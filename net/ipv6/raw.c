@@ -1109,12 +1109,7 @@ id|skb-&gt;csum
 )paren
 )paren
 (brace
-id|IP6_INC_STATS_BH
-c_func
-(paren
-id|Ip6InDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw6 drops counter here */
 id|kfree_skb
 c_func
 (paren
@@ -1146,12 +1141,7 @@ OL
 l_int|0
 )paren
 (brace
-id|IP6_INC_STATS_BH
-c_func
-(paren
-id|Ip6InDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw6 drops counter here */
 id|kfree_skb
 c_func
 (paren
@@ -1162,12 +1152,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|IP6_INC_STATS_BH
-c_func
-(paren
-id|Ip6InDelivers
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1346,12 +1330,7 @@ id|skb-&gt;csum
 )paren
 )paren
 (brace
-id|IP6_INC_STATS_BH
-c_func
-(paren
-id|Ip6InDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw6 drops counter here */
 id|kfree_skb
 c_func
 (paren
@@ -1838,12 +1817,7 @@ suffix:colon
 op_minus
 id|EHOSTUNREACH
 suffix:semicolon
-id|IP6_INC_STATS_USER
-c_func
-(paren
-id|Ip6InDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw6 drops counter here */
 r_goto
 id|out_free
 suffix:semicolon

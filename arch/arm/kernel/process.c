@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/process.c&n; *&n; *  Copyright (C) 1996-2000 Russell King - Converted to ARM.&n; *  Origional Copyright (C) 1995  Linus Torvalds&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -404,6 +405,26 @@ id|condition_codes
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;PC is at %s&bslash;n&quot;
+comma
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;LR is at %s&bslash;n&quot;
+comma
+id|regs-&gt;ARM_lr
 )paren
 suffix:semicolon
 id|printk
@@ -1509,9 +1530,11 @@ l_string|&quot;Ir&quot;
 id|flags
 )paren
 comma
-l_string|&quot;I&quot;
+l_string|&quot;r&quot;
 (paren
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 )paren
 comma
 l_string|&quot;r&quot;

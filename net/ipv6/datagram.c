@@ -722,6 +722,10 @@ id|sin-&gt;sin6_flowinfo
 op_assign
 l_int|0
 suffix:semicolon
+id|sin-&gt;sin6_scope_id
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

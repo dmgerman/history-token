@@ -971,7 +971,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceNumber
+id|desc.bInterfaceNumber
 comma
 id|dev-&gt;buf
 comma
@@ -1041,7 +1041,7 @@ op_star
 id|udev
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|iface_as
 suffix:semicolon
@@ -1093,19 +1093,9 @@ id|USB_REQ_SET_INTERFACE
 comma
 id|USB_RECIP_INTERFACE
 comma
-id|iface-&gt;altsetting
-(braket
 id|alternate
-)braket
-dot
-id|bAlternateSetting
 comma
-id|iface-&gt;altsetting
-(braket
-id|alternate
-)braket
-dot
-id|bInterfaceNumber
+id|iface-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|NULL
 comma
@@ -1141,7 +1131,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_as-&gt;bNumEndpoints
+id|iface_as-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -1155,7 +1145,7 @@ id|iface_as-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 r_int
 id|out
@@ -1207,7 +1197,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_as-&gt;bNumEndpoints
+id|iface_as-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -1221,7 +1211,7 @@ id|iface_as-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 r_int
 id|out
@@ -1265,7 +1255,7 @@ id|iface_as-&gt;endpoint
 id|i
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 )brace
 r_return
@@ -1458,7 +1448,7 @@ id|iface-&gt;altsetting
 id|i
 )braket
 dot
-id|bAlternateSetting
+id|desc.bAlternateSetting
 op_ne
 id|i
 )paren
@@ -1475,6 +1465,8 @@ id|iface-&gt;altsetting
 (braket
 id|i
 )braket
+dot
+id|desc
 dot
 id|bAlternateSetting
 )paren
@@ -1579,9 +1571,9 @@ l_int|1
 r_int
 id|expected
 op_assign
-id|udev-&gt;actconfig-&gt;bConfigurationValue
+id|udev-&gt;actconfig-&gt;desc.bConfigurationValue
 suffix:semicolon
-multiline_comment|/* [9.4.2] get_configuration always works */
+multiline_comment|/* [9.4.2] get_configuration always works&n;&t;&t; * ... although some cheap devices (like one TI Hub I&squot;ve got)&n;&t;&t; * won&squot;t return config descriptors except before set_config.&n;&t;&t; */
 id|retval
 op_assign
 id|usb_control_msg
@@ -2039,7 +2031,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceNumber
+id|desc.bInterfaceNumber
 comma
 id|dev-&gt;buf
 )paren
@@ -2080,6 +2072,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*-------------------------------------------------------------------------*/
+singleline_comment|// control queueing !!
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* We only have this one interface to user space, through usbfs.&n; * User mode code can scan usbfs to find N different devices (maybe on&n; * different busses) to use when testing, and allocate one thread per&n; * test.  So discovery is simplified, and we have no device naming issues.&n; *&n; * Don&squot;t use these only as stress/load tests.  Use them along with with&n; * other USB bus activity:  plugging, unplugging, mousing, mp3 playback,&n; * video capture, and so on.  Run different tests at different times, in&n; * different sequences.  Nothing here should interact with other devices,&n; * except indirectly by consuming USB bandwidth and CPU resources for test&n; * threads and request completion.&n; */
 DECL|function|usbtest_ioctl
@@ -2206,7 +2200,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 r_return
 op_minus
@@ -3222,7 +3216,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceNumber
+id|desc.bInterfaceNumber
 )paren
 suffix:semicolon
 id|dev-&gt;intf
@@ -3314,26 +3308,6 @@ op_assign
 l_string|&quot; intr-out&quot;
 suffix:semicolon
 )brace
-macro_line|#if 1
-singleline_comment|// FIXME disabling this until we finally get rid of
-singleline_comment|// interrupt &quot;automagic&quot; resubmission
-id|dbg
-(paren
-l_string|&quot;%s:  no interrupt transfers for now&quot;
-comma
-id|dev-&gt;id
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace

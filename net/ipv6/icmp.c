@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;Internet Control Message Protocol (ICMPv6)&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;$Id: icmp.c,v 1.38 2002/02/08 03:57:19 davem Exp $&n; *&n; *&t;Based on net/ipv4/icmp.c&n; *&n; *&t;RFC 1885&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Andi Kleen&t;&t;:&t;exception handling&n; *&t;Andi Kleen&t;&t;&t;add rate limits. never reply to a icmp.&n; *&t;&t;&t;&t;&t;add more length checks and other fixes.&n; *&t;yoshfuji&t;&t;:&t;ensure to sent parameter problem for&n; *&t;&t;&t;&t;&t;fragments.&n; */
+multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Andi Kleen&t;&t;:&t;exception handling&n; *&t;Andi Kleen&t;&t;&t;add rate limits. never reply to a icmp.&n; *&t;&t;&t;&t;&t;add more length checks and other fixes.&n; *&t;yoshfuji&t;&t;:&t;ensure to sent parameter problem for&n; *&t;&t;&t;&t;&t;fragments.&n; *&t;YOSHIFUJI Hideaki @USAGI:&t;added sysctl for icmp rate limit.&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,6 +13,9 @@ macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef CONFIG_SYSCTL
+macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
@@ -2733,4 +2736,40 @@ r_return
 id|fatal
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
+DECL|variable|ipv6_icmp_table
+id|ctl_table
+id|ipv6_icmp_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|NET_IPV6_ICMP_RATELIMIT
+comma
+l_string|&quot;ratelimit&quot;
+comma
+op_amp
+id|sysctl_icmpv6_time
+comma
+r_sizeof
+(paren
+r_int
+)paren
+comma
+l_int|0644
+comma
+l_int|NULL
+comma
+op_amp
+id|proc_dointvec
+)brace
+comma
+(brace
+l_int|0
+)brace
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 eof

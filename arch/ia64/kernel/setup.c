@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -27,10 +28,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
 macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
 macro_line|#endif
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;((a) &gt; (b) ? (a) : (b))
 r_extern
 r_char
 id|_end
@@ -141,6 +138,9 @@ r_static
 r_int
 id|num_rsvd_regions
 suffix:semicolon
+DECL|macro|IGNORE_PFN0
+mdefine_line|#define IGNORE_PFN0&t;1&t;/* XXX fix me: ignore pfn 0 until TLB miss handler is updated... */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|variable|bootmap_start
 r_static
 r_int
@@ -208,13 +208,202 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|IGNORE_PFN0
-mdefine_line|#define IGNORE_PFN0&t;1&t;/* XXX fix me: ignore pfn 0 until TLB miss handler is updated... */
-multiline_comment|/*&n; * Free available memory based on the primitive map created from&n; * the boot parameters. This routine does not assume the incoming&n; * segments are sorted.&n; */
-r_static
+macro_line|#else /* CONFIG_DISCONTIGMEM */
+multiline_comment|/*&n; * efi_memmap_walk() knows nothing about layout of memory across nodes. Find&n; * out to which node a block of memory belongs.  Ignore memory that we cannot&n; * identify, and split blocks that run across multiple nodes.&n; *&n; * Take this opportunity to round the start address up and the end address&n; * down to page boundaries.&n; */
+r_void
+DECL|function|call_pernode_memory
+id|call_pernode_memory
+(paren
 r_int
-DECL|function|free_available_memory
-id|free_available_memory
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+comma
+r_void
+op_star
+id|arg
+)paren
+(brace
+r_int
+r_int
+id|rs
+comma
+id|re
+suffix:semicolon
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|start
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+id|end
+op_and_assign
+id|PAGE_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|start
+op_ge
+id|end
+)paren
+r_return
+suffix:semicolon
+id|func
+op_assign
+id|arg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|num_memblks
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This machine doesn&squot;t have SRAT, so call func with&n;&t;&t; * nid=0, bank=0.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|start
+OL
+id|end
+)paren
+(paren
+op_star
+id|func
+)paren
+(paren
+id|start
+comma
+id|end
+op_minus
+id|start
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_memblks
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|rs
+op_assign
+id|max
+c_func
+(paren
+id|start
+comma
+id|node_memblk
+(braket
+id|i
+)braket
+dot
+id|start_paddr
+)paren
+suffix:semicolon
+id|re
+op_assign
+id|min
+c_func
+(paren
+id|end
+comma
+id|node_memblk
+(braket
+id|i
+)braket
+dot
+id|start_paddr
+op_plus
+id|node_memblk
+(braket
+id|i
+)braket
+dot
+id|size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rs
+OL
+id|re
+)paren
+(paren
+op_star
+id|func
+)paren
+(paren
+id|rs
+comma
+id|re
+op_minus
+id|rs
+comma
+id|node_memblk
+(braket
+id|i
+)braket
+dot
+id|nid
+comma
+id|node_memblk
+(braket
+id|i
+)braket
+dot
+id|bank
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
+multiline_comment|/*&n; * Filter incoming memory segments based on the primitive map created from the boot&n; * parameters. Segments contained in the map are removed from the memory ranges. A&n; * caller-specified function is called with the memory ranges that remain after filtering.&n; * This routine does not assume the incoming segments are sorted.&n; */
+r_int
+DECL|function|filter_rsvd_memory
+id|filter_rsvd_memory
 (paren
 r_int
 r_int
@@ -236,6 +425,19 @@ comma
 id|range_end
 comma
 id|prev_start
+suffix:semicolon
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -276,6 +478,10 @@ id|prev_start
 op_assign
 id|PAGE_OFFSET
 suffix:semicolon
+id|func
+op_assign
+id|arg
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -293,7 +499,7 @@ id|i
 (brace
 id|range_start
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|start
@@ -303,7 +509,7 @@ id|prev_start
 suffix:semicolon
 id|range_end
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|end
@@ -323,8 +529,30 @@ id|range_start
 OL
 id|range_end
 )paren
-id|free_bootmem
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+id|call_pernode_memory
 c_func
+(paren
+id|__pa
+c_func
+(paren
+id|range_start
+)paren
+comma
+id|__pa
+c_func
+(paren
+id|range_end
+)paren
+comma
+id|func
+)paren
+suffix:semicolon
+macro_line|#else
+(paren
+op_star
+id|func
+)paren
 (paren
 id|__pa
 c_func
@@ -337,6 +565,7 @@ op_minus
 id|range_start
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* nothing more available in this segment */
 r_if
 c_cond
@@ -363,6 +592,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * Find a place to put the bootmap and return its starting address in bootmap_start.&n; * This address must be page-aligned.&n; */
 r_static
 r_int
@@ -451,7 +681,7 @@ op_increment
 (brace
 id|range_start
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|start
@@ -461,7 +691,7 @@ id|free_start
 suffix:semicolon
 id|range_end
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|end
@@ -538,6 +768,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 r_static
 r_void
 DECL|function|sort_regions
@@ -880,6 +1111,29 @@ comma
 id|num_rsvd_regions
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+(brace
+r_extern
+r_void
+id|discontig_mem_init
+(paren
+r_void
+)paren
+suffix:semicolon
+id|bootmap_size
+op_assign
+id|max_pfn
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* stop gcc warnings */
+id|discontig_mem_init
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_DISCONTIGMEM */
 multiline_comment|/* first find highest page frame number */
 id|max_pfn
 op_assign
@@ -952,9 +1206,9 @@ multiline_comment|/* Free all available memory, then mark bootmem-map as being i
 id|efi_memmap_walk
 c_func
 (paren
-id|free_available_memory
+id|filter_rsvd_memory
 comma
-l_int|0
+id|free_bootmem
 )paren
 suffix:semicolon
 id|reserve_bootmem
@@ -965,6 +1219,7 @@ comma
 id|bootmap_size
 )paren
 suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -1066,6 +1321,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/* Initialize the ACPI boot-time table parser */
+id|acpi_table_init
+c_func
+(paren
+op_star
+id|cmdline_p
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_NUMA
+id|acpi_numa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* CONFIG_APCI_BOOT */
 id|find_memory
 c_func
 (paren
@@ -2024,11 +2296,11 @@ suffix:semicolon
 r_struct
 id|cpuinfo_ia64
 op_star
-id|my_cpu_info
+id|cpu_info
 suffix:semicolon
 r_void
 op_star
-id|my_cpu_data
+id|cpu_data
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
@@ -2039,68 +2311,60 @@ id|__per_cpu_end
 suffix:semicolon
 r_int
 id|cpu
-op_assign
+suffix:semicolon
+multiline_comment|/*&n;&t; * get_free_pages() cannot be used before cpu_init() done.  BSP allocates&n;&t; * &quot;NR_CPUS&quot; pages for all CPUs to avoid that AP calls get_zeroed_page().&n;&t; */
+r_if
+c_cond
+(paren
 id|smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|__per_cpu_end
-op_minus
-id|__per_cpu_start
-OG
-id|PAGE_SIZE
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Per-cpu data area too big! (%Zu &gt; %Zu)&quot;
-comma
-id|__per_cpu_end
-op_minus
-id|__per_cpu_start
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * On the BSP, the page allocator isn&squot;t initialized by the time we get here.  On&n;&t; * the APs, the bootmem allocator is no longer available...&n;&t; */
-r_if
-c_cond
-(paren
-id|cpu
 op_eq
 l_int|0
 )paren
-id|my_cpu_data
+(brace
+id|cpu_data
 op_assign
-id|alloc_bootmem_pages
+(paren
+r_int
+r_int
+)paren
+id|__alloc_bootmem
 c_func
 (paren
-id|__per_cpu_end
-op_minus
-id|__per_cpu_start
-)paren
-suffix:semicolon
-r_else
-id|my_cpu_data
-op_assign
-(paren
-r_void
+id|PERCPU_PAGE_SIZE
 op_star
-)paren
-id|get_zeroed_page
+id|NR_CPUS
+comma
+id|PERCPU_PAGE_SIZE
+comma
+id|__pa
 c_func
 (paren
-id|GFP_KERNEL
+id|MAX_DMA_ADDRESS
+)paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+(brace
 id|memcpy
 c_func
 (paren
-id|my_cpu_data
+id|cpu_data
 comma
 id|__phys_per_cpu_start
 comma
@@ -2118,38 +2382,37 @@ op_assign
 r_char
 op_star
 )paren
-id|my_cpu_data
+id|cpu_data
 op_minus
 id|__per_cpu_start
 suffix:semicolon
-id|my_cpu_info
+id|cpu_data
+op_add_assign
+id|PERCPU_PAGE_SIZE
+suffix:semicolon
+)brace
+)brace
+id|cpu_data
 op_assign
-id|my_cpu_data
+id|__per_cpu_start
 op_plus
-(paren
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|__get_cpu_var
+id|__per_cpu_offset
+(braket
+id|smp_processor_id
 c_func
 (paren
-id|cpu_info
 )paren
-op_minus
-id|__per_cpu_start
-)paren
+)braket
 suffix:semicolon
-macro_line|#else
-id|my_cpu_data
+macro_line|#else /* !CONFIG_SMP */
+id|cpu_data
 op_assign
 id|__phys_per_cpu_start
 suffix:semicolon
-macro_line|#endif
-id|my_cpu_info
+macro_line|#endif /* !CONFIG_SMP */
+id|cpu_info
 op_assign
-id|my_cpu_data
+id|cpu_data
 op_plus
 (paren
 (paren
@@ -2166,17 +2429,26 @@ op_minus
 id|__per_cpu_start
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|cpu_info-&gt;node_data
+op_assign
+id|get_node_data_ptr
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * We can&squot;t pass &quot;local_cpu_data&quot; to identify_cpu() because we haven&squot;t called&n;&t; * ia64_mmu_init() yet.  And we can&squot;t call ia64_mmu_init() first because it&n;&t; * depends on the data returned by identify_cpu().  We break the dependency by&n;&t; * accessing cpu_data() the old way, through identity mapped space.&n;&t; */
 id|identify_cpu
 c_func
 (paren
-id|my_cpu_info
+id|cpu_info
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MCKINLEY
 (brace
 DECL|macro|FEATURE_SET
-mdefine_line|#define FEATURE_SET 16
+macro_line|#&t;&t;define FEATURE_SET 16
 r_struct
 id|ia64_pal_retval
 id|iprv
@@ -2184,7 +2456,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|my_cpu_info-&gt;family
+id|cpu_info-&gt;family
 op_eq
 l_int|0x1f
 )paren
@@ -2316,7 +2588,7 @@ suffix:semicolon
 id|ia64_mmu_init
 c_func
 (paren
-id|my_cpu_data
+id|cpu_data
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT

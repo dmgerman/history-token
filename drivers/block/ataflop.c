@@ -26,12 +26,6 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 DECL|macro|FD_MAX_UNITS
@@ -44,6 +38,14 @@ r_struct
 id|request_queue
 id|floppy_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;floppy_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
 multiline_comment|/* Disk types: DD, HD, ED */
 DECL|struct|atari_disk_type
 r_static
@@ -5604,22 +5606,21 @@ r_void
 )paren
 (brace
 r_int
-id|device
-comma
 id|drive
 comma
 id|type
+suffix:semicolon
+r_struct
+id|atari_floppy_struct
+op_star
+id|floppy
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;redo_fd_request: CURRENT=%08lx CURRENT-&gt;dev=%04x CURRENT-&gt;sector=%ld&bslash;n&quot;
+l_string|&quot;redo_fd_request: CURRENT=%p dev=%s CURRENT-&gt;sector=%ld&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|CURRENT
 comma
 op_logical_neg
@@ -5630,9 +5631,9 @@ id|QUEUE
 )paren
 ques
 c_cond
-id|CURRENT-&gt;rq_dev
+id|CURRENT-&gt;rq_disk-&gt;disk_name
 suffix:colon
-l_int|0
+l_string|&quot;&quot;
 comma
 op_logical_neg
 id|blk_queue_empty
@@ -5666,43 +5667,22 @@ id|QUEUE
 r_goto
 id|the_end
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
-suffix:semicolon
-id|device
+id|floppy
 op_assign
-id|minor
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
+id|CURRENT-&gt;rq_disk-&gt;private_data
 suffix:semicolon
 id|drive
 op_assign
-id|device
-op_amp
-l_int|3
+id|floppy
+op_minus
+id|unit
 suffix:semicolon
 id|type
 op_assign
-id|device
-op_rshift
-l_int|2
+id|fd_device
+(braket
+id|drive
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -7411,11 +7391,7 @@ id|drive
 op_logical_and
 id|old_dev
 op_ne
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
+id|type
 )paren
 r_return
 op_minus
@@ -7474,11 +7450,7 @@ id|fd_device
 id|drive
 )braket
 op_assign
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
+id|type
 suffix:semicolon
 r_if
 c_cond
@@ -7487,11 +7459,7 @@ id|old_dev
 op_logical_and
 id|old_dev
 op_ne
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
+id|type
 )paren
 id|invalidate_buffers
 c_func
@@ -7501,7 +7469,13 @@ c_func
 (paren
 id|FLOPPY_MAJOR
 comma
-id|old_dev
+id|drive
+op_plus
+(paren
+id|type
+op_lshift
+l_int|2
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -7726,6 +7700,11 @@ id|NUM_DISK_MINORS
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+op_star
+id|part
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|get_disk

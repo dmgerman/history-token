@@ -677,6 +677,8 @@ id|iface-&gt;altsetting
 (braket
 id|setno
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -767,7 +769,7 @@ id|setno
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|desc
 op_assign
@@ -803,7 +805,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|desc-&gt;bNumEndpoints
+id|desc-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -830,9 +832,13 @@ id|start
 comma
 id|end
 comma
+op_amp
 id|desc-&gt;endpoint
-op_plus
+(braket
 id|i
+)braket
+dot
+id|desc
 )paren
 suffix:semicolon
 )brace
@@ -899,7 +905,7 @@ id|desc-&gt;bConfigurationValue
 comma
 id|desc-&gt;bmAttributes
 comma
-id|desc-&gt;MaxPower
+id|desc-&gt;bMaxPower
 op_star
 l_int|2
 )paren
@@ -927,7 +933,7 @@ id|end
 comma
 r_const
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 comma
@@ -982,7 +988,8 @@ id|start
 comma
 id|end
 comma
-id|config
+op_amp
+id|config-&gt;desc
 comma
 id|active
 )paren
@@ -996,7 +1003,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment

@@ -381,14 +381,17 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 id|cpu_logical_map
 c_func
 (paren
 id|x
 )paren
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|i
 )braket
@@ -854,10 +857,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 id|cpu
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

@@ -15,22 +15,22 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
 DECL|macro|SNDRV_OS_MINORS
 mdefine_line|#define SNDRV_OS_MINORS 256
-DECL|variable|snd_major
+DECL|variable|major
 r_int
-id|snd_major
+id|major
 op_assign
 id|CONFIG_SND_MAJOR
 suffix:semicolon
-DECL|variable|snd_cards_limit
+DECL|variable|cards_limit
 r_static
 r_int
-id|snd_cards_limit
+id|cards_limit
 op_assign
 id|SNDRV_CARDS
 suffix:semicolon
-DECL|variable|snd_device_mode
+DECL|variable|device_mode
 r_int
-id|snd_device_mode
+id|device_mode
 op_assign
 id|S_IFCHR
 op_or
@@ -38,15 +38,15 @@ id|S_IRUGO
 op_or
 id|S_IWUGO
 suffix:semicolon
-DECL|variable|snd_device_gid
+DECL|variable|device_gid
 r_int
-id|snd_device_gid
+id|device_gid
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|snd_device_uid
+DECL|variable|device_uid
 r_int
-id|snd_device_uid
+id|device_uid
 op_assign
 l_int|0
 suffix:semicolon
@@ -83,7 +83,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_major
+id|major
 comma
 l_string|&quot;i&quot;
 )paren
@@ -91,7 +91,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_major
+id|major
 comma
 l_string|&quot;Major # for sound driver.&quot;
 )paren
@@ -99,7 +99,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_major
+id|major
 comma
 l_string|&quot;default:116,skill:devel&quot;
 )paren
@@ -107,7 +107,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_cards_limit
+id|cards_limit
 comma
 l_string|&quot;i&quot;
 )paren
@@ -115,7 +115,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_cards_limit
+id|cards_limit
 comma
 l_string|&quot;Count of soundcards installed in the system.&quot;
 )paren
@@ -123,7 +123,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cards_limit
+id|cards_limit
 comma
 l_string|&quot;default:8,skill:advanced&quot;
 )paren
@@ -131,7 +131,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_device_mode
+id|device_mode
 comma
 l_string|&quot;i&quot;
 )paren
@@ -139,7 +139,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_device_mode
+id|device_mode
 comma
 l_string|&quot;Device file permission mask for sound dynamic device filesystem.&quot;
 )paren
@@ -147,7 +147,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_device_mode
+id|device_mode
 comma
 l_string|&quot;default:0666,base:8&quot;
 )paren
@@ -155,7 +155,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_device_gid
+id|device_gid
 comma
 l_string|&quot;i&quot;
 )paren
@@ -163,7 +163,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_device_gid
+id|device_gid
 comma
 l_string|&quot;Device file GID for sound dynamic device filesystem.&quot;
 )paren
@@ -171,7 +171,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_device_gid
+id|device_gid
 comma
 l_string|&quot;default:0&quot;
 )paren
@@ -179,7 +179,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_device_uid
+id|device_uid
 comma
 l_string|&quot;i&quot;
 )paren
@@ -187,7 +187,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_device_uid
+id|device_uid
 comma
 l_string|&quot;Device file UID for sound dynamic device filesystem.&quot;
 )paren
@@ -195,7 +195,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_device_uid
+id|device_uid
 comma
 l_string|&quot;default:0&quot;
 )paren
@@ -1352,7 +1352,7 @@ id|card
 suffix:semicolon
 id|snd_ecards_limit
 op_assign
-id|snd_cards_limit
+id|cards_limit
 suffix:semicolon
 r_for
 c_loop
@@ -1434,7 +1434,7 @@ c_cond
 id|register_chrdev
 c_func
 (paren
-id|snd_major
+id|major
 comma
 l_string|&quot;alsa&quot;
 comma
@@ -1449,7 +1449,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;unable to register native major device number %d&bslash;n&quot;
 comma
-id|snd_major
+id|major
 )paren
 suffix:semicolon
 r_return
@@ -1504,7 +1504,7 @@ l_int|0
 suffix:semicolon
 id|controlnum
 OL
-id|snd_cards_limit
+id|cards_limit
 suffix:semicolon
 id|controlnum
 op_increment
@@ -1529,13 +1529,13 @@ id|controlname
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|snd_major
+id|major
 comma
 id|controlnum
 op_lshift
 l_int|5
 comma
-id|snd_device_mode
+id|device_mode
 op_or
 id|S_IFCHR
 comma
@@ -1599,7 +1599,7 @@ l_int|0
 suffix:semicolon
 id|controlnum
 OL
-id|snd_cards_limit
+id|cards_limit
 suffix:semicolon
 id|controlnum
 op_increment
@@ -1665,7 +1665,7 @@ c_cond
 id|unregister_chrdev
 c_func
 (paren
-id|snd_major
+id|major
 comma
 l_string|&quot;alsa&quot;
 )paren
@@ -1678,7 +1678,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;unable to unregister major device number %d&bslash;n&quot;
 comma
-id|snd_major
+id|major
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS

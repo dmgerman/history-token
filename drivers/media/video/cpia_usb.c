@@ -283,6 +283,8 @@ comma
 id|cpia_usb_close
 comma
 l_int|0
+comma
+id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|variable|cam_list
@@ -928,7 +930,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -1055,7 +1057,7 @@ l_int|1
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 id|urb-&gt;transfer_buffer
 op_assign
@@ -2568,8 +2570,10 @@ suffix:semicolon
 id|cpia_add_to_list
 c_func
 (paren
+op_amp
 id|cam_list
 comma
+op_amp
 id|cam
 )paren
 suffix:semicolon
@@ -2809,6 +2813,7 @@ suffix:semicolon
 id|cpia_remove_from_list
 c_func
 (paren
+op_amp
 id|cam
 )paren
 suffix:semicolon

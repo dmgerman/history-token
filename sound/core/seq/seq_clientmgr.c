@@ -276,7 +276,7 @@ suffix:semicolon
 )brace
 r_extern
 r_int
-id|snd_seq_client_load
+id|seq_client_load
 (braket
 )braket
 suffix:semicolon
@@ -457,7 +457,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_seq_client_load
+id|seq_client_load
 (braket
 id|idx
 )braket
@@ -469,7 +469,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_seq_client_load
+id|seq_client_load
 (braket
 id|idx
 )braket

@@ -42,12 +42,6 @@ r_struct
 id|scsi_device
 id|SCSI_Device_T
 suffix:semicolon
-DECL|typedef|SCSI_Disk_T
-r_typedef
-r_struct
-id|scsi_disk
-id|SCSI_Disk_T
-suffix:semicolon
 DECL|typedef|SCSI_Command_T
 r_typedef
 r_struct
@@ -111,36 +105,18 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|BusLogic_AbortCommand
-c_func
-(paren
-id|SCSI_Command_T
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|BusLogic_ResetCommand
-c_func
-(paren
-id|SCSI_Command_T
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|BusLogic_BIOSDiskParameters
 c_func
 (paren
-id|SCSI_Disk_T
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star
@@ -178,7 +154,7 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n;  Define the BusLogic SCSI Host Template structure.&n;*/
 DECL|macro|BUSLOGIC
-mdefine_line|#define BUSLOGIC&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;  { proc_name:      &quot;BusLogic&quot;,&t;&t;&t;  /* ProcFS Directory Entry */ &bslash;&n;    proc_info:      BusLogic_ProcDirectoryInfo,&t;  /* ProcFS Info Function   */ &bslash;&n;    name:           &quot;BusLogic&quot;,&t;&t;&t;  /* Driver Name            */ &bslash;&n;    detect:         BusLogic_DetectHostAdapter,&t;  /* Detect Host Adapter    */ &bslash;&n;    release:        BusLogic_ReleaseHostAdapter,  /* Release Host Adapter   */ &bslash;&n;    info:           BusLogic_DriverInfo,&t;  /* Driver Info Function   */ &bslash;&n;    queuecommand:   BusLogic_QueueCommand,&t;  /* Queue Command Function */ &bslash;&n;    abort:          BusLogic_AbortCommand,&t;  /* Abort Command Function */ &bslash;&n;    reset:          BusLogic_ResetCommand,&t;  /* Reset Command Function */ &bslash;&n;    slave_attach:   BusLogic_SlaveAttach,&t;  /* Configure a SCSI_Device*/ &bslash;&n;    bios_param:     BusLogic_BIOSDiskParameters,  /* BIOS Disk Parameters   */ &bslash;&n;    unchecked_isa_dma: 1,&t;&t;&t;  /* Default Initial Value  */ &bslash;&n;    max_sectors:    128,&t;&t;&t;  /* I/O queue len limit    */ &bslash;&n;    use_clustering: ENABLE_CLUSTERING }&t;&t;  /* Enable Clustering&t;    */
+mdefine_line|#define BUSLOGIC&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;  { proc_name:      &quot;BusLogic&quot;,&t;&t;&t;  /* ProcFS Directory Entry */ &bslash;&n;    proc_info:      BusLogic_ProcDirectoryInfo,&t;  /* ProcFS Info Function   */ &bslash;&n;    name:           &quot;BusLogic&quot;,&t;&t;&t;  /* Driver Name            */ &bslash;&n;    detect:         BusLogic_DetectHostAdapter,&t;  /* Detect Host Adapter    */ &bslash;&n;    release:        BusLogic_ReleaseHostAdapter,  /* Release Host Adapter   */ &bslash;&n;    info:           BusLogic_DriverInfo,&t;  /* Driver Info Function   */ &bslash;&n;    queuecommand:   BusLogic_QueueCommand,&t;  /* Queue Command Function */ &bslash;&n;    slave_attach:   BusLogic_SlaveAttach,&t;  /* Configure a SCSI_Device*/ &bslash;&n;    bios_param:     BusLogic_BIOSDiskParameters,  /* BIOS Disk Parameters   */ &bslash;&n;    unchecked_isa_dma: 1,&t;&t;&t;  /* Default Initial Value  */ &bslash;&n;    max_sectors:    128,&t;&t;&t;  /* I/O queue len limit    */ &bslash;&n;    use_clustering: ENABLE_CLUSTERING }&t;&t;  /* Enable Clustering&t;    */
 multiline_comment|/*&n;  BusLogic_DriverVersion protects the private portion of this file.&n;*/
 macro_line|#ifdef BusLogic_DriverVersion
 multiline_comment|/*&n;  FlashPoint support is only available for the Intel x86 Architecture with&n;  CONFIG_PCI set.&n;*/

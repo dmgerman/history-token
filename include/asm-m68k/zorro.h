@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_M68K_ZORRO_H
 DECL|macro|_ASM_M68K_ZORRO_H
 mdefine_line|#define _ASM_M68K_ZORRO_H
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/raw_io.h&gt;
 DECL|macro|z_readb
 mdefine_line|#define z_readb raw_inb
 DECL|macro|z_readw

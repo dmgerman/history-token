@@ -66,6 +66,19 @@ id|KERN_INFO
 l_string|&quot;NET4: Ethernet Bridge 008 for NET4.0&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER
+r_if
+c_cond
+(paren
+id|br_netfilter_init
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|br_handle_frame_hook
 op_assign
 id|br_handle_frame
@@ -119,6 +132,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETFILTER
+id|br_netfilter_fini
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|unregister_netdevice_notifier
 c_func
 (paren

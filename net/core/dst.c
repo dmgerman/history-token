@@ -409,6 +409,10 @@ id|dst-&gt;lastuse
 op_assign
 id|jiffies
 suffix:semicolon
+id|dst-&gt;path
+op_assign
+id|dst
+suffix:semicolon
 id|dst-&gt;input
 op_assign
 id|dst_discard

@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 singleline_comment|// struct pt_regs for IRQ handler &amp; Port I/O
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &quot;sd.h&quot;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;   
 singleline_comment|// Scsi_Host definition for INT handler
 macro_line|#include &quot;cpqfcTSchip.h&quot;

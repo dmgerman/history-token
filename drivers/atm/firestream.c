@@ -2235,10 +2235,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* Here we get the tx purge inhibit command ... */
 multiline_comment|/* Action, I believe, is &quot;don&squot;t do anything&quot;. -- REW */
+suffix:semicolon
 )brace
 id|write_fs
 (paren

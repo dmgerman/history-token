@@ -2106,16 +2106,35 @@ id|__FUNCTION__
 r_return
 suffix:semicolon
 )brace
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - nonzero control read status received: %d&quot;
+l_string|&quot;%s - urb shutting down with status: %d&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2123,6 +2142,21 @@ id|urb-&gt;status
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
 suffix:semicolon
 )brace
 singleline_comment|// process this interrupt-read even if there are no ports open
@@ -2383,6 +2417,34 @@ op_increment
 id|portNumber
 suffix:semicolon
 )brace
+)brace
+m_exit
+suffix:colon
+id|result
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s - Error %d submitting control urb&quot;
+comma
+id|__FUNCTION__
+comma
+id|result
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*****************************************************************************&n; * edge_bulk_in_callback&n; *&t;this is the callback function for when we have received data on the &n; *&t;bulk in endpoint.&n; *****************************************************************************/
@@ -3024,7 +3086,7 @@ op_assign
 id|port0-&gt;bulk_out_endpointAddress
 suffix:semicolon
 multiline_comment|/* set up our interrupt urb */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|edge_serial-&gt;interrupt_read_urb
@@ -3051,7 +3113,7 @@ id|edge_serial-&gt;interrupt_read_urb-&gt;interval
 )paren
 suffix:semicolon
 multiline_comment|/* set up our bulk in urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|edge_serial-&gt;read_urb
@@ -4634,7 +4696,7 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* fill up the urb with all of our data and submit it */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -8684,7 +8746,7 @@ comma
 id|CmdUrbs
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma

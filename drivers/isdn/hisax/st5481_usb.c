@@ -628,50 +628,59 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
-r_if
+r_int
+id|status
+suffix:semicolon
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
-OL
-l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-op_ne
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
 op_minus
 id|ENOENT
-)paren
-(brace
-id|WARN
-c_func
-(paren
-l_string|&quot;urb status %d&quot;
-comma
-id|urb-&gt;status
-)paren
-suffix:semicolon
-id|urb-&gt;actual_length
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
 id|DBG
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;urb killed&quot;
+l_string|&quot;urb shutting down with status: %d&quot;
+comma
+id|urb-&gt;status
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
-singleline_comment|// Give up
-)brace
+r_default
+suffix:colon
+id|WARN
+c_func
+(paren
+l_string|&quot;nonzero urb status received: %d&quot;
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
 )brace
 id|DBG_PACKET
 c_func
@@ -691,7 +700,8 @@ op_eq
 l_int|0
 )paren
 (brace
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|irqbyte
@@ -833,6 +843,30 @@ id|urb-&gt;actual_length
 op_assign
 l_int|0
 suffix:semicolon
+m_exit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|WARN
+c_func
+(paren
+l_string|&quot;usb_submit_urb failed with result %d&quot;
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* ======================================================================&n; * initialization&n; */
 DECL|function|st5481_setup_usb
@@ -871,12 +905,12 @@ op_amp
 id|adapter-&gt;intr
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -915,7 +949,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 )paren
 OL
@@ -953,7 +987,7 @@ singleline_comment|// Check if the config is sane
 r_if
 c_cond
 (paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 op_ne
 l_int|7
 )paren
@@ -963,7 +997,7 @@ c_func
 (paren
 l_string|&quot;expecting 7 got %d endpoints!&quot;
 comma
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 )paren
 suffix:semicolon
 r_return
@@ -977,7 +1011,7 @@ id|altsetting-&gt;endpoint
 l_int|3
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 op_assign
 l_int|32
 suffix:semicolon
@@ -986,7 +1020,7 @@ id|altsetting-&gt;endpoint
 l_int|4
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 op_assign
 l_int|32
 suffix:semicolon
@@ -1050,7 +1084,7 @@ op_assign
 id|urb
 suffix:semicolon
 singleline_comment|// Fill the control URB
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|urb
 comma
@@ -1148,7 +1182,7 @@ l_int|1
 )braket
 suffix:semicolon
 singleline_comment|// Fill the interrupt URB
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|urb
@@ -1160,7 +1194,7 @@ c_func
 (paren
 id|dev
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 )paren
 comma
 id|buf
@@ -1171,7 +1205,7 @@ id|usb_int_complete
 comma
 id|adapter
 comma
-id|endpoint-&gt;bInterval
+id|endpoint-&gt;desc.bInterval
 )paren
 suffix:semicolon
 r_return
@@ -1491,7 +1525,7 @@ id|context
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 suffix:semicolon
 r_for
 c_loop

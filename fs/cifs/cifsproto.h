@@ -1769,5 +1769,5 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _CIFSPROTO_H */
+macro_line|#endif&t;&t;&t;/* _CIFSPROTO_H */
 eof

@@ -23,7 +23,7 @@ id|TITAN_agp
 op_assign
 l_int|0
 suffix:semicolon
-r_static
+multiline_comment|/* Save Titan configuration data as the console had it set up.  */
 r_struct
 (brace
 DECL|member|wsba
@@ -50,12 +50,19 @@ id|tba
 l_int|4
 )braket
 suffix:semicolon
-DECL|variable|saved_pachip_port
+DECL|variable|saved_config
 )brace
-id|saved_pachip_port
+id|saved_config
 (braket
 l_int|4
 )braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|common
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * BIOS32-style PCI interface:&n; */
 DECL|macro|DEBUG_MCHECK
@@ -945,7 +952,7 @@ id|hose
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the existing PCI window translations.  SRM will &n;&t; * need them when we go to reboot.&n;&t; */
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -962,7 +969,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -979,7 +986,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -996,7 +1003,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1013,7 +1020,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1030,7 +1037,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1047,7 +1054,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1064,7 +1071,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1081,7 +1088,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1098,7 +1105,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1115,7 +1122,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1132,7 +1139,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1610,7 +1617,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1627,7 +1634,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1644,7 +1651,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1661,7 +1668,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1678,7 +1685,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1695,7 +1702,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1712,7 +1719,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1729,7 +1736,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1746,7 +1753,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1763,7 +1770,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1780,7 +1787,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket
@@ -1797,7 +1804,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pachip_port
+id|saved_config
 (braket
 id|index
 )braket

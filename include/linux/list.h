@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_LIST_H
 DECL|macro|_LINUX_LIST_H
 mdefine_line|#define _LINUX_LIST_H
-macro_line|#if defined(__KERNEL__) || defined(_LVM_H_INCLUDE)
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Simple doubly linked list implementation.&n; *&n; * Some of the internal functions (&quot;__xxx&quot;) are useful when&n; * manipulating whole lists rather than single entries, as&n; * sometimes we already know the next/prev entries and we can&n; * generate better code by using them directly rather than&n; * using the generic single-entry routines.&n; */
@@ -603,6 +603,8 @@ mdefine_line|#define __list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (he
 multiline_comment|/**&n; * list_for_each_safe_rcu&t;-&t;iterate over an rcu-protected list safe&n; *&t;&t;&t;&t;&t;against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_safe_rcu
 mdefine_line|#define list_for_each_safe_rcu(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, ({ read_barrier_depends(); 0;}), n = pos-&gt;next)
-macro_line|#endif /* __KERNEL__ || _LVM_H_INCLUDE */
+macro_line|#else
+macro_line|#warning &quot;don&squot;t include kernel headers in userspace&quot;
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

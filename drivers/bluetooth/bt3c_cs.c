@@ -979,14 +979,17 @@ l_int|0
 r_int
 id|dlen
 suffix:semicolon
+r_struct
 id|hci_event_hdr
 op_star
 id|eh
 suffix:semicolon
+r_struct
 id|hci_acl_hdr
 op_star
 id|ah
 suffix:semicolon
+r_struct
 id|hci_sco_hdr
 op_star
 id|sh
@@ -1003,6 +1006,7 @@ suffix:colon
 id|eh
 op_assign
 (paren
+r_struct
 id|hci_event_hdr
 op_star
 )paren
@@ -1026,6 +1030,7 @@ suffix:colon
 id|ah
 op_assign
 (paren
+r_struct
 id|hci_acl_hdr
 op_star
 )paren
@@ -1057,6 +1062,7 @@ suffix:colon
 id|sh
 op_assign
 (paren
+r_struct
 id|hci_sco_hdr
 op_star
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;&t;mii.c: MII interface library&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2001,2002 Jeff Garzik&n;&n;&t;Various code came from myson803.c and other files by&n;&t;Donald Becker.  Copyright:&n;&n;&t;&t;Written 1998-2002 by Donald Becker.&n;&n;&t;&t;This software may be used and distributed according&n;&t;&t;to the terms of the GNU General Public License (GPL),&n;&t;&t;incorporated herein by reference.  Drivers based on&n;&t;&t;or derived from this code fall under the GPL and must&n;&t;&t;retain the authorship, copyright and license notice.&n;&t;&t;This file is not a complete program and may only be&n;&t;&t;used when the entire operating system is licensed&n;&t;&t;under the GPL.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;&t;Scyld Computing Corporation&n;&t;&t;410 Severn Ave., Suite 210&n;&t;&t;Annapolis MD 21403&n;&n;&n; */
+multiline_comment|/*&n;&n;&t;mii.c: MII interface library&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2001,2002 Jeff Garzik&n;&n;&t;Various code came from myson803.c and other files by&n;&t;Donald Becker.  Copyright:&n;&n;&t;&t;Written 1998-2002 by Donald Becker.&n;&n;&t;&t;This software may be used and distributed according&n;&t;&t;to the terms of the GNU General Public License (GPL),&n;&t;&t;incorporated herein by reference.  Drivers based on&n;&t;&t;or derived from this code fall under the GPL and must&n;&t;&t;retain the authorship, copyright and license notice.&n;&t;&t;This file is not a complete program and may only be&n;&t;&t;used when the entire operating system is licensed&n;&t;&t;under the GPL.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;&t;Scyld Computing Corporation&n;&t;&t;410 Severn Ave., Suite 210&n;&t;&t;Annapolis MD 21403&n;&n;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -1236,12 +1236,12 @@ id|BMCR_ANENABLE
 )paren
 id|mii_if-&gt;force_media
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_else
 id|mii_if-&gt;force_media
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1349,7 +1349,7 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&quot;
+l_string|&quot;Jeff Garzik &lt;jgarzik@pobox.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

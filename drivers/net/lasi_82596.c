@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|variable|__devinitdata
 r_static
@@ -6412,15 +6411,13 @@ id|lp-&gt;scb.status
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|wait_cmd
@@ -6472,9 +6469,12 @@ comma
 l_string|&quot;close2 timed out&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

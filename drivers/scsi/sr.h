@@ -8,9 +8,17 @@ multiline_comment|/* The CDROM is fairly slow, so we need a little extra time */
 multiline_comment|/* In fact, it is very slow if it has to spin up first */
 DECL|macro|IOCTL_TIMEOUT
 mdefine_line|#define IOCTL_TIMEOUT 30*HZ
+DECL|struct|scsi_cd
 r_typedef
 r_struct
+id|scsi_cd
 (brace
+DECL|member|driver
+r_struct
+id|Scsi_Device_Template
+op_star
+id|driver
+suffix:semicolon
 DECL|member|capacity
 r_int
 id|capacity

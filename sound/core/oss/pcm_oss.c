@@ -15,10 +15,10 @@ macro_line|#include &quot;pcm_plugin.h&quot;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|variable|snd_dsp_map
+DECL|variable|dsp_map
 r_static
 r_int
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|SNDRV_CARDS
 )braket
@@ -39,10 +39,10 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|snd_adsp_map
+DECL|variable|adsp_map
 r_static
 r_int
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|SNDRV_CARDS
 )braket
@@ -63,10 +63,10 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_nonblock_open
+DECL|variable|nonblock_open
 r_static
 r_int
-id|snd_nonblock_open
+id|nonblock_open
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -89,7 +89,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dsp_map
+id|dsp_map
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -103,7 +103,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dsp_map
+id|dsp_map
 comma
 l_string|&quot;PCM device number assigned to 1st OSS device.&quot;
 )paren
@@ -111,7 +111,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dsp_map
+id|dsp_map
 comma
 l_string|&quot;default:0,skill:advanced&quot;
 )paren
@@ -119,7 +119,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_adsp_map
+id|adsp_map
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -133,7 +133,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_adsp_map
+id|adsp_map
 comma
 l_string|&quot;PCM device number assigned to 2nd OSS device.&quot;
 )paren
@@ -141,7 +141,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_adsp_map
+id|adsp_map
 comma
 l_string|&quot;default:1,skill:advanced&quot;
 )paren
@@ -149,7 +149,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_nonblock_open
+id|nonblock_open
 comma
 l_string|&quot;i&quot;
 )paren
@@ -157,7 +157,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_nonblock_open
+id|nonblock_open
 comma
 l_string|&quot;Don&squot;t block opening busy PCM devices.&quot;
 )paren
@@ -165,7 +165,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_nonblock_open
+id|nonblock_open
 comma
 l_string|&quot;default:0,skill:advanced&quot;
 )paren
@@ -8052,12 +8052,12 @@ op_eq
 id|SNDRV_MINOR_OSS_PCM1
 ques
 c_cond
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|cardnum
 )braket
 suffix:colon
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|cardnum
 )braket
@@ -8259,7 +8259,7 @@ id|nonblock
 )paren
 id|nonblock
 op_assign
-id|snd_nonblock_open
+id|nonblock_open
 suffix:semicolon
 id|init_waitqueue_entry
 c_func
@@ -11411,7 +11411,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|pcm-&gt;card-&gt;number
 )braket
@@ -11501,7 +11501,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|pcm-&gt;card-&gt;number
 )braket
@@ -11562,7 +11562,7 @@ id|pcm-&gt;oss.reg
 r_if
 c_cond
 (paren
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|pcm-&gt;card-&gt;number
 )braket
@@ -11594,7 +11594,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|pcm-&gt;card-&gt;number
 )braket
@@ -11700,14 +11700,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|i
 )braket
 OL
 l_int|0
 op_logical_or
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|i
 )braket
@@ -11722,13 +11722,13 @@ l_string|&quot;invalid dsp_map[%d] = %d&bslash;n&quot;
 comma
 id|i
 comma
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|snd_dsp_map
+id|dsp_map
 (braket
 id|i
 )braket
@@ -11739,14 +11739,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|i
 )braket
 OL
 l_int|0
 op_logical_or
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|i
 )braket
@@ -11761,13 +11761,13 @@ l_string|&quot;invalid adsp_map[%d] = %d&bslash;n&quot;
 comma
 id|i
 comma
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|snd_adsp_map
+id|adsp_map
 (braket
 id|i
 )braket

@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;microtek.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
@@ -1491,7 +1490,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|transfer
@@ -2468,7 +2467,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|desc-&gt;urb
@@ -2987,7 +2986,7 @@ id|intf
 suffix:semicolon
 multiline_comment|/* the altsettting 0 on the interface we&squot;re probing */
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
@@ -3081,7 +3080,7 @@ multiline_comment|/* Check if the config is sane */
 r_if
 c_cond
 (paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 op_ne
 id|MTS_EP_TOTAL
 )paren
@@ -3099,7 +3098,7 @@ comma
 (paren
 r_int
 )paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 )paren
 suffix:semicolon
 r_return
@@ -3116,7 +3115,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -3131,7 +3130,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -3152,7 +3151,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 )paren
 suffix:semicolon
 )brace
@@ -3166,7 +3165,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3179,7 +3178,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -3212,7 +3211,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -3239,8 +3238,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* I don&squot;t understand the following fully (it&squot;s from usb-storage) -- John */
-multiline_comment|/* set the interface -- STALL is an acceptable response here */
 id|result
 op_assign
 id|usb_set_interface
@@ -3248,7 +3245,7 @@ c_func
 (paren
 id|dev
 comma
-id|altsetting-&gt;bInterfaceNumber
+id|altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -3271,32 +3268,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* no error */
-r_break
-suffix:semicolon
-r_case
-op_minus
-id|EPIPE
-suffix:colon
-id|usb_clear_halt
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|MTS_DEBUG
-c_func
-(paren
-l_string|&quot;clearing clearing stall on control interface&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default

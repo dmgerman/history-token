@@ -342,13 +342,15 @@ DECL|macro|PHILIPS_SET_PAL_L2
 mdefine_line|#define PHILIPS_SET_PAL_L2&t;0x0a
 DECL|macro|PHILIPS_SET_PAL_L
 mdefine_line|#define PHILIPS_SET_PAL_L&t;0x0b&t;
-multiline_comment|/* system switching for Philips FI1216MF MK2&n;   from datasheet &quot;1996 Jul 09&quot;,&n; */
+multiline_comment|/* system switching for Philips FI1216MF MK2&n;   from datasheet &quot;1996 Jul 09&quot;,&n;    standard         BG     L      L&squot;&n;    picture carrier  38.90  38.90  33.95&n;    colour&t;     34.47  34.37  38.38&n;    sound 1          33.40  32.40  40.45&n;    sound 2          33.16  -      -&n;    NICAM            33.05  33.05  39.80&n; */
 DECL|macro|PHILIPS_MF_SET_BG
 mdefine_line|#define PHILIPS_MF_SET_BG&t;0x01 /* Bit 2 must be zero, Bit 3 is system output */
 DECL|macro|PHILIPS_MF_SET_PAL_L
-mdefine_line|#define PHILIPS_MF_SET_PAL_L&t;0x03
+mdefine_line|#define PHILIPS_MF_SET_PAL_L&t;0x03 
+singleline_comment|// France
 DECL|macro|PHILIPS_MF_SET_PAL_L2
-mdefine_line|#define PHILIPS_MF_SET_PAL_L2&t;0x02
+mdefine_line|#define PHILIPS_MF_SET_PAL_L2&t;0x02 
+singleline_comment|// L&squot;
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|struct|tunertype
 r_struct
@@ -406,7 +408,7 @@ r_int
 r_int
 id|IFPCoff
 suffix:semicolon
-multiline_comment|/* 622.4=16*38.90 MHz PAL, 732=16*45.75 NTSC */
+multiline_comment|/* 622.4=16*38.90 MHz PAL, &n;&t;&t;&t;&t;   732  =16*45.75 NTSCi, &n;&t;&t;&t;&t;   940  =58.75 NTSC-Japan */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The floats in the tuner struct are computed at compile time&n; *&t;by gcc and cast back to integers. Thus we don&squot;t violate the&n; *&t;&quot;no float in kernel&quot; rule.&n; */
@@ -446,7 +448,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Philips PAL_I&quot;
+l_string|&quot;Philips PAL_I (FI1246 and compatibles)&quot;
 comma
 id|Philips
 comma
@@ -472,7 +474,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Philips NTSC&quot;
+l_string|&quot;Philips NTSC (FI1236 and compatibles)&quot;
 comma
 id|Philips
 comma
@@ -498,7 +500,7 @@ l_int|732
 )brace
 comma
 (brace
-l_string|&quot;Philips SECAM&quot;
+l_string|&quot;Philips (SECAM+PAL_BG) (FI1216MF, FM1216MF, FR1216MF)&quot;
 comma
 id|Philips
 comma
@@ -546,7 +548,7 @@ l_int|0x00
 )brace
 comma
 (brace
-l_string|&quot;Philips PAL&quot;
+l_string|&quot;Philips PAL_BG (FI1216 and compatibles)&quot;
 comma
 id|Philips
 comma
@@ -1017,7 +1019,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Philips PAL_DK&quot;
+l_string|&quot;Philips PAL_DK (FI1256 and compatibles)&quot;
 comma
 id|Philips
 comma
@@ -1248,9 +1250,10 @@ l_int|0x08
 comma
 l_int|0x8e
 comma
-l_int|940
+l_int|732
 )brace
 comma
+singleline_comment|// Corrected to NTSC=732 (was:940)
 (brace
 l_string|&quot;Samsung PAL TCPM9091PD27&quot;
 comma
@@ -1407,7 +1410,7 @@ l_int|623
 )brace
 comma
 (brace
-l_string|&quot;Philips PAL/SECAM multi (FM1216ME)&quot;
+l_string|&quot;Philips PAL/SECAM multi (FM1216ME MK3)&quot;
 comma
 id|Philips
 comma
@@ -1430,6 +1433,32 @@ comma
 l_int|0x8e
 comma
 l_int|623
+)brace
+comma
+(brace
+l_string|&quot;LG NTSC (newer TAPC series)&quot;
+comma
+id|LGINNOTEK
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|170.00
+comma
+l_int|16
+op_star
+l_float|450.00
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|0x08
+comma
+l_int|0x8e
+comma
+l_int|732
 )brace
 comma
 )brace
@@ -1817,6 +1846,49 @@ c_func
 (paren
 l_string|&quot;&bslash;n &quot;
 )paren
+suffix:semicolon
+)brace
+singleline_comment|// Look for MT2032 id:
+singleline_comment|// part= 0x04(MT2032), 0x06(MT2030), 0x07(MT2040)
+r_if
+c_cond
+(paren
+(paren
+id|buf
+(braket
+l_int|0x11
+)braket
+op_ne
+l_int|0x4d
+)paren
+op_logical_or
+(paren
+id|buf
+(braket
+l_int|0x12
+)braket
+op_ne
+l_int|0x54
+)paren
+op_logical_or
+(paren
+id|buf
+(braket
+l_int|0x13
+)braket
+op_ne
+l_int|0x04
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;not a MT2032.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 singleline_comment|// Initialize Registers per spec.
@@ -3856,6 +3928,7 @@ id|t-&gt;type
 r_case
 id|TUNER_PHILIPS_SECAM
 suffix:colon
+singleline_comment|// FI1216MF
 multiline_comment|/* 0x01 -&gt; ??? no change ??? */
 multiline_comment|/* 0x02 -&gt; PAL BDGHI / SECAM L */
 multiline_comment|/* 0x04 -&gt; ??? PAL others / SECAM others ??? */
@@ -4405,7 +4478,7 @@ id|t-&gt;type
 )paren
 (brace
 r_case
-id|TUNER_PHILIPS_FM1216ME
+id|TUNER_PHILIPS_FM1216ME_MK3
 suffix:colon
 id|buffer
 (braket
@@ -4932,9 +5005,17 @@ op_ne
 op_minus
 l_int|1
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tuner: type already set&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4956,7 +5037,7 @@ op_assign
 op_star
 id|iarg
 suffix:semicolon
-id|dprintk
+id|printk
 c_func
 (paren
 l_string|&quot;tuner: type set to %d (%s)&bslash;n&quot;
@@ -5419,7 +5500,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;(unset)&quot;
+l_string|&quot;(tuner unset)&quot;
 comma
 id|flags
 suffix:colon

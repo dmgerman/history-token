@@ -18,10 +18,6 @@ multiline_comment|/* #define REALLY_SLOW_IO  */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;mcd_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
 mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
@@ -50,6 +46,12 @@ r_struct
 id|request_queue
 id|mcd_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;mcd_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;mcd_queue)
 DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT

@@ -70,6 +70,7 @@ r_int
 id|__kernel_daddr_t
 suffix:semicolon
 multiline_comment|/* Note these change from narrow to wide kernels */
+macro_line|#ifdef __LP64__
 DECL|typedef|__kernel_size_t
 r_typedef
 r_int
@@ -91,6 +92,29 @@ r_typedef
 r_int
 id|__kernel_time_t
 suffix:semicolon
+macro_line|#else
+DECL|typedef|__kernel_size_t
+r_typedef
+r_int
+r_int
+id|__kernel_size_t
+suffix:semicolon
+DECL|typedef|__kernel_ssize_t
+r_typedef
+r_int
+id|__kernel_ssize_t
+suffix:semicolon
+DECL|typedef|__kernel_ptrdiff_t
+r_typedef
+r_int
+id|__kernel_ptrdiff_t
+suffix:semicolon
+DECL|typedef|__kernel_time_t
+r_typedef
+r_int
+id|__kernel_time_t
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|__kernel_caddr_t
 r_typedef
 r_char
@@ -164,6 +188,17 @@ macro_line|#endif /* !defined(__KERNEL__) &amp;&amp; !defined(__USE_ALL) */
 DECL|typedef|__kernel_fsid_t
 )brace
 id|__kernel_fsid_t
+suffix:semicolon
+multiline_comment|/* compatibility stuff */
+DECL|typedef|__kernel_old_uid_t
+r_typedef
+id|__kernel_uid_t
+id|__kernel_old_uid_t
+suffix:semicolon
+DECL|typedef|__kernel_old_gid_t
+r_typedef
+id|__kernel_gid_t
+id|__kernel_old_gid_t
 suffix:semicolon
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(__LP64__)
 multiline_comment|/* Now 32bit compatibility types */

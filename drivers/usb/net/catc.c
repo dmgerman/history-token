@@ -1031,12 +1031,37 @@ op_assign
 id|LinkBad
 suffix:semicolon
 )brace
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+r_return
+suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
+r_default
+suffix:colon
+multiline_comment|/* error */
 id|dbg
 c_func
 (paren
@@ -1055,7 +1080,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|resubmit
 suffix:semicolon
 )brace
 r_if
@@ -1167,6 +1193,33 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|resubmit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s, status %d&quot;
+comma
+id|catc-&gt;usbdev-&gt;bus-&gt;bus_name
+comma
+id|catc-&gt;usbdev-&gt;devpath
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transmit routines.&n; */
 DECL|function|catc_tx_run
@@ -1295,7 +1348,7 @@ suffix:semicolon
 id|urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|urb-&gt;status
 op_assign
@@ -1614,7 +1667,7 @@ l_string|&quot;Transmit timed out.&quot;
 suffix:semicolon
 id|catc-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -3310,7 +3363,7 @@ c_func
 (paren
 id|usbdev
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|1
 )paren
@@ -3648,7 +3701,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|catc-&gt;ctrl_urb
@@ -3674,7 +3727,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;tx_urb
@@ -3698,7 +3751,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;rx_urb
@@ -3722,7 +3775,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|catc-&gt;irq_urb

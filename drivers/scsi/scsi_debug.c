@@ -5685,14 +5685,18 @@ r_int
 id|scsi_debug_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -5713,7 +5717,7 @@ id|KERN_INFO
 l_string|&quot;scsi_debug: biosparam&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* int size = disk-&gt;capacity; */
+multiline_comment|/* int size = capacity; */
 id|info
 (braket
 l_int|0

@@ -136,6 +136,10 @@ id|block_device
 op_star
 id|lo_device
 suffix:semicolon
+DECL|member|lo_blocksize
+r_int
+id|lo_blocksize
+suffix:semicolon
 DECL|member|key_data
 r_void
 op_star

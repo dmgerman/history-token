@@ -174,6 +174,10 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|sysctl_ipv6_bindv6only
+r_int
+id|sysctl_ipv6_bindv6only
+suffix:semicolon
 macro_line|#ifdef INET_REFCNT_DEBUG
 DECL|variable|inet6_sock_nr
 id|atomic_t
@@ -745,6 +749,10 @@ suffix:semicolon
 id|np-&gt;pmtudisc
 op_assign
 id|IPV6_PMTUDISC_WANT
+suffix:semicolon
+id|np-&gt;ipv6only
+op_assign
+id|sysctl_ipv6_bindv6only
 suffix:semicolon
 multiline_comment|/* Init the ipv4 part of the socket since we can have sockets&n;&t; * using v6 API for ipv4.&n;&t; */
 id|inet-&gt;ttl

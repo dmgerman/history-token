@@ -674,7 +674,7 @@ DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 3)
+mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
 multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
 DECL|macro|IO_BITMAP_SIZE
 mdefine_line|#define IO_BITMAP_SIZE&t;32
@@ -1249,18 +1249,6 @@ comma
 r_int
 r_int
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Release all segment info associated with a VM */
-r_extern
-r_void
-id|release_segments
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
 )paren
 suffix:semicolon
 r_extern

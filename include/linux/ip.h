@@ -474,5 +474,64 @@ suffix:semicolon
 multiline_comment|/*The options start here. */
 )brace
 suffix:semicolon
+DECL|struct|ip_auth_hdr
+r_struct
+id|ip_auth_hdr
+(brace
+DECL|member|nexthdr
+id|__u8
+id|nexthdr
+suffix:semicolon
+DECL|member|hdrlen
+id|__u8
+id|hdrlen
+suffix:semicolon
+multiline_comment|/* This one is measured in 32 bit units! */
+DECL|member|reserved
+id|__u16
+id|reserved
+suffix:semicolon
+DECL|member|spi
+id|__u32
+id|spi
+suffix:semicolon
+DECL|member|seq_no
+id|__u32
+id|seq_no
+suffix:semicolon
+multiline_comment|/* Sequence number */
+DECL|member|auth_data
+id|__u8
+id|auth_data
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Variable len but &gt;=4. Mind the 64 bit alignment! */
+)brace
+suffix:semicolon
+DECL|struct|ip_esp_hdr
+r_struct
+id|ip_esp_hdr
+(brace
+DECL|member|spi
+id|__u32
+id|spi
+suffix:semicolon
+DECL|member|seq_no
+id|__u32
+id|seq_no
+suffix:semicolon
+multiline_comment|/* Sequence number */
+DECL|member|enc_data
+id|__u8
+id|enc_data
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Variable len but &gt;=8. Mind the 64 bit alignment! */
+)brace
+suffix:semicolon
 macro_line|#endif&t;/* _LINUX_IP_H */
 eof

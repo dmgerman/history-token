@@ -22,7 +22,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;eata_dma.h&quot;
 macro_line|#include &quot;eata_dma_proc.h&quot; 

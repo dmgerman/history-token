@@ -2,8 +2,10 @@ multiline_comment|/*&n; * include/asm-parisc/cache.h&n; */
 macro_line|#ifndef __ARCH_PARISC_CACHE_H
 DECL|macro|__ARCH_PARISC_CACHE_H
 mdefine_line|#define __ARCH_PARISC_CACHE_H
-multiline_comment|/*&n;** XXX FIXME : L1_CACHE_BYTES (cacheline size) should be a boot time thing.&n;** &n;** 32-bit on PA2.0 is not covered well by the #ifdef __LP64__ below.&n;** PA2.0 processors have 64-byte cachelines.&n;**&n;** The issue is mostly cacheline ping-ponging on SMP boxes.&n;** To avoid this, code should define stuff to be per CPU on cacheline&n;** aligned boundaries. This can make a 2x or more difference in perf&n;** depending on how badly the thrashing is.&n;**&n;** We don&squot;t need to worry about I/O since all PA2.0 boxes (except T600)&n;** are I/O coherent. That means flushing less than you needed to generally&n;** doesn&squot;t matter - the I/O MMU will read/modify/write the cacheline.&n;**&n;** (Digression: it is possible to program I/O MMU&squot;s to not first read&n;** a cacheline for inbound data - ie just grab ownership and start writing.&n;** While it improves I/O throughput, you gotta know the device driver&n;** is well behaved and can deal with the issues.)&n;*/
-macro_line|#if defined(__LP64__)
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * PA 2.0 processors have 64-byte cachelines; PA 1.1 processors have&n; * 32-byte cachelines.  The default configuration is not for SMP anyway,&n; * so if you&squot;re building for SMP, you should select the appropriate&n; * processor type.  There is a potential livelock danger when running&n; * a machine with this value set too small, but it&squot;s more probable you&squot;ll&n; * just ruin performance.&n; */
+macro_line|#ifdef CONFIG_PA20
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES 64
 macro_line|#else
@@ -20,13 +22,23 @@ DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned __attribute__((__aligned__(L1_CACHE_BYTES)))
 r_extern
 r_void
-id|init_cache
+id|flush_data_cache_local
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* initializes cache-flushing */
+multiline_comment|/* flushes local data-cache only */
+r_extern
+r_void
+id|flush_instruction_cache_local
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* flushes local code-cache only */
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|flush_data_cache
@@ -35,16 +47,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* flushes data-cache only */
+multiline_comment|/* flushes data-cache only (all processors) */
+macro_line|#else
+DECL|macro|flush_data_cache
+mdefine_line|#define flush_data_cache flush_data_cache_local
+DECL|macro|flush_instruction_cache
+mdefine_line|#define flush_instruction_cache flush_instruction_cache_local
+macro_line|#endif
 r_extern
 r_void
-id|flush_instruction_cache
+id|parisc_cache_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* flushes code-cache only */
+multiline_comment|/* initializes cache-flushing */
 r_extern
 r_void
 id|flush_all_caches
@@ -53,7 +71,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* flushes code and data-cache */
+multiline_comment|/* flush everything (tlb &amp; cache) */
 r_extern
 r_int
 id|get_cache_info
@@ -64,21 +82,150 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|flush_user_icache_range_asm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_kernel_icache_range_asm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_user_dcache_range_asm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_kernel_dcache_range_asm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_kernel_dcache_page
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_kernel_icache_page
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|disable_sr_hashing
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* turns off space register hashing */
+r_extern
+r_void
+id|disable_sr_hashing_asm
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* low level support for above */
+r_extern
+r_void
+id|free_sid
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_int
+r_int
+id|alloc_sid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_struct
+id|seq_file
+suffix:semicolon
+r_extern
+r_void
+id|show_cache_info
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|split_tlb
+suffix:semicolon
+r_extern
+r_int
+id|dcache_stride
+suffix:semicolon
+r_extern
+r_int
+id|icache_stride
+suffix:semicolon
+r_extern
 r_struct
 id|pdc_cache_info
 id|cache_info
 suffix:semicolon
-DECL|macro|fdce
-mdefine_line|#define fdce(addr) asm volatile(&quot;fdce 0(%0)&quot; : : &quot;r&quot; (addr))
-DECL|macro|fice
-mdefine_line|#define fice(addr) asm volatile(&quot;fice 0(%%sr1,%0)&quot; : : &quot;r&quot; (addr))
-DECL|macro|pdtlbe
-mdefine_line|#define pdtlbe(addr) asm volatile(&quot;pdtlbe 0(%%sr1,%0)&quot; : : &quot;r&quot; (addr))
+DECL|macro|pdtlb
+mdefine_line|#define pdtlb(addr)         asm volatile(&quot;pdtlb 0(%%sr1,%0)&quot; : : &quot;r&quot; (addr));
+DECL|macro|pitlb
+mdefine_line|#define pitlb(addr)         asm volatile(&quot;pitlb 0(%%sr1,%0)&quot; : : &quot;r&quot; (addr));
 DECL|macro|pdtlb_kernel
 mdefine_line|#define pdtlb_kernel(addr)  asm volatile(&quot;pdtlb 0(%0)&quot; : : &quot;r&quot; (addr));
-DECL|macro|pitlbe
-mdefine_line|#define pitlbe(addr) asm volatile(&quot;pitlbe 0(%%sr1,%0)&quot; : : &quot;r&quot; (addr))
-DECL|macro|kernel_fdc
-mdefine_line|#define kernel_fdc(addr) asm volatile(&quot;fdc 0(%%sr0, %0)&quot; : : &quot;r&quot; (addr))
+macro_line|#endif /* ! __ASSEMBLY__ */
+multiline_comment|/* Classes of processor wrt: disabling space register hashing */
+DECL|macro|SRHASH_PCXST
+mdefine_line|#define SRHASH_PCXST    0   /* pcxs, pcxt, pcxt_ */
+DECL|macro|SRHASH_PCXL
+mdefine_line|#define SRHASH_PCXL     1   /* pcxl */
+DECL|macro|SRHASH_PA20
+mdefine_line|#define SRHASH_PA20     2   /* pcxu, pcxu_, pcxw, pcxw_ */
 macro_line|#endif
 eof

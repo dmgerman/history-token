@@ -1,7 +1,6 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -192,6 +191,32 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|tsc_disable
+mdefine_line|#define tsc_disable 0
+DECL|function|tsc_setup
+r_static
+r_int
+id|__init
+id|tsc_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;notsc: Kernel compiled with CONFIG_X86_TSC, cannot disable TSC.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 id|__setup
 c_func
 (paren
@@ -200,7 +225,6 @@ comma
 id|tsc_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|get_model_name
 r_int
 id|__init
@@ -1280,7 +1304,6 @@ l_int|3
 suffix:semicolon
 multiline_comment|/*&n;&t; * The vendor-specific functions might have changed features.  Now&n;&t; * we do &quot;generic changes.&quot;&n;&t; */
 multiline_comment|/* TSC disabled? */
-macro_line|#ifndef CONFIG_X86_TSC
 r_if
 c_cond
 (paren
@@ -1294,7 +1317,6 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FXSR disabled? */
 r_if
 c_cond
@@ -1319,13 +1341,6 @@ id|c-&gt;x86_capability
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Init Machine Check Exception if available. */
-id|mcheck_init
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 multiline_comment|/* If the model name is still unset, do table lookup. */
 r_if
 c_cond
@@ -1466,6 +1481,13 @@ id|boot_cpu_data.x86_capability
 (braket
 l_int|3
 )braket
+)paren
+suffix:semicolon
+multiline_comment|/* Init Machine Check Exception if available. */
+id|mcheck_init
+c_func
+(paren
+id|c
 )paren
 suffix:semicolon
 )brace
@@ -1867,7 +1889,6 @@ op_or
 id|X86_CR4_DE
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_TSC
 r_if
 c_cond
 (paren
@@ -1899,7 +1920,6 @@ id|X86_CR4_TSD
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize the per-CPU GDT with the boot GDT,&n;&t; * and set up the GDT descriptor:&n;&t; */
 r_if
 c_cond
@@ -2140,128 +2160,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Bulk registration of the cpu devices with the system.&n; * Some of this stuff could possibly be moved into a shared &n; * location..&n; * Also, these devices should be integrated with other CPU data..&n; */
-DECL|variable|cpu_devices
-r_static
-r_struct
-id|cpu
-id|cpu_devices
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|variable|cpu_driver
-r_static
-r_struct
-id|device_driver
-id|cpu_driver
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;cpu&quot;
-comma
-dot
-id|bus
-op_assign
-op_amp
-id|system_bus_type
-comma
-dot
-id|devclass
-op_assign
-op_amp
-id|cpu_devclass
-comma
-)brace
-suffix:semicolon
-DECL|function|register_cpus
-r_static
-r_int
-id|__init
-id|register_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|driver_register
-c_func
-(paren
-op_amp
-id|cpu_driver
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_struct
-id|sys_device
-op_star
-id|sysdev
-op_assign
-op_amp
-id|cpu_devices
-(braket
-id|i
-)braket
-dot
-id|sysdev
-suffix:semicolon
-id|sysdev-&gt;name
-op_assign
-l_string|&quot;cpu&quot;
-suffix:semicolon
-id|sysdev-&gt;id
-op_assign
-id|i
-suffix:semicolon
-id|sysdev-&gt;dev.driver
-op_assign
-op_amp
-id|cpu_driver
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpu_possible
-c_func
-(paren
-id|i
-)paren
-)paren
-id|sys_device_register
-c_func
-(paren
-id|sysdev
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|register_cpus
-id|subsys_initcall
-c_func
-(paren
-id|register_cpus
-)paren
-suffix:semicolon
 eof

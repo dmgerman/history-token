@@ -520,6 +520,11 @@ id|fl
 op_assign
 (brace
 dot
+id|iif
+op_assign
+id|skb-&gt;dev-&gt;ifindex
+comma
+dot
 id|nl_u
 op_assign
 (brace
@@ -551,9 +556,9 @@ macro_line|#endif
 )brace
 comma
 dot
-id|iif
+id|proto
 op_assign
-id|skb-&gt;dev-&gt;ifindex
+id|ciph-&gt;protocol
 )brace
 suffix:semicolon
 multiline_comment|/* Use fib_lookup() until we get our own&n;&t;&t;&t;&t;&t; * hash table of NATed hosts -- Rani&n;&t;&t;&t;&t; &t; */

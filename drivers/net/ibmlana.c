@@ -1,4 +1,4 @@
-multiline_comment|/* &n;net-3-driver for the IBM LAN Adapter/A&n;&n;This is an extension to the Linux operating system, and is covered by the&n;same GNU General Public License that covers that work.&n;&n;Copyright 1999 by Alfred Arnold (alfred@ccac.rwth-aachen.de, aarnold@elsa.de)&n;&n;This driver is based both on the SK_MCA driver, which is itself based on the&n;SK_G16 and 3C523 driver.&n;&n;paper sources:&n;  &squot;PC Hardware: Aufbau, Funktionsweise, Programmierung&squot; by &n;  Hans-Peter Messmer for the basic Microchannel stuff&n;  &n;  &squot;Linux Geraetetreiber&squot; by Allesandro Rubini, Kalle Dalheimer&n;  for help on Ethernet driver programming&n;&n;  &squot;DP83934CVUL-20/25 MHz SONIC-T Ethernet Controller Datasheet&squot; by National&n;  Semiconductor for info on the MAC chip&n;&n;  &squot;LAN Technical Reference Ethernet Adapter Interface Version 1 Release 1.0&n;   Document Number SC30-3661-00&squot; by IBM for info on the adapter itself&n;&n;  Also see http://www.natsemi.com/&n;&n;special acknowledgements to:&n;  - Bob Eager for helping me out with documentation from IBM&n;  - Jim Shorney for his endless patience with me while I was using &n;    him as a beta tester to trace down the address filter bug ;-)&n;&n;  Missing things:&n;&n;  -&gt; set debug level via ioctl instead of compile-time switches&n;  -&gt; I didn&squot;t follow the development of the 2.1.x kernels, so my&n;     assumptions about which things changed with which kernel version &n;     are probably nonsense&n;&n;History:&n;  Nov 6th, 1999&n;  &t;startup from SK_MCA driver&n;  Dec 6th, 1999&n;&t;finally got docs about the card.  A big thank you to Bob Eager!&n;  Dec 12th, 1999&n;&t;first packet received&n;  Dec 13th, 1999&n;&t;recv queue done, tcpdump works&n;  Dec 15th, 1999&n;&t;transmission part works&n;  Dec 28th, 1999&n;&t;added usage of the isa_functions for Linux 2.3 .  Things should&n;&t;still work with 2.0.x....&n;  Jan 28th, 2000&n;&t;in Linux 2.2.13, the version.h file mysteriously didn&squot;t get&n;&t;included.  Added a workaround for this.  Futhermore, it now&n;&t;not only compiles as a modules ;-)&n;  Jan 30th, 2000&n;&t;newer kernels automatically probe more than one board, so the&n;&t;&squot;startslot&squot; as a variable is also needed here&n;  Apr 12th, 2000&n;&t;the interrupt mask register is not set &squot;hard&squot; instead of individually&n;&t;setting registers, since this seems to set bits that shouldn&squot;t be&n;&t;set&n;  May 21st, 2000&n;&t;reset interrupt status immediately after CAM load&n;&t;add a recovery delay after releasing the chip&squot;s reset line&n;  May 24th, 2000&n;&t;finally found the bug in the address filter setup - damned signed&n;        chars!&n;  June 1st, 2000&n;&t;corrected version codes, added support for the latest 2.3 changes&n;&n; *************************************************************************/
+multiline_comment|/* &n;net-3-driver for the IBM LAN Adapter/A&n;&n;This is an extension to the Linux operating system, and is covered by the&n;same GNU General Public License that covers that work.&n;&n;Copyright 1999 by Alfred Arnold (alfred@ccac.rwth-aachen.de, aarnold@elsa.de)&n;&n;This driver is based both on the SK_MCA driver, which is itself based on the&n;SK_G16 and 3C523 driver.&n;&n;paper sources:&n;  &squot;PC Hardware: Aufbau, Funktionsweise, Programmierung&squot; by &n;  Hans-Peter Messmer for the basic Microchannel stuff&n;  &n;  &squot;Linux Geraetetreiber&squot; by Allesandro Rubini, Kalle Dalheimer&n;  for help on Ethernet driver programming&n;&n;  &squot;DP83934CVUL-20/25 MHz SONIC-T Ethernet Controller Datasheet&squot; by National&n;  Semiconductor for info on the MAC chip&n;&n;  &squot;LAN Technical Reference Ethernet Adapter Interface Version 1 Release 1.0&n;   Document Number SC30-3661-00&squot; by IBM for info on the adapter itself&n;&n;  Also see http://www.natsemi.com/&n;&n;special acknowledgements to:&n;  - Bob Eager for helping me out with documentation from IBM&n;  - Jim Shorney for his endless patience with me while I was using &n;    him as a beta tester to trace down the address filter bug ;-)&n;&n;  Missing things:&n;&n;  -&gt; set debug level via ioctl instead of compile-time switches&n;  -&gt; I didn&squot;t follow the development of the 2.1.x kernels, so my&n;     assumptions about which things changed with which kernel version &n;     are probably nonsense&n;&n;History:&n;  Nov 6th, 1999&n;  &t;startup from SK_MCA driver&n;  Dec 6th, 1999&n;&t;finally got docs about the card.  A big thank you to Bob Eager!&n;  Dec 12th, 1999&n;&t;first packet received&n;  Dec 13th, 1999&n;&t;recv queue done, tcpdump works&n;  Dec 15th, 1999&n;&t;transmission part works&n;  Dec 28th, 1999&n;&t;added usage of the isa_functions for Linux 2.3 .  Things should&n;&t;still work with 2.0.x....&n;  Jan 28th, 2000&n;&t;in Linux 2.2.13, the version.h file mysteriously didn&squot;t get&n;&t;included.  Added a workaround for this.  Futhermore, it now&n;&t;not only compiles as a modules ;-)&n;  Jan 30th, 2000&n;&t;newer kernels automatically probe more than one board, so the&n;&t;&squot;startslot&squot; as a variable is also needed here&n;  Apr 12th, 2000&n;&t;the interrupt mask register is not set &squot;hard&squot; instead of individually&n;&t;setting registers, since this seems to set bits that shouldn&squot;t be&n;&t;set&n;  May 21st, 2000&n;&t;reset interrupt status immediately after CAM load&n;&t;add a recovery delay after releasing the chip&squot;s reset line&n;  May 24th, 2000&n;&t;finally found the bug in the address filter setup - damned signed&n;        chars!&n;  June 1st, 2000&n;&t;corrected version codes, added support for the latest 2.3 changes&n;  Oct 28th, 2002&n;  &t;cleaned up for the 2.5 tree &lt;alan@redhat.com&gt;&n;&n; *************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -52,7 +52,7 @@ id|dumpregs
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -135,7 +135,7 @@ id|dumpmem
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -196,7 +196,7 @@ c_func
 (paren
 l_string|&quot; %02x&quot;
 comma
-id|IBMLANA_READB
+id|isa_readb
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -447,7 +447,7 @@ id|wait_timeout
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -475,9 +475,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-op_ne
+comma
 id|fin
+)paren
 )paren
 r_if
 c_cond
@@ -511,7 +515,7 @@ id|ResetBoard
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -593,7 +597,7 @@ id|InitDscrs
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -628,7 +632,7 @@ id|rra_t
 id|rra
 suffix:semicolon
 multiline_comment|/* initialize RAM */
-id|IBMLANA_SETIO
+id|isa_memset_io
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -728,7 +732,7 @@ id|tda.link
 op_or_assign
 l_int|1
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -857,7 +861,7 @@ id|rra.cnthi
 op_assign
 l_int|0
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -920,7 +924,7 @@ id|rda.inuse
 op_assign
 l_int|1
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1000,7 +1004,7 @@ id|InitSONIC
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1121,7 +1125,9 @@ l_int|2
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: SONIC did not respond on RRRA command - giving up.&quot;
 comma
 id|dev-&gt;name
@@ -1175,7 +1181,7 @@ id|StopSONIC
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1363,7 +1369,7 @@ id|InitBoard
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1543,7 +1549,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* feed CDA into SONIC, initialize RCR value (always get broadcasts) */
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1558,7 +1564,7 @@ op_star
 id|camcnt
 )paren
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1659,7 +1665,9 @@ l_int|2
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s:SONIC did not respond on LCAM command - giving up.&quot;
 comma
 id|dev-&gt;name
@@ -1969,7 +1977,7 @@ id|StartTx
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -2039,7 +2047,7 @@ id|irqrbe_handler
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -2084,7 +2092,7 @@ id|irqrx_handler
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -2141,7 +2149,7 @@ id|rda_t
 )paren
 )paren
 suffix:semicolon
-id|IBMLANA_FROMIO
+id|isa_memcpy_fromio
 c_func
 (paren
 op_amp
@@ -2217,7 +2225,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* copy out data */
-id|IBMLANA_FROMIO
+id|isa_memcpy_fromio
 c_func
 (paren
 id|skb_put
@@ -2262,12 +2270,10 @@ suffix:semicolon
 id|priv-&gt;stat.rx_packets
 op_increment
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20119)&t;/* byte counters for kernel &gt;= 2.1.25 */
 id|priv-&gt;stat.rx_bytes
 op_add_assign
 id|rda.length
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* pass to the upper layers */
 id|netif_rx
 c_func
@@ -2313,7 +2319,7 @@ id|rda.inuse
 op_assign
 l_int|1
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -2330,7 +2336,7 @@ id|rda_t
 )paren
 suffix:semicolon
 multiline_comment|/* set up link and EOL = 0 in currently last descriptor. Only write&n;&t;&t;   the link field since the SONIC may currently already access the&n;&t;&t;   other fields. */
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -2374,7 +2380,7 @@ id|irqtx_handler
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -2393,7 +2399,7 @@ id|tda_t
 id|tda
 suffix:semicolon
 multiline_comment|/* fetch descriptor (we forgot the size ;-) */
-id|IBMLANA_FROMIO
+id|isa_memcpy_fromio
 c_func
 (paren
 op_amp
@@ -2422,12 +2428,10 @@ multiline_comment|/* update statistics */
 id|priv-&gt;stat.tx_packets
 op_increment
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020119)
 id|priv-&gt;stat.tx_bytes
 op_add_assign
 id|tda.length
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* update our pointers */
 id|priv-&gt;txused
 (braket
@@ -2462,25 +2466,12 @@ id|TXBUFCNT
 )paren
 suffix:semicolon
 multiline_comment|/* tell the upper layer we can go on transmitting */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x02032a
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|irqtxerr_handler
 r_static
@@ -2489,7 +2480,7 @@ id|irqtxerr_handler
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -2508,7 +2499,7 @@ id|tda_t
 id|tda
 suffix:semicolon
 multiline_comment|/* fetch descriptor to check status */
-id|IBMLANA_FROMIO
+id|isa_memcpy_fromio
 c_func
 (paren
 op_amp
@@ -2615,25 +2606,12 @@ id|TXBUFCNT
 )paren
 suffix:semicolon
 multiline_comment|/* tell the upper layer we can go on transmitting */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x02032a
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* general interrupt entry */
 DECL|function|irq_handler
@@ -2656,13 +2634,13 @@ id|regs
 )paren
 (brace
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 op_assign
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 )paren
 id|device
@@ -2689,24 +2667,6 @@ id|BCMREG_IPEND
 )paren
 r_return
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
-macro_line|#if 0
-id|set_bit
-c_func
-(paren
-id|LINK_STATE_RXSEM
-comma
-op_amp
-id|dev-&gt;state
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* loop through the interrupt bits until everything is clear */
 r_while
 c_loop
@@ -2827,24 +2787,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
-macro_line|#if 0
-id|clear_bit
-c_func
-(paren
-id|LINK_STATE_RXSEM
-comma
-op_amp
-id|dev-&gt;state
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* ------------------------------------------------------------------------&n; * driver methods&n; * ------------------------------------------------------------------------ */
 multiline_comment|/* MCA info */
@@ -2874,13 +2816,13 @@ comma
 id|i
 suffix:semicolon
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 op_assign
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 )paren
 id|d
@@ -3066,7 +3008,7 @@ id|ibmlana_open
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3114,6 +3056,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: failed to register irq %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3137,29 +3080,12 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* initialize operational flags */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3172,7 +3098,7 @@ id|ibmlana_close
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3198,10 +3124,6 @@ id|dev-&gt;irq
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032a)
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3219,7 +3141,7 @@ op_star
 id|skb
 comma
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3253,40 +3175,6 @@ suffix:semicolon
 r_int
 id|baddr
 suffix:semicolon
-multiline_comment|/* if we get called with a NULL descriptor, the Ethernet layer thinks &n;&t;   our card is stuck an we should reset it.  We&squot;ll do this completely: */
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Resetting SONIC&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|StopSONIC
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|InitBoard
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* don&squot;t try to free the block here ;-) */
-)brace
 multiline_comment|/* find out if there are free slots for a frame to transmit. If not,&n;&t;   the upper layer is in deep desperation and we simply ignore the frame. */
 r_if
 c_cond
@@ -3334,7 +3222,7 @@ op_star
 id|PKTSIZE
 )paren
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3383,7 +3271,7 @@ OL
 id|tmplen
 )paren
 (brace
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3417,7 +3305,7 @@ id|tda_t
 )paren
 )paren
 suffix:semicolon
-id|IBMLANA_FROMIO
+id|isa_memcpy_fromio
 c_func
 (paren
 op_amp
@@ -3439,7 +3327,7 @@ id|tda.fraglength
 op_assign
 id|tmplen
 suffix:semicolon
-id|IBMLANA_TOIO
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3456,15 +3344,13 @@ id|tda_t
 )paren
 suffix:semicolon
 multiline_comment|/* if there were no active descriptors, trigger the SONIC */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|priv-&gt;txusedcnt
@@ -3485,19 +3371,12 @@ id|priv-&gt;txusedcnt
 op_ge
 id|TXBUFCNT
 )paren
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3523,32 +3402,23 @@ l_int|1
 op_mod
 id|TXBUFCNT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
 id|tx_done
 suffix:colon
-multiline_comment|/* When did that change exactly ? */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20200)
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-comma
-id|FREE_WRITE
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -3563,7 +3433,7 @@ id|ibmlana_stats
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3580,9 +3450,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_return
 op_amp
-(paren
 id|priv-&gt;stat
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* we don&squot;t support runtime reconfiguration, since am MCA card can&n;   be unambigously identified by its POS registers. */
@@ -3593,7 +3461,7 @@ id|ibmlana_config
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -3615,7 +3483,7 @@ id|ibmlana_set_multicast_list
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3648,7 +3516,7 @@ id|ibmlana_probe
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3687,14 +3555,12 @@ suffix:semicolon
 id|ibmlana_medium
 id|medium
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* can&squot;t work without an MCA bus ;-) */
 r_if
 c_cond
@@ -3778,7 +3644,6 @@ op_amp
 id|medium
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20300)
 multiline_comment|/* slot already in use ? */
 r_if
 c_cond
@@ -3805,38 +3670,29 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* were we looking for something different ? */
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;irq
 op_ne
 l_int|0
-)paren
 op_logical_or
-(paren
 id|dev-&gt;mem_start
 op_ne
 l_int|0
-)paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;irq
 op_ne
 l_int|0
-)paren
 op_logical_and
-(paren
 id|dev-&gt;irq
 op_ne
 id|irq
-)paren
 )paren
 (brace
 id|slot
@@ -3857,17 +3713,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;mem_start
 op_ne
 l_int|0
-)paren
 op_logical_and
-(paren
 id|dev-&gt;mem_start
 op_ne
 id|base
-)paren
 )paren
 (brace
 id|slot
@@ -3901,17 +3753,13 @@ l_int|1
 )paren
 r_return
 (paren
-(paren
 id|base
 op_ne
 l_int|0
-)paren
 op_logical_or
-(paren
 id|irq
 op_ne
 l_int|0
-)paren
 )paren
 ques
 c_cond
@@ -3925,6 +3773,7 @@ multiline_comment|/* announce success */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: IBM LAN Adapter/A found in slot %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3953,6 +3802,7 @@ id|dev-&gt;name
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cannot allocate I/O range at %#x!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3993,14 +3843,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20200)
 id|mca_mark_as_used
 c_func
 (paren
 id|slot
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* allocate structure */
 id|priv
 op_assign
@@ -4053,13 +3901,18 @@ id|priv-&gt;medium
 op_assign
 id|medium
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
 op_amp
-(paren
 id|priv-&gt;stat
-)paren
 comma
 l_int|0
 comma
@@ -4166,6 +4019,7 @@ multiline_comment|/* print config */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: IRQ %d, I/O %#lx, memory %#lx-%#lx, &quot;
 l_string|&quot;MAC address %02x:%02x:%02x:%02x:%02x:%02x.&bslash;n&quot;
 comma
@@ -4215,6 +4069,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %s medium&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4250,7 +4105,7 @@ mdefine_line|#define DEVMAX 5
 DECL|variable|moddevs
 r_static
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 id|moddevs
 (braket
 id|DEVMAX
@@ -4407,7 +4262,7 @@ r_void
 )paren
 (brace
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 id|dev
 suffix:semicolon
@@ -4418,21 +4273,6 @@ suffix:semicolon
 r_int
 id|z
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;cannot unload, module in use&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -4504,14 +4344,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x20200)
 id|mca_mark_as_unused
 c_func
 (paren
 id|priv-&gt;slot
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mca_set_adapter_name
 c_func
 (paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/ext3/symlink.c&n; *&n; * Only fast symlinks 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
+macro_line|#include &quot;xattr.h&quot;
 DECL|function|ext3_readlink
 r_static
 r_int
@@ -92,6 +93,44 @@ id|ei-&gt;i_data
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ext3_symlink_inode_operations
+r_struct
+id|inode_operations
+id|ext3_symlink_inode_operations
+op_assign
+(brace
+dot
+id|readlink
+op_assign
+id|page_readlink
+comma
+dot
+id|follow_link
+op_assign
+id|page_follow_link
+comma
+dot
+id|setxattr
+op_assign
+id|ext3_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext3_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext3_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext3_removexattr
+comma
+)brace
+suffix:semicolon
 DECL|variable|ext3_fast_symlink_inode_operations
 r_struct
 id|inode_operations
@@ -110,6 +149,26 @@ op_assign
 id|ext3_follow_link
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
+dot
+id|setxattr
+op_assign
+id|ext3_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext3_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext3_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext3_removexattr
+comma
 )brace
 suffix:semicolon
 eof

@@ -227,7 +227,7 @@ mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_
 DECL|macro|RGN_KERNEL
 mdefine_line|#define RGN_KERNEL&t;7
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PAGE_SIZE)
+mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PERCPU_PAGE_SIZE)
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END

@@ -722,7 +722,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
-multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function first sets the machine state, then atomically&n; * tests-and-clears the CAN_CANCEL bit in us-&gt;flags to see if the current_urb&n; * needs to be aborted.&n; *&n; * The submit function first verifies that the submission completed without&n; * errors, and only then sets the CAN_CANCEL bit.  This prevents the abort&n; * function from trying to cancel the URB while the submit call is underway.&n; * Next, the submit function must test the state to see if we got aborted&n; * before the submission or before setting the CAN_CANCEL bit.  If so, it&squot;s&n; * essential to abort the URB if it hasn&squot;t been cancelled already (i.e.,&n; * if the CAN_CANCEL bit is still set).  Either way, the function must then&n; * wait for the URB to finish.  Note that because the USB_ASYNC_UNLINK flag&n; * is set, the URB can still be in progress even after a call to&n; * usb_unlink_urb() returns.&n; *&n; * (It&squot;s also permissible, but not necessary, to test the state -before-&n; * submitting the URB.  Doing so would prevent an unnecessary submission if&n; * the transaction had already been aborted, but this is very unlikely to&n; * happen, because the abort would have to have been requested during actual&n; * kernel processing rather than during an I/O delay.)&n; *&n; * The idea is that (1) once the state is changed to ABORTING, either the&n; * aborting function or the submitting function is guaranteed to call&n; * usb_unlink_urb() for an active URB, and (2) test_and_clear_bit() prevents&n; * usb_unlink_urb() from being called more than once or from being called&n; * during usb_submit_urb().&n; */
+multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function first sets the machine state, then atomically&n; * tests-and-clears the CAN_CANCEL bit in us-&gt;flags to see if the current_urb&n; * needs to be aborted.&n; *&n; * The submit function first verifies that the submission completed without&n; * errors, and only then sets the CAN_CANCEL bit.  This prevents the abort&n; * function from trying to cancel the URB while the submit call is underway.&n; * Next, the submit function must test the state to see if we got aborted&n; * before the submission or before setting the CAN_CANCEL bit.  If so, it&squot;s&n; * essential to abort the URB if it hasn&squot;t been cancelled already (i.e.,&n; * if the CAN_CANCEL bit is still set).  Either way, the function must then&n; * wait for the URB to finish.  Note that because the URB_ASYNC_UNLINK flag&n; * is set, the URB can still be in progress even after a call to&n; * usb_unlink_urb() returns.&n; *&n; * (It&squot;s also permissible, but not necessary, to test the state -before-&n; * submitting the URB.  Doing so would prevent an unnecessary submission if&n; * the transaction had already been aborted, but this is very unlikely to&n; * happen, because the abort would have to have been requested during actual&n; * kernel processing rather than during an I/O delay.)&n; *&n; * The idea is that (1) once the state is changed to ABORTING, either the&n; * aborting function or the submitting function is guaranteed to call&n; * usb_unlink_urb() for an active URB, and (2) test_and_clear_bit() prevents&n; * usb_unlink_urb() from being called more than once or from being called&n; * during usb_submit_urb().&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
 DECL|function|usb_stor_blocking_completion
 r_static
@@ -799,7 +799,7 @@ l_int|0
 suffix:semicolon
 id|us-&gt;current_urb-&gt;transfer_flags
 op_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 multiline_comment|/* submit the URB */
 id|status
@@ -969,7 +969,7 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/* fill and submit the URB */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|us-&gt;current_urb
@@ -1051,7 +1051,7 @@ r_int
 id|status
 suffix:semicolon
 multiline_comment|/* fill and submit the URB */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|us-&gt;current_urb
@@ -1114,16 +1114,18 @@ c_func
 (paren
 id|pipe
 )paren
-op_or
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|usb_pipein
-c_func
 (paren
 id|pipe
 )paren
-op_lshift
-l_int|7
 )paren
+id|endp
+op_or_assign
+id|USB_DIR_IN
 suffix:semicolon
 id|result
 op_assign
@@ -1613,7 +1615,305 @@ r_return
 id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_bulk_transfer_buf to achieve its goals --&n; * this function simply determines if we&squot;re going to use scatter-gather or not,&n; * and acts appropriately.&n; */
+multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather primitives&n; */
+DECL|function|usb_stor_bulk_transfer_sglist
+r_int
+id|usb_stor_bulk_transfer_sglist
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+comma
+r_int
+r_int
+id|pipe
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|num_sg
+comma
+r_int
+r_int
+id|length
+comma
+r_int
+r_int
+op_star
+id|act_len
+)paren
+(brace
+r_int
+id|result
+suffix:semicolon
+r_int
+id|partial
+suffix:semicolon
+multiline_comment|/* initialize the scatter-gather request block */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_bulk_transfer_sglist(): xfer %d bytes, &quot;
+l_string|&quot;%d entires&bslash;n&quot;
+comma
+id|length
+comma
+id|num_sg
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_sg_init
+c_func
+(paren
+id|us-&gt;current_sg
+comma
+id|us-&gt;pusb_dev
+comma
+id|pipe
+comma
+l_int|0
+comma
+id|sg
+comma
+id|num_sg
+comma
+id|length
+comma
+id|SLAB_NOIO
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_sg_init returned %d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* since the block has been initialized successfully, it&squot;s now&n;&t; * okay to cancel it */
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_CANCEL_SG
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+multiline_comment|/* has the current command been aborted? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+multiline_comment|/* cancel the request, if it hasn&squot;t been cancelled already */
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+id|US_FLIDX_CANCEL_SG
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- cancelling sg request&bslash;n&quot;
+)paren
+suffix:semicolon
+id|usb_sg_cancel
+c_func
+(paren
+id|us-&gt;current_sg
+)paren
+suffix:semicolon
+)brace
+)brace
+id|usb_sg_wait
+c_func
+(paren
+id|us-&gt;current_sg
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_CANCEL_SG
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|us-&gt;current_sg-&gt;status
+suffix:semicolon
+id|partial
+op_assign
+id|us-&gt;current_sg-&gt;bytes
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_sg_wait() returned %d xferrerd %d/%d&bslash;n&quot;
+comma
+id|result
+comma
+id|partial
+comma
+id|length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|act_len
+)paren
+op_star
+id|act_len
+op_assign
+id|partial
+suffix:semicolon
+multiline_comment|/* if we stall, we need to clear it before we go on */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|EPIPE
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;clearing endpoint halt for pipe 0x%x,&quot;
+l_string|&quot;stalled at %d bytes&bslash;n&quot;
+comma
+id|pipe
+comma
+id|partial
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_stor_clear_halt
+c_func
+(paren
+id|us
+comma
+id|pipe
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_STALLED
+suffix:semicolon
+)brace
+multiline_comment|/* NAK - that means we&squot;ve tried this a few times already */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|ETIMEDOUT
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- device NAKed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* the catch-all error case */
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- unknown error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* did we send all the data? */
+r_if
+c_cond
+(paren
+id|partial
+op_eq
+id|length
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transfer complete&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_GOOD
+suffix:semicolon
+)brace
+multiline_comment|/* no error code, so we must have transferred some data,&n;&t; * just not all of it */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+comma
+id|partial
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_SHORT
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Nore that this uses the usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts apropriately.&n; */
 DECL|function|usb_stor_bulk_transfer_sg
 r_int
 id|usb_stor_bulk_transfer_sg
@@ -1645,21 +1945,7 @@ id|residual
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_int
 id|result
-op_assign
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
-r_int
-r_int
-id|amount
 suffix:semicolon
 r_int
 r_int
@@ -1672,73 +1958,26 @@ c_cond
 id|use_sg
 )paren
 (brace
-multiline_comment|/* loop over all the scatter gather structures and &n;&t;&t; * make the appropriate requests for each, until done&n;&t;&t; */
-id|sg
-op_assign
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
-id|buf
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-(paren
-id|i
-OL
-id|use_sg
-)paren
-op_logical_and
-(paren
-id|length_left
-OG
-l_int|0
-)paren
-suffix:semicolon
-(paren
-id|i
-op_increment
-comma
-op_increment
-id|sg
-)paren
-)paren
-(brace
-multiline_comment|/* transfer the lesser of the next buffer or the&n;&t;&t;&t; * remaining data */
-id|amount
-op_assign
-id|sg-&gt;length
-OL
-id|length_left
-ques
-c_cond
-id|sg-&gt;length
-suffix:colon
-id|length_left
-suffix:semicolon
+multiline_comment|/* use the usb core scatter-gather primitives */
 id|result
 op_assign
-id|usb_stor_bulk_transfer_buf
+id|usb_stor_bulk_transfer_sglist
 c_func
 (paren
 id|us
 comma
 id|pipe
 comma
-id|sg_address
-c_func
 (paren
+r_struct
+id|scatterlist
 op_star
-id|sg
 )paren
+id|buf
 comma
-id|amount
+id|use_sg
+comma
+id|length_left
 comma
 op_amp
 id|partial
@@ -1748,17 +1987,6 @@ id|length_left
 op_sub_assign
 id|partial
 suffix:semicolon
-multiline_comment|/* if we get an error, end the loop here */
-r_if
-c_cond
-(paren
-id|result
-op_ne
-id|USB_STOR_XFER_GOOD
-)paren
-r_break
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -2538,6 +2766,33 @@ id|us-&gt;current_urb
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* If we are waiting for a scatter-gather operation, cancel it. */
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+id|US_FLIDX_CANCEL_SG
+comma
+op_amp
+id|us-&gt;flags
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- cancelling sg request&bslash;n&quot;
+)paren
+suffix:semicolon
+id|usb_sg_cancel
+c_func
+(paren
+id|us-&gt;current_sg
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* If we are waiting for an IRQ, simulate it */
 r_if
 c_cond
@@ -2605,6 +2860,9 @@ id|us_data
 op_star
 )paren
 id|urb-&gt;context
+suffix:semicolon
+r_int
+id|status
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -2681,7 +2939,8 @@ c_func
 l_string|&quot;ERROR: Unwanted interrupt received!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -2698,7 +2957,8 @@ op_amp
 id|us-&gt;ip_waitq
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* is the device removed? */
@@ -2772,7 +3032,8 @@ c_func
 l_string|&quot;-- IRQ too short&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* was this a command-completion interrupt? */
@@ -2797,7 +3058,8 @@ c_func
 l_string|&quot;-- not a command-completion IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* was this a wanted interrupt? */
@@ -2821,7 +3083,8 @@ c_func
 l_string|&quot;ERROR: Unwanted interrupt received!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* copy the valid data */
@@ -2853,6 +3116,32 @@ op_amp
 (paren
 id|us-&gt;ip_waitq
 )paren
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+multiline_comment|/* resubmit the urb */
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
 )paren
 suffix:semicolon
 )brace

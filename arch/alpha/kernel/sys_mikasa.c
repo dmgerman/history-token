@@ -803,11 +803,6 @@ op_assign
 id|common_init_pci
 comma
 dot
-id|kill_arch
-op_assign
-l_int|NULL
-comma
-dot
 id|pci_map_irq
 op_assign
 id|mikasa_map_irq
@@ -894,6 +889,11 @@ dot
 id|init_pci
 op_assign
 id|cia_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|cia_kill_arch
 comma
 dot
 id|pci_map_irq

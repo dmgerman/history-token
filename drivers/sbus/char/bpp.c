@@ -1586,7 +1586,7 @@ id|f
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1701,7 +1701,7 @@ id|f
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2559,7 +2559,7 @@ r_const
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|f-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -3238,7 +3238,7 @@ r_const
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|f-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -3376,7 +3376,7 @@ suffix:semicolon
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

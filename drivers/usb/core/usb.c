@@ -616,7 +616,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -634,7 +634,7 @@ id|altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceNumber
+id|desc.bInterfaceNumber
 op_eq
 id|ifnum
 )paren
@@ -650,10 +650,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_epnum_to_ep_desc - get the endpoint object with a given endpoint number&n; * @dev: the device whose current configuration is considered&n; * @epnum: the desired endpoint&n; *&n; * This walks the device descriptor for the currently active configuration,&n; * and returns a pointer to the endpoint with that particular endpoint&n; * number, or null.&n; *&n; * Note that interface descriptors are not required to assign endpont&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first endpoint in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; */
-DECL|function|usb_epnum_to_ep_desc
 r_struct
 id|usb_endpoint_descriptor
 op_star
+DECL|function|usb_epnum_to_ep_desc
 id|usb_epnum_to_ep_desc
 c_func
 (paren
@@ -682,7 +682,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -725,7 +725,7 @@ id|altsetting
 id|j
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 suffix:semicolon
 id|k
 op_increment
@@ -750,7 +750,7 @@ id|endpoint
 id|k
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 )paren
 r_return
 op_amp
@@ -768,6 +768,8 @@ id|endpoint
 (braket
 id|k
 )braket
+dot
+id|desc
 suffix:semicolon
 r_return
 l_int|NULL
@@ -933,7 +935,7 @@ id|id
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intf
 suffix:semicolon
@@ -1114,7 +1116,7 @@ op_logical_and
 (paren
 id|id-&gt;bInterfaceClass
 op_ne
-id|intf-&gt;bInterfaceClass
+id|intf-&gt;desc.bInterfaceClass
 )paren
 )paren
 r_continue
@@ -1131,7 +1133,7 @@ op_logical_and
 (paren
 id|id-&gt;bInterfaceSubClass
 op_ne
-id|intf-&gt;bInterfaceSubClass
+id|intf-&gt;desc.bInterfaceSubClass
 )paren
 )paren
 r_continue
@@ -1148,7 +1150,7 @@ op_logical_and
 (paren
 id|id-&gt;bInterfaceProtocol
 op_ne
-id|intf-&gt;bInterfaceProtocol
+id|intf-&gt;desc.bInterfaceProtocol
 )paren
 )paren
 r_continue
@@ -1607,21 +1609,21 @@ id|intf-&gt;altsetting
 id|alt
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 comma
 id|intf-&gt;altsetting
 (braket
 id|alt
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 comma
 id|intf-&gt;altsetting
 (braket
 id|alt
 )braket
 dot
-id|bInterfaceProtocol
+id|desc.bInterfaceProtocol
 )paren
 suffix:semicolon
 r_if
@@ -2139,7 +2141,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -2629,23 +2631,59 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
-multiline_comment|/* USB v1.1 5.5.3 */
-multiline_comment|/* We read the first 8 bytes from the device descriptor to get to */
-multiline_comment|/*  the bMaxPacketSize0 field. Then we set the maximum packet size */
-multiline_comment|/*  for the control pipe, and retrieve the rest */
+multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
+r_switch
+c_cond
+(paren
+id|dev-&gt;speed
+)paren
+(brace
+r_case
+id|USB_SPEED_HIGH
+suffix:colon
+multiline_comment|/* fixed at 64 */
+id|i
+op_assign
+l_int|64
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_SPEED_FULL
+suffix:colon
+multiline_comment|/* 8, 16, 32, or 64 */
+multiline_comment|/* to determine the ep0 maxpacket size, read the first 8&n;&t;&t; * bytes from the device descriptor to get bMaxPacketSize0;&n;&t;&t; * then correct our initial (small) guess.&n;&t;&t; */
+singleline_comment|// FALLTHROUGH
+r_case
+id|USB_SPEED_LOW
+suffix:colon
+multiline_comment|/* fixed at 8 */
+id|i
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|dev-&gt;epmaxpacketin
 (braket
 l_int|0
 )braket
 op_assign
-l_int|8
+id|i
 suffix:semicolon
 id|dev-&gt;epmaxpacketout
 (braket
 l_int|0
 )braket
 op_assign
-l_int|8
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -2743,6 +2781,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Let the SET_ADDRESS settle */
+multiline_comment|/* high and low speed devices don&squot;t need this... */
 id|err
 op_assign
 id|usb_get_descriptor
@@ -2827,6 +2866,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_FULL
+)paren
+(brace
 id|dev-&gt;epmaxpacketin
 (braket
 l_int|0
@@ -2841,6 +2888,7 @@ l_int|0
 op_assign
 id|dev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
+)brace
 id|err
 op_assign
 id|usb_get_device_descriptor
@@ -2965,7 +3013,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_if
@@ -3112,7 +3160,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -3133,8 +3181,16 @@ r_struct
 id|usb_interface_descriptor
 op_star
 id|desc
+suffix:semicolon
+id|desc
 op_assign
+op_amp
 id|interface-&gt;altsetting
+(braket
+id|interface-&gt;act_altsetting
+)braket
+dot
+id|desc
 suffix:semicolon
 id|interface-&gt;dev.parent
 op_assign
@@ -3164,7 +3220,7 @@ id|dev-&gt;bus-&gt;busnum
 comma
 id|dev-&gt;devpath
 comma
-id|interface-&gt;altsetting-&gt;bInterfaceNumber
+id|desc-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
 r_if
@@ -3203,7 +3259,7 @@ id|dev-&gt;bus-&gt;bus_name
 comma
 id|dev-&gt;devpath
 comma
-id|interface-&gt;altsetting-&gt;bInterfaceNumber
+id|desc-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
 )brace

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -210,7 +211,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This double-counts: the nrpages are both in the&n;&t;&t; * page-cache and in the swapper space. At the same time,&n;&t;&t; * this compensates for the swap-space over-allocation&n;&t;&t; * (ie &quot;nr_swap_pages&quot; being too small).&n;&t;&t; */
 id|free
 op_add_assign
-id|swapper_space.nrpages
+id|total_swapcache_pages
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The code below doesn&squot;t account for free space in the&n;&t;&t; * inode and dentry slab cache, slab cache fragmentation,&n;&t;&t; * inodes and dentries which will become freeable under&n;&t;&t; * VM load, etc. Lets just hope all these (complex)&n;&t;&t; * factors balance out...&n;&t;&t; */
 id|free
@@ -309,7 +310,6 @@ suffix:semicolon
 multiline_comment|/* Remove one vm structure from the inode&squot;s i_mapping address space. */
 DECL|function|remove_shared_vm_struct
 r_static
-r_inline
 r_void
 id|remove_shared_vm_struct
 c_func
@@ -1073,7 +1073,6 @@ suffix:semicolon
 )brace
 DECL|function|__vma_link_rb
 r_static
-r_inline
 r_void
 id|__vma_link_rb
 c_func
@@ -1274,7 +1273,6 @@ suffix:semicolon
 )brace
 DECL|function|vma_link
 r_static
-r_inline
 r_void
 id|vma_link
 c_func
@@ -1607,6 +1605,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The caller must hold down_write(current-&gt;mm-&gt;mmap_sem).&n; */
 DECL|function|do_mmap_pgoff
 r_int
 r_int
@@ -2536,6 +2535,45 @@ id|len
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MAP_POPULATE
+)paren
+(brace
+id|up_write
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+id|sys_remap_file_pages
+c_func
+(paren
+id|addr
+comma
+id|len
+comma
+id|prot
+comma
+id|pgoff
+comma
+id|flags
+op_amp
+id|MAP_NONBLOCK
+)paren
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+)brace
 r_return
 id|addr
 suffix:semicolon
@@ -2636,9 +2674,21 @@ id|flags
 )paren
 (brace
 r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
+r_struct
 id|vm_area_struct
 op_star
 id|vma
+suffix:semicolon
+r_int
+id|found_hole
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2670,7 +2720,7 @@ op_assign
 id|find_vma
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|addr
 )paren
@@ -2701,11 +2751,7 @@ suffix:semicolon
 )brace
 id|addr
 op_assign
-id|PAGE_ALIGN
-c_func
-(paren
-id|TASK_UNMAPPED_BASE
-)paren
+id|mm-&gt;free_area_cache
 suffix:semicolon
 r_for
 c_loop
@@ -2715,7 +2761,7 @@ op_assign
 id|find_vma
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|addr
 )paren
@@ -2740,6 +2786,32 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Record the first available hole.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|found_hole
+op_logical_and
+(paren
+op_logical_neg
+id|vma
+op_logical_or
+id|addr
+OL
+id|vma-&gt;vm_start
+)paren
+)paren
+(brace
+id|mm-&gt;free_area_cache
+op_assign
+id|addr
+suffix:semicolon
+id|found_hole
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3939,7 +4011,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Normal function to fix up a mapping&n; * This function is the default for when an area has no specific&n; * function.  This may be used as part of a more specific routine.&n; *&n; * By the time this function is called, the area struct has been&n; * removed from the process mapping list.&n; */
 DECL|function|unmap_vma
-r_static
 r_void
 id|unmap_vma
 c_func
@@ -3980,6 +4051,22 @@ op_sub_assign
 id|len
 op_rshift
 id|PAGE_SHIFT
+suffix:semicolon
+multiline_comment|/*&n;&t; * Is this a new hole at the lowest possible address?&n;&t; */
+r_if
+c_cond
+(paren
+id|area-&gt;vm_start
+op_ge
+id|TASK_UNMAPPED_BASE
+op_logical_and
+id|area-&gt;vm_start
+OL
+id|area-&gt;vm_mm-&gt;free_area_cache
+)paren
+id|area-&gt;vm_mm-&gt;free_area_cache
+op_assign
+id|area-&gt;vm_start
 suffix:semicolon
 id|remove_shared_vm_struct
 c_func
@@ -4289,19 +4376,6 @@ id|next
 op_assign
 id|mpnt-&gt;vm_next
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|is_vm_hugetlb_page
-c_func
-(paren
-id|mpnt
-)paren
-)paren
-)paren
-(brace
 id|mpnt-&gt;vm_next
 op_assign
 id|touched
@@ -4322,14 +4396,6 @@ id|mm-&gt;mm_rb
 suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
-suffix:semicolon
-)brace
-r_else
-id|free_hugepages
-c_func
-(paren
-id|mpnt
-)paren
 suffix:semicolon
 id|mpnt
 op_assign
@@ -5347,12 +5413,6 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|release_segments
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -5421,18 +5481,6 @@ suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|is_vm_hugetlb_page
-c_func
-(paren
-id|mpnt
-)paren
-)paren
-)paren
 id|unmap_page_range
 c_func
 (paren
@@ -5443,15 +5491,6 @@ comma
 id|start
 comma
 id|end
-)paren
-suffix:semicolon
-r_else
-id|mpnt-&gt;vm_ops
-op_member_access_from_pointer
-id|close
-c_func
-(paren
-id|mpnt
 )paren
 suffix:semicolon
 id|mpnt

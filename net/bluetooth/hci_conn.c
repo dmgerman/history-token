@@ -802,7 +802,7 @@ id|read_lock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|list_for_each
@@ -811,7 +811,7 @@ c_func
 id|p
 comma
 op_amp
-id|hdev_list
+id|hci_dev_list
 )paren
 (brace
 r_struct
@@ -915,7 +915,7 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 r_return

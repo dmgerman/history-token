@@ -1118,10 +1118,13 @@ id|r4k_interval
 )paren
 )paren
 suffix:semicolon
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 l_int|0
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

@@ -382,6 +382,11 @@ id|fl
 op_assign
 (brace
 dot
+id|oif
+op_assign
+id|dev-&gt;ifindex
+comma
+dot
 id|nl_u
 op_assign
 (brace
@@ -397,9 +402,9 @@ id|dst
 )brace
 comma
 dot
-id|oif
+id|proto
 op_assign
-id|dev-&gt;ifindex
+id|IPPROTO_IGMP
 )brace
 suffix:semicolon
 r_if

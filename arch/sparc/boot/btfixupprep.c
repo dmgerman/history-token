@@ -860,7 +860,7 @@ id|strcmp
 (paren
 id|sect
 comma
-l_string|&quot;.text.init&quot;
+l_string|&quot;.init.text&quot;
 )paren
 )paren
 (brace
@@ -869,11 +869,15 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;Wrong use of &squot;%s&squot; BTFIXUPSET.&bslash;nBTFIXUPSET_CALL can be used only in __init sections&bslash;n&quot;
+l_string|&quot;Wrong use of &squot;%s&squot; BTFIXUPSET in &squot;%s&squot; section.&bslash;n&quot;
+l_string|&quot;BTFIXUPSET_CALL can be used only in&quot;
+l_string|&quot; __init sections&bslash;n&quot;
 comma
 id|buffer
 op_plus
 id|shift
+comma
+id|sect
 )paren
 suffix:semicolon
 m_exit
@@ -912,7 +916,7 @@ id|strcmp
 (paren
 id|sect
 comma
-l_string|&quot;.text.init&quot;
+l_string|&quot;.init.text&quot;
 )paren
 op_logical_and
 id|strcmp
@@ -958,7 +962,9 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;Wrong use of &squot;%s&squot; in &squot;%s&squot; section. It can be only used in .text, .text.init, .fixup and __ksymtab&bslash;n&quot;
+l_string|&quot;Wrong use of &squot;%s&squot; in &squot;%s&squot; section.&bslash;n&quot;
+l_string|&quot; It can be used only in .text, .init.text,&quot;
+l_string|&quot; .fixup and __ksymtab&bslash;n&quot;
 comma
 id|buffer
 op_plus
@@ -973,7 +979,9 @@ c_func
 (paren
 id|stderr
 comma
-l_string|&quot;Wrong use of &squot;%s&squot; in &squot;%s&squot; section. It can be only used in .text, .fixup and .text.init&bslash;n&quot;
+l_string|&quot;Wrong use of &squot;%s&squot; in &squot;%s&squot; section.&bslash;n&quot;
+l_string|&quot; It can be only used in .text, .init.text,&quot;
+l_string|&quot; and .fixup&bslash;n&quot;
 comma
 id|buffer
 op_plus
@@ -2173,7 +2181,7 @@ id|strcmp
 (paren
 id|r-&gt;sect
 comma
-l_string|&quot;.text.init&quot;
+l_string|&quot;.init.text&quot;
 )paren
 )paren
 id|printf

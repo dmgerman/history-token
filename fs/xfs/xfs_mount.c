@@ -7239,15 +7239,6 @@ id|PBR_ALIGNED_ONLY
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|LVM_BLK_MAJOR
-suffix:colon
-id|btp-&gt;pbr_flags
-op_assign
-id|PBR_SECTOR_ONLY
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_return
 id|btp

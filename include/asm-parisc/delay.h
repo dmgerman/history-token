@@ -4,11 +4,6 @@ mdefine_line|#define _PARISC_DELAY_H
 macro_line|#include &lt;asm/system.h&gt;    /* for mfctl() */
 macro_line|#include &lt;asm/processor.h&gt; /* for boot_cpu_data */
 multiline_comment|/*&n; * Copyright (C) 1993 Linus Torvalds&n; *&n; * Delay routines&n; */
-r_extern
-r_int
-r_int
-id|loops_per_sec
-suffix:semicolon
 DECL|function|__delay
 r_static
 id|__inline__
@@ -24,24 +19,9 @@ id|loops
 id|asm
 r_volatile
 (paren
-"&quot;"
-dot
-id|balignl
-l_int|64
-comma
-l_int|0x34000034
-id|addib
-comma
-id|UV
-op_minus
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-dot
-id|nop
-"&quot;"
+l_string|&quot;&t;.balignl&t;64,0x34000034&bslash;n&quot;
+l_string|&quot;&t;addib,UV -1,%0,.&bslash;n&quot;
+l_string|&quot;&t;nop&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

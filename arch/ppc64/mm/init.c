@@ -2182,7 +2182,7 @@ l_int|0
 suffix:semicolon
 id|nid
 OL
-id|MAX_NUMNODES
+id|numnodes
 suffix:semicolon
 id|nid
 op_increment

@@ -4034,10 +4034,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 id|cpu
-)braket
+)paren
+dot
+id|irqs
 (braket
 l_int|0
 )braket

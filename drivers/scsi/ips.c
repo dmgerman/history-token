@@ -146,7 +146,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ips.h&quot;
@@ -304,9 +303,9 @@ macro_line|#else
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)      (page_address((sg)-&gt;page) ? &bslash;&n;                                     page_address((sg)-&gt;page)+(sg)-&gt;offset : 0)
 DECL|macro|IPS_LOCK_SAVE
-mdefine_line|#define IPS_LOCK_SAVE(lock,flags) spin_lock(lock)
+mdefine_line|#define IPS_LOCK_SAVE(lock,flags) do{spin_lock(lock);(void)flags;}while(0)
 DECL|macro|IPS_UNLOCK_RESTORE
-mdefine_line|#define IPS_UNLOCK_RESTORE(lock,flags) spin_unlock(lock)
+mdefine_line|#define IPS_UNLOCK_RESTORE(lock,flags) do{spin_unlock(lock);(void)flags;}while(0)
 macro_line|#endif
 DECL|macro|IPS_DMA_DIR
 mdefine_line|#define IPS_DMA_DIR(scb) ((!scb-&gt;scsi_cmd || ips_is_passthru(scb-&gt;scsi_cmd) || &bslash;&n;                         SCSI_DATA_NONE == scb-&gt;scsi_cmd-&gt;sc_data_direction) ? &bslash;&n;                         PCI_DMA_BIDIRECTIONAL : &bslash;&n;                         scsi_to_pci_dma_dir(scb-&gt;scsi_cmd-&gt;sc_data_direction))
@@ -1364,12 +1363,15 @@ r_int
 id|ips_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star
@@ -7411,14 +7413,18 @@ DECL|function|ips_biosparam
 id|ips_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -7453,7 +7459,7 @@ op_assign
 id|ips_ha_t
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -7500,7 +7506,7 @@ r_if
 c_cond
 (paren
 (paren
-id|disk-&gt;capacity
+id|capacity
 OG
 l_int|0x400000
 )paren
@@ -7542,7 +7548,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -7639,6 +7645,10 @@ r_if
 c_cond
 (paren
 id|SDptr-&gt;tagged_supported
+op_logical_and
+id|SDptr-&gt;type
+op_eq
+id|TYPE_DISK
 )paren
 (brace
 id|min
@@ -7650,9 +7660,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|min
+id|ha-&gt;enq-&gt;ucLogDriveCount
 op_le
-l_int|16
+l_int|2
 )paren
 id|min
 op_assign
@@ -18997,6 +19007,8 @@ op_assign
 id|IPS_SCSI_INQ_WBus16
 op_or
 id|IPS_SCSI_INQ_Sync
+op_or
+id|IPS_SCSI_INQ_CmdQue
 suffix:semicolon
 id|strncpy
 c_func

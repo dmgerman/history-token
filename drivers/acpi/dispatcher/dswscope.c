@@ -1,7 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
@@ -87,6 +86,10 @@ id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
+id|acpi_generic_state
+op_star
+id|old_scope_info
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_scope_stack_push&quot;
@@ -118,7 +121,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_ex_validate_object_type
+id|acpi_ut_valid_object_type
 (paren
 id|type
 )paren
@@ -168,6 +171,80 @@ id|u16
 )paren
 id|type
 suffix:semicolon
+id|walk_state-&gt;scope_depth
+op_increment
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[%.2d] Pushed scope &quot;
+comma
+(paren
+id|u32
+)paren
+id|walk_state-&gt;scope_depth
+)paren
+)paren
+suffix:semicolon
+id|old_scope_info
+op_assign
+id|walk_state-&gt;scope_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_scope_info
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[%4.4s] (%10s)&quot;
+comma
+id|old_scope_info-&gt;scope.node-&gt;name.ascii
+comma
+id|acpi_ut_get_type_name
+(paren
+id|old_scope_info-&gt;common.value
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[&bslash;&bslash;___] (%10s)&quot;
+comma
+l_string|&quot;ROOT&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;, New scope -&gt; [%4.4s] (%s)&bslash;n&quot;
+comma
+id|scope_info-&gt;scope.node-&gt;name.ascii
+comma
+id|acpi_ut_get_type_name
+(paren
+id|scope_info-&gt;common.value
+)paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Push new scope object onto stack */
 id|acpi_ut_push_generic_state
 (paren
@@ -197,6 +274,10 @@ id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
+id|acpi_generic_state
+op_star
+id|new_scope_info
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_scope_stack_pop&quot;
@@ -224,12 +305,22 @@ id|AE_STACK_UNDERFLOW
 )paren
 suffix:semicolon
 )brace
+id|walk_state-&gt;scope_depth
+op_decrement
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Popped object type (%s)&bslash;n&quot;
+l_string|&quot;[%.2d] Popped scope [%4.4s] (%10s), New scope -&gt; &quot;
+comma
+(paren
+id|u32
+)paren
+id|walk_state-&gt;scope_depth
+comma
+id|scope_info-&gt;scope.node-&gt;name.ascii
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -238,6 +329,45 @@ id|scope_info-&gt;common.value
 )paren
 )paren
 suffix:semicolon
+id|new_scope_info
+op_assign
+id|walk_state-&gt;scope_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_scope_info
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[%4.4s] (%s)&bslash;n&quot;
+comma
+id|new_scope_info-&gt;scope.node-&gt;name.ascii
+comma
+id|acpi_ut_get_type_name
+(paren
+id|new_scope_info-&gt;common.value
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[&bslash;&bslash;___] (ROOT)&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 id|acpi_ut_delete_generic_state
 (paren
 id|scope_info

@@ -26,6 +26,14 @@ macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG( A... )
 macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|proc_bt
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_bt
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
 mdefine_line|#define BT_MAX_PROTO&t;5
@@ -1339,6 +1347,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|hci_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|hci_proc_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|bt_init
 r_static
 r_int
@@ -1352,17 +1376,13 @@ r_void
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth Core ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Core ver %s&quot;
 comma
 id|VERSION
 )paren
 suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
-)paren
-suffix:semicolon
+id|proc_bt
+op_assign
 id|proc_mkdir
 c_func
 (paren
@@ -1404,7 +1424,7 @@ id|bt_sock_cache
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Bluetooth socket cache creation failed&quot;
+l_string|&quot;Socket cache creation failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1417,6 +1437,17 @@ c_func
 (paren
 op_amp
 id|bt_sock_family_ops
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;HCI device and connection manager initialized&quot;
+)paren
+suffix:semicolon
+id|hci_proc_init
+c_func
+(paren
 )paren
 suffix:semicolon
 id|hci_sock_init
@@ -1439,6 +1470,11 @@ r_void
 )paren
 (brace
 id|hci_sock_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|hci_proc_cleanup
 c_func
 (paren
 )paren

@@ -5,13 +5,12 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;sr.h&quot;
 macro_line|#if 0
 mdefine_line|#define DEBUG
@@ -271,11 +270,13 @@ op_star
 id|cgc
 )paren
 (brace
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|SRpnt
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|SDev
 suffix:semicolon
@@ -682,6 +683,11 @@ comma
 id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -699,22 +705,12 @@ l_int|13
 op_eq
 l_int|0x00
 )paren
-(brace
 multiline_comment|/* sense: Invalid command operation code */
 id|err
 op_assign
 op_minus
 id|EDRIVE_CANT_DO_THIS
 suffix:semicolon
-)brace
-r_else
-(brace
-id|err
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 macro_line|#ifdef DEBUG
 id|print_command
 c_func
@@ -2560,5 +2556,4 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * tab-width: 8&n; * End:&n; */
 eof

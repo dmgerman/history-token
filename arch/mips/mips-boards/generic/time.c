@@ -335,10 +335,13 @@ id|null
 suffix:semicolon
 r_do
 (brace
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 l_int|0
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

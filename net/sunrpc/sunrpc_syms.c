@@ -457,6 +457,13 @@ c_func
 id|cache_flush
 )paren
 suffix:semicolon
+DECL|variable|cache_purge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cache_purge
+)paren
+suffix:semicolon
 DECL|variable|cache_fresh
 id|EXPORT_SYMBOL
 c_func

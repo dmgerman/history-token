@@ -4,6 +4,7 @@ DECL|macro|_HOSTS_H
 mdefine_line|#define _HOSTS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/* It is senseless to set SG_ALL any higher than this - the performance&n; *  does not get any better, and it wastes memory&n; */
 DECL|macro|SG_NONE
@@ -162,7 +163,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * The QueueCommand function works in a similar manner&n;     * to the command function.&t; It takes an additional parameter,&n;     * void (* done)(int host, int code) which is passed the host&n;     * # and exit result when the command is complete.&n;     * Host number is the POSITION IN THE hosts array of THIS&n;     * host adapter.&n;     *&n;     * The done() function must only be called after QueueCommand() &n;     * has returned.&n;     */
+multiline_comment|/*&n;     * The QueueCommand function works in a similar manner&n;     * to the command function.&t; It takes an additional parameter,&n;     * void (* done)(int host, int code) which is passed the host&n;     * # and exit result when the command is complete.&n;     * Host number is the POSITION IN THE hosts array of THIS&n;     * host adapter.&n;     *&n;     * if queuecommand returns 0, then the HBA has accepted the&n;     * command.  The done() function must be called on the command&n;     * when the driver has finished with it. (you may call done on the&n;     * command before queuecommand returns, but in this case you&n;     * *must* return 0 from queuecommand).&n;     *&n;     * queuecommand may also reject the command, in which case it may&n;     * not touch the command and must not call done() for it.&n;     *&n;     * There are two possible rejection returns:&n;     *&n;     *   SCSI_MLQUEUE_DEVICE_BUSY: Block this device temporarily, but&n;     *   allow commands to other devices serviced by this host.&n;     *&n;     *   SCSI_MLQUEUE_HOST_BUSY: Block all devices served by this&n;     *   host temporarily.&n;     *&n;     *   for compatibility, any other non-zero return is treated the&n;     *   same as SCSI_MLQUEUE_HOST_BUSY.&n;     *&n;     *   NOTE: &quot;temporarily&quot; means either until the next command for&n;     *   this device/host completes, or a period of time determined by&n;     *   I/O pressure in the system if there are no other outstanding&n;     *   commands.&n;     * */
 DECL|member|queuecommand
 r_int
 (paren
@@ -241,7 +242,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Since the mid level driver handles time outs, etc, we want to&n;     * be able to abort the current command.  Abort returns 0 if the&n;     * abortion was successful.&t; The field SCpnt-&gt;abort reason&n;     * can be filled in with the appropriate reason why we wanted&n;     * the abort in the first place, and this will be used&n;     * in the mid-level code instead of the host_byte().&n;     * If non-zero, the code passed to it&n;     * will be used as the return code, otherwise&n;     * DID_ABORT  should be returned.&n;     *&n;     * Note that the scsi driver should &quot;clean up&quot; after itself,&n;     * resetting the bus, etc.&t;if necessary.&n;     *&n;     * NOTE - this interface is depreciated, and will go away.  Use&n;     * the eh_ routines instead.&n;     */
+multiline_comment|/*&n;     * Old EH handlers, no longer used. Make them warn the user of old&n;     * drivers by using a wrogn type&n;     */
 DECL|member|abort
 r_int
 (paren
@@ -249,11 +250,9 @@ op_star
 m_abort
 )paren
 (paren
-id|Scsi_Cmnd
-op_star
+r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * The reset function will reset the SCSI bus.  Any executing&n;     * commands should fail with a DID_RESET in the host byte.&n;     * The Scsi_Cmnd  is passed so that the reset routine can figure&n;     * out which host adapter should be reset, and also which command&n;     * within the command block was responsible for the reset in&n;     * the first place.&t; Some hosts do not implement a reset function,&n;     * and these hosts must call scsi_request_sense(SCpnt) to keep&n;     * the command alive.&n;     *&n;     * NOTE - this interface is depreciated, and will go away.  Use&n;     * the eh_ routines instead.&n;     */
 DECL|member|reset
 r_int
 (paren
@@ -261,10 +260,8 @@ op_star
 id|reset
 )paren
 (paren
-id|Scsi_Cmnd
-op_star
-comma
 r_int
+comma
 r_int
 )paren
 suffix:semicolon
@@ -300,12 +297,15 @@ op_star
 id|bios_param
 )paren
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 (braket
@@ -919,14 +919,6 @@ op_assign
 op_amp
 id|pdev-&gt;dev
 suffix:semicolon
-multiline_comment|/* register parent with driverfs */
-id|device_register
-c_func
-(paren
-op_amp
-id|shost-&gt;host_driverfs_dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
 r_extern
@@ -993,23 +985,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|major
-r_int
-r_int
-id|major
-suffix:semicolon
-DECL|member|min_major
-r_int
-r_int
-id|min_major
-suffix:semicolon
-multiline_comment|/* Minimum major in range. */
-DECL|member|max_major
-r_int
-r_int
-id|max_major
-suffix:semicolon
-multiline_comment|/* Maximum major in range. */
 DECL|member|nr_dev
 r_int
 r_int
@@ -1058,17 +1033,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Sizes arrays based upon number of devices&n;&t;&t;   *  detected */
-DECL|member|finish
-r_void
-(paren
-op_star
-id|finish
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Perform initialization after attachment */
 DECL|member|attach
 r_int
 (paren
@@ -1250,16 +1214,10 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is an ugly hack.  If we expect to be able to load devices at run time,&n; * we need to leave extra room in some of the data structures.&t;Doing a&n; * realloc to enlarge the structures would be riddled with race conditions,&n; * so until a better solution is discovered, we use this crude approach&n; *&n; * Even bigger hack for SparcSTORAGE arrays. Those are at least 6 disks, but&n; * usually up to 30 disks, so everyone would need to change this. -jj&n; *&n; * Note: These things are all evil and all need to go away.  My plan is to&n; * tackle the character devices first, as there aren&squot;t any locking implications&n; * in the block device layer.   The block devices will require more work.&n; *&n; * The generics driver has been updated to resize as required.  So as the tape&n; * driver. Two down, two more to go.&n; */
-macro_line|#ifndef CONFIG_SD_EXTRA_DEVS
-DECL|macro|CONFIG_SD_EXTRA_DEVS
-mdefine_line|#define CONFIG_SD_EXTRA_DEVS 2
-macro_line|#endif
 macro_line|#ifndef CONFIG_SR_EXTRA_DEVS
 DECL|macro|CONFIG_SR_EXTRA_DEVS
 mdefine_line|#define CONFIG_SR_EXTRA_DEVS 2
 macro_line|#endif
-DECL|macro|SD_EXTRA_DEVS
-mdefine_line|#define SD_EXTRA_DEVS CONFIG_SD_EXTRA_DEVS
 DECL|macro|SR_EXTRA_DEVS
 mdefine_line|#define SR_EXTRA_DEVS CONFIG_SR_EXTRA_DEVS
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/

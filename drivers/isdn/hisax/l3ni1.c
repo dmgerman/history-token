@@ -23,6 +23,13 @@ id|ni1_revision
 op_assign
 l_string|&quot;$Revision: 2.5.6.3 $&quot;
 suffix:semicolon
+DECL|variable|l3ni1_lock
+r_static
+id|spinlock_t
+id|l3ni1_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
 DECL|macro|MsgHead
@@ -60,15 +67,13 @@ op_assign
 l_int|32
 suffix:semicolon
 multiline_comment|/* maximum search depth */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|l3ni1_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|retval
@@ -167,9 +172,12 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|l3ni1_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -210,15 +218,13 @@ id|id
 r_return
 suffix:semicolon
 multiline_comment|/* 0 = invalid value */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|l3ni1_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|p-&gt;prot.ni1.invoke_used
@@ -239,9 +245,12 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|l3ni1_lock
+comma
 id|flags
 )paren
 suffix:semicolon

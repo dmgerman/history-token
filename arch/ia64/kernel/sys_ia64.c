@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/file.h&gt;&t;&t;/* doh, must come after sched.h... */
@@ -1234,6 +1235,14 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+(brace
 id|vma
 op_assign
 id|find_vma
@@ -1263,18 +1272,14 @@ op_ne
 id|addr
 )paren
 )paren
-r_return
+id|retval
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|mm-&gt;mmap_sem
-)paren
+r_goto
+id|out
 suffix:semicolon
-(brace
 id|spin_lock
 c_func
 (paren
@@ -1300,6 +1305,8 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|up_write
 c_func
 (paren

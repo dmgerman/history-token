@@ -138,6 +138,20 @@ id|lid_t
 id|xtlid
 suffix:semicolon
 multiline_comment|/* lid of xtree lock on directory */
+macro_line|#ifdef CONFIG_JFS_POSIX_ACL
+DECL|member|i_acl
+r_struct
+id|posix_acl
+op_star
+id|i_acl
+suffix:semicolon
+DECL|member|i_default_acl
+r_struct
+id|posix_acl
+op_star
+id|i_default_acl
+suffix:semicolon
+macro_line|#endif
 r_union
 (brace
 r_struct
@@ -237,6 +251,8 @@ DECL|macro|i_inline
 mdefine_line|#define i_inline u.link._inline
 DECL|macro|i_inline_ea
 mdefine_line|#define i_inline_ea u.link._inline_ea
+DECL|macro|JFS_ACL_NOT_CACHED
+mdefine_line|#define JFS_ACL_NOT_CACHED ((void *)-1)
 DECL|macro|IREAD_LOCK
 mdefine_line|#define IREAD_LOCK(ip)&t;&t;down_read(&amp;JFS_IP(ip)-&gt;rdwrlock)
 DECL|macro|IREAD_UNLOCK

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Macros for manipulating and testing page-&gt;flags&n; 
 macro_line|#ifndef PAGE_FLAGS_H
 DECL|macro|PAGE_FLAGS_H
 mdefine_line|#define PAGE_FLAGS_H
+macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/*&n; * Various page-&gt;flags bits:&n; *&n; * PG_reserved is set for special pages, which can never be swapped out. Some&n; * of them might not even exist (eg empty_bad_page)...&n; *&n; * The PG_private bitflag is set if page-&gt;private contains a valid value.&n; *&n; * During disk I/O, PG_locked is used. This bit is set before I/O and&n; * reset when I/O completes. page_waitqueue(page) is a wait queue of all tasks&n; * waiting for the I/O on this page to complete.&n; *&n; * PG_uptodate tells whether the page&squot;s contents is valid.  When a read&n; * completes, the page becomes uptodate, unless a disk I/O error happened.&n; *&n; * For choosing which pages to swap out, inode pages carry a PG_referenced bit,&n; * which is set any time the system accesses that page through the (mapping,&n; * index) hash table.  This referenced bit, together with the referenced bit&n; * in the page tables, is used to manipulate page-&gt;age and move the page across&n; * the active, inactive_dirty and inactive_clean lists.&n; *&n; * Note that the referenced bit, the page-&gt;lru list_head and the active,&n; * inactive_dirty and inactive_clean lists are protected by the&n; * zone-&gt;lru_lock, and *NOT* by the usual PG_locked bit!&n; *&n; * PG_error is set to indicate that an I/O error occurred on this page.&n; *&n; * PG_arch_1 is an architecture specific page state bit.  The generic code&n; * guarantees that this bit is cleared for a page when it first is entered into&n; * the page cache.&n; *&n; * PG_highmem pages are not permanently mapped into the kernel virtual address&n; * space, they need to be kmapped separately for doing IO on the pages.  The&n; * struct page (these bits with information) are always mapped into kernel&n; * address space...&n; */
 multiline_comment|/*&n; * Don&squot;t use the *_dontuse flags.  Use the macros.  Otherwise you&squot;ll break&n; * locked- and dirty-page accounting.  The top eight bits of page-&gt;flags are&n; * used for page-&gt;zone, so putting flag bits there doesn&squot;t work.&n; */
 DECL|macro|PG_locked
@@ -40,7 +41,6 @@ DECL|macro|PG_direct
 mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
-r_extern
 r_struct
 id|page_state
 (brace
@@ -163,11 +163,15 @@ r_int
 id|allocstall
 suffix:semicolon
 )brace
-id|____cacheline_aligned_in_smp
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|page_state
+comma
 id|page_states
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 r_extern
 r_void
@@ -192,7 +196,7 @@ id|ret
 )paren
 suffix:semicolon
 DECL|macro|mod_page_state
-mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int cpu = get_cpu();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;page_states[cpu].member += (delta);&t;&t;&t;&bslash;&n;&t;&t;put_cpu();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_cpu_var(page_states).member += (delta);&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state
@@ -316,6 +320,7 @@ mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)
 DECL|macro|TestClearPageDirect
 mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
+macro_line|#ifdef CONFIG_SWAP
 r_extern
 r_struct
 id|address_space
@@ -323,6 +328,10 @@ id|swapper_space
 suffix:semicolon
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+macro_line|#else
+DECL|macro|PageSwapCache
+mdefine_line|#define PageSwapCache(page) 0
+macro_line|#endif
 r_struct
 id|page
 suffix:semicolon

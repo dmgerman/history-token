@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @list: list_head to queue the update requests&n; * @func: actual update function to call after the grace period.&n; * @arg: argument to be passed to the actual update function.&n; */
 DECL|struct|rcu_head
 r_struct
@@ -152,17 +153,16 @@ r_struct
 id|list_head
 id|curlist
 suffix:semicolon
-DECL|variable|____cacheline_aligned_in_smp
 )brace
-id|____cacheline_aligned_in_smp
 suffix:semicolon
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|rcu_data
+comma
 id|rcu_data
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 r_extern
 r_struct
@@ -170,15 +170,15 @@ id|rcu_ctrlblk
 id|rcu_ctrlblk
 suffix:semicolon
 DECL|macro|RCU_qsctr
-mdefine_line|#define RCU_qsctr(cpu) &t;&t;(rcu_data[(cpu)].qsctr)
+mdefine_line|#define RCU_qsctr(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).qsctr)
 DECL|macro|RCU_last_qsctr
-mdefine_line|#define RCU_last_qsctr(cpu) &t;(rcu_data[(cpu)].last_qsctr)
+mdefine_line|#define RCU_last_qsctr(cpu) &t;(per_cpu(rcu_data, (cpu)).last_qsctr)
 DECL|macro|RCU_batch
-mdefine_line|#define RCU_batch(cpu) &t;&t;(rcu_data[(cpu)].batch)
+mdefine_line|#define RCU_batch(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).batch)
 DECL|macro|RCU_nxtlist
-mdefine_line|#define RCU_nxtlist(cpu) &t;(rcu_data[(cpu)].nxtlist)
+mdefine_line|#define RCU_nxtlist(cpu) &t;(per_cpu(rcu_data, (cpu)).nxtlist)
 DECL|macro|RCU_curlist
-mdefine_line|#define RCU_curlist(cpu) &t;(rcu_data[(cpu)].curlist)
+mdefine_line|#define RCU_curlist(cpu) &t;(per_cpu(rcu_data, (cpu)).curlist)
 DECL|macro|RCU_QSCTR_INVALID
 mdefine_line|#define RCU_QSCTR_INVALID&t;0
 DECL|function|rcu_pending

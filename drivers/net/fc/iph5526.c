@@ -27,7 +27,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt; /* had the declarations for init_fcdev among others + includes if_fcdevice.h */
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../fc4/fcp.h&quot;
@@ -22348,14 +22347,18 @@ r_int
 id|iph5526_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|n
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -22366,7 +22369,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket

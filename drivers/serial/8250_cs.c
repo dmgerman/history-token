@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -951,9 +952,9 @@ id|irq
 suffix:semicolon
 id|serial.flags
 op_assign
-id|ASYNC_SKIP_TEST
+id|UPF_SKIP_TEST
 op_or
-id|ASYNC_SHARE_IRQ
+id|UPF_SHARE_IRQ
 suffix:semicolon
 id|line
 op_assign

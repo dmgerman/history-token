@@ -11,31 +11,37 @@ r_struct
 id|ipc64_perm
 id|msg_perm
 suffix:semicolon
+macro_line|#ifndef __LP64__
 DECL|member|__pad1
 r_int
 r_int
 id|__pad1
 suffix:semicolon
+macro_line|#endif
 DECL|member|msg_stime
 id|__kernel_time_t
 id|msg_stime
 suffix:semicolon
 multiline_comment|/* last msgsnd time */
+macro_line|#ifndef __LP64__
 DECL|member|__pad2
 r_int
 r_int
 id|__pad2
 suffix:semicolon
+macro_line|#endif
 DECL|member|msg_rtime
 id|__kernel_time_t
 id|msg_rtime
 suffix:semicolon
 multiline_comment|/* last msgrcv time */
+macro_line|#ifndef __LP64__
 DECL|member|__pad3
 r_int
 r_int
 id|__pad3
 suffix:semicolon
+macro_line|#endif
 DECL|member|msg_ctime
 id|__kernel_time_t
 id|msg_ctime

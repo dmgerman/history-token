@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -2273,6 +2274,18 @@ id|timeout
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
+)paren
+id|timeout
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2645,7 +2658,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren

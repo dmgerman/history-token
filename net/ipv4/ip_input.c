@@ -23,6 +23,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 multiline_comment|/*&n; *&t;SNMP management statistics&n; */
@@ -317,6 +318,38 @@ id|ipprot
 suffix:semicolon
 id|resubmit
 suffix:colon
+multiline_comment|/* Fuck... This IS ugly. */
+r_if
+c_cond
+(paren
+id|protocol
+op_ne
+id|IPPROTO_AH
+op_logical_and
+id|protocol
+op_ne
+id|IPPROTO_ESP
+op_logical_and
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|hash
 op_assign
 id|protocol
@@ -393,6 +426,12 @@ r_goto
 id|resubmit
 suffix:semicolon
 )brace
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInDelivers
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -403,6 +442,12 @@ op_logical_neg
 id|raw_sk
 )paren
 (brace
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInUnknownProtos
+)paren
+suffix:semicolon
 id|icmp_send
 c_func
 (paren
@@ -416,6 +461,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_else
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInDelivers
+)paren
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren
@@ -655,9 +707,17 @@ id|skb
 )paren
 )paren
 )paren
+(brace
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInDiscards
+)paren
+suffix:semicolon
 r_goto
 id|drop
 suffix:semicolon
+)brace
 id|iph
 op_assign
 id|skb-&gt;nh.iph
@@ -877,9 +937,17 @@ id|GFP_ATOMIC
 op_eq
 l_int|NULL
 )paren
+(brace
+id|IP_INC_STATS_BH
+c_func
+(paren
+id|IpInDiscards
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

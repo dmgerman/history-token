@@ -46,7 +46,6 @@ macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;advansys.h&quot;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1721,10 +1720,6 @@ DECL|member|chip_version
 id|uchar
 id|chip_version
 suffix:semicolon
-DECL|member|pci_device_id
-id|ushort
-id|pci_device_id
-suffix:semicolon
 DECL|member|lib_serial_no
 id|ushort
 id|lib_serial_no
@@ -1774,6 +1769,12 @@ id|adapter_info
 (braket
 l_int|6
 )braket
+suffix:semicolon
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 suffix:semicolon
 DECL|typedef|ASC_DVC_CFG
 )brace
@@ -5614,11 +5615,6 @@ id|uchar
 id|termination
 suffix:semicolon
 multiline_comment|/* Term. Ctrl. bits 6-5 of SCSI_CFG1 register */
-DECL|member|pci_device_id
-id|ushort
-id|pci_device_id
-suffix:semicolon
-multiline_comment|/* PCI device code number */
 DECL|member|lib_version
 id|ushort
 id|lib_version
@@ -5661,6 +5657,13 @@ id|ushort
 id|serial3
 suffix:semicolon
 multiline_comment|/* EEPROM serial number word 3 */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+multiline_comment|/* pointer to the pci dev structure for this board */
 DECL|typedef|ADV_DVC_CFG
 )brace
 id|ADV_DVC_CFG
@@ -10970,9 +10973,9 @@ id|asc_dvc_varp-&gt;irq_no
 op_assign
 id|pci_devp-&gt;irq
 suffix:semicolon
-id|asc_dvc_varp-&gt;cfg-&gt;pci_device_id
+id|asc_dvc_varp-&gt;cfg-&gt;pci_dev
 op_assign
-id|pci_devp-&gt;device
+id|pci_devp
 suffix:semicolon
 id|asc_dvc_varp-&gt;cfg-&gt;pci_slot_info
 op_assign
@@ -11039,9 +11042,9 @@ id|adv_dvc_varp-&gt;irq_no
 op_assign
 id|pci_devp-&gt;irq
 suffix:semicolon
-id|adv_dvc_varp-&gt;cfg-&gt;pci_device_id
+id|adv_dvc_varp-&gt;cfg-&gt;pci_dev
 op_assign
-id|pci_devp-&gt;device
+id|pci_devp
 suffix:semicolon
 id|adv_dvc_varp-&gt;cfg-&gt;pci_slot_info
 op_assign
@@ -14727,14 +14730,18 @@ DECL|function|advansys_biosparam
 id|advansys_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|dp
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dep
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -14757,7 +14764,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|dp-&gt;device-&gt;host
+id|sdev-&gt;host
 comma
 id|biosparam
 )paren
@@ -14767,7 +14774,7 @@ op_assign
 id|ASC_BOARDP
 c_func
 (paren
-id|dp-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -14789,7 +14796,7 @@ op_amp
 id|ASC_CNTL_BIOS_GT_1GB
 )paren
 op_logical_and
-id|dp-&gt;capacity
+id|capacity
 OG
 l_int|0x200000
 )paren
@@ -14838,7 +14845,7 @@ op_amp
 id|BIOS_CTRL_EXTENDED_XLAT
 )paren
 op_logical_and
-id|dp-&gt;capacity
+id|capacity
 OG
 l_int|0x200000
 )paren
@@ -14885,7 +14892,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dp-&gt;capacity
+id|capacity
 op_div
 (paren
 id|ip
@@ -26377,30 +26384,10 @@ macro_line|#ifdef CONFIG_PCI
 id|uchar
 id|byte_data
 suffix:semicolon
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|ASC_PCI_ID2BUS
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|PCI_DEVFN
-c_func
-(paren
-id|ASC_PCI_ID2DEV
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|ASC_PCI_ID2FUNC
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-)paren
+id|asc_dvc-&gt;cfg-&gt;pci_dev
 comma
 id|offset
 comma
@@ -26441,30 +26428,10 @@ id|byte_data
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|ASC_PCI_ID2BUS
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|PCI_DEVFN
-c_func
-(paren
-id|ASC_PCI_ID2DEV
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|ASC_PCI_ID2FUNC
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-)paren
+id|asc_dvc-&gt;cfg-&gt;pci_dev
 comma
 id|offset
 comma
@@ -26704,30 +26671,10 @@ macro_line|#ifdef CONFIG_PCI
 id|uchar
 id|byte_data
 suffix:semicolon
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|ASC_PCI_ID2BUS
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|PCI_DEVFN
-c_func
-(paren
-id|ASC_PCI_ID2DEV
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|ASC_PCI_ID2FUNC
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-)paren
+id|asc_dvc-&gt;cfg-&gt;pci_dev
 comma
 id|offset
 comma
@@ -26768,30 +26715,10 @@ id|byte_data
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|ASC_PCI_ID2BUS
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|PCI_DEVFN
-c_func
-(paren
-id|ASC_PCI_ID2DEV
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-comma
-id|ASC_PCI_ID2FUNC
-c_func
-(paren
-id|asc_dvc-&gt;cfg-&gt;pci_slot_info
-)paren
-)paren
+id|asc_dvc-&gt;cfg-&gt;pci_dev
 comma
 id|offset
 comma
@@ -28252,7 +28179,7 @@ c_func
 (paren
 l_string|&quot; pci_device_id %d, lib_serial_no %u, lib_version %u, mcode_date 0x%x,&bslash;n&quot;
 comma
-id|h-&gt;pci_device_id
+id|h-&gt;pci_dev-&gt;device
 comma
 id|h-&gt;lib_serial_no
 comma
@@ -28720,7 +28647,7 @@ l_string|&quot;  mcode_version 0x%x, pci_device_id 0x%x, lib_version %u&bslash;n
 comma
 id|h-&gt;mcode_version
 comma
-id|h-&gt;pci_device_id
+id|h-&gt;pci_dev-&gt;device
 comma
 id|h-&gt;lib_version
 )paren
@@ -44797,7 +44724,7 @@ id|asc_dvc-&gt;iop_base
 suffix:semicolon
 id|pci_device_id
 op_assign
-id|asc_dvc-&gt;cfg-&gt;pci_device_id
+id|asc_dvc-&gt;cfg-&gt;pci_dev-&gt;device
 suffix:semicolon
 id|warn_code
 op_assign

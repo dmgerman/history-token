@@ -7788,11 +7788,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;Timed out command pending for %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
+id|SCpnt-&gt;request-&gt;rq_disk
+ques
+c_cond
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;disk_name
+suffix:colon
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7840,11 +7841,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;Other pending command %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
+id|SCpnt-&gt;request-&gt;rq_disk
+ques
+c_cond
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;disk_name
+suffix:colon
+l_string|&quot;?&quot;
 )paren
 suffix:semicolon
 )brace
@@ -8414,21 +8416,24 @@ id|SCSI_RESET_PUNT
 suffix:semicolon
 )brace
 macro_line|#endif    /* end of big comment block around old_abort + old_reset */
-macro_line|#include &quot;sd.h&quot;
 DECL|function|aha1542_biosparam
 r_static
 r_int
 id|aha1542_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -8441,14 +8446,14 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|translation_algorithm
 op_assign
 id|HOSTDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|bios_translation

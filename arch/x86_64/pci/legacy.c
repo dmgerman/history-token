@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Discover remaining PCI buses in case there are peer host bridges.&n; * We use the number of last PCI bus provided by the PCI BIOS.&n; */
 DECL|function|pcibios_fixup_peer_bridges
-r_static
 r_void
 id|__devinit
 id|pcibios_fixup_peer_bridges
@@ -35,7 +34,7 @@ op_le
 l_int|0
 op_logical_or
 id|pcibios_last_bus
-op_ge
+OG
 l_int|0xff
 )paren
 r_return

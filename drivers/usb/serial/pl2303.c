@@ -2857,8 +2857,62 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 singleline_comment|//unsigned char *data = urb-&gt;transfer_buffer;
-singleline_comment|//int i;
-singleline_comment|//ints auto restart...
+r_int
+id|status
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|urb-&gt;status
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - urb shutting down with status: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2866,19 +2920,6 @@ op_logical_neg
 id|serial
 )paren
 (brace
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-)paren
-(brace
-id|urb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2893,10 +2934,31 @@ comma
 id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
-macro_line|#if 0
 singleline_comment|//FIXME need to update state of terminal lines variable
-macro_line|#endif
-r_return
+m_exit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
 suffix:semicolon
 )brace
 DECL|function|pl2303_read_bulk_callback

@@ -7,7 +7,7 @@ r_int
 r_int
 id|hil_base
 suffix:semicolon
-multiline_comment|/* declared in drivers/gsc/hil.c */
+multiline_comment|/* declared in drivers/parisc/hil.c */
 r_extern
 r_int
 r_int

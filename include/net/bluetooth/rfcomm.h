@@ -1148,5 +1148,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_bt_rfcomm
+suffix:semicolon
 macro_line|#endif /* __RFCOMM_H */
 eof

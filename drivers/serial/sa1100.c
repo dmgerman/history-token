@@ -985,13 +985,11 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 op_amp
 id|sport-&gt;port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 r_if
@@ -2523,8 +2521,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad index number %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad index number %d&bslash;n&quot;
 comma
 id|idx
 )paren
@@ -2682,8 +2681,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: bad port number %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: bad port number %d&bslash;n&quot;
 comma
 id|port
 )paren
@@ -3273,19 +3273,11 @@ id|driver_name
 op_assign
 l_string|&quot;ttySA&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
 l_string|&quot;ttySA%d&quot;
 comma
-macro_line|#else
-dot
-id|dev_name
-op_assign
-l_string|&quot;ttySA&quot;
-comma
-macro_line|#endif
 dot
 id|major
 op_assign

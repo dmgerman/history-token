@@ -216,4 +216,11 @@ c_func
 id|bt_sock_w4_connect
 )paren
 suffix:semicolon
+DECL|variable|proc_bt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|proc_bt
+)paren
+suffix:semicolon
 eof

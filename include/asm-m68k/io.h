@@ -494,57 +494,6 @@ DECL|macro|outw
 mdefine_line|#define outw(val,port) ((port)&lt;1024 ? isa_outw((val),(port)) : out_le16((port),(val)))
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
-multiline_comment|/* Values for nocacheflag and cmode */
-DECL|macro|IOMAP_FULL_CACHING
-mdefine_line|#define IOMAP_FULL_CACHING&t;&t;0
-DECL|macro|IOMAP_NOCACHE_SER
-mdefine_line|#define IOMAP_NOCACHE_SER&t;&t;1
-DECL|macro|IOMAP_NOCACHE_NONSER
-mdefine_line|#define IOMAP_NOCACHE_NONSER&t;&t;2
-DECL|macro|IOMAP_WRITETHROUGH
-mdefine_line|#define IOMAP_WRITETHROUGH&t;&t;3
-r_extern
-r_void
-id|iounmap
-c_func
-(paren
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|__ioremap
-c_func
-(paren
-r_int
-r_int
-id|physaddr
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-id|cacheflag
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__iounmap
-c_func
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
 DECL|function|ioremap
 r_extern
 r_inline

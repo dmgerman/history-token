@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/auto_fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/raid/md_u.h&gt;
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_int
@@ -4544,6 +4545,74 @@ id|RESTART_ARRAY_RW
 )paren
 comma
 macro_line|#endif /* CONFIG_MD */
+macro_line|#if defined(CONFIG_BLK_DEV_DM) || defined(CONFIG_BLK_DEV_DM_MODULE)
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_VERSION
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_REMOVE_ALL
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_CREATE
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_REMOVE
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_RELOAD
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_SUSPEND
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_RENAME
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_DEPS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_STATUS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_TARGET_STATUS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_TARGET_WAIT
+)paren
+comma
+macro_line|#endif /* CONFIG_BLK_DEV_DM */
 id|IOCTL32_DEFAULT
 c_func
 (paren

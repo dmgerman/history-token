@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Real VM (paging to/from disk) started 18.12.91. Much m
 multiline_comment|/*&n; * 05.04.94  -  Multi-page memory management added for v1.1.&n; * &t;&t;Idea by Alex Bligh (alex@cconcepts.co.uk)&n; *&n; * 16.07.99  -  Support of BIGMEM added by Gerhard Wichert, Siemens AG&n; *&t;&t;(Gerhard.Wichert@pdb.siemens.de)&n; */
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
@@ -1753,6 +1754,29 @@ id|pgd_t
 op_star
 id|dir
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|unmap_hugepage_range
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|end
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|BUG_ON
 c_func
 (paren
@@ -1882,6 +1906,29 @@ id|end
 comma
 id|block
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|zap_hugepage_range
+c_func
+(paren
+id|vma
+comma
+id|address
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -2550,6 +2597,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+id|pages
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2632,7 +2688,6 @@ suffix:semicolon
 )brace
 DECL|function|zeromap_pte_range
 r_static
-r_inline
 r_void
 id|zeromap_pte_range
 c_func
@@ -3960,7 +4015,7 @@ comma
 id|page_table
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|new_page
@@ -4493,8 +4548,12 @@ id|new_page
 )paren
 suffix:semicolon
 )brace
-r_return
+id|lru_add_drain
+c_func
+(paren
+)paren
 suffix:semicolon
+multiline_comment|/* Push any new pages onto the LRU now */
 )brace
 multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and&n; * should release the pagetable lock on exit..&n; */
 DECL|function|do_swap_page
@@ -4655,8 +4714,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Had to read the page from swap area: Major fault */
@@ -4740,8 +4799,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|VM_FAULT_MINOR
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* The page isn&squot;t present yet, go ahead with the fault. */
@@ -4861,6 +4924,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon
@@ -5056,7 +5121,7 @@ id|vma-&gt;vm_page_prot
 )paren
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|page
@@ -5294,7 +5359,7 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
-id|lru_cache_add
+id|lru_cache_add_active
 c_func
 (paren
 id|page

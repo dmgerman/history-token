@@ -1,6 +1,9 @@
+multiline_comment|/*&n; *  WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING&n; *  ---------------------------------------------------------------&n; *  This source file will be removed as soon as we have converted&n; *  hp_psaux.c and hp_keyb.c to the input layer !&n; *  &n; */
 multiline_comment|/*&n; *  linux/arch/parisc/kernel/keyboard.c&n; *&n; *  Alex deVries &lt;adevries@thepuffingroup.com&gt;&n; *  Copyright (1999) The Puffin Group&n; *  Mostly rewritten by Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright 2000 Philipp Rumpf&n; */
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|function|def_setkeycode
 r_static
 r_int
@@ -108,6 +111,8 @@ id|def_sysrq_xlate
 id|NR_KEYS
 )braket
 suffix:semicolon
+DECL|macro|DEFAULT_KEYB_OPS
+mdefine_line|#define DEFAULT_KEYB_OPS &bslash;&n;&t;setkeycode:&t;def_setkeycode,&t;&bslash;&n;&t;getkeycode:&t;def_getkeycode, &bslash;&n;&t;translate:&t;def_translate, &bslash;&n;&t;unexpected_up:&t;def_unexpected_up, &bslash;&n;&t;leds:&t;&t;def_leds, &bslash;&n;&t;init_hw:&t;def_init_hw, &bslash;&n;&t;sysrq_key:&t;0xff, &bslash;&n;&t;sysrq_xlate:&t;def_sysrq_xlate,
 DECL|variable|def_kbd_ops
 r_static
 r_struct
@@ -115,38 +120,7 @@ id|kbd_ops
 id|def_kbd_ops
 op_assign
 (brace
-id|setkeycode
-suffix:colon
-id|def_setkeycode
-comma
-id|getkeycode
-suffix:colon
-id|def_getkeycode
-comma
-id|translate
-suffix:colon
-id|def_translate
-comma
-id|unexpected_up
-suffix:colon
-id|def_unexpected_up
-comma
-id|leds
-suffix:colon
-id|def_leds
-comma
-id|init_hw
-suffix:colon
-id|def_init_hw
-comma
-id|sysrq_key
-suffix:colon
-l_int|0xff
-comma
-id|sysrq_xlate
-suffix:colon
-id|def_sysrq_xlate
-comma
+id|DEFAULT_KEYB_OPS
 )brace
 suffix:semicolon
 DECL|variable|kbd_ops
@@ -157,6 +131,37 @@ id|kbd_ops
 op_assign
 op_amp
 id|def_kbd_ops
+suffix:semicolon
+DECL|function|unregister_kbd_ops
+r_void
+id|unregister_kbd_ops
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|kbd_ops
+id|new_kbd_ops
+op_assign
+(brace
+id|DEFAULT_KEYB_OPS
+)brace
+suffix:semicolon
+id|register_kbd_ops
+c_func
+(paren
+op_amp
+id|new_kbd_ops
+)paren
+suffix:semicolon
+)brace
+DECL|variable|unregister_kbd_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_kbd_ops
+)paren
 suffix:semicolon
 DECL|function|register_kbd_ops
 r_void

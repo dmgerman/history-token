@@ -721,7 +721,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pusb_dev_save-&gt;actconfig-&gt;bNumInterfaces
+id|pusb_dev_save-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment

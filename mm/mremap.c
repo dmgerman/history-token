@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;mm/remap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; *&n; *&t;Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *&t;(C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -12,7 +13,6 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|get_one_pte_map_nested
 r_static
-r_inline
 id|pte_t
 op_star
 id|get_one_pte_map_nested
@@ -323,7 +323,6 @@ suffix:semicolon
 )brace
 DECL|function|copy_one_pte
 r_static
-r_inline
 r_int
 id|copy_one_pte
 c_func
@@ -743,7 +742,6 @@ suffix:semicolon
 )brace
 DECL|function|move_vma
 r_static
-r_inline
 r_int
 r_int
 id|move_vma

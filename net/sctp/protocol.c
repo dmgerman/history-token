@@ -907,7 +907,12 @@ r_else
 (brace
 id|dst_mtu
 op_assign
-id|rt-&gt;u.dst.pmtu
+id|dst_pmtu
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func

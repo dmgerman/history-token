@@ -1322,75 +1322,20 @@ id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
+id|urb-&gt;hcpriv
+op_assign
+l_int|0
+suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
 )paren
 suffix:semicolon
-)brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|hcd_data_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|urb-&gt;status
-op_assign
-op_minus
-id|EINPROGRESS
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|HCD_IS_RUNNING
-(paren
-id|hcd-&gt;state
-)paren
-op_logical_and
-id|rh_status_urb
-(paren
-id|hcd
-comma
-id|urb
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-multiline_comment|/* another driver snuck in? */
-id|dbg
-(paren
-l_string|&quot;%s, can&squot;t resubmit roothub status urb?&quot;
-comma
-id|hcd-&gt;self.bus_name
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|hcd_data_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|BUG
-(paren
-)paren
+r_return
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|hcd_data_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_else
-(brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -1399,6 +1344,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* retrigger timer until completion:  success or unlink */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -1422,7 +1368,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -2771,10 +2716,6 @@ id|dev
 op_assign
 id|urb-&gt;dev
 suffix:semicolon
-id|urb-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|usb_put_dev
 (paren
 id|dev
@@ -3200,7 +3141,7 @@ id|urb-&gt;hcpriv
 op_logical_or
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 (brace
 id|retval
@@ -3285,14 +3226,14 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/* maybe set up to block on completion notification */
+multiline_comment|/* maybe set up to block until the urb&squot;s completion fires.  the&n;&t; * lower level hcd code is always async, locking on urb-&gt;status&n;&t; * updates; an intercepted completion unblocks us.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 )paren
 id|urb-&gt;status
@@ -3308,7 +3249,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 )paren
 (brace
@@ -3451,9 +3392,9 @@ op_logical_neg
 id|urb-&gt;transfer_flags
 op_amp
 (paren
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 op_or
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 )paren
 op_logical_and
@@ -3489,7 +3430,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 op_logical_and
 id|retval
@@ -3765,7 +3706,7 @@ id|usb_hcd_operations
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause problems if it frees, modifies,&n; * or resubmits this URB.&n; * Bandwidth and other resources will be deallocated.&n; *&n; * HCDs must not use this for periodic URBs that are still scheduled&n; * and will be reissued.  They should just call their completion handlers&n; * until the urb is returned to the device driver by unlinking.&n; */
+multiline_comment|/**&n; * usb_hcd_giveback_urb - return URB from HCD to device driver&n; * @hcd: host controller returning the URB&n; * @urb: urb being returned to the USB device driver.&n; * Context: in_interrupt()&n; *&n; * This hands the URB from HCD to its USB device driver, using its&n; * completion function.  The HCD has freed all per-urb resources&n; * (and is done using urb-&gt;hcpriv).  It also released all HCD locks;&n; * the device driver won&squot;t cause problems if it frees, modifies,&n; * or resubmits this URB.&n; */
 DECL|function|usb_hcd_giveback_urb
 r_void
 id|usb_hcd_giveback_urb

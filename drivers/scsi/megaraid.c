@@ -38,7 +38,6 @@ multiline_comment|/*&n; * These header files are required for Shutdown Notificat
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -13546,14 +13545,18 @@ DECL|function|megaraid_biosparam
 r_int
 id|megaraid_biosparam
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -13578,7 +13581,7 @@ op_assign
 id|mega_host_config
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -13586,7 +13589,7 @@ c_cond
 id|IS_RAID_CH
 c_func
 (paren
-id|disk-&gt;device-&gt;channel
+id|sdev-&gt;channel
 )paren
 )paren
 (brace
@@ -13605,7 +13608,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -13617,7 +13620,7 @@ multiline_comment|/* Handle extended translation size for logical drives &gt; 1G
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 op_ge
 l_int|0x200000
 )paren
@@ -13636,7 +13639,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -13676,9 +13679,9 @@ c_cond
 id|mega_partsize
 c_func
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|geom
 )paren
@@ -13696,7 +13699,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;megaraid: invalid partition on this disk on channel %d&bslash;n&quot;
 comma
-id|disk-&gt;device-&gt;channel
+id|sdev-&gt;channel
 )paren
 suffix:semicolon
 multiline_comment|/* Default heads (64) &amp; sectors (32) */
@@ -13710,7 +13713,7 @@ l_int|32
 suffix:semicolon
 id|cylinders
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_rshift
 l_int|11
 suffix:semicolon
@@ -13718,7 +13721,7 @@ multiline_comment|/* Handle extended translation size for logical drives &gt; 1G
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 op_ge
 l_int|0x200000
 )paren
@@ -13737,7 +13740,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -13780,14 +13783,13 @@ DECL|function|mega_partsize
 id|mega_partsize
 c_func
 (paren
-id|Disk
-op_star
-id|disk
-comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -13819,7 +13821,7 @@ suffix:semicolon
 r_int
 id|capacity
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 r_char

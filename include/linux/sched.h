@@ -65,6 +65,8 @@ DECL|macro|CLONE_CLEARTID
 mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
 DECL|macro|CLONE_DETACHED
 mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
+DECL|macro|CLONE_UNTRACED
+mdefine_line|#define CLONE_UNTRACED  0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
@@ -359,6 +361,12 @@ op_star
 id|mmap_cache
 suffix:semicolon
 multiline_comment|/* last find_vma result */
+DECL|member|free_area_cache
+r_int
+r_int
+id|free_area_cache
+suffix:semicolon
+multiline_comment|/* first hole */
 DECL|member|pgd
 id|pgd_t
 op_star
@@ -714,19 +722,6 @@ id|mm
 comma
 op_star
 id|active_mm
-suffix:semicolon
-DECL|member|local_pages
-r_struct
-id|list_head
-id|local_pages
-suffix:semicolon
-DECL|member|allocation_order
-DECL|member|nr_local_pages
-r_int
-r_int
-id|allocation_order
-comma
-id|nr_local_pages
 suffix:semicolon
 multiline_comment|/* task state */
 DECL|member|binfmt
@@ -1162,6 +1157,11 @@ id|backing_dev_info
 op_star
 id|backing_dev_info
 suffix:semicolon
+DECL|member|ptrace_message
+r_int
+r_int
+id|ptrace_message
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -1199,24 +1199,22 @@ DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
 DECL|macro|PF_MEMDIE
 mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
-DECL|macro|PF_FREE_PAGES
-mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_FLUSHER
-mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
+mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
 DECL|macro|PF_NOWARN
-mdefine_line|#define PF_NOWARN&t;0x00008000&t;/* debug: don&squot;t warn if alloc fails */
+mdefine_line|#define PF_NOWARN&t;0x00004000&t;/* debug: don&squot;t warn if alloc fails */
 DECL|macro|PF_FREEZE
-mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
+mdefine_line|#define PF_FREEZE&t;0x00008000&t;/* this task should be frozen for suspend */
 DECL|macro|PF_IOTHREAD
-mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
+mdefine_line|#define PF_IOTHREAD&t;0x00010000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
-mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
+mdefine_line|#define PF_FROZEN&t;0x00020000&t;/* frozen for system suspend */
 DECL|macro|PF_SYNC
-mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
+mdefine_line|#define PF_SYNC&t;&t;0x00040000&t;/* performing fsync(), etc */
 DECL|macro|PF_FSTRANS
-mdefine_line|#define PF_FSTRANS&t;0x00100000&t;/* inside a filesystem transaction */
+mdefine_line|#define PF_FSTRANS&t;0x00080000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
-mdefine_line|#define PF_KSWAPD&t;0x00200000&t;/* I am kswapd */
+mdefine_line|#define PF_KSWAPD&t;0x00100000&t;/* I am kswapd */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1226,6 +1224,14 @@ DECL|macro|PT_TRACESYSGOOD
 mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
 DECL|macro|PT_PTRACE_CAP
 mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
+DECL|macro|PT_TRACE_FORK
+mdefine_line|#define PT_TRACE_FORK&t;0x00000010
+DECL|macro|PT_TRACE_VFORK
+mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
+DECL|macro|PT_TRACE_CLONE
+mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
+DECL|macro|PT_TRACE_EXEC
+mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)

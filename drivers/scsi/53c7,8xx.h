@@ -71,7 +71,7 @@ DECL|macro|NCR53c7xx_release
 mdefine_line|#define NCR53c7xx_release NULL
 macro_line|#endif
 DECL|macro|NCR53c7xx
-mdefine_line|#define NCR53c7xx {&t;&t;&t;&t;&t;&bslash;&n;          name:           &quot;NCR53c{7,8}xx (rel 17)&quot;,&t;&bslash;&n;&t;  detect:         NCR53c7xx_detect,&t;&t;&bslash;&n;&t;  queuecommand:   NCR53c7xx_queue_command,&t;&bslash;&n;&t;  abort:          NCR53c7xx_abort,&t;&t;&bslash;&n;&t;  reset:          NCR53c7xx_reset,&t;&t;&bslash;&n;&t;  bios_param:     scsicam_bios_param,&t;&t;&bslash;&n;&t;  can_queue:      24,&t;&t;&t;&t;&bslash;&n;&t;  this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;  sg_tablesize:   127,&t;&t;&t;&t;&bslash;&n;&t;  cmd_per_lun:    3,&t;&t;&t;&t;&bslash;&n;&t;  use_clustering: DISABLE_CLUSTERING} 
+mdefine_line|#define NCR53c7xx {&t;&t;&t;&t;&t;&bslash;&n;          name:           &quot;NCR53c{7,8}xx (rel 17)&quot;,&t;&bslash;&n;&t;  detect:         NCR53c7xx_detect,&t;&t;&bslash;&n;&t;  queuecommand:   NCR53c7xx_queue_command,&t;&bslash;&n;&t;  abort:          NCR53c7xx_abort,&t;&t;&bslash;&n;&t;  reset:          NCR53c7xx_reset,&t;&t;&bslash;&n;&t;  can_queue:      24,&t;&t;&t;&t;&bslash;&n;&t;  this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;  sg_tablesize:   127,&t;&t;&t;&t;&bslash;&n;&t;  cmd_per_lun:    3,&t;&t;&t;&t;&bslash;&n;&t;  use_clustering: DISABLE_CLUSTERING} 
 macro_line|#ifndef HOSTS_C
 multiline_comment|/* Register addresses, ordered numerically */
 multiline_comment|/* SCSI control 0 rw, default = 0xc0 */
@@ -1436,14 +1436,12 @@ r_int
 id|chip
 suffix:semicolon
 multiline_comment|/* set to chip type; 700-66 is&n;&t;&t;&t;&t;&t;   700-66, rest are last three&n;&t;&t;&t;&t;&t;   digits of part number */
-multiline_comment|/*&n;     * PCI bus, device, function, only for NCR53c8x0 chips.&n;     * pci_valid indicates that the PCI configuration information&n;     * is valid, and we can twiddle MAX_LAT, etc. as recommended&n;     * for maximum performance in the NCR documentation.&n;     */
-DECL|member|pci_bus
-DECL|member|pci_device_fn
-r_int
-r_char
-id|pci_bus
-comma
-id|pci_device_fn
+multiline_comment|/*&n;     * PCI device, only for NCR53c8x0 chips.&n;     * pci_valid indicates that the PCI configuration information&n;     * is valid, and we can twiddle MAX_LAT, etc. as recommended&n;     * for maximum performance in the NCR documentation.&n;     */
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 suffix:semicolon
 DECL|member|pci_valid
 r_int

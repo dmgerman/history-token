@@ -11668,7 +11668,7 @@ id|codec
 id|printk
 c_func
 (paren
-l_string|&quot;i810_audio: timed out waiting for codec %d analog ready&quot;
+l_string|&quot;i810_audio: timed out waiting for codec %d analog ready.&bslash;n&quot;
 comma
 id|num_ac97
 )paren

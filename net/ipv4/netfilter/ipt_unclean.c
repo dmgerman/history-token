@@ -2310,6 +2310,29 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* CHECK: Do not use what is unused.&n;&t; * First bit of fragmentation flags should be unused.&n;&t; * May be used by OS fingerprinting tools.&n;&t; * 04 Jun 2002, Maciej Soltysiak, solt@dns.toxicfilms.tv&n;&t; */
+r_if
+c_cond
+(paren
+id|ntohs
+c_func
+(paren
+id|iph-&gt;frag_off
+)paren
+op_rshift
+l_int|15
+)paren
+(brace
+id|limpk
+c_func
+(paren
+l_string|&quot;IP unused bit set&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Per-protocol checks. */
 r_switch
 c_cond

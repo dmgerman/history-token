@@ -159,5 +159,32 @@ op_star
 id|pool
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * A mempool_alloc_t and mempool_free_t that get the memory from&n; * a slab that is passed in through pool_data.&n; */
+r_void
+op_star
+id|mempool_alloc_slab
+c_func
+(paren
+r_int
+id|gfp_mask
+comma
+r_void
+op_star
+id|pool_data
+)paren
+suffix:semicolon
+r_void
+id|mempool_free_slab
+c_func
+(paren
+r_void
+op_star
+id|element
+comma
+r_void
+op_star
+id|pool_data
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_MEMPOOL_H */
 eof

@@ -486,7 +486,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u32
 op_star
 id|metrics
 )paren
@@ -552,7 +552,7 @@ l_int|1
 comma
 r_sizeof
 (paren
-r_int
+id|u32
 )paren
 comma
 id|metrics
@@ -2515,6 +2515,14 @@ id|panic
 c_func
 (paren
 l_string|&quot;rtnetlink_init: cannot initialize rtnetlink&bslash;n&quot;
+)paren
+suffix:semicolon
+id|netlink_set_nonroot
+c_func
+(paren
+id|NETLINK_ROUTE
+comma
+id|NL_NONROOT_RECV
 )paren
 suffix:semicolon
 id|register_netdevice_notifier

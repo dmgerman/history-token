@@ -19,7 +19,6 @@ macro_line|#include  &lt;linux/blk.h&gt;
 macro_line|#include  &lt;linux/sched.h&gt;
 macro_line|#include  &lt;linux/interrupt.h&gt;
 macro_line|#include  &lt;asm/io.h&gt;
-macro_line|#include  &quot;sd.h&quot;
 macro_line|#include  &quot;hosts.h&quot;
 multiline_comment|/* batteries not included :-) */
 multiline_comment|/*&n; * modes in which the driver can operate &n; */
@@ -266,12 +265,15 @@ r_int
 id|imm_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star

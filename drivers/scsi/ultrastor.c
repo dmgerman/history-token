@@ -27,7 +27,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ultrastor.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include&lt;linux/stat.h&gt;
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
@@ -3764,14 +3763,18 @@ r_int
 id|ultrastor_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -3781,7 +3784,7 @@ id|dkinfo
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 r_int

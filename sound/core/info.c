@@ -143,7 +143,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_int
-id|snd_major
+id|major
 suffix:semicolon
 r_extern
 r_struct
@@ -3875,11 +3875,11 @@ r_return
 suffix:semicolon
 id|inode-&gt;i_gid
 op_assign
-id|snd_device_gid
+id|device_gid
 suffix:semicolon
 id|inode-&gt;i_uid
 op_assign
-id|snd_device_uid
+id|device_uid
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
@@ -3978,7 +3978,7 @@ suffix:semicolon
 macro_line|#endif
 r_int
 r_int
-id|major
+id|_major
 op_assign
 id|number
 op_rshift
@@ -4009,11 +4009,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|major
+id|_major
 )paren
-id|major
+id|_major
 op_assign
-id|snd_major
+id|major
 suffix:semicolon
 r_if
 c_cond
@@ -4032,7 +4032,7 @@ suffix:semicolon
 id|mode
 op_and_assign
 (paren
-id|snd_device_mode
+id|device_mode
 op_amp
 (paren
 id|S_IRUGO
@@ -4148,11 +4148,11 @@ suffix:semicolon
 )brace
 id|p-&gt;gid
 op_assign
-id|snd_device_gid
+id|device_gid
 suffix:semicolon
 id|p-&gt;uid
 op_assign
-id|snd_device_uid
+id|device_uid
 suffix:semicolon
 id|p-&gt;data
 op_assign

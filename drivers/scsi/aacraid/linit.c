@@ -19,7 +19,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;aacraid.h&quot;
-macro_line|#include &quot;sd.h&quot;
 DECL|macro|AAC_DRIVERNAME
 mdefine_line|#define AAC_DRIVERNAME&t;&quot;aacraid&quot;
 id|MODULE_AUTHOR
@@ -609,12 +608,15 @@ r_int
 id|aac_biosparm
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star
@@ -1100,13 +1102,15 @@ id|container
 op_increment
 )paren
 (brace
-id|fsa_dev_ptr-&gt;devno
+id|fsa_dev_ptr-&gt;devname
 (braket
 id|container
 )braket
+(braket
+l_int|0
+)braket
 op_assign
-op_minus
-l_int|1
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 id|dprintk
@@ -1597,14 +1601,18 @@ r_int
 id|aac_biosparm
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -1640,7 +1648,7 @@ multiline_comment|/*&n;&t; *&t;Assuming extended translation is enabled - #REVIS
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 op_ge
 l_int|2
 op_star
@@ -1653,7 +1661,7 @@ multiline_comment|/* 1 GB in 512 byte sectors */
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 op_ge
 l_int|4
 op_star
@@ -1697,7 +1705,7 @@ suffix:semicolon
 )brace
 id|param-&gt;cylinders
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|param-&gt;heads
@@ -1879,7 +1887,7 @@ suffix:semicolon
 )brace
 id|param-&gt;cylinders
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|param-&gt;heads

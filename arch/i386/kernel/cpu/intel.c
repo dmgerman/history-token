@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpu.h&quot;
 DECL|variable|__initdata
 r_static
@@ -31,6 +32,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
+multiline_comment|/*&n; * Alignment at which movsl is preferred for bulk memory copies.&n; */
+DECL|variable|movsl_mask
+r_struct
+id|movsl_mask
+id|movsl_mask
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *&t;Early probe support logic for ppro memory erratum #50&n; *&n; *&t;This is called before we do cpu ident work&n; */
 DECL|function|ppro_with_ram_bug
 r_int
@@ -1589,6 +1598,48 @@ c_func
 id|c
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_INTEL_USERCOPY
+multiline_comment|/*&n;&t; * Set up the preferred alignment for movsl bulk memory moves&n;&t; */
+r_switch
+c_cond
+(paren
+id|c-&gt;x86
+)paren
+(brace
+r_case
+l_int|4
+suffix:colon
+multiline_comment|/* 486: untested */
+r_break
+suffix:semicolon
+r_case
+l_int|5
+suffix:colon
+multiline_comment|/* Old Pentia: untested */
+r_break
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+multiline_comment|/* PII/PIII only like movsl with 8-byte alignment */
+id|movsl_mask.mask
+op_assign
+l_int|7
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|15
+suffix:colon
+multiline_comment|/* P4 is OK down to 8-byte alignment */
+id|movsl_mask.mask
+op_assign
+l_int|7
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 DECL|function|intel_size_cache
 r_static

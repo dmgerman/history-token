@@ -226,8 +226,6 @@ DECL|macro|SCSI_OWNER_BH_HANDLER
 mdefine_line|#define SCSI_OWNER_BH_HANDLER     0x104
 DECL|macro|SCSI_OWNER_NOBODY
 mdefine_line|#define SCSI_OWNER_NOBODY         0x105
-DECL|macro|COMMAND_SIZE
-mdefine_line|#define COMMAND_SIZE(opcode) scsi_command_size[((opcode) &gt;&gt; 5) &amp; 7]
 DECL|macro|IDENTIFY_BASE
 mdefine_line|#define IDENTIFY_BASE       0x80
 DECL|macro|IDENTIFY
@@ -468,15 +466,6 @@ r_int
 id|in_scan_scsis
 suffix:semicolon
 r_extern
-r_const
-r_int
-r_char
-id|scsi_command_size
-(braket
-l_int|8
-)braket
-suffix:semicolon
-r_extern
 r_struct
 id|bus_type
 id|scsi_driverfs_bus_type
@@ -619,62 +608,6 @@ id|sgl
 comma
 r_int
 id|index
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in scsi_dma.c&n; */
-r_void
-id|scsi_resize_dma_pool
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|scsi_init_minimal_dma_pool
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-op_star
-id|scsi_malloc
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_int
-id|scsi_free
-c_func
-(paren
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in scsi_merge.c&n; */
-r_extern
-r_void
-id|scsi_initialize_merge_fn
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|SDpnt
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|scsi_init_io
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_lib.c&n; */
@@ -955,6 +888,18 @@ id|scsi_dev_init
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_mlqueue_insert
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */

@@ -131,6 +131,16 @@ DECL|member|s_next_generation
 id|u32
 id|s_next_generation
 suffix:semicolon
+DECL|member|s_dir_count
+r_int
+r_int
+id|s_dir_count
+suffix:semicolon
+DECL|member|s_debts
+id|u8
+op_star
+id|s_debts
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_EXT2_FS_SB */

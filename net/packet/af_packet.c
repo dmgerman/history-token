@@ -24,26 +24,8 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#ifdef CONFIG_NET_DIVERT
-macro_line|#include &lt;linux/divert.h&gt;
-macro_line|#endif /* CONFIG_NET_DIVERT */
 macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/inet_common.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_DLCI
-r_extern
-r_int
-id|dlci_ioctl
-c_func
-(paren
-r_int
-r_int
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|macro|CONFIG_SOCK_PACKET
 mdefine_line|#define CONFIG_SOCK_PACKET&t;1
@@ -5582,76 +5564,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-r_case
-id|SIOCGIFBR
-suffix:colon
-r_case
-id|SIOCSIFBR
-suffix:colon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
-macro_line|#ifdef CONFIG_INET
-macro_line|#ifdef CONFIG_KMOD
-r_if
-c_cond
-(paren
-id|br_ioctl_hook
-op_eq
-l_int|NULL
-)paren
-id|request_module
-c_func
-(paren
-l_string|&quot;bridge&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|br_ioctl_hook
-op_ne
-l_int|NULL
-)paren
-r_return
-id|br_ioctl_hook
-c_func
-(paren
-id|arg
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;&t;&t;&t;
-r_return
-op_minus
-id|ENOPKG
-suffix:semicolon
-r_case
-id|SIOCGIFDIVERT
-suffix:colon
-r_case
-id|SIOCSIFDIVERT
-suffix:colon
-macro_line|#ifdef CONFIG_NET_DIVERT
-r_return
-id|divert_ioctl
-c_func
-(paren
-id|cmd
-comma
-(paren
-r_struct
-id|divert_cf
-op_star
-)paren
-id|arg
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|ENOPKG
-suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 macro_line|#ifdef CONFIG_INET
 r_case
 id|SIOCADDRT
@@ -5694,12 +5606,6 @@ id|SIOCSIFDSTADDR
 suffix:colon
 r_case
 id|SIOCSIFFLAGS
-suffix:colon
-r_case
-id|SIOCADDDLCI
-suffix:colon
-r_case
-id|SIOCDELDLCI
 suffix:colon
 r_return
 id|inet_dgram_ops

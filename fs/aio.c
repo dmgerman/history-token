@@ -2547,6 +2547,7 @@ id|iocb
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave

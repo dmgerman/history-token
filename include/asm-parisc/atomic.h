@@ -6,11 +6,11 @@ macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* Copyright (C) 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;.  */
 multiline_comment|/*&n; * Atomic operations that C can&squot;t guarantee us.  Useful for&n; * resource counting etc..&n; *&n; * And probably incredibly slow on parisc.  OTOH, we don&squot;t&n; * have to write any serious assembly.   prumpf&n; */
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* we have an array of spinlocks for our atomic_ts, and a hash function&n; * to get the right index */
+multiline_comment|/* Use an array of spinlocks for our atomic_ts.&n;** Hash function to index into a different SPINLOCK.&n;** Since &quot;a&quot; is usually an address, &quot;&gt;&gt;8&quot; makes one spinlock per 64-bytes.&n;*/
 DECL|macro|ATOMIC_HASH_SIZE
-macro_line|#  define ATOMIC_HASH_SIZE 1
+macro_line|#  define ATOMIC_HASH_SIZE 4
 DECL|macro|ATOMIC_HASH
-macro_line|#  define ATOMIC_HASH(a) (&amp;__atomic_hash[0])
+macro_line|#  define ATOMIC_HASH(a) (&amp;__atomic_hash[(((unsigned long) a)&gt;&gt;8)&amp;(ATOMIC_HASH_SIZE-1)])
 r_extern
 id|spinlock_t
 id|__atomic_hash
@@ -39,7 +39,7 @@ DECL|macro|SPIN_LOCK_IRQSAVE
 mdefine_line|#define SPIN_LOCK_IRQSAVE(lock, flags)&t;&t;do { local_irq_save(flags);       SPIN_LOCK(lock); } while (0)
 DECL|macro|SPIN_UNLOCK_IRQRESTORE
 mdefine_line|#define SPIN_UNLOCK_IRQRESTORE(lock, flags)&t;do { SPIN_UNLOCK(lock);  local_irq_restore(flags); } while (0)
-multiline_comment|/* Note that we need not lock read accesses - aligned word writes/reads&n; * are atomic, so a reader never sees unconsistent values.&n; *&n; * Cache-line alignment would conflict with, for example, linux/module.h */
+multiline_comment|/* Note that we need not lock read accesses - aligned word writes/reads&n; * are atomic, so a reader never sees unconsistent values.&n; *&n; * Cache-line alignment would conflict with, for example, linux/module.h&n; */
 r_typedef
 r_struct
 (brace
@@ -52,6 +52,336 @@ DECL|typedef|atomic_t
 )brace
 id|atomic_t
 suffix:semicolon
+multiline_comment|/*&n;** xchg/cmpxchg moved from asm/system.h - ggg&n;*/
+macro_line|#if 1
+multiline_comment|/* This should get optimized out since it&squot;s never called.&n;** Or get a link error if xchg is used &quot;wrong&quot;.&n;*/
+r_extern
+r_void
+id|__xchg_called_with_bad_pointer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|__xchg_called_with_bad_pointer
+r_static
+r_inline
+r_void
+id|__xchg_called_with_bad_pointer
+c_func
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_void
+id|panic
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;xchg called with bad pointer&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* __xchg32/64 defined in arch/parisc/lib/bitops.c */
+r_extern
+r_int
+r_int
+id|__xchg8
+c_func
+(paren
+r_char
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__xchg32
+c_func
+(paren
+r_int
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+macro_line|#ifdef __LP64__
+r_extern
+r_int
+r_int
+id|__xchg64
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* optimizer better get rid of switch since size is a constant */
+DECL|function|__xchg
+r_static
+id|__inline__
+r_int
+r_int
+id|__xchg
+c_func
+(paren
+r_int
+r_int
+id|x
+comma
+id|__volatile__
+r_void
+op_star
+id|ptr
+comma
+r_int
+id|size
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+macro_line|#ifdef __LP64__
+r_case
+l_int|8
+suffix:colon
+r_return
+id|__xchg64
+c_func
+(paren
+id|x
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+macro_line|#endif
+r_case
+l_int|4
+suffix:colon
+r_return
+id|__xchg32
+c_func
+(paren
+(paren
+r_int
+)paren
+id|x
+comma
+(paren
+r_int
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+r_return
+id|__xchg8
+c_func
+(paren
+(paren
+r_char
+)paren
+id|x
+comma
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+)brace
+id|__xchg_called_with_bad_pointer
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|x
+suffix:semicolon
+)brace
+multiline_comment|/*&n;** REVISIT - Abandoned use of LDCW in xchg() for now:&n;** o need to test sizeof(*ptr) to avoid clearing adjacent bytes&n;** o and while we are at it, could __LP64__ code use LDCD too?&n;**&n;**&t;if (__builtin_constant_p(x) &amp;&amp; (x == NULL))&n;**&t;&t;if (((unsigned long)p &amp; 0xf) == 0)&n;**&t;&t;&t;return __ldcw(p);&n;*/
+DECL|macro|xchg
+mdefine_line|#define xchg(ptr,x) &bslash;&n;&t;((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
+DECL|macro|__HAVE_ARCH_CMPXCHG
+mdefine_line|#define __HAVE_ARCH_CMPXCHG&t;1
+multiline_comment|/* bug catcher for when unsupported size is used - won&squot;t link */
+r_extern
+r_void
+id|__cmpxchg_called_with_bad_pointer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* __cmpxchg_u32/u64 defined in arch/parisc/lib/bitops.c */
+r_extern
+r_int
+r_int
+id|__cmpxchg_u32
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|m
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+id|new_
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__cmpxchg_u64
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|ptr
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+id|new_
+)paren
+suffix:semicolon
+multiline_comment|/* don&squot;t worry...optimizer will get rid of most of this */
+r_static
+id|__inline__
+r_int
+r_int
+DECL|function|__cmpxchg
+id|__cmpxchg
+c_func
+(paren
+r_volatile
+r_void
+op_star
+id|ptr
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+id|new_
+comma
+r_int
+id|size
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+macro_line|#ifdef __LP64__
+r_case
+l_int|8
+suffix:colon
+r_return
+id|__cmpxchg_u64
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|ptr
+comma
+id|old
+comma
+id|new_
+)paren
+suffix:semicolon
+macro_line|#endif
+r_case
+l_int|4
+suffix:colon
+r_return
+id|__cmpxchg_u32
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|ptr
+comma
+(paren
+r_int
+r_int
+)paren
+id|old
+comma
+(paren
+r_int
+r_int
+)paren
+id|new_
+)paren
+suffix:semicolon
+)brace
+id|__cmpxchg_called_with_bad_pointer
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|old
+suffix:semicolon
+)brace
+DECL|macro|cmpxchg
+mdefine_line|#define cmpxchg(ptr,o,n)&t;&t;&t;&t;&t;&t; &bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _o_ = (o);&t;&t;&t;&t;&t; &bslash;&n;     __typeof__(*(ptr)) _n_ = (n);&t;&t;&t;&t;&t; &bslash;&n;     (__typeof__(*(ptr))) __cmpxchg((ptr), (unsigned long)_o_,&t;&t; &bslash;&n;&t;&t;&t;&t;    (unsigned long)_n_, sizeof(*(ptr))); &bslash;&n;  })
 multiline_comment|/* It&squot;s possible to reduce all atomic operations to either&n; * __atomic_add_return, __atomic_set and __atomic_ret (the latter&n; * is there only for consistency). */
 DECL|function|__atomic_add_return
 r_static
@@ -200,5 +530,13 @@ DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)&t;&t;(__atomic_read(v))
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)&t;{ (i) }
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;smp_mb()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;smp_mb()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;smp_mb()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;smp_mb()
 macro_line|#endif
 eof

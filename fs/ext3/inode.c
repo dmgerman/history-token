@@ -11,12 +11,63 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO
+multiline_comment|/*&n; * Test whether an inode is a fast symlink.&n; */
+DECL|function|ext3_inode_is_fast_symlink
+r_static
+r_inline
+r_int
+id|ext3_inode_is_fast_symlink
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_int
+id|ea_blocks
+op_assign
+id|EXT3_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_file_acl
+ques
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_blocksize
+op_rshift
+l_int|9
+)paren
+suffix:colon
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|S_ISLNK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_and
+id|inode-&gt;i_blocks
+op_minus
+id|ea_blocks
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The ext3 forget function must perform a revoke if we are freeing data&n; * which has been journaled.  Metadata (eg. indirect blocks) must be&n; * revoked in all cases. &n; *&n; * &quot;bh&quot; may be NULL: a metadata block may have been freed from memory&n; * but there may still be a record of it in the journal, and that record&n; * still needs to be revoked.&n; */
 DECL|function|ext3_forget
-r_static
 r_int
 id|ext3_forget
 c_func
@@ -418,14 +469,6 @@ c_func
 (paren
 id|inode
 )paren
-op_logical_or
-id|inode-&gt;i_ino
-op_eq
-id|EXT3_ACL_IDX_INO
-op_logical_or
-id|inode-&gt;i_ino
-op_eq
-id|EXT3_ACL_DATA_INO
 )paren
 r_goto
 id|no_delete
@@ -5119,6 +5162,8 @@ id|rw
 comma
 id|inode
 comma
+id|inode-&gt;i_sb-&gt;s_bdev
+comma
 id|iov
 comma
 id|offset
@@ -6980,6 +7025,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ext3_inode_is_fast_symlink
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|IS_APPEND
 c_func
 (paren
@@ -7585,14 +7641,6 @@ id|EXT3_ROOT_INO
 op_logical_and
 id|inode-&gt;i_ino
 op_ne
-id|EXT3_ACL_IDX_INO
-op_logical_and
-id|inode-&gt;i_ino
-op_ne
-id|EXT3_ACL_DATA_INO
-op_logical_and
-id|inode-&gt;i_ino
-op_ne
 id|EXT3_JOURNAL_INO
 op_logical_and
 id|inode-&gt;i_ino
@@ -7904,6 +7952,16 @@ suffix:semicolon
 r_int
 id|block
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
+id|ei-&gt;i_acl
+op_assign
+id|EXT3_ACL_NOT_CACHED
+suffix:semicolon
+id|ei-&gt;i_default_acl
+op_assign
+id|EXT3_ACL_NOT_CACHED
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7916,11 +7974,9 @@ op_amp
 id|iloc
 )paren
 )paren
-(brace
 r_goto
 id|bad_inode
 suffix:semicolon
-)brace
 id|bh
 op_assign
 id|iloc.bh
@@ -8252,20 +8308,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_ino
-op_eq
-id|EXT3_ACL_IDX_INO
-op_logical_or
-id|inode-&gt;i_ino
-op_eq
-id|EXT3_ACL_DATA_INO
-)paren
-multiline_comment|/* Nothing to do */
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
 id|S_ISREG
 c_func
 (paren
@@ -8340,8 +8382,11 @@ id|inode-&gt;i_mode
 r_if
 c_cond
 (paren
-op_logical_neg
-id|inode-&gt;i_blocks
+id|ext3_inode_is_fast_symlink
+c_func
+(paren
+id|inode
+)paren
 )paren
 id|inode-&gt;i_op
 op_assign
@@ -8353,7 +8398,7 @@ r_else
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|page_symlink_inode_operations
+id|ext3_symlink_inode_operations
 suffix:semicolon
 r_if
 c_cond
@@ -8378,6 +8423,12 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|ext3_special_inode_operations
+suffix:semicolon
 id|init_special_inode
 c_func
 (paren
@@ -8395,6 +8446,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8541,6 +8593,30 @@ r_goto
 id|out_brelse
 suffix:semicolon
 )brace
+multiline_comment|/* For fields not not tracking in the in-memory inode,&n;&t; * initialise them to zero for new inodes. */
+r_if
+c_cond
+(paren
+id|ei-&gt;i_state
+op_amp
+id|EXT3_STATE_NEW
+)paren
+id|memset
+c_func
+(paren
+id|raw_inode
+comma
+l_int|0
+comma
+id|EXT3_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_inode_size
+)paren
+suffix:semicolon
 id|raw_inode-&gt;i_mode
 op_assign
 id|cpu_to_le16
@@ -8749,29 +8825,6 @@ id|raw_inode-&gt;i_fsize
 op_assign
 id|ei-&gt;i_frag_size
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* If we are not tracking these fields in the in-memory inode,&n;&t; * then preserve them on disk, but still initialise them to zero&n;&t; * for new inodes. */
-r_if
-c_cond
-(paren
-id|ei-&gt;i_state
-op_amp
-id|EXT3_STATE_NEW
-)paren
-(brace
-id|raw_inode-&gt;i_faddr
-op_assign
-l_int|0
-suffix:semicolon
-id|raw_inode-&gt;i_frag
-op_assign
-l_int|0
-suffix:semicolon
-id|raw_inode-&gt;i_fsize
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif
 id|raw_inode-&gt;i_file_acl
 op_assign
@@ -9095,7 +9148,7 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ext3_setattr()&n; *&n; * Called from notify_change.&n; *&n; * We want to trap VFS attempts to truncate the file as soon as&n; * possible.  In particular, we want to make sure that when the VFS&n; * shrinks i_size, we put the inode on the orphan list and modify&n; * i_disksize immediately, so that during the subsequent flushing of&n; * dirty pages and freeing of disk blocks, we can guarantee that any&n; * commit will leave the blocks being flushed in an unused state on&n; * disk.  (On recovery, the inode will get truncated and the blocks will&n; * be freed, so we have a strong guarantee that no future commit will&n; * leave these blocks visible to the user.)  &n; *&n; * This is only needed for regular files.  rmdir() has its own path, and&n; * we can never truncate a direcory except on final unlink (at which&n; * point i_nlink is zero so recovery is easy.)&n; *&n; * Called with the BKL.  &n; */
+multiline_comment|/*&n; * ext3_setattr()&n; *&n; * Called from notify_change.&n; *&n; * We want to trap VFS attempts to truncate the file as soon as&n; * possible.  In particular, we want to make sure that when the VFS&n; * shrinks i_size, we put the inode on the orphan list and modify&n; * i_disksize immediately, so that during the subsequent flushing of&n; * dirty pages and freeing of disk blocks, we can guarantee that any&n; * commit will leave the blocks being flushed in an unused state on&n; * disk.  (On recovery, the inode will get truncated and the blocks will&n; * be freed, so we have a strong guarantee that no future commit will&n; * leave these blocks visible to the user.)  &n; *&n; * Called with inode-&gt;sem down.&n; */
 DECL|function|ext3_setattr
 r_int
 id|ext3_setattr
@@ -9208,6 +9261,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISREG
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_and
 id|attr-&gt;ia_valid
 op_amp
 id|ATTR_SIZE
@@ -9323,6 +9382,26 @@ c_func
 (paren
 l_int|NULL
 comma
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+op_logical_and
+(paren
+id|ia_valid
+op_amp
+id|ATTR_MODE
+)paren
+)paren
+id|rc
+op_assign
+id|ext3_acl_chmod
+c_func
+(paren
 id|inode
 )paren
 suffix:semicolon

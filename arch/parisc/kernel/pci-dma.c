@@ -1,17 +1,17 @@
-multiline_comment|/*&n;** Dynamic DMA mapping support.&n;** See Documentation/DMA-mapping.txt for interface definitions.&n;**&n;**      (c) Copyright 1999,2000 Hewlett-Packard Company&n;**      (c) Copyright 2000 Grant Grundler&n;**&t;(c) Copyright 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n;**      (c) Copyright 2000 John Marvin&n;**&n;** This implementation is for PA-RISC platforms that do not support&n;** I/O TLBs (aka DMA address translation hardware).&n;**&n;** &quot;leveraged&quot; from 2.3.47: arch/ia64/kernel/pci-dma.c.&n;** (I assume it&squot;s from David Mosberger-Tang but there was no Copyright)&n;**&n;** AFAIK, all PA7100LC and PA7300LC platforms can use this code.&n;** All PA2.0 machines but V-class can alias xxx_alloc_consistent()&n;** to use regular cacheable memory.&n;**&n;** - ggg&n;*/
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/*&n;** PARISC 1.1 Dynamic DMA mapping support.&n;** This implementation is for PA-RISC platforms that do not support&n;** I/O TLBs (aka DMA address translation hardware).&n;** See Documentation/DMA-mapping.txt for interface definitions.&n;**&n;**      (c) Copyright 1999,2000 Hewlett-Packard Company&n;**      (c) Copyright 2000 Grant Grundler&n;**&t;(c) Copyright 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n;**      (c) Copyright 2000 John Marvin&n;**&n;** &quot;leveraged&quot; from 2.3.47: arch/ia64/kernel/pci-dma.c.&n;** (I assume it&squot;s from David Mosberger-Tang but there was no Copyright)&n;**&n;** AFAIK, all PA7100LC and PA7300LC platforms can use this code.&n;**&n;** - ggg&n;*/
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;    /* for DMA_CHUNK_SIZE */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;/* get_order */
-macro_line|#include &lt;asm/dma.h&gt;    /* for DMA_CHUNK_SIZE */
-macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|proc_gsc_root
 r_static
 r_struct
@@ -393,6 +393,9 @@ op_assign
 id|pte_alloc_kernel
 c_func
 (paren
+op_amp
+id|init_mm
+comma
 id|pmd
 comma
 id|vaddr
@@ -507,9 +510,11 @@ id|pmd
 suffix:semicolon
 id|pmd
 op_assign
-id|pmd_alloc_kernel
+id|pmd_alloc
 c_func
 (paren
+l_int|NULL
+comma
 id|dir
 comma
 id|vaddr
@@ -648,7 +653,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -1491,6 +1496,16 @@ id|pcxl_res_size
 )paren
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|pcxl_res_map
+comma
+l_int|0
+comma
+id|pcxl_res_size
+)paren
+suffix:semicolon
 id|proc_gsc_root
 op_assign
 id|proc_mkdir
@@ -1934,6 +1949,16 @@ id|sglist
 op_increment
 )paren
 (brace
+r_int
+r_int
+id|vaddr
+op_assign
+id|sg_virt_addr
+c_func
+(paren
+id|sglist
+)paren
+suffix:semicolon
 id|sg_dma_address
 c_func
 (paren
@@ -1946,7 +1971,7 @@ id|dma_addr_t
 id|virt_to_phys
 c_func
 (paren
-id|sglist-&gt;address
+id|vaddr
 )paren
 suffix:semicolon
 id|sg_dma_len
@@ -1960,11 +1985,7 @@ suffix:semicolon
 id|flush_kernel_dcache_range
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|sglist-&gt;address
+id|vaddr
 comma
 id|sglist-&gt;length
 )paren
@@ -2042,11 +2063,11 @@ op_increment
 id|flush_kernel_dcache_range
 c_func
 (paren
+id|sg_virt_addr
+c_func
 (paren
-r_int
-r_int
+id|sglist
 )paren
-id|sglist-&gt;address
 comma
 id|sglist-&gt;length
 )paren
@@ -2151,11 +2172,11 @@ op_increment
 id|flush_kernel_dcache_range
 c_func
 (paren
+id|sg_virt_addr
+c_func
 (paren
-r_int
-r_int
+id|sglist
 )paren
-id|sglist-&gt;address
 comma
 id|sglist-&gt;length
 )paren
@@ -2273,12 +2294,6 @@ multiline_comment|/* dma_sync_single */
 id|pa11_dma_sync_sg
 multiline_comment|/* dma_sync_sg */
 )brace
-suffix:semicolon
-DECL|variable|hppa_dma_ops
-r_struct
-id|pci_dma_ops
-op_star
-id|hppa_dma_ops
 suffix:semicolon
 DECL|function|pcxl_proc_info
 r_static

@@ -1,6 +1,7 @@
 macro_line|#ifndef _IPV6_H
 DECL|macro|_IPV6_H
 mdefine_line|#define _IPV6_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* The latest drafts declared increase in minimal mtu up to 1280. */
@@ -339,6 +340,11 @@ DECL|member|pmtudisc
 id|pmtudisc
 suffix:colon
 l_int|2
+comma
+DECL|member|ipv6only
+id|ipv6only
+suffix:colon
+l_int|1
 suffix:semicolon
 DECL|member|ipv6_mc_list
 r_struct
@@ -487,6 +493,17 @@ DECL|macro|inet6_sk
 mdefine_line|#define inet6_sk(__sk) ((struct raw6_sock *)__sk)-&gt;pinet6
 DECL|macro|raw6_sk
 mdefine_line|#define raw6_sk(__sk) (&amp;((struct raw6_sock *)__sk)-&gt;raw6)
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+DECL|macro|__ipv6_only_sock
+mdefine_line|#define __ipv6_only_sock(sk)&t;(inet6_sk(sk)-&gt;ipv6only)
+DECL|macro|ipv6_only_sock
+mdefine_line|#define ipv6_only_sock(sk)&t;((sk)-&gt;family == PF_INET6 &amp;&amp; __ipv6_only_sock(sk))
+macro_line|#else
+DECL|macro|__ipv6_only_sock
+mdefine_line|#define __ipv6_only_sock(sk)&t;0
+DECL|macro|ipv6_only_sock
+mdefine_line|#define ipv6_only_sock(sk)&t;0
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

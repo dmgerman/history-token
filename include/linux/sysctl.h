@@ -1316,6 +1316,16 @@ DECL|enumerator|NET_IPV6_ROUTE
 id|NET_IPV6_ROUTE
 op_assign
 l_int|18
+comma
+DECL|enumerator|NET_IPV6_ICMP
+id|NET_IPV6_ICMP
+op_assign
+l_int|19
+comma
+DECL|enumerator|NET_IPV6_BINDV6ONLY
+id|NET_IPV6_BINDV6ONLY
+op_assign
+l_int|20
 )brace
 suffix:semicolon
 r_enum
@@ -1417,6 +1427,15 @@ DECL|enumerator|NET_IPV6_RTR_SOLICIT_DELAY
 id|NET_IPV6_RTR_SOLICIT_DELAY
 op_assign
 l_int|10
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/net/ipv6/icmp */
+r_enum
+(brace
+DECL|enumerator|NET_IPV6_ICMP_RATELIMIT
+id|NET_IPV6_ICMP_RATELIMIT
+op_assign
+l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/&lt;protocol&gt;/neigh/&lt;dev&gt; */

@@ -376,6 +376,8 @@ DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;(PAGE_OFFSET_RAW)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifndef CONFIG_SUN3
+DECL|macro|WANT_PAGE_VIRTUAL
+mdefine_line|#define WANT_PAGE_VIRTUAL
 macro_line|#ifdef CONFIG_SINGLE_MEMORY_CHUNK
 r_extern
 r_int

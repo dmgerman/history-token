@@ -24,7 +24,7 @@ macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
-macro_line|#include &lt;linux/netfilter.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 DECL|variable|raw_v4_htable
 r_struct
 id|sock
@@ -768,12 +768,7 @@ OL
 l_int|0
 )paren
 (brace
-id|IP_INC_STATS
-c_func
-(paren
-id|IpInDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw drops counter here */
 id|kfree_skb
 c_func
 (paren
@@ -784,12 +779,6 @@ r_return
 id|NET_RX_DROP
 suffix:semicolon
 )brace
-id|IP_INC_STATS
-c_func
-(paren
-id|IpInDelivers
-)paren
-suffix:semicolon
 r_return
 id|NET_RX_SUCCESS
 suffix:semicolon
@@ -1560,6 +1549,11 @@ id|fl
 op_assign
 (brace
 dot
+id|oif
+op_assign
+id|ipc.oif
+comma
+dot
 id|nl_u
 op_assign
 (brace
@@ -1585,9 +1579,9 @@ id|tos
 )brace
 comma
 dot
-id|oif
+id|proto
 op_assign
-id|ipc.oif
+id|IPPROTO_RAW
 )brace
 suffix:semicolon
 id|err

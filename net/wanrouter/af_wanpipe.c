@@ -6540,12 +6540,6 @@ suffix:colon
 r_case
 id|SIOCSIFFLAGS
 suffix:colon
-r_case
-id|SIOCADDDLCI
-suffix:colon
-r_case
-id|SIOCDELDLCI
-suffix:colon
 r_return
 id|inet_dgram_ops
 dot

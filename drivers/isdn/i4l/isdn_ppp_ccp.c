@@ -1,8 +1,114 @@
+multiline_comment|/* Linux ISDN subsystem, PPP CCP support&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;isdn_ppp_ccp.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
-macro_line|#include &quot;isdn_net.h&quot;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#include &lt;linux/ppp-comp.h&gt;
+multiline_comment|/* ====================================================================== */
+DECL|enum|ippp_ccp_reset_states
+r_enum
+id|ippp_ccp_reset_states
+(brace
+DECL|enumerator|CCPResetIdle
+id|CCPResetIdle
+comma
+DECL|enumerator|CCPResetSentReq
+id|CCPResetSentReq
+comma
+DECL|enumerator|CCPResetRcvdReq
+id|CCPResetRcvdReq
+comma
+DECL|enumerator|CCPResetSentAck
+id|CCPResetSentAck
+comma
+DECL|enumerator|CCPResetRcvdAck
+id|CCPResetRcvdAck
+)brace
+suffix:semicolon
+DECL|struct|ippp_ccp_reset_state
+r_struct
+id|ippp_ccp_reset_state
+(brace
+DECL|member|state
+r_enum
+id|ippp_ccp_reset_states
+id|state
+suffix:semicolon
+multiline_comment|/* State of this transaction */
+DECL|member|ccp
+r_struct
+id|ippp_ccp
+op_star
+id|ccp
+suffix:semicolon
+multiline_comment|/* Backlink */
+DECL|member|id
+r_int
+r_char
+id|id
+suffix:semicolon
+multiline_comment|/* id index */
+DECL|member|ta
+r_int
+r_char
+id|ta
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The timer is active (flag) */
+DECL|member|expra
+r_int
+r_char
+id|expra
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* We expect a ResetAck at all */
+DECL|member|dlen
+r_int
+id|dlen
+suffix:semicolon
+multiline_comment|/* Databytes stored in data */
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+multiline_comment|/* For timeouts/retries */
+multiline_comment|/* This is a hack but seems sufficient for the moment. We do not want&n;&t;   to have this be yet another allocation for some bytes, it is more&n;&t;   memory management overhead than the whole mess is worth. */
+DECL|member|data
+r_int
+r_char
+id|data
+(braket
+id|IPPP_RESET_MAXDATABYTES
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The data structure keeping track of the currently outstanding CCP Reset&n;   transactions. */
+DECL|struct|ippp_ccp_reset
+r_struct
+id|ippp_ccp_reset
+(brace
+DECL|member|rs
+r_struct
+id|ippp_ccp_reset_state
+op_star
+id|rs
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* One per possible id */
+DECL|member|lastid
+r_int
+r_char
+id|lastid
+suffix:semicolon
+multiline_comment|/* Last id allocated */
+)brace
+suffix:semicolon
 multiline_comment|/* In-kernel handling of CCP Reset-Request and Reset-Ack is necessary,&n;   but absolutely nontrivial. The most abstruse problem we are facing is&n;   that the generation, reception and all the handling of timeouts and&n;   resends including proper request id management should be entirely left&n;   to the (de)compressor, but indeed is not covered by the current API to&n;   the (de)compressor. The API is a prototype version from PPP where only&n;   some (de)compressors have yet been implemented and all of them are&n;   rather simple in their reset handling. Especially, their is only one&n;   outstanding ResetAck at a time with all of them and ResetReq/-Acks do&n;   not have parameters. For this very special case it was sufficient to&n;   just return an error code from the decompressor and have a single&n;   reset() entry to communicate all the necessary information between&n;   the framework and the (de)compressor. Bad enough, LZS is different&n;   (and any other compressor may be different, too). It has multiple&n;   histories (eventually) and needs to Reset each of them independently&n;   and thus uses multiple outstanding Acks and history numbers as an&n;   additional parameter to Reqs/Acks.&n;   All that makes it harder to port the reset state engine into the&n;   kernel because it is not just the same simple one as in (i)pppd but&n;   it must be able to pass additional parameters and have multiple out-&n;   standing Acks. We are trying to achieve the impossible by handling&n;   reset transactions independent by their id. The id MUST change when&n;   the data portion changes, thus any (de)compressor who uses more than&n;   one resettable state must provide and recognize individual ids for&n;   each individual reset transaction. The framework itself does _only_&n;   differentiate them by id, because it has no other semantics like the&n;   (de)compressor might.&n;   This looks like a major redesign of the interface would be nice,&n;   but I don&squot;t have an idea how to do it better. */
 multiline_comment|/* ====================================================================== */
 multiline_comment|/* Free a given state and clear everything up for later reallocation */
@@ -133,18 +239,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|ccp
-op_member_access_from_pointer
-id|push_header
-c_func
-(paren
-id|ccp-&gt;priv
-comma
-id|skb
-comma
-id|proto
-)paren
-suffix:semicolon
 id|p
 op_assign
 id|skb_put
@@ -232,6 +326,8 @@ c_func
 id|ccp-&gt;priv
 comma
 id|skb
+comma
+id|proto
 )paren
 suffix:semicolon
 )brace
@@ -935,7 +1031,7 @@ id|sk_buff
 op_star
 id|skb_in
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren
@@ -971,7 +1067,7 @@ c_cond
 (paren
 op_star
 id|proto
-template_param
+OG
 l_int|0x3fff
 )paren
 (brace
@@ -1137,7 +1233,7 @@ id|sk_buff
 op_star
 id|skb_in
 comma
-r_int
+id|u16
 op_star
 id|proto
 )paren
@@ -1386,22 +1482,16 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-op_star
-id|proto
-op_assign
+r_if
+c_cond
+(paren
 id|isdn_ppp_strip_proto
 c_func
 (paren
 id|skb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
+comma
 id|proto
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|kfree_skb

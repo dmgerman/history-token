@@ -1062,9 +1062,9 @@ mdefine_line|#define TASK_SIZE (test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;T
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE_USER32
-mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (STACK_TOP_USER32 / 4)
+mdefine_line|#define TASK_UNMAPPED_BASE_USER32 (PAGE_ALIGN(STACK_TOP_USER32 / 4))
 DECL|macro|TASK_UNMAPPED_BASE_USER64
-mdefine_line|#define TASK_UNMAPPED_BASE_USER64 (STACK_TOP_USER64 / 4)
+mdefine_line|#define TASK_UNMAPPED_BASE_USER64 (PAGE_ALIGN(STACK_TOP_USER64 / 4))
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE ((test_thread_flag(TIF_32BIT)||(ppcdebugset(PPCDBG_BINFMT_32ADDR))) ? &bslash;&n;&t;&t;TASK_UNMAPPED_BASE_USER32 : TASK_UNMAPPED_BASE_USER64 )
 r_typedef

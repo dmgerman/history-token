@@ -594,7 +594,7 @@ id|dev-&gt;ctrl_urb-&gt;transfer_buffer_length
 op_assign
 id|size
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|dev-&gt;ctrl_urb
@@ -1758,7 +1758,7 @@ id|skb
 suffix:semicolon
 id|goon
 suffix:colon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -1935,7 +1935,7 @@ id|dev-&gt;rx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -2097,6 +2097,9 @@ id|rtl8150_t
 op_star
 id|dev
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|dev
 op_assign
 id|urb-&gt;context
@@ -2118,14 +2121,25 @@ id|urb-&gt;status
 r_case
 l_int|0
 suffix:colon
+multiline_comment|/* success */
 r_break
 suffix:semicolon
 r_case
 op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
 id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
 suffix:colon
 r_return
 suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
 r_default
 suffix:colon
 id|info
@@ -2138,7 +2152,38 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
+r_goto
+id|resubmit
+suffix:semicolon
 )brace
+multiline_comment|/* FIXME if this doesn&squot;t do anything, don&squot;t submit the urb! */
+id|resubmit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s/input0, status %d&quot;
+comma
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
+comma
+id|dev-&gt;udev-&gt;devpath
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;**&n;**&t;network related part of the code&n;**&n;*/
 DECL|function|fill_skb_pool
@@ -2581,7 +2626,7 @@ id|netdev-&gt;name
 suffix:semicolon
 id|dev-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -2770,7 +2815,7 @@ id|dev-&gt;tx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;tx_urb
@@ -2914,7 +2959,7 @@ op_amp
 id|dev-&gt;sem
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
@@ -2963,7 +3008,7 @@ comma
 id|res
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|dev-&gt;intr_urb
@@ -3754,7 +3799,7 @@ id|udev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 )paren
 (brace

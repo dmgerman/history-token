@@ -460,6 +460,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -509,7 +512,8 @@ l_int|10
 op_logical_or
 id|hub-&gt;error
 )paren
-r_return
+r_goto
+id|resubmit
 suffix:semicolon
 id|hub-&gt;error
 op_assign
@@ -574,6 +578,35 @@ op_amp
 id|hub_event_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|resubmit
+suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|hub-&gt;urb
+comma
+id|GFP_ATOMIC
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+id|err
+(paren
+l_string|&quot;hub &squot;%s-%s&squot; status %d for interrupt resubmit&quot;
+comma
+id|urb-&gt;dev-&gt;bus-&gt;bus_name
+comma
+id|urb-&gt;dev-&gt;devpath
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -1696,7 +1729,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|hub-&gt;urb
@@ -1951,7 +1984,7 @@ id|id
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|desc
 suffix:semicolon
@@ -1994,13 +2027,13 @@ r_if
 c_cond
 (paren
 (paren
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|0
 )paren
 op_logical_and
 (paren
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|1
 )paren
@@ -2011,7 +2044,7 @@ c_func
 (paren
 l_string|&quot;invalid subclass (%d) for USB hub device #%d&quot;
 comma
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 comma
 id|dev-&gt;devnum
 )paren
@@ -2025,7 +2058,7 @@ multiline_comment|/* Multiple endpoints? What kind of mutant ninja-hub is this? 
 r_if
 c_cond
 (paren
-id|desc-&gt;bNumEndpoints
+id|desc-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
@@ -2035,7 +2068,7 @@ c_func
 (paren
 l_string|&quot;invalid bNumEndpoints (%d) for USB hub device #%d&quot;
 comma
-id|desc-&gt;bNumEndpoints
+id|desc-&gt;desc.bNumEndpoints
 comma
 id|dev-&gt;devnum
 )paren
@@ -2052,6 +2085,8 @@ id|desc-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 multiline_comment|/* Output endpoint? Curiousier and curiousier.. */
 r_if
@@ -5055,7 +5090,7 @@ c_func
 (paren
 id|dev
 comma
-id|dev-&gt;actconfig-&gt;bConfigurationValue
+id|dev-&gt;actconfig-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_if
@@ -5089,7 +5124,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -5118,6 +5153,8 @@ id|intf-&gt;altsetting
 (braket
 id|intf-&gt;act_altsetting
 )braket
+dot
+id|desc
 suffix:semicolon
 id|ret
 op_assign

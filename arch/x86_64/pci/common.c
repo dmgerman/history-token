@@ -20,7 +20,7 @@ DECL|variable|pcibios_last_bus
 r_int
 id|pcibios_last_bus
 op_assign
-l_int|0xfe
+l_int|0xff
 suffix:semicolon
 multiline_comment|/* XXX */
 DECL|variable|pci_root_bus

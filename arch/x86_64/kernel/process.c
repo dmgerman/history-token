@@ -64,6 +64,8 @@ r_int
 id|kernel_thread_flags
 op_assign
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 suffix:semicolon
 DECL|variable|hlt_counter
 r_int

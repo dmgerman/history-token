@@ -4630,6 +4630,11 @@ id|err_iounmap
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get IO, memory, and IRQ resources for new devices&n;&t; */
+singleline_comment|// The next line is required for cpqhp_find_available_resources
+id|ctrl-&gt;interrupt
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
 id|rc
 op_assign
 id|cpqhp_find_available_resources
@@ -4747,10 +4752,6 @@ id|INT_MASK
 )paren
 suffix:semicolon
 multiline_comment|/* set up the interrupt */
-id|ctrl-&gt;interrupt
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
 id|dbg
 c_func
 (paren

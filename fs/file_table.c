@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/eventpoll.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct
@@ -444,6 +445,12 @@ op_star
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+id|ep_notify_file_close
+c_func
+(paren
+id|file
+)paren
 suffix:semicolon
 id|locks_remove_flock
 c_func

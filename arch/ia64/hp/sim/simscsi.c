@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;../drivers/scsi/scsi.h&quot;
-macro_line|#include &quot;../drivers/scsi/sd.h&quot;
 macro_line|#include &quot;../drivers/scsi/hosts.h&quot;
 macro_line|#include &quot;simscsi.h&quot;
 DECL|macro|DEBUG_SIMSCSI
@@ -411,57 +410,21 @@ l_string|&quot;simulated SCSI host adapter&quot;
 suffix:semicolon
 )brace
 r_int
-DECL|function|simscsi_abort
-id|simscsi_abort
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;simscsi_abort: unimplemented&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|SCSI_ABORT_SUCCESS
-suffix:semicolon
-)brace
-r_int
-DECL|function|simscsi_reset
-id|simscsi_reset
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_int
-r_int
-id|reset_flags
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;simscsi_reset: unimplemented&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|SCSI_RESET_SUCCESS
-suffix:semicolon
-)brace
-r_int
 DECL|function|simscsi_biosparam
 id|simscsi_biosparam
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|n
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -469,11 +432,6 @@ id|ip
 )braket
 )paren
 (brace
-r_int
-id|size
-op_assign
-id|disk-&gt;capacity
-suffix:semicolon
 id|ip
 (braket
 l_int|0
@@ -495,7 +453,7 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|size
+id|capacity
 op_rshift
 l_int|11
 suffix:semicolon
@@ -1644,11 +1602,20 @@ suffix:semicolon
 r_case
 id|MODE_SENSE
 suffix:colon
-id|printk
+multiline_comment|/* sd.c uses this to determine whether disk does write-caching. */
+id|memset
 c_func
 (paren
-l_string|&quot;MODE_SENSE&bslash;n&quot;
+id|sc-&gt;request_buffer
+comma
+l_int|0
+comma
+l_int|128
 )paren
+suffix:semicolon
+id|sc-&gt;result
+op_assign
+id|GOOD
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1771,7 +1738,5 @@ id|driver_template
 op_assign
 id|SIMSCSI
 suffix:semicolon
-DECL|macro|__initcall
-mdefine_line|#define __initcall(fn)&t;late_initcall(fn)
 macro_line|#include &quot;../drivers/scsi/scsi_module.c&quot;
 eof

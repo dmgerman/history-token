@@ -12,21 +12,25 @@ id|ipc64_perm
 id|sem_perm
 suffix:semicolon
 multiline_comment|/* permissions .. see ipc.h */
+macro_line|#ifndef __LP64__
 DECL|member|__pad1
 r_int
 r_int
 id|__pad1
 suffix:semicolon
+macro_line|#endif
 DECL|member|sem_otime
 id|__kernel_time_t
 id|sem_otime
 suffix:semicolon
 multiline_comment|/* last semop time */
+macro_line|#ifndef __LP64__
 DECL|member|__pad2
 r_int
 r_int
 id|__pad2
 suffix:semicolon
+macro_line|#endif
 DECL|member|sem_ctime
 id|__kernel_time_t
 id|sem_ctime

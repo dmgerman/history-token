@@ -417,7 +417,7 @@ l_string|&quot;Done.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* SHUTUP_SONIC */
-multiline_comment|/* &n;&t; * Now register the handlers for the the master IRQ handlers&n;&t; * at levels 1-7. Most of the work is done elsewhere.&n;&t; */
+multiline_comment|/* &n;&t; * Now register the handlers for the master IRQ handlers&n;&t; * at levels 1-7. Most of the work is done elsewhere.&n;&t; */
 r_if
 c_cond
 (paren
@@ -771,10 +771,13 @@ r_int
 r_int
 id|cpu_flags
 suffix:semicolon
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 l_int|0
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket
@@ -1882,10 +1885,13 @@ id|base
 comma
 id|i
 comma
-id|kstat.irqs
-(braket
+id|kstat_cpu
+c_func
+(paren
 l_int|0
-)braket
+)paren
+dot
+id|irqs
 (braket
 id|i
 )braket

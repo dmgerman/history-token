@@ -19,47 +19,30 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/offset.h&gt;
+macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-DECL|variable|semaphore_wake_lock
-id|spinlock_t
-id|semaphore_wake_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-macro_line|#ifdef __LP64__
-multiline_comment|/* The 64-bit code should work equally well in 32-bit land but I didn&squot;t&n; * want to take the time to confirm that.  -PB&n; */
-r_extern
-r_int
-r_int
-id|ret_from_kernel_thread
-suffix:semicolon
-macro_line|#else
-id|asmlinkage
-r_void
-id|ret_from_kernel_thread
-c_func
-(paren
-r_void
-)paren
-id|__asm__
-c_func
-(paren
-l_string|&quot;ret_from_kernel_thread&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#include &lt;asm/pdc_chassis.h&gt;
 DECL|variable|hlt_counter
 r_int
 id|hlt_counter
-op_assign
-l_int|0
+suffix:semicolon
+multiline_comment|/*&n; * Power off function, if any&n; */
+DECL|variable|pm_power_off
+r_void
+(paren
+op_star
+id|pm_power_off
+)paren
+(paren
+r_void
+)paren
 suffix:semicolon
 DECL|function|disable_hlt
 r_void
@@ -85,6 +68,20 @@ id|hlt_counter
 op_decrement
 suffix:semicolon
 )brace
+DECL|function|default_idle
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The idle thread. There&squot;s no useful work to be&n; * done, so just try to conserve power and have a&n; * low exit latency (ie sit in a loop waiting for&n; * somebody to say that they&squot;d like to reschedule)&n; */
 DECL|function|cpu_idle
 r_void
@@ -95,15 +92,6 @@ r_void
 )paren
 (brace
 multiline_comment|/* endless idle loop with no priority at all */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -136,28 +124,16 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|reboot_setup
-r_void
-id|__init
-id|reboot_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-)brace
-DECL|variable|mach_notifier
-r_struct
-id|notifier_block
-op_star
-id|mach_notifier
-suffix:semicolon
+macro_line|#ifdef __LP64__
+DECL|macro|COMMAND_GLOBAL
+mdefine_line|#define COMMAND_GLOBAL  0xfffffffffffe0030UL
+macro_line|#else
+DECL|macro|COMMAND_GLOBAL
+mdefine_line|#define COMMAND_GLOBAL  0xfffe0030
+macro_line|#endif
+DECL|macro|CMD_RESET
+mdefine_line|#define CMD_RESET       5       /* reset any module */
+multiline_comment|/*&n;** The Wright Brothers and Gecko systems have a H/W problem&n;** (Lasi...&squot;nuf said) may cause a broadcast reset to lockup&n;** the system. An HVERSION dependent PDC call was developed&n;** to perform a &quot;safe&quot;, platform specific broadcast reset instead&n;** of kludging up all the code.&n;**&n;** Older machines which do not implement PDC_BROADCAST_RESET will&n;** return (with an error) and the regular broadcast reset can be&n;** issued. Obviously, if the PDC does implement PDC_BROADCAST_RESET&n;** the PDC call will not return (the system will be reset).&n;*/
 DECL|function|machine_restart
 r_void
 id|machine_restart
@@ -165,18 +141,52 @@ c_func
 (paren
 r_char
 op_star
-id|ptr
+id|cmd
 )paren
 (brace
-id|notifier_call_chain
+macro_line|#ifdef FASTBOOT_SELFTEST_SUPPORT
+multiline_comment|/*&n;&t; ** If user has modified the Firmware Selftest Bitmap,&n;&t; ** run the tests specified in the bitmap after the&n;&t; ** system is rebooted w/PDC_DO_RESET.&n;&t; **&n;&t; ** ftc_bitmap = 0x1AUL &quot;Skip destructive memory tests&quot;&n;&t; **&n;&t; ** Using &quot;directed resets&quot; at each processor with the MEM_TOC&n;&t; ** vector cleared will also avoid running destructive&n;&t; ** memory self tests. (Not implemented yet)&n;&t; */
+r_if
+c_cond
+(paren
+id|ftc_bitmap
+)paren
+(brace
+id|pdc_do_firm_test_reset
 c_func
 (paren
-op_amp
-id|mach_notifier
+id|ftc_bitmap
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* set up a new led state on systems shipped with a LED State panel */
+id|pdc_chassis_send_status
+c_func
+(paren
+id|PDC_CHASSIS_DIRECT_SHUTDOWN
+)paren
+suffix:semicolon
+multiline_comment|/* &quot;Normal&quot; system reset */
+id|pdc_do_reset
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Nope...box should reset with just CMD_RESET now */
+id|gsc_writel
+c_func
+(paren
+id|CMD_RESET
 comma
-id|MACH_RESTART
-comma
-id|ptr
+id|COMMAND_GLOBAL
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for RESET to lay us to rest. */
+r_while
+c_loop
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -188,38 +198,9 @@ c_func
 r_void
 )paren
 (brace
-id|notifier_call_chain
-c_func
-(paren
-op_amp
-id|mach_notifier
-comma
-id|MACH_HALT
-comma
-l_int|NULL
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;** The LED/ChassisCodes are updated by the led_halt()&n;&t;** function, called by the reboot notifier chain.&n;&t;*/
 )brace
-DECL|function|machine_power_on
-r_void
-id|machine_power_on
-c_func
-(paren
-r_void
-)paren
-(brace
-id|notifier_call_chain
-c_func
-(paren
-op_amp
-id|mach_notifier
-comma
-id|MACH_POWER_ON
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * This routine is called from sys_reboot to actually turn off the&n; * machine &n; */
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -228,26 +209,42 @@ c_func
 r_void
 )paren
 (brace
-id|notifier_call_chain
+multiline_comment|/* If there is a registered power off handler, call it. */
+r_if
+c_cond
+(paren
+id|pm_power_off
+)paren
+(brace
+id|pm_power_off
 c_func
 (paren
-op_amp
-id|mach_notifier
-comma
-id|MACH_POWER_OFF
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|machine_heartbeat
-r_void
-id|machine_heartbeat
+multiline_comment|/* Put the soft power button back under hardware control.&n;&t; * If the user had already pressed the power button, the&n;&t; * following call will immediately power off. */
+id|pdc_soft_power_button
 c_func
 (paren
-r_void
+l_int|0
 )paren
-(brace
+suffix:semicolon
+id|pdc_chassis_send_status
+c_func
+(paren
+id|PDC_CHASSIS_DIRECT_SHUTDOWN
+)paren
+suffix:semicolon
+multiline_comment|/* It seems we have no way to power the system off via&n;&t; * software. The user has to press the button himself. */
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;System shut down completed.&bslash;n&quot;
+id|KERN_EMERG
+l_string|&quot;Please power this system off now.&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a kernel thread&n; */
 r_extern
@@ -329,6 +326,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* Only needs to handle fpu stuff or perf monitors.&n;&t;** REVISIT: several arches implement a &quot;lazy fpu state&quot;.&n;&t;*/
 id|set_fs
 c_func
 (paren
@@ -404,6 +402,19 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+r_int
+op_star
+id|user_tid
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|regs-&gt;gr
+(braket
+l_int|26
+)braket
+suffix:semicolon
 id|p
 op_assign
 id|do_fork
@@ -419,6 +430,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+id|user_tid
 )paren
 suffix:semicolon
 r_return
@@ -473,6 +486,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -534,8 +549,31 @@ op_amp
 id|p-&gt;thread.regs
 )paren
 suffix:semicolon
-r_int
-id|ksp
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|p-&gt;thread_info
+suffix:semicolon
+multiline_comment|/* We have to use void * instead of a function pointer, because&n;&t; * function pointers aren&squot;t a pointer to the function on 64-bit.&n;&t; * Make them const so the compiler knows they live in .text */
+r_extern
+r_void
+op_star
+r_const
+id|ret_from_kernel_thread
+suffix:semicolon
+r_extern
+r_void
+op_star
+r_const
+id|child_return
+suffix:semicolon
+r_extern
+r_void
+op_star
+r_const
+id|hpux_child_return
 suffix:semicolon
 op_star
 id|cregs
@@ -561,8 +599,8 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* Kernel Thread */
-id|ksp
+multiline_comment|/* kernel thread */
+id|cregs-&gt;ksp
 op_assign
 (paren
 (paren
@@ -571,19 +609,14 @@ r_int
 r_int
 )paren
 (paren
-id|p
+id|ti
 )paren
 )paren
 op_plus
-id|TASK_SZ_ALGN
+id|THREAD_SZ_ALGN
 )paren
 suffix:semicolon
-id|cregs-&gt;ksp
-op_assign
-id|ksp
-suffix:semicolon
-multiline_comment|/* always return to kernel */
-macro_line|#ifdef __LP64__
+multiline_comment|/* Must exit via ret_from_kernel_thread in order&n;&t;&t; * to call schedule_tail()&n;&t;&t; */
 id|cregs-&gt;kpc
 op_assign
 (paren
@@ -593,17 +626,19 @@ r_int
 op_amp
 id|ret_from_kernel_thread
 suffix:semicolon
-macro_line|#else
-id|cregs-&gt;kpc
+multiline_comment|/*&n;&t;&t; * Copy function and argument to be called from&n;&t;&t; * ret_from_kernel_thread.&n;&t;&t; */
+macro_line|#ifdef __LP64__
+id|cregs-&gt;gr
+(braket
+l_int|27
+)braket
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|ret_from_kernel_thread
+id|pregs-&gt;gr
+(braket
+l_int|27
+)braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; * Copy function and argument to be called from&n;&t;&t; * ret_from_kernel_thread.&n;&t;&t; */
 id|cregs-&gt;gr
 (braket
 l_int|26
@@ -627,7 +662,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* User Thread:&n;&t;&t; *&n;&t;&t; * Use same stack depth as parent when in wrapper&n;&t;&t; *&n;&t;&t; * Note that the fork wrappers are responsible&n;&t;&t; * for setting gr[20] and gr[21].&n;&t;&t; */
+multiline_comment|/* user thread */
+multiline_comment|/*&n;&t;&t; * Note that the fork wrappers are responsible&n;&t;&t; * for setting gr[21].&n;&t;&t; */
+multiline_comment|/* Use same stack depth as parent */
 id|cregs-&gt;ksp
 op_assign
 (paren
@@ -636,30 +673,60 @@ r_int
 r_int
 )paren
 (paren
-id|p
+id|ti
 )paren
 )paren
 op_plus
 (paren
 id|pregs-&gt;gr
 (braket
-l_int|20
+l_int|21
 )braket
 op_amp
 (paren
-id|INIT_TASK_SIZE
+id|INIT_THREAD_SIZE
 op_minus
 l_int|1
 )paren
 )paren
 suffix:semicolon
+id|cregs-&gt;gr
+(braket
+l_int|30
+)braket
+op_assign
+id|usp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;personality
+op_eq
+id|PER_HPUX
+)paren
+(brace
 id|cregs-&gt;kpc
 op_assign
-id|pregs-&gt;gr
-(braket
-l_int|21
-)braket
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|hpux_child_return
 suffix:semicolon
+)brace
+r_else
+(brace
+id|cregs-&gt;kpc
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|child_return
+suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0

@@ -1609,7 +1609,7 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/* set up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;write_urb
@@ -1905,6 +1905,9 @@ id|data
 op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1915,17 +1918,35 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-multiline_comment|/* The urb might have been killed. */
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+l_string|&quot;%s - urb shutting down with status: %d&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1933,6 +1954,21 @@ id|urb-&gt;status
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
 suffix:semicolon
 )brace
 r_if
@@ -2022,8 +2058,8 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* INT urbs are automatically re-submitted */
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The interrupt-in pipe signals exceptional conditions (modem line&n;&t; * signal changes and errors). data[0] holds MSR, data[1] holds LSR.&n;&t; */
@@ -2109,7 +2145,31 @@ id|MCT_U232_LSR_BI
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/* INT urbs are automatically re-submitted */
+m_exit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* mct_u232_read_int_callback */
 DECL|function|mct_u232_set_termios

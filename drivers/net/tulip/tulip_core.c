@@ -1,5 +1,5 @@
 multiline_comment|/* tulip_core.c: A DEC 21x4x-family ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
 DECL|macro|DRV_VERSION
@@ -827,6 +827,22 @@ comma
 l_int|0x104A
 comma
 l_int|0x2774
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+(brace
+l_int|0x1259
+comma
+l_int|0xa120
 comma
 id|PCI_ANY_ID
 comma
@@ -7639,10 +7655,6 @@ id|dev-&gt;base_addr
 op_assign
 id|ioaddr
 suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
 macro_line|#ifdef CONFIG_TULIP_MWI
 r_if
 c_cond
@@ -8470,6 +8482,10 @@ id|i
 )braket
 suffix:semicolon
 id|last_irq
+op_assign
+id|irq
+suffix:semicolon
+id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon

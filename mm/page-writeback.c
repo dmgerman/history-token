@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
@@ -399,18 +400,15 @@ id|mapping
 )paren
 (brace
 r_static
-r_struct
-id|rate_limit_struct
-(brace
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
-id|count
-suffix:semicolon
-)brace
-id|____cacheline_aligned_in_smp
+comma
 id|ratelimits
-(braket
-id|NR_CPUS
-)braket
+)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|cpu
@@ -441,23 +439,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|per_cpu
+c_func
+(paren
 id|ratelimits
-(braket
+comma
 id|cpu
-)braket
-dot
-id|count
+)paren
 op_increment
 op_ge
 id|ratelimit
 )paren
 (brace
+id|per_cpu
+c_func
+(paren
 id|ratelimits
-(braket
+comma
 id|cpu
-)braket
-dot
-id|count
+)paren
 op_assign
 l_int|0
 suffix:semicolon

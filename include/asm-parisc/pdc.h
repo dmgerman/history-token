@@ -1,7 +1,32 @@
 macro_line|#ifndef _PARISC_PDC_H
 DECL|macro|_PARISC_PDC_H
 mdefine_line|#define _PARISC_PDC_H
-multiline_comment|/*&n;    PDC entry points...&n;*/
+multiline_comment|/*&n; *&t;PDC return values ...&n; *&t;All PDC calls return a subset of these errors. &n; */
+DECL|macro|PDC_WARN
+mdefine_line|#define PDC_WARN&t;&t;  3&t;/* Call completed with a warning */
+DECL|macro|PDC_REQ_ERR_1
+mdefine_line|#define PDC_REQ_ERR_1&t;&t;  2&t;/* See above&t;&t;&t; */
+DECL|macro|PDC_REQ_ERR_0
+mdefine_line|#define PDC_REQ_ERR_0&t;&t;  1&t;/* Call would generate a requestor error */
+DECL|macro|PDC_OK
+mdefine_line|#define PDC_OK&t;&t;&t;  0&t;/* Call completed successfully&t;*/
+DECL|macro|PDC_BAD_PROC
+mdefine_line|#define PDC_BAD_PROC&t;&t; -1&t;/* Called non-existent procedure*/
+DECL|macro|PDC_BAD_OPTION
+mdefine_line|#define PDC_BAD_OPTION&t;&t; -2&t;/* Called with non-existent option */
+DECL|macro|PDC_ERROR
+mdefine_line|#define PDC_ERROR&t;&t; -3&t;/* Call could not complete without an error */
+DECL|macro|PDC_NE_MOD
+mdefine_line|#define PDC_NE_MOD&t;&t; -5&t;/* Module not found&t;&t;*/
+DECL|macro|PDC_NE_CELL_MOD
+mdefine_line|#define PDC_NE_CELL_MOD&t;&t; -7&t;/* Cell module not found&t;*/
+DECL|macro|PDC_INVALID_ARG
+mdefine_line|#define PDC_INVALID_ARG&t;&t;-10&t;/* Called with an invalid argument */
+DECL|macro|PDC_BUS_POW_WARN
+mdefine_line|#define PDC_BUS_POW_WARN&t;-12&t;/* Call could not complete in allowed power budget */
+DECL|macro|PDC_NOT_NARROW
+mdefine_line|#define PDC_NOT_NARROW&t;&t;-17&t;/* Narrow mode not supported&t;*/
+multiline_comment|/*&n; *&t;PDC entry points...&n; */
 DECL|macro|PDC_POW_FAIL
 mdefine_line|#define PDC_POW_FAIL&t;1&t;&t;/* perform a power-fail&t;&t;*/
 DECL|macro|PDC_POW_FAIL_PREPARE
@@ -15,7 +40,7 @@ mdefine_line|#define PDC_CHASSIS_WARN&t;1&t;/* return chassis warnings&t;*/
 DECL|macro|PDC_CHASSIS_DISPWARN
 mdefine_line|#define PDC_CHASSIS_DISPWARN&t;2&t;/* update&amp;return chassis status */
 DECL|macro|PDC_RETURN_CHASSIS_INFO
-mdefine_line|#define PDC_RETURN_CHASSIS_INFO 128&t;/* HVERSION dependend: return chassis LED/LCD info  */
+mdefine_line|#define PDC_RETURN_CHASSIS_INFO 128&t;/* HVERSION dependent: return chassis LED/LCD info  */
 DECL|macro|PDC_PIM
 mdefine_line|#define PDC_PIM         3               /* Get PIM data                 */
 DECL|macro|PDC_PIM_HPMC
@@ -39,9 +64,9 @@ mdefine_line|#define PDC_MODEL_VERSIONS&t;2&t;/* returns cpu-internal versions*/
 DECL|macro|PDC_MODEL_SYSMODEL
 mdefine_line|#define PDC_MODEL_SYSMODEL&t;3&t;/* return system model info&t;*/
 DECL|macro|PDC_MODEL_ENSPEC
-mdefine_line|#define PDC_MODEL_ENSPEC&t;4&t;/* ??? */
+mdefine_line|#define PDC_MODEL_ENSPEC&t;4&t;/* enable specific option&t;*/
 DECL|macro|PDC_MODEL_DISPEC
-mdefine_line|#define PDC_MODEL_DISPEC&t;5&t;/* ??? */
+mdefine_line|#define PDC_MODEL_DISPEC&t;5&t;/* disable specific option&t;*/
 DECL|macro|PDC_MODEL_CPU_ID
 mdefine_line|#define PDC_MODEL_CPU_ID&t;6&t;/* returns cpu-id (only newer machines!) */
 DECL|macro|PDC_MODEL_CAPABILITIES
@@ -50,6 +75,10 @@ DECL|macro|PDC_MODEL_GET_BOOT__OP
 mdefine_line|#define PDC_MODEL_GET_BOOT__OP&t;8&t;/* returns boot test options&t;*/
 DECL|macro|PDC_MODEL_SET_BOOT__OP
 mdefine_line|#define PDC_MODEL_SET_BOOT__OP&t;9&t;/* set boot test options&t;*/
+DECL|macro|PA89_INSTRUCTION_SET
+mdefine_line|#define PA89_INSTRUCTION_SET&t;0x4&t;/* capatibilies returned&t;*/
+DECL|macro|PA90_INSTRUCTION_SET
+mdefine_line|#define PA90_INSTRUCTION_SET&t;0x8
 DECL|macro|PDC_CACHE
 mdefine_line|#define PDC_CACHE&t;5&t;&t;/* return/set cache (&amp; TLB) info*/
 DECL|macro|PDC_CACHE_INFO
@@ -59,60 +88,88 @@ mdefine_line|#define PDC_CACHE_SET_COH&t;1&t;/* set coherence state&t;&t;*/
 DECL|macro|PDC_CACHE_RET_SPID
 mdefine_line|#define PDC_CACHE_RET_SPID&t;2&t;/* returns space-ID bits&t;*/
 DECL|macro|PDC_HPA
-mdefine_line|#define PDC_HPA&t; 6       &t;/* return HPA of processor */
+mdefine_line|#define PDC_HPA&t;&t;6&t;&t;/* return HPA of processor&t;*/
 DECL|macro|PDC_HPA_PROCESSOR
-mdefine_line|#define PDC_HPA_PROCESSOR       0
+mdefine_line|#define PDC_HPA_PROCESSOR&t;0
 DECL|macro|PDC_HPA_MODULES
-mdefine_line|#define PDC_HPA_MODULES&t; 1
+mdefine_line|#define PDC_HPA_MODULES&t;&t;1
+DECL|macro|PDC_COPROC
+mdefine_line|#define PDC_COPROC&t;7&t;&t;/* Co-Processor (usually FP unit(s)) */
+DECL|macro|PDC_COPROC_CFG
+mdefine_line|#define PDC_COPROC_CFG&t;&t;0&t;/* Co-Processor Cfg (FP unit(s) enabled?) */
 DECL|macro|PDC_IODC
-mdefine_line|#define PDC_IODC&t;8       /* talk to IODC */
+mdefine_line|#define PDC_IODC&t;8&t;&t;/* talk to IODC&t;&t;&t;*/
 DECL|macro|PDC_IODC_READ
-mdefine_line|#define PDC_IODC_READ&t;   0       /* read IODC entry point */
-multiline_comment|/*      PDC_IODC_RI_*&t;&t;      INDEX parameter of PDC_IODC_READ   */
+mdefine_line|#define PDC_IODC_READ&t;&t;0&t;/* read IODC entry point&t;*/
+multiline_comment|/*      PDC_IODC_RI_&t;&t;&t; * INDEX parameter of PDC_IODC_READ */
 DECL|macro|PDC_IODC_RI_DATA_BYTES
-mdefine_line|#define PDC_IODC_RI_DATA_BYTES&t;0&t;/* IODC Data Bytes&t;&t;    */
-multiline_comment|/*&t;&t;&t;&t;1, 2&t;   obsolete - HVERSION dependent      */
+mdefine_line|#define PDC_IODC_RI_DATA_BYTES&t;0&t;/* IODC Data Bytes&t;&t;*/
+multiline_comment|/*&t;&t;&t;&t;1, 2&t;   obsolete - HVERSION dependent*/
 DECL|macro|PDC_IODC_RI_INIT
-mdefine_line|#define PDC_IODC_RI_INIT&t;3&t;/* Initialize module&t;&t;  */
+mdefine_line|#define PDC_IODC_RI_INIT&t;3&t;/* Initialize module&t;&t;*/
 DECL|macro|PDC_IODC_RI_IO
 mdefine_line|#define PDC_IODC_RI_IO&t;&t;4&t;/* Module input/output&t;&t;*/
 DECL|macro|PDC_IODC_RI_SPA
 mdefine_line|#define PDC_IODC_RI_SPA&t;&t;5&t;/* Module input/output&t;&t;*/
 DECL|macro|PDC_IODC_RI_CONFIG
 mdefine_line|#define PDC_IODC_RI_CONFIG&t;6&t;/* Module input/output&t;&t;*/
-multiline_comment|/*&t;&t;&t;&t;7&t;  obsolete - HVERSION dependent      */
+multiline_comment|/*&t;&t;&t;&t;7&t;  obsolete - HVERSION dependent */
 DECL|macro|PDC_IODC_RI_TEST
 mdefine_line|#define PDC_IODC_RI_TEST&t;8&t;/* Module input/output&t;&t;*/
 DECL|macro|PDC_IODC_RI_TLB
 mdefine_line|#define PDC_IODC_RI_TLB&t;&t;9&t;/* Module input/output&t;&t;*/
 DECL|macro|PDC_IODC_NINIT
-mdefine_line|#define PDC_IODC_NINIT&t;  2       /* non-destructive init */
+mdefine_line|#define PDC_IODC_NINIT&t;&t;2&t;/* non-destructive init&t;&t;*/
 DECL|macro|PDC_IODC_DINIT
-mdefine_line|#define PDC_IODC_DINIT&t;  3       /* destructive init */
+mdefine_line|#define PDC_IODC_DINIT&t;&t;3&t;/* destructive init&t;&t;*/
 DECL|macro|PDC_IODC_MEMERR
-mdefine_line|#define PDC_IODC_MEMERR&t; 4       /* check for memory errors */
+mdefine_line|#define PDC_IODC_MEMERR&t;&t;4&t;/* check for memory errors&t;*/
 DECL|macro|PDC_IODC_INDEX_DATA
-mdefine_line|#define PDC_IODC_INDEX_DATA     0       /* get first 16 bytes from mod IODC */
+mdefine_line|#define PDC_IODC_INDEX_DATA&t;0&t;/* get first 16 bytes from mod IODC */
 DECL|macro|PDC_IODC_BUS_ERROR
-mdefine_line|#define PDC_IODC_BUS_ERROR      -4      /* bus error return value */
+mdefine_line|#define PDC_IODC_BUS_ERROR&t;-4&t;/* bus error return value&t;*/
 DECL|macro|PDC_IODC_INVALID_INDEX
-mdefine_line|#define PDC_IODC_INVALID_INDEX  -5      /* invalid index return value */
+mdefine_line|#define PDC_IODC_INVALID_INDEX&t;-5&t;/* invalid index return value&t;*/
 DECL|macro|PDC_IODC_COUNT
-mdefine_line|#define PDC_IODC_COUNT&t;  -6      /* count is too small */
+mdefine_line|#define PDC_IODC_COUNT&t;&t;-6&t;/* count is too small&t;&t;*/
 DECL|macro|PDC_TOD
-mdefine_line|#define&t;PDC_TOD&t;&t;9&t;&t;/* time-of-day clock (TOD) */
+mdefine_line|#define PDC_TOD&t;&t;9&t;&t;/* time-of-day clock (TOD)&t;*/
 DECL|macro|PDC_TOD_READ
-mdefine_line|#define&t;PDC_TOD_READ&t;&t;0&t;/* read TOD  */
+mdefine_line|#define PDC_TOD_READ&t;&t;0&t;/* read TOD&t;&t;&t;*/
 DECL|macro|PDC_TOD_WRITE
-mdefine_line|#define&t;PDC_TOD_WRITE&t;&t;1&t;/* write TOD */
+mdefine_line|#define PDC_TOD_WRITE&t;&t;1&t;/* write TOD&t;&t;&t;*/
 DECL|macro|PDC_TOD_ITIMER
-mdefine_line|#define&t;PDC_TOD_ITIMER&t;&t;2&t;/* calibrate Interval Timer (CR16) */
+mdefine_line|#define PDC_TOD_ITIMER&t;&t;2&t;/* calibrate Interval Timer (CR16) */
+DECL|macro|PDC_STABLE
+mdefine_line|#define PDC_STABLE&t;10&t;&t;/* stable storage (sprockets)&t;*/
+DECL|macro|PDC_STABLE_READ
+mdefine_line|#define PDC_STABLE_READ&t;&t;0
+DECL|macro|PDC_STABLE_WRITE
+mdefine_line|#define PDC_STABLE_WRITE&t;1
+DECL|macro|PDC_STABLE_RETURN_SIZE
+mdefine_line|#define PDC_STABLE_RETURN_SIZE&t;2
+DECL|macro|PDC_STABLE_VERIFY_CONTENTS
+mdefine_line|#define PDC_STABLE_VERIFY_CONTENTS 3
+DECL|macro|PDC_STABLE_INITIALIZE
+mdefine_line|#define PDC_STABLE_INITIALIZE&t;4
+DECL|macro|PDC_NVOLATILE
+mdefine_line|#define PDC_NVOLATILE&t;11&t;&t;/* often not implemented&t;*/
 DECL|macro|PDC_ADD_VALID
-mdefine_line|#define PDC_ADD_VALID&t;12    &t;&t;/* Memory validation PDC call */
+mdefine_line|#define PDC_ADD_VALID&t;12&t;&t;/* Memory validation PDC call&t;*/
 DECL|macro|PDC_ADD_VALID_VERIFY
-mdefine_line|#define PDC_ADD_VALID_VERIFY  0    &t;/* Make PDC_ADD_VALID verify region */
+mdefine_line|#define PDC_ADD_VALID_VERIFY&t;0&t;/* Make PDC_ADD_VALID verify region */
 DECL|macro|PDC_INSTR
 mdefine_line|#define PDC_INSTR&t;15&t;&t;/* get instr to invoke PDCE_CHECK() */
+DECL|macro|PDC_PROC
+mdefine_line|#define PDC_PROC&t;16&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_CONFIG
+mdefine_line|#define PDC_CONFIG&t;16&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_CONFIG_DECONFIG
+mdefine_line|#define PDC_CONFIG_DECONFIG&t;0
+DECL|macro|PDC_CONFIG_DRECONFIG
+mdefine_line|#define PDC_CONFIG_DRECONFIG&t;1
+DECL|macro|PDC_CONFIG_DRETURN_CONFIG
+mdefine_line|#define PDC_CONFIG_DRETURN_CONFIG 2
 DECL|macro|PDC_BLOCK_TLB
 mdefine_line|#define PDC_BLOCK_TLB&t;18&t;&t;/* manage hardware block-TLB&t;*/
 DECL|macro|PDC_BTLB_INFO
@@ -129,122 +186,597 @@ DECL|macro|PDC_TLB_INFO
 mdefine_line|#define PDC_TLB_INFO&t;&t;0&t;/* returns parameter &t;&t;*/
 DECL|macro|PDC_TLB_SETUP
 mdefine_line|#define PDC_TLB_SETUP&t;&t;1&t;/* set up miss handling &t;*/
+DECL|macro|PDC_MEM
+mdefine_line|#define PDC_MEM&t;&t;20&t;&t;/* Manage memory&t;&t;*/
+DECL|macro|PDC_MEM_MEMINFO
+mdefine_line|#define PDC_MEM_MEMINFO&t;&t;0
+DECL|macro|PDC_MEM_ADD_PAGE
+mdefine_line|#define PDC_MEM_ADD_PAGE&t;1
+DECL|macro|PDC_MEM_CLEAR_PDT
+mdefine_line|#define PDC_MEM_CLEAR_PDT&t;2
+DECL|macro|PDC_MEM_READ_PDT
+mdefine_line|#define PDC_MEM_READ_PDT&t;3
+DECL|macro|PDC_MEM_RESET_CLEAR
+mdefine_line|#define PDC_MEM_RESET_CLEAR&t;4
+DECL|macro|PDC_MEM_GOODMEM
+mdefine_line|#define PDC_MEM_GOODMEM&t;&t;5
+DECL|macro|PDC_MEM_TABLE
+mdefine_line|#define PDC_MEM_TABLE&t;&t;128&t;/* Non contig mem map (sprockets) */
+DECL|macro|PDC_MEM_RETURN_ADDRESS_TABLE
+mdefine_line|#define PDC_MEM_RETURN_ADDRESS_TABLE&t;PDC_MEM_TABLE
+DECL|macro|PDC_MEM_GET_MEMORY_SYSTEM_TABLES_SIZE
+mdefine_line|#define PDC_MEM_GET_MEMORY_SYSTEM_TABLES_SIZE&t;131
+DECL|macro|PDC_MEM_GET_MEMORY_SYSTEM_TABLES
+mdefine_line|#define PDC_MEM_GET_MEMORY_SYSTEM_TABLES&t;132
+DECL|macro|PDC_MEM_GET_PHYSICAL_LOCATION_FROM_MEMORY_ADDRESS
+mdefine_line|#define PDC_MEM_GET_PHYSICAL_LOCATION_FROM_MEMORY_ADDRESS 133
+DECL|macro|PDC_MEM_RET_SBE_REPLACED
+mdefine_line|#define PDC_MEM_RET_SBE_REPLACED&t;5&t;/* PDC_MEM return values */
+DECL|macro|PDC_MEM_RET_DUPLICATE_ENTRY
+mdefine_line|#define PDC_MEM_RET_DUPLICATE_ENTRY&t;4
+DECL|macro|PDC_MEM_RET_BUF_SIZE_SMALL
+mdefine_line|#define PDC_MEM_RET_BUF_SIZE_SMALL&t;1
+DECL|macro|PDC_MEM_RET_PDT_FULL
+mdefine_line|#define PDC_MEM_RET_PDT_FULL&t;&t;-11
+DECL|macro|PDC_MEM_RET_INVALID_PHYSICAL_LOCATION
+mdefine_line|#define PDC_MEM_RET_INVALID_PHYSICAL_LOCATION ~0ULL
+macro_line|#ifndef __ASSEMBLY__
+r_typedef
+r_struct
+(brace
+DECL|member|baseAddr
+r_int
+r_int
+r_int
+id|baseAddr
+suffix:semicolon
+DECL|member|pages
+r_int
+r_int
+id|pages
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_int
+id|reserved
+suffix:semicolon
+DECL|typedef|MemAddrTable_t
+)brace
+id|MemAddrTable_t
+suffix:semicolon
+macro_line|#endif
+DECL|macro|PDC_PSW
+mdefine_line|#define PDC_PSW&t;&t;21&t;&t;/* Get/Set default System Mask  */
+DECL|macro|PDC_PSW_MASK
+mdefine_line|#define PDC_PSW_MASK&t;&t;0&t;/* Return mask                  */
+DECL|macro|PDC_PSW_GET_DEFAULTS
+mdefine_line|#define PDC_PSW_GET_DEFAULTS&t;1&t;/* Return defaults              */
+DECL|macro|PDC_PSW_SET_DEFAULTS
+mdefine_line|#define PDC_PSW_SET_DEFAULTS&t;2&t;/* Set default                  */
+DECL|macro|PDC_PSW_ENDIAN_BIT
+mdefine_line|#define PDC_PSW_ENDIAN_BIT&t;1&t;/* set for big endian           */
+DECL|macro|PDC_PSW_WIDE_BIT
+mdefine_line|#define PDC_PSW_WIDE_BIT&t;2&t;/* set for wide mode            */ 
 DECL|macro|PDC_SYSTEM_MAP
-mdefine_line|#define PDC_SYSTEM_MAP&t;22&t;&t;/* find system modules */
+mdefine_line|#define PDC_SYSTEM_MAP&t;22&t;&t;/* find system modules&t;&t;*/
 DECL|macro|PDC_FIND_MODULE
 mdefine_line|#define PDC_FIND_MODULE &t;0
+DECL|macro|PDC_FIND_ADDRESS
+mdefine_line|#define PDC_FIND_ADDRESS&t;1
+DECL|macro|PDC_TRANSLATE_PATH
+mdefine_line|#define PDC_TRANSLATE_PATH&t;2
+DECL|macro|PDC_SOFT_POWER
+mdefine_line|#define PDC_SOFT_POWER&t;23&t;&t;/* soft power switch&t;&t;*/
+DECL|macro|PDC_SOFT_POWER_INFO
+mdefine_line|#define PDC_SOFT_POWER_INFO&t;0&t;/* return info about the soft power switch */
+DECL|macro|PDC_SOFT_POWER_ENABLE
+mdefine_line|#define PDC_SOFT_POWER_ENABLE&t;1&t;/* enable/disable soft power switch */
 multiline_comment|/* HVERSION dependent */
-DECL|macro|PDC_IO
-mdefine_line|#define PDC_IO&t;&t;&t;135&t;/* log error info, reset IO system  */
-DECL|macro|PDC_BROADCAST_RESET
-mdefine_line|#define PDC_BROADCAST_RESET&t;136&t;/* reset all processors&t;     */
-DECL|macro|PDC_DO_RESET
-mdefine_line|#define PDC_DO_RESET            0UL&t;/* option: perform a broadcast reset */
-DECL|macro|PDC_DO_FIRM_TEST_RESET
-mdefine_line|#define PDC_DO_FIRM_TEST_RESET  1UL&t;/* Do broadcast reset with bitmap */
-DECL|macro|PDC_BR_RECONFIGURATION
-mdefine_line|#define PDC_BR_RECONFIGURATION  2UL&t;/* reset w/reconfiguration */
-DECL|macro|PDC_FIRM_TEST_MAGIC
-mdefine_line|#define PDC_FIRM_TEST_MAGIC &t;0xab9ec36fUL    /* for this reboot only */
-DECL|macro|PDC_LAN_STATION_ID
-mdefine_line|#define PDC_LAN_STATION_ID      138     /* Hversion dependent mechanism for */
-DECL|macro|PDC_LAN_STATION_ID_READ
-mdefine_line|#define PDC_LAN_STATION_ID_READ 0       /* getting the lan station address  */
-DECL|macro|PDC_LAN_STATION_ID_SIZE
-mdefine_line|#define&t;PDC_LAN_STATION_ID_SIZE&t;6
-multiline_comment|/* Legacy PDC definitions for same stuff */
-DECL|macro|PDC_PCI_INDEX
-mdefine_line|#define PDC_PCI_INDEX&t;&t;   147UL
-DECL|macro|PDC_PCI_GET_INT_TBL_SIZE
-mdefine_line|#define PDC_PCI_GET_INT_TBL_SIZE&t;13UL
-DECL|macro|PDC_PCI_GET_INT_TBL
-mdefine_line|#define PDC_PCI_GET_INT_TBL&t;     14UL
-multiline_comment|/* generic error codes returned by all PDC-functions */
-DECL|macro|PDC_WARN
-mdefine_line|#define PDC_WARN&t;    3  /* Call completed with a warning */
-DECL|macro|PDC_REQ_ERR_1
-mdefine_line|#define PDC_REQ_ERR_1       2  /* See above */
-DECL|macro|PDC_REQ_ERR_0
-mdefine_line|#define PDC_REQ_ERR_0       1  /* Call would generate a requestor error */
-DECL|macro|PDC_OK
-mdefine_line|#define PDC_OK&t;      0  /* Call completed successfully */
-DECL|macro|PDC_BAD_PROC
-mdefine_line|#define PDC_BAD_PROC&t;   -1  /* Called non-existant procedure */
-DECL|macro|PDC_BAD_OPTION
-mdefine_line|#define PDC_BAD_OPTION     -2  /* Called with non-existant option */
-DECL|macro|PDC_ERROR
-mdefine_line|#define PDC_ERROR&t;  -3  /* Call could not complete without an error */
-DECL|macro|PDC_INVALID_ARG
-mdefine_line|#define PDC_INVALID_ARG   -10  /* Called with an invalid argument */
-DECL|macro|PDC_BUS_POW_WARN
-mdefine_line|#define PDC_BUS_POW_WARN  -12  /* Call could not complete in allowed power budget */
-multiline_comment|/* The following are from the HPUX .h files, and are just for&n;compatibility */
-DECL|macro|PDC_RET_OK
-mdefine_line|#define PDC_RET_OK       0L&t;/* Call completed successfully */
-DECL|macro|PDC_RET_NE_PROC
-mdefine_line|#define PDC_RET_NE_PROC -1L&t;/* Non-existent procedure */
-DECL|macro|PDC_RET_NE_OPT
-mdefine_line|#define PDC_RET_NE_OPT  -2L&t;/* non-existant option - arg1 */
-DECL|macro|PDC_RET_NE_MOD
-mdefine_line|#define PDC_RET_NE_MOD  -5L&t;/* Module not found */
-DECL|macro|PDC_RET_NE_CELL_MOD
-mdefine_line|#define PDC_RET_NE_CELL_MOD -7L&t;/* Cell module not found */
-DECL|macro|PDC_RET_INV_ARG
-mdefine_line|#define PDC_RET_INV_ARG&t;-10L&t;/* Invalid argument */
-DECL|macro|PDC_RET_NOT_NARROW
-mdefine_line|#define PDC_RET_NOT_NARROW -17L /* Narrow mode not supported */
-multiline_comment|/* Error codes for PDC_ADD_VALID */
-DECL|macro|PDC_ADD_VALID_WARN
-mdefine_line|#define PDC_ADD_VALID_WARN&t;    3  /* Call completed with a warning */
-DECL|macro|PDC_ADD_VALID_REQ_ERR_1
-mdefine_line|#define PDC_ADD_VALID_REQ_ERR_1       2  /* See above */
-DECL|macro|PDC_ADD_VALID_REQ_ERR_0
-mdefine_line|#define PDC_ADD_VALID_REQ_ERR_0       1  /* Call would generate a requestor error */
-DECL|macro|PDC_ADD_VALID_OK
-mdefine_line|#define PDC_ADD_VALID_OK&t;      0  /* Call completed successfully */
-DECL|macro|PDC_ADD_VALID_BAD_OPTION
-mdefine_line|#define PDC_ADD_VALID_BAD_OPTION     -2  /* Called with non-existant option */
-DECL|macro|PDC_ADD_VALID_ERROR
-mdefine_line|#define PDC_ADD_VALID_ERROR&t;  -3  /* Call could not complete without an error */
-DECL|macro|PDC_ADD_VALID_INVALID_ARG
-mdefine_line|#define PDC_ADD_VALID_INVALID_ARG   -10  /* Called with an invalid argument */
-DECL|macro|PDC_ADD_VALID_BUS_POW_WARN
-mdefine_line|#define PDC_ADD_VALID_BUS_POW_WARN  -12  /* Call could not complete in allowed power budget */
 multiline_comment|/* The PDC_MEM_MAP calls */
 DECL|macro|PDC_MEM_MAP
-mdefine_line|#define PDC_MEM_MAP&t;    128
+mdefine_line|#define PDC_MEM_MAP&t;128&t;&t;/* on s700: return page info&t;*/
 DECL|macro|PDC_MEM_MAP_HPA
-mdefine_line|#define PDC_MEM_MAP_HPA&t;&t;0
+mdefine_line|#define PDC_MEM_MAP_HPA&t;&t;0&t;/* returns hpa of a module&t;*/
+DECL|macro|PDC_EEPROM
+mdefine_line|#define PDC_EEPROM&t;129&t;&t;/* EEPROM access&t;&t;*/
+DECL|macro|PDC_EEPROM_READ_WORD
+mdefine_line|#define PDC_EEPROM_READ_WORD&t;0
+DECL|macro|PDC_EEPROM_WRITE_WORD
+mdefine_line|#define PDC_EEPROM_WRITE_WORD&t;1
+DECL|macro|PDC_EEPROM_READ_BYTE
+mdefine_line|#define PDC_EEPROM_READ_BYTE&t;2
+DECL|macro|PDC_EEPROM_WRITE_BYTE
+mdefine_line|#define PDC_EEPROM_WRITE_BYTE&t;3
+DECL|macro|PDC_EEPROM_EEPROM_PASSWORD
+mdefine_line|#define PDC_EEPROM_EEPROM_PASSWORD -1000
+DECL|macro|PDC_NVM
+mdefine_line|#define PDC_NVM&t;&t;130&t;&t;/* NVM (non-volatile memory) access */
+DECL|macro|PDC_NVM_READ_WORD
+mdefine_line|#define PDC_NVM_READ_WORD&t;0
+DECL|macro|PDC_NVM_WRITE_WORD
+mdefine_line|#define PDC_NVM_WRITE_WORD&t;1
+DECL|macro|PDC_NVM_READ_BYTE
+mdefine_line|#define PDC_NVM_READ_BYTE&t;2
+DECL|macro|PDC_NVM_WRITE_BYTE
+mdefine_line|#define PDC_NVM_WRITE_BYTE&t;3
+DECL|macro|PDC_SEED_ERROR
+mdefine_line|#define PDC_SEED_ERROR&t;132&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_IO
+mdefine_line|#define PDC_IO&t;&t;135&t;&t;/* log error info, reset IO system */
+DECL|macro|PDC_IO_READ_AND_CLEAR_ERRORS
+mdefine_line|#define PDC_IO_READ_AND_CLEAR_ERRORS&t;0
+DECL|macro|PDC_IO_READ_AND_LOG_ERRORS
+mdefine_line|#define PDC_IO_READ_AND_LOG_ERRORS&t;1
+DECL|macro|PDC_IO_SUSPEND_USB
+mdefine_line|#define PDC_IO_SUSPEND_USB&t;&t;2
+multiline_comment|/* sets bits 6&amp;7 (little endian) of the HcControl Register */
+DECL|macro|PDC_IO_USB_SUSPEND
+mdefine_line|#define PDC_IO_USB_SUSPEND&t;0xC000000000000000
+DECL|macro|PDC_IO_EEPROM_IO_ERR_TABLE_FULL
+mdefine_line|#define PDC_IO_EEPROM_IO_ERR_TABLE_FULL&t;-5&t;/* return value */
+DECL|macro|PDC_IO_NO_SUSPEND
+mdefine_line|#define PDC_IO_NO_SUSPEND&t;&t;-6&t;/* return value */
+DECL|macro|PDC_BROADCAST_RESET
+mdefine_line|#define PDC_BROADCAST_RESET 136&t;&t;/* reset all processors&t;&t;*/
+DECL|macro|PDC_DO_RESET
+mdefine_line|#define PDC_DO_RESET&t;&t;0&t;/* option: perform a broadcast reset */
+DECL|macro|PDC_DO_FIRM_TEST_RESET
+mdefine_line|#define PDC_DO_FIRM_TEST_RESET&t;1&t;/* Do broadcast reset with bitmap */
+DECL|macro|PDC_BR_RECONFIGURATION
+mdefine_line|#define PDC_BR_RECONFIGURATION&t;2&t;/* reset w/reconfiguration&t;*/
+DECL|macro|PDC_FIRM_TEST_MAGIC
+mdefine_line|#define PDC_FIRM_TEST_MAGIC&t;0xab9ec36fUL    /* for this reboot only&t;*/
+DECL|macro|PDC_LAN_STATION_ID
+mdefine_line|#define PDC_LAN_STATION_ID 138&t;&t;/* Hversion dependent mechanism for */
+DECL|macro|PDC_LAN_STATION_ID_READ
+mdefine_line|#define PDC_LAN_STATION_ID_READ&t;0&t;/* getting the lan station address  */
+DECL|macro|PDC_LAN_STATION_ID_SIZE
+mdefine_line|#define&t;PDC_LAN_STATION_ID_SIZE&t;6
+DECL|macro|PDC_CHECK_RANGES
+mdefine_line|#define PDC_CHECK_RANGES 139&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_NV_SECTIONS
+mdefine_line|#define PDC_NV_SECTIONS&t;141&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_PERFORMANCE
+mdefine_line|#define PDC_PERFORMANCE&t;142&t;&t;/* performance monitoring&t;*/
+DECL|macro|PDC_SYSTEM_INFO
+mdefine_line|#define PDC_SYSTEM_INFO&t;143&t;&t;/* system information&t;&t;*/
+DECL|macro|PDC_SYSINFO_RETURN_INFO_SIZE
+mdefine_line|#define PDC_SYSINFO_RETURN_INFO_SIZE&t;0
+DECL|macro|PDC_SYSINFO_RRETURN_SYS_INFO
+mdefine_line|#define PDC_SYSINFO_RRETURN_SYS_INFO&t;1
+DECL|macro|PDC_SYSINFO_RRETURN_ERRORS
+mdefine_line|#define PDC_SYSINFO_RRETURN_ERRORS&t;2
+DECL|macro|PDC_SYSINFO_RRETURN_WARNINGS
+mdefine_line|#define PDC_SYSINFO_RRETURN_WARNINGS&t;3
+DECL|macro|PDC_SYSINFO_RETURN_REVISIONS
+mdefine_line|#define PDC_SYSINFO_RETURN_REVISIONS&t;4
+DECL|macro|PDC_SYSINFO_RRETURN_DIAGNOSE
+mdefine_line|#define PDC_SYSINFO_RRETURN_DIAGNOSE&t;5
+DECL|macro|PDC_SYSINFO_RRETURN_HV_DIAGNOSE
+mdefine_line|#define PDC_SYSINFO_RRETURN_HV_DIAGNOSE&t;1005
+DECL|macro|PDC_RDR
+mdefine_line|#define PDC_RDR&t;&t;144&t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_RDR_READ_BUFFER
+mdefine_line|#define PDC_RDR_READ_BUFFER&t;0
+DECL|macro|PDC_RDR_READ_SINGLE
+mdefine_line|#define PDC_RDR_READ_SINGLE&t;1
+DECL|macro|PDC_RDR_WRITE_SINGLE
+mdefine_line|#define PDC_RDR_WRITE_SINGLE&t;2
+DECL|macro|PDC_INTRIGUE
+mdefine_line|#define PDC_INTRIGUE&t;145 &t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_INTRIGUE_WRITE_BUFFER
+mdefine_line|#define PDC_INTRIGUE_WRITE_BUFFER &t; 0
+DECL|macro|PDC_INTRIGUE_GET_SCRATCH_BUFSIZE
+mdefine_line|#define PDC_INTRIGUE_GET_SCRATCH_BUFSIZE 1
+DECL|macro|PDC_INTRIGUE_START_CPU_COUNTERS
+mdefine_line|#define PDC_INTRIGUE_START_CPU_COUNTERS&t; 2
+DECL|macro|PDC_INTRIGUE_STOP_CPU_COUNTERS
+mdefine_line|#define PDC_INTRIGUE_STOP_CPU_COUNTERS&t; 3
+DECL|macro|PDC_STI
+mdefine_line|#define PDC_STI&t;&t;146 &t;&t;/* STI access&t;&t;&t;*/
+multiline_comment|/* same as PDC_PCI_XXX values (see below) */
+multiline_comment|/* Legacy PDC definitions for same stuff */
+DECL|macro|PDC_PCI_INDEX
+mdefine_line|#define PDC_PCI_INDEX&t;147
+DECL|macro|PDC_PCI_INTERFACE_INFO
+mdefine_line|#define PDC_PCI_INTERFACE_INFO&t;&t;0
+DECL|macro|PDC_PCI_SLOT_INFO
+mdefine_line|#define PDC_PCI_SLOT_INFO&t;&t;1
+DECL|macro|PDC_PCI_INFLIGHT_BYTES
+mdefine_line|#define PDC_PCI_INFLIGHT_BYTES&t;&t;2
+DECL|macro|PDC_PCI_READ_CONFIG
+mdefine_line|#define PDC_PCI_READ_CONFIG&t;&t;3
+DECL|macro|PDC_PCI_WRITE_CONFIG
+mdefine_line|#define PDC_PCI_WRITE_CONFIG&t;&t;4
+DECL|macro|PDC_PCI_READ_PCI_IO
+mdefine_line|#define PDC_PCI_READ_PCI_IO&t;&t;5
+DECL|macro|PDC_PCI_WRITE_PCI_IO
+mdefine_line|#define PDC_PCI_WRITE_PCI_IO&t;&t;6
+DECL|macro|PDC_PCI_READ_CONFIG_DELAY
+mdefine_line|#define PDC_PCI_READ_CONFIG_DELAY&t;7
+DECL|macro|PDC_PCI_UPDATE_CONFIG_DELAY
+mdefine_line|#define PDC_PCI_UPDATE_CONFIG_DELAY&t;8
+DECL|macro|PDC_PCI_PCI_PATH_TO_PCI_HPA
+mdefine_line|#define PDC_PCI_PCI_PATH_TO_PCI_HPA&t;9
+DECL|macro|PDC_PCI_PCI_HPA_TO_PCI_PATH
+mdefine_line|#define PDC_PCI_PCI_HPA_TO_PCI_PATH&t;10
+DECL|macro|PDC_PCI_PCI_PATH_TO_PCI_BUS
+mdefine_line|#define PDC_PCI_PCI_PATH_TO_PCI_BUS&t;11
+DECL|macro|PDC_PCI_PCI_RESERVED
+mdefine_line|#define PDC_PCI_PCI_RESERVED&t;&t;12
+DECL|macro|PDC_PCI_PCI_INT_ROUTE_SIZE
+mdefine_line|#define PDC_PCI_PCI_INT_ROUTE_SIZE&t;13
+DECL|macro|PDC_PCI_GET_INT_TBL_SIZE
+mdefine_line|#define PDC_PCI_GET_INT_TBL_SIZE&t;PDC_PCI_PCI_INT_ROUTE_SIZE
+DECL|macro|PDC_PCI_PCI_INT_ROUTE
+mdefine_line|#define PDC_PCI_PCI_INT_ROUTE&t;&t;14
+DECL|macro|PDC_PCI_GET_INT_TBL
+mdefine_line|#define PDC_PCI_GET_INT_TBL&t;&t;PDC_PCI_PCI_INT_ROUTE 
+DECL|macro|PDC_PCI_READ_MON_TYPE
+mdefine_line|#define PDC_PCI_READ_MON_TYPE&t;&t;15
+DECL|macro|PDC_PCI_WRITE_MON_TYPE
+mdefine_line|#define PDC_PCI_WRITE_MON_TYPE&t;&t;16
+multiline_comment|/* Get SCSI Interface Card info:  SDTR, SCSI ID, mode (SE vs LVD) */
+DECL|macro|PDC_INITIATOR
+mdefine_line|#define PDC_INITIATOR&t;163
+DECL|macro|PDC_GET_INITIATOR
+mdefine_line|#define PDC_GET_INITIATOR&t;0
+DECL|macro|PDC_SET_INITIATOR
+mdefine_line|#define PDC_SET_INITIATOR&t;1
+DECL|macro|PDC_DELETE_INITIATOR
+mdefine_line|#define PDC_DELETE_INITIATOR&t;2
+DECL|macro|PDC_RETURN_TABLE_SIZE
+mdefine_line|#define PDC_RETURN_TABLE_SIZE&t;3
+DECL|macro|PDC_RETURN_TABLE
+mdefine_line|#define PDC_RETURN_TABLE&t;4
+DECL|macro|PDC_LINK
+mdefine_line|#define PDC_LINK&t;165 &t;&t;/* (sprockets)&t;&t;&t;*/
+DECL|macro|PDC_LINK_PCI_ENTRY_POINTS
+mdefine_line|#define PDC_LINK_PCI_ENTRY_POINTS&t;0  /* list (Arg1) = 0 */
+DECL|macro|PDC_LINK_USB_ENTRY_POINTS
+mdefine_line|#define PDC_LINK_USB_ENTRY_POINTS&t;1  /* list (Arg1) = 1 */
 multiline_comment|/* constants for OS (NVM...) */
 DECL|macro|OS_ID_NONE
-mdefine_line|#define OS_ID_NONE&t;0
+mdefine_line|#define OS_ID_NONE&t;&t;0&t;/* Undefined OS ID&t;*/
 DECL|macro|OS_ID_HPUX
-mdefine_line|#define OS_ID_HPUX&t;1
-DECL|macro|OS_ID_MPEXL
-mdefine_line|#define OS_ID_MPEXL&t;2
-DECL|macro|OS_ID_OSF
-mdefine_line|#define OS_ID_OSF&t;3
+mdefine_line|#define OS_ID_HPUX&t;&t;1&t;/* HP-UX OS&t;&t;*/
 DECL|macro|OS_ID_LINUX
-mdefine_line|#define OS_ID_LINUX&t;OS_ID_HPUX
+mdefine_line|#define OS_ID_LINUX&t;&t;OS_ID_HPUX /* just use the same value as hpux */
+DECL|macro|OS_ID_MPEXL
+mdefine_line|#define OS_ID_MPEXL&t;&t;2&t;/* MPE XL OS&t;&t;*/
+DECL|macro|OS_ID_OSF
+mdefine_line|#define OS_ID_OSF&t;&t;3&t;/* OSF OS&t;&t;*/
+DECL|macro|OS_ID_HPRT
+mdefine_line|#define OS_ID_HPRT&t;&t;4&t;/* HP-RT OS&t;&t;*/
+DECL|macro|OS_ID_NOVEL
+mdefine_line|#define OS_ID_NOVEL&t;&t;5&t;/* NOVELL OS&t;&t;*/
+DECL|macro|OS_ID_NT
+mdefine_line|#define OS_ID_NT&t;&t;6&t;/* NT OS&t;&t;*/
 multiline_comment|/* constants for PDC_CHASSIS */
 DECL|macro|OSTAT_OFF
-mdefine_line|#define OSTAT_OFF&t;&t;      0
+mdefine_line|#define OSTAT_OFF&t;&t;0
 DECL|macro|OSTAT_FLT
-mdefine_line|#define OSTAT_FLT&t;&t;      1 
+mdefine_line|#define OSTAT_FLT&t;&t;1 
 DECL|macro|OSTAT_TEST
-mdefine_line|#define OSTAT_TEST&t;&t;     2
+mdefine_line|#define OSTAT_TEST&t;&t;2
 DECL|macro|OSTAT_INIT
-mdefine_line|#define OSTAT_INIT&t;&t;     3
+mdefine_line|#define OSTAT_INIT&t;&t;3
 DECL|macro|OSTAT_SHUT
-mdefine_line|#define OSTAT_SHUT&t;&t;     4
+mdefine_line|#define OSTAT_SHUT&t;&t;4
 DECL|macro|OSTAT_WARN
-mdefine_line|#define OSTAT_WARN&t;&t;     5
+mdefine_line|#define OSTAT_WARN&t;&t;5
 DECL|macro|OSTAT_RUN
-mdefine_line|#define OSTAT_RUN&t;&t;      6
+mdefine_line|#define OSTAT_RUN&t;&t;6
 DECL|macro|OSTAT_ON
-mdefine_line|#define OSTAT_ON&t;&t;       7
+mdefine_line|#define OSTAT_ON&t;&t;7
+macro_line|#ifdef __LP64__
+multiline_comment|/* PDC PAT CELL */
+DECL|macro|PDC_PAT_CELL
+mdefine_line|#define PDC_PAT_CELL&t;64L&t;&t;/* Interface for gaining and &n;&t;&t;&t;&t;&t; * manipulating cell state within PD */
+DECL|macro|PDC_PAT_CELL_GET_NUMBER
+mdefine_line|#define PDC_PAT_CELL_GET_NUMBER&t;   0L&t;/* Return Cell number&t;&t;*/
+DECL|macro|PDC_PAT_CELL_GET_INFO
+mdefine_line|#define PDC_PAT_CELL_GET_INFO      1L&t;/* Returns info about Cell&t;*/
+DECL|macro|PDC_PAT_CELL_MODULE
+mdefine_line|#define PDC_PAT_CELL_MODULE        2L&t;/* Returns info about Module&t;*/
+DECL|macro|PDC_PAT_CELL_SET_ATTENTION
+mdefine_line|#define PDC_PAT_CELL_SET_ATTENTION 9L&t;/* Set Cell Attention indicator&t;*/
+DECL|macro|PDC_PAT_CELL_NUMBER_TO_LOC
+mdefine_line|#define PDC_PAT_CELL_NUMBER_TO_LOC 10L&t;/* Cell Number -&gt; Location&t;*/
+DECL|macro|PDC_PAT_CELL_WALK_FABRIC
+mdefine_line|#define PDC_PAT_CELL_WALK_FABRIC   11L&t;/* Walk the Fabric&t;&t;*/
+DECL|macro|PDC_PAT_CELL_GET_RDT_SIZE
+mdefine_line|#define PDC_PAT_CELL_GET_RDT_SIZE  12L&t;/* Return Route Distance Table Sizes */
+DECL|macro|PDC_PAT_CELL_GET_RDT
+mdefine_line|#define PDC_PAT_CELL_GET_RDT       13L&t;/* Return Route Distance Tables&t;*/
+DECL|macro|PDC_PAT_CELL_GET_LOCAL_PDH_SZ
+mdefine_line|#define PDC_PAT_CELL_GET_LOCAL_PDH_SZ  14L /* Read Local PDH Buffer Size*/
+DECL|macro|PDC_PAT_CELL_SET_LOCAL_PDH
+mdefine_line|#define PDC_PAT_CELL_SET_LOCAL_PDH     15L /* Write Local PDH Buffer&t;*/
+DECL|macro|PDC_PAT_CELL_GET_REMOTE_PDH_SZ
+mdefine_line|#define PDC_PAT_CELL_GET_REMOTE_PDH_SZ 16L /* Return Remote PDH Buffer Size */
+DECL|macro|PDC_PAT_CELL_GET_REMOTE_PDH
+mdefine_line|#define PDC_PAT_CELL_GET_REMOTE_PDH    17L /* Read Remote PDH Buffer&t;*/
+DECL|macro|PDC_PAT_CELL_GET_DBG_INFO
+mdefine_line|#define PDC_PAT_CELL_GET_DBG_INFO  128L&t;/* Return DBG Buffer Info&t;*/
+DECL|macro|PDC_PAT_CELL_CHANGE_ALIAS
+mdefine_line|#define PDC_PAT_CELL_CHANGE_ALIAS  129L&t;/* Change Non-Equivalent Alias Checking */
+multiline_comment|/*&n;** Arg to PDC_PAT_CELL_MODULE memaddr[4]&n;**&n;** Addresses on the Merced Bus != all Runway Bus addresses.&n;** This is intended for programming SBA/LBA chips range registers.&n;*/
+DECL|macro|IO_VIEW
+mdefine_line|#define IO_VIEW&t;&t;&t;0UL
+DECL|macro|PA_VIEW
+mdefine_line|#define PA_VIEW&t;&t;&t;1UL
+multiline_comment|/* PDC_PAT_CELL_MODULE entity type values */
+DECL|macro|PAT_ENTITY_CA
+mdefine_line|#define PAT_ENTITY_CA&t;&t;0&t;/* central agent&t;*/
+DECL|macro|PAT_ENTITY_PROC
+mdefine_line|#define PAT_ENTITY_PROC&t;&t;1&t;/* processor&t;&t;*/
+DECL|macro|PAT_ENTITY_MEM
+mdefine_line|#define PAT_ENTITY_MEM&t;&t;2&t;/* memory controller&t;*/
+DECL|macro|PAT_ENTITY_SBA
+mdefine_line|#define PAT_ENTITY_SBA&t;&t;3&t;/* system bus adapter&t;*/
+DECL|macro|PAT_ENTITY_LBA
+mdefine_line|#define PAT_ENTITY_LBA&t;&t;4&t;/* local bus adapter&t;*/
+DECL|macro|PAT_ENTITY_PBC
+mdefine_line|#define PAT_ENTITY_PBC&t;&t;5&t;/* processor bus converter */
+DECL|macro|PAT_ENTITY_XBC
+mdefine_line|#define PAT_ENTITY_XBC&t;&t;6&t;/* crossbar fabric connect */
+DECL|macro|PAT_ENTITY_RC
+mdefine_line|#define PAT_ENTITY_RC&t;&t;7&t;/* fabric interconnect&t;*/
+multiline_comment|/* PDC_PAT_CELL_MODULE address range type values */
+DECL|macro|PAT_PBNUM
+mdefine_line|#define PAT_PBNUM&t;&t;0&t;/* PCI Bus Number&t;*/
+DECL|macro|PAT_LMMIO
+mdefine_line|#define PAT_LMMIO&t;&t;1&t;/* &lt; 4G MMIO Space&t;*/
+DECL|macro|PAT_GMMIO
+mdefine_line|#define PAT_GMMIO&t;&t;2&t;/* &gt; 4G MMIO Space&t;*/
+DECL|macro|PAT_NPIOP
+mdefine_line|#define PAT_NPIOP&t;&t;3&t;/* Non Postable I/O Port Space */
+DECL|macro|PAT_PIOP
+mdefine_line|#define PAT_PIOP&t;&t;4&t;/* Postable I/O Port Space */
+DECL|macro|PAT_AHPA
+mdefine_line|#define PAT_AHPA&t;&t;5&t;/* Additional HPA Space&t;*/
+DECL|macro|PAT_UFO
+mdefine_line|#define PAT_UFO&t;&t;&t;6&t;/* HPA Space (UFO for Mariposa) */
+DECL|macro|PAT_GNIP
+mdefine_line|#define PAT_GNIP&t;&t;7&t;/* GNI Reserved Space&t;*/
+multiline_comment|/* PDC PAT CHASSIS LOG */
+DECL|macro|PDC_PAT_CHASSIS_LOG
+mdefine_line|#define PDC_PAT_CHASSIS_LOG&t;65L&t;/* Platform logging &amp; forward&n;&t;&t;&t;&t;&t; ** progress functions&t;*/
+DECL|macro|PDC_PAT_CHASSIS_WRITE_LOG
+mdefine_line|#define PDC_PAT_CHASSIS_WRITE_LOG&t;0L /* Write Log Entry&t;*/
+DECL|macro|PDC_PAT_CHASSIS_READ_LOG
+mdefine_line|#define PDC_PAT_CHASSIS_READ_LOG&t;1L /* Read  Log Entry&t;*/
+multiline_comment|/* PDC PAT CPU  */
+DECL|macro|PDC_PAT_CPU
+mdefine_line|#define PDC_PAT_CPU&t;&t;67L&t;/* Interface to CPU configuration&n;&t;&t;&t;&t;&t; * within the protection domain */
+DECL|macro|PDC_PAT_CPU_INFO
+mdefine_line|#define PDC_PAT_CPU_INFO&t;&t;0L /* Return CPU config info&t;*/
+DECL|macro|PDC_PAT_CPU_DELETE
+mdefine_line|#define PDC_PAT_CPU_DELETE&t;&t;1L /* Delete CPU&t;&t;*/
+DECL|macro|PDC_PAT_CPU_ADD
+mdefine_line|#define PDC_PAT_CPU_ADD&t;&t;&t;2L /* Add    CPU&t;&t;*/
+DECL|macro|PDC_PAT_CPU_GET_NUMBER
+mdefine_line|#define PDC_PAT_CPU_GET_NUMBER&t;&t;3L /* Return CPU Number&t;&t;*/
+DECL|macro|PDC_PAT_CPU_GET_HPA
+mdefine_line|#define PDC_PAT_CPU_GET_HPA&t;&t;4L /* Return CPU HPA&t;&t;*/
+DECL|macro|PDC_PAT_CPU_STOP
+mdefine_line|#define PDC_PAT_CPU_STOP            &t;5L /* Stop   CPU&t;&t;*/
+DECL|macro|PDC_PAT_CPU_RENDEZVOUS
+mdefine_line|#define PDC_PAT_CPU_RENDEZVOUS      &t;6L /* Rendezvous CPU&t;&t;*/
+DECL|macro|PDC_PAT_CPU_GET_CLOCK_INFO
+mdefine_line|#define PDC_PAT_CPU_GET_CLOCK_INFO  &t;7L /* Return CPU Clock info&t;*/
+DECL|macro|PDC_PAT_CPU_GET_RENDEZVOUS_STATE
+mdefine_line|#define PDC_PAT_CPU_GET_RENDEZVOUS_STATE 8L /* Return Rendezvous State&t;*/
+DECL|macro|PDC_PAT_CPU_PLUNGE_FABRIC
+mdefine_line|#define PDC_PAT_CPU_PLUNGE_FABRIC&t;128L /* Plunge Fabric&t;&t;*/
+DECL|macro|PDC_PAT_CPU_UPDATE_CACHE_CLEANSING
+mdefine_line|#define PDC_PAT_CPU_UPDATE_CACHE_CLEANSING 129L /* Manipulate Cache &n;                                                 * Cleansing Mode&t;*/
+multiline_comment|/*  PDC PAT EVENT */
+DECL|macro|PDC_PAT_EVENT
+mdefine_line|#define PDC_PAT_EVENT&t;&t;68L&t;/* Interface to Platform Events */
+DECL|macro|PDC_PAT_EVENT_GET_CAPS
+mdefine_line|#define PDC_PAT_EVENT_GET_CAPS&t;&t;0L /* Get Capabilities&t;&t;*/
+DECL|macro|PDC_PAT_EVENT_SET_MODE
+mdefine_line|#define PDC_PAT_EVENT_SET_MODE&t;&t;1L /* Set Notification Mode&t;*/
+DECL|macro|PDC_PAT_EVENT_SCAN
+mdefine_line|#define PDC_PAT_EVENT_SCAN&t;&t;2L /* Scan Event&t;&t;*/
+DECL|macro|PDC_PAT_EVENT_HANDLE
+mdefine_line|#define PDC_PAT_EVENT_HANDLE&t;&t;3L /* Handle Event&t;&t;*/
+DECL|macro|PDC_PAT_EVENT_GET_NB_CALL
+mdefine_line|#define PDC_PAT_EVENT_GET_NB_CALL&t;4L /* Get Non-Blocking call Args*/
+multiline_comment|/*  PDC PAT HPMC */
+DECL|macro|PDC_PAT_HPMC
+mdefine_line|#define PDC_PAT_HPMC&t;&t;70L&t;/* Cause processor to go into spin&n;&t;&t;&t;&t;&t; ** loop, and wait for wake up from&n;&t;&t;&t;&t;&t; ** Monarch Processor&t;&t;*/
+DECL|macro|PDC_PAT_HPMC_RENDEZ_CPU
+mdefine_line|#define PDC_PAT_HPMC_RENDEZ_CPU&t;&t;0L /* go into spin loop&t;&t;*/
+DECL|macro|PDC_PAT_HPMC_SET_PARAMS
+mdefine_line|#define PDC_PAT_HPMC_SET_PARAMS&t;&t;1L /* Allows OS to specify intr which PDC &n;                                        * will use to interrupt OS during machine&n;                                        * check rendezvous&t;&t;*/
+multiline_comment|/* parameters for PDC_PAT_HPMC_SET_PARAMS */
+DECL|macro|HPMC_SET_PARAMS_INTR
+mdefine_line|#define HPMC_SET_PARAMS_INTR&t;&t;1L /* Rendezvous Interrupt&t;*/
+DECL|macro|HPMC_SET_PARAMS_WAKE
+mdefine_line|#define HPMC_SET_PARAMS_WAKE&t;&t;2L /* Wake up processor&t;&t;*/
+multiline_comment|/*  PDC PAT IO */
+DECL|macro|PDC_PAT_IO
+mdefine_line|#define PDC_PAT_IO&t;&t;71L&t;/* On-line services for I/O modules */
+DECL|macro|PDC_PAT_IO_GET_SLOT_STATUS
+mdefine_line|#define PDC_PAT_IO_GET_SLOT_STATUS&t; 5L /* Get Slot Status Info&t;*/
+DECL|macro|PDC_PAT_IO_GET_LOC_FROM_HARDWARE
+mdefine_line|#define PDC_PAT_IO_GET_LOC_FROM_HARDWARE 6L /* Get Physical Location from */
+multiline_comment|/* Hardware Path&t;&t;*/
+DECL|macro|PDC_PAT_IO_GET_HARDWARE_FROM_LOC
+mdefine_line|#define PDC_PAT_IO_GET_HARDWARE_FROM_LOC 7L /* Get Hardware Path from &n;                                             * Physical Location&t;*/
+DECL|macro|PDC_PAT_IO_GET_PCI_CONFIG_FROM_HW
+mdefine_line|#define PDC_PAT_IO_GET_PCI_CONFIG_FROM_HW 11L /* Get PCI Configuration&n;                                               * Address from Hardware Path */
+DECL|macro|PDC_PAT_IO_GET_HW_FROM_PCI_CONFIG
+mdefine_line|#define PDC_PAT_IO_GET_HW_FROM_PCI_CONFIG 12L /* Get Hardware Path &n;                                               * from PCI Configuration Address */
+DECL|macro|PDC_PAT_IO_READ_HOST_BRIDGE_INFO
+mdefine_line|#define PDC_PAT_IO_READ_HOST_BRIDGE_INFO  13L /* Read Host Bridge State Info */
+DECL|macro|PDC_PAT_IO_CLEAR_HOST_BRIDGE_INFO
+mdefine_line|#define PDC_PAT_IO_CLEAR_HOST_BRIDGE_INFO 14L /* Clear Host Bridge State Info*/
+DECL|macro|PDC_PAT_IO_GET_PCI_ROUTING_TABLE_SIZE
+mdefine_line|#define PDC_PAT_IO_GET_PCI_ROUTING_TABLE_SIZE 15L /* Get PCI INT Routing Table &n;                                                   * Size&t;&t;*/
+DECL|macro|PDC_PAT_IO_GET_PCI_ROUTING_TABLE
+mdefine_line|#define PDC_PAT_IO_GET_PCI_ROUTING_TABLE  16L /* Get PCI INT Routing Table */
+DECL|macro|PDC_PAT_IO_GET_HINT_TABLE_SIZE
+mdefine_line|#define PDC_PAT_IO_GET_HINT_TABLE_SIZE    17L /* Get Hint Table Size&t;*/
+DECL|macro|PDC_PAT_IO_GET_HINT_TABLE
+mdefine_line|#define PDC_PAT_IO_GET_HINT_TABLE&t;18L /* Get Hint Table&t;&t;*/
+DECL|macro|PDC_PAT_IO_PCI_CONFIG_READ
+mdefine_line|#define PDC_PAT_IO_PCI_CONFIG_READ&t;19L /* PCI Config Read&t;&t;*/
+DECL|macro|PDC_PAT_IO_PCI_CONFIG_WRITE
+mdefine_line|#define PDC_PAT_IO_PCI_CONFIG_WRITE&t;20L /* PCI Config Write&t;&t;*/
+DECL|macro|PDC_PAT_IO_GET_NUM_IO_SLOTS
+mdefine_line|#define PDC_PAT_IO_GET_NUM_IO_SLOTS&t;21L /* Get Number of I/O Bay Slots in &n;                                       &t;&t;  * Cabinet&t;&t;*/
+DECL|macro|PDC_PAT_IO_GET_LOC_IO_SLOTS
+mdefine_line|#define PDC_PAT_IO_GET_LOC_IO_SLOTS&t;22L /* Get Physical Location of I/O */
+multiline_comment|/* Bay Slots in Cabinet&t;*/
+DECL|macro|PDC_PAT_IO_BAY_STATUS_INFO
+mdefine_line|#define PDC_PAT_IO_BAY_STATUS_INFO&t;28L /* Get I/O Bay Slot Status Info */
+DECL|macro|PDC_PAT_IO_GET_PROC_VIEW
+mdefine_line|#define PDC_PAT_IO_GET_PROC_VIEW&t;29L /* Get Processor view of IO address */
+DECL|macro|PDC_PAT_IO_PROG_SBA_DIR_RANGE
+mdefine_line|#define PDC_PAT_IO_PROG_SBA_DIR_RANGE&t;30L /* Program directed range&t;*/
+multiline_comment|/* PDC PAT MEM */
+DECL|macro|PDC_PAT_MEM
+mdefine_line|#define PDC_PAT_MEM&t;&t;72L  /* Manage memory page deallocation */
+DECL|macro|PDC_PAT_MEM_PD_INFO
+mdefine_line|#define PDC_PAT_MEM_PD_INFO     &t;0L /* Return PDT info for PD&t;*/
+DECL|macro|PDC_PAT_MEM_PD_CLEAR
+mdefine_line|#define PDC_PAT_MEM_PD_CLEAR    &t;1L /* Clear PDT for PD&t;&t;*/
+DECL|macro|PDC_PAT_MEM_PD_READ
+mdefine_line|#define PDC_PAT_MEM_PD_READ     &t;2L /* Read PDT entries for PD&t;*/
+DECL|macro|PDC_PAT_MEM_PD_RESET
+mdefine_line|#define PDC_PAT_MEM_PD_RESET    &t;3L /* Reset clear bit for PD&t;*/
+DECL|macro|PDC_PAT_MEM_CELL_INFO
+mdefine_line|#define PDC_PAT_MEM_CELL_INFO   &t;5L /* Return PDT info For Cell&t;*/
+DECL|macro|PDC_PAT_MEM_CELL_CLEAR
+mdefine_line|#define PDC_PAT_MEM_CELL_CLEAR  &t;6L /* Clear PDT For Cell&t;*/
+DECL|macro|PDC_PAT_MEM_CELL_READ
+mdefine_line|#define PDC_PAT_MEM_CELL_READ   &t;7L /* Read PDT entries For Cell&t;*/
+DECL|macro|PDC_PAT_MEM_CELL_RESET
+mdefine_line|#define PDC_PAT_MEM_CELL_RESET  &t;8L /* Reset clear bit For Cell&t;*/
+DECL|macro|PDC_PAT_MEM_SETGM
+mdefine_line|#define PDC_PAT_MEM_SETGM&t;  &t;9L /* Set Golden Memory value&t;*/
+DECL|macro|PDC_PAT_MEM_ADD_PAGE
+mdefine_line|#define PDC_PAT_MEM_ADD_PAGE    &t;10L /* ADDs a page to the cell&t;*/
+DECL|macro|PDC_PAT_MEM_ADDRESS
+mdefine_line|#define PDC_PAT_MEM_ADDRESS     &t;11L /* Get Physical Location From*/
+multiline_comment|/* Memory Address&t;&t;*/
+DECL|macro|PDC_PAT_MEM_GET_TXT_SIZE
+mdefine_line|#define PDC_PAT_MEM_GET_TXT_SIZE   &t;12L /* Get Formatted Text Size&t;*/
+DECL|macro|PDC_PAT_MEM_GET_PD_TXT
+mdefine_line|#define PDC_PAT_MEM_GET_PD_TXT     &t;13L /* Get PD Formatted Text&t;*/
+DECL|macro|PDC_PAT_MEM_GET_CELL_TXT
+mdefine_line|#define PDC_PAT_MEM_GET_CELL_TXT   &t;14L /* Get Cell Formatted Text&t;*/
+DECL|macro|PDC_PAT_MEM_RD_STATE_INFO
+mdefine_line|#define PDC_PAT_MEM_RD_STATE_INFO  &t;15L /* Read Mem Module State Info*/
+DECL|macro|PDC_PAT_MEM_CLR_STATE_INFO
+mdefine_line|#define PDC_PAT_MEM_CLR_STATE_INFO &t;16L /*Clear Mem Module State Info*/
+DECL|macro|PDC_PAT_MEM_CLEAN_RANGE
+mdefine_line|#define PDC_PAT_MEM_CLEAN_RANGE    &t;128L /*Clean Mem in specific range*/
+DECL|macro|PDC_PAT_MEM_GET_TBL_SIZE
+mdefine_line|#define PDC_PAT_MEM_GET_TBL_SIZE   &t;131L /* Get Memory Table Size&t;*/
+DECL|macro|PDC_PAT_MEM_GET_TBL
+mdefine_line|#define PDC_PAT_MEM_GET_TBL        &t;132L /* Get Memory Table&t;*/
+multiline_comment|/* PDC PAT NVOLATILE */
+DECL|macro|PDC_PAT_NVOLATILE
+mdefine_line|#define PDC_PAT_NVOLATILE&t;73L&t;   /* Access Non-Volatile Memory*/
+DECL|macro|PDC_PAT_NVOLATILE_READ
+mdefine_line|#define PDC_PAT_NVOLATILE_READ&t;&t;0L /* Read Non-Volatile Memory&t;*/
+DECL|macro|PDC_PAT_NVOLATILE_WRITE
+mdefine_line|#define PDC_PAT_NVOLATILE_WRITE&t;&t;1L /* Write Non-Volatile Memory&t;*/
+DECL|macro|PDC_PAT_NVOLATILE_GET_SIZE
+mdefine_line|#define PDC_PAT_NVOLATILE_GET_SIZE&t;2L /* Return size of NVM&t;*/
+DECL|macro|PDC_PAT_NVOLATILE_VERIFY
+mdefine_line|#define PDC_PAT_NVOLATILE_VERIFY&t;3L /* Verify contents of NVM&t;*/
+DECL|macro|PDC_PAT_NVOLATILE_INIT
+mdefine_line|#define PDC_PAT_NVOLATILE_INIT&t;&t;4L /* Initialize NVM&t;&t;*/
+multiline_comment|/* PDC PAT PD */
+DECL|macro|PDC_PAT_PD
+mdefine_line|#define PDC_PAT_PD&t;&t;74L&t;    /* Protection Domain Info&t;*/
+DECL|macro|PDC_PAT_PD_GET_ADDR_MAP
+mdefine_line|#define PDC_PAT_PD_GET_ADDR_MAP&t;&t;0L  /* Get Address Map&t;&t;*/
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP entry types */
+DECL|macro|PAT_MEMORY_DESCRIPTOR
+mdefine_line|#define PAT_MEMORY_DESCRIPTOR&t;&t;1
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP memory types */
+DECL|macro|PAT_MEMTYPE_MEMORY
+mdefine_line|#define PAT_MEMTYPE_MEMORY&t;&t;0
+DECL|macro|PAT_MEMTYPE_FIRMWARE
+mdefine_line|#define PAT_MEMTYPE_FIRMWARE&t;&t;4
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP memory usage */
+DECL|macro|PAT_MEMUSE_GENERAL
+mdefine_line|#define PAT_MEMUSE_GENERAL&t;&t;0
+DECL|macro|PAT_MEMUSE_GI
+mdefine_line|#define PAT_MEMUSE_GI&t;&t;&t;128
+DECL|macro|PAT_MEMUSE_GNI
+mdefine_line|#define PAT_MEMUSE_GNI&t;&t;&t;129
+macro_line|#endif /* __LP64__ */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
+r_extern
+r_int
+id|pdc_type
+suffix:semicolon
+multiline_comment|/* Values for pdc_type */
+DECL|macro|PDC_TYPE_ILLEGAL
+mdefine_line|#define PDC_TYPE_ILLEGAL&t;-1
+DECL|macro|PDC_TYPE_PAT
+mdefine_line|#define PDC_TYPE_PAT&t;&t; 0 /* 64-bit PAT-PDC */
+DECL|macro|PDC_TYPE_SYSTEM_MAP
+mdefine_line|#define PDC_TYPE_SYSTEM_MAP&t; 1 /* 32-bit, but supports PDC_SYSTEM_MAP */
+DECL|macro|PDC_TYPE_SNAKE
+mdefine_line|#define PDC_TYPE_SNAKE&t;&t; 2 /* Doesn&squot;t support SYSTEM_MAP */
+DECL|macro|is_pdc_pat
+mdefine_line|#define is_pdc_pat()    (pdc_type == PDC_TYPE_PAT)
+DECL|struct|pdc_chassis_info
+r_struct
+id|pdc_chassis_info
+(brace
+multiline_comment|/* for PDC_CHASSIS_INFO */
+DECL|member|actcnt
+r_int
+r_int
+id|actcnt
+suffix:semicolon
+multiline_comment|/* actual number of bytes returned */
+DECL|member|maxcnt
+r_int
+r_int
+id|maxcnt
+suffix:semicolon
+multiline_comment|/* maximum number of bytes that could be returned */
+)brace
+suffix:semicolon
+DECL|struct|pdc_coproc_cfg
+r_struct
+id|pdc_coproc_cfg
+(brace
+multiline_comment|/* for PDC_COPROC_CFG */
+DECL|member|ccr_functional
+r_int
+r_int
+id|ccr_functional
+suffix:semicolon
+DECL|member|ccr_present
+r_int
+r_int
+id|ccr_present
+suffix:semicolon
+DECL|member|revision
+r_int
+r_int
+id|revision
+suffix:semicolon
+DECL|member|model
+r_int
+r_int
+id|model
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|pdc_model
 r_struct
 id|pdc_model
@@ -295,127 +827,19 @@ r_int
 r_int
 id|curr_key
 suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|9
-)braket
-suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-macro_line|#if 0
-r_struct
-id|pdc_chassis_warn
-(brace
-multiline_comment|/* for PDC_CHASSIS */
-r_int
-r_int
-id|warn
-suffix:semicolon
-r_int
-r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|1
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|struct|pdc_model_sysmodel
-r_struct
-id|pdc_model_sysmodel
-(brace
-multiline_comment|/* for PDC_MODEL_SYSMODEL */
-DECL|member|mod_len
-r_int
-r_int
-id|mod_len
-suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|1
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|struct|pdc_model_cpuid
-r_struct
-id|pdc_model_cpuid
-(brace
-multiline_comment|/* for PDC_MODEL_CPU_ID */
-DECL|member|cpuid
-r_int
-r_int
-id|cpuid
-suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|1
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* Values for PDC_MODEL_CAPABILITES non-equivalent virtual aliasing support */
+DECL|macro|PDC_MODEL_IOPDIR_FDC
+mdefine_line|#define PDC_MODEL_IOPDIR_FDC            (1 &lt;&lt; 2)        /* see sba_iommu.c */
+DECL|macro|PDC_MODEL_NVA_MASK
+mdefine_line|#define PDC_MODEL_NVA_MASK&t;&t;(3 &lt;&lt; 4)
+DECL|macro|PDC_MODEL_NVA_SUPPORTED
+mdefine_line|#define PDC_MODEL_NVA_SUPPORTED&t;&t;(0 &lt;&lt; 4)
+DECL|macro|PDC_MODEL_NVA_SLOW
+mdefine_line|#define PDC_MODEL_NVA_SLOW&t;&t;(1 &lt;&lt; 4)
+DECL|macro|PDC_MODEL_NVA_UNSUPPORTED
+mdefine_line|#define PDC_MODEL_NVA_UNSUPPORTED&t;(3 &lt;&lt; 4)
 DECL|struct|pdc_cache_cf
 r_struct
 id|pdc_cache_cf
@@ -435,7 +859,7 @@ id|cc_alias
 suffix:colon
 l_int|4
 comma
-multiline_comment|/* alias boundaries for virtual adresses   */
+multiline_comment|/* alias boundaries for virtual addresses   */
 DECL|member|cc_block
 id|cc_block
 suffix:colon
@@ -713,60 +1137,7 @@ r_int
 r_int
 id|dt_loop
 suffix:semicolon
-multiline_comment|/* padded to 32 entries... */
-DECL|member|pad
-r_int
-r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|30
-)braket
-suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|struct|pdc_hpa
-r_struct
-id|pdc_hpa
-(brace
-multiline_comment|/* PDC_HPA */
-DECL|member|hpa
-r_int
-r_int
-id|hpa
-suffix:semicolon
-DECL|member|filler
-r_int
-r_int
-id|filler
-(braket
-l_int|31
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* If you start using the next struct, you&squot;ll have to adjust it to&n; * work with 64-bit firmware I think -PB&n; */
@@ -822,7 +1193,7 @@ id|features
 suffix:semicolon
 r_int
 r_char
-id|filler1
+id|pad1
 suffix:semicolon
 r_int
 r_int
@@ -838,7 +1209,7 @@ l_int|16
 suffix:semicolon
 r_int
 r_int
-id|filler
+id|pad
 (braket
 l_int|15
 )braket
@@ -857,7 +1228,7 @@ l_int|8
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef __LP64__
+macro_line|#ifndef CONFIG_PA20
 multiline_comment|/* no BLTBs in pa2.0 processors */
 DECL|struct|pdc_btlb_info_range
 r_struct
@@ -908,76 +1279,58 @@ r_struct
 id|pdc_btlb_info_range
 id|variable_range_info
 suffix:semicolon
-DECL|member|pad
+)brace
+suffix:semicolon
+macro_line|#endif /* !CONFIG_PA20 */
+macro_line|#ifdef __LP64__
+DECL|struct|pdc_memory_table_raddr
+r_struct
+id|pdc_memory_table_raddr
+(brace
+multiline_comment|/* PDC_MEM/PDC_MEM_TABLE (return info) */
+DECL|member|entries_returned
 r_int
 r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|4
-)braket
+id|entries_returned
+suffix:semicolon
+DECL|member|entries_total
+r_int
+r_int
+id|entries_total
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-macro_line|#endif
-DECL|struct|pdc_tlb
+DECL|struct|pdc_memory_table
 r_struct
-id|pdc_tlb
+id|pdc_memory_table
 (brace
-multiline_comment|/* for PDC_TLB */
-DECL|member|min_size
+multiline_comment|/* PDC_MEM/PDC_MEM_TABLE (arguments) */
+DECL|member|paddr
 r_int
 r_int
-id|min_size
+id|paddr
 suffix:semicolon
-DECL|member|max_size
+DECL|member|pages
 r_int
 r_int
-id|max_size
+id|pages
 suffix:semicolon
-DECL|member|pad
+DECL|member|reserved
 r_int
 r_int
-id|pad
-(braket
-l_int|32
-op_minus
-l_int|2
-)braket
+id|reserved
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|struct|pdc_system_map
+macro_line|#endif /* __LP64__ */
+DECL|struct|pdc_system_map_mod_info
 r_struct
-id|pdc_system_map
+id|pdc_system_map_mod_info
 (brace
-multiline_comment|/* PDC_SYTEM_MAP/FIND_MODULE */
+multiline_comment|/* PDC_SYSTEM_MAP/FIND_MODULE */
 DECL|member|mod_addr
-r_void
-op_star
+r_int
+r_int
 id|mod_addr
 suffix:semicolon
 DECL|member|mod_pgs
@@ -990,31 +1343,28 @@ r_int
 r_int
 id|add_addrs
 suffix:semicolon
-DECL|member|filler
+)brace
+suffix:semicolon
+DECL|struct|pdc_system_map_addr_info
+r_struct
+id|pdc_system_map_addr_info
+(brace
+multiline_comment|/* PDC_SYSTEM_MAP/FIND_ADDRESS */
+DECL|member|mod_addr
 r_int
 r_int
-id|filler
-(braket
-l_int|29
-)braket
+id|mod_addr
+suffix:semicolon
+DECL|member|mod_pgs
+r_int
+r_int
+id|mod_pgs
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-multiline_comment|/*&n; * Device path specifications used by PDC.&n; */
-DECL|struct|pdc_module_path
+DECL|struct|hardware_path
 r_struct
-id|pdc_module_path
+id|hardware_path
 (brace
 DECL|member|flags
 r_char
@@ -1035,6 +1385,18 @@ r_char
 id|mod
 suffix:semicolon
 multiline_comment|/* fixed field of specified module */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Device path specifications used by PDC.&n; */
+DECL|struct|pdc_module_path
+r_struct
+id|pdc_module_path
+(brace
+DECL|member|path
+r_struct
+id|hardware_path
+id|path
+suffix:semicolon
 DECL|member|layers
 r_int
 r_int
@@ -1045,20 +1407,9 @@ l_int|6
 suffix:semicolon
 multiline_comment|/* device-specific info (ctlr #, unit # ...) */
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-macro_line|#ifndef __LP64__
-multiline_comment|/* Probably needs 64-bit porting -PB */
+macro_line|#ifndef CONFIG_PA20
+multiline_comment|/* Only used on some pre-PA2.0 boxes */
 DECL|struct|pdc_memory_map
 r_struct
 id|pdc_memory_map
@@ -1077,47 +1428,6 @@ id|more_pgs
 suffix:semicolon
 multiline_comment|/* number of additional I/O pgs */
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|struct|pdc_lan_station_id
-r_struct
-id|pdc_lan_station_id
-(brace
-multiline_comment|/* PDC_LAN_STATION_ID */
-DECL|member|addr
-r_int
-r_char
-id|addr
-(braket
-id|PDC_LAN_STATION_ID_SIZE
-)braket
-suffix:semicolon
-DECL|member|pad0
-r_int
-r_char
-id|pad0
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|pad1
-r_int
-id|pad1
-(braket
-l_int|30
-)braket
-suffix:semicolon
-)brace
 suffix:semicolon
 macro_line|#endif
 DECL|struct|pdc_tod
@@ -1134,26 +1444,140 @@ r_int
 r_int
 id|tod_usec
 suffix:semicolon
-DECL|member|pad
+)brace
+suffix:semicolon
+macro_line|#ifdef __LP64__
+DECL|struct|pdc_pat_cell_num
+r_struct
+id|pdc_pat_cell_num
+(brace
+DECL|member|cell_num
 r_int
-id|pad
-(braket
-l_int|30
-)braket
+r_int
+id|cell_num
+suffix:semicolon
+DECL|member|cell_loc
+r_int
+r_int
+id|cell_loc
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
+DECL|struct|pdc_pat_cpu_num
+r_struct
+id|pdc_pat_cpu_num
+(brace
+DECL|member|cpu_num
+r_int
+r_int
+id|cpu_num
+suffix:semicolon
+DECL|member|cpu_loc
+r_int
+r_int
+id|cpu_loc
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pdc_pat_pd_addr_map_entry
+r_struct
+id|pdc_pat_pd_addr_map_entry
+(brace
+DECL|member|entry_type
+r_int
+r_char
+id|entry_type
+suffix:semicolon
+multiline_comment|/* 1 = Memory Descriptor Entry Type */
+DECL|member|reserve1
+r_int
+r_char
+id|reserve1
+(braket
+l_int|5
+)braket
+suffix:semicolon
+DECL|member|memory_type
+r_int
+r_char
+id|memory_type
+suffix:semicolon
+DECL|member|memory_usage
+r_int
+r_char
+id|memory_usage
+suffix:semicolon
+DECL|member|paddr
+r_int
+r_int
+id|paddr
+suffix:semicolon
+DECL|member|pages
+r_int
+r_int
+id|pages
+suffix:semicolon
+multiline_comment|/* Length in 4K pages */
+DECL|member|reserve2
+r_int
+r_int
+id|reserve2
+suffix:semicolon
+DECL|member|cell_map
+r_int
+r_int
+id|cell_map
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* FIXME: mod[508] should really be a union of the various mod components */
+DECL|struct|pdc_pat_cell_mod_maddr_block
+r_struct
+id|pdc_pat_cell_mod_maddr_block
+(brace
+multiline_comment|/* PDC_PAT_CELL_MODULE */
+DECL|member|cba
+r_int
+r_int
+id|cba
+suffix:semicolon
+multiline_comment|/* function 0 configuration space address */
+DECL|member|mod_info
+r_int
+r_int
+id|mod_info
+suffix:semicolon
+multiline_comment|/* module information */
+DECL|member|mod_location
+r_int
+r_int
+id|mod_location
+suffix:semicolon
+multiline_comment|/* physical location of the module */
+DECL|member|mod_path
+r_struct
+id|hardware_path
+id|mod_path
+suffix:semicolon
+multiline_comment|/* hardware path */
+DECL|member|mod
+r_int
+r_int
+id|mod
+(braket
+l_int|508
+)braket
+suffix:semicolon
+multiline_comment|/* PAT cell module components */
+)brace
+suffix:semicolon
+DECL|typedef|pdc_pat_cell_mod_maddr_block_t
+r_typedef
+r_struct
+id|pdc_pat_cell_mod_maddr_block
+id|pdc_pat_cell_mod_maddr_block_t
+suffix:semicolon
+macro_line|#endif /* __LP64__ */
 multiline_comment|/* architected results from PDC_PIM/transfer hpmc on a PA1.1 machine */
 DECL|struct|pdc_hpmc_pim_11
 r_struct
@@ -1481,6 +1905,8 @@ mdefine_line|#define ENTRY_INIT_MSG&t;&t;9
 multiline_comment|/* IODC ENTRY_IO() */
 DECL|macro|ENTRY_IO_BOOTIN
 mdefine_line|#define ENTRY_IO_BOOTIN&t;&t;0
+DECL|macro|ENTRY_IO_BOOTOUT
+mdefine_line|#define ENTRY_IO_BOOTOUT&t;1
 DECL|macro|ENTRY_IO_CIN
 mdefine_line|#define ENTRY_IO_CIN&t;&t;2
 DECL|macro|ENTRY_IO_COUT
@@ -1489,6 +1915,10 @@ DECL|macro|ENTRY_IO_CLOSE
 mdefine_line|#define ENTRY_IO_CLOSE&t;&t;4
 DECL|macro|ENTRY_IO_GETMSG
 mdefine_line|#define ENTRY_IO_GETMSG&t;&t;9
+DECL|macro|ENTRY_IO_BBLOCK_IN
+mdefine_line|#define ENTRY_IO_BBLOCK_IN&t;16
+DECL|macro|ENTRY_IO_BBLOCK_OUT
+mdefine_line|#define ENTRY_IO_BBLOCK_OUT&t;17
 multiline_comment|/* IODC ENTRY_SPA() */
 multiline_comment|/* IODC ENTRY_CONFIG() */
 multiline_comment|/* IODC ENTRY_TEST() */
@@ -1497,7 +1927,7 @@ multiline_comment|/* DEFINITION OF THE ZERO-PAGE (PAG0) */
 multiline_comment|/* based on work by Jason Eckhardt (jason@equator.com) */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PAGE0
-mdefine_line|#define&t;PAGE0&t;((struct zeropage *)0xc0000000)
+mdefine_line|#define PAGE0   ((struct zeropage *)__PAGE_OFFSET)
 DECL|struct|zeropage
 r_struct
 id|zeropage
@@ -1702,26 +2132,6 @@ mdefine_line|#define BOOT_CONSOLE_SPA_OFFSET  0x3c4
 DECL|macro|BOOT_CONSOLE_PATH_OFFSET
 mdefine_line|#define BOOT_CONSOLE_PATH_OFFSET 0x3a8
 macro_line|#ifndef __ASSEMBLY__
-DECL|struct|pdc_pat_io_num
-r_struct
-id|pdc_pat_io_num
-(brace
-DECL|member|num
-r_int
-r_int
-id|num
-suffix:semicolon
-DECL|member|reserved
-r_int
-r_int
-id|reserved
-(braket
-l_int|31
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
 r_void
 id|pdc_console_init
 c_func
@@ -1729,65 +2139,80 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|pdc_getc
+multiline_comment|/* in pdc_console.c */
+r_void
+id|pdc_console_restart
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* wait for char */
-r_extern
 r_void
-id|pdc_putc
+id|setup_pdc
 c_func
 (paren
-r_int
-r_char
+r_void
 )paren
 suffix:semicolon
-multiline_comment|/* print char */
+multiline_comment|/* in inventory.c */
 multiline_comment|/* wrapper-functions from pdc.c */
 r_int
 id|pdc_add_valid
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|address
 )paren
 suffix:semicolon
 r_int
-id|pdc_hpa_processor
+id|pdc_chassis_info
 c_func
 (paren
+r_struct
+id|pdc_chassis_info
+op_star
+id|chassis_info
+comma
 r_void
 op_star
-id|address
-)paren
-suffix:semicolon
-macro_line|#if 0
+id|led_info
+comma
 r_int
-id|pdc_hpa_modules
-c_func
-(paren
-r_void
-op_star
-id|address
+r_int
+id|len
 )paren
 suffix:semicolon
-macro_line|#endif
+r_int
+id|pdc_chassis_disp
+c_func
+(paren
+r_int
+r_int
+id|disp
+)paren
+suffix:semicolon
+r_int
+id|pdc_coproc_cfg
+c_func
+(paren
+r_struct
+id|pdc_coproc_cfg
+op_star
+id|pdc_coproc_info
+)paren
+suffix:semicolon
 r_int
 id|pdc_iodc_read
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
-id|address
+id|actcnt
 comma
-r_void
-op_star
+r_int
+r_int
 id|hpa
 comma
 r_int
@@ -1807,16 +2232,34 @@ r_int
 id|pdc_system_map_find_mods
 c_func
 (paren
-r_void
+r_struct
+id|pdc_system_map_mod_info
 op_star
 id|pdc_mod_info
 comma
-r_void
+r_struct
+id|pdc_module_path
 op_star
 id|mod_path
 comma
 r_int
-id|index
+id|mod_index
+)paren
+suffix:semicolon
+r_int
+id|pdc_system_map_find_addrs
+c_func
+(paren
+r_struct
+id|pdc_system_map_addr_info
+op_star
+id|pdc_addr_info
+comma
+r_int
+id|mod_index
+comma
+r_int
+id|addr_index
 )paren
 suffix:semicolon
 r_int
@@ -1842,8 +2285,8 @@ r_int
 id|pdc_model_cpuid
 c_func
 (paren
-r_struct
-id|pdc_model_cpuid
+r_int
+r_int
 op_star
 id|cpu_id
 )paren
@@ -1852,13 +2295,23 @@ r_int
 id|pdc_model_versions
 c_func
 (paren
-r_struct
-id|pdc_model_cpuid
+r_int
+r_int
 op_star
-id|cpu_id
+id|versions
 comma
 r_int
 id|id
+)paren
+suffix:semicolon
+r_int
+id|pdc_model_capabilities
+c_func
+(paren
+r_int
+r_int
+op_star
+id|capabilities
 )paren
 suffix:semicolon
 r_int
@@ -1871,7 +2324,7 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-macro_line|#ifndef __LP64__
+macro_line|#ifndef CONFIG_PA20
 r_int
 id|pdc_btlb_info
 c_func
@@ -1883,6 +2336,22 @@ id|btlb
 )paren
 suffix:semicolon
 r_int
+id|pdc_mem_map_hpa
+c_func
+(paren
+r_struct
+id|pdc_memory_map
+op_star
+id|r_addr
+comma
+r_struct
+id|pdc_module_path
+op_star
+id|mod_path
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_PA20 */
+r_int
 id|pdc_lan_station_id
 c_func
 (paren
@@ -1890,97 +2359,22 @@ r_char
 op_star
 id|lan_addr
 comma
-r_void
-op_star
+r_int
+r_int
 id|net_hpa
 )paren
 suffix:semicolon
-macro_line|#endif
-r_int
-id|pdc_mem_map_hpa
-c_func
-(paren
-r_void
-op_star
-id|r_addr
-comma
-r_void
-op_star
-id|mod_path
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pdc_chassis_disp
-c_func
-(paren
-r_int
-r_int
-id|disp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pdc_chassis_info
-c_func
-(paren
-r_void
-op_star
-id|pdc_result
-comma
-r_void
-op_star
-id|chassis_info
-comma
-r_int
-r_int
-id|len
-)paren
-suffix:semicolon
-macro_line|#ifdef __LP64__
-r_int
-id|pdc_pat_get_irt_size
-c_func
-(paren
-r_void
-op_star
-id|r_addr
-comma
-r_int
-r_int
-id|cell_num
-)paren
-suffix:semicolon
-r_int
-id|pdc_pat_get_irt
-c_func
-(paren
-r_void
-op_star
-id|r_addr
-comma
-r_int
-r_int
-id|cell_num
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* No PAT support for 32-bit kernels...sorry */
-DECL|macro|pdc_pat_get_irt_size
-mdefine_line|#define pdc_pat_get_irt_size(r_addr, cell_numn)&t;PDC_RET_NE_PROC
-DECL|macro|pdc_pat_get_irt
-mdefine_line|#define pdc_pat_get_irt(r_addr, cell_num)&t;PDC_RET_NE_PROC
-macro_line|#endif
 r_int
 id|pdc_pci_irt_size
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
-id|r_addr
+id|num_entries
 comma
-r_void
-op_star
+r_int
+r_int
 id|hpa
 )paren
 suffix:semicolon
@@ -1988,17 +2382,45 @@ r_int
 id|pdc_pci_irt
 c_func
 (paren
-r_void
-op_star
-id|r_addr
+r_int
+r_int
+id|num_entries
 comma
-r_void
-op_star
+r_int
+r_int
 id|hpa
 comma
 r_void
 op_star
 id|tbl
+)paren
+suffix:semicolon
+r_int
+id|pdc_get_initiator
+c_func
+(paren
+r_struct
+id|hardware_path
+op_star
+id|hwpath
+comma
+r_int
+r_char
+op_star
+id|scsi_id
+comma
+r_int
+r_int
+op_star
+id|period
+comma
+r_char
+op_star
+id|width
+comma
+r_char
+op_star
+id|mode
 )paren
 suffix:semicolon
 r_int
@@ -2024,43 +2446,257 @@ r_int
 id|usec
 )paren
 suffix:semicolon
-multiline_comment|/* on all currently-supported platforms, IODC I/O calls are always&n; * 32-bit calls, and MEM_PDC calls are always the same width as the OS.&n; * This means Cxxx boxes can&squot;t run wide kernels right now. -PB&n; *&n; * Note that some PAT boxes may have 64-bit IODC I/O...&n; */
 macro_line|#ifdef __LP64__
-DECL|macro|mem_pdc_call
-macro_line|#   define mem_pdc_call(args...) real64_call(0L, ##args)
-macro_line|#else
-DECL|macro|mem_pdc_call
-macro_line|#   define mem_pdc_call(args...) real32_call(0L, ##args)
+r_int
+id|pdc_mem_mem_table
+c_func
+(paren
+r_struct
+id|pdc_memory_table_raddr
+op_star
+id|r_addr
+comma
+r_struct
+id|pdc_memory_table
+op_star
+id|tbl
+comma
+r_int
+r_int
+id|entries
+)paren
+suffix:semicolon
 macro_line|#endif
-multiline_comment|/* yes &squot;int&squot;, not &squot;long&squot; -- IODC I/O is always 32-bit stuff */
-r_extern
 r_int
-id|real64_call
+id|pdc_do_firm_test_reset
 c_func
 (paren
 r_int
 r_int
-id|function
-comma
-dot
-dot
-dot
+id|ftc_bitmap
 )paren
 suffix:semicolon
-r_extern
 r_int
-id|real32_call
+id|pdc_do_reset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|pdc_soft_power_info
 c_func
 (paren
 r_int
 r_int
-id|function
-comma
-dot
-dot
-dot
+op_star
+id|power_reg
 )paren
 suffix:semicolon
+r_int
+id|pdc_soft_power_button
+c_func
+(paren
+r_int
+id|sw_control
+)paren
+suffix:semicolon
+r_void
+id|pdc_suspend_usb
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|pdc_iodc_getc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|pdc_iodc_putc
+c_func
+(paren
+r_int
+r_char
+id|c
+)paren
+suffix:semicolon
+r_void
+id|pdc_iodc_outc
+c_func
+(paren
+r_int
+r_char
+id|c
+)paren
+suffix:semicolon
+r_void
+id|pdc_emergency_unlock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|pdc_sti_call
+c_func
+(paren
+r_int
+r_int
+id|func
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|inptr
+comma
+r_int
+r_int
+id|outputr
+comma
+r_int
+r_int
+id|glob_cfg
+)paren
+suffix:semicolon
+macro_line|#ifdef __LP64__
+r_int
+id|pdc_pat_chassis_send_log
+c_func
+(paren
+r_int
+r_int
+id|status
+comma
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_cell_get_number
+c_func
+(paren
+r_struct
+id|pdc_pat_cell_num
+op_star
+id|cell_info
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_cell_module
+c_func
+(paren
+r_int
+r_int
+op_star
+id|actcnt
+comma
+r_int
+r_int
+id|ploc
+comma
+r_int
+r_int
+id|mod
+comma
+r_int
+r_int
+id|view_type
+comma
+r_void
+op_star
+id|mem_addr
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_cpu_get_number
+c_func
+(paren
+r_struct
+id|pdc_pat_cpu_num
+op_star
+id|cpu_info
+comma
+r_void
+op_star
+id|hpa
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_get_irt_size
+c_func
+(paren
+r_int
+r_int
+op_star
+id|num_entries
+comma
+r_int
+r_int
+id|cell_num
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_get_irt
+c_func
+(paren
+r_void
+op_star
+id|r_addr
+comma
+r_int
+r_int
+id|cell_num
+)paren
+suffix:semicolon
+r_int
+id|pdc_pat_pd_get_addr_map
+c_func
+(paren
+r_int
+r_int
+op_star
+id|actual_len
+comma
+r_void
+op_star
+id|mem_addr
+comma
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
+multiline_comment|/********************************************************************&n;* PDC_PAT_CELL[Return Cell Module] memaddr[0] conf_base_addr&n;* ----------------------------------------------------------&n;* Bit  0 to 51 - conf_base_addr&n;* Bit 52 to 62 - reserved&n;* Bit       63 - endianess bit&n;********************************************************************/
+DECL|macro|PAT_GET_CBA
+mdefine_line|#define PAT_GET_CBA(value) ((value) &amp; 0xfffffffffffff000UL)
+multiline_comment|/********************************************************************&n;* PDC_PAT_CELL[Return Cell Module] memaddr[1] mod_info&n;* ----------------------------------------------------&n;* Bit  0 to  7 - entity type&n;*    0 = central agent,            1 = processor,&n;*    2 = memory controller,        3 = system bus adapter,&n;*    4 = local bus adapter,        5 = processor bus converter,&n;*    6 = crossbar fabric connect,  7 = fabric interconnect,&n;*    8 to 254 reserved,            255 = unknown.&n;* Bit  8 to 15 - DVI&n;* Bit 16 to 23 - IOC functions&n;* Bit 24 to 39 - reserved&n;* Bit 40 to 63 - mod_pages&n;*    number of 4K pages a module occupies starting at conf_base_addr&n;********************************************************************/
+DECL|macro|PAT_GET_ENTITY
+mdefine_line|#define PAT_GET_ENTITY(value)&t;(((value) &gt;&gt; 56) &amp; 0xffUL)
+DECL|macro|PAT_GET_DVI
+mdefine_line|#define PAT_GET_DVI(value)&t;(((value) &gt;&gt; 48) &amp; 0xffUL)
+DECL|macro|PAT_GET_IOC
+mdefine_line|#define PAT_GET_IOC(value)&t;(((value) &gt;&gt; 40) &amp; 0xffUL)
+DECL|macro|PAT_GET_MOD_PAGES
+mdefine_line|#define PAT_GET_MOD_PAGES(value)(((value) &amp; 0xffffffUL)
+macro_line|#else /* !__LP64__ */
+multiline_comment|/* No PAT support for 32-bit kernels...sorry */
+DECL|macro|pdc_pat_get_irt_size
+mdefine_line|#define pdc_pat_get_irt_size(num_entries, cell_numn)&t;PDC_BAD_PROC
+DECL|macro|pdc_pat_get_irt
+mdefine_line|#define pdc_pat_get_irt(r_addr, cell_num)&t;PDC_BAD_PROC
+macro_line|#endif /* !__LP64__ */
 r_extern
 r_void
 id|pdc_init

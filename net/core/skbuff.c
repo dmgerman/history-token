@@ -20,6 +20,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|sysctl_hot_list_len
@@ -639,6 +640,10 @@ id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -689,6 +694,12 @@ macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 id|skb-&gt;nf_debug
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|skb-&gt;nf_bridge
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
@@ -985,6 +996,12 @@ c_func
 id|skb-&gt;dst
 )paren
 suffix:semicolon
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1029,6 +1046,14 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_put
+c_func
+(paren
+id|skb-&gt;nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|skb_headerinit
 c_func
@@ -1158,6 +1183,18 @@ id|dst_clone
 c_func
 (paren
 id|n-&gt;dst
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
+id|sp
+)paren
+suffix:semicolon
+id|secpath_get
+c_func
+(paren
+id|n-&gt;sp
 )paren
 suffix:semicolon
 id|memcpy
@@ -1295,6 +1332,14 @@ id|nf_debug
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|C
+c_func
+(paren
+id|nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /*CONFIG_NETFILTER*/
 macro_line|#if defined(CONFIG_HIPPI)
 id|C
@@ -1338,6 +1383,14 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_get
+c_func
+(paren
+id|skb-&gt;nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 id|n
@@ -1410,6 +1463,16 @@ id|dst_clone
 c_func
 (paren
 id|old-&gt;dst
+)paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|sp
+op_assign
+id|secpath_get
+c_func
+(paren
+id|old-&gt;sp
 )paren
 suffix:semicolon
 r_new
@@ -1519,6 +1582,22 @@ op_member_access_from_pointer
 id|nf_debug
 op_assign
 id|old-&gt;nf_debug
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+r_new
+op_member_access_from_pointer
+id|nf_bridge
+op_assign
+id|old-&gt;nf_bridge
+suffix:semicolon
+id|nf_bridge_get
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|nf_bridge
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif

@@ -17,8 +17,6 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;acsi_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -61,6 +59,10 @@ r_struct
 id|request_queue
 id|acsi_queue
 suffix:semicolon
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;acsi_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;acsi_queue)
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 DECL|macro|DEBUG_DETECT

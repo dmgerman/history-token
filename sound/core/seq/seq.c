@@ -12,9 +12,9 @@ macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_system.h&quot;
 macro_line|#include &quot;seq_info.h&quot;
 macro_line|#include &lt;sound/seq_device.h&gt;
-DECL|variable|snd_seq_client_load
+DECL|variable|seq_client_load
 r_int
-id|snd_seq_client_load
+id|seq_client_load
 (braket
 l_int|64
 )braket
@@ -32,40 +32,40 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_class
+DECL|variable|seq_default_timer_class
 r_int
-id|snd_seq_default_timer_class
+id|seq_default_timer_class
 op_assign
 id|SNDRV_TIMER_CLASS_GLOBAL
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_sclass
+DECL|variable|seq_default_timer_sclass
 r_int
-id|snd_seq_default_timer_sclass
+id|seq_default_timer_sclass
 op_assign
 id|SNDRV_TIMER_SCLASS_NONE
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_card
+DECL|variable|seq_default_timer_card
 r_int
-id|snd_seq_default_timer_card
+id|seq_default_timer_card
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_device
+DECL|variable|seq_default_timer_device
 r_int
-id|snd_seq_default_timer_device
+id|seq_default_timer_device
 op_assign
 id|SNDRV_TIMER_GLOBAL_SYSTEM
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_subdevice
+DECL|variable|seq_default_timer_subdevice
 r_int
-id|snd_seq_default_timer_subdevice
+id|seq_default_timer_subdevice
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|snd_seq_default_timer_resolution
+DECL|variable|seq_default_timer_resolution
 r_int
-id|snd_seq_default_timer_resolution
+id|seq_default_timer_resolution
 op_assign
 l_int|0
 suffix:semicolon
@@ -103,7 +103,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_client_load
+id|seq_client_load
 comma
 l_string|&quot;1-64i&quot;
 )paren
@@ -111,7 +111,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_client_load
+id|seq_client_load
 comma
 l_string|&quot;The numbers of global (system) clients to load through kmod.&quot;
 )paren
@@ -119,7 +119,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_class
+id|seq_default_timer_class
 comma
 l_string|&quot;i&quot;
 )paren
@@ -127,7 +127,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_class
+id|seq_default_timer_class
 comma
 l_string|&quot;The default timer class.&quot;
 )paren
@@ -135,7 +135,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_sclass
+id|seq_default_timer_sclass
 comma
 l_string|&quot;i&quot;
 )paren
@@ -143,7 +143,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_sclass
+id|seq_default_timer_sclass
 comma
 l_string|&quot;The default timer slave class.&quot;
 )paren
@@ -151,7 +151,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_card
+id|seq_default_timer_card
 comma
 l_string|&quot;i&quot;
 )paren
@@ -159,7 +159,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_card
+id|seq_default_timer_card
 comma
 l_string|&quot;The default timer card number.&quot;
 )paren
@@ -167,7 +167,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_device
+id|seq_default_timer_device
 comma
 l_string|&quot;i&quot;
 )paren
@@ -175,7 +175,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_device
+id|seq_default_timer_device
 comma
 l_string|&quot;The default timer device number.&quot;
 )paren
@@ -183,7 +183,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_subdevice
+id|seq_default_timer_subdevice
 comma
 l_string|&quot;i&quot;
 )paren
@@ -191,7 +191,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_subdevice
+id|seq_default_timer_subdevice
 comma
 l_string|&quot;The default timer subdevice number.&quot;
 )paren
@@ -199,7 +199,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_seq_default_timer_resolution
+id|seq_default_timer_resolution
 comma
 l_string|&quot;i&quot;
 )paren
@@ -207,7 +207,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_seq_default_timer_resolution
+id|seq_default_timer_resolution
 comma
 l_string|&quot;The default timer resolution in Hz.&quot;
 )paren

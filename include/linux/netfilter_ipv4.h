@@ -75,6 +75,12 @@ op_assign
 op_minus
 l_int|200
 comma
+DECL|enumerator|NF_IP_PRI_BRIDGE_SABOTAGE_FORWARD
+id|NF_IP_PRI_BRIDGE_SABOTAGE_FORWARD
+op_assign
+op_minus
+l_int|175
+comma
 DECL|enumerator|NF_IP_PRI_MANGLE
 id|NF_IP_PRI_MANGLE
 op_assign
@@ -86,6 +92,12 @@ id|NF_IP_PRI_NAT_DST
 op_assign
 op_minus
 l_int|100
+comma
+DECL|enumerator|NF_IP_PRI_BRIDGE_SABOTAGE_LOCAL_OUT
+id|NF_IP_PRI_BRIDGE_SABOTAGE_LOCAL_OUT
+op_assign
+op_minus
+l_int|50
 comma
 DECL|enumerator|NF_IP_PRI_FILTER
 id|NF_IP_PRI_FILTER

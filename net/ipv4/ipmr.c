@@ -4777,6 +4777,11 @@ id|fl
 op_assign
 (brace
 dot
+id|oif
+op_assign
+id|vif-&gt;link
+comma
+dot
 id|nl_u
 op_assign
 (brace
@@ -4806,9 +4811,9 @@ id|iph-&gt;tos
 )brace
 comma
 dot
-id|oif
+id|proto
 op_assign
-id|vif-&gt;link
+id|IPPROTO_IPIP
 )brace
 suffix:semicolon
 r_if
@@ -4843,6 +4848,11 @@ id|fl
 op_assign
 (brace
 dot
+id|oif
+op_assign
+id|vif-&gt;link
+comma
+dot
 id|nl_u
 op_assign
 (brace
@@ -4867,9 +4877,9 @@ id|iph-&gt;tos
 )brace
 comma
 dot
-id|oif
+id|proto
 op_assign
-id|vif-&gt;link
+id|IPPROTO_IPIP
 )brace
 suffix:semicolon
 r_if

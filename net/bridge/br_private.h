@@ -543,6 +543,17 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|br_dev_queue_push_xmit
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|br_forward
 c_func
@@ -552,6 +563,17 @@ id|net_bridge_port
 op_star
 id|to
 comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|br_forward_finish
+c_func
+(paren
 r_struct
 id|sk_buff
 op_star
@@ -680,6 +702,17 @@ suffix:semicolon
 multiline_comment|/* br_input.c */
 r_extern
 r_int
+id|br_handle_frame_finish
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|br_handle_frame
 c_func
 (paren
@@ -740,6 +773,23 @@ c_func
 r_int
 r_int
 id|arg
+)paren
+suffix:semicolon
+multiline_comment|/* br_netfilter.c */
+r_extern
+r_int
+id|br_netfilter_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_netfilter_fini
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp.c */

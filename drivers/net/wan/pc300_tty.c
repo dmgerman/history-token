@@ -2997,7 +2997,13 @@ c_func
 (paren
 id|cpc_tty-&gt;tty
 comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|buf-&gt;data
+)paren
 comma
 op_amp
 id|flags

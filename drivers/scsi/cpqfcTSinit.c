@@ -27,9 +27,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 singleline_comment|// ioctl related
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &quot;sd.h&quot;
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
 macro_line|#include &quot;cpqfcTStrigger.h&quot;
@@ -5359,14 +5359,18 @@ r_int
 id|cpqfcTS_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|n
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -5377,7 +5381,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ENTER
 c_func

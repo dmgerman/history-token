@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Driver for Philips UDA1341TS on Compaq iPAQ H3600 soundcard&n; *  Copyright (C) 2002 Tomas Kasparek &lt;tomas.kasparek@seznam.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License.&n; * &n; * History:&n; *&n; * 2002-03-13&t;Tomas Kasparek&t;Initial release - based on h3600-uda1341.c from OSS&n; * 2002-03-20   Tomas Kasparek  playback over ALSA is working&n; * 2002-03-28   Tomas Kasparek  playback over OSS emulation is working&n; * 2002-03-29   Tomas Kasparek  basic capture is working (native ALSA)&n; * 2002-03-29   Tomas Kasparek  capture is working (OSS emulation)&n; * 2002-04-04   Tomas Kasparek  better rates handling (allow non-standard rates)&n; */
-multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.4 2002/08/06 18:03:25 perex Exp $ */
+multiline_comment|/* $Id: sa11xx-uda1341.c,v 1.5 2002/10/21 18:28:19 perex Exp $ */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -49,11 +49,11 @@ c_func
 l_string|&quot;{{UDA1341,iPAQ H3600 UDA1341TS}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -61,7 +61,7 @@ multiline_comment|/* ID for this card */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;s&quot;
 )paren
@@ -69,7 +69,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for SA1100/SA1111 + UDA1341TS soundcard.&quot;
 )paren
@@ -3575,7 +3575,7 @@ c_func
 op_minus
 l_int|1
 comma
-id|snd_id
+id|id
 comma
 id|THIS_MODULE
 comma

@@ -12,36 +12,49 @@ id|ipc64_perm
 id|shm_perm
 suffix:semicolon
 multiline_comment|/* operation perms */
+macro_line|#ifndef __LP64__
 DECL|member|__pad1
 r_int
 r_int
 id|__pad1
 suffix:semicolon
+macro_line|#endif
 DECL|member|shm_atime
 id|__kernel_time_t
 id|shm_atime
 suffix:semicolon
 multiline_comment|/* last attach time */
+macro_line|#ifndef __LP64__
 DECL|member|__pad2
 r_int
 r_int
 id|__pad2
 suffix:semicolon
+macro_line|#endif
 DECL|member|shm_dtime
 id|__kernel_time_t
 id|shm_dtime
 suffix:semicolon
 multiline_comment|/* last detach time */
+macro_line|#ifndef __LP64__
 DECL|member|__pad3
 r_int
 r_int
 id|__pad3
 suffix:semicolon
+macro_line|#endif
 DECL|member|shm_ctime
 id|__kernel_time_t
 id|shm_ctime
 suffix:semicolon
 multiline_comment|/* last change time */
+macro_line|#ifndef __LP64__
+DECL|member|__pad4
+r_int
+r_int
+id|__pad4
+suffix:semicolon
+macro_line|#endif
 DECL|member|shm_segsz
 r_int
 id|shm_segsz
@@ -76,8 +89,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __LP64__
-macro_line|#warning shminfo64 is an undocumented struct
-multiline_comment|/* The &squot;unsigned int&squot; (formerly &squot;unsigned long&squot;) data types below will&n; * ensure that a 32-bit app calling shmctl(*,IPC_INFO,*) will work on&n; * a wide kernel, but if some of these values are meant to contain pointers&n; * they may need to be &squot;long long&squot; instead. -PB&n; */
+multiline_comment|/* The &squot;unsigned int&squot; (formerly &squot;unsigned long&squot;) data types below will&n; * ensure that a 32-bit app calling shmctl(*,IPC_INFO,*) will work on&n; * a wide kernel, but if some of these values are meant to contain pointers&n; * they may need to be &squot;long long&squot; instead. -PB XXX FIXME&n; */
 macro_line|#endif
 DECL|struct|shminfo64
 r_struct

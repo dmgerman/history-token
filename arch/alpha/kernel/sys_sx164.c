@@ -463,7 +463,7 @@ comma
 dot
 id|kill_arch
 op_assign
-l_int|NULL
+id|cia_kill_arch
 comma
 dot
 id|pci_map_irq

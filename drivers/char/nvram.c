@@ -70,6 +70,8 @@ DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(x)&t;&t;(TT_RTC_BAS + 2*(x))
 DECL|macro|CHECK_DRIVER_INIT
 mdefine_line|#define CHECK_DRIVER_INIT()&t;(MACH_IS_ATARI &amp;&amp; ATARIHW_PRESENT(TT_CLK))
+DECL|macro|NVRAM_BYTES
+mdefine_line|#define NVRAM_BYTES&t;&t;50
 multiline_comment|/* On Ataris, the checksum is over all bytes except the checksum bytes&n; * themselves; these are at the very end */
 DECL|macro|ATARI_CKS_RANGE_START
 mdefine_line|#define ATARI_CKS_RANGE_START&t;0

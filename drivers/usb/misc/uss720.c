@@ -2715,12 +2715,12 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -2767,7 +2767,7 @@ c_func
 (paren
 id|usbdev
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|2
 )paren
@@ -2972,9 +2972,9 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;uss720: epaddr %d interval %d&bslash;n&quot;
 comma
-id|endpoint-&gt;bEndpointAddress
+id|endpoint-&gt;desc.bEndpointAddress
 comma
-id|endpoint-&gt;bInterval
+id|endpoint-&gt;desc.bInterval
 )paren
 suffix:semicolon
 macro_line|#if 0

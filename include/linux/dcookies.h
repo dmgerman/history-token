@@ -44,7 +44,8 @@ id|vfsmount
 op_star
 id|vfsmnt
 comma
-id|u32
+r_int
+r_int
 op_star
 id|cookie
 )paren
@@ -95,7 +96,8 @@ id|vfsmount
 op_star
 id|vfsmnt
 comma
-id|u32
+r_int
+r_int
 op_star
 id|cookie
 )paren

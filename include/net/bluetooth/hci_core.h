@@ -3,6 +3,7 @@ multiline_comment|/* &n; * $Id: hci_core.h,v 1.3 2002/04/17 18:55:21 maxk Exp $ 
 macro_line|#ifndef __HCI_CORE_H
 DECL|macro|__HCI_CORE_H
 mdefine_line|#define __HCI_CORE_H
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
 multiline_comment|/* HCI upper protocols */
 DECL|macro|HCI_PROTO_L2CAP
@@ -11,6 +12,12 @@ DECL|macro|HCI_PROTO_SCO
 mdefine_line|#define HCI_PROTO_SCO&t;1
 DECL|macro|HCI_INIT_TIMEOUT
 mdefine_line|#define HCI_INIT_TIMEOUT (HZ * 10)
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_bt_hci
+suffix:semicolon
 multiline_comment|/* HCI Core structures */
 DECL|struct|inquiry_entry
 r_struct
@@ -264,6 +271,14 @@ DECL|member|promisc
 id|atomic_t
 id|promisc
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|member|proc
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
+macro_line|#endif
 DECL|member|open
 r_int
 (paren
@@ -453,11 +468,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|list_head
-id|hdev_list
+id|hci_dev_list
 suffix:semicolon
 r_extern
 id|rwlock_t
-id|hdev_list_lock
+id|hci_dev_list_lock
 suffix:semicolon
 multiline_comment|/* ----- Inquiry cache ----- */
 DECL|macro|INQUIRY_CACHE_AGE_MAX
@@ -1509,6 +1524,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_int
+id|hci_dev_proc_init
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+)paren
+suffix:semicolon
+r_void
+id|hci_dev_proc_cleanup
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+)paren
+suffix:semicolon
 multiline_comment|/* ----- LMP capabilities ----- */
 DECL|macro|lmp_rswitch_capable
 mdefine_line|#define lmp_rswitch_capable(dev) (dev-&gt;features[0] &amp; LMP_RSWITCH)

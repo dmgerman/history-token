@@ -229,6 +229,8 @@ DECL|macro|SHM_DEST
 mdefine_line|#define&t;SHM_DEST&t;01000&t;/* segment will be destroyed on last detach */
 DECL|macro|SHM_LOCKED
 mdefine_line|#define SHM_LOCKED      02000   /* segment will not be swapped */
+DECL|macro|SHM_HUGETLB
+mdefine_line|#define SHM_HUGETLB     04000   /* segment will use huge TLB pages */
 id|asmlinkage
 r_int
 id|sys_shmget

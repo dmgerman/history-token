@@ -165,7 +165,7 @@ r_struct
 id|ConfigDev
 id|cd
 suffix:semicolon
-r_int
+id|loff_t
 id|pos
 op_assign
 op_star

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#include &lt;asm/numnodes.h&gt;
@@ -64,6 +65,55 @@ macro_line|#else
 DECL|macro|ZONE_PADDING
 mdefine_line|#define ZONE_PADDING(name)
 macro_line|#endif
+DECL|struct|per_cpu_pages
+r_struct
+id|per_cpu_pages
+(brace
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* number of pages in the list */
+DECL|member|low
+r_int
+id|low
+suffix:semicolon
+multiline_comment|/* low watermark, refill needed */
+DECL|member|high
+r_int
+id|high
+suffix:semicolon
+multiline_comment|/* high watermark, emptying needed */
+DECL|member|batch
+r_int
+id|batch
+suffix:semicolon
+multiline_comment|/* chunk size for buddy add/remove */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* the list of pages */
+)brace
+suffix:semicolon
+DECL|struct|per_cpu_pageset
+r_struct
+id|per_cpu_pageset
+(brace
+DECL|member|pcp
+r_struct
+id|per_cpu_pages
+id|pcp
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0: hot.  1: cold */
+DECL|variable|____cacheline_aligned_in_smp
+)brace
+id|____cacheline_aligned_in_smp
+suffix:semicolon
 multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone
 r_struct
@@ -150,6 +200,18 @@ DECL|member|wait_table_bits
 r_int
 r_int
 id|wait_table_bits
+suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad3_
+)paren
+r_struct
+id|per_cpu_pageset
+id|pageset
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Discontig memory support fields.&n;&t; */
 DECL|member|zone_pgdat
@@ -470,6 +532,155 @@ multiline_comment|/* page-&gt;zone is currently 8 bits ... */
 DECL|macro|MAX_NR_NODES
 mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+r_extern
+id|DECLARE_BITMAP
+c_func
+(paren
+id|node_online_map
+comma
+id|MAX_NUMNODES
+)paren
+suffix:semicolon
+r_extern
+id|DECLARE_BITMAP
+c_func
+(paren
+id|memblk_online_map
+comma
+id|MAX_NR_MEMBLKS
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_DISCONTIGMEM) || defined(CONFIG_NUMA)
+DECL|macro|node_online
+mdefine_line|#define node_online(node)&t;test_bit(node, node_online_map)
+DECL|macro|node_set_online
+mdefine_line|#define node_set_online(node)&t;set_bit(node, node_online_map)
+DECL|macro|node_set_offline
+mdefine_line|#define node_set_offline(node)&t;clear_bit(node, node_online_map)
+DECL|function|num_online_nodes
+r_static
+r_inline
+r_int
+r_int
+id|num_online_nodes
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|num
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_NUMNODES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|node_online
+c_func
+(paren
+id|i
+)paren
+)paren
+id|num
+op_increment
+suffix:semicolon
+)brace
+r_return
+id|num
+suffix:semicolon
+)brace
+DECL|macro|memblk_online
+mdefine_line|#define memblk_online(memblk)&t;&t;test_bit(memblk, memblk_online_map)
+DECL|macro|memblk_set_online
+mdefine_line|#define memblk_set_online(memblk)&t;set_bit(memblk, memblk_online_map)
+DECL|macro|memblk_set_offline
+mdefine_line|#define memblk_set_offline(memblk)&t;clear_bit(memblk, memblk_online_map)
+DECL|function|num_online_memblks
+r_static
+r_inline
+r_int
+r_int
+id|num_online_memblks
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|num
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_NR_MEMBLKS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|memblk_online
+c_func
+(paren
+id|i
+)paren
+)paren
+id|num
+op_increment
+suffix:semicolon
+)brace
+r_return
+id|num
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_DISCONTIGMEM &amp;&amp; !CONFIG_NUMA */
+DECL|macro|node_online
+mdefine_line|#define node_online(node) &bslash;&n;&t;({ BUG_ON((node) != 0); test_bit(node, node_online_map); })
+DECL|macro|node_set_online
+mdefine_line|#define node_set_online(node) &bslash;&n;&t;({ BUG_ON((node) != 0); set_bit(node, node_online_map); })
+DECL|macro|node_set_offline
+mdefine_line|#define node_set_offline(node) &bslash;&n;&t;({ BUG_ON((node) != 0); clear_bit(node, node_online_map); })
+DECL|macro|num_online_nodes
+mdefine_line|#define num_online_nodes()&t;1
+DECL|macro|memblk_online
+mdefine_line|#define memblk_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); test_bit(memblk, memblk_online_map); })
+DECL|macro|memblk_set_online
+mdefine_line|#define memblk_set_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); set_bit(memblk, memblk_online_map); })
+DECL|macro|memblk_set_offline
+mdefine_line|#define memblk_set_offline(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); clear_bit(memblk, memblk_online_map); })
+DECL|macro|num_online_memblks
+mdefine_line|#define num_online_memblks()&t;&t;1
+macro_line|#endif /* CONFIG_DISCONTIGMEM || CONFIG_NUMA */
 DECL|macro|MAP_ALIGN
 mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(struct page)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(struct page) - ((x) % sizeof(struct page))))
 macro_line|#endif /* !__ASSEMBLY__ */

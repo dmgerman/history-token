@@ -1,7 +1,7 @@
 macro_line|#ifndef _PARISC_CURRENT_H
 DECL|macro|_PARISC_CURRENT_H
 mdefine_line|#define _PARISC_CURRENT_H
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon
@@ -17,41 +17,13 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|current
-suffix:semicolon
-id|asm
+r_return
+id|current_thread_info
 c_func
 (paren
-l_string|&quot;copy 30,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|current
 )paren
-)paren
-suffix:semicolon
-r_return
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-(paren
-(paren
-r_int
-)paren
-id|current
-op_amp
-op_complement
-(paren
-id|THREAD_SIZE
-op_minus
-l_int|1
-)paren
-)paren
+op_member_access_from_pointer
+id|task
 suffix:semicolon
 )brace
 DECL|macro|current

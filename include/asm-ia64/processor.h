@@ -73,6 +73,9 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#include &lt;asm/nodedata.h&gt;
+macro_line|#endif
 multiline_comment|/* like above but expressed as bitfields for more efficient access: */
 DECL|struct|ia64_psr
 r_struct
@@ -459,6 +462,14 @@ suffix:semicolon
 DECL|member|prof_multiplier
 id|__u64
 id|prof_multiplier
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+DECL|member|node_data
+r_struct
+id|ia64_node_data
+op_star
+id|node_data
 suffix:semicolon
 macro_line|#endif
 )brace

@@ -35,10 +35,10 @@ DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP( A... )
 macro_line|#endif
 macro_line|#ifndef CONFIG_BT_USB_ZERO_PACKET
-DECL|macro|USB_ZERO_PACKET
-macro_line|#undef  USB_ZERO_PACKET
-DECL|macro|USB_ZERO_PACKET
-mdefine_line|#define USB_ZERO_PACKET 0
+DECL|macro|URB_ZERO_PACKET
+macro_line|#undef  URB_ZERO_PACKET
+DECL|macro|URB_ZERO_PACKET
+mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
 DECL|variable|hci_usb_driver
 r_static
@@ -336,7 +336,7 @@ id|pipe
 )paren
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|urb
@@ -574,7 +574,7 @@ comma
 id|husb-&gt;bulk_in_ep
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -1156,7 +1156,7 @@ c_func
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|urb
@@ -1334,7 +1334,7 @@ comma
 id|husb-&gt;bulk_out_ep
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -1354,7 +1354,7 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -1874,6 +1874,9 @@ id|len
 op_assign
 id|HCI_EVENT_HDR_SIZE
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
@@ -1901,11 +1904,62 @@ id|husb-&gt;hdev.flags
 )paren
 r_return
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
-op_logical_or
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;%s urb shutting down with status: %d&quot;
+comma
+id|husb-&gt;hdev.name
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;%s nonzero urb status received: %d&quot;
+comma
+id|husb-&gt;hdev.name
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|count
 )paren
@@ -1922,7 +1976,8 @@ comma
 id|count
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|read_lock
@@ -2128,7 +2183,8 @@ op_amp
 id|husb-&gt;completion_lock
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 id|bad_len
 suffix:colon
@@ -2152,6 +2208,31 @@ c_func
 (paren
 op_amp
 id|husb-&gt;completion_lock
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|BT_ERR
+(paren
+l_string|&quot;%s usb_submit_urb failed with result %d&quot;
+comma
+id|husb-&gt;hdev.name
+comma
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -2642,7 +2723,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|bulk_out_ep
 (braket
@@ -2650,7 +2731,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|isoc_out_ep
 (braket
@@ -2658,7 +2739,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|bulk_in_ep
 (braket
@@ -2666,7 +2747,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|isoc_in_ep
 (braket
@@ -2674,7 +2755,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|intr_in_ep
 (braket
@@ -2682,12 +2763,12 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|uif
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2757,7 +2838,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OL
 l_int|3
 )paren
@@ -2853,7 +2934,7 @@ c_func
 r_int
 r_int
 comma
-id|udev-&gt;actconfig-&gt;bNumInterfaces
+id|udev-&gt;actconfig-&gt;desc.bNumInterfaces
 comma
 id|HCI_MAX_IFACE_NUM
 )paren
@@ -2913,7 +2994,7 @@ l_int|0
 suffix:semicolon
 id|e
 OL
-id|uif-&gt;bNumEndpoints
+id|uif-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|e
 op_increment
@@ -2930,7 +3011,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ep-&gt;bmAttributes
+id|ep-&gt;desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2941,7 +3022,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -2960,7 +3041,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -2987,7 +3068,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;wMaxPacketSize
+id|ep-&gt;desc.wMaxPacketSize
 OL
 id|size
 )paren
@@ -2995,7 +3076,7 @@ r_break
 suffix:semicolon
 id|size
 op_assign
-id|ep-&gt;wMaxPacketSize
+id|ep-&gt;desc.wMaxPacketSize
 suffix:semicolon
 id|isoc_iface
 op_assign
@@ -3012,7 +3093,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3152,7 +3233,7 @@ id|bulk_out_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;bulk_in_ep
 op_assign
@@ -3161,7 +3242,7 @@ id|bulk_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;intr_ep
 op_assign
@@ -3170,7 +3251,7 @@ id|intr_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;intr_interval
 op_assign
@@ -3179,7 +3260,7 @@ id|intr_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bInterval
+id|desc.bInterval
 suffix:semicolon
 r_if
 c_cond
@@ -3234,7 +3315,7 @@ id|isoc_in_ep
 l_int|1
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;isoc_out_ep
 op_assign
@@ -3243,7 +3324,7 @@ id|isoc_in_ep
 l_int|1
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 )brace
 id|husb-&gt;completion_lock
@@ -3502,15 +3583,9 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth HCI USB driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;HCI USB driver ver %s&quot;
 comma
 id|VERSION
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 r_if

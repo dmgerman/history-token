@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * proc_llc.c - proc interface for LLC&n; *&n; * Copyright (c) 2001 by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&t;&t; 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/llc_c_ac.h&gt;
@@ -13,7 +14,6 @@ macro_line|#include &lt;net/llc_conn.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_sap.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|llc_ui_format_mac
 r_static
 r_void
@@ -72,7 +72,6 @@ suffix:semicolon
 )brace
 DECL|function|llc_get_sk_idx
 r_static
-id|__inline__
 r_struct
 id|sock
 op_star
@@ -136,22 +135,18 @@ id|sk
 op_assign
 id|sap-&gt;sk_list.list
 suffix:semicolon
-id|pos
-op_logical_and
 id|sk
 suffix:semicolon
 id|sk
 op_assign
 id|sk-&gt;next
 )paren
-op_decrement
-id|pos
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|pos
+op_decrement
 )paren
 (brace
 r_if
@@ -167,7 +162,8 @@ op_amp
 id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
-r_break
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|read_unlock_bh
@@ -178,6 +174,8 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_return
 id|sk
 suffix:semicolon
@@ -282,48 +280,13 @@ op_star
 l_int|1
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|list_empty
-c_func
-(paren
-op_amp
-id|llc_main_station.sap_list.list
-)paren
-)paren
-(brace
 id|sk
 op_assign
-l_int|NULL
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|sap
-op_assign
-id|list_entry
+id|llc_get_sk_idx
 c_func
 (paren
-id|llc_main_station.sap_list.list.next
-comma
-r_struct
-id|llc_sap
-comma
-id|node
+l_int|0
 )paren
-suffix:semicolon
-id|read_lock_bh
-c_func
-(paren
-op_amp
-id|sap-&gt;sk_list.lock
-)paren
-suffix:semicolon
-id|sk
-op_assign
-id|sap-&gt;sk_list.list
 suffix:semicolon
 r_goto
 id|out
@@ -450,6 +413,45 @@ op_star
 id|v
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|v
+)paren
+(brace
+r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|v
+suffix:semicolon
+r_struct
+id|llc_opt
+op_star
+id|llc
+op_assign
+id|llc_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
+id|llc_sap
+op_star
+id|sap
+op_assign
+id|llc-&gt;sap
+suffix:semicolon
+id|read_unlock_bh
+c_func
+(paren
+op_amp
+id|sap-&gt;sk_list.lock
+)paren
+suffix:semicolon
+)brace
 id|read_unlock_bh
 c_func
 (paren

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/fat_cvf.h&gt;
 DECL|variable|fat_new_dir
 id|EXPORT_SYMBOL
 c_func
@@ -44,13 +43,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|fat__get_entry
-)paren
-suffix:semicolon
-DECL|variable|fat_mark_buffer_dirty
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fat_mark_buffer_dirty
 )paren
 suffix:semicolon
 DECL|variable|fat_notify_change
@@ -130,20 +122,6 @@ c_func
 id|fat_write_inode
 )paren
 suffix:semicolon
-DECL|variable|register_cvf_format
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_cvf_format
-)paren
-suffix:semicolon
-DECL|variable|unregister_cvf_format
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_cvf_format
-)paren
-suffix:semicolon
 DECL|variable|fat_dir_ioctl
 id|EXPORT_SYMBOL
 c_func
@@ -170,13 +148,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|fat_truncate
-)paren
-suffix:semicolon
-DECL|variable|fat_brelse
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fat_brelse
 )paren
 suffix:semicolon
 r_int
