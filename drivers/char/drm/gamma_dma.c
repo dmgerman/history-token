@@ -2752,6 +2752,8 @@ id|DRM_IOREMAP
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
 id|buf
@@ -2928,6 +2930,8 @@ id|DRM_IOREMAPFREE
 c_func
 (paren
 id|dev_priv-&gt;buffers
+comma
+id|dev
 )paren
 suffix:semicolon
 id|DRM

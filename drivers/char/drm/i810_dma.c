@@ -932,6 +932,8 @@ op_star
 id|dev_priv-&gt;ring.virtual_start
 comma
 id|dev_priv-&gt;ring.Size
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1029,6 +1031,8 @@ id|ioremapfree
 id|buf_priv-&gt;kernel_virtual
 comma
 id|buf-&gt;total
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1391,6 +1395,8 @@ id|ioremap
 id|buf-&gt;bus_address
 comma
 id|buf-&gt;total
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1633,6 +1639,8 @@ op_plus
 id|init-&gt;ring_start
 comma
 id|init-&gt;ring_size
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -2099,6 +2099,8 @@ id|ioremapfree
 id|map-&gt;handle
 comma
 id|map-&gt;size
+comma
+id|dev
 )paren
 suffix:semicolon
 r_break
