@@ -645,6 +645,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Send probe frames. Called from aarp_probe_network and&n; *&t;aarp_proxy_probe_network.&n; */
 DECL|function|aarp_send_probe
+r_static
 r_void
 id|aarp_send_probe
 c_func
@@ -1667,6 +1668,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Probe a Phase 1 device or a device that requires its Net:Node to&n; * be set via an ioctl.&n; */
 DECL|function|aarp_send_probe_phase1
+r_static
 r_void
 id|aarp_send_probe_phase1
 c_func

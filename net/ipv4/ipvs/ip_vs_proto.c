@@ -28,6 +28,7 @@ id|IP_VS_PROTO_TAB_SIZE
 suffix:semicolon
 multiline_comment|/*&n; *&t;register an ipvs protocol&n; */
 DECL|function|register_ip_vs_protocol
+r_static
 r_int
 id|register_ip_vs_protocol
 c_func
@@ -82,6 +83,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;unregister an ipvs protocol&n; */
 DECL|function|unregister_ip_vs_protocol
+r_static
 r_int
 id|unregister_ip_vs_protocol
 c_func

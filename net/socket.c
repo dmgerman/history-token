@@ -2616,6 +2616,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|sock_readv_writev
+r_static
 r_int
 id|sock_readv_writev
 c_func

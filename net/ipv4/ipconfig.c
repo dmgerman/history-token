@@ -86,6 +86,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* IPconfig parameters set manually */
 DECL|variable|__initdata
+r_static
 r_int
 id|ic_enable
 id|__initdata
@@ -114,6 +115,7 @@ id|IC_RARP
 macro_line|#endif
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_int
 id|ic_host_name_set
 id|__initdata
@@ -129,6 +131,7 @@ id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* My IP address */
 DECL|variable|ic_netmask
+r_static
 id|u32
 id|ic_netmask
 op_assign
@@ -171,11 +174,13 @@ suffix:semicolon
 multiline_comment|/* Path to mount as root */
 multiline_comment|/* Persistent data: */
 DECL|variable|ic_proto_used
+r_static
 r_int
 id|ic_proto_used
 suffix:semicolon
 multiline_comment|/* Protocol used, if any */
 DECL|variable|ic_nameservers
+r_static
 id|u32
 id|ic_nameservers
 (braket
@@ -184,6 +189,7 @@ id|CONF_NAMESERVERS_MAX
 suffix:semicolon
 multiline_comment|/* DNS Server IP addresses */
 DECL|variable|ic_domain
+r_static
 id|u8
 id|ic_domain
 (braket

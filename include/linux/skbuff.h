@@ -3274,7 +3274,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|skb_queue_walk
-mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next, prefetch(skb-&gt;next);&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb = skb-&gt;next, prefetch(skb-&gt;next))
+mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     prefetch(skb-&gt;next), (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb = skb-&gt;next)
 r_extern
 r_struct
 id|sk_buff

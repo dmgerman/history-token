@@ -492,13 +492,6 @@ c_func
 id|cache_check
 )paren
 suffix:semicolon
-DECL|variable|cache_clean
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cache_clean
-)paren
-suffix:semicolon
 DECL|variable|cache_flush
 id|EXPORT_SYMBOL
 c_func

@@ -20,6 +20,21 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;net/rose.h&gt;
+r_static
+r_int
+id|rose_create_facilities
+c_func
+(paren
+r_int
+r_char
+op_star
+id|buffer
+comma
+id|rose_cb
+op_star
+id|rose
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;This routine purges all of the queues of frames.&n; */
 DECL|function|rose_clear_queues
 r_void
@@ -1812,6 +1827,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|rose_create_facilities
+r_static
 r_int
 id|rose_create_facilities
 c_func

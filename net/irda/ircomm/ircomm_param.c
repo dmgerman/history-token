@@ -373,42 +373,6 @@ comma
 l_int|4
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function ircomm_param_flush (self)&n; *&n; *    Flush (send) out all queued parameters&n; *&n; */
-DECL|function|ircomm_param_flush
-r_int
-id|ircomm_param_flush
-c_func
-(paren
-r_struct
-id|ircomm_tty_cb
-op_star
-id|self
-)paren
-(brace
-multiline_comment|/* we should lock here, but I guess this function is unused...&n;&t; * Jean II */
-r_if
-c_cond
-(paren
-id|self-&gt;ctrl_skb
-)paren
-(brace
-id|ircomm_control_request
-c_func
-(paren
-id|self-&gt;ircomm
-comma
-id|self-&gt;ctrl_skb
-)paren
-suffix:semicolon
-id|self-&gt;ctrl_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function ircomm_param_request (self, pi, flush)&n; *&n; *    Queue a parameter for the control channel&n; *&n; */
 DECL|function|ircomm_param_request
 r_int

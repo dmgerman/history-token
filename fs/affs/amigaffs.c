@@ -1,12 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/amigaffs.c&n; *&n; *  (c) 1996  Hans-Joachim Widmaier - Rewritten&n; *&n; *  (C) 1993  Ray Burr - Amiga FFS filesystem.&n; *&n; *  Please send bug reports to: hjw@zvw.de&n; */
-macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &quot;affs.h&quot;
 r_extern
 r_struct
 id|timezone

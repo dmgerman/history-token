@@ -16,6 +16,7 @@ DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag) (iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
 multiline_comment|/*&n; * Function ircomm_tty_change_speed (driver)&n; *&n; *    Change speed of the driver. If the remote device is a DCE, then this&n; *    should make it change the speed of its serial port&n; */
 DECL|function|ircomm_tty_change_speed
+r_static
 r_void
 id|ircomm_tty_change_speed
 c_func

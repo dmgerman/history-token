@@ -2351,6 +2351,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_station_state_process: queue event and try to process queue.&n; *&t;@skb: Address of the event&n; *&n; *&t;Queues an event (on the station event queue) for handling by the&n; *&t;station state machine and attempts to process any queued-up events.&n; */
 DECL|function|llc_station_state_process
+r_static
 r_void
 id|llc_station_state_process
 c_func

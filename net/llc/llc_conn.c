@@ -1814,6 +1814,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_lookup_listener - Finds listener for local MAC + SAP&n; *&t;@sap: SAP&n; *&t;@laddr: address of local LLC (MAC + SAP)&n; *&n; *&t;Search connection list of the SAP and finds connection listening on&n; *&t;local mac, and local sap. Returns pointer for parent socket found,&n; *&t;%NULL otherwise.&n; */
 DECL|function|llc_lookup_listener
+r_static
 r_struct
 id|sock
 op_star
@@ -1956,6 +1957,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;find_next_offset - finds offset for next category of transitions&n; *&t;@state: state table.&n; *&t;@offset: start offset.&n; *&n; *&t;Finds offset of next category of transitions in transition table.&n; *&t;Returns the start index of next category.&n; */
 DECL|function|find_next_offset
+r_static
 id|u16
 id|find_next_offset
 c_func
@@ -2869,6 +2871,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to initialize.&n; *&n; *     Initializes a socket with default llc values.&n; */
 DECL|function|llc_sk_init
+r_static
 r_int
 id|llc_sk_init
 c_func

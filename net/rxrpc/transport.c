@@ -604,22 +604,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* end rxrpc_create_transport() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * clear the connections on a transport endpoint&n; */
-DECL|function|rxrpc_clear_transport
-r_void
-id|rxrpc_clear_transport
-c_func
-(paren
-r_struct
-id|rxrpc_transport
-op_star
-id|trans
-)paren
-(brace
-singleline_comment|//struct rxrpc_connection *conn;
-)brace
-multiline_comment|/* end rxrpc_clear_transport() */
-multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * destroy a transport endpoint&n; */
 DECL|function|rxrpc_put_transport
 r_void

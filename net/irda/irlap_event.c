@@ -620,6 +620,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Calculate and set time before we will have to send back the pf bit&n; * to the peer. Use in primary.&n; * Make sure that state is XMIT_P/XMIT_S when calling this function&n; * (and that nobody messed up with the state). - Jean II&n; */
 DECL|function|irlap_start_poll_timer
+r_static
 r_void
 id|irlap_start_poll_timer
 c_func
