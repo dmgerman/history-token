@@ -925,7 +925,7 @@ suffix:semicolon
 )brace
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 id|writel
 (paren

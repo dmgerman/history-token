@@ -8834,7 +8834,7 @@ id|USBCMD
 suffix:semicolon
 id|uhci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * De-allocate all resources..&n; */
@@ -10228,7 +10228,7 @@ suffix:semicolon
 )brace
 id|uhci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 r_return
 l_int|0

@@ -467,10 +467,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ehci-&gt;hcd.state
-op_assign
-id|USB_STATE_READY
-suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#include &quot;ehci-hub.c&quot;
@@ -1438,7 +1434,7 @@ id|ehci-&gt;reboot_notifier
 suffix:semicolon
 id|ehci-&gt;hcd.state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 id|writel
 (paren
@@ -1970,7 +1966,7 @@ singleline_comment|// restore pci FLADJ value
 singleline_comment|// khubd and drivers will set HC running, if needed;
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_READY
+id|USB_STATE_RUNNING
 suffix:semicolon
 singleline_comment|// FIXME Philips/Intel/... etc don&squot;t really have a &quot;READY&quot;
 singleline_comment|// state ... turn on CMD_RUN too

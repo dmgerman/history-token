@@ -3245,6 +3245,19 @@ op_star
 )paren
 id|udev-&gt;bus-&gt;hcpriv
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
+)paren
+r_return
+op_minus
+id|ESHUTDOWN
+suffix:semicolon
 r_return
 id|hcd-&gt;driver-&gt;get_frame_number
 (paren
@@ -3519,6 +3532,20 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+multiline_comment|/* running ~= hc unlink handshake works (irq, timer, etc)&n;&t; * halted ~= no unlink handshake is needed&n;&t; * suspended, resuming == should never happen&n;&t; */
+id|WARN_ON
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
+op_logical_and
+id|hcd-&gt;state
+op_ne
+id|USB_STATE_HALT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3552,6 +3579,28 @@ id|EBUSY
 suffix:semicolon
 r_goto
 id|done
+suffix:semicolon
+)brace
+multiline_comment|/* PCI IRQ setup can easily be broken so that USB controllers&n;&t; * never get completion IRQs ... maybe even the ones we need to&n;&t; * finish unlinking the initial failed usb_set_address().&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hcd-&gt;saw_irq
+)paren
+(brace
+id|dev_warn
+(paren
+id|hcd-&gt;controller
+comma
+l_string|&quot;Unlink after no-IRQ?  &quot;
+l_string|&quot;Different ACPI or APIC settings may help.&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hcd-&gt;saw_irq
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* maybe set up to block until the urb&squot;s completion fires.  the&n;&t; * lower level hcd code is always async, locking on urb-&gt;status&n;&t; * updates; an intercepted completion unblocks us.&n;&t; */
@@ -3847,6 +3896,19 @@ suffix:semicolon
 id|hcd
 op_assign
 id|udev-&gt;bus-&gt;hcpriv
+suffix:semicolon
+id|WARN_ON
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
+op_logical_and
+id|hcd-&gt;state
+op_ne
+id|USB_STATE_HALT
+)paren
 suffix:semicolon
 id|local_irq_disable
 (paren
@@ -4501,6 +4563,10 @@ id|USB_STATE_HALT
 multiline_comment|/* irq sharing? */
 r_return
 id|IRQ_NONE
+suffix:semicolon
+id|hcd-&gt;saw_irq
+op_assign
+l_int|1
 suffix:semicolon
 id|hcd-&gt;driver-&gt;irq
 (paren
