@@ -392,6 +392,11 @@ op_star
 id|drm_alloc_agp
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 id|pages
 comma
@@ -403,6 +408,8 @@ r_return
 id|drm_agp_allocate_memory
 c_func
 (paren
+id|bridge
+comma
 id|pages
 comma
 id|type

@@ -1040,6 +1040,7 @@ id|dev-&gt;agp-&gt;acquired
 id|drm_agp_do_release
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 id|dev-&gt;agp-&gt;acquired
