@@ -75,6 +75,7 @@ DECL|typedef|cfg_p
 r_typedef
 r_volatile
 r_int
+r_int
 op_star
 id|cfg_p
 suffix:semicolon
@@ -1384,6 +1385,7 @@ DECL|macro|bi_cpu
 mdefine_line|#define bi_cpu&t;&t;bi_pi.pi_cpu&t;/* cpu assigned. */
 DECL|member|bi_ibits
 r_int
+r_int
 id|bi_ibits
 suffix:semicolon
 multiline_comment|/* which Bridge interrupt bit(s) */
@@ -1765,6 +1767,7 @@ multiline_comment|/* revision number of Bridge */
 multiline_comment|/* bs_dma_flags are the forced dma flags used on all DMAs. Used for&n;     * working around ASIC rev issues and protocol specific requirements&n;     */
 DECL|member|bs_dma_flags
 r_int
+r_int
 id|bs_dma_flags
 suffix:semicolon
 multiline_comment|/* forced DMA flags */
@@ -2133,10 +2136,12 @@ suffix:semicolon
 multiline_comment|/* REQ/GNT/INT in use by ... */
 DECL|member|ph_rrb_fixed
 r_int
+r_int
 id|ph_rrb_fixed
 suffix:semicolon
 multiline_comment|/* do not change RRB allocations */
 DECL|member|ph_hands_off
+r_int
 r_int
 id|ph_hands_off
 suffix:semicolon
