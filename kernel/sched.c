@@ -5883,7 +5883,7 @@ DECL|typedef|migration_req_t
 )brace
 id|migration_req_t
 suffix:semicolon
-multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.&n; */
+multiline_comment|/*&n; * Change a given task&squot;s CPU affinity. Migrate the process to a&n; * proper CPU and schedule it away if the CPU it&squot;s executing on&n; * is removed from the allowed bitmask.&n; *&n; * NOTE: the caller must have a valid reference to the task, the&n; * task must not exit() &amp; deallocate itself prematurely.&n; *&n; * NOTE2: this function is not atomic.&n; */
 DECL|function|set_cpus_allowed
 r_void
 id|set_cpus_allowed
