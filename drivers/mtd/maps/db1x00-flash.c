@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on Alchemy Db1xxx boards&n; * &n; * $Id: db1x00-flash.c,v 1.3 2004/07/14 17:45:40 dwmw2 Exp $&n; *&n; * (C) 2003 Pete Popov &lt;ppopov@pacbell.net&gt;&n; * &n; */
+multiline_comment|/*&n; * Flash memory access on Alchemy Db1xxx boards&n; * &n; * $Id: db1x00-flash.c,v 1.5 2004/09/18 23:22:35 ppopov Exp $&n; *&n; * (C) 2003 Pete Popov &lt;ppopov@embeddedalley.com&gt;&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,14 +8,23 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/db1x00.h&gt;
 macro_line|#ifdef &t;DEBUG_RW
 DECL|macro|DBG
 mdefine_line|#define&t;DBG(x...)&t;printk(x)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define&t;DBG(x...)&t;
+macro_line|#endif
+multiline_comment|/* MTD CONFIG OPTIONS */
+macro_line|#if defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; defined(CONFIG_MTD_DB1X00_USER)
+DECL|macro|DB1X00_BOTH_BANKS
+mdefine_line|#define DB1X00_BOTH_BANKS
+macro_line|#elif defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; !defined(CONFIG_MTD_DB1X00_USER)
+DECL|macro|DB1X00_BOOT_ONLY
+mdefine_line|#define DB1X00_BOOT_ONLY
+macro_line|#elif !defined(CONFIG_MTD_DB1X00_BOOT) &amp;&amp; defined(CONFIG_MTD_DB1X00_USER)
+DECL|macro|DB1X00_USER_ONLY
+mdefine_line|#define DB1X00_USER_ONLY
 macro_line|#endif
 DECL|variable|window_addr
 r_static
@@ -37,13 +46,14 @@ id|flash_size
 suffix:semicolon
 DECL|variable|bcsr
 r_static
-id|BCSR
+r_int
+r_int
 op_star
-r_const
 id|bcsr
 op_assign
 (paren
-id|BCSR
+r_int
+r_int
 op_star
 )paren
 l_int|0xAE000000
@@ -298,7 +308,10 @@ r_switch
 c_cond
 (paren
 (paren
-id|bcsr-&gt;status
+id|bcsr
+(braket
+l_int|2
+)braket
 op_rshift
 l_int|14
 )paren
@@ -539,8 +552,9 @@ suffix:semicolon
 id|db1xxx_mtd_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

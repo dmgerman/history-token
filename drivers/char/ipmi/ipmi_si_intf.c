@@ -3375,6 +3375,7 @@ id|addrs
 comma
 r_int
 comma
+op_amp
 id|num_addrs
 comma
 l_int|0
@@ -3398,6 +3399,7 @@ id|ports
 comma
 r_int
 comma
+op_amp
 id|num_ports
 comma
 l_int|0
@@ -3421,6 +3423,7 @@ id|irqs
 comma
 r_int
 comma
+op_amp
 id|num_irqs
 comma
 l_int|0
@@ -3444,6 +3447,7 @@ id|regspacings
 comma
 r_int
 comma
+op_amp
 id|num_regspacings
 comma
 l_int|0
@@ -3468,6 +3472,7 @@ id|regsizes
 comma
 r_int
 comma
+op_amp
 id|num_regsizes
 comma
 l_int|0
@@ -3492,6 +3497,7 @@ id|regshifts
 comma
 r_int
 comma
+op_amp
 id|num_regshifts
 comma
 l_int|0
@@ -7054,7 +7060,7 @@ c_cond
 (paren
 id|pci_dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_HP_VENDOR_ID
@@ -7073,7 +7079,7 @@ c_cond
 (paren
 id|pci_dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_ERMC_CLASSCODE
@@ -7114,6 +7120,12 @@ c_cond
 id|error
 )paren
 (brace
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7140,6 +7152,12 @@ l_int|0x0001
 )paren
 )paren
 (brace
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7182,10 +7200,18 @@ comma
 id|base_addr
 )paren
 )paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|info
 op_assign
 id|kmalloc
@@ -7207,6 +7233,12 @@ op_logical_neg
 id|info
 )paren
 (brace
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7312,6 +7344,12 @@ r_int
 r_int
 )paren
 id|base_addr
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
 )paren
 suffix:semicolon
 r_return

@@ -8,10 +8,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/8250_pci.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
@@ -127,9 +126,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -246,9 +245,9 @@ op_star
 id|dev
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|bar
@@ -273,7 +272,7 @@ id|dev
 suffix:semicolon
 r_int
 r_int
-id|port
+id|base
 comma
 id|len
 suffix:semicolon
@@ -302,7 +301,7 @@ op_amp
 id|IORESOURCE_MEM
 )paren
 (brace
-id|port
+id|base
 op_assign
 id|pci_resource_start
 c_func
@@ -339,7 +338,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|port
+id|base
 comma
 id|len
 )paren
@@ -357,17 +356,17 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|req-&gt;io_type
+id|port-&gt;iotype
 op_assign
 id|UPIO_MEM
 suffix:semicolon
-id|req-&gt;iomap_base
+id|port-&gt;mapbase
 op_assign
-id|port
+id|base
 op_plus
 id|offset
 suffix:semicolon
-id|req-&gt;iomem_base
+id|port-&gt;membase
 op_assign
 id|priv-&gt;remapped_bar
 (braket
@@ -376,14 +375,14 @@ id|bar
 op_plus
 id|offset
 suffix:semicolon
-id|req-&gt;iomem_reg_shift
+id|port-&gt;regshift
 op_assign
 id|regshift
 suffix:semicolon
 )brace
 r_else
 (brace
-id|port
+id|base
 op_assign
 id|pci_resource_start
 c_func
@@ -395,24 +394,13 @@ id|bar
 op_plus
 id|offset
 suffix:semicolon
-id|req-&gt;io_type
+id|port-&gt;iotype
 op_assign
 id|UPIO_PORT
 suffix:semicolon
-id|req-&gt;port
+id|port-&gt;iobase
 op_assign
-id|port
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|HIGH_BITS_OFFSET
-)paren
-id|req-&gt;port_high
-op_assign
-id|port
-op_rshift
-id|HIGH_BITS_OFFSET
+id|base
 suffix:semicolon
 )brace
 r_return
@@ -437,9 +425,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -495,7 +483,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -598,9 +586,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -692,7 +680,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -1027,9 +1015,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -1093,7 +1081,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -1923,9 +1911,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -2018,7 +2006,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -2046,9 +2034,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -2109,7 +2097,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -2159,9 +2147,9 @@ op_star
 id|board
 comma
 r_struct
-id|serial_struct
+id|uart_port
 op_star
-id|req
+id|port
 comma
 r_int
 id|idx
@@ -2243,7 +2231,7 @@ c_func
 (paren
 id|dev
 comma
-id|req
+id|port
 comma
 id|bar
 comma
@@ -5984,10 +5972,6 @@ id|pci_serial_quirk
 op_star
 id|quirk
 suffix:semicolon
-r_struct
-id|serial_struct
-id|serial_req
-suffix:semicolon
 r_int
 id|rc
 comma
@@ -6289,21 +6273,26 @@ id|i
 op_increment
 )paren
 (brace
+r_struct
+id|uart_port
+id|serial_port
+suffix:semicolon
 id|memset
 c_func
 (paren
 op_amp
-id|serial_req
+id|serial_port
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|serial_req
+r_struct
+id|uart_port
 )paren
 )paren
 suffix:semicolon
-id|serial_req.flags
+id|serial_port.flags
 op_assign
 id|UPF_SKIP_TEST
 op_or
@@ -6311,11 +6300,13 @@ id|UPF_AUTOPROBE
 op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
-id|serial_req.baud_base
+id|serial_port.uartclk
 op_assign
 id|board-&gt;base_baud
+op_star
+l_int|16
 suffix:semicolon
-id|serial_req.irq
+id|serial_port.irq
 op_assign
 id|get_pci_irq
 c_func
@@ -6326,6 +6317,11 @@ id|board
 comma
 id|i
 )paren
+suffix:semicolon
+id|serial_port.dev
+op_assign
+op_amp
+id|dev-&gt;dev
 suffix:semicolon
 r_if
 c_cond
@@ -6340,7 +6336,7 @@ comma
 id|board
 comma
 op_amp
-id|serial_req
+id|serial_port
 comma
 id|i
 )paren
@@ -6353,11 +6349,11 @@ c_func
 (paren
 l_string|&quot;Setup PCI port: port %x, irq %d, type %d&bslash;n&quot;
 comma
-id|serial_req.port
+id|serial_port.iobase
 comma
-id|serial_req.irq
+id|serial_port.irq
 comma
-id|serial_req.io_type
+id|serial_port.iotype
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6366,11 +6362,11 @@ id|priv-&gt;line
 id|i
 )braket
 op_assign
-id|register_serial
+id|serial8250_register_port
 c_func
 (paren
 op_amp
-id|serial_req
+id|serial_port
 )paren
 suffix:semicolon
 r_if
@@ -6501,7 +6497,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|unregister_serial
+id|serial8250_unregister_port
 c_func
 (paren
 id|priv-&gt;line

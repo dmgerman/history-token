@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
@@ -457,13 +457,6 @@ DECL|member|test_rx_ring
 r_struct
 id|e1000_desc_ring
 id|test_rx_ring
-suffix:semicolon
-DECL|member|pci_state
-r_uint32
-id|pci_state
-(braket
-l_int|16
-)braket
 suffix:semicolon
 DECL|member|msg_enable
 r_int

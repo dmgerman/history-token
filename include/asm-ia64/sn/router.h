@@ -1,13 +1,10 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2004 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_ROUTER_H
 DECL|macro|_ASM_IA64_SN_ROUTER_H
 mdefine_line|#define _ASM_IA64_SN_ROUTER_H
 multiline_comment|/*&n; * Router Register definitions&n; *&n; * Macro argument _L always stands for a link number (1 to 8, inclusive).&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/sn/vector.h&gt;
-macro_line|#include &lt;asm/sn/slotnum.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 DECL|typedef|router_reg_t
 r_typedef
 r_uint64
@@ -517,7 +514,7 @@ id|moduleid_t
 id|module
 suffix:semicolon
 DECL|member|slot
-id|slotid_t
+r_char
 id|slot
 suffix:semicolon
 DECL|typedef|router_map_ent_t
@@ -707,7 +704,7 @@ id|ri_stat_rev_id
 suffix:semicolon
 multiline_comment|/* Status rev ID value&t;&t;    */
 DECL|member|ri_vector
-id|net_vec_t
+r_uint64
 id|ri_vector
 suffix:semicolon
 multiline_comment|/* vector from guardian to router   */
@@ -740,7 +737,7 @@ id|ri_module
 suffix:semicolon
 multiline_comment|/* Which module are we in?&t;    */
 DECL|member|ri_slotnum
-id|slotid_t
+r_char
 id|ri_slotnum
 suffix:semicolon
 multiline_comment|/* Which slot are we in?&t;    */
@@ -753,7 +750,8 @@ id|GLBL_PARMS_REGS
 suffix:semicolon
 multiline_comment|/* Global parms0&amp;1 register contents*/
 DECL|member|ri_vertex
-id|vertex_hdl_t
+r_void
+op_star
 id|ri_vertex
 suffix:semicolon
 multiline_comment|/* hardware graph vertex            */
@@ -774,7 +772,8 @@ id|ri_hist_type
 suffix:semicolon
 multiline_comment|/* histogram type&t;&t;    */
 DECL|member|ri_guardian
-id|vertex_hdl_t
+r_void
+op_star
 id|ri_guardian
 suffix:semicolon
 multiline_comment|/* guardian node for the router&t;    */
@@ -806,7 +805,7 @@ id|ri_lock
 suffix:semicolon
 multiline_comment|/* Lock for access to router info   */
 DECL|member|ri_vecarray
-id|net_vec_t
+r_uint64
 op_star
 id|ri_vecarray
 suffix:semicolon
@@ -849,7 +848,8 @@ r_struct
 id|nodepda_router_info_s
 (brace
 DECL|member|router_vhdl
-id|vertex_hdl_t
+r_void
+op_star
 id|router_vhdl
 suffix:semicolon
 multiline_comment|/* vertex handle of the router &t;    */
@@ -868,7 +868,7 @@ id|router_module
 suffix:semicolon
 multiline_comment|/* module in which router is there  */
 DECL|member|router_slot
-id|slotid_t
+r_char
 id|router_slot
 suffix:semicolon
 multiline_comment|/* router slot&t;&t;&t;    */
@@ -879,7 +879,7 @@ id|router_type
 suffix:semicolon
 multiline_comment|/* kind of router &t;&t;    */
 DECL|member|router_vector
-id|net_vec_t
+r_uint64
 id|router_vector
 suffix:semicolon
 multiline_comment|/* vector from the guardian node    */
@@ -931,7 +931,7 @@ id|nic
 suffix:semicolon
 multiline_comment|/* vector route from the master hub to &n;&t;&t;&t; * this router.&n;&t;&t;&t; */
 DECL|member|vec
-id|net_vec_t
+r_uint64
 id|vec
 suffix:semicolon
 multiline_comment|/* port status */
@@ -957,17 +957,19 @@ r_struct
 (brace
 multiline_comment|/* vertex handle for the router */
 DECL|member|vhdl
-id|vertex_hdl_t
+r_void
+op_star
 id|vhdl
 suffix:semicolon
 multiline_comment|/* guardian for this router */
 DECL|member|guard
-id|vertex_hdl_t
+r_void
+op_star
 id|guard
 suffix:semicolon
 multiline_comment|/* vector router from the guardian to the router */
 DECL|member|vec
-id|net_vec_t
+r_uint64
 id|vec
 suffix:semicolon
 DECL|member|k_elt
@@ -1033,140 +1035,5 @@ DECL|macro|RTABLE_SHFT
 mdefine_line|#define RTABLE_SHFT(_L)&t;&t;(4 * ((_L) - 1))
 DECL|macro|RTABLE_MASK
 mdefine_line|#define RTABLE_MASK(_L)&t;&t;(0x7UL &lt;&lt; RTABLE_SHFT(_L))
-DECL|macro|ROUTERINFO_STKSZ
-mdefine_line|#define&t;ROUTERINFO_STKSZ&t;4096
-macro_line|#ifndef __ASSEMBLY__
-r_int
-id|router_reg_read
-c_func
-(paren
-id|router_info_t
-op_star
-id|rip
-comma
-r_int
-id|regno
-comma
-id|router_reg_t
-op_star
-id|val
-)paren
-suffix:semicolon
-r_int
-id|router_reg_write
-c_func
-(paren
-id|router_info_t
-op_star
-id|rip
-comma
-r_int
-id|regno
-comma
-id|router_reg_t
-id|val
-)paren
-suffix:semicolon
-r_int
-id|router_get_info
-c_func
-(paren
-id|vertex_hdl_t
-id|routerv
-comma
-id|router_info_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|router_set_leds
-c_func
-(paren
-id|router_info_t
-op_star
-id|rip
-)paren
-suffix:semicolon
-r_void
-id|router_print_state
-c_func
-(paren
-id|router_info_t
-op_star
-id|rip
-comma
-r_int
-id|level
-comma
-r_void
-(paren
-op_star
-id|pf
-)paren
-(paren
-r_int
-comma
-r_char
-op_star
-comma
-dot
-dot
-dot
-)paren
-comma
-r_int
-id|print_where
-)paren
-suffix:semicolon
-r_void
-id|capture_router_stats
-c_func
-(paren
-id|router_info_t
-op_star
-id|rip
-)paren
-suffix:semicolon
-r_int
-id|probe_routers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|get_routername
-c_func
-(paren
-r_int
-r_char
-id|brd_type
-comma
-r_char
-op_star
-id|rtrname
-)paren
-suffix:semicolon
-r_void
-id|router_guardians_set
-c_func
-(paren
-id|vertex_hdl_t
-id|hwgraph_root
-)paren
-suffix:semicolon
-r_int
-id|router_hist_reselect
-c_func
-(paren
-id|router_info_t
-op_star
-comma
-r_int64
-)paren
-suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SN_ROUTER_H */
 eof

@@ -2,8 +2,12 @@ multiline_comment|/*&n; * linux/arch/arm/mach-footbridge/cats-hw.c&n; *&n; * CAT
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &quot;common.h&quot;
 DECL|macro|CFG_PORT
 mdefine_line|#define CFG_PORT&t;0x370
 DECL|macro|INDEX_PORT
@@ -201,4 +205,95 @@ c_func
 id|cats_hw_init
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * CATS uses soft-reboot by default, since&n; * hard reboots fail on early boards.&n; */
+r_static
+r_void
+id|__init
+DECL|function|fixup_cats
+id|fixup_cats
+c_func
+(paren
+r_struct
+id|machine_desc
+op_star
+id|desc
+comma
+r_struct
+id|tag
+op_star
+id|tags
+comma
+r_char
+op_star
+op_star
+id|cmdline
+comma
+r_struct
+id|meminfo
+op_star
+id|mi
+)paren
+(brace
+id|ORIG_VIDEO_LINES
+op_assign
+l_int|25
+suffix:semicolon
+id|ORIG_VIDEO_POINTS
+op_assign
+l_int|16
+suffix:semicolon
+id|ORIG_Y
+op_assign
+l_int|24
+suffix:semicolon
+)brace
+id|MACHINE_START
+c_func
+(paren
+id|CATS
+comma
+l_string|&quot;Chalice-CATS&quot;
+)paren
+id|MAINTAINER
+c_func
+(paren
+l_string|&quot;Philip Blundell&quot;
+)paren
+id|BOOT_MEM
+c_func
+(paren
+l_int|0x00000000
+comma
+id|DC21285_ARMCSR_BASE
+comma
+l_int|0xfe000000
+)paren
+id|BOOT_PARAMS
+c_func
+(paren
+l_int|0x00000100
+)paren
+id|SOFT_REBOOT
+id|FIXUP
+c_func
+(paren
+id|fixup_cats
+)paren
+id|MAPIO
+c_func
+(paren
+id|footbridge_map_io
+)paren
+id|INITIRQ
+c_func
+(paren
+id|footbridge_init_irq
+)paren
+dot
+id|timer
+op_assign
+op_amp
+id|isa_timer
+comma
+id|MACHINE_END
 eof

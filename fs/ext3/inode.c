@@ -5867,6 +5867,8 @@ r_if
 c_cond
 (paren
 id|orphan
+op_logical_and
+id|inode-&gt;i_nlink
 )paren
 id|ext3_orphan_del
 c_func

@@ -32,9 +32,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|# include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -4265,8 +4265,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|s.string
 comma
 id|s.length
@@ -4341,8 +4339,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|strip_info-&gt;tx_head
 comma

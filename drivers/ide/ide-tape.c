@@ -22,12 +22,12 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * partition&n; */
 DECL|struct|os_partition_s
 r_typedef
@@ -5185,21 +5185,12 @@ op_amp
 id|pc-&gt;flags
 )paren
 )paren
-(paren
-r_void
-)paren
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_begin
+id|dma_start
 c_func
 (paren
 id|drive
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5502,51 +5493,17 @@ id|pc-&gt;flags
 op_logical_and
 id|drive-&gt;using_dma
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|PC_WRITING
-comma
-op_amp
-id|pc-&gt;flags
-)paren
-)paren
 id|dma_ok
 op_assign
 op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|hwif
 op_member_access_from_pointer
-id|ide_dma_write
+id|dma_setup
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-r_else
-id|dma_ok
-op_assign
-op_logical_neg
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_read
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

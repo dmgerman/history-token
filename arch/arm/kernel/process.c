@@ -220,6 +220,11 @@ c_func
 r_void
 )paren
 (brace
+id|local_fiq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* endless idle loop with no priority at all */
 r_while
 c_loop

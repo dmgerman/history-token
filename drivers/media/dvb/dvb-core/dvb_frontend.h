@@ -8,9 +8,46 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/dvb/frontend.h&gt;
-macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
+multiline_comment|/* FIXME: Move to i2c-id.h */
+DECL|macro|I2C_DRIVERID_DVBFE_ALPS_TDLB7
+mdefine_line|#define I2C_DRIVERID_DVBFE_ALPS_TDLB7&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_ALPS_TDMB7
+mdefine_line|#define I2C_DRIVERID_DVBFE_ALPS_TDMB7&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_AT76C651
+mdefine_line|#define I2C_DRIVERID_DVBFE_AT76C651&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_CX24110
+mdefine_line|#define I2C_DRIVERID_DVBFE_CX24110&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_CX22702
+mdefine_line|#define I2C_DRIVERID_DVBFE_CX22702&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_DIB3000MB
+mdefine_line|#define I2C_DRIVERID_DVBFE_DIB3000MB&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_DST
+mdefine_line|#define I2C_DRIVERID_DVBFE_DST&t;&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_DUMMY
+mdefine_line|#define I2C_DRIVERID_DVBFE_DUMMY&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_L64781
+mdefine_line|#define I2C_DRIVERID_DVBFE_L64781&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_MT312
+mdefine_line|#define I2C_DRIVERID_DVBFE_MT312&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_MT352
+mdefine_line|#define I2C_DRIVERID_DVBFE_MT352&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_NXT6000
+mdefine_line|#define I2C_DRIVERID_DVBFE_NXT6000&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_SP887X
+mdefine_line|#define I2C_DRIVERID_DVBFE_SP887X&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_STV0299
+mdefine_line|#define I2C_DRIVERID_DVBFE_STV0299&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_TDA1004X
+mdefine_line|#define I2C_DRIVERID_DVBFE_TDA1004X&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_TDA8083
+mdefine_line|#define I2C_DRIVERID_DVBFE_TDA8083&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_VES1820
+mdefine_line|#define I2C_DRIVERID_DVBFE_VES1820&t;I2C_DRIVERID_EXP2
+DECL|macro|I2C_DRIVERID_DVBFE_VES1X93
+mdefine_line|#define I2C_DRIVERID_DVBFE_VES1X93&t;I2C_DRIVERID_EXP2
 multiline_comment|/**&n; *   when before_ioctl is registered and returns value 0, ioctl and after_ioctl&n; *   are not executed.&n; */
 DECL|struct|dvb_frontend
 r_struct
@@ -94,11 +131,11 @@ op_star
 id|data
 )paren
 suffix:semicolon
-DECL|member|i2c
+DECL|member|dvb_adapter
 r_struct
-id|dvb_i2c_bus
+id|dvb_adapter
 op_star
-id|i2c
+id|dvb_adapter
 suffix:semicolon
 DECL|member|before_after_data
 r_void
@@ -150,6 +187,10 @@ DECL|macro|FE_INIT
 mdefine_line|#define FE_INIT               _IO(&squot;v&squot;, 81)
 DECL|macro|FE_GET_TUNE_SETTINGS
 mdefine_line|#define FE_GET_TUNE_SETTINGS  _IOWR(&squot;v&squot;, 83, struct dvb_frontend_tune_settings)
+DECL|macro|FE_REGISTER
+mdefine_line|#define FE_REGISTER&t;      _IO  (&squot;v&squot;, 84)
+DECL|macro|FE_UNREGISTER
+mdefine_line|#define FE_UNREGISTER&t;      _IO  (&squot;v&squot;, 85)
 r_extern
 r_int
 id|dvb_register_frontend
@@ -175,9 +216,9 @@ id|arg
 )paren
 comma
 r_struct
-id|dvb_i2c_bus
+id|dvb_adapter
 op_star
-id|i2c
+id|dvb_adapter
 comma
 r_void
 op_star
@@ -187,6 +228,11 @@ r_struct
 id|dvb_frontend_info
 op_star
 id|info
+comma
+r_struct
+id|module
+op_star
+id|module
 )paren
 suffix:semicolon
 r_extern
@@ -214,9 +260,9 @@ id|arg
 )paren
 comma
 r_struct
-id|dvb_i2c_bus
+id|dvb_adapter
 op_star
-id|i2c
+id|dvb_adapter
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *  Add special ioctl code performed before and after the main ioctl&n; *  to all frontend devices on the specified DVB adapter.&n; *  This is necessairy because the 22kHz/13V-18V/DiSEqC stuff depends&n; *  heavily on the hardware around the frontend, the same tuner can create &n; *  these signals on about a million different ways...&n; *&n; *  Return value: number of frontends where the ioctl&squot;s were applied.&n; */

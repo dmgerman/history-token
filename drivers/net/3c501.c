@@ -31,8 +31,8 @@ macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_IP_MULTICAST */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;

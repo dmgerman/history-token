@@ -415,6 +415,11 @@ r_int
 r_int
 id|max_freeable
 suffix:semicolon
+DECL|member|node_allocs
+r_int
+r_int
+id|node_allocs
+suffix:semicolon
 DECL|member|allochit
 id|atomic_t
 id|allochit
@@ -470,6 +475,8 @@ DECL|macro|STATS_SET_HIGH
 mdefine_line|#define&t;STATS_SET_HIGH(x)&t;do { if ((x)-&gt;num_active &gt; (x)-&gt;high_mark) &bslash;&n;&t;&t;&t;&t;&t;(x)-&gt;high_mark = (x)-&gt;num_active; &bslash;&n;&t;&t;&t;&t;} while (0)
 DECL|macro|STATS_INC_ERR
 mdefine_line|#define&t;STATS_INC_ERR(x)&t;((x)-&gt;errors++)
+DECL|macro|STATS_INC_NODEALLOCS
+mdefine_line|#define&t;STATS_INC_NODEALLOCS(x)&t;((x)-&gt;node_allocs++)
 DECL|macro|STATS_SET_FREEABLE
 mdefine_line|#define&t;STATS_SET_FREEABLE(x, i) &bslash;&n;&t;&t;&t;&t;do { if ((x)-&gt;max_freeable &lt; i) &bslash;&n;&t;&t;&t;&t;&t;(x)-&gt;max_freeable = i; &bslash;&n;&t;&t;&t;&t;} while (0)
 DECL|macro|STATS_INC_ALLOCHIT
@@ -495,6 +502,8 @@ DECL|macro|STATS_SET_HIGH
 mdefine_line|#define&t;STATS_SET_HIGH(x)&t;do { } while (0)
 DECL|macro|STATS_INC_ERR
 mdefine_line|#define&t;STATS_INC_ERR(x)&t;do { } while (0)
+DECL|macro|STATS_INC_NODEALLOCS
+mdefine_line|#define&t;STATS_INC_NODEALLOCS(x)&t;do { } while (0)
 DECL|macro|STATS_SET_FREEABLE
 mdefine_line|#define&t;STATS_SET_FREEABLE(x, i) &bslash;&n;&t;&t;&t;&t;do { } while (0)
 DECL|macro|STATS_INC_ALLOCHIT
@@ -6237,6 +6246,9 @@ id|cachep
 comma
 r_int
 id|flags
+comma
+r_int
+id|nodeid
 )paren
 (brace
 r_struct
@@ -6394,8 +6406,7 @@ id|cachep
 comma
 id|flags
 comma
-op_minus
-l_int|1
+id|nodeid
 )paren
 )paren
 )paren
@@ -7644,6 +7655,9 @@ c_func
 id|cachep
 comma
 id|flags
+comma
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 singleline_comment|// cache_grow can reenable interrupts, then ac could change.
@@ -8984,6 +8998,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/**&n; * kmem_cache_alloc_node - Allocate an object on the specified node&n; * @cachep: The cache to allocate from.&n; * @flags: See kmalloc().&n; * @nodeid: node number of the target node.&n; *&n; * Identical to kmem_cache_alloc, except that this function is slow&n; * and can sleep. And it will allocate memory on the given node, which&n; * can improve the performance for cpu bound structures.&n; */
 DECL|function|kmem_cache_alloc_node
 r_void
@@ -9000,7 +9015,7 @@ id|nodeid
 )paren
 (brace
 r_int
-id|offset
+id|loop
 suffix:semicolon
 r_void
 op_star
@@ -9014,8 +9029,32 @@ suffix:semicolon
 id|kmem_bufctl_t
 id|next
 suffix:semicolon
-multiline_comment|/* The main algorithms are not node aware, thus we have to cheat:&n;&t; * We bypass all caches and allocate a new slab.&n;&t; * The following code is a streamlined copy of cache_grow().&n;&t; */
-multiline_comment|/* Get colour for the slab, and update the next value. */
+r_for
+c_loop
+(paren
+id|loop
+op_assign
+l_int|0
+suffix:semicolon
+suffix:semicolon
+id|loop
+op_increment
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|q
+suffix:semicolon
+id|objp
+op_assign
+l_int|NULL
+suffix:semicolon
+id|check_irq_on
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -9023,28 +9062,97 @@ op_amp
 id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
-id|offset
+multiline_comment|/* walk through all partial and empty slab and find one&n;&t;&t; * from the right node */
+id|list_for_each
+c_func
+(paren
+id|q
+comma
+op_amp
+id|cachep-&gt;lists.slabs_partial
+)paren
+(brace
+id|slabp
 op_assign
-id|cachep-&gt;colour_next
-suffix:semicolon
-id|cachep-&gt;colour_next
-op_increment
+id|list_entry
+c_func
+(paren
+id|q
+comma
+r_struct
+id|slab
+comma
+id|list
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|cachep-&gt;colour_next
-op_ge
-id|cachep-&gt;colour
+id|page_to_nid
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|slabp-&gt;s_mem
 )paren
-id|cachep-&gt;colour_next
+)paren
+op_eq
+id|nodeid
+op_logical_or
+id|loop
+OG
+l_int|2
+)paren
+r_goto
+id|got_slabp
+suffix:semicolon
+)brace
+id|list_for_each
+c_func
+(paren
+id|q
+comma
+op_amp
+id|cachep-&gt;lists.slabs_free
+)paren
+(brace
+id|slabp
 op_assign
-l_int|0
+id|list_entry
+c_func
+(paren
+id|q
+comma
+r_struct
+id|slab
+comma
+id|list
+)paren
 suffix:semicolon
-id|offset
-op_mul_assign
-id|cachep-&gt;colour_off
+r_if
+c_cond
+(paren
+id|page_to_nid
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|slabp-&gt;s_mem
+)paren
+)paren
+op_eq
+id|nodeid
+op_logical_or
+id|loop
+OG
+l_int|2
+)paren
+r_goto
+id|got_slabp
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -9052,15 +9160,16 @@ op_amp
 id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
-multiline_comment|/* Get mem for the objs. */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|objp
-op_assign
-id|kmem_getpages
+id|cache_grow
 c_func
 (paren
 id|cachep
@@ -9070,55 +9179,63 @@ comma
 id|nodeid
 )paren
 )paren
-)paren
-r_goto
-id|failed
-suffix:semicolon
-multiline_comment|/* Get slab management. */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|slabp
-op_assign
-id|alloc_slabmgmt
+(brace
+id|local_irq_enable
 c_func
 (paren
-id|cachep
-comma
-id|objp
-comma
-id|offset
-comma
-id|GFP_KERNEL
 )paren
-)paren
-)paren
-r_goto
-id|opps1
 suffix:semicolon
-id|set_slab_attr
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|got_slabp
+suffix:colon
+multiline_comment|/* found one: allocate object */
+id|check_slabp
 c_func
 (paren
 id|cachep
 comma
 id|slabp
-comma
-id|objp
 )paren
 suffix:semicolon
-id|cache_init_objs
+id|check_spinlock_acquired
 c_func
 (paren
 id|cachep
-comma
-id|slabp
-comma
-id|SLAB_CTOR_CONSTRUCTOR
 )paren
 suffix:semicolon
-multiline_comment|/* The first object is ours: */
+id|STATS_INC_ALLOCED
+c_func
+(paren
+id|cachep
+)paren
+suffix:semicolon
+id|STATS_INC_ACTIVE
+c_func
+(paren
+id|cachep
+)paren
+suffix:semicolon
+id|STATS_SET_HIGH
+c_func
+(paren
+id|cachep
+)paren
+suffix:semicolon
+id|STATS_INC_NODEALLOCS
+c_func
+(paren
+id|cachep
+)paren
+suffix:semicolon
 id|objp
 op_assign
 id|slabp-&gt;s_mem
@@ -9158,14 +9275,6 @@ id|slabp-&gt;free
 op_assign
 id|next
 suffix:semicolon
-multiline_comment|/* add the remaining objects into the cache */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|cachep-&gt;spinlock
-)paren
-suffix:semicolon
 id|check_slabp
 c_func
 (paren
@@ -9174,13 +9283,14 @@ comma
 id|slabp
 )paren
 suffix:semicolon
-id|STATS_INC_GROWN
+multiline_comment|/* move slabp to correct slabp list: */
+id|list_del
 c_func
 (paren
-id|cachep
+op_amp
+id|slabp-&gt;list
 )paren
 suffix:semicolon
-multiline_comment|/* Make slab active. */
 r_if
 c_cond
 (paren
@@ -9188,44 +9298,25 @@ id|slabp-&gt;free
 op_eq
 id|BUFCTL_END
 )paren
-(brace
-id|list_add_tail
+id|list_add
 c_func
 (paren
 op_amp
 id|slabp-&gt;list
 comma
 op_amp
-(paren
-id|list3_data
-c_func
-(paren
-id|cachep
-)paren
-op_member_access_from_pointer
-id|slabs_full
-)paren
+id|cachep-&gt;lists.slabs_full
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-id|list_add_tail
+id|list_add
 c_func
 (paren
 op_amp
 id|slabp-&gt;list
 comma
 op_amp
-(paren
-id|list3_data
-c_func
-(paren
-id|cachep
-)paren
-op_member_access_from_pointer
-id|slabs_partial
-)paren
+id|cachep-&gt;lists.slabs_partial
 )paren
 suffix:semicolon
 id|list3_data
@@ -9235,12 +9326,8 @@ id|cachep
 )paren
 op_member_access_from_pointer
 id|free_objects
-op_add_assign
-id|cachep-&gt;num
-op_minus
-l_int|1
+op_decrement
 suffix:semicolon
-)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -9269,21 +9356,6 @@ suffix:semicolon
 r_return
 id|objp
 suffix:semicolon
-id|opps1
-suffix:colon
-id|kmem_freepages
-c_func
-(paren
-id|cachep
-comma
-id|objp
-)paren
-suffix:semicolon
-id|failed
-suffix:colon
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
 DECL|variable|kmem_cache_alloc_node
 id|EXPORT_SYMBOL
@@ -9292,6 +9364,7 @@ c_func
 id|kmem_cache_alloc_node
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; * kmalloc - allocate memory&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; *&n; * kmalloc is the normal method of allocating memory&n; * in the kernel.&n; *&n; * The @flags argument may be one of:&n; *&n; * %GFP_USER - Allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_ATOMIC - Allocation will not sleep.  Use inside interrupt handlers.&n; *&n; * Additionally, the %GFP_DMA flag may be set to indicate the memory&n; * must be suitable for DMA.  This can mean different things on different&n; * platforms.  For example, on i386, it means that the memory must come&n; * from the first 16MB.&n; */
 DECL|function|__kmalloc
 r_void
@@ -10981,7 +11054,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;slabinfo - version: 2.0 (statistics)&bslash;n&quot;
+l_string|&quot;slabinfo - version: 2.1 (statistics)&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -10990,7 +11063,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;slabinfo - version: 2.0&bslash;n&quot;
+l_string|&quot;slabinfo - version: 2.1&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -11024,7 +11097,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : globalstat &lt;listallocs&gt; &lt;maxobjs&gt; &lt;grown&gt; &lt;reaped&gt; &lt;error&gt; &lt;maxfreeable&gt; &lt;freelimit&gt;&quot;
+l_string|&quot; : globalstat &lt;listallocs&gt; &lt;maxobjs&gt; &lt;grown&gt; &lt;reaped&gt;&quot;
+l_string|&quot; &lt;error&gt; &lt;maxfreeable&gt; &lt;freelimit&gt; &lt;nodeallocs&gt;&quot;
 )paren
 suffix:semicolon
 id|seq_puts
@@ -11524,12 +11598,18 @@ id|free_limit
 op_assign
 id|cachep-&gt;free_limit
 suffix:semicolon
+r_int
+r_int
+id|node_allocs
+op_assign
+id|cachep-&gt;node_allocs
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot; : globalstat %7lu %6lu %5lu %4lu %4lu %4lu %4lu&quot;
+l_string|&quot; : globalstat %7lu %6lu %5lu %4lu %4lu %4lu %4lu %4lu&quot;
 comma
 id|allocs
 comma
@@ -11544,6 +11624,8 @@ comma
 id|max_freeable
 comma
 id|free_limit
+comma
+id|node_allocs
 )paren
 suffix:semicolon
 )brace

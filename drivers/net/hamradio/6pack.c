@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -406,8 +406,6 @@ c_func
 (paren
 id|sp-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|sp-&gt;led_state
 comma
@@ -426,8 +424,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 id|sp-&gt;xbuff
 comma
@@ -452,8 +448,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|sp-&gt;led_state
@@ -780,8 +774,6 @@ c_func
 (paren
 id|sp-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|sp-&gt;led_state
 comma
@@ -800,8 +792,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 id|sp-&gt;xbuff
 comma
@@ -830,8 +820,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|sp-&gt;led_state
@@ -1880,8 +1868,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|sp-&gt;xhead
 comma
 id|sp-&gt;xleft
@@ -2443,8 +2429,6 @@ c_func
 (paren
 id|sp-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|sp-&gt;led_state
 comma
@@ -2457,8 +2441,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|resync_cmd
@@ -2525,8 +2507,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|inbyte
@@ -3842,8 +3822,6 @@ c_func
 (paren
 id|sp-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|sp-&gt;led_state
 comma
@@ -3862,8 +3840,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 id|sp-&gt;xbuff
 comma
@@ -3895,8 +3871,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|sp-&gt;led_state
@@ -4042,8 +4016,6 @@ c_func
 (paren
 id|sp-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|sp-&gt;led_state
 comma
@@ -4065,8 +4037,6 @@ id|write
 c_func
 (paren
 id|sp-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|sp-&gt;led_state

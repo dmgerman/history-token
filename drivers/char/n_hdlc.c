@@ -25,8 +25,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* used in new tty drivers */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* used in new tty drivers */
 macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Buffers for individual HDLC frames&n; */
@@ -258,8 +258,8 @@ op_star
 id|file
 comma
 r_const
-id|__u8
-id|__user
+r_int
+r_char
 op_star
 id|buf
 comma
@@ -1130,8 +1130,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|tbuf-&gt;buf
 comma
 id|tbuf-&gt;count
@@ -1960,8 +1958,8 @@ op_star
 id|file
 comma
 r_const
-id|__u8
-id|__user
+r_int
+r_char
 op_star
 id|data
 comma
@@ -2194,10 +2192,7 @@ id|error
 )paren
 (brace
 multiline_comment|/* Retrieve the user&squot;s buffer */
-r_if
-c_cond
-(paren
-id|copy_from_user
+id|memcpy
 c_func
 (paren
 id|tbuf-&gt;buf
@@ -2206,26 +2201,7 @@ id|data
 comma
 id|count
 )paren
-)paren
-(brace
-multiline_comment|/* return tx buffer to free list */
-id|n_hdlc_buf_put
-c_func
-(paren
-op_amp
-id|n_hdlc-&gt;tx_free_buf_list
-comma
-id|tbuf
-)paren
 suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_else
-(brace
 multiline_comment|/* Send the data */
 id|tbuf-&gt;count
 op_assign
@@ -2250,7 +2226,6 @@ comma
 id|tty
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|error

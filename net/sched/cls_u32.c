@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * net/sched/cls_u32.c&t;Ugly (or Universal) 32bit key Packet Classifier.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;The filters are packed to hash tables of key nodes&n; *&t;with a set of 32bit key/mask pairs at every node.&n; *&t;Nodes reference next level hash tables etc.&n; *&n; *&t;This scheme is the best universal classifier I managed to&n; *&t;invent; it is not super-fast, but it is not slow (provided you&n; *&t;program it correctly), and general enough.  And its relative&n; *&t;speed grows as the number of rules becomes larger.&n; *&n; *&t;It seems that it represents the best middle point between&n; *&t;speed and manageability both by human and by machine.&n; *&n; *&t;It is especially useful for link sharing combined with QoS;&n; *&t;pure RSVP doesn&squot;t need such a general approach and can use&n; *&t;much simpler (and faster) schemes, sort of cls_rsvp.c.&n; *&n; *&t;JHS: We should remove the CONFIG_NET_CLS_IND from here&n; *&t;eventually when the meta match extension is made available&n; *&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

@@ -1816,6 +1816,7 @@ id|enable_dev
 comma
 r_int
 comma
+op_amp
 id|enable_dev_count
 comma
 l_int|0444
@@ -1828,6 +1829,7 @@ id|disable_dev
 comma
 r_int
 comma
+op_amp
 id|disable_dev_count
 comma
 l_int|0444

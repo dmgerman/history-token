@@ -2890,6 +2890,8 @@ op_star
 id|i
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
 (paren
 id|pixel_list
 (braket
@@ -2926,6 +2928,8 @@ op_plus
 l_int|1
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
 (paren
 id|line_list
 (braket
@@ -3028,6 +3032,8 @@ op_star
 id|i
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
 (paren
 l_int|1
 op_lshift
@@ -3117,6 +3123,8 @@ op_plus
 l_int|1
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
 (paren
 l_int|1
 op_lshift
@@ -3760,6 +3768,9 @@ comma
 r_enum
 id|v4l2_field
 id|field
+comma
+id|u32
+id|pixelformat
 )paren
 (brace
 r_struct
@@ -3768,6 +3779,19 @@ op_star
 id|vv
 op_assign
 id|dev-&gt;vv_data
+suffix:semicolon
+r_struct
+id|saa7146_format
+op_star
+id|sfmt
+op_assign
+id|format_by_fourcc
+c_func
+(paren
+id|dev
+comma
+id|pixelformat
+)paren
 suffix:semicolon
 r_int
 id|b_depth
@@ -4002,7 +4026,7 @@ suffix:semicolon
 )brace
 id|vdma1.base_page
 op_assign
-l_int|0
+id|sfmt-&gt;swap
 suffix:semicolon
 id|vdma1.num_line_byte
 op_assign
@@ -4306,6 +4330,8 @@ comma
 id|fh-&gt;ov.win.w.height
 comma
 id|fh-&gt;ov.win.field
+comma
+id|vv-&gt;ov_fmt-&gt;pixelformat
 )paren
 suffix:semicolon
 id|saa7146_set_output_format
@@ -4660,6 +4686,8 @@ dot
 id|dma
 op_or
 id|ME1
+op_or
+id|sfmt-&gt;swap
 suffix:semicolon
 r_if
 c_cond

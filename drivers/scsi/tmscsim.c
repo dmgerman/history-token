@@ -516,17 +516,6 @@ op_minus
 l_int|2
 )brace
 suffix:semicolon
-DECL|variable|tmscsim_paramnum
-r_static
-r_int
-id|tmscsim_paramnum
-op_assign
-id|ARRAY_SIZE
-c_func
-(paren
-id|tmscsim
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -534,7 +523,7 @@ id|tmscsim
 comma
 r_int
 comma
-id|tmscsim_paramnum
+l_int|NULL
 comma
 l_int|0
 )paren

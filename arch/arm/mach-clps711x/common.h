@@ -1,0 +1,26 @@
+multiline_comment|/*&n; * linux/arch/arm/mach-clps711x/common.h&n; *&n; * Common bits.&n; */
+r_struct
+id|sys_timer
+suffix:semicolon
+r_extern
+r_void
+id|clps711x_map_io
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|clps711x_init_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|sys_timer
+id|clps711x_timer
+suffix:semicolon
+eof

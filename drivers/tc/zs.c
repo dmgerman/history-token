@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#endif
@@ -22,7 +23,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -3603,9 +3603,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -3717,74 +3714,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|tmp_buf_sem
-)paren
-suffix:semicolon
-id|copy_from_user
-c_func
-(paren
-id|tmp_buf
-comma
-id|buf
-comma
-id|c
-)paren
-suffix:semicolon
-id|c
-op_assign
-id|min_t
-c_func
-(paren
-r_int
-comma
-id|c
-comma
-id|min
-c_func
-(paren
-id|SERIAL_XMIT_SIZE
-op_minus
-id|info-&gt;xmit_cnt
-op_minus
-l_int|1
-comma
-id|SERIAL_XMIT_SIZE
-op_minus
-id|info-&gt;xmit_head
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|info-&gt;xmit_buf
-op_plus
-id|info-&gt;xmit_head
-comma
-id|tmp_buf
-comma
-id|c
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|tmp_buf_sem
-)paren
-suffix:semicolon
-)brace
-r_else
 id|memcpy
 c_func
 (paren

@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -1472,50 +1472,6 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|pfm_remap_page_range
-id|pfm_remap_page_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|phys_addr
-comma
-r_int
-r_int
-id|size
-comma
-id|pgprot_t
-id|prot
-)paren
-(brace
-r_return
-id|remap_page_range
-c_func
-(paren
-id|vma
-comma
-id|from
-comma
-id|phys_addr
-comma
-id|size
-comma
-id|prot
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
 r_int
 DECL|function|pfm_protect_ctx_ctxsw
 id|pfm_protect_ctx_ctxsw
@@ -2417,33 +2373,6 @@ comma
 id|ctx
 )paren
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the&n; * area and marking the pages as reserved.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|pfm_kvirt_to_pa
-id|pfm_kvirt_to_pa
-c_func
-(paren
-r_int
-r_int
-id|adr
-)paren
-(brace
-id|__u64
-id|pa
-op_assign
-id|ia64_tpa
-c_func
-(paren
-id|adr
-)paren
-suffix:semicolon
-r_return
-id|pa
 suffix:semicolon
 )brace
 r_static
@@ -7576,10 +7505,6 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
-id|page
-suffix:semicolon
 id|DPRINT
 c_func
 (paren
@@ -7607,25 +7532,29 @@ OG
 l_int|0
 )paren
 (brace
-id|page
+r_int
+r_int
+id|pfn
 op_assign
-id|pfm_kvirt_to_pa
+id|ia64_tpa
 c_func
 (paren
 id|buf
 )paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pfm_remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
 comma
 id|addr
 comma
-id|page
+id|pfn
 comma
 id|PAGE_SIZE
 comma

@@ -22,8 +22,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;&t;&t;  
-macro_line|#include &lt;asm/bitops.h&gt;&t;&t;  
 macro_line|#include &lt;asm/io.h&gt;&t;&t;  
 macro_line|#include &lt;asm/dma.h&gt;
 multiline_comment|/* Few macros */

@@ -123,14 +123,6 @@ r_int
 id|region
 suffix:semicolon
 multiline_comment|/* pci region for regs */
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* for PM state save */
 macro_line|#endif
 DECL|macro|HCD_BUFFER_POOLS
 mdefine_line|#define HCD_BUFFER_POOLS&t;4

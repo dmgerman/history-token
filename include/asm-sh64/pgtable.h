@@ -1083,7 +1083,7 @@ mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init

@@ -4,7 +4,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 DECL|function|partition_id_show
 r_static
@@ -246,8 +245,8 @@ op_star
 id|file
 comma
 r_const
-id|__user
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -259,11 +258,31 @@ op_star
 id|data
 )paren
 (brace
+r_char
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|val
+comma
+id|buffer
+comma
+l_int|1
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 id|sn_force_interrupt_flag
 op_assign
 (paren
-op_star
-id|buffer
+id|val
 op_eq
 l_char|&squot;0&squot;
 )paren
@@ -573,7 +592,7 @@ c_func
 (paren
 l_string|&quot;sgi_sn&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren

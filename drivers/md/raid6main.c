@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;raid6.h&quot;
 multiline_comment|/*&n; * Stripe cache&n; */
@@ -8663,7 +8663,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid6: make_request, sector %Lu logical %Lu&bslash;n&quot;
+l_string|&quot;raid6: make_request, sector %llu logical %llu&bslash;n&quot;
 comma
 (paren
 r_int

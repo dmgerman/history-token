@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -31,6 +32,15 @@ DECL|macro|URB_ZERO_PACKET
 macro_line|#undef  URB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET 0
+macro_line|#endif
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
+DECL|variable|isoc
+r_static
+r_int
+id|isoc
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#endif
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;2.7&quot;
@@ -3999,6 +4009,8 @@ macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
+id|isoc
+op_logical_and
 op_logical_neg
 (paren
 id|id-&gt;driver_info
@@ -4655,6 +4667,26 @@ c_func
 id|hci_usb_exit
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
+id|module_param
+c_func
+(paren
+id|isoc
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|isoc
+comma
+l_string|&quot;Set isochronous transfers for SCO over HCI support&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

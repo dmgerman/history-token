@@ -21,12 +21,12 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/arch/svinto.h&gt;/* DMA and register descriptions */
 macro_line|#include &lt;asm/io.h&gt;         /* LED_* I/O functions */
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ethernet.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 singleline_comment|//#define ETHDEBUG

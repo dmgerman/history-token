@@ -4650,19 +4650,9 @@ r_if
 c_cond
 (paren
 id|retval
-OL
-l_int|0
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|pci_nr_found
-op_assign
-id|retval
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
 id|retval
@@ -4684,27 +4674,6 @@ l_int|0
 r_goto
 id|out_unregister_pci
 suffix:semicolon
-macro_line|#endif
-macro_line|#if !defined(CONFIG_HOTPLUG) || defined(MODULE)
-r_if
-c_cond
-(paren
-id|pci_nr_found
-op_plus
-id|retval
-op_eq
-l_int|0
-)paren
-(brace
-id|retval
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|out_unregister_isapnp
-suffix:semicolon
-)brace
 macro_line|#endif
 r_return
 l_int|0

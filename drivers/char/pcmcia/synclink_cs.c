@@ -39,7 +39,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -7022,7 +7022,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Send a block of data&n; * &t;&n; * Arguments:&n; * &n; * tty        pointer to tty information structure&n; * from_user  flag: 1 = from user process&n; * buf&t;      pointer to buffer containing send data&n; * count      size of send data in bytes&n; * &t;&n; * Returns: number of characters written&n; */
+multiline_comment|/* Send a block of data&n; * &t;&n; * Arguments:&n; * &n; * tty        pointer to tty information structure&n; * buf&t;      pointer to buffer containing send data&n; * count      size of send data in bytes&n; * &t;&n; * Returns: number of characters written&n; */
 DECL|function|mgslpc_write
 r_static
 r_int
@@ -7033,9 +7033,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-comma
-r_int
-id|from_user
 comma
 r_const
 r_int
@@ -7053,8 +7050,6 @@ comma
 id|ret
 op_assign
 l_int|0
-comma
-id|err
 suffix:semicolon
 id|MGSLPC_INFO
 op_star
@@ -7194,48 +7189,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-id|COPY_FROM_USER
-c_func
-(paren
-id|err
-comma
-id|info-&gt;tx_buf
-op_plus
-id|info-&gt;tx_put
-comma
-id|buf
-comma
-id|c
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_else
 id|memcpy
 c_func
 (paren

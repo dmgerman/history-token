@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;

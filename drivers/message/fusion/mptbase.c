@@ -3710,6 +3710,7 @@ op_star
 id|ioc
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mem
 suffix:semicolon
@@ -4249,6 +4250,7 @@ id|ioc-&gt;chip
 op_assign
 (paren
 id|SYSIF_REGS
+id|__iomem
 op_star
 )paren
 id|mem
@@ -4273,6 +4275,7 @@ id|ioc-&gt;pio_chip
 op_assign
 (paren
 id|SYSIF_REGS
+id|__iomem
 op_star
 )paren
 id|pmem
@@ -5387,8 +5390,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|ioc-&gt;PciState
 )paren
 suffix:semicolon
 multiline_comment|/* put ioc into READY_STATE */
@@ -5524,8 +5525,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|ioc-&gt;PciState
 )paren
 suffix:semicolon
 id|pci_enable_device
@@ -7434,10 +7433,6 @@ l_int|NULL
 id|iounmap
 c_func
 (paren
-(paren
-id|u8
-op_star
-)paren
 id|ioc-&gt;memmap
 )paren
 suffix:semicolon

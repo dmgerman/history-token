@@ -469,10 +469,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Macros to operate on percpu disk statistics:&n; * Since writes to disk_stats are serialised through the queue_lock,&n; * smp_processor_id() should be enough to get to the per_cpu versions&n; * of statistics counters&n; */
+multiline_comment|/* &n; * Macros to operate on percpu disk statistics:&n; *&n; * The __ variants should only be called in critical sections. The full&n; * variants disable/enable preemption.&n; */
 macro_line|#ifdef&t;CONFIG_SMP
-DECL|macro|disk_stat_add
-mdefine_line|#define disk_stat_add(gendiskp, field, addnd) &t;&bslash;&n;&t;(per_cpu_ptr(gendiskp-&gt;dkstats, smp_processor_id())-&gt;field += addnd)
+DECL|macro|__disk_stat_add
+mdefine_line|#define __disk_stat_add(gendiskp, field, addnd) &t;&bslash;&n;&t;(per_cpu_ptr(gendiskp-&gt;dkstats, smp_processor_id())-&gt;field += addnd)
 DECL|macro|disk_stat_read
 mdefine_line|#define disk_stat_read(gendiskp, field)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;typeof(gendiskp-&gt;dkstats-&gt;field) res = 0;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i=0; i &lt; NR_CPUS; i++) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!cpu_possible(i))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;res += per_cpu_ptr(gendiskp-&gt;dkstats, i)-&gt;field;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|disk_stat_set_all
@@ -543,8 +543,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-DECL|macro|disk_stat_add
-mdefine_line|#define disk_stat_add(gendiskp, field, addnd) (gendiskp-&gt;dkstats.field += addnd)
+DECL|macro|__disk_stat_add
+mdefine_line|#define __disk_stat_add(gendiskp, field, addnd) &bslash;&n;&t;&t;&t;&t;(gendiskp-&gt;dkstats.field += addnd)
 DECL|macro|disk_stat_read
 mdefine_line|#define disk_stat_read(gendiskp, field)&t;(gendiskp-&gt;dkstats.field)
 DECL|function|disk_stat_set_all
@@ -580,10 +580,18 @@ id|disk_stats
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|macro|disk_stat_inc
-mdefine_line|#define disk_stat_inc(gendiskp, field) disk_stat_add(gendiskp, field, 1)
+DECL|macro|disk_stat_add
+mdefine_line|#define disk_stat_add(gendiskp, field, addnd)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&t;&bslash;&n;&t;&t;__disk_stat_add(gendiskp, field, addnd);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|__disk_stat_dec
+mdefine_line|#define __disk_stat_dec(gendiskp, field) __disk_stat_add(gendiskp, field, -1)
 DECL|macro|disk_stat_dec
 mdefine_line|#define disk_stat_dec(gendiskp, field) disk_stat_add(gendiskp, field, -1)
+DECL|macro|__disk_stat_inc
+mdefine_line|#define __disk_stat_inc(gendiskp, field) __disk_stat_add(gendiskp, field, 1)
+DECL|macro|disk_stat_inc
+mdefine_line|#define disk_stat_inc(gendiskp, field) disk_stat_add(gendiskp, field, 1)
+DECL|macro|__disk_stat_sub
+mdefine_line|#define __disk_stat_sub(gendiskp, field, subnd) &bslash;&n;&t;&t;__disk_stat_add(gendiskp, field, -subnd)
 DECL|macro|disk_stat_sub
 mdefine_line|#define disk_stat_sub(gendiskp, field, subnd) &bslash;&n;&t;&t;disk_stat_add(gendiskp, field, -subnd)
 multiline_comment|/* Inlines to alloc and free disk stats in struct gendisk */

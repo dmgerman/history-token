@@ -306,11 +306,11 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/* XXX A comment above remap_page_range says it should only be&n;&t; * called when the mm semaphore is held&n;&t; */
+multiline_comment|/* XXX A comment above remap_pfn_range says it should only be&n;&t; * called when the mm semaphore is held&n;&t; */
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -318,6 +318,8 @@ comma
 id|vma-&gt;vm_start
 comma
 id|p_buf
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

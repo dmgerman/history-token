@@ -264,8 +264,6 @@ DECL|variable|lm77_id
 r_static
 r_int
 id|lm77_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* straight from the datasheet */
 DECL|macro|LM77_TEMP_MIN

@@ -2331,10 +2331,6 @@ suffix:semicolon
 )brace
 id|raid_dev-&gt;baseaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -2667,9 +2663,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon
@@ -2747,9 +2740,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon
@@ -4658,7 +4648,7 @@ id|scb-&gt;scp-&gt;use_sg
 )paren
 (brace
 singleline_comment|// sg list not used
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -4673,7 +4663,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7335,7 +7325,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7373,7 +7363,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev

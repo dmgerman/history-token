@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1473,8 +1473,6 @@ c_func
 (paren
 id|sl-&gt;tty
 comma
-l_int|0
-comma
 id|sl-&gt;xbuff
 comma
 id|count
@@ -1600,8 +1598,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|sl-&gt;xhead
 comma
@@ -5600,8 +5596,6 @@ id|write
 c_func
 (paren
 id|sl-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|s

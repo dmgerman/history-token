@@ -7767,8 +7767,6 @@ id|pci_restore_state
 c_func
 (paren
 id|sp-&gt;pdev
-comma
-id|sp-&gt;config_space
 )paren
 suffix:semicolon
 id|s2io_init_pci
@@ -16698,8 +16696,6 @@ id|pci_save_state
 c_func
 (paren
 id|sp-&gt;pdev
-comma
-id|sp-&gt;config_space
 )paren
 suffix:semicolon
 multiline_comment|/* Setting swapper control on the NIC, for proper reset operation */

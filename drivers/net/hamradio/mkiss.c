@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&t;MKISS Driver&n; *&n; *&t;This module:&n; *&t;&t;This
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1826,8 +1826,6 @@ c_func
 (paren
 id|ax-&gt;tty
 comma
-l_int|0
-comma
 id|ax-&gt;xbuff
 comma
 id|count
@@ -1948,8 +1946,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|ax-&gt;xhead
 comma

@@ -59,6 +59,9 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;ELAN &quot;
 macro_line|#elif defined CONFIG_MCRUSOE
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;CRUSOE &quot;
+macro_line|#elif defined CONFIG_MEFFICEON
+DECL|macro|MODULE_PROC_FAMILY
+mdefine_line|#define MODULE_PROC_FAMILY &quot;EFFICEON &quot;
 macro_line|#elif defined CONFIG_MWINCHIPC6
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;WINCHIPC6 &quot;

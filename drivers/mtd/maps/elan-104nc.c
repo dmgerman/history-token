@@ -1,4 +1,4 @@
-multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.21 2004/07/12 22:38:29 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as separate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
+multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.22 2004/09/16 23:27:13 gleixner Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as separate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -33,8 +33,9 @@ suffix:semicolon
 singleline_comment|// Current page in window.
 DECL|variable|iomapadr
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iomapadr
 suffix:semicolon
 DECL|variable|elan_104nc_spin
@@ -676,8 +677,9 @@ multiline_comment|/* Urg! We use I/O port 0x22 without request_region()ing it,&n
 id|iomapadr
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func

@@ -138,6 +138,10 @@ DECL|enumerator|OSD_MoveWindow
 id|OSD_MoveWindow
 comma
 singleline_comment|//  move current window to (x0, y0)  
+DECL|enumerator|OSD_OpenRaw
+id|OSD_OpenRaw
+comma
+singleline_comment|// Open other types of OSD windows
 DECL|typedef|OSD_Command
 )brace
 id|OSD_Command
@@ -181,7 +185,115 @@ DECL|typedef|osd_cmd_t
 )brace
 id|osd_cmd_t
 suffix:semicolon
+multiline_comment|/* OSD_OpenRaw: set &squot;color&squot; to desired window type */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|OSD_BITMAP1
+id|OSD_BITMAP1
+comma
+multiline_comment|/* 1 bit bitmap */
+DECL|enumerator|OSD_BITMAP2
+id|OSD_BITMAP2
+comma
+multiline_comment|/* 2 bit bitmap */
+DECL|enumerator|OSD_BITMAP4
+id|OSD_BITMAP4
+comma
+multiline_comment|/* 4 bit bitmap */
+DECL|enumerator|OSD_BITMAP8
+id|OSD_BITMAP8
+comma
+multiline_comment|/* 8 bit bitmap */
+DECL|enumerator|OSD_BITMAP1HR
+id|OSD_BITMAP1HR
+comma
+multiline_comment|/* 1 Bit bitmap half resolution */
+DECL|enumerator|OSD_BITMAP2HR
+id|OSD_BITMAP2HR
+comma
+multiline_comment|/* 2 bit bitmap half resolution */
+DECL|enumerator|OSD_BITMAP4HR
+id|OSD_BITMAP4HR
+comma
+multiline_comment|/* 4 bit bitmap half resolution */
+DECL|enumerator|OSD_BITMAP8HR
+id|OSD_BITMAP8HR
+comma
+multiline_comment|/* 8 bit bitmap half resolution */
+DECL|enumerator|OSD_YCRCB422
+id|OSD_YCRCB422
+comma
+multiline_comment|/* 4:2:2 YCRCB Graphic Display */
+DECL|enumerator|OSD_YCRCB444
+id|OSD_YCRCB444
+comma
+multiline_comment|/* 4:4:4 YCRCB Graphic Display */
+DECL|enumerator|OSD_YCRCB444HR
+id|OSD_YCRCB444HR
+comma
+multiline_comment|/* 4:4:4 YCRCB graphic half resolution */
+DECL|enumerator|OSD_VIDEOTSIZE
+id|OSD_VIDEOTSIZE
+comma
+multiline_comment|/* True Size Normal MPEG Video Display */
+DECL|enumerator|OSD_VIDEOHSIZE
+id|OSD_VIDEOHSIZE
+comma
+multiline_comment|/* MPEG Video Display Half Resolution */
+DECL|enumerator|OSD_VIDEOQSIZE
+id|OSD_VIDEOQSIZE
+comma
+multiline_comment|/* MPEG Video Display Quarter Resolution */
+DECL|enumerator|OSD_VIDEODSIZE
+id|OSD_VIDEODSIZE
+comma
+multiline_comment|/* MPEG Video Display Double Resolution */
+DECL|enumerator|OSD_VIDEOTHSIZE
+id|OSD_VIDEOTHSIZE
+comma
+multiline_comment|/* True Size MPEG Video Display Half Resolution */
+DECL|enumerator|OSD_VIDEOTQSIZE
+id|OSD_VIDEOTQSIZE
+comma
+multiline_comment|/* True Size MPEG Video Display Quarter Resolution*/
+DECL|enumerator|OSD_VIDEOTDSIZE
+id|OSD_VIDEOTDSIZE
+comma
+multiline_comment|/* True Size MPEG Video Display Double Resolution */
+DECL|enumerator|OSD_VIDEONSIZE
+id|OSD_VIDEONSIZE
+comma
+multiline_comment|/* Full Size MPEG Video Display */
+DECL|enumerator|OSD_CURSOR
+id|OSD_CURSOR
+multiline_comment|/* Cursor */
+DECL|typedef|osd_raw_window_t
+)brace
+id|osd_raw_window_t
+suffix:semicolon
+DECL|struct|osd_cap_s
+r_typedef
+r_struct
+id|osd_cap_s
+(brace
+DECL|member|cmd
+r_int
+id|cmd
+suffix:semicolon
+DECL|macro|OSD_CAP_MEMSIZE
+mdefine_line|#define OSD_CAP_MEMSIZE         1  /* memory size */
+DECL|member|val
+r_int
+id|val
+suffix:semicolon
+DECL|typedef|osd_cap_t
+)brace
+id|osd_cap_t
+suffix:semicolon
 DECL|macro|OSD_SEND_CMD
 mdefine_line|#define OSD_SEND_CMD       _IOW(&squot;o&squot;, 160, osd_cmd_t)
+DECL|macro|OSD_GET_CAPABILITY
+mdefine_line|#define OSD_GET_CAPABILITY      _IOR(&squot;o&squot;, 161, osd_cap_t)
 macro_line|#endif
 eof

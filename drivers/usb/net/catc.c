@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

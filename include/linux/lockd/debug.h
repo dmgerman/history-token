@@ -40,5 +40,25 @@ DECL|macro|NLMDBG_XDR
 mdefine_line|#define NLMDBG_XDR&t;&t;0x0100
 DECL|macro|NLMDBG_ALL
 mdefine_line|#define NLMDBG_ALL&t;&t;0x7fff
+multiline_comment|/*&n; * Support for printing NLM cookies in dprintk()&n; */
+macro_line|#ifdef RPC_DEBUG
+r_struct
+id|nlm_cookie
+suffix:semicolon
+multiline_comment|/* Call this function with the BKL held (it uses a static buffer) */
+r_extern
+r_const
+r_char
+op_star
+id|nlmdbg_cookie2a
+c_func
+(paren
+r_const
+r_struct
+id|nlm_cookie
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* LINUX_LOCKD_DEBUG_H */
 eof

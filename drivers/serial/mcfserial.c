@@ -16,12 +16,12 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/coldfire.h&gt;
 macro_line|#include &lt;asm/mcfsim.h&gt;
@@ -2550,9 +2550,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -2596,7 +2593,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d): mcfrs_write(tty=%x,from_user=%d,buf=%x,count=%d)&bslash;n&quot;
+l_string|&quot;%s(%d): mcfrs_write(tty=%x,buf=%x,count=%d)&bslash;n&quot;
 comma
 id|__FILE__
 comma
@@ -2606,8 +2603,6 @@ comma
 r_int
 )paren
 id|tty
-comma
-id|from_user
 comma
 (paren
 r_int
@@ -2713,103 +2708,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|mcfrs_tmp_buf_sem
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|mcfrs_tmp_buf
-comma
-id|buf
-comma
-id|c
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|c
-op_assign
-id|min
-c_func
-(paren
-id|c
-comma
-(paren
-r_int
-)paren
-id|min
-c_func
-(paren
-(paren
-(paren
-r_int
-)paren
-id|SERIAL_XMIT_SIZE
-)paren
-op_minus
-id|info-&gt;xmit_cnt
-op_minus
-l_int|1
-comma
-(paren
-(paren
-r_int
-)paren
-id|SERIAL_XMIT_SIZE
-)paren
-op_minus
-id|info-&gt;xmit_head
-)paren
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|info-&gt;xmit_buf
-op_plus
-id|info-&gt;xmit_head
-comma
-id|mcfrs_tmp_buf
-comma
-id|c
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|mcfrs_tmp_buf_sem
-)paren
-suffix:semicolon
-)brace
-r_else
 id|memcpy
 c_func
 (paren

@@ -853,11 +853,12 @@ c_func
 (paren
 id|sa1100_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|sa1100_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|sa1100_timer
+comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3100 */
 multiline_comment|/************************* H3600 *************************/
@@ -1232,11 +1233,12 @@ c_func
 (paren
 id|sa1100_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|sa1100_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|sa1100_timer
+comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3600 */
 macro_line|#ifdef CONFIG_SA1100_H3800
@@ -2596,11 +2598,12 @@ c_func
 (paren
 id|h3800_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|sa1100_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|sa1100_timer
+comma
 id|MACHINE_END
 macro_line|#endif /* CONFIG_SA1100_H3800 */
 eof

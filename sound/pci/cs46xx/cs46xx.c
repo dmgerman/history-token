@@ -144,11 +144,6 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -156,7 +151,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -176,7 +171,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -196,7 +191,7 @@ id|enable
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -216,7 +211,7 @@ id|external_amp
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -236,7 +231,7 @@ id|thinkpad
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -256,7 +251,7 @@ id|mmap_valid
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

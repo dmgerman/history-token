@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_FEC_PACKETHOOK
 macro_line|#include &lt;linux/pkthook.h&gt;
 macro_line|#endif
@@ -22,7 +23,6 @@ macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#ifdef&t;CONFIG_USE_MDIO

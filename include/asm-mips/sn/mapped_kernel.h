@@ -18,15 +18,11 @@ DECL|macro|MAPPED_KERN_RO_TO_PHYS
 mdefine_line|#define MAPPED_KERN_RO_TO_PHYS(x) &bslash;&n;&t;&t;&t;&t;((unsigned long)MAPPED_ADDR_RO_TO_PHYS(x) | &bslash;&n;&t;&t;&t;&t;MAPPED_KERN_RO_PHYSBASE(get_compact_nodeid()))
 DECL|macro|MAPPED_KERN_RW_TO_PHYS
 mdefine_line|#define MAPPED_KERN_RW_TO_PHYS(x) &bslash;&n;&t;&t;&t;&t;((unsigned long)MAPPED_ADDR_RW_TO_PHYS(x) | &bslash;&n;&t;&t;&t;&t;MAPPED_KERN_RW_PHYSBASE(get_compact_nodeid()))
-DECL|macro|MAPPED_OFFSET
-mdefine_line|#define MAPPED_OFFSET&t;&t;&t;16777216
 macro_line|#else /* CONFIG_MAPPED_KERNEL */
 DECL|macro|MAPPED_KERN_RO_TO_PHYS
 mdefine_line|#define MAPPED_KERN_RO_TO_PHYS(x)&t;(x - CKSEG0)
 DECL|macro|MAPPED_KERN_RW_TO_PHYS
 mdefine_line|#define MAPPED_KERN_RW_TO_PHYS(x)&t;(x - CKSEG0)
-DECL|macro|MAPPED_OFFSET
-mdefine_line|#define MAPPED_OFFSET&t;&t;&t;0
 macro_line|#endif /* CONFIG_MAPPED_KERNEL */
 DECL|macro|MAPPED_KERN_RO_TO_K0
 mdefine_line|#define MAPPED_KERN_RO_TO_K0(x)&t;PHYS_TO_K0(MAPPED_KERN_RO_TO_PHYS(x))

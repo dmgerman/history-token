@@ -1,4 +1,12 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/generic.h&n; *&n; * Author: Nicolas Pitre&n; */
+r_struct
+id|sys_timer
+suffix:semicolon
+r_extern
+r_struct
+id|sys_timer
+id|sa1100_timer
+suffix:semicolon
 r_extern
 r_void
 id|__init
@@ -12,15 +20,6 @@ r_extern
 r_void
 id|__init
 id|sa1100_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|sa1100_init_time
 c_func
 (paren
 r_void

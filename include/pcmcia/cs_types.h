@@ -70,16 +70,6 @@ id|region_t
 op_star
 id|memory_handle_t
 suffix:semicolon
-r_struct
-id|eraseq_t
-suffix:semicolon
-DECL|typedef|eraseq_handle_t
-r_typedef
-r_struct
-id|eraseq_t
-op_star
-id|eraseq_handle_t
-suffix:semicolon
 macro_line|#ifndef DEV_NAME_LEN
 DECL|macro|DEV_NAME_LEN
 mdefine_line|#define DEV_NAME_LEN 32

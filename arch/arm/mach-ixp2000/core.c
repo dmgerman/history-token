@@ -576,7 +576,6 @@ r_int
 id|ticks_per_usec
 suffix:semicolon
 DECL|function|ixp2000_gettimeoffset
-r_static
 r_int
 r_int
 id|ixp2000_gettimeoffset
@@ -621,6 +620,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* clear timer 1 */
 id|ixp2000_reg_write
 c_func
@@ -634,6 +640,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -674,10 +687,6 @@ r_int
 id|tick_rate
 )paren
 (brace
-id|gettimeoffset
-op_assign
-id|ixp2000_gettimeoffset
-suffix:semicolon
 id|ixp2000_reg_write
 c_func
 (paren

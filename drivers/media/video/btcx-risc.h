@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * $Id: btcx-risc.h,v 1.2 2004/09/15 16:15:24 kraxel Exp $&n; */
 DECL|struct|btcx_riscmem
 r_struct
 id|btcx_riscmem

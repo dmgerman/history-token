@@ -269,9 +269,9 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
@@ -8992,31 +8992,13 @@ id|version
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
+r_return
 id|pci_register_driver
 c_func
 (paren
 op_amp
 id|hamachi_driver
 )paren
-OG
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|hamachi_driver
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|hamachi_exit

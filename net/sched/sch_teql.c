@@ -2,7 +2,7 @@ multiline_comment|/* net/sched/sch_teql.c&t;&quot;True&quot; (or &quot;trivial&q
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -145,11 +145,11 @@ op_le
 id|dev-&gt;tx_queue_len
 )paren
 (brace
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
@@ -171,7 +171,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return

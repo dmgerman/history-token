@@ -12418,8 +12418,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|vptr-&gt;pci_state
 )paren
 suffix:semicolon
 macro_line|#ifdef ETHTOOL_GWOL
@@ -12599,8 +12597,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|vptr-&gt;pci_state
 )paren
 suffix:semicolon
 id|mac_wol_reset

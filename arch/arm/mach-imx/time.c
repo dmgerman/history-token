@@ -84,6 +84,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* clear the interrupt */
 r_if
 c_cond
@@ -106,6 +113,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
@@ -136,10 +150,11 @@ id|imx_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+r_static
 r_void
 id|__init
-DECL|function|imx_init_time
-id|imx_init_time
+DECL|function|imx_timer_init
+id|imx_timer_init
 c_func
 (paren
 r_void
@@ -194,9 +209,21 @@ op_amp
 id|imx_timer_irq
 )paren
 suffix:semicolon
-id|gettimeoffset
+)brace
+r_struct
+id|imx_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|imx_timer_init
+comma
+dot
+id|offset
 op_assign
 id|imx_gettimeoffset
-suffix:semicolon
+comma
 )brace
+suffix:semicolon
 eof

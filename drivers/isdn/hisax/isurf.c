@@ -559,11 +559,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 id|cs-&gt;hw.isurf.isar
 )paren
 suffix:semicolon
@@ -1354,10 +1349,6 @@ suffix:semicolon
 )brace
 id|cs-&gt;hw.isurf.isar
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

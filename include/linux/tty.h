@@ -772,6 +772,16 @@ r_struct
 id|semaphore
 id|atomic_write
 suffix:semicolon
+DECL|member|write_buf
+r_int
+r_char
+op_star
+id|write_buf
+suffix:semicolon
+DECL|member|write_cnt
+r_int
+id|write_cnt
+suffix:semicolon
 DECL|member|read_lock
 id|spinlock_t
 id|read_lock

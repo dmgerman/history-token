@@ -2,7 +2,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/*&n; * Find next zero bit in a bitmap reasonably efficiently..&n; */
 DECL|function|__find_next_zero_bit
 r_int

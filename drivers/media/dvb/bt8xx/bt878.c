@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * bt878.c: part of the driver for the Pinnacle PCTV Sat DVB PCI card&n; *&n; * Copyright (C) 2002 Peter Hettkamp &lt;peter.hettkamp@t-online.de&gt;&n; *&n; * large parts based on the bttv driver&n; * Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n; *                        &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n; * (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n;&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n;&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -16,11 +16,11 @@ macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;bt878.h&quot;
 macro_line|#include &quot;dst-bt878.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 multiline_comment|/**************************************/
 multiline_comment|/* Miscellaneous utility  definitions */
 multiline_comment|/**************************************/
 DECL|variable|bt878_verbose
+r_static
 r_int
 r_int
 id|bt878_verbose
@@ -28,18 +28,21 @@ op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|bt878_debug
+r_static
 r_int
 r_int
 id|bt878_debug
-op_assign
-l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|verbose
+comma
 id|bt878_verbose
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -50,12 +53,16 @@ comma
 l_string|&quot;verbose startup messages, default is 1 (yes)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|debug
+comma
 id|bt878_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -63,13 +70,7 @@ c_func
 (paren
 id|bt878_debug
 comma
-l_string|&quot;debug messages, default is 0 (no)&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
+l_string|&quot;Turn on/off debugging (default:off).&quot;
 )paren
 suffix:semicolon
 DECL|variable|bt878_num
@@ -1153,57 +1154,6 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|bttv_gpio_enable
-c_func
-(paren
-r_int
-r_int
-id|card
-comma
-r_int
-r_int
-id|mask
-comma
-r_int
-r_int
-id|data
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|bttv_read_gpio
-c_func
-(paren
-r_int
-r_int
-id|card
-comma
-r_int
-r_int
-op_star
-id|data
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|bttv_write_gpio
-c_func
-(paren
-r_int
-r_int
-id|card
-comma
-r_int
-r_int
-id|mask
-comma
-r_int
-r_int
-id|data
-)paren
-suffix:semicolon
 r_int
 DECL|function|bt878_device_control
 id|bt878_device_control
@@ -1343,17 +1293,17 @@ c_func
 id|bt878_device_control
 )paren
 suffix:semicolon
-DECL|function|bt878_find_by_dvb_adap
+DECL|function|bt878_find_by_i2c_adap
 r_struct
 id|bt878
 op_star
-id|bt878_find_by_dvb_adap
+id|bt878_find_by_i2c_adap
 c_func
 (paren
 r_struct
-id|dvb_adapter
+id|i2c_adapter
 op_star
-id|adap
+id|adapter
 )paren
 (brace
 r_int
@@ -1365,7 +1315,7 @@ c_func
 (paren
 l_string|&quot;bt878 find by dvb adap: checking &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|adap-&gt;name
+id|adapter-&gt;name
 )paren
 suffix:semicolon
 r_for
@@ -1391,9 +1341,9 @@ id|bt878
 id|card_nr
 )braket
 dot
-id|adap_ptr
+id|adapter
 op_eq
-id|adap
+id|adapter
 )paren
 r_return
 op_amp
@@ -1408,18 +1358,18 @@ c_func
 (paren
 l_string|&quot;bt878 find by dvb adap: NOT found &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
-id|adap-&gt;name
+id|adapter-&gt;name
 )paren
 suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|bt878_find_by_dvb_adap
+DECL|variable|bt878_find_by_i2c_adap
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|bt878_find_by_dvb_adap
+id|bt878_find_by_i2c_adap
 )paren
 suffix:semicolon
 multiline_comment|/***********************/
@@ -2101,7 +2051,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|bt878_remove
+)paren
 comma
 )brace
 suffix:semicolon
@@ -2253,6 +2207,12 @@ id|module_exit
 c_func
 (paren
 id|bt878_cleanup_module
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

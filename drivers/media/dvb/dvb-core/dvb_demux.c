@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 DECL|macro|NOBUFS
 mdefine_line|#define NOBUFS  
 multiline_comment|/* &n;** #define DVB_DEMUX_SECTION_LOSS_LOG to monitor payload loss in the syslog&n;*/
@@ -2457,6 +2456,13 @@ op_star
 id|feed
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|feed-&gt;demux-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2482,7 +2488,8 @@ comma
 id|feed-&gt;pid
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|list_add
@@ -2493,6 +2500,15 @@ id|feed-&gt;list_head
 comma
 op_amp
 id|feed-&gt;demux-&gt;feed_list
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|feed-&gt;demux-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -2508,6 +2524,13 @@ op_star
 id|feed
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|feed-&gt;demux-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2536,7 +2559,8 @@ comma
 id|feed-&gt;pid
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|list_del
@@ -2544,6 +2568,15 @@ c_func
 (paren
 op_amp
 id|feed-&gt;list_head
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|feed-&gt;demux-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3418,6 +3451,10 @@ c_cond
 id|feed-&gt;ts_type
 op_amp
 id|TS_DECODER
+op_logical_and
+id|feed-&gt;pes_type
+OL
+id|DMX_TS_PES_OTHER
 )paren
 id|demux-&gt;pesfilter
 (braket

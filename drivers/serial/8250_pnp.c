@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &quot;8250.h&quot;
@@ -843,6 +843,13 @@ comma
 multiline_comment|/* U.S. Robotics 33.6K Voice EXT PnP */
 (brace
 l_string|&quot;USR0007&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* U.S. Robotics Courier V.Everything INT PnP */
+(brace
+l_string|&quot;USR0009&quot;
 comma
 l_int|0
 )brace

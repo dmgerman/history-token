@@ -31,11 +31,11 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* default maximum number of failures */
 DECL|macro|IDE_DEFAULT_MAX_FAILURES
 mdefine_line|#define IDE_DEFAULT_MAX_FAILURES &t;1
@@ -2264,10 +2264,6 @@ op_assign
 id|tmp_hwif-&gt;cds
 suffix:semicolon
 macro_line|#endif
-id|hwif-&gt;identify
-op_assign
-id|tmp_hwif-&gt;identify
-suffix:semicolon
 id|hwif-&gt;tuneproc
 op_assign
 id|tmp_hwif-&gt;tuneproc
@@ -2324,17 +2320,17 @@ id|hwif-&gt;atapi_output_bytes
 op_assign
 id|tmp_hwif-&gt;atapi_output_bytes
 suffix:semicolon
-id|hwif-&gt;ide_dma_read
+id|hwif-&gt;dma_setup
 op_assign
-id|tmp_hwif-&gt;ide_dma_read
+id|tmp_hwif-&gt;dma_setup
 suffix:semicolon
-id|hwif-&gt;ide_dma_write
+id|hwif-&gt;dma_exec_cmd
 op_assign
-id|tmp_hwif-&gt;ide_dma_write
+id|tmp_hwif-&gt;dma_exec_cmd
 suffix:semicolon
-id|hwif-&gt;ide_dma_begin
+id|hwif-&gt;dma_start
 op_assign
-id|tmp_hwif-&gt;ide_dma_begin
+id|tmp_hwif-&gt;dma_start
 suffix:semicolon
 id|hwif-&gt;ide_dma_end
 op_assign
@@ -2419,6 +2415,10 @@ suffix:semicolon
 id|hwif-&gt;INSL
 op_assign
 id|tmp_hwif-&gt;INSL
+suffix:semicolon
+id|hwif-&gt;sg_max_nents
+op_assign
+id|tmp_hwif-&gt;sg_max_nents
 suffix:semicolon
 id|hwif-&gt;mmio
 op_assign
@@ -3125,6 +3125,12 @@ id|disk
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|hwif-&gt;sg_table
+)paren
+suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
@@ -7058,14 +7064,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* zero = nothing matched */
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-DECL|variable|probe_pdc4030
-r_static
-r_int
-id|__initdata
-id|probe_pdc4030
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 DECL|variable|probe_ali14xx
 r_static
@@ -7939,8 +7937,6 @@ l_string|&quot;umc8672&quot;
 comma
 l_string|&quot;ali14xx&quot;
 comma
-l_string|&quot;dc4030&quot;
-comma
 l_int|NULL
 )brace
 suffix:semicolon
@@ -8078,20 +8074,6 @@ c_cond
 id|i
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-r_case
-op_minus
-l_int|18
-suffix:colon
-multiline_comment|/* &quot;dc4030&quot; */
-id|probe_pdc4030
-op_assign
-l_int|1
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_case
 op_minus
@@ -8621,31 +8603,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-(brace
-r_extern
-r_int
-id|pdc4030_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|probe_pdc4030
-)paren
-(paren
-r_void
-)paren
-id|pdc4030_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
 (brace
 r_extern

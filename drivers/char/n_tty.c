@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* number of characters left in xmit buffer before select has we have room */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
@@ -732,8 +732,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 l_string|&quot;        &quot;
 comma
 id|spaces
@@ -840,27 +838,22 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
-id|inbuf
+id|buf
 comma
 r_int
 r_int
 id|nr
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|80
-)braket
-suffix:semicolon
 r_int
 id|space
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_const
+r_int
 r_char
 op_star
 id|cp
@@ -911,23 +904,6 @@ r_sizeof
 (paren
 id|buf
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|buf
-comma
-id|inbuf
-comma
-id|nr
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_for
 c_loop
@@ -1020,30 +996,9 @@ c_func
 id|tty
 )paren
 )paren
-(brace
-op_star
-id|cp
-op_assign
-l_char|&squot;&bslash;n&squot;
+r_goto
+id|break_out
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|O_ONLRET
-c_func
-(paren
-id|tty
-)paren
-)paren
-id|tty-&gt;canon_column
-op_assign
-id|tty-&gt;column
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|tty-&gt;canon_column
 op_assign
 id|tty-&gt;column
@@ -1086,15 +1041,8 @@ c_func
 id|tty
 )paren
 )paren
-op_star
-id|cp
-op_assign
-id|toupper
-c_func
-(paren
-op_star
-id|cp
-)paren
+r_goto
+id|break_out
 suffix:semicolon
 r_if
 c_cond
@@ -1137,8 +1085,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|buf
 comma
@@ -5850,7 +5796,6 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|buf
 comma
@@ -5861,7 +5806,6 @@ id|nr
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|b
 op_assign
@@ -6066,13 +6010,10 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-id|get_user
-c_func
-(paren
 id|c
-comma
+op_assign
+op_star
 id|b
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6120,8 +6061,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|1
 comma
 id|b
 comma

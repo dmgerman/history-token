@@ -261,7 +261,7 @@ id|pci_dev
 suffix:semicolon
 id|pci_dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_DISPLAY_VGA
@@ -276,10 +276,18 @@ c_cond
 (paren
 id|pci_dev
 )paren
+(brace
 id|dev-&gt;hose
 op_assign
 id|pci_dev-&gt;sysdata
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

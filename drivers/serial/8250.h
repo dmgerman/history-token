@@ -1,5 +1,22 @@
 multiline_comment|/*&n; *  linux/drivers/char/8250.h&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.h,v 1.8 2002/07/21 21:32:30 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
+r_int
+id|serial8250_register_port
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+)paren
+suffix:semicolon
+r_void
+id|serial8250_unregister_port
+c_func
+(paren
+r_int
+id|line
+)paren
+suffix:semicolon
 r_void
 id|serial8250_get_irq_map
 c_func
@@ -99,6 +116,11 @@ r_int
 r_int
 id|tx_loadsz
 suffix:semicolon
+DECL|member|fcr
+r_int
+r_char
+id|fcr
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -112,6 +134,8 @@ DECL|macro|UART_CAP_EFR
 mdefine_line|#define UART_CAP_EFR&t;(1 &lt;&lt; 9)&t;/* UART has EFR */
 DECL|macro|UART_CAP_SLEEP
 mdefine_line|#define UART_CAP_SLEEP&t;(1 &lt;&lt; 10)&t;/* UART has IER sleep */
+DECL|macro|UART_CAP_AFE
+mdefine_line|#define UART_CAP_AFE&t;(1 &lt;&lt; 11)&t;/* MCR-based hw flow control */
 DECL|macro|SERIAL_DEBUG_PCI
 macro_line|#undef SERIAL_DEBUG_PCI
 macro_line|#if defined(__i386__) &amp;&amp; (defined(CONFIG_M386) || defined(CONFIG_M486))

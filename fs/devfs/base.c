@@ -22,12 +22,12 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVFS_VERSION
 mdefine_line|#define DEVFS_VERSION            &quot;2004-01-31&quot;

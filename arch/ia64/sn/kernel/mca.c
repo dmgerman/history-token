@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
@@ -47,9 +46,9 @@ comma
 id|sn_oemdata_bufsize
 suffix:semicolon
 multiline_comment|/*&n; * print_hook&n; *&n; * This function is the callback routine that SAL calls to log error&n; * info for platform errors.  buf is appended to sn_oemdata, resizing as&n; * required.&n; */
+DECL|function|print_hook
 r_static
 r_int
-DECL|function|print_hook
 id|print_hook
 c_func
 (paren
@@ -207,9 +206,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|sn_cpei_handler
 r_static
 r_void
-DECL|function|sn_cpei_handler
 id|sn_cpei_handler
 c_func
 (paren
@@ -234,9 +233,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|sn_cpei_timer_handler
 r_static
 r_void
-DECL|function|sn_cpei_timer_handler
 id|sn_cpei_timer_handler
 c_func
 (paren
@@ -268,8 +267,8 @@ id|CPEI_INTERVAL
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|sn_init_cpei_timer
+r_void
 id|sn_init_cpei_timer
 c_func
 (paren

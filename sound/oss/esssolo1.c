@@ -1685,7 +1685,7 @@ id|db-&gt;buforder
 op_assign
 id|order
 suffix:semicolon
-multiline_comment|/* now mark the pages as reserved; otherwise remap_page_range doesn&squot;t do what we want */
+multiline_comment|/* now mark the pages as reserved; otherwise remap_pfn_range doesn&squot;t do what we want */
 id|pend
 op_assign
 id|virt_to_page
@@ -6922,7 +6922,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -6934,6 +6934,8 @@ c_func
 (paren
 id|db-&gt;rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma
@@ -14407,32 +14409,13 @@ id|__DATE__
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+r_return
 id|pci_register_driver
 c_func
 (paren
 op_amp
 id|solo1_driver
 )paren
-)paren
-(brace
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|solo1_driver
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

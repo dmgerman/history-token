@@ -816,7 +816,7 @@ multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is ar
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range&t;remap_page_range
+mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
 DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY

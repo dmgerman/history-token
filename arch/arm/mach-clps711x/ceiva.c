@@ -11,22 +11,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-r_extern
-r_void
-id|clps711x_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 DECL|variable|__initdata
 r_static
 r_struct
@@ -114,10 +99,11 @@ c_func
 (paren
 id|clps711x_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|clps711x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|clps711x_timer
+comma
 id|MACHINE_END
 eof

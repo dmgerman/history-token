@@ -72,8 +72,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
@@ -808,13 +808,6 @@ suffix:semicolon
 DECL|member|offload
 id|u32
 id|offload
-suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
 suffix:semicolon
 multiline_comment|/* unused stuff (future use) */
 DECL|member|capabilities
@@ -8173,8 +8166,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* Post 2.x.x versions of the Sleep Image require a reset before&n;&t; * we can download the Runtime Image. But let&squot;s not make users of&n;&t; * the old firmware pay for the reset.&n;&t; */
@@ -10572,8 +10563,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* Init sequence:&n;&t; * 1) Reset the adapter to clear any bad juju&n;&t; * 2) Reload the sleep image&n;&t; * 3) Boot the sleep image&n;&t; * 4) Get the hardware address.&n;&t; * 5) Put the card to sleep.&n;&t; */
@@ -10949,11 +10938,6 @@ id|dev-&gt;poll
 op_assign
 id|typhoon_poll
 suffix:semicolon
-id|dev-&gt;ethtool_ops
-op_assign
-op_amp
-id|typhoon_ethtool_ops
-suffix:semicolon
 id|dev-&gt;weight
 op_assign
 l_int|16
@@ -10984,7 +10968,7 @@ c_func
 id|dev
 comma
 op_amp
-id|ops
+id|typhoon_ethtool_ops
 )paren
 suffix:semicolon
 multiline_comment|/* We can handle scatter gather, up to 16 entries, and&n;&t; * we can do IP checksumming (only version 4, doh...)&n;&t; */
@@ -11369,8 +11353,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 id|typhoon_reset

@@ -21,11 +21,11 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Debug level:&n; *  0 = silent, print only serious errors&n; *  1 = normal, print error messages&n; *  2 = debug, print debug infos&n; *  3 = debug, print even more debug infos (packet data)&n; */
 DECL|macro|LANCE_DEBUG

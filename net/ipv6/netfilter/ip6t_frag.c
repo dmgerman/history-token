@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6t_frag.h&gt;
 id|MODULE_LICENSE
@@ -33,45 +32,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-macro_line|#if 0
-macro_line|#if     BYTE_ORDER == BIG_ENDIAN
-mdefine_line|#define IP6F_OFF_MASK       0xfff8  /* mask out offset from _offlg */
-mdefine_line|#define IP6F_RESERVED_MASK  0x0006  /* reserved bits in ip6f_offlg */
-mdefine_line|#define IP6F_MORE_FRAG      0x0001  /* more-fragments flag */
-macro_line|#else   /* BYTE_ORDER == LITTLE_ENDIAN */
-mdefine_line|#define IP6F_OFF_MASK       0xf8ff  /* mask out offset from _offlg */
-mdefine_line|#define IP6F_RESERVED_MASK  0x0600  /* reserved bits in ip6f_offlg */
-mdefine_line|#define IP6F_MORE_FRAG      0x0100  /* more-fragments flag */
-macro_line|#endif
-macro_line|#endif
-DECL|macro|IP6F_OFF_MASK
-mdefine_line|#define IP6F_OFF_MASK       0xf8ff  /* mask out offset from _offlg */
-DECL|macro|IP6F_RESERVED_MASK
-mdefine_line|#define IP6F_RESERVED_MASK  0x0600  /* reserved bits in ip6f_offlg */
-DECL|macro|IP6F_MORE_FRAG
-mdefine_line|#define IP6F_MORE_FRAG      0x0100  /* more-fragments flag */
-DECL|struct|fraghdr
-r_struct
-id|fraghdr
-(brace
-DECL|member|nexthdr
-id|__u8
-id|nexthdr
-suffix:semicolon
-DECL|member|hdrlen
-id|__u8
-id|hdrlen
-suffix:semicolon
-DECL|member|info
-id|__u16
-id|info
-suffix:semicolon
-DECL|member|id
-id|__u32
-id|id
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Returns 1 if the id is matched by the range, 0 otherwise */
 r_static
 r_inline
@@ -194,7 +154,7 @@ id|hotdrop
 )paren
 (brace
 r_struct
-id|fraghdr
+id|frag_hdr
 op_star
 id|frag
 op_assign
@@ -323,9 +283,11 @@ r_struct
 id|ipv6_opt_hdr
 op_star
 )paren
+(paren
 id|skb-&gt;data
 op_plus
 id|ptr
+)paren
 suffix:semicolon
 multiline_comment|/* Calculate the header length */
 r_if
@@ -470,13 +432,10 @@ c_cond
 (paren
 id|len
 OL
-(paren
-r_int
-)paren
 r_sizeof
 (paren
 r_struct
-id|fraghdr
+id|frag_hdr
 )paren
 )paren
 (brace
@@ -493,7 +452,7 @@ id|frag
 op_assign
 (paren
 r_struct
-id|fraghdr
+id|frag_hdr
 op_star
 )paren
 (paren
@@ -505,19 +464,9 @@ suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;IPv6 FRAG LEN %u %u &quot;
-comma
-id|hdrlen
-comma
-id|frag-&gt;hdrlen
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
 l_string|&quot;INFO %04X &quot;
 comma
-id|frag-&gt;info
+id|frag-&gt;frag_off
 )paren
 suffix:semicolon
 id|DEBUGP
@@ -525,19 +474,30 @@ c_func
 (paren
 l_string|&quot;OFFSET %04X &quot;
 comma
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_OFF_MASK
+op_complement
+l_int|0x7
 )paren
 suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;RES %04X &quot;
+l_string|&quot;RES %02X %04X&quot;
 comma
-id|frag-&gt;info
+id|frag-&gt;reserved
+comma
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_RESERVED_MASK
+l_int|0x6
 )paren
 suffix:semicolon
 id|DEBUGP
@@ -545,9 +505,13 @@ c_func
 (paren
 l_string|&quot;MF %04X &quot;
 comma
-id|frag-&gt;info
+id|frag-&gt;frag_off
 op_amp
-id|IP6F_MORE_FRAG
+id|htons
+c_func
+(paren
+id|IP6_MF
+)paren
 )paren
 suffix:semicolon
 id|DEBUGP
@@ -558,13 +522,13 @@ comma
 id|ntohl
 c_func
 (paren
-id|frag-&gt;id
+id|frag-&gt;identification
 )paren
 comma
 id|ntohl
 c_func
 (paren
-id|frag-&gt;id
+id|frag-&gt;identification
 )paren
 )paren
 suffix:semicolon
@@ -590,7 +554,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|frag-&gt;id
+id|frag-&gt;identification
 )paren
 comma
 op_logical_neg
@@ -607,36 +571,7 @@ suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;len %02X %04X %02X &quot;
-comma
-id|fraginfo-&gt;hdrlen
-comma
-id|hdrlen
-comma
-(paren
-op_logical_neg
-id|fraginfo-&gt;hdrlen
-op_logical_or
-(paren
-id|fraginfo-&gt;hdrlen
-op_eq
-id|hdrlen
-)paren
-op_xor
-op_logical_neg
-op_logical_neg
-(paren
-id|fraginfo-&gt;invflags
-op_amp
-id|IP6T_FRAG_INV_LEN
-)paren
-)paren
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;res %02X %02X %02X &quot;
+l_string|&quot;res %02X %02X%04X %02X &quot;
 comma
 (paren
 id|fraginfo-&gt;flags
@@ -644,9 +579,15 @@ op_amp
 id|IP6T_FRAG_RES
 )paren
 comma
-id|frag-&gt;info
+id|frag-&gt;reserved
+comma
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_RESERVED_MASK
+l_int|0x6
 comma
 op_logical_neg
 (paren
@@ -657,9 +598,17 @@ id|IP6T_FRAG_RES
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|frag-&gt;reserved
+op_logical_or
+(paren
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_RESERVED_MASK
+l_int|0x6
+)paren
 )paren
 )paren
 )paren
@@ -675,9 +624,14 @@ op_amp
 id|IP6T_FRAG_FST
 )paren
 comma
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_OFF_MASK
+op_complement
+l_int|0x7
 comma
 op_logical_neg
 (paren
@@ -688,9 +642,14 @@ id|IP6T_FRAG_FST
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_OFF_MASK
+op_complement
+l_int|0x7
 )paren
 )paren
 )paren
@@ -706,9 +665,13 @@ op_amp
 id|IP6T_FRAG_MF
 )paren
 comma
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_MORE_FRAG
+id|IP6_MF
 comma
 op_logical_neg
 (paren
@@ -721,9 +684,13 @@ op_logical_and
 op_logical_neg
 (paren
 (paren
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_MORE_FRAG
+id|IP6_MF
 )paren
 )paren
 )paren
@@ -740,9 +707,13 @@ op_amp
 id|IP6T_FRAG_NMF
 )paren
 comma
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_MORE_FRAG
+id|IP6_MF
 comma
 op_logical_neg
 (paren
@@ -753,9 +724,13 @@ id|IP6T_FRAG_NMF
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_MORE_FRAG
+id|IP6_MF
 )paren
 )paren
 )paren
@@ -784,7 +759,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|frag-&gt;id
+id|frag-&gt;identification
 )paren
 comma
 op_logical_neg
@@ -797,25 +772,6 @@ id|IP6T_FRAG_INV_IDS
 )paren
 )paren
 op_logical_and
-(paren
-op_logical_neg
-id|fraginfo-&gt;hdrlen
-op_logical_or
-(paren
-id|fraginfo-&gt;hdrlen
-op_eq
-id|hdrlen
-)paren
-op_xor
-op_logical_neg
-op_logical_neg
-(paren
-id|fraginfo-&gt;invflags
-op_amp
-id|IP6T_FRAG_INV_LEN
-)paren
-)paren
-op_logical_and
 op_logical_neg
 (paren
 (paren
@@ -825,9 +781,17 @@ id|IP6T_FRAG_RES
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|frag-&gt;reserved
+op_logical_or
+(paren
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_RESERVED_MASK
+l_int|0x6
+)paren
 )paren
 )paren
 op_logical_and
@@ -840,9 +804,14 @@ id|IP6T_FRAG_FST
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_OFF_MASK
+op_complement
+l_int|0x7
 )paren
 )paren
 op_logical_and
@@ -856,11 +825,13 @@ id|IP6T_FRAG_MF
 op_logical_and
 op_logical_neg
 (paren
+id|ntohs
+c_func
 (paren
-id|frag-&gt;info
-op_amp
-id|IP6F_MORE_FRAG
+id|frag-&gt;frag_off
 )paren
+op_amp
+id|IP6_MF
 )paren
 )paren
 op_logical_and
@@ -873,9 +844,13 @@ id|IP6T_FRAG_NMF
 )paren
 op_logical_and
 (paren
-id|frag-&gt;info
+id|ntohs
+c_func
+(paren
+id|frag-&gt;frag_off
+)paren
 op_amp
-id|IP6F_MORE_FRAG
+id|IP6_MF
 )paren
 )paren
 suffix:semicolon

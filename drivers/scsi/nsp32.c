@@ -9619,6 +9619,10 @@ id|data-&gt;NumAddress
 suffix:semicolon
 id|host-&gt;base
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|data-&gt;MmioAddress
 suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,63))
@@ -10358,20 +10362,12 @@ r_if
 c_cond
 (paren
 id|data-&gt;MmioAddress
-op_ne
-l_int|0
 )paren
 (brace
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
 id|data-&gt;MmioAddress
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -12173,16 +12169,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|nsp32_hw_data
-op_star
-id|data
-op_assign
-(paren
-id|nsp32_hw_data
-op_star
-)paren
-id|host-&gt;hostdata
-suffix:semicolon
 id|nsp32_msg
 c_func
 (paren
@@ -12206,8 +12192,6 @@ suffix:semicolon
 id|pci_save_state
 (paren
 id|pdev
-comma
-id|data-&gt;PciState
 )paren
 suffix:semicolon
 id|pci_disable_device
@@ -12303,8 +12287,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|pdev
-comma
-id|data-&gt;PciState
 )paren
 suffix:semicolon
 id|reg
@@ -12524,10 +12506,6 @@ l_int|0
 suffix:semicolon
 id|data-&gt;MmioAddress
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -12587,7 +12565,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;irq: %i mmio: 0x%lx+0x%lx slot: %s model: %s&quot;
+l_string|&quot;irq: %i mmio: %p+0x%lx slot: %s model: %s&quot;
 comma
 id|pdev-&gt;irq
 comma

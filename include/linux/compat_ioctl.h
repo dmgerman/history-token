@@ -68,6 +68,16 @@ c_func
 (paren
 id|TIOCLINUX
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSBRK
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCCBRK
+)paren
 multiline_comment|/* Little t */
 id|COMPATIBLE_IOCTL
 c_func

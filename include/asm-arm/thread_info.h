@@ -156,6 +156,8 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE&t;&t;8192
 multiline_comment|/*&n; * how to get the thread information struct from C&n; */
 r_static
 r_inline
@@ -200,12 +202,14 @@ op_star
 id|sp
 op_amp
 op_complement
-l_int|0x1fff
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;&t;(8192)
 r_extern
 r_struct
 id|thread_info

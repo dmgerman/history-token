@@ -2521,13 +2521,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ip_conntrack_tcp_update
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_conntrack_tcp_update
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|macro|TH_FIN
 mdefine_line|#define&t;TH_FIN&t;0x01

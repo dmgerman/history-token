@@ -1870,6 +1870,13 @@ comma
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|ali1563_id_table
+)paren
+suffix:semicolon
 DECL|variable|ali1563_pci_driver
 r_static
 r_struct
@@ -1910,7 +1917,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

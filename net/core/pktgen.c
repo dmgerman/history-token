@@ -15,8 +15,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2556,14 +2556,31 @@ id|p
 comma
 l_string|&quot;OK: %llu(c%llu+d%lu) usec, %llu (%dbyte,%dfrags)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|total
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
+(paren
 id|total
 op_minus
 id|idle
+)paren
 comma
 id|idle
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|info-&gt;sofar
 comma
 id|size
@@ -2635,12 +2652,32 @@ id|p
 comma
 l_string|&quot;  %llupps %lluMb/sec (%llubps) errors: %llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|pps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|mbps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|info-&gt;errors
 )paren
 suffix:semicolon

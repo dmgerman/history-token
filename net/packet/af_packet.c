@@ -6818,7 +6818,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -6833,6 +6833,8 @@ id|po-&gt;pg_vec
 id|i
 )braket
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|po-&gt;pg_vec_pages
 op_star

@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -4134,13 +4134,6 @@ id|APList
 suffix:semicolon
 DECL|macro|PCI_SHARED_LEN
 mdefine_line|#define&t;PCI_SHARED_LEN&t;&t;2*MPI_MAX_FIDS*PKTSIZE+RIDSIZE
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|proc_name
 r_char
 id|proc_name
@@ -28714,8 +28707,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|ai-&gt;pci_state
 )paren
 suffix:semicolon
 r_return
@@ -28773,8 +28764,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|ai-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_enable_wake

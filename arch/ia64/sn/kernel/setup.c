@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999,2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999,2001-2004 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -26,20 +26,22 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
+macro_line|#include &quot;shub.h&quot;
 macro_line|#include &lt;asm/sn/leds.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
+macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/clksupport.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shub.h&gt;
+macro_line|#include &lt;asm/sn/geo.h&gt;
+macro_line|#include &quot;xtalk/xwidgetdev.h&quot;
+macro_line|#include &quot;xtalk/hubdev.h&quot;
+macro_line|#include &lt;asm/sn/klconfig.h&gt;
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -50,10 +52,19 @@ id|pda_percpu
 )paren
 suffix:semicolon
 DECL|macro|MAX_PHYS_MEMORY
-mdefine_line|#define MAX_PHYS_MEMORY&t;&t;(1UL &lt;&lt; 49)     /* 1 TB */
+mdefine_line|#define MAX_PHYS_MEMORY&t;&t;(1UL &lt;&lt; 49)&t;/* 1 TB */
+DECL|variable|root_lboard
+id|lboard_t
+op_star
+id|root_lboard
+(braket
+id|MAX_COMPACT_NODES
+)braket
+suffix:semicolon
 r_extern
 r_void
 id|bte_init_node
+c_func
 (paren
 id|nodepda_t
 op_star
@@ -73,17 +84,6 @@ r_extern
 r_int
 r_int
 id|last_time_offset
-suffix:semicolon
-r_extern
-r_void
-id|init_platform_hubinfo
-c_func
-(paren
-id|nodepda_t
-op_star
-op_star
-id|nodepdaindr
-)paren
 suffix:semicolon
 r_extern
 r_void
@@ -127,6 +127,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+DECL|variable|sn_partid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_partid
+)paren
+suffix:semicolon
 DECL|variable|sn_system_serial_number_string
 r_char
 id|sn_system_serial_number_string
@@ -134,9 +141,23 @@ id|sn_system_serial_number_string
 l_int|128
 )braket
 suffix:semicolon
+DECL|variable|sn_system_serial_number_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_system_serial_number_string
+)paren
+suffix:semicolon
 DECL|variable|sn_partition_serial_number
 id|u64
 id|sn_partition_serial_number
+suffix:semicolon
+DECL|variable|sn_partition_serial_number
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_partition_serial_number
+)paren
 suffix:semicolon
 DECL|variable|physical_node_map
 r_int
@@ -159,6 +180,8 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the address of the RRegs in the HSpace of the global&n; * master.  It is used by a hack in serial.c (serial_[in|out],&n; * printk.c (early_printk), and kdb_io.c to put console output on that&n; * node&squot;s Bedrock UART.  It is initialized here to 0, so that&n; * early_printk won&squot;t try to access the UART before&n; * master_node_bedrock_address is properly calculated.&n; */
 DECL|variable|master_node_bedrock_address
 id|u64
+id|__iomem
+op_star
 id|master_node_bedrock_address
 suffix:semicolon
 r_static
@@ -187,11 +210,6 @@ id|nodepdaindr
 (braket
 id|MAX_COMPACT_NODES
 )braket
-suffix:semicolon
-DECL|variable|irqpdaindr
-id|irqpda_t
-op_star
-id|irqpdaindr
 suffix:semicolon
 multiline_comment|/*&n; * The format of &quot;screen_info&quot; is strange, and due to early i386-setup&n; * code. This is just enough to make the console code think we&squot;re on a&n; * VGA color display.&n; */
 DECL|variable|sn_screen_info
@@ -264,10 +282,10 @@ l_int|16
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This routine can only be used during init, since&n; * smp_boot_data is an init data structure.&n; * We have to use smp_boot_data.cpu_phys_id to find&n; * the physical id of the processor because the normal&n; * cpu_physical_id() relies on data structures that&n; * may not be initialized yet.&n; */
+DECL|function|pxm_to_nasid
 r_static
 r_int
 id|__init
-DECL|function|pxm_to_nasid
 id|pxm_to_nasid
 c_func
 (paren
@@ -336,9 +354,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * early_sn_setup - early setup routine for SN platforms&n; *&n; * Sets up an initial console to aid debugging.  Intended primarily&n; * for bringup.  See start_kernel() in init/main.c.&n; */
+DECL|function|early_sn_setup
 r_void
 id|__init
-DECL|function|early_sn_setup
 id|early_sn_setup
 c_func
 (paren
@@ -347,6 +365,7 @@ r_void
 (brace
 r_void
 id|ia64_sal_handler_init
+c_func
 (paren
 r_void
 op_star
@@ -499,7 +518,6 @@ id|ia64_sal_handler_init
 c_func
 (paren
 id|__va
-c_func
 (paren
 id|ep-&gt;sal_proc
 )paren
@@ -539,6 +557,8 @@ id|master_node_bedrock_address
 op_assign
 (paren
 id|u64
+id|__iomem
+op_star
 )paren
 id|REMOTE_HUB
 c_func
@@ -555,7 +575,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;early_sn_setup: setting master_node_bedrock_address to 0x%lx&bslash;n&quot;
+l_string|&quot;early_sn_setup: setting &quot;
+l_string|&quot;master_node_bedrock_address to 0x%p&bslash;n&quot;
 comma
 id|master_node_bedrock_address
 )paren
@@ -579,11 +600,11 @@ id|shub_1_1_found
 id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * sn_check_for_wars&n; *&n; * Set flag for enabling shub specific wars&n; */
+DECL|function|is_shub_1_1
 r_static
 r_inline
 r_int
 id|__init
-DECL|function|is_shub_1_1
 id|is_shub_1_1
 c_func
 (paren
@@ -624,10 +645,10 @@ op_le
 l_int|2
 suffix:semicolon
 )brace
+DECL|function|sn_check_for_wars
 r_static
 r_void
 id|__init
-DECL|function|sn_check_for_wars
 id|sn_check_for_wars
 c_func
 (paren
@@ -669,86 +690,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sn_set_error_handling_features - Tell the SN prom how to handle certain&n; * error types.&n; */
-r_static
-r_void
-id|__init
-DECL|function|sn_set_error_handling_features
-id|sn_set_error_handling_features
-c_func
-(paren
-r_void
-)paren
-(brace
-id|u64
-id|ret
-suffix:semicolon
-id|u64
-id|sn_ehf_bits
-(braket
-l_int|7
-)braket
-suffix:semicolon
-multiline_comment|/* see ia64_sn_set_error_handling_features */
-id|memset
-c_func
-(paren
-id|sn_ehf_bits
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|sn_ehf_bits
-)paren
-)paren
-suffix:semicolon
-DECL|macro|EHF
-mdefine_line|#define EHF(x) __set_bit(SN_SAL_EHF_ ## x, sn_ehf_bits)
-id|EHF
-c_func
-(paren
-id|MCA_SLV_TO_OS_INIT_SLV
-)paren
-suffix:semicolon
-id|EHF
-c_func
-(paren
-id|NO_RZ_TLBC
-)paren
-suffix:semicolon
-singleline_comment|// Uncomment once Jesse&squot;s code goes in - EHF(NO_RZ_IO_READ); 
-DECL|macro|EHF
-macro_line|#undef&t;EHF
-id|ret
-op_assign
-id|ia64_sn_set_error_handling_features
-c_func
-(paren
-id|sn_ehf_bits
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed, return code %ld&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ret
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * sn_setup - SN platform setup routine&n; * @cmdline_p: kernel command line&n; *&n; * Handles platform setup for SN machines.  This includes determining&n; * the RTC frequency (via a SAL call), initializing secondary CPUs, and&n; * setting up per-node data areas.  The console is also initialized here.&n; */
+DECL|function|sn_setup
 r_void
 id|__init
-DECL|function|sn_setup
 id|sn_setup
 c_func
 (paren
@@ -784,24 +729,8 @@ c_func
 )paren
 suffix:semicolon
 r_extern
-id|nasid_t
-id|snia_get_master_baseio_nasid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|sn_cpu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|nasid_t
-id|snia_get_console_nasid
 c_func
 (paren
 r_void
@@ -836,9 +765,9 @@ id|conswitchp
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif /* CONFIG_DUMMY_CONSOLE */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_DUMMY_CONSOLE */
 )brace
-macro_line|#endif /* def(CONFIG_VT) &amp;&amp; def(CONFIG_VGA_CONSOLE) */
+macro_line|#endif&t;&t;&t;&t;/* def(CONFIG_VT) &amp;&amp; def(CONFIG_VGA_CONSOLE) */
 id|MAX_DMA_ADDRESS
 op_assign
 id|PAGE_OFFSET
@@ -991,22 +920,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|snia_get_console_nasid
-c_func
-(paren
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|snia_get_master_baseio_nasid
-c_func
-(paren
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|ia64_sal_freq_base
@@ -1073,6 +986,8 @@ id|master_node_bedrock_address
 op_assign
 (paren
 id|u64
+id|__iomem
+op_star
 )paren
 id|REMOTE_HUB
 c_func
@@ -1089,18 +1004,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sn_setup: setting master_node_bedrock_address to 0x%lx&bslash;n&quot;
+l_string|&quot;sn_setup: setting &quot;
+l_string|&quot;master_node_bedrock_address to 0x%p&bslash;n&quot;
 comma
 id|master_node_bedrock_address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Tell the prom how to handle certain error types */
-id|sn_set_error_handling_features
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * we set the default root device to /dev/hda&n;&t; * to make simulation easy&n;&t; */
 id|ROOT_DEV
 op_assign
@@ -1124,13 +1034,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Setup hubinfo stuff. Has to happen AFTER sn_cpu_init(),&n;&t; * because it uses the cnode to nasid tables.&n;&t; */
-id|init_platform_hubinfo
-c_func
-(paren
-id|nodepdaindr
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|init_smp_config
 c_func
@@ -1149,9 +1052,9 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_init_pdas - setup node data areas&n; *&n; * One time setup for Node Data Area.  Called by sn_setup().&n; */
+DECL|function|sn_init_pdas
 r_void
 id|__init
-DECL|function|sn_init_pdas
 id|sn_init_pdas
 c_func
 (paren
@@ -1215,7 +1118,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Allocate &amp; initalize the nodepda for each node.&n;         */
+multiline_comment|/*&n;&t; * Allocate &amp; initalize the nodepda for each node.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1243,6 +1146,59 @@ id|NODE_DATA
 c_func
 (paren
 id|cnode
+)paren
+comma
+r_sizeof
+(paren
+id|nodepda_t
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|nodepdaindr
+(braket
+id|cnode
+)braket
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|nodepda_t
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Allocate &amp; initialize nodepda for TIOs.  For now, put them on node 0.&n;&t; */
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+id|numnodes
+suffix:semicolon
+id|cnode
+OL
+id|numionodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+id|nodepdaindr
+(braket
+id|cnode
+)braket
+op_assign
+id|alloc_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+l_int|0
 )paren
 comma
 r_sizeof
@@ -1317,7 +1273,7 @@ id|cnode
 op_increment
 )paren
 (brace
-id|init_platform_nodepda
+id|bte_init_node
 c_func
 (paren
 id|nodepdaindr
@@ -1328,7 +1284,25 @@ comma
 id|cnode
 )paren
 suffix:semicolon
-id|bte_init_node
+)brace
+multiline_comment|/*&n;&t; * Initialize the per node hubdev.  This includes IO Nodes and &n;&t; * headless/memless nodes.&n;&t; */
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|numionodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+id|hubdev_init_node
+c_func
 (paren
 id|nodepdaindr
 (braket
@@ -1341,9 +1315,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * sn_cpu_init - initialize per-cpu data areas&n; * @cpuid: cpuid of the caller&n; *&n; * Called during cpu initialization on each cpu as it starts.&n; * Currently, initializes the per-cpu data area for SNIA.&n; * Also sets up a few fields in the nodepda.  Also known as&n; * platform_cpu_init() by the ia64 machvec code.&n; */
+DECL|function|sn_cpu_init
 r_void
 id|__init
-DECL|function|sn_cpu_init
 id|sn_cpu_init
 c_func
 (paren
@@ -1537,75 +1511,6 @@ op_assign
 id|shub_1_1_found
 suffix:semicolon
 multiline_comment|/*&n;&t; * We must use different memory allocators for first cpu (bootmem &n;&t; * allocator) than for the other cpus (regular allocator).&n;&t; */
-r_if
-c_cond
-(paren
-id|cpuid
-op_eq
-l_int|0
-)paren
-id|irqpdaindr
-op_assign
-id|alloc_bootmem_node
-c_func
-(paren
-id|NODE_DATA
-c_func
-(paren
-id|cpuid_to_cnodeid
-c_func
-(paren
-id|cpuid
-)paren
-)paren
-comma
-r_sizeof
-(paren
-id|irqpda_t
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|irqpdaindr
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|irqpda_t
-)paren
-)paren
-suffix:semicolon
-id|irqpdaindr-&gt;irq_flags
-(braket
-id|SGI_PCIBR_ERROR
-)braket
-op_assign
-id|SN2_IRQ_SHARED
-suffix:semicolon
-id|irqpdaindr-&gt;irq_flags
-(braket
-id|SGI_PCIBR_ERROR
-)braket
-op_or_assign
-id|SN2_IRQ_RESERVED
-suffix:semicolon
-id|irqpdaindr-&gt;irq_flags
-(braket
-id|SGI_II_ERROR
-)braket
-op_assign
-id|SN2_IRQ_SHARED
-suffix:semicolon
-id|irqpdaindr-&gt;irq_flags
-(braket
-id|SGI_II_ERROR
-)braket
-op_or_assign
-id|SN2_IRQ_RESERVED
-suffix:semicolon
 id|pda-&gt;pio_write_status_addr
 op_assign
 (paren
@@ -1707,10 +1612,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Scan klconfig for ionodes.  Add the nasids to the&n; * physical_node_map and the pda and increment numionodes.&n; */
+DECL|function|scan_for_ionodes
 r_static
 r_void
 id|__init
-DECL|function|scan_for_ionodes
 id|scan_for_ionodes
 c_func
 (paren
@@ -1980,6 +1885,116 @@ c_func
 id|brd
 comma
 id|KLTYPE_SNIA
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Scan for TIO nodes. */
+r_for
+c_loop
+(paren
+id|nasid
+op_assign
+l_int|0
+suffix:semicolon
+id|nasid
+OL
+id|MAX_PHYSNODE_ID
+suffix:semicolon
+id|nasid
+op_add_assign
+l_int|2
+)paren
+(brace
+multiline_comment|/* if there&squot;s no nasid, don&squot;t try to read the klconfig on the node */
+r_if
+c_cond
+(paren
+id|physical_node_map
+(braket
+id|nasid
+)braket
+op_eq
+op_minus
+l_int|1
+)paren
+r_continue
+suffix:semicolon
+id|brd
+op_assign
+id|find_lboard_any
+c_func
+(paren
+(paren
+id|lboard_t
+op_star
+)paren
+id|root_lboard
+(braket
+id|nasid_to_cnodeid
+c_func
+(paren
+id|nasid
+)paren
+)braket
+comma
+id|KLTYPE_TIO
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|brd
+)paren
+(brace
+id|pda-&gt;cnodeid_to_nasid_table
+(braket
+id|numionodes
+)braket
+op_assign
+id|brd-&gt;brd_nasid
+suffix:semicolon
+id|physical_node_map
+(braket
+id|brd-&gt;brd_nasid
+)braket
+op_assign
+id|numionodes
+suffix:semicolon
+id|root_lboard
+(braket
+id|numionodes
+)braket
+op_assign
+id|brd
+suffix:semicolon
+id|numionodes
+op_increment
+suffix:semicolon
+id|brd
+op_assign
+id|KLCF_NEXT_ANY
+c_func
+(paren
+id|brd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|brd
+)paren
+r_break
+suffix:semicolon
+id|brd
+op_assign
+id|find_lboard_any
+c_func
+(paren
+id|brd
+comma
+id|KLTYPE_TIO
 )paren
 suffix:semicolon
 )brace

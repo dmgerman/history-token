@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.21 2003/07/11 15:12:29 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/nand/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)&n; *&n; *&n; *&t;10-29-2001 TG&t;change to support hardwarespecific access&n; *&t;&t;&t;to controllines&t;(due to change in nand.c)&n; *&t;&t;&t;page_cache added&n; *&n; * $Id: spia.c,v 1.23 2004/10/05 13:50:20 gleixner Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -438,10 +438,20 @@ suffix:semicolon
 multiline_comment|/* Set address of NAND IO lines */
 id|this-&gt;IO_ADDR_R
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|spia_fio_base
 suffix:semicolon
 id|this-&gt;IO_ADDR_W
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|spia_fio_base
 suffix:semicolon
 multiline_comment|/* Set address of hardware control function */
@@ -474,47 +484,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ENXIO
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate memory for internal data buffer */
-id|this-&gt;data_buf
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-id|u_char
-)paren
-op_star
-(paren
-id|spia_mtd-&gt;oobblock
-op_plus
-id|spia_mtd-&gt;oobsize
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this-&gt;data_buf
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Unable to allocate NAND data buffer for SPIA.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|spia_mtd
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Register the partitions */
@@ -551,32 +520,10 @@ id|spia_cleanup
 r_void
 )paren
 (brace
-r_struct
-id|nand_chip
-op_star
-id|this
-op_assign
-(paren
-r_struct
-id|nand_chip
-op_star
-)paren
-op_amp
-id|spia_mtd
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Unregister the device */
-id|del_mtd_device
+multiline_comment|/* Release resources, unregister device */
+id|nand_release
 (paren
 id|spia_mtd
-)paren
-suffix:semicolon
-multiline_comment|/* Free internal data buffer */
-id|kfree
-(paren
-id|this-&gt;data_buf
 )paren
 suffix:semicolon
 multiline_comment|/* Free the MTD device structure */

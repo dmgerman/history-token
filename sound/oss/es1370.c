@@ -1752,7 +1752,7 @@ id|db-&gt;buforder
 op_assign
 id|order
 suffix:semicolon
-multiline_comment|/* now mark the pages as reserved; otherwise remap_page_range doesn&squot;t do what we want */
+multiline_comment|/* now mark the pages as reserved; otherwise remap_pfn_range doesn&squot;t do what we want */
 id|pend
 op_assign
 id|virt_to_page
@@ -6780,7 +6780,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -6792,6 +6792,8 @@ c_func
 (paren
 id|db-&gt;rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma
@@ -10222,7 +10224,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -10234,6 +10236,8 @@ c_func
 (paren
 id|s-&gt;dma_dac1.rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

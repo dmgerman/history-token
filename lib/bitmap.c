@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/bitmap.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * bitmaps provide an array of bits, implemented using an an&n; * array of unsigned longs.  The number of valid bits in a&n; * given bitmap does _not_ need to be an exact multiple of&n; * BITS_PER_LONG.&n; *&n; * The possible unused bits in the last, partially used word&n; * of a bitmap are &squot;don&squot;t care&squot;.  The implementation makes&n; * no particular effort to keep them zero.  It ensures that&n; * their value will not affect the results of any operation.&n; * The bitmap operations that return Boolean (bitmap_empty,&n; * for example) or scalar (bitmap_weight, for example) results&n; * carefully filter out these unused bits from impacting their&n; * results.&n; *&n; * These operations actually hold to a slightly stronger rule:&n; * if you don&squot;t input any bitmaps to these ops that have some&n; * unused bits set, then they won&squot;t output any set unused bits&n; * in output bitmaps.&n; *&n; * The byte ordering of bitmaps is more natural on little&n; * endian architectures.  See the big-endian headers&n; * include/asm-ppc64/bitops.h and include/asm-s390/bitops.h&n; * for the best explanations of this ordering.&n; */
 DECL|function|__bitmap_empty

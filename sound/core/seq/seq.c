@@ -118,11 +118,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -130,7 +125,7 @@ id|seq_client_load
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

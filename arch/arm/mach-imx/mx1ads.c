@@ -287,11 +287,12 @@ c_func
 (paren
 id|imx_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|imx_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|imx_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

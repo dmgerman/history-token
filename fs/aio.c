@@ -2324,6 +2324,10 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+id|tsk-&gt;flags
+op_or_assign
+id|PF_BORROWED_MM
+suffix:semicolon
 id|active_mm
 op_assign
 id|tsk-&gt;active_mm
@@ -2388,6 +2392,11 @@ c_func
 (paren
 id|tsk
 )paren
+suffix:semicolon
+id|tsk-&gt;flags
+op_and_assign
+op_complement
+id|PF_BORROWED_MM
 suffix:semicolon
 id|tsk-&gt;mm
 op_assign

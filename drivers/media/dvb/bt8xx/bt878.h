@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;bt848.h&quot;
+macro_line|#include &quot;bttv.h&quot;
 DECL|macro|BT878_VERSION_CODE
 mdefine_line|#define BT878_VERSION_CODE 0x000000
 DECL|macro|BT878_AINT_STAT
@@ -134,11 +135,11 @@ r_int
 r_int
 id|bttv_nr
 suffix:semicolon
-DECL|member|adap_ptr
+DECL|member|adapter
 r_struct
-id|dvb_adapter
+id|i2c_adapter
 op_star
-id|adap_ptr
+id|adapter
 suffix:semicolon
 DECL|member|dev
 r_struct

@@ -1258,6 +1258,7 @@ suffix:semicolon
 multiline_comment|/* struct pci_dev pointer */
 DECL|member|memmap
 id|u8
+id|__iomem
 op_star
 id|memmap
 suffix:semicolon
@@ -1432,16 +1433,6 @@ DECL|member|lan_cnfg_page1
 id|LANPage1_t
 id|lan_cnfg_page1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|PciState
-id|u32
-id|PciState
-(braket
-l_int|64
-)braket
-suffix:semicolon
-multiline_comment|/* save PCI state to this area */
-macro_line|#endif
 DECL|member|FirstWhoInit
 id|u8
 id|FirstWhoInit

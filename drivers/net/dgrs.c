@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -5422,26 +5422,12 @@ r_if
 c_cond
 (paren
 id|pcicount
-OL
-l_int|0
 )paren
 r_return
 id|pcicount
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
-id|eisacount
-op_plus
-id|pcicount
-)paren
-op_eq
-l_int|0
-ques
-c_cond
-op_minus
-id|ENODEV
-suffix:colon
 l_int|0
 suffix:semicolon
 )brace

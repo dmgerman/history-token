@@ -28,7 +28,6 @@ macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &quot;mmu_decl.h&quot;
-macro_line|#include &quot;mem_pieces.h&quot;
 r_extern
 r_char
 id|etext
@@ -38,11 +37,6 @@ comma
 id|_stext
 (braket
 )braket
-suffix:semicolon
-r_extern
-r_struct
-id|mem_pieces
-id|phys_avail
 suffix:semicolon
 multiline_comment|/* Used by the 44x TLB replacement exception handler.&n; * Just needed it declared someplace.&n; */
 DECL|variable|tlb_44x_index
@@ -181,33 +175,6 @@ l_int|1
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-multiline_comment|/*&n;&t; * If lowmem is not on a pin tlb entry size boundary,&n;&t; * then reserve the last page of system memory. This&n;&t; * eliminates the possibility of a speculative dcache&n;&t; * fetch past the end of system memory that would&n;&t; * result in a machine check exception.&n;&t; */
-r_if
-c_cond
-(paren
-id|total_lowmem
-op_or
-(paren
-id|PPC44x_PIN_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-id|mem_pieces_remove
-c_func
-(paren
-op_amp
-id|phys_avail
-comma
-id|total_lowmem
-op_minus
-id|PAGE_SIZE
-comma
-id|PAGE_SIZE
-comma
-l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* Determine number of entries necessary to cover lowmem */
 id|pinned_tlbs

@@ -1,4 +1,12 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/generic.h&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+r_struct
+id|sys_timer
+suffix:semicolon
+r_extern
+r_struct
+id|sys_timer
+id|pxa_timer
+suffix:semicolon
 r_extern
 r_void
 id|__init
@@ -12,15 +20,6 @@ r_extern
 r_void
 id|__init
 id|pxa_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|pxa_init_time
 c_func
 (paren
 r_void

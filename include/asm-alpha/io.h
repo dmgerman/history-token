@@ -2836,6 +2836,11 @@ DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
+multiline_comment|/*&n; * Some mucking forons use if[n]def writeq to check if platform has it.&n; * It&squot;s a bloody bad idea and we probably want ARCH_HAS_WRITEQ for them&n; * to play with; for now just use cpp anti-recursion logics and make sure&n; * that damn thing is defined and expands to itself.&n; */
+DECL|macro|writeq
+mdefine_line|#define writeq writeq
+DECL|macro|readq
+mdefine_line|#define readq readq
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ALPHA_IO_H */
 eof

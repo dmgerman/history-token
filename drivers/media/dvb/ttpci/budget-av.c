@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * budget-av.c: driver for the SAA7146 based Budget DVB cards&n; *              with analog video in &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
-macro_line|#include &lt;media/saa7146_vv.h&gt;
 macro_line|#include &quot;budget.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
+macro_line|#include &lt;media/saa7146_vv.h&gt;
 DECL|struct|budget_av
 r_struct
 id|budget_av
@@ -14,6 +13,7 @@ suffix:semicolon
 DECL|member|vd
 r_struct
 id|video_device
+op_star
 id|vd
 suffix:semicolon
 DECL|member|cur_input
@@ -33,7 +33,7 @@ id|u8
 id|i2c_readreg
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -148,9 +148,7 @@ id|buf
 op_assign
 id|mm2
 suffix:semicolon
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -174,7 +172,7 @@ id|i2c_readregs
 c_func
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -261,9 +259,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2c
-op_member_access_from_pointer
-id|xfer
+id|i2c_transfer
 c_func
 (paren
 id|i2c
@@ -289,7 +285,7 @@ r_int
 id|i2c_writereg
 (paren
 r_struct
-id|dvb_i2c_bus
+id|i2c_adapter
 op_star
 id|i2c
 comma
@@ -334,7 +330,8 @@ op_assign
 id|msg
 suffix:semicolon
 r_return
-id|i2c-&gt;xfer
+id|i2c_transfer
+c_func
 (paren
 id|i2c
 comma
@@ -504,7 +501,8 @@ c_cond
 (paren
 id|i2c_writereg
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -549,7 +547,8 @@ l_int|0xff
 id|i2c_writereg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -578,7 +577,8 @@ comma
 id|i2c_readreg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -635,7 +635,8 @@ l_int|1
 id|i2c_writereg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -647,7 +648,8 @@ suffix:semicolon
 id|i2c_writereg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -669,7 +671,8 @@ l_int|0
 id|i2c_writereg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -681,7 +684,8 @@ suffix:semicolon
 id|i2c_writereg
 c_func
 (paren
-id|budget-&gt;i2c_bus
+op_amp
+id|budget-&gt;i2c_adap
 comma
 l_int|0x4a
 comma
@@ -758,7 +762,7 @@ comma
 id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|200
@@ -847,6 +851,10 @@ c_cond
 id|bi-&gt;type
 op_ne
 id|BUDGET_KNC1
+op_logical_and
+id|bi-&gt;type
+op_ne
+id|BUDGET_CIN1200
 )paren
 (brace
 r_return
@@ -892,6 +900,10 @@ id|budget_av
 )paren
 )paren
 suffix:semicolon
+id|dev-&gt;ext_priv
+op_assign
+id|budget_av
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -921,10 +933,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|dev-&gt;ext_priv
-op_assign
-id|budget_av
-suffix:semicolon
 multiline_comment|/* knc1 initialization */
 id|saa7146_write
 c_func
@@ -973,7 +981,7 @@ comma
 id|SAA7146_GPIO_OUTHI
 )paren
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|500
@@ -1114,7 +1122,8 @@ c_cond
 id|i2c_readregs
 c_func
 (paren
-id|budget_av-&gt;budget.i2c_bus
+op_amp
+id|budget_av-&gt;budget.i2c_adap
 comma
 l_int|0xa0
 comma
@@ -1630,6 +1639,16 @@ comma
 id|BUDGET_KNC1
 )paren
 suffix:semicolon
+id|MAKE_BUDGET_INFO
+c_func
+(paren
+id|cin1200
+comma
+l_string|&quot;TerraTec Cinergy 1200 DVB-S&quot;
+comma
+id|BUDGET_CIN1200
+)paren
+suffix:semicolon
 DECL|variable|pci_tbl
 r_static
 r_struct
@@ -1647,6 +1666,16 @@ comma
 l_int|0x1131
 comma
 l_int|0x4f56
+)paren
+comma
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|cin1200
+comma
+l_int|0x153b
+comma
+l_int|0x1154
 )paren
 comma
 (brace

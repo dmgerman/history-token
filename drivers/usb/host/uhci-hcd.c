@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -10047,7 +10047,7 @@ id|up_failed
 suffix:semicolon
 id|retval
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

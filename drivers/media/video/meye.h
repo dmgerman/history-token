@@ -539,14 +539,6 @@ id|params
 suffix:semicolon
 multiline_comment|/* additional parameters */
 macro_line|#ifdef CONFIG_PM
-DECL|member|pm_state
-id|u32
-id|pm_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* PCI configuration space */
 DECL|member|pm_mchip_mode
 id|u8
 id|pm_mchip_mode

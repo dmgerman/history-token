@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001-2003 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.19 2004/07/13 22:33:32 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001-2003 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.21 2004/08/14 15:14:05 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -262,7 +262,7 @@ multiline_comment|/* The probe didn&squot;t like it */
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;%s: Found no %s device at location zero&bslash;n&quot;
 comma
 id|cp-&gt;name
@@ -768,25 +768,32 @@ id|cfi-&gt;interleave
 op_assign
 id|nr_chips
 suffix:semicolon
+multiline_comment|/* Minimum device size. Don&squot;t look for one 8-bit device&n;&t;&t;   in a 16-bit bus, etc. */
+id|type
+op_assign
+id|map_bankwidth
+c_func
+(paren
+id|map
+)paren
+op_div
+id|nr_chips
+suffix:semicolon
 r_for
 c_loop
 (paren
-id|type
-op_assign
-l_int|0
 suffix:semicolon
 id|type
-OL
-l_int|3
+op_le
+id|CFI_DEVICETYPE_X32
 suffix:semicolon
 id|type
-op_increment
+op_lshift_assign
+l_int|1
 )paren
 (brace
 id|cfi-&gt;device_type
 op_assign
-l_int|1
-op_lshift
 id|type
 suffix:semicolon
 r_if
