@@ -1786,6 +1786,16 @@ id|tsk-&gt;cnswap
 op_assign
 l_int|0
 suffix:semicolon
+id|tsk-&gt;nvcsw
+op_assign
+id|tsk-&gt;nivcsw
+op_assign
+id|tsk-&gt;cnvcsw
+op_assign
+id|tsk-&gt;cnivcsw
+op_assign
+l_int|0
+suffix:semicolon
 id|tsk-&gt;mm
 op_assign
 l_int|NULL

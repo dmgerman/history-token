@@ -4350,9 +4350,16 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|prev-&gt;nvcsw
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|TASK_RUNNING
 suffix:colon
+id|prev-&gt;nivcsw
+op_increment
 suffix:semicolon
 )brace
 id|pick_next_task
