@@ -1696,7 +1696,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* make sure future calls to the direct io funcs for this offset&n;        ** in the file fail by unmapping the buffer&n;        */
-id|reiserfs_unmap_buffer
+id|clear_buffer_mapped
 c_func
 (paren
 id|bh_result
