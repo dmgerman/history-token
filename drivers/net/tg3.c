@@ -3694,7 +3694,7 @@ op_logical_and
 id|netif_carrier_ok
 c_func
 (paren
-id|tp-&gt;pdev
+id|tp-&gt;dev
 )paren
 )paren
 (brace
@@ -8111,7 +8111,6 @@ op_eq
 l_int|0xffff
 )paren
 )paren
-(brace
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_UNNECESSARY
@@ -14901,7 +14900,6 @@ l_int|0x00000000
 )brace
 suffix:semicolon
 macro_line|#if 0 /* All zeros, dont eat up space with it. */
-DECL|variable|tg3FwData
 id|u32
 id|tg3FwData
 (braket
@@ -18747,7 +18745,6 @@ l_int|0x00000000
 )brace
 suffix:semicolon
 macro_line|#if 0 /* All zeros, dont eat up space with it. */
-DECL|variable|tg3TsoFwData
 id|u32
 id|tg3TsoFwData
 (braket
@@ -22606,7 +22603,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if 0
-DECL|function|tg3_dump_state
 multiline_comment|/*static*/
 r_void
 id|tg3_dump_state
