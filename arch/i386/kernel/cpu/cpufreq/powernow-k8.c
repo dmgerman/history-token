@@ -2787,6 +2787,12 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ppst
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -2816,6 +2822,12 @@ id|BFX
 l_string|&quot;maxvid exceeded with pstate %d&bslash;n&quot;
 comma
 id|j
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ppst
 )paren
 suffix:semicolon
 r_return
@@ -2896,9 +2908,7 @@ id|currvid
 )paren
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 id|printk
 c_func
