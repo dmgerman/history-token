@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/s390/mm/extable.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/extable.c&quot;&n; */
+multiline_comment|/*&n; *  arch/s390/mm/extable.c&n; *&n; *  S390 version&n; *&n; *  identical to arch/i386/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -130,6 +130,11 @@ r_int
 id|addr
 )paren
 (brace
+r_struct
+id|list_head
+op_star
+id|i
+suffix:semicolon
 r_int
 r_int
 id|ret
@@ -160,12 +165,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 r_struct
-id|module
+id|list_head
 op_star
-id|mp
+id|i
 suffix:semicolon
+multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -175,39 +180,37 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
-id|mp
-op_assign
-id|module_list
-suffix:semicolon
-id|mp
-op_ne
-l_int|NULL
-suffix:semicolon
-id|mp
-op_assign
-id|mp-&gt;next
+id|i
+comma
+op_amp
+id|extables
 )paren
 (brace
+r_struct
+id|exception_table
+op_star
+id|ex
+op_assign
+id|list_entry
+c_func
+(paren
+id|i
+comma
+r_struct
+id|exception_table
+comma
+id|list
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|mp-&gt;ex_table_start
+id|ex-&gt;num_entries
 op_eq
-l_int|NULL
-op_logical_or
-op_logical_neg
-(paren
-id|mp-&gt;flags
-op_amp
-(paren
-id|MOD_RUNNING
-op_or
-id|MOD_INITIALIZING
-)paren
-)paren
+l_int|0
 )paren
 r_continue
 suffix:semicolon
@@ -216,9 +219,11 @@ op_assign
 id|search_one_table
 c_func
 (paren
-id|mp-&gt;ex_table_start
+id|ex-&gt;entry
 comma
-id|mp-&gt;ex_table_end
+id|ex-&gt;entry
+op_plus
+id|ex-&gt;num_entries
 op_minus
 l_int|1
 comma
