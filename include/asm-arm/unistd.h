@@ -440,6 +440,32 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_SYSCALL_BASE+224)
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;&t;(__NR_SYSCALL_BASE+225)
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;&t;(__NR_SYSCALL_BASE+226)
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;&t;(__NR_SYSCALL_BASE+227)
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;&t;(__NR_SYSCALL_BASE+228)
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;&t;(__NR_SYSCALL_BASE+229)
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;&t;(__NR_SYSCALL_BASE+230)
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;&t;(__NR_SYSCALL_BASE+231)
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;&t;(__NR_SYSCALL_BASE+232)
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;&t;(__NR_SYSCALL_BASE+233)
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;&t;(__NR_SYSCALL_BASE+234)
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;&t;(__NR_SYSCALL_BASE+235)
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;&t;(__NR_SYSCALL_BASE+236)
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_SYSCALL_BASE+237)
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_SYSCALL_BASE+238
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
