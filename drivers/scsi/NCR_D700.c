@@ -531,6 +531,12 @@ id|hostdata-&gt;clock
 op_assign
 id|NCR_D700_CLOCK_MHZ
 suffix:semicolon
+id|NCR_700_set_io_mapped
+c_func
+(paren
+id|hostdata
+)paren
+suffix:semicolon
 multiline_comment|/* and register the siop */
 id|host
 op_assign

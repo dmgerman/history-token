@@ -439,6 +439,12 @@ id|hostdata-&gt;chip710
 op_assign
 l_int|1
 suffix:semicolon
+id|NCR_700_set_io_mapped
+c_func
+(paren
+id|hostdata
+)paren
+suffix:semicolon
 multiline_comment|/* and register the chip */
 r_if
 c_cond

@@ -301,6 +301,12 @@ op_assign
 id|DMODE_FC2
 suffix:semicolon
 )brace
+id|NCR_700_set_mem_mapped
+c_func
+(paren
+id|hostdata
+)paren
+suffix:semicolon
 id|host
 op_assign
 id|NCR_700_detect
