@@ -435,12 +435,7 @@ DECL|enum|chip_capability_flags
 r_enum
 id|chip_capability_flags
 (brace
-DECL|enumerator|HasESIPhy
 DECL|enumerator|HasDavicomPhy
-id|HasESIPhy
-op_assign
-l_int|2
-comma
 id|HasDavicomPhy
 op_assign
 l_int|4
@@ -4158,7 +4153,6 @@ id|dev
 suffix:semicolon
 multiline_comment|/* The LED outputs of various MII xcvrs should be configured. */
 multiline_comment|/* For NS or Mison phys, turn on bit 1 in register 0x17 */
-multiline_comment|/* For ESI phys, turn on bit 7 in register 0x17. */
 id|mdio_write
 c_func
 (paren
@@ -4184,15 +4178,6 @@ comma
 l_int|0x17
 )paren
 op_or
-(paren
-id|rp-&gt;drv_flags
-op_amp
-id|HasESIPhy
-)paren
-ques
-c_cond
-l_int|0x0080
-suffix:colon
 l_int|0x0001
 )paren
 suffix:semicolon
