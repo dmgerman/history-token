@@ -380,6 +380,7 @@ r_static
 r_inline
 r_int
 r_int
+op_star
 id|get_zholes_size
 c_func
 (paren
