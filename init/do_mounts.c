@@ -174,14 +174,14 @@ suffix:semicolon
 DECL|variable|root_device_name
 r_static
 r_char
+op_star
+id|__initdata
 id|root_device_name
-(braket
-l_int|64
-)braket
 suffix:semicolon
 DECL|variable|saved_root_name
 r_static
 r_char
+id|__initdata
 id|saved_root_name
 (braket
 l_int|64
@@ -307,8 +307,8 @@ id|readwrite
 suffix:semicolon
 DECL|function|try_name
 r_static
-id|__init
 id|dev_t
+id|__init
 id|try_name
 c_func
 (paren
@@ -595,7 +595,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Convert a name into device number.  We accept the following variants:&n; *&n; *&t;1) device number in hexadecimal&t;represents itself&n; *&t;2) /dev/nfs represents Root_NFS (0xff)&n; *&t;3) /dev/&lt;disk_name&gt; represents the device number of disk&n; *&t;4) /dev/&lt;disk_name&gt;&lt;decimal&gt; represents the device number&n; *         of partition - device number of disk plus the partition number&n; *&t;5) /dev/&lt;disk_name&gt;p&lt;decimal&gt; - same as the above, that form is&n; *&t;   used when disk name of partitioned disk ends on a digit.&n; *&n; *&t;If name doesn&squot;t have fall into the categories above, we return 0.&n; *&t;Driverfs is used to check if something is a disk name - it has&n; *&t;all known disks under bus/block/devices.  If the disk name&n; *&t;contains slashes, name of driverfs node has them replaced with&n; *&t;dots.  try_name() does the actual checks, assuming that driverfs&n; *&t;is mounted on rootfs /sys.&n; */
 DECL|function|name_to_dev_t
-id|__init
 id|dev_t
 id|name_to_dev_t
 c_func
@@ -964,15 +963,8 @@ id|saved_root_name
 comma
 id|line
 comma
-l_int|64
-)paren
-suffix:semicolon
-id|saved_root_name
-(braket
 l_int|63
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -2853,6 +2845,7 @@ DECL|variable|old_fd
 DECL|variable|root_fd
 r_static
 r_int
+id|__initdata
 id|old_fd
 comma
 id|root_fd
@@ -2860,6 +2853,7 @@ suffix:semicolon
 DECL|function|do_linuxrc
 r_static
 r_int
+id|__init
 id|do_linuxrc
 c_func
 (paren
@@ -3384,6 +3378,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Prepare the namespace - decide what/where to mount, load ramdisks, etc.&n; */
 DECL|function|prepare_namespace
 r_void
+id|__init
 id|prepare_namespace
 c_func
 (paren
@@ -3412,9 +3407,7 @@ l_int|0
 )braket
 )paren
 (brace
-r_char
-op_star
-id|p
+id|root_device_name
 op_assign
 id|saved_root_name
 suffix:semicolon
@@ -3423,7 +3416,7 @@ op_assign
 id|name_to_dev_t
 c_func
 (paren
-id|p
+id|root_device_name
 )paren
 suffix:semicolon
 r_if
@@ -3432,7 +3425,7 @@ c_cond
 id|strncmp
 c_func
 (paren
-id|p
+id|root_device_name
 comma
 l_string|&quot;/dev/&quot;
 comma
@@ -3441,17 +3434,9 @@ l_int|5
 op_eq
 l_int|0
 )paren
-id|p
+id|root_device_name
 op_add_assign
 l_int|5
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|root_device_name
-comma
-id|p
-)paren
 suffix:semicolon
 )brace
 id|is_floppy
