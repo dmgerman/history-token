@@ -260,35 +260,6 @@ id|fb_cmap
 id|cmap
 suffix:semicolon
 multiline_comment|/* colormap */
-DECL|member|visual
-r_int
-id|visual
-suffix:semicolon
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-multiline_comment|/* see FB_TYPE_* */
-DECL|member|type_aux
-r_int
-id|type_aux
-suffix:semicolon
-multiline_comment|/* Interleave for interleaved Planes */
-DECL|member|ypanstep
-id|u_short
-id|ypanstep
-suffix:semicolon
-multiline_comment|/* zero if no hardware ypan */
-DECL|member|ywrapstep
-id|u_short
-id|ywrapstep
-suffix:semicolon
-multiline_comment|/* zero if no hardware ywrap */
-DECL|member|line_length
-id|u_long
-id|line_length
-suffix:semicolon
-multiline_comment|/* length of a line in bytes */
 DECL|member|can_soft_blank
 id|u_short
 id|can_soft_blank

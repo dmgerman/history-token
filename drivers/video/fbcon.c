@@ -1834,6 +1834,13 @@ op_star
 id|p
 )paren
 (brace
+r_struct
+id|fb_info
+op_star
+id|info
+op_assign
+id|p-&gt;fb_info
+suffix:semicolon
 r_int
 id|m
 suffix:semicolon
@@ -1852,7 +1859,7 @@ c_cond
 id|divides
 c_func
 (paren
-id|p-&gt;ywrapstep
+id|info-&gt;fix.ywrapstep
 comma
 id|fontheight
 c_func
@@ -1870,7 +1877,7 @@ c_func
 id|p
 )paren
 comma
-id|p-&gt;var.yres_virtual
+id|info-&gt;var.yres_virtual
 )paren
 )paren
 id|m
@@ -1884,7 +1891,7 @@ c_cond
 id|divides
 c_func
 (paren
-id|p-&gt;ypanstep
+id|info-&gt;fix.ypanstep
 comma
 id|fontheight
 c_func
@@ -2056,6 +2063,13 @@ id|con
 )braket
 suffix:semicolon
 r_struct
+id|fb_info
+op_star
+id|info
+op_assign
+id|p-&gt;fb_info
+suffix:semicolon
+r_struct
 id|vc_data
 op_star
 id|conp
@@ -2105,12 +2119,12 @@ op_ne
 id|fg_console
 op_logical_or
 (paren
-id|p-&gt;fb_info-&gt;flags
+id|info-&gt;flags
 op_amp
 id|FBINFO_FLAG_MODULE
 )paren
 op_logical_or
-id|p-&gt;type
+id|info-&gt;fix.type
 op_eq
 id|FB_TYPE_TEXT
 )paren
@@ -2134,7 +2148,7 @@ id|con
 op_eq
 id|fg_console
 op_logical_and
-id|p-&gt;type
+id|info-&gt;fix.type
 op_ne
 id|FB_TYPE_TEXT
 )paren
@@ -2964,9 +2978,9 @@ id|KERN_WARNING
 l_string|&quot;fbcon_setup: type %d (aux %d, depth %d) not &quot;
 l_string|&quot;supported&bslash;n&quot;
 comma
-id|p-&gt;type
+id|info-&gt;fix.type
 comma
-id|p-&gt;type_aux
+id|info-&gt;fix.type_aux
 comma
 id|p-&gt;var.bits_per_pixel
 )paren
@@ -7852,7 +7866,7 @@ id|blank
 r_if
 c_cond
 (paren
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_MONO01
 )paren
@@ -7860,12 +7874,12 @@ id|FB_VISUAL_MONO01
 r_if
 c_cond
 (paren
-id|p-&gt;fb_info-&gt;screen_base
+id|info-&gt;screen_base
 )paren
 id|fb_memset255
 c_func
 (paren
-id|p-&gt;fb_info-&gt;screen_base
+id|info-&gt;screen_base
 comma
 id|p-&gt;var.xres_virtual
 op_star
@@ -11325,6 +11339,13 @@ id|fg_console
 )braket
 suffix:semicolon
 multiline_comment|/* draw to vt in foreground */
+r_struct
+id|fb_info
+op_star
+id|info
+op_assign
+id|p-&gt;fb_info
+suffix:semicolon
 r_int
 id|depth
 op_assign
@@ -11340,7 +11361,7 @@ r_char
 op_star
 id|fb
 op_assign
-id|p-&gt;fb_info-&gt;screen_base
+id|info-&gt;screen_base
 suffix:semicolon
 r_int
 r_char
@@ -11390,7 +11411,7 @@ r_if
 c_cond
 (paren
 (paren
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_PSEUDOCOLOR
 op_logical_and
@@ -11400,7 +11421,7 @@ l_int|8
 )paren
 op_logical_or
 (paren
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_DIRECTCOLOR
 op_logical_and
@@ -11538,7 +11559,7 @@ id|j
 )braket
 suffix:semicolon
 )brace
-id|p-&gt;fb_info-&gt;fbops
+id|info-&gt;fbops
 op_member_access_from_pointer
 id|fb_set_cmap
 c_func
@@ -11550,7 +11571,7 @@ l_int|1
 comma
 id|fg_console
 comma
-id|p-&gt;fb_info
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -11603,14 +11624,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;fb_info-&gt;fbops-&gt;fb_rasterimg
+id|info-&gt;fbops-&gt;fb_rasterimg
 )paren
-id|p-&gt;fb_info-&gt;fbops
+id|info-&gt;fbops
 op_member_access_from_pointer
 id|fb_rasterimg
 c_func
 (paren
-id|p-&gt;fb_info
+id|info
 comma
 l_int|1
 )paren
@@ -11658,7 +11679,7 @@ macro_line|#if defined(CONFIG_FBCON_CFB16) || defined(CONFIG_FBCON_CFB24) || &bs
 r_if
 c_cond
 (paren
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_DIRECTCOLOR
 )paren
@@ -12159,7 +12180,7 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|p-&gt;visual
+id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_TRUECOLOR
 )paren
