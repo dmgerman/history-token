@@ -813,6 +813,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|clustered_apic_mode
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|entry-&gt;timestamp
 op_ne
 id|now
