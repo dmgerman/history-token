@@ -193,6 +193,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Locate the user_struct for the passed UID.  If found, take a ref on it.  The&n; * caller must undo that ref with free_uid().&n; *&n; * If the user_struct could not be found, return NULL.&n; */
 DECL|function|find_user
 r_struct
 id|user_struct
@@ -204,7 +205,20 @@ id|uid_t
 id|uid
 )paren
 (brace
-r_return
+r_struct
+id|user_struct
+op_star
+id|ret
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|uidhash_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|uid_hash_find
 c_func
 (paren
@@ -216,6 +230,16 @@ c_func
 id|uid
 )paren
 )paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|uidhash_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|free_uid

@@ -1127,6 +1127,18 @@ comma
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|who
+)paren
+id|free_uid
+c_func
+(paren
+id|user
+)paren
+suffix:semicolon
+multiline_comment|/* For find_user() */
 r_break
 suffix:semicolon
 )brace
@@ -1400,6 +1412,18 @@ comma
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|who
+)paren
+id|free_uid
+c_func
+(paren
+id|user
+)paren
+suffix:semicolon
+multiline_comment|/* for find_user() */
 r_break
 suffix:semicolon
 )brace
