@@ -5632,6 +5632,14 @@ comma
 id|ioc_zx1_init
 )brace
 comma
+(brace
+id|SX1000_IOC_ID
+comma
+l_string|&quot;sx1000&quot;
+comma
+l_int|NULL
+)brace
+comma
 )brace
 suffix:semicolon
 r_static
