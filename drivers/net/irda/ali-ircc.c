@@ -1311,19 +1311,6 @@ op_amp
 id|self-&gt;qos
 )paren
 suffix:semicolon
-id|self-&gt;flags
-op_assign
-id|IFF_FIR
-op_or
-id|IFF_MIR
-op_or
-id|IFF_SIR
-op_or
-id|IFF_DMA
-op_or
-id|IFF_PIO
-suffix:semicolon
-singleline_comment|// benjamin 2000/11/8 05:27PM&t;
 multiline_comment|/* Max DMA buffer size needed = (data_size + 6) * (window_size) + 6; */
 id|self-&gt;rx_buff.truesize
 op_assign
