@@ -622,7 +622,7 @@ c_cond
 (paren
 op_logical_neg
 id|result
-op_amp
+op_logical_and
 id|partial
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.60)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; * Previously maintained by Brian Beattie&n; *&n; * Current maintainer: Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.64)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; * Previously maintained by Brian Beattie&n; *&n; * Current maintainer: Henning Meier-Geinitz &lt;henning@meier-geinitz.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 multiline_comment|/*&n; * For documentation, see Documentation/usb/scanner.txt.&n; * Website: http://www.meier-geinitz.de/kernel/&n; * Please contact the maintainer if your scanner is not detected by this&n; * driver automatically.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 singleline_comment|// #define DEBUG
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.10&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.11&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -405,7 +405,53 @@ l_int|0x4002
 )brace
 comma
 multiline_comment|/* Ultima 2000 (GT6801 based) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05d8
+comma
+l_int|0x4003
+)paren
+)brace
+comma
+multiline_comment|/* E+ 48U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05d8
+comma
+l_int|0x4004
+)paren
+)brace
+comma
+multiline_comment|/* E+ Pro */
+multiline_comment|/* Avision */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0638
+comma
+l_int|0x0a10
+)paren
+)brace
+comma
+multiline_comment|/* iVina FB1600 (=Umax Astra 4500) */
 multiline_comment|/* Benq: see Acer */
+multiline_comment|/* Brother */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04f9
+comma
+l_int|0x0111
+)paren
+)brace
+comma
+multiline_comment|/* MFC 6800 */
 multiline_comment|/* Canon */
 (brace
 id|USB_DEVICE
@@ -553,6 +599,40 @@ l_int|0x0021
 comma
 multiline_comment|/* S200 */
 multiline_comment|/* Epson -- See Seiko/Epson below */
+multiline_comment|/* Fujitsu */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04c5
+comma
+l_int|0x1041
+)paren
+)brace
+comma
+multiline_comment|/* fi-4220c USB/SCSI info:mza@mu-tec.de */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04c5
+comma
+l_int|0x1042
+)paren
+)brace
+comma
+multiline_comment|/* fi-4120c USB/SCSI info:mza@mu-tec.de */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04c5
+comma
+l_int|0x1029
+)paren
+)brace
+comma
+multiline_comment|/* fi-4010c USB AVision info:mza@mu-tec.de */
 multiline_comment|/* Genius */
 (brace
 id|USB_DEVICE
@@ -845,6 +925,18 @@ l_int|0x002d
 )brace
 comma
 multiline_comment|/* X70/X73 */
+multiline_comment|/* Medion */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
+l_int|0x0377
+)paren
+)brace
+comma
+multiline_comment|/* MD 5345 - repackaged Primax? */
 multiline_comment|/* Memorex */
 (brace
 id|USB_DEVICE
@@ -1232,11 +1324,22 @@ c_func
 (paren
 l_int|0x07b3
 comma
-l_int|0x0401
+l_int|0x0400
 )paren
 )brace
 comma
 multiline_comment|/* OpticPro 1248U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0401
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro 1248U (another one) */
 multiline_comment|/* Primax/Colorado */
 (brace
 id|USB_DEVICE
@@ -1310,6 +1413,17 @@ c_func
 (paren
 l_int|0x0461
 comma
+l_int|0x0347
+)paren
+)brace
+comma
+multiline_comment|/* Primascan Colorado 2600u */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0461
+comma
 l_int|0x0360
 )paren
 )brace
@@ -1370,6 +1484,18 @@ l_int|0x0383
 )brace
 comma
 multiline_comment|/* G2E-600 */
+multiline_comment|/* Prolink */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06dc
+comma
+l_int|0x0014
+)paren
+)brace
+comma
+multiline_comment|/* Winscan Pro 2448U */
 multiline_comment|/* Relisis */
 singleline_comment|// { USB_DEVICE(0x0475, 0x0103) },&t;/* Episode - undetected endpoint */
 multiline_comment|/* Seiko/Epson Corp. */
@@ -1615,6 +1741,18 @@ l_int|0x0802
 )brace
 comma
 multiline_comment|/* Stylus CX3200 */
+multiline_comment|/* SYSCAN */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a82
+comma
+l_int|0x4600
+)paren
+)brace
+comma
+multiline_comment|/* TravelScan 460/464 */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE
