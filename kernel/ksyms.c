@@ -3199,6 +3199,20 @@ id|__per_cpu_offset
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|set_fs_pwd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_fs_pwd
+)paren
+suffix:semicolon
+DECL|variable|set_fs_root
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_fs_root
+)paren
+suffix:semicolon
 multiline_comment|/* debug */
 DECL|variable|dump_stack
 id|EXPORT_SYMBOL
