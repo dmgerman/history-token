@@ -1085,6 +1085,15 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|sema_init
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_mount_sem
+comma
+l_int|1
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
