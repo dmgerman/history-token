@@ -815,7 +815,6 @@ id|adapter
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,4)
 DECL|variable|i2c_driver
 r_static
 r_struct
@@ -832,7 +831,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|function|i2c_bitlp_init
 r_int
 id|__init
@@ -842,13 +840,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,4)
-r_struct
-id|parport
-op_star
-id|port
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -860,7 +851,6 @@ comma
 id|I2C_DATE
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,4)
 id|parport_register_driver
 c_func
 (paren
@@ -868,30 +858,6 @@ op_amp
 id|i2c_driver
 )paren
 suffix:semicolon
-macro_line|#else
-r_for
-c_loop
-(paren
-id|port
-op_assign
-id|parport_enumerate
-c_func
-(paren
-)paren
-suffix:semicolon
-id|port
-suffix:semicolon
-id|port
-op_assign
-id|port-&gt;next
-)paren
-id|i2c_parport_attach
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -905,7 +871,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,4)
 id|parport_unregister_driver
 c_func
 (paren
@@ -913,35 +878,6 @@ op_amp
 id|i2c_driver
 )paren
 suffix:semicolon
-macro_line|#else
-r_struct
-id|parport
-op_star
-id|port
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|port
-op_assign
-id|parport_enumerate
-c_func
-(paren
-)paren
-suffix:semicolon
-id|port
-suffix:semicolon
-id|port
-op_assign
-id|port-&gt;next
-)paren
-id|i2c_parport_detach
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 id|MODULE_AUTHOR
 c_func
