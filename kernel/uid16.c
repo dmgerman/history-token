@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 id|asmlinkage
@@ -760,6 +761,12 @@ id|groups
 id|NGROUPS
 )braket
 suffix:semicolon
+id|gid_t
+id|new_groups
+(braket
+id|NGROUPS
+)braket
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -827,7 +834,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|current-&gt;groups
+id|new_groups
 (braket
 id|i
 )braket
@@ -839,6 +846,41 @@ id|groups
 (braket
 id|i
 )braket
+suffix:semicolon
+id|i
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|task_setgroups
+c_func
+(paren
+id|gidsetsize
+comma
+id|new_groups
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_return
+id|i
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|current-&gt;groups
+comma
+id|new_groups
+comma
+id|gidsetsize
+op_star
+r_sizeof
+(paren
+id|gid_t
+)paren
+)paren
 suffix:semicolon
 id|current-&gt;ngroups
 op_assign

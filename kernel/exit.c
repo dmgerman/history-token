@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
@@ -226,6 +227,14 @@ c_func
 (paren
 op_amp
 id|p-&gt;user-&gt;processes
+)paren
+suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|task_free_security
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 id|free_uid
@@ -648,21 +657,13 @@ suffix:semicolon
 multiline_comment|/* cpus_allowed? */
 multiline_comment|/* rt_priority? */
 multiline_comment|/* signals? */
-id|current-&gt;cap_effective
-op_assign
-id|CAP_INIT_EFF_SET
-suffix:semicolon
-id|current-&gt;cap_inheritable
-op_assign
-id|CAP_INIT_INH_SET
-suffix:semicolon
-id|current-&gt;cap_permitted
-op_assign
-id|CAP_FULL_SET
-suffix:semicolon
-id|current-&gt;keep_capabilities
-op_assign
-l_int|0
+id|security_ops
+op_member_access_from_pointer
+id|task_reparent_to_init
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|memcpy
 c_func
@@ -2274,6 +2275,19 @@ op_logical_neg
 id|options
 op_amp
 id|__WALL
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|security_ops
+op_member_access_from_pointer
+id|task_wait
+c_func
+(paren
+id|p
 )paren
 )paren
 r_continue
