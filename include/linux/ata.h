@@ -319,16 +319,6 @@ l_int|4
 )paren
 comma
 multiline_comment|/* Select Device 1 (slave) */
-DECL|enumerator|ATA_BUSY
-id|ATA_BUSY
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
-comma
-multiline_comment|/* BSY status bit */
 DECL|enumerator|ATA_DEVICE_OBS
 id|ATA_DEVICE_OBS
 op_assign
@@ -355,6 +345,36 @@ l_int|3
 )paren
 comma
 multiline_comment|/* obsolete bit in devctl reg */
+DECL|enumerator|ATA_BUSY
+id|ATA_BUSY
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|7
+)paren
+comma
+multiline_comment|/* BSY status bit */
+DECL|enumerator|ATA_DRDY
+id|ATA_DRDY
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|6
+)paren
+comma
+multiline_comment|/* device ready */
+DECL|enumerator|ATA_DF
+id|ATA_DF
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|5
+)paren
+comma
+multiline_comment|/* device fault */
 DECL|enumerator|ATA_DRQ
 id|ATA_DRQ
 op_assign
@@ -897,6 +917,39 @@ op_logical_or
 id|tf-&gt;protocol
 op_eq
 id|ATA_PROT_ATAPI_DMA
+)paren
+suffix:semicolon
+)brace
+DECL|function|ata_ok
+r_static
+r_inline
+r_int
+id|ata_ok
+c_func
+(paren
+id|u8
+id|status
+)paren
+(brace
+r_return
+(paren
+(paren
+id|status
+op_amp
+(paren
+id|ATA_BUSY
+op_or
+id|ATA_DRDY
+op_or
+id|ATA_DF
+op_or
+id|ATA_DRQ
+op_or
+id|ATA_ERR
+)paren
+)paren
+op_eq
+id|ATA_DRDY
 )paren
 suffix:semicolon
 )brace
