@@ -524,6 +524,11 @@ id|name
 id|DEVICE_NAME_SIZE
 )braket
 suffix:semicolon
+DECL|member|released
+r_struct
+id|completion
+id|released
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_i2c_client
@@ -867,10 +872,22 @@ id|name
 id|DEVICE_NAME_SIZE
 )braket
 suffix:semicolon
+DECL|member|dev_released
+r_struct
+id|completion
+id|dev_released
+suffix:semicolon
+DECL|member|class_dev_released
+r_struct
+id|completion
+id|class_dev_released
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|to_i2c_adapter
-mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|macro|dev_to_i2c_adapter
+mdefine_line|#define dev_to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|macro|class_dev_to_i2c_adapter
+mdefine_line|#define class_dev_to_i2c_adapter(d) container_of(d, struct i2c_adapter, class_dev)
 DECL|function|i2c_get_adapdata
 r_static
 r_inline
