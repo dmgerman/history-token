@@ -3368,6 +3368,17 @@ id|p
 op_increment
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|args-&gt;count
+OG
+id|PAGE_SIZE
+)paren
+id|args-&gt;count
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
 id|svc_take_page
 c_func
 (paren
