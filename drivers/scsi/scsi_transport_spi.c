@@ -2765,10 +2765,15 @@ id|spi_dv_device_compare_inquiry
 r_return
 suffix:semicolon
 multiline_comment|/* OK, now we have our initial speed set by the read only inquiry&n;&t; * test, now try an echo buffer test (if the device allows it) */
+id|len
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+id|sdev-&gt;ppr
+)paren
 id|len
 op_assign
 id|spi_dv_device_get_echo_buffer
@@ -2778,7 +2783,11 @@ id|sreq
 comma
 id|buffer
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
 op_eq
 l_int|0
 )paren
