@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|variable|dummy
 r_static
 r_int
@@ -396,7 +397,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -423,7 +424,7 @@ id|set
 op_assign
 id|mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -472,7 +473,7 @@ c_func
 id|irq_nr
 )paren
 suffix:semicolon
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -499,7 +500,7 @@ id|clear
 op_assign
 id|mask
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -508,7 +509,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -518,7 +519,7 @@ id|sun4m_interrupts-&gt;clear
 op_assign
 id|SUN4M_INT_FLOPPY
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -651,7 +652,7 @@ multiline_comment|/*15*/
 l_int|0x00000000
 )brace
 suffix:semicolon
-multiline_comment|/* We assume the caller is local cli()&squot;d when these are called, or else&n; * very bizarre behavior will result.&n; */
+multiline_comment|/* We assume the caller has disabled local interrupts when these are called,&n; * or else very bizarre behavior will result.&n; */
 DECL|function|sun4m_disable_pil_irq
 r_static
 r_void

@@ -119,7 +119,7 @@ comma
 id|flags
 suffix:semicolon
 multiline_comment|/* XXX Badly broken. FIX! - Anton */
-id|save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -184,7 +184,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -194,7 +194,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -222,7 +222,7 @@ id|prom_tbr
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
