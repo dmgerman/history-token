@@ -78,7 +78,6 @@ macro_line|#include &lt;net/sctp/ulpevent.h&gt;
 macro_line|#include &lt;net/sctp/ulpqueue.h&gt;
 multiline_comment|/* Structures useful for managing bind/connect. */
 DECL|struct|sctp_bind_bucket
-r_typedef
 r_struct
 id|sctp_bind_bucket
 (brace
@@ -111,12 +110,9 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-DECL|typedef|sctp_bind_bucket_t
 )brace
-id|sctp_bind_bucket_t
 suffix:semicolon
 DECL|struct|sctp_bind_hashbucket
-r_typedef
 r_struct
 id|sctp_bind_hashbucket
 (brace
@@ -130,13 +126,10 @@ id|sctp_bind_bucket
 op_star
 id|chain
 suffix:semicolon
-DECL|typedef|sctp_bind_hashbucket_t
 )brace
-id|sctp_bind_hashbucket_t
 suffix:semicolon
 multiline_comment|/* Used for hashing all associations.  */
 DECL|struct|sctp_hashbucket
-r_typedef
 r_struct
 id|sctp_hashbucket
 (brace
@@ -150,9 +143,7 @@ id|sctp_ep_common
 op_star
 id|chain
 suffix:semicolon
-DECL|typedef|sctp_hashbucket_t
 )brace
-id|sctp_hashbucket_t
 id|__attribute__
 c_func
 (paren
@@ -247,7 +238,8 @@ r_int
 id|ep_hashsize
 suffix:semicolon
 DECL|member|ep_hashbucket
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|ep_hashbucket
 suffix:semicolon
@@ -257,7 +249,8 @@ r_int
 id|assoc_hashsize
 suffix:semicolon
 DECL|member|assoc_hashbucket
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|assoc_hashbucket
 suffix:semicolon
@@ -276,7 +269,8 @@ id|port_alloc_lock
 suffix:semicolon
 multiline_comment|/* Protects port_rover. */
 DECL|member|port_hashtable
-id|sctp_bind_hashbucket_t
+r_struct
+id|sctp_bind_hashbucket
 op_star
 id|port_hashtable
 suffix:semicolon

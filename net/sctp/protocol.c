@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Initialization/cleanup for SCTP protocol support.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Initialization/cleanup for SCTP protocol support.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -66,6 +66,16 @@ r_struct
 id|sctp_af
 op_star
 id|sctp_af_v6_specific
+suffix:semicolon
+DECL|variable|sctp_chunk_cachep
+id|kmem_cache_t
+op_star
+id|sctp_chunk_cachep
+suffix:semicolon
+DECL|variable|sctp_bucket_cachep
+id|kmem_cache_t
+op_star
+id|sctp_bucket_cachep
 suffix:semicolon
 r_extern
 r_struct
@@ -179,7 +189,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
+multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. &n; * Note: Do not make this __exit as it is used in the init error&n; * path.&n; */
 DECL|function|sctp_proc_exit
 r_void
 id|sctp_proc_exit
@@ -3446,6 +3456,69 @@ op_amp
 id|sctp_stream_protosw
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate a cache pools. */
+id|sctp_bucket_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;sctp_bind_bucket&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_bind_bucket
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_bucket_cachep
+)paren
+r_goto
+id|err_bucket_cachep
+suffix:semicolon
+id|sctp_chunk_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;sctp_chunk&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_chunk
+)paren
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_chunk_cachep
+)paren
+r_goto
+id|err_chunk_cachep
+suffix:semicolon
 multiline_comment|/* Allocate and initialise sctp mibs.  */
 id|status
 op_assign
@@ -3566,7 +3639,8 @@ suffix:semicolon
 id|sctp_proto.assoc_hashbucket
 op_assign
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3576,7 +3650,8 @@ l_int|4096
 op_star
 r_sizeof
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3647,7 +3722,8 @@ suffix:semicolon
 id|sctp_proto.ep_hashbucket
 op_assign
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3657,7 +3733,8 @@ l_int|64
 op_star
 r_sizeof
 (paren
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3728,7 +3805,8 @@ suffix:semicolon
 id|sctp_proto.port_hashtable
 op_assign
 (paren
-id|sctp_bind_hashbucket_t
+r_struct
+id|sctp_bind_hashbucket
 op_star
 )paren
 id|kmalloc
@@ -3738,7 +3816,8 @@ l_int|4096
 op_star
 r_sizeof
 (paren
-id|sctp_bind_hashbucket_t
+r_struct
+id|sctp_bind_hashbucket
 )paren
 comma
 id|GFP_KERNEL
@@ -3970,6 +4049,22 @@ c_func
 suffix:semicolon
 id|err_init_mibs
 suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_chunk_cachep
+)paren
+suffix:semicolon
+id|err_chunk_cachep
+suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_bucket_cachep
+)paren
+suffix:semicolon
+id|err_bucket_cachep
+suffix:colon
 id|inet_del_protocol
 c_func
 (paren
@@ -4064,6 +4159,18 @@ id|kfree
 c_func
 (paren
 id|sctp_proto.port_hashtable
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_chunk_cachep
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|sctp_bucket_cachep
 )paren
 suffix:semicolon
 id|sctp_dbg_objcnt_exit
