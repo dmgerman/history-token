@@ -502,32 +502,6 @@ id|abort_read_started
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * This routine returns 1 if the disk has been changed since the last&n; * check or 0 if it hasn&squot;t.&n; */
-DECL|function|scd_disk_change
-r_static
-r_int
-id|scd_disk_change
-c_func
-(paren
-id|kdev_t
-id|full_dev
-)paren
-(brace
-r_int
-id|retval
-suffix:semicolon
-id|retval
-op_assign
-id|disk_changed
-suffix:semicolon
-id|disk_changed
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Uniform cdrom interface function&n; * report back, if disc has changed from time of last request.&n; */
 DECL|function|scd_media_changed
 r_static
@@ -544,12 +518,19 @@ r_int
 id|disc_nr
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
+id|retval
+op_assign
+id|disk_changed
+suffix:semicolon
+id|disk_changed
+op_assign
+l_int|0
+suffix:semicolon
 r_return
-id|scd_disk_change
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Uniform cdrom interface function&n; * report back, if drive is ready&n; */
