@@ -1,6 +1,6 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2005 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;ixgb.h&quot;
-multiline_comment|/* Change Log&n; * 1.0.84 10/26/04&n; * - reset buffer_info-&gt;dma in Tx resource cleanup logic&n; * 1.0.83 10/12/04&n; * - sparse cleanup - shemminger@osdl.org&n; * - fix tx resource cleanup logic&n; */
+multiline_comment|/* Change Log&n; * 1.0.88 01/05/05&n; * - include fix to the condition that determines when to quit NAPI - Robert Olsson&n; * - use netif_poll_{disable/enable} to synchronize between NAPI and i/f up/down&n; * 1.0.84 10/26/04&n; * - reset buffer_info-&gt;dma in Tx resource cleanup logic&n; * 1.0.83 10/12/04&n; * - sparse cleanup - shemminger@osdl.org&n; * - fix tx resource cleanup logic&n; */
 DECL|variable|ixgb_driver_name
 r_char
 id|ixgb_driver_name
@@ -30,7 +30,7 @@ id|ixgb_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;1.0.87-k2&quot;
+l_string|&quot;1.0.90-k2&quot;
 id|DRIVERNAPI
 suffix:semicolon
 DECL|variable|ixgb_copyright
@@ -39,7 +39,7 @@ id|ixgb_copyright
 (braket
 )braket
 op_assign
-l_string|&quot;Copyright (c) 1999-2004 Intel Corporation.&quot;
+l_string|&quot;Copyright (c) 1999-2005 Intel Corporation.&quot;
 suffix:semicolon
 multiline_comment|/* ixgb_pci_tbl - PCI Device ID Table&n; *&n; * Wildcard entries (PCI_ANY_ID) should come last&n; * Last entry must be all 0s&n; *&n; * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,&n; *   Class, Class Mask, private data (not used) }&n; */
 DECL|variable|ixgb_pci_tbl
@@ -2647,7 +2647,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if&n;&t; * configured incorrectly&n;&t; txdctl  = TXDCTL_PTHRESH_DEFAULT; // prefetch txds below this threshold&n;&t; txdctl |= (TXDCTL_HTHRESH_DEFAULT // only prefetch if there are this many ready&n;&t; &lt;&lt; IXGB_TXDCTL_HTHRESH_SHIFT);&n;&t; IXGB_WRITE_REG (hw, TXDCTL, txdctl);&n;&t; */
+multiline_comment|/* don&squot;t set up txdctl, it induces performance problems if configured&n;&t; * incorrectly */
 multiline_comment|/* Set the Tx Interrupt Delay register */
 id|IXGB_WRITE_REG
 c_func
@@ -3089,7 +3089,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* burst 16 or burst when RXT0*/
+multiline_comment|/* set up pre-fetching of receive buffers so we get some before we&n;&t; * run out (default hardware behavior is to run out before fetching&n;&t; * more).  This sets up to fetch if HTHRESH rx descriptors are avail&n;&t; * and the descriptors in hw cache are below PTHRESH.  This avoids&n;&t; * the hardware behavior of fetching &lt;=512 descriptors in a single&n;&t; * burst that pre-empts all other activity, usually causing fifo&n;&t; * overflows. */
+multiline_comment|/* use WTHRESH to burst write 16 descriptors or burst when RXT0 */
 id|rxdctl
 op_assign
 id|RXDCTL_WTHRESH_DEFAULT
