@@ -1491,25 +1491,4 @@ id|totalhigh_pages
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|set_max_mapnr_init
-r_void
-id|__init
-id|set_max_mapnr_init
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_HIGHMEM
-id|num_physpages
-op_assign
-id|highend_pfn
-suffix:semicolon
-macro_line|#else
-id|num_physpages
-op_assign
-id|max_low_pfn
-suffix:semicolon
-macro_line|#endif
-)brace
 eof
