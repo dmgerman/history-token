@@ -159,9 +159,12 @@ suffix:semicolon
 r_extern
 r_int
 id|devfs_register_tape
+c_func
 (paren
-id|devfs_handle_t
-id|de
+r_const
+r_char
+op_star
+id|name
 )paren
 suffix:semicolon
 r_extern

@@ -27002,7 +27002,7 @@ op_assign
 id|devfs_register_tape
 c_func
 (paren
-id|drive-&gt;de
+id|drive-&gt;devfs_name
 )paren
 suffix:semicolon
 id|drive-&gt;disk-&gt;fops

@@ -20616,7 +20616,7 @@ op_assign
 id|devfs_register_tape
 c_func
 (paren
-id|SDp-&gt;de
+id|SDp-&gt;devfs_name
 )paren
 suffix:semicolon
 id|printk
