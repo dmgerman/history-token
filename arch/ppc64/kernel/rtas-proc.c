@@ -2680,7 +2680,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;Temp. (&#xfffd;C/&#xfffd;F):&bslash;t&quot;
+l_string|&quot;Temp. (C/F):&bslash;t&quot;
 )paren
 suffix:semicolon
 id|temperature
