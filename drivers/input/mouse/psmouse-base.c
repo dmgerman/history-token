@@ -138,7 +138,7 @@ l_string|&quot;ImPS/2&quot;
 comma
 l_string|&quot;ImExPS/2&quot;
 comma
-l_string|&quot;Synaptics&quot;
+l_string|&quot;SynPS/2&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * psmouse_process_packet() analyzes the PS/2 mouse packet contents and&n; * reports relevant events to the input module.&n; */
