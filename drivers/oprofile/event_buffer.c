@@ -265,6 +265,7 @@ id|event_buffer
 suffix:semicolon
 )brace
 DECL|function|event_buffer_open
+r_static
 r_int
 id|event_buffer_open
 c_func
@@ -381,6 +382,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|event_buffer_release
+r_static
 r_int
 id|event_buffer_release
 c_func
@@ -439,6 +441,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|event_buffer_read
+r_static
 id|ssize_t
 id|event_buffer_read
 c_func

@@ -28,6 +28,7 @@ suffix:semicolon
 DECL|macro|DEFAULT_TIMER_EXPIRE
 mdefine_line|#define DEFAULT_TIMER_EXPIRE (HZ / 10)
 DECL|variable|work_enabled
+r_static
 r_int
 id|work_enabled
 suffix:semicolon

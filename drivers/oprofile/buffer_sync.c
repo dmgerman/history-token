@@ -25,6 +25,7 @@ id|dead_tasks
 )paren
 suffix:semicolon
 DECL|variable|marked_cpus
+r_static
 id|cpumask_t
 id|marked_cpus
 op_assign
@@ -37,6 +38,7 @@ c_func
 id|task_mortuary
 )paren
 suffix:semicolon
+r_static
 r_void
 id|process_task_mortuary
 c_func
@@ -1378,6 +1380,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Move tasks along towards death. Any tasks on dead_tasks&n; * will definitely have no remaining references in any&n; * CPU buffers at this point, because we use two lists,&n; * and to have reached the list, it must have gone through&n; * one full sync already.&n; */
 DECL|function|process_task_mortuary
+r_static
 r_void
 id|process_task_mortuary
 c_func
