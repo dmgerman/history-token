@@ -704,13 +704,6 @@ c_func
 id|irda_task_execute
 )paren
 suffix:semicolon
-DECL|variable|irda_task_kick
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_task_kick
-)paren
-suffix:semicolon
 DECL|variable|irda_task_next_state
 id|EXPORT_SYMBOL
 c_func

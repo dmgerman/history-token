@@ -805,16 +805,6 @@ op_star
 id|task
 )paren
 suffix:semicolon
-r_int
-id|irda_task_kick
-c_func
-(paren
-r_struct
-id|irda_task
-op_star
-id|task
-)paren
-suffix:semicolon
 r_struct
 id|irda_task
 op_star

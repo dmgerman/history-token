@@ -729,6 +729,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_task_kick (task)&n; *&n; *    Tries to execute a task possible multiple times until the task is either&n; *    finished, or askes for a timeout. When a task is finished, we do post&n; *    processing, and notify the parent task, that is waiting for this task&n; *    to complete.&n; */
 DECL|function|irda_task_kick
+r_static
 r_int
 id|irda_task_kick
 c_func
