@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;60xx Single Board Computer Watchdog Timer driver for Linux 2.2.x&n; *&n; *      Based on acquirewdt.c by Alan Cox.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author does NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *&t;the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2000    Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *           12/4 - 2000      [Initial revision]&n; *           25/4 - 2000      Added /dev/watchdog support&n; *           09/5 - 2001      [smj@oro.net] fixed fop_write to &quot;return 1&quot; on success&n; *           12/4 - 2002      [rob@osinvestor.com] eliminate fop_read&n; *                            fix possible wdt_is_open race&n; *                            add CONFIG_WATCHDOG_NOWAYOUT support&n; *                            remove lock_kernel/unlock_kernel pairs&n; *                            added KERN_* to printk&squot;s&n; *                            got rid of extraneous comments&n; *                            changed watchdog_info to correctly reflect what the driver offers&n; *                            added WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS, WDIOC_SETTIMEOUT,&n; *                            WDIOC_GETTIMEOUT, and WDIOC_SETOPTIONS ioctls&n; *           09/8 - 2003      [wim@iguana.be] cleanup of trailing spaces&n; *                            use module_param&n; *                            made timeout (the emulated heartbeat) a module_param&n; *                            made the keepalive ping an internal subroutine&n; *                            made wdt_stop and wdt_start module params&n; *                            added MODULE_AUTHOR and MODULE_DESCRIPTION info&n; *&n; *&n; *  This WDT driver is different from the other Linux WDT&n; *  drivers in the following ways:&n; *  *)  The driver will ping the watchdog by itself, because this&n; *      particular WDT has a very short timeout (one second) and it&n; *      would be insane to count on any userspace daemon always&n; *      getting scheduled within that time frame.&n; *&n; */
+multiline_comment|/*&n; *&t;60xx Single Board Computer Watchdog Timer driver for Linux 2.2.x&n; *&n; *      Based on acquirewdt.c by Alan Cox.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author does NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *&t;the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2000    Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *           12/4 - 2000      [Initial revision]&n; *           25/4 - 2000      Added /dev/watchdog support&n; *           09/5 - 2001      [smj@oro.net] fixed fop_write to &quot;return 1&quot; on success&n; *           12/4 - 2002      [rob@osinvestor.com] eliminate fop_read&n; *                            fix possible wdt_is_open race&n; *                            add CONFIG_WATCHDOG_NOWAYOUT support&n; *                            remove lock_kernel/unlock_kernel pairs&n; *                            added KERN_* to printk&squot;s&n; *                            got rid of extraneous comments&n; *                            changed watchdog_info to correctly reflect what the driver offers&n; *                            added WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS, WDIOC_SETTIMEOUT,&n; *                            WDIOC_GETTIMEOUT, and WDIOC_SETOPTIONS ioctls&n; *           09/8 - 2003      [wim@iguana.be] cleanup of trailing spaces&n; *                            use module_param&n; *                            made timeout (the emulated heartbeat) a module_param&n; *                            made the keepalive ping an internal subroutine&n; *                            made wdt_stop and wdt_start module params&n; *                            added extra printk&squot;s for startup problems&n; *                            added MODULE_AUTHOR and MODULE_DESCRIPTION info&n; *&n; *&n; *  This WDT driver is different from the other Linux WDT&n; *  drivers in the following ways:&n; *  *)  The driver will ping the watchdog by itself, because this&n; *      particular WDT has a very short timeout (one second) and it&n; *      would be insane to count on any userspace daemon always&n; *      getting scheduled within that time frame.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -640,7 +640,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
@@ -1153,6 +1153,11 @@ l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
 comma
 id|wdt_stop
 )paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 r_goto
 id|err_out_region1
