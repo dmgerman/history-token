@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IBM C-It Video Camera driver&n; *&n; * Supports IBM C-It Video Camera.&n; *&n; * This driver is based on earlier work of:&n; *&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; *&n; * 5/24/00 Removed optional (and unnecessary) locking of the driver while&n; * the device remains plugged in. Corrected race conditions in ibmcam_open&n; * and ibmcam_probe() routines using this as a guideline:&n; *&n; * (2) The big kernel lock is automatically released when a process sleeps&n; *   in the kernel and is automatically reacquired on reschedule if the&n; *   process had the lock originally.  Any code that can be compiled as&n; *   a module and is entered with the big kernel lock held *MUST*&n; *   increment the use count to activate the indirect module protection&n; *   before doing anything that might sleep.&n; *&n; *   In practice, this means that all routines that live in modules and&n; *   are invoked under the big kernel lock should do MOD_INC_USE_COUNT&n; *   as their very first action.  And all failure paths from that&n; *   routine must do MOD_DEC_USE_COUNT before returning.&n; */
+multiline_comment|/*&n; * USB IBM C-It Video Camera driver&n; *&n; * Supports Xirlink C-It Video Camera, IBM PC Camera,&n; * IBM NetCamera and Veo Stingray.&n; *&n; * This driver is based on earlier work of:&n; *&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; *&n; * 5/24/00 Removed optional (and unnecessary) locking of the driver while&n; * the device remains plugged in. Corrected race conditions in ibmcam_open&n; * and ibmcam_probe() routines using this as a guideline:&n; *&n; * (2) The big kernel lock is automatically released when a process sleeps&n; *   in the kernel and is automatically reacquired on reschedule if the&n; *   process had the lock originally.  Any code that can be compiled as&n; *   a module and is entered with the big kernel lock held *MUST*&n; *   increment the use count to activate the indirect module protection&n; *   before doing anything that might sleep.&n; *&n; *   In practice, this means that all routines that live in modules and&n; *   are invoked under the big kernel lock should do MOD_INC_USE_COUNT&n; *   as their very first action.  And all failure paths from that&n; *   routine must do MOD_DEC_USE_COUNT before returning.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
@@ -6,11 +6,15 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;usbvideo.h&quot;
 DECL|macro|IBMCAM_VENDOR_ID
-mdefine_line|#define&t;IBMCAM_VENDOR_ID&t;0x0545
+mdefine_line|#define IBMCAM_VENDOR_ID&t;0x0545
 DECL|macro|IBMCAM_PRODUCT_ID
-mdefine_line|#define&t;IBMCAM_PRODUCT_ID&t;0x8080
+mdefine_line|#define IBMCAM_PRODUCT_ID&t;0x8080
 DECL|macro|NETCAM_PRODUCT_ID
 mdefine_line|#define NETCAM_PRODUCT_ID&t;0x8002&t;/* IBM NetCamera, close to model 2 */
+DECL|macro|VEO_800C_PRODUCT_ID
+mdefine_line|#define VEO_800C_PRODUCT_ID&t;0x800C&t;/* Veo Stingray, repackaged Model 2 */
+DECL|macro|VEO_800D_PRODUCT_ID
+mdefine_line|#define VEO_800D_PRODUCT_ID&t;0x800D&t;/* Veo Stingray, repackaged Model 4 */
 DECL|macro|MAX_IBMCAM
 mdefine_line|#define MAX_IBMCAM&t;&t;4&t;/* How many devices we allow to connect */
 DECL|macro|USES_IBMCAM_PUTPIXEL
@@ -24217,6 +24221,18 @@ op_logical_and
 (paren
 id|dev-&gt;descriptor.idProduct
 op_ne
+id|VEO_800C_PRODUCT_ID
+)paren
+op_logical_and
+(paren
+id|dev-&gt;descriptor.idProduct
+op_ne
+id|VEO_800D_PRODUCT_ID
+)paren
+op_logical_and
+(paren
+id|dev-&gt;descriptor.idProduct
+op_ne
 id|NETCAM_PRODUCT_ID
 )paren
 )paren
@@ -24265,9 +24281,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|dev-&gt;descriptor.idProduct
 op_eq
 id|NETCAM_PRODUCT_ID
+)paren
+op_logical_or
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+id|VEO_800D_PRODUCT_ID
+)paren
 )paren
 id|model
 op_assign
@@ -24313,14 +24337,78 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Print detailed info on what we found so far */
+r_do
+(brace
+r_char
+op_star
+id|brand
+op_assign
+l_int|NULL
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;descriptor.idProduct
+)paren
+(brace
+r_case
+id|NETCAM_PRODUCT_ID
+suffix:colon
+id|brand
+op_assign
+l_string|&quot;IBM NetCamera&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|VEO_800C_PRODUCT_ID
+suffix:colon
+id|brand
+op_assign
+l_string|&quot;Veo Stingray [800C]&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|VEO_800D_PRODUCT_ID
+suffix:colon
+id|brand
+op_assign
+l_string|&quot;Veo Stingray [800D]&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IBMCAM_PRODUCT_ID
+suffix:colon
+r_default
+suffix:colon
+id|brand
+op_assign
+l_string|&quot;IBM PC Camera&quot;
+suffix:semicolon
+multiline_comment|/* a.k.a. Xirlink C-It */
+r_break
+suffix:semicolon
+)brace
 id|info
 c_func
 (paren
-l_string|&quot;IBM USB camera found (model %d, rev. 0x%04x)&quot;
+l_string|&quot;%s USB camera found (model %d, rev. 0x%04x)&quot;
+comma
+id|brand
 comma
 id|model
 comma
 id|dev-&gt;descriptor.bcdDevice
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Validate found interface: must have one ISO endpoint */
@@ -25215,7 +25303,6 @@ id|cams
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(usb_device_id_ver)
 DECL|variable|id_table
 r_static
 id|__devinitdata
@@ -25287,6 +25374,36 @@ l_int|0x030a
 comma
 multiline_comment|/* Model 4 */
 (brace
+id|USB_DEVICE_VER
+c_func
+(paren
+id|IBMCAM_VENDOR_ID
+comma
+id|VEO_800C_PRODUCT_ID
+comma
+l_int|0x030a
+comma
+l_int|0x030a
+)paren
+)brace
+comma
+multiline_comment|/* Model 2 */
+(brace
+id|USB_DEVICE_VER
+c_func
+(paren
+id|IBMCAM_VENDOR_ID
+comma
+id|VEO_800D_PRODUCT_ID
+comma
+l_int|0x030a
+comma
+l_int|0x030a
+)paren
+)brace
+comma
+multiline_comment|/* Model 4 */
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -25299,7 +25416,6 @@ comma
 id|id_table
 )paren
 suffix:semicolon
-macro_line|#endif /* defined(usb_device_id_ver) */
 DECL|variable|ibmcam_init
 id|module_init
 c_func
