@@ -31,6 +31,12 @@ op_assign
 l_int|0x03
 comma
 multiline_comment|/* mount event for block devices */
+DECL|enumerator|KOBJ_UMOUNT
+id|KOBJ_UMOUNT
+op_assign
+l_int|0x04
+comma
+multiline_comment|/* umount event for block devices */
 DECL|enumerator|KOBJ_MAX_ACTION
 id|KOBJ_MAX_ACTION
 comma

@@ -29,6 +29,9 @@ multiline_comment|/* 0x02 */
 l_string|&quot;mount&quot;
 comma
 multiline_comment|/* 0x03 */
+l_string|&quot;umount&quot;
+comma
+multiline_comment|/* 0x04 */
 )brace
 suffix:semicolon
 DECL|function|action_to_string
