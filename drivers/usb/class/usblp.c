@@ -3444,11 +3444,11 @@ l_int|NULL
 suffix:semicolon
 id|usblp-&gt;writeurb-&gt;transfer_flags
 op_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 id|usblp-&gt;readurb-&gt;transfer_flags
 op_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 multiline_comment|/* Malloc write &amp; read buffers.  We somewhat wastefully&n;&t; * malloc both regardless of bidirectionality, because the&n;&t; * alternate setting can be changed later via an ioctl. */
 r_if

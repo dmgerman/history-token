@@ -7317,7 +7317,7 @@ id|hid-&gt;inbuf_dma
 suffix:semicolon
 id|hid-&gt;urbin-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 )brace
 r_else
@@ -7382,7 +7382,7 @@ id|hid-&gt;outbuf_dma
 suffix:semicolon
 id|hid-&gt;urbout-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 )brace
 )brace
@@ -7681,7 +7681,11 @@ id|hid-&gt;ctrlbuf_dma
 suffix:semicolon
 id|hid-&gt;urbctrl-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+(paren
+id|URB_NO_TRANSFER_DMA_MAP
+op_or
+id|URB_NO_SETUP_DMA_MAP
+)paren
 suffix:semicolon
 r_return
 id|hid

@@ -1914,7 +1914,7 @@ id|kbd-&gt;new_dma
 suffix:semicolon
 id|kbd-&gt;irq-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 id|kbd-&gt;cr-&gt;bRequestType
 op_assign
@@ -2162,7 +2162,11 @@ id|kbd-&gt;leds_dma
 suffix:semicolon
 id|kbd-&gt;led-&gt;transfer_flags
 op_or_assign
-id|URB_NO_DMA_MAP
+(paren
+id|URB_NO_TRANSFER_DMA_MAP
+op_or
+id|URB_NO_SETUP_DMA_MAP
+)paren
 suffix:semicolon
 id|input_register_device
 c_func
