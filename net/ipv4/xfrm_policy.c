@@ -4360,7 +4360,6 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|_decode_session
 id|_decode_session
