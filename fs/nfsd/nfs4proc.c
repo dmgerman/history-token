@@ -607,14 +607,15 @@ id|status
 r_goto
 id|out
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|open-&gt;op_claim_type
-op_eq
-id|NFS4_OPEN_CLAIM_NULL
 )paren
 (brace
+r_case
+id|NFS4_OPEN_CLAIM_NULL
+suffix:colon
 multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo,&n;&t; * (3) set open-&gt;op_truncate if the file is to be truncated&n;&t; * after opening, (4) do permission checking.&n;&t; */
 id|status
 op_assign
@@ -636,16 +637,11 @@ id|status
 r_goto
 id|out
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|open-&gt;op_claim_type
-op_eq
+r_break
+suffix:semicolon
+r_case
 id|NFS4_OPEN_CLAIM_PREVIOUS
-)paren
-(brace
+suffix:colon
 multiline_comment|/*&n;&t;* The CURRENT_FH is already set to the file being opened. This&n;&t;* block of code will (1) set open-&gt;op_cinfo, (2) set&n;&t;* open-&gt;op_truncate if the file is to be truncated after opening,&n;&t;* (3) do permission checking.&n;&t;*/
 id|status
 op_assign
@@ -667,13 +663,37 @@ id|status
 r_goto
 id|out
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_case
+id|NFS4_OPEN_CLAIM_DELEGATE_CUR
+suffix:colon
+r_case
+id|NFS4_OPEN_CLAIM_DELEGATE_PREV
+suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;NFSD: unsupported OPEN claim type&bslash;n&quot;
+l_string|&quot;NFSD: unsupported OPEN claim type %d&bslash;n&quot;
+comma
+id|open-&gt;op_claim_type
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|nfserr_notsupp
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;NFSD: Invalid OPEN claim type %d&bslash;n&quot;
+comma
+id|open-&gt;op_claim_type
 )paren
 suffix:semicolon
 id|status
