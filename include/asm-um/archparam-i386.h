@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __UM_ARCHPARAM_I386_H
 DECL|macro|__UM_ARCHPARAM_I386_H
 mdefine_line|#define __UM_ARCHPARAM_I386_H
@@ -39,6 +39,66 @@ mdefine_line|#define ELF_PLAT_INIT(regs, load_addr) do { &bslash;&n;&t;PT_REGS_E
 multiline_comment|/* Shamelessly stolen from include/asm-i386/elf.h */
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs) do {&t;&bslash;&n;&t;pr_reg[0] = PT_REGS_EBX(regs);&t;&t;&bslash;&n;&t;pr_reg[1] = PT_REGS_ECX(regs);&t;&t;&bslash;&n;&t;pr_reg[2] = PT_REGS_EDX(regs);&t;&t;&bslash;&n;&t;pr_reg[3] = PT_REGS_ESI(regs);&t;&t;&bslash;&n;&t;pr_reg[4] = PT_REGS_EDI(regs);&t;&t;&bslash;&n;&t;pr_reg[5] = PT_REGS_EBP(regs);&t;&t;&bslash;&n;&t;pr_reg[6] = PT_REGS_EAX(regs);&t;&t;&bslash;&n;&t;pr_reg[7] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[8] = PT_REGS_ES(regs);&t;&t;&bslash;&n;&t;/* fake once used fs and gs selectors? */&t;&bslash;&n;&t;pr_reg[9] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[10] = PT_REGS_DS(regs);&t;&t;&bslash;&n;&t;pr_reg[11] = PT_REGS_SYSCALL_NR(regs);&t;&bslash;&n;&t;pr_reg[12] = PT_REGS_IP(regs);&t;&t;&bslash;&n;&t;pr_reg[13] = PT_REGS_CS(regs);&t;&t;&bslash;&n;&t;pr_reg[14] = PT_REGS_EFLAGS(regs);&t;&bslash;&n;&t;pr_reg[15] = PT_REGS_SP(regs);&t;&t;&bslash;&n;&t;pr_reg[16] = PT_REGS_SS(regs);&t;&t;&bslash;&n;} while(0);
+macro_line|#if 0 /* Turn this back on when UML has VSYSCALL working */
+mdefine_line|#define VSYSCALL_BASE&t;(__fix_to_virt(FIX_VSYSCALL))
+macro_line|#else
+DECL|macro|VSYSCALL_BASE
+mdefine_line|#define VSYSCALL_BASE&t;0
+macro_line|#endif
+DECL|macro|VSYSCALL_EHDR
+mdefine_line|#define VSYSCALL_EHDR&t;((const struct elfhdr *) VSYSCALL_BASE)
+DECL|macro|VSYSCALL_ENTRY
+mdefine_line|#define VSYSCALL_ENTRY&t;((unsigned long) &amp;__kernel_vsyscall)
+r_extern
+r_void
+op_star
+id|__kernel_vsyscall
+suffix:semicolon
+multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
+DECL|macro|AT_SYSINFO
+mdefine_line|#define AT_SYSINFO&t;&t;32
+DECL|macro|AT_SYSINFO_EHDR
+mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO,&t;VSYSCALL_ENTRY);&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL_BASE);&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out&n; * extra segments containing the vsyscall DSO contents.  Dumping its&n; * contents makes post-mortem fully interpretable later without matching up&n; * the same kernel and hardware config to see what PC values meant.&n; * Dumping its extra ELF program headers includes all the other information&n; * a debugger needs to easily find how the vsyscall DSO was being used.&n; */
+macro_line|#if 0
+mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(VSYSCALL_EHDR-&gt;e_phnum)
+macro_line|#endif
+DECL|macro|ELF_CORE_EXTRA_PHDRS
+macro_line|#undef ELF_CORE_EXTRA_PHDRS
+macro_line|#if 0
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_PHDRS&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf_phdr *) (VSYSCALL_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;Elf32_Off ofs = 0;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;      &bslash;&n;&t;&t;struct elf_phdr phdr = vsyscall_phdrs[i];&t;&t;      &bslash;&n;&t;&t;if (phdr.p_type == PT_LOAD) {&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;ofs = phdr.p_offset = offset;&t;&t;&t;      &bslash;&n;&t;&t;&t;offset += phdr.p_filesz;&t;&t;&t;      &bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;phdr.p_offset += ofs;&t;&t;&t;&t;      &bslash;&n;&t;&t;phdr.p_paddr = 0; /* match other core phdrs */&t;&t;      &bslash;&n;&t;&t;DUMP_WRITE(&amp;phdr, sizeof(phdr));&t;&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
+mdefine_line|#define ELF_CORE_WRITE_EXTRA_DATA&t;&t;&t;&t;&t;      &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;const struct elf_phdr *const vsyscall_phdrs =&t;&t;&t;      &bslash;&n;&t;&t;(const struct elf_phdr *) (VSYSCALL_BASE&t;&t;      &bslash;&n;&t;&t;&t;&t;&t;   + VSYSCALL_EHDR-&gt;e_phoff);&t;      &bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;for (i = 0; i &lt; VSYSCALL_EHDR-&gt;e_phnum; ++i) {&t;&t;&t;      &bslash;&n;&t;&t;if (vsyscall_phdrs[i].p_type == PT_LOAD)&t;&t;      &bslash;&n;&t;&t;&t;DUMP_WRITE((void *) vsyscall_phdrs[i].p_vaddr,&t;      &bslash;&n;&t;&t;&t;&t;   vsyscall_phdrs[i].p_filesz);&t;&t;      &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (0)
+macro_line|#endif
+DECL|macro|ELF_CORE_WRITE_EXTRA_PHDRS
+macro_line|#undef ELF_CORE_WRITE_EXTRA_PHDRS
+DECL|macro|ELF_CORE_WRITE_EXTRA_DATA
+macro_line|#undef ELF_CORE_WRITE_EXTRA_DATA
+DECL|macro|R_386_NONE
+mdefine_line|#define R_386_NONE&t;0
+DECL|macro|R_386_32
+mdefine_line|#define R_386_32&t;1
+DECL|macro|R_386_PC32
+mdefine_line|#define R_386_PC32&t;2
+DECL|macro|R_386_GOT32
+mdefine_line|#define R_386_GOT32&t;3
+DECL|macro|R_386_PLT32
+mdefine_line|#define R_386_PLT32&t;4
+DECL|macro|R_386_COPY
+mdefine_line|#define R_386_COPY&t;5
+DECL|macro|R_386_GLOB_DAT
+mdefine_line|#define R_386_GLOB_DAT&t;6
+DECL|macro|R_386_JMP_SLOT
+mdefine_line|#define R_386_JMP_SLOT&t;7
+DECL|macro|R_386_RELATIVE
+mdefine_line|#define R_386_RELATIVE&t;8
+DECL|macro|R_386_GOTOFF
+mdefine_line|#define R_386_GOTOFF&t;9
+DECL|macro|R_386_GOTPC
+mdefine_line|#define R_386_GOTPC&t;10
+DECL|macro|R_386_NUM
+mdefine_line|#define R_386_NUM&t;11
 multiline_comment|/********* Bits for asm-um/delay.h **********/
 DECL|typedef|um_udelay_t
 r_typedef

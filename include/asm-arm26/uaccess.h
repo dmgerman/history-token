@@ -394,6 +394,10 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|function|clear_user
 r_static
 id|__inline__

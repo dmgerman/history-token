@@ -1574,6 +1574,31 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Darsen Lu &lt;darsen@micro.ee.nthu.edu.tw&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x066f
+comma
+l_int|0x8000
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;SigmaTel&quot;
+comma
+l_string|&quot;USBMSC Audio Player&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
 id|UNUSUAL_DEV
 c_func

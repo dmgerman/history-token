@@ -99,16 +99,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-r_extern
-r_int
-id|fb_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|vc_cons
 r_struct
 id|vc
@@ -9538,10 +9528,15 @@ op_logical_and
 id|count
 )paren
 (brace
-id|c
+r_int
+id|orig
 op_assign
 op_star
 id|buf
+suffix:semicolon
+id|c
+op_assign
+id|orig
 suffix:semicolon
 id|buf
 op_increment
@@ -9552,6 +9547,21 @@ suffix:semicolon
 id|count
 op_decrement
 suffix:semicolon
+multiline_comment|/* Do no translation at all in control states */
+r_if
+c_cond
+(paren
+id|vc_state
+op_ne
+id|ESnormal
+)paren
+(brace
+id|tc
+op_assign
+id|c
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -10088,7 +10098,7 @@ id|tty
 comma
 id|currcons
 comma
-id|c
+id|orig
 )paren
 suffix:semicolon
 )brace
@@ -12435,13 +12445,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-id|fb_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 r_return
 l_int|0
 suffix:semicolon

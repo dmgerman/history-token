@@ -25,13 +25,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Trident,4DWave DX},&quot;
@@ -155,14 +149,6 @@ comma
 l_string|&quot;Index value for Trident 4DWave PCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -181,14 +167,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for Trident 4DWave PCI soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -211,14 +189,6 @@ comma
 l_string|&quot;Enable Trident 4DWave PCI soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -239,15 +209,6 @@ comma
 l_string|&quot;Number of hardware channels assigned for PCM.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_channels
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:32,allows:{{1,32}}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -266,15 +227,6 @@ c_func
 id|wavetable_size
 comma
 l_string|&quot;Maximum memory size in kB for wavetable synth.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wavetable_size
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:8192,skill:advanced&quot;
 )paren
 suffix:semicolon
 DECL|variable|snd_trident_ids

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -21,7 +22,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|macro|IRQ_RESCHEDULE
 mdefine_line|#define IRQ_RESCHEDULE&t;&t;13
@@ -618,35 +618,16 @@ r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* Cook up an idler for this guy. */
-id|kernel_thread
+id|p
+op_assign
+id|fork_idle
 c_func
 (paren
-id|start_secondary
-comma
-l_int|NULL
-comma
-id|CLONE_IDLETASK
+id|i
 )paren
 suffix:semicolon
 id|cpucount
 op_increment
-suffix:semicolon
-id|p
-op_assign
-id|prev_task
-c_func
-(paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-id|p
-comma
-id|i
-)paren
 suffix:semicolon
 id|current_set
 (braket
@@ -654,12 +635,6 @@ id|i
 )braket
 op_assign
 id|p-&gt;thread_info
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|p
-)paren
 suffix:semicolon
 multiline_comment|/* See trampoline.S for details... */
 id|entry
@@ -1695,20 +1670,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|sparc_do_profile
-c_func
-(paren
-r_int
-r_int
-id|pc
-comma
-r_int
-r_int
-id|o7
-)paren
-suffix:semicolon
 DECL|function|smp4m_percpu_timer_interrupt
 r_void
 id|smp4m_percpu_timer_interrupt
@@ -1734,29 +1695,14 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
-)paren
-(brace
-id|sparc_do_profile
-c_func
-(paren
-id|regs-&gt;pc
-comma
-id|regs-&gt;u_regs
-(braket
-id|UREG_RETPC
-)braket
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -6358,6 +6358,9 @@ suffix:colon
 r_case
 id|NV_ARCH_20
 suffix:colon
+r_case
+id|NV_ARCH_30
+suffix:colon
 r_if
 c_cond
 (paren
@@ -6645,6 +6648,9 @@ id|NV_ARCH_10
 suffix:colon
 r_case
 id|NV_ARCH_20
+suffix:colon
+r_case
+id|NV_ARCH_30
 suffix:colon
 multiline_comment|/*&n;             * Initialize state for the RivaTriangle3D05 routines.&n;             */
 id|LOAD_FIXED_STATE
@@ -7221,6 +7227,9 @@ id|NV_ARCH_10
 suffix:colon
 r_case
 id|NV_ARCH_20
+suffix:colon
+r_case
+id|NV_ARCH_30
 suffix:colon
 r_if
 c_cond
@@ -9653,6 +9662,9 @@ suffix:colon
 r_case
 id|NV_ARCH_20
 suffix:colon
+r_case
+id|NV_ARCH_30
+suffix:colon
 id|state-&gt;offset0
 op_assign
 id|chip-&gt;PGRAPH
@@ -11482,6 +11494,9 @@ id|NV_ARCH_10
 suffix:colon
 r_case
 id|NV_ARCH_20
+suffix:colon
+r_case
+id|NV_ARCH_30
 suffix:colon
 id|nv10GetConfig
 c_func

@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * This was written with the Sega Saturn (SMP SH-2 7604) in mind,&n; * but is designed to be usable regardless if there&squot;s an MMU&n; * present or not.&n; */
@@ -259,44 +258,12 @@ id|task_struct
 op_star
 id|tsk
 suffix:semicolon
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|regs
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-)paren
-suffix:semicolon
 id|tsk
 op_assign
-id|copy_process
+id|fork_idle
 c_func
 (paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -314,26 +281,6 @@ c_func
 l_string|&quot;Failed forking idle task for cpu %d&bslash;n&quot;
 comma
 id|cpu
-)paren
-suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-id|tsk
-comma
-id|cpu
-)paren
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|tsk
 )paren
 suffix:semicolon
 id|tsk-&gt;thread_info-&gt;cpu

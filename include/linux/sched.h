@@ -40,8 +40,6 @@ DECL|macro|CLONE_FILES
 mdefine_line|#define CLONE_FILES&t;0x00000400&t;/* set if open files shared between processes */
 DECL|macro|CLONE_SIGHAND
 mdefine_line|#define CLONE_SIGHAND&t;0x00000800&t;/* set if signal handlers and blocked signals shared */
-DECL|macro|CLONE_IDLETASK
-mdefine_line|#define CLONE_IDLETASK&t;0x00001000&t;/* set if new pid should be 0 (kernel only)*/
 DECL|macro|CLONE_PTRACE
 mdefine_line|#define CLONE_PTRACE&t;0x00002000&t;/* set if we want to let tracing continue on the child too */
 DECL|macro|CLONE_VFORK
@@ -163,10 +161,12 @@ DECL|macro|TASK_UNINTERRUPTIBLE
 mdefine_line|#define TASK_UNINTERRUPTIBLE&t;2
 DECL|macro|TASK_STOPPED
 mdefine_line|#define TASK_STOPPED&t;&t;4
+DECL|macro|TASK_TRACED
+mdefine_line|#define TASK_TRACED&t;&t;8
 DECL|macro|TASK_ZOMBIE
-mdefine_line|#define TASK_ZOMBIE&t;&t;8
+mdefine_line|#define TASK_ZOMBIE&t;&t;16
 DECL|macro|TASK_DEAD
-mdefine_line|#define TASK_DEAD&t;&t;16
+mdefine_line|#define TASK_DEAD&t;&t;32
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
 DECL|macro|set_task_state
@@ -383,6 +383,79 @@ r_int
 id|sysctl_max_map_count
 suffix:semicolon
 macro_line|#include &lt;linux/aio.h&gt;
+r_extern
+r_int
+r_int
+id|arch_get_unmapped_area
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|arch_get_unmapped_area_topdown
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+comma
+r_int
+r_int
+id|pgoff
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|arch_unmap_area
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|area
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|arch_unmap_area_topdown
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|area
+)paren
+suffix:semicolon
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -406,6 +479,55 @@ op_star
 id|mmap_cache
 suffix:semicolon
 multiline_comment|/* last find_vma result */
+DECL|member|get_unmapped_area
+r_int
+r_int
+(paren
+op_star
+id|get_unmapped_area
+)paren
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+comma
+r_int
+r_int
+id|pgoff
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+DECL|member|unmap_area
+r_void
+(paren
+op_star
+id|unmap_area
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|area
+)paren
+suffix:semicolon
+DECL|member|mmap_base
+r_int
+r_int
+id|mmap_base
+suffix:semicolon
+multiline_comment|/* base of mmap area */
 DECL|member|free_area_cache
 r_int
 r_int
@@ -490,6 +612,7 @@ suffix:semicolon
 DECL|member|rss
 DECL|member|total_vm
 DECL|member|locked_vm
+DECL|member|shared_vm
 r_int
 r_int
 id|rss
@@ -497,10 +620,21 @@ comma
 id|total_vm
 comma
 id|locked_vm
+comma
+id|shared_vm
 suffix:semicolon
+DECL|member|exec_vm
+DECL|member|stack_vm
+DECL|member|reserved_vm
 DECL|member|def_flags
 r_int
 r_int
+id|exec_vm
+comma
+id|stack_vm
+comma
+id|reserved_vm
+comma
 id|def_flags
 suffix:semicolon
 DECL|member|saved_auxv
@@ -508,7 +642,7 @@ r_int
 r_int
 id|saved_auxv
 (braket
-l_int|40
+l_int|42
 )braket
 suffix:semicolon
 multiline_comment|/* for /proc/PID/auxv */
@@ -641,6 +775,11 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
+multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
+DECL|member|stop_state
+r_int
+id|stop_state
+suffix:semicolon
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
@@ -672,6 +811,49 @@ op_star
 id|tty
 suffix:semicolon
 multiline_comment|/* NULL if no tty */
+multiline_comment|/*&n;&t; * Cumulative resource counters for dead threads in the group,&n;&t; * and for reaped dead child processes forked by this group.&n;&t; * Live threads maintain their own counters and add to these&n;&t; * in __exit_signal, except for the group leader.&n;&t; */
+DECL|member|utime
+DECL|member|stime
+DECL|member|cutime
+DECL|member|cstime
+r_int
+r_int
+id|utime
+comma
+id|stime
+comma
+id|cutime
+comma
+id|cstime
+suffix:semicolon
+DECL|member|nvcsw
+DECL|member|nivcsw
+DECL|member|cnvcsw
+DECL|member|cnivcsw
+r_int
+r_int
+id|nvcsw
+comma
+id|nivcsw
+comma
+id|cnvcsw
+comma
+id|cnivcsw
+suffix:semicolon
+DECL|member|min_flt
+DECL|member|maj_flt
+DECL|member|cmin_flt
+DECL|member|cmaj_flt
+r_int
+r_int
+id|min_flt
+comma
+id|maj_flt
+comma
+id|cmin_flt
+comma
+id|cmaj_flt
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -682,7 +864,7 @@ mdefine_line|#define MAX_RT_PRIO&t;&t;MAX_USER_RT_PRIO
 DECL|macro|MAX_PRIO
 mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
 DECL|macro|rt_task
-mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
+mdefine_line|#define rt_task(p)&t;&t;(unlikely((p)-&gt;prio &lt; MAX_RT_PRIO))
 multiline_comment|/*&n; * Some day this will be a full-fledged user tracking system..&n; */
 DECL|struct|user_struct
 r_struct
@@ -856,6 +1038,45 @@ suffix:semicolon
 multiline_comment|/* wall_to_monotonic used when set */
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|struct|sched_info
+r_struct
+id|sched_info
+(brace
+multiline_comment|/* cumulative counters */
+DECL|member|cpu_time
+r_int
+r_int
+id|cpu_time
+comma
+multiline_comment|/* time spent on the cpu */
+DECL|member|run_delay
+id|run_delay
+comma
+multiline_comment|/* time spent waiting on a runqueue */
+DECL|member|pcnt
+id|pcnt
+suffix:semicolon
+multiline_comment|/* # of timeslices run on this cpu */
+multiline_comment|/* timestamps */
+DECL|member|last_arrival
+r_int
+r_int
+id|last_arrival
+comma
+multiline_comment|/* when we last ran on a cpu */
+DECL|member|last_queued
+id|last_queued
+suffix:semicolon
+multiline_comment|/* when we were last queued to run */
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|proc_schedstat_operations
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|io_context
 suffix:semicolon
@@ -1038,6 +1259,13 @@ id|time_slice
 comma
 id|first_time_slice
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCHEDSTATS
+DECL|member|sched_info
+r_struct
+id|sched_info
+id|sched_info
+suffix:semicolon
+macro_line|#endif
 DECL|member|tasks
 r_struct
 id|list_head
@@ -1141,7 +1369,7 @@ multiline_comment|/* threadgroup leader */
 multiline_comment|/* PID/PID hash table linkage. */
 DECL|member|pids
 r_struct
-id|pid_link
+id|pid
 id|pids
 (braket
 id|PIDTYPE_MAX
@@ -1207,31 +1435,19 @@ id|real_timer
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime
-DECL|member|cutime
-DECL|member|cstime
 r_int
 r_int
 id|utime
 comma
 id|stime
-comma
-id|cutime
-comma
-id|cstime
 suffix:semicolon
 DECL|member|nvcsw
 DECL|member|nivcsw
-DECL|member|cnvcsw
-DECL|member|cnivcsw
 r_int
 r_int
 id|nvcsw
 comma
 id|nivcsw
-comma
-id|cnvcsw
-comma
-id|cnivcsw
 suffix:semicolon
 multiline_comment|/* context switch counts */
 DECL|member|start_time
@@ -1241,17 +1457,11 @@ suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
-DECL|member|cmin_flt
-DECL|member|cmaj_flt
 r_int
 r_int
 id|min_flt
 comma
 id|maj_flt
-comma
-id|cmin_flt
-comma
-id|cmaj_flt
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid
@@ -1503,6 +1713,12 @@ op_star
 id|last_siginfo
 suffix:semicolon
 multiline_comment|/* For ptrace use.  */
+multiline_comment|/*&n; * current io wait handle: wait queue entry to use for io waits&n; * If this thread is processing aio, this points at the waitqueue&n; * inside the currently handled kiocb. It may be NULL (i.e. default&n; * to a stack based synchronous wait) if its doing sync IO.&n; */
+DECL|member|io_wait
+id|wait_queue_t
+op_star
+id|io_wait
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct
@@ -1535,6 +1751,17 @@ r_return
 id|tsk-&gt;signal-&gt;pgrp
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|free_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|__put_task_struct
@@ -1591,163 +1818,6 @@ mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean 
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 macro_line|#ifdef CONFIG_SMP
-DECL|macro|SCHED_LOAD_SCALE
-mdefine_line|#define SCHED_LOAD_SCALE&t;128UL&t;/* increase resolution of load */
-DECL|macro|SD_BALANCE_NEWIDLE
-mdefine_line|#define SD_BALANCE_NEWIDLE&t;1&t;/* Balance when about to become idle */
-DECL|macro|SD_BALANCE_EXEC
-mdefine_line|#define SD_BALANCE_EXEC&t;&t;2&t;/* Balance on exec */
-DECL|macro|SD_BALANCE_CLONE
-mdefine_line|#define SD_BALANCE_CLONE&t;4&t;/* Balance on clone */
-DECL|macro|SD_WAKE_IDLE
-mdefine_line|#define SD_WAKE_IDLE&t;&t;8&t;/* Wake to idle CPU on task wakeup */
-DECL|macro|SD_WAKE_AFFINE
-mdefine_line|#define SD_WAKE_AFFINE&t;&t;16&t;/* Wake task to waking CPU */
-DECL|macro|SD_WAKE_BALANCE
-mdefine_line|#define SD_WAKE_BALANCE&t;&t;32&t;/* Perform balancing at task wakeup */
-DECL|macro|SD_SHARE_CPUPOWER
-mdefine_line|#define SD_SHARE_CPUPOWER&t;64&t;/* Domain members share cpu power */
-DECL|struct|sched_group
-r_struct
-id|sched_group
-(brace
-DECL|member|next
-r_struct
-id|sched_group
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Must be a circular list */
-DECL|member|cpumask
-id|cpumask_t
-id|cpumask
-suffix:semicolon
-multiline_comment|/*&n;&t; * CPU power of this group, SCHED_LOAD_SCALE being max power for a&n;&t; * single CPU. This should be read only (except for setup). Although&n;&t; * it will need to be written to at cpu hot(un)plug time, perhaps the&n;&t; * cpucontrol semaphore will provide enough exclusion?&n;&t; */
-DECL|member|cpu_power
-r_int
-r_int
-id|cpu_power
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|sched_domain
-r_struct
-id|sched_domain
-(brace
-multiline_comment|/* These fields must be setup */
-DECL|member|parent
-r_struct
-id|sched_domain
-op_star
-id|parent
-suffix:semicolon
-multiline_comment|/* top domain must be null terminated */
-DECL|member|groups
-r_struct
-id|sched_group
-op_star
-id|groups
-suffix:semicolon
-multiline_comment|/* the balancing groups of the domain */
-DECL|member|span
-id|cpumask_t
-id|span
-suffix:semicolon
-multiline_comment|/* span of all CPUs in this domain */
-DECL|member|min_interval
-r_int
-r_int
-id|min_interval
-suffix:semicolon
-multiline_comment|/* Minimum balance interval ms */
-DECL|member|max_interval
-r_int
-r_int
-id|max_interval
-suffix:semicolon
-multiline_comment|/* Maximum balance interval ms */
-DECL|member|busy_factor
-r_int
-r_int
-id|busy_factor
-suffix:semicolon
-multiline_comment|/* less balancing by factor if busy */
-DECL|member|imbalance_pct
-r_int
-r_int
-id|imbalance_pct
-suffix:semicolon
-multiline_comment|/* No balance until over watermark */
-DECL|member|cache_hot_time
-r_int
-r_int
-r_int
-id|cache_hot_time
-suffix:semicolon
-multiline_comment|/* Task considered cache hot (ns) */
-DECL|member|cache_nice_tries
-r_int
-r_int
-id|cache_nice_tries
-suffix:semicolon
-multiline_comment|/* Leave cache hot tasks for # tries */
-DECL|member|per_cpu_gain
-r_int
-r_int
-id|per_cpu_gain
-suffix:semicolon
-multiline_comment|/* CPU % gained by adding domain cpus */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* See SD_* */
-multiline_comment|/* Runtime fields. */
-DECL|member|last_balance
-r_int
-r_int
-id|last_balance
-suffix:semicolon
-multiline_comment|/* init to jiffies. units in jiffies */
-DECL|member|balance_interval
-r_int
-r_int
-id|balance_interval
-suffix:semicolon
-multiline_comment|/* initialise to 1. units in ms. */
-DECL|member|nr_balance_failed
-r_int
-r_int
-id|nr_balance_failed
-suffix:semicolon
-multiline_comment|/* initialise to 0 */
-)brace
-suffix:semicolon
-multiline_comment|/* Common values for SMT siblings */
-DECL|macro|SD_SIBLING_INIT
-mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 15,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-multiline_comment|/* Common values for CPUs */
-DECL|macro|SD_CPU_INIT
-mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (5*1000000/2),&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* Common values for NUMA nodes */
-DECL|macro|SD_NODE_INIT
-mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_CLONE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
-macro_line|#endif
-r_extern
-r_void
-id|cpu_attach_domain
-c_func
-(paren
-r_struct
-id|sched_domain
-op_star
-id|sd
-comma
-r_int
-id|cpu
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|set_cpus_allowed
@@ -1792,18 +1862,19 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* sched_exec is called by processes performing an exec */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|sched_balance_exec
+id|sched_exec
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|sched_balance_exec
-mdefine_line|#define sched_balance_exec()   {}
+DECL|macro|sched_exec
+mdefine_line|#define sched_exec()   {}
 macro_line|#endif
 r_extern
 r_void
@@ -1966,13 +2037,18 @@ r_struct
 id|mm_struct
 id|init_mm
 suffix:semicolon
+DECL|macro|find_task_by_pid
+mdefine_line|#define find_task_by_pid(nr)&t;find_task_by_pid_type(PIDTYPE_PID, nr)
 r_extern
 r_struct
 id|task_struct
 op_star
-id|find_task_by_pid
+id|find_task_by_pid_type
 c_func
 (paren
+r_int
+id|type
+comma
 r_int
 id|pid
 )paren
@@ -2118,13 +2194,17 @@ r_void
 id|FASTCALL
 c_func
 (paren
-id|wake_up_forked_process
+id|wake_up_new_task
 c_func
 (paren
 r_struct
 id|task_struct
 op_star
 id|tsk
+comma
+r_int
+r_int
+id|clone_flags
 )paren
 )paren
 suffix:semicolon
@@ -2138,21 +2218,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|wake_up_forked_thread
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2169,26 +2234,6 @@ op_star
 id|tsk
 )paren
 (brace
-)brace
-DECL|function|wake_up_forked_thread
-r_static
-r_inline
-r_void
-id|wake_up_forked_thread
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-id|wake_up_forked_process
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 r_extern
@@ -2425,6 +2470,18 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|force_sigsegv
+c_func
+(paren
+r_int
+comma
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|force_sig_info
 c_func
 (paren
@@ -2496,18 +2553,6 @@ id|siginfo
 op_star
 comma
 id|pid_t
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|notify_parent
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -2873,17 +2918,18 @@ id|mm_struct
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Grab a reference to the mm if its not already going away */
+multiline_comment|/* Grab a reference to a task&squot;s mm, if it is not already going away */
 r_extern
 r_struct
 id|mm_struct
 op_star
-id|mmgrab
+id|get_task_mm
 c_func
 (paren
 r_struct
-id|mm_struct
+id|task_struct
 op_star
+id|task
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the current tasks stale references to the old mm_struct */
@@ -3116,33 +3162,12 @@ id|__user
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|task_struct
+id|task_t
 op_star
-id|copy_process
+id|fork_idle
 c_func
 (paren
 r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-id|__user
-op_star
-comma
-r_int
-id|__user
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -3239,23 +3264,18 @@ op_star
 id|p
 )paren
 (brace
-r_struct
-id|pid
-op_star
-id|pid
-op_assign
+r_return
+id|list_empty
+c_func
+(paren
+op_amp
 id|p-&gt;pids
 (braket
 id|PIDTYPE_TGID
 )braket
 dot
-id|pidptr
-suffix:semicolon
-r_return
-id|pid-&gt;task_list.next-&gt;next
-op_eq
-op_amp
-id|pid-&gt;task_list
+id|pid_list
+)paren
 suffix:semicolon
 )brace
 DECL|macro|delay_group_leader
@@ -3312,60 +3332,6 @@ c_func
 op_amp
 id|p-&gt;alloc_lock
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * get_task_mm - acquire a reference to the task&squot;s mm&n; *&n; * Returns %NULL if the task has no mm. User must release&n; * the mm via mmput() after use.&n; */
-DECL|function|get_task_mm
-r_static
-r_inline
-r_struct
-id|mm_struct
-op_star
-id|get_task_mm
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-r_struct
-id|mm_struct
-op_star
-id|mm
-suffix:semicolon
-id|task_lock
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-id|mm
-op_assign
-id|task-&gt;mm
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mm
-)paren
-id|mm
-op_assign
-id|mmgrab
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
-id|task_unlock
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-r_return
-id|mm
 suffix:semicolon
 )brace
 multiline_comment|/* set thread flags in other task&squot;s structures&n; * - see asm/thread_info.h for TIF_xxxx flags available&n; */
@@ -3788,6 +3754,46 @@ id|cpu
 (brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#ifdef HAVE_ARCH_PICK_MMAP_LAYOUT
+r_extern
+r_void
+id|arch_pick_mmap_layout
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|arch_pick_mmap_layout
+r_static
+r_inline
+r_void
+id|arch_pick_mmap_layout
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|mm-&gt;mmap_base
+op_assign
+id|TASK_UNMAPPED_BASE
+suffix:semicolon
+id|mm-&gt;get_unmapped_area
+op_assign
+id|arch_get_unmapped_area
+suffix:semicolon
+id|mm-&gt;unmap_area
+op_assign
+id|arch_unmap_area
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -3,7 +3,7 @@ macro_line|#ifndef _ASMi386_TIMEX_H
 DECL|macro|_ASMi386_TIMEX_H
 mdefine_line|#define _ASMi386_TIMEX_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifdef CONFIG_X86_ELAN
 DECL|macro|CLOCK_TICK_RATE
 macro_line|#  define CLOCK_TICK_RATE 1189200 /* AMD Elan has different frequency! */
@@ -36,26 +36,35 @@ id|get_cycles
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_X86_TSC
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
 r_int
 r_int
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_TSC
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_has_tsc
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_X86_GENERIC) || defined(CONFIG_X86_TSC)
 id|rdtscll
 c_func
 (paren
 id|ret
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
-macro_line|#endif
 )brace
 r_extern
 r_int

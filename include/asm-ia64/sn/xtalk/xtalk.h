@@ -65,7 +65,7 @@ mdefine_line|#define&t;XIO_PORT(x)&t;((xwidgetnum_t)(((x)&amp;XIO_PORT_BITS) &gt
 DECL|macro|XIO_PACK
 mdefine_line|#define&t;XIO_PACK(p,o)&t;((((uint64_t)(p))&lt;&lt;XIO_PORT_SHIFT) | ((o)&amp;XIO_ADDR_BITS))
 multiline_comment|/*&n; * Kernel/driver only definitions&n; */
-macro_line|#if __KERNEL__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;

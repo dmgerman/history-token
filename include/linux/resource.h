@@ -129,7 +129,7 @@ DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
 multiline_comment|/*&n; * GPG wants 32kB of mlocked memory, to make sure pass phrases&n; * and other sensitive information are never written to disk.&n; */
 DECL|macro|MLOCK_LIMIT
-mdefine_line|#define MLOCK_LIMIT&t;(32*1024)
+mdefine_line|#define MLOCK_LIMIT&t;(8 * PAGE_SIZE)
 multiline_comment|/*&n; * Due to binary compatibility, the actual resource numbers&n; * may be different for different linux versions..&n; */
 macro_line|#include &lt;asm/resource.h&gt;
 macro_line|#endif

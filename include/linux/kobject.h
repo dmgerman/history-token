@@ -1,11 +1,13 @@
 multiline_comment|/*&n; * kobject.h - generic kernel object infrastructure.&n; *&n; * Copyright (c) 2002-2003&t;Patrick Mochel&n; * Copyright (c) 2002-2003&t;Open Source Development Labs&n; *&n; * This file is released under the GPLv2.&n; *&n; * &n; * Please read Documentation/kobject.txt before using the kobject&n; * interface, ESPECIALLY the parts about reference counts and object&n; * destructors. &n; */
-macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(_KOBJECT_H_)
+macro_line|#ifndef _KOBJECT_H_
 DECL|macro|_KOBJECT_H_
 mdefine_line|#define _KOBJECT_H_
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|KOBJ_NAME_LEN
 mdefine_line|#define KOBJ_NAME_LEN&t;20
@@ -25,9 +27,10 @@ id|name
 id|KOBJ_NAME_LEN
 )braket
 suffix:semicolon
-DECL|member|refcount
-id|atomic_t
-id|refcount
+DECL|member|kref
+r_struct
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|entry
 r_struct
@@ -220,6 +223,23 @@ comma
 r_struct
 id|kobject
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|kobject_get_path
+c_func
+(paren
+r_struct
+id|kset
+op_star
+comma
+r_struct
+id|kobject
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|struct|kobj_type
@@ -735,5 +755,6 @@ id|subsys_attribute
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _KOBJECT_H_ */
 eof

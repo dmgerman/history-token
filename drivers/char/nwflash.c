@@ -120,27 +120,6 @@ r_extern
 id|spinlock_t
 id|gpio_lock
 suffix:semicolon
-multiline_comment|/*&n; * the delay routine - it is often required to let the flash &quot;breeze&quot;...&n; */
-DECL|function|flash_wait
-r_void
-id|flash_wait
-c_func
-(paren
-r_int
-id|timeout
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
 DECL|function|get_flash_id
 r_static
 r_int
@@ -1318,12 +1297,10 @@ op_assign
 l_int|0xD0
 suffix:semicolon
 multiline_comment|/*&n;&t; * wait 10 ms&n;&t; */
-id|flash_wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * wait while erasing in process (up to 10 sec)&n;&t; */
@@ -1358,12 +1335,10 @@ id|timeout
 )paren
 )paren
 (brace
-id|flash_wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * read any address&n;&t;&t; */
@@ -1441,12 +1416,10 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * just to make sure - verify if erased OK...&n;&t; */
-id|flash_wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|pWritePtr
@@ -1949,12 +1922,10 @@ id|led_amber_off
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * wait couple ms&n;&t;&t;&t;&t; */
-id|flash_wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * red LED == write&n;&t;&t;&t;&t; */
@@ -2002,12 +1973,10 @@ c_func
 id|led_green_on
 )paren
 suffix:semicolon
-id|flash_wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|pWritePtr

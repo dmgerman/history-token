@@ -713,6 +713,11 @@ op_assign
 id|ohci_hub_resume
 comma
 macro_line|#endif
+dot
+id|start_port_reset
+op_assign
+id|ohci_start_port_reset
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -844,9 +849,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|printk
+id|pr_debug
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: block sizes: ed %Zd td %Zd&bslash;n&quot;
 comma
 id|hcd_name

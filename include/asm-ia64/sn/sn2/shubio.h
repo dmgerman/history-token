@@ -6820,7 +6820,7 @@ mdefine_line|#define IIO_WSTAT_TXRETRY_CNT(w)        (((w) &gt;&gt; IIO_WSTAT_TX
 multiline_comment|/* Number of II perf. counters we can multiplex at once */
 DECL|macro|IO_PERF_SETS
 mdefine_line|#define IO_PERF_SETS&t;32
-macro_line|#if __KERNEL__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;

@@ -48,6 +48,17 @@ op_star
 id|op
 )paren
 suffix:semicolon
+r_static
+r_void
+id|__afs_put_vlocation
+c_func
+(paren
+r_struct
+id|afs_vlocation
+op_star
+id|vlocation
+)paren
+suffix:semicolon
 DECL|function|__afs_vlocation_timeout
 r_static
 r_void
@@ -1819,6 +1830,7 @@ multiline_comment|/* end afs_vlocation_lookup() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * finish using a volume location record&n; * - caller must have cell-&gt;vol_sem write-locked&n; */
 DECL|function|__afs_put_vlocation
+r_static
 r_void
 id|__afs_put_vlocation
 c_func

@@ -8,11 +8,10 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-DECL|variable|__initdata
+DECL|variable|lmb
 r_struct
 id|lmb
 id|lmb
-id|__initdata
 suffix:semicolon
 r_static
 r_int

@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-iop3xx/irqs.h&n; *&n; * Author:&t;Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright:&t;(C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef _IOP321_IRQS_H_
+DECL|macro|_IOP321_IRQS_H_
+mdefine_line|#define _IOP321_IRQS_H_
 multiline_comment|/*&n; * IOP80321 chipset interrupts&n; */
 DECL|macro|IOP321_IRQ_OFS
 mdefine_line|#define IOP321_IRQ_OFS&t;&t;0
@@ -75,7 +77,6 @@ mdefine_line|#define NR_IOP321_IRQS&t;&t;(IOP321_IRQ(31) + 1)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;NR_IOP321_IRQS
 multiline_comment|/*&n; * Interrupts available on the IQ80321 board&n; */
-macro_line|#ifdef CONFIG_ARCH_IQ80321
 multiline_comment|/*&n; * On board devices&n; */
 DECL|macro|IRQ_IQ80321_I82544
 mdefine_line|#define&t;IRQ_IQ80321_I82544&t;IRQ_IOP321_XINT0
@@ -90,8 +91,25 @@ DECL|macro|IRQ_IQ80321_INTC
 mdefine_line|#define&t;IRQ_IQ80321_INTC&t;IRQ_IOP321_XINT2
 DECL|macro|IRQ_IQ80321_INTD
 mdefine_line|#define&t;IRQ_IQ80321_INTD&t;IRQ_IOP321_XINT3
+multiline_comment|/*&n; * Interrupts on the IQ31244 board&n; */
+multiline_comment|/*&n; * On board devices&n; */
+DECL|macro|IRQ_IQ31244_UART
+mdefine_line|#define IRQ_IQ31244_UART&t;IRQ_IOP321_XINT1
+DECL|macro|IRQ_IQ31244_I82546
+mdefine_line|#define&t;IRQ_IQ31244_I82546&t;IRQ_IOP321_XINT0
+DECL|macro|IRQ_IQ31244_SATA
+mdefine_line|#define IRQ_IQ31244_SATA&t;IRQ_IOP321_XINT2
+DECL|macro|IRQ_IQ31244_PCIX_SLOT
+mdefine_line|#define&t;IRQ_IQ31244_PCIX_SLOT&t;IRQ_IOP321_XINT3
+multiline_comment|/*&n; * PCI interrupts&n; */
+DECL|macro|IRQ_IQ31244_INTA
+mdefine_line|#define&t;IRQ_IQ31244_INTA&t;IRQ_IOP321_XINT0
+DECL|macro|IRQ_IQ31244_INTB
+mdefine_line|#define&t;IRQ_IQ31244_INTB&t;IRQ_IOP321_XINT1
+DECL|macro|IRQ_IQ31244_INTC
+mdefine_line|#define&t;IRQ_IQ31244_INTC&t;IRQ_IOP321_XINT2
+DECL|macro|IRQ_IQ31244_INTD
+mdefine_line|#define&t;IRQ_IQ31244_INTD&t;IRQ_IOP321_XINT3
 macro_line|#endif 
-singleline_comment|// CONFIG_ARCH_IQ80321
-DECL|macro|XSCALE_PMU_IRQ
-mdefine_line|#define XSCALE_PMU_IRQ&t;IRQ_IOP321_CORE_PMU
+singleline_comment|// _IOP321_IRQ_H_
 eof

@@ -665,6 +665,10 @@ DECL|macro|MODULE_AUTHOR
 macro_line|#undef MODULE_AUTHOR
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t __u32
+DECL|macro|TASK_SIZE
+macro_line|#undef TASK_SIZE
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE 0xffffffff
 r_static
 r_void
 id|elf32_init
@@ -981,15 +985,15 @@ comma
 id|mpnt
 )paren
 suffix:semicolon
+id|mm-&gt;stack_vm
+op_assign
 id|mm-&gt;total_vm
 op_assign
+id|vma_pages
+c_func
 (paren
-id|mpnt-&gt;vm_end
-op_minus
-id|mpnt-&gt;vm_start
+id|mpnt
 )paren
-op_rshift
-id|PAGE_SHIFT
 suffix:semicolon
 )brace
 r_for

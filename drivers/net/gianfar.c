@@ -1062,7 +1062,6 @@ op_increment
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%2.2x%c&quot;
 comma
 id|dev-&gt;dev_addr
@@ -1083,7 +1082,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -283,29 +283,7 @@ id|dm_endbit
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* dir stuff */
 multiline_comment|/* Inode stuff */
-r_int
-id|adfs_get_block
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-id|sector_t
-id|block
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_int
-id|create
-)paren
-suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -410,29 +388,6 @@ dot
 suffix:semicolon
 DECL|macro|adfs_error
 mdefine_line|#define adfs_error(sb, fmt...) __adfs_error(sb, __FUNCTION__, fmt)
-multiline_comment|/* namei.c */
-r_extern
-r_struct
-id|dentry
-op_star
-id|adfs_lookup
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|dir
-comma
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|nameidata
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* super.c */
 multiline_comment|/*&n; * Inodes and file operations&n; */
 multiline_comment|/* dir_*.c */

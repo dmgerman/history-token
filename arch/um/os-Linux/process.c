@@ -1,12 +1,22 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;signal.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;user.h&quot;
+macro_line|#include &quot;user_util.h&quot;
+DECL|macro|ARBITRARY_ADDR
+mdefine_line|#define ARBITRARY_ADDR -1
+DECL|macro|FAILURE_PID
+mdefine_line|#define FAILURE_PID    -1
+DECL|macro|STAT_PATH_LEN
+mdefine_line|#define STAT_PATH_LEN sizeof(&quot;/proc/#######/stat&bslash;0&quot;)
+DECL|macro|COMM_SCANF
+mdefine_line|#define COMM_SCANF &quot;%*[^)])&quot;
 DECL|function|os_process_pc
 r_int
 r_int
@@ -20,10 +30,7 @@ id|pid
 r_char
 id|proc_stat
 (braket
-r_sizeof
-(paren
-l_string|&quot;/proc/#####/stat&bslash;0&quot;
-)paren
+id|STAT_PATH_LEN
 )braket
 comma
 id|buf
@@ -37,6 +44,8 @@ id|pc
 suffix:semicolon
 r_int
 id|fd
+comma
+id|err
 suffix:semicolon
 id|sprintf
 c_func
@@ -78,22 +87,21 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;os_process_pc - couldn&squot;t open &squot;%s&squot;, errno = %d&bslash;n&quot;
+l_string|&quot;os_process_pc - couldn&squot;t open &squot;%s&squot;, err = %d&bslash;n&quot;
 comma
 id|proc_stat
 comma
-id|errno
+op_minus
+id|fd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|ARBITRARY_ADDR
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|read
+id|err
+op_assign
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -105,6 +113,11 @@ r_sizeof
 id|buf
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -112,25 +125,25 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;os_process_pc - couldn&squot;t read &squot;%s&squot;, errno = %d&bslash;n&quot;
+l_string|&quot;os_process_pc - couldn&squot;t read &squot;%s&squot;, err = %d&bslash;n&quot;
 comma
 id|proc_stat
 comma
-id|errno
+op_minus
+id|err
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|ARBITRARY_ADDR
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -138,8 +151,7 @@ id|fd
 suffix:semicolon
 id|pc
 op_assign
-op_minus
-l_int|1
+id|ARBITRARY_ADDR
 suffix:semicolon
 r_if
 c_cond
@@ -149,9 +161,11 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%*d %*s %*c %*d %*d %*d %*d %*d %*d %*d %*d &quot;
+l_string|&quot;%*d &quot;
+id|COMM_SCANF
+l_string|&quot; %*c %*d %*d %*d %*d %*d %*d %*d %*d &quot;
 l_string|&quot;%*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d %*d &quot;
-l_string|&quot;%*d %*d %*d %*d %ld&quot;
+l_string|&quot;%*d %*d %*d %*d %lu&quot;
 comma
 op_amp
 id|pc
@@ -185,10 +199,7 @@ id|pid
 r_char
 id|stat
 (braket
-r_sizeof
-(paren
-l_string|&quot;/proc/nnnnn/stat&bslash;0&quot;
-)paren
+id|STAT_PATH_LEN
 )braket
 suffix:semicolon
 r_char
@@ -263,7 +274,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t open &squot;%s&squot;, errno = %d&bslash;n&quot;
+l_string|&quot;Couldn&squot;t open &squot;%s&squot;, err = %d&bslash;n&quot;
 comma
 id|stat
 comma
@@ -272,13 +283,12 @@ id|fd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|FAILURE_PID
 suffix:semicolon
 )brace
 id|n
 op_assign
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -291,7 +301,7 @@ id|data
 )paren
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -308,22 +318,22 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t read &squot;%s&squot;, errno = %d&bslash;n&quot;
+l_string|&quot;Couldn&squot;t read &squot;%s&squot;, err = %d&bslash;n&quot;
 comma
 id|stat
+comma
+op_minus
+id|n
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|FAILURE_PID
 suffix:semicolon
 )brace
 id|parent
 op_assign
-op_minus
-l_int|1
+id|FAILURE_PID
 suffix:semicolon
-multiline_comment|/* XXX This will break if there is a space in the command */
 id|n
 op_assign
 id|sscanf
@@ -331,7 +341,9 @@ c_func
 (paren
 id|data
 comma
-l_string|&quot;%*d %*s %*c %d&quot;
+l_string|&quot;%*d &quot;
+id|COMM_SCANF
+l_string|&quot; %*c %d&quot;
 comma
 op_amp
 id|parent
@@ -402,6 +414,9 @@ c_cond
 id|reap_child
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|waitpid
 c_func
 (paren
@@ -410,6 +425,7 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -423,6 +439,18 @@ r_int
 id|pid
 )paren
 (brace
+macro_line|#ifdef __NR_tkill
+id|syscall
+c_func
+(paren
+id|__NR_tkill
+comma
+id|pid
+comma
+id|SIGUSR1
+)paren
+suffix:semicolon
+macro_line|#else
 id|kill
 c_func
 (paren
@@ -431,6 +459,7 @@ comma
 id|SIGUSR1
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|os_getpid
 r_int
@@ -459,6 +488,7 @@ comma
 r_int
 id|fd
 comma
+r_int
 r_int
 r_int
 id|off
@@ -515,7 +545,7 @@ l_int|0
 suffix:semicolon
 id|loc
 op_assign
-id|mmap
+id|mmap64
 c_func
 (paren
 (paren

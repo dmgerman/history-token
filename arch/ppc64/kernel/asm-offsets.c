@@ -8,11 +8,11 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
@@ -177,6 +177,20 @@ r_struct
 id|thread_struct
 comma
 id|ksp
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|KSP_VSID
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|ksp_vsid
 )paren
 )paren
 suffix:semicolon
@@ -577,20 +591,6 @@ id|context.id
 )paren
 )paren
 suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACASLBR3
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|slb_r3
-)paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 id|DEFINE
 c_func
@@ -618,76 +618,6 @@ r_struct
 id|paca_struct
 comma
 id|default_decr
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACAPROFENABLED
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|prof_enabled
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACAPROFLEN
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|prof_len
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACAPROFSHIFT
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|prof_shift
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACAPROFBUFFER
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|prof_buffer
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACAPROFSTEXT
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|prof_stext
 )paren
 )paren
 suffix:semicolon

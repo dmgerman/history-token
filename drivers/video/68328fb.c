@@ -1406,6 +1406,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|mc68x328fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;68328fb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *  initialize the default mode from the LCD controller registers&n;&t; */
 id|mc68x328fb_default.xres
 op_assign
@@ -1604,6 +1616,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mc68x328fb_init
+id|module_init
+c_func
+(paren
+id|mc68x328fb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|mc68x328fb_cleanup
 r_static
@@ -1623,13 +1642,6 @@ id|fb_info
 )paren
 suffix:semicolon
 )brace
-DECL|variable|mc68x328fb_init
-id|module_init
-c_func
-(paren
-id|mc68x328fb_init
-)paren
-suffix:semicolon
 DECL|variable|mc68x328fb_cleanup
 id|module_exit
 c_func

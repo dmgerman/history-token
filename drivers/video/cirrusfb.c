@@ -11002,6 +11002,18 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|cirrusfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;cirrusfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ZORRO
 id|error
 op_or_assign
@@ -11219,7 +11231,6 @@ id|cirrusfb_zorro_driver
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|cirrusfb_init
 id|module_init
 c_func
@@ -11227,6 +11238,7 @@ c_func
 id|cirrusfb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|cirrusfb_exit
 id|module_exit
 c_func

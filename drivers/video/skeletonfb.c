@@ -829,6 +829,19 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/*&n;     *  For kernel boot options (in &squot;video=xxxfb:&lt;options&gt;&squot; format)&n;     */
+macro_line|#ifndef MODULE
+id|xxxfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;xxxfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;     *  If your driver supports multiple boards, you should unregister and&n;     *  clean up all instances.&n;     */
 id|unregister_framebuffer
 c_func
@@ -965,7 +978,6 @@ comma
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;     *  Modularization&n;     */
-macro_line|#ifdef MODULE
 DECL|variable|xxxfb_init
 id|module_init
 c_func
@@ -973,7 +985,6 @@ c_func
 id|xxxfb_init
 )paren
 suffix:semicolon
-macro_line|#endif 
 DECL|variable|xxxfb_cleanup
 id|module_exit
 c_func

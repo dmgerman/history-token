@@ -9,6 +9,7 @@ multiline_comment|/**&n; * oom_badness - calculate a numeric value for how bad t
 DECL|function|badness
 r_static
 r_int
+r_int
 id|badness
 c_func
 (paren
@@ -18,6 +19,7 @@ op_star
 id|p
 )paren
 (brace
+r_int
 r_int
 id|points
 comma
@@ -217,6 +219,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|maxpoints
 op_assign
 l_int|0
@@ -249,6 +252,7 @@ c_cond
 id|p-&gt;pid
 )paren
 (brace
+r_int
 r_int
 id|points
 op_assign

@@ -360,6 +360,7 @@ op_star
 id|befs_inode_cachep
 suffix:semicolon
 DECL|variable|befs_dir_operations
+r_static
 r_struct
 id|file_operations
 id|befs_dir_operations
@@ -378,6 +379,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_dir_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|befs_dir_inode_operations
@@ -391,6 +393,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_file_operations
+r_static
 r_struct
 id|file_operations
 id|befs_file_operations
@@ -414,6 +417,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|befs_aops
+r_static
 r_struct
 id|address_space_operations
 id|befs_aops
@@ -1972,8 +1976,6 @@ id|befs_inode_info
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
@@ -3723,7 +3725,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Cannot load nls %s&quot;
-l_string|&quot;loding default nls&quot;
+l_string|&quot; loading default nls&quot;
 comma
 id|befs_sb-&gt;mount_opts.iocharset
 )paren
@@ -3736,6 +3738,25 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* load default nls if none is specified  in mount options */
+)brace
+r_else
+(brace
+id|befs_debug
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Loading default nls&quot;
+)paren
+suffix:semicolon
+id|befs_sb-&gt;nls
+op_assign
+id|load_nls_default
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0

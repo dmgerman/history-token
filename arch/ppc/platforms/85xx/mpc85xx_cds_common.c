@@ -1164,7 +1164,7 @@ l_int|0
 r_return
 id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
-macro_line|#if CONFIG_85xx_PCI2
+macro_line|#ifdef CONFIG_85xx_PCI2
 multiline_comment|/* With the current code we know PCI2 will be bus 2, however this may&n;&t; * not be guarnteed */
 r_if
 c_cond
@@ -1330,13 +1330,6 @@ id|mpc85xx_setup_hose
 c_func
 (paren
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_8250

@@ -113,6 +113,14 @@ id|x86_virt_bits
 comma
 id|x86_phys_bits
 suffix:semicolon
+DECL|member|x86_num_cores
+id|__u8
+id|x86_num_cores
+suffix:semicolon
+DECL|member|x86_apicid
+id|__u8
+id|x86_apicid
+suffix:semicolon
 DECL|member|x86_power
 id|__u32
 id|x86_power
@@ -171,7 +179,7 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 macro_line|#else
 DECL|macro|cpu_data
-mdefine_line|#define cpu_data &amp;boot_cpu_data
+mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
@@ -1176,11 +1184,5 @@ DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
-macro_line|#ifdef CONFIG_SCHED_SMT
-DECL|macro|ARCH_HAS_SCHED_DOMAIN
-mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
-DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
-macro_line|#endif
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

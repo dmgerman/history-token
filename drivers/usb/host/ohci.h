@@ -770,6 +770,17 @@ id|NUM_INTS
 )braket
 suffix:semicolon
 multiline_comment|/* shadow int_table */
+multiline_comment|/*&n;&t; * OTG controllers and transceivers need software interaction;&n;&t; * other external transceivers should be software-transparent &n;&t; */
+DECL|member|transceiver
+r_struct
+id|otg_transceiver
+op_star
+id|transceiver
+suffix:semicolon
+DECL|member|power_budget
+r_int
+id|power_budget
+suffix:semicolon
 multiline_comment|/*&n;&t; * memory management for queue data structures&n;&t; */
 DECL|member|td_cache
 r_struct

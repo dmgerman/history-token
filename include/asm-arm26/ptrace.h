@@ -43,6 +43,8 @@ DECL|macro|pc_pointer
 mdefine_line|#define pc_pointer(v) ((v) &amp; ~PCMASK)   /* convert v to pc type address */
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) (pc_pointer((regs)-&gt;ARM_pc)) /* get pc */
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 multiline_comment|/* this struct defines the way the registers are stored on the&n;   stack during a system call. */
 DECL|struct|pt_regs
 r_struct

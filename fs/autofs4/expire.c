@@ -513,6 +513,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|autofs4_check_leaves
+r_static
 r_struct
 id|dentry
 op_star

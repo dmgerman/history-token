@@ -154,7 +154,7 @@ mdefine_line|#define MAX_TXABSDELAY            0xFFFF
 DECL|macro|MIN_TXABSDELAY
 mdefine_line|#define MIN_TXABSDELAY                 0
 DECL|macro|DEFAULT_ITR
-mdefine_line|#define DEFAULT_ITR                    1
+mdefine_line|#define DEFAULT_ITR                 8000
 DECL|macro|MAX_ITR
 mdefine_line|#define MAX_ITR                   100000
 DECL|macro|MIN_ITR

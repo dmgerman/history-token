@@ -1117,6 +1117,7 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;
 singleline_comment|//CONFIG_BEFS_DEBUG
 )brace
+multiline_comment|/* unused */
 r_void
 DECL|function|befs_dump_small_data
 id|befs_dump_small_data
@@ -1134,6 +1135,7 @@ id|sd
 )paren
 (brace
 )brace
+multiline_comment|/* unused */
 r_void
 DECL|function|befs_dump_run
 id|befs_dump_run

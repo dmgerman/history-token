@@ -42,7 +42,7 @@ id|channel_mask
 comma
 id|ulong
 comma
-l_int|444
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -67,7 +67,7 @@ id|debug
 comma
 r_int
 comma
-l_int|444
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -573,6 +573,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|q40fb_init
+id|module_init
+c_func
+(paren
+id|q40fb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

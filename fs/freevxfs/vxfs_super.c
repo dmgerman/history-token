@@ -91,9 +91,9 @@ op_assign
 id|vxfs_read_inode
 comma
 dot
-id|put_inode
+id|clear_inode
 op_assign
-id|vxfs_put_inode
+id|vxfs_clear_inode
 comma
 dot
 id|put_super

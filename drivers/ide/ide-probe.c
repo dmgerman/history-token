@@ -2269,7 +2269,6 @@ id|hwif-&gt;gendev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC
 DECL|function|wait_hwif_ready
 r_static
 r_int
@@ -2287,7 +2286,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;Probing IDE interface %s...&bslash;n&quot;
 comma
 id|hwif-&gt;name
@@ -2421,7 +2420,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
 r_static
@@ -2584,7 +2582,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
 multiline_comment|/* This is needed on some PPCs and a bunch of BIOS-less embedded&n;&t; * platforms. Typical cases are:&n;&t; * &n;&t; *  - The firmware hard reset the disk before booting the kernel,&n;&t; *    the drive is still doing it&squot;s poweron-reset sequence, that&n;&t; *    can take up to 30 seconds&n;&t; *  - The firmware does nothing (or no firmware), the device is&n;&t; *    still in POST state (same as above actually).&n;&t; *  - Some CD/DVD/Writer combo drives tend to drive the bus during&n;&t; *    their reset sequence even when they are non-selected slave&n;&t; *    devices, thus preventing discovery of the main HD&n;&t; *    &n;&t; *  Doing this wait-for-busy should not harm any existing configuration&n;&t; *  (at least things won&squot;t be worse than what current code does, that&n;&t; *  is blindly go &amp; talk to the drive) and fix some issues like the&n;&t; *  above.&n;&t; *  &n;&t; *  BenH.&n;&t; */
 r_if
 c_cond
@@ -2598,13 +2595,12 @@ id|hwif
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;%s: Wait for ready failed before probe !&bslash;n&quot;
 comma
 id|hwif-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC */
 multiline_comment|/*&n;&t; * Second drive should only exist if first drive was found,&n;&t; * but a lot of cdrom drives are configured as single slaves.&n;&t; */
 r_for
 c_loop
@@ -2653,6 +2649,87 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;present
+op_logical_and
+id|hwif-&gt;present
+op_logical_and
+id|unit
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|id-&gt;model
+comma
+id|drive-&gt;id-&gt;model
+)paren
+op_eq
+l_int|0
+op_logical_and
+multiline_comment|/* Don&squot;t do this for noprobe or non ATA */
+id|strcmp
+c_func
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;UNKNOWN&quot;
+)paren
+op_logical_and
+multiline_comment|/* And beware of confused Maxtor drives that go &quot;M0000000000&quot;&n;&t;&t;&t;      &quot;The SN# is garbage in the ID block...&quot; [Eric] */
+id|strncmp
+c_func
+(paren
+id|drive-&gt;id-&gt;serial_no
+comma
+l_string|&quot;M0000000000000000000&quot;
+comma
+l_int|20
+)paren
+op_logical_and
+id|strncmp
+c_func
+(paren
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|id-&gt;serial_no
+comma
+id|drive-&gt;id-&gt;serial_no
+comma
+l_int|20
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ide-probe: ignoring undecoded slave&bslash;n&quot;
+)paren
+suffix:semicolon
+id|drive-&gt;present
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren

@@ -2,13 +2,16 @@ multiline_comment|/*&n; * hvconsole.h&n; * Copyright (C) 2004 Ryan S Arnold, IBM
 macro_line|#ifndef _PPC64_HVCONSOLE_H
 DECL|macro|_PPC64_HVCONSOLE_H
 mdefine_line|#define _PPC64_HVCONSOLE_H
+multiline_comment|/*&n; * This is the max number of console adapters that can/will be found as&n; * console devices on first stage console init.  Any number beyond this range&n; * can&squot;t be used as a console device but is still a valid tty device.&n; */
+DECL|macro|MAX_NR_HVC_CONSOLES
+mdefine_line|#define MAX_NR_HVC_CONSOLES&t;16
 r_extern
 r_int
 id|hvc_get_chars
 c_func
 (paren
-r_int
-id|index
+r_uint32
+id|vtermno
 comma
 r_char
 op_star
@@ -23,8 +26,8 @@ r_int
 id|hvc_put_chars
 c_func
 (paren
-r_int
-id|index
+r_uint32
+id|vtermno
 comma
 r_const
 r_char
@@ -35,14 +38,26 @@ r_int
 id|count
 )paren
 suffix:semicolon
+multiline_comment|/* Early discovery of console adapters. */
 r_extern
 r_int
-id|hvc_count
+id|hvc_find_vtys
 c_func
 (paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Implemented by a console driver */
+r_extern
 r_int
-op_star
-id|start_termno
+id|hvc_instantiate
+c_func
+(paren
+r_uint32
+id|vtermno
+comma
+r_int
+id|index
 )paren
 suffix:semicolon
 macro_line|#endif /* _PPC64_HVCONSOLE_H */

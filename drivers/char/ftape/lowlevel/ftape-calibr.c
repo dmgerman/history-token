@@ -6,7 +6,10 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(__alpha__)
 macro_line|# include &lt;asm/hwrpb.h&gt;
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__x86_64__)
+macro_line|# include &lt;asm/msr.h&gt;
+macro_line|# include &lt;asm/timex.h&gt;
+macro_line|#elif defined(__i386__)
 macro_line|# include &lt;linux/timex.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/ftape.h&gt;
@@ -18,7 +21,7 @@ macro_line|#undef DEBUG
 macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__i386__) &amp;&amp; !defined(__x86_64__)
 macro_line|# error Ftape is not implemented for this architecture!
 macro_line|#endif
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__x86_64__)
 DECL|variable|ps_per_cycle
 r_static
 r_int
@@ -62,7 +65,22 @@ suffix:semicolon
 r_return
 id|r
 suffix:semicolon
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__x86_64__)
+r_int
+r_int
+id|r
+suffix:semicolon
+id|rdtscl
+c_func
+(paren
+id|r
+)paren
+suffix:semicolon
+r_return
+id|r
+suffix:semicolon
+macro_line|#elif defined(__i386__)
+multiline_comment|/*&n; * Note that there is some time between counter underflowing and jiffies&n; * increasing, so the code below won&squot;t always give correct output.&n; * -Vojtech&n; */
 r_int
 r_int
 id|flags
@@ -153,14 +171,14 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__x86_64__)
 r_return
 id|ftape_timestamp
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__i386__)
 r_int
 r_int
 id|count
@@ -241,30 +259,15 @@ r_int
 id|t1
 )paren
 (brace
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__x86_64__)
 r_return
 (paren
 id|t1
-op_le
-id|t0
-)paren
-ques
-c_cond
-id|t1
-op_plus
-(paren
-l_int|1UL
-op_lshift
-l_int|32
-)paren
 op_minus
 id|t0
-suffix:colon
-id|t1
-op_minus
-id|t0
+)paren
 suffix:semicolon
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__i386__)
 multiline_comment|/*&n;&t; * This is tricky: to work for both short and full ftape_timestamps&n;&t; * we&squot;ll have to discriminate between these.&n;&t; * If it _looks_ like short stamps with wrapping around we&squot;ll&n;&t; * asume it are. This will generate a small error if it really&n;&t; * was a (very large) delta from full ftape_timestamps.&n;&t; */
 r_return
 (paren
@@ -302,7 +305,7 @@ r_int
 id|count
 )paren
 (brace
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__x86_64__)
 r_return
 (paren
 id|ps_per_cycle
@@ -312,7 +315,7 @@ id|count
 op_div
 l_int|1000000UL
 suffix:semicolon
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__i386__)
 r_return
 (paren
 l_int|10000
@@ -477,94 +480,26 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(__i386__) || defined(__x86_64__)
-r_int
-r_int
-id|t
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|TRACE_FUN
 c_func
 (paren
 id|ft_t_any
 )paren
 suffix:semicolon
-multiline_comment|/*  Haven&squot;t studied on why, but there sometimes is a problem&n;&t; *  with the tick timer readout. The two bytes get swapped.&n;&t; *  This hack solves that problem by doing one extra input.&n;&t; */
-r_for
-c_loop
-(paren
-id|i
+macro_line|#if defined(__x86_64__)
+id|ps_per_cycle
 op_assign
-l_int|0
+l_int|1000000000UL
+op_div
+id|cpu_khz
 suffix:semicolon
-id|i
-OL
-l_int|1000
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|t
-op_assign
-id|short_ftape_timestamp
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|t
-OG
-id|LATCH
-)paren
-(brace
-id|inb_p
-c_func
-(paren
-l_int|0x40
-)paren
-suffix:semicolon
-multiline_comment|/* get in sync again */
-id|TRACE
-c_func
-(paren
-id|ft_t_warn
-comma
-l_string|&quot;clock counter fixed&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 macro_line|#elif defined(__alpha__)
-macro_line|#if CONFIG_FT_ALPHA_CLOCK == 0
-macro_line|#error You must define and set CONFIG_FT_ALPHA_CLOCK in &squot;make config&squot; !
-macro_line|#endif
 r_extern
 r_struct
 id|hwrpb_struct
 op_star
 id|hwrpb
 suffix:semicolon
-id|TRACE_FUN
-c_func
-(paren
-id|ft_t_any
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwrpb-&gt;cycle_freq
-op_ne
-l_int|0
-)paren
-(brace
 id|ps_per_cycle
 op_assign
 (paren
@@ -579,25 +514,6 @@ l_int|1000UL
 op_div
 id|hwrpb-&gt;cycle_freq
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * HELP:  Linux 2.0.x doesn&squot;t set cycle_freq on my noname !&n;&t;&t; */
-id|ps_per_cycle
-op_assign
-(paren
-l_int|1000
-op_star
-l_int|1000
-op_star
-l_int|1000
-op_star
-l_int|1000UL
-)paren
-op_div
-id|CONFIG_FT_ALPHA_CLOCK
-suffix:semicolon
-)brace
 macro_line|#endif
 id|TRACE_EXIT
 suffix:semicolon
@@ -656,7 +572,7 @@ r_int
 r_int
 id|time
 suffix:semicolon
-macro_line|#if defined(__i386__) || defined(__x86_64__)
+macro_line|#if defined(__i386__)
 r_int
 r_int
 id|old_tc
@@ -892,7 +808,7 @@ comma
 id|tc
 )paren
 suffix:semicolon
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__x86_64__)
 multiline_comment|/*&n;&t;&t; * Increase the calibration count exponentially until the&n;&t;&t; * calibration time exceeds 100 ms.&n;&t;&t; */
 r_if
 c_cond
@@ -907,7 +823,7 @@ l_int|1000
 r_break
 suffix:semicolon
 )brace
-macro_line|#elif defined(__i386__) || defined(__x86_64__)
+macro_line|#elif defined(__i386__)
 multiline_comment|/*&n;&t;&t; * increase the count until the resulting time nears 2/HZ,&n;&t;&t; * then the tc will drop sharply because we lose LATCH counts.&n;&t;&t; */
 r_if
 c_cond

@@ -45,6 +45,13 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|fix_aperture
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* This code runs before the PCI subsystem is initialized, so just &n;   access the northbridge directly. */
 DECL|macro|NB_ID_3
 mdefine_line|#define NB_ID_3 (PCI_VENDOR_ID_AMD | (0x1103&lt;&lt;16))
@@ -933,6 +940,9 @@ r_if
 c_cond
 (paren
 id|iommu_aperture_disabled
+op_logical_or
+op_logical_neg
+id|fix_aperture
 )paren
 r_return
 suffix:semicolon
@@ -1152,7 +1162,6 @@ op_logical_or
 id|fallback_aper_force
 )paren
 (brace
-multiline_comment|/* When there is a AGP bridge in the system assume the&n;&t;&t;   user wants to use the AGP driver too and needs an&n;&t;&t;   aperture.  However this case (AGP but no good&n;&t;&t;   aperture) should only happen with a more broken than&n;&t;&t;   usual BIOS, because it would even break Windows. */
 id|printk
 c_func
 (paren

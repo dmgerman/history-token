@@ -18,8 +18,8 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern
 r_void
 id|die
@@ -795,6 +795,29 @@ l_string|&quot;=r&quot;
 id|address
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_PAGE_FAULT
+comma
+l_string|&quot;page fault&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|14
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* It&squot;s safe to allow irq&squot;s after cr2 has been saved */
 r_if
@@ -1713,6 +1736,10 @@ c_func
 id|address
 )paren
 suffix:semicolon
+r_int
+r_int
+id|pgd_paddr
+suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
@@ -1738,7 +1765,7 @@ l_string|&quot;movl %%cr3,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|pgd
+id|pgd_paddr
 )paren
 )paren
 suffix:semicolon
@@ -1753,7 +1780,7 @@ op_star
 id|__va
 c_func
 (paren
-id|pgd
+id|pgd_paddr
 )paren
 suffix:semicolon
 id|pgd_k

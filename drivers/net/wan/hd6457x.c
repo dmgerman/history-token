@@ -2444,11 +2444,9 @@ id|tmc
 op_assign
 id|CLOCK_BASE
 op_div
-(paren
 id|brv
-op_star
+op_div
 id|port-&gt;settings.clock_rate
-)paren
 suffix:semicolon
 )brace
 r_while
@@ -2462,9 +2460,7 @@ id|tmc
 op_le
 l_int|128
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2504,11 +2500,9 @@ id|port-&gt;settings.clock_rate
 op_assign
 id|CLOCK_BASE
 op_div
-(paren
 id|brv
-op_star
+op_div
 id|tmc
-)paren
 suffix:semicolon
 )brace
 r_else

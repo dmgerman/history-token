@@ -133,7 +133,7 @@ id|sctp_timeouts
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* SCTP_CONNTRACK_NONE  */
 op_amp
@@ -2699,9 +2699,9 @@ macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 id|cleanup
 suffix:colon
-macro_line|#ifdef CONFIG_SYSCTL
 id|ip_conntrack_protocol_unregister
 c_func
 (paren

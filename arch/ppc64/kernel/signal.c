@@ -2049,17 +2049,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -2110,8 +2099,6 @@ id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|syscall_restart
 r_static
@@ -2227,6 +2214,10 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the current thread is 32 bit - invoke the&n;&t; * 32 bit signal handling code&n;&t; */
 r_if
 c_cond
@@ -2265,6 +2256,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -2278,19 +2272,6 @@ OG
 l_int|0
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|signr
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 multiline_comment|/* Whee!  Actually deliver the signal.  */
 r_if
 c_cond
@@ -2308,6 +2289,7 @@ c_func
 (paren
 id|regs
 comma
+op_amp
 id|ka
 )paren
 suffix:semicolon
@@ -2316,6 +2298,7 @@ c_func
 (paren
 id|signr
 comma
+op_amp
 id|ka
 comma
 op_amp

@@ -15498,14 +15498,14 @@ r_int
 id|low
 suffix:semicolon
 multiline_comment|/* low index of binary search */
-multiline_comment|/* Initialize the extent entry structure to catch access to&n;&t;* uninitialized br_startblock field.&n;&t;*/
+multiline_comment|/*&n;&t; * Initialize the extent entry structure to catch access to&n;&t; * uninitialized br_startblock field.&n;&t; */
 id|got.br_startoff
 op_assign
-l_int|0xffa5a5a5a5a5a5a5
+l_int|0xffa5a5a5a5a5a5a5LL
 suffix:semicolon
 id|got.br_blockcount
 op_assign
-l_int|0xa55a5a5a5a5a5a5a
+l_int|0xa55a5a5a5a5a5a5aLL
 suffix:semicolon
 id|got.br_state
 op_assign
@@ -15514,7 +15514,7 @@ suffix:semicolon
 macro_line|#if XFS_BIG_BLKNOS
 id|got.br_startblock
 op_assign
-l_int|0xffffa5a5a5a5a5a5
+l_int|0xffffa5a5a5a5a5a5LL
 suffix:semicolon
 macro_line|#else
 id|got.br_startblock

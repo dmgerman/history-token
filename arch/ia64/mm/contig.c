@@ -370,6 +370,19 @@ op_amp
 id|PAGE_MASK
 )paren
 suffix:semicolon
+id|free_start
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|rsvd_region
+(braket
+id|i
+)braket
+dot
+id|end
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -399,6 +412,7 @@ id|range_start
 )paren
 suffix:semicolon
 r_return
+op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* done */
@@ -413,19 +427,6 @@ id|end
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|free_start
-op_assign
-id|PAGE_ALIGN
-c_func
-(paren
-id|rsvd_region
-(braket
-id|i
-)braket
-dot
-id|end
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -967,8 +968,6 @@ comma
 op_amp
 id|contig_page_data
 comma
-l_int|NULL
-comma
 id|zones_size
 comma
 l_int|0
@@ -1023,6 +1022,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|contig_page_data.node_mem_map
+op_assign
+id|vmem_map
+suffix:semicolon
 id|free_area_init_node
 c_func
 (paren
@@ -1030,8 +1033,6 @@ l_int|0
 comma
 op_amp
 id|contig_page_data
-comma
-id|vmem_map
 comma
 id|zones_size
 comma

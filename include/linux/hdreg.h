@@ -907,10 +907,8 @@ suffix:semicolon
 multiline_comment|/* hd/ide ctl&squot;s that pass (arg) ptrs to user space are numbered 0x033n/0x033n */
 multiline_comment|/* 0x330 is reserved - used to be HDIO_GETGEO_BIG */
 multiline_comment|/* 0x331 is reserved - used to be HDIO_GETGEO_BIG_RAW */
-DECL|macro|HDIO_SET_IDE_SCSI
-mdefine_line|#define HDIO_SET_IDE_SCSI      0x0338
-DECL|macro|HDIO_SET_SCSI_IDE
-mdefine_line|#define HDIO_SET_SCSI_IDE      0x0339
+multiline_comment|/* 0x338 is reserved - used to be HDIO_SET_IDE_SCSI */
+multiline_comment|/* 0x339 is reserved - used to be HDIO_SET_SCSI_IDE */
 DECL|macro|__NEW_HD_DRIVE_ID
 mdefine_line|#define __NEW_HD_DRIVE_ID
 multiline_comment|/*&n; * Structure returned by HDIO_GET_IDENTITY, as per ANSI NCITS ATA6 rev.1b spec.&n; *&n; * If you change something here, please remember to update fix_driveid() in&n; * ide/probe.c.&n; */

@@ -1033,6 +1033,8 @@ c_func
 id|inode
 comma
 id|FMODE_WRITE
+op_or
+id|O_NONBLOCK
 )paren
 suffix:semicolon
 r_if
@@ -1040,6 +1042,7 @@ c_cond
 (paren
 id|err
 )paren
+multiline_comment|/* ENOMEM or EWOULDBLOCK */
 r_goto
 id|out_nfserr
 suffix:semicolon
@@ -2659,6 +2662,9 @@ c_func
 (paren
 id|inode
 comma
+id|O_NONBLOCK
+op_or
+(paren
 (paren
 id|access
 op_amp
@@ -2670,12 +2676,14 @@ id|FMODE_WRITE
 suffix:colon
 l_int|0
 )paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|err
 )paren
+multiline_comment|/* NOMEM or WOULDBLOCK */
 r_goto
 id|out_nfserr
 suffix:semicolon

@@ -1,9 +1,7 @@
-multiline_comment|/* $Id: capifunc.h,v 1.11 2004/03/20 17:19:58 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: capifunc.h,v 1.11.4.1 2004/08/28 20:03:53 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef __CAPIFUNC_H__
 DECL|macro|__CAPIFUNC_H__
 mdefine_line|#define __CAPIFUNC_H__
-DECL|macro|MAX_DESCRIPTORS
-mdefine_line|#define MAX_DESCRIPTORS  32
 DECL|macro|DRRELMAJOR
 mdefine_line|#define DRRELMAJOR  2
 DECL|macro|DRRELMINOR

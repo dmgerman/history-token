@@ -1848,10 +1848,12 @@ id|addressing
 suffix:semicolon
 multiline_comment|/*      : 3;&n;&t;&t;&t;&t;&t; *  0=28-bit&n;&t;&t;&t;&t;&t; *  1=48-bit&n;&t;&t;&t;&t;&t; *  2=48-bit doing 28-bit&n;&t;&t;&t;&t;&t; *  3=64-bit&n;&t;&t;&t;&t;&t; */
 DECL|member|scsi
-id|u8
+r_int
 id|scsi
+suffix:colon
+l_int|1
 suffix:semicolon
-multiline_comment|/* 0=default, 1=skip current ide-subdriver for ide-scsi emulation */
+multiline_comment|/* 0=default, 1=ide-scsi emulation */
 DECL|member|quirk_list
 id|u8
 id|quirk_list

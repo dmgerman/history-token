@@ -262,9 +262,15 @@ id|br_handle_frame_hook
 )paren
 (paren
 r_struct
+id|net_bridge_port
+op_star
+id|p
+comma
+r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern

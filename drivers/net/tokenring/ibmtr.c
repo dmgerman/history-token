@@ -3973,9 +3973,6 @@ multiline_comment|/* to reverse what we do in tok_close */
 multiline_comment|/* init the spinlock */
 id|ti-&gt;lock
 op_assign
-(paren
-id|spinlock_t
-)paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|init_timer

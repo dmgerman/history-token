@@ -39226,10 +39226,10 @@ c_func
 id|p-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -39462,10 +39462,10 @@ c_func
 id|p-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 op_div
 l_int|4
 )paren
@@ -40608,10 +40608,10 @@ c_func
 id|p-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 op_div
 l_int|4
 )paren
@@ -41019,12 +41019,10 @@ c_func
 id|p-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|2
-op_star
-id|HZ
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -42424,6 +42422,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|AIC7XXX_H_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|AIC7XXX_H_VERSION
 )paren
 suffix:semicolon
 DECL|variable|driver_template

@@ -1361,12 +1361,12 @@ r_break
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;xmit_fifo_room
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|info-&gt;xmit_cnt
@@ -5507,7 +5507,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#ifdef CAP_SYS_ADMIN
 r_if
 c_cond
 (paren
@@ -5518,17 +5517,6 @@ c_func
 id|CAP_SYS_ADMIN
 )paren
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|suser
-c_func
-(paren
-)paren
-)paren
-macro_line|#endif
 (brace
 r_if
 c_cond
@@ -7354,7 +7342,7 @@ l_int|0
 (brace
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -7411,7 +7399,7 @@ id|info-&gt;xmit_buf
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|c
@@ -7532,12 +7520,12 @@ id|end
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|XMIT_BUF_SIZE

@@ -382,8 +382,7 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|INET_ECN_is_capable
+id|INET_ECN_is_not_ect
 c_func
 (paren
 (paren

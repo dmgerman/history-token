@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;tcrypt.h&quot;
 multiline_comment|/*&n; * Need to kmalloc() memory for testing kmap().&n; */
 DECL|macro|TVMEMSIZE
@@ -131,6 +132,8 @@ comma
 l_string|&quot;tea&quot;
 comma
 l_string|&quot;xtea&quot;
+comma
+l_string|&quot;whirlpool&quot;
 comma
 l_int|NULL
 )brace
@@ -4035,6 +4038,16 @@ comma
 id|SHA512_TEST_VECTORS
 )paren
 suffix:semicolon
+id|test_hash
+c_func
+(paren
+l_string|&quot;whirlpool&quot;
+comma
+id|whirlpool_tv_template
+comma
+id|WHIRLPOOL_TEST_VECTORS
+)paren
+suffix:semicolon
 id|test_deflate
 c_func
 (paren
@@ -4638,6 +4651,21 @@ id|KHAZAD_DEC_TEST_VECTORS
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|22
+suffix:colon
+id|test_hash
+c_func
+(paren
+l_string|&quot;whirlpool&quot;
+comma
+id|whirlpool_tv_template
+comma
+id|WHIRLPOOL_TEST_VECTORS
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 macro_line|#ifdef CONFIG_CRYPTO_HMAC
 r_case
 l_int|100
@@ -4815,12 +4843,14 @@ c_func
 id|fini
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

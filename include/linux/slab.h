@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/mm/slab.h&n; * Written by Mark Hemment, 1996.&n; * (markhe@nextd.demon.co.uk)&n; */
-macro_line|#if&t;!defined(_LINUX_SLAB_H)
+macro_line|#ifndef _LINUX_SLAB_H
 DECL|macro|_LINUX_SLAB_H
 mdefine_line|#define&t;_LINUX_SLAB_H
 macro_line|#if&t;defined(__KERNEL__)
@@ -54,6 +54,8 @@ DECL|macro|SLAB_RECLAIM_ACCOUNT
 mdefine_line|#define SLAB_RECLAIM_ACCOUNT&t;0x00020000UL&t;/* track pages allocated to indicate&n;&t;&t;&t;&t;&t;&t;   what is reclaimable later*/
 DECL|macro|SLAB_PANIC
 mdefine_line|#define SLAB_PANIC&t;&t;0x00040000UL&t;/* panic if kmem_cache_create() fails */
+DECL|macro|SLAB_DESTROY_BY_RCU
+mdefine_line|#define SLAB_DESTROY_BY_RCU&t;0x00080000UL&t;/* defer freeing pages to RCU */
 multiline_comment|/* flags passed to a constructor func */
 DECL|macro|SLAB_CTOR_CONSTRUCTOR
 mdefine_line|#define&t;SLAB_CTOR_CONSTRUCTOR&t;0x001UL&t;&t;/* if not set, then deconstructor */
@@ -326,6 +328,19 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+op_star
+id|kcalloc
+c_func
+(paren
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|kfree
 c_func
 (paren
@@ -425,15 +440,6 @@ r_extern
 id|kmem_cache_t
 op_star
 id|bio_cachep
-suffix:semicolon
-r_void
-id|ptrinfo
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
 suffix:semicolon
 r_extern
 id|atomic_t

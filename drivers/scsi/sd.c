@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
@@ -26,11 +27,12 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
-multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
+multiline_comment|/*&n; * More than enough for everybody ;)  The huge number of majors&n; * is a leftover from 16bit dev_t days, we don&squot;t really need that&n; * much numberspace.&n; */
 DECL|macro|SD_MAJORS
 mdefine_line|#define SD_MAJORS&t;16
-DECL|macro|SD_DISKS
-mdefine_line|#define SD_DISKS&t;32768&t;/* anything between 256 and 262144 */
+multiline_comment|/*&n; * This is limited by the naming scheme enforced in sd_probe,&n; * add another character to it if you really need more disks.&n; */
+DECL|macro|SD_MAX_DISKS
+mdefine_line|#define SD_MAX_DISKS&t;(((26 * 26) + 26 + 1) * 26)
 multiline_comment|/*&n; * Time out in seconds for disks and Magneto-opticals (which are slower).&n; */
 DECL|macro|SD_TIMEOUT
 mdefine_line|#define SD_TIMEOUT&t;&t;(30 * HZ)
@@ -117,16 +119,12 @@ suffix:semicolon
 multiline_comment|/* state of disk RCD bit, unused */
 )brace
 suffix:semicolon
-DECL|variable|sd_index_bits
 r_static
-r_int
-r_int
-id|sd_index_bits
-(braket
-id|SD_DISKS
-op_div
-id|BITS_PER_LONG
-)braket
+id|DEFINE_IDR
+c_func
+(paren
+id|sd_index_idr
+)paren
 suffix:semicolon
 DECL|variable|sd_index_lock
 r_static
@@ -309,7 +307,7 @@ id|sd_issue_flush
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Device no to disk mapping:&n; * &n; *       major         disc2     disc  p1&n; *   |............|.............|....|....| &lt;- dev_t&n; *    31        20 19          8 7  4 3  0&n; * &n; * Inside a major, we have 16k disks, however mapped non-&n; * contiguously. The first 16 disks are for major0, the next&n; * ones with major1, ... Disk 256 is for major0 again, disk 272 &n; * for major1, ... &n; * As we stay compatible with our numbering scheme, we can reuse &n; * the well-know SCSI majors 8, 65--71, 136--143.&n; */
+multiline_comment|/*&n; * Device no to disk mapping:&n; * &n; *       major         disc2     disc  p1&n; *   |............|.............|....|....| &lt;- dev_t&n; *    31        20 19          8 7  4 3  0&n; * &n; * Inside a major, we have 16k disks, however mapped non-&n; * contiguously. The first 16 disks are for major0, the next&n; * ones with major1, ... Disk 256 is for major0 again, disk 272 &n; * for major1, ... &n; * As we stay compatible with our numbering scheme, we can reuse &n; * the well-know SCSI majors 8, 65--71, 136--143.&n; */
 DECL|function|sd_major
 r_static
 r_int
@@ -373,63 +371,6 @@ suffix:semicolon
 multiline_comment|/* shut up gcc */
 )brace
 )brace
-DECL|function|make_sd_dev
-r_static
-r_int
-r_int
-id|make_sd_dev
-c_func
-(paren
-r_int
-r_int
-id|sd_nr
-comma
-r_int
-r_int
-id|part
-)paren
-(brace
-r_return
-(paren
-id|part
-op_amp
-l_int|0xf
-)paren
-op_or
-(paren
-(paren
-id|sd_nr
-op_amp
-l_int|0xf
-)paren
-op_lshift
-l_int|4
-)paren
-op_or
-(paren
-id|sd_major
-c_func
-(paren
-(paren
-id|sd_nr
-op_amp
-l_int|0xf0
-)paren
-op_rshift
-l_int|4
-)paren
-op_lshift
-l_int|20
-)paren
-op_or
-(paren
-id|sd_nr
-op_amp
-l_int|0xfff00
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* reverse mapping dev -&gt; (sd_nr, part) not currently needed */
 DECL|macro|to_scsi_disk
 mdefine_line|#define to_scsi_disk(obj) container_of(obj,struct scsi_disk,kref)
 DECL|function|scsi_disk
@@ -506,19 +447,12 @@ c_func
 id|disk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|kref_get
 c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
 )paren
-)paren
-r_goto
-id|out_sdkp
 suffix:semicolon
 r_if
 c_cond
@@ -549,10 +483,10 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
-id|out_sdkp
-suffix:colon
 id|sdkp
 op_assign
 l_int|NULL
@@ -600,6 +534,8 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
 id|up
@@ -2497,14 +2433,14 @@ id|sdp
 )paren
 id|retval
 op_assign
-id|scsi_ioctl
+id|scsi_test_unit_ready
 c_func
 (paren
 id|sdp
 comma
-id|SCSI_IOCTL_TEST_UNIT_READY
+id|SD_TIMEOUT
 comma
-l_int|NULL
+id|SD_MAX_RETRIES
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unable to test, unit probably not ready.   This usually&n;&t; * means there is no disc in the drive.  Mark as changed,&n;&t; * and we will figure it out later once the drive is&n;&t; * available again.&n;&t; */
@@ -5771,8 +5707,6 @@ id|index
 suffix:semicolon
 r_int
 id|error
-comma
-id|devno
 suffix:semicolon
 id|error
 op_assign
@@ -5863,11 +5797,8 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
-comma
-id|scsi_disk_release
 )paren
 suffix:semicolon
-multiline_comment|/* Note: We can accomodate 64 partitions, but the genhd code&n;&t; * assumes partitions allocate consecutive minors, which they don&squot;t.&n;&t; * So for now stay with max 16 partitions and leave two spare bits. &n;&t; * Later, we may change the genhd code and the alloc_disk() call&n;&t; * and the -&gt;minors assignment here. &t;KG, 2004-02-10&n;&t; */
 id|gd
 op_assign
 id|alloc_disk
@@ -5885,32 +5816,23 @@ id|gd
 r_goto
 id|out_free
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|sd_index_lock
-)paren
-suffix:semicolon
-id|index
-op_assign
-id|find_first_zero_bit
-c_func
-(paren
-id|sd_index_bits
-comma
-id|SD_DISKS
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|index
-op_eq
-id|SD_DISKS
+op_logical_neg
+id|idr_pre_get
+c_func
+(paren
+op_amp
+id|sd_index_idr
+comma
+id|GFP_KERNEL
 )paren
-(brace
-id|spin_unlock
+)paren
+r_goto
+id|out_put
+suffix:semicolon
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -5919,19 +5841,16 @@ id|sd_index_lock
 suffix:semicolon
 id|error
 op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-r_goto
-id|out_put
-suffix:semicolon
-)brace
-id|__set_bit
+id|idr_get_new
 c_func
 (paren
-id|index
+op_amp
+id|sd_index_idr
 comma
-id|sd_index_bits
+l_int|NULL
+comma
+op_amp
+id|index
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -5940,6 +5859,26 @@ c_func
 op_amp
 id|sd_index_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+op_ge
+id|SD_MAX_DISKS
+)paren
+id|error
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out_put
 suffix:semicolon
 id|sdkp-&gt;device
 op_assign
@@ -5986,30 +5925,36 @@ op_assign
 id|SD_MOD_TIMEOUT
 suffix:semicolon
 )brace
-id|devno
-op_assign
-id|make_sd_dev
-c_func
-(paren
-id|index
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|gd-&gt;major
 op_assign
-id|MAJOR
+id|sd_major
 c_func
 (paren
-id|devno
+(paren
+id|index
+op_amp
+l_int|0xf0
+)paren
+op_rshift
+l_int|4
 )paren
 suffix:semicolon
 id|gd-&gt;first_minor
 op_assign
-id|MINOR
-c_func
 (paren
-id|devno
+(paren
+id|index
+op_amp
+l_int|0xf
+)paren
+op_lshift
+l_int|4
+)paren
+op_or
+(paren
+id|index
+op_amp
+l_int|0xfff00
 )paren
 suffix:semicolon
 id|gd-&gt;minors
@@ -6052,9 +5997,11 @@ id|index
 OL
 (paren
 l_int|26
-op_star
-l_int|27
+op_plus
+l_int|1
 )paren
+op_star
+l_int|26
 )paren
 (brace
 id|sprintf
@@ -6297,6 +6244,8 @@ c_func
 (paren
 op_amp
 id|sdkp-&gt;kref
+comma
+id|scsi_disk_release
 )paren
 suffix:semicolon
 id|up
@@ -6348,12 +6297,13 @@ op_amp
 id|sd_index_lock
 )paren
 suffix:semicolon
-id|clear_bit
+id|idr_remove
 c_func
 (paren
-id|sdkp-&gt;index
+op_amp
+id|sd_index_idr
 comma
-id|sd_index_bits
+id|sdkp-&gt;index
 )paren
 suffix:semicolon
 id|spin_unlock

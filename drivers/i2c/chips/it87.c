@@ -2515,7 +2515,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in0_ref
+id|cpu0_vid
 comma
 id|S_IRUGO
 comma
@@ -2525,7 +2525,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_vid
-mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in0_ref)
+mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_cpu0_vid)
 multiline_comment|/* This function is called when:&n;     * it87_driver is inserted (when this module is loaded), for each&n;       available adapter&n;     * when a new adapter is inserted (and it87_driver is still present) */
 DECL|function|it87_attach_adapter
 r_static

@@ -381,7 +381,6 @@ suffix:semicolon
 )brace
 DECL|macro|__pa
 mdefine_line|#define __pa(x) ((unsigned long)(x)-PAGE_OFFSET)
-multiline_comment|/* Not 100% correct, for use by /dev/mem only */
 r_extern
 r_int
 id|page_is_ram
@@ -389,7 +388,7 @@ c_func
 (paren
 r_int
 r_int
-id|physaddr
+id|pfn
 )paren
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
@@ -459,6 +458,8 @@ mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
 macro_line|#endif
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_to_kaddr
+mdefine_line|#define pfn_to_kaddr(pfn)&t;__va((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1997,9 +1998,11 @@ c_func
 suffix:semicolon
 id|txcount
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|TX_SIZE
 comma
 id|port-&gt;xmit_cnt
@@ -2184,9 +2187,11 @@ l_int|1
 (brace
 id|cnt
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|txcount
 comma
 (paren
@@ -3205,9 +3210,12 @@ r_else
 multiline_comment|/* Data   Packet */
 id|count
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|byte_count
 comma
 (paren
@@ -5591,12 +5599,14 @@ c_func
 suffix:semicolon
 id|cnt
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5671,12 +5681,14 @@ c_func
 suffix:semicolon
 id|cnt
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|cnt
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -9599,16 +9611,10 @@ id|re_schedule
 op_assign
 l_int|0
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 macro_line|#ifdef ISICOM_DEBUG&t;

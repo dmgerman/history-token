@@ -753,8 +753,6 @@ DECL|macro|SNDRV_PCM_INFO_JOINT_DUPLEX
 mdefine_line|#define SNDRV_PCM_INFO_JOINT_DUPLEX&t;0x00200000&t;/* playback and capture stream are somewhat correlated */
 DECL|macro|SNDRV_PCM_INFO_SYNC_START
 mdefine_line|#define SNDRV_PCM_INFO_SYNC_START&t;0x00400000&t;/* pcm support some kind of sync go */
-DECL|macro|SNDRV_PCM_INFO_NONATOMIC_OPS
-mdefine_line|#define SNDRV_PCM_INFO_NONATOMIC_OPS&t;0x00800000&t;/* non-atomic prepare callback */
 DECL|enum|sndrv_pcm_state
 r_enum
 id|sndrv_pcm_state

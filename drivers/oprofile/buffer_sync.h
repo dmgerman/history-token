@@ -18,5 +18,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* sync the given CPU&squot;s buffer */
+r_void
+id|sync_buffer
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#endif /* OPROFILE_BUFFER_SYNC_H */
 eof

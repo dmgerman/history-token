@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __UM_UACCESS_H
 DECL|macro|__UM_UACCESS_H
 mdefine_line|#define __UM_UACCESS_H
+macro_line|#include &quot;linux/sched.h&quot;
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ 0
 DECL|macro|VERIFY_WRITE
@@ -26,6 +27,10 @@ DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, n) copy_from_user(to, from, n)
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to, from, n) copy_to_user(to, from, n)
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x, ptr) &bslash;&n;({ &bslash;&n;        const __typeof__(ptr) __private_ptr = ptr; &bslash;&n;        __typeof__(*(__private_ptr)) __private_val; &bslash;&n;        int __private_ret = -EFAULT; &bslash;&n;        (x) = 0; &bslash;&n;&t;if (__copy_from_user(&amp;__private_val, (__private_ptr), &bslash;&n;&t;    sizeof(*(__private_ptr))) == 0) {&bslash;&n;        &t;(x) = (__typeof__(*(__private_ptr))) __private_val; &bslash;&n;&t;&t;__private_ret = 0; &bslash;&n;&t;} &bslash;&n;        __private_ret; &bslash;&n;}) 
 DECL|macro|get_user

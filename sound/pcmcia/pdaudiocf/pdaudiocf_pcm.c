@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &quot;pdaudiocf.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t&t;pdacf_t
 multiline_comment|/*&n; * we use a vmalloc&squot;ed (sg-)buffer&n; */
 multiline_comment|/* get the physical page pointer on the given offset */
 DECL|function|snd_pcm_get_vmalloc_page
@@ -1118,15 +1116,7 @@ id|pdacf_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pdacf_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|chip-&gt;pcm
 op_assign

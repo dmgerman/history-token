@@ -2105,6 +2105,11 @@ op_assign
 l_string|&quot;microcode&quot;
 comma
 dot
+id|devfs_name
+op_assign
+l_string|&quot;cpu/microcode&quot;
+comma
+dot
 id|fops
 op_assign
 op_amp

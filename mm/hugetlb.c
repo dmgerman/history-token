@@ -84,13 +84,11 @@ id|page
 r_int
 id|nid
 op_assign
-id|page_zone
+id|page_to_nid
 c_func
 (paren
 id|page
 )paren
-op_member_access_from_pointer
-id|zone_pgdat-&gt;node_id
 suffix:semicolon
 id|list_add
 c_func
@@ -280,6 +278,8 @@ comma
 id|GFP_HIGHUSER
 op_or
 id|__GFP_COMP
+op_or
+id|__GFP_NOWARN
 comma
 id|HUGETLB_PAGE_ORDER
 )paren
@@ -653,6 +653,7 @@ comma
 id|hugetlb_setup
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|update_and_free_page
 r_static
 r_void
@@ -1027,7 +1028,6 @@ r_return
 id|nr_huge_pages
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|hugetlb_sysctl_handler
 r_int
 id|hugetlb_sysctl_handler

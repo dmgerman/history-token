@@ -1102,6 +1102,12 @@ comma
 id|NCR5380_intr
 )paren
 suffix:semicolon
+id|NCR5380_exit
+c_func
+(paren
+id|shpnt
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

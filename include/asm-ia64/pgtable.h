@@ -918,11 +918,6 @@ r_extern
 r_void
 id|memmap_init
 (paren
-r_struct
-id|page
-op_star
-id|start
-comma
 r_int
 r_int
 id|size

@@ -94,9 +94,6 @@ l_int|0
 suffix:semicolon
 id|sonypi_device.queue.s_lock
 op_assign
-(paren
-id|spinlock_t
-)paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|init_waitqueue_head

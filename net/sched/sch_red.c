@@ -149,8 +149,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|INET_ECN_is_capable
+id|INET_ECN_is_not_ect
 c_func
 (paren
 id|skb-&gt;nh.iph-&gt;tos
@@ -159,15 +158,6 @@ id|skb-&gt;nh.iph-&gt;tos
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|INET_ECN_is_not_ce
-c_func
-(paren
-id|skb-&gt;nh.iph-&gt;tos
-)paren
-)paren
 id|IP_ECN_set_ce
 c_func
 (paren
@@ -187,8 +177,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|INET_ECN_is_capable
+id|INET_ECN_is_not_ect
 c_func
 (paren
 id|ip6_get_dsfield

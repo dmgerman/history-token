@@ -3,6 +3,7 @@ DECL|macro|_LINUX_POLL_H
 mdefine_line|#define _LINUX_POLL_H
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -284,8 +285,10 @@ suffix:semicolon
 )brace
 r_static
 r_inline
+r_int
+r_int
+id|__must_check
 DECL|function|set_fd_set
-r_void
 id|set_fd_set
 c_func
 (paren
@@ -309,6 +312,7 @@ c_cond
 (paren
 id|ufdset
 )paren
+r_return
 id|__copy_to_user
 c_func
 (paren
@@ -322,6 +326,9 @@ c_func
 id|nr
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

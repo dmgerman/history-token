@@ -3,7 +3,7 @@ macro_line|#ifndef _NET_IPV6_H
 DECL|macro|_NET_IPV6_H
 mdefine_line|#define _NET_IPV6_H
 macro_line|#include &lt;linux/ipv6.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;

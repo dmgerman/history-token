@@ -35,13 +35,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{NeoMagic,NM256AV},&quot;
@@ -257,14 +251,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -287,14 +273,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -313,14 +291,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -345,14 +315,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|playback_bufsize
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -373,14 +335,6 @@ comma
 l_string|&quot;ADC frame size in kB for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|capture_bufsize
-comma
-id|SNDRV_ENABLED
 )paren
 suffix:semicolon
 id|module_param_array
@@ -405,16 +359,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|force_ac97
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -437,14 +381,6 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|buffer_top
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -465,16 +401,6 @@ comma
 l_string|&quot;Enable the cache for coefficient table access.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|use_cache
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -493,16 +419,6 @@ c_func
 id|vaio_hack
 comma
 l_string|&quot;Enable workaround for Sony VAIO notebooks.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|vaio_hack
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * hw definitions&n; */
@@ -638,8 +554,6 @@ r_struct
 id|snd_nm256_stream
 id|nm256_stream_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t nm256_t
 DECL|struct|snd_nm256_stream
 r_struct
 id|snd_nm256_stream
@@ -1560,8 +1474,6 @@ l_int|48000
 comma
 )brace
 suffix:semicolon
-DECL|macro|NUM_SAMPLERATES
-mdefine_line|#define NUM_SAMPLERATES (sizeof(samplerates) / sizeof(samplerates[0]))
 DECL|variable|constraints_rates
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -1571,7 +1483,11 @@ op_assign
 dot
 id|count
 op_assign
-id|NUM_SAMPLERATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|samplerates
+)paren
 comma
 dot
 id|list
@@ -1610,7 +1526,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_SAMPLERATES
+id|ARRAY_SIZE
+c_func
+(paren
+id|samplerates
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -2103,10 +2023,6 @@ op_star
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|err
 op_assign
 l_int|0
@@ -2123,13 +2039,11 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_switch
@@ -2203,13 +2117,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2251,10 +2163,6 @@ op_star
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|err
 op_assign
 l_int|0
@@ -2271,13 +2179,11 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_switch
@@ -2351,13 +2257,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2402,10 +2306,6 @@ op_star
 )paren
 id|runtime-&gt;private_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|snd_assert
 c_func
 (paren
@@ -2444,13 +2344,11 @@ id|s-&gt;cur_period
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|s-&gt;running
@@ -2467,13 +2365,11 @@ comma
 id|substream
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2631,8 +2527,9 @@ id|curp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Remapped I/O space can be accessible as pointer on i386 */
+multiline_comment|/* This might be changed in the future */
 macro_line|#ifndef __i386__
-multiline_comment|/* FIXME: I/O space is not accessible via pointers on all architectures */
 multiline_comment|/*&n; * silence / copy for playback&n; */
 r_static
 r_int
@@ -3014,12 +2911,10 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
-id|SNDRV_PCM_INFO_MMAP
+id|SNDRV_PCM_INFO_MMAP_IOMEM
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
@@ -3100,12 +2995,10 @@ op_assign
 dot
 id|info
 op_assign
-macro_line|#ifdef __i386__
-id|SNDRV_PCM_INFO_MMAP
+id|SNDRV_PCM_INFO_MMAP_IOMEM
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 op_or
-macro_line|#endif
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 multiline_comment|/*SNDRV_PCM_INFO_PAUSE |*/
@@ -3468,6 +3361,11 @@ op_assign
 id|snd_nm256_playback_silence
 comma
 macro_line|#endif
+dot
+id|mmap
+op_assign
+id|snd_pcm_lib_mmap_iomem
+comma
 )brace
 suffix:semicolon
 DECL|variable|snd_nm256_capture_ops
@@ -3518,6 +3416,11 @@ op_assign
 id|snd_nm256_capture_copy
 comma
 macro_line|#endif
+dot
+id|mmap
+op_assign
+id|snd_pcm_lib_mmap_iomem
+comma
 )brace
 suffix:semicolon
 r_static
@@ -3665,17 +3568,11 @@ op_star
 id|chip
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Reset everything. */
@@ -3702,13 +3599,11 @@ suffix:semicolon
 multiline_comment|/* stop sounds.. */
 singleline_comment|//snd_nm256_playback_stop(chip);
 singleline_comment|//snd_nm256_capture_stop(chip);
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3796,16 +3691,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 id|u16
 id|status
@@ -4081,16 +3967,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 id|u32
 id|status
@@ -4426,17 +4303,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_int
 id|res
@@ -4511,15 +4378,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|tries
@@ -4603,27 +4462,13 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the mixer.  &squot;Tis magic!  */
@@ -4675,13 +4520,11 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4699,18 +4542,38 @@ id|chip
 )paren
 (brace
 id|ac97_bus_t
-id|bus
-comma
 op_star
 id|pbus
 suffix:semicolon
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 r_int
 id|i
 comma
 id|err
+suffix:semicolon
+r_static
+id|ac97_bus_ops_t
+id|ops
+op_assign
+(brace
+dot
+id|reset
+op_assign
+id|snd_nm256_ac97_reset
+comma
+dot
+id|write
+op_assign
+id|snd_nm256_ac97_write
+comma
+dot
+id|read
+op_assign
+id|snd_nm256_ac97_read
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* looks like nm256 hangs up when unexpected registers are touched... */
 r_static
@@ -4733,6 +4596,8 @@ comma
 id|AC97_MIC
 comma
 id|AC97_LINE
+comma
+id|AC97_CD
 comma
 id|AC97_VIDEO
 comma
@@ -4758,32 +4623,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|bus
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|bus
-)paren
-)paren
-suffix:semicolon
-id|bus.reset
-op_assign
-id|snd_nm256_ac97_reset
-suffix:semicolon
-id|bus.write
-op_assign
-id|snd_nm256_ac97_write
-suffix:semicolon
-id|bus.read
-op_assign
-id|snd_nm256_ac97_read
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4795,8 +4634,12 @@ c_func
 (paren
 id|chip-&gt;card
 comma
+l_int|0
+comma
 op_amp
-id|bus
+id|ops
+comma
+l_int|NULL
 comma
 op_amp
 id|pbus
@@ -5106,17 +4949,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -5165,17 +4998,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 multiline_comment|/* Perform a full reset on the hardware */
 id|pci_enable_device
@@ -5353,7 +5176,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -5378,17 +5201,7 @@ id|nm256_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|nm256_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_nm256_free
@@ -5471,12 +5284,16 @@ l_int|NULL
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|nm256_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

@@ -2024,14 +2024,13 @@ id|ac97_t
 op_star
 id|ac97
 op_assign
-id|snd_magic_cast
+id|entry-&gt;private_data
+suffix:semicolon
+id|down
 c_func
 (paren
-id|ac97_t
-comma
-id|entry-&gt;private_data
-comma
-r_return
+op_amp
+id|ac97-&gt;mutex
 )paren
 suffix:semicolon
 r_if
@@ -2049,13 +2048,6 @@ id|AC97_ID_AD1881
 singleline_comment|// Analog Devices AD1881/85/86
 r_int
 id|idx
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|ac97-&gt;spec.ad18xx.mutex
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2133,13 +2125,6 @@ comma
 l_int|0x7000
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|ac97-&gt;spec.ad18xx.mutex
-)paren
-suffix:semicolon
 id|snd_iprintf
 c_func
 (paren
@@ -2208,6 +2193,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SND_DEBUG
 multiline_comment|/* direct register write for debugging */
@@ -2230,15 +2222,7 @@ id|ac97_t
 op_star
 id|ac97
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|ac97_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_char
 id|line
@@ -2251,6 +2235,13 @@ r_int
 id|reg
 comma
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2291,7 +2282,7 @@ l_int|2
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* register must be odd */
+multiline_comment|/* register must be even */
 r_if
 c_cond
 (paren
@@ -2322,6 +2313,13 @@ id|val
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|snd_ac97_proc_regs_read_main
@@ -2408,14 +2406,13 @@ id|ac97_t
 op_star
 id|ac97
 op_assign
-id|snd_magic_cast
+id|entry-&gt;private_data
+suffix:semicolon
+id|down
 c_func
 (paren
-id|ac97_t
-comma
-id|entry-&gt;private_data
-comma
-r_return
+op_amp
+id|ac97-&gt;mutex
 )paren
 suffix:semicolon
 r_if
@@ -2433,13 +2430,6 @@ id|AC97_ID_AD1881
 singleline_comment|// Analog Devices AD1881/85/86
 r_int
 id|idx
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|ac97-&gt;spec.ad18xx.mutex
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -2509,13 +2499,6 @@ comma
 l_int|0x7000
 )paren
 suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|ac97-&gt;spec.ad18xx.mutex
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -2530,6 +2513,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|ac97-&gt;mutex
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_ac97_proc_init
 r_void

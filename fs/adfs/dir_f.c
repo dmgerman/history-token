@@ -600,6 +600,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read and check that a directory is valid&n; */
+r_static
 r_int
 DECL|function|adfs_dir_read
 id|adfs_dir_read
@@ -1049,6 +1050,7 @@ id|obj-&gt;attr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * get a directory entry.  Note that the caller is responsible&n; * for holding the relevant locks.&n; */
+r_static
 r_int
 DECL|function|__adfs_dir_get
 id|__adfs_dir_get
@@ -1209,6 +1211,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|__adfs_dir_put
 id|__adfs_dir_put

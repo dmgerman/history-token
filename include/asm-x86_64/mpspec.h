@@ -432,10 +432,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Default configurations&n; *&n; *&t;1&t;2 CPU ISA 82489DX&n; *&t;2&t;2 CPU EISA 82489DX neither IRQ 0 timer nor IRQ 13 DMA chaining&n; *&t;3&t;2 CPU EISA 82489DX&n; *&t;4&t;2 CPU MCA 82489DX&n; *&t;5&t;2 CPU ISA+PCI&n; *&t;6&t;2 CPU EISA+PCI&n; *&t;7&t;2 CPU MCA+PCI&n; */
+DECL|macro|MAX_MP_BUSSES
+mdefine_line|#define MAX_MP_BUSSES 270
 DECL|macro|MAX_IRQ_SOURCES
 mdefine_line|#define MAX_IRQ_SOURCES 256
-DECL|macro|MAX_MP_BUSSES
-mdefine_line|#define MAX_MP_BUSSES 32
 DECL|enum|mp_bustype
 r_enum
 id|mp_bustype
@@ -468,13 +468,6 @@ r_int
 id|mp_bus_id_to_pci_bus
 (braket
 id|MAX_MP_BUSSES
-)braket
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|pci_bus_to_cpumask
-(braket
-l_int|256
 )braket
 suffix:semicolon
 r_extern

@@ -14,10 +14,10 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|macro|__FAIL_ADDR_MASK
 mdefine_line|#define __FAIL_ADDR_MASK 0x7ffff000
@@ -249,10 +249,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send SIGSEGV to task.  This is an external routine&n; * to keep the stack usage of do_page_fault small.&n; */
-DECL|function|force_sigsegv
+DECL|function|do_sigsegv
 r_static
 r_void
-id|force_sigsegv
+id|do_sigsegv
 c_func
 (paren
 r_struct
@@ -710,7 +710,7 @@ id|tsk-&gt;thread.trap_no
 op_assign
 id|error_code
 suffix:semicolon
-id|force_sigsegv
+id|do_sigsegv
 c_func
 (paren
 id|regs

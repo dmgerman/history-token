@@ -116,6 +116,8 @@ multiline_comment|/* 1 if in `kernel mode&squot;, 0 if user mode */
 suffix:semicolon
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs)&t;((regs)-&gt;pc)
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs)&t;&t;&t;(!(regs)-&gt;kernel_mode)
 multiline_comment|/* When a struct pt_regs is used to save user state for a system call in&n;   the kernel, the system call is stored in the space for R0 (since it&squot;s&n;   never used otherwise, R0 being a constant 0).  Non-system-calls&n;   simply store 0 there.  */

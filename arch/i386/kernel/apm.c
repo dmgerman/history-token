@@ -7766,6 +7766,10 @@ id|KERN_NOTICE
 l_string|&quot;apm: disabled - APM is not SMP safe.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|apm_info.disabled
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -7786,6 +7790,10 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;apm: overridden by ACPI.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|apm_info.disabled
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 op_minus

@@ -425,6 +425,11 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The function eventpoll_release() should be the first called&n;&t; * in the file cleanup chain.&n;&t; */
 id|eventpoll_release
 c_func

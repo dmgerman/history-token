@@ -164,6 +164,8 @@ DECL|typedef|diva_strace_path2action_t
 )brace
 id|diva_strace_path2action_t
 suffix:semicolon
+DECL|macro|DIVA_MAX_MANAGEMENT_TRANSFER_SIZE
+mdefine_line|#define DIVA_MAX_MANAGEMENT_TRANSFER_SIZE 4096
 DECL|struct|_diva_strace_context
 r_typedef
 r_struct
@@ -210,9 +212,7 @@ DECL|member|buffer
 id|byte
 id|buffer
 (braket
-l_int|2048
-op_plus
-l_int|512
+id|DIVA_MAX_MANAGEMENT_TRANSFER_SIZE
 op_plus
 l_int|1
 )braket

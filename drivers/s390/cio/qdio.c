@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.84 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.86 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -1334,7 +1334,7 @@ multiline_comment|/* &n;&t; * set our summary bit again, as otherwise there is a
 r_if
 c_cond
 (paren
-id|q-&gt;is_iqdio_q
+id|q-&gt;is_thinint_q
 )paren
 id|tiqdio_set_summary_bit
 c_func

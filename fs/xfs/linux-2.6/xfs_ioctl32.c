@@ -13,7 +13,7 @@ macro_line|#include &quot;xfs_dfrag.h&quot;
 macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_X86_64)
 DECL|macro|BROKEN_X86_ALIGNMENT
 mdefine_line|#define BROKEN_X86_ALIGNMENT
-macro_line|#endif
+macro_line|#else
 DECL|struct|xfs_fsop_bulkreq32
 r_typedef
 r_struct
@@ -201,6 +201,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|xfs_ioctl32_trans
 r_struct
 id|ioctl_trans

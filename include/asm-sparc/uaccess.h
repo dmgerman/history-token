@@ -406,6 +406,10 @@ id|n
 )paren
 suffix:semicolon
 )brace
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|function|__clear_user
 r_static
 r_inline

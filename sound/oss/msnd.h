@@ -207,14 +207,15 @@ mdefine_line|#define PCTODSP_BASED(w)&t;(USHORT)(((w)/2) + DSP_BASE_ADDR)
 DECL|macro|DSPTOPC_BASED
 mdefine_line|#define DSPTOPC_BASED(w)&t;(((w) - DSP_BASE_ADDR) * 2)
 macro_line|#ifdef SLOWIO
-DECL|macro|outb
-macro_line|#  undef outb
-DECL|macro|inb
-macro_line|#  undef inb
-DECL|macro|outb
-macro_line|#  define outb&t;&t;&t;outb_p
-DECL|macro|inb
-macro_line|#  define inb&t;&t;&t;inb_p
+DECL|macro|msnd_outb
+mdefine_line|#define msnd_outb&t;&t;&t;outb_p
+DECL|macro|msnd_inb
+mdefine_line|#define msnd_inb&t;&t;&t;inb_p
+macro_line|#else
+DECL|macro|msnd_outb
+mdefine_line|#define msnd_outb&t;&t;&t;outb
+DECL|macro|msnd_inb
+mdefine_line|#define msnd_inb&t;&t;&t;inb
 macro_line|#endif
 multiline_comment|/* JobQueueStruct */
 DECL|macro|JQS_wStart

@@ -258,21 +258,6 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* probe a volume location server to see if it is still alive */
-r_extern
-r_int
-id|afs_rxvl_probe
-c_func
-(paren
-r_struct
-id|afs_server
-op_star
-id|server
-comma
-r_int
-id|alloc_flags
-)paren
-suffix:semicolon
 multiline_comment|/* look up a volume location database entry by name */
 r_extern
 r_int

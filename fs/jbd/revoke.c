@@ -1085,6 +1085,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

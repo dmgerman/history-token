@@ -7,6 +7,7 @@ macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 DECL|function|user_thread_tramp
@@ -83,6 +84,8 @@ r_int
 id|pid
 comma
 id|status
+comma
+id|err
 suffix:semicolon
 id|pid
 op_assign
@@ -130,9 +133,11 @@ r_return
 id|pid
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|CATCH_EINTR
+c_func
 (paren
+id|err
+op_assign
 id|waitpid
 c_func
 (paren
@@ -143,6 +148,12 @@ id|status
 comma
 id|WUNTRACED
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren

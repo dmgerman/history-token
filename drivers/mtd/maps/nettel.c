@@ -486,7 +486,7 @@ id|nettel_erasecallback
 suffix:semicolon
 id|nettel_erase.callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|nettel_erase.addr
 op_assign

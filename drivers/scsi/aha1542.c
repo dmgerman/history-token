@@ -7188,12 +7188,10 @@ c_func
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|4
-op_star
-id|HZ
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -7389,12 +7387,10 @@ c_func
 id|SCpnt-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|scsi_sleep
+id|ssleep
 c_func
 (paren
 l_int|4
-op_star
-id|HZ
 )paren
 suffix:semicolon
 id|spin_lock_irq

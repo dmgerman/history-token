@@ -468,6 +468,13 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mmapper_init - find_iomem failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

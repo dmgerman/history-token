@@ -8,7 +8,7 @@ mdefine_line|#define&t;MIP_BUSY&t;&t;1
 DECL|macro|MIP_SPIN
 mdefine_line|#define&t;MIP_SPIN&t;&t;0xf0000
 DECL|macro|MIP_VALID
-mdefine_line|#define&t;MIP_VALID&t;&t;0x0100000000000000
+mdefine_line|#define&t;MIP_VALID&t;&t;0x0100000000000000ULL
 DECL|macro|MIP_PORT
 mdefine_line|#define&t;MIP_PORT(VALUE)&t;((VALUE &gt;&gt; 32) &amp; 0xffff)
 DECL|macro|MIP_RD_LO

@@ -41,23 +41,10 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-DECL|member|__magic
-r_int
-id|__magic
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name)         , (long)&amp;(name).__magic
-macro_line|#else
-DECL|macro|__SEM_DEBUG_INIT
-macro_line|# define __SEM_DEBUG_INIT(name)
-macro_line|#endif
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count)             &bslash;&n;        { ATOMIC_INIT(count), ATOMIC_INIT(0),           &bslash;&n;          __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)    &bslash;&n;          __SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name, n)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.count&t;&t;= ATOMIC_INIT(n),&t;&t;&t;&t;&bslash;&n;&t;.waking&t;&t;= ATOMIC_INIT(0),&t;&t;&t;&t;&bslash;&n;&t;.wait&t;&t;= __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)    &bslash;&n;}
 DECL|macro|__MUTEX_INITIALIZER
 mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;        __SEMAPHORE_INITIALIZER(name,1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
@@ -208,14 +195,6 @@ suffix:semicolon
 r_int
 id|failed
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 id|might_sleep
 c_func
 (paren
@@ -283,14 +262,6 @@ suffix:semicolon
 r_int
 id|failed
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 id|might_sleep
 c_func
 (paren
@@ -362,14 +333,6 @@ suffix:semicolon
 r_int
 id|failed
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 id|local_save_flags
 c_func
 (paren
@@ -436,14 +399,6 @@ suffix:semicolon
 r_int
 id|wakeup
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
-id|CHECK_MAGIC
-c_func
-(paren
-id|sem-&gt;__magic
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* atomically increment the semaphores count, and if it was negative, we wake people */
 id|local_save_flags
 c_func

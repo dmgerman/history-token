@@ -6633,6 +6633,18 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|vga16fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;vga16fb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -6933,6 +6945,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|vga16fb_init
 id|module_init
 c_func
@@ -6940,7 +6953,6 @@ c_func
 id|vga16fb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|vga16fb_exit
 id|module_exit
 c_func

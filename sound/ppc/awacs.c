@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 macro_line|#ifdef CONFIG_ADB_CUDA
 DECL|macro|PMAC_AMP_AVAIL
 mdefine_line|#define PMAC_AMP_AVAIL
@@ -2928,6 +2926,30 @@ comma
 id|AWACS_SWITCH
 c_func
 (paren
+l_string|&quot;CD Capture Switch&quot;
+comma
+l_int|0
+comma
+id|SHIFT_MUX_CD
+comma
+l_int|0
+)paren
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* FIXME: is this correct order?&n; * screamer (powerbook G3 pismo) seems to have different bits...&n; */
+DECL|variable|__initdata
+r_static
+id|snd_kcontrol_new_t
+id|snd_pmac_awacs_mixers2
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+id|AWACS_SWITCH
+c_func
+(paren
 l_string|&quot;Line Capture Switch&quot;
 comma
 l_int|0
@@ -2940,11 +2962,34 @@ comma
 id|AWACS_SWITCH
 c_func
 (paren
-l_string|&quot;CD Capture Switch&quot;
+l_string|&quot;Mic Capture Switch&quot;
 comma
 l_int|0
 comma
-id|SHIFT_MUX_CD
+id|SHIFT_MUX_MIC
+comma
+l_int|0
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+id|snd_kcontrol_new_t
+id|snd_pmac_screamer_mixers2
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+id|AWACS_SWITCH
+c_func
+(paren
+l_string|&quot;Line Capture Switch&quot;
+comma
+l_int|0
+comma
+id|SHIFT_MUX_MIC
 comma
 l_int|0
 )paren
@@ -2956,7 +3001,7 @@ l_string|&quot;Mic Capture Switch&quot;
 comma
 l_int|0
 comma
-id|SHIFT_MUX_MIC
+id|SHIFT_MUX_LINE
 comma
 l_int|0
 )paren
@@ -3084,8 +3129,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 multiline_comment|/*&n; * add new mixer elements to the card&n; */
 DECL|function|build_mixers
 r_static
@@ -4216,7 +4259,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_mixers
@@ -4225,6 +4268,56 @@ comma
 id|snd_pmac_awacs_mixers
 )paren
 )paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;model
+op_eq
+id|PMAC_SCREAMER
+)paren
+id|err
+op_assign
+id|build_mixers
+c_func
+(paren
+id|chip
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_pmac_screamer_mixers2
+)paren
+comma
+id|snd_pmac_screamer_mixers2
+)paren
+suffix:semicolon
+r_else
+id|err
+op_assign
+id|build_mixers
+c_func
+(paren
+id|chip
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_pmac_awacs_mixers2
+)paren
+comma
+id|snd_pmac_awacs_mixers2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -4281,7 +4374,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_amp_vol
@@ -4375,7 +4468,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_speaker_vol
@@ -4441,7 +4534,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_screamer_mic_boost
@@ -4470,7 +4563,7 @@ c_func
 (paren
 id|chip
 comma
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|snd_pmac_awacs_mic_boost

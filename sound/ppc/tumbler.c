@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PMac Tumbler/Snapper lowlevel functions&n; *&n; * Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * PMac Tumbler/Snapper lowlevel functions&n; *&n; * Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *   Rene Rebe &lt;rene.rebe@gmx.net&gt;:&n; *     * update from shadow registers on wakeup and headphone plug&n; *     * automatically toggle DRC on headphone plug&n; *&t;&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -15,8 +15,6 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#endif
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;tumbler_volume.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 multiline_comment|/* i2c address for tumbler */
 DECL|macro|TAS_I2C_ADDR
 mdefine_line|#define TAS_I2C_ADDR&t;0x34
@@ -3431,33 +3429,6 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;DRC Switch&quot;
-comma
-dot
-id|info
-op_assign
-id|snd_pmac_boolean_mono_info
-comma
-dot
-id|get
-op_assign
-id|tumbler_get_drc_switch
-comma
-dot
-id|put
-op_assign
-id|tumbler_put_drc_switch
-)brace
-comma
-(brace
-dot
-id|iface
-op_assign
-id|SNDRV_CTL_ELEM_IFACE_MIXER
-comma
-dot
-id|name
-op_assign
 l_string|&quot;DRC Range&quot;
 comma
 dot
@@ -3596,33 +3567,6 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;DRC Switch&quot;
-comma
-dot
-id|info
-op_assign
-id|snd_pmac_boolean_mono_info
-comma
-dot
-id|get
-op_assign
-id|tumbler_get_drc_switch
-comma
-dot
-id|put
-op_assign
-id|tumbler_put_drc_switch
-)brace
-comma
-(brace
-dot
-id|iface
-op_assign
-id|SNDRV_CTL_ELEM_IFACE_MIXER
-comma
-dot
-id|name
-op_assign
 l_string|&quot;DRC Range&quot;
 comma
 dot
@@ -3749,6 +3693,39 @@ id|TUMBLER_MUTE_AMP
 comma
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+id|snd_kcontrol_new_t
+id|tumbler_drc_sw
+id|__initdata
+op_assign
+(brace
+dot
+id|iface
+op_assign
+id|SNDRV_CTL_ELEM_IFACE_MIXER
+comma
+dot
+id|name
+op_assign
+l_string|&quot;DRC Switch&quot;
+comma
+dot
+id|info
+op_assign
+id|snd_pmac_boolean_mono_info
+comma
+dot
+id|get
+op_assign
+id|tumbler_get_drc_switch
+comma
+dot
+id|put
+op_assign
+id|tumbler_put_drc_switch
+)brace
+suffix:semicolon
 macro_line|#ifdef PMAC_SUPPORT_AUTOMUTE
 multiline_comment|/*&n; * auto-mute stuffs&n; */
 DECL|function|tumbler_detect_headphone
@@ -3841,6 +3818,78 @@ id|sw-&gt;id
 suffix:semicolon
 )brace
 )brace
+DECL|variable|device_change
+r_static
+r_struct
+id|work_struct
+id|device_change
+suffix:semicolon
+r_static
+r_void
+DECL|function|device_change_handler
+id|device_change_handler
+c_func
+(paren
+r_void
+op_star
+id|self
+)paren
+(brace
+id|pmac_t
+op_star
+id|chip
+op_assign
+(paren
+id|pmac_t
+op_star
+)paren
+id|self
+suffix:semicolon
+id|pmac_tumbler_t
+op_star
+id|mix
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip
+)paren
+r_return
+suffix:semicolon
+id|mix
+op_assign
+id|chip-&gt;mixer_data
+suffix:semicolon
+multiline_comment|/* first set the DRC so the speaker do not explode -ReneR */
+r_if
+c_cond
+(paren
+id|chip-&gt;model
+op_eq
+id|PMAC_TUMBLER
+)paren
+id|tumbler_set_drc
+c_func
+(paren
+id|mix
+)paren
+suffix:semicolon
+r_else
+id|snapper_set_drc
+c_func
+(paren
+id|mix
+)paren
+suffix:semicolon
+multiline_comment|/* reset the master volume so the correct amplification is applied */
+id|tumbler_set_master_volume
+c_func
+(paren
+id|mix
+)paren
+suffix:semicolon
+)brace
 DECL|function|tumbler_update_automute
 r_static
 r_void
@@ -3916,6 +3965,10 @@ comma
 id|chip-&gt;master_sw_ctl
 )paren
 suffix:semicolon
+id|mix-&gt;drc_enable
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -3950,12 +4003,17 @@ comma
 id|chip-&gt;master_sw_ctl
 )paren
 suffix:semicolon
+id|mix-&gt;drc_enable
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 id|do_notify
 )paren
+(brace
 id|snd_ctl_notify
 c_func
 (paren
@@ -3965,6 +4023,26 @@ id|SNDRV_CTL_EVENT_MASK_VALUE
 comma
 op_amp
 id|chip-&gt;hp_detect_ctl-&gt;id
+)paren
+suffix:semicolon
+id|snd_ctl_notify
+c_func
+(paren
+id|chip-&gt;card
+comma
+id|SNDRV_CTL_EVENT_MASK_VALUE
+comma
+op_amp
+id|chip-&gt;drc_sw_ctl-&gt;id
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* finally we need to schedule an update of the mixer values&n;&t;&t;   (master and DRC are enough for now) -ReneR */
+id|schedule_work
+c_func
+(paren
+op_amp
+id|device_change
 )paren
 suffix:semicolon
 )brace
@@ -3994,16 +4072,7 @@ id|pmac_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|pmac_t
-comma
 id|devid
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5308,12 +5377,58 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+id|chip-&gt;drc_sw_ctl
+op_assign
+id|snd_ctl_new1
+c_func
+(paren
+op_amp
+id|tumbler_drc_sw
+comma
+id|chip
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ctl_add
+c_func
+(paren
+id|chip-&gt;card
+comma
+id|chip-&gt;drc_sw_ctl
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 id|chip-&gt;resume
 op_assign
 id|tumbler_resume
 suffix:semicolon
 macro_line|#endif
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|device_change
+comma
+id|device_change_handler
+comma
+(paren
+r_void
+op_star
+)paren
+id|chip
+)paren
+suffix:semicolon
 macro_line|#ifdef PMAC_SUPPORT_AUTOMUTE
 r_if
 c_cond

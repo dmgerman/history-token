@@ -755,6 +755,33 @@ id|PciDev
 r_if
 c_cond
 (paren
+id|pci_enable_device
+c_func
+(paren
+id|PciDev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cpqfc: can&squot;t enable PCI device at %s&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|PciDev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|err_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|pci_set_dma_mask
 c_func
 (paren
@@ -773,7 +800,8 @@ id|KERN_WARNING
 l_string|&quot;cpqfc: HBA cannot support required DMA mask, skipping.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_continue
+r_goto
+id|err_disable_dev
 suffix:semicolon
 )brace
 singleline_comment|// NOTE: (kernel 2.2.12-32) limits allocation to 128k bytes...
@@ -799,7 +827,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_continue
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpqfc: can&squot;t register SCSI HBA, skipping.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_disable_dev
 suffix:semicolon
 )brace
 id|DEBUG_PCI
@@ -1020,18 +1056,14 @@ id|HostAdapter
 id|printk
 c_func
 (paren
-l_string|&quot; IRQ %u already used&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpqfc: IRQ %u already used&bslash;n&quot;
 comma
 id|HostAdapter-&gt;irq
 )paren
 suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|HostAdapter
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|err_unregister
 suffix:semicolon
 )brace
 singleline_comment|// Since we have two 256-byte I/O port ranges (upper
@@ -1054,26 +1086,14 @@ id|DEV_NAME
 id|printk
 c_func
 (paren
-l_string|&quot;  cpqfcTS address in use: %x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpqfc: address in use: %x&bslash;n&quot;
 comma
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 )paren
 suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|HostAdapter-&gt;irq
-comma
-id|HostAdapter
-)paren
-suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|HostAdapter
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
 r_if
@@ -1094,34 +1114,14 @@ id|DEV_NAME
 id|printk
 c_func
 (paren
-l_string|&quot;  cpqfcTS address in use: %x&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpqfc: address in use: %x&bslash;n&quot;
 comma
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
-comma
-l_int|0xff
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|HostAdapter-&gt;irq
-comma
-id|HostAdapter
-)paren
-suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|HostAdapter
-)paren
-suffix:semicolon
-r_continue
+r_goto
+id|err_release_region_U
 suffix:semicolon
 )brace
 singleline_comment|// OK, we have grabbed everything we need now.
@@ -1227,7 +1227,9 @@ id|KERN_WARNING
 l_string|&quot;cpqfc: initialization of HBA hardware failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: might want to do something better than nothing here.
+r_goto
+id|err_release_region_L
+suffix:semicolon
 )brace
 id|cpqfcHBAdata-&gt;fcStatsTime
 op_assign
@@ -1297,6 +1299,58 @@ c_func
 (paren
 id|HostAdapter-&gt;host_lock
 )paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+id|err_release_region_L
+suffix:colon
+id|release_region
+c_func
+(paren
+id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+id|err_release_region_U
+suffix:colon
+id|release_region
+c_func
+(paren
+id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+id|err_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|HostAdapter-&gt;irq
+comma
+id|HostAdapter
+)paren
+suffix:semicolon
+id|err_unregister
+suffix:colon
+id|scsi_unregister
+c_func
+(paren
+id|HostAdapter
+)paren
+suffix:semicolon
+id|err_disable_dev
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|PciDev
+)paren
+suffix:semicolon
+id|err_continue
+suffix:colon
+r_continue
 suffix:semicolon
 )brace
 singleline_comment|// end of while()
@@ -2701,6 +2755,12 @@ l_int|0xff
 )paren
 suffix:semicolon
 multiline_comment|/* we get &quot;vfree: bad address&quot; executing this - need to investigate... &n;  if( (void*)((unsigned long)cpqfcHBAdata-&gt;fcChip.Registers.MemBase) !=&n;      cpqfcHBAdata-&gt;fcChip.Registers.ReMapMemBase)&n;    vfree( cpqfcHBAdata-&gt;fcChip.Registers.ReMapMemBase);&n;*/
+id|pci_disable_device
+c_func
+(paren
+id|cpqfcHBAdata-&gt;PciDev
+)paren
+suffix:semicolon
 id|LEAVE
 c_func
 (paren

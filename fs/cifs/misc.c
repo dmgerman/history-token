@@ -1004,7 +1004,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|treeCon-&gt;ses
+)paren
+op_logical_and
+(paren
 id|treeCon-&gt;ses-&gt;server
+)paren
 )paren
 r_if
 c_cond

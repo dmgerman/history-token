@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 r_extern
 r_void
 id|die
@@ -105,6 +104,18 @@ id|VM_LOCKED
 id|vma-&gt;vm_mm-&gt;locked_vm
 op_add_assign
 id|grow
+suffix:semicolon
+id|__vm_stat_account
+c_func
+(paren
+id|vma-&gt;vm_mm
+comma
+id|vma-&gt;vm_flags
+comma
+id|vma-&gt;vm_file
+comma
+id|grow
+)paren
 suffix:semicolon
 r_return
 l_int|0

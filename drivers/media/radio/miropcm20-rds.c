@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
 DECL|variable|text_buffer
@@ -206,16 +207,10 @@ id|bits
 l_int|8
 )braket
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 id|aci_rds_cmd

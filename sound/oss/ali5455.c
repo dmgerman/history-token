@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifndef PCI_DEVICE_ID_ALI_5455
 DECL|macro|PCI_DEVICE_ID_ALI_5455
 mdefine_line|#define PCI_DEVICE_ID_ALI_5455&t;0x5455

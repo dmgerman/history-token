@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)
 macro_line|#include &quot;linux/list.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/irq.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;linux/errno.h&quot;
@@ -10,6 +11,7 @@ macro_line|#include &quot;asm/errno.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
+macro_line|#include &quot;irq_kern.h&quot;
 macro_line|#include &quot;port.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
@@ -113,7 +115,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|pipe_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pipe_interrupt
 c_func
 (paren
@@ -172,6 +174,7 @@ id|EAGAIN
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|printk
@@ -218,6 +221,9 @@ c_func
 op_amp
 id|conn-&gt;port-&gt;sem
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|port_accept
@@ -432,12 +438,8 @@ op_amp
 id|port-&gt;pending
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 l_int|1
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 id|out_free
 suffix:colon
@@ -605,7 +607,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|port_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|port_interrupt
 c_func
 (paren
@@ -639,6 +641,9 @@ c_func
 op_amp
 id|port_work
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|port_data

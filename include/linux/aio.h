@@ -100,7 +100,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|ki_retry
-r_int
+id|ssize_t
 (paren
 op_star
 id|ki_retry
@@ -156,6 +156,48 @@ DECL|member|ki_pos
 id|loff_t
 id|ki_pos
 suffix:semicolon
+multiline_comment|/* State that we remember to be able to restart/retry  */
+DECL|member|ki_opcode
+r_int
+r_int
+id|ki_opcode
+suffix:semicolon
+DECL|member|ki_nbytes
+r_int
+id|ki_nbytes
+suffix:semicolon
+multiline_comment|/* copy of iocb-&gt;aio_nbytes */
+DECL|member|ki_buf
+r_char
+id|__user
+op_star
+id|ki_buf
+suffix:semicolon
+multiline_comment|/* remaining iocb-&gt;aio_buf */
+DECL|member|ki_left
+r_int
+id|ki_left
+suffix:semicolon
+multiline_comment|/* remaining bytes */
+DECL|member|ki_wait
+id|wait_queue_t
+id|ki_wait
+suffix:semicolon
+DECL|member|ki_retried
+r_int
+id|ki_retried
+suffix:semicolon
+multiline_comment|/* just for testing */
+DECL|member|ki_kicked
+r_int
+id|ki_kicked
+suffix:semicolon
+multiline_comment|/* just for testing */
+DECL|member|ki_queued
+r_int
+id|ki_queued
+suffix:semicolon
+multiline_comment|/* just for testing */
 DECL|member|private
 r_void
 op_star
@@ -166,7 +208,7 @@ suffix:semicolon
 DECL|macro|is_sync_kiocb
 mdefine_line|#define is_sync_kiocb(iocb)&t;((iocb)-&gt;ki_key == KIOCB_SYNC_KEY)
 DECL|macro|init_sync_kiocb
-mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_flags = 0;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_dtor = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_obj.tsk = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_flags = 0;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_dtor = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_obj.tsk = tsk;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_user_data = 0;                  &bslash;&n;&t;&t;init_wait((&amp;(x)-&gt;ki_wait));             &bslash;&n;&t;} while (0)
 DECL|macro|AIO_RING_MAGIC
 mdefine_line|#define AIO_RING_MAGIC&t;&t;&t;0xa10a10a1
 DECL|macro|AIO_RING_COMPAT_FEATURES
@@ -527,6 +569,15 @@ DECL|macro|get_ioctx
 mdefine_line|#define get_ioctx(kioctx)&t;do { if (unlikely(atomic_read(&amp;(kioctx)-&gt;users) &lt;= 0)) BUG(); atomic_inc(&amp;(kioctx)-&gt;users); } while (0)
 DECL|macro|put_ioctx
 mdefine_line|#define put_ioctx(kioctx)&t;do { if (unlikely(atomic_dec_and_test(&amp;(kioctx)-&gt;users))) __put_ioctx(kioctx); else if (unlikely(atomic_read(&amp;(kioctx)-&gt;users) &lt; 0)) BUG(); } while (0)
+DECL|macro|in_aio
+mdefine_line|#define in_aio() !is_sync_wait(current-&gt;io_wait)
+multiline_comment|/* may be used for debugging */
+DECL|macro|warn_if_async
+mdefine_line|#define warn_if_async()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (in_aio()) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_ERR &quot;%s(%s:%d) called in async context!&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;__FUNCTION__, __FILE__, __LINE__);&t;&t;&bslash;&n;&t;&t;dump_stack();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|io_wait_to_kiocb
+mdefine_line|#define io_wait_to_kiocb(wait) container_of(wait, struct kiocb, ki_wait)
+DECL|macro|is_retried_kiocb
+mdefine_line|#define is_retried_kiocb(iocb) ((iocb)-&gt;ki_retried &gt; 1)
 macro_line|#include &lt;linux/aio_abi.h&gt;
 DECL|function|list_kiocb
 r_static

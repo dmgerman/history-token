@@ -587,7 +587,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_ETRAX_DEBUG_PORT_NULL
+macro_line|#ifdef CONFIG_ETRAX_DEBUG_PORT_NULL
 r_return
 suffix:semicolon
 macro_line|#endif

@@ -241,6 +241,13 @@ suffix:semicolon
 r_case
 id|NETDEV_UNREGISTER
 suffix:colon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 id|br_del_if
 c_func
 (paren
@@ -249,7 +256,8 @@ comma
 id|dev
 )paren
 suffix:semicolon
-r_break
+r_goto
+id|done
 suffix:semicolon
 )brace
 id|spin_unlock_bh
@@ -259,6 +267,8 @@ op_amp
 id|br-&gt;lock
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 r_return
 id|NOTIFY_DONE
 suffix:semicolon

@@ -503,9 +503,13 @@ id|cam
 comma
 l_int|0x06
 comma
+l_int|0x0f
+op_minus
+(paren
 id|ctrl-&gt;value
 op_amp
 l_int|0x0f
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -812,7 +816,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;darkness&quot;
+l_string|&quot;brightness&quot;
 comma
 dot
 id|minimum
@@ -832,7 +836,7 @@ comma
 dot
 id|default_value
 op_assign
-l_int|0x00
+l_int|0x0f
 comma
 dot
 id|flags

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Dynamic DMA mapping support. Common code&n; */
+multiline_comment|/*&n; * Dynamic DMA mapping support.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -6,13 +6,13 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scatter-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
-DECL|function|pci_map_sg
+DECL|function|dma_map_sg
 r_int
-id|pci_map_sg
+id|dma_map_sg
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|hwdev
 comma
@@ -36,7 +36,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 r_for
@@ -74,18 +74,16 @@ id|s-&gt;page
 suffix:semicolon
 id|s-&gt;dma_address
 op_assign
-id|pci_map_page
+id|virt_to_bus
 c_func
 (paren
-id|hwdev
-comma
+id|page_address
+c_func
+(paren
 id|s-&gt;page
-comma
+)paren
+op_plus
 id|s-&gt;offset
-comma
-id|s-&gt;length
-comma
-id|direction
 )paren
 suffix:semicolon
 id|s-&gt;dma_length
@@ -97,21 +95,21 @@ r_return
 id|nents
 suffix:semicolon
 )brace
-DECL|variable|pci_map_sg
+DECL|variable|dma_map_sg
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_map_sg
+id|dma_map_sg
 )paren
 suffix:semicolon
 multiline_comment|/* Unmap a set of streaming mode DMA translations.&n; * Again, cpu read rules concerning calls here are the same as for&n; * pci_unmap_single() above.&n; */
-DECL|function|pci_unmap_sg
+DECL|function|dma_unmap_sg
 r_void
-id|pci_unmap_sg
+id|dma_unmap_sg
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -172,7 +170,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 id|dev
@@ -186,11 +184,11 @@ id|dir
 suffix:semicolon
 )brace
 )brace
-DECL|variable|pci_unmap_sg
+DECL|variable|dma_unmap_sg
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_unmap_sg
+id|dma_unmap_sg
 )paren
 suffix:semicolon
 eof

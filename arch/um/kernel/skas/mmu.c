@@ -71,13 +71,16 @@ OL
 l_int|0
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;init_new_context_skas - new_mm failed, errno = %d&bslash;n&quot;
 comma
 id|mm-&gt;context.skas.mm_fd
 )paren
+suffix:semicolon
+r_return
+id|mm-&gt;context.skas.mm_fd
 suffix:semicolon
 )brace
 r_return

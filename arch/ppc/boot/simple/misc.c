@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
-macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Default cmdline */
 macro_line|#ifdef CONFIG_CMDLINE
 DECL|macro|CMDLINE
@@ -239,11 +238,6 @@ comma
 id|TotalMemory
 op_assign
 l_int|0
-suffix:semicolon
-id|serial_fixups
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 id|com_port
@@ -899,7 +893,7 @@ suffix:semicolon
 id|gunzip
 c_func
 (paren
-l_int|NULL
+l_int|0x0
 comma
 l_int|0x400000
 comma
@@ -1158,6 +1152,21 @@ r_return
 id|rec
 suffix:semicolon
 )brace
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|board_isa_init
+id|board_isa_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 multiline_comment|/* Allow decompress_kernel to be hooked into.  This is the default. */
 r_void
 op_star
@@ -1191,6 +1200,11 @@ op_star
 id|ign2
 )paren
 (brace
+id|board_isa_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|decompress_kernel
 c_func

@@ -2304,6 +2304,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 DECL|function|pxamci_suspend
 r_static
 r_int
@@ -2413,6 +2414,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|pxamci_suspend
+mdefine_line|#define pxamci_suspend&t;NULL
+DECL|macro|pxamci_resume
+mdefine_line|#define pxamci_resume&t;NULL
+macro_line|#endif
 DECL|variable|pxamci_driver
 r_static
 r_struct

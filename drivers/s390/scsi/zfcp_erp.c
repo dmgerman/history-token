@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.61 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.65 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -18,7 +18,7 @@ id|u8
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|zfcp_els_handler
 c_func
 (paren
@@ -746,6 +746,40 @@ id|zfcp_erp_action
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * zfcp_fsf_request_timeout_handler - called if a request timed out&n; * @data: pointer to adapter for handler function&n; *&n; * This function needs to be called if requests (ELS, Generic Service,&n; * or SCSI commands) exceed a certain time limit. The assumption is&n; * that after the time limit the adapter get stuck. So we trigger a reopen of&n; * the adapter. This should not be used for error recovery, SCSI abort&n; * commands and SCSI requests from SCSI mid-layer.&n; */
+r_void
+DECL|function|zfcp_fsf_request_timeout_handler
+id|zfcp_fsf_request_timeout_handler
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+id|adapter
+op_assign
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+)paren
+id|data
+suffix:semicolon
+id|zfcp_erp_adapter_reopen
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * function:&t;zfcp_fsf_scsi_er_timeout_handler&n; *&n; * purpose:     This function needs to be called whenever a SCSI error recovery&n; *              action (abort/reset) does not return.&n; *              Re-opening the adapter means that the command can be returned&n; *              by zfcp (it is guarranteed that it does not return via the&n; *              adapter anymore). The buffer can then be used again.&n; *    &n; * returns:     sod all&n; */
 r_void
 DECL|function|zfcp_fsf_scsi_er_timeout_handler
@@ -1299,6 +1333,16 @@ c_func
 id|send_els-&gt;req
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|req
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+)paren
+suffix:semicolon
 op_star
 (paren
 id|u32
@@ -1656,8 +1700,8 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_els_handler&n; *&n; * purpose:     Handler for all kind of ELSs&n; *&n; * returns:     0       - Operation completed successfuly&n; *              -ENXIO  - ELS has been rejected&n; *              -EPERM  - Port forced reopen failed&n; */
-r_int
+multiline_comment|/**&n; * zfcp_els_handler - handler for ELS commands&n; * @data: pointer to struct zfcp_send_els&n; * If ELS failed (LS_RJT or timed out) forced reopen of the port is triggered.&n; */
+r_void
 DECL|function|zfcp_els_handler
 id|zfcp_els_handler
 c_func
@@ -1685,11 +1729,6 @@ op_star
 id|port
 op_assign
 id|send_els-&gt;port
-suffix:semicolon
-r_struct
-id|zfcp_ls_rjt
-op_star
-id|rjt
 suffix:semicolon
 r_struct
 id|zfcp_ls_rtv_acc
@@ -1720,14 +1759,8 @@ id|resp
 suffix:semicolon
 id|u8
 id|req_code
-comma
-id|resp_code
 suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* request rejected or timed out */
 r_if
 c_cond
 (paren
@@ -1761,8 +1794,9 @@ comma
 l_string|&quot;forcreop&quot;
 )paren
 suffix:semicolon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|zfcp_erp_port_forced_reopen
 c_func
 (paren
@@ -1770,15 +1804,7 @@ id|port
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|0
 )paren
-(brace
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
@@ -1794,54 +1820,24 @@ id|port
 )paren
 )paren
 suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
 r_goto
-id|skip_fsfstatus
+id|out
 suffix:semicolon
 )brace
 id|req
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-id|page_to_pfn
+id|zfcp_sg_to_address
 c_func
 (paren
-id|send_els-&gt;req-&gt;page
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
-op_plus
-id|send_els-&gt;req-&gt;offset
+id|send_els-&gt;req
 )paren
 suffix:semicolon
 id|resp
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-id|page_to_pfn
+id|zfcp_sg_to_address
 c_func
 (paren
-id|send_els-&gt;resp-&gt;page
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
-op_plus
-id|send_els-&gt;resp-&gt;offset
+id|send_els-&gt;resp
 )paren
 suffix:semicolon
 id|req_code
@@ -1853,181 +1849,6 @@ op_star
 )paren
 id|req
 suffix:semicolon
-id|resp_code
-op_assign
-op_star
-(paren
-id|u8
-op_star
-)paren
-id|resp
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|resp_code
-)paren
-(brace
-r_case
-id|ZFCP_LS_RJT
-suffix:colon
-id|rjt
-op_assign
-(paren
-r_struct
-id|zfcp_ls_rjt
-op_star
-)paren
-id|resp
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|rjt-&gt;reason_code
-)paren
-(brace
-r_case
-id|ZFCP_LS_RJT_INVALID_COMMAND_CODE
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;invalid LS command code &quot;
-l_string|&quot;(wwpn=0x%016Lx, command=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|req_code
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_LOGICAL_ERROR
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;logical error (wwpn=0x%016Lx, &quot;
-l_string|&quot;reason_expl=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|rjt-&gt;reason_expl
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_LOGICAL_BUSY
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;logical busy (wwpn=0x%016Lx, &quot;
-l_string|&quot;reason_expl=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|rjt-&gt;reason_expl
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_PROTOCOL_ERROR
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;protocol error (wwpn=0x%016Lx, &quot;
-l_string|&quot;reason_expl=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|rjt-&gt;reason_expl
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_UNABLE_TO_PERFORM
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;unable to perform command requested &quot;
-l_string|&quot;(wwpn=0x%016Lx, reason_expl=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|rjt-&gt;reason_expl
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_COMMAND_NOT_SUPPORTED
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;command not supported (wwpn=0x%016Lx, &quot;
-l_string|&quot;command=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|req_code
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_RJT_VENDOR_UNIQUE_ERROR
-suffix:colon
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;vendor specific error (wwpn=0x%016Lx, &quot;
-l_string|&quot;vendor_unique=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|rjt-&gt;vendor_unique
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;ELS rejected by remote port 0x%016Lx &quot;
-l_string|&quot;on adapter %s (reason_code=0x%02x)&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|zfcp_get_busid_by_port
-c_func
-(paren
-id|port
-)paren
-comma
-id|rjt-&gt;reason_code
-)paren
-suffix:semicolon
-)brace
-id|retval
-op_assign
-op_minus
-id|ENXIO
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ZFCP_LS_ACC
-suffix:colon
 r_switch
 c_cond
 (paren
@@ -2194,73 +2015,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;unknown payload code 0x%02x received for &quot;
-l_string|&quot;request 0x%02x to d_id 0x%08x, reopen needed &quot;
-l_string|&quot;for port 0x%016Lx on adapter %s&bslash;n&quot;
-comma
-id|resp_code
-comma
-id|req_code
-comma
-id|port-&gt;d_id
-comma
-id|port-&gt;wwpn
-comma
-id|zfcp_get_busid_by_port
-c_func
-(paren
-id|port
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|zfcp_erp_port_forced_reopen
-c_func
-(paren
-id|port
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|0
-)paren
-(brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;reopen of remote port 0x%016Lx on &quot;
-l_string|&quot;adapter %s failed&bslash;n&quot;
-comma
-id|port-&gt;wwpn
-comma
-id|zfcp_get_busid_by_port
-c_func
-(paren
-id|port
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
-)brace
-)brace
-id|skip_fsfstatus
+id|out
 suffix:colon
 id|__free_pages
 c_func
@@ -2282,8 +2037,11 @@ c_func
 id|send_els-&gt;resp
 )paren
 suffix:semicolon
-r_return
-id|retval
+id|kfree
+c_func
+(paren
+id|send_els
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * function:    zfcp_test_link&n; *&n; * purpose:     Test a status of a link to a remote port using the ELS command ADISC&n; *&n; * returns:     0       - Link is OK&n; *              -EPERM  - Port forced reopen failed&n; */
@@ -2776,7 +2534,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;Wrappper for zfcp_erp_port_reopen_internal&n; *              used to ensure the correct locking&n; *&n; * returns:&t;0&t;- initiated action succesfully&n; *&t;&t;&lt;0&t;- failed to initiate action&n; */
+multiline_comment|/**&n; * zfcp_erp_port_reopen - initiate reopen of a remote port&n; * @port: port to be reopened&n; * @clear_mask: specifies flags in port status to be cleared&n; * Return: 0 on success, &lt; 0 on error&n; *&n; * This is a wrappper function for zfcp_erp_port_reopen_internal. It ensures&n; * correct locking. An error recovery task is initiated to do the reopen.&n; * To wait for the completion of the reopen zfcp_erp_wait should be used.&n; */
 r_int
 DECL|function|zfcp_erp_port_reopen
 id|zfcp_erp_port_reopen
@@ -3013,7 +2771,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;Wrappper for zfcp_erp_unit_reopen_internal&n; *              used to ensure the correct locking&n; *&n; * returns:&t;0&t;- initiated action succesfully&n; *&t;&t;&lt;0&t;- failed to initiate action&n; */
+multiline_comment|/**&n; * zfcp_erp_unit_reopen - initiate reopen of a unit&n; * @unit: unit to be reopened&n; * @clear_mask: specifies flags in unit status to be cleared&n; * Return: 0 on success, &lt; 0 on error&n; *&n; * This is a wrappper for zfcp_erp_unit_reopen_internal. It ensures correct&n; * locking. An error recovery task is initiated to do the reopen.&n; * To wait for the completion of the reopen zfcp_erp_wait should be used.&n; */
 r_int
 DECL|function|zfcp_erp_unit_reopen
 id|zfcp_erp_unit_reopen
@@ -6835,7 +6593,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:&t;&n; *&n; * purpose:&t;&n; *&n; * returns:&n; */
+multiline_comment|/**&n; * zfcp_erp_wait - wait for completion of error recovery on an adapter&n; * @adapter: adapter for which to wait for completion of its error recovery&n; * Return: 0&n; */
 r_int
 DECL|function|zfcp_erp_wait
 id|zfcp_erp_wait
@@ -7396,7 +7154,7 @@ op_logical_neg
 id|atomic_test_mask
 c_func
 (paren
-id|ZFCP_STATUS_PORT_NAMESERVER
+id|ZFCP_STATUS_PORT_WKA
 comma
 op_amp
 id|port-&gt;status
@@ -9244,7 +9002,7 @@ c_cond
 id|atomic_test_mask
 c_func
 (paren
-id|ZFCP_STATUS_PORT_NAMESERVER
+id|ZFCP_STATUS_PORT_WKA
 comma
 op_amp
 id|erp_action-&gt;port-&gt;status
@@ -9714,7 +9472,7 @@ id|port-&gt;status
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;nameserver port is open&bslash;n&quot;
+l_string|&quot;WKA port is open&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -9727,7 +9485,7 @@ r_else
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;open failed for nameserver port&bslash;n&quot;
+l_string|&quot;open failed for WKA port&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval

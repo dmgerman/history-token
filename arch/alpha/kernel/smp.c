@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -22,7 +23,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;proto.h&quot;
@@ -1416,44 +1416,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_struct
-id|task_struct
-op_star
-id|__init
-DECL|function|fork_by_hand
-id|fork_by_hand
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Don&squot;t care about the contents of regs since we&squot;ll never&n;&t;   reschedule the forked task. */
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-r_return
-id|copy_process
-c_func
-(paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Bring one cpu online.&n; */
 r_static
 r_int
@@ -1478,9 +1440,10 @@ suffix:semicolon
 multiline_comment|/* Cook up an idler for this guy.  Note that the address we&n;&t;   give to kernel_thread is irrelevant -- it&squot;s going to start&n;&t;   where HWRPB.CPU_restart says to start.  But this gets all&n;&t;   the other task-y sort of data structures set up like we&n;&t;   wish.  We can&squot;t use kernel_thread since we must avoid&n;&t;   rescheduling the child.  */
 id|idle
 op_assign
-id|fork_by_hand
+id|fork_idle
 c_func
 (paren
+id|cpuid
 )paren
 suffix:semicolon
 r_if
@@ -1498,26 +1461,6 @@ c_func
 l_string|&quot;failed fork for CPU %d&quot;
 comma
 id|cpuid
-)paren
-suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-id|idle
-comma
-id|cpuid
-)paren
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|idle
 )paren
 suffix:semicolon
 id|DBGS
@@ -2204,16 +2147,12 @@ id|cpu
 )braket
 suffix:semicolon
 multiline_comment|/* Record kernel PC.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user
-)paren
-id|alpha_do_profile
+id|profile_tick
 c_func
 (paren
-id|regs-&gt;pc
+id|CPU_PROFILING
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if

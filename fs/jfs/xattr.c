@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines  Corp., 2000-2003&n; *   Copyright (C) Christoph Hellwig, 2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines  Corp., 2000-2004&n; *   Copyright (C) Christoph Hellwig, 2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
@@ -565,6 +566,24 @@ l_int|1
 op_rshift
 id|sb-&gt;s_blocksize_bits
 suffix:semicolon
+multiline_comment|/* Allocate new blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nblocks
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|dbAlloc
@@ -589,9 +608,20 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+multiline_comment|/*Rollback quota allocation. */
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nblocks
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now have nblocks worth of storage to stuff into the FEALIST.&n;&t; * loop over the FEALIST copying data into the buffer one page at&n;&t; * a time.&n;&t; */
 id|cp
 op_assign
@@ -781,6 +811,15 @@ l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
+multiline_comment|/* Rollback quota allocation. */
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nblocks
+)paren
+suffix:semicolon
 id|dbFree
 c_func
 (paren
@@ -1225,6 +1264,11 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_int
+id|quota_allocation
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* When fsck.jfs clears a bad ea, it doesn&squot;t clear the size */
 r_if
 c_cond
@@ -1563,6 +1607,26 @@ OG
 id|current_blocks
 )paren
 (brace
+multiline_comment|/* Allocate new blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|inode
+comma
+id|blocks_needed
+)paren
+)paren
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+id|quota_allocation
+op_assign
+id|blocks_needed
+suffix:semicolon
 id|rc
 op_assign
 id|dbAlloc
@@ -1590,8 +1654,8 @@ c_cond
 (paren
 id|rc
 )paren
-r_return
-id|rc
+r_goto
+id|clean_up
 suffix:semicolon
 id|DXDlength
 c_func
@@ -1667,9 +1731,13 @@ id|s64
 id|blocks_needed
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|ea_buf-&gt;xattr
@@ -1738,8 +1806,8 @@ id|s64
 id|blocks_needed
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 r_goto
@@ -1783,10 +1851,16 @@ id|ea_buf-&gt;mp
 op_eq
 l_int|NULL
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
+r_goto
+id|clean_up
+suffix:semicolon
+)brace
 id|ea_buf-&gt;xattr
 op_assign
 id|ea_buf-&gt;mp-&gt;data
@@ -1847,13 +1921,38 @@ comma
 id|ea_buf
 )paren
 suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 r_return
 id|ea_size
+suffix:semicolon
+id|clean_up
+suffix:colon
+multiline_comment|/* Rollback quota allocation */
+r_if
+c_cond
+(paren
+id|quota_allocation
+)paren
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|inode
+comma
+id|quota_allocation
+)paren
+suffix:semicolon
+r_return
+(paren
+id|rc
+)paren
 suffix:semicolon
 )brace
 DECL|function|ea_release
@@ -2276,15 +2375,17 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|inode-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
+multiline_comment|/* If old blocks exist, they must be removed from quota allocation. */
+r_if
+c_cond
+(paren
+id|old_blocks
+)paren
+id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|inode-&gt;i_sb
+id|inode
 comma
-id|new_blocks
-op_minus
 id|old_blocks
 )paren
 suffix:semicolon

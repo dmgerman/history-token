@@ -9625,6 +9625,16 @@ c_func
 r_void
 )paren
 (brace
+id|i810fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;i810fb&quot;
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10006,13 +10016,6 @@ id|i810fb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|i810fb_init
-id|module_init
-c_func
-(paren
-id|i810fb_init
-)paren
-suffix:semicolon
 DECL|variable|i810fb_exit
 id|module_exit
 c_func
@@ -10021,4 +10024,11 @@ id|i810fb_exit
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
+DECL|variable|i810fb_init
+id|module_init
+c_func
+(paren
+id|i810fb_init
+)paren
+suffix:semicolon
 eof

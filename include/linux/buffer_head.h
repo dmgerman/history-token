@@ -108,11 +108,6 @@ r_int
 id|b_state
 suffix:semicolon
 multiline_comment|/* buffer state bitmap (see above) */
-DECL|member|b_count
-id|atomic_t
-id|b_count
-suffix:semicolon
-multiline_comment|/* users using this block */
 DECL|member|b_this_page
 r_struct
 id|buffer_head
@@ -127,16 +122,21 @@ op_star
 id|b_page
 suffix:semicolon
 multiline_comment|/* the page this bh is mapped to */
-DECL|member|b_blocknr
-id|sector_t
-id|b_blocknr
+DECL|member|b_count
+id|atomic_t
+id|b_count
 suffix:semicolon
-multiline_comment|/* block number */
+multiline_comment|/* users using this block */
 DECL|member|b_size
 id|u32
 id|b_size
 suffix:semicolon
 multiline_comment|/* block size */
+DECL|member|b_blocknr
+id|sector_t
+id|b_blocknr
+suffix:semicolon
+multiline_comment|/* block number */
 DECL|member|b_data
 r_char
 op_star
@@ -413,23 +413,6 @@ id|uptodate
 suffix:semicolon
 multiline_comment|/* Things to do with buffers at mapping-&gt;private_list */
 r_void
-id|buffer_insert_list
-c_func
-(paren
-id|spinlock_t
-op_star
-id|lock
-comma
-r_struct
-id|buffer_head
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_void
 id|mark_buffer_dirty_inode
 c_func
 (paren
@@ -473,19 +456,6 @@ id|inode
 )paren
 suffix:semicolon
 r_int
-id|fsync_buffers_list
-c_func
-(paren
-id|spinlock_t
-op_star
-id|lock
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_int
 id|sync_mapping_buffers
 c_func
 (paren
@@ -506,16 +476,6 @@ id|bdev
 comma
 id|sector_t
 id|block
-)paren
-suffix:semicolon
-r_void
-id|mark_buffer_async_read
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
 )paren
 suffix:semicolon
 r_void
@@ -1316,6 +1276,11 @@ op_star
 id|bh
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1354,6 +1319,11 @@ op_star
 id|bh
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

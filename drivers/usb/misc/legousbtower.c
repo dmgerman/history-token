@@ -2343,9 +2343,11 @@ suffix:semicolon
 multiline_comment|/* write the data into interrupt_out_buffer from userspace */
 id|bytes_to_write
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|write_buffer_size

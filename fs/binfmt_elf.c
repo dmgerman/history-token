@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 r_static
 r_int
@@ -2878,6 +2879,12 @@ id|current-&gt;personality
 op_or_assign
 id|READ_IMPLIES_EXEC
 suffix:semicolon
+id|arch_pick_mmap_layout
+c_func
+(paren
+id|current-&gt;mm
+)paren
+suffix:semicolon
 multiline_comment|/* Do this so that we can load the interpreter, if need be.  We will&n;&t;   change some of these later */
 id|current-&gt;mm-&gt;rss
 op_assign
@@ -2885,7 +2892,7 @@ l_int|0
 suffix:semicolon
 id|current-&gt;mm-&gt;free_area_cache
 op_assign
-id|TASK_UNMAPPED_BASE
+id|current-&gt;mm-&gt;mmap_base
 suffix:semicolon
 id|retval
 op_assign
@@ -4875,6 +4882,40 @@ id|prstatus-&gt;pr_sid
 op_assign
 id|p-&gt;signal-&gt;session
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;pid
+op_eq
+id|p-&gt;tgid
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This is the record for the group leader.  Add in the&n;&t;&t; * cumulative times of previous dead threads.  This total&n;&t;&t; * won&squot;t include the time of each live thread whose state&n;&t;&t; * is included in the core dump.  The final total reported&n;&t;&t; * to our parent process when it calls wait4 will include&n;&t;&t; * those sums as well as the little bit more time it takes&n;&t;&t; * this and each other thread to finish dying after the&n;&t;&t; * core dump synchronization phase.&n;&t;&t; */
+id|jiffies_to_timeval
+c_func
+(paren
+id|p-&gt;utime
+op_plus
+id|p-&gt;signal-&gt;utime
+comma
+op_amp
+id|prstatus-&gt;pr_utime
+)paren
+suffix:semicolon
+id|jiffies_to_timeval
+c_func
+(paren
+id|p-&gt;stime
+op_plus
+id|p-&gt;signal-&gt;stime
+comma
+op_amp
+id|prstatus-&gt;pr_stime
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|jiffies_to_timeval
 c_func
 (paren
@@ -4893,10 +4934,11 @@ op_amp
 id|prstatus-&gt;pr_stime
 )paren
 suffix:semicolon
+)brace
 id|jiffies_to_timeval
 c_func
 (paren
-id|p-&gt;cutime
+id|p-&gt;signal-&gt;cutime
 comma
 op_amp
 id|prstatus-&gt;pr_cutime
@@ -4905,7 +4947,7 @@ suffix:semicolon
 id|jiffies_to_timeval
 c_func
 (paren
-id|p-&gt;cstime
+id|p-&gt;signal-&gt;cstime
 comma
 op_amp
 id|prstatus-&gt;pr_cstime

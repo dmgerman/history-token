@@ -1303,7 +1303,7 @@ id|dst_entry
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETPOLL_RX
+macro_line|#ifdef CONFIG_NETPOLL
 DECL|member|netpoll_rx
 r_int
 id|netpoll_rx

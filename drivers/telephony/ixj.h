@@ -3995,6 +3995,7 @@ r_char
 id|cid_rec_flag
 suffix:semicolon
 DECL|member|rec_mode
+r_int
 r_char
 id|rec_mode
 suffix:semicolon
@@ -4019,6 +4020,7 @@ r_char
 id|cid_play_flag
 suffix:semicolon
 DECL|member|play_mode
+r_int
 r_char
 id|play_mode
 suffix:semicolon

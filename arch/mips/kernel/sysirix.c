@@ -3378,7 +3378,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;cutime
+id|current-&gt;signal-&gt;cutime
 comma
 op_amp
 id|tbuf-&gt;tms_cutime
@@ -3389,7 +3389,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|current-&gt;cstime
+id|current-&gt;signal-&gt;cstime
 comma
 op_amp
 id|tbuf-&gt;tms_cstime

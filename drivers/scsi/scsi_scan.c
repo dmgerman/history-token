@@ -546,6 +546,10 @@ id|id
 comma
 id|uint
 id|lun
+comma
+r_void
+op_star
+id|hostdata
 )paren
 (brace
 r_struct
@@ -665,6 +669,11 @@ c_func
 op_amp
 id|sdev-&gt;list_lock
 )paren
+suffix:semicolon
+multiline_comment|/* usually NULL and set by -&gt;slave_alloc instead */
+id|sdev-&gt;hostdata
+op_assign
+id|hostdata
 suffix:semicolon
 multiline_comment|/* if the device needs this changing, it may do so in the&n;&t; * slave_configure function */
 id|sdev-&gt;max_device_blocked
@@ -2229,6 +2238,10 @@ id|sdevp
 comma
 r_int
 id|rescan
+comma
+r_void
+op_star
+id|hostdata
 )paren
 (brace
 r_struct
@@ -2353,6 +2366,8 @@ comma
 id|id
 comma
 id|lun
+comma
+id|hostdata
 )paren
 suffix:semicolon
 r_if
@@ -2799,6 +2814,8 @@ comma
 l_int|NULL
 comma
 id|rescan
+comma
+l_int|NULL
 )paren
 op_ne
 id|SCSI_SCAN_LUN_PRESENT
@@ -3582,6 +3599,8 @@ comma
 l_int|NULL
 comma
 id|rescan
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3643,11 +3662,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|scsi_add_device
+DECL|function|__scsi_add_device
 r_struct
 id|scsi_device
 op_star
-id|scsi_add_device
+id|__scsi_add_device
 c_func
 (paren
 r_struct
@@ -3663,6 +3682,10 @@ id|id
 comma
 id|uint
 id|lun
+comma
+r_void
+op_star
+id|hostdata
 )paren
 (brace
 r_struct
@@ -3699,6 +3722,8 @@ op_amp
 id|sdev
 comma
 l_int|1
+comma
+id|hostdata
 )paren
 suffix:semicolon
 r_if
@@ -3867,6 +3892,8 @@ comma
 l_int|NULL
 comma
 id|rescan
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -3893,6 +3920,8 @@ op_amp
 id|sdev
 comma
 id|rescan
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4371,6 +4400,8 @@ comma
 id|shost-&gt;this_id
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

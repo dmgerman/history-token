@@ -2892,14 +2892,10 @@ op_assign
 op_minus
 id|ENXIO
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace

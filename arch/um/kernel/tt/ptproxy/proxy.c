@@ -6,7 +6,6 @@ macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;termios.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/types.h&gt;
@@ -1210,6 +1209,9 @@ op_eq
 l_int|1
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -1221,6 +1223,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1252,6 +1255,9 @@ id|debugger.pid
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -1263,6 +1269,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1319,19 +1326,7 @@ id|gdb_init_string
 (braket
 )braket
 op_assign
-"&quot;"
-id|att
-l_int|1
-id|b
-id|panic
-id|b
-id|stop
-id|handle
-id|SIGWINCH
-id|nostop
-id|noprint
-id|pass
-"&quot;"
+l_string|&quot;att 1 &bslash;n&bslash;&n;b panic &bslash;n&bslash;&n;b stop &bslash;n&bslash;&n;handle SIGWINCH nostop noprint pass &bslash;n&bslash;&n;&quot;
 suffix:semicolon
 DECL|function|start_debugger
 r_int
@@ -1365,17 +1360,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|child
 op_assign
 id|fork
 c_func
 (paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|child
 op_eq
 l_int|0
 )paren
@@ -1525,10 +1520,6 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|make_tempfile
@@ -1541,7 +1532,11 @@ id|tempname
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -1549,9 +1544,11 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;start_debugger : make_tempfile failed, errno = %d&bslash;n&quot;
+l_string|&quot;start_debugger : make_tempfile failed,&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|fd
 )paren
 suffix:semicolon
 m_exit
@@ -1560,7 +1557,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|fd
@@ -1587,7 +1584,7 @@ c_cond
 id|stop
 )paren
 (brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|fd
@@ -1602,7 +1599,7 @@ l_string|&quot;b start_kernel&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|fd

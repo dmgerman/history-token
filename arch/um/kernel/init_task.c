@@ -4,7 +4,6 @@ macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/init_task.h&quot;
-macro_line|#include &quot;linux/version.h&quot;
 macro_line|#include &quot;linux/mqueue.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
@@ -47,6 +46,18 @@ id|INIT_SIGNALS
 c_func
 (paren
 id|init_signals
+)paren
+suffix:semicolon
+DECL|variable|init_sighand
+r_static
+r_struct
+id|sighand_struct
+id|init_sighand
+op_assign
+id|INIT_SIGHAND
+c_func
+(paren
+id|init_sighand
 )paren
 suffix:semicolon
 DECL|variable|init_mm
@@ -100,31 +111,6 @@ id|init_task
 )paren
 )brace
 suffix:semicolon
-DECL|function|alloc_task_struct
-r_struct
-id|task_struct
-op_star
-id|alloc_task_struct
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-id|__get_free_pages
-c_func
-(paren
-id|GFP_KERNEL
-comma
-id|CONFIG_KERNEL_STACK_ORDER
-)paren
-suffix:semicolon
-)brace
 DECL|function|unprotect_stack
 r_void
 id|unprotect_stack
@@ -155,31 +141,6 @@ comma
 l_int|0
 comma
 l_int|1
-)paren
-suffix:semicolon
-)brace
-DECL|function|free_task_struct
-r_void
-id|free_task_struct
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-(brace
-multiline_comment|/* free_pages decrements the page counter and only actually frees&n;&t; * the pages if they are now not accessed by anything.&n;&t; */
-id|free_pages
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|task
-comma
-id|CONFIG_KERNEL_STACK_ORDER
 )paren
 suffix:semicolon
 )brace

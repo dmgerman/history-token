@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * inode.c -- user mode filesystem api for usb gadget controllers&n; *&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003 Agilent Technologies&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * inode.c -- user mode filesystem api for usb gadget controllers&n; *&n; * Copyright (C) 2003-2004 David Brownell&n; * Copyright (C) 2003 Agilent Technologies&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 singleline_comment|// #define&t;DEBUG &t;&t;&t;/* data to help fault diagnosis */
 singleline_comment|// #define&t;VERBOSE&t;&t;/* extra debug messages (success too) */
 macro_line|#include &lt;linux/init.h&gt;
@@ -18,7 +18,7 @@ multiline_comment|/*&n; * The gadgetfs API maps each endpoint to a file descript
 DECL|macro|DRIVER_DESC
 mdefine_line|#define&t;DRIVER_DESC&t;&quot;USB Gadget filesystem&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define&t;DRIVER_VERSION&t;&quot;18 Nov 2003&quot;
+mdefine_line|#define&t;DRIVER_VERSION&t;&quot;24 Aug 2004&quot;
 DECL|variable|driver_desc
 r_static
 r_const
@@ -563,36 +563,14 @@ id|data
 suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------*/
-multiline_comment|/* most &quot;how to use the hardware&quot; policy choices are in userspace:&n; * mapping endpoint roles the driver needs to the capabilities that&n; * the usb controller exposes.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_DUMMY_HCD
-multiline_comment|/* act (mostly) like a net2280 */
-DECL|macro|CONFIG_USB_GADGET_NET2280
-mdefine_line|#define CONFIG_USB_GADGET_NET2280
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx_udc&quot;
-multiline_comment|/* earlier hardware doesn&squot;t have UDCCFR, races set_{config,interface} */
-macro_line|#warning works best with pxa255 or newer
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;goku_udc&quot;
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;omap_udc&quot;
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
-macro_line|#endif
+multiline_comment|/* most &quot;how to use the hardware&quot; policy choices are in userspace:&n; * mapping endpoint roles (which the driver needs) to the capabilities&n; * which the usb controller has.  most of those capabilities are exposed&n; * implicitly, starting with the driver name and then endpoint names.&n; */
+DECL|variable|CHIP
+r_static
+r_const
+r_char
+op_star
+id|CHIP
+suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------------*/
 multiline_comment|/* NOTE:  don&squot;t use dev_printk calls before binding to the gadget&n; * at the end of ep0 configuration, or after unbind.&n; */
 multiline_comment|/* too wordy: dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args) */
@@ -1753,11 +1731,6 @@ id|kiocb_priv
 op_star
 id|priv
 op_assign
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|iocb
 op_member_access_from_pointer
 r_private
@@ -1832,7 +1805,7 @@ suffix:semicolon
 )brace
 DECL|function|ep_aio_read_retry
 r_static
-r_int
+id|ssize_t
 id|ep_aio_read_retry
 c_func
 (paren
@@ -1847,16 +1820,11 @@ id|kiocb_priv
 op_star
 id|priv
 op_assign
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|iocb
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_int
+id|ssize_t
 id|status
 op_assign
 id|priv-&gt;actual
@@ -1901,6 +1869,12 @@ c_func
 id|priv-&gt;buf
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
 id|aio_put_req
 c_func
 (paren
@@ -1940,11 +1914,6 @@ id|kiocb_priv
 op_star
 id|priv
 op_assign
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|iocb
 op_member_access_from_pointer
 r_private
@@ -2003,6 +1972,18 @@ c_func
 (paren
 id|req-&gt;buf
 )paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+id|iocb
+op_member_access_from_pointer
+r_private
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* aio_complete() reports bytes-transferred _and_ faults */
 r_if
@@ -2128,6 +2109,11 @@ r_struct
 id|ep_data
 op_star
 id|epdata
+comma
+r_char
+id|__user
+op_star
+id|ubuf
 )paren
 (brace
 r_struct
@@ -2151,6 +2137,52 @@ id|req
 suffix:semicolon
 id|ssize_t
 id|value
+suffix:semicolon
+id|priv
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+op_star
+id|priv
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv
+)paren
+(brace
+id|value
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|fail
+suffix:colon
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+r_return
+id|value
+suffix:semicolon
+)brace
+id|iocb
+op_member_access_from_pointer
+r_private
+op_assign
+id|priv
+suffix:semicolon
+id|priv-&gt;ubuf
+op_assign
+id|ubuf
 suffix:semicolon
 id|value
 op_assign
@@ -2177,11 +2209,11 @@ l_int|0
 id|kfree
 c_func
 (paren
-id|buf
+id|priv
 )paren
 suffix:semicolon
-r_return
-id|value
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|iocb-&gt;ki_cancel
@@ -2328,12 +2360,20 @@ c_func
 id|value
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
 id|put_ep
 c_func
 (paren
 id|epdata
 )paren
 suffix:semicolon
+)brace
 r_else
 id|value
 op_assign
@@ -2367,20 +2407,6 @@ id|loff_t
 id|o
 )paren
 (brace
-r_struct
-id|kiocb_priv
-op_star
-id|priv
-op_assign
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|iocb
-op_member_access_from_pointer
-r_private
-suffix:semicolon
 r_struct
 id|ep_data
 op_star
@@ -2435,10 +2461,6 @@ id|iocb-&gt;ki_retry
 op_assign
 id|ep_aio_read_retry
 suffix:semicolon
-id|priv-&gt;ubuf
-op_assign
-id|ubuf
-suffix:semicolon
 r_return
 id|ep_aio_rwtail
 c_func
@@ -2450,6 +2472,8 @@ comma
 id|len
 comma
 id|epdata
+comma
+id|ubuf
 )paren
 suffix:semicolon
 )brace
@@ -2572,6 +2596,8 @@ comma
 id|len
 comma
 id|epdata
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2588,6 +2614,11 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
+comma
+dot
+id|llseek
+op_assign
+id|no_llseek
 comma
 dot
 id|read
@@ -3205,6 +3236,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|llseek
+op_assign
+id|no_llseek
+comma
+dot
 id|open
 op_assign
 id|ep_open
@@ -3674,6 +3710,45 @@ id|dev-&gt;state
 op_assign
 id|STATE_CONNECTED
 suffix:semicolon
+multiline_comment|/* assume that was SET_CONFIGURATION */
+r_if
+c_cond
+(paren
+id|dev-&gt;current_config
+)paren
+(brace
+r_int
+id|power
+suffix:semicolon
+macro_line|#ifdef&t;HIGHSPEED
+r_if
+c_cond
+(paren
+id|dev-&gt;gadget-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+id|power
+op_assign
+id|dev-&gt;hs_config-&gt;bMaxPower
+suffix:semicolon
+r_else
+macro_line|#endif
+id|power
+op_assign
+id|dev-&gt;config-&gt;bMaxPower
+suffix:semicolon
+id|usb_gadget_vbus_draw
+c_func
+(paren
+id|dev-&gt;gadget
+comma
+l_int|2
+op_star
+id|power
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -4780,6 +4855,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|llseek
+op_assign
+id|no_llseek
+comma
+dot
 id|read
 op_assign
 id|ep0_read
@@ -5430,12 +5510,23 @@ id|dev-&gt;current_config
 op_assign
 l_int|0
 suffix:semicolon
+id|usb_gadget_vbus_draw
+c_func
+(paren
+id|gadget
+comma
+l_int|8
+multiline_comment|/* mA */
+)paren
+suffix:semicolon
 singleline_comment|// user mode expected to disable endpoints
 )brace
 r_else
 (brace
 id|u8
 id|config
+comma
+id|power
 suffix:semicolon
 macro_line|#ifdef&t;HIGHSPEED
 r_if
@@ -5445,16 +5536,28 @@ id|gadget-&gt;speed
 op_eq
 id|USB_SPEED_HIGH
 )paren
+(brace
 id|config
 op_assign
 id|dev-&gt;hs_config-&gt;bConfigurationValue
 suffix:semicolon
+id|power
+op_assign
+id|dev-&gt;hs_config-&gt;bMaxPower
+suffix:semicolon
+)brace
 r_else
 macro_line|#endif
+(brace
 id|config
 op_assign
 id|dev-&gt;config-&gt;bConfigurationValue
 suffix:semicolon
+id|power
+op_assign
+id|dev-&gt;config-&gt;bMaxPower
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5473,6 +5576,16 @@ suffix:semicolon
 id|dev-&gt;current_config
 op_assign
 id|config
+suffix:semicolon
+id|usb_gadget_vbus_draw
+c_func
+(paren
+id|gadget
+comma
+l_int|2
+op_star
+id|power
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -6339,11 +6452,11 @@ id|gadget-&gt;name
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;%s expected &quot;
-id|CHIP
-l_string|&quot; controller not %s&bslash;n&quot;
+l_string|&quot;%s expected %s controller not %s&bslash;n&quot;
 comma
 id|shortname
+comma
+id|CHIP
 comma
 id|gadget-&gt;name
 )paren
@@ -6672,6 +6785,88 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------------*/
+DECL|function|gadgetfs_nop
+r_static
+r_void
+id|gadgetfs_nop
+c_func
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|arg
+)paren
+(brace
+)brace
+DECL|function|gadgetfs_probe
+r_static
+r_int
+id|gadgetfs_probe
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+)paren
+(brace
+id|CHIP
+op_assign
+id|gadget-&gt;name
+suffix:semicolon
+r_return
+op_minus
+id|EISNAM
+suffix:semicolon
+)brace
+DECL|variable|probe_driver
+r_static
+r_struct
+id|usb_gadget_driver
+id|probe_driver
+op_assign
+(brace
+dot
+id|speed
+op_assign
+id|USB_SPEED_HIGH
+comma
+dot
+id|bind
+op_assign
+id|gadgetfs_probe
+comma
+dot
+id|unbind
+op_assign
+id|gadgetfs_nop
+comma
+dot
+id|setup
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|gadgetfs_nop
+comma
+dot
+id|disconnect
+op_assign
+id|gadgetfs_nop
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;nop&quot;
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* DEVICE INITIALIZATION&n; *&n; *     fd = open (&quot;/dev/gadget/$CHIP&quot;, O_RDWR)&n; *     status = write (fd, descriptors, sizeof descriptors)&n; *&n; * That write establishes the device configuration, so the kernel can&n; * bind to the controller ... guaranteeing it can handle enumeration&n; * at all necessary speeds.  Descriptor order is:&n; *&n; * . message tag (u32, host order) ... for now, must be zero; it&n; *&t;would change to support features like multi-config devices&n; * . full/low speed config ... all wTotalLength bytes (with interface,&n; *&t;class, altsetting, endpoint, and other descriptors)&n; * . high speed config ... all descriptors, for high speed operation;&n; * &t;this one&squot;s optional except for high-speed hardware&n; * . device descriptor&n; *&n; * Endpoints are not yet enabled. Drivers may want to immediately&n; * initialize them, using the /dev/gadget/ep* files that are available&n; * as soon as the kernel sees the configuration, or they can wait&n; * until device configuration and interface altsetting changes create&n; * the need to configure (or unconfigure) them.&n; *&n; * After initialization, the device stays active for as long as that&n; * $CHIP file is open.  Events may then be read from that descriptor,&n; * such configuration notifications.  More complex drivers will handle&n; * some control requests in user space.&n; */
 DECL|function|is_valid_config
 r_static
@@ -6713,6 +6908,7 @@ id|USB_CONFIG_ATT_WAKEUP
 op_eq
 l_int|0
 suffix:semicolon
+multiline_comment|/* FIXME if gadget-&gt;is_otg, _must_ include an otg descriptor */
 multiline_comment|/* FIXME check lengths: walk to end */
 )brace
 r_static
@@ -7197,6 +7393,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|llseek
+op_assign
+id|no_llseek
+comma
+dot
 id|open
 op_assign
 id|dev_open
@@ -7553,6 +7754,26 @@ id|the_device
 r_return
 op_minus
 id|ESRCH
+suffix:semicolon
+multiline_comment|/* fake probe to determine $CHIP */
+(paren
+r_void
+)paren
+id|usb_gadget_register_driver
+(paren
+op_amp
+id|probe_driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CHIP
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* superblock */
 id|sb-&gt;s_blocksize

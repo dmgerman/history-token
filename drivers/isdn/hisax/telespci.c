@@ -1259,7 +1259,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren

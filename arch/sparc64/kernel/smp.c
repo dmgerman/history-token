@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -25,7 +26,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
@@ -1299,37 +1299,12 @@ id|ret
 comma
 id|cpu_node
 suffix:semicolon
-id|kernel_thread
-c_func
-(paren
-l_int|NULL
-comma
-l_int|NULL
-comma
-id|CLONE_IDLETASK
-)paren
-suffix:semicolon
 id|p
 op_assign
-id|prev_task
+id|fork_idle
 c_func
 (paren
-op_amp
-id|init_task
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-id|p
-comma
 id|cpu
-)paren
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|p
 )paren
 suffix:semicolon
 id|callin_flag
@@ -3996,17 +3971,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|sparc64_do_profile
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|macro|prof_multiplier
 mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
 DECL|macro|prof_counter
@@ -4101,9 +4065,11 @@ suffix:semicolon
 )brace
 r_do
 (brace
-id|sparc64_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

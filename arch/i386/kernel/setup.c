@@ -744,7 +744,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;timer&quot;
+l_string|&quot;timer0&quot;
 comma
 dot
 id|start
@@ -754,7 +754,31 @@ comma
 dot
 id|end
 op_assign
-l_int|0x005f
+l_int|0x0043
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_BUSY
+op_or
+id|IORESOURCE_IO
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;timer1&quot;
+comma
+dot
+id|start
+op_assign
+l_int|0x0050
+comma
+dot
+id|end
+op_assign
+l_int|0x0053
 comma
 dot
 id|flags
@@ -5729,7 +5753,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * NOTE: before this point _nobody_ is allowed to allocate&n;&t; * any memory using the bootmem allocator.&n;&t; */
+multiline_comment|/*&n;&t; * NOTE: before this point _nobody_ is allowed to allocate&n;&t; * any memory using the bootmem allocator.  Although the&n;&t; * alloctor is now initialised only the first 8Mb of the kernel&n;&t; * virtual address space has been mapped.  All allocations before&n;&t; * paging_init() has completed must use the alloc_bootmem_low_pages()&n;&t; * variant (which allocates DMA&squot;able memory) and care must be taken&n;&t; * not to exceed the 8Mb limit.&n;&t; */
 macro_line|#ifdef CONFIG_SMP
 id|smp_alloc_memory
 c_func
@@ -5743,6 +5767,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * NOTE: at this point the bootmem allocator is fully available.&n;&t; */
 macro_line|#ifdef CONFIG_EARLY_PRINTK
 (brace
 r_char

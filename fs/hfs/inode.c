@@ -3291,6 +3291,11 @@ op_assign
 id|generic_file_mmap
 comma
 dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+dot
 id|fsync
 op_assign
 id|file_fsync

@@ -1784,7 +1784,7 @@ suffix:colon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;tasklet received mf(%x) : msg_id(%x) uid(%x, %x) size(%d)&bslash;n&quot;
+l_string|&quot;tasklet received mf(%x) : msg_id(%x) uid(%x, %x) size(%zd)&bslash;n&quot;
 comma
 id|msg
 comma
@@ -1863,16 +1863,7 @@ id|mixart_mgr_t
 op_star
 id|mgr
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|mixart_mgr_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 id|err

@@ -892,7 +892,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-r_char
 DECL|function|asn1_oid_decode
 id|asn1_oid_decode
 c_func
@@ -1273,6 +1272,8 @@ r_int
 r_int
 op_star
 id|oid
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -1928,6 +1929,8 @@ id|ASN1_PRI
 )paren
 )paren
 (brace
+id|rc
+op_assign
 id|asn1_oid_decode
 c_func
 (paren
@@ -1943,6 +1946,12 @@ op_amp
 id|oidlen
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
 id|cFYI
 c_func
 (paren
@@ -1993,12 +2002,19 @@ comma
 id|NTLMSSP_OID_LEN
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|oid
+)paren
+(brace
 id|kfree
 c_func
 (paren
 id|oid
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2008,6 +2024,7 @@ id|use_ntlmssp
 op_assign
 id|TRUE
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace

@@ -7391,6 +7391,7 @@ r_void
 )paren
 (brace
 macro_line|#ifdef MODULE
+macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -7408,6 +7409,7 @@ comma
 id|CARDNAME
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 id|driver_register

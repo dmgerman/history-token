@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_xtree.c: extent allocation descriptor B+-tree manager&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -2266,6 +2267,24 @@ c_cond
 (paren
 id|rc
 op_assign
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|xlen
+)paren
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|dbAlloc
 c_func
 (paren
@@ -2283,9 +2302,19 @@ id|xaddr
 )paren
 )paren
 )paren
+(brace
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|xlen
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; *      insert entry for new extent&n;&t; */
 id|xflag
@@ -2372,6 +2401,7 @@ id|xaddrp
 op_eq
 l_int|0
 )paren
+(brace
 id|dbFree
 c_func
 (paren
@@ -2385,6 +2415,15 @@ id|s64
 id|xlen
 )paren
 suffix:semicolon
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|xlen
+)paren
+suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -3617,6 +3656,11 @@ id|rxtlck
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
+id|quota_allocation
+op_assign
+l_int|0
+suffix:semicolon
 id|smp
 op_assign
 id|split-&gt;mp
@@ -3637,7 +3681,6 @@ c_func
 id|xtStat.split
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * allocate the new right page for the split&n;&t; */
 id|pxdlist
 op_assign
 id|split-&gt;pxdlist
@@ -3661,6 +3704,41 @@ c_func
 id|pxd
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|lengthPXD
+c_func
+(paren
+id|pxd
+)paren
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EDQUOT
+suffix:semicolon
+r_goto
+id|clean_up
+suffix:semicolon
+)brace
+id|quota_allocation
+op_add_assign
+id|lengthPXD
+c_func
+(paren
+id|pxd
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * allocate the new right page for the split&n;&t; */
 id|rmp
 op_assign
 id|get_metapage
@@ -3682,10 +3760,16 @@ id|rmp
 op_eq
 l_int|NULL
 )paren
-r_return
+(brace
+id|rc
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
+r_goto
+id|clean_up
+suffix:semicolon
+)brace
 id|jfs_info
 c_func
 (paren
@@ -3942,20 +4026,6 @@ id|rbnp
 op_assign
 id|rbn
 suffix:semicolon
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|ip-&gt;i_sb
-comma
-id|lengthPXD
-c_func
-(paren
-id|pxd
-)paren
-)paren
-suffix:semicolon
 id|jfs_info
 c_func
 (paren
@@ -4008,8 +4078,8 @@ c_func
 id|rmp
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|clean_up
 suffix:semicolon
 )brace
 id|BT_MARK_DIRTY
@@ -4421,20 +4491,6 @@ id|rbnp
 op_assign
 id|rbn
 suffix:semicolon
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|ip-&gt;i_sb
-comma
-id|lengthPXD
-c_func
-(paren
-id|pxd
-)paren
-)paren
-suffix:semicolon
 id|jfs_info
 c_func
 (paren
@@ -4447,6 +4503,27 @@ id|rp
 suffix:semicolon
 r_return
 id|rc
+suffix:semicolon
+id|clean_up
+suffix:colon
+multiline_comment|/* Rollback quota allocation. */
+r_if
+c_cond
+(paren
+id|quota_allocation
+)paren
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|quota_allocation
+)paren
+suffix:semicolon
+r_return
+(paren
+id|rc
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      xtSplitRoot()&n; *&n; * function:&n; *      split the full root page into&n; *      original/root/split page and new right page&n; *      i.e., root remains fixed in tree anchor (inode) and&n; *      the root is copied to a single new right child page&n; *      since root page &lt;&lt; non-root page, and&n; *      the split root page contains a single entry for the&n; *      new right child page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      struct xtsplit  *split,&n; *      struct metapage&t;**rmpp)&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
@@ -4586,6 +4663,34 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+multiline_comment|/* Allocate blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|lengthPXD
+c_func
+(paren
+id|pxd
+)paren
+)paren
+)paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|rmp
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 id|jfs_info
 c_func
 (paren
@@ -4930,20 +5035,6 @@ op_star
 id|rmpp
 op_assign
 id|rmp
-suffix:semicolon
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|ip-&gt;i_sb
-comma
-id|lengthPXD
-c_func
-(paren
-id|pxd
-)paren
-)paren
 suffix:semicolon
 id|jfs_info
 c_func
@@ -13221,13 +13312,11 @@ id|ip-&gt;i_size
 op_assign
 id|newsize
 suffix:semicolon
-multiline_comment|/* update nblocks to reflect freed blocks */
-id|ip-&gt;i_blocks
-op_sub_assign
-id|LBLK2PBLK
+multiline_comment|/* update quota allocation to reflect freed blocks */
+id|DQUOT_FREE_BLOCK
 c_func
 (paren
-id|ip-&gt;i_sb
+id|ip
 comma
 id|nfreed
 )paren

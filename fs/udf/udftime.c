@@ -92,6 +92,7 @@ mdefine_line|#define SPD 0x15180 /*3600*24*/
 DECL|macro|SPY
 mdefine_line|#define SPY(y,l,s) (SPD * (365*y+l)+s)
 DECL|variable|year_seconds
+r_static
 id|time_t
 id|year_seconds
 (braket

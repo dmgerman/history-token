@@ -1110,6 +1110,23 @@ id|sysctl_overcommit_ratio
 op_div
 l_int|100
 suffix:semicolon
+multiline_comment|/*&n;&t; * Leave the last 3% for root&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+id|allowed
+op_sub_assign
+id|allowed
+op_div
+l_int|32
+suffix:semicolon
 id|allowed
 op_add_assign
 id|total_swap_pages

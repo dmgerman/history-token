@@ -3660,17 +3660,10 @@ DECL|struct|velocity_info
 r_struct
 id|velocity_info
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|velocity_info
-op_star
-id|next
-suffix:semicolon
-DECL|member|prev
-r_struct
-id|velocity_info
-op_star
-id|prev
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|pdev
 r_struct
@@ -3689,7 +3682,7 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 DECL|member|pci_state
 id|u32
 id|pci_state

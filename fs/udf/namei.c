@@ -594,7 +594,7 @@ suffix:semicolon
 )brace
 id|cfi-&gt;descTag.descCRC
 op_assign
-id|cpu_to_le32
+id|cpu_to_le16
 c_func
 (paren
 id|crc

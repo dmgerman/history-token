@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -146,4 +147,80 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SYSCTL) &amp;&amp; defined(CONFIG_6xx)
+multiline_comment|/*&n; * Register the sysctl to set/clear powersave_nap.&n; */
+r_extern
+r_int
+r_int
+id|powersave_nap
+suffix:semicolon
+DECL|variable|powersave_nap_ctl_table
+r_static
+id|ctl_table
+id|powersave_nap_ctl_table
+(braket
+)braket
+op_assign
+initialization_block
+suffix:semicolon
+DECL|variable|powersave_nap_sysctl_root
+r_static
+id|ctl_table
+id|powersave_nap_sysctl_root
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|1
+comma
+l_string|&quot;kernel&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0755
+comma
+id|powersave_nap_ctl_table
+comma
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+comma
+)brace
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|register_powersave_nap_sysctl
+id|register_powersave_nap_sysctl
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_sysctl_table
+c_func
+(paren
+id|powersave_nap_sysctl_root
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|register_powersave_nap_sysctl
+id|__initcall
+c_func
+(paren
+id|register_powersave_nap_sysctl
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

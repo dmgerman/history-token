@@ -287,13 +287,6 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* Host backpointer */
-DECL|member|next
-r_struct
-id|NCR5380_hostdata
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Next in our hot chain */
 DECL|member|id_mask
 DECL|member|id_higher_mask
 r_int
@@ -379,12 +372,6 @@ r_int
 id|time_expires
 suffix:semicolon
 multiline_comment|/* in jiffies, set prior to sleeping */
-DECL|member|next_timer
-r_struct
-id|Scsi_Host
-op_star
-id|next_timer
-suffix:semicolon
 DECL|member|select_time
 r_int
 id|select_time
@@ -488,6 +475,17 @@ id|instance
 comma
 r_int
 id|flags
+)paren
+suffix:semicolon
+r_static
+r_void
+id|NCR5380_exit
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|instance
 )paren
 suffix:semicolon
 r_static

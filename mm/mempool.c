@@ -692,6 +692,14 @@ op_or
 id|__GFP_IO
 )paren
 suffix:semicolon
+id|might_sleep_if
+c_func
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_WAIT
+)paren
+suffix:semicolon
 id|repeat_alloc
 suffix:colon
 id|element

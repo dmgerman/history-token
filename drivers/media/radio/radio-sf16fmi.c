@@ -294,18 +294,13 @@ comma
 id|myport
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|7
+l_int|143
 )paren
 suffix:semicolon
+multiline_comment|/* was schedule_timeout(HZ/7) */
 id|up
 c_func
 (paren
@@ -387,20 +382,13 @@ comma
 id|myport
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+l_int|143
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|7
-)paren
-suffix:semicolon
+multiline_comment|/* was schedule_timeout(HZ/7) */
 id|res
 op_assign
 (paren

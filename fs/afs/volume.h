@@ -283,17 +283,6 @@ DECL|macro|afs_get_vlocation
 mdefine_line|#define afs_get_vlocation(V) do { atomic_inc(&amp;(V)-&gt;usage); } while(0)
 r_extern
 r_void
-id|__afs_put_vlocation
-c_func
-(paren
-r_struct
-id|afs_vlocation
-op_star
-id|vlocation
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|afs_put_vlocation
 c_func
 (paren

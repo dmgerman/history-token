@@ -2074,6 +2074,13 @@ id|chipsfb_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|chips_init
+id|module_init
+c_func
+(paren
+id|chips_init
+)paren
+suffix:semicolon
 DECL|function|chipsfb_exit
 r_static
 r_void

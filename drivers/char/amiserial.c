@@ -138,10 +138,6 @@ l_int|1
 suffix:semicolon
 DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS&t;(sizeof(rs_table)/sizeof(struct serial_state))
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the copy_from_user blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
 DECL|variable|tmp_buf
 r_static
@@ -1176,7 +1172,7 @@ macro_line|#if (defined(SERIAL_DEBUG_OPEN) || defined(SERIAL_DEBUG_INTR))
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%02d CD now %s...&quot;
+l_string|&quot;ttyS%d CD now %s...&quot;
 comma
 id|info-&gt;line
 comma
@@ -6090,9 +6086,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -8122,7 +8121,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ttyS%02d is the amiga builtin serial port&bslash;n&quot;
+l_string|&quot;ttyS%d is the amiga builtin serial port&bslash;n&quot;
 comma
 id|state-&gt;line
 )paren

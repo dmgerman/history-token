@@ -2,9 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __2_5_COMPAT_H__
 DECL|macro|__2_5_COMPAT_H__
 mdefine_line|#define __2_5_COMPAT_H__
-macro_line|#include &quot;linux/version.h&quot;
-DECL|macro|INIT_CONSOLE
-mdefine_line|#define INIT_CONSOLE(dev_name, write_proc, device_proc, setup_proc, f) { &bslash;&n;&t;name :&t;&t;dev_name, &bslash;&n;&t;write :&t;&t;write_proc, &bslash;&n;&t;read :&t;&t;NULL, &bslash;&n;&t;device :&t;device_proc, &bslash;&n;&t;setup :&t;&t;setup_proc, &bslash;&n;&t;flags :&t;&t;f, &bslash;&n;&t;index :&t;&t;-1, &bslash;&n;&t;cflag :&t;&t;0, &bslash;&n;&t;next :&t;&t;NULL &bslash;&n;}
 DECL|macro|INIT_HARDSECT
 mdefine_line|#define INIT_HARDSECT(arr, maj, sizes)
 DECL|macro|SET_PRI

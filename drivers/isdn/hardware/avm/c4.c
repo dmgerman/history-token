@@ -5423,15 +5423,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon

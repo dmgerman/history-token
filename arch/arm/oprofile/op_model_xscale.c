@@ -17,6 +17,8 @@ DECL|macro|CCNT_RESET
 mdefine_line|#define&t;CCNT_RESET&t;0x004&t;/* Reset clock counter */
 DECL|macro|PMU_RESET
 mdefine_line|#define&t;PMU_RESET&t;(CCNT_RESET | PMN_RESET)
+DECL|macro|PMU_CNT64
+mdefine_line|#define PMU_CNT64&t;0x008&t;/* Make CCNT count every 64th cycle */
 multiline_comment|/* TODO do runtime detection */
 macro_line|#ifdef CONFIG_ARCH_IOP310
 DECL|macro|XSCALE_PMU_IRQ
@@ -353,11 +355,6 @@ id|u32
 id|val
 )paren
 (brace
-multiline_comment|/* upper 4bits and 7, 11 are write-as-0 */
-id|val
-op_and_assign
-l_int|0xffff77f
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -365,6 +362,12 @@ id|pmu-&gt;id
 op_eq
 id|PMU_XSC1
 )paren
+(brace
+multiline_comment|/* upper 4bits and 7, 11 are write-as-0 */
+id|val
+op_and_assign
+l_int|0xffff77f
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
@@ -377,7 +380,14 @@ id|val
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+multiline_comment|/* bits 4-23 are write-as-0, 24-31 are write ignored */
+id|val
+op_and_assign
+l_int|0xf
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
@@ -390,6 +400,7 @@ id|val
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|read_pmnc
 r_static
@@ -422,6 +433,7 @@ id|val
 )paren
 suffix:semicolon
 r_else
+(brace
 id|__asm__
 id|__volatile__
 (paren
@@ -433,6 +445,12 @@ id|val
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* bits 1-2 and 4-23 are read-unpredictable */
+id|val
+op_and_assign
+l_int|0xff000009
+suffix:semicolon
+)brace
 r_return
 id|val
 suffix:semicolon
@@ -1392,9 +1410,9 @@ id|regs
 (brace
 r_int
 r_int
-id|eip
+id|pc
 op_assign
-id|instruction_pointer
+id|profile_pc
 c_func
 (paren
 id|regs
@@ -1481,7 +1499,7 @@ suffix:semicolon
 id|oprofile_add_sample
 c_func
 (paren
-id|eip
+id|pc
 comma
 id|is_kernel
 comma
@@ -1631,6 +1649,7 @@ op_or_assign
 id|pmu-&gt;int_enable
 suffix:semicolon
 r_else
+(brace
 id|__asm__
 id|__volatile__
 (paren
@@ -1643,6 +1662,12 @@ id|pmu-&gt;int_enable
 )paren
 )paren
 suffix:semicolon
+id|pmnc
+op_and_assign
+op_complement
+id|PMU_CNT64
+suffix:semicolon
+)brace
 id|pmnc
 op_or_assign
 id|PMU_ENABLE

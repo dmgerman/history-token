@@ -433,8 +433,6 @@ id|iso_inode_info
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once
@@ -3071,6 +3069,11 @@ id|s-&gt;s_magic
 op_assign
 id|ISOFS_SUPER_MAGIC
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* We can handle files up to 4 GB */
 multiline_comment|/* The CDROM is read-only, has no nodes (devices) on it, and since&n;&t;   all of the files appear to be owned by root, we really do not want&n;&t;   to allow suid.  (suid or devices will not show up unless we have&n;&t;   Rock Ridge extensions) */
 id|s-&gt;s_flags
 op_or_assign

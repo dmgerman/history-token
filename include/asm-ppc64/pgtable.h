@@ -223,6 +223,8 @@ suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
 macro_line|#else
 DECL|macro|hash_huge_page
 mdefine_line|#define hash_huge_page(mm,a,ea,vsid,local)&t;-1

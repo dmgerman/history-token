@@ -448,30 +448,6 @@ suffix:semicolon
 r_int
 id|nr_clusters
 suffix:semicolon
-multiline_comment|/* Why no return value?  Surely the disk could fail... */
-r_if
-c_cond
-(paren
-id|IS_RDONLY
-(paren
-id|inode
-)paren
-)paren
-r_return
-multiline_comment|/* -EPERM */
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_IMMUTABLE
-c_func
-(paren
-id|inode
-)paren
-)paren
-r_return
-multiline_comment|/* -EPERM */
-suffix:semicolon
 multiline_comment|/* &n;&t; * This protects against truncating a file bigger than it was then&n;&t; * trying to write into the hole.&n;&t; */
 r_if
 c_cond

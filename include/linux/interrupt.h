@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * For 2.4.x compatibility, 2.4.x can use&n; *&n; *&t;typedef void irqreturn_t;&n; *&t;#define IRQ_NONE&n; *&t;#define IRQ_HANDLED&n; *&t;#define IRQ_RETVAL(x)&n; *&n; * To mix old-style and new-style irq handler returns.&n; *&n; * IRQ_NONE means we didn&squot;t handle it.&n; * IRQ_HANDLED means that we did have a valid interrupt and handled it.&n; * IRQ_RETVAL(x) selects on the two depending on x being non-zero (for handled)&n; */

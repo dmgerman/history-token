@@ -851,6 +851,7 @@ id|total_mem
 OG
 id|mem_limit
 )paren
+(brace
 id|md-&gt;num_pages
 op_sub_assign
 (paren
@@ -863,6 +864,17 @@ op_rshift
 id|EFI_PAGE_SHIFT
 )paren
 suffix:semicolon
+id|max_addr
+op_assign
+id|md-&gt;phys_addr
+op_plus
+(paren
+id|md-&gt;num_pages
+op_lshift
+id|EFI_PAGE_SHIFT
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

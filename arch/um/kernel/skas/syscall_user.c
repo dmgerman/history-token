@@ -44,6 +44,9 @@ suffix:semicolon
 id|syscall_trace
 c_func
 (paren
+id|regs
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|result
@@ -97,6 +100,9 @@ suffix:semicolon
 id|syscall_trace
 c_func
 (paren
+id|regs
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|record_syscall_end

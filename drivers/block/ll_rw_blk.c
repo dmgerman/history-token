@@ -8435,6 +8435,11 @@ c_func
 id|bio
 )paren
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Test device or partition size, when known. */
 id|maxsector
 op_assign

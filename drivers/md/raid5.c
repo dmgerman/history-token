@@ -2319,15 +2319,15 @@ id|mddev-&gt;sb_dirty
 op_assign
 l_int|1
 suffix:semicolon
-id|conf-&gt;working_disks
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|rdev-&gt;in_sync
 )paren
 (brace
+id|conf-&gt;working_disks
+op_decrement
+suffix:semicolon
 id|mddev-&gt;degraded
 op_increment
 suffix:semicolon
@@ -5589,7 +5589,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|rdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6778,7 +6778,7 @@ id|flags
 id|md_sync_acct
 c_func
 (paren
-id|rdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren

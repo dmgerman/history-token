@@ -4253,9 +4253,6 @@ id|do_fork
 c_func
 (paren
 id|clone_flags
-op_amp
-op_complement
-id|CLONE_IDLETASK
 comma
 id|newsp
 comma
@@ -4578,7 +4575,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_FRAME_POINTER
+macro_line|#ifdef CONFIG_FRAME_POINTER
 r_if
 c_cond
 (paren

@@ -76,6 +76,24 @@ DECL|macro|__put_user
 mdefine_line|#define __put_user(x, ptr)&t;__put_user_nocheck((__typeof__(*(ptr))) (x), (ptr), sizeof(*(ptr)))
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x, ptr)&t;__get_user_nocheck((x), (ptr), sizeof(*(ptr)))
+r_extern
+r_int
+id|__put_user_unaligned_unknown
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|__put_user_unaligned
+mdefine_line|#define __put_user_unaligned(x, ptr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __ret;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __ret = __put_user((x), (ptr)); break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2: __ret = (__put_user((x), (u8 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__put_user((x) &gt;&gt; 8, ((u8 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;case 4: __ret = (__put_user((x), (u16 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__put_user((x) &gt;&gt; 16, ((u16 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;case 8: __ret = (__put_user((x), (u32 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__put_user((x) &gt;&gt; 32, ((u32 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;default: __ret = __put_user_unaligned_unknown();&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+r_extern
+r_int
+id|__get_user_unaligned_unknown
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|__get_user_unaligned
+mdefine_line|#define __get_user_unaligned(x, ptr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __ret;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __ret = __get_user((x), (ptr)); break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2: __ret = (__get_user((x), (u8 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__get_user((x) &gt;&gt; 8, ((u8 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;case 4: __ret = (__get_user((x), (u16 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__get_user((x) &gt;&gt; 16, ((u16 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;case 8: __ret = (__get_user((x), (u32 __user *)(ptr)))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;| (__get_user((x) &gt;&gt; 32, ((u32 __user *)(ptr) + 1))); break;&t;&t;&bslash;&n;&t;&t;default: __ret = __get_user_unaligned_unknown();&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#ifdef ASM_SUPPORTED
 DECL|struct|__large_struct
 DECL|member|buf
@@ -261,6 +279,10 @@ DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to, from, n)&t;__copy_user((to), (from), (n))
 DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, n)&t;__copy_user((to), (from), (n))
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|macro|copy_to_user
 mdefine_line|#define copy_to_user(to, from, n)&t;__copy_tofrom_user((to), (from), (n), 1)
 DECL|macro|copy_from_user

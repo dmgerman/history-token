@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;asm-generic/uaccess.h&gt;
 multiline_comment|/*&n; * The fs value determines whether argument validity checking should be&n; * performed or not.  If get_fs() == USER_DS, checking is performed, with&n; * get_fs() == KERNEL_DS, checking is bypassed.&n; *&n; * For historical reasons, these macros are grossly misnamed.&n; */
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|__UA_LIMIT
@@ -209,6 +210,10 @@ mdefine_line|#define __invoke_copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t
 multiline_comment|/*&n; * __copy_to_user: - Copy a block of data into user space, with less checking.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 multiline_comment|/*&n; * copy_to_user: - Copy a block of data into user space.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
 DECL|macro|copy_to_user
 mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __cu_to, __cu_len))&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                 __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

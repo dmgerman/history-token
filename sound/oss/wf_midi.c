@@ -2657,11 +2657,15 @@ id|io_base
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
+c_func
 (paren
 id|io_base
 comma
 l_int|2
+comma
+l_string|&quot;wavefront midi&quot;
 )paren
 )paren
 (brace
@@ -2729,20 +2733,19 @@ id|KERN_ERR
 l_string|&quot;WF-MPU: Too many MIDI devices detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|phys_dev-&gt;base
+comma
+l_int|2
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|request_region
-(paren
-id|phys_dev-&gt;base
-comma
-l_int|2
-comma
-l_string|&quot;wavefront midi&quot;
-)paren
-suffix:semicolon
 id|phys_dev-&gt;isvirtual
 op_assign
 l_int|0

@@ -1115,6 +1115,8 @@ r_void
 (brace
 r_int
 r_int
+id|oldvalue
+comma
 id|value
 comma
 id|ver
@@ -1442,23 +1444,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|value
+id|oldvalue
 op_assign
 id|apic_read
 c_func
 (paren
 id|APIC_ESR
-)paren
-suffix:semicolon
-id|apic_printk
-c_func
-(paren
-id|APIC_VERBOSE
-comma
-l_string|&quot;ESR value before enabling vector:&quot;
-l_string|&quot; %08lx&bslash;n&quot;
-comma
-id|value
 )paren
 suffix:semicolon
 id|value
@@ -1498,13 +1489,22 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|value
+op_ne
+id|oldvalue
+)paren
 id|apic_printk
 c_func
 (paren
 id|APIC_VERBOSE
 comma
-l_string|&quot;ESR value after enabling vector:&quot;
-l_string|&quot; %08lx&bslash;n&quot;
+l_string|&quot;ESR value before enabling &quot;
+l_string|&quot;vector: 0x%08lx  after: 0x%08lx&bslash;n&quot;
+comma
+id|oldvalue
 comma
 id|value
 )paren
@@ -3544,9 +3544,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|x86_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon
@@ -3840,7 +3842,7 @@ suffix:semicolon
 multiline_comment|/* Here is what the APIC error bits mean:&n;&t;   0: Send CS error&n;&t;   1: Receive CS error&n;&t;   2: Send accept error&n;&t;   3: Receive accept error&n;&t;   4: Reserved&n;&t;   5: Send illegal vector&n;&t;   6: Received illegal vector&n;&t;   7: Illegal register address&n;&t;*/
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;APIC error on CPU%d: %02lx(%02lx)&bslash;n&quot;
 comma
 id|smp_processor_id

@@ -15,6 +15,11 @@ DECL|macro|SBC82xx_MACADDR_NVRAM_FCC2
 mdefine_line|#define SBC82xx_MACADDR_NVRAM_FCC2&t;0x220000d5&t;/* JP7A */
 DECL|macro|SBC82xx_MACADDR_NVRAM_FCC3
 mdefine_line|#define SBC82xx_MACADDR_NVRAM_FCC3&t;0x220000db&t;/* JP7B */
+multiline_comment|/* For our show_cpuinfo hooks. */
+DECL|macro|CPUINFO_VENDOR
+mdefine_line|#define CPUINFO_VENDOR&t;&t;&quot;Wind River&quot;
+DECL|macro|CPUINFO_MACHINE
+mdefine_line|#define CPUINFO_MACHINE&t;&t;&quot;SBC PowerQUICC II&quot;
 DECL|macro|BOOTROM_RESTART_ADDR
 mdefine_line|#define BOOTROM_RESTART_ADDR      ((uint)0x40000104)
 DECL|macro|SBC82xx_PC_IRQA

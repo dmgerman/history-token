@@ -252,6 +252,7 @@ multiline_comment|/* end afs_vnode_cb_timed_out() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * finish off updating the recorded status of a file&n; * - starts callback expiry timer&n; * - adds to server&squot;s callback list&n; */
 DECL|function|afs_vnode_finalise_status_update
+r_static
 r_void
 id|afs_vnode_finalise_status_update
 c_func

@@ -4851,7 +4851,7 @@ id|i
 op_increment
 )paren
 (brace
-r_char
+id|s8
 id|d
 (braket
 l_int|2
@@ -10290,15 +10290,12 @@ id|printk
 id|KERN_WARNING
 id|LOGNAME
 l_string|&quot;FX memset &quot;
-l_string|&quot;(0x%x, 0x%x, 0x%x, %d) incomplete&bslash;n&quot;
+l_string|&quot;(0x%x, 0x%x, %p, %d) incomplete&bslash;n&quot;
 comma
 id|page
 comma
 id|addr
 comma
-(paren
-r_int
-)paren
 id|data
 comma
 id|cnt

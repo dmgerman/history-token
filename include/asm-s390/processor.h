@@ -133,6 +133,8 @@ macro_line|# define DEFAULT_TASK_SIZE&t;(0x40000000000UL)
 macro_line|#endif /* __s390x__ */
 DECL|macro|MM_VM_SIZE
 mdefine_line|#define MM_VM_SIZE(mm)&t;&t;DEFAULT_TASK_SIZE
+DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
+mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 r_typedef
 r_struct
 (brace
@@ -218,6 +220,80 @@ r_struct
 id|thread_struct
 id|thread_struct
 suffix:semicolon
+multiline_comment|/*&n; * Stack layout of a C stack frame.&n; */
+macro_line|#ifndef __PACK_STACK
+DECL|struct|stack_frame
+r_struct
+id|stack_frame
+(brace
+DECL|member|back_chain
+r_int
+r_int
+id|back_chain
+suffix:semicolon
+DECL|member|empty1
+r_int
+r_int
+id|empty1
+(braket
+l_int|5
+)braket
+suffix:semicolon
+DECL|member|gprs
+r_int
+r_int
+id|gprs
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|empty2
+r_int
+r_int
+id|empty2
+(braket
+l_int|8
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#else
+DECL|struct|stack_frame
+r_struct
+id|stack_frame
+(brace
+DECL|member|empty1
+r_int
+r_int
+id|empty1
+(braket
+l_int|5
+)braket
+suffix:semicolon
+DECL|member|empty2
+r_int
+r_int
+id|empty2
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|gprs
+r_int
+r_int
+id|gprs
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|back_chain
+r_int
+r_int
+id|back_chain
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|macro|ARCH_MIN_TASKALIGN
 mdefine_line|#define ARCH_MIN_TASKALIGN&t;8
 macro_line|#ifndef __s390x__

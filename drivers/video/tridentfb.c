@@ -6571,6 +6571,15 @@ id|trident_pci_remove
 )paren
 )brace
 suffix:semicolon
+r_int
+id|tridentfb_setup
+c_func
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
 DECL|function|tridentfb_init
 r_int
 id|__init
@@ -6580,6 +6589,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|tridentfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;tridentfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|output
 c_func
 (paren
@@ -6949,7 +6970,6 @@ id|soft_cursor
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|tridentfb_init
 id|module_init
 c_func
@@ -6957,7 +6977,6 @@ c_func
 id|tridentfb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|tridentfb_exit
 id|module_exit
 c_func

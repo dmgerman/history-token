@@ -244,34 +244,6 @@ id|sigc_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* This magic should be in g_upper[0] for all upper parts&n;   to be valid.  */
-DECL|macro|SIGINFO_EXTRA_V8PLUS_MAGIC
-mdefine_line|#define SIGINFO_EXTRA_V8PLUS_MAGIC&t;0x130e269
-r_typedef
-r_struct
-(brace
-DECL|member|g_upper
-r_int
-r_int
-id|g_upper
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|member|o_upper
-r_int
-r_int
-id|o_upper
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|typedef|siginfo_extra_v8plus_t
-)brace
-id|siginfo_extra_v8plus_t
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SIGCONTEXT_H) */
 eof

@@ -4493,6 +4493,18 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|pvr2fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;pvr2fb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|size
 op_assign
 r_sizeof
@@ -4718,7 +4730,6 @@ id|fb_info
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|pvr2fb_init
 id|module_init
 c_func
@@ -4726,7 +4737,6 @@ c_func
 id|pvr2fb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|pvr2fb_exit
 id|module_exit
 c_func

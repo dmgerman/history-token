@@ -384,17 +384,7 @@ suffix:semicolon
 )brace
 id|mpu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|mpu401_t
-comma
 id|rmidi-&gt;private_data
-comma
-r_return
-op_minus
-id|ENOMEM
-)paren
 suffix:semicolon
 id|mpu-&gt;cport
 op_assign

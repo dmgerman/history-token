@@ -1,17 +1,38 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/irqs.h&n; *&n; *  Author:&t;Nicolas Pitre&n; *  Created:&t;Jun 15, 2001&n; *  Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_PXA27x
 DECL|macro|PXA_IRQ_SKIP
-mdefine_line|#define PXA_IRQ_SKIP&t;7&t;/* The first 7 IRQs are not yet used */
+mdefine_line|#define PXA_IRQ_SKIP&t;0
+macro_line|#else
+DECL|macro|PXA_IRQ_SKIP
+mdefine_line|#define PXA_IRQ_SKIP&t;7
+macro_line|#endif
 DECL|macro|PXA_IRQ
 mdefine_line|#define PXA_IRQ(x)&t;((x) - PXA_IRQ_SKIP)
+DECL|macro|IRQ_SSP3
+mdefine_line|#define IRQ_SSP3&t;PXA_IRQ(0)&t;/* SSP3 service request */
+DECL|macro|IRQ_MSL
+mdefine_line|#define IRQ_MSL&t;&t;PXA_IRQ(1)&t;/* MSL Interface interrupt */
+DECL|macro|IRQ_USBH2
+mdefine_line|#define IRQ_USBH2&t;PXA_IRQ(2)&t;/* USB Host interrupt 1 (OHCI) */
+DECL|macro|IRQ_USBH1
+mdefine_line|#define IRQ_USBH1&t;PXA_IRQ(3)&t;/* USB Host interrupt 2 (non-OHCI) */
+DECL|macro|IRQ_KEYPAD
+mdefine_line|#define IRQ_KEYPAD&t;PXA_IRQ(4)&t;/* Key pad controller */
+DECL|macro|IRQ_MEMSTK
+mdefine_line|#define IRQ_MEMSTK&t;PXA_IRQ(5)&t;/* Memory Stick interrupt */
+DECL|macro|IRQ_PWRI2C
+mdefine_line|#define IRQ_PWRI2C&t;PXA_IRQ(6)&t;/* Power I2C interrupt */
 DECL|macro|IRQ_HWUART
-mdefine_line|#define IRQ_HWUART&t;PXA_IRQ(7)&t;/* HWUART Transmit/Receive/Error */
+mdefine_line|#define IRQ_HWUART&t;PXA_IRQ(7)&t;/* HWUART Transmit/Receive/Error (PXA26x) */
+DECL|macro|IRQ_OST_4_11
+mdefine_line|#define IRQ_OST_4_11&t;PXA_IRQ(7)&t;/* OS timer 4-11 matches (PXA27x) */
 DECL|macro|IRQ_GPIO0
 mdefine_line|#define&t;IRQ_GPIO0&t;PXA_IRQ(8)&t;/* GPIO0 Edge Detect */
 DECL|macro|IRQ_GPIO1
 mdefine_line|#define&t;IRQ_GPIO1&t;PXA_IRQ(9)&t;/* GPIO1 Edge Detect */
-DECL|macro|IRQ_GPIO_2_80
-mdefine_line|#define&t;IRQ_GPIO_2_80&t;PXA_IRQ(10)&t;/* GPIO[2-80] Edge Detect */
+DECL|macro|IRQ_GPIO_2_x
+mdefine_line|#define&t;IRQ_GPIO_2_x&t;PXA_IRQ(10)&t;/* GPIO[2-x] Edge Detect */
 DECL|macro|IRQ_USB
 mdefine_line|#define&t;IRQ_USB&t;&t;PXA_IRQ(11)&t;/* USB Service */
 DECL|macro|IRQ_PMU
@@ -21,9 +42,13 @@ mdefine_line|#define&t;IRQ_I2S&t;&t;PXA_IRQ(13)&t;/* I2S Interrupt */
 DECL|macro|IRQ_AC97
 mdefine_line|#define&t;IRQ_AC97&t;PXA_IRQ(14)&t;/* AC97 Interrupt */
 DECL|macro|IRQ_ASSP
-mdefine_line|#define IRQ_ASSP&t;PXA_IRQ(15)&t;/* Audio SSP Service Request */
+mdefine_line|#define IRQ_ASSP&t;PXA_IRQ(15)&t;/* Audio SSP Service Request (PXA25x) */
+DECL|macro|IRQ_USIM
+mdefine_line|#define IRQ_USIM&t;PXA_IRQ(15)     /* Smart Card interface interrupt (PXA27x) */
 DECL|macro|IRQ_NSSP
-mdefine_line|#define IRQ_NSSP&t;PXA_IRQ(16)&t;/* Network SSP Service Request */
+mdefine_line|#define IRQ_NSSP&t;PXA_IRQ(16)&t;/* Network SSP Service Request (PXA25x) */
+DECL|macro|IRQ_SSP2
+mdefine_line|#define IRQ_SSP2&t;PXA_IRQ(16)&t;/* SSP2 interrupt (PXA27x) */
 DECL|macro|IRQ_LCD
 mdefine_line|#define&t;IRQ_LCD&t;&t;PXA_IRQ(17)&t;/* LCD Controller Service Request */
 DECL|macro|IRQ_I2C
@@ -54,17 +79,35 @@ DECL|macro|IRQ_RTC1Hz
 mdefine_line|#define&t;IRQ_RTC1Hz&t;PXA_IRQ(30)&t;/* RTC HZ Clock Tick */
 DECL|macro|IRQ_RTCAlrm
 mdefine_line|#define&t;IRQ_RTCAlrm&t;PXA_IRQ(31)&t;/* RTC Alarm */
-DECL|macro|GPIO_2_80_TO_IRQ
-mdefine_line|#define GPIO_2_80_TO_IRQ(x)&t;&bslash;&n;&t;&t;&t;PXA_IRQ((x) - 2 + 32)
+macro_line|#ifdef CONFIG_PXA27x
+DECL|macro|IRQ_TPM
+mdefine_line|#define IRQ_TPM&t;&t;PXA_IRQ(32)&t;/* TPM interrupt */
+DECL|macro|IRQ_CAMERA
+mdefine_line|#define IRQ_CAMERA&t;PXA_IRQ(33)&t;/* Camera Interface */
+DECL|macro|PXA_INTERNAL_IRQS
+mdefine_line|#define PXA_INTERNAL_IRQS 34
+macro_line|#else
+DECL|macro|PXA_INTERNAL_IRQS
+mdefine_line|#define PXA_INTERNAL_IRQS 32
+macro_line|#endif
+DECL|macro|GPIO_2_x_TO_IRQ
+mdefine_line|#define GPIO_2_x_TO_IRQ(x)&t;&bslash;&n;&t;&t;&t;PXA_IRQ((x) - 2 + PXA_INTERNAL_IRQS)
 DECL|macro|IRQ_GPIO
-mdefine_line|#define IRQ_GPIO(x)&t;(((x) &lt; 2) ? (IRQ_GPIO0 + (x)) : GPIO_2_80_TO_IRQ(x))
-DECL|macro|IRQ_TO_GPIO_2_80
-mdefine_line|#define IRQ_TO_GPIO_2_80(i)&t;&bslash;&n;&t;&t;&t;((i) - PXA_IRQ(32) + 2)
+mdefine_line|#define IRQ_GPIO(x)&t;(((x) &lt; 2) ? (IRQ_GPIO0 + (x)) : GPIO_2_x_TO_IRQ(x))
+DECL|macro|IRQ_TO_GPIO_2_x
+mdefine_line|#define IRQ_TO_GPIO_2_x(i)&t;&bslash;&n;&t;&t;&t;((i) - IRQ_GPIO(2) + 2)
 DECL|macro|IRQ_TO_GPIO
-mdefine_line|#define IRQ_TO_GPIO(i)&t;((i) - (((i) &gt; IRQ_GPIO1) ? IRQ_GPIO(2) - 2 : IRQ_GPIO(0)))
+mdefine_line|#define IRQ_TO_GPIO(i)&t;(((i) &lt; IRQ_GPIO(2)) ? ((i) - IRQ_GPIO0) : IRQ_TO_GPIO_2_x(i))
+macro_line|#if defined(CONFIG_PXA25x)
+DECL|macro|PXA_LAST_GPIO
+mdefine_line|#define PXA_LAST_GPIO&t;80
+macro_line|#elif defined(CONFIG_PXA27x)
+DECL|macro|PXA_LAST_GPIO
+mdefine_line|#define PXA_LAST_GPIO&t;127
+macro_line|#endif
 multiline_comment|/*&n; * The next 16 interrupts are for board specific purposes.  Since&n; * the kernel can only run on one machine at a time, we can re-use&n; * these.  If you need more, increase IRQ_BOARD_END, but keep it&n; * within sensible limits.&n; */
 DECL|macro|IRQ_BOARD_START
-mdefine_line|#define IRQ_BOARD_START&t;&t;(IRQ_GPIO(80) + 1)
+mdefine_line|#define IRQ_BOARD_START&t;&t;(IRQ_GPIO(PXA_LAST_GPIO) + 1)
 DECL|macro|IRQ_BOARD_END
 mdefine_line|#define IRQ_BOARD_END&t;&t;(IRQ_BOARD_START + 16)
 DECL|macro|IRQ_SA1111_START

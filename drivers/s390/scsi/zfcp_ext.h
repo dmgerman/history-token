@@ -4,7 +4,7 @@ DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.51 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.57 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct
@@ -129,7 +129,6 @@ id|zfcp_port
 op_star
 comma
 id|fcp_lun_t
-id|fcp_lun
 )paren
 suffix:semicolon
 r_extern
@@ -144,7 +143,30 @@ id|zfcp_adapter
 op_star
 comma
 id|wwn_t
-id|wwpn
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|zfcp_port
+op_star
+id|zfcp_get_port_by_did
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+comma
+id|u32
+)paren
+suffix:semicolon
+r_struct
+id|zfcp_adapter
+op_star
+id|zfcp_get_adapter_by_busid
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -201,6 +223,8 @@ id|zfcp_adapter
 op_star
 comma
 id|wwn_t
+comma
+id|u32
 comma
 id|u32
 )paren
@@ -455,6 +479,20 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|zfcp_fsf_exchange_port_data
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+comma
+r_struct
+id|fsf_qtcb_bottom_port
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|zfcp_fsf_control_file
 c_func
 (paren
@@ -474,6 +512,15 @@ comma
 r_struct
 id|zfcp_sg_list
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|zfcp_fsf_request_timeout_handler
+c_func
+(paren
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -592,6 +639,10 @@ r_struct
 id|scsi_cmnd
 op_star
 comma
+r_struct
+id|timer_list
+op_star
+comma
 r_int
 )paren
 suffix:semicolon
@@ -666,7 +717,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/******************************** FCP ****************************************/
+multiline_comment|/******************************* FC/FCP **************************************/
 r_extern
 r_int
 id|zfcp_nameserver_enqueue
@@ -684,6 +735,28 @@ c_func
 (paren
 r_struct
 id|zfcp_erp_action
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|zfcp_check_ct_response
+c_func
+(paren
+r_struct
+id|ct_hdr
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|zfcp_handle_els_rjt
+c_func
+(paren
+id|u32
+comma
+r_struct
+id|zfcp_ls_rjt_par
 op_star
 )paren
 suffix:semicolon
@@ -796,12 +869,14 @@ comma
 r_struct
 id|zfcp_unit
 op_star
-id|unit
 comma
 r_struct
 id|scsi_cmnd
 op_star
-id|scsi_cmnd
+comma
+r_struct
+id|timer_list
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -812,12 +887,14 @@ c_func
 r_struct
 id|zfcp_unit
 op_star
-id|unit
 comma
 r_struct
 id|scsi_cmnd
 op_star
-id|scsi_cmnd
+comma
+r_struct
+id|timer_list
+op_star
 )paren
 suffix:semicolon
 r_extern

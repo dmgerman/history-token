@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
@@ -181,20 +182,12 @@ id|nticks
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 multiline_comment|/* Not SMP, do kernel PC profiling here.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
-)paren
-)paren
-id|alpha_do_profile
-c_func
-(paren
-id|regs-&gt;pc
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1314,7 +1307,7 @@ id|year
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* PC-like is standard; used for year &lt; 20 || year &gt;= 70 */
+multiline_comment|/* PC-like is standard; used for year &gt;= 70 */
 id|epoch
 op_assign
 l_int|1900

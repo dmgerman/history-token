@@ -1281,7 +1281,7 @@ comma
 op_amp
 id|ipmi_poweroff_handler
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|ipmi_user

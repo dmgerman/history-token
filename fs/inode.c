@@ -727,6 +727,11 @@ op_star
 id|inode
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|invalidate_inode_buffers
 c_func
 (paren
@@ -4848,8 +4853,6 @@ id|inode
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_PANIC
 comma
 id|init_once

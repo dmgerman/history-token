@@ -2515,7 +2515,7 @@ c_func
 id|pmac_feature_late_init
 )paren
 suffix:semicolon
-DECL|function|dump_HT_speeds
+macro_line|#if 0
 r_static
 r_void
 id|dump_HT_speeds
@@ -2664,6 +2664,7 @@ l_int|0x7
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|pmac_check_ht_link
 r_void
 id|__init

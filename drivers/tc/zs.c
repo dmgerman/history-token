@@ -389,10 +389,6 @@ r_int
 id|timeout
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the copy_from_user blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
 DECL|variable|tmp_buf
 r_static
@@ -2527,7 +2523,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;starting up ttyS%02d (irq %d)...&quot;
+l_string|&quot;starting up ttyS%d (irq %d)...&quot;
 comma
 id|info-&gt;line
 comma
@@ -3713,12 +3709,14 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -3767,12 +3765,14 @@ id|c
 suffix:semicolon
 id|c
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
-id|MIN
+id|min
 c_func
 (paren
 id|SERIAL_XMIT_SIZE
@@ -5699,7 +5699,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;rs_close ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -5750,7 +5750,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for ttyS%02d: %d&bslash;n&quot;
+l_string|&quot;rs_close: bad serial port count for ttyS%d: %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6056,9 +6056,12 @@ id|timeout
 )paren
 id|char_time
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|char_time
 comma
 id|timeout
@@ -6341,7 +6344,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready before block: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready before block: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6512,7 +6515,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready blocking: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready blocking: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -6560,7 +6563,7 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;block_til_ready after blocking: ttyS%02d, count = %d&bslash;n&quot;
+l_string|&quot;block_til_ready after blocking: ttyS%d, count = %d&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
@@ -7111,33 +7114,7 @@ multiline_comment|/*&n;&t;&t;&t; * We&squot;re called early and memory managment
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|zs_channels
-(braket
-id|n_channels
-)braket
-dot
-id|control
-comma
-id|ZS_CHAN_IO_SIZE
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;SCC I/O region is not free&quot;
-)paren
-suffix:semicolon
-)brace
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -7155,6 +7132,12 @@ comma
 id|ZS_CHAN_IO_SIZE
 comma
 l_string|&quot;SCC&quot;
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;SCC I/O region is not free&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7788,7 +7771,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ttyS%02d at 0x%08x (irq = %d)&quot;
+l_string|&quot;ttyS%d at 0x%08x (irq = %d)&quot;
 comma
 id|info-&gt;line
 comma

@@ -948,8 +948,6 @@ comma
 op_amp
 id|contig_page_data
 comma
-l_int|0
-comma
 id|zones_size
 comma
 id|PAGE_OFFSET

@@ -4428,16 +4428,10 @@ id|ZR36057_JMC
 )paren
 suffix:semicolon
 singleline_comment|// &bslash;Go_en
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|20
+l_int|50
 )paren
 suffix:semicolon
 id|set_videobus_dir

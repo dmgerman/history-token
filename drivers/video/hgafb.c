@@ -2237,7 +2237,6 @@ comma
 l_string|&quot;Disables startup logo if != 0 (default=0)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|hgafb_init
 id|module_init
 c_func
@@ -2245,6 +2244,7 @@ c_func
 id|hgafb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|hgafb_exit
 id|module_exit
 c_func

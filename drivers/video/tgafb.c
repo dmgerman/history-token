@@ -7800,24 +7800,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_int
-id|__init
-DECL|function|tgafb_init
-id|tgafb_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|pci_module_init
-c_func
-(paren
-op_amp
-id|tgafb_driver
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef MODULE
 r_static
 r_void
@@ -8004,8 +7986,37 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* !MODULE */
+r_int
+id|__init
+DECL|function|tgafb_init
+id|tgafb_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifndef MODULE
+id|tgafb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;tgafb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|pci_module_init
+c_func
+(paren
+op_amp
+id|tgafb_driver
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  Modularisation&n; */
-macro_line|#ifdef MODULE
 DECL|variable|tgafb_init
 id|module_init
 c_func
@@ -8013,6 +8024,7 @@ c_func
 id|tgafb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|tgafb_exit
 id|module_exit
 c_func

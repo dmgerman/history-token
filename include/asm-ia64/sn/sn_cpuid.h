@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2004 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN_CPUID_H
 DECL|macro|_ASM_IA64_SN_SN_CPUID_H
 mdefine_line|#define _ASM_IA64_SN_SN_CPUID_H
@@ -17,6 +17,8 @@ DECL|macro|cpu_physical_id_to_nasid
 mdefine_line|#define cpu_physical_id_to_nasid(cpi)&t;&t;((cpi) &amp;0xfff)
 DECL|macro|cpu_physical_id_to_slice
 mdefine_line|#define cpu_physical_id_to_slice(cpi)&t;&t;((cpi&gt;&gt;12) &amp; 3)
+DECL|macro|cpu_physical_id_to_coherence_id
+mdefine_line|#define cpu_physical_id_to_coherence_id(cpi)&t;(cpu_physical_id_to_nasid(cpi) &gt;&gt; 9)
 DECL|macro|get_nasid
 mdefine_line|#define get_nasid()&t;&t;&t;&t;((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 16) &amp; 0xfff)
 DECL|macro|get_slice
@@ -87,5 +89,8 @@ DECL|macro|cpuid_to_subnode
 mdefine_line|#define cpuid_to_subnode(cpuid)&t;&t;((cpuid_to_slice(cpuid)&lt;2) ? 0 : 1)
 DECL|macro|smp_physical_node_id
 mdefine_line|#define smp_physical_node_id()&t;&t;&t;(cpuid_to_nasid(smp_processor_id()))
+multiline_comment|/*&n; * cpuid_to_coherence_id - convert a cpuid to the coherence domain id it&n; * resides on&n; */
+DECL|macro|cpuid_to_coherence_id
+mdefine_line|#define cpuid_to_coherence_id(cpuid)&t;cpu_physical_id_to_coherence_id(cpu_physical_id(cpuid))
 macro_line|#endif /* _ASM_IA64_SN_SN_CPUID_H */
 eof

@@ -233,6 +233,14 @@ DECL|member|skip
 r_int
 id|skip
 suffix:semicolon
+DECL|member|has_init
+r_int
+id|has_init
+suffix:semicolon
+DECL|member|has_cleanup
+r_int
+id|has_cleanup
+suffix:semicolon
 DECL|member|dev_table_buf
 r_struct
 id|buffer

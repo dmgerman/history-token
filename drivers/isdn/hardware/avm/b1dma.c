@@ -4412,13 +4412,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

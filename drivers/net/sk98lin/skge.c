@@ -5,9 +5,7 @@ multiline_comment|/*************************************************************
 macro_line|#include&t;&quot;h/skversion.h&quot;
 macro_line|#include&t;&lt;linux/module.h&gt;
 macro_line|#include&t;&lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &t;&lt;linux/proc_fs.h&gt;
-macro_line|#endif
 macro_line|#include&t;&quot;h/skdrv1st.h&quot;
 macro_line|#include&t;&quot;h/skdrv2nd.h&quot;
 multiline_comment|/*******************************************************************************&n; *&n; * Defines&n; *&n; ******************************************************************************/
@@ -20853,6 +20851,14 @@ id|have_second_mac
 op_assign
 l_int|1
 suffix:semicolon
+id|remove_proc_entry
+c_func
+(paren
+id|dev-&gt;name
+comma
+id|pSkRootDir
+)paren
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -20864,6 +20870,20 @@ c_cond
 (paren
 id|have_second_mac
 )paren
+(brace
+id|remove_proc_entry
+c_func
+(paren
+id|pAC-&gt;dev
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|name
+comma
+id|pSkRootDir
+)paren
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -20873,6 +20893,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+)brace
 id|SkGeYellowLED
 c_func
 (paren
@@ -21314,6 +21335,7 @@ r_void
 r_int
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|memcpy
 c_func
 (paren
@@ -21330,7 +21352,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pSkRootDir
 op_assign
 id|proc_mkdir

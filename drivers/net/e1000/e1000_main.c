@@ -579,7 +579,6 @@ id|p
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_irq_disable
 c_func
@@ -591,7 +590,6 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_irq_enable
 c_func
@@ -760,7 +758,6 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_rx_checksum
 c_func
@@ -2254,6 +2251,11 @@ op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
 )brace
+multiline_comment|/* hard_start_xmit is safe against parallel locking */
+id|netdev-&gt;features
+op_or_assign
+id|NETIF_F_LLTX
+suffix:semicolon
 id|adapter-&gt;en_mng_pt
 op_assign
 id|e1000_enable_mng_pass_thru
@@ -4946,7 +4948,20 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* Check for Promiscuous and All Multicast modes */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|rctl
 op_assign
 id|E1000_READ_REG
@@ -5183,6 +5198,15 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Need to wait a few seconds after link up to get diagnostic information from&n; * the phy */
 r_static
@@ -7444,15 +7468,36 @@ op_add_assign
 id|nr_frags
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spin_trylock
 c_func
 (paren
 op_amp
 id|adapter-&gt;tx_lock
-comma
+)paren
+)paren
+(brace
+multiline_comment|/* Collision - tell upper layer to requeue */
+id|local_irq_restore
+c_func
+(paren
 id|flags
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* need: count + 2 desc gap to keep tail from touching&n;&t; * head, otherwise try next time */
 r_if
 c_cond
@@ -7488,15 +7533,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7538,6 +7574,15 @@ op_amp
 id|adapter-&gt;tx_fifo_stall_timer
 comma
 id|jiffies
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7652,6 +7697,15 @@ suffix:semicolon
 id|netdev-&gt;trans_start
 op_assign
 id|jiffies
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|adapter-&gt;tx_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -8711,7 +8765,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_disable - Mask off interrupt generation on the NIC&n; * @adapter: board private structure&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_irq_disable
 id|e1000_irq_disable
@@ -8758,7 +8811,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_enable - Enable default interrupt generation settings&n; * @adapter: board private structure&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_irq_enable
 id|e1000_irq_enable
@@ -10838,7 +10890,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_rx_checksum - Receive Checksum Offload for 82543&n; * @adapter: board private structure&n; * @rx_desc: receive descriptor&n; * @sk_buff: socket buffer with received data&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_rx_checksum
 id|e1000_rx_checksum

@@ -1435,7 +1435,7 @@ id|all-&gt;info.var.green.length
 op_assign
 id|all-&gt;info.var.blue.length
 op_assign
-id|all_info.var.bits_per_pixel
+id|all-&gt;info.var.bits_per_pixel
 suffix:semicolon
 id|all-&gt;info.var.red.offset
 op_assign
@@ -1794,7 +1794,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|bw2_init
 id|module_init
 c_func
@@ -1802,6 +1801,7 @@ c_func
 id|bw2_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|bw2_exit
 id|module_exit
 c_func

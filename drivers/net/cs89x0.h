@@ -1,5 +1,13 @@
 multiline_comment|/*  Copyright, 1988-1992, Russell Nelson, Crynwr Software&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation, version 1.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;   */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_ARCH_IXDP2X01
+multiline_comment|/* IXDP2401/IXDP2801 uses dword-aligned register addressing */
+DECL|macro|CS89x0_PORT
+mdefine_line|#define CS89x0_PORT(reg) ((reg) * 2)
+macro_line|#else
+DECL|macro|CS89x0_PORT
+mdefine_line|#define CS89x0_PORT(reg) (reg)
+macro_line|#endif
 DECL|macro|PP_ChipID
 mdefine_line|#define PP_ChipID 0x0000&t;/* offset   0h -&gt; Corp -ID              */
 multiline_comment|/* offset   2h -&gt; Model/Product Number  */
@@ -504,11 +512,11 @@ mdefine_line|#define RAM_SIZE&t;0x1000       /*  The card has 4k bytes or RAM */
 DECL|macro|PKT_START
 mdefine_line|#define PKT_START PP_TxFrame  /*  Start of packet RAM */
 DECL|macro|RX_FRAME_PORT
-mdefine_line|#define RX_FRAME_PORT&t;0x0000
+mdefine_line|#define RX_FRAME_PORT&t;CS89x0_PORT(0x0000)
 DECL|macro|TX_FRAME_PORT
 mdefine_line|#define TX_FRAME_PORT RX_FRAME_PORT
 DECL|macro|TX_CMD_PORT
-mdefine_line|#define TX_CMD_PORT&t;0x0004
+mdefine_line|#define TX_CMD_PORT&t;CS89x0_PORT(0x0004)
 DECL|macro|TX_NOW
 mdefine_line|#define TX_NOW&t;&t;0x0000       /*  Tx packet after   5 bytes copied */
 DECL|macro|TX_AFTER_381
@@ -516,13 +524,13 @@ mdefine_line|#define TX_AFTER_381&t;0x0040       /*  Tx packet after 381 bytes c
 DECL|macro|TX_AFTER_ALL
 mdefine_line|#define TX_AFTER_ALL&t;0x00c0       /*  Tx packet after all bytes copied */
 DECL|macro|TX_LEN_PORT
-mdefine_line|#define TX_LEN_PORT&t;0x0006
+mdefine_line|#define TX_LEN_PORT&t;CS89x0_PORT(0x0006)
 DECL|macro|ISQ_PORT
-mdefine_line|#define ISQ_PORT&t;0x0008
+mdefine_line|#define ISQ_PORT&t;CS89x0_PORT(0x0008)
 DECL|macro|ADD_PORT
-mdefine_line|#define ADD_PORT&t;0x000A
+mdefine_line|#define ADD_PORT&t;CS89x0_PORT(0x000A)
 DECL|macro|DATA_PORT
-mdefine_line|#define DATA_PORT&t;0x000C
+mdefine_line|#define DATA_PORT&t;CS89x0_PORT(0x000C)
 DECL|macro|EEPROM_WRITE_EN
 mdefine_line|#define EEPROM_WRITE_EN&t;&t;0x00F0
 DECL|macro|EEPROM_WRITE_DIS

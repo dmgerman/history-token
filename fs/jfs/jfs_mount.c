@@ -426,15 +426,6 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; *      unwind on error&n;&t; */
-singleline_comment|//errout42: /* close fileset inode allocation map */
-id|diUnmount
-c_func
-(paren
-id|ipimap
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|errout41
 suffix:colon
 multiline_comment|/* close fileset inode allocation map inode */

@@ -1345,7 +1345,7 @@ comma
 op_amp
 id|nlm_grace_period
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param_call
@@ -1360,7 +1360,7 @@ comma
 op_amp
 id|nlm_timeout
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param_call
@@ -1375,7 +1375,7 @@ comma
 op_amp
 id|nlm_udpport
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 id|module_param_call
@@ -1390,7 +1390,7 @@ comma
 op_amp
 id|nlm_tcpport
 comma
-l_int|644
+l_int|0644
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialising and terminating the module.&n; */

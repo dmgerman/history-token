@@ -266,7 +266,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|lmc_trace
-r_inline
 r_void
 (def_block
 id|lmc_trace

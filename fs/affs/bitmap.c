@@ -50,6 +50,7 @@ comma
 l_int|4
 )brace
 suffix:semicolon
+r_static
 id|u32
 DECL|function|affs_count_free_bits
 id|affs_count_free_bits

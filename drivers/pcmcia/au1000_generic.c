@@ -2252,10 +2252,6 @@ r_int
 r_int
 id|speed
 suffix:semicolon
-r_int
-r_int
-id|start
-suffix:semicolon
 id|u_long
 id|flags
 suffix:semicolon
@@ -2345,25 +2341,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|start
-op_assign
-id|map-&gt;sys_start
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|map-&gt;sys_stop
-op_eq
-l_int|0
-)paren
-(brace
-id|map-&gt;sys_stop
-op_assign
-id|MAP_SIZE
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2372,7 +2349,7 @@ op_amp
 id|MAP_ATTRIB
 )paren
 (brace
-id|map-&gt;sys_start
+id|map-&gt;static_start
 op_assign
 id|pcmcia_socket
 (braket
@@ -2386,7 +2363,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|map-&gt;sys_start
+id|map-&gt;static_start
 op_assign
 id|pcmcia_socket
 (braket
@@ -2398,16 +2375,6 @@ op_plus
 id|map-&gt;card_start
 suffix:semicolon
 )brace
-id|map-&gt;sys_stop
-op_assign
-id|map-&gt;sys_start
-op_plus
-(paren
-id|map-&gt;sys_stop
-op_minus
-id|start
-)paren
-suffix:semicolon
 id|pcmcia_socket
 (braket
 id|sock
@@ -2435,13 +2402,11 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;set_mem_map %d start %x stop %x card_start %x&bslash;n&quot;
+l_string|&quot;set_mem_map %d start %x card_start %x&bslash;n&quot;
 comma
 id|map-&gt;map
 comma
-id|map-&gt;sys_start
-comma
-id|map-&gt;sys_stop
+id|map-&gt;static_start
 comma
 id|map-&gt;card_start
 )paren

@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/*&n; * The integer part of the number of usecs per jiffy is taken from tick,&n; * but the fractional part is not recorded, so we calculate it using the&n; * initial value of HZ.  This aids systems where tick isn&squot;t really an&n; * integer (e.g. for HZ = 128).&n; */
@@ -1182,72 +1181,16 @@ id|regs
 r_if
 c_cond
 (paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|prof_buffer
-op_logical_and
 id|current-&gt;pid
 )paren
-(brace
-r_int
-r_int
-id|pc
-op_assign
-id|regs-&gt;cp0_epc
-suffix:semicolon
-id|pc
-op_sub_assign
-(paren
-r_int
-r_int
-)paren
-id|_stext
-suffix:semicolon
-id|pc
-op_rshift_assign
-id|prof_shift
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Dont ignore out-of-bounds pc values silently,&n;&t;&t;&t; * put them into the last histogram slot, so if&n;&t;&t;&t; * present, they will show up as a sharp peak.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|pc
-OG
-id|prof_len
-op_minus
-l_int|1
-)paren
-id|pc
-op_assign
-id|prof_len
-op_minus
-l_int|1
-suffix:semicolon
-id|atomic_inc
+id|profile_tick
 c_func
 (paren
-(paren
-id|atomic_t
-op_star
-)paren
-op_amp
-id|prof_buffer
-(braket
-id|pc
-)braket
+id|CPU_PROFILING
+comma
+id|regs
 )paren
 suffix:semicolon
-)brace
-)brace
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* in UP mode, update_process_times() is invoked by do_timer() */
 id|update_process_times

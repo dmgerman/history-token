@@ -506,7 +506,7 @@ id|default_unplug_io_fn
 comma
 )brace
 suffix:semicolon
-DECL|variable|shmem_inodes
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -6050,7 +6050,7 @@ id|KM_USER0
 suffix:semicolon
 id|left
 op_assign
-id|__copy_from_user
+id|__copy_from_user_inatomic
 c_func
 (paren
 id|kaddr

@@ -4,7 +4,6 @@ DECL|macro|_PPC_IO_H
 mdefine_line|#define _PPC_IO_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;

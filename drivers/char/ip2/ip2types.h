@@ -85,6 +85,17 @@ id|type
 id|IP2_MAX_BOARDS
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+(braket
+id|IP2_MAX_BOARDS
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|ip2config_t
 )brace
 id|ip2config_t

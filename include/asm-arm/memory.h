@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_ARM_MEMORY_H
 DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
 macro_line|#ifndef TASK_SIZE
 multiline_comment|/*&n; * TASK_SIZE - the maximum size of a user space task.&n; * TASK_UNMAPPED_BASE - the lower boundary of the mmap VM area&n; */
@@ -205,9 +206,9 @@ macro_line|#ifndef __arch_page_to_dma
 DECL|macro|page_to_dma
 mdefine_line|#define page_to_dma(dev, page)&t;&t;((dma_addr_t)__virt_to_bus((unsigned long)page_address(page)))
 DECL|macro|dma_to_virt
-mdefine_line|#define dma_to_virt(dev, addr)&t;&t;(__bus_to_virt(addr))
+mdefine_line|#define dma_to_virt(dev, addr)&t;&t;((void *)__bus_to_virt(addr))
 DECL|macro|virt_to_dma
-mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__virt_to_bus((unsigned long)(addr)))
+mdefine_line|#define virt_to_dma(dev, addr)&t;&t;((dma_addr_t)__virt_to_bus((unsigned long)(addr)))
 macro_line|#else
 DECL|macro|page_to_dma
 mdefine_line|#define page_to_dma(dev, page)&t;&t;(__arch_page_to_dma(dev, page))

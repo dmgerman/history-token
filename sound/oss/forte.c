@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;forte&quot;

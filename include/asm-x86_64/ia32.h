@@ -231,24 +231,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|union|sigval32
-r_typedef
-r_union
-id|sigval32
-(brace
-DECL|member|sival_int
-r_int
-id|sival_int
-suffix:semicolon
-DECL|member|sival_ptr
-r_int
-r_int
-id|sival_ptr
-suffix:semicolon
-DECL|typedef|sigval_t32
-)brace
-id|sigval_t32
-suffix:semicolon
 DECL|struct|siginfo32
 r_typedef
 r_struct
@@ -319,7 +301,7 @@ id|_overrun
 suffix:semicolon
 multiline_comment|/* overrun count */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 multiline_comment|/* same as below */
@@ -353,7 +335,7 @@ id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 DECL|member|_rt
@@ -387,6 +369,11 @@ suffix:semicolon
 DECL|member|_stime
 id|compat_clock_t
 id|_stime
+suffix:semicolon
+DECL|member|_rusage
+r_struct
+id|compat_rusage
+id|_rusage
 suffix:semicolon
 DECL|member|_sigchld
 )brace

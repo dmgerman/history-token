@@ -1987,7 +1987,11 @@ op_star
 )paren
 id|data
 comma
-id|FRAME_SIZE
+r_sizeof
+(paren
+r_struct
+id|user_regs_struct
+)paren
 )paren
 )paren
 (brace
@@ -1999,6 +2003,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2022,6 +2030,8 @@ r_int
 )paren
 )paren
 (brace
+id|ret
+op_or_assign
 id|__put_user
 c_func
 (paren
@@ -2050,10 +2060,6 @@ r_int
 )paren
 suffix:semicolon
 )brace
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2082,7 +2088,11 @@ op_star
 )paren
 id|data
 comma
-id|FRAME_SIZE
+r_sizeof
+(paren
+r_struct
+id|user_regs_struct
+)paren
 )paren
 )paren
 (brace
@@ -2094,6 +2104,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2117,6 +2131,8 @@ r_int
 )paren
 )paren
 (brace
+id|ret
+op_or_assign
 id|__get_user
 c_func
 (paren
@@ -2149,10 +2165,6 @@ r_int
 )paren
 suffix:semicolon
 )brace
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace

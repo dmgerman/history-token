@@ -3663,7 +3663,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|cg6_init
 id|module_init
 c_func
@@ -3671,6 +3670,7 @@ c_func
 id|cg6_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|cg6_exit
 id|module_exit
 c_func

@@ -368,5 +368,9 @@ DECL|macro|copy_in_user
 mdefine_line|#define copy_in_user lcopy_in_user
 DECL|macro|__copy_in_user
 mdefine_line|#define __copy_in_user lcopy_in_user
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 macro_line|#endif /* __PARISC_UACCESS_H */
 eof

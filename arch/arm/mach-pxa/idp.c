@@ -242,11 +242,7 @@ suffix:semicolon
 id|set_irq_type
 c_func
 (paren
-id|IRQ_TO_GPIO_2_80
-c_func
-(paren
 id|TOUCH_PANEL_IRQ
-)paren
 comma
 id|TOUCH_PANEL_IRQ_EDGE
 )paren

@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -1339,10 +1338,6 @@ id|cpu
 )paren
 (brace
 r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-r_struct
 id|task_struct
 op_star
 id|p
@@ -1358,40 +1353,12 @@ id|c
 suffix:semicolon
 multiline_comment|/* create a process for the processor */
 multiline_comment|/* only regs.msr is actually used, and 0 is OK for it */
-id|memset
-c_func
-(paren
-op_amp
-id|regs
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-)paren
-suffix:semicolon
 id|p
 op_assign
-id|copy_process
+id|fork_idle
 c_func
 (paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-op_amp
-id|regs
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -1415,26 +1382,6 @@ c_func
 (paren
 id|p
 )paren
-)paren
-suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-id|p
-comma
-id|cpu
-)paren
-suffix:semicolon
-id|unhash_process
-c_func
-(paren
-id|p
 )paren
 suffix:semicolon
 id|secondary_ti

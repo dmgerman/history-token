@@ -174,6 +174,10 @@ DECL|macro|__get_user
 mdefine_line|#define __get_user(x,ptr) &bslash;&n;  __get_user_nocheck((x),(ptr),sizeof(*(ptr)))
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr) &bslash;&n;  __put_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
+DECL|macro|__get_user_unaligned
+mdefine_line|#define __get_user_unaligned __get_user
+DECL|macro|__put_user_unaligned
+mdefine_line|#define __put_user_unaligned __put_user
 DECL|macro|__put_user_nocheck
 mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __pu_err;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_size((x),(ptr),(size),__pu_err);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_check
@@ -1528,5 +1532,9 @@ r_int
 id|len
 )paren
 suffix:semicolon
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 macro_line|#endif /* __X86_64_UACCESS_H */
 eof

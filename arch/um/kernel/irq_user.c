@@ -2,7 +2,6 @@ multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;errno.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;sys/poll.h&gt;
@@ -155,10 +154,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|n
 op_assign
 id|poll
@@ -170,7 +165,11 @@ id|pollfds_num
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren
@@ -1729,48 +1728,32 @@ r_int
 id|pid
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fcntl
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|os_set_owner
 c_func
 (paren
 id|fd
 comma
-id|F_SETOWN
-comma
 id|pid
 )paren
-OL
-l_int|0
-)paren
-(brace
-r_int
-id|save_errno
-op_assign
-id|errno
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fcntl
-c_func
-(paren
-id|fd
-comma
-id|F_GETOWN
-comma
+id|err
+OL
 l_int|0
-)paren
-op_ne
-id|pid
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;forward_ipi: F_SETOWN failed, fd = %d, &quot;
-l_string|&quot;me = %d, target = %d, errno = %d&bslash;n&quot;
+l_string|&quot;forward_ipi: set_owner failed, fd = %d, me = %d, &quot;
+l_string|&quot;target = %d, err = %d&bslash;n&quot;
 comma
 id|fd
 comma
@@ -1781,10 +1764,10 @@ c_func
 comma
 id|pid
 comma
-id|save_errno
+op_minus
+id|err
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|forward_interrupts
@@ -1804,6 +1787,9 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|flags
 op_assign
@@ -1828,58 +1814,38 @@ op_assign
 id|irq-&gt;next
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fcntl
+id|err
+op_assign
+id|os_set_owner
 c_func
 (paren
 id|irq-&gt;fd
 comma
-id|F_SETOWN
-comma
 id|pid
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
 (brace
-r_int
-id|save_errno
-op_assign
-id|errno
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fcntl
-c_func
-(paren
-id|irq-&gt;fd
-comma
-id|F_GETOWN
-comma
-l_int|0
-)paren
-op_ne
-id|pid
-)paren
-(brace
-multiline_comment|/* XXX Just remove the irq rather than&n;&t;&t;&t;&t; * print out an infinite stream of these&n;&t;&t;&t;&t; */
+multiline_comment|/* XXX Just remove the irq rather than&n;&t;&t;&t; * print out an infinite stream of these&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
-l_string|&quot;Failed to forward %d to pid %d, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;Failed to forward %d to pid %d, err = %d&bslash;n&quot;
 comma
 id|irq-&gt;fd
 comma
 id|pid
 comma
-id|save_errno
+op_minus
+id|err
 )paren
 suffix:semicolon
-)brace
 )brace
 id|irq-&gt;pid
 op_assign

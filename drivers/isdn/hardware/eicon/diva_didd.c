@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva_didd.c,v 1.13 2003/08/27 10:11:21 schindler Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2002-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: diva_didd.c,v 1.13.6.1 2004/08/28 20:03:53 armin Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2002-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,7 +15,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.13 $&quot;
+l_string|&quot;$Revision: 1.13.6.1 $&quot;
 suffix:semicolon
 DECL|variable|DRIVERNAME
 r_static
@@ -72,8 +72,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|MAX_DESCRIPTORS
-mdefine_line|#define MAX_DESCRIPTORS  32
 DECL|macro|DBG_MINIMUM
 mdefine_line|#define DBG_MINIMUM  (DL_LOG + DL_FTL + DL_ERR)
 DECL|macro|DBG_DEFAULT
@@ -121,14 +119,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|DIVA_DIDD_Read
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|DIVA_DIDD_Read
 )paren
 suffix:semicolon
 DECL|variable|proc_net_eicon
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|proc_net_eicon

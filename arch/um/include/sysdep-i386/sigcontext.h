@@ -24,9 +24,9 @@ mdefine_line|#define SC_TRAP_TYPE(sc) SC_TRAPNO(sc)
 multiline_comment|/* ptrace expects that, at the start of a system call, %eax contains&n; * -ENOSYS, so this makes it so.&n; */
 DECL|macro|SC_START_SYSCALL
 mdefine_line|#define SC_START_SYSCALL(sc) do SC_EAX(sc) = -ENOSYS; while(0)
-multiline_comment|/* These are General Protection and Page Fault */
+multiline_comment|/* This is Page Fault */
 DECL|macro|SEGV_IS_FIXABLE
-mdefine_line|#define SEGV_IS_FIXABLE(trap) ((trap == 13) || (trap == 14))
+mdefine_line|#define SEGV_IS_FIXABLE(trap) (trap == 14)
 DECL|macro|SC_SEGV_IS_FIXABLE
 mdefine_line|#define SC_SEGV_IS_FIXABLE(sc) (SEGV_IS_FIXABLE(SC_TRAPNO(sc)))
 r_extern

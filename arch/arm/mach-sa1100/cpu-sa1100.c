@@ -653,10 +653,6 @@ dot
 id|flags
 op_assign
 id|CPUFREQ_STICKY
-op_or
-id|CPUFREQ_PANIC_OUTOFSYNC
-op_or
-id|CPUFREQ_PANIC_RESUME_OUTOFSYNC
 comma
 dot
 id|verify

@@ -2,21 +2,6 @@ macro_line|#ifndef __SOUND_INITVAL_H
 DECL|macro|__SOUND_INITVAL_H
 mdefine_line|#define __SOUND_INITVAL_H
 multiline_comment|/*&n; *  Init values for soundcard modules&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-macro_line|#ifndef MODULE_GENERIC_STRING
-macro_line|#ifdef MODULE
-DECL|macro|MODULE_GENERIC_STRING
-mdefine_line|#define MODULE_GENERIC_STRING(name, string) &bslash;&n;static const char __module_generic_string_##name [] &bslash;&n;  __attribute__ ((unused, __section__(&quot;.modstring&quot;))) = #name &quot;=&quot; string;
-macro_line|#else
-DECL|macro|MODULE_GENERIC_STRING
-mdefine_line|#define MODULE_GENERIC_STRING(name, string)
-macro_line|#endif
-macro_line|#endif
-DECL|macro|MODULE_CLASSES
-mdefine_line|#define MODULE_CLASSES(val) MODULE_GENERIC_STRING(info_classes, val)
-DECL|macro|MODULE_DEVICES
-mdefine_line|#define MODULE_DEVICES(val) MODULE_GENERIC_STRING(info_devices, val)
-DECL|macro|MODULE_PARM_SYNTAX
-mdefine_line|#define MODULE_PARM_SYNTAX(id, val) MODULE_GENERIC_STRING(info_parm_##id, val)
 DECL|macro|SNDRV_AUTO_PORT
 mdefine_line|#define SNDRV_AUTO_PORT&t;&t;1
 DECL|macro|SNDRV_AUTO_IRQ
@@ -66,38 +51,6 @@ DECL|macro|SNDRV_DEFAULT_DMA_SIZE
 mdefine_line|#define SNDRV_DEFAULT_DMA_SIZE&t;{ [0 ... (SNDRV_CARDS-1)] = SNDRV_AUTO_DMA_SIZE }
 DECL|macro|SNDRV_DEFAULT_PTR
 mdefine_line|#define SNDRV_DEFAULT_PTR&t;SNDRV_DEFAULT_STR
-DECL|macro|SNDRV_BOOLEAN_TRUE_DESC
-mdefine_line|#define SNDRV_BOOLEAN_TRUE_DESC&t;&quot;allows:{{0,Disabled},{1,Enabled}},default:1,dialog:check&quot;
-DECL|macro|SNDRV_BOOLEAN_FALSE_DESC
-mdefine_line|#define SNDRV_BOOLEAN_FALSE_DESC &quot;allows:{{0,Disabled},{1,Enabled}},default:0,dialog:check&quot;
-DECL|macro|SNDRV_ENABLED
-mdefine_line|#define SNDRV_ENABLED&t;&t;&quot;enable:(enable)&quot;
-DECL|macro|SNDRV_INDEX_DESC
-mdefine_line|#define SNDRV_INDEX_DESC&t;SNDRV_ENABLED &quot;,allows:{{0,7}},unique,skill:required,dialog:list&quot;
-DECL|macro|SNDRV_ID_DESC
-mdefine_line|#define SNDRV_ID_DESC&t;&t;SNDRV_ENABLED &quot;,unique&quot;
-DECL|macro|SNDRV_ENABLE_DESC
-mdefine_line|#define SNDRV_ENABLE_DESC&t;SNDRV_BOOLEAN_FALSE_DESC
-DECL|macro|SNDRV_ISAPNP_DESC
-mdefine_line|#define SNDRV_ISAPNP_DESC&t;SNDRV_ENABLED &quot;,&quot; SNDRV_BOOLEAN_TRUE_DESC
-DECL|macro|SNDRV_DMA8_DESC
-mdefine_line|#define SNDRV_DMA8_DESC&t;&t;SNDRV_ENABLED &quot;,allows:{{0,1},{3}},dialog:list&quot;
-DECL|macro|SNDRV_DMA16_DESC
-mdefine_line|#define SNDRV_DMA16_DESC&t;SNDRV_ENABLED &quot;,allows:{{5,7}},dialog:list&quot;
-DECL|macro|SNDRV_DMA_DESC
-mdefine_line|#define SNDRV_DMA_DESC&t;&t;SNDRV_ENABLED &quot;,allows:{{0,1},{3},{5,7}},dialog:list&quot;
-DECL|macro|SNDRV_IRQ_DESC
-mdefine_line|#define SNDRV_IRQ_DESC&t;&t;SNDRV_ENABLED &quot;,allows:{{5},{7},{9},{10,12},{14,15}},dialog:list&quot;
-DECL|macro|SNDRV_DMA_SIZE_DESC
-mdefine_line|#define SNDRV_DMA_SIZE_DESC&t;SNDRV_ENABLED &quot;,allows:{{4,128}},default:64,skill:advanced&quot;
-DECL|macro|SNDRV_DMA8_SIZE_DESC
-mdefine_line|#define SNDRV_DMA8_SIZE_DESC&t;SNDRV_ENABLED &quot;,allows:{{4, 64}},default:64,skill:advanced&quot;
-DECL|macro|SNDRV_DMA16_SIZE_DESC
-mdefine_line|#define SNDRV_DMA16_SIZE_DESC&t;SNDRV_ENABLED &quot;,allows:{{4,128}},default:64,skill:advanced&quot;
-DECL|macro|SNDRV_PORT12_DESC
-mdefine_line|#define SNDRV_PORT12_DESC&t;SNDRV_ENABLED &quot;,allows:{{0,0x3fff}},base:16&quot;
-DECL|macro|SNDRV_PORT_DESC
-mdefine_line|#define SNDRV_PORT_DESC&t;&t;SNDRV_ENABLED &quot;,allows:{{0,0xffff}},base:16&quot;
 macro_line|#ifdef SNDRV_LEGACY_AUTO_PROBE
 DECL|function|snd_legacy_auto_probe
 r_static

@@ -286,6 +286,8 @@ DECL|macro|N_EDATA_ACK
 mdefine_line|#define N_EDATA_ACK     13      /* data ack ind for INTERRUPT       */
 DECL|macro|N_XON
 mdefine_line|#define N_XON           15      /* clear RNR state */
+DECL|macro|N_COMBI_IND
+mdefine_line|#define N_COMBI_IND     N_XON   /* combined indication              */
 DECL|macro|N_Q_BIT
 mdefine_line|#define N_Q_BIT         0x10    /* Q-bit for req/ind                */
 DECL|macro|N_M_BIT
@@ -449,6 +451,14 @@ DECL|macro|MWI_POLL
 mdefine_line|#define MWI_POLL 67     /* Message Waiting Status Request fkt */
 DECL|macro|CALL_PEND_NOTIFY
 mdefine_line|#define CALL_PEND_NOTIFY 68 /* notify capi to set new listen        */
+DECL|macro|DO_NOTHING
+mdefine_line|#define DO_NOTHING 69       /* dont do somethin if you get this     */
+DECL|macro|INT_CT_REJ
+mdefine_line|#define INT_CT_REJ 70       /* ECT rejected internal command        */
+DECL|macro|CALL_HOLD_COMPLETE
+mdefine_line|#define CALL_HOLD_COMPLETE 71 /* In NT Mode indicate hold complete  */
+DECL|macro|CALL_RETRIEVE_COMPLETE
+mdefine_line|#define CALL_RETRIEVE_COMPLETE 72 /* In NT Mode indicate retrieve complete  */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/* management service primitives                                    */
 multiline_comment|/*------------------------------------------------------------------*/
@@ -472,6 +482,8 @@ DECL|macro|MAN_EVENT_IND
 mdefine_line|#define MAN_EVENT_IND   3
 DECL|macro|MAN_TRACE_IND
 mdefine_line|#define MAN_TRACE_IND   4
+DECL|macro|MAN_COMBI_IND
+mdefine_line|#define MAN_COMBI_IND   9
 DECL|macro|MAN_ESC
 mdefine_line|#define MAN_ESC         0x80
 multiline_comment|/*------------------------------------------------------------------*/
@@ -514,6 +526,8 @@ DECL|macro|SHIFT
 mdefine_line|#define SHIFT 0x90              /* codeset shift                    */
 DECL|macro|MORE
 mdefine_line|#define MORE 0xa0               /* more data                        */
+DECL|macro|SDNCMPL
+mdefine_line|#define SDNCMPL 0xa1            /* sending complete                 */
 DECL|macro|CL
 mdefine_line|#define CL 0xb0                 /* congestion level                 */
 multiline_comment|/* codeset 0                                                */
@@ -559,6 +573,10 @@ DECL|macro|RDN
 mdefine_line|#define RDN 0x74                /* redirecting number               */
 DECL|macro|RIN
 mdefine_line|#define RIN 0x76                /* redirection number               */
+DECL|macro|IUP
+mdefine_line|#define IUP 0x76                /* VN6 rerouter-&gt;PCS (codeset 6)    */
+DECL|macro|IPU
+mdefine_line|#define IPU 0x77                /* VN6 PCS-&gt;rerouter (codeset 6)    */
 DECL|macro|RI
 mdefine_line|#define RI  0x79                /* restart indicator                */
 DECL|macro|MIE
@@ -575,6 +593,10 @@ DECL|macro|DLC
 mdefine_line|#define DLC 0x20                /* data link layer configuration    */
 DECL|macro|NLC
 mdefine_line|#define NLC 0x21                /* network layer configuration      */
+DECL|macro|REDIRECT_IE
+mdefine_line|#define REDIRECT_IE     0x22    /* redirection request/indication data */
+DECL|macro|REDIRECT_NET_IE
+mdefine_line|#define REDIRECT_NET_IE 0x23    /* redirection network override data   */
 multiline_comment|/* codeset 6                                                */
 DECL|macro|SIN
 mdefine_line|#define SIN 0x01                /* service indicator                */
@@ -591,6 +613,8 @@ DECL|macro|MSGTYPEIE
 mdefine_line|#define MSGTYPEIE        0x7a   /* Messagetype info element         */
 DECL|macro|CRIE
 mdefine_line|#define CRIE             0x7b   /* INFO info element                */
+DECL|macro|CODESET6IE
+mdefine_line|#define CODESET6IE       0xec   /* Tunnel for Codeset 6 IEs         */
 DECL|macro|VSWITCHIE
 mdefine_line|#define VSWITCHIE        0xed   /* VSwitch info element             */
 DECL|macro|SSEXTIE
@@ -663,6 +687,20 @@ DECL|macro|CCBS_DEACTIVATE
 mdefine_line|#define CCBS_DEACTIVATE           0x33
 DECL|macro|CCBS_INTERROGATE
 mdefine_line|#define CCBS_INTERROGATE          0x34
+DECL|macro|CCBS_STATUS
+mdefine_line|#define CCBS_STATUS               0x35
+DECL|macro|CCBS_ERASE
+mdefine_line|#define CCBS_ERASE                0x36
+DECL|macro|CCBS_B_FREE
+mdefine_line|#define CCBS_B_FREE               0x37
+DECL|macro|CCNR_INFO_RETAIN
+mdefine_line|#define CCNR_INFO_RETAIN          0x38
+DECL|macro|CCBS_REMOTE_USER_FREE
+mdefine_line|#define CCBS_REMOTE_USER_FREE     0x39
+DECL|macro|CCNR_REQUEST
+mdefine_line|#define CCNR_REQUEST              0x3a
+DECL|macro|CCNR_INTERROGATE
+mdefine_line|#define CCNR_INTERROGATE          0x3b
 DECL|macro|GET_SUPPORTED_SERVICES
 mdefine_line|#define GET_SUPPORTED_SERVICES    0xff
 DECL|macro|DIVERSION_PROCEDURE_CFU
@@ -698,6 +736,8 @@ DECL|macro|SMASK_CALL_FORWARDING
 mdefine_line|#define SMASK_CALL_FORWARDING      0x00000010
 DECL|macro|SMASK_CALL_DEFLECTION
 mdefine_line|#define SMASK_CALL_DEFLECTION      0x00000020
+DECL|macro|SMASK_MCID
+mdefine_line|#define SMASK_MCID                 0x00000040
 DECL|macro|SMASK_CCBS
 mdefine_line|#define SMASK_CCBS                 0x00000080
 DECL|macro|SMASK_MWI
@@ -758,6 +798,10 @@ DECL|macro|RTPL2
 mdefine_line|#define RTPL2          14       /* RTP layer-2 protocol             */
 DECL|macro|V120_V42BIS
 mdefine_line|#define V120_V42BIS    15       /* V.120 asynchronous mode supporting V.42bis compression */
+DECL|macro|LISTENER
+mdefine_line|#define LISTENER       27       /* Layer 2 to listen line */
+DECL|macro|MTP2
+mdefine_line|#define MTP2           28       /* MTP2 Layer 2 */
 DECL|macro|PIAFS_CRC
 mdefine_line|#define PIAFS_CRC      29       /* PIAFS Layer 2 with CRC calculation at L2 */
 multiline_comment|/* ------------------------------------------------------&n;   PIAFS DLC DEFINITIONS&n;   ------------------------------------------------------ */
@@ -774,6 +818,28 @@ mdefine_line|#define PIAFS_UDATA_ABILITY_DCDON 0x01
 DECL|macro|PIAFS_UDATA_ABILITY_DDI
 mdefine_line|#define PIAFS_UDATA_ABILITY_DDI   0x80
 multiline_comment|/*&n;DLC of PIAFS :&n;Byte | 8 7 6 5 4 3 2 1&n;-----+--------------------------------------------------------&n;   0 | 0 0 1 0 0 0 0 0  Data Link Configuration&n;   1 | X X X X X X X X  Length of IE (at least 15 Bytes)&n;   2 | 0 0 0 0 0 0 0 0  max. information field, LOW  byte (not used, fix 73 Bytes)&n;   3 | 0 0 0 0 0 0 0 0  max. information field, HIGH byte (not used, fix 73 Bytes)&n;   4 | 0 0 0 0 0 0 0 0  address A (not used)&n;   5 | 0 0 0 0 0 0 0 0  address B (not used)&n;   6 | 0 0 0 0 0 0 0 0  Mode (not used, fix 128)&n;   7 | 0 0 0 0 0 0 0 0  Window Size (not used, fix 127)&n;   8 | X X X X X X X X  XID Length, Low Byte (at least 7 Bytes)&n;   9 | X X X X X X X X  XID Length, High Byte&n;  10 | 0 0 0 0 0 C V S  PIAFS Protocol Speed configuration -&gt; Note(1)&n;     |                  S = 0 -&gt; Protocol Speed is 32K&n;     |                  S = 1 -&gt; Protocol Speed is 64K&n;     |                  V = 0 -&gt; Protocol Speed is fixed&n;     |                  V = 1 -&gt; Protocol Speed is variable&n;     |                  C = 0 -&gt; speed setting according to standard&n;     |                  C = 1 -&gt; speed setting for chinese implementation&n;  11 | 0 0 0 0 0 0 R T  P0 - V42bis Compression enable/disable, Low Byte&n;     |                  T = 0 -&gt; Transmit Direction enable&n;     |                  T = 1 -&gt; Transmit Direction disable&n;     |                  R = 0 -&gt; Receive  Direction enable&n;     |                  R = 1 -&gt; Receive  Direction disable&n;  13 | 0 0 0 0 0 0 0 0  P0 - V42bis Compression enable/disable, High Byte&n;  14 | X X X X X X X X  P1 - V42bis Dictionary Size, Low Byte&n;  15 | X X X X X X X X  P1 - V42bis Dictionary Size, High Byte&n;  16 | X X X X X X X X  P2 - V42bis String Length, Low Byte&n;  17 | X X X X X X X X  P2 - V42bis String Length, High Byte&n;  18 | X X X X X X X X  PIAFS extension length&n;  19 | 1 0 0 0 0 0 0 0  PIAFS extension Id (0x80) - UDATA abilities&n;  20 | U 0 0 0 0 0 0 D  UDATA abilities -&gt; Note (2)&n;     |                  up to now the following Bits are defined:&n;     |                  D - signal DCD ON&n;     |                  U - use extensive UDATA control communication&n;     |                      for DDI test application&n;+ Note (1): ----------+------+-----------------------------------------+&n;| PIAFS Protocol      | Bit  |                                         |&n;| Speed configuration |    S | Bit 1 - Protocol Speed                  |&n;|                     |      |         0 - 32K                         |&n;|                     |      |         1 - 64K (default)               |&n;|                     |    V | Bit 2 - Variable Protocol Speed         |&n;|                     |      |         0 - Speed is fix                |&n;|                     |      |         1 - Speed is variable (default) |&n;|                     |      |             OVERWRITES 32k Bit 1        |&n;|                     |    C | Bit 3   0 - Speed Settings according to |&n;|                     |      |             PIAFS specification         |&n;|                     |      |         1 - Speed setting for chinese   |&n;|                     |      |             PIAFS implementation        |&n;|                     |      | Explanation for chinese speed settings: |&n;|                     |      |         if Bit 3 is set the following   |&n;|                     |      |         rules apply:                    |&n;|                     |      |         Bit1=0 Bit2=0: 32k fix          |&n;|                     |      |         Bit1=1 Bit2=0: 64k fix          |&n;|                     |      |         Bit1=0 Bit2=1: PIAFS is trying  |&n;|                     |      |             to negotiate 32k is that is |&n;|                     |      |             not possible it tries to    |&n;|                     |      |             negotiate 64k               |&n;|                     |      |         Bit1=1 Bit2=1: PIAFS is trying  |&n;|                     |      |             to negotiate 64k is that is |&n;|                     |      |             not possible it tries to    |&n;|                     |      |             negotiate 32k               |&n;+ Note (2): ----------+------+-----------------------------------------+&n;| PIAFS               | Bit  | this byte defines the usage of UDATA    |&n;| Implementation      |      | control communication                   |&n;| UDATA usage         |    D | Bit 1 - DCD-ON signalling               |&n;|                     |      |         0 - no DCD-ON is signalled      |&n;|                     |      |             (default)                   |&n;|                     |      |         1 - DCD-ON will be signalled    |&n;|                     |    U | Bit 8 - DDI test application UDATA      |&n;|                     |      |         control communication           |&n;|                     |      |         0 - no UDATA control            |&n;|                     |      |             communication (default)     |&n;|                     |      |             sets as well the DCD-ON     |&n;|                     |      |             signalling                  |&n;|                     |      |         1 - UDATA control communication |&n;|                     |      |             ATTENTION: Do not use these |&n;|                     |      |                        setting if you   |&n;|                     |      |                        are not really   |&n;|                     |      |                        that you need it |&n;|                     |      |                        and you know     |&n;|                     |      |                        exactly what you |&n;|                     |      |                        are doing.       |&n;|                     |      |                        You can easily   |&n;|                     |      |                        disable any      |&n;|                     |      |                        data transfer.   |&n;+---------------------+------+-----------------------------------------+&n;*/
+multiline_comment|/* ------------------------------------------------------&n;   LISTENER DLC DEFINITIONS&n;   ------------------------------------------------------ */
+DECL|macro|LISTENER_FEATURE_MASK_CUMMULATIVE
+mdefine_line|#define LISTENER_FEATURE_MASK_CUMMULATIVE            0x0001
+multiline_comment|/* ------------------------------------------------------&n;   LISTENER META-FRAME CODE/PRIMITIVE DEFINITIONS&n;   ------------------------------------------------------ */
+DECL|macro|META_CODE_LL_UDATA_RX
+mdefine_line|#define META_CODE_LL_UDATA_RX 0x01
+DECL|macro|META_CODE_LL_UDATA_TX
+mdefine_line|#define META_CODE_LL_UDATA_TX 0x02
+DECL|macro|META_CODE_LL_DATA_RX
+mdefine_line|#define META_CODE_LL_DATA_RX  0x03
+DECL|macro|META_CODE_LL_DATA_TX
+mdefine_line|#define META_CODE_LL_DATA_TX  0x04
+DECL|macro|META_CODE_LL_MDATA_RX
+mdefine_line|#define META_CODE_LL_MDATA_RX 0x05
+DECL|macro|META_CODE_LL_MDATA_TX
+mdefine_line|#define META_CODE_LL_MDATA_TX 0x06
+DECL|macro|META_CODE_EMPTY
+mdefine_line|#define META_CODE_EMPTY       0x10
+DECL|macro|META_CODE_LOST_FRAMES
+mdefine_line|#define META_CODE_LOST_FRAMES 0x11
+DECL|macro|META_FLAG_TRUNCATED
+mdefine_line|#define META_FLAG_TRUNCATED   0x0001
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/* CAPI-like profile to indicate features on LAW_REQ                */
 multiline_comment|/*------------------------------------------------------------------*/
@@ -913,6 +979,22 @@ DECL|macro|MANUFACTURER_FEATURE_AUDIO_TAP
 mdefine_line|#define MANUFACTURER_FEATURE_AUDIO_TAP            0x08000000L
 DECL|macro|MANUFACTURER_FEATURE_FAX_NONSTANDARD
 mdefine_line|#define MANUFACTURER_FEATURE_FAX_NONSTANDARD      0x10000000L
+DECL|macro|MANUFACTURER_FEATURE_SS7
+mdefine_line|#define MANUFACTURER_FEATURE_SS7                  0x20000000L
+DECL|macro|MANUFACTURER_FEATURE_MADAPTER
+mdefine_line|#define MANUFACTURER_FEATURE_MADAPTER             0x40000000L
+DECL|macro|MANUFACTURER_FEATURE_MEASURE
+mdefine_line|#define MANUFACTURER_FEATURE_MEASURE              0x80000000L
+DECL|macro|MANUFACTURER_FEATURE2_LISTENING
+mdefine_line|#define MANUFACTURER_FEATURE2_LISTENING           0x00000001L
+DECL|macro|MANUFACTURER_FEATURE2_SS_DIFFCONTPOSSIBLE
+mdefine_line|#define MANUFACTURER_FEATURE2_SS_DIFFCONTPOSSIBLE 0x00000002L
+DECL|macro|MANUFACTURER_FEATURE2_GENERIC_TONE
+mdefine_line|#define MANUFACTURER_FEATURE2_GENERIC_TONE        0x00000004L
+DECL|macro|MANUFACTURER_FEATURE2_COLOR_FAX
+mdefine_line|#define MANUFACTURER_FEATURE2_COLOR_FAX           0x00000008L
+DECL|macro|MANUFACTURER_FEATURE2_SS_ECT_DIFFCONTPOSSIBLE
+mdefine_line|#define MANUFACTURER_FEATURE2_SS_ECT_DIFFCONTPOSSIBLE 0x00000010L
 DECL|macro|RTP_PRIM_PAYLOAD_PCMU_8000
 mdefine_line|#define RTP_PRIM_PAYLOAD_PCMU_8000     0
 DECL|macro|RTP_PRIM_PAYLOAD_1016_8000
@@ -1006,6 +1088,22 @@ DECL|macro|VSCLMRKS
 mdefine_line|#define VSCLMRKS       5
 DECL|macro|VSTBCTIDENT
 mdefine_line|#define VSTBCTIDENT    6
+DECL|macro|VSETSILINKID
+mdefine_line|#define VSETSILINKID   7
+DECL|macro|VSSAMECONTROLLER
+mdefine_line|#define VSSAMECONTROLLER 8
+multiline_comment|/* Errorcodes for VSETSILINKID begin */
+DECL|macro|VSETSILINKIDRRWC
+mdefine_line|#define VSETSILINKIDRRWC      1
+DECL|macro|VSETSILINKIDREJECT
+mdefine_line|#define VSETSILINKIDREJECT    2
+DECL|macro|VSETSILINKIDTIMEOUT
+mdefine_line|#define VSETSILINKIDTIMEOUT   3
+DECL|macro|VSETSILINKIDFAILCOUNT
+mdefine_line|#define VSETSILINKIDFAILCOUNT 4
+DECL|macro|VSETSILINKIDERROR
+mdefine_line|#define VSETSILINKIDERROR     5
+multiline_comment|/* Errorcodes for VSETSILINKID end */
 multiline_comment|/* -----------------------------------------------------------**&n;** The PROTOCOL_FEATURE_STRING in feature.h (included         **&n;** in prstart.sx and astart.sx) defines capabilities and      **&n;** features of the actual protocol code. It&squot;s used as a bit   **&n;** mask.                                                      **&n;** The following Bits are defined:                            **&n;** -----------------------------------------------------------*/
 DECL|macro|PROTCAP_TELINDUS
 mdefine_line|#define PROTCAP_TELINDUS  0x0001  /* Telindus Variant of protocol code   */
@@ -1039,6 +1137,51 @@ DECL|macro|PROTCAP_FREE14
 mdefine_line|#define PROTCAP_FREE14    0x4000  /* not used                            */
 DECL|macro|PROTCAP_EXTENSION
 mdefine_line|#define PROTCAP_EXTENSION 0x8000  /* used for future extentions          */
+multiline_comment|/* -----------------------------------------------------------* */
+multiline_comment|/* Onhook data transmission ETS30065901 */
+multiline_comment|/* Message Type */
+multiline_comment|/*#define RESERVED4                 0x4*/
+DECL|macro|CALL_SETUP
+mdefine_line|#define CALL_SETUP                0x80
+DECL|macro|MESSAGE_WAITING_INDICATOR
+mdefine_line|#define MESSAGE_WAITING_INDICATOR 0x82
+multiline_comment|/*#define RESERVED84                0x84*/
+multiline_comment|/*#define RESERVED85                0x85*/
+DECL|macro|ADVICE_OF_CHARGE
+mdefine_line|#define ADVICE_OF_CHARGE          0x86
+multiline_comment|/*1111 0001&n;to&n;1111 1111&n;F1H - Reserved for network operator use&n;to&n;FFH*/
+multiline_comment|/* Parameter Types */
+DECL|macro|DATE_AND_TIME
+mdefine_line|#define DATE_AND_TIME                                           1
+DECL|macro|CLI_PARAMETER_TYPE
+mdefine_line|#define CLI_PARAMETER_TYPE                                      2
+DECL|macro|CALLED_DIRECTORY_NUMBER_PARAMETER_TYPE
+mdefine_line|#define CALLED_DIRECTORY_NUMBER_PARAMETER_TYPE                  3
+DECL|macro|REASON_FOR_ABSENCE_OF_CLI_PARAMETER_TYPE
+mdefine_line|#define REASON_FOR_ABSENCE_OF_CLI_PARAMETER_TYPE                4
+DECL|macro|NAME_PARAMETER_TYPE
+mdefine_line|#define NAME_PARAMETER_TYPE                                     7
+DECL|macro|REASON_FOR_ABSENCE_OF_CALLING_PARTY_NAME_PARAMETER_TYPE
+mdefine_line|#define REASON_FOR_ABSENCE_OF_CALLING_PARTY_NAME_PARAMETER_TYPE 8
+DECL|macro|VISUAL_INDICATOR_PARAMETER_TYPE
+mdefine_line|#define VISUAL_INDICATOR_PARAMETER_TYPE                         0xb
+DECL|macro|COMPLEMENTARY_CLI_PARAMETER_TYPE
+mdefine_line|#define COMPLEMENTARY_CLI_PARAMETER_TYPE                        0x10
+DECL|macro|CALL_TYPE_PARAMETER_TYPE
+mdefine_line|#define CALL_TYPE_PARAMETER_TYPE                                0x11
+DECL|macro|FIRST_CALLED_LINE_DIRECTORY_NUMBER_PARAMETER_TYPE
+mdefine_line|#define FIRST_CALLED_LINE_DIRECTORY_NUMBER_PARAMETER_TYPE       0x12
+DECL|macro|NETWORK_MESSAGE_SYSTEM_STATUS_PARAMETER_TYPE
+mdefine_line|#define NETWORK_MESSAGE_SYSTEM_STATUS_PARAMETER_TYPE            0x13
+DECL|macro|FORWARDED_CALL_TYPE_PARAMETER_TYPE
+mdefine_line|#define FORWARDED_CALL_TYPE_PARAMETER_TYPE                      0x15
+DECL|macro|TYPE_OF_CALLING_USER_PARAMETER_TYPE
+mdefine_line|#define TYPE_OF_CALLING_USER_PARAMETER_TYPE                     0x16
+DECL|macro|REDIRECTING_NUMBER_PARAMETER_TYPE
+mdefine_line|#define REDIRECTING_NUMBER_PARAMETER_TYPE                       0x1a
+DECL|macro|EXTENSION_FOR_NETWORK_OPERATOR_USE_PARAMETER_TYPE
+mdefine_line|#define EXTENSION_FOR_NETWORK_OPERATOR_USE_PARAMETER_TYPE       0xe0
+multiline_comment|/* -----------------------------------------------------------* */
 macro_line|#else
 macro_line|#endif /* PC_H_INCLUDED  } */
 eof

@@ -9,10 +9,10 @@ macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
-macro_line|#ifdef CONFIG_ARCH_IQ80321
+macro_line|#ifdef CONFIG_ARCH_IQ80331
 r_extern
 r_void
-id|iq80321_map_io
+id|iq80331_map_io
 c_func
 (paren
 r_void
@@ -20,7 +20,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|iop321_init_irq
+id|iop331_init_irq
 c_func
 (paren
 r_void
@@ -28,19 +28,19 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|iop321_init_time
+id|iop331_init_time
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_IQ80321
+macro_line|#ifdef CONFIG_ARCH_IQ80331
 r_static
 r_void
 id|__init
-DECL|function|fixup_iop321
-id|fixup_iop321
+DECL|function|fixup_iop331
+id|fixup_iop331
 c_func
 (paren
 r_struct
@@ -66,47 +66,49 @@ id|mi
 (brace
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_IQ80321)
+macro_line|#if defined(CONFIG_ARCH_IQ80331)
 id|MACHINE_START
 c_func
 (paren
-id|IQ80321
+id|IQ80331
 comma
-l_string|&quot;Intel IQ80321&quot;
+l_string|&quot;Intel IQ80331&quot;
 )paren
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Intel Corporation&quot;
+l_string|&quot;Intel Corp.&quot;
 )paren
 id|BOOT_MEM
 c_func
 (paren
 id|PHYS_OFFSET
 comma
-id|IQ80321_UART1
+l_int|0xfff01000
 comma
-l_int|0xfe800000
+l_int|0xfffff000
 )paren
-id|FIXUP
-c_func
-(paren
-id|fixup_iop321
-)paren
+singleline_comment|// virtual, physical
+singleline_comment|//&t;BOOT_MEM(PHYS_OFFSET, IQ80331_UART0_VIRT, IQ80331_UART0_PHYS)
 id|MAPIO
 c_func
 (paren
-id|iq80321_map_io
+id|iq80331_map_io
 )paren
 id|INITIRQ
 c_func
 (paren
-id|iop321_init_irq
+id|iop331_init_irq
 )paren
 id|INITTIME
 c_func
 (paren
-id|iop321_init_time
+id|iop331_init_time
+)paren
+id|BOOT_PARAMS
+c_func
+(paren
+l_int|0x0100
 )paren
 id|MACHINE_END
 macro_line|#else

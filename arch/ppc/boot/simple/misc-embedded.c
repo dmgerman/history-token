@@ -14,7 +14,6 @@ macro_line|#elif defined(CONFIG_8260)
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#endif
 macro_line|#include &quot;nonstdio.h&quot;
-macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* The linker tells us where the image is. */
 r_extern
 r_char
@@ -193,6 +192,25 @@ op_star
 id|bp
 )paren
 suffix:semicolon
+multiline_comment|/* Weak function for boards which don&squot;t need to build the&n; * board info struct because they are using PPCBoot/U-Boot.&n; */
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|embed_config
+id|embed_config
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+)brace
 r_int
 r_int
 DECL|function|load_kernel

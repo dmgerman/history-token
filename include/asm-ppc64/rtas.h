@@ -11,15 +11,17 @@ mdefine_line|#define RTAS_INSTANTIATE_MAX (1UL&lt;&lt;30) /* Don&squot;t instant
 multiline_comment|/* Buffer size for ppc_rtas system call. */
 DECL|macro|RTAS_RMOBUF_MAX
 mdefine_line|#define RTAS_RMOBUF_MAX (64 * 1024)
-multiline_comment|/* RTAS return codes */
+multiline_comment|/* RTAS return status codes */
 DECL|macro|RTAS_BUSY
-mdefine_line|#define RTAS_BUSY&t;&t;-2&t;/* RTAS Return Status - Busy */
+mdefine_line|#define RTAS_BUSY&t;&t;-2    /* RTAS Busy */
+DECL|macro|RTAS_NO_SUCH_INDICATOR
+mdefine_line|#define RTAS_NO_SUCH_INDICATOR&t;-3    /* No such indicator implemented */
 DECL|macro|RTAS_EXTENDED_DELAY_MIN
-mdefine_line|#define RTAS_EXTENDED_DELAY_MIN 9900
+mdefine_line|#define RTAS_EXTENDED_DELAY_MIN&t;9900
 DECL|macro|RTAS_EXTENDED_DELAY_MAX
-mdefine_line|#define RTAS_EXTENDED_DELAY_MAX 9905
+mdefine_line|#define RTAS_EXTENDED_DELAY_MAX&t;9905
 DECL|macro|RTAS_UNKNOWN_OP
-mdefine_line|#define RTAS_UNKNOWN_OP&t;&t;-1099&t;/* Return Status - Unknown RTAS Token */
+mdefine_line|#define RTAS_UNKNOWN_OP&t;&t;-1099 /* Unknown RTAS Token */
 multiline_comment|/*&n; * In general to call RTAS use rtas_token(&quot;string&quot;) to lookup&n; * an RTAS token for the given string (e.g. &quot;event-scan&quot;).&n; * To actually perform the call use&n; *    ret = rtas_call(token, n_in, n_out, ...)&n; * Where n_in is the number of input parameters and&n; *       n_out is the number of output parameters&n; *&n; * If the &quot;string&quot; is invalid on this system, RTAS_UNKNOWN_SERVICE&n; * will be returned as a token.  rtas_call() does look for this&n; * token and error out gracefully so rtas_call(rtas_token(&quot;str&quot;), ...)&n; * may be safely used for one-shot calls to RTAS.&n; *&n; */
 DECL|typedef|rtas_arg_t
 r_typedef
@@ -594,6 +596,15 @@ DECL|macro|RTAS_DEBUG
 mdefine_line|#define RTAS_DEBUG KERN_DEBUG &quot;RTAS: &quot;
 DECL|macro|RTAS_ERROR_LOG_MAX
 mdefine_line|#define RTAS_ERROR_LOG_MAX 2048
+multiline_comment|/*&n; * Return the firmware-specified size of the error log buffer&n; *  for all rtas calls that require an error buffer argument.&n; *  This includes &squot;check-exception&squot; and &squot;rtas-last-error&squot;.&n; */
+r_extern
+r_int
+id|rtas_get_error_log_max
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Event Scan Parameters */
 DECL|macro|EVENT_SCAN_ALL_EVENTS
 mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000

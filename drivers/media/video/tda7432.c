@@ -1659,6 +1659,7 @@ suffix:semicolon
 DECL|function|tda7432_init
 r_static
 r_int
+id|__init
 id|tda7432_init
 c_func
 (paren
@@ -1693,6 +1694,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_return
 id|i2c_add_driver
 c_func
 (paren
@@ -1700,13 +1702,11 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|tda7432_fini
 r_static
 r_void
+id|__exit
 id|tda7432_fini
 c_func
 (paren

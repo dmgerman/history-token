@@ -395,7 +395,6 @@ comma
 id|read_actor_t
 comma
 r_void
-id|__user
 op_star
 comma
 r_struct
