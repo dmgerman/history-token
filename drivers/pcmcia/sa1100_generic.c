@@ -168,8 +168,16 @@ op_assign
 op_amp
 id|platform_bus_type
 comma
-multiline_comment|/*&t;.suspend &t;= pcmcia_socket_dev_suspend,*/
-multiline_comment|/*&t;.resume &t;= pcmcia_socket_dev_resume,*/
+dot
+id|suspend
+op_assign
+id|pcmcia_socket_dev_suspend
+comma
+dot
+id|resume
+op_assign
+id|pcmcia_socket_dev_resume
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* sa11x0_pcmcia_init()&n; * ^^^^^^^^^^^^^^^^^^^^&n; *&n; * This routine performs low-level PCMCIA initialization and then&n; * registers this socket driver with Card Services.&n; *&n; * Returns: 0 on success, -ve error code on failure&n; */
