@@ -683,12 +683,6 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|usb_device
-op_star
-id|dev
-suffix:semicolon
 DECL|member|qh
 r_struct
 id|uhci_qh

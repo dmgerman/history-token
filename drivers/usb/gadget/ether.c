@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * ether.c -- Ethernet gadget driver, with CDC and non-CDC options&n; *&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+singleline_comment|// #define DEBUG 1
 singleline_comment|// #define VERBOSE
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2326,6 +2325,13 @@ id|netif_running
 id|dev-&gt;net
 )paren
 )paren
+(brace
+id|spin_unlock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 id|eth_start
 (paren
 id|dev
@@ -2333,6 +2339,13 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -3693,6 +3706,13 @@ id|netif_running
 id|dev-&gt;net
 )paren
 )paren
+(brace
+id|spin_unlock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 id|eth_start
 (paren
 id|dev
@@ -3700,6 +3720,13 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -4414,7 +4441,8 @@ suffix:semicolon
 r_int
 id|retval
 op_assign
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_int
 id|size
@@ -4457,25 +4485,8 @@ comma
 l_string|&quot;no rx skb&bslash;n&quot;
 )paren
 suffix:semicolon
-id|defer_kevent
-(paren
-id|dev
-comma
-id|WORK_RX_MEMORY
-)paren
-suffix:semicolon
-id|list_add
-(paren
-op_amp
-id|req-&gt;list
-comma
-op_amp
-id|dev-&gt;rx_reqs
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|enomem
 suffix:semicolon
 )brace
 id|req-&gt;buf
@@ -4513,6 +4524,8 @@ op_eq
 op_minus
 id|ENOMEM
 )paren
+id|enomem
+suffix:colon
 id|defer_kevent
 (paren
 id|dev
@@ -4540,6 +4553,12 @@ id|dev_kfree_skb_any
 id|skb
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 id|list_add
 (paren
 op_amp
@@ -4547,6 +4566,12 @@ id|req-&gt;list
 comma
 op_amp
 id|dev-&gt;rx_reqs
+)paren
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|dev-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -4777,6 +4802,7 @@ id|dev-&gt;net
 (brace
 id|clean
 suffix:colon
+multiline_comment|/* nobody reading rx_reqs, so no dev-&gt;lock */
 id|list_add
 (paren
 op_amp
@@ -5079,6 +5105,10 @@ id|usb_request
 op_star
 id|req
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|clear_bit
 (paren
 id|WORK_RX_MEMORY
@@ -5088,6 +5118,14 @@ id|dev-&gt;todo
 )paren
 suffix:semicolon
 multiline_comment|/* fill unused rxq slots with some skb */
+id|spin_lock_irqsave
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5117,6 +5155,14 @@ op_amp
 id|req-&gt;list
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5142,7 +5188,23 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|eth_work
 r_static
@@ -5287,6 +5349,12 @@ suffix:semicolon
 id|dev-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 id|list_add
 (paren
 op_amp
@@ -5294,6 +5362,12 @@ id|req-&gt;list
 comma
 op_amp
 id|dev-&gt;tx_reqs
+)paren
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|dev-&gt;lock
 )paren
 suffix:semicolon
 id|dev_kfree_skb_any
@@ -5364,6 +5438,18 @@ id|req
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|req
 op_assign
 id|container_of
@@ -5394,6 +5480,14 @@ id|dev-&gt;tx_reqs
 id|netif_stop_queue
 (paren
 id|net
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* no buffer copies needed, unless the network stack did it&n;&t; * or the hardware can&squot;t use skb buffers.&n;&t; */
@@ -5522,6 +5616,14 @@ id|dev_kfree_skb_any
 id|skb
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5543,6 +5645,14 @@ id|req-&gt;list
 comma
 op_amp
 id|dev-&gt;tx_reqs
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace

@@ -396,7 +396,7 @@ suffix:semicolon
 multiline_comment|/* &quot;ehci-hcd&quot; etc */
 multiline_comment|/* irq handler */
 DECL|member|irq
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq
@@ -844,6 +844,26 @@ suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
 r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_alloc_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|parent
+comma
+r_struct
+id|usb_bus
+op_star
+comma
+r_int
+id|port
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|usb_new_device
 c_func
@@ -852,11 +872,6 @@ r_struct
 id|usb_device
 op_star
 id|dev
-comma
-r_struct
-id|device
-op_star
-id|parent
 )paren
 suffix:semicolon
 r_extern
