@@ -820,7 +820,7 @@ macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -911,7 +911,7 @@ macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -1263,6 +1263,20 @@ r_int
 id|child_stack
 op_minus
 l_int|16
+suffix:semicolon
+multiline_comment|/* stop some PSR bits from being inherited: */
+id|child_ptregs-&gt;cr_ipsr
+op_assign
+(paren
+(paren
+id|child_ptregs-&gt;cr_ipsr
+op_or
+id|IA64_PSR_BITS_TO_SET
+)paren
+op_amp
+op_complement
+id|IA64_PSR_BITS_TO_CLEAR
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE: The calling convention considers all floating point&n;&t; * registers in the high partition (fph) to be scratch.  Since&n;&t; * the only way to get to this point is through a system call,&n;&t; * we know that the values in fph are all dead.  Hence, there&n;&t; * is no need to inherit the fph state from the parent to the&n;&t; * child and all we have to do is to make sure that&n;&t; * IA64_THREAD_FPH_VALID is cleared in the child.&n;&t; *&n;&t; * XXX We could push this optimization a bit further by&n;&t; * clearing IA64_THREAD_FPH_VALID on ANY system call.&n;&t; * However, it&squot;s not clear this is worth doing.  Also, it&n;&t; * would be a slight deviation from the normal Linux system&n;&t; * call behavior where scratch registers are preserved across&n;&t; * system calls (unless used by the system call itself).&n;&t; */
 DECL|macro|THREAD_FLAGS_TO_CLEAR

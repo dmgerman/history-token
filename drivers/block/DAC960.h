@@ -8219,12 +8219,6 @@ r_struct
 id|completion
 id|Completion_T
 suffix:semicolon
-DECL|typedef|GenericDiskInfo_T
-r_typedef
-r_struct
-id|gendisk
-id|GenericDiskInfo_T
-suffix:semicolon
 DECL|typedef|DiskGeometry_T
 r_typedef
 r_struct
@@ -8875,9 +8869,13 @@ DECL|member|MonitoringTimer
 id|Timer_T
 id|MonitoringTimer
 suffix:semicolon
-DECL|member|GenericDiskInfo
-id|GenericDiskInfo_T
-id|GenericDiskInfo
+DECL|member|disks
+r_struct
+id|gendisk
+id|disks
+(braket
+id|DAC960_MaxLogicalDrives
+)braket
 suffix:semicolon
 DECL|member|FreeCommands
 id|DAC960_Command_T
@@ -8900,6 +8898,10 @@ DECL|member|RequestQueue
 id|RequestQueue_T
 op_star
 id|RequestQueue
+suffix:semicolon
+DECL|member|queue_lock
+id|spinlock_t
+id|queue_lock
 suffix:semicolon
 DECL|member|CommandWaitQueue
 id|WaitQueue_T
@@ -9470,7 +9472,6 @@ id|ProcessorFlags
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
@@ -9498,7 +9499,6 @@ id|ProcessorFlags
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
@@ -9562,7 +9562,6 @@ id|ProcessorFlags
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
@@ -9590,7 +9589,6 @@ id|ProcessorFlags
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
@@ -15533,14 +15531,6 @@ id|DAC960_DestroyProcEntries
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n;  Export the Kernel Mode IOCTL interface.&n;*/
-DECL|variable|DAC960_KernelIOCTL
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|DAC960_KernelIOCTL
 )paren
 suffix:semicolon
 macro_line|#endif /* DAC960_DriverVersion */

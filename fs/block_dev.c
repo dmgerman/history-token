@@ -32,7 +32,12 @@ id|sector_t
 id|retval
 op_assign
 op_complement
-l_int|0U
+(paren
+(paren
+id|sector_t
+)paren
+l_int|0
+)paren
 suffix:semicolon
 id|loff_t
 id|sz
@@ -45,7 +50,8 @@ c_cond
 id|sz
 )paren
 (brace
-id|sector_t
+r_int
+r_int
 id|size
 op_assign
 id|block_size
@@ -54,6 +60,7 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
+r_int
 r_int
 id|sizebits
 op_assign
@@ -3802,7 +3809,6 @@ op_amp
 id|bdev-&gt;bd_sem
 )paren
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -4132,7 +4138,7 @@ id|generic_file_read
 comma
 id|write
 suffix:colon
-id|generic_file_write
+id|generic_file_write_nolock
 comma
 id|mmap
 suffix:colon

@@ -15,10 +15,8 @@ r_int
 id|apm_eventinfo_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-DECL|macro|APM_40
-mdefine_line|#define APM_40&t;&t;0x40
 DECL|macro|APM_CS
-mdefine_line|#define APM_CS&t;&t;(APM_40 + 8)
+mdefine_line|#define APM_CS&t;&t;(GDT_ENTRY_APMBIOS_BASE * 8)
 DECL|macro|APM_CS_16
 mdefine_line|#define APM_CS_16&t;(APM_CS + 8)
 DECL|macro|APM_DS

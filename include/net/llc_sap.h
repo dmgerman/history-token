@@ -3,63 +3,71 @@ DECL|macro|LLC_SAP_H
 mdefine_line|#define LLC_SAP_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
-multiline_comment|/* Defines the SAP component */
+multiline_comment|/**&n; * struct llc_sap - Defines the SAP component&n; *&n; * @p_bit - only lowest-order bit used&n; * @f_bit - only lowest-order bit used&n; * @req - provided by LLC layer&n; * @resp - provided by LLC layer&n; * @ind - provided by network layer&n; * @conf - provided by network layer&n; * @laddr - SAP value in this &squot;lsap&squot;&n; * @node - entry in station sap_list&n; * @sk_list - LLC sockets this one manages&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_sap
 r_struct
 id|llc_sap
 (brace
-DECL|member|state
-id|u8
-id|state
-suffix:semicolon
 DECL|member|parent_station
 r_struct
 id|llc_station
 op_star
 id|parent_station
 suffix:semicolon
+DECL|member|state
+id|u8
+id|state
+suffix:semicolon
 DECL|member|p_bit
 id|u8
 id|p_bit
 suffix:semicolon
-multiline_comment|/* only lowest-order bit used */
 DECL|member|f_bit
 id|u8
 id|f_bit
 suffix:semicolon
-multiline_comment|/* only lowest-order bit used */
 DECL|member|req
 id|llc_prim_call_t
 id|req
 suffix:semicolon
-multiline_comment|/* provided by LLC layer */
 DECL|member|resp
 id|llc_prim_call_t
 id|resp
 suffix:semicolon
-multiline_comment|/* provided by LLC layer */
 DECL|member|ind
 id|llc_prim_call_t
 id|ind
 suffix:semicolon
-multiline_comment|/* provided by network layer */
 DECL|member|conf
 id|llc_prim_call_t
 id|conf
 suffix:semicolon
-multiline_comment|/* provided by network layer */
+DECL|member|llc_ind_prim
+DECL|member|llc_cfm_prim
+r_struct
+id|llc_prim_if_block
+id|llc_ind_prim
+comma
+id|llc_cfm_prim
+suffix:semicolon
+DECL|member|llc_ind_data_prim
+DECL|member|llc_cfm_data_prim
+r_union
+id|llc_u_prim_data
+id|llc_ind_data_prim
+comma
+id|llc_cfm_data_prim
+suffix:semicolon
 DECL|member|laddr
 r_struct
 id|llc_addr
 id|laddr
 suffix:semicolon
-multiline_comment|/* SAP value in this &squot;lsap&squot; */
 DECL|member|node
 r_struct
 id|list_head
 id|node
 suffix:semicolon
-multiline_comment|/* entry in station sap_list */
 r_struct
 (brace
 DECL|member|lock
@@ -75,13 +83,11 @@ DECL|member|sk_list
 )brace
 id|sk_list
 suffix:semicolon
-multiline_comment|/* LLC sockets this one manages */
 DECL|member|mac_pdu_q
 r_struct
 id|sk_buff_head
 id|mac_pdu_q
 suffix:semicolon
-multiline_comment|/* PDUs ready to send to MAC */
 )brace
 suffix:semicolon
 r_struct

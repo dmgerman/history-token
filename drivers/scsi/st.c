@@ -18567,6 +18567,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|driverfs_dev-&gt;driver_data
 suffix:semicolon
 r_return
@@ -18591,8 +18594,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|kdev
-comma
-l_string|&quot;kdev&quot;
 comma
 id|S_IRUGO
 comma
@@ -18642,8 +18643,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|type
-comma
-l_string|&quot;type&quot;
 comma
 id|S_IRUGO
 comma
@@ -19266,6 +19265,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|__mkdev
 c_func
 (paren
@@ -19428,6 +19430,9 @@ op_assign
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|__mkdev
 c_func

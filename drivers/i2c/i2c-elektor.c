@@ -64,27 +64,21 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* vdovikin: removed static struct i2c_pcf_isa gpi; code - &n;  this module in real supports only one device, due to missing arguments&n;  in some functions, called from the algo-pcf module. Sometimes it&squot;s&n;  need to be rewriten - but for now just remove this for simpler reading */
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x020301)
-DECL|variable|pcf_wait
-r_static
-r_struct
-id|wait_queue
-op_star
-id|pcf_wait
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#else
 DECL|variable|pcf_wait
 r_static
 id|wait_queue_head_t
 id|pcf_wait
 suffix:semicolon
-macro_line|#endif
 DECL|variable|pcf_pending
 r_static
 r_int
 id|pcf_pending
+suffix:semicolon
+DECL|variable|irq_driver_lock
+id|spinlock_t
+id|irq_driver_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* ----- global defines -----------------------------------------------&t;*/
 DECL|macro|DEB
@@ -336,9 +330,11 @@ OG
 l_int|0
 )paren
 (brace
-id|cli
+id|spin_lock_irq
 c_func
 (paren
+op_amp
+id|irq_driver_lock
 )paren
 suffix:semicolon
 r_if
@@ -366,9 +362,11 @@ id|pcf_pending
 op_assign
 l_int|0
 suffix:semicolon
-id|sti
+id|spin_unlock_irq
 c_func
 (paren
+op_amp
+id|irq_driver_lock
 )paren
 suffix:semicolon
 )brace
@@ -867,7 +865,6 @@ op_assign
 id|DEFAULT_BASE
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020301)
 id|init_waitqueue_head
 c_func
 (paren
@@ -875,7 +872,6 @@ op_amp
 id|pcf_wait
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -931,6 +927,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func

@@ -1,12 +1,13 @@
-multiline_comment|/*&n; * Platform dependent support for HP simulator.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
+multiline_comment|/*&n; * Platform dependent support for HP simulator.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
@@ -99,6 +100,7 @@ id|Root_SDA1
 suffix:semicolon
 multiline_comment|/* default to first SCSI drive */
 id|register_console
+c_func
 (paren
 op_amp
 id|hpsim_cons

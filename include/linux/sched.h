@@ -55,6 +55,14 @@ DECL|macro|CLONE_NEWNS
 mdefine_line|#define CLONE_NEWNS&t;0x00020000&t;/* New namespace group? */
 DECL|macro|CLONE_SYSVSEM
 mdefine_line|#define CLONE_SYSVSEM&t;0x00040000&t;/* share system V SEM_UNDO semantics */
+DECL|macro|CLONE_SETTLS
+mdefine_line|#define CLONE_SETTLS&t;0x00080000&t;/* create a new TLS for the child */
+DECL|macro|CLONE_SETTID
+mdefine_line|#define CLONE_SETTID&t;0x00100000&t;/* write the TID back to userspace */
+DECL|macro|CLONE_DETACHED
+mdefine_line|#define CLONE_DETACHED&t;0x00200000&t;/* parent wants no child-exit signal */
+DECL|macro|CLONE_RELEASE_VM
+mdefine_line|#define CLONE_RELEASE_VM 0x00400000&t;/* release the userspace VM */
 DECL|macro|CLONE_SIGNAL
 mdefine_line|#define CLONE_SIGNAL&t;(CLONE_SIGHAND | CLONE_THREAD)
 multiline_comment|/*&n; * These are the constant used to fake the fixed-point load-average&n; * counting. Some notes:&n; *  - 11 bit fractions expand to 22 bits by the multiplies: this gives&n; *    a load-average precision of 10 bits integer + 11 bits fractional&n; *  - if you want to count load-averages more often, you need more&n; *    precision, or rounding will get you. With 2-second counting freq,&n; *    the EXP_n values would be 1981, 2034 and 2043 if still using only&n; *    11 bit fractions.&n; */
@@ -765,6 +773,12 @@ op_star
 id|vfork_done
 suffix:semicolon
 multiline_comment|/* for vfork() */
+DECL|member|user_vm_lock
+r_int
+op_star
+id|user_vm_lock
+suffix:semicolon
+multiline_comment|/* for CLONE_RELEASE_VM */
 DECL|member|rt_priority
 r_int
 r_int

@@ -956,6 +956,7 @@ id|ifr
 suffix:semicolon
 r_struct
 id|mii_ioctl_data
+op_star
 id|mii
 suffix:semicolon
 r_struct
@@ -1034,16 +1035,18 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|ifr.ifr_data
+multiline_comment|/*&n;&t;&t; * We cannot assume that SIOCGMIIPHY will also read a&n;&t;&t; * register; not all network drivers support that.&n;&t;&t; */
+multiline_comment|/* Yes, the mii is overlaid on the ifreq.ifr_ifru */
+id|mii
 op_assign
 (paren
-r_char
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
-id|mii
+id|ifr.ifr_data
 suffix:semicolon
-multiline_comment|/* try MIIPHY first then, if that doesn&squot;t work, try MIIREG */
 r_if
 c_cond
 (paren
@@ -1057,20 +1060,19 @@ id|ifr
 comma
 id|SIOCGMIIPHY
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* now, mii.phy_id contains info about link status :&n;&t;&t;&t;- mii.phy_id &amp; 0x04 means link up&n;&t;&t;&t;- mii.phy_id &amp; 0x20 means end of auto-negociation&n;&t;&t;&t;*/
 r_return
-id|mii.phy_id
+id|MII_LINK_READY
 suffix:semicolon
+multiline_comment|/* can&squot;t tell */
 )brace
-id|mii.reg_num
+id|mii-&gt;reg_num
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* the MII register we want to read */
 r_if
 c_cond
 (paren
@@ -1088,10 +1090,9 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* mii.val_out contians the same link info as phy_id */
-multiline_comment|/* above                                             */
+multiline_comment|/*&n;&t;&t;&t; * mii-&gt;val_out contains MII reg 1, BMSR&n;&t;&t;&t; * 0x0004 means link established&n;&t;&t;&t; */
 r_return
-id|mii.val_out
+id|mii-&gt;val_out
 suffix:semicolon
 )brace
 )brace
@@ -1971,14 +1972,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Lock the master device so that noone trys to transmit&n;&t; * while we&squot;re changing things&n;&t; */
-id|spin_lock_bh
-c_func
-(paren
-op_amp
-id|master-&gt;xmit_lock
-)paren
-suffix:semicolon
 multiline_comment|/* set promiscuity flag to slaves */
 r_if
 c_cond
@@ -2178,13 +2171,6 @@ comma
 id|bond
 comma
 id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|master-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|write_unlock_irqrestore

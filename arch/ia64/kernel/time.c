@@ -59,6 +59,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|prof_buffer
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 (paren
 l_int|1UL
@@ -74,14 +82,6 @@ id|prof_cpu_mask
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|prof_buffer
-op_logical_and
-id|current-&gt;pid
-)paren
-(brace
 id|ip
 op_sub_assign
 (paren
@@ -95,7 +95,7 @@ id|ip
 op_rshift_assign
 id|prof_shift
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Don&squot;t ignore out-of-bounds IP values silently, put them into the last&n;&t;&t; * histogram slot, so if present, they will show up as a sharp peak.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t ignore out-of-bounds IP values silently, put them into the last&n;&t; * histogram slot, so if present, they will show up as a sharp peak.&n;&t; */
 r_if
 c_cond
 (paren
@@ -125,7 +125,6 @@ id|ip
 )braket
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Return the number of micro-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_static
@@ -1030,16 +1029,19 @@ id|irqaction
 id|timer_irqaction
 op_assign
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|timer_interrupt
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|SA_INTERRUPT
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;timer&quot;
 )brace
 suffix:semicolon

@@ -19,6 +19,8 @@ macro_line|#include &lt;linux/ixjuser.h&gt;
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;../drivers/char/drm/drm.h&gt;
+macro_line|#include &lt;../drivers/char/drm/mga_drm.h&gt;
+macro_line|#include &lt;../drivers/char/drm/i810_drm.h&gt;
 DECL|macro|IOCTL_NR
 mdefine_line|#define IOCTL_NR(a)&t;((a) &amp; ~(_IOC_SIZEMASK &lt;&lt; _IOC_SIZESHIFT))
 DECL|macro|DO_IOCTL

@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+DECL|function|pEII_request
 r_static
-r_void
-DECL|function|pEII_datalink_header
-id|pEII_datalink_header
+r_int
+id|pEII_request
 c_func
 (paren
 r_struct
@@ -64,6 +64,13 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 )brace
+r_return
+id|dev_queue_xmit
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 r_struct
 id|datalink_proto
@@ -107,21 +114,13 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|proto-&gt;type_len
-op_assign
-l_int|0
-suffix:semicolon
 id|proto-&gt;header_length
 op_assign
 l_int|0
 suffix:semicolon
-id|proto-&gt;datalink_header
+id|proto-&gt;request
 op_assign
-id|pEII_datalink_header
-suffix:semicolon
-id|proto-&gt;string_name
-op_assign
-l_string|&quot;EtherII&quot;
+id|pEII_request
 suffix:semicolon
 )brace
 r_return

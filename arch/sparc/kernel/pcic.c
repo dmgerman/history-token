@@ -86,16 +86,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#else
-macro_line|#ifdef CONFIG_SUN_JSFLASH
-r_extern
-r_int
-id|jsflash_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|pcibios_fixups
 r_struct
 id|pci_fixup
@@ -1840,7 +1830,8 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * Main entry point from the PCI subsystem.&n; */
 DECL|function|pcibios_init
-r_void
+r_static
+r_int
 id|__init
 id|pcibios_init
 c_func
@@ -1862,6 +1853,7 @@ id|pcic0_up
 )paren
 (brace
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|pcic
@@ -1914,13 +1906,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_JSFLASH
-id|jsflash_init
-c_func
-(paren
-)paren
+r_return
+l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|pcic_present
 r_int
@@ -4525,4 +4513,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 eof

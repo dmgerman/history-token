@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Optimization barrier */
 multiline_comment|/* The &quot;volatile&quot; is due to gcc bugs */
 DECL|macro|barrier
@@ -525,8 +526,15 @@ mdefine_line|#define pr_info(fmt,arg...) &bslash;&n;&t;printk(KERN_INFO fmt,##ar
 multiline_comment|/*&n; *      Display an IP address in readable format.&n; */
 DECL|macro|NIPQUAD
 mdefine_line|#define NIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[0], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[3]
+macro_line|#if defined(__LITTLE_ENDIAN)
 DECL|macro|HIPQUAD
 mdefine_line|#define HIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[3], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[0]
+macro_line|#elif defined(__BIG_ENDIAN)
+DECL|macro|HIPQUAD
+mdefine_line|#define HIPQUAD&t;NIPQUAD
+macro_line|#else
+macro_line|#error &quot;Please fix asm/byteorder.h&quot;
+macro_line|#endif /* __LITTLE_ENDIAN */
 multiline_comment|/*&n; * min()/max() macros that also do&n; * strict type-checking.. See the&n; * &quot;unnecessary&quot; pointer comparison.&n; */
 DECL|macro|min
 mdefine_line|#define min(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);&t;&bslash;&n;&t;const typeof(y) _y = (y);&t;&bslash;&n;&t;(void) (&amp;_x == &amp;_y);&t;&t;&bslash;&n;&t;_x &lt; _y ? _x : _y; })

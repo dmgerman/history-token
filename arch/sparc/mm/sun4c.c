@@ -7138,12 +7138,11 @@ op_star
 id|ptep
 )paren
 (brace
-op_star
-id|pmdp
+id|pmdp-&gt;pmdv
+(braket
+l_int|0
+)braket
 op_assign
-id|__pmd
-c_func
-(paren
 id|PGD_TABLE
 op_or
 (paren
@@ -7151,7 +7150,6 @@ r_int
 r_int
 )paren
 id|ptep
-)paren
 suffix:semicolon
 )brace
 DECL|function|sun4c_pmd_populate
@@ -7187,12 +7185,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* No highmem on sun4c */
-op_star
-id|pmdp
+id|pmdp-&gt;pmdv
+(braket
+l_int|0
+)braket
 op_assign
-id|__pmd
-c_func
-(paren
 id|PGD_TABLE
 op_or
 (paren
@@ -7203,7 +7200,6 @@ id|page_address
 c_func
 (paren
 id|ptep
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7326,7 +7322,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|sun4c_pmd_clear
+macro_line|#if 0 /* if PMD takes one word */
 r_static
 r_void
 id|sun4c_pmd_clear
@@ -7347,6 +7343,37 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* if pmd_t is a longish aggregate */
+DECL|function|sun4c_pmd_clear
+r_static
+r_void
+id|sun4c_pmd_clear
+c_func
+(paren
+id|pmd_t
+op_star
+id|pmdp
+)paren
+(brace
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|pmdp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|pmd_t
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|sun4c_pgd_none
 r_static
 r_int
@@ -8330,11 +8357,11 @@ id|pte
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
-DECL|function|sun4c_pmd_alloc_one_fast
+DECL|function|sun4c_pmd_alloc_one
 r_static
 id|pmd_t
 op_star
-id|sun4c_pmd_alloc_one_fast
+id|sun4c_pmd_alloc_one
 c_func
 (paren
 r_struct
@@ -9914,9 +9941,9 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|pmd_alloc_one_fast
+id|pmd_alloc_one
 comma
-id|sun4c_pmd_alloc_one_fast
+id|sun4c_pmd_alloc_one
 comma
 id|BTFIXUPCALL_RETO0
 )paren

@@ -34,5 +34,18 @@ DECL|macro|PR_FPEMU_NOPRINT
 macro_line|# define PR_FPEMU_NOPRINT&t;1&t;/* silently emulate fp operations accesses */
 DECL|macro|PR_FPEMU_SIGFPE
 macro_line|# define PR_FPEMU_SIGFPE&t;2&t;/* don&squot;t emulate fp operations, send SIGFPE instead */
+multiline_comment|/* Get/set floating-point exception mode (if meaningful) */
+DECL|macro|PR_GET_FPEXC
+mdefine_line|#define PR_GET_FPEXC&t;11
+DECL|macro|PR_SET_FPEXC
+mdefine_line|#define PR_SET_FPEXC&t;12
+DECL|macro|PR_FP_EXC_DISABLED
+macro_line|# define PR_FP_EXC_DISABLED&t;0&t;/* FP exceptions disabled */
+DECL|macro|PR_FP_EXC_NONRECOV
+macro_line|# define PR_FP_EXC_NONRECOV&t;1&t;/* async non-recoverable exc. mode */
+DECL|macro|PR_FP_EXC_ASYNC
+macro_line|# define PR_FP_EXC_ASYNC&t;2&t;/* async recoverable exception mode */
+DECL|macro|PR_FP_EXC_PRECISE
+macro_line|# define PR_FP_EXC_PRECISE&t;3&t;/* precise exception mode */
 macro_line|#endif /* _LINUX_PRCTL_H */
 eof

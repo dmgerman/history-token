@@ -3,9 +3,10 @@ DECL|macro|_ASM_IA64_PGALLOC_H
 mdefine_line|#define _ASM_IA64_PGALLOC_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to allocate&n; * page tables.&n; *&n; * This hopefully works with any (fixed) ia-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000, Goutham Rao &lt;goutham.rao@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/page-flags.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Very stupidly, we used to get new pgd&squot;s and pmd&squot;s, init their contents&n; * to point to the NULL versions of the next level page table, later on&n; * completely re-init them the same way, then free them up.  This wasted&n; * a lot of work and caused unnecessary memory traffic.  How broken...&n; * We fix this by caching them.&n; */

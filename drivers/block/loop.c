@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
@@ -803,6 +804,12 @@ id|kunmap
 c_func
 (paren
 id|bvec-&gt;bv_page
+)paren
+suffix:semicolon
+id|balance_dirty_pages
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 r_return

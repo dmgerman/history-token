@@ -2,7 +2,7 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* $Id: i2c-dev.c,v 1.44 2001/11/19 18:45:02 mds Exp $ */
+multiline_comment|/* $Id: i2c-dev.c,v 1.46 2002/07/06 02:07:39 mds Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -861,6 +861,27 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|I2C_PEC
+suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+)paren
+id|client-&gt;flags
+op_or_assign
+id|I2C_CLIENT_PEC
+suffix:semicolon
+r_else
+id|client-&gt;flags
+op_and_assign
+op_complement
+id|I2C_CLIENT_PEC
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+r_case
 id|I2C_FUNCS
 suffix:colon
 id|funcs
@@ -1288,6 +1309,12 @@ id|data_arg.size
 op_ne
 id|I2C_SMBUS_I2C_BLOCK_DATA
 )paren
+op_logical_and
+(paren
+id|data_arg.size
+op_ne
+id|I2C_SMBUS_BLOCK_PROC_CALL
+)paren
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -1451,7 +1478,7 @@ id|data_arg.data-&gt;word
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* size == I2C_SMBUS_BLOCK_DATA */
+multiline_comment|/* size == smbus block, i2c block, or block proc. call */
 id|datasize
 op_assign
 r_sizeof
@@ -1466,6 +1493,12 @@ c_cond
 id|data_arg.size
 op_eq
 id|I2C_SMBUS_PROC_CALL
+)paren
+op_logical_or
+(paren
+id|data_arg.size
+op_eq
+id|I2C_SMBUS_BLOCK_PROC_CALL
 )paren
 op_logical_or
 (paren
@@ -1526,6 +1559,12 @@ op_logical_and
 id|data_arg.size
 op_eq
 id|I2C_SMBUS_PROC_CALL
+)paren
+op_logical_or
+(paren
+id|data_arg.size
+op_eq
+id|I2C_SMBUS_BLOCK_PROC_CALL
 )paren
 op_logical_or
 (paren
@@ -2258,6 +2297,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
