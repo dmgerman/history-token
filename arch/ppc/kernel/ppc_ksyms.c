@@ -1502,15 +1502,6 @@ id|__res
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_8xx)
-DECL|variable|request_8xxirq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|request_8xxirq
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|next_mmu_context
 id|EXPORT_SYMBOL
 c_func
