@@ -1,6 +1,8 @@
 macro_line|#ifndef __PMAC_ZILOG_H__
 DECL|macro|__PMAC_ZILOG_H__
 mdefine_line|#define __PMAC_ZILOG_H__
+DECL|macro|pmz_debug
+mdefine_line|#define pmz_debug(fmt,arg...)&t;dev_dbg(&amp;uap-&gt;dev-&gt;ofdev.dev, fmt, ## arg)
 multiline_comment|/*&n; * At most 2 ESCCs with 2 ports each&n; */
 DECL|macro|MAX_ZS_PORTS
 mdefine_line|#define MAX_ZS_PORTS&t;4

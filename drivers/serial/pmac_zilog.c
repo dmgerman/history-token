@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/serial/pmac_zilog.c&n; * &n; * Driver for PowerMac Z85c30 based ESCC cell found in the&n; * &quot;macio&quot; ASICs of various PowerMac models&n; * &n; * Copyright (C) 2003 Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * Derived from drivers/macintosh/macserial.c by Paul Mackerras&n; * and drivers/serial/sunzilog.c by David S. Miller&n; *&n; * Hrm... actually, I ripped most of sunzilog (Thanks David !) and&n; * adapted special tweaks needed for us. I don&squot;t think it&squot;s worth&n; * merging back those though. The DMA code still has to get in&n; * and once done, I expect that driver to remain fairly stable in&n; * the long term, unless we change the driver model again...&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * TODO:   - Add DMA support&n; *         - Defer port shutdown to a few seconds after close&n; *         - maybe put something right into up-&gt;clk_divisor&n; */
+multiline_comment|/*&n; * linux/drivers/serial/pmac_zilog.c&n; * &n; * Driver for PowerMac Z85c30 based ESCC cell found in the&n; * &quot;macio&quot; ASICs of various PowerMac models&n; * &n; * Copyright (C) 2003 Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * Derived from drivers/macintosh/macserial.c by Paul Mackerras&n; * and drivers/serial/sunzilog.c by David S. Miller&n; *&n; * Hrm... actually, I ripped most of sunzilog (Thanks David !) and&n; * adapted special tweaks needed for us. I don&squot;t think it&squot;s worth&n; * merging back those though. The DMA code still has to get in&n; * and once done, I expect that driver to remain fairly stable in&n; * the long term, unless we change the driver model again...&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * TODO:   - Add DMA support&n; *         - Defer port shutdown to a few seconds after close&n; *         - maybe put something right into uap-&gt;clk_divisor&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
@@ -94,7 +94,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 id|u8
 op_star
@@ -127,7 +127,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 )paren
@@ -151,38 +151,38 @@ suffix:semicolon
 id|ZS_CLEARERR
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|ZS_CLEARFIFO
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|ZS_CLEARERR
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 multiline_comment|/* Disable all interrupts.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 comma
@@ -205,7 +205,7 @@ multiline_comment|/* Set parity, sync config, stop bits, and clock divisor.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R4
 comma
@@ -219,7 +219,7 @@ multiline_comment|/* Set misc. TX/RX control bits.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R10
 comma
@@ -233,7 +233,7 @@ multiline_comment|/* Set TX/RX controls sans the enable bits.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R3
 comma
@@ -249,7 +249,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
@@ -266,7 +266,7 @@ multiline_comment|/* Synchronous mode config.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R6
 comma
@@ -279,7 +279,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R7
 comma
@@ -293,7 +293,7 @@ multiline_comment|/* Disable baud generator.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R14
 comma
@@ -310,7 +310,7 @@ multiline_comment|/* Clock mode control.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R11
 comma
@@ -324,7 +324,7 @@ multiline_comment|/* Lower and upper byte of baud rate generator divisor.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R12
 comma
@@ -337,7 +337,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R13
 comma
@@ -351,7 +351,7 @@ multiline_comment|/* Now rewrite R14, with BRENAB (if set).  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R14
 comma
@@ -365,7 +365,7 @@ multiline_comment|/* External status interrupt control.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R15
 comma
@@ -379,7 +379,7 @@ multiline_comment|/* Reset external status interrupts.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -389,7 +389,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -400,7 +400,7 @@ multiline_comment|/* Rewrite R3/R5, this time without enables masked.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R3
 comma
@@ -413,7 +413,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
@@ -427,7 +427,7 @@ multiline_comment|/* Rewrite R1, this time without IRQ enabled masked.  */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 comma
@@ -441,7 +441,7 @@ multiline_comment|/* Enable interrupts */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R9
 comma
@@ -462,7 +462,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_if
@@ -472,7 +472,7 @@ op_logical_neg
 id|ZS_REGS_HELD
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -482,18 +482,18 @@ c_cond
 id|ZS_TX_ACTIVE
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_REGS_HELD
 suffix:semicolon
 )brace
 r_else
 (brace
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: maybe_update_regs: updating&bslash;n&quot;
@@ -502,9 +502,9 @@ suffix:semicolon
 id|pmz_load_zsregs
 c_func
 (paren
-id|up
+id|uap
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 )paren
 suffix:semicolon
 )brace
@@ -519,7 +519,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_struct
 id|pt_regs
@@ -532,7 +532,7 @@ id|tty_struct
 op_star
 id|tty
 op_assign
-id|up-&gt;port.info-&gt;tty
+id|uap-&gt;port.info-&gt;tty
 suffix:semicolon
 multiline_comment|/* XXX info==NULL? */
 r_while
@@ -587,7 +587,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 )paren
@@ -609,7 +609,7 @@ id|CRC_ERR
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -619,7 +619,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 )brace
@@ -628,12 +628,12 @@ op_assign
 id|read_zsdata
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|ch
 op_and_assign
-id|up-&gt;parity_mask
+id|uap-&gt;parity_mask
 suffix:semicolon
 r_if
 c_cond
@@ -642,7 +642,7 @@ id|ch
 op_eq
 l_int|0
 op_logical_and
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 op_amp
 id|BRK_ABRT
 )paren
@@ -669,7 +669,7 @@ id|tty-&gt;flip.flag_buf_ptr
 op_assign
 id|TTY_NORMAL
 suffix:semicolon
-id|up-&gt;port.icount.rx
+id|uap-&gt;port.icount.rx
 op_increment
 suffix:semicolon
 r_if
@@ -705,7 +705,7 @@ op_or
 id|CRC_ERR
 )paren
 suffix:semicolon
-id|up-&gt;port.icount.brk
+id|uap-&gt;port.icount.brk
 op_increment
 suffix:semicolon
 r_if
@@ -715,7 +715,7 @@ id|uart_handle_break
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 )paren
 )paren
 r_goto
@@ -730,7 +730,7 @@ id|r1
 op_amp
 id|PAR_ERR
 )paren
-id|up-&gt;port.icount.parity
+id|uap-&gt;port.icount.parity
 op_increment
 suffix:semicolon
 r_else
@@ -741,7 +741,7 @@ id|r1
 op_amp
 id|CRC_ERR
 )paren
-id|up-&gt;port.icount.frame
+id|uap-&gt;port.icount.frame
 op_increment
 suffix:semicolon
 r_if
@@ -751,12 +751,12 @@ id|r1
 op_amp
 id|Rx_OVR
 )paren
-id|up-&gt;port.icount.overrun
+id|uap-&gt;port.icount.overrun
 op_increment
 suffix:semicolon
 id|r1
 op_and_assign
-id|up-&gt;port.read_status_mask
+id|uap-&gt;port.read_status_mask
 suffix:semicolon
 r_if
 c_cond
@@ -804,7 +804,7 @@ id|uart_handle_sysrq_char
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 comma
 id|ch
 comma
@@ -817,14 +817,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_eq
 l_int|0xff
 op_logical_or
 (paren
 id|r1
 op_amp
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 )paren
 op_eq
 l_int|0
@@ -876,7 +876,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -910,7 +910,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_struct
 id|pt_regs
@@ -927,7 +927,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -935,7 +935,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -945,7 +945,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 macro_line|#ifdef HAS_SCCDBG
@@ -962,7 +962,7 @@ id|BRK_ABRT
 op_logical_and
 op_logical_neg
 (paren
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 op_amp
 id|BRK_ABRT
 )paren
@@ -994,7 +994,7 @@ c_cond
 id|ZS_WANTS_MODEM_STATUS
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -1005,7 +1005,7 @@ id|status
 op_amp
 id|SYNC_HUNT
 )paren
-id|up-&gt;port.icount.dsr
+id|uap-&gt;port.icount.dsr
 op_increment
 suffix:semicolon
 multiline_comment|/* The Zilog just gives us an interrupt when DCD/CTS/etc. change.&n;&t;&t; * But it does not tell us which bit has changed, we have to keep&n;&t;&t; * track of this ourselves.&n;&t;&t; */
@@ -1018,13 +1018,13 @@ op_amp
 id|DCD
 )paren
 op_xor
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 )paren
 id|uart_handle_dcd_change
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 comma
 (paren
 id|status
@@ -1042,13 +1042,13 @@ op_amp
 id|CTS
 )paren
 op_xor
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 )paren
 id|uart_handle_cts_change
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 comma
 (paren
 id|status
@@ -1061,11 +1061,11 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|up-&gt;port.info-&gt;delta_msr_wait
+id|uap-&gt;port.info-&gt;delta_msr_wait
 )paren
 suffix:semicolon
 )brace
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 op_assign
 id|status
 suffix:semicolon
@@ -1079,7 +1079,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_struct
@@ -1093,7 +1093,7 @@ c_cond
 id|ZS_IS_CONS
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -1104,7 +1104,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -1123,7 +1123,7 @@ id|Tx_BUF_EMP
 r_return
 suffix:semicolon
 )brace
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_TX_ACTIVE
@@ -1134,19 +1134,19 @@ c_cond
 id|ZS_REGS_HELD
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
 id|pmz_load_zsregs
 c_func
 (paren
-id|up
+id|uap
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 )paren
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_REGS_HELD
@@ -1158,11 +1158,11 @@ c_cond
 id|ZS_TX_STOPPED
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_TX_STOPPED
@@ -1174,31 +1174,31 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.x_char
+id|uap-&gt;port.x_char
 )paren
 (brace
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_TX_ACTIVE
 suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
-id|up-&gt;port.x_char
+id|uap-&gt;port.x_char
 )paren
 suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
-id|up-&gt;port.icount.tx
+id|uap-&gt;port.icount.tx
 op_increment
 suffix:semicolon
-id|up-&gt;port.x_char
+id|uap-&gt;port.x_char
 op_assign
 l_int|0
 suffix:semicolon
@@ -1208,7 +1208,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.info
+id|uap-&gt;port.info
 op_eq
 l_int|NULL
 )paren
@@ -1218,7 +1218,7 @@ suffix:semicolon
 id|xmit
 op_assign
 op_amp
-id|up-&gt;port.info-&gt;xmit
+id|uap-&gt;port.info-&gt;xmit
 suffix:semicolon
 r_if
 c_cond
@@ -1234,7 +1234,7 @@ id|uart_write_wakeup
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 )paren
 suffix:semicolon
 r_goto
@@ -1248,20 +1248,20 @@ id|uart_tx_stopped
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 )paren
 )paren
 r_goto
 id|ack_tx_int
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_TX_ACTIVE
 suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|xmit-&gt;buf
 (braket
@@ -1272,7 +1272,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|xmit-&gt;tail
@@ -1289,7 +1289,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|up-&gt;port.icount.tx
+id|uap-&gt;port.icount.tx
 op_increment
 suffix:semicolon
 r_if
@@ -1307,7 +1307,7 @@ id|uart_write_wakeup
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 )paren
 suffix:semicolon
 r_return
@@ -1317,7 +1317,7 @@ suffix:colon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -1327,7 +1327,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 )brace
@@ -1354,7 +1354,7 @@ id|regs
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|dev_id
 suffix:semicolon
@@ -1381,13 +1381,13 @@ op_assign
 id|ZS_IS_CHANNEL_A
 c_func
 (paren
-id|up
+id|uap
 )paren
 ques
 c_cond
-id|up
+id|uap
 suffix:colon
-id|up-&gt;mate
+id|uap-&gt;mate
 suffix:semicolon
 id|up_b
 op_assign
@@ -1405,12 +1405,12 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R3
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz_irq: %x&bslash;n&quot;
@@ -1449,7 +1449,7 @@ c_func
 id|up_a
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: irq channel A: %x&bslash;n&quot;
@@ -1549,7 +1549,7 @@ c_func
 id|up_b
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: irq channel B: %x&bslash;n&quot;
@@ -1627,7 +1627,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_int
@@ -1641,7 +1641,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
@@ -1651,7 +1651,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -1660,7 +1660,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
@@ -1733,7 +1733,7 @@ id|mctrl
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -1754,7 +1754,7 @@ c_cond
 id|ZS_IS_IRDA
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 r_return
@@ -1771,7 +1771,7 @@ c_cond
 id|ZS_IS_INTMODEM
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -1809,14 +1809,14 @@ op_or_assign
 id|DTR
 suffix:semicolon
 multiline_comment|/* NOTE: Not subject to &squot;transmitter active&squot; rule.  */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
 op_or_assign
 id|set_bits
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -1827,11 +1827,11 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -1840,7 +1840,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 )brace
@@ -1967,7 +1967,7 @@ id|tty_start
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -1979,17 +1979,17 @@ r_int
 r_char
 id|status
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: start_tx()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_TX_ACTIVE
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_TX_STOPPED
@@ -1999,7 +1999,7 @@ op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -2027,7 +2027,7 @@ id|port-&gt;x_char
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|port-&gt;x_char
 )paren
@@ -2035,7 +2035,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|port-&gt;icount.tx
@@ -2059,7 +2059,7 @@ suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|xmit-&gt;buf
 (braket
@@ -2070,7 +2070,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|xmit-&gt;tail
@@ -2105,11 +2105,11 @@ id|uart_write_wakeup
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: start_tx() done.&bslash;n&quot;
@@ -2132,7 +2132,7 @@ id|port
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -2146,19 +2146,19 @@ c_cond
 id|ZS_IS_CONS
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 r_return
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: stop_rx()()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Disable all RX interrupts.  */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R1
 )braket
@@ -2169,10 +2169,10 @@ suffix:semicolon
 id|pmz_maybe_update_regs
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: stop_rx() done.&bslash;n&quot;
@@ -2195,7 +2195,7 @@ id|port
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -2209,7 +2209,7 @@ id|new_reg
 suffix:semicolon
 id|new_reg
 op_assign
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
@@ -2227,13 +2227,13 @@ c_cond
 (paren
 id|new_reg
 op_ne
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
 )paren
 (brace
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
@@ -2244,11 +2244,11 @@ multiline_comment|/* NOTE: Not subject to &squot;transmitter active&squot; rule.
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R15
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
@@ -2275,7 +2275,7 @@ id|break_state
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -2327,7 +2327,7 @@ suffix:semicolon
 id|new_reg
 op_assign
 (paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -2343,13 +2343,13 @@ c_cond
 (paren
 id|new_reg
 op_ne
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
 )paren
 (brace
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -2360,11 +2360,11 @@ multiline_comment|/* NOTE: Not subject to &squot;transmitter active&squot; rule.
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -2391,7 +2391,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_int
 id|state
@@ -2413,9 +2413,9 @@ c_func
 (paren
 id|PMAC_FTR_SCC_ENABLE
 comma
-id|up-&gt;node
+id|uap-&gt;node
 comma
-id|up-&gt;port_type
+id|uap-&gt;port_type
 comma
 l_int|1
 )paren
@@ -2426,7 +2426,7 @@ c_cond
 id|ZS_IS_INTMODEM
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -2435,7 +2435,7 @@ c_func
 (paren
 id|PMAC_FTR_MODEM_ENABLE
 comma
-id|up-&gt;node
+id|uap-&gt;node
 comma
 l_int|0
 comma
@@ -2455,7 +2455,7 @@ c_cond
 id|ZS_IS_IRDA
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 id|mdelay
@@ -2475,7 +2475,7 @@ c_cond
 id|ZS_IS_INTMODEM
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -2484,7 +2484,7 @@ c_func
 (paren
 id|PMAC_FTR_MODEM_ENABLE
 comma
-id|up-&gt;node
+id|uap-&gt;node
 comma
 l_int|0
 comma
@@ -2497,9 +2497,9 @@ c_func
 (paren
 id|PMAC_FTR_SCC_ENABLE
 comma
-id|up-&gt;node
+id|uap-&gt;node
 comma
-id|up-&gt;port_type
+id|uap-&gt;port_type
 comma
 l_int|0
 )paren
@@ -2509,7 +2509,7 @@ r_return
 id|delay
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * FixZeroBug....Works around a bug in the SCC receving channel.&n; * Taken from Darwin code, 15 Sept. 2000  -DanM&n; *&n; * The following sequence prevents a problem that is seen with O&squot;Hare ASICs&n; * (most versions -- also with some Heathrow and Hydra ASICs) where a zero&n; * at the input to the receiver becomes &squot;stuck&squot; and locks up the receiver.&n; * This problem can occur as a result of a zero bit at the receiver input&n; * coincident with any of the following events:&n; *&n; *&t;The SCC is initialized (hardware or software).&n; *&t;A framing error is detected.&n; *&t;The clocking option changes from synchronous or X1 asynchronous&n; *&t;&t;clocking to X16, X32, or X64 asynchronous clocking.&n; *&t;The decoding mode is changed among NRZ, NRZI, FM0, or FM1.&n; *&n; * This workaround attempts to recover from the lockup condition by placing&n; * the SCC in synchronous loopback mode with a fast clock before programming&n; * any of the asynchronous modes.&n; */
+multiline_comment|/*&n; * FixZeroBug....Works around a bug in the SCC receving channel.&n; * Taken from Darwin code, 15 Sept. 2000  -DanM&n; *&n; * The following sequence prevents a problem that is seen with O&squot;Hare ASICs&n; * (most versions -- also with some Heathrow and Hydra ASICs) where a zero&n; * at the input to the receiver becomes &squot;stuck&squot; and locks uap the receiver.&n; * This problem can occur as a result of a zero bit at the receiver input&n; * coincident with any of the following events:&n; *&n; *&t;The SCC is initialized (hardware or software).&n; *&t;A framing error is detected.&n; *&t;The clocking option changes from synchronous or X1 asynchronous&n; *&t;&t;clocking to X16, X32, or X64 asynchronous clocking.&n; *&t;The decoding mode is changed among NRZ, NRZI, FM0, or FM1.&n; *&n; * This workaround attempts to recover from the lockup condition by placing&n; * the SCC in synchronous loopback mode with a fast clock before programming&n; * any of the asynchronous modes.&n; */
 DECL|function|pmz_fix_zero_bug_scc
 r_static
 r_void
@@ -2519,20 +2519,20 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
 id|ZS_IS_CHANNEL_A
 c_func
 (paren
-id|up
+id|uap
 )paren
 ques
 c_cond
@@ -2544,7 +2544,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|udelay
@@ -2556,7 +2556,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
@@ -2564,7 +2564,7 @@ comma
 id|ZS_IS_CHANNEL_A
 c_func
 (paren
-id|up
+id|uap
 )paren
 ques
 c_cond
@@ -2579,13 +2579,13 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|4
 comma
@@ -2600,7 +2600,7 @@ multiline_comment|/* I think this is wrong....but, I just copying code....&n;&t;
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|3
 comma
@@ -2615,7 +2615,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|5
 comma
@@ -2630,7 +2630,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
@@ -2641,7 +2641,7 @@ multiline_comment|/* Didn&squot;t we already do this? */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|11
 comma
@@ -2655,7 +2655,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|12
 comma
@@ -2665,7 +2665,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|13
 comma
@@ -2675,7 +2675,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|14
 comma
@@ -2689,7 +2689,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|14
 comma
@@ -2705,7 +2705,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|3
 comma
@@ -2719,7 +2719,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 comma
@@ -2729,7 +2729,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 comma
@@ -2741,7 +2741,7 @@ multiline_comment|/* The channel should be OK now, but it is probably receiving&
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
@@ -2751,7 +2751,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|4
 comma
@@ -2761,7 +2761,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|3
 comma
@@ -2779,7 +2779,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 )paren
@@ -2793,7 +2793,7 @@ r_void
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|8
 )paren
@@ -2801,7 +2801,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 comma
@@ -2811,7 +2811,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 comma
@@ -2820,7 +2820,7 @@ id|ERR_RES
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Real startup routine, powers up the hardware and sets up&n; * the SCC. Returns a delay in ms where you need to wait before&n; * actually using the port, this is typically the internal modem&n; * powerup delay. This routine expect the lock to be taken.&n; */
+multiline_comment|/*&n; * Real startup routine, powers uap the hardware and sets uap&n; * the SCC. Returns a delay in ms where you need to wait before&n; * actually using the port, this is typically the internal modem&n; * powerup delay. This routine expect the lock to be taken.&n; */
 DECL|function|__pmz_startup
 r_static
 r_int
@@ -2830,7 +2830,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_int
@@ -2842,23 +2842,23 @@ id|memset
 c_func
 (paren
 op_amp
-id|up-&gt;curregs
+id|uap-&gt;curregs
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Power up the SCC &amp; underlying hardware (modem/irda) */
+multiline_comment|/* Power uap the SCC &amp; underlying hardware (modem/irda) */
 id|pwr_delay
 op_assign
 id|pmz_set_scc_power
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|1
 )paren
@@ -2867,21 +2867,21 @@ multiline_comment|/* Nice buggy HW ... */
 id|pmz_fix_zero_bug_scc
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the chip */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
 id|ZS_IS_CHANNEL_A
 c_func
 (paren
-id|up
+id|uap
 )paren
 ques
 c_cond
@@ -2893,7 +2893,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|udelay
@@ -2905,7 +2905,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|9
 comma
@@ -2915,14 +2915,14 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the interrupt registers */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 comma
@@ -2932,7 +2932,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -2942,7 +2942,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -2952,7 +2952,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -2962,7 +2962,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 comma
@@ -2970,25 +2970,25 @@ id|RES_H_IUS
 )paren
 suffix:semicolon
 multiline_comment|/* Remember status for DCD/CTS changes */
-id|up-&gt;prev_status
+id|uap-&gt;prev_status
 op_assign
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
 suffix:semicolon
 multiline_comment|/* Enable receiver and transmitter.  */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R3
 )braket
 op_or_assign
 id|RxENABLE
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -3000,7 +3000,7 @@ op_or
 id|DTR
 suffix:semicolon
 multiline_comment|/* Master interrupt enable */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R9
 )braket
@@ -3009,7 +3009,7 @@ id|NV
 op_or
 id|MIE
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R1
 )braket
@@ -3023,7 +3023,7 @@ suffix:semicolon
 id|pmz_maybe_update_regs
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 r_return
@@ -3046,7 +3046,7 @@ id|port
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -3063,7 +3063,7 @@ id|pwr_delay
 op_assign
 l_int|0
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: startup()&bslash;n&quot;
@@ -3077,7 +3077,7 @@ op_logical_neg
 id|ZS_IS_CONS
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -3095,7 +3095,7 @@ op_assign
 id|__pmz_startup
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3114,7 +3114,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|up-&gt;port.irq
+id|uap-&gt;port.irq
 comma
 id|pmz_interrupt
 comma
@@ -3122,21 +3122,23 @@ id|SA_SHIRQ
 comma
 l_string|&quot;PowerMac Zilog&quot;
 comma
-id|up
+id|uap
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;Unable to register zs interrupt handler.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pmz_set_scc_power
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 )paren
@@ -3155,7 +3157,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: delaying %d ms&bslash;n&quot;
@@ -3182,7 +3184,7 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: startup() done.&bslash;n&quot;
@@ -3207,7 +3209,7 @@ id|port
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -3219,7 +3221,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: shutdown()&bslash;n&quot;
@@ -3229,9 +3231,9 @@ multiline_comment|/* Release interrupt handler */
 id|free_irq
 c_func
 (paren
-id|up-&gt;port.irq
+id|uap-&gt;port.irq
 comma
-id|up
+id|uap
 )paren
 suffix:semicolon
 r_if
@@ -3240,7 +3242,7 @@ c_cond
 id|ZS_IS_CONS
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 r_return
@@ -3255,7 +3257,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Disable receiver and transmitter.  */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R3
 )braket
@@ -3263,7 +3265,7 @@ op_and_assign
 op_complement
 id|RxENABLE
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -3272,7 +3274,7 @@ op_complement
 id|TxENABLE
 suffix:semicolon
 multiline_comment|/* Disable all interrupts and BRK assertion.  */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R1
 )braket
@@ -3286,7 +3288,7 @@ op_or
 id|RxINT_MASK
 )paren
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -3297,14 +3299,14 @@ suffix:semicolon
 id|pmz_maybe_update_regs
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 multiline_comment|/* Shut the chip down */
 id|pmz_set_scc_power
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0
 )paren
@@ -3318,7 +3320,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: shutdown() done.&bslash;n&quot;
@@ -3326,16 +3328,16 @@ l_string|&quot;pmz: shutdown() done.&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Shared by TTY driver and serial console setup.  The port lock is held&n; * and local interrupts are disabled.&n; */
+DECL|function|pmz_convert_to_zs
 r_static
 r_void
-DECL|function|pmz_convert_to_zs
 id|pmz_convert_to_zs
 c_func
 (paren
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_int
 r_int
@@ -3364,14 +3366,14 @@ op_div
 l_int|16
 suffix:colon
 multiline_comment|/* 230400 */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R4
 )braket
 op_assign
 id|X16CLK
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R11
 )braket
@@ -3386,14 +3388,14 @@ op_div
 l_int|32
 suffix:colon
 multiline_comment|/* 115200 */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R4
 )braket
 op_assign
 id|X32CLK
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R11
 )braket
@@ -3404,14 +3406,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R4
 )braket
 op_assign
 id|X16CLK
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R11
 )braket
@@ -3432,7 +3434,7 @@ op_div
 l_int|16
 )paren
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R12
 )braket
@@ -3443,7 +3445,7 @@ op_amp
 l_int|255
 )paren
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R13
 )braket
@@ -3458,7 +3460,7 @@ op_amp
 l_int|255
 )paren
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R14
 )braket
@@ -3467,7 +3469,7 @@ id|BRENAB
 suffix:semicolon
 )brace
 multiline_comment|/* Character size, stop bits, and parity. */
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|3
 )braket
@@ -3475,7 +3477,7 @@ op_and_assign
 op_complement
 id|RxN_MASK
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
@@ -3494,21 +3496,21 @@ id|CSIZE
 r_case
 id|CS5
 suffix:colon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|3
 )braket
 op_or_assign
 id|Rx5
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
 op_or_assign
 id|Tx5
 suffix:semicolon
-id|up-&gt;parity_mask
+id|uap-&gt;parity_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
@@ -3517,21 +3519,21 @@ suffix:semicolon
 r_case
 id|CS6
 suffix:colon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|3
 )braket
 op_or_assign
 id|Rx6
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
 op_or_assign
 id|Tx6
 suffix:semicolon
-id|up-&gt;parity_mask
+id|uap-&gt;parity_mask
 op_assign
 l_int|0x3f
 suffix:semicolon
@@ -3540,21 +3542,21 @@ suffix:semicolon
 r_case
 id|CS7
 suffix:colon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|3
 )braket
 op_or_assign
 id|Rx7
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
 op_or_assign
 id|Tx7
 suffix:semicolon
-id|up-&gt;parity_mask
+id|uap-&gt;parity_mask
 op_assign
 l_int|0x7f
 suffix:semicolon
@@ -3565,21 +3567,21 @@ id|CS8
 suffix:colon
 r_default
 suffix:colon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|3
 )braket
 op_or_assign
 id|Rx8
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
 op_or_assign
 id|Tx8
 suffix:semicolon
-id|up-&gt;parity_mask
+id|uap-&gt;parity_mask
 op_assign
 l_int|0xff
 suffix:semicolon
@@ -3587,7 +3589,7 @@ r_break
 suffix:semicolon
 )brace
 suffix:semicolon
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3604,7 +3606,7 @@ id|cflag
 op_amp
 id|CSTOPB
 )paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3612,7 +3614,7 @@ op_or_assign
 id|SB2
 suffix:semicolon
 r_else
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3626,7 +3628,7 @@ id|cflag
 op_amp
 id|PARENB
 )paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3634,7 +3636,7 @@ op_or_assign
 id|PAR_ENAB
 suffix:semicolon
 r_else
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3652,7 +3654,7 @@ op_amp
 id|PARODD
 )paren
 )paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3660,7 +3662,7 @@ op_or_assign
 id|PAR_EVEN
 suffix:semicolon
 r_else
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|4
 )braket
@@ -3668,7 +3670,7 @@ op_and_assign
 op_complement
 id|PAR_EVEN
 suffix:semicolon
-id|up-&gt;port.read_status_mask
+id|uap-&gt;port.read_status_mask
 op_assign
 id|Rx_OVR
 suffix:semicolon
@@ -3679,7 +3681,7 @@ id|iflag
 op_amp
 id|INPCK
 )paren
-id|up-&gt;port.read_status_mask
+id|uap-&gt;port.read_status_mask
 op_or_assign
 id|CRC_ERR
 op_or
@@ -3696,11 +3698,11 @@ op_or
 id|PARMRK
 )paren
 )paren
-id|up-&gt;port.read_status_mask
+id|uap-&gt;port.read_status_mask
 op_or_assign
 id|BRK_ABRT
 suffix:semicolon
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_assign
 l_int|0
 suffix:semicolon
@@ -3711,7 +3713,7 @@ id|iflag
 op_amp
 id|IGNPAR
 )paren
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_or_assign
 id|CRC_ERR
 op_or
@@ -3725,7 +3727,7 @@ op_amp
 id|IGNBRK
 )paren
 (brace
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_or_assign
 id|BRK_ABRT
 suffix:semicolon
@@ -3736,7 +3738,7 @@ id|iflag
 op_amp
 id|IGNPAR
 )paren
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_or_assign
 id|Rx_OVR
 suffix:semicolon
@@ -3752,7 +3754,7 @@ id|CREAD
 op_eq
 l_int|0
 )paren
-id|up-&gt;port.ignore_status_mask
+id|uap-&gt;port.ignore_status_mask
 op_assign
 l_int|0xff
 suffix:semicolon
@@ -3766,7 +3768,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_int
 id|w
@@ -3781,7 +3783,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|5
 comma
@@ -3793,7 +3795,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|udelay
@@ -3805,7 +3807,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|5
 comma
@@ -3819,7 +3821,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|udelay
@@ -3831,7 +3833,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|5
 comma
@@ -3843,7 +3845,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|udelay
@@ -3855,7 +3857,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|5
 comma
@@ -3869,7 +3871,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 )brace
@@ -3883,7 +3885,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 comma
 r_int
 id|cflags
@@ -3923,11 +3925,11 @@ multiline_comment|/* disable serial interrupts and receive DMA */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|1
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|1
 )braket
@@ -3948,7 +3950,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -3962,7 +3964,7 @@ op_logical_or
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 )paren
@@ -3982,10 +3984,12 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;transmitter didn&squot;t drain&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4009,7 +4013,7 @@ multiline_comment|/* set to 8 bits, no parity, 19200 baud, RTS on, DTR off */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R4
 comma
@@ -4021,7 +4025,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R11
 comma
@@ -4045,7 +4049,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R12
 comma
@@ -4055,7 +4059,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R13
 comma
@@ -4067,7 +4071,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R14
 comma
@@ -4077,7 +4081,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R3
 comma
@@ -4089,7 +4093,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
@@ -4103,7 +4107,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 multiline_comment|/* set TxD low for ~104us and pulse RTS */
@@ -4116,7 +4120,7 @@ suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|0xfe
 )paren
@@ -4124,7 +4128,7 @@ suffix:semicolon
 id|pmz_irda_rts_pulses
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|150
 )paren
@@ -4132,7 +4136,7 @@ suffix:semicolon
 id|pmz_irda_rts_pulses
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|180
 )paren
@@ -4140,7 +4144,7 @@ suffix:semicolon
 id|pmz_irda_rts_pulses
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|50
 )paren
@@ -4155,7 +4159,7 @@ multiline_comment|/* assert DTR, wait 30ms, talk to the chip */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
@@ -4171,7 +4175,7 @@ suffix:semicolon
 id|zssync
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|mdelay
@@ -4186,7 +4190,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -4196,13 +4200,13 @@ id|Rx_CH_AV
 id|read_zsdata
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|1
 )paren
@@ -4218,7 +4222,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -4238,10 +4242,12 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;irda_setup timed out on 1st byte&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4261,7 +4267,7 @@ op_assign
 id|read_zsdata
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 r_if
@@ -4271,10 +4277,12 @@ id|t
 op_ne
 l_int|4
 )paren
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;irda_setup 1st byte = %x&bslash;n&quot;
 comma
 id|t
@@ -4283,7 +4291,7 @@ suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|code
 )paren
@@ -4299,7 +4307,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -4319,10 +4327,12 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;irda_setup timed out on 2nd byte&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4342,7 +4352,7 @@ op_assign
 id|read_zsdata
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 r_if
@@ -4352,10 +4362,12 @@ id|t
 op_ne
 id|code
 )paren
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
+op_amp
+id|uap-&gt;dev-&gt;ofdev.dev
+comma
 l_string|&quot;irda_setup 2nd byte = %x (%x)&bslash;n&quot;
 comma
 id|t
@@ -4375,7 +4387,7 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
@@ -4389,19 +4401,19 @@ suffix:semicolon
 id|pmz_irda_rts_pulses
 c_func
 (paren
-id|up
+id|uap
 comma
 l_int|80
 )paren
 suffix:semicolon
-multiline_comment|/* We should be right to go now.  We assume that load_zsregs&n;&t;   will get called soon to load up the correct baud rate etc. */
-id|up-&gt;curregs
+multiline_comment|/* We should be right to go now.  We assume that load_zsregs&n;&t;   will get called soon to load uap the correct baud rate etc. */
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
 op_assign
 (paren
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R5
 )braket
@@ -4414,9 +4426,9 @@ id|DTR
 suffix:semicolon
 )brace
 multiline_comment|/* The port lock is not held.  */
+DECL|function|pmz_set_termios
 r_static
 r_void
-DECL|function|pmz_set_termios
 id|pmz_set_termios
 c_func
 (paren
@@ -4439,7 +4451,7 @@ id|old
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|to_pmz
 c_func
@@ -4454,7 +4466,7 @@ suffix:semicolon
 r_int
 id|baud
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: set_termios()&bslash;n&quot;
@@ -4480,7 +4492,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
@@ -4488,7 +4500,7 @@ suffix:semicolon
 id|pmz_convert_to_zs
 c_func
 (paren
-id|up
+id|uap
 comma
 id|termios-&gt;c_cflag
 comma
@@ -4504,13 +4516,13 @@ id|UART_ENABLE_MS
 c_func
 (paren
 op_amp
-id|up-&gt;port
+id|uap-&gt;port
 comma
 id|termios-&gt;c_cflag
 )paren
 )paren
 (brace
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
@@ -4521,14 +4533,14 @@ id|SYNCIE
 op_or
 id|CTSIE
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_MODEM_STATUS
 suffix:semicolon
 )brace
 r_else
 (brace
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 id|R15
 )braket
@@ -4542,7 +4554,7 @@ op_or
 id|CTSIE
 )paren
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_MODEM_STATUS
@@ -4555,13 +4567,13 @@ c_cond
 id|ZS_IS_IRDA
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 id|pmz_irda_setup
 c_func
 (paren
-id|up
+id|uap
 comma
 id|termios-&gt;c_cflag
 )paren
@@ -4570,19 +4582,19 @@ multiline_comment|/* Load registers to the chip */
 id|pmz_maybe_update_regs
 c_func
 (paren
-id|up
+id|uap
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|pr_debug
+id|pmz_debug
 c_func
 (paren
 l_string|&quot;pmz: set_termios() done.&bslash;n&quot;
@@ -4777,7 +4789,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_struct
@@ -4785,7 +4797,7 @@ id|device_node
 op_star
 id|np
 op_assign
-id|up-&gt;node
+id|uap-&gt;node
 suffix:semicolon
 r_char
 op_star
@@ -4811,7 +4823,7 @@ r_int
 id|len
 suffix:semicolon
 multiline_comment|/*&n;&t; * Request &amp; map chip registers&n;&t; */
-id|up-&gt;port.mapbase
+id|uap-&gt;port.mapbase
 op_assign
 id|np-&gt;addrs
 (braket
@@ -4820,28 +4832,28 @@ l_int|0
 dot
 id|address
 suffix:semicolon
-id|up-&gt;port.membase
+id|uap-&gt;port.membase
 op_assign
 id|ioremap
 c_func
 (paren
-id|up-&gt;port.mapbase
+id|uap-&gt;port.mapbase
 comma
 l_int|0x1000
 )paren
 suffix:semicolon
-id|up-&gt;control_reg
+id|uap-&gt;control_reg
 op_assign
 (paren
 r_volatile
 id|u8
 op_star
 )paren
-id|up-&gt;port.membase
+id|uap-&gt;port.membase
 suffix:semicolon
-id|up-&gt;data_reg
+id|uap-&gt;data_reg
 op_assign
-id|up-&gt;control_reg
+id|uap-&gt;control_reg
 op_plus
 l_int|0x10
 suffix:semicolon
@@ -4858,7 +4870,7 @@ id|np-&gt;n_intrs
 op_ge
 l_int|3
 )paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_HAS_DMA
 suffix:semicolon
@@ -4869,11 +4881,11 @@ c_cond
 id|ZS_HAS_DMA
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
-id|up-&gt;tx_dma_regs
+id|uap-&gt;tx_dma_regs
 op_assign
 (paren
 r_volatile
@@ -4899,12 +4911,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;tx_dma_regs
+id|uap-&gt;tx_dma_regs
 op_eq
 l_int|NULL
 )paren
 (brace
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_HAS_DMA
@@ -4913,7 +4925,7 @@ r_goto
 id|no_dma
 suffix:semicolon
 )brace
-id|up-&gt;rx_dma_regs
+id|uap-&gt;rx_dma_regs
 op_assign
 (paren
 r_volatile
@@ -4939,7 +4951,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;rx_dma_regs
+id|uap-&gt;rx_dma_regs
 op_eq
 l_int|NULL
 )paren
@@ -4951,10 +4963,10 @@ c_func
 r_void
 op_star
 )paren
-id|up-&gt;tx_dma_regs
+id|uap-&gt;tx_dma_regs
 )paren
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_HAS_DMA
@@ -4963,7 +4975,7 @@ r_goto
 id|no_dma
 suffix:semicolon
 )brace
-id|up-&gt;tx_dma_irq
+id|uap-&gt;tx_dma_irq
 op_assign
 id|np-&gt;intrs
 (braket
@@ -4972,7 +4984,7 @@ l_int|1
 dot
 id|line
 suffix:semicolon
-id|up-&gt;rx_dma_irq
+id|uap-&gt;rx_dma_irq
 op_assign
 id|np-&gt;intrs
 (braket
@@ -4996,7 +5008,7 @@ comma
 l_string|&quot;cobalt&quot;
 )paren
 )paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_IS_INTMODEM
 suffix:semicolon
@@ -5030,11 +5042,11 @@ op_eq
 l_int|0
 )paren
 )paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_IS_IRDA
 suffix:semicolon
-id|up-&gt;port_type
+id|uap-&gt;port_type
 op_assign
 id|PMAC_SCC_ASYNC
 suffix:semicolon
@@ -5080,7 +5092,7 @@ l_string|&quot;IrDA&quot;
 op_eq
 l_int|0
 )paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_IS_IRDA
 suffix:semicolon
@@ -5098,7 +5110,7 @@ l_string|&quot;Modem&quot;
 op_eq
 l_int|0
 )paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_IS_INTMODEM
 suffix:semicolon
@@ -5109,10 +5121,10 @@ c_cond
 id|ZS_IS_IRDA
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
-id|up-&gt;port_type
+id|uap-&gt;port_type
 op_assign
 id|PMAC_SCC_IRDA
 suffix:semicolon
@@ -5122,7 +5134,7 @@ c_cond
 id|ZS_IS_INTMODEM
 c_func
 (paren
-id|up
+id|uap
 )paren
 )paren
 (brace
@@ -5187,7 +5199,7 @@ suffix:colon
 r_case
 l_int|0x0c
 suffix:colon
-id|up-&gt;port_type
+id|uap-&gt;port_type
 op_assign
 id|PMAC_SCC_I2S1
 suffix:semicolon
@@ -5222,11 +5234,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Init remaining bits of &quot;port&quot; structure&n;&t; */
-id|up-&gt;port.iotype
+id|uap-&gt;port.iotype
 op_assign
 id|SERIAL_IO_MEM
 suffix:semicolon
-id|up-&gt;port.irq
+id|uap-&gt;port.irq
 op_assign
 id|np-&gt;intrs
 (braket
@@ -5235,24 +5247,24 @@ l_int|0
 dot
 id|line
 suffix:semicolon
-id|up-&gt;port.uartclk
+id|uap-&gt;port.uartclk
 op_assign
 id|ZS_CLOCK
 suffix:semicolon
-id|up-&gt;port.fifosize
+id|uap-&gt;port.fifosize
 op_assign
 l_int|1
 suffix:semicolon
-id|up-&gt;port.ops
+id|uap-&gt;port.ops
 op_assign
 op_amp
 id|pmz_pops
 suffix:semicolon
-id|up-&gt;port.type
+id|uap-&gt;port.type
 op_assign
 id|PORT_PMAC_ZILOG
 suffix:semicolon
-id|up-&gt;port.flags
+id|uap-&gt;port.flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -5270,7 +5282,7 @@ c_func
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 )paren
 (brace
 r_struct
@@ -5285,14 +5297,14 @@ c_func
 r_void
 op_star
 )paren
-id|up-&gt;control_reg
+id|uap-&gt;control_reg
 )paren
 suffix:semicolon
 id|np
 op_assign
-id|up-&gt;node
+id|uap-&gt;node
 suffix:semicolon
-id|up-&gt;node
+id|uap-&gt;node
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5356,7 +5368,7 @@ id|mdev-&gt;ofdev.node
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 op_amp
 id|pmz_ports
@@ -5364,7 +5376,7 @@ id|pmz_ports
 id|i
 )braket
 suffix:semicolon
-id|up-&gt;dev
+id|uap-&gt;dev
 op_assign
 id|mdev
 suffix:semicolon
@@ -5374,7 +5386,7 @@ c_func
 op_amp
 id|mdev-&gt;ofdev.dev
 comma
-id|up
+id|uap
 )paren
 suffix:semicolon
 r_if
@@ -5383,7 +5395,7 @@ c_cond
 id|macio_request_resources
 c_func
 (paren
-id|up-&gt;dev
+id|uap-&gt;dev
 comma
 l_string|&quot;pmac_zilog&quot;
 )paren
@@ -5394,11 +5406,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Failed to request resource, port still active&bslash;n&quot;
 comma
-id|up-&gt;node-&gt;name
+id|uap-&gt;node-&gt;name
 )paren
 suffix:semicolon
 r_else
-id|up-&gt;flags
+id|uap-&gt;flags
 op_or_assign
 id|PMACZILOG_FLAG_RSRC_REQUESTED
 suffix:semicolon
@@ -5427,7 +5439,7 @@ id|mdev
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 id|dev_get_drvdata
 c_func
@@ -5440,7 +5452,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|up
+id|uap
 )paren
 r_return
 op_minus
@@ -5449,7 +5461,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;flags
+id|uap-&gt;flags
 op_amp
 id|PMACZILOG_FLAG_RSRC_REQUESTED
 )paren
@@ -5457,10 +5469,10 @@ id|PMACZILOG_FLAG_RSRC_REQUESTED
 id|macio_release_resources
 c_func
 (paren
-id|up-&gt;dev
+id|uap-&gt;dev
 )paren
 suffix:semicolon
-id|up-&gt;flags
+id|uap-&gt;flags
 op_and_assign
 op_complement
 id|PMACZILOG_FLAG_RSRC_REQUESTED
@@ -5475,7 +5487,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|up-&gt;dev
+id|uap-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6177,7 +6189,7 @@ comma
 id|version
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * First, we need to do a direct OF-based probe pass. We&n;&t; * do that because we want serial console up before the&n;&t; * macio stuffs calls us back, and since that makes it&n;&t; * easier to pass the proper number of channels to&n;&t; * uart_register_driver()&n;&t; */
+multiline_comment|/* &n;&t; * First, we need to do a direct OF-based probe pass. We&n;&t; * do that because we want serial console uap before the&n;&t; * macio stuffs calls us back, and since that makes it&n;&t; * easier to pass the proper number of channels to&n;&t; * uart_register_driver()&n;&t; */
 r_if
 c_cond
 (paren
@@ -6326,7 +6338,7 @@ id|count
 r_struct
 id|uart_pmac_port
 op_star
-id|up
+id|uap
 op_assign
 op_amp
 id|pmz_ports
@@ -6345,7 +6357,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
@@ -6354,11 +6366,11 @@ multiline_comment|/* Turn of interrupts and enable the transmitter. */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|1
 )braket
@@ -6370,11 +6382,11 @@ suffix:semicolon
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R5
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|5
 )braket
@@ -6409,7 +6421,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -6428,7 +6440,7 @@ suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|s
 (braket
@@ -6454,7 +6466,7 @@ c_loop
 id|read_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R0
 )paren
@@ -6473,7 +6485,7 @@ suffix:semicolon
 id|write_zsdata
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R13
 )paren
@@ -6484,11 +6496,11 @@ multiline_comment|/* Restore the values in the registers. */
 id|write_zsreg
 c_func
 (paren
-id|up
+id|uap
 comma
 id|R1
 comma
-id|up-&gt;curregs
+id|uap-&gt;curregs
 (braket
 l_int|1
 )braket
@@ -6499,7 +6511,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|up-&gt;port.lock
+id|uap-&gt;port.lock
 comma
 id|flags
 )paren
