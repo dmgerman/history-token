@@ -381,6 +381,29 @@ r_int
 id|create
 )paren
 suffix:semicolon
+DECL|typedef|dio_iodone_t
+r_typedef
+r_void
+(paren
+id|dio_iodone_t
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|loff_t
+id|offset
+comma
+id|ssize_t
+id|bytes
+comma
+r_void
+op_star
+r_private
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -6495,6 +6518,10 @@ comma
 id|get_blocks_t
 op_star
 id|get_blocks
+comma
+id|dio_iodone_t
+op_star
+id|end_io
 )paren
 suffix:semicolon
 r_extern
