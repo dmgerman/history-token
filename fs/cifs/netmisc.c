@@ -546,17 +546,23 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Convert string containing dotted ip address to binary form */
 multiline_comment|/* returns 0 if invalid address */
-multiline_comment|/* BB add address family, change rc to status flag and return */
-multiline_comment|/* also see inet_pton */
-multiline_comment|/* To identify v4 vs. v6 - 1) check for colon (v6 only) 2) then call inet_pton to parse for bad address  */
+multiline_comment|/* BB add address family, change rc to status flag and return union or for ipv6 */
+multiline_comment|/*  will need parent to call something like inet_pton to convert ipv6 address  BB */
 r_int
-DECL|function|cifs_inet_addr
-id|cifs_inet_addr
+DECL|function|cifs_inet_pton
+id|cifs_inet_pton
 c_func
 (paren
+r_int
+id|address_family
+comma
 r_char
 op_star
 id|cp
+comma
+r_void
+op_star
+id|dst
 )paren
 (brace
 r_struct
@@ -605,6 +611,19 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|address_family
+op_ne
+id|AF_INET
+)paren
+(brace
+r_return
+op_minus
+id|EAFNOSUPPORT
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -752,6 +771,30 @@ id|cp
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|temp
+op_eq
+l_char|&squot;:&squot;
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;IPv6 addresses not supported for CIFS mounts yet&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
 r_break
 suffix:semicolon
 )brace
@@ -839,9 +882,21 @@ c_func
 id|value
 )paren
 suffix:semicolon
-r_return
+op_star
+(paren
+(paren
+r_int
+op_star
+)paren
+id|dst
+)paren
+op_assign
 id|address.s_addr
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* success */
 )brace
 multiline_comment|/*****************************************************************************&n;convert a NT status code to a dos class/code&n; *****************************************************************************/
 multiline_comment|/* NT status -&gt; dos error map */
