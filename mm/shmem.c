@@ -885,6 +885,10 @@ r_static
 r_const
 id|swp_entry_t
 id|unswapped
+op_assign
+(brace
+l_int|0
+)brace
 suffix:semicolon
 r_if
 c_cond
