@@ -736,12 +736,34 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_IA64
 id|irq
 op_assign
-id|gsi_to_vector
+id|acpi_irq_to_vector
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;SCI (ACPI interrupt %d) not registered&bslash;n&quot;
+comma
+id|acpi_fadt.sci_int
+)paren
+suffix:semicolon
+r_return
+id|AE_OK
+suffix:semicolon
+)brace
 macro_line|#endif
 id|acpi_irq_irq
 op_assign
@@ -812,7 +834,7 @@ id|acpi_irq_handler
 macro_line|#ifdef CONFIG_IA64
 id|irq
 op_assign
-id|gsi_to_vector
+id|acpi_irq_to_vector
 c_func
 (paren
 id|irq
