@@ -177,7 +177,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * update_dirs_plus()&n; *&n; * Update the fields &squot;i_size&squot;, &squot;i_nlink&squot;, &squot;i_ctime&squot;, &squot;i_mtime&squot; and&n; * &squot;i_version&squot; of the inodes associated with a directory that has&n; * had a file (&squot;is_dir&squot;==0) or directory (&squot;is_dir&squot;!=0) added to it.&n; */
+multiline_comment|/*&n; * update_dirs_plus()&n; *&n; * Update the fields &squot;i_size&squot;, &squot;i_nlink&squot;, &squot;i_ctime&squot; and &squot;i_mtime&squot;&n; * of the inodes associated with a directory that has&n; * had a file (&squot;is_dir&squot;==0) or directory (&squot;is_dir&squot;!=0) added to it.&n; */
 DECL|function|update_dirs_plus
 r_static
 r_inline
@@ -278,11 +278,6 @@ id|tmp
 op_member_access_from_pointer
 id|dir_size
 suffix:semicolon
-id|tmp-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 )brace
 id|tmp-&gt;i_ctime
 op_assign
@@ -299,7 +294,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * update_dirs_minus()&n; *&n; * Update the fields &squot;i_size&squot;, &squot;i_nlink&squot;, &squot;i_ctime&squot;, &squot;i_mtime&squot; and&n; * &squot;i_version&squot; of the inodes associated with a directory that has&n; * had a file (&squot;is_dir&squot;==0) or directory (&squot;is_dir&squot;!=0) removed.&n; */
+multiline_comment|/*&n; * update_dirs_minus()&n; *&n; * Update the fields &squot;i_size&squot;, &squot;i_nlink&squot;, &squot;i_ctime&squot;, &squot;i_mtime&squot; and&n; * of the inodes associated with a directory that has&n; * had a file (&squot;is_dir&squot;==0) or directory (&squot;is_dir&squot;!=0) removed.&n; */
 DECL|function|update_dirs_minus
 r_static
 r_inline
@@ -399,11 +394,6 @@ id|tmp
 )paren
 op_member_access_from_pointer
 id|dir_size
-suffix:semicolon
-id|tmp-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 )brace
 id|tmp-&gt;i_ctime

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,6)
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#endif
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;

@@ -313,11 +313,6 @@ id|file-&gt;f_reada
 op_assign
 l_int|0
 suffix:semicolon
-id|file-&gt;f_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 )brace
 id|retval
 op_assign

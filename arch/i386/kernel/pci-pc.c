@@ -108,6 +108,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
 DECL|variable|pci_config_lock
+r_static
 id|spinlock_t
 id|pci_config_lock
 op_assign
@@ -5221,12 +5222,12 @@ op_assign
 l_int|9
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Nobody seems to know what this does. Damn.&n; *&n; * But it does seem to fix some unspecified problem&n; * with &squot;movntq&squot; copies on Athlons.&n; *&n; * VIA 8363,8622,8361 Northbridges:&n; *  - bits  5, 6, 7 at offset 0x55 need to be turned off&n; * VIA 8367 (KT266x) Northbridges:&n; *  - bits  5, 6, 7 at offset 0x95 need to be turned off&n; */
-DECL|function|pci_fixup_via_athlon_bug
+multiline_comment|/*&n; * Addresses issues with problems in the memory write queue timer in&n; * certain VIA Northbridges.  This bugfix is per VIA&squot;s specifications.&n; *&n; * VIA 8363,8622,8361 Northbridges:&n; *  - bits  5, 6, 7 at offset 0x55 need to be turned off&n; * VIA 8367 (KT266x) Northbridges:&n; *  - bits  5, 6, 7 at offset 0x95 need to be turned off&n; */
+DECL|function|pci_fixup_via_northbridge_bug
 r_static
 r_void
 id|__init
-id|pci_fixup_via_athlon_bug
+id|pci_fixup_via_northbridge_bug
 c_func
 (paren
 r_struct
@@ -5279,7 +5280,7 @@ l_int|0xe0
 id|printk
 c_func
 (paren
-l_string|&quot;Trying to stomp on Athlon bug...&bslash;n&quot;
+l_string|&quot;Disabling broken memory write queue.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|v
@@ -5394,7 +5395,7 @@ id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8363_0
 comma
-id|pci_fixup_via_athlon_bug
+id|pci_fixup_via_northbridge_bug
 )brace
 comma
 (brace
@@ -5404,7 +5405,7 @@ id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8622
 comma
-id|pci_fixup_via_athlon_bug
+id|pci_fixup_via_northbridge_bug
 )brace
 comma
 (brace
@@ -5414,7 +5415,7 @@ id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8361
 comma
-id|pci_fixup_via_athlon_bug
+id|pci_fixup_via_northbridge_bug
 )brace
 comma
 (brace
@@ -5424,7 +5425,7 @@ id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8367_0
 comma
-id|pci_fixup_via_athlon_bug
+id|pci_fixup_via_northbridge_bug
 )brace
 comma
 (brace

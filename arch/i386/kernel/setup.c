@@ -4860,12 +4860,6 @@ r_case
 l_int|6
 suffix:colon
 multiline_comment|/* An Athlon/Duron. We can trust the BIOS probably */
-id|mcheck_init
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -7329,12 +7323,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|mcheck_init
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -8622,13 +8610,6 @@ c_func
 id|c-&gt;x86_model_id
 comma
 id|p
-)paren
-suffix:semicolon
-multiline_comment|/* Enable MCA if available */
-id|mcheck_init
-c_func
-(paren
-id|c
 )paren
 suffix:semicolon
 )brace
@@ -10356,6 +10337,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* Disable the PN if appropriate */
 id|squash_the_stupid_serial_number
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+multiline_comment|/* Init Machine Check Exception if available. */
+id|mcheck_init
 c_func
 (paren
 id|c

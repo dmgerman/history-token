@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Wrapper functions for accessing the file_struct fd arr
 macro_line|#ifndef __LINUX_FILE_H
 DECL|macro|__LINUX_FILE_H
 mdefine_line|#define __LINUX_FILE_H
+macro_line|#include &lt;linux/sched.h&gt;
 r_extern
 r_void
 id|FASTCALL

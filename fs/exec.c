@@ -4131,13 +4131,6 @@ l_int|0
 r_goto
 id|close_fail
 suffix:semicolon
-id|down_read
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|binfmt
@@ -4150,13 +4143,6 @@ comma
 id|regs
 comma
 id|file
-)paren
-suffix:semicolon
-id|up_read
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 id|close_fail

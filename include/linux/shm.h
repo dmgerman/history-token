@@ -236,20 +236,6 @@ op_star
 id|buf
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|shm_unuse
-c_func
-(paren
-id|swp_entry_t
-id|entry
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SHM_H_ */
 eof

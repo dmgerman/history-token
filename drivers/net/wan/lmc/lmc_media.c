@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 singleline_comment|//#include &lt;asm/smp.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20155
 macro_line|#include &lt;linux/bios32.h&gt;

@@ -22,6 +22,12 @@ c_func
 l_string|&quot;ACPI Component Architecture (CA) - ACPI Bus Manager&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                               Types &amp; Defines&n; *****************************************************************************/
 r_typedef
 r_struct

@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_upcall.h&gt;

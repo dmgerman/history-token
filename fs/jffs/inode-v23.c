@@ -1353,10 +1353,6 @@ l_int|511
 op_rshift
 l_int|9
 suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-l_int|0
-suffix:semicolon
 id|f
 op_assign
 id|jffs_find_file
@@ -4592,11 +4588,6 @@ l_int|0
 comma
 id|del_node
 )paren
-suffix:semicolon
-id|dir-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|dir-&gt;i_ctime
 op_assign

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -103,9 +104,10 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|kernel_flag
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

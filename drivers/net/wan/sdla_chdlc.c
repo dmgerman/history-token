@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#else &t;&t;&t;&t;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;net/route.h&gt;          /* Adding new route entries : 2.0.X kernels */
 macro_line|#endif
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* sockaddr_in */

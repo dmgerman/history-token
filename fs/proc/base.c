@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
 mdefine_line|#define fake_ino(pid,ino) (((pid)&lt;&lt;16)|(ino))

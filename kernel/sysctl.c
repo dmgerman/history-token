@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * sysctl.c: General linux system control interface&n; *&n; * Begun 24 March 1995, Stephen Tweedie&n; * Added /proc support, Dec 1995&n; * Added bdflush entry and intvec min/max checking, 2/23/96, Tom Dyas.&n; * Added hooks for /proc/sys/net (minor, minor patch), 96/4/1, Mike Shaver.&n; * Added kernel/java-{interpreter,appletviewer}, 96/5/10, Mike Shaver.&n; * Dynamic registration fixes, Stephen Tweedie.&n; * Added kswapd-interval, ctrl-alt-del, printk stuff, 1/8/97, Chris Horn.&n; * Made sysctl support optional via CONFIG_SYSCTL, 1/10/97, Chris&n; *  Horn.&n; * Added proc_doulongvec_ms_jiffies_minmax, 09/08/99, Carlos H. Bauer.&n; * Added proc_doulongvec_minmax, 09/08/99, Carlos H. Bauer.&n; * Changed linked lists to use list.h instead of lists.h, 02/24/00, Bill&n; *  Wendling.&n; * The list_for_each() macro wasn&squot;t appropriate for the sysctl loop.&n; *  Removed it and replaced it with older style, 03/23/00, Bill Wendling&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;

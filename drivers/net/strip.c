@@ -34,7 +34,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * isdigit() and isspace() use the ctype[] array, which is not available&n; * to kernel modules.  If compiling as a module,  use  a local definition&n; * of isdigit() and isspace() until  _ctype is added to ksyms.&n; */
 macro_line|#ifdef MODULE

@@ -36,6 +36,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2566,6 +2567,48 @@ id|csum_partial
 )paren
 suffix:semicolon
 multiline_comment|/* for networking and md */
+DECL|variable|seq_escape
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_escape
+)paren
+suffix:semicolon
+DECL|variable|seq_printf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_printf
+)paren
+suffix:semicolon
+DECL|variable|seq_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_open
+)paren
+suffix:semicolon
+DECL|variable|seq_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_release
+)paren
+suffix:semicolon
+DECL|variable|seq_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_read
+)paren
+suffix:semicolon
+DECL|variable|seq_lseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_lseek
+)paren
+suffix:semicolon
 multiline_comment|/* Program loader interfaces */
 DECL|variable|setup_arg_pages
 id|EXPORT_SYMBOL

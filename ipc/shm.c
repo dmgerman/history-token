@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/ipc/shm.c&n; * Copyright (C) 1992, 1993 Krishna Balasubramanian&n; *&t; Many improvements/fixes by Bruno Haible.&n; * Replaced `struct shm_desc&squot; by `struct vm_area_struct&squot;, July 1994.&n; * Fixed the shm swap deallocation (shm_unuse()), August 1998 Andrea Arcangeli.&n; *&n; * /proc/sysvipc/shm support (c) 1999 Dragos Acostachioaie &lt;dragos@iname.com&gt;&n; * BIGMEM support, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; * SMP thread shm, Jean-Luc Boyard &lt;jean-luc.boyard@siemens.fr&gt;&n; * HIGHMEM support, Ingo Molnar &lt;mingo@redhat.com&gt;&n; * Make shmmax, shmall, shmmni sysctl&squot;able, Christoph Rohland &lt;cr@sap.com&gt;&n; * Shared /dev/zero support, Kanoj Sarcar &lt;kanoj@sgi.com&gt;&n; * Move the mm functionality over to mm/shmem.c, Christoph Rohland &lt;cr@sap.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
 macro_line|#include &lt;linux/sunrpc/stats.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
+macro_line|#include &lt;asm/signal.h&gt;
 multiline_comment|/*&n; * This defines an RPC port mapping&n; */
 DECL|struct|rpc_portmap
 r_struct

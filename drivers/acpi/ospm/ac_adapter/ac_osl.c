@@ -19,6 +19,12 @@ c_func
 l_string|&quot;ACPI Component Architecture (CA) - AC Adapter Driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|AC_PROC_ROOT
 mdefine_line|#define AC_PROC_ROOT&t;&t;&quot;ac_adapter&quot;
 DECL|macro|AC_PROC_STATUS

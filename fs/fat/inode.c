@@ -508,6 +508,10 @@ comma
 id|MSDOS_ROOT_INO
 )paren
 suffix:semicolon
+id|inode-&gt;i_version
+op_assign
+l_int|0
+suffix:semicolon
 id|fat_fill_inode
 c_func
 (paren
@@ -2082,9 +2086,7 @@ op_assign
 id|sbi-&gt;options.fs_gid
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
@@ -3947,6 +3949,10 @@ id|root_inode-&gt;i_ino
 op_assign
 id|MSDOS_ROOT_INO
 suffix:semicolon
+id|root_inode-&gt;i_version
+op_assign
+l_int|0
+suffix:semicolon
 id|fat_read_root
 c_func
 (paren
@@ -4597,9 +4603,7 @@ op_assign
 id|sbi-&gt;options.fs_gid
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign

@@ -893,11 +893,6 @@ id|de-&gt;ino
 op_assign
 l_int|0
 suffix:semicolon
-id|dir-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|mark_buffer_dirty
 c_func
 (paren
@@ -1136,11 +1131,6 @@ op_assign
 id|old_dir-&gt;i_mtime
 op_assign
 id|CURRENT_TIME
-suffix:semicolon
-id|old_dir-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -1415,11 +1405,6 @@ c_func
 (paren
 id|dir
 )paren
-suffix:semicolon
-id|dir-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|de-&gt;ino
 op_assign

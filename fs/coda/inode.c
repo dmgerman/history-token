@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/coda.h&gt;
 macro_line|#include &lt;linux/coda_linux.h&gt;
 macro_line|#include &lt;linux/coda_psdev.h&gt;

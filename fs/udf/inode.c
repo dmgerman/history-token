@@ -845,9 +845,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|inode-&gt;i_version
-op_increment
-suffix:semicolon
 )brace
 DECL|function|udf_expand_dir_adinicb
 r_struct
@@ -1446,9 +1443,6 @@ c_func
 (paren
 id|inode
 )paren
-suffix:semicolon
-id|inode-&gt;i_version
-op_increment
 suffix:semicolon
 r_return
 id|dbh
@@ -5390,11 +5384,6 @@ r_int
 id|offset
 comma
 id|alen
-suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|UDF_I_NEW_INODE
 c_func

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (C) 1996, 1997 Claus-Justus Heine&n;&n;
 macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_ZFT_DFLT_BLK_SZ */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;

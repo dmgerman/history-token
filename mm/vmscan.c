@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/mm/vmscan.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Swap reorganised 29.12.95, Stephen Tweedie.&n; *  kswapd added: 7.1.96  sct&n; *  Removed kswapd_ctl limits, and swap out as many pages as needed&n; *  to bring the system back to freepages.high: 2.4.97, Rik van Riel.&n; *  Zone aware kswapd started 02/00, Kanoj Sarcar (kanoj@sgi.com).&n; *  Multiqueue VM started 5.8.00, Rik van Riel.&n; */
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*#include &lt;asm/irq.h&gt;*/
 macro_line|#include &lt;asm/q40_master.h&gt;

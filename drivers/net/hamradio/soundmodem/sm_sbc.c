@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x20100
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|put_user
 macro_line|#undef put_user

@@ -44,19 +44,6 @@ DECL|macro|KERN_INFO
 mdefine_line|#define&t;KERN_INFO&t;&quot;&lt;6&gt;&quot;&t;/* informational&t;&t;&t;*/
 DECL|macro|KERN_DEBUG
 mdefine_line|#define&t;KERN_DEBUG&t;&quot;&lt;7&gt;&quot;&t;/* debug-level messages&t;&t;&t;*/
-DECL|macro|NORET_TYPE
-macro_line|# define NORET_TYPE    /**/
-DECL|macro|ATTRIB_NORET
-macro_line|# define ATTRIB_NORET  __attribute__((noreturn))
-DECL|macro|NORET_AND
-macro_line|# define NORET_AND     noreturn,
-macro_line|#ifdef __i386__
-DECL|macro|FASTCALL
-mdefine_line|#define FASTCALL(x)&t;x __attribute__((regparm(3)))
-macro_line|#else
-DECL|macro|FASTCALL
-mdefine_line|#define FASTCALL(x)&t;x
-macro_line|#endif
 r_struct
 id|completion
 suffix:semicolon

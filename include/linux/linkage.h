@@ -70,5 +70,18 @@ mdefine_line|#define ALIGN_STR __ALIGN_STR
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(name) &bslash;&n;  .globl SYMBOL_NAME(name); &bslash;&n;  ALIGN; &bslash;&n;  SYMBOL_NAME_LABEL(name)
 macro_line|#endif
+DECL|macro|NORET_TYPE
+macro_line|# define NORET_TYPE    /**/
+DECL|macro|ATTRIB_NORET
+macro_line|# define ATTRIB_NORET  __attribute__((noreturn))
+DECL|macro|NORET_AND
+macro_line|# define NORET_AND     noreturn,
+macro_line|#ifdef __i386__
+DECL|macro|FASTCALL
+mdefine_line|#define FASTCALL(x)&t;x __attribute__((regparm(3)))
+macro_line|#else
+DECL|macro|FASTCALL
+mdefine_line|#define FASTCALL(x)&t;x
+macro_line|#endif
 macro_line|#endif
 eof

@@ -547,9 +547,9 @@ id|blk_max_pfn
 suffix:semicolon
 multiline_comment|/*&n; * standard bounce addresses:&n; *&n; * BLK_BOUNCE_HIGH&t;: bounce all highmem pages&n; * BLK_BOUNCE_ANY&t;: don&squot;t bounce anything&n; * BLK_BOUNCE_ISA&t;: bounce pages above ISA DMA boundary&n; */
 DECL|macro|BLK_BOUNCE_HIGH
-mdefine_line|#define BLK_BOUNCE_HIGH&t;&t;((blk_max_low_pfn + 1) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_HIGH&t;&t;(blk_max_low_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ANY
-mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((blk_max_pfn + 1) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_ANY&t;&t;(blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
 r_extern

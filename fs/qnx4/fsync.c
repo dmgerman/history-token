@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * The functions for qnx4 fs file synchronization.&n; */
 macro_line|#ifdef CONFIG_QNX4FS_RW

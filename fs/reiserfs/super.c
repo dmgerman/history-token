@@ -3046,10 +3046,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|s-&gt;s_blocksize
-op_assign
-id|size
-suffix:semicolon
 id|s-&gt;u.reiserfs_sb.s_mount_state
 op_assign
 id|SB_REISERFS_STATE

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -121,9 +122,10 @@ macro_line|#endif
 )brace
 macro_line|#endif /* CONFIG_SGI_IP27 */
 multiline_comment|/* The &squot;big kernel lock&squot; */
-DECL|variable|kernel_flag
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

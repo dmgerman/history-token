@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -17,9 +18,10 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * This was written with the BRCM12500 MP SOC in mind, but tries to&n; * be generic.  It&squot;s modelled on the mips64 smp.c code, which is&n; * derived from Sparc, I&squot;m guessing, which is derived from...&n; * &n; * It&squot;s probably horribly designed for very large ccNUMA systems&n; * as it doesn&squot;t take any node clustering into account.  &n;*/
 multiline_comment|/* Ze Big Kernel Lock! */
-DECL|variable|kernel_flag
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(__i386__)
 macro_line|# include &lt;asm/system.h&gt;
-macro_line|# include &lt;asm/segment.h&gt;
 macro_line|#endif
 macro_line|#if defined(__sparc__)
 macro_line|# include &lt;linux/init.h&gt;

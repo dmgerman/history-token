@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/ftape.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,16)
 macro_line|#include &lt;linux/init.h&gt;

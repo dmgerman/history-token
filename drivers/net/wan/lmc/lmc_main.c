@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20155
 macro_line|#include &lt;linux/bios32.h&gt;

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;capiutil.h&quot;
 id|MODULE_DESCRIPTION

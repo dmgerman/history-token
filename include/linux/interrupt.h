@@ -3,11 +3,13 @@ macro_line|#ifndef _LINUX_INTERRUPT_H
 DECL|macro|_LINUX_INTERRUPT_H
 mdefine_line|#define _LINUX_INTERRUPT_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|struct|irqaction
 r_struct

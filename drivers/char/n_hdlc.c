@@ -32,7 +32,6 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#ifdef CONFIG_KERNELD
 macro_line|#include &lt;linux/kerneld.h&gt;
 macro_line|#endif
-macro_line|#include &lt;asm/segment.h&gt;
 DECL|macro|GET_USER
 mdefine_line|#define GET_USER(error,value,addr) error = get_user(value,addr)
 DECL|macro|COPY_FROM_USER

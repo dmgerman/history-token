@@ -9,7 +9,6 @@ mdefine_line|#define QLA1280_VERSION      &quot; 3.00-Beta&quot;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

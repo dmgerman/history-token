@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 DECL|function|qnx4_readdir
 r_static
 r_int

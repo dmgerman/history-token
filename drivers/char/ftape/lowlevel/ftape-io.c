@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (C) 1993-1996 Bas Laarhoven,&n; *      
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;

@@ -4387,6 +4387,7 @@ comma
 id|name
 suffix:colon
 l_string|&quot;idescsi&quot;
+comma
 id|detect
 suffix:colon
 id|idescsi_detect

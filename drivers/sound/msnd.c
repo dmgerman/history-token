@@ -15,7 +15,6 @@ macro_line|#ifdef LINUX20
 macro_line|#  include &lt;linux/major.h&gt;
 macro_line|#  include &lt;linux/fs.h&gt;
 macro_line|#  include &lt;linux/sound.h&gt;
-macro_line|#  include &lt;asm/segment.h&gt;
 macro_line|#  include &quot;sound_config.h&quot;
 macro_line|#else
 macro_line|#  include &lt;linux/init.h&gt;

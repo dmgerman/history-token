@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline mem*, str* functions */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __initfunc et al. */
-macro_line|#include &lt;asm/segment.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* copy_to_user */
 macro_line|#include &lt;asm/io.h&gt;

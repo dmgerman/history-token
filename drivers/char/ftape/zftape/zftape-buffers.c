@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (C) 1995-1997 Claus-Justus Heine.&n;&n;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,0)
 macro_line|#include &lt;linux/vmalloc.h&gt;

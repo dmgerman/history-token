@@ -2344,6 +2344,10 @@ op_amp
 id|lo-&gt;lo_lock
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_NOIO
+suffix:semicolon
 multiline_comment|/*&n;&t; * up sem, we are running&n;&t; */
 id|up
 c_func
@@ -2558,6 +2562,23 @@ id|lo_device
 op_assign
 id|inode-&gt;i_rdev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lo_device
+op_eq
+id|dev
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if

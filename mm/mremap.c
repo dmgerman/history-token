@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;linux/mm/remap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; */
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;

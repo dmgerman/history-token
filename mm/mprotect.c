@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;linux/mm/mprotect.c&n; *&n; *  (C) Copyright 1994 Linus Torvalds&n; */
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;

@@ -18,7 +18,6 @@ mdefine_line|#define PROC_STATS_FORMAT &quot;%30s: %12lu&bslash;n&quot;
 macro_line|#else
 DECL|macro|PROC_STATS_FORMAT
 mdefine_line|#define PROC_STATS_FORMAT &quot;%30s: %12u&bslash;n&quot;
-macro_line|#include &lt;asm/segment.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#endif
 multiline_comment|/****** Defines and Macros **************************************************/
 DECL|macro|PROC_BUFSZ

@@ -1,7 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    Aironet driver for 4500 and 4800 series cards&n;&n;    This code is released under both the GPL version 2 and BSD licenses.&n;    Either license may be used.  The respective licenses are found at&n;    the end of this file.&n;&n;    This code was developed by Benjamin Reed &lt;breed@users.sourceforge.net&gt;&n;    including portions of which come from the Aironet PC4500&n;    Developer&squot;s Reference Manual and used with permission.  Copyright&n;    (C) 1999 Benjamin Reed.  All Rights Reserved.  Permission to use&n;    code in the Developer&squot;s manual was granted for this driver by&n;    Aironet.  Major code contributions were received from Javier Achirica&n;    and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;.  Code was also integrated from&n;    the Cisco Aironet driver for Linux.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

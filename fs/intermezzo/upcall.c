@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * Mostly platform independent upcall operations to Venus:&n; *  -- upcalls&n; *  -- upcall routines&n; *&n; * Linux 2.0 version&n; * Copyright (C) 1996 Peter J. Braam &lt;braam@cs.cmu.edu&gt;,&n; * Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;&n; *&n; * Redone for Linux 2.1&n; * Copyright (C) 1997 Carnegie Mellon University&n; *&n; * Carnegie Mellon University encourages users of this code to contribute&n; * improvements to the Coda project. Contact Peter Braam &lt;coda@cs.cmu.edu&gt;.&n; *&n; * Much cleaned up for InterMezzo&n; * Copyright (C) 1998 Peter J. Braam &lt;braam@cs.cmu.edu&gt;,&n; * Copyright (C) 1999 Carnegie Mellon University&n; *&n; */
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -16,7 +15,6 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;

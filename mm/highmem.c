@@ -84,10 +84,11 @@ r_int
 r_int
 id|last_pkmap_nr
 suffix:semicolon
-DECL|variable|kmap_lock
+DECL|variable|__cacheline_aligned_in_smp
 r_static
 id|spinlock_t
 id|kmap_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

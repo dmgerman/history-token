@@ -15,7 +15,6 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * hippi_net_init()&n; *&n; * Do nothing, this is just to pursuade the stupid linker to behave.&n; */
 DECL|function|hippi_net_init

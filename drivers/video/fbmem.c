@@ -2867,6 +2867,11 @@ id|off
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+multiline_comment|/* This is an IO map - tell maydump to skip this VMA */
+id|vma-&gt;vm_flags
+op_or_assign
+id|VM_IO
+suffix:semicolon
 macro_line|#if defined(__sparc_v9__)
 id|vma-&gt;vm_flags
 op_or_assign
@@ -2898,10 +2903,6 @@ l_int|0
 r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 macro_line|#else
 macro_line|#if defined(__mc68000__)
@@ -3008,11 +3009,6 @@ c_func
 (paren
 id|vma-&gt;vm_page_prot
 )paren
-suffix:semicolon
-multiline_comment|/* This is an IO map - tell maydump to skip this VMA */
-id|vma-&gt;vm_flags
-op_or_assign
-id|VM_IO
 suffix:semicolon
 macro_line|#elif defined(__sh__)
 id|pgprot_val
@@ -4370,4 +4366,10 @@ id|GET_FB_IDX
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA   /* Because we have our own definition */
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;sys.h&quot;
 macro_line|#include &quot;idi.h&quot;

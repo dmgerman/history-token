@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/fs/ncpfs/symlink.c&n; *&n; *  Code for allowing
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_NCPFS_EXTRAS
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;

@@ -5451,13 +5451,10 @@ id|inode
 )paren
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
-id|event
+op_increment
 suffix:semicolon
 id|dentry-&gt;d_time
 op_assign
@@ -5527,9 +5524,7 @@ op_assign
 id|CURRENT_TIME
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -6001,13 +5996,10 @@ id|inode
 )paren
 suffix:semicolon
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
-id|event
+op_increment
 suffix:semicolon
 id|dir-&gt;i_nlink
 op_increment
@@ -6409,9 +6401,7 @@ id|rename_done
 suffix:semicolon
 )brace
 id|new_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 multiline_comment|/* releases old_bh */
 id|vfat_remove_entry
@@ -6452,9 +6442,7 @@ id|old_inode
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign

@@ -1053,9 +1053,13 @@ id|jiffies
 op_plus
 id|AFTER_RESET_DELAY
 suffix:semicolon
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|end
+)paren
 suffix:semicolon
 )paren
 (brace

@@ -296,11 +296,6 @@ op_amp
 id|cpqfcHBAdata-&gt;fcChip
 suffix:semicolon
 macro_line|#endif
-r_struct
-id|fs_struct
-op_star
-id|fs
-suffix:semicolon
 id|DECLARE_MUTEX_LOCKED
 c_func
 (paren
@@ -336,63 +331,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we were started as result of loading a module, close all of the&n;&t; * user space pages.  We don&squot;t need them, and if we didn&squot;t close them&n;&t; * they would be locked into memory.&n;&t; */
-id|exit_mm
+id|daemonize
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
-id|current-&gt;session
-op_assign
-l_int|1
-suffix:semicolon
-id|current-&gt;pgrp
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Become as one with the init task */
-id|exit_fs
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-multiline_comment|/* current-&gt;fs-&gt;count--; */
-id|fs
-op_assign
-id|init_task.fs
-suffix:semicolon
-singleline_comment|// Some kernels compiled for SMP, while actually running
-singleline_comment|// on a uniproc machine, will return NULL for this call
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fs
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; cpqfcTS FATAL: fs is NULL! Is this an SMP kernel on uniproc machine?&bslash;n &quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|current-&gt;fs
-op_assign
-id|fs
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|fs-&gt;count
-)paren
-suffix:semicolon
-)brace
 id|siginitsetinv
 c_func
 (paren

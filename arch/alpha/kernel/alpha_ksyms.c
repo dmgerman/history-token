@@ -1276,4 +1276,20 @@ c_func
 id|get_wchan
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALPHA_IRONGATE
+DECL|variable|irongate_ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irongate_ioremap
+)paren
+suffix:semicolon
+DECL|variable|irongate_iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irongate_iounmap
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

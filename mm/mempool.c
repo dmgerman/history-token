@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/mm/mempool.c&n; *&n; *  memory buffer pool support. Such pools are mostly used&n; *  for guaranteed, deadlock-free memory allocations during&n; *  extreme VM load.&n; *&n; *  started by Ingo Molnar, Copyright (C) 2001&n; */
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;

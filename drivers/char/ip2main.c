@@ -121,7 +121,6 @@ singleline_comment|// the 2.1.XX stuff then it would be trivial for you to fix.
 singleline_comment|// Most of these macros were stolen from some other drivers
 singleline_comment|// so blame them.
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,4)
-macro_line|#&t;include &lt;asm/segment.h&gt;
 DECL|macro|GET_USER
 macro_line|#&t;define GET_USER(error,value,addr) error = get_user(value,addr)
 DECL|macro|COPY_FROM_USER

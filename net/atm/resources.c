@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/kernel.h&gt; /* for barrier */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t; /* for struct sock */
-macro_line|#include &lt;asm/segment.h&gt; /* for get_fs_long and put_fs_long */
 macro_line|#include &quot;common.h&quot;
 macro_line|#include &quot;resources.h&quot;
 macro_line|#ifndef NULL

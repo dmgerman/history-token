@@ -825,11 +825,6 @@ id|inode
 r_goto
 id|out
 suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-op_increment
-id|event
-suffix:semicolon
 id|inode-&gt;i_uid
 op_assign
 id|sb-&gt;u.adfs_sb.s_uid

@@ -222,4 +222,10 @@ c_func
 (paren
 id|exit_nls_utf8
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 eof

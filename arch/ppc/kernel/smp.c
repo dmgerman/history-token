@@ -13,6 +13,7 @@ mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -72,10 +73,10 @@ DECL|variable|ipi_sent
 id|atomic_t
 id|ipi_sent
 suffix:semicolon
-DECL|variable|__cacheline_aligned
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
-id|__cacheline_aligned
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

@@ -241,6 +241,14 @@ r_int
 r_int
 id|sony_cd_fifost_reg
 suffix:semicolon
+DECL|variable|cdu31a_lock
+r_static
+id|spinlock_t
+id|cdu31a_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* queue lock */
 DECL|variable|sony_spun_up
 r_static
 r_int
@@ -5148,53 +5156,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* I don&squot;t use INIT_REQUEST because it calls return, which would&n;&t;&t;   return without unlocking the device.  It shouldn&squot;t matter,&n;&t;&t;   but just to be safe... */
-r_if
-c_cond
-(paren
-id|MAJOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-(brace
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
+id|INIT_REQUEST
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-(brace
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
 id|block
 op_assign
 id|CURRENT-&gt;sector
@@ -5226,45 +5189,28 @@ r_goto
 id|cdu31a_request_startover
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|CURRENT-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
+(brace
 r_switch
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 (brace
 r_case
 id|READ
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t; * the media, return an error.&n;&t;&t;&t; */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-(paren
-id|block
-op_div
-l_int|4
-)paren
-OL
-id|sony_toc.start_track_lba
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;CDU31A: Request before beginning of media&bslash;n&quot;
-)paren
-suffix:semicolon
-id|end_request
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-r_goto
-id|cdu31a_request_startover
-suffix:semicolon
-)brace
-macro_line|#endif
+multiline_comment|/*&n;&t;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t;&t; * the media, return an error.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5361,7 +5307,7 @@ r_goto
 id|cdu31a_request_startover
 suffix:semicolon
 )brace
-multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;&t;&t;   next request. */
+multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;&t;&t;&t;   next request. */
 r_if
 c_cond
 (paren
@@ -5398,7 +5344,7 @@ id|cdu31a_request_startover
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If the requested block is not the next one waiting in&n;&t;&t;&t;   the driver, abort the current operation and start a&n;&t;&t;&t;   new one. */
+multiline_comment|/* If the requested block is not the next one waiting in&n;&t;&t;&t;&t;   the driver, abort the current operation and start a&n;&t;&t;&t;&t;   new one. */
 r_else
 r_if
 c_cond
@@ -5609,6 +5555,7 @@ c_func
 l_string|&quot;CDU31A: Unknown cmd&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|end_do_cdu31a_request
@@ -13004,6 +12951,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|cdu31a_lock
 )paren
 suffix:semicolon
 id|read_ahead

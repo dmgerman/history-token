@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for verify_area */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* for -EBUSY */
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* for check_region, request_region */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for loops_per_jiffy */
-macro_line|#include &lt;asm/segment.h&gt;&t;/* for put_user_byte */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for inb_p, outb_p, inb, outb, etc. */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* for get_user, etc. */
 macro_line|#include &lt;linux/wait.h&gt;&t;&t;/* for wait_queue */

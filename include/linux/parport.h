@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Any part of this program may be used in documents lice
 macro_line|#ifndef _PARPORT_H_
 DECL|macro|_PARPORT_H_
 mdefine_line|#define _PARPORT_H_
+macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* Start off with user-visible constants */
 multiline_comment|/* Maximum of 16 ports per machine */
 DECL|macro|PARPORT_MAX

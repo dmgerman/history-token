@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (c) 1995-1997 Claus-Justus Heine &n;&n;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;

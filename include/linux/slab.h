@@ -9,8 +9,8 @@ r_struct
 id|kmem_cache_s
 id|kmem_cache_t
 suffix:semicolon
-macro_line|#include&t;&lt;linux/mm.h&gt;
-macro_line|#include&t;&lt;linux/cache.h&gt;
+macro_line|#include&t;&lt;linux/gfp.h&gt;
+macro_line|#include&t;&lt;linux/types.h&gt;
 multiline_comment|/* flags for kmem_cache_alloc() */
 DECL|macro|SLAB_NOFS
 mdefine_line|#define&t;SLAB_NOFS&t;&t;GFP_NOFS
@@ -236,6 +236,9 @@ r_void
 op_star
 id|data
 )paren
+suffix:semicolon
+r_struct
+id|file
 suffix:semicolon
 r_extern
 r_int

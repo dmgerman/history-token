@@ -420,17 +420,6 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * simply &quot;aging&quot; of requests in queue&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|__rq-&gt;elevator_sequence
-op_decrement
-op_le
-l_int|0
-)paren
-r_break
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -441,6 +430,17 @@ id|REQ_BARRIER
 op_or
 id|REQ_STARTED
 )paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * simply &quot;aging&quot; of requests in queue&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|__rq-&gt;elevator_sequence
+op_decrement
+op_le
+l_int|0
 )paren
 r_break
 suffix:semicolon

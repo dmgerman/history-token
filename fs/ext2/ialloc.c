@@ -1563,7 +1563,7 @@ id|inode
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
-id|event
+id|sb-&gt;u.ext2_sb.s_next_generation
 op_increment
 suffix:semicolon
 id|mark_inode_dirty

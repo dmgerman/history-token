@@ -2603,9 +2603,7 @@ id|out
 suffix:semicolon
 )brace
 id|new_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 multiline_comment|/* There we go */
 r_if
@@ -2682,9 +2680,7 @@ id|old_inode
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign
@@ -2878,9 +2874,7 @@ id|old_inode
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign

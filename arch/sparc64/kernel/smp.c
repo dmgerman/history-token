@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -47,21 +48,11 @@ id|prom_cpu_nodes
 )braket
 suffix:semicolon
 DECL|variable|cpu_data
-r_struct
 id|cpuinfo_sparc
 id|cpu_data
 (braket
 id|NR_CPUS
 )braket
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-l_int|64
-)paren
-)paren
-)paren
 suffix:semicolon
 DECL|variable|__cpu_number_map
 r_volatile
@@ -75,7 +66,7 @@ id|__attribute__
 (paren
 id|aligned
 (paren
-l_int|64
+id|SMP_CACHE_BYTES
 )paren
 )paren
 )paren
@@ -92,7 +83,7 @@ id|__attribute__
 (paren
 id|aligned
 (paren
-l_int|64
+id|SMP_CACHE_BYTES
 )paren
 )paren
 )paren
@@ -114,9 +105,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Kernel spinlock */
-DECL|variable|kernel_flag
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

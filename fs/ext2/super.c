@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|error_buf
 r_static
@@ -3181,6 +3182,18 @@ suffix:semicolon
 id|sb-&gt;u.ext2_sb.s_gdb_count
 op_assign
 id|db_count
+suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|sb-&gt;u.ext2_sb.s_next_generation
+comma
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; */
 id|sb-&gt;s_op

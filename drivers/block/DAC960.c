@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;DAC960.h&quot;
 multiline_comment|/*&n;  DAC960_ControllerCount is the number of DAC960 Controllers detected.&n;*/

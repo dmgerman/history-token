@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/namespace.c&n; *&n; * (C) Copyright Al Viro 2000, 2001&n; *&t;Released under GPL v2.&n; *&n; * Based on code from fs/super.c, copyright Linus Torvalds and others.&n; * Heavily rewritten.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * i8k.h -- Linux driver for accessing the SMM BIOS on Dell I8000 laptops&n; *&n; * Copyright (C) 2001  Massimo Dal Zotto &lt;dz@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
+multiline_comment|/*&n; * i8k.h -- Linux driver for accessing the SMM BIOS on Dell laptops&n; *&n; * Copyright (C) 2001  Massimo Dal Zotto &lt;dz@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
 macro_line|#ifndef _LINUX_I8K_H
 DECL|macro|_LINUX_I8K_H
 mdefine_line|#define _LINUX_I8K_H
@@ -35,11 +35,11 @@ mdefine_line|#define I8K_FAN_HIGH&t;&t;2
 DECL|macro|I8K_FAN_MAX
 mdefine_line|#define I8K_FAN_MAX&t;&t;I8K_FAN_HIGH
 DECL|macro|I8K_VOL_UP
-mdefine_line|#define I8K_VOL_UP&t;&t;0x01
+mdefine_line|#define I8K_VOL_UP&t;&t;1
 DECL|macro|I8K_VOL_DOWN
-mdefine_line|#define I8K_VOL_DOWN&t;&t;0x02
+mdefine_line|#define I8K_VOL_DOWN&t;&t;2
 DECL|macro|I8K_VOL_MUTE
-mdefine_line|#define I8K_VOL_MUTE&t;&t;0x03
+mdefine_line|#define I8K_VOL_MUTE&t;&t;4
 DECL|macro|I8K_AC
 mdefine_line|#define I8K_AC&t;&t;&t;1
 DECL|macro|I8K_BATTERY

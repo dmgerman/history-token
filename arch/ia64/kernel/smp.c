@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
@@ -28,9 +29,10 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 multiline_comment|/* The &squot;big kernel lock&squot; */
-DECL|variable|kernel_flag
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|kernel_flag
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
