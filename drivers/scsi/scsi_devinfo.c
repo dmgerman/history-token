@@ -862,6 +862,16 @@ id|BLIST_LARGELUN
 )brace
 comma
 (brace
+l_string|&quot;Generic&quot;
+comma
+l_string|&quot;USB Storage-SMC&quot;
+comma
+l_string|&quot;0207&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
 l_string|&quot;HITACHI&quot;
 comma
 l_string|&quot;DF400&quot;
