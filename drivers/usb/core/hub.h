@@ -436,11 +436,6 @@ op_star
 id|descriptor
 suffix:semicolon
 multiline_comment|/* class descriptor */
-DECL|member|khubd_sem
-r_struct
-id|semaphore
-id|khubd_sem
-suffix:semicolon
 DECL|member|tt
 r_struct
 id|usb_tt
