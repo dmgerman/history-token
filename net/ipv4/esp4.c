@@ -616,10 +616,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|alen
-op_add_assign
-l_int|2
-suffix:semicolon
 id|top_iph-&gt;protocol
 op_assign
 id|IPPROTO_UDP
@@ -916,10 +912,6 @@ id|udpdata32
 op_plus
 l_int|2
 )paren
-suffix:semicolon
-id|alen
-op_add_assign
-l_int|2
 suffix:semicolon
 id|top_iph-&gt;protocol
 op_assign
