@@ -88,6 +88,10 @@ comma
 id|direction
 )paren
 suffix:semicolon
+id|s-&gt;dma_length
+op_assign
+id|s-&gt;length
+suffix:semicolon
 )brace
 r_return
 id|nents
@@ -175,7 +179,7 @@ id|dev
 comma
 id|s-&gt;dma_address
 comma
-id|s-&gt;length
+id|s-&gt;dma_length
 comma
 id|dir
 )paren

@@ -1260,13 +1260,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
 id|ubleft
-op_div
+op_ge
 id|statstruct_size
-)paren
-OG
-l_int|0
 op_logical_and
 id|agno
 OL
@@ -1627,11 +1623,7 @@ id|irbufend
 op_logical_and
 id|icount
 OL
-(paren
-id|ubleft
-op_div
-id|statstruct_size
-)paren
+id|ubcount
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Loop as long as we&squot;re unable to read the&n;&t;&t;&t; * inode btree.&n;&t;&t;&t; */
@@ -1826,8 +1818,12 @@ op_assign
 id|irbuf
 suffix:semicolon
 id|irbp
-template_param
-l_int|0
+OL
+id|irbufend
+op_logical_and
+id|ubleft
+op_ge
+id|statstruct_size
 suffix:semicolon
 id|irbp
 op_increment

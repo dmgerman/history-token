@@ -11,6 +11,6 @@ mdefine_line|#define VSYSCALL32_VSYSCALL ((void *)VSYSCALL32_BASE + 0x400)
 DECL|macro|VSYSCALL32_SIGRETURN
 mdefine_line|#define VSYSCALL32_SIGRETURN ((void *)VSYSCALL32_BASE + 0x500) 
 DECL|macro|VSYSCALL32_RTSIGRETURN
-mdefine_line|#define VSYSCALL32_RTSIGRETURN ((void *)VSYSCALL32_BASE + 0x500) 
+mdefine_line|#define VSYSCALL32_RTSIGRETURN ((void *)VSYSCALL32_BASE + 0x600) 
 macro_line|#endif
 eof

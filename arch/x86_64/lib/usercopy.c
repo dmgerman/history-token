@@ -171,7 +171,7 @@ op_div
 l_int|8
 )paren
 comma
-l_string|&quot;[dst] &quot;
+l_string|&quot;[dst]&quot;
 (paren
 id|addr
 )paren

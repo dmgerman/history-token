@@ -25,6 +25,8 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/user32.h&gt;
 DECL|macro|WARN_OLD
 macro_line|#undef WARN_OLD
+DECL|macro|CORE_DUMP
+macro_line|#undef CORE_DUMP /* probably broken */
 r_extern
 r_int
 id|ia32_setup_arg_pages
@@ -61,6 +63,7 @@ id|file
 op_star
 )paren
 suffix:semicolon
+macro_line|#if CORE_DUMP
 r_static
 r_int
 id|aout_core_dump
@@ -350,6 +353,7 @@ id|dump-&gt;i387
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#endif
 DECL|variable|aout_format
 r_static
 r_struct
@@ -372,11 +376,13 @@ id|load_shlib
 op_assign
 id|load_aout_library
 comma
+macro_line|#if CORE_DUMP
 dot
 id|core_dump
 op_assign
 id|aout_core_dump
 comma
+macro_line|#endif
 dot
 id|min_coredump
 op_assign
@@ -434,6 +440,7 @@ id|start
 )paren
 suffix:semicolon
 )brace
+macro_line|#if CORE_DUMP
 multiline_comment|/*&n; * These are the only things you should do on a core-file: use only these&n; * macros to write out all the necessary info.&n; */
 DECL|function|dump_write
 r_static
@@ -842,6 +849,7 @@ r_return
 id|has_dumped
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * create_aout_tables() parses the env- and arg-strings in new user&n; * memory and creates the pointer tables from them, and puts their&n; * addresses on the &quot;stack&quot;, returning the new stack pointer value.&n; */
 DECL|function|create_aout_tables
 r_static
@@ -1319,17 +1327,23 @@ id|regs-&gt;r15
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* OK, This is the point of no return */
+id|set_personality
+c_func
+(paren
+id|PER_LINUX
+)paren
+suffix:semicolon
 id|set_thread_flag
 c_func
 (paren
 id|TIF_IA32
 )paren
 suffix:semicolon
-multiline_comment|/* OK, This is the point of no return */
-id|set_personality
+id|clear_thread_flag
 c_func
 (paren
-id|PER_LINUX
+id|TIF_ABI_PENDING
 )paren
 suffix:semicolon
 id|current-&gt;mm-&gt;end_code

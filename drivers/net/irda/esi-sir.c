@@ -147,6 +147,17 @@ op_assign
 op_amp
 id|dev-&gt;qos
 suffix:semicolon
+multiline_comment|/* Power up and set dongle to 9600 baud */
+id|sirdev_set_dtr_rts
+c_func
+(paren
+id|dev
+comma
+id|FALSE
+comma
+id|TRUE
+)paren
+suffix:semicolon
 id|qos-&gt;baud_rate.bits
 op_and_assign
 id|IR_9600
@@ -166,7 +177,7 @@ c_func
 id|qos
 )paren
 suffix:semicolon
-multiline_comment|/* shouldn&squot;t we do set_dtr_rts(FALSE, TRUE) here (power up at 9600)? */
+multiline_comment|/* irda thread waits 50 msec for power settling */
 r_return
 l_int|0
 suffix:semicolon
@@ -184,9 +195,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Power off dongle */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -200,7 +209,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function esi_change_speed (task)&n; *&n; *    Set the speed for the Extended Systems JetEye PC ESI-9680 type dongle&n; *&n; */
+multiline_comment|/*&n; * Function esi_change_speed (task)&n; *&n; * Set the speed for the Extended Systems JetEye PC ESI-9680 type dongle&n; * Apparently (see old esi-driver) no delays are needed here...&n; *&n; */
 DECL|function|esi_change_speed
 r_static
 r_int
@@ -216,6 +225,11 @@ r_int
 id|speed
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 id|dtr
 comma
@@ -253,6 +267,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|speed
 op_assign
 l_int|9600
@@ -273,9 +292,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Change speed of dongle */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -289,9 +306,8 @@ id|dev-&gt;speed
 op_assign
 id|speed
 suffix:semicolon
-multiline_comment|/* do we need some delay for power stabilization? */
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function esi_reset (task)&n; *&n; *    Reset dongle;&n; *&n; */
@@ -307,9 +323,7 @@ op_star
 id|dev
 )paren
 (brace
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -319,7 +333,21 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* Hm, probably repower to 9600 and some delays? */
+multiline_comment|/* Hm, the old esi-driver left the dongle unpowered relying on&n;&t; * the following speed change to repower. This might work for&n;&t; * the esi because we only need the modem lines. However, now the&n;&t; * general rule is reset must bring the dongle to some working&n;&t; * well-known state because speed change might write to registers.&n;&t; * The old esi-driver didn&squot;t any delay here - let&squot;s hope it&squot; fine.&n;&t; */
+id|sirdev_set_dtr_rts
+c_func
+(paren
+id|dev
+comma
+id|FALSE
+comma
+id|TRUE
+)paren
+suffix:semicolon
+id|dev-&gt;speed
+op_assign
+l_int|9600
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
