@@ -82,7 +82,6 @@ macro_line|#ifndef PCI_DEVICE_ID_SGI_ACENIC
 DECL|macro|PCI_DEVICE_ID_SGI_ACENIC
 mdefine_line|#define PCI_DEVICE_ID_SGI_ACENIC&t;0x0009
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20400
 DECL|variable|acenic_pci_tbl
 r_static
 r_struct
@@ -241,40 +240,6 @@ comma
 id|acenic_pci_tbl
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(a)
-macro_line|#endif
-macro_line|#ifndef wmb
-DECL|macro|wmb
-mdefine_line|#define wmb()&t;mb()
-macro_line|#endif
-macro_line|#ifndef __exit
-DECL|macro|__exit
-mdefine_line|#define __exit
-macro_line|#endif
-macro_line|#ifndef __devinit
-DECL|macro|__devinit
-mdefine_line|#define __devinit&t;__init
-macro_line|#endif
-macro_line|#ifndef SMP_CACHE_BYTES
-DECL|macro|SMP_CACHE_BYTES
-mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
-macro_line|#endif
-macro_line|#ifndef SET_MODULE_OWNER
-DECL|macro|SET_MODULE_OWNER
-mdefine_line|#define SET_MODULE_OWNER(dev)&t;&t;do{} while(0)
-DECL|macro|ACE_MOD_INC_USE_COUNT
-mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;MOD_INC_USE_COUNT
-DECL|macro|ACE_MOD_DEC_USE_COUNT
-mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;MOD_DEC_USE_COUNT
-macro_line|#else
-DECL|macro|ACE_MOD_INC_USE_COUNT
-mdefine_line|#define ACE_MOD_INC_USE_COUNT&t;&t;do{} while(0)
-DECL|macro|ACE_MOD_DEC_USE_COUNT
-mdefine_line|#define ACE_MOD_DEC_USE_COUNT&t;&t;do{} while(0)
-macro_line|#endif
 macro_line|#ifndef SET_NETDEV_DEV
 DECL|macro|SET_NETDEV_DEV
 mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;do{} while(0)
@@ -286,353 +251,9 @@ macro_line|#else
 DECL|macro|ace_sync_irq
 mdefine_line|#define ace_sync_irq(irq)&t;synchronize_irq()
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x2051e
-DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;do{__save_flags(flags) ; &bslash;&n;&t;&t;&t;&t;&t;   __cli();} while(0)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02030d)
-DECL|macro|pci_resource_start
-mdefine_line|#define pci_resource_start(dev, bar)&t;dev-&gt;base_address[bar]
-macro_line|#elif (LINUX_VERSION_CODE &lt; 0x02032c)
-DECL|macro|pci_resource_start
-mdefine_line|#define pci_resource_start(dev, bar)&t;dev-&gt;resource[bar].start
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02030e)
-DECL|macro|net_device
-mdefine_line|#define net_device device
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032a)
-DECL|typedef|dma_addr_t
-r_typedef
-id|u32
-id|dma_addr_t
-suffix:semicolon
-DECL|function|pci_alloc_consistent
-r_static
-r_inline
-r_void
-op_star
-id|pci_alloc_consistent
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-(brace
-r_void
-op_star
-id|virt_ptr
-suffix:semicolon
-id|virt_ptr
-op_assign
-id|kmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|virt_ptr
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-op_star
-id|dma_handle
-op_assign
-id|virt_to_bus
-c_func
-(paren
-id|virt_ptr
-)paren
-suffix:semicolon
-r_return
-id|virt_ptr
-suffix:semicolon
-)brace
-DECL|macro|pci_free_consistent
-mdefine_line|#define pci_free_consistent(cookie, size, ptr, dma_ptr)&t;kfree(ptr)
-DECL|macro|pci_map_page
-mdefine_line|#define pci_map_page(cookie, page, off, size, dir)&t;&bslash;&n;&t;virt_to_bus(page_address(page)+(off))
-DECL|macro|pci_unmap_page
-mdefine_line|#define pci_unmap_page(cookie, address, size, dir)
-DECL|macro|pci_set_dma_mask
-mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 0 : -EIO)
-DECL|macro|pci_dma_supported
-mdefine_line|#define pci_dma_supported(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 1 : 0)
-macro_line|#elif (LINUX_VERSION_CODE &lt; 0x02040d)
-multiline_comment|/*&n; * 2.4.13 introduced pci_map_page()/pci_unmap_page() - for 2.4.12 and prior,&n; * fall back on pci_map_single()/pci_unnmap_single().&n; *&n; * We are guaranteed that the page is mapped at this point since&n; * pci_map_page() is only used upon valid struct skb&squot;s.&n; */
-r_static
-r_inline
-id|dma_addr_t
-DECL|function|pci_map_page
-id|pci_map_page
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|cookie
-comma
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|off
-comma
-r_int
-id|size
-comma
-r_int
-id|dir
-)paren
-(brace
-r_void
-op_star
-id|page_virt
-suffix:semicolon
-id|page_virt
-op_assign
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page_virt
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|pci_map_single
-c_func
-(paren
-id|cookie
-comma
-(paren
-id|page_virt
-op_plus
-id|off
-)paren
-comma
-id|size
-comma
-id|dir
-)paren
-suffix:semicolon
-)brace
-DECL|macro|pci_unmap_page
-mdefine_line|#define pci_unmap_page(cookie, dma_addr, size, dir)&t;&bslash;&n;&t;pci_unmap_single(cookie, dma_addr, size, dir)
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x020412)
-DECL|macro|DECLARE_PCI_UNMAP_ADDR
-mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
-DECL|macro|DECLARE_PCI_UNMAP_LEN
-mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
-DECL|macro|pci_unmap_addr
-mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;0
-DECL|macro|pci_unmap_addr_set
-mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do{} while(0)
-DECL|macro|pci_unmap_len
-mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;0
-DECL|macro|pci_unmap_len_set
-mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do{} while(0)
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032b)
-multiline_comment|/*&n; * SoftNet&n; *&n; * For pre-softnet kernels we need to tell the upper layer not to&n; * re-enter start_xmit() while we are in there. However softnet&n; * guarantees not to enter while we are in there so there is no need&n; * to do the netif_stop_queue() dance unless the transmit queue really&n; * gets stuck. This should also improve performance according to tests&n; * done by Aman Singla.&n; */
-DECL|macro|dev_kfree_skb_irq
-mdefine_line|#define dev_kfree_skb_irq(a)&t;&t;&t;dev_kfree_skb(a)
-DECL|macro|netif_wake_queue
-mdefine_line|#define netif_wake_queue(dev)&t;&t;&t;clear_bit(0, &amp;dev-&gt;tbusy)
-DECL|macro|netif_stop_queue
-mdefine_line|#define netif_stop_queue(dev)&t;&t;&t;set_bit(0, &amp;dev-&gt;tbusy)
-DECL|macro|late_stop_netif_stop_queue
-mdefine_line|#define late_stop_netif_stop_queue(dev)&t;&t;do{} while(0)
-DECL|macro|early_stop_netif_stop_queue
-mdefine_line|#define early_stop_netif_stop_queue(dev)&t;test_and_set_bit(0,&amp;dev-&gt;tbusy)
-DECL|macro|early_stop_netif_wake_queue
-mdefine_line|#define early_stop_netif_wake_queue(dev)&t;netif_wake_queue(dev)
-DECL|function|netif_start_queue
-r_static
-r_inline
-r_void
-id|netif_start_queue
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-DECL|macro|ace_mark_net_bh
-mdefine_line|#define ace_mark_net_bh()&t;&t;&t;mark_bh(NET_BH)
-DECL|macro|netif_queue_stopped
-mdefine_line|#define netif_queue_stopped(dev)&t;&t;dev-&gt;tbusy
-DECL|macro|netif_running
-mdefine_line|#define netif_running(dev)&t;&t;&t;dev-&gt;start
-DECL|macro|ace_if_down
-mdefine_line|#define ace_if_down(dev)&t;&t;&t;do{dev-&gt;start = 0;} while(0)
-DECL|macro|tasklet_struct
-mdefine_line|#define tasklet_struct&t;&t;&t;&t;tq_struct
-DECL|function|tasklet_schedule
-r_static
-r_inline
-r_void
-id|tasklet_schedule
-c_func
-(paren
-r_struct
-id|tasklet_struct
-op_star
-id|tasklet
-)paren
-(brace
-id|queue_task
-c_func
-(paren
-id|tasklet
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-)brace
-DECL|function|tasklet_init
-r_static
-r_inline
-r_void
-id|tasklet_init
-c_func
-(paren
-r_struct
-id|tasklet_struct
-op_star
-id|tasklet
-comma
-r_void
-(paren
-op_star
-id|func
-)paren
-(paren
-r_int
-r_int
-)paren
-comma
-r_int
-r_int
-id|data
-)paren
-(brace
-id|tasklet-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-id|tasklet-&gt;sync
-op_assign
-l_int|0
-suffix:semicolon
-id|tasklet-&gt;routine
-op_assign
-(paren
-r_void
-(paren
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-)paren
-id|func
-suffix:semicolon
-id|tasklet-&gt;data
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|data
-suffix:semicolon
-)brace
-DECL|macro|tasklet_kill
-mdefine_line|#define tasklet_kill(tasklet)&t;&t;&t;do{} while(0)
-macro_line|#else
-DECL|macro|late_stop_netif_stop_queue
-mdefine_line|#define late_stop_netif_stop_queue(dev)&t;&t;netif_stop_queue(dev)
-DECL|macro|early_stop_netif_stop_queue
-mdefine_line|#define early_stop_netif_stop_queue(dev)&t;0
-DECL|macro|early_stop_netif_wake_queue
-mdefine_line|#define early_stop_netif_wake_queue(dev)&t;do{} while(0)
-DECL|macro|ace_mark_net_bh
-mdefine_line|#define ace_mark_net_bh()&t;&t;&t;do{} while(0)
-DECL|macro|ace_if_down
-mdefine_line|#define ace_if_down(dev)&t;&t;&t;do{} while(0)
-macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02031b)
-DECL|macro|NEW_NETINIT
-mdefine_line|#define NEW_NETINIT
-DECL|macro|ACE_PROBE_ARG
-mdefine_line|#define ACE_PROBE_ARG&t;&t;&t;&t;void
-macro_line|#else
-DECL|macro|ACE_PROBE_ARG
-mdefine_line|#define ACE_PROBE_ARG&t;&t;&t;&t;struct net_device *dev
-macro_line|#endif
-macro_line|#ifndef min_t
-DECL|macro|min_t
-mdefine_line|#define min_t(type,a,b)&t;(((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef ARCH_HAS_PREFETCHW
-macro_line|#ifndef prefetchw
-DECL|macro|prefetchw
-mdefine_line|#define prefetchw(x)&t;&t;&t;&t;do{} while(0)
-macro_line|#endif
+macro_line|#ifndef offset_in_page
+DECL|macro|offset_in_page
+mdefine_line|#define offset_in_page(ptr)&t;((unsigned long)(ptr) &amp; ~PAGE_MASK)
 macro_line|#endif
 DECL|macro|ACE_MAX_MOD_PARMS
 mdefine_line|#define ACE_MAX_MOD_PARMS&t;8
@@ -842,20 +463,20 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|acenic_probe
+r_static
 r_int
-id|__devinit
+id|__init
 id|acenic_probe
+c_func
 (paren
-id|ACE_PROBE_ARG
+r_void
 )paren
 (brace
-macro_line|#ifdef NEW_NETINIT
 r_struct
 id|net_device
 op_star
 id|dev
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|ace_private
 op_star
@@ -1777,7 +1398,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1950,7 +1570,6 @@ comma
 l_string|&quot;AceNIC/3C985/GA620 ratio of NIC memory used for TX/RX descriptors (range 0-63)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|ace_module_cleanup
 r_static
 r_void
@@ -2403,82 +2022,11 @@ id|next
 suffix:semicolon
 )brace
 )brace
-DECL|function|ace_module_init
-r_int
-id|__init
-id|ace_module_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|status
-suffix:semicolon
-id|root_dev
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef NEW_NETINIT
-id|status
-op_assign
-id|acenic_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|status
-op_assign
-id|acenic_probe
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|status
-suffix:semicolon
-)brace
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032a)
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|ace_module_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-id|ace_module_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#else
-DECL|variable|ace_module_init
+DECL|variable|acenic_probe
 id|module_init
 c_func
 (paren
-id|ace_module_init
+id|acenic_probe
 )paren
 suffix:semicolon
 DECL|variable|ace_module_cleanup
@@ -2488,7 +2036,6 @@ c_func
 id|ace_module_cleanup
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|ace_free_descriptors
 r_static
 r_void
@@ -9287,8 +8834,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ACE_MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * Setup the bottom half rx ring refill handler&n;&t; */
 id|tasklet_init
 c_func
@@ -9341,12 +8886,6 @@ id|flags
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|ace_if_down
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Without (or before) releasing irq and stopping hardware, this&n;&t; * is an absolute non-sense, by the way. It will be reset instantly&n;&t; * by the first irq.&n;&t; */
 id|netif_stop_queue
@@ -9651,8 +9190,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|ACE_MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9900,19 +9437,6 @@ id|u32
 id|idx
 comma
 id|flagsize
-suffix:semicolon
-multiline_comment|/*&n;&t; * This only happens with pre-softnet, ie. 2.2.x kernels.&n; &t; */
-r_if
-c_cond
-(paren
-id|early_stop_netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
 id|restart
 suffix:colon
