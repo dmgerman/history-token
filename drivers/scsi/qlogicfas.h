@@ -92,7 +92,7 @@ id|qlogicfas_biosparam
 c_func
 (paren
 r_struct
-id|scsi_disk
+id|scsi_device
 op_star
 comma
 r_struct
@@ -106,6 +106,7 @@ r_int
 )braket
 )paren
 suffix:semicolon
-)brace
+DECL|macro|QLOGICFAS
+mdefine_line|#define QLOGICFAS {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;detect:         &t;&t;qlogicfas_detect,&t;&bslash;&n;&t;info:           &t;&t;qlogicfas_info,&t;&t;&bslash;&n;&t;command:     &t;&t;&t;qlogicfas_command, &t;&bslash;&n;&t;queuecommand:&t;&t;&t;qlogicfas_queuecommand,&t;&bslash;&n;&t;eh_abort_handler:          &t;qlogicfas_abort,&t;&bslash;&n;&t;eh_bus_reset_handler:&t;&t;qlogicfas_bus_reset,&t;&bslash;&n;&t;eh_device_reset_handler:        qlogicfas_device_reset,&t;&bslash;&n;&t;eh_host_reset_handler:          qlogicfas_host_reset,&t;&bslash;&n;&t;bios_param:     qlogicfas_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue:      0,&t;&t;&t;&t;&t;&bslash;&n;&t;this_id:        -1,&t;&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:    1,&t;&t;&t;&t;&t;&bslash;&n;&t;use_clustering: DISABLE_CLUSTERING&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* _QLOGICFAS_H */
 eof

@@ -3005,7 +3005,8 @@ r_int
 id|NCR53c406a_biosparm
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_disk
 op_star
 id|disk
 comma

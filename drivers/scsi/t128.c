@@ -728,7 +728,6 @@ c_func
 r_struct
 id|scsi_device
 op_star
-"&#x208d;"
 id|sdev
 comma
 r_struct

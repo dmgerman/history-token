@@ -16,7 +16,8 @@ r_int
 id|dtc_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
