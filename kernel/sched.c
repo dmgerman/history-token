@@ -1467,7 +1467,6 @@ id|p-&gt;prio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Used by the migration code - we pull tasks from the head of the&n; * remote queue so we want these tasks to show up at the head of the&n; * local queue:&n; */
 DECL|function|enqueue_task_head
 r_static
 r_inline
@@ -8229,7 +8228,6 @@ id|prev-&gt;state
 op_assign
 id|EXIT_DEAD
 suffix:semicolon
-multiline_comment|/*&n;&t; * if entering off of a kernel preemption go straight&n;&t; * to picking the next task.&n;&t; */
 id|switch_count
 op_assign
 op_amp
