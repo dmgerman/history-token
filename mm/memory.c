@@ -2476,16 +2476,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-id|flush_cache_range
-c_func
-(paren
-id|vma
-comma
-id|address
-comma
-id|end
-)paren
-suffix:semicolon
 id|tlb
 op_assign
 id|tlb_gather_mmu
