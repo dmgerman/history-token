@@ -1965,11 +1965,6 @@ op_star
 id|ptr
 suffix:semicolon
 multiline_comment|/* current data entry */
-r_char
-op_star
-id|savptr
-suffix:semicolon
-multiline_comment|/* saved data entry */
 r_int
 id|wantoff
 suffix:semicolon
