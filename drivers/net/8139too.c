@@ -2821,6 +2821,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 (paren
 id|pdev
