@@ -7041,7 +7041,7 @@ id|rx_fd-&gt;end
 op_assign
 l_int|0xbabeface
 suffix:semicolon
-)brace
+singleline_comment|//}
 r_goto
 r_try
 suffix:semicolon
