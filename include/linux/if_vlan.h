@@ -99,17 +99,21 @@ multiline_comment|/* packet type ID field (or len) */
 suffix:semicolon
 DECL|macro|VLAN_VID_MASK
 mdefine_line|#define VLAN_VID_MASK&t;0xfff
-multiline_comment|/* found in af_inet.c */
+multiline_comment|/* found in socket.c */
 r_extern
+r_void
+id|vlan_ioctl_set
+c_func
+(paren
 r_int
 (paren
 op_star
-id|vlan_ioctl_hook
+id|hook
 )paren
 (paren
 r_int
 r_int
-id|arg
+)paren
 )paren
 suffix:semicolon
 DECL|macro|VLAN_NAME
