@@ -636,6 +636,16 @@ r_struct
 id|list_head
 id|tasks
 suffix:semicolon
+DECL|member|ptrace_children
+r_struct
+id|list_head
+id|ptrace_children
+suffix:semicolon
+DECL|member|ptrace_list
+r_struct
+id|list_head
+id|ptrace_list
+suffix:semicolon
 DECL|member|mm
 DECL|member|active_mm
 r_struct

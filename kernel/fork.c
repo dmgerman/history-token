@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3245,6 +3246,20 @@ op_amp
 id|p-&gt;thread_group
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|p-&gt;ptrace_children
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|p-&gt;ptrace_list
+)paren
+suffix:semicolon
 multiline_comment|/* Need tasklist lock for parent etc handling! */
 id|write_lock_irq
 c_func
@@ -3319,6 +3334,14 @@ id|SET_LINKS
 c_func
 (paren
 id|p
+)paren
+suffix:semicolon
+id|ptrace_link
+c_func
+(paren
+id|p
+comma
+id|p-&gt;parent
 )paren
 suffix:semicolon
 id|hash_pid
