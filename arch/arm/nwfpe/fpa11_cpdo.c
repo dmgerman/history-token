@@ -13,7 +13,7 @@ id|opcode
 comma
 id|FPREG
 op_star
-id|rfd
+id|rFd
 )paren
 suffix:semicolon
 r_int
@@ -28,7 +28,7 @@ id|opcode
 comma
 id|FPREG
 op_star
-id|rfd
+id|rFd
 )paren
 suffix:semicolon
 r_int
@@ -43,7 +43,7 @@ id|opcode
 comma
 id|FPREG
 op_star
-id|rfd
+id|rFd
 )paren
 suffix:semicolon
 DECL|function|EmulateCPDO
@@ -79,7 +79,6 @@ id|nDest
 comma
 id|nRc
 suffix:semicolon
-singleline_comment|//printk(&quot;EmulateCPDO(0x%08x)&bslash;n&quot;,opcode);
 multiline_comment|/* Get the destination size.  If not valid let Linux perform&n;&t;   an invalid instruction trap. */
 id|nDest
 op_assign

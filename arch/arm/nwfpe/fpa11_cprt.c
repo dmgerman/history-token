@@ -92,7 +92,6 @@ id|nRc
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|//printk(&quot;EmulateCPRT(0x%08x)&bslash;n&quot;,opcode);
 r_if
 c_cond
 (paren
@@ -719,7 +718,6 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//printk(&quot;PerformComparison(0x%08x)&bslash;n&quot;,opcode);
 id|Fn
 op_assign
 id|getFn

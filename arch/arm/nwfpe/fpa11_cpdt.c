@@ -1042,7 +1042,6 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;PerformLDF(0x%08x), Fd = 0x%08x&bslash;n&quot;,opcode,getFd(opcode));
 id|pBase
 op_assign
 (paren
@@ -1255,7 +1254,6 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;PerformSTF(0x%08x), Fd = 0x%08x&bslash;n&quot;,opcode,getFd(opcode));
 id|SetRoundingMode
 c_func
 (paren
@@ -1839,7 +1837,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if 1
 DECL|function|EmulateCPDT
 r_int
 r_int
@@ -1858,7 +1855,6 @@ id|nRc
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//printk(&quot;EmulateCPDT(0x%08x)&bslash;n&quot;,opcode);
 r_if
 c_cond
 (paren
@@ -1949,5 +1945,4 @@ r_return
 id|nRc
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
