@@ -10,8 +10,6 @@ DECL|macro|SERIAL_TTY_MINORS
 mdefine_line|#define SERIAL_TTY_MINORS&t;255&t;/* loads of devices :) */
 DECL|macro|MAX_NUM_PORTS
 mdefine_line|#define MAX_NUM_PORTS&t;&t;8&t;/* The maximum number of ports one device can grab at once */
-DECL|macro|USB_SERIAL_MAGIC
-mdefine_line|#define USB_SERIAL_MAGIC&t;0x6702&t;/* magic number for usb_serial struct */
 multiline_comment|/* parity check flag */
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
@@ -160,15 +158,11 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @magic: magic number for internal validity of this pointer.&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
+multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
 DECL|struct|usb_serial
 r_struct
 id|usb_serial
 (brace
-DECL|member|magic
-r_int
-id|magic
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|usb_device
@@ -1052,27 +1046,6 @@ id|dbg
 c_func
 (paren
 l_string|&quot;%s - serial == NULL&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|serial-&gt;magic
-op_ne
-id|USB_SERIAL_MAGIC
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad magic number for serial&quot;
 comma
 id|function
 )paren

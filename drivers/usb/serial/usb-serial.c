@@ -285,10 +285,6 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|serial-&gt;magic
-op_assign
-id|USB_SERIAL_MAGIC
-suffix:semicolon
 op_star
 id|minor
 op_assign
