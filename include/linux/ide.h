@@ -3641,17 +3641,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|member|capacity
-id|sector_t
-(paren
-op_star
-id|capacity
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|member|proc
 id|ide_proc_entry_t
 op_star
