@@ -883,6 +883,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|ip_rt_put
 c_func
 (paren
