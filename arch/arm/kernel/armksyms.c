@@ -286,15 +286,6 @@ comma
 id|send_sig
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-DECL|variable|kd_mksound
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kd_mksound
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__do_softirq
 id|EXPORT_SYMBOL_NOVERS
 c_func
