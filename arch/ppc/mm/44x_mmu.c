@@ -57,7 +57,7 @@ r_int
 r_int
 id|tlb_44x_hwater
 op_assign
-l_int|61
+l_int|62
 suffix:semicolon
 multiline_comment|/*&n; * &quot;Pins&quot; a 256MB TLB entry in AS0 for kernel lowmem&n; */
 r_static
@@ -114,11 +114,7 @@ l_string|&quot;i&quot;
 (paren
 id|PPC44x_TLB_VALID
 op_or
-id|PPC44x_TLB_PAGESZ
-c_func
-(paren
-id|PPC44x_PAGESZ_256M
-)paren
+id|PPC44x_TLB_256M
 )paren
 comma
 l_string|&quot;i&quot;
