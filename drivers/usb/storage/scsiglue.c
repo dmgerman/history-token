@@ -140,6 +140,15 @@ id|us-&gt;host_no
 op_assign
 id|us-&gt;host-&gt;host_no
 suffix:semicolon
+id|scsi_set_device
+c_func
+(paren
+id|us-&gt;host
+comma
+op_amp
+id|us-&gt;pusb_dev-&gt;dev
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
