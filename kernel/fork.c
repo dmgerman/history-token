@@ -2804,6 +2804,25 @@ op_assign
 id|new_flags
 suffix:semicolon
 )brace
+DECL|function|sys_set_tid_address
+id|asmlinkage
+r_int
+id|sys_set_tid_address
+c_func
+(paren
+r_int
+op_star
+id|user_tid
+)paren
+(brace
+id|current-&gt;user_tid
+op_assign
+id|user_tid
+suffix:semicolon
+r_return
+id|current-&gt;pid
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This creates a new process as a copy of the old one,&n; * but does not actually start it yet.&n; *&n; * It copies the registers, and all the appropriate&n; * parts of the process environment (as per the clone&n; * flags). The actual kick-off is left to the caller.&n; */
 DECL|function|copy_process
 r_static
