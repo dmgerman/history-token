@@ -30,9 +30,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|clps711x
-op_minus
-id|init_time
+id|clps711x_init_time
 c_func
 (paren
 r_void
