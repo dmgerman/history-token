@@ -68,6 +68,7 @@ id|i2c_dev_array_lock
 )paren
 suffix:semicolon
 DECL|function|i2c_dev_get_by_minor
+r_static
 r_struct
 id|i2c_dev
 op_star
@@ -109,6 +110,7 @@ id|i2c_dev
 suffix:semicolon
 )brace
 DECL|function|i2c_dev_get_by_adapter
+r_static
 r_struct
 id|i2c_dev
 op_star
@@ -722,8 +724,10 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|i2cdev_ioctl
+r_static
 r_int
 id|i2cdev_ioctl
+c_func
 (paren
 r_struct
 id|inode
