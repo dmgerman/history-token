@@ -61,6 +61,13 @@ mdefine_line|#define IXGB_DBG(args...)
 macro_line|#endif
 DECL|macro|IXGB_ERR
 mdefine_line|#define IXGB_ERR(args...) printk(KERN_ERR &quot;ixgb: &quot; args)
+multiline_comment|/* TX/RX descriptor defines */
+DECL|macro|DEFAULT_TXD
+mdefine_line|#define DEFAULT_TXD&t; 256
+DECL|macro|MAX_TXD
+mdefine_line|#define MAX_TXD   &t;4096
+DECL|macro|MIN_TXD
+mdefine_line|#define MIN_TXD&t;  64
 multiline_comment|/* hardware cannot reliably support more than 512 descriptors owned by&n; * hardware descrioptor cache otherwise an unreliable ring under heavy &n; * recieve load may result */
 multiline_comment|/* #define DEFAULT_RXD&t;   1024 */
 multiline_comment|/* #define MAX_RXD&t;   4096 */

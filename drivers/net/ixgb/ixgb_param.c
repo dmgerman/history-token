@@ -105,12 +105,6 @@ comma
 l_string|&quot;Transmit Interrupt Delay Enable&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEFAULT_TXD
-mdefine_line|#define DEFAULT_TXD&t;&t;&t;    256
-DECL|macro|MAX_TXD
-mdefine_line|#define MAX_TXD&t;&t;&t;&t;   4096
-DECL|macro|MIN_TXD
-mdefine_line|#define MIN_TXD&t;&t;&t;&t;     64
 DECL|macro|DEFAULT_TIDV
 mdefine_line|#define DEFAULT_TIDV&t;   &t;&t;     32
 DECL|macro|MAX_TIDV
