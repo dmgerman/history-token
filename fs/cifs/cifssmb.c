@@ -15656,10 +15656,6 @@ id|pSMB-&gt;ByteCount
 op_assign
 l_int|0
 suffix:semicolon
-id|pSMB-&gt;hdr.smb_buf_length
-op_add_assign
-id|pSMB-&gt;ByteCount
-suffix:semicolon
 id|rc
 op_assign
 id|SendReceive
