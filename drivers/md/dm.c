@@ -752,42 +752,6 @@ suffix:semicolon
 multiline_comment|/* deferred successfully */
 )brace
 multiline_comment|/*-----------------------------------------------------------------&n; * CRUD START:&n; *   A more elegant soln is in the works that uses the queue&n; *   merge fn, unfortunately there are a couple of changes to&n; *   the block layer that I want to make for this.  So in the&n; *   interests of getting something for people to use I give&n; *   you this clearly demarcated crap.&n; *---------------------------------------------------------------*/
-DECL|function|to_sector
-r_static
-r_inline
-id|sector_t
-id|to_sector
-c_func
-(paren
-r_int
-r_int
-id|bytes
-)paren
-(brace
-r_return
-id|bytes
-op_rshift
-id|SECTOR_SHIFT
-suffix:semicolon
-)brace
-DECL|function|to_bytes
-r_static
-r_inline
-r_int
-r_int
-id|to_bytes
-c_func
-(paren
-id|sector_t
-id|sector
-)paren
-(brace
-r_return
-id|sector
-op_lshift
-id|SECTOR_SHIFT
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Decrements the number of outstanding ios that a bio has been&n; * cloned into, completing the original io if necc.&n; */
 DECL|function|dec_pending
 r_static
