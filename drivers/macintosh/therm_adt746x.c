@@ -775,14 +775,14 @@ id|thermostat_driver
 op_assign
 (brace
 dot
-id|name
+id|owner
 op_assign
-l_string|&quot;Apple Thermostat ADT746x&quot;
+id|THIS_MODULE
 comma
 dot
-id|id
+id|name
 op_assign
-l_int|0xDEAD7467
+l_string|&quot;therm_adt746x&quot;
 comma
 dot
 id|flags
@@ -792,13 +792,11 @@ comma
 dot
 id|attach_adapter
 op_assign
-op_amp
 id|attach_thermostat
 comma
 dot
 id|detach_adapter
 op_assign
-op_amp
 id|detach_thermostat
 comma
 )brace
@@ -1870,10 +1868,6 @@ id|th-&gt;clt.driver
 op_assign
 op_amp
 id|thermostat_driver
-suffix:semicolon
-id|th-&gt;clt.id
-op_assign
-l_int|0xDEAD7467
 suffix:semicolon
 id|strcpy
 c_func
