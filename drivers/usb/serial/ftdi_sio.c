@@ -8420,7 +8420,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dbg
 c_func
 (paren
 l_string|&quot;write request of 0 bytes&quot;
