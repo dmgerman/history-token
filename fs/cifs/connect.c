@@ -195,6 +195,7 @@ op_star
 op_star
 id|csocket
 )paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * cifs tcp session reconnection&n;&t; * &n;&t; * mark tcp session as reconnecting so temporarily locked&n;&t; * mark all smb sessions as reconnecting for tcp session&n;&t; * reconnect tcp session&n;&t; * wake up waiters on reconnection? - (not needed currently)&n;&t; */
 r_int
 DECL|function|cifs_reconnect
@@ -515,7 +516,7 @@ id|ipv6_connect
 c_func
 (paren
 op_amp
-id|server-&gt;sockAddr
+id|server-&gt;addr.sockAddr6
 comma
 op_amp
 id|server-&gt;ssocket
@@ -530,7 +531,7 @@ id|ipv4_connect
 c_func
 (paren
 op_amp
-id|server-&gt;sockAddr
+id|server-&gt;addr.sockAddr
 comma
 op_amp
 id|server-&gt;ssocket
@@ -3583,7 +3584,7 @@ id|ses-&gt;server
 r_if
 c_cond
 (paren
-id|ses-&gt;server-&gt;sockAddr.sin_addr.s_addr
+id|ses-&gt;server-&gt;addr.sockAddr.sin_addr.s_addr
 op_eq
 id|new_target_ip_addr
 )paren
@@ -3727,7 +3728,7 @@ comma
 (paren
 l_string|&quot; old ip addr: %x == new ip %x ?&quot;
 comma
-id|tcon-&gt;ses-&gt;server-&gt;sockAddr.sin_addr
+id|tcon-&gt;ses-&gt;server-&gt;addr.sockAddr.sin_addr
 dot
 id|s_addr
 comma
@@ -3738,7 +3739,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcon-&gt;ses-&gt;server-&gt;sockAddr.sin_addr
+id|tcon-&gt;ses-&gt;server-&gt;addr.sockAddr.sin_addr
 dot
 id|s_addr
 op_eq
@@ -4811,7 +4812,10 @@ r_struct
 id|sockaddr_in
 id|sin_server
 suffix:semicolon
-multiline_comment|/*&t;struct sockaddr_in6 sin_server6; */
+r_struct
+id|sockaddr_in6
+id|sin_server6
+suffix:semicolon
 r_struct
 id|smb_vol
 id|volume_info
@@ -4949,6 +4953,8 @@ r_if
 c_cond
 (paren
 id|volume_info.UNCip
+op_logical_and
+id|volume_info.UNC
 )paren
 (brace
 id|sin_server.sin_addr.s_addr
@@ -4965,7 +4971,9 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;UNC: %s  &quot;
+l_string|&quot;UNC: %s ip: %s  &quot;
+comma
+id|volume_info.UNC
 comma
 id|volume_info.UNCip
 )paren
@@ -4973,8 +4981,27 @@ id|volume_info.UNCip
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|volume_info.UNCip
+)paren
 (brace
-multiline_comment|/* BB we could connect to the DFS root? but which server do we ask? */
+multiline_comment|/* BB using ip addr as server name connect to the DFS root below */
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Connecting to DFS root not implemented yet&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* which servers DFS root would we conect to */
+(brace
 id|cERROR
 c_func
 (paren
@@ -5253,7 +5280,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|srvTcp-&gt;sockAddr
+id|srvTcp-&gt;addr.sockAddr
 comma
 op_amp
 id|sin_server
