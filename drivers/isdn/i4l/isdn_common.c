@@ -4887,8 +4887,6 @@ id|buf
 comma
 id|count
 comma
-l_int|1
-comma
 id|drvidx
 comma
 id|isdn_minor2chan
@@ -5246,8 +5244,6 @@ c_func
 id|buf
 comma
 id|count
-comma
-l_int|1
 comma
 id|drvidx
 comma
