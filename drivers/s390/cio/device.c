@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.129 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.131 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1240,6 +1240,54 @@ c_func
 id|cdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|ENODEV
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_ne
+id|DEV_STATE_NOT_OPER
+)paren
+(brace
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_assign
+id|DEV_STATE_OFFLINE
+suffix:semicolon
+id|dev_fsm_event
+c_func
+(paren
+id|cdev
+comma
+id|DEV_EVENT_NOTOPER
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+id|cdev-&gt;ccwlock
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 id|spin_unlock_irq
 c_func
 (paren
