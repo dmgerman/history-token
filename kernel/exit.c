@@ -2855,6 +2855,12 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+id|exit_itimers
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 id|exit_thread
 c_func
 (paren

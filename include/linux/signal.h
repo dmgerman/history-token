@@ -732,6 +732,8 @@ id|cookie
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|macro|FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
+mdefine_line|#define FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SIGNAL_H */
 eof
