@@ -443,7 +443,7 @@ id|acpi_size
 id|length
 )paren
 suffix:semicolon
-id|u32
+id|u64
 id|acpi_os_get_timer
 (paren
 r_void

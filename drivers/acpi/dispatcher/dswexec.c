@@ -23,6 +23,8 @@ id|acpi_gbl_op_type_dispatch
 )braket
 op_assign
 (brace
+id|acpi_ex_opcode_0A_0T_1R
+comma
 id|acpi_ex_opcode_1A_0T_0R
 comma
 id|acpi_ex_opcode_1A_0T_1R

@@ -922,6 +922,15 @@ id|timeout
 suffix:semicolon
 multiline_comment|/*&n; * exmonadic - ACPI AML (p-code) execution, monadic operators&n; */
 id|acpi_status
+id|acpi_ex_opcode_0A_0T_1R
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ex_opcode_1A_0T_0R
 (paren
 r_struct

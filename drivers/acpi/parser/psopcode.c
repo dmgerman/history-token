@@ -246,6 +246,8 @@ DECL|macro|ARGP_SUBTRACT_OP
 mdefine_line|#define ARGP_SUBTRACT_OP                ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_TARGET)
 DECL|macro|ARGP_THERMAL_ZONE_OP
 mdefine_line|#define ARGP_THERMAL_ZONE_OP            ARGP_LIST3 (ARGP_PKGLENGTH,  ARGP_NAME,          ARGP_OBJLIST)
+DECL|macro|ARGP_TIMER_OP
+mdefine_line|#define ARGP_TIMER_OP                   ARG_NONE
 DECL|macro|ARGP_TO_BCD_OP
 mdefine_line|#define ARGP_TO_BCD_OP                  ARGP_LIST2 (ARGP_TERMARG,    ARGP_TARGET)
 DECL|macro|ARGP_TO_BUFFER_OP
@@ -489,6 +491,8 @@ DECL|macro|ARGI_SUBTRACT_OP
 mdefine_line|#define ARGI_SUBTRACT_OP                ARGI_LIST3 (ARGI_INTEGER,    ARGI_INTEGER,       ARGI_TARGETREF)
 DECL|macro|ARGI_THERMAL_ZONE_OP
 mdefine_line|#define ARGI_THERMAL_ZONE_OP            ARGI_INVALID_OPCODE
+DECL|macro|ARGI_TIMER_OP
+mdefine_line|#define ARGI_TIMER_OP                   ARG_NONE
 DECL|macro|ARGI_TO_BCD_OP
 mdefine_line|#define ARGI_TO_BCD_OP                  ARGI_LIST2 (ARGI_INTEGER,    ARGI_FIXED_TARGET)
 DECL|macro|ARGI_TO_BUFFER_OP
@@ -3102,6 +3106,25 @@ id|AML_NSOPCODE
 op_or
 id|AML_NSNODE
 )paren
+comma
+multiline_comment|/* ACPI 3.0 opcodes */
+multiline_comment|/* 7E */
+id|ACPI_OP
+(paren
+l_string|&quot;Timer&quot;
+comma
+id|ARGP_TIMER_OP
+comma
+id|ARGI_TIMER_OP
+comma
+id|ACPI_TYPE_ANY
+comma
+id|AML_CLASS_EXECUTE
+comma
+id|AML_TYPE_EXEC_0A_0T_1R
+comma
+id|AML_FLAGS_EXEC_0A_0T_1R
+)paren
 multiline_comment|/*! [End] no source code translation !*/
 )brace
 suffix:semicolon
@@ -3664,6 +3687,7 @@ l_int|0x45
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This table is indexed by the second opcode of the extended opcode&n; * pair.  It returns an index into the opcode table (acpi_gbl_aml_op_info)&n; */
 DECL|variable|acpi_gbl_long_op_index
 r_static
 r_const
@@ -3785,7 +3809,7 @@ l_int|0x56
 comma
 l_int|0x57
 comma
-id|_UNK
+l_int|0x7e
 comma
 id|_UNK
 comma
