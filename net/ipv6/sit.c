@@ -2047,6 +2047,12 @@ op_ne
 id|RTN_UNICAST
 )paren
 (brace
+id|ip_rt_put
+c_func
+(paren
+id|rt
+)paren
+suffix:semicolon
 id|tunnel-&gt;stat.tx_carrier_errors
 op_increment
 suffix:semicolon
