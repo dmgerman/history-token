@@ -244,7 +244,11 @@ c_cond
 id|nowayout
 )paren
 (brace
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 multiline_comment|/* do not permit disabling the watchdog by writing 0 to reg. 0xF2 */
 r_if
