@@ -45,11 +45,18 @@ mdefine_line|#define get_slice()&t;&t;&t;&t;((ia64_get_lid() &gt;&gt; 28) &amp; 
 DECL|macro|get_node_number
 mdefine_line|#define get_node_number(addr)&t;&t;&t;(((unsigned long)(addr)&gt;&gt;38) &amp; 0x7ff)
 macro_line|#endif
-multiline_comment|/*&n; * NOTE: id &amp; eid refer to Intels definitions of the LID register&n; *&t;(id = NASID, eid = slice)&n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */
+multiline_comment|/*&n; * NOTE: id &amp; eid refer to Intel&squot;s definitions of the LID register&n; * &n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */
 DECL|macro|id_eid_to_cpu_physical_id
-mdefine_line|#define id_eid_to_cpu_physical_id(id,eid)       (((id)&lt;&lt;8) | (eid))
-DECL|macro|id_eid_to_cpuid
-mdefine_line|#define id_eid_to_cpuid(id,eid)         &t;(cpu_logical_id(id_eid_to_cpu_physical_id((id),(eid))))
+mdefine_line|#define id_eid_to_cpu_physical_id(id,eid)&t; &t;(((id)&lt;&lt;8) | (eid))
+DECL|macro|nasid_slice_to_cpuid
+mdefine_line|#define nasid_slice_to_cpuid(nasid,slice)&t;&t;(cpu_logical_id(nasid_slice_to_cpu_physical_id((nasid),(slice))))
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+DECL|macro|nasid_slice_to_cpu_physical_id
+mdefine_line|#define nasid_slice_to_cpu_physical_id(nasid, slice)&t;(((nasid)&lt;&lt;8) | (slice))
+macro_line|#else
+DECL|macro|nasid_slice_to_cpu_physical_id
+mdefine_line|#define nasid_slice_to_cpu_physical_id(nasid, slice)&t;(((slice)&lt;&lt;12) | (nasid))
+macro_line|#endif
 multiline_comment|/*&n; * The following table/struct  is used for managing PTC coherency domains.&n; */
 r_typedef
 r_struct
@@ -99,10 +106,10 @@ DECL|macro|cnodeid_to_nasid
 mdefine_line|#define cnodeid_to_nasid(cnodeid)&t;(get_node_number(local_node_data-&gt;pg_data_ptrs[cnodeid]))
 multiline_comment|/*&n; * nasid_to_cnodeid - convert a NASID to a cnodeid&n; */
 DECL|macro|nasid_to_cnodeid
-mdefine_line|#define nasid_to_cnodeid(nasid)&t;&t;(local_node_data-&gt;physical_node_map[nasid])
+mdefine_line|#define nasid_to_cnodeid(nasid)&t;&t;(nasid) /* (local_node_data-&gt;physical_node_map[nasid]) */
 multiline_comment|/*&n; * cnode_slice_to_cpuid - convert a codeid &amp; slice to a cpuid&n; */
 DECL|macro|cnode_slice_to_cpuid
-mdefine_line|#define cnode_slice_to_cpuid(cnodeid,slice) (id_eid_to_cpuid(cnodeid_to_nasid(cnodeid),(slice)))
+mdefine_line|#define cnode_slice_to_cpuid(cnodeid,slice) (nasid_slice_to_cpuid(cnodeid_to_nasid(cnodeid),(slice)))
 multiline_comment|/*&n; * cpuid_to_subnode - convert a cpuid to the subnode it resides on.&n; *   slice 0 &amp; 1 are on subnode 0&n; *   slice 2 &amp; 3 are on subnode 1.&n; */
 DECL|macro|cpuid_to_subnode
 mdefine_line|#define cpuid_to_subnode(cpuid)&t;&t;((cpuid_to_slice(cpuid)&lt;2) ? 0 : 1)

@@ -1,10 +1,15 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; * &n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; *&n; *&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/nodedata.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/sn/bte_copy.h&gt;
@@ -20,7 +25,7 @@ comma
 id|IIO_IBLS1
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * bte_init_node(nodepda, cnode)&n; *&n; * Initialize the nodepda structure with BTE base addresses and&n; * spinlocks.&n; *&n; */
+multiline_comment|/*&n; * bte_init_node(nodepda, cnode)&n; *&n; * Initialize the nodepda structure with BTE base addresses and&n; * spinlocks.&n; *&n; * NOTE: The kernel parameter btetest will cause the initialization&n; * code to reserve blocks of physically contiguous memory to be&n; * used by the bte test module.&n; */
 r_void
 DECL|function|bte_init_node
 id|bte_init_node
@@ -31,7 +36,7 @@ op_star
 id|mynodepda
 comma
 id|cnodeid_t
-id|cNode
+id|cnode
 )paren
 (brace
 r_int
@@ -55,7 +60,7 @@ op_increment
 (brace
 macro_line|#ifdef CONFIG_IA64_SGI_SN2
 multiline_comment|/* &gt;&gt;&gt; Don&squot;t know why the 0x1800000L is here.  Robin */
-id|mynodepda-&gt;node_bte_info
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
@@ -78,7 +83,7 @@ l_int|0x1800000L
 )paren
 suffix:semicolon
 macro_line|#elif CONFIG_IA64_SGI_SN1
-id|mynodepda-&gt;node_bte_info
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
@@ -101,19 +106,17 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error BTE Not defined for this hardware platform.
 macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_SGI_BTE_LOCKING
-multiline_comment|/* Initialize the notification and spinlock */
-multiline_comment|/* so the first transfer can occur. */
-id|mynodepda-&gt;node_bte_info
+multiline_comment|/*&n;&t;&t; * Initialize the notification and spinlock&n;&t;&t; * so the first transfer can occur.&n;&t;&t; */
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
 dot
-id|mostRecentNotification
+id|most_rcnt_na
 op_assign
 op_amp
 (paren
-id|mynodepda-&gt;node_bte_info
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
@@ -121,7 +124,7 @@ dot
 id|notify
 )paren
 suffix:semicolon
-id|mynodepda-&gt;node_bte_info
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
@@ -130,11 +133,12 @@ id|notify
 op_assign
 l_int|0L
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_BTE_LOCKING
 id|spin_lock_init
 c_func
 (paren
 op_amp
-id|mynodepda-&gt;node_bte_info
+id|mynodepda-&gt;bte_if
 (braket
 id|i
 )braket
@@ -143,6 +147,268 @@ id|spinlock
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_IA64_SGI_BTE_LOCKING */
+id|mynodepda-&gt;bte_if
+(braket
+id|i
+)braket
+dot
+id|bte_test_buf
+op_assign
+id|alloc_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+id|cnode
+)paren
+comma
+id|BTE_MAX_XFER
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n; * bte_reset_nasid(nasid_t)&n; *&n; * Does a soft reset of the BTEs on the specified nasid.&n; * This is followed by a one-line transfer from each of the&n; * virtual interfaces.&n; */
+r_void
+DECL|function|bte_reset_nasid
+id|bte_reset_nasid
+c_func
+(paren
+id|nasid_t
+id|n
+)paren
+(brace
+id|ii_ibcr_u_t
+id|ibcr
+suffix:semicolon
+id|ibcr.ii_ibcr_regval
+op_assign
+id|REMOTE_HUB_L
+c_func
+(paren
+id|n
+comma
+id|IIO_IBCR
+)paren
+suffix:semicolon
+id|ibcr.ii_ibcr_fld_s.i_soft_reset
+op_assign
+l_int|1
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBCR
+comma
+id|ibcr.ii_ibcr_regval
+)paren
+suffix:semicolon
+multiline_comment|/* One line transfer on virtual interface 0 */
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBLS_0
+comma
+id|IBLS_BUSY
+op_or
+l_int|1
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBSA_0
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+op_amp
+id|nodepda-&gt;bte_cleanup
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBDA_0
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+op_amp
+id|nodepda-&gt;bte_cleanup
+(braket
+l_int|4
+op_star
+id|L1_CACHE_BYTES
+)braket
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBNA_0
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+op_amp
+id|nodepda-&gt;bte_cleanup
+(braket
+l_int|4
+op_star
+id|L1_CACHE_BYTES
+)braket
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBCT_0
+comma
+id|BTE_NOTIFY
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|REMOTE_HUB_L
+c_func
+(paren
+id|n
+comma
+id|IIO_IBLS0
+)paren
+)paren
+(brace
+multiline_comment|/* &gt;&gt;&gt; Need some way out in case of hang... */
+)brace
+multiline_comment|/* One line transfer on virtual interface 1 */
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBLS_1
+comma
+id|IBLS_BUSY
+op_or
+l_int|1
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBSA_1
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|nodepda-&gt;bte_cleanup
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBDA_1
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|nodepda-&gt;bte_cleanup
+(braket
+l_int|4
+op_star
+id|L1_CACHE_BYTES
+)braket
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBNA_1
+comma
+id|TO_PHYS
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|nodepda-&gt;bte_cleanup
+(braket
+l_int|5
+op_star
+id|L1_CACHE_BYTES
+)braket
+)paren
+)paren
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|n
+comma
+id|IIO_IBCT_1
+comma
+id|BTE_NOTIFY
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|REMOTE_HUB_L
+c_func
+(paren
+id|n
+comma
+id|IIO_IBLS1
+)paren
+)paren
+(brace
+multiline_comment|/* &gt;&gt;&gt; Need some way out in case of hang... */
 )brace
 )brace
 multiline_comment|/*&n; * bte_init_cpu()&n; *&n; * Initialize the cpupda structure with pointers to the&n; * nodepda bte blocks.&n; *&n; */
@@ -154,73 +420,34 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Called by setup.c as each cpu is being added to the nodepda */
-r_if
-c_cond
-(paren
-id|local_node_data-&gt;active_cpu_count
-op_amp
-l_int|0x1
-)paren
-(brace
-id|pda.cpubte
+id|pda-&gt;cpu_bte_if
 (braket
 l_int|0
 )braket
 op_assign
 op_amp
 (paren
-id|nodepda-&gt;node_bte_info
+id|nodepda-&gt;bte_if
 (braket
-l_int|0
+l_int|1
 )braket
 )paren
 suffix:semicolon
-id|pda.cpubte
+id|pda-&gt;cpu_bte_if
 (braket
 l_int|1
 )braket
 op_assign
 op_amp
 (paren
-id|nodepda-&gt;node_bte_info
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pda.cpubte
-(braket
-l_int|0
-)braket
-op_assign
-op_amp
-(paren
-id|nodepda-&gt;node_bte_info
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|pda.cpubte
-(braket
-l_int|1
-)braket
-op_assign
-op_amp
-(paren
-id|nodepda-&gt;node_bte_info
+id|nodepda-&gt;bte_if
 (braket
 l_int|0
 )braket
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * bte_unaligned_copy(src, dest, len, mode)&n; *&n; * use the block transfer engine to move kernel&n; * memory from src to dest using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SGI documentation.&n; *   bteBlock - kernel virtual address of a temporary&n; *              buffer used during unaligned transfers.&n; *&n; * NOTE: If the source, dest, and len are all cache line aligned,&n; * then it would be _FAR_ preferrable to use bte_copy instead.&n; */
+multiline_comment|/*&n; * bte_unaligned_copy(src, dest, len, mode)&n; *&n; * use the block transfer engine to move kernel&n; * memory from src to dest using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SGI documentation.&n; *&n; * NOTE: If the source, dest, and len are all cache line aligned,&n; * then it would be _FAR_ preferrable to use bte_copy instead.&n; */
 id|bte_result_t
 DECL|function|bte_unaligned_copy
 id|bte_unaligned_copy
@@ -237,10 +464,6 @@ id|len
 comma
 id|u64
 id|mode
-comma
-r_char
-op_star
-id|bteBlock
 )paren
 (brace
 r_int
@@ -276,6 +499,10 @@ suffix:semicolon
 id|bte_result_t
 id|rv
 suffix:semicolon
+r_char
+op_star
+id|bteBlock
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -290,6 +517,20 @@ id|BTE_SUCCESS
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IA64_SGI_BTE_LOCKING
+macro_line|#error bte_unaligned_copy() assumes single BTE selection in bte_copy().
+macro_line|#else
+multiline_comment|/* temporary buffer used during unaligned transfers */
+id|bteBlock
+op_assign
+id|pda-&gt;cpu_bte_if
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|bte_test_buf
+suffix:semicolon
+macro_line|#endif
 id|headBcopySrcOffset
 op_assign
 id|src

@@ -328,7 +328,6 @@ r_return
 id|str
 suffix:semicolon
 )brace
-r_static
 r_void
 id|__init
 DECL|function|ia64_sal_handler_init

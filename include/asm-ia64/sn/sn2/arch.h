@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: arch.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_ARCH_H
 DECL|macro|_ASM_IA64_SN_SN2_ARCH_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ARCH_H
@@ -42,10 +42,5 @@ DECL|macro|LOCALCPU
 mdefine_line|#define LOCALCPU(slice)&t;(((slice) &amp; LOCALCPU_MASK) &gt;&gt; LOCALCPU_SHFT)
 DECL|macro|TO_SLICE
 mdefine_line|#define TO_SLICE(subn, local)&t;(((subn) &lt;&lt; SUBNODE_SHFT) | &bslash;&n;&t;&t;&t;&t; ((local) &lt;&lt; LOCALCPU_SHFT))
-DECL|typedef|mmr_t
-r_typedef
-id|u64
-id|mmr_t
-suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_SN2_ARCH_H */
 eof

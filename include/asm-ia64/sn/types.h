@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_TYPES_H
 DECL|macro|_ASM_IA64_SN_TYPES_H
 mdefine_line|#define _ASM_IA64_SN_TYPES_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|cpuid_t
 r_typedef
@@ -29,6 +30,7 @@ r_char
 id|partid_t
 suffix:semicolon
 multiline_comment|/* partition ID type */
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
 DECL|typedef|moduleid_t
 r_typedef
 r_int
@@ -43,6 +45,28 @@ r_int
 id|cmoduleid_t
 suffix:semicolon
 multiline_comment|/* kernel compact module id type */
+macro_line|#else
+DECL|typedef|moduleid_t
+r_typedef
+r_int
+r_int
+id|moduleid_t
+suffix:semicolon
+multiline_comment|/* user-visible module number type */
+DECL|typedef|cmoduleid_t
+r_typedef
+r_int
+r_int
+id|cmoduleid_t
+suffix:semicolon
+multiline_comment|/* kernel compact module id type */
+macro_line|#endif
+DECL|typedef|slabid_t
+r_typedef
+r_int
+r_char
+id|slabid_t
+suffix:semicolon
 DECL|typedef|clusterid_t
 r_typedef
 r_int

@@ -50,6 +50,11 @@ id|__s32
 id|preempt_count
 suffix:semicolon
 multiline_comment|/* 0=premptable, &lt;0=BUG; will also serve as bh-counter */
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_SIZE

@@ -113,10 +113,6 @@ id|ia64_mca_sal_data_area
 l_int|1356
 )braket
 suffix:semicolon
-DECL|variable|ia64_mca_min_state_save_info
-id|u64
-id|ia64_mca_min_state_save_info
-suffix:semicolon
 DECL|variable|ia64_tlb_functional
 id|u64
 id|ia64_tlb_functional
@@ -124,6 +120,25 @@ suffix:semicolon
 DECL|variable|ia64_os_mca_recovery_successful
 id|u64
 id|ia64_os_mca_recovery_successful
+suffix:semicolon
+multiline_comment|/* TODO: need to assign min-state structure to UC memory */
+DECL|variable|ia64_mca_min_state_save_info
+id|u64
+id|ia64_mca_min_state_save_info
+(braket
+id|MIN_STATE_AREA_SIZE
+)braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|512
+)paren
+)paren
+)paren
 suffix:semicolon
 r_static
 r_void
@@ -277,6 +292,9 @@ c_func
 (paren
 r_int
 id|sal_info_type
+comma
+r_int
+id|called_from_init
 )paren
 (brace
 r_int
@@ -318,6 +336,20 @@ id|prfunc_t
 id|printk
 )paren
 suffix:semicolon
+multiline_comment|/* temporary: only clear SAL logs on hardware-corrected errors&n;&t;&t;or if we&squot;re logging an error after an MCA-initiated reboot */
+r_if
+c_cond
+(paren
+(paren
+id|sal_info_type
+OG
+l_int|1
+)paren
+op_logical_or
+(paren
+id|called_from_init
+)paren
+)paren
 id|ia64_sal_clear_state_info
 c_func
 (paren
@@ -368,6 +400,8 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_CPE
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -408,7 +442,7 @@ r_void
 (brace
 )brace
 multiline_comment|/*&n; *  ia64_mca_check_errors&n; *&n; *  External entry to check for error records which may have been posted by SAL&n; *  for a prior failure which resulted in a machine shutdown before an the&n; *  error could be logged.  This function must be called after the filesystem&n; *  is initialized.&n; *&n; *  Inputs  :   None&n; *&n; *  Outputs :   None&n; */
-r_void
+r_int
 DECL|function|ia64_mca_check_errors
 id|ia64_mca_check_errors
 (paren
@@ -420,7 +454,12 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_MCA
+comma
+l_int|1
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ia64_mca_check_errors
@@ -480,137 +519,6 @@ id|cpev
 suffix:semicolon
 )brace
 macro_line|#endif /* PLATFORM_MCA_HANDLERS */
-DECL|variable|min_state_labels
-r_static
-r_char
-op_star
-id|min_state_labels
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;nat&quot;
-comma
-l_string|&quot;r1&quot;
-comma
-l_string|&quot;r2&quot;
-comma
-l_string|&quot;r3&quot;
-comma
-l_string|&quot;r4&quot;
-comma
-l_string|&quot;r5&quot;
-comma
-l_string|&quot;r6&quot;
-comma
-l_string|&quot;r7&quot;
-comma
-l_string|&quot;r8&quot;
-comma
-l_string|&quot;r9&quot;
-comma
-l_string|&quot;r10&quot;
-comma
-l_string|&quot;r11&quot;
-comma
-l_string|&quot;r12&quot;
-comma
-l_string|&quot;r13&quot;
-comma
-l_string|&quot;r14&quot;
-comma
-l_string|&quot;r15&quot;
-comma
-l_string|&quot;b0r16&quot;
-comma
-l_string|&quot;b0r17&quot;
-comma
-l_string|&quot;b0r18&quot;
-comma
-l_string|&quot;b0r19&quot;
-comma
-l_string|&quot;b0r20&quot;
-comma
-l_string|&quot;b0r21&quot;
-comma
-l_string|&quot;b0r22&quot;
-comma
-l_string|&quot;b0r23&quot;
-comma
-l_string|&quot;b0r24&quot;
-comma
-l_string|&quot;b0r25&quot;
-comma
-l_string|&quot;b0r26&quot;
-comma
-l_string|&quot;b0r27&quot;
-comma
-l_string|&quot;b0r28&quot;
-comma
-l_string|&quot;b0r29&quot;
-comma
-l_string|&quot;b0r30&quot;
-comma
-l_string|&quot;b0r31&quot;
-comma
-l_string|&quot;r16&quot;
-comma
-l_string|&quot;r17&quot;
-comma
-l_string|&quot;r18&quot;
-comma
-l_string|&quot;r19&quot;
-comma
-l_string|&quot;r20&quot;
-comma
-l_string|&quot;r21&quot;
-comma
-l_string|&quot;r22&quot;
-comma
-l_string|&quot;r23&quot;
-comma
-l_string|&quot;r24&quot;
-comma
-l_string|&quot;r25&quot;
-comma
-l_string|&quot;r26&quot;
-comma
-l_string|&quot;r27&quot;
-comma
-l_string|&quot;r28&quot;
-comma
-l_string|&quot;r29&quot;
-comma
-l_string|&quot;r30&quot;
-comma
-l_string|&quot;r31&quot;
-comma
-l_string|&quot;preds&quot;
-comma
-l_string|&quot;br0&quot;
-comma
-l_string|&quot;rsc&quot;
-comma
-l_string|&quot;iip&quot;
-comma
-l_string|&quot;ipsr&quot;
-comma
-l_string|&quot;ifs&quot;
-comma
-l_string|&quot;xip&quot;
-comma
-l_string|&quot;xpsr&quot;
-comma
-l_string|&quot;xfs&quot;
-)brace
-suffix:semicolon
-DECL|variable|ia64_pmss_dump_bank0
-r_int
-id|ia64_pmss_dump_bank0
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* dump bank 0 ? */
 multiline_comment|/*&n; * routine to process and prepare to dump min_state_save&n; * information for debugging purposes.&n; *&n; */
 r_void
 DECL|function|ia64_process_min_state_save
@@ -619,11 +527,6 @@ id|ia64_process_min_state_save
 id|pal_min_state_area_t
 op_star
 id|pmss
-comma
-r_struct
-id|pt_regs
-op_star
-id|ptregs
 )paren
 (brace
 r_int
@@ -631,7 +534,7 @@ id|i
 comma
 id|max
 op_assign
-l_int|57
+id|MIN_STATE_AREA_SIZE
 suffix:semicolon
 id|u64
 op_star
@@ -642,6 +545,12 @@ id|u64
 op_star
 )paren
 id|pmss
+suffix:semicolon
+id|u64
+op_star
+id|return_min_state_ptr
+op_assign
+id|ia64_mca_min_state_save_info
 suffix:semicolon
 multiline_comment|/* dump out the min_state_area information */
 r_for
@@ -659,95 +568,18 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ia64_pmss_dump_bank0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-l_string|&quot;B0&quot;
-comma
-id|min_state_labels
-(braket
-id|i
-)braket
-comma
-l_int|2
-)paren
-op_eq
-l_int|0
-)paren
-(brace
+multiline_comment|/* copy min-state register info for eventual return to PAL */
+op_star
+id|return_min_state_ptr
+op_increment
+op_assign
+op_star
+id|tpmss_ptr
+suffix:semicolon
 id|tpmss_ptr
 op_increment
 suffix:semicolon
 multiline_comment|/* skip to next entry */
-r_continue
-suffix:semicolon
-)brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;%5s=0x%16.16lx &quot;
-comma
-id|min_state_labels
-(braket
-id|i
-)braket
-comma
-op_star
-id|tpmss_ptr
-op_increment
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|i
-op_plus
-l_int|1
-)paren
-op_mod
-l_int|3
-)paren
-op_eq
-l_int|0
-op_logical_or
-(paren
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-l_string|&quot;GR16&quot;
-comma
-id|min_state_labels
-(braket
-id|i
-)braket
-)paren
-)paren
-op_logical_and
-op_logical_neg
-id|ia64_pmss_dump_bank0
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * ia64_mca_cmc_vector_setup&n; *&n; *  Setup the corrected machine check vector register in the processor and&n; *  unmask interrupt.  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      None&n; *&n; * Outputs&n; *&t;None&n; */
@@ -1400,11 +1232,6 @@ c_func
 id|SAL_INFO_TYPE_CPE
 )paren
 suffix:semicolon
-multiline_comment|/* Zero the min state save info */
-id|ia64_mca_min_state_save_info
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#if defined(MCA_TEST)
 id|mca_test
 c_func
@@ -1418,16 +1245,15 @@ c_func
 l_string|&quot;Mca related initialization done&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0   
-singleline_comment|// Too early in initialization -- error log is lost
+multiline_comment|/* commented out because this is done elsewhere */
+macro_line|#if 0
 multiline_comment|/* Do post-failure MCA error logging */
 id|ia64_mca_check_errors
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif  
-singleline_comment|// Too early in initialization -- error log is lost
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup_ipi_wait&n; *&n; *&t;Wait for the inter-cpu interrupt to be sent by the&n; *&t;monarch processor once it is done with handling the&n; *&t;MCA.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
 r_void
@@ -1652,7 +1478,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Mask all interrupts */
-macro_line|#warning XXX fix me: this used to be: save_and_cli(flags);
 id|local_irq_save
 c_func
 (paren
@@ -1748,10 +1573,8 @@ op_assign
 id|IA64_MCA_SAME_CONTEXT
 suffix:semicolon
 multiline_comment|/* Register pointer to new min state values */
-multiline_comment|/* NOTE: need to do something with this during recovery phase */
 id|ia64_os_to_sal_handoff_state.imots_new_min_state
 op_assign
-op_amp
 id|ia64_mca_min_state_save_info
 suffix:semicolon
 )brace
@@ -1776,6 +1599,8 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_MCA
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Do Platform-specific mca error handling if required.&n;&t; */
@@ -1839,6 +1664,8 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_CMC
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1981,8 +1808,6 @@ c_func
 (paren
 op_amp
 id|proc_ptr-&gt;processor_static_info.min_state_area
-comma
-id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the INIT SAL logs now that they have been saved in the OS buffer */
@@ -5157,6 +4982,14 @@ id|sal_processor_static_info_t
 op_star
 )paren
 id|p_data
+suffix:semicolon
+multiline_comment|/* copy interrupted context PAL min-state info */
+id|ia64_process_min_state_save
+c_func
+(paren
+op_amp
+id|spsi-&gt;min_state_area
+)paren
 suffix:semicolon
 multiline_comment|/* Print branch register contents if valid */
 r_if

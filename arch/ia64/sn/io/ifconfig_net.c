@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  ifconfig_net - SGI&squot;s Persistent Network Device names.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/* $Id: ifconfig_net.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  ifconfig_net - SGI&squot;s Persistent Network Device names.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -584,6 +584,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Read in the header and see how big of a buffer we really need to &n;&t; * allocate.&n;&t; */
 id|ifname_num
 op_assign
+(paren
+r_struct
+id|ifname_num
+op_star
+)paren
 id|kmalloc
 c_func
 (paren
@@ -596,19 +601,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ifname_num
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -626,19 +618,7 @@ r_struct
 id|ifname_num
 )paren
 )paren
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ifname_num
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 id|size
 op_assign
 id|ifname_num-&gt;size
@@ -651,6 +631,11 @@ id|ifname_num
 suffix:semicolon
 id|ifname_num
 op_assign
+(paren
+r_struct
+id|ifname_num
+op_star
+)paren
 id|kmalloc
 c_func
 (paren
@@ -658,16 +643,6 @@ id|size
 comma
 id|GFP_KERNEL
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ifname_num
-)paren
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
 id|ifname_MAC
 op_assign
@@ -692,9 +667,6 @@ id|ifname_num
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -708,19 +680,7 @@ id|arg
 comma
 id|size
 )paren
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ifname_num
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 id|new_devices
 op_assign
 id|kmalloc
@@ -737,24 +697,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|new_devices
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|ifname_num
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 id|temp_new_devices
 op_assign
 id|new_devices
@@ -935,9 +877,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Copy back to the User Buffer area any new devices encountered.&n;&t; */
-r_if
-c_cond
-(paren
 id|copy_to_user
 c_func
 (paren
@@ -965,10 +904,6 @@ r_struct
 id|ifname_num
 )paren
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -980,21 +915,18 @@ id|file_operations
 id|ifconfig_net_fops
 op_assign
 (brace
-dot
 id|ioctl
-op_assign
+suffix:colon
 id|ifconfig_net_ioctl
 comma
 multiline_comment|/* ioctl */
-dot
 id|open
-op_assign
+suffix:colon
 id|ifconfig_net_open
 comma
 multiline_comment|/* open */
-dot
 id|release
-op_assign
+suffix:colon
 id|ifconfig_net_close
 multiline_comment|/* release */
 )brace
