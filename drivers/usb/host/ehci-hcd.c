@@ -3237,8 +3237,6 @@ id|qh-&gt;qtd_list
 (brace
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon

@@ -999,8 +999,6 @@ id|qh
 suffix:semicolon
 id|qh_put
 (paren
-id|ehci
-comma
 id|qh
 )paren
 suffix:semicolon
@@ -1140,7 +1138,7 @@ comma
 id|atomic_read
 (paren
 op_amp
-id|qh-&gt;refcount
+id|qh-&gt;kref.refcount
 )paren
 comma
 id|ehci-&gt;periodic_sched
@@ -7162,8 +7160,6 @@ l_int|0
 suffix:semicolon
 id|qh_put
 (paren
-id|ehci
-comma
 id|temp.qh
 )paren
 suffix:semicolon

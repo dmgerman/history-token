@@ -852,9 +852,16 @@ op_star
 id|reclaim
 suffix:semicolon
 multiline_comment|/* next to reclaim */
-DECL|member|refcount
-id|atomic_t
-id|refcount
+DECL|member|ehci
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+suffix:semicolon
+DECL|member|kref
+r_struct
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|stamp
 r_int
