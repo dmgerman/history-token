@@ -66,124 +66,26 @@ mdefine_line|#define WD_S_RUNNING&t;0x01&t;/* Watchdog device status running&t;*
 DECL|macro|WD_S_EXPIRED
 mdefine_line|#define WD_S_EXPIRED&t;0x02&t;/* Watchdog device status expired&t;*/
 multiline_comment|/* Sun uses Altera PLD EPF8820ATC144-4 &n; * providing three hardware watchdogs:&n; *&n; * &t;1) RIC - sends an interrupt when triggered&n; * &t;2) XIR - asserts XIR_B_RESET when triggered, resets CPU&n; * &t;3) POR - asserts POR_B_RESET when triggered, resets CPU, backplane, board&n; *&n; *** Timer register block definition (struct wd_timer_regblk)&n; *&n; * dcntr and limit registers (halfword access):      &n; * -------------------&n; * | 15 | ...| 1 | 0 |&n; * -------------------&n; * |-  counter val  -|&n; * -------------------&n; * dcntr - &t;Current 16-bit downcounter value.&n; * &t;&t;&t;When downcounter reaches &squot;0&squot; watchdog expires.&n; * &t;&t;&t;Reading this register resets downcounter with &squot;limit&squot; value.&n; * limit - &t;16-bit countdown value in 1/10th second increments.&n; * &t;&t;&t;Writing this register begins countdown with input value.&n; * &t;&t;&t;Reading from this register does not affect counter.&n; * NOTES:&t;After watchdog reset, dcntr and limit contain &squot;1&squot;&n; *&n; * status register (byte access):&n; * ---------------------------&n; * | 7 | ... | 2 |  1  |  0  |&n; * --------------+------------&n; * |-   UNUSED  -| EXP | RUN |&n; * ---------------------------&n; * status-&t;Bit 0 - Watchdog is running&n; * &t;&t;&t;Bit 1 - Watchdog has expired&n; *&n; *** PLD register block definition (struct wd_pld_regblk)&n; *&n; * intr_mask register (byte access):&n; * ---------------------------------&n; * | 7 | ... | 3 |  2  |  1  |  0  |&n; * +-------------+------------------&n; * |-   UNUSED  -| WD3 | WD2 | WD1 |&n; * ---------------------------------&n; * WD3 -  1 == Interrupt disabled for watchdog 3&n; * WD2 -  1 == Interrupt disabled for watchdog 2&n; * WD1 -  1 == Interrupt disabled for watchdog 1&n; *&n; * pld_status register (byte access):&n; * UNKNOWN, MAGICAL MYSTERY REGISTER&n; *&n; */
-DECL|struct|wd_timer_regblk
-r_struct
-id|wd_timer_regblk
-(brace
-DECL|member|dcntr
-r_volatile
-id|__u16
-id|dcntr
-suffix:semicolon
-multiline_comment|/* down counter&t;&t;- hw&t;*/
-DECL|member|dcntr_pad
-r_volatile
-id|__u16
-id|dcntr_pad
-suffix:semicolon
-DECL|member|limit
-r_volatile
-id|__u16
-id|limit
-suffix:semicolon
-multiline_comment|/* limit register&t;- hw&t;*/
-DECL|member|limit_pad
-r_volatile
-id|__u16
-id|limit_pad
-suffix:semicolon
-DECL|member|status
-r_volatile
-id|__u8
-id|status
-suffix:semicolon
-multiline_comment|/* status register&t;- b&t;&t;*/
-DECL|member|status_pad
-r_volatile
-id|__u8
-id|status_pad
-suffix:semicolon
-DECL|member|status_pad2
-r_volatile
-id|__u16
-id|status_pad2
-suffix:semicolon
-DECL|member|pad32
-r_volatile
-id|__u32
-id|pad32
-suffix:semicolon
-multiline_comment|/* yet more padding&t;&t;&t;*/
-)brace
-suffix:semicolon
-DECL|struct|wd_pld_regblk
-r_struct
-id|wd_pld_regblk
-(brace
-DECL|member|intr_mask
-r_volatile
-id|__u8
-id|intr_mask
-suffix:semicolon
-multiline_comment|/* interrupt mask&t;- b&t;&t;*/
-DECL|member|intr_mask_pad
-r_volatile
-id|__u8
-id|intr_mask_pad
-suffix:semicolon
-DECL|member|intr_mask_pad2
-r_volatile
-id|__u16
-id|intr_mask_pad2
-suffix:semicolon
-DECL|member|status
-r_volatile
-id|__u8
-id|status
-suffix:semicolon
-multiline_comment|/* device status&t;- b&t;&t;*/
-DECL|member|status_pad
-r_volatile
-id|__u8
-id|status_pad
-suffix:semicolon
-DECL|member|status_pad2
-r_volatile
-id|__u16
-id|status_pad2
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|wd_regblk
-r_struct
-id|wd_regblk
-(brace
-DECL|member|wd0_regs
-r_volatile
-r_struct
-id|wd_timer_regblk
-id|wd0_regs
-suffix:semicolon
-DECL|member|wd1_regs
-r_volatile
-r_struct
-id|wd_timer_regblk
-id|wd1_regs
-suffix:semicolon
-DECL|member|wd2_regs
-r_volatile
-r_struct
-id|wd_timer_regblk
-id|wd2_regs
-suffix:semicolon
-DECL|member|pld_regs
-r_volatile
-r_struct
-id|wd_pld_regblk
-id|pld_regs
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|WD_TIMER_REGSZ
+mdefine_line|#define WD_TIMER_REGSZ&t;16
+DECL|macro|WD0_OFF
+mdefine_line|#define WD0_OFF&t;&t;0
+DECL|macro|WD1_OFF
+mdefine_line|#define WD1_OFF&t;&t;(WD_TIMER_REGSZ * 1)
+DECL|macro|WD2_OFF
+mdefine_line|#define WD2_OFF&t;&t;(WD_TIMER_REGSZ * 2)
+DECL|macro|PLD_OFF
+mdefine_line|#define PLD_OFF&t;&t;(WD_TIMER_REGSZ * 3)
+DECL|macro|WD_DCNTR
+mdefine_line|#define WD_DCNTR&t;0x00
+DECL|macro|WD_LIMIT
+mdefine_line|#define WD_LIMIT&t;0x04
+DECL|macro|WD_STATUS
+mdefine_line|#define WD_STATUS&t;0x08
+DECL|macro|PLD_IMASK
+mdefine_line|#define PLD_IMASK&t;(PLD_OFF + 0x00)
+DECL|macro|PLD_STATUS
+mdefine_line|#define PLD_STATUS&t;(PLD_OFF + 0x04)
 multiline_comment|/* Individual timer structure &n; */
 DECL|struct|wd_timer
 r_struct
@@ -203,9 +105,8 @@ r_char
 id|runstatus
 suffix:semicolon
 DECL|member|regs
-r_volatile
-r_struct
-id|wd_timer_regblk
+r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -259,9 +160,8 @@ id|WD_NUMDEVS
 )braket
 suffix:semicolon
 DECL|member|regs
-r_volatile
-r_struct
-id|wd_regblk
+r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -1721,44 +1621,36 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;tintr_mask  at 0x%lx: 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tintr_mask  at %p: 0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.intr_mask
-)paren
+id|wd_dev.regs
+op_plus
+id|PLD_IMASK
 comma
 id|readb
 c_func
 (paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.intr_mask
+id|wd_dev.regs
+op_plus
+id|PLD_IMASK
 )paren
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;tpld_status at 0x%lx: 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;tpld_status at %p: 0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.status
-)paren
+id|wd_dev.regs
+op_plus
+id|PLD_STATUS
 comma
 id|readb
 c_func
 (paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.status
+id|wd_dev.regs
+op_plus
+id|PLD_STATUS
 )paren
 )paren
 suffix:semicolon
@@ -1787,8 +1679,9 @@ op_assign
 id|wd_readb
 c_func
 (paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.intr_mask
+id|wd_dev.regs
+op_plus
+id|PLD_IMASK
 )paren
 suffix:semicolon
 r_int
@@ -1839,8 +1732,9 @@ c_func
 (paren
 id|curregs
 comma
-op_amp
-id|wd_dev.regs-&gt;pld_regs.intr_mask
+id|wd_dev.regs
+op_plus
+id|PLD_IMASK
 )paren
 suffix:semicolon
 r_return
@@ -1865,8 +1759,9 @@ c_cond
 id|wd_readb
 c_func
 (paren
-op_amp
-id|pTimer-&gt;regs-&gt;status
+id|pTimer-&gt;regs
+op_plus
+id|WD_STATUS
 )paren
 op_amp
 id|WD_S_RUNNING
@@ -1875,8 +1770,9 @@ id|WD_S_RUNNING
 id|wd_readw
 c_func
 (paren
-op_amp
-id|pTimer-&gt;regs-&gt;dcntr
+id|pTimer-&gt;regs
+op_plus
+id|WD_DCNTR
 )paren
 suffix:semicolon
 )brace
@@ -1900,8 +1796,9 @@ c_cond
 id|wd_readb
 c_func
 (paren
-op_amp
-id|pTimer-&gt;regs-&gt;status
+id|pTimer-&gt;regs
+op_plus
+id|WD_STATUS
 )paren
 op_amp
 id|WD_S_RUNNING
@@ -1974,8 +1871,9 @@ c_func
 (paren
 id|pTimer-&gt;timeout
 comma
-op_amp
-id|pTimer-&gt;regs-&gt;limit
+id|pTimer-&gt;regs
+op_plus
+id|WD_LIMIT
 )paren
 suffix:semicolon
 id|wd_toggleintr
@@ -2013,8 +1911,9 @@ c_func
 (paren
 id|WD_BLIMIT
 comma
-op_amp
-id|pTimer-&gt;regs-&gt;limit
+id|pTimer-&gt;regs
+op_plus
+id|WD_LIMIT
 )paren
 suffix:semicolon
 )brace
@@ -2034,9 +1933,8 @@ id|miscdevice
 op_star
 id|whichmisc
 suffix:semicolon
-r_volatile
-r_struct
-id|wd_timer_regblk
+r_void
+id|__iomem
 op_star
 id|whichregs
 suffix:semicolon
@@ -2076,8 +1974,9 @@ l_string|&quot;RIC&quot;
 suffix:semicolon
 id|whichregs
 op_assign
-op_amp
-id|wd_dev.regs-&gt;wd0_regs
+id|wd_dev.regs
+op_plus
+id|WD0_OFF
 suffix:semicolon
 id|whichmask
 op_assign
@@ -2120,8 +2019,9 @@ l_string|&quot;XIR&quot;
 suffix:semicolon
 id|whichregs
 op_assign
-op_amp
-id|wd_dev.regs-&gt;wd1_regs
+id|wd_dev.regs
+op_plus
+id|WD1_OFF
 suffix:semicolon
 id|whichmask
 op_assign
@@ -2164,8 +2064,9 @@ l_string|&quot;POR&quot;
 suffix:semicolon
 id|whichregs
 op_assign
-op_amp
-id|wd_dev.regs-&gt;wd2_regs
+id|wd_dev.regs
+op_plus
+id|WD2_OFF
 suffix:semicolon
 id|whichmask
 op_assign
@@ -2455,8 +2356,9 @@ op_assign
 id|wd_readb
 c_func
 (paren
-op_amp
-id|pTimer-&gt;regs-&gt;status
+id|pTimer-&gt;regs
+op_plus
+id|WD_STATUS
 )paren
 suffix:semicolon
 r_int
@@ -2466,8 +2368,9 @@ op_assign
 id|wd_readb
 c_func
 (paren
-op_amp
-id|wd_dev.regs-&gt;pld_regs.intr_mask
+id|wd_dev.regs
+op_plus
+id|PLD_IMASK
 )paren
 suffix:semicolon
 r_int
@@ -2886,13 +2789,14 @@ op_eq
 id|wd_readb
 c_func
 (paren
-op_amp
 id|wd_dev.watchdog
 (braket
 id|id
 )braket
 dot
-id|regs-&gt;status
+id|regs
+op_plus
+id|WD_STATUS
 )paren
 )paren
 (brace
@@ -2964,13 +2868,14 @@ comma
 id|wd_readw
 c_func
 (paren
-op_amp
 id|wd_dev.watchdog
 (braket
 id|id
 )braket
 dot
-id|regs-&gt;limit
+id|regs
+op_plus
+id|WD_LIMIT
 )paren
 op_div
 l_int|10
