@@ -966,12 +966,19 @@ id|sym
 )paren
 )paren
 (brace
-id|prop
+r_struct
+id|symbol
+op_star
+id|cs
 op_assign
+id|prop_get_symbol
+c_func
+(paren
 id|sym_get_choice_prop
 c_func
 (paren
 id|sym
+)paren
 )paren
 suffix:semicolon
 r_switch
@@ -986,7 +993,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|prop-&gt;def-&gt;user.tri
+id|cs-&gt;user.tri
 op_eq
 id|yes
 )paren
@@ -1000,13 +1007,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|prop-&gt;def-&gt;user.tri
+id|cs-&gt;user.tri
 op_ne
 id|no
 )paren
 multiline_comment|/* warn? */
 suffix:semicolon
-id|prop-&gt;def-&gt;user.val
+id|cs-&gt;user.val
 op_assign
 id|sym
 suffix:semicolon
@@ -1018,7 +1025,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|prop-&gt;def-&gt;user.tri
+id|cs-&gt;user.tri
 op_assign
 id|sym-&gt;user.tri
 suffix:semicolon

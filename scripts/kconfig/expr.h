@@ -339,12 +339,6 @@ r_char
 op_star
 id|text
 suffix:semicolon
-DECL|member|def
-r_struct
-id|symbol
-op_star
-id|def
-suffix:semicolon
 DECL|member|visible
 r_struct
 id|expr_value
