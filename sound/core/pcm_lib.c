@@ -155,6 +155,11 @@ id|frames
 op_assign
 id|runtime-&gt;silence_size
 suffix:semicolon
+r_else
+id|frames
+op_assign
+id|runtime-&gt;silence_threshold
+suffix:semicolon
 )brace
 r_else
 (brace

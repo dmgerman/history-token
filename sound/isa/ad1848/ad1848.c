@@ -109,6 +109,15 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 0,1,3,5,6,7 */
+DECL|variable|thinkpad
+r_static
+r_int
+id|thinkpad
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
+multiline_comment|/* Thinkpad special case */
 id|MODULE_PARM
 c_func
 (paren
@@ -289,6 +298,38 @@ comma
 id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|thinkpad
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|thinkpad
+comma
+l_string|&quot;Enable only for the onboard CS4248 of IBM Thinkpad 360/750/755 series.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|thinkpad
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_FALSE_DESC
+)paren
+suffix:semicolon
 DECL|variable|snd_ad1848_cards
 r_static
 id|snd_card_t
@@ -340,7 +381,8 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify port&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ad1848: specify port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -362,7 +404,8 @@ id|SNDRV_AUTO_IRQ
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify irq&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ad1848: specify irq&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -384,7 +427,8 @@ id|SNDRV_AUTO_DMA
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify dma1&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ad1848: specify dma1&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -449,6 +493,14 @@ id|dma1
 id|dev
 )braket
 comma
+id|thinkpad
+(braket
+id|dev
+)braket
+ques
+c_cond
+id|AD1848_HW_THINKPAD
+suffix:colon
 id|AD1848_HW_DETECT
 comma
 op_amp
@@ -564,6 +616,24 @@ id|dev
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|thinkpad
+(braket
+id|dev
+)braket
+)paren
+(brace
+id|strcat
+c_func
+(paren
+id|card-&gt;longname
+comma
+l_string|&quot; [Thinkpad]&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -845,6 +915,21 @@ id|str
 comma
 op_amp
 id|dma1
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|thinkpad
 (braket
 id|nr_dev
 )braket

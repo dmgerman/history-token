@@ -39,7 +39,7 @@ l_string|&quot;{{Creative Labs,SB Live!/PCI512/E-mu APS},&quot;
 l_string|&quot;{Creative Labs,SB Audigy}}&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 DECL|macro|ENABLE_SYNTH
 mdefine_line|#define ENABLE_SYNTH
 macro_line|#include &lt;sound/emu10k1_synth.h&gt;

@@ -7203,7 +7203,7 @@ id|rmidi
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 DECL|function|snd_rawmidi_dev_seq_free
 r_static
 r_void
@@ -7656,7 +7656,7 @@ id|rmidi-&gt;proc_entry
 op_assign
 id|entry
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_if
 c_cond
 (paren
@@ -7975,7 +7975,7 @@ op_amp
 id|register_mutex
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_if
 c_cond
 (paren

@@ -1901,7 +1901,7 @@ id|hwdep_mappers
 (braket
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_SEQUENCER
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_extern
 r_struct
 id|ioctl32_mapper
@@ -1919,7 +1919,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SND_SEQUENCER
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 id|snd_ioctl32_unregister
 c_func
 (paren
@@ -1998,7 +1998,7 @@ c_func
 id|hwdep_mappers
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_SEQUENCER
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 id|snd_ioctl32_register
 c_func
 (paren

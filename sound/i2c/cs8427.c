@@ -211,7 +211,6 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|snd_cs8427_reg_write
-r_static
 r_int
 id|snd_cs8427_reg_write
 c_func
@@ -310,7 +309,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_cs8427_reg_read
-r_static
 r_int
 id|snd_cs8427_reg_read
 c_func
@@ -3007,6 +3005,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_cs8427_reset
+)paren
+suffix:semicolon
+DECL|variable|snd_cs8427_reg_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_cs8427_reg_write
+)paren
+suffix:semicolon
+DECL|variable|snd_cs8427_reg_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_cs8427_reg_read
 )paren
 suffix:semicolon
 DECL|variable|snd_cs8427_iec958_build

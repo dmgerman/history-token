@@ -7858,6 +7858,13 @@ c_cond
 (paren
 id|chip-&gt;suspend
 )paren
+(brace
+id|snd_pcm_suspend_all
+c_func
+(paren
+id|chip-&gt;pcm
+)paren
+suffix:semicolon
 (paren
 op_star
 id|chip-&gt;suspend
@@ -7866,6 +7873,7 @@ id|chip-&gt;suspend
 id|chip
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

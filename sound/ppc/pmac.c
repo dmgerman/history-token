@@ -3173,7 +3173,7 @@ comma
 id|FEATURE_Sound_CLK_enable
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|1000

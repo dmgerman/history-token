@@ -2039,6 +2039,7 @@ op_amp
 id|timeri-&gt;ack_list
 )paren
 suffix:semicolon
+macro_line|#if 0   /* FIXME: this causes dead lock with the sequencer timer */
 multiline_comment|/* wait until the callback is finished */
 r_while
 c_loop
@@ -2073,6 +2074,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|list_del_init
 c_func
 (paren
@@ -8658,13 +8660,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|tu-&gt;qlock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8673,6 +8668,13 @@ OL
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|tu-&gt;qlock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8767,6 +8769,13 @@ id|tu-&gt;qused
 op_decrement
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|tu-&gt;qlock
+)paren
+suffix:semicolon
 r_return
 id|result
 OG

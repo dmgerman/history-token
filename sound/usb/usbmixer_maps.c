@@ -205,6 +205,64 @@ l_int|0
 multiline_comment|/* terminator */
 )brace
 suffix:semicolon
+multiline_comment|/* Section &quot;justlink_map&quot; below added by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; * sourced from Maplin Electronics (http://www.maplin.co.uk), part number A56AK&n; * Part has 2 connectors that act as a single output. (TOSLINK Optical for digital out, and 3.5mm Jack for Analogue out.)&n; * The USB Mixer publishes a Microphone and extra Volume controls for it, but none exist on the device,&n; * so this map removes all unwanted sliders from alsamixer&n; */
+DECL|variable|justlink_map
+r_static
+r_struct
+id|usbmix_name_map
+id|justlink_map
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* 1: IT pcm playback */
+multiline_comment|/* 2: Not present */
+(brace
+l_int|3
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* IT mic (No mic input on device) */
+multiline_comment|/* 4: Not present */
+multiline_comment|/* 5: OT speacker */
+multiline_comment|/* 6: OT pcm capture */
+(brace
+l_int|7
+comma
+l_string|&quot;Master Playback&quot;
+)brace
+comma
+multiline_comment|/* Mute/volume for speaker */
+(brace
+l_int|8
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Capture Switch (No capture inputs on device) */
+(brace
+l_int|9
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Capture Mute/volume (No capture inputs on device */
+multiline_comment|/* 0xa: Not present */
+multiline_comment|/* 0xb: MU (w/o controls) */
+(brace
+l_int|0xc
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Mic feedback Mute/volume (No capture inputs on device) */
+(brace
+l_int|0
+)brace
+multiline_comment|/* terminator */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Control map entries&n; */
 DECL|variable|usbmix_ctl_maps
 r_static
@@ -221,6 +279,14 @@ comma
 l_int|0x3000
 comma
 id|extigy_map
+)brace
+comma
+(brace
+l_int|0xc45
+comma
+l_int|0x1158
+comma
+id|justlink_map
 )brace
 comma
 (brace

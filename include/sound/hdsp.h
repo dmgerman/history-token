@@ -13,6 +13,9 @@ comma
 DECL|enumerator|Multiface
 id|Multiface
 comma
+DECL|enumerator|H9652
+id|H9652
+comma
 DECL|enumerator|Undefined
 id|Undefined
 comma

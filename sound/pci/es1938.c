@@ -543,7 +543,7 @@ id|snd_info_entry_t
 op_star
 id|proc_entry
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|member|gameport
 r_struct
 id|gameport
@@ -6591,7 +6591,7 @@ id|chip
 )paren
 (brace
 multiline_comment|/*if (chip-&gt;rmidi)&n;&t;  snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0);*/
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -8369,7 +8369,7 @@ l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*else&n;&t;    snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0x40);*/
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 id|chip-&gt;gameport.io
 op_assign
 id|chip-&gt;game_port
