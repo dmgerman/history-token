@@ -1,21 +1,12 @@
 multiline_comment|/*&n; * RocketPort device driver for Linux&n; *&n; * Written by Theodore Ts&squot;o, 1995, 1996, 1997, 1998, 1999, 2000.&n; * &n; * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2003 by Comtrol, Inc.&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * Kernel Synchronization:&n; *&n; * This driver has 2 kernel control paths - exception handlers (calls into the driver&n; * from user mode) and the timer bottom half (tasklet).  This is a polled driver, interrupts&n; * are not used.&n; *&n; * Critical data: &n; * -  rp_table[], accessed through passed &quot;info&quot; pointers, is a global (static) array of &n; *    serial port state information and the xmit_buf circular buffer.  Protected by &n; *    a per port spinlock.&n; * -  xmit_flags[], an array of ints indexed by line (port) number, indicating that there&n; *    is data to be transmitted.  Protected by atomic bit operations.&n; * -  rp_num_ports, int indicating number of open ports, protected by atomic operations.&n; * &n; * rp_write() and rp_write_char() functions use a per port semaphore to protect against&n; * simultaneous access to the same port by more than one process.&n; */
 multiline_comment|/****** Defines ******/
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef PCI_NUM_RESOURCES
 DECL|macro|PCI_BASE_ADDRESS
 mdefine_line|#define PCI_BASE_ADDRESS(dev, r) ((dev)-&gt;resource[r].start)
 macro_line|#else
 DECL|macro|PCI_BASE_ADDRESS
 mdefine_line|#define PCI_BASE_ADDRESS(dev, r) ((dev)-&gt;base_address[r])
-macro_line|#endif
-macro_line|#ifndef VERSION_CODE
-DECL|macro|VERSION_CODE
-macro_line|#  define VERSION_CODE(vers,rel,seq) ( ((vers)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq) )
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION_CODE(2,2,9)&t;/*  No version &lt; 2.2 */
-macro_line|#  error &quot;This kernel is too old: not supported by this file&quot;
 macro_line|#endif
 DECL|macro|ROCKET_PARANOIA_CHECK
 mdefine_line|#define ROCKET_PARANOIA_CHECK
@@ -43,48 +34,18 @@ DECL|macro|REV_PCI_ORDER
 macro_line|#undef REV_PCI_ORDER
 DECL|macro|ROCKET_DEBUG_IO
 macro_line|#undef ROCKET_DEBUG_IO
-multiline_comment|/*   CAUTION!!!!!  The TIME_STAT Function relies on the Pentium 64 bit&n; *    register.  For various reasons related to 1.2.13, the test for this&n; *    register is omitted from this driver.  If you are going to enable&n; *    this option, make sure you are running a Pentium CPU and that a&n; *    cat of /proc/cpuinfo shows ability TS Counters as Yes.  Warning part&n; *    done, don&squot;t cry to me if you enable this options and things won&squot;t&n; *    work.  If it gives you any problems, then disable the option.  The code&n; *    in this function is pretty straight forward, if it breaks on your&n; *    CPU, there is probably something funny about your CPU.&n; */
-DECL|macro|TIME_STAT
-macro_line|#undef TIME_STAT&t;&t;/* For performing timing statistics on driver. */
-multiline_comment|/* Produces printks, one every TIME_COUNTER loops, eats */
-multiline_comment|/* some of your CPU time.  Good for testing or */
-multiline_comment|/* other checking, otherwise, leave it undefed */
-multiline_comment|/* Doug Ledford */
-DECL|macro|TIME_STAT_CPU
-mdefine_line|#define TIME_STAT_CPU 100&t;/* This needs to be set to your processor speed */
-multiline_comment|/* For example, 100Mhz CPU, set this to 100 */
-DECL|macro|TIME_COUNTER
-mdefine_line|#define TIME_COUNTER 180000&t;/* This is how many iterations to run before */
-multiline_comment|/* performing the printk statements.   */
-multiline_comment|/* 6000 = 1 minute, 360000 = 1 hour, etc. */
-multiline_comment|/* Since time_stat is long long, this */
-multiline_comment|/* Can be really high if you want :)  */
-DECL|macro|TIME_STAT_VERBOSE
-macro_line|#undef TIME_STAT_VERBOSE&t;/* Undef this if you want a terse log message. */
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION_CODE(2,4,0)
-DECL|macro|TTY_DRIVER_NO_DEVFS
-mdefine_line|#define TTY_DRIVER_NO_DEVFS 0
-macro_line|#endif
 DECL|macro|POLL_PERIOD
 mdefine_line|#define POLL_PERIOD HZ/100&t;/*  Polling period .01 seconds (10ms) */
 multiline_comment|/****** Kernel includes ******/
 macro_line|#ifdef MODVERSIONS
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION_CODE(2,5,00)
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#else
 macro_line|#include &lt;config/modversions.h&gt;
-macro_line|#endif
 macro_line|#endif&t;&t;&t;&t;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION_CODE(2,4,0)
-macro_line|#include &lt;linux/malloc.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -110,18 +71,10 @@ macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/****** RocketPort includes ******/
 macro_line|#include &quot;rocket_int.h&quot;
 macro_line|#include &quot;rocket.h&quot;
-macro_line|#ifdef LOCAL_ROCKET_H
-macro_line|#include &quot;version.h&quot;
-macro_line|#else
 DECL|macro|ROCKET_VERSION
-mdefine_line|#define ROCKET_VERSION &quot;2.08&quot;
+mdefine_line|#define ROCKET_VERSION &quot;2.09&quot;
 DECL|macro|ROCKET_DATE
-mdefine_line|#define ROCKET_DATE &quot;02-June-2003&quot;
-macro_line|#endif&t;&t;&t;&t;/* LOCAL_ROCKET_H */
-multiline_comment|/*&n; * All of the compatibilty code so we can compile serial.c against&n; * older kernels is hidden in rocket_compat.h&n; */
-macro_line|#if defined(LOCAL_ROCKET_H) || (LINUX_VERSION_CODE &lt; VERSION_CODE(2,3,23))
-macro_line|#include &quot;rocket_compat.h&quot;
-macro_line|#endif
+mdefine_line|#define ROCKET_DATE &quot;12-June-2003&quot;
 multiline_comment|/****** RocketPort Local Variables ******/
 DECL|variable|rocket_driver
 r_static
@@ -340,33 +293,6 @@ r_static
 r_int
 id|max_board
 suffix:semicolon
-macro_line|#ifdef TIME_STAT
-DECL|variable|time_stat
-r_static
-r_int
-r_int
-r_int
-id|time_stat
-suffix:semicolon
-DECL|variable|time_stat_short
-r_static
-r_int
-r_int
-id|time_stat_short
-suffix:semicolon
-DECL|variable|time_stat_long
-r_static
-r_int
-r_int
-id|time_stat_long
-suffix:semicolon
-DECL|variable|time_counter
-r_static
-r_int
-r_int
-id|time_counter
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * The following arrays define the interrupt bits corresponding to each AIOP.&n; * These bits are different between the ISA and regular PCI boards and the&n; * Universal PCI boards.&n; */
 DECL|variable|aiop_intr_bits
 r_static
@@ -429,10 +355,6 @@ c_func
 (paren
 r_int
 id|i
-comma
-r_int
-op_star
-id|reserved_controller
 )paren
 suffix:semicolon
 r_static
@@ -1949,59 +1871,6 @@ suffix:semicolon
 id|Word_t
 id|bit
 suffix:semicolon
-macro_line|#ifdef TIME_STAT
-r_int
-r_int
-id|low
-op_assign
-l_int|0
-comma
-id|high
-op_assign
-l_int|0
-comma
-id|loop_time
-suffix:semicolon
-r_int
-r_int
-r_int
-id|time_stat_tmp
-op_assign
-l_int|0
-comma
-id|time_stat_tmp2
-op_assign
-l_int|0
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;.byte 0x0f,0x31&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|low
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|high
-)paren
-)paren
-suffix:semicolon
-id|time_stat_tmp
-op_assign
-id|high
-suffix:semicolon
-id|time_stat_tmp
-op_lshift_assign
-l_int|32
-suffix:semicolon
-id|time_stat_tmp
-op_add_assign
-id|low
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* TIME_STAT */
 multiline_comment|/*  Walk through all the boards (ctrl&squot;s) */
 r_for
 c_loop
@@ -2272,231 +2141,6 @@ op_plus
 id|POLL_PERIOD
 )paren
 suffix:semicolon
-macro_line|#ifdef TIME_STAT
-id|__asm__
-c_func
-(paren
-l_string|&quot;.byte 0x0f,0x31&quot;
-suffix:colon
-l_string|&quot;=a&quot;
-(paren
-id|low
-)paren
-comma
-l_string|&quot;=d&quot;
-(paren
-id|high
-)paren
-)paren
-suffix:semicolon
-id|time_stat_tmp2
-op_assign
-id|high
-suffix:semicolon
-id|time_stat_tmp2
-op_lshift_assign
-l_int|32
-suffix:semicolon
-id|time_stat_tmp2
-op_add_assign
-id|low
-suffix:semicolon
-id|time_stat_tmp2
-op_sub_assign
-id|time_stat_tmp
-suffix:semicolon
-id|time_stat
-op_add_assign
-id|time_stat_tmp2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_counter
-op_eq
-l_int|0
-)paren
-id|time_stat_short
-op_assign
-id|time_stat_long
-op_assign
-id|time_stat_tmp2
-suffix:semicolon
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|time_stat_tmp2
-OL
-id|time_stat_short
-)paren
-id|time_stat_short
-op_assign
-id|time_stat_tmp2
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|time_stat_tmp2
-OG
-id|time_stat_long
-)paren
-id|time_stat_long
-op_assign
-id|time_stat_tmp2
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_increment
-id|time_counter
-op_eq
-id|TIME_COUNTER
-)paren
-(brace
-id|loop_time
-op_assign
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-(paren
-id|time_stat
-op_rshift
-l_int|32
-)paren
-op_star
-(paren
-(paren
-r_int
-r_int
-)paren
-(paren
-l_int|0xffffffff
-)paren
-op_div
-(paren
-id|TIME_STAT_CPU
-op_star
-id|TIME_COUNTER
-)paren
-)paren
-)paren
-op_plus
-(paren
-(paren
-r_int
-r_int
-)paren
-id|time_stat
-op_div
-(paren
-id|TIME_STAT_CPU
-op_star
-id|TIME_COUNTER
-)paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef TIME_STAT_VERBOSE
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;rp_do_poll: Interrupt Timings&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;     %5ld iterations; %ld us min,&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|TIME_COUNTER
-comma
-(paren
-id|time_stat_short
-op_div
-id|TIME_STAT_CPU
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;     %5ld us max, %ld us average per iteration.&bslash;n&quot;
-comma
-(paren
-id|time_stat_long
-op_div
-id|TIME_STAT_CPU
-)paren
-comma
-id|loop_time
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;We want to use &lt; 5,000 us for an iteration.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#else&t;&t;&t;&t;/* TIME_STAT_VERBOSE */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;rp: %ld loops: %ld min, %ld max, %ld us/loop.&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|TIME_COUNTER
-comma
-(paren
-id|time_stat_short
-op_div
-id|TIME_STAT_CPU
-)paren
-comma
-(paren
-id|time_stat_long
-op_div
-id|TIME_STAT_CPU
-)paren
-comma
-id|loop_time
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* TIME_STAT_VERBOSE */
-id|time_counter
-op_assign
-id|time_stat
-op_assign
-l_int|0
-suffix:semicolon
-id|time_stat_short
-op_assign
-id|time_stat_long
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;&t;/* TIME_STAT */
 )brace
 multiline_comment|/*&n; *  Initializes the r_port structure for a port, as well as enabling the port on &n; *  the board.  &n; *  Inputs:  board, aiop, chan numbers&n; */
 DECL|function|init_r_port
@@ -2890,7 +2534,6 @@ id|line
 op_assign
 id|info
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,0)
 r_if
 c_cond
 (paren
@@ -2907,7 +2550,6 @@ op_amp
 id|pci_dev-&gt;dev
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; *  Configures a rocketport port according to its termio settings.  Called from &n; *  user mode into the driver (exception handler).  *info CD manipulation is spinlock protected.&n; */
 DECL|function|configure_r_port
@@ -4088,7 +3730,6 @@ r_int
 r_int
 id|page
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,0)
 id|line
 op_assign
 id|TTY_GET_LINE
@@ -4097,22 +3738,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-macro_line|#else
-id|line
-op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|TTY_DRIVER_MINOR_START
-c_func
-(paren
-id|tty
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4240,10 +3865,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if ((LINUX_VERSION_CODE &lt; VERSION_CODE(2,5,0)) &amp;&amp; defined(MODULE))
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -5038,10 +4659,6 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-macro_line|#if ((LINUX_VERSION_CODE &lt; VERSION_CODE(2,5,0)) &amp;&amp; defined(MODULE))
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -5835,7 +5452,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,0)
 multiline_comment|/*&n; *  Returns the state of the serial modem control lines.  These next 2 functions &n; *  are the way kernel versions &gt; 2.5 handle modem control lines rather than IOCTLs.&n; */
 DECL|function|rp_tiocmget
 r_static
@@ -6094,7 +5710,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*  Linux &gt; 2.5 */
 DECL|function|get_config
 r_static
 r_int
@@ -7804,11 +7419,6 @@ c_cond
 (paren
 id|info-&gt;count
 )paren
-(brace
-macro_line|#if ((LINUX_VERSION_CODE &lt; VERSION_CODE(2,5,0)) &amp;&amp; defined(MODULE))
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -7816,7 +7426,6 @@ op_amp
 id|rp_num_ports_open
 )paren
 suffix:semicolon
-)brace
 id|clear_bit
 c_func
 (paren
@@ -10580,35 +10189,8 @@ id|aiop
 op_assign
 id|ports_per_aiop
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION_CODE(2,3,99)
 id|printk
 c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Comtrol PCI controller #%d ID 0x%x found at 0x%lx, &quot;
-l_string|&quot;%d AIOP(s) (%s)&bslash;n&quot;
-comma
-id|i
-comma
-id|dev-&gt;device
-comma
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-comma
-id|num_aiops
-comma
-id|rocketModel
-(braket
-id|i
-)braket
-dot
-id|modelString
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
 (paren
 l_string|&quot;Comtrol PCI controller #%d ID 0x%x found in bus:slot:fn %s at address %04lx, &quot;
 l_string|&quot;%d AIOP(s) (%s)&bslash;n&quot;
@@ -10634,7 +10216,6 @@ dot
 id|modelString
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -10871,7 +10452,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; VERSION_CODE(2,3,99)&t;/*  Linux version 2.4 and greater */
 multiline_comment|/*&n; *  Probes for PCI cards, inits them if found&n; *  Input:   board_found = number of ISA boards already found, or the&n; *           starting board number&n; *  Returns: Number of PCI boards found&n; */
 DECL|function|init_PCI
 r_static
@@ -10938,165 +10518,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-macro_line|#else&t;&t;&t;&t;/*  Linux version 2.2 */
-multiline_comment|/*&n; *  Linux 2.2 pci_find_device() does not allow a search of all devices for a certain vendor,&n; *  you have to try each device ID.  Comtrol device ID&squot;s are 0x0000 -0x000F for the original&n; *  boards.  Newer board are 0x08xx (see upci_ids[]).&n; */
-DECL|function|init_PCI
-r_static
-r_int
-id|__init
-id|init_PCI
-c_func
-(paren
-r_int
-id|boards_found
-)paren
-(brace
-r_int
-id|j
-comma
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_static
-r_int
-id|upci_ids
-(braket
-)braket
-op_assign
-(brace
-id|PCI_DEVICE_ID_URP32INTF
-comma
-id|PCI_DEVICE_ID_URP8INTF
-comma
-id|PCI_DEVICE_ID_URP16INTF
-comma
-id|PCI_DEVICE_ID_CRP16INTF
-comma
-id|PCI_DEVICE_ID_URP8OCTA
-comma
-id|PCI_DEVICE_ID_UPCI_RM3_8PORT
-comma
-id|PCI_DEVICE_ID_UPCI_RM3_4PORT
-)brace
-suffix:semicolon
-DECL|macro|NUM_UPCI_IDS
-mdefine_line|#define NUM_UPCI_IDS&t;(sizeof(upci_ids) / sizeof(upci_ids[0]))
-multiline_comment|/*  Try finding devices with PCI ID&squot;s 0x0000 - 0x000F */
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-l_int|16
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_VENDOR_ID_RP
-comma
-id|j
-comma
-id|dev
-)paren
-)paren
-)paren
-(brace
-id|register_PCI
-c_func
-(paren
-id|count
-op_plus
-id|boards_found
-comma
-id|dev
-)paren
-suffix:semicolon
-id|count
-op_increment
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*  Now try finding the UPCI devices,  which have PCI ID&squot;s 0x0800 - 0x080F */
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
-suffix:semicolon
-id|j
-OL
-id|NUM_UPCI_IDS
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_VENDOR_ID_RP
-comma
-id|upci_ids
-(braket
-id|j
-)braket
-comma
-id|dev
-)paren
-)paren
-)paren
-(brace
-id|register_PCI
-c_func
-(paren
-id|count
-op_plus
-id|boards_found
-comma
-id|dev
-)paren
-suffix:semicolon
-id|count
-op_increment
-suffix:semicolon
-)brace
-)brace
-r_return
-(paren
-id|count
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;&t;/*  Linux version 2.2/2.4 */
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 multiline_comment|/*&n; *  Probes for ISA cards&n; *  Input:   i = the board number to look for&n; *  Returns: 1 if board found, 0 else&n; */
 DECL|function|init_ISA
@@ -11108,10 +10529,6 @@ c_func
 (paren
 r_int
 id|i
-comma
-r_int
-op_star
-id|reserved_controller
 )paren
 (brace
 r_int
@@ -11145,6 +10562,7 @@ r_char
 op_star
 id|type_string
 suffix:semicolon
+multiline_comment|/*  If io_addr is zero, no board configured */
 r_if
 c_cond
 (paren
@@ -11152,10 +10570,6 @@ id|rcktpt_io_addr
 (braket
 id|i
 )braket
-op_eq
-l_int|0
-op_logical_or
-id|controller
 op_eq
 l_int|0
 )paren
@@ -11164,10 +10578,12 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*  Reserve the IO region */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|rcktpt_io_addr
@@ -11176,6 +10592,8 @@ id|i
 )braket
 comma
 l_int|64
+comma
+l_string|&quot;Comtrol RocketPort&quot;
 )paren
 )paren
 (brace
@@ -11183,7 +10601,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;RocketPort board address 0x%lx in use...&bslash;n&quot;
+l_string|&quot;Unable to reserve IO region for configured ISA RocketPort at address 0x%lx, board not installed...&bslash;n&quot;
 comma
 id|rcktpt_io_addr
 (braket
@@ -11201,54 +10619,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-op_plus
-l_int|0x40
-op_eq
-id|controller
-)paren
-(brace
-op_star
-id|reserved_controller
-op_assign
-l_int|1
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-comma
-l_int|68
-comma
-l_string|&quot;Comtrol RocketPort&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-comma
-l_int|64
-comma
-l_string|&quot;Comtrol RocketPort&quot;
 )paren
 suffix:semicolon
 )brace
@@ -11432,6 +10802,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* CSels used for other stuff */
 )brace
+multiline_comment|/*  If something went wrong initing the AIOP&squot;s release the ISA IO memory */
 r_if
 c_cond
 (paren
@@ -11439,38 +10810,6 @@ id|num_aiops
 op_le
 l_int|0
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-op_plus
-l_int|0x40
-op_eq
-id|controller
-)paren
-(brace
-op_star
-id|reserved_controller
-op_assign
-l_int|0
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-comma
-l_int|68
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 id|release_region
 c_func
@@ -11483,7 +10822,6 @@ comma
 l_int|64
 )paren
 suffix:semicolon
-)brace
 id|rcktpt_io_addr
 (braket
 id|i
@@ -11497,6 +10835,15 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|rocketModel
+(braket
+id|i
+)braket
+dot
+id|startingPortNumber
+op_assign
+id|nextLineNumber
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -11724,8 +11071,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Comtrol ISA controller #%d found at 0x%lx, &quot;
-l_string|&quot;%d AIOPs %s&bslash;n&quot;
+l_string|&quot;RocketPort ISA card #%d found at 0x%lx - %d AIOPs %s&bslash;n&quot;
 comma
 id|i
 comma
@@ -11874,7 +11220,6 @@ id|wait_until_sent
 op_assign
 id|rp_wait_until_sent
 comma
-macro_line|#if (LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,0))
 dot
 id|tiocmget
 op_assign
@@ -11885,7 +11230,6 @@ id|tiocmset
 op_assign
 id|rp_tiocmset
 comma
-macro_line|#endif /* Kernel &gt; 2.5 */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The module &quot;startup&quot; routine; it&squot;s run when the module is loaded.&n; */
@@ -11906,11 +11250,6 @@ comma
 id|isa_boards_found
 comma
 id|i
-suffix:semicolon
-r_int
-id|reserved_controller
-op_assign
-l_int|0
 suffix:semicolon
 id|printk
 c_func
@@ -12018,11 +11357,16 @@ id|rocketModel
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; *  If board 1 is non-zero, there is at least one ISA configured.  If controller is &n;&t; *  zero, use the default controller IO address of board1 + 0x40.&n;&t; */
 r_if
 c_cond
 (paren
 id|board1
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|controller
 op_eq
 l_int|0
@@ -12033,17 +11377,32 @@ id|board1
 op_plus
 l_int|0x40
 suffix:semicolon
+)brace
+r_else
+(brace
+id|controller
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*  Used as a flag, meaning no ISA boards */
+)brace
+multiline_comment|/*  If an ISA card is configured, reserve the 4 byte IO space for the Mudbac controller */
 r_if
 c_cond
 (paren
 id|controller
 op_logical_and
-id|check_region
+(paren
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|controller
 comma
 l_int|4
+comma
+l_string|&quot;Comtrol RocketPort&quot;
+)paren
 )paren
 )paren
 (brace
@@ -12051,13 +11410,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Controller IO addresses in use, unloading driver.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|put_tty_driver
-c_func
-(paren
-id|rocket_driver
+l_string|&quot;Unable to reserve IO region for first configured ISA RocketPort controller 0x%lx.  Driver exiting &bslash;n&quot;
+comma
+id|controller
 )paren
 suffix:semicolon
 r_return
@@ -12215,12 +11570,10 @@ l_int|3
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set up the tty driver structure and then register this&n;&t; * driver with the tty layer.&n;&t; */
-macro_line|#if (LINUX_VERSION_CODE &gt; VERSION_CODE(2,5,0))
 id|rocket_driver-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#endif /* Kernel &gt; 2.5 */
 id|rocket_driver-&gt;flags
 op_assign
 id|TTY_DRIVER_NO_DEVFS
@@ -12365,9 +11718,6 @@ id|init_ISA
 c_func
 (paren
 id|i
-comma
-op_amp
-id|reserved_controller
 )paren
 )paren
 id|isa_boards_found
@@ -12436,37 +11786,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|isa_boards_found
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|reserved_controller
-op_eq
-l_int|0
-)paren
-id|request_region
-c_func
-(paren
-id|controller
-comma
-l_int|4
-comma
-l_string|&quot;Comtrol RocketPort&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|controller
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -12486,11 +11805,6 @@ id|retval
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_int
-id|released_controller
-op_assign
-l_int|0
 suffix:semicolon
 id|del_timer_sync
 c_func
@@ -12594,36 +11908,6 @@ id|i
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-op_plus
-l_int|0x40
-op_eq
-id|controller
-)paren
-(brace
-id|released_controller
-op_increment
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|rcktpt_io_addr
-(braket
-id|i
-)braket
-comma
-l_int|68
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|release_region
 c_func
 (paren
@@ -12636,15 +11920,10 @@ l_int|64
 )paren
 suffix:semicolon
 )brace
-)brace
 r_if
 c_cond
 (paren
 id|controller
-op_logical_and
-id|released_controller
-op_eq
-l_int|0
 )paren
 id|release_region
 c_func

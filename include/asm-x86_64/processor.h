@@ -802,7 +802,7 @@ id|x
 id|asm
 r_volatile
 (paren
-l_string|&quot;2: prefetchnta %0&bslash;n1:&bslash;t&quot;
+l_string|&quot;2: prefetcht0 %0&bslash;n1:&bslash;t&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
 l_string|&quot;  .align 8&bslash;n&bslash;t&quot;
 l_string|&quot;  .quad  2b,1b&bslash;n&bslash;t&quot;

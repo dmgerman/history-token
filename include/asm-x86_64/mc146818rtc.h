@@ -14,7 +14,13 @@ DECL|macro|CMOS_READ
 mdefine_line|#define CMOS_READ(addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;inb_p(RTC_PORT(1)); &bslash;&n;})
 DECL|macro|CMOS_WRITE
 mdefine_line|#define CMOS_WRITE(val, addr) ({ &bslash;&n;outb_p((addr),RTC_PORT(0)); &bslash;&n;outb_p((val),RTC_PORT(1)); &bslash;&n;})
+macro_line|#ifndef CONFIG_HPET_TIMER
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ 8
+macro_line|#else
+multiline_comment|/* Temporary workaround due to IRQ routing problem. */
+DECL|macro|RTC_IRQ
+mdefine_line|#define RTC_IRQ 0
+macro_line|#endif
 macro_line|#endif /* _ASM_MC146818RTC_H */
 eof

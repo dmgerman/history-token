@@ -750,8 +750,33 @@ c_cond
 (paren
 id|bdi-&gt;memory_backed
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|sb
+op_eq
+id|blockdev_superblock
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Dirty memory-backed blockdev: the ramdisk&n;&t;&t;&t;&t; * driver does this.&n;&t;&t;&t;&t; */
+id|list_move
+c_func
+(paren
+op_amp
+id|inode-&gt;i_list
+comma
+op_amp
+id|sb-&gt;s_dirty
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Assume that all inodes on this superblock are memory&n;&t;&t;&t; * backed.  Skip the superblock.&n;&t;&t;&t; */
 r_break
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

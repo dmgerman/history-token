@@ -571,7 +571,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|hpet.address
+id|vxtime.hpet_address
 op_assign
 id|hpet_tbl-&gt;addr.addrl
 op_or
@@ -592,7 +592,7 @@ l_string|&quot;acpi: HPET id: %#x base: %#lx&bslash;n&quot;
 comma
 id|hpet_tbl-&gt;id
 comma
-id|hpet.address
+id|vxtime.hpet_address
 )paren
 suffix:semicolon
 r_return

@@ -56,6 +56,12 @@ id|__con_initcall_start
 comma
 id|__con_initcall_end
 suffix:semicolon
+r_extern
+id|initcall_t
+id|__security_initcall_start
+comma
+id|__security_initcall_end
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef MODULE
 macro_line|#ifndef __ASSEMBLY__
@@ -82,6 +88,8 @@ DECL|macro|__exitcall
 mdefine_line|#define __exitcall(fn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static exitcall_t __exitcall_##fn __exit_call = fn
 DECL|macro|console_initcall
 mdefine_line|#define console_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.con_initcall.init&quot;)))=fn
+DECL|macro|security_initcall
+mdefine_line|#define security_initcall(fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.security_initcall.init&quot;))) = fn
 DECL|struct|obs_kernel_param
 r_struct
 id|obs_kernel_param
@@ -131,6 +139,8 @@ DECL|macro|device_initcall
 mdefine_line|#define device_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|late_initcall
 mdefine_line|#define late_initcall(fn)&t;&t;module_init(fn)
+DECL|macro|security_initcall
+mdefine_line|#define security_initcall(fn)&t;&t;module_init(fn)
 multiline_comment|/* These macros create a dummy inline: gcc 2.9x does not count alias&n; as usage, hence the `unused function&squot; warning when __init functions&n; are declared static. We use the dummy __*_module_inline functions&n; both to kill the warning and check the type of the init/cleanup&n; function. */
 multiline_comment|/* Each module must use one module_init(), or one no_module_init */
 DECL|macro|module_init

@@ -23,8 +23,8 @@ mdefine_line|#define VSYSCALL_END (-2UL &lt;&lt; 20)
 DECL|macro|VSYSCALL_ADDR
 mdefine_line|#define VSYSCALL_ADDR(vsyscall_nr) (VSYSCALL_START+VSYSCALL_SIZE*(vsyscall_nr))
 macro_line|#ifdef __KERNEL__
-DECL|macro|__section_hpet
-mdefine_line|#define __section_hpet __attribute__ ((unused, __section__ (&quot;.hpet&quot;), aligned(16)))
+DECL|macro|__section_vxtime
+mdefine_line|#define __section_vxtime __attribute__ ((unused, __section__ (&quot;.vxtime&quot;), aligned(16)))
 DECL|macro|__section_wall_jiffies
 mdefine_line|#define __section_wall_jiffies __attribute__ ((unused, __section__ (&quot;.wall_jiffies&quot;), aligned(16)))
 DECL|macro|__section_jiffies
@@ -37,42 +37,45 @@ DECL|macro|__section_xtime
 mdefine_line|#define __section_xtime __attribute__ ((unused, __section__ (&quot;.xtime&quot;), aligned(16)))
 DECL|macro|__section_xtime_lock
 mdefine_line|#define __section_xtime_lock __attribute__ ((unused, __section__ (&quot;.xtime_lock&quot;), aligned(L1_CACHE_BYTES)))
-DECL|struct|hpet_data
+DECL|macro|VXTIME_TSC
+mdefine_line|#define VXTIME_TSC&t;1
+DECL|macro|VXTIME_HPET
+mdefine_line|#define VXTIME_HPET&t;2
+DECL|struct|vxtime_data
 r_struct
-id|hpet_data
+id|vxtime_data
 (brace
-DECL|member|address
+DECL|member|hpet_address
 r_int
-id|address
+id|hpet_address
 suffix:semicolon
-multiline_comment|/* base address */
+multiline_comment|/* HPET base address */
 DECL|member|hz
 r_int
 r_int
 id|hz
 suffix:semicolon
 multiline_comment|/* HPET clocks / sec */
-DECL|member|trigger
-r_int
-id|trigger
-suffix:semicolon
-multiline_comment|/* value at last interrupt */
 DECL|member|last
 r_int
 id|last
-suffix:semicolon
-DECL|member|offset
-r_int
-id|offset
 suffix:semicolon
 DECL|member|last_tsc
 r_int
 r_int
 id|last_tsc
 suffix:semicolon
-DECL|member|ticks
+DECL|member|quot
 r_int
-id|ticks
+id|quot
+suffix:semicolon
+DECL|member|tsc_quot
+r_int
+id|tsc_quot
+suffix:semicolon
+DECL|member|mode
+r_int
+id|mode
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -83,8 +86,8 @@ mdefine_line|#define hpet_writel(d,a)        writel(d, fix_to_virt(FIX_HPET_BASE
 multiline_comment|/* vsyscall space (readonly) */
 r_extern
 r_struct
-id|hpet_data
-id|__hpet
+id|vxtime_data
+id|__vxtime
 suffix:semicolon
 r_extern
 r_struct
@@ -114,8 +117,8 @@ suffix:semicolon
 multiline_comment|/* kernel space (writeable) */
 r_extern
 r_struct
-id|hpet_data
-id|hpet
+id|vxtime_data
+id|vxtime
 suffix:semicolon
 r_extern
 r_int
