@@ -265,8 +265,6 @@ DECL|macro|transport_class_to_rport
 mdefine_line|#define transport_class_to_rport(classdev)&t;&bslash;&n;&t;dev_to_rport(classdev-&gt;dev)
 DECL|macro|rport_to_shost
 mdefine_line|#define rport_to_shost(r)&t;&t;&t;&bslash;&n;&t;dev_to_shost(r-&gt;dev.parent)
-DECL|macro|FC_SCSI_SCAN_DELAY
-mdefine_line|#define FC_SCSI_SCAN_DELAY&t;&t;(1 * HZ)&t;/* 1 second delay */
 multiline_comment|/*&n; * FC SCSI Target Attributes&n; *&n; * The SCSI Target is considered an extention of a remote port (as&n; * a remote port can be more than a SCSI Target). Within the scsi&n; * subsystem, we leave the Target as a separate entity. Doing so&n; * provides backward compatibility with prior FC transport api&squot;s,&n; * and lets remote ports be handled entirely within the FC transport&n; * and independently from the scsi subsystem. The drawback is that&n; * some data will be duplicated.&n; */
 DECL|struct|fc_starget_attrs
 r_struct
