@@ -58,7 +58,7 @@ suffix:semicolon
 multiline_comment|/* assertions handling */
 multiline_comment|/** always check a condition and panic if it&squot;s false. */
 DECL|macro|RASSERT
-mdefine_line|#define RASSERT( cond, format, args... )&t;&t;&t;&t;&t;&bslash;&n;if( !( cond ) ) &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  reiserfs_panic( 0, &quot;reiserfs[%i]: assertion &quot; #cond &quot; failed at &quot;&t;&bslash;&n;&t;&t;  __FILE__ &quot;:%i:%s: &quot; format &quot;&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;  in_interrupt() ? -1 : current -&gt; pid, __LINE__ , __FUNCTION__ , ##args )
+mdefine_line|#define RASSERT( cond, format, args... )&t;&t;&t;&t;&t;&bslash;&n;if( !( cond ) ) &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  reiserfs_panic( NULL, &quot;reiserfs[%i]: assertion &quot; #cond &quot; failed at &quot;&t;&bslash;&n;&t;&t;  __FILE__ &quot;:%i:%s: &quot; format &quot;&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;  in_interrupt() ? -1 : current -&gt; pid, __LINE__ , __FUNCTION__ , ##args )
 macro_line|#if defined( CONFIG_REISERFS_CHECK )
 DECL|macro|RFALSE
 mdefine_line|#define RFALSE( cond, format, args... ) RASSERT( !( cond ), format, ##args )
