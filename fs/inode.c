@@ -511,6 +511,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|inode-&gt;i_alloc_sem
+)paren
+suffix:semicolon
 id|INIT_RADIX_TREE
 c_func
 (paren

@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt; /* for generic_osync_inode */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_sem&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;page_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_shared_sem&t;&t;(truncate-&gt;invalidate_mmap_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_shared_sem&t;&t;(various places)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;page_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;page_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_sem&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;page_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_shared_sem&t;&t;(truncate-&gt;invalidate_mmap_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_shared_sem&t;&t;(various places)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_alloc_sem             (various)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;page_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;page_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
 multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s page_lock.&n; */
 DECL|function|__remove_from_page_cache
 r_void
@@ -570,6 +570,56 @@ c_func
 id|filemap_fdatawait
 )paren
 suffix:semicolon
+DECL|function|filemap_write_and_wait
+r_int
+id|filemap_write_and_wait
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping-&gt;nrpages
+)paren
+(brace
+id|retval
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
+id|retval
+op_assign
+id|filemap_fdatawait
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
+)brace
+r_return
+id|retval
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This adds a page to the page cache, starting out as locked, unreferenced,&n; * not uptodate and with no errors.&n; *&n; * This function is used for two things: adding newly allocated pagecache&n; * pages and for moving existing anon pages into swapcache.&n; *&n; * In the case of pagecache pages, the page is new, so we can just run&n; * SetPageLocked() against it.  The other page state flags were set by&n; * rmqueue()&n; *&n; * In the case of swapcache, try_to_swap_out() has already locked the page, so&n; * SetPageLocked() is ugly-but-OK there too.  The required page state has been&n; * set up by swap_out_add_to_swap_cache().&n; *&n; * This function does not add the page to the LRU.  The caller must do that.&n; */
 DECL|function|add_to_page_cache
 r_int
@@ -6436,7 +6486,7 @@ c_func
 id|generic_write_checks
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Write to a file through the page cache. &n; *&n; * We put everything into the page cache prior to writing it. This is not a&n; * problem when writing full pages. With partial pages, however, we first have&n; * to read the data into the cache, then dirty the page, and finally schedule&n; * it for writing by marking it dirty.&n; *&t;&t;&t;&t;&t;&t;&t;okir@monad.swb.de&n; */
+multiline_comment|/*&n; * Write to a file through the page cache. &n; * Called under i_sem for S_ISREG files.&n; *&n; * We put everything into the page cache prior to writing it. This is not a&n; * problem when writing full pages. With partial pages, however, we first have&n; * to read the data into the cache, then dirty the page, and finally schedule&n; * it for writing by marking it dirty.&n; *&t;&t;&t;&t;&t;&t;&t;okir@monad.swb.de&n; */
 id|ssize_t
 DECL|function|generic_file_aio_write_nolock
 id|generic_file_aio_write_nolock
@@ -6850,7 +6900,7 @@ op_assign
 id|end
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Sync the fs metadata but not the minor inode changes and&n;&t;&t; * of course not the data as we did direct DMA for the IO.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sync the fs metadata but not the minor inode changes and&n;&t;&t; * of course not the data as we did direct DMA for the IO.&n;&t;&t; * i_sem is held, which protects generic_osync_inode() from&n;&t;&t; * livelocking.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6893,8 +6943,21 @@ op_assign
 op_minus
 id|EIOCBQUEUED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|written
+op_ne
+op_minus
+id|ENOTBLK
+)paren
 r_goto
 id|out_status
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * direct-io write to a hole: fall through to buffered I/O&n;&t;&t; */
+id|written
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|buf
@@ -7320,6 +7383,28 @@ id|OSYNC_DATA
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If we get here for O_DIRECT writes then we must have fallen through&n;&t; * to buffered writes (block instantiation inside i_size).  So we sync&n;&t; * the file data here, to try to honour O_DIRECT expectations.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_DIRECT
+)paren
+op_logical_and
+id|written
+)paren
+id|status
+op_assign
+id|filemap_write_and_wait
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 id|out_status
 suffix:colon
 id|err
@@ -7802,6 +7887,7 @@ c_func
 id|generic_file_writev
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Called under i_sem for writes to S_ISREG files&n; */
 id|ssize_t
 DECL|function|generic_file_direct_IO
 id|generic_file_direct_IO
@@ -7846,15 +7932,9 @@ suffix:semicolon
 id|ssize_t
 id|retval
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping-&gt;nrpages
-)paren
-(brace
 id|retval
 op_assign
-id|filemap_fdatawrite
+id|filemap_write_and_wait
 c_func
 (paren
 id|mapping
@@ -7867,23 +7947,7 @@ id|retval
 op_eq
 l_int|0
 )paren
-id|retval
-op_assign
-id|filemap_fdatawait
-c_func
-(paren
-id|mapping
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_goto
-id|out
-suffix:semicolon
-)brace
+(brace
 id|retval
 op_assign
 id|mapping-&gt;a_ops
@@ -7917,8 +7981,7 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|out
-suffix:colon
+)brace
 r_return
 id|retval
 suffix:semicolon

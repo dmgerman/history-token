@@ -895,6 +895,13 @@ op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_inode-&gt;i_alloc_sem
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|notify_change
@@ -904,6 +911,13 @@ id|dentry
 comma
 op_amp
 id|newattrs
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_inode-&gt;i_alloc_sem
 )paren
 suffix:semicolon
 id|up
