@@ -2,21 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef&t;_SDLADRV_H
 DECL|macro|_SDLADRV_H
 mdefine_line|#define&t;_SDLADRV_H
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) + ((b) &lt;&lt; 8) + (c))
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
-DECL|macro|LINUX_2_4
-mdefine_line|#define LINUX_2_4&t;
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
-DECL|macro|LINUX_2_1
-mdefine_line|#define LINUX_2_1
-macro_line|#else
-DECL|macro|LINUX_2_0
-mdefine_line|#define LINUX_2_0
-macro_line|#endif
 DECL|macro|SDLA_MAXIORANGE
 mdefine_line|#define&t;SDLA_MAXIORANGE&t;4&t;/* maximum I/O port range */
 DECL|macro|SDLA_WINDOWSIZE
@@ -67,7 +52,6 @@ r_char
 id|auto_pci_cfg
 suffix:semicolon
 multiline_comment|/* Autodetect PCI Slot */
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 DECL|member|pci_dev
 r_struct
 id|pci_dev
@@ -75,20 +59,6 @@ op_star
 id|pci_dev
 suffix:semicolon
 multiline_comment|/* PCI device */
-macro_line|#else
-DECL|member|pci_bus
-r_int
-r_char
-id|pci_bus
-suffix:semicolon
-multiline_comment|/* PCI bus number */
-DECL|member|pci_dev_func
-r_int
-r_char
-id|pci_dev_func
-suffix:semicolon
-multiline_comment|/* PCI device/function number */
-macro_line|#endif
 DECL|member|dpmbase
 r_void
 op_star
