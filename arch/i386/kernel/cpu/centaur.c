@@ -951,20 +951,19 @@ l_int|0xC0000001
 )paren
 suffix:semicolon
 )brace
-r_switch
+multiline_comment|/* Cyrix III family needs CX8 &amp; PGE explicity enabled. */
+r_if
 c_cond
 (paren
 id|c-&gt;x86_model
+op_ge
+l_int|6
+op_logical_and
+id|c-&gt;x86_model
+op_le
+l_int|9
 )paren
 (brace
-r_case
-l_int|6
-dot
-dot
-dot
-l_int|8
-suffix:colon
-multiline_comment|/* Cyrix III family */
 id|rdmsr
 (paren
 id|MSR_VIA_FCR
@@ -986,7 +985,6 @@ op_lshift
 l_int|7
 )paren
 suffix:semicolon
-multiline_comment|/* Report CX8 &amp; enable PGE */
 id|wrmsr
 (paren
 id|MSR_VIA_FCR
@@ -1004,6 +1002,19 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Before Nehemiah, the C3&squot;s had 3dNOW! */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+op_ge
+l_int|6
+op_logical_and
+id|c-&gt;x86_model
+OL
+l_int|9
+)paren
 id|set_bit
 c_func
 (paren
@@ -1012,13 +1023,6 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
-multiline_comment|/* fall through */
-r_case
-l_int|9
-suffix:colon
-multiline_comment|/* Nehemiah */
-r_default
-suffix:colon
 id|get_model_name
 c_func
 (paren
@@ -1031,9 +1035,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 )brace
 DECL|function|init_centaur
 r_static
