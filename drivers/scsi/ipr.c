@@ -7079,10 +7079,10 @@ id|ioa_cfg-&gt;in_reset_reload
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for a second for any errors to be logged */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
