@@ -223,14 +223,6 @@ op_logical_neg
 id|name
 )paren
 (brace
-id|d_splice_alias
-c_func
-(paren
-id|dent_inode
-comma
-id|dent
-)paren
-suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -238,7 +230,13 @@ l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|d_splice_alias
+c_func
+(paren
+id|dent_inode
+comma
+id|dent
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t;&t; * We are too indented. Handle imperfect&n;&t;&t;&t;&t; * matches and short file names further below.&n;&t;&t;&t;&t; */
@@ -859,6 +857,8 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
+id|new_dent
+op_assign
 id|d_splice_alias
 c_func
 (paren
@@ -867,8 +867,24 @@ comma
 id|real_dent
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+id|new_dent
+)paren
+id|dput
+c_func
+(paren
 id|real_dent
+)paren
+suffix:semicolon
+r_else
+id|new_dent
+op_assign
+id|real_dent
+suffix:semicolon
+r_return
+id|new_dent
 suffix:semicolon
 )brace
 id|kfree
@@ -1176,7 +1192,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %lu.&quot;
+l_string|&quot;Entering for inode 0x%lx.&quot;
 comma
 id|vi-&gt;i_ino
 )paren
@@ -1289,6 +1305,17 @@ id|unmap_mft_record
 c_func
 (paren
 id|ni
+)paren
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Inode 0x%lx does not have a file name &quot;
+l_string|&quot;attribute. Run chkdsk.&quot;
+comma
+id|vi-&gt;i_ino
 )paren
 suffix:semicolon
 r_return
@@ -1439,6 +1466,19 @@ c_func
 id|parent_vi
 )paren
 suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to get parent directory inode &quot;
+l_string|&quot;0x%lx of child inode 0x%lx.&quot;
+comma
+id|parent_ino
+comma
+id|vi-&gt;i_ino
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -1486,7 +1526,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Done for inode %lu.&quot;
+l_string|&quot;Done for inode 0x%lx.&quot;
 comma
 id|vi-&gt;i_ino
 )paren
@@ -1555,7 +1595,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %lu, generation %u.&quot;
+l_string|&quot;Entering for inode 0x%lx, generation 0x%x.&quot;
 comma
 id|ino
 comma
@@ -1585,6 +1625,17 @@ id|vi
 )paren
 )paren
 )paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to get inode 0x%lx.&quot;
+comma
+id|ino
+)paren
+suffix:semicolon
 r_return
 (paren
 r_struct
@@ -1593,6 +1644,7 @@ op_star
 )paren
 id|vi
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1612,10 +1664,13 @@ id|gen
 )paren
 (brace
 multiline_comment|/* We didn&squot;t find the right inode. */
-id|ntfs_debug
+id|ntfs_error
 c_func
 (paren
-l_string|&quot;Inode %lu, bad count: %d %d or version %u %u.&quot;
+id|sb
+comma
+l_string|&quot;Inode 0x%lx, bad count: %d %d or version 0x%x &quot;
+l_string|&quot;0x%x.&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -1686,7 +1741,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Done for inode %lu, generation %u.&quot;
+l_string|&quot;Done for inode 0x%lx, generation 0x%x.&quot;
 comma
 id|ino
 comma
