@@ -1511,7 +1511,13 @@ id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|nr_serviced
+OG
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ei_tx_err - handle transmitter error&n; * @dev: network device which threw the exception&n; *&n; * A transmitter error has happened. Most likely excess collisions (which&n; * is a fairly normal condition). If the error is one where the Tx will&n; * have been aborted, we try and send another one right away, instead of&n; * letting the failed packet sit and collect dust in the Tx buffer. This&n; * is a much better solution as it avoids kernel based Tx timeouts, and&n; * an unnecessary card reset.&n; *&n; * Called with lock held.&n; */
