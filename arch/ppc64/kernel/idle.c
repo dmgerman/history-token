@@ -904,7 +904,7 @@ c_cond
 id|cpu_is_offline
 c_func
 (paren
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
