@@ -4958,7 +4958,7 @@ c_func
 op_amp
 id|cmap
 comma
-l_int|1
+l_int|0
 comma
 id|info
 )paren
