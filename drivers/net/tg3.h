@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.h,v 1.37.2.32 2002/03/11 12:18:18 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@pobox.com)&n; */
+multiline_comment|/* $Id: tg3.h,v 1.37.2.32 2002/03/11 12:18:18 davem Exp $&n; * tg3.h: Definitions for Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002, 2003, 2004 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001 Jeff Garzik (jgarzik@pobox.com)&n; * Copyright (C) 2004 Sun Microsystems Inc.&n; */
 macro_line|#ifndef _T3_H
 DECL|macro|_T3_H
 mdefine_line|#define _T3_H
@@ -201,6 +201,8 @@ DECL|macro|CHIPREV_ID_5704_A1
 mdefine_line|#define  CHIPREV_ID_5704_A1&t;&t; 0x2001
 DECL|macro|CHIPREV_ID_5704_A2
 mdefine_line|#define  CHIPREV_ID_5704_A2&t;&t; 0x2002
+DECL|macro|CHIPREV_ID_5704_A3
+mdefine_line|#define  CHIPREV_ID_5704_A3&t;&t; 0x2003
 DECL|macro|CHIPREV_ID_5705_A0
 mdefine_line|#define  CHIPREV_ID_5705_A0&t;&t; 0x3000
 DECL|macro|CHIPREV_ID_5705_A1
@@ -992,9 +994,92 @@ DECL|macro|MAC_EXTADDR_11_LOW
 mdefine_line|#define MAC_EXTADDR_11_LOW&t;&t;0x0000058c
 DECL|macro|MAC_SERDES_CFG
 mdefine_line|#define MAC_SERDES_CFG&t;&t;&t;0x00000590
+DECL|macro|MAC_SERDES_CFG_EDGE_SELECT
+mdefine_line|#define  MAC_SERDES_CFG_EDGE_SELECT&t; 0x00001000
 DECL|macro|MAC_SERDES_STAT
 mdefine_line|#define MAC_SERDES_STAT&t;&t;&t;0x00000594
-multiline_comment|/* 0x598 --&gt; 0x600 unused */
+multiline_comment|/* 0x598 --&gt; 0x5b0 unused */
+DECL|macro|SG_DIG_CTRL
+mdefine_line|#define SG_DIG_CTRL&t;&t;&t;0x000005b0
+DECL|macro|SG_DIG_USING_HW_AUTONEG
+mdefine_line|#define  SG_DIG_USING_HW_AUTONEG&t; 0x80000000
+DECL|macro|SG_DIG_SOFT_RESET
+mdefine_line|#define  SG_DIG_SOFT_RESET&t;&t; 0x40000000
+DECL|macro|SG_DIG_DISABLE_LINKRDY
+mdefine_line|#define  SG_DIG_DISABLE_LINKRDY&t;&t; 0x20000000
+DECL|macro|SG_DIG_CRC16_CLEAR_N
+mdefine_line|#define  SG_DIG_CRC16_CLEAR_N&t;&t; 0x01000000
+DECL|macro|SG_DIG_EN10B
+mdefine_line|#define  SG_DIG_EN10B&t;&t;&t; 0x00800000
+DECL|macro|SG_DIG_CLEAR_STATUS
+mdefine_line|#define  SG_DIG_CLEAR_STATUS&t;&t; 0x00400000
+DECL|macro|SG_DIG_LOCAL_DUPLEX_STATUS
+mdefine_line|#define  SG_DIG_LOCAL_DUPLEX_STATUS&t; 0x00200000
+DECL|macro|SG_DIG_LOCAL_LINK_STATUS
+mdefine_line|#define  SG_DIG_LOCAL_LINK_STATUS&t; 0x00100000
+DECL|macro|SG_DIG_SPEED_STATUS_MASK
+mdefine_line|#define  SG_DIG_SPEED_STATUS_MASK&t; 0x000c0000
+DECL|macro|SG_DIG_SPEED_STATUS_SHIFT
+mdefine_line|#define  SG_DIG_SPEED_STATUS_SHIFT&t; 18
+DECL|macro|SG_DIG_JUMBO_PACKET_DISABLE
+mdefine_line|#define  SG_DIG_JUMBO_PACKET_DISABLE&t; 0x00020000
+DECL|macro|SG_DIG_RESTART_AUTONEG
+mdefine_line|#define  SG_DIG_RESTART_AUTONEG&t;&t; 0x00010000
+DECL|macro|SG_DIG_FIBER_MODE
+mdefine_line|#define  SG_DIG_FIBER_MODE&t;&t; 0x00008000
+DECL|macro|SG_DIG_REMOTE_FAULT_MASK
+mdefine_line|#define  SG_DIG_REMOTE_FAULT_MASK&t; 0x00006000
+DECL|macro|SG_DIG_PAUSE_MASK
+mdefine_line|#define  SG_DIG_PAUSE_MASK&t;&t; 0x00001800
+DECL|macro|SG_DIG_GBIC_ENABLE
+mdefine_line|#define  SG_DIG_GBIC_ENABLE&t;&t; 0x00000400
+DECL|macro|SG_DIG_CHECK_END_ENABLE
+mdefine_line|#define  SG_DIG_CHECK_END_ENABLE&t; 0x00000200
+DECL|macro|SG_DIG_SGMII_AUTONEG_TIMER
+mdefine_line|#define  SG_DIG_SGMII_AUTONEG_TIMER&t; 0x00000100
+DECL|macro|SG_DIG_CLOCK_PHASE_SELECT
+mdefine_line|#define  SG_DIG_CLOCK_PHASE_SELECT&t; 0x00000080
+DECL|macro|SG_DIG_GMII_INPUT_SELECT
+mdefine_line|#define  SG_DIG_GMII_INPUT_SELECT&t; 0x00000040
+DECL|macro|SG_DIG_MRADV_CRC16_SELECT
+mdefine_line|#define  SG_DIG_MRADV_CRC16_SELECT&t; 0x00000020
+DECL|macro|SG_DIG_COMMA_DETECT_ENABLE
+mdefine_line|#define  SG_DIG_COMMA_DETECT_ENABLE&t; 0x00000010
+DECL|macro|SG_DIG_AUTONEG_TIMER_REDUCE
+mdefine_line|#define  SG_DIG_AUTONEG_TIMER_REDUCE&t; 0x00000008
+DECL|macro|SG_DIG_AUTONEG_LOW_ENABLE
+mdefine_line|#define  SG_DIG_AUTONEG_LOW_ENABLE&t; 0x00000004
+DECL|macro|SG_DIG_REMOTE_LOOPBACK
+mdefine_line|#define  SG_DIG_REMOTE_LOOPBACK&t;&t; 0x00000002
+DECL|macro|SG_DIG_LOOPBACK
+mdefine_line|#define  SG_DIG_LOOPBACK&t;&t; 0x00000001
+DECL|macro|SG_DIG_STATUS
+mdefine_line|#define SG_DIG_STATUS&t;&t;&t;0x000005b4
+DECL|macro|SG_DIG_CRC16_BUS_MASK
+mdefine_line|#define  SG_DIG_CRC16_BUS_MASK&t;&t; 0xffff0000
+DECL|macro|SG_DIG_PARTNER_FAULT_MASK
+mdefine_line|#define  SG_DIG_PARTNER_FAULT_MASK&t; 0x00600000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_PARTNER_ASYM_PAUSE
+mdefine_line|#define  SG_DIG_PARTNER_ASYM_PAUSE&t; 0x00100000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_PARTNER_PAUSE_CAPABLE
+mdefine_line|#define  SG_DIG_PARTNER_PAUSE_CAPABLE&t; 0x00080000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_PARTNER_HALF_DUPLEX
+mdefine_line|#define  SG_DIG_PARTNER_HALF_DUPLEX&t; 0x00040000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_PARTNER_FULL_DUPLEX
+mdefine_line|#define  SG_DIG_PARTNER_FULL_DUPLEX&t; 0x00020000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_PARTNER_NEXT_PAGE
+mdefine_line|#define  SG_DIG_PARTNER_NEXT_PAGE&t; 0x00010000 /* If !MRADV_CRC16_SELECT */
+DECL|macro|SG_DIG_AUTONEG_STATE_MASK
+mdefine_line|#define  SG_DIG_AUTONEG_STATE_MASK&t; 0x00000ff0
+DECL|macro|SG_DIG_COMMA_DETECTOR
+mdefine_line|#define  SG_DIG_COMMA_DETECTOR&t;&t; 0x00000008
+DECL|macro|SG_DIG_MAC_ACK_STATUS
+mdefine_line|#define  SG_DIG_MAC_ACK_STATUS&t;&t; 0x00000004
+DECL|macro|SG_DIG_AUTONEG_COMPLETE
+mdefine_line|#define  SG_DIG_AUTONEG_COMPLETE&t; 0x00000002
+DECL|macro|SG_DIG_AUTONEG_ERROR
+mdefine_line|#define  SG_DIG_AUTONEG_ERROR&t;&t; 0x00000001
+multiline_comment|/* 0x5b8 --&gt; 0x600 unused */
 DECL|macro|MAC_TX_MAC_STATE_BASE
 mdefine_line|#define MAC_TX_MAC_STATE_BASE&t;&t;0x00000600 /* 16 bytes */
 DECL|macro|MAC_RX_MAC_STATE_BASE
@@ -4208,6 +4293,8 @@ DECL|macro|TG3_FLG2_PCI_EXPRESS
 mdefine_line|#define TG3_FLG2_PCI_EXPRESS&t;&t;0x00000200
 DECL|macro|TG3_FLG2_ASF_NEW_HANDSHAKE
 mdefine_line|#define TG3_FLG2_ASF_NEW_HANDSHAKE&t;0x00000400
+DECL|macro|TG3_FLG2_HW_AUTONEG
+mdefine_line|#define TG3_FLG2_HW_AUTONEG&t;&t;0x00000800
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
