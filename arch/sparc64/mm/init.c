@@ -7111,14 +7111,6 @@ suffix:semicolon
 multiline_comment|/* paging_init() sets up the page tables */
 r_extern
 r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|cheetah_ecache_flush_init
 c_func
 (paren
@@ -7716,14 +7708,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_SERIAL
-multiline_comment|/* This does not logically belong here, but we need to call it at&n;&t; * the moment we are able to use the bootmem allocator. This _has_&n;&t; * to be done after the prom_mappings above so since&n;&t; * __alloc_bootmem() doesn&squot;t work correctly until then.&n;&t; */
-id|sun_serial_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* We only created DTLB mapping of this stuff. */
 id|spitfire_flush_dtlb_nucleus_page
 c_func
