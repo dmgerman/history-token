@@ -4575,7 +4575,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_FRAME_POINTER
+macro_line|#ifdef CONFIG_FRAME_POINTER
 r_if
 c_cond
 (paren
