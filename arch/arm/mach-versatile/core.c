@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-versatile/core.c&n; *&n; *  Copyright (C) 1999 - 2003 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
@@ -12,7 +13,9 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#ifdef CONFIG_MMC
 macro_line|#include &lt;asm/mach/mmc.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Versatile Vectored Interrupt Controller.&n; */
 DECL|macro|VA_VIC_BASE
 mdefine_line|#define VA_VIC_BASE&t;&t; IO_ADDRESS(VERSATILE_VIC_BASE)
@@ -1158,6 +1161,7 @@ comma
 suffix:semicolon
 DECL|macro|VERSATILE_SYSMCI
 mdefine_line|#define VERSATILE_SYSMCI&t;(IO_ADDRESS(VERSATILE_SYS_BASE) + VERSATILE_SYS_MCI_OFFSET)
+macro_line|#ifdef CONFIG_MMC
 DECL|function|mmc_status
 r_static
 r_int
@@ -1268,8 +1272,9 @@ id|mmc_status
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|macro|AMBA_DEVICE
-mdefine_line|#define AMBA_DEVICE(name,busid,base,plat)&t;&t;&t;&bslash;&n;static struct amba_device name##_device = {&t;&t;&t;&bslash;&n;&t;.dev&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.coherent_dma_mask = ~0,&t;&t;&t;&bslash;&n;&t;&t;.bus_id&t;= busid,&t;&t;&t;&t;&bslash;&n;&t;&t;.platform_data = plat,&t;&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.res&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.start&t;= VERSATILE_##base##_BASE,&t;&t;&bslash;&n;&t;&t;.end&t;= (VERSATILE_##base##_BASE) + SZ_4K - 1,&bslash;&n;&t;&t;.flags&t;= IORESOURCE_MEM,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.irq&t;&t;= base##_IRQ,&t;&t;&t;&t;&bslash;&n;&t;.dma&t;&t;= base##_DMA,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define AMBA_DEVICE(name,busid,base,plat)&t;&t;&t;&bslash;&n;static struct amba_device name##_device = {&t;&t;&t;&bslash;&n;&t;.dev&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.coherent_dma_mask = ~0,&t;&t;&t;&bslash;&n;&t;&t;.bus_id&t;= busid,&t;&t;&t;&t;&bslash;&n;&t;&t;.platform_data = plat,&t;&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.res&t;&t;= {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.start&t;= VERSATILE_##base##_BASE,&t;&t;&bslash;&n;&t;&t;.end&t;= (VERSATILE_##base##_BASE) + SZ_4K - 1,&bslash;&n;&t;&t;.flags&t;= IORESOURCE_MEM,&t;&t;&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.irq&t;&t;= base##_IRQ,&t;&t;&t;&t;&bslash;&n;&t;/* .dma&t;&t;= base##_DMA,*/&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|AACI_IRQ
 mdefine_line|#define AACI_IRQ&t;{ IRQ_AACI, NO_IRQ }
 DECL|macro|AACI_DMA
@@ -1378,6 +1383,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMC
 id|AMBA_DEVICE
 c_func
 (paren
@@ -1391,6 +1397,7 @@ op_amp
 id|mmc0_plat_data
 )paren
 suffix:semicolon
+macro_line|#endif
 id|AMBA_DEVICE
 c_func
 (paren
@@ -1439,6 +1446,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMC
 id|AMBA_DEVICE
 c_func
 (paren
@@ -1452,6 +1460,7 @@ op_amp
 id|mmc1_plat_data
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* DevChip Primecells */
 id|AMBA_DEVICE
 c_func
@@ -1710,9 +1719,11 @@ comma
 op_amp
 id|aaci_device
 comma
+macro_line|#ifdef CONFIG_MMC
 op_amp
 id|mmc0_device
 comma
+macro_line|#endif
 op_amp
 id|kmi0_device
 comma
@@ -1722,9 +1733,11 @@ comma
 op_amp
 id|sci1_device
 comma
+macro_line|#ifdef CONFIG_MMC
 op_amp
 id|mmc1_device
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|VA_LEDS_BASE

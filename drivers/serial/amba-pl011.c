@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
-macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_AMBA_PL011_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
@@ -39,12 +38,6 @@ DECL|member|port
 r_struct
 id|uart_port
 id|port
-suffix:semicolon
-DECL|member|clk
-r_struct
-id|clk
-op_star
-id|clk
 suffix:semicolon
 DECL|member|im
 r_int
@@ -1424,23 +1417,6 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-multiline_comment|/*&n;&t; * Try to enable the clock producer.&n;&t; */
-id|retval
-op_assign
-id|clk_enable
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate the IRQ&n;&t; */
 id|retval
 op_assign
@@ -1464,7 +1440,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|clk_dis
+id|out
 suffix:semicolon
 id|writew
 c_func
@@ -1620,14 +1596,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|clk_dis
-suffix:colon
-id|clk_disable
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -1751,13 +1719,6 @@ comma
 id|uap-&gt;port.membase
 op_plus
 id|UART011_LCRH
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Shut down the clock producer&n;&t; */
-id|clk_disable
-c_func
-(paren
-id|uap-&gt;clk
 )paren
 suffix:semicolon
 )brace
@@ -2834,22 +2795,6 @@ id|amba_ports
 id|co-&gt;index
 )braket
 suffix:semicolon
-id|ret
-op_assign
-id|clk_enable
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3162,39 +3107,6 @@ id|uart_amba_port
 )paren
 )paren
 suffix:semicolon
-id|uap-&gt;clk
-op_assign
-id|clk_get
-c_func
-(paren
-op_amp
-id|dev-&gt;dev
-comma
-l_string|&quot;UARTCLK&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-)paren
-(brace
-id|ret
-op_assign
-id|PTR_ERR
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-suffix:semicolon
-r_goto
-id|unmap
-suffix:semicolon
-)brace
 id|uap-&gt;port.dev
 op_assign
 op_amp
@@ -3219,14 +3131,17 @@ id|dev-&gt;irq
 l_int|0
 )braket
 suffix:semicolon
+macro_line|#if 0 /* FIXME */
 id|uap-&gt;port.uartclk
 op_assign
-id|clk_get_rate
-c_func
-(paren
-id|uap-&gt;clk
-)paren
+l_int|14745600
 suffix:semicolon
+macro_line|#else
+id|uap-&gt;port.uartclk
+op_assign
+l_int|24000000
+suffix:semicolon
+macro_line|#endif
 id|uap-&gt;port.fifosize
 op_assign
 l_int|16
@@ -3292,14 +3207,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|clk_put
-c_func
-(paren
-id|uap-&gt;clk
-)paren
-suffix:semicolon
-id|unmap
-suffix:colon
 id|iounmap
 c_func
 (paren
@@ -3404,12 +3311,6 @@ id|iounmap
 c_func
 (paren
 id|uap-&gt;port.membase
-)paren
-suffix:semicolon
-id|clk_put
-c_func
-(paren
-id|uap-&gt;clk
 )paren
 suffix:semicolon
 id|kfree
