@@ -129,6 +129,9 @@ mdefine_line|#define AHZ&t;&t;100
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
+r_struct
+id|super_block
+suffix:semicolon
 r_extern
 r_void
 id|acct_auto_close

@@ -10,9 +10,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 multiline_comment|/* If you want debugging uncomment: */
 multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/init.h&gt;
@@ -213,23 +211,6 @@ id|i2cdev_adaps
 id|I2CDEV_ADAPS_MAX
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|devfs_i2c
-r_static
-id|devfs_handle_t
-id|devfs_i2c
-(braket
-id|I2CDEV_ADAPS_MAX
-)braket
-suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 DECL|variable|i2cdev_driver
 r_static
 r_struct
@@ -299,11 +280,6 @@ op_amp
 id|i2cdev_driver
 comma
 )brace
-suffix:semicolon
-DECL|variable|i2cdev_initialized
-r_static
-r_int
-id|i2cdev_initialized
 suffix:semicolon
 DECL|function|i2cdev_read
 r_static
@@ -1788,7 +1764,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|8
+l_int|12
 )braket
 suffix:semicolon
 r_if
@@ -1845,7 +1821,7 @@ id|sprintf
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;i2c/%d&quot;
 comma
 id|i
 )paren
@@ -1867,15 +1843,9 @@ id|i
 op_assign
 id|adap
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_i2c
-(braket
-id|i
-)braket
-op_assign
 id|devfs_register
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -1897,7 +1867,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -1913,17 +1882,14 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* This is actually a detach_adapter call! */
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_i2c
-(braket
+l_string|&quot;i2c/%d&quot;
+comma
 id|i
-)braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|i2cdev_adaps
 (braket
 id|i
@@ -2002,14 +1968,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i2cdev_initialized
-op_ge
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
 (paren
 id|res
 op_assign
@@ -2031,32 +1989,12 @@ l_string|&quot;module not removed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|i2cdev_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i2cdev_initialized
-op_ge
-l_int|1
-)paren
-(brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;i2c&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
 id|unregister_chrdev
 c_func
 (paren
@@ -2064,23 +2002,7 @@ id|I2C_MAJOR
 comma
 l_string|&quot;i2c&quot;
 )paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-dev.o: unable to release major %d for i2c bus&bslash;n&quot;
-comma
-id|I2C_MAJOR
-)paren
 suffix:semicolon
-)brace
-id|i2cdev_initialized
-op_decrement
-suffix:semicolon
-)brace
 )brace
 DECL|function|i2c_dev_init
 r_int
@@ -2104,10 +2026,6 @@ id|I2C_VERSION
 comma
 id|I2C_DATE
 )paren
-suffix:semicolon
-id|i2cdev_initialized
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2138,9 +2056,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -2150,10 +2065,6 @@ l_string|&quot;i2c&quot;
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-macro_line|#endif
-id|i2cdev_initialized
-op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -2177,18 +2088,24 @@ id|KERN_ERR
 l_string|&quot;i2c-dev.o: Driver registration failed, module not inserted.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|i2cdev_cleanup
+id|devfs_remove
 c_func
 (paren
+l_string|&quot;i2c&quot;
+)paren
+suffix:semicolon
+id|unregister_chrdev
+c_func
+(paren
+id|I2C_MAJOR
+comma
+l_string|&quot;i2c&quot;
 )paren
 suffix:semicolon
 r_return
 id|res
 suffix:semicolon
 )brace
-id|i2cdev_initialized
-op_increment
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

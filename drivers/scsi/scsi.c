@@ -2113,10 +2113,6 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
-DECL|variable|scsi_devfs_handle
-id|devfs_handle_t
-id|scsi_devfs_handle
-suffix:semicolon
 multiline_comment|/*&n; * scsi_do_cmd sends all the commands out to the low-level driver.  It&n; * handles the specifics required for each low level driver - ie queued&n; * or non queued.  It also prevents conflicts when different high level&n; * drivers go for the same host at the same time.&n; */
 DECL|function|scsi_wait_req
 r_void
@@ -6216,8 +6212,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|scsi_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -6281,10 +6275,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|scsi_devfs_handle
+l_string|&quot;scsi&quot;
 )paren
 suffix:semicolon
 id|scsi_exit_procfs

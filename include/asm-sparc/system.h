@@ -108,14 +108,6 @@ r_int
 id|empty_zero_page
 suffix:semicolon
 r_extern
-r_struct
-id|linux_romvec
-op_star
-id|romvec
-suffix:semicolon
-DECL|macro|halt
-mdefine_line|#define halt() romvec-&gt;pv_halt()
-r_extern
 r_void
 id|sun_do_break
 c_func

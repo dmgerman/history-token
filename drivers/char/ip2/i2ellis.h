@@ -764,17 +764,6 @@ r_int
 r_int
 id|SendPendingRetry
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
-multiline_comment|/* Device handles into devfs */
-DECL|member|devfs_ipl_handle
-id|devfs_handle_t
-id|devfs_ipl_handle
-suffix:semicolon
-DECL|member|devfs_stat_handle
-id|devfs_handle_t
-id|devfs_stat_handle
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|i2eBordStr
 DECL|typedef|i2eBordStrPtr
 )brace

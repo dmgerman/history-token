@@ -37,11 +37,6 @@ op_assign
 id|TIMAXTIME
 suffix:semicolon
 multiline_comment|/* timeout in tenth of seconds     */
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 multiline_comment|/*---------- misc functions ------------------------------------------- */
 multiline_comment|/*&n; * Re-initialize device&n; */
 r_static
@@ -1208,7 +1203,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|8
+l_int|32
 )braket
 suffix:semicolon
 id|dbg
@@ -1368,7 +1363,7 @@ id|sprintf
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;ticables/usb/%d&quot;
 comma
 id|s-&gt;minor
 )paren
@@ -1388,11 +1383,10 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|s-&gt;devfs
-op_assign
 id|devfs_register
+c_func
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -1525,14 +1519,14 @@ id|s-&gt;opened
 op_assign
 l_int|0
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 (paren
-id|s-&gt;devfs
+id|name
+comma
+l_string|&quot;ticables/usb/%d&quot;
+comma
+id|s-&gt;minor
 )paren
-suffix:semicolon
-id|s-&gt;devfs
-op_assign
-l_int|NULL
 suffix:semicolon
 id|info
 (paren
@@ -1790,8 +1784,6 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* Use devfs, tree: /dev/ticables/usb/[0..3] */
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL
@@ -1866,9 +1858,10 @@ op_amp
 id|tiglusb_driver
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|devfs_handle
+l_string|&quot;ticables/usb&quot;
 )paren
 suffix:semicolon
 id|unregister_chrdev

@@ -677,11 +677,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|variable|pciba_devfs_handle
-r_static
-id|devfs_handle_t
-id|pciba_devfs_handle
-suffix:semicolon
 macro_line|#if !defined(CONFIG_IA64_SGI_SN1)
 r_static
 id|status
@@ -712,8 +707,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pciba_devfs_handle
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|devfs_mk_dir
 c_func
 (paren
@@ -723,13 +720,6 @@ l_string|&quot;pci&quot;
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pciba_devfs_handle
-op_eq
-l_int|NULL
 )paren
 r_return
 id|failure
@@ -746,7 +736,7 @@ c_func
 (paren
 id|devfs_path
 comma
-l_string|&quot;%02x/%02x.%x&quot;
+l_string|&quot;pci/%02x/%02x.%x&quot;
 comma
 id|dev-&gt;bus-&gt;number
 comma
@@ -768,7 +758,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|pciba_devfs_handle
+l_int|NULL
 comma
 id|devfs_path
 comma
@@ -799,10 +789,10 @@ op_eq
 id|failure
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|pciba_devfs_handle
+l_string|&quot;pci&quot;
 )paren
 suffix:semicolon
 r_return
@@ -893,10 +883,10 @@ op_eq
 id|failure
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|pciba_devfs_handle
+l_string|&quot;pci&quot;
 )paren
 suffix:semicolon
 r_return

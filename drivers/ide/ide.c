@@ -9817,10 +9817,6 @@ id|ide_fops
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Probe module&n; */
-DECL|variable|ide_devfs_handle
-id|devfs_handle_t
-id|ide_devfs_handle
-suffix:semicolon
 DECL|variable|ide_lock
 id|EXPORT_SYMBOL
 c_func
@@ -9833,13 +9829,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_probe
-)paren
-suffix:semicolon
-DECL|variable|ide_devfs_handle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_devfs_handle
 )paren
 suffix:semicolon
 DECL|variable|ide_bus_type
@@ -9884,8 +9873,6 @@ id|REVISION
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ide_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -10128,9 +10115,10 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|ide_devfs_handle
+l_string|&quot;ide&quot;
 )paren
 suffix:semicolon
 id|bus_unregister

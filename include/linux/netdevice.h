@@ -428,6 +428,9 @@ id|__LINK_STATE_NOCARRIER
 comma
 DECL|enumerator|__LINK_STATE_RX_SCHED
 id|__LINK_STATE_RX_SCHED
+comma
+DECL|enumerator|__LINK_STATE_LINKWATCH_PENDING
+id|__LINK_STATE_LINKWATCH_PENDING
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This structure holds at boot time configured netdevice settings. They&n; * are then used in the device probing. &n; */
@@ -2245,6 +2248,17 @@ mdefine_line|#define __dev_put(dev) atomic_dec(&amp;(dev)-&gt;refcnt)
 DECL|macro|dev_hold
 mdefine_line|#define dev_hold(dev) atomic_inc(&amp;(dev)-&gt;refcnt)
 multiline_comment|/* Carrier loss detection, dial on demand. The functions netif_carrier_on&n; * and _off may be called from IRQ context, but it is caller&n; * who is responsible for serialization of these calls.&n; */
+r_extern
+r_void
+id|linkwatch_fire_event
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 DECL|function|netif_carrier_ok
 r_static
 r_inline
@@ -2294,13 +2308,22 @@ op_star
 id|dev
 )paren
 (brace
-id|clear_bit
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
 c_func
 (paren
 id|__LINK_STATE_NOCARRIER
 comma
 op_amp
 id|dev-&gt;state
+)paren
+)paren
+id|linkwatch_fire_event
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -2332,13 +2355,23 @@ op_star
 id|dev
 )paren
 (brace
-id|set_bit
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_set_bit
 c_func
 (paren
 id|__LINK_STATE_NOCARRIER
 comma
 op_amp
 id|dev-&gt;state
+)paren
+)paren
+id|linkwatch_fire_event
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

@@ -748,11 +748,11 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|macro|ISAPNP_CS4232
-mdefine_line|#define ISAPNP_CS4232(_va, _vb, _vc, _device, _wss, _ctrl, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                         ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(_va, _vb, _vc, _mpu401) } &bslash;&n;        }
+mdefine_line|#define ISAPNP_CS4232(_va, _vb, _vc, _device, _wss, _ctrl, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                          ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl), &bslash;&n;&t;&t;&t;  ISAPNP_DEVICE_ID(_va, _vb, _vc, _mpu401) } &bslash;&n;        }
 DECL|macro|ISAPNP_CS4232_1
-mdefine_line|#define ISAPNP_CS4232_1(_va, _vb, _vc, _device, _wss, _ctrl, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                         ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl), &bslash;&n;&t;&t;&t; ISAPNP_DEVICE_ID(&squot;P&squot;, &squot;N&squot;, &squot;P&squot;, _mpu401) } &bslash;&n;        }
+mdefine_line|#define ISAPNP_CS4232_1(_va, _vb, _vc, _device, _wss, _ctrl, _mpu401) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                          ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl), &bslash;&n;&t;&t; &t;  ISAPNP_DEVICE_ID(&squot;P&squot;, &squot;N&squot;, &squot;P&squot;, _mpu401) } &bslash;&n;        }
 DECL|macro|ISAPNP_CS4232_WOMPU
-mdefine_line|#define ISAPNP_CS4232_WOMPU(_va, _vb, _vc, _device, _wss, _ctrl) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                         ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl) } &bslash;&n;        }
+mdefine_line|#define ISAPNP_CS4232_WOMPU(_va, _vb, _vc, _device, _wss, _ctrl) &bslash;&n;&t;{ &bslash;&n;&t;&t;ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;&t;&t;.devs = { ISAPNP_DEVICE_ID(_va, _vb, _vc, _wss), &bslash;&n;                          ISAPNP_DEVICE_ID(_va, _vb, _vc, _ctrl) } &bslash;&n;        }
 macro_line|#ifdef CS4232
 DECL|variable|__devinitdata
 r_static

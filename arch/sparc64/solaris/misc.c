@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -3444,26 +3445,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-DECL|member|tv_usec
-r_int
-id|tv_sec
-comma
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|sol_ntptimeval
 r_struct
 id|sol_ntptimeval
 (brace
 DECL|member|time
 r_struct
-id|timeval32
+id|compat_timeval
 id|time
 suffix:semicolon
 DECL|member|maxerror

@@ -8599,6 +8599,9 @@ op_assign
 r_char
 op_star
 )paren
+(paren
+r_int
+)paren
 id|block_start
 suffix:semicolon
 id|bh-&gt;b_bdev

@@ -158,7 +158,6 @@ op_increment
 multiline_comment|/* pass the feature bit in question as misc data */
 op_star
 id|sdir
-op_increment
 op_assign
 id|create_proc_read_entry
 (paren
@@ -186,6 +185,20 @@ id|i
 dot
 id|feature
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|sdir
+)paren
+op_star
+id|sdir-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|sdir
+op_increment
 suffix:semicolon
 )brace
 op_star
@@ -286,8 +299,6 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|len
 op_assign
 id|sprintf
@@ -357,8 +368,6 @@ l_int|0
 id|len
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len

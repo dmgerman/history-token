@@ -701,11 +701,6 @@ id|socksys_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 r_int
 id|__init
 DECL|function|init_socksys
@@ -839,8 +834,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_register
 (paren
 l_int|NULL
@@ -925,9 +918,9 @@ id|printk
 l_string|&quot;Couldn&squot;t unregister socksys character device&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 (paren
-id|devfs_handle
+l_string|&quot;socksys&quot;
 )paren
 suffix:semicolon
 )brace

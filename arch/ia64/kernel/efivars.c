@@ -591,6 +591,10 @@ id|new_efivar-&gt;entry
 r_return
 l_int|1
 suffix:semicolon
+id|new_efivar-&gt;entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|new_efivar-&gt;entry-&gt;data
 op_assign
 id|new_efivar
@@ -692,8 +696,6 @@ op_amp
 id|efivars_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -729,8 +731,6 @@ id|var_data-&gt;DataSize
 comma
 id|var_data-&gt;Data
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -868,8 +868,6 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|var_data
 op_assign
 id|kmalloc
@@ -886,14 +884,10 @@ c_cond
 op_logical_neg
 id|var_data
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -908,8 +902,6 @@ id|size
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1058,8 +1050,6 @@ c_func
 id|var_data
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1136,8 +1126,6 @@ c_func
 (paren
 id|var_data
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock
 c_func

@@ -33,12 +33,12 @@ mdefine_line|#define IDEFLOPPY_DEBUG_BUGS&t;&t;1
 multiline_comment|/* #define IDEFLOPPY_DEBUG(fmt, args...) printk(KERN_INFO fmt, ## args) */
 DECL|macro|IDEFLOPPY_DEBUG
 mdefine_line|#define IDEFLOPPY_DEBUG( fmt, args... )
-macro_line|#ifndef IDEFLOPPY_DEBUG_LOG
-DECL|macro|debug_log
-mdefine_line|#define debug_log(fmt, args... ) do {} while(0)
-macro_line|#else
+macro_line|#if IDEFLOPPY_DEBUG_LOG
 DECL|macro|debug_log
 mdefine_line|#define debug_log printk
+macro_line|#else
+DECL|macro|debug_log
+mdefine_line|#define debug_log(fmt, args... ) do {} while(0)
 macro_line|#endif
 multiline_comment|/*&n; *&t;Some drives require a longer irq timeout.&n; */
 DECL|macro|IDEFLOPPY_WAIT_CMD

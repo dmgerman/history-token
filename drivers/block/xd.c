@@ -425,13 +425,6 @@ r_struct
 id|request_queue
 id|xd_queue
 suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* xd_init: register the block device number and set up pointer tables */
 DECL|function|xd_init
 r_static
@@ -607,9 +600,8 @@ r_goto
 id|out1
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
+c_func
 (paren
 l_int|NULL
 comma
@@ -1014,6 +1006,12 @@ l_int|4
 suffix:semicolon
 id|out2
 suffix:colon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;xd&quot;
+)paren
+suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
@@ -6729,9 +6727,10 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|devfs_handle
+l_string|&quot;xd&quot;
 )paren
 suffix:semicolon
 r_if

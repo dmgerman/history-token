@@ -3183,11 +3183,6 @@ id|ppp_release
 suffix:semicolon
 DECL|macro|PPP_MAJOR
 mdefine_line|#define PPP_MAJOR&t;108
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 multiline_comment|/* Called at boot time if ppp is compiled into the kernel,&n;   or at module load time (from init_module) if compiled as a module. */
 DECL|function|ppp_init
 r_int
@@ -3237,8 +3232,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-id|devfs_handle
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -10586,10 +10579,10 @@ id|KERN_ERR
 l_string|&quot;PPP: failed to unregister PPP device&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;ppp&quot;
 )paren
 suffix:semicolon
 )brace

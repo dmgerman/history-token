@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Handle firewalling&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek               &lt;buytenh@gnu.org&gt;&n; *&t;Bart De Schuymer&t;&t;&lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Lennert dedicates this file to Kerstin Wurdinger.&n; */
+multiline_comment|/*&n; *&t;Handle firewalling&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek               &lt;buytenh@gnu.org&gt;&n; *&t;Bart De Schuymer&t;&t;&lt;bdschuym@pandora.be&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Lennert dedicates this file to Kerstin Wurdinger.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -80,6 +80,8 @@ op_assign
 (brace
 (braket
 id|RTAX_MTU
+op_minus
+l_int|1
 )braket
 op_assign
 l_int|1500
@@ -1001,7 +1003,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This is the &squot;purely bridged&squot; case.  We pass the packet to&n; * netfilter with indev and outdev set to the bridge device,&n; * but we are still able to filter on the &squot;real&squot; indev/outdev&n; * because another bit of the bridge-nf patch overloads the&n; * &squot;-i&squot; and &squot;-o&squot; iptables interface checks to take&n; * skb-&gt;phys{in,out}dev into account as well (so both the real&n; * device and the bridge device will match).&n; */
+multiline_comment|/* This is the &squot;purely bridged&squot; case.  We pass the packet to&n; * netfilter with indev and outdev set to the bridge device,&n; * but we are still able to filter on the &squot;real&squot; indev/outdev&n; * because of the ipt_physdev.c module.&n; */
 DECL|function|br_nf_forward
 r_static
 r_int
@@ -1181,7 +1183,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This function sees both locally originated IP packets and forwarded&n; * IP packets (in both cases the destination device is a bridge&n; * device). It also sees bridged-and-DNAT&squot;ed packets.&n; * For the sake of interface transparency (i.e. properly&n; * overloading the &squot;-o&squot; option), we steal packets destined to&n; * a bridge device away from the PF_INET/FORWARD and PF_INET/OUTPUT hook&n; * functions, and give them back later, when we have determined the real&n; * output device. This is done in here.&n; *&n; * If (nf_bridge-&gt;mask &amp; BRNF_BRIDGED_DNAT) then the packet is bridged&n; * and we fake the PF_BRIDGE/FORWARD hook. The function br_nf_forward()&n; * will then fake the PF_INET/FORWARD hook. br_nf_local_out() has priority&n; * NF_BR_PRI_FIRST, so no relevant PF_BRIDGE/INPUT functions have been nor&n; * will be executed.&n; * Otherwise, if nf_bridge-&gt;physindev is NULL, the bridge-nf code never touched&n; * this packet before, and so the packet was locally originated. We fake&n; * the PF_INET/LOCAL_OUT hook.&n; * Finally, if nf_bridge-&gt;physindev isn&squot;t NULL, then the packet was IP routed,&n; * so we fake the PF_INET/FORWARD hook. ipv4_sabotage_out() makes sure&n; * even routed packets that didn&squot;t arrive on a bridge interface have their&n; * nf_bridge-&gt;physindev set.&n; */
+multiline_comment|/* This function sees both locally originated IP packets and forwarded&n; * IP packets (in both cases the destination device is a bridge&n; * device). It also sees bridged-and-DNAT&squot;ed packets.&n; * To be able to filter on the physical bridge devices (with the ipt_physdev.c&n; * module), we steal packets destined to a bridge device away from the&n; * PF_INET/FORWARD and PF_INET/OUTPUT hook functions, and give them back later,&n; * when we have determined the real output device. This is done in here.&n; *&n; * If (nf_bridge-&gt;mask &amp; BRNF_BRIDGED_DNAT) then the packet is bridged&n; * and we fake the PF_BRIDGE/FORWARD hook. The function br_nf_forward()&n; * will then fake the PF_INET/FORWARD hook. br_nf_local_out() has priority&n; * NF_BR_PRI_FIRST, so no relevant PF_BRIDGE/INPUT functions have been nor&n; * will be executed.&n; * Otherwise, if nf_bridge-&gt;physindev is NULL, the bridge-nf code never touched&n; * this packet before, and so the packet was locally originated. We fake&n; * the PF_INET/LOCAL_OUT hook.&n; * Finally, if nf_bridge-&gt;physindev isn&squot;t NULL, then the packet was IP routed,&n; * so we fake the PF_INET/FORWARD hook. ipv4_sabotage_out() makes sure&n; * even routed packets that didn&squot;t arrive on a bridge interface have their&n; * nf_bridge-&gt;physindev set.&n; */
 DECL|function|br_nf_local_out
 r_static
 r_int

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -573,7 +574,7 @@ c_cond
 (paren
 (paren
 (paren
-id|__kernel_size_t32
+id|compat_size_t
 )paren
 id|sigsetsize
 )paren

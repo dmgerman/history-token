@@ -3012,6 +3012,8 @@ r_int
 id|nblocks
 comma
 id|i
+comma
+id|disk
 suffix:semicolon
 r_char
 op_star
@@ -3185,7 +3187,7 @@ id|rd_blocks
 id|printk
 c_func
 (paren
-l_string|&quot;RAMDISK: image too big! (%d/%d blocks)&bslash;n&quot;
+l_string|&quot;RAMDISK: image too big! (%d/%ld blocks)&bslash;n&quot;
 comma
 id|nblocks
 comma
@@ -3295,7 +3297,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;RAMDISK: Loading %d blocks [%d disk%s] into ram disk... &quot;
+l_string|&quot;RAMDISK: Loading %d blocks [%ld disk%s] into ram disk... &quot;
 comma
 id|nblocks
 comma
@@ -3327,6 +3329,10 @@ c_loop
 id|i
 op_assign
 l_int|0
+comma
+id|disk
+op_assign
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -3355,9 +3361,8 @@ c_func
 (paren
 l_string|&quot;done disk #%d.&bslash;n&quot;
 comma
-id|i
-op_div
-id|devblocks
+id|disk
+op_increment
 )paren
 suffix:semicolon
 id|rotate
@@ -3389,11 +3394,7 @@ c_func
 (paren
 l_string|&quot;disk #%d&quot;
 comma
-id|i
-op_div
-id|devblocks
-op_plus
-l_int|1
+id|disk
 )paren
 suffix:semicolon
 id|in_fd
@@ -3431,11 +3432,7 @@ c_func
 (paren
 l_string|&quot;Loading disk #%d... &quot;
 comma
-id|i
-op_div
-id|devblocks
-op_plus
-l_int|1
+id|disk
 )paren
 suffix:semicolon
 )brace

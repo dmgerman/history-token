@@ -1205,11 +1205,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|function|dtlk_init
 r_static
 r_int
@@ -1282,9 +1277,8 @@ comma
 id|dtlk_major
 )paren
 suffix:semicolon
-id|devfs_handle
-op_assign
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -1376,10 +1370,10 @@ comma
 l_string|&quot;dtlk&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;dtlk&quot;
 )paren
 suffix:semicolon
 id|release_region

@@ -6,11 +6,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
-DECL|variable|dfsh
-id|devfs_handle_t
-id|dfsh
-suffix:semicolon
 DECL|variable|text_buffer
+r_static
 r_char
 op_star
 id|text_buffer
@@ -374,9 +371,7 @@ r_void
 r_if
 c_cond
 (paren
-(paren
-id|dfsh
-op_assign
+op_logical_neg
 id|devfs_register
 c_func
 (paren
@@ -402,11 +397,9 @@ comma
 l_int|NULL
 )paren
 )paren
-op_eq
-l_int|NULL
-)paren
-r_goto
-id|devfs_register
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 id|printk
 c_func
@@ -433,12 +426,6 @@ macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
-id|devfs_register
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 DECL|function|miropcm20_rds_cleanup
 r_static
@@ -450,10 +437,10 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|dfsh
+l_string|&quot;v4l/rds/radiotext&quot;
 )paren
 suffix:semicolon
 )brace
