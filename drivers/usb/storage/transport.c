@@ -2416,6 +2416,17 @@ comma
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* if we stalled the data transfer it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+r_return
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2715,6 +2726,17 @@ l_string|&quot;CB data stage result is 0x%x&bslash;n&quot;
 comma
 id|result
 )paren
+suffix:semicolon
+multiline_comment|/* if we stalled the data transfer it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+r_return
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 r_if
 c_cond
