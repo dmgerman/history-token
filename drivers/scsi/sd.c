@@ -6080,6 +6080,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|SDpnt-&gt;online
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|verbose
 )paren
 (brace
