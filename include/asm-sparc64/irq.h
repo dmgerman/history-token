@@ -190,6 +190,8 @@ suffix:semicolon
 )brace
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS    15
+DECL|macro|irq_cannonicalize
+mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
 r_extern
 r_void
 id|disable_irq
