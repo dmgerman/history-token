@@ -292,7 +292,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: reply fsinfo %d&bslash;n&quot;
+l_string|&quot;%s: reply fsinfo: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -329,7 +329,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: reply getattr %d&bslash;n&quot;
+l_string|&quot;%s: reply getattr: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -396,7 +396,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply getattr&bslash;n&quot;
+l_string|&quot;NFS reply getattr: %d&bslash;n&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -490,7 +492,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply setattr&bslash;n&quot;
+l_string|&quot;NFS reply setattr: %d&bslash;n&quot;
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -940,7 +944,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply access, status = %d&bslash;n&quot;
+l_string|&quot;NFS reply access: %d&bslash;n&quot;
 comma
 id|status
 )paren
