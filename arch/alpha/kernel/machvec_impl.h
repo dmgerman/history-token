@@ -14,11 +14,11 @@ DECL|macro|TITAN_HAE_ADDRESS
 mdefine_line|#define TITAN_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
 DECL|macro|WILDFIRE_HAE_ADDRESS
 mdefine_line|#define WILDFIRE_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
-macro_line|#if CIA_ONE_HAE_WINDOW
+macro_line|#ifdef CIA_ONE_HAE_WINDOW
 DECL|macro|CIA_HAE_ADDRESS
 mdefine_line|#define CIA_HAE_ADDRESS&t;&t;(&amp;alpha_mv.hae_cache)
 macro_line|#endif
-macro_line|#if MCPCIA_ONE_HAE_WINDOW
+macro_line|#ifdef MCPCIA_ONE_HAE_WINDOW
 DECL|macro|MCPCIA_HAE_ADDRESS
 mdefine_line|#define MCPCIA_HAE_ADDRESS&t;(&amp;alpha_mv.hae_cache)
 macro_line|#endif
