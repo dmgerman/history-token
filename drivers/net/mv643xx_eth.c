@@ -4208,7 +4208,6 @@ op_eq
 id|CHECKSUM_HW
 )paren
 (brace
-multiline_comment|/* CPU already calculated pseudo header checksum. */
 id|ipheader
 op_assign
 id|skb-&gt;nh.iph-&gt;ihl
