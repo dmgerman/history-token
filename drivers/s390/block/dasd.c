@@ -6065,14 +6065,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|add_blkdev_randomness
+id|add_disk_randomness
 c_func
 (paren
-id|major
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
+id|req-&gt;rq_disk
 )paren
 suffix:semicolon
 id|end_that_request_last

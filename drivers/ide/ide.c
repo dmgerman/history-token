@@ -929,14 +929,10 @@ id|nr_sectors
 )paren
 )paren
 (brace
-id|add_blkdev_randomness
+id|add_disk_randomness
 c_func
 (paren
-id|major
-c_func
-(paren
-id|rq-&gt;rq_dev
-)paren
+id|rq-&gt;rq_disk
 )paren
 suffix:semicolon
 r_if

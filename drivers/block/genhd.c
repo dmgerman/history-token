@@ -1432,6 +1432,12 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
+id|disk-&gt;random
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
 id|disk-&gt;part
 )paren
 suffix:semicolon
@@ -1593,6 +1599,12 @@ id|disk-&gt;disk_dev
 )paren
 suffix:semicolon
 )brace
+id|rand_initialize_disk
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 r_return
 id|disk
 suffix:semicolon

@@ -689,14 +689,10 @@ r_return
 id|SCpnt
 suffix:semicolon
 )brace
-id|add_blkdev_randomness
+id|add_disk_randomness
 c_func
 (paren
-id|major
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
+id|req-&gt;rq_disk
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

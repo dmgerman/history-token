@@ -318,6 +318,12 @@ r_struct
 id|device
 id|disk_dev
 suffix:semicolon
+DECL|member|random
+r_struct
+id|timer_rand_state
+op_star
+id|random
+suffix:semicolon
 DECL|member|sync_io
 r_int
 id|sync_io
