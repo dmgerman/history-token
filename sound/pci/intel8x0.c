@@ -1228,6 +1228,13 @@ id|in_sdin_init
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|in_measurement
+r_int
+id|in_measurement
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* during ac97 clock measurement */
 DECL|member|fix_nocache
 r_int
 id|fix_nocache
@@ -3481,6 +3488,12 @@ id|step
 op_star
 id|ichdev-&gt;fragsize1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;in_measurement
+)paren
 id|ichdev-&gt;position
 op_mod_assign
 id|ichdev-&gt;size
@@ -11393,6 +11406,10 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+id|chip-&gt;in_measurement
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* trigger */
 r_if
 c_cond
@@ -11460,7 +11477,6 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|set_current_state
 c_func
 (paren
@@ -11475,15 +11491,6 @@ op_div
 l_int|20
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* FIXME: schedule() can take too long time and overlap the boundary.. */
-id|mdelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irq
 c_func
 (paren
@@ -11513,6 +11520,10 @@ suffix:semicolon
 id|pos
 op_add_assign
 id|ichdev-&gt;position
+suffix:semicolon
+id|chip-&gt;in_measurement
+op_assign
+l_int|0
 suffix:semicolon
 id|do_gettimeofday
 c_func
