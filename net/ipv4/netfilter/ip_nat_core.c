@@ -1826,6 +1826,7 @@ id|iphdroff
 op_plus
 r_sizeof
 (paren
+op_star
 id|iph
 )paren
 )paren
