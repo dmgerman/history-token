@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/vermagic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -3171,6 +3172,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_OBSOLETE_MODPARM */
+DECL|variable|vermagic
+r_static
+r_const
+r_char
+id|vermagic
+(braket
+)braket
+op_assign
+id|VERMAGIC_STRING
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODVERSIONS
 DECL|function|check_version
 r_static
@@ -3376,6 +3387,77 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|check_modstruct_version
+r_static
+r_inline
+r_int
+id|check_modstruct_version
+c_func
+(paren
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_int
+r_int
+id|versindex
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+(brace
+r_int
+r_int
+id|i
+suffix:semicolon
+r_struct
+id|kernel_symbol_group
+op_star
+id|ksg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|__find_symbol
+c_func
+(paren
+l_string|&quot;struct_module&quot;
+comma
+op_amp
+id|ksg
+comma
+op_amp
+id|i
+comma
+l_int|1
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|check_version
+c_func
+(paren
+id|sechdrs
+comma
+id|versindex
+comma
+l_string|&quot;struct_module&quot;
+comma
+id|mod
+comma
+id|ksg
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* First part is kernel version, which we ignore. */
 DECL|function|same_magic
 r_static
@@ -3461,6 +3543,31 @@ comma
 r_int
 r_int
 id|symidx
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|check_modstruct_version
+r_static
+r_inline
+r_int
+id|check_modstruct_version
+c_func
+(paren
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_int
+r_int
+id|versindex
+comma
+r_struct
+id|module
+op_star
+id|mod
 )paren
 (brace
 r_return
@@ -4907,13 +5014,6 @@ id|TAINT_PROPRIETARY_MODULE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* From init/vermagic.o */
-r_extern
-r_char
-id|vermagic
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* Allocate and load the module: note that size of section 0 is always&n;   zero, and we rely on this for optional sections. */
 DECL|function|load_module
 r_static
@@ -5835,6 +5935,31 @@ id|modindex
 dot
 id|sh_addr
 suffix:semicolon
+multiline_comment|/* Check module struct version now, before we try to use module. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|check_modstruct_version
+c_func
+(paren
+id|sechdrs
+comma
+id|versindex
+comma
+id|mod
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOEXEC
+suffix:semicolon
+r_goto
+id|free_hdr
+suffix:semicolon
+)brace
 multiline_comment|/* This is allowed: modprobe --force will invalidate it. */
 r_if
 c_cond
@@ -7186,9 +7311,9 @@ op_assign
 r_int
 r_int
 )paren
-id|mod-&gt;module_core
+id|mod-&gt;module_init
 op_plus
-id|mod-&gt;core_size
+id|mod-&gt;init_size
 suffix:semicolon
 r_else
 id|nextval
@@ -7197,9 +7322,9 @@ op_assign
 r_int
 r_int
 )paren
-id|mod-&gt;module_init
+id|mod-&gt;module_core
 op_plus
-id|mod-&gt;init_size
+id|mod-&gt;core_size
 suffix:semicolon
 multiline_comment|/* Scan for closest preceeding symbol, and next symbol. (ELF&n;           starts real symbols at 1). */
 r_for
@@ -8013,4 +8138,28 @@ c_func
 id|symbols_init
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODVERSIONS
+multiline_comment|/* Generate the signature for struct module here, too, for modversions. */
+DECL|function|struct_module
+r_void
+id|struct_module
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+DECL|variable|struct_module
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|struct_module
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
