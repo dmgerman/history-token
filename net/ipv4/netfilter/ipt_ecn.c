@@ -1,4 +1,4 @@
-multiline_comment|/* IP tables module for matching the value of the IPv4 and TCP ECN bits&n; *&n; * ipt_ecn.c,v 1.3 2002/05/29 15:09:00 laforge Exp&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * This software is distributed under the terms GNU GPL v2&n; */
+multiline_comment|/* IP tables module for matching the value of the IPv4 and TCP ECN bits&n; *&n; * ipt_ecn.c,v 1.3 2002/05/29 15:09:00 laforge Exp&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;

@@ -28,7 +28,6 @@ id|checksum
 suffix:semicolon
 DECL|typedef|sctp_sctphdr_t
 )brace
-id|sctp_sctphdr_t
 id|__attribute__
 c_func
 (paren
@@ -36,6 +35,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_sctphdr_t
 suffix:semicolon
 multiline_comment|/* Section 3.2.  Chunk Field Descriptions. */
 DECL|struct|sctp_chunkhdr
@@ -57,7 +57,6 @@ id|length
 suffix:semicolon
 DECL|typedef|sctp_chunkhdr_t
 )brace
-id|sctp_chunkhdr_t
 id|__attribute__
 c_func
 (paren
@@ -65,6 +64,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_chunkhdr_t
 suffix:semicolon
 multiline_comment|/* Section 3.2.  Chunk Type Values.&n; * [Chunk Type] identifies the type of information contained in the Chunk&n; * Value field. It takes a value from 0 to 254. The value of 255 is&n; * reserved for future use as an extension field.&n; */
 r_typedef
@@ -226,14 +226,14 @@ id|length
 suffix:semicolon
 DECL|typedef|sctp_paramhdr_t
 )brace
-id|sctp_paramhdr_t
-id|__attribute
+id|__attribute__
 c_func
 (paren
 (paren
 id|packed
 )paren
 )paren
+id|sctp_paramhdr_t
 suffix:semicolon
 r_typedef
 r_enum
@@ -469,7 +469,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_datahdr_t
 )brace
-id|sctp_datahdr_t
 id|__attribute__
 c_func
 (paren
@@ -477,6 +476,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_datahdr_t
 suffix:semicolon
 DECL|struct|sctp_data_chunk
 r_typedef
@@ -493,7 +493,6 @@ id|data_hdr
 suffix:semicolon
 DECL|typedef|sctp_data_chunk_t
 )brace
-id|sctp_data_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -501,6 +500,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_data_chunk_t
 suffix:semicolon
 multiline_comment|/* DATA Chuck Specific Flags */
 r_enum
@@ -576,7 +576,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_inithdr_t
 )brace
-id|sctp_inithdr_t
 id|__attribute__
 c_func
 (paren
@@ -584,6 +583,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_inithdr_t
 suffix:semicolon
 DECL|struct|sctp_init_chunk
 r_typedef
@@ -600,7 +600,6 @@ id|init_hdr
 suffix:semicolon
 DECL|typedef|sctp_init_chunk_t
 )brace
-id|sctp_init_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -608,6 +607,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_init_chunk_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.2.1. IPv4 Address Parameter (5) */
 DECL|struct|sctp_ipv4addr_param
@@ -626,7 +626,6 @@ id|addr
 suffix:semicolon
 DECL|typedef|sctp_ipv4addr_param_t
 )brace
-id|sctp_ipv4addr_param_t
 id|__attribute__
 c_func
 (paren
@@ -634,6 +633,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_ipv4addr_param_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.2.1. IPv6 Address Parameter (6) */
 DECL|struct|sctp_ipv6addr_param
@@ -652,7 +652,6 @@ id|addr
 suffix:semicolon
 DECL|typedef|sctp_ipv6addr_param_t
 )brace
-id|sctp_ipv6addr_param_t
 id|__attribute__
 c_func
 (paren
@@ -660,6 +659,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_ipv6addr_param_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.2.1 Cookie Preservative (9) */
 DECL|struct|sctp_cookie_preserve_param
@@ -677,7 +677,6 @@ id|lifespan_increment
 suffix:semicolon
 DECL|typedef|sctp_cookie_preserve_param_t
 )brace
-id|sctp_cookie_preserve_param_t
 id|__attribute__
 c_func
 (paren
@@ -685,6 +684,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_cookie_preserve_param_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.2.1 Host Name Address (11) */
 DECL|struct|sctp_hostname_param
@@ -705,7 +705,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_hostname_param_t
 )brace
-id|sctp_hostname_param_t
 id|__attribute__
 c_func
 (paren
@@ -713,6 +712,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_hostname_param_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.2.1 Supported Address Types (12) */
 DECL|struct|sctp_supported_addrs_param
@@ -733,7 +733,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_supported_addrs_param_t
 )brace
-id|sctp_supported_addrs_param_t
 id|__attribute__
 c_func
 (paren
@@ -741,6 +740,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_supported_addrs_param_t
 suffix:semicolon
 multiline_comment|/* Appendix A. ECN Capable (32768) */
 DECL|struct|sctp_ecn_capable_param
@@ -754,7 +754,6 @@ id|param_hdr
 suffix:semicolon
 DECL|typedef|sctp_ecn_capable_param_t
 )brace
-id|sctp_ecn_capable_param_t
 id|__attribute__
 c_func
 (paren
@@ -762,6 +761,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_ecn_capable_param_t
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.3 Initiation Acknowledgement (INIT ACK) (2):&n; *   The INIT ACK chunk is used to acknowledge the initiation of an SCTP&n; *   association.&n; */
 DECL|typedef|sctp_initack_chunk_t
@@ -788,7 +788,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_cookie_param_t
 )brace
-id|sctp_cookie_param_t
 id|__attribute__
 c_func
 (paren
@@ -796,6 +795,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_cookie_param_t
 suffix:semicolon
 multiline_comment|/* Section 3.3.3.1 Unrecognized Parameters (8) */
 DECL|struct|sctp_unrecognized_param
@@ -813,7 +813,6 @@ id|unrecognized
 suffix:semicolon
 DECL|typedef|sctp_unrecognized_param_t
 )brace
-id|sctp_unrecognized_param_t
 id|__attribute__
 c_func
 (paren
@@ -821,6 +820,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_unrecognized_param_t
 suffix:semicolon
 multiline_comment|/*&n; * 3.3.4 Selective Acknowledgement (SACK) (3):&n; *&n; *  This chunk is sent to the peer endpoint to acknowledge received DATA&n; *  chunks and to inform the peer endpoint of gaps in the received&n; *  subsequences of DATA chunks as represented by their TSNs.&n; */
 DECL|struct|sctp_gap_ack_block
@@ -838,7 +838,6 @@ id|end
 suffix:semicolon
 DECL|typedef|sctp_gap_ack_block_t
 )brace
-id|sctp_gap_ack_block_t
 id|__attribute__
 c_func
 (paren
@@ -846,6 +845,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_gap_ack_block_t
 suffix:semicolon
 DECL|typedef|sctp_dup_tsn_t
 r_typedef
@@ -897,7 +897,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_sackhdr_t
 )brace
-id|sctp_sackhdr_t
 id|__attribute__
 c_func
 (paren
@@ -905,6 +904,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_sackhdr_t
 suffix:semicolon
 DECL|struct|sctp_sack_chunk
 r_typedef
@@ -921,7 +921,6 @@ id|sack_hdr
 suffix:semicolon
 DECL|typedef|sctp_sack_chunk_t
 )brace
-id|sctp_sack_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -929,6 +928,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_sack_chunk_t
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.5 Heartbeat Request (HEARTBEAT) (4):&n; *&n; *  An endpoint should send this chunk to its peer endpoint to probe the&n; *  reachability of a particular destination transport address defined in&n; *  the present association.&n; */
 DECL|struct|sctp_heartbeathdr
@@ -942,7 +942,6 @@ id|info
 suffix:semicolon
 DECL|typedef|sctp_heartbeathdr_t
 )brace
-id|sctp_heartbeathdr_t
 id|__attribute__
 c_func
 (paren
@@ -950,6 +949,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_heartbeathdr_t
 suffix:semicolon
 DECL|struct|sctp_heartbeat_chunk
 r_typedef
@@ -966,7 +966,6 @@ id|hb_hdr
 suffix:semicolon
 DECL|typedef|sctp_heartbeat_chunk_t
 )brace
-id|sctp_heartbeat_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -974,6 +973,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_heartbeat_chunk_t
 suffix:semicolon
 multiline_comment|/* For the abort and shutdown ACK we must carry the init tag in the&n; * common header. Just the common header is all that is needed with a&n; * chunk descriptor.&n; */
 DECL|struct|sctp_abort_chunk
@@ -987,7 +987,6 @@ id|uh
 suffix:semicolon
 DECL|typedef|sctp_abort_chunkt_t
 )brace
-id|sctp_abort_chunkt_t
 id|__attribute__
 c_func
 (paren
@@ -995,6 +994,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_abort_chunkt_t
 suffix:semicolon
 multiline_comment|/* For the graceful shutdown we must carry the tag (in common header)&n; * and the highest consecutive acking value.&n; */
 DECL|struct|sctp_shutdownhdr
@@ -1008,7 +1008,6 @@ id|cum_tsn_ack
 suffix:semicolon
 DECL|typedef|sctp_shutdownhdr_t
 )brace
-id|sctp_shutdownhdr_t
 id|__attribute__
 c_func
 (paren
@@ -1016,6 +1015,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_shutdownhdr_t
 suffix:semicolon
 DECL|struct|sctp_shutdown_chunk_t
 r_struct
@@ -1031,7 +1031,6 @@ id|shutdown_hdr
 suffix:semicolon
 )brace
 id|__attribute__
-c_func
 (paren
 (paren
 id|packed
@@ -1061,7 +1060,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_errhdr_t
 )brace
-id|sctp_errhdr_t
 id|__attribute__
 c_func
 (paren
@@ -1069,6 +1067,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_errhdr_t
 suffix:semicolon
 DECL|struct|sctp_operr_chunk
 r_typedef
@@ -1085,7 +1084,6 @@ id|err_hdr
 suffix:semicolon
 DECL|typedef|sctp_operr_chunk_t
 )brace
-id|sctp_operr_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -1093,6 +1091,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_operr_chunk_t
 suffix:semicolon
 multiline_comment|/* RFC 2960 3.3.10 - Operation Error&n; *&n; * Cause Code: 16 bits (unsigned integer)&n; *&n; *     Defines the type of error conditions being reported.&n; *    Cause Code&n; *     Value           Cause Code&n; *     ---------      ----------------&n; *      1              Invalid Stream Identifier&n; *      2              Missing Mandatory Parameter&n; *      3              Stale Cookie Error&n; *      4              Out of Resource&n; *      5              Unresolvable Address&n; *      6              Unrecognized Chunk Type&n; *      7              Invalid Mandatory Parameter&n; *      8              Unrecognized Parameters&n; *      9              No User Data&n; *     10              Cookie Received While Shutting Down&n; */
 r_typedef
@@ -1303,7 +1302,6 @@ id|ence_hdr
 suffix:semicolon
 DECL|typedef|sctp_ecne_chunk_t
 )brace
-id|sctp_ecne_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -1311,6 +1309,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_ecne_chunk_t
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Appendix A.  Explicit Congestion Notification.&n; *   Congestion Window Reduced (CWR) (13)&n; */
 DECL|struct|sctp_cwrhdr
@@ -1341,7 +1340,6 @@ id|cwr_hdr
 suffix:semicolon
 DECL|typedef|sctp_cwr_chunk_t
 )brace
-id|sctp_cwr_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -1349,6 +1347,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_cwr_chunk_t
 suffix:semicolon
 multiline_comment|/*&n; * ADDIP Section 3.1 New Chunk Types&n; */
 multiline_comment|/* ADDIP&n; * Section 3.1.1 Address Configuration Change Chunk (ASCONF)&n; *&n; * &t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents a Serial Number for the ASCONF Chunk. The&n; *&t;valid range of Serial Number is from 0 to 2^32-1.&n; *&t;Serial Numbers wrap back to 0 after reaching 2^32 -1.&n; *&n; *&t;Address Parameter: 8 or 20 bytes (depending on type)&n; *&t;The address is an address of the sender of the ASCONF chunk,&n; *&t;the address MUST be considered part of the association by the&n; *&t;peer endpoint. This field may be used by the receiver of the &n; *&t;ASCONF to help in finding the association. This parameter MUST&n; *&t;be present in every ASCONF message i.e. it is a mandatory TLV&n; *&t;parameter.&n; *&n; *&t;ASCONF Parameter: TLV format&n; *&t;Each Address configuration change is represented by a TLV&n; *&t;parameter as defined in Section 3.2. One or more requests may&n; *&t;be present in an ASCONF Chunk.&n; *&n; * Section 3.1.2 Address Configuration Acknowledgement Chunk (ASCONF-ACK)&n; * &n; *&t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents the Serial Number for the received ASCONF&n; *&t;Chunk that is acknowledged by this chunk. This value is copied&n; *&t;from the received ASCONF Chunk. &n; *&n; *&t;ASCONF Parameter Response: TLV format&n; *&t;The ASCONF Parameter Response is used in the ASCONF-ACK to&n; *&t;report status of ASCONF processing.&n; */
@@ -1367,7 +1366,6 @@ id|crr_id
 suffix:semicolon
 DECL|typedef|sctp_addip_param_t
 )brace
-id|sctp_addip_param_t
 id|__attribute__
 c_func
 (paren
@@ -1375,6 +1373,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_addip_param_t
 suffix:semicolon
 DECL|struct|sctp_addiphdr
 r_typedef
@@ -1394,7 +1393,6 @@ l_int|0
 suffix:semicolon
 DECL|typedef|sctp_addiphdr_t
 )brace
-id|sctp_addiphdr_t
 id|__attribute__
 c_func
 (paren
@@ -1402,6 +1400,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_addiphdr_t
 suffix:semicolon
 DECL|struct|sctp_addip_chunk
 r_typedef
@@ -1418,7 +1417,6 @@ id|addip_hdr
 suffix:semicolon
 DECL|typedef|sctp_addip_chunk_t
 )brace
-id|sctp_addip_chunk_t
 id|__attribute__
 c_func
 (paren
@@ -1426,6 +1424,7 @@ c_func
 id|packed
 )paren
 )paren
+id|sctp_addip_chunk_t
 suffix:semicolon
 macro_line|#endif /* __LINUX_SCTP_H__ */
 eof

@@ -7757,6 +7757,11 @@ op_star
 id|v
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|v
+)paren
 id|rcu_read_unlock
 c_func
 (paren
