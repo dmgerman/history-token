@@ -1027,6 +1027,18 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+l_int|0x10b7
+comma
+l_int|0x7770
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* 3ComAirConnect */
+(brace
 l_int|0x111a
 comma
 l_int|0x1023
