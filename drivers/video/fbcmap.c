@@ -1045,7 +1045,7 @@ c_cond
 op_star
 id|transp
 suffix:colon
-l_int|0
+l_int|0xffff
 suffix:semicolon
 )brace
 r_else
@@ -1090,7 +1090,7 @@ suffix:semicolon
 r_else
 id|htransp
 op_assign
-l_int|0
+l_int|0xffff
 suffix:semicolon
 )brace
 id|red
