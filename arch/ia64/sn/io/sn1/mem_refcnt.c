@@ -1,5 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* $Id: mem_refcnt.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -34,7 +33,7 @@ id|devfs_handle_t
 id|hub
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_SN
+macro_line|#if 0
 id|devfs_handle_t
 id|refcnt_dev
 suffix:semicolon

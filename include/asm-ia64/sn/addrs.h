@@ -42,7 +42,7 @@ DECL|macro|NODE_OFFSET
 mdefine_line|#define NODE_OFFSET(_n)&t;&t;(UINT64_CAST (_n) &lt;&lt; NODE_SIZE_BITS)
 macro_line|#endif
 DECL|macro|NODE_CAC_BASE
-mdefine_line|#define NODE_CAC_BASE(_n)&t;(CAC_BASE   + NODE_OFFSET(_n))
+mdefine_line|#define NODE_CAC_BASE(_n)&t;(CAC_BASE  + NODE_OFFSET(_n))
 DECL|macro|NODE_HSPEC_BASE
 mdefine_line|#define NODE_HSPEC_BASE(_n)&t;(HSPEC_BASE + NODE_OFFSET(_n))
 DECL|macro|NODE_IO_BASE
@@ -54,7 +54,7 @@ mdefine_line|#define NODE_UNCAC_BASE(_n)&t;(UNCAC_BASE + NODE_OFFSET(_n))
 DECL|macro|TO_NODE
 mdefine_line|#define TO_NODE(_n, _x)&t;&t;(NODE_OFFSET(_n)     | ((_x)&t;&t;   ))
 DECL|macro|TO_NODE_CAC
-mdefine_line|#define TO_NODE_CAC(_n, _x)&t;(NODE_CAC_BASE(_n)   | ((_x) &amp; TO_PHYS_MASK))
+mdefine_line|#define TO_NODE_CAC(_n, _x)&t;(NODE_CAC_BASE(_n) | ((_x) &amp; TO_PHYS_MASK))
 DECL|macro|TO_NODE_UNCAC
 mdefine_line|#define TO_NODE_UNCAC(_n, _x)&t;(NODE_UNCAC_BASE(_n) | ((_x) &amp; TO_PHYS_MASK))
 DECL|macro|TO_NODE_MSPEC
@@ -176,9 +176,9 @@ mdefine_line|#define REMOTE_HSPEC_ADDR(_n, _x)&t;(HUBREG_CAST (RREG_BASE(_n) + (
 macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|HUB_L
-mdefine_line|#define HUB_L(_a)&t;&t;&t;*(_a)
+mdefine_line|#define HUB_L(_a)&t;&t;&t;(*((volatile typeof(*_a) *)_a))
 DECL|macro|HUB_S
-mdefine_line|#define&t;HUB_S(_a, _d)&t;&t;&t;*(_a) = (_d)
+mdefine_line|#define&t;HUB_S(_a, _d)&t;&t;&t;(*((volatile typeof(*_a) *)_a) = (_d))
 DECL|macro|LOCAL_HUB_L
 mdefine_line|#define LOCAL_HUB_L(_r)&t;&t;&t;HUB_L(LOCAL_HUB_ADDR(_r))
 DECL|macro|LOCAL_HUB_S
@@ -286,7 +286,7 @@ mdefine_line|#define GDA_ADDR(nasid)&t;&t;KLD_GDA(nasid)-&gt;pointer
 DECL|macro|GDA_SIZE
 mdefine_line|#define GDA_SIZE(nasid)&t;&t;KLD_GDA(nasid)-&gt;size
 DECL|macro|NODE_OFFSET_TO_K0
-mdefine_line|#define NODE_OFFSET_TO_K0(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;(PAGE_OFFSET | NODE_OFFSET(_nasid) | (_off))
+mdefine_line|#define NODE_OFFSET_TO_K0(_nasid, _off)&t;&t;&t;&t;&t;&bslash;&n;&t;(CACHEABLE_MEM_SPACE | NODE_OFFSET(_nasid) | (_off))
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SN_ADDRS_H */
 eof

@@ -1,8 +1,9 @@
 multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -28,10 +29,14 @@ suffix:semicolon
 DECL|variable|force_fire_and_forget
 r_int
 id|force_fire_and_forget
+op_assign
+l_int|1
 suffix:semicolon
 DECL|variable|ignore_conveyor_override
 r_int
 id|ignore_conveyor_override
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|dummy_vrtx
 id|devfs_handle_t
@@ -117,129 +122,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_char
-op_star
-DECL|function|nic_bridge_vertex_info
-id|nic_bridge_vertex_info
-c_func
-(paren
-id|devfs_handle_t
-id|v
-comma
-id|nic_data_t
-id|mcr
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;nic_bridge_vertex_info : returns NULL&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_char
-op_star
-)paren
-l_int|0
-suffix:semicolon
-)brace
-r_void
-op_star
-DECL|function|snia_kmem_alloc_node
-id|snia_kmem_alloc_node
-c_func
-(paren
-r_register
-r_int
-id|size
-comma
-r_register
-r_int
-id|flags
-comma
-id|cnodeid_t
-id|node
-)paren
-(brace
-multiline_comment|/* Allocates on node &squot;node&squot; */
-id|FIXME
-c_func
-(paren
-l_string|&quot;snia_kmem_alloc_node : use kmalloc&quot;
-)paren
-suffix:semicolon
-r_return
-id|kmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-)brace
-r_void
-op_star
-DECL|function|snia_kmem_zalloc_node
-id|snia_kmem_zalloc_node
-c_func
-(paren
-r_register
-r_int
-id|size
-comma
-r_register
-r_int
-id|flags
-comma
-id|cnodeid_t
-id|node
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;snia_kmem_zalloc_node : use kmalloc&quot;
-)paren
-suffix:semicolon
-r_return
-id|kmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|snia_kmem_free
-id|snia_kmem_free
-c_func
-(paren
-r_void
-op_star
-id|where
-comma
-r_int
-id|size
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;snia_kmem_free : use kfree&quot;
-)paren
-suffix:semicolon
-r_return
-id|kfree
-c_func
-(paren
-id|where
-)paren
-suffix:semicolon
-)brace
 r_void
 op_star
 DECL|function|snia_kmem_zone_alloc
@@ -247,7 +129,8 @@ id|snia_kmem_zone_alloc
 c_func
 (paren
 r_register
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 comma
@@ -275,7 +158,8 @@ id|snia_kmem_zone_free
 c_func
 (paren
 r_register
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 comma
@@ -291,7 +175,8 @@ l_string|&quot;snia_kmem_zone_free : no-op&quot;
 )paren
 suffix:semicolon
 )brace
-id|zone_t
+r_struct
+id|zone
 op_star
 DECL|function|snia_kmem_zone_init
 id|snia_kmem_zone_init
@@ -314,7 +199,8 @@ l_string|&quot;snia_kmem_zone_free : returns NULL&quot;
 suffix:semicolon
 r_return
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 )paren
 l_int|0
@@ -365,36 +251,6 @@ suffix:semicolon
 )brace
 r_else
 r_return
-l_int|0
-suffix:semicolon
-)brace
-r_void
-op_star
-DECL|function|swap_ptr
-id|swap_ptr
-c_func
-(paren
-r_void
-op_star
-op_star
-id|loc
-comma
-r_void
-op_star
-r_new
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;swap_ptr : returns null&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_void
-op_star
-)paren
 l_int|0
 suffix:semicolon
 )brace

@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_SN_PCI_PCIBR_H
 DECL|macro|_ASM_SN_PCI_PCIBR_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_H
 macro_line|#if defined(__KERNEL__)
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/pio.h&gt;
@@ -63,6 +64,10 @@ multiline_comment|/* ===========================================================
 r_extern
 id|pciio_provider_t
 id|pcibr_provider
+suffix:semicolon
+r_extern
+id|pciio_provider_t
+id|pci_pic_provider
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *    secondary entry points: pcibr PCI bus provider&n; *&n; *&t;These functions are normally exported explicitly by&n; *&t;a direct call from the pcibr initialization routine&n; *&t;into the generic crosstalk provider; they are included&n; *&t;here to enable a more aggressive performance hack in&n; *&t;the generic crosstalk layer, where if we know that the&n; *&t;only possible crosstalk provider is pcibr, and we can&n; *&t;guarantee that all entry points are properly named, and&n; *&t;we can deal with the implicit casting properly, then&n; *&t;we can turn many of the generic provider routines into&n; *&t;plain brances, or even eliminate them (given sufficient&n; *&t;smarts on the part of the compilation system).&n; */
 r_extern
@@ -390,6 +395,7 @@ id|pcibr_intr_t
 id|intr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_extern
 r_int
 id|pcibr_intr_connect
@@ -399,6 +405,21 @@ id|pcibr_intr_t
 id|intr
 )paren
 suffix:semicolon
+macro_line|#else
+r_extern
+r_int
+id|pcibr_intr_connect
+c_func
+(paren
+id|pcibr_intr_t
+id|intr
+comma
+id|intr_func_t
+comma
+id|intr_arg_t
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|pcibr_intr_disconnect
@@ -525,6 +546,7 @@ r_int
 id|error_code
 )paren
 suffix:semicolon
+macro_line|#ifdef PIC_LATER
 r_extern
 id|pciio_slot_t
 id|pcibr_error_extract
@@ -542,6 +564,7 @@ op_star
 id|addrp
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|pcibr_wrb_flush
@@ -576,6 +599,7 @@ op_star
 id|count_pool
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_IA64_SGI_SN1
 r_extern
 r_int
 id|pcibr_alloc_all_rrbs
@@ -612,6 +636,7 @@ r_int
 id|virt4
 )paren
 suffix:semicolon
+macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|rrb_alloc_funct_f
@@ -789,6 +814,7 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|typedef|pcibr_intr_bits_f
 r_typedef
 r_int
@@ -800,6 +826,21 @@ comma
 id|pciio_intr_line_t
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|typedef|pcibr_intr_bits_f
+r_typedef
+r_int
+id|pcibr_intr_bits_f
+c_func
+(paren
+id|pciio_info_t
+comma
+id|pciio_intr_line_t
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|pcibr_hints_intr_bits
@@ -969,28 +1010,18 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|pcibr_slot_info_req_s
-r_struct
-id|pcibr_slot_info_req_s
-(brace
-DECL|member|req_slot
-r_int
-id|req_slot
-suffix:semicolon
-DECL|member|req_respp
-id|pcibr_slot_info_resp_t
-id|req_respp
-suffix:semicolon
-DECL|member|req_size
-r_int
-id|req_size
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|pcibr_slot_info_resp_s
 r_struct
 id|pcibr_slot_info_resp_s
 (brace
+DECL|member|resp_bs_bridge_type
+r_int
+id|resp_bs_bridge_type
+suffix:semicolon
+DECL|member|resp_bs_bridge_mode
+r_int
+id|resp_bs_bridge_mode
+suffix:semicolon
 DECL|member|resp_has_host
 r_int
 id|resp_has_host
@@ -1066,7 +1097,7 @@ r_int
 id|resp_bss_d32_flags
 suffix:semicolon
 DECL|member|resp_bss_ext_ates_active
-r_int
+id|atomic_t
 id|resp_bss_ext_ates_active
 suffix:semicolon
 DECL|member|resp_bss_cmd_pointer
@@ -1083,9 +1114,17 @@ DECL|member|resp_bs_rrb_valid
 r_int
 id|resp_bs_rrb_valid
 suffix:semicolon
-DECL|member|resp_bs_rrb_valid_v
+DECL|member|resp_bs_rrb_valid_v1
 r_int
-id|resp_bs_rrb_valid_v
+id|resp_bs_rrb_valid_v1
+suffix:semicolon
+DECL|member|resp_bs_rrb_valid_v2
+r_int
+id|resp_bs_rrb_valid_v2
+suffix:semicolon
+DECL|member|resp_bs_rrb_valid_v3
+r_int
+id|resp_bs_rrb_valid_v3
 suffix:semicolon
 DECL|member|resp_bs_rrb_res
 r_int
@@ -1107,6 +1146,16 @@ DECL|member|resp_b_int_host
 id|bridgereg_t
 id|resp_b_int_host
 suffix:semicolon
+macro_line|#ifndef CONFIG_IA64_SGI_SN1
+DECL|member|resp_p_int_enable
+id|picreg_t
+id|resp_p_int_enable
+suffix:semicolon
+DECL|member|resp_p_int_host
+id|picreg_t
+id|resp_p_int_host
+suffix:semicolon
+macro_line|#endif
 DECL|struct|pcibr_slot_func_info_resp_s
 r_struct
 id|pcibr_slot_func_info_resp_s
@@ -1260,6 +1309,11 @@ DECL|macro|PCI_SLOT_DRV_ATTACH_ERR
 mdefine_line|#define PCI_SLOT_DRV_ATTACH_ERR  25     /* driver attach error */
 DECL|macro|PCI_SLOT_DRV_DETACH_ERR
 mdefine_line|#define PCI_SLOT_DRV_DETACH_ERR  26     /* driver detach error */
+multiline_comment|/* EFBIG                         27    */
+DECL|macro|PCI_MULTI_FUNC_ERR
+mdefine_line|#define PCI_MULTI_FUNC_ERR       28     /* multi-function card error */
+DECL|macro|PCI_SLOT_RBAR_ALLOC_ERR
+mdefine_line|#define PCI_SLOT_RBAR_ALLOC_ERR  29     /* slot PCI-X RBAR alloc error */
 multiline_comment|/* ERANGE                        34    */
 multiline_comment|/* EUNATCH                       42    */
 macro_line|#endif&t;&t;&t;&t;/* _ASM_SN_PCI_PCIBR_H */

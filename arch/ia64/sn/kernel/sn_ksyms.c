@@ -3,42 +3,8 @@ multiline_comment|/*&n; * Architecture-specific kernel symbols&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
-multiline_comment|/*&n; * other stuff (more to be added later, cleanup then)&n; */
-DECL|variable|sn1_pci_map_sg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sn1_pci_map_sg
-)paren
-suffix:semicolon
-DECL|variable|sn1_pci_unmap_sg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sn1_pci_unmap_sg
-)paren
-suffix:semicolon
-DECL|variable|sn1_pci_alloc_consistent
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sn1_pci_alloc_consistent
-)paren
-suffix:semicolon
-DECL|variable|sn1_pci_free_consistent
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sn1_pci_free_consistent
-)paren
-suffix:semicolon
-DECL|variable|sn1_dma_address
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sn1_dma_address
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/sn/intr.h&gt;
+macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_extern
@@ -155,27 +121,114 @@ id|__va_debug
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Support IPIs for loaded modules. */
+DECL|variable|sn_send_IPI_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_send_IPI_phys
+)paren
+suffix:semicolon
+multiline_comment|/* symbols referenced by partitioning modules */
+macro_line|#include &lt;asm/sn/bte_copy.h&gt;
+DECL|variable|bte_unaligned_copy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bte_unaligned_copy
+)paren
+suffix:semicolon
+macro_line|#include &lt;asm/sal.h&gt;
+DECL|variable|ia64_sal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_sal
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN2
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+DECL|variable|sal_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sal_lock
+)paren
+suffix:semicolon
+DECL|variable|sn_partid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_partid
+)paren
+suffix:semicolon
+DECL|variable|sn_local_partid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_local_partid
+)paren
+suffix:semicolon
+DECL|variable|sn_system_serial_number_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_system_serial_number_string
+)paren
+suffix:semicolon
+DECL|variable|sn_partition_serial_number
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_partition_serial_number
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* added by tduffy 04.08.01 to fix depmod issues */
 macro_line|#include &lt;linux/mmzone.h&gt;
-DECL|variable|sn1_pci_unmap_single
-id|EXPORT_SYMBOL
+macro_line|#ifdef BUS_INT_WAR
+r_extern
+r_void
+id|sn_add_polled_interrupt
 c_func
 (paren
-id|sn1_pci_unmap_single
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
-DECL|variable|sn1_pci_map_single
-id|EXPORT_SYMBOL
+r_extern
+r_void
+id|sn_delete_polled_interrupt
 c_func
 (paren
-id|sn1_pci_map_single
+r_int
 )paren
 suffix:semicolon
-DECL|variable|sn1_pci_dma_sync_single
+DECL|variable|sn_add_polled_interrupt
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sn1_pci_dma_sync_single
+id|sn_add_polled_interrupt
+)paren
+suffix:semicolon
+DECL|variable|sn_delete_polled_interrupt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_delete_polled_interrupt
+)paren
+suffix:semicolon
+macro_line|#endif
+r_extern
+id|nasid_t
+id|master_nasid
+suffix:semicolon
+DECL|variable|master_nasid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|master_nasid
 )paren
 suffix:semicolon
 eof

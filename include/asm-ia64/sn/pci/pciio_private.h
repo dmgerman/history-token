@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_SN_PCI_PCIIO_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIIO_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_PRIVATE_H
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
+macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
 multiline_comment|/*&n; * pciio_private.h -- private definitions for pciio&n; * PCI drivers should NOT include this file.&n; */
 macro_line|#ident &quot;sys/PCI/pciio_private: $Revision: 1.13 $&quot;
 multiline_comment|/*&n; * All PCI providers set up PIO using this information.&n; */
@@ -94,6 +95,16 @@ id|pciio_intr_line_t
 id|pi_lines
 suffix:semicolon
 multiline_comment|/* which interrupt line(s) */
+DECL|member|pi_func
+id|intr_func_t
+id|pi_func
+suffix:semicolon
+multiline_comment|/* handler function (when connected) */
+DECL|member|pi_arg
+id|intr_arg_t
+id|pi_arg
+suffix:semicolon
+multiline_comment|/* handler parameter (when connected) */
 DECL|member|pi_mustruncpu
 id|cpuid_t
 id|pi_mustruncpu
@@ -116,6 +127,48 @@ DECL|macro|PCIIO_INTR_CONNECTED
 mdefine_line|#define PCIIO_INTR_CONNECTED&t;1&t;/* interrupt handler/thread has been connected */
 DECL|macro|PCIIO_INTR_NOTHREAD
 mdefine_line|#define PCIIO_INTR_NOTHREAD&t;2&t;/* interrupt handler wants to be called at interrupt level */
+multiline_comment|/*&n; * Some PCI provider implementations keep track of PCI window Base Address&n; * Register (BAR) address range assignment via the rmalloc()/rmfree() arena&n; * management routines.  These implementations use the following data&n; * structure for each allocation address space (e.g. memory, I/O, small&n; * window, etc.).&n; *&n; * The ``page size&squot;&squot; encodes the minimum allocation unit and must be a power&n; * of 2.  The main use of this allocation ``page size&squot;&squot; is to control the&n; * number of free address ranges that the mapping allocation software will&n; * need to track.  Smaller values will allow more efficient use of the address&n; * ranges but will result in much larger allocation map structures ...  For&n; * instance, if we want to manage allocations for a 256MB address range,&n; * choosing a 1MB allocation page size will result in up to 1MB being wasted&n; * for allocation requests smaller than 1MB.  The worst case allocation&n; * pattern for the allocation software to track would be a pattern of 1MB&n; * allocated, 1MB free.  This results in the need to track up to 128 free&n; * ranges.&n; */
+DECL|struct|pciio_win_map_s
+r_struct
+id|pciio_win_map_s
+(brace
+DECL|member|wm_map
+r_struct
+id|map
+op_star
+id|wm_map
+suffix:semicolon
+multiline_comment|/* window address map */
+DECL|member|wm_page_size
+r_int
+id|wm_page_size
+suffix:semicolon
+multiline_comment|/* allocation ``page size&squot;&squot; */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Opaque structure used to keep track of window allocation information.&n; */
+DECL|struct|pciio_win_alloc_s
+r_struct
+id|pciio_win_alloc_s
+(brace
+DECL|member|wa_map
+id|pciio_win_map_t
+id|wa_map
+suffix:semicolon
+multiline_comment|/* window map allocation is from */
+DECL|member|wa_base
+r_int
+r_int
+id|wa_base
+suffix:semicolon
+multiline_comment|/* allocation starting page number */
+DECL|member|wa_pages
+r_int
+id|wa_pages
+suffix:semicolon
+multiline_comment|/* number of pages in allocation */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Each PCI Card has one of these.&n; */
 DECL|struct|pciio_info_s
 r_struct
@@ -183,7 +236,9 @@ id|error_handler_arg_t
 id|c_einfo
 suffix:semicolon
 multiline_comment|/* first parameter for efunc */
+DECL|struct|pciio_win_info_s
 r_struct
+id|pciio_win_info_s
 (brace
 multiline_comment|/* state of BASE regs */
 DECL|member|w_space
@@ -202,24 +257,28 @@ DECL|member|w_devio_index
 r_int
 id|w_devio_index
 suffix:semicolon
-multiline_comment|/* DevIO[] register used to&n;                                                   access this window */
+multiline_comment|/* DevIO[] register used to&n;                                                    access this window */
+DECL|member|w_win_alloc
+r_struct
+id|pciio_win_alloc_s
+id|w_win_alloc
+suffix:semicolon
+multiline_comment|/* window allocation cookie */
 DECL|member|c_window
 )brace
 id|c_window
 (braket
-l_int|6
+id|PCI_CFG_BASE_ADDRS
+op_plus
+l_int|1
 )braket
 suffix:semicolon
-DECL|member|c_rbase
-r_int
-id|c_rbase
-suffix:semicolon
-multiline_comment|/* EXPANSION ROM base addr */
-DECL|member|c_rsize
-r_int
-id|c_rsize
-suffix:semicolon
-multiline_comment|/* EXPANSION ROM size (bytes) */
+DECL|macro|c_rwindow
+mdefine_line|#define c_rwindow&t;c_window[PCI_CFG_BASE_ADDRS]&t;/* EXPANSION ROM window */
+DECL|macro|c_rbase
+mdefine_line|#define c_rbase&t;&t;c_rwindow.w_base&t;&t;/* EXPANSION ROM base addr */
+DECL|macro|c_rsize
+mdefine_line|#define c_rsize&t;&t;c_rwindow.w_size&t;&t;/* EXPANSION ROM size (bytes) */
 DECL|member|c_piospace
 id|pciio_piospace_t
 id|c_piospace

@@ -27,20 +27,22 @@ mdefine_line|#define MAX_PCI_XWIDGET 256
 DECL|macro|MAX_ATE_MAPS
 mdefine_line|#define MAX_ATE_MAPS 1024
 DECL|macro|SET_PCIA64
-mdefine_line|#define SET_PCIA64(dev) &bslash;&n;&t;(((struct sn1_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64) = 1
+mdefine_line|#define SET_PCIA64(dev) &bslash;&n;&t;(((struct sn_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64) = 1
 DECL|macro|IS_PCIA64
-mdefine_line|#define IS_PCIA64(dev)&t;(((dev)-&gt;dma_mask == 0xffffffffffffffffUL) || &bslash;&n;&t;&t;(((struct sn1_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64))
+mdefine_line|#define IS_PCIA64(dev)&t;(((dev)-&gt;dma_mask == 0xffffffffffffffffUL) || &bslash;&n;&t;&t;(((struct sn_device_sysdata *)((dev)-&gt;sysdata))-&gt;isa64))
 DECL|macro|IS_PCI32G
 mdefine_line|#define IS_PCI32G(dev)&t;((dev)-&gt;dma_mask &gt;= 0xffffffff)
 DECL|macro|IS_PCI32L
 mdefine_line|#define IS_PCI32L(dev)&t;((dev)-&gt;dma_mask &lt; 0xffffffff)
+DECL|macro|IS_PIC_DEVICE
+mdefine_line|#define IS_PIC_DEVICE(dev) ((struct sn_device_sysdata *)dev-&gt;sysdata)-&gt;isPIC
 DECL|macro|PCIDEV_VERTEX
-mdefine_line|#define PCIDEV_VERTEX(pci_dev) &bslash;&n;&t;(((struct sn1_device_sysdata *)((pci_dev)-&gt;sysdata))-&gt;vhdl)
+mdefine_line|#define PCIDEV_VERTEX(pci_dev) &bslash;&n;&t;(((struct sn_device_sysdata *)((pci_dev)-&gt;sysdata))-&gt;vhdl)
 DECL|macro|PCIBUS_VERTEX
-mdefine_line|#define PCIBUS_VERTEX(pci_bus) &bslash;&n;&t;(((struct sn1_widget_sysdata *)((pci_bus)-&gt;sysdata))-&gt;vhdl)
-DECL|struct|sn1_widget_sysdata
+mdefine_line|#define PCIBUS_VERTEX(pci_bus) &bslash;&n;&t;(((struct sn_widget_sysdata *)((pci_bus)-&gt;sysdata))-&gt;vhdl)
+DECL|struct|sn_widget_sysdata
 r_struct
-id|sn1_widget_sysdata
+id|sn_widget_sysdata
 (brace
 DECL|member|vhdl
 id|devfs_handle_t
@@ -48,9 +50,9 @@ id|vhdl
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|sn1_device_sysdata
+DECL|struct|sn_device_sysdata
 r_struct
-id|sn1_device_sysdata
+id|sn_device_sysdata
 (brace
 DECL|member|vhdl
 id|devfs_handle_t
@@ -59,6 +61,10 @@ suffix:semicolon
 DECL|member|isa64
 r_int
 id|isa64
+suffix:semicolon
+DECL|member|isPIC
+r_int
+id|isPIC
 suffix:semicolon
 DECL|member|dma_buf_sync
 r_volatile
@@ -76,9 +82,9 @@ id|xbow_buf_sync
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|sn1_dma_maps_s
+DECL|struct|sn_dma_maps_s
 r_struct
-id|sn1_dma_maps_s
+id|sn_dma_maps_s
 (brace
 DECL|member|dma_map
 r_struct

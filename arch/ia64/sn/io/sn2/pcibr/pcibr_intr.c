@@ -1,6 +1,5 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -42,6 +41,9 @@ id|info
 comma
 id|pciio_intr_line_t
 id|lines
+comma
+r_int
+id|nslots
 )paren
 suffix:semicolon
 id|pcibr_intr_t
@@ -76,6 +78,10 @@ id|pcibr_intr_connect
 c_func
 (paren
 id|pcibr_intr_t
+comma
+id|intr_func_t
+comma
+id|intr_arg_t
 )paren
 suffix:semicolon
 r_void
@@ -134,12 +140,15 @@ id|info
 comma
 id|pciio_intr_line_t
 id|lines
+comma
+r_int
+id|nslots
 )paren
 (brace
 id|pciio_slot_t
 id|slot
 op_assign
-id|pciio_info_slot_get
+id|PCIBR_INFO_SLOT_GET_INT
 c_func
 (paren
 id|info
@@ -156,7 +165,7 @@ c_cond
 (paren
 id|slot
 OL
-l_int|8
+id|nslots
 )paren
 (brace
 r_if
@@ -337,7 +346,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;There are end cases where a deadlock can occur if interrupt &n; *&t;processing completes and the Bridge b_int_status bit is still set.&n; *&n; *&t;One scenerio is if a second PCI interrupt occurs within 60ns of&n; *&t;the previous interrupt being cleared. In this case the Bridge&n; *&t;does not detect the transition, the Bridge b_int_status bit&n; *&t;remains set, and because no transition was detected no interrupt&n; *&t;packet is sent to the Hub/Heart.&n; *&n; *&t;A second scenerio is possible when a b_int_status bit is being&n; *&t;shared by multiple devices:&n; *&t;&t;&t;&t;&t;&t;Device #1 generates interrupt&n; *&t;&t;&t;&t;&t;&t;Bridge b_int_status bit set&n; *&t;&t;&t;&t;&t;&t;Device #2 generates interrupt&n; *&t;&t;interrupt processing begins&n; *&t;&t;  ISR for device #1 runs and&n; *&t;&t;&t;clears interrupt&n; *&t;&t;&t;&t;&t;&t;Device #1 generates interrupt&n; *&t;&t;  ISR for device #2 runs and&n; *&t;&t;&t;clears interrupt&n; *&t;&t;&t;&t;&t;&t;(b_int_status bit still set)&n; *&t;&t;interrupt processing completes&n; *&t;&t;  &n; *&t;Interrupt processing is now complete, but an interrupt is still&n; *&t;outstanding for Device #1. But because there was no transition of&n; *&t;the b_int_status bit, no interrupt packet will be generated and&n; *&t;a deadlock will occur.&n; *&n; *&t;To avoid these deadlock situations, this function is used&n; *&t;to check if a specific Bridge b_int_status bit is set, and if so,&n; *&t;cause the setting of the corresponding interrupt bit.&n; *&n; *&t;On a XBridge (IP35), we do this by writing the appropriate Bridge Force &n; *&t;Interrupt register.&n; */
+multiline_comment|/*&n; *&t;There are end cases where a deadlock can occur if interrupt &n; *&t;processing completes and the Bridge b_int_status bit is still set.&n; *&n; *&t;One scenerio is if a second PCI interrupt occurs within 60ns of&n; *&t;the previous interrupt being cleared. In this case the Bridge&n; *&t;does not detect the transition, the Bridge b_int_status bit&n; *&t;remains set, and because no transition was detected no interrupt&n; *&t;packet is sent to the Hub/Heart.&n; *&n; *&t;A second scenerio is possible when a b_int_status bit is being&n; *&t;shared by multiple devices:&n; *&t;&t;&t;&t;&t;&t;Device #1 generates interrupt&n; *&t;&t;&t;&t;&t;&t;Bridge b_int_status bit set&n; *&t;&t;&t;&t;&t;&t;Device #2 generates interrupt&n; *&t;&t;interrupt processing begins&n; *&t;&t;  ISR for device #1 runs and&n; *&t;&t;&t;clears interrupt&n; *&t;&t;&t;&t;&t;&t;Device #1 generates interrupt&n; *&t;&t;  ISR for device #2 runs and&n; *&t;&t;&t;clears interrupt&n; *&t;&t;&t;&t;&t;&t;(b_int_status bit still set)&n; *&t;&t;interrupt processing completes&n; *&t;&t;  &n; *&t;Interrupt processing is now complete, but an interrupt is still&n; *&t;outstanding for Device #1. But because there was no transition of&n; *&t;the b_int_status bit, no interrupt packet will be generated and&n; *&t;a deadlock will occur.&n; *&n; *&t;To avoid these deadlock situations, this function is used&n; *&t;to check if a specific Bridge b_int_status bit is set, and if so,&n; *&t;cause the setting of the corresponding interrupt bit.&n; *&n; *&t;On a XBridge (SN1), we do this by writing the appropriate Bridge Force &n; *&t;Interrupt register. On SN0, or SN1 with an older Bridge, the Bridge &n; *&t;Force Interrupt register does not exist, so we write the Hub &n; *&t;INT_PEND_MOD register directly. Likewise for Octane, where we write the &n; *&t;Heart Set Interrupt Status register directly.&n; */
 r_void
 DECL|function|pcibr_force_interrupt
 id|pcibr_force_interrupt
@@ -347,6 +356,7 @@ id|pcibr_intr_wrap_t
 id|wrap
 )paren
 (brace
+macro_line|#ifdef PIC_LATER
 r_int
 id|bit
 suffix:semicolon
@@ -361,22 +371,32 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-id|cpuid_t
-id|cpuvertex_to_cpuid
-c_func
-(paren
-id|devfs_handle_t
-id|vhdl
-)paren
-suffix:semicolon
 id|bit
 op_assign
-id|wrap-&gt;iw_intr
+id|wrap-&gt;iw_ibit
+suffix:semicolon
+id|PCIBR_DEBUG
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_INTR
+comma
+id|pcibr_soft-&gt;bs_vhdl
+comma
+l_string|&quot;pcibr_force_interrupt: bit=0x%x&bslash;n&quot;
+comma
+id|bit
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pcibr_soft-&gt;bs_xbridge
+id|IS_XBRIDGE_OR_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
 )paren
 (brace
 id|bridge-&gt;b_force_pin
@@ -432,17 +452,12 @@ id|xtalk_intr
 suffix:semicolon
 id|cpu
 op_assign
-id|cpuvertex_to_cpuid
-c_func
-(paren
-id|xtalk_intr_cpu_get
+id|xtalk_intr_cpuid_get
 c_func
 (paren
 id|xtalk_intr
 )paren
-)paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 id|REMOTE_CPU_SEND_INTR
 c_func
 (paren
@@ -451,8 +466,8 @@ comma
 id|intr_bit
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#endif&t;/* PIC_LATER */
 )brace
 multiline_comment|/*ARGSUSED */
 id|pcibr_intr_t
@@ -485,7 +500,11 @@ suffix:semicolon
 id|pciio_slot_t
 id|pciio_slot
 op_assign
-id|pcibr_info-&gt;f_slot
+id|PCIBR_INFO_SLOT_GET_INT
+c_func
+(paren
+id|pcibr_info
+)paren
 suffix:semicolon
 id|pcibr_soft_t
 id|pcibr_soft
@@ -510,9 +529,6 @@ r_int
 id|is_threaded
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|thread_swlevel
 suffix:semicolon
 id|xtalk_intr_t
 op_star
@@ -555,16 +571,15 @@ suffix:semicolon
 id|bridgereg_t
 id|int_dev
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v: pcibr_intr_alloc&bslash;n&quot;
-l_string|&quot;%v:%s%s%s%s%s&bslash;n&quot;
-comma
-id|owner_dev
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;pcibr_intr_alloc: %s%s%s%s%s&bslash;n&quot;
 comma
 op_logical_neg
 (paren
@@ -614,8 +629,8 @@ l_string|&quot; INTD&quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|NEW
 c_func
 (paren
@@ -631,38 +646,6 @@ id|pcibr_intr
 r_return
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev_desc
-)paren
-(brace
-id|cpuid_t
-id|intr_target_from_desc
-c_func
-(paren
-id|device_desc_t
-comma
-r_int
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_extern
-r_int
-id|default_intr_pri
-suffix:semicolon
-id|is_threaded
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* PCI interrupts are threaded, by default */
-id|thread_swlevel
-op_assign
-id|default_intr_pri
-suffix:semicolon
-)brace
 id|pcibr_intr-&gt;bi_dev
 op_assign
 id|pconn_vhdl
@@ -680,6 +663,16 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* bits will be added below */
+id|pcibr_intr-&gt;bi_func
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* unset until connect */
+id|pcibr_intr-&gt;bi_arg
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* unset until connect */
 id|pcibr_intr-&gt;bi_flags
 op_assign
 id|is_threaded
@@ -721,19 +714,29 @@ id|pciio_info_t
 id|pcibr_info
 comma
 id|lines
+comma
+id|PCIBR_NUM_SLOTS
+c_func
+(paren
+id|pcibr_soft
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * For each PCI interrupt line requested, figure&n;     * out which Bridge PCI Interrupt Line it maps&n;     * to, and make sure there are xtalk resources&n;     * allocated for it.&n;     */
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_int_bits: 0x%X&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_intr_alloc: pcibr_int_bits: 0x%x&bslash;n&quot;
 comma
 id|pcibr_int_bits
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif 
 r_for
 c_loop
 (paren
@@ -784,7 +787,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This xtalk_intr_alloc is constrained for two reasons:&n;&t;&t; * 1) Normal interrupts and error interrupts need to be delivered&n;&t;&t; *    through a single xtalk target widget so that there aren&squot;t any&n;&t;&t; *    ordering problems with DMA, completion interrupts, and error&n;&t;&t; *    interrupts. (Use of xconn_vhdl forces this.)&n;&t;&t; *&n;&t;&t; * 2) On IP35, addressing constraints on IP35 and Bridge force&n;&t;&t; *    us to use a single PI number for all interrupts from a&n;&t;&t; *    single Bridge. (IP35-specific code forces this, and we&n;&t;&t; *    verify in pcibr_setwidint.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This xtalk_intr_alloc is constrained for two reasons:&n;&t;&t; * 1) Normal interrupts and error interrupts need to be delivered&n;&t;&t; *    through a single xtalk target widget so that there aren&squot;t any&n;&t;&t; *    ordering problems with DMA, completion interrupts, and error&n;&t;&t; *    interrupts. (Use of xconn_vhdl forces this.)&n;&t;&t; *&n;&t;&t; * 2) On SN1, addressing constraints on SN1 and Bridge force&n;&t;&t; *    us to use a single PI number for all interrupts from a&n;&t;&t; *    single Bridge. (SN1-specific code forces this).&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * All code dealing with threaded PCI interrupt handlers&n;&t;&t; * is located at the pcibr level. Because of this,&n;&t;&t; * we always want the lower layers (hub/heart_intr_alloc, &n;&t;&t; * intr_level_connect) to treat us as non-threaded so we&n;&t;&t; * don&squot;t set up a duplicate threaded environment. We make&n;&t;&t; * this happen by calling a special xtalk interface.&n;&t;&t; */
 id|xtalk_intr
 op_assign
@@ -798,18 +801,20 @@ comma
 id|owner_dev
 )paren
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v: xtalk_intr=0x%X&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
-id|xconn_vhdl
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_intr_alloc: xtalk_intr=0x%x&bslash;n&quot;
 comma
 id|xtalk_intr
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* both an assert and a runtime check on this:&n;&t;&t; * we need to check in non-DEBUG kernels, and&n;&t;&t; * the ASSERT gets us more information when&n;&t;&t; * we use DEBUG kernels.&n;&t;&t; */
 id|ASSERT
 c_func
@@ -916,18 +921,20 @@ op_assign
 id|int_dev
 suffix:semicolon
 multiline_comment|/* XXXMP */
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v: bridge intr bit %d clears my wrb&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
 comma
+l_string|&quot;bridge intr bit %d clears my wrb&bslash;n&quot;
+comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -1011,14 +1018,15 @@ id|pcibr_int_bit
 dot
 id|bsi_pcibr_intr_wrap.iw_list
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;0x%x: Bridge bit %d wrap=0x%x&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;Bridge bit 0x%x wrap=0x%x&bslash;n&quot;
 comma
 id|pcibr_int_bit
 comma
@@ -1029,27 +1037,8 @@ id|pcibr_int_bit
 dot
 id|bsi_pcibr_intr_wrap
 )paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%v: Bridge bit %d wrap=0x%x&bslash;n&quot;
-comma
-id|pconn_vhdl
-comma
-id|pcibr_int_bit
-comma
-id|pcibr_soft-&gt;bs_intr
-(braket
-id|pcibr_int_bit
-)braket
-dot
-id|bsi_pcibr_intr_wrap
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1070,20 +1059,22 @@ id|intr_entry
 )paren
 (brace
 multiline_comment|/* we are the first interrupt on this bridge bit.&n;&t;&t; */
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v INT 0x%x (bridge bit %d) allocated [FIRST]&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;INT 0x%x (bridge bit %d) allocated [FIRST]&bslash;n&quot;
 comma
 id|pcibr_int_bits
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
@@ -1123,20 +1114,22 @@ c_func
 id|intr_entry
 )paren
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v INT 0x%x (bridge bit %d) replaces erased first&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;INT 0x%x (bridge bit %d) replaces erased first&bslash;n&quot;
 comma
 id|pcibr_int_bits
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
@@ -1174,20 +1167,22 @@ id|bsi_pcibr_intr_wrap.iw_shared
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v INT 0x%x (bridge bit %d) is new SECOND&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;INT 0x%x (bridge bit %d) is new SECOND&bslash;n&quot;
 comma
 id|pcibr_int_bits
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
@@ -1228,20 +1223,22 @@ c_func
 id|intr_entry
 )paren
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v INT 0x%x (bridge bit %d) replaces erased Nth&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;INT 0x%x (bridge bit %d) replaces erase Nth&bslash;n&quot;
 comma
 id|pcibr_int_bits
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -1270,20 +1267,22 @@ id|intr_entry
 )paren
 (brace
 multiline_comment|/* entry appended to share list&n;&t;&t;     */
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v INT 0x%x (bridge bit %d) is new Nth&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pconn_vhdl
+comma
+l_string|&quot;INT 0x%x (bridge bit %d) is new Nth&bslash;n&quot;
 comma
 id|pcibr_int_bits
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -1425,18 +1424,20 @@ l_int|NULL
 )paren
 )paren
 (brace
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%s: cleared a handler from bit %d&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
-id|pcibr_soft-&gt;bs_name
+id|pcibr_intr-&gt;bi_dev
+comma
+l_string|&quot;pcibr_intr_free: cleared hdlr from bit 0x%x&bslash;n&quot;
 comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* If this interrupt line is not being shared between multiple&n;&t;     * devices release the xtalk interrupt resources.&n;&t;     */
 id|intr_shared
@@ -1532,6 +1533,18 @@ id|xtalk_intr
 (brace
 id|iopaddr_t
 id|addr
+suffix:semicolon
+id|xtalk_intr_vector_t
+id|vect
+suffix:semicolon
+id|devfs_handle_t
+id|vhdl
+suffix:semicolon
+id|bridge_t
+op_star
+id|bridge
+suffix:semicolon
+id|addr
 op_assign
 id|xtalk_intr_addr_get
 c_func
@@ -1539,7 +1552,6 @@ c_func
 id|xtalk_intr
 )paren
 suffix:semicolon
-id|xtalk_intr_vector_t
 id|vect
 op_assign
 id|xtalk_intr_vector_get
@@ -1548,8 +1560,94 @@ c_func
 id|xtalk_intr
 )paren
 suffix:semicolon
+id|vhdl
+op_assign
+id|xtalk_intr_dev_get
+c_func
+(paren
+id|xtalk_intr
+)paren
+suffix:semicolon
+id|bridge
+op_assign
+(paren
+id|bridge_t
+op_star
+)paren
+id|xtalk_piotrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|0
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|bridge_t
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_pic
+c_func
+(paren
+id|bridge
+)paren
+)paren
+(brace
+id|picreg_t
+op_star
+id|int_addr
+suffix:semicolon
+id|int_addr
+op_assign
+(paren
+id|picreg_t
+op_star
+)paren
+id|xtalk_intr_sfarg_get
+c_func
+(paren
+id|xtalk_intr
+)paren
+suffix:semicolon
+op_star
+id|int_addr
+op_assign
+(paren
+(paren
+id|PIC_INT_ADDR_FLD
+op_amp
+(paren
+(paren
+r_uint64
+)paren
+id|vect
+op_lshift
+l_int|48
+)paren
+)paren
+op_or
+(paren
+id|PIC_INT_ADDR_HOST
+op_amp
+id|addr
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|bridgereg_t
 op_star
+id|int_addr
+suffix:semicolon
 id|int_addr
 op_assign
 (paren
@@ -1584,6 +1682,7 @@ id|vect
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/*ARGSUSED */
 r_int
 DECL|function|pcibr_intr_connect
@@ -1592,6 +1691,12 @@ c_func
 (paren
 id|pcibr_intr_t
 id|pcibr_intr
+comma
+id|intr_func_t
+id|intr_func
+comma
+id|intr_arg_t
+id|intr_arg
 )paren
 (brace
 id|pcibr_soft_t
@@ -1613,8 +1718,8 @@ suffix:semicolon
 r_int
 id|pcibr_int_bit
 suffix:semicolon
-id|bridgereg_t
-id|b_int_enable
+r_uint64
+id|int_enable
 suffix:semicolon
 r_int
 r_int
@@ -1631,16 +1736,28 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v: pcibr_intr_connect&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pcibr_intr-&gt;bi_dev
+comma
+l_string|&quot;pcibr_intr_connect: intr_func=0x%x&bslash;n&quot;
+comma
+id|pcibr_intr
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
+id|pcibr_intr-&gt;bi_func
+op_assign
+id|intr_func
+suffix:semicolon
+id|pcibr_intr-&gt;bi_arg
+op_assign
+id|intr_arg
+suffix:semicolon
 op_star
 (paren
 (paren
@@ -1681,8 +1798,15 @@ id|pcibr_int_bit
 )paren
 )paren
 (brace
+id|pcibr_intr_wrap_t
+id|intr_wrap
+suffix:semicolon
 id|xtalk_intr_t
 id|xtalk_intr
+suffix:semicolon
+r_void
+op_star
+id|int_addr
 suffix:semicolon
 id|xtalk_intr
 op_assign
@@ -1692,6 +1816,16 @@ id|pcibr_int_bit
 )braket
 dot
 id|bsi_xtalk_intr
+suffix:semicolon
+id|intr_wrap
+op_assign
+op_amp
+id|pcibr_soft-&gt;bs_intr
+(braket
+id|pcibr_int_bit
+)braket
+dot
+id|bsi_pcibr_intr_wrap
 suffix:semicolon
 multiline_comment|/*&n;&t;     * If this interrupt line is being shared and the connect has&n;&t;     * already been done, no need to do it again.&n;&t;     */
 r_if
@@ -1707,16 +1841,32 @@ id|bsi_pcibr_intr_wrap.iw_connected
 r_continue
 suffix:semicolon
 multiline_comment|/*&n;&t;     * Use the pcibr wrapper function to handle all Bridge interrupts&n;&t;     * regardless of whether the interrupt line is shared or not.&n;&t;     */
-id|xtalk_intr_connect
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
 c_func
 (paren
-id|xtalk_intr
-comma
-(paren
-id|xtalk_intr_setfunc_t
+id|pcibr_soft
 )paren
-id|pcibr_setpciint
-comma
+)paren
+id|int_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_amp
+(paren
+id|bridge-&gt;p_int_addr_64
+(braket
+id|pcibr_int_bit
+)braket
+)paren
+suffix:semicolon
+r_else
+id|int_addr
+op_assign
 (paren
 r_void
 op_star
@@ -1730,6 +1880,29 @@ id|pcibr_int_bit
 dot
 id|addr
 )paren
+suffix:semicolon
+id|xtalk_intr_connect
+c_func
+(paren
+id|xtalk_intr
+comma
+id|pcibr_intr_func
+comma
+(paren
+id|intr_arg_t
+)paren
+id|intr_wrap
+comma
+(paren
+id|xtalk_intr_setfunc_t
+)paren
+id|pcibr_setpciint
+comma
+(paren
+r_void
+op_star
+)paren
+id|int_addr
 )paren
 suffix:semicolon
 id|pcibr_soft-&gt;bs_intr
@@ -1741,19 +1914,48 @@ id|bsi_pcibr_intr_wrap.iw_connected
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%v bridge bit %d wrapper connected&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
 id|pcibr_intr-&gt;bi_dev
 comma
+l_string|&quot;pcibr_setpciint: int_addr=0x%x, *int_addr=0x%x, &quot;
+l_string|&quot;pcibr_int_bit=0x%x&bslash;n&quot;
+comma
+id|int_addr
+comma
+(paren
+id|is_pic
+c_func
+(paren
+id|bridge
+)paren
+ques
+c_cond
+op_star
+(paren
+id|picreg_t
+op_star
+)paren
+id|int_addr
+suffix:colon
+op_star
+(paren
+id|bridgereg_t
+op_star
+)paren
+id|int_addr
+)paren
+comma
 id|pcibr_int_bit
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 )brace
+multiline_comment|/* PIC WAR. PV# 854697&n;&t; * On PIC we must write 64-bit MMRs with 64-bit stores&n;&t; */
 id|s
 op_assign
 id|pcibr_lock
@@ -1762,18 +1964,55 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-id|b_int_enable
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
+id|PCIBR_WAR_ENABLED
+c_func
+(paren
+id|PV854697
+comma
+id|pcibr_soft
+)paren
+)paren
+(brace
+id|int_enable
+op_assign
+id|bridge-&gt;p_int_enable_64
+suffix:semicolon
+id|int_enable
+op_or_assign
+id|pcibr_int_bits
+suffix:semicolon
+id|bridge-&gt;p_int_enable_64
+op_assign
+id|int_enable
+suffix:semicolon
+)brace
+r_else
+(brace
+id|bridgereg_t
+id|int_enable
+suffix:semicolon
+id|int_enable
 op_assign
 id|bridge-&gt;b_int_enable
 suffix:semicolon
-id|b_int_enable
+id|int_enable
 op_or_assign
 id|pcibr_int_bits
 suffix:semicolon
 id|bridge-&gt;b_int_enable
 op_assign
-id|b_int_enable
+id|int_enable
 suffix:semicolon
+)brace
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
@@ -1818,8 +2057,11 @@ suffix:semicolon
 r_int
 id|pcibr_int_bit
 suffix:semicolon
-id|bridgereg_t
-id|b_int_enable
+id|pcibr_intr_wrap_t
+id|intr_wrap
+suffix:semicolon
+r_uint64
+id|int_enable
 suffix:semicolon
 r_int
 r_int
@@ -1839,6 +2081,14 @@ id|pcibr_intr-&gt;bi_flags
 op_and_assign
 op_complement
 id|PCIIO_INTR_CONNECTED
+suffix:semicolon
+id|pcibr_intr-&gt;bi_func
+op_assign
+l_int|0
+suffix:semicolon
+id|pcibr_intr-&gt;bi_arg
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;     * For each PCI interrupt line requested, figure&n;     * out which Bridge PCI Interrupt Line it maps&n;     * to, and disconnect the interrupt.&n;     */
 multiline_comment|/* don&squot;t disable interrupts for lines that&n;     * are shared between devices.&n;     */
@@ -1895,6 +2145,7 @@ id|pcibr_int_bits
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* PIC WAR. PV# 854697&n;     * On PIC we must write 64-bit MMRs with 64-bit stores&n;     */
 id|s
 op_assign
 id|pcibr_lock
@@ -1903,19 +2154,60 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-id|b_int_enable
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
+id|PCIBR_WAR_ENABLED
+c_func
+(paren
+id|PV854697
+comma
+id|pcibr_soft
+)paren
+)paren
+(brace
+id|int_enable
 op_assign
+id|bridge-&gt;p_int_enable_64
+suffix:semicolon
+id|int_enable
+op_and_assign
+op_complement
+id|pcibr_int_bits
+suffix:semicolon
+id|bridge-&gt;p_int_enable_64
+op_assign
+id|int_enable
+suffix:semicolon
+)brace
+r_else
+(brace
+id|int_enable
+op_assign
+(paren
+r_uint64
+)paren
 id|bridge-&gt;b_int_enable
 suffix:semicolon
-id|b_int_enable
+id|int_enable
 op_and_assign
 op_complement
 id|pcibr_int_bits
 suffix:semicolon
 id|bridge-&gt;b_int_enable
 op_assign
-id|b_int_enable
+(paren
+id|bridgereg_t
+)paren
+id|int_enable
 suffix:semicolon
+)brace
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
@@ -1925,6 +2217,20 @@ c_func
 id|pcibr_soft
 comma
 id|s
+)paren
+suffix:semicolon
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
+comma
+id|pcibr_intr-&gt;bi_dev
+comma
+l_string|&quot;pcibr_intr_disconnect: disabled int_bits=0x%x&bslash;n&quot;
+comma
+id|pcibr_int_bits
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1953,6 +2259,10 @@ id|pcibr_int_bit
 )paren
 )paren
 (brace
+r_void
+op_star
+id|int_addr
+suffix:semicolon
 multiline_comment|/* if the interrupt line is now shared,&n;&t;     * do not disconnect it.&n;&t;     */
 r_if
 c_cond
@@ -1986,18 +2296,20 @@ id|bsi_pcibr_intr_wrap.iw_connected
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; INTR_DEBUG
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;%s: xtalk disconnect done for Bridge bit %d&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
 comma
-id|pcibr_soft-&gt;bs_name
+id|pcibr_intr-&gt;bi_dev
 comma
-id|pcibr_int_bit
+l_string|&quot;pcibr_intr_disconnect: disconnect int_bits=0x%x&bslash;n&quot;
+comma
+id|pcibr_int_bits
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* if we are sharing the interrupt line,&n;&t;     * connect us up; this closes the hole&n;&t;     * where the another pcibr_intr_alloc()&n;&t;     * was in progress as we disconnected.&n;&t;     */
 r_if
 c_cond
@@ -2012,21 +2324,55 @@ id|bsi_pcibr_intr_wrap.iw_shared
 )paren
 r_continue
 suffix:semicolon
-id|xtalk_intr_connect
-c_func
-(paren
+id|intr_wrap
+op_assign
+op_amp
 id|pcibr_soft-&gt;bs_intr
 (braket
 id|pcibr_int_bit
 )braket
 dot
-id|bsi_xtalk_intr
-comma
+id|bsi_pcibr_intr_wrap
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|xtalk_intr_setfunc_t
+op_logical_neg
+id|pcibr_soft-&gt;bs_intr
+(braket
+id|pcibr_int_bit
+)braket
+dot
+id|bsi_pcibr_intr_wrap.iw_shared
 )paren
-id|pcibr_setpciint
-comma
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+)paren
+id|int_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+op_amp
+(paren
+id|bridge-&gt;p_int_addr_64
+(braket
+id|pcibr_int_bit
+)braket
+)paren
+suffix:semicolon
+r_else
+id|int_addr
+op_assign
 (paren
 r_void
 op_star
@@ -2039,6 +2385,48 @@ id|pcibr_int_bit
 )braket
 dot
 id|addr
+)paren
+suffix:semicolon
+id|xtalk_intr_connect
+c_func
+(paren
+id|pcibr_soft-&gt;bs_intr
+(braket
+id|pcibr_int_bit
+)braket
+dot
+id|bsi_xtalk_intr
+comma
+id|pcibr_intr_func
+comma
+(paren
+id|intr_arg_t
+)paren
+id|intr_wrap
+comma
+(paren
+id|xtalk_intr_setfunc_t
+)paren
+id|pcibr_setpciint
+comma
+(paren
+r_void
+op_star
+)paren
+id|pcibr_int_bit
+)paren
+suffix:semicolon
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_INTR_ALLOC
+comma
+id|pcibr_intr-&gt;bi_dev
+comma
+l_string|&quot;pcibr_intr_disconnect: now-sharing int_bits=0x%x&bslash;n&quot;
+comma
+id|pcibr_int_bit
 )paren
 )paren
 suffix:semicolon
@@ -2322,6 +2710,18 @@ id|bridge-&gt;b_int_host_err
 op_assign
 id|vect
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_setwidint: b_wid_int_upper 0x%x b_wid_int_lower 0x%x b_int_host_err 0x%x&bslash;n&quot;
+comma
+id|NEW_b_wid_int_upper
+comma
+id|NEW_b_wid_int_lower
+comma
+id|vect
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * pcibr_intr_preset: called during mlreset time&n; * if the platform specific code needs to route&n; * one of the Bridge&squot;s xtalk interrupts before the&n; * xtalk infrastructure is available.&n; */
 r_void
@@ -2398,6 +2798,38 @@ id|bridge-&gt;b_int_host_err
 op_assign
 id|vect
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_xintr_preset: b_wid_int_upper 0x%lx b_wid_int_lower 0x%lx b_int_host_err 0x%x&bslash;n&quot;
+comma
+(paren
+(paren
+l_int|0x000F0000
+op_amp
+(paren
+id|targ
+op_lshift
+l_int|16
+)paren
+)paren
+op_or
+id|XTALK_ADDR_TO_UPPER
+c_func
+(paren
+id|addr
+)paren
+)paren
+comma
+id|XTALK_ADDR_TO_LOWER
+c_func
+(paren
+id|addr
+)paren
+comma
+id|vect
+)paren
+suffix:semicolon
 multiline_comment|/* turn on all interrupts except&n;&t; * the PCI interrupt requests,&n;&t; * at least at heart.&n;&t; */
 id|bridge-&gt;b_int_enable
 op_or_assign
@@ -2466,6 +2898,9 @@ suffix:semicolon
 id|reg_p
 id|wrbf
 suffix:semicolon
+id|intr_func_t
+id|func
+suffix:semicolon
 id|pcibr_intr_t
 id|intr
 suffix:semicolon
@@ -2490,6 +2925,92 @@ id|x
 op_assign
 l_int|0
 suffix:semicolon
+id|pcibr_soft_t
+id|pcibr_soft
+op_assign
+id|wrap-&gt;iw_soft
+suffix:semicolon
+id|bridge_t
+op_star
+id|bridge
+op_assign
+id|pcibr_soft-&gt;bs_base
+suffix:semicolon
+r_uint64
+id|p_enable
+op_assign
+id|pcibr_soft-&gt;bs_int_enable
+suffix:semicolon
+r_int
+id|bit
+op_assign
+id|wrap-&gt;iw_ibit
+suffix:semicolon
+multiline_comment|/*&n;&t; * PIC WAR.  PV#855272&n;&t; * Early attempt at a workaround for the runaway&n;&t; * interrupt problem.   Briefly disable the enable bit for&n;&t; * this device.&n;&t; */
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
+id|PCIBR_WAR_ENABLED
+c_func
+(paren
+id|PV855272
+comma
+id|pcibr_soft
+)paren
+)paren
+(brace
+r_int
+id|s
+suffix:semicolon
+multiline_comment|/* disable-enable interrupts for this bridge pin */
+id|p_enable
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|bit
+)paren
+suffix:semicolon
+id|s
+op_assign
+id|pcibr_lock
+c_func
+(paren
+id|pcibr_soft
+)paren
+suffix:semicolon
+id|bridge-&gt;p_int_enable_64
+op_assign
+id|p_enable
+suffix:semicolon
+id|p_enable
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|bit
+)paren
+suffix:semicolon
+id|bridge-&gt;p_int_enable_64
+op_assign
+id|p_enable
+suffix:semicolon
+id|pcibr_unlock
+c_func
+(paren
+id|pcibr_soft
+comma
+id|s
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If any handler is still running from a previous interrupt&n;&t; * just return. If there&squot;s a need to call the handler(s) again,&n;&t; * another interrupt will be generated either by the device or by&n;&t; * pcibr_force_interrupt().&n;&t; */
 r_if
 c_cond
@@ -2543,7 +3064,7 @@ id|PCIIO_INTR_CONNECTED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This device may have initiated write&n;&t;&t; * requests since the bridge last saw&n;&t;&t; * an edge on this interrupt input; flushing&n;&t;&t; * the buffer prior to invoking the handler&n;&t;&t; * should help but may not be sufficient if we &n;&t;&t; * get more requests after the flush, followed&n;&t;&t; * by the card deciding it wants service, before&n;&t;&t; * the interrupt handler checks to see if things need&n;&t;&t; * to be done.&n;&t;&t; *&n;&t;&t; * There is a similar race condition if&n;&t;&t; * an interrupt handler loops around and&n;&t;&t; * notices further service is required.&n;&t;&t; * Perhaps we need to have an explicit&n;&t;&t; * call that interrupt handlers need to&n;&t;&t; * do between noticing that DMA to memory&n;&t;&t; * has completed, but before observing the&n;&t;&t; * contents of memory?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;     * This device may have initiated write&n;&t;&t;     * requests since the bridge last saw&n;&t;&t;     * an edge on this interrupt input; flushing&n;&t;&t;     * the buffer prior to invoking the handler&n;&t;&t;     * should help but may not be sufficient if we &n;&t;&t;     * get more requests after the flush, followed&n;&t;&t;     * by the card deciding it wants service, before&n;&t;&t;     * the interrupt handler checks to see if things need&n;&t;&t;     * to be done.&n;&t;&t;     *&n;&t;&t;     * There is a similar race condition if&n;&t;&t;     * an interrupt handler loops around and&n;&t;&t;     * notices further service is required.&n;&t;&t;     * Perhaps we need to have an explicit&n;&t;&t;     * call that interrupt handlers need to&n;&t;&t;     * do between noticing that DMA to memory&n;&t;&t;     * has completed, but before observing the&n;&t;&t;     * contents of memory?&n;&t;&t;     */
 r_if
 c_cond
 (paren
@@ -2557,7 +3078,7 @@ id|is_threaded
 )paren
 )paren
 (brace
-multiline_comment|/* Non-threaded. &n;&t;&t;&t; * Call the interrupt handler at interrupt level&n;&t;&t;&t; */
+multiline_comment|/* Non-threaded -  Call the interrupt handler at interrupt level */
 multiline_comment|/* Only need to flush write buffers if sharing */
 r_if
 c_cond
@@ -2619,6 +3140,21 @@ id|wrbf
 suffix:semicolon
 macro_line|#endif
 )brace
+id|func
+op_assign
+id|intr-&gt;bi_func
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|func
+)paren
+id|func
+c_func
+(paren
+id|intr-&gt;bi_arg
+)paren
+suffix:semicolon
 )brace
 id|clearit
 op_assign
@@ -2630,7 +3166,7 @@ id|do_nonthreaded
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the non-threaded handler was the last to complete,&n;&t;&t; * (i.e., no threaded handlers still running) force an&n;&t;&t; * interrupt to avoid a potential deadlock situation.&n;&t;&t; */
+multiline_comment|/*&n;&t;     * If the non-threaded handler was the last to complete,&n;&t;     * (i.e., no threaded handlers still running) force an&n;&t;     * interrupt to avoid a potential deadlock situation.&n;&t;     */
 r_if
 c_cond
 (paren
@@ -2666,19 +3202,20 @@ op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
 id|bridgereg_t
-id|b_int_enable
+id|int_enable
 suffix:semicolon
 id|bridgereg_t
 id|mask
 op_assign
 l_int|1
 op_lshift
-id|wrap-&gt;iw_intr
+id|wrap-&gt;iw_ibit
 suffix:semicolon
 r_int
 r_int
 id|s
 suffix:semicolon
+multiline_comment|/* PIC BRINUGP WAR (PV# 854697):&n;&t;     * On PIC we must write 64-bit MMRs with 64-bit stores&n;&t;     */
 id|s
 op_assign
 id|pcibr_lock
@@ -2687,19 +3224,60 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-id|b_int_enable
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
+id|PCIBR_WAR_ENABLED
+c_func
+(paren
+id|PV854697
+comma
+id|pcibr_soft
+)paren
+)paren
+(brace
+id|int_enable
 op_assign
+id|bridge-&gt;p_int_enable_64
+suffix:semicolon
+id|int_enable
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+id|bridge-&gt;p_int_enable_64
+op_assign
+id|int_enable
+suffix:semicolon
+)brace
+r_else
+(brace
+id|int_enable
+op_assign
+(paren
+r_uint64
+)paren
 id|bridge-&gt;b_int_enable
 suffix:semicolon
-id|b_int_enable
+id|int_enable
 op_and_assign
 op_complement
 id|mask
 suffix:semicolon
 id|bridge-&gt;b_int_enable
 op_assign
-id|b_int_enable
+(paren
+id|bridgereg_t
+)paren
+id|int_enable
 suffix:semicolon
+)brace
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
