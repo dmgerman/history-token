@@ -561,6 +561,23 @@ id|nvram_sync
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Motherboard/chipset features. This is a kind of general purpose&n;&t; * hook used to control some machine specific features (like reset&n;&t; * lines, chip power control, etc...).&n;&t; */
+DECL|member|feature_call
+r_int
+(paren
+op_star
+id|feature_call
+)paren
+(paren
+r_int
+r_int
+id|feature
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* functions for dealing with other cpus */
 DECL|member|smp_ops
