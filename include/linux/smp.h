@@ -122,23 +122,6 @@ DECL|macro|MSG_RESCHEDULE
 mdefine_line|#define MSG_RESCHEDULE&t;&t;0x0003&t;/* Reschedule request from master CPU*/
 DECL|macro|MSG_CALL_FUNCTION
 mdefine_line|#define MSG_CALL_FUNCTION       0x0004  /* Call function on all other CPUs */
-DECL|macro|__per_cpu_data
-mdefine_line|#define __per_cpu_data&t;__attribute__((section(&quot;.data.percpu&quot;)))
-macro_line|#ifndef __HAVE_ARCH_PER_CPU
-r_extern
-r_int
-r_int
-id|__per_cpu_offset
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-multiline_comment|/* var is in discarded region: offset to particular copy we want */
-DECL|macro|per_cpu
-mdefine_line|#define per_cpu(var, cpu) RELOC_HIDE(var, per_cpu_offset(cpu))
-DECL|macro|this_cpu
-mdefine_line|#define this_cpu(var) per_cpu(var, smp_processor_id())
-macro_line|#endif /* !__HAVE_ARCH_PER_CPU */
 macro_line|#else /* !SMP */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
 DECL|macro|smp_num_cpus

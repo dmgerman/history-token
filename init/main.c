@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -916,19 +917,8 @@ macro_line|#else
 DECL|macro|smp_init
 mdefine_line|#define smp_init()&t;do { } while (0)
 macro_line|#endif
-DECL|function|setup_per_cpu_areas
-r_static
-r_inline
-r_void
-id|setup_per_cpu_areas
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 macro_line|#else
-macro_line|#ifndef __HAVE_ARCH_PER_CPU
+macro_line|#ifdef __GENERIC_PER_CPU
 DECL|variable|__per_cpu_offset
 r_int
 r_int
@@ -1039,7 +1029,19 @@ id|size
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* !__HAVE_ARCH_PER_CPU */
+macro_line|#else
+DECL|function|setup_per_cpu_areas
+r_static
+r_inline
+r_void
+id|setup_per_cpu_areas
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif /* !__GENERIC_PER_CPU */
 multiline_comment|/* Called by boot processor to activate the rest. */
 DECL|function|smp_init
 r_static
