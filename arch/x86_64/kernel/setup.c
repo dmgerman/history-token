@@ -2936,9 +2936,11 @@ suffix:semicolon
 r_int
 id|level
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
 r_int
 id|cpu
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Bit 31 in normal CPUID used for nonstandard 3DNow ID;&n;&t;   3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway */
 id|clear_bit
 c_func
