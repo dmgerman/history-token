@@ -422,12 +422,12 @@ comma
 (paren
 id|val
 op_amp
-l_int|0x1000000000000000
+l_int|0x0800000000000000
 )paren
 op_rshift
-l_int|24
+l_int|23
 )paren
-multiline_comment|/* bit 60 -&gt; 36 */
+multiline_comment|/* bit 59 -&gt; 36 */
 op_or
 (paren
 (paren

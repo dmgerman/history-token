@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  hosts.c Copyright (C) 1992 Drew Eckhardt&n; *          Copyright (C) 1993, 1994, 1995 Eric Youngdale&n; *&n; *  mid to lowlevel SCSI driver interface&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *  Added QLOGIC QLA1280 SCSI controller kernel host support. &n; *     August 4, 1999 Fred Lewis, Intel DuPont&n; *&n; *  Updated to reflect the new initialization scheme for the higher &n; *  level of scsi drivers (sd/sr/st)&n; *  September 17, 2000 Torben Mathiasen &lt;tmm@image.dk&gt;&n; *&n; *  Restructured scsi_host lists and associated functions.&n; *  September 04, 2002 Mike Anderson (andmike@us.ibm.com)&n; */
+multiline_comment|/*&n; *  hosts.c Copyright (C) 1992 Drew Eckhardt&n; *          Copyright (C) 1993, 1994, 1995 Eric Youngdale&n; *          Copyright (C) 2002-2003 Christoph Hellwig&n; *&n; *  mid to lowlevel SCSI driver interface&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *  Added QLOGIC QLA1280 SCSI controller kernel host support. &n; *     August 4, 1999 Fred Lewis, Intel DuPont&n; *&n; *  Updated to reflect the new initialization scheme for the higher &n; *  level of scsi drivers (sd/sr/st)&n; *  September 17, 2000 Torben Mathiasen &lt;tmm@image.dk&gt;&n; *&n; *  Restructured scsi_host lists and associated functions.&n; *  September 04, 2002 Mike Anderson (andmike@us.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|variable|scsi_host_next_hn
@@ -63,6 +63,41 @@ id|scsi_host_cls_release
 comma
 )brace
 suffix:semicolon
+DECL|function|scsi_device_cancel_cb
+r_static
+r_int
+id|scsi_device_cancel_cb
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|scsi_device_cancel
+c_func
+(paren
+id|to_scsi_device
+c_func
+(paren
+id|dev
+)paren
+comma
+op_star
+(paren
+r_int
+op_star
+)paren
+id|data
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * scsi_host_cancel - cancel outstanding IO to this host&n; * @shost:&t;pointer to struct Scsi_Host&n; * recovery:&t;recovery requested to run.&n; **/
 DECL|function|scsi_host_cancel
 r_void
@@ -78,18 +113,6 @@ r_int
 id|recovery
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|shost-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -97,14 +120,6 @@ id|SHOST_CANCEL
 comma
 op_amp
 id|shost-&gt;shost_state
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|shost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|device_for_each_child
@@ -150,10 +165,6 @@ op_star
 id|shost
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|scsi_host_cancel
 c_func
 (paren
@@ -174,14 +185,6 @@ c_func
 id|shost
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|shost-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -189,14 +192,6 @@ id|SHOST_DEL
 comma
 op_amp
 id|shost-&gt;shost_state
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|shost-&gt;host_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|class_device_unregister
@@ -651,7 +646,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|shost-&gt;my_devices
+id|shost-&gt;__devices
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -1033,12 +1028,8 @@ r_class
 op_star
 r_class
 op_assign
-id|class_get
-c_func
-(paren
 op_amp
 id|shost_class
-)paren
 suffix:semicolon
 r_struct
 id|class_device
@@ -1060,12 +1051,6 @@ comma
 op_star
 id|p
 suffix:semicolon
-r_if
-c_cond
-(paren
-r_class
-)paren
-(brace
 id|down_read
 c_func
 (paren
@@ -1123,14 +1108,6 @@ op_amp
 r_class
 op_member_access_from_pointer
 id|subsys.rwsem
-)paren
-suffix:semicolon
-)brace
-id|class_put
-c_func
-(paren
-op_amp
-id|shost_class
 )paren
 suffix:semicolon
 r_return

@@ -31656,11 +31656,11 @@ id|TG3_FLG2_MAX_RXPEND_64
 op_logical_and
 id|tp-&gt;rx_pending
 OG
-l_int|64
+l_int|63
 )paren
 id|tp-&gt;rx_pending
 op_assign
-l_int|64
+l_int|63
 suffix:semicolon
 id|tp-&gt;rx_jumbo_pending
 op_assign
@@ -38577,7 +38577,7 @@ id|TG3_FLG2_MAX_RXPEND_64
 suffix:semicolon
 id|tp-&gt;rx_pending
 op_assign
-l_int|64
+l_int|63
 suffix:semicolon
 )brace
 r_if

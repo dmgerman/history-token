@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -10484,9 +10485,13 @@ id|im-&gt;users
 comma
 id|im-&gt;tm_running
 comma
+id|jiffies_to_clock_t
+c_func
+(paren
 id|im-&gt;timer.expires
 op_minus
 id|jiffies
+)paren
 comma
 id|im-&gt;reporter
 )paren
