@@ -44,6 +44,7 @@ r_struct
 id|pci_fixup
 id|pcibios_fixups
 (braket
+l_int|1
 )braket
 suffix:semicolon
 DECL|variable|pci_root_ops

@@ -3,6 +3,7 @@ DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -313,54 +314,6 @@ macro_line|#else
 DECL|macro|pgprot_writecombine
 macro_line|# define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
 macro_line|#endif
-multiline_comment|/*&n; * Return the region index for virtual address ADDRESS.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|rgn_index
-id|rgn_index
-(paren
-r_int
-r_int
-id|address
-)paren
-(brace
-id|ia64_va
-id|a
-suffix:semicolon
-id|a.l
-op_assign
-id|address
-suffix:semicolon
-r_return
-id|a.f.reg
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Return the region offset for virtual address ADDRESS.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|rgn_offset
-id|rgn_offset
-(paren
-r_int
-r_int
-id|address
-)paren
-(brace
-id|ia64_va
-id|a
-suffix:semicolon
-id|a.l
-op_assign
-id|address
-suffix:semicolon
-r_return
-id|a.f.off
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_int
@@ -795,6 +748,105 @@ id|paging_init
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this macro to take care of any (delayed) i-cache flushing&n; * that may be necessary.&n; */
+r_static
+r_inline
+r_void
+DECL|function|update_mmu_cache
+id|update_mmu_cache
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+id|pte_t
+id|pte
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_exec
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* not an executable page... */
+id|page
+op_assign
+id|pte_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+multiline_comment|/* don&squot;t use VADDR: it may not be mapped on this CPU (or may have just been flushed): */
+id|addr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|page_address
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* i-cache is already coherent with d-cache */
+id|flush_icache_range
+c_func
+(paren
+id|addr
+comma
+id|addr
+op_plus
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PG_arch_1
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+multiline_comment|/* mark page as clean */
+)brace
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xff)
 DECL|macro|SWP_OFFSET
@@ -810,37 +862,6 @@ DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range&t;/* XXX is this right? */
-multiline_comment|/*&n; * Now for some cache flushing routines.  This is the kind of stuff that can be very&n; * expensive, so try to avoid them whenever possible.&n; */
-multiline_comment|/* Caches aren&squot;t brain-dead on the IA-64. */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,page)&t;&t;do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(PG_arch_1, &amp;page-&gt;flags);&t;&bslash;&n;} while (0)
-r_extern
-r_void
-id|flush_icache_range
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma, page, user_addr, len)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _addr = page_address(page) + ((user_addr) &amp; ~PAGE_MASK);&t;&bslash;&n;&t;flush_icache_range(_addr, _addr + (len));&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int
