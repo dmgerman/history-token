@@ -147,6 +147,16 @@ id|net_device
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|netdev_unregister_sysfs
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************************&n;&n;&t;&t;Protocol management and registration routines&n;&n;*******************************************************************************/
 multiline_comment|/*&n; *&t;For efficiency&n; */
 DECL|variable|netdev_nit
@@ -9249,11 +9259,10 @@ suffix:semicolon
 r_case
 id|NETREG_UNREGISTERING
 suffix:colon
-id|class_device_del
+id|netdev_unregister_sysfs
 c_func
 (paren
-op_amp
-id|dev-&gt;class_dev
+id|dev
 )paren
 suffix:semicolon
 id|dev-&gt;reg_state
