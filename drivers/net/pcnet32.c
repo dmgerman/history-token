@@ -4504,6 +4504,17 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+comma
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
 id|printk
@@ -4713,6 +4724,15 @@ id|netif_start_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -6695,6 +6715,8 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+comma
+id|flags
 suffix:semicolon
 r_struct
 id|pcnet32_private
@@ -6702,6 +6724,15 @@ op_star
 id|lp
 op_assign
 id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6779,6 +6810,15 @@ l_int|0x0042
 )paren
 suffix:semicolon
 multiline_comment|/*  Resume normal operation */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|mdio_read
 r_static
