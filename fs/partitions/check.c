@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;../drivers/base/fs/fs.h&gt;&t;/* Eeeeewwwww */
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;acorn.h&quot;
 macro_line|#include &quot;amiga.h&quot;
@@ -1931,6 +1930,9 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|strncpy
 c_func
 (paren
@@ -1962,12 +1964,21 @@ id|s
 op_assign
 l_char|&squot;!&squot;
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|kobject_add
 c_func
 (paren
 op_amp
 id|disk-&gt;kobj
 )paren
+)paren
+)paren
+r_return
 suffix:semicolon
 id|disk_sysfs_symlinks
 c_func
