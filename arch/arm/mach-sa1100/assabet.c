@@ -215,10 +215,6 @@ id|BCR_value
 op_assign
 id|ASSABET_BCR_DB1111
 suffix:semicolon
-id|NCR_0
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifndef CONFIG_ASSABET_NEPONSET
 id|printk
 c_func
@@ -1017,14 +1013,6 @@ c_func
 id|assabet_io_desc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ASSABET_NEPONSET
-multiline_comment|/*&n;&t; * We map Neponset registers even if it isn&squot;t present since&n;&t; * many drivers will try to probe their stuff (and fail).&n;&t; * This is still more friendly than a kernel paging request&n;&t; * crash.&n;&t; */
-id|neponset_map_io
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1034,6 +1022,14 @@ c_func
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_ASSABET_NEPONSET
+multiline_comment|/*&n;&t;&t; * We map Neponset registers even if it isn&squot;t present since&n;&t;&t; * many drivers will try to probe their stuff (and fail).&n;&t;&t; * This is still more friendly than a kernel paging request&n;&t;&t; * crash.&n;&t;&t; */
+id|neponset_map_io
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * When Neponset is attached, the first UART should be&n;&t;&t; * UART3.  That&squot;s what Angel is doing and many documents&n;&t;&t; * are stating this.&n;&t;&t; * We do the Neponset mapping even if Neponset support&n;&t;&t; * isn&squot;t compiled in so the user will still get something on&n;&t;&t; * the expected physical serial port.&n;&t;&t; */
 id|sa1100_register_uart
 c_func

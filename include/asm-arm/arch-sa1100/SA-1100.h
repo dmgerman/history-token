@@ -4,6 +4,19 @@ macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 macro_line|#error You must include hardware.h not SA-1100.h
 macro_line|#endif
 macro_line|#include &quot;bitfield.h&quot;
+multiline_comment|/*&n; * SA1100 CS line to physical address&n; */
+DECL|macro|SA1100_CS0_PHYS
+mdefine_line|#define SA1100_CS0_PHYS&t;0x00000000
+DECL|macro|SA1100_CS1_PHYS
+mdefine_line|#define SA1100_CS1_PHYS&t;0x08000000
+DECL|macro|SA1100_CS2_PHYS
+mdefine_line|#define SA1100_CS2_PHYS&t;0x10000000
+DECL|macro|SA1100_CS3_PHYS
+mdefine_line|#define SA1100_CS3_PHYS&t;0x18000000
+DECL|macro|SA1100_CS4_PHYS
+mdefine_line|#define SA1100_CS4_PHYS&t;0x40000000
+DECL|macro|SA1100_CS5_PHYS
+mdefine_line|#define SA1100_CS5_PHYS&t;0x48000000
 multiline_comment|/*&n; * Personal Computer Memory Card International Association (PCMCIA) sockets&n; */
 DECL|macro|PCMCIAPrtSp
 mdefine_line|#define PCMCIAPrtSp&t;0x04000000&t;/* PCMCIA Partition Space [byte]   */
