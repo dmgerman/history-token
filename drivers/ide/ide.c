@@ -8954,15 +8954,11 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-macro_line|#else /* !CONFIG_BLK_DEV_IDEPCI */
-id|hwif-&gt;udma_four
-op_assign
-l_int|0
-suffix:semicolon
+macro_line|#else
 r_goto
 id|bad_hwif
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 r_case
 op_minus
 l_int|6
