@@ -1449,6 +1449,11 @@ r_struct
 id|bus_type
 id|platform_bus_type
 suffix:semicolon
+r_extern
+r_struct
+id|device
+id|legacy_bus
+suffix:semicolon
 multiline_comment|/* drivers/base/power.c */
 r_extern
 r_int
