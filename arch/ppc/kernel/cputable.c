@@ -1978,12 +1978,12 @@ multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 (brace
-multiline_comment|/* 440GX Rev. B1 (2.1) */
+multiline_comment|/* 440GX Rev. C */
 l_int|0xf0000fff
 comma
-l_int|0x50000852
+l_int|0x50000892
 comma
-l_string|&quot;440GX Rev. B1 (2.1)&quot;
+l_string|&quot;440GX Rev. C&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
