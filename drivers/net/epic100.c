@@ -4802,6 +4802,7 @@ id|u32
 id|ctrl_word
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
