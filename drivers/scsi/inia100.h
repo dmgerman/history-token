@@ -1,4 +1,4 @@
-multiline_comment|/**************************************************************************&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; **************************************************************************&n; *&n; * Module: inia100.h&n; * Description: INI-A100U2W LINUX device driver header&n; * Revision History:&n; *&t;06/18/98 HL, Initial production Version 1.02&n; *&t;12/19/98 bv, Use spinlocks for 2.1.95 and up&n; ****************************************************************************/
+multiline_comment|/**************************************************************************&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; **************************************************************************&n; *&n; * Module: inia100.h&n; * Description: INI-A100U2W LINUX device driver header&n; * Revision History:&n; *&t;06/18/98 HL, Initial production Version 1.02&n; *&t;12/19/98 bv, Use spinlocks for 2.1.95 and up&n; *&t;06/25/02 Doug Ledford &lt;dledford@redhat.com&gt;&n; *&t;&t; - This and the i60uscsi.h file are almost identical,&n; *&t;&t;   merged them into a single header used by both .c files.&n; ****************************************************************************/
 macro_line|#ifndef&t;CVT_LINUX_VERSION
 DECL|macro|CVT_LINUX_VERSION
 mdefine_line|#define&t;CVT_LINUX_VERSION(V,P,S)&t;(((V) * 65536) + ((P) * 256) + (S))
@@ -6,7 +6,9 @@ macro_line|#endif
 macro_line|#ifndef&t;LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;sd.h&quot;
 r_extern
 r_int
@@ -24,15 +26,6 @@ c_func
 (paren
 r_struct
 id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|inia100_command
-c_func
-(paren
-id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
@@ -94,9 +87,7 @@ multiline_comment|/*for linux v2.0 */
 DECL|macro|inia100_REVID
 mdefine_line|#define inia100_REVID &quot;Initio INI-A100U2W SCSI device driver; Revision: 1.02c&quot;
 DECL|macro|INIA100
-mdefine_line|#define INIA100&t;{ &bslash;&n;&t;next:&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;module:&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;INIA100&quot;, &bslash;&n;&t;proc_info:&t;NULL,&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;inia100_REVID, &bslash;&n;&t;detect:&t;&t;inia100_detect, &bslash;&n;&t;release:&t;inia100_release, &bslash;&n;&t;info:&t;&t;NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;command:&t;inia100_command, &bslash;&n;&t;queuecommand:&t;inia100_queue, &bslash;&n; &t;eh_strategy_handler: NULL, &bslash;&n; &t;eh_abort_handler: NULL, &bslash;&n; &t;eh_device_reset_handler: NULL, &bslash;&n; &t;eh_bus_reset_handler: NULL, &bslash;&n; &t;eh_host_reset_handler: NULL, &bslash;&n;&t;abort:&t;&t;inia100_abort, &bslash;&n;&t;reset:&t;&t;inia100_reset, &bslash;&n;&t;slave_attach:&t;NULL, &bslash;&n;&t;bios_param:&t;inia100_biosparam, &bslash;&n;&t;can_queue:&t;1, &bslash;&n;&t;this_id:&t;1, &bslash;&n;&t;sg_tablesize:&t;SG_ALL, &bslash;&n;&t;cmd_per_lun: &t;1, &bslash;&n;&t;present:&t;0, &bslash;&n;&t;unchecked_isa_dma: 0, &bslash;&n;&t;use_clustering:&t;ENABLE_CLUSTERING, &bslash;&n;}
-DECL|macro|VIRT_TO_BUS
-mdefine_line|#define VIRT_TO_BUS(i)  (unsigned int) virt_to_bus((void *)(i))
+mdefine_line|#define INIA100&t;{ &bslash;&n;&t;next:&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;module:&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name:&t;&quot;inia100&quot;, &bslash;&n;&t;proc_info:&t;NULL,&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;inia100_REVID, &bslash;&n;&t;detect:&t;&t;inia100_detect, &bslash;&n;&t;release:&t;inia100_release, &bslash;&n;&t;info:&t;&t;NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;command:&t;NULL, &bslash;&n;&t;queuecommand:&t;inia100_queue, &bslash;&n; &t;eh_strategy_handler: NULL, &bslash;&n; &t;eh_abort_handler: NULL, &bslash;&n; &t;eh_device_reset_handler: NULL, &bslash;&n; &t;eh_bus_reset_handler: NULL, &bslash;&n; &t;eh_host_reset_handler: NULL, &bslash;&n;&t;abort:&t;&t;inia100_abort, &bslash;&n;&t;reset:&t;&t;inia100_reset, &bslash;&n;&t;slave_attach:&t;NULL, &bslash;&n;&t;bios_param:&t;inia100_biosparam, &bslash;&n;&t;can_queue:&t;1, &bslash;&n;&t;this_id:&t;1, &bslash;&n;&t;sg_tablesize:&t;SG_ALL, &bslash;&n;&t;cmd_per_lun: &t;1, &bslash;&n;&t;present:&t;0, &bslash;&n;&t;unchecked_isa_dma: 0, &bslash;&n;&t;use_clustering:&t;ENABLE_CLUSTERING, &bslash;&n;}
 DECL|macro|ULONG
 mdefine_line|#define ULONG   unsigned long
 DECL|macro|PVOID
@@ -138,9 +129,13 @@ macro_line|#endif
 macro_line|#if 1
 DECL|macro|ORC_MAXQUEUE
 mdefine_line|#define ORC_MAXQUEUE&t;&t;245
+DECL|macro|ORC_MAXTAGS
+mdefine_line|#define ORC_MAXTAGS&t;&t;64
 macro_line|#else
 DECL|macro|ORC_MAXQUEUE
 mdefine_line|#define ORC_MAXQUEUE&t;&t;25
+DECL|macro|ORC_MAXTAGS
+mdefine_line|#define ORC_MAXTAGS&t;&t;8
 macro_line|#endif
 DECL|macro|TOTAL_SG_ENTRY
 mdefine_line|#define TOTAL_SG_ENTRY&t;&t;32
@@ -150,8 +145,6 @@ DECL|macro|IMAX_CDB
 mdefine_line|#define IMAX_CDB&t;&t;&t;15
 DECL|macro|SENSE_SIZE
 mdefine_line|#define SENSE_SIZE&t;&t;14
-DECL|macro|MAX_SUPPORTED_ADAPTERS
-mdefine_line|#define MAX_SUPPORTED_ADAPTERS  4
 DECL|macro|SUCCESSFUL
 mdefine_line|#define SUCCESSFUL              0x00
 DECL|macro|I920_DEVICE_ID
@@ -177,6 +170,32 @@ multiline_comment|/* Data Length */
 DECL|typedef|ORC_SG
 )brace
 id|ORC_SG
+suffix:semicolon
+DECL|struct|inia100_Adpt_Struc
+r_typedef
+r_struct
+id|inia100_Adpt_Struc
+(brace
+DECL|member|ADPT_BIOS
+id|UWORD
+id|ADPT_BIOS
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|ADPT_BASE
+id|UWORD
+id|ADPT_BASE
+suffix:semicolon
+multiline_comment|/* 1 */
+DECL|member|ADPT_pdev
+r_struct
+id|pci_dev
+op_star
+id|ADPT_pdev
+suffix:semicolon
+multiline_comment|/* 2 */
+DECL|typedef|INIA100_ADPT_STRUCT
+)brace
+id|INIA100_ADPT_STRUCT
 suffix:semicolon
 multiline_comment|/* SCSI related definition                                              */
 DECL|macro|DISC_NOT_ALLOW
@@ -671,7 +690,7 @@ id|HCS_virScbArray
 suffix:semicolon
 multiline_comment|/* 28 Virtual Pointer to SCB array     */
 DECL|member|HCS_physScbArray
-id|U32
+id|dma_addr_t
 id|HCS_physScbArray
 suffix:semicolon
 multiline_comment|/* Scb Physical address */
@@ -681,7 +700,7 @@ id|HCS_virEscbArray
 suffix:semicolon
 multiline_comment|/* Virtual pointer to ESCB Scatter list */
 DECL|member|HCS_physEscbArray
-id|U32
+id|dma_addr_t
 id|HCS_physEscbArray
 suffix:semicolon
 multiline_comment|/* scatter list Physical address */
@@ -749,6 +768,12 @@ DECL|member|pSRB_lock
 id|spinlock_t
 id|pSRB_lock
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 DECL|typedef|ORC_HCS
 )brace
 id|ORC_HCS
@@ -813,4 +838,523 @@ DECL|macro|MAX_PCI_DEVICES
 mdefine_line|#define&t;MAX_PCI_DEVICES&t;21
 DECL|macro|MAX_PCI_BUSES
 mdefine_line|#define&t;MAX_PCI_BUSES&t;8
+DECL|struct|Adpt_Struc
+r_typedef
+r_struct
+id|Adpt_Struc
+(brace
+DECL|member|ADPT_BIOS
+id|USHORT
+id|ADPT_BIOS
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|ADPT_BASE
+id|UBYTE
+id|ADPT_BASE
+suffix:semicolon
+multiline_comment|/* 1 */
+DECL|member|ADPT_Bus
+id|UBYTE
+id|ADPT_Bus
+suffix:semicolon
+multiline_comment|/* 2 */
+DECL|member|ADPT_Device
+id|UBYTE
+id|ADPT_Device
+suffix:semicolon
+multiline_comment|/* 3 */
+DECL|member|ADPT_Reserved
+id|UBYTE
+id|ADPT_Reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|typedef|JACS
+DECL|typedef|PJACS
+)brace
+id|JACS
+comma
+op_star
+id|PJACS
+suffix:semicolon
+DECL|struct|_NVRAM
+r_typedef
+r_struct
+id|_NVRAM
+(brace
+multiline_comment|/*----------header ---------------*/
+DECL|member|SubVendorID0
+id|UCHAR
+id|SubVendorID0
+suffix:semicolon
+multiline_comment|/* 00 - Sub Vendor ID           */
+DECL|member|SubVendorID1
+id|UCHAR
+id|SubVendorID1
+suffix:semicolon
+multiline_comment|/* 00 - Sub Vendor ID           */
+DECL|member|SubSysID0
+id|UCHAR
+id|SubSysID0
+suffix:semicolon
+multiline_comment|/* 02 - Sub System ID           */
+DECL|member|SubSysID1
+id|UCHAR
+id|SubSysID1
+suffix:semicolon
+multiline_comment|/* 02 - Sub System ID           */
+DECL|member|SubClass
+id|UCHAR
+id|SubClass
+suffix:semicolon
+multiline_comment|/* 04 - Sub Class               */
+DECL|member|VendorID0
+id|UCHAR
+id|VendorID0
+suffix:semicolon
+multiline_comment|/* 05 - Vendor ID               */
+DECL|member|VendorID1
+id|UCHAR
+id|VendorID1
+suffix:semicolon
+multiline_comment|/* 05 - Vendor ID               */
+DECL|member|DeviceID0
+id|UCHAR
+id|DeviceID0
+suffix:semicolon
+multiline_comment|/* 07 - Device ID               */
+DECL|member|DeviceID1
+id|UCHAR
+id|DeviceID1
+suffix:semicolon
+multiline_comment|/* 07 - Device ID               */
+DECL|member|Reserved0
+id|UCHAR
+id|Reserved0
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 09 - Reserved                */
+DECL|member|Revision
+id|UCHAR
+id|Revision
+suffix:semicolon
+multiline_comment|/* 0B - Revision of data structure */
+multiline_comment|/* ----Host Adapter Structure ---- */
+DECL|member|NumOfCh
+id|UCHAR
+id|NumOfCh
+suffix:semicolon
+multiline_comment|/* 0C - Number of SCSI channel  */
+DECL|member|BIOSConfig1
+id|UCHAR
+id|BIOSConfig1
+suffix:semicolon
+multiline_comment|/* 0D - BIOS configuration 1    */
+DECL|member|BIOSConfig2
+id|UCHAR
+id|BIOSConfig2
+suffix:semicolon
+multiline_comment|/* 0E - BIOS boot channel&amp;target ID */
+DECL|member|BIOSConfig3
+id|UCHAR
+id|BIOSConfig3
+suffix:semicolon
+multiline_comment|/* 0F - BIOS configuration 3    */
+multiline_comment|/* ----SCSI channel Structure ---- */
+multiline_comment|/* from &quot;CTRL-I SCSI Host Adapter SetUp menu &quot;  */
+DECL|member|SCSI0Id
+id|UCHAR
+id|SCSI0Id
+suffix:semicolon
+multiline_comment|/* 10 - Channel 0 SCSI ID       */
+DECL|member|SCSI0Config
+id|UCHAR
+id|SCSI0Config
+suffix:semicolon
+multiline_comment|/* 11 - Channel 0 SCSI configuration */
+DECL|member|SCSI0MaxTags
+id|UCHAR
+id|SCSI0MaxTags
+suffix:semicolon
+multiline_comment|/* 12 - Channel 0 Maximum tags  */
+DECL|member|SCSI0ResetTime
+id|UCHAR
+id|SCSI0ResetTime
+suffix:semicolon
+multiline_comment|/* 13 - Channel 0 Reset recovering time */
+DECL|member|ReservedforChannel0
+id|UCHAR
+id|ReservedforChannel0
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 14 - Reserved                */
+multiline_comment|/* ----SCSI target Structure ----  */
+multiline_comment|/* from &quot;CTRL-I SCSI device SetUp menu &quot;                        */
+DECL|member|Target00Config
+id|UCHAR
+id|Target00Config
+suffix:semicolon
+multiline_comment|/* 16 - Channel 0 Target 0 config */
+DECL|member|Target01Config
+id|UCHAR
+id|Target01Config
+suffix:semicolon
+multiline_comment|/* 17 - Channel 0 Target 1 config */
+DECL|member|Target02Config
+id|UCHAR
+id|Target02Config
+suffix:semicolon
+multiline_comment|/* 18 - Channel 0 Target 2 config */
+DECL|member|Target03Config
+id|UCHAR
+id|Target03Config
+suffix:semicolon
+multiline_comment|/* 19 - Channel 0 Target 3 config */
+DECL|member|Target04Config
+id|UCHAR
+id|Target04Config
+suffix:semicolon
+multiline_comment|/* 1A - Channel 0 Target 4 config */
+DECL|member|Target05Config
+id|UCHAR
+id|Target05Config
+suffix:semicolon
+multiline_comment|/* 1B - Channel 0 Target 5 config */
+DECL|member|Target06Config
+id|UCHAR
+id|Target06Config
+suffix:semicolon
+multiline_comment|/* 1C - Channel 0 Target 6 config */
+DECL|member|Target07Config
+id|UCHAR
+id|Target07Config
+suffix:semicolon
+multiline_comment|/* 1D - Channel 0 Target 7 config */
+DECL|member|Target08Config
+id|UCHAR
+id|Target08Config
+suffix:semicolon
+multiline_comment|/* 1E - Channel 0 Target 8 config */
+DECL|member|Target09Config
+id|UCHAR
+id|Target09Config
+suffix:semicolon
+multiline_comment|/* 1F - Channel 0 Target 9 config */
+DECL|member|Target0AConfig
+id|UCHAR
+id|Target0AConfig
+suffix:semicolon
+multiline_comment|/* 20 - Channel 0 Target A config */
+DECL|member|Target0BConfig
+id|UCHAR
+id|Target0BConfig
+suffix:semicolon
+multiline_comment|/* 21 - Channel 0 Target B config */
+DECL|member|Target0CConfig
+id|UCHAR
+id|Target0CConfig
+suffix:semicolon
+multiline_comment|/* 22 - Channel 0 Target C config */
+DECL|member|Target0DConfig
+id|UCHAR
+id|Target0DConfig
+suffix:semicolon
+multiline_comment|/* 23 - Channel 0 Target D config */
+DECL|member|Target0EConfig
+id|UCHAR
+id|Target0EConfig
+suffix:semicolon
+multiline_comment|/* 24 - Channel 0 Target E config */
+DECL|member|Target0FConfig
+id|UCHAR
+id|Target0FConfig
+suffix:semicolon
+multiline_comment|/* 25 - Channel 0 Target F config */
+DECL|member|SCSI1Id
+id|UCHAR
+id|SCSI1Id
+suffix:semicolon
+multiline_comment|/* 26 - Channel 1 SCSI ID       */
+DECL|member|SCSI1Config
+id|UCHAR
+id|SCSI1Config
+suffix:semicolon
+multiline_comment|/* 27 - Channel 1 SCSI configuration */
+DECL|member|SCSI1MaxTags
+id|UCHAR
+id|SCSI1MaxTags
+suffix:semicolon
+multiline_comment|/* 28 - Channel 1 Maximum tags  */
+DECL|member|SCSI1ResetTime
+id|UCHAR
+id|SCSI1ResetTime
+suffix:semicolon
+multiline_comment|/* 29 - Channel 1 Reset recovering time */
+DECL|member|ReservedforChannel1
+id|UCHAR
+id|ReservedforChannel1
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 2A - Reserved                */
+multiline_comment|/* ----SCSI target Structure ----  */
+multiline_comment|/* from &quot;CTRL-I SCSI device SetUp menu &quot;                                          */
+DECL|member|Target10Config
+id|UCHAR
+id|Target10Config
+suffix:semicolon
+multiline_comment|/* 2C - Channel 1 Target 0 config */
+DECL|member|Target11Config
+id|UCHAR
+id|Target11Config
+suffix:semicolon
+multiline_comment|/* 2D - Channel 1 Target 1 config */
+DECL|member|Target12Config
+id|UCHAR
+id|Target12Config
+suffix:semicolon
+multiline_comment|/* 2E - Channel 1 Target 2 config */
+DECL|member|Target13Config
+id|UCHAR
+id|Target13Config
+suffix:semicolon
+multiline_comment|/* 2F - Channel 1 Target 3 config */
+DECL|member|Target14Config
+id|UCHAR
+id|Target14Config
+suffix:semicolon
+multiline_comment|/* 30 - Channel 1 Target 4 config */
+DECL|member|Target15Config
+id|UCHAR
+id|Target15Config
+suffix:semicolon
+multiline_comment|/* 31 - Channel 1 Target 5 config */
+DECL|member|Target16Config
+id|UCHAR
+id|Target16Config
+suffix:semicolon
+multiline_comment|/* 32 - Channel 1 Target 6 config */
+DECL|member|Target17Config
+id|UCHAR
+id|Target17Config
+suffix:semicolon
+multiline_comment|/* 33 - Channel 1 Target 7 config */
+DECL|member|Target18Config
+id|UCHAR
+id|Target18Config
+suffix:semicolon
+multiline_comment|/* 34 - Channel 1 Target 8 config */
+DECL|member|Target19Config
+id|UCHAR
+id|Target19Config
+suffix:semicolon
+multiline_comment|/* 35 - Channel 1 Target 9 config */
+DECL|member|Target1AConfig
+id|UCHAR
+id|Target1AConfig
+suffix:semicolon
+multiline_comment|/* 36 - Channel 1 Target A config */
+DECL|member|Target1BConfig
+id|UCHAR
+id|Target1BConfig
+suffix:semicolon
+multiline_comment|/* 37 - Channel 1 Target B config */
+DECL|member|Target1CConfig
+id|UCHAR
+id|Target1CConfig
+suffix:semicolon
+multiline_comment|/* 38 - Channel 1 Target C config */
+DECL|member|Target1DConfig
+id|UCHAR
+id|Target1DConfig
+suffix:semicolon
+multiline_comment|/* 39 - Channel 1 Target D config */
+DECL|member|Target1EConfig
+id|UCHAR
+id|Target1EConfig
+suffix:semicolon
+multiline_comment|/* 3A - Channel 1 Target E config */
+DECL|member|Target1FConfig
+id|UCHAR
+id|Target1FConfig
+suffix:semicolon
+multiline_comment|/* 3B - Channel 1 Target F config */
+DECL|member|reserved
+id|UCHAR
+id|reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* 3C - Reserved                */
+multiline_comment|/* ---------- CheckSum ----------       */
+DECL|member|CheckSum
+id|UCHAR
+id|CheckSum
+suffix:semicolon
+multiline_comment|/* 3F - Checksum of NVRam       */
+DECL|typedef|NVRAM
+DECL|typedef|PNVRAM
+)brace
+id|NVRAM
+comma
+op_star
+id|PNVRAM
+suffix:semicolon
+multiline_comment|/* Bios Configuration for nvram-&gt;BIOSConfig1                            */
+DECL|macro|NBC_BIOSENABLE
+mdefine_line|#define NBC_BIOSENABLE  0x01    /* BIOS enable                    */
+DECL|macro|NBC_CDROM
+mdefine_line|#define NBC_CDROM       0x02    /* Support bootable CDROM */
+DECL|macro|NBC_REMOVABLE
+mdefine_line|#define NBC_REMOVABLE   0x04    /* Support removable drive        */
+multiline_comment|/* Bios Configuration for nvram-&gt;BIOSConfig2                            */
+DECL|macro|NBB_TARGET_MASK
+mdefine_line|#define NBB_TARGET_MASK 0x0F    /* Boot SCSI target ID number     */
+DECL|macro|NBB_CHANL_MASK
+mdefine_line|#define NBB_CHANL_MASK  0xF0    /* Boot SCSI channel number       */
+multiline_comment|/* Bit definition for nvram-&gt;SCSIConfig                                 */
+DECL|macro|NCC_BUSRESET
+mdefine_line|#define NCC_BUSRESET    0x01    /* Reset SCSI bus at power up     */
+DECL|macro|NCC_PARITYCHK
+mdefine_line|#define NCC_PARITYCHK   0x02    /* SCSI parity enable             */
+DECL|macro|NCC_LVDS
+mdefine_line|#define NCC_LVDS        0x10    /* Enable LVDS                    */
+DECL|macro|NCC_ACTTERM1
+mdefine_line|#define NCC_ACTTERM1    0x20    /* Enable active terminator 1     */
+DECL|macro|NCC_ACTTERM2
+mdefine_line|#define NCC_ACTTERM2    0x40    /* Enable active terminator 2     */
+DECL|macro|NCC_AUTOTERM
+mdefine_line|#define NCC_AUTOTERM    0x80    /* Enable auto termination        */
+multiline_comment|/* Bit definition for nvram-&gt;TargetxConfig                              */
+DECL|macro|NTC_PERIOD
+mdefine_line|#define NTC_PERIOD      0x07    /* Maximum Sync. Speed            */
+DECL|macro|NTC_1GIGA
+mdefine_line|#define NTC_1GIGA       0x08    /* 255 head / 63 sectors (64/32) */
+DECL|macro|NTC_NO_SYNC
+mdefine_line|#define NTC_NO_SYNC     0x10    /* NO SYNC. NEGO          */
+DECL|macro|NTC_NO_WIDESYNC
+mdefine_line|#define NTC_NO_WIDESYNC 0x20    /* NO WIDE SYNC. NEGO             */
+DECL|macro|NTC_DISC_ENABLE
+mdefine_line|#define NTC_DISC_ENABLE 0x40    /* Enable SCSI disconnect */
+DECL|macro|NTC_SPINUP
+mdefine_line|#define NTC_SPINUP      0x80    /* Start disk drive               */
+multiline_comment|/* Default NVRam values                                                 */
+DECL|macro|NBC_DEFAULT
+mdefine_line|#define NBC_DEFAULT     (NBC_ENABLE)
+DECL|macro|NCC_DEFAULT
+mdefine_line|#define NCC_DEFAULT     (NCC_BUSRESET | NCC_AUTOTERM | NCC_PARITYCHK)
+DECL|macro|NCC_MAX_TAGS
+mdefine_line|#define NCC_MAX_TAGS    0x20    /* Maximum tags per target        */
+DECL|macro|NCC_RESET_TIME
+mdefine_line|#define NCC_RESET_TIME  0x0A    /* SCSI RESET recovering time     */
+DECL|macro|NTC_DEFAULT
+mdefine_line|#define NTC_DEFAULT     (NTC_1GIGA | NTC_NO_WIDESYNC | NTC_DISC_ENABLE)
+r_typedef
+r_union
+(brace
+multiline_comment|/* Union define for mechanism 1   */
+r_struct
+(brace
+DECL|member|RegNum
+r_int
+r_char
+id|RegNum
+suffix:semicolon
+DECL|member|FcnNum
+r_int
+r_char
+id|FcnNum
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|DeviceNum
+r_int
+r_char
+id|DeviceNum
+suffix:colon
+l_int|5
+suffix:semicolon
+DECL|member|BusNum
+r_int
+r_char
+id|BusNum
+suffix:semicolon
+DECL|member|Reserved
+r_int
+r_char
+id|Reserved
+suffix:colon
+l_int|7
+suffix:semicolon
+DECL|member|Enable
+r_int
+r_char
+id|Enable
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|sConfigAdr
+)brace
+id|sConfigAdr
+suffix:semicolon
+DECL|member|lConfigAdr
+r_int
+r_int
+id|lConfigAdr
+suffix:semicolon
+DECL|typedef|CONFIG_ADR
+)brace
+id|CONFIG_ADR
+suffix:semicolon
+r_typedef
+r_union
+(brace
+multiline_comment|/* Union define for mechanism 2   */
+r_struct
+(brace
+DECL|member|RegNum
+r_int
+r_char
+id|RegNum
+suffix:semicolon
+DECL|member|DeviceNum
+r_int
+r_char
+id|DeviceNum
+suffix:semicolon
+DECL|member|Reserved
+r_int
+r_int
+id|Reserved
+suffix:semicolon
+DECL|member|sHostAdr
+)brace
+id|sHostAdr
+suffix:semicolon
+DECL|member|lHostAdr
+r_int
+r_int
+id|lHostAdr
+suffix:semicolon
+DECL|typedef|HOST_ADR
+)brace
+id|HOST_ADR
+suffix:semicolon
+DECL|macro|ORC_RD
+mdefine_line|#define ORC_RD(x,y)             (UCHAR)(inb(  (int)((ULONG)((ULONG)x+(UCHAR)y)) ))
+DECL|macro|ORC_RDLONG
+mdefine_line|#define ORC_RDLONG(x,y)         (long)(inl((int)((ULONG)((ULONG)x+(UCHAR)y)) ))
+DECL|macro|ORC_WR
+mdefine_line|#define ORC_WR(     adr,data)   outb( (UCHAR)(data), (int)(adr))
+DECL|macro|ORC_WRSHORT
+mdefine_line|#define ORC_WRSHORT(adr,data)   outw( (UWORD)(data), (int)(adr))
+DECL|macro|ORC_WRLONG
+mdefine_line|#define ORC_WRLONG( adr,data)   outl( (ULONG)(data), (int)(adr))
 eof

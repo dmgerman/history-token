@@ -711,6 +711,10 @@ id|retval-&gt;max_sectors
 op_assign
 id|tpnt-&gt;max_sectors
 suffix:semicolon
+id|retval-&gt;use_blk_tcq
+op_assign
+id|tpnt-&gt;use_blk_tcq
+suffix:semicolon
 r_if
 c_cond
 (paren

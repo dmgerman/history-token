@@ -379,7 +379,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_mft_aops - address space operations for access to $MFT&n; *&n; * Address space operations for access to $MFT. This allows us to simply use&n; * read_cache_page() in map_mft_record().&n; */
+multiline_comment|/**&n; * ntfs_mft_aops - address space operations for access to $MFT&n; *&n; * Address space operations for access to $MFT. This allows us to simply use&n; * ntfs_map_page() in map_mft_record_page().&n; */
 DECL|variable|ntfs_mft_aops
 r_struct
 id|address_space_operations
@@ -941,7 +941,7 @@ op_amp
 id|ni-&gt;count
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If pure ntfs_inode, i.e. no vfs inode attached, we leave it to&n;&t; * ntfs_clear_inode() in the extent inode case, and to the caller in&n;&t; * the non-extent, yet pure ntfs inode case, to do the actual tear&n;&t; * down of all structures and freeing of all allocated memory.&n;&t; */
+multiline_comment|/*&n;&t; * If pure ntfs_inode, i.e. no vfs inode attached, we leave it to&n;&t; * ntfs_clear_extent_inode() in the extent inode case, and to the&n;&t; * caller in the non-extent, yet pure ntfs inode case, to do the actual&n;&t; * tear down of all structures and freeing of all allocated memory.&n;&t; */
 r_return
 suffix:semicolon
 )brace
@@ -1231,10 +1231,12 @@ suffix:semicolon
 multiline_comment|/* Record wasn&squot;t there. Get a new ntfs inode and initialize it. */
 id|ni
 op_assign
-id|ntfs_new_inode
+id|ntfs_new_extent_inode
 c_func
 (paren
 id|base_ni-&gt;vol-&gt;sb
+comma
+id|mft_no
 )paren
 suffix:semicolon
 r_if
@@ -1270,10 +1272,6 @@ suffix:semicolon
 id|ni-&gt;vol
 op_assign
 id|base_ni-&gt;vol
-suffix:semicolon
-id|ni-&gt;mft_no
-op_assign
-id|mft_no
 suffix:semicolon
 id|ni-&gt;seq_no
 op_assign
@@ -1329,7 +1327,7 @@ op_amp
 id|base_ni-&gt;count
 )paren
 suffix:semicolon
-id|ntfs_clear_inode
+id|ntfs_clear_extent_inode
 c_func
 (paren
 id|ni
@@ -1590,7 +1588,7 @@ c_cond
 (paren
 id|destroy_ni
 )paren
-id|ntfs_clear_inode
+id|ntfs_clear_extent_inode
 c_func
 (paren
 id|ni

@@ -23,6 +23,38 @@ multiline_comment|/* nanoseconds */
 )brace
 suffix:semicolon
 macro_line|#endif /* _STRUCT_TIMESPEC */
+DECL|struct|timeval
+r_struct
+id|timeval
+(brace
+DECL|member|tv_sec
+id|time_t
+id|tv_sec
+suffix:semicolon
+multiline_comment|/* seconds */
+DECL|member|tv_usec
+id|suseconds_t
+id|tv_usec
+suffix:semicolon
+multiline_comment|/* microseconds */
+)brace
+suffix:semicolon
+DECL|struct|timezone
+r_struct
+id|timezone
+(brace
+DECL|member|tz_minuteswest
+r_int
+id|tz_minuteswest
+suffix:semicolon
+multiline_comment|/* minutes west of Greenwich */
+DECL|member|tz_dsttime
+r_int
+id|tz_dsttime
+suffix:semicolon
+multiline_comment|/* type of dst correction */
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Change timeval to jiffies, trying to avoid the&n; * most obvious overflows..&n; *&n; * And some not so obvious.&n; *&n; * Note that we don&squot;t want to return MAX_LONG, because&n; * for various timeout reasons we often end up having&n; * to wait &quot;jiffies+1&quot; in order to guarantee that we wait&n; * at _least_ &quot;jiffies&quot; - so &quot;jiffies+1&quot; had better still&n; * be positive.&n; */
 DECL|macro|MAX_JIFFY_OFFSET
@@ -115,6 +147,106 @@ id|HZ
 op_star
 (paren
 l_int|1000000000L
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|value-&gt;tv_sec
+op_assign
+id|jiffies
+op_div
+id|HZ
+suffix:semicolon
+)brace
+multiline_comment|/* Same for &quot;timeval&quot; */
+r_static
+id|__inline__
+r_int
+r_int
+DECL|function|timeval_to_jiffies
+id|timeval_to_jiffies
+c_func
+(paren
+r_struct
+id|timeval
+op_star
+id|value
+)paren
+(brace
+r_int
+r_int
+id|sec
+op_assign
+id|value-&gt;tv_sec
+suffix:semicolon
+r_int
+id|usec
+op_assign
+id|value-&gt;tv_usec
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sec
+op_ge
+(paren
+id|MAX_JIFFY_OFFSET
+op_div
+id|HZ
+)paren
+)paren
+r_return
+id|MAX_JIFFY_OFFSET
+suffix:semicolon
+id|usec
+op_add_assign
+l_int|1000000L
+op_div
+id|HZ
+op_minus
+l_int|1
+suffix:semicolon
+id|usec
+op_div_assign
+l_int|1000000L
+op_div
+id|HZ
+suffix:semicolon
+r_return
+id|HZ
+op_star
+id|sec
+op_plus
+id|usec
+suffix:semicolon
+)brace
+r_static
+id|__inline__
+r_void
+DECL|function|jiffies_to_timeval
+id|jiffies_to_timeval
+c_func
+(paren
+r_int
+r_int
+id|jiffies
+comma
+r_struct
+id|timeval
+op_star
+id|value
+)paren
+(brace
+id|value-&gt;tv_usec
+op_assign
+(paren
+id|jiffies
+op_mod
+id|HZ
+)paren
+op_star
+(paren
+l_int|1000000L
 op_div
 id|HZ
 )paren
@@ -248,38 +380,6 @@ suffix:semicolon
 DECL|macro|CURRENT_TIME
 mdefine_line|#define CURRENT_TIME (xtime.tv_sec)
 macro_line|#endif /* __KERNEL__ */
-DECL|struct|timeval
-r_struct
-id|timeval
-(brace
-DECL|member|tv_sec
-id|time_t
-id|tv_sec
-suffix:semicolon
-multiline_comment|/* seconds */
-DECL|member|tv_usec
-id|suseconds_t
-id|tv_usec
-suffix:semicolon
-multiline_comment|/* microseconds */
-)brace
-suffix:semicolon
-DECL|struct|timezone
-r_struct
-id|timezone
-(brace
-DECL|member|tz_minuteswest
-r_int
-id|tz_minuteswest
-suffix:semicolon
-multiline_comment|/* minutes west of Greenwich */
-DECL|member|tz_dsttime
-r_int
-id|tz_dsttime
-suffix:semicolon
-multiline_comment|/* type of dst correction */
-)brace
-suffix:semicolon
 DECL|macro|NFDBITS
 mdefine_line|#define NFDBITS&t;&t;&t;__NFDBITS
 macro_line|#ifdef __KERNEL__

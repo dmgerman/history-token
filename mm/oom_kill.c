@@ -104,9 +104,9 @@ multiline_comment|/*&n;&t; * CPU time is in seconds and run time is in minutes. 
 id|cpu_time
 op_assign
 (paren
-id|p-&gt;times.tms_utime
+id|p-&gt;utime
 op_plus
-id|p-&gt;times.tms_stime
+id|p-&gt;stime
 )paren
 op_rshift
 (paren

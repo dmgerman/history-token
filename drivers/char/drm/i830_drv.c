@@ -2,6 +2,8 @@ multiline_comment|/* i830_drv.c -- I810 driver -*- linux-c -*-&n; * Created: Mon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;i830.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;i830_drm.h&quot;
 macro_line|#include &quot;i830_drv.h&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;

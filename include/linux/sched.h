@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
@@ -803,10 +802,19 @@ r_struct
 id|timer_list
 id|real_timer
 suffix:semicolon
-DECL|member|times
-r_struct
-id|tms
-id|times
+DECL|member|utime
+DECL|member|stime
+DECL|member|cutime
+DECL|member|cstime
+r_int
+r_int
+id|utime
+comma
+id|stime
+comma
+id|cutime
+comma
+id|cstime
 suffix:semicolon
 DECL|member|start_time
 r_int
