@@ -2645,8 +2645,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Yes, works even as a module... :) */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

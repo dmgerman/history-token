@@ -739,6 +739,4 @@ c_func
 l_string|&quot;procfs examples&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof
