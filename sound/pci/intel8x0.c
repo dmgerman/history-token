@@ -3686,6 +3686,8 @@ comma
 id|status
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: on some ICH5 board shows the same&n;&t;&t;&t; *        problem.  So we return IRQ_HANDLED&n;&t;&t;&t; *        in any cases.&n;&t;&t;&t; * (or, maybe add a new module param to control this?)&n;&t;&t;&t; */
+macro_line|#if 0
 multiline_comment|/* some Nforce[2] boards have problems when&n;&t;&t;&t;   IRQ_NONE is returned here.&n;&t;&t;&t;*/
 r_if
 c_cond
@@ -3698,6 +3700,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 id|IRQ_RETVAL
@@ -10624,6 +10627,25 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|chip-&gt;irq
+op_ge
+l_int|0
+)paren
+id|free_irq
+c_func
+(paren
+id|chip-&gt;irq
+comma
+(paren
+r_void
+op_star
+)paren
+id|chip
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|chip-&gt;bdbars.area
 )paren
 (brace
@@ -10650,25 +10672,6 @@ id|chip-&gt;bdbars
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|chip-&gt;irq
-op_ge
-l_int|0
-)paren
-id|free_irq
-c_func
-(paren
-id|chip-&gt;irq
-comma
-(paren
-r_void
-op_star
-)paren
-id|chip
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
