@@ -8176,12 +8176,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|optcd_port
 comma
 l_int|4
+comma
+l_string|&quot;optcd&quot;
 )paren
 )paren
 (brace
@@ -8218,6 +8221,14 @@ comma
 id|optcd_port
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -8238,6 +8249,14 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;optcd: unknown drive detected; aborting&bslash;n&quot;
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -8266,6 +8285,14 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;optcd: cannot init double speed mode&bslash;n&quot;
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 id|DEBUG
@@ -8310,6 +8337,14 @@ id|KERN_ERR
 l_string|&quot;optcd: unable to get major %d&bslash;n&quot;
 comma
 id|MAJOR_NR
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -8366,16 +8401,6 @@ id|MAJOR_NR
 )paren
 comma
 l_int|2048
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|optcd_port
-comma
-l_int|4
-comma
-l_string|&quot;optcd&quot;
 )paren
 suffix:semicolon
 id|register_disk
