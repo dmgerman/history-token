@@ -42,6 +42,10 @@ r_int
 r_int
 id|prof_shift
 suffix:semicolon
+r_extern
+r_int
+id|prof_on
+suffix:semicolon
 DECL|enum|profile_type
 r_enum
 id|profile_type

@@ -27,6 +27,10 @@ r_int
 r_int
 id|prof_shift
 suffix:semicolon
+DECL|variable|prof_on
+r_int
+id|prof_on
+suffix:semicolon
 DECL|function|profile_setup
 r_int
 id|__init
@@ -54,10 +58,23 @@ op_amp
 id|par
 )paren
 )paren
+(brace
 id|prof_shift
 op_assign
 id|par
 suffix:semicolon
+id|prof_on
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;kernel profiling enabled&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -79,7 +96,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|prof_shift
+id|prof_on
 )paren
 r_return
 suffix:semicolon

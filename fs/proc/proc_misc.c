@@ -3168,7 +3168,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|prof_shift
+id|prof_on
 )paren
 (brace
 id|entry
