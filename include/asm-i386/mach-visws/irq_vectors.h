@@ -33,6 +33,8 @@ mdefine_line|#define TIMER_IRQ 0
 multiline_comment|/*&n; * &n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
+DECL|macro|NR_IRQ_VECTORS
+mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
 DECL|macro|FPU_IRQ
 mdefine_line|#define FPU_IRQ&t;&t;&t;13
 DECL|macro|FIRST_VM86_IRQ
