@@ -56,7 +56,7 @@ op_star
 id|dev
 )paren
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
