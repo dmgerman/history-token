@@ -319,6 +319,11 @@ id|family
 comma
 r_int
 id|priority
+comma
+r_struct
+id|proto
+op_star
+id|prot
 )paren
 suffix:semicolon
 r_extern

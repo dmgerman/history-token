@@ -4462,7 +4462,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;RAW&quot;
+l_string|&quot;RAWv6&quot;
 comma
 dot
 id|owner
@@ -4540,7 +4540,7 @@ op_assign
 id|raw_v6_unhash
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren

@@ -2553,7 +2553,7 @@ op_star
 id|skb
 )paren
 (brace
-multiline_comment|/* allocate the newsk from the same slab of the master sock,&n;&t; * if not, at sk_free time we&squot;ll try to free it from the wrong&n;&t; * slabcache (i.e. is it TCPv4 or v6?) -acme */
+multiline_comment|/* allocate the newsk from the same slab of the master sock,&n;&t; * if not, at sk_free time we&squot;ll try to free it from the wrong&n;&t; * slabcache (i.e. is it TCPv4 or v6?), this is handled thru sk-&gt;sk_prot -acme */
 r_struct
 id|sock
 op_star
@@ -2566,9 +2566,9 @@ id|PF_INET
 comma
 id|GFP_ATOMIC
 comma
-l_int|0
+id|sk-&gt;sk_prot
 comma
-id|sk-&gt;sk_prot-&gt;slab
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -3063,10 +3063,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|newsk-&gt;sk_sleep
-op_assign
-l_int|NULL
-suffix:semicolon
-id|newsk-&gt;sk_owner
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3683,14 +3679,6 @@ l_int|NULL
 )paren
 r_goto
 id|listen_overflow
-suffix:semicolon
-id|sk_set_owner
-c_func
-(paren
-id|child
-comma
-id|sk-&gt;sk_owner
-)paren
 suffix:semicolon
 id|tcp_synq_unlink
 c_func

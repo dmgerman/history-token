@@ -453,7 +453,7 @@ id|sk_from
 op_plus
 l_int|1
 comma
-id|sk_from-&gt;sk_prot-&gt;slab_obj_size
+id|sk_from-&gt;sk_prot-&gt;obj_size
 op_minus
 id|ancestor_size
 )paren
