@@ -1197,9 +1197,8 @@ id|sockaddr_storage_t
 op_star
 id|addr
 comma
-r_const
-id|sctpParam_t
-id|param
+id|sctp_addr_param_t
+op_star
 comma
 id|__u16
 id|port
@@ -1224,7 +1223,8 @@ r_const
 id|sockaddr_storage_t
 op_star
 comma
-id|sctpParam_t
+id|sctp_addr_param_t
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Extern declarations for major data structures.  */
