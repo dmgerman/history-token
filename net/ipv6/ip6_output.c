@@ -5409,15 +5409,6 @@ op_or_assign
 id|IPCORK_OPT
 suffix:semicolon
 multiline_comment|/* need source address above miyazawa*/
-id|exthdrlen
-op_add_assign
-id|opt-&gt;opt_flen
-ques
-c_cond
-id|opt-&gt;opt_flen
-suffix:colon
-l_int|0
-suffix:semicolon
 )brace
 id|dst_hold
 c_func
@@ -5478,6 +5469,15 @@ op_add_assign
 id|exthdrlen
 suffix:semicolon
 )brace
+id|exthdrlen
+op_add_assign
+id|opt
+ques
+c_cond
+id|opt-&gt;opt_flen
+suffix:colon
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
