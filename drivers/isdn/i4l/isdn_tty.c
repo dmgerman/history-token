@@ -8422,14 +8422,14 @@ c_cond
 (paren
 id|dev-&gt;profd
 )paren
-id|group_send_sig_info
+id|kill_pg_info
 c_func
 (paren
 id|SIGIO
 comma
 id|SEND_SIG_PRIV
 comma
-id|dev-&gt;profd
+id|dev-&gt;profd-&gt;pgrp
 )paren
 suffix:semicolon
 )brace
