@@ -3583,6 +3583,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|kstack_depth_to_print
+r_static
 r_int
 id|kstack_depth_to_print
 op_assign

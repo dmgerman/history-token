@@ -4,11 +4,10 @@ DECL|macro|IRIAP_H
 mdefine_line|#define IRIAP_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;net/irda/qos.h&gt;
 macro_line|#include &lt;net/irda/iriap_event.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
-macro_line|#include &lt;net/irda/irqueue.h&gt;
-macro_line|#include &lt;net/irda/timer.h&gt;
+macro_line|#include &lt;net/irda/irqueue.h&gt;&t;&t;/* irda_queue_t */
+macro_line|#include &lt;net/irda/timer.h&gt;&t;&t;/* struct timer_list */
 DECL|macro|IAP_LST
 mdefine_line|#define IAP_LST 0x80
 DECL|macro|IAP_ACK

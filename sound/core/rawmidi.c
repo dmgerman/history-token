@@ -577,10 +577,16 @@ id|snd_printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;rawmidi drain error (avail = %i, buffer_size = %i)&bslash;n&quot;
+l_string|&quot;rawmidi drain error (avail = %li, buffer_size = %li)&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|runtime-&gt;avail
 comma
+(paren
+r_int
+)paren
 id|runtime-&gt;buffer_size
 )paren
 suffix:semicolon

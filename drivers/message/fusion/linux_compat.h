@@ -8,6 +8,35 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+macro_line|#ifndef rwlock_init
+DECL|macro|rwlock_init
+mdefine_line|#define rwlock_init(x) do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+DECL|macro|SET_NICE
+mdefine_line|#define SET_NICE(current,x)&t;do {(current)-&gt;nice = (x);} while (0)
+macro_line|#else
+DECL|macro|SET_NICE
+mdefine_line|#define SET_NICE(current,x)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
+DECL|macro|pci_enable_device
+mdefine_line|#define pci_enable_device(pdev)&t;(0)
+DECL|macro|SCSI_DATA_UNKNOWN
+mdefine_line|#define SCSI_DATA_UNKNOWN&t;0
+DECL|macro|SCSI_DATA_WRITE
+mdefine_line|#define SCSI_DATA_WRITE&t;&t;1
+DECL|macro|SCSI_DATA_READ
+mdefine_line|#define SCSI_DATA_READ&t;&t;2
+DECL|macro|SCSI_DATA_NONE
+mdefine_line|#define SCSI_DATA_NONE&t;&t;3
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
+DECL|macro|pci_set_dma_mask
+mdefine_line|#define pci_set_dma_mask(pdev, mask)&t;(0)
+DECL|macro|scsi_set_pci_device
+mdefine_line|#define scsi_set_pci_device(sh, pdev)&t;(0)
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
 macro_line|#&t;if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,18)
 DECL|typedef|dma_addr_t
@@ -95,13 +124,37 @@ DECL|macro|module_init
 mdefine_line|#define module_init(x) &bslash;&n;&t;int init_module(void) __attribute__((alias(#x))); &bslash;&n;&t;extern inline __init_module_func_t __init_module_inline(void) &bslash;&n;&t;{ return x; }
 DECL|macro|module_exit
 mdefine_line|#define module_exit(x) &bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#x))); &bslash;&n;&t;extern inline __cleanup_module_func_t __cleanup_module_inline(void) &bslash;&n;&t;{ return x; }
-macro_line|#else 
+macro_line|#else
 DECL|macro|module_init
 mdefine_line|#define module_init(x)&t;__initcall(x);
 DECL|macro|module_exit
 mdefine_line|#define module_exit(x)&t;__exitcall(x);
 macro_line|#endif
 multiline_comment|/* } block snipped from lk-2.2.18/include/linux/init.h */
+multiline_comment|/* This block snipped from lk-2.2.18/include/linux/sched.h { */
+multiline_comment|/*&n; * Used prior to schedule_timeout calls..&n; */
+DECL|macro|__set_current_state
+mdefine_line|#define __set_current_state(state_value)&t;do { current-&gt;state = state_value; } while (0)
+macro_line|#ifdef __SMP__
+DECL|macro|set_current_state
+mdefine_line|#define set_current_state(state_value)&t;&t;do { __set_current_state(state_value); mb(); } while (0)
+macro_line|#else
+DECL|macro|set_current_state
+mdefine_line|#define set_current_state(state_value)&t;&t;__set_current_state(state_value)
+macro_line|#endif
+multiline_comment|/* } block snipped from lk-2.2.18/include/linux/sched.h */
+multiline_comment|/* procfs compat stuff... */
+DECL|macro|proc_mkdir
+mdefine_line|#define proc_mkdir(x,y)&t;&t;&t;create_proc_entry(x, S_IFDIR, y)
+multiline_comment|/* MUTEX compat stuff... */
+DECL|macro|DECLARE_MUTEX
+mdefine_line|#define DECLARE_MUTEX(name)&t;&t;struct semaphore name=MUTEX
+DECL|macro|DECLARE_MUTEX_LOCKED
+mdefine_line|#define DECLARE_MUTEX_LOCKED(name)&t;struct semaphore name=MUTEX_LOCKED
+DECL|macro|init_MUTEX
+mdefine_line|#define init_MUTEX(x)&t;&t;&t;*(x)=MUTEX
+DECL|macro|init_MUTEX_LOCKED
+mdefine_line|#define init_MUTEX_LOCKED(x)&t;&t;*(x)=MUTEX_LOCKED
 multiline_comment|/* Wait queues. */
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name)&t;&bslash;&n;&t;struct wait_queue * (name) = NULL
@@ -122,6 +175,11 @@ DECL|macro|ARCH_IOREMAP
 mdefine_line|#define ARCH_IOREMAP(base)&t;ioremap(base)
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif&t;&t;/* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,18) */
+multiline_comment|/*&n; * Inclined to use:&n; *   #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,10)&n; * here, but MODULE_LICENSE defined in 2.4.9-6 and 2.4.9-13&n; * breaks the rule:-(&n; */
+macro_line|#ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)
+macro_line|#endif
 multiline_comment|/* PCI/driver subsystem { */
 macro_line|#ifndef pci_for_each_dev
 DECL|macro|pci_for_each_dev
@@ -147,19 +205,6 @@ mdefine_line|#define PCI_BASEADDR_START(idx)         resource[idx].start
 DECL|macro|PCI_BASEADDR_SIZE
 mdefine_line|#define PCI_BASEADDR_SIZE(dev,idx)      (dev)-&gt;resource[idx].end - (dev)-&gt;resource[idx].start + 1
 macro_line|#endif&t;&t;/* } ifndef pci_for_each_dev */
-multiline_comment|/* procfs compat stuff... */
-macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,28)
-DECL|macro|CREATE_PROCDIR_ENTRY
-mdefine_line|#define CREATE_PROCDIR_ENTRY(x,y)  create_proc_entry(x, S_IFDIR, y)
-multiline_comment|/* This is a macro so we don&squot;t need to pull all the procfs&n; * headers into this file. -DaveM&n; */
-DECL|macro|create_proc_read_entry
-mdefine_line|#define create_proc_read_entry(name, mode, base, __read_proc, __data) &bslash;&n;({      struct proc_dir_entry *__res=create_proc_entry(name,mode,base); &bslash;&n;        if (__res) { &bslash;&n;                __res-&gt;read_proc=(__read_proc); &bslash;&n;                __res-&gt;data=(__data); &bslash;&n;        } &bslash;&n;        __res; &bslash;&n;})
-macro_line|#else
-DECL|macro|CREATE_PROCDIR_ENTRY
-mdefine_line|#define CREATE_PROCDIR_ENTRY(x,y)  proc_mkdir(x, y)
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/* Compatability for the 2.3.x PCI DMA API. */
 macro_line|#ifndef PCI_DMA_BIDIRECTIONAL
 multiline_comment|/*{-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -247,6 +292,23 @@ DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* PCI_DMA_BIDIRECTIONAL */
+multiline_comment|/*&n; *  With the new command queuing code in the SCSI mid-layer we no longer have&n; *  to hold the io_request_lock spin lock when calling the scsi_done routine.&n; *  For now we only do this with the 2.5.1 kernel or newer.&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
+DECL|macro|MPT_HOST_LOCK
+mdefine_line|#define MPT_HOST_LOCK(flags)
+DECL|macro|MPT_HOST_UNLOCK
+mdefine_line|#define MPT_HOST_UNLOCK(flags)
+macro_line|#else
+DECL|macro|MPT_HOST_LOCK
+mdefine_line|#define MPT_HOST_LOCK(flags) &bslash;&n;                spin_lock_irqsave(&amp;io_request_lock, flags)
+DECL|macro|MPT_HOST_UNLOCK
+mdefine_line|#define MPT_HOST_UNLOCK(flags) &bslash;&n;                spin_unlock_irqrestore(&amp;io_request_lock, flags)
+macro_line|#endif
+multiline_comment|/*&n; *  We use our new error handling code if the kernel version is 2.5.1 or newer.&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
+DECL|macro|MPT_SCSI_USE_NEW_EH
+mdefine_line|#define MPT_SCSI_USE_NEW_EH
+macro_line|#endif
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

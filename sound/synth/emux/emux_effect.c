@@ -965,7 +965,7 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 multiline_comment|/* change effects - for OSS sequencer compatibility */
 r_void
 DECL|function|snd_emux_send_effect_oss

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irda.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 multiline_comment|/*&n; * Belkin is selling a dongle called the SmartBeam.&n; * In fact, there is two hardware version of this dongle, of course with&n; * the same name and looking the exactly same (grrr...).&n; * I guess that I&squot;ve got the old one, because inside I don&squot;t have&n; * a jumper for IrDA/ASK...&n; *&n; * As far as I can make it from info on their web site, the old dongle &n; * support only 9600 b/s, which make our life much simpler as far as&n; * the driver is concerned, but you might not like it very much ;-)&n; * The new SmartBeam does 115 kb/s, and I&squot;ve not tested it...&n; *&n; * Belkin claim that the correct driver for the old dongle (in Windows)&n; * is the generic Parallax 9500a driver, but the Linux LiteLink driver&n; * fails for me (probably because Linux-IrDA doesn&squot;t rate fallback),&n; * so I created this really dumb driver...&n; *&n; * In fact, this driver doesn&squot;t do much. The only thing it does is to&n; * prevent Linux-IrDA to use any other speed than 9600 b/s ;-) This&n; * driver is called &quot;old_belkin&quot; so that when the new SmartBeam is supported&n; * its driver can be called &quot;belkin&quot; instead of &quot;new_belkin&quot;.&n; *&n; * Note : this driver was written without any info/help from Belkin,&n; * so a lot of info here might be totally wrong. Blame me ;-)&n; */
 multiline_comment|/* Let&squot;s guess */
@@ -102,6 +101,7 @@ suffix:semicolon
 )brace
 DECL|function|old_belkin_cleanup
 r_void
+id|__exit
 id|old_belkin_cleanup
 c_func
 (paren
@@ -257,7 +257,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -277,35 +276,19 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Old-Belkin module&n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|old_belkin_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|old_belkin_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup Old-Belkin module&n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|old_belkin_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|old_belkin_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

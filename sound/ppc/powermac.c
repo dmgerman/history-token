@@ -545,6 +545,10 @@ l_int|0
 r_goto
 id|__error
 suffix:semicolon
+id|chip-&gt;initialized
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

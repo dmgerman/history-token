@@ -350,6 +350,7 @@ suffix:semicolon
 )brace
 DECL|function|irlan_cleanup
 r_void
+id|__exit
 id|irlan_cleanup
 c_func
 (paren
@@ -4414,7 +4415,6 @@ id|MOD_DEC_USE_COUNT
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -4466,36 +4466,19 @@ l_string|&quot;Access type DIRECT=1, PEER=2, HOSTED=3&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize the IrLAN module, this function is called by the&n; *    modprobe(1) program.&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|irlan_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|irlan_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Remove the IrLAN module, this function is called by the rmmod(1)&n; *    program&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|irlan_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
-multiline_comment|/* Free some memory */
 id|irlan_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

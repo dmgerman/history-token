@@ -993,6 +993,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_struct
+id|tty_driver
+suffix:semicolon
 DECL|function|proc_tty_register_driver
 r_static
 r_inline

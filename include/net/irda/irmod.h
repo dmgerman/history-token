@@ -1,14 +1,305 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irmod.h&n; * Version:       0.3&n; * Description:   IrDA module and utilities functions&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Dec 15 13:58:52 1997&n; * Modified at:   Fri Jan 28 13:15:24 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charg.&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irmod.h&n; * Version:       0.3&n; * Description:   IrDA module and utilities functions&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Dec 15 13:58:52 1997&n; * Modified at:   Fri Jan 28 13:15:24 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charg.&n; *     &n; ********************************************************************/
 macro_line|#ifndef IRMOD_H
 DECL|macro|IRMOD_H
 mdefine_line|#define IRMOD_H
-macro_line|#include &lt;net/irda/irda.h&gt;&t;&t;/* Notify stuff */
-multiline_comment|/* Nothing much here anymore - Maybe this header should be merged in&n; * another header like net/irda/irda.h... - Jean II */
-multiline_comment|/* Locking wrapper - Note the inverted logic on irda_lock().&n; * Those function basically return false if the lock is already in the&n; * position you want to set it. - Jean II */
-DECL|macro|irda_lock
-mdefine_line|#define irda_lock(lock)&t;&t;(! test_and_set_bit(0, (void *) (lock)))
-DECL|macro|irda_unlock
-mdefine_line|#define irda_unlock(lock)&t;(test_and_clear_bit(0, (void *) (lock)))
+multiline_comment|/* Misc status information */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|STATUS_OK
+id|STATUS_OK
+comma
+DECL|enumerator|STATUS_ABORTED
+id|STATUS_ABORTED
+comma
+DECL|enumerator|STATUS_NO_ACTIVITY
+id|STATUS_NO_ACTIVITY
+comma
+DECL|enumerator|STATUS_NOISY
+id|STATUS_NOISY
+comma
+DECL|enumerator|STATUS_REMOTE
+id|STATUS_REMOTE
+comma
+DECL|typedef|LINK_STATUS
+)brace
+id|LINK_STATUS
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|LOCK_NO_CHANGE
+id|LOCK_NO_CHANGE
+comma
+DECL|enumerator|LOCK_LOCKED
+id|LOCK_LOCKED
+comma
+DECL|enumerator|LOCK_UNLOCKED
+id|LOCK_UNLOCKED
+comma
+DECL|typedef|LOCK_STATUS
+)brace
+id|LOCK_STATUS
+suffix:semicolon
+DECL|enumerator|FLOW_STOP
+DECL|enumerator|FLOW_START
+DECL|typedef|LOCAL_FLOW
+r_typedef
+r_enum
+(brace
+id|FLOW_STOP
+comma
+id|FLOW_START
+)brace
+id|LOCAL_FLOW
+suffix:semicolon
+multiline_comment|/*  &n; *  IrLMP disconnect reasons. The order is very important, since they &n; *  correspond to disconnect reasons sent in IrLMP disconnect frames, so&n; *  please do not touch :-)&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|LM_USER_REQUEST
+id|LM_USER_REQUEST
+op_assign
+l_int|1
+comma
+multiline_comment|/* User request */
+DECL|enumerator|LM_LAP_DISCONNECT
+id|LM_LAP_DISCONNECT
+comma
+multiline_comment|/* Unexpected IrLAP disconnect */
+DECL|enumerator|LM_CONNECT_FAILURE
+id|LM_CONNECT_FAILURE
+comma
+multiline_comment|/* Failed to establish IrLAP connection */
+DECL|enumerator|LM_LAP_RESET
+id|LM_LAP_RESET
+comma
+multiline_comment|/* IrLAP reset */
+DECL|enumerator|LM_INIT_DISCONNECT
+id|LM_INIT_DISCONNECT
+comma
+multiline_comment|/* Link Management initiated disconnect */
+DECL|enumerator|LM_LSAP_NOTCONN
+id|LM_LSAP_NOTCONN
+comma
+multiline_comment|/* Data delivered on unconnected LSAP */
+DECL|enumerator|LM_NON_RESP_CLIENT
+id|LM_NON_RESP_CLIENT
+comma
+multiline_comment|/* Non responsive LM-MUX client */
+DECL|enumerator|LM_NO_AVAIL_CLIENT
+id|LM_NO_AVAIL_CLIENT
+comma
+multiline_comment|/* No available LM-MUX client */
+DECL|enumerator|LM_CONN_HALF_OPEN
+id|LM_CONN_HALF_OPEN
+comma
+multiline_comment|/* Connection is half open */
+DECL|enumerator|LM_BAD_SOURCE_ADDR
+id|LM_BAD_SOURCE_ADDR
+comma
+multiline_comment|/* Illegal source address (i.e 0x00) */
+DECL|typedef|LM_REASON
+)brace
+id|LM_REASON
+suffix:semicolon
+DECL|macro|LM_UNKNOWN
+mdefine_line|#define LM_UNKNOWN 0xff       /* Unspecified disconnect reason */
+multiline_comment|/* A few forward declarations (to make compiler happy) */
+r_struct
+id|qos_info
+suffix:semicolon
+multiline_comment|/* in &lt;net/irda/qos.h&gt; */
+multiline_comment|/*&n; *  Notify structure used between transport and link management layers&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|data_indication
+r_int
+(paren
+op_star
+id|data_indication
+)paren
+(paren
+r_void
+op_star
+id|priv
+comma
+r_void
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|udata_indication
+r_int
+(paren
+op_star
+id|udata_indication
+)paren
+(paren
+r_void
+op_star
+id|priv
+comma
+r_void
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|connect_confirm
+r_void
+(paren
+op_star
+id|connect_confirm
+)paren
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+r_struct
+id|qos_info
+op_star
+id|qos
+comma
+id|__u32
+id|max_sdu_size
+comma
+id|__u8
+id|max_header_size
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|connect_indication
+r_void
+(paren
+op_star
+id|connect_indication
+)paren
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+r_struct
+id|qos_info
+op_star
+id|qos
+comma
+id|__u32
+id|max_sdu_size
+comma
+id|__u8
+id|max_header_size
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+DECL|member|disconnect_indication
+r_void
+(paren
+op_star
+id|disconnect_indication
+)paren
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+id|LM_REASON
+id|reason
+comma
+r_struct
+id|sk_buff
+op_star
+)paren
+suffix:semicolon
+DECL|member|flow_indication
+r_void
+(paren
+op_star
+id|flow_indication
+)paren
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+id|LOCAL_FLOW
+id|flow
+)paren
+suffix:semicolon
+DECL|member|status_indication
+r_void
+(paren
+op_star
+id|status_indication
+)paren
+(paren
+r_void
+op_star
+id|instance
+comma
+id|LINK_STATUS
+id|link
+comma
+id|LOCK_STATUS
+id|lock
+)paren
+suffix:semicolon
+DECL|member|instance
+r_void
+op_star
+id|instance
+suffix:semicolon
+multiline_comment|/* Layer instance pointer */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Name of layer */
+DECL|typedef|notify_t
+)brace
+id|notify_t
+suffix:semicolon
+DECL|macro|NOTIFY_MAX_NAME
+mdefine_line|#define NOTIFY_MAX_NAME 16
 multiline_comment|/* Zero the notify structure */
 r_void
 id|irda_notify_init
@@ -19,5 +310,10 @@ op_star
 id|notify
 )paren
 suffix:semicolon
+multiline_comment|/* Locking wrapper - Note the inverted logic on irda_lock().&n; * Those function basically return false if the lock is already in the&n; * position you want to set it. - Jean II */
+DECL|macro|irda_lock
+mdefine_line|#define irda_lock(lock)&t;&t;(! test_and_set_bit(0, (void *) (lock)))
+DECL|macro|irda_unlock
+mdefine_line|#define irda_unlock(lock)&t;(test_and_clear_bit(0, (void *) (lock)))
 macro_line|#endif /* IRMOD_H */
 eof

@@ -8,11 +8,11 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/trident.h&gt;
 multiline_comment|/* page arguments of these two macros are Trident page (4096 bytes), not like&n; * aligned pages in others&n; */
 DECL|macro|__set_tlb_bus
-mdefine_line|#define __set_tlb_bus(trident,page,ptr,addr) &bslash;&n;&t;do { (trident)-&gt;tlb.entries[page] = (addr) &amp; ~(SNDRV_TRIDENT_PAGE_SIZE-1); &bslash;&n;&t;     (trident)-&gt;tlb.shadow_entries[page] = (ptr); } while (0)
+mdefine_line|#define __set_tlb_bus(trident,page,ptr,addr) &bslash;&n;&t;do { (trident)-&gt;tlb.entries[page] = cpu_to_le32((addr) &amp; ~(SNDRV_TRIDENT_PAGE_SIZE-1)); &bslash;&n;&t;     (trident)-&gt;tlb.shadow_entries[page] = (ptr); } while (0)
 DECL|macro|__tlb_to_ptr
 mdefine_line|#define __tlb_to_ptr(trident,page) &bslash;&n;&t;(void*)((trident)-&gt;tlb.shadow_entries[page])
 DECL|macro|__tlb_to_addr
-mdefine_line|#define __tlb_to_addr(trident,page) &bslash;&n;&t;(dma_addr_t)((trident-&gt;tlb.entries[page]) &amp; ~(SNDRV_TRIDENT_PAGE_SIZE - 1))
+mdefine_line|#define __tlb_to_addr(trident,page) &bslash;&n;&t;(dma_addr_t)le32_to_cpu((trident-&gt;tlb.entries[page]) &amp; ~(SNDRV_TRIDENT_PAGE_SIZE - 1))
 macro_line|#if PAGE_SIZE == 4096
 multiline_comment|/* page size == SNDRV_TRIDENT_PAGE_SIZE */
 DECL|macro|ALIGN_PAGE_SIZE

@@ -12,11 +12,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* FIXME need i2c versioning */
-DECL|macro|LM_DATE
-mdefine_line|#define LM_DATE &quot;20010825&quot;
-DECL|macro|LM_VERSION
-mdefine_line|#define LM_VERSION &quot;2.6.1&quot;
 macro_line|#ifndef THIS_MODULE
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE NULL
@@ -791,6 +786,13 @@ l_int|0
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-proc.o: error: sysctl interface not supported by kernel!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -848,6 +850,7 @@ id|new_header-&gt;ctl_table-&gt;child-&gt;child-&gt;de
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-proc.o: NULL pointer when trying to install fill_inode fix!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2987,6 +2990,7 @@ l_int|1
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found force parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
@@ -3103,6 +3107,7 @@ l_int|1
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found ignore parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3198,6 +3203,7 @@ l_int|2
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found ignore_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3265,6 +3271,7 @@ id|i
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found normal isa entry for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3351,6 +3358,7 @@ l_int|0
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found normal isa_range entry for adapter %d, &quot;
 l_string|&quot;addr %04x&quot;
 comma
@@ -3411,6 +3419,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found normal i2c entry for adapter %d, &quot;
 l_string|&quot;addr %02x&quot;
 comma
@@ -3473,6 +3482,7 @@ l_int|1
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found normal i2c_range entry for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3558,6 +3568,7 @@ l_int|1
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found probe parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3655,6 +3666,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-proc.o: found probe_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3741,11 +3753,12 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;i2c-proc.o version %s (%s)&bslash;n&quot;
 comma
-id|LM_VERSION
+id|I2C_VERSION
 comma
-id|LM_DATE
+id|I2C_DATE
 )paren
 suffix:semicolon
 id|i2c_initialized
@@ -3768,10 +3781,19 @@ l_int|0
 )paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-proc.o: error: sysctl interface not supported by kernel!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
-id|ENOMEM
+id|EPERM
 suffix:semicolon
+)brace
 id|i2c_proc_header-&gt;ctl_table-&gt;child-&gt;de-&gt;owner
 op_assign
 id|THIS_MODULE

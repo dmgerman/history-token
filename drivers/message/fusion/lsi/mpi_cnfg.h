@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_CNFG.H&n; *          Title:  MPI Config message, structures, and Pages&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI Version:  01.01.11&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added _PAGEVERSION definitions for all pages.&n; *                      Added FcPhLowestVersion, FcPhHighestVersion, Reserved2&n; *                      fields to FC_DEVICE_0 page, updated the page version.&n; *                      Changed _FREE_RUNNING_CLOCK to _PACING_TRANSFERS in&n; *                      SCSI_PORT_0, SCSI_DEVICE_0 and SCSI_DEVICE_1 pages&n; *                      and updated the page versions.&n; *                      Added _RESPONSE_ID_MASK definition to SCSI_PORT_1&n; *                      page and updated the page version.&n; *                      Added Information field and _INFO_PARAMS_NEGOTIATED&n; *                      definitionto SCSI_DEVICE_0 page.&n; *  06-22-00  01.00.03  Removed batch controls from LAN_0 page and updated the&n; *                      page version.&n; *                      Added BucketsRemaining to LAN_1 page, redefined the&n; *                      state values, and updated the page version.&n; *                      Revised bus width definitions in SCSI_PORT_0,&n; *                      SCSI_DEVICE_0 and SCSI_DEVICE_1 pages.&n; *  06-30-00  01.00.04  Added MaxReplySize to LAN_1 page and updated the page&n; *                      version.&n; *                      Moved FC_DEVICE_0 PageAddress description to spec.&n; *  07-27-00  01.00.05  Corrected the SubsystemVendorID and SubsystemID field&n; *                      widths in IOC_0 page and updated the page version.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Added Manufacturing pages, IO Unit Page 2, SCSI SPI&n; *                      Port Page 2, FC Port Page 4, FC Port Page 5&n; *  11-15-00  01.01.02  Interim changes to match proposals&n; *  12-04-00  01.01.03  Config page changes to match MPI rev 1.00.01.&n; *  12-05-00  01.01.04  Modified config page actions.&n; *  01-09-01  01.01.05  Added defines for page address formats.&n; *                      Data size for Manufacturing pages 2 and 3 no longer&n; *                      defined here.&n; *                      Io Unit Page 2 size is fixed at 4 adapters and some&n; *                      flags were changed.&n; *                      SCSI Port Page 2 Device Settings modified.&n; *                      New fields added to FC Port Page 0 and some flags&n; *                      cleaned up.&n; *                      Removed impedance flash from FC Port Page 1.&n; *                      Added FC Port pages 6 and 7.&n; *  01-25-01  01.01.06  Added MaxInitiators field to FcPortPage0.&n; *  01-29-01  01.01.07  Changed some defines to make them 32 character unique.&n; *                      Added some LinkType defines for FcPortPage0.&n; *  02-20-01  01.01.08  Started using MPI_POINTER.&n; *  02-27-01  01.01.09  Replaced MPI_CONFIG_PAGETYPE_SCSI_LUN with&n; *                      MPI_CONFIG_PAGETYPE_RAID_VOLUME.&n; *                      Added definitions and structures for IOC Page 2 and&n; *                      RAID Volume Page 2.&n; *  03-27-01  01.01.10  Added CONFIG_PAGE_FC_PORT_8 and CONFIG_PAGE_FC_PORT_9.&n; *                      CONFIG_PAGE_FC_PORT_3 now supports persistent by DID.&n; *                      Added VendorId and ProductRevLevel fields to&n; *                      RAIDVOL2_IM_PHYS_ID struct.&n; *                      Modified values for MPI_FCPORTPAGE0_FLAGS_ATTACH_&n; *                      defines to make them compatible to MPI version 1.0.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.11  Added some new defines for the PageAddress field and&n; *                      removed some obsolete ones.&n; *                      Added IO Unit Page 3.&n; *                      Modified defines for Scsi Port Page 2.&n; *                      Modified RAID Volume Pages.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_CNFG.H&n; *          Title:  MPI Config message, structures, and Pages&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI Version:  01.02.05&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added _PAGEVERSION definitions for all pages.&n; *                      Added FcPhLowestVersion, FcPhHighestVersion, Reserved2&n; *                      fields to FC_DEVICE_0 page, updated the page version.&n; *                      Changed _FREE_RUNNING_CLOCK to _PACING_TRANSFERS in&n; *                      SCSI_PORT_0, SCSI_DEVICE_0 and SCSI_DEVICE_1 pages&n; *                      and updated the page versions.&n; *                      Added _RESPONSE_ID_MASK definition to SCSI_PORT_1&n; *                      page and updated the page version.&n; *                      Added Information field and _INFO_PARAMS_NEGOTIATED&n; *                      definitionto SCSI_DEVICE_0 page.&n; *  06-22-00  01.00.03  Removed batch controls from LAN_0 page and updated the&n; *                      page version.&n; *                      Added BucketsRemaining to LAN_1 page, redefined the&n; *                      state values, and updated the page version.&n; *                      Revised bus width definitions in SCSI_PORT_0,&n; *                      SCSI_DEVICE_0 and SCSI_DEVICE_1 pages.&n; *  06-30-00  01.00.04  Added MaxReplySize to LAN_1 page and updated the page&n; *                      version.&n; *                      Moved FC_DEVICE_0 PageAddress description to spec.&n; *  07-27-00  01.00.05  Corrected the SubsystemVendorID and SubsystemID field&n; *                      widths in IOC_0 page and updated the page version.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Added Manufacturing pages, IO Unit Page 2, SCSI SPI&n; *                      Port Page 2, FC Port Page 4, FC Port Page 5&n; *  11-15-00  01.01.02  Interim changes to match proposals&n; *  12-04-00  01.01.03  Config page changes to match MPI rev 1.00.01.&n; *  12-05-00  01.01.04  Modified config page actions.&n; *  01-09-01  01.01.05  Added defines for page address formats.&n; *                      Data size for Manufacturing pages 2 and 3 no longer&n; *                      defined here.&n; *                      Io Unit Page 2 size is fixed at 4 adapters and some&n; *                      flags were changed.&n; *                      SCSI Port Page 2 Device Settings modified.&n; *                      New fields added to FC Port Page 0 and some flags&n; *                      cleaned up.&n; *                      Removed impedance flash from FC Port Page 1.&n; *                      Added FC Port pages 6 and 7.&n; *  01-25-01  01.01.06  Added MaxInitiators field to FcPortPage0.&n; *  01-29-01  01.01.07  Changed some defines to make them 32 character unique.&n; *                      Added some LinkType defines for FcPortPage0.&n; *  02-20-01  01.01.08  Started using MPI_POINTER.&n; *  02-27-01  01.01.09  Replaced MPI_CONFIG_PAGETYPE_SCSI_LUN with&n; *                      MPI_CONFIG_PAGETYPE_RAID_VOLUME.&n; *                      Added definitions and structures for IOC Page 2 and&n; *                      RAID Volume Page 2.&n; *  03-27-01  01.01.10  Added CONFIG_PAGE_FC_PORT_8 and CONFIG_PAGE_FC_PORT_9.&n; *                      CONFIG_PAGE_FC_PORT_3 now supports persistent by DID.&n; *                      Added VendorId and ProductRevLevel fields to&n; *                      RAIDVOL2_IM_PHYS_ID struct.&n; *                      Modified values for MPI_FCPORTPAGE0_FLAGS_ATTACH_&n; *                      defines to make them compatible to MPI version 1.0.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.11  Added some new defines for the PageAddress field and&n; *                      removed some obsolete ones.&n; *                      Added IO Unit Page 3.&n; *                      Modified defines for Scsi Port Page 2.&n; *                      Modified RAID Volume Pages.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      Added SepID and SepBus to RVP2 IMPhysicalDisk struct.&n; *                      Added defines for the SEP bits in RVP2 VolumeSettings.&n; *                      Modified the DeviceSettings field in RVP2 to use the&n; *                      proper structure.&n; *                      Added defines for SES, SAF-TE, and cross channel for&n; *                      IOCPage2 CapabilitiesFlags.&n; *                      Removed define for MPI_IOUNITPAGE2_FLAGS_RAID_DISABLE.&n; *                      Removed define for&n; *                      MPI_SCSIPORTPAGE2_PORT_FLAGS_PARITY_ENABLE.&n; *                      Added define for MPI_CONFIG_PAGEATTR_RO_PERSISTENT.&n; *  08-29-01 01.02.02   Fixed value for MPI_MANUFACTPAGE_DEVID_53C1035.&n; *                      Added defines for MPI_FCPORTPAGE1_FLAGS_HARD_ALPA_ONLY&n; *                      and MPI_FCPORTPAGE1_FLAGS_IMMEDIATE_ERROR_REPLY.&n; *                      Removed MPI_SCSIPORTPAGE0_CAP_PACING_TRANSFERS,&n; *                      MPI_SCSIDEVPAGE0_NP_PACING_TRANSFERS, and&n; *                      MPI_SCSIDEVPAGE1_RP_PACING_TRANSFERS, and&n; *                      MPI_SCSIDEVPAGE1_CONF_PPR_ALLOWED.&n; *                      Added defines for MPI_SCSIDEVPAGE1_CONF_WDTR_DISALLOWED&n; *                      and MPI_SCSIDEVPAGE1_CONF_SDTR_DISALLOWED.&n; *                      Added OnBusTimerValue to CONFIG_PAGE_SCSI_PORT_1.&n; *                      Added rejected bits to SCSI Device Page 0 Information.&n; *                      Increased size of ALPA array in FC Port Page 2 by one&n; *                      and removed a one byte reserved field.&n; *  09-28-01 01.02.03   Swapped NegWireSpeedLow and NegWireSpeedLow in&n; *                      CONFIG_PAGE_LAN_1 to match preferred 64-bit ordering.&n; *                      Added structures for Manufacturing Page 4, IO Unit&n; *                      Page 3, IOC Page 3, IOC Page 4, RAID Volume Page 0, and&n; *                      RAID PhysDisk Page 0.&n; *  10-04-01 01.02.04   Added define for MPI_CONFIG_PAGETYPE_RAID_PHYSDISK.&n; *                      Modified some of the new defines to make them 32&n; *                      character unique.&n; *                      Modified how variable length pages (arrays) are defined.&n; *                      Added generic defines for hot spare pools and RAID&n; *                      volume types.&n; *  11-01-01 01.02.05   Added define for MPI_IOUNITPAGE1_DISABLE_IR.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_CNFG_H
 DECL|macro|MPI_CNFG_H
 mdefine_line|#define MPI_CNFG_H
@@ -85,15 +85,15 @@ comma
 id|MPI_POINTER
 id|PTR_CONFIG_PAGE_HEADER_UNION
 suffix:semicolon
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  PageType field values                                                   */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   PageType field values&n;****************************************************************************/
 DECL|macro|MPI_CONFIG_PAGEATTR_READ_ONLY
 mdefine_line|#define MPI_CONFIG_PAGEATTR_READ_ONLY               (0x00)
 DECL|macro|MPI_CONFIG_PAGEATTR_CHANGEABLE
 mdefine_line|#define MPI_CONFIG_PAGEATTR_CHANGEABLE              (0x10)
 DECL|macro|MPI_CONFIG_PAGEATTR_PERSISTENT
 mdefine_line|#define MPI_CONFIG_PAGEATTR_PERSISTENT              (0x20)
+DECL|macro|MPI_CONFIG_PAGEATTR_RO_PERSISTENT
+mdefine_line|#define MPI_CONFIG_PAGEATTR_RO_PERSISTENT           (0x30)
 DECL|macro|MPI_CONFIG_PAGEATTR_MASK
 mdefine_line|#define MPI_CONFIG_PAGEATTR_MASK                    (0xF0)
 DECL|macro|MPI_CONFIG_PAGETYPE_IO_UNIT
@@ -116,19 +116,15 @@ DECL|macro|MPI_CONFIG_PAGETYPE_RAID_VOLUME
 mdefine_line|#define MPI_CONFIG_PAGETYPE_RAID_VOLUME             (0x08)
 DECL|macro|MPI_CONFIG_PAGETYPE_MANUFACTURING
 mdefine_line|#define MPI_CONFIG_PAGETYPE_MANUFACTURING           (0x09)
+DECL|macro|MPI_CONFIG_PAGETYPE_RAID_PHYSDISK
+mdefine_line|#define MPI_CONFIG_PAGETYPE_RAID_PHYSDISK           (0x0A)
 DECL|macro|MPI_CONFIG_PAGETYPE_MASK
 mdefine_line|#define MPI_CONFIG_PAGETYPE_MASK                    (0x0F)
 DECL|macro|MPI_CONFIG_TYPENUM_MASK
 mdefine_line|#define MPI_CONFIG_TYPENUM_MASK                     (0x0FFF)
-multiline_comment|/****************************************************************************&n; *  PageAddres field values&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   PageAddress field values&n;****************************************************************************/
 DECL|macro|MPI_SCSI_PORT_PGAD_PORT_MASK
 mdefine_line|#define MPI_SCSI_PORT_PGAD_PORT_MASK                (0x000000FF)
-DECL|macro|MPI_SCSI_DEVICE_FORM_MASK
-mdefine_line|#define MPI_SCSI_DEVICE_FORM_MASK                   (0xF0000000)
-DECL|macro|MPI_SCSI_DEVICE_FORM_TARGETID
-mdefine_line|#define MPI_SCSI_DEVICE_FORM_TARGETID               (0x00000000)
-DECL|macro|MPI_SCSI_DEVICE_FORM_RAID_PHYS_DEV_NUM
-mdefine_line|#define MPI_SCSI_DEVICE_FORM_RAID_PHYS_DEV_NUM      (0x10000000)
 DECL|macro|MPI_SCSI_DEVICE_TARGET_ID_MASK
 mdefine_line|#define MPI_SCSI_DEVICE_TARGET_ID_MASK              (0x000000FF)
 DECL|macro|MPI_SCSI_DEVICE_TARGET_ID_SHIFT
@@ -137,18 +133,6 @@ DECL|macro|MPI_SCSI_DEVICE_BUS_MASK
 mdefine_line|#define MPI_SCSI_DEVICE_BUS_MASK                    (0x0000FF00)
 DECL|macro|MPI_SCSI_DEVICE_BUS_SHIFT
 mdefine_line|#define MPI_SCSI_DEVICE_BUS_SHIFT                   (8)
-DECL|macro|MPI_SCSI_DEVICE_VOLUME_TARG_ID_MASK
-mdefine_line|#define MPI_SCSI_DEVICE_VOLUME_TARG_ID_MASK         (0x000000FF)
-DECL|macro|MPI_SCSI_DEVICE_VOLUME_TARG_ID_SHIFT
-mdefine_line|#define MPI_SCSI_DEVICE_VOLUME_TARG_ID_SHIFT        (0)
-DECL|macro|MPI_SCSI_DEVICE_VOLUME_BUS_MASK
-mdefine_line|#define MPI_SCSI_DEVICE_VOLUME_BUS_MASK             (0x0000FF00)
-DECL|macro|MPI_SCSI_DEVICE_VOLUME_BUS_SHIFT
-mdefine_line|#define MPI_SCSI_DEVICE_VOLUME_BUS_SHIFT            (8)
-DECL|macro|MPI_SCSI_DEVICE_PHYS_DISK_NUM_MASK
-mdefine_line|#define MPI_SCSI_DEVICE_PHYS_DISK_NUM_MASK          (0x00FF0000)
-DECL|macro|MPI_SCSI_DEVICE_PHYS_DISK_NUM_SHIFT
-mdefine_line|#define MPI_SCSI_DEVICE_PHYS_DISK_NUM_SHIFT         (16)
 DECL|macro|MPI_FC_PORT_PGAD_PORT_MASK
 mdefine_line|#define MPI_FC_PORT_PGAD_PORT_MASK                  (0xF0000000)
 DECL|macro|MPI_FC_PORT_PGAD_PORT_SHIFT
@@ -187,9 +171,11 @@ DECL|macro|MPI_FC_DEVICE_PGAD_BT_TID_MASK
 mdefine_line|#define MPI_FC_DEVICE_PGAD_BT_TID_MASK              (0x000000FF)
 DECL|macro|MPI_FC_DEVICE_PGAD_BT_TID_SHIFT
 mdefine_line|#define MPI_FC_DEVICE_PGAD_BT_TID_SHIFT             (0)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Config Request Message                                                          */
-multiline_comment|/****************************************************************************/
+DECL|macro|MPI_PHYSDISK_PGAD_PHYSDISKNUM_MASK
+mdefine_line|#define MPI_PHYSDISK_PGAD_PHYSDISKNUM_MASK          (0x000000FF)
+DECL|macro|MPI_PHYSDISK_PGAD_PHYSDISKNUM_SHIFT
+mdefine_line|#define MPI_PHYSDISK_PGAD_PHYSDISKNUM_SHIFT         (0)
+multiline_comment|/****************************************************************************&n;*   Config Request Message&n;****************************************************************************/
 DECL|struct|_MSG_CONFIG
 r_typedef
 r_struct
@@ -271,9 +257,7 @@ comma
 id|MPI_POINTER
 id|pConfig_t
 suffix:semicolon
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Action field values                                                     */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   Action field values&n;****************************************************************************/
 DECL|macro|MPI_CONFIG_ACTION_PAGE_HEADER
 mdefine_line|#define MPI_CONFIG_ACTION_PAGE_HEADER               (0x00)
 DECL|macro|MPI_CONFIG_ACTION_PAGE_READ_CURRENT
@@ -371,21 +355,29 @@ id|MPI_POINTER
 id|pConfigReply_t
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n;*&n;*               C o n f i g u r a t i o n    P a g e s&n;*&n;*****************************************************************************/
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Manufacturing Config pages                                              */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   Manufacturing Config pages&n;****************************************************************************/
 DECL|macro|MPI_MANUFACTPAGE_DEVICEID_FC909
 mdefine_line|#define MPI_MANUFACTPAGE_DEVICEID_FC909             (0x0621)
 DECL|macro|MPI_MANUFACTPAGE_DEVICEID_FC919
 mdefine_line|#define MPI_MANUFACTPAGE_DEVICEID_FC919             (0x0624)
 DECL|macro|MPI_MANUFACTPAGE_DEVICEID_FC929
 mdefine_line|#define MPI_MANUFACTPAGE_DEVICEID_FC929             (0x0622)
+DECL|macro|MPI_MANUFACTPAGE_DEVICEID_FC919X
+mdefine_line|#define MPI_MANUFACTPAGE_DEVICEID_FC919X            (0x0628)
+DECL|macro|MPI_MANUFACTPAGE_DEVICEID_FC929X
+mdefine_line|#define MPI_MANUFACTPAGE_DEVICEID_FC929X            (0x0626)
 DECL|macro|MPI_MANUFACTPAGE_DEVID_53C1030
 mdefine_line|#define MPI_MANUFACTPAGE_DEVID_53C1030              (0x0030)
 DECL|macro|MPI_MANUFACTPAGE_DEVID_53C1030ZC
 mdefine_line|#define MPI_MANUFACTPAGE_DEVID_53C1030ZC            (0x0031)
+DECL|macro|MPI_MANUFACTPAGE_DEVID_1030_53C1035
+mdefine_line|#define MPI_MANUFACTPAGE_DEVID_1030_53C1035         (0x0032)
+DECL|macro|MPI_MANUFACTPAGE_DEVID_1030ZC_53C1035
+mdefine_line|#define MPI_MANUFACTPAGE_DEVID_1030ZC_53C1035       (0x0033)
 DECL|macro|MPI_MANUFACTPAGE_DEVID_53C1035
-mdefine_line|#define MPI_MANUFACTPAGE_DEVID_53C1035              (0x0035)
+mdefine_line|#define MPI_MANUFACTPAGE_DEVID_53C1035              (0x0040)
+DECL|macro|MPI_MANUFACTPAGE_DEVID_53C1035ZC
+mdefine_line|#define MPI_MANUFACTPAGE_DEVID_53C1035ZC            (0x0041)
 DECL|struct|_CONFIG_PAGE_MANUFACTURING_0
 r_typedef
 r_struct
@@ -523,6 +515,11 @@ comma
 id|MPI_POINTER
 id|pMpiChipRevisionId_t
 suffix:semicolon
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_MAN_PAGE_2_HW_SETTINGS_WORDS
+DECL|macro|MPI_MAN_PAGE_2_HW_SETTINGS_WORDS
+mdefine_line|#define MPI_MAN_PAGE_2_HW_SETTINGS_WORDS    (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_MANUFACTURING_2
 r_typedef
 r_struct
@@ -542,7 +539,7 @@ DECL|member|HwSettings
 id|U32
 id|HwSettings
 (braket
-l_int|1
+id|MPI_MAN_PAGE_2_HW_SETTINGS_WORDS
 )braket
 suffix:semicolon
 multiline_comment|/* 08h */
@@ -563,6 +560,11 @@ id|pManufacturingPage2_t
 suffix:semicolon
 DECL|macro|MPI_MANUFACTURING2_PAGEVERSION
 mdefine_line|#define MPI_MANUFACTURING2_PAGEVERSION                  (0x00)
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_MAN_PAGE_3_INFO_WORDS
+DECL|macro|MPI_MAN_PAGE_3_INFO_WORDS
+mdefine_line|#define MPI_MAN_PAGE_3_INFO_WORDS           (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_MANUFACTURING_3
 r_typedef
 r_struct
@@ -582,7 +584,7 @@ DECL|member|Info
 id|U32
 id|Info
 (braket
-l_int|1
+id|MPI_MAN_PAGE_3_INFO_WORDS
 )braket
 suffix:semicolon
 multiline_comment|/* 08h */
@@ -603,9 +605,97 @@ id|pManufacturingPage3_t
 suffix:semicolon
 DECL|macro|MPI_MANUFACTURING3_PAGEVERSION
 mdefine_line|#define MPI_MANUFACTURING3_PAGEVERSION                  (0x00)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  IO Unit Config Pages                                                    */
-multiline_comment|/****************************************************************************/
+DECL|struct|_CONFIG_PAGE_MANUFACTURING_4
+r_typedef
+r_struct
+id|_CONFIG_PAGE_MANUFACTURING_4
+(brace
+DECL|member|Header
+id|fCONFIG_PAGE_HEADER
+id|Header
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Reserved1
+id|U32
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|InfoOffset0
+id|U8
+id|InfoOffset0
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|InfoSize0
+id|U8
+id|InfoSize0
+suffix:semicolon
+multiline_comment|/* 09h */
+DECL|member|InfoOffset1
+id|U8
+id|InfoOffset1
+suffix:semicolon
+multiline_comment|/* 0Ah */
+DECL|member|InfoSize1
+id|U8
+id|InfoSize1
+suffix:semicolon
+multiline_comment|/* 0Bh */
+DECL|member|InquirySize
+id|U8
+id|InquirySize
+suffix:semicolon
+multiline_comment|/* 0Ch */
+DECL|member|Reserved2
+id|U8
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 0Dh */
+DECL|member|Reserved3
+id|U16
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 0Eh */
+DECL|member|InquiryData
+id|U8
+id|InquiryData
+(braket
+l_int|56
+)braket
+suffix:semicolon
+multiline_comment|/* 10h */
+DECL|member|ISVolumeSettings
+id|U32
+id|ISVolumeSettings
+suffix:semicolon
+multiline_comment|/* 48h */
+DECL|member|IMEVolumeSettings
+id|U32
+id|IMEVolumeSettings
+suffix:semicolon
+multiline_comment|/* 4Ch */
+DECL|member|IMVolumeSettings
+id|U32
+id|IMVolumeSettings
+suffix:semicolon
+multiline_comment|/* 50h */
+DECL|typedef|fCONFIG_PAGE_MANUFACTURING_4
+DECL|typedef|PTR_CONFIG_PAGE_MANUFACTURING_4
+)brace
+id|fCONFIG_PAGE_MANUFACTURING_4
+comma
+id|MPI_POINTER
+id|PTR_CONFIG_PAGE_MANUFACTURING_4
+comma
+DECL|typedef|ManufacturingPage4_t
+DECL|typedef|pManufacturingPage4_t
+id|ManufacturingPage4_t
+comma
+id|MPI_POINTER
+id|pManufacturingPage4_t
+suffix:semicolon
+DECL|macro|MPI_MANUFACTURING4_PAGEVERSION
+mdefine_line|#define MPI_MANUFACTURING4_PAGEVERSION                  (0x00)
+multiline_comment|/****************************************************************************&n;*   IO Unit Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_IO_UNIT_0
 r_typedef
 r_struct
@@ -670,6 +760,7 @@ id|pIOUnitPage1_t
 suffix:semicolon
 DECL|macro|MPI_IOUNITPAGE1_PAGEVERSION
 mdefine_line|#define MPI_IOUNITPAGE1_PAGEVERSION                     (0x00)
+multiline_comment|/* IO Unit Page 1 Flags defines */
 DECL|macro|MPI_IOUNITPAGE1_MULTI_FUNCTION
 mdefine_line|#define MPI_IOUNITPAGE1_MULTI_FUNCTION                  (0x00000000)
 DECL|macro|MPI_IOUNITPAGE1_SINGLE_FUNCTION
@@ -678,6 +769,8 @@ DECL|macro|MPI_IOUNITPAGE1_MULTI_PATHING
 mdefine_line|#define MPI_IOUNITPAGE1_MULTI_PATHING                   (0x00000002)
 DECL|macro|MPI_IOUNITPAGE1_SINGLE_PATHING
 mdefine_line|#define MPI_IOUNITPAGE1_SINGLE_PATHING                  (0x00000000)
+DECL|macro|MPI_IOUNITPAGE1_DISABLE_IR
+mdefine_line|#define MPI_IOUNITPAGE1_DISABLE_IR                      (0x00000040)
 DECL|macro|MPI_IOUNITPAGE1_FORCE_32
 mdefine_line|#define MPI_IOUNITPAGE1_FORCE_32                        (0x00000080)
 DECL|struct|_MPI_ADAPTER_INFO
@@ -764,8 +857,6 @@ id|pIOUnitPage2_t
 suffix:semicolon
 DECL|macro|MPI_IOUNITPAGE2_PAGEVERSION
 mdefine_line|#define MPI_IOUNITPAGE2_PAGEVERSION                     (0x00)
-DECL|macro|MPI_IOUNITPAGE2_FLAGS_RAID_DISABLE
-mdefine_line|#define MPI_IOUNITPAGE2_FLAGS_RAID_DISABLE              (0x00000001)
 DECL|macro|MPI_IOUNITPAGE2_FLAGS_PAUSE_ON_ERROR
 mdefine_line|#define MPI_IOUNITPAGE2_FLAGS_PAUSE_ON_ERROR            (0x00000002)
 DECL|macro|MPI_IOUNITPAGE2_FLAGS_VERBOSE_ENABLE
@@ -774,6 +865,11 @@ DECL|macro|MPI_IOUNITPAGE2_FLAGS_COLOR_VIDEO_DISABLE
 mdefine_line|#define MPI_IOUNITPAGE2_FLAGS_COLOR_VIDEO_DISABLE       (0x00000008)
 DECL|macro|MPI_IOUNITPAGE2_FLAGS_DONT_HOOK_INT_40
 mdefine_line|#define MPI_IOUNITPAGE2_FLAGS_DONT_HOOK_INT_40          (0x00000010)
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_IO_UNIT_PAGE_3_GPIO_VAL_MAX
+DECL|macro|MPI_IO_UNIT_PAGE_3_GPIO_VAL_MAX
+mdefine_line|#define MPI_IO_UNIT_PAGE_3_GPIO_VAL_MAX     (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_IO_UNIT_3
 r_typedef
 r_struct
@@ -784,54 +880,29 @@ id|fCONFIG_PAGE_HEADER
 id|Header
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|VolumeSettings
-id|U32
-id|VolumeSettings
+DECL|member|GPIOCount
+id|U8
+id|GPIOCount
 suffix:semicolon
 multiline_comment|/* 04h */
-DECL|member|InfoOffset0
+DECL|member|Reserved1
 id|U8
-id|InfoOffset0
+id|Reserved1
 suffix:semicolon
-multiline_comment|/* 08h */
-DECL|member|InfoSize0
-id|U8
-id|InfoSize0
-suffix:semicolon
-multiline_comment|/* 09h */
-DECL|member|InfoOffset1
-id|U8
-id|InfoOffset1
-suffix:semicolon
-multiline_comment|/* 0Ah */
-DECL|member|InfoSize1
-id|U8
-id|InfoSize1
-suffix:semicolon
-multiline_comment|/* 0Bh */
-DECL|member|InquirySize
-id|U8
-id|InquirySize
-suffix:semicolon
-multiline_comment|/* 0Ch */
-DECL|member|Reserved
-id|U8
-id|Reserved
-suffix:semicolon
-multiline_comment|/* 0Dh */
+multiline_comment|/* 05h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
-multiline_comment|/* 0Eh */
-DECL|member|InquiryData
-id|U8
-id|InquiryData
+multiline_comment|/* 06h */
+DECL|member|GPIOVal
+id|U16
+id|GPIOVal
 (braket
-l_int|56
+id|MPI_IO_UNIT_PAGE_3_GPIO_VAL_MAX
 )braket
 suffix:semicolon
-multiline_comment|/* 10h */
+multiline_comment|/* 08h */
 DECL|typedef|fCONFIG_PAGE_IO_UNIT_3
 DECL|typedef|PTR_CONFIG_PAGE_IO_UNIT_3
 )brace
@@ -848,10 +919,16 @@ id|MPI_POINTER
 id|pIOUnitPage3_t
 suffix:semicolon
 DECL|macro|MPI_IOUNITPAGE3_PAGEVERSION
-mdefine_line|#define MPI_IOUNITPAGE3_PAGEVERSION                     (0x00)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  IOC Config Pages                                                        */
-multiline_comment|/****************************************************************************/
+mdefine_line|#define MPI_IOUNITPAGE3_PAGEVERSION                     (0x01)
+DECL|macro|MPI_IOUNITPAGE3_GPIO_FUNCTION_MASK
+mdefine_line|#define MPI_IOUNITPAGE3_GPIO_FUNCTION_MASK              (0xFC)
+DECL|macro|MPI_IOUNITPAGE3_GPIO_FUNCTION_SHIFT
+mdefine_line|#define MPI_IOUNITPAGE3_GPIO_FUNCTION_SHIFT             (2)
+DECL|macro|MPI_IOUNITPAGE3_GPIO_SETTING_OFF
+mdefine_line|#define MPI_IOUNITPAGE3_GPIO_SETTING_OFF                (0x00)
+DECL|macro|MPI_IOUNITPAGE3_GPIO_SETTING_ON
+mdefine_line|#define MPI_IOUNITPAGE3_GPIO_SETTING_ON                 (0x01)
+multiline_comment|/****************************************************************************&n;*   IOC Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_IOC_0
 r_typedef
 r_struct
@@ -984,9 +1061,9 @@ r_typedef
 r_struct
 id|_CONFIG_PAGE_IOC_2_RAID_VOL
 (brace
-DECL|member|VolumeTargetID
+DECL|member|VolumeID
 id|U8
-id|VolumeTargetID
+id|VolumeID
 suffix:semicolon
 multiline_comment|/* 00h */
 DECL|member|VolumeBus
@@ -994,31 +1071,31 @@ id|U8
 id|VolumeBus
 suffix:semicolon
 multiline_comment|/* 01h */
-DECL|member|Reserved
-id|U16
-id|Reserved
+DECL|member|VolumeIOC
+id|U8
+id|VolumeIOC
 suffix:semicolon
 multiline_comment|/* 02h */
-DECL|member|VolumeVersionMinor
+DECL|member|VolumePageNumber
 id|U8
-id|VolumeVersionMinor
+id|VolumePageNumber
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|VolumeType
+id|U8
+id|VolumeType
 suffix:semicolon
 multiline_comment|/* 04h */
-DECL|member|VolumeVersionMajor
+DECL|member|Reserved2
 id|U8
-id|VolumeVersionMajor
+id|Reserved2
 suffix:semicolon
 multiline_comment|/* 05h */
-DECL|member|VolumeRaidType
-id|U8
-id|VolumeRaidType
+DECL|member|Reserved3
+id|U16
+id|Reserved3
 suffix:semicolon
 multiline_comment|/* 06h */
-DECL|member|Reserved1
-id|U8
-id|Reserved1
-suffix:semicolon
-multiline_comment|/* 07h */
 DECL|typedef|fCONFIG_PAGE_IOC_2_RAID_VOL
 DECL|typedef|PTR_CONFIG_PAGE_IOC_2_RAID_VOL
 )brace
@@ -1034,6 +1111,11 @@ comma
 id|MPI_POINTER
 id|pConfigPageIoc2RaidVol_t
 suffix:semicolon
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_IOC_PAGE_2_RAID_VOLUME_MAX
+DECL|macro|MPI_IOC_PAGE_2_RAID_VOLUME_MAX
+mdefine_line|#define MPI_IOC_PAGE_2_RAID_VOLUME_MAX      (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_IOC_2
 r_typedef
 r_struct
@@ -1059,16 +1141,21 @@ id|U8
 id|MaxVolumes
 suffix:semicolon
 multiline_comment|/* 09h */
-DECL|member|Reserved
-id|U16
-id|Reserved
+DECL|member|NumActivePhysDisks
+id|U8
+id|NumActivePhysDisks
 suffix:semicolon
 multiline_comment|/* 0Ah */
+DECL|member|MaxPhysDisks
+id|U8
+id|MaxPhysDisks
+suffix:semicolon
+multiline_comment|/* 0Bh */
 DECL|member|RaidVolume
 id|fCONFIG_PAGE_IOC_2_RAID_VOL
 id|RaidVolume
 (braket
-l_int|1
+id|MPI_IOC_PAGE_2_RAID_VOLUME_MAX
 )braket
 suffix:semicolon
 multiline_comment|/* 0Ch */
@@ -1088,32 +1175,213 @@ id|MPI_POINTER
 id|pIOCPage2_t
 suffix:semicolon
 DECL|macro|MPI_IOCPAGE2_PAGEVERSION
-mdefine_line|#define MPI_IOCPAGE2_PAGEVERSION                        (0x00)
+mdefine_line|#define MPI_IOCPAGE2_PAGEVERSION                        (0x01)
 multiline_comment|/* IOC Page 2 Capabilities flags */
-DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_RAID_0_SUPPORT
-mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_RAID_0_SUPPORT           (0x00000001)
-DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_RAID_1_SUPPORT
-mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_RAID_1_SUPPORT           (0x00000002)
-DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_LSI_MIRROR_SUPPORT
-mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_LSI_MIRROR_SUPPORT       (0x00000004)
-DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_RAID_5_SUPPORT
-mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_RAID_5_SUPPORT           (0x00000008)
-DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_RAID_10_SUPPORT
-mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_RAID_10_SUPPORT          (0x00000010)
-multiline_comment|/* IOC Page 2 Volume RAID Type values */
-DECL|macro|MPI_IOCPAGE2_VOL_TYPE_RAID_0
-mdefine_line|#define MPI_IOCPAGE2_VOL_TYPE_RAID_0                    (0x00)
-DECL|macro|MPI_IOCPAGE2_VOL_TYPE_RAID_1
-mdefine_line|#define MPI_IOCPAGE2_VOL_TYPE_RAID_1                    (0x01)
-DECL|macro|MPI_IOCPAGE2_VOL_TYPE_LSI_MIRROR
-mdefine_line|#define MPI_IOCPAGE2_VOL_TYPE_LSI_MIRROR                (0x02)
-DECL|macro|MPI_IOCPAGE2_VOL_TYPE_RAID_5
-mdefine_line|#define MPI_IOCPAGE2_VOL_TYPE_RAID_5                    (0x05)
-DECL|macro|MPI_IOCPAGE2_VOL_TYPE_RAID_10
-mdefine_line|#define MPI_IOCPAGE2_VOL_TYPE_RAID_10                   (0x0A)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  SCSI Port Config Pages                                                  */
-multiline_comment|/****************************************************************************/
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_IS_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_IS_SUPPORT               (0x00000001)
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_IME_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_IME_SUPPORT              (0x00000002)
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_IM_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_IM_SUPPORT               (0x00000004)
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_SES_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_SES_SUPPORT              (0x20000000)
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_SAFTE_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_SAFTE_SUPPORT            (0x40000000)
+DECL|macro|MPI_IOCPAGE2_CAP_FLAGS_CROSS_CHANNEL_SUPPORT
+mdefine_line|#define MPI_IOCPAGE2_CAP_FLAGS_CROSS_CHANNEL_SUPPORT    (0x80000000)
+multiline_comment|/* IOC Page 2 Volume RAID Type values, also used in RAID Volume pages */
+DECL|macro|MPI_RAID_VOL_TYPE_IS
+mdefine_line|#define MPI_RAID_VOL_TYPE_IS                        (0x00)
+DECL|macro|MPI_RAID_VOL_TYPE_IME
+mdefine_line|#define MPI_RAID_VOL_TYPE_IME                       (0x01)
+DECL|macro|MPI_RAID_VOL_TYPE_IM
+mdefine_line|#define MPI_RAID_VOL_TYPE_IM                        (0x02)
+DECL|struct|_IOC_3_PHYS_DISK
+r_typedef
+r_struct
+id|_IOC_3_PHYS_DISK
+(brace
+DECL|member|PhysDiskID
+id|U8
+id|PhysDiskID
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|PhysDiskBus
+id|U8
+id|PhysDiskBus
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|PhysDiskIOC
+id|U8
+id|PhysDiskIOC
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|PhysDiskNum
+id|U8
+id|PhysDiskNum
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|typedef|IOC_3_PHYS_DISK
+DECL|typedef|PTR_IOC_3_PHYS_DISK
+)brace
+id|IOC_3_PHYS_DISK
+comma
+id|MPI_POINTER
+id|PTR_IOC_3_PHYS_DISK
+comma
+DECL|typedef|Ioc3PhysDisk_t
+DECL|typedef|pIoc3PhysDisk_t
+id|Ioc3PhysDisk_t
+comma
+id|MPI_POINTER
+id|pIoc3PhysDisk_t
+suffix:semicolon
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_IOC_PAGE_3_PHYSDISK_MAX
+DECL|macro|MPI_IOC_PAGE_3_PHYSDISK_MAX
+mdefine_line|#define MPI_IOC_PAGE_3_PHYSDISK_MAX         (1)
+macro_line|#endif
+DECL|struct|_CONFIG_PAGE_IOC_3
+r_typedef
+r_struct
+id|_CONFIG_PAGE_IOC_3
+(brace
+DECL|member|Header
+id|fCONFIG_PAGE_HEADER
+id|Header
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|NumPhysDisks
+id|U8
+id|NumPhysDisks
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|Reserved2
+id|U16
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|PhysDisk
+id|IOC_3_PHYS_DISK
+id|PhysDisk
+(braket
+id|MPI_IOC_PAGE_3_PHYSDISK_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|typedef|fCONFIG_PAGE_IOC_3
+DECL|typedef|PTR_CONFIG_PAGE_IOC_3
+)brace
+id|fCONFIG_PAGE_IOC_3
+comma
+id|MPI_POINTER
+id|PTR_CONFIG_PAGE_IOC_3
+comma
+DECL|typedef|IOCPage3_t
+DECL|typedef|pIOCPage3_t
+id|IOCPage3_t
+comma
+id|MPI_POINTER
+id|pIOCPage3_t
+suffix:semicolon
+DECL|macro|MPI_IOCPAGE3_PAGEVERSION
+mdefine_line|#define MPI_IOCPAGE3_PAGEVERSION                        (0x00)
+DECL|struct|_IOC_4_SEP
+r_typedef
+r_struct
+id|_IOC_4_SEP
+(brace
+DECL|member|SEPTargetID
+id|U8
+id|SEPTargetID
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|SEPBus
+id|U8
+id|SEPBus
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|Reserved
+id|U16
+id|Reserved
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|typedef|IOC_4_SEP
+DECL|typedef|PTR_IOC_4_SEP
+)brace
+id|IOC_4_SEP
+comma
+id|MPI_POINTER
+id|PTR_IOC_4_SEP
+comma
+DECL|typedef|Ioc4Sep_t
+DECL|typedef|pIoc4Sep_t
+id|Ioc4Sep_t
+comma
+id|MPI_POINTER
+id|pIoc4Sep_t
+suffix:semicolon
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_IOC_PAGE_4_SEP_MAX
+DECL|macro|MPI_IOC_PAGE_4_SEP_MAX
+mdefine_line|#define MPI_IOC_PAGE_4_SEP_MAX              (1)
+macro_line|#endif
+DECL|struct|_CONFIG_PAGE_IOC_4
+r_typedef
+r_struct
+id|_CONFIG_PAGE_IOC_4
+(brace
+DECL|member|Header
+id|fCONFIG_PAGE_HEADER
+id|Header
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|ActiveSEP
+id|U8
+id|ActiveSEP
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|MaxSEP
+id|U8
+id|MaxSEP
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|Reserved1
+id|U16
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|SEP
+id|IOC_4_SEP
+id|SEP
+(braket
+id|MPI_IOC_PAGE_4_SEP_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|typedef|fCONFIG_PAGE_IOC_4
+DECL|typedef|PTR_CONFIG_PAGE_IOC_4
+)brace
+id|fCONFIG_PAGE_IOC_4
+comma
+id|MPI_POINTER
+id|PTR_CONFIG_PAGE_IOC_4
+comma
+DECL|typedef|IOCPage4_t
+DECL|typedef|pIOCPage4_t
+id|IOCPage4_t
+comma
+id|MPI_POINTER
+id|pIOCPage4_t
+suffix:semicolon
+DECL|macro|MPI_IOCPAGE4_PAGEVERSION
+mdefine_line|#define MPI_IOCPAGE4_PAGEVERSION                        (0x00)
+multiline_comment|/****************************************************************************&n;*   SCSI Port Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_SCSI_PORT_0
 r_typedef
 r_struct
@@ -1157,8 +1425,6 @@ DECL|macro|MPI_SCSIPORTPAGE0_CAP_DT
 mdefine_line|#define MPI_SCSIPORTPAGE0_CAP_DT                        (0x00000002)
 DECL|macro|MPI_SCSIPORTPAGE0_CAP_QAS
 mdefine_line|#define MPI_SCSIPORTPAGE0_CAP_QAS                       (0x00000004)
-DECL|macro|MPI_SCSIPORTPAGE0_CAP_PACING_TRANSFERS
-mdefine_line|#define MPI_SCSIPORTPAGE0_CAP_PACING_TRANSFERS          (0x00000008)
 DECL|macro|MPI_SCSIPORTPAGE0_CAP_MIN_SYNC_PERIOD_MASK
 mdefine_line|#define MPI_SCSIPORTPAGE0_CAP_MIN_SYNC_PERIOD_MASK      (0x0000FF00)
 DECL|macro|MPI_SCSIPORTPAGE0_CAP_MAX_SYNC_OFFSET_MASK
@@ -1190,6 +1456,11 @@ id|U32
 id|Configuration
 suffix:semicolon
 multiline_comment|/* 04h */
+DECL|member|OnBusTimerValue
+id|U32
+id|OnBusTimerValue
+suffix:semicolon
+multiline_comment|/* 08h */
 DECL|typedef|fCONFIG_PAGE_SCSI_PORT_1
 DECL|typedef|PTR_CONFIG_PAGE_SCSI_PORT_1
 )brace
@@ -1206,7 +1477,7 @@ id|MPI_POINTER
 id|pSCSIPortPage1_t
 suffix:semicolon
 DECL|macro|MPI_SCSIPORTPAGE1_PAGEVERSION
-mdefine_line|#define MPI_SCSIPORTPAGE1_PAGEVERSION                   (0x01)
+mdefine_line|#define MPI_SCSIPORTPAGE1_PAGEVERSION                   (0x02)
 DECL|macro|MPI_SCSIPORTPAGE1_CFG_PORT_SCSI_ID_MASK
 mdefine_line|#define MPI_SCSIPORTPAGE1_CFG_PORT_SCSI_ID_MASK         (0x000000FF)
 DECL|macro|MPI_SCSIPORTPAGE1_CFG_PORT_RESPONSE_ID_MASK
@@ -1293,8 +1564,6 @@ DECL|macro|MPI_SCSIPORTPAGE2_PAGEVERSION
 mdefine_line|#define MPI_SCSIPORTPAGE2_PAGEVERSION                       (0x01)
 DECL|macro|MPI_SCSIPORTPAGE2_PORT_FLAGS_SCAN_HIGH_TO_LOW
 mdefine_line|#define MPI_SCSIPORTPAGE2_PORT_FLAGS_SCAN_HIGH_TO_LOW       (0x00000001)
-DECL|macro|MPI_SCSIPORTPAGE2_PORT_FLAGS_PARITY_ENABLE
-mdefine_line|#define MPI_SCSIPORTPAGE2_PORT_FLAGS_PARITY_ENABLE          (0x00000002)
 DECL|macro|MPI_SCSIPORTPAGE2_PORT_FLAGS_AVOID_SCSI_RESET
 mdefine_line|#define MPI_SCSIPORTPAGE2_PORT_FLAGS_AVOID_SCSI_RESET       (0x00000004)
 DECL|macro|MPI_SCSIPORTPAGE2_PORT_FLAGS_ALTERNATE_CHS
@@ -1337,9 +1606,7 @@ DECL|macro|MPI_SCSIPORTPAGE2_DEVICE_WIDE_DISABLE
 mdefine_line|#define MPI_SCSIPORTPAGE2_DEVICE_WIDE_DISABLE               (0x0010)
 DECL|macro|MPI_SCSIPORTPAGE2_DEVICE_BOOT_CHOICE
 mdefine_line|#define MPI_SCSIPORTPAGE2_DEVICE_BOOT_CHOICE                (0x0020)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  SCSI Target Device Config Pages                                         */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   SCSI Target Device Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_SCSI_DEVICE_0
 r_typedef
 r_struct
@@ -1376,15 +1643,13 @@ id|MPI_POINTER
 id|pSCSIDevicePage0_t
 suffix:semicolon
 DECL|macro|MPI_SCSIDEVPAGE0_PAGEVERSION
-mdefine_line|#define MPI_SCSIDEVPAGE0_PAGEVERSION                    (0x01)
+mdefine_line|#define MPI_SCSIDEVPAGE0_PAGEVERSION                    (0x02)
 DECL|macro|MPI_SCSIDEVPAGE0_NP_IU
 mdefine_line|#define MPI_SCSIDEVPAGE0_NP_IU                          (0x00000001)
 DECL|macro|MPI_SCSIDEVPAGE0_NP_DT
 mdefine_line|#define MPI_SCSIDEVPAGE0_NP_DT                          (0x00000002)
 DECL|macro|MPI_SCSIDEVPAGE0_NP_QAS
 mdefine_line|#define MPI_SCSIDEVPAGE0_NP_QAS                         (0x00000004)
-DECL|macro|MPI_SCSIDEVPAGE0_NP_PACING_TRANSFERS
-mdefine_line|#define MPI_SCSIDEVPAGE0_NP_PACING_TRANSFERS            (0x00000008)
 DECL|macro|MPI_SCSIDEVPAGE0_NP_NEG_SYNC_PERIOD_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE0_NP_NEG_SYNC_PERIOD_MASK        (0x0000FF00)
 DECL|macro|MPI_SCSIDEVPAGE0_NP_NEG_SYNC_OFFSET_MASK
@@ -1395,6 +1660,12 @@ DECL|macro|MPI_SCSIDEVPAGE0_NP_AIP
 mdefine_line|#define MPI_SCSIDEVPAGE0_NP_AIP                         (0x80000000)
 DECL|macro|MPI_SCSIDEVPAGE0_INFO_PARAMS_NEGOTIATED
 mdefine_line|#define MPI_SCSIDEVPAGE0_INFO_PARAMS_NEGOTIATED         (0x00000001)
+DECL|macro|MPI_SCSIDEVPAGE0_INFO_SDTR_REJECTED
+mdefine_line|#define MPI_SCSIDEVPAGE0_INFO_SDTR_REJECTED             (0x00000002)
+DECL|macro|MPI_SCSIDEVPAGE0_INFO_WDTR_REJECTED
+mdefine_line|#define MPI_SCSIDEVPAGE0_INFO_WDTR_REJECTED             (0x00000004)
+DECL|macro|MPI_SCSIDEVPAGE0_INFO_PPR_REJECTED
+mdefine_line|#define MPI_SCSIDEVPAGE0_INFO_PPR_REJECTED              (0x00000008)
 DECL|struct|_CONFIG_PAGE_SCSI_DEVICE_1
 r_typedef
 r_struct
@@ -1436,15 +1707,13 @@ id|MPI_POINTER
 id|pSCSIDevicePage1_t
 suffix:semicolon
 DECL|macro|MPI_SCSIDEVPAGE1_PAGEVERSION
-mdefine_line|#define MPI_SCSIDEVPAGE1_PAGEVERSION                    (0x02)
+mdefine_line|#define MPI_SCSIDEVPAGE1_PAGEVERSION                    (0x03)
 DECL|macro|MPI_SCSIDEVPAGE1_RP_IU
 mdefine_line|#define MPI_SCSIDEVPAGE1_RP_IU                          (0x00000001)
 DECL|macro|MPI_SCSIDEVPAGE1_RP_DT
 mdefine_line|#define MPI_SCSIDEVPAGE1_RP_DT                          (0x00000002)
 DECL|macro|MPI_SCSIDEVPAGE1_RP_QAS
 mdefine_line|#define MPI_SCSIDEVPAGE1_RP_QAS                         (0x00000004)
-DECL|macro|MPI_SCSIDEVPAGE1_RP_PACING_TRANSFERS
-mdefine_line|#define MPI_SCSIDEVPAGE1_RP_PACING_TRANSFERS            (0x00000008)
 DECL|macro|MPI_SCSIDEVPAGE1_RP_MIN_SYNC_PERIOD_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE1_RP_MIN_SYNC_PERIOD_MASK        (0x0000FF00)
 DECL|macro|MPI_SCSIDEVPAGE1_RP_MAX_SYNC_OFFSET_MASK
@@ -1457,8 +1726,10 @@ DECL|macro|MPI_SCSIDEVPAGE1_DV_LVD_DRIVE_STRENGTH_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE1_DV_LVD_DRIVE_STRENGTH_MASK     (0x00000003)
 DECL|macro|MPI_SCSIDEVPAGE1_DV_SE_SLEW_RATE_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE1_DV_SE_SLEW_RATE_MASK           (0x00000300)
-DECL|macro|MPI_SCSIDEVPAGE1_CONF_PPR_ALLOWED
-mdefine_line|#define MPI_SCSIDEVPAGE1_CONF_PPR_ALLOWED               (0x00000001)
+DECL|macro|MPI_SCSIDEVPAGE1_CONF_WDTR_DISALLOWED
+mdefine_line|#define MPI_SCSIDEVPAGE1_CONF_WDTR_DISALLOWED           (0x00000002)
+DECL|macro|MPI_SCSIDEVPAGE1_CONF_SDTR_DISALLOWED
+mdefine_line|#define MPI_SCSIDEVPAGE1_CONF_SDTR_DISALLOWED           (0x00000004)
 DECL|struct|_CONFIG_PAGE_SCSI_DEVICE_2
 r_typedef
 r_struct
@@ -1553,9 +1824,7 @@ DECL|macro|MPI_SCSIDEVPAGE2_DPS_BIT_14_PL_SELECT_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE2_DPS_BIT_14_PL_SELECT_MASK      (0x30000000)
 DECL|macro|MPI_SCSIDEVPAGE2_DPS_BIT_15_PL_SELECT_MASK
 mdefine_line|#define MPI_SCSIDEVPAGE2_DPS_BIT_15_PL_SELECT_MASK      (0xC0000000)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  FC Port Config Pages                                                    */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   FC Port Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_FC_PORT_0
 r_typedef
 r_struct
@@ -1818,7 +2087,11 @@ id|MPI_POINTER
 id|pFCPortPage1_t
 suffix:semicolon
 DECL|macro|MPI_FCPORTPAGE1_PAGEVERSION
-mdefine_line|#define MPI_FCPORTPAGE1_PAGEVERSION                     (0x01)
+mdefine_line|#define MPI_FCPORTPAGE1_PAGEVERSION                     (0x02)
+DECL|macro|MPI_FCPORTPAGE1_FLAGS_EXT_FCP_STATUS_EN
+mdefine_line|#define MPI_FCPORTPAGE1_FLAGS_EXT_FCP_STATUS_EN         (0x08000000)
+DECL|macro|MPI_FCPORTPAGE1_FLAGS_IMMEDIATE_ERROR_REPLY
+mdefine_line|#define MPI_FCPORTPAGE1_FLAGS_IMMEDIATE_ERROR_REPLY     (0x04000000)
 DECL|macro|MPI_FCPORTPAGE1_FLAGS_SORT_BY_DID
 mdefine_line|#define MPI_FCPORTPAGE1_FLAGS_SORT_BY_DID               (0x00000001)
 DECL|macro|MPI_FCPORTPAGE1_FLAGS_SORT_BY_WWN
@@ -1849,14 +2122,14 @@ DECL|macro|MPI_FCPORTPAGE1_LCONFIG_SPEED_10GIG
 mdefine_line|#define MPI_FCPORTPAGE1_LCONFIG_SPEED_10GIG             (0x03)
 DECL|macro|MPI_FCPORTPAGE1_LCONFIG_SPEED_AUTO
 mdefine_line|#define MPI_FCPORTPAGE1_LCONFIG_SPEED_AUTO              (0x0F)
-DECL|macro|MPI_FCPORTPAGE1_TOPOLGY_MASK
-mdefine_line|#define MPI_FCPORTPAGE1_TOPOLGY_MASK                    (0x0F)
-DECL|macro|MPI_FCPORTPAGE1_TOPOLGY_NLPORT
-mdefine_line|#define MPI_FCPORTPAGE1_TOPOLGY_NLPORT                  (0x01)
-DECL|macro|MPI_FCPORTPAGE1_TOPOLGY_NPORT
-mdefine_line|#define MPI_FCPORTPAGE1_TOPOLGY_NPORT                   (0x02)
-DECL|macro|MPI_FCPORTPAGE1_TOPOLGY_AUTO
-mdefine_line|#define MPI_FCPORTPAGE1_TOPOLGY_AUTO                    (0x0F)
+DECL|macro|MPI_FCPORTPAGE1_TOPOLOGY_MASK
+mdefine_line|#define MPI_FCPORTPAGE1_TOPOLOGY_MASK                   (0x0F)
+DECL|macro|MPI_FCPORTPAGE1_TOPOLOGY_NLPORT
+mdefine_line|#define MPI_FCPORTPAGE1_TOPOLOGY_NLPORT                 (0x01)
+DECL|macro|MPI_FCPORTPAGE1_TOPOLOGY_NPORT
+mdefine_line|#define MPI_FCPORTPAGE1_TOPOLOGY_NPORT                  (0x02)
+DECL|macro|MPI_FCPORTPAGE1_TOPOLOGY_AUTO
+mdefine_line|#define MPI_FCPORTPAGE1_TOPOLOGY_AUTO                   (0x0F)
 DECL|struct|_CONFIG_PAGE_FC_PORT_2
 r_typedef
 r_struct
@@ -1876,15 +2149,10 @@ DECL|member|ALPA
 id|U8
 id|ALPA
 (braket
-l_int|126
+l_int|127
 )braket
 suffix:semicolon
 multiline_comment|/* 05h */
-DECL|member|Reserved
-id|U8
-id|Reserved
-suffix:semicolon
-multiline_comment|/* 83h */
 DECL|typedef|fCONFIG_PAGE_FC_PORT_2
 DECL|typedef|PTR_CONFIG_PAGE_FC_PORT_2
 )brace
@@ -1901,7 +2169,7 @@ id|MPI_POINTER
 id|pFCPortPage2_t
 suffix:semicolon
 DECL|macro|MPI_FCPORTPAGE2_PAGEVERSION
-mdefine_line|#define MPI_FCPORTPAGE2_PAGEVERSION                     (0x00)
+mdefine_line|#define MPI_FCPORTPAGE2_PAGEVERSION                     (0x01)
 DECL|struct|_WWN_FORMAT
 r_typedef
 r_struct
@@ -2012,6 +2280,11 @@ DECL|macro|MPI_PERSISTENT_FLAGS_BOOT_DEVICE
 mdefine_line|#define MPI_PERSISTENT_FLAGS_BOOT_DEVICE                (0x0008)
 DECL|macro|MPI_PERSISTENT_FLAGS_BY_DID
 mdefine_line|#define MPI_PERSISTENT_FLAGS_BY_DID                     (0x0080)
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_FC_PORT_PAGE_3_ENTRY_MAX
+DECL|macro|MPI_FC_PORT_PAGE_3_ENTRY_MAX
+mdefine_line|#define MPI_FC_PORT_PAGE_3_ENTRY_MAX        (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_FC_PORT_3
 r_typedef
 r_struct
@@ -2026,7 +2299,7 @@ DECL|member|Entry
 id|FC_PORT_PERSISTENT
 id|Entry
 (braket
-l_int|1
+id|MPI_FC_PORT_PAGE_3_ENTRY_MAX
 )braket
 suffix:semicolon
 multiline_comment|/* 04h */
@@ -2131,10 +2404,10 @@ id|AliasWWPN
 suffix:semicolon
 multiline_comment|/* 0Ch */
 DECL|typedef|fCONFIG_PAGE_FC_PORT_5_ALIAS_INFO
-DECL|typedef|PTR_CONFIG_PAGE_FC_PORT_5_ALIAS_INFO
 )brace
 id|fCONFIG_PAGE_FC_PORT_5_ALIAS_INFO
 comma
+DECL|typedef|PTR_CONFIG_PAGE_FC_PORT_5_ALIAS_INFO
 id|MPI_POINTER
 id|PTR_CONFIG_PAGE_FC_PORT_5_ALIAS_INFO
 comma
@@ -2145,6 +2418,11 @@ comma
 id|MPI_POINTER
 id|pFcPortPage5AliasInfo_t
 suffix:semicolon
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_FC_PORT_PAGE_5_ALIAS_MAX
+DECL|macro|MPI_FC_PORT_PAGE_5_ALIAS_MAX
+mdefine_line|#define MPI_FC_PORT_PAGE_5_ALIAS_MAX        (1)
+macro_line|#endif
 DECL|struct|_CONFIG_PAGE_FC_PORT_5
 r_typedef
 r_struct
@@ -2159,7 +2437,7 @@ DECL|member|AliasInfo
 id|fCONFIG_PAGE_FC_PORT_5_ALIAS_INFO
 id|AliasInfo
 (braket
-l_int|1
+id|MPI_FC_PORT_PAGE_5_ALIAS_MAX
 )braket
 suffix:semicolon
 multiline_comment|/* 04h */
@@ -2456,9 +2734,7 @@ id|pFCPortPage9_t
 suffix:semicolon
 DECL|macro|MPI_FCPORTPAGE9_PAGEVERSION
 mdefine_line|#define MPI_FCPORTPAGE9_PAGEVERSION                     (0x00)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  FC Device Config Pages                                                  */
-multiline_comment|/****************************************************************************/
+multiline_comment|/****************************************************************************&n;*   FC Device Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_FC_DEVICE_0
 r_typedef
 r_struct
@@ -2560,81 +2836,373 @@ mdefine_line|#define MPI_FC_DEVICE_PAGE0_PROT_FCP_TARGET             (0x02)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PROT_FCP_INITIATOR
 mdefine_line|#define MPI_FC_DEVICE_PAGE0_PROT_FCP_INITIATOR          (0x04)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_PORT_MASK
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_PORT_MASK              (MPI_FC_DEVICE_PGAD_PORT_MASK)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_PORT_MASK      (MPI_FC_DEVICE_PGAD_PORT_MASK)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_FORM_MASK
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_MASK              (MPI_FC_DEVICE_PGAD_FORM_MASK)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_MASK      (MPI_FC_DEVICE_PGAD_FORM_MASK)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_FORM_NEXT_DID
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_NEXT_DID          (MPI_FC_DEVICE_PGAD_FORM_NEXT_DID)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_NEXT_DID  (MPI_FC_DEVICE_PGAD_FORM_NEXT_DID)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_FORM_BUS_TID
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_BUS_TID           (MPI_FC_DEVICE_PGAD_FORM_BUS_TID)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_FORM_BUS_TID   (MPI_FC_DEVICE_PGAD_FORM_BUS_TID)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_DID_MASK
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_DID_MASK               (MPI_FC_DEVICE_PGAD_ND_DID_MASK)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_DID_MASK       (MPI_FC_DEVICE_PGAD_ND_DID_MASK)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_BUS_MASK
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_BUS_MASK               (MPI_FC_DEVICE_PGAD_BT_BUS_MASK)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_BUS_MASK       (MPI_FC_DEVICE_PGAD_BT_BUS_MASK)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_BUS_SHIFT
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_BUS_SHIFT              (MPI_FC_DEVICE_PGAD_BT_BUS_SHIFT)
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_BUS_SHIFT      (MPI_FC_DEVICE_PGAD_BT_BUS_SHIFT)
 DECL|macro|MPI_FC_DEVICE_PAGE0_PGAD_TID_MASK
-mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_TID_MASK               (MPI_FC_DEVICE_PGAD_BT_TID_MASK)
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  RAID Volume Config Pages                                                  */
-multiline_comment|/****************************************************************************/
-DECL|struct|_RAIDVOL2_IM_PHYS_ID
+mdefine_line|#define MPI_FC_DEVICE_PAGE0_PGAD_TID_MASK       (MPI_FC_DEVICE_PGAD_BT_TID_MASK)
+multiline_comment|/****************************************************************************&n;*   RAID Volume Config Pages&n;****************************************************************************/
+DECL|struct|_RAID_VOL0_PHYS_DISK
 r_typedef
 r_struct
-id|_RAIDVOL2_IM_PHYS_ID
+id|_RAID_VOL0_PHYS_DISK
 (brace
-DECL|member|TargetID
-id|U8
-id|TargetID
+DECL|member|Reserved
+id|U16
+id|Reserved
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|Bus
+DECL|member|PhysDiskMap
 id|U8
-id|Bus
-suffix:semicolon
-multiline_comment|/* 01h */
-DECL|member|IocNumber
-id|U8
-id|IocNumber
+id|PhysDiskMap
 suffix:semicolon
 multiline_comment|/* 02h */
-DECL|member|PhysDiskNumber
+DECL|member|PhysDiskNum
 id|U8
-id|PhysDiskNumber
+id|PhysDiskNum
 suffix:semicolon
 multiline_comment|/* 03h */
+DECL|typedef|RAID_VOL0_PHYS_DISK
+DECL|typedef|PTR_RAID_VOL0_PHYS_DISK
+)brace
+id|RAID_VOL0_PHYS_DISK
+comma
+id|MPI_POINTER
+id|PTR_RAID_VOL0_PHYS_DISK
+comma
+DECL|typedef|RaidVol0PhysDisk_t
+DECL|typedef|pRaidVol0PhysDisk_t
+id|RaidVol0PhysDisk_t
+comma
+id|MPI_POINTER
+id|pRaidVol0PhysDisk_t
+suffix:semicolon
+DECL|macro|MPI_RAIDVOL0_PHYSDISK_PRIMARY
+mdefine_line|#define MPI_RAIDVOL0_PHYSDISK_PRIMARY                   (0x01)
+DECL|macro|MPI_RAIDVOL0_PHYSDISK_SECONDARY
+mdefine_line|#define MPI_RAIDVOL0_PHYSDISK_SECONDARY                 (0x02)
+DECL|struct|_RAID_VOL0_STATUS
+r_typedef
+r_struct
+id|_RAID_VOL0_STATUS
+(brace
+DECL|member|Flags
+id|U8
+id|Flags
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|State
+id|U8
+id|State
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|Reserved
+id|U16
+id|Reserved
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|typedef|RAID_VOL0_STATUS
+DECL|typedef|PTR_RAID_VOL0_STATUS
+)brace
+id|RAID_VOL0_STATUS
+comma
+id|MPI_POINTER
+id|PTR_RAID_VOL0_STATUS
+comma
+DECL|typedef|RaidVol0Status_t
+DECL|typedef|pRaidVol0Status_t
+id|RaidVol0Status_t
+comma
+id|MPI_POINTER
+id|pRaidVol0Status_t
+suffix:semicolon
+multiline_comment|/* RAID Volume Page 0 VolumeStatus defines */
+DECL|macro|MPI_RAIDVOL0_STATUS_FLAG_ENABLED
+mdefine_line|#define MPI_RAIDVOL0_STATUS_FLAG_ENABLED                (0x01)
+DECL|macro|MPI_RAIDVOL0_STATUS_FLAG_QUIESCED
+mdefine_line|#define MPI_RAIDVOL0_STATUS_FLAG_QUIESCED               (0x02)
+DECL|macro|MPI_RAIDVOL0_STATUS_FLAG_RESYNC_IN_PROGRESS
+mdefine_line|#define MPI_RAIDVOL0_STATUS_FLAG_RESYNC_IN_PROGRESS     (0x04)
+DECL|macro|MPI_RAIDVOL0_STATUS_STATE_OPTIMAL
+mdefine_line|#define MPI_RAIDVOL0_STATUS_STATE_OPTIMAL               (0x00)
+DECL|macro|MPI_RAIDVOL0_STATUS_STATE_DEGRADED
+mdefine_line|#define MPI_RAIDVOL0_STATUS_STATE_DEGRADED              (0x01)
+DECL|macro|MPI_RAIDVOL0_STATUS_STATE_FAILED
+mdefine_line|#define MPI_RAIDVOL0_STATUS_STATE_FAILED                (0x02)
+DECL|struct|_RAID_VOL0_SETTINGS
+r_typedef
+r_struct
+id|_RAID_VOL0_SETTINGS
+(brace
+DECL|member|Settings
+id|U16
+id|Settings
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|HotSparePool
+id|U8
+id|HotSparePool
+suffix:semicolon
+multiline_comment|/* 01h */
+multiline_comment|/* MPI_RAID_HOT_SPARE_POOL_ */
 DECL|member|Reserved
 id|U8
 id|Reserved
-(braket
-l_int|8
-)braket
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|typedef|RAID_VOL0_SETTINGS
+DECL|typedef|PTR_RAID_VOL0_SETTINGS
+)brace
+id|RAID_VOL0_SETTINGS
+comma
+id|MPI_POINTER
+id|PTR_RAID_VOL0_SETTINGS
+comma
+DECL|typedef|RaidVol0Settings
+DECL|typedef|pRaidVol0Settings
+id|RaidVol0Settings
+comma
+id|MPI_POINTER
+id|pRaidVol0Settings
+suffix:semicolon
+multiline_comment|/* RAID Volume Page 0 VolumeSettings defines */
+DECL|macro|MPI_RAIDVOL0_SETTING_WRITE_CACHING_ENABLE
+mdefine_line|#define MPI_RAIDVOL0_SETTING_WRITE_CACHING_ENABLE       (0x0001)
+DECL|macro|MPI_RAIDVOL0_SETTING_OFFLINE_ON_SMART
+mdefine_line|#define MPI_RAIDVOL0_SETTING_OFFLINE_ON_SMART           (0x0002)
+DECL|macro|MPI_RAIDVOL0_SETTING_AUTO_CONFIGURE
+mdefine_line|#define MPI_RAIDVOL0_SETTING_AUTO_CONFIGURE             (0x0004)
+DECL|macro|MPI_RAIDVOL0_SETTING_PRIORITY_RESYNC
+mdefine_line|#define MPI_RAIDVOL0_SETTING_PRIORITY_RESYNC            (0x0008)
+DECL|macro|MPI_RAIDVOL0_SETTING_USE_PRODUCT_ID_SUFFIX
+mdefine_line|#define MPI_RAIDVOL0_SETTING_USE_PRODUCT_ID_SUFFIX      (0x0010)
+DECL|macro|MPI_RAIDVOL0_SETTING_USE_DEFAULTS
+mdefine_line|#define MPI_RAIDVOL0_SETTING_USE_DEFAULTS               (0x8000)
+multiline_comment|/* RAID Volume Page 0 HotSparePool defines, also used in RAID Physical Disk */
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_0
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_0                       (0x01)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_1
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_1                       (0x02)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_2
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_2                       (0x04)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_3
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_3                       (0x08)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_4
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_4                       (0x10)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_5
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_5                       (0x20)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_6
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_6                       (0x40)
+DECL|macro|MPI_RAID_HOT_SPARE_POOL_7
+mdefine_line|#define MPI_RAID_HOT_SPARE_POOL_7                       (0x80)
+multiline_comment|/*&n; * Host code (drivers, BIOS, utilities, etc.) should leave this define set to&n; * one and check Header.PageLength at runtime.&n; */
+macro_line|#ifndef MPI_RAID_VOL_PAGE_0_PHYSDISK_MAX
+DECL|macro|MPI_RAID_VOL_PAGE_0_PHYSDISK_MAX
+mdefine_line|#define MPI_RAID_VOL_PAGE_0_PHYSDISK_MAX        (1)
+macro_line|#endif
+DECL|struct|_CONFIG_PAGE_RAID_VOL_0
+r_typedef
+r_struct
+id|_CONFIG_PAGE_RAID_VOL_0
+(brace
+DECL|member|Header
+id|fCONFIG_PAGE_HEADER
+id|Header
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|VolumeID
+id|U8
+id|VolumeID
 suffix:semicolon
 multiline_comment|/* 04h */
-DECL|member|PhysicalDiskIdentifier
+DECL|member|VolumeBus
 id|U8
-id|PhysicalDiskIdentifier
-(braket
-l_int|16
-)braket
+id|VolumeBus
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|VolumeIOC
+id|U8
+id|VolumeIOC
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|VolumeType
+id|U8
+id|VolumeType
+suffix:semicolon
+multiline_comment|/* 07h */
+multiline_comment|/* MPI_RAID_VOL_TYPE_ */
+DECL|member|VolumeStatus
+id|RAID_VOL0_STATUS
+id|VolumeStatus
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|VolumeSettings
+id|RAID_VOL0_SETTINGS
+id|VolumeSettings
 suffix:semicolon
 multiline_comment|/* 0Ch */
-DECL|member|VendorId
+DECL|member|MaxLBA
+id|U32
+id|MaxLBA
+suffix:semicolon
+multiline_comment|/* 10h */
+DECL|member|Reserved1
+id|U32
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 14h */
+DECL|member|StripeSize
+id|U32
+id|StripeSize
+suffix:semicolon
+multiline_comment|/* 18h */
+DECL|member|Reserved2
+id|U32
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 1Ch */
+DECL|member|Reserved3
+id|U32
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 20h */
+DECL|member|NumPhysDisks
 id|U8
-id|VendorId
+id|NumPhysDisks
+suffix:semicolon
+multiline_comment|/* 24h */
+DECL|member|Reserved4
+id|U8
+id|Reserved4
+suffix:semicolon
+multiline_comment|/* 25h */
+DECL|member|Reserved5
+id|U16
+id|Reserved5
+suffix:semicolon
+multiline_comment|/* 26h */
+DECL|member|PhysDisk
+id|RAID_VOL0_PHYS_DISK
+id|PhysDisk
+(braket
+id|MPI_RAID_VOL_PAGE_0_PHYSDISK_MAX
+)braket
+suffix:semicolon
+multiline_comment|/* 28h */
+DECL|typedef|fCONFIG_PAGE_RAID_VOL_0
+DECL|typedef|PTR_CONFIG_PAGE_RAID_VOL_0
+)brace
+id|fCONFIG_PAGE_RAID_VOL_0
+comma
+id|MPI_POINTER
+id|PTR_CONFIG_PAGE_RAID_VOL_0
+comma
+DECL|typedef|RaidVolumePage0_t
+DECL|typedef|pRaidVolumePage0_t
+id|RaidVolumePage0_t
+comma
+id|MPI_POINTER
+id|pRaidVolumePage0_t
+suffix:semicolon
+DECL|macro|MPI_RAIDVOLPAGE0_PAGEVERSION
+mdefine_line|#define MPI_RAIDVOLPAGE0_PAGEVERSION                    (0x00)
+multiline_comment|/****************************************************************************&n;*   RAID Physical Disk Config Pages&n;****************************************************************************/
+DECL|struct|_RAID_PHYS_DISK0_ERROR_DATA
+r_typedef
+r_struct
+id|_RAID_PHYS_DISK0_ERROR_DATA
+(brace
+DECL|member|ErrorCdbByte
+id|U8
+id|ErrorCdbByte
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|ErrorSenseKey
+id|U8
+id|ErrorSenseKey
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|Reserved
+id|U16
+id|Reserved
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|ErrorCount
+id|U16
+id|ErrorCount
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|ErrorASC
+id|U8
+id|ErrorASC
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|ErrorASCQ
+id|U8
+id|ErrorASCQ
+suffix:semicolon
+multiline_comment|/* 07h */
+DECL|member|SmartCount
+id|U16
+id|SmartCount
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|SmartASC
+id|U8
+id|SmartASC
+suffix:semicolon
+multiline_comment|/* 0Ah */
+DECL|member|SmartASCQ
+id|U8
+id|SmartASCQ
+suffix:semicolon
+multiline_comment|/* 0Bh */
+DECL|typedef|RAID_PHYS_DISK0_ERROR_DATA
+DECL|typedef|PTR_RAID_PHYS_DISK0_ERROR_DATA
+)brace
+id|RAID_PHYS_DISK0_ERROR_DATA
+comma
+id|MPI_POINTER
+id|PTR_RAID_PHYS_DISK0_ERROR_DATA
+comma
+DECL|typedef|RaidPhysDisk0ErrorData_t
+DECL|typedef|pRaidPhysDisk0ErrorData_t
+id|RaidPhysDisk0ErrorData_t
+comma
+id|MPI_POINTER
+id|pRaidPhysDisk0ErrorData_t
+suffix:semicolon
+DECL|struct|_RAID_PHYS_DISK_INQUIRY_DATA
+r_typedef
+r_struct
+id|_RAID_PHYS_DISK_INQUIRY_DATA
+(brace
+DECL|member|VendorID
+id|U8
+id|VendorID
 (braket
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* 1Ch */
-DECL|member|ProductId
+multiline_comment|/* 00h */
+DECL|member|ProductID
 id|U8
-id|ProductId
+id|ProductID
 (braket
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* 24h */
+multiline_comment|/* 08h */
 DECL|member|ProductRevLevel
 id|U8
 id|ProductRevLevel
@@ -2642,12 +3210,7 @@ id|ProductRevLevel
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* 34h */
-DECL|member|Reserved1
-id|U32
-id|Reserved1
-suffix:semicolon
-multiline_comment|/* 38h */
+multiline_comment|/* 18h */
 DECL|member|Info
 id|U8
 id|Info
@@ -2655,249 +3218,215 @@ id|Info
 l_int|32
 )braket
 suffix:semicolon
-multiline_comment|/* 3Ch */
-DECL|typedef|RAIDVOL2_IM_PHYS_ID
-DECL|typedef|PTR_RAIDVOL2_IM_PHYS_ID
+multiline_comment|/* 1Ch */
+DECL|typedef|RAID_PHYS_DISK0_INQUIRY_DATA
+DECL|typedef|PTR_RAID_PHYS_DISK0_INQUIRY_DATA
 )brace
-id|RAIDVOL2_IM_PHYS_ID
+id|RAID_PHYS_DISK0_INQUIRY_DATA
 comma
 id|MPI_POINTER
-id|PTR_RAIDVOL2_IM_PHYS_ID
+id|PTR_RAID_PHYS_DISK0_INQUIRY_DATA
 comma
-DECL|typedef|RaidVol2ImPhysicalID_t
-DECL|typedef|pRaidVol2ImPhysicalID_t
-id|RaidVol2ImPhysicalID_t
+DECL|typedef|RaidPhysDisk0InquiryData
+DECL|typedef|pRaidPhysDisk0InquiryData
+id|RaidPhysDisk0InquiryData
 comma
 id|MPI_POINTER
-id|pRaidVol2ImPhysicalID_t
+id|pRaidPhysDisk0InquiryData
 suffix:semicolon
-DECL|struct|_RAIDVOL2_IM_DISK_INFO
+DECL|struct|_RAID_PHYS_DISK0_SETTINGS
 r_typedef
 r_struct
-id|_RAIDVOL2_IM_DISK_INFO
+id|_RAID_PHYS_DISK0_SETTINGS
 (brace
-DECL|member|DiskStatus
-id|U32
-id|DiskStatus
+DECL|member|SepID
+id|U8
+id|SepID
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|DeviceSettings
-id|U32
-id|DeviceSettings
+DECL|member|SepBus
+id|U8
+id|SepBus
 suffix:semicolon
-multiline_comment|/* 04h */
-DECL|member|ErrorCount
-id|U16
-id|ErrorCount
+multiline_comment|/* 01h */
+DECL|member|HotSparePool
+id|U8
+id|HotSparePool
 suffix:semicolon
-multiline_comment|/* 08h */
+multiline_comment|/* 02h */
+multiline_comment|/* MPI_RAID_HOT_SPARE_POOL_ */
+DECL|member|PhysDiskSettings
+id|U8
+id|PhysDiskSettings
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|typedef|RAID_PHYS_DISK0_SETTINGS
+DECL|typedef|PTR_RAID_PHYS_DISK0_SETTINGS
+)brace
+id|RAID_PHYS_DISK0_SETTINGS
+comma
+id|MPI_POINTER
+id|PTR_RAID_PHYS_DISK0_SETTINGS
+comma
+DECL|typedef|RaidPhysDiskSettings_t
+DECL|typedef|pRaidPhysDiskSettings_t
+id|RaidPhysDiskSettings_t
+comma
+id|MPI_POINTER
+id|pRaidPhysDiskSettings_t
+suffix:semicolon
+DECL|struct|_RAID_PHYS_DISK0_STATUS
+r_typedef
+r_struct
+id|_RAID_PHYS_DISK0_STATUS
+(brace
+DECL|member|Flags
+id|U8
+id|Flags
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|State
+id|U8
+id|State
+suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
-multiline_comment|/* 0Ah */
-DECL|member|ErrorCdbByte
-id|U8
-id|ErrorCdbByte
-suffix:semicolon
-multiline_comment|/* 0Ch */
-DECL|member|ErrorSenseKey
-id|U8
-id|ErrorSenseKey
-suffix:semicolon
-multiline_comment|/* 0Dh */
-DECL|member|ErrorASC
-id|U8
-id|ErrorASC
-suffix:semicolon
-multiline_comment|/* 0Eh */
-DECL|member|ErrorASCQ
-id|U8
-id|ErrorASCQ
-suffix:semicolon
-multiline_comment|/* 0Fh */
-DECL|member|SmartCount
-id|U16
-id|SmartCount
-suffix:semicolon
-multiline_comment|/* 10h */
-DECL|member|SmartASC
-id|U8
-id|SmartASC
-suffix:semicolon
-multiline_comment|/* 12h */
-DECL|member|SmartASCQ
-id|U8
-id|SmartASCQ
-suffix:semicolon
-multiline_comment|/* 13h */
-DECL|typedef|RAIDVOL2_IM_DISK_INFO
-DECL|typedef|PTR_RAIDVOL2_IM_DISK_INFO
+multiline_comment|/* 02h */
+DECL|typedef|RAID_PHYS_DISK0_STATUS
+DECL|typedef|PTR_RAID_PHYS_DISK0_STATUS
 )brace
-id|RAIDVOL2_IM_DISK_INFO
+id|RAID_PHYS_DISK0_STATUS
 comma
 id|MPI_POINTER
-id|PTR_RAIDVOL2_IM_DISK_INFO
+id|PTR_RAID_PHYS_DISK0_STATUS
 comma
-DECL|typedef|RaidVol2ImDiskInfo_t
-DECL|typedef|pRaidVol2ImDiskInfo_t
-id|RaidVol2ImDiskInfo_t
+DECL|typedef|RaidPhysDiskStatus_t
+DECL|typedef|pRaidPhysDiskStatus_t
+id|RaidPhysDiskStatus_t
 comma
 id|MPI_POINTER
-id|pRaidVol2ImDiskInfo_t
+id|pRaidPhysDiskStatus_t
 suffix:semicolon
 multiline_comment|/* RAID Volume 2 IM Physical Disk DiskStatus flags */
-DECL|macro|MPI_RVP2_PHYS_DISK_PRIMARY
-mdefine_line|#define MPI_RVP2_PHYS_DISK_PRIMARY                      (0x00000001)
-DECL|macro|MPI_RVP2_PHYS_DISK_SECONDARY
-mdefine_line|#define MPI_RVP2_PHYS_DISK_SECONDARY                    (0x00000002)
-DECL|macro|MPI_RVP2_PHYS_DISK_HOT_SPARE
-mdefine_line|#define MPI_RVP2_PHYS_DISK_HOT_SPARE                    (0x00000004)
-DECL|macro|MPI_RVP2_PHYS_DISK_OUT_OF_SYNC
-mdefine_line|#define MPI_RVP2_PHYS_DISK_OUT_OF_SYNC                  (0x00000008)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_MASK
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_MASK                  (0x00000F00)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_ONLINE
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_ONLINE                (0x00000000)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_MISSING
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_MISSING               (0x00000100)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_NOT_COMPATIBLE
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_NOT_COMPATIBLE        (0x00000200)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_FAILED
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_FAILED                (0x00000300)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_INITIALIZING
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_INITIALIZING          (0x00000400)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_OFFLINE_REQUESTED
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_OFFLINE_REQUESTED     (0x00000500)
-DECL|macro|MPI_RVP2_PHYS_DISK_STATUS_OTHER_OFFLINE
-mdefine_line|#define MPI_RVP2_PHYS_DISK_STATUS_OTHER_OFFLINE         (0x00000F00)
-DECL|struct|_RAIDVOL2_IM_PHYSICAL_DISK
+DECL|macro|MPI_PHYSDISK0_STATUS_FLAG_OUT_OF_SYNC
+mdefine_line|#define MPI_PHYSDISK0_STATUS_FLAG_OUT_OF_SYNC           (0x01)
+DECL|macro|MPI_PHYSDISK0_STATUS_FLAG_QUIESCED
+mdefine_line|#define MPI_PHYSDISK0_STATUS_FLAG_QUIESCED              (0x02)
+DECL|macro|MPI_PHYSDISK0_STATUS_ONLINE
+mdefine_line|#define MPI_PHYSDISK0_STATUS_ONLINE                     (0x00)
+DECL|macro|MPI_PHYSDISK0_STATUS_MISSING
+mdefine_line|#define MPI_PHYSDISK0_STATUS_MISSING                    (0x01)
+DECL|macro|MPI_PHYSDISK0_STATUS_NOT_COMPATIBLE
+mdefine_line|#define MPI_PHYSDISK0_STATUS_NOT_COMPATIBLE             (0x02)
+DECL|macro|MPI_PHYSDISK0_STATUS_FAILED
+mdefine_line|#define MPI_PHYSDISK0_STATUS_FAILED                     (0x03)
+DECL|macro|MPI_PHYSDISK0_STATUS_INITIALIZING
+mdefine_line|#define MPI_PHYSDISK0_STATUS_INITIALIZING               (0x04)
+DECL|macro|MPI_PHYSDISK0_STATUS_OFFLINE_REQUESTED
+mdefine_line|#define MPI_PHYSDISK0_STATUS_OFFLINE_REQUESTED          (0x05)
+DECL|macro|MPI_PHYSDISK0_STATUS_FAILED_REQUESTED
+mdefine_line|#define MPI_PHYSDISK0_STATUS_FAILED_REQUESTED           (0x06)
+DECL|macro|MPI_PHYSDISK0_STATUS_OTHER_OFFLINE
+mdefine_line|#define MPI_PHYSDISK0_STATUS_OTHER_OFFLINE              (0xFF)
+DECL|struct|_CONFIG_PAGE_RAID_PHYS_DISK_0
 r_typedef
 r_struct
-id|_RAIDVOL2_IM_PHYSICAL_DISK
-(brace
-DECL|member|Id
-id|RAIDVOL2_IM_PHYS_ID
-id|Id
-suffix:semicolon
-multiline_comment|/* 00h */
-DECL|member|Info
-id|RAIDVOL2_IM_DISK_INFO
-id|Info
-suffix:semicolon
-multiline_comment|/* 5Ch */
-DECL|typedef|RAIDVOL2_IM_PHYSICAL_DISK
-DECL|typedef|PTR_RAIDVOL2_IM_PHYSICAL_DISK
-)brace
-id|RAIDVOL2_IM_PHYSICAL_DISK
-comma
-id|MPI_POINTER
-id|PTR_RAIDVOL2_IM_PHYSICAL_DISK
-comma
-DECL|typedef|RaidVol2ImPhysicalDisk_t
-DECL|typedef|pRaidVol2ImPhysicalDisk_t
-id|RaidVol2ImPhysicalDisk_t
-comma
-id|MPI_POINTER
-id|pRaidVol2ImPhysicalDisk_t
-suffix:semicolon
-DECL|macro|MPI_RAIDVOLPAGE2_MAX_DISKS
-mdefine_line|#define MPI_RAIDVOLPAGE2_MAX_DISKS                      (3)
-DECL|struct|_CONFIG_PAGE_RAID_VOL_2
-r_typedef
-r_struct
-id|_CONFIG_PAGE_RAID_VOL_2
+id|_CONFIG_PAGE_RAID_PHYS_DISK_0
 (brace
 DECL|member|Header
 id|fCONFIG_PAGE_HEADER
 id|Header
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|VolumeStatus
-id|U32
-id|VolumeStatus
+DECL|member|PhysDiskID
+id|U8
+id|PhysDiskID
 suffix:semicolon
 multiline_comment|/* 04h */
-DECL|member|VolumeSettings
-id|U32
-id|VolumeSettings
+DECL|member|PhysDiskBus
+id|U8
+id|PhysDiskBus
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|PhysDiskIOC
+id|U8
+id|PhysDiskIOC
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|PhysDiskNum
+id|U8
+id|PhysDiskNum
+suffix:semicolon
+multiline_comment|/* 07h */
+DECL|member|PhysDiskSettings
+id|RAID_PHYS_DISK0_SETTINGS
+id|PhysDiskSettings
 suffix:semicolon
 multiline_comment|/* 08h */
-DECL|member|Reserved
-id|U32
-id|Reserved
-suffix:semicolon
-multiline_comment|/* 0Ch */
-DECL|member|MaxLba
-id|U64
-id|MaxLba
-suffix:semicolon
-multiline_comment|/* 10h */
-DECL|member|BlockSize
-id|U32
-id|BlockSize
-suffix:semicolon
-multiline_comment|/* 18h */
 DECL|member|Reserved1
-id|U8
+id|U32
 id|Reserved1
 suffix:semicolon
-multiline_comment|/* 1Ch */
-DECL|member|NumPhysicalDisks
-id|U8
-id|NumPhysicalDisks
-suffix:semicolon
-multiline_comment|/* 1Dh */
+multiline_comment|/* 0Ch */
 DECL|member|Reserved2
-id|U16
+id|U32
 id|Reserved2
 suffix:semicolon
-multiline_comment|/* 1Eh */
-DECL|member|IMPhysicalDisk
-id|RAIDVOL2_IM_PHYSICAL_DISK
-id|IMPhysicalDisk
+multiline_comment|/* 10h */
+DECL|member|Reserved3
+id|U32
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 14h */
+DECL|member|DiskIdentifier
+id|U8
+id|DiskIdentifier
 (braket
-id|MPI_RAIDVOLPAGE2_MAX_DISKS
+l_int|16
 )braket
 suffix:semicolon
-DECL|typedef|fCONFIG_PAGE_RAID_VOL_2
-DECL|typedef|PTR_CONFIG_PAGE_RAID_VOL_2
-)brace
-id|fCONFIG_PAGE_RAID_VOL_2
-comma
-id|MPI_POINTER
-id|PTR_CONFIG_PAGE_RAID_VOL_2
-comma
-DECL|typedef|RaidVolumePage2_t
-DECL|typedef|pRaidVolumePage2_t
-id|RaidVolumePage2_t
-comma
-id|MPI_POINTER
-id|pRaidVolumePage2_t
+multiline_comment|/* 18h */
+DECL|member|InquiryData
+id|RAID_PHYS_DISK0_INQUIRY_DATA
+id|InquiryData
 suffix:semicolon
-DECL|macro|MPI_RAIDVOLPAGE2_PAGEVERSION
-mdefine_line|#define MPI_RAIDVOLPAGE2_PAGEVERSION                    (0x00)
-multiline_comment|/* RAID Volume Page 2 VolumeStatus defines */
-DECL|macro|MPI_RAIDVOLPAGE2_STATUS_ENABLED
-mdefine_line|#define MPI_RAIDVOLPAGE2_STATUS_ENABLED                 (0x00000001)
-DECL|macro|MPI_RAIDVOLPAGE2_STATUS_QUIESCED
-mdefine_line|#define MPI_RAIDVOLPAGE2_STATUS_QUIESCED                (0x00000002)
-DECL|macro|MPI_RAIDVOLPAGE2_STATUS_RESYNC_IN_PROGRESS
-mdefine_line|#define MPI_RAIDVOLPAGE2_STATUS_RESYNC_IN_PROGRESS      (0x00000004)
-DECL|macro|MPI_RAIDVOLPAGE2_STATUS_DEGRADED
-mdefine_line|#define MPI_RAIDVOLPAGE2_STATUS_DEGRADED                (0x00000008)
-multiline_comment|/* RAID Volume Page 2 VolumeSettings defines */
-DECL|macro|MPI_RAIDVOLPAGE2_SETTING_WRITE_CACHING_ENABLE
-mdefine_line|#define MPI_RAIDVOLPAGE2_SETTING_WRITE_CACHING_ENABLE   (0x00000001)
-DECL|macro|MPI_RAIDVOLPAGE2_SETTING_OFFLINE_ON_SMART
-mdefine_line|#define MPI_RAIDVOLPAGE2_SETTING_OFFLINE_ON_SMART       (0x00000002)
-DECL|macro|MPI_RAIDVOLPAGE2_SETTING_AUTO_CONFIGURE
-mdefine_line|#define MPI_RAIDVOLPAGE2_SETTING_AUTO_CONFIGURE         (0x00000004)
-DECL|macro|MPI_RAIDVOLPAGE2_SETTING_USE_DEFAULTS
-mdefine_line|#define MPI_RAIDVOLPAGE2_SETTING_USE_DEFAULTS           (0x80000000)
-multiline_comment|/****************************************************************************/
-multiline_comment|/* LAN Config Pages                                                         */
-multiline_comment|/****************************************************************************/
+multiline_comment|/* 28h */
+DECL|member|PhysDiskStatus
+id|RAID_PHYS_DISK0_STATUS
+id|PhysDiskStatus
+suffix:semicolon
+multiline_comment|/* 64h */
+DECL|member|MaxLBA
+id|U32
+id|MaxLBA
+suffix:semicolon
+multiline_comment|/* 68h */
+DECL|member|ErrorData
+id|RAID_PHYS_DISK0_ERROR_DATA
+id|ErrorData
+suffix:semicolon
+multiline_comment|/* 6Ch */
+DECL|typedef|fCONFIG_PAGE_RAID_PHYS_DISK_0
+DECL|typedef|PTR_CONFIG_PAGE_RAID_PHYS_DISK_0
+)brace
+id|fCONFIG_PAGE_RAID_PHYS_DISK_0
+comma
+id|MPI_POINTER
+id|PTR_CONFIG_PAGE_RAID_PHYS_DISK_0
+comma
+DECL|typedef|RaidPhysDiskPage0_t
+DECL|typedef|pRaidPhysDiskPage0_t
+id|RaidPhysDiskPage0_t
+comma
+id|MPI_POINTER
+id|pRaidPhysDiskPage0_t
+suffix:semicolon
+DECL|macro|MPI_RAIDPHYSDISKPAGE0_PAGEVERSION
+mdefine_line|#define MPI_RAIDPHYSDISKPAGE0_PAGEVERSION           (0x00)
+multiline_comment|/****************************************************************************&n;*   LAN Config Pages&n;****************************************************************************/
 DECL|struct|_CONFIG_PAGE_LAN_0
 r_typedef
 r_struct
@@ -3011,14 +3540,14 @@ id|U32
 id|MaxReplySize
 suffix:semicolon
 multiline_comment|/* 24h */
-DECL|member|NegWireSpeedHigh
-id|U32
-id|NegWireSpeedHigh
-suffix:semicolon
-multiline_comment|/* 28h */
 DECL|member|NegWireSpeedLow
 id|U32
 id|NegWireSpeedLow
+suffix:semicolon
+multiline_comment|/* 28h */
+DECL|member|NegWireSpeedHigh
+id|U32
+id|NegWireSpeedHigh
 suffix:semicolon
 multiline_comment|/* 2Ch */
 DECL|typedef|fCONFIG_PAGE_LAN_1

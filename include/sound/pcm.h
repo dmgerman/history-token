@@ -149,7 +149,7 @@ r_struct
 id|_snd_pcm_runtime
 id|snd_pcm_runtime_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 macro_line|#include &quot;pcm_oss.h&quot;
 macro_line|#endif
 multiline_comment|/*&n; *  Hardware (lowlevel) section&n; */
@@ -1128,7 +1128,7 @@ r_int
 id|dma_bytes
 suffix:semicolon
 multiline_comment|/* size of DMA area */
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
 id|snd_pcm_oss_runtime_t
@@ -1255,7 +1255,7 @@ id|file
 op_star
 id|ffile
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
 id|snd_pcm_oss_substream_t
@@ -1294,7 +1294,7 @@ id|proc_prealloc_entry
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 DECL|macro|SUBSTREAM_BUSY
 mdefine_line|#define SUBSTREAM_BUSY(substream) ((substream)-&gt;file != NULL || ((substream)-&gt;oss.file != NULL))
 macro_line|#else
@@ -1331,7 +1331,7 @@ id|snd_pcm_substream_t
 op_star
 id|substream
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 multiline_comment|/* -- OSS things -- */
 DECL|member|oss
 id|snd_pcm_oss_stream_t
@@ -1437,7 +1437,7 @@ op_star
 id|pcm
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 DECL|member|oss
 id|snd_pcm_oss_t
 id|oss
@@ -3440,6 +3440,26 @@ id|format
 comma
 r_int
 id|samples
+)paren
+suffix:semicolon
+r_const
+r_char
+op_star
+id|snd_pcm_format_name
+c_func
+(paren
+id|snd_pcm_format_t
+id|format
+)paren
+suffix:semicolon
+r_const
+r_char
+op_star
+id|snd_pcm_subformat_name
+c_func
+(paren
+id|snd_pcm_subformat_t
+id|subformat
 )paren
 suffix:semicolon
 r_void

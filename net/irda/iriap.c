@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irttp.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 macro_line|#include &lt;net/irda/iriap_event.h&gt;
@@ -421,6 +420,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function iriap_cleanup (void)&n; *&n; *    Initializes the IrIAP layer, called by the module cleanup code in&n; *    irmod.c&n; */
 DECL|function|iriap_cleanup
 r_void
+id|__exit
 id|iriap_cleanup
 c_func
 (paren

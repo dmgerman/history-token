@@ -53,7 +53,7 @@ id|snd_card_rwlock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|variable|snd_mixer_oss_notify_callback
 r_int
 (paren
@@ -640,7 +640,7 @@ op_amp
 id|snd_card_rwlock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -868,6 +868,27 @@ op_amp
 id|snd_card_rwlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|snd_cards
+(braket
+id|card-&gt;number
+)braket
+)paren
+(brace
+multiline_comment|/* already registered */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|snd_card_rwlock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|snd_cards
 (braket
 id|card-&gt;number
@@ -885,7 +906,7 @@ op_amp
 id|snd_card_rwlock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 r_if
 c_cond
 (paren

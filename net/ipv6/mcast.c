@@ -73,6 +73,7 @@ op_star
 id|ma
 )paren
 suffix:semicolon
+r_static
 r_void
 id|igmp6_timer_handler
 c_func
@@ -2126,6 +2127,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|igmp6_send
+r_static
 r_void
 id|igmp6_send
 c_func
@@ -2787,6 +2789,7 @@ id|ma-&gt;mca_lock
 suffix:semicolon
 )brace
 DECL|function|igmp6_timer_handler
+r_static
 r_void
 id|igmp6_timer_handler
 c_func

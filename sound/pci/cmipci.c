@@ -361,8 +361,8 @@ DECL|macro|CM_AC3EN1
 mdefine_line|#define CM_AC3EN1&t;&t;0x00100000&t;/* enable AC3: model 037 */
 DECL|macro|CM_SPD24SEL
 mdefine_line|#define CM_SPD24SEL&t;&t;0x00020000&t;/* 24bit spdif: model 037 */
-DECL|macro|CM_SPDIF_INVERSE
-mdefine_line|#define CM_SPDIF_INVERSE&t;0x00010000
+multiline_comment|/* #define CM_SPDIF_INVERSE&t;0x00010000 */
+multiline_comment|/* ??? */
 DECL|macro|CM_ADCBITLEN_MASK
 mdefine_line|#define CM_ADCBITLEN_MASK&t;0x0000C000&t;
 DECL|macro|CM_ADCBITLEN_16
@@ -616,8 +616,9 @@ DECL|macro|CM_REG_MISC
 mdefine_line|#define CM_REG_MISC&t;&t;0x27
 DECL|macro|CM_XGPO1
 mdefine_line|#define CM_XGPO1&t;&t;0x20
-DECL|macro|CM_XGPBIO
-mdefine_line|#define CM_XGPBIO&t;&t;0x04
+singleline_comment|// #define CM_XGPBIO&t;&t;0x04
+DECL|macro|CM_SPDIF_INVERSE
+mdefine_line|#define CM_SPDIF_INVERSE&t;0x04&t;/* spdif input phase inverse (model 037) */
 DECL|macro|CM_SPDVALID
 mdefine_line|#define CM_SPDVALID&t;&t;0x02&t;/* spdif input valid check */
 DECL|macro|CM_DMAUTO
@@ -8787,7 +8788,7 @@ id|CM_VAUXLM_SHIFT
 comma
 id|CM_VAUXRM_SHIFT
 comma
-l_int|1
+l_int|0
 )paren
 comma
 id|CMIPCI_MIXER_SW_STEREO
@@ -9518,16 +9519,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* DEFINE_BIT_SWITCH_ARG(spdi_phase, CM_REG_CHFORMAT, CM_SPDIF_INVERSE, 0, 0); */
 id|DEFINE_BIT_SWITCH_ARG
 c_func
 (paren
 id|spdi_phase
 comma
-id|CM_REG_CHFORMAT
+id|CM_REG_MISC
 comma
 id|CM_SPDIF_INVERSE
 comma
-l_int|0
+l_int|1
 comma
 l_int|0
 )paren

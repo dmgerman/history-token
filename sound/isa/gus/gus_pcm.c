@@ -3716,7 +3716,7 @@ id|rates
 suffix:colon
 id|SNDRV_PCM_RATE_CONTINUOUS
 op_or
-id|SNDRV_PCM_RATE_8000_44100
+id|SNDRV_PCM_RATE_8000_48000
 comma
 id|rate_min
 suffix:colon

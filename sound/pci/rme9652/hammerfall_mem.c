@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    ALSA memory allocation module for the RME Digi9652&n;  &n; &t;Copyright(c) 1999 IEM - Winfried Ritsch&n;        Copyright (C) 1999 Paul Barton-Davis &n;&n;    This module is only needed if you compiled the rme9652 driver with&n;    the PREALLOCATE_MEMORY option. It allocates the memory need to&n;    run the board and holds it until the module is unloaded. Because&n;    we need 2 contiguous 1.6MB regions for the board, it can be&n;    a problem getting them once the system memory has become fairly&n;    fragmented. &n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;&n;    $Id: rme9652_mem.c,v 1.6 2002/02/04 10:21:33 tiwai Exp $&n;&n;&n;    Tue Oct 17 2000  Jaroslav Kysela &lt;perex@suse.cz&gt;&n;    &t;* space is allocated only for physical devices&n;        * added support for 2.4 kernels (pci_alloc_consistent)&n;    &n;*/
+multiline_comment|/* &n;    ALSA memory allocation module for the RME Digi9652&n;  &n; &t;Copyright(c) 1999 IEM - Winfried Ritsch&n;        Copyright (C) 1999 Paul Barton-Davis &n;&n;    This module is only needed if you compiled the hammerfall driver with&n;    the PREALLOCATE_MEMORY option. It allocates the memory need to&n;    run the board and holds it until the module is unloaded. Because&n;    we need 2 contiguous 1.6MB regions for the board, it can be&n;    a problem getting them once the system memory has become fairly&n;    fragmented. &n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;&n;    $Id: hammerfall_mem.c,v 1.2 2002/06/19 08:52:11 perex Exp $&n;&n;&n;    Tue Oct 17 2000  Jaroslav Kysela &lt;perex@suse.cz&gt;&n;    &t;* space is allocated only for physical devices&n;        * added support for 2.4 kernels (pci_alloc_consistent)&n;    &n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -6,12 +6,12 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|RME9652_CARDS
-mdefine_line|#define RME9652_CARDS&t;&t;&t;8
-DECL|macro|RME9652_CHANNEL_BUFFER_SAMPLES
-mdefine_line|#define RME9652_CHANNEL_BUFFER_SAMPLES  (16*1024)
-DECL|macro|RME9652_CHANNEL_BUFFER_BYTES
-mdefine_line|#define RME9652_CHANNEL_BUFFER_BYTES    (4*RME9652_CHANNEL_BUFFER_SAMPLES)
+DECL|macro|HAMMERFALL_CARDS
+mdefine_line|#define HAMMERFALL_CARDS&t;&t;&t;8
+DECL|macro|HAMMERFALL_CHANNEL_BUFFER_SAMPLES
+mdefine_line|#define HAMMERFALL_CHANNEL_BUFFER_SAMPLES  (16*1024)
+DECL|macro|HAMMERFALL_CHANNEL_BUFFER_BYTES
+mdefine_line|#define HAMMERFALL_CHANNEL_BUFFER_BYTES    (4*HAMMERFALL_CHANNEL_BUFFER_SAMPLES)
 multiline_comment|/* export */
 DECL|variable|snd_enable
 r_static
@@ -48,7 +48,7 @@ l_string|&quot;1-&quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|RME9652_CARDS
+id|HAMMERFALL_CARDS
 )paren
 l_string|&quot;i&quot;
 )paren
@@ -85,24 +85,24 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Since we don&squot;t know at this point if we&squot;re allocating memory for a&n;   Hammerfall or a Hammerfall/Light, assume the worst and allocate&n;   space for the maximum number of channels.&n;&t;&t;   &n;   See note in rme9652.h about why we allocate for an extra channel.  &n;*/
+multiline_comment|/* Since we don&squot;t know at this point if we&squot;re allocating memory for a&n;   Hammerfall or a Hammerfall/Light, assume the worst and allocate&n;   space for the maximum number of channels.&n;&n;   The extra channel is allocated because we need a 64kB-aligned&n;   buffer in the actual interface driver code (see rme9652.c or hdsp.c&n;   for details)&n;*/
 DECL|macro|TOTAL_SIZE
-mdefine_line|#define TOTAL_SIZE (26+1)*(RME9652_CHANNEL_BUFFER_BYTES)
+mdefine_line|#define TOTAL_SIZE (26+1)*(HAMMERFALL_CHANNEL_BUFFER_BYTES)
 DECL|macro|NBUFS
-mdefine_line|#define NBUFS   2*RME9652_CARDS
-DECL|macro|RME9652_BUF_ALLOCATED
-mdefine_line|#define RME9652_BUF_ALLOCATED 0x1
-DECL|macro|RME9652_BUF_USED
-mdefine_line|#define RME9652_BUF_USED      0x2
-DECL|typedef|rme9652_buf_t
+mdefine_line|#define NBUFS   2*HAMMERFALL_CARDS
+DECL|macro|HAMMERFALL_BUF_ALLOCATED
+mdefine_line|#define HAMMERFALL_BUF_ALLOCATED 0x1
+DECL|macro|HAMMERFALL_BUF_USED
+mdefine_line|#define HAMMERFALL_BUF_USED      0x2
+DECL|typedef|hammerfall_buf_t
 r_typedef
 r_struct
-id|rme9652_buf_stru
-id|rme9652_buf_t
+id|hammerfall_buf_stru
+id|hammerfall_buf_t
 suffix:semicolon
-DECL|struct|rme9652_buf_stru
+DECL|struct|hammerfall_buf_stru
 r_struct
-id|rme9652_buf_stru
+id|hammerfall_buf_stru
 (brace
 DECL|member|pci
 r_struct
@@ -125,25 +125,25 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|rme9652_buffers
+DECL|variable|hammerfall_buffers
 r_static
-id|rme9652_buf_t
-id|rme9652_buffers
+id|hammerfall_buf_t
+id|hammerfall_buffers
 (braket
 id|NBUFS
 )braket
 suffix:semicolon
-multiline_comment|/* These are here so that we have absolutely no dependencies on any&n;   other modules. Dependencies can (1) cause us to lose in the rush&n;   for 2x 1.6MB chunks of contiguous memory and (2) make driver&n;   debugging difficult because unloading and reloading the snd module&n;   causes us to have to do the same for this one. Since on 2.2&n;   kernels, and before, we can rarely if ever allocate memory after&n;   starting things running, this would be bad.&n;*/
+multiline_comment|/* These are here so that we have absolutely no dependencies&n;   on any other modules. Dependencies can (1) cause us to&n;   lose in the rush for 2x1.6MB chunks of contiguous memory&n;   and (2) make driver debugging difficult because unloading&n;   and reloading the snd module causes us to have to do the&n;   same for this one. Since we can rarely if ever allocate&n;   memory after starting things running, that would be very&n;   undesirable.  &n;*/
 multiline_comment|/* remove hack for pci_alloc_consistent to avoid dependecy on snd module */
 macro_line|#ifdef HACK_PCI_ALLOC_CONSISTENT
 DECL|macro|pci_alloc_consistent
 macro_line|#undef pci_alloc_consistent
 macro_line|#endif
-DECL|function|rme9652_malloc_pages
+DECL|function|hammerfall_malloc_pages
 r_static
 r_void
 op_star
-id|rme9652_malloc_pages
+id|hammerfall_malloc_pages
 c_func
 (paren
 r_struct
@@ -299,10 +299,10 @@ r_return
 id|res
 suffix:semicolon
 )brace
-DECL|function|rme9652_free_pages
+DECL|function|hammerfall_free_pages
 r_static
 r_void
-id|rme9652_free_pages
+id|hammerfall_free_pages
 c_func
 (paren
 r_struct
@@ -441,7 +441,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;rme9652_free_pages: dmaaddr != ptr&bslash;n&quot;
+l_string|&quot;hammerfall_free_pages: dmaaddr != ptr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -462,13 +462,15 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|function|snd_rme9652_get_buffer
+DECL|function|snd_hammerfall_get_buffer
 r_void
 op_star
-id|snd_rme9652_get_buffer
+id|snd_hammerfall_get_buffer
 (paren
-r_int
-id|card
+r_struct
+id|pci_dev
+op_star
+id|pcidev
 comma
 id|dma_addr_t
 op_star
@@ -478,51 +480,20 @@ id|dmaaddr
 r_int
 id|i
 suffix:semicolon
-id|rme9652_buf_t
+id|hammerfall_buf_t
 op_star
 id|rbuf
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|card
-OL
-l_int|0
-op_logical_or
-id|card
-op_ge
-id|RME9652_CARDS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;snd_rme9652_get_buffer: card %d is out of range&quot;
-comma
-id|card
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|card
-op_star
-l_int|2
+l_int|0
 suffix:semicolon
 id|i
 OL
-id|card
-op_star
-l_int|2
-op_plus
-l_int|2
+id|NBUFS
 suffix:semicolon
 id|i
 op_increment
@@ -531,7 +502,7 @@ op_increment
 id|rbuf
 op_assign
 op_amp
-id|rme9652_buffers
+id|hammerfall_buffers
 (braket
 id|i
 )braket
@@ -541,12 +512,16 @@ c_cond
 (paren
 id|rbuf-&gt;flags
 op_eq
-id|RME9652_BUF_ALLOCATED
+id|HAMMERFALL_BUF_ALLOCATED
 )paren
 (brace
 id|rbuf-&gt;flags
 op_or_assign
-id|RME9652_BUF_USED
+id|HAMMERFALL_BUF_USED
+suffix:semicolon
+id|rbuf-&gt;pci
+op_assign
+id|pcidev
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -564,12 +539,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|snd_rme9652_free_buffer
+DECL|function|snd_hammerfall_free_buffer
 r_void
-id|snd_rme9652_free_buffer
+id|snd_hammerfall_free_buffer
 (paren
-r_int
-id|card
+r_struct
+id|pci_dev
+op_star
+id|pcidev
 comma
 r_void
 op_star
@@ -579,50 +556,20 @@ id|addr
 r_int
 id|i
 suffix:semicolon
-id|rme9652_buf_t
+id|hammerfall_buf_t
 op_star
 id|rbuf
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|card
-OL
-l_int|0
-op_logical_or
-id|card
-op_ge
-id|RME9652_CARDS
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;snd_rme9652_get_buffer: card %d is out of range&quot;
-comma
-id|card
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|card
-op_star
-l_int|2
+l_int|0
 suffix:semicolon
 id|i
 OL
-id|card
-op_star
-l_int|2
-op_plus
-l_int|2
+id|NBUFS
 suffix:semicolon
 id|i
 op_increment
@@ -631,7 +578,7 @@ op_increment
 id|rbuf
 op_assign
 op_amp
-id|rme9652_buffers
+id|hammerfall_buffers
 (braket
 id|i
 )braket
@@ -642,6 +589,10 @@ c_cond
 id|rbuf-&gt;buf
 op_eq
 id|addr
+op_logical_and
+id|rbuf-&gt;pci
+op_eq
+id|pcidev
 )paren
 (brace
 id|MOD_DEC_USE_COUNT
@@ -649,7 +600,7 @@ suffix:semicolon
 id|rbuf-&gt;flags
 op_and_assign
 op_complement
-id|RME9652_BUF_USED
+id|HAMMERFALL_BUF_USED
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -657,15 +608,15 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;RME9652 memory allocator: unknown buffer address passed to free buffer&quot;
+l_string|&quot;Hammerfall memory allocator: unknown buffer address or PCI device ID&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|rme9652_free_buffers
+DECL|function|hammerfall_free_buffers
 r_static
 r_void
 id|__exit
-id|rme9652_free_buffers
+id|hammerfall_free_buffers
 (paren
 r_void
 )paren
@@ -673,7 +624,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|rme9652_buf_t
+id|hammerfall_buf_t
 op_star
 id|rbuf
 suffix:semicolon
@@ -696,7 +647,7 @@ multiline_comment|/* We rely on general module code to prevent&n;&t;&t;   us fro
 id|rbuf
 op_assign
 op_amp
-id|rme9652_buffers
+id|hammerfall_buffers
 (braket
 id|i
 )braket
@@ -706,10 +657,10 @@ c_cond
 (paren
 id|rbuf-&gt;flags
 op_eq
-id|RME9652_BUF_ALLOCATED
+id|HAMMERFALL_BUF_ALLOCATED
 )paren
 (brace
-id|rme9652_free_pages
+id|hammerfall_free_pages
 (paren
 id|rbuf-&gt;pci
 comma
@@ -731,11 +682,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|alsa_rme9652_mem_init
+DECL|function|alsa_hammerfall_mem_init
 r_static
 r_int
 id|__init
-id|alsa_rme9652_mem_init
+id|alsa_hammerfall_mem_init
 c_func
 (paren
 r_void
@@ -749,7 +700,7 @@ id|pci_dev
 op_star
 id|pci
 suffix:semicolon
-id|rme9652_buf_t
+id|hammerfall_buf_t
 op_star
 id|rbuf
 suffix:semicolon
@@ -772,7 +723,7 @@ op_increment
 id|rbuf
 op_assign
 op_amp
-id|rme9652_buffers
+id|hammerfall_buffers
 (braket
 id|i
 )braket
@@ -799,7 +750,7 @@ suffix:semicolon
 multiline_comment|/* card number */
 id|rbuf
 op_assign
-id|rme9652_buffers
+id|hammerfall_buffers
 suffix:semicolon
 id|pci_for_each_dev
 c_func
@@ -810,6 +761,7 @@ id|pci
 r_int
 id|k
 suffix:semicolon
+multiline_comment|/* check for Hammerfall and Hammerfall DSP cards */
 r_if
 c_cond
 (paren
@@ -817,9 +769,15 @@ id|pci-&gt;vendor
 op_ne
 l_int|0x10ee
 op_logical_or
+(paren
 id|pci-&gt;device
 op_ne
 l_int|0x3fc4
+op_logical_and
+id|pci-&gt;device
+op_ne
+l_int|0x3fc5
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -851,7 +809,7 @@ id|k
 (brace
 id|rbuf-&gt;buf
 op_assign
-id|rme9652_malloc_pages
+id|hammerfall_malloc_pages
 c_func
 (paren
 id|pci
@@ -870,7 +828,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|rme9652_free_buffers
+id|hammerfall_free_buffers
 c_func
 (paren
 )paren
@@ -879,7 +837,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;RME9652 memory allocator: no memory available for card %d buffer %d&bslash;n&quot;
+l_string|&quot;Hammerfall memory allocator: no memory available for card %d buffer %d&bslash;n&quot;
 comma
 id|i
 comma
@@ -895,7 +853,7 @@ suffix:semicolon
 )brace
 id|rbuf-&gt;flags
 op_assign
-id|RME9652_BUF_ALLOCATED
+id|HAMMERFALL_BUF_ALLOCATED
 suffix:semicolon
 id|rbuf
 op_increment
@@ -916,24 +874,36 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;RME9652 memory allocator: no RME9652 card found...&bslash;n&quot;
+l_string|&quot;Hammerfall memory allocator: &quot;
+l_string|&quot;no Hammerfall cards found...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Hammerfall memory allocator: &quot;
+l_string|&quot;buffers allocated for %d cards&bslash;n&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|alsa_rme9652_mem_exit
+DECL|function|alsa_hammerfall_mem_exit
 r_static
 r_void
 id|__exit
-id|alsa_rme9652_mem_exit
+id|alsa_hammerfall_mem_exit
 c_func
 (paren
 r_void
 )paren
 (brace
-id|rme9652_free_buffers
+id|hammerfall_free_buffers
 c_func
 (paren
 )paren
@@ -942,24 +912,24 @@ suffix:semicolon
 id|module_init
 c_func
 (paren
-id|alsa_rme9652_mem_init
+id|alsa_hammerfall_mem_init
 )paren
 id|module_exit
 c_func
 (paren
-id|alsa_rme9652_mem_exit
+id|alsa_hammerfall_mem_exit
 )paren
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|snd_rme9652_get_buffer
+id|snd_hammerfall_get_buffer
 )paren
 suffix:semicolon
 DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|snd_rme9652_free_buffer
+id|snd_hammerfall_free_buffer
 )paren
 suffix:semicolon
 eof

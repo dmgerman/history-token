@@ -1,12 +1,16 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/isense.c&n; *      Little linux driver / shim that interfaces with the Fusion MPT&n; *      Linux base driver to provide english readable strings in SCSI&n; *      Error Report logging output.  This module implements SCSI-3&n; *      Opcode lookup and a sorted table of SCSI-3 ASC/ASCQ strings.&n; *&n; *  Copyright (c) 1991-2001 Steven J. Ralston&n; *  Written By: Steven J. Ralston&n; *  (yes I wrote some of the orig. code back in 1991!)&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: isense.c,v 1.28.14.1 2001/08/24 20:07:04 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/isense.c&n; *      Little linux driver / shim that interfaces with the Fusion MPT&n; *      Linux base driver to provide english readable strings in SCSI&n; *      Error Report logging output.  This module implements SCSI-3&n; *      Opcode lookup and a sorted table of SCSI-3 ASC/ASCQ strings.&n; *&n; *  Copyright (c) 1991-2002 Steven J. Ralston&n; *  Written By: Steven J. Ralston&n; *  (yes I wrote some of the orig. code back in 1991!)&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: isense.c,v 1.33 2002/02/27 18:44:19 sralston Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#if defined (__sparc__)
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#endif
 multiline_comment|/* Hmmm, avoid undefined spinlock_t on lk-2.2.14-5.0 */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
 macro_line|#include &lt;asm/spinlock.h&gt;
@@ -14,7 +18,7 @@ macro_line|#endif
 DECL|macro|MODULEAUTHOR
 mdefine_line|#define MODULEAUTHOR &quot;Steven J. Ralston&quot;
 DECL|macro|COPYRIGHT
-mdefine_line|#define COPYRIGHT &quot;Copyright (c) 2001 &quot; MODULEAUTHOR
+mdefine_line|#define COPYRIGHT &quot;Copyright (c) 2001-2002 &quot; MODULEAUTHOR
 macro_line|#include &quot;mptbase.h&quot;
 macro_line|#include &quot;isense.h&quot;
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -29,6 +33,8 @@ DECL|macro|my_VERSION
 mdefine_line|#define my_VERSION&t;MPT_LINUX_VERSION_COMMON
 DECL|macro|MYNAM
 mdefine_line|#define MYNAM&t;&t;&quot;isense&quot;
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 DECL|variable|MODULEAUTHOR
 id|MODULE_AUTHOR
 c_func
@@ -41,12 +47,6 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|my_NAME
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

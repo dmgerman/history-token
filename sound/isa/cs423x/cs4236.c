@@ -1178,6 +1178,23 @@ comma
 l_int|0xa803
 )paren
 comma
+multiline_comment|/* TerraTec AudioSystem EWS64XL - CS4236B */
+id|ISAPNP_CS4232_WOMPU
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_int|0xa836
+comma
+l_int|0xa800
+comma
+l_int|0xa810
+)paren
+comma
 multiline_comment|/* Crystal Semiconductors CS4237B */
 id|ISAPNP_CS4232
 c_func
@@ -1453,6 +1470,25 @@ comma
 l_int|0x0100
 comma
 l_int|0x0110
+)paren
+comma
+multiline_comment|/* Some noname CS4236 based card */
+id|ISAPNP_CS4232
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_int|0xe936
+comma
+l_int|0x0000
+comma
+l_int|0x0010
+comma
+l_int|0x0003
 )paren
 comma
 multiline_comment|/* CS4236B */
@@ -2059,6 +2095,19 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* CTRL initialization */
+r_if
+c_cond
+(paren
+id|acard-&gt;ctrl
+op_logical_and
+id|snd_cport
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
+)paren
+(brace
 id|pdev
 op_assign
 id|acard-&gt;ctrl
@@ -2175,6 +2224,7 @@ id|dev
 )braket
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* MPU initialization */
 r_if
 c_cond

@@ -5,6 +5,7 @@ mdefine_line|#define IRCOMM_TTY_H
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;&t;&t;/* struct tty_struct */
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 macro_line|#include &lt;net/irda/ircomm_core.h&gt;
 macro_line|#include &lt;net/irda/ircomm_param.h&gt;

@@ -15853,7 +15853,7 @@ id|xmit_skb
 id|dev_kfree_skb
 c_func
 (paren
-id|skb
+id|xmit_skb
 )paren
 suffix:semicolon
 r_if

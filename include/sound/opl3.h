@@ -8,7 +8,7 @@ macro_line|#include &quot;core.h&quot;
 macro_line|#include &quot;hwdep.h&quot;
 macro_line|#include &quot;timer.h&quot;
 macro_line|#include &quot;seq_midi_emul.h&quot;
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 macro_line|#include &quot;seq_oss.h&quot;
 macro_line|#include &quot;seq_oss_legacy.h&quot;
 macro_line|#endif
@@ -369,7 +369,7 @@ id|snd_midi_channel_set_t
 op_star
 id|chset
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 DECL|member|oss_seq_dev
 id|snd_seq_device_t
 op_star

@@ -136,7 +136,7 @@ id|CAP_FOWNER
 )paren
 r_return
 op_minus
-id|EPERM
+id|EACCES
 suffix:semicolon
 r_if
 c_cond

@@ -3338,6 +3338,16 @@ suffix:semicolon
 )brace
 id|no_mmaps
 suffix:colon
+r_if
+c_cond
+(paren
+id|last
+OL
+id|first
+)paren
+multiline_comment|/* needed for arches with discontiguous pgd indices */
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the PGD bits are not consecutive in the virtual address, the&n;&t; * old method of shifting the VA &gt;&gt; by PGDIR_SHIFT doesn&squot;t work.&n;&t; */
 id|start_index
 op_assign

@@ -5,7 +5,7 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.35 2001/08/12 17:22:20 mds Exp $ */
+multiline_comment|/* $Id: i2c-id.h,v 1.41 2002/03/11 07:18:55 simon Exp $ */
 macro_line|#ifndef I2C_ID_H
 DECL|macro|I2C_ID_H
 mdefine_line|#define I2C_ID_H
@@ -101,6 +101,8 @@ DECL|macro|I2C_DRIVERID_SP5055
 mdefine_line|#define I2C_DRIVERID_SP5055&t;44     /* Satellite tuner&t;&t;*/
 DECL|macro|I2C_DRIVERID_STV0030
 mdefine_line|#define I2C_DRIVERID_STV0030&t;45     /* Multipurpose switch&t;&t;*/
+DECL|macro|I2C_DRIVERID_SAA7108
+mdefine_line|#define I2C_DRIVERID_SAA7108    46     /* video decoder, image scaler   */
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -166,6 +168,12 @@ DECL|macro|I2C_DRIVERID_IT87
 mdefine_line|#define I2C_DRIVERID_IT87 1026
 DECL|macro|I2C_DRIVERID_CH700X
 mdefine_line|#define I2C_DRIVERID_CH700X 1027 /* single driver for CH7003-7009 digital pc to tv encoders */
+DECL|macro|I2C_DRIVERID_FSCPOS
+mdefine_line|#define I2C_DRIVERID_FSCPOS 1028
+DECL|macro|I2C_DRIVERID_FSCSCY
+mdefine_line|#define I2C_DRIVERID_FSCSCY 1029
+DECL|macro|I2C_DRIVERID_PCF8591
+mdefine_line|#define I2C_DRIVERID_PCF8591 1030
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -183,6 +191,10 @@ DECL|macro|I2C_ALGO_SAA7146
 mdefine_line|#define I2C_ALGO_SAA7146 0x060000&t;/* SAA 7146 video decoder bus&t;*/
 DECL|macro|I2C_ALGO_ACB
 mdefine_line|#define I2C_ALGO_ACB &t;0x070000&t;/* ACCESS.bus algorithm         */
+DECL|macro|I2C_ALGO_IIC
+mdefine_line|#define I2C_ALGO_IIC    0x080000 &t;/* ITE IIC bus */
+DECL|macro|I2C_ALGO_SAA7134
+mdefine_line|#define I2C_ALGO_SAA7134 0x090000
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -244,6 +256,9 @@ mdefine_line|#define I2C_HW_ACPI_EC          0x00
 multiline_comment|/* --- MPC8xx PowerPC adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_MPC8XX_EPON
 mdefine_line|#define I2C_HW_MPC8XX_EPON 0x00&t;/* Eponymous MPC8xx I2C adapter &t;*/
+multiline_comment|/* --- ITE based algorithms&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_I_IIC
+mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00

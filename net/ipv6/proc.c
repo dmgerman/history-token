@@ -188,6 +188,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|struct|snmp6_item
+r_static
 r_struct
 id|snmp6_item
 (brace

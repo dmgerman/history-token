@@ -3,7 +3,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-core.c,v 1.64 2001/08/13 01:35:56 mds Exp $ */
+multiline_comment|/* $Id: i2c-core.c,v 1.73 2002/03/03 17:37:44 mds Exp $ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -364,6 +364,7 @@ id|proc_entry
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: Could not create /proc/bus/%s&bslash;n&quot;
 comma
 id|name
@@ -477,6 +478,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: adapter %s registered as adapter %d.&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -576,6 +578,7 @@ id|i
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;i2c-core.o: unregister_adapter adap [%s] not found.&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -651,6 +654,7 @@ id|adap
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;i2c-core.o: can&squot;t detach adapter %s &quot;
 l_string|&quot;while detaching driver %s: driver not &quot;
 l_string|&quot;detached!&quot;
@@ -727,6 +731,7 @@ id|client
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: adapter %s not &quot;
 l_string|&quot;unregistered, because client at &quot;
 l_string|&quot;address %02x can&squot;t be detached. &quot;
@@ -795,6 +800,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: adapter unregistered: %s&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -921,6 +927,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: driver %s registered.&bslash;n&quot;
 comma
 id|driver-&gt;name
@@ -1077,6 +1084,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: unregister_driver - looking for clients.&bslash;n&quot;
 )paren
 )paren
@@ -1129,6 +1137,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: examining adapter %s:&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -1163,6 +1172,7 @@ id|adap
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;i2c-core.o: while unregistering &quot;
 l_string|&quot;dummy driver %s, adapter %s could &quot;
 l_string|&quot;not be detached properly; driver &quot;
@@ -1254,6 +1264,7 @@ id|client
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: while &quot;
 l_string|&quot;unregistering driver &quot;
 l_string|&quot;`%s&squot;, the client at &quot;
@@ -1308,6 +1319,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: driver unregistered: %s&bslash;n&quot;
 comma
 id|driver-&gt;name
@@ -1488,6 +1500,7 @@ id|client
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: warning: client_register seems &quot;
 l_string|&quot;to have failed for client %02x at adapter %s&bslash;n&quot;
 comma
@@ -1502,6 +1515,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: client [%s] registered to adapter [%s](pos. %d).&bslash;n&quot;
 comma
 id|client-&gt;name
@@ -1648,6 +1662,7 @@ id|client
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: client_unregister [%s] failed, &quot;
 l_string|&quot;client not detached&quot;
 comma
@@ -1674,6 +1689,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: client [%s] unregistered.&bslash;n&quot;
 comma
 id|client-&gt;name
@@ -2496,7 +2512,7 @@ c_cond
 (paren
 id|count
 OG
-l_int|4000
+l_int|4096
 )paren
 r_return
 op_minus
@@ -2514,11 +2530,11 @@ c_cond
 (paren
 id|len_total
 OG
-l_int|4000
+l_int|4096
 )paren
 id|len_total
 op_assign
-l_int|4000
+l_int|4096
 suffix:semicolon
 r_for
 c_loop
@@ -2832,6 +2848,7 @@ id|proc_bus
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: /proc/bus/ does not exist&quot;
 )paren
 suffix:semicolon
@@ -2867,6 +2884,7 @@ id|proc_bus_i2c
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: Could not create /proc/bus/i2c&quot;
 )paren
 suffix:semicolon
@@ -2975,6 +2993,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: master_xfer: %s with %d msgs.&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -3018,6 +3037,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
 comma
 id|adap-&gt;id
@@ -3097,6 +3117,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: master_send: writing %d bytes on %s.&bslash;n&quot;
 comma
 id|count
@@ -3151,6 +3172,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
 comma
 id|client-&gt;adapter-&gt;id
@@ -3228,6 +3250,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: master_recv: reading %d bytes on %s.&bslash;n&quot;
 comma
 id|count
@@ -3269,6 +3292,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: master_recv: return:%d (count:%d, addr:0x%02x)&bslash;n&quot;
 comma
 id|ret
@@ -3298,6 +3322,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
 comma
 id|client-&gt;adapter-&gt;id
@@ -3346,6 +3371,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: i2c ioctl, cmd: 0x%x, arg: %#lx&bslash;n&quot;
 comma
 id|cmd
@@ -3563,6 +3589,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found force parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adap_id
@@ -3674,6 +3701,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found ignore parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3767,6 +3795,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found ignore_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3835,6 +3864,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found normal i2c entry for adapter %d, &quot;
 l_string|&quot;addr %02x&quot;
 comma
@@ -3904,6 +3934,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found normal i2c_range entry for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -3986,6 +4017,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found probe parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -4077,6 +4109,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-core.o: found probe_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
@@ -4758,6 +4791,98 @@ id|data
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Returns the number of read bytes */
+DECL|function|i2c_smbus_read_i2c_block_data
+r_extern
+id|s32
+id|i2c_smbus_read_i2c_block_data
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+id|u8
+id|command
+comma
+id|u8
+op_star
+id|values
+)paren
+(brace
+r_union
+id|i2c_smbus_data
+id|data
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i2c_smbus_xfer
+c_func
+(paren
+id|client-&gt;adapter
+comma
+id|client-&gt;addr
+comma
+id|client-&gt;flags
+comma
+id|I2C_SMBUS_READ
+comma
+id|command
+comma
+id|I2C_SMBUS_I2C_BLOCK_DATA
+comma
+op_amp
+id|data
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_else
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+op_le
+id|data.block
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|values
+(braket
+id|i
+op_minus
+l_int|1
+)braket
+op_assign
+id|data.block
+(braket
+id|i
+)braket
+suffix:semicolon
+r_return
+id|data.block
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+)brace
 DECL|function|i2c_smbus_write_i2c_block_data
 r_extern
 id|s32
@@ -5188,6 +5313,7 @@ id|I2C_SMBUS_READ
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: Block read not supported under &quot;
 l_string|&quot;I2C emulation!&bslash;n&quot;
 )paren
@@ -5229,15 +5355,14 @@ l_int|34
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: smbus_access called with &quot;
 l_string|&quot;invalid block write size (%d)&bslash;n&quot;
 comma
-id|msg
+id|data-&gt;block
 (braket
 l_int|0
 )braket
-dot
-id|len
 )paren
 suffix:semicolon
 r_return
@@ -5279,11 +5404,111 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|I2C_SMBUS_I2C_BLOCK_DATA
+suffix:colon
+r_if
+c_cond
+(paren
+id|read_write
+op_eq
+id|I2C_SMBUS_READ
+)paren
+(brace
+id|msg
+(braket
+l_int|1
+)braket
+dot
+id|len
+op_assign
+l_int|32
+suffix:semicolon
+)brace
+r_else
+(brace
+id|msg
+(braket
+l_int|0
+)braket
+dot
+id|len
+op_assign
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+op_plus
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg
+(braket
+l_int|0
+)braket
+dot
+id|len
+OG
+l_int|34
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-core.o: i2c_smbus_xfer_emulated called with &quot;
+l_string|&quot;invalid block write size (%d)&bslash;n&quot;
+comma
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|msgbuf0
+(braket
+id|i
+)braket
+op_assign
+id|data-&gt;block
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-core.o: smbus_access called with invalid size (%d)&bslash;n&quot;
 comma
 id|size
@@ -5371,6 +5596,45 @@ l_int|1
 op_lshift
 l_int|8
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|I2C_SMBUS_I2C_BLOCK_DATA
+suffix:colon
+multiline_comment|/* fixed at 32 for now */
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+op_assign
+l_int|32
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|32
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|data-&gt;block
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+op_assign
+id|msgbuf1
+(braket
+id|i
+)braket
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5560,7 +5824,12 @@ r_void
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-core.o: i2c core module&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2c-core.o: i2c core module version %s (%s)&bslash;n&quot;
+comma
+id|I2C_VERSION
+comma
+id|I2C_DATE
 )paren
 suffix:semicolon
 id|memset
@@ -6030,6 +6299,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|i2c_smbus_write_block_data
+)paren
+suffix:semicolon
+DECL|variable|i2c_smbus_read_i2c_block_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|i2c_smbus_read_i2c_block_data
+)paren
+suffix:semicolon
+DECL|variable|i2c_smbus_write_i2c_block_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|i2c_smbus_write_i2c_block_data
 )paren
 suffix:semicolon
 DECL|variable|i2c_get_functionality

@@ -9658,14 +9658,7 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|mp-&gt;synclist
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -10749,11 +10742,6 @@ c_func
 id|dip-&gt;di_nblocks
 )paren
 )paren
-suffix:semicolon
-id|ip-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|ip-&gt;i_generation
 op_assign

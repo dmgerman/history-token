@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Delay routines using a pre-computed &quot;cycles/usec&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 r_static
 id|__inline__
@@ -148,7 +149,7 @@ macro_line|#ifdef CONFIG_ITANIUM
 r_while
 c_loop
 (paren
-id|__builtin_expect
+id|unlikely
 (paren
 (paren
 id|__s32
@@ -157,9 +158,6 @@ id|result
 op_eq
 op_minus
 l_int|1
-comma
-l_int|0
-)paren
 )paren
 id|__asm__
 id|__volatile__

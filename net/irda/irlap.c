@@ -159,6 +159,7 @@ suffix:semicolon
 )brace
 DECL|function|irlap_cleanup
 r_void
+id|__exit
 id|irlap_cleanup
 c_func
 (paren

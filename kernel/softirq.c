@@ -73,12 +73,8 @@ c_func
 )paren
 (brace
 r_int
+r_int
 id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
 suffix:semicolon
 id|__u32
 id|pending
@@ -103,6 +99,13 @@ id|local_irq_save
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pending

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptlan.c&n; *      IP Over Fibre Channel device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 2000-2001 LSI Logic Corporation&n; *  Originally By: Noah Romer&n; *&n; *  $Id: mptlan.c,v 1.32.2.2 2001/07/12 19:43:33 nromer Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptlan.c&n; *      IP Over Fibre Channel device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 2000-2002 LSI Logic Corporation&n; *  Originally By: Noah Romer&n; *&n; *  $Id: mptlan.c,v 1.52 2002/05/06 13:45:07 sshirron Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -11,6 +11,12 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|MYNAM
 mdefine_line|#define MYNAM&t;&t;&quot;mptlan&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; * MPT LAN message sizes without variable part.&n; */
 DECL|macro|MPT_LAN_RECEIVE_POST_REQUEST_SIZE
@@ -85,7 +91,7 @@ DECL|member|bucketthresh
 r_int
 id|bucketthresh
 suffix:semicolon
-multiline_comment|/* Send more when this many used */
+multiline_comment|/* Send more when this many left */
 DECL|member|mpt_txfidx
 r_int
 op_star
@@ -263,6 +269,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|priority
 )paren
 suffix:semicolon
 r_static
@@ -405,6 +414,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#ifdef QLOGIC_NAA_WORKAROUND
 DECL|variable|mpt_bad_naa
 r_static
 r_struct
@@ -418,6 +428,7 @@ DECL|variable|bad_naa_lock
 id|rwlock_t
 id|bad_naa_lock
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; * Fusion MPT LAN external data&n; */
 r_extern
@@ -786,7 +797,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -836,6 +847,16 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|dlprintk
+(paren
+(paren
+id|KERN_INFO
+l_string|&quot;mptlan/ioc_reset: called netif_stop_queue for %s.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
 )paren
 suffix:semicolon
 id|atomic_set
@@ -929,7 +950,7 @@ op_star
 id|pEvReply
 )paren
 (brace
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1175,7 +1196,7 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1284,7 +1305,7 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1310,7 +1331,7 @@ id|i
 op_increment
 )paren
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1324,7 +1345,7 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1332,7 +1353,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1393,7 +1414,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1501,7 +1522,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&t;&t;dprintk((KERN_ERR MYNAM &quot;/reset: Evil funkiness abounds! &quot;&n;&t;&t;&quot;Unable to allocate a request frame.&bslash;n&quot;));&n;*/
+multiline_comment|/*&t;&t;dlprintk((KERN_ERR MYNAM &quot;/reset: Evil funkiness abounds! &quot;&n;&t;&t;&quot;Unable to allocate a request frame.&bslash;n&quot;));&n;*/
 r_return
 op_minus
 l_int|1
@@ -1591,7 +1612,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1607,7 +1628,7 @@ c_func
 id|LanCtx
 )paren
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1659,9 +1680,11 @@ op_decrement
 id|timeout
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -1699,7 +1722,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -1954,12 +1977,46 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|mpt_lan_priv
+op_star
+id|priv
+op_assign
+(paren
+r_struct
+id|mpt_lan_priv
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|MPT_ADAPTER
+op_star
+id|mpt_dev
+op_assign
+id|priv-&gt;mpt_dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpt_dev-&gt;active
+)paren
+(brace
+id|dlprintk
+(paren
+(paren
+l_string|&quot;mptlan/tx_timeout: calling netif_wake_queue for %s.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+)paren
+suffix:semicolon
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 singleline_comment|//static inline int
@@ -2213,6 +2270,8 @@ c_func
 (paren
 id|pSendRep-&gt;IOCStatus
 )paren
+op_amp
+id|MPI_IOCSTATUS_MASK
 )paren
 (brace
 r_case
@@ -2480,11 +2539,6 @@ suffix:semicolon
 r_int
 id|ctx
 suffix:semicolon
-r_struct
-id|NAA_Hosed
-op_star
-id|nh
-suffix:semicolon
 id|u16
 id|cur_naa
 op_assign
@@ -2572,12 +2626,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2751,6 +2799,13 @@ suffix:semicolon
 singleline_comment|//&t;dioprintk((KERN_INFO MYNAM &quot;: %s/%s: BC = %08x, skb = %p, buff = %p&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;IOC_AND_NETDEV_NAMES_s_s(dev),
 singleline_comment|//&t;&t;&t;ctx, skb, skb-&gt;data));
+macro_line|#ifdef QLOGIC_NAA_WORKAROUND
+(brace
+r_struct
+id|NAA_Hosed
+op_star
+id|nh
+suffix:semicolon
 multiline_comment|/* Munge the NAA for Tx packets to QLogic boards, which don&squot;t follow&n;&t;   RFC 2625. The longer I look at this, the more my opinion of Qlogic&n;&t;   drops. */
 id|read_lock_irq
 c_func
@@ -2855,7 +2910,7 @@ id|cur_naa
 op_assign
 id|nh-&gt;NAA
 suffix:semicolon
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -2877,6 +2932,8 @@ op_amp
 id|bad_naa_lock
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 id|pTrans-&gt;TransactionDetails
 (braket
 l_int|0
@@ -2967,7 +3024,7 @@ id|pTrans-&gt;TransactionDetails
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* If we ever decide to send more than one Simple SGE per LANSend, then&n;&t;   we will need to make sure that LAST_ELEMENT only gets set on the &n;&t;   last one. Otherwise, bad voodoo and evil funkiness will commence. */
+multiline_comment|/* If we ever decide to send more than one Simple SGE per LANSend, then&n;&t;   we will need to make sure that LAST_ELEMENT only gets set on the&n;&t;   last one. Otherwise, bad voodoo and evil funkiness will commence. */
 id|pSimple-&gt;FlagsLength
 op_assign
 id|cpu_to_le32
@@ -3094,7 +3151,11 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|priority
 )paren
+multiline_comment|/* &n; * @priority: 0 = put it on the timer queue, 1 = put it on the immediate queue&n; */
 (brace
 r_struct
 id|mpt_lan_priv
@@ -3118,6 +3179,12 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|priority
+)paren
+(brace
 id|queue_task
 c_func
 (paren
@@ -3134,6 +3201,31 @@ c_func
 id|IMMEDIATE_BH
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|queue_task
+c_func
+(paren
+op_amp
+id|priv-&gt;post_buckets_task
+comma
+op_amp
+id|tq_timer
+)paren
+suffix:semicolon
+id|dioprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: post_buckets queued on &quot;
+l_string|&quot;timer.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 id|dioprintk
 c_func
 (paren
@@ -3256,6 +3348,8 @@ id|mpt_lan_wake_post_buckets_task
 c_func
 (paren
 id|dev
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|dioprintk
@@ -3579,7 +3673,7 @@ suffix:semicolon
 id|u32
 id|ctx
 suffix:semicolon
-id|u8
+r_int
 id|count
 suffix:semicolon
 r_int
@@ -3590,7 +3684,7 @@ op_assign
 id|pRecvRep-&gt;NumberOfContexts
 suffix:semicolon
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -3647,11 +3741,11 @@ id|ctx
 dot
 id|skb
 suffix:semicolon
-singleline_comment|//&t;&t;dprintk((KERN_INFO MYNAM &quot;: %s: dev_name = %s&bslash;n&quot;,
+singleline_comment|//&t;&t;dlprintk((KERN_INFO MYNAM &quot;: %s: dev_name = %s&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;&t;IOC_AND_NETDEV_NAMES_s_s(dev)));
-singleline_comment|//&t;&t;dprintk((KERN_INFO MYNAM &quot;@rpr[2], priv = %p, buckets_out addr = %p&quot;,
-singleline_comment|//&t;&t;&t;  &t;priv, &amp;(priv-&gt;buckets_out)));
-singleline_comment|//&t;&t;dprintk((KERN_INFO MYNAM &quot;@rpr[2] TC + 3&bslash;n&quot;));
+singleline_comment|//&t;&t;dlprintk((KERN_INFO MYNAM &quot;@rpr[2], priv = %p, buckets_out addr = %p&quot;,
+singleline_comment|//&t;&t;&t;&t;priv, &amp;(priv-&gt;buckets_out)));
+singleline_comment|//&t;&t;dlprintk((KERN_INFO MYNAM &quot;@rpr[2] TC + 3&bslash;n&quot;));
 id|priv-&gt;RcvCtl
 (braket
 id|ctx
@@ -3718,11 +3812,11 @@ id|priv-&gt;buckets_out
 suffix:semicolon
 singleline_comment|//&t;for (i = 0; i &lt; priv-&gt;max_buckets_out; i++)
 singleline_comment|//&t;&t;if (priv-&gt;RcvCtl[i].skb != NULL)
-singleline_comment|//&t;&t;&t;dprintk((KERN_INFO MYNAM &quot;@rpr: bucket %03x &quot;
+singleline_comment|//&t;&t;&t;dlprintk((KERN_INFO MYNAM &quot;@rpr: bucket %03x &quot;
 singleline_comment|//&t;&t;&t;&t;  &quot;is still out&bslash;n&quot;, i));
-multiline_comment|/*&t;dprintk((KERN_INFO MYNAM &quot;/receive_post_reply: freed %d buckets&bslash;n&quot;,&n;&t;&t;  count));&n;*/
+multiline_comment|/*&t;dlprintk((KERN_INFO MYNAM &quot;/receive_post_reply: freed %d buckets&bslash;n&quot;,&n;&t;&t;  count));&n;*/
 multiline_comment|/**/
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -3794,11 +3888,19 @@ id|u32
 id|len
 comma
 id|ctx
-suffix:semicolon
-id|u32
+comma
 id|offset
 suffix:semicolon
-id|u8
+id|u32
+id|remaining
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|pRecvRep-&gt;BucketsRemaining
+)paren
+suffix:semicolon
+r_int
 id|count
 suffix:semicolon
 r_int
@@ -3835,12 +3937,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|le16_to_cpu
 c_func
 (paren
 id|pRecvRep-&gt;IOCStatus
 )paren
 op_amp
+id|MPI_IOCSTATUS_MASK
+)paren
+op_eq
 id|MPI_IOCSTATUS_LAN_CANCELED
 )paren
 r_return
@@ -4392,30 +4498,6 @@ l_string|&quot;Arrgghh! We&squot;ve done it again!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-(brace
-id|u32
-id|remaining
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|pRecvRep-&gt;BucketsRemaining
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|remaining
-OL
-id|priv-&gt;bucketthresh
-)paren
-id|mpt_lan_wake_post_buckets_task
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4445,6 +4527,13 @@ id|priv-&gt;buckets_out
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|remaining
+OL
+l_int|10
+)paren
 id|printk
 (paren
 id|KERN_INFO
@@ -4468,8 +4557,58 @@ id|priv-&gt;buckets_out
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|remaining
+OL
+id|priv-&gt;bucketthresh
+)paren
+op_logical_and
+(paren
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|priv-&gt;buckets_out
+)paren
+op_minus
+id|remaining
+)paren
+OG
+id|MPT_LAN_BUCKETS_REMAIN_MISMATCH_THRESH
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot; Mismatch between driver&squot;s &quot;
+l_string|&quot;buckets_out count and fw&squot;s BucketsRemaining &quot;
+l_string|&quot;count has crossed the threshold, issuing a &quot;
+l_string|&quot;LanReset to clear the fw&squot;s hashtable. You may &quot;
+l_string|&quot;want to check your /var/log/messages for &bslash;&quot;CRC &quot;
+l_string|&quot;error&bslash;&quot; event notifications.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mpt_lan_reset
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|mpt_lan_wake_post_buckets_task
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|mpt_lan_receive_skb
 c_func
@@ -4878,15 +5017,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/**/
 id|printk
 (paren
 id|KERN_WARNING
-multiline_comment|/**/
 id|MYNAM
 l_string|&quot;/%s: Can&squot;t alloc skb&bslash;n&quot;
 comma
-multiline_comment|/**/
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -5325,7 +5461,7 @@ id|priv-&gt;post_buckets_active
 op_assign
 l_int|0
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5385,7 +5521,7 @@ l_int|0
 dot
 id|MaxLanBuckets
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5579,7 +5715,7 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|MPT_LAN_TX_TIMEOUT
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5620,8 +5756,6 @@ id|curadapter
 suffix:semicolon
 r_int
 id|i
-op_assign
-l_int|0
 comma
 id|j
 suffix:semicolon
@@ -5633,7 +5767,8 @@ comma
 id|LANVER
 )paren
 suffix:semicolon
-multiline_comment|/* Init the global r/w lock for the bad_naa list. We want to do this &n;&t;   before any boards are initialized and may be used. */
+macro_line|#ifdef QLOGIC_NAA_WORKAROUND
+multiline_comment|/* Init the global r/w lock for the bad_naa list. We want to do this&n;&t;   before any boards are initialized and may be used. */
 id|rwlock_init
 c_func
 (paren
@@ -5641,6 +5776,7 @@ op_amp
 id|bad_naa_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5676,7 +5812,7 @@ id|mpt_lan_index
 op_assign
 id|LanCtx
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5702,7 +5838,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5753,10 +5889,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|j
-op_assign
-l_int|0
-suffix:semicolon
 id|curadapter
 op_assign
 id|mpt_adapter_find_first
@@ -5908,6 +6040,10 @@ suffix:semicolon
 singleline_comment|//&t;&t;&t;&t;&t;printk (KERN_INFO MYNAM &quot;: %s/%s: Max_TX_outstanding = %d&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;&t;&t;&t;&t;IOC_AND_NETDEV_NAMES_s_s(dev),
 singleline_comment|//&t;&t;&t;&t;&t;&t;&t;NETDEV_TO_LANPRIV_PTR(dev)-&gt;tx_max_out);
+id|j
+op_assign
+id|curadapter-&gt;id
+suffix:semicolon
 id|mpt_landev
 (braket
 id|j
@@ -5915,7 +6051,7 @@ id|j
 op_assign
 id|dev
 suffix:semicolon
-id|dprintk
+id|dlprintk
 c_func
 (paren
 (paren
@@ -5933,9 +6069,6 @@ id|j
 )braket
 )paren
 )paren
-suffix:semicolon
-id|j
-op_increment
 suffix:semicolon
 )brace
 r_else
@@ -6108,12 +6241,6 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Debug stuff. FIXME!
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|variable|mpt_lan_init
 id|module_init
 c_func
@@ -6163,15 +6290,6 @@ r_struct
 id|fcllc
 op_star
 id|fcllc
-suffix:semicolon
-id|u16
-id|source_naa
-op_assign
-id|fch-&gt;stype
-comma
-id|found
-op_assign
-l_int|0
 suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
@@ -6369,6 +6487,17 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
+macro_line|#ifdef QLOGIC_NAA_WORKAROUND
+(brace
+id|u16
+id|source_naa
+op_assign
+id|fch-&gt;stype
+comma
+id|found
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Workaround for QLogic not following RFC 2625 in regards to the NAA&n;&t;   value. */
 r_if
 c_cond
@@ -6400,7 +6529,7 @@ c_func
 id|ETH_P_ARP
 )paren
 )paren
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -6446,7 +6575,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -6566,7 +6695,7 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -6609,7 +6738,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -6678,7 +6807,7 @@ id|fch-&gt;saddr
 id|i
 )braket
 suffix:semicolon
-id|dprintk
+id|dlprintk
 (paren
 (paren
 id|KERN_INFO
@@ -6754,7 +6883,9 @@ id|bad_naa_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Strip the SNAP header from ARP packets since we don&squot;t &n;&t; * pass them through to the 802.2/SNAP layers.&n;&t; */
+)brace
+macro_line|#endif
+multiline_comment|/* Strip the SNAP header from ARP packets since we don&squot;t&n;&t; * pass them through to the 802.2/SNAP layers.&n;&t; */
 r_if
 c_cond
 (paren

@@ -486,7 +486,7 @@ comma
 id|esp-&gt;ehost
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME, look if the scsi id is availabe from NVRAM&n;&t; */
+multiline_comment|/*&n;&t; * FIXME, look if the scsi id is available from NVRAM&n;&t; */
 id|esp-&gt;scsi_id
 op_assign
 l_int|7

@@ -3,6 +3,7 @@ macro_line|#ifndef IRCOMM_CORE_H
 DECL|macro|IRCOMM_CORE_H
 mdefine_line|#define IRCOMM_CORE_H
 macro_line|#include &lt;net/irda/irda.h&gt;
+macro_line|#include &lt;net/irda/irqueue.h&gt;
 macro_line|#include &lt;net/irda/ircomm_event.h&gt;
 DECL|macro|IRCOMM_MAGIC
 mdefine_line|#define IRCOMM_MAGIC 0x98347298
