@@ -35551,7 +35551,7 @@ id|tp-&gt;tg3_flags2
 op_or_assign
 id|TG3_FLG2_PHY_5704_A0_BUG
 suffix:semicolon
-multiline_comment|/* Note: 5750 also needs this flag set to improve bit error rate. */
+multiline_comment|/* Note: 5705 also needs this flag set to improve bit error rate. */
 r_if
 c_cond
 (paren
