@@ -691,12 +691,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
-DECL|member|service_pending
-r_int
-id|service_pending
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|addressing
 r_int
 id|addressing
@@ -1431,6 +1425,13 @@ id|byte
 id|unmask
 suffix:semicolon
 multiline_comment|/* flag: okay to unmask other irqs */
+DECL|member|auto_poll
+r_int
+id|auto_poll
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* supports nop auto-poll */
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int

@@ -30,6 +30,7 @@ DECL|macro|VIP_MASK
 mdefine_line|#define VIP_MASK&t;0x00100000&t;/* virtual interrupt pending */
 DECL|macro|ID_MASK
 mdefine_line|#define ID_MASK&t;&t;0x00200000
+multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; asm volatile(&quot;leaq 1f(%%rip),%0&bslash;n1:&quot;:&quot;=r&quot;(pc)); pc; })
 multiline_comment|/*&n; *  CPU type and hardware bug flags. Kept separately for each CPU.&n; *  Members of this structure are referenced in head.S, so think twice&n; *  before touching them. [mj]&n; */
@@ -605,35 +606,24 @@ l_string|&quot;ax&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|CX86_CCR0
+macro_line|#if 0
+multiline_comment|/*&n; *      Cyrix CPU configuration register indexes&n; */
 mdefine_line|#define CX86_CCR0 0xc0
-DECL|macro|CX86_CCR1
 mdefine_line|#define CX86_CCR1 0xc1
-DECL|macro|CX86_CCR2
 mdefine_line|#define CX86_CCR2 0xc2
-DECL|macro|CX86_CCR3
 mdefine_line|#define CX86_CCR3 0xc3
-DECL|macro|CX86_CCR4
 mdefine_line|#define CX86_CCR4 0xe8
-DECL|macro|CX86_CCR5
 mdefine_line|#define CX86_CCR5 0xe9
-DECL|macro|CX86_CCR6
 mdefine_line|#define CX86_CCR6 0xea
-DECL|macro|CX86_CCR7
 mdefine_line|#define CX86_CCR7 0xeb
-DECL|macro|CX86_DIR0
 mdefine_line|#define CX86_DIR0 0xfe
-DECL|macro|CX86_DIR1
 mdefine_line|#define CX86_DIR1 0xff
-DECL|macro|CX86_ARR_BASE
 mdefine_line|#define CX86_ARR_BASE 0xc4
-DECL|macro|CX86_RCR_BASE
 mdefine_line|#define CX86_RCR_BASE 0xdc
 multiline_comment|/*&n; *      Cyrix CPU indexed register access macros&n; */
-DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
-DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * Bus types&n; */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
@@ -650,7 +640,7 @@ mdefine_line|#define TASK_UNMAPPED_32 0x40000000
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 (TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;((current-&gt;thread.flags &amp; THREAD_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
+mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flags(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
 multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
 DECL|macro|IO_BITMAP_SIZE
 mdefine_line|#define IO_BITMAP_SIZE&t;32
@@ -658,54 +648,6 @@ DECL|macro|IO_BITMAP_OFFSET
 mdefine_line|#define IO_BITMAP_OFFSET offsetof(struct tss_struct,io_bitmap)
 DECL|macro|INVALID_IO_BITMAP_OFFSET
 mdefine_line|#define INVALID_IO_BITMAP_OFFSET 0x8000
-multiline_comment|/* We&squot;ll have to decide which format to use for floating stores, and&n;   kill all others... */
-DECL|struct|i387_fsave_struct
-r_struct
-id|i387_fsave_struct
-(brace
-DECL|member|cwd
-id|u32
-id|cwd
-suffix:semicolon
-DECL|member|swd
-id|u32
-id|swd
-suffix:semicolon
-DECL|member|twd
-id|u32
-id|twd
-suffix:semicolon
-DECL|member|fip
-id|u32
-id|fip
-suffix:semicolon
-DECL|member|fcs
-id|u32
-id|fcs
-suffix:semicolon
-DECL|member|foo
-id|u32
-id|foo
-suffix:semicolon
-DECL|member|fos
-id|u32
-id|fos
-suffix:semicolon
-DECL|member|st_space
-id|u32
-id|st_space
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* 8*10 bytes for each FP-reg = 80 bytes */
-DECL|member|status
-id|u32
-id|status
-suffix:semicolon
-multiline_comment|/* software status information */
-)brace
-suffix:semicolon
 DECL|struct|i387_fxsave_struct
 r_struct
 id|i387_fxsave_struct
@@ -726,29 +668,21 @@ DECL|member|fop
 id|u16
 id|fop
 suffix:semicolon
-DECL|member|fip
-id|u32
-id|fip
+DECL|member|rip
+id|u64
+id|rip
 suffix:semicolon
-DECL|member|fcs
-id|u32
-id|fcs
-suffix:semicolon
-DECL|member|foo
-id|u32
-id|foo
-suffix:semicolon
-DECL|member|fos
-id|u32
-id|fos
+DECL|member|rdp
+id|u64
+id|rdp
 suffix:semicolon
 DECL|member|mxcsr
 id|u32
 id|mxcsr
 suffix:semicolon
-DECL|member|reserved
+DECL|member|mxcsr_mask
 id|u32
-id|reserved
+id|mxcsr_mask
 suffix:semicolon
 DECL|member|st_space
 id|u32
@@ -762,15 +696,15 @@ DECL|member|xmm_space
 id|u32
 id|xmm_space
 (braket
-l_int|32
+l_int|64
 )braket
 suffix:semicolon
-multiline_comment|/* 8*16 bytes for each XMM-reg = 128 bytes */
+multiline_comment|/* 16*16 bytes for each XMM-reg = 128 bytes */
 DECL|member|padding
 id|u32
 id|padding
 (braket
-l_int|56
+l_int|24
 )braket
 suffix:semicolon
 )brace
@@ -784,97 +718,14 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-DECL|struct|i387_soft_struct
-r_struct
-id|i387_soft_struct
-(brace
-DECL|member|cwd
-id|u32
-id|cwd
-suffix:semicolon
-DECL|member|swd
-id|u32
-id|swd
-suffix:semicolon
-DECL|member|twd
-id|u32
-id|twd
-suffix:semicolon
-DECL|member|fip
-id|u32
-id|fip
-suffix:semicolon
-DECL|member|fcs
-id|u32
-id|fcs
-suffix:semicolon
-DECL|member|foo
-id|u32
-id|foo
-suffix:semicolon
-DECL|member|fos
-id|u32
-id|fos
-suffix:semicolon
-DECL|member|st_space
-id|u32
-id|st_space
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* 8*10 bytes for each FP-reg = 80 bytes */
-DECL|member|ftop
-DECL|member|changed
-DECL|member|lookahead
-DECL|member|no_update
-DECL|member|rm
-DECL|member|alimit
-r_int
-r_char
-id|ftop
-comma
-id|changed
-comma
-id|lookahead
-comma
-id|no_update
-comma
-id|rm
-comma
-id|alimit
-suffix:semicolon
-DECL|member|info
-r_struct
-id|info
-op_star
-id|info
-suffix:semicolon
-DECL|member|entry_eip
-r_int
-r_int
-id|entry_eip
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|union|i387_union
 r_union
 id|i387_union
 (brace
-DECL|member|fsave
-r_struct
-id|i387_fsave_struct
-id|fsave
-suffix:semicolon
 DECL|member|fxsave
 r_struct
 id|i387_fxsave_struct
 id|fxsave
-suffix:semicolon
-DECL|member|soft
-r_struct
-id|i387_soft_struct
-id|soft
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1050,32 +901,16 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
-macro_line|#ifndef CONFIG_SMP
-r_extern
-r_char
-id|stackfault_stack
-(braket
-)braket
-suffix:semicolon
-DECL|macro|STACKDESC
-mdefine_line|#define STACKDESC rsp2: (unsigned long)stackfault_stack,
 DECL|macro|STACKFAULT_STACK
-mdefine_line|#define STACKFAULT_STACK 2
-macro_line|#else
-DECL|macro|STACKFAULT_STACK
-mdefine_line|#define STACKFAULT_STACK 0
-DECL|macro|STACKDESC
-mdefine_line|#define STACKDESC
-macro_line|#endif
-multiline_comment|/* Doublefault currently shares the same stack on all CPUs. Hopefully&n;   only one gets into this unfortunate condition at a time. Cannot do&n;   the same for SF because that can be easily triggered by user&n;   space. */
-DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rsp1: (unsigned long)doublefault_stack, &t;&t;&bslash;&n;&t;STACKDESC &bslash;&n;}
-r_extern
-r_char
-id|doublefault_stack
-(braket
-)braket
-suffix:semicolon
+mdefine_line|#define STACKFAULT_STACK 1
+DECL|macro|DOUBLEFAULT_STACK
+mdefine_line|#define DOUBLEFAULT_STACK 2 
+DECL|macro|NMI_STACK
+mdefine_line|#define NMI_STACK 3 
+DECL|macro|N_EXCEPTION_STACKS
+mdefine_line|#define N_EXCEPTION_STACKS 3  /* hw limit: 7 */
+DECL|macro|EXCEPTION_STKSZ
+mdefine_line|#define EXCEPTION_STKSZ 1024
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;__asm__(&quot;movl %0,%%fs; movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (0));&t;&t; &bslash;&n;&t;wrmsrl(MSR_KERNEL_GS_BASE, 0);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rip = (new_rip);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;write_pda(oldrsp, (new_rsp));&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;cs = __USER_CS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;ss = __USER_DS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;eflags = 0x200;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while(0) 
 r_struct
@@ -1148,27 +983,10 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
-DECL|function|thread_saved_pc
+multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; * What is this good for? it will be always the scheduler or ret_from_fork.&n; */
+DECL|macro|thread_saved_pc
+mdefine_line|#define thread_saved_pc(t) (*(unsigned long *)((t)-&gt;thread.rsp - 8))
 r_extern
-r_inline
-r_int
-r_int
-id|thread_saved_pc
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* FIXME */
-)brace
 r_int
 r_int
 id|get_wchan
@@ -1180,13 +998,10 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: this is incorrect when the task is sleeping in a syscall entered&n;   through SYSCALL. */
-DECL|macro|__kstk_regs
-mdefine_line|#define __kstk_regs(tsk)  &bslash;&n;&t;((struct pt_regs *)&bslash;&n;&t;(((char *)(tsk)-&gt;thread_info) + THREAD_SIZE - sizeof(struct pt_regs)))
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk) (__kstk_regs(tsk)-&gt;rip)
+mdefine_line|#define KSTK_EIP(tsk) &bslash;&n;&t;(((struct pt_regs *)(tsk-&gt;thread.rsp0 - sizeof(struct pt_regs)))-&gt;rip)
 DECL|macro|KSTK_ESP
-mdefine_line|#define KSTK_ESP(tsk) (__kstk_regs(tsk)-&gt;rsp)
+mdefine_line|#define KSTK_ESP(tsk) -1 /* sorry. doesn&squot;t work for syscall. */
 multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
 DECL|function|rep_nop
 r_extern
@@ -1208,65 +1023,16 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu 1
-multiline_comment|/* 3d now! prefetch instructions. Could also use the SSE flavours; not sure&n;   if it makes a difference. gcc 3.1 has __builtin_prefetch too, but I am&n;   not sure it makes sense to use them. */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
-DECL|function|prefetch
-r_extern
-r_inline
-r_void
-id|prefetch
-c_func
-(paren
-r_const
-r_void
-op_star
-id|x
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;prefetch (%0)&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|x
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|prefetchw
-r_extern
-r_inline
-r_void
-id|prefetchw
-c_func
-(paren
-r_const
-r_void
-op_star
-id|x
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;prefetchw (%0)&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|x
-)paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|prefetch
+mdefine_line|#define prefetch(x) __builtin_prefetch((x),0)
+DECL|macro|prefetchw
+mdefine_line|#define prefetchw(x) __builtin_prefetch((x),1)
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)  prefetchw(x)
 DECL|macro|cpu_relax

@@ -1790,6 +1790,18 @@ r_int
 r_int
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+OG
+l_int|256
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu
@@ -1939,6 +1951,18 @@ suffix:semicolon
 id|out
 suffix:colon
 multiline_comment|/*&n;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t; * disabled while the handler was running.&n;&t; */
+r_if
+c_cond
+(paren
+id|irq
+OG
+l_int|256
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|desc-&gt;handler
 op_member_access_from_pointer
 id|end

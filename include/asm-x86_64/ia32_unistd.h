@@ -480,7 +480,15 @@ DECL|macro|__NR_ia32_fremovexattr
 mdefine_line|#define __NR_ia32_fremovexattr&t;237
 DECL|macro|__NR_ia32_tkill
 mdefine_line|#define __NR_ia32_tkill&t;&t;238
+DECL|macro|__NR_ia32_sendfile64
+mdefine_line|#define __NR_ia32_sendfile64&t;&t;239
+DECL|macro|__NR_ia32_futex
+mdefine_line|#define __NR_ia32_futex&t;&t;240
+DECL|macro|__NR_ia32_sched_setaffinity
+mdefine_line|#define __NR_ia32_sched_setaffinity&t;241
+DECL|macro|__NR_ia32_sched_getaffinity
+mdefine_line|#define __NR_ia32_sched_getaffinity&t;242
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 240&t;/* must be &gt; than biggest syscall! */&t;
+mdefine_line|#define IA32_NR_syscalls 243&t;/* must be &gt; than biggest syscall! */&t;
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof

@@ -6914,11 +6914,7 @@ id|currcons
 dot
 id|default_ledflagstate
 suffix:semicolon
-id|set_leds
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* do not do set_leds here because this causes an endless tasklet loop&n;&t;   when the keyboard hasn&squot;t been initialized yet */
 id|cursor_type
 op_assign
 id|CUR_DEFAULT

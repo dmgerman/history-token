@@ -9,6 +9,8 @@ DECL|macro|PROT_EXEC
 mdefine_line|#define PROT_EXEC&t;0x4&t;&t;/* page can be executed */
 DECL|macro|PROT_NONE
 mdefine_line|#define PROT_NONE&t;0x0&t;&t;/* page can not be accessed */
+DECL|macro|PROT_SEM
+mdefine_line|#define PROT_SEM&t;0x0
 DECL|macro|MAP_SHARED
 mdefine_line|#define MAP_SHARED&t;0x01&t;&t;/* Share changes */
 DECL|macro|MAP_PRIVATE

@@ -110,7 +110,7 @@ DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 64
 DECL|typedef|dma64_addr_t
 r_typedef
-id|u32
+id|u64
 id|dma64_addr_t
 suffix:semicolon
 DECL|typedef|dma_addr_t

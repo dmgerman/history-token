@@ -1,7 +1,10 @@
-multiline_comment|/*&n; * arch/i386/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
+multiline_comment|/*&n; * arch/x86_64/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; * This is needed for high PCI addresses that aren&squot;t mapped in the&n; * 640k-1MB IO memory area on PC&squot;s&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
 r_inline
@@ -110,6 +113,8 @@ c_func
 id|_PAGE_PRESENT
 op_or
 id|_PAGE_RW
+op_or
+id|_PAGE_GLOBAL
 op_or
 id|_PAGE_DIRTY
 op_or
@@ -334,12 +339,9 @@ id|address
 suffix:semicolon
 id|dir
 op_assign
-id|pgd_offset
+id|pgd_offset_k
 c_func
 (paren
-op_amp
-id|init_mm
-comma
 id|address
 )paren
 suffix:semicolon
