@@ -197,18 +197,6 @@ id|nl_nonroot
 id|MAX_LINKS
 )braket
 suffix:semicolon
-macro_line|#ifdef NL_EMULATE_DEV
-DECL|variable|netlink_kernel
-r_static
-r_struct
-id|socket
-op_star
-id|netlink_kernel
-(braket
-id|MAX_LINKS
-)braket
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|netlink_dump
