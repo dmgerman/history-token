@@ -6,6 +6,9 @@ macro_line|#ifndef _ASM_ARM_IXP4XX_H_
 DECL|macro|_ASM_ARM_IXP4XX_H_
 mdefine_line|#define _ASM_ARM_IXP4XX_H_
 multiline_comment|/*&n; * IXP4xx Linux Memory Map:&n; *&n; * Phy&t;&t;Size&t;&t;Virt&t;&t;Description&n; * =========================================================================&n; *&n; * 0x00000000&t;0x10000000(max)&t;PAGE_OFFSET&t;System RAM&n; *&n; * 0x48000000&t;0x04000000&t;ioremap&squot;d&t;PCI Memory Space&n; *&n; * 0x50000000&t;0x10000000&t;ioremap&squot;d&t;EXP BUS&n; *&n; * 0x6000000&t;0x00004000&t;ioremap&squot;d&t;QMgr&n; *&n; * 0xC0000000&t;0x00001000&t;0xffbfe000&t;PCI CFG &n; *&n; * 0xC4000000&t;0x00001000&t;0xffbfd000&t;EXP CFG &n; *&n; * 0xC8000000&t;0x0000C000&t;0xffbf2000&t;On-Chip Peripherals&n; */
+multiline_comment|/*&n; * Queue Manager&n; */
+DECL|macro|IXP4XX_QMGR_BASE_PHYS
+mdefine_line|#define IXP4XX_QMGR_BASE_PHYS&t;&t;(0x60000000)
 multiline_comment|/*&n; * Expansion BUS Configuration registers&n; */
 DECL|macro|IXP4XX_EXP_CFG_BASE_PHYS
 mdefine_line|#define IXP4XX_EXP_CFG_BASE_PHYS&t;(0xC4000000)
@@ -91,8 +94,12 @@ DECL|macro|IXP4XX_GPIO_BASE_PHYS
 mdefine_line|#define IXP4XX_GPIO_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0x4000)
 DECL|macro|IXP4XX_TIMER_BASE_PHYS
 mdefine_line|#define IXP4XX_TIMER_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0x5000)
+DECL|macro|IXP4XX_EthA_BASE_PHYS
+mdefine_line|#define IXP4XX_EthA_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0x9000)
+DECL|macro|IXP4XX_EthB_BASE_PHYS
+mdefine_line|#define IXP4XX_EthB_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0xA000)
 DECL|macro|IXP4XX_USB_BASE_PHYS
-mdefine_line|#define IXP4XX_USB_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0x5000)
+mdefine_line|#define IXP4XX_USB_BASE_PHYS&t;(IXP4XX_PERIPHERAL_BASE_PHYS + 0xB000)
 DECL|macro|IXP4XX_UART1_BASE_VIRT
 mdefine_line|#define IXP4XX_UART1_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0x0000)
 DECL|macro|IXP4XX_UART2_BASE_VIRT
@@ -105,8 +112,12 @@ DECL|macro|IXP4XX_GPIO_BASE_VIRT
 mdefine_line|#define IXP4XX_GPIO_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0x4000)
 DECL|macro|IXP4XX_TIMER_BASE_VIRT
 mdefine_line|#define IXP4XX_TIMER_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0x5000)
+DECL|macro|IXP4XX_EthA_BASE_VIRT
+mdefine_line|#define IXP4XX_EthA_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0x9000)
+DECL|macro|IXP4XX_EthB_BASE_VIRT
+mdefine_line|#define IXP4XX_EthB_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0xA000)
 DECL|macro|IXP4XX_USB_BASE_VIRT
-mdefine_line|#define IXP4XX_USB_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0x5000)
+mdefine_line|#define IXP4XX_USB_BASE_VIRT&t;(IXP4XX_PERIPHERAL_BASE_VIRT + 0xB000)
 multiline_comment|/*&n; * Constants to make it easy to access  Interrupt Controller registers&n; */
 DECL|macro|IXP4XX_ICPR_OFFSET
 mdefine_line|#define IXP4XX_ICPR_OFFSET&t;0x00 /* Interrupt Status */

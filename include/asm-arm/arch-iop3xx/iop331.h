@@ -1,32 +1,54 @@
-multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop331.h&n; *&n; * Intel IOP331 Chip definitions&n; *&n; * Author: Dave Jiang (dave.jiang@intel.com)&n; * Copyright (C) 2003 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop331.h&n; *&n; * Intel IOP331 Chip definitions&n; *&n; * Author: Dave Jiang (dave.jiang@intel.com)&n; * Copyright (C) 2003, 2004 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _IOP331_HW_H_
 DECL|macro|_IOP331_HW_H_
 mdefine_line|#define _IOP331_HW_H_
 multiline_comment|/*&n; * This is needed for mixed drivers that need to work on all&n; * IOP3xx variants but behave slightly differently on each.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef&t;CONFIG_ARCH_IOP331
+multiline_comment|/*#define&t;iop_is_331()&t;((processor_id &amp; 0xffffffb0) == 0x69054090) */
 DECL|macro|iop_is_331
-mdefine_line|#define&t;iop_is_331()&t;((processor_id &amp; 0xffffffb0) == 0x69054090)
+mdefine_line|#define&t;iop_is_331()&t;((processor_id &amp; 0xffffff30) == 0x69054010)
 macro_line|#else
 DECL|macro|iop_is_331
 mdefine_line|#define&t;iop_is_331()&t;0
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * IOP331 I/O and Mem space regions for PCI autoconfiguration&n; */
-DECL|macro|IOP331_PCI_LOWER_IO
-mdefine_line|#define IOP331_PCI_LOWER_IO             0x90000000
-DECL|macro|IOP331_PCI_UPPER_IO
-mdefine_line|#define IOP331_PCI_UPPER_IO             0x900fffff
-DECL|macro|IOP331_PCI_LOWER_MEM
-mdefine_line|#define IOP331_PCI_LOWER_MEM            0x80000000
-DECL|macro|IOP331_PCI_UPPER_MEM
-mdefine_line|#define IOP331_PCI_UPPER_MEM            0x87ffffff
-DECL|macro|IOP331_PCI_WINDOW_SIZE
-mdefine_line|#define IOP331_PCI_WINDOW_SIZE          128 * 0x100000
+DECL|macro|IOP331_PCI_IO_WINDOW_SIZE
+mdefine_line|#define IOP331_PCI_IO_WINDOW_SIZE   0x10000
+DECL|macro|IOP331_PCI_LOWER_IO_PA
+mdefine_line|#define IOP331_PCI_LOWER_IO_PA      0x90000000
+DECL|macro|IOP331_PCI_LOWER_IO_VA
+mdefine_line|#define IOP331_PCI_LOWER_IO_VA      0xfe000000
+DECL|macro|IOP331_PCI_LOWER_IO_BA
+mdefine_line|#define IOP331_PCI_LOWER_IO_BA      (*IOP331_OIOWTVR)
+DECL|macro|IOP331_PCI_UPPER_IO_PA
+mdefine_line|#define IOP331_PCI_UPPER_IO_PA      (IOP331_PCI_LOWER_IO_PA + IOP331_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_UPPER_IO_VA
+mdefine_line|#define IOP331_PCI_UPPER_IO_VA      (IOP331_PCI_LOWER_IO_VA + IOP331_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_UPPER_IO_BA
+mdefine_line|#define IOP331_PCI_UPPER_IO_BA      (IOP331_PCI_LOWER_IO_BA + IOP331_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_IO_OFFSET
+mdefine_line|#define IOP331_PCI_IO_OFFSET        (IOP331_PCI_LOWER_IO_VA - IOP331_PCI_LOWER_IO_BA)
+DECL|macro|IOP331_PCI_MEM_WINDOW_SIZE
+mdefine_line|#define IOP331_PCI_MEM_WINDOW_SIZE  (~*IOP331_IALR1 + 1)
+DECL|macro|IOP331_PCI_LOWER_MEM_PA
+mdefine_line|#define IOP331_PCI_LOWER_MEM_PA     0x80000000
+DECL|macro|IOP331_PCI_LOWER_MEM_VA
+mdefine_line|#define IOP331_PCI_LOWER_MEM_VA     0x80000000
+DECL|macro|IOP331_PCI_LOWER_MEM_BA
+mdefine_line|#define IOP331_PCI_LOWER_MEM_BA     (*IOP331_OMWTVR0)
+DECL|macro|IOP331_PCI_UPPER_MEM_PA
+mdefine_line|#define IOP331_PCI_UPPER_MEM_PA     (IOP331_PCI_LOWER_MEM_PA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_UPPER_MEM_VA
+mdefine_line|#define IOP331_PCI_UPPER_MEM_VA     (IOP331_PCI_LOWER_MEM_VA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_UPPER_MEM_BA
+mdefine_line|#define IOP331_PCI_UPPER_MEM_BA     (IOP331_PCI_LOWER_MEM_BA + IOP331_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP331_PCI_MEM_OFFSET
+mdefine_line|#define IOP331_PCI_MEM_OFFSET       (IOP331_PCI_LOWER_MEM_VA - IOP331_PCI_LOWER_MEM_BA)
 multiline_comment|/*&n; * IOP331 chipset registers&n; */
 DECL|macro|IOP331_VIRT_MEM_BASE
-mdefine_line|#define IOP331_VIRT_MEM_BASE 0xfeffe000  /* chip virtual mem address*/
-singleline_comment|// #define IOP331_VIRT_MEM_BASE 0xfff00000  /* chip virtual mem address*/
+mdefine_line|#define IOP331_VIRT_MEM_BASE  0xfeffe000  /* chip virtual mem address*/
 DECL|macro|IOP331_PHYS_MEM_BASE
 mdefine_line|#define IOP331_PHYS_MEM_BASE  0xffffe000  /* chip physical memory address */
 DECL|macro|IOP331_REG_ADDR
@@ -370,8 +392,16 @@ DECL|macro|IOP331_TU_TISR
 mdefine_line|#define IOP331_TU_TISR    (volatile u32 *)IOP331_REG_ADDR(0x000007E8)
 DECL|macro|IOP331_TU_WDTCR
 mdefine_line|#define IOP331_TU_WDTCR   (volatile u32 *)IOP331_REG_ADDR(0x000007EC)
+macro_line|#if defined(CONFIG_ARCH_IOP331)
 DECL|macro|IOP331_TICK_RATE
-mdefine_line|#define&t;IOP331_TICK_RATE&t;266000000&t;/* 266 MHz clock */
+mdefine_line|#define&t;IOP331_TICK_RATE&t;266000000&t;/* 266 MHz IB clock */
+macro_line|#endif
+macro_line|#if defined(CONFIG_IOP331_STEPD) || defined(CONFIG_ARCH_IQ80333)
+DECL|macro|IOP331_TICK_RATE
+macro_line|#undef IOP331_TICK_RATE
+DECL|macro|IOP331_TICK_RATE
+mdefine_line|#define IOP331_TICK_RATE&t;333000000&t;/* 333 Mhz IB clock */
+macro_line|#endif
 multiline_comment|/* Application accelerator unit 0x00000800 - 0x000008FF */
 DECL|macro|IOP331_AAU_ACR
 mdefine_line|#define IOP331_AAU_ACR     (volatile u32 *)IOP331_REG_ADDR(0x00000800)
@@ -491,6 +521,14 @@ multiline_comment|/* Reserved 0x000016B8 through 0x000016FF */
 multiline_comment|/* 0x00001700 through 0x0000172C  UART 0 */
 multiline_comment|/* Reserved 0x00001730 through 0x0000173F */
 multiline_comment|/* 0x00001740 through 0x0000176C UART 1 */
+DECL|macro|IOP331_UART0_PHYS
+mdefine_line|#define IOP331_UART0_PHYS  (IOP331_PHYS_MEM_BASE | 0x00001700)&t;/* UART #1 physical */
+DECL|macro|IOP331_UART1_PHYS
+mdefine_line|#define IOP331_UART1_PHYS  (IOP331_PHYS_MEM_BASE | 0x00001740)&t;/* UART #2 physical */
+DECL|macro|IOP331_UART0_VIRT
+mdefine_line|#define IOP331_UART0_VIRT  (IOP331_VIRT_MEM_BASE | 0x00001700) /* UART #1 virtual addr */
+DECL|macro|IOP331_UART1_VIRT
+mdefine_line|#define IOP331_UART1_VIRT  (IOP331_VIRT_MEM_BASE | 0x00001740) /* UART #2 virtual addr */
 multiline_comment|/* Reserved 0x00001770 through 0x0000177F */
 multiline_comment|/* General Purpose I/O Registers */
 DECL|macro|IOP331_GPOE
