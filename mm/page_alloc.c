@@ -4725,6 +4725,8 @@ l_string|&quot; high:%lukB&quot;
 l_string|&quot; active:%lukB&quot;
 l_string|&quot; inactive:%lukB&quot;
 l_string|&quot; present:%lukB&quot;
+l_string|&quot; pages_scanned:%lu&quot;
+l_string|&quot; all_unreclaimable? %s&quot;
 l_string|&quot;&bslash;n&quot;
 comma
 id|zone-&gt;name
@@ -4769,6 +4771,17 @@ id|K
 c_func
 (paren
 id|zone-&gt;present_pages
+)paren
+comma
+id|zone-&gt;pages_scanned
+comma
+(paren
+id|zone-&gt;all_unreclaimable
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
 )paren
 )paren
 suffix:semicolon
