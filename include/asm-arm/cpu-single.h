@@ -10,8 +10,6 @@ macro_line|#endif
 DECL|macro|__cpu_fn
 mdefine_line|#define __cpu_fn(name,x)&t;__catify_fn(name,x)
 multiline_comment|/*&n; * If we are supporting multiple CPUs, then we must use a table of&n; * function pointers for this lot.  Otherwise, we can optimise the&n; * table away.&n; */
-DECL|macro|cpu_data_abort
-mdefine_line|#define cpu_data_abort&t;&t;&t;__cpu_fn(CPU_ABRT,_abort)
 DECL|macro|cpu_check_bugs
 mdefine_line|#define cpu_check_bugs&t;&t;&t;__cpu_fn(CPU_NAME,_check_bugs)
 DECL|macro|cpu_proc_init
@@ -46,10 +44,6 @@ DECL|macro|cpu_set_pmd
 mdefine_line|#define cpu_set_pmd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pmd)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte&t;&t;&t;__cpu_fn(CPU_NAME,_set_pte)
-DECL|macro|cpu_copy_user_page
-mdefine_line|#define cpu_copy_user_page&t;&t;__cpu_fn(MMU_ARCH,_copy_user_page)
-DECL|macro|cpu_clear_user_page
-mdefine_line|#define cpu_clear_user_page&t;&t;__cpu_fn(MMU_ARCH,_clear_user_page)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -242,38 +236,6 @@ id|ptep
 comma
 id|pte_t
 id|pte
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_copy_user_page
-c_func
-(paren
-r_void
-op_star
-id|to
-comma
-r_void
-op_star
-id|from
-comma
-r_int
-r_int
-id|u_addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|cpu_clear_user_page
-c_func
-(paren
-r_void
-op_star
-id|page
-comma
-r_int
-r_int
-id|u_addr
 )paren
 suffix:semicolon
 r_extern

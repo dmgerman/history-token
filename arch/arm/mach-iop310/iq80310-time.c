@@ -176,7 +176,7 @@ op_assign
 (paren
 id|b0
 op_amp
-l_int|0x20
+l_int|0x40
 )paren
 op_rshift
 l_int|1
@@ -196,7 +196,7 @@ op_assign
 (paren
 id|b1
 op_amp
-l_int|0x20
+l_int|0x40
 )paren
 op_rshift
 l_int|1
@@ -216,7 +216,7 @@ op_assign
 (paren
 id|b2
 op_amp
-l_int|0x20
+l_int|0x40
 )paren
 op_rshift
 l_int|1
@@ -269,7 +269,7 @@ r_return
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/* IRQs are disabled before entering here from do_gettimeofday() */
+multiline_comment|/*&n; * IRQs are disabled before entering here from do_gettimeofday().&n; * Note that the counter may wrap.  When it does, &squot;elapsed&squot; will&n; * be small, but we will have a pending interrupt.&n; */
 DECL|function|iq80310_gettimeoffset
 r_static
 r_int
@@ -284,8 +284,25 @@ r_int
 id|elapsed
 comma
 id|usec
+comma
+id|tmp1
 suffix:semicolon
-multiline_comment|/* We need elapsed timer ticks since last interrupt */
+r_int
+r_int
+id|stat1
+comma
+id|stat2
+suffix:semicolon
+id|stat1
+op_assign
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|IQ80310_INT_STAT
+suffix:semicolon
 id|elapsed
 op_assign
 id|iq80310_read_timer
@@ -293,7 +310,46 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Now convert them to usec */
+id|stat2
+op_assign
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|IQ80310_INT_STAT
+suffix:semicolon
+multiline_comment|/*&n;&t; * If an interrupt was pending before we read the timer,&n;&t; * we&squot;ve already wrapped.  Factor this into the time.&n;&t; * If an interrupt was pending after we read the timer,&n;&t; * it may have wrapped between checking the interrupt&n;&t; * status and reading the timer.  Re-read the timer to&n;&t; * be sure its value is after the wrap.&n;&t; */
+r_if
+c_cond
+(paren
+id|stat1
+op_amp
+l_int|1
+)paren
+id|elapsed
+op_add_assign
+id|LATCH
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|stat2
+op_amp
+l_int|1
+)paren
+id|elapsed
+op_assign
+id|LATCH
+op_plus
+id|iq80310_read_timer
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now convert them to usec.&n;&t; */
 id|usec
 op_assign
 (paren
@@ -356,32 +412,10 @@ op_or_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * AHEM..HACK&n;&t; *&n;&t; * Since the timer interrupt is cascaded through the CPLD and&n;&t; * the 80312 and the demux code calls do_IRQ, the irq count is&n;&t; * going to be atleast 2 when we get here and this will cause the&n;&t; * kernel to increment the system tick counter even if we&squot;re&n;&t; * idle. This causes it to look like there&squot;s always 100% system&n;&t; * time, which is not the case.  To get around it, we just decrement&n;&t; * the IRQ count before calling do_timer. We increment it again&n;&t; * b/c otherwise it will go negative and than bad things happen.&n;&t; *&n;&t; * -DS&n;&t; */
-id|irq_exit
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|irq
-)paren
-suffix:semicolon
 id|do_timer
 c_func
 (paren
 id|regs
-)paren
-suffix:semicolon
-id|irq_enter
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|irq
 )paren
 suffix:semicolon
 )brace
