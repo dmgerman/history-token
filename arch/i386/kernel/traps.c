@@ -1412,7 +1412,7 @@ id|__asm__
 r_volatile
 (paren
 l_string|&quot;movl %0, %%esp&bslash;n&bslash;t&quot;
-l_string|&quot;jmp %1&bslash;n&bslash;t&quot;
+l_string|&quot;jmp *%1&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=a&quot;
 (paren
