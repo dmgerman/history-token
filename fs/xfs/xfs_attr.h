@@ -256,8 +256,12 @@ DECL|macro|ATTR_KERNOVAL
 mdefine_line|#define ATTR_KERNOVAL&t;0x2000&t;/* [kernel] get attr size only, not value */
 DECL|macro|ATTR_KERNAMELS
 mdefine_line|#define ATTR_KERNAMELS&t;0x4000&t;/* [kernel] list attr names (simple list) */
+DECL|macro|ATTR_KERNORMALS
+mdefine_line|#define ATTR_KERNORMALS&t;0x0800&t;/* [kernel] normal attr list: user+secure */
+DECL|macro|ATTR_KERNROOTLS
+mdefine_line|#define ATTR_KERNROOTLS&t;0x8000&t;/* [kernel] include root in the attr list */
 DECL|macro|ATTR_KERNFULLS
-mdefine_line|#define ATTR_KERNFULLS&t;0x8000&t;/* [kernel] full attr list, ie. root+user */
+mdefine_line|#define ATTR_KERNFULLS&t;(ATTR_KERNORMALS|ATTR_KERNROOTLS)
 multiline_comment|/*&n; * The maximum size (into the kernel or returned from the kernel) of an&n; * attribute value or the buffer used for an attr_list() call.  Larger&n; * sizes will result in an ERANGE return code.&n; */
 DECL|macro|ATTR_MAX_VALUELEN
 mdefine_line|#define&t;ATTR_MAX_VALUELEN&t;(64*1024)&t;/* max length of a value */

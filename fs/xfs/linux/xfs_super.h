@@ -45,7 +45,7 @@ macro_line|# define set_posix_acl_flag(sb)&t;do { } while (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_SECURITY
 DECL|macro|XFS_SECURITY_STRING
-macro_line|# define XFS_SECURITY_STRING&t;&quot;security attrs, &quot;
+macro_line|# define XFS_SECURITY_STRING&t;&quot;security attributes, &quot;
 DECL|macro|ENOSECURITY
 macro_line|# define ENOSECURITY&t;&t;0
 macro_line|#else

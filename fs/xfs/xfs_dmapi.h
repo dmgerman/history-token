@@ -182,6 +182,29 @@ DECL|macro|DM_FLAGS_NDELAY
 mdefine_line|#define DM_FLAGS_NDELAY&t;&t;0x001&t;/* return EAGAIN after dm_pending() */
 DECL|macro|DM_FLAGS_UNWANTED
 mdefine_line|#define DM_FLAGS_UNWANTED&t;0x002&t;/* event not in fsys dm_eventset_t */
+DECL|macro|DM_FLAGS_ISEM
+mdefine_line|#define DM_FLAGS_ISEM&t;&t;0x004&t;/* thread holds i_sem */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,6,0)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,4,21)
+multiline_comment|/* i_alloc_sem was added in 2.4.22-pre1 */
+DECL|macro|DM_FLAGS_IALLOCSEM_RD
+mdefine_line|#define DM_FLAGS_IALLOCSEM_RD&t;0x010&t;/* thread holds i_alloc_sem rd */
+DECL|macro|DM_FLAGS_IALLOCSEM_WR
+mdefine_line|#define DM_FLAGS_IALLOCSEM_WR&t;0x020&t;/* thread holds i_alloc_sem wr */
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/*&n; *&t;Based on IO_ISDIRECT, decide which i_ flag is set.&n; */
+macro_line|#ifdef DM_FLAGS_IALLOCSEM_RD
+DECL|macro|DM_SEM_FLAG_RD
+mdefine_line|#define DM_SEM_FLAG_RD(ioflags) (((ioflags) &amp; IO_ISDIRECT) ? &bslash;&n;&t;&t;&t;      DM_FLAGS_IALLOCSEM_RD : DM_FLAGS_ISEM)
+DECL|macro|DM_SEM_FLAG_WR
+mdefine_line|#define DM_SEM_FLAG_WR&t;(DM_FLAGS_IALLOCSEM_WR | DM_FLAGS_ISEM)
+macro_line|#else
+DECL|macro|DM_SEM_FLAG_RD
+mdefine_line|#define DM_SEM_FLAG_RD(ioflags) (((ioflags) &amp; IO_ISDIRECT) ? &bslash;&n;&t;&t;&t;      0 : DM_FLAGS_ISEM)
+DECL|macro|DM_SEM_FLAG_WR
+mdefine_line|#define DM_SEM_FLAG_WR&t;(DM_FLAGS_ISEM)
+macro_line|#endif
 multiline_comment|/*&n; *&t;Macros to turn caller specified delay/block flags into&n; *&t;dm_send_xxxx_event flag DM_FLAGS_NDELAY.&n; */
 DECL|macro|FILP_DELAY_FLAG
 mdefine_line|#define FILP_DELAY_FLAG(filp) ((filp-&gt;f_flags&amp;(O_NDELAY|O_NONBLOCK)) ? &bslash;&n;&t;&t;&t;DM_FLAGS_NDELAY : 0)
