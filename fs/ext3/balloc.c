@@ -1977,14 +1977,6 @@ r_int
 r_int
 id|goal
 comma
-id|u32
-op_star
-id|prealloc_count
-comma
-id|u32
-op_star
-id|prealloc_block
-comma
 r_int
 op_star
 id|errp

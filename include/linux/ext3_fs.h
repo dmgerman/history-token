@@ -12,11 +12,6 @@ multiline_comment|/*&n; * The second extended filesystem constants/structures&n;
 multiline_comment|/*&n; * Define EXT3FS_DEBUG to produce debug messages&n; */
 DECL|macro|EXT3FS_DEBUG
 macro_line|#undef EXT3FS_DEBUG
-multiline_comment|/*&n; * Define EXT3_PREALLOCATE to preallocate data blocks for expanding files&n; */
-DECL|macro|EXT3_PREALLOCATE
-macro_line|#undef  EXT3_PREALLOCATE /* @@@ Fix this! */
-DECL|macro|EXT3_DEFAULT_PREALLOC_BLOCKS
-mdefine_line|#define EXT3_DEFAULT_PREALLOC_BLOCKS&t;8
 multiline_comment|/*&n; * Always enable hashed directories&n; */
 DECL|macro|CONFIG_EXT3_INDEX
 mdefine_line|#define CONFIG_EXT3_INDEX
@@ -1333,12 +1328,6 @@ op_star
 comma
 r_int
 r_int
-comma
-id|__u32
-op_star
-comma
-id|__u32
-op_star
 comma
 r_int
 op_star

@@ -66,16 +66,6 @@ DECL|member|i_next_alloc_goal
 id|__u32
 id|i_next_alloc_goal
 suffix:semicolon
-macro_line|#ifdef EXT3_PREALLOCATE
-DECL|member|i_prealloc_block
-id|__u32
-id|i_prealloc_block
-suffix:semicolon
-DECL|member|i_prealloc_count
-id|__u32
-id|i_prealloc_count
-suffix:semicolon
-macro_line|#endif
 DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup

@@ -2460,16 +2460,6 @@ id|ei-&gt;i_dtime
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef EXT3_PREALLOCATE
-id|ei-&gt;i_prealloc_block
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_prealloc_count
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|ei-&gt;i_block_group
 op_assign
 id|group
