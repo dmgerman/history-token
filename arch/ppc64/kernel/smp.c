@@ -629,6 +629,12 @@ l_int|2
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* The information for processor bringup must&n;&t; * be written out to main store before we release&n;&t; * the processor.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
 id|paca
 (braket
@@ -839,6 +845,12 @@ id|MAX_PACAS
 )paren
 )paren
 r_return
+suffix:semicolon
+multiline_comment|/* The information for processor bringup must&n;&t; * be written out to main store before we release&n;&t; * the processor.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
 id|paca
