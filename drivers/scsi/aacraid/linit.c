@@ -639,6 +639,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 2/Si */
@@ -652,6 +654,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -665,6 +669,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Si */
@@ -678,6 +684,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Si */
@@ -691,6 +699,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -704,6 +714,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -717,6 +729,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -730,6 +744,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -743,6 +759,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* PERC 3/Di */
@@ -756,6 +774,8 @@ comma
 l_string|&quot;catapult        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* catapult*/
@@ -769,6 +789,8 @@ comma
 l_string|&quot;tomcat          &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* tomcat*/
@@ -782,6 +804,8 @@ comma
 l_string|&quot;Adaptec 2120S   &quot;
 comma
 l_int|1
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Adaptec 2120S (Crusader)*/
@@ -795,6 +819,8 @@ comma
 l_string|&quot;Adaptec 2200S   &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Adaptec 2200S (Vulcan)*/
@@ -808,6 +834,8 @@ comma
 l_string|&quot;Adaptec 2200S   &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Adaptec 2200S (Vulcan-2m)*/
@@ -821,6 +849,8 @@ comma
 l_string|&quot;Legend S220     &quot;
 comma
 l_int|1
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Legend S220*/
@@ -834,6 +864,8 @@ comma
 l_string|&quot;Legend S230     &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Legend S230*/
@@ -938,6 +970,8 @@ comma
 l_string|&quot;PERC 320/DC     &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Perc 320/DC*/
@@ -977,6 +1011,8 @@ comma
 l_string|&quot;PERCRAID        &quot;
 comma
 l_int|4
+comma
+id|AAC_QUIRK_31BIT
 )brace
 comma
 multiline_comment|/* Dell PERC2 &quot;Quad Channel&quot; */
@@ -1859,6 +1895,49 @@ id|pdev
 comma
 l_int|0xFFFFFFFFULL
 )paren
+op_logical_or
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0xFFFFFFFFULL
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/*&n;&t; * If the quirk31 bit is set, the adapter needs adapter&n;&t; * to driver communication memory to be allocated below 2gig&n;&t; */
+r_if
+c_cond
+(paren
+id|aac_drivers
+(braket
+id|index
+)braket
+dot
+id|quirks
+op_amp
+id|AAC_QUIRK_31BIT
+)paren
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0x7FFFFFFFULL
+)paren
+op_logical_or
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0x7FFFFFFFULL
+)paren
 )paren
 r_goto
 id|out
@@ -2024,6 +2103,33 @@ id|init
 id|aac
 comma
 id|shost-&gt;unique_id
+)paren
+)paren
+r_goto
+id|out_free_fibs
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we had set a smaller DMA mask earlier, set it to 4gig&n;&t; * now since the adapter can dma data to at least a 4gig&n;&t; * address space.&n;&t; */
+r_if
+c_cond
+(paren
+id|aac_drivers
+(braket
+id|index
+)braket
+dot
+id|quirks
+op_amp
+id|AAC_QUIRK_31BIT
+)paren
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0xFFFFFFFFULL
 )paren
 )paren
 r_goto
