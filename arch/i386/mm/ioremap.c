@@ -1067,11 +1067,7 @@ id|p-&gt;phys_addr
 )paren
 )paren
 comma
-(paren
 id|p-&gt;size
-op_minus
-id|PAGE_SIZE
-)paren
 op_rshift
 id|PAGE_SHIFT
 comma
