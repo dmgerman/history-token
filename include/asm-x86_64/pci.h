@@ -181,8 +181,8 @@ r_extern
 id|dma_addr_t
 id|bad_dma_address
 suffix:semicolon
-DECL|macro|pci_dma_error
-mdefine_line|#define pci_dma_error(x) ((x) == bad_dma_address)
+DECL|macro|pci_dma_mapping_error
+mdefine_line|#define pci_dma_mapping_error(x) ((x) == bad_dma_address)
 multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void
