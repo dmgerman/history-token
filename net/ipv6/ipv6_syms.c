@@ -189,6 +189,13 @@ c_func
 id|in6_dev_finish_destroy
 )paren
 suffix:semicolon
+DECL|variable|ip6_found_nexthdr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip6_found_nexthdr
+)paren
+suffix:semicolon
 DECL|variable|xfrm6_rcv
 id|EXPORT_SYMBOL
 c_func

@@ -3723,7 +3723,6 @@ macro_line|#endif
 macro_line|#endif
 )brace
 DECL|function|ip6_found_nexthdr
-r_static
 r_int
 id|ip6_found_nexthdr
 c_func
