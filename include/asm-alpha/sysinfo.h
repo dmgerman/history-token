@@ -32,7 +32,7 @@ mdefine_line|#define UAC_NOFIX&t;&t;&t;2
 DECL|macro|UAC_SIGBUS
 mdefine_line|#define UAC_SIGBUS&t;&t;&t;4
 macro_line|#ifdef __KERNEL__
-multiline_comment|/* This is the shift that is applied to the UAC bits as stored in the &n;   per-thread flags.  */
+multiline_comment|/* This is the shift that is applied to the UAC bits as stored in the&n;   per-thread flags.  See thread_info.h.  */
 DECL|macro|UAC_SHIFT
 mdefine_line|#define UAC_SHIFT&t;&t;&t;6
 macro_line|#endif

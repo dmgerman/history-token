@@ -46,7 +46,7 @@ DECL|macro|FPCR_DYN_MASK
 mdefine_line|#define FPCR_DYN_MASK&t; (0x3UL &lt;&lt; FPCR_DYN_SHIFT)
 DECL|macro|FPCR_MASK
 mdefine_line|#define FPCR_MASK&t;0xffff800000000000
-multiline_comment|/*&n; * IEEE trap enables are implemented in software.  These per-thread&n; * bits are stored in the &quot;flags&quot; field of &quot;struct thread_struct&quot;.&n; * Thus, the bits are defined so as not to conflict with the&n; * floating-point enable bit (which is architected).  On top of that,&n; * we want to make these bits compatible with OSF/1 so&n; * ieee_set_fp_control() etc. can be implemented easily and&n; * compatibly.  The corresponding definitions are in&n; * /usr/include/machine/fpu.h under OSF/1.&n; */
+multiline_comment|/*&n; * IEEE trap enables are implemented in software.  These per-thread&n; * bits are stored in the &quot;ieee_state&quot; field of &quot;struct thread_info&quot;.&n; * Thus, the bits are defined so as not to conflict with the&n; * floating-point enable bit (which is architected).  On top of that,&n; * we want to make these bits compatible with OSF/1 so&n; * ieee_set_fp_control() etc. can be implemented easily and&n; * compatibly.  The corresponding definitions are in&n; * /usr/include/machine/fpu.h under OSF/1.&n; */
 DECL|macro|IEEE_TRAP_ENABLE_INV
 mdefine_line|#define IEEE_TRAP_ENABLE_INV&t;(1UL&lt;&lt;1)&t;/* invalid op */
 DECL|macro|IEEE_TRAP_ENABLE_DZE
