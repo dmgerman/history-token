@@ -2596,6 +2596,17 @@ id|sctp_addr_param
 )paren
 )braket
 suffix:semicolon
+r_struct
+id|sctp_af
+op_star
+id|af
+op_assign
+id|sctp_get_af_specific
+c_func
+(paren
+id|ssa-&gt;v4.sin_family
+)paren
+suffix:semicolon
 multiline_comment|/* Build the error on the stack.   We are way to malloc crazy&n;&t; * throughout the code today.&n;&t; */
 id|errhdr
 op_assign
@@ -2618,7 +2629,9 @@ suffix:semicolon
 multiline_comment|/* Copy into a parm format. */
 id|len
 op_assign
-id|sockaddr2sctp_addr
+id|af
+op_member_access_from_pointer
+id|to_addr_param
 c_func
 (paren
 id|ssa
