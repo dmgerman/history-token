@@ -1908,7 +1908,7 @@ id|ACPI_INTERRUPT_CPEI
 suffix:colon
 id|vector
 op_assign
-id|IA64_PCE_VECTOR
+id|IA64_CPE_VECTOR
 suffix:semicolon
 id|delivery
 op_assign

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -729,6 +730,13 @@ id|flags
 suffix:semicolon
 )brace
 )brace
+DECL|variable|sn_send_IPI_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_send_IPI_phys
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * sn2_send_IPI - send an IPI to a processor&n; * @cpuid: target of the IPI&n; * @vector: command to send&n; * @delivery_mode: delivery mechanism&n; * @redirect: redirect the IPI?&n; *&n; * Sends an IPI (InterProcessor Interrupt) to the processor specified by&n; * @cpuid.  @vector specifies the command to send, while @delivery_mode can &n; * be one of the following&n; *&n; * %IA64_IPI_DM_INT - pend an interrupt&n; * %IA64_IPI_DM_PMI - pend a PMI&n; * %IA64_IPI_DM_NMI - pend an NMI&n; * %IA64_IPI_DM_INIT - pend an INIT interrupt&n; */
 r_void
 DECL|function|sn2_send_IPI

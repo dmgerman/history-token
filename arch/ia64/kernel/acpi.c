@@ -17,36 +17,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
-id|asm
-(paren
-l_string|&quot;.weak iosapic_register_intr&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_override_isa_irq&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_register_platform_intr&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_init&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_system_init&quot;
-)paren
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;.weak iosapic_version&quot;
-)paren
-suffix:semicolon
 DECL|variable|pm_idle
 r_void
 (paren
@@ -719,11 +689,6 @@ c_func
 id|header
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|iosapic_init
-)paren
 id|iosapic_init
 c_func
 (paren
@@ -780,26 +745,6 @@ c_func
 id|header
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_platform_intr
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PREFIX
-l_string|&quot;No ACPI platform interrupt support&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Get vector assignment for this interrupt, set attributes,&n;&t; * and program the IOSAPIC routing table.&n;&t; */
 id|vector
 op_assign
@@ -890,16 +835,6 @@ c_func
 (paren
 id|header
 )paren
-suffix:semicolon
-multiline_comment|/* Ignore if the platform doesn&squot;t support overrides */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_override_isa_irq
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|iosapic_override_isa_irq
 c_func
@@ -1035,11 +970,6 @@ op_assign
 id|acpi_madt-&gt;flags.pcat_compat
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|iosapic_system_init
-)paren
 id|iosapic_system_init
 c_func
 (paren
@@ -1995,9 +1925,6 @@ id|fadt_descriptor_rev2
 op_star
 id|fadt
 suffix:semicolon
-id|u32
-id|sci_irq
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2059,41 +1986,14 @@ id|acpi_kbd_controller_present
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_intr
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* just ignore the rest */
-id|sci_irq
-op_assign
-id|fadt-&gt;sci_int
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|has_8259
-op_logical_and
-id|sci_irq
-OL
-l_int|16
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* legacy, no setup required */
-id|iosapic_register_intr
+id|acpi_register_irq
 c_func
 (paren
-id|sci_irq
+id|fadt-&gt;sci_int
 comma
-id|IOSAPIC_POL_LOW
+id|ACPI_ACTIVE_LOW
 comma
-id|IOSAPIC_LEVEL
+id|ACPI_LEVEL_SENSITIVE
 )paren
 suffix:semicolon
 r_return
@@ -2650,7 +2550,7 @@ DECL|function|acpi_irq_to_vector
 id|acpi_irq_to_vector
 (paren
 id|u32
-id|irq
+id|gsi
 )paren
 (brace
 r_if
@@ -2658,7 +2558,7 @@ c_cond
 (paren
 id|has_8259
 op_logical_and
-id|irq
+id|gsi
 OL
 l_int|16
 )paren
@@ -2666,14 +2566,14 @@ r_return
 id|isa_irq_to_vector
 c_func
 (paren
-id|irq
+id|gsi
 )paren
 suffix:semicolon
 r_return
 id|gsi_to_vector
 c_func
 (paren
-id|irq
+id|gsi
 )paren
 suffix:semicolon
 )brace
@@ -2691,21 +2591,14 @@ id|u32
 id|trigger
 )paren
 (brace
-r_int
-id|vector
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|has_8259
 op_logical_and
-(paren
 id|gsi
 OL
 l_int|16
-)paren
 )paren
 r_return
 id|isa_irq_to_vector
@@ -2714,29 +2607,34 @@ c_func
 id|gsi
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iosapic_register_intr
-)paren
 r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Turn it on */
-id|vector
-op_assign
 id|iosapic_register_intr
+c_func
 (paren
 id|gsi
 comma
+(paren
 id|polarity
-comma
-id|trigger
+op_eq
+id|ACPI_ACTIVE_HIGH
 )paren
-suffix:semicolon
-r_return
-id|vector
+ques
+c_cond
+id|IOSAPIC_POL_HIGH
+suffix:colon
+id|IOSAPIC_POL_LOW
+comma
+(paren
+id|trigger
+op_eq
+id|ACPI_EDGE_SENSITIVE
+)paren
+ques
+c_cond
+id|IOSAPIC_EDGE
+suffix:colon
+id|IOSAPIC_LEVEL
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI_BOOT */

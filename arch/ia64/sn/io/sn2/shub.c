@@ -727,9 +727,6 @@ suffix:semicolon
 r_uint64
 id|longarg
 suffix:semicolon
-id|vertex_hdl_t
-id|d
-suffix:semicolon
 r_int
 id|nasid
 suffix:semicolon
@@ -738,11 +735,7 @@ op_assign
 (paren
 id|cnodeid_t
 )paren
-id|hwgraph_fastinfo_get
-c_func
-(paren
-id|d
-)paren
+id|file-&gt;f_dentry-&gt;d_fsdata
 suffix:semicolon
 r_switch
 c_cond

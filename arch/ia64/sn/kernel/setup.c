@@ -817,7 +817,7 @@ id|platform_intr_list
 id|ACPI_INTERRUPT_CPEI
 )braket
 op_assign
-id|IA64_PCE_VECTOR
+id|IA64_CPE_VECTOR
 suffix:semicolon
 r_if
 c_cond
