@@ -280,7 +280,6 @@ id|ACPI_DB_TABLES
 comma
 l_string|&quot;Table Signature: [%4.4s]&bslash;n&quot;
 comma
-op_amp
 id|return_header-&gt;signature
 )paren
 )paren
