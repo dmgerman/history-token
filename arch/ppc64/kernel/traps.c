@@ -1804,6 +1804,17 @@ id|regs
 r_if
 c_cond
 (paren
+id|debugger_fault_handler
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|regs-&gt;msr
 op_amp
 l_int|0x100000
