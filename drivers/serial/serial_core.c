@@ -1740,11 +1740,6 @@ id|state
 op_assign
 id|tty-&gt;driver_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty
-)paren
 id|__uart_put_char
 c_func
 (paren
@@ -1813,9 +1808,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|tty
-op_logical_or
 op_logical_neg
 id|state-&gt;info-&gt;xmit.buf
 )paren
