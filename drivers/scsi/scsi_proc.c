@@ -961,7 +961,7 @@ suffix:semicolon
 )brace
 DECL|function|proc_scsi_write
 r_static
-r_int
+id|ssize_t
 id|proc_scsi_write
 c_func
 (paren
@@ -972,6 +972,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
