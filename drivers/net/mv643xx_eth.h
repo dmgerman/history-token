@@ -900,6 +900,10 @@ DECL|member|tx_first_desc_q
 r_int
 id|tx_first_desc_q
 suffix:semicolon
+DECL|member|tx_first_command
+id|u32
+id|tx_first_command
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef MV64340_TX_FAST_REFILL
 DECL|member|tx_clean_threshold
@@ -908,7 +912,6 @@ id|tx_clean_threshold
 suffix:semicolon
 macro_line|#endif
 DECL|member|p_rx_desc_area
-r_volatile
 r_struct
 id|eth_rx_desc
 op_star
@@ -933,7 +936,6 @@ id|MV64340_RX_QUEUE_SIZE
 )braket
 suffix:semicolon
 DECL|member|p_tx_desc_area
-r_volatile
 r_struct
 id|eth_tx_desc
 op_star
