@@ -80,7 +80,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -97,7 +97,7 @@ id|addr
 op_or_assign
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -218,7 +218,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -236,7 +236,7 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -360,7 +360,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -377,7 +377,7 @@ id|addr
 op_xor_assign
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -501,7 +501,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -532,7 +532,7 @@ id|addr
 op_or_assign
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -679,7 +679,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -711,7 +711,7 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -859,7 +859,7 @@ c_func
 id|nr
 )paren
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -890,7 +890,7 @@ id|addr
 op_xor_assign
 id|mask
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -1852,6 +1852,9 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_first_bit - find the first set bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first set bit, not the number of the byte&n; * containing a bit.&n; */
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(addr, size) &bslash;&n;        find_next_bit((addr), (size), 0)
 DECL|macro|_EXT2_HAVE_ASM_BITOPS_
 mdefine_line|#define _EXT2_HAVE_ASM_BITOPS_
 macro_line|#ifdef __KERNEL__

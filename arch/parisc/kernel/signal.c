@@ -1657,7 +1657,7 @@ id|err
 r_goto
 id|give_sigsegv
 suffix:semicolon
-multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
+multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace. The first words of tramp are used to&n;&t;   save the previous sigrestartblock trampoline that might be&n;&t;   on the stack. We start the sigreturn trampoline at &n;&t;   SIGRESTARTBLOCK_TRAMP+X. */
 id|err
 op_or_assign
 id|__put_user
@@ -1673,7 +1673,7 @@ comma
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+id|SIGRESTARTBLOCK_TRAMP
 op_plus
 l_int|0
 )braket
@@ -1689,7 +1689,7 @@ comma
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+id|SIGRESTARTBLOCK_TRAMP
 op_plus
 l_int|1
 )braket
@@ -1705,7 +1705,7 @@ comma
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+id|SIGRESTARTBLOCK_TRAMP
 op_plus
 l_int|2
 )braket
@@ -1721,7 +1721,7 @@ comma
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+id|SIGRESTARTBLOCK_TRAMP
 op_plus
 l_int|3
 )braket
@@ -1767,7 +1767,7 @@ r_int
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+l_int|0
 )braket
 comma
 (paren
@@ -1791,7 +1791,7 @@ r_int
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+l_int|0
 )braket
 comma
 (paren
@@ -1805,6 +1805,7 @@ id|TRAMP_SIZE
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* TRAMP Words 0-4, Lenght 5 = SIGRESTARTBLOCK_TRAMP&n;&t; * TRAMP Words 5-9, Length 4 = SIGRETURN_TRAMP&n;&t; * So the SIGRETURN_TRAMP is at the end of SIGRESTARTBLOCK_TRAMP&n;&t; */
 id|rp
 op_assign
 (paren
@@ -1814,7 +1815,7 @@ r_int
 op_amp
 id|frame-&gt;tramp
 (braket
-id|SIGRETURN_TRAMP
+id|SIGRESTARTBLOCK_TRAMP
 )braket
 suffix:semicolon
 r_if

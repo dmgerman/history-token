@@ -276,6 +276,11 @@ mdefine_line|#define set_wmb(var, value)&t;&t;do { var = value; wmb(); } while (
 multiline_comment|/* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.  */
 DECL|macro|__ldcw
 mdefine_line|#define __ldcw(a) ({ &bslash;&n;&t;unsigned __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldcw 0(%1),%0&quot; : &quot;=r&quot; (__ret) : &quot;r&quot; (a)); &bslash;&n;&t;__ret; &bslash;&n;})
+multiline_comment|/* Because kmalloc only guarantees 8-byte alignment for kmalloc&squot;d data,&n;   and GCC only guarantees 8-byte alignment for stack locals, we can&squot;t&n;   be assured of 16-byte alignment for atomic lock data even if we&n;   specify &quot;__attribute ((aligned(16)))&quot; in the type declaration.  So,&n;   we use a struct containing an array of four ints for the atomic lock&n;   type and dynamically select the 16-byte aligned int from the array&n;   for the semaphore.  */
+DECL|macro|__PA_LDCW_ALIGNMENT
+mdefine_line|#define __PA_LDCW_ALIGNMENT 16
+DECL|macro|__ldcw_align
+mdefine_line|#define __ldcw_align(a) ({ &bslash;&n;  unsigned long __ret = (unsigned long) a;                     &t;&t;&bslash;&n;  __ret = (__ret + __PA_LDCW_ALIGNMENT - 1) &amp; ~(__PA_LDCW_ALIGNMENT - 1); &bslash;&n;  (volatile unsigned int *) __ret;                                      &bslash;&n;})
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef
@@ -285,23 +290,19 @@ DECL|member|lock
 r_volatile
 r_int
 r_int
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 id|lock
+(braket
+l_int|4
+)braket
 suffix:semicolon
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
+DECL|macro|__lock_aligned
+mdefine_line|#define __lock_aligned __attribute__((__section__(&quot;.data.lock_aligned&quot;)))
 macro_line|#endif
+DECL|macro|KERNEL_START
+mdefine_line|#define KERNEL_START (0x10100000 - 0x1000)
 macro_line|#endif
 eof

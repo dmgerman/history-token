@@ -1326,5 +1326,8 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* At the moment, we panic on error for IOMMU resource exaustion */
+DECL|macro|dma_mapping_error
+mdefine_line|#define dma_mapping_error(x)&t;0
 macro_line|#endif
 eof

@@ -299,7 +299,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PDC_NARROW
+macro_line|#ifdef __LP64__
+r_extern
+r_int
+id|parisc_narrow_firmware
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|parisc_narrow_firmware
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -307,6 +317,7 @@ id|KERN_INFO
 l_string|&quot;Kernel is using PDC in 32-bit mode.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|setup_pdc
 c_func
@@ -557,6 +568,10 @@ suffix:colon
 r_case
 id|pcxw2
 suffix:colon
+r_case
+id|mako
+suffix:colon
+multiline_comment|/* XXX : this is really mckinley bus */
 r_if
 c_cond
 (paren

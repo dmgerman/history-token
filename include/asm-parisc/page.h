@@ -11,6 +11,7 @@ mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t;memset((void *)(page), 0, PAGE_SIZE)
@@ -138,6 +139,7 @@ id|vaddr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
+macro_line|#ifdef __LP64__
 DECL|member|pte
 DECL|typedef|pte_t
 r_typedef
@@ -150,13 +152,32 @@ suffix:semicolon
 )brace
 id|pte_t
 suffix:semicolon
+macro_line|#else
+r_typedef
+r_struct
+(brace
+DECL|member|pte
+r_int
+r_int
+id|pte
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|typedef|pte_t
+)brace
+id|pte_t
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* NOTE: even on 64 bits, these entries are __u32 because we allocate&n; * the pmd and pgd in ZONE_DMA (i.e. under 4GB) */
 DECL|member|pmd
 DECL|typedef|pmd_t
 r_typedef
 r_struct
 (brace
-r_int
-r_int
+id|__u32
 id|pmd
 suffix:semicolon
 )brace
@@ -167,8 +188,7 @@ DECL|typedef|pgd_t
 r_typedef
 r_struct
 (brace
-r_int
-r_int
+id|__u32
 id|pgd
 suffix:semicolon
 )brace
@@ -188,6 +208,13 @@ id|pgprot_t
 suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte)
+macro_line|#ifdef __LP64__
+DECL|macro|pte_flags
+mdefine_line|#define pte_flags(x)&t;(*(__u32 *)&amp;((x).pte))
+macro_line|#else
+DECL|macro|pte_flags
+mdefine_line|#define pte_flags(x)&t;((x).flags)
+macro_line|#endif
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pgd_val
@@ -295,15 +322,44 @@ r_int
 id|npmem_ranges
 suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* WARNING: The definitions below must match exactly to sizeof(pte_t)&n; * etc&n; */
+macro_line|#ifdef __LP64__
+DECL|macro|BITS_PER_PTE_ENTRY
+mdefine_line|#define BITS_PER_PTE_ENTRY&t;3
+DECL|macro|BITS_PER_PMD_ENTRY
+mdefine_line|#define BITS_PER_PMD_ENTRY&t;2
+DECL|macro|BITS_PER_PGD_ENTRY
+mdefine_line|#define BITS_PER_PGD_ENTRY&t;2
+macro_line|#else
+DECL|macro|BITS_PER_PTE_ENTRY
+mdefine_line|#define BITS_PER_PTE_ENTRY&t;3
+DECL|macro|BITS_PER_PMD_ENTRY
+mdefine_line|#define BITS_PER_PMD_ENTRY&t;2
+DECL|macro|BITS_PER_PGD_ENTRY
+mdefine_line|#define BITS_PER_PGD_ENTRY&t;BITS_PER_PMD_ENTRY
+macro_line|#endif
+DECL|macro|PGD_ENTRY_SIZE
+mdefine_line|#define PGD_ENTRY_SIZE&t;(1UL &lt;&lt; BITS_PER_PGD_ENTRY)
+DECL|macro|PMD_ENTRY_SIZE
+mdefine_line|#define PMD_ENTRY_SIZE&t;(1UL &lt;&lt; BITS_PER_PMD_ENTRY)
+DECL|macro|PTE_ENTRY_SIZE
+mdefine_line|#define PTE_ENTRY_SIZE&t;(1UL &lt;&lt; BITS_PER_PTE_ENTRY)
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 DECL|macro|LINUX_GATEWAY_SPACE
 mdefine_line|#define LINUX_GATEWAY_SPACE     0
+multiline_comment|/* This governs the relationship between virtual and physical addresses.&n; * If you alter it, make sure to take care of our various fixed mapping&n; * segments in fixmap.h */
 DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET           (0x10000000)
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;((unsigned long)__PAGE_OFFSET)
+multiline_comment|/* The size of the gateway page (we leave lots of room for expansion) */
+DECL|macro|GATEWAY_PAGE_SIZE
+mdefine_line|#define GATEWAY_PAGE_SIZE&t;0x4000
+multiline_comment|/* The start of the actual kernel binary---used in vmlinux.lds.S&n; * Leave some space after __PAGE_OFFSET for detecting kernel null&n; * ptr derefs */
+DECL|macro|KERNEL_BINARY_TEXT_START
+mdefine_line|#define KERNEL_BINARY_TEXT_START&t;(__PAGE_OFFSET + 0x100000)
 multiline_comment|/* These macros don&squot;t work for 64-bit C code -- don&squot;t allow in C at all */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|PA

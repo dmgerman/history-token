@@ -2,30 +2,157 @@ macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/* Note that PA-RISC has to use `1&squot; to mean unlocked and `0&squot; to mean locked&n; * since it only has load-and-zero.&n; */
+multiline_comment|/* Note that PA-RISC has to use `1&squot; to mean unlocked and `0&squot; to mean locked&n; * since it only has load-and-zero. Moreover, at least on some PA processors,&n; * the semaphore address has to be 16-byte aligned.&n; */
 DECL|macro|SPIN_LOCK_UNLOCKED
 macro_line|#undef SPIN_LOCK_UNLOCKED
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 1 }
+mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { { 1, 1, 1, 1 } }
 DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;do { (x)-&gt;lock = 1; } while(0)
-DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(x) ((x)-&gt;lock == 0)
+mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
+DECL|function|spin_is_locked
+r_static
+r_inline
+r_int
+id|spin_is_locked
+c_func
+(paren
+id|spinlock_t
+op_star
+id|x
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|a
+op_assign
+id|__ldcw_align
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+r_return
+op_star
+id|a
+op_eq
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(((volatile spinlock_t *)(x))-&gt;lock == 0)
+mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|_raw_spin_lock_flags
 mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
-macro_line|#if 1
-DECL|macro|_raw_spin_lock
-mdefine_line|#define _raw_spin_lock(x) do { &bslash;&n;&t;while (__ldcw (&amp;(x)-&gt;lock) == 0) &bslash;&n;&t;&t;while (((x)-&gt;lock) == 0) ; } while (0)
-macro_line|#else
-DECL|macro|_raw_spin_lock
-mdefine_line|#define _raw_spin_lock(x) &bslash;&n;&t;do { while(__ldcw(&amp;(x)-&gt;lock) == 0); } while(0)
-macro_line|#endif
-DECL|macro|_raw_spin_unlock
-mdefine_line|#define _raw_spin_unlock(x) &bslash;&n;&t;do { (x)-&gt;lock = 1; } while(0)
-DECL|macro|_raw_spin_trylock
-mdefine_line|#define _raw_spin_trylock(x) (__ldcw(&amp;(x)-&gt;lock) != 0)
+DECL|function|_raw_spin_lock
+r_static
+r_inline
+r_void
+id|_raw_spin_lock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|x
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|a
+op_assign
+id|__ldcw_align
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|__ldcw
+c_func
+(paren
+id|a
+)paren
+op_eq
+l_int|0
+)paren
+r_while
+c_loop
+(paren
+op_star
+id|a
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|_raw_spin_unlock
+r_static
+r_inline
+r_void
+id|_raw_spin_unlock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|x
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|a
+op_assign
+id|__ldcw_align
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+op_star
+id|a
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|_raw_spin_trylock
+r_static
+r_inline
+r_int
+id|_raw_spin_trylock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|x
+)paren
+(brace
+r_volatile
+r_int
+r_int
+op_star
+id|a
+op_assign
+id|__ldcw_align
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+r_return
+id|__ldcw
+c_func
+(paren
+id|a
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; */
 r_typedef
 r_struct
@@ -44,7 +171,7 @@ DECL|typedef|rwlock_t
 id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { {1}, 0 }
+mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { { { 1, 1, 1, 1 } }, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp)&t;do { *(lp) = RW_LOCK_UNLOCKED; } while (0)
 DECL|macro|rwlock_is_locked

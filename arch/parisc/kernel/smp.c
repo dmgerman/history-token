@@ -1,4 +1,4 @@
-multiline_comment|/*&n;** SMP Support&n;**&n;** Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n;** Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n;** Copyright (C) 2001 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n;** &n;** Lots of stuff stolen from arch/alpha/kernel/smp.c&n;** ...and then parisc stole from arch/ia64/kernel/smp.c. Thanks David! :^)&n;**&n;** Thanks to John Curry and Ullas Ponnadi. I learned alot from their work.&n;** -grant (1/12/2001)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;*/
+multiline_comment|/*&n;** SMP Support&n;**&n;** Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n;** Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n;** Copyright (C) 2001,2004 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n;** &n;** Lots of stuff stolen from arch/alpha/kernel/smp.c&n;** ...and then parisc stole from arch/ia64/kernel/smp.c. Thanks David! :^)&n;**&n;** Thanks to John Curry and Ullas Ponnadi. I learned alot from their work.&n;** -grant (1/12/2001)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;*/
 DECL|macro|ENTRY_SYS_CPUS
 macro_line|#undef ENTRY_SYS_CPUS&t;/* syscall support for iCOD-like functionality */
 macro_line|#include &lt;linux/autoconf.h&gt;
@@ -51,15 +51,6 @@ id|task_struct
 op_star
 id|smp_init_current_idle_task
 suffix:semicolon
-DECL|variable|smp_commenced
-r_static
-r_volatile
-r_int
-id|smp_commenced
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Set when the idlers are all forked */
 DECL|variable|cpu_now_booting
 r_static
 r_volatile
@@ -69,6 +60,21 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* track which CPU is booting */
+DECL|variable|parisc_max_cpus
+r_static
+r_int
+id|parisc_max_cpus
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Command line */
+DECL|variable|cache_decay_ticks
+r_int
+r_int
+id|cache_decay_ticks
+suffix:semicolon
+multiline_comment|/* declared by include/linux/sched.h */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -76,8 +82,13 @@ op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
 multiline_comment|/* Bitmap of online CPUs */
-DECL|macro|IS_LOGGED_IN
-mdefine_line|#define IS_LOGGED_IN(cpunum) (cpu_isset(cpunum, cpu_online_map))
+DECL|variable|cpu_possible_map
+id|cpumask_t
+id|cpu_possible_map
+op_assign
+id|CPU_MASK_NONE
+suffix:semicolon
+multiline_comment|/* Bitmap of Present CPUs */
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func
@@ -85,41 +96,11 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
-r_int
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|cache_decay_ticks
-r_int
-r_int
-id|cache_decay_ticks
-suffix:semicolon
-DECL|variable|max_cpus
-r_static
-r_int
-id|max_cpus
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* Command line */
-DECL|variable|cpu_present_mask
-id|cpumask_t
-id|cpu_present_mask
-suffix:semicolon
-DECL|variable|cpu_present_mask
+DECL|variable|cpu_possible_map
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_present_mask
+id|cpu_possible_map
 )paren
 suffix:semicolon
 DECL|struct|smp_call_struct
@@ -216,7 +197,7 @@ macro_line|#error verify IRQ_OFFSET(IPI_IRQ) is ipi_interrupt() in new IRQ regio
 r_if
 c_cond
 (paren
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|cpuid
@@ -820,7 +801,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|parisc_max_cpus
 suffix:semicolon
 id|i
 op_increment
@@ -829,6 +810,12 @@ op_increment
 r_if
 c_cond
 (paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+op_logical_and
 id|i
 op_ne
 id|smp_processor_id
@@ -966,7 +953,10 @@ c_func
 op_amp
 id|data.unstarted_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -977,7 +967,10 @@ c_func
 op_amp
 id|data.unfinished_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -1162,7 +1155,7 @@ op_star
 id|str
 )paren
 (brace
-id|max_cpus
+id|parisc_max_cpus
 op_assign
 l_int|0
 suffix:semicolon
@@ -1197,7 +1190,7 @@ op_amp
 id|str
 comma
 op_amp
-id|max_cpus
+id|parisc_max_cpus
 )paren
 suffix:semicolon
 r_return
@@ -1534,26 +1527,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Interrupts have been off until now */
-multiline_comment|/* Slaves wait here until Big Poppa daddy say &quot;jump&quot; */
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* PARANOID */
-r_while
-c_loop
-(paren
-op_logical_neg
-id|smp_commenced
-)paren
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* PARANOID */
 id|cpu_idle
 c_func
 (paren
@@ -1568,8 +1541,8 @@ l_string|&quot;smp_callin() AAAAaaaaahhhh....&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; * Create the idle task for a new Slave CPU.  DO NOT use kernel_thread()&n; * because that could end up calling schedule(). If it did, the new idle&n; * task could get scheduled before we had a chance to remove it from the&n; * run-queue...&n; */
-DECL|function|fork_by_hand
 r_static
 r_struct
 id|task_struct
@@ -1607,8 +1580,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Bring one cpu online.&n; */
-DECL|function|smp_boot_one_cpu
-r_static
 r_int
 id|__init
 id|smp_boot_one_cpu
@@ -1716,7 +1687,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * OK, wait a bit for that CPU to finish staggering about. &n;&t; * Slave will set a bit when it reaches smp_cpu_init() and then&n;&t; * wait for smp_commenced to be 1.&n;&t; * Once we see the bit change, we can move on.&n;&t; */
+multiline_comment|/* &n;&t; * OK, wait a bit for that CPU to finish staggering about. &n;&t; * Slave will set a bit when it reaches smp_cpu_init().&n;&t; * Once the &quot;monarch CPU&quot; sees the bit change, it can move on.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1735,7 +1706,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|cpunum
@@ -1825,36 +1796,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** inventory.c:do_inventory() has already &squot;discovered&squot; the additional CPU&squot;s.&n;** We are ready to wrest them from PDC&squot;s control now.&n;** Called by smp_init bring all the secondaries online and hold them.  &n;**&n;** o Setup of the IPI irq handler is done in irq.c.&n;** o MEM_RENDEZ is initialzed in head.S:stext()&n;**&n;*/
-DECL|function|smp_boot_cpus
+macro_line|#endif
+DECL|function|smp_prepare_boot_cpu
 r_void
-id|__init
-id|smp_boot_cpus
+id|__devinit
+id|smp_prepare_boot_cpu
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|i
-comma
-id|cpu_count
-op_assign
-l_int|1
-suffix:semicolon
-r_int
-r_int
-id|bogosum
-op_assign
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|loops_per_jiffy
-suffix:semicolon
-multiline_comment|/* Count Monarch */
-multiline_comment|/* REVISIT - assumes first CPU reported by PAT PDC is BSP */
 r_int
 id|bootstrap_processor
 op_assign
@@ -1866,6 +1817,17 @@ dot
 id|cpuid
 suffix:semicolon
 multiline_comment|/* CPU ID of BSP */
+macro_line|#ifdef ENTRY_SYS_CPUS
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|state
+op_assign
+id|STATE_RUNNING
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Setup BSP mappings */
 id|printk
 c_func
@@ -1884,58 +1846,48 @@ id|current-&gt;thread_info-&gt;cpu
 op_assign
 id|bootstrap_processor
 suffix:semicolon
-multiline_comment|/* Mark Boostrap processor as present */
-id|cpu_online_map
-op_assign
-id|cpumask_of_cpu
+id|cpu_set
 c_func
 (paren
 id|bootstrap_processor
+comma
+id|cpu_online_map
 )paren
 suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|bootstrap_processor
+comma
+id|cpu_possible_map
+)paren
+suffix:semicolon
+multiline_comment|/* Mark Boostrap processor as present */
 id|current-&gt;active_mm
 op_assign
 op_amp
 id|init_mm
 suffix:semicolon
-macro_line|#ifdef ENTRY_SYS_CPUS
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|state
+id|cache_decay_ticks
 op_assign
-id|STATE_RUNNING
+id|HZ
+op_div
+l_int|100
 suffix:semicolon
-macro_line|#endif
-id|cpu_present_mask
-op_assign
-id|cpumask_of_cpu
+multiline_comment|/* FIXME very rough.  */
+)brace
+multiline_comment|/*&n;** inventory.c:do_inventory() hasn&squot;t yet been run and thus we&n;** don&squot;t &squot;discover&squot; the additional CPU&squot;s until later.&n;*/
+DECL|function|smp_prepare_cpus
+r_void
+id|__init
+id|smp_prepare_cpus
 c_func
 (paren
-id|bootstrap_processor
-)paren
-suffix:semicolon
-multiline_comment|/* Nothing to do when told not to.  */
-r_if
-c_cond
-(paren
+r_int
+r_int
 id|max_cpus
-op_eq
-l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMP mode deactivated.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1948,145 +1900,24 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Limiting CPUs to %d&bslash;n&quot;
+l_string|&quot;SMP: Limited to %d CPUs&bslash;n&quot;
 comma
 id|max_cpus
 )paren
 suffix:semicolon
-multiline_comment|/* We found more than one CPU.... */
-r_if
-c_cond
-(paren
-id|boot_cpu_data.cpu_count
-OG
-l_int|1
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_data
-(braket
-id|i
-)braket
-dot
-id|cpuid
-op_eq
-id|NO_PROC_ID
-op_logical_or
-id|cpu_data
-(braket
-id|i
-)braket
-dot
-id|cpuid
-op_eq
-id|bootstrap_processor
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_boot_one_cpu
+id|printk
 c_func
 (paren
-id|cpu_data
-(braket
-id|i
-)braket
-dot
-id|cpuid
+id|KERN_INFO
+l_string|&quot;SMP: Monarch CPU activated (%lu.%02lu BogoMIPS)&bslash;n&quot;
 comma
-id|cpu_count
-)paren
-OL
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|bogosum
-op_add_assign
+(paren
 id|cpu_data
 (braket
-id|i
+l_int|0
 )braket
 dot
 id|loops_per_jiffy
-suffix:semicolon
-id|cpu_count
-op_increment
-suffix:semicolon
-multiline_comment|/* Count good CPUs only... */
-id|cpu_present_mask
-op_or_assign
-l_int|1UL
-op_lshift
-id|i
-suffix:semicolon
-multiline_comment|/* Bail when we&squot;ve started as many CPUS as told to */
-r_if
-c_cond
-(paren
-id|cpu_count
-op_eq
-id|max_cpus
-)paren
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|cpu_count
-op_eq
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMP: Bootstrap processor only.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * FIXME very rough.&n;&t; */
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|100
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMP: Total %d of %d processors activated &quot;
-l_string|&quot;(%lu.%02lu BogoMIPS noticed) (Present Mask: %lu).&bslash;n&quot;
-comma
-id|cpu_count
-comma
-id|boot_cpu_data.cpu_count
-comma
-(paren
-id|bogosum
 op_plus
 l_int|25
 )paren
@@ -2095,7 +1926,12 @@ l_int|5000
 comma
 (paren
 (paren
-id|bogosum
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|loops_per_jiffy
 op_plus
 l_int|25
 )paren
@@ -2104,46 +1940,11 @@ l_int|50
 )paren
 op_mod
 l_int|100
-comma
-id|cpu_present_mask
-)paren
-suffix:semicolon
-id|smp_num_cpus
-op_assign
-id|cpu_count
-suffix:semicolon
-macro_line|#ifdef PER_CPU_IRQ_REGION
-id|ipi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* &n; * Called from main.c by Monarch Processor.&n; * After this, any CPU can schedule any task.&n; */
-DECL|function|smp_commence
-r_void
-id|smp_commence
-c_func
-(paren
-r_void
-)paren
-(brace
-id|smp_commenced
-op_assign
-l_int|1
-suffix:semicolon
-id|mb
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * XXX FIXME : do nothing&n; */
 DECL|function|smp_cpus_done
 r_void
 id|smp_cpus_done
@@ -2154,58 +1955,7 @@ r_int
 id|cpu_max
 )paren
 (brace
-id|smp_threads_ready
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|smp_prepare_cpus
-r_void
-id|__init
-id|smp_prepare_cpus
-c_func
-(paren
-r_int
-r_int
-id|max_cpus
-)paren
-(brace
-id|smp_boot_cpus
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|smp_prepare_boot_cpu
-r_void
-id|__devinit
-id|smp_prepare_boot_cpu
-c_func
-(paren
-r_void
-)paren
-(brace
-id|cpu_set
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|cpu_set
-c_func
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|cpu_present_mask
-)paren
+r_return
 suffix:semicolon
 )brace
 DECL|function|__cpu_up
@@ -2318,7 +2068,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|i
@@ -2418,7 +2168,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|i
@@ -2528,7 +2278,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|i
@@ -2654,7 +2404,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|IS_LOGGED_IN
+id|cpu_online
 c_func
 (paren
 id|i

@@ -19,62 +19,85 @@ macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR
-mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
+mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, (unsigned long)pmd_val(e))
 DECL|macro|pgd_ERROR
-mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
+mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, (unsigned long)pgd_val(e))
 multiline_comment|/* Note: If you change ISTACK_SIZE, you need to change the corresponding&n;  * values in vmlinux.lds and vmlinux64.lds (init_istack section). Also,&n;  * the &quot;order&quot; and size need to agree.&n;  */
 DECL|macro|ISTACK_SIZE
 mdefine_line|#define  ISTACK_SIZE  32768 /* Interrupt Stack Size */
 DECL|macro|ISTACK_ORDER
 mdefine_line|#define  ISTACK_ORDER 3
-multiline_comment|/*&n; * NOTE: Many of the below macros use PT_NLEVELS because&n; *       it is convenient that PT_NLEVELS == LOG2(pte size in bytes),&n; *       i.e. we use 3 level page tables when we use 8 byte pte&squot;s&n; *       (for 64 bit) and 2 level page tables when we use 4 byte pte&squot;s&n; */
+multiline_comment|/* This is the size of the initially mapped kernel memory (i.e. currently&n; * 0 to 1&lt;&lt;23 == 8MB */
+DECL|macro|KERNEL_INITIAL_ORDER
+mdefine_line|#define KERNEL_INITIAL_ORDER&t;23
+DECL|macro|KERNEL_INITIAL_SIZE
+mdefine_line|#define KERNEL_INITIAL_SIZE&t;(1 &lt;&lt; KERNEL_INITIAL_ORDER)
 macro_line|#ifdef __LP64__
 DECL|macro|PT_NLEVELS
-mdefine_line|#define PT_NLEVELS 3
-DECL|macro|PT_INITIAL
-mdefine_line|#define PT_INITIAL 4 /* Number of initial page tables */
+mdefine_line|#define PT_NLEVELS&t;3
+DECL|macro|PGD_ORDER
+mdefine_line|#define PGD_ORDER&t;1 /* Number of pages per pgd */
+DECL|macro|PMD_ORDER
+mdefine_line|#define PMD_ORDER&t;1 /* Number of pages per pmd */
+DECL|macro|PGD_ALLOC_ORDER
+mdefine_line|#define PGD_ALLOC_ORDER&t;2 /* first pgd contains pmd */
 macro_line|#else
 DECL|macro|PT_NLEVELS
-mdefine_line|#define PT_NLEVELS 2
-DECL|macro|PT_INITIAL
-mdefine_line|#define PT_INITIAL 2 /* Number of initial page tables */
+mdefine_line|#define PT_NLEVELS&t;2
+DECL|macro|PGD_ORDER
+mdefine_line|#define PGD_ORDER&t;1 /* Number of pages per pgd */
+DECL|macro|PGD_ALLOC_ORDER
+mdefine_line|#define PGD_ALLOC_ORDER&t;PGD_ORDER
 macro_line|#endif
-DECL|macro|MAX_ADDRBITS
-mdefine_line|#define MAX_ADDRBITS (PAGE_SHIFT + (PT_NLEVELS)*(PAGE_SHIFT - PT_NLEVELS))
-DECL|macro|MAX_ADDRESS
-mdefine_line|#define MAX_ADDRESS (1UL &lt;&lt; MAX_ADDRBITS)
-DECL|macro|SPACEID_SHIFT
-mdefine_line|#define SPACEID_SHIFT (MAX_ADDRBITS - 32)
-multiline_comment|/* Definitions for 1st level */
-DECL|macro|PGDIR_SHIFT
-mdefine_line|#define PGDIR_SHIFT  (PAGE_SHIFT + (PT_NLEVELS - 1)*(PAGE_SHIFT - PT_NLEVELS))
-DECL|macro|PGDIR_SIZE
-mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
-DECL|macro|PGDIR_MASK
-mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
-DECL|macro|USER_PTRS_PER_PGD
-mdefine_line|#define USER_PTRS_PER_PGD       PTRS_PER_PGD
+multiline_comment|/* Definitions for 3rd level (we use PLD here for Page Lower directory&n; * because PTE_SHIFT is used lower down to mean shift that has to be&n; * done to get usable bits out of the PTE) */
+DECL|macro|PLD_SHIFT
+mdefine_line|#define PLD_SHIFT&t;PAGE_SHIFT
+DECL|macro|PLD_SIZE
+mdefine_line|#define PLD_SIZE&t;PAGE_SIZE
+DECL|macro|BITS_PER_PTE
+mdefine_line|#define BITS_PER_PTE&t;(PAGE_SHIFT - BITS_PER_PTE_ENTRY)
+DECL|macro|PTRS_PER_PTE
+mdefine_line|#define PTRS_PER_PTE    (1UL &lt;&lt; BITS_PER_PTE)
 multiline_comment|/* Definitions for 2nd level */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT       (PAGE_SHIFT + (PAGE_SHIFT - PT_NLEVELS))
+mdefine_line|#define PMD_SHIFT       (PLD_SHIFT + BITS_PER_PTE)
 DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
 macro_line|#if PT_NLEVELS == 3
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|BITS_PER_PMD
+mdefine_line|#define BITS_PER_PMD&t;(PAGE_SHIFT + PMD_ORDER - BITS_PER_PMD_ENTRY)
 macro_line|#else
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD    1
+DECL|macro|BITS_PER_PMD
+mdefine_line|#define BITS_PER_PMD&t;0
 macro_line|#endif
-multiline_comment|/* Definitions for 3rd level */
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|PTRS_PER_PMD
+mdefine_line|#define PTRS_PER_PMD    (1UL &lt;&lt; BITS_PER_PMD)
+multiline_comment|/* Definitions for 1st level */
+DECL|macro|PGDIR_SHIFT
+mdefine_line|#define PGDIR_SHIFT&t;(PMD_SHIFT + BITS_PER_PMD)
+DECL|macro|BITS_PER_PGD
+mdefine_line|#define BITS_PER_PGD&t;(PAGE_SHIFT + PGD_ORDER - BITS_PER_PGD_ENTRY)
+DECL|macro|PGDIR_SIZE
+mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
+DECL|macro|PGDIR_MASK
+mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
+DECL|macro|PTRS_PER_PGD
+mdefine_line|#define PTRS_PER_PGD    (1UL &lt;&lt; BITS_PER_PGD)
+DECL|macro|USER_PTRS_PER_PGD
+mdefine_line|#define USER_PTRS_PER_PGD       PTRS_PER_PGD
+DECL|macro|MAX_ADDRBITS
+mdefine_line|#define MAX_ADDRBITS&t;(PGDIR_SHIFT + BITS_PER_PGD)
+DECL|macro|MAX_ADDRESS
+mdefine_line|#define MAX_ADDRESS&t;(1UL &lt;&lt; MAX_ADDRBITS)
+DECL|macro|SPACEID_SHIFT
+mdefine_line|#define SPACEID_SHIFT (MAX_ADDRBITS - 32)
+multiline_comment|/* This calculates the number of initial pages we need for the initial&n; * page tables */
+DECL|macro|PT_INITIAL
+mdefine_line|#define PT_INITIAL&t;(1 &lt;&lt; (KERNEL_INITIAL_ORDER - PMD_SHIFT))
 multiline_comment|/*&n; * pgd entries used up by user/kernel:&n; */
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
@@ -90,7 +113,7 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START   ((unsigned long)vmalloc_start)
 multiline_comment|/* this is a fixmap remnant, see fixmap.h */
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;(TMPALIAS_MAP_START)
+mdefine_line|#define VMALLOC_END&t;(KERNEL_MAP_END)
 macro_line|#endif
 multiline_comment|/* NB: The tlb miss handlers make certain assumptions about the order */
 multiline_comment|/*     of the following bits, so be careful (One example, bits 25-31  */
@@ -239,8 +262,7 @@ suffix:semicolon
 multiline_comment|/* declared in init_task.c */
 multiline_comment|/* initial page tables for 0-8MB for kernel */
 r_extern
-r_int
-r_int
+id|pte_t
 id|pg0
 (braket
 )braket
@@ -261,26 +283,125 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = 0; } while (0)
+macro_line|#ifdef __LP64__
+multiline_comment|/* The first entry of the permanent pmd is not there if it contains&n; * the gateway marker */
+DECL|macro|pmd_none
+mdefine_line|#define pmd_none(x)&t;(!pmd_val(x) || pmd_val(x) == _PAGE_GATEWAY)
+DECL|macro|pmd_bad
+mdefine_line|#define pmd_bad(x)&t;((pmd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE &amp;&amp; (pmd_val(x) &amp; ~PAGE_MASK) != (_PAGE_TABLE | _PAGE_GATEWAY))
+macro_line|#else
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(x)&t;((pmd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE)
+macro_line|#endif
 DECL|macro|pmd_present
 mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
-DECL|macro|pmd_clear
-mdefine_line|#define pmd_clear(xp)&t;do { pmd_val(*(xp)) = 0; } while (0)
+DECL|function|pmd_clear
+r_static
+r_inline
+r_void
+id|pmd_clear
+c_func
+(paren
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
 macro_line|#ifdef __LP64__
+r_if
+c_cond
+(paren
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_amp
+id|_PAGE_GATEWAY
+)paren
+(brace
+multiline_comment|/* This is the entry pointing to the permanent pmd&n;&t;&t; * attached to the pgd; cannot clear it */
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+id|_PAGE_GATEWAY
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#if PT_NLEVELS == 3
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) ((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 multiline_comment|/* For 64 bit we have three level tables */
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(x)     (!pgd_val(x))
+macro_line|#ifdef __LP64__
+DECL|macro|pgd_bad
+mdefine_line|#define pgd_bad(x)      ((pgd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE &amp;&amp; (pgd_val(x) &amp; ~PAGE_MASK) != (_PAGE_TABLE | _PAGE_GATEWAY))
+macro_line|#else
 DECL|macro|pgd_bad
 mdefine_line|#define pgd_bad(x)      ((pgd_val(x) &amp; ~PAGE_MASK) != _PAGE_TABLE)
+macro_line|#endif
 DECL|macro|pgd_present
 mdefine_line|#define pgd_present(x)  (pgd_val(x) &amp; _PAGE_PRESENT)
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(xp)   do { pgd_val(*(xp)) = 0; } while (0)
+DECL|function|pgd_clear
+r_static
+r_inline
+r_void
+id|pgd_clear
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgd
+)paren
+(brace
+macro_line|#ifdef __LP64__
+r_if
+c_cond
+(paren
+id|pgd_val
+c_func
+(paren
+op_star
+id|pgd
+)paren
+op_amp
+id|_PAGE_GATEWAY
+)paren
+(brace
+multiline_comment|/* This is the permanent pmd attached to the pgd; cannot&n;&t;&t; * free it */
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
+id|pgd_val
+c_func
+(paren
+op_star
+id|pgd
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
@@ -770,7 +891,7 @@ multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
-macro_line|#ifdef __LP64__
+macro_line|#if PT_NLEVELS == 3
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,address) &bslash;&n;((pmd_t *) pgd_page(*(dir)) + (((address)&gt;&gt;PMD_SHIFT) &amp; (PTRS_PER_PMD-1)))
 macro_line|#else

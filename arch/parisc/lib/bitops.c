@@ -5,12 +5,13 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|__atomic_hash
-id|spinlock_t
+DECL|variable|__lock_aligned
+id|atomic_lock_t
 id|__atomic_hash
 (braket
 id|ATOMIC_HASH_SIZE
 )braket
+id|__lock_aligned
 op_assign
 (brace
 (braket
@@ -25,16 +26,23 @@ l_int|1
 )paren
 )braket
 op_assign
-id|SPIN_LOCK_UNLOCKED
+(paren
+id|atomic_lock_t
+)paren
+(brace
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+)brace
+)brace
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__atomic_lock
-id|spinlock_t
-id|__atomic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 macro_line|#ifdef __LP64__
 DECL|function|__xchg64
 r_int
@@ -58,7 +66,7 @@ id|temp
 comma
 id|flags
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -80,7 +88,7 @@ id|ptr
 op_assign
 id|x
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -119,7 +127,7 @@ r_int
 r_int
 id|temp
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -148,7 +156,7 @@ id|ptr
 op_assign
 id|x
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -186,7 +194,7 @@ r_int
 r_int
 id|temp
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -215,7 +223,7 @@ id|ptr
 op_assign
 id|x
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -261,7 +269,7 @@ r_int
 r_int
 id|prev
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -290,7 +298,7 @@ id|ptr
 op_assign
 r_new
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH
@@ -336,7 +344,7 @@ r_int
 r_int
 id|prev
 suffix:semicolon
-id|SPIN_LOCK_IRQSAVE
+id|atomic_spin_lock_irqsave
 c_func
 (paren
 id|ATOMIC_HASH
@@ -365,7 +373,7 @@ id|ptr
 op_assign
 r_new
 suffix:semicolon
-id|SPIN_UNLOCK_IRQRESTORE
+id|atomic_spin_unlock_irqrestore
 c_func
 (paren
 id|ATOMIC_HASH

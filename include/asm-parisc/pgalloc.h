@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+multiline_comment|/* Allocate the top level pgd (page directory)&n; *&n; * Here (for 64 bit kernels) we implement a Hybrid L2/L3 scheme: we&n; * allocate the first pmd adjacent to the pgd.  This means that we can&n; * subtract a constant offset to get to it.  The pmd and pgd sizes are&n; * arranged so that a single pmd covers 4GB (giving a full LP64&n; * process access to 8TB) so our lookups are effectively L2 for the&n; * first 4GB of the kernel (i.e. for all ILP32 processes and all the&n; * kernel for machines with under 4GB of memory) */
 DECL|function|pgd_alloc
 r_static
 r_inline
@@ -30,11 +31,21 @@ op_assign
 id|pgd_t
 op_star
 )paren
-id|__get_free_page
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|GFP_DMA
+comma
+id|PGD_ALLOC_ORDER
 )paren
+suffix:semicolon
+id|pgd_t
+op_star
+id|actual_pgd
+op_assign
+id|pgd
 suffix:semicolon
 r_if
 c_cond
@@ -47,14 +58,65 @@ op_ne
 l_int|NULL
 )paren
 )paren
-id|clear_page
+(brace
+id|memset
 c_func
 (paren
 id|pgd
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+id|PGD_ALLOC_ORDER
 )paren
 suffix:semicolon
-r_return
+macro_line|#ifdef __LP64__
+id|actual_pgd
+op_add_assign
+id|PTRS_PER_PGD
+suffix:semicolon
+multiline_comment|/* Populate first pmd with allocated memory.  We mark it&n;&t;&t; * with _PAGE_GATEWAY as a signal to the system that this&n;&t;&t; * pmd entry may not be cleared. */
+id|pgd_val
+c_func
+(paren
+op_star
+id|actual_pgd
+)paren
+op_assign
+(paren
+id|_PAGE_TABLE
+op_or
+id|_PAGE_GATEWAY
+)paren
+op_plus
+(paren
+id|__u32
+)paren
+id|__pa
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
 id|pgd
+)paren
+suffix:semicolon
+multiline_comment|/* The first pmd entry also is marked with _PAGE_GATEWAY as&n;&t;&t; * a signal that this pmd may not be freed */
+id|pgd_val
+c_func
+(paren
+op_star
+id|pgd
+)paren
+op_assign
+id|_PAGE_GATEWAY
+suffix:semicolon
+macro_line|#endif
+)brace
+r_return
+id|actual_pgd
 suffix:semicolon
 )brace
 DECL|function|pgd_free
@@ -69,7 +131,13 @@ op_star
 id|pgd
 )paren
 (brace
-id|free_page
+macro_line|#ifdef __LP64__
+id|pgd
+op_sub_assign
+id|PTRS_PER_PGD
+suffix:semicolon
+macro_line|#endif
+id|free_pages
 c_func
 (paren
 (paren
@@ -77,10 +145,12 @@ r_int
 r_int
 )paren
 id|pgd
+comma
+id|PGD_ALLOC_ORDER
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __LP64__
+macro_line|#if PT_NLEVELS == 3
 multiline_comment|/* Three Level Page Table Support for pmd&squot;s */
 DECL|function|pgd_populate
 r_static
@@ -112,6 +182,9 @@ id|pgd
 op_assign
 id|_PAGE_TABLE
 op_plus
+(paren
+id|__u32
+)paren
 id|__pa
 c_func
 (paren
@@ -123,6 +196,7 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* NOTE: pmd must be in ZONE_DMA (&lt;4GB) so the pgd pointer can be&n; * housed in 32 bits */
 DECL|function|pmd_alloc_one
 r_static
 r_inline
@@ -149,12 +223,16 @@ op_assign
 id|pmd_t
 op_star
 )paren
-id|__get_free_page
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|GFP_DMA
+comma
+id|PMD_ORDER
 )paren
 suffix:semicolon
 r_if
@@ -162,10 +240,16 @@ c_cond
 (paren
 id|pmd
 )paren
-id|clear_page
+id|memset
 c_func
 (paren
 id|pmd
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+id|PMD_ORDER
 )paren
 suffix:semicolon
 r_return
@@ -184,7 +268,26 @@ op_star
 id|pmd
 )paren
 (brace
-id|free_page
+macro_line|#ifdef __LP64__
+r_if
+c_cond
+(paren
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_amp
+id|_PAGE_GATEWAY
+)paren
+(brace
+multiline_comment|/* This is the permanent pmd attached to the pgd;&n;&t;&t; * cannot free it */
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
+id|free_pages
 c_func
 (paren
 (paren
@@ -192,6 +295,8 @@ r_int
 r_int
 )paren
 id|pmd
+comma
+id|PMD_ORDER
 )paren
 suffix:semicolon
 )brace
@@ -226,6 +331,50 @@ op_star
 id|pte
 )paren
 (brace
+macro_line|#ifdef __LP64__
+multiline_comment|/* preserve the gateway marker if this is the beginning of&n;&t; * the permanent pmd */
+r_if
+c_cond
+(paren
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_amp
+id|_PAGE_GATEWAY
+)paren
+(brace
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
+op_assign
+(paren
+id|_PAGE_TABLE
+op_or
+id|_PAGE_GATEWAY
+)paren
+op_plus
+(paren
+id|__u32
+)paren
+id|__pa
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pte
+)paren
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|pmd_val
 c_func
 (paren
@@ -235,6 +384,9 @@ id|pmd
 op_assign
 id|_PAGE_TABLE
 op_plus
+(paren
+id|__u32
+)paren
 id|__pa
 c_func
 (paren
@@ -248,6 +400,7 @@ suffix:semicolon
 )brace
 DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(mm, pmd, pte_page) &bslash;&n;&t;pmd_populate_kernel(mm, pmd, page_address(pte_page))
+multiline_comment|/* NOTE: pte must be in ZONE_DMA (&lt;4GB) so that the pmd pointer&n; * can be housed in 32 bits */
 r_static
 r_inline
 r_struct
@@ -278,6 +431,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -337,6 +492,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if

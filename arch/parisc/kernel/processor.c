@@ -655,6 +655,11 @@ r_struct
 id|pdc_coproc_cfg
 id|coproc_cfg
 suffix:semicolon
+id|set_firmware_width
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|pdc_coproc_cfg

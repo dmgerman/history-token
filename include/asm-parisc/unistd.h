@@ -1338,104 +1338,167 @@ mdefine_line|#define __NR_gettid             (__NR_Linux + 206)
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead          (__NR_Linux + 207)
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill&t;&t;(__NR_Linux + 208)
+mdefine_line|#define __NR_tkill              (__NR_Linux + 208)
 DECL|macro|__NR_sendfile64
-mdefine_line|#define __NR_sendfile64&t;&t;(__NR_Linux + 209)
+mdefine_line|#define __NR_sendfile64         (__NR_Linux + 209)
 DECL|macro|__NR_futex
-mdefine_line|#define __NR_futex&t;&t;(__NR_Linux + 210)
+mdefine_line|#define __NR_futex              (__NR_Linux + 210)
 DECL|macro|__NR_sched_setaffinity
-mdefine_line|#define __NR_sched_setaffinity&t;(__NR_Linux + 211)
+mdefine_line|#define __NR_sched_setaffinity  (__NR_Linux + 211)
 DECL|macro|__NR_sched_getaffinity
-mdefine_line|#define __NR_sched_getaffinity&t;(__NR_Linux + 212)
+mdefine_line|#define __NR_sched_getaffinity  (__NR_Linux + 212)
 DECL|macro|__NR_set_thread_area
-mdefine_line|#define __NR_set_thread_area&t;(__NR_Linux + 213)
+mdefine_line|#define __NR_set_thread_area    (__NR_Linux + 213)
 DECL|macro|__NR_get_thread_area
-mdefine_line|#define __NR_get_thread_area&t;(__NR_Linux + 214)
+mdefine_line|#define __NR_get_thread_area    (__NR_Linux + 214)
 DECL|macro|__NR_io_setup
-mdefine_line|#define __NR_io_setup&t;&t;(__NR_Linux + 215)
+mdefine_line|#define __NR_io_setup           (__NR_Linux + 215)
 DECL|macro|__NR_io_destroy
-mdefine_line|#define __NR_io_destroy&t;&t;(__NR_Linux + 216)
+mdefine_line|#define __NR_io_destroy         (__NR_Linux + 216)
 DECL|macro|__NR_io_getevents
-mdefine_line|#define __NR_io_getevents&t;(__NR_Linux + 217)
+mdefine_line|#define __NR_io_getevents       (__NR_Linux + 217)
 DECL|macro|__NR_io_submit
-mdefine_line|#define __NR_io_submit&t;&t;(__NR_Linux + 218)
+mdefine_line|#define __NR_io_submit          (__NR_Linux + 218)
 DECL|macro|__NR_io_cancel
-mdefine_line|#define __NR_io_cancel&t;&t;(__NR_Linux + 219)
+mdefine_line|#define __NR_io_cancel          (__NR_Linux + 219)
 DECL|macro|__NR_alloc_hugepages
-mdefine_line|#define __NR_alloc_hugepages&t;(__NR_Linux + 220)
+mdefine_line|#define __NR_alloc_hugepages    (__NR_Linux + 220)
 DECL|macro|__NR_free_hugepages
-mdefine_line|#define __NR_free_hugepages&t;(__NR_Linux + 221)
+mdefine_line|#define __NR_free_hugepages     (__NR_Linux + 221)
 DECL|macro|__NR_exit_group
-mdefine_line|#define __NR_exit_group&t;&t;(__NR_Linux + 222)
+mdefine_line|#define __NR_exit_group         (__NR_Linux + 222)
 DECL|macro|__NR_lookup_dcookie
-mdefine_line|#define __NR_lookup_dcookie&t;(__NR_Linux + 223)
+mdefine_line|#define __NR_lookup_dcookie     (__NR_Linux + 223)
 DECL|macro|__NR_epoll_create
-mdefine_line|#define __NR_epoll_create&t;(__NR_Linux + 224)
+mdefine_line|#define __NR_epoll_create       (__NR_Linux + 224)
 DECL|macro|__NR_epoll_ctl
-mdefine_line|#define __NR_epoll_ctl&t;&t;(__NR_Linux + 225)
+mdefine_line|#define __NR_epoll_ctl          (__NR_Linux + 225)
 DECL|macro|__NR_epoll_wait
-mdefine_line|#define __NR_epoll_wait&t;&t;(__NR_Linux + 226)
+mdefine_line|#define __NR_epoll_wait         (__NR_Linux + 226)
 DECL|macro|__NR_remap_file_pages
-mdefine_line|#define __NR_remap_file_pages&t;(__NR_Linux + 227)
+mdefine_line|#define __NR_remap_file_pages   (__NR_Linux + 227)
 DECL|macro|__NR_semtimedop
-mdefine_line|#define __NR_semtimedop&t;&t;(__NR_Linux + 228)
+mdefine_line|#define __NR_semtimedop         (__NR_Linux + 228)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open            (__NR_Linux + 229) /* Keep the mq_* syscalls together */
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink          (__NR_Linux + 230)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend       (__NR_Linux + 231)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive    (__NR_Linux + 232)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify          (__NR_Linux + 233)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr      (__NR_Linux + 234)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     228
+mdefine_line|#define __NR_Linux_syscalls     235
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR
 mdefine_line|#define LINUX_GATEWAY_ADDR      0x100
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* The old syscall code here didn&squot;t work, and it looks like it&squot;s only used&n; * by applications such as fdisk which for some reason need to produce&n; * their own syscall instead of using same from libc.  The code below&n; * is leveraged from glibc/sysdeps/unix/sysv/linux/hppa/sysdep.h where&n; * it is essentially duplicated -- which sucks.  -PB&n; */
 DECL|macro|SYS_ify
 mdefine_line|#define SYS_ify(syscall_name)   __NR_##syscall_name
-multiline_comment|/* The system call number MUST ALWAYS be loaded in the delay slot of&n;   the ble instruction, or restarting system calls WILL NOT WORK.  See&n;   arch/parisc/kernel/signal.c - dhd, 2000-07-26 */
+multiline_comment|/* Assume all syscalls are done from PIC code just to be&n; * safe. The worst case scenario is that you lose a register&n; * and save/restore r19 across the syscall. */
+DECL|macro|PIC
+mdefine_line|#define PIC
+macro_line|#ifndef ASM_LINE_SEP
+DECL|macro|ASM_LINE_SEP
+macro_line|# define ASM_LINE_SEP ;
+macro_line|#endif
+multiline_comment|/* Definition taken from glibc 2.3.3&n; * sysdeps/unix/sysv/linux/hppa/sysdep.h&n; */
+macro_line|#ifdef PIC
+multiline_comment|/* WARNING: CANNOT BE USED IN A NOP! */
+DECL|macro|K_STW_PIC
+macro_line|# define K_STW_PIC stw %r19, -32(%sr0, %sp) ASM_LINE_SEP
+DECL|macro|K_LDW_PIC
+macro_line|# define K_LDW_PIC ldw -32(%sr0, %sp), %r19 ASM_LINE_SEP
+DECL|macro|K_STW_ASM_PIC
+macro_line|# define K_STW_ASM_PIC&t;&quot;       copy %%r19, %%r4&bslash;n&quot;
+DECL|macro|K_LDW_ASM_PIC
+macro_line|# define K_LDW_ASM_PIC&t;&quot;       copy %%r4, %%r19&bslash;n&quot;
+DECL|macro|K_USING_GR4
+macro_line|# define K_USING_GR4&t;&quot;%r4&quot;,
+macro_line|#else
+DECL|macro|K_STW_PIC
+macro_line|# define K_STW_PIC ASM_LINE_SEP
+DECL|macro|K_LDW_PIC
+macro_line|# define K_LDW_PIC ASM_LINE_SEP
+DECL|macro|K_STW_ASM_PIC
+macro_line|# define K_STW_ASM_PIC&t;&quot; &bslash;n&quot;
+DECL|macro|K_LDW_ASM_PIC
+macro_line|# define K_LDW_ASM_PIC&t;&quot; &bslash;n&quot;
+DECL|macro|K_USING_GR4
+macro_line|# define K_USING_GR4
+macro_line|#endif
+multiline_comment|/* GCC has to be warned that a syscall may clobber all the ABI&n;   registers listed as &quot;caller-saves&quot;, see page 8, Table 2&n;   in section 2.2.6 of the PA-RISC RUN-TIME architecture&n;   document. However! r28 is the result and will conflict with&n;   the clobber list so it is left out. Also the input arguments&n;   registers r20 -&gt; r26 will conflict with the list so they&n;   are treated specially. Although r19 is clobbered by the syscall&n;   we cannot say this because it would violate ABI, thus we say&n;   r4 is clobbered and use that register to save/restore r19&n;   across the syscall. */
+DECL|macro|K_CALL_CLOB_REGS
+mdefine_line|#define K_CALL_CLOB_REGS &quot;%r1&quot;, &quot;%r2&quot;, K_USING_GR4 &bslash;&n;&t;        &t; &quot;%r20&quot;, &quot;%r29&quot;, &quot;%r31&quot;
 DECL|macro|K_INLINE_SYSCALL
-mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)       ({              &bslash;&n;        unsigned long __sys_res;                                &bslash;&n;        {                                                       &bslash;&n;                register unsigned long __res asm(&quot;r28&quot;);        &bslash;&n;                K_LOAD_ARGS_##nr(args)                            &bslash;&n;                asm volatile(                                   &bslash;&n;&t;&t;&t;&quot;ble  0x100(%%sr2, %%r0)&bslash;n&bslash;t&quot;           &bslash;&n;                        &quot; ldi %1, %%r20&quot;                        &bslash;&n;                        : &quot;=r&quot; (__res)                          &bslash;&n;                        : &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &bslash;&n;&t;&t;&t;  );                                    &bslash;&n;                __sys_res = __res;                              &bslash;&n;        }                                                       &bslash;&n;        if (__sys_res &gt;= (unsigned long)-4095) {                &bslash;&n;&t;&t;errno = -__sys_res;&t;&t;&t;&t;&bslash;&n;                __sys_res = (unsigned long)-1;                 &bslash;&n;        }                                                       &bslash;&n;        __sys_res;                                              &bslash;&n;})
+macro_line|#undef K_INLINE_SYSCALL
+DECL|macro|K_INLINE_SYSCALL
+mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)&t;({&t;&t;&t;&bslash;&n;&t;long __sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __res asm(&quot;r28&quot;);&t;&t;&bslash;&n;&t;&t;K_LOAD_ARGS_##nr(args)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* FIXME: HACK stw/ldw r19 around syscall */&t;&t;&bslash;&n;&t;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;K_STW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ble  0x100(%%sr2, %%r0)&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&t;ldi %1, %%r20&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;K_LDW_ASM_PIC&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &t;&bslash;&n;&t;&t;&t;: K_CALL_CLOB_REGS K_CLOB_ARGS_##nr&t;&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sys_res = (long)__res;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (unsigned long)__sys_res &gt;= (unsigned long)-4095 ){&t;&bslash;&n;&t;&t;errno = -__sys_res);&t;&t;        &t;&t;&bslash;&n;&t;&t;__sys_res = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__sys_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|K_LOAD_ARGS_0
 mdefine_line|#define K_LOAD_ARGS_0()
 DECL|macro|K_LOAD_ARGS_1
-mdefine_line|#define K_LOAD_ARGS_1(r26)                                        &bslash;&n;        register unsigned long __r26 __asm__(&quot;r26&quot;) = (unsigned long)r26;       &bslash;&n;        K_LOAD_ARGS_0()
+mdefine_line|#define K_LOAD_ARGS_1(r26)&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long __r26 __asm__(&quot;r26&quot;) = (unsigned long)(r26);   &bslash;&n;&t;K_LOAD_ARGS_0()
 DECL|macro|K_LOAD_ARGS_2
-mdefine_line|#define K_LOAD_ARGS_2(r26,r25)                                    &bslash;&n;        register unsigned long __r25 __asm__(&quot;r25&quot;) = (unsigned long)r25;       &bslash;&n;        K_LOAD_ARGS_1(r26)
+mdefine_line|#define K_LOAD_ARGS_2(r26,r25)&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long __r25 __asm__(&quot;r25&quot;) = (unsigned long)(r25);   &bslash;&n;&t;K_LOAD_ARGS_1(r26)
 DECL|macro|K_LOAD_ARGS_3
-mdefine_line|#define K_LOAD_ARGS_3(r26,r25,r24)                                &bslash;&n;        register unsigned long __r24 __asm__(&quot;r24&quot;) = (unsigned long)r24;       &bslash;&n;        K_LOAD_ARGS_2(r26,r25)
+mdefine_line|#define K_LOAD_ARGS_3(r26,r25,r24)&t;&t;&t;&t;&bslash;&n;&t;register unsigned long __r24 __asm__(&quot;r24&quot;) = (unsigned long)(r24);   &bslash;&n;&t;K_LOAD_ARGS_2(r26,r25)
 DECL|macro|K_LOAD_ARGS_4
-mdefine_line|#define K_LOAD_ARGS_4(r26,r25,r24,r23)                            &bslash;&n;        register unsigned long __r23 __asm__(&quot;r23&quot;) = (unsigned long)r23;       &bslash;&n;        K_LOAD_ARGS_3(r26,r25,r24)
+mdefine_line|#define K_LOAD_ARGS_4(r26,r25,r24,r23)&t;&t;&t;&t;&bslash;&n;&t;register unsigned long __r23 __asm__(&quot;r23&quot;) = (unsigned long)(r23);   &bslash;&n;&t;K_LOAD_ARGS_3(r26,r25,r24)
 DECL|macro|K_LOAD_ARGS_5
-mdefine_line|#define K_LOAD_ARGS_5(r26,r25,r24,r23,r22)                        &bslash;&n;        register unsigned long __r22 __asm__(&quot;r22&quot;) = (unsigned long)r22;       &bslash;&n;        K_LOAD_ARGS_4(r26,r25,r24,r23)
+mdefine_line|#define K_LOAD_ARGS_5(r26,r25,r24,r23,r22)&t;&t;&t;&bslash;&n;&t;register unsigned long __r22 __asm__(&quot;r22&quot;) = (unsigned long)(r22);   &bslash;&n;&t;K_LOAD_ARGS_4(r26,r25,r24,r23)
 DECL|macro|K_LOAD_ARGS_6
-mdefine_line|#define K_LOAD_ARGS_6(r26,r25,r24,r23,r22,r21)                    &bslash;&n;        register unsigned long __r21 __asm__(&quot;r21&quot;) = (unsigned long)r21;       &bslash;&n;        K_LOAD_ARGS_5(r26,r25,r24,r23,r22)
+mdefine_line|#define K_LOAD_ARGS_6(r26,r25,r24,r23,r22,r21)&t;&t;&t;&bslash;&n;&t;register unsigned long __r21 __asm__(&quot;r21&quot;) = (unsigned long)(r21);   &bslash;&n;&t;K_LOAD_ARGS_5(r26,r25,r24,r23,r22)
+multiline_comment|/* Even with zero args we use r20 for the syscall number */
 DECL|macro|K_ASM_ARGS_0
 mdefine_line|#define K_ASM_ARGS_0
 DECL|macro|K_ASM_ARGS_1
-mdefine_line|#define K_ASM_ARGS_1 , &quot;r&quot; (__r26)
+mdefine_line|#define K_ASM_ARGS_1 K_ASM_ARGS_0, &quot;r&quot; (__r26)
 DECL|macro|K_ASM_ARGS_2
-mdefine_line|#define K_ASM_ARGS_2 , &quot;r&quot; (__r26), &quot;r&quot; (__r25)
+mdefine_line|#define K_ASM_ARGS_2 K_ASM_ARGS_1, &quot;r&quot; (__r25)
 DECL|macro|K_ASM_ARGS_3
-mdefine_line|#define K_ASM_ARGS_3 , &quot;r&quot; (__r26), &quot;r&quot; (__r25), &quot;r&quot; (__r24)
+mdefine_line|#define K_ASM_ARGS_3 K_ASM_ARGS_2, &quot;r&quot; (__r24)
 DECL|macro|K_ASM_ARGS_4
-mdefine_line|#define K_ASM_ARGS_4 , &quot;r&quot; (__r26), &quot;r&quot; (__r25), &quot;r&quot; (__r24), &quot;r&quot; (__r23)
+mdefine_line|#define K_ASM_ARGS_4 K_ASM_ARGS_3, &quot;r&quot; (__r23)
 DECL|macro|K_ASM_ARGS_5
-mdefine_line|#define K_ASM_ARGS_5 , &quot;r&quot; (__r26), &quot;r&quot; (__r25), &quot;r&quot; (__r24), &quot;r&quot; (__r23), &quot;r&quot; (__r22)
+mdefine_line|#define K_ASM_ARGS_5 K_ASM_ARGS_4, &quot;r&quot; (__r22)
 DECL|macro|K_ASM_ARGS_6
-mdefine_line|#define K_ASM_ARGS_6 , &quot;r&quot; (__r26), &quot;r&quot; (__r25), &quot;r&quot; (__r24), &quot;r&quot; (__r23), &quot;r&quot; (__r22), &quot;r&quot; (__r21)
+mdefine_line|#define K_ASM_ARGS_6 K_ASM_ARGS_5, &quot;r&quot; (__r21)
+multiline_comment|/* The registers not listed as inputs but clobbered */
+DECL|macro|K_CLOB_ARGS_6
+mdefine_line|#define K_CLOB_ARGS_6
+DECL|macro|K_CLOB_ARGS_5
+mdefine_line|#define K_CLOB_ARGS_5 K_CLOB_ARGS_6, &quot;%r21&quot;
+DECL|macro|K_CLOB_ARGS_4
+mdefine_line|#define K_CLOB_ARGS_4 K_CLOB_ARGS_5, &quot;%r22&quot;
+DECL|macro|K_CLOB_ARGS_3
+mdefine_line|#define K_CLOB_ARGS_3 K_CLOB_ARGS_4, &quot;%r23&quot;
+DECL|macro|K_CLOB_ARGS_2
+mdefine_line|#define K_CLOB_ARGS_2 K_CLOB_ARGS_3, &quot;%r24&quot;
+DECL|macro|K_CLOB_ARGS_1
+mdefine_line|#define K_CLOB_ARGS_1 K_CLOB_ARGS_2, &quot;%r25&quot;
+DECL|macro|K_CLOB_ARGS_0
+mdefine_line|#define K_CLOB_ARGS_0 K_CLOB_ARGS_1, &quot;%r26&quot;
 DECL|macro|_syscall0
-mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;&t;&t;      &bslash;&n;type name(void)&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;    return K_INLINE_SYSCALL(name, 0);&t;&bslash;&n;}
+mdefine_line|#define _syscall0(type,name)&t;&t;&t;&t;&t;&t;&bslash;&n;type name(void)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 0);&t;                                &bslash;&n;}
 DECL|macro|_syscall1
-mdefine_line|#define _syscall1(type,name,type1,arg1)&t;&t;&t;&t;&t;      &bslash;&n;type name(type1 arg1)&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;    return K_INLINE_SYSCALL(name, 1, arg1);&t;&bslash;&n;}
+mdefine_line|#define _syscall1(type,name,type1,arg1)&t;&t;&t;&t;&t;&bslash;&n;type name(type1 arg1)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 1, arg1);&t;                        &bslash;&n;}
 DECL|macro|_syscall2
-mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;&t;&t;      &bslash;&n;type name(type1 arg1, type2 arg2)&t;&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;    return K_INLINE_SYSCALL(name, 2, arg1, arg2);&t;&bslash;&n;}
+mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2)&t;&t;&t;&bslash;&n;type name(type1 arg1, type2 arg2)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 2, arg1, arg2);&t;                &bslash;&n;}
 DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&t;&t;      &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3)&t;&t;&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;    return K_INLINE_SYSCALL(name, 3, arg1, arg2, arg3);&t;&bslash;&n;}
+mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)&t;&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 3, arg1, arg2, arg3);&t;                &bslash;&n;}
 DECL|macro|_syscall4
-mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4)      &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4)&t;&t;      &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;    return K_INLINE_SYSCALL(name, 4, arg1, arg2, arg3, arg4);&t;&bslash;&n;}
+mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 4, arg1, arg2, arg3, arg4);&t;        &bslash;&n;}
 multiline_comment|/* select takes 5 arguments */
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 5, arg1, arg2, arg3, arg4, arg5);&t;&bslash;&n;}
 multiline_comment|/* mmap &amp; mmap2 take 6 arguments */
 DECL|macro|_syscall6
-mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 6, arg1, arg2, arg3, arg4, arg5, arg6);&t;&bslash;&n;}
+mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;        &bslash;&n;    return K_INLINE_SYSCALL(name, 6, arg1, arg2, arg3, arg4, arg5, arg6);&t;&bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
