@@ -15,18 +15,9 @@ macro_line|#include &quot;isdn_ppp.h&quot;
 macro_line|#ifdef CONFIG_ISDN_AUDIO
 macro_line|#include &quot;isdn_audio.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVERSION_MODULE
-DECL|macro|CONFIG_ISDN_DIVERSION
-mdefine_line|#define CONFIG_ISDN_DIVERSION
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
 macro_line|#include &lt;linux/isdn_divertif.h&gt;
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 macro_line|#include &quot;isdn_v110.h&quot;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-multiline_comment|/* Debugflags */
-DECL|macro|ISDN_DEBUG_STATCALLB
-macro_line|#undef ISDN_DEBUG_STATCALLB
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -178,7 +169,7 @@ r_char
 op_star
 id|isdn_v110_revision
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
+macro_line|#if defined(CONFIG_ISDN_DIVERSION) || defined(CONFIG_ISDN_DIVERSION_MODULE)
 DECL|variable|divert_if
 r_static
 id|isdn_divert_if
@@ -186,7 +177,10 @@ op_star
 id|divert_if
 suffix:semicolon
 multiline_comment|/* = NULL */
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
+macro_line|#else
+DECL|macro|divert_if
+mdefine_line|#define divert_if (0)
+macro_line|#endif
 r_static
 r_void
 id|set_global_features
@@ -1921,12 +1915,10 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;ICALL (net): %d %ld %s&bslash;n&quot;
+l_string|&quot;ICALL: %d %ld %s&bslash;n&quot;
 comma
 id|di
 comma
@@ -1935,7 +1927,6 @@ comma
 id|c-&gt;parm.num
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2032,7 +2023,6 @@ id|c-&gt;parm.setup
 r_return
 id|retval
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DIVERSION 
 r_if
 c_cond
 (paren
@@ -2057,7 +2047,6 @@ r_return
 id|retval
 suffix:semicolon
 multiline_comment|/* processed */
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */                       
 r_if
 c_cond
 (paren
@@ -2250,17 +2239,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;ICALL: ret=%d&bslash;n&quot;
 comma
 id|retval
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -2280,11 +2266,9 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;CINF: %ld %s&bslash;n&quot;
 comma
 id|c-&gt;arg
@@ -2292,7 +2276,6 @@ comma
 id|c-&gt;parm.num
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2335,11 +2318,9 @@ suffix:semicolon
 r_case
 id|ISDN_STAT_CAUSE
 suffix:colon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;CAUSE: %ld %s&bslash;n&quot;
 comma
 id|c-&gt;arg
@@ -2347,7 +2328,6 @@ comma
 id|c-&gt;parm.num
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2372,7 +2352,6 @@ comma
 id|c
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
 r_if
 c_cond
 (paren
@@ -2386,17 +2365,14 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_break
 suffix:semicolon
 r_case
 id|ISDN_STAT_DISPLAY
 suffix:colon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;DISPLAY: %ld %s&bslash;n&quot;
 comma
 id|c-&gt;arg
@@ -2404,7 +2380,6 @@ comma
 id|c-&gt;parm.display
 )paren
 suffix:semicolon
-macro_line|#endif
 id|isdn_tty_stat_callback
 c_func
 (paren
@@ -2413,7 +2388,6 @@ comma
 id|c
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
 r_if
 c_cond
 (paren
@@ -2427,7 +2401,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_break
 suffix:semicolon
 r_case
@@ -2444,17 +2417,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;DCONN: %ld&bslash;n&quot;
 comma
 id|c-&gt;arg
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2544,17 +2514,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;DHUP: %ld&bslash;n&quot;
 comma
 id|c-&gt;arg
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2627,7 +2594,6 @@ id|c
 )paren
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
 r_if
 c_cond
 (paren
@@ -2640,9 +2606,6 @@ c_func
 (paren
 id|c
 )paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
-r_break
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2660,17 +2623,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;BCONN: %ld&bslash;n&quot;
 comma
 id|c-&gt;arg
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Signal B-channel-connect to network-devices */
 r_if
 c_cond
@@ -2758,17 +2718,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;BHUP: %ld&bslash;n&quot;
 comma
 id|c-&gt;arg
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2859,17 +2816,14 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_STATCALLB
-id|printk
+id|dbg_statcallb
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;NODCH: %ld&bslash;n&quot;
 comma
 id|c-&gt;arg
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3373,7 +3327,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
 r_case
 id|ISDN_STAT_PROT
 suffix:colon
@@ -3394,7 +3347,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_default
 suffix:colon
 r_return
@@ -10228,7 +10180,7 @@ id|interface-&gt;features
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_ISDN_DIVERSION
+macro_line|#if defined(CONFIG_ISDN_DIVERSION) || defined(CONFIG_ISDN_DIVERSION_MODULE)
 DECL|function|map_drvname
 r_static
 r_char
@@ -10419,7 +10371,7 @@ c_func
 id|DIVERT_REG_NAME
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_DIVERSION */
+macro_line|#endif
 DECL|variable|register_isdn
 id|EXPORT_SYMBOL
 c_func

@@ -21,6 +21,8 @@ DECL|macro|ISDN_DEBUG_NET_DIAL
 macro_line|#undef  ISDN_DEBUG_NET_DIAL
 DECL|macro|ISDN_DEBUG_NET_ICALL
 macro_line|#undef  ISDN_DEBUG_NET_ICALL
+DECL|macro|ISDN_DEBUG_STATCALLB
+macro_line|#undef  ISDN_DEBUG_STATCALLB
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
 DECL|macro|dbg_net_dial
 mdefine_line|#define dbg_net_dial(arg...) printk(KERN_DEBUG arg)
@@ -34,6 +36,13 @@ mdefine_line|#define dbg_net_icall(arg...) printk(KERN_DEBUG arg)
 macro_line|#else
 DECL|macro|dbg_net_icall
 mdefine_line|#define dbg_net_icall(arg...) do {} while (0)
+macro_line|#endif
+macro_line|#ifdef ISDN_DEBUG_STATCALLB
+DECL|macro|dbg_statcallb
+mdefine_line|#define dbg_statcallb(arg...) printk(KERN_DEBUG arg)
+macro_line|#else
+DECL|macro|dbg_statcallb
+mdefine_line|#define dbg_statcallb(arg...) do {} while (0)
 macro_line|#endif
 DECL|macro|isdn_BUG
 mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN Bug at %s:%d&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
