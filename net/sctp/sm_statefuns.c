@@ -3558,12 +3558,6 @@ comma
 id|unk_param
 )paren
 suffix:semicolon
-id|sctp_chunk_free
-c_func
-(paren
-id|err_chunk
-)paren
-suffix:semicolon
 )brace
 id|sctp_add_cmd_sf
 c_func
