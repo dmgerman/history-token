@@ -4137,6 +4137,8 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/* this was a layering violation and we can&squot;t support it&n;&t;   anymore, sorry. */
+macro_line|#if 0
 r_struct
 id|gendisk
 op_star
@@ -4187,6 +4189,7 @@ id|scsi-&gt;transform
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 id|test_bit
 c_func
