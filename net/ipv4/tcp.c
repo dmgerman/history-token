@@ -2708,6 +2708,13 @@ id|tcp_current_mss
 c_func
 (paren
 id|sk
+comma
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MSG_OOB
+)paren
 )paren
 suffix:semicolon
 id|copied
@@ -3146,6 +3153,13 @@ id|tcp_current_mss
 c_func
 (paren
 id|sk
+comma
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MSG_OOB
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3547,7 +3561,7 @@ id|tp
 r_int
 id|tmp
 op_assign
-id|tp-&gt;mss_cache
+id|tp-&gt;mss_cache_std
 suffix:semicolon
 r_if
 c_cond
@@ -3734,6 +3748,13 @@ id|tcp_current_mss
 c_func
 (paren
 id|sk
+comma
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MSG_OOB
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Ok commence sending. */
@@ -4469,6 +4490,13 @@ id|tcp_current_mss
 c_func
 (paren
 id|sk
+comma
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MSG_OOB
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9081,7 +9109,7 @@ id|TCP_MAXSEG
 suffix:colon
 id|val
 op_assign
-id|tp-&gt;mss_cache
+id|tp-&gt;mss_cache_std
 suffix:semicolon
 r_if
 c_cond
@@ -9392,7 +9420,7 @@ id|HZ
 suffix:semicolon
 id|info.tcpi_snd_mss
 op_assign
-id|tp-&gt;mss_cache
+id|tp-&gt;mss_cache_std
 suffix:semicolon
 id|info.tcpi_rcv_mss
 op_assign
