@@ -2,12 +2,8 @@ multiline_comment|/*&n; * linux/drivers/ide/ide-pnp.c&n; *&n; * This file provid
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
-DECL|macro|DEV_IO
-mdefine_line|#define DEV_IO(dev, index) (dev-&gt;resource[index].start)
-DECL|macro|DEV_IRQ
-mdefine_line|#define DEV_IRQ(dev, index) (dev-&gt;irq_resource[index].start)
 DECL|macro|DEV_NAME
-mdefine_line|#define DEV_NAME(dev) (dev-&gt;bus-&gt;name ? dev-&gt;bus-&gt;name : &quot;ISA PnP&quot;)
+mdefine_line|#define DEV_NAME(dev) (dev-&gt;name)
 DECL|macro|GENERIC_HD_DATA
 mdefine_line|#define GENERIC_HD_DATA&t;&t;0
 DECL|macro|GENERIC_HD_ERROR
@@ -84,7 +80,7 @@ id|init_fn
 )paren
 (paren
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 comma
@@ -103,7 +99,7 @@ id|pnpide_generic_init
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 comma
@@ -135,7 +131,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|DEV_IO
+id|pnp_port_valid
 c_func
 (paren
 id|dev
@@ -143,7 +139,7 @@ comma
 l_int|0
 )paren
 op_logical_and
-id|DEV_IO
+id|pnp_port_valid
 c_func
 (paren
 id|dev
@@ -151,7 +147,7 @@ comma
 l_int|1
 )paren
 op_logical_and
-id|DEV_IRQ
+id|pnp_irq_valid
 c_func
 (paren
 id|dev
@@ -172,7 +168,7 @@ comma
 (paren
 id|ide_ioreg_t
 )paren
-id|DEV_IO
+id|pnp_port_start
 c_func
 (paren
 id|dev
@@ -185,7 +181,7 @@ comma
 (paren
 id|ide_ioreg_t
 )paren
-id|DEV_IO
+id|pnp_port_start
 c_func
 (paren
 id|dev
@@ -198,7 +194,7 @@ comma
 l_int|NULL
 comma
 singleline_comment|//&t;&t;&t;generic_pnp_ide_iops,
-id|DEV_IRQ
+id|pnp_irq
 c_func
 (paren
 id|dev
@@ -243,7 +239,7 @@ id|dev
 )paren
 )paren
 suffix:semicolon
-id|hwif-&gt;pci_dev
+id|hwif-&gt;pnp_dev
 op_assign
 id|dev
 suffix:semicolon
@@ -303,7 +299,7 @@ id|pnp_dev_inst
 (brace
 DECL|member|dev
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 suffix:semicolon
@@ -343,7 +339,7 @@ id|enable
 )paren
 (brace
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 op_assign
@@ -415,14 +411,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;deactivate
-)paren
-id|dev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_device_detach
 c_func
 (paren
 id|dev
@@ -451,7 +440,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|isapnp_find_dev
+id|pnp_find_dev
 c_func
 (paren
 l_int|NULL
@@ -468,18 +457,7 @@ id|dev
 r_if
 c_cond
 (paren
-id|dev-&gt;active
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;prepare
-op_logical_and
-id|dev
-op_member_access_from_pointer
-id|prepare
+id|pnp_device_attach
 c_func
 (paren
 id|dev
@@ -487,34 +465,17 @@ id|dev
 OL
 l_int|0
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ide-pnp: %s prepare failed&bslash;n&quot;
-comma
-id|DEV_NAME
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|dev-&gt;activate
-op_logical_and
-id|dev
-op_member_access_from_pointer
-id|activate
+id|pnp_activate_dev
 c_func
 (paren
 id|dev
+comma
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -551,20 +512,7 @@ l_int|1
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|dev
-op_member_access_from_pointer
-id|deactivate
-c_func
-(paren
-id|dev
-)paren
-)paren
-id|dev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_device_detach
 c_func
 (paren
 id|dev

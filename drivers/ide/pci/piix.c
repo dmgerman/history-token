@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/piix.c&t;&t;Version 0.40&t;August 18, 2002&n; *&n; *  Copyright (C) 1998-1999 Andrzej Krzysztofowicz, Author and Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  May be copied or modified under the terms of the GNU General Public License&n; *&n; *  PIO mode setting function for Intel chipsets.  &n; *  For use instead of BIOS settings.&n; *&n; * 40-41&n; * 42-43&n; * &n; *                 41&n; *                 43&n; *&n; * | PIO 0       | c0 | 80 | 0 | &t;piix_tune_drive(drive, 0);&n; * | PIO 2 | SW2 | d0 | 90 | 4 | &t;piix_tune_drive(drive, 2);&n; * | PIO 3 | MW1 | e1 | a1 | 9 | &t;piix_tune_drive(drive, 3);&n; * | PIO 4 | MW2 | e3 | a3 | b | &t;piix_tune_drive(drive, 4);&n; * &n; * sitre = word40 &amp; 0x4000; primary&n; * sitre = word42 &amp; 0x4000; secondary&n; *&n; * 44 8421|8421    hdd|hdb&n; * &n; * 48 8421         hdd|hdc|hdb|hda udma enabled&n; *&n; *    0001         hda&n; *    0010         hdb&n; *    0100         hdc&n; *    1000         hdd&n; *&n; * 4a 84|21        hdb|hda&n; * 4b 84|21        hdd|hdc&n; *&n; *    ata-33/82371AB&n; *    ata-33/82371EB&n; *    ata-33/82801AB            ata-66/82801AA&n; *    00|00 udma 0              00|00 reserved&n; *    01|01 udma 1              01|01 udma 3&n; *    10|10 udma 2              10|10 udma 4&n; *    11|11 reserved            11|11 reserved&n; *&n; * 54 8421|8421    ata66 drive|ata66 enable&n; *&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x40, &amp;reg40);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x42, &amp;reg42);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x44, &amp;reg44);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x48, &amp;reg48);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x4a, &amp;reg4a);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x54, &amp;reg54);&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/piix.c&t;&t;Version 0.42&t;January 11, 2003&n; *&n; *  Copyright (C) 1998-1999 Andrzej Krzysztofowicz, Author and Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2003 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; *&n; *  PIO mode setting function for Intel chipsets.  &n; *  For use instead of BIOS settings.&n; *&n; * 40-41&n; * 42-43&n; * &n; *                 41&n; *                 43&n; *&n; * | PIO 0       | c0 | 80 | 0 | &t;piix_tune_drive(drive, 0);&n; * | PIO 2 | SW2 | d0 | 90 | 4 | &t;piix_tune_drive(drive, 2);&n; * | PIO 3 | MW1 | e1 | a1 | 9 | &t;piix_tune_drive(drive, 3);&n; * | PIO 4 | MW2 | e3 | a3 | b | &t;piix_tune_drive(drive, 4);&n; * &n; * sitre = word40 &amp; 0x4000; primary&n; * sitre = word42 &amp; 0x4000; secondary&n; *&n; * 44 8421|8421    hdd|hdb&n; * &n; * 48 8421         hdd|hdc|hdb|hda udma enabled&n; *&n; *    0001         hda&n; *    0010         hdb&n; *    0100         hdc&n; *    1000         hdd&n; *&n; * 4a 84|21        hdb|hda&n; * 4b 84|21        hdd|hdc&n; *&n; *    ata-33/82371AB&n; *    ata-33/82371EB&n; *    ata-33/82801AB            ata-66/82801AA&n; *    00|00 udma 0              00|00 reserved&n; *    01|01 udma 1              01|01 udma 3&n; *    10|10 udma 2              10|10 udma 4&n; *    11|11 reserved            11|11 reserved&n; *&n; * 54 8421|8421    ata66 drive|ata66 enable&n; *&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x40, &amp;reg40);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x42, &amp;reg42);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x44, &amp;reg44);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x48, &amp;reg48);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x4a, &amp;reg4a);&n; * pci_read_config_word(HWIF(drive)-&gt;pci_dev, 0x54, &amp;reg54);&n; *&n; * Documentation&n; *&t;Publically available from Intel web site. Errata documentation&n; * is also publically available. As an aide to anyone hacking on this&n; * driver the list of errata that are relevant is below.going back to&n; * PIIX4. Older device documentation is now a bit tricky to find.&n; *&n; * Errata of note:&n; *&n; * Unfixable&n; *&t;PIIX4    errata #9&t;- Only on ultra obscure hw&n; *&t;ICH3&t; errata #13     - Not observed to affect real hw&n; *&t;&t;&t;&t;  by Intel&n; *&n; * Things we must deal with&n; *&t;PIIX4&t;errata #10&t;- BM IDE hang with non UDMA&n; *&t;&t;&t;&t;  (must stop/start dma to recover)&n; *&t;440MX   errata #15&t;- As PIIX4 errata #10&n; *&t;PIIX4&t;errata #15&t;- Must not read control registers&n; * &t;&t;&t;&t;  during a PIO transfer&n; *&t;440MX   errata #13&t;- As PIIX4 errata #15&n; *&t;ICH2&t;errata #21&t;- DMA mode 0 doesn&squot;t work right&n; *&t;ICH0/1  errata #55&t;- As ICH2 errata #21&n; *&t;ICH2&t;spec c #9&t;- Extra operations needed to handle&n; *&t;&t;&t;&t;  drive hotswap [NOT YET SUPPORTED]&n; *&t;ICH2    spec c #20&t;- IDE PRD must not cross a 64K boundary&n; *&t;&t;&t;&t;  and must be dword aligned&n; *&t;ICH2    spec c #24&t;- UDMA mode 4,5 t85/86 should be 6ns not 3.3&n; *&n; * Should have been BIOS fixed:&n; *&t;450NX:&t;errata #19&t;- DMA hangs on old 450NX&n; *&t;450NX:  errata #20&t;- DMA hangs on old 450NX&n; *&t;450NX:  errata #25&t;- Corruption with DMA on old 450NX&n; *&t;ICH3    errata #15      - IDE deadlock under high load&n; *&t;&t;&t;&t;  (BIOS must set dev 31 fn 0 bit 23)&n; *&t;ICH3&t;errata #18&t;- Don&squot;t use native mode&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -38,6 +38,13 @@ DECL|variable|n_piix_devs
 r_static
 r_int
 id|n_piix_devs
+suffix:semicolon
+DECL|variable|no_piix_dma
+r_static
+r_int
+id|no_piix_dma
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/**&n; *&t;piix_get_info&t;&t;-&t;fill in /proc for PIIX ide&n; *&t;@buffer: buffer to fill&n; *&t;@addr: address of user start in buffer&n; *&t;@offset: offset into &squot;file&squot;&n; *&t;@count: buffer count&n; *&n; *&t;Walks the PIIX devices and outputs summary data on the tuning and&n; *&t;anything else that will help with debugging&n; */
 DECL|function|piix_get_info
@@ -2114,6 +2121,48 @@ id|speed
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;piix_faulty_dma0&t;&t;-&t;check for DMA0 errata&n; *&t;@hwif: IDE interface to check&n; *&n; *&t;If an ICH/ICH0/ICH2 interface is is operating in multi-word&n; *&t;DMA mode with 600nS cycle time the IDE PIO prefetch buffer will&n; *&t;inadvertently provide an extra piece of secondary data to the primary&n; *&t;device resulting in data corruption.&n; *&n; *&t;With such a device this test function returns true. This allows&n; *&t;our tuning code to follow Intel recommendations and use PIO on&n; *&t;such devices.&n; */
+DECL|function|piix_faulty_dma0
+r_static
+r_int
+id|piix_faulty_dma0
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|hwif-&gt;pci_dev-&gt;device
+)paren
+(brace
+r_case
+id|PCI_DEVICE_ID_INTEL_82801AA_1
+suffix:colon
+multiline_comment|/* ICH */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801AB_1
+suffix:colon
+multiline_comment|/* ICH0 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801BA_8
+suffix:colon
+multiline_comment|/* ICH2 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801BA_9
+suffix:colon
+multiline_comment|/* ICH2 */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;piix_config_drive_for_dma&t;-&t;configure drive for DMA&n; *&t;@drive: IDE drive to configure&n; *&n; *&t;Set up a PIIX interface channel for the best available speed.&n; *&t;We prefer UDMA if it is available and then MWDMA. If DMA is &n; *&t;not available we switch to PIO and return 0. &n; */
 DECL|function|piix_config_drive_for_dma
 r_static
@@ -2140,13 +2189,38 @@ id|drive
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Some ICH devices cannot support DMA mode 0 */
+r_if
+c_cond
+(paren
+id|speed
+op_eq
+id|XFER_MW_DMA_0
+op_logical_and
+id|piix_faulty_dma0
+c_func
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+)paren
+)paren
+(brace
+id|speed
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* If no DMA speed was available or the chipset has DMA bugs&n;&t;   then disable DMA and use PIO */
 r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|speed
-)paren
+op_logical_or
+id|no_piix_dma
 )paren
 (brace
 id|u8
@@ -2931,6 +3005,138 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;piix_check_450nx&t;-&t;Check for problem 450NX setup&n; *&t;&n; *&t;Check for the present of 450NX errata #19 and errata #25. If&n; *&t;they are found, disable use of DMA IDE&n; */
+DECL|function|piix_check_450nx
+r_static
+r_void
+id|__init
+id|piix_check_450nx
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|u16
+id|cfg
+suffix:semicolon
+id|u8
+id|rev
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|pdev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82454NX
+comma
+id|pdev
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* Look for 450NX PXB. Check for problem configurations&n;&t;&t;   A PCI quirk checks bit 6 already */
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|rev
+)paren
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+l_int|0x41
+comma
+op_amp
+id|cfg
+)paren
+suffix:semicolon
+multiline_comment|/* Only on the original revision: IDE DMA can hang */
+r_if
+c_cond
+(paren
+id|rev
+op_eq
+l_int|0x00
+)paren
+(brace
+id|no_piix_dma
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* On all revisions PXB bus lock must be disabled for IDE */
+r_else
+r_if
+c_cond
+(paren
+id|cfg
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|14
+)paren
+)paren
+(brace
+id|no_piix_dma
+op_assign
+l_int|2
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|no_piix_dma
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;piix: 450NX errata present, disabling IDE DMA.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|no_piix_dma
+op_eq
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;piix: A BIOS update may resolve this.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -3237,6 +3443,11 @@ c_func
 r_void
 )paren
 (brace
+id|piix_check_450nx
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ide_pci_register_driver
 c_func
