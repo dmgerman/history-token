@@ -35,6 +35,33 @@ macro_line|#ifndef STATIC
 DECL|macro|STATIC
 mdefine_line|#define STATIC static
 macro_line|#endif
+multiline_comment|/*&n; * State flag for unwritten extent buffers.&n; *&n; * We need to be able to distinguish between these and delayed&n; * allocate buffers within XFS.  The generic IO path code does&n; * not need to distinguish - we use the BH_Delay flag for both&n; * delalloc and these ondisk-uninitialised buffers.&n; */
+id|BUFFER_FNS
+c_func
+(paren
+id|PrivateStart
+comma
+id|unwritten
+)paren
+suffix:semicolon
+DECL|function|set_buffer_unwritten_io
+r_static
+r_inline
+r_void
+id|set_buffer_unwritten_io
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+(brace
+id|bh-&gt;b_end_io
+op_assign
+id|linvfs_unwritten_done
+suffix:semicolon
+)brace
 DECL|macro|restricted_chown
 mdefine_line|#define restricted_chown&t;xfs_params.restrict_chown
 DECL|macro|irix_sgid_inherit
