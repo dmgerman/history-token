@@ -2152,6 +2152,8 @@ c_func
 id|flags
 op_or
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 comma
 l_int|0
 )paren
