@@ -481,9 +481,9 @@ id|pmu_sem
 )paren
 suffix:semicolon
 )brace
-DECL|function|pmu_init
-r_void
+r_int
 id|__init
+DECL|function|pmu_init
 id|pmu_init
 c_func
 (paren
@@ -518,6 +518,8 @@ OL
 l_int|0
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|pmu_model
 op_assign
@@ -560,6 +562,9 @@ l_string|&quot;oprofile: using %s PMU&bslash;n&quot;
 comma
 id|spec-&gt;name
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pmu_exit

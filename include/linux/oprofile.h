@@ -113,7 +113,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure. This is called even in timer interrupt&n; * mode so an arch can set a backtrace callback.&n; *&n; * If an error occurs, the fields should be left untouched.&n; */
-r_void
+r_int
 id|oprofile_arch_init
 c_func
 (paren

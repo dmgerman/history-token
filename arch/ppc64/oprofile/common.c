@@ -526,7 +526,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_init
-r_void
+r_int
 id|__init
 id|oprofile_arch_init
 c_func
@@ -673,6 +673,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|ops-&gt;create_files
@@ -703,6 +705,9 @@ l_string|&quot;oprofile: using %s performance monitoring.&bslash;n&quot;
 comma
 id|ops-&gt;cpu_type
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

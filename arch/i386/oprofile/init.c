@@ -50,7 +50,7 @@ id|depth
 )paren
 suffix:semicolon
 DECL|function|oprofile_arch_init
-r_void
+r_int
 id|__init
 id|oprofile_arch_init
 c_func
@@ -99,6 +99,9 @@ macro_line|#endif
 id|ops-&gt;backtrace
 op_assign
 id|x86_backtrace
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

@@ -629,7 +629,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
+r_int
 id|__init
 DECL|function|oprofile_arch_init
 id|oprofile_arch_init
@@ -729,6 +729,8 @@ op_logical_neg
 id|lmodel
 )paren
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|model
 op_assign
@@ -766,6 +768,9 @@ l_string|&quot;oprofile: using %s performance monitoring.&bslash;n&quot;
 comma
 id|lmodel-&gt;cpu_type
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_void
