@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.c,v 1.59 2004/03/21 17:27:32 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifunc.c,v 1.60 2004/03/22 16:28:27 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -2094,7 +2094,6 @@ multiline_comment|/*&n; * remove cards&n; */
 DECL|function|divacapi_remove_cards
 r_static
 r_void
-id|DIVA_EXIT_FUNCTION
 id|divacapi_remove_cards
 c_func
 (paren
