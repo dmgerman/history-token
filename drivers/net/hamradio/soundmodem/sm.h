@@ -501,7 +501,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * ===================== diagnostics stuff ===============================&n; */
 DECL|function|diag_trigger
-r_extern
+r_static
 r_inline
 r_void
 id|diag_trigger
@@ -543,7 +543,7 @@ mdefine_line|#define SHRT_MAX ((short)(((unsigned short)(~0U))&gt;&gt;1))
 DECL|macro|SHRT_MIN
 mdefine_line|#define SHRT_MIN (-SHRT_MAX-1)
 DECL|function|diag_add
-r_extern
+r_static
 r_inline
 r_void
 id|diag_add
@@ -634,7 +634,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|diag_add_one
-r_extern
+r_static
 r_inline
 r_void
 id|diag_add_one
@@ -810,7 +810,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * ===================== utility functions ===============================&n; */
 macro_line|#if 0
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -828,7 +828,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -846,7 +846,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -864,7 +864,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -968,7 +968,7 @@ l_int|0x0000FFFF
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1054,7 +1054,7 @@ l_int|0x00FF
 )paren
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1123,7 +1123,7 @@ l_int|0x0F
 suffix:semicolon
 )brace
 macro_line|#endif
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1145,7 +1145,7 @@ id|unused
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1168,7 +1168,7 @@ id|unused
 )paren
 suffix:semicolon
 DECL|function|gcd
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -1228,7 +1228,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|lcm
-r_extern
+r_static
 r_inline
 r_int
 r_int

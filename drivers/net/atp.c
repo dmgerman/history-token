@@ -2957,11 +2957,15 @@ id|num_tx_since_rx
 OG
 l_int|8
 op_logical_and
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|dev-&gt;last_rx
 op_plus
 id|HZ
+)paren
 )paren
 (brace
 r_if

@@ -1136,7 +1136,7 @@ id|dev-&gt;mem_start
 )paren
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -1149,7 +1149,7 @@ id|wordlength
 )paren
 (brace
 multiline_comment|/* No Tx pages to skip over to get to Rx */
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 suffix:semicolon
@@ -1160,7 +1160,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|TX_PAGES
 op_star
@@ -2461,7 +2461,7 @@ suffix:semicolon
 r_int
 id|end_of_ring
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 suffix:semicolon
 multiline_comment|/* Maybe enable shared memory just be to be safe... nahh.*/
 r_if
@@ -2526,7 +2526,7 @@ id|skb-&gt;data
 op_plus
 id|semi_count
 comma
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 comma
 id|count
 )paren
