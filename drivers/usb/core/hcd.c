@@ -1982,6 +1982,10 @@ comma
 id|usb_dev-&gt;bus-&gt;busnum
 )paren
 suffix:semicolon
+id|usb_dev-&gt;state
+op_assign
+id|USB_STATE_DEFAULT
+suffix:semicolon
 id|retval
 op_assign
 id|usb_new_device

@@ -599,6 +599,11 @@ id|ipaq_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;ipaq&quot;

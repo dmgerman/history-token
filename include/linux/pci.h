@@ -656,6 +656,11 @@ id|list_head
 id|pools
 suffix:semicolon
 multiline_comment|/* pci_pools tied to this device */
+DECL|member|consistent_dma_mask
+id|u64
+id|consistent_dma_mask
+suffix:semicolon
+multiline_comment|/* Like dma_mask, but for&n;&t;&t;&t;&t;&t;       pci_alloc_consistent mappings as&n;&t;&t;&t;&t;&t;       not all hardware supports&n;&t;&t;&t;&t;&t;       64 bit addresses for consistent&n;&t;&t;&t;&t;&t;       allocations such descriptors. */
 DECL|member|current_state
 id|u32
 id|current_state
@@ -2034,6 +2039,19 @@ id|mask
 suffix:semicolon
 r_int
 id|pci_dac_set_dma_mask
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u64
+id|mask
+)paren
+suffix:semicolon
+r_int
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 r_struct

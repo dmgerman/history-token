@@ -489,7 +489,7 @@ macro_line|# define scsi_proc_host_rm(shost)&t;do { } while (0)
 DECL|macro|scsi_init_procfs
 macro_line|# define scsi_init_procfs()&t;&t;(0)
 DECL|macro|scsi_exit_procfs
-macro_line|# define scsi_exit_procfs&t;&t;do { } while (0)
+macro_line|# define scsi_exit_procfs()&t;&t;do { } while (0)
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
 r_extern
