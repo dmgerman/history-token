@@ -3,9 +3,9 @@ macro_line|#ifndef __RADEON_DRV_H__
 DECL|macro|__RADEON_DRV_H__
 mdefine_line|#define __RADEON_DRV_H__
 DECL|macro|GET_RING_HEAD
-mdefine_line|#define GET_RING_HEAD(ring)&t;&t;readl( (volatile u32 *) (ring)-&gt;head )
+mdefine_line|#define GET_RING_HEAD(ring)&t;&t;DRM_READ32(  (volatile u32 *) (ring)-&gt;head )
 DECL|macro|SET_RING_HEAD
-mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;writel( (val), (volatile u32 *) (ring)-&gt;head )
+mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;DRM_WRITE32( (volatile u32 *) (ring)-&gt;head , (val))
 DECL|struct|drm_radeon_freelist
 r_typedef
 r_struct
@@ -166,6 +166,10 @@ DECL|member|usec_timeout
 r_int
 id|usec_timeout
 suffix:semicolon
+DECL|member|is_r200
+r_int
+id|is_r200
+suffix:semicolon
 DECL|member|is_pci
 r_int
 id|is_pci
@@ -179,9 +183,47 @@ DECL|member|bus_pci_gart
 id|dma_addr_t
 id|bus_pci_gart
 suffix:semicolon
-DECL|member|idle_count
-id|atomic_t
-id|idle_count
+r_struct
+(brace
+DECL|member|boxes
+id|u32
+id|boxes
+suffix:semicolon
+DECL|member|freelist_timeouts
+r_int
+id|freelist_timeouts
+suffix:semicolon
+DECL|member|freelist_loops
+r_int
+id|freelist_loops
+suffix:semicolon
+DECL|member|requested_bufs
+r_int
+id|requested_bufs
+suffix:semicolon
+DECL|member|last_frame_reads
+r_int
+id|last_frame_reads
+suffix:semicolon
+DECL|member|last_clear_reads
+r_int
+id|last_clear_reads
+suffix:semicolon
+DECL|member|clears
+r_int
+id|clears
+suffix:semicolon
+DECL|member|texture_uploads
+r_int
+id|texture_uploads
+suffix:semicolon
+DECL|member|stats
+)brace
+id|stats
+suffix:semicolon
+DECL|member|do_boxes
+r_int
+id|do_boxes
 suffix:semicolon
 DECL|member|page_flipping
 r_int
@@ -311,23 +353,7 @@ r_int
 id|radeon_cp_init
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -335,23 +361,7 @@ r_int
 id|radeon_cp_start
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -359,23 +369,7 @@ r_int
 id|radeon_cp_stop
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -383,23 +377,7 @@ r_int
 id|radeon_cp_reset
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -407,23 +385,7 @@ r_int
 id|radeon_cp_idle
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -431,23 +393,7 @@ r_int
 id|radeon_engine_reset
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -455,23 +401,7 @@ r_int
 id|radeon_fullscreen
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -479,23 +409,7 @@ r_int
 id|radeon_cp_buffers
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -532,47 +446,6 @@ r_int
 id|n
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|radeon_update_ring_snapshot
-id|radeon_update_ring_snapshot
-c_func
-(paren
-id|drm_radeon_ring_buffer_t
-op_star
-id|ring
-)paren
-(brace
-id|ring-&gt;space
-op_assign
-(paren
-id|GET_RING_HEAD
-c_func
-(paren
-id|ring
-)paren
-op_minus
-id|ring-&gt;tail
-)paren
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ring-&gt;space
-op_le
-l_int|0
-)paren
-id|ring-&gt;space
-op_add_assign
-id|ring-&gt;size
-suffix:semicolon
-)brace
 r_extern
 r_int
 id|radeon_do_cp_idle
@@ -609,23 +482,7 @@ r_int
 id|radeon_cp_clear
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -633,23 +490,7 @@ r_int
 id|radeon_cp_swap
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -657,23 +498,7 @@ r_int
 id|radeon_cp_vertex
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -681,23 +506,7 @@ r_int
 id|radeon_cp_indices
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -705,23 +514,7 @@ r_int
 id|radeon_cp_texture
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -729,23 +522,7 @@ r_int
 id|radeon_cp_stipple
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -753,23 +530,7 @@ r_int
 id|radeon_cp_indirect
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -777,23 +538,7 @@ r_int
 id|radeon_cp_vertex2
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -801,23 +546,7 @@ r_int
 id|radeon_cp_cmdbuf
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -825,23 +554,7 @@ r_int
 id|radeon_cp_getparam
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -849,25 +562,20 @@ r_int
 id|radeon_cp_flip
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
+multiline_comment|/* Flags for stats.boxes&n; */
+DECL|macro|RADEON_BOX_DMA_IDLE
+mdefine_line|#define RADEON_BOX_DMA_IDLE      0x1
+DECL|macro|RADEON_BOX_RING_FULL
+mdefine_line|#define RADEON_BOX_RING_FULL     0x2
+DECL|macro|RADEON_BOX_FLIP
+mdefine_line|#define RADEON_BOX_FLIP          0x4
+DECL|macro|RADEON_BOX_WAIT_IDLE
+mdefine_line|#define RADEON_BOX_WAIT_IDLE     0x8
+DECL|macro|RADEON_BOX_TEXTURE_LOAD
+mdefine_line|#define RADEON_BOX_TEXTURE_LOAD  0x10
 multiline_comment|/* Register definitions, register access macros and drmAddMap constants&n; * for Radeon kernel driver.&n; */
 DECL|macro|RADEON_AGP_COMMAND
 mdefine_line|#define RADEON_AGP_COMMAND&t;&t;0x0f60
@@ -1073,6 +781,8 @@ DECL|macro|RADEON_Z_ENABLE
 macro_line|#&t;define RADEON_Z_ENABLE&t;&t;&t;(1 &lt;&lt; 8)
 DECL|macro|RADEON_RB3D_DEPTHOFFSET
 mdefine_line|#define RADEON_RB3D_DEPTHOFFSET&t;&t;0x1c24
+DECL|macro|RADEON_RB3D_DEPTHPITCH
+mdefine_line|#define RADEON_RB3D_DEPTHPITCH&t;&t;0x1c28
 DECL|macro|RADEON_RB3D_PLANEMASK
 mdefine_line|#define RADEON_RB3D_PLANEMASK&t;&t;0x1d84
 DECL|macro|RADEON_RB3D_STENCILREFMASK
@@ -1499,6 +1209,110 @@ DECL|macro|RADEON_TXFORMAT_ARGB8888
 mdefine_line|#define RADEON_TXFORMAT_ARGB8888&t;6
 DECL|macro|RADEON_TXFORMAT_RGBA8888
 mdefine_line|#define RADEON_TXFORMAT_RGBA8888&t;7
+DECL|macro|R200_PP_TXCBLEND_0
+mdefine_line|#define R200_PP_TXCBLEND_0                0x2f00
+DECL|macro|R200_PP_TXCBLEND_1
+mdefine_line|#define R200_PP_TXCBLEND_1                0x2f10
+DECL|macro|R200_PP_TXCBLEND_2
+mdefine_line|#define R200_PP_TXCBLEND_2                0x2f20
+DECL|macro|R200_PP_TXCBLEND_3
+mdefine_line|#define R200_PP_TXCBLEND_3                0x2f30
+DECL|macro|R200_PP_TXCBLEND_4
+mdefine_line|#define R200_PP_TXCBLEND_4                0x2f40
+DECL|macro|R200_PP_TXCBLEND_5
+mdefine_line|#define R200_PP_TXCBLEND_5                0x2f50
+DECL|macro|R200_PP_TXCBLEND_6
+mdefine_line|#define R200_PP_TXCBLEND_6                0x2f60
+DECL|macro|R200_PP_TXCBLEND_7
+mdefine_line|#define R200_PP_TXCBLEND_7                0x2f70
+DECL|macro|R200_SE_TCL_LIGHT_MODEL_CTL_0
+mdefine_line|#define R200_SE_TCL_LIGHT_MODEL_CTL_0     0x2268 
+DECL|macro|R200_PP_TFACTOR_0
+mdefine_line|#define R200_PP_TFACTOR_0                 0x2ee0
+DECL|macro|R200_SE_VTX_FMT_0
+mdefine_line|#define R200_SE_VTX_FMT_0                 0x2088
+DECL|macro|R200_SE_VAP_CNTL
+mdefine_line|#define R200_SE_VAP_CNTL                  0x2080
+DECL|macro|R200_SE_TCL_MATRIX_SEL_0
+mdefine_line|#define R200_SE_TCL_MATRIX_SEL_0          0x2230
+DECL|macro|R200_SE_TCL_TEX_PROC_CTL_2
+mdefine_line|#define R200_SE_TCL_TEX_PROC_CTL_2        0x22a8 
+DECL|macro|R200_SE_TCL_UCP_VERT_BLEND_CTL
+mdefine_line|#define R200_SE_TCL_UCP_VERT_BLEND_CTL    0x22c0 
+DECL|macro|R200_PP_TXFILTER_5
+mdefine_line|#define R200_PP_TXFILTER_5                0x2ca0 
+DECL|macro|R200_PP_TXFILTER_4
+mdefine_line|#define R200_PP_TXFILTER_4                0x2c80 
+DECL|macro|R200_PP_TXFILTER_3
+mdefine_line|#define R200_PP_TXFILTER_3                0x2c60 
+DECL|macro|R200_PP_TXFILTER_2
+mdefine_line|#define R200_PP_TXFILTER_2                0x2c40 
+DECL|macro|R200_PP_TXFILTER_1
+mdefine_line|#define R200_PP_TXFILTER_1                0x2c20 
+DECL|macro|R200_PP_TXFILTER_0
+mdefine_line|#define R200_PP_TXFILTER_0                0x2c00 
+DECL|macro|R200_PP_TXOFFSET_5
+mdefine_line|#define R200_PP_TXOFFSET_5                0x2d78
+DECL|macro|R200_PP_TXOFFSET_4
+mdefine_line|#define R200_PP_TXOFFSET_4                0x2d60
+DECL|macro|R200_PP_TXOFFSET_3
+mdefine_line|#define R200_PP_TXOFFSET_3                0x2d48
+DECL|macro|R200_PP_TXOFFSET_2
+mdefine_line|#define R200_PP_TXOFFSET_2                0x2d30
+DECL|macro|R200_PP_TXOFFSET_1
+mdefine_line|#define R200_PP_TXOFFSET_1                0x2d18
+DECL|macro|R200_PP_TXOFFSET_0
+mdefine_line|#define R200_PP_TXOFFSET_0                0x2d00
+DECL|macro|R200_RE_AUX_SCISSOR_CNTL
+mdefine_line|#define R200_RE_AUX_SCISSOR_CNTL          0x26f0
+DECL|macro|R200_SE_VTE_CNTL
+mdefine_line|#define R200_SE_VTE_CNTL                  0x20b0
+DECL|macro|R200_SE_TCL_OUTPUT_VTX_COMP_SEL
+mdefine_line|#define R200_SE_TCL_OUTPUT_VTX_COMP_SEL   0x2250
+DECL|macro|R200_PP_TAM_DEBUG3
+mdefine_line|#define R200_PP_TAM_DEBUG3                0x2d9c
+DECL|macro|R200_PP_CNTL_X
+mdefine_line|#define R200_PP_CNTL_X                    0x2cc4
+DECL|macro|R200_SE_VAP_CNTL_STATUS
+mdefine_line|#define R200_SE_VAP_CNTL_STATUS           0x2140
+DECL|macro|R200_RE_SCISSOR_TL_0
+mdefine_line|#define R200_RE_SCISSOR_TL_0              0x1cd8
+DECL|macro|R200_RE_SCISSOR_TL_1
+mdefine_line|#define R200_RE_SCISSOR_TL_1              0x1ce0
+DECL|macro|R200_RE_SCISSOR_TL_2
+mdefine_line|#define R200_RE_SCISSOR_TL_2              0x1ce8
+DECL|macro|R200_RB3D_DEPTHXY_OFFSET
+mdefine_line|#define R200_RB3D_DEPTHXY_OFFSET          0x1d60 
+DECL|macro|R200_RE_AUX_SCISSOR_CNTL
+mdefine_line|#define R200_RE_AUX_SCISSOR_CNTL          0x26f0
+DECL|macro|R200_SE_VTX_STATE_CNTL
+mdefine_line|#define R200_SE_VTX_STATE_CNTL            0x2180
+DECL|macro|R200_RE_POINTSIZE
+mdefine_line|#define R200_RE_POINTSIZE                 0x2648
+DECL|macro|R200_SE_TCL_INPUT_VTX_VECTOR_ADDR_0
+mdefine_line|#define R200_SE_TCL_INPUT_VTX_VECTOR_ADDR_0 0x2254
+DECL|macro|SE_VAP_CNTL__TCL_ENA_MASK
+mdefine_line|#define SE_VAP_CNTL__TCL_ENA_MASK                          0x00000001
+DECL|macro|SE_VAP_CNTL__FORCE_W_TO_ONE_MASK
+mdefine_line|#define SE_VAP_CNTL__FORCE_W_TO_ONE_MASK                   0x00010000
+DECL|macro|SE_VAP_CNTL__VF_MAX_VTX_NUM__SHIFT
+mdefine_line|#define SE_VAP_CNTL__VF_MAX_VTX_NUM__SHIFT                 0x00000012
+DECL|macro|SE_VTE_CNTL__VTX_XY_FMT_MASK
+mdefine_line|#define SE_VTE_CNTL__VTX_XY_FMT_MASK                       0x00000100
+DECL|macro|SE_VTE_CNTL__VTX_Z_FMT_MASK
+mdefine_line|#define SE_VTE_CNTL__VTX_Z_FMT_MASK                        0x00000200
+DECL|macro|SE_VTX_FMT_0__VTX_Z0_PRESENT_MASK
+mdefine_line|#define SE_VTX_FMT_0__VTX_Z0_PRESENT_MASK                  0x00000001
+DECL|macro|SE_VTX_FMT_0__VTX_W0_PRESENT_MASK
+mdefine_line|#define SE_VTX_FMT_0__VTX_W0_PRESENT_MASK                  0x00000002
+DECL|macro|SE_VTX_FMT_0__VTX_COLOR_0_FMT__SHIFT
+mdefine_line|#define SE_VTX_FMT_0__VTX_COLOR_0_FMT__SHIFT               0x0000000b
+DECL|macro|R200_3D_DRAW_IMMD_2
+mdefine_line|#define R200_3D_DRAW_IMMD_2      0xC0003500
+DECL|macro|R200_SE_VTX_FMT_1
+mdefine_line|#define R200_SE_VTX_FMT_1                 0x208c
+DECL|macro|R200_RE_CNTL
+mdefine_line|#define R200_RE_CNTL                      0x1c50 
 multiline_comment|/* Constants */
 DECL|macro|RADEON_MAX_USEC_TIMEOUT
 mdefine_line|#define RADEON_MAX_USEC_TIMEOUT&t;&t;100000&t;/* 100 ms */
@@ -1521,13 +1335,13 @@ mdefine_line|#define RADEON_BASE(reg)&t;((unsigned long)(dev_priv-&gt;mmio-&gt;h
 DECL|macro|RADEON_ADDR
 mdefine_line|#define RADEON_ADDR(reg)&t;(RADEON_BASE( reg ) + reg)
 DECL|macro|RADEON_READ
-mdefine_line|#define RADEON_READ(reg)&t;readl( (volatile u32 *) RADEON_ADDR(reg) )
+mdefine_line|#define RADEON_READ(reg)&t;DRM_READ32(  (volatile u32 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_WRITE
-mdefine_line|#define RADEON_WRITE(reg,val)&t;writel( (val), (volatile u32 *) RADEON_ADDR(reg) )
+mdefine_line|#define RADEON_WRITE(reg,val)&t;DRM_WRITE32( (volatile u32 *) RADEON_ADDR(reg), (val) )
 DECL|macro|RADEON_READ8
-mdefine_line|#define RADEON_READ8(reg)&t;readb( (volatile u8 *) RADEON_ADDR(reg) )
+mdefine_line|#define RADEON_READ8(reg)&t;DRM_READ8(  (volatile u8 *) RADEON_ADDR(reg) )
 DECL|macro|RADEON_WRITE8
-mdefine_line|#define RADEON_WRITE8(reg,val)&t;writeb( (val), (volatile u8 *) RADEON_ADDR(reg) )
+mdefine_line|#define RADEON_WRITE8(reg,val)&t;DRM_WRITE8( (volatile u8 *) RADEON_ADDR(reg), (val) )
 DECL|macro|RADEON_WRITE_PLL
 mdefine_line|#define RADEON_WRITE_PLL( addr, val )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE8( RADEON_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;       ((addr) &amp; 0x1f) | RADEON_PLL_WR_EN );&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CLOCK_CNTL_DATA, (val) );&t;&t;&t;&bslash;&n;} while (0)
 r_extern
@@ -1572,11 +1386,12 @@ DECL|macro|RADEON_PURGE_ZCACHE
 mdefine_line|#define RADEON_PURGE_ZCACHE() do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( RADEON_RB3D_ZCACHE_CTLSTAT, 0 ) );&t;&bslash;&n;&t;OUT_RING( RADEON_RB3D_ZC_FLUSH_ALL );&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* ================================================================&n; * Misc helper macros&n; */
 DECL|macro|LOCK_TEST_WITH_RETURN
-mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != current-&gt;pid ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != DRM_CURRENTPID ) {&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;, __func__ );&t;&bslash;&n;&t;&t;return DRM_ERR(EINVAL);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* Perfbox functionality only.  &n; */
 DECL|macro|RING_SPACE_TEST_WITH_RETURN
-mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;radeon_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;udelay( 1 );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check from memory failed, reading register...&bslash;n&quot; );&t;&bslash;&n;&t;&t;/* If ring space check fails from RAM, try reading the&t;&bslash;&n;&t;&t;   register directly */&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ring-&gt;space = 4 * ( RADEON_READ( RADEON_CP_RB_RPTR ) - ring-&gt;tail );&t;&bslash;&n;&t;&t;if ( ring-&gt;space &lt;= 0 )&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;ring-&gt;space += ring-&gt;size;&t;&t;&t;&bslash;&n;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&t;&bslash;&n;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(dev_priv-&gt;stats.boxes &amp; RADEON_BOX_DMA_IDLE)) {&t;&t;&bslash;&n;&t;&t;u32 head = GET_RING_HEAD(&amp;dev_priv-&gt;ring);&t;&t;&bslash;&n;&t;&t;if (head == dev_priv-&gt;ring.tail)&t;&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;stats.boxes |= RADEON_BOX_DMA_IDLE;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|VB_AGE_TEST_WITH_RETURN
-mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_sarea_t *sarea_priv = dev_priv-&gt;sarea_priv;&t;&t;&bslash;&n;&t;if ( sarea_priv-&gt;last_dispatch &gt;= RADEON_MAX_VB_AGE ) {&t;&t;&bslash;&n;&t;&t;int __ret = radeon_do_cp_idle( dev_priv );&t;&t;&bslash;&n;&t;&t;if ( __ret &lt; 0 ) return __ret;&t;&t;&t;&t;&bslash;&n;&t;&t;sarea_priv-&gt;last_dispatch = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;radeon_freelist_reset( dev );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_radeon_sarea_t *sarea_priv = dev_priv-&gt;sarea_priv;&t;&t;&bslash;&n;&t;if ( sarea_priv-&gt;last_dispatch &gt;= RADEON_MAX_VB_AGE ) {&t;&t;&bslash;&n;&t;&t;int __ret = radeon_do_cp_idle( dev_priv );&t;&t;&bslash;&n;&t;&t;if ( __ret ) return __ret;&t;&t;&t;&t;&bslash;&n;&t;&t;sarea_priv-&gt;last_dispatch = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;radeon_freelist_reset( dev );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RADEON_DISPATCH_AGE
 mdefine_line|#define RADEON_DISPATCH_AGE( age ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( RADEON_LAST_DISPATCH_REG, 0 ) );&t;&t;&bslash;&n;&t;OUT_RING( age );&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RADEON_FRAME_AGE
@@ -1589,25 +1404,23 @@ DECL|macro|radeon_flush_write_combine
 mdefine_line|#define radeon_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
 macro_line|#else
 DECL|macro|radeon_flush_write_combine
-mdefine_line|#define radeon_flush_write_combine()&t;mb()
+mdefine_line|#define radeon_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
 macro_line|#endif
 DECL|macro|RADEON_VERBOSE
 mdefine_line|#define RADEON_VERBOSE&t;0
 DECL|macro|RING_LOCALS
-mdefine_line|#define RING_LOCALS&t;int write, _nr; unsigned int mask; volatile u32 *ring;
+mdefine_line|#define RING_LOCALS&t;int write, _nr; unsigned int mask; u32 *ring;
 DECL|macro|BEGIN_RING
-mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   n, __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;                COMMIT_RING();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;radeon_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_nr = n; dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   n, __func__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;                COMMIT_RING();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;radeon_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_nr = n; dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADVANCE_RING
-mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((dev_priv-&gt;ring.tail + _nr) &amp; mask) != write) {&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ADVANCE_RING(): mismatch: nr: %x write: %x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;((dev_priv-&gt;ring.tail + _nr) &amp; mask),&t;&t;&bslash;&n;&t;&t;&t;write);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((dev_priv-&gt;ring.tail + _nr) &amp; mask) != write) {&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;ADVANCE_RING(): mismatch: nr: %x write: %x line: %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;((dev_priv-&gt;ring.tail + _nr) &amp; mask),&t;&t;&bslash;&n;&t;&t;&t;write, __LINE__);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|COMMIT_RING
-mdefine_line|#define COMMIT_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;radeon_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, dev_priv-&gt;ring.tail );&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define COMMIT_RING() do {&t;&t;&t;&t;&t;    &bslash;&n;&t;RADEON_WRITE( RADEON_CP_RB_WPTR, dev_priv-&gt;ring.tail );&t;&t;    &bslash;&n;} while (0)
 DECL|macro|OUT_RING
 mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( RADEON_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING_REG
 mdefine_line|#define OUT_RING_REG( reg, val ) do {&t;&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CP_PACKET0( reg, 0 ) );&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( val );&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING_USER_TABLE
-mdefine_line|#define OUT_RING_USER_TABLE( tab, sz ) do {&t;&t;&t;&bslash;&n;&t;int _size = (sz);&t;&t;&t;&t;&t;&bslash;&n;&t;int *_tab = (tab);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (write + _size &gt; mask) {&t;&t;&t;&t;&bslash;&n;&t;&t;int i = (mask+1) - write;&t;&t;&t;&bslash;&n;&t;&t;if (__copy_from_user( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;&t;      _tab, i*4 ))&t;&t;&bslash;&n;&t;&t;&t;return -EFAULT;&t;&t;&t;&t;&bslash;&n;&t;&t;write = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_size -= i;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tab += i;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_size &amp;&amp; __copy_from_user( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;               _tab, _size*4 ))&t;&t;&bslash;&n;&t;&t;return -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write += _size;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|RADEON_PERFORMANCE_BOXES
-mdefine_line|#define RADEON_PERFORMANCE_BOXES&t;0
+mdefine_line|#define OUT_RING_USER_TABLE( tab, sz ) do {&t;&t;&t;&bslash;&n;&t;int _size = (sz);&t;&t;&t;&t;&t;&bslash;&n;&t;int *_tab = (tab);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (write + _size &gt; mask) {&t;&t;&t;&t;&bslash;&n;&t;&t;int i = (mask+1) - write;&t;&t;&t;&bslash;&n;&t;&t;if (DRM_COPY_FROM_USER_UNCHECKED( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;&t;      _tab, i*4 ))&t;&t;&bslash;&n;&t;&t;&t;return DRM_ERR(EFAULT);&t;&t;&bslash;&n;&t;&t;write = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_size -= i;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tab += i;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_size &amp;&amp; DRM_COPY_FROM_USER_UNCHECKED( (int *)(ring+write),&t;&bslash;&n;&t;&t;&t;               _tab, _size*4 ))&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EFAULT);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write += _size;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __RADEON_DRV_H__ */
 eof

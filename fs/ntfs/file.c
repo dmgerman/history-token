@@ -70,6 +70,14 @@ op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+macro_line|#ifdef NTFS_RW
+dot
+id|write
+op_assign
+id|generic_file_write
+comma
+multiline_comment|/* Write to a file. */
+macro_line|#endif
 dot
 id|mmap
 op_assign
@@ -81,7 +89,7 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
-multiline_comment|/* Zero-copy data send. */
+multiline_comment|/* Zero-copy data send with the&n;&t;&t;&t;&t;&t;&t;   data source being on the&n;&t;&t;&t;&t;&t;&t;   ntfs partition. We don&squot;t&n;&t;&t;&t;&t;&t;&t;   need to care about the data&n;&t;&t;&t;&t;&t;&t;   destination. */
 dot
 id|open
 op_assign

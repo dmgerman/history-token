@@ -962,7 +962,7 @@ id|page
 )paren
 )paren
 (brace
-id|__remove_inode_page
+id|__remove_from_page_cache
 c_func
 (paren
 id|page

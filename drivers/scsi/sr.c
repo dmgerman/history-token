@@ -1455,12 +1455,6 @@ id|SCp
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
-id|check_disk_change
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

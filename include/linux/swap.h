@@ -315,16 +315,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__remove_inode_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* Incomplete types for prototype declarations: */
 r_struct
 id|task_struct

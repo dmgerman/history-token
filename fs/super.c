@@ -2127,12 +2127,6 @@ id|error
 r_goto
 id|out
 suffix:semicolon
-id|check_disk_change
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|error
 op_assign
 op_minus

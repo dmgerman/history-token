@@ -376,6 +376,10 @@ id|m-&gt;buf
 r_goto
 id|Enomem
 suffix:semicolon
+id|m-&gt;count
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|m-&gt;op
 op_member_access_from_pointer
@@ -386,6 +390,10 @@ id|m
 comma
 id|p
 )paren
+suffix:semicolon
+id|m-&gt;count
+op_assign
+l_int|0
 suffix:semicolon
 r_goto
 id|Done

@@ -597,6 +597,13 @@ op_or
 id|IRQ_INPROGRESS
 )paren
 )paren
+op_logical_and
+id|irq_desc
+(braket
+id|irq_nr
+)braket
+dot
+id|action
 )paren
 (brace
 id|set_bit

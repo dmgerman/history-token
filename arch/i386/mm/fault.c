@@ -497,11 +497,11 @@ id|info.si_code
 op_assign
 id|SEGV_MAPERR
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re in an interrupt, have no user context or are running in an&n;&t; * atomic region then we must not take the fault..&n;&t; */
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|preempt_count
 c_func
 (paren
 )paren

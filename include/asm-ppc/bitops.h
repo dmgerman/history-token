@@ -20,7 +20,6 @@ mdefine_line|#define SMP_WMB
 DECL|macro|SMP_MB
 mdefine_line|#define SMP_MB
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/*&n; * These used to be if&squot;d out here because using : &quot;cc&quot; as a constraint&n; * resulted in errors from egcs.  Things appear to be OK with gcc-2.95.&n; */
 DECL|function|set_bit
 r_static
 id|__inline__
@@ -1097,24 +1096,10 @@ op_star
 id|addr
 )paren
 (brace
-id|__const__
-r_int
-r_int
-op_star
-id|p
-op_assign
-(paren
-id|__const__
-r_int
-r_int
-op_star
-)paren
-id|addr
-suffix:semicolon
 r_return
 (paren
 (paren
-id|p
+id|addr
 (braket
 id|nr
 op_rshift

@@ -896,7 +896,7 @@ c_func
 l_string|&quot;die_if_kernel recursion detected.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2605,7 +2605,7 @@ c_func
 l_string|&quot;die_if_kernel recursion detected.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
