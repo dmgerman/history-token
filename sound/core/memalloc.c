@@ -3203,7 +3203,7 @@ id|len
 comma
 l_string|&quot;SBUS [%x]&quot;
 comma
-id|sbus-&gt;slot
+id|sdev-&gt;slot
 )paren
 suffix:semicolon
 )brace
