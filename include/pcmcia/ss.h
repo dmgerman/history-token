@@ -67,12 +67,6 @@ id|pci_dev
 op_star
 id|cb_dev
 suffix:semicolon
-DECL|member|bus
-r_struct
-id|bus_operations
-op_star
-id|bus
-suffix:semicolon
 DECL|typedef|socket_cap_t
 )brace
 id|socket_cap_t

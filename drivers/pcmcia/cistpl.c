@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
@@ -169,21 +168,17 @@ c_cond
 (paren
 id|s-&gt;cis_virt
 )paren
-id|bus_iounmap
+id|iounmap
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|s-&gt;cis_virt
 )paren
 suffix:semicolon
 id|s-&gt;cis_virt
 op_assign
-id|bus_ioremap
+id|ioremap
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|mem-&gt;sys_start
 comma
 id|s-&gt;cap.map_size
@@ -341,11 +336,9 @@ id|sys
 op_assign
 id|s-&gt;cis_virt
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|flags
 comma
 id|sys
@@ -353,11 +346,9 @@ op_plus
 id|CISREG_ICTRL0
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|addr
 op_amp
 l_int|0xff
@@ -367,11 +358,9 @@ op_plus
 id|CISREG_IADDR0
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -385,11 +374,9 @@ op_plus
 id|CISREG_IADDR1
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -403,11 +390,9 @@ op_plus
 id|CISREG_IADDR2
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -438,11 +423,9 @@ op_increment
 op_star
 id|buf
 op_assign
-id|bus_readb
+id|readb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|sys
 op_plus
 id|CISREG_IDATA0
@@ -558,11 +541,9 @@ suffix:semicolon
 op_star
 id|buf
 op_assign
-id|bus_readb
+id|readb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|sys
 )paren
 suffix:semicolon
@@ -769,11 +750,9 @@ id|sys
 op_assign
 id|s-&gt;cis_virt
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|flags
 comma
 id|sys
@@ -781,11 +760,9 @@ op_plus
 id|CISREG_ICTRL0
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|addr
 op_amp
 l_int|0xff
@@ -795,11 +772,9 @@ op_plus
 id|CISREG_IADDR0
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -813,11 +788,9 @@ op_plus
 id|CISREG_IADDR1
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -831,11 +804,9 @@ op_plus
 id|CISREG_IADDR2
 )paren
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 (paren
 id|addr
 op_rshift
@@ -863,11 +834,9 @@ comma
 id|buf
 op_increment
 )paren
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 op_star
 id|buf
 comma
@@ -973,11 +942,9 @@ id|s-&gt;cap.map_size
 )paren
 r_break
 suffix:semicolon
-id|bus_writeb
+id|writeb
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 op_star
 id|buf
 comma
@@ -1039,11 +1006,9 @@ l_int|1
 suffix:semicolon
 id|vs-&gt;cis_virt
 op_assign
-id|bus_ioremap
+id|ioremap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|base
 comma
 id|vs-&gt;cap.map_size
@@ -1061,11 +1026,9 @@ id|info1
 )paren
 suffix:semicolon
 multiline_comment|/* invalidate mapping and CIS cache */
-id|bus_iounmap
+id|iounmap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|vs-&gt;cis_virt
 )paren
 suffix:semicolon
@@ -1109,11 +1072,9 @@ l_int|1
 suffix:semicolon
 id|vs-&gt;cis_virt
 op_assign
-id|bus_ioremap
+id|ioremap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|base
 op_plus
 id|vs-&gt;cap.map_size
@@ -1132,11 +1093,9 @@ op_amp
 id|info2
 )paren
 suffix:semicolon
-id|bus_iounmap
+id|iounmap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|vs-&gt;cis_virt
 )paren
 suffix:semicolon
@@ -1194,11 +1153,9 @@ l_int|1
 suffix:semicolon
 id|vs-&gt;cis_virt
 op_assign
-id|bus_ioremap
+id|ioremap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|base
 comma
 id|vs-&gt;cap.map_size
@@ -1251,11 +1208,9 @@ l_int|44
 (brace
 id|d
 op_assign
-id|bus_readl
+id|readl
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|vs-&gt;cis_virt
 op_plus
 id|i
@@ -1270,11 +1225,9 @@ op_and_assign
 id|d
 suffix:semicolon
 )brace
-id|bus_iounmap
+id|iounmap
 c_func
 (paren
-id|vs-&gt;cap.bus
-comma
 id|vs-&gt;cis_virt
 )paren
 suffix:semicolon
@@ -1447,11 +1400,9 @@ l_int|1
 suffix:semicolon
 id|s-&gt;cis_virt
 op_assign
-id|bus_ioremap
+id|ioremap
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|s-&gt;cis_mem.sys_start
 comma
 id|s-&gt;cap.map_size
@@ -1514,11 +1465,9 @@ comma
 id|s-&gt;cap.map_size
 )paren
 suffix:semicolon
-id|bus_iounmap
+id|iounmap
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|s-&gt;cis_virt
 )paren
 suffix:semicolon

@@ -27,7 +27,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|PCI_OPT
@@ -6587,10 +6586,6 @@ id|client-&gt;event_callback_args.client_handle
 op_assign
 id|client
 suffix:semicolon
-id|client-&gt;event_callback_args.bus
-op_assign
-id|s-&gt;cap.bus
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7297,11 +7292,9 @@ op_amp
 id|IRQ_HANDLE_PRESENT
 )paren
 (brace
-id|bus_free_irq
+id|free_irq
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|req-&gt;AssignedIRQ
 comma
 id|req-&gt;Instance
@@ -8760,11 +8753,9 @@ id|IRQ_HANDLE_PRESENT
 r_if
 c_cond
 (paren
-id|bus_request_irq
+id|request_irq
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|irq
 comma
 id|req-&gt;Handler

@@ -2888,10 +2888,6 @@ id|socket-&gt;cap.cb_dev
 op_assign
 id|socket-&gt;dev
 suffix:semicolon
-id|socket-&gt;cap.bus
-op_assign
-l_int|NULL
-suffix:semicolon
 id|printk
 c_func
 (paren
