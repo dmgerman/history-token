@@ -3819,6 +3819,11 @@ suffix:colon
 id|tp-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+)paren
 id|dev_kfree_skb
 c_func
 (paren
