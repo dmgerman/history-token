@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *  NOTES:&n; *&n; *   - async unlink should be used for avoiding the sleep inside lock.&n; *     however, it causes oops by unknown reason on usb-uhci, and&n; *     disabled as default.  the feature is enabled by async_unlink=1&n; *     option (especially when preempt is used).&n; *   - the linked URBs would be preferred but not used so far because of&n; *     the instability of unlinking.&n; *   - type II is not supported properly.  there is no device which supports&n; *     this type *correctly*.  SB extigy looks as if it supports, but it&squot;s&n; *     indeed an AC3 stream packed in SPDIF frames (i.e. no real AC3 stream).&n; */
+multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *  NOTES:&n; *&n; *   - async unlink should be used for avoiding the sleep inside lock.&n; *     2.4.22 usb-uhci seems buggy for async unlinking and results in&n; *     oops.  in such a cse, pass async_unlink=0 option.&n; *   - the linked URBs would be preferred but not used so far because of&n; *     the instability of unlinking.&n; *   - type II is not supported properly.  there is no device which supports&n; *     this type *correctly*.  SB extigy looks as if it supports, but it&squot;s&n; *     indeed an AC3 stream packed in SPDIF frames (i.e. no real AC3 stream).&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -143,7 +143,7 @@ r_static
 r_int
 id|async_unlink
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -3631,6 +3631,9 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* stop urbs (to be sure) */
+r_if
+c_cond
+(paren
 id|deactivate_urbs
 c_func
 (paren
@@ -3640,11 +3643,8 @@ id|force
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|async_unlink
+OG
+l_int|0
 )paren
 id|wait_clear_urbs
 c_func
@@ -3793,23 +3793,6 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* max. allowed frequency */
 id|subs-&gt;phase
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* reset the pointer */
-id|subs-&gt;hwptr
-op_assign
-l_int|0
-suffix:semicolon
-id|subs-&gt;hwptr_done
-op_assign
-l_int|0
-suffix:semicolon
-id|subs-&gt;transfer_sched
-op_assign
-l_int|0
-suffix:semicolon
-id|subs-&gt;transfer_done
 op_assign
 l_int|0
 suffix:semicolon
@@ -6019,6 +6002,49 @@ c_func
 id|runtime
 comma
 id|subs-&gt;curpacksize
+)paren
+suffix:semicolon
+multiline_comment|/* reset the pointer */
+id|subs-&gt;hwptr
+op_assign
+l_int|0
+suffix:semicolon
+id|subs-&gt;hwptr_done
+op_assign
+l_int|0
+suffix:semicolon
+id|subs-&gt;transfer_sched
+op_assign
+l_int|0
+suffix:semicolon
+id|subs-&gt;transfer_done
+op_assign
+l_int|0
+suffix:semicolon
+id|subs-&gt;phase
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* clear urbs (to be sure) */
+r_if
+c_cond
+(paren
+id|deactivate_urbs
+c_func
+(paren
+id|subs
+comma
+l_int|0
+comma
+l_int|0
+)paren
+OG
+l_int|0
+)paren
+id|wait_clear_urbs
+c_func
+(paren
+id|subs
 )paren
 suffix:semicolon
 r_return
@@ -9709,7 +9735,7 @@ id|snd_usb_audio_pcm_free
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-l_int|0
+id|SNDRV_PCM_INFO_NONATOMIC_OPS
 suffix:semicolon
 r_if
 c_cond
