@@ -925,10 +925,9 @@ id|PEGASUS_REQ_SET_REG
 suffix:semicolon
 id|pegasus-&gt;dr.wValue
 op_assign
-id|cpu_to_le16p
+id|cpu_to_le16
 c_func
 (paren
-op_amp
 id|data
 )paren
 suffix:semicolon
