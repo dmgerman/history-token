@@ -41,10 +41,8 @@ id|wdtpci_lock
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|io
 r_static
@@ -659,7 +657,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -1270,6 +1268,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|spin_lock_irqsave
@@ -1323,6 +1323,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren

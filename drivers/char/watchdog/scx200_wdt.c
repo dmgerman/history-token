@@ -99,7 +99,7 @@ id|open_semaphore
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
 suffix:semicolon
 multiline_comment|/* Bits of the WDCNFG register */
@@ -296,10 +296,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|expect_close
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -324,8 +320,9 @@ id|file
 r_if
 c_cond
 (paren
-op_logical_neg
 id|expect_close
+op_ne
+l_int|42
 )paren
 (brace
 id|printk
@@ -351,6 +348,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -520,7 +521,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 r_return

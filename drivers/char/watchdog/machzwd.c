@@ -246,10 +246,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|zf_expect_close
 r_static
-r_int
+r_char
 id|zf_expect_close
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|zf_lock
 r_static
@@ -905,12 +903,12 @@ l_char|&squot;V&squot;
 (brace
 id|zf_expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;zf_expect_close 1&bslash;n&quot;
+l_string|&quot;zf_expect_close = 42&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1144,6 +1142,8 @@ r_if
 c_cond
 (paren
 id|zf_expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|zf_timer_off

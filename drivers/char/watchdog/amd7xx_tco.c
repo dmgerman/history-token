@@ -89,10 +89,8 @@ suffix:semicolon
 multiline_comment|/* only for device access */
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -826,6 +824,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|amdtco_disable
@@ -860,6 +860,10 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -965,7 +969,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 macro_line|#endif

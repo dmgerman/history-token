@@ -59,10 +59,8 @@ l_int|2
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 id|module_param
 c_func
@@ -1376,7 +1374,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -1645,6 +1643,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 multiline_comment|/*  Disable the board  */
@@ -1700,6 +1700,10 @@ id|open_allowed
 suffix:semicolon
 )brace
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

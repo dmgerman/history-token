@@ -47,10 +47,8 @@ id|testmode
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 id|module_param
 c_func
@@ -485,8 +483,9 @@ multiline_comment|/*&n;&t; *&t;Shut off the timer.&n;&t; * &t;Lock it in if it&s
 r_if
 c_cond
 (paren
-op_logical_neg
-id|nowayout
+id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 multiline_comment|/* unlock the SuperIO chip */
@@ -656,6 +655,10 @@ l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -763,7 +766,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace

@@ -72,10 +72,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -263,6 +261,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 r_if
@@ -336,6 +336,10 @@ comma
 op_amp
 id|mixcomwd_opened
 )paren
+suffix:semicolon
+id|expect_close
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -444,7 +448,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace

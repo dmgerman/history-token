@@ -22,7 +22,7 @@ id|wdt_is_open
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
 suffix:semicolon
 multiline_comment|/*&n; *&t;You must set these - there is no sane way to probe for this board.&n; *&t;You can use wdt=x,y to set these now.&n; */
@@ -734,7 +734,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -1258,6 +1258,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|inb_p
@@ -1295,6 +1297,10 @@ comma
 op_amp
 id|wdt_is_open
 )paren
+suffix:semicolon
+id|expect_close
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_return

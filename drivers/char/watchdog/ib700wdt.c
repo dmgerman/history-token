@@ -26,10 +26,8 @@ id|ibwdt_lock
 suffix:semicolon
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;ib700wdt: &quot;
@@ -266,7 +264,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
@@ -625,6 +623,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 id|outb_p
 c_func
@@ -647,6 +647,10 @@ l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot
 )paren
 suffix:semicolon
 id|ibwdt_is_open
+op_assign
+l_int|0
+suffix:semicolon
+id|expect_close
 op_assign
 l_int|0
 suffix:semicolon

@@ -13,10 +13,8 @@ DECL|macro|TIMER_MARGIN
 mdefine_line|#define TIMER_MARGIN&t;60&t;&t;/* (secs) Default is 1 minute */
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|soft_margin
 r_static
@@ -272,6 +270,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|del_timer
@@ -300,6 +300,10 @@ comma
 op_amp
 id|timer_alive
 )paren
+suffix:semicolon
+id|expect_close
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -408,7 +412,7 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
 )brace
