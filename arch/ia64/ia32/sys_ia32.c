@@ -20031,7 +20031,7 @@ id|pos_hi
 r_extern
 id|asmlinkage
 r_int
-id|sys_pread
+id|sys_pread64
 (paren
 r_int
 r_int
@@ -20045,7 +20045,7 @@ id|loff_t
 )paren
 suffix:semicolon
 r_return
-id|sys_pread
+id|sys_pread64
 c_func
 (paren
 id|fd
@@ -20095,7 +20095,7 @@ id|pos_hi
 r_extern
 id|asmlinkage
 r_int
-id|sys_pwrite
+id|sys_pwrite64
 (paren
 r_int
 r_int
@@ -20110,7 +20110,7 @@ id|loff_t
 )paren
 suffix:semicolon
 r_return
-id|sys_pwrite
+id|sys_pwrite64
 c_func
 (paren
 id|fd

@@ -6856,6 +6856,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|adapter-&gt;netdev-&gt;irq
 )paren
 suffix:semicolon
 )brace

@@ -14,6 +14,30 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ioctl.h&quot;
+multiline_comment|/* BIG GEOMETRY - dying, used only by HDIO_GETGEO_BIG_RAW */
+DECL|struct|hd_big_geometry
+r_struct
+id|hd_big_geometry
+(brace
+DECL|member|heads
+id|u8
+id|heads
+suffix:semicolon
+DECL|member|sectors
+id|u8
+id|sectors
+suffix:semicolon
+DECL|member|cylinders
+id|u32
+id|cylinders
+suffix:semicolon
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Implement generic ioctls invoked from userspace to imlpement specific&n; * functionality.&n; *&n; * Unfortunately every single low level programm out there is using this&n; * interface.&n; */
 DECL|function|do_cmd_ioctl
 r_static

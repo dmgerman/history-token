@@ -250,11 +250,6 @@ op_assign
 id|md_hd_struct
 comma
 dot
-id|sizes
-op_assign
-id|md_size
-comma
-dot
 id|nr_real
 op_assign
 id|MAX_MD_DEVS
@@ -12948,13 +12943,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|blk_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|md_size
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -13100,7 +13088,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 (paren
 id|MAJOR_NR
 comma
@@ -14728,7 +14716,7 @@ c_func
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

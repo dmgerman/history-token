@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
 macro_line|#include &lt;asm/sockios.h&gt;
-multiline_comment|/*&n; * For setsockoptions(2)&n; *&n; * This defines are ABI conformant as far as Linux supports these ...&n; */
+multiline_comment|/*&n; * For setsockopt(2)&n; *&n; * This defines are ABI conformant as far as Linux supports these ...&n; */
 DECL|macro|SOL_SOCKET
 mdefine_line|#define SOL_SOCKET&t;0xffff
 DECL|macro|SO_DEBUG

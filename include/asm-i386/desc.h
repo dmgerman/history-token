@@ -187,11 +187,9 @@ l_int|0x82
 suffix:semicolon
 )brace
 DECL|macro|TLS_FLAGS_MASK
-mdefine_line|#define TLS_FLAGS_MASK&t;&t;&t;0x00000003
+mdefine_line|#define TLS_FLAGS_MASK&t;&t;&t;0x00000001
 DECL|macro|TLS_FLAG_WRITABLE
 mdefine_line|#define TLS_FLAG_WRITABLE&t;&t;0x00000001
-DECL|macro|TLS_FLAG_CLEAR
-mdefine_line|#define TLS_FLAG_CLEAR&t;&t;&t;0x00000002
 DECL|function|load_TLS_desc
 r_static
 r_inline

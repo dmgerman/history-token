@@ -1262,9 +1262,6 @@ comma
 r_int
 r_int
 id|cmd
-comma
-r_int
-id|blocking
 )paren
 (brace
 r_return

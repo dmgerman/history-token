@@ -1,20 +1,17 @@
 multiline_comment|/*&n; *  kernel/sched.c&n; *&n; *  Kernel scheduler and related syscalls&n; *&n; *  Copyright (C) 1991-2002  Linus Torvalds&n; *&n; *  1996-12-23  Modified by Dave Grothe to fix bugs in semaphores and&n; *&t;&t;make semaphores SMP safe&n; *  1998-11-19&t;Implemented schedule_timeout() and related stuff&n; *&t;&t;by Andrea Arcangeli&n; *  2002-01-04&t;New ultra-scalable O(1) scheduler by Ingo Molnar:&n; *&t;&t;hybrid priority-list and round-robin design with&n; *&t;&t;an array-switch method of distributing timeslices&n; *&t;&t;and per-CPU runqueues.  Cleanups and useful suggestions&n; *&t;&t;by Davide Libenzi, preemptible kernel bits by Robert Love.&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/security.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
 DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
@@ -6523,76 +6520,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The migration thread startup relies on the following property&n; * of set_cpus_allowed(): if the thread is not running currently&n; * then we can just put it into the target runqueue.&n; */
-DECL|variable|migration_startup
-id|DECLARE_MUTEX_LOCKED
-c_func
-(paren
-id|migration_startup
-)paren
-suffix:semicolon
-DECL|struct|migration_startup_data
-r_typedef
-r_struct
-id|migration_startup_data
-(brace
-DECL|member|cpu
-r_int
-id|cpu
-suffix:semicolon
-DECL|member|thread
-id|task_t
-op_star
-id|thread
-suffix:semicolon
-DECL|typedef|migration_startup_t
-)brace
-id|migration_startup_t
-suffix:semicolon
-DECL|function|migration_startup_thread
-r_static
-r_int
-id|migration_startup_thread
-c_func
-(paren
-r_void
-op_star
-id|data
-)paren
-(brace
-id|migration_startup_t
-op_star
-id|startup
-op_assign
-id|data
-suffix:semicolon
-id|wait_task_inactive
-c_func
-(paren
-id|startup-&gt;thread
-)paren
-suffix:semicolon
-id|set_cpus_allowed
-c_func
-(paren
-id|startup-&gt;thread
-comma
-l_int|1UL
-op_lshift
-id|startup-&gt;cpu
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|migration_startup
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * migration_thread - this is a highprio system thread that performs&n; * thread migration by &squot;pulling&squot; threads into the target runqueue.&n; */
 DECL|function|migration_thread
 r_static
@@ -6610,15 +6537,13 @@ id|sched_param
 id|param
 op_assign
 (brace
+dot
 id|sched_priority
-suffix:colon
+op_assign
 id|MAX_RT_PRIO
 op_minus
 l_int|1
 )brace
-suffix:semicolon
-id|migration_startup_t
-id|startup
 suffix:semicolon
 r_int
 id|cpu
@@ -6634,8 +6559,6 @@ id|rq
 suffix:semicolon
 r_int
 id|ret
-comma
-id|pid
 suffix:semicolon
 id|daemonize
 c_func
@@ -6655,51 +6578,17 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-id|startup.cpu
-op_assign
-id|cpu
-suffix:semicolon
-id|startup.thread
-op_assign
-id|current
-suffix:semicolon
-id|pid
-op_assign
-id|kernel_thread
+id|set_cpus_allowed
 c_func
 (paren
-id|migration_startup_thread
+id|current
 comma
-op_amp
-id|startup
-comma
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-op_or
-id|CLONE_SIGNAL
+l_int|1UL
+op_lshift
+id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Migration can happen without a migration thread on the&n;&t; * target CPU because here we remove the thread from the&n;&t; * runqueue and the helper thread then moves this thread&n;&t; * to the target CPU - we&squot;ll wake up there.&n;&t; */
-id|down
-c_func
-(paren
-op_amp
-id|migration_startup
-)paren
-suffix:semicolon
-multiline_comment|/* we need to waitpid() to release the helper thread */
-id|waitpid
-c_func
-(paren
-id|pid
-comma
-l_int|NULL
-comma
-id|__WCLONE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * At this point the startup helper thread must have&n;&t; * migrated us to the proper CPU already:&n;&t; */
 r_if
 c_cond
 (paren
@@ -6710,11 +6599,6 @@ c_func
 op_ne
 id|cpu
 )paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7039,16 +6923,6 @@ op_star
 id|hcpu
 )paren
 (brace
-r_int
-r_int
-id|cpu
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|hcpu
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7063,7 +6937,10 @@ c_func
 (paren
 l_string|&quot;Starting migration thread for cpu %li&bslash;n&quot;
 comma
-id|cpu
+(paren
+r_int
+)paren
+id|hcpu
 )paren
 suffix:semicolon
 id|kernel_thread
@@ -7071,11 +6948,7 @@ c_func
 (paren
 id|migration_thread
 comma
-(paren
-r_void
-op_star
-)paren
-id|cpu
+id|hcpu
 comma
 id|CLONE_FS
 op_or
@@ -7091,7 +6964,10 @@ op_logical_neg
 id|cpu_rq
 c_func
 (paren
-id|cpu
+(paren
+r_int
+)paren
+id|hcpu
 )paren
 op_member_access_from_pointer
 id|migration_thread

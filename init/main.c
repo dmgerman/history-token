@@ -1729,16 +1729,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_SMP
-r_extern
-r_int
-id|migration_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|spawn_ksoftirqd
@@ -1747,7 +1737,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_int
+id|migration_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|migration_init
 c_func
 (paren

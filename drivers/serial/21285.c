@@ -1,24 +1,14 @@
-multiline_comment|/*&n; * linux/drivers/char/21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: 21285.c,v 1.34 2002/07/22 15:27:32 rmk Exp $&n; */
+multiline_comment|/*&n; * linux/drivers/char/21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: 21285.c,v 1.37 2002/07/28 10:03:27 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 DECL|macro|BAUD_BASE
@@ -161,19 +151,6 @@ op_star
 id|port
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -199,15 +176,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|serial21285_enable_ms
 r_static
@@ -2035,7 +2003,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: 21285 driver $Revision: 1.34 $&bslash;n&quot;
+l_string|&quot;Serial: 21285 driver $Revision: 1.37 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|serial21285_setup_ports
@@ -2126,7 +2094,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.34 $&quot;
+l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.37 $&quot;
 )paren
 suffix:semicolon
 eof

@@ -3588,7 +3588,7 @@ c_func
 (paren
 l_string|&quot;ufs_read_super: block size %u is too small&bslash;n&quot;
 comma
-id|uspi-&gt;s_fsize
+id|uspi-&gt;s_bsize
 )paren
 suffix:semicolon
 r_goto

@@ -16763,12 +16763,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|trident_suspend
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: nodelist.h,v 1.68 2002/03/08 11:27:19 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.74 2002/06/26 01:20:43 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -111,6 +111,8 @@ id|nlink
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|INOCACHE_HASHSIZE
+mdefine_line|#define INOCACHE_HASHSIZE 128
 DECL|struct|jffs2_scan_info
 r_struct
 id|jffs2_scan_info
@@ -260,11 +262,6 @@ r_uint32
 id|ofs
 suffix:semicolon
 multiline_comment|/* Don&squot;t really need this, but optimisation */
-DECL|member|node_ofs
-r_uint32
-id|node_ofs
-suffix:semicolon
-multiline_comment|/* offset within the physical node */
 )brace
 suffix:semicolon
 DECL|struct|jffs2_eraseblock
@@ -343,6 +340,9 @@ DECL|macro|JFFS2_RESERVED_BLOCKS_GCBAD
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCBAD (JFFS2_RESERVED_BLOCKS_BASE + 1)&t;&t;/* ... pick a block from the bad_list to GC */
 DECL|macro|JFFS2_RESERVED_BLOCKS_GCMERGE
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCMERGE (JFFS2_RESERVED_BLOCKS_BASE)&t;&t;/* ... merge pages when garbage collecting */
+multiline_comment|/* How much dirty space before it goes on the very_dirty_list */
+DECL|macro|VERYDIRTY
+mdefine_line|#define VERYDIRTY(c, size) ((size) &gt;= ((c)-&gt;sector_size / 2))
 DECL|macro|PAD
 mdefine_line|#define PAD(x) (((x)+3)&amp;~3)
 DECL|function|jffs2_raw_ref_to_inum
@@ -630,6 +630,16 @@ r_struct
 id|jffs2_raw_node_ref
 op_star
 id|raw
+)paren
+suffix:semicolon
+r_void
+id|jffs2_dump_block_lists
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
 )paren
 suffix:semicolon
 multiline_comment|/* write.c */
@@ -1247,6 +1257,16 @@ suffix:semicolon
 multiline_comment|/* scan.c */
 r_int
 id|jffs2_scan_medium
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_void
+id|jffs2_rotate_lists
 c_func
 (paren
 r_struct

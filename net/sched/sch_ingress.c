@@ -306,7 +306,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;No effect. sch_ingress doesnt maintain classes at the moment&quot;
+l_string|&quot;No effect. sch_ingress doesn&squot;t maintain classes at the moment&quot;
 )paren
 suffix:semicolon
 r_return
@@ -358,7 +358,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;No effect. sch_ingress doesnt maintain classes at the moment&quot;
+l_string|&quot;No effect. sch_ingress doesn&squot;t maintain classes at the moment&quot;
 )paren
 suffix:semicolon
 )brace

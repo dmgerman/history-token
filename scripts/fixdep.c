@@ -464,7 +464,7 @@ op_plus
 id|len
 )paren
 suffix:semicolon
-singleline_comment|// start at +1, so that p can never be &lt; map
+multiline_comment|/* start at +1, so that p can never be &lt; map */
 r_int
 op_star
 id|m
@@ -908,7 +908,7 @@ r_char
 op_star
 id|end
 op_assign
-id|map
+id|m
 op_plus
 id|len
 suffix:semicolon

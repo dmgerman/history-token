@@ -15,7 +15,7 @@ DECL|macro|SIOCATMARK
 mdefine_line|#define SIOCATMARK&t;0x8905
 DECL|macro|SIOCGSTAMP
 mdefine_line|#define SIOCGSTAMP&t;0x8906&t;&t;/* Get stamp */
-multiline_comment|/* For setsockoptions(2) */
+multiline_comment|/* For setsockopt(2) */
 DECL|macro|SOL_SOCKET
 mdefine_line|#define SOL_SOCKET&t;1
 DECL|macro|SO_DEBUG

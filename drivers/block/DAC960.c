@@ -7460,7 +7460,7 @@ multiline_comment|/*&n;    Register the Block Device Major Number for this DAC96
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MajorNumber
@@ -7564,10 +7564,6 @@ id|Controller-&gt;GenericDiskInfo.part
 op_assign
 id|Controller-&gt;DiskPartitions
 suffix:semicolon
-id|Controller-&gt;GenericDiskInfo.sizes
-op_assign
-id|Controller-&gt;PartitionSizes
-suffix:semicolon
 multiline_comment|/*&n;    Complete initialization of the Generic Disk Information structure.&n;  */
 id|Controller-&gt;GenericDiskInfo.major
 op_assign
@@ -7627,7 +7623,7 @@ op_plus
 id|Controller-&gt;ControllerNumber
 suffix:semicolon
 multiline_comment|/*&n;    Unregister the Block Device Major Number for this DAC960 Controller.&n;  */
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MajorNumber
@@ -7648,10 +7644,6 @@ id|MajorNumber
 suffix:semicolon
 multiline_comment|/*&n;    Remove the Disk Partitions array, Partition Sizes array, Block Sizes&n;    array, Max Sectors per Request array, and Max Segments per Request array.&n;  */
 id|Controller-&gt;GenericDiskInfo.part
-op_assign
-l_int|NULL
-suffix:semicolon
-id|Controller-&gt;GenericDiskInfo.sizes
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -19993,7 +19985,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Controller-&gt;GenericDiskInfo.sizes
+id|Controller-&gt;GenericDiskInfo.part
 (braket
 id|minor
 c_func
@@ -20001,6 +19993,8 @@ c_func
 id|Inode-&gt;i_rdev
 )paren
 )braket
+dot
+id|nr_sects
 op_eq
 l_int|0
 )paren

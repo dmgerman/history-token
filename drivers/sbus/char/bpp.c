@@ -4539,7 +4539,7 @@ id|ENODEV
 suffix:semicolon
 id|rc
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|BPP_MAJOR
@@ -4651,7 +4651,7 @@ id|devfs_unregister
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|BPP_MAJOR

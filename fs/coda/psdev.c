@@ -1420,7 +1420,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|CODA_PSDEV_MAJOR
@@ -1616,7 +1616,7 @@ c_func
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|CODA_PSDEV_MAJOR
@@ -1685,7 +1685,7 @@ c_func
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|CODA_PSDEV_MAJOR

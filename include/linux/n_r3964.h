@@ -1,4 +1,4 @@
-multiline_comment|/* r3964 linediscipline for linux&n; *&n; * -----------------------------------------------------------&n; * Copyright by&n; * Philips Automation Projects&n; * Kassel (Germany)&n; * http://www.pap-philips.de&n; * -----------------------------------------------------------&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License, incorporated herein by reference.&n; *&n; * Author:&n; * L. Haag&n; *&n; * $Log: r3964.h,v $&n; * Revision 1.1.1.1  1998/10/13 16:43:14  dwmw2&n; * This&squot;ll screw the version control&n; *&n; * Revision 1.6  1998/09/30 00:40:38  dwmw2&n; * Updated to use kernel&squot;s N_R3964 if available&n; *&n; * Revision 1.4  1998/04/02 20:29:44  lhaag&n; * select, blocking, ...&n; *&n; * Revision 1.3  1998/02/12 18:58:43  root&n; * fixed some memory leaks&n; * calculation of checksum characters&n; *&n; * Revision 1.2  1998/02/07 13:03:17  root&n; * ioctl read_telegram&n; *&n; * Revision 1.1  1998/02/06 19:19:43  root&n; * Initial revision&n; *&n; *&n; */
+multiline_comment|/* r3964 linediscipline for linux&n; *&n; * -----------------------------------------------------------&n; * Copyright by&n; * Philips Automation Projects&n; * Kassel (Germany)&n; * http://www.pap-philips.de&n; * -----------------------------------------------------------&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License, incorporated herein by reference.&n; *&n; * Author:&n; * L. Haag&n; *&n; * $Log: r3964.h,v $&n; * Revision 1.3  2001/03/18 13:02:24  dwmw2&n; * Fix timer usage, use spinlocks properly.&n; *&n; * Revision 1.2  2001/03/18 12:53:15  dwmw2&n; * Merge changes in 2.4.2&n; *&n; * Revision 1.1.1.1  1998/10/13 16:43:14  dwmw2&n; * This&squot;ll screw the version control&n; *&n; * Revision 1.6  1998/09/30 00:40:38  dwmw2&n; * Updated to use kernel&squot;s N_R3964 if available&n; *&n; * Revision 1.4  1998/04/02 20:29:44  lhaag&n; * select, blocking, ...&n; *&n; * Revision 1.3  1998/02/12 18:58:43  root&n; * fixed some memory leaks&n; * calculation of checksum characters&n; *&n; * Revision 1.2  1998/02/07 13:03:17  root&n; * ioctl read_telegram&n; *&n; * Revision 1.1  1998/02/06 19:19:43  root&n; * Initial revision&n; *&n; *&n; */
 macro_line|#ifndef __LINUX_N_R3964_H__
 DECL|macro|__LINUX_N_R3964_H__
 mdefine_line|#define __LINUX_N_R3964_H__
@@ -93,6 +93,10 @@ DECL|struct|r3964_client_info
 r_struct
 id|r3964_client_info
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|pid
 id|pid_t
 id|pid
@@ -278,6 +282,10 @@ DECL|struct|r3964_info
 r_struct
 id|r3964_info
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|tty
 r_struct
 id|tty_struct
@@ -372,23 +380,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|count_down
-r_int
-id|count_down
+DECL|member|tmr
+r_struct
+id|timer_list
+id|tmr
 suffix:semicolon
 DECL|member|nRetry
 r_int
 id|nRetry
-suffix:semicolon
-DECL|member|bh_1
-r_struct
-id|tq_struct
-id|bh_1
-suffix:semicolon
-DECL|member|bh_2
-r_struct
-id|tq_struct
-id|bh_2
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -3712,12 +3712,6 @@ c_func
 id|dev-&gt;priv
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3727,6 +3721,12 @@ comma
 id|dev-&gt;name
 comma
 id|retval
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return

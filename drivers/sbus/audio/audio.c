@@ -9953,7 +9953,7 @@ multiline_comment|/* Register our character device driver with the VFS. */
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|SOUND_MAJOR
@@ -9993,7 +9993,7 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|SOUND_MAJOR

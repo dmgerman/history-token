@@ -1826,7 +1826,7 @@ id|printk
 l_string|&quot;SHMIQ setup&bslash;n&quot;
 )paren
 suffix:semicolon
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|SHMIQ_MAJOR

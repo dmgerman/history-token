@@ -1940,13 +1940,6 @@ id|nr
 suffix:semicolon
 id|short_pkt
 suffix:colon
-id|kunmap
-c_func
-(paren
-op_star
-id|page
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1965,6 +1958,13 @@ l_int|1
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+op_star
+id|page
+)paren
 suffix:semicolon
 r_return
 id|nr

@@ -426,8 +426,8 @@ op_assign
 l_int|3
 comma
 multiline_comment|/* was: struct: Set free page thresholds */
-DECL|enumerator|VM_BDFLUSH_UNUSED
-id|VM_BDFLUSH_UNUSED
+DECL|enumerator|VM_UNUSED4
+id|VM_UNUSED4
 op_assign
 l_int|4
 comma
@@ -438,26 +438,26 @@ op_assign
 l_int|5
 comma
 multiline_comment|/* Turn off the virtual memory safety limit */
-DECL|enumerator|VM_UNUSED4
-id|VM_UNUSED4
+DECL|enumerator|VM_UNUSED5
+id|VM_UNUSED5
 op_assign
 l_int|6
 comma
 multiline_comment|/* was: struct: Set buffer memory thresholds */
-DECL|enumerator|VM_UNUSED5
-id|VM_UNUSED5
+DECL|enumerator|VM_UNUSED7
+id|VM_UNUSED7
 op_assign
 l_int|7
 comma
 multiline_comment|/* was: struct: Set cache memory thresholds */
-DECL|enumerator|VM_PAGERDAEMON
-id|VM_PAGERDAEMON
+DECL|enumerator|VM_UNUSED8
+id|VM_UNUSED8
 op_assign
 l_int|8
 comma
-multiline_comment|/* struct: Control kswapd behaviour */
-DECL|enumerator|VM_UNUSED6
-id|VM_UNUSED6
+multiline_comment|/* was: struct: Control kswapd behaviour */
+DECL|enumerator|VM_UNUSED9
+id|VM_UNUSED9
 op_assign
 l_int|9
 comma

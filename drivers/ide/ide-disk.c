@@ -2804,8 +2804,6 @@ id|drive
 (brace
 r_return
 id|drive-&gt;capacity
-op_minus
-id|drive-&gt;sect0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is tightly woven into the driver-&gt;special can not touch.&n; * DON&squot;T do it again until a total personality rewrite is committed.&n; */
@@ -4187,9 +4185,14 @@ id|drvid
 op_assign
 id|i
 suffix:semicolon
-id|ch-&gt;gd-&gt;de_arr
+id|ch-&gt;gd
 (braket
 id|i
+)braket
+op_member_access_from_pointer
+id|de_arr
+(braket
+l_int|0
 )braket
 op_assign
 id|drive-&gt;de
@@ -4199,9 +4202,14 @@ c_cond
 (paren
 id|drive-&gt;removable
 )paren
-id|ch-&gt;gd-&gt;flags
+id|ch-&gt;gd
 (braket
 id|i
+)braket
+op_member_access_from_pointer
+id|flags
+(braket
+l_int|0
 )braket
 op_or_assign
 id|GENHD_FL_REMOVABLE
@@ -5010,7 +5018,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|ide_unregister_subdriver
+id|ata_unregister_device
 c_func
 (paren
 id|drive
@@ -5684,7 +5692,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 id|drive
@@ -5695,9 +5703,10 @@ id|idedisk_driver
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ide-disk: %s: Failed to register the driver with ide.c&bslash;n&quot;
+l_string|&quot;%s: Failed to register the driver with ide.c&bslash;n&quot;
 comma
 id|drive-&gt;name
 )paren

@@ -801,8 +801,7 @@ op_assign
 id|read_cache_page
 c_func
 (paren
-op_amp
-id|inode-&gt;i_data
+id|inode-&gt;i_mapping
 comma
 id|desc-&gt;page_index
 comma
@@ -2621,7 +2620,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 id|error
@@ -2712,6 +2711,8 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
+id|out_unlock
+suffix:colon
 id|unlock_kernel
 c_func
 (paren
@@ -2719,6 +2720,14 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
+id|BUG_ON
+c_func
+(paren
+id|error
+OG
+l_int|0
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -2958,8 +2967,7 @@ op_assign
 id|find_get_page
 c_func
 (paren
-op_amp
-id|dir-&gt;i_data
+id|dir-&gt;i_mapping
 comma
 id|desc.page_index
 )paren

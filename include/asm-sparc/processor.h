@@ -393,7 +393,7 @@ op_star
 id|last_task_used_math
 suffix:semicolon
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 macro_line|#endif
 macro_line|#endif /* __ASM_SPARC_PROCESSOR_H */
 eof
