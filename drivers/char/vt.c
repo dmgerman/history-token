@@ -15122,13 +15122,6 @@ c_func
 id|default_blu
 )paren
 suffix:semicolon
-DECL|variable|vc_cons_allocated
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vc_cons_allocated
-)paren
-suffix:semicolon
 DECL|variable|update_region
 id|EXPORT_SYMBOL
 c_func
