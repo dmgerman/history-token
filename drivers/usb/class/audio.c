@@ -24190,14 +24190,7 @@ op_amp
 id|open_sem
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|s-&gt;audiodev
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
+id|list_del_init
 c_func
 (paren
 op_amp
