@@ -2570,7 +2570,7 @@ id|kaweth
 op_assign
 id|net-&gt;priv
 suffix:semicolon
-r_char
+id|u16
 op_star
 id|private_header
 suffix:semicolon
@@ -2714,6 +2714,8 @@ id|cpu_to_le16
 c_func
 (paren
 id|skb-&gt;len
+op_minus
+l_int|2
 )paren
 suffix:semicolon
 id|kaweth-&gt;tx_skb
