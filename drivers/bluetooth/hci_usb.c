@@ -49,6 +49,21 @@ id|bluetooth_ids
 )braket
 op_assign
 (brace
+multiline_comment|/* Digianswer device */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08fd
+comma
+l_int|0x0001
+)paren
+comma
+id|driver_info
+suffix:colon
+id|HCI_DIGIANSWER
+)brace
+comma
 multiline_comment|/* Generic Bluetooth USB device */
 (brace
 id|USB_DEVICE_INFO
@@ -1886,7 +1901,7 @@ id|_urb-&gt;urb.setup_packet
 suffix:semicolon
 id|dr-&gt;bRequestType
 op_assign
-id|HCI_CTRL_REQ
+id|husb-&gt;ctrl_req
 suffix:semicolon
 id|dr-&gt;bRequest
 op_assign
@@ -4117,6 +4132,22 @@ id|intr_in_ep
 (braket
 l_int|0
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_DIGIANSWER
+)paren
+id|husb-&gt;ctrl_req
+op_assign
+id|HCI_DIGI_REQ
+suffix:semicolon
+r_else
+id|husb-&gt;ctrl_req
+op_assign
+id|HCI_CTRL_REQ
 suffix:semicolon
 macro_line|#ifdef CONFIG_BT_USB_SCO
 r_if
