@@ -917,7 +917,6 @@ id|card-&gt;number
 op_ge
 id|cards_limit
 )paren
-(brace
 id|devfs_mk_cdev
 c_func
 (paren
@@ -965,7 +964,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-)brace
 id|up
 c_func
 (paren
@@ -1073,7 +1071,6 @@ id|card-&gt;number
 op_ge
 id|cards_limit
 )paren
-(brace
 multiline_comment|/* created in sound.c */
 id|devfs_remove
 c_func
@@ -1095,7 +1092,6 @@ id|minor
 )paren
 )paren
 suffix:semicolon
-)brace
 id|list_del
 c_func
 (paren
@@ -1548,7 +1544,6 @@ suffix:semicolon
 id|controlnum
 op_increment
 )paren
-(brace
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1571,29 +1566,6 @@ comma
 id|controlnum
 )paren
 suffix:semicolon
-id|class_simple_device_add
-c_func
-(paren
-id|sound_class
-comma
-id|MKDEV
-c_func
-(paren
-id|major
-comma
-id|controlnum
-op_lshift
-l_int|5
-)paren
-comma
-l_int|NULL
-comma
-l_string|&quot;controlC%d&quot;
-comma
-id|controlnum
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifndef MODULE
 id|printk
 c_func
@@ -1637,7 +1609,6 @@ suffix:semicolon
 id|controlnum
 op_increment
 )paren
-(brace
 id|devfs_remove
 c_func
 (paren
@@ -1646,21 +1617,6 @@ comma
 id|controlnum
 )paren
 suffix:semicolon
-id|class_simple_device_remove
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|major
-comma
-id|controlnum
-op_lshift
-l_int|5
-)paren
-)paren
-suffix:semicolon
-)brace
 id|snd_info_minor_unregister
 c_func
 (paren

@@ -488,7 +488,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_ctl_register
+id|snd_ctl_create
 c_func
 (paren
 id|card
@@ -559,10 +559,12 @@ id|card
 suffix:semicolon
 id|__error_ctl
 suffix:colon
-id|snd_ctl_unregister
+id|snd_device_free_all
 c_func
 (paren
 id|card
+comma
+id|SNDRV_DEV_CMD_PRE
 )paren
 suffix:semicolon
 id|__error
@@ -821,12 +823,6 @@ id|card-&gt;files_lock
 suffix:semicolon
 multiline_comment|/* phase 3: notify all connected devices about disconnection */
 multiline_comment|/* at this point, they cannot respond to any calls except release() */
-id|snd_ctl_disconnect
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 r_if
 c_cond
@@ -1018,27 +1014,6 @@ l_string|&quot;unable to free all devices (normal)&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Fatal, but this situation should never occur */
-)brace
-r_if
-c_cond
-(paren
-id|snd_ctl_unregister
-c_func
-(paren
-id|card
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;unable to unregister control minors&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Not fatal error */
 )brace
 r_if
 c_cond

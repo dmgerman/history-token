@@ -69,6 +69,9 @@ op_star
 id|SNDRV_DEV_TYPE_RANGE_SIZE
 )paren
 comma
+DECL|enumerator|SNDRV_DEV_CONTROL
+id|SNDRV_DEV_CONTROL
+comma
 DECL|enumerator|SNDRV_DEV_LOWLEVEL_PRE
 id|SNDRV_DEV_LOWLEVEL_PRE
 comma
