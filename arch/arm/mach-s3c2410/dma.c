@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
+multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  10-Nov-2004 BJD  Ensure all external symbols exported for modules&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_S3C2410_DMA_DEBUG
 DECL|macro|DEBUG
@@ -1464,6 +1464,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_enqueue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_enqueue
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_void
@@ -2150,6 +2157,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_request
+)paren
+suffix:semicolon
 multiline_comment|/* s3c2410_dma_free&n; *&n; * release the given channel back to the system, will stop and flush&n; * any outstanding transfers, and ensure the channel is ready for the&n; * next claimant.&n; *&n; * Note, although a warning is currently printed if the freeing client&n; * info is not the same as the registrant&squot;s client info, the free is still&n; * allowed to go through.&n;*/
 DECL|function|s3c2410_dma_free
 r_int
@@ -2259,6 +2273,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_free
+)paren
+suffix:semicolon
 DECL|function|s3c2410_dma_dostop
 r_static
 r_int
@@ -2616,6 +2637,13 @@ id|ENOENT
 suffix:semicolon
 multiline_comment|/* unknown, don&squot;t bother */
 )brace
+DECL|variable|s3c2410_dma_ctrl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_ctrl
+)paren
+suffix:semicolon
 multiline_comment|/* DMA configuration for each channel&n; *&n; * DISRCC -&gt; source of the DMA (AHB,APB)&n; * DISRC  -&gt; source address of the DMA&n; * DIDSTC -&gt; destination of the DMA (AHB,APD)&n; * DIDST  -&gt; destination address of the DMA&n;*/
 multiline_comment|/* s3c2410_dma_config&n; *&n; * xfersize:     size of unit in bytes (1,2,4)&n; * dcon:         base value of the DCONx register&n;*/
 DECL|function|s3c2410_dma_config
@@ -2743,6 +2771,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_config
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_config
+)paren
+suffix:semicolon
 DECL|function|s3c2410_dma_setflags
 r_int
 id|s3c2410_dma_setflags
@@ -2792,6 +2827,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_setflags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_setflags
+)paren
+suffix:semicolon
 multiline_comment|/* do we need to protect the settings of the fields from&n; * irq?&n;*/
 DECL|function|s3c2410_dma_set_opfn
 r_int
@@ -2841,6 +2883,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_set_opfn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_set_opfn
+)paren
+suffix:semicolon
 DECL|function|s3c2410_dma_set_buffdone_fn
 r_int
 id|s3c2410_dma_set_buffdone_fn
@@ -2889,6 +2938,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_set_buffdone_fn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_set_buffdone_fn
+)paren
+suffix:semicolon
 multiline_comment|/* s3c2410_dma_devconfig&n; *&n; * configure the dma source/destination hardware type and address&n; *&n; * source:    S3C2410_DMASRC_HW: source is hardware&n; *            S3C2410_DMASRC_MEM: source is memory&n; *&n; * hwcfg:     the value for xxxSTCn register,&n; *            bit 0: 0=increment pointer, 1=leave pointer&n; *            bit 1: 0=soucre is AHB, 1=soucre is APB&n; *&n; * devaddr:   physical address of the source&n;*/
 DECL|function|s3c2410_dma_devconfig
 r_int
@@ -3115,6 +3171,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|s3c2410_dma_devconfig
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|s3c2410_dma_devconfig
+)paren
+suffix:semicolon
 multiline_comment|/* system device class */
 macro_line|#ifdef CONFIG_PM
 DECL|function|s3c2410_dma_suspend
