@@ -160,6 +160,13 @@ id|gadget_is_pxa
 (paren
 id|gadget
 )paren
+op_logical_and
+l_char|&squot;i&squot;
+op_eq
+id|tmp
+(braket
+l_int|1
+)braket
 )paren
 r_return
 l_int|0
