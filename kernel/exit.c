@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -202,16 +203,12 @@ id|task_t
 op_star
 id|leader
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|p-&gt;state
 OL
 id|TASK_ZOMBIE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2369,6 +2366,12 @@ id|preempt_count
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|profile_exit_task
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|fake_volatile
