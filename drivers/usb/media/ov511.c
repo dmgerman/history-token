@@ -20,11 +20,11 @@ macro_line|#endif
 macro_line|#include &quot;ov511.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.61 for Linux 2.5&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.62 for Linux 2.5&quot;
 DECL|macro|EMAIL
-mdefine_line|#define EMAIL &quot;mmcclell@bigfoot.com&quot;
+mdefine_line|#define EMAIL &quot;mark@alpha.dyndns.org&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Mark McClelland &lt;mmcclell@bigfoot.com&gt; &amp; Bret Wallach &bslash;&n;&t;&amp; Orion Sky Lawlor &lt;olawlor@acm.org&gt; &amp; Kevin Moore &amp; Charl P. Botha &bslash;&n;&t;&lt;cpbotha@ieee.org&gt; &amp; Claudio Matsuoka &lt;claudio@conectiva.com&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Mark McClelland &lt;mark@alpha.dyndns.org&gt; &amp; Bret Wallach &bslash;&n;&t;&amp; Orion Sky Lawlor &lt;olawlor@acm.org&gt; &amp; Kevin Moore &amp; Charl P. Botha &bslash;&n;&t;&lt;cpbotha@ieee.org&gt; &amp; Claudio Matsuoka &lt;claudio@conectiva.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;ov511 USB Camera Driver&quot;
 DECL|macro|OV511_I2C_RETRIES
@@ -94,11 +94,6 @@ DECL|variable|testpat
 r_static
 r_int
 id|testpat
-suffix:semicolon
-DECL|variable|sensor_gbr
-r_static
-r_int
-id|sensor_gbr
 suffix:semicolon
 DECL|variable|dumppix
 r_static
@@ -193,7 +188,6 @@ r_static
 r_int
 id|bandingfilter
 suffix:semicolon
-multiline_comment|/* Pixel clock divisor */
 DECL|variable|clockdiv
 r_static
 r_int
@@ -202,7 +196,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Isoc packet size */
 DECL|variable|packetsize
 r_static
 r_int
@@ -211,7 +204,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Frame drop register (16h) */
 DECL|variable|framedrop
 r_static
 r_int
@@ -1071,6 +1063,12 @@ multiline_comment|/* or OV7110 evaluation kit */
 l_int|192
 comma
 l_string|&quot;Webeye 2000B&quot;
+)brace
+comma
+(brace
+l_int|253
+comma
+l_string|&quot;Alpha Vision Tech. AlphaCam SE&quot;
 )brace
 comma
 (brace
@@ -2562,11 +2560,11 @@ id|ov-&gt;proc_button
 )paren
 r_return
 suffix:semicolon
-)brace
 id|ov-&gt;proc_button-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+)brace
 multiline_comment|/* Create &quot;control&quot; entry (ioctl() interface) */
 id|PDEBUG
 c_func
@@ -5047,7 +5045,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 multiline_comment|/* Write to a specific I2C slave ID and register, using the specified mask */
 r_static
 r_int
@@ -5270,7 +5267,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS) */
 multiline_comment|/* Sets I2C read and write slave IDs. Returns &lt;0 for error */
 r_static
 r_int
@@ -5485,8 +5481,7 @@ id|regn
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
+comma
 id|rc
 suffix:semicolon
 r_for
@@ -5575,8 +5570,7 @@ id|regn
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
+comma
 id|rc
 suffix:semicolon
 r_for
@@ -5616,7 +5610,6 @@ id|rc
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: Should there be an OV518 version of this? */
 r_static
 r_void
 DECL|function|ov511_dump_regs
@@ -5783,6 +5776,179 @@ l_int|0xbf
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|ov518_dump_regs
+id|ov518_dump_regs
+c_func
+(paren
+r_struct
+id|usb_ov511
+op_star
+id|ov
+)paren
+(brace
+id|info
+c_func
+(paren
+l_string|&quot;VIDEO MODE REGS&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x20
+comma
+l_int|0x2f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;DATA PUMP AND SNAPSHOT REGS&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x30
+comma
+l_int|0x3f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;I2C REGS&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x40
+comma
+l_int|0x4f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;SYSTEM CONTROL AND VENDOR REGS&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x50
+comma
+l_int|0x5f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;60 - 6F&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x60
+comma
+l_int|0x6f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;70 - 7F&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x70
+comma
+l_int|0x7f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Y QUANTIZATION TABLE&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x80
+comma
+l_int|0x8f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;UV QUANTIZATION TABLE&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0x90
+comma
+l_int|0x9f
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;A0 - BF&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0xa0
+comma
+l_int|0xbf
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;CBR&quot;
+)paren
+suffix:semicolon
+id|dump_reg_range
+c_func
+(paren
+id|ov
+comma
+l_int|0xc0
+comma
+l_int|0xcf
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* Temporarily stops OV511 from functioning. Must do this before changing&n; * registers while the camera is streaming */
@@ -5944,7 +6110,7 @@ id|ov
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )paren
 suffix:semicolon
 id|reg_w
@@ -5954,7 +6120,7 @@ id|ov
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x03
+l_int|0x02
 )paren
 suffix:semicolon
 id|reg_w
@@ -5964,7 +6130,7 @@ id|ov
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )paren
 suffix:semicolon
 )brace
@@ -6135,6 +6301,7 @@ id|EIO
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
 id|schedule_timeout
+c_func
 (paren
 l_int|1
 op_plus
@@ -8966,25 +9133,6 @@ l_int|105
 op_lshift
 l_int|8
 suffix:semicolon
-multiline_comment|/* Can we get these from frame[0]? -claudio? */
-id|p-&gt;depth
-op_assign
-id|ov-&gt;frame
-(braket
-l_int|0
-)braket
-dot
-id|depth
-suffix:semicolon
-id|p-&gt;palette
-op_assign
-id|ov-&gt;frame
-(braket
-l_int|0
-)braket
-dot
-id|format
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10830,9 +10978,6 @@ suffix:semicolon
 r_case
 id|SEN_OV6620
 suffix:colon
-r_case
-id|SEN_OV6630
-suffix:colon
 id|i2c_w
 c_func
 (paren
@@ -10848,7 +10993,26 @@ suffix:colon
 l_int|0x04
 )paren
 suffix:semicolon
-multiline_comment|/* No special settings yet */
+r_break
+suffix:semicolon
+r_case
+id|SEN_OV6630
+suffix:colon
+id|i2c_w
+c_func
+(paren
+id|ov
+comma
+l_int|0x14
+comma
+id|qvga
+ques
+c_cond
+l_int|0xa4
+suffix:colon
+l_int|0x84
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -11162,36 +11326,6 @@ comma
 id|framedrop
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sensor_gbr
-)paren
-id|i2c_w_mask
-c_func
-(paren
-id|ov
-comma
-l_int|0x12
-comma
-l_int|0x08
-comma
-l_int|0x08
-)paren
-suffix:semicolon
-r_else
-id|i2c_w_mask
-c_func
-(paren
-id|ov
-comma
-l_int|0x12
-comma
-l_int|0x00
-comma
-l_int|0x08
-)paren
-suffix:semicolon
 multiline_comment|/* Test Pattern */
 id|i2c_w_mask
 c_func
@@ -11212,8 +11346,7 @@ comma
 l_int|0x02
 )paren
 suffix:semicolon
-multiline_comment|/* Auto white balance */
-singleline_comment|//&t;if (awb)
+multiline_comment|/* Enable auto white balance */
 id|i2c_w_mask
 c_func
 (paren
@@ -11226,8 +11359,6 @@ comma
 l_int|0x04
 )paren
 suffix:semicolon
-singleline_comment|//&t;else
-singleline_comment|//&t;&t;i2c_w_mask(ov, 0x12, 0x00, 0x04);
 singleline_comment|// This will go away as soon as ov51x_mode_init_sensor_regs()
 singleline_comment|// is fully tested.
 multiline_comment|/* 7620/6620/6630? don&squot;t have register 0x35, so play it safe */
@@ -12199,7 +12330,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-multiline_comment|/* YUV420, low pass filer on */
+multiline_comment|/* YUV420, low pass filter on */
 id|reg_w
 c_func
 (paren
@@ -18719,26 +18850,6 @@ c_cond
 (paren
 id|ov-&gt;buf_state
 op_eq
-id|BUF_PEND_DEALLOC
-)paren
-(brace
-id|ov-&gt;buf_state
-op_assign
-id|BUF_ALLOCATED
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|ov-&gt;buf_timer
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ov-&gt;buf_state
-op_eq
 id|BUF_ALLOCATED
 )paren
 r_goto
@@ -19914,6 +20025,25 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+multiline_comment|/* Can we get these from frame[0]? -claudio? */
+id|p-&gt;depth
+op_assign
+id|ov-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|depth
+suffix:semicolon
+id|p-&gt;palette
+op_assign
+id|ov-&gt;frame
+(braket
+l_int|0
+)braket
+dot
+id|format
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -20641,9 +20771,11 @@ op_logical_neg
 id|depth
 )paren
 (brace
-id|err
+id|PDEBUG
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;VIDIOCMCAPTURE: invalid format (%s)&quot;
 comma
 id|symbolic
@@ -20742,9 +20874,11 @@ id|force_palette
 )paren
 )paren
 (brace
-id|info
+id|PDEBUG
 c_func
 (paren
+l_int|2
+comma
 l_string|&quot;palette rejected (%s)&quot;
 comma
 id|symbolic
@@ -21302,6 +21436,77 @@ suffix:semicolon
 id|vu-&gt;teletext
 op_assign
 id|VIDEO_NO_UNIT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|OV511IOC_WI2C
+suffix:colon
+(brace
+r_struct
+id|ov511_i2c_struct
+op_star
+id|w
+op_assign
+id|arg
+suffix:semicolon
+r_return
+id|i2c_w_slave
+c_func
+(paren
+id|ov
+comma
+id|w-&gt;slave
+comma
+id|w-&gt;reg
+comma
+id|w-&gt;value
+comma
+id|w-&gt;mask
+)paren
+suffix:semicolon
+)brace
+r_case
+id|OV511IOC_RI2C
+suffix:colon
+(brace
+r_struct
+id|ov511_i2c_struct
+op_star
+id|r
+op_assign
+id|arg
+suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
+id|rc
+op_assign
+id|i2c_r_slave
+c_func
+(paren
+id|ov
+comma
+id|r-&gt;slave
+comma
+id|r-&gt;reg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|r-&gt;value
+op_assign
+id|rc
 suffix:semicolon
 r_return
 l_int|0
@@ -24387,23 +24592,19 @@ l_int|0x15
 op_amp
 l_int|1
 )paren
-(brace
 id|info
 c_func
 (paren
 l_string|&quot;Sensor is an OV7620AE&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|info
 c_func
 (paren
 l_string|&quot;Sensor is an OV76BE&quot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* OV511+ will return all zero isoc data unless we&n;&t;&t; * configure the sensor as a 7620. Someone needs to&n;&t;&t; * find the exact reg. setting that causes this. */
 r_if
 c_cond
@@ -24416,7 +24617,7 @@ id|BRG_OV511PLUS
 id|info
 c_func
 (paren
-l_string|&quot;Enabling 511+/76BE workaround&quot;
+l_string|&quot;Enabling 511+/7620AE workaround&quot;
 )paren
 suffix:semicolon
 id|ov-&gt;sensor
@@ -26185,7 +26386,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )brace
 comma
 (brace
@@ -26193,7 +26394,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x03
+l_int|0x02
 )brace
 comma
 (brace
@@ -26201,7 +26402,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )brace
 comma
 (brace
@@ -26259,7 +26460,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )brace
 comma
 (brace
@@ -26267,7 +26468,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x03
+l_int|0x02
 )brace
 comma
 (brace
@@ -26275,7 +26476,7 @@ id|OV511_REG_BUS
 comma
 id|R51x_SYS_SNAP
 comma
-l_int|0x01
+l_int|0x00
 )brace
 comma
 (brace
@@ -27453,7 +27654,6 @@ id|ov
 r_goto
 id|error
 suffix:semicolon
-multiline_comment|/* OV518+ has packet numbering turned on by default */
 r_if
 c_cond
 (paren
@@ -27461,15 +27661,64 @@ id|ov-&gt;bridge
 op_eq
 id|BRG_OV518
 )paren
-id|ov-&gt;packet_numbering
+(brace
+r_struct
+id|usb_interface
+op_star
+id|ifp
 op_assign
+op_amp
+id|ov-&gt;dev-&gt;config
+(braket
 l_int|0
+)braket
+dot
+id|interface
+(braket
+l_int|0
+)braket
 suffix:semicolon
-r_else
+id|__u16
+id|mxps
+op_assign
+id|ifp-&gt;altsetting
+(braket
+l_int|7
+)braket
+dot
+id|endpoint
+(braket
+l_int|0
+)braket
+dot
+id|wMaxPacketSize
+suffix:semicolon
+multiline_comment|/* Some OV518s have packet numbering by default, some don&squot;t */
+r_if
+c_cond
+(paren
+id|mxps
+op_eq
+l_int|897
+)paren
 id|ov-&gt;packet_numbering
 op_assign
 l_int|1
 suffix:semicolon
+r_else
+id|ov-&gt;packet_numbering
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* OV518+ has packet numbering turned on by default */
+id|ov-&gt;packet_numbering
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|ov518_set_packet_size
 c_func
 (paren
@@ -28036,7 +28285,8 @@ id|ov-&gt;buf_state
 op_assign
 id|BUF_NOT_ALLOCATED
 suffix:semicolon
-multiline_comment|/* Must be kmalloc()&squot;ed, for DMA accessibility */
+multiline_comment|/* Allocate control transfer buffer. */
+multiline_comment|/* Must be kmalloc()&squot;ed, for DMA compatibility */
 id|ov-&gt;cbuf
 op_assign
 id|kmalloc
@@ -28200,12 +28450,28 @@ c_cond
 (paren
 id|dump_bridge
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ov-&gt;bclass
+op_eq
+id|BCL_OV511
+)paren
 id|ov511_dump_regs
 c_func
 (paren
 id|ov
 )paren
 suffix:semicolon
+r_else
+id|ov518_dump_regs
+c_func
+(paren
+id|ov
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|memcpy
 c_func
@@ -28627,6 +28893,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|PDEBUG
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;Disconnect complete&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|variable|ov511_driver
 r_static
