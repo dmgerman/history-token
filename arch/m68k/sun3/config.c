@@ -565,10 +565,6 @@ id|mach_get_irq_list
 op_assign
 id|show_sun3_interrupts
 suffix:semicolon
-id|mach_gettod
-op_assign
-id|sun3_gettod
-suffix:semicolon
 id|mach_reset
 op_assign
 id|sun3_reboot
@@ -588,6 +584,10 @@ suffix:semicolon
 id|mach_halt
 op_assign
 id|sun3_halt
+suffix:semicolon
+id|mach_get_hardware_list
+op_assign
+id|sun3_get_hardware_list
 suffix:semicolon
 macro_line|#if !defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_FB)
 id|conswitchp

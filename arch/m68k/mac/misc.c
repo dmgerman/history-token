@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
@@ -2086,71 +2087,6 @@ multiline_comment|/* day in the month */
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the boot time for use in initializing the kernel clock.&n; *&n; * I&squot;d like to read the hardware clock here but many machines read&n; * the PRAM through ADB, and interrupts aren&squot;t initialized when this&n; * is called so ADB obviously won&squot;t work.&n; */
-DECL|function|mac_gettod
-r_void
-id|mac_gettod
-c_func
-(paren
-r_int
-op_star
-id|yearp
-comma
-r_int
-op_star
-id|monp
-comma
-r_int
-op_star
-id|dayp
-comma
-r_int
-op_star
-id|hourp
-comma
-r_int
-op_star
-id|minp
-comma
-r_int
-op_star
-id|secp
-)paren
-(brace
-multiline_comment|/* Yes the GMT bias is backwards.  It looks like Penguin is&n;           screwing up the boottime it gives us... This works for me&n;           in Canada/Eastern but it might be wrong everywhere else. */
-id|unmktime
-c_func
-(paren
-id|mac_bi_data.boottime
-comma
-op_minus
-id|mac_bi_data.gmtbias
-op_star
-l_int|60
-comma
-id|yearp
-comma
-id|monp
-comma
-id|dayp
-comma
-id|hourp
-comma
-id|minp
-comma
-id|secp
-)paren
-suffix:semicolon
-multiline_comment|/* For some reason this is off by one */
-op_star
-id|monp
-op_assign
-op_star
-id|monp
-op_plus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* &n; * Read/write the hardware clock.&n; */
 DECL|function|mac_hwclk
 r_int
@@ -2161,7 +2097,7 @@ r_int
 id|op
 comma
 r_struct
-id|hwclk_time
+id|rtc_time
 op_star
 id|t
 )paren
@@ -2255,7 +2191,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|t-&gt;wday
+id|t-&gt;tm_wday
 op_assign
 l_int|0
 suffix:semicolon
@@ -2267,22 +2203,22 @@ comma
 l_int|0
 comma
 op_amp
-id|t-&gt;year
+id|t-&gt;tm_year
 comma
 op_amp
-id|t-&gt;mon
+id|t-&gt;tm_mon
 comma
 op_amp
-id|t-&gt;day
+id|t-&gt;tm_mday
 comma
 op_amp
-id|t-&gt;hour
+id|t-&gt;tm_hour
 comma
 op_amp
-id|t-&gt;min
+id|t-&gt;tm_min
 comma
 op_amp
-id|t-&gt;sec
+id|t-&gt;tm_sec
 )paren
 suffix:semicolon
 id|printk
@@ -2290,21 +2226,21 @@ c_func
 (paren
 l_string|&quot;mac_hwclk: read %04d-%02d-%-2d %02d:%02d:%02d&bslash;n&quot;
 comma
-id|t-&gt;year
+id|t-&gt;tm_year
 op_plus
 l_int|1900
 comma
-id|t-&gt;mon
+id|t-&gt;tm_mon
 op_plus
 l_int|1
 comma
-id|t-&gt;day
+id|t-&gt;tm_mday
 comma
-id|t-&gt;hour
+id|t-&gt;tm_hour
 comma
-id|t-&gt;min
+id|t-&gt;tm_min
 comma
-id|t-&gt;sec
+id|t-&gt;tm_sec
 )paren
 suffix:semicolon
 )brace
@@ -2316,21 +2252,21 @@ c_func
 (paren
 l_string|&quot;mac_hwclk: tried to write %04d-%02d-%-2d %02d:%02d:%02d&bslash;n&quot;
 comma
-id|t-&gt;year
+id|t-&gt;tm_year
 op_plus
 l_int|1900
 comma
-id|t-&gt;mon
+id|t-&gt;tm_mon
 op_plus
 l_int|1
 comma
-id|t-&gt;day
+id|t-&gt;tm_mday
 comma
-id|t-&gt;hour
+id|t-&gt;tm_hour
 comma
-id|t-&gt;min
+id|t-&gt;tm_min
 comma
-id|t-&gt;sec
+id|t-&gt;tm_sec
 )paren
 suffix:semicolon
 macro_line|#if 0&t;/* it trashes my rtc */
@@ -2339,21 +2275,21 @@ op_assign
 id|mktime
 c_func
 (paren
-id|t-&gt;year
+id|t-&gt;tm_year
 op_plus
 l_int|1900
 comma
-id|t-&gt;mon
+id|t-&gt;tm_mon
 op_plus
 l_int|1
 comma
-id|t-&gt;day
+id|t-&gt;tm_mday
 comma
-id|t-&gt;hour
+id|t-&gt;tm_hour
 comma
-id|t-&gt;min
+id|t-&gt;tm_min
 comma
-id|t-&gt;sec
+id|t-&gt;tm_sec
 )paren
 suffix:semicolon
 r_if
@@ -2440,7 +2376,7 @@ id|nowtime
 )paren
 (brace
 r_struct
-id|hwclk_time
+id|rtc_time
 id|now
 suffix:semicolon
 id|mac_hwclk
@@ -2452,13 +2388,13 @@ op_amp
 id|now
 )paren
 suffix:semicolon
-id|now.sec
+id|now.tm_sec
 op_assign
 id|nowtime
 op_mod
 l_int|60
 suffix:semicolon
-id|now.min
+id|now.tm_min
 op_assign
 (paren
 id|nowtime

@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -277,59 +278,13 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|atari_mste_gettod
-(paren
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atari_tt_gettod
-(paren
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|atari_mste_hwclk
 (paren
 r_int
 comma
 r_struct
-id|hwclk_time
+id|rtc_time
 op_star
 )paren
 suffix:semicolon
@@ -340,7 +295,7 @@ id|atari_tt_hwclk
 r_int
 comma
 r_struct
-id|hwclk_time
+id|rtc_time
 op_star
 )paren
 suffix:semicolon
@@ -1935,10 +1890,6 @@ c_func
 l_string|&quot;TT_CLK &quot;
 )paren
 suffix:semicolon
-id|mach_gettod
-op_assign
-id|atari_tt_gettod
-suffix:semicolon
 id|mach_hwclk
 op_assign
 id|atari_tt_hwclk
@@ -1973,10 +1924,6 @@ c_func
 (paren
 l_string|&quot;MSTE_CLK &quot;
 )paren
-suffix:semicolon
-id|mach_gettod
-op_assign
-id|atari_mste_gettod
 suffix:semicolon
 id|mach_hwclk
 op_assign

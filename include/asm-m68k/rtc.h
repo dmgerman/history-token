@@ -4,48 +4,7 @@ macro_line|#ifndef _ASM_RTC_H
 DECL|macro|_ASM_RTC_H
 mdefine_line|#define _ASM_RTC_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
-DECL|struct|hwclk_time
-r_struct
-id|hwclk_time
-(brace
-DECL|member|sec
-r_int
-id|sec
-suffix:semicolon
-multiline_comment|/* 0..59 */
-DECL|member|min
-r_int
-id|min
-suffix:semicolon
-multiline_comment|/* 0..59 */
-DECL|member|hour
-r_int
-id|hour
-suffix:semicolon
-multiline_comment|/* 0..23 */
-DECL|member|day
-r_int
-id|day
-suffix:semicolon
-multiline_comment|/* 1..31 */
-DECL|member|mon
-r_int
-id|mon
-suffix:semicolon
-multiline_comment|/* 0..11 */
-DECL|member|year
-r_int
-id|year
-suffix:semicolon
-multiline_comment|/* 70... */
-DECL|member|wday
-r_int
-id|wday
-suffix:semicolon
-multiline_comment|/* 0..6, 0 is Sunday, -1 means unknown/don&squot;t set */
-)brace
-suffix:semicolon
+macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* a few implementation details for the emulation : */
 r_extern
 r_int
