@@ -212,7 +212,6 @@ id|socket
 op_star
 id|igmp6_socket
 suffix:semicolon
-r_static
 r_int
 id|__ipv6_dev_mc_dec
 c_func
@@ -4109,7 +4108,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;device multicast group del&n; */
 DECL|function|__ipv6_dev_mc_dec
-r_static
 r_int
 id|__ipv6_dev_mc_dec
 c_func

@@ -1681,7 +1681,7 @@ suffix:semicolon
 id|addrconf_leave_solict
 c_func
 (paren
-id|dev
+id|idev
 comma
 op_amp
 id|aca-&gt;aca_addr

@@ -4705,9 +4705,9 @@ id|addrconf_leave_solict
 c_func
 (paren
 r_struct
-id|net_device
+id|inet6_dev
 op_star
-id|dev
+id|idev
 comma
 r_struct
 id|in6_addr
@@ -4722,7 +4722,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;flags
+id|idev-&gt;dev-&gt;flags
 op_amp
 (paren
 id|IFF_LOOPBACK
@@ -4741,10 +4741,10 @@ op_amp
 id|maddr
 )paren
 suffix:semicolon
-id|ipv6_dev_mc_dec
+id|__ipv6_dev_mc_dec
 c_func
 (paren
-id|dev
+id|idev
 comma
 op_amp
 id|maddr
@@ -14387,7 +14387,7 @@ suffix:colon
 id|addrconf_leave_solict
 c_func
 (paren
-id|ifp-&gt;idev-&gt;dev
+id|ifp-&gt;idev
 comma
 op_amp
 id|ifp-&gt;addr
