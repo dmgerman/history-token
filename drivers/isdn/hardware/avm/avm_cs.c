@@ -1742,7 +1742,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;avmcs_cs&quot;
+l_string|&quot;avm_cs&quot;
 comma
 )brace
 comma
