@@ -7046,6 +7046,28 @@ id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1043
+comma
+dot
+id|device
+op_assign
+l_int|0x80a1
+comma
+dot
+id|name
+op_assign
+l_string|&quot;ASUS A7V8-X&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_SWAP_SURROUND
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
@@ -9357,6 +9379,42 @@ id|VIA_DXS_ENABLE
 comma
 multiline_comment|/* Shuttle SK41G */
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1043
+comma
+dot
+id|device
+op_assign
+l_int|0x80a1
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* ASUS A7V8-X */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1462
+comma
+dot
+id|device
+op_assign
+l_int|0x7120
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* MSI KT4V */
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
@@ -9920,11 +9978,7 @@ l_int|0
 r_goto
 id|__error
 suffix:semicolon
-id|chip-&gt;dxs_fixed
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* use 48k for DXS #3 */
+singleline_comment|// chip-&gt;dxs_fixed = 1; /* FIXME: use 48k for DXS #3? */
 )brace
 r_else
 (brace

@@ -12804,7 +12804,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|ac97-&gt;ext_id
+id|ac97-&gt;scaps
 op_amp
 id|AC97_SCAP_SURROUND_DAC
 )paren
@@ -12823,7 +12823,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|ac97-&gt;ext_id
+id|ac97-&gt;scaps
 op_amp
 id|AC97_SCAP_CENTER_LFE_DAC
 )paren
