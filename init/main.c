@@ -1214,11 +1214,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-r_int
-id|j
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* FIXME: This should be done in userspace --RR */
 id|for_each_present_cpu
 c_func
@@ -1248,25 +1243,26 @@ c_func
 id|i
 )paren
 )paren
-(brace
 id|cpu_up
 c_func
 (paren
 id|i
 )paren
 suffix:semicolon
-id|j
-op_increment
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Any cleanup work */
 id|printk
 c_func
 (paren
-l_string|&quot;Brought up %u CPUs&bslash;n&quot;
+l_string|&quot;Brought up %ld CPUs&bslash;n&quot;
 comma
-id|j
+(paren
+r_int
+)paren
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|smp_cpus_done
