@@ -4,20 +4,25 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/numaq.h&gt;
-DECL|variable|nodes_mem_start
-id|u64
-id|nodes_mem_start
+multiline_comment|/* These are needed before the pgdat&squot;s are created */
+DECL|variable|node_start_pfn
+r_int
+r_int
+id|node_start_pfn
 (braket
 id|MAX_NUMNODES
 )braket
 suffix:semicolon
-DECL|variable|nodes_mem_size
-id|u64
-id|nodes_mem_size
+DECL|variable|node_end_pfn
+r_int
+r_int
+id|node_end_pfn
 (braket
 id|MAX_NUMNODES
 )braket
 suffix:semicolon
+DECL|macro|MB_TO_PAGES
+mdefine_line|#define&t;MB_TO_PAGES(addr) ((addr) &lt;&lt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * Function: smp_dump_qct()&n; *&n; * Description: gets memory layout from the quad config table.  This&n; * function also increments numnodes with the number of nodes (quads)&n; * present.&n; */
 DECL|function|smp_dump_qct
 r_static
@@ -53,8 +58,6 @@ c_func
 id|SYS_CFG_DATA_PRIV_ADDR
 )paren
 suffix:semicolon
-DECL|macro|MB_TO_B
-mdefine_line|#define&t;MB_TO_B(addr) ((addr) &lt;&lt; 20)
 id|numnodes
 op_assign
 l_int|0
@@ -97,43 +100,31 @@ id|scd-&gt;eq
 id|node
 )braket
 suffix:semicolon
-multiline_comment|/* Convert to bytes */
-id|nodes_mem_start
+multiline_comment|/* Convert to pages */
+id|node_start_pfn
 (braket
 id|node
 )braket
 op_assign
-id|MB_TO_B
+id|MB_TO_PAGES
 c_func
 (paren
-(paren
-id|u64
-)paren
 id|eq-&gt;hi_shrd_mem_start
 op_minus
-(paren
-id|u64
-)paren
 id|eq-&gt;priv_mem_size
 )paren
 suffix:semicolon
-id|nodes_mem_size
+id|node_end_pfn
 (braket
 id|node
 )braket
 op_assign
-id|MB_TO_B
+id|MB_TO_PAGES
 c_func
 (paren
-(paren
-id|u64
-)paren
-id|eq-&gt;hi_shrd_mem_size
+id|eq-&gt;hi_shrd_mem_start
 op_plus
-(paren
-id|u64
-)paren
-id|eq-&gt;priv_mem_size
+id|eq-&gt;hi_shrd_mem_size
 )paren
 suffix:semicolon
 )brace
