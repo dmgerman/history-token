@@ -79,6 +79,9 @@ mdefine_line|#define PORT_S3C2410    55
 multiline_comment|/* SGI IP22 aka Indy / Challenge S / Indigo 2 */
 DECL|macro|PORT_IP22ZILOG
 mdefine_line|#define PORT_IP22ZILOG&t;56
+multiline_comment|/* Sharp LH7a40x -- an ARM9 SoC series */
+DECL|macro|PORT_LH7A40X
+mdefine_line|#define PORT_LH7A40X&t;57
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
