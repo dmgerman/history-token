@@ -3255,13 +3255,13 @@ id|newabs_mask
 )braket
 op_assign
 (brace
-l_int|0xC8
+l_int|0xC0
 comma
 l_int|0x00
 comma
 l_int|0x00
 comma
-l_int|0xC8
+l_int|0xC0
 comma
 l_int|0x00
 )brace
