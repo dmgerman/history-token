@@ -3585,6 +3585,15 @@ comma
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/* When only partial message is copied to the user, increase&n;&t;&t; * rwnd by that amount. If all the data in the skb is read,&n;&t;&t; * rwnd is updated when the skb&squot;s destructor is called via&n;&t;&t; * sctp_ulpevent_free().&n;&t;&t; */
+id|sctp_assoc_rwnd_increase
+c_func
+(paren
+id|event-&gt;asoc
+comma
+id|copied
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
