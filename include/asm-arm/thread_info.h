@@ -284,8 +284,9 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * We use bit 30 of the preempt_count to indicate that kernel&n; * preemption is occuring.  See include/asm-arm/hardirq.h.&n; */
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000
+mdefine_line|#define PREEMPT_ACTIVE&t;0x40000000
 multiline_comment|/*&n; * thread information flags:&n; *  TIF_SYSCALL_TRACE&t;- syscall trace active&n; *  TIF_NOTIFY_RESUME&t;- resumption notification requested&n; *  TIF_SIGPENDING&t;- signal pending&n; *  TIF_NEED_RESCHED&t;- rescheduling necessary&n; *  TIF_USEDFPU&t;&t;- FPU was used by this task this quantum (SMP)&n; *  TIF_POLLING_NRFLAG&t;- true if poll_idle() is polling TIF_NEED_RESCHED&n; */
 DECL|macro|TIF_NOTIFY_RESUME
 mdefine_line|#define TIF_NOTIFY_RESUME&t;0
@@ -295,12 +296,10 @@ DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;2
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;8
-DECL|macro|TIF_USED_FPU
-mdefine_line|#define TIF_USED_FPU&t;&t;16
 DECL|macro|TIF_POLLING_NRFLAG
-mdefine_line|#define TIF_POLLING_NRFLAG&t;17
+mdefine_line|#define TIF_POLLING_NRFLAG&t;16
 DECL|macro|TIF_USING_IWMMXT
-mdefine_line|#define TIF_USING_IWMMXT&t;18
+mdefine_line|#define TIF_USING_IWMMXT&t;17
 DECL|macro|_TIF_NOTIFY_RESUME
 mdefine_line|#define _TIF_NOTIFY_RESUME&t;(1 &lt;&lt; TIF_NOTIFY_RESUME)
 DECL|macro|_TIF_SIGPENDING
@@ -309,8 +308,6 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1 &lt;&lt; TIF_NEED_RESCHED)
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
-DECL|macro|_TIF_USED_FPU
-mdefine_line|#define _TIF_USED_FPU&t;&t;(1 &lt;&lt; TIF_USED_FPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1 &lt;&lt; TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_USING_IWMMXT
