@@ -3199,7 +3199,7 @@ c_func
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;core_frequency is 0&bslash;n&quot;
+l_string|&quot;Invalid _PSS data: freq is zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
