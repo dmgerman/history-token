@@ -6932,6 +6932,26 @@ op_assign
 op_amp
 id|pmac_ide_dma_lostirq
 suffix:semicolon
+id|ide_hwifs
+(braket
+id|ix
+)braket
+dot
+id|ide_dma_queued_on
+op_assign
+op_amp
+id|__ide_dma_queued_on
+suffix:semicolon
+id|ide_hwifs
+(braket
+id|ix
+)braket
+dot
+id|ide_dma_queued_off
+op_assign
+op_amp
+id|__ide_dma_queued_off
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC_AUTO
 r_if
 c_cond

@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * arch/ppc/platforms/sandpoint_setup.c&n; * &n; * Board setup routines for the Motorola SPS Sandpoint Test Platform.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
-multiline_comment|/*&n; * This file adds support for the Motorola SPS Sandpoint Test Platform.&n; * These boards have a PPMC slot for the processor so any combination&n; * of cpu and host bridge can be attached.  This port is for an 8240 PPMC&n; * module from Motorola SPS and other closely related cpu/host bridge&n; * combinations (e.g., 750/755/7400 with MPC107 host bridge).&n; * The sandpoint itself has a Windbond 83c553 (PCI-ISA bridge, 2 DMA ctlrs, 2&n; * cascaded 8259 interrupt ctlrs, 8254 Timer/Counter, and an IDE ctlr), a&n; * National 87308 (RTC, 2 UARTs, Keyboard &amp; mouse ctlrs, and a floppy ctlr),&n; * and 4 PCI slots (only 2 of which are usable; the other 2 are keyed for 3.3V&n; * but are really 5V).&n; *&n; * The firmware on the sandpoint is called DINK (not my acronym :).  This port&n; * depends on DINK to do some basic initialization (e.g., initialize the memory&n; * ctlr) and to ensure that the processor is using MAP B (CHRP map).&n; *&n; * The switch settings for the Sandpoint board MUST be as follows:&n; * &t;S3: down&n; * &t;S4: up&n; * &t;S5: up&n; * &t;S6: down&n; *&n; * &squot;down&squot; is in the direction from the PCI slots towards the PPMC slot;&n; * &squot;up&squot; is in the direction from the PPMC slot towards the PCI slots.&n; * Be careful, the way the sandpoint board is installed in XT chasses will&n; * make the directions reversed.&n; *&n; * Since Motorola listened to our suggestions for improvement, we now have&n; * the Sandpoint X3 board.  All of the PCI slots are available, it uses&n; * the serial interrupt interface (just a hardware thing we need to&n; * configure properly).&n; *&n; * Use the default X3 switch settings.  The interrupts are then:&n; *&t;&t;EPIC&t;Source&n; *&t;&t;  0&t;SIOINT &t;&t;(8259, active low)&n; *&t;&t;  1&t;PCI #1&n; *&t;&t;  2&t;PCI #2&n; *&t;&t;  3&t;PCI #3&n; *&t;&t;  4&t;PCI #4&n; *&t;&t;  7&t;Winbond INTC&t;(IDE interrupt)&n; *&t;&t;  8&t;Winbond INTD&t;(IDE interrupt)&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/sandpoint_setup.c&n; *&n; * Board setup routines for the Motorola SPS Sandpoint Test Platform.&n; *&n; * Author: Mark A. Greer&n; *&t; mgreer@mvista.com&n; *&n; * 2000-2003 (c) MontaVista Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * This file adds support for the Motorola SPS Sandpoint Test Platform.&n; * These boards have a PPMC slot for the processor so any combination&n; * of cpu and host bridge can be attached.  This port is for an 8240 PPMC&n; * module from Motorola SPS and other closely related cpu/host bridge&n; * combinations (e.g., 750/755/7400 with MPC107 host bridge).&n; * The sandpoint itself has a Windbond 83c553 (PCI-ISA bridge, 2 DMA ctlrs, 2&n; * cascaded 8259 interrupt ctlrs, 8254 Timer/Counter, and an IDE ctlr), a&n; * National 87308 (RTC, 2 UARTs, Keyboard &amp; mouse ctlrs, and a floppy ctlr),&n; * and 4 PCI slots (only 2 of which are usable; the other 2 are keyed for 3.3V&n; * but are really 5V).&n; *&n; * The firmware on the sandpoint is called DINK (not my acronym :).  This port&n; * depends on DINK to do some basic initialization (e.g., initialize the memory&n; * ctlr) and to ensure that the processor is using MAP B (CHRP map).&n; *&n; * The switch settings for the Sandpoint board MUST be as follows:&n; * &t;S3: down&n; * &t;S4: up&n; * &t;S5: up&n; * &t;S6: down&n; *&n; * &squot;down&squot; is in the direction from the PCI slots towards the PPMC slot;&n; * &squot;up&squot; is in the direction from the PPMC slot towards the PCI slots.&n; * Be careful, the way the sandpoint board is installed in XT chasses will&n; * make the directions reversed.&n; *&n; * Since Motorola listened to our suggestions for improvement, we now have&n; * the Sandpoint X3 board.  All of the PCI slots are available, it uses&n; * the serial interrupt interface (just a hardware thing we need to&n; * configure properly).&n; *&n; * Use the default X3 switch settings.  The interrupts are then:&n; *&t;&t;EPIC&t;Source&n; *&t;&t;  0&t;SIOINT &t;&t;(8259, active low)&n; *&t;&t;  1&t;PCI #1&n; *&t;&t;  2&t;PCI #2&n; *&t;&t;  3&t;PCI #3&n; *&t;&t;  4&t;PCI #4&n; *&t;&t;  7&t;Winbond INTC&t;(IDE interrupt)&n; *&t;&t;  8&t;Winbond INTD&t;(IDE interrupt)&n; *&n; *&n; * Motorola has finally released a version of DINK32 that correctly&n; * (seemingly) initalizes the memory controller correctly, regardless&n; * of the amount of memory in the system.  Once a method of determining&n; * what version of DINK initializes the system for us, if applicable, is&n; * found, we can hopefully stop hardcoding 32MB of RAM.&n; *&n; * It is important to note that this code only supports the Sandpoint X3&n; * (all flavors) platform, and it does not support the X2 anymore.  Code&n; * that at one time worked on the X2 can be found at:&n; * ftp://source.mvista.com/pub/linuxppc/obsolete/sandpoint/&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,6 +16,9 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;&t;/* for linux/serial_core.h */
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -34,20 +37,39 @@ macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &quot;sandpoint.h&quot;
 r_extern
-id|u_int
-id|openpic_irq
+r_void
+id|gen550_progress
 c_func
 (paren
-r_void
+r_char
+op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|openpic_eoi
+id|gen550_init
 c_func
 (paren
-r_void
+r_int
+comma
+r_struct
+id|uart_port
+op_star
 )paren
+suffix:semicolon
+DECL|variable|__res
+r_int
+r_char
+id|__res
+(braket
+r_sizeof
+(paren
+id|bd_t
+)paren
+)braket
 suffix:semicolon
 r_static
 r_void
@@ -57,7 +79,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * *** IMPORTANT ***&n; *&n; * The first 16 entries of &squot;sandpoint_openpic_initsenses[]&squot; are there and&n; * initialized to 0 on purpose.  DO NOT REMOVE THEM as the &squot;offset&squot; parameter&n; * of &squot;openpic_init()&squot; does not work for the sandpoint because the 8259&n; * interrupt is NOT routed to the EPIC&squot;s IRQ 0 AND the EPIC&squot;s IRQ 0&squot;s offset is&n; * the same as a normal openpic&squot;s IRQ 16 offset.&n; */
+multiline_comment|/*&n; * Define all of the IRQ senses and polarities.  Taken from the&n; * Sandpoint X3 User&squot;s manual.&n; */
 DECL|variable|__initdata
 r_static
 id|u_char
@@ -67,102 +89,574 @@ id|sandpoint_openpic_initsenses
 id|__initdata
 op_assign
 (brace
-l_int|0
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 0-15 not used by EPCI but by 8259 (std PC-type IRQs) */
-l_int|0
+multiline_comment|/* 0: SIOINT */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 1 */
-l_int|0
+multiline_comment|/* 2: PCI Slot 1 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 2 */
-l_int|0
+multiline_comment|/* 3: PCI Slot 2 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 3 */
-l_int|0
+multiline_comment|/* 4: PCI Slot 3 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 4 */
-l_int|0
+multiline_comment|/* 5: PCI Slot 4 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 5 */
-l_int|0
-comma
-multiline_comment|/* 6 */
-l_int|0
-comma
-multiline_comment|/* 7 */
-l_int|0
-comma
-multiline_comment|/* 8 */
-l_int|0
-comma
-multiline_comment|/* 9 */
-l_int|0
-comma
-multiline_comment|/* 10 */
-l_int|0
-comma
-multiline_comment|/* 11 */
-l_int|0
-comma
-multiline_comment|/* 12 */
-l_int|0
-comma
-multiline_comment|/* 13 */
-l_int|0
-comma
-multiline_comment|/* 14 */
-l_int|0
-comma
-multiline_comment|/* 15 */
-macro_line|#ifdef CONFIG_SANDPOINT_X3
-l_int|1
-comma
-multiline_comment|/* 16: EPIC IRQ 0: Active Low -- SIOINT (8259) */
-l_int|0
-comma
-multiline_comment|/* AACK!  Shouldn&squot;t need this.....see sandpoint_pci.c for more info */
-l_int|1
-comma
-multiline_comment|/* 17: EPIC IRQ 1: Active Low -- PCI Slot 1 */
-l_int|1
-comma
-multiline_comment|/* 18: EPIC IRQ 2: Active Low -- PCI Slot 2 */
-l_int|1
-comma
-multiline_comment|/* 19: EPIC IRQ 3: Active Low -- PCI Slot 3 */
-l_int|1
-comma
-multiline_comment|/* 20: EPIC IRQ 4: Active Low -- PCI Slot 4 */
-l_int|0
-comma
-multiline_comment|/* 21 -- Unused */
-l_int|0
-comma
-multiline_comment|/* 22 -- Unused */
-l_int|1
-comma
-multiline_comment|/* 23 -- IDE (Winbond INT C)  */
-l_int|1
-comma
-multiline_comment|/* 24 -- IDE (Winbond INT D)  */
-multiline_comment|/* 35 - 31 (EPIC 9 - 15) Unused */
-macro_line|#else
-l_int|1
-comma
-multiline_comment|/* 16: EPIC IRQ 0: Active Low -- PCI intrs */
-l_int|1
-comma
-multiline_comment|/* 17: EPIC IRQ 1: Active Low -- PCI (possibly 8259) intrs */
-l_int|1
-comma
-multiline_comment|/* 18: EPIC IRQ 2: Active Low -- PCI (possibly 8259) intrs  */
-l_int|1
-multiline_comment|/* 19: EPIC IRQ 3: Active Low -- PCI intrs */
-multiline_comment|/* 20: EPIC IRQ 4: Not used */
-macro_line|#endif
+multiline_comment|/* 8: IDE (INT C) */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
+multiline_comment|/* 9: IDE (INT D) */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Motorola SPS Sandpoint interrupt routing.&n; */
+r_static
+r_inline
+r_int
+DECL|function|sandpoint_map_irq
+id|sandpoint_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+r_char
+id|idsel
+comma
+r_int
+r_char
+id|pin
+)paren
+(brace
+r_static
+r_char
+id|pci_irq_table
+(braket
+)braket
+(braket
+l_int|4
+)braket
+op_assign
+multiline_comment|/*&n;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t; * &t;   A   B   C   D&n;&t; */
+(brace
+(brace
+l_int|16
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 11 - i8259 on Winbond */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 12 - unused */
+(brace
+l_int|18
+comma
+l_int|21
+comma
+l_int|20
+comma
+l_int|19
+)brace
+comma
+multiline_comment|/* IDSEL 13 - PCI slot 1 */
+(brace
+l_int|19
+comma
+l_int|18
+comma
+l_int|21
+comma
+l_int|20
+)brace
+comma
+multiline_comment|/* IDSEL 14 - PCI slot 2 */
+(brace
+l_int|20
+comma
+l_int|19
+comma
+l_int|18
+comma
+l_int|21
+)brace
+comma
+multiline_comment|/* IDSEL 15 - PCI slot 3 */
+(brace
+l_int|21
+comma
+l_int|20
+comma
+l_int|19
+comma
+l_int|18
+)brace
+comma
+multiline_comment|/* IDSEL 16 - PCI slot 4 */
+)brace
+suffix:semicolon
+r_const
+r_int
+id|min_idsel
+op_assign
+l_int|11
+comma
+id|max_idsel
+op_assign
+l_int|16
+comma
+id|irqs_per_slot
+op_assign
+l_int|4
+suffix:semicolon
+r_return
+id|PCI_IRQ_TABLE_LOOKUP
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__init
+DECL|function|sandpoint_setup_winbond_83553
+id|sandpoint_setup_winbond_83553
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+)paren
+(brace
+r_int
+id|devfn
+suffix:semicolon
+multiline_comment|/*&n;&t; * Route IDE interrupts directly to the 8259&squot;s IRQ 14 &amp; 15.&n;&t; * We can&squot;t route the IDE interrupt to PCI INTC# or INTD# because those&n;&t; * woule interfere with the PMC&squot;s INTC# and INTD# lines.&n;&t; */
+multiline_comment|/*&n;&t; * Winbond Fcn 0&n;&t; */
+id|devfn
+op_assign
+id|PCI_DEVFN
+c_func
+(paren
+l_int|11
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|early_write_config_byte
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x43
+comma
+multiline_comment|/* IDE Interrupt Routing Control */
+l_int|0xef
+)paren
+suffix:semicolon
+id|early_write_config_word
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x44
+comma
+multiline_comment|/* PCI Interrupt Routing Control */
+l_int|0x0000
+)paren
+suffix:semicolon
+multiline_comment|/* Want ISA memory cycles to be forwarded to PCI bus */
+id|early_write_config_byte
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x48
+comma
+multiline_comment|/* ISA-to-PCI Addr Decoder Control */
+l_int|0xf0
+)paren
+suffix:semicolon
+multiline_comment|/* Enable RTC and Keyboard address locations.  */
+id|early_write_config_byte
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x4d
+comma
+multiline_comment|/* Chip Select Control Register */
+l_int|0x00
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Port 92.  */
+id|early_write_config_byte
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x4e
+comma
+multiline_comment|/* AT System Control Register */
+l_int|0x06
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Winbond Fcn 1&n;&t; */
+id|devfn
+op_assign
+id|PCI_DEVFN
+c_func
+(paren
+l_int|11
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Put IDE controller into native mode. */
+id|early_write_config_byte
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x09
+comma
+multiline_comment|/* Programming interface Register */
+l_int|0x8f
+)paren
+suffix:semicolon
+multiline_comment|/* Init IRQ routing, enable both ports, disable fast 16 */
+id|early_write_config_dword
+c_func
+(paren
+id|hose
+comma
+l_int|0
+comma
+id|devfn
+comma
+l_int|0x40
+comma
+multiline_comment|/* IDE Control/Status Register */
+l_int|0x00ff0011
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__init
+DECL|function|sandpoint_find_bridges
+id|sandpoint_find_bridges
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|pci_controller
+op_star
+id|hose
+suffix:semicolon
+id|hose
+op_assign
+id|pcibios_alloc_controller
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hose
+)paren
+r_return
+suffix:semicolon
+id|hose-&gt;first_busno
+op_assign
+l_int|0
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+l_int|0xff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpc10x_bridge_init
+c_func
+(paren
+id|hose
+comma
+id|MPC10X_MEM_MAP_B
+comma
+id|MPC10X_MEM_MAP_B
+comma
+id|MPC10X_MAPB_EUMB_BASE
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* Do early winbond init, then scan PCI bus */
+id|sandpoint_setup_winbond_83553
+c_func
+(paren
+id|hose
+)paren
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+id|pciauto_bus_scan
+c_func
+(paren
+id|hose
+comma
+id|hose-&gt;first_busno
+)paren
+suffix:semicolon
+id|ppc_md.pcibios_fixup
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ppc_md.pcibios_fixup_bus
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ppc_md.pci_swizzle
+op_assign
+id|common_swizzle
+suffix:semicolon
+id|ppc_md.pci_map_irq
+op_assign
+id|sandpoint_map_irq
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ppc_md.progress
+)paren
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;Bridge init failed&quot;
+comma
+l_int|0x100
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Host bridge init failed&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#if defined(CONFIG_SERIAL_8250) &amp;&amp; &bslash;&n;&t;(defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG))
+r_static
+r_void
+id|__init
+DECL|function|sandpoint_early_serial_map
+id|sandpoint_early_serial_map
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|uart_port
+id|serial_req
+suffix:semicolon
+multiline_comment|/* Setup serial port access */
+id|memset
+c_func
+(paren
+op_amp
+id|serial_req
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|serial_req
+)paren
+)paren
+suffix:semicolon
+id|serial_req.uartclk
+op_assign
+id|UART_CLK
+suffix:semicolon
+id|serial_req.irq
+op_assign
+l_int|4
+suffix:semicolon
+id|serial_req.flags
+op_assign
+id|STD_COM_FLAGS
+suffix:semicolon
+id|serial_req.iotype
+op_assign
+id|SERIAL_IO_MEM
+suffix:semicolon
+id|serial_req.membase
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|SANDPOINT_SERIAL_0
+suffix:semicolon
+id|gen550_init
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|serial_req
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|serial_req
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Assume early_serial_setup() doesn&squot;t modify serial_req */
+id|serial_req.line
+op_assign
+l_int|1
+suffix:semicolon
+id|serial_req.irq
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* XXXX */
+id|serial_req.membase
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|SANDPOINT_SERIAL_1
+suffix:semicolon
+id|gen550_init
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|serial_req
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|serial_req
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Early serial init of port 1 failed&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_static
 r_void
 id|__init
@@ -218,16 +712,18 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Motorola SPS Sandpoint Test Platform&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Sandpoint port (MontaVista Software, Inc. (source@mvista.com))&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Port by MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The Sandpoint rom doesn&squot;t enable any caches.  Do that now.&n;&t; * The 7450 portion will also set up the L3s once I get enough&n;&t; * information do do so.  If the processor running doesn&squot;t have&n;&t; * and L2, the _set_L2CR is a no-op.&n;&t; */
+multiline_comment|/* DINK32 12.3 and below do not correctly enable any caches.&n;&t; * We will do this now with good known values.  Future versions&n;&t; * of DINK32 are supposed to get this correct.&n;&t; */
 r_if
 c_cond
 (paren
@@ -240,25 +736,67 @@ id|cpu_features
 op_amp
 id|CPU_FTR_SPEC7450
 )paren
-(brace
-multiline_comment|/* Just enable L2, the bits are different from others.&n;&t;&t;*/
+multiline_comment|/* 745x is different.  We only want to pass along enable. */
 id|_set_L2CR
 c_func
 (paren
 id|L2CR_L2E
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-multiline_comment|/* The magic number for Sandpoint/74xx PrPMCs.&n;&t;&t;*/
+r_if
+c_cond
+(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_L2CR
+)paren
+multiline_comment|/* All modules have 1MB of L2.  We also assume that an&n;&t;&t; * L2 divisor of 3 will work.&n;&t;&t; */
 id|_set_L2CR
 c_func
 (paren
-l_int|0xbd014000
+id|L2CR_L2E
+op_or
+id|L2CR_L2SIZ_1MB
+op_or
+id|L2CR_L2CLK_DIV3
+op_or
+id|L2CR_L2RAM_PIPE
+op_or
+id|L2CR_L2OH_1_0
+op_or
+id|L2CR_L2DF
+)paren
+suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Untested right now. */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_L3CR
+)paren
+(brace
+multiline_comment|/* Magic value. */
+id|_set_L3CR
+c_func
+(paren
+l_int|0x8f032000
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|macro|SANDPOINT_87308_CFG_ADDR
 mdefine_line|#define&t;SANDPOINT_87308_CFG_ADDR&t;&t;0x15c
@@ -274,7 +812,7 @@ DECL|macro|SANDPOINT_87308_DEV_ENABLE
 mdefine_line|#define&t;SANDPOINT_87308_DEV_ENABLE(dev_num) {&t;&t;&t;&t;&bslash;&n;&t;SANDPOINT_87308_SELECT_DEV(dev_num);&t;&t;&t;&t;&bslash;&n;&t;SANDPOINT_87308_CFG_OUTB(0x30, 0x01);&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Initialize the ISA devices on the Nat&squot;l PC87308VUL SuperIO chip.&n; */
 r_static
-r_void
+r_int
 id|__init
 DECL|function|sandpoint_setup_natl_87308
 id|sandpoint_setup_natl_87308
@@ -415,11 +953,19 @@ id|SIO_CONFIG_RD
 suffix:semicolon
 multiline_comment|/* Have to write twice to change! */
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|sandpoint_setup_natl_87308
+id|arch_initcall
+c_func
+(paren
+id|sandpoint_setup_natl_87308
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Fix IDE interrupts.&n; */
 r_static
-r_void
+r_int
 id|__init
 DECL|function|sandpoint_fix_winbond_83553
 id|sandpoint_fix_winbond_83553
@@ -446,29 +992,26 @@ l_int|0x4d1
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|sandpoint_fix_winbond_83553
+id|arch_initcall
+c_func
+(paren
+id|sandpoint_fix_winbond_83553
+)paren
+suffix:semicolon
 r_static
-r_void
+r_int
 id|__init
-DECL|function|sandpoint_init2
-id|sandpoint_init2
+DECL|function|sandpoint_request_io
+id|sandpoint_request_io
 c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/* Do Sandpoint board specific initialization.  */
-id|sandpoint_fix_winbond_83553
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sandpoint_setup_natl_87308
-c_func
-(paren
-)paren
-suffix:semicolon
 id|request_region
 c_func
 (paren
@@ -530,9 +1073,17 @@ l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Interrupt setup and service.  Interrrupts on the Sandpoint come&n; * from the four PCI slots plus the 8259 in the Winbond Super I/O (SIO).&n; * These interrupts are sent to one of four IRQs on the EPIC.&n; * The SIO shares its interrupt with either slot 2 or slot 3 (INTA#).&n; * Slot numbering is confusing.  Sometimes in the documentation they&n; * use 0,1,2,3 and others 1,2,3,4.  We will use slots 1,2,3,4 and&n; * map this to IRQ 16, 17, 18, 19.&n; * For Sandpoint X3, this has been better designed.  The 8259 is&n; * cascaded from EPIC IRQ0, IRQ1-4 map to PCI slots 1-4, IDE is on&n; * EPIC 7 and 8.&n; */
+DECL|variable|sandpoint_request_io
+id|arch_initcall
+c_func
+(paren
+id|sandpoint_request_io
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Interrupt setup and service.  Interrrupts on the Sandpoint come&n; * from the four PCI slots plus the 8259 in the Winbond Super I/O (SIO).&n; * The 8259 is cascaded from EPIC IRQ0, IRQ1-4 map to PCI slots 1-4,&n; * IDE is on EPIC 7 and 8.&n; */
 r_static
 r_void
 id|__init
@@ -546,7 +1097,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * 3 things cause us to jump through some hoops:&n;&t; *   1) the EPIC on the 8240 &amp; 107 are not full-blown openpic pic&squot;s&n;&t; *   2) the 8259 is NOT cascaded on the openpic IRQ 0&n;&t; *   3) the 8259 shares its interrupt line with some PCI interrupts.&n;&t; *&n;&t; * What we&squot;ll do is set up the 8259 to be level sensitive, active low&n;&t; * just like a PCI device.  Then, when an interrupt on the IRQ that is&n;&t; * shared with the 8259 comes in, we&squot;ll take a peek at the 8259 to see&n;&t; * it its generating an interrupt.  If it is, we&squot;ll handle the 8259&n;&t; * interrupt.  Otherwise, we&squot;ll handle it just like a normal PCI&n;&t; * interrupt.  This does give the 8259 interrupts a higher priority&n;&t; * than the EPIC ones--hopefully, not a problem.&n;&t; */
 id|OpenPIC_InitSenses
 op_assign
 id|sandpoint_openpic_initsenses
@@ -558,20 +1108,27 @@ r_sizeof
 id|sandpoint_openpic_initsenses
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We need to tell openpic_set_sources where things actually are.&n;&t; * mpc10x_common will setup OpenPIC_Addr at ioremap(EUMB phys base +&n;&t; * EPIC offset (0x40000));  The EPIC IRQ Register Address Map -&n;&t; * Interrupt Source Configuration Registers gives these numbers&n;&t; * as offsets starting at 0x50200, we need to adjust occordinly.&n;&t; */
+multiline_comment|/* Map serial interrupts 0-15 */
+id|openpic_set_sources
+c_func
+(paren
+l_int|0
+comma
+l_int|16
+comma
+id|OpenPIC_Addr
+op_plus
+l_int|0x10200
+)paren
+suffix:semicolon
 id|openpic_init
 c_func
 (paren
-l_int|1
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-op_minus
-l_int|1
+id|NUM_8259_INTERRUPTS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * openpic_init() has set up irq_desc[0-23] to be openpic&n;&t; * interrupts.  We need to set irq_desc[0-15] to be 8259 interrupts.&n;&t; * We then need to request and enable the 8259 irq.&n;&t; */
+multiline_comment|/*&n;&t; * openpic_init() has set up irq_desc[16-31] to be openpic&n;&t; * interrupts.  We need to set irq_desc[0-15] to be i8259&n;&t; * interrupts.&n;&t; */
 r_for
 c_loop
 (paren
@@ -598,117 +1155,12 @@ op_amp
 id|i8259_pic
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|SANDPOINT_SIO_IRQ
-comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;8259 cascade to EPIC&quot;
-comma
-l_int|NULL
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get OpenPIC IRQ %d for cascade&bslash;n&quot;
-comma
-id|SANDPOINT_SIO_IRQ
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t; * The EPIC allows for a read in the range of 0xFEF00000 -&gt;&n;&t; * 0xFEFFFFFF to generate a PCI interrupt-acknowledge transaction.&n;&t; */
 id|i8259_init
 c_func
 (paren
-l_int|NULL
+l_int|0xfef00000
 )paren
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|sandpoint_get_irq
-id|sandpoint_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-id|irq
-comma
-id|cascade_irq
-suffix:semicolon
-id|irq
-op_assign
-id|openpic_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|SANDPOINT_SIO_IRQ
-)paren
-(brace
-id|cascade_irq
-op_assign
-id|i8259_irq
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cascade_irq
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|irq
-op_assign
-id|cascade_irq
-suffix:semicolon
-id|openpic_eoi
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|OPENPIC_VEC_SPURIOUS
-)paren
-(brace
-id|irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|irq
 suffix:semicolon
 )brace
 r_static
@@ -728,20 +1180,17 @@ id|irq
 op_eq
 l_int|2
 )paren
-(brace
 r_return
 l_int|9
 suffix:semicolon
-)brace
 r_else
-(brace
 r_return
 id|irq
 suffix:semicolon
 )brace
-)brace
 r_static
-id|ulong
+r_int
+r_int
 id|__init
 DECL|function|sandpoint_find_end_of_memory
 id|sandpoint_find_end_of_memory
@@ -750,14 +1199,27 @@ c_func
 r_void
 )paren
 (brace
-id|ulong
-id|size
+id|bd_t
+op_star
+id|bp
 op_assign
-l_int|0
+(paren
+id|bd_t
+op_star
+)paren
+id|__res
 suffix:semicolon
-macro_line|#if 0&t;/* Leave out until DINK sets mem ctlr correctly */
-id|size
-op_assign
+r_if
+c_cond
+(paren
+id|bp-&gt;bi_memsize
+)paren
+r_return
+id|bp-&gt;bi_memsize
+suffix:semicolon
+multiline_comment|/* DINK32 13.0 correctly initalizes things, so iff you use&n;&t; * this you _should_ be able to change this instead of a&n;&t; * hardcoded value. */
+macro_line|#if 0
+r_return
 id|mpc10x_get_mem_size
 c_func
 (paren
@@ -765,8 +1227,7 @@ id|MPC10X_MEM_MAP_B
 )paren
 suffix:semicolon
 macro_line|#else
-id|size
-op_assign
+r_return
 l_int|32
 op_star
 l_int|1024
@@ -774,9 +1235,6 @@ op_star
 l_int|1024
 suffix:semicolon
 macro_line|#endif
-r_return
-id|size
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -801,7 +1259,6 @@ id|_PAGE_IO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Due to Sandpoint X2 errata, the Port 92 will not work.&n; */
 r_static
 r_void
 DECL|function|sandpoint_restart
@@ -909,17 +1366,6 @@ op_star
 id|m
 )paren
 (brace
-id|uint
-id|pvid
-suffix:semicolon
-id|pvid
-op_assign
-id|mfspr
-c_func
-(paren
-id|PVR
-)paren
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -934,31 +1380,6 @@ c_func
 id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: Sandpoint&bslash;n&quot;
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;processor&bslash;t: PVID: 0x%x, vendor: %s&bslash;n&quot;
-comma
-id|pvid
-comma
-(paren
-id|pvid
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
-ques
-c_cond
-l_string|&quot;IBM&quot;
-suffix:colon
-l_string|&quot;Motorola&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1089,8 +1510,6 @@ suffix:semicolon
 id|sandpoint_ide_ports_known
 op_assign
 l_int|1
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 r_static
@@ -1338,8 +1757,6 @@ op_assign
 id|hw-&gt;irq
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Set BAT 3 to map 0xf8000000 to end of physical memory space 1-to-1.&n; */
@@ -1359,24 +1776,11 @@ id|bat3u
 comma
 id|bat3l
 suffix:semicolon
-r_static
-r_int
-id|mapping_set
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mapping_set
-)paren
-(brace
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot; lis %0,0xf800&bslash;n &bslash;&n;&t;&t;  ori %1,%0,0x002a&bslash;n &bslash;&n;&t;&t;  ori %0,%0,0x0ffe&bslash;n &bslash;&n;&t;&t;  mtspr 0x21e,%0&bslash;n &bslash;&n;&t;&t;  mtspr 0x21f,%1&bslash;n &bslash;&n;&t;&t;  isync&bslash;n &bslash;&n;&t;&t;  sync &quot;
+l_string|&quot; lis %0,0xf800&bslash;n&t;&bslash;&n;&t;&t;&t;ori %1,%0,0x002a&bslash;n&t;&bslash;&n;&t;&t;&t;ori %0,%0,0x0ffe&bslash;n&t;&bslash;&n;&t;&t;&t;mtspr 0x21e,%0&bslash;n&t;&bslash;&n;&t;&t;&t;mtspr 0x21f,%1&bslash;n&t;&bslash;&n;&t;&t;&t;isync&bslash;n&t;&t;&t;&bslash;&n;&t;&t;&t;sync &quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1389,187 +1793,7 @@ id|bat3l
 )paren
 )paren
 suffix:semicolon
-id|mapping_set
-op_assign
-l_int|1
-suffix:semicolon
 )brace
-r_return
-suffix:semicolon
-)brace
-macro_line|#ifdef&t;CONFIG_SERIAL_TEXT_DEBUG
-macro_line|#include &lt;linux/serialP.h&gt;
-macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/serial.h&gt;
-DECL|variable|rs_table
-r_static
-r_struct
-id|serial_state
-id|rs_table
-(braket
-id|RS_TABLE_SIZE
-)braket
-op_assign
-(brace
-id|SERIAL_PORT_DFNS
-multiline_comment|/* Defined in &lt;asm/serial.h&gt; */
-)brace
-suffix:semicolon
-r_static
-r_void
-DECL|function|sandpoint_progress
-id|sandpoint_progress
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_int
-r_int
-id|hex
-)paren
-(brace
-r_volatile
-r_char
-id|c
-suffix:semicolon
-r_volatile
-r_int
-r_int
-id|com_port
-suffix:semicolon
-id|u16
-id|shift
-suffix:semicolon
-id|com_port
-op_assign
-id|rs_table
-(braket
-l_int|0
-)braket
-dot
-id|port
-suffix:semicolon
-id|shift
-op_assign
-id|rs_table
-(braket
-l_int|0
-)braket
-dot
-id|iomem_reg_shift
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|c
-op_assign
-op_star
-id|s
-op_increment
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-op_lshift
-id|shift
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_assign
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c
-op_eq
-l_char|&squot;&bslash;n&squot;
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-op_lshift
-id|shift
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_assign
-l_char|&squot;&bslash;r&squot;
-suffix:semicolon
-)brace
-)brace
-)brace
-macro_line|#endif&t;/* CONFIG_SERIAL_TEXT_DEBUG */
-id|__init
-r_void
-id|sandpoint_setup_pci_ptrs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|TODC_ALLOC
 c_func
 (paren
@@ -1611,6 +1835,94 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* ASSUMPTION:  If both r3 (bd_t pointer) and r6 (cmdline pointer)&n;&t; * are non-zero, then we should use the board info from the bd_t&n;&t; * structure and the cmdline pointed to by r6 instead of the&n;&t; * information from birecs, if any.  Otherwise, use the information&n;&t; * from birecs as discovered by the preceeding call to&n;&t; * parse_bootinfo().  This rule should work with both PPCBoot, which&n;&t; * uses a bd_t board info structure, and the kernel boot wrapper,&n;&t; * which uses birecs.&n;&t; */
+r_if
+c_cond
+(paren
+id|r3
+op_logical_and
+id|r6
+)paren
+(brace
+multiline_comment|/* copy board info structure */
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|__res
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+id|r3
+op_plus
+id|KERNELBASE
+)paren
+comma
+r_sizeof
+(paren
+id|bd_t
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* copy command line */
+op_star
+(paren
+r_char
+op_star
+)paren
+(paren
+id|r7
+op_plus
+id|KERNELBASE
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+(paren
+r_char
+op_star
+)paren
+(paren
+id|r6
+op_plus
+id|KERNELBASE
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+multiline_comment|/* take care of initrd if we have one */
+r_if
+c_cond
+(paren
+id|r4
+)paren
+(brace
+id|initrd_start
+op_assign
+id|r4
+op_plus
+id|KERNELBASE
+suffix:semicolon
+id|initrd_end
+op_assign
+id|r5
+op_plus
+id|KERNELBASE
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 multiline_comment|/* Map in board regs, etc. */
 id|sandpoint_set_bat
 c_func
@@ -1659,11 +1971,7 @@ id|sandpoint_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
-id|sandpoint_get_irq
-suffix:semicolon
-id|ppc_md.init
-op_assign
-id|sandpoint_init2
+id|openpic_get_irq
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -1723,29 +2031,19 @@ id|ppc_md.nvram_write_val
 op_assign
 id|todc_mc146818_write_val
 suffix:semicolon
-id|ppc_md.heartbeat
-op_assign
-l_int|NULL
+macro_line|#if defined(CONFIG_SERIAL_8250) &amp;&amp; &bslash;&n;&t;(defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG))
+id|sandpoint_early_serial_map
+c_func
+(paren
+)paren
 suffix:semicolon
-id|ppc_md.heartbeat_reset
-op_assign
-l_int|0
-suffix:semicolon
-id|ppc_md.heartbeat_count
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef&t;CONFIG_SERIAL_TEXT_DEBUG
+macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
 id|ppc_md.progress
 op_assign
-id|sandpoint_progress
+id|gen550_progress
 suffix:semicolon
-macro_line|#else&t;/* !CONFIG_SERIAL_TEXT_DEBUG */
-id|ppc_md.progress
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SERIAL_TEXT_DEBUG */
+macro_line|#endif
+macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ppc_ide_md.default_irq
 op_assign
@@ -1760,7 +2058,5 @@ op_assign
 id|sandpoint_ide_init_hwif_ports
 suffix:semicolon
 macro_line|#endif
-r_return
-suffix:semicolon
 )brace
 eof

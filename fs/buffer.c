@@ -1065,6 +1065,10 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SYNCWRITE
+suffix:semicolon
 id|ret
 op_assign
 id|filemap_fdatawrite
@@ -1114,6 +1118,11 @@ id|ret
 id|ret
 op_assign
 id|err
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SYNCWRITE
 suffix:semicolon
 id|up
 c_func
@@ -1221,6 +1230,10 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SYNCWRITE
+suffix:semicolon
 id|ret
 op_assign
 id|filemap_fdatawrite
@@ -1270,6 +1283,11 @@ id|ret
 id|ret
 op_assign
 id|err
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SYNCWRITE
 suffix:semicolon
 id|up
 c_func

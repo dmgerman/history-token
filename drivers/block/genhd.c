@@ -865,7 +865,7 @@ c_func
 id|disk
 )paren
 suffix:semicolon
-id|elv_register_queue
+id|blk_register_queue
 c_func
 (paren
 id|disk
@@ -898,7 +898,7 @@ op_star
 id|disk
 )paren
 (brace
-id|elv_unregister_queue
+id|blk_unregister_queue
 c_func
 (paren
 id|disk

@@ -3410,6 +3410,10 @@ suffix:colon
 id|error
 suffix:semicolon
 )brace
+DECL|macro|MMAP_READAROUND
+mdefine_line|#define MMAP_READAROUND (16UL)
+DECL|macro|MMAP_LOTSAMISS
+mdefine_line|#define MMAP_LOTSAMISS  (100)
 multiline_comment|/*&n; * filemap_nopage() is invoked via the vma operations vector for a&n; * mapped memory region to read in file data during a page fault.&n; *&n; * The goto&squot;s are kind of ugly, but this streamlines the normal case of having&n; * it in the page cache, and handles the special cases reasonably without&n; * having a lot of duplicated code.&n; */
 DECL|function|filemap_nopage
 r_struct
@@ -3477,7 +3481,9 @@ comma
 id|endoff
 suffix:semicolon
 r_int
-id|did_readahead
+id|did_readaround
+op_assign
+l_int|0
 suffix:semicolon
 id|pgoff
 op_assign
@@ -3509,7 +3515,6 @@ id|area-&gt;vm_pgoff
 suffix:semicolon
 id|retry_all
 suffix:colon
-multiline_comment|/*&n;&t; * An external ptracer can access pages that normally aren&squot;t&n;&t; * accessible..&n;&t; */
 id|size
 op_assign
 (paren
@@ -3525,20 +3530,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|pgoff
 op_ge
 id|size
 )paren
-op_logical_and
+r_goto
+id|outside_data_content
+suffix:semicolon
+multiline_comment|/* If we don&squot;t want any read-ahead, don&squot;t bother */
+r_if
+c_cond
 (paren
-id|area-&gt;vm_mm
-op_eq
-id|current-&gt;mm
+id|VM_RandomReadHint
+c_func
+(paren
+id|area
 )paren
 )paren
-r_return
-l_int|NULL
+r_goto
+id|no_cached_page
 suffix:semicolon
 multiline_comment|/*&n;&t; * The &quot;size&quot; of the file, as far as mmap is concerned, isn&squot;t bigger&n;&t; * than the mapping&n;&t; */
 r_if
@@ -3552,11 +3562,7 @@ id|size
 op_assign
 id|endoff
 suffix:semicolon
-id|did_readahead
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * The readahead code wants to be told about each and every page&n;&t; * so it can build and shrink its windows appropriately&n;&t; */
+multiline_comment|/*&n;&t; * The readahead code wants to be told about each and every page&n;&t; * so it can build and shrink its windows appropriately&n;&t; *&n;&t; * For sequential accesses, we use the generic readahead logic.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3566,11 +3572,6 @@ c_func
 id|area
 )paren
 )paren
-(brace
-id|did_readahead
-op_assign
-l_int|1
-suffix:semicolon
 id|page_cache_readahead
 c_func
 (paren
@@ -3583,42 +3584,6 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If the offset is outside the mapping size we&squot;re off the end&n;&t; * of a privately mapped file, so we need to map a zero page.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|pgoff
-OL
-id|size
-)paren
-op_logical_and
-op_logical_neg
-id|VM_RandomReadHint
-c_func
-(paren
-id|area
-)paren
-)paren
-(brace
-id|did_readahead
-op_assign
-l_int|1
-suffix:semicolon
-id|page_cache_readaround
-c_func
-(paren
-id|mapping
-comma
-id|ra
-comma
-id|file
-comma
-id|pgoff
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Do we have something in the page cache already?&n;&t; */
 id|retry_find
 suffix:colon
@@ -3642,7 +3607,11 @@ id|page
 r_if
 c_cond
 (paren
-id|did_readahead
+id|VM_SequentialReadHint
+c_func
+(paren
+id|area
+)paren
 )paren
 (brace
 id|handle_ra_miss
@@ -3655,15 +3624,62 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|did_readahead
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_goto
 id|no_cached_page
 suffix:semicolon
 )brace
+id|ra-&gt;mmap_miss
+op_increment
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Do we miss much more than hit in this file? If so,&n;&t;&t; * stop bothering with read-ahead. It will only hurt.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ra-&gt;mmap_miss
+OG
+id|ra-&gt;mmap_hit
+op_plus
+id|MMAP_LOTSAMISS
+)paren
+r_goto
+id|no_cached_page
+suffix:semicolon
+id|did_readaround
+op_assign
+l_int|1
+suffix:semicolon
+id|do_page_cache_readahead
+c_func
+(paren
+id|mapping
+comma
+id|file
+comma
+id|pgoff
+op_amp
+op_complement
+(paren
+id|MMAP_READAROUND
+op_minus
+l_int|1
+)paren
+comma
+id|MMAP_READAROUND
+)paren
+suffix:semicolon
+r_goto
+id|retry_find
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|did_readaround
+)paren
+id|ra-&gt;mmap_hit
+op_increment
+suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, found a page in the page cache, now we need to check&n;&t; * that it&squot;s up-to-date.&n;&t; */
 r_if
 c_cond
@@ -3690,6 +3706,20 @@ suffix:semicolon
 r_return
 id|page
 suffix:semicolon
+id|outside_data_content
+suffix:colon
+multiline_comment|/*&n;&t; * An external ptracer can access pages that normally aren&squot;t&n;&t; * accessible..&n;&t; */
+r_if
+c_cond
+(paren
+id|area-&gt;vm_mm
+op_eq
+id|current-&gt;mm
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Fall through to the non-read-ahead case */
 id|no_cached_page
 suffix:colon
 multiline_comment|/*&n;&t; * We&squot;re only likely to ever get here if MADV_RANDOM is in&n;&t; * effect.&n;&t; */

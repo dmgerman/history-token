@@ -7670,7 +7670,7 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|info.si_uid
 op_assign
@@ -7741,7 +7741,7 @@ id|SI_TKILL
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|info.si_uid
 op_assign

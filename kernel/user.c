@@ -474,13 +474,6 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|new_user-&gt;__count
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
 id|new_user-&gt;processes
 )paren
 suffix:semicolon
