@@ -668,6 +668,18 @@ id|inode
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* linux/net/ipv4/ipconfig.c: trims ip addr off front of name, too. */
+r_extern
+id|u32
+id|root_nfs_parse_addr
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+multiline_comment|/*__init*/
 multiline_comment|/*&n; * linux/fs/nfs/file.c&n; */
 r_extern
 r_struct
