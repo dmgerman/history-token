@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &quot;sleep.h&quot;
 r_static
 r_void
 DECL|function|acpi_power_off
@@ -30,6 +31,11 @@ c_func
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|acpi_wakeup_gpe_poweroff_prepare
+c_func
+(paren
 )paren
 suffix:semicolon
 id|acpi_enter_sleep_state_prep
