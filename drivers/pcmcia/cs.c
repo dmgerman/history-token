@@ -3442,6 +3442,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Yenta (at least) probes interrupts before registering the socket and&n; * starting the handler thread.&n; */
 DECL|function|pcmcia_parse_events
 r_void
 id|pcmcia_parse_events
@@ -3454,6 +3455,12 @@ id|s
 comma
 id|u_int
 id|events
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|s-&gt;thread
 )paren
 (brace
 id|spin_lock
@@ -3481,6 +3488,7 @@ op_amp
 id|s-&gt;thread_wait
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* pcmcia_parse_events */
 multiline_comment|/*======================================================================&n;&n;    Special stuff for managing IO windows, because they are scarce.&n;    &n;======================================================================*/
