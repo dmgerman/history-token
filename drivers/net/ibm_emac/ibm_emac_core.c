@@ -5790,6 +5790,16 @@ comma
 id|CONFIG_IBM_EMAC_FGAP
 )paren
 suffix:semicolon
+multiline_comment|/* set VLAN Tag Protocol Identifier */
+id|out_be32
+c_func
+(paren
+op_amp
+id|emacp-&gt;em0vtpid
+comma
+l_int|0x8100
+)paren
+suffix:semicolon
 multiline_comment|/* Init ring buffers */
 id|emac_init_rings
 c_func
