@@ -1444,7 +1444,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|scmd-&gt;underflow
 op_assign
@@ -1920,7 +1920,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|rtn
 op_assign
@@ -3710,7 +3710,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|sreq-&gt;sr_bufflen
 op_assign
@@ -4616,7 +4616,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:semicolon
 id|scmd-&gt;sc_request
 op_assign

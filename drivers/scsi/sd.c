@@ -461,7 +461,7 @@ id|WRITE
 )paren
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 r_else
 r_if
@@ -471,12 +471,12 @@ id|rq-&gt;data_len
 )paren
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 r_else
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|this_count
 op_assign
@@ -826,7 +826,7 @@ id|WRITE_6
 suffix:semicolon
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -851,7 +851,7 @@ id|READ_6
 suffix:semicolon
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -3090,7 +3090,7 @@ l_int|0
 suffix:semicolon
 id|SRpnt-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|scsi_wait_req
 (paren
@@ -3355,7 +3355,7 @@ l_int|0
 suffix:semicolon
 id|SRpnt-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|scsi_wait_req
 c_func
@@ -3688,7 +3688,7 @@ l_int|0
 suffix:semicolon
 id|SRpnt-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|scsi_wait_req
 c_func
@@ -5755,7 +5755,7 @@ suffix:semicolon
 )brace
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_for
 c_loop

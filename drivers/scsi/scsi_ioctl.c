@@ -236,7 +236,7 @@ suffix:semicolon
 )brace
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|scsi_wait_req
 c_func
@@ -825,7 +825,7 @@ l_int|0
 (brace
 id|data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -839,7 +839,7 @@ l_int|0
 (brace
 id|data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -847,7 +847,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t; * Can this ever happen?&n;&t;&t;&t; */
 id|data_direction
 op_assign
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:semicolon
 )brace
 )brace
@@ -859,7 +859,7 @@ l_int|NULL
 suffix:semicolon
 id|data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Obtain the command from the user&squot;s address space.&n;&t; */

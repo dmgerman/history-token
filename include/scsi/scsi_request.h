@@ -78,8 +78,8 @@ r_int
 id|sr_allowed
 suffix:semicolon
 DECL|member|sr_data_direction
-r_int
-r_char
+r_enum
+id|dma_data_direction
 id|sr_data_direction
 suffix:semicolon
 DECL|member|sr_cmd_len
