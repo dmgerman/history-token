@@ -9742,7 +9742,7 @@ id|buffer_head
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 id|init_buffer_head
 comma
