@@ -292,6 +292,31 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Is an i_ino of zero legal? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_SERVER_INUM
+)paren
+(brace
+(paren
+op_star
+id|pinode
+)paren
+op_member_access_from_pointer
+id|i_ino
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|findData.UniqueId
+suffix:semicolon
+)brace
+multiline_comment|/* note ino incremented to unique num in new_inode */
 id|insert_inode_hash
 c_func
 (paren
@@ -1127,6 +1152,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Is an i_ino of zero legal? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
+multiline_comment|/* We can not use the IndexNumber from either&n;&t;&t;&t;Windows or Samba as it is frequently set to zero */
+multiline_comment|/* There may be higher info levels that work but&n;&t;&t;&t;Are there Windows server or network appliances&n;&t;&t;&t;for which IndexNumber field is not guaranteed unique? */
+multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM) {&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
+multiline_comment|/*NB: ino incremented to unique num in new_inode*/
 id|insert_inode_hash
 c_func
 (paren
@@ -1251,21 +1282,9 @@ op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|attr
-op_amp
-id|ATTR_REPARSE
-)paren
-(brace
-multiline_comment|/* Can IFLNK be set as it basically is on windows with IFREG or IFDIR? */
-id|inode-&gt;i_mode
-op_or_assign
-id|S_IFLNK
-suffix:semicolon
-)brace
-r_else
+multiline_comment|/*&t;&t;if (attr &amp; ATTR_REPARSE)  */
+multiline_comment|/* &t;&t;We no longer handle these as symlinks because we could not */
+multiline_comment|/* &t;&t;follow them due to the absolute path with drive letter */
 r_if
 c_cond
 (paren
@@ -4430,6 +4449,29 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EOPNOTSUPP
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;OS2 level of SetPathInfo not implemented&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Need to convert time_buf into old format, &n;&t;&t;&t;but probably better to do that inside the function&n;&t;&t;&t;below rather than here */
+multiline_comment|/* Better to return EOPNOTSUPP until function&n;&t;&t;&t;below is ready */
+multiline_comment|/* CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        FILE_INFO_STANDARD * data, cifs_sb-&gt;local_nls); */
+)brace
 )brace
 multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
 r_if

@@ -153,7 +153,7 @@ id|FE_NEEDS_BENDING
 op_assign
 l_int|0x20000000
 comma
-singleline_comment|// frontend requires frequency bending
+singleline_comment|// not supported anymore, don&squot;t use (frontend requires frequency bending)
 DECL|enumerator|FE_CAN_RECOVER
 id|FE_CAN_RECOVER
 op_assign
@@ -217,7 +217,7 @@ DECL|member|notifier_delay
 id|__u32
 id|notifier_delay
 suffix:semicolon
-multiline_comment|/* ms */
+multiline_comment|/* DEPRECATED */
 DECL|member|caps
 id|fe_caps_t
 id|caps

@@ -2,9 +2,8 @@ multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_ext.h&n; * &n; * F
 macro_line|#ifndef ZFCP_EXT_H
 DECL|macro|ZFCP_EXT_H
 mdefine_line|#define ZFCP_EXT_H
-multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_EXT_REVISION
-mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.61 $&quot;
+mdefine_line|#define ZFCP_EXT_REVISION &quot;$Revision: 1.62 $&quot;
 macro_line|#include &quot;zfcp_def.h&quot;
 r_extern
 r_struct

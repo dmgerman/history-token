@@ -460,11 +460,11 @@ l_int|16
 )braket
 op_assign
 (brace
-l_string|&quot;VIVT write-through&quot;
+l_string|&quot;write-through&quot;
 comma
-l_string|&quot;VIVT write-back&quot;
+l_string|&quot;write-back&quot;
 comma
-l_string|&quot;VIVT write-back&quot;
+l_string|&quot;write-back&quot;
 comma
 l_string|&quot;undefined 3&quot;
 comma
@@ -472,9 +472,9 @@ l_string|&quot;undefined 4&quot;
 comma
 l_string|&quot;undefined 5&quot;
 comma
-l_string|&quot;VIVT write-back&quot;
+l_string|&quot;write-back&quot;
 comma
-l_string|&quot;VIVT write-back&quot;
+l_string|&quot;write-back&quot;
 comma
 l_string|&quot;undefined 8&quot;
 comma
@@ -488,7 +488,7 @@ l_string|&quot;undefined 12&quot;
 comma
 l_string|&quot;undefined 13&quot;
 comma
-l_string|&quot;VIPT write-back&quot;
+l_string|&quot;write-back&quot;
 comma
 l_string|&quot;undefined 15&quot;
 comma
@@ -778,7 +778,17 @@ id|processor_id
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: D %s cache&bslash;n&quot;
+l_string|&quot;CPU: D %s %s cache&bslash;n&quot;
+comma
+id|cache_is_vivt
+c_func
+(paren
+)paren
+ques
+c_cond
+l_string|&quot;VIVT&quot;
+suffix:colon
+l_string|&quot;VIPT&quot;
 comma
 id|cache_types
 (braket
@@ -911,7 +921,7 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|15
+l_int|7
 suffix:semicolon
 r_if
 c_cond

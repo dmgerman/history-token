@@ -15246,6 +15246,10 @@ op_assign
 op_amp
 id|snd_pcm_vm_ops_data_mmio
 suffix:semicolon
+id|area-&gt;vm_private_data
+op_assign
+id|substream
+suffix:semicolon
 id|area-&gt;vm_flags
 op_or_assign
 id|VM_IO

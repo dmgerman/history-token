@@ -439,12 +439,6 @@ op_amp
 id|sr_ref_sem
 )paren
 suffix:semicolon
-id|scsi_device_put
-c_func
-(paren
-id|cd-&gt;device
-)paren
-suffix:semicolon
 id|kref_put
 c_func
 (paren
@@ -452,6 +446,12 @@ op_amp
 id|cd-&gt;kref
 comma
 id|sr_kref_release
+)paren
+suffix:semicolon
+id|scsi_device_put
+c_func
+(paren
+id|cd-&gt;device
 )paren
 suffix:semicolon
 id|up

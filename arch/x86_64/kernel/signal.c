@@ -1762,6 +1762,9 @@ multiline_comment|/* Are we from a system call? */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;orig_rax
 op_ge
 l_int|0
@@ -2084,6 +2087,9 @@ multiline_comment|/* Did we come from a system call? */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;orig_rax
 op_ge
 l_int|0

@@ -232,6 +232,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * CI link layer file ops&n; ******************************************************************************/
 DECL|function|ci_ll_init
+r_static
 r_int
 id|ci_ll_init
 c_func
@@ -283,6 +284,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ci_ll_flush
+r_static
 r_void
 id|ci_ll_flush
 c_func
@@ -312,6 +314,7 @@ id|ciwbuf
 suffix:semicolon
 )brace
 DECL|function|ci_ll_release
+r_static
 r_void
 id|ci_ll_release
 c_func
@@ -349,6 +352,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ci_ll_reset
+r_static
 r_int
 id|ci_ll_reset
 c_func

@@ -9,6 +9,10 @@ DECL|macro|ASL_RESNAME_ALIGNMENT
 mdefine_line|#define ASL_RESNAME_ALIGNMENT                   &quot;_ALN&quot;
 DECL|macro|ASL_RESNAME_ADDRESSSPACE
 mdefine_line|#define ASL_RESNAME_ADDRESSSPACE                &quot;_ASI&quot;
+DECL|macro|ASL_RESNAME_ACCESSSIZE
+mdefine_line|#define ASL_RESNAME_ACCESSSIZE                  &quot;_ASZ&quot;
+DECL|macro|ASL_RESNAME_TYPESPECIFICATTRIBUTES
+mdefine_line|#define ASL_RESNAME_TYPESPECIFICATTRIBUTES      &quot;_ATT&quot;
 DECL|macro|ASL_RESNAME_BASEADDRESS
 mdefine_line|#define ASL_RESNAME_BASEADDRESS                 &quot;_BAS&quot;
 DECL|macro|ASL_RESNAME_BUSMASTER
@@ -376,6 +380,74 @@ id|range_length
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|asl_extended_address_desc
+r_struct
+id|asl_extended_address_desc
+(brace
+DECL|member|descriptor_type
+id|u8
+id|descriptor_type
+suffix:semicolon
+DECL|member|length
+id|u16
+id|length
+suffix:semicolon
+DECL|member|resource_type
+id|u8
+id|resource_type
+suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+DECL|member|specific_flags
+id|u8
+id|specific_flags
+suffix:semicolon
+DECL|member|revision_iD
+id|u8
+id|revision_iD
+suffix:semicolon
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:semicolon
+DECL|member|granularity
+id|u64
+id|granularity
+suffix:semicolon
+DECL|member|address_min
+id|u64
+id|address_min
+suffix:semicolon
+DECL|member|address_max
+id|u64
+id|address_max
+suffix:semicolon
+DECL|member|translation_offset
+id|u64
+id|translation_offset
+suffix:semicolon
+DECL|member|address_length
+id|u64
+id|address_length
+suffix:semicolon
+DECL|member|type_specific_attributes
+id|u64
+id|type_specific_attributes
+suffix:semicolon
+DECL|member|optional_fields
+id|u8
+id|optional_fields
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* Used for length calculation only */
+)brace
+suffix:semicolon
+DECL|macro|ASL_EXTENDED_ADDRESS_DESC_REVISION
+mdefine_line|#define ASL_EXTENDED_ADDRESS_DESC_REVISION          1       /* ACPI 3.0 */
 DECL|struct|asl_qword_address_desc
 r_struct
 id|asl_qword_address_desc
@@ -589,10 +661,11 @@ DECL|member|bit_offset
 id|u8
 id|bit_offset
 suffix:semicolon
-DECL|member|reserved
+DECL|member|access_size
 id|u8
-id|reserved
+id|access_size
 suffix:semicolon
+multiline_comment|/* ACPI 3.0, was Reserved */
 DECL|member|address
 id|u64
 id|address
@@ -680,6 +753,11 @@ DECL|member|was
 r_struct
 id|asl_word_address_desc
 id|was
+suffix:semicolon
+DECL|member|eas
+r_struct
+id|asl_extended_address_desc
+id|eas
 suffix:semicolon
 DECL|member|exx
 r_struct

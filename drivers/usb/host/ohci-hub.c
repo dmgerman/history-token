@@ -1273,12 +1273,32 @@ suffix:semicolon
 r_int
 id|can_suspend
 op_assign
-l_int|1
+id|hcd-&gt;can_wakeup
 suffix:semicolon
-multiline_comment|/* if !USB_SUSPEND, root hub timers won&squot;t get shut down ... */
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* handle autosuspended root:  finish resuming before&n;&t; * letting khubd or root hub timer see state changes.&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|ohci-&gt;hc_control
+op_amp
+id|OHCI_CTRL_HCFS
+)paren
+op_ne
+id|OHCI_USB_OPER
+op_logical_or
 op_logical_neg
 id|HCD_IS_RUNNING
 c_func
@@ -1286,9 +1306,15 @@ c_func
 id|ohci-&gt;hcd.state
 )paren
 )paren
-r_return
+(brace
+id|can_suspend
+op_assign
 l_int|0
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 id|ports
 op_assign
 id|roothub_a
@@ -1326,8 +1352,8 @@ id|RH_A_NDP
 )paren
 suffix:semicolon
 multiline_comment|/* retry later; &quot;should not happen&quot; */
-r_return
-l_int|0
+r_goto
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* init status */
@@ -1497,6 +1523,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|done
+suffix:colon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/* save power by suspending idle root hubs;&n;&t; * INTR_RD wakes us when there&squot;s work&n;&t; * NOTE: if we can do this, we don&squot;t need a root hub timer!&n;&t; */
 r_if

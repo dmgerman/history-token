@@ -2647,7 +2647,25 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* else user will poll for IRQs */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irqbits_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * IRQ will be re-enabled when user asks for the irq (whether&n;&t; * polling or as a result of the signal)&n;&t; */
+id|disable_irq
+c_func
+(paren
+id|intno
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 id|out
 suffix:colon
 id|spin_unlock_irqrestore

@@ -1274,15 +1274,15 @@ id|CIS
 suffix:semicolon
 r_return
 (paren
-(paren
-id|u8
-)paren
-(paren
 id|CIS
 op_amp
 id|mask
 )paren
-)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the control register to use the 66MHz system&n; * clock for UDMA 3/4/5 mode operation when necessary.&n; *&n; * It may also be possible to leave the 66MHz clock on&n; * and readjust the timing parameters.&n; */

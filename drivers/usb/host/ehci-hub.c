@@ -451,7 +451,7 @@ id|HCS_N_PORTS
 id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
-id|msleep
+id|mdelay
 (paren
 l_int|20
 )paren
@@ -1140,6 +1140,10 @@ multiline_comment|/* per-port indicators (LEDs) */
 macro_line|#endif
 id|desc-&gt;wHubCharacteristics
 op_assign
+(paren
+id|__force
+id|__u16
+)paren
 id|cpu_to_le16
 (paren
 id|temp

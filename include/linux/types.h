@@ -353,6 +353,7 @@ id|__u32
 id|__bitwise
 id|__be32
 suffix:semicolon
+macro_line|#if defined(__GNUC__) &amp;&amp; !defined(__STRICT_ANSI__)
 DECL|typedef|__le64
 r_typedef
 id|__u64
@@ -365,6 +366,7 @@ id|__u64
 id|__bitwise
 id|__be64
 suffix:semicolon
+macro_line|#endif
 DECL|struct|ustat
 r_struct
 id|ustat

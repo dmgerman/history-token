@@ -1667,6 +1667,8 @@ DECL|macro|ACPI_RDESC_TYPE_EXTENDED_XRUPT
 mdefine_line|#define ACPI_RDESC_TYPE_EXTENDED_XRUPT          0x89
 DECL|macro|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
 mdefine_line|#define ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE     0x8A
+DECL|macro|ACPI_RDESC_TYPE_EXTENDED_ADDRESS_SPACE
+mdefine_line|#define ACPI_RDESC_TYPE_EXTENDED_ADDRESS_SPACE  0x8B
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous&n; *&n; ****************************************************************************/
 DECL|macro|ACPI_ASCII_ZERO
 mdefine_line|#define ACPI_ASCII_ZERO                      0x30

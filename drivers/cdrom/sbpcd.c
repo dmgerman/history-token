@@ -3641,6 +3641,14 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
+r_static
+r_int
+id|cmd_out_T
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|get_state_T
 r_static
 r_int
@@ -3652,14 +3660,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-r_static
-r_int
-id|cmd_out_T
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 id|clr_cmdbuf
 c_func
@@ -4398,6 +4398,14 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*/
+r_static
+r_int
+id|cc_DriveReset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|cmd_out_T
 r_static
 r_int
@@ -4413,14 +4421,6 @@ DECL|macro|CMDT_TRIES
 mdefine_line|#define CMDT_TRIES 1000
 DECL|macro|TEST_FALSE_FF
 mdefine_line|#define TEST_FALSE_FF 1
-r_static
-r_int
-id|cc_DriveReset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|i
 comma

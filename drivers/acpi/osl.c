@@ -2230,9 +2230,7 @@ id|width
 )paren
 (brace
 r_return
-(paren
 id|AE_SUPPORT
-)paren
 suffix:semicolon
 )brace
 id|acpi_status
@@ -2256,9 +2254,7 @@ id|width
 )paren
 (brace
 r_return
-(paren
 id|AE_SUPPORT
-)paren
 suffix:semicolon
 )brace
 r_void

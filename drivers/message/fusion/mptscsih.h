@@ -38,9 +38,9 @@ DECL|member|max_width
 id|u8
 id|max_width
 suffix:semicolon
-DECL|member|min_sync_fac
+DECL|member|min_sync_factor
 id|u8
-id|min_sync_fac
+id|min_sync_factor
 suffix:semicolon
 DECL|member|saf_te
 id|u8
@@ -48,7 +48,5 @@ id|saf_te
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|MPTSCSIH_DRIVER_SETUP
-mdefine_line|#define MPTSCSIH_DRIVER_SETUP                   &bslash;&n;{                                               &bslash;&n;        MPTSCSIH_DOMAIN_VALIDATION,             &bslash;&n;        MPTSCSIH_MAX_WIDTH,                     &bslash;&n;        MPTSCSIH_MIN_SYNC,                      &bslash;&n;        MPTSCSIH_SAF_TE,                        &bslash;&n;}
 macro_line|#endif
 eof

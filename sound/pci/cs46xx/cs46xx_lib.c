@@ -12338,6 +12338,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -14980,6 +14986,12 @@ op_assign
 id|amp_saved
 suffix:semicolon
 multiline_comment|/* restore the status */
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -15017,6 +15029,12 @@ r_int
 id|amp_saved
 suffix:semicolon
 id|pci_enable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
+id|pci_set_master
 c_func
 (paren
 id|chip-&gt;pci
@@ -15273,10 +15291,18 @@ id|chip
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|spin_lock_init
 c_func
 (paren

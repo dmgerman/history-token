@@ -6,6 +6,116 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+DECL|function|convert_to_cifs_notify_flags
+id|__u32
+id|convert_to_cifs_notify_flags
+c_func
+(paren
+r_int
+r_int
+id|fcntl_notify_flags
+)paren
+(brace
+id|__u32
+id|cifs_ntfy_flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* No way on Linux VFS to ask to monitor xattr&n;&t;changes (and no stream support either */
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_ACCESS
+)paren
+(brace
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_LAST_ACCESS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_MODIFY
+)paren
+(brace
+multiline_comment|/* What does this mean on directories? */
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_LAST_WRITE
+op_or
+id|FILE_NOTIFY_CHANGE_SIZE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_CREATE
+)paren
+(brace
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_CREATION
+op_or
+id|FILE_NOTIFY_CHANGE_LAST_WRITE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_DELETE
+)paren
+(brace
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_LAST_WRITE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_RENAME
+)paren
+(brace
+multiline_comment|/* BB review this - checking various server behaviors */
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_DIR_NAME
+op_or
+id|FILE_NOTIFY_CHANGE_FILE_NAME
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fcntl_notify_flags
+op_amp
+id|DN_ATTRIB
+)paren
+(brace
+id|cifs_ntfy_flags
+op_or_assign
+id|FILE_NOTIFY_CHANGE_SECURITY
+op_or
+id|FILE_NOTIFY_CHANGE_ATTRIBUTES
+suffix:semicolon
+)brace
+multiline_comment|/*&t;if(fcntl_notify_flags &amp; DN_MULTISHOT) {&n;&t;&t;cifs_ntfy_flags |= ;&n;&t;} */
+multiline_comment|/* BB fixme - not sure how to handle this with CIFS yet */
+r_return
+id|cifs_ntfy_flags
+suffix:semicolon
+)brace
 DECL|function|cifs_dir_notify
 r_int
 id|cifs_dir_notify
@@ -118,18 +228,21 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cFYI
+id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;cifs dir notify on file %s&quot;
+l_string|&quot;cifs dir notify on file %s with arg 0x%lx&quot;
 comma
 id|full_path
+comma
+id|arg
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* BB removeme BB */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -168,7 +281,7 @@ c_cond
 id|rc
 )paren
 (brace
-id|cFYI
+id|cERROR
 c_func
 (paren
 l_int|1
@@ -178,8 +291,25 @@ l_string|&quot;Could not open directory for notify&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* BB remove BB */
 )brace
 r_else
+(brace
+id|filter
+op_assign
+id|convert_to_cifs_notify_flags
+c_func
+(paren
+id|arg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|filter
+op_ne
+l_int|0
+)paren
 (brace
 id|rc
 op_assign
@@ -190,8 +320,8 @@ id|xid
 comma
 id|pTcon
 comma
-l_int|1
-multiline_comment|/* subdirs */
+l_int|0
+multiline_comment|/* no subdirs */
 comma
 id|netfid
 comma
@@ -200,7 +330,28 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* BB add code to close file eventually (at unmount&n;&t;&t;&t;it would close automatically but may be a way&n;&t;&t;&t;to do it easily when inode freed or when&n;&t;&t;&t;notify info is cleared/changed */
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;notify rc %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 id|FreeXid

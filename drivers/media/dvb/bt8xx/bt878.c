@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;bt878.h&quot;
-macro_line|#include &quot;dst-bt878.h&quot;
+macro_line|#include &quot;dst_priv.h&quot;
 multiline_comment|/**************************************/
 multiline_comment|/* Miscellaneous utility  definitions */
 multiline_comment|/**************************************/
@@ -2062,35 +2062,11 @@ id|bt878_pci_driver_registered
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* This will be used later by dvb-bt8xx to only use the audio&n; * dma of certain cards */
-DECL|function|bt878_find_audio_dma
-r_int
-id|bt878_find_audio_dma
-c_func
-(paren
-r_void
-)paren
-(brace
-singleline_comment|// pci_register_driver(&amp;bt878_pci_driver);
-id|bt878_pci_driver_registered
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|bt878_find_audio_dma
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bt878_find_audio_dma
-)paren
-suffix:semicolon
 multiline_comment|/*******************************/
 multiline_comment|/* Module management functions */
 multiline_comment|/*******************************/
 DECL|function|bt878_init_module
+r_static
 r_int
 id|bt878_init_module
 c_func
@@ -2134,7 +2110,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 multiline_comment|/*&n;        bt878_check_chipset();&n;*/
-multiline_comment|/* later we register inside of bt878_find_audio_dma&n;&t; * because we may want to ignore certain cards */
+multiline_comment|/* later we register inside of bt878_find_audio_dma()&n;&t; * because we may want to ignore certain cards */
 id|bt878_pci_driver_registered
 op_assign
 l_int|1
@@ -2149,6 +2125,7 @@ id|bt878_pci_driver
 suffix:semicolon
 )brace
 DECL|function|bt878_cleanup_module
+r_static
 r_void
 id|bt878_cleanup_module
 c_func
@@ -2178,20 +2155,6 @@ r_return
 suffix:semicolon
 )brace
 DECL|variable|bt878_init_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bt878_init_module
-)paren
-suffix:semicolon
-DECL|variable|bt878_cleanup_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bt878_cleanup_module
-)paren
-suffix:semicolon
-DECL|variable|bt878_init_module
 id|module_init
 c_func
 (paren
@@ -2205,6 +2168,7 @@ c_func
 id|bt878_cleanup_module
 )paren
 suffix:semicolon
+singleline_comment|//MODULE_AUTHOR(&quot;XXX&quot;);
 id|MODULE_LICENSE
 c_func
 (paren

@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
+macro_line|#warning &quot;include/asm/arch-sa1100/ide.h needs fixing for lart&quot;
 DECL|variable|__initdata
 r_static
 r_struct

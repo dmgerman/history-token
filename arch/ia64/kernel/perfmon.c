@@ -6826,7 +6826,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * XXX: check for signals :&n;&t;&t; * &t;- ok of explicit close&n;&t;&t; * &t;- not ok when coming from exit_files()&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XXX: check for signals :&n;&t;&t; * &t;- ok for explicit close&n;&t;&t; * &t;- not ok when coming from exit_files()&n;&t;&t; */
 id|schedule
 c_func
 (paren
@@ -17104,72 +17104,51 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;entering for [%d]&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|pfm_context_unload
+c_func
+(paren
+id|ctx
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|regs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctx-&gt;ctx_fl_system
+id|ret
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;perfmon: pfm_context_force_terminate [%d] is system-wide&bslash;n&quot;
+l_string|&quot;pfm_context_force_terminate: [%d] unloaded failed with %d&bslash;n&quot;
 comma
 id|current-&gt;pid
+comma
+id|ret
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * we stop the whole thing, we do no need to flush&n;&t; * we know we WERE masked&n;&t; */
-id|pfm_clear_psr_up
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|up
-op_assign
-l_int|0
-suffix:semicolon
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
-id|sp
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * disconnect the task from the context and vice-versa&n;&t; */
-id|current-&gt;thread.pfm_context
-op_assign
-l_int|NULL
-suffix:semicolon
-id|current-&gt;thread.flags
-op_and_assign
-op_complement
-id|IA64_THREAD_PM_VALID
-suffix:semicolon
-id|ctx-&gt;ctx_task
-op_assign
-l_int|NULL
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;context terminated&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * and wakeup controlling task, indicating we are now disconnected&n;&t; */
 id|wake_up_interruptible
 c_func
@@ -18499,7 +18478,7 @@ op_assign
 id|ovfl_pmds
 suffix:semicolon
 )brace
-id|DPRINT
+id|DPRINT_ovfl
 c_func
 (paren
 (paren
@@ -21450,6 +21429,20 @@ id|ctx-&gt;ctx_used_pmds
 l_int|0
 )braket
 suffix:semicolon
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;is_self=%d ovfl_val=0x%lx mask2=0x%lx&bslash;n&quot;
+comma
+id|is_self
+comma
+id|ovfl_val
+comma
+id|mask2
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -21591,11 +21584,9 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] is_self=%d ctx_pmd[%d]=0x%lx  pmd_val=0x%lx&bslash;n&quot;
+l_string|&quot;[%d] ctx_pmd[%d]=0x%lx  pmd_val=0x%lx&bslash;n&quot;
 comma
 id|task-&gt;pid
-comma
-id|is_self
 comma
 id|i
 comma

@@ -884,15 +884,18 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
-id|wall_to_monotonic.tv_sec
-op_assign
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|wall_to_monotonic
+comma
 op_minus
 id|xtime.tv_sec
-suffix:semicolon
-id|wall_to_monotonic.tv_nsec
-op_assign
+comma
 op_minus
 id|xtime.tv_nsec
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_CHIP_M32102) || defined(CONFIG_CHIP_XNUX2) &bslash;&n;&t;|| defined(CONFIG_CHIP_VDEC2) || defined(CONFIG_CHIP_M32700) &bslash;&n;&t;|| defined(CONFIG_CHIP_OPSP)
 multiline_comment|/* M32102 MFT setup */

@@ -2669,7 +2669,7 @@ mdefine_line|#define I2O_TIMEOUT_RESET&t;&t;30
 DECL|macro|I2O_TIMEOUT_STATUS_GET
 mdefine_line|#define I2O_TIMEOUT_STATUS_GET&t;&t;5
 DECL|macro|I2O_TIMEOUT_LCT_GET
-mdefine_line|#define I2O_TIMEOUT_LCT_GET&t;&t;20
+mdefine_line|#define I2O_TIMEOUT_LCT_GET&t;&t;360
 DECL|macro|I2O_TIMEOUT_SCSI_SCB_ABORT
 mdefine_line|#define I2O_TIMEOUT_SCSI_SCB_ABORT&t;240
 multiline_comment|/* retries */

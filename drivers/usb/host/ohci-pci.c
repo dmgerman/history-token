@@ -319,19 +319,6 @@ id|_machine
 op_eq
 id|_MACH_Pmac
 )paren
-id|disable_irq
-(paren
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|hcd-&gt;self.controller
-)paren
-)paren
-op_member_access_from_pointer
-id|irq
-)paren
-suffix:semicolon
 (brace
 r_struct
 id|device_node
@@ -368,7 +355,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PMAC_PBOOK */
 r_return
 l_int|0
 suffix:semicolon
@@ -400,6 +387,13 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+r_if
+c_cond
+(paren
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
 (brace
 r_struct
 id|device_node
@@ -435,7 +429,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PMAC_PBOOK */
 multiline_comment|/* resume root hub */
 r_if
 c_cond
@@ -480,35 +474,6 @@ id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|retval
-op_eq
-l_int|0
-)paren
-(brace
-macro_line|#ifdef CONFIG_PMAC_PBOOK
-r_if
-c_cond
-(paren
-id|_machine
-op_eq
-id|_MACH_Pmac
-)paren
-id|enable_irq
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|hcd-&gt;self.controller
-)paren
-op_member_access_from_pointer
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 r_return
 id|retval
 suffix:semicolon

@@ -1189,7 +1189,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TASK = %p[%d] &squot;%s&squot; THREAD: %p&quot;
+l_string|&quot;TASK = %p[%d] &squot;%s&squot; THREAD: %p&bslash;n&quot;
 comma
 id|current
 comma
@@ -1442,6 +1442,19 @@ id|last_task_used_altivec
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|last_task_used_spe
+op_eq
+id|current
+)paren
+id|last_task_used_spe
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|flush_thread
 r_void
@@ -1473,6 +1486,19 @@ id|last_task_used_altivec
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|last_task_used_spe
+op_eq
+id|current
+)paren
+id|last_task_used_spe
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|release_thread
@@ -1891,6 +1917,19 @@ id|last_task_used_altivec
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|last_task_used_spe
+op_eq
+id|current
+)paren
+id|last_task_used_spe
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren

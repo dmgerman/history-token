@@ -964,7 +964,7 @@ comma
 id|cpu-&gt;x86_model_id
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_SPEEDSTEP_CENTRINO_ACPI
+macro_line|#ifndef CONFIG_X86_SPEEDSTEP_CENTRINO_ACPI
 id|printk
 c_func
 (paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
@@ -1040,12 +1041,9 @@ comma
 id|regs
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * If a signal handler needs to be called,&n;&t;&t;&t; * do_signal32() has set R3 to the signal number (the&n;&t;&t;&t; * first argument of the signal handler), so don&squot;t&n;&t;&t;&t; * overwrite that with EINTR !&n;&t;&t;&t; * In the other cases, do_signal32() doesn&squot;t touch &n;&t;&t;&t; * R3, so it&squot;s still set to -EINTR (see above).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Returning 0 means we return to userspace via&n;&t;&t;&t; * ret_from_except and thus restore all user&n;&t;&t;&t; * registers from *regs.  This is what we need&n;&t;&t;&t; * to do when a signal has been delivered.&n;&t;&t;&t; */
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2542,12 +2540,9 @@ comma
 id|regs
 )paren
 )paren
-multiline_comment|/*&n;&t;&t;&t; * If a signal handler needs to be called,&n;&t;&t;&t; * do_signal32() has set R3 to the signal number (the&n;&t;&t;&t; * first argument of the signal handler), so don&squot;t&n;&t;&t;&t; * overwrite that with EINTR !&n;&t;&t;&t; * In the other cases, do_signal32() doesn&squot;t touch &n;&t;&t;&t; * R3, so it&squot;s still set to -EINTR (see above).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Returning 0 means we return to userspace via&n;&t;&t;&t; * ret_from_except and thus restore all user&n;&t;&t;&t; * registers from *regs.  This is what we need&n;&t;&t;&t; * to do when a signal has been delivered.&n;&t;&t;&t; */
 r_return
-id|regs-&gt;gpr
-(braket
-l_int|3
-)braket
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2793,7 +2788,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Set up a signal frame for a &quot;real-time&quot; signal handler&n; * (one which gets siginfo).&n; */
 DECL|function|handle_rt_signal32
 r_static
-r_void
+r_int
 id|handle_rt_signal32
 c_func
 (paren
@@ -3125,7 +3120,23 @@ id|regs-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -3150,6 +3161,9 @@ id|sig
 comma
 id|current
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|do_setcontext32
@@ -3642,7 +3656,7 @@ suffix:semicolon
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
 DECL|function|handle_signal32
 r_static
-r_void
+r_int
 id|handle_signal32
 c_func
 (paren
@@ -3929,7 +3943,23 @@ id|regs-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
+)paren
+id|ptrace_notify
+c_func
+(paren
+id|SIGTRAP
+)paren
+suffix:semicolon
 r_return
+l_int|1
 suffix:semicolon
 id|badframe
 suffix:colon
@@ -3955,6 +3985,9 @@ id|sig
 comma
 id|current
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a signal return; undo the signal stack.&n; */
@@ -4408,6 +4441,8 @@ id|ka.sa.sa_flags
 op_amp
 id|SA_SIGINFO
 )paren
+id|ret
+op_assign
 id|handle_rt_signal32
 c_func
 (paren
@@ -4427,6 +4462,8 @@ id|newsp
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|handle_signal32
 c_func
 (paren
@@ -4448,6 +4485,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ret
+op_logical_and
 op_logical_neg
 (paren
 id|ka.sa.sa_flags
@@ -4499,7 +4538,7 @@ id|current-&gt;sighand-&gt;siglock
 suffix:semicolon
 )brace
 r_return
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 eof

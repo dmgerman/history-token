@@ -1859,8 +1859,8 @@ suffix:semicolon
 )brace
 r_else
 id|req-&gt;data_len
-op_sub_assign
-id|cmd-&gt;bufflen
+op_assign
+id|cmd-&gt;resid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Zero these out.  They now point to freed memory, and it is&n;&t; * dangerous to hang onto the pointers.&n;&t; */
