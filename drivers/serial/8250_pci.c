@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/8250_pci.c&n; *&n; *  Probe module for 8250/16550-type PCI serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: 8250_pci.c,v 1.19 2002/07/21 21:32:30 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250_pci.c&n; *&n; *  Probe module for 8250/16550-type PCI serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: 8250_pci.c,v 1.24 2002/07/29 14:39:56 rmk Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -16,6 +16,7 @@ macro_line|#undef pci_board
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
 macro_line|#ifndef IS_PCI_REGION_IOPORT
 DECL|macro|IS_PCI_REGION_IOPORT
@@ -370,6 +371,80 @@ id|idx
 op_minus
 l_int|2
 )paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* HP&squot;s Diva chip puts the 4th/5th serial port further out, and&n;&t; * some serial ports are supposed to be hidden on certain models.&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_HP
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_HP_DIVA
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|dev-&gt;subsystem_device
+)paren
+(brace
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_MAESTRO
+suffix:colon
+r_if
+c_cond
+(paren
+id|idx
+op_eq
+l_int|3
+)paren
+id|idx
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_EVEREST
+suffix:colon
+r_if
+c_cond
+(paren
+id|idx
+OG
+l_int|0
+)paren
+id|idx
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|idx
+OG
+l_int|2
+)paren
+id|idx
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|idx
+OG
+l_int|2
+)paren
+(brace
+id|offset
+op_assign
+l_int|0x18
 suffix:semicolon
 )brace
 )brace
@@ -1394,6 +1469,93 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * HP&squot;s Remote Management Console.  The Diva chip came in several&n; * different versions.  N-class, L2000 and A500 have two Diva chips, each&n; * with 3 UARTs (the third UART on the second chip is unused).  Superdome&n; * and Keystone have one Diva chip with 3 UARTs.  Some later machines have&n; * one Diva chip, but it has been expanded to 5 UARTs.&n; */
+r_static
+r_int
+id|__devinit
+DECL|function|pci_hp_diva
+id|pci_hp_diva
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_board
+op_star
+id|board
+comma
+r_int
+id|enable
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|enable
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;subsystem_device
+)paren
+(brace
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_TOSCA1
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_HALFDOME
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_KEYSTONE
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_EVEREST
+suffix:colon
+id|board-&gt;num_ports
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_TOSCA2
+suffix:colon
+id|board-&gt;num_ports
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_MAESTRO
+suffix:colon
+id|board-&gt;num_ports
+op_assign
+l_int|4
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_HP_DIVA_POWERBAR
+suffix:colon
+id|board-&gt;num_ports
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_static
 r_int
 id|__devinit
@@ -1506,6 +1668,9 @@ comma
 DECL|enumerator|pbn_b1_8_1382400
 id|pbn_b1_8_1382400
 comma
+DECL|enumerator|pbn_b2_1_115200
+id|pbn_b2_1_115200
+comma
 DECL|enumerator|pbn_b2_8_115200
 id|pbn_b2_8_115200
 comma
@@ -1559,6 +1724,9 @@ id|pbn_intel_i960
 comma
 DECL|enumerator|pbn_sgi_ioc3
 id|pbn_sgi_ioc3
+comma
+DECL|enumerator|pbn_hp_diva
+id|pbn_hp_diva
 comma
 DECL|enumerator|pbn_nec_nile4
 id|pbn_nec_nile4
@@ -1818,6 +1986,15 @@ multiline_comment|/* pbn_b1_8_1382400 */
 (brace
 id|SPCI_FL_BASE2
 comma
+l_int|1
+comma
+l_int|115200
+)brace
+comma
+multiline_comment|/* pbn_b2_1_115200 */
+(brace
+id|SPCI_FL_BASE2
+comma
 l_int|8
 comma
 l_int|115200
@@ -2047,6 +2224,23 @@ comma
 l_int|0x20178
 )brace
 comma
+(brace
+id|SPCI_FL_BASE0
+comma
+l_int|5
+comma
+l_int|115200
+comma
+l_int|8
+comma
+l_int|0
+comma
+id|pci_hp_diva
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* pbn_hp_diva */
 multiline_comment|/*&n;&t; * NEC Vrc-5074 (Nile 4) builtin UART.&n;&t; */
 (brace
 id|SPCI_FL_BASE0
@@ -2541,10 +2735,18 @@ comma
 id|board
 )paren
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2618,10 +2820,18 @@ c_cond
 op_logical_neg
 id|priv
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Run the initialization function, if any&n;&t; */
 r_if
 c_cond
@@ -2651,6 +2861,12 @@ op_ne
 l_int|0
 )paren
 (brace
+id|pci_disable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -4563,6 +4779,39 @@ comma
 id|pbn_sgi_ioc3
 )brace
 comma
+multiline_comment|/* HP Diva card */
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_hp_diva
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_DIVA_AUX
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b2_1_115200
+)brace
+comma
 multiline_comment|/*&n;&t; * NEC Vrc-5074 (Nile 4) builtin UART.&n;&t; */
 (brace
 id|PCI_VENDOR_ID_NEC
@@ -4669,15 +4918,6 @@ comma
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifndef __devexit_p
-macro_line|#if defined(MODULE) || defined(CONFIG_HOTPLUG)
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) x
-macro_line|#else
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) NULL
-macro_line|#endif
-macro_line|#endif
 DECL|variable|serial_pci_driver
 r_static
 r_struct
