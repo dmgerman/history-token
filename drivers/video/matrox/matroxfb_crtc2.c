@@ -2283,8 +2283,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_struct
-id|fb_vblank
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2323,6 +2323,7 @@ id|crt
 comma
 (paren
 id|u_int32_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2412,6 +2413,7 @@ id|tmp
 comma
 (paren
 id|u_int32_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2741,6 +2743,7 @@ id|conn
 comma
 (paren
 id|u_int32_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2876,6 +2879,7 @@ id|tmp
 comma
 (paren
 id|u_int32_t
+id|__user
 op_star
 )paren
 id|arg
