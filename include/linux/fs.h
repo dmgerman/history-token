@@ -1828,6 +1828,22 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* unblock callback */
+DECL|member|fl_copy_lock
+r_void
+(paren
+op_star
+id|fl_copy_lock
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+comma
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* that will die - we need it for nfs_lock_info */
