@@ -484,6 +484,18 @@ op_amp
 id|getstatus
 )paren
 suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: Card present %x Power status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|func-&gt;presence_save
+comma
+id|func-&gt;pwr_save
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -509,6 +521,25 @@ id|taskInfo-&gt;event_type
 op_assign
 id|INT_SWITCH_OPEN
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|func-&gt;pwr_save
+op_logical_and
+id|func-&gt;presence_save
+)paren
+(brace
+id|taskInfo-&gt;event_type
+op_assign
+id|INT_POWER_FAULT
+suffix:semicolon
+id|err
+c_func
+(paren
+l_string|&quot;Surprise Removal of card&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -5537,6 +5568,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ctrl-&gt;crit_sect
+)paren
+suffix:semicolon
 r_return
 id|WRONG_BUS_FREQUENCY
 suffix:semicolon
@@ -5579,6 +5617,13 @@ comma
 id|__FUNCTION__
 comma
 id|rc
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
@@ -6198,7 +6243,11 @@ id|func-&gt;is_a_board
 op_assign
 l_int|0x01
 suffix:semicolon
-multiline_comment|/* next, we will instantiate the linux pci_dev structures &n;&t;&t; * (with appropriate driver notification, if already present) &n;&t;&t; */
+id|func-&gt;pwr_save
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Next, we will instantiate the linux pci_dev structures &n;&t;&t; * (with appropriate driver notification, if already present) &n;&t;&t; */
 id|index
 op_assign
 l_int|0
@@ -6940,6 +6989,10 @@ id|func-&gt;switch_save
 op_assign
 l_int|0x10
 suffix:semicolon
+id|func-&gt;pwr_save
+op_assign
+l_int|0
+suffix:semicolon
 id|func-&gt;is_a_board
 op_assign
 l_int|0
@@ -6997,9 +7050,6 @@ suffix:semicolon
 id|u8
 id|getstatus
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 id|pushbutton_pending
 op_assign
 l_int|0
@@ -7053,69 +7103,12 @@ comma
 id|p_slot-&gt;device
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|shpchp_disable_slot
 c_func
 (paren
 id|p_slot
 )paren
-)paren
-(brace
-multiline_comment|/* Wait for exclusive access to hardware */
-id|down
-c_func
-(paren
-op_amp
-id|p_slot-&gt;ctrl-&gt;crit_sect
-)paren
 suffix:semicolon
-multiline_comment|/* Turn on the Attention LED */
-id|rc
-op_assign
-id|p_slot-&gt;hpc_ops
-op_member_access_from_pointer
-id|set_attention_status
-c_func
-(paren
-id|p_slot
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s: Issue of Set Atten Indicator On command failed&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Wait for the command to complete */
-id|wait_for_ctrl_irq
-(paren
-id|p_slot-&gt;ctrl
-)paren
-suffix:semicolon
-multiline_comment|/* Done with exclusive hardware access */
-id|up
-c_func
-(paren
-op_amp
-id|p_slot-&gt;ctrl-&gt;crit_sect
-)paren
-suffix:semicolon
-)brace
 id|p_slot-&gt;state
 op_assign
 id|STATIC_STATE
@@ -7153,42 +7146,6 @@ c_func
 (paren
 op_amp
 id|p_slot-&gt;ctrl-&gt;crit_sect
-)paren
-suffix:semicolon
-multiline_comment|/* Turn off the green LED */
-id|rc
-op_assign
-id|p_slot-&gt;hpc_ops
-op_member_access_from_pointer
-id|set_attention_status
-c_func
-(paren
-id|p_slot
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s: Issue of Set Atten Indicator On command failed&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Wait for the command to complete */
-id|wait_for_ctrl_irq
-(paren
-id|p_slot-&gt;ctrl
 )paren
 suffix:semicolon
 id|p_slot-&gt;hpc_ops
@@ -8228,9 +8185,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Check to see if (latch closed, card present, power off) */
@@ -8281,9 +8236,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|rc
@@ -8325,9 +8278,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|rc
@@ -8369,9 +8320,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|up
@@ -8403,9 +8352,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 id|func-&gt;bus
 op_assign
@@ -8439,6 +8386,29 @@ op_amp
 (paren
 id|func-&gt;presence_save
 )paren
+)paren
+suffix:semicolon
+id|p_slot-&gt;hpc_ops
+op_member_access_from_pointer
+id|get_power_status
+c_func
+(paren
+id|p_slot
+comma
+op_amp
+(paren
+id|func-&gt;pwr_save
+)paren
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: func-&gt;pwr_save %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|func-&gt;pwr_save
 )paren
 suffix:semicolon
 id|p_slot-&gt;hpc_ops
@@ -8653,9 +8623,7 @@ op_logical_neg
 id|p_slot-&gt;ctrl
 )paren
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 multiline_comment|/* Check to see if (latch closed, card present, power on) */
 id|down
@@ -8705,9 +8673,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|ret
@@ -8749,9 +8715,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|ret
@@ -8794,9 +8758,7 @@ id|p_slot-&gt;ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
 id|up

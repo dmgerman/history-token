@@ -77,6 +77,10 @@ DECL|member|presence_save
 id|u8
 id|presence_save
 suffix:semicolon
+DECL|member|pwr_save
+id|u8
+id|pwr_save
+suffix:semicolon
 DECL|member|base_length
 id|u32
 id|base_length
