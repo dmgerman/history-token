@@ -547,7 +547,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -560,7 +560,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input2
+id|temp2_input
 comma
 id|S_IRUGO
 comma
@@ -573,7 +573,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input3
+id|temp3_input
 comma
 id|S_IRUGO
 comma
@@ -586,7 +586,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input4
+id|temp4_input
 comma
 id|S_IRUGO
 comma
@@ -599,7 +599,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -614,7 +614,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max2
+id|temp2_max
 comma
 id|S_IWUSR
 op_or
@@ -629,7 +629,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max3
+id|temp3_max
 comma
 id|S_IWUSR
 op_or
@@ -644,7 +644,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max4
+id|temp4_max
 comma
 id|S_IWUSR
 op_or
@@ -1095,7 +1095,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1105,7 +1105,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input2
+id|dev_attr_temp2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1115,7 +1115,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input3
+id|dev_attr_temp3_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1125,7 +1125,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input4
+id|dev_attr_temp4_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1135,7 +1135,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1145,7 +1145,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max2
+id|dev_attr_temp2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1155,7 +1155,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max3
+id|dev_attr_temp3_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1165,7 +1165,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max4
+id|dev_attr_temp4_max
 )paren
 suffix:semicolon
 id|device_create_file

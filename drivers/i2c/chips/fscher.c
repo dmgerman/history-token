@@ -386,31 +386,31 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|sysfs_r
-mdefine_line|#define sysfs_r(kind, offset, reg) &bslash;&n;static ssize_t show_##kind (struct fscher_data *, char *, int); &bslash;&n;static ssize_t show_##kind##offset (struct device *, char *); &bslash;&n;static ssize_t show_##kind##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;fscher_update_client(client); &bslash;&n;&t;return show_##kind(data, buf, (offset)); &bslash;&n;}
+mdefine_line|#define sysfs_r(kind, sub, offset, reg) &bslash;&n;static ssize_t show_##kind##sub (struct fscher_data *, char *, int); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *, char *); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;fscher_update_client(client); &bslash;&n;&t;return show_##kind##sub(data, buf, (offset)); &bslash;&n;}
 DECL|macro|sysfs_w
-mdefine_line|#define sysfs_w(kind, offset, reg) &bslash;&n;static ssize_t set_##kind (struct i2c_client *, struct fscher_data *, const char *, size_t, int, int); &bslash;&n;static ssize_t set_##kind##offset (struct device *, const char *, size_t); &bslash;&n;static ssize_t set_##kind##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;return set_##kind(client, data, buf, count, (offset), reg); &bslash;&n;}
+mdefine_line|#define sysfs_w(kind, sub, offset, reg) &bslash;&n;static ssize_t set_##kind##sub (struct i2c_client *, struct fscher_data *, const char *, size_t, int, int); &bslash;&n;static ssize_t set_##kind##offset##sub (struct device *, const char *, size_t); &bslash;&n;static ssize_t set_##kind##offset##sub (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct fscher_data *data = i2c_get_clientdata(client); &bslash;&n;&t;return set_##kind##sub(client, data, buf, count, (offset), reg); &bslash;&n;}
 DECL|macro|sysfs_rw_n
-mdefine_line|#define sysfs_rw_n(kind, offset, reg) &bslash;&n;sysfs_r(kind, offset, reg) &bslash;&n;sysfs_w(kind, offset, reg) &bslash;&n;static DEVICE_ATTR(kind##offset, S_IRUGO | S_IWUSR, show_##kind##offset, set_##kind##offset);
+mdefine_line|#define sysfs_rw_n(kind, sub, offset, reg) &bslash;&n;sysfs_r(kind, sub, offset, reg) &bslash;&n;sysfs_w(kind, sub, offset, reg) &bslash;&n;static DEVICE_ATTR(kind##offset##sub, S_IRUGO | S_IWUSR, show_##kind##offset##sub, set_##kind##offset##sub);
 DECL|macro|sysfs_rw
-mdefine_line|#define sysfs_rw(kind, reg) &bslash;&n;sysfs_r(kind, 0, reg) &bslash;&n;sysfs_w(kind, 0, reg) &bslash;&n;static DEVICE_ATTR(kind, S_IRUGO | S_IWUSR, show_##kind##0, set_##kind##0);
+mdefine_line|#define sysfs_rw(kind, sub, reg) &bslash;&n;sysfs_r(kind, sub, 0, reg) &bslash;&n;sysfs_w(kind, sub, 0, reg) &bslash;&n;static DEVICE_ATTR(kind##sub, S_IRUGO | S_IWUSR, show_##kind##0##sub, set_##kind##0##sub);
 DECL|macro|sysfs_ro_n
-mdefine_line|#define sysfs_ro_n(kind, offset, reg) &bslash;&n;sysfs_r(kind, offset, reg) &bslash;&n;static DEVICE_ATTR(kind##offset, S_IRUGO, show_##kind##offset, NULL);
+mdefine_line|#define sysfs_ro_n(kind, sub, offset, reg) &bslash;&n;sysfs_r(kind, sub, offset, reg) &bslash;&n;static DEVICE_ATTR(kind##offset##sub, S_IRUGO, show_##kind##offset##sub, NULL);
 DECL|macro|sysfs_ro
-mdefine_line|#define sysfs_ro(kind, reg) &bslash;&n;sysfs_r(kind, 0, reg) &bslash;&n;static DEVICE_ATTR(kind, S_IRUGO, show_##kind##0, NULL);
+mdefine_line|#define sysfs_ro(kind, sub, reg) &bslash;&n;sysfs_r(kind, sub, 0, reg) &bslash;&n;static DEVICE_ATTR(kind, S_IRUGO, show_##kind##0##sub, NULL);
 DECL|macro|sysfs_fan
-mdefine_line|#define sysfs_fan(offset, reg_status, reg_min, reg_ripple, reg_act) &bslash;&n;sysfs_rw_n(pwm       , offset, reg_min) &bslash;&n;sysfs_rw_n(fan_status, offset, reg_status) &bslash;&n;sysfs_rw_n(fan_div   , offset, reg_ripple) &bslash;&n;sysfs_ro_n(fan_input , offset, reg_act)
+mdefine_line|#define sysfs_fan(offset, reg_status, reg_min, reg_ripple, reg_act) &bslash;&n;sysfs_rw_n(pwm,        , offset, reg_min) &bslash;&n;sysfs_rw_n(fan, _status, offset, reg_status) &bslash;&n;sysfs_rw_n(fan, _div   , offset, reg_ripple) &bslash;&n;sysfs_ro_n(fan, _input , offset, reg_act)
 DECL|macro|sysfs_temp
-mdefine_line|#define sysfs_temp(offset, reg_status, reg_act) &bslash;&n;sysfs_rw_n(temp_status, offset, reg_status) &bslash;&n;sysfs_ro_n(temp_input , offset, reg_act)
+mdefine_line|#define sysfs_temp(offset, reg_status, reg_act) &bslash;&n;sysfs_rw_n(temp, _status, offset, reg_status) &bslash;&n;sysfs_ro_n(temp, _input , offset, reg_act)
 DECL|macro|sysfs_in
-mdefine_line|#define sysfs_in(offset, reg_act) &bslash;&n;sysfs_ro_n(in_input, offset, reg_act)
+mdefine_line|#define sysfs_in(offset, reg_act) &bslash;&n;sysfs_ro_n(in, _input, offset, reg_act)
 DECL|macro|sysfs_revision
-mdefine_line|#define sysfs_revision(reg_revision) &bslash;&n;sysfs_ro(revision, reg_revision)
+mdefine_line|#define sysfs_revision(reg_revision) &bslash;&n;sysfs_ro(revision, , reg_revision)
 DECL|macro|sysfs_alarms
-mdefine_line|#define sysfs_alarms(reg_events) &bslash;&n;sysfs_ro(alarms, reg_events)
+mdefine_line|#define sysfs_alarms(reg_events) &bslash;&n;sysfs_ro(alarms, , reg_events)
 DECL|macro|sysfs_control
-mdefine_line|#define sysfs_control(reg_control) &bslash;&n;sysfs_rw(control, reg_control)
+mdefine_line|#define sysfs_control(reg_control) &bslash;&n;sysfs_rw(control, , reg_control)
 DECL|macro|sysfs_watchdog
-mdefine_line|#define sysfs_watchdog(reg_control, reg_status, reg_preset) &bslash;&n;sysfs_rw(watchdog_control, reg_control) &bslash;&n;sysfs_rw(watchdog_status , reg_status) &bslash;&n;sysfs_rw(watchdog_preset , reg_preset)
+mdefine_line|#define sysfs_watchdog(reg_control, reg_status, reg_preset) &bslash;&n;sysfs_rw(watchdog, _control, reg_control) &bslash;&n;sysfs_rw(watchdog, _status , reg_status) &bslash;&n;sysfs_rw(watchdog, _preset , reg_preset)
 id|sysfs_fan
 c_func
 (paren
@@ -523,11 +523,11 @@ comma
 id|FSCHER_REG_WDOG_PRESET
 )paren
 DECL|macro|device_create_file_fan
-mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_status##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_div##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_input##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_status); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_div); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_input); &bslash;&n;} while (0)
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_status##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_status); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_input); &bslash;&n;} while (0)
 DECL|macro|device_create_file_in
-mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_input); &bslash;&n;} while (0)
 DECL|macro|device_create_file_revision
 mdefine_line|#define device_create_file_revision(client) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_revision); &bslash;&n;} while (0)
 DECL|macro|device_create_file_alarms

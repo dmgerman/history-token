@@ -838,9 +838,9 @@ id|max
 )paren
 suffix:semicolon
 DECL|macro|sysfs_in_offset
-mdefine_line|#define sysfs_in_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_in_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;        return show_in(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in_input##offset, S_IRUGO, show_regs_in_##offset, NULL)
+mdefine_line|#define sysfs_in_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_in_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;        return show_in(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_regs_in_##offset, NULL)
 DECL|macro|sysfs_in_reg_offset
-mdefine_line|#define sysfs_in_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_in_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_in_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_in_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in_##reg##offset, S_IRUGO| S_IWUSR, show_regs_in_##reg##offset, store_regs_in_##reg##offset)
+mdefine_line|#define sysfs_in_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_in_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_in_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_in_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_in_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_in_##reg##offset, store_regs_in_##reg##offset)
 DECL|macro|sysfs_in_offsets
 mdefine_line|#define sysfs_in_offsets(offset) &bslash;&n;sysfs_in_offset(offset); &bslash;&n;sysfs_in_reg_offset(min, offset); &bslash;&n;sysfs_in_reg_offset(max, offset);
 id|sysfs_in_offsets
@@ -898,7 +898,7 @@ l_int|8
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_in
-mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_min##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_max##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_min); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in##offset##_max); &bslash;&n;} while (0)
 DECL|macro|show_fan_reg
 mdefine_line|#define show_fan_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;FAN_FROM_REG(data-&gt;reg[nr-1], (long)DIV_FROM_REG(data-&gt;fan_div[nr-1]))); &bslash;&n;}
 DECL|variable|fan
@@ -1023,9 +1023,9 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_fan_offset
-mdefine_line|#define sysfs_fan_offset(offset) &bslash;&n;static ssize_t show_regs_fan_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan_input##offset, S_IRUGO, show_regs_fan_##offset, NULL)
+mdefine_line|#define sysfs_fan_offset(offset) &bslash;&n;static ssize_t show_regs_fan_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, show_regs_fan_##offset, NULL)
 DECL|macro|sysfs_fan_min_offset
-mdefine_line|#define sysfs_fan_min_offset(offset) &bslash;&n;static ssize_t show_regs_fan_min##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_min(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_min##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_min(dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan_min##offset, S_IRUGO | S_IWUSR, show_regs_fan_min##offset, store_regs_fan_min##offset)
+mdefine_line|#define sysfs_fan_min_offset(offset) &bslash;&n;static ssize_t show_regs_fan_min##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_min(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_min##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_min(dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR, show_regs_fan_min##offset, store_regs_fan_min##offset)
 id|sysfs_fan_offset
 c_func
 (paren
@@ -1063,7 +1063,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_fan
-mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_min##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_min); &bslash;&n;} while (0)
 DECL|macro|show_temp_reg
 mdefine_line|#define show_temp_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)AS99127_TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;LM75_TEMP_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, (long)TEMP_FROM_REG(data-&gt;reg)); &bslash;&n;&t;} &bslash;&n;}
 DECL|variable|temp
@@ -1106,9 +1106,9 @@ id|hyst
 )paren
 suffix:semicolon
 DECL|macro|sysfs_temp_offset
-mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_temp_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp_input##offset, S_IRUGO, show_regs_temp_##offset, NULL)
+mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash;&n;show_regs_temp_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_input, S_IRUGO, show_regs_temp_##offset, NULL)
 DECL|macro|sysfs_temp_reg_offset
-mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp_##reg##offset, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset)
+mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset)
 DECL|macro|sysfs_temp_offsets
 mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(max, offset); &bslash;&n;sysfs_temp_reg_offset(hyst, offset);
 id|sysfs_temp_offsets
@@ -1130,7 +1130,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_max##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_hyst##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_max); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_hyst); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_vid_reg
@@ -2093,7 +2093,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_fan_div
-mdefine_line|#define sysfs_fan_div(offset) &bslash;&n;static ssize_t show_regs_fan_div_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_div_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_div_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_div_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan_div##offset, S_IRUGO | S_IWUSR, show_regs_fan_div_##offset, store_regs_fan_div_##offset)
+mdefine_line|#define sysfs_fan_div(offset) &bslash;&n;static ssize_t show_regs_fan_div_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_fan_div_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_fan_div_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_fan_div_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_div, S_IRUGO | S_IWUSR, show_regs_fan_div_##offset, store_regs_fan_div_##offset)
 id|sysfs_fan_div
 c_func
 (paren
@@ -2113,7 +2113,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_fan_div
-mdefine_line|#define device_create_file_fan_div(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_div##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_fan_div(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_div); &bslash;&n;} while (0)
 multiline_comment|/* w83697hf only has two fans */
 r_static
 id|ssize_t
@@ -2559,7 +2559,7 @@ suffix:semicolon
 DECL|macro|sysfs_pwm
 mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR, show_regs_pwm_##offset, store_regs_pwm_##offset)
 DECL|macro|sysfs_pwmenable
-mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm_enable##offset, S_IRUGO | S_IWUSR, show_regs_pwmenable_##offset, store_regs_pwmenable_##offset)
+mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset##_enable, S_IRUGO | S_IWUSR, show_regs_pwmenable_##offset, store_regs_pwmenable_##offset)
 id|sysfs_pwm
 c_func
 (paren
@@ -2594,7 +2594,7 @@ suffix:semicolon
 DECL|macro|device_create_file_pwm
 mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;} while (0)
 DECL|macro|device_create_file_pwmenable
-mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm_enable##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset##_enable); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_sensor_reg
