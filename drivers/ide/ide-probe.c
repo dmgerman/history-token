@@ -1256,6 +1256,22 @@ id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Disable device irq if we don&squot;t need to&n;&t;&t; * probe for it. Otherwise we&squot;ll get spurious&n;&t;&t; * interrupts during the identify-phase that&n;&t;&t; * the irq handler isn&squot;t expecting.&n;&t;&t; */
+id|hwif
+op_member_access_from_pointer
+id|OUTB
+c_func
+(paren
+id|drive-&gt;ctl
+op_or
+l_int|2
+comma
+id|IDE_CONTROL_REG
+)paren
+suffix:semicolon
+)brace
 id|retval
 op_assign
 id|actual_try_to_identify
