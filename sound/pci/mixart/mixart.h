@@ -213,6 +213,11 @@ DECL|member|msg_fifo_writeptr
 r_int
 id|msg_fifo_writeptr
 suffix:semicolon
+DECL|member|msg_processed
+id|atomic_t
+id|msg_processed
+suffix:semicolon
+multiline_comment|/* number of messages to be processed in takslet */
 DECL|member|lock
 id|spinlock_t
 id|lock

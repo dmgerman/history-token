@@ -458,22 +458,9 @@ r_if
 c_cond
 (paren
 id|err
-)paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;error MSG_STREAM_ST***_STREAM_GRP_PACKET&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+OL
+l_int|0
+op_logical_or
 id|group_state_resp.txx_status
 op_ne
 l_int|0
@@ -483,7 +470,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;error status MSG_STREAM_ST***_STREAM_GRP_PACKET (%x)!&bslash;n&quot;
+l_string|&quot;error MSG_STREAM_ST***_STREAM_GRP_PACKET err=%x stat=%x !&bslash;n&quot;
+comma
+id|err
 comma
 id|group_state_resp.txx_status
 )paren
@@ -530,22 +519,9 @@ r_if
 c_cond
 (paren
 id|err
-)paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;error MSG_STREAM_START_STREAM_GRP_PACKET !&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+OL
+l_int|0
+op_logical_or
 id|group_state_resp.txx_status
 op_ne
 l_int|0
@@ -555,7 +531,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;error status MSG_STREAM_START_STREAM_GRP_PACKET (%x)!&bslash;n&quot;
+l_string|&quot;error MSG_STREAM_START_STREAM_GRP_PACKET err=%x stat=%x !&bslash;n&quot;
+comma
+id|err
 comma
 id|group_state_resp.txx_status
 )paren
@@ -612,33 +590,28 @@ r_if
 c_cond
 (paren
 id|err
-)paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;error MSG_SYSTEM_SEND_SYNCHRO_CMD!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+OL
+l_int|0
+op_logical_or
 id|stat
+op_ne
+l_int|0
 )paren
 (brace
 id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;error MSG_SYSTEM_SEND_SYNCHRO_CMD stat=%x!&bslash;n&quot;
+l_string|&quot;error MSG_SYSTEM_SEND_SYNCHRO_CMD err=%x stat=%x !&bslash;n&quot;
+comma
+id|err
 comma
 id|stat
 )paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|pipe-&gt;status
@@ -680,6 +653,12 @@ id|request
 suffix:semicolon
 id|mixart_clock_properties_t
 id|clock_properties
+suffix:semicolon
+id|mixart_clock_properties_resp_t
+id|clock_prop_resp
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_switch
 c_cond
@@ -815,8 +794,59 @@ r_sizeof
 id|clock_properties
 )paren
 suffix:semicolon
-multiline_comment|/* we are not allowed to wait for the response, so simply set rate */
-multiline_comment|/* TODO : error has to be handled later in the tasklet! */
+id|err
+op_assign
+id|snd_mixart_send_msg
+c_func
+(paren
+id|mgr
+comma
+op_amp
+id|request
+comma
+r_sizeof
+(paren
+id|clock_prop_resp
+)paren
+comma
+op_amp
+id|clock_prop_resp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+op_logical_or
+id|clock_prop_resp.status
+op_ne
+l_int|0
+op_logical_or
+id|clock_prop_resp.clock_mode
+op_ne
+id|CM_STANDALONE
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;error MSG_CLOCK_SET_PROPERTIES err=%x stat=%x mod=%x !&bslash;n&quot;
+comma
+id|err
+comma
+id|clock_prop_resp.status
+comma
+id|clock_prop_resp.clock_mode
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -834,14 +864,7 @@ op_assign
 id|PIPE_RUNNING
 suffix:semicolon
 r_return
-id|snd_mixart_send_msg_nonblock
-c_func
-(paren
-id|mgr
-comma
-op_amp
-id|request
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Allocate or reference output pipe for analog IOs (pcmp0/1)&n; */
@@ -1279,7 +1302,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;message MSG_STREAM_ADD_**PUT_GROUP return error: err(%x) status(%x)!&bslash;n&quot;
+l_string|&quot;error MSG_STREAM_ADD_**PUT_GROUP err=%x stat=%x !&bslash;n&quot;
 comma
 id|err
 comma
@@ -1736,7 +1759,6 @@ c_func
 l_string|&quot;SNDRV_PCM_TRIGGER_START&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// snd_printk(KERN_DEBUG &quot;hw_avail = %d&bslash;n&quot;, snd_pcm_playback_hw_avail(subs-&gt;runtime));
 multiline_comment|/* START_STREAM */
 r_if
 c_cond
@@ -1782,7 +1804,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* TODO : mixart drains data transefered in advance -&gt; mute stream ? */
 id|stream-&gt;status
 op_assign
 id|MIXART_STREAM_STATUS_OPEN
@@ -1838,7 +1859,73 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  prepare callback for all pcms&n; */
+DECL|function|mixart_sync_nonblock_events
+r_static
+r_int
+id|mixart_sync_nonblock_events
+c_func
+(paren
+id|mixart_mgr_t
+op_star
+id|mgr
+)paren
+(brace
+r_int
+id|timeout
+op_assign
+id|HZ
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|mgr-&gt;msg_processed
+)paren
+OG
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|timeout
+op_decrement
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mixart: cannot process nonblock events!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *  prepare callback for all pcms&n; *&n; *  NOTE: this callback is non-atomic (pcm-&gt;info_flags |= SNDRV_PCM_INFO_NONATOMIC_OPS)&n; */
 DECL|function|snd_mixart_prepare
 r_static
 r_int
@@ -1875,6 +1962,12 @@ id|snd_printdd
 c_func
 (paren
 l_string|&quot;snd_mixart_prepare&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mixart_sync_nonblock_events
+c_func
+(paren
+id|chip-&gt;mgr
 )paren
 suffix:semicolon
 multiline_comment|/* only the first stream can choose the sample rate */
@@ -2105,17 +2198,13 @@ suffix:colon
 id|snd_printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;error use default SNDRV_PCM_FORMAT_S16_LE&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;error mixart_set_format() : unknown format&bslash;n&quot;
 )paren
 suffix:semicolon
-id|stream_param.sample_type
-op_assign
-id|ST_INTEGER_16LE
-suffix:semicolon
-id|stream_param.sample_size
-op_assign
-l_int|16
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|snd_printdd
@@ -2225,7 +2314,7 @@ id|resp.error_code
 id|snd_printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;MSG_STREAM_SET_INPUT_STAGE_PARAM err=%x; resp=%x&bslash;n&quot;
 comma
 id|err
@@ -2386,15 +2475,6 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;mixart_set_format() returned error (%x)&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -2513,10 +2593,26 @@ op_star
 id|subs
 )paren
 (brace
+id|mixart_t
+op_star
+id|chip
+op_assign
+id|snd_pcm_substream_chip
+c_func
+(paren
+id|subs
+)paren
+suffix:semicolon
 id|snd_pcm_lib_free_pages
 c_func
 (paren
 id|subs
+)paren
+suffix:semicolon
+id|mixart_sync_nonblock_events
+c_func
+(paren
+id|chip-&gt;mgr
 )paren
 suffix:semicolon
 r_return
@@ -3850,7 +3946,7 @@ id|snd_mixart_capture_ops
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-l_int|0
+id|SNDRV_PCM_INFO_NONATOMIC_OPS
 suffix:semicolon
 id|strcpy
 c_func
@@ -3979,7 +4075,7 @@ id|snd_mixart_capture_ops
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-l_int|0
+id|SNDRV_PCM_INFO_NONATOMIC_OPS
 suffix:semicolon
 id|strcpy
 c_func
@@ -5758,6 +5854,22 @@ c_func
 (paren
 op_amp
 id|mgr-&gt;msg_mutex
+)paren
+suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|mgr-&gt;msg_sleep
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|mgr-&gt;msg_processed
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* init setup mutex*/
