@@ -1367,7 +1367,7 @@ id|bio
 )brace
 macro_line|#endif /* CONFIG_MMU */
 DECL|macro|rq_for_each_bio
-mdefine_line|#define rq_for_each_bio(_bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (_bio = (rq)-&gt;bio; _bio; _bio = bio-&gt;bi_next)
+mdefine_line|#define rq_for_each_bio(_bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (_bio = (rq)-&gt;bio; _bio; _bio = _bio-&gt;bi_next)
 DECL|struct|sec_size
 r_struct
 id|sec_size
