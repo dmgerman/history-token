@@ -4466,11 +4466,13 @@ op_assign
 id|svwks_init_one
 comma
 macro_line|#if 0&t;/* FIXME: implement */
+dot
 id|suspend
-suffix:colon
+op_assign
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 comma
 macro_line|#endif
 )brace
