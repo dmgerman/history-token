@@ -21,10 +21,21 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the Cirrus PD6729 PCI-PCMCIA bridge&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jun Komuro &lt;komurojun@mbn.nifty.com&gt;&quot;
+)paren
+suffix:semicolon
 DECL|macro|MAX_SOCKETS
 mdefine_line|#define MAX_SOCKETS 2
-multiline_comment|/* simple helper functions */
-multiline_comment|/* External clock time, in nanoseconds.  120 ns = 8.33 MHz */
+multiline_comment|/*&n; * simple helper functions&n; * External clock time, in nanoseconds.  120 ns = 8.33 MHz&n; */
 DECL|macro|to_cycles
 mdefine_line|#define to_cycles(ns)&t;((ns)/120)
 DECL|variable|port_lock
@@ -1021,8 +1032,7 @@ op_or_assign
 id|SS_DETECT
 suffix:semicolon
 )brace
-multiline_comment|/* IO cards have a different meaning of bits 0,1 */
-multiline_comment|/* Also notice the inverse-logic on the bits */
+multiline_comment|/*&n;&t; * IO cards have a different meaning of bits 0,1&n;&t; * Also notice the inverse-logic on the bits&n;&t; */
 r_if
 c_cond
 (paren
@@ -1242,8 +1252,7 @@ id|state-&gt;csc_mask
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* First the power status of the socket */
-multiline_comment|/* PCTRL - Power Control Register */
+multiline_comment|/*&n;&t; * First the power status of the socket&n;&t; * PCTRL - Power Control Register&n;&t; */
 id|reg
 op_assign
 id|indirect_read
@@ -1354,8 +1363,7 @@ op_assign
 l_int|120
 suffix:semicolon
 )brace
-multiline_comment|/* Now the IO card, RESET flags and IO interrupt */
-multiline_comment|/* IGENC, Interrupt and General Control */
+multiline_comment|/*&n;&t; * Now the IO card, RESET flags and IO interrupt&n;&t; * IGENC, Interrupt and General Control&n;&t; */
 id|reg
 op_assign
 id|indirect_read
@@ -1398,8 +1406,7 @@ id|state-&gt;io_irq
 op_assign
 id|socket-&gt;socket.pci_irq
 suffix:semicolon
-multiline_comment|/* Card status change */
-multiline_comment|/* CSCICR, Card Status Change Interrupt Configuration */
+multiline_comment|/*&n;&t; * Card status change&n;&t; * CSCICR, Card Status Change Interrupt Configuration&n;&t; */
 id|reg
 op_assign
 id|indirect_read
@@ -2840,7 +2847,7 @@ comma
 id|MAX_SOCKETS
 )paren
 suffix:semicolon
-multiline_comment|/* Since we have no memory BARs some firmware we may not&n; &t;   have had PCI_COMMAND_MEM enabled, yet the device needs&n; &t;   it. */
+multiline_comment|/*&n;&t; * Since we have no memory BARs some firmware we may not&n;&t; * have had PCI_COMMAND_MEM enabled, yet the device needs&n;&t; * it.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren

@@ -32,12 +32,6 @@ macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|kDEBUG
 mdefine_line|#define kDEBUG 0
-DECL|variable|pa_dbit_lock
-id|spinlock_t
-id|pa_dbit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|smp_lock
 id|spinlock_t
 id|smp_lock
@@ -60,21 +54,20 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* track which CPU is booting */
-DECL|variable|parisc_max_cpus
-r_static
-r_int
-id|parisc_max_cpus
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* Command line */
 DECL|variable|cache_decay_ticks
 r_int
 r_int
 id|cache_decay_ticks
 suffix:semicolon
 multiline_comment|/* declared by include/linux/sched.h */
+DECL|variable|parisc_max_cpus
+r_static
+r_int
+id|parisc_max_cpus
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* online cpus are ones that we&squot;ve managed to bring up completely&n; * possible cpus are all valid cpu &n; * present cpus are all detected cpu&n; *&n; * On startup we bring up the &quot;possible&quot; cpus. Since we discover&n; * CPUs later, we add them as hotplug, so the possible cpu mask is&n; * empty in the beginning.&n; */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -86,7 +79,7 @@ DECL|variable|cpu_possible_map
 id|cpumask_t
 id|cpu_possible_map
 op_assign
-id|CPU_MASK_NONE
+id|CPU_MASK_ALL
 suffix:semicolon
 multiline_comment|/* Bitmap of Present CPUs */
 DECL|variable|cpu_online_map
@@ -801,7 +794,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|parisc_max_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -924,6 +917,19 @@ id|spinlock_t
 id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OL
+l_int|2
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Can deadlock when called with interrupts disabled */
 id|WARN_ON
@@ -1140,69 +1146,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function
-)paren
-suffix:semicolon
-multiline_comment|/*&n; *&t;Setup routine for controlling SMP activation&n; *&n; *&t;Command-line option of &quot;nosmp&quot; or &quot;maxcpus=0&quot; will disable SMP&n; *&t;activation entirely (the MPS table probe still happens, though).&n; *&n; *&t;Command-line option of &quot;maxcpus=&lt;NUM&gt;&quot;, where &lt;NUM&gt; is an integer&n; *&t;greater than 0, limits the maximum number of CPUs activated in&n; *&t;SMP mode to &lt;NUM&gt;.&n; */
-DECL|function|nosmp
-r_static
-r_int
-id|__init
-id|nosmp
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|parisc_max_cpus
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;nosmp&quot;
-comma
-id|nosmp
-)paren
-suffix:semicolon
-DECL|function|maxcpus
-r_static
-r_int
-id|__init
-id|maxcpus
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|parisc_max_cpus
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;maxcpus=&quot;
-comma
-id|maxcpus
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Flush all other CPU&squot;s tlb and then mine.  Do this with on_each_cpu()&n; * as we want to ensure all TLB&squot;s flushed before proceeding.&n; */
@@ -1541,8 +1484,8 @@ l_string|&quot;smp_callin() AAAAaaaaahhhh....&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
 multiline_comment|/*&n; * Create the idle task for a new Slave CPU.  DO NOT use kernel_thread()&n; * because that could end up calling schedule(). If it did, the new idle&n; * task could get scheduled before we had a chance to remove it from the&n; * run-queue...&n; */
+DECL|function|fork_by_hand
 r_static
 r_struct
 id|task_struct
@@ -1580,6 +1523,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Bring one cpu online.&n; */
+DECL|function|smp_boot_one_cpu
 r_int
 id|__init
 id|smp_boot_one_cpu
@@ -1587,9 +1531,6 @@ c_func
 (paren
 r_int
 id|cpuid
-comma
-r_int
-id|cpunum
 )paren
 (brace
 r_struct
@@ -1636,7 +1577,7 @@ c_func
 (paren
 id|idle
 comma
-id|cpunum
+id|cpuid
 )paren
 suffix:semicolon
 id|unhash_process
@@ -1647,12 +1588,12 @@ id|idle
 suffix:semicolon
 id|idle-&gt;thread_info-&gt;cpu
 op_assign
-id|cpunum
+id|cpuid
 suffix:semicolon
 multiline_comment|/* Let _start know what logical CPU we&squot;re booting&n;&t;** (offset into init_tasks[],cpu_data[])&n;&t;*/
 id|cpu_now_booting
 op_assign
-id|cpunum
+id|cpuid
 suffix:semicolon
 multiline_comment|/* &n;&t;** boot strap code needs to know the task address since&n;&t;** it also contains the process stack.&n;&t;*/
 id|smp_init_current_idle_task
@@ -1664,7 +1605,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** This gets PDC to release the CPU from a very tight loop.&n;&t;** See MEM_RENDEZ comments in head.S.&n;&t;*/
+id|printk
+c_func
+(paren
+l_string|&quot;Releasing cpu %d now, hpa=%lx&bslash;n&quot;
+comma
+id|cpuid
+comma
+id|cpu_data
+(braket
+id|cpuid
+)braket
+dot
+id|hpa
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;** This gets PDC to release the CPU from a very tight loop.&n;&t;**&n;&t;** From the PA-RISC 2.0 Firmware Architecture Reference Specification:&n;&t;** &quot;The MEM_RENDEZ vector specifies the location of OS_RENDEZ which &n;&t;** is executed after receiving the rendezvous signal (an interrupt to &n;&t;** EIR{0}). MEM_RENDEZ is valid only when it is nonzero and the &n;&t;** contents of memory are valid.&quot;&n;&t;*/
 id|__raw_writel
 c_func
 (paren
@@ -1676,7 +1632,7 @@ id|TIMER_IRQ
 comma
 id|cpu_data
 (braket
-id|cpunum
+id|cpuid
 )braket
 dot
 id|hpa
@@ -1709,7 +1665,7 @@ c_cond
 id|cpu_online
 c_func
 (paren
-id|cpunum
+id|cpuid
 )paren
 )paren
 (brace
@@ -1769,11 +1725,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;SMP: CPU:%d (num %d) came alive after %ld _us&bslash;n&quot;
+l_string|&quot;SMP: CPU:%d came alive after %ld _us&bslash;n&quot;
 comma
 id|cpuid
-comma
-id|cpunum
 comma
 id|timeout
 op_star
@@ -1784,7 +1738,7 @@ macro_line|#endif /* kDEBUG */
 macro_line|#ifdef ENTRY_SYS_CPUS
 id|cpu_data
 (braket
-id|cpunum
+id|cpuid
 )braket
 dot
 id|state
@@ -1796,7 +1750,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|smp_prepare_boot_cpu
 r_void
 id|__devinit
@@ -1832,19 +1785,10 @@ multiline_comment|/* Setup BSP mappings */
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;SMP: bootstrap CPU ID is %d&bslash;n&quot;
 comma
 id|bootstrap_processor
 )paren
-suffix:semicolon
-id|init_task.thread_info-&gt;cpu
-op_assign
-id|bootstrap_processor
-suffix:semicolon
-id|current-&gt;thread_info-&gt;cpu
-op_assign
-id|bootstrap_processor
 suffix:semicolon
 id|cpu_set
 c_func
@@ -1859,14 +1803,8 @@ c_func
 (paren
 id|bootstrap_processor
 comma
-id|cpu_possible_map
+id|cpu_present_map
 )paren
-suffix:semicolon
-multiline_comment|/* Mark Boostrap processor as present */
-id|current-&gt;active_mm
-op_assign
-op_amp
-id|init_mm
 suffix:semicolon
 id|cache_decay_ticks
 op_assign
@@ -1888,61 +1826,36 @@ r_int
 id|max_cpus
 )paren
 (brace
+id|cpus_clear
+c_func
+(paren
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|parisc_max_cpus
+op_assign
+id|max_cpus
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|max_cpus
-op_ne
-op_minus
-l_int|1
 )paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SMP: Limited to %d CPUs&bslash;n&quot;
-comma
-id|max_cpus
+l_string|&quot;SMP mode deactivated.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMP: Monarch CPU activated (%lu.%02lu BogoMIPS)&bslash;n&quot;
-comma
-(paren
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|loops_per_jiffy
-op_plus
-l_int|25
-)paren
-op_div
-l_int|5000
-comma
-(paren
-(paren
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|loops_per_jiffy
-op_plus
-l_int|25
-)paren
-op_div
-l_int|50
-)paren
-op_mod
-l_int|100
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|smp_cpus_done
@@ -1969,6 +1882,23 @@ r_int
 id|cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu
+op_ne
+l_int|0
+op_logical_and
+id|cpu
+OL
+id|parisc_max_cpus
+)paren
+id|smp_boot_one_cpu
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
 r_return
 id|cpu_online
 c_func

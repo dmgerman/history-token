@@ -4107,6 +4107,10 @@ id|generic_ide_ioctl
 c_func
 (paren
 r_struct
+id|file
+op_star
+comma
+r_struct
 id|block_device
 op_star
 comma

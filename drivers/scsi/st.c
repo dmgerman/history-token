@@ -17754,6 +17754,8 @@ op_assign
 id|scsi_cmd_ioctl
 c_func
 (paren
+id|file
+comma
 id|STp-&gt;disk
 comma
 id|cmd_in
