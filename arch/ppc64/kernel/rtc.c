@@ -743,7 +743,7 @@ l_string|&quot;driver/rtc&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rtc_read_proc
 comma
@@ -752,7 +752,6 @@ l_int|NULL
 op_eq
 l_int|NULL
 )paren
-(brace
 id|misc_deregister
 c_func
 (paren
@@ -760,7 +759,6 @@ op_amp
 id|rtc_dev
 )paren
 suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENOMEM
