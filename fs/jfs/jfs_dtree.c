@@ -1203,6 +1203,13 @@ l_int|1
 )paren
 )paren
 (brace
+r_struct
+id|dir_table_slot
+id|temp_table
+(braket
+l_int|12
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * It&squot;s time to move the inline table to an external&n;&t;&t; * page and begin to build the xtree&n;&t;&t; */
 r_if
 c_cond
@@ -1225,13 +1232,6 @@ id|clean_up
 suffix:semicolon
 multiline_comment|/* No space */
 multiline_comment|/*&n;&t;&t; * Save the table, we&squot;re going to overwrite it with the&n;&t;&t; * xtree root&n;&t;&t; */
-r_struct
-id|dir_table_slot
-id|temp_table
-(braket
-l_int|12
-)braket
-suffix:semicolon
 id|memcpy
 c_func
 (paren

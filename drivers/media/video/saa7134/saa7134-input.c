@@ -2,10 +2,61 @@ multiline_comment|/*&n; * handle saa7134 IR remotes via linux kernel input layer
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
+DECL|variable|disable_ir
+r_static
+r_int
+r_int
+id|disable_ir
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|disable_ir
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable_ir
+comma
+l_string|&quot;disable infrared remote support&quot;
+)paren
+suffix:semicolon
+DECL|variable|ir_debug
+r_static
+r_int
+r_int
+id|ir_debug
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ir_debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ir_debug
+comma
+l_string|&quot;enable debug messages [IR]&quot;
+)paren
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(fmt, arg...)&t;if (ir_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/ir: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|variable|flyvideo_codes
 r_static
@@ -719,6 +770,222 @@ comma
 singleline_comment|// . (decimal dot)
 )brace
 suffix:semicolon
+DECL|variable|avacssmart_codes
+r_static
+id|IR_KEYTAB_TYPE
+id|avacssmart_codes
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+op_assign
+(brace
+(braket
+l_int|30
+)braket
+op_assign
+id|KEY_POWER
+comma
+singleline_comment|// power
+(braket
+l_int|28
+)braket
+op_assign
+id|KEY_SEARCH
+comma
+singleline_comment|// scan
+(braket
+l_int|7
+)braket
+op_assign
+id|KEY_SELECT
+comma
+singleline_comment|// source
+(braket
+l_int|22
+)braket
+op_assign
+id|KEY_VOLUMEUP
+comma
+(braket
+l_int|20
+)braket
+op_assign
+id|KEY_VOLUMEDOWN
+comma
+(braket
+l_int|31
+)braket
+op_assign
+id|KEY_CHANNELUP
+comma
+(braket
+l_int|23
+)braket
+op_assign
+id|KEY_CHANNELDOWN
+comma
+(braket
+l_int|24
+)braket
+op_assign
+id|KEY_MUTE
+comma
+(braket
+l_int|2
+)braket
+op_assign
+id|KEY_KP0
+comma
+(braket
+l_int|1
+)braket
+op_assign
+id|KEY_KP1
+comma
+(braket
+l_int|11
+)braket
+op_assign
+id|KEY_KP2
+comma
+(braket
+l_int|27
+)braket
+op_assign
+id|KEY_KP3
+comma
+(braket
+l_int|5
+)braket
+op_assign
+id|KEY_KP4
+comma
+(braket
+l_int|9
+)braket
+op_assign
+id|KEY_KP5
+comma
+(braket
+l_int|21
+)braket
+op_assign
+id|KEY_KP6
+comma
+(braket
+l_int|6
+)braket
+op_assign
+id|KEY_KP7
+comma
+(braket
+l_int|10
+)braket
+op_assign
+id|KEY_KP8
+comma
+(braket
+l_int|18
+)braket
+op_assign
+id|KEY_KP9
+comma
+(braket
+l_int|16
+)braket
+op_assign
+id|KEY_KPDOT
+comma
+(braket
+l_int|3
+)braket
+op_assign
+id|KEY_TUNER
+comma
+singleline_comment|// tv/fm
+(braket
+l_int|4
+)braket
+op_assign
+id|KEY_REWIND
+comma
+singleline_comment|// fm tuning left or function left
+(braket
+l_int|12
+)braket
+op_assign
+id|KEY_FORWARD
+comma
+singleline_comment|// fm tuning right or function right
+(braket
+l_int|0
+)braket
+op_assign
+id|KEY_RECORD
+comma
+(braket
+l_int|8
+)braket
+op_assign
+id|KEY_STOP
+comma
+(braket
+l_int|17
+)braket
+op_assign
+id|KEY_PLAY
+comma
+(braket
+l_int|25
+)braket
+op_assign
+id|KEY_ZOOM
+comma
+(braket
+l_int|14
+)braket
+op_assign
+id|KEY_MENU
+comma
+singleline_comment|// function
+(braket
+l_int|19
+)braket
+op_assign
+id|KEY_AGAIN
+comma
+singleline_comment|// recall
+(braket
+l_int|29
+)braket
+op_assign
+id|KEY_RESTART
+comma
+singleline_comment|// reset
+singleline_comment|// FIXME
+(braket
+l_int|13
+)braket
+op_assign
+id|KEY_F21
+comma
+singleline_comment|// mts
+(braket
+l_int|15
+)braket
+op_assign
+id|KEY_F22
+comma
+singleline_comment|// min
+(braket
+l_int|26
+)braket
+op_assign
+id|KEY_F23
+comma
+singleline_comment|// freeze
+)brace
+suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|function|build_key
 r_static
@@ -802,12 +1069,10 @@ comma
 id|ir-&gt;mask_keycode
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;%s: build_key gpio=0x%x mask=0x%x data=%d&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;build_key gpio=0x%x mask=0x%x data=%d&bslash;n&quot;
 comma
 id|gpio
 comma
@@ -1021,7 +1286,6 @@ id|ir_type
 op_assign
 id|IR_TYPE_OTHER
 suffix:semicolon
-multiline_comment|/* detect &amp; configure */
 r_if
 c_cond
 (paren
@@ -1032,6 +1296,16 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|disable_ir
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* detect &amp; configure */
 r_switch
 c_cond
 (paren
@@ -1095,6 +1369,28 @@ suffix:semicolon
 id|mask_keyup
 op_assign
 l_int|0x000002
+suffix:semicolon
+id|polling
+op_assign
+l_int|50
+suffix:semicolon
+singleline_comment|// ms
+r_break
+suffix:semicolon
+r_case
+id|SAA7134_BOARD_AVACSSMARTTV
+suffix:colon
+id|ir_codes
+op_assign
+id|avacssmart_codes
+suffix:semicolon
+id|mask_keycode
+op_assign
+l_int|0x00001F
+suffix:semicolon
+id|mask_keyup
+op_assign
+l_int|0x000020
 suffix:semicolon
 id|polling
 op_assign

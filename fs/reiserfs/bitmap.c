@@ -4570,21 +4570,6 @@ multiline_comment|/* for unformatted nodes, force large allocations */
 id|bigalloc
 op_assign
 id|amount_needed
-op_plus
-id|hint-&gt;prealloc_size
-suffix:semicolon
-multiline_comment|/* try to make things even */
-r_if
-c_cond
-(paren
-id|bigalloc
-op_amp
-l_int|1
-op_logical_and
-id|hint-&gt;prealloc_size
-)paren
-id|bigalloc
-op_decrement
 suffix:semicolon
 )brace
 r_do

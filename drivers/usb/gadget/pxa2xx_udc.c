@@ -5419,10 +5419,13 @@ id|UDCCR_UDE
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_ARCH_PXA
 multiline_comment|/* Disable clock for USB device */
-id|CKEN
-op_and_assign
-op_complement
+id|pxa_set_cken
+c_func
+(paren
 id|CKEN11_USB
+comma
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif
 id|ep0_idle
@@ -5556,9 +5559,13 @@ id|UDCCR_UDE
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_ARCH_PXA
 multiline_comment|/* Enable clock for USB device */
-id|CKEN
-op_or_assign
+id|pxa_set_cken
+c_func
+(paren
 id|CKEN11_USB
+comma
+l_int|1
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* try to clear these bits before we enable the udc */

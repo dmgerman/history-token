@@ -2672,6 +2672,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|sbi-&gt;sb_max_fwd_alloc
+op_assign
+l_int|0xffffff
+suffix:semicolon
 multiline_comment|/* Load bitmap directory */
 r_if
 c_cond

@@ -631,9 +631,11 @@ multiline_comment|/*&n;&t;&t; * Set the &quot;dma handle&quot;&n;&t;&t; */
 op_star
 id|handle
 op_assign
-id|page_to_bus
+id|page_to_dma
 c_func
 (paren
+id|dev
+comma
 id|page
 )paren
 suffix:semicolon

@@ -1564,6 +1564,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|vfs_caches_init_early
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mem_init
 c_func
 (paren

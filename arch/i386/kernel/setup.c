@@ -43,17 +43,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-r_static
-r_inline
-r_char
-op_star
-id|__init
-id|machine_specific_memory_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Machine setup..&n; */
 macro_line|#ifdef CONFIG_EFI
 DECL|variable|efi_enabled
@@ -2705,40 +2694,6 @@ macro_line|#endif
 multiline_comment|/*&n; * Do NOT EVER look at the BIOS memory size location.&n; * It does not work on many machines.&n; */
 DECL|macro|LOWMEMSIZE
 mdefine_line|#define LOWMEMSIZE()&t;(0x9f000)
-DECL|function|setup_memory_region
-r_static
-r_void
-id|__init
-id|setup_memory_region
-c_func
-(paren
-r_void
-)paren
-(brace
-r_char
-op_star
-id|who
-op_assign
-id|machine_specific_memory_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;BIOS-provided physical RAM map:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|print_memory_map
-c_func
-(paren
-id|who
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* setup_memory_region */
 DECL|function|parse_cmdline_early
 r_static
 r_void
@@ -5441,6 +5396,16 @@ comma
 id|noreplacement_setup
 )paren
 suffix:semicolon
+r_static
+r_char
+op_star
+id|__init
+id|machine_specific_memory_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Determine if we were loaded by an EFI loader.  If so, then we have also been&n; * passed the efi memmap, systab, etc., so we should use these data structures&n; * for initialization.  Note, the efi init code path is determined by the&n; * global efi_enabled. This allows the same kernel image to be used on existing&n; * systems (with a traditional BIOS) as well as on EFI systems.&n; */
 DECL|function|setup_arch
 r_void
@@ -5620,11 +5585,24 @@ c_func
 )paren
 suffix:semicolon
 r_else
-id|setup_memory_region
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;BIOS-provided physical RAM map:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|print_memory_map
+c_func
+(paren
+id|machine_specific_memory_setup
 c_func
 (paren
 )paren
+)paren
 suffix:semicolon
+)brace
 id|copy_edd
 c_func
 (paren

@@ -17,7 +17,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|function|memcpy_toshmem
 r_void
-op_star
 id|memcpy_toshmem
 c_func
 (paren
@@ -40,10 +39,6 @@ id|n
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_void
-op_star
-id|ret
 suffix:semicolon
 r_int
 r_char
@@ -69,7 +64,6 @@ id|card
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -81,7 +75,6 @@ id|SRAM_PAGESIZE
 )paren
 (brace
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * determine the page to load from the address&n;&t; */
@@ -163,8 +156,6 @@ id|shmem_pgport
 )braket
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|memcpy_toio
 c_func
 (paren
@@ -274,14 +265,10 @@ l_int|0x4000
 )paren
 )paren
 suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reverse of above&n; */
 DECL|function|memcpy_fromshmem
 r_void
-op_star
 id|memcpy_fromshmem
 c_func
 (paren
@@ -304,10 +291,6 @@ id|n
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_void
-op_star
-id|ret
 suffix:semicolon
 r_int
 r_char
@@ -333,7 +316,6 @@ id|card
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -345,7 +327,6 @@ id|SRAM_PAGESIZE
 )paren
 (brace
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * determine the page to load from the address&n;&t; */
@@ -427,8 +408,6 @@ id|shmem_pgport
 )braket
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|memcpy_fromio
 c_func
 (paren
@@ -507,13 +486,9 @@ l_int|0x80
 )paren
 suffix:semicolon
 multiline_comment|/*&t;pr_debug(&quot;%s: copying %d bytes from %#x to %#x&bslash;n&quot;,&n;&t;&t;sc_adapter[card]-&gt;devicename, n,&n;&t;&t;sc_adapter[card]-&gt;rambase + ((unsigned long) src %0x4000), (unsigned long) dest); */
-r_return
-id|ret
-suffix:semicolon
 )brace
 DECL|function|memset_shmem
 r_void
-op_star
 id|memset_shmem
 c_func
 (paren
@@ -539,10 +514,6 @@ r_int
 r_char
 id|ch
 suffix:semicolon
-r_void
-op_star
-id|ret
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -563,7 +534,6 @@ id|card
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -575,7 +545,6 @@ id|SRAM_PAGESIZE
 )paren
 (brace
 r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * determine the page to load from the address&n;&t; */
@@ -657,8 +626,6 @@ id|shmem_pgport
 )braket
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|memset_io
 c_func
 (paren
@@ -729,9 +696,6 @@ id|lock
 comma
 id|flags
 )paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 eof

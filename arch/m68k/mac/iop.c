@@ -589,7 +589,7 @@ suffix:semicolon
 )brace
 id|iop_base
 (braket
-id|IOP_NUM_SCC
+id|IOP_NUM_ISM
 )braket
 op_member_access_from_pointer
 id|status_ctrl

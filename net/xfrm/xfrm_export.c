@@ -119,6 +119,13 @@ c_func
 id|xfrm_state_check_space
 )paren
 suffix:semicolon
+DECL|variable|xfrm_state_check
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_state_check
+)paren
+suffix:semicolon
 DECL|variable|xfrm_state_lookup
 id|EXPORT_SYMBOL
 c_func
@@ -180,13 +187,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xfrm_check_selectors
-)paren
-suffix:semicolon
-DECL|variable|xfrm_check_output
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm_check_output
 )paren
 suffix:semicolon
 DECL|variable|__secpath_destroy

@@ -44,24 +44,6 @@ op_div
 l_int|8
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_SGI_NEWPORT_GFX
-r_extern
-r_void
-id|gfx_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_void
-id|streamable_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|rtc_DP8570A_init
@@ -73,14 +55,6 @@ suffix:semicolon
 r_extern
 r_int
 id|rtc_MK48T08_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ds1286_init
 c_func
 (paren
 r_void
@@ -1139,34 +1113,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_DS1286
-id|ds1286_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 id|pmu_device_init
 c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_NEWPORT_GFX
-id|gfx_register
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_IP22
-id|streamable_init
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SGI_NEWPORT_GFX
-id|gfx_register
 (paren
 )paren
 suffix:semicolon
