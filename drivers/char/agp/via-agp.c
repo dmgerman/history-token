@@ -516,6 +516,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_AGP3
 multiline_comment|/*&n; * The KT400 does magick to put the AGP bridge compliant with the same&n; * standards version as the graphics card. If we haven&squot;t fallen into&n; * 2.0 compatability mode, we run the normal 3.0 code, and fall back&n; * if something nasty happens.&n; */
 DECL|function|via_kt400_enable
 r_static
@@ -549,6 +550,7 @@ id|mode
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|via_kt400_setup
 r_static
 r_int
@@ -700,11 +702,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_AGP3
 multiline_comment|/* AGP 3.0 mode */
 id|agp_bridge.agp_enable
 op_assign
 id|via_kt400_enable
 suffix:semicolon
+macro_line|#else
+id|printk
+(paren
+l_string|&quot;AGP: VIA KT400 in AGP3.0 mode support not compiled in.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 l_int|0
