@@ -11,7 +11,9 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14, 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda) minor=0; (hdb) minor=64&n; * Secondary i/f:  ide1: major=22; (hdc) minor=0; (hdd) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde) minor=0; (hdf) minor=64&n; * Quaternary i/f: ide3: major=34; (hdg) minor=0; (hdh) minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; */
 DECL|macro|INITIAL_MULT_COUNT
@@ -127,6 +129,8 @@ DECL|macro|GET_STAT
 mdefine_line|#define GET_STAT()&t;&t;IN_BYTE(IDE_STATUS_REG)
 DECL|macro|GET_ALTSTAT
 mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(IDE_CONTROL_REG)
+DECL|macro|GET_FEAT
+mdefine_line|#define GET_FEAT()&t;&t;IN_BYTE(IDE_NSECTOR_REG)
 DECL|macro|OK_STAT
 mdefine_line|#define OK_STAT(stat,good,bad)&t;(((stat)&amp;((good)|(bad)))==(good))
 DECL|macro|BAD_R_STAT
@@ -144,6 +148,8 @@ DECL|macro|PRD_BYTES
 mdefine_line|#define PRD_BYTES&t;8
 DECL|macro|PRD_ENTRIES
 mdefine_line|#define PRD_ENTRIES&t;(PAGE_SIZE / (2 * PRD_BYTES))
+DECL|macro|PRD_SEGMENTS
+mdefine_line|#define PRD_SEGMENTS&t;32
 multiline_comment|/*&n; * Some more useful definitions&n; */
 DECL|macro|IDE_MAJOR_NAME
 mdefine_line|#define IDE_MAJOR_NAME&t;&quot;hd&quot;&t;/* the same for all i/f; see also genhd.c */
@@ -430,7 +436,7 @@ r_char
 id|type
 suffix:semicolon
 multiline_comment|/* distingiush different devices: disk, cdrom, tape, floppy, ... */
-multiline_comment|/* NOTE: If we had proper separation between channel and host chip, we&n;&t; * could move this to the chanell and many sync problems would&n;&t; * magically just go away.&n;&t; */
+multiline_comment|/* NOTE: If we had proper separation between channel and host chip, we&n;&t; * could move this to the channel and many sync problems would&n;&t; * magically just go away.&n;&t; */
 DECL|member|queue
 id|request_queue_t
 id|queue
@@ -1424,7 +1430,7 @@ op_star
 id|hwif
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Status returned from various ide_ functions&n; */
+multiline_comment|/*&n; * Status returned by various functions.&n; */
 r_typedef
 r_enum
 (brace
@@ -1434,12 +1440,19 @@ comma
 multiline_comment|/* no drive operation was started */
 DECL|enumerator|ide_started
 id|ide_started
+comma
 multiline_comment|/* a drive operation was started, and a handler was set */
+DECL|enumerator|ide_released
+id|ide_released
+multiline_comment|/* started and released bus */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
 suffix:semicolon
-multiline_comment|/*&n; *  internal ide interrupt handler type&n; */
+multiline_comment|/*&n; *  Interrupt handler types.&n; */
+r_struct
+id|ata_taskfile
+suffix:semicolon
 DECL|typedef|ide_pre_handler_t
 r_typedef
 id|ide_startstop_t
@@ -1479,9 +1492,11 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|IDE_BUSY
-mdefine_line|#define IDE_BUSY&t;0
+mdefine_line|#define IDE_BUSY&t;0&t;/* awaiting an interrupt */
 DECL|macro|IDE_SLEEP
 mdefine_line|#define IDE_SLEEP&t;1
+DECL|macro|IDE_DMA
+mdefine_line|#define IDE_DMA&t;&t;2&t;/* DMA in progress */
 DECL|struct|hwgroup_s
 r_typedef
 r_struct
@@ -2298,6 +2313,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This function is intended to be used prior to invoking ide_do_drive_cmd().&n; */
+r_extern
 r_void
 id|ide_init_drive_cmd
 (paren
@@ -2366,10 +2382,9 @@ id|byte
 id|err
 )paren
 suffix:semicolon
-DECL|struct|ide_task_s
-r_typedef
+DECL|struct|ata_taskfile
 r_struct
-id|ide_task_s
+id|ata_taskfile
 (brace
 DECL|member|taskfile
 r_struct
@@ -2395,9 +2410,7 @@ id|ide_handler_t
 op_star
 id|handler
 suffix:semicolon
-DECL|typedef|ide_task_t
 )brace
-id|ide_task_t
 suffix:semicolon
 r_void
 id|ata_input_data
@@ -2505,22 +2518,9 @@ op_star
 id|drive
 comma
 r_struct
-id|hd_drive_task_hdr
+id|ata_taskfile
 op_star
-id|taskfile
-comma
-r_struct
-id|hd_drive_hob_hdr
-op_star
-id|hobfile
-comma
-id|ide_handler_t
-op_star
-id|handler
-comma
-id|ide_pre_handler_t
-op_star
-id|prehandler
+id|args
 comma
 r_struct
 id|request
@@ -2598,7 +2598,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|cmd
 comma
@@ -2607,13 +2608,14 @@ op_star
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* Expects args is a full set of TF registers and parses the command type */
+multiline_comment|/* This is setting up all fields in args, which depend upon the command type.&n; */
 r_extern
 r_void
 id|ide_cmd_type_parser
 c_func
 (paren
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren
@@ -2699,7 +2701,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren
@@ -2730,7 +2733,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren
@@ -3060,6 +3064,8 @@ r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
+DECL|macro|DRIVE_LOCK
+mdefine_line|#define DRIVE_LOCK(drive)&t;&t;((drive)-&gt;queue.queue_lock)
 r_extern
 r_int
 id|drive_is_ready

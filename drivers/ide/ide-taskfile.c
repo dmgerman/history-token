@@ -1087,7 +1087,8 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -1549,22 +1550,9 @@ op_star
 id|drive
 comma
 r_struct
-id|hd_drive_task_hdr
+id|ata_taskfile
 op_star
-id|taskfile
-comma
-r_struct
-id|hd_drive_hob_hdr
-op_star
-id|hobfile
-comma
-id|ide_handler_t
-op_star
-id|handler
-comma
-id|ide_pre_handler_t
-op_star
-id|prehandler
+id|args
 comma
 r_struct
 id|request
@@ -1595,7 +1583,7 @@ multiline_comment|/* (ks/hs): Moved to start, do not use for multiple out comman
 r_if
 c_cond
 (paren
-id|handler
+id|args-&gt;handler
 op_ne
 id|task_mulout_intr
 )paren
@@ -1650,7 +1638,7 @@ l_int|1
 id|OUT_BYTE
 c_func
 (paren
-id|hobfile-&gt;feature
+id|args-&gt;hobfile.feature
 comma
 id|IDE_FEATURE_REG
 )paren
@@ -1658,7 +1646,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|hobfile-&gt;sector_count
+id|args-&gt;hobfile.sector_count
 comma
 id|IDE_NSECTOR_REG
 )paren
@@ -1666,7 +1654,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|hobfile-&gt;sector_number
+id|args-&gt;hobfile.sector_number
 comma
 id|IDE_SECTOR_REG
 )paren
@@ -1674,7 +1662,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|hobfile-&gt;low_cylinder
+id|args-&gt;hobfile.low_cylinder
 comma
 id|IDE_LCYL_REG
 )paren
@@ -1682,7 +1670,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|hobfile-&gt;high_cylinder
+id|args-&gt;hobfile.high_cylinder
 comma
 id|IDE_HCYL_REG
 )paren
@@ -1691,7 +1679,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;feature
+id|args-&gt;taskfile.feature
 comma
 id|IDE_FEATURE_REG
 )paren
@@ -1699,7 +1687,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;sector_count
+id|args-&gt;taskfile.sector_count
 comma
 id|IDE_NSECTOR_REG
 )paren
@@ -1708,7 +1696,7 @@ multiline_comment|/* refers to number of sectors to transfer */
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;sector_number
+id|args-&gt;taskfile.sector_number
 comma
 id|IDE_SECTOR_REG
 )paren
@@ -1717,7 +1705,7 @@ multiline_comment|/* refers to sector offset or start sector */
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;low_cylinder
+id|args-&gt;taskfile.low_cylinder
 comma
 id|IDE_LCYL_REG
 )paren
@@ -1725,7 +1713,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;high_cylinder
+id|args-&gt;taskfile.high_cylinder
 comma
 id|IDE_HCYL_REG
 )paren
@@ -1734,7 +1722,7 @@ id|OUT_BYTE
 c_func
 (paren
 (paren
-id|taskfile-&gt;device_head
+id|args-&gt;taskfile.device_head
 op_amp
 id|HIHI
 )paren
@@ -1747,7 +1735,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|handler
+id|args-&gt;handler
 op_ne
 l_int|NULL
 )paren
@@ -1757,7 +1745,7 @@ c_func
 (paren
 id|drive
 comma
-id|handler
+id|args-&gt;handler
 comma
 id|WAIT_CMD
 comma
@@ -1767,7 +1755,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|taskfile-&gt;command
+id|args-&gt;taskfile.command
 comma
 id|IDE_COMMAND_REG
 )paren
@@ -1776,11 +1764,13 @@ multiline_comment|/*&n;&t;&t; * Warning check for race between handler and preha
 r_if
 c_cond
 (paren
-id|prehandler
+id|args-&gt;prehandler
 op_ne
 l_int|NULL
 )paren
 r_return
+id|args
+op_member_access_from_pointer
 id|prehandler
 c_func
 (paren
@@ -1807,13 +1797,13 @@ c_func
 (paren
 (paren
 (paren
-id|taskfile-&gt;command
+id|args-&gt;taskfile.command
 op_eq
 id|WIN_WRITEDMA
 )paren
 op_logical_or
 (paren
-id|taskfile-&gt;command
+id|args-&gt;taskfile.command
 op_eq
 id|WIN_WRITEDMA_EXT
 )paren
@@ -2029,7 +2019,8 @@ op_star
 id|drive
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -2362,6 +2353,7 @@ DECL|function|pre_task_out_intr
 r_static
 id|ide_startstop_t
 id|pre_task_out_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2373,7 +2365,8 @@ op_star
 id|rq
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -2951,7 +2944,8 @@ r_void
 id|ide_cmd_type_parser
 c_func
 (paren
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren
@@ -3525,7 +3519,8 @@ id|request
 id|rq
 suffix:semicolon
 multiline_comment|/* FIXME: This is on stack! */
-id|ide_task_t
+r_struct
+id|ata_taskfile
 id|args
 suffix:semicolon
 id|memset
@@ -3538,7 +3533,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ide_task_t
+id|args
 )paren
 )paren
 suffix:semicolon
@@ -3617,7 +3612,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 comma
@@ -3833,7 +3829,9 @@ id|argsize
 op_assign
 l_int|4
 suffix:semicolon
-id|ide_task_t
+multiline_comment|/* FIXME: this should not reside on the stack */
+r_struct
+id|ata_taskfile
 id|tfargs
 suffix:semicolon
 r_if

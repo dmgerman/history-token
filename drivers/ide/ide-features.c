@@ -653,7 +653,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren
@@ -764,7 +765,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 )paren

@@ -2273,6 +2273,7 @@ multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cm
 DECL|function|ide_end_drive_cmd
 r_void
 id|ide_end_drive_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2495,14 +2496,11 @@ op_amp
 id|REQ_DRIVE_TASKFILE
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
-(paren
-id|ide_task_t
-op_star
-)paren
 id|rq-&gt;special
 suffix:semicolon
 id|rq-&gt;errors
@@ -4197,11 +4195,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * start_request() initiates handling of a new I/O request&n; */
+multiline_comment|/*&n; * This initiates handling of a new I/O request.&n; */
 DECL|function|start_request
 r_static
 id|ide_startstop_t
 id|start_request
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -4450,7 +4449,8 @@ op_amp
 id|REQ_DRIVE_TASKFILE
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -4472,15 +4472,7 @@ c_func
 (paren
 id|drive
 comma
-op_amp
-id|args-&gt;taskfile
-comma
-op_amp
-id|args-&gt;hobfile
-comma
-id|args-&gt;handler
-comma
-l_int|NULL
+id|args
 comma
 l_int|NULL
 )paren
@@ -5077,6 +5069,7 @@ suffix:semicolon
 DECL|function|restart_request
 id|ide_startstop_t
 id|restart_request
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -5904,7 +5897,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * ide_timer_expiry() is our timeout function for all drive operations.&n; * But note that it can also be invoked as a result of a &quot;sleep&quot; operation&n; * triggered by the mod_timer() call in ide_do_request.&n; */
+multiline_comment|/*&n; * This is our timeout function for all drive operations.  But note that it can&n; * also be invoked as a result of a &quot;sleep&quot; operation triggered by the&n; * mod_timer() call in ide_do_request.&n; */
 DECL|function|ide_timer_expiry
 r_void
 id|ide_timer_expiry
@@ -6138,7 +6131,7 @@ id|hwif-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* disable_irq_nosync ?? */
-macro_line|#endif /* DISABLE_IRQ_NOSYNC */
+macro_line|#endif
 id|__cli
 c_func
 (paren
@@ -6594,7 +6587,7 @@ op_logical_neg
 id|drive
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This should NEVER happen, and there isn&squot;t much we could do about it here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This should NEVER happen, and there isn&squot;t much we could do&n;&t;&t; * about it here.&n;&t;&t; */
 r_goto
 id|out_lock
 suffix:semicolon
@@ -7049,12 +7042,10 @@ id|action
 op_eq
 id|ide_end
 )paren
-(brace
 id|queue_head
 op_assign
 id|queue_head-&gt;prev
 suffix:semicolon
-)brace
 r_else
 id|queue_head
 op_assign
@@ -7552,7 +7543,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Request a particular device type module.&n;&t; *&n;&t; * FIXME: The function which should rather requests the drivers is&n;&t; * ide_driver_module(), since it seems illogical and even a bit&n;&t; * dangerous to delay this until open time!&n;&t; */
+multiline_comment|/* Request a particular device type module.&n;&t; *&n;&t; * FIXME: The function which should rather requests the drivers in&n;&t; * ide_driver_module(), since it seems illogical and even a bit&n;&t; * dangerous to delay this until open time!&n;&t; */
 macro_line|#ifdef CONFIG_KMOD
 r_if
 c_cond

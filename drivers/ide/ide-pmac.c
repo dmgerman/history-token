@@ -4675,8 +4675,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|pmac_ide_raw_build_sglist
-id|pmac_ide_raw_build_sglist
+DECL|function|pmac_raw_build_sglist
+id|pmac_raw_build_sglist
 (paren
 r_int
 id|ix
@@ -4721,7 +4721,8 @@ id|nents
 op_assign
 l_int|0
 suffix:semicolon
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -5048,7 +5049,7 @@ id|sg_nents
 op_assign
 id|i
 op_assign
-id|pmac_ide_raw_build_sglist
+id|pmac_raw_build_sglist
 c_func
 (paren
 id|ix
@@ -6506,7 +6507,8 @@ l_int|1
 )paren
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign

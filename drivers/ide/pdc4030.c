@@ -2062,12 +2062,14 @@ multiline_comment|/*&n; * do_pdc4030_io() is called from do_rw_disk, having had 
 DECL|function|do_pdc4030_io
 id|ide_startstop_t
 id|do_pdc4030_io
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|task
 )paren
@@ -2469,7 +2471,8 @@ r_struct
 id|hd_drive_task_hdr
 id|taskfile
 suffix:semicolon
-id|ide_task_t
+r_struct
+id|ata_taskfile
 id|args
 suffix:semicolon
 id|memset

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Long lost data from 2.0.34 that is now in 2.0.39&n; *&n; * This was used in ./drivers/block/triton.c to do DMA Base address setup&n; * when PnP failed.  Oh the things we forget.  I believe this was part&n; * of SFF-8038i that has been withdrawn from public access... :-((&n; */
@@ -632,16 +633,17 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-DECL|function|ide_raw_build_sglist
+multiline_comment|/*&n; * FIXME: taskfiles should be a map of pages, not a long virt address... /jens&n; * FIXME: I agree with Jens --mdcki!&n; */
+DECL|function|raw_build_sglist
 r_static
 r_int
-id|ide_raw_build_sglist
+id|raw_build_sglist
 c_func
 (paren
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 comma
 r_struct
 id|request
@@ -654,14 +656,15 @@ id|scatterlist
 op_star
 id|sg
 op_assign
-id|hwif-&gt;sg_table
+id|ch-&gt;sg_table
 suffix:semicolon
 r_int
 id|nents
 op_assign
 l_int|0
 suffix:semicolon
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
@@ -690,7 +693,7 @@ id|rq-&gt;q
 comma
 id|rq
 comma
-id|hwif-&gt;sg_table
+id|ch-&gt;sg_table
 )paren
 suffix:semicolon
 r_if
@@ -718,16 +721,15 @@ id|args-&gt;command_type
 op_eq
 id|IDE_DRIVE_TASK_RAW_WRITE
 )paren
-id|hwif-&gt;sg_dma_direction
+id|ch-&gt;sg_dma_direction
 op_assign
 id|PCI_DMA_TODEVICE
 suffix:semicolon
 r_else
-id|hwif-&gt;sg_dma_direction
+id|ch-&gt;sg_dma_direction
 op_assign
 id|PCI_DMA_FROMDEVICE
 suffix:semicolon
-macro_line|#if 1&t;
 r_if
 c_cond
 (paren
@@ -873,18 +875,17 @@ suffix:semicolon
 id|nents
 op_increment
 suffix:semicolon
-macro_line|#endif
 r_return
 id|pci_map_sg
 c_func
 (paren
-id|hwif-&gt;pci_dev
+id|ch-&gt;pci_dev
 comma
 id|sg
 comma
 id|nents
 comma
-id|hwif-&gt;sg_dma_direction
+id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
@@ -966,7 +967,7 @@ id|hwif-&gt;sg_nents
 op_assign
 id|i
 op_assign
-id|ide_raw_build_sglist
+id|raw_build_sglist
 c_func
 (paren
 id|hwif
@@ -2484,7 +2485,8 @@ l_int|1
 )paren
 )paren
 (brace
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|args
 op_assign
