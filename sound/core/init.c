@@ -3123,6 +3123,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3146,7 +3149,8 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME: correct state value? */
-r_return
+id|err
+op_assign
 id|card
 op_member_access_from_pointer
 id|pm_suspend
@@ -3156,6 +3160,15 @@ id|card
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|pci_save_state
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|snd_card_pci_resume
