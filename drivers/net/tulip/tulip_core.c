@@ -504,6 +504,8 @@ l_int|256
 comma
 l_int|0x0001abef
 comma
+id|HAS_MII
+op_or
 id|MC_HASH_ONLY
 op_or
 id|COMET_MAC_ADDR
