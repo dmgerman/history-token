@@ -1635,9 +1635,9 @@ multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
 DECL|function|__sctp_style
-r_int
 r_static
 r_inline
+r_int
 id|__sctp_style
 c_func
 (paren
@@ -1667,9 +1667,9 @@ multiline_comment|/* Is the association in this state? */
 DECL|macro|sctp_state
 mdefine_line|#define sctp_state(asoc, state) __sctp_state((asoc), (SCTP_STATE_##state))
 DECL|function|__sctp_state
-r_int
 r_static
 r_inline
+r_int
 id|__sctp_state
 c_func
 (paren
@@ -1693,9 +1693,9 @@ multiline_comment|/* Is the socket in this state? */
 DECL|macro|sctp_sstate
 mdefine_line|#define sctp_sstate(sk, state) __sctp_sstate((sk), (SCTP_SS_##state))
 DECL|function|__sctp_sstate
-r_int
 r_static
 r_inline
+r_int
 id|__sctp_sstate
 c_func
 (paren
