@@ -8123,6 +8123,11 @@ id|shmem_mmap
 comma
 macro_line|#ifdef CONFIG_TMPFS
 dot
+id|llseek
+op_assign
+id|generic_file_llseek
+comma
+dot
 id|read
 op_assign
 id|shmem_file_read
