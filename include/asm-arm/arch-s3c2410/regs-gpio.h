@@ -881,8 +881,8 @@ DECL|macro|S3C2410_GPG12_INP
 mdefine_line|#define S3C2410_GPG12_INP     (0x00 &lt;&lt; 24)
 DECL|macro|S3C2410_GPG12_OUTP
 mdefine_line|#define S3C2410_GPG12_OUTP    (0x01 &lt;&lt; 24)
-DECL|macro|S3C2410_GPG12_EINT18
-mdefine_line|#define S3C2410_GPG12_EINT18  (0x02 &lt;&lt; 24)
+DECL|macro|S3C2410_GPG12_EINT20
+mdefine_line|#define S3C2410_GPG12_EINT20  (0x02 &lt;&lt; 24)
 DECL|macro|S3C2410_GPG12_XMON
 mdefine_line|#define S3C2410_GPG12_XMON    (0x03 &lt;&lt; 24)
 DECL|macro|S3C2410_GPG10
@@ -891,8 +891,8 @@ DECL|macro|S3C2410_GPG13_INP
 mdefine_line|#define S3C2410_GPG13_INP     (0x00 &lt;&lt; 26)
 DECL|macro|S3C2410_GPG13_OUTP
 mdefine_line|#define S3C2410_GPG13_OUTP    (0x01 &lt;&lt; 26)
-DECL|macro|S3C2410_GPG13_EINT18
-mdefine_line|#define S3C2410_GPG13_EINT18  (0x02 &lt;&lt; 26)
+DECL|macro|S3C2410_GPG13_EINT21
+mdefine_line|#define S3C2410_GPG13_EINT21  (0x02 &lt;&lt; 26)
 DECL|macro|S3C2410_GPG13_nXPON
 mdefine_line|#define S3C2410_GPG13_nXPON   (0x03 &lt;&lt; 26)
 DECL|macro|S3C2410_GPG10
@@ -901,8 +901,8 @@ DECL|macro|S3C2410_GPG14_INP
 mdefine_line|#define S3C2410_GPG14_INP     (0x00 &lt;&lt; 28)
 DECL|macro|S3C2410_GPG14_OUTP
 mdefine_line|#define S3C2410_GPG14_OUTP    (0x01 &lt;&lt; 28)
-DECL|macro|S3C2410_GPG14_EINT18
-mdefine_line|#define S3C2410_GPG14_EINT18  (0x02 &lt;&lt; 28)
+DECL|macro|S3C2410_GPG14_EINT22
+mdefine_line|#define S3C2410_GPG14_EINT22  (0x02 &lt;&lt; 28)
 DECL|macro|S3C2410_GPG14_YMON
 mdefine_line|#define S3C2410_GPG14_YMON    (0x03 &lt;&lt; 28)
 DECL|macro|S3C2410_GPG10
@@ -911,8 +911,8 @@ DECL|macro|S3C2410_GPG15_INP
 mdefine_line|#define S3C2410_GPG15_INP     (0x00 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG15_OUTP
 mdefine_line|#define S3C2410_GPG15_OUTP    (0x01 &lt;&lt; 30)
-DECL|macro|S3C2410_GPG15_EINT18
-mdefine_line|#define S3C2410_GPG15_EINT18  (0x02 &lt;&lt; 30)
+DECL|macro|S3C2410_GPG15_EINT23
+mdefine_line|#define S3C2410_GPG15_EINT23  (0x02 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG15_nYPON
 mdefine_line|#define S3C2410_GPG15_nYPON   (0x03 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG_PUPDIS
