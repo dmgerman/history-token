@@ -3136,9 +3136,15 @@ id|memp
 op_minus
 id|stack_len
 suffix:semicolon
-id|current-&gt;mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|current-&gt;mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_if

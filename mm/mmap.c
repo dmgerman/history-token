@@ -7855,9 +7855,15 @@ id|mm-&gt;mm_rb
 op_assign
 id|RB_ROOT
 suffix:semicolon
-id|mm-&gt;rss
-op_assign
+id|set_mm_counter
+c_func
+(paren
+id|mm
+comma
+id|rss
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|mm-&gt;total_vm
 op_assign

@@ -1239,8 +1239,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|mm-&gt;rss
-op_increment
+id|inc_mm_counter
+c_func
+(paren
+id|mm
+comma
+id|rss
+)paren
 suffix:semicolon
 id|lru_cache_add_active
 c_func
