@@ -4860,6 +4860,7 @@ suffix:semicolon
 DECL|function|read_suspend_image
 r_static
 r_int
+id|__init
 id|read_suspend_image
 c_func
 (paren
