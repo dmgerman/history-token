@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__LOG_BUF_LEN
 mdefine_line|#define __LOG_BUF_LEN&t;(1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)

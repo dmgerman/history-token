@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -646,7 +647,7 @@ op_amp
 id|current-&gt;user-&gt;sigpending
 )paren
 OL
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_SIGPENDING
 )braket
@@ -2441,7 +2442,7 @@ op_amp
 id|t-&gt;user-&gt;sigpending
 )paren
 OL
-id|t-&gt;rlim
+id|t-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_SIGPENDING
 )braket
@@ -3032,9 +3033,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t bother zombies and stopped tasks (but&n;&t; * SIGKILL will punch through stopped state)&n;&t; */
 id|mask
 op_assign
-id|TASK_DEAD
+id|EXIT_DEAD
 op_or
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_or
 id|TASK_TRACED
 suffix:semicolon
@@ -3545,12 +3546,12 @@ multiline_comment|/*&n;&t;&t; * Don&squot;t bother with already dead threads&n;&
 r_if
 c_cond
 (paren
-id|t-&gt;state
+id|t-&gt;exit_state
 op_amp
 (paren
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 op_or
-id|TASK_DEAD
+id|EXIT_DEAD
 )paren
 )paren
 r_continue

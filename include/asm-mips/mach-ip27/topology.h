@@ -26,8 +26,5 @@ id|nasid_b
 suffix:semicolon
 DECL|macro|node_distance
 mdefine_line|#define node_distance(from, to)&t;node_distance(from, to)
-multiline_comment|/* Cross-node load balancing interval. */
-DECL|macro|NODE_BALANCE_RATE
-mdefine_line|#define NODE_BALANCE_RATE&t;10
 macro_line|#endif /* _ASM_MACH_TOPOLOGY_H */
 eof

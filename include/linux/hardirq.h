@@ -4,6 +4,25 @@ mdefine_line|#define LINUX_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#ifdef CONFIG_GENERIC_HARDIRQS
+multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-27 are the hardirq count (max # of hardirqs: 4096)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0x0fff0000&n; */
+DECL|macro|PREEMPT_BITS
+mdefine_line|#define PREEMPT_BITS&t;8
+DECL|macro|SOFTIRQ_BITS
+mdefine_line|#define SOFTIRQ_BITS&t;8
+DECL|macro|HARDIRQ_BITS
+mdefine_line|#define HARDIRQ_BITS&t;12
+DECL|macro|PREEMPT_SHIFT
+mdefine_line|#define PREEMPT_SHIFT&t;0
+DECL|macro|SOFTIRQ_SHIFT
+mdefine_line|#define SOFTIRQ_SHIFT&t;(PREEMPT_SHIFT + PREEMPT_BITS)
+DECL|macro|HARDIRQ_SHIFT
+mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
+multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
+macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
+macro_line|# error HARDIRQ_BITS is too low!
+macro_line|#endif
+macro_line|#endif /* CONFIG_GENERIC_HARDIRQS */
 DECL|macro|__IRQ_MASK
 mdefine_line|#define __IRQ_MASK(x)&t;((1UL &lt;&lt; (x))-1)
 DECL|macro|PREEMPT_MASK
@@ -60,6 +79,22 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|synchronize_irq
 macro_line|# define synchronize_irq(irq)&t;barrier()
+macro_line|#endif
+macro_line|#ifdef CONFIG_GENERIC_HARDIRQS
+DECL|macro|nmi_enter
+mdefine_line|#define nmi_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+DECL|macro|nmi_exit
+mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
+DECL|macro|irq_enter
+mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+r_extern
+r_void
+id|irq_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* LINUX_HARDIRQ_H */
 eof

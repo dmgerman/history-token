@@ -1603,7 +1603,7 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_CPU_SH4) || defined(CONFIG_SH7705_CACHE_32KB)
 r_if
 c_cond
 (paren
@@ -1659,7 +1659,7 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_CPU_SH4) || defined(CONFIG_SH7705_CACHE_32KB)
 r_if
 c_cond
 (paren

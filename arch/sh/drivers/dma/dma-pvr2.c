@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/sh/boards/dreamcast/dma-pvr2.c&n; *&n; * NEC PowerVR 2 (Dreamcast) DMA support&n; *&n; * Copyright (C) 2003  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * arch/sh/boards/dreamcast/dma-pvr2.c&n; *&n; * NEC PowerVR 2 (Dreamcast) DMA support&n; *&n; * Copyright (C) 2003, 2004  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -101,9 +101,9 @@ id|pvr2_request_dma
 c_func
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 (brace
 r_if
@@ -140,9 +140,9 @@ id|pvr2_get_dma_residue
 c_func
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 (brace
 r_return
@@ -158,18 +158,18 @@ id|pvr2_xfer_dma
 c_func
 (paren
 r_struct
-id|dma_info
+id|dma_channel
 op_star
-id|info
+id|chan
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|info-&gt;sar
+id|chan-&gt;sar
 op_logical_or
 op_logical_neg
-id|info-&gt;dar
+id|chan-&gt;dar
 )paren
 r_return
 op_minus
@@ -182,7 +182,7 @@ suffix:semicolon
 id|ctrl_outl
 c_func
 (paren
-id|info-&gt;dar
+id|chan-&gt;dar
 comma
 id|PVR2_DMA_ADDR
 )paren
@@ -190,7 +190,7 @@ suffix:semicolon
 id|ctrl_outl
 c_func
 (paren
-id|info-&gt;count
+id|chan-&gt;count
 comma
 id|PVR2_DMA_COUNT
 )paren
@@ -198,7 +198,7 @@ suffix:semicolon
 id|ctrl_outl
 c_func
 (paren
-id|info-&gt;mode
+id|chan-&gt;mode
 op_amp
 id|DMA_MODE_MASK
 comma
@@ -241,11 +241,6 @@ id|pvr2_dma_ops
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;PowerVR 2 DMA&quot;
-comma
-dot
 id|request
 op_assign
 id|pvr2_request_dma
@@ -262,6 +257,36 @@ id|pvr2_xfer_dma
 comma
 )brace
 suffix:semicolon
+DECL|variable|pvr2_dma_info
+r_static
+r_struct
+id|dma_info
+id|pvr2_dma_info
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;PowerVR 2 DMA&quot;
+comma
+dot
+id|nr_channels
+op_assign
+l_int|1
+comma
+dot
+id|ops
+op_assign
+op_amp
+id|pvr2_dma_ops
+comma
+dot
+id|flags
+op_assign
+id|DMAC_CHANNELS_TEI_CAPABLE
+comma
+)brace
+suffix:semicolon
 DECL|function|pvr2_dma_init
 r_static
 r_int
@@ -272,11 +297,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-comma
-id|base
-suffix:semicolon
 id|setup_irq
 c_func
 (paren
@@ -294,43 +314,12 @@ comma
 l_string|&quot;pvr2 cascade&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* PVR2 cascade comes after on-chip DMAC */
-id|base
-op_assign
-id|ONCHIP_NR_DMA_CHANNELS
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|PVR2_NR_DMA_CHANNELS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dma_info
-(braket
-id|base
-op_plus
-id|i
-)braket
-dot
-id|ops
-op_assign
-op_amp
-id|pvr2_dma_ops
-suffix:semicolon
 r_return
 id|register_dmac
 c_func
 (paren
 op_amp
-id|pvr2_dma_ops
+id|pvr2_dma_info
 )paren
 suffix:semicolon
 )brace

@@ -4,7 +4,7 @@ DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 macro_line|#include &lt;asm/qeth.h&gt;
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.36 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.38 $&quot;
 r_extern
 r_const
 r_char
@@ -247,6 +247,36 @@ DECL|enumerator|IPA_CMD_STOPLAN
 id|IPA_CMD_STOPLAN
 op_assign
 l_int|0x02
+comma
+DECL|enumerator|IPA_CMD_SETVMAC
+id|IPA_CMD_SETVMAC
+op_assign
+l_int|0x21
+comma
+DECL|enumerator|IPA_CMD_DELVMAC
+id|IPA_CMD_DELVMAC
+op_assign
+l_int|0x22
+comma
+DECL|enumerator|IPA_CMD_SETGMAC
+id|IPA_CMD_SETGMAC
+op_assign
+l_int|0x23
+comma
+DECL|enumerator|IPA_CMD_DELGMAC
+id|IPA_CMD_DELGMAC
+op_assign
+l_int|0x24
+comma
+DECL|enumerator|IPA_CMD_SETVLAN
+id|IPA_CMD_SETVLAN
+op_assign
+l_int|0x25
+comma
+DECL|enumerator|IPA_CMD_DELVLAN
+id|IPA_CMD_DELVLAN
+op_assign
+l_int|0x26
 comma
 DECL|enumerator|IPA_CMD_SETIP
 id|IPA_CMD_SETIP
@@ -831,6 +861,45 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|qeth_ipacmd_layer2setdelmac
+r_struct
+id|qeth_ipacmd_layer2setdelmac
+(brace
+DECL|member|mac_length
+id|__u32
+id|mac_length
+suffix:semicolon
+DECL|member|mac
+id|__u8
+id|mac
+(braket
+l_int|6
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|qeth_ipacmd_layer2setdelvlan
+r_struct
+id|qeth_ipacmd_layer2setdelvlan
+(brace
+DECL|member|vlan_id
+id|__u16
+id|vlan_id
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|qeth_ipacmd_setassparms_hdr
 r_struct
 id|qeth_ipacmd_setassparms_hdr
@@ -1354,6 +1423,16 @@ r_struct
 id|qeth_ipacmd_setassparms
 id|setassparms
 suffix:semicolon
+DECL|member|setdelmac
+r_struct
+id|qeth_ipacmd_layer2setdelmac
+id|setdelmac
+suffix:semicolon
+DECL|member|setdelvlan
+r_struct
+id|qeth_ipacmd_layer2setdelvlan
+id|setdelvlan
+suffix:semicolon
 DECL|member|create_destroy_addr
 r_struct
 id|qeth_create_destroy_address
@@ -1509,6 +1588,15 @@ DECL|macro|QETH_ULP_ENABLE_RESP_DIFINFO_LEN
 mdefine_line|#define QETH_ULP_ENABLE_RESP_DIFINFO_LEN(buffer) &bslash;&n;&t;&t;(PDU_ENCAPSULATION(buffer) + 0x17)
 DECL|macro|QETH_ULP_ENABLE_RESP_LINK_TYPE
 mdefine_line|#define QETH_ULP_ENABLE_RESP_LINK_TYPE(buffer) &bslash;&n;&t;&t;(PDU_ENCAPSULATION(buffer)+ 0x2b)
+multiline_comment|/* Layer 2 defintions */
+DECL|macro|QETH_PROT_LAYER2
+mdefine_line|#define QETH_PROT_LAYER2 0x08
+DECL|macro|QETH_PROT_TCPIP
+mdefine_line|#define QETH_PROT_TCPIP  0x03
+DECL|macro|QETH_ULP_ENABLE_PROT_TYPE
+mdefine_line|#define QETH_ULP_ENABLE_PROT_TYPE(buffer) (buffer+0x50)
+DECL|macro|QETH_IPA_CMD_PROT_TYPE
+mdefine_line|#define QETH_IPA_CMD_PROT_TYPE(buffer) (buffer+0x19)
 r_extern
 r_int
 r_char

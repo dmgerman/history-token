@@ -5,33 +5,6 @@ mdefine_line|#define _ASM_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;&t;&t;/* ppc_md */
 macro_line|#include &lt;asm/atomic.h&gt;
-r_extern
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|disable_irq_nosync
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These constants are used for passing information about interrupt&n; * signal polarity and level/edge sensing to the low-level PIC chip&n; * drivers.&n; */
 DECL|macro|IRQ_SENSE_MASK
 mdefine_line|#define IRQ_SENSE_MASK&t;&t;0x1

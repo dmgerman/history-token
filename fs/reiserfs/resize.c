@@ -22,6 +22,11 @@ r_int
 id|block_count_new
 )paren
 (brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|reiserfs_super_block
 op_star
@@ -31,6 +36,17 @@ r_struct
 id|reiserfs_bitmap_info
 op_star
 id|bitmap
+suffix:semicolon
+r_struct
+id|reiserfs_bitmap_info
+op_star
+id|old_bitmap
+op_assign
+id|SB_AP_BITMAP
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -413,6 +429,7 @@ op_logical_neg
 id|bitmap
 )paren
 (brace
+multiline_comment|/* Journal bitmaps are still supersized, but the memory isn&squot;t&n;&t;&t; * leaked, so I guess it&squot;s ok */
 id|printk
 c_func
 (paren
@@ -462,15 +479,12 @@ id|bitmap
 id|i
 )braket
 op_assign
-id|SB_AP_BITMAP
-c_func
-(paren
-id|s
-)paren
+id|old_bitmap
 (braket
 id|i
 )braket
 suffix:semicolon
+multiline_comment|/* This doesn&squot;t go through the journal, but it doesn&squot;t have to.&n;&t;     * The changes are still atomic: We&squot;re synced up when the journal&n;&t;     * transaction begins, and the new bitmaps don&squot;t matter if the&n;&t;     * transaction fails. */
 r_for
 c_loop
 (paren
@@ -599,16 +613,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* free old bitmap blocks array */
-id|vfree
-c_func
-(paren
-id|SB_AP_BITMAP
-c_func
-(paren
-id|s
-)paren
-)paren
-suffix:semicolon
 id|SB_AP_BITMAP
 c_func
 (paren
@@ -617,8 +621,15 @@ id|s
 op_assign
 id|bitmap
 suffix:semicolon
+id|vfree
+(paren
+id|old_bitmap
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* begin transaction */
+multiline_comment|/* begin transaction, if there was an error, it&squot;s fine. Yes, we have&n;&t; * incorrect bitmaps now, but none of it is ever going to touch the&n;&t; * disk anyway. */
+id|err
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -629,6 +640,14 @@ id|s
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* correct last bitmap blocks in old and new disk layout */
 id|reiserfs_prepare_for_journal
@@ -978,6 +997,7 @@ id|j_must_wait
 op_assign
 l_int|1
 suffix:semicolon
+r_return
 id|journal_end
 c_func
 (paren
@@ -988,9 +1008,6 @@ id|s
 comma
 l_int|10
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

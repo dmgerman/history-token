@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -4775,6 +4776,28 @@ id|elapsed
 comma
 id|start
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;therm_pm72: freezing thermostat&bslash;n&quot;
+)paren
+suffix:semicolon
+id|refrigerator
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
+)brace
 id|start
 op_assign
 id|jiffies

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/gen550_kgdb.c&n; *&n; * Generic 16550 kgdb support intended to be useful on a variety&n; * of platforms.  To enable this support, it is necessary to set&n; * the CONFIG_GEN550 option.  Any virtual mapping of the serial&n; * port(s) to be used can be accomplished by setting&n; * ppc_md.early_serial_map to a platform-specific mapping function.&n; *&n; * Adapted from ppc4xx_kgdb.c.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2002-2003 (c) MontaVista Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/gen550_kgdb.c&n; *&n; * Generic 16550 kgdb support intended to be useful on a variety&n; * of platforms.  To enable this support, it is necessary to set&n; * the CONFIG_GEN550 option.  Any virtual mapping of the serial&n; * port(s) to be used can be accomplished by setting&n; * ppc_md.early_serial_map to a platform-specific mapping function.&n; *&n; * Adapted from ppc4xx_kgdb.c.&n; *&n; * Author: Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * 2002-2004 (c) MontaVista Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -194,6 +194,18 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;kgdb init&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc_md.early_serial_map
+)paren
+id|ppc_md
+dot
+id|early_serial_map
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kgdb_debugport

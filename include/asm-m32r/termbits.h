@@ -286,6 +286,8 @@ DECL|macro|B4000000
 mdefine_line|#define  B4000000 0010017
 DECL|macro|CIBAUD
 mdefine_line|#define CIBAUD&t;  002003600000&t;/* input baud rate (not used) */
+DECL|macro|CTVB
+mdefine_line|#define CTVB&t;  004000000000&t;&t;/* VisioBraille Terminal flow control */
 DECL|macro|CMSPAR
 mdefine_line|#define CMSPAR&t;  010000000000&t;&t;/* mark or space (stick) parity */
 DECL|macro|CRTSCTS

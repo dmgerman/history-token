@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: signal.c,v 1.20 2004/01/13 05:52:11 kkojima Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
+multiline_comment|/* $Id: signal.c,v 1.21 2004/06/28 13:18:44 doyu Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -600,7 +600,7 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_SH4
+macro_line|#ifdef CONFIG_SH_FPU
 DECL|function|restore_sigcontext_fpu
 r_static
 r_inline
@@ -776,7 +776,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_CPU_SH4 */
+macro_line|#endif /* CONFIG_SH_FPU */
 r_static
 r_int
 DECL|function|restore_sigcontext
@@ -980,7 +980,7 @@ id|pc
 suffix:semicolon
 DECL|macro|COPY
 macro_line|#undef COPY
-macro_line|#ifdef CONFIG_CPU_SH4
+macro_line|#ifdef CONFIG_SH_FPU
 r_if
 c_cond
 (paren
@@ -1656,7 +1656,7 @@ id|pc
 suffix:semicolon
 DECL|macro|COPY
 macro_line|#undef COPY
-macro_line|#ifdef CONFIG_CPU_SH4
+macro_line|#ifdef CONFIG_SH_FPU
 id|err
 op_or_assign
 id|save_sigcontext_fpu

@@ -1926,6 +1926,7 @@ op_or
 id|PCI_COMMAND_MASTER
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_SH_HS7751RVOIP) &amp;&amp; !defined(CONFIG_SH_RTS7751R2D)
 id|early_write_config_byte
 c_func
 (paren
@@ -1942,6 +1943,7 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Allocate PCI I/O and/or memory space */
 id|pciauto_setup_bars
 c_func

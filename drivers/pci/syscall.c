@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|asmlinkage
 r_int
@@ -27,6 +28,7 @@ r_int
 id|len
 comma
 r_void
+id|__user
 op_star
 id|buf
 )paren
@@ -366,6 +368,7 @@ r_int
 id|len
 comma
 r_void
+id|__user
 op_star
 id|buf
 )paren

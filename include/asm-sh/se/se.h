@@ -47,8 +47,13 @@ DECL|macro|PA_DIPSW1
 mdefine_line|#define PA_DIPSW1&t;0xb0800002&t;/* Dip switch 7,8 */
 DECL|macro|PA_LED
 mdefine_line|#define PA_LED&t;&t;0xb0c00000&t;/* LED */
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|macro|PA_BCR
+mdefine_line|#define PA_BCR&t;&t;0xb0e00000
+macro_line|#else
 DECL|macro|PA_BCR
 mdefine_line|#define PA_BCR&t;&t;0xb1400000&t;/* FPGA */
+macro_line|#endif
 DECL|macro|PA_MRSHPC
 mdefine_line|#define PA_MRSHPC&t;0xb83fffe0&t;/* MR-SHPC-01 PCMCIA controller */
 DECL|macro|PA_MRSHPC_MW1
@@ -97,7 +102,12 @@ DECL|macro|BCR_ILCRF
 mdefine_line|#define BCR_ILCRF&t;(PA_BCR + 10)
 DECL|macro|BCR_ILCRG
 mdefine_line|#define BCR_ILCRG&t;(PA_BCR + 12)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|macro|IRQ_STNIC
+mdefine_line|#define IRQ_STNIC   12
+macro_line|#else
 DECL|macro|IRQ_STNIC
 mdefine_line|#define IRQ_STNIC&t;10
+macro_line|#endif
 macro_line|#endif  /* __ASM_SH_HITACHI_SE_H */
 eof

@@ -3,8 +3,14 @@ DECL|macro|__ASM_SH_DMA_MAPPING_H
 mdefine_line|#define __ASM_SH_DMA_MAPPING_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+r_extern
+r_struct
+id|bus_type
+id|pci_bus_type
+suffix:semicolon
 multiline_comment|/* arch/sh/mm/consistent.c */
 r_extern
 r_void
@@ -52,56 +58,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SH_DREAMCAST
-r_struct
-id|pci_dev
-suffix:semicolon
-r_extern
-r_struct
-id|bus_type
-id|pci_bus_type
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|__pci_alloc_consistent
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__pci_free_consistent
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-r_int
-id|size
-comma
-r_void
-op_star
-id|vaddr
-comma
-id|dma_addr_t
-id|dma_handle
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|dma_supported
 mdefine_line|#define dma_supported(dev, mask)&t;(1)
 DECL|function|dma_set_mask
@@ -172,36 +128,18 @@ r_int
 id|flag
 )paren
 (brace
-multiline_comment|/*&n;&t; * Some platforms have special pci_alloc_consistent() implementations,&n;&t; * in these instances we can&squot;t use the generic consistent_alloc().&n;&t; */
-macro_line|#ifdef CONFIG_SH_DREAMCAST
-r_if
-c_cond
-(paren
-id|dev
-op_logical_and
-id|dev-&gt;bus
-op_eq
-op_amp
-id|pci_bus_type
-)paren
-r_return
-id|__pci_alloc_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
 id|sh_mv.mv_consistent_alloc
 )paren
-r_return
+(brace
+r_void
+op_star
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|sh_mv
 dot
 id|mv_consistent_alloc
@@ -216,6 +154,17 @@ comma
 id|flag
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|NULL
+)paren
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_return
 id|consistent_alloc
 c_func
@@ -251,41 +200,17 @@ id|dma_addr_t
 id|dma_handle
 )paren
 (brace
-multiline_comment|/*&n;&t; * Same note as above applies to pci_free_consistent()..&n;&t; */
-macro_line|#ifdef CONFIG_SH_DREAMCAST
-r_if
-c_cond
-(paren
-id|dev
-op_logical_and
-id|dev-&gt;bus
-op_eq
-op_amp
-id|pci_bus_type
-)paren
-(brace
-id|__pci_free_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|vaddr
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
 id|sh_mv.mv_consistent_free
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|sh_mv
 dot
 id|mv_consistent_free
@@ -300,6 +225,13 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
 r_return
 suffix:semicolon
 )brace

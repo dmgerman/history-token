@@ -2,6 +2,7 @@ multiline_comment|/* $Id: irq_ipr.c,v 1.1.2.1 2002/11/17 10:53:43 mrbrown Exp $&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -1382,6 +1383,13 @@ suffix:semicolon
 )brace
 macro_line|#endif /* !CONFIG_CPU_SUBTYPE_SH7300 */
 macro_line|#endif /* CONFIG_CPU_SUBTYPE_SH7707 || CONFIG_CPU_SUBTYPE_SH7709  || CONFIG_CPU_SUBTYPE_SH7300*/
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40
+id|init_IRQ_intc2
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Perform the machine specific initialisation */
 r_if
 c_cond
@@ -1640,4 +1648,11 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|make_ipr_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_ipr_irq
+)paren
+suffix:semicolon
 eof

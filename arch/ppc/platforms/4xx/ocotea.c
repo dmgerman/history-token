@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/ocotea.c&n; *&n; * Ocotea board specific routines&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2003 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/ocotea.c&n; *&n; * Ocotea board specific routines&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2003-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
+macro_line|#include &lt;syslib/gen550.h&gt;
 macro_line|#include &lt;syslib/ibm440gx_common.h&gt;
 multiline_comment|/*&n; * This is a horrible kludge, we eventually need to abstract this&n; * generic PHY stuff, so the  standard phy mode defines can be&n; * easily used from arch code.&n; */
 macro_line|#include &quot;../../../../drivers/net/ibm_emac/ibm_emac_phy.h&quot;
@@ -114,6 +115,12 @@ c_func
 id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: PPC440GX EVB (Ocotea)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ibm440gx_show_cpuinfo
+c_func
+(paren
+id|m
 )paren
 suffix:semicolon
 r_return
@@ -804,6 +811,18 @@ l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
+multiline_comment|/* Configure debug serial access */
+id|gen550_init
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|port
+)paren
+suffix:semicolon
+macro_line|#endif
 id|port.membase
 op_assign
 id|ioremap64
@@ -846,6 +865,18 @@ l_string|&quot;Early serial init of port 1 failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
+multiline_comment|/* Configure debug serial access */
+id|gen550_init
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|port
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_void
@@ -882,24 +913,6 @@ id|DBCR0_IDM
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
-id|ibm440gx_get_clocks
-c_func
-(paren
-op_amp
-id|clocks
-comma
-l_int|33333333
-comma
-l_int|6
-op_star
-l_int|1843200
-)paren
-suffix:semicolon
-id|ocp_sys_info.opb_bus_freq
-op_assign
-id|clocks.opb
-suffix:semicolon
 multiline_comment|/* Setup TODC access */
 id|TODC_INIT
 c_func
@@ -1025,10 +1038,30 @@ op_plus
 id|KERNELBASE
 )paren
 suffix:semicolon
-multiline_comment|/* Disable L2-Cache due to hardware issues */
-id|ibm440gx_l2c_disable
+multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
+id|ibm440gx_get_clocks
 c_func
 (paren
+op_amp
+id|clocks
+comma
+l_int|33333333
+comma
+l_int|6
+op_star
+l_int|1843200
+)paren
+suffix:semicolon
+id|ocp_sys_info.opb_bus_freq
+op_assign
+id|clocks.opb
+suffix:semicolon
+multiline_comment|/* Disable L2-Cache on broken hardware, enable it otherwise */
+id|ibm440gx_l2c_setup
+c_func
+(paren
+op_amp
+id|clocks
 )paren
 suffix:semicolon
 id|ibm44x_platform_init

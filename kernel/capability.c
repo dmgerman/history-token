@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|securebits
 r_int

@@ -3478,7 +3478,7 @@ l_int|1
 suffix:colon
 multiline_comment|/* UL_GETFSIZE - in 512B chunks */
 r_return
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -3514,9 +3514,10 @@ id|val
 op_lshift_assign
 l_int|9
 suffix:semicolon
-id|lock_kernel
+id|task_lock
 c_func
 (paren
+id|current-&gt;group_leader
 )paren
 suffix:semicolon
 r_if
@@ -3524,7 +3525,7 @@ c_cond
 (paren
 id|val
 OG
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -3543,9 +3544,10 @@ id|CAP_SYS_RESOURCE
 )paren
 )paren
 (brace
-id|unlock_kernel
+id|task_unlock
 c_func
 (paren
+id|current-&gt;group_leader
 )paren
 suffix:semicolon
 r_return
@@ -3553,7 +3555,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -3563,7 +3565,7 @@ op_assign
 id|val
 suffix:semicolon
 )brace
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -3572,9 +3574,10 @@ id|rlim_cur
 op_assign
 id|val
 suffix:semicolon
-id|unlock_kernel
+id|task_unlock
 c_func
 (paren
+id|current-&gt;group_leader
 )paren
 suffix:semicolon
 r_return
@@ -3585,7 +3588,7 @@ l_int|3
 suffix:colon
 multiline_comment|/* UL_GMEMLIM */
 r_return
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket

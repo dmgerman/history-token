@@ -2086,7 +2086,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Check initial limits. This avoids letting people circumvent&n;&t; * size limits imposed on them by creating programs with large&n;&t; * arrays in the data or bss.&n;&t; */
 id|rlim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_DATA
 )braket

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|function|vfs_statfs
 r_int
@@ -3801,7 +3802,7 @@ c_cond
 (paren
 id|fd
 op_ge
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_NOFILE
 )braket

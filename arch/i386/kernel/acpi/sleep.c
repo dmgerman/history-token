@@ -167,7 +167,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * acpi_restore_state&n; */
+multiline_comment|/*&n; * acpi_restore_state - undo effects of acpi_save_state_mem&n; */
 DECL|function|acpi_restore_state_mem
 r_void
 id|acpi_restore_state_mem

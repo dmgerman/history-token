@@ -79,6 +79,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &quot;typhoon.h&quot;
 macro_line|#include &quot;typhoon-firmware.h&quot;
 DECL|variable|__devinitdata

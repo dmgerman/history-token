@@ -17,6 +17,10 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+DECL|variable|irq_mis_count
+id|atomic_t
+id|irq_mis_count
+suffix:semicolon
 DECL|variable|ioapic_lock
 r_static
 id|spinlock_t
@@ -915,13 +919,6 @@ macro_line|#  define TDprintk(x...)
 DECL|macro|Dprintk
 macro_line|#  define Dprintk(x...) 
 macro_line|# endif
-r_extern
-id|cpumask_t
-id|irq_affinity
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 DECL|variable|pending_irq_balance_cpumask
 id|cpumask_t
 id|__cacheline_aligned
@@ -2671,7 +2668,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|irqbalance_disable
-r_static
 r_int
 id|__init
 id|irqbalance_disable
@@ -2751,7 +2747,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|balanced_irq_init
-id|__initcall
+id|late_initcall
 c_func
 (paren
 id|balanced_irq_init
@@ -3021,7 +3017,6 @@ multiline_comment|/*&n; * Find the IRQ entry number of a certain pin.&n; */
 DECL|function|find_irq_entry
 r_static
 r_int
-id|__init
 id|find_irq_entry
 c_func
 (paren
@@ -3593,7 +3588,6 @@ multiline_comment|/*&n; * EISA Edge/Level control register, ELCR&n; */
 DECL|function|EISA_ELCR
 r_static
 r_int
-id|__init
 id|EISA_ELCR
 c_func
 (paren
@@ -3906,7 +3900,6 @@ suffix:semicolon
 DECL|function|MPBIOS_trigger
 r_static
 r_int
-id|__init
 id|MPBIOS_trigger
 c_func
 (paren
@@ -7977,7 +7970,6 @@ l_int|0x1f
 )paren
 )paren
 (brace
-macro_line|#ifdef APIC_MISMATCH_DEBUG
 id|atomic_inc
 c_func
 (paren
@@ -7985,7 +7977,6 @@ op_amp
 id|irq_mis_count
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock
 c_func
 (paren

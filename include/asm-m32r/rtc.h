@@ -40,7 +40,7 @@ DECL|macro|RTC_TCR_4KOHM
 macro_line|#  define RTC_TCR_4KOHM &t;0x02&t;/* xxxxxx10 4kOhm */
 DECL|macro|RTC_TCR_8KOHM
 macro_line|#  define RTC_TCR_8KOHM &t;0x03&t;/* xxxxxx11 8kOhm */
-macro_line|#ifdef CONFIG_M32700UT_DS1302
+macro_line|#ifdef CONFIG_DS1302
 r_extern
 r_int
 r_char

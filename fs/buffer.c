@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/buffer.c&n; *&n; *  Copyright (C) 1991, 1992
 multiline_comment|/*&n; * Start bdflush() with kernel_thread not syscall - Paul Gortmaker, 12/95&n; *&n; * Removed a lot of unnecessary code and simplified things now that&n; * the buffer cache isn&squot;t our primary cache - Andrew Tridgell 12/96&n; *&n; * Speed up hash, lru, and free list operations.  Use gfp() for allocating&n; * hash table, use SLAB cache for buffer heads. SMP threading.  -DaveM&n; *&n; * Added 32k buffer block sizes - these are required older ARM systems. - RMK&n; *&n; * async buffer flushing, 1999 Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
@@ -7981,7 +7982,7 @@ id|EFBIG
 suffix:semicolon
 id|limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

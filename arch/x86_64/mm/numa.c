@@ -1459,6 +1459,7 @@ id|numa_off
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA_EMU
 r_if
 c_cond
 (paren
@@ -1501,6 +1502,7 @@ op_assign
 id|MAX_NUMNODES
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
