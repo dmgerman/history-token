@@ -109,11 +109,6 @@ op_assign
 id|TYPE_ROM
 comma
 dot
-id|major
-op_assign
-id|SCSI_CDROM_MAJOR
-comma
-dot
 id|blk
 op_assign
 l_int|1

@@ -531,11 +531,6 @@ op_assign
 id|TYPE_TAPE
 comma
 dot
-id|major
-op_assign
-id|SCSI_TAPE_MAJOR
-comma
-dot
 id|detect
 op_assign
 id|st_detect

@@ -444,10 +444,6 @@ id|scsi_type
 suffix:colon
 id|TYPE_TAPE
 comma
-id|major
-suffix:colon
-id|OSST_MAJOR
-comma
 id|detect
 suffix:colon
 id|osst_detect

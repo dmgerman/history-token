@@ -962,23 +962,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|major
-r_int
-r_int
-id|major
-suffix:semicolon
-DECL|member|min_major
-r_int
-r_int
-id|min_major
-suffix:semicolon
-multiline_comment|/* Minimum major in range. */
-DECL|member|max_major
-r_int
-r_int
-id|max_major
-suffix:semicolon
-multiline_comment|/* Maximum major in range. */
 DECL|member|nr_dev
 r_int
 r_int

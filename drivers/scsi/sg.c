@@ -181,11 +181,6 @@ op_assign
 l_int|0xff
 comma
 dot
-id|major
-op_assign
-id|SCSI_GENERIC_MAJOR
-comma
-dot
 id|detect
 op_assign
 id|sg_detect
