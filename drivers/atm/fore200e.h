@@ -2733,34 +2733,6 @@ DECL|typedef|fore200e_bus_t
 )brace
 id|fore200e_bus_t
 suffix:semicolon
-macro_line|#if defined(CONFIG_ATM_FORE200E_SBA)
-macro_line|#  if defined(CONFIG_ATM_FORE200E_PCA)
-DECL|macro|FORE200E_DMA_BIDIRECTIONAL
-macro_line|#    define FORE200E_DMA_BIDIRECTIONAL PCI_DMA_BIDIRECTIONAL
-DECL|macro|FORE200E_DMA_TODEVICE
-macro_line|#    define FORE200E_DMA_TODEVICE      PCI_DMA_TODEVICE
-DECL|macro|FORE200E_DMA_FROMDEVICE
-macro_line|#    define FORE200E_DMA_FROMDEVICE    PCI_DMA_FROMDEVICE
-macro_line|#  else
-DECL|macro|FORE200E_DMA_BIDIRECTIONAL
-macro_line|#    define FORE200E_DMA_BIDIRECTIONAL SBUS_DMA_BIDIRECTIONAL
-DECL|macro|FORE200E_DMA_TODEVICE
-macro_line|#    define FORE200E_DMA_TODEVICE      SBUS_DMA_TODEVICE
-DECL|macro|FORE200E_DMA_FROMDEVICE
-macro_line|#    define FORE200E_DMA_FROMDEVICE    SBUS_DMA_FROMDEVICE
-macro_line|#  endif
-macro_line|#else
-macro_line|#  ifndef CONFIG_ATM_FORE200E_PCA
-macro_line|#    warning compiling the fore200e driver without any hardware support enabled!
-macro_line|#    include &lt;linux/pci.h&gt;
-macro_line|#  endif
-DECL|macro|FORE200E_DMA_BIDIRECTIONAL
-macro_line|#  define FORE200E_DMA_BIDIRECTIONAL PCI_DMA_BIDIRECTIONAL
-DECL|macro|FORE200E_DMA_TODEVICE
-macro_line|#  define FORE200E_DMA_TODEVICE      PCI_DMA_TODEVICE
-DECL|macro|FORE200E_DMA_FROMDEVICE
-macro_line|#  define FORE200E_DMA_FROMDEVICE    PCI_DMA_FROMDEVICE
-macro_line|#endif
 multiline_comment|/* vc mapping */
 DECL|struct|fore200e_vc_map
 r_typedef
