@@ -7205,7 +7205,7 @@ r_return
 id|blk_ioctl
 c_func
 (paren
-id|ip-&gt;i_rdev
+id|ip-&gt;i_bdev
 comma
 id|cmd
 comma

@@ -10674,7 +10674,7 @@ op_assign
 id|blk_ioctl
 c_func
 (paren
-id|dev
+id|inode-&gt;i_bdev
 comma
 id|cmd
 comma
