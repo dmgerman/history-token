@@ -774,13 +774,9 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|dirname
 op_plus
 l_int|3
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|dev-&gt;de

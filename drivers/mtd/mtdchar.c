@@ -2161,11 +2161,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;mtd&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|register_mtd_user

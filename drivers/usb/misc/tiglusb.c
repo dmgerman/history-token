@@ -1790,11 +1790,7 @@ suffix:semicolon
 multiline_comment|/* Use devfs, tree: /dev/ticables/usb/[0..3] */
 id|devfs_mk_dir
 (paren
-l_int|NULL
-comma
 l_string|&quot;ticables/usb&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* register USB module */

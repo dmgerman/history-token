@@ -9,10 +9,15 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#ifndef MAX_HWIFS
+macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|MAX_HWIFS
-macro_line|#undef  MAX_HWIFS
+mdefine_line|#define MAX_HWIFS&t;10
+macro_line|# else
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;2
+macro_line|# endif
+macro_line|#endif
 DECL|function|ide_default_irq
 r_static
 id|__inline__

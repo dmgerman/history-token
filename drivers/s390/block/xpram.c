@@ -1547,11 +1547,7 @@ suffix:semicolon
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;slram&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Assign the other needed values: make request function, sizes and&n;&t; * hardsect size. All the minor devices feature the same value.&n;&t; */
