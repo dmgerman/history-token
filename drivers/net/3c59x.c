@@ -695,8 +695,6 @@ l_int|32
 comma
 )brace
 comma
-DECL|macro|EISA_3C592_OFFSET
-mdefine_line|#define EISA_3C592_OFFSET 1&t;&t;/* Offset of this entry for vortex_eisa_init */
 (brace
 l_string|&quot;3c592 EISA 10Mbps Demon/Vortex&quot;
 comma
@@ -711,8 +709,6 @@ l_int|32
 comma
 )brace
 comma
-DECL|macro|EISA_3C597_OFFSET
-mdefine_line|#define EISA_3C597_OFFSET 2&t;&t;/* Offset of this entry for vortex_eisa_init */
 (brace
 l_string|&quot;3c597 EISA Fast Demon/Vortex&quot;
 comma
@@ -4021,13 +4017,13 @@ op_assign
 (brace
 l_string|&quot;TCM5920&quot;
 comma
-id|EISA_3C592_OFFSET
+id|CH_3C592
 )brace
 comma
 (brace
 l_string|&quot;TCM5970&quot;
 comma
-id|EISA_3C597_OFFSET
+id|CH_3C597
 )brace
 comma
 (brace
@@ -6051,7 +6047,7 @@ c_cond
 (paren
 id|vp-&gt;available_media
 op_amp
-l_int|0x4b
+l_int|0x40
 )paren
 op_logical_or
 (paren
