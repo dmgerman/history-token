@@ -8701,6 +8701,13 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef HP100_DEBUG_B
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|hp100_private
 op_star
