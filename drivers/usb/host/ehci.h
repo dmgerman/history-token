@@ -24,6 +24,11 @@ r_int
 r_int
 id|reclaim
 suffix:semicolon
+DECL|member|lost_iaa
+r_int
+r_int
+id|lost_iaa
+suffix:semicolon
 multiline_comment|/* termination of urbs from core */
 DECL|member|complete
 r_int
