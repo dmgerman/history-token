@@ -678,6 +678,29 @@ op_assign
 id|apicid
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|num_processors
+op_ge
+id|NR_CPUS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NR_CPUS limit of %i reached.  Cannot &quot;
+l_string|&quot;boot CPU(apicid 0x%d).&bslash;n&quot;
+comma
+id|NR_CPUS
+comma
+id|m-&gt;mpc_apicid
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|num_processors
 op_increment
 suffix:semicolon
