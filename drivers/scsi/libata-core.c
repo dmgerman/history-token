@@ -63,6 +63,7 @@ r_int
 id|device
 )paren
 suffix:semicolon
+macro_line|#if 0 /* to be used eventually */
 r_static
 r_void
 id|ata_qc_push
@@ -77,6 +78,7 @@ r_int
 id|append
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|ata_dma_complete
@@ -7010,8 +7012,8 @@ id|page
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 /* to be used eventually */
 multiline_comment|/**&n; *&t;ata_eng_schedule - run an iteration of the pio/dma/whatever engine&n; *&t;@ap: port on which activity will occur&n; *&t;@eng: instance of engine&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_eng_schedule
 r_static
 r_void
 id|ata_eng_schedule
@@ -7029,6 +7031,7 @@ id|eng
 (brace
 multiline_comment|/* FIXME */
 )brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;ata_eng_timeout - Handle timeout of queued command&n; *&t;@ap: Port on which timed-out command is active&n; *&n; *&t;Some part of the kernel (currently, only the SCSI layer)&n; *&t;has noticed that the active command on port @ap has not&n; *&t;completed after a specified length of time.  Handle this&n; *&t;condition by disabling DMA (if necessary) and completing&n; *&t;transactions, with error if necessary.&n; *&n; *&t;This also handles the case of the &quot;lost interrupt&quot;, where&n; *&t;for some reason (possibly hardware bug, possibly driver bug)&n; *&t;an interrupt was not delivered to the driver, even though the&n; *&t;transaction completed successfully.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from SCSI layer (none, can sleep)&n; */
 DECL|function|ata_eng_timeout
 r_void
@@ -7659,8 +7662,8 @@ id|ap-&gt;qactive
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 /* to be used eventually */
 multiline_comment|/**&n; *&t;ata_qc_push -&n; *&t;@qc:&n; *&t;@append:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_qc_push
 r_static
 r_void
 id|ata_qc_push
@@ -7742,6 +7745,7 @@ id|eng
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;ata_qc_issue -&n; *&t;@qc:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|ata_qc_issue
 r_int
