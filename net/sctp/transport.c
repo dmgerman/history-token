@@ -213,10 +213,6 @@ id|peer-&gt;error_count
 op_assign
 l_int|0
 suffix:semicolon
-id|peer-&gt;debug_name
-op_assign
-l_string|&quot;unnamedtransport&quot;
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -296,6 +292,23 @@ op_assign
 l_int|0
 suffix:semicolon
 id|peer-&gt;malloced
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Initialize the state information for SFR-CACC */
+id|peer-&gt;cacc.changeover_active
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.cycling_changeover
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.next_tsn_at_change
+op_assign
+l_int|0
+suffix:semicolon
+id|peer-&gt;cacc.cacc_saw_newack
 op_assign
 l_int|0
 suffix:semicolon

@@ -604,8 +604,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|sctp_ulpq_init
 c_func
 (paren
@@ -640,10 +639,6 @@ suffix:semicolon
 id|asoc-&gt;need_ecne
 op_assign
 l_int|0
-suffix:semicolon
-id|asoc-&gt;debug_name
-op_assign
-l_string|&quot;unnamedasoc&quot;
 suffix:semicolon
 id|asoc-&gt;eyecatcher
 op_assign
@@ -1013,6 +1008,26 @@ id|asoc-&gt;peer.active_path
 op_assign
 id|transport
 suffix:semicolon
+multiline_comment|/* &n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
+r_if
+c_cond
+(paren
+id|transport-&gt;cacc.changeover_active
+)paren
+id|transport-&gt;cacc.cycling_changeover
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 2) The sender MUST set CHANGEOVER_ACTIVE to indicate that&n;&t; * a changeover has occurred.&n;&t; */
+id|transport-&gt;cacc.changeover_active
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 3) The sender MUST store the next TSN to be sent in&n;&t; * next_tsn_at_change.&n;&t; */
+id|transport-&gt;cacc.next_tsn_at_change
+op_assign
+id|asoc-&gt;next_tsn
+suffix:semicolon
 )brace
 multiline_comment|/* Add a transport address to an association.  */
 DECL|function|sctp_assoc_add_peer
@@ -1252,8 +1267,7 @@ multiline_comment|/* If we do not yet have a primary path, set one.  */
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|asoc-&gt;peer.primary_path
 )paren
 (brace
@@ -1591,8 +1605,7 @@ multiline_comment|/* If we failed to find a usable transport, just camp on the&n
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|first
 )paren
 (brace

@@ -2148,12 +2148,6 @@ DECL|member|max_retrans
 r_int
 id|max_retrans
 suffix:semicolon
-multiline_comment|/* We use this name for debugging output... */
-DECL|member|debug_name
-r_char
-op_star
-id|debug_name
-suffix:semicolon
 multiline_comment|/* Per         : A timer used by each destination.&n;&t; * Destination :&n;&t; * Timer       :&n;&t; *&n;&t; * [Everywhere else in the text this is called T3-rtx. -ed]&n;&t; */
 DECL|member|T3_rtx_timer
 r_struct
@@ -2189,6 +2183,33 @@ r_int
 id|malloced
 suffix:semicolon
 multiline_comment|/* Is this structure kfree()able? */
+multiline_comment|/* State information saved for SFR_CACC algorithm. The key&n;&t; * idea in SFR_CACC is to maintain state at the sender on a&n;&t; * per-destination basis when a changeover happens.&n;&t; * &t;char changeover_active;&n;&t; * &t;char cycling_changeover;&n;&t; * &t;__u32 next_tsn_at_change;&n;&t; * &t;char cacc_saw_newack;&n;&t; */
+r_struct
+(brace
+multiline_comment|/* An unsigned integer, which stores the next TSN to be&n;&t;&t; * used by the sender, at the moment of changeover.&n;&t;&t; */
+DECL|member|next_tsn_at_change
+id|__u32
+id|next_tsn_at_change
+suffix:semicolon
+multiline_comment|/* A flag which indicates the occurrence of a changeover */
+DECL|member|changeover_active
+r_char
+id|changeover_active
+suffix:semicolon
+multiline_comment|/* A glag which indicates whether the change of primary is&n;&t;&t; * the first switch to this destination address during an&n;&t;&t; * active switch.&n;&t;&t; */
+DECL|member|cycling_changeover
+r_char
+id|cycling_changeover
+suffix:semicolon
+multiline_comment|/* A temporary flag, which is used during the processing of&n;&t;&t; * a SACK to estimate the causative TSN(s)&squot;s group.&n;&t;&t; */
+DECL|member|cacc_saw_newack
+r_char
+id|cacc_saw_newack
+suffix:semicolon
+DECL|member|cacc
+)brace
+id|cacc
+suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
