@@ -1,133 +1,240 @@
 macro_line|#ifndef __WL3501_H__
 DECL|macro|__WL3501_H__
 mdefine_line|#define __WL3501_H__
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|WL3501_SLOW_DOWN_IO
 mdefine_line|#define WL3501_SLOW_DOWN_IO __asm__ __volatile__(&quot;outb %al,$0x80&quot;)
 multiline_comment|/* define for WLA 2.0 */
 DECL|macro|WL3501_BLKSZ
 mdefine_line|#define WL3501_BLKSZ 256
 multiline_comment|/*&n; * ID for input Signals of DRIVER block&n; * bit[7-5] is block ID: 000&n; * bit[4-0] is signal ID&n;*/
-DECL|macro|WL3501_Alarm
-mdefine_line|#define WL3501_Alarm&t;&t;0x00
-DECL|macro|WL3501_MdConfirm
-mdefine_line|#define WL3501_MdConfirm&t;0x01
-DECL|macro|WL3501_MdIndicate
-mdefine_line|#define WL3501_MdIndicate&t;0x02
-DECL|macro|WL3501_AssocConfirm
-mdefine_line|#define WL3501_AssocConfirm&t;0x03
-DECL|macro|WL3501_AssocIndicate
-mdefine_line|#define WL3501_AssocIndicate&t;0x04
-DECL|macro|WL3501_AutheConfirm
-mdefine_line|#define WL3501_AutheConfirm&t;0x05
-DECL|macro|WL3501_AutheIndicate
-mdefine_line|#define WL3501_AutheIndicate&t;0x06
-DECL|macro|WL3501_DeautheConfirm
-mdefine_line|#define WL3501_DeautheConfirm&t;0x07
-DECL|macro|WL3501_DeautheIndicate
-mdefine_line|#define WL3501_DeautheIndicate &t;0x08
-DECL|macro|WL3501_DisassocConfirm
-mdefine_line|#define WL3501_DisassocConfirm &t;0x09
-DECL|macro|WL3501_DisassocIndicate
-mdefine_line|#define WL3501_DisassocIndicate&t;0x0A
-DECL|macro|WL3501_GetConfirm
-mdefine_line|#define WL3501_GetConfirm&t;0x0B
-DECL|macro|WL3501_JoinConfirm
-mdefine_line|#define WL3501_JoinConfirm &t;0x0C
-DECL|macro|WL3501_PowermgtConfirm
-mdefine_line|#define WL3501_PowermgtConfirm &t;0x0D
-DECL|macro|WL3501_ReassocConfirm
-mdefine_line|#define WL3501_ReassocConfirm&t;0x0E
-DECL|macro|WL3501_ReassocIndicate
-mdefine_line|#define WL3501_ReassocIndicate &t;0x0F
-DECL|macro|WL3501_ScanConfirm
-mdefine_line|#define WL3501_ScanConfirm &t;0x10
-DECL|macro|WL3501_SetConfirm
-mdefine_line|#define WL3501_SetConfirm&t;0x11
-DECL|macro|WL3501_StartConfirm
-mdefine_line|#define WL3501_StartConfirm&t;0x12
-DECL|macro|WL3501_ResyncConfirm
-mdefine_line|#define WL3501_ResyncConfirm&t;0x13
-DECL|macro|WL3501_SiteConfirm
-mdefine_line|#define WL3501_SiteConfirm &t;0x14
-DECL|macro|WL3501_SaveConfirm
-mdefine_line|#define WL3501_SaveConfirm &t;0x15
-DECL|macro|WL3501_RFtestConfirm
-mdefine_line|#define WL3501_RFtestConfirm&t;0x16
+DECL|enum|wl3501_signals
+r_enum
+id|wl3501_signals
+(brace
+DECL|enumerator|WL3501_SIG_ALARM
+id|WL3501_SIG_ALARM
+comma
+DECL|enumerator|WL3501_SIG_MD_CONFIRM
+id|WL3501_SIG_MD_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_MD_IND
+id|WL3501_SIG_MD_IND
+comma
+DECL|enumerator|WL3501_SIG_ASSOC_CONFIRM
+id|WL3501_SIG_ASSOC_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_ASSOC_IND
+id|WL3501_SIG_ASSOC_IND
+comma
+DECL|enumerator|WL3501_SIG_AUTH_CONFIRM
+id|WL3501_SIG_AUTH_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_AUTH_IND
+id|WL3501_SIG_AUTH_IND
+comma
+DECL|enumerator|WL3501_SIG_DEAUTH_CONFIRM
+id|WL3501_SIG_DEAUTH_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_DEAUTH_IND
+id|WL3501_SIG_DEAUTH_IND
+comma
+DECL|enumerator|WL3501_SIG_DISASSOC_CONFIRM
+id|WL3501_SIG_DISASSOC_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_DISASSOC_IND
+id|WL3501_SIG_DISASSOC_IND
+comma
+DECL|enumerator|WL3501_SIG_GET_CONFIRM
+id|WL3501_SIG_GET_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_JOIN_CONFIRM
+id|WL3501_SIG_JOIN_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_POWERMGT_CONFIRM
+id|WL3501_SIG_POWERMGT_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_REASSOC_CONFIRM
+id|WL3501_SIG_REASSOC_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_REASSOC_IND
+id|WL3501_SIG_REASSOC_IND
+comma
+DECL|enumerator|WL3501_SIG_SCAN_CONFIRM
+id|WL3501_SIG_SCAN_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_SET_CONFIRM
+id|WL3501_SIG_SET_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_START_CONFIRM
+id|WL3501_SIG_START_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_RESYNC_CONFIRM
+id|WL3501_SIG_RESYNC_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_SITE_CONFIRM
+id|WL3501_SIG_SITE_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_SAVE_CONFIRM
+id|WL3501_SIG_SAVE_CONFIRM
+comma
+DECL|enumerator|WL3501_SIG_RFTEST_CONFIRM
+id|WL3501_SIG_RFTEST_CONFIRM
+comma
 multiline_comment|/*&n; * ID for input Signals of MLME block&n; * bit[7-5] is block ID: 010&n; * bit[4-0] is signal ID&n; */
-DECL|macro|WL3501_AssocRequest
-mdefine_line|#define WL3501_AssocRequest&t;0x20
-DECL|macro|WL3501_AutheRequest
-mdefine_line|#define WL3501_AutheRequest&t;0x21
-DECL|macro|WL3501_DeautheRequest
-mdefine_line|#define WL3501_DeautheRequest&t;0x22
-DECL|macro|WL3501_DisassocRequest
-mdefine_line|#define WL3501_DisassocRequest&t;0x23
-DECL|macro|WL3501_GetRequest
-mdefine_line|#define WL3501_GetRequest&t;0x24
-DECL|macro|WL3501_JoinRequest
-mdefine_line|#define WL3501_JoinRequest&t;0x25
-DECL|macro|WL3501_PowermgtRequest
-mdefine_line|#define WL3501_PowermgtRequest&t;0x26
-DECL|macro|WL3501_ReassocRequest
-mdefine_line|#define WL3501_ReassocRequest&t;0x27
-DECL|macro|WL3501_ScanRequest
-mdefine_line|#define WL3501_ScanRequest&t;0x28
-DECL|macro|WL3501_SetRequest
-mdefine_line|#define WL3501_SetRequest&t;0x29
-DECL|macro|WL3501_StartRequest
-mdefine_line|#define WL3501_StartRequest&t;0x2A
-DECL|macro|WL3501_MdRequest
-mdefine_line|#define WL3501_MdRequest&t;0x2B
-DECL|macro|WL3501_ResyncRequest
-mdefine_line|#define WL3501_ResyncRequest&t;0x2C
-DECL|macro|WL3501_SiteRequest
-mdefine_line|#define WL3501_SiteRequest&t;0x2D
-DECL|macro|WL3501_SaveRequest
-mdefine_line|#define WL3501_SaveRequest&t;0x2E
-DECL|macro|WL3501_RFtestRequest
-mdefine_line|#define WL3501_RFtestRequest&t;0x2F
-DECL|macro|WL3501_MmConfirm
-mdefine_line|#define WL3501_MmConfirm&t;0x60
-DECL|macro|WL3501_MmIndicate
-mdefine_line|#define WL3501_MmIndicate&t;0x61
-DECL|macro|WL3501_Infrastructure
-mdefine_line|#define WL3501_Infrastructure&t;&t;0
-DECL|macro|WL3501_Independent
-mdefine_line|#define WL3501_Independent&t;&t;1
-DECL|macro|WL3501_Any_bss
-mdefine_line|#define WL3501_Any_bss&t;&t;&t;2
-DECL|macro|WL3501_ActiveScan
-mdefine_line|#define WL3501_ActiveScan&t;&t;0
-DECL|macro|WL3501_PassiveScan
-mdefine_line|#define WL3501_PassiveScan&t;&t;1
-DECL|macro|WL3501_TxResult_Success
-mdefine_line|#define WL3501_TxResult_Success&t;&t;0
-DECL|macro|WL3501_TxResult_NoBss
-mdefine_line|#define WL3501_TxResult_NoBss&t;&t;1
-DECL|macro|WL3501_TxResult_retryLimit
-mdefine_line|#define WL3501_TxResult_retryLimit&t;2
-DECL|macro|WL3501_Open_System
-mdefine_line|#define WL3501_Open_System&t;0
-DECL|macro|WL3501_Share_Key
-mdefine_line|#define WL3501_Share_Key&t;1
-DECL|macro|EtherII
-mdefine_line|#define EtherII     0
-DECL|macro|Ether802_3e
-mdefine_line|#define Ether802_3e 1
-DECL|macro|Ether802_3f
-mdefine_line|#define Ether802_3f 2
-DECL|macro|WL3501_STATUS_SUCCESS
-mdefine_line|#define WL3501_STATUS_SUCCESS    0
-DECL|macro|WL3501_STATUS_INVALID
-mdefine_line|#define WL3501_STATUS_INVALID    1
-DECL|macro|WL3501_STATUS_TIMEOUT
-mdefine_line|#define WL3501_STATUS_TIMEOUT    2
-DECL|macro|WL3501_STATUS_REFUSED
-mdefine_line|#define WL3501_STATUS_REFUSED    3
-DECL|macro|WL3501_STATUS_MANYREQ
-mdefine_line|#define WL3501_STATUS_MANYREQ    4
-DECL|macro|WL3501_STATUS_ALREADYBSS
-mdefine_line|#define WL3501_STATUS_ALREADYBSS 5
+DECL|enumerator|WL3501_SIG_ASSOC_REQ
+id|WL3501_SIG_ASSOC_REQ
+op_assign
+l_int|0x20
+comma
+DECL|enumerator|WL3501_SIG_AUTH_REQ
+id|WL3501_SIG_AUTH_REQ
+comma
+DECL|enumerator|WL3501_SIG_DEAUTH_REQ
+id|WL3501_SIG_DEAUTH_REQ
+comma
+DECL|enumerator|WL3501_SIG_DISASSOC_REQ
+id|WL3501_SIG_DISASSOC_REQ
+comma
+DECL|enumerator|WL3501_SIG_GET_REQ
+id|WL3501_SIG_GET_REQ
+comma
+DECL|enumerator|WL3501_SIG_JOIN_REQ
+id|WL3501_SIG_JOIN_REQ
+comma
+DECL|enumerator|WL3501_SIG_POWERMGT_REQ
+id|WL3501_SIG_POWERMGT_REQ
+comma
+DECL|enumerator|WL3501_SIG_REASSOC_REQ
+id|WL3501_SIG_REASSOC_REQ
+comma
+DECL|enumerator|WL3501_SIG_SCAN_REQ
+id|WL3501_SIG_SCAN_REQ
+comma
+DECL|enumerator|WL3501_SIG_SET_REQ
+id|WL3501_SIG_SET_REQ
+comma
+DECL|enumerator|WL3501_SIG_START_REQ
+id|WL3501_SIG_START_REQ
+comma
+DECL|enumerator|WL3501_SIG_MD_REQ
+id|WL3501_SIG_MD_REQ
+comma
+DECL|enumerator|WL3501_SIG_RESYNC_REQ
+id|WL3501_SIG_RESYNC_REQ
+comma
+DECL|enumerator|WL3501_SIG_SITE_REQ
+id|WL3501_SIG_SITE_REQ
+comma
+DECL|enumerator|WL3501_SIG_SAVE_REQ
+id|WL3501_SIG_SAVE_REQ
+comma
+DECL|enumerator|WL3501_SIG_RF_TEST_REQ
+id|WL3501_SIG_RF_TEST_REQ
+comma
+DECL|enumerator|WL3501_SIG_MM_CONFIRM
+id|WL3501_SIG_MM_CONFIRM
+op_assign
+l_int|0x60
+comma
+DECL|enumerator|WL3501_SIG_MM_IND
+id|WL3501_SIG_MM_IND
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_net_type
+r_enum
+id|wl3501_net_type
+(brace
+DECL|enumerator|WL3501_NET_TYPE_INFRASTRUCTURE
+id|WL3501_NET_TYPE_INFRASTRUCTURE
+comma
+DECL|enumerator|WL3501_NET_TYPE_INDEPENDENT
+id|WL3501_NET_TYPE_INDEPENDENT
+comma
+DECL|enumerator|WL3501_NET_TYPE_ANY_BSS
+id|WL3501_NET_TYPE_ANY_BSS
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_scan_type
+r_enum
+id|wl3501_scan_type
+(brace
+DECL|enumerator|WL3501_SCAN_TYPE_ACTIVE
+id|WL3501_SCAN_TYPE_ACTIVE
+comma
+DECL|enumerator|WL3501_SCAN_TYPE_PASSIVE
+id|WL3501_SCAN_TYPE_PASSIVE
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_tx_result
+r_enum
+id|wl3501_tx_result
+(brace
+DECL|enumerator|WL3501_TX_RESULT_SUCCESS
+id|WL3501_TX_RESULT_SUCCESS
+comma
+DECL|enumerator|WL3501_TX_RESULT_NO_BSS
+id|WL3501_TX_RESULT_NO_BSS
+comma
+DECL|enumerator|WL3501_TX_RESULT_RETRY_LIMIT
+id|WL3501_TX_RESULT_RETRY_LIMIT
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_sys_type
+r_enum
+id|wl3501_sys_type
+(brace
+DECL|enumerator|WL3501_SYS_TYPE_OPEN
+id|WL3501_SYS_TYPE_OPEN
+comma
+DECL|enumerator|WL3501_SYS_TYPE_SHARE_KEY
+id|WL3501_SYS_TYPE_SHARE_KEY
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_pkt_type
+r_enum
+id|wl3501_pkt_type
+(brace
+DECL|enumerator|WL3501_PKT_TYPE_ETHERII
+id|WL3501_PKT_TYPE_ETHERII
+comma
+DECL|enumerator|WL3501_PKT_TYPE_ETHER802_3E
+id|WL3501_PKT_TYPE_ETHER802_3E
+comma
+DECL|enumerator|WL3501_PKT_TYPE_ETHER802_3F
+id|WL3501_PKT_TYPE_ETHER802_3F
+comma
+)brace
+suffix:semicolon
+DECL|enum|wl3501_status
+r_enum
+id|wl3501_status
+(brace
+DECL|enumerator|WL3501_STATUS_SUCCESS
+id|WL3501_STATUS_SUCCESS
+comma
+DECL|enumerator|WL3501_STATUS_INVALID
+id|WL3501_STATUS_INVALID
+comma
+DECL|enumerator|WL3501_STATUS_TIMEOUT
+id|WL3501_STATUS_TIMEOUT
+comma
+DECL|enumerator|WL3501_STATUS_REFUSED
+id|WL3501_STATUS_REFUSED
+comma
+DECL|enumerator|WL3501_STATUS_MANY_REQ
+id|WL3501_STATUS_MANY_REQ
+comma
+DECL|enumerator|WL3501_STATUS_ALREADY_BSS
+id|WL3501_STATUS_ALREADY_BSS
+comma
+)brace
+suffix:semicolon
 DECL|macro|WL3501_FREQ_DOMAIN_FCC
 mdefine_line|#define WL3501_FREQ_DOMAIN_FCC    0x10&t;/* Channel 1 to 11 */
 DECL|macro|WL3501_FREQ_DOMAIN_IC
@@ -191,7 +298,7 @@ r_int
 r_char
 id|addr1
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|addr2
@@ -199,7 +306,7 @@ r_int
 r_char
 id|addr2
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|addr3
@@ -207,7 +314,7 @@ r_int
 r_char
 id|addr3
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|seq_ctrl
@@ -219,7 +326,7 @@ r_int
 r_char
 id|addr4
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
@@ -295,7 +402,7 @@ r_int
 r_char
 id|addr1
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|addr2
@@ -303,7 +410,7 @@ r_int
 r_char
 id|addr2
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|addr3
@@ -311,7 +418,7 @@ r_int
 r_char
 id|addr3
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|seq
@@ -323,7 +430,7 @@ r_int
 r_char
 id|addr4
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
@@ -447,14 +554,14 @@ r_int
 r_char
 id|mac_addr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_assoc_conf
+DECL|struct|wl3501_assoc_confirm
 r_struct
-id|wl3501_assoc_conf
+id|wl3501_assoc_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -494,7 +601,7 @@ r_int
 r_char
 id|mac_addr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
@@ -530,14 +637,14 @@ r_int
 r_char
 id|mac_addr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_auth_conf
+DECL|struct|wl3501_auth_confirm
 r_struct
-id|wl3501_auth_conf
+id|wl3501_auth_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -553,9 +660,9 @@ r_int
 r_char
 id|reserved
 suffix:semicolon
-DECL|member|Type
+DECL|member|type
 id|u16
-id|Type
+id|type
 suffix:semicolon
 DECL|member|status
 id|u16
@@ -566,14 +673,14 @@ r_int
 r_char
 id|mac_addr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_get_conf
+DECL|struct|wl3501_get_confirm
 r_struct
-id|wl3501_get_conf
+id|wl3501_get_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -683,7 +790,7 @@ r_int
 r_char
 id|bssid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
@@ -728,9 +835,9 @@ l_int|10
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_join_conf
+DECL|struct|wl3501_join_confirm
 r_struct
-id|wl3501_join_conf
+id|wl3501_join_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -795,7 +902,7 @@ r_int
 r_char
 id|bssid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
@@ -807,15 +914,15 @@ l_int|34
 )braket
 suffix:semicolon
 DECL|member|scan_type
-r_int
-r_char
+r_enum
+id|wl3501_scan_type
 id|scan_type
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_scan_conf
+DECL|struct|wl3501_scan_confirm
 r_struct
-id|wl3501_scan_conf
+id|wl3501_scan_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -873,7 +980,7 @@ r_int
 r_char
 id|bssid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
@@ -923,9 +1030,9 @@ id|rssi
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_start_conf
+DECL|struct|wl3501_start_confirm
 r_struct
-id|wl3501_start_conf
+id|wl3501_start_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -988,7 +1095,7 @@ r_int
 r_char
 id|daddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|saddr
@@ -996,7 +1103,7 @@ r_int
 r_char
 id|saddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
@@ -1047,7 +1154,7 @@ r_int
 r_char
 id|daddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|saddr
@@ -1055,14 +1162,14 @@ r_int
 r_char
 id|saddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|wl3501_md_conf
+DECL|struct|wl3501_md_confirm
 r_struct
-id|wl3501_md_conf
+id|wl3501_md_confirm
 (brace
 DECL|member|next_blk
 id|u16
@@ -1125,27 +1232,22 @@ r_struct
 id|wl3501_mac_addr
 (brace
 DECL|member|b0
-id|u8
-id|b0
-suffix:semicolon
 DECL|member|b1
-id|u8
-id|b1
-suffix:semicolon
 DECL|member|b2
-id|u8
-id|b2
-suffix:semicolon
 DECL|member|b3
-id|u8
-id|b3
-suffix:semicolon
 DECL|member|b4
-id|u8
-id|b4
-suffix:semicolon
 DECL|member|b5
 id|u8
+id|b0
+comma
+id|b1
+comma
+id|b2
+comma
+id|b3
+comma
+id|b4
+comma
 id|b5
 suffix:semicolon
 )brace
@@ -1332,6 +1434,10 @@ r_struct
 id|wl3501_mac_addr
 id|mac_addr
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|tx_buffer_size
 id|u16
 id|tx_buffer_size
@@ -1386,7 +1492,8 @@ id|u8
 id|llc_type
 suffix:semicolon
 DECL|member|net_type
-id|u8
+r_enum
+id|wl3501_net_type
 id|net_type
 suffix:semicolon
 DECL|member|essid
@@ -1441,7 +1548,7 @@ id|card_start
 suffix:semicolon
 DECL|member|bss_set
 r_struct
-id|wl3501_scan_conf
+id|wl3501_scan_confirm
 id|bss_set
 (braket
 l_int|20
@@ -1473,12 +1580,13 @@ id|iw_statistics
 id|wstats
 suffix:semicolon
 DECL|member|node
+r_struct
 id|dev_node_t
 id|node
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * wl3501_ioctl_blk is put into ifreq.ifr_data which is a union (16 bytes)&n; * sizeof(wl3501_ioctl_blk) must be less than 16 bytes.&n; */
+multiline_comment|/**&n; * struct wl3501_ioctl_blk - ioctl block&n; * @cmd - Command to run&n; * @len - Length of the data buffer&n; * @data - Pointer to the data buffer&n; *&n; * wl3501_ioctl_blk is put into ifreq.ifr_data which is a union (16 bytes)&n; * sizeof(wl3501_ioctl_blk) must be less than 16 bytes.&n; */
 DECL|struct|wl3501_ioctl_blk
 r_struct
 id|wl3501_ioctl_blk
@@ -1487,19 +1595,16 @@ DECL|member|cmd
 id|u16
 id|cmd
 suffix:semicolon
-multiline_comment|/* Command to run */
 DECL|member|len
 id|u16
 id|len
 suffix:semicolon
-multiline_comment|/* Length of the data buffer */
 DECL|member|data
 r_int
 r_char
 op_star
 id|data
 suffix:semicolon
-multiline_comment|/* Pointer to the data buffer */
 )brace
 suffix:semicolon
 DECL|struct|wl3501_ioctl_parm
@@ -1515,7 +1620,8 @@ id|u8
 id|chan
 suffix:semicolon
 DECL|member|net_type
-id|u8
+r_enum
+id|wl3501_net_type
 id|net_type
 suffix:semicolon
 DECL|member|essid
@@ -1545,13 +1651,23 @@ id|freq_domain
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|WL3501_IOCTL_GET_PARAMETER
-mdefine_line|#define WL3501_IOCTL_GET_PARAMETER   0&t;/* Get parameter */
-DECL|macro|WL3501_IOCTL_SET_PARAMETER
-mdefine_line|#define WL3501_IOCTL_SET_PARAMETER   1&t;/* Get parameter */
-DECL|macro|WL3501_IOCTL_WRITE_FLASH
-mdefine_line|#define WL3501_IOCTL_WRITE_FLASH     2&t;/* Write firmware into Flash ROM */
-DECL|macro|WL3501_IOCTL_SET_RESET
-mdefine_line|#define WL3501_IOCTL_SET_RESET       3&t;/* Reset the firmware */
-macro_line|#endif&t;&t;&t;&t;/* __WL3501_H__ */
+DECL|enum|wl3501_ioctl_cmd
+r_enum
+id|wl3501_ioctl_cmd
+(brace
+DECL|enumerator|WL3501_IOCTL_CMD_GET_PARAMETER
+id|WL3501_IOCTL_CMD_GET_PARAMETER
+comma
+DECL|enumerator|WL3501_IOCTL_CMD_SET_PARAMETER
+id|WL3501_IOCTL_CMD_SET_PARAMETER
+comma
+DECL|enumerator|WL3501_IOCTL_CMD_WRITE_FLASH
+id|WL3501_IOCTL_CMD_WRITE_FLASH
+comma
+DECL|enumerator|WL3501_IOCTL_CMD_SET_RESET
+id|WL3501_IOCTL_CMD_SET_RESET
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 eof
