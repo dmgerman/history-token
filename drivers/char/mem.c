@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  linux/drivers/char/mem.c&n; *&n; *  Copyright (C) 199
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/tpqic02.h&gt;
-macro_line|#include &lt;linux/ftape.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;

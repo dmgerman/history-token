@@ -411,7 +411,7 @@ r_int
 id|cpu
 )paren
 (brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_int
 id|redir
 op_assign

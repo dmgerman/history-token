@@ -8584,7 +8584,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA
 id|err
 op_assign
 id|mca_register_driver
@@ -8632,7 +8632,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#if CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA
 id|mca_unregister_driver
 (paren
 op_amp
