@@ -11,6 +11,9 @@ op_star
 comma
 id|xfs_acl_t
 op_star
+comma
+r_int
+op_star
 )paren
 suffix:semicolon
 id|STATIC
@@ -1070,6 +1073,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_int
+id|basicperms
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* more than std unix perms? */
 r_if
 c_cond
 (paren
@@ -1180,8 +1189,19 @@ c_func
 id|vp
 comma
 id|xfs_acl
+comma
+op_amp
+id|basicperms
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we have more than std unix permissions, set up the actual attr.&n;&t; * Otherwise, delete any existing attr.  This prevents us from&n;&t; * having actual attrs for permissions that can be stored in the&n;&t; * standard permission bits.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|basicperms
+)paren
+(brace
 id|xfs_acl_set_attr
 c_func
 (paren
@@ -1195,6 +1215,18 @@ op_amp
 id|error
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|xfs_acl_vremove
+c_func
+(paren
+id|vp
+comma
+id|_ACL_TYPE_ACCESS
+)paren
+suffix:semicolon
+)brace
 id|out
 suffix:colon
 id|VN_RELE
@@ -2712,6 +2744,11 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|basicperms
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the parent does not have a default ACL, or it&squot;s an&n;&t; * invalid ACL, we&squot;re done.&n;&t; */
 r_if
 c_cond
@@ -2780,6 +2817,9 @@ c_func
 id|vp
 comma
 id|cacl
+comma
+op_amp
+id|basicperms
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Default and Access ACL on the file.&t;The mode is already&n;&t; * set on the file, so we don&squot;t need to worry about that.&n;&t; *&n;&t; * If the new file is a directory, its default ACL is a copy of&n;&t; * the containing directory&squot;s default ACL.&n;&t; */
@@ -2808,6 +2848,9 @@ c_cond
 (paren
 op_logical_neg
 id|error
+op_logical_and
+op_logical_neg
+id|basicperms
 )paren
 id|xfs_acl_set_attr
 c_func
@@ -2846,6 +2889,10 @@ comma
 id|xfs_acl_t
 op_star
 id|acl
+comma
+r_int
+op_star
+id|basicperms
 )paren
 (brace
 id|vattr_t
@@ -2867,6 +2914,11 @@ comma
 id|error
 comma
 id|nomask
+op_assign
+l_int|1
+suffix:semicolon
+op_star
+id|basicperms
 op_assign
 l_int|1
 suffix:semicolon
@@ -2971,6 +3023,7 @@ suffix:semicolon
 r_case
 id|ACL_MASK
 suffix:colon
+multiline_comment|/* more than just standard modes */
 id|nomask
 op_assign
 l_int|0
@@ -2980,6 +3033,11 @@ op_or_assign
 id|ap-&gt;ae_perm
 op_lshift
 l_int|3
+suffix:semicolon
+op_star
+id|basicperms
+op_assign
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2994,6 +3052,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* more than just standard modes */
+op_star
+id|basicperms
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
