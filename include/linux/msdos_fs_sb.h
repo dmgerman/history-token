@@ -111,6 +111,12 @@ suffix:semicolon
 multiline_comment|/* Does this need case conversion? 0=need case conversion*/
 )brace
 suffix:semicolon
+DECL|macro|FAT_HASH_BITS
+mdefine_line|#define FAT_HASH_BITS&t;8
+DECL|macro|FAT_HASH_SIZE
+mdefine_line|#define FAT_HASH_SIZE&t;(1UL &lt;&lt; FAT_HASH_BITS)
+DECL|macro|FAT_HASH_MASK
+mdefine_line|#define FAT_HASH_MASK&t;(FAT_HASH_SIZE-1)
 DECL|struct|msdos_sb_info
 r_struct
 id|msdos_sb_info
@@ -238,6 +244,18 @@ r_int
 id|dir_per_block_bits
 suffix:semicolon
 multiline_comment|/* log2(dir_per_block) */
+DECL|member|inode_hash_lock
+id|spinlock_t
+id|inode_hash_lock
+suffix:semicolon
+DECL|member|inode_hashtable
+r_struct
+id|hlist_head
+id|inode_hashtable
+(braket
+id|FAT_HASH_SIZE
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

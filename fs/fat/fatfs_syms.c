@@ -132,11 +132,6 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-id|fat_hash_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|fat_cache_init

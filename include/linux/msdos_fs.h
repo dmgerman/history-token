@@ -946,14 +946,6 @@ suffix:semicolon
 multiline_comment|/* fat/inode.c */
 r_extern
 r_void
-id|fat_hash_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|fat_attach
 c_func
 (paren
