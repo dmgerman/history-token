@@ -803,6 +803,8 @@ id|b
 )paren
 suffix:semicolon
 )brace
+DECL|macro|update_mmu_cache
+mdefine_line|#define update_mmu_cache(vma, address, pte) do { } while (0)
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -909,17 +911,8 @@ macro_line|#endif
 multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this routine to take care of any (delayed) i-cache&n; * flushing that may be necessary.&n; */
 r_extern
 r_void
-id|update_mmu_cache
+id|lazy_mmu_prot_update
 (paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|vaddr
-comma
 id|pte_t
 id|pte
 )paren
@@ -995,6 +988,8 @@ DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
 mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
+DECL|macro|__HAVE_ARCH_LAZY_MMU_PROT_UPDATE
+mdefine_line|#define __HAVE_ARCH_LAZY_MMU_PROT_UPDATE
 multiline_comment|/*&n; * Override for pgd_addr_end() to deal with the virtual address space holes&n; * in each region.  In regions 0..4 virtual address bits are used like this:&n; *      +--------+------+--------+-----+-----+--------+&n; *      | pgdhi3 | rsvd | pgdlow | pmd | pte | offset |&n; *      +--------+------+--------+-----+-----+--------+&n; *  &squot;pgdlow&squot; overflows to pgdhi3 (a.k.a. region bits) leaving rsvd==0&n; */
 DECL|macro|IA64_PGD_OVERFLOW
 mdefine_line|#define IA64_PGD_OVERFLOW (PGDIR_SIZE &lt;&lt; (PAGE_SHIFT-6))

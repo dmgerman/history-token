@@ -5583,6 +5583,12 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine handles present pages, when users try to write&n; * to a shared page. It is done by copying the page to a new address&n; * and decrementing the shared-page counter for the old page.&n; *&n; * Goto-purists beware: the only reason for goto&squot;s here is that it results&n; * in better assembly code.. The &quot;default&quot; path will see no jumps at all.&n; *&n; * Note that this routine assumes that the protection checks have been&n; * done by the caller (the low-level page fault routine in most cases).&n; * Thus we can safely just mark it writable once we&squot;ve done any necessary&n; * COW.&n; *&n; * We also mark the page dirty at this point even though the page will&n; * change only once the write actually happens. This avoids a few races,&n; * and potentially makes it more efficient.&n; *&n; * We hold the mm semaphore and the page_table_lock on entry and exit&n; * with the page_table_lock released.&n; */
 DECL|function|do_wp_page
@@ -5769,6 +5775,12 @@ id|vma
 comma
 id|address
 comma
+id|entry
+)paren
+suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
 id|entry
 )paren
 suffix:semicolon
@@ -7589,6 +7601,12 @@ comma
 id|pte
 )paren
 suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
 id|pte_unmap
 c_func
 (paren
@@ -7859,6 +7877,12 @@ id|vma
 comma
 id|addr
 comma
+id|entry
+)paren
+suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
 id|entry
 )paren
 suffix:semicolon
@@ -8338,6 +8362,12 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -8730,6 +8760,12 @@ id|vma
 comma
 id|address
 comma
+id|entry
+)paren
+suffix:semicolon
+id|lazy_mmu_prot_update
+c_func
+(paren
 id|entry
 )paren
 suffix:semicolon
