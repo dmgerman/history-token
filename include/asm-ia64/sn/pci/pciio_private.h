@@ -126,6 +126,37 @@ DECL|macro|PCIIO_INTR_CONNECTED
 mdefine_line|#define PCIIO_INTR_CONNECTED&t;1&t;/* interrupt handler/thread has been connected */
 DECL|macro|PCIIO_INTR_NOTHREAD
 mdefine_line|#define PCIIO_INTR_NOTHREAD&t;2&t;/* interrupt handler wants to be called at interrupt level */
+multiline_comment|/*&n; * Generic PCI bus information&n; */
+DECL|struct|pciio_businfo_s
+r_struct
+id|pciio_businfo_s
+(brace
+DECL|member|bi_multi_master
+r_int
+id|bi_multi_master
+suffix:semicolon
+multiline_comment|/* Bus provider supports multiple */
+multiline_comment|/* dma masters behind a single slot. */
+multiline_comment|/* Needed to work around a thrashing */
+multiline_comment|/* issue in SGI Bridge ASIC and */
+multiline_comment|/* its derivatives. */
+DECL|member|bi_asic_type
+id|pciio_asic_type_t
+id|bi_asic_type
+suffix:semicolon
+multiline_comment|/* PCI ASIC type */
+DECL|member|bi_bus_type
+id|pciio_bus_type_t
+id|bi_bus_type
+suffix:semicolon
+multiline_comment|/* PCI bus type */
+DECL|member|bi_bus_speed
+id|pciio_bus_speed_t
+id|bi_bus_speed
+suffix:semicolon
+multiline_comment|/* PCI bus speed */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Some PCI provider implementations keep track of PCI window Base Address&n; * Register (BAR) address range assignment via the rmalloc()/rmfree() arena&n; * management routines.  These implementations use the following data&n; * structure for each allocation address space (e.g. memory, I/O, small&n; * window, etc.).&n; *&n; * The ``page size&squot;&squot; encodes the minimum allocation unit and must be a power&n; * of 2.  The main use of this allocation ``page size&squot;&squot; is to control the&n; * number of free address ranges that the mapping allocation software will&n; * need to track.  Smaller values will allow more efficient use of the address&n; * ranges but will result in much larger allocation map structures ...  For&n; * instance, if we want to manage allocations for a 256MB address range,&n; * choosing a 1MB allocation page size will result in up to 1MB being wasted&n; * for allocation requests smaller than 1MB.  The worst case allocation&n; * pattern for the allocation software to track would be a pattern of 1MB&n; * allocated, 1MB free.  This results in the need to track up to 128 free&n; * ranges.&n; */
 DECL|struct|pciio_win_map_s
 r_struct
@@ -185,6 +216,11 @@ id|vertex_hdl_t
 id|c_vertex
 suffix:semicolon
 multiline_comment|/* back pointer to vertex */
+DECL|member|c_hostvertex
+id|vertex_hdl_t
+id|c_hostvertex
+suffix:semicolon
+multiline_comment|/* top most device in tree */
 DECL|member|c_bus
 id|pciio_bus_t
 id|c_bus
@@ -246,6 +282,12 @@ DECL|member|w_space
 id|pciio_space_t
 id|w_space
 suffix:semicolon
+DECL|member|w_code
+r_char
+id|w_code
+suffix:semicolon
+multiline_comment|/* low 4 bits of MEM BAR */
+multiline_comment|/* low 2 bits of IO BAR */
 DECL|member|w_base
 id|iopaddr_t
 id|w_base
@@ -285,6 +327,11 @@ id|pciio_piospace_t
 id|c_piospace
 suffix:semicolon
 multiline_comment|/* additional I/O spaces allocated */
+DECL|member|c_type1
+r_int
+id|c_type1
+suffix:semicolon
+multiline_comment|/* use type1 addressing */
 )brace
 suffix:semicolon
 r_extern

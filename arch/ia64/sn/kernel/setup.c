@@ -609,7 +609,7 @@ c_func
 suffix:semicolon
 r_extern
 id|nasid_t
-id|get_master_baseio_nasid
+id|snia_get_master_baseio_nasid
 c_func
 (paren
 r_void
@@ -742,7 +742,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|get_console_nasid
+id|snia_get_console_nasid
 c_func
 (paren
 )paren
@@ -750,7 +750,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|get_master_baseio_nasid
+id|snia_get_master_baseio_nasid
 c_func
 (paren
 )paren

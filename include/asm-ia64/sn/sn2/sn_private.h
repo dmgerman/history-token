@@ -62,14 +62,6 @@ id|nasid_t
 )paren
 suffix:semicolon
 r_extern
-id|nasid_t
-id|get_console_nasid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_char
 id|get_console_pcislot
 c_func

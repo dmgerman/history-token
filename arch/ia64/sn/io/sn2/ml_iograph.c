@@ -604,7 +604,7 @@ id|widgetnum
 (brace
 r_extern
 id|nasid_t
-id|get_master_baseio_nasid
+id|snia_get_master_baseio_nasid
 c_func
 (paren
 r_void
@@ -650,7 +650,7 @@ c_cond
 (paren
 id|nasid
 op_eq
-id|get_master_baseio_nasid
+id|snia_get_master_baseio_nasid
 c_func
 (paren
 )paren
@@ -666,7 +666,7 @@ l_string|&quot;Nasid == %d, console nasid == %d&quot;
 comma
 id|nasid
 comma
-id|get_master_baseio_nasid
+id|snia_get_master_baseio_nasid
 c_func
 (paren
 )paren

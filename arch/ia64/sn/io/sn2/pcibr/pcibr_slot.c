@@ -6136,7 +6136,7 @@ id|p_new_enable
 suffix:semicolon
 r_extern
 r_int
-id|badaddr_val
+id|snia_badaddr_val
 c_func
 (paren
 r_volatile
@@ -6213,7 +6213,7 @@ multiline_comment|/* flushbus */
 )brace
 id|rv
 op_assign
-id|badaddr_val
+id|snia_badaddr_val
 c_func
 (paren
 (paren
