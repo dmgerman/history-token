@@ -415,7 +415,7 @@ DECL|macro|__a2v
 mdefine_line|#define __a2v(x) ((void *) __va(absolute_to_phys(x)))
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page) &bslash;&n;&t;&t;((page) - page_zone(page)-&gt;zone_mem_map + &bslash;&n;&t;&t;(page_zone(page)-&gt;zone_start_pfn))
+mdefine_line|#define page_to_pfn(page)&t;discontigmem_page_to_pfn(page)
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;discontigmem_pfn_to_page(pfn)
 macro_line|#else

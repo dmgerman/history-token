@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
@@ -1810,6 +1811,7 @@ l_int|0x211
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize the bootmem system and give it all the memory we&n; * have available.&n; */
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|do_init_bootmem
 r_void
 id|__init
@@ -2086,6 +2088,7 @@ id|zones_size
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_extern
 r_int
 r_int
@@ -2134,6 +2137,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_extern
 r_char
 op_star
@@ -2148,6 +2152,7 @@ r_int
 r_int
 id|addr
 suffix:semicolon
+macro_line|#endif
 r_int
 id|codepages
 op_assign
@@ -2162,20 +2167,6 @@ r_int
 id|initpages
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-r_int
-id|va_rtas_base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
-(paren
-id|rtas.base
-)paren
 suffix:semicolon
 id|max_mapnr
 op_assign
@@ -2204,6 +2195,119 @@ id|max_pfn
 op_assign
 id|max_low_pfn
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+(brace
+r_int
+id|nid
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|nid
+op_assign
+l_int|0
+suffix:semicolon
+id|nid
+OL
+id|MAX_NUMNODES
+suffix:semicolon
+id|nid
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|numa_node_exists
+(braket
+id|nid
+)braket
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;freeing bootmem node %x&bslash;n&quot;
+comma
+id|nid
+)paren
+suffix:semicolon
+id|totalram_pages
+op_add_assign
+id|free_all_bootmem_node
+c_func
+(paren
+id|NODE_DATA
+c_func
+(paren
+id|nid
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;Memory: %luk available (%dk kernel code, %dk data, %dk init) [%08lx,%08lx]&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+comma
+id|codepages
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+comma
+id|datapages
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+comma
+id|initpages
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+comma
+id|PAGE_OFFSET
+comma
+(paren
+r_int
+r_int
+)paren
+id|__va
+c_func
+(paren
+id|lmb_end_of_DRAM
+c_func
+(paren
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
 id|totalram_pages
 op_add_assign
 id|free_all_bootmem
@@ -2408,6 +2512,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|mem_init_done
 op_assign
 l_int|1

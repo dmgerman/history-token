@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC64_PGALLOC_H
 DECL|macro|_PPC64_PGALLOC_H
 mdefine_line|#define _PPC64_PGALLOC_H
-macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 r_static
@@ -271,8 +271,53 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|pte_alloc_one
-mdefine_line|#define pte_alloc_one(mm, address) &bslash;&n;&t;virt_to_page(pte_alloc_one_kernel((mm), (address)))
+r_static
+r_inline
+r_struct
+id|page
+op_star
+DECL|function|pte_alloc_one
+id|pte_alloc_one
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+id|pte_t
+op_star
+id|pte
+op_assign
+id|pte_alloc_one_kernel
+c_func
+(paren
+id|mm
+comma
+id|address
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte
+)paren
+r_return
+id|virt_to_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_void

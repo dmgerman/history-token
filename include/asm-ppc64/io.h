@@ -482,7 +482,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 macro_line|#if 0
 mdefine_line|#define BIO_VMERGE_BOUNDARY&t;4096
 macro_line|#endif
