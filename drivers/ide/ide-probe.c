@@ -3877,10 +3877,12 @@ id|fops
 op_assign
 id|ide_fops
 suffix:semicolon
-id|hwif-&gt;gd
+id|hwif-&gt;drives
 (braket
 id|unit
 )braket
+dot
+id|disk
 op_assign
 id|gd
 op_plus
