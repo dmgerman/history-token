@@ -3210,7 +3210,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, msg_len: %u)&bslash;n&quot;
+l_string|&quot;sctp_sendmsg(sk: %p, msg: %p, msg_len: %zu)&bslash;n&quot;
 comma
 id|sk
 comma
@@ -3428,7 +3428,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;msg_len: %u, sinfo_flags: 0x%x&bslash;n&quot;
+l_string|&quot;msg_len: %zu, sinfo_flags: 0x%x&bslash;n&quot;
 comma
 id|msg_len
 comma
@@ -4706,7 +4706,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_recvmsg(%s: %p, %s: %p, %s: %d, %s: %d, %s: &quot;
+l_string|&quot;sctp_recvmsg(%s: %p, %s: %p, %s: %zd, %s: %d, %s: &quot;
 l_string|&quot;0x%x, %s: %p)&bslash;n&quot;
 comma
 l_string|&quot;sk&quot;
@@ -14737,7 +14737,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;wait_for_sndbuf: asoc=%p, timeo=%ld, msg_len=%u&bslash;n&quot;
+l_string|&quot;wait_for_sndbuf: asoc=%p, timeo=%ld, msg_len=%zu&bslash;n&quot;
 comma
 id|asoc
 comma
