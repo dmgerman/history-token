@@ -135,6 +135,8 @@ id|p
 )paren
 suffix:semicolon
 )brace
+DECL|macro|task_hot
+mdefine_line|#define task_hot(p, now, sd) ((now) - (p)-&gt;timestamp &lt; (sd)-&gt;cache_hot_time)
 multiline_comment|/*&n; * These are the runqueue data structures:&n; */
 DECL|macro|BITMAP_SIZE
 mdefine_line|#define BITMAP_SIZE ((((MAX_PRIO+1+7)/8)+sizeof(long)-1)/sizeof(long))
@@ -1778,13 +1780,17 @@ id|sync
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
+id|cpu
+comma
+id|this_cpu
+comma
 id|success
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_int
 id|old_state
@@ -1793,17 +1799,7 @@ id|runqueue_t
 op_star
 id|rq
 suffix:semicolon
-r_int
-id|cpu
-comma
-id|this_cpu
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-r_int
-r_int
-r_int
-id|now
-suffix:semicolon
 r_int
 r_int
 id|load
@@ -1971,13 +1967,6 @@ l_int|2
 r_goto
 id|out_set_cpu
 suffix:semicolon
-id|now
-op_assign
-id|sched_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Migrate the task to the waking domain.&n;&t; * Do not violate hard affinity.&n;&t; */
 id|for_each_domain
 c_func
@@ -2002,11 +1991,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|task_hot
+c_func
+(paren
+id|p
+comma
 id|rq-&gt;timestamp_last_tick
-op_minus
-id|p-&gt;timestamp
-OL
-id|sd-&gt;cache_hot_time
+comma
+id|sd
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -2066,15 +2059,6 @@ comma
 id|new_cpu
 )paren
 suffix:semicolon
-r_goto
-id|repeat_lock_task
-suffix:semicolon
-)brace
-r_goto
-id|out_activate
-suffix:semicolon
-id|repeat_lock_task
-suffix:colon
 id|task_rq_unlock
 c_func
 (paren
@@ -2084,6 +2068,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* might preempt at this point */
 id|rq
 op_assign
 id|task_rq_lock
@@ -2135,6 +2120,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
+)brace
 id|out_activate
 suffix:colon
 macro_line|#endif /* CONFIG_SMP */
@@ -3797,11 +3783,15 @@ id|sd-&gt;cache_nice_tries
 r_if
 c_cond
 (paren
+id|task_hot
+c_func
+(paren
+id|p
+comma
 id|rq-&gt;timestamp_last_tick
-op_minus
-id|p-&gt;timestamp
-OL
-id|sd-&gt;cache_hot_time
+comma
+id|sd
+)paren
 )paren
 r_return
 l_int|0
@@ -3843,14 +3833,6 @@ id|idle_type
 id|idle
 )paren
 (brace
-r_int
-id|idx
-suffix:semicolon
-r_int
-id|pulled
-op_assign
-l_int|0
-suffix:semicolon
 id|prio_array_t
 op_star
 id|array
@@ -3865,6 +3847,13 @@ id|head
 comma
 op_star
 id|curr
+suffix:semicolon
+r_int
+id|idx
+comma
+id|pulled
+op_assign
+l_int|0
 suffix:semicolon
 id|task_t
 op_star
@@ -4219,17 +4208,9 @@ id|tmp
 )paren
 )paren
 )paren
-(brace
-id|WARN_ON
-c_func
-(paren
-l_int|1
-)paren
+r_goto
+id|nextgroup
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|for_each_cpu_mask
 c_func
 (paren
