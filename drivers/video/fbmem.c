@@ -53,6 +53,14 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|amba_clcdfb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|amifb_init
 c_func
 (paren
@@ -1125,6 +1133,16 @@ comma
 id|cyber2000fb_init
 comma
 id|cyber2000fb_setup
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_ARMCLCD
+(brace
+l_string|&quot;ambaclcdfb&quot;
+comma
+id|amba_clcdfb_init
+comma
+l_int|NULL
 )brace
 comma
 macro_line|#endif
