@@ -2094,10 +2094,6 @@ id|dev-&gt;stop
 op_assign
 id|shaper_close
 suffix:semicolon
-id|dev-&gt;destructor
-op_assign
-id|free_netdev
-suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
 id|shaper_start_xmit
