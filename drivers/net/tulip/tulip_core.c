@@ -211,6 +211,16 @@ l_int|0x01A00000
 op_or
 l_int|0x4800
 suffix:semicolon
+macro_line|#elif defined(__mips__)
+DECL|variable|csr0
+r_static
+r_int
+id|csr0
+op_assign
+l_int|0x00200000
+op_or
+l_int|0x4000
+suffix:semicolon
 macro_line|#else
 macro_line|#warning Processor architecture undefined!
 DECL|variable|csr0
@@ -8180,6 +8190,52 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* DDB5477 MAC address in first EEPROM locations. */
+id|sa_offset
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* No media table either */
+id|tp-&gt;flags
+op_and_assign
+op_complement
+id|HAS_MEDIA_TABLE
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS_COBALT
+r_if
+c_cond
+(paren
+(paren
+id|pdev-&gt;bus-&gt;number
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_eq
+l_int|7
+)paren
+op_logical_or
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_eq
+l_int|12
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Cobalt MAC address in first EEPROM locations. */
 id|sa_offset
 op_assign
 l_int|0

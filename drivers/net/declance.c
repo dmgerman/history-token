@@ -1,21 +1,52 @@
-multiline_comment|/*     &n; *    Lance ethernet driver for the MIPS processor based&n; *      DECstation family&n; *&n; *&n; *      adopted from sunlance.c by Richard van den Berg&n; *&n; *      additional sources:&n; *      - PMAD-AA TURBOchannel Ethernet Module Functional Specification,&n; *        Revision 1.2&n; *&n; *      History:&n; *&n; *      v0.001: The kernel accepts the code and it shows the hardware address.&n; *&n; *      v0.002: Removed most sparc stuff, left only some module and dma stuff.&n; *&n; *      v0.003: Enhanced base address calculation from proposals by&n; *      Harald Koerfgen and Thomas Riemer.&n; *&n; *      v0.004: lance-regs is pointing at the right addresses, added prom&n; *      check. First start of address mapping and DMA.&n; *&n; *      v0.005: started to play around with LANCE-DMA. This driver will not work&n; *      for non IOASIC lances. HK&n; *&n; *      v0.006: added pointer arrays to lance_private and setup routine for them&n; *      in dec_lance_init. HK&n; *&n; *      v0.007: Big shit. The LANCE seems to use a different DMA mechanism to access&n; *      the init block. This looks like one (short) word at a time, but the smallest&n; *      amount the IOASIC can transfer is a (long) word. So we have a 2-2 padding here.&n; *      Changed lance_init_block accordingly. The 16-16 padding for the buffers&n; *      seems to be correct. HK&n; *&n; *     v0.008 - mods to make PMAX_LANCE work. 01/09/1999 triemer&n; */
-DECL|macro|DEBUG_DRIVER
-macro_line|#undef DEBUG_DRIVER
-DECL|variable|version
+multiline_comment|/*     &n; *    Lance ethernet driver for the MIPS processor based&n; *      DECstation family&n; *&n; *&n; *      adopted from sunlance.c by Richard van den Berg&n; *&n; *      Copyright (C) 2002, 2003  Maciej W. Rozycki&n; *&n; *      additional sources:&n; *      - PMAD-AA TURBOchannel Ethernet Module Functional Specification,&n; *        Revision 1.2&n; *&n; *      History:&n; *&n; *      v0.001: The kernel accepts the code and it shows the hardware address.&n; *&n; *      v0.002: Removed most sparc stuff, left only some module and dma stuff.&n; *&n; *      v0.003: Enhanced base address calculation from proposals by&n; *              Harald Koerfgen and Thomas Riemer.&n; *&n; *      v0.004: lance-regs is pointing at the right addresses, added prom&n; *              check. First start of address mapping and DMA.&n; *&n; *      v0.005: started to play around with LANCE-DMA. This driver will not&n; *              work for non IOASIC lances. HK&n; *&n; *      v0.006: added pointer arrays to lance_private and setup routine for&n; *              them in dec_lance_init. HK&n; *&n; *      v0.007: Big shit. The LANCE seems to use a different DMA mechanism to&n; *              access the init block. This looks like one (short) word at a&n; *              time, but the smallest amount the IOASIC can transfer is a&n; *              (long) word. So we have a 2-2 padding here. Changed&n; *              lance_init_block accordingly. The 16-16 padding for the buffers&n; *              seems to be correct. HK&n; *&n; *      v0.008: mods to make PMAX_LANCE work. 01/09/1999 triemer&n; *&n; *      v0.009: Module support fixes, multiple interfaces support, various&n; *              bits. macro&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/dec/interrupts.h&gt;
+macro_line|#include &lt;asm/dec/ioasic.h&gt;
+macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
+macro_line|#include &lt;asm/dec/kn01.h&gt;
+macro_line|#include &lt;asm/dec/machtype.h&gt;
+macro_line|#include &lt;asm/dec/tc.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|variable|__devinitdata
 r_static
 r_char
-op_star
 id|version
+(braket
+)braket
+id|__devinitdata
 op_assign
-l_string|&quot;declance.c: v0.008 by Linux Mips DECstation task force&bslash;n&quot;
+l_string|&quot;declance.c: v0.009 by Linux MIPS DECstation task force&bslash;n&quot;
 suffix:semicolon
-DECL|variable|lancestr
-r_static
-r_char
-op_star
-id|lancestr
-op_assign
-l_string|&quot;LANCE&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Linux MIPS DECstation task force&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;DEC LANCE (DECstation onboard, PMAD-xx) driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * card types&n; */
 DECL|macro|ASIC_LANCE
@@ -24,34 +55,6 @@ DECL|macro|PMAD_LANCE
 mdefine_line|#define PMAD_LANCE 2
 DECL|macro|PMAX_LANCE
 mdefine_line|#define PMAX_LANCE 3
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;asm/dec/interrupts.h&gt;
-macro_line|#include &lt;asm/dec/ioasic_ints.h&gt;
-macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
-macro_line|#include &lt;asm/dec/machtype.h&gt;
-macro_line|#include &lt;asm/dec/tc.h&gt;
-macro_line|#include &lt;asm/dec/kn01.h&gt;
-macro_line|#include &lt;asm/wbflush.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/user.h&gt;
-macro_line|#include &lt;linux/utsname.h&gt;
-macro_line|#include &lt;linux/a.out.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#ifndef CONFIG_TC
 DECL|variable|system_base
 r_int
@@ -64,11 +67,6 @@ r_int
 id|dmaptr
 suffix:semicolon
 macro_line|#endif
-DECL|variable|type
-r_static
-r_int
-id|type
-suffix:semicolon
 DECL|macro|LE_CSR0
 mdefine_line|#define LE_CSR0 0
 DECL|macro|LE_CSR1
@@ -187,8 +185,6 @@ DECL|macro|TX_BUFF_SIZE
 mdefine_line|#define TX_BUFF_SIZE            PKT_BUF_SZ
 DECL|macro|TEST_HITS
 macro_line|#undef TEST_HITS
-DECL|macro|DEBUG_DRIVER
-mdefine_line|#define DEBUG_DRIVER 1
 DECL|macro|ZERO
 mdefine_line|#define ZERO 0
 multiline_comment|/* The DS2000/3000 have a linear 64 KB buffer.&n;&n; * The PMAD-AA has 128 kb buffer on-board. &n; *&n; * The IOASIC LANCE devices use a shared memory region. This region as seen &n; * from the CPU is (max) 128 KB long and has to be on an 128 KB boundary.&n; * The LANCE sees this as a 64 KB long continuous memory region.&n; *&n; * The LANCE&squot;s DMA address is used as an index in this buffer and DMA takes&n; * place in bursts of eight 16-Bit words which are packed into four 32-Bit words&n; * by the IOASIC. This leads to a strange padding: 16 bytes of valid data followed&n; * by a 16 byte gap :-(.&n; */
@@ -226,7 +222,7 @@ DECL|member|length
 r_int
 id|length
 suffix:semicolon
-multiline_comment|/* This length is 2s complement (negative)!&n;&t;&t;&t;&t;   * Buffer length&n;&t;&t;&t;&t; */
+multiline_comment|/* 2s complement (negative!)&n;&t;&t;&t;&t;&t;   of buffer length */
 DECL|member|gap2
 r_int
 id|gap2
@@ -236,7 +232,7 @@ r_int
 r_int
 id|mblength
 suffix:semicolon
-multiline_comment|/* This is the actual number of bytes received */
+multiline_comment|/* actual number of bytes received */
 DECL|member|gap3
 r_int
 id|gap3
@@ -277,7 +273,7 @@ DECL|member|length
 r_int
 id|length
 suffix:semicolon
-multiline_comment|/* Length is 2s complement (negative)! */
+multiline_comment|/* 2s complement (negative!)&n;&t;&t;&t;&t;&t;   of buffer length */
 DECL|member|gap2
 r_int
 id|gap2
@@ -303,7 +299,7 @@ r_int
 r_int
 id|mode
 suffix:semicolon
-multiline_comment|/* Pre-set mode (reg. 15) */
+multiline_comment|/* pre-set mode (reg. 15) */
 DECL|member|gap0
 r_int
 id|gap0
@@ -316,7 +312,7 @@ id|phys_addr
 l_int|12
 )braket
 suffix:semicolon
-multiline_comment|/* Physical ethernet address&n;&t;&t;&t;&t;&t;   * only 0, 1, 4, 5, 8, 9 are valid&n;&t;&t;&t;&t;&t;   * 2, 3, 6, 7, 10, 11 are gaps&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* physical ethernet address&n;&t;&t;&t;&t;&t;   only 0, 1, 4, 5, 8, 9 are valid&n;&t;&t;&t;&t;&t;   2, 3, 6, 7, 10, 11 are gaps */
 DECL|member|filter
 r_int
 r_int
@@ -325,7 +321,7 @@ id|filter
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* Multicast filter.&n;&t;&t;&t;&t;&t;   * only 0, 2, 4, 6 are valid&n;&t;&t;&t;&t;&t;   * 1, 3, 5, 7 are gaps&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* multicast filter&n;&t;&t;&t;&t;&t;   only 0, 2, 4, 6 are valid&n;&t;&t;&t;&t;&t;   1, 3, 5, 7 are gaps */
 multiline_comment|/* Receive and transmit ring base, along with extra bits. */
 DECL|member|rx_ptr
 r_int
@@ -368,10 +364,10 @@ r_int
 id|gap4
 suffix:semicolon
 DECL|member|gap5
-r_char
+r_int
 id|gap5
 (braket
-l_int|16
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* The buffer descriptors */
@@ -406,10 +402,23 @@ DECL|struct|lance_private
 r_struct
 id|lance_private
 (brace
-DECL|member|name
-r_char
+DECL|member|next
+r_struct
+id|net_device
 op_star
-id|name
+id|next
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+DECL|member|slot
+r_int
+id|slot
+suffix:semicolon
+DECL|member|dma_irq
+r_int
+id|dma_irq
 suffix:semicolon
 DECL|member|ll
 r_volatile
@@ -424,13 +433,6 @@ r_struct
 id|lance_init_block
 op_star
 id|init_block
-suffix:semicolon
-DECL|member|dma_ptr_reg
-r_volatile
-r_int
-r_int
-op_star
-id|dma_ptr_reg
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -459,19 +461,6 @@ DECL|member|busmaster_regval
 r_int
 r_int
 id|busmaster_regval
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-multiline_comment|/* Backpointer        */
-DECL|member|next_module
-r_struct
-id|lance_private
-op_star
-id|next_module
 suffix:semicolon
 DECL|member|multicast_timer
 r_struct
@@ -548,7 +537,13 @@ id|dec_lance_debug
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;   #ifdef MODULE&n;   static struct lance_private *root_lance_dev = NULL;&n;   #endif&n; */
+DECL|variable|root_lance_dev
+r_static
+r_struct
+id|net_device
+op_star
+id|root_lance_dev
+suffix:semicolon
 DECL|function|writereg
 r_static
 r_inline
@@ -571,7 +566,7 @@ id|regptr
 op_assign
 id|value
 suffix:semicolon
-id|wbflush
+id|iob
 c_func
 (paren
 )paren
@@ -683,6 +678,10 @@ r_void
 id|cp_to_buf
 c_func
 (paren
+r_const
+r_int
+id|type
+comma
 r_void
 op_star
 id|to
@@ -692,7 +691,7 @@ r_void
 op_star
 id|from
 comma
-id|__kernel_size_t
+r_int
 id|len
 )paren
 (brace
@@ -951,7 +950,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|wbflush
+id|iob
 c_func
 (paren
 )paren
@@ -962,12 +961,16 @@ r_void
 id|cp_from_buf
 c_func
 (paren
+r_const
+r_int
+id|type
+comma
 r_void
 op_star
 id|to
 comma
-r_int
-r_char
+r_const
+r_void
 op_star
 id|from
 comma
@@ -1696,7 +1699,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|wbflush
+id|iob
 c_func
 (paren
 )paren
@@ -2214,6 +2217,8 @@ multiline_comment|/* make room */
 id|cp_from_buf
 c_func
 (paren
+id|lp-&gt;type
+comma
 id|skb-&gt;data
 comma
 (paren
@@ -2644,6 +2649,47 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|lance_dma_merr_int
+r_static
+r_void
+id|lance_dma_merr_int
+c_func
+(paren
+r_const
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+id|dev_id
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: DMA error&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 r_static
 id|irqreturn_t
 DECL|function|lance_interrupt
@@ -2813,25 +2859,6 @@ op_amp
 id|LE_C0_MERR
 )paren
 (brace
-r_volatile
-r_int
-r_int
-id|int_stat
-op_assign
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|system_base
-op_plus
-id|IOCTL
-op_plus
-id|SIR
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2842,53 +2869,6 @@ comma
 id|csr0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|int_stat
-op_amp
-id|LANCE_DMA_MEMRDERR
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: DMA error&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|int_stat
-op_or_assign
-id|LANCE_DMA_MEMRDERR
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * re-enable LANCE DMA&n;&t;&t;&t; */
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|system_base
-op_plus
-id|IOCTL
-op_plus
-id|SSR
-)paren
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-id|wbflush
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|writereg
 c_func
 (paren
@@ -3093,7 +3073,7 @@ id|lance_interrupt
 comma
 l_int|0
 comma
-id|lp-&gt;name
+l_string|&quot;lance&quot;
 comma
 id|dev
 )paren
@@ -3102,7 +3082,7 @@ id|dev
 id|printk
 c_func
 (paren
-l_string|&quot;Lance: Can&squot;t get irq %d&bslash;n&quot;
+l_string|&quot;lance: Can&squot;t get IRQ %d&bslash;n&quot;
 comma
 id|dev-&gt;irq
 )paren
@@ -3110,6 +3090,102 @@ suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lp-&gt;dma_irq
+op_ge
+l_int|0
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|lp-&gt;dma_irq
+comma
+op_amp
+id|lance_dma_merr_int
+comma
+l_int|0
+comma
+l_string|&quot;lance error&quot;
+comma
+id|dev
+)paren
+)paren
+(brace
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;lance: Can&squot;t get DMA IRQ %d&bslash;n&quot;
+comma
+id|lp-&gt;dma_irq
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioasic_ssr_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|fast_mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Enable I/O ASIC LANCE DMA.  */
+id|ioasic_write
+c_func
+(paren
+id|IO_REG_SSR
+comma
+id|ioasic_read
+c_func
+(paren
+id|IO_REG_SSR
+)paren
+op_or
+id|IO_SSR_LANCE_DMA_EN
+)paren
+suffix:semicolon
+id|fast_mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioasic_ssr_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -3189,15 +3265,76 @@ comma
 id|LE_C0_STOP
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;dma_irq
+op_ge
+l_int|0
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioasic_ssr_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|fast_mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Disable I/O ASIC LANCE DMA.  */
+id|ioasic_write
+c_func
+(paren
+id|IO_REG_SSR
+comma
+id|ioasic_read
+c_func
+(paren
+id|IO_REG_SSR
+)paren
+op_amp
+op_complement
+id|IO_SSR_LANCE_DMA_EN
+)paren
+suffix:semicolon
+id|fast_iob
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioasic_ssr_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|lp-&gt;dma_irq
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
 id|free_irq
 c_func
 (paren
 id|dev-&gt;irq
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev
 )paren
 suffix:semicolon
@@ -3479,6 +3616,8 @@ suffix:semicolon
 id|cp_to_buf
 c_func
 (paren
+id|lp-&gt;type
+comma
 (paren
 r_char
 op_star
@@ -3649,12 +3788,6 @@ id|addrs
 suffix:semicolon
 r_int
 id|i
-comma
-id|j
-comma
-id|bit
-comma
-id|byte
 suffix:semicolon
 id|u32
 id|crc
@@ -3771,7 +3904,7 @@ op_assign
 id|ether_crc_le
 c_func
 (paren
-l_int|6
+id|ETH_ALEN
 comma
 id|addrs
 )paren
@@ -4007,14 +4140,13 @@ id|__init
 id|dec_lance_init
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
 r_const
 r_int
 id|type
+comma
+r_const
+r_int
+id|slot
 )paren
 (brace
 r_static
@@ -4056,10 +4188,6 @@ id|system_base
 op_assign
 id|KN01_LANCE_BASE
 suffix:semicolon
-macro_line|#else
-r_int
-id|slot
-suffix:semicolon
 macro_line|#endif
 r_if
 c_cond
@@ -4082,7 +4210,7 @@ op_assign
 id|init_etherdev
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 r_sizeof
 (paren
@@ -4101,7 +4229,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* init_etherdev ensures the data structures used by the LANCE are aligned. */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * init_etherdev ensures the data structures used by the LANCE&n;&t; * are aligned.&n;&t; */
 id|lp
 op_assign
 (paren
@@ -4118,6 +4252,14 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|lp-&gt;type
+op_assign
+id|type
+suffix:semicolon
+id|lp-&gt;slot
+op_assign
+id|slot
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4132,7 +4274,7 @@ id|dev-&gt;base_addr
 op_assign
 id|system_base
 op_plus
-id|LANCE
+id|IOASIC_LANCE
 suffix:semicolon
 multiline_comment|/* buffer space for the on-board LANCE shared memory */
 multiline_comment|/*&n;&t;&t; * FIXME: ugly hack!&n;&t;&t; */
@@ -4152,18 +4294,25 @@ l_int|0x00020000
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
-id|ETHER
+id|dec_interrupt
+(braket
+id|DEC_IRQ_LANCE
+)braket
 suffix:semicolon
 id|esar_base
 op_assign
 id|system_base
 op_plus
-id|ESAR
+id|IOASIC_ESAR
 suffix:semicolon
 multiline_comment|/* Workaround crash with booting KN04 2.1k from Disk */
 id|memset
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|dev-&gt;mem_start
 comma
 l_int|0
@@ -4292,27 +4441,19 @@ id|TX_BUFF_SIZE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * setup and enable IOASIC LANCE DMA&n;&t;&t; */
-id|lp-&gt;dma_ptr_reg
+multiline_comment|/* Setup I/O ASIC LANCE DMA.  */
+id|lp-&gt;dma_irq
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|system_base
-op_plus
-id|IOCTL
-op_plus
-id|LANCE_DMA_P
-)paren
+id|dec_interrupt
+(braket
+id|DEC_IRQ_LANCE_MERR
+)braket
 suffix:semicolon
-op_star
+id|ioasic_write
+c_func
 (paren
-id|lp-&gt;dma_ptr_reg
-)paren
-op_assign
+id|IO_REG_LANCE_DMA_P
+comma
 id|PHYSADDR
 c_func
 (paren
@@ -4320,30 +4461,6 @@ id|dev-&gt;mem_start
 )paren
 op_lshift
 l_int|3
-suffix:semicolon
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|system_base
-op_plus
-id|IOCTL
-op_plus
-id|SSR
-)paren
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-id|wbflush
-c_func
-(paren
 )paren
 suffix:semicolon
 r_break
@@ -4351,14 +4468,6 @@ suffix:semicolon
 r_case
 id|PMAD_LANCE
 suffix:colon
-id|slot
-op_assign
-id|search_tc_card
-c_func
-(paren
-l_string|&quot;PMAD-AA&quot;
-)paren
-suffix:semicolon
 id|claim_tc_card
 c_func
 (paren
@@ -4393,6 +4502,123 @@ id|dev-&gt;mem_start
 op_plus
 l_int|0x1c0002
 suffix:semicolon
+id|lp-&gt;dma_irq
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|RX_RING_SIZE
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|lp-&gt;rx_buf_ptr_cpu
+(braket
+id|i
+)braket
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|dev-&gt;mem_start
+op_plus
+id|BUF_OFFSET_CPU
+op_plus
+id|i
+op_star
+id|RX_BUFF_SIZE
+)paren
+suffix:semicolon
+id|lp-&gt;rx_buf_ptr_lnc
+(braket
+id|i
+)braket
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|BUF_OFFSET_LNC
+op_plus
+id|i
+op_star
+id|RX_BUFF_SIZE
+)paren
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|TX_RING_SIZE
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|lp-&gt;tx_buf_ptr_cpu
+(braket
+id|i
+)braket
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|dev-&gt;mem_start
+op_plus
+id|BUF_OFFSET_CPU
+op_plus
+id|RX_RING_SIZE
+op_star
+id|RX_BUFF_SIZE
+op_plus
+id|i
+op_star
+id|TX_BUFF_SIZE
+)paren
+suffix:semicolon
+id|lp-&gt;tx_buf_ptr_lnc
+(braket
+id|i
+)braket
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|BUF_OFFSET_LNC
+op_plus
+id|RX_RING_SIZE
+op_star
+id|RX_BUFF_SIZE
+op_plus
+id|i
+op_star
+id|TX_BUFF_SIZE
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif
@@ -4401,7 +4627,10 @@ id|PMAX_LANCE
 suffix:colon
 id|dev-&gt;irq
 op_assign
-id|ETHER
+id|dec_interrupt
+(braket
+id|DEC_IRQ_LANCE
+)braket
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
@@ -4417,6 +4646,11 @@ id|esar_base
 op_assign
 id|KN01_RTC_BASE
 op_plus
+l_int|1
+suffix:semicolon
+id|lp-&gt;dma_irq
+op_assign
+op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * setup the pointer arrays, this sucks [tm] :-(&n;&t;&t; */
@@ -4711,6 +4945,14 @@ id|err_out
 suffix:semicolon
 )brace
 )brace
+id|lp-&gt;next
+op_assign
+id|root_lance_dev
+suffix:semicolon
+id|root_lance_dev
+op_assign
+id|dev
+suffix:semicolon
 multiline_comment|/* Copy the ethernet address to the device structure, later to the&n;&t; * lance initialization block so the lance gets it every time it&squot;s&n;&t; * (re)initialized.&n;&t; */
 r_switch
 c_cond
@@ -4814,10 +5056,6 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|lp-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
@@ -4859,10 +5097,6 @@ id|lp-&gt;ll
 op_assign
 id|ll
 suffix:semicolon
-id|lp-&gt;name
-op_assign
-id|lancestr
-suffix:semicolon
 multiline_comment|/* busmaster_regval (CSR3) should be zero according to the PMAD-AA&n;&t; * specification.&n;&t; */
 id|lp-&gt;busmaster_regval
 op_assign
@@ -4871,12 +5105,6 @@ suffix:semicolon
 id|dev-&gt;dma
 op_assign
 l_int|0
-suffix:semicolon
-id|ether_setup
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 multiline_comment|/* We cannot sleep if the chip is busy during a&n;&t; * multicast list update event, because such events&n;&t; * can occur from interrupts (ex. IPv6).  So we&n;&t; * use a timer to try again later when necessary. -DaveM&n;&t; */
 id|init_timer
@@ -4899,23 +5127,6 @@ op_assign
 op_amp
 id|lance_set_multicast_retry
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|dev-&gt;ifindex
-op_assign
-id|dev_new_index
-c_func
-(paren
-)paren
-suffix:semicolon
-id|lp-&gt;next_module
-op_assign
-id|root_lance_dev
-suffix:semicolon
-id|root_lance_dev
-op_assign
-id|lp
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -4948,58 +5159,24 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_static
 r_int
-id|called
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|root_lance_dev
+id|count
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Scan slots for PMAD-AA cards first. */
 macro_line|#ifdef CONFIG_TC
-r_int
-id|slot
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|TURBOCHANNEL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IOASIC
-op_logical_and
-op_logical_neg
-id|called
-)paren
-(brace
-id|called
-op_assign
-l_int|1
+r_int
+id|slot
 suffix:semicolon
-id|type
-op_assign
-id|ASIC_LANCE
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
+r_while
+c_loop
 (paren
 (paren
 id|slot
@@ -5014,82 +5191,109 @@ op_ge
 l_int|0
 )paren
 (brace
-id|type
-op_assign
-id|PMAD_LANCE
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-)brace
-)brace
-r_else
-(brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|called
+id|dec_lance_init
+c_func
+(paren
+id|PMAD_LANCE
+comma
+id|slot
+)paren
+OL
+l_int|0
+)paren
+r_break
+suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+multiline_comment|/* Then handle onboard devices. */
+r_if
+c_cond
+(paren
+id|dec_interrupt
+(braket
+id|DEC_IRQ_LANCE
+)braket
+op_ge
+l_int|0
 )paren
 (brace
-id|called
-op_assign
-l_int|1
-suffix:semicolon
-id|type
-op_assign
-id|PMAX_LANCE
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|called
-op_logical_and
+id|dec_interrupt
+(braket
+id|DEC_IRQ_LANCE_MERR
+)braket
+op_ge
+l_int|0
+)paren
+(brace
+macro_line|#ifdef CONFIG_TC
+r_if
+c_cond
+(paren
+id|dec_lance_init
+c_func
+(paren
+id|ASIC_LANCE
+comma
+op_minus
+l_int|1
+)paren
+op_ge
+l_int|0
+)paren
+id|count
+op_increment
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+r_if
+c_cond
+(paren
 op_logical_neg
 id|TURBOCHANNEL
 )paren
 (brace
-id|called
-op_assign
-l_int|1
-suffix:semicolon
-id|type
-op_assign
-id|PMAX_LANCE
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
+r_if
+c_cond
+(paren
 id|dec_lance_init
 c_func
 (paren
-id|dev
+id|PMAX_LANCE
 comma
-id|type
+op_minus
+l_int|1
 )paren
+op_ge
+l_int|0
+)paren
+id|count
+op_increment
+suffix:semicolon
+)brace
+)brace
+r_return
+(paren
+id|count
+OG
+l_int|0
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|dec_lance_cleanup
@@ -5102,40 +5306,63 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
-r_struct
-id|lance_private
-op_star
-id|lp
-suffix:semicolon
 r_while
 c_loop
 (paren
 id|root_lance_dev
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|root_lance_dev
+suffix:semicolon
+r_struct
+id|lance_private
+op_star
 id|lp
 op_assign
-id|root_lance_dev-&gt;next_module
+(paren
+r_struct
+id|lance_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+macro_line|#ifdef CONFIG_TC
+r_if
+c_cond
+(paren
+id|lp-&gt;slot
+op_ge
+l_int|0
+)paren
+id|release_tc_card
+c_func
+(paren
+id|lp-&gt;slot
+)paren
+suffix:semicolon
+macro_line|#endif
+id|root_lance_dev
+op_assign
+id|lp-&gt;next
 suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
-id|root_lance_dev-&gt;dev
+id|dev
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|root_lance_dev-&gt;dev
+id|dev
 )paren
 suffix:semicolon
-id|root_lance_dev
-op_assign
-id|lp
-suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 )brace
 DECL|variable|dec_lance_probe
 id|module_init
