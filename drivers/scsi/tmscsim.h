@@ -136,7 +136,7 @@ id|u8
 id|ScsiPhase
 suffix:semicolon
 DECL|member|TagNumber
-id|u8
+id|s8
 id|TagNumber
 suffix:semicolon
 DECL|member|SGIndex
