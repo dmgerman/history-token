@@ -71,6 +71,7 @@ id|header-&gt;type
 r_case
 id|ACPI_SRAT_PROCESSOR_AFFINITY
 suffix:colon
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 (brace
 r_struct
 id|acpi_table_processor_affinity
@@ -108,11 +109,13 @@ l_string|&quot;disabled&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* ACPI_DEBUG_OUTPUT */
 r_break
 suffix:semicolon
 r_case
 id|ACPI_SRAT_MEMORY_AFFINITY
 suffix:colon
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 (brace
 r_struct
 id|acpi_table_memory_affinity
@@ -163,6 +166,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* ACPI_DEBUG_OUTPUT */
 r_break
 suffix:semicolon
 r_default
@@ -257,6 +261,11 @@ id|acpi_parse_processor_affinity
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -309,6 +318,11 @@ id|acpi_parse_memory_affinity
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
