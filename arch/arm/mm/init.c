@@ -246,11 +246,10 @@ suffix:semicolon
 r_else
 id|shared
 op_add_assign
-id|atomic_read
+id|page_count
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 )paren
 op_minus
 l_int|1
