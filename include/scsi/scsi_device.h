@@ -382,6 +382,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* do not use MODE SENSE page 0x3f */
+DECL|member|use_192_bytes_for_3f
+r_int
+id|use_192_bytes_for_3f
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ask for 192 bytes from page 0x3f */
 DECL|member|no_start_on_add
 r_int
 id|no_start_on_add
