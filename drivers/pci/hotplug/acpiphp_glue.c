@@ -47,6 +47,7 @@ DECL|function|is_ejectable
 r_static
 r_int
 id|is_ejectable
+c_func
 (paren
 id|acpi_handle
 id|handle
