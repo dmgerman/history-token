@@ -948,6 +948,8 @@ DECL|macro|MSC_SERIAL
 mdefine_line|#define MSC_SERIAL&t;&t;0x00
 DECL|macro|MSC_PULSELED
 mdefine_line|#define MSC_PULSELED&t;&t;0x01
+DECL|macro|MSC_GESTURE
+mdefine_line|#define MSC_GESTURE&t;&t;0x02
 DECL|macro|MSC_MAX
 mdefine_line|#define MSC_MAX&t;&t;&t;0x07
 multiline_comment|/*&n; * LEDs&n; */
