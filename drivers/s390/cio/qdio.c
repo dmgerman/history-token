@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.93 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.94 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -9807,6 +9807,51 @@ id|ENODEV
 )paren
 (brace
 multiline_comment|/* No need to wait for device no longer present. */
+id|qdio_set_state
+c_func
+(paren
+id|irq_ptr
+comma
+id|QDIO_IRQ_STATE_INACTIVE
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|get_ccwdev_lock
+c_func
+(paren
+id|cdev
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_void
+op_star
+)paren
+id|cdev-&gt;handler
+op_ne
+(paren
+r_void
+op_star
+)paren
+id|qdio_handler
+)paren
+op_logical_and
+id|rc
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Whoever put another handler there, has to cope with the&n;&t;&t; * interrupt theirself. Might happen if qdio_shutdown was&n;&t;&t; * called on already shutdown queues, but this shouldn&squot;t have&n;&t;&t; * bad side effects.&n;&t;&t; */
 id|qdio_set_state
 c_func
 (paren
