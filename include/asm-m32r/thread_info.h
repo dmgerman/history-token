@@ -141,6 +141,81 @@ DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
+DECL|macro|TI_FLAG_FAULT_CODE_SHIFT
+mdefine_line|#define TI_FLAG_FAULT_CODE_SHIFT&t;28
+DECL|function|set_thread_fault_code
+r_static
+r_inline
+r_void
+id|set_thread_fault_code
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ti-&gt;flags
+op_assign
+(paren
+id|ti-&gt;flags
+op_amp
+(paren
+op_complement
+l_int|0
+op_rshift
+(paren
+l_int|32
+op_minus
+id|TI_FLAG_FAULT_CODE_SHIFT
+)paren
+)paren
+)paren
+op_or
+(paren
+id|val
+op_lshift
+id|TI_FLAG_FAULT_CODE_SHIFT
+)paren
+suffix:semicolon
+)brace
+DECL|function|get_thread_fault_code
+r_static
+r_inline
+r_int
+r_int
+id|get_thread_fault_code
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ti-&gt;flags
+op_rshift
+id|TI_FLAG_FAULT_CODE_SHIFT
+suffix:semicolon
+)brace
 macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
 DECL|macro|GET_THREAD_INFO
@@ -178,6 +253,7 @@ DECL|macro|TIF_IRET
 mdefine_line|#define TIF_IRET&t;&t;5&t;/* return with iret */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
+multiline_comment|/* 31..28 fault code */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
