@@ -4165,10 +4165,15 @@ id|fib6_gc_lock
 suffix:semicolon
 id|gc_args.timeout
 op_assign
+id|dummy
+ques
+c_cond
 (paren
 r_int
 )paren
 id|dummy
+suffix:colon
+id|ip6_rt_gc_interval
 suffix:semicolon
 )brace
 r_else

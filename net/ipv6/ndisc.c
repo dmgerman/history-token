@@ -6858,7 +6858,8 @@ suffix:semicolon
 id|fib6_run_gc
 c_func
 (paren
-l_int|0
+op_complement
+l_int|0UL
 )paren
 suffix:semicolon
 r_break
@@ -6878,7 +6879,8 @@ suffix:semicolon
 id|fib6_run_gc
 c_func
 (paren
-l_int|0
+op_complement
+l_int|0UL
 )paren
 suffix:semicolon
 r_break
