@@ -46,12 +46,6 @@ id|list_head
 id|cr_hash
 suffix:semicolon
 multiline_comment|/* hash chain */
-DECL|member|cr_auth
-r_struct
-id|rpc_auth
-op_star
-id|cr_auth
-suffix:semicolon
 DECL|member|cr_ops
 r_struct
 id|rpc_credops
@@ -262,6 +256,13 @@ DECL|struct|rpc_credops
 r_struct
 id|rpc_credops
 (brace
+DECL|member|cr_name
+r_const
+r_char
+op_star
+id|cr_name
+suffix:semicolon
+multiline_comment|/* Name of the auth flavour */
 DECL|member|crdestroy
 r_void
 (paren

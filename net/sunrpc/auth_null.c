@@ -530,6 +530,11 @@ id|null_credops
 op_assign
 (brace
 dot
+id|cr_name
+op_assign
+l_string|&quot;AUTH_NULL&quot;
+comma
+dot
 id|crdestroy
 op_assign
 id|nul_destroy_cred

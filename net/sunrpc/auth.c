@@ -495,10 +495,6 @@ comma
 id|cr_hash
 )paren
 suffix:semicolon
-id|cred-&gt;cr_auth
-op_assign
-l_int|NULL
-suffix:semicolon
 id|list_move
 c_func
 (paren
@@ -532,6 +528,11 @@ DECL|function|rpcauth_prune_expired
 id|rpcauth_prune_expired
 c_func
 (paren
+r_struct
+id|rpc_auth
+op_star
+id|auth
+comma
 r_struct
 id|rpc_cred
 op_star
@@ -567,7 +568,7 @@ id|jiffies
 comma
 id|cred-&gt;cr_expire
 op_plus
-id|cred-&gt;cr_auth-&gt;au_expire
+id|auth-&gt;au_expire
 )paren
 )paren
 id|cred-&gt;cr_flags
@@ -585,11 +586,6 @@ op_amp
 id|RPCAUTH_CRED_UPTODATE
 )paren
 )paren
-(brace
-id|cred-&gt;cr_auth
-op_assign
-l_int|NULL
-suffix:semicolon
 id|list_move
 c_func
 (paren
@@ -599,7 +595,6 @@ comma
 id|free
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Remove stale credentials. Avoid sleeping inside the loop.&n; */
 r_static
@@ -688,6 +683,8 @@ suffix:semicolon
 id|rpcauth_prune_expired
 c_func
 (paren
+id|auth
+comma
 id|cred
 comma
 id|free
@@ -865,6 +862,8 @@ suffix:semicolon
 id|rpcauth_prune_expired
 c_func
 (paren
+id|auth
+comma
 id|entry
 comma
 op_amp
@@ -919,10 +918,6 @@ id|auth-&gt;au_credcache
 id|nr
 )braket
 )paren
-suffix:semicolon
-id|cred-&gt;cr_auth
-op_assign
-id|auth
 suffix:semicolon
 id|get_rpccred
 c_func
@@ -1440,7 +1435,7 @@ l_string|&quot;RPC: %4d using %s cred %p to wrap rpc data&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma
-id|cred-&gt;cr_auth-&gt;au_ops-&gt;au_name
+id|cred-&gt;cr_ops-&gt;cr_name
 comma
 id|cred
 )paren
@@ -1520,7 +1515,7 @@ l_string|&quot;RPC: %4d using %s cred %p to unwrap rpc data&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma
-id|cred-&gt;cr_auth-&gt;au_ops-&gt;au_name
+id|cred-&gt;cr_ops-&gt;cr_name
 comma
 id|cred
 )paren

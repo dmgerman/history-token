@@ -1046,6 +1046,11 @@ id|unix_credops
 op_assign
 (brace
 dot
+id|cr_name
+op_assign
+l_string|&quot;AUTH_UNIX&quot;
+comma
+dot
 id|crdestroy
 op_assign
 id|unx_destroy_cred

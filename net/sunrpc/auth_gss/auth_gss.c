@@ -4897,6 +4897,11 @@ id|gss_credops
 op_assign
 (brace
 dot
+id|cr_name
+op_assign
+l_string|&quot;AUTH_GSS&quot;
+comma
+dot
 id|crdestroy
 op_assign
 id|gss_destroy_cred
