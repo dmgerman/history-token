@@ -910,9 +910,9 @@ l_string|&quot;Sony&quot;
 comma
 l_string|&quot;PEG Mass Storage&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
