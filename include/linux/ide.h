@@ -5196,6 +5196,14 @@ op_star
 )paren
 suffix:semicolon
 r_int
+id|ide_use_dma
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_int
 id|__ide_dma_off
 c_func
 (paren
@@ -5381,6 +5389,22 @@ op_star
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 macro_line|#else
+DECL|function|ide_use_dma
+r_static
+r_inline
+r_int
+id|ide_use_dma
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|__ide_dma_off
 r_static
 r_inline
