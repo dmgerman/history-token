@@ -8777,7 +8777,11 @@ id|neofb_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|neofb_remove
+)paren
 )brace
 suffix:semicolon
 multiline_comment|/* **************************** init-time only **************************** */

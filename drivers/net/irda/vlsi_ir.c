@@ -5256,7 +5256,11 @@ id|vlsi_irda_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|vlsi_irda_remove
+)paren
 comma
 id|suspend
 suffix:colon

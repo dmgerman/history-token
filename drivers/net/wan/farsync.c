@@ -5894,7 +5894,11 @@ id|fst_add_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|fst_remove_one
+)paren
 comma
 id|suspend
 suffix:colon

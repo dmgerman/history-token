@@ -738,7 +738,11 @@ id|orinoco_plx_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|orinoco_plx_remove_one
+)paren
 comma
 id|suspend
 suffix:colon
