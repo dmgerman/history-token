@@ -5060,6 +5060,8 @@ op_assign
 id|is_hugepage_only_range
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|addr
 comma
 id|len
@@ -6508,6 +6510,8 @@ c_cond
 id|is_hugepage_only_range
 c_func
 (paren
+id|mm
+comma
 id|start
 comma
 id|end

@@ -199,7 +199,7 @@ macro_line|# define htlbpage_to_page(x)&t;(((unsigned long) REGION_NUMBER(x) &lt
 DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 DECL|macro|is_hugepage_only_range
-macro_line|# define is_hugepage_only_range(addr, len)&t;&t;&bslash;&n;&t; (REGION_NUMBER(addr) == REGION_HPAGE &amp;&amp;&t;&bslash;&n;&t;  REGION_NUMBER((addr)+(len)) == REGION_HPAGE)
+macro_line|# define is_hugepage_only_range(mm, addr, len)&t;&t;&bslash;&n;&t; (REGION_NUMBER(addr) == REGION_HPAGE &amp;&amp;&t;&bslash;&n;&t;  REGION_NUMBER((addr)+(len)) == REGION_HPAGE)
 r_extern
 r_int
 r_int

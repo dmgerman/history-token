@@ -2463,6 +2463,8 @@ op_logical_neg
 id|is_hugepage_only_range
 c_func
 (paren
+id|mm
+comma
 id|addr
 comma
 id|len
@@ -2518,6 +2520,8 @@ c_cond
 id|touches_hugepage_low_range
 c_func
 (paren
+id|mm
+comma
 id|addr
 comma
 id|len
@@ -2773,6 +2777,8 @@ op_logical_neg
 id|is_hugepage_only_range
 c_func
 (paren
+id|mm
+comma
 id|addr
 comma
 id|len
@@ -2816,6 +2822,8 @@ c_cond
 id|touches_hugepage_low_range
 c_func
 (paren
+id|mm
+comma
 id|addr
 comma
 id|len
