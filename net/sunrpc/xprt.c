@@ -5849,6 +5849,22 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|tp-&gt;nonagle
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* disable Nagle&squot;s algorithm */
 id|sk-&gt;data_ready
 op_assign
 id|tcp_data_ready

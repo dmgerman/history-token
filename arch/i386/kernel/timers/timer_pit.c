@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This code largely moved from arch/i386/kernel/time.c.&
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
