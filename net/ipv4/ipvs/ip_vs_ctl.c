@@ -807,7 +807,6 @@ id|__u16
 id|port
 )paren
 (brace
-r_register
 r_int
 id|porth
 op_assign
@@ -1559,7 +1558,6 @@ id|__u16
 id|port
 )paren
 (brace
-r_register
 r_int
 id|porth
 op_assign

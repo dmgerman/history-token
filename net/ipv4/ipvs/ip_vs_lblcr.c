@@ -432,7 +432,6 @@ op_star
 id|set
 )paren
 (brace
-r_register
 r_struct
 id|ip_vs_dest_list
 op_star
@@ -713,7 +712,6 @@ op_star
 id|set
 )paren
 (brace
-r_register
 r_struct
 id|ip_vs_dest_list
 op_star
