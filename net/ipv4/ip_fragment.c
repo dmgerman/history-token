@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP fragmentation functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_fragment.c,v 1.59 2002/01/12 07:54:56 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Split from ip.c , see ip_input.c for history.&n; *&t;&t;David S. Miller :&t;Begin massive cleanup...&n; *&t;&t;Andi Kleen&t;:&t;Add sysctls.&n; *&t;&t;xxxx&t;&t;:&t;Overlapfrag bug.&n; *&t;&t;Ultima          :       ip_expire() kernel panic.&n; *&t;&t;Bill Hawes&t;:&t;Frag accounting and evictor fixes.&n; *&t;&t;John McDonald&t;:&t;0 length frag bug.&n; *&t;&t;Alexey Kuznetsov:&t;SMP races, threading, cleanup.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP fragmentation functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_fragment.c,v 1.59 2002/01/12 07:54:56 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Split from ip.c , see ip_input.c for history.&n; *&t;&t;David S. Miller :&t;Begin massive cleanup...&n; *&t;&t;Andi Kleen&t;:&t;Add sysctls.&n; *&t;&t;xxxx&t;&t;:&t;Overlapfrag bug.&n; *&t;&t;Ultima          :       ip_expire() kernel panic.&n; *&t;&t;Bill Hawes&t;:&t;Frag accounting and evictor fixes.&n; *&t;&t;John McDonald&t;:&t;0 length frag bug.&n; *&t;&t;Alexey Kuznetsov:&t;SMP races, threading, cleanup.&n; *&t;&t;Patrick McHardy :&t;LRU queue of frag heads for evictor.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -69,6 +70,12 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* linked list pointers&t;&t;&t;*/
+DECL|member|lru_list
+r_struct
+id|list_head
+id|lru_list
+suffix:semicolon
+multiline_comment|/* lru list member &t;&t;&t;*/
 DECL|member|saddr
 id|u32
 id|saddr
@@ -164,6 +171,13 @@ id|ipfrag_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|ipq_lru_list
+)paren
+suffix:semicolon
 DECL|variable|ip_frag_nqueues
 r_int
 id|ip_frag_nqueues
@@ -198,6 +212,13 @@ op_star
 id|qp-&gt;pprev
 op_assign
 id|qp-&gt;next
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|qp-&gt;lru_list
+)paren
 suffix:semicolon
 id|ip_frag_nqueues
 op_decrement
@@ -605,12 +626,22 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-comma
-id|progress
+r_struct
+id|ipq
+op_star
+id|qp
 suffix:semicolon
-r_do
+r_struct
+id|list_head
+op_star
+id|tmp
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
 (brace
 r_if
 c_cond
@@ -626,43 +657,6 @@ id|sysctl_ipfrag_low_thresh
 )paren
 r_return
 suffix:semicolon
-id|progress
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* FIXME: Make LRU queue of frag heads. -DaveM */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|IPQ_HASHSZ
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_struct
-id|ipq
-op_star
-id|qp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ipq_hash
-(braket
-id|i
-)braket
-op_eq
-l_int|NULL
-)paren
-r_continue
-suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -673,27 +667,40 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|list_empty
+c_func
 (paren
-id|qp
-op_assign
-id|ipq_hash
-(braket
-id|i
-)braket
+op_amp
+id|ipq_lru_list
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
-multiline_comment|/* find the oldest queue for this hash bucket */
-r_while
-c_loop
+id|read_unlock
+c_func
 (paren
-id|qp-&gt;next
+op_amp
+id|ipfrag_lock
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|tmp
+op_assign
+id|ipq_lru_list.next
+suffix:semicolon
 id|qp
 op_assign
-id|qp-&gt;next
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|ipq
+comma
+id|lru_list
+)paren
 suffix:semicolon
 id|atomic_inc
 c_func
@@ -751,28 +758,7 @@ c_func
 id|IpReasmFails
 )paren
 suffix:semicolon
-id|progress
-op_assign
-l_int|1
-suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|ipfrag_lock
-)paren
-suffix:semicolon
-)brace
-)brace
-r_while
-c_loop
-(paren
-id|progress
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Oops, a fragment queue timed out.  Kill it and send an ICMP reply.&n; */
 DECL|function|ip_expire
@@ -1075,6 +1061,23 @@ id|ipq_hash
 (braket
 id|hash
 )braket
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|qp-&gt;lru_list
+)paren
+suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|qp-&gt;lru_list
+comma
+op_amp
+id|ipq_lru_list
+)paren
 suffix:semicolon
 id|ip_frag_nqueues
 op_increment
@@ -1902,6 +1905,30 @@ l_int|0
 id|qp-&gt;last_in
 op_or_assign
 id|FIRST_IN
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|ipfrag_lock
+)paren
+suffix:semicolon
+id|list_move_tail
+c_func
+(paren
+op_amp
+id|qp-&gt;lru_list
+comma
+op_amp
+id|ipq_lru_list
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ipfrag_lock
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon

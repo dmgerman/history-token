@@ -165,6 +165,11 @@ id|cifsSesInfo
 op_star
 id|ses
 suffix:semicolon
+r_struct
+id|cifsTconInfo
+op_star
+id|tcon
+suffix:semicolon
 id|server-&gt;tcpStatus
 op_assign
 id|CifsNeedReconnect
@@ -183,6 +188,7 @@ l_string|&quot;Reconnecting tcp session &quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* before reconnecting the tcp session, mark the smb session (uid)&n;&t;&t;and the tid bad so they are not used until reconnected */
 id|read_lock
 c_func
 (paren
@@ -230,9 +236,49 @@ id|ses-&gt;status
 op_assign
 id|CifsNeedReconnect
 suffix:semicolon
+id|ses-&gt;ipc_tid
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* else tcp and smb sessions need reconnection */
+)brace
+id|list_for_each
+c_func
+(paren
+id|tmp
+comma
+op_amp
+id|GlobalTreeConnectionList
+)paren
+(brace
+id|tcon
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|cifsTconInfo
+comma
+id|cifsConnectionList
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;server
+op_eq
+id|server
+)paren
+(brace
+id|tcon-&gt;tidStatus
+op_assign
+id|CifsNeedReconnect
+suffix:semicolon
+)brace
 )brace
 id|read_unlock
 c_func
@@ -351,6 +397,13 @@ r_else
 id|server-&gt;tcpStatus
 op_assign
 id|CifsGood
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|server-&gt;response_q
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -639,7 +692,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Received error on sock_recvmsg( peek) with length = %d&quot;
+l_string|&quot;Error on sock_recvmsg(peek) length = %d&quot;
 comma
 id|length
 )paren
@@ -649,6 +702,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -11035,6 +11089,10 @@ l_int|NULL
 )paren
 )paren
 (brace
+id|tcon-&gt;tidStatus
+op_assign
+id|CifsGood
+suffix:semicolon
 id|tcon-&gt;tid
 op_assign
 id|smb_buffer_response-&gt;Tid

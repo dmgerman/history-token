@@ -437,8 +437,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* The ascii or unicode name of this resource depending on the ses-&gt;capabilities */
-multiline_comment|/* BB fill in this field */
+multiline_comment|/* UNC name of resource (in ASCII not UTF) */
 DECL|member|nativeFileSystem
 r_char
 op_star
