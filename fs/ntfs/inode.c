@@ -1624,6 +1624,8 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Transfer information from mft record into vfs and ntfs inodes. */
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|le16_to_cpu
@@ -3648,6 +3650,8 @@ id|vi-&gt;i_atime
 op_assign
 id|base_vi-&gt;i_atime
 suffix:semicolon
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|base_ni-&gt;seq_no
@@ -4690,6 +4694,8 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Need this to sanity check attribute list references to $MFT. */
+id|vi-&gt;i_generation
+op_assign
 id|ni-&gt;seq_no
 op_assign
 id|le16_to_cpu
