@@ -11,6 +11,7 @@ macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|SNDRV_OS_MINORS
 mdefine_line|#define SNDRV_OS_MINORS 256
 DECL|variable|major
@@ -148,16 +149,11 @@ l_string|&quot;default:0666,base:8&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-singleline_comment|// MODULE_ALIAS_CHARDEV_MAJOR(CONFIG_SND_MAJOR);
-id|MODULE_ALIAS
-c_func
-(paren
-l_string|&quot;char-major-&quot;
-id|__stringify
+DECL|variable|CONFIG_SND_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
 c_func
 (paren
 id|CONFIG_SND_MAJOR
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* this one holds the actual max. card number currently available.&n; * as default, it&squot;s identical with cards_limit option.  when more&n; * modules are loaded manually, this limit number increases, too.&n; */
