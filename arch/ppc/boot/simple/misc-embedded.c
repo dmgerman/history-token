@@ -980,6 +980,8 @@ suffix:semicolon
 r_int
 r_int
 id|initrd_loc
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
