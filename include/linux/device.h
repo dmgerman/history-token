@@ -1840,16 +1840,6 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|platform_add_device
-c_func
-(paren
-r_struct
-id|platform_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|platform_add_devices
 c_func
 (paren
