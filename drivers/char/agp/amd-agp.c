@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+macro_line|#include &quot;amd.h&quot;
 DECL|struct|amd_page_map
 r_struct
 id|amd_page_map
