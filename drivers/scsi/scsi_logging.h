@@ -51,16 +51,11 @@ id|scsi_logging_level
 suffix:semicolon
 DECL|macro|SCSI_CHECK_LOGGING
 mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        unsigned int mask = (1 &lt;&lt; (BITS)) - 1;&t;&t;&t;&bslash;&n;        if (((scsi_logging_level &gt;&gt; (SHIFT)) &amp; mask) &gt; (LEVEL))&t;&bslash;&n;&t;&t;(CMD);&t;&t;&t;&t;&t;&t;&bslash;&n;}
-DECL|macro|SCSI_SET_LOGGING
-mdefine_line|#define SCSI_SET_LOGGING(SHIFT, BITS, LEVEL)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        unsigned int mask = ((1 &lt;&lt; (BITS)) - 1) &lt;&lt; SHIFT;&t;&bslash;&n;        scsi_logging_level = ((scsi_logging_level &amp; ~mask)&t;&bslash;&n;                              | ((LEVEL &lt;&lt; SHIFT) &amp; mask));&t;&bslash;&n;}
 macro_line|#else
-multiline_comment|/*&n; * With no logging enabled, stub these out so they don&squot;t do anything.&n; */
 DECL|macro|SCSI_CHECK_LOGGING
 mdefine_line|#define SCSI_CHECK_LOGGING(SHIFT, BITS, LEVEL, CMD)
-DECL|macro|SCSI_SET_LOGGING
-mdefine_line|#define SCSI_SET_LOGGING(SHIFT, BITS, LEVEL)
 macro_line|#endif /* CONFIG_SCSI_LOGGING */
-multiline_comment|/*&n; * These are the macros that are actually used throughout the code to&n; * log events.  If logging isn&squot;t enabled, they are no-ops and will be&n; * completely absent from the user&squot;s code.&n; *&n; * The &squot;set&squot; versions of the macros are really intended to only be called&n; * from the /proc filesystem, and in production kernels this will be about&n; * all that is ever used.  It could be useful in a debugging environment to&n; * bump the logging level when certain strange events are detected, however.&n; */
+multiline_comment|/*&n; * These are the macros that are actually used throughout the code to&n; * log events.  If logging isn&squot;t enabled, they are no-ops and will be&n; * completely absent from the user&squot;s code.&n; */
 DECL|macro|SCSI_LOG_ERROR_RECOVERY
 mdefine_line|#define SCSI_LOG_ERROR_RECOVERY(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_ERROR_SHIFT, SCSI_LOG_ERROR_BITS, LEVEL,CMD);
 DECL|macro|SCSI_LOG_TIMEOUT
@@ -81,25 +76,10 @@ DECL|macro|SCSI_LOG_HLCOMPLETE
 mdefine_line|#define SCSI_LOG_HLCOMPLETE(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL,CMD);
 DECL|macro|SCSI_LOG_IOCTL
 mdefine_line|#define SCSI_LOG_IOCTL(LEVEL,CMD)  &bslash;&n;        SCSI_CHECK_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL,CMD);
-DECL|macro|SCSI_SET_ERROR_RECOVERY_LOGGING
-mdefine_line|#define SCSI_SET_ERROR_RECOVERY_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_ERROR_SHIFT, SCSI_LOG_ERROR_BITS, LEVEL);
-DECL|macro|SCSI_SET_TIMEOUT_LOGGING
-mdefine_line|#define SCSI_SET_TIMEOUT_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_TIMEOUT_SHIFT, SCSI_LOG_TIMEOUT_BITS, LEVEL);
-DECL|macro|SCSI_SET_SCAN_BUS_LOGGING
-mdefine_line|#define SCSI_SET_SCAN_BUS_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_SCAN_SHIFT, SCSI_LOG_SCAN_BITS, LEVEL);
-DECL|macro|SCSI_SET_MLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_MLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_MLQUEUE_SHIFT, SCSI_LOG_MLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_MLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_MLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_MLCOMPLETE_SHIFT, SCSI_LOG_MLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_LLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_LLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_LLQUEUE_SHIFT, SCSI_LOG_LLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_LLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_LLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_LLCOMPLETE_SHIFT, SCSI_LOG_LLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_HLQUEUE_LOGGING
-mdefine_line|#define SCSI_SET_HLQUEUE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_HLQUEUE_SHIFT, SCSI_LOG_HLQUEUE_BITS, LEVEL);
-DECL|macro|SCSI_SET_HLCOMPLETE_LOGGING
-mdefine_line|#define SCSI_SET_HLCOMPLETE_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_HLCOMPLETE_SHIFT, SCSI_LOG_HLCOMPLETE_BITS, LEVEL);
-DECL|macro|SCSI_SET_IOCTL_LOGGING
-mdefine_line|#define SCSI_SET_IOCTL_LOGGING(LEVEL)  &bslash;&n;        SCSI_SET_LOGGING(SCSI_LOG_IOCTL_SHIFT, SCSI_LOG_IOCTL_BITS, LEVEL);
+r_extern
+r_int
+r_int
+id|scsi_logging_level
+suffix:semicolon
 macro_line|#endif /* _SCSI_LOGGING_H */
 eof

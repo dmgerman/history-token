@@ -147,6 +147,8 @@ c_func
 r_struct
 id|scsi_device
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
