@@ -6968,7 +6968,7 @@ l_int|0
 suffix:semicolon
 id|retval
 op_assign
-id|check_disk_change
+id|full_check_disk_change
 c_func
 (paren
 id|bdev
