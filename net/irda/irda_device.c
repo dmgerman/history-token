@@ -1198,6 +1198,30 @@ op_assign
 id|IFF_NOARP
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Funciton  alloc_irdadev &n; * &t;Allocates and sets up an IRDA device in a manner similar to&n; * &t;alloc_etherdev.&n; */
+DECL|function|alloc_irdadev
+r_struct
+id|net_device
+op_star
+id|alloc_irdadev
+c_func
+(paren
+r_int
+id|sizeof_priv
+)paren
+(brace
+r_return
+id|alloc_netdev
+c_func
+(paren
+id|sizeof_priv
+comma
+l_string|&quot;irda%d&quot;
+comma
+id|irda_device_setup
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Function irda_device_txqueue_empty (dev)&n; *&n; *    Check if there is still some frames in the transmit queue for this&n; *    device. Maybe we should use: q-&gt;q.qlen == 0.&n; *&n; */
 DECL|function|irda_device_txqueue_empty
 r_int

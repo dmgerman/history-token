@@ -648,6 +648,13 @@ c_func
 id|irda_device_setup
 )paren
 suffix:semicolon
+DECL|variable|alloc_irdadev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|alloc_irdadev
+)paren
+suffix:semicolon
 DECL|variable|irda_device_set_media_busy
 id|EXPORT_SYMBOL
 c_func
