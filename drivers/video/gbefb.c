@@ -4598,7 +4598,7 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 r_char
 op_star
-id|option
+id|options
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4611,7 +4611,7 @@ c_func
 l_string|&quot;gbefb&quot;
 comma
 op_amp
-id|option
+id|options
 )paren
 )paren
 r_return
