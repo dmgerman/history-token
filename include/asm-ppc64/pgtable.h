@@ -183,7 +183,7 @@ r_int
 )braket
 suffix:semicolon
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (mem_map + MAP_NR(empty_zero_page))
+mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* shift to put page number into pte */
 DECL|macro|PTE_SHIFT
