@@ -83,6 +83,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Precompensation enabled */
+DECL|member|dv_pending
+r_int
+r_int
+id|dv_pending
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Internal flag */
 )brace
 suffix:semicolon
 multiline_comment|/* accessor functions */
@@ -461,6 +469,24 @@ c_func
 (paren
 r_struct
 id|scsi_transport_template
+op_star
+)paren
+suffix:semicolon
+r_void
+id|spi_schedule_dv_device
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_void
+id|spi_dv_device
+c_func
+(paren
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon

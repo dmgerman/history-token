@@ -2093,6 +2093,15 @@ id|sdev-&gt;use_10_for_ms
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* set the device running here so that slave configure&n;&t; * may do I/O */
+id|scsi_device_set_state
+c_func
+(paren
+id|sdev
+comma
+id|SDEV_RUNNING
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
