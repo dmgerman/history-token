@@ -142,13 +142,13 @@ DECL|macro|ACL_PTYPE_MASK
 mdefine_line|#define ACL_PTYPE_MASK&t;(~SCO_PTYPE_MASK)
 multiline_comment|/* ACL flags */
 DECL|macro|ACL_CONT
-mdefine_line|#define ACL_CONT&t;&t;0x0001
+mdefine_line|#define ACL_CONT&t;&t;0x01
 DECL|macro|ACL_START
-mdefine_line|#define ACL_START&t;&t;0x0002
+mdefine_line|#define ACL_START&t;&t;0x02
 DECL|macro|ACL_ACTIVE_BCAST
-mdefine_line|#define ACL_ACTIVE_BCAST&t;0x0010
+mdefine_line|#define ACL_ACTIVE_BCAST&t;0x04
 DECL|macro|ACL_PICO_BCAST
-mdefine_line|#define ACL_PICO_BCAST&t;&t;0x0020
+mdefine_line|#define ACL_PICO_BCAST&t;&t;0x08
 multiline_comment|/* Baseband links */
 DECL|macro|SCO_LINK
 mdefine_line|#define SCO_LINK&t;0x00
@@ -1547,7 +1547,7 @@ id|packed
 id|evt_role_change
 suffix:semicolon
 DECL|macro|EVT_ROLE_CHANGE_SIZE
-mdefine_line|#define EVT_ROLE_CHANGE_SIZE 1
+mdefine_line|#define EVT_ROLE_CHANGE_SIZE 8
 DECL|macro|EVT_PIN_CODE_REQ
 mdefine_line|#define EVT_PIN_CODE_REQ        0x16
 r_typedef
@@ -1921,6 +1921,29 @@ r_struct
 id|hci_filter
 (brace
 DECL|member|type_mask
+r_int
+r_int
+id|type_mask
+suffix:semicolon
+DECL|member|event_mask
+r_int
+r_int
+id|event_mask
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|opcode
+id|__u16
+id|opcode
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|hci_ufilter
+r_struct
+id|hci_ufilter
+(brace
+DECL|member|type_mask
 id|__u32
 id|type_mask
 suffix:semicolon
@@ -1945,102 +1968,6 @@ DECL|macro|HCI_FLT_OGF_BITS
 mdefine_line|#define HCI_FLT_OGF_BITS&t;63
 DECL|macro|HCI_FLT_OCF_BITS
 mdefine_line|#define HCI_FLT_OCF_BITS&t;127
-macro_line|#if BITS_PER_LONG == 64
-DECL|function|hci_set_bit
-r_static
-r_inline
-r_void
-id|hci_set_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_void
-op_star
-id|addr
-)paren
-(brace
-op_star
-(paren
-(paren
-id|__u32
-op_star
-)paren
-id|addr
-op_plus
-(paren
-id|nr
-op_rshift
-l_int|5
-)paren
-)paren
-op_or_assign
-(paren
-(paren
-id|__u32
-)paren
-l_int|1
-op_lshift
-(paren
-id|nr
-op_amp
-l_int|31
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|hci_test_bit
-r_static
-r_inline
-r_int
-id|hci_test_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_void
-op_star
-id|addr
-)paren
-(brace
-r_return
-op_star
-(paren
-(paren
-id|__u32
-op_star
-)paren
-id|addr
-op_plus
-(paren
-id|nr
-op_rshift
-l_int|5
-)paren
-)paren
-op_amp
-(paren
-(paren
-id|__u32
-)paren
-l_int|1
-op_lshift
-(paren
-id|nr
-op_amp
-l_int|31
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|hci_set_bit
-mdefine_line|#define hci_set_bit&t;set_bit
-DECL|macro|hci_test_bit
-mdefine_line|#define hci_test_bit&t;test_bit
-macro_line|#endif
 multiline_comment|/* Ioctl requests structures */
 DECL|struct|hci_dev_stats
 r_struct
