@@ -9,8 +9,9 @@ multiline_comment|/* list of timers, ordered by preference, NULL terminated */
 DECL|variable|timers
 r_static
 r_struct
-id|timer_opts
+id|init_timer_opts
 op_star
+id|__initdata
 id|timers
 (braket
 )braket
@@ -18,24 +19,24 @@ op_assign
 (brace
 macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 op_amp
-id|timer_cyclone
+id|timer_cyclone_init
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_HPET_TIMER
 op_amp
-id|timer_hpet
+id|timer_hpet_init
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_PM_TIMER
 op_amp
-id|timer_pmtmr
+id|timer_pmtmr_init
 comma
 macro_line|#endif
 op_amp
-id|timer_tsc
+id|timer_tsc_init
 comma
 op_amp
-id|timer_pit
+id|timer_pit_init
 comma
 l_int|NULL
 comma
@@ -112,6 +113,7 @@ DECL|function|select_timer
 r_struct
 id|timer_opts
 op_star
+id|__init
 id|select_timer
 c_func
 (paren
@@ -164,6 +166,8 @@ id|timers
 (braket
 id|i
 )braket
+op_member_access_from_pointer
+id|opts
 suffix:semicolon
 op_increment
 id|i

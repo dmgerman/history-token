@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASMi386_TIMER_H
 DECL|macro|_ASMi386_TIMER_H
 mdefine_line|#define _ASMi386_TIMER_H
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/**&n; * struct timer_ops - used to define a timer source&n; *&n; * @name: name of the timer.&n; * @init: Probes and initializes the timer. Takes clock= override &n; *        string as an argument. Returns 0 on success, anything else&n; *        on failure.&n; * @mark_offset: called by the timer interrupt.&n; * @get_offset:  called by gettimeofday(). Returns the number of microseconds&n; *               since the last timer interupt.&n; * @monotonic_clock: returns the number of nanoseconds since the init of the&n; *                   timer.&n; * @delay: delays this many clock cycles.&n; */
 DECL|struct|timer_opts
 r_struct
@@ -10,18 +11,6 @@ DECL|member|name
 r_char
 op_star
 id|name
-suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_char
-op_star
-id|override
-)paren
 suffix:semicolon
 DECL|member|mark_offset
 r_void
@@ -69,12 +58,37 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|init_timer_opts
+r_struct
+id|init_timer_opts
+(brace
+DECL|member|init
+r_int
+(paren
+op_star
+id|init
+)paren
+(paren
+r_char
+op_star
+id|override
+)paren
+suffix:semicolon
+DECL|member|opts
+r_struct
+id|timer_opts
+op_star
+id|opts
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 r_extern
 r_struct
 id|timer_opts
 op_star
+id|__init
 id|select_timer
 c_func
 (paren
@@ -124,14 +138,19 @@ id|timer_pit
 suffix:semicolon
 r_extern
 r_struct
-id|timer_opts
-id|timer_tsc
+id|init_timer_opts
+id|timer_pit_init
+suffix:semicolon
+r_extern
+r_struct
+id|init_timer_opts
+id|timer_tsc_init
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 r_extern
 r_struct
-id|timer_opts
-id|timer_cyclone
+id|init_timer_opts
+id|timer_cyclone_init
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -154,8 +173,8 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_HPET_TIMER
 r_extern
 r_struct
-id|timer_opts
-id|timer_hpet
+id|init_timer_opts
+id|timer_hpet_init
 suffix:semicolon
 r_extern
 r_int
@@ -173,8 +192,8 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_X86_PM_TIMER
 r_extern
 r_struct
-id|timer_opts
-id|timer_pmtmr
+id|init_timer_opts
+id|timer_pmtmr_init
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
