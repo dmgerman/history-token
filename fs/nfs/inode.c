@@ -2076,10 +2076,12 @@ l_int|0
 r_goto
 id|out_err
 suffix:semicolon
+multiline_comment|/*&n;&t; * Current versions of glibc do not correctly handle the&n;&t; * case where f_frsize != f_bsize.  Eventually we want to&n;&t; * report the value of wtmult in this field.&n;&t; */
 id|buf-&gt;f_frsize
 op_assign
-id|server-&gt;wtmult
+id|sb-&gt;s_blocksize
 suffix:semicolon
+multiline_comment|/*&n;&t; * On most *nix systems, f_blocks, f_bfree, and f_bavail&n;&t; * are reported in units of f_frsize.  Linux hasn&squot;t had&n;&t; * an f_frsize field in its statfs struct until recently,&n;&t; * thus historically Linux&squot;s sys_statfs reports these&n;&t; * fields in units of f_bsize.&n;&t; */
 id|buf-&gt;f_bsize
 op_assign
 id|sb-&gt;s_blocksize
