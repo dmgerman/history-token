@@ -2043,7 +2043,6 @@ macro_line|#include &lt;linux/qnx4_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
-macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
@@ -2289,11 +2288,6 @@ DECL|member|udf_sb
 r_struct
 id|udf_sb_info
 id|udf_sb
-suffix:semicolon
-DECL|member|ncpfs_sb
-r_struct
-id|ncp_sb_info
-id|ncpfs_sb
 suffix:semicolon
 DECL|member|jffs2_sb
 r_struct
