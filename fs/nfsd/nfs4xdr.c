@@ -8724,22 +8724,6 @@ id|cd-&gt;rd_bmval
 l_int|1
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|bmval0
-op_amp
-op_complement
-(paren
-id|FATTR4_WORD0_RDATTR_ERROR
-)paren
-)paren
-op_logical_or
-id|bmval1
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * &quot;Heavyweight&quot; case: we have no choice except to&n;&t;&t; * call nfsd4_encode_fattr(). &n;&t;&t; */
 id|dentry
 op_assign
 id|lookup_one_len
@@ -8814,7 +8798,7 @@ id|exp
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * -EAGAIN is the only error returned from &n;&t;&t;&t; * nfsd_cross_mnt() and it indicates that an &n;&t;&t;&t; * up-call has  been initiated to fill in the export &n;&t;&t;&t; * options on exp.  When the answer comes back,&n;&t;&t;&t; * this call will be retried.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * -EAGAIN is the only error returned from&n;&t;&t; * nfsd_cross_mnt() and it indicates that an&n;&t;&t; * up-call has  been initiated to fill in the export&n;&t;&t; * options on exp.  When the answer comes back,&n;&t;&t; * this call will be retried.&n;&t;&t; */
 id|dput
 c_func
 (paren
@@ -8896,7 +8880,7 @@ id|nospc
 suffix:semicolon
 id|error
 suffix:colon
-multiline_comment|/*&n;&t;&t; * If we get here, we experienced a miscellaneous&n;&t;&t; * failure while writing the attributes.  If the&n;&t;&t; * client requested the RDATTR_ERROR attribute,&n;&t;&t; * we stuff the error code into this attribute&n;&t;&t; * and continue.  If this attribute was not requested,&n;&t;&t; * then in accordance with the spec, we fail the&n;&t;&t; * entire READDIR operation(!)&n;&t;&t; */
+multiline_comment|/*&n;&t; * If we get here, we experienced a miscellaneous&n;&t; * failure while writing the attributes.  If the&n;&t; * client requested the RDATTR_ERROR attribute,&n;&t; * we stuff the error code into this attribute&n;&t; * and continue.  If this attribute was not requested,&n;&t; * then in accordance with the spec, we fail the&n;&t; * entire READDIR operation(!)&n;&t; */
 r_if
 c_cond
 (paren
@@ -8925,9 +8909,6 @@ id|bmval1
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* falling through here will do the right thing... */
-)brace
-multiline_comment|/*&n;&t; * In the common &quot;lightweight&quot; case, we avoid&n;&t; * the overhead of nfsd4_encode_fattr() by assembling&n;&t; * a small fattr by hand.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8973,13 +8954,6 @@ op_assign
 id|p
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bmval0
-op_amp
-id|FATTR4_WORD0_RDATTR_ERROR
-)paren
 op_star
 id|p
 op_increment
