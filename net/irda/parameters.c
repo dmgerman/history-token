@@ -1,5 +1,6 @@
 multiline_comment|/*********************************************************************&n; *&n; * Filename:      parameters.c&n; * Version:       1.0&n; * Description:   A more general way to handle (pi,pl,pv) parameters&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Jun  7 10:25:11 1999&n; * Modified at:   Sun Jan 30 14:08:39 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -1616,6 +1617,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irda_param_pack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_param_pack
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_unpack (skb, fmt, ...)&n; */
 DECL|function|irda_param_unpack
 r_int
@@ -1846,6 +1854,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irda_param_unpack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_param_unpack
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_insert (self, pi, buf, len, info)&n; *&n; *    Insert the specified parameter (pi) into buffer. Returns number of&n; *    bytes inserted&n; */
 DECL|function|irda_param_insert
 r_int
@@ -2050,6 +2065,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irda_param_insert
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_param_insert
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_extract_all (self, buf, len, info)&n; *&n; *    Parse all parameters. If len is correct, then everything should be&n; *    safe. Returns the number of bytes that was parsed&n; *&n; */
 DECL|function|irda_param_extract
 r_int
@@ -2296,6 +2318,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irda_param_extract
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_param_extract
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_extract_all (self, buf, len, info)&n; *&n; *    Parse all parameters. If len is correct, then everything should be&n; *    safe. Returns the number of bytes that was parsed&n; *&n; */
 DECL|function|irda_param_extract_all
 r_int
@@ -2401,4 +2430,11 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|irda_param_extract_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_param_extract_all
+)paren
+suffix:semicolon
 eof

@@ -1126,11 +1126,11 @@ suffix:semicolon
 id|__mcheck_info
 suffix:semicolon
 DECL|macro|mcheck_expected
-mdefine_line|#define mcheck_expected(cpu)&t;((void)(cpu), __mcheck_info.expected)
+mdefine_line|#define mcheck_expected(cpu)&t;(*((void)(cpu), &amp;__mcheck_info.expected))
 DECL|macro|mcheck_taken
-mdefine_line|#define mcheck_taken(cpu)&t;((void)(cpu), __mcheck_info.taken)
+mdefine_line|#define mcheck_taken(cpu)&t;(*((void)(cpu), &amp;__mcheck_info.taken))
 DECL|macro|mcheck_extra
-mdefine_line|#define mcheck_extra(cpu)&t;((void)(cpu), __mcheck_info.extra)
+mdefine_line|#define mcheck_extra(cpu)&t;(*((void)(cpu), &amp;__mcheck_info.extra))
 macro_line|#endif
 r_extern
 r_void
