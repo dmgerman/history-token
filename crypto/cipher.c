@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;internal.h&quot;
 macro_line|#include &quot;scatterwalk.h&quot;
@@ -250,6 +251,11 @@ id|src
 op_assign
 id|walk-&gt;data
 suffix:semicolon
+r_int
+id|n
+op_assign
+id|bsize
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -265,10 +271,13 @@ id|bsize
 )paren
 )paren
 )paren
+(brace
 id|src
 op_assign
 id|tmp
 suffix:semicolon
+id|n
+op_assign
 id|scatterwalk_copychunks
 c_func
 (paren
@@ -279,6 +288,15 @@ comma
 id|bsize
 comma
 l_int|0
+)paren
+suffix:semicolon
+)brace
+id|scatterwalk_advance
+c_func
+(paren
+id|walk
+comma
+id|n
 )paren
 suffix:semicolon
 r_return
@@ -387,6 +405,28 @@ r_int
 id|in_place
 )paren
 (brace
+r_int
+id|n
+op_assign
+id|bsize
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|scatterwalk_across_pages
+c_func
+(paren
+id|walk
+comma
+id|bsize
+)paren
+)paren
+)paren
+id|n
+op_assign
 id|scatterwalk_copychunks
 c_func
 (paren
@@ -397,6 +437,30 @@ comma
 id|bsize
 comma
 l_int|1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|in_place
+)paren
+id|memcpy
+c_func
+(paren
+id|walk-&gt;data
+comma
+id|dst
+comma
+id|bsize
+)paren
+suffix:semicolon
+id|scatterwalk_advance
+c_func
+(paren
+id|walk
+comma
+id|n
 )paren
 suffix:semicolon
 )brace
