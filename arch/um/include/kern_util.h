@@ -256,6 +256,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+r_int
 id|page_mask
 c_func
 (paren

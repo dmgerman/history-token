@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Copyright 2003 PathScale, Inc.&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
@@ -890,6 +890,7 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 DECL|function|page_mask
+r_int
 r_int
 id|page_mask
 c_func
