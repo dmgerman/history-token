@@ -7832,10 +7832,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-multiline_comment|/* There is a race with updating IOC in here, but it&squot;s not worth */
-multiline_comment|/*  trying to fix since this is merely an optimization. The only */
-multiline_comment|/*  time we&squot;d lose is if the status of the packet got updated */
-multiline_comment|/*  and we&squot;d be turning on FSBR next frame anyway, so it&squot;s a wash */
 id|urbp-&gt;fsbr_timeout
 op_assign
 l_int|1
@@ -8481,7 +8477,7 @@ suffix:semicolon
 r_struct
 id|urb_priv
 op_star
-id|urbp
+id|up
 op_assign
 (paren
 r_struct
@@ -8498,24 +8494,24 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|urb-&gt;lock
+id|u-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check if the FSBR timed out */
 r_if
 c_cond
 (paren
-id|urbp-&gt;fsbr
+id|up-&gt;fsbr
 op_logical_and
 op_logical_neg
-id|urbp-&gt;fsbr_timeout
+id|up-&gt;fsbr_timeout
 op_logical_and
 id|time_after_eq
 c_func
 (paren
 id|jiffies
 comma
-id|urbp-&gt;fsbrtime
+id|up-&gt;fsbrtime
 op_plus
 id|IDLE_TIMEOUT
 )paren
@@ -8539,7 +8535,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|urbp-&gt;inserttime
+id|up-&gt;inserttime
 op_plus
 id|u-&gt;timeout
 )paren
@@ -8567,7 +8563,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|urb-&gt;lock
+id|u-&gt;lock
 )paren
 suffix:semicolon
 )brace
