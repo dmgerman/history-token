@@ -24,22 +24,6 @@ id|afs_transport
 suffix:semicolon
 r_static
 r_int
-id|afs_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|afs_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
 id|afs_adding_peer
 c_func
 (paren
@@ -58,23 +42,6 @@ r_struct
 id|rxrpc_peer
 op_star
 id|peer
-)paren
-suffix:semicolon
-multiline_comment|/* XXX late_initcall is kludgy, but the only alternative seems to create&n; * a transport upon the first mount, which is worse. Or is it?&n; */
-multiline_comment|/* module_init(afs_init); */
-DECL|variable|afs_init
-id|late_initcall
-c_func
-(paren
-id|afs_init
-)paren
-suffix:semicolon
-multiline_comment|/* must be called after net/ to create socket */
-DECL|variable|afs_exit
-id|module_exit
-c_func
-(paren
-id|afs_exit
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -198,6 +165,7 @@ multiline_comment|/*&n; * initialise the AFS client FS module&n; */
 DECL|function|afs_init
 r_static
 r_int
+id|__init
 id|afs_init
 c_func
 (paren
@@ -483,6 +451,15 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_init() */
+multiline_comment|/* XXX late_initcall is kludgy, but the only alternative seems to create&n; * a transport upon the first mount, which is worse. Or is it?&n; */
+DECL|variable|afs_init
+id|late_initcall
+c_func
+(paren
+id|afs_init
+)paren
+suffix:semicolon
+multiline_comment|/* must be called after net/ to create socket */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * clean up on module removal&n; */
 DECL|function|afs_exit
@@ -551,6 +528,13 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_exit() */
+DECL|variable|afs_exit
+id|module_exit
+c_func
+(paren
+id|afs_exit
+)paren
+suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * notification that new peer record is being added&n; * - called from krxsecd&n; * - return an error to induce an abort&n; * - mustn&squot;t sleep (caller holds an rwlock)&n; */
 DECL|function|afs_adding_peer
