@@ -1151,7 +1151,7 @@ id|PFX
 l_string|&quot;Found KT400 in disguise as a KT266.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Check AGP compatability mode. */
+multiline_comment|/* Check AGP compatibility mode. */
 id|pci_read_config_byte
 c_func
 (paren
@@ -1321,7 +1321,7 @@ op_amp
 id|reg
 )paren
 suffix:semicolon
-multiline_comment|/* Check AGP 2.0 compatability mode. */
+multiline_comment|/* Check AGP 2.0 compatibility mode. */
 r_if
 c_cond
 (paren

@@ -5582,7 +5582,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// test LBA and multiper sector transfer compatability
+singleline_comment|// test LBA and multiper sector transfer compatibility
 r_if
 c_cond
 (paren
@@ -5610,7 +5610,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// test PIO/bus matering mode compatability
+singleline_comment|// test PIO/bus matering mode compatibility
 r_if
 c_cond
 (paren

@@ -2665,7 +2665,7 @@ id|d-&gt;raid_disk
 op_assign
 id|rdev2-&gt;desc_nr
 suffix:semicolon
-multiline_comment|/* compatability */
+multiline_comment|/* compatibility */
 r_if
 c_cond
 (paren

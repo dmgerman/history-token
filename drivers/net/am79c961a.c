@@ -964,7 +964,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
-macro_line|#error Not compatable
+macro_line|#error Not compatible
 macro_line|#endif
 r_static
 r_int

@@ -278,7 +278,7 @@ DECL|macro|DMA_ST_INT
 mdefine_line|#define DMA_ST_INT&t;2
 DECL|macro|DMA_ST_AB
 mdefine_line|#define DMA_ST_AB&t;1
-multiline_comment|/*&n; * DMA (MEMC) compatability&n; */
+multiline_comment|/*&n; * DMA (MEMC) compatibility&n; */
 DECL|macro|HALF_SAM
 mdefine_line|#define HALF_SAM&t;vram_half_sam
 DECL|macro|VDMA_ALIGNMENT

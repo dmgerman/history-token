@@ -25175,7 +25175,7 @@ mdefine_line|#define IOCTL_TABLE_START void ioctl32_foo(void) { asm volatile(&qu
 DECL|macro|IOCTL_TABLE_END
 mdefine_line|#define IOCTL_TABLE_END asm volatile(&quot;&bslash;nioctl_translations_end:&bslash;n&bslash;t.previous&quot;); }
 id|IOCTL_TABLE_START
-multiline_comment|/* List here exlicitly which ioctl&squot;s are known to have&n; * compatable types passed or none at all...&n; */
+multiline_comment|/* List here exlicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all...&n; */
 multiline_comment|/* Big T */
 id|COMPATIBLE_IOCTL
 c_func

@@ -3507,7 +3507,7 @@ id|reg41
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * This is a device pin issue on CSB6.&n;&t;&t;&t; * Since there will be a future raid mode,&n;&t;&t;&t; * early versions of the chipset require the&n;&t;&t;&t; * interrupt pin to be set, and it is a compatablity&n;&t;&t;&t; * mode issue.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This is a device pin issue on CSB6.&n;&t;&t;&t; * Since there will be a future raid mode,&n;&t;&t;&t; * early versions of the chipset require the&n;&t;&t;&t; * interrupt pin to be set, and it is a compatiblity&n;&t;&t;&t; * mode issue.&n;&t;&t;&t; */
 id|dev-&gt;irq
 op_assign
 l_int|0

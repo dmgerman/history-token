@@ -322,7 +322,7 @@ id|__initdata
 op_assign
 l_string|&quot;12233445&quot;
 suffix:semicolon
-multiline_comment|/*&n; * Reset the slow-loop (SLOP) bit on the 686(L) which is set by some old&n; * BIOSes for compatability with DOS games.  This makes the udelay loop&n; * work correctly, and improves performance.&n; *&n; * FIXME: our newer udelay uses the tsc. We dont need to frob with SLOP&n; */
+multiline_comment|/*&n; * Reset the slow-loop (SLOP) bit on the 686(L) which is set by some old&n; * BIOSes for compatibility with DOS games.  This makes the udelay loop&n; * work correctly, and improves performance.&n; *&n; * FIXME: our newer udelay uses the tsc. We dont need to frob with SLOP&n; */
 r_extern
 r_void
 id|calibrate_delay

@@ -3865,7 +3865,7 @@ id|arg2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Handle adjtimex compatability. */
+multiline_comment|/* Handle adjtimex compatibility. */
 DECL|struct|timex32
 r_struct
 id|timex32
