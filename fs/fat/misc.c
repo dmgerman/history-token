@@ -1849,6 +1849,7 @@ op_star
 id|dir
 comma
 r_const
+r_int
 r_char
 op_star
 id|name

@@ -623,6 +623,7 @@ id|nls_table
 op_star
 id|nls
 comma
+r_int
 r_char
 op_star
 id|buf
@@ -765,6 +766,7 @@ op_star
 id|inode
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -847,6 +849,7 @@ id|unicode
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_char
 id|work
 (braket
@@ -960,9 +963,6 @@ id|de-&gt;name
 l_int|0
 )braket
 op_eq
-(paren
-id|__s8
-)paren
 id|DELETED_FLAG
 )paren
 r_continue
@@ -1295,9 +1295,6 @@ id|de-&gt;name
 l_int|0
 )braket
 op_eq
-(paren
-id|__s8
-)paren
 id|DELETED_FLAG
 )paren
 r_continue
@@ -1955,6 +1952,7 @@ id|unicode
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_char
 id|c
 comma
@@ -2233,9 +2231,6 @@ id|de-&gt;name
 l_int|0
 )braket
 op_eq
-(paren
-id|__s8
-)paren
 id|DELETED_FLAG
 )paren
 r_goto
@@ -2607,9 +2602,6 @@ id|de-&gt;name
 l_int|0
 )braket
 op_eq
-(paren
-id|__s8
-)paren
 id|DELETED_FLAG
 )paren
 r_goto
@@ -3345,6 +3337,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
 r_char
 id|longname
 (braket

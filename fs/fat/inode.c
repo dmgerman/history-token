@@ -3842,7 +3842,7 @@ comma
 id|rootdir_sectors
 suffix:semicolon
 r_int
-r_char
+r_int
 id|media
 suffix:semicolon
 r_int
@@ -5393,11 +5393,13 @@ r_int
 id|is_exec
 c_func
 (paren
+r_int
 r_char
 op_star
 id|extension
 )paren
 (brace
+r_int
 r_char
 op_star
 id|exe_extensions

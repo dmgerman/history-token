@@ -432,6 +432,7 @@ id|qstr
 )paren
 (brace
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -510,6 +511,7 @@ op_member_access_from_pointer
 id|nls_io
 suffix:semicolon
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -812,6 +814,7 @@ multiline_comment|/* MS-DOS &quot;device special files&quot; */
 DECL|variable|reserved3_names
 r_static
 r_const
+r_int
 r_char
 op_star
 id|reserved3_names
@@ -833,6 +836,7 @@ suffix:semicolon
 DECL|variable|reserved4_names
 r_static
 r_const
+r_int
 r_char
 op_star
 id|reserved4_names
@@ -1078,6 +1082,7 @@ id|vfat_valid_longname
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -1090,6 +1095,7 @@ id|xlate
 )paren
 (brace
 r_const
+r_int
 r_char
 op_star
 op_star
@@ -1269,6 +1275,7 @@ id|inode
 op_star
 id|dir
 comma
+r_int
 r_char
 op_star
 id|name
@@ -1676,6 +1683,7 @@ comma
 r_int
 id|ulen
 comma
+r_int
 r_char
 op_star
 id|name_res
@@ -2623,6 +2631,7 @@ id|xlate_to_uni
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -2630,6 +2639,7 @@ comma
 r_int
 id|len
 comma
+r_int
 r_char
 op_star
 id|outname
@@ -2664,6 +2674,7 @@ r_int
 r_char
 id|nc
 suffix:semicolon
+r_int
 r_char
 op_star
 id|op
@@ -2695,7 +2706,7 @@ id|utf8_mbstowcs
 c_func
 (paren
 (paren
-id|__u16
+m_wchar_t
 op_star
 )paren
 id|outname
@@ -2732,7 +2743,7 @@ id|outlen
 op_star
 r_sizeof
 (paren
-id|__u16
+m_wchar_t
 )paren
 )braket
 suffix:semicolon
@@ -3172,6 +3183,7 @@ op_star
 id|dir
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -3231,6 +3243,7 @@ id|cksum
 comma
 id|lcase
 suffix:semicolon
+r_int
 r_char
 id|msdos_name
 (braket
@@ -3320,6 +3333,7 @@ comma
 id|len
 comma
 (paren
+r_int
 r_char
 op_star
 )paren
