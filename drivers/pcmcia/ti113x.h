@@ -687,6 +687,9 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_TI_1225
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_TI_4510
+suffix:colon
 id|socket-&gt;socket.zoom_video
 op_assign
 id|ti_zoom_video
