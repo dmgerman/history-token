@@ -26,14 +26,6 @@ id|powernow_data
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/*&n;The PSB table supplied by BIOS allows for the definition of the number of&n;p-states that can be used when running on a/c, and the number of p-states&n;that can be used when running on battery. This allows laptop manufacturers&n;to force the system to save power when running from battery. The relationship &n;is :&n;   1 &lt;= number_of_battery_p_states &lt;= maximum_number_of_p_states&n;&n;This driver does NOT have the support in it to detect transitions from&n;a/c power to battery power, and thus trigger the transition to a lower&n;p-state if required. This is because I need ACPI and the 2.6 kernel to do &n;this, and this is a 2.4 kernel driver. Check back for a new improved driver&n;for the 2.6 kernel soon.&n;&n;This code therefore assumes it is on battery at all times, and thus&n;restricts performance to number_of_battery_p_states. For desktops, &n;  number_of_battery_p_states == maximum_number_of_pstates, &n;so this is not actually a restriction.&n;*/
-DECL|variable|batps
-r_static
-id|u32
-id|batps
-suffix:semicolon
-multiline_comment|/* limit on the number of p states when on battery */
-multiline_comment|/* - set by BIOS in the PSB/PST                    */
 multiline_comment|/* Return a frequency in MHz, given an input fid */
 DECL|function|find_freq_from_fid
 r_static
@@ -2244,7 +2236,7 @@ c_func
 (paren
 l_string|&quot;, only %d lowest states on battery&quot;
 comma
-id|batps
+id|data-&gt;batps
 )paren
 suffix:semicolon
 id|printk
@@ -2374,12 +2366,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|batps
+id|data-&gt;batps
 op_eq
 l_int|0
 )paren
 (brace
-id|batps
+id|data-&gt;batps
 op_assign
 id|data-&gt;numps
 suffix:semicolon
@@ -2388,7 +2380,7 @@ r_else
 r_if
 c_cond
 (paren
-id|batps
+id|data-&gt;batps
 OG
 id|data-&gt;numps
 )paren
@@ -2401,7 +2393,7 @@ id|BFX
 l_string|&quot;batterypstates &gt; numpstates&bslash;n&quot;
 )paren
 suffix:semicolon
-id|batps
+id|data-&gt;batps
 op_assign
 id|data-&gt;numps
 suffix:semicolon
@@ -2415,7 +2407,7 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;Restricting operation to %d p-states&bslash;n&quot;
 comma
-id|batps
+id|data-&gt;batps
 )paren
 suffix:semicolon
 id|printk
