@@ -3954,6 +3954,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|c
+op_eq
+l_int|NULL
+)paren
+r_return
+id|CS_NO_CARD
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|c-&gt;state
