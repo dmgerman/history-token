@@ -19,6 +19,7 @@ multiline_comment|/* lowlevel routines */
 macro_line|#include &quot;amp.h&quot;
 macro_line|#include &quot;revo.h&quot;
 macro_line|#include &quot;aureon.h&quot;
+macro_line|#include &quot;prodigy.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -50,6 +51,7 @@ l_string|&quot;{&quot;
 id|REVO_DEVICE_DESC
 id|AMP_AUDIO2000_DEVICE_DESC
 id|AUREON_DEVICE_DESC
+id|PRODIGY_DEVICE_DESC
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
 l_string|&quot;{ICEnsemble,Generic Envy24HT}}&quot;
@@ -8319,6 +8321,8 @@ comma
 id|snd_vt1724_amp_cards
 comma
 id|snd_vt1724_aureon_cards
+comma
+id|snd_vt1724_prodigy_cards
 comma
 l_int|0
 comma
