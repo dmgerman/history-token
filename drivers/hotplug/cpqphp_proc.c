@@ -797,9 +797,9 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-l_string|&quot;driver/hpc&quot;
+l_string|&quot;hpc&quot;
 comma
-l_int|NULL
+id|proc_root_driver
 )paren
 suffix:semicolon
 r_if
