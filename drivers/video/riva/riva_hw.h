@@ -53,18 +53,18 @@ DECL|macro|NV_RD08
 mdefine_line|#define NV_RD08(p,i)&t;in_8(p+i)
 macro_line|#else
 DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)  (((U008 *)(p))[i]=(d))
+mdefine_line|#define NV_WR08(p,i,d)  (writeb((d), (u8 __iomem *)(p) + (i)))
 DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)    (((U008 *)(p))[i])
+mdefine_line|#define NV_RD08(p,i)    (readb((u8 __iomem *)(p) + (i)))
 macro_line|#endif
 DECL|macro|NV_WR16
-mdefine_line|#define NV_WR16(p,i,d)  (((U016 *)(p))[(i)/2]=(d))
+mdefine_line|#define NV_WR16(p,i,d)  (writew((d), (u16 __iomem *)(p) + (i)/2))
 DECL|macro|NV_RD16
-mdefine_line|#define NV_RD16(p,i)    (((U016 *)(p))[(i)/2])
+mdefine_line|#define NV_RD16(p,i)    (readw((u16 __iomem *)(p) + (i)/2))
 DECL|macro|NV_WR32
-mdefine_line|#define NV_WR32(p,i,d)  (((U032 *)(p))[(i)/4]=(d))
+mdefine_line|#define NV_WR32(p,i,d)  (writel((d), (u32 __iomem *)(p) + (i)/4))
 DECL|macro|NV_RD32
-mdefine_line|#define NV_RD32(p,i)    (((U032 *)(p))[(i)/4])
+mdefine_line|#define NV_RD32(p,i)    (readl((u32 __iomem *)(p) + (i)/4))
 DECL|macro|VGA_WR08
 mdefine_line|#define VGA_WR08(p,i,d) NV_WR08(p,i,d)
 DECL|macro|VGA_RD08
@@ -1216,108 +1216,126 @@ multiline_comment|/*&n;     * Non-FIFO registers.&n;     */
 DECL|member|PCRTC0
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PCRTC0
 suffix:semicolon
 DECL|member|PCRTC
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PCRTC
 suffix:semicolon
 DECL|member|PRAMDAC0
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PRAMDAC0
 suffix:semicolon
 DECL|member|PFB
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PFB
 suffix:semicolon
 DECL|member|PFIFO
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PFIFO
 suffix:semicolon
 DECL|member|PGRAPH
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PGRAPH
 suffix:semicolon
 DECL|member|PEXTDEV
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PEXTDEV
 suffix:semicolon
 DECL|member|PTIMER
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PTIMER
 suffix:semicolon
 DECL|member|PMC
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PMC
 suffix:semicolon
 DECL|member|PRAMIN
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PRAMIN
 suffix:semicolon
 DECL|member|FIFO
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|FIFO
 suffix:semicolon
 DECL|member|CURSOR
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|CURSOR
 suffix:semicolon
 DECL|member|PCIO0
 r_volatile
 id|U008
+id|__iomem
 op_star
 id|PCIO0
 suffix:semicolon
 DECL|member|PCIO
 r_volatile
 id|U008
+id|__iomem
 op_star
 id|PCIO
 suffix:semicolon
 DECL|member|PVIO
 r_volatile
 id|U008
+id|__iomem
 op_star
 id|PVIO
 suffix:semicolon
 DECL|member|PDIO0
 r_volatile
 id|U008
+id|__iomem
 op_star
 id|PDIO0
 suffix:semicolon
 DECL|member|PDIO
 r_volatile
 id|U008
+id|__iomem
 op_star
 id|PDIO
 suffix:semicolon
 DECL|member|PRAMDAC
 r_volatile
 id|U032
+id|__iomem
 op_star
 id|PRAMDAC
 suffix:semicolon
@@ -1476,46 +1494,55 @@ suffix:semicolon
 multiline_comment|/*&n;     * FIFO registers.&n;     */
 DECL|member|Rop
 id|RivaRop
+id|__iomem
 op_star
 id|Rop
 suffix:semicolon
 DECL|member|Patt
 id|RivaPattern
+id|__iomem
 op_star
 id|Patt
 suffix:semicolon
 DECL|member|Clip
 id|RivaClip
+id|__iomem
 op_star
 id|Clip
 suffix:semicolon
 DECL|member|Pixmap
 id|RivaPixmap
+id|__iomem
 op_star
 id|Pixmap
 suffix:semicolon
 DECL|member|Blt
 id|RivaScreenBlt
+id|__iomem
 op_star
 id|Blt
 suffix:semicolon
 DECL|member|Bitmap
 id|RivaBitmap
+id|__iomem
 op_star
 id|Bitmap
 suffix:semicolon
 DECL|member|Line
 id|RivaLine
+id|__iomem
 op_star
 id|Line
 suffix:semicolon
 DECL|member|Tri03
 id|RivaTexturedTriangle03
+id|__iomem
 op_star
 id|Tri03
 suffix:semicolon
 DECL|member|Tri05
 id|RivaTexturedTriangle05
+id|__iomem
 op_star
 id|Tri05
 suffix:semicolon
@@ -1683,6 +1710,6 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * FIFO Free Count. Should attempt to yield processor if RIVA is busy.&n; */
 DECL|macro|RIVA_FIFO_FREE
-mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt)) {                        &bslash;&n;&t;mb();mb();&t;&t;&t;&t;&t;&t;    &bslash;&n;        (hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;     &bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
+mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt)) {                        &bslash;&n;&t;mb();mb();&t;&t;&t;&t;&t;&t;    &bslash;&n;        (hwinst).FifoFreeCount = NV_RD32(&amp;(hwinst).hwptr-&gt;FifoFree, 0) &gt;&gt; 2;     &bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
 macro_line|#endif /* __RIVA_HW_H__ */
 eof
