@@ -5016,6 +5016,8 @@ id|usb_alloc_urb
 c_func
 (paren
 id|FRAMES_PER_DESC
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

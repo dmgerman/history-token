@@ -893,6 +893,8 @@ id|usb_alloc_urb
 c_func
 (paren
 id|packets
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

@@ -1769,12 +1769,15 @@ l_int|0x02
 )paren
 (brace
 multiline_comment|/* we found a bulk out endpoint */
+multiline_comment|/* a probe() may sleep and has no restrictions on memory allocations */
 id|dev-&gt;write_urb
 op_assign
 id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
