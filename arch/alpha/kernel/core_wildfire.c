@@ -15,8 +15,6 @@ DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
-DECL|macro|DEBUG_MCHECK
-mdefine_line|#define DEBUG_MCHECK 0&t;&t;/* 0 = minimal, 1 = debug, 2 = debug+dump.  */
 DECL|macro|DEBUG_CONFIG
 mdefine_line|#define DEBUG_CONFIG 0
 DECL|macro|DEBUG_DUMP_REGS
@@ -1624,10 +1622,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;bus
-op_eq
-id|pbus
+op_logical_neg
+id|pbus-&gt;parent
 )paren
+multiline_comment|/* No parent means peer PCI bus. */
 id|bus
 op_assign
 l_int|0
