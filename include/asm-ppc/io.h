@@ -732,7 +732,7 @@ DECL|macro|iobarrier_r
 mdefine_line|#define iobarrier_r()  eieio()
 DECL|macro|iobarrier_w
 mdefine_line|#define iobarrier_w()  eieio()
-multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; */
+multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; *&n; * Read operations have additional twi &amp; isync to make sure the read&n; * is actually performed (i.e. the data has come back) before we start&n; * executing any following instructions.&n; */
 DECL|function|in_8
 r_extern
 r_inline
@@ -754,7 +754,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lbz%U1%X1 %0,%1; eieio&quot;
+l_string|&quot;lbz%U1%X1 %0,%1;&bslash;n&quot;
+l_string|&quot;twi 0,%0,0;&bslash;n&quot;
+l_string|&quot;isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -829,7 +831,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lhbrx %0,0,%1; eieio&quot;
+l_string|&quot;lhbrx %0,0,%1;&bslash;n&quot;
+l_string|&quot;twi 0,%0,0;&bslash;n&quot;
+l_string|&quot;isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -873,7 +877,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lhz%U1%X1 %0,%1; eieio&quot;
+l_string|&quot;lhz%U1%X1 %0,%1;&bslash;n&quot;
+l_string|&quot;twi 0,%0,0;&bslash;n&quot;
+l_string|&quot;isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -988,7 +994,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lwbrx %0,0,%1; eieio&quot;
+l_string|&quot;lwbrx %0,0,%1;&bslash;n&quot;
+l_string|&quot;twi 0,%0,0;&bslash;n&quot;
+l_string|&quot;isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1031,7 +1039,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lwz%U1%X1 %0,%1; eieio&quot;
+l_string|&quot;lwz%U1%X1 %0,%1;&bslash;n&quot;
+l_string|&quot;twi 0,%0,0;&bslash;n&quot;
+l_string|&quot;isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
