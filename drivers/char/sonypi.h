@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/kfifo.h&gt;
 macro_line|#include &lt;linux/sonypi.h&gt;
@@ -1232,6 +1231,12 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|platform_device
+op_star
+id|pdev
+suffix:semicolon
 DECL|member|irq
 id|u16
 id|irq
@@ -1302,14 +1307,6 @@ DECL|member|jog_dev
 r_struct
 id|input_dev
 id|jog_dev
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm
-r_struct
-id|pm_dev
-op_star
-id|pm
 suffix:semicolon
 macro_line|#endif
 )brace
