@@ -1764,6 +1764,12 @@ id|thread_keyring
 suffix:semicolon
 multiline_comment|/* keyring private to this thread */
 macro_line|#endif
+multiline_comment|/*&n; * All archs should support atomic ops with&n; * 1 byte granularity.&n; */
+DECL|member|memdie
+r_int
+r_char
+id|memdie
+suffix:semicolon
 multiline_comment|/*&n; * Must be changed atomically so it shouldn&squot;t be&n; * be a shareable bitflag.&n; */
 DECL|member|used_math
 r_int
@@ -2096,10 +2102,8 @@ DECL|macro|PF_SIGNALED
 mdefine_line|#define PF_SIGNALED&t;0x00000400&t;/* killed by a signal */
 DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
-DECL|macro|PF_MEMDIE
-mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FLUSHER
-mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
+mdefine_line|#define PF_FLUSHER&t;0x00001000&t;/* responsible for disk writeback */
 DECL|macro|PF_FREEZE
 mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task is being frozen for suspend now */
 DECL|macro|PF_NOFREEZE
