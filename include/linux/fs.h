@@ -5353,7 +5353,7 @@ r_void
 id|sync_inodes
 c_func
 (paren
-id|kdev_t
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -5533,7 +5533,7 @@ r_void
 id|sync_supers
 c_func
 (paren
-id|kdev_t
+r_void
 )paren
 suffix:semicolon
 r_extern

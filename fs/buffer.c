@@ -1371,7 +1371,6 @@ suffix:semicolon
 id|sync_inodes
 c_func
 (paren
-id|NODEV
 )paren
 suffix:semicolon
 id|DQUOT_SYNC
@@ -1383,7 +1382,6 @@ suffix:semicolon
 id|sync_supers
 c_func
 (paren
-id|NODEV
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -10743,7 +10741,6 @@ suffix:semicolon
 id|sync_supers
 c_func
 (paren
-id|NODEV
 )paren
 suffix:semicolon
 id|unlock_kernel
