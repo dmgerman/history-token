@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_KD_H
 DECL|macro|_LINUX_KD_H
 mdefine_line|#define _LINUX_KD_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* 0x4B is &squot;K&squot;, to avoid collision with termios and vt */
 DECL|macro|GIO_FONT
 mdefine_line|#define GIO_FONT&t;0x4B60&t;/* gets font in expanded form */
@@ -29,6 +30,7 @@ suffix:semicolon
 multiline_comment|/* scan lines per character (1-32) */
 DECL|member|chardata
 r_char
+id|__user
 op_star
 id|chardata
 suffix:semicolon
@@ -132,6 +134,7 @@ suffix:semicolon
 DECL|member|entries
 r_struct
 id|unipair
+id|__user
 op_star
 id|entries
 suffix:semicolon
