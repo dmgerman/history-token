@@ -1780,7 +1780,7 @@ r_return
 id|cpu_addr
 suffix:semicolon
 )brace
-multiline_comment|/* Free and unmap a consistent DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistent.  SIZE must&n;   be the same as what as passed into pci_alloc_consistent.&n;   References to the memory and mappings assosciated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
+multiline_comment|/* Free and unmap a consistent DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistent.  SIZE must&n;   be the same as what as passed into pci_alloc_consistent.&n;   References to the memory and mappings associated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
 r_void
 DECL|function|pci_free_consistent
 id|pci_free_consistent
