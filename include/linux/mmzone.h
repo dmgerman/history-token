@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
@@ -67,6 +68,30 @@ suffix:semicolon
 DECL|member|need_balance
 r_int
 id|need_balance
+suffix:semicolon
+DECL|member|active_list
+r_struct
+id|list_head
+id|active_list
+suffix:semicolon
+DECL|member|inactive_list
+r_struct
+id|list_head
+id|inactive_list
+suffix:semicolon
+DECL|member|refill_counter
+id|atomic_t
+id|refill_counter
+suffix:semicolon
+DECL|member|nr_active
+r_int
+r_int
+id|nr_active
+suffix:semicolon
+DECL|member|nr_inactive
+r_int
+r_int
+id|nr_inactive
 suffix:semicolon
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
 DECL|member|free_area
@@ -290,17 +315,6 @@ multiline_comment|/*&n; * The following two are not meant for general usage. The
 r_struct
 id|page
 suffix:semicolon
-r_extern
-r_void
-id|show_free_areas_core
-c_func
-(paren
-id|pg_data_t
-op_star
-id|pgdat
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|free_area_init_core
 c_func
@@ -336,6 +350,21 @@ r_struct
 id|page
 op_star
 id|pmap
+)paren
+suffix:semicolon
+r_void
+id|get_zone_counts
+c_func
+(paren
+r_int
+r_int
+op_star
+id|active
+comma
+r_int
+r_int
+op_star
+id|inactive
 )paren
 suffix:semicolon
 r_extern

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -553,6 +554,14 @@ id|cpu
 suffix:semicolon
 r_int
 r_int
+id|inactive
+suffix:semicolon
+r_int
+r_int
+id|active
+suffix:semicolon
+r_int
+r_int
 id|flushes
 op_assign
 l_int|0
@@ -602,6 +611,16 @@ c_func
 (paren
 op_amp
 id|ps
+)paren
+suffix:semicolon
+id|get_zone_counts
+c_func
+(paren
+op_amp
+id|active
+comma
+op_amp
+id|inactive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * display in kilobytes.&n; */
@@ -694,13 +713,13 @@ comma
 id|K
 c_func
 (paren
-id|ps.nr_active
+id|active
 )paren
 comma
 id|K
 c_func
 (paren
-id|ps.nr_inactive
+id|inactive
 )paren
 comma
 id|K
