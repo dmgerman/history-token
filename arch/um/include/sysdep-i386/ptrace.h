@@ -3,10 +3,10 @@ macro_line|#ifndef __SYSDEP_I386_PTRACE_H
 DECL|macro|__SYSDEP_I386_PTRACE_H
 mdefine_line|#define __SYSDEP_I386_PTRACE_H
 macro_line|#include &quot;uml-config.h&quot;
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 macro_line|#include &quot;ptrace-tt.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;ptrace-skas.h&quot;
 macro_line|#endif
 macro_line|#include &quot;choose-mode.h&quot;
@@ -32,14 +32,14 @@ id|is_user
 suffix:semicolon
 r_union
 (brace
-macro_line|#ifdef CONFIG_MODE_TT
+macro_line|#ifdef UML_CONFIG_MODE_TT
 DECL|member|tt
 r_void
 op_star
 id|tt
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 r_struct
 (brace
 DECL|member|regs
