@@ -846,6 +846,30 @@ DECL|macro|pnp_can_disable
 mdefine_line|#define pnp_can_disable(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;disable) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_DISABLE))
 DECL|macro|pnp_can_configure
 mdefine_line|#define pnp_can_configure(dev)&t;((!(dev)-&gt;active) &amp;&amp; ((dev)-&gt;config_mode &amp; PNP_CONFIG_AUTO) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_CONFIGURABLE))
+macro_line|#ifdef CONFIG_ISAPNP
+r_extern
+r_struct
+id|pnp_protocol
+id|isapnp_protocol
+suffix:semicolon
+DECL|macro|pnp_device_is_isapnp
+mdefine_line|#define pnp_device_is_isapnp(dev) ((dev)-&gt;protocol == (&amp;isapnp_protocol))
+macro_line|#else
+DECL|macro|pnp_device_is_isapnp
+mdefine_line|#define pnp_device_is_isapnp(dev) 0
+macro_line|#endif
+macro_line|#ifdef CONFIG_PNPBIOS
+r_extern
+r_struct
+id|pnp_protocol
+id|pnpbios_protocol
+suffix:semicolon
+DECL|macro|pnp_device_is_pnpbios
+mdefine_line|#define pnp_device_is_pnpbios(dev) ((dev)-&gt;protocol == (&amp;pnpbios_protocol))
+macro_line|#else
+DECL|macro|pnp_device_is_pnpbios
+mdefine_line|#define pnp_device_is_pnpbios(dev) 0
+macro_line|#endif
 multiline_comment|/* status */
 DECL|macro|PNP_READY
 mdefine_line|#define PNP_READY&t;&t;0x0000
@@ -855,6 +879,11 @@ DECL|macro|PNP_BUSY
 mdefine_line|#define PNP_BUSY&t;&t;0x0002
 DECL|macro|PNP_FAULTY
 mdefine_line|#define PNP_FAULTY&t;&t;0x0004
+multiline_comment|/* isapnp specific macros */
+DECL|macro|isapnp_card_number
+mdefine_line|#define isapnp_card_number(dev)&t;((dev)-&gt;card ? (dev)-&gt;card-&gt;number : -1)
+DECL|macro|isapnp_csn_number
+mdefine_line|#define isapnp_csn_number(dev)  ((dev)-&gt;number)
 multiline_comment|/*&n; * Driver Management&n; */
 DECL|struct|pnp_id
 r_struct

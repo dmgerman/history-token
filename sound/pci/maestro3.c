@@ -1990,6 +1990,30 @@ comma
 )brace
 comma
 multiline_comment|/* FIXME: Inspiron 8100 id should probably be here, too&n;&t; * (8200 irrelevant: has intel8x0 with CS4205) */
+multiline_comment|/* NEC LM800J/7 */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;NEC LM800J/7&quot;
+comma
+dot
+id|vendor
+op_assign
+l_int|0x1033
+comma
+dot
+id|device
+op_assign
+l_int|0x80f1
+comma
+dot
+id|amp_gpio
+op_assign
+l_int|0x03
+comma
+)brace
+comma
 multiline_comment|/* END */
 (brace
 l_int|0

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for PowerMac onboard soundchips&n; * Copyright 
 macro_line|#ifndef __PMAC_H
 DECL|macro|__PMAC_H
 mdefine_line|#define __PMAC_H
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;awacs.h&quot;
@@ -148,75 +149,6 @@ suffix:semicolon
 multiline_comment|/* currently available formats */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * beep using pcm&n; */
-DECL|struct|snd_pmac_beep
-r_struct
-id|snd_pmac_beep
-(brace
-DECL|member|running
-r_int
-id|running
-suffix:semicolon
-multiline_comment|/* boolean */
-DECL|member|volume
-r_int
-id|volume
-suffix:semicolon
-multiline_comment|/* mixer volume: 0-100 */
-DECL|member|volume_play
-r_int
-id|volume_play
-suffix:semicolon
-multiline_comment|/* currently playing volume */
-DECL|member|hz
-r_int
-id|hz
-suffix:semicolon
-DECL|member|nsamples
-r_int
-id|nsamples
-suffix:semicolon
-DECL|member|buf
-r_int
-op_star
-id|buf
-suffix:semicolon
-multiline_comment|/* allocated wave buffer */
-DECL|member|addr
-r_int
-r_int
-id|addr
-suffix:semicolon
-multiline_comment|/* physical address of buffer */
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-multiline_comment|/* timer list for stopping beep */
-DECL|member|orig_mksound
-r_void
-(paren
-op_star
-id|orig_mksound
-)paren
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* pointer to restore */
-DECL|member|control
-id|snd_kcontrol_t
-op_star
-id|control
-suffix:semicolon
-multiline_comment|/* mixer element */
-)brace
-suffix:semicolon
 multiline_comment|/*&n; */
 DECL|enum|snd_pmac_model
 r_enum
@@ -261,6 +193,11 @@ DECL|member|revision
 r_int
 r_int
 id|revision
+suffix:semicolon
+DECL|member|manufacturer
+r_int
+r_int
+id|manufacturer
 suffix:semicolon
 DECL|member|subframe
 r_int
@@ -730,5 +667,11 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+macro_line|#ifndef PMAC_SUPPORT_PCM_BEEP
+DECL|macro|snd_pmac_attach_beep
+mdefine_line|#define snd_pmac_attach_beep(chip) 0
+DECL|macro|snd_pmac_beep_stop
+mdefine_line|#define snd_pmac_beep_stop(chip)  /**/
+macro_line|#endif
 macro_line|#endif /* __PMAC_H */
 eof

@@ -58,6 +58,7 @@ id|enable
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 DECL|variable|enable_beep
 r_static
 r_int
@@ -65,6 +66,7 @@ id|enable_beep
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -141,6 +143,7 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
+macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 id|MODULE_PARM
 c_func
 (paren
@@ -167,6 +170,7 @@ l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * card entry&n; */
 DECL|variable|snd_pmac_card
 r_static
@@ -567,7 +571,7 @@ id|chip-&gt;initialized
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 r_if
 c_cond
 (paren
@@ -748,6 +752,7 @@ id|id
 )paren
 op_eq
 l_int|2
+macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 op_logical_and
 id|get_option
 c_func
@@ -760,6 +765,7 @@ id|enable_beep
 )paren
 op_eq
 l_int|2
+macro_line|#endif
 )paren
 suffix:semicolon
 r_return

@@ -51,23 +51,25 @@ mdefine_line|#define DSP_MAX_TASK_DESC   50
 DECL|macro|DSP_MAX_PCM_CHANNELS
 mdefine_line|#define DSP_MAX_PCM_CHANNELS 32
 DECL|macro|DSP_MAX_SRC_NR
-mdefine_line|#define DSP_MAX_SRC_NR       6
+mdefine_line|#define DSP_MAX_SRC_NR       14
 DECL|macro|DSP_PCM_MAIN_CHANNEL
-mdefine_line|#define DSP_PCM_MAIN_CHANNEL    1
+mdefine_line|#define DSP_PCM_MAIN_CHANNEL        1
 DECL|macro|DSP_PCM_REAR_CHANNEL
-mdefine_line|#define DSP_PCM_REAR_CHANNEL    2
-DECL|macro|DSP_PCM_CENTER_CHANNEL
-mdefine_line|#define DSP_PCM_CENTER_CHANNEL  3
-DECL|macro|DSP_PCM_LFE_CHANNEL
-mdefine_line|#define DSP_PCM_LFE_CHANNEL     4
+mdefine_line|#define DSP_PCM_REAR_CHANNEL        2
+DECL|macro|DSP_PCM_CENTER_LFE_CHANNEL
+mdefine_line|#define DSP_PCM_CENTER_LFE_CHANNEL  3
+DECL|macro|DSP_PCM_S71_CHANNEL
+mdefine_line|#define DSP_PCM_S71_CHANNEL         4 /* surround 7.1 */
 DECL|macro|DSP_IEC958_CHANNEL
-mdefine_line|#define DSP_IEC958_CHANNEL      5
+mdefine_line|#define DSP_IEC958_CHANNEL          5
 DECL|macro|DSP_SPDIF_STATUS_OUTPUT_ENABLED
-mdefine_line|#define DSP_SPDIF_STATUS_OUTPUT_ENABLED 1
+mdefine_line|#define DSP_SPDIF_STATUS_OUTPUT_ENABLED       1
 DECL|macro|DSP_SPDIF_STATUS_PLAYBACK_OPEN
-mdefine_line|#define DSP_SPDIF_STATUS_PLAYBACK_OPEN  2
+mdefine_line|#define DSP_SPDIF_STATUS_PLAYBACK_OPEN        2
 DECL|macro|DSP_SPDIF_STATUS_HW_ENABLED
-mdefine_line|#define DSP_SPDIF_STATUS_HW_ENABLED     4
+mdefine_line|#define DSP_SPDIF_STATUS_HW_ENABLED           4
+DECL|macro|DSP_SPDIF_STATUS_INPUT_CTRL_ENABLED
+mdefine_line|#define DSP_SPDIF_STATUS_INPUT_CTRL_ENABLED   8
 r_struct
 id|_dsp_module_desc_t
 suffix:semicolon
@@ -379,11 +381,17 @@ DECL|member|dac_volume_left
 id|u16
 id|dac_volume_left
 suffix:semicolon
-multiline_comment|/* Rear PCM playback mixer */
+multiline_comment|/* Rear/surround PCM playback mixer */
 DECL|member|rear_mix_scb
 id|dsp_scb_descriptor_t
 op_star
 id|rear_mix_scb
+suffix:semicolon
+multiline_comment|/* Center/LFE mixer */
+DECL|member|center_lfe_mix_scb
+id|dsp_scb_descriptor_t
+op_star
+id|center_lfe_mix_scb
 suffix:semicolon
 DECL|member|npcm_channels
 r_int

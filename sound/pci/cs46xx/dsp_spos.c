@@ -3133,11 +3133,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0x2580
+l_int|0x2480
 suffix:semicolon
 id|i
 OL
-l_int|0x2580
+l_int|0x2480
 op_plus
 l_int|0x40
 suffix:semicolon
@@ -5346,11 +5346,22 @@ id|vari_decimate_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
-id|sec_codec_out_scb
+id|rear_codec_out_scb
+suffix:semicolon
+id|dsp_scb_descriptor_t
+op_star
+id|clfe_codec_out_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
 id|magic_snoop_scb
+suffix:semicolon
+r_int
+id|fifo_addr
+comma
+id|fifo_span
+comma
+id|valid_slots
 suffix:semicolon
 id|spos_control_block_t
 id|sposcb
@@ -6311,23 +6322,88 @@ id|record_mix_scb
 r_goto
 id|_fail_end
 suffix:semicolon
-multiline_comment|/* create secondary CODEC output */
-id|sec_codec_out_scb
+id|valid_slots
+op_assign
+id|snd_cs46xx_peekBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_ACOSV
+)paren
+suffix:semicolon
+id|snd_assert
+(paren
+id|chip-&gt;nr_ac97_codecs
+op_eq
+l_int|1
+op_logical_or
+id|chip-&gt;nr_ac97_codecs
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;nr_ac97_codecs
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* output on slot 5 and 11 &n;&t;&t;   on primary CODEC */
+id|fifo_addr
+op_assign
+l_int|0x20
+suffix:semicolon
+id|fifo_span
+op_assign
+l_int|0x60
+suffix:semicolon
+multiline_comment|/* enable slot 5 and 11 */
+id|valid_slots
+op_or_assign
+id|ACOSV_SLV5
+op_or
+id|ACOSV_SLV11
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* output on slot 7 and 8 &n;&t;&t;   on secondary CODEC */
+id|fifo_addr
+op_assign
+l_int|0x40
+suffix:semicolon
+id|fifo_span
+op_assign
+l_int|0x10
+suffix:semicolon
+multiline_comment|/* enable slot 7 and 8 */
+id|valid_slots
+op_or_assign
+id|ACOSV_SLV7
+op_or
+id|ACOSV_SLV8
+suffix:semicolon
+)brace
+multiline_comment|/* create CODEC tasklet for rear speakers output*/
+id|rear_codec_out_scb
 op_assign
 id|cs46xx_dsp_create_codec_out_scb
 c_func
 (paren
 id|chip
 comma
-l_string|&quot;CodecOutSCB_II&quot;
+l_string|&quot;CodecOutSCB_Rear&quot;
 comma
-l_int|0x0010
+id|fifo_span
 comma
-l_int|0x0040
+id|fifo_addr
 comma
 id|REAR_MIXER_SCB_ADDR
 comma
-id|SEC_CODECOUT_SCB_ADDR
+id|REAR_CODECOUT_SCB_ADDR
 comma
 id|codec_in_scb
 comma
@@ -6338,7 +6414,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sec_codec_out_scb
+id|rear_codec_out_scb
 )paren
 r_goto
 id|_fail_end
@@ -6357,7 +6433,7 @@ id|MIX_SAMPLE_BUF3
 comma
 id|REAR_MIXER_SCB_ADDR
 comma
-id|sec_codec_out_scb
+id|rear_codec_out_scb
 comma
 id|SCB_ON_PARENT_SUBLIST_SCB
 )paren
@@ -6375,6 +6451,104 @@ id|rear_mix_scb
 r_goto
 id|_fail_end
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;nr_ac97_codecs
+op_eq
+l_int|2
+)paren
+(brace
+multiline_comment|/* create CODEC tasklet for rear Center/LFE output &n;&t;&t;   slot 6 and 9 on seconadry CODEC */
+id|clfe_codec_out_scb
+op_assign
+id|cs46xx_dsp_create_codec_out_scb
+c_func
+(paren
+id|chip
+comma
+l_string|&quot;CodecOutSCB_CLFE&quot;
+comma
+l_int|0x0030
+comma
+l_int|0x0030
+comma
+id|CLFE_MIXER_SCB_ADDR
+comma
+id|CLFE_CODEC_SCB_ADDR
+comma
+id|rear_codec_out_scb
+comma
+id|SCB_ON_PARENT_NEXT_SCB
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|clfe_codec_out_scb
+)paren
+r_goto
+id|_fail_end
+suffix:semicolon
+multiline_comment|/* create the rear PCM channel  mixer SCB */
+id|ins-&gt;center_lfe_mix_scb
+op_assign
+id|cs46xx_dsp_create_mix_only_scb
+c_func
+(paren
+id|chip
+comma
+l_string|&quot;CLFEMixerSCB&quot;
+comma
+id|MIX_SAMPLE_BUF4
+comma
+id|CLFE_MIXER_SCB_ADDR
+comma
+id|clfe_codec_out_scb
+comma
+id|SCB_ON_PARENT_SUBLIST_SCB
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ins-&gt;center_lfe_mix_scb
+)paren
+r_goto
+id|_fail_end
+suffix:semicolon
+multiline_comment|/* enable slot 6 and 9 */
+id|valid_slots
+op_or_assign
+id|ACOSV_SLV6
+op_or
+id|ACOSV_SLV9
+suffix:semicolon
+)brace
+r_else
+(brace
+id|clfe_codec_out_scb
+op_assign
+id|rear_codec_out_scb
+suffix:semicolon
+id|ins-&gt;center_lfe_mix_scb
+op_assign
+id|rear_mix_scb
+suffix:semicolon
+)brace
+multiline_comment|/* enable slots depending on CODEC configuration */
+id|snd_cs46xx_pokeBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_ACOSV
+comma
+id|valid_slots
+)paren
+suffix:semicolon
 multiline_comment|/* the magic snooper */
 id|magic_snoop_scb
 op_assign
@@ -6390,7 +6564,7 @@ id|OUTPUT_SNOOP_BUFFER
 comma
 id|codec_out_scb
 comma
-id|sec_codec_out_scb
+id|clfe_codec_out_scb
 comma
 id|SCB_ON_PARENT_NEXT_SCB
 )paren
@@ -6452,7 +6626,7 @@ id|master_mix_scb
 comma
 id|SCB_ON_PARENT_SUBLIST_SCB
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -6747,25 +6921,31 @@ l_int|1
 comma
 l_int|4000
 comma
+multiline_comment|/* SPDIFICountLimit SPDIFICount */
 multiline_comment|/* 4 */
 id|DSP_SPOS_UUUU
 comma
+multiline_comment|/* SPDIFIStatusData */
 multiline_comment|/* 5 */
-id|DSP_SPOS_UULO
+l_int|0
 comma
 id|DSP_SPOS_UUHI
 comma
+multiline_comment|/* StatusData, Free4 */
 multiline_comment|/* 6 */
 id|DSP_SPOS_UUUU
 comma
+multiline_comment|/* Free3 */
 multiline_comment|/* 7 */
 id|DSP_SPOS_UU
 comma
 id|DSP_SPOS_DC
 comma
+multiline_comment|/* Free2 BitCount*/
 multiline_comment|/* 8 */
 id|DSP_SPOS_UUUU
 comma
+multiline_comment|/* TempStatus */
 multiline_comment|/* 9 */
 id|SPDIFO_SCB_INST
 comma
@@ -6805,6 +6985,7 @@ l_int|0x0001
 comma
 multiline_comment|/* F */
 id|DSP_SPOS_UUUU
+multiline_comment|/* SPDIN_STATUS monitor */
 )brace
 suffix:semicolon
 multiline_comment|/* 0xBA0 */
@@ -7139,6 +7320,16 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
+multiline_comment|/* clear fifo pointer */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_SPDIN_FIFOPTR
+comma
+l_int|0x0
+)paren
+suffix:semicolon
 multiline_comment|/* monitor state */
 id|ins-&gt;spdif_status_out
 op_and_assign
@@ -7290,6 +7481,43 @@ op_amp
 id|chip-&gt;spos_mutex
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ins-&gt;spdif_status_out
+op_amp
+id|DSP_SPDIF_STATUS_INPUT_CTRL_ENABLED
+)paren
+)paren
+(brace
+multiline_comment|/* time countdown enable */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_ASER_COUNTDOWN
+comma
+l_int|0x80000005
+)paren
+suffix:semicolon
+multiline_comment|/* NOTE: 80000005 value is just magic. With all values&n;&t;&t;   that I&squot;ve tested this one seem to give the best result.&n;&t;&t;   Got no explication why. (Benny) */
+multiline_comment|/* SPDIF input MASTER ENABLE */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_SPDIN_CONTROL
+comma
+l_int|0x800003ff
+)paren
+suffix:semicolon
+id|ins-&gt;spdif_status_out
+op_or_assign
+id|DSP_SPDIF_STATUS_INPUT_CTRL_ENABLED
+suffix:semicolon
+)brace
 multiline_comment|/* create and start the asynchronous receiver SCB */
 id|ins-&gt;asynch_rx_scb
 op_assign
@@ -7319,37 +7547,9 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 multiline_comment|/* reset SPDIF input sample buffer pointer */
-id|snd_cs46xx_poke
-(paren
-id|chip
-comma
-(paren
-id|SPDIFI_SCB_INST
-op_plus
-l_int|0x0c
-)paren
-op_lshift
-l_int|2
-comma
-(paren
-id|SPDIFI_IP_OUTPUT_BUFFER1
-op_lshift
-l_int|0x10
-)paren
-op_or
-l_int|0xFFFC
-)paren
-suffix:semicolon
+multiline_comment|/*snd_cs46xx_poke (chip, (SPDIFI_SCB_INST + 0x0c) &lt;&lt; 2,&n;&t;  (SPDIFI_IP_OUTPUT_BUFFER1 &lt;&lt; 0x10) | 0xFFFC);*/
 multiline_comment|/* reset FIFO ptr */
-id|cs46xx_poke_via_dsp
-(paren
-id|chip
-comma
-id|SP_SPDIN_FIFOPTR
-comma
-l_int|0x0
-)paren
-suffix:semicolon
+multiline_comment|/*cs46xx_poke_via_dsp (chip,SP_SPDIN_FIFOPTR, 0x0);*/
 id|cs46xx_src_link
 c_func
 (paren

@@ -6,7 +6,6 @@ macro_line|#ifdef ALSA_BUILD
 macro_line|#include &quot;config.h&quot;
 macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SNDRV_CARDS
 mdefine_line|#define SNDRV_CARDS&t;&t;8&t;/* number of supported soundcards - don&squot;t change - minor numbers */
 macro_line|#ifndef CONFIG_SND_MAJOR&t;/* standard configuration */
