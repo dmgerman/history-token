@@ -278,23 +278,6 @@ DECL|macro|ACPI_MASK_BITS_BELOW
 mdefine_line|#define ACPI_MASK_BITS_BELOW(position)       ((ACPI_INTEGER_MAX) &lt;&lt; ((u32) (position)))
 DECL|macro|ACPI_IS_OCTAL_DIGIT
 mdefine_line|#define ACPI_IS_OCTAL_DIGIT(d)               (((char)(d) &gt;= &squot;0&squot;) &amp;&amp; ((char)(d) &lt;= &squot;7&squot;))
-multiline_comment|/* Macros for GAS addressing */
-macro_line|#if ACPI_MACHINE_WIDTH != 16
-DECL|macro|ACPI_PCI_DEVICE
-mdefine_line|#define ACPI_PCI_DEVICE(a)              (u16) ((ACPI_HIDWORD ((a))) &amp; 0x0000FFFF)
-DECL|macro|ACPI_PCI_FUNCTION
-mdefine_line|#define ACPI_PCI_FUNCTION(a)            (u16) ((ACPI_LODWORD ((a))) &gt;&gt; 16)
-DECL|macro|ACPI_PCI_REGISTER
-mdefine_line|#define ACPI_PCI_REGISTER(a)            (u16) ((ACPI_LODWORD ((a))) &amp; 0x0000FFFF)
-macro_line|#else
-multiline_comment|/* No support for GAS and PCI IDs in 16-bit mode  */
-DECL|macro|ACPI_PCI_FUNCTION
-mdefine_line|#define ACPI_PCI_FUNCTION(a)            (u16) ((a) &amp; 0xFFFF0000)
-DECL|macro|ACPI_PCI_DEVICE
-mdefine_line|#define ACPI_PCI_DEVICE(a)              (u16) ((a) &amp; 0x0000FFFF)
-DECL|macro|ACPI_PCI_REGISTER
-mdefine_line|#define ACPI_PCI_REGISTER(a)            (u16) ((a) &amp; 0x0000FFFF)
-macro_line|#endif
 multiline_comment|/* Bitfields within ACPI registers */
 DECL|macro|ACPI_REGISTER_PREPARE_BITS
 mdefine_line|#define ACPI_REGISTER_PREPARE_BITS(val, pos, mask)      ((val &lt;&lt; pos) &amp; mask)
