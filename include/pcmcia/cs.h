@@ -1479,6 +1479,28 @@ id|mask
 )paren
 suffix:semicolon
 macro_line|#endif
+r_struct
+id|pcmcia_socket
+op_star
+id|pcmcia_get_socket
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|skt
+)paren
+suffix:semicolon
+r_void
+id|pcmcia_put_socket
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|skt
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_CS_H */
 eof
