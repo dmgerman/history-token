@@ -23,7 +23,7 @@ macro_line|#include &quot;i810_regs.h&quot;
 macro_line|#include &quot;i810.h&quot;
 macro_line|#include &quot;i810_main.h&quot;
 multiline_comment|/* PCI */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_const
 r_char
@@ -31,7 +31,7 @@ op_star
 id|i810_pci_list
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 l_string|&quot;Intel(R) 810 Framebuffer Device&quot;
@@ -6902,12 +6902,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_ops
 id|i810fb_ops
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -7248,7 +7248,7 @@ multiline_comment|/*************************************************************
 DECL|function|i810_fix_pointers
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_fix_pointers
 c_func
 (paren
@@ -7324,7 +7324,7 @@ suffix:semicolon
 DECL|function|i810_fix_offsets
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_fix_offsets
 c_func
 (paren
@@ -7449,7 +7449,7 @@ suffix:semicolon
 DECL|function|i810_alloc_agp_mem
 r_static
 r_int
-id|__init
+id|__devinit
 id|i810_alloc_agp_mem
 c_func
 (paren
@@ -7693,7 +7693,7 @@ multiline_comment|/**&n; * i810_init_monspecs&n; * @info: pointer to device spec
 DECL|function|i810_init_monspecs
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_init_monspecs
 c_func
 (paren
@@ -7799,7 +7799,7 @@ multiline_comment|/**&n; * i810_init_defaults - initializes default values to us
 DECL|function|i810_init_defaults
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_init_defaults
 c_func
 (paren
@@ -7956,7 +7956,7 @@ multiline_comment|/**&n; * i810_init_device - initialize device&n; * @par: point
 DECL|function|i810_init_device
 r_static
 r_void
-id|__init
+id|__devinit
 id|i810_init_device
 c_func
 (paren
@@ -8048,7 +8048,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|i810_allocate_pci_resource
 id|i810_allocate_pci_resource
 c_func
@@ -8812,7 +8812,7 @@ suffix:semicolon
 DECL|function|i810fb_init_pci
 r_static
 r_int
-id|__init
+id|__devinit
 id|i810fb_init_pci
 (paren
 r_struct

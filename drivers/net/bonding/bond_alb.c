@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; */
+multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
@@ -768,7 +768,7 @@ id|slave
 op_star
 id|least_loaded
 suffix:semicolon
-id|u32
+id|s64
 id|curr_gap
 comma
 id|max_gap
@@ -830,11 +830,17 @@ suffix:semicolon
 id|max_gap
 op_assign
 (paren
+id|s64
+)paren
+(paren
 id|slave-&gt;speed
 op_star
 l_int|1000000
 )paren
 op_minus
+(paren
+id|s64
+)paren
 (paren
 id|SLAVE_TLB_INFO
 c_func
@@ -877,11 +883,17 @@ id|slave
 id|curr_gap
 op_assign
 (paren
+id|s64
+)paren
+(paren
 id|slave-&gt;speed
 op_star
 l_int|1000000
 )paren
 op_minus
+(paren
+id|s64
+)paren
 (paren
 id|SLAVE_TLB_INFO
 c_func

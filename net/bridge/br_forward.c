@@ -200,6 +200,10 @@ id|skb-&gt;dev
 op_assign
 id|to-&gt;dev
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 id|NF_HOOK
 c_func
 (paren

@@ -234,6 +234,14 @@ c_func
 (paren
 id|m
 comma
+l_string|&quot;type         : cipher&bslash;n&quot;
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
 l_string|&quot;blocksize    : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_blocksize
@@ -269,6 +277,14 @@ c_func
 (paren
 id|m
 comma
+l_string|&quot;type         : digest&bslash;n&quot;
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
 l_string|&quot;blocksize    : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_blocksize
@@ -282,6 +298,31 @@ comma
 l_string|&quot;digestsize   : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_digest.dia_digestsize
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CRYPTO_ALG_TYPE_COMPRESS
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;type         : compression&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;type         : unknown&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

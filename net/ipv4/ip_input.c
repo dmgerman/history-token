@@ -263,6 +263,12 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|skb-&gt;nf_debug
+op_assign
+l_int|3
+id|D
+l_int|0
+suffix:semicolon
 macro_line|#endif /*CONFIG_NETFILTER_DEBUG*/
 id|__skb_pull
 c_func

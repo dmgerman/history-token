@@ -7900,7 +7900,7 @@ suffix:semicolon
 DECL|function|riva_set_fbinfo
 r_static
 r_int
-id|__init
+id|__devinit
 id|riva_set_fbinfo
 c_func
 (paren
@@ -8686,7 +8686,7 @@ multiline_comment|/* -----------------------------------------------------------
 DECL|function|rivafb_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|rivafb_probe
 c_func
 (paren

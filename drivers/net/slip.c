@@ -5330,9 +5330,11 @@ c_cond
 id|busy
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -5341,10 +5343,6 @@ id|HZ
 op_div
 l_int|10
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 )brace
 id|busy

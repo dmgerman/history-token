@@ -3369,17 +3369,11 @@ c_cond
 id|brvcc-&gt;filter.netmask
 op_ne
 l_int|0
-op_logical_and
-id|pos
-op_decrement
-op_eq
-l_int|0
 )paren
-r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|seq
 comma
 l_string|&quot;    filter=%d.%d.%d.%d/&quot;
 l_string|&quot;%d.%d.%d.%d&bslash;n&quot;

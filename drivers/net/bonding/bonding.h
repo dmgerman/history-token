@@ -156,7 +156,6 @@ suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
-op_star
 id|stats
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

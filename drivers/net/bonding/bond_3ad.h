@@ -430,7 +430,7 @@ r_struct
 id|mac_addr
 id|requester_system
 suffix:semicolon
-singleline_comment|//   The requester&#xfffd;s system id
+singleline_comment|//   The requester&squot;s system id
 DECL|member|requester_transaction_id
 id|u32
 id|requester_transaction_id

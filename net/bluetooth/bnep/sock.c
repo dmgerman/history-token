@@ -631,6 +631,14 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|sock-&gt;ops
 op_assign
 op_amp

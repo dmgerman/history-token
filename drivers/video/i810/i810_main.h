@@ -4,7 +4,7 @@ DECL|macro|__I810_MAIN_H__
 mdefine_line|#define __I810_MAIN_H__
 r_static
 r_int
-id|__init
+id|__devinit
 id|i810fb_init_pci
 (paren
 r_struct
@@ -396,7 +396,7 @@ DECL|function|set_mtrr
 r_static
 r_inline
 r_void
-id|__init
+id|__devinit
 id|set_mtrr
 c_func
 (paren
