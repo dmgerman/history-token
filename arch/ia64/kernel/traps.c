@@ -939,14 +939,14 @@ c_func
 id|fpu_owner
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif /* !CONFIG_SMP */
 id|ia64_set_fpu_owner
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* !CONFIG_SMP */
 r_if
 c_cond
 (paren

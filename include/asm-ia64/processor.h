@@ -543,6 +543,11 @@ op_star
 id|siginfo
 suffix:semicolon
 multiline_comment|/* current siginfo struct for ptrace() */
+DECL|member|last_fph_cpu
+id|__u64
+id|last_fph_cpu
+suffix:semicolon
+multiline_comment|/* CPU that may hold the contents of f32-f127 */
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|member|eflag
 id|__u64
@@ -1049,7 +1054,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_SMP
 r_static
 r_inline
 r_struct
@@ -1099,7 +1103,6 @@ id|t
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_SMP */
 r_extern
 r_void
 id|__ia64_init_fpu
