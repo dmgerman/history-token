@@ -18,6 +18,10 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
+macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
+DECL|macro|DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG_ON
