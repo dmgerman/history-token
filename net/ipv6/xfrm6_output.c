@@ -178,7 +178,13 @@ id|IPPROTO_IPV6
 suffix:semicolon
 id|top_iph-&gt;hop_limit
 op_assign
-id|iph-&gt;hop_limit
+id|dst_path_metric
+c_func
+(paren
+id|dst
+comma
+id|RTAX_HOPLIMIT
+)paren
 suffix:semicolon
 id|ipv6_addr_copy
 c_func

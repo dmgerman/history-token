@@ -11494,6 +11494,9 @@ comma
 id|ihlen
 comma
 id|ret
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_struct
 id|iphdr
@@ -11562,6 +11565,10 @@ suffix:semicolon
 id|ad-&gt;u.net.v4info.daddr
 op_assign
 id|ih-&gt;daddr
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
@@ -11736,6 +11743,9 @@ id|nexthdr
 suffix:semicolon
 r_int
 id|ret
+op_assign
+op_minus
+id|EINVAL
 comma
 id|offset
 suffix:semicolon
@@ -11799,6 +11809,10 @@ comma
 op_amp
 id|ip6-&gt;daddr
 )paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 id|nexthdr
 op_assign
