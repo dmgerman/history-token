@@ -100,7 +100,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 suffix:semicolon
 op_increment
 id|i

@@ -2461,6 +2461,13 @@ c_func
 id|yield
 )paren
 suffix:semicolon
+DECL|variable|io_schedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|io_schedule
+)paren
+suffix:semicolon
 DECL|variable|__cond_resched
 id|EXPORT_SYMBOL
 c_func

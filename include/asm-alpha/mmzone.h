@@ -25,8 +25,6 @@ DECL|macro|pa_to_nid
 mdefine_line|#define pa_to_nid(pa)&t;&t;alpha_pa_to_nid(pa)
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;node_data[(nid)])
-DECL|macro|node_size
-mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|node_localnr
 mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_start_pfn)
 macro_line|#if 1
@@ -109,7 +107,7 @@ mdefine_line|#define page_to_pa(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((( (page) 
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid(((u64)pfn &lt;&lt; PAGE_SHIFT))
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((pfn) - node_start_pfn(pfn_to_nid(pfn))) &lt;&t;&t;&t;&bslash;&n;&t; node_size(pfn_to_nid(pfn)))&t;&t;&t;&t;&t;&bslash;&n;
+mdefine_line|#define pfn_valid(pfn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((pfn) - node_start_pfn(pfn_to_nid(pfn))) &lt;&t;&t;&t;&bslash;&n;&t; node_spanned_pages(pfn_to_nid(pfn)))&t;&t;&t;&t;&t;&bslash;&n;
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid((__pa(kaddr) &gt;&gt; PAGE_SHIFT))
 macro_line|#endif /* CONFIG_DISCONTIGMEM */

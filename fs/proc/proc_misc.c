@@ -2568,13 +2568,6 @@ id|data
 (brace
 r_int
 id|len
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|len
 op_assign
 id|get_locks_status
 c_func
@@ -2586,11 +2579,6 @@ comma
 id|off
 comma
 id|count
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

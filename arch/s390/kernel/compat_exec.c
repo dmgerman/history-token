@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -108,8 +109,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 (paren
