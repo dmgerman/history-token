@@ -2254,6 +2254,12 @@ id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/* Ack: we are alive */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Theoretically the ack = 0 might not be on this CPU yet. */
 id|atomic_inc
 c_func
 (paren
@@ -2291,6 +2297,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Ack: irqs disabled. */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Must read state first. */
 id|atomic_inc
 c_func
 (paren
@@ -2321,6 +2333,12 @@ id|prepared
 op_assign
 l_int|1
 suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Must read state first. */
 id|atomic_inc
 c_func
 (paren
@@ -2349,6 +2367,12 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Ack: we are exiting. */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Must read state first. */
 id|atomic_inc
 c_func
 (paren
