@@ -166,11 +166,6 @@ r_struct
 id|tty_driver
 id|cy_serial_driver
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* This is the address lookup table. The driver will probe for&n;   Cyclom-Y/ISA boards at all addresses in here. If you want the&n;   driver to probe addresses at a different address, add it to&n;   this table.  If the driver is probing some other board and&n;   causing problems, remove the offending address from this table.&n;   The cy_setup function extracts additional addresses from the&n;   boot options line.  The form is &quot;cyclades=address,address...&quot;&n;*/
 DECL|variable|cy_isa_addresses
@@ -24167,11 +24162,6 @@ suffix:semicolon
 id|cy_serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|cy_serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|cy_serial_driver.table
 op_assign

@@ -374,11 +374,6 @@ id|serial_termios_locked
 id|DZ_NB_PORT
 )braket
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the copy_from_user blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
 DECL|variable|tmp_buf
 r_static

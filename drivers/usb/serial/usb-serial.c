@@ -99,11 +99,6 @@ macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* There is no MODULE_DEVICE_TABLE for usbserial.c.  Instead&n;   the MODULE_DEVICE_TABLE declarations in each serial driver&n;   cause the &quot;hotplug&quot; program to pull in whatever module is necessary&n;   via modprobe, and modprobe will load usbserial because the serial&n;   drivers depend on it.&n;*/
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 DECL|variable|serial_tty
 r_static
 r_struct
@@ -4560,12 +4555,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-comma
-dot
-id|refcount
-op_assign
-op_amp
-id|serial_refcount
 comma
 dot
 id|table

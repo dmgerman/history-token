@@ -3282,11 +3282,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * TTY driver structures.&n; */
-DECL|variable|acm_tty_refcount
-r_static
-r_int
-id|acm_tty_refcount
-suffix:semicolon
 DECL|variable|acm_tty_table
 r_static
 r_struct
@@ -3375,12 +3370,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-comma
-dot
-id|refcount
-op_assign
-op_amp
-id|acm_tty_refcount
 comma
 dot
 id|table

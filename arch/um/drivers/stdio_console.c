@@ -34,13 +34,6 @@ r_struct
 id|tty_driver
 id|console_driver
 suffix:semicolon
-DECL|variable|console_refcount
-r_static
-r_int
-id|console_refcount
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|init_console_ops
 r_static
 r_struct
@@ -869,12 +862,6 @@ id|tty_driver
 id|console_driver
 op_assign
 (brace
-dot
-id|refcount
-op_assign
-op_amp
-id|console_refcount
-comma
 dot
 id|open
 op_assign

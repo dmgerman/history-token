@@ -56,14 +56,11 @@ id|mesg
 l_int|100
 )braket
 suffix:semicolon
-DECL|variable|pc_refcount
 DECL|variable|nbdevs
 DECL|variable|num_cards
 DECL|variable|liloconfig
 r_static
 r_int
-id|pc_refcount
-comma
 id|nbdevs
 comma
 id|num_cards
@@ -5085,11 +5082,6 @@ suffix:semicolon
 id|pc_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|pc_driver.refcount
-op_assign
-op_amp
-id|pc_refcount
 suffix:semicolon
 id|pc_driver.table
 op_assign

@@ -574,11 +574,6 @@ id|moxaChannels
 id|MAX_PORTS
 )braket
 suffix:semicolon
-DECL|variable|moxaRefcount
-r_static
-r_int
-id|moxaRefcount
-suffix:semicolon
 DECL|variable|moxaXmitBuff
 r_static
 r_int
@@ -1488,11 +1483,6 @@ suffix:semicolon
 id|moxaDriver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|moxaDriver.refcount
-op_assign
-op_amp
-id|moxaRefcount
 suffix:semicolon
 id|moxaDriver.table
 op_assign

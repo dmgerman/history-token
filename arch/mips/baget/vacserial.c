@@ -26,7 +26,7 @@ DECL|macro|SERIAL_INLINE
 mdefine_line|#define SERIAL_INLINE
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  tty-&gt;name,(info-&gt;flags),serial_refcount,info-&gt;count,tty-&gt;count,s)
+mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  tty-&gt;name,(info-&gt;flags),serial_driver.refcount,info-&gt;count,tty-&gt;count,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -103,11 +103,6 @@ r_static
 r_struct
 id|tty_driver
 id|serial_driver
-suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
 suffix:semicolon
 multiline_comment|/* number of characters left in xmit buffer before we ask for more */
 DECL|macro|WAKEUP_CHARS
@@ -9160,11 +9155,6 @@ suffix:semicolon
 id|serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|serial_driver.table
 op_assign

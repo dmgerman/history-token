@@ -176,11 +176,6 @@ id|stl_termioslocked
 id|STL_MAXDEVS
 )braket
 suffix:semicolon
-DECL|variable|stl_refcount
-r_static
-r_int
-id|stl_refcount
-suffix:semicolon
 multiline_comment|/*&n; *&t;We will need to allocate a temporary write buffer for chars that&n; *&t;come direct from user space. The problem is that a copy from user&n; *&t;space might cause a page fault (typically on a system that is&n; *&t;swapping!). All ports will share one buffer - since if the system&n; *&t;is already swapping a shared buffer won&squot;t make things any worse.&n; */
 DECL|variable|stl_tmpwritebuf
 r_static
@@ -14008,11 +14003,6 @@ suffix:semicolon
 id|stl_serial.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|stl_serial.refcount
-op_assign
-op_amp
-id|stl_refcount
 suffix:semicolon
 id|stl_serial.table
 op_assign

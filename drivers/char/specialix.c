@@ -97,11 +97,6 @@ r_struct
 id|tty_driver
 id|specialix_driver
 suffix:semicolon
-DECL|variable|specialix_refcount
-r_static
-r_int
-id|specialix_refcount
-suffix:semicolon
 DECL|variable|specialix_table
 r_static
 r_struct
@@ -9784,11 +9779,6 @@ suffix:semicolon
 id|specialix_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|specialix_driver.refcount
-op_assign
-op_amp
-id|specialix_refcount
 suffix:semicolon
 id|specialix_driver.table
 op_assign

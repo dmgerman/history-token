@@ -57,11 +57,6 @@ r_struct
 id|tty_driver
 id|riscom_driver
 suffix:semicolon
-DECL|variable|riscom_refcount
-r_static
-r_int
-id|riscom_refcount
-suffix:semicolon
 DECL|variable|riscom_table
 r_static
 r_struct
@@ -8611,11 +8606,6 @@ suffix:semicolon
 id|riscom_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|riscom_driver.refcount
-op_assign
-op_amp
-id|riscom_refcount
 suffix:semicolon
 id|riscom_driver.table
 op_assign

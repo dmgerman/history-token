@@ -314,11 +314,6 @@ id|tty3215_termios_locked
 id|NR_3215
 )braket
 suffix:semicolon
-DECL|variable|tty3215_refcount
-r_static
-r_int
-id|tty3215_refcount
-suffix:semicolon
 multiline_comment|/*&n; * Get a request structure from the free list&n; */
 r_static
 r_inline
@@ -4749,11 +4744,6 @@ suffix:semicolon
 id|tty3215_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|tty3215_driver.refcount
-op_assign
-op_amp
-id|tty3215_refcount
 suffix:semicolon
 id|tty3215_driver.table
 op_assign

@@ -11673,11 +11673,6 @@ id|do_clear
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine initializes console interrupts, and does nothing&n; * else. If you want the screen to clear, call tty_write with&n; * the appropriate escape-sequence.&n; */
-DECL|variable|console_refcount
-r_static
-r_int
-id|console_refcount
-suffix:semicolon
 DECL|function|con_init
 r_static
 r_int
@@ -12027,11 +12022,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_RESET_TERMIOS
-suffix:semicolon
-id|console_driver.refcount
-op_assign
-op_amp
-id|console_refcount
 suffix:semicolon
 id|console_driver.table
 op_assign

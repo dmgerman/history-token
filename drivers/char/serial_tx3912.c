@@ -184,10 +184,6 @@ id|rs_port
 op_star
 id|rs_ports
 suffix:semicolon
-DECL|variable|rs_refcount
-r_int
-id|rs_refcount
-suffix:semicolon
 DECL|variable|rs_initialized
 r_int
 id|rs_initialized
@@ -3181,11 +3177,6 @@ op_or
 id|HUPCL
 op_or
 id|CLOCAL
-suffix:semicolon
-id|rs_driver.refcount
-op_assign
-op_amp
-id|rs_refcount
 suffix:semicolon
 id|rs_driver.table
 op_assign

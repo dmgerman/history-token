@@ -139,11 +139,6 @@ multiline_comment|/* Description of one CTC-tty */
 r_typedef
 r_struct
 (brace
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
-multiline_comment|/* Number of opens        */
 DECL|member|ctc_tty_device
 r_struct
 id|tty_driver
@@ -5051,11 +5046,6 @@ suffix:semicolon
 id|device-&gt;flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|device-&gt;refcount
-op_assign
-op_amp
-id|driver-&gt;refcount
 suffix:semicolon
 id|device-&gt;table
 op_assign

@@ -8568,11 +8568,6 @@ id|m-&gt;tty_modem.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
 suffix:semicolon
-id|m-&gt;tty_modem.refcount
-op_assign
-op_amp
-id|m-&gt;refcount
-suffix:semicolon
 id|m-&gt;tty_modem.table
 op_assign
 id|m-&gt;modem_table

@@ -269,11 +269,6 @@ DECL|struct|isdn_modem
 r_struct
 id|isdn_modem
 (brace
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
-multiline_comment|/* Number of opens        */
 DECL|member|tty_modem
 r_struct
 id|tty_driver

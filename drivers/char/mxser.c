@@ -685,11 +685,6 @@ r_struct
 id|tty_driver
 id|mxvar_sdriver
 suffix:semicolon
-DECL|variable|mxvar_refcount
-r_static
-r_int
-id|mxvar_refcount
-suffix:semicolon
 DECL|variable|mxvar_table
 r_static
 r_struct
@@ -1980,11 +1975,6 @@ suffix:semicolon
 id|mxvar_sdriver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|mxvar_sdriver.refcount
-op_assign
-op_amp
-id|mxvar_refcount
 suffix:semicolon
 id|mxvar_sdriver.table
 op_assign

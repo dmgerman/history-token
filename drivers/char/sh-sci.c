@@ -265,11 +265,6 @@ id|sci_termios_locked
 id|SCI_NPORTS
 )braket
 suffix:semicolon
-DECL|variable|sci_refcount
-r_static
-r_int
-id|sci_refcount
-suffix:semicolon
 DECL|variable|sci_debug
 r_static
 r_int
@@ -4602,11 +4597,6 @@ suffix:semicolon
 id|sci_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|sci_driver.refcount
-op_assign
-op_amp
-id|sci_refcount
 suffix:semicolon
 id|sci_driver.table
 op_assign

@@ -325,11 +325,6 @@ r_struct
 id|tty_driver
 id|pcxe_driver
 suffix:semicolon
-DECL|variable|pcxe_refcount
-r_static
-r_int
-id|pcxe_refcount
-suffix:semicolon
 DECL|variable|pcxx_timer
 r_static
 r_struct
@@ -5396,11 +5391,6 @@ suffix:semicolon
 id|pcxe_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|pcxe_driver.refcount
-op_assign
-op_amp
-id|pcxe_refcount
 suffix:semicolon
 id|pcxe_driver.table
 op_assign

@@ -3897,12 +3897,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ---- TTY structure ---- */
-DECL|variable|rfcomm_tty_refcount
-r_static
-r_int
-id|rfcomm_tty_refcount
-suffix:semicolon
-multiline_comment|/* If we manage several devices */
 DECL|variable|rfcomm_tty_table
 r_static
 r_struct
@@ -3994,12 +3988,6 @@ dot
 id|flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-comma
-dot
-id|refcount
-op_assign
-op_amp
-id|rfcomm_tty_refcount
 comma
 dot
 id|table

@@ -199,13 +199,6 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|tty_refcount
-r_static
-r_int
-id|tty_refcount
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|simcons_tty_open
 r_int
 id|simcons_tty_open
@@ -317,11 +310,6 @@ suffix:semicolon
 id|tty_driver.type
 op_assign
 id|TTY_DRIVER_TYPE_SYSCONS
-suffix:semicolon
-id|tty_driver.refcount
-op_assign
-op_amp
-id|tty_refcount
 suffix:semicolon
 id|tty_driver.table
 op_assign

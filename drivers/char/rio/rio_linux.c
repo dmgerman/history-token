@@ -368,10 +368,6 @@ id|rio_port
 op_star
 id|rio_ports
 suffix:semicolon
-DECL|variable|rio_refcount
-r_int
-id|rio_refcount
-suffix:semicolon
 DECL|variable|rio_initialized
 r_int
 id|rio_initialized
@@ -2861,11 +2857,6 @@ suffix:semicolon
 id|rio_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|rio_driver.refcount
-op_assign
-op_amp
-id|rio_refcount
 suffix:semicolon
 id|rio_driver.table
 op_assign

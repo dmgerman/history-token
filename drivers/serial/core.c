@@ -7752,7 +7752,7 @@ c_func
 id|drv-&gt;state
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Maybe we should be using a slab cache for this, especially if&n;&t; * we have a large number of ports to handle.  Note that we also&n;&t; * allocate space for an integer for reference counting.&n;&t; */
+multiline_comment|/*&n;&t; * Maybe we should be using a slab cache for this, especially if&n;&t; * we have a large number of ports to handle.&n;&t; */
 id|drv-&gt;state
 op_assign
 id|kmalloc
@@ -7765,11 +7765,6 @@ id|uart_state
 )paren
 op_star
 id|drv-&gt;nr
-op_plus
-r_sizeof
-(paren
-r_int
-)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -7802,11 +7797,6 @@ id|uart_state
 )paren
 op_star
 id|drv-&gt;nr
-op_plus
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 suffix:semicolon
 id|termios
@@ -7976,18 +7966,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|normal-&gt;refcount
-op_assign
-(paren
-r_int
-op_star
-)paren
-(paren
-id|drv-&gt;state
-op_plus
-id|drv-&gt;nr
-)paren
 suffix:semicolon
 id|normal-&gt;termios
 op_assign

@@ -183,11 +183,6 @@ comma
 id|isicom_pci_tbl
 )paren
 suffix:semicolon
-DECL|variable|isicom_refcount
-r_static
-r_int
-id|isicom_refcount
-suffix:semicolon
 DECL|variable|prev_card
 r_static
 r_int
@@ -8196,11 +8191,6 @@ suffix:semicolon
 id|isicom_normal.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|isicom_normal.refcount
-op_assign
-op_amp
-id|isicom_refcount
 suffix:semicolon
 id|isicom_normal.table
 op_assign

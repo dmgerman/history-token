@@ -723,11 +723,6 @@ r_struct
 id|tty_driver
 id|ip2_tty_driver
 suffix:semicolon
-DECL|variable|ref_count
-r_static
-r_int
-id|ref_count
-suffix:semicolon
 multiline_comment|/* Here, then is a table of board pointers which the interrupt routine should&n; * scan through to determine who it must service.&n; */
 DECL|variable|i2nBoards
 r_static
@@ -905,7 +900,7 @@ multiline_comment|/* Macros */
 multiline_comment|/**********/
 macro_line|#if defined(MODULE) &amp;&amp; defined(IP2DEBUG_OPEN)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    tty-&gt;name,(pCh-&gt;flags),ref_count, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
+mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    tty-&gt;name,(pCh-&gt;flags),ip2_tty_driver.refcount, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -2649,11 +2644,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|ip2_tty_driver.refcount
-op_assign
-op_amp
-id|ref_count
 suffix:semicolon
 id|ip2_tty_driver.table
 op_assign
@@ -12407,7 +12397,7 @@ c_func
 (paren
 id|rc
 comma
-id|ref_count
+id|ip2_tty_driver.refcount
 comma
 id|pIndex
 op_increment

@@ -86,11 +86,6 @@ r_struct
 id|tty_driver
 id|serial_driver
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 r_static
 r_int
 id|serial_console_setup
@@ -9205,11 +9200,6 @@ suffix:semicolon
 id|serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|serial_driver.table
 op_assign

@@ -112,13 +112,6 @@ c_func
 id|tmp_buf_sem
 )paren
 suffix:semicolon
-DECL|variable|aurora_refcount
-r_static
-r_int
-id|aurora_refcount
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|aurora_table
 r_static
 r_struct
@@ -11715,11 +11708,6 @@ suffix:semicolon
 id|aurora_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|aurora_driver.refcount
-op_assign
-op_amp
-id|aurora_refcount
 suffix:semicolon
 id|aurora_driver.table
 op_assign

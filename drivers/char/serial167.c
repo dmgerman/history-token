@@ -148,11 +148,6 @@ multiline_comment|/* ttyS3 */
 suffix:semicolon
 DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS        (sizeof(cy_port)/sizeof(struct cyclades_port))
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 DECL|variable|serial_table
 r_static
 r_struct
@@ -9880,11 +9875,6 @@ suffix:semicolon
 id|cy_serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|cy_serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|cy_serial_driver.table
 op_assign

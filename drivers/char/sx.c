@@ -276,11 +276,6 @@ id|sx_port
 op_star
 id|sx_ports
 suffix:semicolon
-DECL|variable|sx_refcount
-r_static
-r_int
-id|sx_refcount
-suffix:semicolon
 DECL|variable|sx_initialized
 r_static
 r_int
@@ -8679,11 +8674,6 @@ suffix:semicolon
 id|sx_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|sx_driver.refcount
-op_assign
-op_amp
-id|sx_refcount
 suffix:semicolon
 id|sx_driver.table
 op_assign

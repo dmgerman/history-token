@@ -41,11 +41,6 @@ id|pty_driver
 comma
 id|pty_slave_driver
 suffix:semicolon
-DECL|variable|pty_refcount
-r_static
-r_int
-id|pty_refcount
-suffix:semicolon
 multiline_comment|/* Note: one set of tables for BSD and one for Unix98 */
 DECL|variable|pty_table
 r_static
@@ -1454,11 +1449,6 @@ op_assign
 id|TTY_DRIVER_RESET_TERMIOS
 op_or
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|pty_driver.refcount
-op_assign
-op_amp
-id|pty_refcount
 suffix:semicolon
 id|pty_driver.table
 op_assign

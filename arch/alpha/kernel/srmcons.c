@@ -30,11 +30,6 @@ suffix:semicolon
 multiline_comment|/* &n; * The TTY driver&n; */
 DECL|macro|MAX_SRM_CONSOLE_DEVICES
 mdefine_line|#define MAX_SRM_CONSOLE_DEVICES 1&t;/* only support 1 console device */
-DECL|variable|srmcons_refcount
-r_static
-r_int
-id|srmcons_refcount
-suffix:semicolon
 DECL|variable|srmcons_table
 r_static
 r_struct
@@ -1109,12 +1104,6 @@ dot
 id|termios_locked
 op_assign
 id|srmcons_termios_locked
-comma
-dot
-id|refcount
-op_assign
-op_amp
-id|srmcons_refcount
 comma
 dot
 id|open

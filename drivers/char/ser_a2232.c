@@ -361,11 +361,6 @@ id|tty_driver
 id|a2232_driver
 suffix:semicolon
 multiline_comment|/* Variables used by the TTY driver */
-DECL|variable|a2232_refcount
-r_static
-r_int
-id|a2232_refcount
-suffix:semicolon
 DECL|variable|a2232_table
 r_static
 r_struct
@@ -2532,11 +2527,6 @@ suffix:semicolon
 id|a2232_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|a2232_driver.refcount
-op_assign
-op_amp
-id|a2232_refcount
 suffix:semicolon
 id|a2232_driver.table
 op_assign

@@ -336,11 +336,6 @@ r_struct
 id|tty_driver
 id|tty3270_driver
 suffix:semicolon
-DECL|variable|tty3270_refcount
-r_static
-r_int
-id|tty3270_refcount
-suffix:semicolon
 DECL|variable|tty3270_table
 r_static
 r_struct
@@ -387,11 +382,6 @@ id|tty_driver
 id|con3270_driver
 suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-DECL|variable|con3270_refcount
-r_static
-r_int
-id|con3270_refcount
-suffix:semicolon
 DECL|variable|con3270_table
 r_static
 r_struct
@@ -513,11 +503,6 @@ suffix:semicolon
 id|td-&gt;flags
 op_or_assign
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|td-&gt;refcount
-op_assign
-op_amp
-id|tty3270_refcount
 suffix:semicolon
 id|td-&gt;table
 op_assign
@@ -708,11 +693,6 @@ suffix:semicolon
 id|td-&gt;num
 op_assign
 l_int|1
-suffix:semicolon
-id|td-&gt;refcount
-op_assign
-op_amp
-id|con3270_refcount
 suffix:semicolon
 id|td-&gt;table
 op_assign

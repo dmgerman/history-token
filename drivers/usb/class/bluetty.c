@@ -524,11 +524,6 @@ id|usb_bluetooth_ids
 comma
 )brace
 suffix:semicolon
-DECL|variable|bluetooth_refcount
-r_static
-r_int
-id|bluetooth_refcount
-suffix:semicolon
 DECL|variable|bluetooth_tty_driver
 r_static
 r_struct
@@ -5273,12 +5268,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-comma
-dot
-id|refcount
-op_assign
-op_amp
-id|bluetooth_refcount
 comma
 dot
 id|table

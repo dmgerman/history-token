@@ -84,11 +84,6 @@ r_struct
 id|tty_driver
 id|mcfrs_serial_driver
 suffix:semicolon
-DECL|variable|mcfrs_serial_refcount
-r_static
-r_int
-id|mcfrs_serial_refcount
-suffix:semicolon
 multiline_comment|/* serial subtype definitions */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
@@ -6593,11 +6588,6 @@ suffix:semicolon
 id|mcfrs_serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|mcfrs_serial_driver.refcount
-op_assign
-op_amp
-id|mcfrs_serial_refcount
 suffix:semicolon
 id|mcfrs_serial_driver.table
 op_assign

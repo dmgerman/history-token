@@ -238,11 +238,6 @@ r_struct
 id|tty_driver
 id|esp_driver
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 multiline_comment|/* serial subtype definitions */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL&t;1
@@ -261,7 +256,7 @@ DECL|macro|_INLINE_
 mdefine_line|#define _INLINE_ inline
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) printk(&quot;(%s): [%x] refc=%d, serc=%d, ttyc=%d -&gt; %s&bslash;n&quot;, &bslash;&n; tty-&gt;name, (info-&gt;flags), serial_refcount,info-&gt;count,tty-&gt;count,s)
+mdefine_line|#define DBG_CNT(s) printk(&quot;(%s): [%x] refc=%d, serc=%d, ttyc=%d -&gt; %s&bslash;n&quot;, &bslash;&n; tty-&gt;name, (info-&gt;flags), serial_driver.refcount,info-&gt;count,tty-&gt;count,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -10962,11 +10957,6 @@ suffix:semicolon
 id|esp_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|esp_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|esp_driver.table
 op_assign

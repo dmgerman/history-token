@@ -222,11 +222,6 @@ r_struct
 id|tty_driver
 id|siccnormal_driver
 suffix:semicolon
-DECL|variable|siccuart_refcount
-r_static
-r_int
-id|siccuart_refcount
-suffix:semicolon
 DECL|variable|siccuart_table
 r_static
 r_struct
@@ -6936,11 +6931,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|siccnormal_driver.refcount
-op_assign
-op_amp
-id|siccuart_refcount
 suffix:semicolon
 id|siccnormal_driver.table
 op_assign

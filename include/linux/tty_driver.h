@@ -86,7 +86,6 @@ suffix:semicolon
 multiline_comment|/* tty driver flags */
 DECL|member|refcount
 r_int
-op_star
 id|refcount
 suffix:semicolon
 multiline_comment|/* for loadable tty drivers */

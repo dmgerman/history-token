@@ -121,11 +121,6 @@ r_struct
 id|tty_driver
 id|serial_driver
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 DECL|variable|serial_timer
 r_static
 r_struct
@@ -338,7 +333,7 @@ id|NR_PORTS
 suffix:semicolon
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) printk(&quot;(%s): [%x] refc=%d, serc=%d, ttyc=%d -&gt; %s&bslash;n&quot;, &bslash;&n; tty-&gt;name, (info-&gt;flags), serial_refcount,info-&gt;count,tty-&gt;count,s)
+mdefine_line|#define DBG_CNT(s) printk(&quot;(%s): [%x], refc=%d, serc=%d, ttyc=%d -&gt; %s&bslash;n&quot;, &bslash;&n; tty-&gt;name, (info-&gt;flags), serial_driver.refcount, info-&gt;count,tty-&gt;count,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -10525,11 +10520,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|serial_driver.table
 op_assign

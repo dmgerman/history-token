@@ -202,11 +202,6 @@ r_struct
 id|tty_driver
 id|hp_simserial_driver
 suffix:semicolon
-DECL|variable|serial_refcount
-r_static
-r_int
-id|serial_refcount
-suffix:semicolon
 DECL|variable|IRQ_ports
 r_static
 r_struct
@@ -3875,11 +3870,6 @@ suffix:semicolon
 id|hp_simserial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|hp_simserial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
 suffix:semicolon
 id|hp_simserial_driver.table
 op_assign

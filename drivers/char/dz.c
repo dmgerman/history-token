@@ -4290,11 +4290,6 @@ id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
-id|serial_driver.refcount
-op_assign
-op_amp
-id|serial_refcount
-suffix:semicolon
 id|serial_driver.table
 op_assign
 id|serial_table

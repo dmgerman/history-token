@@ -66,11 +66,6 @@ r_struct
 id|tty_driver
 id|hvc_driver
 suffix:semicolon
-DECL|variable|hvc_refcount
-r_static
-r_int
-id|hvc_refcount
-suffix:semicolon
 DECL|variable|hvc_table
 r_static
 r_struct
@@ -1108,11 +1103,6 @@ suffix:semicolon
 id|hvc_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|hvc_driver.refcount
-op_assign
-op_amp
-id|hvc_refcount
 suffix:semicolon
 id|hvc_driver.table
 op_assign

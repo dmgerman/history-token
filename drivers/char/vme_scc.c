@@ -389,10 +389,6 @@ id|scc_ports
 l_int|2
 )braket
 suffix:semicolon
-DECL|variable|scc_refcount
-r_int
-id|scc_refcount
-suffix:semicolon
 DECL|variable|scc_initialized
 r_int
 id|scc_initialized
@@ -516,11 +512,6 @@ suffix:semicolon
 id|scc_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|scc_driver.refcount
-op_assign
-op_amp
-id|scc_refcount
 suffix:semicolon
 id|scc_driver.table
 op_assign

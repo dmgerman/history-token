@@ -3770,10 +3770,7 @@ op_assign
 op_star
 id|o_ltp_loc
 suffix:semicolon
-(paren
-op_star
 id|driver-&gt;other-&gt;refcount
-)paren
 op_increment
 suffix:semicolon
 r_if
@@ -3838,10 +3835,7 @@ op_assign
 op_star
 id|ltp_loc
 suffix:semicolon
-(paren
-op_star
 id|driver-&gt;refcount
-)paren
 op_increment
 suffix:semicolon
 id|tty-&gt;count
@@ -4171,10 +4165,7 @@ id|o_tty-&gt;magic
 op_assign
 l_int|0
 suffix:semicolon
-(paren
-op_star
 id|o_tty-&gt;driver-&gt;refcount
-)paren
 op_decrement
 suffix:semicolon
 id|file_list_lock
@@ -4241,10 +4232,7 @@ id|tty-&gt;magic
 op_assign
 l_int|0
 suffix:semicolon
-(paren
-op_star
 id|tty-&gt;driver-&gt;refcount
-)paren
 op_decrement
 suffix:semicolon
 id|file_list_lock
@@ -9686,7 +9674,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
 id|driver-&gt;refcount
 )paren
 r_return

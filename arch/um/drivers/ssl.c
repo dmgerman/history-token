@@ -26,13 +26,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Referenced only by tty_driver below - presumably it&squot;s locked correctly&n; * by the tty driver.&n; */
-DECL|variable|ssl_refcount
-r_static
-r_int
-id|ssl_refcount
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|ssl_driver
 r_static
 r_struct
@@ -782,12 +775,6 @@ id|tty_driver
 id|ssl_driver
 op_assign
 (brace
-dot
-id|refcount
-op_assign
-op_amp
-id|ssl_refcount
-comma
 dot
 id|open
 op_assign

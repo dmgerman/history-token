@@ -125,13 +125,6 @@ id|sclp_tty_termios_locked
 l_int|1
 )braket
 suffix:semicolon
-DECL|variable|sclp_tty_refcount
-r_static
-r_int
-id|sclp_tty_refcount
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 r_struct
 id|termios
@@ -3099,11 +3092,6 @@ suffix:semicolon
 id|sclp_tty_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|sclp_tty_driver.refcount
-op_assign
-op_amp
-id|sclp_tty_refcount
 suffix:semicolon
 multiline_comment|/* sclp_tty_driver.proc_entry ?&t; */
 id|sclp_tty_driver.table

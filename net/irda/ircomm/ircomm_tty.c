@@ -276,12 +276,6 @@ r_struct
 id|tty_driver
 id|driver
 suffix:semicolon
-DECL|variable|ircomm_tty_refcount
-r_static
-r_int
-id|ircomm_tty_refcount
-suffix:semicolon
-multiline_comment|/* If we manage several devices */
 DECL|variable|ircomm_tty_table
 r_static
 r_struct
@@ -424,11 +418,6 @@ suffix:semicolon
 id|driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|driver.refcount
-op_assign
-op_amp
-id|ircomm_tty_refcount
 suffix:semicolon
 id|driver.table
 op_assign

@@ -160,11 +160,6 @@ r_struct
 id|tty_driver
 id|rocket_driver
 suffix:semicolon
-DECL|variable|rocket_refcount
-r_static
-r_int
-id|rocket_refcount
-suffix:semicolon
 DECL|variable|driver_version
 r_static
 r_struct
@@ -12239,11 +12234,6 @@ op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 macro_line|#endif
-id|rocket_driver.refcount
-op_assign
-op_amp
-id|rocket_refcount
-suffix:semicolon
 id|rocket_driver.table
 op_assign
 id|rocket_table

@@ -5826,11 +5826,6 @@ r_struct
 id|tty_driver
 id|capinc_tty_driver
 suffix:semicolon
-DECL|variable|capinc_tty_refcount
-r_static
-r_int
-id|capinc_tty_refcount
-suffix:semicolon
 DECL|variable|capinc_tty_table
 r_static
 r_struct
@@ -5964,11 +5959,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_RESET_TERMIOS
-suffix:semicolon
-id|drv-&gt;refcount
-op_assign
-op_amp
-id|capinc_tty_refcount
 suffix:semicolon
 id|drv-&gt;table
 op_assign
