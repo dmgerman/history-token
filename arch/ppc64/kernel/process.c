@@ -2109,6 +2109,7 @@ op_plus
 l_int|16
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * XXX we mask the upper 32 bits until procps&n;&t;&t;&t; * gets fixed.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
