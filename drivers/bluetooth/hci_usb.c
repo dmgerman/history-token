@@ -4332,9 +4332,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|husb-&gt;completion_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_for
 c_loop

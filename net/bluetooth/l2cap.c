@@ -442,9 +442,12 @@ op_amp
 id|conn-&gt;lock
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|conn-&gt;chan_list.lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|BT_DBG
 c_func
