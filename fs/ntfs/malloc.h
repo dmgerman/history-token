@@ -4,50 +4,6 @@ DECL|macro|_LINUX_NTFS_MALLOC_H
 mdefine_line|#define _LINUX_NTFS_MALLOC_H
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-multiline_comment|/**&n; * vmalloc_nofs - allocate any pages but don&squot;t allow calls into fs layer&n; * @size:&t;number of bytes to allocate&n; *&n; * Allocate any pages but don&squot;t allow calls into fs layer. Return allocated&n; * memory or NULL if insufficient memory.&n; */
-DECL|function|vmalloc_nofs
-r_static
-r_inline
-r_void
-op_star
-id|vmalloc_nofs
-c_func
-(paren
-r_int
-r_int
-id|size
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|size
-op_rshift
-id|PAGE_SHIFT
-OL
-id|num_physpages
-)paren
-)paren
-r_return
-id|__vmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_NOFS
-op_or
-id|__GFP_HIGHMEM
-comma
-id|PAGE_KERNEL
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * ntfs_malloc_nofs - allocate memory in multiples of pages&n; * @size&t;number of bytes to allocate&n; *&n; * Allocates @size bytes of memory, rounded up to multiples of PAGE_SIZE and&n; * returns a pointer to the allocated memory.&n; *&n; * If there was insufficient memory to complete the request, return NULL.&n; */
 DECL|function|ntfs_malloc_nofs
 r_static
@@ -151,12 +107,24 @@ id|likely
 c_func
 (paren
 (paren
+(paren
 r_int
 r_int
 )paren
 id|addr
 OL
 id|VMALLOC_START
+)paren
+op_logical_or
+(paren
+(paren
+r_int
+r_int
+)paren
+id|addr
+op_ge
+id|VMALLOC_END
+)paren
 )paren
 )paren
 (brace
