@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;The all defines and part of code (such as cs461x_*) are &n;&t;contributed from ALSA 0.5.8 sources. &n;&t;See http://www.alsa-project.org/ for sources&n;&t;&n;&t;Tested on Linux 686 2.4.0-test9, ALSA 0.5.8a and CS4610&n;*/
+multiline_comment|/*&n;&t;The all defines and part of code (such as cs461x_*) are&n;&t;contributed from ALSA 0.5.8 sources.&n;&t;See http://www.alsa-project.org/ for sources&n;&n;&t;Tested on Linux 686 2.4.0-test9, ALSA 0.5.8a and CS4610&n;*/
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -111,7 +111,7 @@ DECL|macro|JSIO_BXOE
 mdefine_line|#define JSIO_BXOE                               0x00000040
 DECL|macro|JSIO_BYOE
 mdefine_line|#define JSIO_BYOE                               0x00000080
-multiline_comment|/* &n;   The card initialization code is obfuscated; the module cs461x &n;   need to be loaded after ALSA modules initialized and something&n;   played on the CS 4610 chip (see sources for details of CS4610&n;   initialization code from ALSA)&n;*/
+multiline_comment|/*&n;   The card initialization code is obfuscated; the module cs461x&n;   need to be loaded after ALSA modules initialized and something&n;   played on the CS 4610 chip (see sources for details of CS4610&n;   initialization code from ALSA)&n;*/
 multiline_comment|/* Card specific definitions */
 DECL|macro|CS461X_BA0_SIZE
 mdefine_line|#define CS461X_BA0_SIZE         0x2000
@@ -135,7 +135,7 @@ DECL|macro|BA1_DWORD_SIZE
 mdefine_line|#define BA1_DWORD_SIZE          (13 * 1024 + 512)
 DECL|macro|BA1_MEMORY_COUNT
 mdefine_line|#define BA1_MEMORY_COUNT        3
-multiline_comment|/* &n;   Only one CS461x card is still suppoted; the code requires&n;   redesign to avoid this limitatuion.&n;*/
+multiline_comment|/*&n;   Only one CS461x card is still suppoted; the code requires&n;   redesign to avoid this limitatuion.&n;*/
 DECL|variable|ba0_addr
 r_static
 r_int
