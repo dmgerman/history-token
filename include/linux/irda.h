@@ -104,6 +104,11 @@ id|IRDA_EP7211_IR
 op_assign
 l_int|8
 comma
+DECL|enumerator|IRDA_MCP2120_DONGLE
+id|IRDA_MCP2120_DONGLE
+op_assign
+l_int|9
+comma
 DECL|typedef|IRDA_DONGLE
 )brace
 id|IRDA_DONGLE
