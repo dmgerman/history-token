@@ -5094,13 +5094,29 @@ id|ep
 op_assign
 id|sp-&gt;ep
 suffix:semicolon
-multiline_comment|/* connect() cannot be done on a peeled-off socket. */
+multiline_comment|/* connect() cannot be done on a socket that is already in ESTABLISHED&n;&t; * state - UDP-style peeled off socket or a TCP-style socket that&n;&t; * is already connected. &n;&t; * It cannot be done even on a TCP-style listening socket.&n;&t; */
 r_if
 c_cond
 (paren
-id|SCTP_SOCKET_UDP_HIGH_BANDWIDTH
+(paren
+id|SCTP_SS_ESTABLISHED
+op_eq
+id|sk-&gt;state
+)paren
+op_logical_or
+(paren
+(paren
+id|SCTP_SOCKET_TCP
 op_eq
 id|sp-&gt;type
+)paren
+op_logical_and
+(paren
+id|SCTP_SS_LISTENING
+op_eq
+id|sk-&gt;state
+)paren
+)paren
 )paren
 (brace
 id|err
