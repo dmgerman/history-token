@@ -789,31 +789,24 @@ op_logical_neg
 id|mapping
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * We must not allow an anon page&n;&t;&t;&t;&t;&t; * with no buffers to be visible on&n;&t;&t;&t;&t;&t; * the LRU, so we unlock the page after&n;&t;&t;&t;&t;&t; * taking the lru lock&n;&t;&t;&t;&t;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pagemap_lru_lock
-)paren
-suffix:semicolon
+multiline_comment|/* effectively free the page here */
 id|unlock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-id|__lru_cache_del
+id|page_cache_release
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* effectively free the page here */
-id|page_cache_release
+id|spin_lock
 c_func
 (paren
-id|page
+op_amp
+id|pagemap_lru_lock
 )paren
 suffix:semicolon
 r_if
