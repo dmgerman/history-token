@@ -1283,6 +1283,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 id|timer_tick
 c_func
 (paren
@@ -1332,6 +1339,13 @@ id|state
 suffix:semicolon
 )brace
 )brace
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

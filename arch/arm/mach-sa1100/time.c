@@ -193,6 +193,13 @@ r_int
 r_int
 id|next_match
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_do
 (brace
 id|timer_tick
@@ -229,6 +236,13 @@ id|OSCR
 )paren
 op_le
 l_int|0
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return

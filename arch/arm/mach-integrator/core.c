@@ -666,6 +666,13 @@ op_star
 )paren
 id|TIMER1_VA_BASE
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 singleline_comment|// ...clear the interrupt
 id|timer1-&gt;TimerClear
 op_assign
@@ -675,6 +682,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return

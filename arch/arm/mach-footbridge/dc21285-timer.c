@@ -63,6 +63,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 op_star
 id|CSR_TIMER1_CLR
 op_assign
@@ -72,6 +79,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return
