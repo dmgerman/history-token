@@ -1101,6 +1101,19 @@ op_star
 id|bridge
 )paren
 suffix:semicolon
+r_int
+r_int
+id|agp_generic_mask_memory
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
 multiline_comment|/* Standard agp registers */
 DECL|macro|AGPSTAT
 mdefine_line|#define AGPSTAT&t;&t;&t;0x4

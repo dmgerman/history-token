@@ -2263,11 +2263,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|masks
-op_assign
-id|i460_masks
-comma
-dot
 id|aperture_sizes
 op_assign
 id|i460_sizes
@@ -2306,6 +2301,11 @@ dot
 id|mask_memory
 op_assign
 id|i460_mask_memory
+comma
+dot
+id|masks
+op_assign
+id|i460_masks
 comma
 dot
 id|agp_enable
