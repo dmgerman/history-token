@@ -4622,9 +4622,7 @@ id|dst
 )paren
 )paren
 r_return
-id|dst
-op_member_access_from_pointer
-id|output
+id|dst_output
 c_func
 (paren
 id|skb
@@ -4637,7 +4635,7 @@ c_func
 (paren
 id|skb
 comma
-id|dst-&gt;output
+id|dst_output
 )paren
 suffix:semicolon
 )brace
