@@ -323,6 +323,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* TCP */
+multiline_comment|/*&n;&t; * XID&n;&t; */
+DECL|member|xid
+id|__u32
+id|xid
+suffix:semicolon
+multiline_comment|/* Next XID value to use */
 multiline_comment|/*&n;&t; * State of TCP reply receive stuff&n;&t; */
 DECL|member|tcp_recm
 id|u32

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
@@ -5355,79 +5356,48 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate a &squot;unique&squot; XID&n; */
-r_static
-id|u32
 DECL|function|xprt_alloc_xid
+r_static
+r_inline
+id|u32
 id|xprt_alloc_xid
 c_func
 (paren
-r_void
+r_struct
+id|rpc_xprt
+op_star
+id|xprt
 )paren
 (brace
-r_static
-id|spinlock_t
-id|xid_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-r_static
-r_int
-id|need_init
-op_assign
-l_int|1
-suffix:semicolon
-r_static
-id|u32
-id|xid
-suffix:semicolon
-id|u32
-id|ret
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|xid_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|need_init
-)paren
-)paren
-(brace
-id|xid
-op_assign
-id|get_seconds
-c_func
-(paren
-)paren
-op_lshift
-l_int|12
-suffix:semicolon
-id|need_init
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|xid
+r_return
+id|xprt-&gt;xid
 op_increment
 suffix:semicolon
-id|spin_unlock
+)brace
+DECL|function|xprt_init_xid
+r_static
+r_inline
+r_void
+id|xprt_init_xid
+c_func
+(paren
+r_struct
+id|rpc_xprt
+op_star
+id|xprt
+)paren
+(brace
+id|get_random_bytes
 c_func
 (paren
 op_amp
-id|xid_lock
+id|xprt-&gt;xid
+comma
+r_sizeof
+(paren
+id|xprt-&gt;xid
 )paren
-suffix:semicolon
-r_return
-id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize RPC request&n; */
@@ -5472,6 +5442,7 @@ op_assign
 id|xprt_alloc_xid
 c_func
 (paren
+id|xprt
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -6049,6 +6020,12 @@ suffix:semicolon
 id|xprt-&gt;free
 op_assign
 id|xprt-&gt;slot
+suffix:semicolon
+id|xprt_init_xid
+c_func
+(paren
+id|xprt
+)paren
 suffix:semicolon
 multiline_comment|/* Check whether we want to use a reserved port */
 id|xprt-&gt;resvport
