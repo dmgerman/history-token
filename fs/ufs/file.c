@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * Make sure the offset never goes beyond the 32-bit mark..&n; */
 DECL|function|ufs_file_lseek
 r_static
