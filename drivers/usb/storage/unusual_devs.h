@@ -1398,6 +1398,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Avi Kivity &lt;avi@argo.co.il&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05ac
+comma
+l_int|0x1203
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Apple&quot;
+comma
+l_string|&quot;iPod&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 id|UNUSUAL_DEV
 c_func
