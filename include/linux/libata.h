@@ -48,10 +48,6 @@ macro_line|#endif
 multiline_comment|/* defines only for the constants which don&squot;t work well as enums */
 DECL|macro|ATA_TAG_POISON
 mdefine_line|#define ATA_TAG_POISON&t;&t;0xfafbfcfdU
-DECL|macro|ATA_DMA_BOUNDARY
-mdefine_line|#define ATA_DMA_BOUNDARY&t;0xffffUL
-DECL|macro|ATA_DMA_MASK
-mdefine_line|#define ATA_DMA_MASK&t;&t;0xffffffffULL
 r_enum
 (brace
 multiline_comment|/* various global constants */
@@ -925,7 +921,8 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|scsicmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|scsicmd
 suffix:semicolon
@@ -936,7 +933,8 @@ op_star
 id|scsidone
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1773,7 +1771,8 @@ r_int
 id|ata_scsi_queuecmd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1783,7 +1782,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren

@@ -5681,7 +5681,8 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -5973,7 +5974,8 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -6115,7 +6117,8 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -6629,7 +6632,8 @@ id|scatterlist
 op_star
 id|sg
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -7355,7 +7359,8 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -7631,7 +7636,8 @@ id|ap
 op_assign
 id|qc-&gt;ap
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -9429,7 +9435,6 @@ c_func
 id|sh
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: check return val */
 id|ata_thread_kill
 c_func
 (paren
@@ -11453,7 +11458,6 @@ id|host_set-&gt;ports
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* FIXME: check return val */
 id|scsi_remove_host
 c_func
 (paren
@@ -11518,20 +11522,12 @@ id|i
 op_increment
 )paren
 (brace
-id|Scsi_Host_Template
-op_star
-id|sht
-suffix:semicolon
 id|ap
 op_assign
 id|host_set-&gt;ports
 (braket
 id|i
 )braket
-suffix:semicolon
-id|sht
-op_assign
-id|ap-&gt;host-&gt;hostt
 suffix:semicolon
 id|ata_scsi_release
 c_func
@@ -11545,7 +11541,6 @@ c_func
 id|ap-&gt;host
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: check return val */
 )brace
 id|pci_release_regions
 c_func
