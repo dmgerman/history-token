@@ -843,14 +843,15 @@ id|using_inta
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
-ques
-c_cond
-l_int|15
-suffix:colon
-l_int|14
+id|ide_default_irq
+c_func
+(paren
+id|hwif-&gt;io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
 suffix:semicolon
-multiline_comment|/* legacy mode */
 r_else
 r_if
 c_cond
