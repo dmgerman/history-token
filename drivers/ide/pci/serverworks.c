@@ -4360,26 +4360,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;svwks_remove_one&t;-&t;called when an OSB/CSB is unplugged&n; *&t;@dev: the device that was removed&n; *&n; *&t;Disconnect a SVWKS device that has been unplugged either by hotplug&n; *&t;or by a more civilized notification scheme. Not yet supported.&n; */
-DECL|function|svwks_remove_one
-r_static
-r_void
-id|svwks_remove_one
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;SVWKS removal not yet supported&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -4479,14 +4459,6 @@ comma
 id|probe
 suffix:colon
 id|svwks_init_one
-comma
-id|remove
-suffix:colon
-id|__devexit_p
-c_func
-(paren
-id|svwks_remove_one
-)paren
 comma
 macro_line|#if 0&t;/* FIXME: implement */
 id|suspend
