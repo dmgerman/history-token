@@ -12,6 +12,7 @@ macro_line|#include&t;&lt;linux/notifier.h&gt;
 macro_line|#include&t;&lt;linux/kallsyms.h&gt;
 macro_line|#include&t;&lt;linux/cpu.h&gt;
 macro_line|#include&t;&lt;linux/sysctl.h&gt;
+macro_line|#include&t;&lt;linux/module.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 macro_line|#include&t;&lt;asm/cacheflush.h&gt;
 macro_line|#include&t;&lt;asm/tlbflush.h&gt;
@@ -780,6 +781,13 @@ multiline_comment|/*&n; * vm_enough_memory() looks at this to determine how many
 DECL|variable|slab_reclaim_pages
 id|atomic_t
 id|slab_reclaim_pages
+suffix:semicolon
+DECL|variable|slab_reclaim_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|slab_reclaim_pages
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * chicken and egg problem: delay the per-cpu array allocation&n; * until the general caches are up.&n; */
 r_enum

@@ -1598,8 +1598,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vm_enough_memory
+id|security_vm_enough_memory
 c_func
 (paren
 (paren

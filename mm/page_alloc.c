@@ -65,6 +65,20 @@ id|sysctl_lower_zone_protection
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|totalram_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|totalram_pages
+)paren
+suffix:semicolon
+DECL|variable|nr_swap_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_swap_pages
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Used by page_zone() to look up the address of the struct zone whose&n; * id is encoded in the upper bits of page-&gt;flags&n; */
 DECL|variable|zone_table
 r_struct
@@ -3142,6 +3156,13 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+DECL|variable|nr_free_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_free_pages
+)paren
+suffix:semicolon
 DECL|function|nr_used_zone_pages
 r_int
 r_int
@@ -3456,6 +3477,13 @@ id|ATOMIC_INIT
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+DECL|variable|nr_pagecache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_pagecache
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
