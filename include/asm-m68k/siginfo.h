@@ -3,6 +3,8 @@ DECL|macro|_M68K_SIGINFO_H
 mdefine_line|#define _M68K_SIGINFO_H
 DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
+DECL|macro|HAVE_ARCH_COPY_SIGINFO
+mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 DECL|struct|siginfo
 r_typedef
@@ -180,6 +182,71 @@ mdefine_line|#define si_uid16&t;_sifields._kill._uid
 macro_line|#else
 DECL|macro|si_uid
 mdefine_line|#define si_uid&t;&t;_sifields._kill._uid
+macro_line|#endif
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/string.h&gt;
+DECL|function|copy_siginfo
+r_static
+r_inline
+r_void
+id|copy_siginfo
+c_func
+(paren
+r_struct
+id|siginfo
+op_star
+id|to
+comma
+r_struct
+id|siginfo
+op_star
+id|from
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|from-&gt;si_code
+OL
+l_int|0
+)paren
+id|memcpy
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+r_sizeof
+(paren
+op_star
+id|to
+)paren
+)paren
+suffix:semicolon
+r_else
+multiline_comment|/* _sigchld is currently the largest know union member */
+id|memcpy
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+l_int|3
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+op_plus
+r_sizeof
+(paren
+id|from-&gt;_sifields._sigchld
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof
