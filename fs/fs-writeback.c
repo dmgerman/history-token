@@ -851,7 +851,7 @@ id|nr_to_write
 op_logical_and
 op_star
 id|nr_to_write
-op_eq
+op_le
 l_int|0
 )paren
 r_break
@@ -1006,7 +1006,7 @@ id|nr_to_write
 op_logical_and
 op_star
 id|nr_to_write
-op_eq
+op_le
 l_int|0
 )paren
 r_break
