@@ -218,7 +218,7 @@ l_int|0x10b5
 comma
 l_int|0x9050
 comma
-id|PCI_ANY_ID
+l_int|0x1369
 comma
 id|PCI_ANY_ID
 comma
@@ -236,7 +236,7 @@ l_int|0x10b5
 comma
 l_int|0x9030
 comma
-id|PCI_ANY_ID
+l_int|0x1369
 comma
 id|PCI_ANY_ID
 comma
