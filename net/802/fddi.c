@@ -19,6 +19,7 @@ macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/*&n; * Create the FDDI MAC header for an arbitrary protocol layer&n; *&n; * saddr=NULL&t;means use device source address&n; * daddr=NULL&t;means leave destination address (eg unresolved arp)&n; */
 DECL|function|fddi_header
+r_static
 r_int
 id|fddi_header
 c_func
@@ -217,6 +218,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Rebuild the FDDI MAC header. This is called after an ARP&n; * (or in future other address resolution) has completed on&n; * this sk_buff.  We now let ARP fill in the other fields.&n; */
 DECL|function|fddi_rebuild_header
+r_static
 r_int
 id|fddi_rebuild_header
 c_func
