@@ -13434,6 +13434,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * propagate kernel psr in new context (used for first ctxsw in&n;&t; */
+id|nctx-&gt;ctx_saved_psr
+op_assign
+id|pfm_get_psr
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* link with new task */
 id|thread-&gt;pfm_context
 op_assign
