@@ -21,15 +21,6 @@ DECL|member|head_position
 id|sector_t
 id|head_position
 suffix:semicolon
-multiline_comment|/*&n;&t; * State bits:&n;&t; */
-DECL|member|operational
-r_int
-id|operational
-suffix:semicolon
-DECL|member|write_only
-r_int
-id|write_only
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|r1bio_t

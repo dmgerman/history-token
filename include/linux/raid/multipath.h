@@ -12,11 +12,6 @@ id|mdk_rdev_t
 op_star
 id|rdev
 suffix:semicolon
-multiline_comment|/*&n;&t; * State bits:&n;&t; */
-DECL|member|operational
-r_int
-id|operational
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|multipath_private_data

@@ -119,6 +119,15 @@ DECL|macro|R5_LOCKED
 mdefine_line|#define&t;R5_LOCKED&t;1&t;/* IO has been submitted on &quot;req&quot; */
 DECL|macro|R5_OVERWRITE
 mdefine_line|#define&t;R5_OVERWRITE&t;2&t;/* towrite covers whole page */
+multiline_comment|/* and some that are internal to handle_stripe */
+DECL|macro|R5_Insync
+mdefine_line|#define&t;R5_Insync&t;3&t;/* rdev &amp;&amp; rdev-&gt;in_sync at start */
+DECL|macro|R5_Wantread
+mdefine_line|#define&t;R5_Wantread&t;4&t;/* want to schedule a read */
+DECL|macro|R5_Wantwrite
+mdefine_line|#define&t;R5_Wantwrite&t;5
+DECL|macro|R5_Syncio
+mdefine_line|#define&t;R5_Syncio&t;6&t;/* this io need to be accounted as resync io */
 multiline_comment|/*&n; * Write method&n; */
 DECL|macro|RECONSTRUCT_WRITE
 mdefine_line|#define RECONSTRUCT_WRITE&t;1
@@ -149,14 +158,6 @@ DECL|member|rdev
 id|mdk_rdev_t
 op_star
 id|rdev
-suffix:semicolon
-DECL|member|operational
-r_int
-id|operational
-suffix:semicolon
-DECL|member|write_only
-r_int
-id|write_only
 suffix:semicolon
 )brace
 suffix:semicolon

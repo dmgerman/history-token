@@ -509,6 +509,7 @@ r_int
 r_int
 id|sb_offset
 suffix:semicolon
+multiline_comment|/* A device can be in one of three states based on two flags:&n;&t; * Not working:   faulty==1 in_sync==0&n;&t; * Fully working: faulty==0 in_sync==1&n;&t; * Working, but not&n;&t; * in sync with array&n;&t; *                faulty==0 in_sync==0&n;&t; *&n;&t; * It can never have faulty==1, in_sync==1&n;&t; * This reduces the burden of testing multiple flags in many cases&n;&t; */
 DECL|member|faulty
 r_int
 id|faulty
@@ -771,8 +772,9 @@ op_star
 id|mddev
 )paren
 suffix:semicolon
+multiline_comment|/* error_handler must set -&gt;faulty and clear -&gt;in_sync&n;&t; * if appropriate, and should abort recovery if needed &n;&t; */
 DECL|member|error_handler
-r_int
+r_void
 (paren
 op_star
 id|error_handler

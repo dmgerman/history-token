@@ -193,7 +193,7 @@ id|nr_sectors
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|md_error
 (paren
 id|mddev_t
@@ -203,14 +203,6 @@ comma
 id|mdk_rdev_t
 op_star
 id|rdev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|md_run_setup
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
