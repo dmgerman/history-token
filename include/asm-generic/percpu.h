@@ -21,70 +21,9 @@ DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu) (*RELOC_HIDE(&amp;per_cpu__##var, __per_cpu_offset[cpu]))
 DECL|macro|__get_cpu_var
 mdefine_line|#define __get_cpu_var(var) per_cpu(var, smp_processor_id())
-DECL|function|percpu_modcopy
-r_static
-r_inline
-r_void
-id|percpu_modcopy
-c_func
-(paren
-r_void
-op_star
-id|pcpudst
-comma
-r_const
-r_void
-op_star
-id|src
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_int
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|cpu_possible
-c_func
-(paren
-id|i
-)paren
-)paren
-id|memcpy
-c_func
-(paren
-id|pcpudst
-op_plus
-id|__per_cpu_offset
-(braket
-id|i
-)braket
-comma
-id|src
-comma
-id|size
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* A macro to avoid #include hell... */
+DECL|macro|percpu_modcopy
+mdefine_line|#define percpu_modcopy(pcpudst, src, size)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int __i;&t;&t;&t;&t;&t;&bslash;&n;&t;for (__i = 0; __i &lt; NR_CPUS; __i++)&t;&t;&t;&bslash;&n;&t;&t;if (cpu_possible(__i))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;memcpy((pcpudst)+__per_cpu_offset[__i],&t;&bslash;&n;&t;&t;&t;       (src), (size));&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else /* ! SMP */
 DECL|macro|DEFINE_PER_CPU
 mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __typeof__(type) per_cpu__##name
