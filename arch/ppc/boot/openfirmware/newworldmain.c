@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &quot;nonstdio.h&quot;
+macro_line|#include &quot;of1275.h&quot;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* Passed from the linker */
@@ -25,56 +26,8 @@ id|_end
 suffix:semicolon
 r_extern
 r_int
-id|getprop
-c_func
-(paren
-r_void
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|heap_max
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|claim
-c_func
-(paren
-r_int
-r_int
-id|virt
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-r_int
-id|align
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|finddevice
-c_func
-(paren
-r_const
-r_char
-op_star
-)paren
 suffix:semicolon
 r_extern
 r_void
@@ -128,28 +81,6 @@ comma
 r_int
 r_int
 id|progend
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pause
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|release
-c_func
-(paren
-r_void
-op_star
-id|ptr
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 DECL|variable|avail_ram

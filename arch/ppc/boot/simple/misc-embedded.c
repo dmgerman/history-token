@@ -237,7 +237,7 @@ op_amp
 id|bp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|com_port
 op_assign
 id|serial_init

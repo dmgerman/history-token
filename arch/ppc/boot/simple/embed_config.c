@@ -2,13 +2,15 @@ multiline_comment|/* Board specific functions for those embedded 8xx boards that
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_8xx
 macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_8260
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_40x
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#endif
 multiline_comment|/* For those boards that don&squot;t provide one.&n;*/
 macro_line|#if !defined(CONFIG_MBX)
@@ -2060,15 +2062,186 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WILLOW */
-macro_line|#ifdef CONFIG_TREEBOOT
+r_void
+DECL|function|embed_config
+id|embed_config
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+r_static
+r_const
+r_int
+r_int
+id|line_size
+op_assign
+l_int|32
+suffix:semicolon
+r_static
+r_const
+r_int
+r_int
+id|congruence_classes
+op_assign
+l_int|256
+suffix:semicolon
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|u_char
+op_star
+id|cp
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|bd_t
+op_star
+id|bd
+suffix:semicolon
+multiline_comment|/*&n;&t; * At one point, we were getting machine checks.  Linux was not&n;&t; * invalidating the data cache before it was enabled.  The&n;&t; * following code was added to do that.  Soon after we had done&n;&t; * that, we found the real reasons for the machine checks.  I&squot;ve&n;&t; * run the kernel a few times with the following code&n;&t; * temporarily removed without any apparent problems.  However,&n;&t; * I objdump&squot;ed the kernel and boot code and found out that&n;&t; * there were no other dccci&squot;s anywhere, so I put the code back&n;&t; * in and have been reluctant to remove it.  It seems safer to&n;&t; * just leave it here.&n;&t; */
+r_for
+c_loop
+(paren
+id|addr
+op_assign
+l_int|0
+suffix:semicolon
+id|addr
+OL
+(paren
+id|congruence_classes
+op_star
+id|line_size
+)paren
+suffix:semicolon
+id|addr
+op_add_assign
+id|line_size
+)paren
+(brace
+id|__asm__
+c_func
+(paren
+l_string|&quot;dccci 0,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;b&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+)brace
+id|bd
+op_assign
+op_amp
+id|bdinfo
+suffix:semicolon
+op_star
+id|bdp
+op_assign
+id|bd
+suffix:semicolon
+id|bd-&gt;bi_memsize
+op_assign
+id|XPAR_DDR_0_SIZE
+suffix:semicolon
+id|bd-&gt;bi_intfreq
+op_assign
+id|XPAR_CORE_CLOCK_FREQ_HZ
+suffix:semicolon
+id|bd-&gt;bi_busfreq
+op_assign
+id|XPAR_PLB_CLOCK_FREQ_HZ
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_IBM_OPENBIOS
 multiline_comment|/* This could possibly work for all treeboot roms.&n;*/
-macro_line|#if defined(CONFIG_ASH)
+macro_line|#if defined(CONFIG_ASH) || defined(CONFIG_BEECH)
 DECL|macro|BOARD_INFO_VECTOR
 mdefine_line|#define BOARD_INFO_VECTOR       0xFFF80B50 /* openbios 1.19 moved this vector down  - armin */
 macro_line|#else
 DECL|macro|BOARD_INFO_VECTOR
-mdefine_line|#define&t;BOARD_INFO_VECTOR&t;0xFFFE0B50
+mdefine_line|#define BOARD_INFO_VECTOR&t;0xFFFE0B50
 macro_line|#endif
+macro_line|#ifdef CONFIG_BEECH
+r_static
+r_void
+DECL|function|get_board_info
+id|get_board_info
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+r_typedef
+r_void
+(paren
+op_star
+id|PFV
+)paren
+(paren
+id|bd_t
+op_star
+id|bd
+)paren
+suffix:semicolon
+(paren
+(paren
+id|PFV
+)paren
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|BOARD_INFO_VECTOR
+)paren
+)paren
+(paren
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_void
+DECL|function|embed_config
+id|embed_config
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+op_star
+id|bdp
+op_assign
+op_amp
+id|bdinfo
+suffix:semicolon
+id|get_board_info
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_BEECH */
 r_void
 DECL|function|embed_config
 id|embed_config
@@ -2125,20 +2298,6 @@ id|BOARD_INFO_VECTOR
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_STB03xxx)
-r_volatile
-id|emac_t
-op_star
-id|emacp
-suffix:semicolon
-id|emacp
-op_assign
-(paren
-id|emac_t
-op_star
-)paren
-id|EMAC0_BASE
-suffix:semicolon
-multiline_comment|/* assume 1st emac - armin */
 multiline_comment|/* shut down the Ethernet controller that the boot rom&n;&t; * sometimes leaves running.&n;&t; */
 id|mtdcr
 c_func
@@ -2172,16 +2331,15 @@ id|MALCR_MMSR
 )brace
 suffix:semicolon
 multiline_comment|/* wait for the reset */
-id|emacp-&gt;em0mr0
-op_assign
-l_int|0x20000000
-suffix:semicolon
-multiline_comment|/* then reset EMAC */
-id|eieio
+id|out_be32
 c_func
 (paren
+id|EMAC0_BASE
+comma
+l_int|0x20000000
 )paren
 suffix:semicolon
+multiline_comment|/* then reset EMAC */
 macro_line|#endif
 id|bd
 op_assign
@@ -2305,8 +2463,8 @@ l_int|66666666
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Yeah, this look weird, but on Redwood 4 they are&n;&t; * different object in the structure.  When RW5 uses&n;&t; * OpenBIOS, it requires a special value.&n;&t; */
-macro_line|#ifdef CONFIG_REDWOOD_5
+multiline_comment|/* Yeah, this look weird, but on Redwood 4 they are&n;&t; * different object in the structure.  Sincr Redwwood 5&n;&t; * and Redwood 6 use OpenBIOS, it requires a special value.&n;&t; */
+macro_line|#if defined(CONFIG_REDWOOD_5) || defined (CONFIG_REDWOOD_6)
 id|bd-&gt;bi_tbfreq
 op_assign
 l_int|27
@@ -2317,7 +2475,8 @@ l_int|1000
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_BEECH */
+macro_line|#endif /* CONFIG_IBM_OPENBIOS */
 macro_line|#ifdef CONFIG_EP405
 macro_line|#include &lt;linux/serial_reg.h&gt;
 r_void
@@ -2390,6 +2549,48 @@ id|UART_LCR
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* We haven&squot;t seen actual problems with the EP405 leaving the&n;&t; * EMAC running (as we have on Walnut).  But the registers&n;&t; * suggest it may not be left completely quiescent.  Reset it&n;&t; * just to be sure. */
+id|mtdcr
+c_func
+(paren
+id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
+comma
+id|MALCR_MMSR
+)paren
+suffix:semicolon
+multiline_comment|/* 1st reset MAL */
+r_while
+c_loop
+(paren
+id|mfdcr
+c_func
+(paren
+id|DCRN_MALCR
+c_func
+(paren
+id|DCRN_MAL_BASE
+)paren
+)paren
+op_amp
+id|MALCR_MMSR
+)paren
+(brace
+)brace
+suffix:semicolon
+multiline_comment|/* wait for the reset */
+id|out_be32
+c_func
+(paren
+id|EMAC0_BASE
+comma
+l_int|0x20000000
+)paren
+suffix:semicolon
+multiline_comment|/* then reset EMAC */
 id|bd
 op_assign
 op_amp
@@ -2630,6 +2831,58 @@ id|bdp
 op_assign
 id|bd
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|8192
+suffix:semicolon
+id|i
+op_add_assign
+l_int|32
+)paren
+(brace
+id|__asm__
+c_func
+(paren
+l_string|&quot;dccci 0,%0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
+id|__asm__
+c_func
+(paren
+l_string|&quot;iccci 0,0&quot;
+)paren
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;sync;isync&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* init ram for parity */
+id|memset
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|0x400000
+)paren
+suffix:semicolon
+multiline_comment|/* Lo memory */
 id|bd-&gt;bi_memsize
 op_assign
 (paren
