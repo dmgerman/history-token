@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;i8259.h&quot;
@@ -1112,7 +1111,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_enable_irq: irq=%x: ibm_set_xive &quot;
+l_string|&quot;xics_enable_irq: irq=%d: ibm_set_xive &quot;
 l_string|&quot;returned %x&bslash;n&quot;
 comma
 id|irq
@@ -1152,7 +1151,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_enable_irq: irq=%x: ibm_int_on &quot;
+l_string|&quot;xics_enable_irq: irq=%d: ibm_int_on &quot;
 l_string|&quot;returned %x&bslash;n&quot;
 comma
 id|irq
@@ -1219,7 +1218,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_disable_real_irq: irq=%x: &quot;
+l_string|&quot;xics_disable_real_irq: irq=%d: &quot;
 l_string|&quot;ibm_int_off returned %x&bslash;n&quot;
 comma
 id|irq
@@ -1271,7 +1270,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_disable_irq: irq=%x: ibm_set_xive(0xff)&quot;
+l_string|&quot;xics_disable_irq: irq=%d: ibm_set_xive(0xff)&quot;
 l_string|&quot; returned %x&bslash;n&quot;
 comma
 id|irq
@@ -1438,17 +1437,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-r_extern
-r_int
-r_int
-id|real_irq_to_virt_slowpath
-c_func
-(paren
-r_int
-r_int
-id|real_irq
-)paren
-suffix:semicolon
 DECL|function|xics_get_irq
 r_int
 id|xics_get_irq
@@ -1587,7 +1575,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Interrupt 0x%x (real) is invalid,&quot;
+l_string|&quot;Interrupt %d (real) is invalid,&quot;
 l_string|&quot; disabling it.&bslash;n&quot;
 comma
 id|vec
@@ -1615,15 +1603,6 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-r_extern
-r_struct
-id|xics_ipi_struct
-id|xics_ipi_message
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
-suffix:semicolon
 DECL|function|xics_ipi_action
 id|irqreturn_t
 id|xics_ipi_action
@@ -1982,27 +1961,12 @@ c_cond
 op_logical_neg
 id|np
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Can&squot;t find Interrupt Presentation&bslash;n&quot;
+l_string|&quot;xics_init_IRQ: can&squot;t find interrupt presentation&quot;
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;Can&squot;t find Interrupt Presentation&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|nextnode
 suffix:colon
 id|ireg
@@ -2057,27 +2021,12 @@ c_cond
 op_logical_neg
 id|ireg
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Can&squot;t find Interrupt Reg Property&bslash;n&quot;
+l_string|&quot;xics_init_IRQ: can&squot;t find interrupt reg property&quot;
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;Can&squot;t find Interrupt Reg Property&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -2373,7 +2322,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;xics:  no ISA Interrupt Controller&bslash;n&quot;
+l_string|&quot;xics: no ISA interrupt controller&bslash;n&quot;
 )paren
 suffix:semicolon
 id|xics_irq_8259_cascade_real
@@ -2411,27 +2360,12 @@ c_cond
 op_logical_neg
 id|ireg
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Can&squot;t find ISA Interrupts Property&bslash;n&quot;
+l_string|&quot;xics_init_IRQ: can&squot;t find ISA interrupts property&quot;
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;Can&squot;t find ISA Interrupts Property&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|xics_irq_8259_cascade_real
 op_assign
 op_star
@@ -2540,8 +2474,6 @@ id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#ifdef CONFIG_PPC_PSERIES
-multiline_comment|/* actually iSeries does not use any of xics...but it has link dependencies&n;&t; * for now, except this new one...&n;&t; */
 )brace
 r_else
 r_if
@@ -2557,7 +2489,6 @@ op_assign
 op_amp
 id|pSeriesLP_ops
 suffix:semicolon
-macro_line|#endif
 )brace
 id|xics_8259_pic.enable
 op_assign
@@ -2687,7 +2618,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_init_IRQ: couldn&squot;t get 8259 cascade&bslash;n&quot;
+l_string|&quot;xics_setup_i8259: couldn&squot;t get 8259 &quot;
+l_string|&quot;cascade&bslash;n&quot;
 )paren
 suffix:semicolon
 id|i8259_init
@@ -2943,7 +2875,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;xics_set_affinity irq=%d ibm,set-xive &quot;
+l_string|&quot;xics_set_affinity: irq=%d ibm,set-xive &quot;
 l_string|&quot;returns %d&bslash;n&quot;
 comma
 id|irq
@@ -3279,7 +3211,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;migrate_irqs_away irq=%d &quot;
+l_string|&quot;migrate_irqs_away: irq=%d &quot;
 l_string|&quot;ibm,set-xive returns %d&bslash;n&quot;
 comma
 id|virq
