@@ -3110,7 +3110,6 @@ multiline_comment|/*&n; * Find the pin to which IRQ[irq] (ISA) is connected&n; *
 DECL|function|find_isa_irq_pin
 r_static
 r_int
-id|__init
 id|find_isa_irq_pin
 c_func
 (paren
