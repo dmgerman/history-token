@@ -210,6 +210,8 @@ DECL|macro|HID_UP_PID
 mdefine_line|#define HID_UP_PID &t;&t;0x000f0000
 DECL|macro|HID_UP_HPVENDOR
 mdefine_line|#define HID_UP_HPVENDOR         0xff7f0000
+DECL|macro|HID_UP_MSVENDOR
+mdefine_line|#define HID_UP_MSVENDOR&t;&t;0xff000000
 DECL|macro|HID_USAGE
 mdefine_line|#define HID_USAGE&t;&t;0x0000ffff
 DECL|macro|HID_GD_POINTER

@@ -395,7 +395,7 @@ l_int|0
 comma
 l_int|0x90
 comma
-l_string|&quot;D-padUp&quot;
+l_string|&quot;D-PadUp&quot;
 )brace
 comma
 (brace
@@ -403,7 +403,7 @@ l_int|0
 comma
 l_int|0x91
 comma
-l_string|&quot;D-padDown&quot;
+l_string|&quot;D-PadDown&quot;
 )brace
 comma
 (brace
@@ -411,7 +411,7 @@ l_int|0
 comma
 l_int|0x92
 comma
-l_string|&quot;D-padRight&quot;
+l_string|&quot;D-PadRight&quot;
 )brace
 comma
 (brace
@@ -419,7 +419,7 @@ l_int|0
 comma
 l_int|0x93
 comma
-l_string|&quot;D-padLeft&quot;
+l_string|&quot;D-PadLeft&quot;
 )brace
 comma
 (brace
@@ -428,6 +428,46 @@ comma
 l_int|0
 comma
 l_string|&quot;Keyboard&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x01
+comma
+l_string|&quot;NumLock&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x02
+comma
+l_string|&quot;CapsLock&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x03
+comma
+l_string|&quot;ScrollLock&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x04
+comma
+l_string|&quot;Compose&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x05
+comma
+l_string|&quot;Kana&quot;
 )brace
 comma
 (brace
@@ -459,7 +499,15 @@ l_int|12
 comma
 l_int|0
 comma
-l_string|&quot;Hotkey&quot;
+l_string|&quot;Consumer&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0x238
+comma
+l_string|&quot;HorizontalWheel&quot;
 )brace
 comma
 (brace
@@ -5556,47 +5604,26 @@ comma
 id|KEY_DEL_EOL
 )braket
 op_assign
-l_string|&quot;Delete EOL&quot;
+l_string|&quot;DeleteEOL&quot;
 comma
 (braket
 id|KEY_DEL_EOS
 )braket
 op_assign
-l_string|&quot;Delete EOS&quot;
+l_string|&quot;DeleteEOS&quot;
 comma
 (braket
 id|KEY_INS_LINE
 )braket
 op_assign
-l_string|&quot;Insert line&quot;
+l_string|&quot;InsertLine&quot;
 comma
 (braket
 id|KEY_DEL_LINE
 )braket
 op_assign
-l_string|&quot;Delete line&quot;
+l_string|&quot;DeleteLine&quot;
 comma
-)brace
-suffix:semicolon
-DECL|variable|absval
-r_static
-r_char
-op_star
-id|absval
-(braket
-l_int|5
-)braket
-op_assign
-(brace
-l_string|&quot;Value&quot;
-comma
-l_string|&quot;Min  &quot;
-comma
-l_string|&quot;Max  &quot;
-comma
-l_string|&quot;Fuzz &quot;
-comma
-l_string|&quot;Flat &quot;
 )brace
 suffix:semicolon
 DECL|variable|relatives
