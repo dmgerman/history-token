@@ -3927,7 +3927,7 @@ op_logical_neg
 id|xfrm_policy_check
 c_func
 (paren
-l_int|NULL
+id|sk
 comma
 id|XFRM_POLICY_IN
 comma
