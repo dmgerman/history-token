@@ -2050,9 +2050,7 @@ id|__init
 DECL|function|acpi_table_init
 id|acpi_table_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 (brace
 r_struct

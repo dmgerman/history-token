@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2001 MontaVista Software, ppopov@mvista.
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
@@ -42,10 +43,6 @@ r_int
 id|r4k_cur
 suffix:semicolon
 multiline_comment|/* What counter should be at next timer irq */
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 DECL|macro|ALLINTS
 mdefine_line|#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
 DECL|function|ack_r4ktimer
@@ -507,7 +504,7 @@ id|ALLINTS
 )paren
 suffix:semicolon
 multiline_comment|/* Read time from the RTC chipset. */
-id|write_lock_irqsave
+id|write_seqlock_irqsave
 (paren
 op_amp
 id|xtime_lock
@@ -526,7 +523,7 @@ id|xtime.tv_usec
 op_assign
 l_int|0
 suffix:semicolon
-id|write_unlock_irqrestore
+id|write_sequnlock_irqrestore
 c_func
 (paren
 op_amp
@@ -768,7 +765,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|read_lock_irqsave
+r_int
+r_int
+id|seq
+suffix:semicolon
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
+c_func
 (paren
 op_amp
 id|xtime_lock
@@ -788,7 +794,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t; */
+multiline_comment|/*&n;&t;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -800,12 +806,20 @@ id|tv-&gt;tv_usec
 op_add_assign
 id|USECS_PER_JIFFY
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
+c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -836,7 +850,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 (paren
 op_amp
 id|xtime_lock
@@ -888,7 +902,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 (paren
 op_amp
 id|xtime_lock

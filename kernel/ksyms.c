@@ -45,6 +45,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2570,6 +2571,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xtime
+)paren
+suffix:semicolon
+DECL|variable|xtime_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xtime_lock
 )paren
 suffix:semicolon
 DECL|variable|do_gettimeofday

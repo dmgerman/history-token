@@ -53,6 +53,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 (paren
 id|acpi_gbl_acpi_table_data
 (braket
@@ -61,10 +62,8 @@ id|i
 dot
 id|flags
 op_amp
-id|ACPI_TABLE_TYPE_MASK
-)paren
-op_ne
 id|search_type
+)paren
 )paren
 (brace
 r_continue
@@ -114,7 +113,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Table [%4.4s] matched and is a required ACPI table&bslash;n&quot;
+l_string|&quot;Table [%4.4s] is an ACPI table consumed by the core subsystem&bslash;n&quot;
 comma
 (paren
 r_char
@@ -141,7 +140,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Table [%4.4s] is not a required ACPI table - ignored&bslash;n&quot;
+l_string|&quot;Table [%4.4s] is not an ACPI table consumed by the core subsystem - ignored&bslash;n&quot;
 comma
 (paren
 r_char
@@ -235,7 +234,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Could not install ACPI table [%s], %s&bslash;n&quot;
+l_string|&quot;Could not install ACPI table [%4.4s], %s&bslash;n&quot;
 comma
 id|table_info-&gt;pointer-&gt;signature
 comma

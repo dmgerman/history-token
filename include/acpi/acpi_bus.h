@@ -4,7 +4,7 @@ DECL|macro|__ACPI_BUS_H__
 mdefine_line|#define __ACPI_BUS_H__
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
-macro_line|#include &quot;include/acpi.h&quot;
+macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 r_extern
