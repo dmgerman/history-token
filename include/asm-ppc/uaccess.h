@@ -10,11 +10,11 @@ DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ&t;0
 DECL|macro|VERIFY_WRITE
 mdefine_line|#define VERIFY_WRITE&t;1
-multiline_comment|/*&n; * The fs value determines whether argument validity checking should be&n; * performed or not.  If get_fs() == USER_DS, checking is performed, with&n; * get_fs() == KERNEL_DS, checking is bypassed.&n; *&n; * For historical reasons, these macros are grossly misnamed.&n; */
+multiline_comment|/*&n; * The fs value determines whether argument validity checking should be&n; * performed or not.  If get_fs() == USER_DS, checking is performed, with&n; * get_fs() == KERNEL_DS, checking is bypassed.&n; *&n; * For historical reasons, these macros are grossly misnamed.&n; *&n; * The fs/ds values are now the highest legal address in the &quot;segment&quot;.&n; * This simplifies the checking in the routines below.&n; */
 DECL|macro|KERNEL_DS
-mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { 0 })
+mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { ~0UL })
 DECL|macro|USER_DS
-mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { 1 })
+mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { TASK_SIZE - 1 })
 DECL|macro|get_ds
 mdefine_line|#define get_ds()&t;(KERNEL_DS)
 DECL|macro|get_fs
@@ -23,14 +23,10 @@ DECL|macro|set_fs
 mdefine_line|#define set_fs(val)&t;(current-&gt;thread.fs = (val))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
-DECL|macro|__kernel_ok
-mdefine_line|#define __kernel_ok (segment_eq(get_fs(), KERNEL_DS))
-DECL|macro|__user_ok
-mdefine_line|#define __user_ok(addr,size) (((size) &lt;= TASK_SIZE)&amp;&amp;((addr) &lt;= TASK_SIZE-(size)))
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size) (__kernel_ok || __user_ok((addr),(size)))
+mdefine_line|#define __access_ok(addr,size)&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;((addr) &lt;= current-&gt;thread.fs.seg&t;&t;&t;&t;    &bslash;&n;&t; &amp;&amp; ((size) == 0 || (size) - 1 &lt;= current-&gt;thread.fs.seg - (addr)))
 DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size) __access_ok((unsigned long)(addr),(size))
+mdefine_line|#define access_ok(type, addr, size) __access_ok((unsigned long)(addr),(size))
 DECL|function|verify_area
 r_extern
 r_inline
@@ -602,15 +598,7 @@ r_int
 r_int
 id|top
 op_assign
-id|__kernel_ok
-ques
-c_cond
-op_complement
-l_int|0UL
-suffix:colon
-id|TASK_SIZE
-op_minus
-l_int|1
+id|current-&gt;thread.fs.seg
 suffix:semicolon
 r_if
 c_cond
