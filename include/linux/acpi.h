@@ -166,7 +166,7 @@ DECL|member|entry
 id|u32
 id|entry
 (braket
-l_int|1
+l_int|8
 )braket
 suffix:semicolon
 )brace

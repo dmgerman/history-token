@@ -475,16 +475,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|pmd_present
-c_func
-(paren
-op_star
-id|pmd
-)paren
-)paren
 r_return
 id|pte_offset_map
 c_func
@@ -493,9 +483,6 @@ id|pmd
 comma
 id|address
 )paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|pte_alloc_kernel

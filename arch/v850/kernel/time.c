@@ -14,6 +14,8 @@ macro_line|#include &quot;mach.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE&t;(tick_nsec / 1000)

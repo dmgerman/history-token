@@ -631,13 +631,12 @@ id|pending_irq_balance_apicid
 id|NR_IRQS
 )braket
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|irqbalance_disabled
 r_static
 r_int
 id|irqbalance_disabled
-id|__initdata
 op_assign
-l_int|0
+id|NO_BALANCE_IRQ
 suffix:semicolon
 DECL|variable|physical_balance
 r_static
@@ -1804,7 +1803,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|no_balance_irq
+id|irqbalance_disabled
 )paren
 r_return
 suffix:semicolon
