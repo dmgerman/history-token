@@ -64,8 +64,7 @@ op_assign
 id|va.va_nblocks
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_XFS_POSIX_ACL
-multiline_comment|/*&n; * Determine whether a process has a valid fs_struct (kernel daemons&n; * like knfsd don&squot;t have an fs_struct).&n; */
+multiline_comment|/*&n; * Determine whether a process has a valid fs_struct (kernel daemons&n; * like knfsd don&squot;t have an fs_struct).&n; *&n; * XXX(hch):  nfsd is broken, better fix it instead.&n; */
 id|STATIC
 r_int
 r_inline
@@ -87,7 +86,6 @@ id|init_task.fs
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|STATIC
 r_int
 DECL|function|linvfs_mknod
