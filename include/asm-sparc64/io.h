@@ -465,6 +465,7 @@ id|u8
 id|_readb
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -507,6 +508,7 @@ id|u16
 id|_readw
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -549,6 +551,7 @@ id|u32
 id|_readl
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -591,6 +594,7 @@ id|u64
 id|_readq
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -636,6 +640,7 @@ c_func
 id|u8
 id|b
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -677,6 +682,7 @@ c_func
 id|u16
 id|w
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -718,6 +724,7 @@ c_func
 id|u32
 id|l
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -759,6 +766,7 @@ c_func
 id|u64
 id|q
 comma
+r_volatile
 r_void
 id|__iomem
 op_star
