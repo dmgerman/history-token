@@ -1432,7 +1432,7 @@ c_func
 (paren
 id|regs-&gt;u_regs
 (braket
-id|UREG_G6
+id|UREG_G7
 )braket
 comma
 op_amp
