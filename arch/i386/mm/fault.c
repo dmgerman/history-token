@@ -779,7 +779,11 @@ c_cond
 (paren
 id|regs-&gt;eflags
 op_amp
+(paren
 id|X86_EFLAGS_IF
+op_or
+id|VM_MASK
+)paren
 )paren
 id|local_irq_enable
 c_func
