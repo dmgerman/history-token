@@ -3550,6 +3550,14 @@ id|pagedir_order
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
 id|printk
 c_func
 (paren
