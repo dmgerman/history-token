@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -167,7 +168,7 @@ id|request
 suffix:semicolon
 DECL|member|removal
 r_struct
-id|timer_list
+id|work_struct
 id|removal
 suffix:semicolon
 DECL|member|bind
@@ -1008,8 +1009,9 @@ r_void
 id|handle_removal
 c_func
 (paren
-id|u_long
-id|sn
+r_void
+op_star
+id|data
 )paren
 (brace
 r_struct
@@ -1017,11 +1019,7 @@ id|pcmcia_bus_socket
 op_star
 id|s
 op_assign
-id|get_socket_info_by_nr
-c_func
-(paren
-id|sn
-)paren
+id|data
 suffix:semicolon
 id|handle_event
 c_func
@@ -1107,26 +1105,15 @@ id|s-&gt;state
 op_or_assign
 id|SOCKET_REMOVAL_PENDING
 suffix:semicolon
-id|init_timer
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
 id|s-&gt;removal
-)paren
-suffix:semicolon
-id|s-&gt;removal.expires
-op_assign
-id|jiffies
-op_plus
+comma
 id|HZ
 op_div
 l_int|10
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|s-&gt;removal
 )paren
 suffix:semicolon
 )brace
@@ -3887,20 +3874,15 @@ id|s-&gt;socket_dev
 op_assign
 id|dev
 suffix:semicolon
-id|s-&gt;removal.data
-op_assign
-id|s-&gt;socket_no
-suffix:semicolon
-id|s-&gt;removal.function
-op_assign
-op_amp
-id|handle_removal
-suffix:semicolon
-id|init_timer
+id|INIT_WORK
 c_func
 (paren
 op_amp
 id|s-&gt;removal
+comma
+id|handle_removal
+comma
+id|s
 )paren
 suffix:semicolon
 multiline_comment|/* Set up hotline to Card Services */
@@ -4168,6 +4150,11 @@ id|cls_d
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
+)paren
 suffix:semicolon
 id|down_write
 c_func
