@@ -920,14 +920,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
-id|dev-&gt;cmd_list
+id|cmd-&gt;list
 comma
 op_amp
-id|cmd-&gt;list
+id|dev-&gt;cmd_list
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
