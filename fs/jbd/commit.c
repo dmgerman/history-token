@@ -1532,7 +1532,7 @@ comma
 l_string|&quot;dumping temporary bh&quot;
 )paren
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh
@@ -1761,7 +1761,7 @@ id|jh-&gt;b_transaction
 op_assign
 l_int|NULL
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh
@@ -1964,7 +1964,7 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* One for getblk() */
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|descriptor

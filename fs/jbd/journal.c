@@ -5125,7 +5125,7 @@ id|jh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * A journal_head is attached to a buffer_head whenever JBD has an&n; * interest in the buffer.&n; *&n; * Whenever a buffer has an attached journal_head, its -&gt;b_state:BH_JBD bit&n; * is set.  This bit is tested in core kernel code where we need to take&n; * JBD-specific actions.  Testing the zeroness of -&gt;b_private is not reliable&n; * there.&n; *&n; * When a buffer has its BH_JBD bit set, its -&gt;b_count is elevated by one.&n; *&n; * When a buffer has its BH_JBD bit set it is immune from being released by&n; * core kernel code, mainly via -&gt;b_count.&n; *&n; * A journal_head may be detached from its buffer_head when the journal_head&squot;s&n; * b_transaction, b_cp_transaction and b_next_transaction pointers are NULL.&n; * Various places in JBD call journal_remove_journal_head() to indicate that the&n; * journal_head can be dropped if needed.&n; *&n; * Various places in the kernel want to attach a journal_head to a buffer_head&n; * _before_ attaching the journal_head to a transaction.  To protect the&n; * journal_head in this situation, journal_add_journal_head elevates the&n; * journal_head&squot;s b_jcount refcount by one.  The caller must call&n; * journal_unlock_journal_head() to undo this.&n; *&n; * So the typical usage would be:&n; *&n; *&t;(Attach a journal_head if needed.  Increments b_jcount)&n; *&t;struct journal_head *jh = journal_add_journal_head(bh);&n; *&t;...&n; *&t;jh-&gt;b_transaction = xxx;&n; *&t;journal_unlock_journal_head(jh);&n; *&n; * Now, the journal_head&squot;s b_jcount is zero, but it is safe from being released&n; * because it has a non-zero b_transaction.&n; */
+multiline_comment|/*&n; * A journal_head is attached to a buffer_head whenever JBD has an&n; * interest in the buffer.&n; *&n; * Whenever a buffer has an attached journal_head, its -&gt;b_state:BH_JBD bit&n; * is set.  This bit is tested in core kernel code where we need to take&n; * JBD-specific actions.  Testing the zeroness of -&gt;b_private is not reliable&n; * there.&n; *&n; * When a buffer has its BH_JBD bit set, its -&gt;b_count is elevated by one.&n; *&n; * When a buffer has its BH_JBD bit set it is immune from being released by&n; * core kernel code, mainly via -&gt;b_count.&n; *&n; * A journal_head may be detached from its buffer_head when the journal_head&squot;s&n; * b_transaction, b_cp_transaction and b_next_transaction pointers are NULL.&n; * Various places in JBD call journal_remove_journal_head() to indicate that the&n; * journal_head can be dropped if needed.&n; *&n; * Various places in the kernel want to attach a journal_head to a buffer_head&n; * _before_ attaching the journal_head to a transaction.  To protect the&n; * journal_head in this situation, journal_add_journal_head elevates the&n; * journal_head&squot;s b_jcount refcount by one.  The caller must call&n; * journal_put_journal_head() to undo this.&n; *&n; * So the typical usage would be:&n; *&n; *&t;(Attach a journal_head if needed.  Increments b_jcount)&n; *&t;struct journal_head *jh = journal_add_journal_head(bh);&n; *&t;...&n; *&t;jh-&gt;b_transaction = xxx;&n; *&t;journal_put_journal_head(jh);&n; *&n; * Now, the journal_head&squot;s b_jcount is zero, but it is safe from being released&n; * because it has a non-zero b_transaction.&n; */
 multiline_comment|/*&n; * Give a buffer_head a journal_head.&n; *&n; * Doesn&squot;t need the journal lock.&n; * May sleep.&n; * Cannot be called with journal_datalist_lock held.&n; */
 DECL|function|journal_add_journal_head
 r_struct
@@ -5485,9 +5485,10 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-DECL|function|journal_unlock_journal_head
+multiline_comment|/*&n; * Drop a reference on the passed journal_head.  If it fell to zero then try to&n; * release the journal_head from the buffer_head.&n; */
+DECL|function|journal_put_journal_head
 r_void
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 r_struct

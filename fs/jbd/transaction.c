@@ -2055,7 +2055,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh
@@ -2313,7 +2313,7 @@ comma
 id|jh
 )paren
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh
@@ -2501,7 +2501,7 @@ comma
 id|jh-&gt;b_committed_data
 )paren
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh
@@ -2855,7 +2855,7 @@ comma
 l_string|&quot;exit&quot;
 )paren
 suffix:semicolon
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 id|jh

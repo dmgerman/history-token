@@ -1882,7 +1882,7 @@ id|bh
 suffix:semicolon
 r_extern
 r_void
-id|journal_unlock_journal_head
+id|journal_put_journal_head
 c_func
 (paren
 r_struct
