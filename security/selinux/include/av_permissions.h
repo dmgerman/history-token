@@ -267,6 +267,12 @@ DECL|macro|CHR_FILE__QUOTAON
 mdefine_line|#define CHR_FILE__QUOTAON                         0x00008000UL
 DECL|macro|CHR_FILE__MOUNTON
 mdefine_line|#define CHR_FILE__MOUNTON                         0x00010000UL
+DECL|macro|CHR_FILE__EXECUTE_NO_TRANS
+mdefine_line|#define CHR_FILE__EXECUTE_NO_TRANS                0x00020000UL
+DECL|macro|CHR_FILE__ENTRYPOINT
+mdefine_line|#define CHR_FILE__ENTRYPOINT                      0x00040000UL
+DECL|macro|CHR_FILE__EXECMOD
+mdefine_line|#define CHR_FILE__EXECMOD                         0x00080000UL
 DECL|macro|BLK_FILE__IOCTL
 mdefine_line|#define BLK_FILE__IOCTL                           0x00000001UL
 DECL|macro|BLK_FILE__READ
