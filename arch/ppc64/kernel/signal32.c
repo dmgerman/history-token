@@ -361,6 +361,7 @@ id|regs
 comma
 r_struct
 id|mcontext32
+id|__user
 op_star
 id|frame
 comma
@@ -1235,11 +1236,13 @@ comma
 r_const
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction32
+id|__user
 op_star
 id|oact
 comma
@@ -1442,10 +1445,12 @@ id|u32
 id|how
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|set
 comma
 id|compat_sigset_t
+id|__user
 op_star
 id|oset
 comma
@@ -1455,6 +1460,11 @@ id|sigsetsize
 (brace
 id|sigset_t
 id|s
+suffix:semicolon
+id|sigset_t
+id|__user
+op_star
+id|up
 suffix:semicolon
 id|compat_sigset_t
 id|s32
@@ -1513,6 +1523,17 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* This is valid because of the set_fs() */
+id|up
+op_assign
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
+op_amp
+id|s
+suffix:semicolon
 id|ret
 op_assign
 id|sys_rt_sigprocmask
@@ -1526,16 +1547,14 @@ comma
 id|set
 ques
 c_cond
-op_amp
-id|s
+id|up
 suffix:colon
 l_int|NULL
 comma
 id|oset
 ques
 c_cond
-op_amp
-id|s
+id|up
 suffix:colon
 l_int|NULL
 comma
@@ -1603,6 +1622,7 @@ id|sys32_rt_sigpending
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|set
 comma
@@ -1633,11 +1653,17 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer cast is valid because of the set_fs() */
 id|ret
 op_assign
 id|sys_rt_sigpending
 c_func
 (paren
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|s
 comma
@@ -1699,6 +1725,7 @@ id|copy_siginfo_to_user32
 c_func
 (paren
 id|compat_siginfo_t
+id|__user
 op_star
 id|d
 comma
@@ -1985,15 +2012,18 @@ id|sys32_rt_sigtimedwait
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|uthese
 comma
 id|compat_siginfo_t
+id|__user
 op_star
 id|uinfo
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 id|uts
 comma
@@ -2080,17 +2110,28 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer casts are valid because of the set_fs() */
 id|ret
 op_assign
 id|sys_rt_sigtimedwait
 c_func
 (paren
+(paren
+id|sigset_t
+id|__user
+op_star
+)paren
 op_amp
 id|s
 comma
 id|uinfo
 ques
 c_cond
+(paren
+id|siginfo_t
+id|__user
+op_star
+)paren
 op_amp
 id|info
 suffix:colon
@@ -2099,6 +2140,12 @@ comma
 id|uts
 ques
 c_cond
+(paren
+r_struct
+id|timespec
+id|__user
+op_star
+)paren
 op_amp
 id|t
 suffix:colon
@@ -2157,6 +2204,7 @@ id|u32
 id|sig
 comma
 id|compat_siginfo_t
+id|__user
 op_star
 id|uinfo
 )paren
@@ -2211,6 +2259,7 @@ id|set_fs
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer cast is valid becasuse of the set_fs() */
 id|ret
 op_assign
 id|sys_rt_sigqueueinfo
@@ -2226,6 +2275,11 @@ r_int
 )paren
 id|sig
 comma
+(paren
+id|siginfo_t
+id|__user
+op_star
+)paren
 op_amp
 id|info
 )paren
@@ -2245,6 +2299,7 @@ id|sys32_rt_sigsuspend
 c_func
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -2554,6 +2609,7 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/* The __user pointer casts are valid because of the set_fs() */
 id|ret
 op_assign
 id|do_sigaltstack
@@ -2562,6 +2618,11 @@ c_func
 id|newstack
 ques
 c_cond
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|uss
 suffix:colon
@@ -2570,6 +2631,11 @@ comma
 id|oldstack
 ques
 c_cond
+(paren
+id|stack_t
+id|__user
+op_star
+)paren
 op_amp
 id|uoss
 suffix:colon
@@ -3128,6 +3194,7 @@ comma
 (paren
 r_struct
 id|mcontext32
+id|__user
 op_star
 )paren
 (paren
@@ -3628,6 +3695,7 @@ id|VERIFY_WRITE
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|newsp
@@ -3984,6 +4052,7 @@ op_assign
 (paren
 r_struct
 id|mcontext32
+id|__user
 op_star
 )paren
 (paren
