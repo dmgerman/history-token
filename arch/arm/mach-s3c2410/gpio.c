@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/gpio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 GPIO support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog&n; *&t;13-Sep-2004  BJD  Implemented change of MISCCR&n; *&t;14-Sep-2004  BJD  Added getpin call&n; *&t;14-Sep-2004  BJD  Fixed bug in setpin() call&n; */
+multiline_comment|/* linux/arch/arm/mach-s3c2410/gpio.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 GPIO support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog&n; *&t;13-Sep-2004  BJD  Implemented change of MISCCR&n; *&t;14-Sep-2004  BJD  Added getpin call&n; *&t;14-Sep-2004  BJD  Fixed bug in setpin() call&n; *&t;30-Sep-2004  BJD  Fixed cfgpin() mask bug&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -33,15 +33,7 @@ id|pin
 suffix:semicolon
 r_int
 r_int
-id|shift
-op_assign
-l_int|1
-suffix:semicolon
-r_int
-r_int
 id|mask
-op_assign
-l_int|3
 suffix:semicolon
 r_int
 r_int
@@ -59,23 +51,32 @@ OL
 id|S3C2410_GPIO_BANKB
 )paren
 (brace
-id|shift
-op_assign
-l_int|0
-suffix:semicolon
 id|mask
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-id|mask
-op_lshift_assign
+op_lshift
 id|S3C2410_GPIO_OFFSET
 c_func
 (paren
 id|pin
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|mask
+op_assign
+l_int|3
+op_lshift
+id|S3C2410_GPIO_OFFSET
+c_func
+(paren
+id|pin
+)paren
+op_star
+l_int|2
+suffix:semicolon
+)brace
 id|local_irq_save
 c_func
 (paren
@@ -94,9 +95,8 @@ l_int|0x00
 suffix:semicolon
 id|con
 op_and_assign
+op_complement
 id|mask
-op_lshift
-id|shift
 suffix:semicolon
 id|con
 op_or_assign
