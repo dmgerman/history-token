@@ -1191,6 +1191,7 @@ c_func
 id|tb_ticks_per_usec
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
 DECL|variable|register_profile_notifier
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -1205,4 +1206,5 @@ c_func
 id|unregister_profile_notifier
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
