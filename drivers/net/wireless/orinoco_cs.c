@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.13e&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;orinoco_cs&quot;
 DECL|macro|PFX
@@ -2158,7 +2158,8 @@ op_assign
 id|DRIVER_NAME
 l_string|&quot; &quot;
 id|DRIVER_VERSION
-l_string|&quot;(David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot; (David Gibson &lt;hermes@gibson.dropbear.id.au&gt;, &quot;
+l_string|&quot;Pavel Roskin &lt;proski@gnu.org&gt;, et al)&quot;
 suffix:semicolon
 DECL|variable|orinoco_driver
 r_static

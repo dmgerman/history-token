@@ -1,4 +1,4 @@
-multiline_comment|/* airport.c 0.13e&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
+multiline_comment|/* airport.c&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; * Note specific to airport stub:&n; * &n; *  0.05 : first version of the new split driver&n; *  0.06 : fix possible hang on powerup, add sleep support&n; */
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;airport&quot;
 DECL|macro|PFX
