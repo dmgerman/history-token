@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/atm_zatm.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -4965,16 +4966,6 @@ suffix:semicolon
 r_int
 id|chan
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_int
-id|once
-op_assign
-l_int|1
-suffix:semicolon
 id|zatm_vcc
 op_assign
 id|ZATM_VCC
@@ -5009,8 +5000,8 @@ c_func
 l_string|&quot;close_tx&bslash;n&quot;
 )paren
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|skb_peek
 c_func
@@ -5018,12 +5009,6 @@ c_func
 op_amp
 id|zatm_vcc-&gt;backlog
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|once
 )paren
 (brace
 id|printk
@@ -5037,29 +5022,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|once
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|sleep_on
+id|wait_event
+c_func
+(paren
+id|zatm_vcc-&gt;tx_wait
+comma
+op_logical_neg
+id|skb_peek
 c_func
 (paren
 op_amp
-id|zatm_vcc-&gt;tx_wait
+id|zatm_vcc-&gt;backlog
+)paren
 )paren
 suffix:semicolon
 )brace
-id|once
-op_assign
-l_int|1
-suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
-(paren
-id|skb
-op_assign
 id|skb_peek
 c_func
 (paren
@@ -5067,20 +5047,11 @@ op_amp
 id|zatm_vcc-&gt;tx_queue
 )paren
 )paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|once
-)paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;waiting for TX queue to drain ... %p&bslash;n&quot;
-comma
-id|skb
+l_string|&quot;waiting for TX queue to drain ...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|event_dump
@@ -5088,24 +5059,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|once
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|DPRINTK
+id|wait_event
 c_func
 (paren
-l_string|&quot;waiting for TX queue to drain ... %p&bslash;n&quot;
+id|zatm_vcc-&gt;tx_wait
 comma
-id|skb
-)paren
-suffix:semicolon
-id|sleep_on
+op_logical_neg
+id|skb_peek
 c_func
 (paren
 op_amp
-id|zatm_vcc-&gt;tx_wait
+id|zatm_vcc-&gt;tx_queue
+)paren
 )paren
 suffix:semicolon
 )brace
