@@ -4465,6 +4465,8 @@ c_cond
 id|cmd
 op_eq
 id|SNDRV_PCM_TRIGGER_START
+op_logical_and
+id|rme32-&gt;fullduplex_mode
 )paren
 (brace
 id|snd_pcm_group_for_each
