@@ -509,6 +509,8 @@ DECL|macro|to_pcmcia_drv
 mdefine_line|#define to_pcmcia_drv(n) container_of(n, struct pcmcia_driver, drv)
 DECL|macro|handle_to_pdev
 mdefine_line|#define handle_to_pdev(handle) container_of(handle, struct pcmcia_device, client);
+DECL|macro|handle_to_dev
+mdefine_line|#define handle_to_dev(handle) ((container_of(handle, struct pcmcia_device, client))-&gt;dev)
 multiline_comment|/* error reporting */
 r_void
 id|cs_error

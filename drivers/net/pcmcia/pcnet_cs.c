@@ -3778,6 +3778,19 @@ op_and_assign
 op_complement
 id|DEV_CONFIG_PENDING
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 id|dev-&gt;poll_controller
 op_assign
