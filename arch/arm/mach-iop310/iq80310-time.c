@@ -284,8 +284,6 @@ r_int
 id|elapsed
 comma
 id|usec
-comma
-id|tmp1
 suffix:semicolon
 r_int
 r_int

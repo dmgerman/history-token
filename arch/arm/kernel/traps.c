@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1408,6 +1409,93 @@ r_return
 id|regs-&gt;ARM_r0
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|do_cache_op
+id|do_cache_op
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+comma
+r_int
+id|flags
+)paren
+(brace
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|end
+OL
+id|start
+)paren
+r_return
+suffix:semicolon
+id|vma
+op_assign
+id|find_vma
+c_func
+(paren
+id|current-&gt;active_mm
+comma
+id|start
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma
+op_logical_and
+id|vma-&gt;vm_start
+OL
+id|end
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|start
+OL
+id|vma-&gt;vm_start
+)paren
+id|start
+op_assign
+id|vma-&gt;vm_start
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|end
+OG
+id|vma-&gt;vm_end
+)paren
+id|end
+op_assign
+id|vma-&gt;vm_end
+suffix:semicolon
+id|flush_cache_range
+c_func
+(paren
+id|vma
+comma
+id|start
+comma
+id|end
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * Handle all unrecognised system calls.&n; *  0x9f0000 - 0x9fffff are some more esoteric system calls&n; */
 DECL|macro|NR
 mdefine_line|#define NR(x) ((__ARM_NR_##x) - __ARM_NR_BASE)
@@ -1580,14 +1668,14 @@ c_func
 id|cacheflush
 )paren
 suffix:colon
-id|cpu_cache_clean_invalidate_range
+id|do_cache_op
 c_func
 (paren
 id|regs-&gt;ARM_r0
 comma
 id|regs-&gt;ARM_r1
 comma
-l_int|1
+id|regs-&gt;ARM_r2
 )paren
 suffix:semicolon
 r_return

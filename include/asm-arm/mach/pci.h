@@ -259,6 +259,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|iop310_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|dc21285_setup
 c_func
