@@ -3339,10 +3339,6 @@ id|task-&gt;tk_status
 r_case
 l_int|0
 suffix:colon
-id|state-&gt;state
-op_assign
-id|calldata-&gt;arg.open_flags
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -3409,6 +3405,10 @@ r_return
 suffix:semicolon
 )brace
 )brace
+id|state-&gt;state
+op_assign
+id|calldata-&gt;arg.open_flags
+suffix:semicolon
 id|nfs4_put_open_state
 c_func
 (paren
