@@ -14327,7 +14327,7 @@ suffix:semicolon
 )brace
 DECL|function|fbcon_mode_deleted
 r_static
-r_void
+r_int
 id|fbcon_mode_deleted
 c_func
 (paren
@@ -14452,20 +14452,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
+r_return
 id|found
-)paren
-id|fb_delete_videomode
-c_func
-(paren
-id|mode
-comma
-op_amp
-id|info-&gt;monspecs.modelist
-)paren
 suffix:semicolon
 )brace
 DECL|function|fbcon_event_notify
@@ -14511,6 +14499,11 @@ r_struct
 id|fb_videomode
 op_star
 id|mode
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
@@ -14563,6 +14556,8 @@ op_star
 )paren
 id|event-&gt;data
 suffix:semicolon
+id|ret
+op_assign
 id|fbcon_mode_deleted
 c_func
 (paren
@@ -14575,7 +14570,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The console `switch&squot; structure for the frame buffer based console&n; */
