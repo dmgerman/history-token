@@ -73,20 +73,27 @@ DECL|macro|MSDOS_DOT
 mdefine_line|#define MSDOS_DOT    &quot;.          &quot; /* &quot;.&quot;, padded to MSDOS_NAME chars */
 DECL|macro|MSDOS_DOTDOT
 mdefine_line|#define MSDOS_DOTDOT &quot;..         &quot; /* &quot;..&quot;, padded to MSDOS_NAME chars */
-DECL|macro|MSDOS_FAT12
-mdefine_line|#define MSDOS_FAT12 4084 /* maximum number of clusters in a 12 bit FAT */
 multiline_comment|/* media of boot sector */
 DECL|macro|FAT_VALID_MEDIA
 mdefine_line|#define FAT_VALID_MEDIA(x)&t;((0xF8 &lt;= (x) &amp;&amp; (x) &lt;= 0xFF) || (x) == 0xF0)
 DECL|macro|FAT_FIRST_ENT
 mdefine_line|#define FAT_FIRST_ENT(s, x)&t;((MSDOS_SB(s)-&gt;fat_bits == 32 ? 0x0FFFFF00 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? 0xFF00 : 0xF00) | (x))
+multiline_comment|/* maximum number of clusters */
+DECL|macro|MAX_FAT12
+mdefine_line|#define MAX_FAT12 0xFF4
+DECL|macro|MAX_FAT16
+mdefine_line|#define MAX_FAT16 0xFFF4
+DECL|macro|MAX_FAT32
+mdefine_line|#define MAX_FAT32 0x0FFFFFF6
+DECL|macro|MAX_FAT
+mdefine_line|#define MAX_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? MAX_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? MAX_FAT16 : MAX_FAT12)
 multiline_comment|/* bad cluster mark */
 DECL|macro|BAD_FAT12
 mdefine_line|#define BAD_FAT12 0xFF7
 DECL|macro|BAD_FAT16
 mdefine_line|#define BAD_FAT16 0xFFF7
 DECL|macro|BAD_FAT32
-mdefine_line|#define BAD_FAT32 0xFFFFFF7
+mdefine_line|#define BAD_FAT32 0x0FFFFFF7
 DECL|macro|BAD_FAT
 mdefine_line|#define BAD_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
 multiline_comment|/* standard EOF */
@@ -95,7 +102,7 @@ mdefine_line|#define EOF_FAT12 0xFFF
 DECL|macro|EOF_FAT16
 mdefine_line|#define EOF_FAT16 0xFFFF
 DECL|macro|EOF_FAT32
-mdefine_line|#define EOF_FAT32 0xFFFFFFF
+mdefine_line|#define EOF_FAT32 0x0FFFFFFF
 DECL|macro|EOF_FAT
 mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
 DECL|macro|FAT_ENT_FREE
