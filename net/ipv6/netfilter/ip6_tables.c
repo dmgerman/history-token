@@ -6543,6 +6543,19 @@ op_member_access_from_pointer
 id|number
 )paren
 suffix:semicolon
+multiline_comment|/* save number of initial entries */
+id|table
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|initial_entries
+op_assign
+id|table
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 id|table-&gt;lock
 op_assign
 id|RW_LOCK_UNLOCKED
