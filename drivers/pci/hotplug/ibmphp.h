@@ -1,7 +1,7 @@
 macro_line|#ifndef __IBMPHP_H
 DECL|macro|__IBMPHP_H
 mdefine_line|#define __IBMPHP_H
-multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Jyoti Shah, Tong Yu, Irene Zubarev, IBM Corporation&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001,2002 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Jyoti Shah, Tong Yu, Irene Zubarev, IBM Corporation&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001-2003 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *&n; */
 macro_line|#include &quot;pci_hotplug.h&quot;
 r_extern
 r_int
@@ -992,15 +992,6 @@ r_void
 id|ibmphp_unlock_operations
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ibmphp_hpc_fillhpslotinfo
-(paren
-r_struct
-id|hotplug_slot
-op_star
 )paren
 suffix:semicolon
 r_extern
