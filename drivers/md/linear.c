@@ -272,6 +272,13 @@ r_sizeof
 op_star
 id|conf
 )paren
+op_plus
+id|mddev-&gt;raid_disks
+op_star
+r_sizeof
+(paren
+id|dev_info_t
+)paren
 comma
 id|GFP_KERNEL
 )paren

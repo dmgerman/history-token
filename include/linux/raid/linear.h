@@ -54,13 +54,6 @@ id|linear_hash
 op_star
 id|hash_table
 suffix:semicolon
-DECL|member|disks
-id|dev_info_t
-id|disks
-(braket
-id|MD_SB_DISKS
-)braket
-suffix:semicolon
 DECL|member|smallest
 id|dev_info_t
 op_star
@@ -69,6 +62,13 @@ suffix:semicolon
 DECL|member|nr_zones
 r_int
 id|nr_zones
+suffix:semicolon
+DECL|member|disks
+id|dev_info_t
+id|disks
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
