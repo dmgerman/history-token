@@ -112,7 +112,7 @@ suffix:colon
 id|device_power_down
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|error
@@ -452,13 +452,21 @@ op_assign
 id|device_suspend
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_FREEZE
 )paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Some devices failed to suspend&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|Finish
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

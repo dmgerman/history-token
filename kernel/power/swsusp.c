@@ -2938,7 +2938,7 @@ op_assign
 id|device_power_down
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_FREEZE
 )paren
 )paren
 )paren
@@ -3041,7 +3041,7 @@ suffix:semicolon
 id|device_power_down
 c_func
 (paren
-id|PM_SUSPEND_DISK
+id|PMSG_FREEZE
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll ignore saved state, but this gets preempt count (etc) right */
