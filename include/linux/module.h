@@ -1355,6 +1355,12 @@ r_void
 )paren
 (brace
 )brace
+r_struct
+id|device_driver
+suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 DECL|function|module_add_driver
 r_static
 r_inline
@@ -1365,10 +1371,12 @@ c_func
 r_struct
 id|module
 op_star
+id|module
 comma
 r_struct
 id|device_driver
 op_star
+id|driver
 )paren
 (brace
 )brace
@@ -1382,6 +1390,7 @@ c_func
 r_struct
 id|device_driver
 op_star
+id|driver
 )paren
 (brace
 )brace
