@@ -723,6 +723,15 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set page cache allocation policy&n;&t; */
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping
+comma
+id|GFP_NOFS
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon

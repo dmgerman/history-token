@@ -619,25 +619,12 @@ id|uint
 id|cflag
 suffix:semicolon
 multiline_comment|/* 4: */
-r_struct
-(brace
-multiline_comment|/* 8: FIFO commit queue header */
-DECL|member|head
-r_struct
-id|tblock
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-r_struct
-id|tblock
-op_star
-id|tail
-suffix:semicolon
 DECL|member|cqueue
-)brace
+r_struct
+id|list_head
 id|cqueue
 suffix:semicolon
+multiline_comment|/* FIFO commit queue */
 DECL|member|flush_tblk
 r_struct
 id|tblock
