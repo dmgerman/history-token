@@ -5775,6 +5775,8 @@ comma
 id|nr_segs
 comma
 id|ext3_direct_io_get_blocks
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|out_stop

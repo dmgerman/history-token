@@ -2574,6 +2574,8 @@ comma
 id|nr_segs
 comma
 id|ext2_get_blocks
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

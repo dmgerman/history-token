@@ -1232,6 +1232,8 @@ comma
 id|nr_segs
 comma
 id|jfs_get_blocks
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
