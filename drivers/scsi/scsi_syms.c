@@ -385,6 +385,14 @@ c_func
 id|scsi_device_types
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This is for st to find the bounce limit&n; */
+DECL|variable|scsi_calculate_bounce_limit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_calculate_bounce_limit
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Externalize timers so that HBAs can safely start/restart commands.&n; */
 r_extern
 r_void

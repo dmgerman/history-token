@@ -40,22 +40,6 @@ multiline_comment|/* WARNING: Leave this in for now: the dependency preprocessor
 macro_line|#if !defined(CONFIG_53C700_IO_MAPPED) &amp;&amp; !defined(CONFIG_53C700_MEM_MAPPED)
 macro_line|#error &quot;Config.in must define either CONFIG_53C700_IO_MAPPED or CONFIG_53C700_MEM_MAPPED to use this scsi core.&quot;
 macro_line|#endif
-multiline_comment|/* macros for consistent memory allocation */
-macro_line|#ifdef CONFIG_53C700_USE_CONSISTENT
-DECL|macro|NCR_700_dma_cache_wback
-mdefine_line|#define NCR_700_dma_cache_wback(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_wback(mem, size)
-DECL|macro|NCR_700_dma_cache_inv
-mdefine_line|#define NCR_700_dma_cache_inv(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_inv(mem, size)
-DECL|macro|NCR_700_dma_cache_wback_inv
-mdefine_line|#define NCR_700_dma_cache_wback_inv(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_wback_inv(mem, size)
-macro_line|#else
-DECL|macro|NCR_700_dma_cache_wback
-mdefine_line|#define NCR_700_dma_cache_wback(mem, size) dma_cache_wback(mem,size)
-DECL|macro|NCR_700_dma_cache_inv
-mdefine_line|#define NCR_700_dma_cache_inv(mem, size) dma_cache_inv(mem,size)
-DECL|macro|NCR_700_dma_cache_wback_inv
-mdefine_line|#define NCR_700_dma_cache_wback_inv(mem, size) dma_cache_wback_inv(mem,size)
-macro_line|#endif
 r_struct
 id|NCR_700_Host_Parameters
 suffix:semicolon
@@ -577,11 +561,11 @@ r_int
 id|base
 suffix:semicolon
 multiline_comment|/* the base for the port (copied to host) */
-DECL|member|pci_dev
+DECL|member|dev
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pci_dev
+id|dev
 suffix:semicolon
 DECL|member|dmode_extra
 id|__u32
@@ -626,14 +610,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* if we can alter the SCSI bus clock&n;                                   speed (so can negiotiate sync) */
-macro_line|#ifdef CONFIG_53C700_USE_CONSISTENT
-DECL|member|consistent
-id|__u32
-id|consistent
-suffix:colon
-l_int|1
-suffix:semicolon
-macro_line|#endif
 DECL|member|sync_clock
 r_int
 id|sync_clock
@@ -1057,14 +1033,14 @@ mdefine_line|#define NCR_710_MIN_XFERP&t;0
 DECL|macro|NCR_700_MIN_PERIOD
 mdefine_line|#define NCR_700_MIN_PERIOD&t;25 /* for SDTR message, 100ns */
 DECL|macro|script_patch_32
-mdefine_line|#define script_patch_32(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]) + value; &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching %s at %d to 0x%lx&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], (value))); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define script_patch_32(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]) + value; &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_sync(&amp;(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); &bslash;&n;&t;&t;DEBUG((&quot; script, patching %s at %d to 0x%lx&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], (value))); &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|script_patch_32_abs
-mdefine_line|#define script_patch_32_abs(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(value); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching %s at %d to 0x%lx&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], (value))); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define script_patch_32_abs(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(value); &bslash;&n;&t;&t;dma_cache_sync(&amp;(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); &bslash;&n;&t;&t;DEBUG((&quot; script, patching %s at %d to 0x%lx&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], (value))); &bslash;&n;&t;} &bslash;&n;}
 multiline_comment|/* Used for patching the SCSI ID in the SELECT instruction */
 DECL|macro|script_patch_ID
-mdefine_line|#define script_patch_ID(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xff00ffff; &bslash;&n;&t;&t;val |= ((value) &amp; 0xff) &lt;&lt; 16; &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching ID field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define script_patch_ID(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xff00ffff; &bslash;&n;&t;&t;val |= ((value) &amp; 0xff) &lt;&lt; 16; &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_sync(&amp;(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); &bslash;&n;&t;&t;DEBUG((&quot; script, patching ID field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|script_patch_16
-mdefine_line|#define script_patch_16(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xffff0000; &bslash;&n;&t;&t;val |= ((value) &amp; 0xffff); &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_wback((unsigned long)&amp;(script)[A_##symbol##_used[i]], 4); &bslash;&n;&t;&t;DEBUG((&quot; script, patching short field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define script_patch_16(script, symbol, value) &bslash;&n;{ &bslash;&n;&t;int i; &bslash;&n;&t;for(i=0; i&lt; (sizeof(A_##symbol##_used) / sizeof(__u32)); i++) { &bslash;&n;&t;&t;__u32 val = bS_to_cpu((script)[A_##symbol##_used[i]]); &bslash;&n;&t;&t;val &amp;= 0xffff0000; &bslash;&n;&t;&t;val |= ((value) &amp; 0xffff); &bslash;&n;&t;&t;(script)[A_##symbol##_used[i]] = bS_to_host(val); &bslash;&n;&t;&t;dma_cache_sync(&amp;(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); &bslash;&n;&t;&t;DEBUG((&quot; script, patching short field %s at %d to 0x%x&bslash;n&quot;, &bslash;&n;&t;&t;       #symbol, A_##symbol##_used[i], val)); &bslash;&n;&t;} &bslash;&n;}
 macro_line|#endif
 macro_line|#ifdef CONFIG_53C700_MEM_MAPPED
 r_static

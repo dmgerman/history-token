@@ -193,6 +193,7 @@ multiline_comment|/* push %edx */
 l_int|0x55
 comma
 multiline_comment|/* push %ebp */
+multiline_comment|/* 3: backjump target */
 l_int|0x89
 comma
 l_int|0xe5
@@ -203,16 +204,28 @@ comma
 l_int|0x34
 comma
 multiline_comment|/* sysenter */
-l_int|0x00
+multiline_comment|/* 7: align return point with nop&squot;s to make disassembly easier */
+l_int|0x90
 comma
-multiline_comment|/* align return point */
-multiline_comment|/* System call restart point is here! (SYSENTER_RETURN - 2) */
+l_int|0x90
+comma
+l_int|0x90
+comma
+l_int|0x90
+comma
+l_int|0x90
+comma
+l_int|0x90
+comma
+l_int|0x90
+comma
+multiline_comment|/* 14: System call restart point is here! (SYSENTER_RETURN - 2) */
 l_int|0xeb
 comma
-l_int|0xfa
+l_int|0xf3
 comma
 multiline_comment|/* jmp to &quot;movl %esp,%ebp&quot; */
-multiline_comment|/* System call normal return point is here! (SYSENTER_RETURN in entry.S) */
+multiline_comment|/* 16: System call normal return point is here! (SYSENTER_RETURN in entry.S) */
 l_int|0x5d
 comma
 multiline_comment|/* pop %ebp */

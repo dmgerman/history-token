@@ -9414,6 +9414,10 @@ op_amp
 id|tp-&gt;syn_wait_lock
 )paren
 suffix:semicolon
+id|sk
+op_assign
+id|sk-&gt;next
+suffix:semicolon
 )brace
 r_if
 c_cond

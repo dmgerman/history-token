@@ -1998,10 +1998,15 @@ id|NET_SCTP_HB_INTERVAL
 op_assign
 l_int|10
 comma
+DECL|enumerator|NET_SCTP_PRESERVE_ENABLE
+id|NET_SCTP_PRESERVE_ENABLE
+op_assign
+l_int|11
+comma
 DECL|enumerator|NET_SCTP_MAX_BURST
 id|NET_SCTP_MAX_BURST
 op_assign
-l_int|11
+l_int|12
 comma
 )brace
 suffix:semicolon

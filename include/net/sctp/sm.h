@@ -282,6 +282,14 @@ DECL|variable|sctp_sf_do_8_5_1_E_sa
 id|sctp_state_fn_t
 id|sctp_sf_do_8_5_1_E_sa
 suffix:semicolon
+DECL|variable|sctp_sf_cookie_echoed_err
+id|sctp_state_fn_t
+id|sctp_sf_cookie_echoed_err
+suffix:semicolon
+DECL|variable|sctp_sf_do_5_2_6_stale
+id|sctp_state_fn_t
+id|sctp_sf_do_5_2_6_stale
+suffix:semicolon
 multiline_comment|/* Prototypes for primitive event state functions.  */
 DECL|variable|sctp_sf_do_prm_asoc
 id|sctp_state_fn_t
@@ -371,10 +379,6 @@ id|sctp_sf_autoclose_timer_expire
 suffix:semicolon
 multiline_comment|/* These are state functions which are either obsolete or not in use yet.&n; * If any of these functions needs to be revived, it should be renamed with&n; * the &quot;sctp_sf_xxx&quot; prefix, and be moved to the above prototype groups.&n; */
 multiline_comment|/* Prototypes for chunk state functions.  Not in use. */
-DECL|variable|sctp_sf_do_5_2_6_stale
-id|sctp_state_fn_t
-id|sctp_sf_do_5_2_6_stale
-suffix:semicolon
 DECL|variable|sctp_sf_do_9_2_reshutack
 id|sctp_state_fn_t
 id|sctp_sf_do_9_2_reshutack
@@ -522,6 +526,9 @@ op_star
 comma
 r_int
 id|priority
+comma
+r_int
+id|vparam_len
 )paren
 suffix:semicolon
 id|sctp_chunk_t
@@ -1160,6 +1167,11 @@ comma
 r_int
 op_star
 id|err
+comma
+id|sctp_chunk_t
+op_star
+op_star
+id|err_chk_p
 )paren
 suffix:semicolon
 r_int
@@ -1176,6 +1188,34 @@ id|sockaddr_storage
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_void
+id|sctp_send_stale_cookie_err
+c_func
+(paren
+r_const
+id|sctp_endpoint_t
+op_star
+id|ep
+comma
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+r_const
+id|sctp_chunk_t
+op_star
+id|chunk
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+comma
+id|sctp_chunk_t
+op_star
+id|err_chunk
 )paren
 suffix:semicolon
 multiline_comment|/* 3rd level prototypes */

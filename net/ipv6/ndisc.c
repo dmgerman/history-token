@@ -4125,6 +4125,12 @@ id|ndopts
 )paren
 )paren
 (brace
+id|in6_dev_put
+c_func
+(paren
+id|in6_dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
