@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.31 2002/09/21 09:05:29 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2002  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.33 2002/09/29 23:43:11 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2002  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -928,11 +928,7 @@ op_star
 (paren
 id|driver
 op_plus
-r_sizeof
-(paren
-r_struct
-id|cpufreq_driver
-)paren
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API

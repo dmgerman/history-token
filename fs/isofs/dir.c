@@ -33,12 +33,14 @@ id|file_operations
 id|isofs_dir_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_read_dir
 comma
+dot
 id|readdir
-suffix:colon
+op_assign
 id|isofs_readdir
 comma
 )brace
@@ -50,8 +52,9 @@ id|inode_operations
 id|isofs_dir_inode_operations
 op_assign
 (brace
+dot
 id|lookup
-suffix:colon
+op_assign
 id|isofs_lookup
 comma
 )brace
