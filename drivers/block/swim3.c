@@ -5137,7 +5137,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR

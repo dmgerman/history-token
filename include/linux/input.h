@@ -21,18 +21,15 @@ id|timeval
 id|time
 suffix:semicolon
 DECL|member|type
-r_int
-r_int
+id|__u16
 id|type
 suffix:semicolon
 DECL|member|code
-r_int
-r_int
+id|__u16
 id|code
 suffix:semicolon
 DECL|member|value
-r_int
-r_int
+id|__s32
 id|value
 suffix:semicolon
 )brace
@@ -63,6 +60,32 @@ id|version
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|input_absinfo
+r_struct
+id|input_absinfo
+(brace
+DECL|member|value
+id|__s32
+id|value
+suffix:semicolon
+DECL|member|minimum
+id|__s32
+id|minimum
+suffix:semicolon
+DECL|member|maximum
+id|__s32
+id|maximum
+suffix:semicolon
+DECL|member|fuzz
+id|__s32
+id|fuzz
+suffix:semicolon
+DECL|member|flat
+id|__s32
+id|flat
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
@@ -90,9 +113,9 @@ mdefine_line|#define EVIOCGSND(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x1a, 
 DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
-mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */
+mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, struct input_absinfo)&t;&t;/* get abs value/limits */
 DECL|macro|EVIOCSABS
-mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, int[5])&t;&t;/* set abs value/limits */
+mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, struct input_absinfo)&t;&t;/* set abs value/limits */
 DECL|macro|EVIOCSFF
 mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
@@ -827,7 +850,7 @@ mdefine_line|#define KEY_SLOW&t;&t;0x199
 DECL|macro|KEY_SHUFFLE
 mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
 DECL|macro|KEY_BREAK
-mdefine_line|#define KEY_BREAK&t;&t;0x1ab
+mdefine_line|#define KEY_BREAK&t;&t;0x19b
 DECL|macro|KEY_PREVIOUS
 mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
 DECL|macro|KEY_DIGITS
@@ -835,7 +858,7 @@ mdefine_line|#define KEY_DIGITS&t;&t;0x19d
 DECL|macro|KEY_TEEN
 mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
-mdefine_line|#define KEY_TWEN&t;&t;0x1af
+mdefine_line|#define KEY_TWEN&t;&t;0x19f
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */

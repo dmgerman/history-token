@@ -2,7 +2,7 @@ macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
 macro_line|#include &lt;asm/sockios.h&gt;
-multiline_comment|/* For setsockoptions(2) */
+multiline_comment|/* For setsockopt(2) */
 multiline_comment|/*&n; * Note: we only bother about making the SOL_SOCKET options&n; * same as OSF/1, as that&squot;s all that &quot;normal&quot; programs are&n; * likely to set.  We don&squot;t necessarily want to be binary&n; * compatible with _everything_. &n; */
 DECL|macro|SOL_SOCKET
 mdefine_line|#define SOL_SOCKET&t;0xffff

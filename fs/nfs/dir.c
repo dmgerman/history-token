@@ -2322,6 +2322,12 @@ id|dentry
 )paren
 suffix:semicolon
 )brace
+id|d_drop
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

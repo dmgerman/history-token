@@ -1633,7 +1633,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* We have nothing to really do here - we know the lists must be&n;&t;   empty */
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|SOUND_MAJOR
@@ -1660,7 +1660,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|SOUND_MAJOR

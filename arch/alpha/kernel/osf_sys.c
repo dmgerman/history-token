@@ -766,10 +766,10 @@ id|regs
 op_member_access_from_pointer
 id|r20
 op_assign
-id|tsk-&gt;real_parent-&gt;pid
+id|tsk-&gt;real_parent-&gt;tgid
 suffix:semicolon
 r_return
-id|tsk-&gt;pid
+id|tsk-&gt;tgid
 suffix:semicolon
 )brace
 DECL|function|osf_mmap

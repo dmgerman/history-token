@@ -3053,7 +3053,7 @@ id|entry.vector
 op_assign
 id|vector
 suffix:semicolon
-multiline_comment|/*&n;&t; * The timer IRQ doesnt have to know that behind the&n;&t; * scene we have a 8259A-master in AEOI mode ...&n;&t; */
+multiline_comment|/*&n;&t; * The timer IRQ doesn&squot;t have to know that behind the&n;&t; * scene we have a 8259A-master in AEOI mode ...&n;&t; */
 id|irq_desc
 (braket
 l_int|0
@@ -6824,7 +6824,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;timer doesnt work through the IO-APIC - disabling NMI Watchdog!&bslash;n&quot;
+l_string|&quot;timer doesn&squot;t work through the IO-APIC - disabling NMI Watchdog!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nmi_watchdog

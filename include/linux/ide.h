@@ -1386,12 +1386,6 @@ op_star
 id|rq
 suffix:semicolon
 multiline_comment|/* current request */
-DECL|member|sleep
-r_int
-r_int
-id|sleep
-suffix:semicolon
-multiline_comment|/* sleep until this time */
 DECL|member|retry_pio
 id|u8
 id|retry_pio
@@ -1500,13 +1494,6 @@ suffix:colon
 l_int|2
 suffix:semicolon
 multiline_comment|/* 1=autotune, 2=noautotune, 0=default */
-DECL|member|remap_0_to_1
-r_int
-id|remap_0_to_1
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* 0=remap if ezdrive, 1=remap, 2=noremap */
 DECL|member|ata_flash
 r_int
 id|ata_flash
@@ -1554,11 +1541,6 @@ id|u8
 id|nowerr
 suffix:semicolon
 multiline_comment|/* used for ignoring WRERR_STAT */
-DECL|member|sect0
-id|u8
-id|sect0
-suffix:semicolon
-multiline_comment|/* offset of first sector for DM6:DDO */
 DECL|member|head
 id|u8
 id|head
@@ -1949,6 +1931,9 @@ r_struct
 id|gendisk
 op_star
 id|gd
+(braket
+id|MAX_DRIVES
+)braket
 suffix:semicolon
 multiline_comment|/* gendisk structure */
 multiline_comment|/*&n;&t; * Routines to tune PIO and DMA mode for drives.&n;&t; *&n;&t; * A value of 255 indicates that the function should choose the optimal&n;&t; * mode itself.&n;&t; */
@@ -2246,6 +2231,16 @@ r_struct
 id|ata_device
 op_star
 )paren
+suffix:semicolon
+DECL|member|seg_boundary_mask
+r_int
+r_int
+id|seg_boundary_mask
+suffix:semicolon
+DECL|member|max_segment_size
+r_int
+r_int
+id|max_segment_size
 suffix:semicolon
 DECL|member|dmatable_cpu
 r_int

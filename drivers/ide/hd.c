@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -271,16 +270,6 @@ r_static
 r_struct
 id|hd_struct
 id|hd
-(braket
-id|MAX_HD
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
-DECL|variable|hd_sizes
-r_static
-r_int
-id|hd_sizes
 (braket
 id|MAX_HD
 op_lshift
@@ -3279,12 +3268,21 @@ r_static
 r_struct
 id|gendisk
 id|hd_gendisk
+(braket
+l_int|2
+)braket
 op_assign
+(brace
 (brace
 dot
 id|major
 op_assign
 id|MAJOR_NR
+comma
+dot
+id|first_minor
+op_assign
+l_int|0
 comma
 dot
 id|major_name
@@ -3302,9 +3300,40 @@ op_assign
 id|hd
 comma
 dot
-id|sizes
+id|fops
 op_assign
-id|hd_sizes
+op_amp
+id|hd_fops
+comma
+)brace
+comma
+(brace
+dot
+id|major
+op_assign
+id|MAJOR_NR
+comma
+dot
+id|first_minor
+op_assign
+l_int|64
+comma
+dot
+id|major_name
+op_assign
+l_string|&quot;hd&quot;
+comma
+dot
+id|minor_shift
+op_assign
+l_int|6
+comma
+dot
+id|part
+op_assign
+id|hd
+op_plus
+l_int|64
 comma
 dot
 id|fops
@@ -3312,6 +3341,7 @@ op_assign
 op_amp
 id|hd_fops
 comma
+)brace
 )brace
 suffix:semicolon
 DECL|function|hd_interrupt
@@ -3870,10 +3900,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|hd_gendisk.nr_real
-op_assign
-id|NR_HD
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3889,11 +3915,29 @@ id|drive
 op_increment
 )paren
 (brace
+id|hd_gendisk
+(braket
+id|i
+)braket
+dot
+id|nr_real
+op_assign
+l_int|1
+suffix:semicolon
+id|add_gendisk
+c_func
+(paren
+id|hd_gendisk
+op_plus
+id|drive
+)paren
+suffix:semicolon
 id|register_disk
 c_func
 (paren
-op_amp
 id|hd_gendisk
+op_plus
+id|drive
 comma
 id|mk_kdev
 c_func
@@ -3948,7 +3992,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3998,13 +4042,6 @@ id|MAJOR_NR
 )paren
 comma
 l_int|255
-)paren
-suffix:semicolon
-id|add_gendisk
-c_func
-(paren
-op_amp
-id|hd_gendisk
 )paren
 suffix:semicolon
 id|init_timer

@@ -958,6 +958,8 @@ id|smbiod_flags
 suffix:semicolon
 id|out
 suffix:colon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * smbiod kernel thread&n; */
 DECL|function|smbiod
