@@ -2908,25 +2908,6 @@ r_break
 suffix:semicolon
 r_case
 op_minus
-id|EPIPE
-suffix:colon
-multiline_comment|/* stall or babble */
-id|usb_clear_halt
-(paren
-id|urb-&gt;dev
-comma
-id|usb_rcvbulkpipe
-(paren
-id|urb-&gt;dev
-comma
-id|UDSL_ENDPOINT_DATA_IN
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-op_minus
 id|ENOENT
 suffix:colon
 multiline_comment|/* buffer was unlinked */
