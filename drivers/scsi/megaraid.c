@@ -15317,6 +15317,12 @@ id|pdev
 r_goto
 id|out
 suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|pci_bus
 op_assign
 id|pdev-&gt;bus-&gt;number

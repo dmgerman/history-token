@@ -177,7 +177,7 @@ macro_line|#undef&t;MAX_START
 DECL|macro|MAX_START
 mdefine_line|#define&t;MAX_START 250
 macro_line|#endif
-multiline_comment|/*&n;**    The maximum number of segments a transfer is split into.&n;**    We support up to 127 segments for both read and write.&n;**    The data scripts are broken into 2 sub-scripts.&n;**    80 (MAX_SCATTERL) segments are moved from a sub-script &n;**    in on-chip RAM. This makes data transfers shorter than &n;**    80k (assuming 1k fs) as fast as possible.&n;*/
+multiline_comment|/*&n;**    The maximum number of segments a transfer is split into.&n;**    We support up to 127 segments for both read and write.&n;**    The data scripts are broken into 2 sub-scripts.&n;**    80 (MAX_SCATTERL) segments are moved from a sub-script&n;**    in on-chip RAM. This makes data transfers shorter than &n;**    80k (assuming 1k fs) as fast as possible.&n;*/
 DECL|macro|MAX_SCATTER
 mdefine_line|#define MAX_SCATTER (SCSI_NCR_MAX_SCATTER)
 macro_line|#if (MAX_SCATTER &gt; 80)
@@ -12407,9 +12407,11 @@ id|cp-&gt;cdb_buf
 comma
 id|cmd-&gt;cmnd
 comma
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|cmd-&gt;cmd_len
 comma
 r_sizeof
@@ -14489,7 +14491,7 @@ id|cmd-&gt;sense_buffer
 comma
 id|cp-&gt;sense_buf
 comma
-id|MIN
+id|min
 c_func
 (paren
 r_sizeof

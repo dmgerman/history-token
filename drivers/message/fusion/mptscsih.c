@@ -2911,6 +2911,29 @@ comma
 id|pScsiReply
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  Look for + dump FCP ResponseInfo[]!&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|scsi_state
+op_amp
+id|MPI_SCSI_STATE_RESPONSE_INFO_VALID
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;  FCP_ResponseInfo=%08xh&bslash;n&quot;
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|pScsiReply-&gt;ResponseInfo
+)paren
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3302,23 +3325,6 @@ r_case
 id|MPI_IOCSTATUS_SCSI_PROTOCOL_ERROR
 suffix:colon
 multiline_comment|/* 0x0047 */
-r_if
-c_cond
-(paren
-id|pScsiReply-&gt;SCSIState
-op_amp
-id|MPI_SCSI_STATE_TERMINATED
-)paren
-(brace
-multiline_comment|/*  Not real sure here either...  */
-id|sc-&gt;result
-op_assign
-id|DID_RESET
-op_lshift
-l_int|16
-suffix:semicolon
-)brace
-r_else
 id|sc-&gt;result
 op_assign
 id|DID_SOFT_ERROR
@@ -3875,6 +3881,16 @@ multiline_comment|/* Set status, free OS resources (SG DMA buffers)&n;&t;&t;&t; 
 r_if
 c_cond
 (paren
+id|scsi_device_online
+c_func
+(paren
+id|SCpnt-&gt;device
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|SCpnt-&gt;use_sg
 )paren
 (brace
@@ -3942,6 +3958,7 @@ id|SCpnt-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 id|SCpnt-&gt;result
 op_assign

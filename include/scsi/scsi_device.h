@@ -178,6 +178,11 @@ DECL|member|scsi_level
 r_char
 id|scsi_level
 suffix:semicolon
+DECL|member|inq_periph_qual
+r_char
+id|inq_periph_qual
+suffix:semicolon
+multiline_comment|/* PQ from INQUIRY data */
 DECL|member|inquiry_len
 r_int
 r_char
@@ -415,6 +420,10 @@ suffix:semicolon
 multiline_comment|/* what device_blocked counts down from  */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
+DECL|member|timeout
+r_int
+id|timeout
+suffix:semicolon
 DECL|member|sdev_gendev
 r_struct
 id|device

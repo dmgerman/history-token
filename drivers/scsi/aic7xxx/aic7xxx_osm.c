@@ -2276,6 +2276,13 @@ id|ahc
 suffix:semicolon
 r_int
 id|found
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|eisa_err
+comma
+id|pci_err
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * It is a bug that the upper layer takes&n;&t; * this lock just prior to calling us.&n;&t; */
@@ -2387,25 +2394,33 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
+id|pci_err
+op_assign
 id|ahc_linux_pci_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_EISA
+id|eisa_err
+op_assign
 id|ahc_linux_eisa_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Register with the SCSI layer all&n;&t; * controllers we&squot;ve found.&n;&t; */
-id|found
-op_assign
-l_int|0
+r_if
+c_cond
+(paren
+id|pci_err
+op_logical_and
+id|eisa_err
+)paren
+(brace
+r_goto
+id|out
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Register with the SCSI layer all&n;&t; * controllers we&squot;ve found.&n;&t; */
 id|TAILQ_FOREACH
 c_func
 (paren
@@ -2434,6 +2449,8 @@ id|found
 op_increment
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|spin_lock_irq
 c_func
@@ -4897,6 +4914,7 @@ c_cond
 id|rvalue
 )paren
 (brace
+macro_line|#ifdef CONFIG_PCI
 r_case
 id|AHC_PCI
 suffix:colon
@@ -5024,6 +5042,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 r_case
 id|AHC_EISA
 suffix:colon
@@ -8090,6 +8109,10 @@ l_string|&quot;ahc_dv_%d&quot;
 comma
 id|ahc-&gt;unit
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_FREEZE
 suffix:semicolon
 macro_line|#endif
 id|unlock_kernel
@@ -15202,8 +15225,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|ahc_linux_free_device
-id|ahc_linux_free_device
+DECL|function|__ahc_linux_free_device
+id|__ahc_linux_free_device
 c_func
 (paren
 r_struct
@@ -15221,13 +15244,6 @@ r_struct
 id|ahc_linux_target
 op_star
 id|targ
-suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|dev-&gt;timer
-)paren
 suffix:semicolon
 id|targ
 op_assign
@@ -15272,6 +15288,39 @@ c_func
 id|ahc
 comma
 id|targ
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|ahc_linux_free_device
+id|ahc_linux_free_device
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_struct
+id|ahc_linux_device
+op_star
+id|dev
+)paren
+(brace
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|dev-&gt;timer
+)paren
+suffix:semicolon
+id|__ahc_linux_free_device
+c_func
+(paren
+id|ahc
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -18051,7 +18100,7 @@ id|dev-&gt;active
 op_eq
 l_int|0
 )paren
-id|ahc_linux_free_device
+id|__ahc_linux_free_device
 c_func
 (paren
 id|ahc
@@ -19505,6 +19554,14 @@ suffix:semicolon
 )brace
 )brace
 r_static
+r_void
+id|ahc_linux_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|ahc_linux_init
@@ -19515,21 +19572,32 @@ r_void
 )paren
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
-r_return
-(paren
+r_int
+id|rc
+op_assign
 id|ahc_linux_detect
 c_func
 (paren
 op_amp
 id|aic7xxx_driver_template
 )paren
-ques
+suffix:semicolon
+r_if
 c_cond
-l_int|0
-suffix:colon
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|ahc_linux_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 macro_line|#else
 id|scsi_register_module
@@ -19574,7 +19642,6 @@ macro_line|#endif
 )brace
 r_static
 r_void
-id|__exit
 DECL|function|ahc_linux_exit
 id|ahc_linux_exit
 c_func
@@ -19635,20 +19702,16 @@ id|aic7xxx_driver_template
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PCI
 id|ahc_linux_pci_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_EISA
 id|ahc_linux_eisa_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|ahc_linux_init
 id|module_init

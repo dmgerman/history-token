@@ -1028,6 +1028,11 @@ suffix:semicolon
 r_int
 id|possible_inq_resp_len
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 op_star
 id|bflags
 op_assign
@@ -1151,6 +1156,9 @@ id|sreq-&gt;sr_result
 )paren
 )paren
 suffix:semicolon
+op_increment
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1183,12 +1191,21 @@ l_int|0xf
 op_eq
 id|UNIT_ATTENTION
 op_logical_and
+(paren
 id|sreq-&gt;sr_sense_buffer
 (braket
 l_int|12
 )braket
 op_eq
 l_int|0x28
+op_logical_or
+id|sreq-&gt;sr_sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x29
+)paren
 op_logical_and
 id|sreq-&gt;sr_sense_buffer
 (braket
@@ -1198,11 +1215,21 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* not-ready to ready transition - good */
+multiline_comment|/* not-ready to ready transition or power-on - good */
 multiline_comment|/* dpg: bogus? INQUIRY never returns UNIT_ATTENTION */
+multiline_comment|/* Supposedly, but many buggy devices do so anyway */
+r_if
+c_cond
+(paren
+id|count
+OL
+l_int|3
+)paren
+r_goto
+id|repeat_inquiry
+suffix:semicolon
 )brace
-r_else
-multiline_comment|/*&n;&t;&t;&t; * assume no peripheral if any other sort of error&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * assume no peripheral if any other sort of error&n;&t;&t; */
 r_return
 suffix:semicolon
 )brace
@@ -1708,11 +1735,9 @@ c_func
 id|inq_result
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * For a peripheral qualifier (PQ) value of 1 (001b), the SCSI&n;&t; * spec says: The device server is capable of supporting the&n;&t; * specified peripheral device type on this logical unit. However,&n;&t; * the physical device is not currently connected to this logical&n;&t; * unit.&n;&t; *&n;&t; * The above is vague, as it implies that we could treat 001 and&n;&t; * 011 the same. Stay compatible with previous code, and create a&n;&t; * Scsi_Device for a PQ of 1&n;&t; *&n;&t; * XXX Save the PQ field let the upper layers figure out if they&n;&t; * want to attach or not to this device, do not set online FALSE;&n;&t; * otherwise, offline devices still get an sd allocated, and they&n;&t; * use up an sd slot.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
+multiline_comment|/*&n;&t; * For a peripheral qualifier (PQ) value of 1 (001b), the SCSI&n;&t; * spec says: The device server is capable of supporting the&n;&t; * specified peripheral device type on this logical unit. However,&n;&t; * the physical device is not currently connected to this logical&n;&t; * unit.&n;&t; *&n;&t; * The above is vague, as it implies that we could treat 001 and&n;&t; * 011 the same. Stay compatible with previous code, and create a&n;&t; * Scsi_Device for a PQ of 1&n;&t; *&n;&t; * Don&squot;t set the device offline here; rather let the upper&n;&t; * level drivers eval the PQ to decide whether they should&n;&t; * attach. So remove ((inq_result[0] &gt;&gt; 5) &amp; 7) == 1 check.&n;&t; */
+id|sdev-&gt;inq_periph_qual
+op_assign
 (paren
 id|inq_result
 (braket
@@ -1723,34 +1748,7 @@ l_int|5
 )paren
 op_amp
 l_int|7
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|SCSI_LOG_SCAN_BUS
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi scan: peripheral&quot;
-l_string|&quot; qualifier of 1, device offlined&bslash;n&quot;
-)paren
-)paren
 suffix:semicolon
-id|scsi_device_set_state
-c_func
-(paren
-id|sdev
-comma
-id|SDEV_OFFLINE
-)paren
-suffix:semicolon
-)brace
 id|sdev-&gt;removable
 op_assign
 (paren

@@ -291,7 +291,7 @@ c_cond
 (paren
 id|ha-&gt;req_ring_index
 op_eq
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 )paren
 (brace
 id|ha-&gt;req_ring_index
@@ -369,7 +369,7 @@ c_cond
 (paren
 id|ha-&gt;req_ring_index
 op_eq
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 )paren
 (brace
 id|ha-&gt;req_ring_index
@@ -1274,7 +1274,7 @@ l_int|2
 multiline_comment|/* Calculate number of free request entries */
 id|cnt
 op_assign
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_OUT
@@ -1302,7 +1302,7 @@ suffix:semicolon
 r_else
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_minus
 (paren
 id|ha-&gt;req_ring_index
@@ -1683,7 +1683,7 @@ c_cond
 (paren
 id|ha-&gt;req_ring_index
 op_eq
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 )paren
 (brace
 id|ha-&gt;req_ring_index
@@ -1735,7 +1735,7 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_IN
@@ -2051,7 +2051,7 @@ suffix:semicolon
 r_else
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_minus
 (paren
 id|ha-&gt;req_ring_index
@@ -2302,7 +2302,7 @@ r_else
 (brace
 id|ha-&gt;req_q_cnt
 op_assign
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 op_minus
 (paren
 id|ha-&gt;req_ring_index
@@ -2602,7 +2602,7 @@ c_cond
 (paren
 id|ha-&gt;req_ring_index
 op_eq
-id|REQUEST_ENTRY_CNT
+id|ha-&gt;request_q_length
 )paren
 (brace
 id|ha-&gt;req_ring_index
@@ -2633,7 +2633,7 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-id|RD_REG_WORD
+id|RD_REG_WORD_RELAXED
 c_func
 (paren
 id|ISP_REQ_Q_IN

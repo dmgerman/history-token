@@ -37,12 +37,6 @@ macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
 macro_line|#include &lt;linux/config.h&gt;        /* for CONFIG_PCI */
 DECL|macro|AIC7XXX_C_VERSION
 mdefine_line|#define AIC7XXX_C_VERSION  &quot;5.2.6&quot;
-DECL|macro|NUMBER
-mdefine_line|#define NUMBER(arr)     (sizeof(arr) / sizeof(arr[0]))
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)        (((a) &lt; (b)) ? (a) : (b))
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)        (((a) &gt; (b)) ? (a) : (b))
 DECL|macro|ALL_TARGETS
 mdefine_line|#define ALL_TARGETS -1
 DECL|macro|ALL_CHANNELS
@@ -2968,7 +2962,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|options
@@ -3256,7 +3250,7 @@ op_logical_or
 (paren
 id|instance
 op_ge
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic7xxx_tag_info
@@ -3380,7 +3374,7 @@ op_logical_and
 (paren
 id|instance
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic7xxx_tag_info
@@ -4139,9 +4133,11 @@ id|end_addr
 suffix:semicolon
 id|end_addr
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|address
 comma
 id|skip_addr
@@ -5183,9 +5179,12 @@ l_int|0
 suffix:semicolon
 id|maxsync
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|maxsync
 comma
 id|AHC_SYNCRATE_ULTRA2
@@ -5218,9 +5217,12 @@ l_int|0
 suffix:semicolon
 id|maxsync
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|maxsync
 comma
 id|AHC_SYNCRATE_ULTRA2
@@ -5270,9 +5272,12 @@ l_int|0
 suffix:semicolon
 id|maxsync
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|maxsync
 comma
 id|AHC_SYNCRATE_ULTRA2
@@ -5725,7 +5730,7 @@ suffix:semicolon
 op_star
 id|offset
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 op_star
@@ -7461,7 +7466,7 @@ suffix:semicolon
 )brace
 id|scb_count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 (paren
@@ -18127,9 +18132,12 @@ l_int|1
 suffix:semicolon
 id|aic_dev-&gt;goal.period
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_char
+comma
 l_int|10
 comma
 id|p-&gt;user
@@ -18233,9 +18241,12 @@ suffix:semicolon
 multiline_comment|/*&n;           * Validate the values the device passed to us against our SEEPROM&n;           * settings.  We don&squot;t have to do this if we aren&squot;t replying since&n;           * the device isn&squot;t allowed to send values greater than the ones&n;           * we first sent to it.&n;           */
 id|new_period
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|period
 comma
 id|aic_dev-&gt;goal.period
@@ -18243,9 +18254,12 @@ id|aic_dev-&gt;goal.period
 suffix:semicolon
 id|new_offset
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 comma
 id|aic_dev-&gt;goal.offset
@@ -18660,9 +18674,12 @@ l_int|1
 suffix:semicolon
 id|aic_dev-&gt;goal.period
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_char
+comma
 l_int|10
 comma
 id|p-&gt;user
@@ -23481,7 +23498,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|hard_error
@@ -24134,9 +24151,12 @@ l_int|1
 suffix:semicolon
 id|aic_dev-&gt;goal.period
 op_assign
-id|MAX
+id|max_t
 c_func
 (paren
+r_int
+r_char
+comma
 l_int|10
 comma
 id|aic_dev-&gt;goal.period
@@ -24496,7 +24516,7 @@ c_cond
 (paren
 id|p-&gt;instance
 op_ge
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic7xxx_tag_info
@@ -25054,7 +25074,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|AIC7xxx
@@ -34188,7 +34208,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|aic_pdevs
@@ -37610,7 +37630,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUMBER
+id|ARRAY_SIZE
 c_func
 (paren
 id|sort_list

@@ -12796,6 +12796,17 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;mailbox4
+)paren
+suffix:semicolon
+multiline_comment|/* PCI posted write flush */
 id|out
 suffix:colon
 r_if
@@ -13966,6 +13977,17 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;mailbox4
+)paren
+suffix:semicolon
+multiline_comment|/* PCI posted write flush */
 id|out
 suffix:colon
 r_if
@@ -14258,6 +14280,17 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
+id|RD_REG_WORD
+c_func
+(paren
+op_amp
+id|reg-&gt;mailbox4
+)paren
+suffix:semicolon
+multiline_comment|/* PCI posted write flush */
 id|LEAVE
 c_func
 (paren
@@ -14371,7 +14404,7 @@ id|mailbox
 l_int|0
 )braket
 op_assign
-id|RD_REG_WORD
+id|RD_REG_WORD_dmasync
 c_func
 (paren
 op_amp
