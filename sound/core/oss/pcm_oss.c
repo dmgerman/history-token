@@ -2850,6 +2850,10 @@ id|runtime-&gt;oss.period_ptr
 op_assign
 l_int|0
 suffix:semicolon
+id|runtime-&gt;oss.buffer_used
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4647,6 +4651,10 @@ id|runtime-&gt;oss.bytes
 op_add_assign
 id|tmp
 suffix:semicolon
+id|runtime-&gt;oss.period_ptr
+op_assign
+id|tmp
+suffix:semicolon
 id|runtime-&gt;oss.buffer_used
 op_assign
 id|tmp
@@ -4681,7 +4689,7 @@ comma
 id|runtime-&gt;oss.buffer
 op_plus
 (paren
-id|runtime-&gt;oss.period_bytes
+id|runtime-&gt;oss.period_ptr
 op_minus
 id|runtime-&gt;oss.buffer_used
 )paren
