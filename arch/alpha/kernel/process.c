@@ -31,55 +31,6 @@ macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
-multiline_comment|/*&n; * No need to acquire the kernel lock, we&squot;re entirely local..&n; */
-id|asmlinkage
-r_int
-DECL|function|sys_sethae
-id|sys_sethae
-c_func
-(paren
-r_int
-r_int
-id|hae
-comma
-r_int
-r_int
-id|a1
-comma
-r_int
-r_int
-id|a2
-comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
-r_struct
-id|pt_regs
-id|regs
-)paren
-(brace
-(paren
-op_amp
-id|regs
-)paren
-op_member_access_from_pointer
-id|hae
-op_assign
-id|hae
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|default_idle
 r_void
 id|default_idle
