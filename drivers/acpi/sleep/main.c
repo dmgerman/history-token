@@ -19,6 +19,14 @@ id|sleep_states
 id|ACPI_S_STATE_COUNT
 )braket
 suffix:semicolon
+r_extern
+r_void
+id|do_suspend_lowlevel_s4bios
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_system_restore_state - OS-specific restoration of state&n; * @state:&t;sleep state we&squot;re exiting&n; *&n; * Note that if we&squot;re coming back from S4, the memory image should have already&n; * been loaded from the disk and is already in place. (Otherwise how else would we&n; * be here?).&n; */
 id|acpi_status
 DECL|function|acpi_system_restore_state

@@ -22,6 +22,14 @@ comma
 id|wakeup_end
 suffix:semicolon
 r_extern
+r_void
+id|zap_low_mappings
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|FASTCALL
