@@ -2357,12 +2357,6 @@ id|cap_ptr
 )paren
 r_break
 suffix:semicolon
-id|pci_dev_put
-c_func
-(paren
-id|device
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Ok, here we have a AGP device. Disable impossible&n;&t; * settings, and adjust the readqueue to the minimum.&n;&t; */
 id|pci_read_config_dword
