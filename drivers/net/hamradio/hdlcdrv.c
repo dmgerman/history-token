@@ -2131,6 +2131,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
