@@ -6,7 +6,10 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#ifdef CONFIG_KDB
 macro_line|#include &lt;linux/kdb.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -17,7 +20,6 @@ macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/sn/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
-macro_line|#include &lt;asm/acpi-ext.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 DECL|variable|shub_mmr_names
