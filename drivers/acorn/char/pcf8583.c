@@ -84,7 +84,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|DAT
-mdefine_line|#define DAT(x) ((unsigned int)(x-&gt;data))
+mdefine_line|#define DAT(x) ((unsigned int)(x-&gt;dev.driver_data))
 r_static
 r_int
 DECL|function|pcf8583_attach
@@ -184,7 +184,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|c-&gt;name
+id|c-&gt;dev.name
 comma
 l_string|&quot;PCF8583&quot;
 )paren
@@ -210,7 +210,7 @@ op_assign
 op_amp
 id|pcf8583_driver
 suffix:semicolon
-id|c-&gt;data
+id|c-&gt;dev.driver_data
 op_assign
 l_int|NULL
 suffix:semicolon
