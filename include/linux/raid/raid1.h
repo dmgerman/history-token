@@ -119,10 +119,6 @@ id|atomic_t
 id|remaining
 suffix:semicolon
 multiline_comment|/* &squot;have we finished&squot; count,&n;&t;&t;&t;&t;&t;    * used from IRQ handlers&n;&t;&t;&t;&t;&t;    */
-DECL|member|cmd
-r_int
-id|cmd
-suffix:semicolon
 DECL|member|sector
 id|sector_t
 id|sector
@@ -180,6 +176,8 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* bits for r1bio.state */
 DECL|macro|R1BIO_Uptodate
-mdefine_line|#define&t;R1BIO_Uptodate&t;1
+mdefine_line|#define&t;R1BIO_Uptodate&t;0
+DECL|macro|R1BIO_IsSync
+mdefine_line|#define&t;R1BIO_IsSync&t;1
 macro_line|#endif
 eof
