@@ -87,11 +87,6 @@ id|CifsNeedReconnect
 )paren
 )paren
 (brace
-id|rc
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -188,6 +183,12 @@ id|nls_codepage
 )paren
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 )brace
 r_if
 c_cond
