@@ -20,16 +20,6 @@ macro_line|#include &lt;linux/i2c-id.h&gt;
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
-DECL|macro|I2C_ALGO_MAX
-mdefine_line|#define I2C_ALGO_MAX&t;4&t;&t;/* control memory consumption&t;*/
-DECL|macro|I2C_ADAP_MAX
-mdefine_line|#define I2C_ADAP_MAX&t;16
-DECL|macro|I2C_DRIVER_MAX
-mdefine_line|#define I2C_DRIVER_MAX&t;16
-DECL|macro|I2C_CLIENT_MAX
-mdefine_line|#define I2C_CLIENT_MAX&t;32
-DECL|macro|I2C_DUMMY_MAX
-mdefine_line|#define I2C_DUMMY_MAX 4
 r_struct
 id|i2c_msg
 suffix:semicolon
@@ -406,6 +396,18 @@ id|i2c_adapter
 op_star
 )paren
 suffix:semicolon
+DECL|member|detach_adapter
+r_int
+(paren
+op_star
+id|detach_adapter
+)paren
+(paren
+r_struct
+id|i2c_adapter
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* tells the driver that a client is about to be deleted &amp; gives it &n;&t; * the chance to remove its private data. Also, if the client struct&n;&t; * has been dynamically allocated by the driver in the function above,&n;&t; * it must be freed here.&n;&t; */
 DECL|member|detach_client
 r_int
@@ -445,6 +447,11 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -505,6 +512,11 @@ id|device
 id|dev
 suffix:semicolon
 multiline_comment|/* the device structure&t;&t;*/
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_i2c_client
@@ -776,15 +788,15 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* data fields that are valid for all devices&t;*/
-DECL|member|bus
+DECL|member|bus_lock
 r_struct
 id|semaphore
-id|bus
+id|bus_lock
 suffix:semicolon
-DECL|member|list
+DECL|member|clist_lock
 r_struct
 id|semaphore
-id|list
+id|clist_lock
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -792,15 +804,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* flags specifying div. data&t;&t;*/
-DECL|member|clients
-r_struct
-id|i2c_client
-op_star
-id|clients
-(braket
-id|I2C_CLIENT_MAX
-)braket
-suffix:semicolon
 DECL|member|timeout
 r_int
 id|timeout
@@ -822,6 +825,20 @@ r_int
 id|inode
 suffix:semicolon
 macro_line|#endif /* def CONFIG_PROC_FS */
+DECL|member|nr
+r_int
+id|nr
+suffix:semicolon
+DECL|member|clients
+r_struct
+id|list_head
+id|clients
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_i2c_adapter
@@ -876,8 +893,10 @@ suffix:semicolon
 multiline_comment|/*flags for the driver struct: */
 DECL|macro|I2C_DF_NOTIFY
 mdefine_line|#define I2C_DF_NOTIFY&t;0x01&t;&t;/* notify on bus (de/a)ttaches &t;*/
-DECL|macro|I2C_DF_DUMMY
-mdefine_line|#define I2C_DF_DUMMY&t;0x02&t;&t;/* do not connect any clients */
+macro_line|#if 0
+multiline_comment|/* this flag is gone -- there is a (optional) driver-&gt;detach_adapter&n; * callback now which can be used instead */
+macro_line|# define I2C_DF_DUMMY&t;0x02
+macro_line|#endif
 multiline_comment|/*flags for the client struct: */
 DECL|macro|I2C_CLIENT_ALLOW_USE
 mdefine_line|#define I2C_CLIENT_ALLOW_USE&t;&t;0x01&t;/* Client allows access */
@@ -1121,6 +1140,28 @@ multiline_comment|/* This call returns a unique low identifier for each register
 r_extern
 r_int
 id|i2c_adapter_id
+c_func
+(paren
+r_struct
+id|i2c_adapter
+op_star
+id|adap
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|i2c_adapter
+op_star
+id|i2c_get_adapter
+c_func
+(paren
+r_int
+id|id
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i2c_put_adapter
 c_func
 (paren
 r_struct
