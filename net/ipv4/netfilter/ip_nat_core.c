@@ -4454,7 +4454,6 @@ r_int
 id|clean_nat
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -4468,10 +4467,6 @@ id|data
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|i-&gt;nat
 comma
@@ -4496,7 +4491,7 @@ c_func
 r_void
 )paren
 (brace
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 op_amp

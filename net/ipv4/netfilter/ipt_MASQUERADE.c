@@ -469,7 +469,6 @@ DECL|function|device_cmp
 id|device_cmp
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -559,7 +558,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|device_cmp
@@ -632,7 +631,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|device_cmp
