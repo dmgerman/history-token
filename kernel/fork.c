@@ -3535,9 +3535,10 @@ id|p-&gt;did_exec
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * We mark the process as running here, but have not actually&n;&t; * inserted it onto the runqueue yet. This guarantees that&n;&t; * nobody will actually run it, and a signal or other external&n;&t; * event cannot wake it up and insert it on the runqueue either.&n;&t; */
 id|p-&gt;state
 op_assign
-id|TASK_UNINTERRUPTIBLE
+id|TASK_RUNNING
 suffix:semicolon
 id|copy_flags
 c_func
@@ -4766,10 +4767,6 @@ id|TIF_SIGPENDING
 )paren
 suffix:semicolon
 )brace
-id|p-&gt;state
-op_assign
-id|TASK_STOPPED
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4787,6 +4784,11 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* do this last */
+r_else
+id|p-&gt;state
+op_assign
+id|TASK_STOPPED
+suffix:semicolon
 op_increment
 id|total_forks
 suffix:semicolon
