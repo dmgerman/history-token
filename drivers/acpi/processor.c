@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -213,6 +215,22 @@ comma
 comma
 )brace
 suffix:semicolon
+DECL|variable|c2
+r_static
+r_int
+id|c2
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|c3
+r_static
+r_int
+id|c3
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|struct|acpi_processor_errata
 r_struct
 id|acpi_processor_errata
@@ -382,6 +400,30 @@ r_static
 r_struct
 id|acpi_processor_errata
 id|errata
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|c2
+comma
+id|c2
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|c3
+comma
+id|c3
+comma
+r_bool
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|pm_idle_save
 r_static
@@ -1804,6 +1846,20 @@ l_string|&quot;C2 not supported in SMP mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c2
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;C2 disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C2 requirements.&n;&t;&t; * Normalize the C2 latency to expidite policy.&n;&t;&t; */
 r_else
 (brace
@@ -1926,6 +1982,20 @@ l_string|&quot;C3 not supported on PIIX4 with Type-F DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;C3 disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C3 requirements.  &n;&t;&t; * Normalize the C2 latency to expidite policy.  Enable&n;&t;&t; * checking of bus mastering status (bm_check) so we can &n;&t;&t; * use this in our C3 policy.&n;&t;&t; */
 r_else
 (brace
@@ -8737,6 +8807,119 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* IBM ThinkPad R40e crashes mysteriously when going into C2 or C3. &n;   For now disable this. Probably a bug somewhere else. */
+DECL|function|no_c2c3
+r_static
+r_int
+id|no_c2c3
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|id
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s detected - C2,C3 disabled. Overwrite with &bslash;&quot;processor.c2=1 processor.c3=1&bslash;n&bslash;&quot;&quot;
+comma
+id|id-&gt;ident
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c2
+op_eq
+op_minus
+l_int|1
+)paren
+id|c2
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c3
+op_eq
+op_minus
+l_int|1
+)paren
+id|c3
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|processor_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|processor_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|no_c2c3
+comma
+l_string|&quot;IBM ThinkPad R40e&quot;
+comma
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VENDOR
+comma
+l_string|&quot;IBM&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;1SET60WW&quot;
+)paren
+)brace
+)brace
+comma
+(brace
+id|no_c2c3
+comma
+l_string|&quot;Medion 41700&quot;
+comma
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VENDOR
+comma
+l_string|&quot;Phoenix Technologies LTD&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;R01-A1J&quot;
+)paren
+)brace
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
 r_static
 r_int
 id|__init
@@ -8853,6 +9036,12 @@ suffix:semicolon
 id|acpi_processor_ppc_init
 c_func
 (paren
+)paren
+suffix:semicolon
+id|dmi_check_system
+c_func
+(paren
+id|processor_dmi_table
 )paren
 suffix:semicolon
 id|return_VALUE
