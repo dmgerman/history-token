@@ -114,6 +114,13 @@ c_func
 id|orig_fgconsole
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: &n;&t; * This following part is left over from swsusp. Is it really needed?&n;&t; */
+id|update_screen
+c_func
+(paren
+id|fg_console
+)paren
+suffix:semicolon
 macro_line|#endif
 r_return
 suffix:semicolon
