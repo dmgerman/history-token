@@ -2261,6 +2261,9 @@ r_case
 l_int|0x1003
 suffix:colon
 singleline_comment|// Hauppauge/TT Nova budget (stv0299/ALPS BSRU6(tsa5059) OR ves1893/ALPS BSRV2(sp5659))
+r_case
+l_int|0x1013
+suffix:colon
 singleline_comment|// try the ALPS BSRV2 first of all
 id|budget-&gt;dvb_frontend
 op_assign
@@ -2695,7 +2698,16 @@ comma
 id|BUDGET_TT
 )paren
 suffix:semicolon
-multiline_comment|/* MAKE_BUDGET_INFO(satel,&t;&quot;SATELCO Multimedia PCI&quot;,&t;BUDGET_TT_HW_DISEQC); UNDEFINED HARDWARE - mail linuxtv.org list */
+id|MAKE_BUDGET_INFO
+c_func
+(paren
+id|satel
+comma
+l_string|&quot;SATELCO Multimedia PCI&quot;
+comma
+id|BUDGET_TT_HW_DISEQC
+)paren
+suffix:semicolon
 id|MAKE_BUDGET_INFO
 c_func
 (paren
@@ -2745,7 +2757,16 @@ comma
 l_int|0x1005
 )paren
 comma
-multiline_comment|/*&t;MAKE_EXTENSION_PCI(satel, 0x13c2, 0x1013), UNDEFINED HARDWARE */
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|satel
+comma
+l_int|0x13c2
+comma
+l_int|0x1013
+)paren
+comma
 id|MAKE_EXTENSION_PCI
 c_func
 (paren
