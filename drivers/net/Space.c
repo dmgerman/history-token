@@ -9,14 +9,14 @@ macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
 multiline_comment|/* A unified ethernet device probe.  This is the easiest way to have every&n;   ethernet adaptor have the name &quot;eth[0123...]&quot;.&n;   */
 r_extern
-r_int
-id|ne2_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|ne2_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -900,7 +900,7 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
-id|devprobe
+id|devprobe2
 id|mca_probes
 (braket
 )braket
@@ -915,24 +915,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-(brace
-l_int|NULL
-comma
-l_int|0
-)brace
-comma
-)brace
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_struct
-id|devprobe2
-id|mca_probes2
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
 macro_line|#ifdef CONFIG_ELMC&t;&t;/* 3c523 */
 (brace
 id|elmc_probe
@@ -970,7 +952,7 @@ DECL|variable|__initdata
 r_static
 r_struct
 id|devprobe2
-id|isa_probes2
+id|isa_probes
 (braket
 )braket
 id|__initdata
@@ -1507,16 +1489,6 @@ id|eisa_probes
 )paren
 op_eq
 l_int|0
-op_logical_or
-id|probe_list
-c_func
-(paren
-id|dev
-comma
-id|mca_probes
-)paren
-op_eq
-l_int|0
 )paren
 id|err
 op_assign
@@ -1578,7 +1550,7 @@ c_func
 (paren
 id|unit
 comma
-id|mca_probes2
+id|mca_probes
 comma
 id|base_addr
 op_eq
@@ -1590,7 +1562,7 @@ c_func
 (paren
 id|unit
 comma
-id|isa_probes2
+id|isa_probes
 comma
 id|base_addr
 op_eq
