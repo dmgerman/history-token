@@ -1911,6 +1911,12 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* scsi_cmnd participates in queue lists */
+DECL|member|eh_list
+r_struct
+id|list_head
+id|eh_list
+suffix:semicolon
+multiline_comment|/* Used to place us on the host eh list */
 DECL|member|eh_state
 r_int
 id|eh_state
@@ -2436,16 +2442,24 @@ mdefine_line|#define scsi_eh_eflags_clr(scp, flags) do { &bslash;&n;&t;scp-&gt;e
 DECL|macro|scsi_eh_eflags_clr_all
 mdefine_line|#define scsi_eh_eflags_clr_all(scp) (scp-&gt;eh_eflags = 0)
 multiline_comment|/*&n; * Scsi Error Handler Flags&n; */
-DECL|macro|SCSI_EH_CMD_ERR
-mdefine_line|#define SCSI_EH_CMD_ERR&t;0x0001&t;/* Orig cmd error&squot;d */
-DECL|macro|SCSI_EH_CMD_FAILED
-mdefine_line|#define SCSI_EH_CMD_FAILED&t;0x0002&t;/* Orig cmd error type failed */
-DECL|macro|SCSI_EH_CMD_TIMEOUT
-mdefine_line|#define SCSI_EH_CMD_TIMEOUT&t;0x0004&t;/* Orig cmd error type timeout */
+DECL|macro|SCSI_EH_CANCEL_CMD
+mdefine_line|#define SCSI_EH_CANCEL_CMD&t;0x0001&t;/* Cancel this cmd */
 DECL|macro|SCSI_EH_REC_TIMEOUT
-mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0008&t;/* Recovery cmd timeout */
+mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0002&t;/* EH retry timed out */
 DECL|macro|SCSI_SENSE_VALID
 mdefine_line|#define SCSI_SENSE_VALID(scmd) ((scmd-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
+r_extern
+r_int
+id|scsi_eh_scmd_add
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_int
 id|scsi_set_medium_removal
 c_func
