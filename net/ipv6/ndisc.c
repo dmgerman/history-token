@@ -4230,12 +4230,16 @@ id|NUD_REACHABLE
 suffix:colon
 id|NUD_STALE
 comma
+id|NEIGH_UPDATE_F_SUSPECT_CONNECTED
+op_or
+(paren
 id|msg-&gt;icmph.icmp6_override
 ques
 c_cond
 id|NEIGH_UPDATE_F_OVERRIDE
 suffix:colon
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|neigh_release
