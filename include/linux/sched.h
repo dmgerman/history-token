@@ -893,6 +893,14 @@ id|rlim
 id|RLIM_NLIMITS
 )braket
 suffix:semicolon
+DECL|member|cpu_timers
+r_struct
+id|list_head
+id|cpu_timers
+(braket
+l_int|3
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
@@ -1700,6 +1708,27 @@ r_int
 id|min_flt
 comma
 id|maj_flt
+suffix:semicolon
+DECL|member|it_prof_expires
+DECL|member|it_virt_expires
+id|cputime_t
+id|it_prof_expires
+comma
+id|it_virt_expires
+suffix:semicolon
+DECL|member|it_sched_expires
+r_int
+r_int
+r_int
+id|it_sched_expires
+suffix:semicolon
+DECL|member|cpu_timers
+r_struct
+id|list_head
+id|cpu_timers
+(braket
+l_int|3
+)braket
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid

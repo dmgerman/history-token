@@ -1450,7 +1450,7 @@ id|t
 op_assign
 id|x-&gt;timer
 suffix:semicolon
-id|t-&gt;it_timer.magic
+id|t-&gt;it.mmtimer.clock
 op_assign
 id|x-&gt;i
 suffix:semicolon
@@ -1463,9 +1463,9 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|t-&gt;it_timer.expires
+id|t-&gt;it.mmtimer.expires
 op_add_assign
-id|t-&gt;it_incr
+id|t-&gt;it.mmtimer.incr
 op_lshift
 id|n
 suffix:semicolon
@@ -1497,7 +1497,7 @@ c_func
 (paren
 id|x-&gt;i
 comma
-id|t-&gt;it_timer.expires
+id|t-&gt;it.mmtimer.expires
 )paren
 )paren
 suffix:semicolon
@@ -1618,7 +1618,7 @@ id|base
 id|i
 )braket
 dot
-id|timer-&gt;it_timer.expires
+id|timer-&gt;it.mmtimer.expires
 suffix:semicolon
 multiline_comment|/* expires test won&squot;t work with shared irqs */
 r_if
@@ -1789,7 +1789,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;it_incr
+id|t-&gt;it.mmtimer.incr
 )paren
 (brace
 multiline_comment|/* Periodic timer */
@@ -1819,7 +1819,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Ensure we don&squot;t false trigger in mmtimer_interrupt */
-id|t-&gt;it_timer.expires
+id|t-&gt;it.mmtimer.expires
 op_assign
 l_int|0
 suffix:semicolon
@@ -1860,7 +1860,7 @@ id|timer
 )paren
 (brace
 multiline_comment|/* Insure that a newly created timer is off */
-id|timer-&gt;it_timer.magic
+id|timer-&gt;it.mmtimer.clock
 op_assign
 id|TIMER_OFF
 suffix:semicolon
@@ -1884,12 +1884,12 @@ id|timr
 r_int
 id|i
 op_assign
-id|timr-&gt;it_timer.magic
+id|timr-&gt;it.mmtimer.clock
 suffix:semicolon
 id|cnodeid_t
 id|nodeid
 op_assign
-id|timr-&gt;it_timer.data
+id|timr-&gt;it.mmtimer.node
 suffix:semicolon
 id|mmtimer_t
 op_star
@@ -1940,11 +1940,11 @@ id|t-&gt;timer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|timr-&gt;it_timer.magic
+id|timr-&gt;it.mmtimer.clock
 op_assign
 id|TIMER_OFF
 suffix:semicolon
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.mmtimer.expires
 op_assign
 l_int|0
 suffix:semicolon
@@ -1987,7 +1987,7 @@ id|cur_setting
 r_if
 c_cond
 (paren
-id|timr-&gt;it_timer.magic
+id|timr-&gt;it.mmtimer.clock
 op_eq
 id|TIMER_OFF
 )paren
@@ -2016,7 +2016,7 @@ c_func
 (paren
 id|cur_setting-&gt;it_interval
 comma
-id|timr-&gt;it_incr
+id|timr-&gt;it.mmtimer.incr
 op_star
 id|sgi_clock_period
 )paren
@@ -2027,7 +2027,7 @@ c_func
 id|cur_setting-&gt;it_value
 comma
 (paren
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.mmtimer.expires
 op_minus
 id|rtc_time
 c_func
@@ -2351,19 +2351,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|timr-&gt;it_timer.magic
+id|timr-&gt;it.mmtimer.clock
 op_assign
 id|i
 suffix:semicolon
-id|timr-&gt;it_timer.data
+id|timr-&gt;it.mmtimer.node
 op_assign
 id|nodeid
 suffix:semicolon
-id|timr-&gt;it_incr
+id|timr-&gt;it.mmtimer.incr
 op_assign
 id|period
 suffix:semicolon
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.mmtimer.expires
 op_assign
 id|when
 suffix:semicolon
@@ -2404,7 +2404,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.mmtimer.expires
 op_assign
 l_int|0
 suffix:semicolon
@@ -2412,7 +2412,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.mmtimer.expires
 op_sub_assign
 id|period
 suffix:semicolon

@@ -71,13 +71,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Just because the timer is not in the timer list does NOT mean it is&n; * inactive.  It could be in the &quot;fire&quot; routine getting a new expire time.&n; */
 DECL|macro|TIMER_INACTIVE
 mdefine_line|#define TIMER_INACTIVE 1
-DECL|macro|TIMER_RETRY
-mdefine_line|#define TIMER_RETRY 1
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|timer_active
-macro_line|# define timer_active(tmr) &bslash;&n;&t;&t;((tmr)-&gt;it_timer.entry.prev != (void *)TIMER_INACTIVE)
+macro_line|# define timer_active(tmr) &bslash;&n;&t;&t;((tmr)-&gt;it.real.timer.entry.prev != (void *)TIMER_INACTIVE)
 DECL|macro|set_timer_inactive
-macro_line|# define set_timer_inactive(tmr) &bslash;&n;&t;&t;do { &bslash;&n;&t;&t;&t;(tmr)-&gt;it_timer.entry.prev = (void *)TIMER_INACTIVE; &bslash;&n;&t;&t;} while (0)
+macro_line|# define set_timer_inactive(tmr) &bslash;&n;&t;&t;do { &bslash;&n;&t;&t;&t;(tmr)-&gt;it.real.timer.entry.prev = (void *)TIMER_INACTIVE; &bslash;&n;&t;&t;} while (0)
 macro_line|#else
 DECL|macro|timer_active
 macro_line|# define timer_active(tmr) BARFY&t;
@@ -89,8 +87,6 @@ multiline_comment|/*&n; * we assume that the new SIGEV_THREAD_ID shares no bits 
 macro_line|#if SIGEV_THREAD_ID != (SIGEV_THREAD_ID &amp; &bslash;&n;                       ~(SIGEV_SIGNAL | SIGEV_NONE | SIGEV_THREAD))
 macro_line|#error &quot;SIGEV_THREAD_ID must not share bit with other SIGEV values!&quot;
 macro_line|#endif
-DECL|macro|REQUEUE_PENDING
-mdefine_line|#define REQUEUE_PENDING 1
 multiline_comment|/*&n; * The timer ID is turned into a timer address by idr_find().&n; * Verifying a valid ID consists of:&n; *&n; * a) checking that idr_find() returns other than -1.&n; * b) checking that the timer id matches the one in the timer itself.&n; * c) that the timer owner is in the callers thread group.&n; */
 multiline_comment|/*&n; * CLOCKs: The POSIX standard calls for a couple of clocks and allows us&n; *&t;    to implement others.  This structure defines the various&n; *&t;    clocks and allows the possibility of adding others.&t; We&n; *&t;    provide an interface to add clocks to the table and expect&n; *&t;    the &quot;arch&quot; code to add at least one clock that is high&n; *&t;    resolution.&t; Here we define the standard CLOCK_REALTIME as a&n; *&t;    1/HZ resolution clock.&n; *&n; * RESOLUTION: Clock resolution is used to round up timer and interval&n; *&t;    times, NOT to report clock times, which are reported with as&n; *&t;    much resolution as the system can muster.  In some cases this&n; *&t;    resolution may depend on the underlying clock hardware and&n; *&t;    may not be quantifiable until run time, and only then is the&n; *&t;    necessary code is written.&t;The standard says we should say&n; *&t;    something about this issue in the documentation...&n; *&n; * FUNCTIONS: The CLOCKs structure defines possible functions to handle&n; *&t;    various clock functions.  For clocks that use the standard&n; *&t;    system timer code these entries should be NULL.  This will&n; *&t;    allow dispatch without the overhead of indirect function&n; *&t;    calls.  CLOCKS that depend on other sources (e.g. WWV or GPS)&n; *&t;    must supply functions here, even if the function just returns&n; *&t;    ENOSYS.  The standard POSIX timer management code assumes the&n; *&t;    following: 1.) The k_itimer struct (sched.h) is used for the&n; *&t;    timer.  2.) The list, it_lock, it_clock, it_id and it_process&n; *&t;    fields are not modified by timer code.&n; *&n; *          At this time all functions EXCEPT clock_nanosleep can be&n; *          redirected by the CLOCKS structure.  Clock_nanosleep is in&n; *          there, but the code ignores it.&n; *&n; * Permissions: It is assumed that the clock_settime() function defined&n; *&t;    for each clock will take care of permission checks.&t; Some&n; *&t;    clocks may be set able by any user (i.e. local process&n; *&t;    clocks) others not.&t; Currently the only set able clock we&n; *&t;    have is CLOCK_REALTIME and its high res counter part, both of&n; *&t;    which we beg off on and pass to do_sys_settimeofday().&n; */
 DECL|variable|posix_clocks
@@ -318,18 +314,21 @@ op_star
 id|new_timer
 )paren
 (brace
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|new_timer-&gt;it.real.abs_timer_entry
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren
 op_amp
-id|new_timer-&gt;it_timer
+id|new_timer-&gt;it.real.timer
 )paren
 suffix:semicolon
-id|new_timer-&gt;it_timer.expires
-op_assign
-l_int|0
-suffix:semicolon
-id|new_timer-&gt;it_timer.data
+id|new_timer-&gt;it.real.timer.data
 op_assign
 (paren
 r_int
@@ -337,7 +336,7 @@ r_int
 )paren
 id|new_timer
 suffix:semicolon
-id|new_timer-&gt;it_timer.function
+id|new_timer-&gt;it.real.timer.function
 op_assign
 id|posix_timer_fn
 suffix:semicolon
@@ -717,11 +716,11 @@ id|delta
 comma
 id|new_wall_to-&gt;tv_sec
 op_minus
-id|timr-&gt;wall_to_prev.tv_sec
+id|timr-&gt;it.real.wall_to_prev.tv_sec
 comma
 id|new_wall_to-&gt;tv_nsec
 op_minus
-id|timr-&gt;wall_to_prev.tv_nsec
+id|timr-&gt;it.real.wall_to_prev.tv_nsec
 )paren
 suffix:semicolon
 r_if
@@ -791,12 +790,12 @@ op_amp
 id|exp
 )paren
 suffix:semicolon
-id|timr-&gt;wall_to_prev
+id|timr-&gt;it.real.wall_to_prev
 op_assign
 op_star
 id|new_wall_to
 suffix:semicolon
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 op_add_assign
 (paren
 id|sign
@@ -832,7 +831,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 )paren
 (brace
@@ -847,7 +846,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -883,12 +882,12 @@ r_int
 r_int
 id|seq
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the timer for the next interval (if there is one).&n;&t; * Note: this code uses the abs_timer_lock to protect&n;&t; * wall_to_prev and must hold it until exp is set, not exactly&n;&t; * obvious...&n;&n;&t; * This function is used for CLOCK_REALTIME* and&n;&t; * CLOCK_MONOTONIC* timers.  If we ever want to handle other&n;&t; * CLOCKs, the calling code (do_schedule_next_timer) would need&n;&t; * to pull the &quot;clock&quot; info from the timer and dispatch the&n;&t; * &quot;other&quot; CLOCKs &quot;next timer&quot; code (which, I suppose should&n;&t; * also be added to the k_clock structure).&n;&t; */
+multiline_comment|/*&n;&t; * Set up the timer for the next interval (if there is one).&n;&t; * Note: this code uses the abs_timer_lock to protect&n;&t; * it.real.wall_to_prev and must hold it until exp is set, not exactly&n;&t; * obvious...&n;&n;&t; * This function is used for CLOCK_REALTIME* and&n;&t; * CLOCK_MONOTONIC* timers.  If we ever want to handle other&n;&t; * CLOCKs, the calling code (do_schedule_next_timer) would need&n;&t; * to pull the &quot;clock&quot; info from the timer and dispatch the&n;&t; * &quot;other&quot; CLOCKs &quot;next timer&quot; code (which, I suppose should&n;&t; * also be added to the k_clock structure).&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 )paren
 r_return
 suffix:semicolon
@@ -936,7 +935,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 )paren
 (brace
@@ -999,7 +998,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 suffix:semicolon
 )brace
@@ -1048,6 +1047,21 @@ id|info-&gt;si_sys_private
 r_goto
 m_exit
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|timr-&gt;it_clock
+OL
+l_int|0
+)paren
+multiline_comment|/* CPU clock */
+id|posix_cpu_timer_schedule
+c_func
+(paren
+id|timr
+)paren
+suffix:semicolon
+r_else
 id|schedule_next_timer
 c_func
 (paren
@@ -1265,7 +1279,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 )paren
 (brace
@@ -1313,11 +1327,11 @@ id|delta
 comma
 id|new_wall_to.tv_sec
 op_minus
-id|timr-&gt;wall_to_prev.tv_sec
+id|timr-&gt;it.real.wall_to_prev.tv_sec
 comma
 id|new_wall_to.tv_nsec
 op_minus
-id|timr-&gt;wall_to_prev.tv_nsec
+id|timr-&gt;it.real.wall_to_prev.tv_nsec
 )paren
 suffix:semicolon
 r_if
@@ -1369,11 +1383,11 @@ op_amp
 id|exp
 )paren
 suffix:semicolon
-id|timr-&gt;wall_to_prev
+id|timr-&gt;it.real.wall_to_prev
 op_assign
 id|new_wall_to
 suffix:semicolon
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 op_add_assign
 id|exp
 suffix:semicolon
@@ -1381,7 +1395,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 suffix:semicolon
 id|do_notify
@@ -1411,7 +1425,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 )paren
 id|si_private
 op_assign
@@ -1642,13 +1656,6 @@ r_sizeof
 r_struct
 id|k_itimer
 )paren
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|tmr-&gt;abs_timer_entry
 )paren
 suffix:semicolon
 r_if
@@ -1981,10 +1988,6 @@ suffix:semicolon
 id|new_timer-&gt;it_clock
 op_assign
 id|which_clock
-suffix:semicolon
-id|new_timer-&gt;it_incr
-op_assign
-l_int|0
 suffix:semicolon
 id|new_timer-&gt;it_overrun
 op_assign
@@ -2477,7 +2480,7 @@ suffix:semicolon
 r_do
 id|expires
 op_assign
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 suffix:semicolon
 r_while
 c_loop
@@ -2487,7 +2490,7 @@ r_volatile
 r_int
 )paren
 (paren
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 )paren
 op_ne
 id|expires
@@ -2517,19 +2520,19 @@ id|SIGEV_NONE
 )paren
 op_logical_and
 op_logical_neg
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 op_logical_and
 id|posix_time_before
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 comma
 op_amp
 id|now
 )paren
 )paren
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 op_assign
 id|expires
 op_assign
@@ -2568,7 +2571,7 @@ id|now
 suffix:semicolon
 id|expires
 op_assign
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 suffix:semicolon
 )brace
 r_else
@@ -2580,7 +2583,7 @@ id|timer_pending
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 )paren
 id|expires
@@ -2609,7 +2612,7 @@ suffix:semicolon
 id|jiffies_to_timespec
 c_func
 (paren
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 comma
 op_amp
 id|cur_setting-&gt;it_interval
@@ -3099,7 +3102,7 @@ id|old_setting
 )paren
 suffix:semicolon
 multiline_comment|/* disable the timer */
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 op_assign
 l_int|0
 suffix:semicolon
@@ -3119,7 +3122,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 )paren
 multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the&n;&t;&t; * complete melt down of the timer.  So return with&n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
@@ -3137,7 +3140,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3178,7 +3181,7 @@ op_logical_neg
 id|new_setting-&gt;it_value.tv_nsec
 )paren
 (brace
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 op_assign
 l_int|0
 suffix:semicolon
@@ -3206,7 +3209,7 @@ id|expire_64
 comma
 op_amp
 (paren
-id|timr-&gt;wall_to_prev
+id|timr-&gt;it.real.wall_to_prev
 )paren
 )paren
 )paren
@@ -3216,7 +3219,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|timr-&gt;it_timer.expires
+id|timr-&gt;it.real.timer.expires
 op_assign
 (paren
 r_int
@@ -3236,7 +3239,7 @@ op_amp
 id|expire_64
 )paren
 suffix:semicolon
-id|timr-&gt;it_incr
+id|timr-&gt;it.real.incr
 op_assign
 (paren
 r_int
@@ -3263,7 +3266,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 suffix:semicolon
 r_if
@@ -3288,7 +3291,7 @@ c_func
 (paren
 op_amp
 (paren
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 comma
 op_amp
@@ -3539,7 +3542,7 @@ op_star
 id|timer
 )paren
 (brace
-id|timer-&gt;it_incr
+id|timer-&gt;it.real.incr
 op_assign
 l_int|0
 suffix:semicolon
@@ -3558,7 +3561,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|timer-&gt;it_timer
+id|timer-&gt;it.real.timer
 )paren
 )paren
 multiline_comment|/*&n;&t;&t; * It can only be active if on an other cpu.  Since&n;&t;&t; * we have cleared the interval stuff above, it should&n;&t;&t; * clear once we release the spin lock.  Of course once&n;&t;&t; * we do that anything could happen, including the&n;&t;&t; * complete melt down of the timer.  So return with&n;&t;&t; * a &quot;retry&quot; exit status.&n;&t;&t; */
@@ -3570,7 +3573,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|timer-&gt;it_timer
+id|timer-&gt;it.real.timer
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4622,14 +4625,14 @@ comma
 r_struct
 id|k_itimer
 comma
-id|abs_timer_entry
+id|it.real.abs_timer_entry
 )paren
 suffix:semicolon
 id|list_del_init
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 )paren
 suffix:semicolon
 r_if
@@ -4648,7 +4651,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 )paren
 multiline_comment|/* timer run yet? */
@@ -4656,14 +4659,14 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|timr-&gt;it_timer
+id|timr-&gt;it.real.timer
 )paren
 suffix:semicolon
 id|list_add
 c_func
 (paren
 op_amp
-id|timr-&gt;abs_timer_entry
+id|timr-&gt;it.real.abs_timer_entry
 comma
 op_amp
 id|abs_list.list
@@ -4802,6 +4805,15 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/*&n;&t; * Do this here as nsleep function does not have the real address.&n;&t; */
+id|restart_block-&gt;arg1
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|rmtp
+suffix:semicolon
 id|ret
 op_assign
 id|CLOCK_DISPATCH
@@ -4820,15 +4832,6 @@ op_amp
 id|t
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Do this here as common_nsleep does not have the real address&n;&t; */
-id|restart_block-&gt;arg1
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|rmtp
 suffix:semicolon
 r_if
 c_cond

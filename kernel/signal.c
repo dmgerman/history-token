@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -1009,6 +1010,12 @@ op_amp
 id|sighand-&gt;siglock
 )paren
 suffix:semicolon
+id|posix_cpu_timers_exit
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1020,6 +1027,12 @@ id|sig-&gt;count
 )paren
 )paren
 (brace
+id|posix_cpu_timers_exit_group
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

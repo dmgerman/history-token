@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2936,6 +2937,12 @@ suffix:semicolon
 id|scheduler_tick
 c_func
 (paren
+)paren
+suffix:semicolon
+id|run_posix_cpu_timers
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 )brace
