@@ -120,7 +120,7 @@ l_int|0xb8
 comma
 l_int|0x3f
 comma
-l_int|0xa1
+l_int|0xa0
 comma
 l_int|0x00
 comma
