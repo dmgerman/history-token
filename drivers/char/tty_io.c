@@ -9707,13 +9707,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MOXA_SMARTIO
-id|mxser_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 macro_line|#ifdef CONFIG_MOXA_INTELLIO
 id|moxa_init
 c_func
