@@ -728,6 +728,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|sync_page_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sync_page_range
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * filemap_fdatawait - walk the list of under-writeback pages of the given&n; *     address space and wait for all of them.&n; *&n; * @mapping: address space structure to wait for&n; */
 DECL|function|filemap_fdatawait
 r_int
