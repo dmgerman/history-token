@@ -1243,7 +1243,14 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+r_if
+c_cond
+(paren
+id|p-&gt;interrupts
+(braket
+id|i
+)braket
+)paren
 id|__set_bit
 c_func
 (paren
@@ -1255,7 +1262,6 @@ comma
 id|irq-&gt;map
 )paren
 suffix:semicolon
-)brace
 id|irq-&gt;flags
 op_assign
 id|irq_flags
@@ -1347,7 +1353,14 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
+r_if
+c_cond
+(paren
+id|p-&gt;interrupts
+(braket
+id|i
+)braket
+)paren
 id|__set_bit
 c_func
 (paren
@@ -1359,7 +1372,6 @@ comma
 id|irq-&gt;map
 )paren
 suffix:semicolon
-)brace
 id|irq-&gt;flags
 op_assign
 id|irq_flags

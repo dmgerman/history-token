@@ -1056,9 +1056,12 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;wakeup.flags.valid
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|arg.integer.value
 op_assign
@@ -1111,9 +1114,12 @@ id|dev-&gt;wakeup.flags.valid
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1169,8 +1175,11 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_return
+id|return_VALUE
+c_func
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Shutdown a wakeup device, counterpart of above method&n; * 1. Disable _PSW (power state wake)&n; * 2. Shutdown down the power resources&n; */
@@ -1231,9 +1240,12 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;wakeup.flags.valid
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|arg.integer.value
 op_assign
@@ -1285,9 +1297,12 @@ id|dev-&gt;wakeup.flags.valid
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Close power resource */
@@ -1337,14 +1352,20 @@ id|dev-&gt;wakeup.flags.valid
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_VALUE
+c_func
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                             Device Power Management&n;   -------------------------------------------------------------------------- */
@@ -1859,8 +1880,11 @@ id|resource-&gt;references
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_power_open_fs

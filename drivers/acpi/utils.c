@@ -1492,8 +1492,11 @@ OG
 id|ACPI_MAX_HANDLES
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|list-&gt;count
