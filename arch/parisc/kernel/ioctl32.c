@@ -18046,6 +18046,22 @@ DECL|macro|IOCTL_TABLE_END
 mdefine_line|#define IOCTL_TABLE_END    }; struct ioctl_trans ioctl_end[0];
 id|IOCTL_TABLE_START
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
+multiline_comment|/* Might be moved to compat_ioctl.h with some ifdefs... */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTART
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTOP
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSLTC
+)paren
 multiline_comment|/* PA-specific ioctls */
 id|COMPATIBLE_IOCTL
 c_func
