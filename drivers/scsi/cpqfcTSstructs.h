@@ -362,9 +362,6 @@ DECL|macro|ELS_RJT
 mdefine_line|#define ELS_RJT 0x1000000
 DECL|macro|SCSI_REPORT_LUNS
 mdefine_line|#define SCSI_REPORT_LUNS 0x0A0
-DECL|macro|REPORT_LUNS
-mdefine_line|#define REPORT_LUNS 0xA0 
-singleline_comment|// SCSI-3 command op-code
 DECL|macro|FCP_TARGET_RESET
 mdefine_line|#define FCP_TARGET_RESET 0x200
 DECL|macro|ELS_LILP_FRAME
