@@ -362,7 +362,7 @@ op_assign
 r_void
 op_star
 )paren
-id|relsec-&gt;sh_offset
+id|relsec-&gt;sh_addr
 suffix:semicolon
 r_int
 r_int
@@ -450,7 +450,7 @@ op_assign
 id|Elf32_Sym
 op_star
 )paren
-id|symsec-&gt;sh_offset
+id|symsec-&gt;sh_addr
 )paren
 op_plus
 id|offset
@@ -518,7 +518,7 @@ suffix:semicolon
 )brace
 id|loc
 op_assign
-id|dstsec-&gt;sh_offset
+id|dstsec-&gt;sh_addr
 op_plus
 id|rel-&gt;r_offset
 suffix:semicolon

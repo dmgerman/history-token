@@ -256,7 +256,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 multiline_comment|/* Search (defined) internal symbols first. */
 r_for
@@ -3609,7 +3609,7 @@ id|sechdrs
 id|strindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 r_switch
 c_cond
@@ -3889,7 +3889,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 comma
 id|i
 op_assign
@@ -3998,7 +3998,7 @@ dot
 id|st_shndx
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_plus
 id|sym
 (braket
@@ -4025,7 +4025,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 comma
 id|i
 op_assign
@@ -4084,7 +4084,7 @@ id|sechdrs
 id|strindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 id|sym
 (braket
@@ -4542,6 +4542,26 @@ id|i
 op_increment
 )paren
 (brace
+multiline_comment|/* Mark all sections sh_addr with their address in the&n;&t;&t;   temporary image. */
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_addr
+op_assign
+(paren
+r_int
+)paren
+id|hdr
+op_plus
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_offset
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4860,14 +4880,12 @@ op_assign
 r_void
 op_star
 )paren
-id|hdr
-op_plus
 id|sechdrs
 (braket
 id|modindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 multiline_comment|/* Now copy in args */
 id|err
@@ -5128,7 +5146,7 @@ id|mod-&gt;module_init
 op_assign
 id|ptr
 suffix:semicolon
-multiline_comment|/* Transfer each section which requires ALLOC, and set sh_offset&n;&t;   fields to absolute addresses. */
+multiline_comment|/* Transfer each section which requires ALLOC, and set sh_addr&n;&t;   fields to absolute addresses. */
 id|used.core_size
 op_assign
 l_int|0
@@ -5210,7 +5228,7 @@ id|sechdrs
 id|i
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_assign
 (paren
 r_int
@@ -5229,22 +5247,6 @@ id|modindex
 id|mod
 op_assign
 id|ptr
-suffix:semicolon
-)brace
-r_else
-(brace
-id|sechdrs
-(braket
-id|i
-)braket
-dot
-id|sh_offset
-op_add_assign
-(paren
-r_int
-r_int
-)paren
-id|hdr
 suffix:semicolon
 )brace
 )brace
@@ -5332,7 +5334,7 @@ id|sechdrs
 id|exportindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 )brace
 multiline_comment|/* Set up exception table */
@@ -5371,7 +5373,7 @@ id|sechdrs
 id|exindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 )brace
 multiline_comment|/* Now handle each section. */
@@ -5438,7 +5440,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 id|mod-&gt;num_syms
 op_assign
@@ -5465,7 +5467,7 @@ id|sechdrs
 id|strindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 macro_line|#endif
 id|err
@@ -5519,7 +5521,7 @@ id|sechdrs
 id|obsparmindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 comma
 id|sechdrs
 (braket
@@ -5547,7 +5549,7 @@ id|sechdrs
 id|strindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 )paren
 suffix:semicolon
 )brace
@@ -5573,7 +5575,7 @@ id|sechdrs
 id|setupindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 comma
 id|sechdrs
 (braket

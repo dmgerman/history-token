@@ -175,7 +175,7 @@ id|sechdrs
 id|relsec
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 id|ElfW
 c_func
@@ -251,7 +251,7 @@ dot
 id|sh_info
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_plus
 id|rel
 (braket
@@ -276,7 +276,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_plus
 id|ELFW
 c_func
