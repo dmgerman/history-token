@@ -464,6 +464,10 @@ id|scc_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|scc_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|scc_driver.driver_name
 op_assign
 l_string|&quot;scc&quot;
@@ -3439,8 +3443,6 @@ c_func
 id|ptr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|scc_close
 r_static
@@ -3464,8 +3466,6 @@ c_func
 (paren
 id|ptr
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n; * Internal support functions&n; *--------------------------------------------------------------------------*/
@@ -4105,17 +4105,6 @@ id|port-&gt;gs.flags
 op_or_assign
 id|GS_ACTIVE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;gs.count
-op_eq
-l_int|1
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 id|retval
 op_assign
 id|gs_block_til_ready
@@ -4132,8 +4121,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|port-&gt;gs.count
 op_decrement
 suffix:semicolon
