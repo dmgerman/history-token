@@ -13207,11 +13207,6 @@ comma
 id|sectors
 suffix:semicolon
 r_int
-id|capacity
-op_assign
-id|capacity
-suffix:semicolon
-r_int
 r_char
 op_star
 id|buf
