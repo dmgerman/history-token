@@ -1293,6 +1293,10 @@ l_int|1
 )paren
 r_return
 suffix:semicolon
+(paren
+r_void
+)paren
+(paren
 id|probe_list2
 c_func
 (paren
@@ -1363,6 +1367,7 @@ comma
 id|base_addr
 op_eq
 l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
