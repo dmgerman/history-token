@@ -1662,24 +1662,5 @@ macro_line|#else
 DECL|macro|sector_div
 macro_line|# define sector_div(n, b)( &bslash;&n;{ &bslash;&n;&t;int _res; &bslash;&n;&t;_res = (n) % (b); &bslash;&n;&t;(n) /= (b); &bslash;&n;&t;_res; &bslash;&n;} &bslash;&n;)
 macro_line|#endif 
-r_extern
-id|atomic_t
-id|nr_iowait_tasks
-suffix:semicolon
-r_void
-id|io_schedule
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|io_schedule_timeout
-c_func
-(paren
-r_int
-id|timeout
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

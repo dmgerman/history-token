@@ -1789,7 +1789,7 @@ c_func
 id|i
 )paren
 dot
-id|cpustat.idle
+id|cpustat.iowait
 )paren
 )paren
 suffix:semicolon
@@ -1987,7 +1987,7 @@ l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
 l_string|&quot;procs_running %lu&bslash;n&quot;
-l_string|&quot;procs_blocked %u&bslash;n&quot;
+l_string|&quot;procs_blocked %lu&bslash;n&quot;
 comma
 id|nr_context_switches
 c_func
@@ -2007,11 +2007,9 @@ c_func
 (paren
 )paren
 comma
-id|atomic_read
+id|nr_iowait
 c_func
 (paren
-op_amp
-id|nr_iowait_tasks
 )paren
 )paren
 suffix:semicolon
