@@ -8513,12 +8513,12 @@ mdefine_line|#define EXT3_OLD_QFMT_BLOCKS 11
 multiline_comment|/* Blocks: quota info + (4 pointer blocks + 1 entry block) * (3 indirect + 1 descriptor + 1 bitmap) + superblock */
 DECL|macro|EXT3_V0_QFMT_BLOCKS
 mdefine_line|#define EXT3_V0_QFMT_BLOCKS 27
-DECL|variable|old_sync_dquot
+DECL|variable|old_write_dquot
 r_static
 r_int
 (paren
 op_star
-id|old_sync_dquot
+id|old_write_dquot
 )paren
 (paren
 r_struct
@@ -8527,10 +8527,10 @@ op_star
 id|dquot
 )paren
 suffix:semicolon
-DECL|function|ext3_sync_dquot
+DECL|function|ext3_write_dquot
 r_static
 r_int
-id|ext3_sync_dquot
+id|ext3_write_dquot
 c_func
 (paren
 r_struct
@@ -8647,7 +8647,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|old_sync_dquot
+id|old_write_dquot
 c_func
 (paren
 id|dquot
@@ -8804,13 +8804,13 @@ op_amp
 id|ext3_qops
 )paren
 suffix:semicolon
-id|old_sync_dquot
+id|old_write_dquot
 op_assign
-id|ext3_qops.sync_dquot
+id|ext3_qops.write_dquot
 suffix:semicolon
-id|ext3_qops.sync_dquot
+id|ext3_qops.write_dquot
 op_assign
-id|ext3_sync_dquot
+id|ext3_write_dquot
 suffix:semicolon
 macro_line|#endif
 id|err
