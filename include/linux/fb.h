@@ -193,6 +193,36 @@ DECL|macro|FB_ACCEL_NEOMAGIC_NM2360
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2360 97&t;/* NeoMagic NM2360              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2380
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2380 98&t;/* NeoMagic NM2380              */
+DECL|macro|FB_ACCEL_SAVAGE4
+mdefine_line|#define FB_ACCEL_SAVAGE4        0x80&t;/* S3 Savage4                   */
+DECL|macro|FB_ACCEL_SAVAGE3D
+mdefine_line|#define FB_ACCEL_SAVAGE3D       0x81&t;/* S3 Savage3D                  */
+DECL|macro|FB_ACCEL_SAVAGE3D_MV
+mdefine_line|#define FB_ACCEL_SAVAGE3D_MV    0x82&t;/* S3 Savage3D-MV               */
+DECL|macro|FB_ACCEL_SAVAGE2000
+mdefine_line|#define FB_ACCEL_SAVAGE2000     0x83&t;/* S3 Savage2000                */
+DECL|macro|FB_ACCEL_SAVAGE_MX_MV
+mdefine_line|#define FB_ACCEL_SAVAGE_MX_MV   0x84&t;/* S3 Savage/MX-MV              */
+DECL|macro|FB_ACCEL_SAVAGE_MX
+mdefine_line|#define FB_ACCEL_SAVAGE_MX      0x85&t;/* S3 Savage/MX                 */
+DECL|macro|FB_ACCEL_SAVAGE_IX_MV
+mdefine_line|#define FB_ACCEL_SAVAGE_IX_MV   0x86&t;/* S3 Savage/IX-MV              */
+DECL|macro|FB_ACCEL_SAVAGE_IX
+mdefine_line|#define FB_ACCEL_SAVAGE_IX      0x87&t;/* S3 Savage/IX                 */
+DECL|macro|FB_ACCEL_PROSAVAGE_PM
+mdefine_line|#define FB_ACCEL_PROSAVAGE_PM   0x88&t;/* S3 ProSavage PM133           */
+DECL|macro|FB_ACCEL_PROSAVAGE_KM
+mdefine_line|#define FB_ACCEL_PROSAVAGE_KM   0x89&t;/* S3 ProSavage KM133           */
+DECL|macro|FB_ACCEL_S3TWISTER_P
+mdefine_line|#define FB_ACCEL_S3TWISTER_P    0x8a&t;/* S3 Twister                   */
+DECL|macro|FB_ACCEL_S3TWISTER_K
+mdefine_line|#define FB_ACCEL_S3TWISTER_K    0x8b&t;/* S3 TwisterK                  */
+DECL|macro|FB_ACCEL_SUPERSAVAGE
+mdefine_line|#define FB_ACCEL_SUPERSAVAGE    0x8c    /* S3 Supersavage               */
+DECL|macro|FB_ACCEL_PROSAVAGE_DDR
+mdefine_line|#define FB_ACCEL_PROSAVAGE_DDR  0x8d&t;/* S3 ProSavage DDR             */
+DECL|macro|FB_ACCEL_PROSAVAGE_DDRK
+mdefine_line|#define FB_ACCEL_PROSAVAGE_DDRK 0x8e&t;/* S3 ProSavage DDR-K           */
 DECL|struct|fb_fix_screeninfo
 r_struct
 id|fb_fix_screeninfo
