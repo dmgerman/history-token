@@ -7216,6 +7216,8 @@ id|__ffs
 c_func
 (paren
 id|p-&gt;cpus_allowed
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 id|rq_dest

@@ -1049,6 +1049,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_CRYPTO
 r_int
 id|i
 comma
@@ -1173,6 +1174,7 @@ op_assign
 id|status
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|xfrm_count_auth_supported
 r_int

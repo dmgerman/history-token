@@ -261,6 +261,8 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/* Activate a new MM instance for the current task. */
 DECL|function|activate_mm
 r_static
