@@ -132,6 +132,10 @@ r_int
 id|nbytes
 )paren
 (brace
+id|walk-&gt;data
+op_add_assign
+id|nbytes
+suffix:semicolon
 id|walk-&gt;offset
 op_add_assign
 id|nbytes

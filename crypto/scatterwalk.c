@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;internal.h&quot;
 macro_line|#include &quot;scatterwalk.h&quot;
@@ -104,6 +105,13 @@ id|walk-&gt;len_this_segment
 op_assign
 id|sg-&gt;length
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|sg-&gt;length
+)paren
+suffix:semicolon
 id|rest_of_page
 op_assign
 id|PAGE_CACHE_SIZE
@@ -160,6 +168,34 @@ op_plus
 id|walk-&gt;offset
 suffix:semicolon
 )brace
+DECL|function|scatterwalk_unmap
+r_static
+r_inline
+r_void
+id|scatterwalk_unmap
+c_func
+(paren
+r_struct
+id|scatter_walk
+op_star
+id|walk
+comma
+r_int
+id|out
+)paren
+(brace
+multiline_comment|/* walk-&gt;data may be pointing the first byte of the next page;&n;&t;   however, we know we transfered at least one byte.  So,&n;&t;   walk-&gt;data - 1 will be a virtual address in the mapped page. */
+id|crypto_kunmap
+c_func
+(paren
+id|walk-&gt;data
+op_minus
+l_int|1
+comma
+id|out
+)paren
+suffix:semicolon
+)brace
 DECL|function|scatterwalk_pagedone
 r_static
 r_void
@@ -179,7 +215,6 @@ r_int
 id|more
 )paren
 (brace
-multiline_comment|/* walk-&gt;data may be pointing the first byte of the next page;&n;&t;   however, we know we transfered at least one byte.  So,&n;&t;   walk-&gt;data - 1 will be a virtual address in the mapped page. */
 r_if
 c_cond
 (paren
@@ -260,10 +295,10 @@ r_int
 id|more
 )paren
 (brace
-id|crypto_kunmap
+id|scatterwalk_unmap
 c_func
 (paren
-id|walk-&gt;data
+id|walk
 comma
 id|out
 )paren
@@ -333,10 +368,10 @@ id|nbytes
 op_sub_assign
 id|walk-&gt;len_this_page
 suffix:semicolon
-id|crypto_kunmap
+id|scatterwalk_unmap
 c_func
 (paren
-id|walk-&gt;data
+id|walk
 comma
 id|out
 )paren
