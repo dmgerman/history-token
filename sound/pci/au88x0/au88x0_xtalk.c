@@ -251,10 +251,11 @@ l_int|0
 )brace
 suffix:semicolon
 singleline_comment|// Input gain for 4 A3D slices. One possible input pair is left zero.
-DECL|variable|vortex_asXtalkGainsAllChan
+DECL|variable|asXtalkGainsAllChan
+r_static
 id|xtalk_gains_t
 r_const
-id|vortex_asXtalkGainsAllChan
+id|asXtalkGainsAllChan
 op_assign
 (brace
 l_int|0x7FFF
@@ -4709,6 +4710,26 @@ id|i
 )paren
 suffix:semicolon
 )brace
+)brace
+r_static
+r_void
+DECL|function|vortex_XtalkHw_SetGainsAllChan
+id|vortex_XtalkHw_SetGainsAllChan
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+)paren
+(brace
+id|vortex_XtalkHw_SetGains
+c_func
+(paren
+id|vortex
+comma
+id|asXtalkGainsAllChan
+)paren
+suffix:semicolon
 )brace
 macro_line|#if 0
 r_static

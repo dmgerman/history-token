@@ -3246,12 +3246,10 @@ c_func
 id|v
 )paren
 suffix:semicolon
-id|vortex_XtalkHw_SetGains
+id|vortex_XtalkHw_SetGainsAllChan
 c_func
 (paren
 id|v
-comma
-id|vortex_asXtalkGainsAllChan
 )paren
 suffix:semicolon
 r_switch
