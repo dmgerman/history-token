@@ -683,7 +683,7 @@ mdefine_line|#define SLB_VSID_KERNEL&t;&t;(SLB_VSID_KP|SLB_VSID_C)
 DECL|macro|SLB_VSID_USER
 mdefine_line|#define SLB_VSID_USER&t;&t;(SLB_VSID_KP|SLB_VSID_KS)
 DECL|macro|VSID_MULTIPLIER
-mdefine_line|#define VSID_MULTIPLIER&t;ASM_CONST(268435399)&t;/* largest 28-bit prime */
+mdefine_line|#define VSID_MULTIPLIER&t;ASM_CONST(200730139)&t;/* 28-bit prime */
 DECL|macro|VSID_BITS
 mdefine_line|#define VSID_BITS&t;36
 DECL|macro|VSID_MODULUS
