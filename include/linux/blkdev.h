@@ -25,12 +25,12 @@ id|request_queue
 id|request_queue_t
 suffix:semicolon
 r_struct
-id|elevator_s
+id|elevator_queue
 suffix:semicolon
 DECL|typedef|elevator_t
 r_typedef
 r_struct
-id|elevator_s
+id|elevator_queue
 id|elevator_t
 suffix:semicolon
 r_struct
@@ -250,6 +250,10 @@ id|wait
 (braket
 l_int|2
 )braket
+suffix:semicolon
+DECL|member|drain
+id|wait_queue_head_t
+id|drain
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -865,6 +869,7 @@ id|last_merge
 suffix:semicolon
 DECL|member|elevator
 id|elevator_t
+op_star
 id|elevator
 suffix:semicolon
 multiline_comment|/*&n;&t; * the queue request freelist, one for reads and one for writes&n;&t; */
@@ -1102,6 +1107,8 @@ DECL|macro|QUEUE_FLAG_PLUGGED
 mdefine_line|#define QUEUE_FLAG_PLUGGED&t;7&t;/* queue is plugged */
 DECL|macro|QUEUE_FLAG_ORDERED
 mdefine_line|#define QUEUE_FLAG_ORDERED&t;8&t;/* supports ordered writes */
+DECL|macro|QUEUE_FLAG_DRAIN
+mdefine_line|#define QUEUE_FLAG_DRAIN&t;9&t;/* draining queue for sched switch */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_tagged
@@ -2252,6 +2259,24 @@ id|nr_blockdev_pages
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_wait_queue_drained
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_finish_queue_drain
+c_func
+(paren
+id|request_queue_t
+op_star
 )paren
 suffix:semicolon
 r_int
