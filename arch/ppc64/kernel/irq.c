@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
