@@ -1547,12 +1547,14 @@ id|priv-&gt;dmaStorageDMA
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 id|pci_release_regions
 c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|free_netdev
 c_func
 (paren
@@ -2462,6 +2464,7 @@ id|dev
 suffix:semicolon
 id|err_out_regions
 suffix:colon
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -2473,6 +2476,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|err_out
 suffix:colon
 r_if
