@@ -652,6 +652,10 @@ r_int
 r_int
 id|usp
 comma
+r_int
+op_star
+id|user_tid
+comma
 r_struct
 id|switch_stack
 op_star
@@ -678,16 +682,6 @@ id|swstack
 op_plus
 l_int|1
 )paren
-suffix:semicolon
-r_int
-op_star
-id|user_tid
-op_assign
-(paren
-r_int
-op_star
-)paren
-id|u_regs-&gt;r19
 suffix:semicolon
 r_if
 c_cond
@@ -1018,6 +1012,20 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* set FEN, clear everything else */
+multiline_comment|/* Set a new TLS for the child thread?  Peek back into the&n;&t;   syscall arguments that we saved on syscall entry.  */
+id|childti-&gt;pcb.unique
+op_assign
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+ques
+c_cond
+id|regs-&gt;r19
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
