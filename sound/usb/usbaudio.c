@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by &n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *  NOTES:&n; *&n; *   - async unlink should be used for avoiding the sleep inside lock.&n; *     2.4.22 usb-uhci seems buggy for async unlinking and results in&n; *     oops.  in such a cse, pass async_unlink=0 option.&n; *   - the linked URBs would be preferred but not used so far because of&n; *     the instability of unlinking.&n; *   - type II is not supported properly.  there is no device which supports&n; *     this type *correctly*.  SB extigy looks as if it supports, but it&squot;s&n; *     indeed an AC3 stream packed in SPDIF frames (i.e. no real AC3 stream).&n; */
+multiline_comment|/*&n; *   (Tentative) USB Audio Driver for ALSA&n; *&n; *   Main and PCM part&n; *&n; *   Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   Many codes borrowed from audio.c by&n; *&t;    Alan Cox (alan@lxorguk.ukuu.org.uk)&n; *&t;    Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *  NOTES:&n; *&n; *   - async unlink should be used for avoiding the sleep inside lock.&n; *     2.4.22 usb-uhci seems buggy for async unlinking and results in&n; *     oops.  in such a cse, pass async_unlink=0 option.&n; *   - the linked URBs would be preferred but not used so far because of&n; *     the instability of unlinking.&n; *   - type II is not supported properly.  there is no device which supports&n; *     this type *correctly*.  SB extigy looks as if it supports, but it&squot;s&n; *     indeed an AC3 stream packed in SPDIF frames (i.e. no real AC3 stream).&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -283,7 +283,7 @@ multiline_comment|/*&n; * debug the h/w constraints&n; */
 multiline_comment|/* #define HW_CONST_DEBUG */
 multiline_comment|/*&n; *&n; */
 DECL|macro|MAX_PACKS
-mdefine_line|#define MAX_PACKS&t;10&t;
+mdefine_line|#define MAX_PACKS&t;10
 DECL|macro|MAX_PACKS_HS
 mdefine_line|#define MAX_PACKS_HS&t;(MAX_PACKS * 8)&t;/* in high speed mode */
 DECL|macro|MAX_URBS
@@ -3704,7 +3704,7 @@ op_minus
 id|EPIPE
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *  wait until all urbs are processed.&n; */
+multiline_comment|/*&n; *  wait until all urbs are processed.&n; */
 DECL|function|wait_clear_urbs
 r_static
 r_int
@@ -15275,7 +15275,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * we need to take care of counter, since disconnection can be called also&n; * many times as well as usb_audio_probe(). &n; */
+multiline_comment|/*&n; * we need to take care of counter, since disconnection can be called also&n; * many times as well as usb_audio_probe().&n; */
 DECL|function|snd_usb_audio_disconnect
 r_static
 r_void
