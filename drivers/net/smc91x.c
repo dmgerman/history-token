@@ -33,9 +33,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_ARM
-macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;smc91x.h&quot;
 macro_line|#ifdef CONFIG_ISA
