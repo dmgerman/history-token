@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 140 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 141 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -2027,7 +2027,6 @@ id|reference.target_type
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
-multiline_comment|/* Ensure that the Buffer arguments are evaluated */
 id|temp_desc
 op_assign
 id|operand
@@ -2037,28 +2036,6 @@ l_int|0
 op_member_access_from_pointer
 id|reference.object
 suffix:semicolon
-macro_line|#if 0
-id|status
-op_assign
-id|acpi_ds_get_buffer_arguments
-(paren
-id|temp_desc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Create a new object that contains one element of the&n;&t;&t;&t;&t;&t; * buffer -- the element pointed to by the index.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * NOTE: index into a buffer is NOT a pointer to a&n;&t;&t;&t;&t;&t; * sub-buffer of the main buffer, it is only a pointer to a&n;&t;&t;&t;&t;&t; * single element (byte) of the buffer!&n;&t;&t;&t;&t;&t; */
 id|return_desc
 op_assign
@@ -2100,34 +2077,6 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
-macro_line|#if 0
-multiline_comment|/* Ensure that the Package arguments are evaluated */
-id|status
-op_assign
-id|acpi_ds_get_package_arguments
-(paren
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|reference.object
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Return the referenced element of the package.  We must add&n;&t;&t;&t;&t;&t; * another reference to the referenced object, however.&n;&t;&t;&t;&t;&t; */
 id|return_desc
 op_assign
@@ -2223,6 +2172,29 @@ l_int|0
 op_member_access_from_pointer
 id|reference.object
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|return_desc
+)paren
+op_eq
+id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+id|return_desc
+op_assign
+id|acpi_ns_get_attached_object
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Add another reference to the object! */
 id|acpi_ut_add_reference
 (paren

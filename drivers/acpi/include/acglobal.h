@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 126 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 128 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -247,6 +247,15 @@ id|acpi_gbl_aml_op_info
 id|AML_NUM_OPCODES
 )braket
 suffix:semicolon
+r_extern
+r_const
+id|NATIVE_CHAR
+op_star
+id|acpi_gbl_region_types
+(braket
+id|ACPI_NUM_PREDEFINED_REGIONS
+)braket
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
 DECL|macro|NUM_NS_TYPES
 mdefine_line|#define NUM_NS_TYPES                    INTERNAL_TYPE_INVALID+1
@@ -413,6 +422,18 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_db_output_flags
 suffix:semicolon
+macro_line|#ifdef ACPI_DISASSEMBLER
+DECL|variable|acpi_gbl_db_opt_disasm
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_db_opt_disasm
+suffix:semicolon
+DECL|variable|acpi_gbl_db_opt_verbose
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_db_opt_verbose
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef ENABLE_DEBUGGER
 r_extern
 id|u8
@@ -438,20 +459,10 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_db_opt_tables
 suffix:semicolon
-DECL|variable|acpi_gbl_db_opt_disasm
-id|ACPI_EXTERN
-id|u8
-id|acpi_gbl_db_opt_disasm
-suffix:semicolon
 DECL|variable|acpi_gbl_db_opt_stats
 id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_db_opt_stats
-suffix:semicolon
-DECL|variable|acpi_gbl_db_opt_verbose
-id|ACPI_EXTERN
-id|u8
-id|acpi_gbl_db_opt_verbose
 suffix:semicolon
 DECL|variable|acpi_gbl_db_opt_ini_methods
 id|ACPI_EXTERN
@@ -515,12 +526,6 @@ id|ACPI_EXTERN
 id|NATIVE_CHAR
 op_star
 id|acpi_gbl_db_filename
-suffix:semicolon
-DECL|variable|acpi_gbl_db_disasm_indent
-id|ACPI_EXTERN
-id|NATIVE_CHAR
-op_star
-id|acpi_gbl_db_disasm_indent
 suffix:semicolon
 DECL|variable|acpi_gbl_db_debug_level
 id|ACPI_EXTERN
