@@ -3376,11 +3376,6 @@ OL
 l_int|0
 )paren
 (brace
-id|io_pid
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3391,6 +3386,11 @@ comma
 op_minus
 id|io_pid
 )paren
+suffix:semicolon
+id|io_pid
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 l_int|0
