@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Siemens Card Controller Module specific definitions&n; * &n; * Copyright (c) 2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * Siemens Card Controller Module specific definitions&n; * &n; * Copyright (C) 2001-2002 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_CCM_H
 DECL|macro|__MACH_CCM_H
 mdefine_line|#define __MACH_CCM_H
@@ -13,11 +13,11 @@ mdefine_line|#define&t;IMAP_ADDR     CCM_IMMR_BASE&t;/* physical base address of
 DECL|macro|IMAP_SIZE
 mdefine_line|#define IMAP_SIZE     CCM_IMAP_SIZE&t;/* mapped size of IMMR area&t;&t;*/
 DECL|macro|FEC_INTERRUPT
-mdefine_line|#define&t;FEC_INTERRUPT&t;15&t;&t;/* = SIU_LEVEL7&t;&t;&t;&t;*/
+mdefine_line|#define&t;FEC_INTERRUPT&t;13&t;&t;/* = SIU_LEVEL6&t;&t;&t;&t;*/
 DECL|macro|DEC_INTERRUPT
-mdefine_line|#define&t;DEC_INTERRUPT&t;13&t;&t;/* = SIU_LEVEL6&t;&t;&t;&t;*/
+mdefine_line|#define&t;DEC_INTERRUPT&t;11&t;&t;/* = SIU_LEVEL5&t;&t;&t;&t;*/
 DECL|macro|CPM_INTERRUPT
-mdefine_line|#define&t;CPM_INTERRUPT&t;11&t;&t;/* = SIU_LEVEL5 (was: SIU_LEVEL2)&t;*/
+mdefine_line|#define&t;CPM_INTERRUPT&t; 9&t;&t;/* = SIU_LEVEL4&t;&t;&t;&t;*/
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
