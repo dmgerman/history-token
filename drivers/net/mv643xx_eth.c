@@ -1,50 +1,28 @@
-multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/ip.h&gt;
+multiline_comment|/*&n; * drivers/net/mv643xx_eth.c - Driver for MV643XX ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *&t;&t;&t;   Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * Copyright (C) 2004 Steven J. Hill &lt;sjhill1@rockwellcollins.com&gt;&n; *&t;&t;&t;&t;     &lt;sjhill@realitydiluted.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
-multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
-multiline_comment|/* Definition for configuring driver */
-DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
-macro_line|#undef MV64340_RX_QUEUE_FILL_ON_TASK
+multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports.&n; */
 multiline_comment|/* Constants */
-DECL|macro|EXTRA_BYTES
-mdefine_line|#define EXTRA_BYTES 32
 DECL|macro|WRAP
-mdefine_line|#define WRAP       ETH_HLEN + 2 + 4 + 16
-DECL|macro|BUFFER_MTU
-mdefine_line|#define BUFFER_MTU dev-&gt;mtu + WRAP
+mdefine_line|#define WRAP&t;&t;&t;&t;ETH_HLEN + 2 + 4
+DECL|macro|RX_SKB_SIZE
+mdefine_line|#define RX_SKB_SIZE&t;&t;&t;((dev-&gt;mtu + WRAP + 7) &amp; ~0x7)
 DECL|macro|INT_CAUSE_UNMASK_ALL
 mdefine_line|#define INT_CAUSE_UNMASK_ALL&t;&t;0x0007ffff
 DECL|macro|INT_CAUSE_UNMASK_ALL_EXT
 mdefine_line|#define INT_CAUSE_UNMASK_ALL_EXT&t;0x0011ffff
-macro_line|#ifdef MV64340_RX_FILL_ON_TASK
+macro_line|#ifdef MV643XX_RX_QUEUE_FILL_ON_TASK
 DECL|macro|INT_CAUSE_MASK_ALL
 mdefine_line|#define INT_CAUSE_MASK_ALL&t;&t;0x00000000
 DECL|macro|INT_CAUSE_CHECK_BITS
@@ -52,10 +30,47 @@ mdefine_line|#define INT_CAUSE_CHECK_BITS&t;&t;INT_CAUSE_UNMASK_ALL
 DECL|macro|INT_CAUSE_CHECK_BITS_EXT
 mdefine_line|#define INT_CAUSE_CHECK_BITS_EXT&t;INT_CAUSE_UNMASK_ALL_EXT
 macro_line|#endif
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
+DECL|macro|MAX_DESCS_PER_SKB
+mdefine_line|#define MAX_DESCS_PER_SKB&t;(MAX_SKB_FRAGS + 1)
+macro_line|#else
+DECL|macro|MAX_DESCS_PER_SKB
+mdefine_line|#define MAX_DESCS_PER_SKB&t;1
+macro_line|#endif
+DECL|macro|PHY_WAIT_ITERATIONS
+mdefine_line|#define PHY_WAIT_ITERATIONS&t;1000&t;/* 1000 iterations * 10uS = 10mS max */
+DECL|macro|PHY_WAIT_MICRO_SECONDS
+mdefine_line|#define PHY_WAIT_MICRO_SECONDS&t;10
 multiline_comment|/* Static function declarations */
 r_static
 r_int
-id|mv64340_eth_real_open
+id|eth_port_link_is_up
+c_func
+(paren
+r_int
+r_int
+id|eth_port_num
+)paren
+suffix:semicolon
+r_static
+r_void
+id|eth_port_uc_addr_get
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_char
+op_star
+id|MacAddr
+)paren
+suffix:semicolon
+r_static
+r_int
+id|mv643xx_eth_real_open
 c_func
 (paren
 r_struct
@@ -65,7 +80,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|mv64340_eth_real_stop
+id|mv643xx_eth_real_stop
 c_func
 (paren
 r_struct
@@ -75,7 +90,7 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|mv64340_eth_change_mtu
+id|mv643xx_eth_change_mtu
 c_func
 (paren
 r_struct
@@ -89,7 +104,7 @@ r_static
 r_struct
 id|net_device_stats
 op_star
-id|mv64340_eth_get_stats
+id|mv643xx_eth_get_stats
 c_func
 (paren
 r_struct
@@ -107,10 +122,10 @@ r_int
 id|eth_port_num
 )paren
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 r_static
 r_int
-id|mv64340_poll
+id|mv643xx_poll
 c_func
 (paren
 r_struct
@@ -124,24 +139,117 @@ id|budget
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|prom_mac_addr_base
+r_static
+r_void
+id|ethernet_phy_set
+c_func
+(paren
 r_int
-r_char
-id|prom_mac_addr_base
-(braket
-l_int|6
-)braket
+r_int
+id|eth_port_num
+comma
+r_int
+id|phy_addr
+)paren
 suffix:semicolon
-DECL|variable|mv64340_sram_base
-r_int
-r_int
-id|mv64340_sram_base
-suffix:semicolon
-multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input : pointer to ethernet interface network device structure&n; *         new mtu size &n; * Output : 0 upon success, -EINVAL upon failure&n; */
-DECL|function|mv64340_eth_change_mtu
 r_static
 r_int
-id|mv64340_eth_change_mtu
+id|ethernet_phy_detect
+c_func
+(paren
+r_int
+r_int
+id|eth_port_num
+)paren
+suffix:semicolon
+DECL|variable|mv64x60_eth_shared_base
+r_static
+r_void
+id|__iomem
+op_star
+id|mv64x60_eth_shared_base
+suffix:semicolon
+multiline_comment|/* used to protect MV643XX_ETH_SMI_REG, which is shared across ports */
+DECL|variable|mv643xx_eth_phy_lock
+r_static
+id|spinlock_t
+id|mv643xx_eth_phy_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|mv_read
+r_static
+r_inline
+id|u32
+id|mv_read
+c_func
+(paren
+r_int
+id|offset
+)paren
+(brace
+r_void
+op_star
+id|__iomem
+id|reg_base
+suffix:semicolon
+id|reg_base
+op_assign
+id|mv64x60_eth_shared_base
+op_minus
+id|MV643XX_ETH_SHARED_REGS
+suffix:semicolon
+r_return
+id|readl
+c_func
+(paren
+id|reg_base
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+DECL|function|mv_write
+r_static
+r_inline
+r_void
+id|mv_write
+c_func
+(paren
+r_int
+id|offset
+comma
+id|u32
+id|data
+)paren
+(brace
+r_void
+op_star
+id|__iomem
+id|reg_base
+suffix:semicolon
+id|reg_base
+op_assign
+id|mv64x60_eth_shared_base
+op_minus
+id|MV643XX_ETH_SHARED_REGS
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|data
+comma
+id|reg_base
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; *&t;&t;new mtu size&n; * Output :&t;0 upon success, -EINVAL upon failure&n; */
+DECL|function|mv643xx_eth_change_mtu
+r_static
+r_int
+id|mv643xx_eth_change_mtu
 c_func
 (paren
 r_struct
@@ -154,7 +262,7 @@ id|new_mtu
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -211,7 +319,7 @@ id|dev-&gt;mtu
 op_assign
 id|new_mtu
 suffix:semicolon
-multiline_comment|/* &n;&t; * Stop then re-open the interface. This will allocate RX skb&squot;s with&n;&t; * the new MTU.&n;&t; * There is a possible danger that the open will not successed, due&n;&t; * to memory is full, which might fail the open function.&n;&t; */
+multiline_comment|/*&n;&t; * Stop then re-open the interface. This will allocate RX skb&squot;s with&n;&t; * the new MTU.&n;&t; * There is a possible danger that the open will not successed, due&n;&t; * to memory is full, which might fail the open function.&n;&t; */
 r_if
 c_cond
 (paren
@@ -225,7 +333,7 @@ id|dev
 r_if
 c_cond
 (paren
-id|mv64340_eth_real_stop
+id|mv643xx_eth_real_stop
 c_func
 (paren
 id|dev
@@ -243,7 +351,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mv64340_eth_real_open
+id|mv643xx_eth_real_open
 c_func
 (paren
 id|dev
@@ -272,11 +380,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_rx_task&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Fills / refills RX queue on a certain gigabit ethernet port&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_rx_task
+multiline_comment|/*&n; * mv643xx_eth_rx_task&n; *&n; * Fills / refills RX queue on a certain gigabit ethernet port&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_rx_task
 r_static
 r_void
-id|mv64340_eth_rx_task
+id|mv643xx_eth_rx_task
 c_func
 (paren
 r_void
@@ -297,7 +405,7 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -348,17 +456,12 @@ l_int|5
 )paren
 )paren
 (brace
-multiline_comment|/* The +8 for buffer allignment and another 32 byte extra */
 id|skb
 op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|BUFFER_MTU
-op_plus
-l_int|8
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -367,7 +470,6 @@ c_cond
 op_logical_neg
 id|skb
 )paren
-multiline_comment|/* Better luck next time */
 r_break
 suffix:semicolon
 id|mp-&gt;rx_ring_skbs
@@ -379,56 +481,20 @@ id|ETH_RX_ENABLE_INTERRUPT
 suffix:semicolon
 id|pkt_info.byte_cnt
 op_assign
-id|dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
-op_plus
-l_int|2
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 suffix:semicolon
-multiline_comment|/* Allign buffer to 8 bytes */
-r_if
-c_cond
-(paren
-id|pkt_info.byte_cnt
-op_amp
-op_complement
-l_int|0x7
-)paren
-(brace
-id|pkt_info.byte_cnt
-op_and_assign
-op_complement
-l_int|0x7
-suffix:semicolon
-id|pkt_info.byte_cnt
-op_add_assign
-l_int|8
-suffix:semicolon
-)brace
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
-id|dev-&gt;mtu
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|4
-op_plus
-l_int|2
-op_plus
-id|EXTRA_BYTES
+id|RX_SKB_SIZE
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
@@ -529,14 +595,14 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if MV64340_RX_QUEUE_FILL_ON_TASK
+macro_line|#ifdef MV643XX_RX_QUEUE_FILL_ON_TASK
 r_else
 (brace
 multiline_comment|/* Return interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|mp-&gt;port_num
@@ -548,11 +614,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * mv64340_eth_rx_task_timer_wrapper&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Timer routine to wake up RX queue filling task. This function is&n; * used only in case the RX queue is empty, and all alloc_skb has&n; * failed (due to out of memory event).&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_rx_task_timer_wrapper
+multiline_comment|/*&n; * mv643xx_eth_rx_task_timer_wrapper&n; *&n; * Timer routine to wake up RX queue filling task. This function is&n; * used only in case the RX queue is empty, and all alloc_skb has&n; * failed (due to out of memory event).&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_rx_task_timer_wrapper
 r_static
 r_void
-id|mv64340_eth_rx_task_timer_wrapper
+id|mv643xx_eth_rx_task_timer_wrapper
 c_func
 (paren
 r_int
@@ -573,7 +639,7 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -587,7 +653,7 @@ id|mp-&gt;rx_timer_flag
 op_assign
 l_int|0
 suffix:semicolon
-id|mv64340_eth_rx_task
+id|mv643xx_eth_rx_task
 c_func
 (paren
 (paren
@@ -598,11 +664,11 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_update_mac_address&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Update the MAC address of the port in the address table&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_update_mac_address
+multiline_comment|/*&n; * mv643xx_eth_update_mac_address&n; *&n; * Update the MAC address of the port in the address table&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_update_mac_address
 r_static
 r_void
-id|mv64340_eth_update_mac_address
+id|mv643xx_eth_update_mac_address
 c_func
 (paren
 r_struct
@@ -612,7 +678,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -653,11 +719,11 @@ id|mp-&gt;port_mac_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_set_rx_mode&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Change from promiscuos to regular rx mode&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_set_rx_mode
+multiline_comment|/*&n; * mv643xx_eth_set_rx_mode&n; *&n; * Change from promiscuos to regular rx mode&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_set_rx_mode
 r_static
 r_void
-id|mv64340_eth_set_rx_mode
+id|mv643xx_eth_set_rx_mode
 c_func
 (paren
 r_struct
@@ -667,7 +733,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -677,6 +743,17 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|u32
+id|config_reg
+suffix:semicolon
+id|config_reg
+op_assign
+id|ethernet_get_config_reg
+c_func
+(paren
+id|mp-&gt;port_num
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -684,48 +761,36 @@ id|dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
-(brace
-id|ethernet_set_config_reg
+id|config_reg
+op_or_assign
 (paren
-id|mp-&gt;port_num
-comma
-id|ethernet_get_config_reg
-c_func
-(paren
-id|mp-&gt;port_num
+id|u32
 )paren
-op_or
-id|ETH_UNICAST_PROMISCUOUS_MODE
-)paren
+id|MV643XX_ETH_UNICAST_PROMISCUOUS_MODE
 suffix:semicolon
-)brace
 r_else
-(brace
-id|ethernet_set_config_reg
-(paren
-id|mp-&gt;port_num
-comma
-id|ethernet_get_config_reg
-c_func
-(paren
-id|mp-&gt;port_num
-)paren
-op_amp
+id|config_reg
+op_and_assign
 op_complement
 (paren
-r_int
-r_int
+id|u32
 )paren
-id|ETH_UNICAST_PROMISCUOUS_MODE
+id|MV643XX_ETH_UNICAST_PROMISCUOUS_MODE
+suffix:semicolon
+id|ethernet_set_config_reg
+c_func
+(paren
+id|mp-&gt;port_num
+comma
+id|config_reg
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * mv64340_eth_set_mac_address&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Change the interface&squot;s mac address.&n; * No special hardware thing should be done because interface is always&n; * put in promiscuous mode.&n; *&n; * Input : pointer to ethernet interface network device structure and&n; *         a pointer to the designated entry to be added to the cache.&n; * Output : zero upon success, negative upon failure&n; */
-DECL|function|mv64340_eth_set_mac_address
+multiline_comment|/*&n; * mv643xx_eth_set_mac_address&n; *&n; * Change the interface&squot;s mac address.&n; * No special hardware thing should be done because interface is always&n; * put in promiscuous mode.&n; *&n; * Input :&t;pointer to ethernet interface network device structure and&n; *&t;&t;a pointer to the designated entry to be added to the cache.&n; * Output :&t;zero upon success, negative upon failure&n; */
+DECL|function|mv643xx_eth_set_mac_address
 r_static
 r_int
-id|mv64340_eth_set_mac_address
+id|mv643xx_eth_set_mac_address
 c_func
 (paren
 r_struct
@@ -775,7 +840,7 @@ op_plus
 l_int|2
 )braket
 suffix:semicolon
-id|mv64340_eth_update_mac_address
+id|mv643xx_eth_update_mac_address
 c_func
 (paren
 id|dev
@@ -785,11 +850,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_tx_timeout&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Called upon a timeout on transmitting a packet&n; *&n; * Input : pointer to ethernet interface network device structure.&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_tx_timeout
+multiline_comment|/*&n; * mv643xx_eth_tx_timeout&n; *&n; * Called upon a timeout on transmitting a packet&n; *&n; * Input :&t;pointer to ethernet interface network device structure.&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_tx_timeout
 r_static
 r_void
-id|mv64340_eth_tx_timeout
+id|mv643xx_eth_tx_timeout
 c_func
 (paren
 r_struct
@@ -799,7 +864,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -827,11 +892,11 @@ id|mp-&gt;tx_timeout_task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_tx_timeout_task&n; *&n; * Actual routine to reset the adapter when a timeout on Tx has occurred&n; */
-DECL|function|mv64340_eth_tx_timeout_task
+multiline_comment|/*&n; * mv643xx_eth_tx_timeout_task&n; *&n; * Actual routine to reset the adapter when a timeout on Tx has occurred&n; */
+DECL|function|mv643xx_eth_tx_timeout_task
 r_static
 r_void
-id|mv64340_eth_tx_timeout_task
+id|mv643xx_eth_tx_timeout_task
 c_func
 (paren
 r_struct
@@ -841,7 +906,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -876,11 +941,11 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_free_tx_queue&n; *&n; * Input : dev - a pointer to the required interface&n; *&n; * Output : 0 if was able to release skb , nonzero otherwise&n; */
-DECL|function|mv64340_eth_free_tx_queue
+multiline_comment|/*&n; * mv643xx_eth_free_tx_queue&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&n; * Output :&t;0 if was able to release skb , nonzero otherwise&n; */
+DECL|function|mv643xx_eth_free_tx_queue
 r_static
 r_int
-id|mv64340_eth_free_tx_queue
+id|mv643xx_eth_free_tx_queue
 c_func
 (paren
 r_struct
@@ -894,7 +959,7 @@ id|eth_int_cause_ext
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -981,28 +1046,13 @@ id|stats-&gt;tx_errors
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * If return_info is different than 0, release the skb.&n;&t;&t; * The case where return_info is not 0 is only in case&n;&t;&t; * when transmitted a scatter/gather packet, where only&n;&t;&t; * last skb releases the whole chain.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If return_info is different than 0, release the skb.&n;&t;&t; * The case where return_info is not 0 is only in case&n;&t;&t; * when transmitted a scatter/gather packet, where only&n;&t;&t; * last skb releases the whole chain.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|pkt_info.return_info
 )paren
 (brace
-id|dev_kfree_skb_irq
-c_func
-(paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-id|pkt_info.return_info
-)paren
-suffix:semicolon
-id|released
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1014,7 +1064,7 @@ id|pkt_info.return_info
 op_member_access_from_pointer
 id|nr_frags
 )paren
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -1023,22 +1073,11 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|mp-&gt;tx_ring_skbs
-op_ne
-l_int|1
-)paren
-id|mp-&gt;tx_ring_skbs
-op_decrement
-suffix:semicolon
-)brace
 r_else
-id|pci_unmap_page
+id|dma_unmap_single
 c_func
 (paren
 l_int|NULL
@@ -1047,10 +1086,20 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Decrement the number of outstanding skbs counter on&n;&t;&t; * the TX queue.&n;&t;&t; */
+id|dev_kfree_skb_irq
+c_func
+(paren
+id|pkt_info.return_info
+)paren
+suffix:semicolon
+id|released
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Decrement the number of outstanding skbs counter on&n;&t;&t;&t; * the TX queue.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1061,7 +1110,25 @@ l_int|0
 id|panic
 c_func
 (paren
-l_string|&quot;ERROR - TX outstanding SKBs counter is corrupted&quot;
+l_string|&quot;ERROR - TX outstanding SKBs&quot;
+l_string|&quot; counter is corrupted&quot;
+)paren
+suffix:semicolon
+id|mp-&gt;tx_ring_skbs
+op_decrement
+suffix:semicolon
+)brace
+r_else
+id|dma_unmap_page
+c_func
+(paren
+l_int|NULL
+comma
+id|pkt_info.buf_ptr
+comma
+id|pkt_info.byte_cnt
+comma
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -1076,22 +1143,18 @@ r_return
 id|released
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_receive&n; *&n; * This function is forward packets that are received from the port&squot;s&n; * queues toward kernel core or FastRoute them to another interface.&n; *&n; * Input : dev - a pointer to the required interface&n; *         max - maximum number to receive (0 means unlimted)&n; *&n; * Output : number of served packets&n; */
-macro_line|#ifdef MV64340_NAPI
-DECL|function|mv64340_eth_receive_queue
+multiline_comment|/*&n; * mv643xx_eth_receive&n; *&n; * This function is forward packets that are received from the port&squot;s&n; * queues toward kernel core or FastRoute them to another interface.&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&t;&t;max - maximum number to receive (0 means unlimted)&n; *&n; * Output :&t;number of served packets&n; */
+macro_line|#ifdef MV643XX_NAPI
+DECL|function|mv643xx_eth_receive_queue
 r_static
 r_int
-id|mv64340_eth_receive_queue
+id|mv643xx_eth_receive_queue
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-r_int
-id|max
 comma
 r_int
 id|budget
@@ -1099,22 +1162,18 @@ id|budget
 macro_line|#else
 r_static
 r_int
-id|mv64340_eth_receive_queue
+id|mv643xx_eth_receive_queue
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_int
-r_int
-id|max
 )paren
 macro_line|#endif
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -1147,7 +1206,7 @@ r_struct
 id|pkt_info
 id|pkt_info
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 r_while
 c_loop
 (paren
@@ -1171,11 +1230,6 @@ macro_line|#else
 r_while
 c_loop
 (paren
-(paren
-op_decrement
-id|max
-)paren
-op_logical_and
 id|eth_port_receive
 c_func
 (paren
@@ -1195,7 +1249,7 @@ suffix:semicolon
 id|received_packets
 op_increment
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 id|budget
 op_decrement
 suffix:semicolon
@@ -1210,11 +1264,6 @@ id|pkt_info.byte_cnt
 suffix:semicolon
 id|skb
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|pkt_info.return_info
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In case received a packet without first / last bits on OR&n;&t;&t; * the error summary bit is on, the packets needs to be dropeed.&n;&t;&t; */
@@ -1281,8 +1330,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Received packet spread on multiple&quot;
-l_string|&quot; descriptors&bslash;n&quot;
+l_string|&quot;%s: Received packet spread &quot;
+l_string|&quot;on multiple descriptors&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1359,7 +1408,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 id|netif_receive_skb
 c_func
 (paren
@@ -1380,11 +1429,11 @@ r_return
 id|received_packets
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_int_handler&n; *&n; * Main interrupt handler for the gigbit ethernet ports&n; *&n; * Input : irq - irq number (not used)&n; *         dev_id - a pointer to the required interface&squot;s data structure&n; *         regs   - not used&n; * Output : N/A&n; */
-DECL|function|mv64340_eth_int_handler
+multiline_comment|/*&n; * mv643xx_eth_int_handler&n; *&n; * Main interrupt handler for the gigbit ethernet ports&n; *&n; * Input :&t;irq&t;- irq number (not used)&n; *&t;&t;dev_id&t;- a pointer to the required interface&squot;s data structure&n; *&t;&t;regs&t;- not used&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_eth_int_handler
 r_static
 id|irqreturn_t
-id|mv64340_eth_int_handler
+id|mv643xx_eth_int_handler
 c_func
 (paren
 r_int
@@ -1413,7 +1462,7 @@ op_star
 id|dev_id
 suffix:semicolon
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -1439,10 +1488,10 @@ suffix:semicolon
 multiline_comment|/* Read interrupt cause registers */
 id|eth_int_cause
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_REG
 c_func
 (paren
 id|port_num
@@ -1460,10 +1509,10 @@ id|BIT1
 )paren
 id|eth_int_cause_ext
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
 c_func
 (paren
 id|port_num
@@ -1472,7 +1521,7 @@ id|port_num
 op_amp
 id|INT_CAUSE_UNMASK_ALL_EXT
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 r_if
 c_cond
 (paren
@@ -1486,11 +1535,11 @@ l_int|0x0007fffd
 (brace
 multiline_comment|/* Dont ack the Rx interrupt */
 macro_line|#endif
-multiline_comment|/*&n;&t; &t; * Clear specific ethernet port intrerrupt registers by&n;&t;&t; * acknowleding relevant bits.&n;&t;&t; */
-id|MV_WRITE
+multiline_comment|/*&n;&t;&t; * Clear specific ethernet port intrerrupt registers by&n;&t;&t; * acknowleding relevant bits.&n;&t;&t; */
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_REG
 c_func
 (paren
 id|port_num
@@ -1507,11 +1556,10 @@ id|eth_int_cause_ext
 op_ne
 l_int|0x0
 )paren
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
-c_func
+id|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
 (paren
 id|port_num
 )paren
@@ -1531,7 +1579,7 @@ l_int|0x0000ffff
 )paren
 op_logical_and
 (paren
-id|mv64340_eth_free_tx_queue
+id|mv643xx_eth_free_tx_queue
 c_func
 (paren
 id|dev
@@ -1543,11 +1591,11 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 OG
 id|mp-&gt;tx_ring_skbs
 op_plus
-l_int|1
+id|MAX_DESCS_PER_SKB
 )paren
 )paren
 id|netif_wake_queue
@@ -1556,7 +1604,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 )brace
 r_else
 (brace
@@ -1571,10 +1619,10 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Mask all the interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|port_num
@@ -1583,11 +1631,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
-c_func
+id|MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG
 (paren
 id|port_num
 )paren
@@ -1603,7 +1650,6 @@ id|dev
 suffix:semicolon
 )brace
 macro_line|#else
-(brace
 r_if
 c_cond
 (paren
@@ -1615,7 +1661,7 @@ op_or
 id|BIT11
 )paren
 )paren
-id|mv64340_eth_receive_queue
+id|mv643xx_eth_receive_queue
 c_func
 (paren
 id|dev
@@ -1623,13 +1669,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer,  add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
-macro_line|#if MV64340_RX_QUEUE_FILL_ON_TASK
+multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer, add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
+macro_line|#ifdef MV643XX_RX_QUEUE_FILL_ON_TASK
 multiline_comment|/* Unmask all interrupts on ethernet port */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|port_num
@@ -1679,59 +1725,53 @@ id|BIT20
 )paren
 )paren
 (brace
-r_int
-r_int
-id|phy_reg_data
-suffix:semicolon
-multiline_comment|/* Check Link status on ethernet port */
-id|eth_port_read_smi_reg
-c_func
-(paren
-id|port_num
-comma
-l_int|1
-comma
-op_amp
-id|phy_reg_data
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|eth_port_link_is_up
+c_func
 (paren
-id|phy_reg_data
-op_amp
-l_int|0x20
+id|port_num
 )paren
 )paren
 (brace
-id|netif_stop_queue
+id|netif_carrier_on
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Start all TX queues on ethernet port. This is good in&n;&t;&t;&t; * case of previous packets where not transmitted, due&n;&t;&t;&t; * to link down and this command re-enables all TX&n;&t;&t;&t; * queues.&n;&t;&t;&t; * Note that it is possible to get a TX resource error&n;&t;&t;&t; * interrupt after issuing this, since not all TX queues&n;&t;&t;&t; * are enabled, or has anything to send.&n;&t;&t;&t; */
-id|MV_WRITE
+multiline_comment|/* Start TX queue */
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
-c_func
+id|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
 (paren
 id|port_num
 )paren
 comma
 l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1759,8 +1799,8 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#ifdef MV64340_COAL
-multiline_comment|/*&n; * eth_port_set_rx_coal - Sets coalescing interrupt mechanism on RX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the RX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the tClk of the MV-643xx chip&n; *&t;, and the required delay of the interrupt in usec.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num      Ethernet port number&n; *&t;unsigned int t_clk        t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay       Delay in usec&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
+macro_line|#ifdef MV643XX_COAL
+multiline_comment|/*&n; * eth_port_set_rx_coal - Sets coalescing interrupt mechanism on RX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the RX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the tClk of the MV-643xx chip&n; *&t;, and the required delay of the interrupt in usec.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num&t;Ethernet port number&n; *&t;unsigned int t_clk&t;&t;t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay&t;&t;Delay in usec&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
 DECL|function|eth_port_set_rx_coal
 r_static
 r_int
@@ -1798,10 +1838,10 @@ op_div
 l_int|64
 suffix:semicolon
 multiline_comment|/* Set RX Coalescing mechanism */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_SDMA_CONFIG_REG
+id|MV643XX_ETH_SDMA_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -1818,10 +1858,10 @@ l_int|8
 )paren
 op_or
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_SDMA_CONFIG_REG
+id|MV643XX_ETH_SDMA_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -1837,7 +1877,7 @@ id|coal
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * eth_port_set_tx_coal - Sets coalescing interrupt mechanism on TX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the TX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the t_cLK frequency of the &n; *&t;MV-643xx chip and the required delay in the interrupt in uSec&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num      Ethernet port number&n; *&t;unsigned int t_clk        t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay       Delay in uSeconds&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
+multiline_comment|/*&n; * eth_port_set_tx_coal - Sets coalescing interrupt mechanism on TX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the TX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the t_cLK frequency of the&n; *&t;MV-643xx chip and the required delay in the interrupt in uSec&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num&t;Ethernet port number&n; *&t;unsigned int t_clk&t;&t;t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay&t;&t;Delay in uSeconds&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
 DECL|function|eth_port_set_tx_coal
 r_static
 r_int
@@ -1877,10 +1917,10 @@ op_div
 l_int|64
 suffix:semicolon
 multiline_comment|/* Set TX Coalescing mechanism */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_TX_FIFO_URGENT_THRESHOLD_REG
+id|MV643XX_ETH_TX_FIFO_URGENT_THRESHOLD_REG
 c_func
 (paren
 id|eth_port_num
@@ -1895,11 +1935,11 @@ r_return
 id|coal
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_open&n; *&n; * This function is called when openning the network device. The function&n; * should initialize all the hardware, initialize cyclic Rx/Tx&n; * descriptors chain and buffers and allocate an IRQ to the network&n; * device.&n; *&n; * Input : a pointer to the network device structure&n; *&n; * Output : zero of success , nonzero if fails.&n; */
-DECL|function|mv64340_eth_open
+multiline_comment|/*&n; * mv643xx_eth_open&n; *&n; * This function is called when openning the network device. The function&n; * should initialize all the hardware, initialize cyclic Rx/Tx&n; * descriptors chain and buffers and allocate an IRQ to the network&n; * device.&n; *&n; * Input :&t;a pointer to the network device structure&n; *&n; * Output :&t;zero of success , nonzero if fails.&n; */
+DECL|function|mv643xx_eth_open
 r_static
 r_int
-id|mv64340_eth_open
+id|mv643xx_eth_open
 c_func
 (paren
 r_struct
@@ -1909,7 +1949,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -1927,8 +1967,6 @@ id|mp-&gt;port_num
 suffix:semicolon
 r_int
 id|err
-op_assign
-id|err
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -1944,7 +1982,7 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|mv64340_eth_int_handler
+id|mv643xx_eth_int_handler
 comma
 id|SA_INTERRUPT
 op_or
@@ -1965,7 +2003,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Can not assign IRQ number to MV64340_eth%d&bslash;n&quot;
+l_string|&quot;Can not assign IRQ number to MV643XX_eth%d&bslash;n&quot;
 comma
 id|port_num
 )paren
@@ -1982,7 +2020,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mv64340_eth_real_open
+id|mv643xx_eth_real_open
 c_func
 (paren
 id|dev
@@ -2039,29 +2077,19 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Rx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *      int &t;&t;&t;rx_desc_num       Number of Rx descriptors&n; *      int &t;&t;&t;rx_buff_size      Size of Rx buffer&n; *      unsigned int    rx_desc_base_addr  Rx descriptors memory area base addr.&n; *      unsigned int    rx_buff_base_addr  Rx buffer memory area base addr.&n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *      false if the given descriptors memory area is not aligned according to&n; *      Ethernet SDMA specifications.&n; *      true otherwise.&n; */
+multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *&t;This function prepares a Rx chained list of descriptors and packet&n; *&t;buffers in a form of a ring. The routine must be called after port&n; *&t;initialization routine and before port start routine.&n; *&t;The Ethernet SDMA engine uses CPU bus addresses to access the various&n; *&t;devices in the system (i.e. DRAM). This function uses the ethernet&n; *&t;struct &squot;virtual to physical&squot; routine (set by the user) to set the ring&n; *&t;with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private *mp&t;Ethernet Port Control srtuct.&n; *&n; * OUTPUT:&n; *&t;The routine updates the Ethernet port control struct with information&n; *&t;regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|ether_init_rx_desc_ring
 r_static
-r_int
+r_void
 id|ether_init_rx_desc_ring
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
-comma
-r_int
-r_int
-id|rx_buff_base_addr
 )paren
 (brace
-r_int
-r_int
-id|buffer_addr
-op_assign
-id|rx_buff_base_addr
-suffix:semicolon
 r_volatile
 r_struct
 id|eth_rx_desc
@@ -2074,24 +2102,9 @@ op_assign
 id|mp-&gt;rx_ring_size
 suffix:semicolon
 r_int
-r_int
-id|rx_desc_base_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|mp-&gt;p_rx_desc_area
-suffix:semicolon
-r_int
-id|rx_buff_size
-op_assign
-l_int|1536
-suffix:semicolon
-multiline_comment|/* Dummy, will be replaced later */
-r_int
 id|i
 suffix:semicolon
+multiline_comment|/* initialize the next_desc_ptr links in the Rx descriptors ring */
 id|p_rx_desc
 op_assign
 (paren
@@ -2099,54 +2112,8 @@ r_struct
 id|eth_rx_desc
 op_star
 )paren
-id|rx_desc_base_addr
+id|mp-&gt;p_rx_desc_area
 suffix:semicolon
-multiline_comment|/* Rx desc Must be 4LW aligned (i.e. Descriptor_Address[3:0]=0000). */
-r_if
-c_cond
-(paren
-id|rx_buff_base_addr
-op_amp
-l_int|0xf
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Rx buffers are limited to 64K bytes and Minimum size is 8 bytes  */
-r_if
-c_cond
-(paren
-(paren
-id|rx_buff_size
-OL
-l_int|8
-)paren
-op_logical_or
-(paren
-id|rx_buff_size
-OG
-id|RX_BUFFER_MAX_SIZE
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* Rx buffers must be 64-bit aligned.       */
-r_if
-c_cond
-(paren
-(paren
-id|rx_buff_base_addr
-op_plus
-id|rx_buff_size
-)paren
-op_amp
-l_int|0x7
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* initialize the Rx descriptors ring */
 r_for
 c_loop
 (paren
@@ -2162,35 +2129,6 @@ id|i
 op_increment
 )paren
 (brace
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_size
-op_assign
-id|rx_buff_size
-suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|byte_cnt
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|cmd_sts
-op_assign
-id|ETH_BUFFER_OWNED_BY_DMA
-op_or
-id|ETH_RX_ENABLE_INTERRUPT
-suffix:semicolon
 id|p_rx_desc
 (braket
 id|i
@@ -2216,26 +2154,6 @@ r_struct
 id|eth_rx_desc
 )paren
 suffix:semicolon
-id|p_rx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_ptr
-op_assign
-id|buffer_addr
-suffix:semicolon
-id|mp-&gt;rx_skb
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|buffer_addr
-op_add_assign
-id|rx_buff_size
-suffix:semicolon
 )brace
 multiline_comment|/* Save Rx desc pointer to driver struct. */
 id|mp-&gt;rx_curr_desc_q
@@ -2256,37 +2174,25 @@ r_struct
 id|eth_rx_desc
 )paren
 suffix:semicolon
+multiline_comment|/* Add the queue to the list of RX queues of this port */
 id|mp-&gt;port_rx_queue_command
 op_or_assign
 l_int|1
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Tx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *      int &t;&t;tx_desc_num        Number of Tx descriptors&n; *      int &t;&t;tx_buff_size&t;   Size of Tx buffer&n; *      unsigned int    tx_desc_base_addr  Tx descriptors memory area base addr.&n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *      false if the given descriptors memory area is not aligned according to&n; *      Ethernet SDMA specifications.&n; *      true otherwise.&n; */
+multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *&t;This function prepares a Tx chained list of descriptors and packet&n; *&t;buffers in a form of a ring. The routine must be called after port&n; *&t;initialization routine and before port start routine.&n; *&t;The Ethernet SDMA engine uses CPU bus addresses to access the various&n; *&t;devices in the system (i.e. DRAM). This function uses the ethernet&n; *&t;struct &squot;virtual to physical&squot; routine (set by the user) to set the ring&n; *&t;with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private *mp&t;Ethernet Port Control srtuct.&n; *&n; * OUTPUT:&n; *&t;The routine updates the Ethernet port control struct with information&n; *&t;regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|ether_init_tx_desc_ring
 r_static
-r_int
+r_void
 id|ether_init_tx_desc_ring
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 )paren
 (brace
-r_int
-r_int
-id|tx_desc_base_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|mp-&gt;p_tx_desc_area
-suffix:semicolon
 r_int
 id|tx_desc_num
 op_assign
@@ -2300,18 +2206,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Tx desc Must be 4LW aligned (i.e. Descriptor_Address[3:0]=0000). */
-r_if
-c_cond
-(paren
-id|tx_desc_base_addr
-op_amp
-l_int|0xf
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* save the first desc pointer to link with the last descriptor */
+multiline_comment|/* Initialize the next_desc_ptr links in the Tx descriptors ring */
 id|p_tx_desc
 op_assign
 (paren
@@ -2319,9 +2214,8 @@ r_struct
 id|eth_tx_desc
 op_star
 )paren
-id|tx_desc_base_addr
+id|mp-&gt;p_tx_desc_area
 suffix:semicolon
-multiline_comment|/* Initialize the Tx descriptors ring */
 r_for
 c_loop
 (paren
@@ -2337,33 +2231,6 @@ id|i
 op_increment
 )paren
 (brace
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|byte_cnt
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|l4i_chk
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|cmd_sts
-op_assign
-l_int|0x00000000
-suffix:semicolon
 id|p_tx_desc
 (braket
 id|i
@@ -2389,24 +2256,7 @@ r_struct
 id|eth_tx_desc
 )paren
 suffix:semicolon
-id|p_tx_desc
-(braket
-id|i
-)braket
-dot
-id|buf_ptr
-op_assign
-l_int|0x00000000
-suffix:semicolon
-id|mp-&gt;tx_skb
-(braket
-id|i
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
-multiline_comment|/* Set Tx desc pointer in driver struct. */
 id|mp-&gt;tx_curr_desc_q
 op_assign
 l_int|0
@@ -2415,13 +2265,12 @@ id|mp-&gt;tx_used_desc_q
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 id|mp-&gt;tx_first_desc_q
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Init Tx ring base and size parameters */
 id|mp-&gt;tx_desc_area_size
 op_assign
 id|tx_desc_num
@@ -2437,15 +2286,12 @@ id|mp-&gt;port_tx_queue_command
 op_or_assign
 l_int|1
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-multiline_comment|/* Helper function for mv64340_eth_open */
-DECL|function|mv64340_eth_real_open
+multiline_comment|/* Helper function for mv643xx_eth_open */
+DECL|function|mv643xx_eth_real_open
 r_static
 r_int
-id|mv64340_eth_real_open
+id|mv643xx_eth_real_open
 c_func
 (paren
 r_struct
@@ -2455,7 +2301,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -2471,18 +2317,21 @@ id|port_num
 op_assign
 id|mp-&gt;port_num
 suffix:semicolon
-id|u32
-id|phy_reg_data
-suffix:semicolon
 r_int
 r_int
 id|size
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|u32
+id|port_serial_control_reg
+suffix:semicolon
 multiline_comment|/* Stop RX Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
 c_func
 (paren
 id|port_num
@@ -2492,10 +2341,10 @@ l_int|0x0000ff00
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the ethernet port interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_REG
 c_func
 (paren
 id|port_num
@@ -2504,10 +2353,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
 c_func
 (paren
 id|port_num
@@ -2517,10 +2366,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask RX buffer and TX end interrupt */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|port_num
@@ -2530,10 +2379,10 @@ id|INT_CAUSE_UNMASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask phy and link status changes interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
+id|MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG
 c_func
 (paren
 id|port_num
@@ -2575,7 +2424,7 @@ r_void
 op_star
 )paren
 )paren
-id|mv64340_eth_rx_task
+id|mv643xx_eth_rx_task
 comma
 id|dev
 )paren
@@ -2597,7 +2446,7 @@ id|timer_list
 suffix:semicolon
 id|mp-&gt;timeout.function
 op_assign
-id|mv64340_eth_rx_task_timer_wrapper
+id|mv643xx_eth_rx_task_timer_wrapper
 suffix:semicolon
 id|mp-&gt;timeout.data
 op_assign
@@ -2615,14 +2464,91 @@ id|mp-&gt;rx_timer_flag
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Allocate RX and TX skb rings */
+id|mp-&gt;rx_skb
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|mp-&gt;rx_skb
+)paren
+op_star
+id|mp-&gt;rx_ring_size
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mp-&gt;rx_skb
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Cannot allocate Rx skb ring&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|mp-&gt;tx_skb
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|mp-&gt;tx_skb
+)paren
+op_star
+id|mp-&gt;tx_ring_size
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mp-&gt;tx_skb
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Cannot allocate Tx skb ring&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mp-&gt;rx_skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate TX ring */
 id|mp-&gt;tx_ring_skbs
 op_assign
 l_int|0
-suffix:semicolon
-id|mp-&gt;tx_ring_size
-op_assign
-id|MV64340_TX_QUEUE_SIZE
 suffix:semicolon
 id|size
 op_assign
@@ -2638,10 +2564,31 @@ id|mp-&gt;tx_desc_area_size
 op_assign
 id|size
 suffix:semicolon
-multiline_comment|/* Assumes allocated ring is 16 bytes alligned */
+r_if
+c_cond
+(paren
+id|mp-&gt;tx_sram_size
+)paren
+(brace
 id|mp-&gt;p_tx_desc_area
 op_assign
-id|pci_alloc_consistent
+id|ioremap
+c_func
+(paren
+id|mp-&gt;tx_sram_addr
+comma
+id|mp-&gt;tx_sram_size
+)paren
+suffix:semicolon
+id|mp-&gt;tx_desc_dma
+op_assign
+id|mp-&gt;tx_sram_addr
+suffix:semicolon
+)brace
+r_else
+id|mp-&gt;p_tx_desc_area
+op_assign
+id|dma_alloc_coherent
 c_func
 (paren
 l_int|NULL
@@ -2650,6 +2597,8 @@ id|size
 comma
 op_amp
 id|mp-&gt;tx_desc_dma
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2670,11 +2619,35 @@ comma
 id|size
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mp-&gt;rx_skb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mp-&gt;tx_skb
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|BUG_ON
+c_func
+(paren
+(paren
+id|u32
+)paren
+id|mp-&gt;p_tx_desc_area
+op_amp
+l_int|0xf
+)paren
+suffix:semicolon
+multiline_comment|/* check 16-byte alignment */
 id|memset
 c_func
 (paren
@@ -2689,7 +2662,6 @@ comma
 id|mp-&gt;tx_desc_area_size
 )paren
 suffix:semicolon
-multiline_comment|/* Dummy will be replaced upon real tx */
 id|ether_init_tx_desc_ring
 c_func
 (paren
@@ -2697,11 +2669,6 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate RX ring */
-multiline_comment|/* Meantime RX Ring are fixed - but must be configurable by user */
-id|mp-&gt;rx_ring_size
-op_assign
-id|MV64340_RX_QUEUE_SIZE
-suffix:semicolon
 id|mp-&gt;rx_ring_skbs
 op_assign
 l_int|0
@@ -2720,10 +2687,31 @@ id|mp-&gt;rx_desc_area_size
 op_assign
 id|size
 suffix:semicolon
-multiline_comment|/* Assumes allocated ring is 16 bytes aligned */
+r_if
+c_cond
+(paren
+id|mp-&gt;rx_sram_size
+)paren
+(brace
 id|mp-&gt;p_rx_desc_area
 op_assign
-id|pci_alloc_consistent
+id|ioremap
+c_func
+(paren
+id|mp-&gt;rx_sram_addr
+comma
+id|mp-&gt;rx_sram_size
+)paren
+suffix:semicolon
+id|mp-&gt;rx_desc_dma
+op_assign
+id|mp-&gt;rx_sram_addr
+suffix:semicolon
+)brace
+r_else
+id|mp-&gt;p_rx_desc_area
+op_assign
+id|dma_alloc_coherent
 c_func
 (paren
 l_int|NULL
@@ -2732,6 +2720,8 @@ id|size
 comma
 op_amp
 id|mp-&gt;rx_desc_dma
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2761,20 +2751,40 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|pci_free_consistent
+r_if
+c_cond
+(paren
+id|mp-&gt;rx_sram_size
+)paren
+id|iounmap
 c_func
 (paren
-l_int|0
+id|mp-&gt;p_rx_desc_area
+)paren
+suffix:semicolon
+r_else
+id|dma_free_coherent
+c_func
+(paren
+l_int|NULL
 comma
 id|mp-&gt;tx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_tx_desc_area
 comma
 id|mp-&gt;tx_desc_dma
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mp-&gt;rx_skb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mp-&gt;tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -2785,6 +2795,10 @@ suffix:semicolon
 id|memset
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|mp-&gt;p_rx_desc_area
 comma
 l_int|0
@@ -2792,29 +2806,13 @@ comma
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|ether_init_rx_desc_ring
 c_func
 (paren
 id|mp
-comma
-l_int|0
-)paren
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;%s: Error initializing RX Ring&quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
-id|mv64340_eth_rx_task
+id|mv643xx_eth_rx_task
 c_func
 (paren
 id|dev
@@ -2828,7 +2826,7 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/* Interrupt Coalescing */
-macro_line|#ifdef MV64340_COAL
+macro_line|#ifdef MV643XX_COAL
 id|mp-&gt;rx_int_coal
 op_assign
 id|eth_port_set_rx_coal
@@ -2838,80 +2836,93 @@ id|port_num
 comma
 l_int|133000000
 comma
-id|MV64340_RX_COAL
+id|MV643XX_RX_COAL
 )paren
 suffix:semicolon
 macro_line|#endif
 id|mp-&gt;tx_int_coal
 op_assign
 id|eth_port_set_tx_coal
+c_func
 (paren
 id|port_num
 comma
 l_int|133000000
 comma
-id|MV64340_TX_COAL
+id|MV643XX_TX_COAL
 )paren
 suffix:semicolon
-multiline_comment|/* Increase the Rx side buffer size */
-id|MV_WRITE
+multiline_comment|/* Increase the Rx side buffer size if supporting GigE */
+id|port_serial_control_reg
+op_assign
+id|mv_read
+c_func
 (paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
 c_func
 (paren
 id|port_num
 )paren
-comma
-(paren
-l_int|0x5
-op_lshift
-l_int|17
-)paren
-op_or
-(paren
-id|MV_READ
-c_func
-(paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
-c_func
-(paren
-id|port_num
-)paren
-)paren
-op_amp
-l_int|0xfff1ffff
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Check Link status on phy */
-id|eth_port_read_smi_reg
-c_func
-(paren
-id|port_num
-comma
-l_int|1
-comma
-op_amp
-id|phy_reg_data
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|phy_reg_data
+id|port_serial_control_reg
 op_amp
-l_int|0x20
+id|MV643XX_ETH_SET_GMII_SPEED_TO_1000
 )paren
-)paren
-id|netif_stop_queue
+id|mv_write
 c_func
 (paren
-id|dev
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
+c_func
+(paren
+id|port_num
+)paren
+comma
+(paren
+id|port_serial_control_reg
+op_amp
+l_int|0xfff1ffff
+)paren
+op_or
+(paren
+l_int|0x5
+op_lshift
+l_int|17
+)paren
 )paren
 suffix:semicolon
-r_else
+multiline_comment|/* wait up to 1 second for link to come up */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|10
+op_logical_and
+op_logical_neg
+id|eth_port_link_is_up
+c_func
+(paren
+id|port_num
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|msleep
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+multiline_comment|/* sleep 1/10 second */
 id|netif_start_queue
 c_func
 (paren
@@ -2922,10 +2933,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mv64340_eth_free_tx_rings
+DECL|function|mv643xx_eth_free_tx_rings
 r_static
 r_void
-id|mv64340_eth_free_tx_rings
+id|mv643xx_eth_free_tx_rings
 c_func
 (paren
 r_struct
@@ -2935,7 +2946,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -2956,10 +2967,10 @@ r_int
 id|curr
 suffix:semicolon
 multiline_comment|/* Stop Tx Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
+id|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
 c_func
 (paren
 id|port_num
@@ -2968,7 +2979,6 @@ comma
 l_int|0x0000ff00
 )paren
 suffix:semicolon
-multiline_comment|/* Free TX rings */
 multiline_comment|/* Free outstanding skb&squot;s on TX rings */
 r_for
 c_loop
@@ -2977,15 +2987,11 @@ id|curr
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|mp-&gt;tx_ring_skbs
-)paren
 op_logical_and
-(paren
 id|curr
 OL
-id|MV64340_TX_QUEUE_SIZE
-)paren
+id|mp-&gt;tx_ring_size
 suffix:semicolon
 id|curr
 op_increment
@@ -3018,8 +3024,6 @@ r_if
 c_cond
 (paren
 id|mp-&gt;tx_ring_skbs
-op_ne
-l_int|0
 )paren
 id|printk
 c_func
@@ -3032,27 +3036,36 @@ comma
 id|mp-&gt;tx_ring_skbs
 )paren
 suffix:semicolon
-id|pci_free_consistent
+multiline_comment|/* Free TX ring */
+r_if
+c_cond
+(paren
+id|mp-&gt;tx_sram_size
+)paren
+id|iounmap
 c_func
 (paren
-l_int|0
+id|mp-&gt;p_tx_desc_area
+)paren
+suffix:semicolon
+r_else
+id|dma_free_coherent
+c_func
+(paren
+l_int|NULL
 comma
 id|mp-&gt;tx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_tx_desc_area
 comma
 id|mp-&gt;tx_desc_dma
 )paren
 suffix:semicolon
 )brace
-DECL|function|mv64340_eth_free_rx_rings
+DECL|function|mv643xx_eth_free_rx_rings
 r_static
 r_void
-id|mv64340_eth_free_rx_rings
+id|mv643xx_eth_free_rx_rings
 c_func
 (paren
 r_struct
@@ -3062,7 +3075,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3082,10 +3095,10 @@ r_int
 id|curr
 suffix:semicolon
 multiline_comment|/* Stop RX Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
 c_func
 (paren
 id|port_num
@@ -3094,7 +3107,6 @@ comma
 l_int|0x0000ff00
 )paren
 suffix:semicolon
-multiline_comment|/* Free RX rings */
 multiline_comment|/* Free preallocated skb&squot;s on RX rings */
 r_for
 c_loop
@@ -3105,11 +3117,9 @@ l_int|0
 suffix:semicolon
 id|mp-&gt;rx_ring_skbs
 op_logical_and
-(paren
 id|curr
 OL
-id|MV64340_RX_QUEUE_SIZE
-)paren
+id|mp-&gt;rx_ring_size
 suffix:semicolon
 id|curr
 op_increment
@@ -3142,8 +3152,6 @@ r_if
 c_cond
 (paren
 id|mp-&gt;rx_ring_skbs
-op_ne
-l_int|0
 )paren
 id|printk
 c_func
@@ -3157,29 +3165,38 @@ comma
 id|mp-&gt;rx_ring_skbs
 )paren
 suffix:semicolon
-id|pci_free_consistent
+multiline_comment|/* Free RX ring */
+r_if
+c_cond
+(paren
+id|mp-&gt;rx_sram_size
+)paren
+id|iounmap
 c_func
 (paren
-l_int|0
+id|mp-&gt;p_rx_desc_area
+)paren
+suffix:semicolon
+r_else
+id|dma_free_coherent
+c_func
+(paren
+l_int|NULL
 comma
 id|mp-&gt;rx_desc_area_size
 comma
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;p_rx_desc_area
 comma
 id|mp-&gt;rx_desc_dma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_stop&n; *&n; * This function is used when closing the network device. &n; * It updates the hardware, &n; * release all memory that holds buffers and descriptors and release the IRQ.&n; * Input : a pointer to the device structure&n; * Output : zero if success , nonzero if fails&n; */
-multiline_comment|/* Helper function for mv64340_eth_stop */
-DECL|function|mv64340_eth_real_stop
+multiline_comment|/*&n; * mv643xx_eth_stop&n; *&n; * This function is used when closing the network device.&n; * It updates the hardware,&n; * release all memory that holds buffers and descriptors and release the IRQ.&n; * Input :&t;a pointer to the device structure&n; * Output :&t;zero if success , nonzero if fails&n; */
+multiline_comment|/* Helper function for mv643xx_eth_stop */
+DECL|function|mv643xx_eth_real_stop
 r_static
 r_int
-id|mv64340_eth_real_stop
+id|mv643xx_eth_real_stop
 c_func
 (paren
 r_struct
@@ -3189,7 +3206,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3211,13 +3228,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|mv64340_eth_free_tx_rings
+id|mv643xx_eth_free_tx_rings
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|mv64340_eth_free_rx_rings
+id|mv643xx_eth_free_rx_rings
 c_func
 (paren
 id|dev
@@ -3230,10 +3247,10 @@ id|mp-&gt;port_num
 )paren
 suffix:semicolon
 multiline_comment|/* Disable ethernet port interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_REG
 c_func
 (paren
 id|port_num
@@ -3242,10 +3259,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
 c_func
 (paren
 id|port_num
@@ -3255,10 +3272,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Mask RX buffer and TX end interrupt */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|port_num
@@ -3268,10 +3285,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Mask phy and link status changes interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
+id|MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG
 c_func
 (paren
 id|port_num
@@ -3284,10 +3301,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mv64340_eth_stop
+DECL|function|mv643xx_eth_stop
 r_static
 r_int
-id|mv64340_eth_stop
+id|mv643xx_eth_stop
 c_func
 (paren
 r_struct
@@ -3297,7 +3314,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3314,7 +3331,7 @@ op_amp
 id|mp-&gt;lock
 )paren
 suffix:semicolon
-id|mv64340_eth_real_stop
+id|mv643xx_eth_real_stop
 c_func
 (paren
 id|dev
@@ -3339,11 +3356,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MV64340_NAPI
-DECL|function|mv64340_tx
+macro_line|#ifdef MV643XX_NAPI
+DECL|function|mv643xx_tx
 r_static
 r_void
-id|mv64340_tx
+id|mv643xx_tx
 c_func
 (paren
 r_struct
@@ -3353,7 +3370,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3388,17 +3405,6 @@ c_cond
 id|pkt_info.return_info
 )paren
 (brace
-id|dev_kfree_skb_irq
-c_func
-(paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-id|pkt_info.return_info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3410,7 +3416,7 @@ id|pkt_info.return_info
 op_member_access_from_pointer
 id|nr_frags
 )paren
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -3419,22 +3425,39 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
+r_else
+id|dma_unmap_single
+c_func
+(paren
+l_int|NULL
+comma
+id|pkt_info.buf_ptr
+comma
+id|pkt_info.byte_cnt
+comma
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_irq
+c_func
+(paren
+id|pkt_info.return_info
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|mp-&gt;tx_ring_skbs
-op_ne
-l_int|1
 )paren
 id|mp-&gt;tx_ring_skbs
 op_decrement
 suffix:semicolon
 )brace
 r_else
-id|pci_unmap_page
+id|dma_unmap_page
 c_func
 (paren
 l_int|NULL
@@ -3443,7 +3466,7 @@ id|pkt_info.buf_ptr
 comma
 id|pkt_info.byte_cnt
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3456,11 +3479,11 @@ c_func
 id|dev
 )paren
 op_logical_and
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 OG
 id|mp-&gt;tx_ring_skbs
 op_plus
-l_int|1
+id|MAX_DESCS_PER_SKB
 )paren
 id|netif_wake_queue
 c_func
@@ -3469,11 +3492,11 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_poll&n; *&n; * This function is used in case of NAPI&n; */
-DECL|function|mv64340_poll
+multiline_comment|/*&n; * mv643xx_poll&n; *&n; * This function is used in case of NAPI&n; */
+DECL|function|mv643xx_poll
 r_static
 r_int
-id|mv64340_poll
+id|mv643xx_poll
 c_func
 (paren
 r_struct
@@ -3487,7 +3510,7 @@ id|budget
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3516,7 +3539,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef MV64340_TX_FAST_REFILL
+macro_line|#ifdef MV643XX_TX_FAST_REFILL
 r_if
 c_cond
 (paren
@@ -3535,7 +3558,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|mv64340_tx
+id|mv643xx_tx
 c_func
 (paren
 id|dev
@@ -3560,13 +3583,10 @@ r_if
 c_cond
 (paren
 (paren
-id|u32
-)paren
-(paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
+id|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
 c_func
 (paren
 id|port_num
@@ -3598,12 +3618,10 @@ id|dev-&gt;quota
 suffix:semicolon
 id|work_done
 op_assign
-id|mv64340_eth_receive_queue
+id|mv643xx_eth_receive_queue
 c_func
 (paren
 id|dev
-comma
-l_int|0
 comma
 id|orig_budget
 )paren
@@ -3658,22 +3676,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_CAUSE_REG
-c_func
-(paren
-id|port_num
-)paren
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MV_WRITE
-c_func
-(paren
-id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_REG
 c_func
 (paren
 id|port_num
@@ -3682,10 +3688,22 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_MASK_REG
+id|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
+c_func
+(paren
+id|port_num
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|mv_write
+c_func
+(paren
+id|MV643XX_ETH_INTERRUPT_MASK_REG
 c_func
 (paren
 id|port_num
@@ -3694,10 +3712,10 @@ comma
 id|INT_CAUSE_UNMASK_ALL
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
+id|MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG
 c_func
 (paren
 id|port_num
@@ -3726,11 +3744,11 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * mv64340_eth_start_xmit&n; *&n; * This function is queues a packet in the Tx descriptor for &n; * required port.&n; *&n; * Input : skb - a pointer to socket buffer&n; *         dev - a pointer to the required port&n; *&n; * Output : zero upon success&n; */
-DECL|function|mv64340_eth_start_xmit
+multiline_comment|/*&n; * mv643xx_eth_start_xmit&n; *&n; * This function is queues a packet in the Tx descriptor for&n; * required port.&n; *&n; * Input :&t;skb - a pointer to socket buffer&n; *&t;&t;dev - a pointer to the required port&n; *&n; * Output :&t;zero upon success&n; */
+DECL|function|mv643xx_eth_start_xmit
 r_static
 r_int
-id|mv64340_eth_start_xmit
+id|mv643xx_eth_start_xmit
 c_func
 (paren
 r_struct
@@ -3745,7 +3763,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -3802,7 +3820,7 @@ r_if
 c_cond
 (paren
 (paren
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 op_minus
 id|mp-&gt;tx_ring_skbs
 )paren
@@ -3830,7 +3848,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Bug in mv64340_eth - Trying to transmit when&quot;
+l_string|&quot;%s: Bug in mv643xx_eth - Trying to transmit when&quot;
 l_string|&quot; queue full !&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3852,6 +3870,13 @@ l_int|NULL
 id|stats-&gt;tx_dropped
 op_increment
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mv64320_eth paranoid check failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -3866,7 +3891,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Update packet info data structure -- DMA owned, first last */
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 r_if
 c_cond
 (paren
@@ -3878,21 +3903,17 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|nr_frags
-op_logical_or
-(paren
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-OG
-l_int|3
-)paren
 )paren
 (brace
-macro_line|#endif
+id|linear
+suffix:colon
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_ne
+id|CHECKSUM_HW
+)paren
 id|pkt_info.cmd_sts
 op_assign
 id|ETH_TX_ENABLE_INTERRUPT
@@ -3901,22 +3922,100 @@ id|ETH_TX_FIRST_DESC
 op_or
 id|ETH_TX_LAST_DESC
 suffix:semicolon
+r_else
+(brace
+id|u32
+id|ipheader
+op_assign
+id|skb-&gt;nh.iph-&gt;ihl
+op_lshift
+l_int|11
+suffix:semicolon
+id|pkt_info.cmd_sts
+op_assign
+id|ETH_TX_ENABLE_INTERRUPT
+op_or
+id|ETH_TX_FIRST_DESC
+op_or
+id|ETH_TX_LAST_DESC
+op_or
+id|ETH_GEN_TCP_UDP_CHECKSUM
+op_or
+id|ETH_GEN_IP_V_4_CHECKSUM
+op_or
+id|ipheader
+suffix:semicolon
+multiline_comment|/* CPU already calculated pseudo header checksum. */
+r_if
+c_cond
+(paren
+id|skb-&gt;nh.iph-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+)paren
+(brace
+id|pkt_info.cmd_sts
+op_or_assign
+id|ETH_UDP_FRAME
+suffix:semicolon
+id|pkt_info.l4i_chk
+op_assign
+id|skb-&gt;h.uh-&gt;check
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|skb-&gt;nh.iph-&gt;protocol
+op_eq
+id|IPPROTO_TCP
+)paren
+id|pkt_info.l4i_chk
+op_assign
+id|skb-&gt;h.th-&gt;check
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: chksum proto != TCP or UDP&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
 id|pkt_info.byte_cnt
 op_assign
 id|skb-&gt;len
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
@@ -3961,7 +4060,6 @@ suffix:semicolon
 id|mp-&gt;tx_ring_skbs
 op_increment
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
 )brace
 r_else
 (brace
@@ -3972,6 +4070,60 @@ suffix:semicolon
 id|u32
 id|ipheader
 suffix:semicolon
+id|skb_frag_t
+op_star
+id|last_frag
+suffix:semicolon
+id|frag
+op_assign
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|nr_frags
+op_minus
+l_int|1
+suffix:semicolon
+id|last_frag
+op_assign
+op_amp
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|frags
+(braket
+id|frag
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|last_frag-&gt;size
+op_le
+l_int|8
+op_logical_and
+id|last_frag-&gt;page_offset
+op_amp
+l_int|0x7
+)paren
+(brace
+id|skb_linearize
+c_func
+(paren
+id|skb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_goto
+id|linear
+suffix:semicolon
+)brace
 multiline_comment|/* first frag which is skb header */
 id|pkt_info.byte_cnt
 op_assign
@@ -3983,10 +4135,10 @@ id|skb
 suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|skb-&gt;data
 comma
@@ -3996,13 +4148,26 @@ c_func
 id|skb
 )paren
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|pkt_info.return_info
 op_assign
 l_int|0
 suffix:semicolon
+id|pkt_info.cmd_sts
+op_assign
+id|ETH_TX_FIRST_DESC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+(brace
+multiline_comment|/* CPU already calculated pseudo header checksum. */
 id|ipheader
 op_assign
 id|skb-&gt;nh.iph-&gt;ihl
@@ -4010,20 +4175,68 @@ op_lshift
 l_int|11
 suffix:semicolon
 id|pkt_info.cmd_sts
-op_assign
-id|ETH_TX_FIRST_DESC
-op_or
+op_or_assign
 id|ETH_GEN_TCP_UDP_CHECKSUM
 op_or
 id|ETH_GEN_IP_V_4_CHECKSUM
 op_or
 id|ipheader
 suffix:semicolon
-multiline_comment|/* CPU already calculated pseudo header checksum. So, use it */
+multiline_comment|/* CPU already calculated pseudo header checksum. */
+r_if
+c_cond
+(paren
+id|skb-&gt;nh.iph-&gt;protocol
+op_eq
+id|IPPROTO_UDP
+)paren
+(brace
+id|pkt_info.cmd_sts
+op_or_assign
+id|ETH_UDP_FRAME
+suffix:semicolon
+id|pkt_info.l4i_chk
+op_assign
+id|skb-&gt;h.uh-&gt;check
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|skb-&gt;nh.iph-&gt;protocol
+op_eq
+id|IPPROTO_TCP
+)paren
 id|pkt_info.l4i_chk
 op_assign
 id|skb-&gt;h.th-&gt;check
 suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: chksum proto != TCP or UDP&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
 id|status
 op_assign
 id|eth_port_send
@@ -4178,30 +4391,9 @@ id|pkt_info.byte_cnt
 op_assign
 id|this_frag-&gt;size
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|this_frag-&gt;size
-OL
-l_int|8
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%d : &bslash;n&quot;
-comma
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-)paren
-suffix:semicolon
 id|pkt_info.buf_ptr
 op_assign
-id|pci_map_page
+id|dma_map_page
 c_func
 (paren
 l_int|NULL
@@ -4212,7 +4404,7 @@ id|this_frag-&gt;page_offset
 comma
 id|this_frag-&gt;size
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|status
@@ -4247,7 +4439,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error on transmitting packet&bslash;n&quot;
+l_string|&quot;%s: Error on &quot;
+l_string|&quot;transmitting packet&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4281,20 +4474,89 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#else
+id|pkt_info.cmd_sts
+op_assign
+id|ETH_TX_ENABLE_INTERRUPT
+op_or
+id|ETH_TX_FIRST_DESC
+op_or
+id|ETH_TX_LAST_DESC
+suffix:semicolon
+id|pkt_info.byte_cnt
+op_assign
+id|skb-&gt;len
+suffix:semicolon
+id|pkt_info.buf_ptr
+op_assign
+id|dma_map_single
+c_func
+(paren
+l_int|NULL
+comma
+id|skb-&gt;data
+comma
+id|skb-&gt;len
+comma
+id|DMA_TO_DEVICE
+)paren
+suffix:semicolon
+id|pkt_info.return_info
+op_assign
+id|skb
+suffix:semicolon
+id|status
+op_assign
+id|eth_port_send
+c_func
+(paren
+id|mp
+comma
+op_amp
+id|pkt_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_eq
+id|ETH_ERROR
+)paren
+op_logical_or
+(paren
+id|status
+op_eq
+id|ETH_QUEUE_FULL
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Error on transmitting packet&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|mp-&gt;tx_ring_skbs
+op_increment
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Check if TX queue can handle another skb. If not, then&n;&t; * signal higher layers to stop requesting TX&n;&t; */
 r_if
 c_cond
 (paren
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 op_le
 (paren
 id|mp-&gt;tx_ring_skbs
 op_plus
-l_int|1
+id|MAX_DESCS_PER_SKB
 )paren
 )paren
-multiline_comment|/* &n;&t;&t; * Stop getting skb&squot;s from upper layers.&n;&t;&t; * Getting skb&squot;s from upper layers will be enabled again after&n;&t;&t; * packets are released.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Stop getting skb&squot;s from upper layers.&n;&t;&t; * Getting skb&squot;s from upper layers will be enabled again after&n;&t;&t; * packets are released.&n;&t;&t; */
 id|netif_stop_queue
 c_func
 (paren
@@ -4327,13 +4589,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-multiline_comment|/*&n; * mv64340_eth_get_stats&n; *&n; * Returns a pointer to the interface statistics.&n; *&n; * Input : dev - a pointer to the required interface&n; *&n; * Output : a pointer to the interface&squot;s statistics&n; */
-DECL|function|mv64340_eth_get_stats
+multiline_comment|/*&n; * mv643xx_eth_get_stats&n; *&n; * Returns a pointer to the interface statistics.&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&n; * Output :&t;a pointer to the interface&squot;s statistics&n; */
+DECL|function|mv643xx_eth_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-id|mv64340_eth_get_stats
+id|mv643xx_eth_get_stats
 c_func
 (paren
 r_struct
@@ -4343,7 +4605,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 op_assign
@@ -4358,21 +4620,42 @@ op_amp
 id|mp-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*/&n; * mv64340_eth_init&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * First function called after registering the network device. &n; * It&squot;s purpose is to initialize the device as an ethernet device, &n; * fill the structure that was given in registration with pointers&n; * to functions, and setting the MAC address of the interface&n; *&n; * Input : number of port to initialize&n; * Output : -ENONMEM if failed , 0 if success&n; */
-DECL|function|mv64340_eth_init
+multiline_comment|/*/&n; * mv643xx_eth_probe&n; *&n; * First function called after registering the network device.&n; * It&squot;s purpose is to initialize the device as an ethernet device,&n; * fill the ethernet device structure with pointers * to functions,&n; * and set the MAC address of the interface&n; *&n; * Input :&t;struct device *&n; * Output :&t;-ENOMEM if failed , 0 if success&n; */
+DECL|function|mv643xx_eth_probe
 r_static
-r_struct
-id|net_device
-op_star
-id|mv64340_eth_init
+r_int
+id|mv643xx_eth_probe
 c_func
 (paren
-r_int
-id|port_num
+r_struct
+id|device
+op_star
+id|ddev
 )paren
 (brace
 r_struct
-id|mv64340_private
+id|platform_device
+op_star
+id|pdev
+op_assign
+id|to_platform_device
+c_func
+(paren
+id|ddev
+)paren
+suffix:semicolon
+r_struct
+id|mv643xx_eth_platform_data
+op_star
+id|pd
+suffix:semicolon
+r_int
+id|port_num
+op_assign
+id|pdev-&gt;id
+suffix:semicolon
+r_struct
+id|mv643xx_private
 op_star
 id|mp
 suffix:semicolon
@@ -4380,6 +4663,15 @@ r_struct
 id|net_device
 op_star
 id|dev
+suffix:semicolon
+id|u8
+op_star
+id|p
+suffix:semicolon
+r_struct
+id|resource
+op_star
+id|res
 suffix:semicolon
 r_int
 id|err
@@ -4392,7 +4684,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 )paren
 )paren
 suffix:semicolon
@@ -4403,7 +4695,16 @@ op_logical_neg
 id|dev
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|dev_set_drvdata
+c_func
+(paren
+id|ddev
+comma
+id|dev
+)paren
 suffix:semicolon
 id|mp
 op_assign
@@ -4413,45 +4714,66 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|res
+op_assign
+id|platform_get_resource
+c_func
+(paren
+id|pdev
+comma
+id|IORESOURCE_IRQ
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|res
+)paren
+suffix:semicolon
 id|dev-&gt;irq
 op_assign
-id|ETH_PORT0_IRQ_NUM
-op_plus
+id|res-&gt;start
+suffix:semicolon
+id|mp-&gt;port_num
+op_assign
 id|port_num
 suffix:semicolon
 id|dev-&gt;open
 op_assign
-id|mv64340_eth_open
+id|mv643xx_eth_open
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
-id|mv64340_eth_stop
+id|mv643xx_eth_stop
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
-id|mv64340_eth_start_xmit
+id|mv643xx_eth_start_xmit
 suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
-id|mv64340_eth_get_stats
+id|mv643xx_eth_get_stats
 suffix:semicolon
 id|dev-&gt;set_mac_address
 op_assign
-id|mv64340_eth_set_mac_address
+id|mv643xx_eth_set_mac_address
 suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
-id|mv64340_eth_set_rx_mode
+id|mv643xx_eth_set_rx_mode
 suffix:semicolon
 multiline_comment|/* No need to Tx Timeout */
 id|dev-&gt;tx_timeout
 op_assign
-id|mv64340_eth_tx_timeout
+id|mv643xx_eth_tx_timeout
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#ifdef MV643XX_NAPI
 id|dev-&gt;poll
 op_assign
-id|mv64340_poll
+id|mv643xx_poll
 suffix:semicolon
 id|dev-&gt;weight
 op_assign
@@ -4466,7 +4788,7 @@ id|HZ
 suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
@@ -4474,12 +4796,12 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;change_mtu
 op_assign
-id|mv64340_eth_change_mtu
+id|mv643xx_eth_change_mtu
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 macro_line|#ifdef MAX_SKB_FRAGS
 macro_line|#ifndef CONFIG_JAGUAR_DMALOW
-multiline_comment|/*&n;         * Zero copy can only work if we use Discovery II memory. Else, we will&n;         * have to map the buffers to ISA memory which is only 16 MB&n;         */
+multiline_comment|/*&n;&t; * Zero copy can only work if we use Discovery II memory. Else, we will&n;&t; * have to map the buffers to ISA memory which is only 16 MB&n;&t; */
 id|dev-&gt;features
 op_assign
 id|NETIF_F_SG
@@ -4491,10 +4813,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#endif
-id|mp-&gt;port_num
-op_assign
-id|port_num
-suffix:semicolon
 multiline_comment|/* Configure the timeout task */
 id|INIT_WORK
 c_func
@@ -4512,7 +4830,7 @@ r_void
 op_star
 )paren
 )paren
-id|mv64340_eth_tx_timeout_task
+id|mv643xx_eth_tx_timeout_task
 comma
 id|dev
 )paren
@@ -4524,24 +4842,207 @@ op_amp
 id|mp-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* set MAC addresses */
+multiline_comment|/* set default config values */
+id|eth_port_uc_addr_get
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;dev_addr
+)paren
+suffix:semicolon
+id|mp-&gt;port_config
+op_assign
+id|MV643XX_ETH_PORT_CONFIG_DEFAULT_VALUE
+suffix:semicolon
+id|mp-&gt;port_config_extend
+op_assign
+id|MV643XX_ETH_PORT_CONFIG_EXTEND_DEFAULT_VALUE
+suffix:semicolon
+id|mp-&gt;port_sdma_config
+op_assign
+id|MV643XX_ETH_PORT_SDMA_CONFIG_DEFAULT_VALUE
+suffix:semicolon
+id|mp-&gt;port_serial_control
+op_assign
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_DEFAULT_VALUE
+suffix:semicolon
+id|mp-&gt;rx_ring_size
+op_assign
+id|MV643XX_ETH_PORT_DEFAULT_RECEIVE_QUEUE_SIZE
+suffix:semicolon
+id|mp-&gt;tx_ring_size
+op_assign
+id|MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE
+suffix:semicolon
+id|pd
+op_assign
+id|pdev-&gt;dev.platform_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pd-&gt;mac_addr
+op_ne
+l_int|NULL
+)paren
 id|memcpy
 c_func
 (paren
 id|dev-&gt;dev_addr
 comma
-id|prom_mac_addr_base
+id|pd-&gt;mac_addr
 comma
 l_int|6
 )paren
 suffix:semicolon
-id|dev-&gt;dev_addr
-(braket
-l_int|5
-)braket
-op_add_assign
+r_if
+c_cond
+(paren
+id|pd-&gt;phy_addr
+op_logical_or
+id|pd-&gt;force_phy_addr
+)paren
+id|ethernet_phy_set
+c_func
+(paren
 id|port_num
+comma
+id|pd-&gt;phy_addr
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;port_config
+op_logical_or
+id|pd-&gt;force_port_config
+)paren
+id|mp-&gt;port_config
+op_assign
+id|pd-&gt;port_config
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;port_config_extend
+op_logical_or
+id|pd-&gt;force_port_config_extend
+)paren
+id|mp-&gt;port_config_extend
+op_assign
+id|pd-&gt;port_config_extend
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;port_sdma_config
+op_logical_or
+id|pd-&gt;force_port_sdma_config
+)paren
+id|mp-&gt;port_sdma_config
+op_assign
+id|pd-&gt;port_sdma_config
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;port_serial_control
+op_logical_or
+id|pd-&gt;force_port_serial_control
+)paren
+id|mp-&gt;port_serial_control
+op_assign
+id|pd-&gt;port_serial_control
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;rx_queue_size
+)paren
+id|mp-&gt;rx_ring_size
+op_assign
+id|pd-&gt;rx_queue_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;tx_queue_size
+)paren
+id|mp-&gt;tx_ring_size
+op_assign
+id|pd-&gt;tx_queue_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pd-&gt;tx_sram_size
+)paren
+(brace
+id|mp-&gt;tx_sram_size
+op_assign
+id|pd-&gt;tx_sram_size
+suffix:semicolon
+id|mp-&gt;tx_sram_addr
+op_assign
+id|pd-&gt;tx_sram_addr
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pd-&gt;rx_sram_size
+)paren
+(brace
+id|mp-&gt;rx_sram_size
+op_assign
+id|pd-&gt;rx_sram_size
+suffix:semicolon
+id|mp-&gt;rx_sram_addr
+op_assign
+id|pd-&gt;rx_sram_addr
+suffix:semicolon
+)brace
+)brace
+id|err
+op_assign
+id|ethernet_phy_detect
+c_func
+(paren
+id|port_num
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|pr_debug
+c_func
+(paren
+l_string|&quot;MV643xx ethernet port %d: &quot;
+l_string|&quot;No PHY detected at addr %d&bslash;n&quot;
+comma
+id|port_num
+comma
+id|ethernet_phy_get
+c_func
+(paren
+id|port_num
+)paren
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|register_netdev
@@ -4556,7 +5057,11 @@ c_cond
 id|err
 )paren
 r_goto
-id|out_free_dev
+id|out
+suffix:semicolon
+id|p
+op_assign
+id|dev-&gt;dev_addr
 suffix:semicolon
 id|printk
 c_func
@@ -4568,32 +5073,32 @@ id|dev-&gt;name
 comma
 id|port_num
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|0
 )braket
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|1
 )braket
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|2
 )braket
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|3
 )braket
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|4
 )braket
 comma
-id|dev-&gt;dev_addr
+id|p
 (braket
 l_int|5
 )braket
@@ -4609,7 +5114,10 @@ id|NETIF_F_SG
 id|printk
 c_func
 (paren
-l_string|&quot;Scatter Gather Enabled  &quot;
+id|KERN_NOTICE
+l_string|&quot;%s: Scatter Gather Enabled&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -4622,33 +5130,49 @@ id|NETIF_F_IP_CSUM
 id|printk
 c_func
 (paren
-l_string|&quot;TX TCP/IP Checksumming Supported  &bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: TX TCP/IP Checksumming Supported&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 id|printk
 c_func
 (paren
-l_string|&quot;RX TCP/UDP Checksum Offload ON, &bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: RX TCP/UDP Checksum Offload ON &bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MV643XX_COAL
 id|printk
 c_func
 (paren
-l_string|&quot;TX and RX Interrupt Coalescing ON &bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: TX and RX Interrupt Coalescing ON &bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#ifdef MV64340_NAPI
+macro_line|#endif
+macro_line|#ifdef MV643XX_NAPI
 id|printk
 c_func
 (paren
-l_string|&quot;RX NAPI Enabled &bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: RX NAPI Enabled &bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
 r_return
-id|dev
+l_int|0
 suffix:semicolon
-id|out_free_dev
+id|out
 suffix:colon
 id|free_netdev
 c_func
@@ -4657,30 +5181,30 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|err
 suffix:semicolon
 )brace
-DECL|function|mv64340_eth_remove
+DECL|function|mv643xx_eth_remove
 r_static
-r_void
-id|mv64340_eth_remove
+r_int
+id|mv643xx_eth_remove
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|ddev
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
-)paren
-(brace
-r_struct
-id|mv64340_private
-op_star
-id|mp
 op_assign
-id|netdev_priv
+id|dev_get_drvdata
 c_func
 (paren
-id|dev
+id|ddev
 )paren
 suffix:semicolon
 id|unregister_netdev
@@ -4700,39 +5224,46 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-)brace
-DECL|variable|mv64340_dev0
-r_static
-r_struct
-id|net_device
-op_star
-id|mv64340_dev0
-suffix:semicolon
-DECL|variable|mv64340_dev1
-r_static
-r_struct
-id|net_device
-op_star
-id|mv64340_dev1
-suffix:semicolon
-DECL|variable|mv64340_dev2
-r_static
-r_struct
-id|net_device
-op_star
-id|mv64340_dev2
-suffix:semicolon
-multiline_comment|/*&n; * mv64340_init_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input : N/A&n; *&n; * Output : N/A&n; */
-DECL|function|mv64340_init_module
-r_static
-r_int
-id|__init
-id|mv64340_init_module
+id|dev_set_drvdata
 c_func
 (paren
-r_void
+id|ddev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|mv643xx_eth_shared_probe
+r_static
+r_int
+id|mv643xx_eth_shared_probe
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|ddev
 )paren
 (brace
+r_struct
+id|platform_device
+op_star
+id|pdev
+op_assign
+id|to_platform_device
+c_func
+(paren
+id|ddev
+)paren
+suffix:semicolon
+r_struct
+id|resource
+op_star
+id|res
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4740,142 +5271,234 @@ id|KERN_NOTICE
 l_string|&quot;MV-643xx 10/100/1000 Ethernet Driver&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MV643XX_ETH_0
-id|mv64340_dev0
+id|res
 op_assign
-id|mv64340_eth_init
+id|platform_get_resource
 c_func
 (paren
+id|pdev
+comma
+id|IORESOURCE_MEM
+comma
 l_int|0
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|mv64340_dev0
+id|res
+op_eq
+l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Error registering MV-64360 ethernet port 0&bslash;n&quot;
-)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_MV643XX_ETH_1
-id|mv64340_dev1
+id|mv64x60_eth_shared_base
 op_assign
-id|mv64340_eth_init
+id|ioremap
 c_func
 (paren
-l_int|1
+id|res-&gt;start
+comma
+id|MV643XX_ETH_SHARED_REGS_SIZE
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|mv64340_dev1
+id|mv64x60_eth_shared_base
+op_eq
+l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Error registering MV-64360 ethernet port 1&bslash;n&quot;
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_MV643XX_ETH_2
-id|mv64340_dev2
-op_assign
-id|mv64340_eth_init
-c_func
-(paren
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mv64340_dev2
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Error registering MV-64360 ethernet port 2&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_cleanup_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input : N/A&n; *&n; * Output : N/A&n; */
-DECL|function|mv64340_cleanup_module
+DECL|function|mv643xx_eth_shared_remove
 r_static
-r_void
-id|__exit
-id|mv64340_cleanup_module
+r_int
+id|mv643xx_eth_shared_remove
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|ddev
+)paren
+(brace
+id|iounmap
+c_func
+(paren
+id|mv64x60_eth_shared_base
+)paren
+suffix:semicolon
+id|mv64x60_eth_shared_base
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|mv643xx_eth_driver
+r_static
+r_struct
+id|device_driver
+id|mv643xx_eth_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|MV643XX_ETH_NAME
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|platform_bus_type
+comma
+dot
+id|probe
+op_assign
+id|mv643xx_eth_probe
+comma
+dot
+id|remove
+op_assign
+id|mv643xx_eth_remove
+comma
+)brace
+suffix:semicolon
+DECL|variable|mv643xx_eth_shared_driver
+r_static
+r_struct
+id|device_driver
+id|mv643xx_eth_shared_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|MV643XX_ETH_SHARED_NAME
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|platform_bus_type
+comma
+dot
+id|probe
+op_assign
+id|mv643xx_eth_shared_probe
+comma
+dot
+id|remove
+op_assign
+id|mv643xx_eth_shared_remove
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * mv643xx_init_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input :&t;N/A&n; *&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_init_module
+r_static
+r_int
+id|__init
+id|mv643xx_init_module
 c_func
 (paren
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|mv64340_dev2
-)paren
-id|mv64340_eth_remove
+r_int
+id|rc
+suffix:semicolon
+id|rc
+op_assign
+id|driver_register
 c_func
 (paren
-id|mv64340_dev2
+op_amp
+id|mv643xx_eth_shared_driver
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|mv64340_dev1
+op_logical_neg
+id|rc
 )paren
-id|mv64340_eth_remove
+(brace
+id|rc
+op_assign
+id|driver_register
 c_func
 (paren
-id|mv64340_dev1
+op_amp
+id|mv643xx_eth_driver
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|mv64340_dev0
+id|rc
 )paren
-id|mv64340_eth_remove
+id|driver_unregister
 c_func
 (paren
-id|mv64340_dev0
+op_amp
+id|mv643xx_eth_shared_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|mv64340_init_module
+r_return
+id|rc
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * mv643xx_cleanup_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input :&t;N/A&n; *&n; * Output :&t;N/A&n; */
+DECL|function|mv643xx_cleanup_module
+r_static
+r_void
+id|__exit
+id|mv643xx_cleanup_module
+c_func
+(paren
+r_void
+)paren
+(brace
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|mv643xx_eth_driver
+)paren
+suffix:semicolon
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|mv643xx_eth_shared_driver
+)paren
+suffix:semicolon
+)brace
+DECL|variable|mv643xx_init_module
 id|module_init
 c_func
 (paren
-id|mv64340_init_module
+id|mv643xx_init_module
 )paren
 suffix:semicolon
-DECL|variable|mv64340_cleanup_module
+DECL|variable|mv643xx_cleanup_module
 id|module_exit
 c_func
 (paren
-id|mv64340_cleanup_module
+id|mv643xx_cleanup_module
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -4887,31 +5510,22 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Rabeeh Khoury, Assaf Hoffman, Matthew Dharm and Manish Lachwani&quot;
+l_string|&quot;Rabeeh Khoury, Assaf Hoffman, Matthew Dharm, Manish Lachwani&quot;
+l_string|&quot; and Dale Farnsworth&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Ethernet driver for Marvell MV64340&quot;
+l_string|&quot;Ethernet driver for Marvell MV643XX&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  The second part is the low level driver of the gigE ethernet ports.&n; */
-multiline_comment|/*&n; * Marvell&squot;s Gigabit Ethernet controller low level driver&n; *&n; * DESCRIPTION:&n; *       This file introduce low level API to Marvell&squot;s Gigabit Ethernet&n; *&t;&t;controller. This Gigabit Ethernet Controller driver API controls&n; *&t;&t;1) Operations (i.e. port init, start, reset etc&squot;).&n; *&t;&t;2) Data flow (i.e. port send, receive etc&squot;).&n; *&t;&t;Each Gigabit Ethernet port is controlled via&n; *              struct mv64340_private.&n; *&t;&t;This struct includes user configuration information as well as&n; *&t;&t;driver internal data needed for its operations.&n; *&n; *&t;&t;Supported Features:  &n; *&t;&t;- This low level driver is OS independent. Allocating memory for&n; *&t;&t;  the descriptor rings and buffers are not within the scope of&n; *&t;&t;  this driver.&n; *&t;&t;- The user is free from Rx/Tx queue managing.&n; *&t;&t;- This low level driver introduce functionality API that enable&n; *&t;&t;  the to operate Marvell&squot;s Gigabit Ethernet Controller in a&n; *&t;&t;  convenient way.&n; *&t;&t;- Simple Gigabit Ethernet port operation API.&n; *&t;&t;- Simple Gigabit Ethernet port data flow API.&n; *&t;&t;- Data flow and operation API support per queue functionality.&n; *&t;&t;- Support cached descriptors for better performance.&n; *&t;&t;- Enable access to all four DRAM banks and internal SRAM memory&n; *&t;&t;  spaces.&n; *&t;&t;- PHY access and control API.&n; *&t;&t;- Port control register configuration API.&n; *&t;&t;- Full control over Unicast and Multicast MAC configurations.&n; *&t;&t;&t;&t;&t;&t;&t;&t;   &n; *&t;&t;Operation flow:&n; *&n; *&t;&t;Initialization phase&n; *&t;&t;This phase complete the initialization of the the mv64340_private&n; *&t;&t;struct. &n; *&t;&t;User information regarding port configuration has to be set&n; *&t;&t;prior to calling the port initialization routine.&n; *&n; *&t;&t;In this phase any port Tx/Rx activity is halted, MIB counters&n; *&t;&t;are cleared, PHY address is set according to user parameter and&n; *&t;&t;access to DRAM and internal SRAM memory spaces.&n; *&n; *&t;&t;Driver ring initialization&n; *&t;&t;Allocating memory for the descriptor rings and buffers is not &n; *&t;&t;within the scope of this driver. Thus, the user is required to&n; *&t;&t;allocate memory for the descriptors ring and buffers. Those&n; *&t;&t;memory parameters are used by the Rx and Tx ring initialization&n; *&t;&t;routines in order to curve the descriptor linked list in a form&n; *&t;&t;of a ring.&n; *&t;&t;Note: Pay special attention to alignment issues when using&n; *&t;&t;cached descriptors/buffers. In this phase the driver store&n; *&t;&t;information in the mv64340_private struct regarding each queue&n; *&t;&t;ring.&n; *&n; *&t;&t;Driver start &n; *&t;&t;This phase prepares the Ethernet port for Rx and Tx activity.&n; *&t;&t;It uses the information stored in the mv64340_private struct to &n; *&t;&t;initialize the various port registers.&n; *&n; *&t;&t;Data flow:&n; *&t;&t;All packet references to/from the driver are done using&n; *              struct pkt_info.&n; *&t;&t;This struct is a unified struct used with Rx and Tx operations. &n; *&t;&t;This way the user is not required to be familiar with neither&n; *&t;&t;Tx nor Rx descriptors structures.&n; *&t;&t;The driver&squot;s descriptors rings are management by indexes.&n; *&t;&t;Those indexes controls the ring resources and used to indicate&n; *&t;&t;a SW resource error:&n; *&t;&t;&squot;current&squot; &n; *&t;&t;This index points to the current available resource for use. For &n; *&t;&t;example in Rx process this index will point to the descriptor  &n; *&t;&t;that will be passed to the user upon calling the receive routine.&n; *&t;&t;In Tx process, this index will point to the descriptor&n; *&t;&t;that will be assigned with the user packet info and transmitted.&n; *&t;&t;&squot;used&squot;    &n; *&t;&t;This index points to the descriptor that need to restore its &n; *&t;&t;resources. For example in Rx process, using the Rx buffer return&n; *&t;&t;API will attach the buffer returned in packet info to the&n; *&t;&t;descriptor pointed by &squot;used&squot;. In Tx process, using the Tx&n; *&t;&t;descriptor return will merely return the user packet info with&n; *&t;&t;the command status of  the transmitted buffer pointed by the&n; *&t;&t;&squot;used&squot; index. Nevertheless, it is essential to use this routine&n; *&t;&t;to update the &squot;used&squot; index.&n; *&t;&t;&squot;first&squot;&n; *&t;&t;This index supports Tx Scatter-Gather. It points to the first &n; *&t;&t;descriptor of a packet assembled of multiple buffers. For example&n; *&t;&t;when in middle of Such packet we have a Tx resource error the &n; *&t;&t;&squot;curr&squot; index get the value of &squot;first&squot; to indicate that the ring &n; *&t;&t;returned to its state before trying to transmit this packet.&n; *&n; *&t;&t;Receive operation:&n; *&t;&t;The eth_port_receive API set the packet information struct,&n; *&t;&t;passed by the caller, with received information from the &n; *&t;&t;&squot;current&squot; SDMA descriptor. &n; *&t;&t;It is the user responsibility to return this resource back&n; *&t;&t;to the Rx descriptor ring to enable the reuse of this source.&n; *&t;&t;Return Rx resource is done using the eth_rx_return_buff API.&n; *&n; *&t;&t;Transmit operation:&n; *&t;&t;The eth_port_send API supports Scatter-Gather which enables to&n; *&t;&t;send a packet spanned over multiple buffers. This means that&n; *&t;&t;for each packet info structure given by the user and put into&n; *&t;&t;the Tx descriptors ring, will be transmitted only if the &squot;LAST&squot;&n; *&t;&t;bit will be set in the packet info command status field. This&n; *&t;&t;API also consider restriction regarding buffer alignments and&n; *&t;&t;sizes.&n; *&t;&t;The user must return a Tx resource after ensuring the buffer&n; *&t;&t;has been transmitted to enable the Tx ring indexes to update.&n; *&n; *&t;&t;BOARD LAYOUT&n; *&t;&t;This device is on-board.  No jumper diagram is necessary.&n; *&n; *&t;&t;EXTERNAL INTERFACE&n; *&n; *       Prior to calling the initialization routine eth_port_init() the user&n; *&t; must set the following fields under mv64340_private struct:&n; *       port_num             User Ethernet port number.&n; *       port_mac_addr[6]&t;    User defined port MAC address.&n; *       port_config          User port configuration value.&n; *       port_config_extend    User port config extend value.&n; *       port_sdma_config      User port SDMA config value.&n; *       port_serial_control   User port serial control value.&n; *&n; *       This driver introduce a set of default values:&n; *       PORT_CONFIG_VALUE           Default port configuration value&n; *       PORT_CONFIG_EXTEND_VALUE    Default port extend configuration value&n; *       PORT_SDMA_CONFIG_VALUE      Default sdma control value&n; *       PORT_SERIAL_CONTROL_VALUE   Default port serial control value&n; *&n; *&t;&t;This driver data flow is done using the struct pkt_info which&n; *              is a unified struct for Rx and Tx operations:&n; *&n; *&t;&t;byte_cnt&t;Tx/Rx descriptor buffer byte count.&n; *&t;&t;l4i_chk&t;&t;CPU provided TCP Checksum. For Tx operation&n; *                              only.&n; *&t;&t;cmd_sts&t;&t;Tx/Rx descriptor command status.&n; *&t;&t;buf_ptr&t;&t;Tx/Rx descriptor buffer pointer.&n; *&t;&t;return_info&t;Tx/Rx user resource return information.&n; */
+multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.&n; */
+multiline_comment|/*&n; * Marvell&squot;s Gigabit Ethernet controller low level driver&n; *&n; * DESCRIPTION:&n; *&t;This file introduce low level API to Marvell&squot;s Gigabit Ethernet&n; *&t;&t;controller. This Gigabit Ethernet Controller driver API controls&n; *&t;&t;1) Operations (i.e. port init, start, reset etc&squot;).&n; *&t;&t;2) Data flow (i.e. port send, receive etc&squot;).&n; *&t;&t;Each Gigabit Ethernet port is controlled via&n; *&t;&t;struct mv643xx_private.&n; *&t;&t;This struct includes user configuration information as well as&n; *&t;&t;driver internal data needed for its operations.&n; *&n; *&t;&t;Supported Features:&n; *&t;&t;- This low level driver is OS independent. Allocating memory for&n; *&t;&t;  the descriptor rings and buffers are not within the scope of&n; *&t;&t;  this driver.&n; *&t;&t;- The user is free from Rx/Tx queue managing.&n; *&t;&t;- This low level driver introduce functionality API that enable&n; *&t;&t;  the to operate Marvell&squot;s Gigabit Ethernet Controller in a&n; *&t;&t;  convenient way.&n; *&t;&t;- Simple Gigabit Ethernet port operation API.&n; *&t;&t;- Simple Gigabit Ethernet port data flow API.&n; *&t;&t;- Data flow and operation API support per queue functionality.&n; *&t;&t;- Support cached descriptors for better performance.&n; *&t;&t;- Enable access to all four DRAM banks and internal SRAM memory&n; *&t;&t;  spaces.&n; *&t;&t;- PHY access and control API.&n; *&t;&t;- Port control register configuration API.&n; *&t;&t;- Full control over Unicast and Multicast MAC configurations.&n; *&n; *&t;&t;Operation flow:&n; *&n; *&t;&t;Initialization phase&n; *&t;&t;This phase complete the initialization of the the&n; *&t;&t;mv643xx_private struct.&n; *&t;&t;User information regarding port configuration has to be set&n; *&t;&t;prior to calling the port initialization routine.&n; *&n; *&t;&t;In this phase any port Tx/Rx activity is halted, MIB counters&n; *&t;&t;are cleared, PHY address is set according to user parameter and&n; *&t;&t;access to DRAM and internal SRAM memory spaces.&n; *&n; *&t;&t;Driver ring initialization&n; *&t;&t;Allocating memory for the descriptor rings and buffers is not&n; *&t;&t;within the scope of this driver. Thus, the user is required to&n; *&t;&t;allocate memory for the descriptors ring and buffers. Those&n; *&t;&t;memory parameters are used by the Rx and Tx ring initialization&n; *&t;&t;routines in order to curve the descriptor linked list in a form&n; *&t;&t;of a ring.&n; *&t;&t;Note: Pay special attention to alignment issues when using&n; *&t;&t;cached descriptors/buffers. In this phase the driver store&n; *&t;&t;information in the mv643xx_private struct regarding each queue&n; *&t;&t;ring.&n; *&n; *&t;&t;Driver start&n; *&t;&t;This phase prepares the Ethernet port for Rx and Tx activity.&n; *&t;&t;It uses the information stored in the mv643xx_private struct to&n; *&t;&t;initialize the various port registers.&n; *&n; *&t;&t;Data flow:&n; *&t;&t;All packet references to/from the driver are done using&n; *&t;&t;struct pkt_info.&n; *&t;&t;This struct is a unified struct used with Rx and Tx operations.&n; *&t;&t;This way the user is not required to be familiar with neither&n; *&t;&t;Tx nor Rx descriptors structures.&n; *&t;&t;The driver&squot;s descriptors rings are management by indexes.&n; *&t;&t;Those indexes controls the ring resources and used to indicate&n; *&t;&t;a SW resource error:&n; *&t;&t;&squot;current&squot;&n; *&t;&t;This index points to the current available resource for use. For&n; *&t;&t;example in Rx process this index will point to the descriptor&n; *&t;&t;that will be passed to the user upon calling the receive&n; *&t;&t;routine.  In Tx process, this index will point to the descriptor&n; *&t;&t;that will be assigned with the user packet info and transmitted.&n; *&t;&t;&squot;used&squot;&n; *&t;&t;This index points to the descriptor that need to restore its&n; *&t;&t;resources. For example in Rx process, using the Rx buffer return&n; *&t;&t;API will attach the buffer returned in packet info to the&n; *&t;&t;descriptor pointed by &squot;used&squot;. In Tx process, using the Tx&n; *&t;&t;descriptor return will merely return the user packet info with&n; *&t;&t;the command status of the transmitted buffer pointed by the&n; *&t;&t;&squot;used&squot; index. Nevertheless, it is essential to use this routine&n; *&t;&t;to update the &squot;used&squot; index.&n; *&t;&t;&squot;first&squot;&n; *&t;&t;This index supports Tx Scatter-Gather. It points to the first&n; *&t;&t;descriptor of a packet assembled of multiple buffers. For&n; *&t;&t;example when in middle of Such packet we have a Tx resource&n; *&t;&t;error the &squot;curr&squot; index get the value of &squot;first&squot; to indicate&n; *&t;&t;that the ring returned to its state before trying to transmit&n; *&t;&t;this packet.&n; *&n; *&t;&t;Receive operation:&n; *&t;&t;The eth_port_receive API set the packet information struct,&n; *&t;&t;passed by the caller, with received information from the&n; *&t;&t;&squot;current&squot; SDMA descriptor.&n; *&t;&t;It is the user responsibility to return this resource back&n; *&t;&t;to the Rx descriptor ring to enable the reuse of this source.&n; *&t;&t;Return Rx resource is done using the eth_rx_return_buff API.&n; *&n; *&t;&t;Transmit operation:&n; *&t;&t;The eth_port_send API supports Scatter-Gather which enables to&n; *&t;&t;send a packet spanned over multiple buffers. This means that&n; *&t;&t;for each packet info structure given by the user and put into&n; *&t;&t;the Tx descriptors ring, will be transmitted only if the &squot;LAST&squot;&n; *&t;&t;bit will be set in the packet info command status field. This&n; *&t;&t;API also consider restriction regarding buffer alignments and&n; *&t;&t;sizes.&n; *&t;&t;The user must return a Tx resource after ensuring the buffer&n; *&t;&t;has been transmitted to enable the Tx ring indexes to update.&n; *&n; *&t;&t;BOARD LAYOUT&n; *&t;&t;This device is on-board.  No jumper diagram is necessary.&n; *&n; *&t;&t;EXTERNAL INTERFACE&n; *&n; *&t;Prior to calling the initialization routine eth_port_init() the user&n; *&t;must set the following fields under mv643xx_private struct:&n; *&t;port_num&t;&t;User Ethernet port number.&n; *&t;port_mac_addr[6]&t;User defined port MAC address.&n; *&t;port_config&t;&t;User port configuration value.&n; *&t;port_config_extend&t;User port config extend value.&n; *&t;port_sdma_config&t;User port SDMA config value.&n; *&t;port_serial_control&t;User port serial control value.&n; *&n; *&t;&t;This driver data flow is done using the struct pkt_info which&n; *&t;&t;is a unified struct for Rx and Tx operations:&n; *&n; *&t;&t;byte_cnt&t;Tx/Rx descriptor buffer byte count.&n; *&t;&t;l4i_chk&t;&t;CPU provided TCP Checksum. For Tx operation&n; *&t;&t;&t;&t;only.&n; *&t;&t;cmd_sts&t;&t;Tx/Rx descriptor command status.&n; *&t;&t;buf_ptr&t;&t;Tx/Rx descriptor buffer pointer.&n; *&t;&t;return_info&t;Tx/Rx user resource return information.&n; */
 multiline_comment|/* defines */
 multiline_comment|/* SDMA command macros */
 DECL|macro|ETH_ENABLE_TX_QUEUE
-mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
-DECL|macro|ETH_DISABLE_TX_QUEUE
-mdefine_line|#define ETH_DISABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; 8))
-DECL|macro|ETH_ENABLE_RX_QUEUE
-mdefine_line|#define ETH_ENABLE_RX_QUEUE(rx_queue, eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; rx_queue))
-DECL|macro|ETH_DISABLE_RX_QUEUE
-mdefine_line|#define ETH_DISABLE_RX_QUEUE(rx_queue, eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG(eth_port),&t;&bslash;&n;&t;         (1 &lt;&lt; (8 + rx_queue)))
-DECL|macro|LINK_UP_TIMEOUT
-mdefine_line|#define LINK_UP_TIMEOUT&t;&t;100000
-DECL|macro|PHY_BUSY_TIMEOUT
-mdefine_line|#define PHY_BUSY_TIMEOUT&t;10000000
+mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;mv_write(MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
 multiline_comment|/* locals */
 multiline_comment|/* PHY routines */
 r_static
@@ -4922,6 +5536,19 @@ c_func
 r_int
 r_int
 id|eth_port_num
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ethernet_phy_set
+c_func
+(paren
+r_int
+r_int
+id|eth_port_num
+comma
+r_int
+id|phy_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Ethernet Port routines */
@@ -4942,7 +5569,7 @@ r_int
 id|option
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * eth_port_init - Initialize the Ethernet port driver&n; *&n; * DESCRIPTION:&n; *       This function prepares the ethernet port to start its activity:&n; *       1) Completes the ethernet port driver struct initialization toward port&n; *           start routine.&n; *       2) Resets the device to a quiescent state in case of warm reboot.&n; *       3) Enable SDMA access to all four DRAM banks as well as internal SRAM.&n; *       4) Clean MAC tables. The reset status of those tables is unknown.&n; *       5) Set PHY address. &n; *       Note: Call this routine prior to eth_port_start routine and after&n; *       setting user values in the user fields of Ethernet port control&n; *       struct.&n; *&n; * INPUT:&n; *       struct mv64340_private *mp   Ethernet port control struct&n; *&n; * OUTPUT:&n; *       See description.&n; *&n; * RETURN:&n; *       None.&n; */
+multiline_comment|/*&n; * eth_port_init - Initialize the Ethernet port driver&n; *&n; * DESCRIPTION:&n; *&t;This function prepares the ethernet port to start its activity:&n; *&t;1) Completes the ethernet port driver struct initialization toward port&n; *&t;&t;start routine.&n; *&t;2) Resets the device to a quiescent state in case of warm reboot.&n; *&t;3) Enable SDMA access to all four DRAM banks as well as internal SRAM.&n; *&t;4) Clean MAC tables. The reset status of those tables is unknown.&n; *&t;5) Set PHY address.&n; *&t;Note: Call this routine prior to eth_port_start routine and after&n; *&t;setting user values in the user fields of Ethernet port control&n; *&t;struct.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private *mp&t;Ethernet port control struct&n; *&n; * OUTPUT:&n; *&t;See description.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_init
 r_static
 r_void
@@ -4950,40 +5577,11 @@ id|eth_port_init
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 )paren
 (brace
-id|mp-&gt;port_config
-op_assign
-id|PORT_CONFIG_VALUE
-suffix:semicolon
-id|mp-&gt;port_config_extend
-op_assign
-id|PORT_CONFIG_EXTEND_VALUE
-suffix:semicolon
-macro_line|#if defined(__BIG_ENDIAN)
-id|mp-&gt;port_sdma_config
-op_assign
-id|PORT_SDMA_CONFIG_VALUE
-suffix:semicolon
-macro_line|#elif defined(__LITTLE_ENDIAN)
-id|mp-&gt;port_sdma_config
-op_assign
-id|PORT_SDMA_CONFIG_VALUE
-op_or
-id|ETH_BLM_RX_NO_SWAP
-op_or
-id|ETH_BLM_TX_NO_SWAP
-suffix:semicolon
-macro_line|#else
-macro_line|#error One of __LITTLE_ENDIAN or __BIG_ENDIAN must be defined!
-macro_line|#endif
-id|mp-&gt;port_serial_control
-op_assign
-id|PORT_SERIAL_CONTROL_VALUE
-suffix:semicolon
 id|mp-&gt;port_rx_queue_command
 op_assign
 l_int|0
@@ -5019,15 +5617,15 @@ id|mp-&gt;port_num
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_start - Start the Ethernet port activity.&n; *&n; * DESCRIPTION:&n; *       This routine prepares the Ethernet port for Rx and Tx activity:&n; *       1. Initialize Tx and Rx Current Descriptor Pointer for each queue that&n; *          has been initialized a descriptor&squot;s ring (using&n; *          ether_init_tx_desc_ring for Tx and ether_init_rx_desc_ring for Rx)&n; *       2. Initialize and enable the Ethernet configuration port by writing to&n; *          the port&squot;s configuration and command registers.&n; *       3. Initialize and enable the SDMA by writing to the SDMA&squot;s &n; *          configuration and command registers.  After completing these steps,&n; *          the ethernet port SDMA can starts to perform Rx and Tx activities.&n; *&n; *       Note: Each Rx and Tx queue descriptor&squot;s list must be initialized prior&n; *       to calling this function (use ether_init_tx_desc_ring for Tx queues&n; *       and ether_init_rx_desc_ring for Rx queues).&n; *&n; * INPUT:&n; *       struct mv64340_private &t;*mp   Ethernet port control struct&n; *&n; * OUTPUT:&n; *       Ethernet port is ready to receive and transmit.&n; *&n; * RETURN:&n; *       false if the port PHY is not up.&n; *       true otherwise.&n; */
+multiline_comment|/*&n; * eth_port_start - Start the Ethernet port activity.&n; *&n; * DESCRIPTION:&n; *&t;This routine prepares the Ethernet port for Rx and Tx activity:&n; *&t; 1. Initialize Tx and Rx Current Descriptor Pointer for each queue that&n; *&t;    has been initialized a descriptor&squot;s ring (using&n; *&t;    ether_init_tx_desc_ring for Tx and ether_init_rx_desc_ring for Rx)&n; *&t; 2. Initialize and enable the Ethernet configuration port by writing to&n; *&t;    the port&squot;s configuration and command registers.&n; *&t; 3. Initialize and enable the SDMA by writing to the SDMA&squot;s&n; *&t;    configuration and command registers.  After completing these steps,&n; *&t;    the ethernet port SDMA can starts to perform Rx and Tx activities.&n; *&n; *&t;Note: Each Rx and Tx queue descriptor&squot;s list must be initialized prior&n; *&t;to calling this function (use ether_init_tx_desc_ring for Tx queues&n; *&t;and ether_init_rx_desc_ring for Rx queues).&n; *&n; * INPUT:&n; *&t;struct mv643xx_private *mp&t;Ethernet port control struct&n; *&n; * OUTPUT:&n; *&t;Ethernet port is ready to receive and transmit.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_start
 r_static
-r_int
+r_void
 id|eth_port_start
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 )paren
@@ -5043,24 +5641,24 @@ id|tx_curr_desc
 comma
 id|rx_curr_desc
 suffix:semicolon
-r_int
-r_int
-id|phy_reg_data
-suffix:semicolon
 multiline_comment|/* Assignment of Tx CTRP of given queue */
 id|tx_curr_desc
 op_assign
 id|mp-&gt;tx_curr_desc_q
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
+id|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
 c_func
 (paren
 id|eth_port_num
 )paren
 comma
+(paren
+id|u32
+)paren
+(paren
 (paren
 r_struct
 id|eth_tx_desc
@@ -5070,21 +5668,26 @@ id|mp-&gt;tx_desc_dma
 op_plus
 id|tx_curr_desc
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* Assignment of Rx CRDP of given queue */
 id|rx_curr_desc
 op_assign
 id|mp-&gt;rx_curr_desc_q
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
+id|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
 c_func
 (paren
 id|eth_port_num
 )paren
 comma
+(paren
+id|u32
+)paren
+(paren
 (paren
 r_struct
 id|eth_rx_desc
@@ -5093,6 +5696,7 @@ op_star
 id|mp-&gt;rx_desc_dma
 op_plus
 id|rx_curr_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Add the assigned Ethernet address to the port&squot;s address table */
@@ -5105,10 +5709,10 @@ id|mp-&gt;port_mac_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Assign port configuration and command. */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_CONFIG_REG
+id|MV643XX_ETH_PORT_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -5117,10 +5721,10 @@ comma
 id|mp-&gt;port_config
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_CONFIG_EXTEND_REG
+id|MV643XX_ETH_PORT_CONFIG_EXTEND_REG
 c_func
 (paren
 id|eth_port_num
@@ -5129,10 +5733,10 @@ comma
 id|mp-&gt;port_config_extend
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
 c_func
 (paren
 id|eth_port_num
@@ -5141,23 +5745,33 @@ comma
 id|mp-&gt;port_serial_control
 )paren
 suffix:semicolon
-id|MV_SET_REG_BITS
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
 c_func
 (paren
 id|eth_port_num
 )paren
 comma
-id|ETH_SERIAL_PORT_ENABLE
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
+c_func
+(paren
+id|eth_port_num
+)paren
+)paren
+op_or
+id|MV643XX_ETH_SERIAL_PORT_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* Assign port SDMA configuration */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_SDMA_CONFIG_REG
+id|MV643XX_ETH_SDMA_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -5167,10 +5781,10 @@ id|mp-&gt;port_sdma_config
 )paren
 suffix:semicolon
 multiline_comment|/* Enable port Rx. */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
 c_func
 (paren
 id|eth_port_num
@@ -5179,36 +5793,8 @@ comma
 id|mp-&gt;port_rx_queue_command
 )paren
 suffix:semicolon
-multiline_comment|/* Check if link is up */
-id|eth_port_read_smi_reg
-c_func
-(paren
-id|eth_port_num
-comma
-l_int|1
-comma
-op_amp
-id|phy_reg_data
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|phy_reg_data
-op_amp
-l_int|0x20
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_uc_addr_set - This function Set the port Unicast address.&n; *&n; * DESCRIPTION:&n; *&t;&t;This function Set the port Ethernet MAC address.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num     Port number.&n; *&t;char *        p_addr&t;&t;Address to be set &n; *&n; * OUTPUT:&n; *&t;Set MAC address low and high registers. also calls eth_port_uc_addr() &n; *       To set the unicast table with the proper information.&n; *&n; * RETURN:&n; *&t;N/A.&n; *&n; */
+multiline_comment|/*&n; * eth_port_uc_addr_set - This function Set the port Unicast address.&n; *&n; * DESCRIPTION:&n; *&t;&t;This function Set the port Ethernet MAC address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Port number.&n; *&t;char *&t;&t;p_addr&t;&t;Address to be set&n; *&n; * OUTPUT:&n; *&t;Set MAC address low and high registers. also calls eth_port_uc_addr()&n; *&t;To set the unicast table with the proper information.&n; *&n; * RETURN:&n; *&t;N/A.&n; *&n; */
 DECL|function|eth_port_uc_addr_set
 r_static
 r_void
@@ -5289,10 +5875,10 @@ op_lshift
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_MAC_ADDR_LOW
+id|MV643XX_ETH_MAC_ADDR_LOW
 c_func
 (paren
 id|eth_port_num
@@ -5301,10 +5887,10 @@ comma
 id|mac_l
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_MAC_ADDR_HIGH
+id|MV643XX_ETH_MAC_ADDR_HIGH
 c_func
 (paren
 id|eth_port_num
@@ -5330,7 +5916,139 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_uc_addr - This function Set the port unicast address table&n; *&n; * DESCRIPTION:&n; *&t;This function locates the proper entry in the Unicast table for the &n; *&t;specified MAC nibble and sets its properties according to function &n; *&t;parameters.&n; *&n; * INPUT:&n; *&t;unsigned int &t;eth_port_num      Port number.&n; *&t;unsigned char uc_nibble&t;&t;Unicast MAC Address last nibble. &n; *&t;int &t;&t;&t;option      0 = Add, 1 = remove address.&n; *&n; * OUTPUT:&n; *&t;This function add/removes MAC addresses from the port unicast address&n; *&t;table. &n; *&n; * RETURN:&n; *&t;true is output succeeded.&n; *&t;false if option parameter is invalid.&n; *&n; */
+multiline_comment|/*&n; * eth_port_uc_addr_get - This function retrieves the port Unicast address&n; * (MAC address) from the ethernet hw registers.&n; *&n; * DESCRIPTION:&n; *&t;&t;This function retrieves the port Ethernet MAC address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Port number.&n; *&t;char&t;&t;*MacAddr&t;pointer where the MAC address is stored&n; *&n; * OUTPUT:&n; *&t;Copy the MAC address to the location pointed to by MacAddr&n; *&n; * RETURN:&n; *&t;N/A.&n; *&n; */
+DECL|function|eth_port_uc_addr_get
+r_static
+r_void
+id|eth_port_uc_addr_get
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_char
+op_star
+id|p_addr
+)paren
+(brace
+r_struct
+id|mv643xx_private
+op_star
+id|mp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_int
+r_int
+id|mac_h
+suffix:semicolon
+r_int
+r_int
+id|mac_l
+suffix:semicolon
+id|mac_h
+op_assign
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_MAC_ADDR_HIGH
+c_func
+(paren
+id|mp-&gt;port_num
+)paren
+)paren
+suffix:semicolon
+id|mac_l
+op_assign
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_MAC_ADDR_LOW
+c_func
+(paren
+id|mp-&gt;port_num
+)paren
+)paren
+suffix:semicolon
+id|p_addr
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|mac_h
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|p_addr
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|mac_h
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|p_addr
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|mac_h
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|p_addr
+(braket
+l_int|3
+)braket
+op_assign
+id|mac_h
+op_amp
+l_int|0xff
+suffix:semicolon
+id|p_addr
+(braket
+l_int|4
+)braket
+op_assign
+(paren
+id|mac_l
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|p_addr
+(braket
+l_int|5
+)braket
+op_assign
+id|mac_l
+op_amp
+l_int|0xff
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * eth_port_uc_addr - This function Set the port unicast address table&n; *&n; * DESCRIPTION:&n; *&t;This function locates the proper entry in the Unicast table for the&n; *&t;specified MAC nibble and sets its properties according to function&n; *&t;parameters.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Port number.&n; *&t;unsigned char&t;uc_nibble&t;Unicast MAC Address last nibble.&n; *&t;int &t;&t;option&t;&t;0 = Add, 1 = remove address.&n; *&n; * OUTPUT:&n; *&t;This function add/removes MAC addresses from the port unicast address&n; *&t;table.&n; *&n; * RETURN:&n; *&t;true is output succeeded.&n; *&t;false if option parameter is invalid.&n; *&n; */
 DECL|function|eth_port_uc_addr
 r_static
 r_int
@@ -5397,14 +6115,14 @@ id|option
 r_case
 id|REJECT_MAC_ADDR
 suffix:colon
-multiline_comment|/* Clear accepts frame bit at specified unicast DA table entry */
+multiline_comment|/* Clear accepts frame bit at given unicast DA table entry */
 id|unicast_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5425,11 +6143,11 @@ id|reg_offset
 )paren
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5448,11 +6166,11 @@ suffix:colon
 multiline_comment|/* Set accepts frame bit at unicast DA filter table entry */
 id|unicast_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5473,11 +6191,11 @@ id|reg_offset
 )paren
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5500,7 +6218,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_init_mac_tables - Clear all entrance in the UC, SMC and OMC tables&n; *&n; * DESCRIPTION:&n; *       Go through all the DA filter tables (Unicast, Special Multicast &amp;&n; *       Other Multicast) and set each entry to 0.&n; *&n; * INPUT:&n; *&t;unsigned int    eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       Multicast and Unicast packets are rejected.&n; *&n; * RETURN:&n; *       None.&n; */
+multiline_comment|/*&n; * eth_port_init_mac_tables - Clear all entrance in the UC, SMC and OMC tables&n; *&n; * DESCRIPTION:&n; *&t;Go through all the DA filter tables (Unicast, Special Multicast &amp;&n; *&t;Other Multicast) and set each entry to 0.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;Multicast and Unicast packets are rejected.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_init_mac_tables
 r_static
 r_void
@@ -5531,11 +6249,11 @@ id|table_index
 op_add_assign
 l_int|4
 )paren
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5563,11 +6281,11 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Clear DA filter special multicast table (Ex_dFSMT) */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5579,11 +6297,11 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DA filter other multicast table (Ex_dFOMT) */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
-id|MV64340_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE
+id|MV643XX_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE
 (paren
 id|eth_port_num
 )paren
@@ -5596,7 +6314,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * eth_clear_mib_counters - Clear all MIB counters&n; *&n; * DESCRIPTION:&n; *       This function clears all MIB counters of a specific ethernet port.&n; *       A read from the MIB counter will reset the counter.&n; *&n; * INPUT:&n; *&t;unsigned int    eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       After reading all MIB counters, the counters resets.&n; *&n; * RETURN:&n; *       MIB counter value.&n; *&n; */
+multiline_comment|/*&n; * eth_clear_mib_counters - Clear all MIB counters&n; *&n; * DESCRIPTION:&n; *&t;This function clears all MIB counters of a specific ethernet port.&n; *&t;A read from the MIB counter will reset the counter.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;After reading all MIB counters, the counters resets.&n; *&n; * RETURN:&n; *&t;MIB counter value.&n; *&n; */
 DECL|function|eth_clear_mib_counters
 r_static
 r_void
@@ -5627,10 +6345,10 @@ id|i
 op_add_assign
 l_int|4
 )paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_MIB_COUNTERS_BASE
+id|MV643XX_ETH_MIB_COUNTERS_BASE
 c_func
 (paren
 id|eth_port_num
@@ -5640,7 +6358,103 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_get - Get the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *       This routine returns the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       None.&n; *&n; * RETURN:&n; *       PHY address.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_detect - Detect whether a phy is present&n; *&n; * DESCRIPTION:&n; *&t;This function tests whether there is a PHY present on&n; *&t;the specified port.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None&n; *&n; * RETURN:&n; *&t;0 on success&n; *&t;-ENODEV on failure&n; *&n; */
+DECL|function|ethernet_phy_detect
+r_static
+r_int
+id|ethernet_phy_detect
+c_func
+(paren
+r_int
+r_int
+id|port_num
+)paren
+(brace
+r_int
+r_int
+id|phy_reg_data0
+suffix:semicolon
+r_int
+id|auto_neg
+suffix:semicolon
+id|eth_port_read_smi_reg
+c_func
+(paren
+id|port_num
+comma
+l_int|0
+comma
+op_amp
+id|phy_reg_data0
+)paren
+suffix:semicolon
+id|auto_neg
+op_assign
+id|phy_reg_data0
+op_amp
+l_int|0x1000
+suffix:semicolon
+id|phy_reg_data0
+op_xor_assign
+l_int|0x1000
+suffix:semicolon
+multiline_comment|/* invert auto_neg */
+id|eth_port_write_smi_reg
+c_func
+(paren
+id|port_num
+comma
+l_int|0
+comma
+id|phy_reg_data0
+)paren
+suffix:semicolon
+id|eth_port_read_smi_reg
+c_func
+(paren
+id|port_num
+comma
+l_int|0
+comma
+op_amp
+id|phy_reg_data0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|phy_reg_data0
+op_amp
+l_int|0x1000
+)paren
+op_eq
+id|auto_neg
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* change didn&squot;t take */
+id|phy_reg_data0
+op_xor_assign
+l_int|0x1000
+suffix:semicolon
+id|eth_port_write_smi_reg
+c_func
+(paren
+id|port_num
+comma
+l_int|0
+comma
+id|phy_reg_data0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ethernet_phy_get - Get the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;PHY address.&n; *&n; */
 DECL|function|ethernet_phy_get
 r_static
 r_int
@@ -5658,10 +6472,10 @@ id|reg_data
 suffix:semicolon
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_PHY_ADDR_REG
+id|MV643XX_ETH_PHY_ADDR_REG
 )paren
 suffix:semicolon
 r_return
@@ -5680,10 +6494,71 @@ l_int|0x1f
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to reset the ethernet port PHY.&n; *       The routine waits until the link is up again or link up is timeout.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       The ethernet port PHY renew its link.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_set - Set the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;int&t;&t;phy_addr&t;PHY address.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
+DECL|function|ethernet_phy_set
+r_static
+r_void
+id|ethernet_phy_set
+c_func
+(paren
+r_int
+r_int
+id|eth_port_num
+comma
+r_int
+id|phy_addr
+)paren
+(brace
+id|u32
+id|reg_data
+suffix:semicolon
+r_int
+id|addr_shift
+op_assign
+l_int|5
+op_star
+id|eth_port_num
+suffix:semicolon
+id|reg_data
+op_assign
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_PHY_ADDR_REG
+)paren
+suffix:semicolon
+id|reg_data
+op_and_assign
+op_complement
+(paren
+l_int|0x1f
+op_lshift
+id|addr_shift
+)paren
+suffix:semicolon
+id|reg_data
+op_or_assign
+(paren
+id|phy_addr
+op_amp
+l_int|0x1f
+)paren
+op_lshift
+id|addr_shift
+suffix:semicolon
+id|mv_write
+c_func
+(paren
+id|MV643XX_ETH_PHY_ADDR_REG
+comma
+id|reg_data
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *&t;This routine utilizes the SMI interface to reset the ethernet port PHY.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;The PHY is reset.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|ethernet_phy_reset
 r_static
-r_int
+r_void
 id|ethernet_phy_reset
 c_func
 (paren
@@ -5692,12 +6567,6 @@ r_int
 id|eth_port_num
 )paren
 (brace
-r_int
-r_int
-id|time_out
-op_assign
-l_int|50
-suffix:semicolon
 r_int
 r_int
 id|phy_reg_data
@@ -5729,48 +6598,8 @@ comma
 id|phy_reg_data
 )paren
 suffix:semicolon
-multiline_comment|/* Poll on the PHY LINK */
-r_do
-(brace
-id|eth_port_read_smi_reg
-c_func
-(paren
-id|eth_port_num
-comma
-l_int|1
-comma
-op_amp
-id|phy_reg_data
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_out
-op_decrement
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|phy_reg_data
-op_amp
-l_int|0x20
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * eth_port_reset - Reset Ethernet port&n; *&n; * DESCRIPTION:&n; * &t;This routine resets the chip by aborting any SDMA engine activity and&n; *      clearing the MIB counters. The Receiver and the Transmit unit are in &n; *      idle state after this command is performed and the port is disabled.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       Channel activity is halted.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * eth_port_reset - Reset Ethernet port&n; *&n; * DESCRIPTION:&n; * &t;This routine resets the chip by aborting any SDMA engine activity and&n; *&t;clearing the MIB counters. The Receiver and the Transmit unit are in&n; *&t;idle state after this command is performed and the port is disabled.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;Channel activity is halted.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|eth_port_reset
 r_static
 r_void
@@ -5779,7 +6608,7 @@ c_func
 (paren
 r_int
 r_int
-id|eth_port_num
+id|port_num
 )paren
 (brace
 r_int
@@ -5789,13 +6618,13 @@ suffix:semicolon
 multiline_comment|/* Stop Tx port activity. Check port Tx activity. */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
+id|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
@@ -5808,12 +6637,13 @@ l_int|0xFF
 )paren
 (brace
 multiline_comment|/* Issue stop command for active channels only */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
+id|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 (paren
@@ -5824,38 +6654,39 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for all Tx activity to terminate. */
-r_do
-(brace
 multiline_comment|/* Check port cause register that all Tx queues are stopped */
-id|reg_data
-op_assign
-id|MV_READ
-(paren
-id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
-(paren
-id|eth_port_num
-)paren
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
-id|reg_data
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
+c_func
+(paren
+id|port_num
+)paren
+)paren
 op_amp
 l_int|0xFF
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Stop Rx port activity. Check port Rx activity. */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
@@ -5868,12 +6699,13 @@ l_int|0xFF
 )paren
 (brace
 multiline_comment|/* Issue stop command for active channels only */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 (paren
@@ -5884,26 +6716,26 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for all Rx activity to terminate. */
-r_do
-(brace
 multiline_comment|/* Check port cause register that all Rx queues are stopped */
-id|reg_data
-op_assign
-id|MV_READ
-(paren
-id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
-(paren
-id|eth_port_num
-)paren
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
-id|reg_data
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
+c_func
+(paren
+id|port_num
+)paren
+)paren
 op_amp
 l_int|0xFF
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -5911,42 +6743,41 @@ multiline_comment|/* Clear all MIB counters */
 id|eth_clear_mib_counters
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the Enable bit in the Configuration Register */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
+c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 )paren
 suffix:semicolon
 id|reg_data
 op_and_assign
 op_complement
-id|ETH_SERIAL_PORT_ENABLE
+id|MV643XX_ETH_SERIAL_PORT_ENABLE
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
+id|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 comma
 id|reg_data
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_set_config_reg - Set specified bits in configuration register.&n; *&n; * DESCRIPTION:&n; *       This function sets specified bits in the given ethernet &n; *       configuration register. &n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int    value   32 bit value.&n; *&n; * OUTPUT:&n; *      The set bits in the value parameter are set in the configuration &n; *      register.&n; *&n; * RETURN:&n; *      None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_set_config_reg - Set specified bits in configuration register.&n; *&n; * DESCRIPTION:&n; *&t;This function sets specified bits in the given ethernet&n; *&t;configuration register.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;value&t;&t;32 bit value.&n; *&n; * OUTPUT:&n; *&t;The set bits in the value parameter are set in the configuration&n; *&t;register.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|ethernet_set_config_reg
 r_static
 r_void
@@ -5968,10 +6799,10 @@ id|eth_config_reg
 suffix:semicolon
 id|eth_config_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_PORT_CONFIG_REG
+id|MV643XX_ETH_PORT_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -5982,10 +6813,10 @@ id|eth_config_reg
 op_or_assign
 id|value
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
-id|MV64340_ETH_PORT_CONFIG_REG
+id|MV643XX_ETH_PORT_CONFIG_REG
 c_func
 (paren
 id|eth_port_num
@@ -5995,7 +6826,85 @@ id|eth_config_reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_get_config_reg - Get the port configuration register&n; *&n; * DESCRIPTION:&n; *       This function returns the configuration register value of the given &n; *       ethernet port.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       None.&n; *&n; * RETURN:&n; *       Port configuration register value.&n; */
+DECL|function|eth_port_link_is_up
+r_static
+r_int
+id|eth_port_link_is_up
+c_func
+(paren
+r_int
+r_int
+id|eth_port_num
+)paren
+(brace
+r_int
+r_int
+id|phy_reg_data0
+suffix:semicolon
+r_int
+r_int
+id|phy_reg_data1
+suffix:semicolon
+id|eth_port_read_smi_reg
+c_func
+(paren
+id|eth_port_num
+comma
+l_int|0
+comma
+op_amp
+id|phy_reg_data0
+)paren
+suffix:semicolon
+id|eth_port_read_smi_reg
+c_func
+(paren
+id|eth_port_num
+comma
+l_int|1
+comma
+op_amp
+id|phy_reg_data1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|phy_reg_data0
+op_amp
+l_int|0x1000
+)paren
+(brace
+multiline_comment|/* auto-neg supported? */
+r_if
+c_cond
+(paren
+id|phy_reg_data1
+op_amp
+l_int|0x20
+)paren
+multiline_comment|/* auto-neg complete */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|phy_reg_data1
+op_amp
+l_int|0x4
+)paren
+multiline_comment|/* link up */
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ethernet_get_config_reg - Get the port configuration register&n; *&n; * DESCRIPTION:&n; *&t;This function returns the configuration register value of the given&n; *&t;ethernet port.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;Port configuration register value.&n; */
 DECL|function|ethernet_get_config_reg
 r_static
 r_int
@@ -6014,10 +6923,10 @@ id|eth_config_reg
 suffix:semicolon
 id|eth_config_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
-id|MV64340_ETH_PORT_CONFIG_EXTEND_REG
+id|MV643XX_ETH_PORT_CONFIG_EXTEND_REG
 (paren
 id|eth_port_num
 )paren
@@ -6027,16 +6936,16 @@ r_return
 id|eth_config_reg
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform PHY register read.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *       unsigned int   phy_reg   PHY register address offset.&n; *       unsigned int   *value   Register value buffer.&n; *&n; * OUTPUT:&n; *       Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *       false if the PHY is busy or read data is not in valid state.&n; *       true otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *&t;This routine utilize the SMI interface to interact with the PHY in&n; *&t;order to perform PHY register read.&n; *&n; * INPUT:&n; *&t;unsigned int&t;port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;phy_reg&t;&t;PHY register address offset.&n; *&t;unsigned int&t;*value&t;&t;Register value buffer.&n; *&n; * OUTPUT:&n; *&t;Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *&t;false if the PHY is busy or read data is not in valid state.&n; *&t;true otherwise.&n; *&n; */
 DECL|function|eth_port_read_smi_reg
 r_static
-r_int
+r_void
 id|eth_port_read_smi_reg
 c_func
 (paren
 r_int
 r_int
-id|eth_port_num
+id|port_num
 comma
 r_int
 r_int
@@ -6054,55 +6963,77 @@ op_assign
 id|ethernet_phy_get
 c_func
 (paren
-id|eth_port_num
+id|port_num
 )paren
 suffix:semicolon
 r_int
 r_int
-id|time_out
-op_assign
-id|PHY_BUSY_TIMEOUT
+id|flags
 suffix:semicolon
 r_int
-r_int
-id|reg_value
+id|i
 suffix:semicolon
-multiline_comment|/* first check that it is not busy */
-r_do
-(brace
-id|reg_value
-op_assign
-id|MV_READ
+multiline_comment|/* the SMI register is a shared resource */
+id|spin_lock_irqsave
 c_func
 (paren
-id|MV64340_ETH_SMI_REG
+op_amp
+id|mv643xx_eth_phy_lock
+comma
+id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* wait for the SMI register to become available */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
+)paren
+op_amp
+id|ETH_SMI_BUSY
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|time_out
-op_decrement
+id|i
 op_eq
-l_int|0
+id|PHY_WAIT_ITERATIONS
 )paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|reg_value
-op_amp
-id|ETH_SMI_BUSY
-)paren
-suffix:semicolon
-multiline_comment|/* not busy */
-id|MV_WRITE
+(brace
+id|printk
 c_func
 (paren
-id|MV64340_ETH_SMI_REG
+l_string|&quot;mv643xx PHY busy timeout, port %d&bslash;n&quot;
+comma
+id|port_num
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+id|PHY_WAIT_MICRO_SECONDS
+)paren
+suffix:semicolon
+)brace
+id|mv_write
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
 comma
 (paren
 id|phy_addr
@@ -6119,80 +7050,83 @@ op_or
 id|ETH_SMI_OPCODE_READ
 )paren
 suffix:semicolon
-id|time_out
-op_assign
-id|PHY_BUSY_TIMEOUT
-suffix:semicolon
-multiline_comment|/* initialize the time out var again */
-r_do
-(brace
-id|reg_value
-op_assign
-id|MV_READ
-c_func
-(paren
-id|MV64340_ETH_SMI_REG
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time_out
-op_decrement
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
+multiline_comment|/* now wait for the data to be valid */
+r_for
 c_loop
 (paren
-id|reg_value
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+op_logical_neg
+(paren
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
+)paren
 op_amp
 id|ETH_SMI_READ_VALID
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for the data to update in the SMI register */
-r_for
-c_loop
-(paren
-id|time_out
-op_assign
-l_int|0
-suffix:semicolon
-id|time_out
-OL
-id|PHY_BUSY_TIMEOUT
-suffix:semicolon
-id|time_out
+id|i
 op_increment
 )paren
-suffix:semicolon
-id|reg_value
-op_assign
-id|MV_READ
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|PHY_WAIT_ITERATIONS
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|MV64340_ETH_SMI_REG
+l_string|&quot;mv643xx PHY read timeout, port %d&bslash;n&quot;
+comma
+id|port_num
 )paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+id|PHY_WAIT_MICRO_SECONDS
+)paren
+suffix:semicolon
+)brace
 op_star
 id|value
 op_assign
-id|reg_value
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
+)paren
 op_amp
 l_int|0xffff
 suffix:semicolon
-r_return
-l_int|1
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mv643xx_eth_phy_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_write_smi_reg - Write to PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform writes to PHY registers.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int   phy_reg   PHY register address offset.&n; *      unsigned int    value   Register value.&n; *&n; * OUTPUT:&n; *      Write the given value to the specified PHY register.&n; *&n; * RETURN:&n; *      false if the PHY is busy.&n; *      true otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_port_write_smi_reg - Write to PHY registers&n; *&n; * DESCRIPTION:&n; *&t;This routine utilize the SMI interface to interact with the PHY in&n; *&t;order to perform writes to PHY registers.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;phy_reg&t;&t;PHY register address offset.&n; *&t;unsigned int&t;value&t;&t;Register value.&n; *&n; * OUTPUT:&n; *&t;Write the given value to the specified PHY register.&n; *&n; * RETURN:&n; *&t;false if the PHY is busy.&n; *&t;true otherwise.&n; *&n; */
 DECL|function|eth_port_write_smi_reg
 r_static
-r_int
+r_void
 id|eth_port_write_smi_reg
 c_func
 (paren
@@ -6210,17 +7144,14 @@ id|value
 )paren
 (brace
 r_int
-r_int
-id|time_out
-op_assign
-id|PHY_BUSY_TIMEOUT
-suffix:semicolon
-r_int
-r_int
-id|reg_value
-suffix:semicolon
-r_int
 id|phy_addr
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|phy_addr
 op_assign
@@ -6230,42 +7161,67 @@ c_func
 id|eth_port_num
 )paren
 suffix:semicolon
-multiline_comment|/* first check that it is not busy */
-r_do
-(brace
-id|reg_value
-op_assign
-id|MV_READ
+multiline_comment|/* the SMI register is a shared resource */
+id|spin_lock_irqsave
 c_func
 (paren
-id|MV64340_ETH_SMI_REG
+op_amp
+id|mv643xx_eth_phy_lock
+comma
+id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* wait for the SMI register to become available */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|mv_read
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
+)paren
+op_amp
+id|ETH_SMI_BUSY
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|time_out
-op_decrement
+id|i
 op_eq
-l_int|0
+id|PHY_WAIT_ITERATIONS
 )paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|reg_value
-op_amp
-id|ETH_SMI_BUSY
-)paren
-suffix:semicolon
-multiline_comment|/* not busy */
-id|MV_WRITE
+(brace
+id|printk
 c_func
 (paren
-id|MV64340_ETH_SMI_REG
+l_string|&quot;mv643xx PHY busy timeout, port %d&bslash;n&quot;
+comma
+id|eth_port_num
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+id|PHY_WAIT_MICRO_SECONDS
+)paren
+suffix:semicolon
+)brace
+id|mv_write
+c_func
+(paren
+id|MV643XX_ETH_SMI_REG
 comma
 (paren
 id|phy_addr
@@ -6288,12 +7244,20 @@ l_int|0xffff
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|mv643xx_eth_phy_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_send - Send an Ethernet packet&n; *&n; * DESCRIPTION:&n; *&t;This routine send a given packet described by p_pktinfo parameter. It &n; *      supports transmitting of a packet spaned over multiple buffers. The &n; *      routine updates &squot;curr&squot; and &squot;first&squot; indexes according to the packet &n; *      segment passed to the routine. In case the packet segment is first, &n; *      the &squot;first&squot; index is update. In any case, the &squot;curr&squot; index is updated. &n; *      If the routine get into Tx resource error it assigns &squot;curr&squot; index as &n; *      &squot;first&squot;. This way the function can abort Tx process of multiple &n; *      descriptors per packet.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;curr&squot; and &squot;first&squot; indexes are updated. &n; *&n; * RETURN:&n; *      ETH_QUEUE_FULL in case of Tx resource error.&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_QUEUE_LAST_RESOURCE if the routine uses the last Tx resource.&n; *      ETH_OK otherwise.&n; *&n; */
-macro_line|#ifdef  MV64340_CHECKSUM_OFFLOAD_TX
+multiline_comment|/*&n; * eth_port_send - Send an Ethernet packet&n; *&n; * DESCRIPTION:&n; *&t;This routine send a given packet described by p_pktinfo parameter. It&n; *&t;supports transmitting of a packet spaned over multiple buffers. The&n; *&t;routine updates &squot;curr&squot; and &squot;first&squot; indexes according to the packet&n; *&t;segment passed to the routine. In case the packet segment is first,&n; *&t;the &squot;first&squot; index is update. In any case, the &squot;curr&squot; index is updated.&n; *&t;If the routine get into Tx resource error it assigns &squot;curr&squot; index as&n; *&t;&squot;first&squot;. This way the function can abort Tx process of multiple&n; *&t;descriptors per packet.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;curr&squot; and &squot;first&squot; indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_QUEUE_FULL in case of Tx resource error.&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_QUEUE_LAST_RESOURCE if the routine uses the last Tx resource.&n; *&t;ETH_OK otherwise.&n; *&n; */
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 multiline_comment|/*&n; * Modified to include the first descriptor pointer in case of SG&n; */
 DECL|function|eth_port_send
 r_static
@@ -6302,7 +7266,7 @@ id|eth_port_send
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -6321,22 +7285,18 @@ id|tx_first_desc
 comma
 id|tx_next_desc
 suffix:semicolon
-r_volatile
 r_struct
 id|eth_tx_desc
 op_star
 id|current_descriptor
 suffix:semicolon
-r_volatile
 r_struct
 id|eth_tx_desc
 op_star
 id|first_descriptor
 suffix:semicolon
 id|u32
-id|command_status
-comma
-id|first_chip_ptr
+id|command
 suffix:semicolon
 multiline_comment|/* Do not process Tx ring in case of Tx ring resource error */
 r_if
@@ -6347,6 +7307,32 @@ id|mp-&gt;tx_resource_err
 r_return
 id|ETH_QUEUE_FULL
 suffix:semicolon
+multiline_comment|/*&n;&t; * The hardware requires that each buffer that is &lt;= 8 bytes&n;&t; * in length must be aligned on an 8 byte boundary.&n;&t; */
+r_if
+c_cond
+(paren
+id|p_pkt_info-&gt;byte_cnt
+op_le
+l_int|8
+op_logical_and
+id|p_pkt_info-&gt;buf_ptr
+op_amp
+l_int|0x7
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mv643xx_eth port %d: packet size &lt;= 8 problem&bslash;n&quot;
+comma
+id|mp-&gt;port_num
+)paren
+suffix:semicolon
+r_return
+id|ETH_ERROR
+suffix:semicolon
+)brace
 multiline_comment|/* Get the Tx Desc ring indexes */
 id|tx_desc_curr
 op_assign
@@ -6364,16 +7350,6 @@ id|mp-&gt;p_tx_desc_area
 id|tx_desc_curr
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current_descriptor
-op_eq
-l_int|NULL
-)paren
-r_return
-id|ETH_ERROR
-suffix:semicolon
 id|tx_next_desc
 op_assign
 (paren
@@ -6382,156 +7358,8 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 suffix:semicolon
-id|command_status
-op_assign
-id|p_pkt_info-&gt;cmd_sts
-op_or
-id|ETH_ZERO_PADDING
-op_or
-id|ETH_GEN_CRC
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|command_status
-op_amp
-id|ETH_TX_FIRST_DESC
-)paren
-(brace
-id|tx_first_desc
-op_assign
-id|tx_desc_curr
-suffix:semicolon
-id|mp-&gt;tx_first_desc_q
-op_assign
-id|tx_first_desc
-suffix:semicolon
-multiline_comment|/* fill first descriptor */
-id|first_descriptor
-op_assign
-op_amp
-id|mp-&gt;p_tx_desc_area
-(braket
-id|tx_desc_curr
-)braket
-suffix:semicolon
-id|first_descriptor-&gt;l4i_chk
-op_assign
-id|p_pkt_info-&gt;l4i_chk
-suffix:semicolon
-id|first_descriptor-&gt;cmd_sts
-op_assign
-id|command_status
-suffix:semicolon
-id|first_descriptor-&gt;byte_cnt
-op_assign
-id|p_pkt_info-&gt;byte_cnt
-suffix:semicolon
-id|first_descriptor-&gt;buf_ptr
-op_assign
-id|p_pkt_info-&gt;buf_ptr
-suffix:semicolon
-id|first_descriptor-&gt;next_desc_ptr
-op_assign
-id|mp-&gt;tx_desc_dma
-op_plus
-id|tx_next_desc
-op_star
-r_sizeof
-(paren
-r_struct
-id|eth_tx_desc
-)paren
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|tx_first_desc
-op_assign
-id|mp-&gt;tx_first_desc_q
-suffix:semicolon
-id|first_descriptor
-op_assign
-op_amp
-id|mp-&gt;p_tx_desc_area
-(braket
-id|tx_first_desc
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|first_descriptor
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;First desc is NULL !!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ETH_ERROR
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|command_status
-op_amp
-id|ETH_TX_LAST_DESC
-)paren
-id|current_descriptor-&gt;next_desc_ptr
-op_assign
-l_int|0x00000000
-suffix:semicolon
-r_else
-(brace
-id|command_status
-op_or_assign
-id|ETH_BUFFER_OWNED_BY_DMA
-suffix:semicolon
-id|current_descriptor-&gt;next_desc_ptr
-op_assign
-id|mp-&gt;tx_desc_dma
-op_plus
-id|tx_next_desc
-op_star
-r_sizeof
-(paren
-r_struct
-id|eth_tx_desc
-)paren
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|p_pkt_info-&gt;byte_cnt
-OL
-l_int|8
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; &lt; 8 problem &bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ETH_ERROR
-suffix:semicolon
-)brace
 id|current_descriptor-&gt;buf_ptr
 op_assign
 id|p_pkt_info-&gt;buf_ptr
@@ -6544,100 +7372,106 @@ id|current_descriptor-&gt;l4i_chk
 op_assign
 id|p_pkt_info-&gt;l4i_chk
 suffix:semicolon
-id|current_descriptor-&gt;cmd_sts
-op_assign
-id|command_status
-suffix:semicolon
 id|mp-&gt;tx_skb
 (braket
 id|tx_desc_curr
 )braket
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|p_pkt_info-&gt;return_info
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
+id|command
+op_assign
+id|p_pkt_info-&gt;cmd_sts
+op_or
+id|ETH_ZERO_PADDING
+op_or
+id|ETH_GEN_CRC
+op_or
+id|ETH_BUFFER_OWNED_BY_DMA
 suffix:semicolon
-multiline_comment|/* Set last desc with DMA ownership and interrupt enable. */
 r_if
 c_cond
 (paren
-id|command_status
+id|command
+op_amp
+id|ETH_TX_LAST_DESC
+)paren
+id|command
+op_or_assign
+id|ETH_TX_ENABLE_INTERRUPT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|command
+op_amp
+id|ETH_TX_FIRST_DESC
+)paren
+(brace
+id|tx_first_desc
+op_assign
+id|tx_desc_curr
+suffix:semicolon
+id|mp-&gt;tx_first_desc_q
+op_assign
+id|tx_first_desc
+suffix:semicolon
+id|first_descriptor
+op_assign
+id|current_descriptor
+suffix:semicolon
+id|mp-&gt;tx_first_command
+op_assign
+id|command
+suffix:semicolon
+)brace
+r_else
+(brace
+id|tx_first_desc
+op_assign
+id|mp-&gt;tx_first_desc_q
+suffix:semicolon
+id|first_descriptor
+op_assign
+op_amp
+id|mp-&gt;p_tx_desc_area
+(braket
+id|tx_first_desc
+)braket
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|first_descriptor
+op_eq
+l_int|NULL
+)paren
+suffix:semicolon
+id|current_descriptor-&gt;cmd_sts
+op_assign
+id|command
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|command
 op_amp
 id|ETH_TX_LAST_DESC
 )paren
 (brace
-id|current_descriptor-&gt;cmd_sts
-op_assign
-id|command_status
-op_or
-id|ETH_TX_ENABLE_INTERRUPT
-op_or
-id|ETH_BUFFER_OWNED_BY_DMA
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|command_status
-op_amp
-id|ETH_TX_FIRST_DESC
-)paren
-)paren
-id|first_descriptor-&gt;cmd_sts
-op_or_assign
-id|ETH_BUFFER_OWNED_BY_DMA
-suffix:semicolon
 id|wmb
 c_func
 (paren
 )paren
 suffix:semicolon
-id|first_chip_ptr
+id|first_descriptor-&gt;cmd_sts
 op_assign
-id|MV_READ
-c_func
-(paren
-id|MV64340_ETH_CURRENT_SERVED_TX_DESC_PTR
-c_func
-(paren
-id|mp-&gt;port_num
-)paren
-)paren
+id|mp-&gt;tx_first_command
 suffix:semicolon
-multiline_comment|/* Apply send command */
-r_if
-c_cond
-(paren
-id|first_chip_ptr
-op_eq
-l_int|0x00000000
-)paren
-id|MV_WRITE
+id|wmb
 c_func
 (paren
-id|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
-c_func
-(paren
-id|mp-&gt;port_num
-)paren
-comma
-(paren
-r_struct
-id|eth_tx_desc
-op_star
-)paren
-id|mp-&gt;tx_desc_dma
-op_plus
-id|tx_first_desc
 )paren
 suffix:semicolon
 id|ETH_ENABLE_TX_QUEUE
@@ -6655,30 +7489,6 @@ id|mp-&gt;tx_first_desc_q
 op_assign
 id|tx_first_desc
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|command_status
-op_amp
-id|ETH_TX_FIRST_DESC
-)paren
-)paren
-(brace
-id|current_descriptor-&gt;cmd_sts
-op_assign
-id|command_status
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Check for ring index overlap in the Tx desc ring */
 r_if
@@ -6705,11 +7515,6 @@ id|mp-&gt;tx_curr_desc_q
 op_assign
 id|tx_next_desc
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ETH_OK
 suffix:semicolon
@@ -6722,7 +7527,7 @@ id|eth_port_send
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -6738,7 +7543,6 @@ suffix:semicolon
 r_int
 id|tx_desc_used
 suffix:semicolon
-r_volatile
 r_struct
 id|eth_tx_desc
 op_star
@@ -6774,16 +7578,6 @@ id|mp-&gt;p_tx_desc_area
 id|tx_desc_curr
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current_descriptor
-op_eq
-l_int|NULL
-)paren
-r_return
-id|ETH_ERROR
-suffix:semicolon
 id|command_status
 op_assign
 id|p_pkt_info-&gt;cmd_sts
@@ -6792,27 +7586,6 @@ id|ETH_ZERO_PADDING
 op_or
 id|ETH_GEN_CRC
 suffix:semicolon
-multiline_comment|/* XXX Is this for real ?!?!? */
-multiline_comment|/* Buffers with a payload smaller than 8 bytes must be aligned to a&n;&t; * 64-bit boundary. We use the memory allocated for Tx descriptor.&n;&t; * This memory is located in TX_BUF_OFFSET_IN_DESC offset within the&n;&t; * Tx descriptor. */
-r_if
-c_cond
-(paren
-id|p_pkt_info-&gt;byte_cnt
-op_le
-l_int|8
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;You have failed in the &lt; 8 bytes errata - fixme&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ETH_ERROR
-suffix:semicolon
-)brace
 id|current_descriptor-&gt;buf_ptr
 op_assign
 id|p_pkt_info-&gt;buf_ptr
@@ -6826,19 +7599,14 @@ id|mp-&gt;tx_skb
 id|tx_desc_curr
 )braket
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|p_pkt_info-&gt;return_info
 suffix:semicolon
-id|mb
+multiline_comment|/* Set last desc with DMA ownership and interrupt enable. */
+id|wmb
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set last desc with DMA ownership and interrupt enable. */
 id|current_descriptor-&gt;cmd_sts
 op_assign
 id|command_status
@@ -6847,7 +7615,11 @@ id|ETH_BUFFER_OWNED_BY_DMA
 op_or
 id|ETH_TX_ENABLE_INTERRUPT
 suffix:semicolon
-multiline_comment|/* Apply send command */
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ETH_ENABLE_TX_QUEUE
 c_func
 (paren
@@ -6863,7 +7635,7 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 suffix:semicolon
 multiline_comment|/* Update the current descriptor */
 id|mp-&gt;tx_curr_desc_q
@@ -6892,7 +7664,7 @@ id|ETH_OK
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * eth_tx_return_desc - Free all used Tx descriptors&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the transmitted packet information to the caller.&n; *      It uses the &squot;first&squot; index to support Tx desc return in case a transmit &n; *      of a packet spanned over multiple buffer still in process.&n; *      In case the Tx queue was in &quot;resource error&quot; condition, where there are &n; *      no available Tx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;first&squot; and &squot;used&squot; indexes are updated. &n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *      ETH_RETRY in case there is transmission in process.&n; *&t;ETH_END_OF_JOB if the routine has nothing to release.&n; *      ETH_OK otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_tx_return_desc - Free all used Tx descriptors&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the transmitted packet information to the caller.&n; *&t;It uses the &squot;first&squot; index to support Tx desc return in case a transmit&n; *&t;of a packet spanned over multiple buffer still in process.&n; *&t;In case the Tx queue was in &quot;resource error&quot; condition, where there are&n; *&t;no available Tx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;first&squot; and &squot;used&squot; indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_RETRY in case there is transmission in process.&n; *&t;ETH_END_OF_JOB if the routine has nothing to release.&n; *&t;ETH_OK otherwise.&n; *&n; */
 DECL|function|eth_tx_return_desc
 r_static
 id|ETH_FUNC_RET_STATUS
@@ -6900,7 +7672,7 @@ id|eth_tx_return_desc
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -6912,15 +7684,20 @@ id|p_pkt_info
 (brace
 r_int
 id|tx_desc_used
-comma
-id|tx_desc_curr
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
+macro_line|#ifdef MV643XX_CHECKSUM_OFFLOAD_TX
 r_int
-id|tx_first_desc
+id|tx_busy_desc
+op_assign
+id|mp-&gt;tx_first_desc_q
+suffix:semicolon
+macro_line|#else
+r_int
+id|tx_busy_desc
+op_assign
+id|mp-&gt;tx_curr_desc_q
 suffix:semicolon
 macro_line|#endif
-r_volatile
 r_struct
 id|eth_tx_desc
 op_star
@@ -6931,20 +7708,10 @@ r_int
 id|command_status
 suffix:semicolon
 multiline_comment|/* Get the Tx Desc ring indexes */
-id|tx_desc_curr
-op_assign
-id|mp-&gt;tx_curr_desc_q
-suffix:semicolon
 id|tx_desc_used
 op_assign
 id|mp-&gt;tx_used_desc_q
 suffix:semicolon
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
-id|tx_first_desc
-op_assign
-id|mp-&gt;tx_first_desc_q
-suffix:semicolon
-macro_line|#endif
 id|p_tx_desc_used
 op_assign
 op_amp
@@ -6953,7 +7720,7 @@ id|mp-&gt;p_tx_desc_area
 id|tx_desc_used
 )braket
 suffix:semicolon
-multiline_comment|/* XXX Sanity check */
+multiline_comment|/* Sanity check */
 r_if
 c_cond
 (paren
@@ -6964,12 +7731,25 @@ l_int|NULL
 r_return
 id|ETH_ERROR
 suffix:semicolon
+multiline_comment|/* Stop release. About to overlap the current available Tx descriptor */
+r_if
+c_cond
+(paren
+id|tx_desc_used
+op_eq
+id|tx_busy_desc
+op_logical_and
+op_logical_neg
+id|mp-&gt;tx_resource_err
+)paren
+r_return
+id|ETH_END_OF_JOB
+suffix:semicolon
 id|command_status
 op_assign
 id|p_tx_desc_used-&gt;cmd_sts
 suffix:semicolon
 multiline_comment|/* Still transmitting... */
-macro_line|#ifndef MV64340_CHECKSUM_OFFLOAD_TX
 r_if
 c_cond
 (paren
@@ -6982,37 +7762,6 @@ id|ETH_BUFFER_OWNED_BY_DMA
 r_return
 id|ETH_RETRY
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Stop release. About to overlap the current available Tx descriptor */
-macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
-r_if
-c_cond
-(paren
-id|tx_desc_used
-op_eq
-id|tx_first_desc
-op_logical_and
-op_logical_neg
-id|mp-&gt;tx_resource_err
-)paren
-r_return
-id|ETH_END_OF_JOB
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|tx_desc_used
-op_eq
-id|tx_desc_curr
-op_logical_and
-op_logical_neg
-id|mp-&gt;tx_resource_err
-)paren
-r_return
-id|ETH_END_OF_JOB
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Pass the packet information to the caller */
 id|p_pkt_info-&gt;cmd_sts
 op_assign
@@ -7041,7 +7790,7 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|MV64340_TX_QUEUE_SIZE
+id|mp-&gt;tx_ring_size
 suffix:semicolon
 multiline_comment|/* Any Tx return cancels the Tx resource error status */
 id|mp-&gt;tx_resource_err
@@ -7052,7 +7801,7 @@ r_return
 id|ETH_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_receive - Get received information from Rx ring.&n; *&n; * DESCRIPTION:&n; * &t;This routine returns the received data to the caller. There is no &n; *&t;data copying during routine operation. All information is returned &n; *&t;using pointer to packet information struct passed from the caller. &n; *      If the routine exhausts&t;Rx ring resources then the resource error flag &n; *      is set.  &n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Rx ring current and used indexes are updated. &n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_QUEUE_FULL if Rx ring resources are exhausted.&n; *&t;ETH_END_OF_JOB if there is no received data.&n; *      ETH_OK otherwise.&n; */
+multiline_comment|/*&n; * eth_port_receive - Get received information from Rx ring.&n; *&n; * DESCRIPTION:&n; * &t;This routine returns the received data to the caller. There is no&n; *&t;data copying during routine operation. All information is returned&n; *&t;using pointer to packet information struct passed from the caller.&n; *&t;If the routine exhausts Rx ring resources then the resource error flag&n; *&t;is set.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Rx ring current and used indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_QUEUE_FULL if Rx ring resources are exhausted.&n; *&t;ETH_END_OF_JOB if there is no received data.&n; *&t;ETH_OK otherwise.&n; */
 DECL|function|eth_port_receive
 r_static
 id|ETH_FUNC_RET_STATUS
@@ -7060,7 +7809,7 @@ id|eth_port_receive
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -7118,6 +7867,11 @@ id|command_status
 op_assign
 id|p_rx_desc-&gt;cmd_sts
 suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Nothing to receive... */
 r_if
 c_cond
@@ -7163,7 +7917,7 @@ op_assign
 id|p_rx_desc-&gt;buf_size
 suffix:semicolon
 multiline_comment|/* Clean the return info field to indicate that the packet has been */
-multiline_comment|/* moved to the upper layers                                        */
+multiline_comment|/* moved to the upper layers&t;&t;&t;&t;&t;    */
 id|mp-&gt;rx_skb
 (braket
 id|rx_curr_desc
@@ -7180,7 +7934,7 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|MV64340_RX_QUEUE_SIZE
+id|mp-&gt;rx_ring_size
 suffix:semicolon
 id|mp-&gt;rx_curr_desc_q
 op_assign
@@ -7198,16 +7952,11 @@ id|mp-&gt;rx_resource_err
 op_assign
 l_int|1
 suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ETH_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_rx_return_buff - Returns a Rx buffer back to the Rx ring.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns a Rx buffer back to the Rx ring. It retrieves the &n; *      next &squot;used&squot; descriptor and attached the returned buffer to it.&n; *      In case the Rx ring was in &quot;resource error&quot; condition, where there are &n; *      no available Rx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp   Ethernet Port Control srtuct. &n; *      struct pkt_info        *p_pkt_info   Information on the returned buffer.&n; *&n; * OUTPUT:&n; *&t;New available Rx resource in Rx descriptor ring.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *      ETH_OK otherwise.&n; */
+multiline_comment|/*&n; * eth_rx_return_buff - Returns a Rx buffer back to the Rx ring.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns a Rx buffer back to the Rx ring. It retrieves the&n; *&t;next &squot;used&squot; descriptor and attached the returned buffer to it.&n; *&t;In case the Rx ring was in &quot;resource error&quot; condition, where there are&n; *&t;no available Rx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv643xx_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;Information on returned buffer.&n; *&n; * OUTPUT:&n; *&t;New available Rx resource in Rx descriptor ring.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_OK otherwise.&n; */
 DECL|function|eth_rx_return_buff
 r_static
 id|ETH_FUNC_RET_STATUS
@@ -7215,7 +7964,7 @@ id|eth_rx_return_buff
 c_func
 (paren
 r_struct
-id|mv64340_private
+id|mv643xx_private
 op_star
 id|mp
 comma
@@ -7264,20 +8013,19 @@ op_assign
 id|p_pkt_info-&gt;return_info
 suffix:semicolon
 multiline_comment|/* Flush the write pipe */
-id|mb
+multiline_comment|/* Return the descriptor to DMA ownership */
+id|wmb
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Return the descriptor to DMA ownership */
 id|p_used_rx_desc-&gt;cmd_sts
 op_assign
 id|ETH_BUFFER_OWNED_BY_DMA
 op_or
 id|ETH_RX_ENABLE_INTERRUPT
 suffix:semicolon
-multiline_comment|/* Flush descriptor and CPU pipe */
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -7291,7 +8039,7 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|MV64340_RX_QUEUE_SIZE
+id|mp-&gt;rx_ring_size
 suffix:semicolon
 multiline_comment|/* Any Rx return cancels the Rx resource error status */
 id|mp-&gt;rx_resource_err

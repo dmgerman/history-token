@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * mv64340.h - MV-64340 Internal registers definition file.&n; *&n; * Copyright 2002 Momentum Computer, Inc.&n; * &t;Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; * Copyright 2002 GALILEO TECHNOLOGY, LTD. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
-macro_line|#ifndef __ASM_MV64340_H
-DECL|macro|__ASM_MV64340_H
-mdefine_line|#define __ASM_MV64340_H
+multiline_comment|/*&n; * mv643xx.h - MV-643XX Internal registers definition file.&n; *&n; * Copyright 2002 Momentum Computer, Inc.&n; * &t;Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; * Copyright 2002 GALILEO TECHNOLOGY, LTD. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+macro_line|#ifndef __ASM_MV643XX_H
+DECL|macro|__ASM_MV643XX_H
+mdefine_line|#define __ASM_MV643XX_H
 macro_line|#ifdef __MIPS__
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/marvell.h&gt;
@@ -1057,226 +1057,230 @@ mdefine_line|#define MV64340_I2O_OUTBOUND_POST_TAIL_POINTER_REG_CPU1_SIDE       
 multiline_comment|/****************************************/
 multiline_comment|/*        Ethernet Unit Registers  &t;&t;*/
 multiline_comment|/****************************************/
-DECL|macro|MV64340_ETH_PHY_ADDR_REG
-mdefine_line|#define MV64340_ETH_PHY_ADDR_REG                                    0x2000
-DECL|macro|MV64340_ETH_SMI_REG
-mdefine_line|#define MV64340_ETH_SMI_REG                                         0x2004
-DECL|macro|MV64340_ETH_UNIT_DEFAULT_ADDR_REG
-mdefine_line|#define MV64340_ETH_UNIT_DEFAULT_ADDR_REG                           0x2008
-DECL|macro|MV64340_ETH_UNIT_DEFAULTID_REG
-mdefine_line|#define MV64340_ETH_UNIT_DEFAULTID_REG                              0x200c
-DECL|macro|MV64340_ETH_UNIT_INTERRUPT_CAUSE_REG
-mdefine_line|#define MV64340_ETH_UNIT_INTERRUPT_CAUSE_REG                        0x2080
-DECL|macro|MV64340_ETH_UNIT_INTERRUPT_MASK_REG
-mdefine_line|#define MV64340_ETH_UNIT_INTERRUPT_MASK_REG                         0x2084
-DECL|macro|MV64340_ETH_UNIT_INTERNAL_USE_REG
-mdefine_line|#define MV64340_ETH_UNIT_INTERNAL_USE_REG                           0x24fc
-DECL|macro|MV64340_ETH_UNIT_ERROR_ADDR_REG
-mdefine_line|#define MV64340_ETH_UNIT_ERROR_ADDR_REG                             0x2094
-DECL|macro|MV64340_ETH_BAR_0
-mdefine_line|#define MV64340_ETH_BAR_0                                           0x2200
-DECL|macro|MV64340_ETH_BAR_1
-mdefine_line|#define MV64340_ETH_BAR_1                                           0x2208
-DECL|macro|MV64340_ETH_BAR_2
-mdefine_line|#define MV64340_ETH_BAR_2                                           0x2210
-DECL|macro|MV64340_ETH_BAR_3
-mdefine_line|#define MV64340_ETH_BAR_3                                           0x2218
-DECL|macro|MV64340_ETH_BAR_4
-mdefine_line|#define MV64340_ETH_BAR_4                                           0x2220
-DECL|macro|MV64340_ETH_BAR_5
-mdefine_line|#define MV64340_ETH_BAR_5                                           0x2228
-DECL|macro|MV64340_ETH_SIZE_REG_0
-mdefine_line|#define MV64340_ETH_SIZE_REG_0                                      0x2204
-DECL|macro|MV64340_ETH_SIZE_REG_1
-mdefine_line|#define MV64340_ETH_SIZE_REG_1                                      0x220c
-DECL|macro|MV64340_ETH_SIZE_REG_2
-mdefine_line|#define MV64340_ETH_SIZE_REG_2                                      0x2214
-DECL|macro|MV64340_ETH_SIZE_REG_3
-mdefine_line|#define MV64340_ETH_SIZE_REG_3                                      0x221c
-DECL|macro|MV64340_ETH_SIZE_REG_4
-mdefine_line|#define MV64340_ETH_SIZE_REG_4                                      0x2224
-DECL|macro|MV64340_ETH_SIZE_REG_5
-mdefine_line|#define MV64340_ETH_SIZE_REG_5                                      0x222c
-DECL|macro|MV64340_ETH_HEADERS_RETARGET_BASE_REG
-mdefine_line|#define MV64340_ETH_HEADERS_RETARGET_BASE_REG                       0x2230
-DECL|macro|MV64340_ETH_HEADERS_RETARGET_CONTROL_REG
-mdefine_line|#define MV64340_ETH_HEADERS_RETARGET_CONTROL_REG                    0x2234
-DECL|macro|MV64340_ETH_HIGH_ADDR_REMAP_REG_0
-mdefine_line|#define MV64340_ETH_HIGH_ADDR_REMAP_REG_0                           0x2280
-DECL|macro|MV64340_ETH_HIGH_ADDR_REMAP_REG_1
-mdefine_line|#define MV64340_ETH_HIGH_ADDR_REMAP_REG_1                           0x2284
-DECL|macro|MV64340_ETH_HIGH_ADDR_REMAP_REG_2
-mdefine_line|#define MV64340_ETH_HIGH_ADDR_REMAP_REG_2                           0x2288
-DECL|macro|MV64340_ETH_HIGH_ADDR_REMAP_REG_3
-mdefine_line|#define MV64340_ETH_HIGH_ADDR_REMAP_REG_3                           0x228c
-DECL|macro|MV64340_ETH_BASE_ADDR_ENABLE_REG
-mdefine_line|#define MV64340_ETH_BASE_ADDR_ENABLE_REG                            0x2290
-DECL|macro|MV64340_ETH_ACCESS_PROTECTION_REG
-mdefine_line|#define MV64340_ETH_ACCESS_PROTECTION_REG(port)                    (0x2294 + (port&lt;&lt;2))
-DECL|macro|MV64340_ETH_MIB_COUNTERS_BASE
-mdefine_line|#define MV64340_ETH_MIB_COUNTERS_BASE(port)                        (0x3000 + (port&lt;&lt;7))
-DECL|macro|MV64340_ETH_PORT_CONFIG_REG
-mdefine_line|#define MV64340_ETH_PORT_CONFIG_REG(port)                          (0x2400 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_CONFIG_EXTEND_REG
-mdefine_line|#define MV64340_ETH_PORT_CONFIG_EXTEND_REG(port)                   (0x2404 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_MII_SERIAL_PARAMETRS_REG
-mdefine_line|#define MV64340_ETH_MII_SERIAL_PARAMETRS_REG(port)                 (0x2408 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_GMII_SERIAL_PARAMETRS_REG
-mdefine_line|#define MV64340_ETH_GMII_SERIAL_PARAMETRS_REG(port)                (0x240c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_VLAN_ETHERTYPE_REG
-mdefine_line|#define MV64340_ETH_VLAN_ETHERTYPE_REG(port)                       (0x2410 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_MAC_ADDR_LOW
-mdefine_line|#define MV64340_ETH_MAC_ADDR_LOW(port)                             (0x2414 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_MAC_ADDR_HIGH
-mdefine_line|#define MV64340_ETH_MAC_ADDR_HIGH(port)                            (0x2418 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_SDMA_CONFIG_REG
-mdefine_line|#define MV64340_ETH_SDMA_CONFIG_REG(port)                          (0x241c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_0
-mdefine_line|#define MV64340_ETH_DSCP_0(port)                                   (0x2420 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_1
-mdefine_line|#define MV64340_ETH_DSCP_1(port)                                   (0x2424 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_2
-mdefine_line|#define MV64340_ETH_DSCP_2(port)                                   (0x2428 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_3
-mdefine_line|#define MV64340_ETH_DSCP_3(port)                                   (0x242c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_4
-mdefine_line|#define MV64340_ETH_DSCP_4(port)                                   (0x2430 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_5
-mdefine_line|#define MV64340_ETH_DSCP_5(port)                                   (0x2434 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DSCP_6
-mdefine_line|#define MV64340_ETH_DSCP_6(port)                                   (0x2438 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_SERIAL_CONTROL_REG
-mdefine_line|#define MV64340_ETH_PORT_SERIAL_CONTROL_REG(port)                  (0x243c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_VLAN_PRIORITY_TAG_TO_PRIORITY
-mdefine_line|#define MV64340_ETH_VLAN_PRIORITY_TAG_TO_PRIORITY(port)            (0x2440 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_STATUS_REG
-mdefine_line|#define MV64340_ETH_PORT_STATUS_REG(port)                          (0x2444 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
-mdefine_line|#define MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(port)               (0x2448 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_FIXED_PRIORITY
-mdefine_line|#define MV64340_ETH_TX_QUEUE_FIXED_PRIORITY(port)                  (0x244c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_TX_TOKEN_BUCKET_RATE_CONFIG
-mdefine_line|#define MV64340_ETH_PORT_TX_TOKEN_BUCKET_RATE_CONFIG(port)         (0x2450 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_MAXIMUM_TRANSMIT_UNIT
-mdefine_line|#define MV64340_ETH_MAXIMUM_TRANSMIT_UNIT(port)                    (0x2458 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_MAXIMUM_TOKEN_BUCKET_SIZE
-mdefine_line|#define MV64340_ETH_PORT_MAXIMUM_TOKEN_BUCKET_SIZE(port)           (0x245c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_INTERRUPT_CAUSE_REG
-mdefine_line|#define MV64340_ETH_INTERRUPT_CAUSE_REG(port)                      (0x2460 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
-mdefine_line|#define MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG(port)               (0x2464 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_INTERRUPT_MASK_REG
-mdefine_line|#define MV64340_ETH_INTERRUPT_MASK_REG(port)                       (0x2468 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
-mdefine_line|#define MV64340_ETH_INTERRUPT_EXTEND_MASK_REG(port)                (0x246c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_RX_FIFO_URGENT_THRESHOLD_REG
-mdefine_line|#define MV64340_ETH_RX_FIFO_URGENT_THRESHOLD_REG(port)             (0x2470 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_FIFO_URGENT_THRESHOLD_REG
-mdefine_line|#define MV64340_ETH_TX_FIFO_URGENT_THRESHOLD_REG(port)             (0x2474 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_RX_MINIMAL_FRAME_SIZE_REG
-mdefine_line|#define MV64340_ETH_RX_MINIMAL_FRAME_SIZE_REG(port)                (0x247c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_RX_DISCARDED_FRAMES_COUNTER
-mdefine_line|#define MV64340_ETH_RX_DISCARDED_FRAMES_COUNTER(port)              (0x2484 + (port&lt;&lt;10)
-DECL|macro|MV64340_ETH_PORT_DEBUG_0_REG
-mdefine_line|#define MV64340_ETH_PORT_DEBUG_0_REG(port)                         (0x248c + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_DEBUG_1_REG
-mdefine_line|#define MV64340_ETH_PORT_DEBUG_1_REG(port)                         (0x2490 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_INTERNAL_ADDR_ERROR_REG
-mdefine_line|#define MV64340_ETH_PORT_INTERNAL_ADDR_ERROR_REG(port)             (0x2494 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_INTERNAL_USE_REG
-mdefine_line|#define MV64340_ETH_INTERNAL_USE_REG(port)                         (0x24fc + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
-mdefine_line|#define MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG(port)                (0x2680 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_CURRENT_SERVED_TX_DESC_PTR
-mdefine_line|#define MV64340_ETH_CURRENT_SERVED_TX_DESC_PTR(port)               (0x2684 + (port&lt;&lt;10))      
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0(port)              (0x260c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_1
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_1(port)              (0x261c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_2
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_2(port)              (0x262c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_3
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_3(port)              (0x263c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_4
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_4(port)              (0x264c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_5
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_5(port)              (0x265c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_6
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_6(port)              (0x266c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_7
-mdefine_line|#define MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_7(port)              (0x267c + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_0(port)              (0x26c0 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_1
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_1(port)              (0x26c4 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_2
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_2(port)              (0x26c8 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_3
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_3(port)              (0x26cc + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_4
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_4(port)              (0x26d0 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_5
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_5(port)              (0x26d4 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_6
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_6(port)              (0x26d8 + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_7
-mdefine_line|#define MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_7(port)              (0x26dc + (port&lt;&lt;10))     
-DECL|macro|MV64340_ETH_TX_QUEUE_0_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_0_TOKEN_BUCKET_COUNT(port)            (0x2700 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_1_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_1_TOKEN_BUCKET_COUNT(port)            (0x2710 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_2_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_2_TOKEN_BUCKET_COUNT(port)            (0x2720 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_3_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_3_TOKEN_BUCKET_COUNT(port)            (0x2730 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_4_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_4_TOKEN_BUCKET_COUNT(port)            (0x2740 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_5_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_5_TOKEN_BUCKET_COUNT(port)            (0x2750 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_6_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_6_TOKEN_BUCKET_COUNT(port)            (0x2760 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_7_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_TX_QUEUE_7_TOKEN_BUCKET_COUNT(port)            (0x2770 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_0_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_0_TOKEN_BUCKET_CONFIG(port)           (0x2704 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_1_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_1_TOKEN_BUCKET_CONFIG(port)           (0x2714 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_2_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_2_TOKEN_BUCKET_CONFIG(port)           (0x2724 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_3_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_3_TOKEN_BUCKET_CONFIG(port)           (0x2734 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_4_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_4_TOKEN_BUCKET_CONFIG(port)           (0x2744 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_5_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_5_TOKEN_BUCKET_CONFIG(port)           (0x2754 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_6_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_6_TOKEN_BUCKET_CONFIG(port)           (0x2764 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_7_TOKEN_BUCKET_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_7_TOKEN_BUCKET_CONFIG(port)           (0x2774 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_0_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_0_ARBITER_CONFIG(port)                (0x2708 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_1_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_1_ARBITER_CONFIG(port)                (0x2718 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_2_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_2_ARBITER_CONFIG(port)                (0x2728 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_3_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_3_ARBITER_CONFIG(port)                (0x2738 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_4_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_4_ARBITER_CONFIG(port)                (0x2748 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_5_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_5_ARBITER_CONFIG(port)                (0x2758 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_6_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_6_ARBITER_CONFIG(port)                (0x2768 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_TX_QUEUE_7_ARBITER_CONFIG
-mdefine_line|#define MV64340_ETH_TX_QUEUE_7_ARBITER_CONFIG(port)                (0x2778 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_PORT_TX_TOKEN_BUCKET_COUNT
-mdefine_line|#define MV64340_ETH_PORT_TX_TOKEN_BUCKET_COUNT(port)               (0x2780 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE
-mdefine_line|#define MV64340_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE(port)   (0x3400 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE
-mdefine_line|#define MV64340_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE(port)     (0x3500 + (port&lt;&lt;10))
-DECL|macro|MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE
-mdefine_line|#define MV64340_ETH_DA_FILTER_UNICAST_TABLE_BASE(port)             (0x3600 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_SHARED_REGS
+mdefine_line|#define MV643XX_ETH_SHARED_REGS                                     0x2000
+DECL|macro|MV643XX_ETH_SHARED_REGS_SIZE
+mdefine_line|#define MV643XX_ETH_SHARED_REGS_SIZE                                0x2000
+DECL|macro|MV643XX_ETH_PHY_ADDR_REG
+mdefine_line|#define MV643XX_ETH_PHY_ADDR_REG                                    0x2000
+DECL|macro|MV643XX_ETH_SMI_REG
+mdefine_line|#define MV643XX_ETH_SMI_REG                                         0x2004
+DECL|macro|MV643XX_ETH_UNIT_DEFAULT_ADDR_REG
+mdefine_line|#define MV643XX_ETH_UNIT_DEFAULT_ADDR_REG                           0x2008
+DECL|macro|MV643XX_ETH_UNIT_DEFAULTID_REG
+mdefine_line|#define MV643XX_ETH_UNIT_DEFAULTID_REG                              0x200c
+DECL|macro|MV643XX_ETH_UNIT_INTERRUPT_CAUSE_REG
+mdefine_line|#define MV643XX_ETH_UNIT_INTERRUPT_CAUSE_REG                        0x2080
+DECL|macro|MV643XX_ETH_UNIT_INTERRUPT_MASK_REG
+mdefine_line|#define MV643XX_ETH_UNIT_INTERRUPT_MASK_REG                         0x2084
+DECL|macro|MV643XX_ETH_UNIT_INTERNAL_USE_REG
+mdefine_line|#define MV643XX_ETH_UNIT_INTERNAL_USE_REG                           0x24fc
+DECL|macro|MV643XX_ETH_UNIT_ERROR_ADDR_REG
+mdefine_line|#define MV643XX_ETH_UNIT_ERROR_ADDR_REG                             0x2094
+DECL|macro|MV643XX_ETH_BAR_0
+mdefine_line|#define MV643XX_ETH_BAR_0                                           0x2200
+DECL|macro|MV643XX_ETH_BAR_1
+mdefine_line|#define MV643XX_ETH_BAR_1                                           0x2208
+DECL|macro|MV643XX_ETH_BAR_2
+mdefine_line|#define MV643XX_ETH_BAR_2                                           0x2210
+DECL|macro|MV643XX_ETH_BAR_3
+mdefine_line|#define MV643XX_ETH_BAR_3                                           0x2218
+DECL|macro|MV643XX_ETH_BAR_4
+mdefine_line|#define MV643XX_ETH_BAR_4                                           0x2220
+DECL|macro|MV643XX_ETH_BAR_5
+mdefine_line|#define MV643XX_ETH_BAR_5                                           0x2228
+DECL|macro|MV643XX_ETH_SIZE_REG_0
+mdefine_line|#define MV643XX_ETH_SIZE_REG_0                                      0x2204
+DECL|macro|MV643XX_ETH_SIZE_REG_1
+mdefine_line|#define MV643XX_ETH_SIZE_REG_1                                      0x220c
+DECL|macro|MV643XX_ETH_SIZE_REG_2
+mdefine_line|#define MV643XX_ETH_SIZE_REG_2                                      0x2214
+DECL|macro|MV643XX_ETH_SIZE_REG_3
+mdefine_line|#define MV643XX_ETH_SIZE_REG_3                                      0x221c
+DECL|macro|MV643XX_ETH_SIZE_REG_4
+mdefine_line|#define MV643XX_ETH_SIZE_REG_4                                      0x2224
+DECL|macro|MV643XX_ETH_SIZE_REG_5
+mdefine_line|#define MV643XX_ETH_SIZE_REG_5                                      0x222c
+DECL|macro|MV643XX_ETH_HEADERS_RETARGET_BASE_REG
+mdefine_line|#define MV643XX_ETH_HEADERS_RETARGET_BASE_REG                       0x2230
+DECL|macro|MV643XX_ETH_HEADERS_RETARGET_CONTROL_REG
+mdefine_line|#define MV643XX_ETH_HEADERS_RETARGET_CONTROL_REG                    0x2234
+DECL|macro|MV643XX_ETH_HIGH_ADDR_REMAP_REG_0
+mdefine_line|#define MV643XX_ETH_HIGH_ADDR_REMAP_REG_0                           0x2280
+DECL|macro|MV643XX_ETH_HIGH_ADDR_REMAP_REG_1
+mdefine_line|#define MV643XX_ETH_HIGH_ADDR_REMAP_REG_1                           0x2284
+DECL|macro|MV643XX_ETH_HIGH_ADDR_REMAP_REG_2
+mdefine_line|#define MV643XX_ETH_HIGH_ADDR_REMAP_REG_2                           0x2288
+DECL|macro|MV643XX_ETH_HIGH_ADDR_REMAP_REG_3
+mdefine_line|#define MV643XX_ETH_HIGH_ADDR_REMAP_REG_3                           0x228c
+DECL|macro|MV643XX_ETH_BASE_ADDR_ENABLE_REG
+mdefine_line|#define MV643XX_ETH_BASE_ADDR_ENABLE_REG                            0x2290
+DECL|macro|MV643XX_ETH_ACCESS_PROTECTION_REG
+mdefine_line|#define MV643XX_ETH_ACCESS_PROTECTION_REG(port)                    (0x2294 + (port&lt;&lt;2))
+DECL|macro|MV643XX_ETH_MIB_COUNTERS_BASE
+mdefine_line|#define MV643XX_ETH_MIB_COUNTERS_BASE(port)                        (0x3000 + (port&lt;&lt;7))
+DECL|macro|MV643XX_ETH_PORT_CONFIG_REG
+mdefine_line|#define MV643XX_ETH_PORT_CONFIG_REG(port)                          (0x2400 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_CONFIG_EXTEND_REG
+mdefine_line|#define MV643XX_ETH_PORT_CONFIG_EXTEND_REG(port)                   (0x2404 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_MII_SERIAL_PARAMETRS_REG
+mdefine_line|#define MV643XX_ETH_MII_SERIAL_PARAMETRS_REG(port)                 (0x2408 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_GMII_SERIAL_PARAMETRS_REG
+mdefine_line|#define MV643XX_ETH_GMII_SERIAL_PARAMETRS_REG(port)                (0x240c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_VLAN_ETHERTYPE_REG
+mdefine_line|#define MV643XX_ETH_VLAN_ETHERTYPE_REG(port)                       (0x2410 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_MAC_ADDR_LOW
+mdefine_line|#define MV643XX_ETH_MAC_ADDR_LOW(port)                             (0x2414 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_MAC_ADDR_HIGH
+mdefine_line|#define MV643XX_ETH_MAC_ADDR_HIGH(port)                            (0x2418 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_SDMA_CONFIG_REG
+mdefine_line|#define MV643XX_ETH_SDMA_CONFIG_REG(port)                          (0x241c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_0
+mdefine_line|#define MV643XX_ETH_DSCP_0(port)                                   (0x2420 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_1
+mdefine_line|#define MV643XX_ETH_DSCP_1(port)                                   (0x2424 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_2
+mdefine_line|#define MV643XX_ETH_DSCP_2(port)                                   (0x2428 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_3
+mdefine_line|#define MV643XX_ETH_DSCP_3(port)                                   (0x242c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_4
+mdefine_line|#define MV643XX_ETH_DSCP_4(port)                                   (0x2430 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_5
+mdefine_line|#define MV643XX_ETH_DSCP_5(port)                                   (0x2434 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DSCP_6
+mdefine_line|#define MV643XX_ETH_DSCP_6(port)                                   (0x2438 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_SERIAL_CONTROL_REG
+mdefine_line|#define MV643XX_ETH_PORT_SERIAL_CONTROL_REG(port)                  (0x243c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_VLAN_PRIORITY_TAG_TO_PRIORITY
+mdefine_line|#define MV643XX_ETH_VLAN_PRIORITY_TAG_TO_PRIORITY(port)            (0x2440 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_STATUS_REG
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_REG(port)                          (0x2444 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG
+mdefine_line|#define MV643XX_ETH_TRANSMIT_QUEUE_COMMAND_REG(port)               (0x2448 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_FIXED_PRIORITY
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_FIXED_PRIORITY(port)                  (0x244c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_TX_TOKEN_BUCKET_RATE_CONFIG
+mdefine_line|#define MV643XX_ETH_PORT_TX_TOKEN_BUCKET_RATE_CONFIG(port)         (0x2450 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_MAXIMUM_TRANSMIT_UNIT
+mdefine_line|#define MV643XX_ETH_MAXIMUM_TRANSMIT_UNIT(port)                    (0x2458 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_MAXIMUM_TOKEN_BUCKET_SIZE
+mdefine_line|#define MV643XX_ETH_PORT_MAXIMUM_TOKEN_BUCKET_SIZE(port)           (0x245c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_INTERRUPT_CAUSE_REG
+mdefine_line|#define MV643XX_ETH_INTERRUPT_CAUSE_REG(port)                      (0x2460 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG
+mdefine_line|#define MV643XX_ETH_INTERRUPT_CAUSE_EXTEND_REG(port)               (0x2464 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_INTERRUPT_MASK_REG
+mdefine_line|#define MV643XX_ETH_INTERRUPT_MASK_REG(port)                       (0x2468 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG
+mdefine_line|#define MV643XX_ETH_INTERRUPT_EXTEND_MASK_REG(port)                (0x246c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_RX_FIFO_URGENT_THRESHOLD_REG
+mdefine_line|#define MV643XX_ETH_RX_FIFO_URGENT_THRESHOLD_REG(port)             (0x2470 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_FIFO_URGENT_THRESHOLD_REG
+mdefine_line|#define MV643XX_ETH_TX_FIFO_URGENT_THRESHOLD_REG(port)             (0x2474 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_RX_MINIMAL_FRAME_SIZE_REG
+mdefine_line|#define MV643XX_ETH_RX_MINIMAL_FRAME_SIZE_REG(port)                (0x247c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_RX_DISCARDED_FRAMES_COUNTER
+mdefine_line|#define MV643XX_ETH_RX_DISCARDED_FRAMES_COUNTER(port)              (0x2484 + (port&lt;&lt;10)
+DECL|macro|MV643XX_ETH_PORT_DEBUG_0_REG
+mdefine_line|#define MV643XX_ETH_PORT_DEBUG_0_REG(port)                         (0x248c + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_DEBUG_1_REG
+mdefine_line|#define MV643XX_ETH_PORT_DEBUG_1_REG(port)                         (0x2490 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_INTERNAL_ADDR_ERROR_REG
+mdefine_line|#define MV643XX_ETH_PORT_INTERNAL_ADDR_ERROR_REG(port)             (0x2494 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_INTERNAL_USE_REG
+mdefine_line|#define MV643XX_ETH_INTERNAL_USE_REG(port)                         (0x24fc + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG
+mdefine_line|#define MV643XX_ETH_RECEIVE_QUEUE_COMMAND_REG(port)                (0x2680 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_CURRENT_SERVED_TX_DESC_PTR
+mdefine_line|#define MV643XX_ETH_CURRENT_SERVED_TX_DESC_PTR(port)               (0x2684 + (port&lt;&lt;10))      
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_0(port)              (0x260c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_1
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_1(port)              (0x261c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_2
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_2(port)              (0x262c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_3
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_3(port)              (0x263c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_4
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_4(port)              (0x264c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_5
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_5(port)              (0x265c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_6
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_6(port)              (0x266c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_7
+mdefine_line|#define MV643XX_ETH_RX_CURRENT_QUEUE_DESC_PTR_7(port)              (0x267c + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_0(port)              (0x26c0 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_1
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_1(port)              (0x26c4 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_2
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_2(port)              (0x26c8 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_3
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_3(port)              (0x26cc + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_4
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_4(port)              (0x26d0 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_5
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_5(port)              (0x26d4 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_6
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_6(port)              (0x26d8 + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_7
+mdefine_line|#define MV643XX_ETH_TX_CURRENT_QUEUE_DESC_PTR_7(port)              (0x26dc + (port&lt;&lt;10))     
+DECL|macro|MV643XX_ETH_TX_QUEUE_0_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_0_TOKEN_BUCKET_COUNT(port)            (0x2700 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_1_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_1_TOKEN_BUCKET_COUNT(port)            (0x2710 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_2_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_2_TOKEN_BUCKET_COUNT(port)            (0x2720 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_3_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_3_TOKEN_BUCKET_COUNT(port)            (0x2730 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_4_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_4_TOKEN_BUCKET_COUNT(port)            (0x2740 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_5_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_5_TOKEN_BUCKET_COUNT(port)            (0x2750 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_6_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_6_TOKEN_BUCKET_COUNT(port)            (0x2760 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_7_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_7_TOKEN_BUCKET_COUNT(port)            (0x2770 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_0_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_0_TOKEN_BUCKET_CONFIG(port)           (0x2704 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_1_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_1_TOKEN_BUCKET_CONFIG(port)           (0x2714 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_2_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_2_TOKEN_BUCKET_CONFIG(port)           (0x2724 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_3_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_3_TOKEN_BUCKET_CONFIG(port)           (0x2734 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_4_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_4_TOKEN_BUCKET_CONFIG(port)           (0x2744 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_5_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_5_TOKEN_BUCKET_CONFIG(port)           (0x2754 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_6_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_6_TOKEN_BUCKET_CONFIG(port)           (0x2764 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_7_TOKEN_BUCKET_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_7_TOKEN_BUCKET_CONFIG(port)           (0x2774 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_0_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_0_ARBITER_CONFIG(port)                (0x2708 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_1_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_1_ARBITER_CONFIG(port)                (0x2718 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_2_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_2_ARBITER_CONFIG(port)                (0x2728 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_3_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_3_ARBITER_CONFIG(port)                (0x2738 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_4_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_4_ARBITER_CONFIG(port)                (0x2748 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_5_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_5_ARBITER_CONFIG(port)                (0x2758 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_6_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_6_ARBITER_CONFIG(port)                (0x2768 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_TX_QUEUE_7_ARBITER_CONFIG
+mdefine_line|#define MV643XX_ETH_TX_QUEUE_7_ARBITER_CONFIG(port)                (0x2778 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_PORT_TX_TOKEN_BUCKET_COUNT
+mdefine_line|#define MV643XX_ETH_PORT_TX_TOKEN_BUCKET_COUNT(port)               (0x2780 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE
+mdefine_line|#define MV643XX_ETH_DA_FILTER_SPECIAL_MULTICAST_TABLE_BASE(port)   (0x3400 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE
+mdefine_line|#define MV643XX_ETH_DA_FILTER_OTHER_MULTICAST_TABLE_BASE(port)     (0x3500 + (port&lt;&lt;10))
+DECL|macro|MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE
+mdefine_line|#define MV643XX_ETH_DA_FILTER_UNICAST_TABLE_BASE(port)             (0x3600 + (port&lt;&lt;10))
 multiline_comment|/*******************************************/
 multiline_comment|/*          CUNIT  Registers               */
 multiline_comment|/*******************************************/
@@ -1775,5 +1779,357 @@ id|brg_clk_freq
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __ASM_MV64340_H */
+multiline_comment|/* These macros describe Ethernet Port configuration reg (Px_cR) bits */
+DECL|macro|MV643XX_ETH_UNICAST_NORMAL_MODE
+mdefine_line|#define MV643XX_ETH_UNICAST_NORMAL_MODE&t;&t;0
+DECL|macro|MV643XX_ETH_UNICAST_PROMISCUOUS_MODE
+mdefine_line|#define MV643XX_ETH_UNICAST_PROMISCUOUS_MODE&t;(1&lt;&lt;0)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_0
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_0&t;&t;0
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_1
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_1&t;&t;(1&lt;&lt;1)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_2
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_2&t;&t;(1&lt;&lt;2)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_3
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_3&t;&t;((1&lt;&lt;2) | (1&lt;&lt;1))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_4
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_4&t;&t;(1&lt;&lt;3)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_5
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_5&t;&t;((1&lt;&lt;3) | (1&lt;&lt;1))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_6
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_6&t;&t;((1&lt;&lt;3) | (1&lt;&lt;2))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_QUEUE_7
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_QUEUE_7&t;&t;((1&lt;&lt;3) | (1&lt;&lt;2) | (1&lt;&lt;1))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_0
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_0&t;0
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_1
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_1&t;(1&lt;&lt;4)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_2
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_2&t;(1&lt;&lt;5)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_3
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_3&t;((1&lt;&lt;5) | (1&lt;&lt;4))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_4
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_4&t;(1&lt;&lt;6)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_5
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_5&t;((1&lt;&lt;6) | (1&lt;&lt;4))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_6
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_6&t;((1&lt;&lt;6) | (1&lt;&lt;5))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_7
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_7&t;((1&lt;&lt;6) | (1&lt;&lt;5) | (1&lt;&lt;4))
+DECL|macro|MV643XX_ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP
+mdefine_line|#define MV643XX_ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP&t;0
+DECL|macro|MV643XX_ETH_REJECT_BC_IF_NOT_IP_OR_ARP
+mdefine_line|#define MV643XX_ETH_REJECT_BC_IF_NOT_IP_OR_ARP&t;(1&lt;&lt;7)
+DECL|macro|MV643XX_ETH_RECEIVE_BC_IF_IP
+mdefine_line|#define MV643XX_ETH_RECEIVE_BC_IF_IP&t;&t;0
+DECL|macro|MV643XX_ETH_REJECT_BC_IF_IP
+mdefine_line|#define MV643XX_ETH_REJECT_BC_IF_IP&t;&t;(1&lt;&lt;8)
+DECL|macro|MV643XX_ETH_RECEIVE_BC_IF_ARP
+mdefine_line|#define MV643XX_ETH_RECEIVE_BC_IF_ARP&t;&t;0
+DECL|macro|MV643XX_ETH_REJECT_BC_IF_ARP
+mdefine_line|#define MV643XX_ETH_REJECT_BC_IF_ARP&t;&t;(1&lt;&lt;9)
+DECL|macro|MV643XX_ETH_TX_AM_NO_UPDATE_ERROR_SUMMARY
+mdefine_line|#define MV643XX_ETH_TX_AM_NO_UPDATE_ERROR_SUMMARY (1&lt;&lt;12)
+DECL|macro|MV643XX_ETH_CAPTURE_TCP_FRAMES_DIS
+mdefine_line|#define MV643XX_ETH_CAPTURE_TCP_FRAMES_DIS&t;0
+DECL|macro|MV643XX_ETH_CAPTURE_TCP_FRAMES_EN
+mdefine_line|#define MV643XX_ETH_CAPTURE_TCP_FRAMES_EN&t;(1&lt;&lt;14)
+DECL|macro|MV643XX_ETH_CAPTURE_UDP_FRAMES_DIS
+mdefine_line|#define MV643XX_ETH_CAPTURE_UDP_FRAMES_DIS&t;0
+DECL|macro|MV643XX_ETH_CAPTURE_UDP_FRAMES_EN
+mdefine_line|#define MV643XX_ETH_CAPTURE_UDP_FRAMES_EN&t;(1&lt;&lt;15)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_0
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_0&t;0
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_1
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_1&t;(1&lt;&lt;16)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_2
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_2&t;(1&lt;&lt;17)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_3
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_3&t;((1&lt;&lt;17) | (1&lt;&lt;16))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_4
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_4&t;(1&lt;&lt;18)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_5
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_5&t;((1&lt;&lt;18) | (1&lt;&lt;16))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_6
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_6&t;((1&lt;&lt;18) | (1&lt;&lt;17))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_7
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_7&t;((1&lt;&lt;18) | (1&lt;&lt;17) | (1&lt;&lt;16))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_0
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_0&t;0
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_1
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_1&t;(1&lt;&lt;19)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_2
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_2&t;(1&lt;&lt;20)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_3
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_3&t;((1&lt;&lt;20) | (1&lt;&lt;19))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_4
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_4&t;((1&lt;&lt;21)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_5
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_5&t;((1&lt;&lt;21) | (1&lt;&lt;19))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_6
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_6&t;((1&lt;&lt;21) | (1&lt;&lt;20))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_7
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_7&t;((1&lt;&lt;21) | (1&lt;&lt;20) | (1&lt;&lt;19))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_0
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_0&t;0
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_1
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_1&t;(1&lt;&lt;22)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_2
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_2&t;(1&lt;&lt;23)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_3
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_3&t;((1&lt;&lt;23) | (1&lt;&lt;22))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_4
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_4&t;(1&lt;&lt;24)
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_5
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_5&t;((1&lt;&lt;24) | (1&lt;&lt;22))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_6
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_6&t;((1&lt;&lt;24) | (1&lt;&lt;23))
+DECL|macro|MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_7
+mdefine_line|#define MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_7&t;((1&lt;&lt;24) | (1&lt;&lt;23) | (1&lt;&lt;22))
+DECL|macro|MV643XX_ETH_PORT_CONFIG_DEFAULT_VALUE
+mdefine_line|#define&t;MV643XX_ETH_PORT_CONFIG_DEFAULT_VALUE&t;&t;&t;&bslash;&n;&t;&t;MV643XX_ETH_UNICAST_NORMAL_MODE&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DEFAULT_RX_QUEUE_0&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DEFAULT_RX_ARP_QUEUE_0&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_RECEIVE_BC_IF_NOT_IP_OR_ARP&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_RECEIVE_BC_IF_IP&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_RECEIVE_BC_IF_ARP&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_CAPTURE_TCP_FRAMES_DIS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_CAPTURE_UDP_FRAMES_DIS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DEFAULT_RX_TCP_QUEUE_0&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DEFAULT_RX_UDP_QUEUE_0&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DEFAULT_RX_BPDU_QUEUE_0
+multiline_comment|/* These macros describe Ethernet Port configuration extend reg (Px_cXR) bits*/
+DECL|macro|MV643XX_ETH_CLASSIFY_EN
+mdefine_line|#define MV643XX_ETH_CLASSIFY_EN&t;&t;&t;&t;(1&lt;&lt;0)
+DECL|macro|MV643XX_ETH_SPAN_BPDU_PACKETS_AS_NORMAL
+mdefine_line|#define MV643XX_ETH_SPAN_BPDU_PACKETS_AS_NORMAL&t;&t;0
+DECL|macro|MV643XX_ETH_SPAN_BPDU_PACKETS_TO_RX_QUEUE_7
+mdefine_line|#define MV643XX_ETH_SPAN_BPDU_PACKETS_TO_RX_QUEUE_7&t;(1&lt;&lt;1)
+DECL|macro|MV643XX_ETH_PARTITION_DISABLE
+mdefine_line|#define MV643XX_ETH_PARTITION_DISABLE&t;&t;&t;0
+DECL|macro|MV643XX_ETH_PARTITION_ENABLE
+mdefine_line|#define MV643XX_ETH_PARTITION_ENABLE&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|MV643XX_ETH_PORT_CONFIG_EXTEND_DEFAULT_VALUE
+mdefine_line|#define&t;MV643XX_ETH_PORT_CONFIG_EXTEND_DEFAULT_VALUE&t;&t;&bslash;&n;&t;&t;MV643XX_ETH_SPAN_BPDU_PACKETS_AS_NORMAL&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_PARTITION_DISABLE
+multiline_comment|/* These macros describe Ethernet Port Sdma configuration reg (SDCR) bits */
+DECL|macro|MV643XX_ETH_RIFB
+mdefine_line|#define MV643XX_ETH_RIFB&t;&t;&t;(1&lt;&lt;0)
+DECL|macro|MV643XX_ETH_RX_BURST_SIZE_1_64BIT
+mdefine_line|#define MV643XX_ETH_RX_BURST_SIZE_1_64BIT&t;&t;0
+DECL|macro|MV643XX_ETH_RX_BURST_SIZE_2_64BIT
+mdefine_line|#define MV643XX_ETH_RX_BURST_SIZE_2_64BIT&t;&t;(1&lt;&lt;1)
+DECL|macro|MV643XX_ETH_RX_BURST_SIZE_4_64BIT
+mdefine_line|#define MV643XX_ETH_RX_BURST_SIZE_4_64BIT&t;&t;(1&lt;&lt;2)
+DECL|macro|MV643XX_ETH_RX_BURST_SIZE_8_64BIT
+mdefine_line|#define MV643XX_ETH_RX_BURST_SIZE_8_64BIT&t;&t;((1&lt;&lt;2) | (1&lt;&lt;1))
+DECL|macro|MV643XX_ETH_RX_BURST_SIZE_16_64BIT
+mdefine_line|#define MV643XX_ETH_RX_BURST_SIZE_16_64BIT&t;&t;(1&lt;&lt;3)
+DECL|macro|MV643XX_ETH_BLM_RX_NO_SWAP
+mdefine_line|#define MV643XX_ETH_BLM_RX_NO_SWAP&t;&t;&t;(1&lt;&lt;4)
+DECL|macro|MV643XX_ETH_BLM_RX_BYTE_SWAP
+mdefine_line|#define MV643XX_ETH_BLM_RX_BYTE_SWAP&t;&t;&t;0
+DECL|macro|MV643XX_ETH_BLM_TX_NO_SWAP
+mdefine_line|#define MV643XX_ETH_BLM_TX_NO_SWAP&t;&t;&t;(1&lt;&lt;5)
+DECL|macro|MV643XX_ETH_BLM_TX_BYTE_SWAP
+mdefine_line|#define MV643XX_ETH_BLM_TX_BYTE_SWAP&t;&t;&t;0
+DECL|macro|MV643XX_ETH_DESCRIPTORS_BYTE_SWAP
+mdefine_line|#define MV643XX_ETH_DESCRIPTORS_BYTE_SWAP&t;&t;(1&lt;&lt;6)
+DECL|macro|MV643XX_ETH_DESCRIPTORS_NO_SWAP
+mdefine_line|#define MV643XX_ETH_DESCRIPTORS_NO_SWAP&t;&t;&t;0
+DECL|macro|MV643XX_ETH_TX_BURST_SIZE_1_64BIT
+mdefine_line|#define MV643XX_ETH_TX_BURST_SIZE_1_64BIT&t;&t;0
+DECL|macro|MV643XX_ETH_TX_BURST_SIZE_2_64BIT
+mdefine_line|#define MV643XX_ETH_TX_BURST_SIZE_2_64BIT&t;&t;(1&lt;&lt;22)
+DECL|macro|MV643XX_ETH_TX_BURST_SIZE_4_64BIT
+mdefine_line|#define MV643XX_ETH_TX_BURST_SIZE_4_64BIT&t;&t;(1&lt;&lt;23)
+DECL|macro|MV643XX_ETH_TX_BURST_SIZE_8_64BIT
+mdefine_line|#define MV643XX_ETH_TX_BURST_SIZE_8_64BIT&t;&t;((1&lt;&lt;23) | (1&lt;&lt;22))
+DECL|macro|MV643XX_ETH_TX_BURST_SIZE_16_64BIT
+mdefine_line|#define MV643XX_ETH_TX_BURST_SIZE_16_64BIT&t;&t;(1&lt;&lt;24)
+DECL|macro|MV643XX_ETH_IPG_INT_RX
+mdefine_line|#define&t;MV643XX_ETH_IPG_INT_RX(value) ((value &amp; 0x3fff) &lt;&lt; 8)
+DECL|macro|MV643XX_ETH_PORT_SDMA_CONFIG_DEFAULT_VALUE
+mdefine_line|#define&t;MV643XX_ETH_PORT_SDMA_CONFIG_DEFAULT_VALUE&t;&t;&bslash;&n;&t;&t;MV643XX_ETH_RX_BURST_SIZE_4_64BIT&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_IPG_INT_RX(0)&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_TX_BURST_SIZE_4_64BIT
+multiline_comment|/* These macros describe Ethernet Port serial control reg (PSCR) bits */
+DECL|macro|MV643XX_ETH_SERIAL_PORT_DISABLE
+mdefine_line|#define MV643XX_ETH_SERIAL_PORT_DISABLE&t;&t;&t;0
+DECL|macro|MV643XX_ETH_SERIAL_PORT_ENABLE
+mdefine_line|#define MV643XX_ETH_SERIAL_PORT_ENABLE&t;&t;&t;(1&lt;&lt;0)
+DECL|macro|MV643XX_ETH_FORCE_LINK_PASS
+mdefine_line|#define MV643XX_ETH_FORCE_LINK_PASS&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|MV643XX_ETH_DO_NOT_FORCE_LINK_PASS
+mdefine_line|#define MV643XX_ETH_DO_NOT_FORCE_LINK_PASS&t;&t;0
+DECL|macro|MV643XX_ETH_ENABLE_AUTO_NEG_FOR_DUPLX
+mdefine_line|#define MV643XX_ETH_ENABLE_AUTO_NEG_FOR_DUPLX&t;&t;0
+DECL|macro|MV643XX_ETH_DISABLE_AUTO_NEG_FOR_DUPLX
+mdefine_line|#define MV643XX_ETH_DISABLE_AUTO_NEG_FOR_DUPLX&t;&t;(1&lt;&lt;2)
+DECL|macro|MV643XX_ETH_ENABLE_AUTO_NEG_FOR_FLOW_CTRL
+mdefine_line|#define MV643XX_ETH_ENABLE_AUTO_NEG_FOR_FLOW_CTRL&t;0
+DECL|macro|MV643XX_ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL
+mdefine_line|#define MV643XX_ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL&t;(1&lt;&lt;3)
+DECL|macro|MV643XX_ETH_ADV_NO_FLOW_CTRL
+mdefine_line|#define MV643XX_ETH_ADV_NO_FLOW_CTRL&t;&t;&t;0
+DECL|macro|MV643XX_ETH_ADV_SYMMETRIC_FLOW_CTRL
+mdefine_line|#define MV643XX_ETH_ADV_SYMMETRIC_FLOW_CTRL&t;&t;(1&lt;&lt;4)
+DECL|macro|MV643XX_ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX
+mdefine_line|#define MV643XX_ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX&t;0
+DECL|macro|MV643XX_ETH_FORCE_FC_MODE_TX_PAUSE_DIS
+mdefine_line|#define MV643XX_ETH_FORCE_FC_MODE_TX_PAUSE_DIS&t;&t;(1&lt;&lt;5)
+DECL|macro|MV643XX_ETH_FORCE_BP_MODE_NO_JAM
+mdefine_line|#define MV643XX_ETH_FORCE_BP_MODE_NO_JAM&t;&t;0
+DECL|macro|MV643XX_ETH_FORCE_BP_MODE_JAM_TX
+mdefine_line|#define MV643XX_ETH_FORCE_BP_MODE_JAM_TX&t;&t;(1&lt;&lt;7)
+DECL|macro|MV643XX_ETH_FORCE_BP_MODE_JAM_TX_ON_RX_ERR
+mdefine_line|#define MV643XX_ETH_FORCE_BP_MODE_JAM_TX_ON_RX_ERR&t;(1&lt;&lt;8)
+DECL|macro|MV643XX_ETH_FORCE_LINK_FAIL
+mdefine_line|#define MV643XX_ETH_FORCE_LINK_FAIL&t;&t;&t;0
+DECL|macro|MV643XX_ETH_DO_NOT_FORCE_LINK_FAIL
+mdefine_line|#define MV643XX_ETH_DO_NOT_FORCE_LINK_FAIL&t;&t;(1&lt;&lt;10)
+DECL|macro|MV643XX_ETH_RETRANSMIT_16_ATTEMPTS
+mdefine_line|#define MV643XX_ETH_RETRANSMIT_16_ATTEMPTS&t;&t;0
+DECL|macro|MV643XX_ETH_RETRANSMIT_FOREVER
+mdefine_line|#define MV643XX_ETH_RETRANSMIT_FOREVER&t;&t;&t;(1&lt;&lt;11)
+DECL|macro|MV643XX_ETH_DISABLE_AUTO_NEG_SPEED_GMII
+mdefine_line|#define MV643XX_ETH_DISABLE_AUTO_NEG_SPEED_GMII&t;&t;(1&lt;&lt;13)
+DECL|macro|MV643XX_ETH_ENABLE_AUTO_NEG_SPEED_GMII
+mdefine_line|#define MV643XX_ETH_ENABLE_AUTO_NEG_SPEED_GMII&t;&t;0
+DECL|macro|MV643XX_ETH_DTE_ADV_0
+mdefine_line|#define MV643XX_ETH_DTE_ADV_0&t;&t;&t;&t;0
+DECL|macro|MV643XX_ETH_DTE_ADV_1
+mdefine_line|#define MV643XX_ETH_DTE_ADV_1&t;&t;&t;&t;(1&lt;&lt;14)
+DECL|macro|MV643XX_ETH_DISABLE_AUTO_NEG_BYPASS
+mdefine_line|#define MV643XX_ETH_DISABLE_AUTO_NEG_BYPASS&t;&t;0
+DECL|macro|MV643XX_ETH_ENABLE_AUTO_NEG_BYPASS
+mdefine_line|#define MV643XX_ETH_ENABLE_AUTO_NEG_BYPASS&t;&t;(1&lt;&lt;15)
+DECL|macro|MV643XX_ETH_AUTO_NEG_NO_CHANGE
+mdefine_line|#define MV643XX_ETH_AUTO_NEG_NO_CHANGE&t;&t;&t;0
+DECL|macro|MV643XX_ETH_RESTART_AUTO_NEG
+mdefine_line|#define MV643XX_ETH_RESTART_AUTO_NEG&t;&t;&t;(1&lt;&lt;16)
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_1518BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_1518BYTE&t;&t;0
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_1522BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_1522BYTE&t;&t;(1&lt;&lt;17)
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_1552BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_1552BYTE&t;&t;(1&lt;&lt;18)
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_9022BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_9022BYTE&t;&t;((1&lt;&lt;18) | (1&lt;&lt;17))
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_9192BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_9192BYTE&t;&t;(1&lt;&lt;19)
+DECL|macro|MV643XX_ETH_MAX_RX_PACKET_9700BYTE
+mdefine_line|#define MV643XX_ETH_MAX_RX_PACKET_9700BYTE&t;&t;((1&lt;&lt;19) | (1&lt;&lt;17))
+DECL|macro|MV643XX_ETH_SET_EXT_LOOPBACK
+mdefine_line|#define MV643XX_ETH_SET_EXT_LOOPBACK&t;&t;&t;(1&lt;&lt;20)
+DECL|macro|MV643XX_ETH_CLR_EXT_LOOPBACK
+mdefine_line|#define MV643XX_ETH_CLR_EXT_LOOPBACK&t;&t;&t;0
+DECL|macro|MV643XX_ETH_SET_FULL_DUPLEX_MODE
+mdefine_line|#define MV643XX_ETH_SET_FULL_DUPLEX_MODE&t;&t;(1&lt;&lt;21)
+DECL|macro|MV643XX_ETH_SET_HALF_DUPLEX_MODE
+mdefine_line|#define MV643XX_ETH_SET_HALF_DUPLEX_MODE&t;&t;0
+DECL|macro|MV643XX_ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
+mdefine_line|#define MV643XX_ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX (1&lt;&lt;22)
+DECL|macro|MV643XX_ETH_DISABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
+mdefine_line|#define MV643XX_ETH_DISABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX 0
+DECL|macro|MV643XX_ETH_SET_GMII_SPEED_TO_10_100
+mdefine_line|#define MV643XX_ETH_SET_GMII_SPEED_TO_10_100&t;&t;0
+DECL|macro|MV643XX_ETH_SET_GMII_SPEED_TO_1000
+mdefine_line|#define MV643XX_ETH_SET_GMII_SPEED_TO_1000&t;&t;(1&lt;&lt;23)
+DECL|macro|MV643XX_ETH_SET_MII_SPEED_TO_10
+mdefine_line|#define MV643XX_ETH_SET_MII_SPEED_TO_10&t;&t;&t;0
+DECL|macro|MV643XX_ETH_SET_MII_SPEED_TO_100
+mdefine_line|#define MV643XX_ETH_SET_MII_SPEED_TO_100&t;&t;(1&lt;&lt;24)
+DECL|macro|MV643XX_ETH_PORT_SERIAL_CONTROL_DEFAULT_VALUE
+mdefine_line|#define&t;MV643XX_ETH_PORT_SERIAL_CONTROL_DEFAULT_VALUE&t;&t;&bslash;&n;&t;&t;MV643XX_ETH_DO_NOT_FORCE_LINK_PASS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_AUTO_NEG_FOR_DUPLX&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL |&t;&bslash;&n;&t;&t;MV643XX_ETH_ADV_SYMMETRIC_FLOW_CTRL&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX |&t;&bslash;&n;&t;&t;MV643XX_ETH_FORCE_BP_MODE_NO_JAM&t;|&t;&bslash;&n;&t;&t;(1&lt;&lt;9)&t;/* reserved */&t;&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DO_NOT_FORCE_LINK_FAIL&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_RETRANSMIT_16_ATTEMPTS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_AUTO_NEG_SPEED_GMII&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DTE_ADV_0&t;&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DISABLE_AUTO_NEG_BYPASS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_AUTO_NEG_NO_CHANGE&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_MAX_RX_PACKET_9700BYTE&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_CLR_EXT_LOOPBACK&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_SET_FULL_DUPLEX_MODE&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
+DECL|macro|MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE
+mdefine_line|#define&t;MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE&t;800
+DECL|macro|MV643XX_ETH_PORT_DEFAULT_RECEIVE_QUEUE_SIZE
+mdefine_line|#define&t;MV643XX_ETH_PORT_DEFAULT_RECEIVE_QUEUE_SIZE&t;400
+DECL|macro|MV643XX_ETH_DESC_SIZE
+mdefine_line|#define MV643XX_ETH_DESC_SIZE&t;&t;&t;&t;64
+DECL|macro|MV643XX_ETH_SHARED_NAME
+mdefine_line|#define MV643XX_ETH_SHARED_NAME&t;&quot;mv643xx_eth_shared&quot;
+DECL|macro|MV643XX_ETH_NAME
+mdefine_line|#define MV643XX_ETH_NAME&t;&quot;mv643xx_eth&quot;
+DECL|struct|mv643xx_eth_platform_data
+r_struct
+id|mv643xx_eth_platform_data
+(brace
+multiline_comment|/* &n;&t; * Non-values for mac_addr, phy_addr, port_config, etc.&n;&t; * override the default value.  Setting the corresponding&n;&t; * force_* field, causes the default value to be overridden&n;&t; * even when zero.&n;&t; */
+DECL|member|force_phy_addr
+r_int
+r_int
+id|force_phy_addr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|force_port_config
+r_int
+r_int
+id|force_port_config
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|force_port_config_extend
+r_int
+r_int
+id|force_port_config_extend
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|force_port_sdma_config
+r_int
+r_int
+id|force_port_sdma_config
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|force_port_serial_control
+r_int
+r_int
+id|force_port_serial_control
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|phy_addr
+r_int
+id|phy_addr
+suffix:semicolon
+DECL|member|mac_addr
+r_char
+op_star
+id|mac_addr
+suffix:semicolon
+multiline_comment|/* pointer to mac address */
+DECL|member|port_config
+id|u32
+id|port_config
+suffix:semicolon
+DECL|member|port_config_extend
+id|u32
+id|port_config_extend
+suffix:semicolon
+DECL|member|port_sdma_config
+id|u32
+id|port_sdma_config
+suffix:semicolon
+DECL|member|port_serial_control
+id|u32
+id|port_serial_control
+suffix:semicolon
+DECL|member|tx_queue_size
+id|u32
+id|tx_queue_size
+suffix:semicolon
+DECL|member|rx_queue_size
+id|u32
+id|rx_queue_size
+suffix:semicolon
+DECL|member|tx_sram_addr
+id|u32
+id|tx_sram_addr
+suffix:semicolon
+DECL|member|tx_sram_size
+id|u32
+id|tx_sram_size
+suffix:semicolon
+DECL|member|rx_sram_addr
+id|u32
+id|rx_sram_addr
+suffix:semicolon
+DECL|member|rx_sram_size
+id|u32
+id|rx_sram_size
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* __ASM_MV643XX_H */
 eof
