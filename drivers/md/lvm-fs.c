@@ -747,7 +747,7 @@ op_assign
 id|_basename
 c_func
 (paren
-id|lv-&gt;lv_name
+id|lv-&gt;u.lv_name
 )paren
 suffix:semicolon
 id|lv_devfs_handle
@@ -755,7 +755,7 @@ id|lv_devfs_handle
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 )braket
 op_assign
@@ -776,7 +776,7 @@ comma
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 comma
 id|S_IFBLK
@@ -828,7 +828,7 @@ id|lv_devfs_handle
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 )braket
 suffix:semicolon
@@ -855,7 +855,7 @@ id|lv_devfs_handle
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 )braket
 )paren
@@ -865,7 +865,7 @@ id|lv_devfs_handle
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 )braket
 op_assign
@@ -885,7 +885,7 @@ op_assign
 id|_basename
 c_func
 (paren
-id|lv-&gt;lv_name
+id|lv-&gt;u.lv_name
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1460,7 +1460,7 @@ id|sz
 comma
 l_string|&quot;name:         %s&bslash;n&quot;
 comma
-id|lv-&gt;lv_name
+id|lv-&gt;u.lv_name
 )paren
 suffix:semicolon
 id|sz
@@ -1474,7 +1474,7 @@ id|sz
 comma
 l_string|&quot;size:         %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_size
+id|lv-&gt;u.lv_size
 )paren
 suffix:semicolon
 id|sz
@@ -1488,7 +1488,7 @@ id|sz
 comma
 l_string|&quot;access:       %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_access
+id|lv-&gt;u.lv_access
 )paren
 suffix:semicolon
 id|sz
@@ -1502,7 +1502,7 @@ id|sz
 comma
 l_string|&quot;status:       %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_status
+id|lv-&gt;u.lv_status
 )paren
 suffix:semicolon
 id|sz
@@ -1516,7 +1516,7 @@ id|sz
 comma
 l_string|&quot;number:       %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_number
+id|lv-&gt;u.lv_number
 )paren
 suffix:semicolon
 id|sz
@@ -1530,7 +1530,7 @@ id|sz
 comma
 l_string|&quot;open:         %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_open
+id|lv-&gt;u.lv_open
 )paren
 suffix:semicolon
 id|sz
@@ -1544,13 +1544,13 @@ id|sz
 comma
 l_string|&quot;allocation:   %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_allocation
+id|lv-&gt;u.lv_allocation
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv-&gt;lv_stripes
+id|lv-&gt;u.lv_stripes
 OG
 l_int|1
 )paren
@@ -1566,7 +1566,7 @@ id|sz
 comma
 l_string|&quot;stripes:      %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_stripes
+id|lv-&gt;u.lv_stripes
 )paren
 suffix:semicolon
 id|sz
@@ -1580,7 +1580,7 @@ id|sz
 comma
 l_string|&quot;stripesize:   %u&bslash;n&quot;
 comma
-id|lv-&gt;lv_stripesize
+id|lv-&gt;u.lv_stripesize
 )paren
 suffix:semicolon
 )brace
@@ -1598,13 +1598,13 @@ comma
 id|major
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 comma
 id|minor
 c_func
 (paren
-id|lv-&gt;lv_dev
+id|lv-&gt;u.lv_dev
 )paren
 )paren
 suffix:semicolon
@@ -2079,7 +2079,7 @@ l_int|NULL
 (brace
 id|pe_t_bytes
 op_add_assign
-id|lv_ptr-&gt;lv_allocated_le
+id|lv_ptr-&gt;u.lv_allocated_le
 suffix:semicolon
 id|hash_table_bytes
 op_add_assign
@@ -2088,18 +2088,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_block_exception
+id|lv_ptr-&gt;u.lv_block_exception
 op_ne
 l_int|NULL
 )paren
 id|lv_block_exception_t_bytes
 op_add_assign
-id|lv_ptr-&gt;lv_remap_end
+id|lv_ptr-&gt;u.lv_remap_end
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_open
+id|lv_ptr-&gt;u.lv_open
 OG
 l_int|0
 )paren
@@ -2109,7 +2109,7 @@ op_increment
 suffix:semicolon
 id|lv_open_total
 op_add_assign
-id|lv_ptr-&gt;lv_open
+id|lv_ptr-&gt;u.lv_open
 suffix:semicolon
 )brace
 )brace
@@ -2953,7 +2953,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|lv_ptr-&gt;lv_status
+id|lv_ptr-&gt;u.lv_status
 op_amp
 id|LV_ACTIVE
 )paren
@@ -2969,7 +2969,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_access
+id|lv_ptr-&gt;u.lv_access
 op_amp
 id|LV_WRITE
 )paren
@@ -2984,7 +2984,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_allocation
+id|lv_ptr-&gt;u.lv_allocation
 op_amp
 id|LV_CONTIGUOUS
 )paren
@@ -2999,7 +2999,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_stripes
+id|lv_ptr-&gt;u.lv_stripes
 OG
 l_int|1
 )paren
@@ -3030,7 +3030,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_stripes
+id|lv_ptr-&gt;u.lv_stripes
 OG
 l_int|1
 )paren
@@ -3045,7 +3045,7 @@ id|sz
 comma
 l_string|&quot;%-2d&quot;
 comma
-id|lv_ptr-&gt;lv_stripes
+id|lv_ptr-&gt;u.lv_stripes
 )paren
 suffix:semicolon
 r_else
@@ -3067,7 +3067,7 @@ op_assign
 id|strrchr
 c_func
 (paren
-id|lv_ptr-&gt;lv_name
+id|lv_ptr-&gt;u.lv_name
 comma
 l_char|&squot;/&squot;
 )paren
@@ -3081,7 +3081,7 @@ l_int|0
 )paren
 id|basename
 op_assign
-id|lv_ptr-&gt;lv_name
+id|lv_ptr-&gt;u.lv_name
 suffix:semicolon
 r_else
 id|basename
@@ -3135,11 +3135,11 @@ id|sz
 comma
 l_string|&quot;%9d /%-6d   &quot;
 comma
-id|lv_ptr-&gt;lv_size
+id|lv_ptr-&gt;u.lv_size
 op_rshift
 l_int|1
 comma
-id|lv_ptr-&gt;lv_size
+id|lv_ptr-&gt;u.lv_size
 op_div
 id|vg_ptr-&gt;pe_size
 )paren
@@ -3147,7 +3147,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lv_ptr-&gt;lv_open
+id|lv_ptr-&gt;u.lv_open
 op_eq
 l_int|0
 )paren
@@ -3175,7 +3175,7 @@ id|sz
 comma
 l_string|&quot;%dx open&quot;
 comma
-id|lv_ptr-&gt;lv_open
+id|lv_ptr-&gt;u.lv_open
 )paren
 suffix:semicolon
 r_return
