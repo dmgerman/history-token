@@ -4131,7 +4131,7 @@ comma
 l_int|NULL
 comma
 multiline_comment|/* AMD-defined */
-l_int|NULL
+l_string|&quot;pni&quot;
 comma
 l_int|NULL
 comma
