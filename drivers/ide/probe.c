@@ -4475,7 +4475,7 @@ id|ch-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Init the per device request queue&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Init the per device request queue.&n;&t;&t; */
 id|q
 op_assign
 op_amp
@@ -4483,7 +4483,7 @@ id|drive-&gt;queue
 suffix:semicolon
 id|q-&gt;queuedata
 op_assign
-id|drive-&gt;channel
+id|drive
 suffix:semicolon
 id|blk_init_queue
 c_func
@@ -4511,7 +4511,7 @@ comma
 id|ch-&gt;max_segment_size
 )paren
 suffix:semicolon
-multiline_comment|/* ATA can do up to 128K per request, pdc4030 needs smaller limit */
+multiline_comment|/* ATA can do up to 128K per request, pdc4030 needs smaller&n;&t;&t; * limit. */
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 r_if
 c_cond
@@ -4533,7 +4533,7 @@ comma
 id|max_sectors
 )paren
 suffix:semicolon
-multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments. */
+multiline_comment|/* ATA DMA can do PRD_ENTRIES number of segments. */
 id|blk_queue_max_hw_segments
 c_func
 (paren
