@@ -1582,6 +1582,12 @@ id|gss_new
 op_assign
 l_int|NULL
 suffix:semicolon
+id|task-&gt;tk_timeout
+op_assign
+l_int|5
+op_star
+id|HZ
+suffix:semicolon
 id|rpc_sleep_on
 c_func
 (paren
