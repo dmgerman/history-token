@@ -4346,9 +4346,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|p-&gt;ptrace
 op_amp
 id|PT_PTRACED
+)paren
 )paren
 id|__ptrace_link
 c_func
