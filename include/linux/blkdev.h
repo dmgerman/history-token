@@ -57,6 +57,10 @@ id|list_head
 id|queuelist
 suffix:semicolon
 multiline_comment|/* looking for -&gt;queue? you must _not_&n;&t;&t;&t;&t;     * access it directly, use&n;&t;&t;&t;&t;     * blkdev_dequeue_request! */
+DECL|member|ref_count
+r_int
+id|ref_count
+suffix:semicolon
 DECL|member|elevator_private
 r_void
 op_star
@@ -157,11 +161,17 @@ r_int
 id|data_len
 suffix:semicolon
 DECL|member|data
-DECL|member|sense
 r_void
 op_star
 id|data
-comma
+suffix:semicolon
+DECL|member|sense_len
+r_int
+r_int
+id|sense_len
+suffix:semicolon
+DECL|member|sense
+r_void
 op_star
 id|sense
 suffix:semicolon
@@ -491,9 +501,6 @@ id|max_depth
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
-DECL|macro|QUEUE_NR_REQUESTS
-mdefine_line|#define QUEUE_NR_REQUESTS&t;8192
 DECL|struct|request_queue
 r_struct
 id|request_queue
@@ -646,6 +653,17 @@ r_struct
 id|blk_queue_tag
 op_star
 id|queue_tags
+suffix:semicolon
+multiline_comment|/*&n;&t; * sg stuff&n;&t; */
+DECL|member|sg_timeout
+r_int
+r_int
+id|sg_timeout
+suffix:semicolon
+DECL|member|sg_reserved_size
+r_int
+r_int
+id|sg_reserved_size
 suffix:semicolon
 )brace
 suffix:semicolon

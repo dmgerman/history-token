@@ -222,6 +222,8 @@ DECL|macro|bio_offset
 mdefine_line|#define bio_offset(bio)&t;&t;bio_iovec((bio))-&gt;bv_offset
 DECL|macro|bio_sectors
 mdefine_line|#define bio_sectors(bio)&t;((bio)-&gt;bi_size &gt;&gt; 9)
+DECL|macro|bio_cur_sectors
+mdefine_line|#define bio_cur_sectors(bio)&t;(bio_iovec(bio)-&gt;bv_len &gt;&gt; 9)
 DECL|macro|bio_data
 mdefine_line|#define bio_data(bio)&t;&t;(page_address(bio_page((bio))) + bio_offset((bio)))
 DECL|macro|bio_barrier
@@ -288,7 +290,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|bio_endio
 c_func
 (paren
@@ -419,6 +421,38 @@ c_func
 r_struct
 id|block_device
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|bio
+op_star
+id|bio_map_user
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bio_unmap_user
+c_func
+(paren
+r_struct
+id|bio
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
