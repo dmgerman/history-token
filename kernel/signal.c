@@ -1544,6 +1544,11 @@ r_int
 id|dequeue_signal
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
 id|sigset_t
 op_star
 id|mask
@@ -1560,7 +1565,7 @@ id|__dequeue_signal
 c_func
 (paren
 op_amp
-id|current-&gt;pending
+id|tsk-&gt;pending
 comma
 id|mask
 comma
@@ -1579,7 +1584,7 @@ id|__dequeue_signal
 c_func
 (paren
 op_amp
-id|current-&gt;signal-&gt;shared_pending
+id|tsk-&gt;signal-&gt;shared_pending
 comma
 id|mask
 comma
@@ -5144,6 +5149,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 id|mask
 comma
 id|info
@@ -6639,6 +6646,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma
@@ -6739,6 +6748,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma
