@@ -100,7 +100,6 @@ op_minus
 id|errno
 suffix:semicolon
 )brace
-multiline_comment|/* See the Makefile for why STAT64_INO_FIELD is passed in&n;&t; * by the build&n;&t; */
 r_if
 c_cond
 (paren
@@ -112,7 +111,7 @@ l_int|NULL
 op_star
 id|inode_out
 op_assign
-id|buf.STAT64_INO_FIELD
+id|buf.st_ino
 suffix:semicolon
 )brace
 r_if
