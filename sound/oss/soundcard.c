@@ -1142,7 +1142,7 @@ id|arg
 id|mixer_info
 id|info
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -1160,7 +1160,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
@@ -1228,7 +1228,7 @@ id|arg
 id|_old_mixer_info
 id|info
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -1246,7 +1246,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
