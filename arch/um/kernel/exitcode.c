@@ -3,6 +3,7 @@ macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/ctype.h&quot;
 macro_line|#include &quot;linux/proc_fs.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+multiline_comment|/* If read and write race, the read will still atomically read a valid&n; * value.&n; */
 DECL|variable|uml_exitcode
 r_int
 id|uml_exitcode

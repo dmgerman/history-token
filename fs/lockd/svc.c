@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/nfs.h&gt;
 DECL|macro|NLMDBG_FACILITY
 mdefine_line|#define NLMDBG_FACILITY&t;&t;NLMDBG_SVC
 DECL|macro|LOCKD_BUFSIZE
-mdefine_line|#define LOCKD_BUFSIZE&t;&t;(1024 + NLMSSVC_XDRSIZE)
+mdefine_line|#define LOCKD_BUFSIZE&t;&t;(1024 + NLMSVC_XDRSIZE)
 DECL|macro|ALLOWED_SIGS
 mdefine_line|#define ALLOWED_SIGS&t;&t;(sigmask(SIGKILL))
 r_extern
@@ -626,9 +626,7 @@ c_func
 op_amp
 id|nlmsvc_program
 comma
-l_int|0
-comma
-id|NLMSVC_XDRSIZE
+id|LOCKD_BUFSIZE
 )paren
 suffix:semicolon
 r_if
@@ -1117,6 +1115,11 @@ id|vs_proc
 op_assign
 id|nlmsvc_procedures
 comma
+dot
+id|vs_xdrsize
+op_assign
+id|NLMSVC_XDRSIZE
+comma
 )brace
 suffix:semicolon
 DECL|variable|nlmsvc_version3
@@ -1140,6 +1143,11 @@ dot
 id|vs_proc
 op_assign
 id|nlmsvc_procedures
+comma
+dot
+id|vs_xdrsize
+op_assign
+id|NLMSVC_XDRSIZE
 comma
 )brace
 suffix:semicolon
@@ -1165,6 +1173,11 @@ dot
 id|vs_proc
 op_assign
 id|nlmsvc_procedures4
+comma
+dot
+id|vs_xdrsize
+op_assign
+id|NLMSVC_XDRSIZE
 comma
 )brace
 suffix:semicolon
@@ -1224,20 +1237,6 @@ op_assign
 id|NLM_PROGRAM
 comma
 multiline_comment|/* program number */
-dot
-id|pg_lovers
-op_assign
-l_int|1
-comma
-multiline_comment|/* version */
-dot
-id|pg_hivers
-op_assign
-id|NLM_NRVERS
-op_minus
-l_int|1
-comma
-multiline_comment|/* range */
 dot
 id|pg_nvers
 op_assign

@@ -500,14 +500,6 @@ l_int|0xC0000000
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_VGA_CONSOLE */
-multiline_comment|/* &n;&t; * Find out how much memory we have.&n;&t; */
-id|TotalMemory
-op_assign
-id|get_mem_size
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Tell the user where we were loaded at and where we were relocated&n;&t; * to for debugging this process.&n;&t; */
 id|puts
 c_func
@@ -927,6 +919,93 @@ l_string|&quot;No residual data found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* First, figure out what kind of host bridge we are on.  If it&squot;s&n;&t; * an MPC10x, we can ask it directly how much memory it has.&n;&t; * Otherwise, see if the residual data has anything.  This isn&squot;t&n;&t; * the best way, but it can be the only way.  If there&squot;s nothing,&n;&t; * assume 32MB. -- Tom.&n;&t; */
+multiline_comment|/* See what our host bridge is. */
+id|pci_read_config_32
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0x00
+comma
+op_amp
+id|pci_viddid
+)paren
+suffix:semicolon
+id|pci_did
+op_assign
+(paren
+id|pci_viddid
+op_amp
+l_int|0xffff0000
+)paren
+op_rshift
+l_int|16
+suffix:semicolon
+multiline_comment|/* See if we are on an MPC10x. */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|pci_viddid
+op_amp
+l_int|0xffff
+)paren
+op_eq
+id|PCI_VENDOR_ID_MOTOROLA
+)paren
+op_logical_and
+(paren
+(paren
+id|pci_did
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_MPC105
+)paren
+op_logical_or
+(paren
+id|pci_did
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_MPC106
+)paren
+op_logical_or
+(paren
+id|pci_did
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_MPC107
+)paren
+)paren
+)paren
+id|TotalMemory
+op_assign
+id|get_mem_size
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* If it&squot;s not, see if we have anything in the residual data. */
+r_else
+r_if
+c_cond
+(paren
+id|residual
+op_logical_and
+id|residual-&gt;TotalMemory
+)paren
+id|TotalMemory
+op_assign
+id|residual-&gt;TotalMemory
+suffix:semicolon
+multiline_comment|/* Fall back to hard-coding 32MB. */
+r_else
+id|TotalMemory
+op_assign
+l_int|32
+op_star
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
 multiline_comment|/* assume the chunk below 8M is free */
 id|end_avail
 op_assign

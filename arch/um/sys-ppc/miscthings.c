@@ -3,14 +3,6 @@ macro_line|#include &quot;linux/stddef.h&quot;
 singleline_comment|// for NULL
 macro_line|#include &quot;linux/elf.h&quot;  
 singleline_comment|// for AT_NULL
-multiline_comment|/* unsigned int local_bh_count[NR_CPUS]; */
-DECL|variable|isa_io_base
-r_int
-r_int
-id|isa_io_base
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* The following function nicked from arch/ppc/kernel/process.c and&n; * adapted slightly */
 multiline_comment|/*&n; * XXX ld.so expects the auxiliary table to start on&n; * a 16-byte boundary, so we have to find it and&n; * move it up. :-(&n; */
 DECL|function|shove_aux_table

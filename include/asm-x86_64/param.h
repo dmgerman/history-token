@@ -3,7 +3,7 @@ DECL|macro|_ASMx86_64_PARAM_H
 mdefine_line|#define _ASMx86_64_PARAM_H
 macro_line|#ifdef __KERNEL__
 DECL|macro|HZ
-macro_line|# define HZ            100            /* Internal kernel timer frequency */
+macro_line|# define HZ            1000            /* Internal kernel timer frequency */
 DECL|macro|USER_HZ
 macro_line|# define USER_HZ       100          /* .. some user interfaces are in &quot;ticks */
 DECL|macro|CLOCKS_PER_SEC

@@ -145,36 +145,19 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Procedure table for NFSv2&n; */
-r_extern
-r_struct
-id|svc_procedure
-id|nfsd_procedures2
-(braket
-)braket
-suffix:semicolon
-macro_line|#ifdef CONFIG_NFSD_V3
-r_extern
-r_struct
-id|svc_procedure
-id|nfsd_procedures3
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif /* CONFIG_NFSD_V3 */
-macro_line|#ifdef CONFIG_NFSD_V4
-r_extern
-r_struct
-id|svc_procedure
-id|nfsd_procedures4
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif /* CONFIG_NFSD_V4 */
 r_extern
 r_struct
 id|svc_program
 id|nfsd_program
+suffix:semicolon
+r_extern
+r_struct
+id|svc_version
+id|nfsd_version2
+comma
+id|nfsd_version3
+comma
+id|nfsd_version4
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes.&n; */
 r_int
@@ -187,6 +170,20 @@ id|port
 comma
 r_int
 id|nrservs
+)paren
+suffix:semicolon
+r_int
+id|nfsd_dispatch
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+id|u32
+op_star
+id|statp
 )paren
 suffix:semicolon
 multiline_comment|/* nfsd/vfs.c */

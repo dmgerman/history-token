@@ -202,7 +202,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|bcmp
+id|memcmp
 c_func
 (paren
 id|iip-&gt;ili_orig_root
@@ -580,7 +580,7 @@ suffix:semicolon
 r_int
 id|data_bytes
 suffix:semicolon
-id|xfs_bmbt_rec_32_t
+id|xfs_bmbt_rec_t
 op_star
 id|ext_buffer
 suffix:semicolon
@@ -738,7 +738,7 @@ id|ip-&gt;i_d.di_onlink
 op_assign
 l_int|0
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
@@ -748,6 +748,8 @@ id|ip-&gt;i_d.di_pad
 l_int|0
 )braket
 )paren
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -845,6 +847,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if ARCH_CONVERT == ARCH_NOCONVERT
 r_if
 c_cond
 (paren
@@ -870,8 +873,9 @@ id|ip-&gt;i_df.if_bytes
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * There are delayed allocation extents&n;&t;&t;&t;&t; * in the inode.  Use xfs_iextents_copy()&n;&t;&t;&t;&t; * to copy only the real extents into&n;&t;&t;&t;&t; * a separate buffer.  We&squot;ll free the&n;&t;&t;&t;&t; * buffer in the unlock routine.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There are delayed allocation extents&n;&t;&t;&t;&t; * in the inode, or we need to convert&n;&t;&t;&t;&t; * the extents to on disk format.&n;&t;&t;&t;&t; * Use xfs_iextents_copy()&n;&t;&t;&t;&t; * to copy only the real extents into&n;&t;&t;&t;&t; * a separate buffer.  We&squot;ll free the&n;&t;&t;&t;&t; * buffer in the unlock routine.&n;&t;&t;&t;&t; */
 id|ext_buffer
 op_assign
 id|kmem_alloc
@@ -1272,6 +1276,17 @@ id|XFS_ILOG_AEXT
 id|ASSERT
 c_func
 (paren
+op_logical_neg
+(paren
+id|iip-&gt;ili_format.ilf_fields
+op_amp
+id|XFS_ILOG_DEXT
+)paren
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
 id|ip-&gt;i_afp-&gt;if_bytes
 OG
 l_int|0
@@ -1323,6 +1338,7 @@ op_eq
 id|ip-&gt;i_d.di_anextents
 )paren
 suffix:semicolon
+macro_line|#if ARCH_CONVERT == ARCH_NOCONVERT
 multiline_comment|/*&n;&t;&t;&t; * There are not delayed allocation extents&n;&t;&t;&t; * for attributes, so just point at the array.&n;&t;&t;&t; */
 id|vecp-&gt;i_addr
 op_assign
@@ -1338,6 +1354,50 @@ id|vecp-&gt;i_len
 op_assign
 id|ip-&gt;i_afp-&gt;if_bytes
 suffix:semicolon
+macro_line|#else&t;&t;
+id|ASSERT
+c_func
+(paren
+id|iip-&gt;ili_aextents_buf
+op_eq
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Need to endian flip before logging&n;&t;&t;&t; */
+id|ext_buffer
+op_assign
+id|kmem_alloc
+c_func
+(paren
+id|ip-&gt;i_df.if_bytes
+comma
+id|KM_SLEEP
+)paren
+suffix:semicolon
+id|iip-&gt;ili_aextents_buf
+op_assign
+id|ext_buffer
+suffix:semicolon
+id|vecp-&gt;i_addr
+op_assign
+(paren
+id|xfs_caddr_t
+)paren
+id|ext_buffer
+suffix:semicolon
+id|vecp-&gt;i_len
+op_assign
+id|xfs_iextents_copy
+c_func
+(paren
+id|ip
+comma
+id|ext_buffer
+comma
+id|XFS_ATTR_FORK
+)paren
+suffix:semicolon
+macro_line|#endif
 id|iip-&gt;ili_format.ilf_asize
 op_assign
 id|vecp-&gt;i_len
@@ -1883,7 +1943,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the inode needed a separate buffer with which to log&n;&t; * its extents, then free it now.&n;&t; */
-multiline_comment|/* FIXME */
 r_if
 c_cond
 (paren
@@ -1933,6 +1992,59 @@ id|ip-&gt;i_df.if_bytes
 )paren
 suffix:semicolon
 id|iip-&gt;ili_extents_buf
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|iip-&gt;ili_aextents_buf
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ASSERT
+c_func
+(paren
+id|ip-&gt;i_d.di_aformat
+op_eq
+id|XFS_DINODE_FMT_EXTENTS
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ip-&gt;i_d.di_anextents
+OG
+l_int|0
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|iip-&gt;ili_format.ilf_fields
+op_amp
+id|XFS_ILOG_AEXT
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ip-&gt;i_afp-&gt;if_bytes
+OG
+l_int|0
+)paren
+suffix:semicolon
+id|kmem_free
+c_func
+(paren
+id|iip-&gt;ili_aextents_buf
+comma
+id|ip-&gt;i_afp-&gt;if_bytes
+)paren
+suffix:semicolon
+id|iip-&gt;ili_aextents_buf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2702,7 +2814,7 @@ id|iip-&gt;ili_inode
 op_assign
 id|ip
 suffix:semicolon
-multiline_comment|/*&n;&t;   We have bzeroed memory. No need ...&n;&t;   iip-&gt;ili_extents_buf = NULL;&n;&t;   iip-&gt;ili_pushbuf_flag = 0;&n;&t; */
+multiline_comment|/*&n;&t;   We have zeroed memory. No need ...&n;&t;   iip-&gt;ili_extents_buf = NULL;&n;&t;   iip-&gt;ili_pushbuf_flag = 0;&n;&t; */
 id|iip-&gt;ili_format.ilf_type
 op_assign
 id|XFS_LI_INODE

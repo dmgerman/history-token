@@ -1149,7 +1149,6 @@ id|mpage_readpage
 suffix:semicolon
 multiline_comment|/*&n; * Writing is not so simple.&n; *&n; * If the page has buffers then they will be used for obtaining the disk&n; * mapping.  We only support pages which are fully mapped-and-dirty, with a&n; * special case for pages which are unmapped at the end: end-of-file.&n; *&n; * If the page has no buffers (preferred) then the page is mapped here.&n; *&n; * If all blocks are found to be contiguous then the page can go into the&n; * BIO.  Otherwise fall back to the mapping&squot;s writepage().&n; * &n; * FIXME: This code wants an estimate of how many pages are still to be&n; * written, so it can intelligently allocate a suitably-sized BIO.  For now,&n; * just allocate full-size (16-page) BIOs.&n; */
 r_static
-r_inline
 r_struct
 id|bio
 op_star

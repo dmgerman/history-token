@@ -1019,7 +1019,7 @@ id|parent
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|snd_remove_proc_entry
@@ -1044,7 +1044,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * OSS info part&n; */
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)
 DECL|macro|SNDRV_OSS_INFO_DEV_AUDIO
 mdefine_line|#define SNDRV_OSS_INFO_DEV_AUDIO&t;0
 DECL|macro|SNDRV_OSS_INFO_DEV_SYNTH
@@ -1075,6 +1075,6 @@ id|string
 suffix:semicolon
 DECL|macro|snd_oss_info_unregister
 mdefine_line|#define snd_oss_info_unregister(dev, num) snd_oss_info_register(dev, num, NULL)
-macro_line|#endif /* CONFIG_SND_OSSEMUL */
+macro_line|#endif /* CONFIG_SND_OSSEMUL &amp;&amp; CONFIG_PROC_FS */
 macro_line|#endif /* __SOUND_INFO_H */
 eof

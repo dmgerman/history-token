@@ -211,6 +211,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#else
 multiline_comment|/* This is simply the barrier() macro from linux/kernel.h but when serial.c&n; * uses tqueue.h uses smp_mb() defined using barrier(), linux/kernel.h&n; * hasn&squot;t yet been included yet so it fails, thus repeating the macro here.&n; */
 DECL|macro|smp_mb
@@ -219,6 +221,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif
 multiline_comment|/* interrupt control */
 DECL|macro|local_save_flags
@@ -281,6 +285,12 @@ DECL|macro|mb
 mdefine_line|#define mb()  __asm__ __volatile__ (&quot;sync&quot; : : :&quot;memory&quot;)
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do { } while(0)
+DECL|macro|set_mb
+mdefine_line|#define set_mb(var, value)  do { var = value; mb(); } while (0)
+DECL|macro|set_wmb
+mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 r_extern
 r_int
 r_int

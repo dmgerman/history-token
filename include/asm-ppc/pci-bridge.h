@@ -257,6 +257,11 @@ r_char
 op_star
 id|cfg_data
 suffix:semicolon
+multiline_comment|/*&n;&t; * If set, indirect method will set the cfg_type bit as&n;&t; * needed to generate type 1 configuration transactions.&n;&t; */
+DECL|member|set_cfg_type
+r_int
+id|set_cfg_type
+suffix:semicolon
 multiline_comment|/* Currently, we limit ourselves to 1 IO range and 3 mem&n;&t; * ranges since the common pci_bus structure can&squot;t handle more&n;&t; */
 DECL|member|io_resource
 r_struct

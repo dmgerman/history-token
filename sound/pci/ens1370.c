@@ -10,8 +10,11 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
+macro_line|#ifdef CHIP1371
 macro_line|#include &lt;sound/ac97_codec.h&gt;
+macro_line|#else
 macro_line|#include &lt;sound/ak4531_codec.h&gt;
+macro_line|#endif
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
@@ -708,6 +711,7 @@ suffix:semicolon
 multiline_comment|/* chip revision */
 r_union
 (brace
+macro_line|#ifdef CHIP1371
 r_struct
 (brace
 DECL|member|ac97
@@ -719,21 +723,20 @@ DECL|member|es1371
 )brace
 id|es1371
 suffix:semicolon
+macro_line|#else
 r_struct
 (brace
-DECL|member|pclkdiv_lock
 r_int
 id|pclkdiv_lock
 suffix:semicolon
-DECL|member|ak4531
 id|ak4531_t
 op_star
 id|ak4531
 suffix:semicolon
-DECL|member|es1370
 )brace
 id|es1370
 suffix:semicolon
+macro_line|#endif
 DECL|member|u
 )brace
 id|u
@@ -2019,7 +2022,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
-l_string|&quot;codec write timeout at 0x%lx [0x%x]&bslash;n&quot;
+l_string|&quot;codec write timeout at 0x%lx [0x%lx]&bslash;n&quot;
 comma
 id|ES_REG
 c_func
@@ -2418,7 +2421,7 @@ l_int|10
 id|snd_printk
 c_func
 (paren
-l_string|&quot;codec read timeout (final) at 0x%lx, reg = 0x%x [0x%x]&bslash;n&quot;
+l_string|&quot;codec read timeout (final) at 0x%lx, reg = 0x%x [0x%lx]&bslash;n&quot;
 comma
 id|ES_REG
 c_func
@@ -2466,7 +2469,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
-l_string|&quot;es1371: codec read timeout at 0x%lx [0x%x]&bslash;n&quot;
+l_string|&quot;es1371: codec read timeout at 0x%lx [0x%lx]&bslash;n&quot;
 comma
 id|ES_REG
 c_func

@@ -90,25 +90,6 @@ id|dev_t
 id|dev
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|blk_ioctl
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-id|bdev
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_BLKPG_H */
 eof

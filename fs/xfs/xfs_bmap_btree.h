@@ -998,6 +998,68 @@ op_star
 id|r
 )paren
 suffix:semicolon
+macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+r_void
+id|xfs_bmbt_disk_get_all
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+comma
+id|xfs_bmbt_irec_t
+op_star
+id|s
+)paren
+suffix:semicolon
+id|xfs_exntst_t
+id|xfs_bmbt_disk_get_state
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+)paren
+suffix:semicolon
+id|xfs_filblks_t
+id|xfs_bmbt_disk_get_blockcount
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+)paren
+suffix:semicolon
+id|xfs_fsblock_t
+id|xfs_bmbt_disk_get_startblock
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+)paren
+suffix:semicolon
+id|xfs_fileoff_t
+id|xfs_bmbt_disk_get_startoff
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|xfs_bmbt_disk_get_all
+mdefine_line|#define xfs_bmbt_disk_get_all(r, s) &bslash;&n;&t;xfs_bmbt_get_all(r, s)
+DECL|macro|xfs_bmbt_disk_get_state
+mdefine_line|#define xfs_bmbt_disk_get_state(r) &bslash;&n;&t;xfs_bmbt_get_state(r)
+DECL|macro|xfs_bmbt_disk_get_blockcount
+mdefine_line|#define xfs_bmbt_disk_get_blockcount(r) &bslash;&n;&t;xfs_bmbt_get_blockcount(r)
+DECL|macro|xfs_bmbt_disk_get_startblock
+mdefine_line|#define xfs_bmbt_disk_get_startblock(r) &bslash;&n;&t;xfs_bmbt_get_blockcount(r)
+DECL|macro|xfs_bmbt_disk_get_startoff
+mdefine_line|#define xfs_bmbt_disk_get_startoff(r) &bslash;&n;&t;xfs_bmbt_get_startoff(r)
+macro_line|#endif
 r_int
 id|xfs_bmbt_increment
 c_func
@@ -1232,6 +1294,47 @@ id|xfs_exntst_t
 id|v
 )paren
 suffix:semicolon
+macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+r_void
+id|xfs_bmbt_disk_set_all
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+comma
+id|xfs_bmbt_irec_t
+op_star
+id|s
+)paren
+suffix:semicolon
+r_void
+id|xfs_bmbt_disk_set_allf
+c_func
+(paren
+id|xfs_bmbt_rec_t
+op_star
+id|r
+comma
+id|xfs_fileoff_t
+id|o
+comma
+id|xfs_fsblock_t
+id|b
+comma
+id|xfs_filblks_t
+id|c
+comma
+id|xfs_exntst_t
+id|v
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|xfs_bmbt_disk_set_all
+mdefine_line|#define xfs_bmbt_disk_set_all(r, s) &bslash;&n;&t;xfs_bmbt_set_all(r, s)
+DECL|macro|xfs_bmbt_disk_set_allf
+mdefine_line|#define xfs_bmbt_disk_set_allf(r, o, b, c, v) &bslash;&n;&t;xfs_bmbt_set_allf(r, o, b, c, v)
+macro_line|#endif
 r_void
 id|xfs_bmbt_to_bmdr
 c_func

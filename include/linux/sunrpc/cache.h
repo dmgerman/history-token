@@ -509,7 +509,7 @@ id|detail
 suffix:semicolon
 r_extern
 r_void
-id|add_word
+id|qword_add
 c_func
 (paren
 r_char
@@ -528,7 +528,7 @@ id|str
 suffix:semicolon
 r_extern
 r_void
-id|add_hex
+id|qword_addhex
 c_func
 (paren
 r_char
@@ -550,7 +550,7 @@ id|blen
 suffix:semicolon
 r_extern
 r_int
-id|get_word
+id|qword_get
 c_func
 (paren
 r_char
@@ -599,7 +599,7 @@ suffix:semicolon
 r_int
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 id|bpp

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/include/asm-x86_64/ide.h&n; *&n; *  Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
-multiline_comment|/*&n; *  This file contains the i386 architecture specific IDE code.&n; */
+multiline_comment|/*&n; *  This file contains the x86_64 architecture specific IDE code.&n; */
 macro_line|#ifndef __ASMx86_64_IDE_H
 DECL|macro|__ASMx86_64_IDE_H
 mdefine_line|#define __ASMx86_64_IDE_H

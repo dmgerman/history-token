@@ -837,13 +837,6 @@ c_func
 id|ip_fast_csum
 )paren
 suffix:semicolon
-DECL|variable|csum_partial_copy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy
-)paren
-suffix:semicolon
 DECL|variable|csum_partial_copy_nocheck
 id|EXPORT_SYMBOL
 c_func

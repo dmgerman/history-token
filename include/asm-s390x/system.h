@@ -746,12 +746,16 @@ DECL|macro|rmb
 mdefine_line|#define rmb()   eieio()
 DECL|macro|wmb
 mdefine_line|#define wmb()   eieio()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do { } while(0)
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()       mb()
 DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()      rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()      wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()    read_barrier_depends()
 DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()     smp_mb()
 DECL|macro|smp_mb__after_clear_bit

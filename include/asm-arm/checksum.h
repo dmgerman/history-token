@@ -69,7 +69,7 @@ op_star
 id|err_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These are the old (and unsafe) way of doing checksums, a warning message will be&n; * printed if they are used and an exception occurs.&n; *&n; * these functions should go away after some time.&n; */
+multiline_comment|/*&n; * This is the old (and unsafe) way of doing checksums, a warning message will&n; * be printed if it is used and an exception occurs.&n; *&n; * this functions should go away after some time.&n; */
 DECL|macro|csum_partial_copy
 mdefine_line|#define csum_partial_copy(src,dst,len,sum)&t;csum_partial_copy_nocheck(src,dst,len,sum)
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; */

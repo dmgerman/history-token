@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/smpboot.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;smpboot_hooks.h&quot;
+macro_line|#include &quot;mach_apic.h&quot;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static

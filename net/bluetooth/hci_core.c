@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI Core.&n; *&n; * $Id: hci_core.c,v 1.6 2002/04/17 17:37:16 maxk Exp $&n; */
+multiline_comment|/*&n; * Bluetooth HCI Core.&n; *&n; * $Id: hci_core.c,v 1.6 2002/04/17 17:37:16 maxk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#ifndef HCI_CORE_DEBUG
+macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -548,7 +548,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|bterr
+id|bt_err
 c_func
 (paren
 id|hdev-&gt;req_result
@@ -725,9 +725,6 @@ r_int
 id|opt
 )paren
 (brace
-id|set_event_flt_cp
-id|ef
-suffix:semicolon
 id|__u16
 id|param
 suffix:semicolon
@@ -775,10 +772,11 @@ suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* Host buffer size */
 (brace
-id|host_buffer_size_cp
-id|bs
+r_struct
+id|hci_cp_host_buffer_size
+id|cp
 suffix:semicolon
-id|bs.acl_mtu
+id|cp.acl_mtu
 op_assign
 id|__cpu_to_le16
 c_func
@@ -786,11 +784,11 @@ c_func
 id|HCI_MAX_ACL_SIZE
 )paren
 suffix:semicolon
-id|bs.sco_mtu
+id|cp.sco_mtu
 op_assign
 id|HCI_MAX_SCO_SIZE
 suffix:semicolon
-id|bs.acl_max_pkt
+id|cp.acl_max_pkt
 op_assign
 id|__cpu_to_le16
 c_func
@@ -798,7 +796,7 @@ c_func
 l_int|0xffff
 )paren
 suffix:semicolon
-id|bs.sco_max_pkt
+id|cp.sco_max_pkt
 op_assign
 id|__cpu_to_le16
 c_func
@@ -815,10 +813,13 @@ id|OGF_HOST_CTL
 comma
 id|OCF_HOST_BUFFER_SIZE
 comma
-id|HOST_BUFFER_SIZE_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|bs
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -840,9 +841,14 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Optional initialization */
 multiline_comment|/* Clear Event Filters */
-id|ef.flt_type
+(brace
+r_struct
+id|hci_cp_set_event_flt
+id|cp
+suffix:semicolon
+id|cp.flt_type
 op_assign
-id|FLT_CLEAR_ALL
+id|HCI_FLT_CLEAR_ALL
 suffix:semicolon
 id|hci_send_cmd
 c_func
@@ -853,12 +859,16 @@ id|OGF_HOST_CTL
 comma
 id|OCF_SET_EVENT_FLT
 comma
-l_int|1
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ef
+id|cp
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Page timeout ~20 secs */
 id|param
 op_assign
@@ -1307,6 +1317,7 @@ id|hci_dev
 op_star
 id|hdev
 comma
+r_struct
 id|inquiry_info
 op_star
 id|info
@@ -1414,7 +1425,8 @@ id|info
 comma
 r_sizeof
 (paren
-id|inquiry_info
+op_star
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -1453,11 +1465,13 @@ op_assign
 op_amp
 id|hdev-&gt;inq_cache
 suffix:semicolon
+r_struct
 id|inquiry_info
 op_star
 id|info
 op_assign
 (paren
+r_struct
 id|inquiry_info
 op_star
 )paren
@@ -1504,7 +1518,8 @@ id|e-&gt;info
 comma
 r_sizeof
 (paren
-id|inquiry_info
+op_star
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -1550,8 +1565,9 @@ op_star
 )paren
 id|opt
 suffix:semicolon
-id|inquiry_cp
-id|ic
+r_struct
+id|hci_cp_inquiry
+id|cp
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -1580,7 +1596,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|ic.lap
+id|cp.lap
 comma
 op_amp
 id|ir-&gt;lap
@@ -1588,11 +1604,11 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|ic.length
+id|cp.length
 op_assign
 id|ir-&gt;length
 suffix:semicolon
-id|ic.num_rsp
+id|cp.num_rsp
 op_assign
 id|ir-&gt;num_rsp
 suffix:semicolon
@@ -1605,10 +1621,13 @@ id|OGF_LINK_CTL
 comma
 id|OCF_INQUIRY
 comma
-id|INQUIRY_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ic
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -1788,6 +1807,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -1858,6 +1878,7 @@ op_plus
 (paren
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -1896,6 +1917,7 @@ id|buf
 comma
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -3722,7 +3744,7 @@ c_func
 id|hdev
 )paren
 suffix:semicolon
-id|conn_hash_init
+id|hci_conn_hash_init
 c_func
 (paren
 id|hdev
@@ -3860,115 +3882,64 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Receive frame from HCI drivers */
-DECL|function|hci_recv_frame
+multiline_comment|/* Suspend HCI device */
+DECL|function|hci_suspend_dev
 r_int
-id|hci_recv_frame
+id|hci_suspend_dev
 c_func
 (paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
 r_struct
 id|hci_dev
 op_star
 id|hdev
-op_assign
-(paren
-r_struct
-id|hci_dev
-op_star
 )paren
-id|skb-&gt;dev
+(brace
+id|hci_notify
+c_func
+(paren
+id|hdev
+comma
+id|HCI_DEV_SUSPEND
+)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hdev
-op_logical_or
-(paren
-op_logical_neg
-id|test_bit
+id|hci_run_hotplug
 c_func
 (paren
-id|HCI_UP
+id|hdev-&gt;name
 comma
-op_amp
-id|hdev-&gt;flags
-)paren
-op_logical_and
-op_logical_neg
-id|test_bit
-c_func
-(paren
-id|HCI_INIT
-comma
-op_amp
-id|hdev-&gt;flags
-)paren
-)paren
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
+l_string|&quot;suspend&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
-id|BT_DBG
+multiline_comment|/* Resume HCI device */
+DECL|function|hci_resume_dev
+r_int
+id|hci_resume_dev
 c_func
 (paren
-l_string|&quot;%s type %d len %d&quot;
-comma
-id|hdev-&gt;name
-comma
-id|skb-&gt;pkt_type
-comma
-id|skb-&gt;len
+r_struct
+id|hci_dev
+op_star
+id|hdev
 )paren
-suffix:semicolon
-multiline_comment|/* Incomming skb */
-id|bluez_cb
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|incomming
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Time stamp */
-id|do_gettimeofday
-c_func
-(paren
-op_amp
-id|skb-&gt;stamp
-)paren
-suffix:semicolon
-multiline_comment|/* Queue frame for rx task */
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|hdev-&gt;rx_q
-comma
-id|skb
-)paren
-suffix:semicolon
-id|hci_sched_rx
+(brace
+id|hci_notify
 c_func
 (paren
 id|hdev
+comma
+id|HCI_DEV_RESUME
+)paren
+suffix:semicolon
+id|hci_run_hotplug
+c_func
+(paren
+id|hdev-&gt;name
+comma
+l_string|&quot;resume&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4391,9 +4362,10 @@ id|HCI_COMMAND_HDR_SIZE
 op_plus
 id|plen
 suffix:semicolon
+r_struct
 id|hci_command_hdr
 op_star
-id|hc
+id|hdr
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -4414,21 +4386,21 @@ comma
 id|plen
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|len
 comma
 id|GFP_ATOMIC
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
 )paren
 (brace
 id|BT_ERR
@@ -4444,9 +4416,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|hc
+id|hdr
 op_assign
 (paren
+r_struct
 id|hci_command_hdr
 op_star
 )paren
@@ -4458,12 +4431,12 @@ comma
 id|HCI_COMMAND_HDR_SIZE
 )paren
 suffix:semicolon
-id|hc-&gt;opcode
+id|hdr-&gt;opcode
 op_assign
 id|__cpu_to_le16
 c_func
 (paren
-id|cmd_opcode_pack
+id|hci_opcode_pack
 c_func
 (paren
 id|ogf
@@ -4472,7 +4445,7 @@ id|ocf
 )paren
 )paren
 suffix:semicolon
-id|hc-&gt;plen
+id|hdr-&gt;plen
 op_assign
 id|plen
 suffix:semicolon
@@ -4555,9 +4528,10 @@ id|__u16
 id|ocf
 )paren
 (brace
+r_struct
 id|hci_command_hdr
 op_star
-id|hc
+id|hdr
 suffix:semicolon
 r_if
 c_cond
@@ -4568,7 +4542,7 @@ id|hdev-&gt;sent_cmd
 r_return
 l_int|NULL
 suffix:semicolon
-id|hc
+id|hdr
 op_assign
 (paren
 r_void
@@ -4579,12 +4553,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hc-&gt;opcode
+id|hdr-&gt;opcode
 op_ne
 id|__cpu_to_le16
 c_func
 (paren
-id|cmd_opcode_pack
+id|hci_opcode_pack
 c_func
 (paren
 id|ogf
@@ -4633,18 +4607,20 @@ id|__u16
 id|flags
 )paren
 (brace
+r_struct
+id|hci_acl_hdr
+op_star
+id|hdr
+suffix:semicolon
 r_int
 id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|hci_acl_hdr
-op_star
-id|ah
-suffix:semicolon
-id|ah
+id|hdr
 op_assign
 (paren
+r_struct
 id|hci_acl_hdr
 op_star
 )paren
@@ -4656,12 +4632,12 @@ comma
 id|HCI_ACL_HDR_SIZE
 )paren
 suffix:semicolon
-id|ah-&gt;handle
+id|hdr-&gt;handle
 op_assign
 id|__cpu_to_le16
 c_func
 (paren
-id|acl_handle_pack
+id|hci_handle_pack
 c_func
 (paren
 id|handle
@@ -4670,7 +4646,7 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-id|ah-&gt;dlen
+id|hdr-&gt;dlen
 op_assign
 id|__cpu_to_le16
 c_func
@@ -4684,7 +4660,7 @@ op_assign
 r_void
 op_star
 )paren
-id|ah
+id|hdr
 suffix:semicolon
 )brace
 DECL|function|hci_send_acl
@@ -4940,8 +4916,9 @@ id|hdev
 op_assign
 id|conn-&gt;hdev
 suffix:semicolon
+r_struct
 id|hci_sco_hdr
-id|hs
+id|hdr
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -4972,7 +4949,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|hs.handle
+id|hdr.handle
 op_assign
 id|__cpu_to_le16
 c_func
@@ -4980,7 +4957,7 @@ c_func
 id|conn-&gt;handle
 )paren
 suffix:semicolon
-id|hs.dlen
+id|hdr.dlen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -5000,7 +4977,7 @@ c_func
 id|skb-&gt;h.raw
 comma
 op_amp
-id|hs
+id|hdr
 comma
 id|HCI_SCO_HDR_SIZE
 )paren
@@ -5061,7 +5038,7 @@ id|quote
 )paren
 (brace
 r_struct
-id|conn_hash
+id|hci_conn_hash
 op_star
 id|h
 op_assign
@@ -5232,7 +5209,7 @@ id|hdev
 )paren
 (brace
 r_struct
-id|conn_hash
+id|hci_conn_hash
 op_star
 id|h
 op_assign
@@ -5640,7 +5617,7 @@ id|hci_task_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ----- HCI RX task (incomming data proccessing) ----- */
+multiline_comment|/* ----- HCI RX task (incoming data proccessing) ----- */
 multiline_comment|/* ACL data packet */
 DECL|function|hci_acldata_packet
 r_static
@@ -5660,9 +5637,10 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
 id|hci_acl_hdr
 op_star
-id|ah
+id|hdr
 op_assign
 (paren
 r_void
@@ -5693,12 +5671,12 @@ op_assign
 id|__le16_to_cpu
 c_func
 (paren
-id|ah-&gt;handle
+id|hdr-&gt;handle
 )paren
 suffix:semicolon
 id|flags
 op_assign
-id|acl_flags
+id|hci_flags
 c_func
 (paren
 id|handle
@@ -5706,7 +5684,7 @@ id|handle
 suffix:semicolon
 id|handle
 op_assign
-id|acl_handle
+id|hci_handle
 c_func
 (paren
 id|handle
@@ -5737,7 +5715,7 @@ id|hdev
 suffix:semicolon
 id|conn
 op_assign
-id|conn_hash_lookup_handle
+id|hci_conn_hash_lookup_handle
 c_func
 (paren
 id|hdev
@@ -5834,9 +5812,10 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
 id|hci_sco_hdr
 op_star
-id|sh
+id|hdr
 op_assign
 (paren
 r_void
@@ -5865,7 +5844,7 @@ op_assign
 id|__le16_to_cpu
 c_func
 (paren
-id|sh-&gt;handle
+id|hdr-&gt;handle
 )paren
 suffix:semicolon
 id|BT_DBG
@@ -5891,7 +5870,7 @@ id|hdev
 suffix:semicolon
 id|conn
 op_assign
-id|conn_hash_lookup_handle
+id|hci_conn_hash_lookup_handle
 c_func
 (paren
 id|hdev
@@ -6354,30 +6333,5 @@ id|hdev
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/* ---- Initialization ---- */
-DECL|function|hci_core_init
-r_int
-id|hci_core_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|hci_core_cleanup
-r_int
-id|hci_core_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

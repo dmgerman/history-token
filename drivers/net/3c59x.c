@@ -10327,6 +10327,8 @@ op_or
 id|TxIntrUploaded
 op_or
 id|AddTCPChksum
+op_or
+id|AddUDPChksum
 )paren
 suffix:semicolon
 r_if

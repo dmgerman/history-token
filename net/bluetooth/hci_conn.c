@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#ifndef HCI_CORE_DEBUG
+macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -49,7 +49,8 @@ id|inquiry_entry
 op_star
 id|ie
 suffix:semicolon
-id|create_conn_cp
+r_struct
+id|hci_cp_create_conn
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -184,7 +185,10 @@ id|OGF_LINK_CTL
 comma
 id|OCF_CREATE_CONN
 comma
-id|CREATE_CONN_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
 id|cp
@@ -205,7 +209,8 @@ id|__u8
 id|reason
 )paren
 (brace
-id|disconnect_cp
+r_struct
+id|hci_cp_disconnect
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -241,7 +246,10 @@ id|OGF_LINK_CTL
 comma
 id|OCF_DISCONNECT
 comma
-id|DISCONNECT_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
 id|cp
@@ -269,7 +277,8 @@ id|hdev
 op_assign
 id|conn-&gt;hdev
 suffix:semicolon
-id|add_sco_cp
+r_struct
+id|hci_cp_add_sco
 id|cp
 suffix:semicolon
 id|BT_DBG
@@ -315,7 +324,10 @@ id|OGF_LINK_CTL
 comma
 id|OCF_ADD_SCO
 comma
-id|ADD_SCO_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
 id|cp
@@ -572,7 +584,7 @@ op_amp
 id|hdev-&gt;tx_task
 )paren
 suffix:semicolon
-id|conn_hash_add
+id|hci_conn_hash_add
 c_func
 (paren
 id|hdev
@@ -691,7 +703,7 @@ op_amp
 id|hdev-&gt;tx_task
 )paren
 suffix:semicolon
-id|conn_hash_del
+id|hci_conn_hash_del
 c_func
 (paren
 id|hdev
@@ -957,7 +969,7 @@ op_logical_neg
 (paren
 id|acl
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev
@@ -1034,7 +1046,7 @@ op_logical_neg
 (paren
 id|sco
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev
@@ -1170,10 +1182,11 @@ id|conn-&gt;pend
 )paren
 )paren
 (brace
-id|auth_requested_cp
-id|ar
+r_struct
+id|hci_cp_auth_requested
+id|cp
 suffix:semicolon
-id|ar.handle
+id|cp.handle
 op_assign
 id|__cpu_to_le16
 c_func
@@ -1190,10 +1203,13 @@ id|OGF_LINK_CTL
 comma
 id|OCF_AUTH_REQUESTED
 comma
-id|AUTH_REQUESTED_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ar
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -1256,10 +1272,11 @@ id|conn
 )paren
 )paren
 (brace
-id|set_conn_encrypt_cp
-id|ce
+r_struct
+id|hci_cp_set_conn_encrypt
+id|cp
 suffix:semicolon
-id|ce.handle
+id|cp.handle
 op_assign
 id|__cpu_to_le16
 c_func
@@ -1267,7 +1284,7 @@ c_func
 id|conn-&gt;handle
 )paren
 suffix:semicolon
-id|ce.encrypt
+id|cp.encrypt
 op_assign
 l_int|1
 suffix:semicolon
@@ -1280,10 +1297,13 @@ id|OGF_LINK_CTL
 comma
 id|OCF_SET_CONN_ENCRYPT
 comma
-id|SET_CONN_ENCRYPT_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ce
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -1304,7 +1324,7 @@ id|hdev
 )paren
 (brace
 r_struct
-id|conn_hash
+id|hci_conn_hash
 op_star
 id|h
 op_assign
@@ -1784,7 +1804,7 @@ id|hdev
 suffix:semicolon
 id|conn
 op_assign
-id|conn_hash_lookup_ba
+id|hci_conn_hash_lookup_ba
 c_func
 (paren
 id|hdev

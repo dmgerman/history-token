@@ -919,12 +919,6 @@ suffix:semicolon
 id|ssize_t
 id|n
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;_write&bslash;n&quot;
-)paren
-suffix:semicolon
 id|parport_claim_or_block
 c_func
 (paren
@@ -1097,12 +1091,6 @@ id|file-&gt;f_pos
 r_return
 op_minus
 id|ESPIPE
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;_read&bslash;n&quot;
-)paren
 suffix:semicolon
 id|parport_claim_or_block
 c_func

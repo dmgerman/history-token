@@ -678,6 +678,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|DASD_PARTN_BITS
 )paren
 suffix:semicolon
 r_if
@@ -703,10 +706,6 @@ id|gdp-&gt;first_minor
 op_assign
 id|index
 op_lshift
-id|DASD_PARTN_BITS
-suffix:semicolon
-id|gdp-&gt;minor_shift
-op_assign
 id|DASD_PARTN_BITS
 suffix:semicolon
 id|gdp-&gt;fops

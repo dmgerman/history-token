@@ -74,7 +74,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BlueZ driver for Nokia Connectivity Card DTL-1&quot;
+l_string|&quot;Bluetooth driver for Nokia Connectivity Card DTL-1&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -767,7 +767,7 @@ op_logical_neg
 (paren
 id|info-&gt;rx_skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|HCI_MAX_FRAME_SIZE
@@ -1480,7 +1480,7 @@ id|skb-&gt;len
 suffix:semicolon
 id|s
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|NSHL

@@ -1043,7 +1043,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|get_tv32
 r_static
-r_inline
 r_int
 id|get_tv32
 c_func
@@ -1232,7 +1231,6 @@ suffix:semicolon
 )brace
 DECL|function|put_it32
 r_static
-r_inline
 r_int
 id|put_it32
 c_func
@@ -4996,7 +4994,6 @@ suffix:semicolon
 )brace
 DECL|function|put_statfs
 r_static
-r_inline
 r_int
 id|put_statfs
 (paren
@@ -7000,10 +6997,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* end of readdir &amp; getdents */
 multiline_comment|/*&n; * Ooo, nasty.  We need here to frob 32-bit unsigned longs to&n; * 64-bit unsigned longs.&n; */
-r_static
-r_inline
-r_int
 DECL|function|get_fd_set32
+r_static
+r_int
 id|get_fd_set32
 c_func
 (paren
@@ -7160,10 +7156,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_void
 DECL|function|set_fd_set32
+r_static
+r_void
 id|set_fd_set32
 c_func
 (paren
@@ -8735,6 +8730,16 @@ op_star
 )paren
 id|raw_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s32-&gt;version
+op_ne
+id|SMB_MOUNT_OLDVERSION
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|s-&gt;version
 op_assign
 id|s32-&gt;version
@@ -8785,6 +8790,8 @@ id|smb_mount_data
 )paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|raw_data
 suffix:semicolon
@@ -12109,42 +12116,6 @@ suffix:semicolon
 multiline_comment|/* XXX This really belongs in some header file... -DaveM */
 DECL|macro|MAX_SOCK_ADDR
 mdefine_line|#define MAX_SOCK_ADDR&t;128&t;&t;/* 108 for Unix domain - &n;&t;&t;&t;&t;&t;   16 for IP, 16 for IPX,&n;&t;&t;&t;&t;&t;   24 for IPv6,&n;&t;&t;&t;&t;&t;   about 80 for AX.25 */
-r_extern
-r_struct
-id|socket
-op_star
-id|sockfd_lookup
-c_func
-(paren
-r_int
-id|fd
-comma
-r_int
-op_star
-id|err
-)paren
-suffix:semicolon
-multiline_comment|/* XXX This as well... */
-DECL|function|sockfd_put
-r_extern
-id|__inline__
-r_void
-id|sockfd_put
-c_func
-(paren
-r_struct
-id|socket
-op_star
-id|sock
-)paren
-(brace
-id|fput
-c_func
-(paren
-id|sock-&gt;file
-)paren
-suffix:semicolon
-)brace
 DECL|struct|msghdr32
 r_struct
 id|msghdr32
@@ -12444,7 +12415,6 @@ suffix:semicolon
 )brace
 DECL|function|msghdr_from_user32_to_kern
 r_static
-r_inline
 r_int
 id|msghdr_from_user32_to_kern
 c_func

@@ -454,6 +454,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|filemap_sync
+r_static
 r_int
 id|filemap_sync
 c_func

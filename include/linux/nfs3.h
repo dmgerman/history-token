@@ -137,6 +137,25 @@ op_assign
 l_int|8
 )brace
 suffix:semicolon
+DECL|struct|nfs3_fh
+r_struct
+id|nfs3_fh
+(brace
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+DECL|member|data
+r_int
+r_char
+id|data
+(braket
+id|NFS3_FHSIZE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|NFS3_VERSION
 mdefine_line|#define NFS3_VERSION&t;&t;3
 DECL|macro|NFS3PROC_NULL

@@ -521,10 +521,12 @@ comma
 id|arch
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|buf-&gt;bs_pad
+comma
+l_int|0
 comma
 r_sizeof
 (paren

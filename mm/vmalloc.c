@@ -1562,11 +1562,7 @@ l_int|NULL
 suffix:semicolon
 id|nr_pages
 op_assign
-(paren
 id|size
-op_plus
-id|PAGE_SIZE
-)paren
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon

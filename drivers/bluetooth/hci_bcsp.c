@@ -25,7 +25,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 macro_line|#include &quot;hci_uart.h&quot;
 macro_line|#include &quot;hci_bcsp.h&quot;
-macro_line|#ifndef HCI_UART_DEBUG
+macro_line|#ifndef CONFIG_BT_HCIUART_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -510,7 +510,7 @@ id|rel
 comma
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_BCSP_TXCRC
+macro_line|#ifdef CONFIG_BT_HCIUART_BCSP_TXCRC
 id|u16
 id|BCSP_CRC_INIT
 c_func
@@ -704,7 +704,7 @@ op_amp
 l_int|0x07
 suffix:semicolon
 )brace
-macro_line|#ifdef  CONFIG_BLUEZ_HCIUART_BCSP_TXCRC
+macro_line|#ifdef  CONFIG_BT_HCIUART_BCSP_TXCRC
 id|hdr
 (braket
 l_int|0
@@ -792,7 +792,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef  CONFIG_BLUEZ_HCIUART_BCSP_TXCRC
+macro_line|#ifdef  CONFIG_BT_HCIUART_BCSP_TXCRC
 id|bcsp_crc_update
 c_func
 (paren
@@ -834,7 +834,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef  CONFIG_BLUEZ_HCIUART_BCSP_TXCRC
+macro_line|#ifdef  CONFIG_BT_HCIUART_BCSP_TXCRC
 id|bcsp_crc_update
 c_func
 (paren
@@ -849,7 +849,7 @@ id|i
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_BCSP_TXCRC
+macro_line|#ifdef CONFIG_BT_HCIUART_BCSP_TXCRC
 multiline_comment|/* Put CRC */
 id|bcsp_txmsg_crc
 op_assign
@@ -2654,7 +2654,7 @@ suffix:semicolon
 multiline_comment|/* Do not increment ptr or decrement count&n;&t;&t;&t;&t; * Allocate packet. Max len of a BCSP pkt= &n;&t;&t;&t;&t; * 0xFFF (payload) +4 (header) +2 (crc) */
 id|bcsp-&gt;rx_skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 l_int|0x1005

@@ -23,7 +23,7 @@ multiline_comment|/*&n; * the same as csum_partial, but copies from src while it
 r_extern
 r_int
 r_int
-id|csum_partial_copy
+id|csum_partial_copy_nocheck
 c_func
 (paren
 r_const
@@ -39,9 +39,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the same as csum_partial, but copies from user space&n; *&n; * this is obsolete and will go away.&n; */
-DECL|macro|csum_partial_copy_fromuser
-mdefine_line|#define csum_partial_copy_fromuser csum_partial_copy
 multiline_comment|/*&n; * this is a new version of the above that records errors it finds in *errp,&n; * but continues and zeros the rest of the buffer.&n; */
 r_int
 r_int
@@ -69,43 +66,6 @@ op_star
 id|errp
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Note: when you get a NULL pointer exception here this means someone&n; *&t;passed in an incorrect kernel address to one of these functions. &n; *&t;&n; *&t;If you use these functions directly please don&squot;t forget the &n; *&t;verify_area().&n; */
-r_extern
-id|__inline__
-DECL|function|csum_partial_copy_nocheck
-r_int
-r_int
-id|csum_partial_copy_nocheck
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dst
-comma
-r_int
-id|len
-comma
-r_int
-id|sum
-)paren
-(brace
-r_return
-id|csum_partial_copy
-(paren
-id|src
-comma
-id|dst
-comma
-id|len
-comma
-id|sum
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Optimized for IP headers, which always checksum on 4 octet boundaries.&n; *&n; *&t;Written by Randolph Chung &lt;tausq@debian.org&gt;&n; */
 DECL|function|ip_fast_csum
 r_static

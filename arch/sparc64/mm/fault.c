@@ -941,7 +941,6 @@ op_star
 suffix:semicolon
 DECL|function|get_fault_insn
 r_static
-r_inline
 r_int
 r_int
 id|get_fault_insn

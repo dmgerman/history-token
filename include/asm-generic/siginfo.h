@@ -20,11 +20,20 @@ DECL|typedef|sigval_t
 )brace
 id|sigval_t
 suffix:semicolon
+multiline_comment|/*&n; * This is the size (including padding) of the part of the&n; * struct siginfo that is before the union.&n; */
+macro_line|#ifndef __ARCH_SI_PREAMBLE_SIZE
+DECL|macro|__ARCH_SI_PREAMBLE_SIZE
+mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE&t;(3 * sizeof(int))
+macro_line|#endif
 DECL|macro|SI_MAX_SIZE
 mdefine_line|#define SI_MAX_SIZE&t;128
 macro_line|#ifndef SI_PAD_SIZE
 DECL|macro|SI_PAD_SIZE
-mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 3)
+mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE - __ARCH_SI_PREAMBLE_SIZE) / sizeof(int))
+macro_line|#endif
+macro_line|#ifndef __ARCH_SI_UID_T
+DECL|macro|__ARCH_SI_UID_T
+mdefine_line|#define __ARCH_SI_UID_T&t;uid_t
 macro_line|#endif
 macro_line|#ifndef HAVE_ARCH_SIGINFO_T
 DECL|struct|siginfo
@@ -62,7 +71,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -96,7 +105,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-id|uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -117,7 +126,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* which child */
 DECL|member|_uid
-id|uid_t
+id|__ARCH_SI_UID_T
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -147,6 +156,13 @@ op_star
 id|_addr
 suffix:semicolon
 multiline_comment|/* faulting insn/memory ref. */
+macro_line|#ifdef __ARCH_SI_TRAPNO
+DECL|member|_trapno
+r_int
+id|_trapno
+suffix:semicolon
+multiline_comment|/* TRAP # which caused the signal */
+macro_line|#endif
 DECL|member|_sigfault
 )brace
 id|_sigfault
@@ -199,6 +215,10 @@ DECL|macro|si_ptr
 mdefine_line|#define si_ptr&t;&t;_sifields._rt._sigval.sival_ptr
 DECL|macro|si_addr
 mdefine_line|#define si_addr&t;&t;_sifields._sigfault._addr
+macro_line|#ifdef __ARCH_SI_TRAPNO
+DECL|macro|si_trapno
+mdefine_line|#define si_trapno&t;_sifields._sigfault._trapno
+macro_line|#endif
 DECL|macro|si_band
 mdefine_line|#define si_band&t;&t;_sifields._sigpoll._band
 DECL|macro|si_fd
@@ -481,12 +501,7 @@ id|to
 comma
 id|from
 comma
-l_int|3
-op_star
-r_sizeof
-(paren
-r_int
-)paren
+id|__ARCH_SI_PREAMBLE_SIZE
 op_plus
 r_sizeof
 (paren

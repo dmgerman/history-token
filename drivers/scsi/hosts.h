@@ -1,8 +1,7 @@
-multiline_comment|/*&n; *  hosts.h Copyright (C) 1992 Drew Eckhardt&n; *          Copyright (C) 1993, 1994, 1995, 1998, 1999 Eric Youngdale&n; *&n; *  mid to low-level SCSI driver interface header&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *&t; Modified by Eric Youngdale eric@andante.org to&n; *&t; add scatter-gather, multiple outstanding request, and other&n; *&t; enhancements.&n; *&n; *  Further modified by Eric Youngdale to support multiple host adapters&n; *  of the same type.&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; */
+multiline_comment|/*&n; *  hosts.h Copyright (C) 1992 Drew Eckhardt&n; *          Copyright (C) 1993, 1994, 1995, 1998, 1999 Eric Youngdale&n; *&n; *  mid to low-level SCSI driver interface header&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *&t; Modified by Eric Youngdale eric@andante.org to&n; *&t; add scatter-gather, multiple outstanding request, and other&n; *&t; enhancements.&n; *&n; *  Further modified by Eric Youngdale to support multiple host adapters&n; *  of the same type.&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *&n; *  Restructured scsi_host lists and associated functions.&n; *  September 04, 2002 Mike Anderson (andmike@us.ibm.com)&n; */
 macro_line|#ifndef _HOSTS_H
 DECL|macro|_HOSTS_H
 mdefine_line|#define _HOSTS_H
-multiline_comment|/*&n;    $Header: /vger/u4/cvs/linux/drivers/scsi/hosts.h,v 1.6 1997/01/19 23:07:13 davem Exp $&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -28,12 +27,10 @@ r_typedef
 r_struct
 id|SHT
 (brace
-multiline_comment|/* Used with loadable modules so we can construct a linked list. */
-DECL|member|next
+DECL|member|shtp_list
 r_struct
-id|SHT
-op_star
-id|next
+id|list_head
+id|shtp_list
 suffix:semicolon
 multiline_comment|/* Used with loadable modules so that we know when it is safe to unload */
 DECL|member|module
@@ -315,22 +312,6 @@ r_int
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Used to set the queue depth for a specific device.&n;     *&n;     * Once the slave_attach() function is in full use, this will go away.&n;     */
-DECL|member|select_queue_depths
-r_void
-(paren
-op_star
-id|select_queue_depths
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * This determines if we will use a non-interrupt driven&n;     * or an interrupt driven scheme,  It is set to the maximum number&n;     * of simultaneous commands a given host adapter will accept.&n;     */
 DECL|member|can_queue
 r_int
@@ -426,16 +407,25 @@ id|Scsi_Host
 (brace
 multiline_comment|/* private: */
 multiline_comment|/*&n;     * This information is private to the scsi mid-layer.  Wrapping it in a&n;     * struct private is a way of marking it in a sort of C++ type of way.&n;     */
-DECL|member|next
+DECL|member|sh_list
 r_struct
-id|Scsi_Host
-op_star
-id|next
+id|list_head
+id|sh_list
 suffix:semicolon
 DECL|member|host_queue
 id|Scsi_Device
 op_star
 id|host_queue
+suffix:semicolon
+DECL|member|all_scsi_hosts
+r_struct
+id|list_head
+id|all_scsi_hosts
+suffix:semicolon
+DECL|member|my_devices
+r_struct
+id|list_head
+id|my_devices
 suffix:semicolon
 DECL|member|default_lock
 id|spinlock_t
@@ -669,21 +659,6 @@ r_int
 r_int
 id|max_host_blocked
 suffix:semicolon
-DECL|member|select_queue_depths
-r_void
-(paren
-op_star
-id|select_queue_depths
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * For SCSI hosts which are PCI devices, set pci_dev so that&n;     * we can do BIOS EDD 3.0 mappings&n;     */
 DECL|member|pci_dev
 r_struct
@@ -730,7 +705,6 @@ c_func
 (paren
 id|Scsi_Device
 op_star
-id|SDpnt
 )paren
 suffix:semicolon
 r_extern
@@ -742,7 +716,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 r_extern
@@ -753,7 +726,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 r_extern
@@ -764,7 +736,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 r_extern
@@ -775,10 +746,8 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 comma
 r_int
-id|channel
 )paren
 suffix:semicolon
 DECL|struct|SHN
@@ -786,11 +755,10 @@ r_typedef
 r_struct
 id|SHN
 (brace
-DECL|member|next
+DECL|member|shn_list
 r_struct
-id|SHN
-op_star
-id|next
+id|list_head
+id|shn_list
 suffix:semicolon
 DECL|member|name
 r_char
@@ -812,33 +780,37 @@ DECL|typedef|Scsi_Host_Name
 id|Scsi_Host_Name
 suffix:semicolon
 r_extern
-id|Scsi_Host_Name
-op_star
-id|scsi_host_no_list
-suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_hostlist
-suffix:semicolon
-r_extern
 r_struct
 id|Scsi_Device_Template
 op_star
 id|scsi_devicelist
 suffix:semicolon
 r_extern
-id|Scsi_Host_Template
-op_star
-id|scsi_hosts
-suffix:semicolon
-r_extern
 r_void
-id|build_proc_dir_entries
+id|scsi_proc_host_mkdir
 c_func
 (paren
 id|Scsi_Host_Template
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_add
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_rm
+c_func
+(paren
+r_struct
+id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
@@ -866,7 +838,6 @@ id|Scsi_Host_Template
 op_star
 comma
 r_int
-id|j
 )paren
 suffix:semicolon
 r_extern
@@ -877,7 +848,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|i
 )paren
 suffix:semicolon
 r_extern
@@ -888,7 +858,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 r_extern
@@ -899,7 +868,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 DECL|function|scsi_assign_lock
@@ -912,14 +880,14 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|host
+id|shost
 comma
 id|spinlock_t
 op_star
 id|lock
 )paren
 (brace
-id|host-&gt;host_lock
+id|shost-&gt;host_lock
 op_assign
 id|lock
 suffix:semicolon
@@ -934,7 +902,7 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
+id|shost
 comma
 r_struct
 id|pci_dev
@@ -942,14 +910,22 @@ op_star
 id|pdev
 )paren
 (brace
-id|SHpnt-&gt;pci_dev
+id|shost-&gt;pci_dev
 op_assign
 id|pdev
 suffix:semicolon
-id|SHpnt-&gt;host_driverfs_dev.parent
+id|shost-&gt;host_driverfs_dev.parent
 op_assign
 op_amp
 id|pdev-&gt;dev
+suffix:semicolon
+multiline_comment|/* register parent with driverfs */
+id|device_register
+c_func
+(paren
+op_amp
+id|shost-&gt;host_driverfs_dev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
@@ -961,19 +937,14 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|shpnt
 comma
 id|uint
-id|hardcoded
 comma
 id|uint
-id|hchannel
 comma
 id|uint
-id|hid
 comma
 id|uint
-id|hlun
 )paren
 suffix:semicolon
 r_extern
@@ -984,7 +955,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|Host
 )paren
 suffix:semicolon
 DECL|macro|BLANK_HOST
@@ -1147,12 +1117,10 @@ c_func
 (paren
 id|Scsi_Device
 op_star
-id|SDpnt
 comma
 r_struct
 id|Scsi_Host
 op_star
-id|SHpnt
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver registration/unregistration.&n; */
@@ -1192,6 +1160,56 @@ c_func
 (paren
 id|Scsi_Host_Template
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host_get_next
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host_hn_get
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_put
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_hn_init
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_host_hn_release
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * host_busy inc/dec/test functions&n; */
@@ -1244,7 +1262,7 @@ DECL|macro|SD_EXTRA_DEVS
 mdefine_line|#define SD_EXTRA_DEVS CONFIG_SD_EXTRA_DEVS
 DECL|macro|SR_EXTRA_DEVS
 mdefine_line|#define SR_EXTRA_DEVS CONFIG_SR_EXTRA_DEVS
-multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
+multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
 r_static
 r_inline
@@ -1256,7 +1274,7 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-id|host
+id|shost
 comma
 r_int
 id|channel
@@ -1270,44 +1288,42 @@ id|lun
 (brace
 id|Scsi_Device
 op_star
-id|SDpnt
+id|sdev
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|SDpnt
+id|sdev
 op_assign
-id|host-&gt;host_queue
+id|shost-&gt;host_queue
 suffix:semicolon
-id|SDpnt
+id|sdev
 op_ne
 l_int|NULL
 suffix:semicolon
-id|SDpnt
+id|sdev
 op_assign
-id|SDpnt-&gt;next
+id|sdev-&gt;next
 )paren
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;channel
+id|sdev-&gt;channel
 op_eq
 id|channel
 op_logical_and
-id|SDpnt-&gt;id
+id|sdev-&gt;id
 op_eq
 id|pun
 op_logical_and
-id|SDpnt-&gt;lun
+id|sdev-&gt;lun
 op_eq
 id|lun
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 r_return
-id|SDpnt
+id|sdev
 suffix:semicolon
 )brace
 macro_line|#endif

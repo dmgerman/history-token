@@ -259,6 +259,15 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_int
+id|iommu_setup
+c_func
+(paren
+r_char
+op_star
+id|opt
+)paren
+suffix:semicolon
 DECL|macro|round_up
 mdefine_line|#define round_up(x,y) (((x) + (y) - 1) &amp; ~((y)-1))
 DECL|macro|round_down

@@ -530,7 +530,7 @@ id|nr_iovecs
 )paren
 )paren
 r_goto
-id|out
+id|noiovec
 suffix:semicolon
 id|bvl
 op_assign
@@ -566,6 +566,8 @@ id|idx
 dot
 id|nr_vecs
 suffix:semicolon
+id|noiovec
+suffix:colon
 id|bio-&gt;bi_io_vec
 op_assign
 id|bvl

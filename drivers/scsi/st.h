@@ -357,6 +357,12 @@ r_char
 id|c_algo
 suffix:semicolon
 multiline_comment|/* compression algorithm */
+DECL|member|pos_unknown
+r_int
+r_char
+id|pos_unknown
+suffix:semicolon
+multiline_comment|/* after reset position unknown */
 DECL|member|tape_type
 r_int
 id|tape_type

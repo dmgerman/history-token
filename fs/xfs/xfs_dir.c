@@ -742,7 +742,7 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -751,6 +751,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -2283,7 +2285,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;Invalid shortform size: dp 0x%p&bslash;n&quot;
+l_string|&quot;Invalid shortform size: dp 0x%p&quot;
 comma
 id|dp
 )paren
@@ -2364,7 +2366,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;Invalid shortform count: dp 0x%p&bslash;n&quot;
+l_string|&quot;Invalid shortform count: dp 0x%p&quot;
 comma
 id|dp
 )paren
@@ -2453,7 +2455,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;Invalid shortform namelen: dp 0x%p&bslash;n&quot;
+l_string|&quot;Invalid shortform namelen: dp 0x%p&quot;
 comma
 id|dp
 )paren
@@ -2494,7 +2496,7 @@ id|CE_WARN
 comma
 id|mp
 comma
-l_string|&quot;Invalid shortform namelen: dp 0x%p&bslash;n&quot;
+l_string|&quot;Invalid shortform namelen: dp 0x%p&quot;
 comma
 id|dp
 )paren

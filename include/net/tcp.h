@@ -7066,6 +7066,8 @@ r_if
 c_cond
 (paren
 id|sk-&gt;no_largesend
+op_logical_or
+id|dst-&gt;header_len
 )paren
 id|sk-&gt;route_caps
 op_and_assign

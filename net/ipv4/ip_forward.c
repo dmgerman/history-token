@@ -101,7 +101,7 @@ id|u8
 op_star
 )paren
 op_amp
-id|rt-&gt;key.dst
+id|rt-&gt;fl.fl4_dst
 )paren
 op_xor
 (paren
@@ -111,7 +111,7 @@ id|u8
 op_star
 )paren
 op_amp
-id|rt-&gt;key.src
+id|rt-&gt;fl.fl4_src
 )paren
 )paren
 op_amp

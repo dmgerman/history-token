@@ -120,8 +120,8 @@ mdefine_line|#define DIRINO_GET_ARCH(pointer,arch) &bslash;&n;    DIRINO4_GET_AR
 macro_line|#endif
 macro_line|#endif
 DECL|macro|DIRINO_COPY_ARCH
-mdefine_line|#define DIRINO_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;bcopy(from,to,sizeof(xfs_ino_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_64(from,to); &bslash;&n;    }
+mdefine_line|#define DIRINO_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;memcpy(to,from,sizeof(xfs_ino_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_64(from,to); &bslash;&n;    }
 DECL|macro|DIRINO4_COPY_ARCH
-mdefine_line|#define DIRINO4_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;bcopy((((__u8*)from+4)),to,sizeof(xfs_dir2_ino4_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_32(from,to); &bslash;&n;    }
+mdefine_line|#define DIRINO4_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;memcpy(to,(((__u8*)from+4)),sizeof(xfs_dir2_ino4_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_32(from,to); &bslash;&n;    }
 macro_line|#endif&t;/* __XFS_ARCH_H__ */
 eof

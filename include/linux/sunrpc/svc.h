@@ -444,6 +444,11 @@ op_star
 id|vs_proc
 suffix:semicolon
 multiline_comment|/* per-procedure info */
+DECL|member|vs_xdrsize
+id|u32
+id|vs_xdrsize
+suffix:semicolon
+multiline_comment|/* xdrsize needed for this version */
 multiline_comment|/* Override dispatch function (e.g. when caching replies).&n;&t; * A return value of 0 means drop the request. &n;&t; * vs_dispatch == NULL means use default dispatcher.&n;&t; */
 DECL|member|vs_dispatch
 r_int
@@ -564,9 +569,6 @@ c_func
 r_struct
 id|svc_program
 op_star
-comma
-r_int
-r_int
 comma
 r_int
 r_int

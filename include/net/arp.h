@@ -150,6 +150,17 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|arp_state_to_flags
+c_func
+(paren
+r_struct
+id|neighbour
+op_star
+id|neigh
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|neigh_ops
 id|arp_broken_ops

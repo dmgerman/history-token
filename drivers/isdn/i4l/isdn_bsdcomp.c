@@ -3097,37 +3097,51 @@ id|isdn_ppp_compressor
 id|ippp_bsd_compress
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* prev,next: overwritten by isdn_ppp */
+dot
+id|num
+op_assign
 id|CI_BSD_COMPRESS
 comma
-multiline_comment|/* compress_proto */
+dot
+id|alloc
+op_assign
 id|bsd_alloc
 comma
-multiline_comment|/* alloc */
+dot
+id|free
+op_assign
 id|bsd_free
 comma
-multiline_comment|/* free */
+dot
+id|init
+op_assign
 id|bsd_init
 comma
-multiline_comment|/* init */
+dot
+id|reset
+op_assign
 id|bsd_reset
 comma
-multiline_comment|/* reset */
+dot
+id|compress
+op_assign
 id|bsd_compress
 comma
-multiline_comment|/* compress */
+dot
+id|decompress
+op_assign
 id|bsd_decompress
 comma
-multiline_comment|/* decompress */
+dot
+id|incomp
+op_assign
 id|bsd_incomp
 comma
-multiline_comment|/* incomp */
+dot
+id|stat
+op_assign
 id|bsd_stats
-multiline_comment|/* comp_stat */
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*************************************************************&n; * Module support routines&n; *************************************************************/

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfssvc.c&n; *&n; * Central processing for nfsd.&n; *&n; * Authors:&t;Olaf Kirch (okir@monad.swb.de)&n; *&n; * Copyright (C) 1995, 1996, 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -8,7 +6,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -21,9 +18,6 @@ macro_line|#include &lt;linux/sunrpc/cache.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/stats.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
-macro_line|#include &lt;linux/nfsd/xdr.h&gt;
-macro_line|#include &lt;linux/nfsd/xdr3.h&gt;
-macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 macro_line|#include &lt;linux/lockd/bind.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;NFSDDBG_SVC
@@ -226,8 +220,6 @@ op_amp
 id|nfsd_program
 comma
 id|NFSD_BUFSIZE
-comma
-id|NFSSVC_XDRSIZE
 )paren
 suffix:semicolon
 r_if
@@ -936,7 +928,6 @@ multiline_comment|/* Release module */
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|nfsd_dispatch
 id|nfsd_dispatch
@@ -1196,94 +1187,15 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|nfsd_version2
-r_static
+r_extern
 r_struct
 id|svc_version
 id|nfsd_version2
-op_assign
-(brace
-dot
-id|vs_vers
-op_assign
-l_int|2
 comma
-dot
-id|vs_nproc
-op_assign
-l_int|18
-comma
-dot
-id|vs_proc
-op_assign
-id|nfsd_procedures2
-comma
-dot
-id|vs_dispatch
-op_assign
-id|nfsd_dispatch
-)brace
-suffix:semicolon
-macro_line|#ifdef CONFIG_NFSD_V3
-DECL|variable|nfsd_version3
-r_static
-r_struct
-id|svc_version
 id|nfsd_version3
-op_assign
-(brace
-dot
-id|vs_vers
-op_assign
-l_int|3
 comma
-dot
-id|vs_nproc
-op_assign
-l_int|22
-comma
-dot
-id|vs_proc
-op_assign
-id|nfsd_procedures3
-comma
-dot
-id|vs_dispatch
-op_assign
-id|nfsd_dispatch
-)brace
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NFSD_V4
-DECL|variable|nfsd_version4
-r_static
-r_struct
-id|svc_version
 id|nfsd_version4
-op_assign
-(brace
-dot
-id|vs_vers
-op_assign
-l_int|4
-comma
-dot
-id|vs_nproc
-op_assign
-l_int|2
-comma
-dot
-id|vs_proc
-op_assign
-id|nfsd_procedures4
-comma
-dot
-id|vs_dispatch
-op_assign
-id|nfsd_dispatch
-)brace
 suffix:semicolon
-macro_line|#endif
 DECL|variable|nfsd_version
 r_static
 r_struct
@@ -1308,13 +1220,6 @@ l_int|3
 op_assign
 op_amp
 id|nfsd_version3
-comma
-macro_line|#elif defined(CONFIG_NFSD_V4)
-(braket
-l_int|3
-)braket
-op_assign
-l_int|NULL
 comma
 macro_line|#endif
 macro_line|#if defined(CONFIG_NFSD_V4)
@@ -1342,20 +1247,6 @@ op_assign
 id|NFS_PROGRAM
 comma
 multiline_comment|/* program number */
-dot
-id|pg_lovers
-op_assign
-l_int|2
-comma
-singleline_comment|// version
-dot
-id|pg_hivers
-op_assign
-id|NFSD_NRVERS
-op_minus
-l_int|1
-comma
-singleline_comment|// range
 dot
 id|pg_nvers
 op_assign

@@ -4,8 +4,8 @@ multiline_comment|/*      $Id: aztcd.c,v 2.60 1997/11/29 09:51:19 root Exp root 
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR AZTECH_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;azt_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;aztcd.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
@@ -48,6 +48,12 @@ mdefine_line|#define AZT_TEST5&t;&t;/* port(1) state */
 mdefine_line|#define AZT_DEBUG
 mdefine_line|#define AZT_DEBUG_MULTISESSION
 macro_line|#endif
+DECL|variable|azt_queue
+r_static
+r_struct
+id|request_queue
+id|azt_queue
+suffix:semicolon
 DECL|function|current_valid
 r_static
 r_int
@@ -64,14 +70,6 @@ c_func
 (paren
 id|QUEUE
 )paren
-op_logical_and
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_eq
-id|MAJOR_NR
 op_logical_and
 id|CURRENT-&gt;cmd
 op_eq
@@ -451,8 +449,10 @@ r_int
 id|check_aztcd_media_change
 c_func
 (paren
-id|kdev_t
-id|full_dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 suffix:semicolon
 r_static
@@ -539,7 +539,7 @@ op_assign
 id|aztcd_ioctl
 comma
 dot
-id|check_media_change
+id|media_changed
 op_assign
 id|check_aztcd_media_change
 comma
@@ -2411,6 +2411,7 @@ r_int
 id|aztUpdateToc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -4002,8 +4003,10 @@ r_int
 id|check_aztcd_media_change
 c_func
 (paren
-id|kdev_t
-id|full_dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 (brace
 r_if
@@ -6381,11 +6384,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;inode: %p, inode-&gt;i_rdev: %x    file: %p&bslash;n&quot;
+l_string|&quot;inode: %p, device: %s    file: %p&bslash;n&quot;
 comma
 id|inode
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|file
 )paren
@@ -7603,6 +7606,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -7653,11 +7657,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|azt_queue
 comma
 id|do_aztcd_request
 comma
@@ -7668,11 +7669,8 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|azt_queue
 comma
 l_int|2048
 )paren
@@ -7682,10 +7680,6 @@ op_assign
 id|MAJOR_NR
 suffix:semicolon
 id|azt_disk-&gt;first_minor
-op_assign
-l_int|0
-suffix:semicolon
-id|azt_disk-&gt;minor_shift
 op_assign
 l_int|0
 suffix:semicolon
@@ -7701,6 +7695,11 @@ id|azt_disk-&gt;disk_name
 comma
 l_string|&quot;aztcd&quot;
 )paren
+suffix:semicolon
+id|azt_disk-&gt;queue
+op_assign
+op_amp
+id|azt_queue
 suffix:semicolon
 id|add_disk
 c_func
@@ -7864,11 +7863,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|azt_queue
 )paren
 suffix:semicolon
 r_if

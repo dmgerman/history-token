@@ -21,8 +21,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SANYO_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;sjcd_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;sjcd.h&quot;
 DECL|variable|sjcd_present
@@ -31,6 +31,12 @@ r_int
 id|sjcd_present
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|sjcd_queue
+r_static
+r_struct
+id|request_queue
+id|sjcd_queue
 suffix:semicolon
 DECL|macro|SJCD_BUF_SIZ
 mdefine_line|#define SJCD_BUF_SIZ 32&t;&t;/* cdr-h94a has internal 64K buffer */
@@ -1460,42 +1466,22 @@ r_int
 id|sjcd_disk_change
 c_func
 (paren
-id|kdev_t
-id|full_dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 (brace
 macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;SJCD: sjcd_disk_change( 0x%x )&bslash;n&quot;
+l_string|&quot;SJCD: sjcd_disk_change(%s)&bslash;n&quot;
 comma
-id|full_dev
+id|disk-&gt;disk_name
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|full_dev
-)paren
-OG
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;SJCD: request error: invalid device minor.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3893,14 +3879,6 @@ c_func
 id|QUEUE
 )paren
 op_logical_and
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_eq
-id|MAJOR_NR
-op_logical_and
 id|CURRENT-&gt;cmd
 op_eq
 id|READ
@@ -5710,7 +5688,7 @@ op_assign
 id|sjcd_ioctl
 comma
 dot
-id|check_media_change
+id|media_changed
 op_assign
 id|sjcd_disk_change
 comma
@@ -5809,11 +5787,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sjcd_queue
 comma
 id|do_sjcd_request
 comma
@@ -5824,11 +5799,8 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sjcd_queue
 comma
 l_int|2048
 )paren
@@ -5838,6 +5810,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -5863,10 +5836,6 @@ op_assign
 id|MAJOR_NR
 comma
 id|sjcd_disk-&gt;first_minor
-op_assign
-l_int|0
-comma
-id|sjcd_disk-&gt;minor_shift
 op_assign
 l_int|0
 comma
@@ -6309,6 +6278,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|sjcd_disk-&gt;queue
+op_assign
+op_amp
+id|sjcd_queue
+suffix:semicolon
 id|add_disk
 c_func
 (paren
@@ -6336,11 +6310,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sjcd_queue
 )paren
 suffix:semicolon
 id|out2
@@ -6431,11 +6402,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|sjcd_queue
 )paren
 suffix:semicolon
 r_if
@@ -6465,11 +6433,6 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;SJCD: module: removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
 )paren
 suffix:semicolon
 )brace

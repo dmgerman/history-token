@@ -3135,9 +3135,9 @@ id|queue_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Support routines for text-based upcalls.&n; * Fields are separated by spaces.&n; * Fields are either mangled to quote space tab newline slosh with slosh&n; * or a hexified with a leading &bslash;x&n; * Record is terminated with newline.&n; *&n; */
-DECL|function|add_word
+DECL|function|qword_add
 r_void
-id|add_word
+id|qword_add
 c_func
 (paren
 r_char
@@ -3328,9 +3328,9 @@ op_assign
 id|len
 suffix:semicolon
 )brace
-DECL|function|add_hex
+DECL|function|qword_addhex
 r_void
-id|add_hex
+id|qword_addhex
 c_func
 (paren
 r_char
@@ -3749,9 +3749,9 @@ suffix:semicolon
 multiline_comment|/*&n; * parse a message from user-space and pass it&n; * to an appropriate cache&n; * Messages are, like requests, separated into fields by&n; * spaces and dequotes as &bslash;xHEXSTRING or embedded &bslash;nnn octal&n; *&n; * Message is &n; *   reply cachename expiry key ... content....&n; *&n; * key and content are both parsed by cache &n; */
 DECL|macro|isodigit
 mdefine_line|#define isodigit(c) (isdigit(c) &amp;&amp; c &lt;= &squot;7&squot;)
-DECL|function|get_word
+DECL|function|qword_get
 r_int
-id|get_word
+id|qword_get
 c_func
 (paren
 r_char

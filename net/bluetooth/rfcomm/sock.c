@@ -21,7 +21,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
-macro_line|#ifndef CONFIG_BLUEZ_RFCOMM_DEBUG
+macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -36,7 +36,7 @@ suffix:semicolon
 DECL|variable|rfcomm_sk_list
 r_static
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 id|rfcomm_sk_list
 op_assign
 (brace
@@ -214,7 +214,7 @@ id|d-&gt;state
 suffix:semicolon
 id|parent
 op_assign
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -242,7 +242,7 @@ c_func
 id|d-&gt;session
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -278,34 +278,6 @@ c_func
 (paren
 id|sk
 )paren
-suffix:semicolon
-)brace
-DECL|function|rfcomm_sk_modem_status
-r_static
-r_void
-id|rfcomm_sk_modem_status
-c_func
-(paren
-r_struct
-id|rfcomm_dlc
-op_star
-id|d
-comma
-r_int
-id|v24_sig
-)paren
-(brace
-id|BT_DBG
-c_func
-(paren
-l_string|&quot;dlc %p v24_sig 0x%02x&quot;
-comma
-id|d
-comma
-id|v24_sig
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/* ---- Socket functions ---- */
@@ -362,7 +334,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -458,7 +430,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -480,7 +452,7 @@ id|bacmp
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -708,7 +680,7 @@ c_loop
 (paren
 id|sk
 op_assign
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 id|parent
@@ -773,7 +745,7 @@ id|sk-&gt;refcnt
 )paren
 suffix:semicolon
 multiline_comment|/* Kill poor orphan */
-id|bluez_sock_unlink
+id|bt_sock_unlink
 c_func
 (paren
 op_amp
@@ -964,7 +936,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|bluez_sock_alloc
+id|bt_sock_alloc
 c_func
 (paren
 id|sock
@@ -1022,10 +994,6 @@ id|d-&gt;state_change
 op_assign
 id|rfcomm_sk_state_change
 suffix:semicolon
-id|d-&gt;modem_status
-op_assign
-id|rfcomm_sk_modem_status
-suffix:semicolon
 id|rfcomm_pi
 c_func
 (paren
@@ -1072,7 +1040,7 @@ id|sk-&gt;state
 op_assign
 id|BT_OPEN
 suffix:semicolon
-id|bluez_sock_link
+id|bt_sock_link
 c_func
 (paren
 op_amp
@@ -1312,7 +1280,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1485,7 +1453,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1515,7 +1483,7 @@ c_func
 id|d
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1537,7 +1505,7 @@ id|err
 )paren
 id|err
 op_assign
-id|bluez_sock_w4_connect
+id|bt_sock_w4_connect
 c_func
 (paren
 id|sk
@@ -1745,7 +1713,7 @@ op_logical_neg
 (paren
 id|nsk
 op_assign
-id|bluez_accept_dequeue
+id|bt_accept_dequeue
 c_func
 (paren
 id|sk
@@ -1960,7 +1928,7 @@ op_amp
 id|sa-&gt;rc_bdaddr
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -1977,7 +1945,7 @@ op_amp
 id|sa-&gt;rc_bdaddr
 comma
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3074,7 +3042,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_RFCOMM_TTY
+macro_line|#ifdef CONFIG_BT_RFCOMM_TTY
 id|err
 op_assign
 id|rfcomm_dev_ioctl
@@ -3296,7 +3264,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3312,7 +3280,7 @@ id|bacpy
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3338,7 +3306,7 @@ id|sk-&gt;state
 op_assign
 id|BT_CONFIG
 suffix:semicolon
-id|bluez_accept_enqueue
+id|bt_accept_enqueue
 c_func
 (paren
 id|parent
@@ -3386,7 +3354,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|bluez_sock_list
+id|bt_sock_list
 op_star
 id|list
 op_assign
@@ -3451,7 +3419,7 @@ id|batostr
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3464,7 +3432,7 @@ id|batostr
 c_func
 (paren
 op_amp
-id|bluez_sk
+id|bt_sk
 c_func
 (paren
 id|sk
@@ -3573,7 +3541,7 @@ comma
 dot
 id|poll
 op_assign
-id|bluez_sock_poll
+id|bt_sock_poll
 comma
 dot
 id|socketpair
@@ -3621,7 +3589,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|bluez_sock_register
+id|bt_sock_register
 c_func
 (paren
 id|BTPROTO_RFCOMM
@@ -3664,7 +3632,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|bluez_sock_unregister
+id|bt_sock_unregister
 c_func
 (paren
 id|BTPROTO_RFCOMM

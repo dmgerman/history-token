@@ -189,7 +189,8 @@ mdefine_line|#define STACKFRAME_SZ     0x60
 DECL|macro|REGWIN_SZ
 mdefine_line|#define REGWIN_SZ         0x40
 macro_line|#endif
-macro_line|#include &lt;asm/asm_offsets.h&gt;
+multiline_comment|/*&n; * The asm_offsets.h is a generated file, so we cannot include it.&n; * It may be OK for glibc headers, but it&squot;s utterly pointless for C code.&n; * The assembly code using those offsets has to include it explicitly.&n; */
+multiline_comment|/* #include &lt;asm/asm_offsets.h&gt; */
 multiline_comment|/* These are for pt_regs. */
 DECL|macro|PT_PSR
 mdefine_line|#define PT_PSR    0x0

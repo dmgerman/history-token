@@ -102,6 +102,10 @@ id|SIGIO
 comma
 id|SIGWINCH
 comma
+id|SIGALRM
+comma
+id|SIGVTALRM
+comma
 op_minus
 l_int|1
 )paren
@@ -123,6 +127,10 @@ comma
 id|SIGIO
 comma
 id|SIGWINCH
+comma
+id|SIGALRM
+comma
+id|SIGVTALRM
 comma
 op_minus
 l_int|1
@@ -146,6 +154,10 @@ id|SIGIO
 comma
 id|SIGWINCH
 comma
+id|SIGALRM
+comma
+id|SIGVTALRM
+comma
 op_minus
 l_int|1
 )paren
@@ -167,6 +179,10 @@ comma
 id|SIGIO
 comma
 id|SIGWINCH
+comma
+id|SIGALRM
+comma
+id|SIGVTALRM
 comma
 op_minus
 l_int|1
@@ -190,6 +206,10 @@ id|SIGIO
 comma
 id|SIGWINCH
 comma
+id|SIGALRM
+comma
+id|SIGVTALRM
+comma
 op_minus
 l_int|1
 )paren
@@ -211,6 +231,10 @@ comma
 id|SIGIO
 comma
 id|SIGWINCH
+comma
+id|SIGALRM
+comma
+id|SIGVTALRM
 comma
 op_minus
 l_int|1
@@ -270,13 +294,6 @@ comma
 id|SIG_IGN
 )paren
 suffix:semicolon
-id|set_timers
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* XXX A bit of a race here */
 id|init_irq_signals
 c_func
 (paren

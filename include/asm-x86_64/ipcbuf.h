@@ -1,7 +1,7 @@
-macro_line|#ifndef __i386_IPCBUF_H__
-DECL|macro|__i386_IPCBUF_H__
-mdefine_line|#define __i386_IPCBUF_H__
-multiline_comment|/*&n; * The ipc64_perm structure for i386 architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 32-bit mode_t and seq&n; * - 2 miscellaneous 32-bit values&n; */
+macro_line|#ifndef __x86_64_IPCBUF_H__
+DECL|macro|__x86_64_IPCBUF_H__
+mdefine_line|#define __x86_64_IPCBUF_H__
+multiline_comment|/*&n; * The ipc64_perm structure for x86_64 architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 32-bit mode_t and seq&n; * - 2 miscellaneous 32-bit values&n; */
 DECL|struct|ipc64_perm
 r_struct
 id|ipc64_perm
@@ -57,5 +57,5 @@ id|__unused2
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __i386_IPCBUF_H__ */
+macro_line|#endif /* __x86_64_IPCBUF_H__ */
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * 35 has been officially registered as the RAMDISK major number, but&n; * so is the original MAJOR number of 1.  We&squot;re using 1 in&n; * include/linux/major.h for now&n; */
 DECL|macro|MAJOR_NR
@@ -90,7 +91,7 @@ op_assign
 id|CONFIG_BLK_DEV_RAM_SIZE
 suffix:semicolon
 multiline_comment|/* Size of the RAM disks */
-multiline_comment|/*&n; * It would be very desiderable to have a soft-blocksize (that in the case&n; * of the ramdisk driver is also the hardblocksize ;) of PAGE_SIZE because&n; * doing that we&squot;ll achieve a far better MM footprint. Using a rd_blocksize of&n; * BLOCK_SIZE in the worst case we&squot;ll make PAGE_SIZE/BLOCK_SIZE buffer-pages&n; * unfreeable. With a rd_blocksize of PAGE_SIZE instead we are sure that only&n; * 1 page will be protected. Depending on the size of the ramdisk you&n; * may want to change the ramdisk blocksize to achieve a better or worse MM&n; * behaviour. The default is still BLOCK_SIZE (needed by rd_load_image that&n; * supposes the filesystem in the image uses a BLOCK_SIZE blocksize).&n; */
+multiline_comment|/*&n; * It would be very desirable to have a soft-blocksize (that in the case&n; * of the ramdisk driver is also the hardblocksize ;) of PAGE_SIZE because&n; * doing that we&squot;ll achieve a far better MM footprint. Using a rd_blocksize of&n; * BLOCK_SIZE in the worst case we&squot;ll make PAGE_SIZE/BLOCK_SIZE buffer-pages&n; * unfreeable. With a rd_blocksize of PAGE_SIZE instead we are sure that only&n; * 1 page will be protected. Depending on the size of the ramdisk you&n; * may want to change the ramdisk blocksize to achieve a better or worse MM&n; * behaviour. The default is still BLOCK_SIZE (needed by rd_load_image that&n; * supposes the filesystem in the image uses a BLOCK_SIZE blocksize).&n; */
 DECL|variable|rd_blocksize
 r_int
 id|rd_blocksize
@@ -973,20 +974,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
 multiline_comment|/* special: we want to release the ramdisk memory,&n;&t;   it&squot;s not like with the other blockdevices where&n;&t;   this ioctl only flushes away the buffer cache. */
 id|error
 op_assign
@@ -1245,6 +1232,27 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|variable|rd_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|rd_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
+)brace
+suffix:semicolon
 DECL|function|rd_open
 r_static
 r_int
@@ -1387,6 +1395,16 @@ id|rd_bdev
 id|unit
 )braket
 op_member_access_from_pointer
+id|bd_inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|rd_backing_dev_info
+suffix:semicolon
+id|rd_bdev
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
 id|bd_inode-&gt;i_size
 op_assign
 id|rd_length
@@ -1408,6 +1426,22 @@ id|MAJOR_NR
 )braket
 dot
 id|request_queue
+suffix:semicolon
+id|rd_bdev
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
+id|bd_disk
+op_assign
+id|get_disk
+c_func
+(paren
+id|rd_disks
+(braket
+id|unit
+)braket
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -1604,6 +1638,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1623,10 +1658,6 @@ suffix:semicolon
 id|initrd_disk-&gt;first_minor
 op_assign
 id|INITRD_MINOR
-suffix:semicolon
-id|initrd_disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|initrd_disk-&gt;fops
 op_assign
@@ -1665,6 +1696,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1767,10 +1799,6 @@ suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
 id|i
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|disk-&gt;fops
 op_assign

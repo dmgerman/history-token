@@ -4663,7 +4663,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|scsicmd-&gt;sc_request-&gt;sr_request-&gt;rq_dev
+id|scsicmd-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|ret

@@ -3135,15 +3135,6 @@ id|regs
 )paren
 (brace
 r_int
-id|user
-op_assign
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -3151,17 +3142,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The profiling function is SMP safe. (nothing can mess&n;&t; * around with &quot;current&quot;, and the profiling counters are&n;&t; * updated with atomic operations). This is especially&n;&t; * useful with a profiling multiplier != 1&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user
-)paren
 id|x86_do_profile
 c_func
 (paren
-id|regs-&gt;rip
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3227,7 +3211,11 @@ macro_line|#ifdef CONFIG_SMP
 id|update_process_times
 c_func
 (paren
-id|user
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3246,14 +3234,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * the NMI deadlock-detector uses this.&n;&t; */
 id|add_pda
 c_func
@@ -3645,6 +3625,9 @@ id|disable_apic
 op_assign
 l_int|1
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|setup_noapictimer
 r_static
@@ -3661,6 +3644,9 @@ id|str
 id|disable_apic_timer
 op_assign
 l_int|1
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|__setup

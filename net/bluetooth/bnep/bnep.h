@@ -4,8 +4,8 @@ macro_line|#ifndef _BNEP_H
 DECL|macro|_BNEP_H
 mdefine_line|#define _BNEP_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
-macro_line|#include &quot;crc32.h&quot;
 singleline_comment|// Limits
 DECL|macro|BNEP_MAX_PROTO_FILTERS
 mdefine_line|#define BNEP_MAX_PROTO_FILTERS     5
@@ -476,7 +476,7 @@ id|addr
 (brace
 r_return
 (paren
-id|bnep_crc32
+id|crc32_be
 c_func
 (paren
 op_complement

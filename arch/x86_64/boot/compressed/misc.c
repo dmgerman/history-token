@@ -784,15 +784,15 @@ c_func
 (paren
 r_void
 op_star
-id|__dest
+id|dest
 comma
-id|__const
+r_const
 r_void
 op_star
-id|__src
+id|src
 comma
 r_int
-id|__n
+id|n
 )paren
 (brace
 r_int
@@ -806,7 +806,7 @@ op_assign
 r_char
 op_star
 )paren
-id|__dest
+id|dest
 comma
 op_star
 id|s
@@ -815,7 +815,7 @@ op_assign
 r_char
 op_star
 )paren
-id|__src
+id|src
 suffix:semicolon
 r_for
 c_loop
@@ -826,7 +826,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|__n
+id|n
 suffix:semicolon
 id|i
 op_increment
@@ -842,7 +842,7 @@ id|i
 )braket
 suffix:semicolon
 r_return
-id|__dest
+id|dest
 suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Fill the input buffer. This is called only when the buffer is empty&n; * and at least one byte is really needed.&n; */

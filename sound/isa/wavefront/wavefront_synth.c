@@ -246,7 +246,7 @@ multiline_comment|/* if WF_DEBUG not defined, no run-time debugging messages wil
 DECL|macro|WF_DEBUG
 mdefine_line|#define WF_DEBUG 1
 macro_line|#ifdef WF_DEBUG
-macro_line|#ifdef NEW_MACRO_VARARGS
+macro_line|#if defined(NEW_MACRO_VARARGS) || __GNUC__ &gt;= 3
 DECL|macro|DPRINT
 mdefine_line|#define DPRINT(cond, ...) &bslash;&n;       if ((dev-&gt;debug &amp; (cond)) == (cond)) { &bslash;&n;&t;     snd_printk (__VA_ARGS__); &bslash;&n;       }
 macro_line|#else

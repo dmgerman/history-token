@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR OPTICS_CDROM_MAJOR
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device))
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;opt_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;optcd.h&quot;
@@ -439,10 +439,17 @@ id|sleep_timer
 )brace
 suffix:semicolon
 DECL|variable|optcd_lock
+r_static
 id|spinlock_t
 id|optcd_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|opt_queue
+r_static
+r_struct
+id|request_queue
+id|opt_queue
 suffix:semicolon
 multiline_comment|/* Timer routine: wake up when desired flag goes low,&n;   or when timeout expires. */
 DECL|function|sleep_timer
@@ -3505,14 +3512,6 @@ c_func
 (paren
 id|QUEUE
 )paren
-op_logical_and
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_eq
-id|MAJOR_NR
 op_logical_and
 id|CURRENT-&gt;cmd
 op_eq
@@ -7631,13 +7630,11 @@ c_func
 (paren
 id|DEBUG_VFS
 comma
-l_string|&quot;inode: %p, inode -&gt; i_rdev: 0x%x, file: %p&bslash;n&quot;
+l_string|&quot;inode: %p, device: %s, file: %p&bslash;n&quot;
 comma
 id|ip
 comma
-id|ip
-op_member_access_from_pointer
-id|i_rdev
+id|ip-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|fp
 )paren
@@ -7745,8 +7742,10 @@ r_int
 id|opt_media_change
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 (brace
 id|DEBUG
@@ -7765,9 +7764,9 @@ c_func
 (paren
 id|DEBUG_VFS
 comma
-l_string|&quot;dev: 0x%x; disk_changed = %d&bslash;n&quot;
+l_string|&quot;dev: %s; disk_changed = %d&bslash;n&quot;
 comma
-id|dev
+id|disk-&gt;disk_name
 comma
 id|disk_changed
 )paren
@@ -8074,7 +8073,7 @@ op_assign
 id|opt_ioctl
 comma
 dot
-id|check_media_change
+id|media_changed
 op_assign
 id|opt_media_change
 comma
@@ -8192,6 +8191,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -8218,10 +8218,6 @@ op_assign
 id|MAJOR_NR
 suffix:semicolon
 id|optcd_disk-&gt;first_minor
-op_assign
-l_int|0
-suffix:semicolon
-id|optcd_disk-&gt;minor_shift
 op_assign
 l_int|0
 suffix:semicolon
@@ -8474,11 +8470,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|opt_queue
 comma
 id|do_optcd_request
 comma
@@ -8489,14 +8482,16 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|opt_queue
 comma
 l_int|2048
 )paren
+suffix:semicolon
+id|optcd_disk-&gt;queue
+op_assign
+op_amp
+id|opt_queue
 suffix:semicolon
 id|add_disk
 c_func
@@ -8583,11 +8578,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|opt_queue
 )paren
 suffix:semicolon
 id|release_region

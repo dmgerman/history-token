@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -4665,6 +4666,24 @@ id|end
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Something will probably happen, so notify. */
+r_if
+c_cond
+(paren
+id|mpnt-&gt;vm_file
+op_logical_and
+(paren
+id|mpnt-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+)paren
+id|profile_exec_unmap
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we need to split any vma, do it now to save pain later.&n;&t; */
 r_if
 c_cond
@@ -5321,6 +5340,12 @@ r_struct
 id|vm_area_struct
 op_star
 id|mpnt
+suffix:semicolon
+id|profile_exit_mmap
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 id|release_segments
 c_func

@@ -11482,6 +11482,7 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
 id|snd_oss_info_register
 c_func
 (paren
@@ -11492,6 +11493,7 @@ comma
 id|name
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pcm-&gt;oss.reg
 op_increment
 suffix:semicolon
@@ -11578,6 +11580,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef SNDRV_OSS_INFO_DEV_AUDIO
 id|snd_oss_info_unregister
 c_func
 (paren
@@ -11586,6 +11589,7 @@ comma
 id|pcm-&gt;card-&gt;number
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond

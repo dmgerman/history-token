@@ -4,6 +4,23 @@ macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ciscohdlck.h&quot;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
+multiline_comment|/*&n; * Definitions for Cisco-HDLC header.&n; */
+DECL|macro|CISCO_ADDR_UNICAST
+mdefine_line|#define CISCO_ADDR_UNICAST    0x0f
+DECL|macro|CISCO_ADDR_BROADCAST
+mdefine_line|#define CISCO_ADDR_BROADCAST  0x8f
+DECL|macro|CISCO_CTRL
+mdefine_line|#define CISCO_CTRL            0x00
+DECL|macro|CISCO_TYPE_CDP
+mdefine_line|#define CISCO_TYPE_CDP        0x2000
+DECL|macro|CISCO_TYPE_SLARP
+mdefine_line|#define CISCO_TYPE_SLARP      0x8035
+DECL|macro|CISCO_SLARP_REQUEST
+mdefine_line|#define CISCO_SLARP_REQUEST   0
+DECL|macro|CISCO_SLARP_REPLY
+mdefine_line|#define CISCO_SLARP_REPLY     1
+DECL|macro|CISCO_SLARP_KEEPALIVE
+mdefine_line|#define CISCO_SLARP_KEEPALIVE 2
 multiline_comment|/* &n; * CISCO HDLC keepalive specific stuff&n; */
 r_static
 r_struct

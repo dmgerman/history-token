@@ -467,7 +467,7 @@ suffix:semicolon
 macro_line|#if defined(__KERNEL__)
 multiline_comment|/*&n; * This is the kernel NFS client file handle representation&n; */
 DECL|macro|NFS_MAXFHSIZE
-mdefine_line|#define NFS_MAXFHSIZE&t;&t;64
+mdefine_line|#define NFS_MAXFHSIZE&t;&t;128
 DECL|struct|nfs_fh
 r_struct
 id|nfs_fh

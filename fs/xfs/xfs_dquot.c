@@ -161,7 +161,7 @@ macro_line|#endif
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Only the q_core portion was bzeroed in dqreclaim_one().&n;&t;&t; * So, we need to reset others.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Only the q_core portion was zeroed in dqreclaim_one().&n;&t;&t; * So, we need to reset others.&n;&t;&t; */
 id|dqp-&gt;q_nrefs
 op_assign
 l_int|0
@@ -344,7 +344,7 @@ op_star
 id|d
 )paren
 (brace
-multiline_comment|/*&n;&t; * Caller has bzero&squot;d the entire dquot &squot;chunk&squot; already.&n;&t; */
+multiline_comment|/*&n;&t; * Caller has zero&squot;d the entire dquot &squot;chunk&squot; already.&n;&t; */
 id|INT_SET
 c_func
 (paren
@@ -1463,10 +1463,12 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|d
+comma
+l_int|0
 comma
 id|BBTOB
 c_func
@@ -2508,13 +2510,13 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* copy everything from disk dquot to the incore dquot */
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|ddqp
-comma
 op_amp
 id|dqp-&gt;q_core
+comma
+id|ddqp
 comma
 r_sizeof
 (paren
@@ -4398,15 +4400,15 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* This is the only portion of data that needs to persist */
-id|bcopy
+id|memcpy
 c_func
 (paren
+id|ddqp
+comma
 op_amp
 (paren
 id|dqp-&gt;q_core
 )paren
-comma
-id|ddqp
 comma
 r_sizeof
 (paren
@@ -5184,11 +5186,13 @@ id|dqp-&gt;dq_flags
 op_assign
 id|XFS_DQ_INACTIVE
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
 id|dqp-&gt;q_core
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -5688,10 +5692,12 @@ op_amp
 id|XFS_QMOPT_DQREPAIR
 )paren
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|ddq
+comma
+l_int|0
 comma
 r_sizeof
 (paren

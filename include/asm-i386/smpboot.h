@@ -28,14 +28,6 @@ macro_line|#else /* !CONFIG_CLUSTERED_APIC */
 DECL|macro|boot_cpu_apicid
 mdefine_line|#define boot_cpu_apicid boot_cpu_physical_apicid
 macro_line|#endif /* CONFIG_CLUSTERED_APIC */
-multiline_comment|/*&n; * How to map from the cpu_present_map&n; */
-macro_line|#ifdef CONFIG_CLUSTERED_APIC
-DECL|macro|cpu_present_to_apicid
-mdefine_line|#define cpu_present_to_apicid(mps_cpu) ( ((mps_cpu/4)*16) + (1&lt;&lt;(mps_cpu%4)) )
-macro_line|#else /* !CONFIG_CLUSTERED_APIC */
-DECL|macro|cpu_present_to_apicid
-mdefine_line|#define cpu_present_to_apicid(apicid) (apicid)
-macro_line|#endif /* CONFIG_CLUSTERED_APIC */
 multiline_comment|/*&n; * Mappings between logical cpu number and logical / physical apicid&n; * The first four macros are trivial, but it keeps the abstraction consistent&n; */
 r_extern
 r_volatile

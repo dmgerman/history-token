@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -28,6 +29,8 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/nmi.h&gt;
+macro_line|#include &lt;asm/edd.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -596,6 +599,22 @@ id|flush_tlb_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_PM)
+DECL|variable|set_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_pm_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_pm_callback
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|IO_APIC_get_PCI_irq_vector
 id|EXPORT_SYMBOL
@@ -635,6 +654,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtc_lock
+)paren
+suffix:semicolon
+DECL|variable|register_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|register_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|unregister_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unregister_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|set_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_callback
 )paren
 suffix:semicolon
 DECL|macro|memcpy
@@ -712,4 +759,57 @@ c_func
 id|__PAGE_KERNEL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|variable|kmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap
+)paren
+suffix:semicolon
+DECL|variable|kunmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kunmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic_to_page
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_EDD_MODULE
+DECL|variable|edd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd
+)paren
+suffix:semicolon
+DECL|variable|eddnr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eddnr
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

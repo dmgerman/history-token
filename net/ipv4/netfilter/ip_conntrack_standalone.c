@@ -242,7 +242,7 @@ comma
 op_amp
 id|expect-&gt;tuple
 comma
-id|__find_proto
+id|__ip_ct_find_proto
 c_func
 (paren
 id|expect-&gt;tuple.dst.protonum
@@ -292,7 +292,7 @@ id|ip_conntrack_protocol
 op_star
 id|proto
 op_assign
-id|__find_proto
+id|__ip_ct_find_proto
 c_func
 (paren
 id|conntrack-&gt;tuplehash
@@ -1685,6 +1685,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_ct_find_proto
+)paren
+suffix:semicolon
+DECL|variable|__ip_ct_find_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ip_ct_find_proto
 )paren
 suffix:semicolon
 DECL|variable|ip_ct_find_helper

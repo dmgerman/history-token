@@ -1047,7 +1047,7 @@ l_string|&quot;--- no soundcards ---&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)
 DECL|function|snd_card_info_read_oss
 r_void
 id|snd_card_info_read_oss

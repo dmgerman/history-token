@@ -1104,11 +1104,11 @@ c_func
 id|generic_file_sendfile
 )paren
 suffix:semicolon
-DECL|variable|do_generic_file_read
+DECL|variable|do_generic_mapping_read
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|do_generic_file_read
+id|do_generic_mapping_read
 )paren
 suffix:semicolon
 DECL|variable|generic_file_write
@@ -1768,13 +1768,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|filemap_nopage
-)paren
-suffix:semicolon
-DECL|variable|filemap_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|filemap_sync
 )paren
 suffix:semicolon
 DECL|variable|filemap_fdatawrite

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ MAX_RT_PRIO..MAX_PRIO-1 ],&n; * and back.&n; */
 DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
@@ -2519,6 +2520,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rcu_pending
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|rcu_check_callbacks
+c_func
+(paren
+id|cpu
+comma
+id|user_ticks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|p
 op_eq
 id|rq-&gt;idle
@@ -3139,6 +3157,13 @@ c_func
 (paren
 id|prev
 )paren
+suffix:semicolon
+id|RCU_qsctr
+c_func
+(paren
+id|prev-&gt;thread_info-&gt;cpu
+)paren
+op_increment
 suffix:semicolon
 r_if
 c_cond
