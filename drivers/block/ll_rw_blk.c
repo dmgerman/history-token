@@ -4170,6 +4170,10 @@ macro_line|#elif defined(CONFIG_IOSCHED_DEADLINE)
 op_amp
 id|iosched_deadline
 suffix:semicolon
+macro_line|#elif defined(CONFIG_IOSCHED_CFQ)
+op_amp
+id|iosched_cfq
+suffix:semicolon
 macro_line|#elif defined(CONFIG_IOSCHED_NOOP)
 op_amp
 id|elevator_noop
@@ -4228,6 +4232,25 @@ id|chosen_elevator
 op_assign
 op_amp
 id|iosched_as
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSCHED_CFQ
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;cfq&quot;
+)paren
+)paren
+id|chosen_elevator
+op_assign
+op_amp
+id|iosched_cfq
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_IOSCHED_NOOP
