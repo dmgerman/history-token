@@ -6,13 +6,8 @@ macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for read? and write? functions */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for delays */
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_COMPAQ_MODULE)
 DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME&t;&quot;cpqphp.o&quot;
-macro_line|#else
-DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
-macro_line|#endif
+mdefine_line|#define MY_NAME&t;&quot;cpqphp&quot;
 DECL|macro|dbg
 mdefine_line|#define dbg(fmt, arg...) do { if (cpqhp_debug) printk(KERN_DEBUG &quot;%s: &quot; fmt , MY_NAME , ## arg); } while (0)
 DECL|macro|err
