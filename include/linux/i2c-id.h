@@ -367,6 +367,8 @@ DECL|macro|I2C_HW_SMBUS_SCX200
 mdefine_line|#define I2C_HW_SMBUS_SCX200&t;0x0b
 DECL|macro|I2C_HW_SMBUS_NFORCE2
 mdefine_line|#define I2C_HW_SMBUS_NFORCE2&t;0x0c
+DECL|macro|I2C_HW_SMBUS_W9968CF
+mdefine_line|#define I2C_HW_SMBUS_W9968CF&t;0x0d
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00
