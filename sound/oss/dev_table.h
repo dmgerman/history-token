@@ -2034,13 +2034,6 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-id|sound_alloc_audiodev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
 id|sound_alloc_mixerdev
 c_func
 (paren

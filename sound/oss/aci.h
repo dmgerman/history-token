@@ -7,14 +7,6 @@ id|aci_port
 suffix:semicolon
 r_extern
 r_int
-id|aci_idcode
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* manufacturer and product ID */
-r_extern
-r_int
 id|aci_version
 suffix:semicolon
 multiline_comment|/* ACI firmware version&t;*/

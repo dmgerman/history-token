@@ -3,6 +3,14 @@ macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|_DEV_TABLE_C_
 mdefine_line|#define _DEV_TABLE_C_
 macro_line|#include &quot;sound_config.h&quot;
+r_static
+r_int
+id|sound_alloc_audiodev
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|sound_install_audiodrv
 r_int
 id|sound_install_audiodrv
@@ -616,6 +624,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|sound_alloc_audiodev
+r_static
 r_int
 id|sound_alloc_audiodev
 c_func
