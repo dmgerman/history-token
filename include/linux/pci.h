@@ -1122,23 +1122,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Device removed (NULL if not a hot-plug capable driver) */
-DECL|member|save_state
-r_int
-(paren
-op_star
-id|save_state
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-id|u32
-id|state
-)paren
-suffix:semicolon
-multiline_comment|/* Save Device Context */
 DECL|member|suspend
 r_int
 (paren
