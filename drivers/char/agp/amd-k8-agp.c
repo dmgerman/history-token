@@ -4,10 +4,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
-r_extern
-r_int
-id|agp_memory_reserved
-suffix:semicolon
 DECL|function|pci_read64
 r_static
 id|u_int64_t
@@ -156,10 +152,6 @@ id|j
 comma
 id|num_entries
 suffix:semicolon
-r_void
-op_star
-id|temp
-suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
@@ -175,19 +167,10 @@ id|agp_bridge.current_size
 suffix:semicolon
 id|num_entries
 op_assign
-id|A_SIZE_32
+id|agp_num_entries
 c_func
 (paren
-id|temp
 )paren
-op_member_access_from_pointer
-id|num_entries
-suffix:semicolon
-id|num_entries
-op_sub_assign
-id|agp_memory_reserved
-op_rshift
-id|PAGE_SHIFT
 suffix:semicolon
 r_if
 c_cond
