@@ -1989,7 +1989,36 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* FIXME: Inspiron 8100 id should probably be here, too&n;&t; * (8200 irrelevant: has intel8x0 with CS4205) */
+multiline_comment|/* Dell Inspiron 8100 */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Dell Inspiron 8100&quot;
+comma
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
+l_int|0x00e6
+comma
+dot
+id|amp_gpio
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|irda_workaround
+op_assign
+l_int|1
+comma
+)brace
+comma
 multiline_comment|/* NEC LM800J/7 */
 (brace
 dot
@@ -6635,6 +6664,7 @@ macro_line|#endif
 DECL|function|snd_m3_mixer
 r_static
 r_int
+id|__devinit
 id|snd_m3_mixer
 c_func
 (paren
@@ -6747,12 +6777,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * DSP Code images&n; */
-DECL|variable|assp_kernel_image
+DECL|variable|__devinitdata
 r_static
 id|u16
 id|assp_kernel_image
 (braket
 )braket
+id|__devinitdata
 op_assign
 (brace
 l_int|0x7980
@@ -8656,12 +8687,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Mini sample rate converter code image&n; * that is to be loaded at 0x400 on the DSP.&n; */
-DECL|variable|assp_minisrc_image
+DECL|variable|__devinitdata
 r_static
 id|u16
 id|assp_minisrc_image
 (braket
 )braket
+id|__devinitdata
 op_assign
 (brace
 l_int|0xBF80
@@ -9455,13 +9487,14 @@ suffix:semicolon
 multiline_comment|/*&n; * initialize ASSP&n; */
 DECL|macro|MINISRC_LPF_LEN
 mdefine_line|#define MINISRC_LPF_LEN 10
-DECL|variable|minisrc_lpf
+DECL|variable|__devinitdata
 r_static
 id|u16
 id|minisrc_lpf
 (braket
 id|MINISRC_LPF_LEN
 )braket
+id|__devinitdata
 op_assign
 (brace
 l_int|0X0743
@@ -9488,6 +9521,7 @@ suffix:semicolon
 DECL|function|snd_m3_assp_init
 r_static
 r_void
+id|__devinit
 id|snd_m3_assp_init
 c_func
 (paren
@@ -9816,6 +9850,7 @@ suffix:semicolon
 DECL|function|snd_m3_assp_client_init
 r_static
 r_int
+id|__devinit
 id|snd_m3_assp_client_init
 c_func
 (paren
@@ -10524,6 +10559,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;suspend_mem
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
@@ -10665,6 +10709,15 @@ r_int
 id|i
 comma
 id|index
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;suspend_mem
+op_eq
+l_int|NULL
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -11485,18 +11538,18 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_m3_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab i/o ports %ld&bslash;n&quot;
 comma
 id|chip-&gt;iobase
+)paren
+suffix:semicolon
+id|snd_m3_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
@@ -11531,6 +11584,20 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|snd_m3_assp_init
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
+id|snd_m3_amp_enable
+c_func
+(paren
+id|chip
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11557,20 +11624,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|snd_m3_assp_init
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-id|snd_m3_amp_enable
-c_func
-(paren
-id|chip
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -11683,18 +11736,18 @@ id|chip
 )paren
 )paren
 (brace
-id|snd_m3_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
 id|pci-&gt;irq
+)paren
+suffix:semicolon
+id|snd_m3_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
@@ -11737,6 +11790,8 @@ c_func
 l_string|&quot;can&squot;t allocate apm buffer&bslash;n&quot;
 )paren
 suffix:semicolon
+r_else
+(brace
 id|card-&gt;set_power_state
 op_assign
 id|snd_m3_set_power_state
@@ -11745,6 +11800,7 @@ id|card-&gt;power_state_private_data
 op_assign
 id|chip
 suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
