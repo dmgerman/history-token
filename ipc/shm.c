@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/shmem_fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|shm_flags
@@ -2622,6 +2623,28 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|audit_ipc_perms
+c_func
+(paren
+l_int|0
+comma
+id|setbuf.uid
+comma
+id|setbuf.gid
+comma
+id|setbuf.mode
+)paren
+)paren
+)paren
+r_return
+id|err
+suffix:semicolon
 id|down
 c_func
 (paren
