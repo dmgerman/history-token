@@ -648,6 +648,16 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
 id|fat_clusters_flush
 c_func
 (paren
