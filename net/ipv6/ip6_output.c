@@ -4070,7 +4070,11 @@ id|frag_list
 r_int
 id|first_len
 op_assign
-l_int|0
+id|skb_pagelen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_if
 c_cond
