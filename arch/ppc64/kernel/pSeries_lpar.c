@@ -1900,12 +1900,21 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* bolted */
+r_if
+c_cond
+(paren
+id|large
+)paren
+id|local_hpte.dw0.dw0.l
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* large page */
 id|local_hpte.dw0.dw0.v
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Set CEC cookie to 0                   */
-multiline_comment|/* Large page = 0                        */
 multiline_comment|/* Zero page = 0                         */
 multiline_comment|/* I-cache Invalidate = 0                */
 multiline_comment|/* I-cache synchronize = 0               */
