@@ -815,9 +815,7 @@ op_assign
 id|fork_idle
 c_func
 (paren
-id|p
-comma
-id|cpu
+id|i
 )paren
 suffix:semicolon
 id|cpucount
