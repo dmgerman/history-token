@@ -442,5 +442,24 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* Eric Brower (ebrower@usa.net)&n; * Translate SBus interrupt levels to ino values--&n; * this is used when converting sbus &quot;interrupts&quot; OBP &n; * node values to &quot;intr&quot; node values, and is platform &n; * dependent.  If only we could call OBP with &n; * &quot;sbus-intr&gt;cpu (sbint -- ino)&quot; from kernel...&n; * See .../drivers/sbus/sbus.c for details.&n; */
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_int
+r_int
+comma
+id|sbint_to_irq
+comma
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+comma
+r_int
+r_int
+)paren
+DECL|macro|sbint_to_irq
+mdefine_line|#define sbint_to_irq(sdev, sbint) BTFIXUP_CALL(sbint_to_irq)(sdev, sbint)
 macro_line|#endif /* !(_SPARC_SBUS_H) */
 eof
