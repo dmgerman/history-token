@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.94 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.99 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1030,6 +1030,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rc
+op_logical_and
 id|device-&gt;state
 op_eq
 id|DASD_STATE_KNOWN
@@ -1049,6 +1052,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rc
+op_logical_and
 id|device-&gt;state
 op_eq
 id|DASD_STATE_BASIC
@@ -1068,6 +1074,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rc
+op_logical_and
 id|device-&gt;state
 op_eq
 id|DASD_STATE_ACCEPT
@@ -1087,6 +1096,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rc
+op_logical_and
 id|device-&gt;state
 op_eq
 id|DASD_STATE_READY
@@ -3004,6 +3016,10 @@ l_string|&quot;I/O error, retry&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+op_minus
+id|EINVAL
+suffix:colon
 r_case
 op_minus
 id|EBUSY
@@ -7121,7 +7137,7 @@ id|dasd_device
 op_star
 id|device
 op_assign
-id|isk-&gt;private_data
+id|disk-&gt;private_data
 suffix:semicolon
 r_if
 c_cond
@@ -8399,7 +8415,7 @@ c_func
 id|dasd_debug_area
 comma
 op_amp
-id|debug_sprintf_view
+id|debug_hex_ascii_view
 )paren
 suffix:semicolon
 id|debug_set_level
