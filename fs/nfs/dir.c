@@ -6113,7 +6113,7 @@ op_amp
 id|new_dentry-&gt;d_count
 )paren
 OG
-l_int|1
+l_int|2
 )paren
 (brace
 r_int
@@ -6178,7 +6178,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dentry still busy? */
+r_else
 r_if
 c_cond
 (paren
@@ -6192,6 +6192,7 @@ OG
 l_int|1
 )paren
 (brace
+multiline_comment|/* dentry still busy? */
 macro_line|#ifdef NFS_PARANOIA
 id|printk
 c_func
