@@ -720,11 +720,6 @@ multiline_comment|/* reset the IRQ */
 )brace
 macro_line|#endif
 )brace
-DECL|variable|use_tsc
-r_static
-r_int
-id|use_tsc
-suffix:semicolon
 multiline_comment|/*&n; * This is the same as the above, except we _also_ save the current&n; * Time Stamp Counter value at the time of the timer interrupt, so that&n; * we later on can estimate the time of day more exactly.&n; */
 DECL|function|timer_interrupt
 r_void
@@ -744,9 +739,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|count
-suffix:semicolon
 multiline_comment|/*&n;&t; * Here we are in the timer irq handler. We just have irqs locally&n;&t; * disabled but we don&squot;t know if the timer_bh is running on the other&n;&t; * CPU. We need to avoid to SMP race with it. NOTE: we don&squot; t need&n;&t; * the irq version of write_lock because as just said we have irq&n;&t; * locally disabled. -arca&n;&t; */
 id|write_lock
 c_func
