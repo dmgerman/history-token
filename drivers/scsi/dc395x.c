@@ -22196,6 +22196,11 @@ id|banner_done
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
@@ -22324,13 +22329,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|pci_set_master
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* store pci devices in out host data object. */
 (paren
 (paren
 r_struct
@@ -22346,7 +22344,12 @@ id|dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* store ptr to scsi host in the PCI device structure */
+id|pci_set_master
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -22356,6 +22359,8 @@ id|scsi_host
 )paren
 suffix:semicolon
 multiline_comment|/* get the scsi mid level to scan for new devices on the bus */
+id|error
+op_assign
 id|scsi_add_host
 c_func
 (paren
@@ -22365,7 +22370,39 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX handle failure */
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|dprintkl
+c_func
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;scsi_add_host failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+id|host_release
+c_func
+(paren
+id|scsi_host
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|scsi_host
+)paren
+suffix:semicolon
+)brace
+r_else
 id|scsi_scan_host
 c_func
 (paren
@@ -22373,7 +22410,7 @@ id|scsi_host
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_remove_one - Called to remove a single instance of the&n; * adapter.&n; *&n; * @dev: The PCI device to intialize.&n; **/
@@ -22409,13 +22446,52 @@ comma
 l_string|&quot;Removing instance&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+(brace
+id|dprintkl
+c_func
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;no host allocated&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|scsi_remove_host
 c_func
 (paren
 id|host
 )paren
+)paren
+(brace
+id|dprintkl
+c_func
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;scsi_remove_host failed&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|host_release
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|scsi_host_put
 c_func
 (paren
 id|host
