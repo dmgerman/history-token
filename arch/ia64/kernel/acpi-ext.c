@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * arch/ia64/kernel/acpi-ext.c&n; *&n; * Copyright (C) 2003 Hewlett-Packard&n; * Copyright (C) Alex Williamson&n; *&n; * Vendor specific extensions to ACPI.  These are used by both&n; * HP and NEC.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
@@ -296,4 +297,11 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+DECL|variable|hp_acpi_csr_space
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hp_acpi_csr_space
+)paren
+suffix:semicolon
 eof
