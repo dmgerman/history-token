@@ -2638,15 +2638,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 r_struct
 id|proc_dir_entry
 op_star
@@ -2727,7 +2718,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
