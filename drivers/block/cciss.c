@@ -10751,6 +10751,40 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86
+(brace
+multiline_comment|/* Need to enable prefetch in the SCSI core for 6400 in x86 */
+id|__u32
+id|prefetch
+suffix:semicolon
+id|prefetch
+op_assign
+id|readl
+c_func
+(paren
+op_amp
+(paren
+id|c-&gt;cfgtable-&gt;SCSI_Prefetch
+)paren
+)paren
+suffix:semicolon
+id|prefetch
+op_or_assign
+l_int|0x100
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|prefetch
+comma
+op_amp
+(paren
+id|c-&gt;cfgtable-&gt;SCSI_Prefetch
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CCISS_DEBUG
 id|printk
 c_func
