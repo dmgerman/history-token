@@ -103,9 +103,9 @@ suffix:semicolon
 multiline_comment|/* Operational parameters that are set at compile time. */
 multiline_comment|/* Keep the ring sizes a power of two for operational efficiency.&n;   The compiler will convert &lt;unsigned&gt;&squot;%&squot;&lt;2^N&gt; into a bit mask.&n;   Making the Tx ring too large decreases the effectiveness of channel&n;   bonding and packet priority.&n;   There are no ill effects from too-large receive rings. */
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;16
+mdefine_line|#define TX_RING_SIZE&t;256
 DECL|macro|TX_QUEUE_LEN
-mdefine_line|#define TX_QUEUE_LEN&t;10&t;&t;/* Limit ring entries actually used.  */
+mdefine_line|#define TX_QUEUE_LEN&t;240&t;&t;/* Limit ring entries actually used.  */
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;256
 DECL|macro|TX_TOTAL_SIZE
@@ -850,7 +850,7 @@ suffix:semicolon
 DECL|macro|EpicRemoved
 mdefine_line|#define EpicRemoved&t;0xffffffff&t;/* Chip failed or removed (CardBus) */
 DECL|macro|EpicNapiEvent
-mdefine_line|#define EpicNapiEvent&t;(RxDone | RxStarted | RxEarlyWarn | RxOverflow | RxFull)
+mdefine_line|#define EpicNapiEvent&t;(TxEmpty | TxDone | &bslash;&n;&t;&t;&t; RxDone | RxStarted | RxEarlyWarn | RxOverflow | RxFull)
 DECL|macro|EpicNormalEvent
 mdefine_line|#define EpicNormalEvent&t;(0x0000ffff &amp; ~EpicNapiEvent)
 DECL|variable|media2miictl
@@ -2044,10 +2044,6 @@ op_or
 id|CntFull
 op_or
 id|TxUnderrun
-op_or
-id|TxDone
-op_or
-id|TxEmpty
 op_or
 id|EpicNapiEvent
 suffix:semicolon
@@ -3724,10 +3720,6 @@ id|CntFull
 op_or
 id|TxUnderrun
 op_or
-id|TxDone
-op_or
-id|TxEmpty
-op_or
 id|RxError
 op_or
 id|RxHeader
@@ -4250,10 +4242,6 @@ op_or
 id|CntFull
 op_or
 id|TxUnderrun
-op_or
-id|TxDone
-op_or
-id|TxEmpty
 op_or
 id|RxError
 op_or
@@ -5479,13 +5467,6 @@ comma
 id|cur_tx
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: if this lock becomes a problem we can narrow the locked&n;&t; * region at the cost of occasionally grabbing the lock more times.&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|ep-&gt;lock
-)paren
-suffix:semicolon
 id|cur_tx
 op_assign
 id|ep-&gt;cur_tx
@@ -5690,13 +5671,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ep-&gt;lock
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|epic_interrupt
@@ -5870,25 +5844,6 @@ id|ep-&gt;napi_lock
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|status
-op_amp
-(paren
-id|TxEmpty
-op_or
-id|TxDone
-)paren
-)paren
-id|epic_tx
-c_func
-(paren
-id|dev
-comma
-id|ep
-)paren
-suffix:semicolon
 multiline_comment|/* Check uncommon events all at once. */
 r_if
 c_cond
@@ -6806,6 +6761,14 @@ comma
 id|ioaddr
 op_plus
 id|INTSTAT
+)paren
+suffix:semicolon
+id|epic_tx
+c_func
+(paren
+id|dev
+comma
+id|ep
 )paren
 suffix:semicolon
 id|work_done
