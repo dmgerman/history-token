@@ -226,7 +226,7 @@ id|av7110
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|av7110_av_exit
 c_func
 (paren

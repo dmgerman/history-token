@@ -613,11 +613,6 @@ id|u32
 id|ir_config
 suffix:semicolon
 multiline_comment|/* firmware stuff */
-DECL|member|device_initialized
-r_int
-r_int
-id|device_initialized
-suffix:semicolon
 DECL|member|bin_fw
 r_int
 r_char
