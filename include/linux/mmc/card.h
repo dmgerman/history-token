@@ -130,6 +130,14 @@ DECL|macro|MMC_STATE_PRESENT
 mdefine_line|#define MMC_STATE_PRESENT&t;(1&lt;&lt;0)
 DECL|macro|MMC_STATE_DEAD
 mdefine_line|#define MMC_STATE_DEAD&t;&t;(1&lt;&lt;1)
+DECL|member|raw_cid
+id|u32
+id|raw_cid
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* raw card CID */
 DECL|member|cid
 r_struct
 id|mmc_cid

@@ -1439,12 +1439,12 @@ op_amp
 l_int|15
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Locate a MMC card on this MMC host given a CID.&n; */
+multiline_comment|/*&n; * Locate a MMC card on this MMC host given a raw CID.&n; */
+DECL|function|mmc_find_card
 r_static
 r_struct
 id|mmc_card
 op_star
-DECL|function|mmc_find_card
 id|mmc_find_card
 c_func
 (paren
@@ -1453,10 +1453,9 @@ id|mmc_host
 op_star
 id|host
 comma
-r_struct
-id|mmc_cid
+id|u32
 op_star
-id|cid
+id|raw_cid
 )paren
 (brace
 r_struct
@@ -1481,15 +1480,13 @@ c_cond
 id|memcmp
 c_func
 (paren
-op_amp
-id|card-&gt;cid
+id|card-&gt;raw_cid
 comma
-id|cid
+id|raw_cid
 comma
 r_sizeof
 (paren
-r_struct
-id|mmc_cid
+id|card-&gt;raw_cid
 )paren
 )paren
 op_eq
@@ -1517,10 +1514,9 @@ id|mmc_host
 op_star
 id|host
 comma
-r_struct
-id|mmc_cid
+id|u32
 op_star
-id|cid
+id|raw_cid
 comma
 r_int
 r_int
@@ -1582,15 +1578,13 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-op_amp
-id|card-&gt;cid
+id|card-&gt;raw_cid
 comma
-id|cid
+id|raw_cid
 comma
 r_sizeof
 (paren
-r_struct
-id|mmc_cid
+id|card-&gt;raw_cid
 )paren
 )paren
 suffix:semicolon
@@ -1895,7 +1889,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Discover cards by requesting their CID.  If this command&n; * times out, it is not an error; there are no further cards&n; * to be discovered.  Add new cards to the list.&n; *&n; * Create a mmc_card entry for each discovered card, assigning&n; * it an RCA, and save the CID.&n; */
+multiline_comment|/*&n; * Discover cards by requesting their CID.  If this command&n; * times out, it is not an error; there are no further cards&n; * to be discovered.  Add new cards to the list.&n; *&n; * Create a mmc_card entry for each discovered card, assigning&n; * it an RCA, and save the raw CID for decoding later.&n; */
 DECL|function|mmc_discover_cards
 r_static
 r_void
@@ -1930,10 +1924,6 @@ l_int|1
 r_struct
 id|mmc_command
 id|cmd
-suffix:semicolon
-r_struct
-id|mmc_cid
-id|cid
 suffix:semicolon
 id|cmd.opcode
 op_assign
@@ -1997,15 +1987,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|mmc_decode_cid
-c_func
-(paren
-op_amp
-id|cid
-comma
-id|cmd.resp
-)paren
-suffix:semicolon
 id|card
 op_assign
 id|mmc_find_card
@@ -2013,8 +1994,7 @@ c_func
 (paren
 id|host
 comma
-op_amp
-id|cid
+id|cmd.resp
 )paren
 suffix:semicolon
 r_if
@@ -2031,8 +2011,7 @@ c_func
 (paren
 id|host
 comma
-op_amp
-id|cid
+id|cmd.resp
 comma
 op_amp
 id|first_rca
@@ -2212,6 +2191,15 @@ op_amp
 id|card-&gt;csd
 comma
 id|cmd.resp
+)paren
+suffix:semicolon
+id|mmc_decode_cid
+c_func
+(paren
+op_amp
+id|card-&gt;cid
+comma
+id|card-&gt;raw_cid
 )paren
 suffix:semicolon
 )brace
