@@ -61,6 +61,8 @@ DECL|macro|ASI_WCACHE_TAG
 mdefine_line|#define ASI_WCACHE_TAG&t;&t;0x3a /* (III) WCache tag RAM diag&t;&t;*/
 DECL|macro|ASI_WCACHE_SNOOP_TAG
 mdefine_line|#define ASI_WCACHE_SNOOP_TAG&t;0x3b /* (III) WCache snoop tag RAM diag&t;&t;*/
+DECL|macro|ASI_SRAM_FAST_INIT
+mdefine_line|#define ASI_SRAM_FAST_INIT&t;0x40 /* (III+) Fast SRAM init&t;&t;&t;*/
 DECL|macro|ASI_DCACHE_INVALIDATE
 mdefine_line|#define ASI_DCACHE_INVALIDATE&t;0x42 /* (III) DCache Invalidate diag&t;&t;*/
 DECL|macro|ASI_DCACHE_UTAG

@@ -7,5 +7,9 @@ DECL|macro|KERNBASE
 mdefine_line|#define KERNBASE&t;0x400000
 DECL|macro|PTREGS_OFF
 mdefine_line|#define&t;PTREGS_OFF&t;(STACK_BIAS + REGWIN_SZ)
+DECL|macro|CHEETAH_ID
+mdefine_line|#define CHEETAH_ID&t;0x003e0014
+DECL|macro|CHEETAH_PLUS_ID
+mdefine_line|#define CHEETAH_PLUS_ID&t;0x003e0015
 macro_line|#endif /* !(_SPARC64_HEAD_H) */
 eof
