@@ -4997,7 +4997,11 @@ id|args
 op_assign
 id|opaque
 suffix:semicolon
+multiline_comment|/* args is already in CPU order */
 r_return
+id|le32_to_cpu
+c_func
+(paren
 id|INODE_PKEY
 c_func
 (paren
@@ -5005,6 +5009,7 @@ id|inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
+)paren
 op_eq
 id|args
 op_member_access_from_pointer
