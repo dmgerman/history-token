@@ -3295,9 +3295,6 @@ id|td_rev
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* wrap-aware logic stolen from &lt;linux/jiffies.h&gt; */
-DECL|macro|tick_before
-mdefine_line|#define tick_before(t1,t2) ((((s16)(t1))-((s16)(t2))) &lt; 0)
 multiline_comment|/* there are some urbs/eds to unlink; called in_irq(), with HCD locked */
 r_static
 r_void

@@ -770,14 +770,6 @@ id|urb-&gt;transfer_flags
 op_assign
 id|URB_ASYNC_UNLINK
 suffix:semicolon
-id|urb-&gt;timeout
-op_assign
-id|msecs_to_jiffies
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
 multiline_comment|/* Irq disabled -&gt; GFP_ATOMIC */
 r_if
 c_cond
@@ -1247,15 +1239,6 @@ multiline_comment|/* This flag (URB_ZERO_PACKET) indicates that what we send is 
 id|urb-&gt;transfer_flags
 op_or_assign
 id|URB_ZERO_PACKET
-suffix:semicolon
-multiline_comment|/* Timeout need to be shorter than NET watchdog timer */
-id|urb-&gt;timeout
-op_assign
-id|msecs_to_jiffies
-c_func
-(paren
-l_int|200
-)paren
 suffix:semicolon
 multiline_comment|/* Generate min turn time. FIXME: can we do better than this? */
 multiline_comment|/* Trying to a turnaround time at this level is trying to measure&n;&t; * processor clock cycle with a wrist-watch, approximate at best...&n;&t; *&n;&t; * What we know is the last time we received a frame over USB.&n;&t; * Due to latency over USB that depend on the USB load, we don&squot;t&n;&t; * know when this frame was received over IrDA (a few ms before ?)&n;&t; * Then, same story for our outgoing frame...&n;&t; *&n;&t; * In theory, the USB dongle is supposed to handle the turnaround&n;&t; * by itself (spec 1.0, chater 4, page 6). Who knows ??? That&squot;s&n;&t; * why this code is enabled only for dongles that doesn&squot;t meet&n;&t; * the spec.&n;&t; * Jean II */

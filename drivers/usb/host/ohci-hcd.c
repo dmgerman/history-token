@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;  /* for in_interrupt () */
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/usb_otg.h&gt;
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &lt;linux/dma-mapping.h&gt; 
 macro_line|#include &lt;linux/dmapool.h&gt;    /* needed by ohci-mem.c when no PCI */
@@ -2228,7 +2229,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* must not be called from interrupt context */
-macro_line|#ifdef CONFIG_PM
+macro_line|#if&t;defined(CONFIG_USB_SUSPEND) || defined(CONFIG_PM)
 DECL|function|mark_children_gone
 r_static
 r_void
