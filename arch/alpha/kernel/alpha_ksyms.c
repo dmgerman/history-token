@@ -774,11 +774,11 @@ c_func
 id|sys_lseek
 )paren
 suffix:semicolon
-DECL|variable|__kernel_execve
+DECL|variable|execve
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__kernel_execve
+id|execve
 )paren
 suffix:semicolon
 DECL|variable|sys_setsid
