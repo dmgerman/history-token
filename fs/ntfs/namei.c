@@ -977,8 +977,9 @@ id|inode_operations
 id|ntfs_dir_inode_ops
 op_assign
 (brace
+dot
 id|lookup
-suffix:colon
+op_assign
 id|ntfs_lookup
 comma
 multiline_comment|/* VFS: Lookup directory. */

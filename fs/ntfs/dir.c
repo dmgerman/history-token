@@ -3666,7 +3666,7 @@ DECL|typedef|INDEX_TYPE
 )brace
 id|INDEX_TYPE
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @filp:&t;open file descriptor for the current directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; */
+multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @fpos:&t;position in the directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; */
 DECL|function|ntfs_filldir
 r_static
 r_inline
@@ -3678,10 +3678,9 @@ id|ntfs_volume
 op_star
 id|vol
 comma
-r_struct
-id|file
+id|loff_t
 op_star
-id|filp
+id|fpos
 comma
 id|ntfs_inode
 op_star
@@ -3727,7 +3726,8 @@ id|index_type
 op_eq
 id|INDEX_TYPE_ALLOCATION
 )paren
-id|filp-&gt;f_pos
+op_star
+id|fpos
 op_assign
 (paren
 id|u8
@@ -3761,7 +3761,8 @@ id|vol-&gt;mft_record_size
 suffix:semicolon
 r_else
 multiline_comment|/* if (index_type == INDEX_TYPE_ROOT) */
-id|filp-&gt;f_pos
+op_star
+id|fpos
 op_assign
 (paren
 id|u8
@@ -3923,14 +3924,15 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Calling filldir for %s with len %i, f_pos 0x%Lx, inode &quot;
+l_string|&quot;Calling filldir for %s with len %i, fpos 0x%Lx, inode &quot;
 l_string|&quot;0x%lx, DT_%s.&quot;
 comma
 id|name
 comma
 id|name_len
 comma
-id|filp-&gt;f_pos
+op_star
+id|fpos
 comma
 id|MREF_LE
 c_func
@@ -3964,7 +3966,8 @@ id|name
 comma
 id|name_len
 comma
-id|filp-&gt;f_pos
+op_star
+id|fpos
 comma
 id|MREF_LE
 c_func
@@ -4010,6 +4013,9 @@ comma
 id|prev_ia_pos
 comma
 id|bmp_pos
+suffix:semicolon
+id|loff_t
+id|fpos
 suffix:semicolon
 r_struct
 id|inode
@@ -4113,14 +4119,18 @@ id|attr_search_context
 op_star
 id|ctx
 suffix:semicolon
+id|fpos
+op_assign
+id|filp-&gt;f_pos
+suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%lx, f_pos 0x%Lx.&quot;
+l_string|&quot;Entering for inode 0x%lx, fpos 0x%Lx.&quot;
 comma
 id|vdir-&gt;i_ino
 comma
-id|filp-&gt;f_pos
+id|fpos
 )paren
 suffix:semicolon
 id|rc
@@ -4133,7 +4143,7 @@ multiline_comment|/* Are we at end of dir yet? */
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+id|fpos
 op_ge
 id|vdir-&gt;i_size
 op_plus
@@ -4147,13 +4157,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|filp-&gt;f_pos
+id|fpos
 )paren
 (brace
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Calling filldir for . with len 1, f_pos 0x0, &quot;
+l_string|&quot;Calling filldir for . with len 1, fpos 0x0, &quot;
 l_string|&quot;inode 0x%lx, DT_DIR.&quot;
 comma
 id|vdir-&gt;i_ino
@@ -4170,7 +4180,7 @@ l_string|&quot;.&quot;
 comma
 l_int|1
 comma
-id|filp-&gt;f_pos
+id|fpos
 comma
 id|vdir-&gt;i_ino
 comma
@@ -4185,14 +4195,14 @@ id|rc
 r_goto
 id|done
 suffix:semicolon
-id|filp-&gt;f_pos
+id|fpos
 op_increment
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+id|fpos
 op_eq
 l_int|1
 )paren
@@ -4200,7 +4210,7 @@ l_int|1
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Calling filldir for .. with len 2, f_pos 0x1, &quot;
+l_string|&quot;Calling filldir for .. with len 2, fpos 0x1, &quot;
 l_string|&quot;inode 0x%lx, DT_DIR.&quot;
 comma
 id|parent_ino
@@ -4221,7 +4231,7 @@ l_string|&quot;..&quot;
 comma
 l_int|2
 comma
-id|filp-&gt;f_pos
+id|fpos
 comma
 id|parent_ino
 c_func
@@ -4240,7 +4250,7 @@ id|rc
 r_goto
 id|done
 suffix:semicolon
-id|filp-&gt;f_pos
+id|fpos
 op_increment
 suffix:semicolon
 )brace
@@ -4362,7 +4372,7 @@ multiline_comment|/* Are we jumping straight into the index allocation attribute
 r_if
 c_cond
 (paren
-id|filp-&gt;f_pos
+id|fpos
 op_ge
 id|vol-&gt;mft_record_size
 )paren
@@ -4375,7 +4385,7 @@ op_assign
 (paren
 id|s64
 )paren
-id|filp-&gt;f_pos
+id|fpos
 suffix:semicolon
 multiline_comment|/* Find the index root attribute in the mft record. */
 r_if
@@ -4620,7 +4630,8 @@ c_func
 (paren
 id|vol
 comma
-id|filp
+op_amp
+id|fpos
 comma
 id|ndir
 comma
@@ -4660,8 +4671,8 @@ id|ndir
 r_goto
 id|EOD
 suffix:semicolon
-multiline_comment|/* Advance f_pos to the beginning of the index allocation. */
-id|filp-&gt;f_pos
+multiline_comment|/* Advance fpos to the beginning of the index allocation. */
+id|fpos
 op_assign
 id|vol-&gt;mft_record_size
 suffix:semicolon
@@ -4682,7 +4693,7 @@ op_assign
 (paren
 id|s64
 )paren
-id|filp-&gt;f_pos
+id|fpos
 op_minus
 id|vol-&gt;mft_record_size
 suffix:semicolon
@@ -5712,7 +5723,8 @@ c_func
 (paren
 id|vol
 comma
-id|filp
+op_amp
+id|fpos
 comma
 id|ndir
 comma
@@ -5776,8 +5788,8 @@ id|bmp_page
 suffix:semicolon
 id|EOD
 suffix:colon
-multiline_comment|/* We are finished, set f_pos to EOD. */
-id|filp-&gt;f_pos
+multiline_comment|/* We are finished, set fpos to EOD. */
+id|fpos
 op_assign
 id|vdir-&gt;i_size
 op_plus
@@ -5817,23 +5829,27 @@ id|rc
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;EOD, f_pos 0x%Lx, returning 0.&quot;
+l_string|&quot;EOD, fpos 0x%Lx, returning 0.&quot;
 comma
-id|filp-&gt;f_pos
+id|fpos
 )paren
 suffix:semicolon
 r_else
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;filldir returned %i, f_pos 0x%Lx, returning 0.&quot;
+l_string|&quot;filldir returned %i, fpos 0x%Lx, returning 0.&quot;
 comma
 id|rc
 comma
-id|filp-&gt;f_pos
+id|fpos
 )paren
 suffix:semicolon
 macro_line|#endif
+id|filp-&gt;f_pos
+op_assign
+id|fpos
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5916,6 +5932,10 @@ op_minus
 id|err
 )paren
 suffix:semicolon
+id|filp-&gt;f_pos
+op_assign
+id|fpos
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -5972,23 +5992,27 @@ id|file_operations
 id|ntfs_dir_ops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|generic_file_llseek
 comma
 multiline_comment|/* Seek inside directory. */
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_read_dir
 comma
 multiline_comment|/* Return -EISDIR. */
+dot
 id|readdir
-suffix:colon
+op_assign
 id|ntfs_readdir
 comma
 multiline_comment|/* Read directory contents. */
+dot
 id|open
-suffix:colon
+op_assign
 id|ntfs_dir_open
 comma
 multiline_comment|/* Open directory. */

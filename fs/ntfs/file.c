@@ -58,23 +58,27 @@ id|file_operations
 id|ntfs_file_ops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|generic_file_llseek
 comma
 multiline_comment|/* Seek inside file. */
+dot
 id|read
-suffix:colon
+op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+dot
 id|mmap
-suffix:colon
+op_assign
 id|generic_file_mmap
 comma
 multiline_comment|/* Mmap file. */
+dot
 id|open
-suffix:colon
+op_assign
 id|ntfs_file_open
 comma
 multiline_comment|/* Open file. */

@@ -386,28 +386,33 @@ id|address_space_operations
 id|ntfs_mft_aops
 op_assign
 (brace
+dot
 id|writepage
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* Write dirty page to disk. */
+dot
 id|readpage
-suffix:colon
+op_assign
 id|ntfs_readpage
 comma
 multiline_comment|/* Fill page with data. */
+dot
 id|sync_page
-suffix:colon
+op_assign
 id|block_sync_page
 comma
 multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
+dot
 id|prepare_write
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* . */
+dot
 id|commit_write
-suffix:colon
+op_assign
 l_int|NULL
 comma
 multiline_comment|/* . */
