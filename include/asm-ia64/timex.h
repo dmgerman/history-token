@@ -50,5 +50,20 @@ id|gettimeoffset
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ia64_reset_wall_time
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_update_wall_time
+(paren
+r_int
+id|delta_nsec
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_TIMEX_H */
 eof
