@@ -1431,15 +1431,10 @@ OL
 l_int|30
 )paren
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|rtc_tenms
@@ -1485,7 +1480,7 @@ c_func
 id|real_seconds
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
