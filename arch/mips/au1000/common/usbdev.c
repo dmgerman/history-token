@@ -2658,7 +2658,11 @@ r_else
 r_int
 id|len
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;conf_desc-&gt;wTotalLength
+)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -5323,7 +5327,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|config_desc-&gt;wTotalLength
+)paren
 comma
 id|ALLOC_FLAGS
 )paren

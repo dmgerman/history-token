@@ -279,7 +279,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|wTotalLength
-id|__u16
+id|__le16
 id|wTotalLength
 suffix:semicolon
 DECL|member|bNumInterfaces

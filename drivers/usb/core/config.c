@@ -1496,9 +1496,13 @@ id|buffer
 suffix:semicolon
 id|config-&gt;desc.wTotalLength
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|buffer2
 op_minus
 id|buffer0
+)paren
 suffix:semicolon
 r_if
 c_cond

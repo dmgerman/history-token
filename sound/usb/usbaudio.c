@@ -14193,6 +14193,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|get_cfg_desc
 c_func
 (paren
@@ -14200,9 +14203,13 @@ id|config
 )paren
 op_member_access_from_pointer
 id|wTotalLength
+)paren
 op_eq
 id|EXTIGY_FIRMWARE_SIZE_OLD
 op_logical_or
+id|le16_to_cpu
+c_func
+(paren
 id|get_cfg_desc
 c_func
 (paren
@@ -14210,6 +14217,7 @@ id|config
 )paren
 op_member_access_from_pointer
 id|wTotalLength
+)paren
 op_eq
 id|EXTIGY_FIRMWARE_SIZE_NEW
 )paren
@@ -14333,6 +14341,9 @@ c_func
 (paren
 l_string|&quot;extigy_boot: new boot length = %d&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|get_cfg_desc
 c_func
 (paren
@@ -14340,6 +14351,7 @@ id|config
 )paren
 op_member_access_from_pointer
 id|wTotalLength
+)paren
 )paren
 suffix:semicolon
 r_return

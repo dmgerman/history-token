@@ -8100,7 +8100,11 @@ id|i
 suffix:semicolon
 id|bufSize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|d-&gt;actconfig-&gt;desc.wTotalLength
+)paren
 suffix:semicolon
 id|u
 op_assign
@@ -8407,7 +8411,11 @@ id|i
 suffix:semicolon
 id|bufSize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|d-&gt;actconfig-&gt;desc.wTotalLength
+)paren
 suffix:semicolon
 id|u
 op_assign

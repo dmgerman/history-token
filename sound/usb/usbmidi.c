@@ -54,7 +54,7 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|member|wTotalLength
-id|__u16
+id|__le16
 id|wTotalLength
 suffix:semicolon
 )brace

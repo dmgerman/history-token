@@ -23681,7 +23681,11 @@ id|dev-&gt;config
 suffix:semicolon
 id|buflen
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;actconfig-&gt;desc.wTotalLength
+)paren
 suffix:semicolon
 id|s
 op_assign

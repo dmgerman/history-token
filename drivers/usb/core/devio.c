@@ -445,12 +445,16 @@ multiline_comment|/* The descriptor may claim to be longer than it&n;&t;&t;&t; *
 r_int
 id|alloclen
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;config
 (braket
 id|i
 )braket
 dot
 id|desc.wTotalLength
+)paren
 suffix:semicolon
 id|len
 op_assign

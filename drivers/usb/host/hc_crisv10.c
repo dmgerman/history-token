@@ -201,7 +201,7 @@ comma
 multiline_comment|/*  __u8  bDescriptorType; Configuration */
 l_int|0x19
 comma
-multiline_comment|/*  __u16 wTotalLength; */
+multiline_comment|/*  __le16 wTotalLength; */
 l_int|0x00
 comma
 l_int|0x01

@@ -253,7 +253,7 @@ l_int|0x19
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 wTotalLength; */
+multiline_comment|/*  __le16 wTotalLength; */
 l_int|0x01
 comma
 multiline_comment|/*  __u8  bNumInterfaces; (1) */
@@ -340,7 +340,7 @@ l_int|0x19
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 wTotalLength; */
+multiline_comment|/*  __le16 wTotalLength; */
 l_int|0x01
 comma
 multiline_comment|/*  __u8  bNumInterfaces; (1) */
