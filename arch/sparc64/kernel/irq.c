@@ -2756,6 +2756,13 @@ r_void
 (brace
 r_int
 id|cpu
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu
 op_assign
 id|smp_processor_id
 c_func
@@ -2779,6 +2786,11 @@ id|cpu
 )paren
 suffix:semicolon
 id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
