@@ -646,7 +646,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;print_lo_info ---- &bslash;n&quot;
+l_string|&quot;print_lo_info ----&bslash;n&quot;
 )paren
 suffix:semicolon
 id|list_for_each
@@ -745,7 +745,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s --- &bslash;n&quot;
+l_string|&quot;%s ---&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -925,7 +925,7 @@ id|ibm_slot_list
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - slot_number: %x &bslash;n&quot;
+l_string|&quot;%s - slot_number: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -955,7 +955,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s --- &bslash;n&quot;
+l_string|&quot;%s ---&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -982,7 +982,7 @@ id|opt_rio_list
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - rio_type %x &bslash;n&quot;
+l_string|&quot;%s - rio_type %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -991,7 +991,7 @@ id|ptr-&gt;rio_type
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - chassis_num: %x &bslash;n&quot;
+l_string|&quot;%s - chassis_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1000,7 +1000,7 @@ id|ptr-&gt;chassis_num
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - first_slot_num: %x &bslash;n&quot;
+l_string|&quot;%s - first_slot_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1009,7 +1009,7 @@ id|ptr-&gt;first_slot_num
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - middle_num: %x &bslash;n&quot;
+l_string|&quot;%s - middle_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3174,7 +3174,7 @@ id|slot_cur
 (brace
 id|err
 (paren
-l_string|&quot;Structure passed is empty &bslash;n&quot;
+l_string|&quot;Structure passed is empty&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5880,7 +5880,7 @@ id|tmp
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;inside ibmphp_probe &bslash;n&quot;
+l_string|&quot;inside ibmphp_probe&bslash;n&quot;
 )paren
 suffix:semicolon
 id|list_for_each
@@ -5933,7 +5933,7 @@ id|dev
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;found device!!! &bslash;n&quot;
+l_string|&quot;found device!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|debug

@@ -294,7 +294,7 @@ comma
 id|ibm_slot_list
 )paren
 suffix:semicolon
-multiline_comment|/* sometimes the hot-pluggable slots start with 4 (not always from 1 */
+multiline_comment|/* sometimes the hot-pluggable slots start with 4 (not always from 1) */
 id|slot_count
 op_assign
 id|max
@@ -777,7 +777,7 @@ id|slot_cur-&gt;ctrl-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;command not completed successfully in power_on &bslash;n&quot;
+l_string|&quot;command not completed successfully in power_on&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -834,7 +834,7 @@ id|retval
 (brace
 id|err
 (paren
-l_string|&quot;power off failed &bslash;n&quot;
+l_string|&quot;power off failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -852,10 +852,11 @@ id|slot_cur-&gt;ctrl-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;command not completed successfully in power_off &bslash;n&quot;
+l_string|&quot;command not completed successfully in power_off&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
@@ -2131,7 +2132,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n;static int get_max_adapter_speed_1 (struct hotplug_slot *hotplug_slot, u8 * value, u8 flag)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot;&n;&t;int hpcrc = 0;&n;&t;struct slot myslot;&n;&n;&t;debug (&quot;get_max_adapter_speed_1 - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;, (ulong)hotplug_slot, (ulong) value);&n;&n;&t;if (flag)&n;&t;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot &amp;&amp; value) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;memcpy ((void *) &amp;myslot, (void *) pslot, sizeof (struct slot));&n;&t;&t;&t;hpcrc = ibmphp_hpc_readslot (pslot, READ_SLOTSTATUS, &amp;(myslot.status));&n;&n;&t;&t;&t;if (!(SLOT_LATCH (myslot.status)) &amp;&amp; (SLOT_PRESENT (myslot.status))) {&n;&t;&t;&t;&t;hpcrc = ibmphp_hpc_readslot (pslot, READ_EXTSLOTSTATUS, &amp;(myslot.ext_status));&n;&t;&t;&t;&t;if (!hpcrc) {&n;&t;&t;&t;&t;&t;*value = SLOT_SPEED (myslot.ext_status);&n;&t;&t;&t;&t;&t;rc = 0;&n;&t;&t;&t;&t;}&n;&t;&t;&t;} else {&n;&t;&t;&t;&t;*value = MAX_ADAPTER_NONE;&n;&t;&t;&t;&t;rc = 0;&n;&t;&t;&t;}&n;                }&n;        } else&n;&t;&t;rc = -ENODEV;&n;&n;&t;if (hpcrc)&n;&t;&t;rc = hpcrc;&n;&n;&t;if (flag)&n;&t;&t;ibmphp_unlock_operations ();&n;&n;&t;debug (&quot;get_max_adapter_speed_1 - Exit rc[%d] hpcrc[%x] value[%x]&bslash;n&quot;, rc, hpcrc, *value);&n;&t;return rc;&n;}&n;&n;static int get_bus_name (struct hotplug_slot *hotplug_slot, char * value)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot = NULL;&n;&n;&t;debug (&quot;get_bus_name - Entry hotplug_slot[%lx] &bslash;n&quot;, (ulong)hotplug_slot);&n;&n;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;rc = 0;&n;&t;&t;&t;snprintf (value, 100, &quot;Bus %x&quot;, pslot-&gt;bus);&n;&t;&t;}&n;&t;} else&n;&t;&t;rc = -ENODEV;&n;&n;&t;ibmphp_unlock_operations ();&n;&t;debug (&quot;get_bus_name - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;*/
+multiline_comment|/*&n;static int get_max_adapter_speed_1 (struct hotplug_slot *hotplug_slot, u8 * value, u8 flag)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot;&n;&t;int hpcrc = 0;&n;&t;struct slot myslot;&n;&n;&t;debug (&quot;get_max_adapter_speed_1 - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;, (ulong)hotplug_slot, (ulong) value);&n;&n;&t;if (flag)&n;&t;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot &amp;&amp; value) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;memcpy ((void *) &amp;myslot, (void *) pslot, sizeof (struct slot));&n;&t;&t;&t;hpcrc = ibmphp_hpc_readslot (pslot, READ_SLOTSTATUS, &amp;(myslot.status));&n;&n;&t;&t;&t;if (!(SLOT_LATCH (myslot.status)) &amp;&amp; (SLOT_PRESENT (myslot.status))) {&n;&t;&t;&t;&t;hpcrc = ibmphp_hpc_readslot (pslot, READ_EXTSLOTSTATUS, &amp;(myslot.ext_status));&n;&t;&t;&t;&t;if (!hpcrc) {&n;&t;&t;&t;&t;&t;*value = SLOT_SPEED (myslot.ext_status);&n;&t;&t;&t;&t;&t;rc = 0;&n;&t;&t;&t;&t;}&n;&t;&t;&t;} else {&n;&t;&t;&t;&t;*value = MAX_ADAPTER_NONE;&n;&t;&t;&t;&t;rc = 0;&n;&t;&t;&t;}&n;                }&n;        } else&n;&t;&t;rc = -ENODEV;&n;&n;&t;if (hpcrc)&n;&t;&t;rc = hpcrc;&n;&n;&t;if (flag)&n;&t;&t;ibmphp_unlock_operations ();&n;&n;&t;debug (&quot;get_max_adapter_speed_1 - Exit rc[%d] hpcrc[%x] value[%x]&bslash;n&quot;, rc, hpcrc, *value);&n;&t;return rc;&n;}&n;&n;static int get_bus_name (struct hotplug_slot *hotplug_slot, char * value)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot = NULL;&n;&n;&t;debug (&quot;get_bus_name - Entry hotplug_slot[%lx]&bslash;n&quot;, (ulong)hotplug_slot);&n;&n;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;rc = 0;&n;&t;&t;&t;snprintf (value, 100, &quot;Bus %x&quot;, pslot-&gt;bus);&n;&t;&t;}&n;&t;} else&n;&t;&t;rc = -ENODEV;&n;&n;&t;ibmphp_unlock_operations ();&n;&t;debug (&quot;get_bus_name - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;*/
 multiline_comment|/*******************************************************************************&n; * This routine will initialize the ops data structure used in the validate&n; * function. It will also power off empty slots that are powered on since BIOS&n; * leaves those on, albeit disconnected&n; ******************************************************************************/
 DECL|function|init_ops
 r_static
@@ -2589,7 +2590,7 @@ id|info
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3167,7 +3168,7 @@ l_int|0xffff
 (brace
 id|debug
 (paren
-l_string|&quot;%s - Inside bus_struture_fixup() &bslash;n&quot;
+l_string|&quot;%s - Inside bus_struture_fixup()&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3348,7 +3349,7 @@ l_int|NULL
 (brace
 id|err
 (paren
-l_string|&quot;ERROR... : pci_dev still NULL &bslash;n&quot;
+l_string|&quot;ERROR... : pci_dev still NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3547,7 +3548,7 @@ id|retval
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - entry slot # %d &bslash;n&quot;
+l_string|&quot;%s - entry slot # %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3776,7 +3777,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;Wrong bus speed &bslash;n&quot;
+l_string|&quot;Wrong bus speed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3790,7 +3791,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;wrong slot speed &bslash;n&quot;
+l_string|&quot;wrong slot speed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3842,7 +3843,7 @@ id|slot_cur-&gt;ctrl-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;command not completed successfully in set_bus &bslash;n&quot;
+l_string|&quot;command not completed successfully in set_bus&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3861,7 +3862,7 @@ id|HZ
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s -Exit &bslash;n&quot;
+l_string|&quot;%s -Exit&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4064,7 +4065,7 @@ id|PCIX133
 )paren
 id|info
 (paren
-l_string|&quot;   133 MHz PCI-X &bslash;n&quot;
+l_string|&quot;   133 MHz PCI-X&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -4081,7 +4082,7 @@ id|PCIX66
 )paren
 id|info
 (paren
-l_string|&quot;    66 MHz PCI-X &bslash;n&quot;
+l_string|&quot;    66 MHz PCI-X&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -4098,13 +4099,13 @@ id|PCI66
 )paren
 id|info
 (paren
-l_string|&quot;    66 MHz PCI &bslash;n&quot;
+l_string|&quot;    66 MHz PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
 id|info
 (paren
-l_string|&quot;    33 MHz PCI &bslash;n&quot;
+l_string|&quot;    33 MHz PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4146,7 +4147,7 @@ id|ibmphp_lock_operations
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;ENABLING SLOT........ &bslash;n&quot;
+l_string|&quot;ENABLING SLOT........&bslash;n&quot;
 )paren
 suffix:semicolon
 id|slot_cur
@@ -4177,7 +4178,7 @@ id|ENABLE
 (brace
 id|err
 (paren
-l_string|&quot;validate function failed &bslash;n&quot;
+l_string|&quot;validate function failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4204,7 +4205,7 @@ id|rc
 (brace
 id|err
 (paren
-l_string|&quot;was not able to set the bus &bslash;n&quot;
+l_string|&quot;was not able to set the bus&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4220,7 +4221,7 @@ id|slot_cur
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;the current bus speed right after set_bus = %x &bslash;n&quot;
+l_string|&quot;the current bus speed right after set_bus = %x&bslash;n&quot;
 comma
 id|slot_cur-&gt;bus_on-&gt;current_speed
 )paren
@@ -4252,7 +4253,7 @@ l_string|&quot;&gt;2 66 PCI cards running on same bus&bslash;n.&quot;
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;Try hot-adding into another bus &bslash;n&quot;
+l_string|&quot;Try hot-adding into another bus&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4344,7 +4345,7 @@ id|slot_cur-&gt;status
 )paren
 id|err
 (paren
-l_string|&quot;power fault occurred trying to power up &bslash;n&quot;
+l_string|&quot;power fault occurred trying to power up&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -4359,7 +4360,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability &bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
@@ -4380,7 +4381,7 @@ id|slot_cur-&gt;ext_status
 (brace
 id|err
 (paren
-l_string|&quot;bus mode mismatch occurred.  please check current bus mode and card capability &bslash;n&quot;
+l_string|&quot;bus mode mismatch occurred.  please check current bus mode and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
@@ -4412,7 +4413,7 @@ id|slot_cur
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;the current bus speed right after power_on = %x &bslash;n&quot;
+l_string|&quot;the current bus speed right after power_on = %x&bslash;n&quot;
 comma
 id|slot_cur-&gt;bus_on-&gt;current_speed
 )paren
@@ -4458,7 +4459,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;power fault occurred trying to power up... &bslash;n&quot;
+l_string|&quot;power fault occurred trying to power up...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4483,7 +4484,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability &bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
@@ -4510,7 +4511,7 @@ id|slot_cur-&gt;status
 (brace
 id|err
 (paren
-l_string|&quot;power on failed... &bslash;n&quot;
+l_string|&quot;power on failed...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4545,7 +4546,7 @@ id|slot_cur-&gt;func
 multiline_comment|/* We cannot do update_slot_info here, since no memory for&n;&t;&t; * kmalloc n.e.ways, and update_slot_info allocates some */
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4624,7 +4625,7 @@ id|slot_cur-&gt;number
 (brace
 id|err
 (paren
-l_string|&quot;configure_card was unsuccessful... &bslash;n&quot;
+l_string|&quot;configure_card was unsuccessful...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_unconfigure_card
@@ -4885,7 +4886,7 @@ id|flag
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;DISABLING SLOT... &bslash;n&quot;
+l_string|&quot;DISABLING SLOT...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4985,7 +4986,7 @@ id|slot_cur-&gt;func
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -5276,7 +5277,7 @@ id|free_slots
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;after slots &bslash;n&quot;
+l_string|&quot;after slots&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_resources
@@ -5285,7 +5286,7 @@ id|ibmphp_free_resources
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;after resources &bslash;n&quot;
+l_string|&quot;after resources&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_bus_info_queue
@@ -5294,7 +5295,7 @@ id|ibmphp_free_bus_info_queue
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;after bus info &bslash;n&quot;
+l_string|&quot;after bus info&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_ebda_hpc_queue
@@ -5303,7 +5304,7 @@ id|ibmphp_free_ebda_hpc_queue
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;after ebda hpc &bslash;n&quot;
+l_string|&quot;after ebda hpc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_ebda_pci_rsrc_queue
@@ -5312,7 +5313,7 @@ id|ibmphp_free_ebda_pci_rsrc_queue
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;after ebda pci rsrc &bslash;n&quot;
+l_string|&quot;after ebda pci rsrc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
