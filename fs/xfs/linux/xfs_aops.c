@@ -616,7 +616,7 @@ op_star
 id|iomapp
 )paren
 (brace
-id|page_buf_daddr_t
+id|xfs_daddr_t
 id|bn
 suffix:semicolon
 id|loff_t
@@ -652,7 +652,7 @@ c_func
 (paren
 id|iomapp-&gt;iomap_bn
 op_ne
-id|PAGE_BUF_DADDR_NULL
+id|IOMAP_DADDR_NULL
 )paren
 suffix:semicolon
 id|delta
@@ -3783,10 +3783,10 @@ c_cond
 (paren
 id|iomap.iomap_bn
 op_ne
-id|PAGE_BUF_DADDR_NULL
+id|IOMAP_DADDR_NULL
 )paren
 (brace
-id|page_buf_daddr_t
+id|xfs_daddr_t
 id|bn
 suffix:semicolon
 id|loff_t
