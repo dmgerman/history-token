@@ -87,18 +87,954 @@ DECL|macro|raw_outw
 mdefine_line|#define raw_outw(val,port) out_be16((port),(val))
 DECL|macro|raw_outl
 mdefine_line|#define raw_outl(val,port) out_be32((port),(val))
-DECL|macro|raw_insb
-mdefine_line|#define raw_insb(port, buf, len) ({&t;   &bslash;&n;&t;volatile unsigned char *_port = (volatile unsigned char *) (port);   &bslash;&n;        unsigned char *_buf =(unsigned char *)(buf);&t;   &bslash;&n;        unsigned int  _i,_len=(unsigned int)(len);&t;   &bslash;&n;        for(_i=0; _i&lt; _len; _i++)  &bslash;&n;           *_buf++=in_8(_port);      &bslash;&n;  })
-DECL|macro|raw_outsb
-mdefine_line|#define raw_outsb(port, buf, len) ({&t;   &bslash;&n;&t;volatile unsigned char *_port = (volatile unsigned char *) (port);   &bslash;&n;        unsigned char *_buf =(unsigned char *)(buf);&t;   &bslash;&n;        unsigned int  _i,_len=(unsigned int)(len);&t;   &bslash;&n;        for( _i=0; _i&lt; _len; _i++)  &bslash;&n;           out_8(_port,*_buf++);      &bslash;&n;  })
-DECL|macro|raw_insw
-mdefine_line|#define raw_insw(port, buf, nr) ({&t;&t;&t;&t;&bslash;&n;&t;volatile unsigned char *_port = (volatile unsigned char *) (port);&t;&bslash;&n;&t;unsigned char *_buf = (unsigned char *)(buf);&t;&t;&t;&bslash;&n;&t;unsigned int _nr = (unsigned int)(nr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &amp; 15) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &amp; 15) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: movew %2@,%0@+; dbra %1,1b&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &gt;&gt; 4) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &gt;&gt; 4) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: &quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %2@,%0@+; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dbra %1,1b&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|raw_outsw
-mdefine_line|#define raw_outsw(port, buf, nr) ({&t;&t;&t;&t;&bslash;&n;&t;volatile unsigned char *_port = (volatile unsigned char *) (port);&t;&bslash;&n;&t;unsigned char *_buf = (unsigned char *)(buf);&t;&t;&t;&bslash;&n;&t;unsigned int _nr = (unsigned int)(nr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &amp; 15) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &amp; 15) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: movew %0@+,%2@; dbra %1,1b&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (_nr &gt;&gt; 4) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp = (_nr &gt;&gt; 4) - 1;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;1: &quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movew %0@+,%2@; &quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dbra %1,1b&quot;&t;   &t;&t;&bslash;&n;&t;&t;&t;: &quot;=a&quot; (_buf), &quot;=d&quot; (_tmp)&t;&bslash;&n;&t;&t;&t;: &quot;a&quot; (_port), &quot;0&quot; (_buf),&t;&bslash;&n;&t;&t;&t;  &quot;1&quot; (_tmp));&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|raw_insw_swapw
-mdefine_line|#define raw_insw_swapw(port, buf, nr) &bslash;&n;({  if ((nr) % 8) &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; dbra %/d6,1b&quot;  &bslash;&n;&t;&t;:               &bslash;&n;&t;&t;: &quot;g&quot; (port), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;    else &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; lsrl  #3,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; movew %/a0@,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a1@+; &bslash;&n;&t;&t; dbra %/d6,1b&quot;  &bslash;&n;                :               &bslash;&n;&t;&t;: &quot;g&quot; (port), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;})
-DECL|macro|raw_outsw_swapw
-mdefine_line|#define raw_outsw_swapw(port, buf, nr) &bslash;&n;({  if ((nr) % 8) &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; dbra %/d6,1b&quot;  &bslash;&n;                :               &bslash;&n;&t;&t;: &quot;g&quot; (port), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;    else &bslash;&n;&t;__asm__ __volatile__ &bslash;&n;&t;       (&quot;movel %0,%/a0; &bslash;&n;&t;&t; movel %1,%/a1; &bslash;&n;&t;&t; movel %2,%/d6; &bslash;&n;&t;&t; lsrl  #3,%/d6; &bslash;&n;&t;&t; subql #1,%/d6; &bslash;&n;&t;       1:movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; movew %/a1@+,%/d0; &bslash;&n;&t;&t; rolw  #8,%/d0; &bslash;&n;&t;&t; movew %/d0,%/a0@; &bslash;&n;&t;&t; dbra %/d6,1b&quot;  &bslash;&n;                :               &bslash;&n;&t;&t;: &quot;g&quot; (port), &quot;g&quot; (buf), &quot;g&quot; (nr) &bslash;&n;&t;&t;: &quot;d0&quot;, &quot;a0&quot;, &quot;a1&quot;, &quot;d6&quot;); &bslash;&n;})
+DECL|function|raw_insb
+r_static
+r_inline
+r_void
+id|raw_insb
+c_func
+(paren
+r_volatile
+r_int
+r_char
+op_star
+id|port
+comma
+r_int
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_int
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+op_star
+id|buf
+op_increment
+op_assign
+id|in_8
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+)brace
+DECL|function|raw_outsb
+r_static
+r_inline
+r_void
+id|raw_outsb
+c_func
+(paren
+r_volatile
+r_int
+r_char
+op_star
+id|port
+comma
+r_const
+r_int
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_int
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|out_8
+c_func
+(paren
+id|port
+comma
+op_star
+id|buf
+op_increment
+)paren
+suffix:semicolon
+)brace
+DECL|function|raw_insw
+r_static
+r_inline
+r_void
+id|raw_insw
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: movew %2@,%0@+; dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;movew %2@,%0@+; &quot;
+l_string|&quot;dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|raw_outsw
+r_static
+r_inline
+r_void
+id|raw_outsw
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_const
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: movew %0@+,%2@; dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;movew %0@+,%2@; &quot;
+l_string|&quot;dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|raw_insl
+r_static
+r_inline
+r_void
+id|raw_insl
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: movel %2@,%0@+; dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;movel %2@,%0@+; &quot;
+l_string|&quot;dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|raw_outsl
+r_static
+r_inline
+r_void
+id|raw_outsl
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_const
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_amp
+l_int|15
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: movel %0@+,%2@; dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+(brace
+id|tmp
+op_assign
+(paren
+id|nr
+op_rshift
+l_int|4
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;1: &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;movel %0@+,%2@; &quot;
+l_string|&quot;dbra %1,1b&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|raw_insw_swapw
+r_static
+r_inline
+r_void
+id|raw_insw_swapw
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|nr
+)paren
+op_mod
+l_int|8
+)paren
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;&bslash;tmovel %0,%/a0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %1,%/a1&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;subql #1,%/d6&bslash;n&quot;
+l_string|&quot;1:&bslash;tmovew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %/d6,1b&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|nr
+)paren
+suffix:colon
+l_string|&quot;d0&quot;
+comma
+l_string|&quot;a0&quot;
+comma
+l_string|&quot;a1&quot;
+comma
+l_string|&quot;d6&quot;
+)paren
+suffix:semicolon
+r_else
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;movel %0,%/a0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %1,%/a1&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;lsrl  #3,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;subql #1,%/d6&bslash;n&quot;
+l_string|&quot;1:&bslash;tmovew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a0@,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a1@+&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %/d6,1b&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|nr
+)paren
+suffix:colon
+l_string|&quot;d0&quot;
+comma
+l_string|&quot;a0&quot;
+comma
+l_string|&quot;a1&quot;
+comma
+l_string|&quot;d6&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|raw_outsw_swapw
+r_static
+r_inline
+r_void
+id|raw_outsw_swapw
+c_func
+(paren
+r_volatile
+r_int
+r_int
+op_star
+id|port
+comma
+r_const
+r_int
+r_int
+op_star
+id|buf
+comma
+r_int
+r_int
+id|nr
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|nr
+)paren
+op_mod
+l_int|8
+)paren
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;movel %0,%/a0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %1,%/a1&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;subql #1,%/d6&bslash;n&quot;
+l_string|&quot;1:&bslash;tmovew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %/d6,1b&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|nr
+)paren
+suffix:colon
+l_string|&quot;d0&quot;
+comma
+l_string|&quot;a0&quot;
+comma
+l_string|&quot;a1&quot;
+comma
+l_string|&quot;d6&quot;
+)paren
+suffix:semicolon
+r_else
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;movel %0,%/a0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %1,%/a1&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;lsrl  #3,%/d6&bslash;n&bslash;t&quot;
+l_string|&quot;subql #1,%/d6&bslash;n&quot;
+l_string|&quot;1:&bslash;tmovew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/a1@+,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;rolw  #8,%/d0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %/d0,%/a0@&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %/d6,1b&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|port
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|buf
+)paren
+comma
+l_string|&quot;g&quot;
+(paren
+id|nr
+)paren
+suffix:colon
+l_string|&quot;d0&quot;
+comma
+l_string|&quot;a0&quot;
+comma
+l_string|&quot;a1&quot;
+comma
+l_string|&quot;d6&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _RAW_IO_H */
 eof
