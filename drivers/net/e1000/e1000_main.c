@@ -554,7 +554,7 @@ op_assign
 (brace
 l_string|&quot;Intel(R) PRO/1000 Network Connection&quot;
 comma
-l_string|&quot;Compaq Gigabit Ethernet Server Adapter&quot;
+l_string|&quot;HP Gigabit Ethernet Server Adapter&quot;
 comma
 l_string|&quot;IBM Mobile, Desktop &amp; Server Adapters&quot;
 )brace
