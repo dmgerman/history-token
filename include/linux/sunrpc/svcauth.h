@@ -21,12 +21,11 @@ DECL|member|cr_gid
 id|gid_t
 id|cr_gid
 suffix:semicolon
-DECL|member|cr_groups
-id|gid_t
-id|cr_groups
-(braket
-id|SVC_CRED_NGROUPS
-)braket
+DECL|member|cr_group_info
+r_struct
+id|group_info
+op_star
+id|cr_group_info
 suffix:semicolon
 )brace
 suffix:semicolon
