@@ -372,13 +372,13 @@ macro_line|#include &quot;pseudo.h&quot;
 DECL|macro|PCD_RETRIES
 mdefine_line|#define PCD_RETRIES&t;     5
 DECL|macro|PCD_TMO
-mdefine_line|#define PCD_TMO&t;&t;   800&t;&t;/* timeout in jiffies */
+mdefine_line|#define PCD_TMO&t;&t;   800&t;/* timeout in jiffies */
 DECL|macro|PCD_DELAY
-mdefine_line|#define PCD_DELAY           50          /* spin delay in uS */
+mdefine_line|#define PCD_DELAY           50&t;/* spin delay in uS */
 DECL|macro|PCD_READY_TMO
-mdefine_line|#define PCD_READY_TMO&t;    20&t;&t;/* in seconds */
+mdefine_line|#define PCD_READY_TMO&t;    20&t;/* in seconds */
 DECL|macro|PCD_RESET_TMO
-mdefine_line|#define PCD_RESET_TMO&t;   100&t;&t;/* in tenths of a second */
+mdefine_line|#define PCD_RESET_TMO&t;   100&t;/* in tenths of a second */
 DECL|macro|PCD_SPIN
 mdefine_line|#define PCD_SPIN&t;(1000000*PCD_TMO)/(HZ*PCD_DELAY)
 DECL|macro|IDE_ERR
@@ -484,6 +484,7 @@ suffix:semicolon
 r_static
 r_int
 id|pcd_get_mcn
+c_func
 (paren
 r_struct
 id|cdrom_device_info
@@ -661,7 +662,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* block in buffer, in CD units,&n;                                           -1 for nothing there. See also&n;&t;&t;&t;&t;&t;   pd_unit.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* block in buffer, in CD units,&n;&t;&t;&t;&t;   -1 for nothing there. See also&n;&t;&t;&t;&t;   pd_unit.&n;&t;&t;&t;&t; */
 multiline_comment|/* the variables below are used mainly in the I/O request engine, which&n;   processes only one request at a time.&n;*/
 DECL|variable|pcd_unit
 r_static
@@ -721,24 +722,29 @@ id|block_device_operations
 id|pcd_bdops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cdrom_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cdrom_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cdrom_ioctl
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 id|cdrom_media_changed
 comma
 )brace
@@ -750,36 +756,59 @@ id|cdrom_device_ops
 id|pcd_dops
 op_assign
 (brace
+dot
+id|open
+op_assign
 id|pcd_open
 comma
+dot
+id|release
+op_assign
 id|pcd_release
 comma
+dot
+id|drive_status
+op_assign
 id|pcd_drive_status
 comma
+dot
+id|media_changed
+op_assign
 id|pcd_media_changed
 comma
+dot
+id|tray_move
+op_assign
 id|pcd_tray_move
 comma
+dot
+id|lock_door
+op_assign
 id|pcd_lock_door
 comma
-l_int|0
-comma
-multiline_comment|/* select speed */
-l_int|0
-comma
-multiline_comment|/* select disk  */
-l_int|0
-comma
-multiline_comment|/* get last session */
+dot
+id|get_mcn
+op_assign
 id|pcd_get_mcn
 comma
+dot
+id|reset
+op_assign
 id|pcd_drive_reset
 comma
+dot
+id|audio_ioctl
+op_assign
 id|pcd_audio_ioctl
 comma
-l_int|0
+dot
+id|generic_packet
+op_assign
+id|pcd_packet
 comma
-multiline_comment|/* dev_ioctl */
+dot
+id|capability
+op_assign
 id|CDC_CLOSE_TRAY
 op_or
 id|CDC_OPEN_TRAY
@@ -799,10 +828,6 @@ op_or
 id|CDC_CD_R
 op_or
 id|CDC_CD_RW
-comma
-l_int|0
-comma
-id|pcd_packet
 comma
 )brace
 suffix:semicolon
@@ -1677,7 +1702,6 @@ OG
 l_int|1
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;%s: %s: Unexpected phase %d, d=%d, k=%d&bslash;n&quot;
 comma
@@ -1710,7 +1734,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;%s: WARNING: ATAPI phase errors&bslash;n&quot;
 comma
@@ -1749,7 +1772,6 @@ r_if
 c_cond
 (paren
 id|pcd_wait
-c_func
 (paren
 id|unit
 comma
@@ -2465,7 +2487,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flg
 op_and_assign
 (paren
@@ -2485,7 +2506,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3035,6 +3055,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * returns  0, with id set if drive is detected&n; *&t;    -1, if drive detection failed&n; */
 DECL|function|pcd_probe
 r_static
 r_int
@@ -3051,7 +3072,6 @@ r_char
 op_star
 id|id
 )paren
-multiline_comment|/*&t;returns  0, with id set if drive is detected&n;&t;        -1, if drive detection failed&n;*/
 (brace
 r_if
 c_cond
@@ -3159,7 +3179,33 @@ id|cmd
 l_int|12
 )braket
 op_assign
-initialization_block
+(brace
+l_int|0x5a
+comma
+l_int|1
+op_lshift
+l_int|3
+comma
+l_int|0x2a
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|18
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
 suffix:semicolon
 r_for
 c_loop
@@ -3466,7 +3512,6 @@ r_if
 c_cond
 (paren
 id|pi_init
-c_func
 (paren
 id|PI
 comma
@@ -3567,6 +3612,7 @@ DECL|function|do_pcd_request
 r_static
 r_void
 id|do_pcd_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -3768,7 +3814,6 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-(brace
 id|pcd_buf
 (braket
 id|k
@@ -3781,7 +3826,6 @@ op_plus
 id|k
 )braket
 suffix:semicolon
-)brace
 id|pcd_count
 op_decrement
 suffix:semicolon
@@ -4234,7 +4278,31 @@ id|cmd
 l_int|12
 )braket
 op_assign
-initialization_block
+(brace
+id|GPCMD_READ_TOC_PMA_ATIP
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|12
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
 suffix:semicolon
 r_struct
 id|cdrom_tochdr
@@ -4303,7 +4371,31 @@ id|cmd
 l_int|12
 )braket
 op_assign
-initialization_block
+(brace
+id|GPCMD_READ_TOC_PMA_ATIP
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|12
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
 suffix:semicolon
 r_struct
 id|cdrom_tocentry
@@ -4484,6 +4576,7 @@ DECL|function|pcd_get_mcn
 r_static
 r_int
 id|pcd_get_mcn
+c_func
 (paren
 r_struct
 id|cdrom_device_info
@@ -4502,7 +4595,31 @@ id|cmd
 l_int|12
 )braket
 op_assign
-initialization_block
+(brace
+id|GPCMD_READ_SUBCHANNEL
+comma
+l_int|0
+comma
+l_int|0x40
+comma
+l_int|2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|24
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
 suffix:semicolon
 r_char
 id|buffer
