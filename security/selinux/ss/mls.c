@@ -1450,6 +1450,7 @@ suffix:semicolon
 op_star
 id|scontext
 op_assign
+op_increment
 id|p
 suffix:semicolon
 id|rc
