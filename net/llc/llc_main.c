@@ -2040,7 +2040,7 @@ r_void
 op_star
 )paren
 l_int|1
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 DECL|variable|llc_tr_packet_type
@@ -2072,7 +2072,7 @@ r_void
 op_star
 )paren
 l_int|1
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
