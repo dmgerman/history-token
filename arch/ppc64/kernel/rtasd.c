@@ -1774,7 +1774,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;ppc64/error_log&quot;
+l_string|&quot;ppc64/rtas/error_log&quot;
 comma
 id|S_IRUSR
 comma
