@@ -29,13 +29,6 @@ mdefine_line|#define LP_NO 8
 multiline_comment|/* ROUND_UP macro from fs/select.c */
 DECL|macro|ROUND_UP
 mdefine_line|#define ROUND_UP(x,y) (((x)+(y)-1)/(y))
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|variable|lp_table
 r_struct
 id|lp_struct
@@ -3283,7 +3276,7 @@ id|port
 r_char
 id|name
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 id|lp_table
@@ -3358,14 +3351,14 @@ id|sprintf
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+l_string|&quot;printers/%d&quot;
 comma
 id|nr
 )paren
 suffix:semicolon
 id|devfs_register
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -3865,8 +3858,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL
@@ -4122,11 +4113,6 @@ id|lpcons
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister
-(paren
-id|devfs_handle
-)paren
-suffix:semicolon
 id|unregister_chrdev
 c_func
 (paren
@@ -4175,7 +4161,21 @@ dot
 id|dev
 )paren
 suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;printers/%d&quot;
+comma
+id|offset
+)paren
+suffix:semicolon
 )brace
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;printers&quot;
+)paren
+suffix:semicolon
 )brace
 id|__setup
 c_func
