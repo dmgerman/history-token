@@ -418,6 +418,18 @@ c_cond
 (paren
 id|rh
 op_amp
+id|RH_A_NPS
+)paren
+multiline_comment|/* no power switching? */
+id|temp
+op_or_assign
+l_int|0x0002
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rh
+op_amp
 id|RH_A_PSM
 )paren
 multiline_comment|/* per-port power switching? */

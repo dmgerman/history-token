@@ -397,7 +397,7 @@ op_and_assign
 op_complement
 id|CPU_HAS_FPU
 suffix:semicolon
-id|release_fpu
+id|disable_fpu
 c_func
 (paren
 )paren

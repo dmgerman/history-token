@@ -98,7 +98,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|atomic_add_negative
+id|atomic24_add_negative
 c_func
 (paren
 id|sleepers
@@ -262,7 +262,7 @@ id|sem-&gt;sleepers
 op_assign
 l_int|0
 suffix:semicolon
-id|atomic_add
+id|atomic24_add
 c_func
 (paren
 id|sleepers
@@ -279,7 +279,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|atomic_add_negative
+id|atomic24_add_negative
 c_func
 (paren
 id|sleepers
@@ -402,7 +402,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|atomic_add_negative
+id|atomic24_add_negative
 c_func
 (paren
 id|sleepers

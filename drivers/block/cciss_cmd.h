@@ -819,6 +819,10 @@ DECL|member|HeartBeat
 id|DWORD
 id|HeartBeat
 suffix:semicolon
+DECL|member|SCSI_Prefetch
+id|DWORD
+id|SCSI_Prefetch
+suffix:semicolon
 DECL|typedef|CfgTable_struct
 )brace
 id|CfgTable_struct

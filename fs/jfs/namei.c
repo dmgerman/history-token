@@ -4834,6 +4834,8 @@ id|old_ip
 suffix:semicolon
 id|new_dir-&gt;i_ctime
 op_assign
+id|new_dir-&gt;i_mtime
+op_assign
 id|CURRENT_TIME
 suffix:semicolon
 id|mark_inode_dirty
@@ -4893,6 +4895,8 @@ op_assign
 id|new_dir
 suffix:semicolon
 id|old_dir-&gt;i_ctime
+op_assign
+id|old_dir-&gt;i_mtime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon

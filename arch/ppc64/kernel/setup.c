@@ -29,6 +29,9 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_int
 r_int
@@ -53,6 +56,32 @@ suffix:semicolon
 r_extern
 r_void
 id|chrp_init
+c_func
+(paren
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_init
 c_func
 (paren
 r_int
@@ -103,6 +132,14 @@ suffix:semicolon
 r_extern
 r_void
 id|pSeriesLP_init_early
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmac_init_early
 c_func
 (paren
 r_void
@@ -170,16 +207,10 @@ id|decr_overclock_proc0_set
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon_map_scc
-c_func
-(paren
-r_void
-)paren
+DECL|variable|powersave_nap
+r_int
+id|powersave_nap
 suffix:semicolon
-macro_line|#endif
 DECL|variable|saved_command_line
 r_char
 id|saved_command_line
@@ -426,25 +457,10 @@ id|i
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_XMON_DEFAULT
-id|debugger
-op_assign
-id|xmon
-suffix:semicolon
-id|debugger_bpt
-op_assign
-id|xmon_bpt
-suffix:semicolon
-id|debugger_sstep
-op_assign
-id|xmon_sstep
-suffix:semicolon
-id|debugger_iabr_match
-op_assign
-id|xmon_iabr_match
-suffix:semicolon
-id|debugger_dabr_match
-op_assign
-id|xmon_dabr_match
+id|xmon_init
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -526,8 +542,58 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_PMAC
+r_case
+id|PLATFORM_POWERMAC
+suffix:colon
+id|pmac_init_early
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+id|initrd_start
+op_assign
+id|initrd_end
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
+id|parse_bootinfo
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+id|map_boot_text
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+(brace
+id|early_console_initialized
+op_assign
+l_int|1
+suffix:semicolon
+id|register_console
+c_func
+(paren
+op_amp
+id|udbg_console
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
@@ -661,9 +727,39 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_SMP */
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_PMAC
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+(brace
+id|finish_device_tree
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pmac_init
+c_func
+(paren
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Finish initializing the hash table (do the dynamic&n;&t; * patching for the fast-path hashtable.S code)&n;&t; */
 id|htab_finish_init
 c_func
@@ -719,7 +815,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg                      = 0x%p&bslash;n&quot;
+l_string|&quot;systemcfg                     = 0x%p&bslash;n&quot;
 comma
 id|systemcfg
 )paren
@@ -854,6 +950,18 @@ op_star
 id|cmd
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|restart
@@ -878,6 +986,18 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|power_off
@@ -901,6 +1021,18 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.nvram_sync
+)paren
+id|ppc_md
+dot
+id|nvram_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|halt
@@ -2196,11 +2328,6 @@ l_string|&quot;Setup Arch&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
-id|xmon_map_scc
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2212,12 +2339,20 @@ comma
 l_string|&quot;xmon&quot;
 )paren
 )paren
-id|xmon
+(brace
+multiline_comment|/* ensure xmon is enabled */
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_XMON */
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize

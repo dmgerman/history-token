@@ -2,13 +2,14 @@ macro_line|#ifndef _ALPHA_BYTEORDER_H
 DECL|macro|_ALPHA_BYTEORDER_H
 mdefine_line|#define _ALPHA_BYTEORDER_H
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 DECL|function|__arch__swab32
 r_static
 id|__inline
-id|__u32
 id|__attribute_const__
+id|__u32
 id|__arch__swab32
 c_func
 (paren

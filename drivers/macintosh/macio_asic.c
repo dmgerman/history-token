@@ -2232,6 +2232,13 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* This assumption is wrong, fix that here for now until I fix the arch */
+id|of_node_get
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 multiline_comment|/* We also assume that pmac_feature will have done a get() on nodes stored&n;&t; * in the macio chips array&n;&t; */
 id|chip
 op_assign

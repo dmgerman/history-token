@@ -9124,15 +9124,14 @@ c_func
 l_string|&quot;jfs_lazycommit being killed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|complete
+id|complete_and_exit
 c_func
 (paren
 op_amp
 id|jfsIOwait
-)paren
-suffix:semicolon
-r_return
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|txLazyUnlock
@@ -9801,15 +9800,14 @@ c_func
 l_string|&quot;jfs_sync being killed&quot;
 )paren
 suffix:semicolon
-id|complete
+id|complete_and_exit
 c_func
 (paren
 op_amp
 id|jfsIOwait
-)paren
-suffix:semicolon
-r_return
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_JFS_DEBUG)

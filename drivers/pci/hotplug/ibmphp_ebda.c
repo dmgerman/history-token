@@ -213,8 +213,8 @@ c_cond
 op_logical_neg
 id|controller
 )paren
-r_return
-l_int|NULL
+r_goto
+id|error
 suffix:semicolon
 id|memset
 (paren
@@ -250,16 +250,9 @@ c_cond
 op_logical_neg
 id|slots
 )paren
-(brace
-id|kfree
-(paren
-id|controller
-)paren
+r_goto
+id|error_contr
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|memset
 (paren
 id|slots
@@ -300,21 +293,9 @@ c_cond
 op_logical_neg
 id|buses
 )paren
-(brace
-id|kfree
-(paren
-id|controller-&gt;slots
-)paren
+r_goto
+id|error_slots
 suffix:semicolon
-id|kfree
-(paren
-id|controller
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|memset
 (paren
 id|buses
@@ -337,6 +318,27 @@ suffix:semicolon
 r_return
 id|controller
 suffix:semicolon
+id|error_slots
+suffix:colon
+id|kfree
+c_func
+(paren
+id|controller-&gt;slots
+)paren
+suffix:semicolon
+id|error_contr
+suffix:colon
+id|kfree
+c_func
+(paren
+id|controller
+)paren
+suffix:semicolon
+id|error
+suffix:colon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|free_ebda_hpc
 r_static
@@ -354,22 +356,10 @@ id|kfree
 id|controller-&gt;slots
 )paren
 suffix:semicolon
-id|controller-&gt;slots
-op_assign
-l_int|NULL
-suffix:semicolon
 id|kfree
 (paren
 id|controller-&gt;buses
 )paren
-suffix:semicolon
-id|controller-&gt;buses
-op_assign
-l_int|NULL
-suffix:semicolon
-id|controller-&gt;ctrl_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 id|kfree
 (paren
@@ -646,7 +636,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;print_lo_info ---- &bslash;n&quot;
+l_string|&quot;print_lo_info ----&bslash;n&quot;
 )paren
 suffix:semicolon
 id|list_for_each
@@ -745,7 +735,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s --- &bslash;n&quot;
+l_string|&quot;%s ---&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -925,7 +915,7 @@ id|ibm_slot_list
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - slot_number: %x &bslash;n&quot;
+l_string|&quot;%s - slot_number: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -955,7 +945,7 @@ id|ptr1
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s --- &bslash;n&quot;
+l_string|&quot;%s ---&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -982,7 +972,7 @@ id|opt_rio_list
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - rio_type %x &bslash;n&quot;
+l_string|&quot;%s - rio_type %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -991,7 +981,7 @@ id|ptr-&gt;rio_type
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - chassis_num: %x &bslash;n&quot;
+l_string|&quot;%s - chassis_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1000,7 +990,7 @@ id|ptr-&gt;chassis_num
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - first_slot_num: %x &bslash;n&quot;
+l_string|&quot;%s - first_slot_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1009,7 +999,7 @@ id|ptr-&gt;first_slot_num
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - middle_num: %x &bslash;n&quot;
+l_string|&quot;%s - middle_num: %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1309,8 +1299,6 @@ id|blk_id
 comma
 id|sub_addr
 comma
-id|rc
-comma
 id|re
 comma
 id|rc_id
@@ -1318,6 +1306,11 @@ comma
 id|re_id
 comma
 id|base
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|rio_complete
 op_assign
@@ -1500,17 +1493,9 @@ id|format
 op_ne
 l_int|4
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|error_nodev
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 id|debug
 (paren
 l_string|&quot;hot blk format: %x&bslash;n&quot;
@@ -1562,17 +1547,9 @@ id|rc_id
 op_ne
 l_int|0x5243
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|error_nodev
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/* rc sub blk signature  */
 id|num_ctlrs
 op_assign
@@ -1600,14 +1577,13 @@ op_logical_neg
 id|hpc_list_ptr
 )paren
 (brace
-id|iounmap
-(paren
-id|io_mem
-)paren
-suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|hpc_list_ptr-&gt;format
@@ -1656,6 +1632,7 @@ op_plus
 id|re
 suffix:semicolon
 multiline_comment|/* re sub blk */
+multiline_comment|/* FIXME: rc is never used/checked */
 id|rc
 op_assign
 id|readw
@@ -1691,17 +1668,9 @@ id|re_id
 op_ne
 l_int|0x5245
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|error_nodev
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/* signature of re */
 id|num_entries
 op_assign
@@ -1730,14 +1699,13 @@ op_logical_neg
 id|rsrc_list_ptr
 )paren
 (brace
-id|iounmap
-(paren
-id|io_mem
-)paren
-suffix:semicolon
-r_return
+id|rc
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|rsrc_list_ptr-&gt;format
@@ -1783,16 +1751,9 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* found rio table */
 r_else
-r_if
-c_cond
-(paren
-id|blk_id
-op_eq
-l_int|0x4752
-)paren
 (brace
+multiline_comment|/* found rio table, blk_id == 0x4752 */
 id|debug
 (paren
 l_string|&quot;now enter io table ---&bslash;n&quot;
@@ -1879,11 +1840,13 @@ op_plus
 l_int|3
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;info about rio table hdr ---&bslash;n&quot;
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;ver_num: %x&bslash;nscal_count: %x&bslash;nriodev_count: %x&bslash;noffset of rio table: %x&bslash;n &quot;
 comma
@@ -1911,17 +1874,9 @@ op_logical_and
 op_logical_neg
 id|rio_complete
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|error_nodev
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1932,8 +1887,6 @@ r_if
 c_cond
 (paren
 id|rio_complete
-op_eq
-l_int|1
 op_logical_and
 id|rio_table_ptr-&gt;ver_num
 op_eq
@@ -1951,16 +1904,9 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 )brace
 )brace
 id|rc
@@ -1974,28 +1920,27 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-id|iounmap
-(paren
-id|io_mem
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 id|rc
 op_assign
 id|ebda_rsrc_rsrc
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_goto
+id|out
+suffix:semicolon
+id|error_nodev
+suffix:colon
 id|rc
-)paren
-(brace
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+id|out
+suffix:colon
 id|iounmap
 (paren
 id|io_mem
@@ -2003,15 +1948,6 @@ id|io_mem
 suffix:semicolon
 r_return
 id|rc
-suffix:semicolon
-)brace
-id|iounmap
-(paren
-id|io_mem
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * map info of scalability details and rio details from physical address&n; */
@@ -3174,7 +3110,7 @@ id|slot_cur
 (brace
 id|err
 (paren
-l_string|&quot;Structure passed is empty &bslash;n&quot;
+l_string|&quot;Structure passed is empty&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5880,7 +5816,7 @@ id|tmp
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;inside ibmphp_probe &bslash;n&quot;
+l_string|&quot;inside ibmphp_probe&bslash;n&quot;
 )paren
 suffix:semicolon
 id|list_for_each
@@ -5933,7 +5869,7 @@ id|dev
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;found device!!! &bslash;n&quot;
+l_string|&quot;found device!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|debug

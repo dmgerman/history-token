@@ -119,6 +119,9 @@ comma
 DECL|enumerator|RADEON_Ig
 id|RADEON_Ig
 comma
+DECL|enumerator|RADEON_Ya
+id|RADEON_Ya
+comma
 DECL|enumerator|RADEON_Yd
 id|RADEON_Yd
 comma
@@ -763,6 +766,22 @@ comma
 (brace
 id|PCI_VENDOR_ID_ATI
 comma
+id|PCI_DEVICE_ID_ATI_RADEON_Ya
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|RADEON_Ya
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_ATI
+comma
 id|PCI_DEVICE_ID_ATI_RADEON_Yd
 comma
 id|PCI_ANY_ID
@@ -951,6 +970,7 @@ id|reg_val
 suffix:semicolon
 multiline_comment|/* these common regs are cleared before mode setting so they do not&n; * interfere with anything&n; */
 DECL|variable|common_regs
+r_static
 id|reg_val
 id|common_regs
 (braket
@@ -1014,6 +1034,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|common_regs_m6
+r_static
 id|reg_val
 id|common_regs_m6
 (braket
@@ -3309,7 +3330,7 @@ op_assign
 id|INPLL
 c_func
 (paren
-id|M_SPLL_REF_FB_DIV
+id|X_MPLL_REF_FB_DIV
 )paren
 suffix:semicolon
 id|ref_div
@@ -3622,7 +3643,7 @@ op_assign
 id|INREG
 c_func
 (paren
-id|RADEON_BIOS_4_SCRATCH
+id|BIOS_4_SCRATCH
 )paren
 suffix:semicolon
 id|printk
@@ -9259,7 +9280,7 @@ op_assign
 (paren
 id|TMDS_RAN_PAT_RST
 op_or
-id|ICHCSEL
+id|TMDS_ICHCSEL
 op_or
 id|TMDS_PLL_EN
 )paren
@@ -14179,10 +14200,10 @@ id|radeonfb_pci_unregister
 comma
 )brace
 suffix:semicolon
-DECL|function|radeonfb_init
+DECL|function|radeonfb_old_init
 r_int
 id|__init
-id|radeonfb_init
+id|radeonfb_old_init
 (paren
 r_void
 )paren
@@ -14195,10 +14216,10 @@ id|radeonfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeonfb_exit
+DECL|function|radeonfb_old_exit
 r_void
 id|__exit
-id|radeonfb_exit
+id|radeonfb_old_exit
 (paren
 r_void
 )paren
@@ -14210,10 +14231,10 @@ id|radeonfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeonfb_setup
+DECL|function|radeonfb_old_setup
 r_int
 id|__init
-id|radeonfb_setup
+id|radeonfb_old_setup
 (paren
 r_char
 op_star
@@ -14391,18 +14412,18 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-DECL|variable|radeonfb_init
+DECL|variable|radeonfb_old_init
 id|module_init
 c_func
 (paren
-id|radeonfb_init
+id|radeonfb_old_init
 )paren
 suffix:semicolon
-DECL|variable|radeonfb_exit
+DECL|variable|radeonfb_old_exit
 id|module_exit
 c_func
 (paren
-id|radeonfb_exit
+id|radeonfb_old_exit
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#endif
 macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &quot;edid.h&quot;

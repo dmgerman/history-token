@@ -58,7 +58,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|openpic_init_IRQ
+id|pSeries_init_openpic
 c_func
 (paren
 r_void
@@ -67,6 +67,14 @@ suffix:semicolon
 r_extern
 r_void
 id|find_and_init_phbs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pSeries_final_fixup
 c_func
 (paren
 r_void
@@ -540,6 +548,13 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
+id|pSeries_nvram_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -810,7 +825,7 @@ id|IC_OPEN_PIC
 (brace
 id|ppc_md.init_IRQ
 op_assign
-id|openpic_init_IRQ
+id|pSeries_init_openpic
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
@@ -831,6 +846,10 @@ suffix:semicolon
 id|ppc_md.init
 op_assign
 id|chrp_init2
+suffix:semicolon
+id|ppc_md.pcibios_fixup
+op_assign
+id|pSeries_final_fixup
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -863,14 +882,6 @@ suffix:semicolon
 id|ppc_md.progress
 op_assign
 id|chrp_progress
-suffix:semicolon
-id|ppc_md.nvram_read
-op_assign
-id|pSeries_nvram_read
-suffix:semicolon
-id|ppc_md.nvram_write
-op_assign
-id|pSeries_nvram_write
 suffix:semicolon
 multiline_comment|/* Build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
 id|dn

@@ -15,12 +15,14 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/ide.h&gt;
-macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#ifndef CONFIG_PPC64
+macro_line|#include &lt;asm/mediabay.h&gt;
+macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
 r_extern
 r_void
@@ -4807,6 +4809,7 @@ c_func
 id|pmif
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC64
 multiline_comment|/* XXX FIXME: Media bay stuff need re-organizing */
 r_if
 c_cond
@@ -4881,6 +4884,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 multiline_comment|/* This is necessary to enable IDE when net-booting */
 id|ppc_md
@@ -5089,7 +5093,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ide%d: Found Apple %s controller, bus ID %d%s&bslash;n&quot;
+l_string|&quot;ide%d: Found Apple %s controller, bus ID %d%s, irq %d&bslash;n&quot;
 comma
 id|hwif-&gt;index
 comma
@@ -5106,6 +5110,8 @@ c_cond
 l_string|&quot; (mediabay)&quot;
 suffix:colon
 l_string|&quot;&quot;
+comma
+id|hwif-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
@@ -6075,9 +6081,27 @@ l_int|0x1000
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */&t;
+multiline_comment|/* We use the OF node irq mapping */
+r_if
+c_cond
+(paren
+id|np-&gt;n_intrs
+op_eq
+l_int|0
+)paren
 id|pmif-&gt;irq
 op_assign
 id|pdev-&gt;irq
+suffix:semicolon
+r_else
+id|pmif-&gt;irq
+op_assign
+id|np-&gt;intrs
+(braket
+l_int|0
+)braket
+dot
+id|line
 suffix:semicolon
 id|pci_set_drvdata
 c_func
@@ -8578,31 +8602,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-id|__pmac
-DECL|function|pmac_ide_dma_count
-id|pmac_ide_dma_count
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_return
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_begin
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Kick the DMA controller into life after the DMA command has been issued&n; * to the drive.&n; */
 r_static
 r_int
@@ -9153,11 +9152,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|hwif-&gt;ide_dma_off
-op_assign
-op_amp
-id|__ide_dma_off
-suffix:semicolon
 id|hwif-&gt;ide_dma_off_quietly
 op_assign
 op_amp
@@ -9183,11 +9177,6 @@ op_assign
 op_amp
 id|pmac_ide_dma_write
 suffix:semicolon
-id|hwif-&gt;ide_dma_count
-op_assign
-op_amp
-id|pmac_ide_dma_count
-suffix:semicolon
 id|hwif-&gt;ide_dma_begin
 op_assign
 op_amp
@@ -9212,16 +9201,6 @@ id|hwif-&gt;ide_dma_host_on
 op_assign
 op_amp
 id|pmac_ide_dma_host_on
-suffix:semicolon
-id|hwif-&gt;ide_dma_good_drive
-op_assign
-op_amp
-id|__ide_dma_good_drive
-suffix:semicolon
-id|hwif-&gt;ide_dma_bad_drive
-op_assign
-op_amp
-id|__ide_dma_bad_drive
 suffix:semicolon
 id|hwif-&gt;ide_dma_verbose
 op_assign

@@ -3388,13 +3388,7 @@ id|drive
 )paren
 )paren
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -4323,7 +4317,7 @@ id|drive
 op_member_access_from_pointer
 id|rq
 suffix:semicolon
-r_int
+id|sector_t
 id|frame
 op_assign
 id|rq-&gt;sector
@@ -5862,13 +5856,7 @@ c_func
 l_string|&quot;ide-cd: dma error&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -6419,13 +6407,7 @@ c_func
 l_string|&quot;ide-cd: write dma error&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -10766,6 +10748,28 @@ op_star
 id|cdi
 )paren
 (brace
+id|ide_drive_t
+op_star
+id|drive
+op_assign
+id|cdi-&gt;handle
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cdi-&gt;use_count
+)paren
+id|CDROM_STATE_FLAGS
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|toc_valid
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * Device initialization.&n; */
 DECL|variable|ide_cdrom_dops

@@ -1253,6 +1253,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|tce_init_pSeries
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md.tce_build
 op_assign
 id|tce_build_pSeriesLP

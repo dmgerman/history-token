@@ -14003,14 +14003,6 @@ op_amp
 id|raw1394_driver
 )paren
 suffix:semicolon
-id|cdev_unmap
-c_func
-(paren
-id|IEEE1394_RAW1394_DEV
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|cdev_del
 c_func
 (paren

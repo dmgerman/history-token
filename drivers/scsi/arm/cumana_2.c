@@ -1425,7 +1425,7 @@ suffix:semicolon
 )brace
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 op_amp
@@ -1760,7 +1760,7 @@ id|host
 suffix:semicolon
 id|out_free
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
@@ -1911,7 +1911,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host

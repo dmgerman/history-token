@@ -1,18 +1,16 @@
 multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_lca.c&n; *&n; * Written by David Mosberger (davidm@cs.arizona.edu) with some code&n; * taken from Dave Rusling&squot;s (david.rusling@reo.mts.dec.com) 32-bit&n; * bios code.&n; *&n; * Code common to all LCA core logic chips.&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|__EXTERN_INLINE
 mdefine_line|#define __EXTERN_INLINE inline
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/core_lca.h&gt;
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 multiline_comment|/*&n; * BIOS32-style PCI interface:&n; */

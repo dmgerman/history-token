@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#if defined (CONFIG_X86_LOCAL_APIC)
 macro_line|#include &lt;mach_apic.h&gt;
@@ -35,14 +36,10 @@ multiline_comment|/* enable HT */
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
@@ -339,6 +336,17 @@ c_func
 (paren
 id|header
 )paren
+suffix:semicolon
+multiline_comment|/* no utility in registering a disabled processor */
+r_if
+c_cond
+(paren
+id|processor-&gt;flags.enabled
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|mp_register_lapic
 (paren
@@ -1335,6 +1343,8 @@ c_func
 id|ACPI_MADT_LAPIC_ADDR_OVR
 comma
 id|acpi_parse_lapic_addr_ovr
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1371,6 +1381,8 @@ c_func
 id|ACPI_MADT_LAPIC
 comma
 id|acpi_parse_lapic
+comma
+id|MAX_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1424,6 +1436,8 @@ c_func
 id|ACPI_MADT_LAPIC_NMI
 comma
 id|acpi_parse_lapic_nmi
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1498,6 +1512,8 @@ c_func
 id|ACPI_MADT_IOAPIC
 comma
 id|acpi_parse_ioapic
+comma
+id|MAX_IO_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1555,6 +1571,8 @@ c_func
 id|ACPI_MADT_INT_SRC_OVR
 comma
 id|acpi_parse_int_src_ovr
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if
@@ -1586,6 +1604,8 @@ c_func
 id|ACPI_MADT_NMI_SRC
 comma
 id|acpi_parse_nmi_src
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if

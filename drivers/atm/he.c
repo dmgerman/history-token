@@ -398,7 +398,6 @@ comma
 id|CON_DAT
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -410,7 +409,7 @@ comma
 id|CON_DAT
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 id|he_writel
 c_func
 (paren
@@ -8850,25 +8849,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-(paren
-r_void
-)paren
-id|he_readl
-c_func
-(paren
-id|he_dev
-comma
-id|G0_RBRQ_H
-op_plus
-(paren
-id|group
-op_star
-l_int|16
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 id|pdus_assembled
@@ -9316,25 +9296,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-(paren
-r_void
-)paren
-id|he_readl
-c_func
-(paren
-id|he_dev
-comma
-id|G0_TBRQ_H
-op_plus
-(paren
-id|group
-op_star
-l_int|16
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_static
@@ -9459,7 +9420,6 @@ c_cond
 (paren
 id|moved
 )paren
-(brace
 id|he_writel
 c_func
 (paren
@@ -9474,20 +9434,6 @@ comma
 id|G0_RBPL_T
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-(paren
-r_void
-)paren
-id|he_readl
-c_func
-(paren
-id|he_dev
-comma
-id|G0_RBPL_T
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 )brace
 macro_line|#ifdef USE_RBPS
 r_static
@@ -9612,7 +9558,6 @@ c_cond
 (paren
 id|moved
 )paren
-(brace
 id|he_writel
 c_func
 (paren
@@ -9627,20 +9572,6 @@ comma
 id|G0_RBPS_T
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-(paren
-r_void
-)paren
-id|he_readl
-c_func
-(paren
-id|he_dev
-comma
-id|G0_RBPS_T
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 )brace
 macro_line|#endif /* USE_RBPS */
 r_static
@@ -10062,7 +9993,7 @@ comma
 id|INT_FIFO
 )paren
 suffix:semicolon
-multiline_comment|/* 8.1.2 controller errata */
+multiline_comment|/* 8.1.2 controller errata; flush posted writes */
 )brace
 macro_line|#ifdef USE_TASKLET
 id|spin_unlock_irqrestore
@@ -10276,7 +10207,6 @@ id|INT_FIFO
 )paren
 suffix:semicolon
 multiline_comment|/* clear interrupt */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -10288,7 +10218,7 @@ comma
 id|INT_FIFO
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -10552,7 +10482,6 @@ comma
 id|TPDRQ_T
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -10564,7 +10493,7 @@ comma
 id|TPDRQ_T
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 )brace
 r_static
 r_int
@@ -11339,7 +11268,6 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -11351,7 +11279,7 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -11588,7 +11516,6 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -11600,7 +11527,7 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -11839,7 +11766,6 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -11851,7 +11777,7 @@ comma
 id|cid
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 id|he_writel_mbox
 c_func
 (paren
@@ -12040,19 +11966,6 @@ id|cid
 )paren
 suffix:semicolon
 multiline_comment|/* also clears TSR4_SESSION_ENDED */
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-(paren
-r_void
-)paren
-id|he_readl_tsr4
-c_func
-(paren
-id|he_dev
-comma
-id|cid
-)paren
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -12104,6 +12017,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+(paren
+r_void
+)paren
+id|he_readl_tsr4
+c_func
+(paren
+id|he_dev
+comma
+id|cid
+)paren
+suffix:semicolon
+multiline_comment|/* flush posted writes */
 id|tpd
 op_assign
 id|__alloc_tpd
@@ -13395,7 +13320,6 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (paren
 r_void
 )paren
@@ -13413,7 +13337,7 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* flush posted writes */
 id|spin_unlock_irqrestore
 c_func
 (paren

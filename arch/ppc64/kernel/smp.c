@@ -32,6 +32,7 @@ macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
@@ -81,7 +82,6 @@ id|cpu_possible_map
 )paren
 suffix:semicolon
 DECL|variable|smp_ops
-r_static
 r_struct
 id|smp_ops_t
 op_star
@@ -159,41 +159,15 @@ id|vpa
 suffix:semicolon
 DECL|macro|smp_message_pass
 mdefine_line|#define smp_message_pass(t,m,d,w) smp_ops-&gt;message_pass((t),(m),(d),(w))
-DECL|function|set_tb
-r_static
-r_inline
+multiline_comment|/* Low level assembly function used to backup CPU 0 state */
+r_extern
 r_void
-id|set_tb
+id|__save_cpu_setup
 c_func
 (paren
-r_int
-r_int
-id|upper
-comma
-r_int
-r_int
-id|lower
-)paren
-(brace
-id|mttbl
-c_func
-(paren
-l_int|0
+r_void
 )paren
 suffix:semicolon
-id|mttbu
-c_func
-(paren
-id|upper
-)paren
-suffix:semicolon
-id|mttbl
-c_func
-(paren
-id|lower
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|variable|iSeries_smp_message
 r_static
@@ -619,6 +593,35 @@ id|nr
 )paren
 (brace
 )brace
+DECL|variable|iSeries_smp_ops
+r_static
+r_struct
+id|smp_ops_t
+id|iSeries_smp_ops
+op_assign
+(brace
+dot
+id|message_pass
+op_assign
+id|smp_iSeries_message_pass
+comma
+dot
+id|probe
+op_assign
+id|smp_iSeries_probe
+comma
+dot
+id|kick_cpu
+op_assign
+id|smp_iSeries_kick_cpu
+comma
+dot
+id|setup_cpu
+op_assign
+id|smp_iSeries_setup_cpu
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* This is called very early. */
 DECL|function|smp_init_iSeries
 r_void
@@ -632,23 +635,7 @@ r_void
 id|smp_ops
 op_assign
 op_amp
-id|ppc_md.smp_ops
-suffix:semicolon
-id|smp_ops-&gt;message_pass
-op_assign
-id|smp_iSeries_message_pass
-suffix:semicolon
-id|smp_ops-&gt;probe
-op_assign
-id|smp_iSeries_probe
-suffix:semicolon
-id|smp_ops-&gt;kick_cpu
-op_assign
-id|smp_iSeries_kick_cpu
-suffix:semicolon
-id|smp_ops-&gt;setup_cpu
-op_assign
-id|smp_iSeries_setup_cpu
+id|iSeries_smp_ops
 suffix:semicolon
 id|systemcfg-&gt;processorCount
 op_assign
@@ -660,9 +647,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_PSERIES
-r_static
-r_void
 DECL|function|smp_openpic_message_pass
+r_void
 id|smp_openpic_message_pass
 c_func
 (paren
@@ -842,10 +828,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|smp_pSeries_kick_cpu
 r_static
 r_void
-DECL|function|smp_kick_cpu
-id|smp_kick_cpu
+id|smp_pSeries_kick_cpu
 c_func
 (paren
 r_int
@@ -1045,9 +1031,9 @@ id|xLpPaca
 )paren
 suffix:semicolon
 )brace
+DECL|function|smp_xics_message_pass
 r_static
 r_void
-DECL|function|smp_xics_message_pass
 id|smp_xics_message_pass
 c_func
 (paren
@@ -1378,6 +1364,64 @@ id|timebase_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pSeries_openpic_smp_ops
+r_static
+r_struct
+id|smp_ops_t
+id|pSeries_openpic_smp_ops
+op_assign
+(brace
+dot
+id|message_pass
+op_assign
+id|smp_openpic_message_pass
+comma
+dot
+id|probe
+op_assign
+id|smp_openpic_probe
+comma
+dot
+id|kick_cpu
+op_assign
+id|smp_pSeries_kick_cpu
+comma
+dot
+id|setup_cpu
+op_assign
+id|smp_openpic_setup_cpu
+comma
+)brace
+suffix:semicolon
+DECL|variable|pSeries_xics_smp_ops
+r_static
+r_struct
+id|smp_ops_t
+id|pSeries_xics_smp_ops
+op_assign
+(brace
+dot
+id|message_pass
+op_assign
+id|smp_xics_message_pass
+comma
+dot
+id|probe
+op_assign
+id|smp_xics_probe
+comma
+dot
+id|kick_cpu
+op_assign
+id|smp_pSeries_kick_cpu
+comma
+dot
+id|setup_cpu
+op_assign
+id|smp_xics_setup_cpu
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* This is called very early */
 DECL|function|smp_init_pSeries
 r_void
@@ -1388,11 +1432,6 @@ c_func
 r_void
 )paren
 (brace
-id|smp_ops
-op_assign
-op_amp
-id|ppc_md.smp_ops
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1400,35 +1439,18 @@ id|naca-&gt;interrupt_controller
 op_eq
 id|IC_OPEN_PIC
 )paren
-(brace
-id|smp_ops-&gt;message_pass
+id|smp_ops
 op_assign
-id|smp_openpic_message_pass
+op_amp
+id|pSeries_openpic_smp_ops
 suffix:semicolon
-id|smp_ops-&gt;probe
-op_assign
-id|smp_openpic_probe
-suffix:semicolon
-id|smp_ops-&gt;setup_cpu
-op_assign
-id|smp_openpic_setup_cpu
-suffix:semicolon
-)brace
 r_else
-(brace
-id|smp_ops-&gt;message_pass
+id|smp_ops
 op_assign
-id|smp_xics_message_pass
+op_amp
+id|pSeries_xics_smp_ops
 suffix:semicolon
-id|smp_ops-&gt;probe
-op_assign
-id|smp_xics_probe
-suffix:semicolon
-id|smp_ops-&gt;setup_cpu
-op_assign
-id|smp_xics_setup_cpu
-suffix:semicolon
-)brace
+multiline_comment|/* Non-lpar has additional take/give timebase */
 r_if
 c_cond
 (paren
@@ -1446,10 +1468,6 @@ op_assign
 id|pSeries_take_timebase
 suffix:semicolon
 )brace
-id|smp_ops-&gt;kick_cpu
-op_assign
-id|smp_kick_cpu
-suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|smp_local_timer_interrupt
@@ -1555,11 +1573,11 @@ multiline_comment|/* spare */
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_XMON
+macro_line|#ifdef CONFIG_DEBUGGER
 r_case
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 suffix:colon
-id|xmon
+id|debugger
 c_func
 (paren
 id|regs
@@ -1567,7 +1585,7 @@ id|regs
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif
 r_default
 suffix:colon
 id|printk
@@ -1609,10 +1627,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_XMON
-DECL|function|smp_send_xmon_break
+macro_line|#ifdef CONFIG_DEBUGGER
+DECL|function|smp_send_debugger_break
 r_void
-id|smp_send_xmon_break
+id|smp_send_debugger_break
 c_func
 (paren
 r_int
@@ -1624,7 +1642,7 @@ c_func
 (paren
 id|cpu
 comma
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 comma
 l_int|0
 comma
@@ -1632,7 +1650,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif
 DECL|function|stop_this_cpu
 r_static
 r_void
@@ -1903,19 +1921,12 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-r_if
-c_cond
-(paren
-id|debugger
-)paren
 id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -1984,19 +1995,12 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-r_if
-c_cond
-(paren
-id|debugger
-)paren
 id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -2247,6 +2251,12 @@ op_assign
 id|smp_ops
 op_member_access_from_pointer
 id|probe
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Backup CPU 0 state if necessary */
+id|__save_cpu_setup
 c_func
 (paren
 )paren

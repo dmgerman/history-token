@@ -412,13 +412,13 @@ c_func
 (paren
 id|func-&gt;bus
 comma
+id|PCI_DEVFN
+c_func
 (paren
 id|func-&gt;device
-op_lshift
-l_int|3
-)paren
-op_or
+comma
 id|j
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -529,6 +529,7 @@ id|u8
 id|irq_num
 )paren
 (brace
+macro_line|#if !defined(CONFIG_X86_IO_APIC)&t;
 r_int
 id|rc
 suffix:semicolon
@@ -669,6 +670,7 @@ comma
 l_int|0x4d1
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5355,11 +5357,9 @@ op_plus
 id|SECONDARY_BUS
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren

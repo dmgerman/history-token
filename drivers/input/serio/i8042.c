@@ -1416,6 +1416,8 @@ r_char
 id|str
 comma
 id|data
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -1440,6 +1442,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|str
+op_amp
+id|I8042_STR_OBF
+)paren
 id|data
 op_assign
 id|i8042_read_data

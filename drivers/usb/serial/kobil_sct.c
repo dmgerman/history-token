@@ -1609,7 +1609,6 @@ id|port-&gt;interrupt_in_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
 suffix:semicolon
-singleline_comment|// usb_dump_urb(port-&gt;interrupt_in_urb);
 id|result
 op_assign
 id|usb_submit_urb
@@ -2013,7 +2012,6 @@ op_assign
 id|port-&gt;serial-&gt;dev
 suffix:semicolon
 singleline_comment|// start reading
-singleline_comment|//usb_dump_urb(port-&gt;interrupt_in_urb);
 id|result
 op_assign
 id|usb_submit_urb

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;Acquire Single Board Computer Watchdog Timer driver&n; *&n; *      Based on wdt.c. Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *          Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *          Can&squot;t add timeout - driver doesn&squot;t allow changing value&n; */
+multiline_comment|/*&n; *&t;Theory of Operation:&n; *&t;&t;The Watch-Dog Timer is provided to ensure that standalone&n; *&t;&t;Systems can always recover from catastrophic conditions that&n; *&t;&t;caused the CPU to crash. This condition may have occured by&n; *&t;&t;external EMI or a software bug. When the CPU stops working&n; *&t;&t;correctly, hardware on the board will either perform a hardware&n; *&t;&t;reset (cold boot) or a non-maskable interrupt (NMI) to bring the&n; *&t;&t;system back to a known state.&n; *&n; *&t;&t;The Watch-Dog Timer is controlled by two I/O Ports.&n; *&t;&t;  443 hex&t;- Read&t;- Enable or refresh the Watch-Dog Timer&n; *&t;&t;  043 hex&t;- Read&t;- Disable the Watch-Dog Timer&n; *&n; *&t;&t;To enable the Watch-Dog Timer, a read from I/O port 443h must&n; *&t;&t;be performed. This will enable and activate the countdown timer&n; *&t;&t;which will eventually time out and either reset the CPU or cause&n; *&t;&t;an NMI depending on the setting of a jumper. To ensure that this&n; *&t;&t;reset condition does not occur, the Watch-Dog Timer must be&n; *&t;&t;periodically refreshed by reading the same I/O port 443h.&n; *&t;&t;The Watch-Dog Timer is disabled by reading I/O port 043h.&n; *&n; *&t;&t;The Watch-Dog Timer Time-Out Period is set via jumpers.&n; *&t;&t;It can be 1, 2, 10, 20, 110 or 220 seconds.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -16,8 +17,8 @@ DECL|macro|WATCHDOG_NAME
 mdefine_line|#define WATCHDOG_NAME &quot;Acquire WDT&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX WATCHDOG_NAME &quot;: &quot;
-DECL|macro|WATCHDOG_TIMEOUT
-mdefine_line|#define WATCHDOG_TIMEOUT 0&t;/* ??? Is the timeout hardcoded to 1 minute ??? */
+DECL|macro|WATCHDOG_HEARTBEAT
+mdefine_line|#define WATCHDOG_HEARTBEAT 0&t;/* There is no way to see what the correct time-out period is */
 DECL|variable|acq_is_open
 r_static
 r_int
@@ -116,10 +117,10 @@ l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Kernel methods.&n; */
-DECL|function|acq_ping
+DECL|function|acq_keepalive
 r_static
 r_void
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 r_void
@@ -260,7 +261,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Well, anyhow someone wrote to us, we should return that favour */
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 )paren
@@ -295,6 +296,14 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|options
+comma
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -377,7 +386,7 @@ suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 )paren
@@ -392,7 +401,7 @@ r_return
 id|put_user
 c_func
 (paren
-id|WATCHDOG_TIMEOUT
+id|WATCHDOG_HEARTBEAT
 comma
 (paren
 r_int
@@ -405,14 +414,6 @@ r_case
 id|WDIOC_SETOPTIONS
 suffix:colon
 (brace
-r_int
-id|options
-comma
-id|retval
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -458,7 +459,7 @@ op_amp
 id|WDIOS_ENABLECARD
 )paren
 (brace
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 )paren
@@ -525,7 +526,7 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 multiline_comment|/* Activate */
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 )paren
@@ -575,7 +576,7 @@ id|PFX
 l_string|&quot;Unexpected close, not stopping watchdog!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|acq_ping
+id|acq_keepalive
 c_func
 (paren
 )paren
@@ -719,16 +720,6 @@ dot
 id|notifier_call
 op_assign
 id|acq_notify_sys
-comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
 comma
 )brace
 suffix:semicolon
@@ -898,10 +889,8 @@ comma
 id|nowayout
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 id|unreg_reboot
 suffix:colon
@@ -939,8 +928,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_goto
 id|out
+suffix:colon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|acq_exit
@@ -1007,22 +998,29 @@ c_func
 id|acq_exit
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Woodhouse&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Acquire Inc. Single Board Computer Watchdog Timer driver&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_AUTHOR
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
 c_func
 (paren
-l_string|&quot;Unkown&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Acquire Single Board Computer Watchdog Timer driver&quot;
+id|WATCHDOG_MINOR
 )paren
 suffix:semicolon
 eof

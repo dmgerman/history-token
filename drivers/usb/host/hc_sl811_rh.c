@@ -1944,6 +1944,8 @@ id|usb_alloc_dev
 l_int|NULL
 comma
 id|hci-&gt;bus
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

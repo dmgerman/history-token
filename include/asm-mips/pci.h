@@ -274,6 +274,20 @@ id|len
 )paren
 suffix:semicolon
 )brace
+DECL|function|pcibios_add_platform_entries
+r_static
+r_inline
+r_void
+id|pcibios_add_platform_entries
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* implement the pci_ DMA API in terms of the generic device dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
