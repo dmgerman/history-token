@@ -88,7 +88,11 @@ r_struct
 id|semaphore
 id|i_sem
 suffix:semicolon
-multiline_comment|/* semaphore */
+DECL|member|i_parent
+r_struct
+id|semaphore
+id|i_parent
+suffix:semicolon
 DECL|member|i_rddir_off
 id|loff_t
 op_star

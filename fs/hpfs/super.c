@@ -1034,6 +1034,13 @@ op_amp
 id|ei-&gt;i_sem
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|ei-&gt;i_parent
+)paren
+suffix:semicolon
 id|inode_init_once
 c_func
 (paren
