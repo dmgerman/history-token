@@ -62,11 +62,6 @@ r_static
 r_int
 id|my_host_number
 suffix:semicolon
-multiline_comment|/*&n; * kernel thread actions&n; */
-DECL|macro|US_ACT_COMMAND
-mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_EXIT
-mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/* The list of structures and the protective lock for them */
 DECL|variable|us_list
 r_struct
@@ -1421,14 +1416,15 @@ multiline_comment|/* our device has gone - pretend not ready */
 r_if
 c_cond
 (paren
-id|atomic_read
+op_logical_neg
+id|test_bit
 c_func
 (paren
+id|DEV_ATTACHED
+comma
 op_amp
-id|us-&gt;device_state
+id|us-&gt;bitflags
 )paren
-op_eq
-id|US_STATE_DETACHED
 )paren
 (brace
 id|US_DEBUGP
@@ -1554,7 +1550,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* atomic_read(&amp;us-&gt;device_state) == STATE_DETACHED */
+multiline_comment|/* test_bit(DEV_ATTACHED, &amp;us-&gt;bitflags) */
 multiline_comment|/* Handle those devices which need us to fake &n;&t;&t;&t; * their inquiry data */
 r_if
 c_cond
@@ -2020,11 +2016,14 @@ id|ss
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 r_int
 id|result
 suffix:semicolon
-macro_line|#endif
+r_int
+id|new_device
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* these are temporary copies -- we test on these, then put them&n;&t; * in the us-data structure &n;&t; */
 r_struct
 id|usb_endpoint_descriptor
@@ -2057,7 +2056,7 @@ id|protocol
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* the altsettting on the interface we&squot;re probing that matched our&n;&t; * usb_match_id table&n;&t; */
+multiline_comment|/* the altsetting on the interface we&squot;re probing that matched our&n;&t; * usb_match_id table&n;&t; */
 r_struct
 id|usb_interface
 op_star
@@ -2087,7 +2086,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;act_altsettting is %d&bslash;n&quot;
+l_string|&quot;act_altsetting is %d&bslash;n&quot;
 comma
 id|intf
 (braket
@@ -2470,7 +2469,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* At this point, we&squot;re committed to using the device */
+multiline_comment|/* At this point, we&squot;ve decided to try to use the device */
 id|usb_get_dev
 c_func
 (paren
@@ -2608,8 +2607,13 @@ l_int|NULL
 )paren
 op_logical_and
 (paren
+id|test_bit
+c_func
 (paren
-id|ss-&gt;pusb_dev
+id|DEV_ATTACHED
+comma
+op_amp
+id|ss-&gt;bitflags
 )paren
 op_logical_or
 op_logical_neg
@@ -2668,32 +2672,22 @@ id|ss-&gt;pusb_dev
 op_assign
 id|dev
 suffix:semicolon
-id|atomic_set
+id|set_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;device_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_ATTACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
-r_if
-c_cond
-(paren
-id|ep_in
-)paren
 id|ss-&gt;ep_in
 op_assign
 id|ep_in-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep_out
-)paren
 id|ss-&gt;ep_out
 op_assign
 id|ep_out-&gt;bEndpointAddress
@@ -2720,17 +2714,9 @@ c_func
 id|ss
 )paren
 )paren
-(brace
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|BadDevice
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* allocate the URB we&squot;re going to use */
 id|ss-&gt;current_urb
 op_assign
@@ -2748,17 +2734,9 @@ c_cond
 op_logical_neg
 id|ss-&gt;current_urb
 )paren
-(brace
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
+r_goto
+id|BadDevice
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* Re-Initialize the device if it needs it */
 r_if
 c_cond
@@ -2861,6 +2839,10 @@ id|us_data
 )paren
 )paren
 suffix:semicolon
+id|new_device
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* allocate the URB we&squot;re going to use */
 id|ss-&gt;current_urb
 op_assign
@@ -2878,23 +2860,9 @@ c_cond
 op_logical_neg
 id|ss-&gt;current_urb
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|ss
-)paren
+r_goto
+id|BadDevice
 suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* Initialize the mutexes only when the struct is new */
 id|init_completion
 c_func
@@ -2966,22 +2934,12 @@ op_assign
 id|unusual_dev
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
-r_if
-c_cond
-(paren
-id|ep_in
-)paren
 id|ss-&gt;ep_in
 op_assign
 id|ep_in-&gt;bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep_out
-)paren
 id|ss-&gt;ep_out
 op_assign
 id|ep_out-&gt;bEndpointAddress
@@ -3382,32 +3340,9 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-id|ss-&gt;transport_name
-op_assign
-l_string|&quot;Unknown&quot;
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss-&gt;current_urb
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss
-)paren
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-r_break
+multiline_comment|/* ss-&gt;transport_name = &quot;Unknown&quot;; */
+r_goto
+id|BadDevice
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -3543,32 +3478,9 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-id|ss-&gt;protocol_name
-op_assign
-l_string|&quot;Unknown&quot;
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss-&gt;current_urb
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss
-)paren
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-r_break
+multiline_comment|/* ss-&gt;protocol_name = &quot;Unknown&quot;; */
+r_goto
+id|BadDevice
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -3595,29 +3507,9 @@ c_func
 id|ss
 )paren
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|ss-&gt;current_urb
-)paren
+r_goto
+id|BadDevice
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss
-)paren
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Since this is a new device, we need to generate a scsi &n;&t;&t; * host definition, and register with the higher SCSI layers&n;&t;&t; */
 multiline_comment|/* Initialize the host template based on the default one */
 id|memcpy
@@ -3679,13 +3571,13 @@ comma
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-id|atomic_set
+id|set_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;device_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_ATTACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 id|ss-&gt;pid
@@ -3716,26 +3608,8 @@ id|USB_STORAGE
 l_string|&quot;Unable to start control thread&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss-&gt;current_urb
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ss
-)paren
-suffix:semicolon
-id|usb_put_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|BadDevice
 suffix:semicolon
 )brace
 multiline_comment|/* wait for the thread to start */
@@ -3753,6 +3627,8 @@ id|ss-&gt;htmplt.module
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+id|result
+op_assign
 id|scsi_register_host
 c_func
 (paren
@@ -3762,6 +3638,43 @@ id|ss-&gt;htmplt
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|USB_STORAGE
+l_string|&quot;Unable to register the scsi host&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* tell the control thread to exit */
+id|ss-&gt;action
+op_assign
+id|US_ACT_EXIT
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ss-&gt;sema
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|ss-&gt;notify
+)paren
+suffix:semicolon
+r_goto
+id|BadDevice
+suffix:semicolon
+)brace
 multiline_comment|/* lock access to the data structures */
 id|down
 c_func
@@ -3807,6 +3720,116 @@ suffix:semicolon
 multiline_comment|/* return a pointer for the disconnect function */
 r_return
 id|ss
+suffix:semicolon
+multiline_comment|/* we come here if there are any problems */
+id|BadDevice
+suffix:colon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;storage_probe() failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|ss-&gt;irq_urb_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ss-&gt;irq_urb
+)paren
+(brace
+id|usb_unlink_urb
+c_func
+(paren
+id|ss-&gt;irq_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|ss-&gt;irq_urb
+)paren
+suffix:semicolon
+id|ss-&gt;irq_urb
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|ss-&gt;irq_urb_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ss-&gt;current_urb
+)paren
+(brace
+id|usb_unlink_urb
+c_func
+(paren
+id|ss-&gt;current_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|ss-&gt;current_urb
+)paren
+suffix:semicolon
+id|ss-&gt;current_urb
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|clear_bit
+c_func
+(paren
+id|DEV_ATTACHED
+comma
+op_amp
+id|ss-&gt;bitflags
+)paren
+suffix:semicolon
+id|ss-&gt;pusb_dev
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_device
+)paren
+id|kfree
+c_func
+(paren
+id|ss
+)paren
+suffix:semicolon
+r_else
+id|up
+c_func
+(paren
+op_amp
+id|ss-&gt;dev_semaphore
+)paren
+suffix:semicolon
+id|usb_put_dev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Handle a disconnect event from the USB core */
@@ -3971,13 +3994,13 @@ id|ss-&gt;pusb_dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|atomic_set
+id|clear_bit
 c_func
 (paren
-op_amp
-id|ss-&gt;sm_state
+id|DEV_ATTACHED
 comma
-id|US_STATE_DETACHED
+op_amp
+id|ss-&gt;bitflags
 )paren
 suffix:semicolon
 multiline_comment|/* unlock access to the device data structure */
