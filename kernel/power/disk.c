@@ -20,7 +20,7 @@ id|pm_ops
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_save
+id|swsusp_suspend
 c_func
 (paren
 r_void
@@ -44,7 +44,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_restore
+id|swsusp_resume
 c_func
 (paren
 r_void
@@ -459,7 +459,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|pmdisk_save
+id|swsusp_save
 c_func
 (paren
 )paren
@@ -628,7 +628,7 @@ c_func
 l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pmdisk_restore
+id|swsusp_resume
 c_func
 (paren
 )paren
