@@ -342,7 +342,7 @@ c_func
 )paren
 )paren
 )paren
-id|invoke_softirq
+id|do_softirq
 c_func
 (paren
 )paren
