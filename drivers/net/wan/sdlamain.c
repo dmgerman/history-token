@@ -15,8 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;&t;&t;/* phys_to_virt() */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sdlapci.h&gt;
 macro_line|#include &lt;linux/if_wanpipe_common.h&gt;
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -104,8 +102,10 @@ multiline_comment|/* WAN link driver entry points */
 r_static
 r_int
 id|setup
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -117,8 +117,10 @@ suffix:semicolon
 r_static
 r_int
 id|shutdown
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -126,8 +128,10 @@ suffix:semicolon
 r_static
 r_int
 id|ioctl
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -481,7 +485,8 @@ id|card_array
 id|cnt
 )braket
 suffix:semicolon
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 op_assign
@@ -680,8 +685,10 @@ DECL|function|setup
 r_static
 r_int
 id|setup
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -2175,8 +2182,10 @@ DECL|function|shutdown
 r_static
 r_int
 id|shutdown
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -2556,8 +2565,10 @@ DECL|function|ioctl
 r_static
 r_int
 id|ioctl
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -3991,8 +4002,10 @@ suffix:semicolon
 DECL|function|wakeup_sk_bh
 r_void
 id|wakeup_sk_bh
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -4042,8 +4055,10 @@ suffix:semicolon
 DECL|function|change_dev_flags
 r_int
 id|change_dev_flags
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -4127,8 +4142,10 @@ DECL|function|get_ip_address
 r_int
 r_int
 id|get_ip_address
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -4239,7 +4256,8 @@ id|sdla_t
 op_star
 id|card
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 )paren

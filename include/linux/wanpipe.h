@@ -2,8 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef&t;_WANPIPE_H
 DECL|macro|_WANPIPE_H
 mdefine_line|#define&t;_WANPIPE_H
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device
 macro_line|#include &lt;linux/wanrouter.h&gt;
 multiline_comment|/* Defines */
 macro_line|#ifndef&t;PACKED
@@ -678,7 +676,8 @@ id|hw
 suffix:semicolon
 multiline_comment|/* hardware configuration */
 DECL|member|wandev
-id|wan_device_t
+r_struct
+id|wan_device
 id|wandev
 suffix:semicolon
 multiline_comment|/* WAN device data space */
@@ -918,7 +917,8 @@ id|u32
 id|hi_svc
 suffix:semicolon
 DECL|member|svc_to_dev_map
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|svc_to_dev_map
 (braket
@@ -926,7 +926,8 @@ id|MAX_X25_LCN
 )braket
 suffix:semicolon
 DECL|member|pvc_to_dev_map
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|pvc_to_dev_map
 (braket
@@ -934,12 +935,14 @@ id|MAX_X25_LCN
 )braket
 suffix:semicolon
 DECL|member|tx_dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|tx_dev
 suffix:semicolon
 DECL|member|cmd_dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|cmd_dev
 suffix:semicolon
@@ -962,7 +965,8 @@ id|u16
 id|timer_int_enabled
 suffix:semicolon
 DECL|member|poll_device
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|poll_device
 suffix:semicolon
@@ -987,7 +991,8 @@ id|u32
 id|udp_lcn
 suffix:semicolon
 DECL|member|udp_dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|udp_dev
 suffix:semicolon
@@ -1071,7 +1076,8 @@ r_int
 id|dlci_num
 suffix:semicolon
 DECL|member|dlci_to_dev_map
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dlci_to_dev_map
 (braket
@@ -1143,7 +1149,8 @@ r_char
 id|update_comms_stats
 suffix:semicolon
 DECL|member|arp_dev
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|arp_dev
 suffix:semicolon
@@ -1731,27 +1738,36 @@ suffix:semicolon
 r_extern
 r_void
 id|wakeup_sk_bh
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern
 r_int
 id|change_dev_flags
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
+id|dev
 comma
 r_int
+id|flags
 )paren
 suffix:semicolon
 r_extern
 r_int
 r_int
 id|get_ip_address
+c_func
 (paren
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|dev
 comma
@@ -1766,9 +1782,12 @@ c_func
 (paren
 id|sdla_t
 op_star
+id|card
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */

@@ -3,13 +3,12 @@ macro_line|#ifndef _WANPIPE_SOCK_DRIVER_COMMON_H
 DECL|macro|_WANPIPE_SOCK_DRIVER_COMMON_H
 mdefine_line|#define _WANPIPE_SOCK_DRIVER_COMMON_H
 macro_line|#include &lt;linux/version.h&gt;
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device
 r_typedef
 r_struct
 (brace
 DECL|member|slave
-id|netdevice_t
+r_struct
+id|net_device
 op_star
 id|slave
 suffix:semicolon
@@ -60,13 +59,17 @@ id|func
 r_struct
 id|sk_buff
 op_star
+id|skb
 comma
-id|netdevice_t
+r_struct
+id|net_device
 op_star
+id|dev
 comma
 r_struct
 id|sock
 op_star
+id|sk
 )paren
 suffix:semicolon
 DECL|member|wanpipe_work
