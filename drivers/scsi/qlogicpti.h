@@ -2,6 +2,7 @@ multiline_comment|/* qlogicpti.h: Performance Technologies QlogicISP sbus card d
 macro_line|#ifndef _QLOGICPTI_H
 DECL|macro|_QLOGICPTI_H
 mdefine_line|#define _QLOGICPTI_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Qlogic/SBUS controller registers. */
 DECL|macro|SBUS_CFG1
 mdefine_line|#define SBUS_CFG1&t;0x006UL
@@ -1214,8 +1215,14 @@ DECL|macro|HCCTRL_B1ENAB
 mdefine_line|#define HCCTRL_B1ENAB           0x0008      /* Breakpoint 1 enable              */
 DECL|macro|HCCTRL_B0ENAB
 mdefine_line|#define HCCTRL_B0ENAB           0x0004      /* Breakpoint 0 enable              */
+macro_line|#ifdef CONFIG_SPARC64
 DECL|macro|QLOGICPTI
 mdefine_line|#define QLOGICPTI {&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;detect:&t;&t;qlogicpti_detect,&t;&t;&t;   &bslash;&n;&t;release:&t;qlogicpti_release,&t;&t;&t;   &bslash;&n;&t;info:&t;&t;qlogicpti_info,&t;&t;&t;&t;   &bslash;&n;&t;queuecommand:&t;qlogicpti_queuecommand_slow,&t;&t;   &bslash;&n;&t;abort:&t;&t;qlogicpti_abort,&t;&t;&t;   &bslash;&n;&t;reset:&t;&t;qlogicpti_reset,&t;&t;&t;   &bslash;&n;&t;can_queue:&t;QLOGICPTI_REQ_QUEUE_LEN,&t;&t;   &bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&t;   &bslash;&n;&t;sg_tablesize:&t;QLOGICPTI_MAX_SG(QLOGICPTI_REQ_QUEUE_LEN), &bslash;&n;&t;cmd_per_lun:&t;1,&t;&t;&t;&t;&t;   &bslash;&n;&t;use_clustering:&t;ENABLE_CLUSTERING,&t;&t;&t;   &bslash;&n;&t;highmem_io:&t;1,&t;&t;&t;   &t;&t;   &bslash;&n;}
+macro_line|#else
+multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
+DECL|macro|QLOGICPTI
+mdefine_line|#define QLOGICPTI {&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;detect:&t;&t;qlogicpti_detect,&t;&t;&t;   &bslash;&n;&t;release:&t;qlogicpti_release,&t;&t;&t;   &bslash;&n;&t;info:&t;&t;qlogicpti_info,&t;&t;&t;&t;   &bslash;&n;&t;queuecommand:&t;qlogicpti_queuecommand_slow,&t;&t;   &bslash;&n;&t;abort:&t;&t;qlogicpti_abort,&t;&t;&t;   &bslash;&n;&t;reset:&t;&t;qlogicpti_reset,&t;&t;&t;   &bslash;&n;&t;can_queue:&t;QLOGICPTI_REQ_QUEUE_LEN,&t;&t;   &bslash;&n;&t;this_id:&t;7,&t;&t;&t;&t;&t;   &bslash;&n;&t;sg_tablesize:&t;QLOGICPTI_MAX_SG(QLOGICPTI_REQ_QUEUE_LEN), &bslash;&n;&t;cmd_per_lun:&t;1,&t;&t;&t;&t;&t;   &bslash;&n;&t;use_clustering:&t;ENABLE_CLUSTERING,&t;&t;&t;   &bslash;&n;}
+macro_line|#endif
 multiline_comment|/* For our interrupt engine. */
 DECL|macro|for_each_qlogicpti
 mdefine_line|#define for_each_qlogicpti(qp) &bslash;&n;        for((qp) = qptichain; (qp); (qp) = (qp)-&gt;next)
