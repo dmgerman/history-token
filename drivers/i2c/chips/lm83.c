@@ -117,9 +117,9 @@ DECL|macro|LM83_REG_W_TCRIT
 mdefine_line|#define LM83_REG_W_TCRIT&t;&t;0x5A
 multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values.&n; */
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;(((val) &gt; 127 ? (val)-0xFF : (val)) * 1000)
+mdefine_line|#define TEMP_FROM_REG(val)&t;(((val) &gt; 127 ? (val) - 0x100 : (val)) * 1000)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -50000 ? -50 + 0xFF : (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &gt; -500 ? ((val)+500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val)-500) / 1000 + 0xFF)
+mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -50000 ? -50 + 0x100 : (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &gt; -500 ? ((val)+500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val)-500) / 1000 + 0x100)
 DECL|variable|LM83_REG_R_TEMP
 r_static
 r_const
