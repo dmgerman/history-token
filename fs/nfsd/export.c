@@ -37,8 +37,10 @@ id|svc_client
 op_star
 id|clp
 comma
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_struct
 id|dentry
@@ -56,8 +58,10 @@ id|svc_client
 op_star
 id|clp
 comma
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_struct
 id|dentry
@@ -308,8 +312,10 @@ id|svc_client
 op_star
 id|clp
 comma
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_struct
 id|dentry
@@ -341,7 +347,7 @@ id|clp-&gt;cl_export
 id|EXPORT_HASH
 c_func
 (paren
-id|dev
+id|sb-&gt;s_dev
 )paren
 )braket
 suffix:semicolon
@@ -380,8 +386,10 @@ id|svc_client
 op_star
 id|clp
 comma
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 comma
 r_struct
 id|dentry
@@ -413,7 +421,7 @@ id|clp-&gt;cl_export
 id|EXPORT_HASH
 c_func
 (paren
-id|dev
+id|sb-&gt;s_dev
 )paren
 )braket
 suffix:semicolon
@@ -817,7 +825,7 @@ c_func
 (paren
 id|clp
 comma
-id|dev
+id|inode-&gt;i_sb
 comma
 id|nd.dentry
 )paren
@@ -848,7 +856,7 @@ c_func
 (paren
 id|clp
 comma
-id|dev
+id|inode-&gt;i_sb
 comma
 id|nd.dentry
 )paren
@@ -1583,7 +1591,7 @@ c_func
 (paren
 id|clp
 comma
-id|dev
+id|inode-&gt;i_sb
 comma
 id|nd.dentry
 )paren
