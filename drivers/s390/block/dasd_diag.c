@@ -1981,7 +1981,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). dasd diag is only relevant for 31 bit.&n; * The dasd_ccw_req_t has 96 bytes, the dasd_diag_req_t has 8 bytes and&n; * the diag_bio_t for each block has 16 bytes. &n; * That makes:&n; * (8192 - 96 - 8) / 16 = 505.5 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediatly&n; * start the next request if one finishes off. That makes 252.75 blocks&n; * for one request. Give a little safety and the result is 240.&n; */
+multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). dasd diag is only relevant for 31 bit.&n; * The dasd_ccw_req_t has 96 bytes, the dasd_diag_req_t has 8 bytes and&n; * the diag_bio_t for each block has 16 bytes. &n; * That makes:&n; * (8192 - 96 - 8) / 16 = 505.5 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediately&n; * start the next request if one finishes off. That makes 252.75 blocks&n; * for one request. Give a little safety and the result is 240.&n; */
 DECL|variable|dasd_diag_discipline
 id|dasd_discipline_t
 id|dasd_diag_discipline

@@ -15400,7 +15400,7 @@ id|v
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If there is nothing to do, return immediatly */
+multiline_comment|/* If there is nothing to do, return immediately */
 r_if
 c_cond
 (paren
@@ -16912,7 +16912,7 @@ id|zr-&gt;params
 op_assign
 id|bp
 suffix:semicolon
-multiline_comment|/* Make changes of input and norm go into effect immediatly */
+multiline_comment|/* Make changes of input and norm go into effect immediately */
 multiline_comment|/* We switch overlay off and on since a change in the norm&n;&t;&t;&t;   needs different VFE settings */
 r_if
 c_cond

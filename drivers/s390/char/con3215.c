@@ -1097,7 +1097,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function to conditionally start an IO. A read is started immediatly,&n; * a write is only started immediatly if the flush flag is on or the&n; * amount of data is bigger than RAW3215_MIN_WRITE. If a write is not&n; * done immediatly a timer is started with a delay of RAW3215_TIMEOUT.&n; */
+multiline_comment|/*&n; * Function to conditionally start an IO. A read is started immediately,&n; * a write is only started immediately if the flush flag is on or the&n; * amount of data is bigger than RAW3215_MIN_WRITE. If a write is not&n; * done immediately a timer is started with a delay of RAW3215_TIMEOUT.&n; */
 r_static
 r_inline
 r_void

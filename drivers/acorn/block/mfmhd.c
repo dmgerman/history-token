@@ -1109,7 +1109,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;issue_command: status immediatly after command issue: %02X:&bslash;n &quot;
+l_string|&quot;issue_command: status immediately after command issue: %02X:&bslash;n &quot;
 comma
 id|status
 op_rshift
