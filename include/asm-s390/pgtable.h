@@ -1338,15 +1338,14 @@ id|address
 )paren
 suffix:semicolon
 macro_line|#endif /* __s390x__ */
-id|pte_clear
+id|pte_val
 c_func
 (paren
-id|vma-&gt;vm_mm
-comma
-id|address
-comma
+op_star
 id|ptep
 )paren
+op_assign
+id|_PAGE_INVALID_EMPTY
 suffix:semicolon
 r_return
 id|pte
