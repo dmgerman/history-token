@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/alim15x3.c&t;&t;Version 0.15&t;2002/08/19&n; *&n; *  Copyright (C) 1998-2000 Michel Aubry, Maintainer&n; *  Copyright (C) 1998-2000 Andrzej Krzysztofowicz, Maintainer&n; *  Copyright (C) 1999-2000 CJ, cjtsai@ali.com.tw, Maintainer&n; *&n; *  Copyright (C) 1998-2000 Andre Hedrick (andre@linux-ide.org)&n; *  May be copied or modified under the terms of the GNU General Public License&n; *  Copyright (C) 2002 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  (U)DMA capable version of ali 1533/1543(C), 1535(D)&n; *&n; **********************************************************************&n; *  9/7/99 --Parts from the above author are included and need to be&n; *  converted into standard interface, once I finish the thought.&n; *&n; *  Recent changes&n; *&t;Don&squot;t use LBA48 mode on ALi &lt;= 0xC4&n; *&t;Don&squot;t poke 0x79 with a non ALi northbridge&n; *&t;Don&squot;t flip undefined bits on newer chipsets (fix Fujitsu laptop hang)&n; */
+multiline_comment|/*&n; * linux/drivers/ide/pci/alim15x3.c&t;&t;Version 0.16&t;2003/01/02&n; *&n; *  Copyright (C) 1998-2000 Michel Aubry, Maintainer&n; *  Copyright (C) 1998-2000 Andrzej Krzysztofowicz, Maintainer&n; *  Copyright (C) 1999-2000 CJ, cjtsai@ali.com.tw, Maintainer&n; *&n; *  Copyright (C) 1998-2000 Andre Hedrick (andre@linux-ide.org)&n; *  May be copied or modified under the terms of the GNU General Public License&n; *  Copyright (C) 2002 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  (U)DMA capable version of ali 1533/1543(C), 1535(D)&n; *&n; **********************************************************************&n; *  9/7/99 --Parts from the above author are included and need to be&n; *  converted into standard interface, once I finish the thought.&n; *&n; *  Recent changes&n; *&t;Don&squot;t use LBA48 mode on ALi &lt;= 0xC4&n; *&t;Don&squot;t poke 0x79 with a non ALi northbridge&n; *&t;Don&squot;t flip undefined bits on newer chipsets (fix Fujitsu laptop hang)&n; *&n; *  Documentation&n; *&t;Chipset documentation available under NDA only&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -141,7 +141,8 @@ r_int
 id|count
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|bibma
 suffix:semicolon
 id|u8
@@ -208,23 +209,14 @@ op_assign
 l_string|&quot;   ???  &quot;
 suffix:semicolon
 multiline_comment|/* first fetch bibma: */
-id|pci_read_config_dword
+id|bibma
+op_assign
+id|pci_resource_start
 c_func
 (paren
 id|bmide_dev
 comma
-l_int|0x20
-comma
-op_amp
-id|bibma
-)paren
-suffix:semicolon
-id|bibma
-op_assign
-(paren
-id|bibma
-op_amp
-l_int|0xfff0
+l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * at that point bibma+0x2 et bibma+0xa are byte&n;&t; * registers to investigate:&n;&t; */
@@ -233,10 +225,6 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bibma
 op_plus
 l_int|0x02
@@ -247,10 +235,6 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bibma
 op_plus
 l_int|0x0a
@@ -1535,6 +1519,13 @@ id|cd_dma_fifo
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|unit
+op_assign
+id|drive-&gt;select.b.unit
+op_amp
+l_int|1
+suffix:semicolon
 id|pio
 op_assign
 id|ide_get_best_pio_mode
@@ -1725,7 +1716,7 @@ id|ide_disk
 r_if
 c_cond
 (paren
-id|hwif-&gt;channel
+id|unit
 )paren
 (brace
 id|pci_write_config_byte
@@ -1770,7 +1761,7 @@ r_else
 r_if
 c_cond
 (paren
-id|hwif-&gt;channel
+id|unit
 )paren
 (brace
 id|pci_write_config_byte
@@ -3287,7 +3278,7 @@ id|ideic
 comma
 id|inmir
 suffix:semicolon
-id|u8
+id|s8
 id|irq_routing_table
 (braket
 )braket
@@ -3326,6 +3317,12 @@ l_int|0
 comma
 l_int|15
 )brace
+suffix:semicolon
+r_int
+id|irq
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|hwif-&gt;irq
 op_assign
@@ -3400,7 +3397,7 @@ id|inmir
 op_amp
 l_int|0x0f
 suffix:semicolon
-id|hwif-&gt;irq
+id|irq
 op_assign
 id|irq_routing_table
 (braket
@@ -3440,12 +3437,25 @@ id|inmir
 op_amp
 l_int|0x0f
 suffix:semicolon
-id|hwif-&gt;irq
+id|irq
 op_assign
 id|irq_routing_table
 (braket
 id|inmir
 )braket
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|irq
+op_ge
+l_int|0
+)paren
+(brace
+id|hwif-&gt;irq
+op_assign
+id|irq
 suffix:semicolon
 )brace
 )brace
@@ -3583,11 +3593,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Warning: ATI Radeon IGP Northbridge is not supported by Linux&bslash;n&quot;
+l_string|&quot;Warning: ATI Radeon IGP Northbridge is not yet fully tested.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SPARC64)
