@@ -39,7 +39,7 @@ id|in_le32
 comma
 l_int|0
 )paren
-multiline_comment|/*&n; * Read the memory controller registers to determine the amount of memory in&n; * the system.  This assumes that the firmware has correctly set up the memory&n; * controller registers.  On CONFIG_ALL_PPC, we know we are being called&n; * under a PReP memory map. On all other machines, we assume we are under&n; * a CHRP memory map.&n; */
+multiline_comment|/*&n; * Read the memory controller registers to determine the amount of memory in&n; * the system.  This assumes that the firmware has correctly set up the memory&n; * controller registers.  On CONFIG_PPC_PREP, we know we are being called&n; * under a PReP memory map. On all other machines, we assume we are under&n; * a CHRP memory map.&n; */
 r_int
 r_int
 DECL|function|get_mem_size
@@ -76,7 +76,7 @@ r_int
 r_char
 id|bank_enables
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PREP
 id|config_addr
 op_assign
 (paren

@@ -7,7 +7,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* for struct irq_routing_table */
+macro_line|#include &quot;../pci.h&quot;
+macro_line|#include &quot;../../../arch/i386/pci/pci.h&quot;&t;/* for struct irq_routing_table */
 macro_line|#include &quot;ibmphp.h&quot;
 DECL|macro|attn_on
 mdefine_line|#define attn_on(sl)  ibmphp_hpc_writeslot (sl, HPC_SLOT_ATTNON)
@@ -2842,78 +2843,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* This routine is to find the pci_bus from kernel structures.&n; * Parameters: bus number&n; * Returns : pci_bus *  or NULL if not found&n; */
-DECL|function|ibmphp_find_bus
-r_static
-r_struct
-id|pci_bus
-op_star
-id|ibmphp_find_bus
-(paren
-id|u8
-id|busno
-)paren
-(brace
-r_const
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
-r_struct
-id|pci_bus
-op_star
-id|bus
-suffix:semicolon
-id|debug
-(paren
-l_string|&quot;inside %s, busno = %x &bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|busno
-)paren
-suffix:semicolon
-id|list_for_each
-(paren
-id|tmp
-comma
-op_amp
-id|pci_root_buses
-)paren
-(brace
-id|bus
-op_assign
-(paren
-r_struct
-id|pci_bus
-op_star
-)paren
-id|pci_bus_b
-(paren
-id|tmp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bus
-)paren
-r_if
-c_cond
-(paren
-id|bus-&gt;number
-op_eq
-id|busno
-)paren
-r_return
-id|bus
-suffix:semicolon
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*************************************************************&n; * This routine frees up memory used by struct slot, including&n; * the pointers to pci_func, bus, hotplug_slot, controller,&n; * and deregistering from the hotplug core&n; *************************************************************/
 DECL|function|free_slots
 r_static
@@ -3152,7 +3081,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ibmphp_find_bus
+id|pci_find_bus
+c_func
 (paren
 id|busno
 )paren
@@ -3399,7 +3329,8 @@ id|pci_bus
 op_star
 id|bus
 op_assign
-id|ibmphp_find_bus
+id|pci_find_bus
+c_func
 (paren
 id|func-&gt;busno
 )paren
@@ -3653,16 +3584,12 @@ id|cmd
 op_assign
 l_int|0x0
 suffix:semicolon
-r_const
-r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
 r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval
@@ -3861,47 +3788,25 @@ suffix:semicolon
 r_case
 id|BUS_SPEED_133
 suffix:colon
-multiline_comment|/* This is to take care of the bug in CIOBX chip*/
-id|list_for_each
+multiline_comment|/* This is to take care of the bug in CIOBX chip */
+r_while
+c_loop
 (paren
-id|tmp
-comma
-op_amp
-id|pci_devices
-)paren
-(brace
+(paren
 id|dev
 op_assign
+id|pci_find_device
+c_func
 (paren
-r_struct
-id|pci_dev
-op_star
-)paren
-id|pci_dev_g
-(paren
-id|tmp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+l_int|0x0101
+comma
 id|dev
 )paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;vendor
-op_eq
-l_int|0x1166
 )paren
-op_logical_and
-(paren
-id|dev-&gt;device
-op_eq
-l_int|0x0101
-)paren
+op_ne
+l_int|NULL
 )paren
 id|ibmphp_hpc_writeslot
 (paren
@@ -3910,8 +3815,6 @@ comma
 id|HPC_BUS_100PCIXMODE
 )paren
 suffix:semicolon
-)brace
-)brace
 id|cmd
 op_assign
 id|HPC_BUS_133PCIXMODE
@@ -5544,7 +5447,8 @@ suffix:semicolon
 )brace
 id|bus
 op_assign
-id|ibmphp_find_bus
+id|pci_find_bus
+c_func
 (paren
 l_int|0
 )paren

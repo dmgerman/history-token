@@ -645,6 +645,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|device_node
@@ -652,10 +654,24 @@ op_star
 id|np
 suffix:semicolon
 multiline_comment|/* PCI interrupts are controlled by the OpenPIC */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|np

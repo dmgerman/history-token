@@ -1035,6 +1035,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u8
 id|val1
@@ -1045,10 +1047,24 @@ id|u16
 id|badr
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Find the PCI device&n;&t; */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

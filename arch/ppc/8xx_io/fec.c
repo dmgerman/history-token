@@ -5426,6 +5426,8 @@ comma
 id|j
 comma
 id|k
+comma
+id|err
 suffix:semicolon
 r_int
 r_char
@@ -5491,15 +5493,9 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-multiline_comment|/* Allocate some private information.&n;&t;*/
-id|fep
+id|dev
 op_assign
-(paren
-r_struct
-id|fec_enet_private
-op_star
-)paren
-id|kmalloc
+id|alloc_etherdev
 c_func
 (paren
 r_sizeof
@@ -5507,43 +5503,21 @@ r_sizeof
 op_star
 id|fep
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|fep
-op_eq
-l_int|NULL
+op_logical_neg
+id|dev
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|__clear_user
-c_func
-(paren
 id|fep
-comma
-r_sizeof
-(paren
-op_star
-id|fep
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Create an Ethernet device instance.&n;&t;*/
-id|dev
 op_assign
-id|init_etherdev
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
+id|dev-&gt;priv
 suffix:semicolon
 id|fecp
 op_assign
@@ -5796,6 +5770,7 @@ op_amp
 id|mem_addr
 )paren
 suffix:semicolon
+multiline_comment|/* BUG: no check for failure */
 multiline_comment|/* Initialize the BD for every fragment in the page.&n;&t;&t;*/
 r_for
 c_loop
@@ -5995,10 +5970,6 @@ r_int
 )paren
 id|fecp
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|fep
-suffix:semicolon
 multiline_comment|/* The FEC Ethernet specific entries in the device structure. */
 id|dev-&gt;open
 op_assign
@@ -6128,6 +6099,30 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* turn off MDIO */
 macro_line|#endif&t;/* CONFIG_USE_MDIO */
+id|err
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 id|printk
 (paren
 l_string|&quot;%s: FEC ENET Version 0.2, FEC irq %d&quot;

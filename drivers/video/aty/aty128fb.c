@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &quot;../macmodes.h&quot;
@@ -46,7 +46,7 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt, args...)
 macro_line|#endif
-macro_line|#ifndef CONFIG_ALL_PPC
+macro_line|#ifndef CONFIG_PPC_PMAC
 multiline_comment|/* default mode */
 DECL|variable|__initdata
 r_static
@@ -136,7 +136,7 @@ comma
 id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
-macro_line|#else /* CONFIG_ALL_PPC */
+macro_line|#else /* CONFIG_PPC_PMAC */
 multiline_comment|/* default to 1024x768 at 75Hz on PPC - this will work&n; * on the iMac, the usual 640x480 @ 60Hz doesn&squot;t. */
 DECL|variable|default_var
 r_static
@@ -227,7 +227,7 @@ comma
 id|FB_VMODE_NONINTERLACED
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* default modedb mode */
 multiline_comment|/* 640x480, 60 Hz, Non-Interlaced (25.172 MHz dotclock) */
 DECL|variable|__initdata
@@ -964,7 +964,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|variable|__initdata
 r_static
 r_int
@@ -6314,7 +6314,7 @@ r_continue
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* vmode and cmode deprecated */
 r_if
 c_cond
@@ -6443,7 +6443,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 id|mode_option
 op_assign
 id|this_opt
@@ -6776,7 +6776,7 @@ id|var
 op_assign
 id|default_var
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -6936,7 +6936,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 (brace
 r_if
 c_cond
@@ -8217,7 +8217,7 @@ op_star
 id|par
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/* instead of a table lookup, assume OF has properly&n;&t; * setup the PLL registers and use their values&n;&t; * to set the XCLK values and reference divider values */
 id|u32
 id|x_mpll_ref_fb_div
@@ -8264,7 +8264,7 @@ id|par-&gt;constants.dotclock
 op_assign
 l_int|2950
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 id|x_mpll_ref_fb_div
 op_assign
 id|aty_ld_pll

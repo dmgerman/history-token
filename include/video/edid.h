@@ -3,7 +3,7 @@ DECL|macro|__linux_video_edid_h__
 mdefine_line|#define __linux_video_edid_h__
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86
@@ -37,7 +37,7 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_X86 */
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 r_extern
 r_char
 op_star

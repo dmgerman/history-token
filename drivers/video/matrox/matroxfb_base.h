@@ -43,7 +43,7 @@ macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
 macro_line|#include &quot;../console/fbcon.h&quot;
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_PPC_PMAC)
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;

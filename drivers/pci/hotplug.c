@@ -836,14 +836,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_detach_device
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -970,14 +968,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_detach_bus
 c_func
 (paren
 id|b
 )paren
 suffix:semicolon
-macro_line|#endif
 id|list_del
 c_func
 (paren
@@ -1023,14 +1019,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pci_proc_detach_device
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pci_put_dev
 c_func
 (paren
