@@ -2338,7 +2338,7 @@ id|disk
 comma
 id|cmd
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_if

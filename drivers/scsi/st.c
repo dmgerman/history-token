@@ -17773,7 +17773,7 @@ id|STp-&gt;disk
 comma
 id|cmd_in
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_if

@@ -57,6 +57,7 @@ id|sg_get_version
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -88,6 +89,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -113,6 +115,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -159,6 +162,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -207,6 +211,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -232,6 +237,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -303,6 +309,7 @@ op_star
 id|q
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -810,6 +817,7 @@ op_star
 id|bd_disk
 comma
 id|Scsi_Ioctl_Command
+id|__user
 op_star
 id|sic
 )paren
@@ -1237,8 +1245,9 @@ r_int
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -1300,10 +1309,6 @@ op_assign
 id|sg_get_version
 c_func
 (paren
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1319,10 +1324,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1338,10 +1339,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1357,10 +1354,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1389,10 +1382,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1408,10 +1397,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1427,10 +1412,6 @@ c_func
 (paren
 id|q
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
@@ -1458,12 +1439,6 @@ c_func
 op_amp
 id|hdr
 comma
-(paren
-r_struct
-id|sg_io_hdr
-id|__user
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -1503,12 +1478,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|sg_io_hdr
-id|__user
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -1554,12 +1523,6 @@ c_func
 op_amp
 id|cgc
 comma
-(paren
-r_struct
-id|cdrom_generic_command
-id|__user
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -1766,12 +1729,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|cdrom_generic_command
-id|__user
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -1817,10 +1774,6 @@ id|q
 comma
 id|bd_disk
 comma
-(paren
-id|Scsi_Ioctl_Command
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon
