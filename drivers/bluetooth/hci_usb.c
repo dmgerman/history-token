@@ -79,6 +79,17 @@ l_int|0x1002
 )paren
 )brace
 comma
+multiline_comment|/* Bluetooth Ultraport Module from IBM */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04bf
+comma
+l_int|0x030a
+)paren
+)brace
+comma
 (brace
 )brace
 multiline_comment|/* Terminating entry */

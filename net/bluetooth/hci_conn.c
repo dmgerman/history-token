@@ -97,6 +97,10 @@ op_amp
 id|conn-&gt;dst
 )paren
 suffix:semicolon
+id|cp.pscan_rep_mode
+op_assign
+l_int|0x01
+suffix:semicolon
 r_if
 c_cond
 (paren
