@@ -64,6 +64,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|no_module_init
-suffix:semicolon
 eof

@@ -857,8 +857,6 @@ DECL|macro|PCI_VENDOR_ID_FD
 mdefine_line|#define PCI_VENDOR_ID_FD&t;&t;0x1036
 DECL|macro|PCI_DEVICE_ID_FD_36C70
 mdefine_line|#define PCI_DEVICE_ID_FD_36C70&t;&t;0x0000
-DECL|macro|PCI_VENDOR_ID_SIS
-mdefine_line|#define PCI_VENDOR_ID_SIS&t;&t;0x1039
 DECL|macro|PCI_VENDOR_ID_SI
 mdefine_line|#define PCI_VENDOR_ID_SI&t;&t;0x1039
 DECL|macro|PCI_DEVICE_ID_SI_5591_AGP
@@ -2785,6 +2783,8 @@ DECL|macro|PCI_DEVICE_ID_TIGON3_5702X
 mdefine_line|#define PCI_DEVICE_ID_TIGON3_5702X&t;0x16a6
 DECL|macro|PCI_DEVICE_ID_TIGON3_5703X
 mdefine_line|#define PCI_DEVICE_ID_TIGON3_5703X&t;0x16a7
+DECL|macro|PCI_DEVICE_ID_BCM4401
+mdefine_line|#define PCI_DEVICE_ID_BCM4401&t;&t;0x4401
 DECL|macro|PCI_VENDOR_ID_SYBA
 mdefine_line|#define PCI_VENDOR_ID_SYBA&t;&t;0x1592
 DECL|macro|PCI_DEVICE_ID_SYBA_2P_EPP

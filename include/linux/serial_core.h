@@ -603,6 +603,11 @@ id|uart_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|custom_divisor
+r_int
+r_int
+id|custom_divisor
+suffix:semicolon
 DECL|member|line
 r_int
 r_int
@@ -650,11 +655,6 @@ DECL|macro|USF_CLOSING_WAIT_INF
 mdefine_line|#define USF_CLOSING_WAIT_INF&t;(0)
 DECL|macro|USF_CLOSING_WAIT_NONE
 mdefine_line|#define USF_CLOSING_WAIT_NONE&t;(65535)
-DECL|member|custom_divisor
-r_int
-r_int
-id|custom_divisor
-suffix:semicolon
 DECL|member|count
 r_int
 id|count

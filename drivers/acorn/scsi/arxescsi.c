@@ -929,18 +929,15 @@ comma
 l_string|&quot;&bslash;nAttached devices:&bslash;n&quot;
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|scd
-op_assign
-id|host-&gt;host_queue
-suffix:semicolon
-id|scd
-suffix:semicolon
-id|scd
-op_assign
-id|scd-&gt;next
+comma
+op_amp
+id|host-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 id|pos
@@ -1351,6 +1348,9 @@ id|scsi_add_host
 c_func
 (paren
 id|host
+comma
+op_amp
+id|ec-&gt;dev
 )paren
 suffix:semicolon
 r_if

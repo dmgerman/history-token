@@ -159,6 +159,22 @@ DECL|macro|SCSI_DISK6_MAJOR
 mdefine_line|#define SCSI_DISK6_MAJOR&t;70
 DECL|macro|SCSI_DISK7_MAJOR
 mdefine_line|#define SCSI_DISK7_MAJOR&t;71
+DECL|macro|SCSI_DISK8_MAJOR
+mdefine_line|#define SCSI_DISK8_MAJOR&t;128
+DECL|macro|SCSI_DISK9_MAJOR
+mdefine_line|#define SCSI_DISK9_MAJOR&t;129
+DECL|macro|SCSI_DISK10_MAJOR
+mdefine_line|#define SCSI_DISK10_MAJOR&t;130
+DECL|macro|SCSI_DISK11_MAJOR
+mdefine_line|#define SCSI_DISK11_MAJOR&t;131
+DECL|macro|SCSI_DISK12_MAJOR
+mdefine_line|#define SCSI_DISK12_MAJOR&t;132
+DECL|macro|SCSI_DISK13_MAJOR
+mdefine_line|#define SCSI_DISK13_MAJOR&t;133
+DECL|macro|SCSI_DISK14_MAJOR
+mdefine_line|#define SCSI_DISK14_MAJOR&t;134
+DECL|macro|SCSI_DISK15_MAJOR
+mdefine_line|#define SCSI_DISK15_MAJOR&t;135
 DECL|macro|COMPAQ_SMART2_MAJOR
 mdefine_line|#define COMPAQ_SMART2_MAJOR&t;72
 DECL|macro|COMPAQ_SMART2_MAJOR1

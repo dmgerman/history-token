@@ -4486,7 +4486,12 @@ id|ns83820
 op_star
 id|dev
 op_assign
-id|_dev-&gt;priv
+(paren
+r_struct
+id|ns83820
+op_star
+)paren
+id|_dev
 suffix:semicolon
 r_switch
 c_cond
@@ -7306,6 +7311,10 @@ suffix:semicolon
 id|dev-&gt;net_dev.owner
 op_assign
 id|THIS_MODULE
+suffix:semicolon
+id|dev-&gt;net_dev.priv
+op_assign
+id|dev
 suffix:semicolon
 id|INIT_WORK
 c_func

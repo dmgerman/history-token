@@ -645,6 +645,8 @@ suffix:semicolon
 )brace
 DECL|macro|test_bit
 mdefine_line|#define test_bit(nr,addr) &bslash;&n;(__builtin_constant_p(nr) ? &bslash;&n; constant_test_bit((nr),(addr)) : &bslash;&n; variable_test_bit((nr),(addr)))
+DECL|macro|ADDR
+macro_line|#undef ADDR
 multiline_comment|/**&n; * find_first_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first zero bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|function|find_first_zero_bit
 r_static

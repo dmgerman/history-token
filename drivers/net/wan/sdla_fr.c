@@ -8062,6 +8062,10 @@ id|skb-&gt;data
 suffix:semicolon
 )brace
 multiline_comment|/* Send a packed up the IP stack */
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|netif_rx
 c_func
 (paren

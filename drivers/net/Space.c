@@ -622,16 +622,6 @@ suffix:semicolon
 multiline_comment|/* Detachable devices (&quot;pocket adaptors&quot;) */
 r_extern
 r_int
-id|de600_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|de620_probe
 c_func
 (paren
@@ -1255,14 +1245,6 @@ id|parport_probes
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_DE600&t;&t;/* D-Link DE-600 adapter */
-(brace
-id|de600_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_DE620&t;&t;/* D-Link DE-620 adapter */
 (brace
 id|de620_probe

@@ -392,6 +392,7 @@ id|xmit_buffs
 id|NUM_XMIT_BUFFS
 )braket
 suffix:semicolon
+macro_line|#if (NUM_XMIT_BUFFS == 1)
 DECL|member|xmit_cmds
 r_volatile
 r_struct
@@ -399,10 +400,9 @@ id|transmit_cmd_struct
 op_star
 id|xmit_cmds
 (braket
-id|NUM_XMIT_BUFFS
+l_int|2
 )braket
 suffix:semicolon
-macro_line|#if (NUM_XMIT_BUFFS == 1)
 DECL|member|nop_cmds
 r_volatile
 r_struct
@@ -414,6 +414,16 @@ l_int|2
 )braket
 suffix:semicolon
 macro_line|#else
+DECL|member|xmit_cmds
+r_volatile
+r_struct
+id|transmit_cmd_struct
+op_star
+id|xmit_cmds
+(braket
+id|NUM_XMIT_BUFFS
+)braket
+suffix:semicolon
 DECL|member|nop_cmds
 r_volatile
 r_struct

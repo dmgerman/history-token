@@ -84,6 +84,8 @@ macro_line|#include &lt;asm/dma.h&gt;
 DECL|macro|NEW_MULTICAST
 mdefine_line|#define NEW_MULTICAST
 macro_line|#include &lt;linux/delay.h&gt;
+DECL|macro|MAX_UNITS
+mdefine_line|#define MAX_UNITS 8
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -119,7 +121,7 @@ l_string|&quot;1-&quot;
 id|__MODULE_STRING
 c_func
 (paren
-l_int|8
+id|MAX_UNITS
 )paren
 l_string|&quot;i&quot;
 )paren
@@ -1621,7 +1623,7 @@ r_static
 r_int
 id|options
 (braket
-l_int|8
+id|MAX_UNITS
 )braket
 op_assign
 (brace
@@ -2427,14 +2429,22 @@ op_logical_and
 id|dev-&gt;mem_start
 ques
 c_cond
-id|dev
-op_member_access_from_pointer
-id|mem_start
+id|dev-&gt;mem_start
+suffix:colon
+(paren
+id|cards_found
+op_ge
+id|MAX_UNITS
+ques
+c_cond
+op_minus
+l_int|1
 suffix:colon
 id|options
 (braket
 id|cards_found
 )braket
+)paren
 )paren
 suffix:semicolon
 id|dev
