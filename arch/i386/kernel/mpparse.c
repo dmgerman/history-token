@@ -690,9 +690,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|m-&gt;mpc_apicid
-OG
 id|MAX_APICS
+op_minus
+id|m-&gt;mpc_apicid
+op_le
+l_int|0
 )paren
 (brace
 id|printk
@@ -3270,9 +3272,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|id
-op_ge
 id|MAX_APICS
+op_minus
+id|id
+op_le
+l_int|0
 )paren
 (brace
 id|printk
