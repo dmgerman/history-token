@@ -2840,6 +2840,10 @@ id|dev
 comma
 id|cmd
 comma
+(paren
+r_int
+r_int
+)paren
 id|arg
 )paren
 suffix:semicolon
