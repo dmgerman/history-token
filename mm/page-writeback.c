@@ -721,6 +721,8 @@ suffix:semicolon
 id|nr_pages
 op_assign
 id|ps.nr_dirty
+op_plus
+id|ps.nr_unstable
 suffix:semicolon
 )brace
 r_return

@@ -1124,11 +1124,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Avoid races. Tell upstream we&squot;ve done all we were told to do */
-id|wbc-&gt;nr_to_write
-op_assign
-l_int|0
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -2003,14 +1998,6 @@ suffix:semicolon
 id|nfsi-&gt;ncommit
 op_sub_assign
 id|res
-suffix:semicolon
-id|sub_page_state
-c_func
-(paren
-id|nr_unstable
-comma
-id|res
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4174,6 +4161,11 @@ id|nfs_page
 op_star
 id|req
 suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -4332,7 +4324,18 @@ c_func
 id|req
 )paren
 suffix:semicolon
+id|res
+op_increment
+suffix:semicolon
 )brace
+id|sub_page_state
+c_func
+(paren
+id|nr_unstable
+comma
+id|res
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|nfs_flush_file

@@ -303,9 +303,12 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|server-&gt;flags
 op_amp
 id|NFS_MOUNT_NOCTO
+)paren
 )paren
 id|res
 op_assign

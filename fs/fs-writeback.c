@@ -1149,7 +1149,13 @@ id|wbc.nr_to_write
 op_assign
 id|ps.nr_dirty
 op_plus
+id|ps.nr_unstable
+op_plus
+(paren
 id|ps.nr_dirty
+op_plus
+id|ps.nr_unstable
+)paren
 op_div
 l_int|4
 suffix:semicolon
