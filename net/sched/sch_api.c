@@ -5008,12 +5008,16 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|psched_time_base
-op_assign
+op_add_assign
 (paren
 (paren
 id|u64
 )paren
+(paren
 id|now
+op_minus
+id|psched_time_mark
+)paren
 )paren
 op_lshift
 id|PSCHED_JSCALE
