@@ -4,7 +4,6 @@ DECL|macro|_ACPIPHP_H
 mdefine_line|#define _ACPIPHP_H
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
-macro_line|#include &quot;acpi_bus.h&quot;
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (acpiphp_debug)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG &quot;%s: &quot; format,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|err
