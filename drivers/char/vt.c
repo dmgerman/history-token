@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/tiocl.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -10682,7 +10683,7 @@ id|type
 )paren
 (brace
 r_case
-l_int|2
+id|TIOCL_SETSEL
 suffix:colon
 id|acquire_console_sem
 c_func
@@ -10694,7 +10695,20 @@ op_assign
 id|set_selection
 c_func
 (paren
+(paren
+r_struct
+id|tiocl_selection
+op_star
+)paren
+(paren
+(paren
+r_char
+op_star
+)paren
 id|arg
+op_plus
+l_int|1
+)paren
 comma
 id|tty
 comma
@@ -10709,7 +10723,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|TIOCL_PASTESEL
 suffix:colon
 id|ret
 op_assign
@@ -10722,7 +10736,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|TIOCL_UNBLANKSCREEN
 suffix:colon
 id|unblank_screen
 c_func
@@ -10732,7 +10746,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|5
+id|TIOCL_SELLOADLUT
 suffix:colon
 id|ret
 op_assign
@@ -10745,7 +10759,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|6
+id|TIOCL_GETSHIFTSTATE
 suffix:colon
 multiline_comment|/*&n;&t; * Make it possible to react to Shift+Mousebutton.&n;&t; * Note that &squot;shift_state&squot; is an undocumented&n;&t; * kernel-internal variable; programs not closely&n;&t; * related to the kernel should not use this.&n;&t; */
 id|data
@@ -10769,7 +10783,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|7
+id|TIOCL_GETMOUSEREPORTING
 suffix:colon
 id|data
 op_assign
@@ -10795,7 +10809,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|10
+id|TIOCL_SETVESABLANK
 suffix:colon
 id|set_vesa_blanking
 c_func
@@ -10807,9 +10821,8 @@ r_break
 suffix:semicolon
 suffix:semicolon
 r_case
-l_int|11
+id|TIOCL_SETKMSGREDIRECT
 suffix:colon
-multiline_comment|/* set kmsg redirect */
 r_if
 c_cond
 (paren
@@ -10860,9 +10873,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|12
+id|TIOCL_GETFGCONSOLE
 suffix:colon
-multiline_comment|/* get fg_console */
 id|ret
 op_assign
 id|fg_console
@@ -10870,9 +10882,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|13
+id|TIOCL_SCROLLCONSOLE
 suffix:colon
-multiline_comment|/* scroll console */
 r_if
 c_cond
 (paren
@@ -10913,9 +10924,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|14
+id|TIOCL_BLANKSCREEN
 suffix:colon
-multiline_comment|/* blank screen until explicitly unblanked, not only poked */
+multiline_comment|/* until explicitly unblanked, not only poked */
 id|ignore_poke
 op_assign
 l_int|1
@@ -10929,9 +10940,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|15
+id|TIOCL_BLANKEDSCREEN
 suffix:colon
-multiline_comment|/* which console is blanked ? */
 id|ret
 op_assign
 id|console_blanked
