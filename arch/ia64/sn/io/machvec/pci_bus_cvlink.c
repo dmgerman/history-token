@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
@@ -85,6 +86,7 @@ id|pcibr_intr_t
 id|intr
 )paren
 suffix:semicolon
+r_static
 r_void
 id|sn_dma_flush_init
 c_func
@@ -165,7 +167,9 @@ DECL|macro|IS_ALTIX
 mdefine_line|#define IS_ALTIX(nasid) (cbrick_type_get_nasid(nasid) == MODULE_CBRICK)
 multiline_comment|/*&n; * Init the provider asic for a given device&n; */
 r_static
+r_inline
 r_void
+id|__init
 DECL|function|set_pci_provider
 id|set_pci_provider
 c_func
@@ -269,6 +273,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pci_bus_to_vertex() - Given a logical Linux Bus Number returns the associated &n; *&t;pci bus vertex from the SGI IO Infrastructure.&n; */
+r_static
+r_inline
 id|vertex_hdl_t
 DECL|function|pci_bus_to_vertex
 id|pci_bus_to_vertex
@@ -496,6 +502,7 @@ id|MAX_NASIDS
 )braket
 suffix:semicolon
 multiline_comment|/* Initialize the data structures for flushing write buffers after a PIO read.&n; * The theory is: &n; * Take an unused int. pin and associate it with a pin that is in use.&n; * After a PIO read, force an interrupt on the unused pin, forcing a write buffer flush&n; * on the in use pin.  This will prevent the race condition between PIO read responses and &n; * DMA writes.&n; */
+r_static
 r_void
 DECL|function|sn_dma_flush_init
 id|sn_dma_flush_init
@@ -629,19 +636,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|flush_nasid_list
 (braket
 id|nasid
 )braket
 dot
 id|widget_p
-op_le
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sn_dma_flush_init: Cannot allocate memory for nasid list&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -837,6 +844,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|flush_nasid_list
 (braket
 id|nasid
@@ -846,13 +854,12 @@ id|widget_p
 (braket
 id|wid_num
 )braket
-op_le
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sn_dma_flush_init: Cannot allocate memory for nasid sub-list&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1456,7 +1463,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * sn_pci_fixup() - This routine is called when platform_pci_fixup() is &n; *&t;invoked at the end of pcibios_init() to link the Linux pci &n; *&t;infrastructure to SGI IO Infrasturcture - ia64/kernel/pci.c&n; *&n; *&t;Other platform specific fixup can also be done here.&n; */
+r_static
 r_void
+id|__init
 DECL|function|sn_pci_fixup
 id|sn_pci_fixup
 c_func
@@ -1642,6 +1651,24 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|widget_sysdata
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sn_pci_fixup(): Unable to &quot;
+l_string|&quot;allocate memory for widget_sysdata&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|widget_sysdata-&gt;vhdl
 op_assign
 id|pci_bus_to_vertex
@@ -1754,14 +1781,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|device_sysdata
-op_le
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sn_pci_fixup: Cannot allocate memory for device sysdata&bslash;n&quot;
 )paren
 suffix:semicolon
