@@ -14508,6 +14508,24 @@ multiline_comment|/* XFS_DIFLAG_REALTIME */
 l_string|&quot;prealloc&quot;
 comma
 multiline_comment|/* XFS_DIFLAG_PREALLOC */
+l_string|&quot;newrtbm&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NEWRTBM */
+l_string|&quot;immutable&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_IMMUTABLE */
+l_string|&quot;append&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_APPEND */
+l_string|&quot;sync&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_SYNC */
+l_string|&quot;noatime&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NOATIME */
+l_string|&quot;nodump&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NODUMP */
 l_int|NULL
 )brace
 suffix:semicolon
