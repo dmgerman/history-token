@@ -856,6 +856,7 @@ id|vci
 )paren
 )paren
 )paren
+(brace
 id|dbg
 (paren
 l_string|&quot;udsl_decode_rawcell: no vcc found for packet on vpi %d, vci %d&quot;
@@ -865,6 +866,22 @@ comma
 id|vci
 )paren
 suffix:semicolon
+id|__skb_pull
+(paren
+id|skb
+comma
+id|min
+(paren
+id|skb-&gt;len
+comma
+(paren
+r_int
+)paren
+l_int|53
+)paren
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 id|dbg
@@ -1018,18 +1035,13 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* If data is corrupt and skb doesn&squot;t hold a whole cell, flush the lot */
-r_if
-c_cond
-(paren
-id|skb_pull
+id|__skb_pull
 (paren
 id|skb
 comma
-l_int|53
+id|skb-&gt;len
 )paren
-op_eq
-l_int|NULL
-)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
