@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * programming the msp34* sound processor family&n; *&n; * (c) 1997-2001 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; * what works and what doesn&squot;t:&n; *&n; *  AM-Mono&n; *      Support for Hauppauge cards added (decoding handled by tuner) added by&n; *      Frederic Crozat &lt;fcrozat@mail.dotcom.fr&gt;&n; *&n; *  FM-Mono&n; *      should work. The stereo modes are backward compatible to FM-mono,&n; *      therefore FM-Mono should be allways available.&n; *&n; *  FM-Stereo (B/G, used in germany)&n; *      should work, with autodetect&n; *&n; *  FM-Stereo (satellite)&n; *      should work, no autodetect (i.e. default is mono, but you can&n; *      switch to stereo -- untested)&n; *&n; *  NICAM (B/G, L , used in UK, Scandinavia, Spain and France)&n; *      should work, with autodetect. Support for NICAM was added by&n; *      Pekka Pietikainen &lt;pp@netppl.fi&gt;&n; *&n; *&n; * TODO:&n; *   - better SAT support&n; *&n; *&n; * 980623  Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *         using soundcore instead of OSS&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1909,7 +1910,7 @@ op_assign
 (paren
 id|volume
 op_star
-l_int|0x73
+l_int|0x7F
 op_div
 l_int|65535
 )paren
@@ -6356,6 +6357,8 @@ id|client
 suffix:semicolon
 r_int
 id|modus
+comma
+id|std
 suffix:semicolon
 r_if
 c_cond
@@ -6401,6 +6404,14 @@ c_func
 id|msp-&gt;norm
 )paren
 suffix:semicolon
+id|std
+op_assign
+id|msp34xx_standard
+c_func
+(paren
+id|msp-&gt;norm
+)paren
+suffix:semicolon
 id|modus
 op_and_assign
 op_complement
@@ -6426,6 +6437,26 @@ l_int|0x30
 multiline_comment|/*MODUS*/
 comma
 id|modus
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DEM
+comma
+l_int|0x20
+multiline_comment|/*stanard*/
+comma
+id|std
 )paren
 )paren
 r_return

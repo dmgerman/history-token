@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * experimental driver for simple i2c audio chips.&n; *&n; * Copyright (c) 2000 Gerd Knorr&n; * based on code by:&n; *   Eric Sandeen (eric_sandeen@bigfoot.com)&n; *   Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; *   Greg Alexander (galexand@acm.org)&n; *&n; * This code is placed under the terms of the GNU General Public License&n; *&n; * OPTIONS:&n; *   debug - set to 1 if you&squot;d like to see debug messages&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -3861,6 +3862,33 @@ DECL|macro|TEA6300_S_SC
 mdefine_line|#define TEA6300_S_SC       0x04  /* stereo C */
 DECL|macro|TEA6300_S_GMU
 mdefine_line|#define TEA6300_S_GMU      0x80  /* general mute */
+DECL|macro|TEA6320_V
+mdefine_line|#define TEA6320_V          0x00  /* volume (0-5)/loudness off (6)/zero crossing mute(7) */
+DECL|macro|TEA6320_FFR
+mdefine_line|#define TEA6320_FFR        0x01  /* fader front right (0-5) */
+DECL|macro|TEA6320_FFL
+mdefine_line|#define TEA6320_FFL        0x02  /* fader front left (0-5) */
+DECL|macro|TEA6320_FRR
+mdefine_line|#define TEA6320_FRR        0x03  /* fader rear right (0-5) */
+DECL|macro|TEA6320_FRL
+mdefine_line|#define TEA6320_FRL        0x04  /* fader rear left (0-5) */
+DECL|macro|TEA6320_BA
+mdefine_line|#define TEA6320_BA         0x05  /* bass (0-4) */
+DECL|macro|TEA6320_TR
+mdefine_line|#define TEA6320_TR         0x06  /* treble (0-4) */
+DECL|macro|TEA6320_S
+mdefine_line|#define TEA6320_S          0x07  /* switch register */
+multiline_comment|/* values for those registers: */
+DECL|macro|TEA6320_S_SA
+mdefine_line|#define TEA6320_S_SA       0x07  /* stereo A input */
+DECL|macro|TEA6320_S_SB
+mdefine_line|#define TEA6320_S_SB       0x06  /* stereo B */
+DECL|macro|TEA6320_S_SC
+mdefine_line|#define TEA6320_S_SC       0x05  /* stereo C */
+DECL|macro|TEA6320_S_SD
+mdefine_line|#define TEA6320_S_SD       0x04  /* stereo D */
+DECL|macro|TEA6320_S_GMU
+mdefine_line|#define TEA6320_S_GMU      0x80  /* general mute */
 DECL|macro|TEA6420_S_SA
 mdefine_line|#define TEA6420_S_SA       0x00  /* stereo A input */
 DECL|macro|TEA6420_S_SB
@@ -3903,6 +3931,110 @@ r_return
 id|val
 op_rshift
 l_int|12
+suffix:semicolon
+)brace
+multiline_comment|/* Assumes 16bit input (values 0x3f to 0x0c are unique, values less than */
+multiline_comment|/* 0x0c mirror those immediately higher) */
+DECL|function|tea6320_volume
+r_static
+r_int
+id|tea6320_volume
+c_func
+(paren
+r_int
+id|val
+)paren
+(brace
+r_return
+(paren
+id|val
+op_div
+(paren
+l_int|65535
+op_div
+(paren
+l_int|63
+op_minus
+l_int|12
+)paren
+)paren
+op_plus
+l_int|12
+)paren
+op_amp
+l_int|0x3f
+suffix:semicolon
+)brace
+DECL|function|tea6320_shift11
+r_static
+r_int
+id|tea6320_shift11
+c_func
+(paren
+r_int
+id|val
+)paren
+(brace
+r_return
+id|val
+op_rshift
+l_int|11
+suffix:semicolon
+)brace
+DECL|function|tea6320_initialize
+r_static
+r_int
+id|tea6320_initialize
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+)paren
+(brace
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TEA6320_FFR
+comma
+l_int|0x3f
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TEA6320_FFL
+comma
+l_int|0x3f
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TEA6320_FRR
+comma
+l_int|0x3f
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TEA6320_FRL
+comma
+l_int|0x3f
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------------------- */
@@ -4542,6 +4674,13 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// address clash with msp34xx
+DECL|variable|tea6320
+r_int
+id|tea6320
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// address clash with msp34xx
 DECL|variable|tea6420
 r_int
 id|tea6420
@@ -4625,6 +4764,16 @@ id|module_param
 c_func
 (paren
 id|tea6300
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|tea6320
 comma
 r_int
 comma
@@ -5214,6 +5363,116 @@ comma
 id|TEA6300_S_SB
 comma
 id|TEA6300_S_SC
+)brace
+comma
+dot
+id|inputmute
+op_assign
+id|TEA6300_S_GMU
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;tea6320&quot;
+comma
+dot
+id|id
+op_assign
+id|I2C_DRIVERID_TEA6300
+comma
+dot
+id|initialize
+op_assign
+id|tea6320_initialize
+comma
+dot
+id|insmodopt
+op_assign
+op_amp
+id|tea6320
+comma
+dot
+id|addr_lo
+op_assign
+id|I2C_TEA6300
+op_rshift
+l_int|1
+comma
+dot
+id|addr_hi
+op_assign
+id|I2C_TEA6300
+op_rshift
+l_int|1
+comma
+dot
+id|registers
+op_assign
+l_int|8
+comma
+dot
+id|flags
+op_assign
+id|CHIP_HAS_VOLUME
+op_or
+id|CHIP_HAS_BASSTREBLE
+op_or
+id|CHIP_HAS_INPUTSEL
+comma
+dot
+id|leftreg
+op_assign
+id|TEA6320_V
+comma
+dot
+id|rightreg
+op_assign
+id|TEA6320_V
+comma
+dot
+id|bassreg
+op_assign
+id|TEA6320_BA
+comma
+dot
+id|treblereg
+op_assign
+id|TEA6320_TR
+comma
+dot
+id|volfunc
+op_assign
+id|tea6320_volume
+comma
+dot
+id|bassfunc
+op_assign
+id|tea6320_shift11
+comma
+dot
+id|treblefunc
+op_assign
+id|tea6320_shift11
+comma
+dot
+id|inputreg
+op_assign
+id|TEA6320_S
+comma
+dot
+id|inputmap
+op_assign
+(brace
+id|TEA6320_S_SA
+comma
+id|TEA6420_S_SB
+comma
+id|TEA6300_S_SC
+comma
+id|TEA6320_S_SD
 )brace
 comma
 dot
@@ -6411,6 +6670,11 @@ comma
 id|chip-&gt;right
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|va-&gt;volume
+)paren
 id|va-&gt;balance
 op_assign
 (paren
@@ -6425,14 +6689,12 @@ id|chip-&gt;right
 )paren
 )paren
 op_div
-(paren
 id|va-&gt;volume
-ques
-c_cond
-id|va-&gt;volume
-suffix:colon
-l_int|1
-)paren
+suffix:semicolon
+r_else
+id|va-&gt;balance
+op_assign
+l_int|32768
 suffix:semicolon
 )brace
 r_if
