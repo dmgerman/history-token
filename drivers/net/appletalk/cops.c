@@ -815,7 +815,7 @@ id|cops_local
 )paren
 )paren
 suffix:semicolon
-id|spinlock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
