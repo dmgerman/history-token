@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&n; * Copyright 2001, Rik van Riel &lt;riel@conectiva.com.br&gt;&n; * Released under the General Public License (GPL).&n; *&n; * Simple, low overhead reverse mapping scheme.&n; * Please try to keep this thing as modular as possible.&n; *&n; * Provides methods for unmapping each kind of mapped page:&n; * the anon methods track anonymous pages, and&n; * the file methods track pages belonging to an inode.&n; *&n; * Original design by Rik van Riel &lt;riel@conectiva.com.br&gt; 2001&n; * File methods by Dave McCracken &lt;dmccr@us.ibm.com&gt; 2003, 2004&n; * Anonymous methods by Andrea Arcangeli &lt;andrea@suse.de&gt; 2004&n; * Contributions by Hugh Dickins &lt;hugh@veritas.com&gt; 2003, 2004&n; */
-multiline_comment|/*&n; * Lock ordering in mm:&n; *&n; * inode-&gt;i_sem&t;(while writing or truncating, not reading or faulting)&n; *   inode-&gt;i_alloc_sem&n; *&n; * When a page fault occurs in writing from user to file, down_read&n; * of mmap_sem nests within i_sem; in sys_msync, i_sem nests within&n; * down_read of mmap_sem; i_sem and down_write of mmap_sem are never&n; * taken together; in truncation, i_sem is taken outermost.&n; *&n; * mm-&gt;mmap_sem&n; *   page-&gt;flags PG_locked (lock_page)&n; *     mapping-&gt;i_mmap_lock&n; *       anon_vma-&gt;lock&n; *         mm-&gt;page_table_lock&n; *           zone-&gt;lru_lock (in mark_page_accessed)&n; *           swap_list_lock (in swap_free etc&squot;s swap_info_get)&n; *             swap_device_lock (in swap_duplicate, swap_info_get)&n; *             mapping-&gt;private_lock (in __set_page_dirty_buffers)&n; *             inode_lock (in set_page_dirty&squot;s __mark_inode_dirty)&n; *               sb_lock (within inode_lock in fs/fs-writeback.c)&n; *               mapping-&gt;tree_lock (widely used, in set_page_dirty,&n; *                         in arch-dependent flush_dcache_mmap_lock,&n; *                         within inode_lock in __sync_single_inode)&n; */
+multiline_comment|/*&n; * Lock ordering in mm:&n; *&n; * inode-&gt;i_sem&t;(while writing or truncating, not reading or faulting)&n; *   inode-&gt;i_alloc_sem&n; *&n; * When a page fault occurs in writing from user to file, down_read&n; * of mmap_sem nests within i_sem; in sys_msync, i_sem nests within&n; * down_read of mmap_sem; i_sem and down_write of mmap_sem are never&n; * taken together; in truncation, i_sem is taken outermost.&n; *&n; * mm-&gt;mmap_sem&n; *   page-&gt;flags PG_locked (lock_page)&n; *     mapping-&gt;i_mmap_lock&n; *       anon_vma-&gt;lock&n; *         mm-&gt;page_table_lock&n; *           zone-&gt;lru_lock (in mark_page_accessed)&n; *           swap_list_lock (in swap_free etc&squot;s swap_info_get)&n; *             mmlist_lock (in mmput, drain_mmlist and others)&n; *             swap_device_lock (in swap_duplicate, swap_info_get)&n; *             mapping-&gt;private_lock (in __set_page_dirty_buffers)&n; *             inode_lock (in set_page_dirty&squot;s __mark_inode_dirty)&n; *               sb_lock (within inode_lock in fs/fs-writeback.c)&n; *               mapping-&gt;tree_lock (widely used, in set_page_dirty,&n; *                         in arch-dependent flush_dcache_mmap_lock,&n; *                         within inode_lock in __sync_single_inode)&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -2085,6 +2085,42 @@ c_func
 id|entry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|mm-&gt;mmlist
+)paren
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mmlist_lock
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|mm-&gt;mmlist
+comma
+op_amp
+id|init_mm.mmlist
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mmlist_lock
+)paren
+suffix:semicolon
+)brace
 id|set_pte
 c_func
 (paren

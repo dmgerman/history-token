@@ -570,7 +570,7 @@ r_struct
 id|list_head
 id|mmlist
 suffix:semicolon
-multiline_comment|/* List of all active mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* List of maybe swapped mm&squot;s.  These are globally strung&n;&t;&t;&t;&t;&t;&t; * together off init_mm.mmlist, and are protected&n;&t;&t;&t;&t;&t;&t; * by mmlist_lock&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|start_code
 DECL|member|end_code
 DECL|member|start_data
@@ -706,10 +706,6 @@ id|kioctx
 id|default_kioctx
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_int
-id|mmlist_nr
 suffix:semicolon
 DECL|struct|sighand_struct
 r_struct
@@ -2131,6 +2127,8 @@ DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x00100000&t;/* Throttle me less: I clean memory */
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
+DECL|macro|PF_BORROWED_MM
+mdefine_line|#define PF_BORROWED_MM&t;0x00400000&t;/* I am a kthread doing use_mm */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
