@@ -65,6 +65,25 @@ op_star
 id|i2c
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dvb_frontend
+op_star
+id|vp310_attach
+c_func
+(paren
+r_const
+r_struct
+id|mt312_config
+op_star
+id|config
+comma
+r_struct
+id|i2c_adapter
+op_star
+id|i2c
+)paren
+suffix:semicolon
 macro_line|#endif 
 singleline_comment|// MT312_H
 eof

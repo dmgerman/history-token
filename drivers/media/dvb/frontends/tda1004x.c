@@ -1575,6 +1575,37 @@ id|firmware
 op_star
 id|fw
 suffix:semicolon
+multiline_comment|/* reset + wake up chip */
+id|tda1004x_write_mask
+c_func
+(paren
+id|state
+comma
+id|TDA1004X_CONFC4
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|state
+comma
+id|TDA10046H_CONF_TRISTATE1
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t re-upload unless necessary */
 r_if
 c_cond
@@ -1630,37 +1661,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* reset chip */
-id|tda1004x_write_mask
-c_func
-(paren
-id|state
-comma
-id|TDA1004X_CONFC4
-comma
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|tda1004x_write_mask
-c_func
-(paren
-id|state
-comma
-id|TDA10046H_CONF_TRISTATE1
-comma
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|msleep
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
 multiline_comment|/* set parameters */
 id|tda1004x_write_byteI
 c_func
@@ -2191,6 +2191,18 @@ comma
 l_int|0x2e
 )paren
 suffix:semicolon
+id|tda1004x_write_mask
+c_func
+(paren
+id|state
+comma
+l_int|0x1f
+comma
+l_int|0x01
+comma
+id|state-&gt;config-&gt;invert_oclk
+)paren
+suffix:semicolon
 id|state-&gt;initialised
 op_assign
 l_int|1
@@ -2589,6 +2601,20 @@ id|BANDWIDTH_8_MHZ
 )paren
 suffix:semicolon
 singleline_comment|// default bandwidth 8 MHz
+id|tda1004x_write_mask
+c_func
+(paren
+id|state
+comma
+l_int|0x3a
+comma
+l_int|0x80
+comma
+id|state-&gt;config-&gt;invert_oclk
+op_lshift
+l_int|7
+)paren
+suffix:semicolon
 id|state-&gt;initialised
 op_assign
 l_int|1
@@ -2736,9 +2762,16 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|// Hardcoded to use auto as much as possible
-singleline_comment|// The TDA10045 is very unreliable if AUTO mode is _not_ used. I have not
-singleline_comment|// yet tested the TDA10046 to see if this issue has been fixed
+singleline_comment|// Hardcoded to use auto as much as possible on the TDA10045 as it
+singleline_comment|// is very unreliable if AUTO mode is _not_ used.
+r_if
+c_cond
+(paren
+id|state-&gt;demod_type
+op_eq
+id|TDA1004X_DEMOD_TDA10045
+)paren
+(brace
 id|fe_params-&gt;u.ofdm.code_rate_HP
 op_assign
 id|FEC_AUTO
@@ -2751,6 +2784,7 @@ id|fe_params-&gt;u.ofdm.transmission_mode
 op_assign
 id|TRANSMISSION_MODE_AUTO
 suffix:semicolon
+)brace
 singleline_comment|// Set standard params.. or put them to auto
 r_if
 c_cond
@@ -5281,6 +5315,11 @@ dot
 id|get_frontend
 op_assign
 id|tda1004x_get_fe
+comma
+dot
+id|get_tune_settings
+op_assign
+id|tda1004x_get_tune_settings
 comma
 dot
 id|read_status

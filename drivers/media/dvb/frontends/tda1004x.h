@@ -20,6 +20,13 @@ id|invert
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* Does the OCLK signal need inverted? */
+DECL|member|invert_oclk
+id|u8
+id|invert_oclk
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/* PLL maintenance */
 DECL|member|pll_init
 r_int

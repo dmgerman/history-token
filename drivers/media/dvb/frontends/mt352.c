@@ -122,10 +122,9 @@ op_ne
 l_int|1
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;mt352_write() failed (err = %d)!&bslash;n&quot;
 comma
 id|err
@@ -246,10 +245,9 @@ id|ret
 op_ne
 l_int|2
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: readreg error (ret == %i)&bslash;n&quot;
 comma
 id|__FUNCTION__

@@ -55,8 +55,8 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)
 macro_line|#endif
-DECL|macro|STV0297_CLOCK
-mdefine_line|#define STV0297_CLOCK   28900
+DECL|macro|STV0297_CLOCK_KHZ
+mdefine_line|#define STV0297_CLOCK_KHZ   28900
 DECL|variable|init_tab
 r_static
 id|u8
@@ -165,7 +165,6 @@ l_int|0x43
 comma
 l_int|0x00
 comma
-singleline_comment|// check
 l_int|0x44
 comma
 l_int|0xff
@@ -912,8 +911,9 @@ suffix:semicolon
 )brace
 DECL|function|stv0297_set_symbolrate
 r_static
-r_int
+r_void
 id|stv0297_set_symbolrate
+c_func
 (paren
 r_struct
 id|stv0297_state
@@ -924,25 +924,34 @@ id|u32
 id|srate
 )paren
 (brace
-id|u64
+r_int
 id|tmp
 suffix:semicolon
 id|tmp
 op_assign
+l_int|131072L
+op_star
 id|srate
 suffix:semicolon
+multiline_comment|/* 131072 = 2^17  */
 id|tmp
-op_lshift_assign
-l_int|32
-suffix:semicolon
-id|do_div
-c_func
+op_assign
+id|tmp
+op_div
 (paren
-id|tmp
-comma
-id|STV0297_CLOCK
+id|STV0297_CLOCK_KHZ
+op_div
+l_int|4
 )paren
 suffix:semicolon
+multiline_comment|/* 1/4 = 2^-2 */
+id|tmp
+op_assign
+id|tmp
+op_star
+l_int|8192L
+suffix:semicolon
+multiline_comment|/* 8192 = 2^13 */
 id|stv0297_writereg
 (paren
 id|state
@@ -1011,87 +1020,6 @@ l_int|24
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|stv0297_get_symbolrate
-r_static
-id|u32
-id|stv0297_get_symbolrate
-(paren
-r_struct
-id|stv0297_state
-op_star
-id|state
-)paren
-(brace
-id|u64
-id|tmp
-suffix:semicolon
-id|tmp
-op_assign
-id|stv0297_readreg
-c_func
-(paren
-id|state
-comma
-l_int|0x55
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|stv0297_readreg
-c_func
-(paren
-id|state
-comma
-l_int|0x56
-)paren
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|stv0297_readreg
-c_func
-(paren
-id|state
-comma
-l_int|0x57
-)paren
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|stv0297_readreg
-c_func
-(paren
-id|state
-comma
-l_int|0x57
-)paren
-op_lshift
-l_int|24
-)paren
-suffix:semicolon
-id|tmp
-op_mul_assign
-id|STV0297_CLOCK
-suffix:semicolon
-id|tmp
-op_rshift_assign
-l_int|32
-suffix:semicolon
-r_return
-id|tmp
-suffix:semicolon
 )brace
 DECL|function|stv0297_set_sweeprate
 r_static
@@ -1106,41 +1034,33 @@ id|state
 comma
 r_int
 id|fshift
+comma
+r_int
+id|symrate
 )paren
 (brace
-id|s64
+r_int
 id|tmp
 suffix:semicolon
-id|u32
-id|symrate
-suffix:semicolon
-id|symrate
+id|tmp
 op_assign
-id|stv0297_get_symbolrate
-c_func
 (paren
-id|state
+r_int
 )paren
-suffix:semicolon
-singleline_comment|// cannot use shifts - it is signed
-id|tmp
-op_assign
 id|fshift
 op_star
-(paren
-l_int|1
-op_lshift
-l_int|28
-)paren
+l_int|262144L
 suffix:semicolon
-id|do_div
-c_func
-(paren
+multiline_comment|/* 262144 = 2*18 */
 id|tmp
-comma
+op_div_assign
 id|symrate
-)paren
 suffix:semicolon
+id|tmp
+op_mul_assign
+l_int|1024
+suffix:semicolon
+multiline_comment|/* 1024 = 2*10   */
 singleline_comment|// adjust
 r_if
 c_cond
@@ -1162,13 +1082,9 @@ op_sub_assign
 l_int|500000
 suffix:semicolon
 )brace
-id|do_div
-c_func
-(paren
 id|tmp
-comma
+op_div_assign
 l_int|1000000
-)paren
 suffix:semicolon
 id|stv0297_writereg
 c_func
@@ -1200,8 +1116,6 @@ op_amp
 l_int|0xf0
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|stv0297_set_carrieroffset
 r_static
@@ -1219,10 +1133,10 @@ id|offset
 )paren
 (brace
 r_int
-id|long_tmp
+id|tmp
 suffix:semicolon
-singleline_comment|// symrate is hardcoded to 10000 here - don&squot;t ask me why
-id|long_tmp
+multiline_comment|/* symrate is hardcoded to 10000 */
+id|tmp
 op_assign
 id|offset
 op_star
@@ -1232,21 +1146,20 @@ multiline_comment|/* (2**28)/10000 */
 r_if
 c_cond
 (paren
-id|long_tmp
+id|tmp
 OL
 l_int|0
 )paren
-(brace
-id|long_tmp
+id|tmp
 op_add_assign
 l_int|0x10000000
 suffix:semicolon
-)brace
-id|long_tmp
+id|tmp
 op_and_assign
 l_int|0x0FFFFFFF
 suffix:semicolon
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1257,14 +1170,14 @@ r_int
 r_char
 )paren
 (paren
-id|long_tmp
+id|tmp
 op_amp
 l_int|0xFF
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// iphase0
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1275,14 +1188,14 @@ r_int
 r_char
 )paren
 (paren
-id|long_tmp
+id|tmp
 op_rshift
 l_int|8
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// iphase1
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1293,13 +1206,12 @@ r_int
 r_char
 )paren
 (paren
-id|long_tmp
+id|tmp
 op_rshift
 l_int|16
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// iphase2
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -1310,15 +1222,13 @@ comma
 l_int|0x0F
 comma
 (paren
-id|long_tmp
+id|tmp
 op_rshift
 l_int|24
 )paren
 op_amp
 l_int|0x0f
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|stv0297_get_carrieroffset
@@ -1336,11 +1246,8 @@ id|state
 id|s32
 id|raw
 suffix:semicolon
-id|s64
+r_int
 id|tmp
-suffix:semicolon
-id|u32
-id|symbol_rate
 suffix:semicolon
 id|stv0297_writereg
 c_func
@@ -1350,14 +1257,6 @@ comma
 l_int|0x6B
 comma
 l_int|0x00
-)paren
-suffix:semicolon
-id|symbol_rate
-op_assign
-id|stv0297_get_symbolrate
-c_func
-(paren
-id|state
 )paren
 suffix:semicolon
 id|raw
@@ -1414,29 +1313,15 @@ l_int|0x0F
 op_lshift
 l_int|24
 suffix:semicolon
-singleline_comment|// cannot just use a shift here &squot;cos it is signed
 id|tmp
 op_assign
 id|raw
 suffix:semicolon
 id|tmp
-op_mul_assign
-id|symbol_rate
-suffix:semicolon
-id|do_div
-c_func
-(paren
-id|tmp
-comma
-l_int|1
-op_lshift
-l_int|28
-)paren
+op_div_assign
+l_int|26844L
 suffix:semicolon
 r_return
-(paren
-id|s32
-)paren
 id|tmp
 suffix:semicolon
 )brace
@@ -1455,90 +1340,7 @@ r_int
 id|freq
 )paren
 (brace
-id|u64
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|freq
-OG
-l_int|10000
-)paren
-id|freq
-op_sub_assign
-id|STV0297_CLOCK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|freq
-OL
-l_int|0
-)paren
-id|freq
-op_assign
-l_int|0
-suffix:semicolon
-id|tmp
-op_assign
-id|freq
-op_lshift
-l_int|16
-suffix:semicolon
-id|do_div
-c_func
-(paren
-id|tmp
-comma
-id|STV0297_CLOCK
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
-OG
-l_int|0xffff
-)paren
-id|tmp
-op_assign
-l_int|0xffff
-suffix:semicolon
-id|stv0297_writereg_mask
-c_func
-(paren
-id|state
-comma
-l_int|0x25
-comma
-l_int|0x80
-comma
-l_int|0x80
-)paren
-suffix:semicolon
-id|stv0297_writereg
-c_func
-(paren
-id|state
-comma
-l_int|0x21
-comma
-id|tmp
-op_rshift
-l_int|8
-)paren
-suffix:semicolon
-id|stv0297_writereg
-c_func
-(paren
-id|state
-comma
-l_int|0x20
-comma
-id|tmp
-)paren
-suffix:semicolon
+multiline_comment|/*&n;        s64 tmp;&n;&n;        if (freq &gt; 10000) freq -= STV0297_CLOCK_KHZ;&n;&n;        tmp = freq &lt;&lt; 16;&n;        do_div(tmp, STV0297_CLOCK_KHZ);&n;        if (tmp &gt; 0xffff) tmp = 0xffff; // check this calculation&n;&n;        stv0297_writereg_mask(state, 0x25, 0x80, 0x80);&n;        stv0297_writereg(state, 0x21, tmp &gt;&gt; 8);&n;        stv0297_writereg(state, 0x20, tmp);&n;*/
 )brace
 DECL|function|stv0297_set_qam
 r_static
@@ -1778,6 +1580,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* soft reset */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -1802,6 +1605,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* reset deinterleaver */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -1826,6 +1630,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* load init table */
 r_for
 c_loop
 (paren
@@ -1863,6 +1668,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* set a dummy symbol rate */
 id|stv0297_set_symbolrate
 c_func
 (paren
@@ -1871,6 +1677,7 @@ comma
 l_int|6900
 )paren
 suffix:semicolon
+multiline_comment|/* invert AGC1 polarity */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -1883,6 +1690,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
+multiline_comment|/* setup bit error counting */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -1931,6 +1739,7 @@ comma
 l_int|0x04
 )paren
 suffix:semicolon
+multiline_comment|/* min + max PWM */
 id|stv0297_writereg
 c_func
 (paren
@@ -2363,9 +2172,6 @@ r_int
 id|delay
 suffix:semicolon
 r_int
-id|locked
-suffix:semicolon
-r_int
 id|sweeprate
 suffix:semicolon
 r_int
@@ -2486,19 +2292,18 @@ comma
 id|p
 )paren
 suffix:semicolon
-singleline_comment|// reset everything
-id|stv0297_writereg_mask
+multiline_comment|/* clear software interrupts */
+id|stv0297_writereg
 c_func
 (paren
 id|state
 comma
 l_int|0x82
 comma
-l_int|0x4
-comma
-l_int|0x4
+l_int|0x0
 )paren
 suffix:semicolon
+multiline_comment|/* set initial demodulation frequency */
 id|stv0297_set_initialdemodfreq
 c_func
 (paren
@@ -2509,6 +2314,7 @@ op_plus
 l_int|7250
 )paren
 suffix:semicolon
+multiline_comment|/* setup AGC */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2635,6 +2441,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+multiline_comment|/* setup STL */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2695,6 +2502,7 @@ comma
 l_int|0x40
 )paren
 suffix:semicolon
+multiline_comment|/* disable frequency sweep */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2707,6 +2515,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+multiline_comment|/* reset deinterleaver */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2731,6 +2540,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+multiline_comment|/* ??? */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2755,6 +2565,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+multiline_comment|/* reset equaliser */
 id|u_threshold
 op_assign
 id|stv0297_readreg
@@ -2853,6 +2664,7 @@ comma
 id|blind_u
 )paren
 suffix:semicolon
+multiline_comment|/* data comes from internal A/D */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -2865,6 +2677,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+multiline_comment|/* clear phase registers */
 id|stv0297_writereg
 c_func
 (paren
@@ -2937,7 +2750,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// set parameters
+multiline_comment|/* set parameters */
 id|stv0297_set_qam
 c_func
 (paren
@@ -2962,6 +2775,10 @@ c_func
 id|state
 comma
 id|sweeprate
+comma
+id|p-&gt;u.qam.symbol_rate
+op_div
+l_int|1000
 )paren
 suffix:semicolon
 id|stv0297_set_carrieroffset
@@ -2980,7 +2797,7 @@ comma
 id|p-&gt;inversion
 )paren
 suffix:semicolon
-singleline_comment|// kick off lock
+multiline_comment|/* kick off lock */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -3077,7 +2894,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-singleline_comment|// wait for WGAGC lock
+multiline_comment|/* wait for WGAGC lock */
 id|starttime
 op_assign
 id|jiffies
@@ -3150,11 +2967,7 @@ c_func
 l_int|20
 )paren
 suffix:semicolon
-singleline_comment|// wait for equaliser partial convergence
-id|locked
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* wait for equaliser partial convergence */
 id|timeout
 op_assign
 id|jiffies
@@ -3199,9 +3012,7 @@ op_amp
 l_int|0x04
 )paren
 (brace
-id|locked
-op_assign
-l_int|1
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -3215,18 +3026,13 @@ id|jiffies
 comma
 id|timeout
 )paren
-op_logical_and
-(paren
-op_logical_neg
-id|locked
-)paren
 )paren
 (brace
 r_goto
 id|timeout
 suffix:semicolon
 )brace
-singleline_comment|// wait for equaliser full convergence
+multiline_comment|/* wait for equaliser full convergence */
 id|timeout
 op_assign
 id|jiffies
@@ -3291,7 +3097,7 @@ r_goto
 id|timeout
 suffix:semicolon
 )brace
-singleline_comment|// disable sweep
+multiline_comment|/* disable sweep */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -3316,7 +3122,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// wait for main lock
+multiline_comment|/* wait for main lock */
 id|timeout
 op_assign
 id|jiffies
@@ -3387,7 +3193,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
-singleline_comment|// is it still locked after that delay?
+multiline_comment|/* is it still locked after that delay? */
 r_if
 c_cond
 (paren
@@ -3409,7 +3215,7 @@ r_goto
 id|timeout
 suffix:semicolon
 )brace
-singleline_comment|// success!!
+multiline_comment|/* success!! */
 id|stv0297_writereg_mask
 c_func
 (paren
@@ -3530,11 +3336,7 @@ id|INVERSION_OFF
 suffix:semicolon
 id|p-&gt;u.qam.symbol_rate
 op_assign
-id|stv0297_get_symbolrate
-c_func
-(paren
-id|state
-)paren
+l_int|0
 suffix:semicolon
 id|p-&gt;u.qam.fec_inner
 op_assign
@@ -3847,10 +3649,6 @@ op_or
 id|FE_CAN_QAM_256
 op_or
 id|FE_CAN_FEC_AUTO
-op_or
-id|FE_CAN_INVERSION_AUTO
-op_or
-id|FE_CAN_RECOVER
 )brace
 comma
 dot
