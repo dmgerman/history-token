@@ -1294,7 +1294,7 @@ op_amp
 id|sigcatch
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
