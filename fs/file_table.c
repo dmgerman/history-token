@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/file_table.c&n; *&n; *  Copyright (C) 1991, 
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/fcblist.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -196,6 +197,12 @@ op_amp
 id|anon_list
 )paren
 suffix:semicolon
+id|file_notify_init
+c_func
+(paren
+id|f
+)paren
+suffix:semicolon
 id|file_list_unlock
 c_func
 (paren
@@ -363,6 +370,12 @@ id|filp-&gt;f_op
 op_assign
 id|dentry-&gt;d_inode-&gt;i_fop
 suffix:semicolon
+id|file_notify_init
+c_func
+(paren
+id|filp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -444,6 +457,12 @@ op_star
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+id|file_notify_cleanup
+c_func
+(paren
+id|file
+)paren
 suffix:semicolon
 id|locks_remove_flock
 c_func

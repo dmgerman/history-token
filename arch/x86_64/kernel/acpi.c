@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 r_extern
 r_int
 id|acpi_disabled
@@ -29,12 +30,6 @@ DECL|variable|acpi_irq_model
 r_enum
 id|acpi_irq_model_id
 id|acpi_irq_model
-suffix:semicolon
-multiline_comment|/*&n; * Use reserved fixmap pages for physical-to-virtual mappings of ACPI tables.&n; * Note that the same range is used for each table, so tables that need to&n; * persist should be memcpy&squot;d.&n; */
-r_extern
-r_int
-r_int
-id|end_pfn
 suffix:semicolon
 multiline_comment|/* rely on all ACPI tables being in the direct mapping */
 r_char
@@ -69,7 +64,7 @@ c_cond
 id|phys_addr
 OL
 (paren
-id|end_pfn
+id|end_pfn_map
 op_lshift
 id|PAGE_SHIFT
 )paren

@@ -1,13 +1,14 @@
 multiline_comment|/*&n; *  linux/include/asm-parisc/ide.h&n; *&n; *  Copyright (C) 1994-1996  Linus Torvalds &amp; authors&n; */
-multiline_comment|/*&n; *  This file contains the i386 architecture specific IDE code.&n; */
-macro_line|#ifndef __ASMi386_IDE_H
-DECL|macro|__ASMi386_IDE_H
-mdefine_line|#define __ASMi386_IDE_H
+multiline_comment|/*&n; *  This file contains the PARISC architecture specific IDE code.&n; */
+macro_line|#ifndef __ASM_PARISC_IDE_H
+DECL|macro|__ASM_PARISC_IDE_H
+mdefine_line|#define __ASM_PARISC_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/superio.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS&t;10
+mdefine_line|#define MAX_HWIFS&t;2
 macro_line|#endif
 DECL|function|ide_default_irq
 r_static
@@ -26,42 +27,20 @@ c_cond
 id|base
 )paren
 (brace
+macro_line|#ifdef CONFIG_SUPERIO
 r_case
 l_int|0x1f0
 suffix:colon
-r_return
-l_int|14
-suffix:semicolon
 r_case
 l_int|0x170
 suffix:colon
 r_return
-l_int|15
+id|superio_get_ide_irq
+c_func
+(paren
+)paren
 suffix:semicolon
-r_case
-l_int|0x1e8
-suffix:colon
-r_return
-l_int|11
-suffix:semicolon
-r_case
-l_int|0x168
-suffix:colon
-r_return
-l_int|10
-suffix:semicolon
-r_case
-l_int|0x1e0
-suffix:colon
-r_return
-l_int|8
-suffix:semicolon
-r_case
-l_int|0x160
-suffix:colon
-r_return
-l_int|12
-suffix:semicolon
+macro_line|#endif /* CONFIG_SUPERIO */
 r_default
 suffix:colon
 r_return
@@ -86,42 +65,40 @@ c_cond
 id|index
 )paren
 (brace
+macro_line|#ifdef CONFIG_SUPERIO 
 r_case
 l_int|0
 suffix:colon
 r_return
+(paren
+id|superio_get_ide_irq
+c_func
+(paren
+)paren
+ques
+c_cond
 l_int|0x1f0
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
 r_return
+(paren
+id|superio_get_ide_irq
+c_func
+(paren
+)paren
+ques
+c_cond
 l_int|0x170
-suffix:semicolon
-r_case
-l_int|2
 suffix:colon
-r_return
-l_int|0x1e8
+l_int|0
+)paren
 suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-r_return
-l_int|0x168
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-r_return
-l_int|0x1e0
-suffix:semicolon
-r_case
-l_int|5
-suffix:colon
-r_return
-l_int|0x160
-suffix:semicolon
+macro_line|#endif /* CONFIG_SUPERIO */
 r_default
 suffix:colon
 r_return
@@ -227,6 +204,13 @@ id|irq
 op_assign
 l_int|0
 suffix:semicolon
+id|hw-&gt;io_ports
+(braket
+id|IDE_IRQ_OFFSET
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|ide_init_default_hwifs
 r_static
@@ -299,6 +283,23 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|macro|ide_request_irq
+mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
+DECL|macro|ide_free_irq
+mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
+DECL|macro|ide_check_region
+mdefine_line|#define ide_check_region(from,extent)&t;&t;check_region((from), (extent))
+DECL|macro|ide_request_region
+mdefine_line|#define ide_request_region(from,extent,name)&t;request_region((from), (extent), (name))
+DECL|macro|ide_release_region
+mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from), (extent))
+multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
+DECL|macro|ide_ack_intr
+mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
+DECL|macro|ide_release_lock
+mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
+DECL|macro|ide_get_lock
+mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* __ASMi386_IDE_H */
+macro_line|#endif /* __ASM_PARISC_IDE_H */
 eof

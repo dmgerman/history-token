@@ -1,41 +1,15 @@
 macro_line|#ifndef _PARISC_PGTABLE_H
 DECL|macro|_PARISC_PGTABLE_H
 mdefine_line|#define _PARISC_PGTABLE_H
+macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * we simulate an x86-style page table for the linux mm code&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
-multiline_comment|/* To make 53c7xx.c happy */
-DECL|macro|IOMAP_FULL_CACHING
-mdefine_line|#define IOMAP_FULL_CACHING&t;2&t;&t;/* used for &squot;what&squot; below */
-DECL|macro|IOMAP_NOCACHE_SER
-mdefine_line|#define IOMAP_NOCACHE_SER&t;3
-r_extern
-r_void
-id|kernel_set_cachemode
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-id|what
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * cache_clear() semantics: Clear any cache entries for the area in question,&n; * without writing back dirty entries first. This is useful if the data will&n; * be overwritten anyway, e.g. by DMA to memory. The range is defined by a&n; * _physical_ address.&n; */
-DECL|macro|cache_clear
-mdefine_line|#define cache_clear(paddr, len)&t;&t;&t;do { } while (0)
-multiline_comment|/*&n; * cache_push() semantics: Write back any dirty cache data in the given area,&n; * and invalidate the range in the instruction cache. It needs not (but may)&n; * invalidate those entries also in the data cache. The range is defined by a&n; * _physical_ address.&n; */
-DECL|macro|cache_push
-mdefine_line|#define cache_push(paddr, len) &bslash;&n;&t;do { &bslash;&n;&t;&t;unsigned long vaddr = phys_to_virt(paddr); &bslash;&n;&t;&t;flush_cache_range(0, vaddr, vaddr + len); &bslash;&n;&t;} while(0)
-DECL|macro|cache_push_v
-mdefine_line|#define cache_push_v(vaddr, len) &bslash;&n;&t;&t;&t;flush_cache_range(0, vaddr, vaddr + len)
+macro_line|#include &lt;asm/bitops.h&gt;
+DECL|macro|ARCH_STACK_GROWSUP
+mdefine_line|#define ARCH_STACK_GROWSUP
 multiline_comment|/*&n; * kern_addr_valid(ADDR) tests if ADDR is pointing to valid kernel&n; * memory.  For the return value to be meaningful, ADDR must be &gt;=&n; * PAGE_OFFSET.  This operation can be relatively expensive (e.g.,&n; * require a hash-, or multi-level tree-lookup or something of that&n; * sort) but it guarantees to return TRUE only if accessing the page&n; * at that address does not cause an error.  Note that there may be&n; * addresses for which kern_addr_valid() returns FALSE even though an&n; * access would not cause an error (e.g., this is typically true for&n; * memory mapped I/O regions.&n; *&n; * XXX Need to implement this for parisc.&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
@@ -49,9 +23,60 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
+multiline_comment|/* Note: If you change ISTACK_SIZE, you need to change the corresponding&n;  * values in vmlinux.lds and vmlinux64.lds (init_istack section). Also,&n;  * the &quot;order&quot; and size need to agree.&n;  */
+DECL|macro|ISTACK_SIZE
+mdefine_line|#define  ISTACK_SIZE  32768 /* Interrupt Stack Size */
+DECL|macro|ISTACK_ORDER
+mdefine_line|#define  ISTACK_ORDER 3
+multiline_comment|/*&n; * NOTE: Many of the below macros use PT_NLEVELS because&n; *       it is convenient that PT_NLEVELS == LOG2(pte size in bytes),&n; *       i.e. we use 3 level page tables when we use 8 byte pte&squot;s&n; *       (for 64 bit) and 2 level page tables when we use 4 byte pte&squot;s&n; */
+macro_line|#ifdef __LP64__
+DECL|macro|PT_NLEVELS
+mdefine_line|#define PT_NLEVELS 3
+DECL|macro|PT_INITIAL
+mdefine_line|#define PT_INITIAL 4 /* Number of initial page tables */
+macro_line|#else
+DECL|macro|PT_NLEVELS
+mdefine_line|#define PT_NLEVELS 2
+DECL|macro|PT_INITIAL
+mdefine_line|#define PT_INITIAL 2 /* Number of initial page tables */
+macro_line|#endif
+DECL|macro|MAX_ADDRBITS
+mdefine_line|#define MAX_ADDRBITS (PAGE_SHIFT + (PT_NLEVELS)*(PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|MAX_ADDRESS
+mdefine_line|#define MAX_ADDRESS (1UL &lt;&lt; MAX_ADDRBITS)
+DECL|macro|SPACEID_SHIFT
+mdefine_line|#define SPACEID_SHIFT (MAX_ADDRBITS - 32)
+multiline_comment|/* Definitions for 1st level */
+DECL|macro|PGDIR_SHIFT
+mdefine_line|#define PGDIR_SHIFT  (PAGE_SHIFT + (PT_NLEVELS - 1)*(PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|PGDIR_SIZE
+mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
+DECL|macro|PGDIR_MASK
+mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
+DECL|macro|PTRS_PER_PGD
+mdefine_line|#define PTRS_PER_PGD    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|USER_PTRS_PER_PGD
+mdefine_line|#define USER_PTRS_PER_PGD       PTRS_PER_PGD
+multiline_comment|/* Definitions for 2nd level */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+DECL|macro|PMD_SHIFT
+mdefine_line|#define PMD_SHIFT       (PAGE_SHIFT + (PAGE_SHIFT - PT_NLEVELS))
+DECL|macro|PMD_SIZE
+mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
+DECL|macro|PMD_MASK
+mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
+macro_line|#if PT_NLEVELS == 3
+DECL|macro|PTRS_PER_PMD
+mdefine_line|#define PTRS_PER_PMD    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
+macro_line|#else
+DECL|macro|PTRS_PER_PMD
+mdefine_line|#define PTRS_PER_PMD    1
+macro_line|#endif
+multiline_comment|/* Definitions for 3rd level */
+DECL|macro|PTRS_PER_PTE
+mdefine_line|#define PTRS_PER_PTE    (1UL &lt;&lt; (PAGE_SHIFT - PT_NLEVELS))
 multiline_comment|/*&n; * pgd entries used up by user/kernel:&n; */
-DECL|macro|USER_PGD_PTRS
-mdefine_line|#define USER_PGD_PTRS (PAGE_OFFSET &gt;&gt; PGDIR_SHIFT)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 macro_line|#ifndef __ASSEMBLY__
@@ -69,53 +94,64 @@ mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;(FIXADDR_START)
 macro_line|#endif
-DECL|macro|_PAGE_READ
-mdefine_line|#define _PAGE_READ&t;0x001&t;/* read access allowed */
-DECL|macro|_PAGE_WRITE
-mdefine_line|#define _PAGE_WRITE&t;0x002&t;/* write access allowed */
-DECL|macro|_PAGE_EXEC
-mdefine_line|#define _PAGE_EXEC&t;0x004&t;/* execute access allowed */
-DECL|macro|_PAGE_GATEWAY
-mdefine_line|#define _PAGE_GATEWAY&t;0x008&t;/* privilege promotion allowed */
+multiline_comment|/* NB: The tlb miss handlers make certain assumptions about the order */
+multiline_comment|/*     of the following bits, so be careful (One example, bits 25-31  */
+multiline_comment|/*     are moved together in one instruction).                        */
+DECL|macro|_PAGE_READ_BIT
+mdefine_line|#define _PAGE_READ_BIT     31   /* (0x001) read access allowed */
+DECL|macro|_PAGE_WRITE_BIT
+mdefine_line|#define _PAGE_WRITE_BIT    30   /* (0x002) write access allowed */
+DECL|macro|_PAGE_EXEC_BIT
+mdefine_line|#define _PAGE_EXEC_BIT     29   /* (0x004) execute access allowed */
 DECL|macro|_PAGE_GATEWAY_BIT
-mdefine_line|#define _PAGE_GATEWAY_BIT 28&t;/* _PAGE_GATEWAY &amp; _PAGE_GATEWAY_BIT need */
-multiline_comment|/* to agree. One could be defined in relation */
-multiline_comment|/* to the other, but that&squot;s kind of ugly. */
-multiline_comment|/* 0x010 reserved (B bit) */
-DECL|macro|_PAGE_DIRTY
-mdefine_line|#define _PAGE_DIRTY&t;0x020&t;/* D: dirty */
-multiline_comment|/* 0x040 reserved (T bit) */
-DECL|macro|_PAGE_NO_CACHE
-mdefine_line|#define _PAGE_NO_CACHE  0x080   /* Software: Uncacheable */
+mdefine_line|#define _PAGE_GATEWAY_BIT  28   /* (0x008) privilege promotion allowed */
+DECL|macro|_PAGE_DMB_BIT
+mdefine_line|#define _PAGE_DMB_BIT      27   /* (0x010) Data Memory Break enable (B bit) */
+DECL|macro|_PAGE_DIRTY_BIT
+mdefine_line|#define _PAGE_DIRTY_BIT    26   /* (0x020) Page Dirty (D bit) */
+DECL|macro|_PAGE_REFTRAP_BIT
+mdefine_line|#define _PAGE_REFTRAP_BIT  25   /* (0x040) Page Ref. Trap enable (T bit) */
 DECL|macro|_PAGE_NO_CACHE_BIT
-mdefine_line|#define _PAGE_NO_CACHE_BIT 24   /* Needs to agree with _PAGE_NO_CACHE above */
-DECL|macro|_PAGE_ACCESSED
-mdefine_line|#define _PAGE_ACCESSED&t;0x100&t;/* R: page cache referenced */
-DECL|macro|_PAGE_PRESENT
-mdefine_line|#define _PAGE_PRESENT   0x200   /* Software: pte contains a translation */
+mdefine_line|#define _PAGE_NO_CACHE_BIT 24   /* (0x080) Uncached Page (U bit) */
+DECL|macro|_PAGE_ACCESSED_BIT
+mdefine_line|#define _PAGE_ACCESSED_BIT 23   /* (0x100) Software: Page Accessed */
 DECL|macro|_PAGE_PRESENT_BIT
-mdefine_line|#define _PAGE_PRESENT_BIT  22   /* Needs to agree with _PAGE_PRESENT above */
-DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER      0x400   /* Software: User accessable page */
+mdefine_line|#define _PAGE_PRESENT_BIT  22   /* (0x200) Software: translation valid */
+DECL|macro|_PAGE_FLUSH_BIT
+mdefine_line|#define _PAGE_FLUSH_BIT    21   /* (0x400) Software: translation valid */
+multiline_comment|/*             for cache flushing only */
 DECL|macro|_PAGE_USER_BIT
-mdefine_line|#define _PAGE_USER_BIT     21   /* Needs to agree with _PAGE_USER above */
-multiline_comment|/* 0x800 still available */
-macro_line|#ifdef __ASSEMBLY__
-DECL|macro|_PGB_
-mdefine_line|#define _PGB_(x)&t;(1 &lt;&lt; (63 - (x)))
-DECL|macro|__PAGE_O
-mdefine_line|#define __PAGE_O&t;_PGB_(13)
-DECL|macro|__PAGE_U
-mdefine_line|#define __PAGE_U&t;_PGB_(12)
-DECL|macro|__PAGE_T
-mdefine_line|#define __PAGE_T&t;_PGB_(2)
-DECL|macro|__PAGE_D
-mdefine_line|#define __PAGE_D&t;_PGB_(3)
-DECL|macro|__PAGE_B
-mdefine_line|#define __PAGE_B&t;_PGB_(4)
-DECL|macro|__PAGE_P
-mdefine_line|#define __PAGE_P&t;_PGB_(14)
-macro_line|#endif
+mdefine_line|#define _PAGE_USER_BIT     20   /* (0x800) Software: User accessable page */
+multiline_comment|/* N.B. The bits are defined in terms of a 32 bit word above, so the */
+multiline_comment|/*      following macro is ok for both 32 and 64 bit.                */
+DECL|macro|xlate_pabit
+mdefine_line|#define xlate_pabit(x) (31 - x)
+DECL|macro|_PAGE_READ
+mdefine_line|#define _PAGE_READ     (1 &lt;&lt; xlate_pabit(_PAGE_READ_BIT))
+DECL|macro|_PAGE_WRITE
+mdefine_line|#define _PAGE_WRITE    (1 &lt;&lt; xlate_pabit(_PAGE_WRITE_BIT))
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW       (_PAGE_READ | _PAGE_WRITE)
+DECL|macro|_PAGE_EXEC
+mdefine_line|#define _PAGE_EXEC     (1 &lt;&lt; xlate_pabit(_PAGE_EXEC_BIT))
+DECL|macro|_PAGE_GATEWAY
+mdefine_line|#define _PAGE_GATEWAY  (1 &lt;&lt; xlate_pabit(_PAGE_GATEWAY_BIT))
+DECL|macro|_PAGE_DMB
+mdefine_line|#define _PAGE_DMB      (1 &lt;&lt; xlate_pabit(_PAGE_DMB_BIT))
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define _PAGE_DIRTY    (1 &lt;&lt; xlate_pabit(_PAGE_DIRTY_BIT))
+DECL|macro|_PAGE_REFTRAP
+mdefine_line|#define _PAGE_REFTRAP  (1 &lt;&lt; xlate_pabit(_PAGE_REFTRAP_BIT))
+DECL|macro|_PAGE_NO_CACHE
+mdefine_line|#define _PAGE_NO_CACHE (1 &lt;&lt; xlate_pabit(_PAGE_NO_CACHE_BIT))
+DECL|macro|_PAGE_ACCESSED
+mdefine_line|#define _PAGE_ACCESSED (1 &lt;&lt; xlate_pabit(_PAGE_ACCESSED_BIT))
+DECL|macro|_PAGE_PRESENT
+mdefine_line|#define _PAGE_PRESENT  (1 &lt;&lt; xlate_pabit(_PAGE_PRESENT_BIT))
+DECL|macro|_PAGE_FLUSH
+mdefine_line|#define _PAGE_FLUSH    (1 &lt;&lt; xlate_pabit(_PAGE_FLUSH_BIT))
+DECL|macro|_PAGE_USER
+mdefine_line|#define _PAGE_USER     (1 &lt;&lt; xlate_pabit(_PAGE_USER_BIT))
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE |  _PAGE_DIRTY | _PAGE_ACCESSED)
 DECL|macro|_PAGE_CHG_MASK
@@ -146,6 +182,8 @@ DECL|macro|PAGE_KERNEL_UNC
 mdefine_line|#define PAGE_KERNEL_UNC&t;__pgprot(_PAGE_KERNEL | _PAGE_NO_CACHE)
 DECL|macro|PAGE_GATEWAY
 mdefine_line|#define PAGE_GATEWAY    __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_GATEWAY| _PAGE_READ)
+DECL|macro|PAGE_FLUSH
+mdefine_line|#define PAGE_FLUSH      __pgprot(_PAGE_FLUSH)
 multiline_comment|/*&n; * We could have an execute only page using &quot;gateway - promote to priv&n; * level 3&quot;, but that is kind of silly. So, the way things are defined&n; * now, we must always have read permission for pages with execute&n; * permission. For the fun of it we&squot;ll go ahead and support write only&n; * pages.&n; */
 multiline_comment|/*xwr*/
 DECL|macro|__P000
@@ -181,8 +219,7 @@ mdefine_line|#define __S110  PAGE_RWX
 DECL|macro|__S111
 mdefine_line|#define __S111  PAGE_RWX
 r_extern
-r_int
-r_int
+id|pgd_t
 id|swapper_pg_dir
 (braket
 )braket
@@ -203,38 +240,15 @@ r_int
 op_star
 id|empty_zero_page
 suffix:semicolon
-multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
-r_extern
-id|pte_t
-id|__bad_page
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pte_t
-op_star
-id|__bad_pagetable
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BAD_PAGETABLE
-mdefine_line|#define BAD_PAGETABLE __bad_pagetable()
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE __bad_page()
+multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 DECL|macro|pte_none
-mdefine_line|#define pte_none(x)&t;(!pte_val(x))
+mdefine_line|#define pte_none(x)     ((pte_val(x) == 0) || (pte_val(x) &amp; _PAGE_FLUSH))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
 mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = 0; } while (0)
-DECL|macro|pte_pagenr
-mdefine_line|#define pte_pagenr(x)&t;((unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_bad
@@ -593,7 +607,47 @@ multiline_comment|/*&n; * Conversion functions: convert a page and protection to
 DECL|macro|__mk_pte
 mdefine_line|#define __mk_pte(addr,pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = ((addr)+pgprot_val(pgprot));&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = ((page)-mem_map)*PAGE_SIZE +&t;&t;&t;&bslash;&n;&t;&t;&t;&t;pgprot_val(pgprot);&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+DECL|function|pfn_pte
+r_static
+r_inline
+id|pte_t
+id|pfn_pte
+c_func
+(paren
+r_int
+r_int
+id|pfn
+comma
+id|pgprot_t
+id|pgprot
+)paren
+(brace
+id|pte_t
+id|pte
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_assign
+(paren
+id|pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_or
+id|pgprot_val
+c_func
+(paren
+id|pgprot
+)paren
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
 multiline_comment|/* This takes a physical page address that is used by the remapping functions */
 DECL|macro|mk_pte_phys
 mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = physpage + pgprot_val(pgprot); __pte; })
@@ -637,15 +691,22 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Permanent address of a page. Obviously must never be&n; * called on a highmem page.&n; */
-DECL|macro|__page_address
-mdefine_line|#define __page_address(page) ({ if (PageHighMem(page)) BUG(); PAGE_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT); })
-DECL|macro|pages_to_mb
-mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
+multiline_comment|/* Permanent address of a page.  On parisc we don&squot;t have highmem. */
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x) (pte_val(x) &gt;&gt; PAGE_SHIFT)
+macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+pte_pagenr(x))
+mdefine_line|#define pte_page(x) (phys_to_page(pte_val(x)))
+macro_line|#else
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x) (mem_map+(pte_val(x) &gt;&gt; PAGE_SHIFT))
+macro_line|#endif
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+DECL|macro|__pmd_page
+mdefine_line|#define __pmd_page(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page(pmd)&t;virt_to_page((void *)__pmd_page(pmd))
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address) &gt;&gt; PGDIR_SHIFT)
 multiline_comment|/* to find an entry in a page-table-directory */
@@ -663,8 +724,22 @@ DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) ((pmd_t *) dir)
 macro_line|#endif
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(pmd, address) &bslash;&n;((pte_t *) pmd_page(*(pmd)) + (((address)&gt;&gt;PAGE_SHIFT) &amp; (PTRS_PER_PTE-1)))
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(pmd, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(pmd)) + __pte_offset(address))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(pmd, address) pte_offset_kernel(pmd, address)
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(pmd, address) pte_offset_kernel(pmd, address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 r_extern
 r_void
 id|paging_init
@@ -672,9 +747,14 @@ id|paging_init
 r_void
 )paren
 suffix:semicolon
-DECL|function|update_mmu_cache
+multiline_comment|/* Used for deferring calls to flush_dcache_page() */
+DECL|macro|PG_dcache_dirty
+mdefine_line|#define PG_dcache_dirty         PG_arch_1
+r_struct
+id|vm_area_struct
+suffix:semicolon
+multiline_comment|/* forward declaration (include/linux/mm.h) */
 r_extern
-r_inline
 r_void
 id|update_mmu_cache
 c_func
@@ -682,33 +762,367 @@ c_func
 r_struct
 id|vm_area_struct
 op_star
-id|vma
 comma
 r_int
 r_int
-id|address
 comma
 id|pte_t
-id|pte
 )paren
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)                     ((x).val &amp; 0x3f)
+mdefine_line|#define __swp_type(x)                     ((x).val &amp; 0x1f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)                   ( (((x).val &gt;&gt; 6) &amp;  0x7) | &bslash;&n;&t;&t;&t;&t;&t;  (((x).val &gt;&gt; 7) &amp; ~0x7) )
+mdefine_line|#define __swp_offset(x)                   ( (((x).val &gt;&gt; 5) &amp;  0xf) | &bslash;&n;&t;&t;&t;&t;&t;  (((x).val &gt;&gt; 7) &amp; ~0xf) )
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)         ((swp_entry_t) { (type) | &bslash;&n;&t;&t;&t;&t;&t;    ((offset &amp;  0x7) &lt;&lt; 6) | &bslash;&n;&t;&t;&t;&t;&t;    ((offset &amp; ~0x7) &lt;&lt; 7) })
+mdefine_line|#define __swp_entry(type, offset)         ((swp_entry_t) { (type) | &bslash;&n;&t;&t;&t;&t;&t;    ((offset &amp;  0xf) &lt;&lt; 5) | &bslash;&n;&t;&t;&t;&t;&t;    ((offset &amp; ~0xf) &lt;&lt; 7) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
-DECL|macro|module_map
-mdefine_line|#define module_map&t;vmalloc
-DECL|macro|module_unmap
-mdefine_line|#define module_unmap&t;vfree
-macro_line|#include &lt;asm-generic/pgtable.h&gt;
+DECL|function|ptep_test_and_clear_young
+r_static
+r_inline
+r_int
+id|ptep_test_and_clear_young
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_return
+id|test_and_clear_bit
+c_func
+(paren
+id|xlate_pabit
+c_func
+(paren
+id|_PAGE_ACCESSED_BIT
+)paren
+comma
+id|ptep
+)paren
+suffix:semicolon
+macro_line|#else
+id|pte_t
+id|pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_young
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pte_mkold
+c_func
+(paren
+id|pte
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|ptep_test_and_clear_dirty
+r_static
+r_inline
+r_int
+id|ptep_test_and_clear_dirty
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_return
+id|test_and_clear_bit
+c_func
+(paren
+id|xlate_pabit
+c_func
+(paren
+id|_PAGE_DIRTY_BIT
+)paren
+comma
+id|ptep
+)paren
+suffix:semicolon
+macro_line|#else
+id|pte_t
+id|pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_dirty
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pte_mkclean
+c_func
+(paren
+id|pte
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#ifdef CONFIG_SMP
+r_extern
+id|spinlock_t
+id|pa_dbit_lock
+suffix:semicolon
+macro_line|#else
+DECL|variable|pa_dbit_lock
+r_static
+r_int
+id|pa_dbit_lock
+suffix:semicolon
+multiline_comment|/* dummy to keep the compilers happy */
+macro_line|#endif
+DECL|function|ptep_get_and_clear
+r_static
+r_inline
+id|pte_t
+id|ptep_get_and_clear
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+id|pte_t
+id|old_pte
+suffix:semicolon
+id|pte_t
+id|pte
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|pa_dbit_lock
+)paren
+suffix:semicolon
+id|pte
+op_assign
+id|old_pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_and_assign
+op_complement
+id|_PAGE_PRESENT
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_or_assign
+id|_PAGE_FLUSH
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pte
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|pa_dbit_lock
+)paren
+suffix:semicolon
+r_return
+id|old_pte
+suffix:semicolon
+)brace
+DECL|function|ptep_set_wrprotect
+r_static
+r_inline
+r_void
+id|ptep_set_wrprotect
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_int
+r_int
+r_new
+comma
+id|old
+suffix:semicolon
+r_do
+(brace
+id|old
+op_assign
+id|pte_val
+c_func
+(paren
+op_star
+id|ptep
+)paren
+suffix:semicolon
+r_new
+op_assign
+id|pte_val
+c_func
+(paren
+id|pte_wrprotect
+c_func
+(paren
+id|__pte
+(paren
+id|old
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|cmpxchg
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|ptep
+comma
+id|old
+comma
+r_new
+)paren
+op_ne
+id|old
+)paren
+suffix:semicolon
+macro_line|#else
+id|pte_t
+id|old_pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pte_wrprotect
+c_func
+(paren
+id|old_pte
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|function|ptep_mkdirty
+r_static
+r_inline
+r_void
+id|ptep_mkdirty
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+id|set_bit
+c_func
+(paren
+id|xlate_pabit
+c_func
+(paren
+id|_PAGE_DIRTY_BIT
+)paren
+comma
+id|ptep
+)paren
+suffix:semicolon
+macro_line|#else
+id|pte_t
+id|old_pte
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+id|set_pte
+c_func
+(paren
+id|ptep
+comma
+id|pte_mkdirty
+c_func
+(paren
+id|old_pte
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|macro|pte_same
+mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t
@@ -718,8 +1132,8 @@ suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
-multiline_comment|/*&n; * No page table caches to initialise&n; */
-DECL|macro|pgtable_cache_init
-mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
-macro_line|#endif /* _PARISC_PAGE_H */
+multiline_comment|/* We provide our own get_unmapped_area to provide cache coherency */
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+macro_line|#endif /* _PARISC_PGTABLE_H */
 eof

@@ -150,7 +150,7 @@ r_int
 id|addr
 )paren
 (brace
-macro_line|#ifndef CONFIG_MODULE
+macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
 r_return
 id|search_one_table
@@ -166,11 +166,6 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#else
-r_struct
-id|exception_table_entry
-op_star
-id|ret
-suffix:semicolon
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special. */
 r_struct
 id|module
@@ -191,6 +186,12 @@ op_assign
 id|mp-&gt;next
 )paren
 (brace
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -500,6 +500,8 @@ c_func
 (paren
 op_amp
 id|freed_pvec
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_while
@@ -1288,6 +1290,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|lru_add_drain
@@ -2069,6 +2073,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_irq

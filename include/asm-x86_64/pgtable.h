@@ -1093,13 +1093,37 @@ mdefine_line|#define mk_kernel_pml4(address) ((pml4_t){ (address) | _KERNPG_TABL
 DECL|macro|level3_offset_k
 mdefine_line|#define level3_offset_k(dir, address) ((pgd_t *) pml4_page(*(dir)) + pgd_index(address))
 multiline_comment|/* PGD - Level3 access */
-DECL|macro|__pgd_offset_k
-mdefine_line|#define __pgd_offset_k(pgd, address) ((pgd) + pgd_index(address))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-DECL|macro|current_pgd_offset_k
-mdefine_line|#define current_pgd_offset_k(address) &bslash;&n;       __pgd_offset_k((pgd_t *)read_pda(level4_pgt), address)
+DECL|function|__pgd_offset_k
+r_static
+r_inline
+id|pgd_t
+op_star
+id|__pgd_offset_k
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgd
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+id|pgd
+op_plus
+id|pgd_index
+c_func
+(paren
+id|address
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Find correct pgd via the hidden fourth level page level: */
 multiline_comment|/* This accesses the reference page table of the boot cpu. &n;   Other CPUs get synced lazily via the page fault handler. */
 DECL|function|pgd_offset_k
 r_static
@@ -1114,11 +1138,15 @@ r_int
 id|address
 )paren
 (brace
-id|pml4_t
-id|pml4
+r_int
+r_int
+id|addr
 suffix:semicolon
-id|pml4
+id|addr
 op_assign
+id|pml4_val
+c_func
+(paren
 id|init_level4_pgt
 (braket
 id|pml4_index
@@ -1127,29 +1155,88 @@ c_func
 id|address
 )paren
 )braket
+)paren
+suffix:semicolon
+id|addr
+op_and_assign
+id|PHYSICAL_PAGE_MASK
 suffix:semicolon
 r_return
 id|__pgd_offset_k
 c_func
 (paren
+(paren
+id|pgd_t
+op_star
+)paren
 id|__va
 c_func
 (paren
-id|pml4_val
-c_func
-(paren
-id|pml4
-)paren
-op_amp
-id|PTE_MASK
+id|addr
 )paren
 comma
 id|address
 )paren
 suffix:semicolon
 )brace
-DECL|macro|__pgd_offset
+multiline_comment|/* Access the pgd of the page table as seen by the current CPU. */
+DECL|function|current_pgd_offset_k
+r_static
+r_inline
+id|pgd_t
+op_star
+id|current_pgd_offset_k
+c_func
+(paren
+r_int
+r_int
+id|address
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|addr
+op_assign
+id|read_pda
+c_func
+(paren
+id|level4_pgt
+)paren
+(braket
+id|pml4_index
+c_func
+(paren
+id|address
+)paren
+)braket
+suffix:semicolon
+id|addr
+op_and_assign
+id|PHYSICAL_PAGE_MASK
+suffix:semicolon
+r_return
+id|__pgd_offset_k
+c_func
+(paren
+(paren
+id|pgd_t
+op_star
+)paren
+id|__va
+c_func
+(paren
+id|addr
+)paren
+comma
+id|address
+)paren
+suffix:semicolon
+)brace
+macro_line|#if 0 /* disabled because of confusing/wrong naming. */
 mdefine_line|#define __pgd_offset(address) pgd_index(address)
+macro_line|#endif
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* PMD  - Level 2 access */

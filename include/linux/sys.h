@@ -3,7 +3,7 @@ DECL|macro|_LINUX_SYS_H
 mdefine_line|#define _LINUX_SYS_H
 multiline_comment|/*&n; * system call entry points ... but not all are defined&n; */
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 256
+mdefine_line|#define NR_syscalls 260
 multiline_comment|/*&n; * These are system calls that will be removed at some time&n; * due to newer versions existing..&n; * (please be careful - ibcs2 may need some of these).&n; */
 macro_line|#ifdef notdef
 DECL|macro|_sys_waitpid

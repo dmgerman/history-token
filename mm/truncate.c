@@ -279,7 +279,7 @@ suffix:semicolon
 multiline_comment|/* pagecache ref */
 )brace
 )brace
-multiline_comment|/**&n; * truncate_inode_pages - truncate *all* the pages from an offset&n; * @mapping: mapping to truncate&n; * @lstart: offset from which to truncate&n; *&n; * Truncate the page cache at a set offset, removing the pages that are beyond&n; * that offset (and zeroing out partial pages).&n; *&n; * Truncate takes two passes - the first pass is nonblocking.  It will not&n; * block on page locks and it will not block on writeback.  The second pass&n; * will wait.  This is to prevent as much IO as possible in the affected region.&n; * The first pass will remove most pages, so the search cost of the second pass&n; * is low.&n; *&n; * When looking at page-&gt;index outside the page lock we need to be careful to&n; * copy it into a local to avoid races (it could change at any time).&n; *&n; * Called under (and serialised by) inode-&gt;i_sem.&n; */
+multiline_comment|/**&n; * truncate_inode_pages - truncate *all* the pages from an offset&n; * @mapping: mapping to truncate&n; * @lstart: offset from which to truncate&n; *&n; * Truncate the page cache at a set offset, removing the pages that are beyond&n; * that offset (and zeroing out partial pages).&n; *&n; * Truncate takes two passes - the first pass is nonblocking.  It will not&n; * block on page locks and it will not block on writeback.  The second pass&n; * will wait.  This is to prevent as much IO as possible in the affected region.&n; * The first pass will remove most pages, so the search cost of the second pass&n; * is low.&n; *&n; * When looking at page-&gt;index outside the page lock we need to be careful to&n; * copy it into a local to avoid races (it could change at any time).&n; *&n; * We pass down the cache-hot hint to the page freeing code.  Even if the&n; * mapping is large, it is probably the case that the final pages are the most&n; * recently touched, and freeing happens in ascending file offset order.&n; *&n; * Called under (and serialised by) inode-&gt;i_sem.&n; */
 DECL|function|truncate_inode_pages
 r_void
 id|truncate_inode_pages
@@ -335,6 +335,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|next
@@ -691,6 +693,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_while
@@ -860,6 +864,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_while

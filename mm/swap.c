@@ -206,7 +206,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This path almost never happens - pages are normally freed via pagevecs.&n; */
+multiline_comment|/*&n; * This path almost never happens for VM activity - pages are normally&n; * freed via pagevecs.  But it gets used by networking.&n; */
 DECL|function|__page_cache_release
 r_void
 id|__page_cache_release
@@ -288,12 +288,10 @@ c_cond
 (paren
 id|page
 )paren
-id|__free_pages_ok
+id|free_hot_page
 c_func
 (paren
 id|page
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -311,6 +309,9 @@ id|pages
 comma
 r_int
 id|nr
+comma
+r_int
+id|cold
 )paren
 (brace
 r_int
@@ -332,6 +333,8 @@ c_func
 (paren
 op_amp
 id|pages_to_free
+comma
+id|cold
 )paren
 suffix:semicolon
 r_for
@@ -479,7 +482,7 @@ op_amp
 id|pages_to_free
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 op_amp
@@ -535,9 +538,11 @@ c_func
 (paren
 id|pvec
 )paren
+comma
+id|pvec-&gt;cold
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 id|pvec
@@ -568,7 +573,13 @@ c_func
 (paren
 op_amp
 id|pages_to_free
+comma
+id|pvec-&gt;cold
 )paren
+suffix:semicolon
+id|pages_to_free.cold
+op_assign
+id|pvec-&gt;cold
 suffix:semicolon
 r_for
 c_loop
@@ -635,7 +646,7 @@ op_amp
 id|pages_to_free
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 id|pvec

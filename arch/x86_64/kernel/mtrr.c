@@ -1,4 +1,4 @@
-multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;&t;Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;  Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;&t;v2.02  July 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Fix gentry inconsistencies between kernel/userspace.&n;&t;  More casts to clean up warnings.&n;*/
+multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;&t;Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;  Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;&t;v2.02  July 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Fix gentry inconsistencies between kernel/userspace.&n;&t;  More casts to clean up warnings.&n;&t;Andi Kleen - rework initialization.&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2294,9 +2294,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#if defined(__x86_64__) &amp;&amp; defined(CONFIG_AGP) 
-multiline_comment|/*&t;{&n;&t;agp_kern_info info; &n;&t;if (type != MTRR_TYPE_UNCACHABLE &amp;&amp; agp_copy_info(&amp;info) &gt;= 0 &amp;&amp; &n;&t;    base&lt;&lt;PAGE_SHIFT &gt;= info.aper_base &amp;&amp; &n;            (base&lt;&lt;PAGE_SHIFT)+(size&lt;&lt;PAGE_SHIFT) &gt;= &n;&t;&t;&t;info.aper_base+info.aper_size*1024*1024)&n;&t;&t;printk(KERN_INFO &quot;%s[%d] setting conflicting mtrr into agp aperture&bslash;n&quot;,current-&gt;comm,current-&gt;pid); &n;&t;}*/
-macro_line|#endif
 multiline_comment|/*  Check upper bits of base and last are equal and lower bits are 0&n;&t;   for base and 1 for last  */
 id|last
 op_assign
@@ -2425,7 +2422,7 @@ id|PAGE_SHIFT
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: base(%Lx) exceeds the MTRR width(%Lx)&bslash;n&quot;
+l_string|&quot;mtrr: base(%lx) exceeds the MTRR width(%lx)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -5157,19 +5154,19 @@ id|mtrr_setup
 r_void
 )paren
 (brace
-id|printk
-(paren
-l_string|&quot;mtrr: v%s)&bslash;n&quot;
-comma
-id|MTRR_VERSION
-)paren
-suffix:semicolon
+multiline_comment|/* If you want to use other vendors please port over the modular&n;&t;   framework from i386 first. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_has_mtrr
+op_logical_or
+id|boot_cpu_data.x86_vendor
+op_ne
+id|X86_VENDOR_AMD
 )paren
-(brace
+r_return
+suffix:semicolon
 multiline_comment|/* Query the width (in bits) of the physical&n;&t;&t;   addressable memory on the Hammer family. */
 r_if
 c_cond
@@ -5220,12 +5217,6 @@ op_amp
 l_int|0x000ffffffffff000L
 suffix:semicolon
 )brace
-id|printk
-(paren
-l_string|&quot;mtrr: detected mtrr type: x86-64&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|__initdata
@@ -5250,12 +5241,36 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|function|mtrr_init_boot_cpu
+macro_line|#endif&t;/*  CONFIG_SMP  */
+DECL|function|mtrr_init_cpu
 r_void
-id|__init
-id|mtrr_init_boot_cpu
+id|mtrr_init_cpu
+c_func
 (paren
-r_void
+r_int
+id|cpu
+)paren
+(brace
+macro_line|#ifndef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+id|mtrr_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+l_int|0
 )paren
 (brace
 id|mtrr_setup
@@ -5270,13 +5285,7 @@ id|smp_mtrr_state
 )paren
 suffix:semicolon
 )brace
-DECL|function|mtrr_init_secondary_cpu
-r_void
-id|__init
-id|mtrr_init_secondary_cpu
-(paren
-r_void
-)paren
+r_else
 (brace
 id|u64
 id|mask
@@ -5288,7 +5297,7 @@ r_struct
 id|set_mtrr_context
 id|ctxt
 suffix:semicolon
-multiline_comment|/* Note that this is not ideal, since the cache is only flushed/disabled&n;&t;   for this CPU while the MTRRs are changed, but changing this requires&n;&t;   more invasive changes to the way the kernel boots  */
+multiline_comment|/* Note that this is not ideal, since the cache is&n;&t;&t;   only flushed/disabled for this CPU while the MTRRs&n;&t;&t;   are changed, but changing this requires more&n;&t;&t;   invasive changes to the way the kernel boots  */
 id|set_mtrr_prepare
 (paren
 op_amp
@@ -5322,8 +5331,10 @@ l_int|0
 suffix:semicolon
 id|count
 OL
+(paren
 r_sizeof
 id|mask
+)paren
 op_star
 l_int|8
 suffix:semicolon
@@ -5336,7 +5347,7 @@ c_cond
 (paren
 id|mask
 op_amp
-l_int|0x01
+l_int|1
 )paren
 id|set_bit
 (paren
@@ -5352,8 +5363,10 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;/*  CONFIG_SMP  */
+macro_line|#endif
+)brace
 DECL|function|mtrr_init
+r_static
 r_int
 id|__init
 id|mtrr_init
@@ -5361,26 +5374,6 @@ id|mtrr_init
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* mtrr_setup() should already have been called from mtrr_init_boot_cpu() */
-id|finalize_mtrr_state
-(paren
-op_amp
-id|smp_mtrr_state
-)paren
-suffix:semicolon
-id|mtrr_state_warn
-(paren
-id|smp_changes_mask
-)paren
-suffix:semicolon
-macro_line|#else
-id|mtrr_setup
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_mtrr
 op_assign
@@ -5445,8 +5438,28 @@ id|init_table
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|finalize_mtrr_state
+(paren
+op_amp
+id|smp_mtrr_state
+)paren
+suffix:semicolon
+id|mtrr_state_warn
+(paren
+id|smp_changes_mask
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mtrr_init
+id|__initcall
+c_func
+(paren
+id|mtrr_init
+)paren
+suffix:semicolon
 eof

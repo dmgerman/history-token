@@ -1100,8 +1100,8 @@ DECL|macro|__NR_swapon
 mdefine_line|#define __NR_swapon              (__NR_Linux + 87)
 DECL|macro|__NR_reboot
 mdefine_line|#define __NR_reboot              (__NR_Linux + 88)
-DECL|macro|__NR_readdir
-mdefine_line|#define __NR_readdir             (__NR_Linux + 89)
+DECL|macro|__NR_mmap2
+mdefine_line|#define __NR_mmap2             (__NR_Linux + 89)
 DECL|macro|__NR_mmap
 mdefine_line|#define __NR_mmap                (__NR_Linux + 90)
 DECL|macro|__NR_munmap
@@ -1124,10 +1124,9 @@ DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs              (__NR_Linux + 99)
 DECL|macro|__NR_fstatfs
 mdefine_line|#define __NR_fstatfs            (__NR_Linux + 100)
-DECL|macro|__NR_ioperm
-mdefine_line|#define __NR_ioperm             (__NR_Linux + 101)
-DECL|macro|__NR_socketcall
-mdefine_line|#define __NR_socketcall         (__NR_Linux + 102)
+DECL|macro|__NR_stat64
+mdefine_line|#define __NR_stat64           (__NR_Linux + 101)
+multiline_comment|/* #define __NR_socketcall         (__NR_Linux + 102) */
 DECL|macro|__NR_syslog
 mdefine_line|#define __NR_syslog             (__NR_Linux + 103)
 DECL|macro|__NR_setitimer
@@ -1146,8 +1145,8 @@ DECL|macro|__NR_getcwd
 mdefine_line|#define __NR_getcwd             (__NR_Linux + 110)
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup            (__NR_Linux + 111)
-DECL|macro|__NR_idle
-mdefine_line|#define __NR_idle               (__NR_Linux + 112)
+DECL|macro|__NR_fstat64
+mdefine_line|#define __NR_fstat64            (__NR_Linux + 112)
 DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork              (__NR_Linux + 113)
 DECL|macro|__NR_wait4
@@ -1318,24 +1317,41 @@ DECL|macro|__NR_getpmsg
 mdefine_line|#define __NR_getpmsg            (__NR_Linux + 196)      /* some people actually want streams */
 DECL|macro|__NR_putpmsg
 mdefine_line|#define __NR_putpmsg            (__NR_Linux + 197)      /* some people actually want streams */
+DECL|macro|__NR_lstat64
+mdefine_line|#define __NR_lstat64            (__NR_Linux + 198)
+DECL|macro|__NR_truncate64
+mdefine_line|#define __NR_truncate64         (__NR_Linux + 199)
+DECL|macro|__NR_ftruncate64
+mdefine_line|#define __NR_ftruncate64        (__NR_Linux + 200)
+DECL|macro|__NR_getdents64
+mdefine_line|#define __NR_getdents64         (__NR_Linux + 201)
+DECL|macro|__NR_fcntl64
+mdefine_line|#define __NR_fcntl64            (__NR_Linux + 202)
+DECL|macro|__NR_attrctl
+mdefine_line|#define __NR_attrctl            (__NR_Linux + 203)
+DECL|macro|__NR_acl_get
+mdefine_line|#define __NR_acl_get            (__NR_Linux + 204)
+DECL|macro|__NR_acl_set
+mdefine_line|#define __NR_acl_set            (__NR_Linux + 205)
 DECL|macro|__NR_gettid
-mdefine_line|#define __NR_gettid             (__NR_Linux + 198)
+mdefine_line|#define __NR_gettid             (__NR_Linux + 206)
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead          (__NR_Linux + 207)
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill              (__NR_Linux + 199)
+mdefine_line|#define __NR_tkill&t;&t;(__NR_Linux + 208)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     199
+mdefine_line|#define __NR_Linux_syscalls     208
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR
 mdefine_line|#define LINUX_GATEWAY_ADDR      0x100
-DECL|macro|LINUX_GATEWAY_STR
-mdefine_line|#define LINUX_GATEWAY_STR       &quot;0x100&quot;
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* The old syscall code here didn&squot;t work, and it looks like it&squot;s only used&n; * by applications such as fdisk which for some reason need to produce&n; * their own syscall instead of using same from libc.  The code below&n; * is leveraged from glibc/sysdeps/unix/sysv/linux/hppa/sysdep.h where&n; * it is essentially duplicated -- which sucks.  -PB&n; */
 DECL|macro|SYS_ify
 mdefine_line|#define SYS_ify(syscall_name)   __NR_##syscall_name
 multiline_comment|/* The system call number MUST ALWAYS be loaded in the delay slot of&n;   the ble instruction, or restarting system calls WILL NOT WORK.  See&n;   arch/parisc/kernel/signal.c - dhd, 2000-07-26 */
 DECL|macro|K_INLINE_SYSCALL
-mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)       ({              &bslash;&n;        unsigned long __sys_res;                                &bslash;&n;        {                                                       &bslash;&n;                register unsigned long __res asm(&quot;r28&quot;);        &bslash;&n;                K_LOAD_ARGS_##nr(args)                            &bslash;&n;                asm volatile(                                   &bslash;&n;&t;&t;&t;&quot;ble  0x100(%%sr2, %%r0)&bslash;n&bslash;t&quot;           &bslash;&n;                        &quot; ldi %1, %%r20&quot;                        &bslash;&n;                        : &quot;=r&quot; (__res)                          &bslash;&n;                        : &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &bslash;&n;&t;&t;&t;  );                                    &bslash;&n;                __sys_res = __res;                              &bslash;&n;        }                                                       &bslash;&n;        if (__sys_res &gt;= (unsigned long)-4095) {                &bslash;&n;&t;&t;errno = -__sys_res;&t;&t;&t;&t;&bslash;&n;                __sys_res == (unsigned long)-1;                 &bslash;&n;        }                                                       &bslash;&n;        __sys_res;                                              &bslash;&n;})
+mdefine_line|#define K_INLINE_SYSCALL(name, nr, args...)       ({              &bslash;&n;        unsigned long __sys_res;                                &bslash;&n;        {                                                       &bslash;&n;                register unsigned long __res asm(&quot;r28&quot;);        &bslash;&n;                K_LOAD_ARGS_##nr(args)                            &bslash;&n;                asm volatile(                                   &bslash;&n;&t;&t;&t;&quot;ble  0x100(%%sr2, %%r0)&bslash;n&bslash;t&quot;           &bslash;&n;                        &quot; ldi %1, %%r20&quot;                        &bslash;&n;                        : &quot;=r&quot; (__res)                          &bslash;&n;                        : &quot;i&quot; (SYS_ify(name)) K_ASM_ARGS_##nr   &bslash;&n;&t;&t;&t;  );                                    &bslash;&n;                __sys_res = __res;                              &bslash;&n;        }                                                       &bslash;&n;        if (__sys_res &gt;= (unsigned long)-4095) {                &bslash;&n;&t;&t;errno = -__sys_res;&t;&t;&t;&t;&bslash;&n;                __sys_res = (unsigned long)-1;                 &bslash;&n;        }                                                       &bslash;&n;        __sys_res;                                              &bslash;&n;})
 DECL|macro|K_LOAD_ARGS_0
 mdefine_line|#define K_LOAD_ARGS_0()
 DECL|macro|K_LOAD_ARGS_1
@@ -1377,10 +1393,11 @@ mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 multiline_comment|/* select takes 5 arguments */
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 5, arg1, arg2, arg3, arg4, arg5);&t;&bslash;&n;}
-multiline_comment|/* mmap takes 6 arguments */
+multiline_comment|/* mmap &amp; mmap2 take 6 arguments */
 DECL|macro|_syscall6
 mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    return K_INLINE_SYSCALL(name, 6, arg1, arg2, arg3, arg4, arg5, arg6);&t;&bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
+macro_line|#include &lt;asm/current.h&gt;
 DECL|function|setsid
 r_static
 r_inline
@@ -1562,156 +1579,6 @@ id|fd
 )paren
 suffix:semicolon
 )brace
-DECL|function|open
-r_static
-r_inline
-r_int
-id|open
-c_func
-(paren
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|flag
-comma
-r_int
-id|mode
-)paren
-(brace
-r_extern
-r_int
-id|sys_open
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_return
-id|sys_open
-c_func
-(paren
-id|file
-comma
-id|flag
-comma
-id|mode
-)paren
-suffix:semicolon
-)brace
-DECL|function|close
-r_static
-r_inline
-r_int
-id|close
-c_func
-(paren
-r_int
-id|fd
-)paren
-(brace
-r_return
-id|sys_close
-c_func
-(paren
-id|fd
-)paren
-suffix:semicolon
-)brace
-DECL|function|_exit
-r_static
-r_inline
-r_int
-id|_exit
-c_func
-(paren
-r_int
-id|exitcode
-)paren
-(brace
-r_extern
-r_int
-id|sys_exit
-c_func
-(paren
-r_int
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
-suffix:semicolon
-r_return
-id|sys_exit
-c_func
-(paren
-id|exitcode
-)paren
-suffix:semicolon
-)brace
-DECL|function|waitpid
-r_static
-r_inline
-id|pid_t
-id|waitpid
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-op_star
-id|wait_stat
-comma
-r_int
-id|options
-)paren
-(brace
-r_extern
-r_int
-id|sys_wait4
-c_func
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
-r_return
-id|sys_wait4
-c_func
-(paren
-(paren
-r_int
-)paren
-id|pid
-comma
-id|wait_stat
-comma
-id|options
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 DECL|function|execve
 r_static
 r_inline
@@ -1771,7 +1638,170 @@ id|current
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|function|open
+r_static
+r_inline
+r_int
+id|open
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|flag
+comma
+r_int
+id|mode
+)paren
+(brace
+r_extern
+r_int
+id|sys_open
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_return
+id|sys_open
+c_func
+(paren
+id|file
+comma
+id|flag
+comma
+id|mode
+)paren
+suffix:semicolon
+)brace
+DECL|function|close
+r_static
+r_inline
+r_int
+id|close
+c_func
+(paren
+r_int
+id|fd
+)paren
+(brace
+r_extern
+id|asmlinkage
+r_int
+id|sys_close
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_return
+id|sys_close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
+)brace
+DECL|function|_exit
+r_static
+r_inline
+r_int
+id|_exit
+c_func
+(paren
+r_int
+id|exitcode
+)paren
+(brace
+r_extern
+r_int
+id|sys_exit
+c_func
+(paren
+r_int
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
+r_return
+id|sys_exit
+c_func
+(paren
+id|exitcode
+)paren
+suffix:semicolon
+)brace
+r_struct
+id|rusage
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_int
+id|sys_wait4
+c_func
+(paren
+id|pid_t
+comma
+r_int
+r_int
+op_star
+comma
+r_int
+comma
+r_struct
+id|rusage
+op_star
+)paren
+suffix:semicolon
+DECL|function|waitpid
+r_static
+r_inline
+id|pid_t
+id|waitpid
+c_func
+(paren
+id|pid_t
+id|pid
+comma
+r_int
+op_star
+id|wait_stat
+comma
+r_int
+id|options
+)paren
+(brace
+r_return
+id|sys_wait4
+c_func
+(paren
+id|pid
+comma
+id|wait_stat
+comma
+id|options
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* __KERNEL_SYSCALLS__ */
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|STR
 macro_line|#undef STR
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */

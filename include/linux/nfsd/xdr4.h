@@ -566,6 +566,25 @@ op_star
 id|rd_fhp
 suffix:semicolon
 multiline_comment|/* response */
+DECL|member|common
+r_struct
+id|readdir_cd
+id|common
+suffix:semicolon
+DECL|member|buffer
+id|u32
+op_star
+id|buffer
+suffix:semicolon
+DECL|member|buflen
+r_int
+id|buflen
+suffix:semicolon
+DECL|member|offset
+id|u32
+op_star
+id|offset
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfsd4_readlink

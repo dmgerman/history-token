@@ -715,19 +715,6 @@ comma
 op_star
 id|active_mm
 suffix:semicolon
-DECL|member|local_pages
-r_struct
-id|list_head
-id|local_pages
-suffix:semicolon
-DECL|member|allocation_order
-DECL|member|nr_local_pages
-r_int
-r_int
-id|allocation_order
-comma
-id|nr_local_pages
-suffix:semicolon
 multiline_comment|/* task state */
 DECL|member|binfmt
 r_struct
@@ -1199,24 +1186,22 @@ DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
 DECL|macro|PF_MEMDIE
 mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
-DECL|macro|PF_FREE_PAGES
-mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_FLUSHER
-mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
+mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
 DECL|macro|PF_NOWARN
-mdefine_line|#define PF_NOWARN&t;0x00008000&t;/* debug: don&squot;t warn if alloc fails */
+mdefine_line|#define PF_NOWARN&t;0x00004000&t;/* debug: don&squot;t warn if alloc fails */
 DECL|macro|PF_FREEZE
-mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
+mdefine_line|#define PF_FREEZE&t;0x00008000&t;/* this task should be frozen for suspend */
 DECL|macro|PF_IOTHREAD
-mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
+mdefine_line|#define PF_IOTHREAD&t;0x00010000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
-mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
+mdefine_line|#define PF_FROZEN&t;0x00020000&t;/* frozen for system suspend */
 DECL|macro|PF_SYNC
-mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
+mdefine_line|#define PF_SYNC&t;&t;0x00040000&t;/* performing fsync(), etc */
 DECL|macro|PF_FSTRANS
-mdefine_line|#define PF_FSTRANS&t;0x00100000&t;/* inside a filesystem transaction */
+mdefine_line|#define PF_FSTRANS&t;0x00080000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
-mdefine_line|#define PF_KSWAPD&t;0x00200000&t;/* I am kswapd */
+mdefine_line|#define PF_KSWAPD&t;0x00100000&t;/* I am kswapd */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001

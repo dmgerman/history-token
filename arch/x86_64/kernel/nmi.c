@@ -12,6 +12,16 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
+r_extern
+r_void
+id|default_do_nmi
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 DECL|variable|nmi_watchdog
 r_int
 r_int

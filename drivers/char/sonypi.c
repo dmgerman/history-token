@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2730,7 +2730,7 @@ op_assign
 id|sonypi_ecrget
 c_func
 (paren
-l_int|0x96
+id|SONYPI_LCD_LIGHT
 )paren
 suffix:semicolon
 r_if
@@ -2803,7 +2803,7 @@ suffix:semicolon
 id|sonypi_ecrset
 c_func
 (paren
-l_int|0x96
+id|SONYPI_LCD_LIGHT
 comma
 id|val8
 )paren
@@ -2818,7 +2818,7 @@ op_assign
 id|sonypi_ecrget16
 c_func
 (paren
-l_int|0xb2
+id|SONYPI_BAT1_FULL
 )paren
 suffix:semicolon
 r_if
@@ -2862,7 +2862,7 @@ op_assign
 id|sonypi_ecrget16
 c_func
 (paren
-l_int|0xa2
+id|SONYPI_BAT1_LEFT
 )paren
 suffix:semicolon
 r_if
@@ -2906,7 +2906,7 @@ op_assign
 id|sonypi_ecrget16
 c_func
 (paren
-l_int|0xba
+id|SONYPI_BAT2_FULL
 )paren
 suffix:semicolon
 r_if
@@ -2950,7 +2950,7 @@ op_assign
 id|sonypi_ecrget16
 c_func
 (paren
-l_int|0xaa
+id|SONYPI_BAT2_LEFT
 )paren
 suffix:semicolon
 r_if
@@ -2994,7 +2994,7 @@ op_assign
 id|sonypi_ecrget
 c_func
 (paren
-l_int|0x81
+id|SONYPI_BAT_FLAGS
 )paren
 op_amp
 l_int|0x07

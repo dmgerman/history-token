@@ -662,7 +662,7 @@ l_string|&quot;&bslash;nCall Trace:&quot;
 suffix:semicolon
 id|i
 op_assign
-l_int|0
+l_int|12
 suffix:semicolon
 id|estack_end
 op_assign

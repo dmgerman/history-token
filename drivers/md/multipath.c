@@ -152,7 +152,7 @@ id|i
 comma
 id|disks
 op_assign
-id|MD_SB_DISKS
+id|mddev-&gt;max_disks
 suffix:semicolon
 multiline_comment|/*&n;&t; * Later we do read balancing on the read side &n;&t; * now we use the first available disk.&n;&t; */
 id|spin_lock_irq
@@ -536,7 +536,7 @@ l_int|0
 suffix:semicolon
 id|disk
 OL
-id|MD_SB_DISKS
+id|conf-&gt;mddev-&gt;max_disks
 suffix:semicolon
 id|disk
 op_increment
@@ -953,7 +953,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MD_SB_DISKS
+id|conf-&gt;mddev-&gt;max_disks
 suffix:semicolon
 id|i
 op_increment

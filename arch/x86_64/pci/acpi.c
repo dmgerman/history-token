@@ -71,6 +71,12 @@ id|KERN_WARNING
 l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* still scan manually in case ACPI forgot some bus */
+id|pcibios_fixup_peer_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0

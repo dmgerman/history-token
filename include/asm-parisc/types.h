@@ -125,6 +125,11 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+DECL|typedef|dma64_addr_t
+r_typedef
+id|u64
+id|dma64_addr_t
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

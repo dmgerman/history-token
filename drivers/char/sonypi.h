@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;13
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;14
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
@@ -30,6 +30,31 @@ DECL|macro|SONYPI_SHIB
 mdefine_line|#define SONYPI_SHIB&t;&t;&t;0x9d
 DECL|macro|SONYPI_TYPE2_REGION_SIZE
 mdefine_line|#define SONYPI_TYPE2_REGION_SIZE&t;0x20
+multiline_comment|/* battery / brightness addresses */
+DECL|macro|SONYPI_BAT_FLAGS
+mdefine_line|#define SONYPI_BAT_FLAGS&t;0x81
+DECL|macro|SONYPI_LCD_LIGHT
+mdefine_line|#define SONYPI_LCD_LIGHT&t;0x96
+DECL|macro|SONYPI_BAT1_PCTRM
+mdefine_line|#define SONYPI_BAT1_PCTRM&t;0xa0
+DECL|macro|SONYPI_BAT1_LEFT
+mdefine_line|#define SONYPI_BAT1_LEFT&t;0xa2
+DECL|macro|SONYPI_BAT1_MAXRT
+mdefine_line|#define SONYPI_BAT1_MAXRT&t;0xa4
+DECL|macro|SONYPI_BAT2_PCTRM
+mdefine_line|#define SONYPI_BAT2_PCTRM&t;0xa8
+DECL|macro|SONYPI_BAT2_LEFT
+mdefine_line|#define SONYPI_BAT2_LEFT&t;0xaa
+DECL|macro|SONYPI_BAT2_MAXRT
+mdefine_line|#define SONYPI_BAT2_MAXRT&t;0xac
+DECL|macro|SONYPI_BAT1_MAXTK
+mdefine_line|#define SONYPI_BAT1_MAXTK&t;0xb0
+DECL|macro|SONYPI_BAT1_FULL
+mdefine_line|#define SONYPI_BAT1_FULL&t;0xb2
+DECL|macro|SONYPI_BAT2_MAXTK
+mdefine_line|#define SONYPI_BAT2_MAXTK&t;0xb8
+DECL|macro|SONYPI_BAT2_FULL
+mdefine_line|#define SONYPI_BAT2_FULL&t;0xba
 multiline_comment|/* ioports used for brightness and type2 events */
 DECL|macro|SONYPI_DATA_IOPORT
 mdefine_line|#define SONYPI_DATA_IOPORT&t;0x62
@@ -352,6 +377,54 @@ id|SONYPI_EVENT_JOGDIAL_DOWN_PRESSED
 )brace
 comma
 (brace
+l_int|0x1e
+comma
+id|SONYPI_EVENT_JOGDIAL_FAST_UP
+)brace
+comma
+(brace
+l_int|0x02
+comma
+id|SONYPI_EVENT_JOGDIAL_FAST_DOWN
+)brace
+comma
+(brace
+l_int|0x5e
+comma
+id|SONYPI_EVENT_JOGDIAL_FAST_UP_PRESSED
+)brace
+comma
+(brace
+l_int|0x42
+comma
+id|SONYPI_EVENT_JOGDIAL_FAST_DOWN_PRESSED
+)brace
+comma
+(brace
+l_int|0x1d
+comma
+id|SONYPI_EVENT_JOGDIAL_VFAST_UP
+)brace
+comma
+(brace
+l_int|0x03
+comma
+id|SONYPI_EVENT_JOGDIAL_VFAST_DOWN
+)brace
+comma
+(brace
+l_int|0x5d
+comma
+id|SONYPI_EVENT_JOGDIAL_VFAST_UP_PRESSED
+)brace
+comma
+(brace
+l_int|0x43
+comma
+id|SONYPI_EVENT_JOGDIAL_VFAST_DOWN_PRESSED
+)brace
+comma
+(brace
 l_int|0x40
 comma
 id|SONYPI_EVENT_JOGDIAL_PRESSED
@@ -542,6 +615,12 @@ id|SONYPI_EVENT_FNKEY_B
 )brace
 comma
 (brace
+l_int|0x36
+comma
+id|SONYPI_EVENT_FNKEY_ONLY
+)brace
+comma
+(brace
 l_int|0x00
 comma
 l_int|0x00
@@ -632,6 +711,12 @@ op_assign
 l_int|0x20
 comma
 id|SONYPI_EVENT_BACK_PRESSED
+)brace
+comma
+(brace
+l_int|0x3b
+comma
+id|SONYPI_EVENT_HELP_PRESSED
 )brace
 comma
 (brace
@@ -778,7 +863,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|wait_on_command
-mdefine_line|#define wait_on_command(quiet, command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s(line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
+mdefine_line|#define wait_on_command(quiet, command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s (line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SONYPI_PRIV_H_ */
 eof

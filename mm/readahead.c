@@ -145,6 +145,8 @@ c_func
 (paren
 op_amp
 id|lru_pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -416,7 +418,7 @@ id|mapping-&gt;page_lock
 suffix:semicolon
 id|page
 op_assign
-id|page_cache_alloc
+id|page_cache_alloc_cold
 c_func
 (paren
 id|mapping

@@ -19,7 +19,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the same as csum_partial, but copies from src while it&n; * checksums&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; */
+multiline_comment|/*&n; * The same as csum_partial, but copies from src while it checksums.&n; *&n; * Here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; */
 r_extern
 r_int
 r_int
@@ -40,6 +40,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * this is a new version of the above that records errors it finds in *errp,&n; * but continues and zeros the rest of the buffer.&n; */
+r_extern
 r_int
 r_int
 id|csum_partial_copy_from_user
@@ -92,236 +93,30 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-id|ldws
-comma
-id|ma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|addi
-op_minus
-l_int|4
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|2
-id|comib
-comma
-op_ge
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-l_float|2f
-id|ldws
-comma
-id|ma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-op_mod
-id|r19
-id|add
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-l_int|0
-id|ldws
-comma
-id|ma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-op_mod
-id|r19
-id|addc
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-l_int|0
-id|ldws
-comma
-id|ma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-op_mod
-id|r19
-id|addc
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-l_int|0
-l_int|1
-suffix:colon
-id|ldws
-comma
-id|ma
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-op_mod
-id|r19
-id|addib
-comma
-template_param
-op_minus
-l_int|1
-comma
-op_mod
-l_int|2
-comma
-l_int|1
-id|b
-id|addc
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-l_int|0
-id|addc
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r0
-comma
-op_mod
-l_int|0
-id|zdepi
-op_minus
-l_int|1
-comma
-l_int|31
-comma
-l_int|16
-comma
-op_mod
-op_mod
-id|r19
-op_logical_and
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-op_mod
-id|r20
-id|extru
-op_mod
-l_int|0
-comma
-l_int|15
-comma
-l_int|16
-comma
-op_mod
-op_mod
-id|r21
-id|add
-op_mod
-op_mod
-id|r20
-comma
-op_mod
-op_mod
-id|r21
-comma
-op_mod
-l_int|0
-op_logical_and
-op_mod
-l_int|0
-comma
-op_mod
-op_mod
-id|r19
-comma
-op_mod
-op_mod
-id|r20
-id|extru
-op_mod
-l_int|0
-comma
-l_int|15
-comma
-l_int|16
-comma
-op_mod
-op_mod
-id|r21
-id|add
-op_mod
-op_mod
-id|r20
-comma
-op_mod
-op_mod
-id|r21
-comma
-op_mod
-l_int|0
-id|subi
-op_minus
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-l_int|2
-suffix:colon
-"&quot;"
+l_string|&quot;&t;ldws,ma&t;&t;4(%1), %0&bslash;n&quot;
+l_string|&quot;&t;addi&t;&t;-4, %2, %2&bslash;n&quot;
+l_string|&quot;&t;comib,&gt;=&t;0, %2, 2f&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%0, %%r19, %0&bslash;n&quot;
+l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
+l_string|&quot;&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
+l_string|&quot;1:&t;ldws,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+l_string|&quot;&t;addib,&lt;&gt;&t;-1, %2, 1b&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%0, %%r19, %0&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%0, %%r0, %0&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&t;zdepi&t;&t;-1, 31, 16, %%r19&bslash;n&quot;
+l_string|&quot;&t;and&t;&t;%0, %%r19, %%r20&bslash;n&quot;
+l_string|&quot;&t;extru&t;&t;%0, 15, 16, %%r21&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%%r20, %%r21, %0&bslash;n&quot;
+l_string|&quot;&t;and&t;&t;%0, %%r19, %%r20&bslash;n&quot;
+l_string|&quot;&t;extru&t;&t;%0, 15, 16, %%r21&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%%r20, %%r21, %0&bslash;n&quot;
+l_string|&quot;&t;subi&t;&t;-1, %0, %0&bslash;n&quot;
+l_string|&quot;2:&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -373,26 +168,13 @@ r_int
 id|sum
 )paren
 (brace
+multiline_comment|/* add the swapped two 16-bit halves of sum,&n;&t;   a possible carry from adding the two 16-bit halves,&n;&t;   will carry from the lower half into the upper half,&n;&t;   giving us the correct sum in the upper half. */
 id|sum
-op_assign
+op_add_assign
 (paren
 id|sum
-op_amp
-l_int|0xffff
-)paren
-op_plus
-(paren
-id|sum
-op_rshift
+op_lshift
 l_int|16
-)paren
-suffix:semicolon
-id|sum
-op_assign
-(paren
-id|sum
-op_amp
-l_int|0xffff
 )paren
 op_plus
 (paren
@@ -402,8 +184,12 @@ l_int|16
 )paren
 suffix:semicolon
 r_return
+(paren
 op_complement
 id|sum
+)paren
+op_rshift
+l_int|16
 suffix:semicolon
 )brace
 DECL|function|csum_tcpudp_nofold
@@ -438,45 +224,10 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|add
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-id|addc
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-id|addc
-op_mod
-l_int|3
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-id|addc
-op_mod
-op_mod
-id|r0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;&t;add  %1, %0, %0&bslash;n&quot;
+l_string|&quot;&t;addc %2, %0, %0&bslash;n&quot;
+l_string|&quot;&t;addc %3, %0, %0&bslash;n&quot;
+l_string|&quot;&t;addc %%r0, %0, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -631,9 +382,119 @@ r_int
 id|sum
 )paren
 (brace
-id|BUG
-c_func
+id|__asm__
+id|__volatile__
 (paren
+macro_line|#if BITS_PER_LONG &gt; 32
+multiline_comment|/*&n;&t;** We can execute two loads and two adds per cycle on PA 8000.&n;&t;** But add insn&squot;s get serialized waiting for the carry bit.&n;&t;** Try to keep 4 registers with &quot;live&quot; values ahead of the ALU.&n;&t;*/
+l_string|&quot;&t;ldd,ma&t;&t;8(%1), %%r19&bslash;n&quot;
+multiline_comment|/* get 1st saddr word */
+l_string|&quot;&t;ldd,ma&t;&t;8(%2), %%r20&bslash;n&quot;
+multiline_comment|/* get 1st daddr word */
+l_string|&quot;&t;add&t;&t;%8, %3, %3&bslash;n&quot;
+multiline_comment|/* add 16-bit proto + len */
+l_string|&quot;&t;add&t;&t;%%r19, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldd,ma&t;&t;8(%1), %%r21&bslash;n&quot;
+multiline_comment|/* 2cd saddr */
+l_string|&quot;&t;ldd,ma&t;&t;8(%2), %%r22&bslash;n&quot;
+multiline_comment|/* 2cd daddr */
+l_string|&quot;&t;add,dc&t;&t;%%r20, %0, %0&bslash;n&quot;
+l_string|&quot;&t;add,dc&t;&t;%%r21, %0, %0&bslash;n&quot;
+l_string|&quot;&t;add,dc&t;&t;%%r22, %0, %0&bslash;n&quot;
+l_string|&quot;&t;add,dc&t;&t;%3, %0, %0&bslash;n&quot;
+multiline_comment|/* fold in proto+len | carry bit */
+l_string|&quot;&t;extrd,u&t;&t;%0, 31, 32, %%r19&bslash;n&quot;
+multiline_comment|/* copy upper half down */
+l_string|&quot;&t;depdi&t;&t;0, 31, 32, %0&bslash;n&quot;
+multiline_comment|/* clear upper half */
+l_string|&quot;&t;add&t;&t;%%r19, %0, %0&bslash;n&quot;
+multiline_comment|/* fold into 32-bits */
+l_string|&quot;&t;addc&t;&t;0, %0, %0&bslash;n&quot;
+multiline_comment|/* add carry */
+macro_line|#else
+multiline_comment|/*&n;&t;** For PA 1.x, the insn order doesn&squot;t matter as much.&n;&t;** Insn stream is serialized on the carry bit here too.&n;&t;** result from the previous operation (eg r0 + x)&n;&t;*/
+l_string|&quot;&t;ldw,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+multiline_comment|/* get 1st saddr word */
+l_string|&quot;&t;ldw,ma&t;&t;4(%2), %%r20&bslash;n&quot;
+multiline_comment|/* get 1st daddr word */
+l_string|&quot;&t;add&t;&t;%8, %3, %3&bslash;n&quot;
+multiline_comment|/* add 16-bit proto + len */
+l_string|&quot;&t;add&t;&t;%%r19, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%1), %%r21&bslash;n&quot;
+multiline_comment|/* 2cd saddr */
+l_string|&quot;&t;addc&t;&t;%%r20, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%2), %%r22&bslash;n&quot;
+multiline_comment|/* 2cd daddr */
+l_string|&quot;&t;addc&t;&t;%%r21, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%1), %%r19&bslash;n&quot;
+multiline_comment|/* 3rd saddr */
+l_string|&quot;&t;addc&t;&t;%%r22, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%2), %%r20&bslash;n&quot;
+multiline_comment|/* 3rd daddr */
+l_string|&quot;&t;addc&t;&t;%%r19, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%1), %%r21&bslash;n&quot;
+multiline_comment|/* 4th saddr */
+l_string|&quot;&t;addc&t;&t;%%r20, %0, %0&bslash;n&quot;
+l_string|&quot;&t;ldw,ma&t;&t;4(%2), %%r22&bslash;n&quot;
+multiline_comment|/* 4th daddr */
+l_string|&quot;&t;addc&t;&t;%%r21, %0, %0&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%%r22, %0, %0&bslash;n&quot;
+l_string|&quot;&t;addc&t;&t;%3, %0, %0&bslash;n&quot;
+multiline_comment|/* fold in proto+len, catch carry */
+macro_line|#endif
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|saddr
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|daddr
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|len
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|saddr
+)paren
+comma
+l_string|&quot;2&quot;
+(paren
+id|daddr
+)paren
+comma
+l_string|&quot;3&quot;
+(paren
+id|len
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|proto
+)paren
+suffix:colon
+l_string|&quot;r19&quot;
+comma
+l_string|&quot;r20&quot;
+comma
+l_string|&quot;r21&quot;
+comma
+l_string|&quot;r22&quot;
 )paren
 suffix:semicolon
 r_return

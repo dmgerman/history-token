@@ -1158,7 +1158,6 @@ id|SA_ONSTACK
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sas_ss_flags
 c_func
 (paren

@@ -934,6 +934,8 @@ c_func
 (paren
 op_amp
 id|lru_pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_for
@@ -2135,6 +2137,8 @@ c_func
 (paren
 op_amp
 id|pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|write_lock

@@ -25,40 +25,42 @@ DECL|macro|LED_DISK_IO
 mdefine_line|#define&t;LED_DISK_IO&t;LED2&t;&t;/* for disk activity */
 DECL|macro|LED_HEARTBEAT
 mdefine_line|#define&t;LED_HEARTBEAT&t;LED3&t;&t;/* heartbeat */
-multiline_comment|/* irq function */
+multiline_comment|/* values for pdc_chassis_lcd_info_ret_block.model: */
+DECL|macro|DISPLAY_MODEL_LCD
+mdefine_line|#define DISPLAY_MODEL_LCD  0&t;&t;/* KittyHawk LED or LCD */
+DECL|macro|DISPLAY_MODEL_NONE
+mdefine_line|#define DISPLAY_MODEL_NONE 1&t;&t;/* no LED or LCD */
+DECL|macro|DISPLAY_MODEL_LASI
+mdefine_line|#define DISPLAY_MODEL_LASI 2&t;&t;/* LASI style 8 bit LED */
+DECL|macro|DISPLAY_MODEL_OLD_ASP
+mdefine_line|#define DISPLAY_MODEL_OLD_ASP 0x7F&t;/* faked: ASP style 8 x 1 bit LED (only very old ASP versions) */
+DECL|macro|LED_CMD_REG_NONE
+mdefine_line|#define LED_CMD_REG_NONE NULL&t;&t;/* NULL == no addr for the cmd register */
+multiline_comment|/* led tasklet struct */
 r_extern
-r_void
-id|led_interrupt_func
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|tasklet_struct
+id|led_tasklet
 suffix:semicolon
-multiline_comment|/* LASI &amp; ASP specific LED initialization funcs */
-r_extern
-r_void
+multiline_comment|/* register_led_driver() */
+r_int
 id|__init
-id|lasi_led_init
+id|register_led_driver
 c_func
 (paren
 r_int
-r_int
-id|lasi_hpa
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|asp_led_init
-c_func
-(paren
-r_int
-r_int
-id|led_ptr
+id|model
+comma
+r_char
+op_star
+id|cmd_reg
+comma
+r_char
+op_star
+id|data_reg
 )paren
 suffix:semicolon
 multiline_comment|/* registers the LED regions for procfs */
-r_extern
 r_void
 id|__init
 id|register_led_regions
@@ -67,8 +69,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* main LED initialization function (uses the PDC) */
-r_extern
+multiline_comment|/* writes a string to the LCD display (if possible on this h/w) */
+r_int
+id|lcd_print
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+multiline_comment|/* main LED initialization function (uses PDC) */
 r_int
 id|__init
 id|led_init

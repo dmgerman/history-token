@@ -178,8 +178,13 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __LP64__
+DECL|macro|pa_psw
+mdefine_line|#define pa_psw(task) ((struct pa_psw *) ((char *) (task) + TASK_PT_PSW + 4))
+macro_line|#else
 DECL|macro|pa_psw
 mdefine_line|#define pa_psw(task) ((struct pa_psw *) ((char *) (task) + TASK_PT_PSW))
+macro_line|#endif
 r_struct
 id|task_struct
 suffix:semicolon
@@ -199,36 +204,11 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev, next, last) do {&t;&t;&t;&bslash;&n;&t;(last) = _switch_to(prev, next);&t;&t;&t;&bslash;&n;} while(0)
-multiline_comment|/* borrowed this from sparc64 -- probably the SMP case is hosed for us */
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;mb()
-DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;rmb()
-DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;wmb()
-DECL|macro|smp_read_barrier_depends
-mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
-macro_line|#else
-multiline_comment|/* This is simply the barrier() macro from linux/kernel.h but when serial.c&n; * uses tqueue.h uses smp_mb() defined using barrier(), linux/kernel.h&n; * hasn&squot;t yet been included yet so it fails, thus repeating the macro here.&n; */
-DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
-DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
-DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
-DECL|macro|smp_read_barrier_depends
-mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
-macro_line|#endif
 multiline_comment|/* interrupt control */
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(x)&t;__asm__ __volatile__(&quot;ssm 0, %0&quot; : &quot;=r&quot; (x) : : &quot;memory&quot;)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;__asm__ __volatile__(&quot;mtsm %0&quot; : : &quot;r&quot; (x) : &quot;memory&quot;)
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable()&t;__asm__ __volatile__(&quot;rsm %0,%%r0&bslash;n&quot; : : &quot;i&quot; (PSW_I) : &quot;memory&quot; )
 DECL|macro|local_irq_enable
@@ -237,17 +217,8 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x) &bslash;&n;&t;__asm__ __volatile__(&quot;rsm %1,%0&quot; : &quot;=r&quot; (x) :&quot;i&quot; (PSW_I) : &quot;memory&quot; )
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsm %0&quot; : : &quot;r&quot; (x) : &quot;memory&quot; )
-macro_line|#ifdef CONFIG_SMP
-macro_line|#else
-DECL|macro|cli
-mdefine_line|#define cli() local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti() local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) local_save_flags(x)
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) local_irq_restore(x)
-macro_line|#endif
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;(flags &amp; PSW_I) == 0;&t;&t;&bslash;&n;})
 DECL|macro|mfctl
 mdefine_line|#define mfctl(reg)&t;({&t;&t;&bslash;&n;&t;unsigned long cr;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mfctl &quot; #reg &quot;,%0&quot; :&t;&bslash;&n;&t;&t; &quot;=r&quot; (cr)&t;&t;&bslash;&n;&t;);&t;&t;&t;&t;&bslash;&n;&t;cr;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|mtctl
@@ -281,35 +252,26 @@ DECL|macro|mfsp
 mdefine_line|#define mfsp(reg)&t;({&t;&t;&bslash;&n;&t;unsigned long cr;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mfsp &quot; #reg &quot;,%0&quot; :&t;&bslash;&n;&t;&t; &quot;=r&quot; (cr)&t;&t;&bslash;&n;&t;);&t;&t;&t;&t;&bslash;&n;&t;cr;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|mtsp
 mdefine_line|#define mtsp(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsp %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr))
+multiline_comment|/*&n;** This is simply the barrier() macro from linux/kernel.h but when serial.c&n;** uses tqueue.h uses smp_mb() defined using barrier(), linux/kernel.h&n;** hasn&squot;t yet been included yet so it fails, thus repeating the macro here.&n;**&n;** PA-RISC architecture allows for weakly ordered memory accesses although&n;** none of the processors use it. There is a strong ordered bit that is&n;** set in the O-bit of the page directory entry. Operating systems that&n;** can not tolerate out of order accesses should set this bit when mapping&n;** pages. The O-bit of the PSW should also be set to 1 (I don&squot;t believe any&n;** of the processor implemented the PSW O-bit). The PCX-W ERS states that&n;** the TLB O-bit is not implemented so the page directory does not need to&n;** have the O-bit set when mapping pages (section 3.1). This section also&n;** states that the PSW Y, Z, G, and O bits are not implemented.&n;** So it looks like nothing needs to be done for parisc-linux (yet).&n;** (thanks to chada for the above comment -ggg)&n;**&n;** The __asm__ op below simple prevents gcc/ld from reordering&n;** instructions across the mb() &quot;call&quot;.&n;*/
 DECL|macro|mb
-mdefine_line|#define mb()  __asm__ __volatile__ (&quot;sync&quot; : : :&quot;memory&quot;)
+mdefine_line|#define mb()&t;&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);&t;/* barrier() */
+DECL|macro|rmb
+mdefine_line|#define rmb()&t;&t;mb()
 DECL|macro|wmb
-mdefine_line|#define wmb() mb()
+mdefine_line|#define wmb()&t;&t;mb()
+DECL|macro|smp_mb
+mdefine_line|#define smp_mb()&t;mb()
+DECL|macro|smp_wmb
+mdefine_line|#define smp_wmb()&t;mb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 DECL|macro|read_barrier_depends
-mdefine_line|#define read_barrier_depends()&t;do { } while(0)
+mdefine_line|#define read_barrier_depends()&t;&t;do { } while(0)
 DECL|macro|set_mb
-mdefine_line|#define set_mb(var, value)  do { var = value; mb(); } while (0)
+mdefine_line|#define set_mb(var, value)&t;&t;do { var = value; mb(); } while (0)
 DECL|macro|set_wmb
-mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
-r_extern
-r_int
-r_int
-id|__xchg
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|macro|xchg
-mdefine_line|#define xchg(ptr,x) &bslash;&n; (__typeof__(*(ptr)))__xchg((unsigned long)(x),(unsigned long*)(ptr),sizeof(*(ptr)))
-multiline_comment|/* LDCW, the only atomic read-write operation PA-RISC has.  Sigh. */
+mdefine_line|#define set_wmb(var, value)&t;&t;do { var = value; wmb(); } while (0)
+multiline_comment|/* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.  */
 DECL|macro|__ldcw
 mdefine_line|#define __ldcw(a) ({ &bslash;&n;&t;unsigned __ret; &bslash;&n;&t;__asm__ __volatile__(&quot;ldcw 0(%1),%0&quot; : &quot;=r&quot; (__ret) : &quot;r&quot; (a)); &bslash;&n;&t;__ret; &bslash;&n;})
 macro_line|#ifdef CONFIG_SMP

@@ -154,6 +154,13 @@ r_void
 )paren
 suffix:semicolon
 r_void
+id|nfsd_export_flush
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|exp_readlock
 c_func
 (paren

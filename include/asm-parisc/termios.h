@@ -133,6 +133,10 @@ DECL|macro|N_IRDA
 mdefine_line|#define N_IRDA&t;&t;11&t;/* Linux IR - http://irda.sourceforge.net/ */
 DECL|macro|N_SMSBLOCK
 mdefine_line|#define N_SMSBLOCK&t;12&t;/* SMS block mode - for talking to GSM data cards about SMS messages */
+DECL|macro|N_HDLC
+mdefine_line|#define N_HDLC&t;&t;13&t;/* synchronous HDLC */
+DECL|macro|N_SYNC_PPP
+mdefine_line|#define N_SYNC_PPP&t;14
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__

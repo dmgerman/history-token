@@ -42,60 +42,11 @@ DECL|struct|readdir_cd
 r_struct
 id|readdir_cd
 (brace
-DECL|member|rqstp
-r_struct
-id|svc_rqst
-op_star
-id|rqstp
-suffix:semicolon
-DECL|member|dirfh
-r_struct
-id|svc_fh
-op_star
-id|dirfh
-suffix:semicolon
-DECL|member|buffer
-id|u32
-op_star
-id|buffer
-suffix:semicolon
-DECL|member|buflen
+DECL|member|err
 r_int
-id|buflen
+id|err
 suffix:semicolon
-DECL|member|offset
-id|u32
-op_star
-id|offset
-suffix:semicolon
-multiline_comment|/* previous dirent-&gt;d_next */
-DECL|member|plus
-r_char
-id|plus
-suffix:semicolon
-multiline_comment|/* readdirplus */
-DECL|member|eob
-r_char
-id|eob
-suffix:semicolon
-multiline_comment|/* end of buffer */
-DECL|member|dotonly
-r_char
-id|dotonly
-suffix:semicolon
-DECL|member|nfserr
-r_int
-id|nfserr
-suffix:semicolon
-multiline_comment|/* v4 only */
-DECL|member|bmval
-id|u32
-id|bmval
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* v4 only */
+multiline_comment|/* 0, nfserr, or nfserr_eof */
 )brace
 suffix:semicolon
 DECL|typedef|encode_dent_fn
@@ -418,8 +369,11 @@ op_star
 comma
 id|loff_t
 comma
-r_char
+r_struct
+id|iovec
 op_star
+comma
+r_int
 comma
 r_int
 r_int
@@ -440,8 +394,11 @@ op_star
 comma
 id|loff_t
 comma
-r_char
+r_struct
+id|iovec
 op_star
+comma
+r_int
 comma
 r_int
 r_int
@@ -625,24 +582,13 @@ id|svc_fh
 op_star
 comma
 id|loff_t
+op_star
+comma
+r_struct
+id|readdir_cd
+op_star
 comma
 id|encode_dent_fn
-comma
-id|u32
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|countp
-comma
-id|u32
-op_star
-id|verf
-comma
-id|u32
-op_star
-id|bmval
 )paren
 suffix:semicolon
 r_int
@@ -790,9 +736,13 @@ DECL|macro|nfserr_readdir_nospc
 mdefine_line|#define&t;nfserr_readdir_nospc&t;__constant_htonl(NFSERR_READDIR_NOSPC)
 DECL|macro|nfserr_bad_xdr
 mdefine_line|#define&t;nfserr_bad_xdr&t;&t;__constant_htonl(NFSERR_BAD_XDR)
-multiline_comment|/* error code for internal use - if a request fails due to&n; * kmalloc failure, it gets dropped.  Client should resend eventually&n; */
+multiline_comment|/* error codes for internal use */
+multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit
 mdefine_line|#define&t;nfserr_dropit&t;&t;__constant_htonl(30000)
+multiline_comment|/* end-of-file indicator in readdir */
+DECL|macro|nfserr_eof
+mdefine_line|#define&t;nfserr_eof&t;&t;__constant_htonl(30001)
 multiline_comment|/* Check for dir entries &squot;.&squot; and &squot;..&squot; */
 DECL|macro|isdotent
 mdefine_line|#define isdotent(n, l)&t;(l &lt; 3 &amp;&amp; n[0] == &squot;.&squot; &amp;&amp; (l == 1 || n[1] == &squot;.&squot;))

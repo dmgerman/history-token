@@ -2400,7 +2400,6 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have set things up such that we perform the checksum of the UDP&n; * packet in parallel with the copies into the RPC client iovec.  -DaveM&n; */
-r_static
 r_int
 DECL|function|csum_partial_copy_to_xdr
 id|csum_partial_copy_to_xdr
