@@ -3233,6 +3233,10 @@ op_amp
 id|MAP_FIXED
 )paren
 (brace
+r_int
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3270,10 +3274,7 @@ id|file
 )paren
 )paren
 (brace
-r_int
-r_int
-id|ret
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Make sure that addr and length are properly aligned.&n;&t;&t;&t; */
 id|ret
 op_assign
 id|is_aligned_hugepage_range
@@ -3284,6 +3285,21 @@ comma
 id|len
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Ensure that a normal request is not falling in a&n;&t;&t;&t; * reserved hugepage range.  For some archs like IA-64,&n;&t;&t;&t; * there is a separate region for hugepages.&n;&t;&t;&t; */
+id|ret
+op_assign
+id|check_valid_hugepage_range
+c_func
+(paren
+id|addr
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3292,7 +3308,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-)brace
 r_return
 id|addr
 suffix:semicolon
