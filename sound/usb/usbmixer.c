@@ -4752,7 +4752,7 @@ id|desc
 l_int|0
 )braket
 OL
-l_int|12
+l_int|11
 op_logical_or
 op_logical_neg
 (paren
@@ -4820,9 +4820,17 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+multiline_comment|/* some devices (e.g. Maya44) omit the bitmap */
 r_if
 c_cond
 (paren
+id|desc
+(braket
+l_int|0
+)braket
+OG
+l_int|11
+op_logical_and
 id|check_matrix_bitmap
 c_func
 (paren
