@@ -1303,7 +1303,7 @@ id|devidx
 suffix:semicolon
 id|md-&gt;block_bits
 op_assign
-id|md-&gt;queue.card-&gt;csd.read_blkbits
+id|card-&gt;csd.read_blkbits
 suffix:semicolon
 id|blk_queue_max_sectors
 c_func
@@ -1328,7 +1328,7 @@ c_func
 (paren
 id|md-&gt;disk
 comma
-id|md-&gt;queue.card-&gt;csd.capacity
+id|card-&gt;csd.capacity
 )paren
 suffix:semicolon
 )brace
@@ -1744,7 +1744,7 @@ c_func
 (paren
 id|md
 comma
-id|md-&gt;queue.card
+id|card
 )paren
 suffix:semicolon
 id|blk_start_queue
