@@ -199,6 +199,11 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|smp_mb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
