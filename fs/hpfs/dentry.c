@@ -123,7 +123,13 @@ c_func
 id|hpfs_upcase
 c_func
 (paren
-id|dentry-&gt;d_sb-&gt;s_hpfs_cp_table
+id|hpfs_sb
+c_func
+(paren
+id|dentry-&gt;d_sb
+)paren
+op_member_access_from_pointer
+id|sb_cp_table
 comma
 id|qstr-&gt;name
 (braket

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 DECL|function|add_element
 r_static
@@ -626,15 +627,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|curr_nr
-suffix:semicolon
-id|DECLARE_WAITQUEUE
+id|DEFINE_WAIT
 c_func
 (paren
 id|wait
-comma
-id|current
 )paren
 suffix:semicolon
 r_int
@@ -814,7 +810,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|add_wait_queue_exclusive
+id|prepare_to_wait
 c_func
 (paren
 op_amp
@@ -822,54 +818,22 @@ id|pool-&gt;wait
 comma
 op_amp
 id|wait
-)paren
-suffix:semicolon
-id|set_task_state
-c_func
-(paren
-id|current
 comma
 id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|pool-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|curr_nr
-op_assign
-id|pool-&gt;curr_nr
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pool-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|curr_nr
+id|pool-&gt;curr_nr
 )paren
-id|schedule
+id|io_schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
-id|remove_wait_queue
+id|finish_wait
 c_func
 (paren
 op_amp

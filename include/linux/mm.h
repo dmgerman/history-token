@@ -315,7 +315,7 @@ r_private
 suffix:semicolon
 multiline_comment|/* mapping-private opaque data */
 multiline_comment|/*&n;&t; * On machines where all RAM is mapped into kernel address space,&n;&t; * we can simply calculate the virtual address. On machines with&n;&t; * highmem some memory is mapped into kernel virtual memory&n;&t; * dynamically, so we need a place to store that address.&n;&t; * Note that this field could be 16 bits on x86 ... ;)&n;&t; *&n;&t; * Architectures with slow multiplication can define&n;&t; * WANT_PAGE_VIRTUAL in asm/page.h&n;&t; */
-macro_line|#if defined(CONFIG_HIGHMEM) || defined(WANT_PAGE_VIRTUAL)
+macro_line|#if defined(WANT_PAGE_VIRTUAL)
 DECL|member|virtual
 r_void
 op_star
@@ -481,22 +481,62 @@ op_lshift
 id|ZONE_SHIFT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * In order to avoid #ifdefs within C code itself, we define&n; * set_page_address to a noop for non-highmem machines, where&n; * the field isn&squot;t useful.&n; * The same is true for page_address() in arch-dependent code.&n; */
-macro_line|#if defined(CONFIG_HIGHMEM) || defined(WANT_PAGE_VIRTUAL)
-DECL|macro|set_page_address
-mdefine_line|#define set_page_address(page, address)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(page)-&gt;virtual = (address);&t;&t;&bslash;&n;&t;} while(0)
-macro_line|#else /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
-DECL|macro|set_page_address
-mdefine_line|#define set_page_address(page, address)  do { } while(0)
-macro_line|#endif /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
-multiline_comment|/*&n; * Permanent address of a page. Obviously must never be&n; * called on a highmem page.&n; */
-macro_line|#if defined(CONFIG_HIGHMEM) || defined(WANT_PAGE_VIRTUAL)
+DECL|macro|lowmem_page_address
+mdefine_line|#define lowmem_page_address(page)&t;&t;&t;&t;&t;&bslash;&n;&t;__va( ( ((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
+macro_line|#if defined(CONFIG_HIGHMEM) &amp;&amp; !defined(WANT_PAGE_VIRTUAL)
+DECL|macro|HASHED_PAGE_VIRTUAL
+mdefine_line|#define HASHED_PAGE_VIRTUAL
+macro_line|#endif
+macro_line|#if defined(WANT_PAGE_VIRTUAL)
 DECL|macro|page_address
 mdefine_line|#define page_address(page) ((page)-&gt;virtual)
-macro_line|#else /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
+DECL|macro|set_page_address
+mdefine_line|#define set_page_address(page, address)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(page)-&gt;virtual = (address);&t;&t;&bslash;&n;&t;} while(0)
+DECL|macro|page_address_init
+mdefine_line|#define page_address_init()  do { } while(0)
+macro_line|#endif
+macro_line|#if defined(HASHED_PAGE_VIRTUAL)
+r_void
+op_star
+id|page_address
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_void
+id|set_page_address
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_void
+op_star
+r_virtual
+)paren
+suffix:semicolon
+r_void
+id|page_address_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if !defined(HASHED_PAGE_VIRTUAL) &amp;&amp; !defined(WANT_PAGE_VIRTUAL)
 DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( ( ((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
-macro_line|#endif /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
+mdefine_line|#define page_address(page) lowmem_page_address(page)
+DECL|macro|set_page_address
+mdefine_line|#define set_page_address(page, address)  do { } while(0)
+DECL|macro|page_address_init
+mdefine_line|#define page_address_init()  do { } while(0)
+macro_line|#endif
 multiline_comment|/*&n; * Return true if this page is mapped into pagetables.  Subtle: test pte.direct&n; * rather than pte.chain.  Because sometimes pte.direct is 64-bit, and .chain&n; * is only 32-bit.&n; */
 DECL|function|page_mapped
 r_static

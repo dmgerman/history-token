@@ -1512,6 +1512,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|page_address_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mem_init
 c_func
 (paren

@@ -160,55 +160,5 @@ id|sb_timeshift
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|s_hpfs_root
-mdefine_line|#define s_hpfs_root u.hpfs_sb.sb_root
-DECL|macro|s_hpfs_fs_size
-mdefine_line|#define s_hpfs_fs_size u.hpfs_sb.sb_fs_size
-DECL|macro|s_hpfs_bitmaps
-mdefine_line|#define s_hpfs_bitmaps u.hpfs_sb.sb_bitmaps
-DECL|macro|s_hpfs_dirband_start
-mdefine_line|#define s_hpfs_dirband_start u.hpfs_sb.sb_dirband_start
-DECL|macro|s_hpfs_dirband_size
-mdefine_line|#define s_hpfs_dirband_size u.hpfs_sb.sb_dirband_size
-DECL|macro|s_hpfs_dmap
-mdefine_line|#define s_hpfs_dmap u.hpfs_sb.sb_dmap
-DECL|macro|s_hpfs_uid
-mdefine_line|#define s_hpfs_uid u.hpfs_sb.sb_uid
-DECL|macro|s_hpfs_gid
-mdefine_line|#define s_hpfs_gid u.hpfs_sb.sb_gid
-DECL|macro|s_hpfs_mode
-mdefine_line|#define s_hpfs_mode u.hpfs_sb.sb_mode
-DECL|macro|s_hpfs_n_free
-mdefine_line|#define s_hpfs_n_free u.hpfs_sb.sb_n_free
-DECL|macro|s_hpfs_n_free_dnodes
-mdefine_line|#define s_hpfs_n_free_dnodes u.hpfs_sb.sb_n_free_dnodes
-DECL|macro|s_hpfs_lowercase
-mdefine_line|#define s_hpfs_lowercase u.hpfs_sb.sb_lowercase
-DECL|macro|s_hpfs_conv
-mdefine_line|#define s_hpfs_conv u.hpfs_sb.sb_conv
-DECL|macro|s_hpfs_eas
-mdefine_line|#define s_hpfs_eas u.hpfs_sb.sb_eas
-DECL|macro|s_hpfs_err
-mdefine_line|#define s_hpfs_err u.hpfs_sb.sb_err
-DECL|macro|s_hpfs_chk
-mdefine_line|#define s_hpfs_chk u.hpfs_sb.sb_chk
-DECL|macro|s_hpfs_was_error
-mdefine_line|#define s_hpfs_was_error u.hpfs_sb.sb_was_error
-DECL|macro|s_hpfs_chkdsk
-mdefine_line|#define s_hpfs_chkdsk u.hpfs_sb.sb_chkdsk
-multiline_comment|/*#define s_hpfs_rd_fnode u.hpfs_sb.sb_rd_fnode*/
-DECL|macro|s_hpfs_rd_inode
-mdefine_line|#define s_hpfs_rd_inode u.hpfs_sb.sb_rd_inode
-DECL|macro|s_hpfs_cp_table
-mdefine_line|#define s_hpfs_cp_table u.hpfs_sb.sb_cp_table
-DECL|macro|s_hpfs_bmp_dir
-mdefine_line|#define s_hpfs_bmp_dir u.hpfs_sb.sb_bmp_dir
-DECL|macro|s_hpfs_c_bitmap
-mdefine_line|#define s_hpfs_c_bitmap u.hpfs_sb.sb_c_bitmap
-DECL|macro|s_hpfs_iget_q
-mdefine_line|#define s_hpfs_iget_q u.hpfs_sb.sb_iget_q
-multiline_comment|/*#define s_hpfs_mounting u.hpfs_sb.sb_mounting*/
-DECL|macro|s_hpfs_timeshift
-mdefine_line|#define s_hpfs_timeshift u.hpfs_sb.sb_timeshift
 macro_line|#endif
 eof

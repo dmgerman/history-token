@@ -711,11 +711,9 @@ comma
 id|srb-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|printk
+id|dump_stack
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;Fix this -- future 2.5 kernels will not work if this is not fixed!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -25,12 +25,18 @@ id|ratelimit_pages
 op_assign
 l_int|32
 suffix:semicolon
-multiline_comment|/*&n; * The total number of pages in the machine.&n; */
 DECL|variable|total_pages
 r_static
 r_int
 id|total_pages
 suffix:semicolon
+multiline_comment|/* The total number of pages in the machine. */
+DECL|variable|dirty_exceeded
+r_static
+r_int
+id|dirty_exceeded
+suffix:semicolon
+multiline_comment|/* Dirty mem may be over limit */
 multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
 DECL|function|sync_writeback_pages
 r_static
@@ -51,15 +57,14 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* The following parameters are exported via /proc/sys/vm */
-multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
-multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
+multiline_comment|/*&n; * Start background writeback (via pdflush) at this percentage&n; */
 DECL|variable|dirty_background_ratio
 r_int
 id|dirty_background_ratio
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/*&n; * The generator of dirty data starts async writeback at this level&n; */
+multiline_comment|/*&n; * The generator of dirty data starts async writeback at this percentage&n; */
 DECL|variable|dirty_async_ratio
 r_int
 id|dirty_async_ratio
@@ -75,7 +80,7 @@ l_int|5
 op_star
 l_int|100
 suffix:semicolon
-multiline_comment|/*&n; * The longest amount of time for which data is allowed to remain dirty&n; */
+multiline_comment|/*&n; * The longest number of centiseconds for which data is allowed to remain dirty&n; */
 DECL|variable|dirty_expire_centisecs
 r_int
 id|dirty_expire_centisecs
@@ -95,7 +100,7 @@ r_int
 id|_min_pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are&n; * generating dirty data.  It looks at the number of dirty pages&n; * in the machine and either:&n; *&n; * - Starts background writeback or&n; * - Causes the caller to perform async writeback or&n; * - Causes the caller to perform synchronous writeback, then&n; *   tells a pdflush thread to perform more writeback or&n; * - Does nothing at all.&n; *&n; * balance_dirty_pages() can sleep.&n; */
+multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are generating dirty&n; * data.  It looks at the number of dirty pages in the machine and will force&n; * the caller to perform writeback if the system is over `async_thresh&squot;.&n; * If we&squot;re over `background_thresh&squot; then pdflush is woken to perform some&n; * writeout.&n; */
 DECL|function|balance_dirty_pages
 r_void
 id|balance_dirty_pages
@@ -113,7 +118,8 @@ id|ps
 suffix:semicolon
 r_int
 id|background_thresh
-comma
+suffix:semicolon
+r_int
 id|async_thresh
 suffix:semicolon
 r_int
@@ -200,6 +206,16 @@ c_func
 comma
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dirty_exceeded
+)paren
+id|dirty_exceeded
+op_assign
+l_int|1
+suffix:semicolon
 id|writeback_inodes
 c_func
 (paren
@@ -213,6 +229,18 @@ c_func
 op_amp
 id|ps
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|dirty_exceeded
+)paren
+id|dirty_exceeded
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -245,7 +273,7 @@ c_func
 id|balance_dirty_pages
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * balance_dirty_pages_ratelimited - balance dirty memory state&n; * @mapping - address_space which was dirtied&n; *&n; * Processes which are dirtying memory should call in here once for each page&n; * which was newly dirtied.  The function will periodically check the system&squot;s&n; * dirty state and will initiate writeback if needed.&n; *&n; * balance_dirty_pages_ratelimited() may sleep.&n; */
+multiline_comment|/**&n; * balance_dirty_pages_ratelimited - balance dirty memory state&n; * @mapping - address_space which was dirtied&n; *&n; * Processes which are dirtying memory should call in here once for each page&n; * which was newly dirtied.  The function will periodically check the system&squot;s&n; * dirty state and will initiate writeback if needed.&n; *&n; * On really big machines, get_page_state is expensive, so try to avoid calling&n; * it too often (ratelimiting).  But once we&squot;re over the dirty memory limit we&n; * decrease the ratelimiting by a lot, to prevent individual processes from&n; * overshooting the limit by (ratelimit_pages) each.&n; */
 DECL|function|balance_dirty_pages_ratelimited
 r_void
 id|balance_dirty_pages_ratelimited
@@ -265,7 +293,7 @@ r_int
 id|count
 suffix:semicolon
 )brace
-id|____cacheline_aligned
+id|____cacheline_aligned_in_smp
 id|ratelimits
 (braket
 id|NR_CPUS
@@ -273,6 +301,22 @@ id|NR_CPUS
 suffix:semicolon
 r_int
 id|cpu
+suffix:semicolon
+r_int
+id|ratelimit
+suffix:semicolon
+id|ratelimit
+op_assign
+id|ratelimit_pages
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dirty_exceeded
+)paren
+id|ratelimit
+op_assign
+l_int|8
 suffix:semicolon
 id|cpu
 op_assign
@@ -292,7 +336,7 @@ dot
 id|count
 op_increment
 op_ge
-id|ratelimit_pages
+id|ratelimit
 )paren
 (brace
 id|ratelimits
