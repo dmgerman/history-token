@@ -5776,7 +5776,7 @@ l_string|&quot;setting usb interface %d:%d&bslash;n&quot;
 comma
 id|fmt-&gt;iface
 comma
-id|fmt-&gt;altset_idx
+id|fmt-&gt;altsetting
 )paren
 suffix:semicolon
 id|subs-&gt;interface
@@ -9301,7 +9301,7 @@ id|buffer
 comma
 l_string|&quot;    Altset %d&bslash;n&quot;
 comma
-id|fp-&gt;altset_idx
+id|fp-&gt;altsetting
 )paren
 suffix:semicolon
 id|snd_iprintf
