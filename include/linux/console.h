@@ -246,7 +246,7 @@ id|vc_data
 op_star
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
 )paren
 suffix:semicolon
