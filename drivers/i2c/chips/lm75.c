@@ -1,11 +1,10 @@
 multiline_comment|/*&n;    lm75.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
-DECL|macro|LM75_SYSCTL_TEMP
-mdefine_line|#define LM75_SYSCTL_TEMP 1200&t;/* Degrees Celsius * 10 */
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
@@ -70,32 +69,28 @@ suffix:semicolon
 multiline_comment|/* Many LM75 constants specified below */
 multiline_comment|/* The LM75 registers */
 DECL|macro|LM75_REG_TEMP
-mdefine_line|#define LM75_REG_TEMP 0x00
+mdefine_line|#define LM75_REG_TEMP&t;&t;0x00
 DECL|macro|LM75_REG_CONF
-mdefine_line|#define LM75_REG_CONF 0x01
+mdefine_line|#define LM75_REG_CONF&t;&t;0x01
 DECL|macro|LM75_REG_TEMP_HYST
-mdefine_line|#define LM75_REG_TEMP_HYST 0x02
+mdefine_line|#define LM75_REG_TEMP_HYST&t;0x02
 DECL|macro|LM75_REG_TEMP_OS
-mdefine_line|#define LM75_REG_TEMP_OS 0x03
+mdefine_line|#define LM75_REG_TEMP_OS&t;0x03
 multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG&n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n;   Fixing this is just not worth it. */
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val) ((((val &amp; 0x7fff) &gt;&gt; 7) * 5) | ((val &amp; 0x8000)?-256:0))
+mdefine_line|#define TEMP_FROM_REG(val)&t;((((val &amp; 0x7fff) &gt;&gt; 7) * 5) | ((val &amp; 0x8000)?-256:0))
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)   (SENSORS_LIMIT((val&lt;0?(0x200+((val)/5))&lt;&lt;7:(((val) + 2) / 5) &lt;&lt; 7),0,0xffff))
+mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val&lt;0?(0x200+((val)/5))&lt;&lt;7:(((val) + 2) / 5) &lt;&lt; 7),0,0xffff))
 multiline_comment|/* Initial values */
 DECL|macro|LM75_INIT_TEMP_OS
-mdefine_line|#define LM75_INIT_TEMP_OS 600
+mdefine_line|#define LM75_INIT_TEMP_OS&t;600
 DECL|macro|LM75_INIT_TEMP_HYST
-mdefine_line|#define LM75_INIT_TEMP_HYST 500
+mdefine_line|#define LM75_INIT_TEMP_HYST&t;500
 multiline_comment|/* Each client has this additional data */
 DECL|struct|lm75_data
 r_struct
 id|lm75_data
 (brace
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
 DECL|member|update_lock
 r_struct
 id|semaphore
@@ -112,17 +107,19 @@ r_int
 id|last_updated
 suffix:semicolon
 multiline_comment|/* In jiffies */
-DECL|member|temp
-DECL|member|temp_os
-DECL|member|temp_hyst
+DECL|member|temp_input
 id|u16
-id|temp
-comma
-id|temp_os
-comma
-id|temp_hyst
+id|temp_input
 suffix:semicolon
 multiline_comment|/* Register values */
+DECL|member|temp_max
+id|u16
+id|temp_max
+suffix:semicolon
+DECL|member|temp_hyst
+id|u16
+id|temp_hyst
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -150,10 +147,6 @@ r_int
 id|address
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 suffix:semicolon
@@ -177,15 +170,6 @@ r_struct
 id|i2c_client
 op_star
 id|client
-)paren
-suffix:semicolon
-r_static
-id|u16
-id|swap_bytes
-c_func
-(paren
-id|u16
-id|val
 )paren
 suffix:semicolon
 r_static
@@ -221,31 +205,6 @@ id|value
 suffix:semicolon
 r_static
 r_void
-id|lm75_temp
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-suffix:semicolon
-r_static
-r_void
 id|lm75_update_client
 c_func
 (paren
@@ -271,7 +230,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;LM75 sensor&quot;
+l_string|&quot;lm75&quot;
 comma
 dot
 id|id
@@ -295,51 +254,96 @@ id|lm75_detach_client
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* These files are created for each detected LM75. This is just a template;&n;   though at first sight, you might think we could use a statically&n;   allocated list, we need some way to get back to the parent - which&n;   is done through one of the &squot;extra&squot; fields which are initialized&n;   when a new copy is allocated. */
-DECL|variable|lm75_dir_table_template
-r_static
-id|ctl_table
-id|lm75_dir_table_template
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|LM75_SYSCTL_TEMP
-comma
-l_string|&quot;temp&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0644
-comma
-l_int|NULL
-comma
-op_amp
-id|i2c_proc_real
-comma
-op_amp
-id|i2c_sysctl_real
-comma
-l_int|NULL
-comma
-op_amp
-id|lm75_temp
-)brace
-comma
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 DECL|variable|lm75_id
 r_static
 r_int
 id|lm75_id
 op_assign
 l_int|0
+suffix:semicolon
+DECL|macro|show
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;lm75_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;temp = TEMP_FROM_REG(data-&gt;value);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, temp * 100);&t;&t;&bslash;&n;}
+DECL|variable|temp_max
+id|show
+c_func
+(paren
+id|temp_max
+)paren
+suffix:semicolon
+DECL|variable|temp_hyst
+id|show
+c_func
+(paren
+id|temp_hyst
+)paren
+suffix:semicolon
+DECL|variable|temp_input
+id|show
+c_func
+(paren
+id|temp_input
+)paren
+suffix:semicolon
+DECL|macro|set
+mdefine_line|#define set(value, reg)&t;&bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct lm75_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp = simple_strtoul(buf, NULL, 10) / 100;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;data-&gt;value = TEMP_TO_REG(temp);&t;&t;&t;&bslash;&n;&t;lm75_write_value(client, reg, data-&gt;value);&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+id|set
+c_func
+(paren
+id|temp_max
+comma
+id|LM75_REG_TEMP_OS
+)paren
+suffix:semicolon
+id|set
+c_func
+(paren
+id|temp_hyst
+comma
+id|LM75_REG_TEMP_HYST
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_max
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_temp_max
+comma
+id|set_temp_max
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_min
+comma
+id|S_IWUSR
+op_or
+id|S_IRUGO
+comma
+id|show_temp_hyst
+comma
+id|set_temp_hyst
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp_input
+comma
+id|S_IRUGO
+comma
+id|show_temp_input
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|function|lm75_attach_adapter
 r_static
@@ -382,10 +386,6 @@ r_int
 id|address
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace
@@ -418,10 +418,7 @@ suffix:semicolon
 r_const
 r_char
 op_star
-id|type_name
-comma
-op_star
-id|client_name
+id|name
 suffix:semicolon
 multiline_comment|/* Make sure we aren&squot;t probing the ISA bus!! This is just a safety check&n;&t;   at this moment; i2c_detect really won&squot;t call us. */
 macro_line|#ifdef DEBUG
@@ -435,13 +432,17 @@ id|adapter
 )paren
 )paren
 (brace
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;lm75.o: lm75_detect called for an ISA bus adapter?!?&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;lm75_detect called for an ISA bus adapter?!?&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+m_exit
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -460,7 +461,7 @@ id|I2C_FUNC_SMBUS_WORD_DATA
 )paren
 )paren
 r_goto
-id|error0
+m_exit
 suffix:semicolon
 multiline_comment|/* OK. For now, we presume we have a valid client. We now create the&n;&t;   client structure, even though we cannot fill it completely yet.&n;&t;   But it allows us to access lm75_{read,write}_value. */
 r_if
@@ -496,7 +497,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|error0
+m_exit
 suffix:semicolon
 )brace
 id|memset
@@ -625,6 +626,7 @@ c_cond
 (paren
 (paren
 id|i2c_smbus_read_byte_data
+c_func
 (paren
 id|new_client
 comma
@@ -640,6 +642,7 @@ id|conf
 op_logical_or
 (paren
 id|i2c_smbus_read_word_data
+c_func
 (paren
 id|new_client
 comma
@@ -655,6 +658,7 @@ id|hyst
 op_logical_or
 (paren
 id|i2c_smbus_read_word_data
+c_func
 (paren
 id|new_client
 comma
@@ -669,7 +673,7 @@ id|os
 )paren
 )paren
 r_goto
-id|error1
+id|exit_free
 suffix:semicolon
 )brace
 multiline_comment|/* Determine the chip type - only one kind supported! */
@@ -692,27 +696,26 @@ op_eq
 id|lm75
 )paren
 (brace
-id|type_name
+id|name
 op_assign
 l_string|&quot;lm75&quot;
-suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;LM75 chip&quot;
 suffix:semicolon
 )brace
 r_else
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;lm75.o: Internal error: unknown kind (%d)?!?&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
 comma
 id|kind
 )paren
 suffix:semicolon
 r_goto
-id|error1
+id|exit_free
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
@@ -721,7 +724,7 @@ c_func
 (paren
 id|new_client-&gt;dev.name
 comma
-id|client_name
+id|name
 comma
 id|DEVICE_NAME_SIZE
 )paren
@@ -757,40 +760,37 @@ id|new_client
 )paren
 )paren
 r_goto
-id|error3
+id|exit_free
 suffix:semicolon
-multiline_comment|/* Register a new directory entry with module sensors */
-id|i
-op_assign
-id|i2c_register_entry
+id|device_create_file
 c_func
 (paren
-id|new_client
+op_amp
+id|new_client-&gt;dev
 comma
-id|type_name
-comma
-id|lm75_dir_table_template
+op_amp
+id|dev_attr_temp_max
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|device_create_file
+c_func
 (paren
-id|i
-OL
-l_int|0
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_min
 )paren
-(brace
-id|err
-op_assign
-id|i
 suffix:semicolon
-r_goto
-id|error4
-suffix:semicolon
-)brace
-id|data-&gt;sysctl_id
-op_assign
-id|i
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp_input
+)paren
 suffix:semicolon
 id|lm75_init_client
 c_func
@@ -801,18 +801,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* OK, this is not exactly good programming practice, usually. But it is&n;   very code-efficient in this case. */
-id|error4
-suffix:colon
-id|i2c_detach_client
-c_func
-(paren
-id|new_client
-)paren
-suffix:semicolon
-id|error3
-suffix:colon
-id|error1
+id|exit_free
 suffix:colon
 id|kfree
 c_func
@@ -820,7 +809,7 @@ c_func
 id|new_client
 )paren
 suffix:semicolon
-id|error0
+m_exit
 suffix:colon
 r_return
 id|err
@@ -838,23 +827,6 @@ op_star
 id|client
 )paren
 (brace
-r_struct
-id|lm75_data
-op_star
-id|data
-op_assign
-id|i2c_get_clientdata
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
-id|i2c_deregister_entry
-c_func
-(paren
-id|data-&gt;sysctl_id
-)paren
-suffix:semicolon
 id|i2c_detach_client
 c_func
 (paren
@@ -1103,13 +1075,16 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
+op_amp
+id|client-&gt;dev
+comma
 l_string|&quot;Starting lm75 update&bslash;n&quot;
 )paren
 suffix:semicolon
-id|data-&gt;temp
+id|data-&gt;temp_input
 op_assign
 id|lm75_read_value
 c_func
@@ -1119,7 +1094,7 @@ comma
 id|LM75_REG_TEMP
 )paren
 suffix:semicolon
-id|data-&gt;temp_os
+id|data-&gt;temp_max
 op_assign
 id|lm75_read_value
 c_func
@@ -1155,182 +1130,6 @@ op_amp
 id|data-&gt;update_lock
 )paren
 suffix:semicolon
-)brace
-DECL|function|lm75_temp
-r_static
-r_void
-id|lm75_temp
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|operation
-comma
-r_int
-id|ctl_name
-comma
-r_int
-op_star
-id|nrels_mag
-comma
-r_int
-op_star
-id|results
-)paren
-(brace
-r_struct
-id|lm75_data
-op_star
-id|data
-op_assign
-id|i2c_get_clientdata
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|operation
-op_eq
-id|SENSORS_PROC_REAL_INFO
-)paren
-op_star
-id|nrels_mag
-op_assign
-l_int|1
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|operation
-op_eq
-id|SENSORS_PROC_REAL_READ
-)paren
-(brace
-id|lm75_update_client
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
-id|results
-(braket
-l_int|0
-)braket
-op_assign
-id|TEMP_FROM_REG
-c_func
-(paren
-id|data-&gt;temp_os
-)paren
-suffix:semicolon
-id|results
-(braket
-l_int|1
-)braket
-op_assign
-id|TEMP_FROM_REG
-c_func
-(paren
-id|data-&gt;temp_hyst
-)paren
-suffix:semicolon
-id|results
-(braket
-l_int|2
-)braket
-op_assign
-id|TEMP_FROM_REG
-c_func
-(paren
-id|data-&gt;temp
-)paren
-suffix:semicolon
-op_star
-id|nrels_mag
-op_assign
-l_int|3
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|operation
-op_eq
-id|SENSORS_PROC_REAL_WRITE
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_star
-id|nrels_mag
-op_ge
-l_int|1
-)paren
-(brace
-id|data-&gt;temp_os
-op_assign
-id|TEMP_TO_REG
-c_func
-(paren
-id|results
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|lm75_write_value
-c_func
-(paren
-id|client
-comma
-id|LM75_REG_TEMP_OS
-comma
-id|data-&gt;temp_os
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_star
-id|nrels_mag
-op_ge
-l_int|2
-)paren
-(brace
-id|data-&gt;temp_hyst
-op_assign
-id|TEMP_TO_REG
-c_func
-(paren
-id|results
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|lm75_write_value
-c_func
-(paren
-id|client
-comma
-id|LM75_REG_TEMP_HYST
-comma
-id|data-&gt;temp_hyst
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|sensors_lm75_init
 r_static
