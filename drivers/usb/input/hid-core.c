@@ -4490,12 +4490,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Find a report with a specified HID usage.&n; */
-DECL|function|hid_find_report_by_usage
+multiline_comment|/*&n; * Find a report field with a specified HID usage.&n; */
+DECL|function|hid_find_field_by_usage
 r_struct
-id|hid_report
+id|hid_field
 op_star
-id|hid_find_report_by_usage
+id|hid_find_field_by_usage
 c_func
 (paren
 r_struct
@@ -4560,7 +4560,10 @@ op_eq
 id|wanted_usage
 )paren
 r_return
-id|report
+id|report-&gt;field
+(braket
+id|i
+)braket
 suffix:semicolon
 r_return
 l_int|NULL

@@ -1347,9 +1347,9 @@ id|hid
 )paren
 suffix:semicolon
 r_struct
-id|hid_report
+id|hid_field
 op_star
-id|hid_find_report_by_usage
+id|hid_find_field_by_usage
 c_func
 (paren
 r_struct
