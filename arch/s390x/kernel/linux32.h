@@ -30,12 +30,6 @@ id|msgtyp
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|F_GETLK64
-mdefine_line|#define F_GETLK64       12
-DECL|macro|F_SETLK64
-mdefine_line|#define F_SETLK64       13
-DECL|macro|F_SETLKW64
-mdefine_line|#define F_SETLKW64      14    
 DECL|struct|old_sigaction32
 r_struct
 id|old_sigaction32

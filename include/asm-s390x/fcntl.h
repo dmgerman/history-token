@@ -124,7 +124,5 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|F_LINUX_SPECIFIC_BASE
 mdefine_line|#define F_LINUX_SPECIFIC_BASE  1024
-DECL|macro|flock64
-mdefine_line|#define flock64   flock
 macro_line|#endif
 eof
