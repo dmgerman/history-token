@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use pci_pool or pci_alloc_consistent&n; *&t;- driver buffers, read/written by HC ... the hcd glue or the&n; *&t;  device driver provides us with dma addresses&n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pagable.&n; */
+multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use dma_pool or dma_alloc_coherent&n; *&t;- driver buffers, read/written by HC ... the hcd glue or the&n; *&t;  device driver provides us with dma addresses&n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pagable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|ohci_hcd_alloc
 r_static
@@ -101,11 +101,11 @@ id|ohci
 (brace
 id|ohci-&gt;td_cache
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ohci_td&quot;
 comma
-id|ohci-&gt;hcd.pdev
+id|ohci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -132,11 +132,11 @@ id|ENOMEM
 suffix:semicolon
 id|ohci-&gt;ed_cache
 op_assign
-id|pci_pool_create
+id|dma_pool_create
 (paren
 l_string|&quot;ohci_ed&quot;
 comma
-id|ohci-&gt;hcd.pdev
+id|ohci-&gt;hcd.self.controller
 comma
 r_sizeof
 (paren
@@ -158,7 +158,7 @@ op_logical_neg
 id|ohci-&gt;ed_cache
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ohci-&gt;td_cache
 )paren
@@ -189,7 +189,7 @@ c_cond
 id|ohci-&gt;td_cache
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ohci-&gt;td_cache
 )paren
@@ -205,7 +205,7 @@ c_cond
 id|ohci-&gt;ed_cache
 )paren
 (brace
-id|pci_pool_destroy
+id|dma_pool_destroy
 (paren
 id|ohci-&gt;ed_cache
 )paren
@@ -299,7 +299,7 @@ id|td
 suffix:semicolon
 id|td
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|hc-&gt;td_cache
 comma
@@ -428,7 +428,7 @@ comma
 id|td
 )paren
 suffix:semicolon
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|hc-&gt;td_cache
 comma
@@ -466,7 +466,7 @@ id|ed
 suffix:semicolon
 id|ed
 op_assign
-id|pci_pool_alloc
+id|dma_pool_alloc
 (paren
 id|hc-&gt;ed_cache
 comma
@@ -526,7 +526,7 @@ op_star
 id|ed
 )paren
 (brace
-id|pci_pool_free
+id|dma_pool_free
 (paren
 id|hc-&gt;ed_cache
 comma

@@ -1,4 +1,5 @@
 multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.24 2002/04/22 03:39:43 mdharm Exp $&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *   (c) 2002 Andries Brouwer (aeb@cwi.nl)&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands.&n; * This driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Known vendor commands: 12 bytes, first byte is opcode&n; *&n; * E7: read scatter gather&n; * E8: read&n; * E9: write&n; * EA: erase&n; * EB: reset&n; * EC: read status&n; * ED: read ID&n; * EE: write CIS (?)&n; * EF: compute checksum (?)&n; */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
@@ -1864,7 +1865,7 @@ id|use_sg
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Erase Command: 12 bytes.&n; * byte 0: opcode: EA&n; * bytes 6-9: erase address (big-endian, counting shorts, sector aligned).&n; * &n; * Always precisely one block is erased; bytes 2-5 and 10-11 are ignored.&n; * The byte address being erased is 2*Eaddress.&n; */
+multiline_comment|/*&n; * Erase Command: 12 bytes.&n; * byte 0: opcode: EA&n; * bytes 6-9: erase address (big-endian, counting shorts, sector aligned).&n; * &n; * Always precisely one block is erased; bytes 2-5 and 10-11 are ignored.&n; * The byte address being erased is 2*Eaddress.&n; * The CIS cannot be erased.&n; */
 r_static
 r_int
 DECL|function|sddr09_erase
@@ -2006,6 +2007,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Write CIS Command: 12 bytes.&n; * byte 0: opcode: EE&n; * bytes 2-5: write address in shorts&n; * bytes 10-11: sector count&n; *&n; * This writes at the indicated address. Don&squot;t know how it differs&n; * from E9. Maybe it does not erase? However, it will also write to&n; * the CIS.&n; *&n; * When two such commands on the same page follow each other directly,&n; * the second one is not done.&n; */
 multiline_comment|/*&n; * Write Command: 12 bytes.&n; * byte 0: opcode: E9&n; * bytes 2-5: write address (big-endian, counting shorts, sector aligned).&n; * bytes 6-9: erase address (big-endian, counting shorts, sector aligned).&n; * bytes 10-11: sector count (big-endian, in 512-byte sectors).&n; *&n; * If write address equals erase address, the erase is done first,&n; * otherwise the write is done first. When erase address equals zero&n; * no erase is done?&n; */
 r_static
 r_int
@@ -6707,12 +6709,16 @@ id|ptr
 l_int|0
 )braket
 op_assign
+id|cpu_to_be16
+c_func
+(paren
 r_sizeof
 (paren
 id|mode_page_01
 )paren
 op_minus
 l_int|2
+)paren
 suffix:semicolon
 id|ptr
 (braket

@@ -107,21 +107,6 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* device memory/io */
-DECL|member|controller
-r_struct
-id|device
-op_star
-id|controller
-suffix:semicolon
-multiline_comment|/* handle to hardware */
-multiline_comment|/* a few non-PCI controllers exist, mostly for OHCI */
-DECL|member|pdev
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
-multiline_comment|/* pci is typical */
 macro_line|#ifdef&t;CONFIG_PCI
 DECL|member|region
 r_int
@@ -141,7 +126,7 @@ DECL|macro|HCD_BUFFER_POOLS
 mdefine_line|#define HCD_BUFFER_POOLS&t;4
 DECL|member|pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|pool
 (braket
@@ -1139,7 +1124,7 @@ id|hcd
 op_member_access_from_pointer
 id|root_hub
 comma
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 )paren
 suffix:semicolon
 )brace

@@ -72,18 +72,31 @@ DECL|macro|USBPORTSC_PE
 mdefine_line|#define   USBPORTSC_PE&t;&t;0x0004&t;/* Port Enable */
 DECL|macro|USBPORTSC_PEC
 mdefine_line|#define   USBPORTSC_PEC&t;&t;0x0008&t;/* Port Enable Change */
-DECL|macro|USBPORTSC_LS
-mdefine_line|#define   USBPORTSC_LS&t;&t;0x0030&t;/* Line Status */
+DECL|macro|USBPORTSC_DPLUS
+mdefine_line|#define   USBPORTSC_DPLUS&t;0x0010&t;/* D+ high (line status) */
+DECL|macro|USBPORTSC_DMINUS
+mdefine_line|#define   USBPORTSC_DMINUS&t;0x0020&t;/* D- high (line status) */
 DECL|macro|USBPORTSC_RD
 mdefine_line|#define   USBPORTSC_RD&t;&t;0x0040&t;/* Resume Detect */
+DECL|macro|USBPORTSC_RES1
+mdefine_line|#define   USBPORTSC_RES1&t;0x0080&t;/* reserved, always 1 */
 DECL|macro|USBPORTSC_LSDA
 mdefine_line|#define   USBPORTSC_LSDA&t;0x0100&t;/* Low Speed Device Attached */
 DECL|macro|USBPORTSC_PR
 mdefine_line|#define   USBPORTSC_PR&t;&t;0x0200&t;/* Port Reset */
+multiline_comment|/* OC and OCC from Intel 430TX and later (not UHCI 1.1d spec) */
 DECL|macro|USBPORTSC_OC
 mdefine_line|#define   USBPORTSC_OC&t;&t;0x0400&t;/* Over Current condition */
+DECL|macro|USBPORTSC_OCC
+mdefine_line|#define   USBPORTSC_OCC&t;&t;0x0800&t;/* Over Current Change R/WC */
 DECL|macro|USBPORTSC_SUSP
 mdefine_line|#define   USBPORTSC_SUSP&t;0x1000&t;/* Suspend */
+DECL|macro|USBPORTSC_RES2
+mdefine_line|#define   USBPORTSC_RES2&t;0x2000&t;/* reserved, write zeroes */
+DECL|macro|USBPORTSC_RES3
+mdefine_line|#define   USBPORTSC_RES3&t;0x4000&t;/* reserved, write zeroes */
+DECL|macro|USBPORTSC_RES4
+mdefine_line|#define   USBPORTSC_RES4&t;0x8000&t;/* reserved, write zeroes */
 multiline_comment|/* Legacy support register */
 DECL|macro|USBLEGSUP
 mdefine_line|#define USBLEGSUP&t;&t;0xc0
@@ -340,7 +353,7 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The UHCI driver places Interrupt, Control and Bulk into QH&squot;s both&n; * to group together TD&squot;s for one transfer, and also to faciliate queuing&n; * of URB&squot;s. To make it easy to insert entries into the schedule, we have&n; * a skeleton of QH&squot;s for each predefined Interrupt latency, low speed&n; * control, high speed control and terminating QH (see explanation for&n; * the terminating QH below).&n; *&n; * When we want to add a new QH, we add it to the end of the list for the&n; * skeleton QH.&n; *&n; * For instance, the queue can look like this:&n; *&n; * skel int128 QH&n; * dev 1 interrupt QH&n; * dev 5 interrupt QH&n; * skel int64 QH&n; * skel int32 QH&n; * ...&n; * skel int1 QH&n; * skel low speed control QH&n; * dev 5 control QH&n; * skel high speed control QH&n; * skel bulk QH&n; * dev 1 bulk QH&n; * dev 2 bulk QH&n; * skel terminating QH&n; *&n; * The terminating QH is used for 2 reasons:&n; * - To place a terminating TD which is used to workaround a PIIX bug&n; *   (see Intel errata for explanation)&n; * - To loop back to the high speed control queue for full speed bandwidth&n; *   reclamation&n; *&n; * Isochronous transfers are stored before the start of the skeleton&n; * schedule and don&squot;t use QH&squot;s. While the UHCI spec doesn&squot;t forbid the&n; * use of QH&squot;s for Isochronous, it doesn&squot;t use them either. Since we don&squot;t&n; * need to use them either, we follow the spec diagrams in hope that it&squot;ll&n; * be more compatible with future UHCI implementations.&n; */
+multiline_comment|/*&n; * The UHCI driver places Interrupt, Control and Bulk into QH&squot;s both&n; * to group together TD&squot;s for one transfer, and also to faciliate queuing&n; * of URB&squot;s. To make it easy to insert entries into the schedule, we have&n; * a skeleton of QH&squot;s for each predefined Interrupt latency, low-speed&n; * control, full-speed control and terminating QH (see explanation for&n; * the terminating QH below).&n; *&n; * When we want to add a new QH, we add it to the end of the list for the&n; * skeleton QH.&n; *&n; * For instance, the queue can look like this:&n; *&n; * skel int128 QH&n; * dev 1 interrupt QH&n; * dev 5 interrupt QH&n; * skel int64 QH&n; * skel int32 QH&n; * ...&n; * skel int1 QH&n; * skel low-speed control QH&n; * dev 5 control QH&n; * skel full-speed control QH&n; * skel bulk QH&n; * dev 1 bulk QH&n; * dev 2 bulk QH&n; * skel terminating QH&n; *&n; * The terminating QH is used for 2 reasons:&n; * - To place a terminating TD which is used to workaround a PIIX bug&n; *   (see Intel errata for explanation)&n; * - To loop back to the full-speed control queue for full-speed bandwidth&n; *   reclamation&n; *&n; * Isochronous transfers are stored before the start of the skeleton&n; * schedule and don&squot;t use QH&squot;s. While the UHCI spec doesn&squot;t forbid the&n; * use of QH&squot;s for Isochronous, it doesn&squot;t use them either. Since we don&squot;t&n; * need to use them either, we follow the spec diagrams in hope that it&squot;ll&n; * be more compatible with future UHCI implementations.&n; */
 DECL|macro|UHCI_NUM_SKELQH
 mdefine_line|#define UHCI_NUM_SKELQH&t;&t;12
 DECL|macro|skel_int128_qh
@@ -503,6 +516,8 @@ id|UHCI_RESUMING_2
 suffix:semicolon
 DECL|macro|hcd_to_uhci
 mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
+DECL|macro|uhci_dev
+mdefine_line|#define uhci_dev(u)&t;((u)-&gt;hcd.self.controller)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
 DECL|struct|uhci_hcd
 r_struct
@@ -530,13 +545,13 @@ id|io_addr
 suffix:semicolon
 DECL|member|qh_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|qh_pool
 suffix:semicolon
 DECL|member|td_pool
 r_struct
-id|pci_pool
+id|dma_pool
 op_star
 id|td_pool
 suffix:semicolon
@@ -578,7 +593,7 @@ DECL|member|fsbr
 r_int
 id|fsbr
 suffix:semicolon
-multiline_comment|/* Full speed bandwidth reclamation */
+multiline_comment|/* Full-speed bandwidth reclamation */
 DECL|member|fsbrtimeout
 r_int
 r_int
@@ -726,11 +741,6 @@ suffix:semicolon
 multiline_comment|/* If we get a short packet during */
 multiline_comment|/*  a control transfer, retrigger */
 multiline_comment|/*  the status phase */
-DECL|member|status
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* Final status */
 DECL|member|inserttime
 r_int
 r_int
@@ -749,12 +759,6 @@ id|list_head
 id|queue_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;frame_list_lock */
-DECL|member|complete_list
-r_struct
-id|list_head
-id|complete_list
-suffix:semicolon
-multiline_comment|/* P: uhci-&gt;complete_list_lock */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * spinlocks are used extensively to protect the many lists and data&n; * structures we have. It&squot;s not that pretty, but it&squot;s necessary. We&n; * need to be done with all of the locks (except complete_list_lock) when&n; * we call urb-&gt;complete. I&squot;ve tried to make it simple enough so I don&squot;t&n; * have to spend hours racking my brain trying to figure out if the&n; * locking is safe.&n; *&n; * Here&squot;s the safe locking order to prevent deadlocks:&n; *&n; * #1 uhci-&gt;urb_list_lock&n; * #2 urb-&gt;lock&n; * #3 uhci-&gt;urb_remove_list_lock, uhci-&gt;frame_list_lock, &n; *   uhci-&gt;qh_remove_list_lock&n; * #4 uhci-&gt;complete_list_lock&n; *&n; * If you&squot;re going to grab 2 or more locks at once, ALWAYS grab the lock&n; * at the lowest level FIRST and NEVER grab locks at the same level at the&n; * same time.&n; * &n; * So, if you need uhci-&gt;urb_list_lock, grab it before you grab urb-&gt;lock&n; */

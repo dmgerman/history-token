@@ -481,10 +481,6 @@ id|hcd-&gt;description
 op_assign
 id|driver-&gt;description
 suffix:semicolon
-id|hcd-&gt;pdev
-op_assign
-id|dev
-suffix:semicolon
 id|hcd-&gt;self.bus_name
 op_assign
 id|pci_name
@@ -508,10 +504,6 @@ id|hcd-&gt;self.controller
 op_assign
 op_amp
 id|dev-&gt;dev
-suffix:semicolon
-id|hcd-&gt;controller
-op_assign
-id|hcd-&gt;self.controller
 suffix:semicolon
 r_if
 c_cond
@@ -541,7 +533,7 @@ suffix:semicolon
 )brace
 id|dev_info
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -568,7 +560,7 @@ l_int|0
 (brace
 id|dev_err
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;can&squot;t reset&bslash;n&quot;
 )paren
@@ -631,7 +623,7 @@ l_int|0
 (brace
 id|dev_err
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;request interrupt %s failed&bslash;n&quot;
 comma
@@ -648,7 +640,7 @@ id|dev-&gt;irq
 suffix:semicolon
 id|dev_info
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;irq %s, %s %p&bslash;n&quot;
 comma
@@ -774,7 +766,7 @@ r_return
 suffix:semicolon
 id|dev_info
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;remove, state %x&bslash;n&quot;
 comma
@@ -810,7 +802,7 @@ id|USB_STATE_QUIESCING
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;roothub graceful disconnect&bslash;n&quot;
 )paren
@@ -948,7 +940,7 @@ id|dev
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;suspend D%d --&gt; D%d&bslash;n&quot;
 comma
@@ -968,7 +960,7 @@ id|USB_STATE_HALT
 suffix:colon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;halted; hcd not suspended&bslash;n&quot;
 )paren
@@ -980,7 +972,7 @@ id|USB_STATE_SUSPENDED
 suffix:colon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;hcd already suspended&bslash;n&quot;
 )paren
@@ -1019,7 +1011,7 @@ id|retval
 )paren
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;suspend fail, retval %d&bslash;n&quot;
 comma
@@ -1078,7 +1070,7 @@ id|dev
 suffix:semicolon
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;resume from state D%d&bslash;n&quot;
 comma
@@ -1095,7 +1087,7 @@ id|USB_STATE_SUSPENDED
 (brace
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;can&squot;t resume, not suspended!&bslash;n&quot;
 )paren
@@ -1144,7 +1136,7 @@ id|hcd-&gt;state
 (brace
 id|dev_dbg
 (paren
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 comma
 l_string|&quot;resume fail, retval %d&bslash;n&quot;
 comma

@@ -380,7 +380,7 @@ id|desc-&gt;bPwrOn2PwrGood
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/* FIXME: f(system power) */
+multiline_comment|/* ehci 1.0, 2.3.9 says 20ms max */
 id|desc-&gt;bHubContrCurrent
 op_assign
 l_int|0
