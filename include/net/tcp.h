@@ -1356,6 +1356,10 @@ r_int
 id|sysctl_tcp_moderate_rcvbuf
 suffix:semicolon
 r_extern
+r_int
+id|sysctl_tcp_tso_win_divisor
+suffix:semicolon
+r_extern
 id|atomic_t
 id|tcp_memory_allocated
 suffix:semicolon
