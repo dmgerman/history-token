@@ -18,6 +18,8 @@ DECL|macro|SEG_TYPE_EN
 mdefine_line|#define SEG_TYPE_EN 5
 DECL|macro|SEG_TYPE_SC
 mdefine_line|#define SEG_TYPE_SC 6
+DECL|macro|SEG_TYPE_EWEN
+mdefine_line|#define SEG_TYPE_EWEN 7
 DECL|macro|SEGMENT_SHARED
 mdefine_line|#define SEGMENT_SHARED 0
 DECL|macro|SEGMENT_EXCLUSIVE
@@ -66,11 +68,23 @@ id|name
 suffix:semicolon
 r_extern
 r_int
-id|segment_info
+id|segment_type
 (paren
 r_char
 op_star
 id|name
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|segment_modify_shared
+(paren
+r_char
+op_star
+id|name
+comma
+r_int
+id|do_nonshared
 )paren
 suffix:semicolon
 macro_line|#endif

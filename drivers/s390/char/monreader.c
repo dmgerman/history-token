@@ -367,7 +367,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * print appropriate error message for segment_load()/segment_info()&n; * return code&n; */
+multiline_comment|/*&n; * print appropriate error message for segment_load()/segment_type()&n; * return code&n; */
 r_static
 r_void
 DECL|function|mon_segment_warn
@@ -498,6 +498,21 @@ id|P_WARNING
 c_func
 (paren
 l_string|&quot;cannot load/query segment %s, out of memory&bslash;n&quot;
+comma
+id|seg_name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ERANGE
+suffix:colon
+id|P_WARNING
+c_func
+(paren
+l_string|&quot;cannot load/query segment %s, exceeds kernel &quot;
+l_string|&quot;mapping range&bslash;n&quot;
 comma
 id|seg_name
 )paren
@@ -2658,7 +2673,7 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|segment_info
+id|segment_type
 c_func
 (paren
 id|mon_dcss_name
