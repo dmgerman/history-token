@@ -739,12 +739,11 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
-id|data
+id|ppos
 )paren
 (brace
 id|acpi_status
@@ -1409,12 +1408,11 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
-id|data
+id|ppos
 )paren
 (brace
 r_int
@@ -2405,7 +2403,7 @@ op_assign
 op_amp
 id|acpi_system_sleep_fops
 suffix:semicolon
-id|entry-&gt;write_proc
+id|entry-&gt;proc_fops-&gt;write
 op_assign
 id|acpi_system_write_sleep
 suffix:semicolon
@@ -2452,7 +2450,7 @@ op_assign
 op_amp
 id|acpi_system_alarm_fops
 suffix:semicolon
-id|entry-&gt;write_proc
+id|entry-&gt;proc_fops-&gt;write
 op_assign
 id|acpi_system_write_alarm
 suffix:semicolon
