@@ -397,12 +397,12 @@ id|prot_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_fix_screeninfo
 id|atyfb_fix
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -1234,12 +1234,12 @@ DECL|member|features
 id|u32
 id|features
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 )brace
 id|aty_chips
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 macro_line|#ifdef CONFIG_FB_ATY_GX
@@ -2108,86 +2108,86 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_dram
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;DRAM&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_resv
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;RESV&quot;
 suffix:semicolon
 macro_line|#ifdef CONFIG_FB_ATY_GX
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_vram
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;VRAM&quot;
 suffix:semicolon
 macro_line|#endif /* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_edo
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;EDO&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_sdram
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;SDRAM (1:1)&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_sgram
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;SGRAM (1:1)&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_sdram32
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;SDRAM (2:1) (32-bit)&quot;
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|ram_off
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;OFF&quot;
 suffix:semicolon
@@ -2201,7 +2201,7 @@ l_int|17
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_FB_ATY_GX
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
@@ -2209,7 +2209,7 @@ id|aty_gx_ram
 (braket
 l_int|8
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 id|ram_dram
@@ -2231,7 +2231,7 @@ id|ram_resv
 suffix:semicolon
 macro_line|#endif /* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
@@ -2239,7 +2239,7 @@ id|aty_ct_ram
 (braket
 l_int|8
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 id|ram_off
