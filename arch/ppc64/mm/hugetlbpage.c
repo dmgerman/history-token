@@ -1821,7 +1821,7 @@ comma
 id|local
 )paren
 suffix:semicolon
-id|huge_page_release
+id|put_page
 c_func
 (paren
 id|page

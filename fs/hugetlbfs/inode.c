@@ -565,7 +565,7 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-id|huge_page_release
+id|put_page
 c_func
 (paren
 id|pvec-&gt;pages
@@ -610,7 +610,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|huge_page_release
+id|put_page
 c_func
 (paren
 id|page

@@ -137,15 +137,6 @@ id|vm_area_struct
 op_star
 )paren
 suffix:semicolon
-r_void
-id|huge_page_release
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
 r_int
 id|hugetlb_report_meminfo
 c_func
@@ -364,8 +355,6 @@ DECL|macro|zap_hugepage_range
 mdefine_line|#define zap_hugepage_range(vma, start, len)&t;BUG()
 DECL|macro|unmap_hugepage_range
 mdefine_line|#define unmap_hugepage_range(vma, start, end)&t;BUG()
-DECL|macro|huge_page_release
-mdefine_line|#define huge_page_release(page)&t;&t;&t;BUG()
 DECL|macro|is_hugepage_mem_enough
 mdefine_line|#define is_hugepage_mem_enough(size)&t;&t;0
 DECL|macro|hugetlb_report_meminfo
