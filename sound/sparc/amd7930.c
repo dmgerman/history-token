@@ -1877,7 +1877,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_amd7930_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_amd7930_interrupt
 c_func
 (paren
@@ -2078,6 +2078,9 @@ c_func
 (paren
 id|amd-&gt;capture_substream
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_amd7930_trigger
