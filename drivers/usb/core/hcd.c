@@ -3784,10 +3784,6 @@ r_int
 id|endpoint
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|hcd_dev
 op_star
@@ -3817,6 +3813,10 @@ suffix:semicolon
 id|hcd
 op_assign
 id|udev-&gt;bus-&gt;hcpriv
+suffix:semicolon
+id|local_irq_disable
+(paren
+)paren
 suffix:semicolon
 id|rescan
 suffix:colon
@@ -3866,11 +3866,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* then kill any current requests */
-id|local_irq_save
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -4096,9 +4091,8 @@ op_amp
 id|hcd_data_lock
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|local_irq_enable
 (paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* synchronize with the hardware, so old configuration state&n;&t; * clears out immediately (and will be freed).&n;&t; */
