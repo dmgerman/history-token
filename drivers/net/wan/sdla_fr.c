@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for inb(), outb(), etc. */
 macro_line|#include &lt;linux/time.h&gt;&t; &t;/* for do_gettimeofday */&t;
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* sockaddr_in */
-macro_line|#include &lt;linux/inet.h&gt;&t;&t;/* in_ntoa(), etc... */
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
@@ -9635,11 +9634,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Address: %s&bslash;n&quot;
+l_string|&quot;%s: Address: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|chan-&gt;name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|chan-&gt;ip_remote
@@ -9653,11 +9652,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Route Added Successfully: %s&bslash;n&quot;
+l_string|&quot;%s: Route Added Successfully: %u.%u.%u.%U&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|chan-&gt;ip_remote
@@ -9773,11 +9772,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Address: %s&bslash;n&quot;
+l_string|&quot;%s: Address: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|chan-&gt;ip_remote
@@ -9791,11 +9790,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Route Removed Sucessfuly: %s&bslash;n&quot;
+l_string|&quot;%s: Route Removed Sucessfuly: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|ip_tmp
@@ -9973,11 +9972,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Address: %s&bslash;n&quot;
+l_string|&quot;%s: Address: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|chan-&gt;name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|dev-&gt;pa_dstaddr
@@ -10044,11 +10043,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Address: %s&bslash;n&quot;
+l_string|&quot;%s: Address: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|dev-&gt;pa_dstaddr
@@ -15399,11 +15398,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Recvd PtP addr -InArp Req: %s&bslash;n&quot;
+l_string|&quot;%s: Recvd PtP addr -InArp Req: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|arphdr-&gt;ar_sip
@@ -15435,11 +15434,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Invalid PtP address. %s  InARP ignored.&bslash;n&quot;
+l_string|&quot;%s: Invalid PtP address. %u.%u.%u.%u  InARP ignored.&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|arphdr-&gt;ar_sip
@@ -15450,14 +15449,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: mask %s&bslash;n&quot;
+l_string|&quot;%s: mask %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
-id|in_dev-&gt;ifa_list-&gt;ifa_mask
+id|in_dev-&gt;ida_list-&gt;ifa_mask
 )paren
 )paren
 suffix:semicolon
@@ -15465,14 +15464,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: local %s&bslash;n&quot;
+l_string|&quot;%s: local %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
-id|in_dev-&gt;ifa_list-&gt;ifa_local
+id|in_dev-&gt;ida_list-&gt;ifa_local
 )paren
 )paren
 suffix:semicolon
@@ -15619,11 +15618,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Recvd PtP addr %s -InArp Reply&bslash;n&quot;
+l_string|&quot;%s: Recvd PtP addr %u.%u.%u.%u -InArp Reply&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|arphdr-&gt;ar_sip
@@ -15743,7 +15742,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Recvd PtP addr %s -InArp Req&bslash;n&quot;
+l_string|&quot;%s: Recvd PtP addr %u.%u.%u.%u -InArp Req&bslash;n&quot;
 comma
 (paren
 (paren
@@ -15755,7 +15754,7 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|arphdr-&gt;ar_sip
@@ -15904,7 +15903,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Recvd PtP addr %s -InArp Reply&bslash;n&quot;
+l_string|&quot;%s: Recvd PtP addr %u.%u.%u.%u -InArp Reply&bslash;n&quot;
 comma
 (paren
 (paren
@@ -15916,7 +15915,7 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|name
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|arphdr-&gt;ar_sip

@@ -293,15 +293,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ROOT_NFS
-r_char
-op_star
-id|in_ntoa
-c_func
-(paren
-id|__u32
-id|in
-)paren
-suffix:semicolon
 r_int
 DECL|function|rpc_getport_external
 id|rpc_getport_external
@@ -368,12 +359,14 @@ comma
 id|prot
 )paren
 suffix:semicolon
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|hostname
 comma
-id|in_ntoa
+l_string|&quot;%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
 c_func
 (paren
 id|sin-&gt;sin_addr.s_addr

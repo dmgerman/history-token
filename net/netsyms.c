@@ -2100,13 +2100,6 @@ id|dev_open
 )paren
 suffix:semicolon
 multiline_comment|/* Used by other modules */
-DECL|variable|in_ntoa
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|in_ntoa
-)paren
-suffix:semicolon
 DECL|variable|xrlim_allow
 id|EXPORT_SYMBOL
 c_func

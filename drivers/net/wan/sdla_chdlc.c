@@ -9041,22 +9041,27 @@ c_cond
 id|card-&gt;u.c.slarp_timer
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Bad IP address %s received&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|in_ntoa
-c_func
-(paren
-id|ntohl
+id|u32
+id|addr_net
+op_assign
+id|htonl
 c_func
 (paren
 id|chdlc_priv_area-&gt;IP_address
 )paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Bad IP address %u.%u.%u.%u received&bslash;n&quot;
+comma
+id|card-&gt;devname
+comma
+id|NIPQUAD
+c_func
+(paren
+id|addr_net
 )paren
 )paren
 suffix:semicolon
@@ -9072,22 +9077,27 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Bad IP address %s issued&bslash;n&quot;
-comma
-id|card-&gt;devname
-comma
-id|in_ntoa
-c_func
-(paren
-id|ntohl
+id|u32
+id|addr_net
+op_assign
+id|htonl
 c_func
 (paren
 id|chdlc_priv_area-&gt;IP_address
 )paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Bad IP address %u.%u.%u.%u issued&bslash;n&quot;
+comma
+id|card-&gt;devname
+comma
+id|NIPQUAD
+c_func
+(paren
+id|addr_net
 )paren
 )paren
 suffix:semicolon
@@ -9570,11 +9580,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Add route %s failed (%d)&bslash;n&quot;
+l_string|&quot;%s: Add route %u.%u.%u.%u failed (%d)&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|remote_IP_addr
@@ -9611,11 +9621,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s:    Local IP addr : %s&bslash;n&quot;
+l_string|&quot;%s:    Local IP addr : %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|local_IP_addr
@@ -9626,11 +9636,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s:    Remote IP addr: %s&bslash;n&quot;
+l_string|&quot;%s:    Remote IP addr: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|remote_IP_addr
@@ -9748,7 +9758,7 @@ l_string|&quot;%s: Remove route %s failed, (err %d)&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|remote_IP_addr
@@ -9776,11 +9786,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Dynamic route removed: %s&bslash;n&quot;
+l_string|&quot;%s: Dynamic route removed: %u.%u.%u.%u&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|local_IP_addr
