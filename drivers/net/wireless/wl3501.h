@@ -533,8 +533,74 @@ DECL|macro|IW_REG_DOMAIN_MKK1
 mdefine_line|#define IW_REG_DOMAIN_MKK1&t;0x41&t;/* Channel 1-14&t;&t;Japan  */
 DECL|macro|IW_REG_DOMAIN_ISRAEL
 mdefine_line|#define IW_REG_DOMAIN_ISRAEL&t;0x50&t;/* Channel 3 - 9&t;Israel */
-DECL|macro|WL3501_ESSID_MAX_LEN
-mdefine_line|#define WL3501_ESSID_MAX_LEN (IW_ESSID_MAX_SIZE + 2)
+DECL|enum|iw_mgmt_info_element_ids
+r_enum
+id|iw_mgmt_info_element_ids
+(brace
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_SSID
+id|IW_MGMT_INFO_ELEMENT_SSID
+comma
+multiline_comment|/* Service Set Identity */
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_SUPPORTED_RATES
+id|IW_MGMT_INFO_ELEMENT_SUPPORTED_RATES
+comma
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_FH_PARAMETER_SET
+id|IW_MGMT_INFO_ELEMENT_FH_PARAMETER_SET
+comma
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET
+id|IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET
+comma
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_CS_PARAMETER_SET
+id|IW_MGMT_INFO_ELEMENT_CS_PARAMETER_SET
+comma
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_CS_TIM
+id|IW_MGMT_INFO_ELEMENT_CS_TIM
+comma
+multiline_comment|/* Traffic Information Map */
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_IBSS_PARAMETER_SET
+id|IW_MGMT_INFO_ELEMENT_IBSS_PARAMETER_SET
+comma
+multiline_comment|/* 7-15: Reserved, unused */
+DECL|enumerator|IW_MGMT_INFO_ELEMENT_CHALLENGE_TEXT
+id|IW_MGMT_INFO_ELEMENT_CHALLENGE_TEXT
+op_assign
+l_int|16
+comma
+multiline_comment|/* 17-31 Reserved for challenge text extension */
+multiline_comment|/* 32-255 Reserved, unused */
+)brace
+suffix:semicolon
+multiline_comment|/* FIXME: check if it need to be bigger */
+DECL|macro|IW_MGMT_INFO_ELEMENT_MAX_DATA
+mdefine_line|#define IW_MGMT_INFO_ELEMENT_MAX_DATA IW_ESSID_MAX_SIZE
+DECL|struct|iw_mgmt_info_element
+r_struct
+id|iw_mgmt_info_element
+(brace
+DECL|member|id
+r_enum
+id|iw_mgmt_info_element_ids
+id|id
+suffix:semicolon
+DECL|member|len
+id|u8
+id|len
+suffix:semicolon
+DECL|member|data
+id|u8
+id|data
+(braket
+id|IW_MGMT_INFO_ELEMENT_MAX_DATA
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|wl3501_tx_hdr
 r_struct
 id|wl3501_tx_hdr
@@ -738,11 +804,9 @@ id|u16
 id|cap_info
 suffix:semicolon
 DECL|member|ssid
-r_char
+r_struct
+id|iw_mgmt_info_element
 id|ssid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
 suffix:semicolon
 DECL|member|bss_basic_rate_set
 id|u8
@@ -1055,11 +1119,9 @@ id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
-r_char
+r_struct
+id|iw_mgmt_info_element
 id|ssid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
 suffix:semicolon
 DECL|member|phy_pset
 id|u8
@@ -1204,11 +1266,9 @@ id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
-r_char
+r_struct
+id|iw_mgmt_info_element
 id|ssid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
 suffix:semicolon
 DECL|member|scan_type
 r_enum
@@ -1275,11 +1335,9 @@ id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|ssid
-r_char
+r_struct
+id|iw_mgmt_info_element
 id|ssid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
 suffix:semicolon
 DECL|member|phy_pset
 id|u8
@@ -1681,11 +1739,14 @@ id|u16
 id|esbq_confirm
 suffix:semicolon
 DECL|member|essid
-id|u8
+r_struct
+id|iw_mgmt_info_element
 id|essid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
+suffix:semicolon
+DECL|member|keep_essid
+r_struct
+id|iw_mgmt_info_element
+id|keep_essid
 suffix:semicolon
 DECL|member|bssid
 id|u8
@@ -1697,13 +1758,6 @@ suffix:semicolon
 DECL|member|net_type
 r_int
 id|net_type
-suffix:semicolon
-DECL|member|keep_essid
-id|u8
-id|keep_essid
-(braket
-id|WL3501_ESSID_MAX_LEN
-)braket
 suffix:semicolon
 DECL|member|nick
 r_char
