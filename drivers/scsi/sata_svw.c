@@ -848,7 +848,7 @@ comma
 dot
 id|exec_command
 op_assign
-id|ata_exec_command_mmio
+id|ata_exec_command
 comma
 dot
 id|phy_reset
@@ -858,12 +858,12 @@ comma
 dot
 id|bmdma_setup
 op_assign
-id|ata_bmdma_setup_mmio
+id|ata_bmdma_setup
 comma
 dot
 id|bmdma_start
 op_assign
-id|ata_bmdma_start_mmio
+id|ata_bmdma_start
 comma
 dot
 id|qc_prep
