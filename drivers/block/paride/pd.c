@@ -429,11 +429,11 @@ mdefine_line|#define PD_ID_LEN       14
 DECL|macro|PD_MAX_RETRIES
 mdefine_line|#define PD_MAX_RETRIES  5
 DECL|macro|PD_TMO
-mdefine_line|#define PD_TMO          800             /* interrupt timeout in jiffies */
+mdefine_line|#define PD_TMO          800&t;/* interrupt timeout in jiffies */
 DECL|macro|PD_SPIN_DEL
-mdefine_line|#define PD_SPIN_DEL     50              /* spin delay in micro-seconds  */
+mdefine_line|#define PD_SPIN_DEL     50&t;/* spin delay in micro-seconds  */
 DECL|macro|PD_SPIN
-mdefine_line|#define PD_SPIN         (1000000*PD_TMO)/(HZ*PD_SPIN_DEL)  
+mdefine_line|#define PD_SPIN         (1000000*PD_TMO)/(HZ*PD_SPIN_DEL)
 DECL|macro|STAT_ERR
 mdefine_line|#define STAT_ERR        0x00001
 DECL|macro|STAT_INDEX
@@ -552,6 +552,7 @@ suffix:semicolon
 r_static
 r_int
 id|pd_release
+c_func
 (paren
 r_struct
 id|inode
@@ -632,6 +633,7 @@ suffix:semicolon
 r_static
 r_int
 id|pd_identify
+c_func
 (paren
 r_int
 id|unit
@@ -910,32 +912,39 @@ id|block_device_operations
 id|pd_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|pd_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|pd_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|pd_ioctl
 comma
+dot
 id|check_media_change
-suffix:colon
+op_assign
 id|pd_check_media
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 id|pd_revalidate
 )brace
 suffix:semicolon
 DECL|function|pd_init_units
+r_static
 r_void
 id|pd_init_units
 c_func
@@ -1073,6 +1082,7 @@ DECL|function|pd_open
 r_static
 r_int
 id|pd_open
+c_func
 (paren
 r_struct
 id|inode
@@ -1386,6 +1396,7 @@ DECL|function|pd_release
 r_static
 r_int
 id|pd_release
+c_func
 (paren
 r_struct
 id|inode
@@ -1652,8 +1663,8 @@ c_func
 r_int
 id|unit
 )paren
-multiline_comment|/* called only for MASTER drive */
 (brace
+multiline_comment|/* called only for MASTER drive */
 id|pi_connect
 c_func
 (paren
@@ -1717,8 +1728,8 @@ r_char
 op_star
 id|msg
 )paren
-multiline_comment|/* polled wait */
 (brace
+multiline_comment|/* polled wait */
 r_int
 id|k
 comma
@@ -2835,7 +2846,6 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-(brace
 id|id
 (braket
 id|j
@@ -2850,7 +2860,6 @@ op_plus
 id|PD_ID_OFF
 )braket
 suffix:semicolon
-)brace
 id|j
 op_assign
 id|PD_ID_LEN
@@ -3141,7 +3150,6 @@ r_if
 c_cond
 (paren
 id|pi_init
-c_func
 (paren
 id|PI
 comma
@@ -3329,6 +3337,7 @@ DECL|function|do_pd_request
 r_static
 r_void
 id|do_pd_request
+c_func
 (paren
 id|request_queue_t
 op_star
