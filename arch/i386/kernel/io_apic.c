@@ -3017,7 +3017,6 @@ multiline_comment|/*&n; * Find the IRQ entry number of a certain pin.&n; */
 DECL|function|find_irq_entry
 r_static
 r_int
-id|__init
 id|find_irq_entry
 c_func
 (paren
@@ -3589,7 +3588,6 @@ multiline_comment|/*&n; * EISA Edge/Level control register, ELCR&n; */
 DECL|function|EISA_ELCR
 r_static
 r_int
-id|__init
 id|EISA_ELCR
 c_func
 (paren
@@ -3902,7 +3900,6 @@ suffix:semicolon
 DECL|function|MPBIOS_trigger
 r_static
 r_int
-id|__init
 id|MPBIOS_trigger
 c_func
 (paren
