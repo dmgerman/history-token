@@ -626,16 +626,6 @@ id|i
 dot
 id|loops_per_jiffy
 suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;processor&bslash;t: %d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 macro_line|#else
 id|pvr
 op_assign
@@ -650,6 +640,16 @@ op_assign
 id|loops_per_jiffy
 suffix:semicolon
 macro_line|#endif
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;processor&bslash;t: %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|seq_printf
 c_func
 (paren

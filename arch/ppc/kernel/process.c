@@ -152,6 +152,13 @@ c_func
 id|init_task
 )paren
 suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
 multiline_comment|/* only used to get secondary processor up */
 DECL|variable|current_set
 r_struct
