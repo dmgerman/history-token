@@ -2757,21 +2757,6 @@ id|task-&gt;tk_exit
 op_assign
 id|callback
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;uid
-op_ne
-id|current-&gt;fsuid
-op_logical_or
-id|current-&gt;gid
-op_ne
-id|current-&gt;fsgid
-)paren
-id|task-&gt;tk_flags
-op_or_assign
-id|RPC_TASK_SETUID
-suffix:semicolon
 multiline_comment|/* Initialize retry counters */
 id|task-&gt;tk_garb_retry
 op_assign
@@ -2780,10 +2765,6 @@ suffix:semicolon
 id|task-&gt;tk_cred_retry
 op_assign
 l_int|2
-suffix:semicolon
-id|task-&gt;tk_suid_retry
-op_assign
-l_int|1
 suffix:semicolon
 id|task-&gt;tk_priority
 op_assign

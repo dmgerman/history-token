@@ -319,8 +319,6 @@ op_star
 comma
 id|u32
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 DECL|member|crrefresh

@@ -3964,9 +3964,6 @@ comma
 id|u32
 op_star
 id|p
-comma
-r_int
-id|ruid
 )paren
 (brace
 r_struct

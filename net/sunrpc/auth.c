@@ -1455,10 +1455,6 @@ c_func
 id|task
 comma
 id|p
-comma
-id|task-&gt;tk_flags
-op_amp
-id|RPC_CALL_REALUID
 )paren
 suffix:semicolon
 )brace

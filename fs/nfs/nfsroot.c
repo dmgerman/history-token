@@ -173,9 +173,6 @@ id|Opt_udp
 comma
 id|Opt_tcp
 comma
-DECL|enumerator|Opt_broken_suid
-id|Opt_broken_suid
-comma
 multiline_comment|/* Error token */
 DECL|enumerator|Opt_err
 id|Opt_err
@@ -360,12 +357,6 @@ comma
 id|Opt_tcp
 comma
 l_string|&quot;tcp&quot;
-)brace
-comma
-(brace
-id|Opt_broken_suid
-comma
-l_string|&quot;broken_suid&quot;
 )brace
 comma
 (brace
@@ -758,15 +749,6 @@ suffix:colon
 id|nfs_data.flags
 op_or_assign
 id|NFS_MOUNT_TCP
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|Opt_broken_suid
-suffix:colon
-id|nfs_data.flags
-op_or_assign
-id|NFS_MOUNT_BROKEN_SUID
 suffix:semicolon
 r_break
 suffix:semicolon
