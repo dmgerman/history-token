@@ -3773,8 +3773,13 @@ DECL|macro|TG3_FLAG_5701_REG_WRITE_BUG
 mdefine_line|#define TG3_FLAG_5701_REG_WRITE_BUG&t;0x00000040
 DECL|macro|TG3_FLAG_POLL_SERDES
 mdefine_line|#define TG3_FLAG_POLL_SERDES&t;&t;0x00000080
+macro_line|#if defined(CONFIG_X86)
 DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
 mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0x00000100
+macro_line|#else
+DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
+mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0&t;/* disables code too */
+macro_line|#endif
 DECL|macro|TG3_FLAG_PCIX_TARGET_HWBUG
 mdefine_line|#define TG3_FLAG_PCIX_TARGET_HWBUG&t;0x00000200
 DECL|macro|TG3_FLAG_WOL_SPEED_100MB
