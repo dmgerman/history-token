@@ -1373,7 +1373,7 @@ suffix:semicolon
 id|__u16
 id|len
 suffix:semicolon
-multiline_comment|/* If the packet doesn&squot;t contain the original IPv6 header we are &n;&t;   in trouble since we might need the source address for furter &n;&t;   processing of the error. */
+multiline_comment|/* If the packet doesn&squot;t contain the original IPv6 header we are &n;&t;   in trouble since we might need the source address for further &n;&t;   processing of the error. */
 id|read_lock
 c_func
 (paren

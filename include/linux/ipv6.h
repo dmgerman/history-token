@@ -303,6 +303,10 @@ DECL|member|rtr_solicit_delay
 id|__s32
 id|rtr_solicit_delay
 suffix:semicolon
+DECL|member|force_mld_version
+id|__s32
+id|force_mld_version
+suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 DECL|member|use_tempaddr
 id|__s32
@@ -388,6 +392,9 @@ id|DEVCONF_MAX_DESYNC_FACTOR
 comma
 DECL|enumerator|DEVCONF_MAX_ADDRESSES
 id|DEVCONF_MAX_ADDRESSES
+comma
+DECL|enumerator|DEVCONF_FORCE_MLD_VERSION
+id|DEVCONF_FORCE_MLD_VERSION
 comma
 DECL|enumerator|DEVCONF_MAX
 id|DEVCONF_MAX

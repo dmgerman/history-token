@@ -5080,14 +5080,7 @@ c_func
 (paren
 id|tbl-&gt;id
 comma
-(paren
 id|tbl-&gt;entry_size
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
 comma
 l_int|0
 comma

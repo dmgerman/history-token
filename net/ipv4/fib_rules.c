@@ -2270,14 +2270,14 @@ id|nlmsg_failure
 suffix:colon
 id|rtattr_failure
 suffix:colon
-id|skb_put
+id|skb_trim
 c_func
 (paren
 id|skb
 comma
 id|b
 op_minus
-id|skb-&gt;tail
+id|skb-&gt;data
 )paren
 suffix:semicolon
 r_return

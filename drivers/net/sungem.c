@@ -9008,9 +9008,6 @@ op_star
 id|gp
 )paren
 (brace
-id|u16
-id|cmd
-suffix:semicolon
 id|u32
 id|mif_cfg
 suffix:semicolon

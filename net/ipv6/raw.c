@@ -786,7 +786,7 @@ id|out
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t; * unpecified and mapped address have a v4 equivalent.&n;&t;&t; */
+multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t; * unspecified and mapped address have a v4 equivalent.&n;&t;&t; */
 id|v4addr
 op_assign
 id|LOOPBACK4_IPV6
@@ -1168,7 +1168,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;This is next to useless... &n; *&t;if we demultiplex in network layer we don&squot;t need the extra call&n; *&t;just to queue the skb... &n; *&t;maybe we could have the network decide uppon a hint if it &n; *&t;should call raw_rcv for demultiplexing&n; */
+multiline_comment|/*&n; *&t;This is next to useless... &n; *&t;if we demultiplex in network layer we don&squot;t need the extra call&n; *&t;just to queue the skb... &n; *&t;maybe we could have the network decide upon a hint if it &n; *&t;should call raw_rcv for demultiplexing&n; */
 DECL|function|rawv6_rcv
 r_int
 id|rawv6_rcv
@@ -2710,7 +2710,7 @@ id|daddr
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * unspecfied destination address &n;&t;&t; * treated as error... is this correct ?&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * unspecified destination address &n;&t;&t; * treated as error... is this correct ?&n;&t;&t; */
 id|fl6_sock_release
 c_func
 (paren

@@ -198,7 +198,7 @@ r_while
 c_loop
 (paren
 (paren
-id|skb-&gt;nh.ipv6h-&gt;saddr.in6_u.u6_addr8
+id|skb-&gt;nh.ipv6h-&gt;saddr.s6_addr
 (braket
 l_int|8
 op_plus

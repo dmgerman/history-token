@@ -1353,6 +1353,16 @@ op_eq
 l_int|0
 )paren
 (brace
+id|q-&gt;ht
+(braket
+id|q-&gt;hash
+(braket
+id|a
+)braket
+)braket
+op_assign
+id|SFQ_DEPTH
+suffix:semicolon
 id|a
 op_assign
 id|q-&gt;next
