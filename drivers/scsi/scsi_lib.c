@@ -2030,22 +2030,8 @@ comma
 id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * kill it. there should be no leftover blocks in this request&n;&t; */
-id|SCpnt
-op_assign
-id|scsi_end_request
-c_func
-(paren
-id|SCpnt
-comma
-l_int|0
-comma
-id|req-&gt;nr_sectors
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|BUG_ON
+multiline_comment|/* release the command and kill it */
+id|scsi_put_command
 c_func
 (paren
 id|SCpnt
@@ -2306,6 +2292,7 @@ id|SCpnt
 )paren
 )paren
 )paren
+multiline_comment|/* BLKPREP_KILL return also releases the command */
 r_return
 id|ret
 suffix:semicolon
@@ -2324,6 +2311,12 @@ id|SCpnt
 )paren
 (brace
 id|scsi_release_buffers
+c_func
+(paren
+id|SCpnt
+)paren
+suffix:semicolon
+id|scsi_put_command
 c_func
 (paren
 id|SCpnt
