@@ -26,6 +26,7 @@ macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#endif&t;/* CONFIG_NET_RADIO */
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
@@ -2617,6 +2618,10 @@ id|br_ioctl_hook
 (paren
 r_int
 r_int
+id|cmd
+comma
+r_int
+r_int
 id|arg
 )paren
 op_assign
@@ -2633,6 +2638,9 @@ op_star
 id|hook
 )paren
 (paren
+r_int
+r_int
+comma
 r_int
 r_int
 )paren
@@ -2980,6 +2988,12 @@ suffix:colon
 r_case
 id|SIOCSIFBR
 suffix:colon
+r_case
+id|SIOCBRADDBR
+suffix:colon
+r_case
+id|SIOCBRDELBR
+suffix:colon
 id|err
 op_assign
 op_minus
@@ -3014,6 +3028,8 @@ op_assign
 id|br_ioctl_hook
 c_func
 (paren
+id|cmd
+comma
 id|arg
 )paren
 suffix:semicolon
@@ -7336,6 +7352,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifdef __ARCH_WANT_SYS_SOCKETCALL
 multiline_comment|/* Argument list sizes for sys_socketcall */
 DECL|macro|AL
 mdefine_line|#define AL(x) ((x) * sizeof(unsigned long))
@@ -7961,6 +7978,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#endif /* __ARCH_WANT_SYS_SOCKETCALL */
 multiline_comment|/*&n; *&t;This function is called by a protocol handler that wants to&n; *&t;advertise its address family, and have it linked into the&n; *&t;SOCKET module.&n; */
 DECL|function|sock_register
 r_int

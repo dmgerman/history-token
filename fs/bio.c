@@ -60,7 +60,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * if you change this list, also change bvec_alloc or things will&n; * break badly! cannot be bigger than what you can fit into an&n; * unsigned short&n; */
 DECL|macro|BV
-mdefine_line|#define BV(x) { .nr_vecs = x, .name = &quot;biovec-&quot; #x }
+mdefine_line|#define BV(x) { .nr_vecs = x, .name = &quot;biovec-&quot;__stringify(x) }
 DECL|variable|bvec_array
 r_static
 r_struct

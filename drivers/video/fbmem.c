@@ -1794,9 +1794,10 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Drawing helpers.&n; */
-DECL|function|sys_inbuf
+DECL|function|fb_sys_inbuf
+r_static
 id|u8
-id|sys_inbuf
+id|fb_sys_inbuf
 c_func
 (paren
 r_struct
@@ -1814,9 +1815,10 @@ op_star
 id|src
 suffix:semicolon
 )brace
-DECL|function|sys_outbuf
+DECL|function|fb_sys_outbuf
+r_static
 r_void
-id|sys_outbuf
+id|fb_sys_outbuf
 c_func
 (paren
 r_struct
@@ -6302,7 +6304,7 @@ l_int|NULL
 )paren
 id|fb_info-&gt;pixmap.outbuf
 op_assign
-id|sys_outbuf
+id|fb_sys_outbuf
 suffix:semicolon
 r_if
 c_cond
@@ -6313,7 +6315,7 @@ l_int|NULL
 )paren
 id|fb_info-&gt;pixmap.inbuf
 op_assign
-id|sys_inbuf
+id|fb_sys_inbuf
 suffix:semicolon
 r_if
 c_cond
@@ -6374,7 +6376,7 @@ l_int|NULL
 )paren
 id|fb_info-&gt;sprite.outbuf
 op_assign
-id|sys_outbuf
+id|fb_sys_outbuf
 suffix:semicolon
 r_if
 c_cond
@@ -6385,7 +6387,7 @@ l_int|NULL
 )paren
 id|fb_info-&gt;sprite.inbuf
 op_assign
-id|sys_inbuf
+id|fb_sys_inbuf
 suffix:semicolon
 id|registered_fb
 (braket

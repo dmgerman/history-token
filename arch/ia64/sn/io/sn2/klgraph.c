@@ -195,7 +195,7 @@ id|nasid
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -326,7 +326,7 @@ id|nasid
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -636,7 +636,7 @@ suffix:semicolon
 )brace
 id|hub_cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|hub_nasid
@@ -776,7 +776,7 @@ suffix:semicolon
 id|NODEPDA
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -848,7 +848,7 @@ id|cpu_dir
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -1322,7 +1322,7 @@ op_increment
 (brace
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -1656,7 +1656,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|router-&gt;rou_port
@@ -1890,7 +1890,7 @@ op_increment
 (brace
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -1926,7 +1926,7 @@ r_do
 (brace
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -2038,7 +2038,7 @@ op_increment
 (brace
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnode
@@ -2117,7 +2117,7 @@ multiline_comment|/* Port not active */
 r_if
 c_cond
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|hub-&gt;hub_port

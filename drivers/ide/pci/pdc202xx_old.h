@@ -1129,11 +1129,6 @@ op_assign
 id|init_chipset_pdc202xx
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_pdc202xx
@@ -1153,29 +1148,7 @@ id|autodma
 op_assign
 id|AUTODMA
 comma
-macro_line|#ifdef CONFIG_PDC202XX_FORCE
-dot
-id|enablebits
-op_assign
-(brace
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-comma
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-)brace
-comma
-macro_line|#else /* !CONFIG_PDC202XX_FORCE */
+macro_line|#ifndef CONFIG_PDC202XX_FORCE
 dot
 id|enablebits
 op_assign
@@ -1238,11 +1211,6 @@ op_assign
 id|init_chipset_pdc202xx
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_pdc202xx
@@ -1262,29 +1230,7 @@ id|autodma
 op_assign
 id|AUTODMA
 comma
-macro_line|#ifdef CONFIG_PDC202XX_FORCE
-dot
-id|enablebits
-op_assign
-(brace
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-comma
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-)brace
-comma
-macro_line|#else /* !CONFIG_PDC202XX_FORCE */
+macro_line|#ifndef CONFIG_PDC202XX_FORCE
 dot
 id|enablebits
 op_assign
@@ -1347,11 +1293,6 @@ op_assign
 id|init_chipset_pdc202xx
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_pdc202xx
@@ -1371,29 +1312,7 @@ id|autodma
 op_assign
 id|AUTODMA
 comma
-macro_line|#ifdef CONFIG_PDC202XX_FORCE
-dot
-id|enablebits
-op_assign
-(brace
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-comma
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-)brace
-comma
-macro_line|#else /* !CONFIG_PDC202XX_FORCE */
+macro_line|#ifndef CONFIG_PDC202XX_FORCE
 dot
 id|enablebits
 op_assign
@@ -1475,29 +1394,7 @@ id|autodma
 op_assign
 id|AUTODMA
 comma
-macro_line|#ifdef CONFIG_PDC202XX_FORCE
-dot
-id|enablebits
-op_assign
-(brace
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-comma
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-)brace
-comma
-macro_line|#else /* !CONFIG_PDC202XX_FORCE */
+macro_line|#ifndef CONFIG_PDC202XX_FORCE
 dot
 id|enablebits
 op_assign
@@ -1560,11 +1457,6 @@ op_assign
 id|init_chipset_pdc202xx
 comma
 dot
-id|init_iops
-op_assign
-l_int|NULL
-comma
-dot
 id|init_hwif
 op_assign
 id|init_hwif_pdc202xx
@@ -1584,29 +1476,7 @@ id|autodma
 op_assign
 id|AUTODMA
 comma
-macro_line|#ifdef CONFIG_PDC202XX_FORCE
-dot
-id|enablebits
-op_assign
-(brace
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-comma
-(brace
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-)brace
-comma
-macro_line|#else /* !CONFIG_PDC202XX_FORCE */
+macro_line|#ifndef CONFIG_PDC202XX_FORCE
 dot
 id|enablebits
 op_assign
@@ -1638,29 +1508,6 @@ dot
 id|extra
 op_assign
 l_int|48
-comma
-)brace
-comma
-(brace
-dot
-id|vendor
-op_assign
-l_int|0
-comma
-dot
-id|device
-op_assign
-l_int|0
-comma
-dot
-id|channels
-op_assign
-l_int|0
-comma
-dot
-id|bootable
-op_assign
-id|EOL
 comma
 )brace
 )brace

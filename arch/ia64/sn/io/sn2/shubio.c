@@ -116,7 +116,7 @@ id|hub_v
 suffix:semicolon
 id|cnode
 op_assign
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
@@ -237,7 +237,7 @@ suffix:semicolon
 multiline_comment|/* Get the nasid for the cnode */
 id|src_nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|src_node

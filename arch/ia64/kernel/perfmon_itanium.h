@@ -1,9 +1,4 @@
 multiline_comment|/*&n; * This file contains the Itanium PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
-DECL|macro|RDEP
-mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
-macro_line|#ifndef CONFIG_ITANIUM
-macro_line|#error &quot;This file is only valid when CONFIG_ITANIUM is defined&quot;
-macro_line|#endif
 r_static
 r_int
 id|pfm_ita_pmc_check
@@ -33,31 +28,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_static
-r_int
-id|pfm_write_ibr_dbr
-c_func
-(paren
-r_int
-id|mode
-comma
-id|pfm_context_t
-op_star
-id|ctx
-comma
-r_void
-op_star
-id|arg
-comma
-r_int
-id|count
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|variable|pfm_ita_pmc_desc
 r_static
 id|pfm_reg_desc_t
@@ -75,14 +45,6 @@ id|pfm_ita_pmd_desc
 (braket
 id|PMU_MAX_PMDS
 )braket
-op_assign
-initialization_block
-suffix:semicolon
-multiline_comment|/*&n; * impl_pmcs, impl_pmds are computed at runtime to minimize errors!&n; */
-DECL|variable|pmu_conf
-r_static
-id|pmu_config_t
-id|pmu_conf
 op_assign
 initialization_block
 suffix:semicolon
@@ -119,6 +81,31 @@ id|regs
 r_int
 id|ret
 suffix:semicolon
+r_int
+id|is_loaded
+suffix:semicolon
+multiline_comment|/* sanitfy check */
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|is_loaded
+op_assign
+id|ctx-&gt;ctx_state
+op_eq
+id|PFM_CTX_LOADED
+op_logical_or
+id|ctx-&gt;ctx_state
+op_eq
+id|PFM_CTX_MASKED
+suffix:semicolon
 multiline_comment|/*&n;&t; * we must clear the (instruction) debug registers if pmc13.ta bit is cleared&n;&t; * before they are written (fl_using_dbreg==0) to avoid picking up stale information.&n;&t; */
 r_if
 c_cond
@@ -126,6 +113,8 @@ c_cond
 id|cnum
 op_eq
 l_int|13
+op_logical_and
+id|is_loaded
 op_logical_and
 (paren
 (paren
@@ -208,6 +197,8 @@ id|cnum
 op_eq
 l_int|11
 op_logical_and
+id|is_loaded
+op_logical_and
 (paren
 (paren
 op_star
@@ -287,4 +278,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * impl_pmcs, impl_pmds are computed at runtime to minimize errors!&n; */
+DECL|variable|pmu_conf_ita
+r_static
+id|pmu_config_t
+id|pmu_conf_ita
+op_assign
+initialization_block
+suffix:semicolon
 eof

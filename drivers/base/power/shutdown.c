@@ -67,7 +67,7 @@ id|dev-&gt;detach_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * We handle system devices differently - we suspend and shut them &n; * down first and resume them first. That way, we do anything stupid like&n; * shutting down the interrupt controller before any devices..&n; *&n; * Note that there are not different stages for power management calls - &n; * they only get one called once when interrupts are disabled. &n; */
+multiline_comment|/**&n; * We handle system devices differently - we suspend and shut them&n; * down last and resume them first. That way, we don&squot;t do anything stupid like&n; * shutting down the interrupt controller before any devices..&n; *&n; * Note that there are not different stages for power management calls - &n; * they only get one called once when interrupts are disabled. &n; */
 r_extern
 r_int
 id|sysdev_shutdown
@@ -76,7 +76,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * device_shutdown - call -&gt;remove() on each device to shutdown. &n; */
+multiline_comment|/**&n; * device_shutdown - call -&gt;shutdown() on each device to shutdown.&n; */
 DECL|function|device_shutdown
 r_void
 id|device_shutdown

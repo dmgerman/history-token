@@ -785,8 +785,6 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* data holds the pointer to this node&squot;s FIT */
 id|len
 op_assign
@@ -820,8 +818,6 @@ id|eof
 comma
 id|len
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len
@@ -862,8 +858,6 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* data holds the pointer to this node&squot;s FIT */
 id|len
 op_assign
@@ -897,8 +891,6 @@ id|eof
 comma
 id|len
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len
@@ -1140,6 +1132,11 @@ op_star
 op_star
 id|entp
 suffix:semicolon
+r_struct
+id|proc_dir_entry
+op_star
+id|p
+suffix:semicolon
 id|cnodeid_t
 id|cnodeid
 suffix:semicolon
@@ -1267,6 +1264,8 @@ c_func
 id|cnodeid
 )paren
 suffix:semicolon
+id|p
+op_assign
 id|create_proc_read_entry
 c_func
 (paren
@@ -1286,6 +1285,17 @@ id|nasid
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+)paren
+id|p-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|p
+op_assign
 id|create_proc_read_entry
 c_func
 (paren
@@ -1304,6 +1314,15 @@ c_func
 id|nasid
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+)paren
+id|p-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 r_return

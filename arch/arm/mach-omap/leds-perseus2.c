@@ -183,7 +183,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Actually burn the LEDs&n;&t; */
-id|omap_writew
+id|__raw_writew
 c_func
 (paren
 op_complement

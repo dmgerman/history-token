@@ -360,10 +360,21 @@ macro_line|#ifndef __ASSEMBLER__
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor differentiation&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_ID_REG
 mdefine_line|#define OMAP_ID_REG&t;&t;__REG32(0xfffed404)
+multiline_comment|/* See also uncompress.h */
+DECL|macro|OMAP_ID_730
+mdefine_line|#define OMAP_ID_730&t;&t;0xB55F
+DECL|macro|OMAP_ID_1510
+mdefine_line|#define OMAP_ID_1510&t;&t;0xB470
+DECL|macro|OMAP_ID_1610
+mdefine_line|#define OMAP_ID_1610&t;&t;0xB576
+DECL|macro|OMAP_ID_1710
+mdefine_line|#define OMAP_ID_1710&t;&t;0xB5F7
+DECL|macro|OMAP_ID_5912
+mdefine_line|#define OMAP_ID_5912&t;&t;0xB58C
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;
 DECL|macro|cpu_is_omap730
-mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB55F)
+mdefine_line|#define cpu_is_omap730()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_730)
 macro_line|#else
 DECL|macro|cpu_is_omap730
 mdefine_line|#define cpu_is_omap730()&t;0
@@ -371,7 +382,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 macro_line|#include &quot;omap1510.h&quot;
 DECL|macro|cpu_is_omap1510
-mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB470)
+mdefine_line|#define cpu_is_omap1510()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1510)
 macro_line|#else
 DECL|macro|cpu_is_omap1510
 mdefine_line|#define cpu_is_omap1510()&t;0
@@ -379,10 +390,10 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1610
 macro_line|#include &quot;omap1610.h&quot;
 DECL|macro|cpu_is_omap1710
-mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB5F7)
+mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1710)
 multiline_comment|/* Detect 1710 as 1610 for now */
 DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB576 || &bslash;&n;&t;&t;&t;&t; cpu_is_omap1710())
+mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_1610 &bslash;&n;&t;&t;&t;&t;|| cpu_is_omap1710())
 macro_line|#else
 DECL|macro|cpu_is_omap1610
 mdefine_line|#define cpu_is_omap1610()&t;0
@@ -392,7 +403,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP5912
 macro_line|#include &quot;omap5912.h&quot;
 DECL|macro|cpu_is_omap5912
-mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == 0xB58C)
+mdefine_line|#define cpu_is_omap5912()&t;(((OMAP_ID_REG &gt;&gt; 12) &amp; 0xffff) == OMAP_ID_5912)
 macro_line|#else
 DECL|macro|cpu_is_omap5912
 mdefine_line|#define cpu_is_omap5912()&t;0

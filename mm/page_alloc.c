@@ -5521,7 +5521,6 @@ suffix:semicolon
 id|zonelist-&gt;zones
 (braket
 id|j
-op_increment
 )braket
 op_assign
 l_int|NULL

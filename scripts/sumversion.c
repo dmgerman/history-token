@@ -2560,11 +2560,13 @@ id|p
 (brace
 r_if
 c_cond
+(paren
 id|isspace
 c_func
 (paren
 op_star
 id|p
+)paren
 )paren
 (brace
 op_star

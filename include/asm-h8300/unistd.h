@@ -549,6 +549,50 @@ DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type, name, atype, a, btype, b, ctype, c, dtype, d, etype, e)&t;&bslash;&n;type name(atype a, btype b, ctype c, dtype d, etype e)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  register long __res __asm__(&quot;er0&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&quot;mov.l&t;%6, er5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%5, er4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%4, er3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%3, er2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;mov.l&t;%2, er1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%1, er0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;trapa&t;#0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;ir&quot; (__NR_##name),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)a),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)b),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)c),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)d),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;m&quot; ((long)e)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;cc&quot;, &quot;er1&quot;, &quot;er2&quot;, &quot;er3&quot;, &quot;er4&quot;, &quot;er5&quot;);&t;&t;&bslash;&n;  if ((unsigned long)(__res) &gt;= (unsigned long)(-125)) {&t;&t;       &t;&bslash;&n;    errno = -__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __res = -1;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  return (type)__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|_syscall6
 mdefine_line|#define _syscall6(type, name, atype, a, btype, b, ctype, c, dtype, d,           &bslash;&n;                              etype, e, ftype, f)&t;                        &bslash;&n;type name(atype a, btype b, ctype c, dtype d, etype e, ftype f)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  register long __res __asm__(&quot;er0&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&quot;mov.l&t;er6,@-sp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;                        &quot;mov.l&t;%7, er6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;                        &quot;mov.l&t;%6, er5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%5, er4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%4, er3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%3, er2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;mov.l&t;%2, er1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%1, er0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;trapa&t;#0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;mov.l&t;@sp+,er6&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;ir&quot; (__NR_##name),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)a),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)b),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)c),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;g&quot; ((long)d),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;m&quot; ((long)e),&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;m&quot; ((long)e)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;cc&quot;, &quot;er1&quot;, &quot;er2&quot;, &quot;er3&quot;, &quot;er4&quot;, &quot;er5&quot;);&t;&t;&bslash;&n;  if ((unsigned long)(__res) &gt;= (unsigned long)(-125)) {&t;&t;       &t;&bslash;&n;    errno = -__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __res = -1;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  return (type)__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+macro_line|#ifdef __KERNEL__
+DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
+mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
+DECL|macro|__ARCH_WANT_OLD_READDIR
+mdefine_line|#define __ARCH_WANT_OLD_READDIR
+DECL|macro|__ARCH_WANT_OLD_STAT
+mdefine_line|#define __ARCH_WANT_OLD_STAT
+DECL|macro|__ARCH_WANT_STAT64
+mdefine_line|#define __ARCH_WANT_STAT64
+DECL|macro|__ARCH_WANT_SYS_ALARM
+mdefine_line|#define __ARCH_WANT_SYS_ALARM
+DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
+mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
+DECL|macro|__ARCH_WANT_SYS_SGETMASK
+mdefine_line|#define __ARCH_WANT_SYS_SGETMASK
+DECL|macro|__ARCH_WANT_SYS_SIGNAL
+mdefine_line|#define __ARCH_WANT_SYS_SIGNAL
+DECL|macro|__ARCH_WANT_SYS_TIME
+mdefine_line|#define __ARCH_WANT_SYS_TIME
+DECL|macro|__ARCH_WANT_SYS_UTIME
+mdefine_line|#define __ARCH_WANT_SYS_UTIME
+DECL|macro|__ARCH_WANT_SYS_WAITPID
+mdefine_line|#define __ARCH_WANT_SYS_WAITPID
+DECL|macro|__ARCH_WANT_SYS_SOCKETCALL
+mdefine_line|#define __ARCH_WANT_SYS_SOCKETCALL
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+mdefine_line|#define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+mdefine_line|#define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+mdefine_line|#define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+mdefine_line|#define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+mdefine_line|#define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+mdefine_line|#define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

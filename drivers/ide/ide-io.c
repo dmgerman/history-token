@@ -5116,6 +5116,10 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+id|rq-&gt;waiting
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -71,10 +72,6 @@ id|cpuid_t
 id|cpu0
 comma
 id|cpu1
-suffix:semicolon
-id|nodepda_t
-op_star
-id|lnodepda
 suffix:semicolon
 id|sh_ii_int0_enable_u_t
 id|ii_int_enable
@@ -145,17 +142,17 @@ c_func
 id|master_nasid
 )paren
 suffix:semicolon
-id|lnodepda
+id|cpu
 op_assign
-id|NODEPDA
+id|first_cpu
+c_func
+(paren
+id|node_to_cpumask
 c_func
 (paren
 id|cnode
 )paren
-suffix:semicolon
-id|cpu
-op_assign
-id|lnodepda-&gt;node_first_cpu
+)paren
 suffix:semicolon
 id|cpu
 op_assign
@@ -205,17 +202,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|lnodepda
+id|cpu
 op_assign
-id|NODEPDA
+id|first_cpu
+c_func
+(paren
+id|node_to_cpumask
 c_func
 (paren
 id|node
 )paren
-suffix:semicolon
-id|cpu
-op_assign
-id|lnodepda-&gt;node_first_cpu
+)paren
 suffix:semicolon
 id|cpu
 op_assign

@@ -1900,7 +1900,6 @@ id|bt-&gt;timeout
 op_assign
 id|BT_RESET_DELAY
 suffix:semicolon
-suffix:semicolon
 id|bt-&gt;state
 op_assign
 id|BT_STATE_RESET2

@@ -292,9 +292,9 @@ c_func
 (paren
 l_int|0x10000000
 comma
-l_int|0xe0000000
+l_int|0xfff00000
 comma
-l_int|0xe0000000
+l_int|0xfef00000
 )paren
 id|BOOT_PARAMS
 c_func

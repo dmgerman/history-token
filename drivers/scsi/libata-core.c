@@ -236,7 +236,7 @@ r_return
 l_string|&quot;&lt;invalid THR_xxx state&gt;&quot;
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_load_pio - send taskfile registers to host controller&n; *&t;@ioaddr: set of IO ports to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_load_pio - send taskfile registers to host controller&n; *&t;@ap: Port to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_load_pio
 r_void
 id|ata_tf_load_pio
@@ -460,7 +460,7 @@ id|ap
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_load_mmio - send taskfile registers to host controller&n; *&t;@ioaddr: set of IO ports to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using MMIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_load_mmio - send taskfile registers to host controller&n; *&t;@ap: Port to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using MMIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_load_mmio
 r_void
 id|ata_tf_load_mmio
@@ -953,7 +953,7 @@ id|tf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_read_pio - input device&squot;s ATA taskfile shadow registers&n; *&t;@ioaddr: set of IO ports from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf via PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_read_pio - input device&squot;s ATA taskfile shadow registers&n; *&t;@ap: Port from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf via PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_read_pio
 r_void
 id|ata_tf_read_pio
@@ -1078,7 +1078,7 @@ id|ioaddr-&gt;lbah_addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;ata_tf_read_mmio - input device&squot;s ATA taskfile shadow registers&n; *&t;@ioaddr: set of IO ports from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf via MMIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_read_mmio - input device&squot;s ATA taskfile shadow registers&n; *&t;@ap: Port from which input is read&n; *&t;@tf: ATA taskfile register set for storing input&n; *&n; *&t;Reads ATA taskfile registers for currently-selected device&n; *&t;into @tf via MMIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_read_mmio
 r_void
 id|ata_tf_read_mmio
@@ -1287,7 +1287,7 @@ id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_tf_to_fis - Convert ATA taskfile to SATA FIS structure&n; *&t;@tf: Taskfile to convert&n; *&t;@fis: Buffer into which data will output&n; *&n; *&t;Converts a standard ATA taskfile to a Serial ATA&n; *&t;FIS structure (Register - Host to Device).&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
+multiline_comment|/**&n; *&t;ata_tf_to_fis - Convert ATA taskfile to SATA FIS structure&n; *&t;@tf: Taskfile to convert&n; *&t;@fis: Buffer into which data will output&n; *&t;@pmp: Port multiplier port&n; *&n; *&t;Converts a standard ATA taskfile to a Serial ATA&n; *&t;FIS structure (Register - Host to Device).&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_to_fis
 r_void
 id|ata_tf_to_fis
@@ -5780,7 +5780,7 @@ id|ap
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_set_xfermode -&n; *&t;@ap:&n; *&t;@dev:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dev_set_xfermode - Issue SET FEATURES - XFER MODE command&n; *&t;@ap: Port associated with device @dev&n; *&t;@dev: Device to which command will be sent&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_dev_set_xfermode
 r_static
 r_void
@@ -5914,7 +5914,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_set_udma -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dev_set_udma - Set ATA device&squot;s transfer mode to Ultra DMA&n; *&t;@ap: Port associated with device @dev&n; *&t;@device: Device whose mode will be set&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_dev_set_udma
 r_static
 r_void
@@ -6002,7 +6002,7 @@ id|XFER_UDMA_0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_set_pio -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dev_set_pio - Set ATA device&squot;s transfer mode to PIO&n; *&t;@ap: Port associated with device @dev&n; *&t;@device: Device whose mode will be set&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_dev_set_pio
 r_static
 r_void
@@ -7708,7 +7708,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_qc_new -&n; *&t;@ap:&n; *&t;@dev:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_qc_new - Request an available ATA command, for queueing&n; *&t;@ap: Port associated with device @dev&n; *&t;@dev: Device from whom we request an available command structure&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_qc_new
 r_static
 r_struct
@@ -7788,7 +7788,7 @@ r_return
 id|qc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_qc_new_init -&n; *&t;@ap:&n; *&t;@dev:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_qc_new_init - Request an available ATA command, and initialize it&n; *&t;@ap: Port associated with device @dev&n; *&t;@dev: Device from whom we request an available command structure&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_qc_new_init
 r_struct
 id|ata_queued_cmd
@@ -7904,7 +7904,7 @@ r_return
 id|qc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_qc_complete -&n; *&t;@qc:&n; *&t;@drv_stat:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_qc_complete - Complete an active ATA command&n; *&t;@qc: Command to complete&n; *&t;@drv_stat: ATA status register contents&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_qc_complete
 r_void
 id|ata_qc_complete
@@ -8765,7 +8765,7 @@ id|ATA_DMA_CMD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dma_complete -&n; *&t;@qc:&n; *&t;@host_stat:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dma_complete - Complete an active ATA BMDMA command&n; *&t;@qc: Command to complete&n; *&t;@host_stat: BMDMA status register contents&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_dma_complete
 r_static
 r_void
@@ -9144,7 +9144,7 @@ r_return
 id|handled
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_interrupt -&n; *&t;@irq:&n; *&t;@dev_instance:&n; *&t;@regs:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_interrupt - Default ATA host interrupt handler&n; *&t;@irq: irq line&n; *&t;@dev_instance: pointer to our host information structure&n; *&t;@regs: unused&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|ata_interrupt
 id|irqreturn_t
 id|ata_interrupt
@@ -9778,7 +9778,7 @@ id|ap-&gt;probe_task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_host_remove -&n; *&t;@ap:&n; *&t;@do_unregister:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_host_remove - Unregister SCSI host structure with upper layers&n; *&t;@ap: Port to unregister&n; *&t;@do_unregister: 1 if we fully unregister, 0 to just stop the port&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_host_remove
 r_static
 r_void
@@ -9828,7 +9828,7 @@ id|ap
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_host_init -&n; *&t;@host:&n; *&t;@ent:&n; *&t;@port_no:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_host_init - Initialize an ata_port structure&n; *&t;@ap: Structure to initialize&n; *&t;@host: associated SCSI mid-layer structure&n; *&t;@host_set: Collection of hosts to which @ap belongs&n; *&t;@ent: Probe information provided by low-level driver&n; *&t;@port_no: Port number associated with this ata_port&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_host_init
 r_static
 r_void
@@ -10061,7 +10061,7 @@ id|ata_ioports
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_host_add -&n; *&t;@ent:&n; *&t;@host_set:&n; *&t;@port_no:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_host_add - Attach low-level ATA driver to system&n; *&t;@ent: Information provided by low-level driver&n; *&t;@host_set: Collections of ports to which we add&n; *&t;@port_no: Port number associated with this host&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|ata_host_add
 r_static
 r_struct
@@ -10659,7 +10659,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_release - SCSI layer callback hook for host unload&n; *&t;@host: libata host to be unloaded&n; *&n; *&t;Performs all duties necessary to shut down a libata port:&n; *&t;Kill port kthread, disable port, and release resources.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from SCSI layer.&n; *&n; *&t;RETURNS:&n; *&t;One.&n; */
+multiline_comment|/**&n; *&t;ata_scsi_release - SCSI layer callback hook for host unload&n; *&t;@host: libata host to be unloaded&n; *&n; *&t;Performs all duties necessary to shut down a libata port...&n; *&t;Kill port kthread, disable port, and release resources.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from SCSI layer.&n; *&n; *&t;RETURNS:&n; *&t;One.&n; */
 DECL|function|ata_scsi_release
 r_int
 id|ata_scsi_release
@@ -10719,7 +10719,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_std_ports - initialize ioaddr with standard port offsets.&n; *&t;@ioaddr:&n; */
+multiline_comment|/**&n; *&t;ata_std_ports - initialize ioaddr with standard port offsets.&n; *&t;@ioaddr: IO address structure to be initialized&n; */
 DECL|function|ata_std_ports
 r_void
 id|ata_std_ports
@@ -10792,7 +10792,7 @@ op_plus
 id|ATA_REG_CMD
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_pci_init_one -&n; *&t;@pdev:&n; *&t;@port_info:&n; *&t;@n_ports:&n; *&n; *&t;LOCKING:&n; *&t;Inherited from PCI layer (may sleep).&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_pci_init_one - Initialize/register PCI IDE host controller&n; *&t;@pdev: Controller to be initialized&n; *&t;@port_info: Information from low-level host driver&n; *&t;@n_ports: Number of ports attached to host controller&n; *&n; *&t;LOCKING:&n; *&t;Inherited from PCI layer (may sleep).&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|ata_pci_init_one
 r_int
 id|ata_pci_init_one

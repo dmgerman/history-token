@@ -39,7 +39,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* for boot_cpu_data */
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for virt_to_bus, etc. */

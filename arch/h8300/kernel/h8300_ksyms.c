@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
+macro_line|#include &lt;asm/gpio.h&gt;
 singleline_comment|//asmlinkage long long __ashrdi3 (long long, int);
 singleline_comment|//asmlinkage long long __lshrdi3 (long long, int);
 r_extern
@@ -107,20 +108,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_fast_csum
-)paren
-suffix:semicolon
-DECL|variable|mach_enable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mach_enable_irq
-)paren
-suffix:semicolon
-DECL|variable|mach_disable_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mach_disable_irq
 )paren
 suffix:semicolon
 DECL|variable|kernel_thread
@@ -455,13 +442,7 @@ c_func
 id|__umodsi3
 )paren
 suffix:semicolon
-DECL|variable|_current_task
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|_current_task
-)paren
-suffix:semicolon
+macro_line|#ifdef MAGIC_ROM_PTR
 DECL|variable|is_in_rom
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -469,19 +450,26 @@ c_func
 id|is_in_rom
 )paren
 suffix:semicolon
+macro_line|#endif
+DECL|variable|h8300_reserved_gpio
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|h8300_reserved_gpio
 )paren
+suffix:semicolon
+DECL|variable|h8300_free_gpio
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|h8300_free_gpio
 )paren
+suffix:semicolon
+DECL|variable|h8300_set_gpio_dir
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|h8300_set_gpio_dir
 )paren
+suffix:semicolon
 eof
