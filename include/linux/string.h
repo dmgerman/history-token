@@ -54,6 +54,20 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+id|__kernel_size_t
+id|strcspn
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Include machine specific inline routines&n; */
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#ifndef __HAVE_ARCH_STRCPY
