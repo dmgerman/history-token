@@ -1246,18 +1246,6 @@ id|allowed
 op_add_assign
 id|total_swap_pages
 suffix:semicolon
-multiline_comment|/* Leave the last 3% for root */
-r_if
-c_cond
-(paren
-id|current-&gt;euid
-)paren
-id|allowed
-op_sub_assign
-id|allowed
-op_div
-l_int|32
-suffix:semicolon
 multiline_comment|/* Don&squot;t let a single process grow too big:&n;&t;   leave 3% of the size of this process for other processes */
 id|allowed
 op_sub_assign
