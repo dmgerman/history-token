@@ -1,11 +1,11 @@
-multiline_comment|/*&n; *  acpi_drivers.h  ($Revision: 17 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_drivers.h  ($Revision: 23 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#ifndef __ACPI_DRIVERS_H__
 DECL|macro|__ACPI_DRIVERS_H__
 mdefine_line|#define __ACPI_DRIVERS_H__
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 DECL|macro|ACPI_DRIVER_VERSION
-mdefine_line|#define ACPI_DRIVER_VERSION&t;&t;0x20020308
+mdefine_line|#define ACPI_DRIVER_VERSION&t;&t;0x20020404
 DECL|macro|ACPI_MAX_STRING
 mdefine_line|#define ACPI_MAX_STRING&t;&t;&t;80
 multiline_comment|/* --------------------------------------------------------------------------&n;                                    ACPI Bus&n;   -------------------------------------------------------------------------- */
@@ -68,46 +68,52 @@ mdefine_line|#define ACPI_BATTERY_UNITS_AMPS&t;&t;&quot;mA&quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;                                      Button&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_BUTTON_COMPONENT
 mdefine_line|#define ACPI_BUTTON_COMPONENT&t;&t;0x00080000
-DECL|macro|ACPI_BUTTON_CLASS
-mdefine_line|#define ACPI_BUTTON_CLASS&t;&t;&quot;button&quot;
-DECL|macro|ACPI_BUTTON_HID_LID
-mdefine_line|#define ACPI_BUTTON_HID_LID&t;&t;&quot;PNP0C0D&quot;
-DECL|macro|ACPI_BUTTON_HID_POWER
-mdefine_line|#define ACPI_BUTTON_HID_POWER&t;&t;&quot;PNP0C0C&quot;&t;
-DECL|macro|ACPI_BUTTON_HID_POWERF
-mdefine_line|#define ACPI_BUTTON_HID_POWERF&t;&t;&quot;ACPI_FPB&quot;
-DECL|macro|ACPI_BUTTON_HID_SLEEP
-mdefine_line|#define ACPI_BUTTON_HID_SLEEP&t;&t;&quot;PNP0C0E&quot;
-DECL|macro|ACPI_BUTTON_HID_SLEEPF
-mdefine_line|#define ACPI_BUTTON_HID_SLEEPF&t;&t;&quot;ACPI_FSB&quot;
 DECL|macro|ACPI_BUTTON_DRIVER_NAME
 mdefine_line|#define ACPI_BUTTON_DRIVER_NAME&t;&t;&quot;ACPI Button Driver&quot;
-DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWER
-mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWER&t;&quot;Power Button&quot;
-DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWERF
-mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWERF&t;&quot;Power Button&quot;
-DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEP
-mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEP&t;&quot;Sleep Button&quot;
-DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEPF
-mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEPF&t;&quot;Sleep Button&quot;
-DECL|macro|ACPI_BUTTON_DEVICE_NAME_LID
-mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_LID&t;&quot;Lid Switch&quot;
+DECL|macro|ACPI_BUTTON_CLASS
+mdefine_line|#define ACPI_BUTTON_CLASS&t;&t;&quot;button&quot;
 DECL|macro|ACPI_BUTTON_FILE_INFO
 mdefine_line|#define ACPI_BUTTON_FILE_INFO&t;&t;&quot;info&quot;
 DECL|macro|ACPI_BUTTON_TYPE_UNKNOWN
 mdefine_line|#define ACPI_BUTTON_TYPE_UNKNOWN&t;0x00
+DECL|macro|ACPI_BUTTON_NOTIFY_STATUS
+mdefine_line|#define ACPI_BUTTON_NOTIFY_STATUS&t;0x80
+DECL|macro|ACPI_BUTTON_SUBCLASS_POWER
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_POWER&t;&quot;power&quot;
+DECL|macro|ACPI_BUTTON_HID_POWER
+mdefine_line|#define ACPI_BUTTON_HID_POWER&t;&t;&quot;PNP0C0C&quot;&t;
+DECL|macro|ACPI_BUTTON_HID_POWERF
+mdefine_line|#define ACPI_BUTTON_HID_POWERF&t;&t;&quot;ACPI_FPB&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWER
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWER&t;&quot;Power Button (CM)&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_POWERF
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_POWERF&t;&quot;Power Button (FF)&quot;
 DECL|macro|ACPI_BUTTON_TYPE_POWER
 mdefine_line|#define ACPI_BUTTON_TYPE_POWER&t;&t;0x01
 DECL|macro|ACPI_BUTTON_TYPE_POWERF
 mdefine_line|#define ACPI_BUTTON_TYPE_POWERF&t;&t;0x02
+DECL|macro|ACPI_BUTTON_SUBCLASS_SLEEP
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_SLEEP&t;&quot;sleep&quot;
+DECL|macro|ACPI_BUTTON_HID_SLEEP
+mdefine_line|#define ACPI_BUTTON_HID_SLEEP&t;&t;&quot;PNP0C0E&quot;
+DECL|macro|ACPI_BUTTON_HID_SLEEPF
+mdefine_line|#define ACPI_BUTTON_HID_SLEEPF&t;&t;&quot;ACPI_FSB&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEP
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEP&t;&quot;Sleep Button (CM)&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_SLEEPF
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_SLEEPF&t;&quot;Sleep Button (FF)&quot;
 DECL|macro|ACPI_BUTTON_TYPE_SLEEP
 mdefine_line|#define ACPI_BUTTON_TYPE_SLEEP&t;&t;0x03
 DECL|macro|ACPI_BUTTON_TYPE_SLEEPF
 mdefine_line|#define ACPI_BUTTON_TYPE_SLEEPF&t;&t;0x04
+DECL|macro|ACPI_BUTTON_SUBCLASS_LID
+mdefine_line|#define ACPI_BUTTON_SUBCLASS_LID&t;&quot;lid&quot;
+DECL|macro|ACPI_BUTTON_HID_LID
+mdefine_line|#define ACPI_BUTTON_HID_LID&t;&t;&quot;PNP0C0D&quot;
+DECL|macro|ACPI_BUTTON_DEVICE_NAME_LID
+mdefine_line|#define ACPI_BUTTON_DEVICE_NAME_LID&t;&quot;Lid Switch&quot;
 DECL|macro|ACPI_BUTTON_TYPE_LID
 mdefine_line|#define ACPI_BUTTON_TYPE_LID&t;&t;0x05
-DECL|macro|ACPI_BUTTON_NOTIFY_STATUS
-mdefine_line|#define ACPI_BUTTON_NOTIFY_STATUS&t;0x80
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Embedded Controller&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_EC_COMPONENT
 mdefine_line|#define ACPI_EC_COMPONENT&t;&t;0x00100000
@@ -316,18 +322,14 @@ mdefine_line|#define ACPI_PROCESSOR_LIMIT_INCREMENT&t;0x01
 DECL|macro|ACPI_PROCESSOR_LIMIT_DECREMENT
 mdefine_line|#define ACPI_PROCESSOR_LIMIT_DECREMENT&t;0x02
 r_int
-id|acpi_processor_set_limit
+id|acpi_processor_set_thermal_limit
 c_func
 (paren
 id|acpi_handle
 id|handle
 comma
 r_int
-id|flags
-comma
-r_int
-op_star
-id|state
+id|type
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                     System&n;   -------------------------------------------------------------------------- */

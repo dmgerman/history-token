@@ -7,6 +7,10 @@ macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES&t;&t;4
+r_extern
+r_int
+id|acpi_mp_config
+suffix:semicolon
 r_char
 op_star
 id|__acpi_map_table
@@ -41,6 +45,15 @@ comma
 r_int
 r_int
 id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_boot_init
+(paren
+r_char
+op_star
+id|cmdline
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
