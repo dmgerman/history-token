@@ -2,7 +2,6 @@ DECL|macro|MSNFS
 mdefine_line|#define MSNFS&t;/* HACK HACK */
 multiline_comment|/*&n; * linux/fs/nfsd/vfs.c&n; *&n; * File operations used by nfsd. Some of these have been ripped from&n; * other parts of the kernel because they weren&squot;t in ksyms.c, others&n; * are partial duplicates with added or changed functionality.&n; *&n; * Note that several functions dget() the dentry upon which they want&n; * to act, most notably those that create directory entries. Response&n; * dentry&squot;s are dput()&squot;d if necessary in the release callback.&n; * So if you notice code paths that apparently fail to dput() the&n; * dentry, don&squot;t worry--they have been taken care of.&n; *&n; * Copyright (C) 1995-1999 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -16,8 +15,6 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
