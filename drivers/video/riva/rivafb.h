@@ -129,11 +129,13 @@ r_struct
 id|riva_regs
 id|current_state
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86
 DECL|member|state
 r_struct
 id|vgastate
 id|state
 suffix:semicolon
+macro_line|#endif
 DECL|member|ref_count
 id|atomic_t
 id|ref_count

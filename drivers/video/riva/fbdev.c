@@ -5540,6 +5540,7 @@ op_logical_neg
 id|cnt
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86
 id|memset
 c_func
 (paren
@@ -5580,6 +5581,7 @@ op_amp
 id|par-&gt;state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|RivaGetConfig
 c_func
 (paren
@@ -5729,6 +5731,7 @@ op_amp
 id|par-&gt;initial_state
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86
 id|restore_vga
 c_func
 (paren
@@ -5736,6 +5739,7 @@ op_amp
 id|par-&gt;state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|par-&gt;riva
 dot
 id|LockUnlock
