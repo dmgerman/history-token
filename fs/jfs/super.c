@@ -1722,12 +1722,6 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;JFS development version: $Name:  $&bslash;n&quot;
-)paren
-suffix:semicolon
 id|jfs_inode_cachep
 op_assign
 id|kmem_cache_create
