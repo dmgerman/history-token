@@ -758,6 +758,7 @@ op_star
 id|sb
 comma
 r_int
+r_int
 id|ino
 comma
 r_struct
@@ -778,31 +779,14 @@ c_func
 id|de
 )paren
 suffix:semicolon
-macro_line|#if 1
-multiline_comment|/* shouldn&squot;t ever happen */
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|de
 op_logical_and
 id|de-&gt;deleted
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;proc_iget: using deleted entry %s, count=%d&bslash;n&quot;
-comma
-id|de-&gt;name
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|de-&gt;count
-)paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|inode
 op_assign
 id|iget
