@@ -1064,11 +1064,13 @@ r_int
 id|pppbind
 suffix:semicolon
 multiline_comment|/* ippp device for bindings         */
-DECL|member|ppp_slot
-r_int
-id|ppp_slot
+DECL|member|ipppd
+r_struct
+id|ipppd
+op_star
+id|ipppd
 suffix:semicolon
-multiline_comment|/* PPPD device slot number          */
+multiline_comment|/* /dev/ipppX which controls us     */
 DECL|member|super_tx_queue
 r_struct
 id|sk_buff_head

@@ -1223,10 +1223,9 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|idev-&gt;ppp_slot
+id|idev-&gt;ipppd
 op_assign
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|idev-&gt;pppbind
 op_assign
