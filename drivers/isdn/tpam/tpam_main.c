@@ -346,9 +346,12 @@ id|card-&gt;irq
 op_assign
 id|dev-&gt;irq
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|card-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|sprintf
 c_func
