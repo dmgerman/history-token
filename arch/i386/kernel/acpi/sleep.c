@@ -215,17 +215,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_PAE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI: S3 and PAE do not like each other for now, S3 disabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-macro_line|#endif
 id|acpi_wakeup_address
 op_assign
 (paren
