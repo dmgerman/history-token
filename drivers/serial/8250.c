@@ -4831,7 +4831,7 @@ id|up
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in change_speed())&n;&t; */
+multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in settermios())&n;&t; */
 r_if
 c_cond
 (paren
@@ -5112,7 +5112,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via change_speed(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
+multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via settermios(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
 id|up-&gt;ier
 op_assign
 id|UART_IER_RLSI
@@ -5413,8 +5413,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|serial8250_change_speed
-id|serial8250_change_speed
+DECL|function|serial8250_settermios
+id|serial8250_settermios
 c_func
 (paren
 r_struct
@@ -5422,17 +5422,15 @@ id|uart_port
 op_star
 id|port
 comma
-r_int
-r_int
-id|cflag
+r_struct
+id|termios
+op_star
+id|termios
 comma
-r_int
-r_int
-id|iflag
-comma
-r_int
-r_int
-id|quot
+r_struct
+id|termios
+op_star
+id|old
 )paren
 (brace
 r_struct
@@ -5459,10 +5457,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+r_int
+id|quot
+suffix:semicolon
 r_switch
 c_cond
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|CSIZE
 )paren
@@ -5509,7 +5511,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|CSTOPB
 )paren
@@ -5520,7 +5522,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|PARENB
 )paren
@@ -5533,7 +5535,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|PARODD
 )paren
@@ -5546,7 +5548,7 @@ macro_line|#ifdef CMSPAR
 r_if
 c_cond
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|CMSPAR
 )paren
@@ -5555,6 +5557,19 @@ op_or_assign
 id|UART_LCR_SPAR
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Ask the core to calculate the divisor for us.&n;&t; */
+id|quot
+op_assign
+id|uart_get_divisor
+c_func
+(paren
+id|port
+comma
+id|termios
+comma
+id|old
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Work around a bug in the Oxford Semiconductor 952 rev B&n;&t; * chip which causes it to seriously miscalculate baud rates&n;&t; * when DLL is 0.&n;&t; */
 r_if
 c_cond
@@ -5647,6 +5662,27 @@ id|fcr
 op_or_assign
 id|UART_FCR7_64BYTE
 suffix:semicolon
+multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|up-&gt;port.lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Update the per-port timeout.&n;&t; */
+id|uart_update_timeout
+c_func
+(paren
+id|port
+comma
+id|termios-&gt;c_cflag
+comma
+id|quot
+)paren
+suffix:semicolon
 id|up-&gt;port.read_status_mask
 op_assign
 id|UART_LSR_OE
@@ -5658,7 +5694,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iflag
+id|termios-&gt;c_iflag
 op_amp
 id|INPCK
 )paren
@@ -5671,7 +5707,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iflag
+id|termios-&gt;c_iflag
 op_amp
 (paren
 id|BRKINT
@@ -5691,7 +5727,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iflag
+id|termios-&gt;c_iflag
 op_amp
 id|IGNPAR
 )paren
@@ -5704,7 +5740,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iflag
+id|termios-&gt;c_iflag
 op_amp
 id|IGNBRK
 )paren
@@ -5717,7 +5753,7 @@ multiline_comment|/*&n;&t;&t; * If we&squot;re ignoring parity and break indicat
 r_if
 c_cond
 (paren
-id|iflag
+id|termios-&gt;c_iflag
 op_amp
 id|IGNPAR
 )paren
@@ -5731,7 +5767,7 @@ r_if
 c_cond
 (paren
 (paren
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|CREAD
 )paren
@@ -5741,16 +5777,6 @@ l_int|0
 id|up-&gt;port.ignore_status_mask
 op_or_assign
 id|UART_LSR_DR
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * CTS flow control flag and modem status interrupts&n;&t; */
 id|up-&gt;ier
@@ -5767,7 +5793,7 @@ c_func
 op_amp
 id|up-&gt;port
 comma
-id|cflag
+id|termios-&gt;c_cflag
 )paren
 )paren
 id|up-&gt;ier
@@ -5814,7 +5840,7 @@ id|up
 comma
 id|UART_EFR
 comma
-id|cflag
+id|termios-&gt;c_cflag
 op_amp
 id|CRTSCTS
 ques
@@ -7239,9 +7265,9 @@ op_assign
 id|serial8250_shutdown
 comma
 dot
-id|change_speed
+id|settermios
 op_assign
-id|serial8250_change_speed
+id|serial8250_settermios
 comma
 dot
 id|pm

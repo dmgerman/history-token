@@ -2879,7 +2879,7 @@ id|up
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in change_speed())&n;&t; */
+multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in settermios())&n;&t; */
 r_if
 c_cond
 (paren
@@ -3120,7 +3120,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via change_speed(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
+multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via settermios(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
 id|up-&gt;ier
 op_assign
 id|UART_IER_RLSI
@@ -3639,6 +3639,27 @@ id|fcr
 op_or_assign
 id|UART_FCR7_64BYTE
 suffix:semicolon
+multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|up-&gt;port.lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Update the per-port timeout.&n;&t; */
+id|uart_update_timeout
+c_func
+(paren
+id|port
+comma
+id|cflag
+comma
+id|quot
+)paren
+suffix:semicolon
 id|up-&gt;port.read_status_mask
 op_assign
 id|UART_LSR_OE
@@ -3755,16 +3776,6 @@ id|cflag
 id|up-&gt;ier
 op_or_assign
 id|UART_IER_MSI
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|serial_out
 c_func
@@ -3941,6 +3952,58 @@ op_amp
 id|up-&gt;port.lock
 comma
 id|flags
+)paren
+suffix:semicolon
+)brace
+r_static
+r_void
+DECL|function|sunsu_settermios
+id|sunsu_settermios
+c_func
+(paren
+r_struct
+id|uart_port
+op_star
+id|port
+comma
+r_struct
+id|termios
+op_star
+id|termios
+comma
+r_struct
+id|termios
+op_star
+id|old
+)paren
+(brace
+r_int
+r_int
+id|quot
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ask the core to calculate the divisor for us.&n;&t; */
+id|quot
+op_assign
+id|uart_get_divisor
+c_func
+(paren
+id|port
+comma
+id|termios
+comma
+id|old
+)paren
+suffix:semicolon
+id|sunsu_change_speed
+c_func
+(paren
+id|port
+comma
+id|termios-&gt;c_cflag
+comma
+id|termios-&gt;c_iflag
+comma
+id|quot
 )paren
 suffix:semicolon
 )brace
@@ -4139,9 +4202,9 @@ op_assign
 id|sunsu_shutdown
 comma
 dot
-id|change_speed
+id|settermios
 op_assign
-id|sunsu_change_speed
+id|sunsu_settermios
 comma
 dot
 id|type
