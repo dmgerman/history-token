@@ -4266,6 +4266,9 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|yam_seqops
 r_static
