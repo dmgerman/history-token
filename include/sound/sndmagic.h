@@ -161,6 +161,8 @@ DECL|macro|es1938_t_magic
 mdefine_line|#define es1938_t_magic&t;&t;&t;&t;0xa15a1301
 DECL|macro|cs46xx_t_magic
 mdefine_line|#define cs46xx_t_magic&t;&t;&t;&t;0xa15a1401
+DECL|macro|cs46xx_pcm_t_magic
+mdefine_line|#define cs46xx_pcm_t_magic&t;&t;&t;0xa15a1402
 DECL|macro|ensoniq_t_magic
 mdefine_line|#define ensoniq_t_magic&t;&t;&t;&t;0xa15a1501
 DECL|macro|sonicvibes_t_magic

@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
+macro_line|#include &quot;cs46xx_dsp_spos.h&quot;
 macro_line|#ifndef PCI_VENDOR_ID_CIRRUS
 DECL|macro|PCI_VENDOR_ID_CIRRUS
 mdefine_line|#define PCI_VENDOR_ID_CIRRUS            0x1013
@@ -1225,11 +1226,13 @@ mdefine_line|#define SERACC_CHIP_TYPE_1_03                  0x00000000
 DECL|macro|SERACC_CHIP_TYPE_2_0
 mdefine_line|#define SERACC_CHIP_TYPE_2_0                   0x00000001
 DECL|macro|SERACC_TWO_CODECS
-mdefine_line|#define SERACC_TWO_CODECS                       0x00000002
+mdefine_line|#define SERACC_TWO_CODECS                      0x00000002
 DECL|macro|SERACC_MDM
-mdefine_line|#define SERACC_MDM                              0x00000004
+mdefine_line|#define SERACC_MDM                             0x00000004
 DECL|macro|SERACC_HSP
-mdefine_line|#define SERACC_HSP                              0x00000008
+mdefine_line|#define SERACC_HSP                             0x00000008
+DECL|macro|SERACC_ODT
+mdefine_line|#define SERACC_ODT                             0x00000010 /* only CS4630 */
 macro_line|#endif
 multiline_comment|/*&n; *  The following defines are for the flags in the AC97 control register 2.&n; */
 macro_line|#ifndef NO_CS4612
@@ -2204,12 +2207,110 @@ DECL|macro|SAVE_REG_MAX
 mdefine_line|#define SAVE_REG_MAX             0x10
 DECL|macro|POWER_DOWN_ALL
 mdefine_line|#define POWER_DOWN_ALL         0x7f0f
+multiline_comment|/* maxinum number of AC97 codecs connected, AC97 2.0 defined 4 */
+DECL|macro|MAX_NR_AC97
+mdefine_line|#define MAX_NR_AC97&t;&t;&t;&t;4
+DECL|macro|CS46XX_PRIMARY_CODEC_INDEX
+mdefine_line|#define CS46XX_PRIMARY_CODEC_INDEX&t;&t;0
+DECL|macro|CS46XX_SECONDARY_CODEC_INDEX
+mdefine_line|#define CS46XX_SECONDARY_CODEC_INDEX&t;&t;1
+DECL|macro|CS46XX_SECONDARY_CODEC_OFFSET
+mdefine_line|#define CS46XX_SECONDARY_CODEC_OFFSET&t;&t;0x80
 multiline_comment|/*&n; *&n; */
 DECL|typedef|cs46xx_t
 r_typedef
 r_struct
 id|_snd_cs46xx
 id|cs46xx_t
+suffix:semicolon
+DECL|struct|_snd_cs46xx_pcm_t
+r_typedef
+r_struct
+id|_snd_cs46xx_pcm_t
+(brace
+DECL|member|hw_area
+r_int
+r_char
+op_star
+id|hw_area
+suffix:semicolon
+DECL|member|hw_addr
+id|dma_addr_t
+id|hw_addr
+suffix:semicolon
+multiline_comment|/* PCI bus address, not accessible */
+DECL|member|hw_size
+r_int
+r_int
+id|hw_size
+suffix:semicolon
+DECL|member|ctl
+r_int
+r_int
+id|ctl
+suffix:semicolon
+DECL|member|shift
+r_int
+r_int
+id|shift
+suffix:semicolon
+multiline_comment|/* Shift count to trasform frames in bytes */
+DECL|member|sw_bufsize
+r_int
+r_int
+id|sw_bufsize
+suffix:semicolon
+DECL|member|sw_data
+r_int
+r_int
+id|sw_data
+suffix:semicolon
+multiline_comment|/* Offset to next dst (or src) in sw ring buffer */
+DECL|member|sw_io
+r_int
+r_int
+id|sw_io
+suffix:semicolon
+DECL|member|sw_ready
+r_int
+id|sw_ready
+suffix:semicolon
+multiline_comment|/* Bytes ready to be transferred to/from hw */
+DECL|member|hw_data
+r_int
+r_int
+id|hw_data
+suffix:semicolon
+multiline_comment|/* Offset to next dst (or src) in hw ring buffer */
+DECL|member|hw_io
+r_int
+r_int
+id|hw_io
+suffix:semicolon
+multiline_comment|/* Ring buffer hw pointer */
+DECL|member|hw_ready
+r_int
+id|hw_ready
+suffix:semicolon
+multiline_comment|/* Bytes ready for play (or captured) in hw ring buffer */
+DECL|member|appl_ptr
+r_int
+id|appl_ptr
+suffix:semicolon
+multiline_comment|/* Last seen appl_ptr */
+DECL|member|substream
+id|snd_pcm_substream_t
+op_star
+id|substream
+suffix:semicolon
+DECL|member|pcm_channel
+id|pcm_channel_descriptor_t
+op_star
+id|pcm_channel
+suffix:semicolon
+DECL|typedef|cs46xx_pcm_t
+)brace
+id|cs46xx_pcm_t
 suffix:semicolon
 r_typedef
 r_struct
@@ -2390,17 +2491,21 @@ id|snd_pcm_substream_t
 op_star
 id|substream
 suffix:semicolon
-DECL|member|play
 DECL|member|capt
 )brace
-id|play
-comma
 id|capt
+suffix:semicolon
+DECL|member|nr_ac97_codecs
+r_int
+id|nr_ac97_codecs
 suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star
 id|ac97
+(braket
+id|MAX_NR_AC97
+)braket
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -2515,6 +2620,24 @@ r_struct
 id|pm_dev
 op_star
 id|pm_dev
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
+DECL|member|dsp_spos_instance
+id|dsp_spos_instance_t
+op_star
+id|dsp_spos_instance
+suffix:semicolon
+macro_line|#else /* for compatibility */
+DECL|member|playback_pcm
+id|cs46xx_pcm_t
+op_star
+id|playback_pcm
+suffix:semicolon
+DECL|member|play_ctl
+r_int
+r_int
+id|play_ctl
 suffix:semicolon
 macro_line|#endif
 )brace
