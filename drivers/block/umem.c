@@ -1191,11 +1191,17 @@ id|card
 op_assign
 id|q-&gt;queuedata
 suffix:semicolon
-id|spin_lock_bh
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|card-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1213,11 +1219,13 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|card-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2079,7 +2087,7 @@ op_assign
 id|bio-&gt;bi_idx
 suffix:semicolon
 multiline_comment|/* count of completed segments*/
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -2106,7 +2114,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
