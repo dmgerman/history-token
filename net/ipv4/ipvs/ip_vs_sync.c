@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the NetFilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_sync.c,v 1.13 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * ip_vs_sync:  sync connection info from master load balancer to backups&n; *              through multicast&n; *&n; * Changes:&n; *&t;Alexandre Cassen&t;:&t;Added master &amp; backup support at a time.&n; *&t;Alexandre Cassen&t;:&t;Added SyncID support for incoming sync&n; *&t;&t;&t;&t;&t;messages filtering.&n; */
+multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the NetFilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_sync.c,v 1.13 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * ip_vs_sync:  sync connection info from master load balancer to backups&n; *              through multicast&n; *&n; * Changes:&n; *&t;Alexandre Cassen&t;:&t;Added master &amp; backup support at a time.&n; *&t;Alexandre Cassen&t;:&t;Added SyncID support for incoming sync&n; *&t;&t;&t;&t;&t;messages filtering.&n; *&t;Justin Ossevoort&t;:&t;Fix endian problem on sync message size.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
@@ -846,6 +846,15 @@ id|p
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/* Convert size back to host byte order */
+id|m-&gt;size
+op_assign
+id|ntohs
+c_func
+(paren
+id|m-&gt;size
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2104,6 +2113,65 @@ id|len
 suffix:semicolon
 )brace
 r_static
+r_void
+DECL|function|ip_vs_send_sync_msg
+id|ip_vs_send_sync_msg
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+comma
+r_struct
+id|ip_vs_sync_mesg
+op_star
+id|msg
+)paren
+(brace
+r_int
+id|msize
+suffix:semicolon
+id|msize
+op_assign
+id|msg-&gt;size
+suffix:semicolon
+multiline_comment|/* Put size in network byte order */
+id|msg-&gt;size
+op_assign
+id|htons
+c_func
+(paren
+id|msg-&gt;size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip_vs_send_async
+c_func
+(paren
+id|sock
+comma
+(paren
+r_char
+op_star
+)paren
+id|msg
+comma
+id|msize
+)paren
+op_ne
+id|msize
+)paren
+id|IP_VS_ERR
+c_func
+(paren
+l_string|&quot;ip_vs_send_async error&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_static
 r_int
 DECL|function|ip_vs_receive
 id|ip_vs_receive
@@ -2259,11 +2327,6 @@ id|ip_vs_sync_buff
 op_star
 id|sb
 suffix:semicolon
-r_struct
-id|ip_vs_sync_mesg
-op_star
-id|m
-suffix:semicolon
 multiline_comment|/* create the sending multicast socket */
 id|sock
 op_assign
@@ -2311,33 +2374,12 @@ c_func
 )paren
 )paren
 (brace
-id|m
-op_assign
-id|sb-&gt;mesg
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ip_vs_send_async
+id|ip_vs_send_sync_msg
 c_func
 (paren
 id|sock
 comma
-(paren
-r_char
-op_star
-)paren
-id|m
-comma
-id|m-&gt;size
-)paren
-op_ne
-id|m-&gt;size
-)paren
-id|IP_VS_ERR
-c_func
-(paren
-l_string|&quot;ip_vs_send_async error&bslash;n&quot;
+id|sb-&gt;mesg
 )paren
 suffix:semicolon
 id|ip_vs_sync_buff_release
@@ -2364,33 +2406,12 @@ id|HZ
 )paren
 )paren
 (brace
-id|m
-op_assign
-id|sb-&gt;mesg
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ip_vs_send_async
+id|ip_vs_send_sync_msg
 c_func
 (paren
 id|sock
 comma
-(paren
-r_char
-op_star
-)paren
-id|m
-comma
-id|m-&gt;size
-)paren
-op_ne
-id|m-&gt;size
-)paren
-id|IP_VS_ERR
-c_func
-(paren
-l_string|&quot;ip_vs_send_async error&bslash;n&quot;
+id|sb-&gt;mesg
 )paren
 suffix:semicolon
 id|ip_vs_sync_buff_release
