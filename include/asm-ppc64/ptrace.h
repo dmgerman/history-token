@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC64_PTRACE_H
 DECL|macro|_PPC64_PTRACE_H
 mdefine_line|#define _PPC64_PTRACE_H
-multiline_comment|/*&n; * Copyright (C) 2001 PPC64 Team, IBM Corp&n; *&n; * This struct defines the way the registers are stored on the&n; * kernel stack during a system call or other kernel entry.&n; *&n; * this should only contain volatile regs&n; * since we can keep non-volatile in the thread_struct&n; * should set this up when only volatiles are saved&n; * by intr code.&n; *&n; * Since this is going on the stack, *CARE MUST BE TAKEN* to insure&n; * that the overall structure is a multiple of 16 bytes in length.&n; *&n; * Note that the offsets of the fields in this struct correspond with&n; * the PT_* values below.  This simplifies arch/ppc/kernel/ptrace.c.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 PPC64 Team, IBM Corp&n; *&n; * This struct defines the way the registers are stored on the&n; * kernel stack during a system call or other kernel entry.&n; *&n; * this should only contain volatile regs&n; * since we can keep non-volatile in the thread_struct&n; * should set this up when only volatiles are saved&n; * by intr code.&n; *&n; * Since this is going on the stack, *CARE MUST BE TAKEN* to insure&n; * that the overall structure is a multiple of 16 bytes in length.&n; *&n; * Note that the offsets of the fields in this struct correspond with&n; * the PT_* values below.  This simplifies arch/ppc64/kernel/ptrace.c.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PPC_REG
 mdefine_line|#define PPC_REG unsigned long
@@ -239,14 +239,12 @@ DECL|macro|PT_RESULT
 mdefine_line|#define PT_RESULT 43
 DECL|macro|PT_FPR0
 mdefine_line|#define PT_FPR0&t;48
+multiline_comment|/* Kernel and userspace will both use this PT_FPSCR value.  32-bit apps will have&n; * visibility to the asm-ppc/ptrace.h header instead of this one.&n; */
+DECL|macro|PT_FPSCR
+mdefine_line|#define PT_FPSCR (PT_FPR0 + 32 + 1)&t;  /* each FP reg occupies 1 slot in 64-bit space */
 macro_line|#ifdef __KERNEL__
-DECL|macro|PT_FPSCR
-mdefine_line|#define PT_FPSCR (PT_FPR0 + 32 + 1)&t;  /* each FP reg occupies 1 slot in this space */
 DECL|macro|PT_FPSCR32
-mdefine_line|#define PT_FPSCR32 (PT_FPR0 + 2*32 + 1)&t;  /* To the 32-bit user - each FP reg occupies 2 slots in this space */
-macro_line|#else
-DECL|macro|PT_FPSCR
-mdefine_line|#define PT_FPSCR (PT_FPR0 + 2*32 + 1)&t;/* each FP reg occupies 2 slots in this space -- Fix when 64-bit apps. */
+mdefine_line|#define PT_FPSCR32 (PT_FPR0 + 2*32 + 1)&t;  /* each FP reg occupies 2 32-bit userspace slots */
 macro_line|#endif
 multiline_comment|/* Additional PTRACE requests implemented on PowerPC. */
 DECL|macro|PPC_PTRACE_GETREGS
