@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/85xx/mpc8540_ads.c&n; *&n; * MPC8540ADS board specific routines&n; *&n; * Maintainer: Kumar Gala &lt;kumar.gala@freescale.com&gt;&n; *&n; * Copyright 2004 Freescale Semiconductor Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/85xx/mpc8560_ads.c&n; *&n; * MPC8560ADS board specific routines&n; *&n; * Maintainer: Kumar Gala &lt;kumar.gala@freescale.com&gt;&n; *&n; * Copyright 2004 Freescale Semiconductor Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -34,9 +34,19 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/immap_85xx.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
 macro_line|#include &lt;mm/mmu_decl.h&gt;
+macro_line|#include &lt;syslib/cpm2_pic.h&gt;
 macro_line|#include &lt;syslib/ppc85xx_common.h&gt;
 macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
+r_extern
+r_void
+id|cpm2_reset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|mpc85xx_tsec1_def
 r_struct
 id|ocp_gfar_data
@@ -73,9 +83,9 @@ id|GFAR_HAS_MULTI_INTR
 op_or
 id|GFAR_HAS_RMON
 op_or
-id|GFAR_HAS_PHY_INTR
-op_or
 id|GFAR_HAS_COALESCE
+op_or
+id|GFAR_HAS_PHY_INTR
 )paren
 comma
 dot
@@ -126,58 +136,15 @@ id|GFAR_HAS_MULTI_INTR
 op_or
 id|GFAR_HAS_RMON
 op_or
-id|GFAR_HAS_PHY_INTR
-op_or
 id|GFAR_HAS_COALESCE
+op_or
+id|GFAR_HAS_PHY_INTR
 )paren
 comma
 dot
 id|phyid
 op_assign
 l_int|1
-comma
-dot
-id|phyregidx
-op_assign
-l_int|0
-comma
-)brace
-suffix:semicolon
-DECL|variable|mpc85xx_fec_def
-r_struct
-id|ocp_gfar_data
-id|mpc85xx_fec_def
-op_assign
-(brace
-dot
-id|interruptTransmit
-op_assign
-id|MPC85xx_IRQ_FEC
-comma
-dot
-id|interruptError
-op_assign
-id|MPC85xx_IRQ_FEC
-comma
-dot
-id|interruptReceive
-op_assign
-id|MPC85xx_IRQ_FEC
-comma
-dot
-id|interruptPHY
-op_assign
-id|MPC85xx_IRQ_EXT5
-comma
-dot
-id|flags
-op_assign
-l_int|0
-comma
-dot
-id|phyid
-op_assign
-l_int|3
 comma
 dot
 id|phyregidx
@@ -203,8 +170,8 @@ multiline_comment|/* ***********************************************************
 r_static
 r_void
 id|__init
-DECL|function|mpc8540ads_setup_arch
-id|mpc8540ads_setup_arch
+DECL|function|mpc8560ads_setup_arch
+id|mpc8560ads_setup_arch
 c_func
 (paren
 r_void
@@ -234,6 +201,11 @@ r_int
 r_int
 id|freq
 suffix:semicolon
+id|cpm2_reset
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* get the core frequency */
 id|freq
 op_assign
@@ -249,7 +221,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;mpc8540ads_setup_arch()&quot;
+l_string|&quot;mpc8560ads_setup_arch()&quot;
 comma
 l_int|0
 )paren
@@ -266,31 +238,6 @@ multiline_comment|/* setup PCI host bridges */
 id|mpc85xx_setup_hose
 c_func
 (paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_8250
-id|mpc85xx_early_serial_map
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-multiline_comment|/* Invalidate the entry we stole earlier the serial ports&n;&t; * should be properly mapped */
-id|invalidate_tlbcam_entry
-c_func
-(paren
-id|NUM_TLBCAMS
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -370,44 +317,6 @@ l_int|6
 )paren
 suffix:semicolon
 )brace
-id|def
-op_assign
-id|ocp_get_one_device
-c_func
-(paren
-id|OCP_VENDOR_FREESCALE
-comma
-id|OCP_FUNC_GFAR
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|def
-)paren
-(brace
-id|einfo
-op_assign
-(paren
-r_struct
-id|ocp_gfar_data
-op_star
-)paren
-id|def-&gt;additions
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|einfo-&gt;mac_addr
-comma
-id|binfo-&gt;bi_enet2addr
-comma
-l_int|6
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -441,6 +350,147 @@ op_amp
 id|binfo-&gt;bi_immr_base
 )paren
 )paren
+suffix:semicolon
+)brace
+DECL|function|cpm2_cascade
+r_static
+id|irqreturn_t
+id|cpm2_cascade
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_while
+c_loop
+(paren
+(paren
+id|irq
+op_assign
+id|cpm2_get_irq
+c_func
+(paren
+id|regs
+)paren
+)paren
+op_ge
+l_int|0
+)paren
+(brace
+id|ppc_irq_dispatch_handler
+c_func
+(paren
+id|regs
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__init
+DECL|function|mpc8560_ads_init_IRQ
+id|mpc8560_ads_init_IRQ
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_volatile
+id|cpm2_map_t
+op_star
+id|immap
+op_assign
+id|cpm2_immr
+suffix:semicolon
+multiline_comment|/* Setup OpenPIC */
+id|mpc85xx_ads_init_IRQ
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* disable all CPM interupts */
+id|immap-&gt;im_intctl.ic_simrh
+op_assign
+l_int|0x0
+suffix:semicolon
+id|immap-&gt;im_intctl.ic_simrl
+op_assign
+l_int|0x0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|CPM_IRQ_OFFSET
+suffix:semicolon
+id|i
+OL
+(paren
+id|NR_CPM_INTS
+op_plus
+id|CPM_IRQ_OFFSET
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|irq_desc
+(braket
+id|i
+)braket
+dot
+id|handler
+op_assign
+op_amp
+id|cpm2_pic
+suffix:semicolon
+multiline_comment|/* Initialize the default interrupt mapping priorities,&n;&t; * in case the boot rom changed something on us.&n;&t; */
+id|immap-&gt;im_intctl.ic_sicr
+op_assign
+l_int|0
+suffix:semicolon
+id|immap-&gt;im_intctl.ic_scprrh
+op_assign
+l_int|0x05309770
+suffix:semicolon
+id|immap-&gt;im_intctl.ic_scprrl
+op_assign
+l_int|0x05309770
+suffix:semicolon
+id|request_irq
+c_func
+(paren
+id|MPC85xx_IRQ_CPM
+comma
+id|cpm2_cascade
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;cpm2_cascade&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* ************************************************************************ */
@@ -514,39 +564,6 @@ id|bd_t
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-(brace
-id|bd_t
-op_star
-id|binfo
-op_assign
-(paren
-id|bd_t
-op_star
-)paren
-id|__res
-suffix:semicolon
-multiline_comment|/* Use the last TLB entry to map CCSRBAR to allow access to DUART regs */
-id|settlbcam
-c_func
-(paren
-id|NUM_TLBCAMS
-op_minus
-l_int|1
-comma
-id|binfo-&gt;bi_immr_base
-comma
-id|binfo-&gt;bi_immr_base
-comma
-id|MPC85xx_CCSRBAR_SIZE
-comma
-id|_PAGE_IO
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
 multiline_comment|/*&n;&t; * If the init RAM disk has been configured in, and there&squot;s a valid&n;&t; * starting address for it, set it up.&n;&t; */
 r_if
@@ -609,7 +626,7 @@ suffix:semicolon
 multiline_comment|/* setup the PowerPC module struct */
 id|ppc_md.setup_arch
 op_assign
-id|mpc8540ads_setup_arch
+id|mpc8560ads_setup_arch
 suffix:semicolon
 id|ppc_md.show_cpuinfo
 op_assign
@@ -617,7 +634,7 @@ id|mpc85xx_ads_show_cpuinfo
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
-id|mpc85xx_ads_init_IRQ
+id|mpc8560_ads_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
@@ -655,12 +672,6 @@ id|ppc_md.calibrate_decr
 op_assign
 id|mpc85xx_calibrate_decr
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_8250) &amp;&amp; defined(CONFIG_SERIAL_TEXT_DEBUG)
-id|ppc_md.progress
-op_assign
-id|gen550_progress
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SERIAL_8250 &amp;&amp; CONFIG_SERIAL_TEXT_DEBUG */
 r_if
 c_cond
 (paren
@@ -671,7 +682,7 @@ dot
 id|progress
 c_func
 (paren
-l_string|&quot;mpc8540ads_init(): exit&quot;
+l_string|&quot;mpc8560ads_init(): exit&quot;
 comma
 l_int|0
 )paren
