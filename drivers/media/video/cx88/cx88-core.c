@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: cx88-core.c,v 1.15 2004/10/25 11:26:36 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * driver core&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-core.c,v 1.24 2005/01/19 12:01:55 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * driver core&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -194,6 +195,32 @@ c_func
 id|nicam
 comma
 l_string|&quot;tv audio is nicam&quot;
+)paren
+suffix:semicolon
+DECL|variable|nocomb
+r_static
+r_int
+r_int
+id|nocomb
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|nocomb
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nocomb
+comma
+l_string|&quot;disable comb filter&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
@@ -2480,7 +2507,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|cx88_risc_disasm
+macro_line|#if 0 /* currently unused, but useful for debugging */
 r_void
 id|cx88_risc_disasm
 c_func
@@ -2610,6 +2637,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|cx88_sram_channel_dump
 r_void
 id|cx88_sram_channel_dump
@@ -3238,9 +3266,9 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------ */
-DECL|function|cx88_irq
-r_void
-id|cx88_irq
+DECL|function|cx88_core_irq
+r_int
+id|cx88_core_irq
 c_func
 (paren
 r_struct
@@ -3250,11 +3278,41 @@ id|core
 comma
 id|u32
 id|status
-comma
-id|u32
-id|mask
 )paren
 (brace
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|18
+)paren
+)paren
+(brace
+id|cx88_ir_irq
+c_func
+(paren
+id|core
+)paren
+suffix:semicolon
+id|handled
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|handled
+)paren
 id|cx88_print_irqbits
 c_func
 (paren
@@ -3266,8 +3324,11 @@ id|cx88_pci_irqs
 comma
 id|status
 comma
-id|mask
+id|core-&gt;pci_irqmask
 )paren
+suffix:semicolon
+r_return
+id|handled
 suffix:semicolon
 )brace
 DECL|function|cx88_wakeup
@@ -4536,6 +4597,20 @@ l_int|1
 )paren
 suffix:semicolon
 singleline_comment|// 5-tap interpolation
+r_if
+c_cond
+(paren
+id|nocomb
+)paren
+id|value
+op_or_assign
+(paren
+l_int|3
+op_lshift
+l_int|5
+)paren
+suffix:semicolon
+singleline_comment|// disable comb filter
 id|cx_write
 c_func
 (paren
@@ -5016,8 +5091,6 @@ c_func
 id|MO_AUDD_LNGTH
 comma
 l_int|128
-op_div
-l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* fifo size */
@@ -5027,8 +5100,6 @@ c_func
 id|MO_AUDR_LNGTH
 comma
 l_int|128
-op_div
-l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* fifo size */
@@ -5524,6 +5595,19 @@ c_func
 id|norm
 )paren
 )paren
+)paren
+suffix:semicolon
+singleline_comment|// this is needed as well to set all tvnorm parameter
+id|cx88_set_scale
+c_func
+(paren
+id|core
+comma
+l_int|320
+comma
+l_int|240
+comma
+id|V4L2_FIELD_INTERLACED
 )paren
 suffix:semicolon
 singleline_comment|// audio
@@ -6157,6 +6241,13 @@ id|core
 )paren
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|core-&gt;refcount
+)paren
+suffix:semicolon
 id|core-&gt;pci_bus
 op_assign
 id|pci-&gt;bus-&gt;number
@@ -6169,12 +6260,9 @@ c_func
 id|pci-&gt;devfn
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|core-&gt;refcount
-)paren
+id|core-&gt;pci_irqmask
+op_assign
+l_int|0x00fc00
 suffix:semicolon
 id|core-&gt;nr
 op_assign
@@ -6440,6 +6528,14 @@ c_func
 id|core
 )paren
 suffix:semicolon
+id|cx88_ir_init
+c_func
+(paren
+id|core
+comma
+id|pci
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -6527,6 +6623,12 @@ op_amp
 id|devlist
 )paren
 suffix:semicolon
+id|cx88_ir_fini
+c_func
+(paren
+id|core
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6607,11 +6709,11 @@ c_func
 id|cx88_print_irqbits
 )paren
 suffix:semicolon
-DECL|variable|cx88_irq
+DECL|variable|cx88_core_irq
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cx88_irq
+id|cx88_core_irq
 )paren
 suffix:semicolon
 DECL|variable|cx88_wakeup
@@ -6661,13 +6763,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cx88_free_buffer
-)paren
-suffix:semicolon
-DECL|variable|cx88_risc_disasm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cx88_risc_disasm
 )paren
 suffix:semicolon
 DECL|variable|cx88_sram_channels

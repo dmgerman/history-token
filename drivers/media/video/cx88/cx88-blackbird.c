@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * $Id: cx88-blackbird.c,v 1.17 2004/11/07 13:17:15 kraxel Exp $&n; *&n; *  Support for a cx23416 mpeg encoder via cx2388x host port.&n; *  &quot;blackbird&quot; reference design.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  Includes parts from the ivtv driver( http://ivtv.sourceforge.net/),&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-blackbird.c,v 1.26 2005/03/07 15:58:05 kraxel Exp $&n; *&n; *  Support for a cx23416 mpeg encoder via cx2388x host port.&n; *  &quot;blackbird&quot; reference design.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  Includes parts from the ivtv driver( http://ivtv.sourceforge.net/),&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -848,16 +849,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|udelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-multiline_comment|/* without this, things don&squot;t go right (subsequent memory_write()&squot;s don&squot;t get through */
-multiline_comment|/* ? would this be safe here? set_current_state(TASK_INTERRUPTIBLE); schedule_timeout(1); */
-macro_line|#endif
 )brace
 DECL|function|register_read
 r_static
@@ -1297,7 +1288,7 @@ r_if
 c_cond
 (paren
 l_int|0
-op_eq
+op_ne
 (paren
 id|flag
 op_amp
@@ -1535,6 +1526,8 @@ l_string|&quot;Mailbox signature found&bslash;n&quot;
 suffix:semicolon
 r_return
 id|i
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -2103,9 +2096,9 @@ l_int|2
 comma
 l_int|0
 comma
-l_int|480
+id|dev-&gt;height
 comma
-l_int|720
+id|dev-&gt;width
 )paren
 suffix:semicolon
 multiline_comment|/* assign aspect ratio */
@@ -3178,11 +3171,11 @@ id|V4L2_BUF_TYPE_VIDEO_CAPTURE
 suffix:semicolon
 id|f-&gt;fmt.pix.width
 op_assign
-l_int|720
+id|dev-&gt;width
 suffix:semicolon
 id|f-&gt;fmt.pix.height
 op_assign
-l_int|576
+id|dev-&gt;height
 suffix:semicolon
 id|f-&gt;fmt.pix.pixelformat
 op_assign
@@ -3491,6 +3484,19 @@ id|fh-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+multiline_comment|/* FIXME: locking against other video device */
+id|cx88_set_scale
+c_func
+(paren
+id|dev-&gt;core
+comma
+id|dev-&gt;width
+comma
+id|dev-&gt;height
+comma
+id|V4L2_FIELD_INTERLACED
+)paren
+suffix:semicolon
 id|videobuf_queue_init
 c_func
 (paren
@@ -3583,6 +3589,13 @@ c_cond
 id|fh-&gt;mpegq.reading
 )paren
 id|videobuf_read_stop
+c_func
+(paren
+op_amp
+id|fh-&gt;mpegq
+)paren
+suffix:semicolon
+id|videobuf_mmap_free
 c_func
 (paren
 op_amp
@@ -4069,6 +4082,14 @@ id|dev-&gt;core
 op_assign
 id|core
 suffix:semicolon
+id|dev-&gt;width
+op_assign
+l_int|720
+suffix:semicolon
+id|dev-&gt;height
+op_assign
+l_int|480
+suffix:semicolon
 id|err
 op_assign
 id|cx8802_init_common
@@ -4183,6 +4204,20 @@ id|dev-&gt;devlist
 suffix:semicolon
 multiline_comment|/* common */
 id|cx8802_fini_common
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|cx88_core_put
+c_func
+(paren
+id|dev-&gt;core
+comma
+id|dev-&gt;pci
+)paren
+suffix:semicolon
+id|kfree
 c_func
 (paren
 id|dev
