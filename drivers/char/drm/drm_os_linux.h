@@ -74,6 +74,8 @@ mdefine_line|#define DRM_MALLOC(x) kmalloc(x, GFP_KERNEL)
 multiline_comment|/** &squot;free&squot; without the overhead of DRM(free)() */
 DECL|macro|DRM_FREE
 mdefine_line|#define DRM_FREE(x,size) kfree(x)
+DECL|macro|DRM_GET_PRIV_WITH_RETURN
+mdefine_line|#define DRM_GET_PRIV_WITH_RETURN(_priv, _filp) _priv = _filp-&gt;private_data
 multiline_comment|/** &n; * Get the pointer to the SAREA.&n; *&n; * Searches the SAREA on the mapping lists and points drm_device::sarea to it.&n; */
 DECL|macro|DRM_GETSAREA
 mdefine_line|#define DRM_GETSAREA()&t;&t;&t;&t;&t;&t;&t; &bslash;&n;do { &t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;drm_map_list_t *entry;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;list_for_each_entry( entry, &amp;dev-&gt;maplist-&gt;head, head ) {&t; &bslash;&n;&t;&t;if ( entry-&gt;map &amp;&amp;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;     entry-&gt;map-&gt;type == _DRM_SHM &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;     (entry-&gt;map-&gt;flags &amp; _DRM_CONTAINS_LOCK) ) {&t; &bslash;&n;&t;&t;&t;dev_priv-&gt;sarea = entry-&gt;map;&t;&t;&t; &bslash;&n; &t;&t;&t;break;&t;&t;&t;&t;&t;&t; &bslash;&n; &t;&t;}&t;&t;&t;&t;&t;&t;&t; &bslash;&n; &t;}&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while (0)
