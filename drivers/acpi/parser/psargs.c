@@ -602,12 +602,10 @@ op_logical_neg
 id|method_desc
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_PARSE
-comma
-l_string|&quot;Control Method - %p has no attached object&bslash;n&quot;
+l_string|&quot;ps_get_next_namepath: Control Method %p has no attached object&bslash;n&quot;
 comma
 id|node
 )paren

@@ -104,12 +104,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unknown Reference subtype %X&bslash;n&quot;
+l_string|&quot;Unknown Reference subtype in get ref %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
@@ -135,16 +133,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
+l_string|&quot;Invalid descriptor type in get ref: %X&bslash;n&quot;
 comma
-l_string|&quot;%p has invalid descriptor [%s]&bslash;n&quot;
-comma
-id|obj_desc
-comma
-id|acpi_ut_get_descriptor_name
+id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|obj_desc
 )paren
@@ -731,6 +725,18 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Invalid object type, should not happen here */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Concat - invalid obj type: %X&bslash;n&quot;
+comma
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc1
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
