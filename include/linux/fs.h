@@ -4188,6 +4188,16 @@ op_star
 id|file
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_NOATIME
+)paren
+)paren
 id|touch_atime
 c_func
 (paren

@@ -34,6 +34,8 @@ DECL|macro|O_DSYNC
 mdefine_line|#define O_DSYNC&t;&t;01000000 /* HPUX only */
 DECL|macro|O_RSYNC
 mdefine_line|#define O_RSYNC&t;&t;02000000 /* HPUX only */
+DECL|macro|O_NOATIME
+mdefine_line|#define O_NOATIME&t;04000000
 DECL|macro|FASYNC
 mdefine_line|#define FASYNC&t;&t;00020000 /* fcntl, for BSD compatibility */
 DECL|macro|O_DIRECT
