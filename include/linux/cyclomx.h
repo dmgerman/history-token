@@ -15,10 +15,9 @@ macro_line|#endif
 DECL|macro|is_digit
 mdefine_line|#define&t;is_digit(ch) (((ch)&gt;=(unsigned)&squot;0&squot;&amp;&amp;(ch)&lt;=(unsigned)&squot;9&squot;)?1:0)
 multiline_comment|/* Adapter Data Space.&n; * This structure is needed because we handle multiple cards, otherwise&n; * static data would do it.&n; */
-DECL|struct|cycx
-r_typedef
+DECL|struct|cycx_device
 r_struct
-id|cycx
+id|cycx_device
 (brace
 DECL|member|devname
 r_char
@@ -83,7 +82,7 @@ id|isr
 )paren
 (paren
 r_struct
-id|cycx
+id|cycx_device
 op_star
 id|card
 )paren
@@ -97,7 +96,7 @@ id|exec
 )paren
 (paren
 r_struct
-id|cycx
+id|cycx_device
 op_star
 id|card
 comma
@@ -153,33 +152,35 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-DECL|typedef|cycx_t
 )brace
-id|cycx_t
 suffix:semicolon
 multiline_comment|/* Public Functions */
 r_void
 id|cyclomx_mod_inc_use_count
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_main.c */
 r_void
 id|cyclomx_mod_dec_use_count
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_main.c */
 r_void
 id|cyclomx_set_state
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 comma
@@ -187,12 +188,13 @@ r_int
 id|state
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_main.c */
 macro_line|#ifdef CONFIG_CYCLOMX_X25
 r_int
 id|cyx_init
+c_func
 (paren
-id|cycx_t
+r_struct
+id|cycx_device
 op_star
 id|card
 comma
@@ -201,7 +203,6 @@ op_star
 id|conf
 )paren
 suffix:semicolon
-multiline_comment|/* cycx_x25.c */
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _CYCLOMX_H */
