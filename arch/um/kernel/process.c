@@ -33,7 +33,7 @@ macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;mode.h&quot;
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;skas.h&quot;
 macro_line|#endif
@@ -1413,7 +1413,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 r_struct
 id|ptrace_faultinfo
 id|fi
