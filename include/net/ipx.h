@@ -311,7 +311,7 @@ r_int
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* To handle special ncp connection-handling sockets for mars_nwe,&n; &t; * the connection number must be stored in the socket. */
+multiline_comment|/*&n;&t; * To handle special ncp connection-handling sockets for mars_nwe,&n; &t; * the connection number must be stored in the socket.&n;&t; */
 DECL|member|ipx_ncp_conn
 r_int
 r_int
@@ -394,5 +394,5 @@ op_star
 id|intrfc
 )paren
 suffix:semicolon
-macro_line|#endif /* def _NET_INET_IPX_H_ */
+macro_line|#endif /* _NET_INET_IPX_H_ */
 eof
