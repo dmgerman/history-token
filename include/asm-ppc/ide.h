@@ -19,8 +19,9 @@ r_void
 id|__ide_mm_insw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 comma
 r_void
@@ -36,8 +37,9 @@ r_void
 id|__ide_mm_outsw
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 comma
 r_void
@@ -53,8 +55,9 @@ r_void
 id|__ide_mm_insl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 comma
 r_void
@@ -70,8 +73,9 @@ r_void
 id|__ide_mm_outsl
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 comma
 r_void
