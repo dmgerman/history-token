@@ -608,60 +608,6 @@ DECL|enumerator|DATA_HIGH
 id|DATA_HIGH
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Serial Interface Unit&n; */
-multiline_comment|/* SIU interfaces */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|SIU_RS232C
-id|SIU_RS232C
-comma
-DECL|enumerator|SIU_IRDA
-id|SIU_IRDA
-DECL|typedef|siu_interface_t
-)brace
-id|siu_interface_t
-suffix:semicolon
-multiline_comment|/* IrDA interfaces */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|IRDA_NONE
-id|IRDA_NONE
-comma
-DECL|enumerator|IRDA_SHARP
-id|IRDA_SHARP
-comma
-DECL|enumerator|IRDA_TEMIC
-id|IRDA_TEMIC
-comma
-DECL|enumerator|IRDA_HP
-id|IRDA_HP
-DECL|typedef|irda_module_t
-)brace
-id|irda_module_t
-suffix:semicolon
-r_extern
-r_void
-id|vr41xx_select_siu_interface
-c_func
-(paren
-id|siu_interface_t
-id|interface
-comma
-id|irda_module_t
-id|module
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Debug Serial Interface Unit&n; */
-r_extern
-r_void
-id|vr41xx_dsiu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * PCI Control Unit&n; */
 DECL|macro|PCI_MASTER_ADDRESS_MASK
 mdefine_line|#define PCI_MASTER_ADDRESS_MASK&t;0x7fffffffU
