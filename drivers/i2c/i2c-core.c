@@ -2704,7 +2704,7 @@ id|i2c_bus_type
 suffix:semicolon
 )brace
 DECL|variable|i2c_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|i2c_init
