@@ -1,9 +1,9 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a (jgarzik):&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;- If no phy is found, fail to load that board&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer&n;&t;- Re-align comments in private struct&n;&n;&t;Version LK1.04c:&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version LK1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version LK1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;&t;Version LK1.03 (D-Link):&n;&t;- New Rx scheme, reduce Rx congestion&n;&t;- Option to disable flow control&n;&n;&t;Version LK1.04 (D-Link):&n;&t;- Tx timeout recovery&n;&t;- More support for ethtool.&n;&n;&t;Version LK1.04a:&n;&t;- Remove unused/constant members from struct pci_id_info&n;&t;(which then allows removal of &squot;drv_flags&squot; from private struct)&n;&t;(jgarzik)&n;&t;- If no phy is found, fail to load that board (jgarzik)&n;&t;- Always start phy id scan at id 1 to avoid problems (Donald Becker)&n;&t;- Autodetect where mii_preable_required is needed,&n;&t;default to not needed.  (Donald Becker)&n;&n;&t;Version LK1.04b:&n;&t;- Remove mii_preamble_required module parameter (Donald Becker)&n;&t;- Add per-interface mii_preamble_required (setting is autodetected)&n;&t;  (Donald Becker)&n;&t;- Remove unnecessary cast from void pointer (jgarzik)&n;&t;- Re-align comments in private struct (jgarzik)&n;&n;&t;Version LK1.04c (jgarzik):&n;&t;- Support bitmapped message levels (NETIF_MSG_xxx), and the&n;&t;  two ethtool ioctls that get/set them&n;&t;- Don&squot;t hand-code MII ethtool support, use standard API/lib&n;&n;&t;Version LK1.04d:&n;&t;- Merge from Donald Becker&squot;s sundance.c: (Jason Lunz)&n;&t;&t;* proper support for variably-sized MTUs&n;&t;&t;* default to PIO, to fix chip bugs&n;&t;- Add missing unregister_netdev (Jason Lunz)&n;&t;- Add CONFIG_SUNDANCE_MMIO config option (jgarzik)&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.04c&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.04d&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;19-Sep-2002&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
@@ -22,11 +22,6 @@ r_int
 id|max_interrupt_work
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|mtu
-r_static
-r_int
-id|mtu
 suffix:semicolon
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n;   Typical is a 64 element hash table based on the Ethernet CRC.  */
 DECL|variable|multicast_filter_limit
@@ -172,14 +167,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|mtu
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|debug
 comma
 l_string|&quot;i&quot;
@@ -226,14 +213,6 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|mtu
-comma
-l_string|&quot;Sundance Alta MTU (all boards)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
 id|debug
 comma
 l_string|&quot;Sundance Alta debug level (0-5)&quot;
@@ -256,6 +235,11 @@ l_string|&quot;Sundance Alta flow control [0|1]&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the Sundance Technologies &quot;Alta&quot; ST201 chip.&n;&n;II. Board-specific settings&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;Some chips explicitly use only 2^N sized rings, while others use a&n;&squot;next descriptor&squot; pointer that the driver forms into rings.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver uses a zero-copy receive and transmit scheme.&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in a later phase of receives.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;A subtle aspect of the operation is that the IP header at offset 14 in an&n;ethernet frame isn&squot;t longword aligned for further processing.&n;Unaligned buffers are permitted by the Sundance hardware, so&n;frames are received into the skbuff at an offset of &quot;+2&quot;, 16-byte aligning&n;the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;lp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. Iff the &squot;lp-&gt;tx_full&squot; flag is set, it&n;clears both the tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;The Sundance ST201 datasheet, preliminary version.&n;http://cesdis.gsfc.nasa.gov/linux/misc/100mbps.html&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;&n;IVc. Errata&n;&n;*/
+multiline_comment|/* Work-around for Kendin chip bugs. */
+macro_line|#ifndef CONFIG_SUNDANCE_MMIO
+DECL|macro|USE_IO_OPS
+mdefine_line|#define USE_IO_OPS 1
+macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -604,8 +588,8 @@ id|StationAddr
 op_assign
 l_int|0x54
 comma
-DECL|enumerator|MaxTxSize
-id|MaxTxSize
+DECL|enumerator|MaxFrameSize
+id|MaxFrameSize
 op_assign
 l_int|0x5A
 comma
@@ -1215,6 +1199,20 @@ DECL|macro|EEPROM_SA_OFFSET
 mdefine_line|#define EEPROM_SA_OFFSET&t;0x10
 DECL|macro|DEFAULT_INTR
 mdefine_line|#define DEFAULT_INTR (IntrRxDMADone | IntrPCIErr | &bslash;&n;&t;&t;&t;IntrDrvRqst | IntrTxDone | StatsMax | &bslash;&n;&t;&t;&t;LinkChange)
+r_static
+r_int
+id|change_mtu
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|new_mtu
+)paren
+suffix:semicolon
 r_static
 r_int
 id|eeprom_read
@@ -1865,6 +1863,11 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+id|dev-&gt;change_mtu
+op_assign
+op_amp
+id|change_mtu
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
@@ -1872,15 +1875,6 @@ id|pdev
 comma
 id|dev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mtu
-)paren
-id|dev-&gt;mtu
-op_assign
-id|mtu
 suffix:semicolon
 id|i
 op_assign
@@ -2103,7 +2097,7 @@ id|ASICCtrl
 )paren
 suffix:semicolon
 r_goto
-id|err_out_unmap_rx
+id|err_out_unregister
 suffix:semicolon
 )brace
 id|np-&gt;mii_if.phy_id
@@ -2543,6 +2537,14 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out_unregister
+suffix:colon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|err_out_unmap_rx
 suffix:colon
 id|pci_free_consistent
@@ -2611,6 +2613,62 @@ suffix:semicolon
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|change_mtu
+r_static
+r_int
+id|change_mtu
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|new_mtu
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|new_mtu
+OL
+l_int|68
+)paren
+op_logical_or
+(paren
+id|new_mtu
+OG
+l_int|8191
+)paren
+)paren
+multiline_comment|/* Set by RxDMAFrameLen */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|dev-&gt;mtu
+op_assign
+id|new_mtu
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Read the EEPROM and MII Management Data I/O (MDIO) interfaces. */
@@ -3292,6 +3350,43 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize other registers. */
+id|writew
+c_func
+(paren
+id|dev-&gt;mtu
+op_plus
+l_int|14
+comma
+id|ioaddr
+op_plus
+id|MaxFrameSize
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;mtu
+OG
+l_int|2047
+)paren
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ASICCtrl
+)paren
+op_or
+l_int|0x0C
+comma
+id|ioaddr
+op_plus
+id|ASICCtrl
+)paren
+suffix:semicolon
 multiline_comment|/* Configure the PCI bus bursts and FIFO thresholds. */
 r_if
 c_cond
@@ -4017,7 +4112,7 @@ id|PKT_BUF_SZ
 suffix:colon
 id|dev-&gt;mtu
 op_plus
-l_int|32
+l_int|36
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize all Rx descriptors. */
