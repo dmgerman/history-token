@@ -3367,6 +3367,10 @@ id|last_warning
 op_assign
 id|jiffies
 suffix:semicolon
+id|skipped
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace

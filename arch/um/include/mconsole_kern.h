@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/*&n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __MCONSOLE_KERN_H__
 DECL|macro|__MCONSOLE_KERN_H__
 mdefine_line|#define __MCONSOLE_KERN_H__
@@ -46,6 +46,26 @@ r_char
 op_star
 )paren
 suffix:semicolon
+DECL|member|get_config
+r_int
+(paren
+op_star
+id|get_config
+)paren
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+comma
+r_int
+comma
+r_char
+op_star
+op_star
+)paren
+suffix:semicolon
 DECL|member|remove
 r_int
 (paren
@@ -59,6 +79,8 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CONFIG_CHUNK
+mdefine_line|#define CONFIG_CHUNK(str, size, current, chunk, end) &bslash;&n;do { &bslash;&n;&t;current += strlen(chunk); &bslash;&n;&t;if(current &gt;= size) &bslash;&n;&t;&t;str = NULL; &bslash;&n;&t;if(str != NULL){ &bslash;&n;&t;&t;strcpy(str, chunk); &bslash;&n;&t;&t;str += strlen(chunk); &bslash;&n;&t;} &bslash;&n;&t;if(end) &bslash;&n;&t;&t;current++; &bslash;&n;} while(0)
 macro_line|#ifdef CONFIG_MCONSOLE
 r_extern
 r_void

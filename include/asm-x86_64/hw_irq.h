@@ -361,6 +361,7 @@ suffix:semicolon
 r_struct
 id|notifier_block
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
 r_int
 id|register_profile_notifier
 c_func
@@ -381,6 +382,44 @@ op_star
 id|nb
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|register_profile_notifier
+r_static
+r_inline
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_profile_notifier
+r_static
+r_inline
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROFILING */
 macro_line|#ifdef CONFIG_SMP /*more of this file should probably be ifdefed SMP */
 DECL|function|hw_resend_irq
 r_static

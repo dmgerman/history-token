@@ -284,8 +284,8 @@ r_return
 id|logical_apicid
 suffix:semicolon
 )brace
-DECL|macro|wakeup_secondary_cpu
-mdefine_line|#define wakeup_secondary_cpu(apicid, start_eip) &bslash;&n;&t;wakeup_secondary_via_NMI(apicid)
+DECL|macro|WAKE_SECONDARY_VIA_NMI
+mdefine_line|#define WAKE_SECONDARY_VIA_NMI
 DECL|function|setup_portio_remap
 r_static
 r_inline

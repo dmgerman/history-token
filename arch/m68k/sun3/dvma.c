@@ -1,4 +1,4 @@
-multiline_comment|/* dvma support routines */
+multiline_comment|/*&n; * linux/arch/m68k/sun3/dvma.c&n; *&n; * Written by Sam Creasey&n; *&n; * Sun3 IOMMU routines used for dvma accesses.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -67,10 +67,14 @@ id|j
 suffix:semicolon
 id|ptep
 op_assign
-id|__mk_pte
+id|pfn_pte
+c_func
+(paren
+id|virt_to_pfn
 c_func
 (paren
 id|kaddr
+)paren
 comma
 id|PAGE_KERNEL
 )paren

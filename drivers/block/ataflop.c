@@ -823,9 +823,9 @@ mdefine_line|#define&t;SUD&t;unit[SelectedDrive]
 DECL|macro|SUDT
 mdefine_line|#define&t;SUDT&t;unit[SelectedDrive].disktype
 DECL|macro|FDC_READ
-mdefine_line|#define FDC_READ(reg) ({&t;&t;&t;&bslash;&n;    /* unsigned long __flags; */&t;&t;&bslash;&n;    unsigned short __val;&t;&t;&t;&bslash;&n;    /* save_flags(__flags); cli(); */&t;&t;&bslash;&n;    dma_wd.dma_mode_status = 0x80 | (reg);&t;&bslash;&n;    udelay(25);&t;&t;&t;&t;&t;&bslash;&n;    __val = dma_wd.fdc_acces_seccount;&t;&t;&bslash;&n;    MFPDELAY();&t;&t;&t;&t;&t;&bslash;&n;    /* restore_flags(__flags); */&t;&t;&bslash;&n;    __val &amp; 0xff;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define FDC_READ(reg) ({&t;&t;&t;&bslash;&n;    /* unsigned long __flags; */&t;&t;&bslash;&n;    unsigned short __val;&t;&t;&t;&bslash;&n;    /* local_irq_save(__flags); */&t;&t;&bslash;&n;    dma_wd.dma_mode_status = 0x80 | (reg);&t;&bslash;&n;    udelay(25);&t;&t;&t;&t;&t;&bslash;&n;    __val = dma_wd.fdc_acces_seccount;&t;&t;&bslash;&n;    MFPDELAY();&t;&t;&t;&t;&t;&bslash;&n;    /* local_irq_restore(__flags); */&t;&t;&bslash;&n;    __val &amp; 0xff;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|FDC_WRITE
-mdefine_line|#define FDC_WRITE(reg,val)&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;/* unsigned long __flags; */&t;&t;&bslash;&n;&t;/* save_flags(__flags); cli(); */&t;&bslash;&n;&t;dma_wd.dma_mode_status = 0x80 | (reg);&t;&bslash;&n;&t;udelay(25);&t;&t;&t;&t;&bslash;&n;&t;dma_wd.fdc_acces_seccount = (val);&t;&bslash;&n;&t;MFPDELAY();&t;&t;&t;&t;&bslash;&n;        /* restore_flags(__flags); */&t;&t;&bslash;&n;    } while(0)
+mdefine_line|#define FDC_WRITE(reg,val)&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;/* unsigned long __flags; */&t;&t;&bslash;&n;&t;/* local_irq_save(__flags); */&t;&t;&bslash;&n;&t;dma_wd.dma_mode_status = 0x80 | (reg);&t;&bslash;&n;&t;udelay(25);&t;&t;&t;&t;&bslash;&n;&t;dma_wd.fdc_acces_seccount = (val);&t;&bslash;&n;&t;MFPDELAY();&t;&t;&t;&t;&bslash;&n;        /* local_irq_restore(__flags); */&t;&bslash;&n;    } while(0)
 multiline_comment|/* Buffering variables:&n; * First, there is a DMA buffer in ST-RAM that is used for floppy DMA&n; * operations. Second, a track buffer is used to cache a whole track&n; * of the disk to save read operations. These are two separate buffers&n; * because that allows write operations without clearing the track buffer.&n; */
 DECL|variable|MaxSectors
 r_static
@@ -1458,10 +1458,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+DECL|variable|readtrack_timer
 r_static
 r_struct
 id|timer_list
 id|readtrack_timer
+op_assign
 id|TIMER_INITIALIZER
 c_func
 (paren
@@ -1607,18 +1609,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+multiline_comment|/* protect against various other ints mucking around with the PSG */
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* protect against various other ints mucking around with the PSG */
 id|sound_ym.rd_data_reg_sel
 op_assign
 l_int|14
@@ -1641,7 +1638,7 @@ id|sound_ym.rd_data_reg_sel
 op_amp
 l_int|0xfe
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1676,18 +1673,13 @@ id|SelectedDrive
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+multiline_comment|/* protect against various other ints mucking around with the PSG */
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* protect against various other ints mucking around with the PSG */
 id|sound_ym.rd_data_reg_sel
 op_assign
 l_int|14
@@ -1721,7 +1713,7 @@ id|atari_dont_touch_floppy_select
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1780,18 +1772,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+multiline_comment|/* protect against various other ints mucking around with the PSG */
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* protect against various other ints mucking around with the PSG */
 id|atari_dont_touch_floppy_select
 op_assign
 l_int|0
@@ -1823,7 +1810,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1973,18 +1960,13 @@ id|drive
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+multiline_comment|/* protect against various other ints mucking around with the PSG */
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* protect against various other ints mucking around with the PSG */
 r_if
 c_cond
 (paren
@@ -2075,7 +2057,7 @@ id|changed_floppies
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2412,15 +2394,10 @@ id|desc-&gt;sect_offset
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -2456,7 +2433,7 @@ id|IRQ_MFP_FDC
 )paren
 suffix:semicolon
 multiline_comment|/* should be already, just to be sure */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3531,15 +3508,10 @@ l_int|25
 )paren
 suffix:semicolon
 multiline_comment|/* Setup DMA */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dma_wd.dma_lo
@@ -3607,7 +3579,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3788,15 +3760,10 @@ id|addr
 comma
 id|addr2
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3807,7 +3774,7 @@ id|MultReadInProgress
 )paren
 (brace
 multiline_comment|/* This prevents a race condition that could arise if the&n;&t;&t; * interrupt is triggered while the calling of this timer&n;&t;&t; * callback function takes place. The IRQ function then has&n;&t;&t; * already cleared &squot;MultReadInProgress&squot;  when flow of control&n;&t;&t; * gets here.&n;&t;&t; */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3923,7 +3890,7 @@ id|MultReadInProgress
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3962,7 +3929,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* not yet finished, wait another tenth rotation */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4695,15 +4662,10 @@ l_int|40
 )paren
 suffix:semicolon
 multiline_comment|/* Setup DMA */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dma_wd.dma_lo
@@ -4771,7 +4733,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5164,15 +5126,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|stdma_release
@@ -5191,7 +5148,7 @@ op_amp
 id|fdc_wait
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6000,19 +5957,19 @@ c_func
 id|IRQ_MFP_FDC
 )paren
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* The request function is called with ints&n;&t;sti();&t;&t;&t;&t; * disabled... so must save the IPL for later */
+multiline_comment|/* The request function is called with ints&n;&t;local_irq_disable();&t;&t; * disabled... so must save the IPL for later */
 id|redo_fd_request
 c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

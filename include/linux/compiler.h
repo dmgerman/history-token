@@ -10,6 +10,14 @@ DECL|macro|likely
 mdefine_line|#define likely(x)&t;__builtin_expect((x),1)
 DECL|macro|unlikely
 mdefine_line|#define unlikely(x)&t;__builtin_expect((x),0)
+multiline_comment|/*&n; * Allow us to mark functions as &squot;deprecated&squot; and have gcc emit a nice&n; * warning for each use, in hopes of speeding the functions removal.&n; * Usage is:&n; * &t;&t;int deprecated foo(void)&n; * and then gcc will emit a warning for each usage of the function.&n; */
+macro_line|#if __GNUC__ &gt;= 3
+DECL|macro|__deprecated
+mdefine_line|#define __deprecated&t;__attribute__((deprecated))
+macro_line|#else
+DECL|macro|__deprecated
+mdefine_line|#define __deprecated
+macro_line|#endif
 multiline_comment|/* This macro obfuscates arithmetic on a variable address so that gcc&n;   shouldn&squot;t recognize the original var, and make assumptions about it */
 DECL|macro|RELOC_HIDE
 mdefine_line|#define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;    __asm__ (&quot;&quot; : &quot;=g&quot;(__ptr) : &quot;0&quot;(ptr));&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })

@@ -815,9 +815,10 @@ op_eq
 id|IRQ_WRITE
 )paren
 (brace
-id|events
+id|fd
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|pollfds

@@ -141,7 +141,7 @@ r_int
 id|stack
 )paren
 (brace
-id|protect
+id|protect_memory
 c_func
 (paren
 id|stack

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1027,7 +1028,67 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|A2091_SCSI
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;A2901&quot;
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Commodore A2091/A590 SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|a2091_detect
+comma
+dot
+id|release
+op_assign
+id|a2091_release
+comma
+dot
+id|queuecommand
+op_assign
+id|wd33c93_queuecommand
+comma
+dot
+m_abort
+op_assign
+id|wd33c93_abort
+comma
+dot
+id|reset
+op_assign
+id|wd33c93_reset
+comma
+dot
+id|can_queue
+op_assign
+id|CAN_QUEUE
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+id|CMD_PER_LUN
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|a2091_release

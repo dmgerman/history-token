@@ -3418,6 +3418,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* But zero is a valid IRQ number. */
+id|init_timer
+c_func
+(paren
+op_amp
+id|socket-&gt;poll_timer
+)paren
+suffix:semicolon
 id|socket-&gt;poll_timer.function
 op_assign
 id|yenta_interrupt_wrapper

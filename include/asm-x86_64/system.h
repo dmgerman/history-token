@@ -675,8 +675,9 @@ DECL|macro|mb
 mdefine_line|#define mb() &t;asm volatile(&quot;mfence&quot;:::&quot;memory&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;asm volatile(&quot;lfence&quot;:::&quot;memory&quot;)
+multiline_comment|/* could use SFENCE here, but it would be only needed for unordered SSE&n;   store instructions and we always do an explicit sfence with them currently.&n;   the ordering of normal stores is serialized enough. Just make it a compile&n;   barrier. */
 DECL|macro|wmb
-mdefine_line|#define wmb()&t;asm volatile(&quot;sfence&quot;:::&quot;memory&quot;)
+mdefine_line|#define wmb()&t;asm volatile(&quot;&quot; ::: &quot;memory&quot;)
 DECL|macro|read_barrier_depends
 mdefine_line|#define read_barrier_depends()&t;do {} while(0)
 DECL|macro|set_mb

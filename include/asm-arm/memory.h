@@ -72,7 +72,7 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;__virt_to_phys((unsigned long)(x))
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)__phys_to_virt((unsigned long)(x)))
-multiline_comment|/*&n; * Virtual &lt;-&gt; DMA view memory address translations&n; * Again, these are *only* valid on the kernel direct mapped RAM&n; * memory.  Use of these is *depreciated*.&n; */
+multiline_comment|/*&n; * Virtual &lt;-&gt; DMA view memory address translations&n; * Again, these are *only* valid on the kernel direct mapped RAM&n; * memory.  Use of these is *deprecated*.&n; */
 DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus(x)&t;&t;(__virt_to_bus((unsigned long)(x)))
 DECL|macro|bus_to_virt
@@ -110,7 +110,7 @@ macro_line|#endif
 multiline_comment|/*&n; * For BIO.  &quot;will die&quot;.  Kill me when bio_to_phys() and bvec_to_phys() die.&n; */
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
-multiline_comment|/*&n; * We should really eliminate virt_to_bus() here - it&squot;s depreciated.&n; */
+multiline_comment|/*&n; * We should really eliminate virt_to_bus() here - it&squot;s deprecated.&n; */
 DECL|macro|page_to_bus
 mdefine_line|#define page_to_bus(page)&t;(virt_to_bus(page_address(page)))
 macro_line|#endif

@@ -64,6 +64,11 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+multiline_comment|/*&n;     *  falconide_intr_lock is used to obtain access to the IDE interrupt,&n;     *  which is shared between several drivers.&n;     */
+DECL|variable|falconide_intr_lock
+r_int
+id|falconide_intr_lock
+suffix:semicolon
 multiline_comment|/*&n;     *  Probe for a Falcon IDE interface&n;     */
 DECL|function|falconide_init
 r_void

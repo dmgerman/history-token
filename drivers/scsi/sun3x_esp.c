@@ -7,10 +7,10 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;sun3x_esp.h&quot;
 macro_line|#include &lt;asm/sun3x.h&gt;
 macro_line|#include &lt;asm/dvma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1763,7 +1763,79 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SCSI_SUN3X_ESP
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp&quot;
+comma
+dot
+id|proc_info
+op_assign
+op_amp
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Sun ESP 100/100a/200&quot;
+comma
+dot
+id|detect
+op_assign
+id|sun3x_esp_detect
+comma
+dot
+id|info
+op_assign
+id|esp_info
+comma
+dot
+id|command
+op_assign
+id|esp_command
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE

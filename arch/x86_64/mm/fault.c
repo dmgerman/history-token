@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 r_extern
 r_void
 id|die
@@ -745,6 +746,48 @@ op_amp
 l_int|4
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA32_EMULATION
+multiline_comment|/* 32bit vsyscall. map on demand. */
+r_if
+c_cond
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_IA32
+)paren
+op_logical_and
+id|address
+op_ge
+l_int|0xffffe000
+op_logical_and
+id|address
+OL
+l_int|0xffffefff
+op_minus
+l_int|7
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|map_syscall32
+c_func
+(paren
+id|mm
+comma
+id|address
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|out_of_memory2
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -943,6 +986,8 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|out_of_memory2
+suffix:colon
 r_if
 c_cond
 (paren
@@ -1067,18 +1112,6 @@ suffix:semicolon
 id|pte_t
 op_star
 id|pte
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;vmalloc_fault err %lx addr %lx rip %lx&bslash;n&quot;
-comma
-id|error_code
-comma
-id|address
-comma
-id|regs-&gt;rip
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * x86-64 has the same kernel 3rd level pages for all CPUs.&n;&t;&t; * But for vmalloc/modules the TLB synchronization works lazily,&n;&t;&t; * so it can happen that we get a page fault for something&n;&t;&t; * that is really already in the page table. Just check if it&n;&t;&t; * is really there and when yes flush the local TLB. &n;&t;&t; */
 id|pgd

@@ -1,3 +1,4 @@
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
@@ -90,9 +91,16 @@ id|init-&gt;gate_addr
 comma
 id|slave
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 comma
-id|buf
+id|ibuf
+suffix:colon
+(brace
+l_char|&squot;&bslash;0&squot;
+)brace
+comma
+id|obuf
 suffix:colon
 (brace
 l_char|&squot;&bslash;0&squot;
@@ -110,16 +118,6 @@ id|dev
 suffix:colon
 id|dev
 )brace
-)paren
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|dev-&gt;name
-comma
-l_string|&quot;umn&quot;
-comma
-id|IFNAMSIZ
 )paren
 suffix:semicolon
 id|dev-&gt;init
@@ -146,24 +144,6 @@ id|dev-&gt;flags
 op_assign
 id|IFF_NOARP
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Couldn&squot;t initialize umn&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren

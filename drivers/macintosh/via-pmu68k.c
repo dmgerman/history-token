@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
@@ -3760,15 +3761,10 @@ id|req-&gt;complete
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3811,7 +3807,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3919,15 +3915,10 @@ id|req
 suffix:semicolon
 multiline_comment|/* assert pmu_state == idle */
 multiline_comment|/* get the packet to send */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|req
@@ -3987,7 +3978,7 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4003,17 +3994,12 @@ c_func
 (brace
 r_int
 r_int
-id|cpu_flags
+id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -4074,10 +4060,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5978,7 +5964,7 @@ id|hid0
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|msr
@@ -5990,7 +5976,7 @@ id|MSR_POW
 op_or
 id|MSR_EE
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|msr

@@ -2467,15 +2467,10 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Block a timer-based transmit from overlapping.  This could better be&n;&t; * done with atomic_swap(1, dev-&gt;tbusy), but set_bit() works as well.&n;&t; */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2487,7 +2482,7 @@ c_func
 )paren
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2537,7 +2532,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2680,15 +2675,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* ++roman: Take care at locking the ST-DMA... This must be done with ints&n;&t; * off, since otherwise an int could slip in between the question and the&n;&t; * locking itself, and then we&squot;d go to sleep... And locking itself is&n;&t; * necessary to keep the floppy_change timer from working with ST-DMA&n;&t; * registers. */
@@ -2701,7 +2691,7 @@ c_func
 )paren
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2723,7 +2713,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

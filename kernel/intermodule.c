@@ -615,7 +615,7 @@ c_cond
 (paren
 id|ime-&gt;owner
 )paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|ime-&gt;owner

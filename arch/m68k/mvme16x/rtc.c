@@ -121,15 +121,10 @@ id|RTC_RD_TIME
 suffix:colon
 multiline_comment|/* Read the time/date from RTC&t;*/
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Ensure clock and real-time-mode-register are accessible */
@@ -212,7 +207,7 @@ id|rtc-&gt;ctrl
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -455,15 +450,10 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|rtc-&gt;ctrl
@@ -524,7 +514,7 @@ id|rtc-&gt;ctrl
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -684,15 +674,13 @@ comma
 id|RTC_VERSION
 )paren
 suffix:semicolon
+r_return
 id|misc_register
 c_func
 (paren
 op_amp
 id|rtc_dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

@@ -2014,11 +2014,20 @@ id|error
 op_eq
 l_int|0
 )paren
+(brace
 id|current-&gt;ptrace
 op_and_assign
 op_complement
 id|PT_DTRACE
 suffix:semicolon
+multiline_comment|/* Make sure we don&squot;t return using sysenter.. */
+id|set_thread_flag
+c_func
+(paren
+id|TIF_SIGPENDING
+)paren
+suffix:semicolon
+)brace
 id|putname
 c_func
 (paren
