@@ -465,11 +465,6 @@ r_int
 r_int
 id|pbr_blocksize
 suffix:semicolon
-DECL|member|pbr_blocksize_bits
-r_int
-r_int
-id|pbr_blocksize_bits
-suffix:semicolon
 DECL|typedef|pb_target_t
 )brace
 id|pb_target_t
@@ -925,47 +920,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* buffer to lock&t;&t;*/
-r_extern
-r_void
-id|pagebuf_lock_disable
-c_func
-(paren
-multiline_comment|/* disable buffer locking&t;*/
-r_struct
-id|pb_target
-op_star
-comma
-multiline_comment|/* inode for buffers&t;&t;*/
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* do blkdev_put?&t;&t;*/
-r_extern
-r_struct
-id|pb_target
-op_star
-id|pagebuf_lock_enable
-c_func
-(paren
-id|dev_t
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* do blkdev_get?&t;&t;*/
-r_extern
-r_void
-id|pagebuf_target_blocksize
-c_func
-(paren
-id|pb_target_t
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* block size&t;&t;&t;*/
 r_extern
 r_void
 id|pagebuf_target_clear
