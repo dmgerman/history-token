@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.c,v 1.43.2.80 2002/03/14 00:10:04 davem Exp $&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@pobox.com)&n; */
+multiline_comment|/*&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@pobox.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -46,9 +46,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.2a&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.4&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Dec 9, 2002&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Feb 1, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -8359,6 +8359,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* handle link change and other phy events */
 r_if
 c_cond
 (paren
@@ -8401,6 +8402,7 @@ id|tp
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* run TX completion thread */
 r_if
 c_cond
 (paren
@@ -8435,6 +8437,7 @@ id|tp-&gt;tx_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* run RX thread, within the bounds set by NAPI */
 id|done
 op_assign
 l_int|1
@@ -8503,6 +8506,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* if no more work, tell net stack and NIC we&squot;re done */
 r_if
 c_cond
 (paren
@@ -8574,6 +8578,7 @@ id|work_exists
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* check for phy events */
 r_if
 c_cond
 (paren
@@ -8601,6 +8606,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* check for RX/TX work to do */
 r_if
 c_cond
 (paren
@@ -8691,6 +8697,7 @@ op_amp
 id|SD_STATUS_UPDATED
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * writing any value to intr-mbox-0 clears PCI INTA# and&n;&t;&t; * chip-internal interrupt pending events.&n;&t;&t; * writing non-zero to intr-mbox-0 additional tells the&n;&t;&t; * NIC to stop sending us irqs, engaging &quot;in-intr-handler&quot;&n;&t;&t; * event coalescing.&n;&t;&t; */
 id|tw32_mailbox
 c_func
 (paren
@@ -8701,6 +8708,7 @@ comma
 l_int|0x00000001
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Flush PCI write.  This also guarantees that our&n;&t;&t; * status block has been flushed to host memory.&n;&t;&t; */
 id|tr32
 c_func
 (paren
@@ -8735,8 +8743,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* schedule NAPI poll */
 r_else
 (brace
+multiline_comment|/* no work, shared interrupt perhaps?  re-enable&n;&t;&t;&t; * interrupts, and flush that PCI write&n;&t;&t;&t; */
 id|tw32_mailbox
 c_func
 (paren
@@ -9243,7 +9253,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE: Broadcom&squot;s driver botches this case up really bad.&n;&t; *       This is especially true if any of the frag pages&n;&t; *       are in highmem.  It will instantly oops in that case.&n;&t; */
 multiline_comment|/* New SKB is guarenteed to be linear. */
 id|entry
 op_assign
@@ -30211,7 +30220,7 @@ op_assign
 id|SPLIT_MODE_5704_MAX_REQ
 suffix:semicolon
 )brace
-multiline_comment|/* ROFL, you should see Broadcom&squot;s driver code implementing&n;&t; * this, stuff like &quot;if (a || b)&quot; where a and b are always&n;&t; * mutually exclusive.  DaveM finds like 6 bugs today, hello!&n;&t; */
+multiline_comment|/* this one is limited to 10/100 only */
 r_if
 c_cond
 (paren
@@ -30396,20 +30405,15 @@ id|tp-&gt;pci_chip_rev_id
 op_eq
 id|ASIC_REV_5700
 )paren
-(brace
-multiline_comment|/* ROFL!  Latest Broadcom driver disables NETIF_F_HIGHDMA&n;&t;&t; * in this case instead of fixing their workaround code.&n;&t;&t; *&n;&t;&t; * Like, hey, there is this skb_copy() thing guys,&n;&t;&t; * use it.  Oh I can&squot;t stop laughing...&n;&t;&t; */
 id|tp-&gt;dev-&gt;hard_start_xmit
 op_assign
 id|tg3_start_xmit_4gbug
 suffix:semicolon
-)brace
 r_else
-(brace
 id|tp-&gt;dev-&gt;hard_start_xmit
 op_assign
 id|tg3_start_xmit
 suffix:semicolon
-)brace
 id|tp-&gt;rx_offset
 op_assign
 l_int|2
