@@ -5699,10 +5699,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|swptr
-op_assign
-id|dmabuf-&gt;swptr
-suffix:semicolon
 id|cnt
 op_assign
 id|i810_get_available_read_data
@@ -5710,6 +5706,10 @@ c_func
 (paren
 id|state
 )paren
+suffix:semicolon
+id|swptr
+op_assign
+id|dmabuf-&gt;swptr
 suffix:semicolon
 singleline_comment|// this is to make the copy_to_user simpler below
 r_if
@@ -6309,10 +6309,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|swptr
-op_assign
-id|dmabuf-&gt;swptr
-suffix:semicolon
 id|cnt
 op_assign
 id|i810_get_free_write_space
@@ -6320,6 +6316,10 @@ c_func
 (paren
 id|state
 )paren
+suffix:semicolon
+id|swptr
+op_assign
+id|dmabuf-&gt;swptr
 suffix:semicolon
 multiline_comment|/* Bound the maximum size to how much we can copy to the&n;&t;&t; * dma buffer before we hit the end.  If we have more to&n;&t;&t; * copy then it will get done in a second pass of this&n;&t;&t; * loop starting from the beginning of the buffer.&n;&t;&t; */
 r_if
