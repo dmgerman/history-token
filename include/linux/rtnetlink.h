@@ -2,8 +2,6 @@ macro_line|#ifndef __LINUX_RTNETLINK_H
 DECL|macro|__LINUX_RTNETLINK_H
 mdefine_line|#define __LINUX_RTNETLINK_H
 macro_line|#include &lt;linux/netlink.h&gt;
-DECL|macro|RTNL_DEBUG
-mdefine_line|#define RTNL_DEBUG 1
 multiline_comment|/****&n; *&t;&t;Routing/neighbour discovery messages.&n; ****/
 multiline_comment|/* Types of messages */
 DECL|macro|RTM_BASE
