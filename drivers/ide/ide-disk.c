@@ -9216,6 +9216,7 @@ id|idedisk_init
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
 id|idedisk_reinit
 c_func
@@ -9232,6 +9233,10 @@ id|ide_driver_t
 id|idedisk_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;ide-disk&quot;
@@ -9377,6 +9382,7 @@ l_string|&quot;ATA DISK Driver&quot;
 )paren
 suffix:semicolon
 DECL|function|idedisk_reinit
+r_static
 r_int
 id|idedisk_reinit
 c_func
@@ -9386,8 +9392,6 @@ op_star
 id|drive
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* strstr(&quot;foo&quot;, &quot;&quot;) is non-NULL */
 r_if
 c_cond
@@ -9522,15 +9526,11 @@ op_member_access_from_pointer
 id|busy
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

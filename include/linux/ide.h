@@ -2771,6 +2771,12 @@ r_typedef
 r_struct
 id|ide_driver_s
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_const
 r_char
@@ -4208,56 +4214,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-r_int
-id|idedisk_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
-macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-r_int
-id|ide_cdrom_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
-macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-r_int
-id|idetape_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-r_int
-id|idefloppy_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-r_int
-id|idescsi_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
 macro_line|#endif /* _IDE_C */
 r_int
 id|ide_register_module

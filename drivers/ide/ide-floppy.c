@@ -8632,6 +8632,7 @@ id|idefloppy_init
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
 id|idefloppy_reinit
 c_func
@@ -8648,6 +8649,10 @@ id|ide_driver_t
 id|idefloppy_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;ide-floppy&quot;
@@ -8794,6 +8799,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|idefloppy_reinit
+r_static
 r_int
 id|idefloppy_reinit
 (paren
@@ -8805,8 +8811,6 @@ id|drive
 id|idefloppy_floppy_t
 op_star
 id|floppy
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -8976,15 +8980,11 @@ op_member_access_from_pointer
 id|busy
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

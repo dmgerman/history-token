@@ -2784,6 +2784,10 @@ id|ide_driver_t
 id|idescsi_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;ide-scsi&quot;
@@ -2919,8 +2923,6 @@ suffix:semicolon
 r_int
 id|id
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3054,15 +3056,11 @@ comma
 id|id
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

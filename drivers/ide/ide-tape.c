@@ -26949,6 +26949,7 @@ id|idetape_init
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
 id|idetape_reinit
 c_func
@@ -26965,6 +26966,10 @@ id|ide_driver_t
 id|idetape_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;ide-tape&quot;
@@ -27145,6 +27150,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|idetape_reinit
+r_static
 r_int
 id|idetape_reinit
 (paren
@@ -27159,8 +27165,6 @@ id|tape
 suffix:semicolon
 r_int
 id|minor
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -27444,15 +27448,11 @@ c_func
 id|tape-&gt;de_r
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
