@@ -3135,7 +3135,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|ha-&gt;loop_state
+id|ha2-&gt;loop_state
 )paren
 op_eq
 id|LOOP_DEAD
@@ -11654,7 +11654,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|ha-&gt;loop_state
+id|fcport-&gt;ha-&gt;loop_state
 )paren
 op_eq
 id|LOOP_DEAD
@@ -14163,7 +14163,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vis_ha-&gt;loop_state
+id|fcport-&gt;ha-&gt;loop_state
 )paren
 op_eq
 id|LOOP_DEAD
