@@ -4503,12 +4503,6 @@ multiline_comment|/*&n;&t; * OK, we have all disks and the array is ready to run
 r_if
 c_cond
 (paren
-op_logical_neg
-id|mddev-&gt;sb
-)paren
-r_if
-c_cond
-(paren
 id|alloc_array_sb
 c_func
 (paren
@@ -6159,6 +6153,9 @@ multiline_comment|/*&n;&t; * Analyze all RAID superblock(s)&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|mddev-&gt;sb
+op_logical_and
 id|analyze_sbs
 c_func
 (paren
