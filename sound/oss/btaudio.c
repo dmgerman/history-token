@@ -2604,9 +2604,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2728,9 +2727,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2829,9 +2827,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
