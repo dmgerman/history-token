@@ -247,12 +247,13 @@ suffix:semicolon
 r_else
 id|n
 op_assign
-(paren
 id|shost-&gt;hostt
 op_member_access_from_pointer
 id|proc_info
 c_func
 (paren
+id|shost
+comma
 id|buffer
 comma
 id|start
@@ -261,10 +262,7 @@ id|offset
 comma
 id|length
 comma
-id|shost-&gt;host_no
-comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 op_star
@@ -393,6 +391,8 @@ op_member_access_from_pointer
 id|proc_info
 c_func
 (paren
+id|shost
+comma
 id|page
 comma
 op_amp
@@ -401,8 +401,6 @@ comma
 l_int|0
 comma
 id|count
-comma
-id|shost-&gt;host_no
 comma
 l_int|1
 )paren

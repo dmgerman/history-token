@@ -63,6 +63,11 @@ r_int
 id|cciss_scsi_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|sh
+comma
 r_char
 op_star
 id|buffer
@@ -82,10 +87,6 @@ r_int
 id|length
 comma
 multiline_comment|/* length of data in buffer */
-r_int
-id|hostnum
-comma
-multiline_comment|/* which host adapter (always zero for me) */
 r_int
 id|func
 )paren
@@ -4910,6 +4911,11 @@ DECL|function|cciss_scsi_proc_info
 id|cciss_scsi_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|sh
+comma
 r_char
 op_star
 id|buffer
@@ -4930,10 +4936,6 @@ id|length
 comma
 multiline_comment|/* length of data in buffer */
 r_int
-id|hostnum
-comma
-multiline_comment|/* which host adapter (always zero for me) */
-r_int
 id|func
 )paren
 multiline_comment|/* 0 == read, 1 == write */
@@ -4943,37 +4945,12 @@ id|buflen
 comma
 id|datalen
 suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|sh
-suffix:semicolon
 id|ctlr_info_t
 op_star
 id|ci
 suffix:semicolon
 r_int
 id|cntl_num
-suffix:semicolon
-id|sh
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostnum
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sh
-op_eq
-l_int|NULL
-)paren
-multiline_comment|/* This really shouldn&squot;t ever happen. */
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|ci
 op_assign
@@ -5021,7 +4998,7 @@ id|buffer
 comma
 l_string|&quot;hostnum=%d&bslash;n&quot;
 comma
-id|hostnum
+id|sh-&gt;host_no
 )paren
 suffix:semicolon
 id|datalen
@@ -5071,7 +5048,7 @@ c_func
 (paren
 id|cntl_num
 comma
-id|hostnum
+id|sh-&gt;host_no
 comma
 id|buffer
 comma

@@ -4155,26 +4155,6 @@ DECL|macro|LU_Q
 mdefine_line|#define LU_Q(ha, b, t, l)&t;(ha-&gt;dev[SUBDEV(b, t, l)])
 macro_line|#endif&t;&t;&t;&t;/* HOSTS_C */
 multiline_comment|/*&n; *  Linux - SCSI Driver Interface Function Prototypes.&n; */
-r_int
-id|qla1280_proc_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 r_const
 r_char
 op_star
