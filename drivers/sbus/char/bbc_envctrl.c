@@ -2,6 +2,7 @@ multiline_comment|/* $Id: bbc_envctrl.c,v 1.4 2001/04/06 16:48:08 davem Exp $&n;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
