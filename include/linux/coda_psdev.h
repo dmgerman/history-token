@@ -100,7 +100,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fidp
 )paren
@@ -115,7 +116,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -134,7 +135,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 comma
 r_struct
@@ -152,7 +153,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -169,7 +170,7 @@ op_star
 id|type
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|resfid
 )paren
@@ -184,7 +185,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -205,7 +206,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -223,7 +224,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -244,7 +245,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -268,7 +269,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -281,7 +282,7 @@ r_int
 id|length
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|newfid
 comma
@@ -301,7 +302,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -323,7 +324,7 @@ id|dev_t
 id|rdev
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|newfid
 comma
@@ -343,7 +344,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -366,7 +367,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -389,7 +390,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -411,12 +412,12 @@ id|super_block
 op_star
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|new_fid
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|old_fid
 comma
@@ -447,12 +448,12 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -475,7 +476,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -506,7 +507,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -524,7 +525,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -566,7 +567,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 )paren

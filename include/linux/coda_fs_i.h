@@ -13,7 +13,7 @@ id|coda_inode_info
 (brace
 DECL|member|c_fid
 r_struct
-id|ViceFid
+id|CodaFid
 id|c_fid
 suffix:semicolon
 multiline_comment|/* Coda identifier */
@@ -106,7 +106,7 @@ op_star
 op_star
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 comma
 r_struct
@@ -126,7 +126,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -158,7 +158,8 @@ op_star
 id|coda_fid_to_inode
 c_func
 (paren
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fid
 comma
@@ -176,10 +177,12 @@ r_struct
 id|inode
 op_star
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 )paren
 suffix:semicolon

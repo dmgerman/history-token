@@ -279,55 +279,19 @@ mdefine_line|#define&t;IFTOCDT(mode)&t;(((mode) &amp; 0170000) &gt;&gt; 12)
 DECL|macro|CDTTOIF
 mdefine_line|#define&t;CDTTOIF(dirtype)&t;((dirtype) &lt;&lt; 12)
 macro_line|#endif
-macro_line|#ifndef&t;_FID_T_
-DECL|macro|_FID_T_
-mdefine_line|#define _FID_T_&t;1
-DECL|typedef|VolumeId
-r_typedef
-id|u_int32_t
-id|VolumeId
-suffix:semicolon
-DECL|typedef|VnodeId
-r_typedef
-id|u_int32_t
-id|VnodeId
-suffix:semicolon
-DECL|typedef|Unique_t
-r_typedef
-id|u_int32_t
-id|Unique_t
-suffix:semicolon
-DECL|typedef|FileVersion
-r_typedef
-id|u_int32_t
-id|FileVersion
-suffix:semicolon
-macro_line|#endif 
-macro_line|#ifndef&t;_VICEFID_T_
-DECL|macro|_VICEFID_T_
-mdefine_line|#define _VICEFID_T_&t;1
-DECL|struct|ViceFid
-r_typedef
+DECL|struct|CodaFid
 r_struct
-id|ViceFid
+id|CodaFid
 (brace
-DECL|member|Volume
-id|VolumeId
-id|Volume
+DECL|member|opaque
+id|u_int32_t
+id|opaque
+(braket
+l_int|3
+)braket
 suffix:semicolon
-DECL|member|Vnode
-id|VnodeId
-id|Vnode
-suffix:semicolon
-DECL|member|Unique
-id|Unique_t
-id|Unique
-suffix:semicolon
-DECL|typedef|ViceFid
 )brace
-id|ViceFid
 suffix:semicolon
-macro_line|#endif&t;/* VICEFID */
 macro_line|#ifdef __linux__
 DECL|function|coda_f2i
 r_static
@@ -337,7 +301,7 @@ id|coda_f2i
 c_func
 (paren
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 )paren
@@ -354,24 +318,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_eq
 l_int|0xfffffffe
 op_logical_or
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_eq
 l_int|0xffffffff
 )paren
 r_return
 (paren
 (paren
-id|fid-&gt;Volume
+id|fid-&gt;opaque
+(braket
+l_int|0
+)braket
 op_lshift
 l_int|20
 )paren
 op_or
 (paren
-id|fid-&gt;Unique
+id|fid-&gt;opaque
+(braket
+l_int|2
+)braket
 op_amp
 l_int|0xfffff
 )paren
@@ -380,16 +356,25 @@ suffix:semicolon
 r_else
 r_return
 (paren
-id|fid-&gt;Unique
+id|fid-&gt;opaque
+(braket
+l_int|2
+)braket
 op_plus
 (paren
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_lshift
 l_int|10
 )paren
 op_plus
 (paren
-id|fid-&gt;Volume
+id|fid-&gt;opaque
+(braket
+l_int|0
+)braket
 op_lshift
 l_int|20
 )paren
@@ -398,7 +383,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|coda_f2i
-mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;((fid) ? ((fid)-&gt;Unique + ((fid)-&gt;Vnode&lt;&lt;10) + ((fid)-&gt;Volume&lt;&lt;20)) : 0)
+mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;((fid) ? ((fid)-&gt;opaque[2] + ((fid)-&gt;opaque[1]&lt;&lt;10) + ((fid)-&gt;opaque[0]&lt;&lt;20)) : 0)
 macro_line|#endif
 macro_line|#ifndef _VUID_T_
 DECL|macro|_VUID_T_
@@ -753,7 +738,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -780,7 +766,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -819,7 +806,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -850,7 +838,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -881,7 +870,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -912,7 +902,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|cmd
@@ -966,7 +957,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -998,7 +990,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1030,7 +1023,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -1066,7 +1060,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1090,7 +1085,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|vtype
@@ -1110,7 +1106,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1143,7 +1140,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1164,7 +1162,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1196,12 +1195,14 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|sourceFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|sourceFid
 suffix:semicolon
 multiline_comment|/* cnode to link *to* */
 DECL|member|destFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|destFid
 suffix:semicolon
 multiline_comment|/* Directory in which to place link */
@@ -1234,7 +1235,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|sourceFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|sourceFid
 suffix:semicolon
 DECL|member|srcname
@@ -1242,7 +1244,8 @@ r_int
 id|srcname
 suffix:semicolon
 DECL|member|destFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|destFid
 suffix:semicolon
 DECL|member|destname
@@ -1273,7 +1276,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1298,7 +1302,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1319,7 +1324,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1351,7 +1357,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 multiline_comment|/* Directory to put symlink in */
@@ -1392,7 +1399,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1428,7 +1436,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1455,7 +1464,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1470,7 +1480,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|vtype
@@ -1512,7 +1523,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|CodaFid
 suffix:semicolon
 )brace
@@ -1529,7 +1541,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|CodaFid
 suffix:semicolon
 )brace
@@ -1546,7 +1559,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|CodaFid
 suffix:semicolon
 )brace
@@ -1564,11 +1578,13 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|NewFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|NewFid
 suffix:semicolon
 DECL|member|OldFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|OldFid
 suffix:semicolon
 )brace
@@ -1584,7 +1600,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -1628,7 +1645,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags

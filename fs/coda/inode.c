@@ -115,7 +115,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ViceFid
+id|CodaFid
 )paren
 )paren
 suffix:semicolon
@@ -534,7 +534,8 @@ id|vc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ViceFid
+r_struct
+id|CodaFid
 id|fid
 suffix:semicolon
 r_int

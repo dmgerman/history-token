@@ -150,7 +150,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fidp
 )paren
@@ -225,9 +226,6 @@ r_else
 op_star
 id|fidp
 op_assign
-(paren
-id|ViceFid
-)paren
 id|outp-&gt;coda_root.VFid
 suffix:semicolon
 )brace
@@ -254,7 +252,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -347,7 +345,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -440,7 +438,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -457,7 +455,7 @@ op_star
 id|type
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|resfid
 )paren
@@ -616,7 +614,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -739,7 +737,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -829,7 +827,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -952,7 +950,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -1053,7 +1051,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -1066,7 +1064,7 @@ r_int
 id|length
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|newfid
 comma
@@ -1231,12 +1229,12 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|old_fid
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|new_fid
 comma
@@ -1472,7 +1470,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -1494,7 +1492,7 @@ id|dev_t
 id|rdev
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|newfid
 comma
@@ -1670,7 +1668,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -1822,7 +1820,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -1975,7 +1973,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -2153,12 +2151,12 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|dirfid
 comma
@@ -2316,7 +2314,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -2546,7 +2544,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 )paren
@@ -2633,7 +2631,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -2723,7 +2721,7 @@ op_star
 id|sb
 comma
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 comma
@@ -3809,7 +3807,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*  &n;    The statements below are part of the Coda opportunistic&n;    programming -- taken from the Mach/BSD kernel code for Coda. &n;    You don&squot;t get correct semantics by stating what needs to be&n;    done without guaranteeing the invariants needed for it to happen.&n;    When will be have time to find out what exactly is going on?  (pjb)&n;*/
-multiline_comment|/* &n; * There are 7 cases where cache invalidations occur.  The semantics&n; *  of each is listed here:&n; *&n; * CODA_FLUSH     -- flush all entries from the name cache and the cnode cache.&n; * CODA_PURGEUSER -- flush all entries from the name cache for a specific user&n; *                  This call is a result of token expiration.&n; *&n; * The next arise as the result of callbacks on a file or directory.&n; * CODA_ZAPFILE   -- flush the cached attributes for a file.&n;&n; * CODA_ZAPDIR    -- flush the attributes for the dir and&n; *                  force a new lookup for all the children&n;                    of this dir.&n;&n; *&n; * The next is a result of Venus detecting an inconsistent file.&n; * CODA_PURGEFID  -- flush the attribute for the file&n; *                  purge it and its children from the dcache&n; *&n; * The last  allows Venus to replace local fids with global ones&n; * during reintegration.&n; *&n; * CODA_REPLACE -- replace one ViceFid with another throughout the name cache */
+multiline_comment|/* &n; * There are 7 cases where cache invalidations occur.  The semantics&n; *  of each is listed here:&n; *&n; * CODA_FLUSH     -- flush all entries from the name cache and the cnode cache.&n; * CODA_PURGEUSER -- flush all entries from the name cache for a specific user&n; *                  This call is a result of token expiration.&n; *&n; * The next arise as the result of callbacks on a file or directory.&n; * CODA_ZAPFILE   -- flush the cached attributes for a file.&n;&n; * CODA_ZAPDIR    -- flush the attributes for the dir and&n; *                  force a new lookup for all the children&n;                    of this dir.&n;&n; *&n; * The next is a result of Venus detecting an inconsistent file.&n; * CODA_PURGEFID  -- flush the attribute for the file&n; *                  purge it and its children from the dcache&n; *&n; * The last  allows Venus to replace local fids with global ones&n; * during reintegration.&n; *&n; * CODA_REPLACE -- replace one CodaFid with another throughout the name cache */
 DECL|function|coda_downcall
 r_int
 id|coda_downcall
@@ -3902,7 +3900,8 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fid
 op_assign
@@ -3962,7 +3961,7 @@ op_star
 id|inode
 suffix:semicolon
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 op_assign
@@ -4013,7 +4012,8 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|fid
 op_assign
@@ -4079,14 +4079,16 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|oldfid
 op_assign
 op_amp
 id|out-&gt;coda_replace.OldFid
 suffix:semicolon
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|newfid
 op_assign

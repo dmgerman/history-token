@@ -458,15 +458,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|ViceFid
+id|CodaFid
 id|resfid
 op_assign
 (brace
+(brace
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
+)brace
 )brace
 suffix:semicolon
 r_int
@@ -932,7 +931,7 @@ op_star
 id|inode
 suffix:semicolon
 r_struct
-id|ViceFid
+id|CodaFid
 id|newfid
 suffix:semicolon
 r_struct
@@ -1141,7 +1140,7 @@ op_star
 id|inode
 suffix:semicolon
 r_struct
-id|ViceFid
+id|CodaFid
 id|newfid
 suffix:semicolon
 r_struct
@@ -1374,7 +1373,7 @@ r_int
 id|error
 suffix:semicolon
 r_struct
-id|ViceFid
+id|CodaFid
 id|newfid
 suffix:semicolon
 id|lock_kernel

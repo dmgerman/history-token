@@ -159,7 +159,7 @@ multiline_comment|/* this file:  heloers */
 r_static
 id|__inline__
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|coda_i2f
 c_func
@@ -200,7 +200,8 @@ op_star
 id|coda_f2s
 c_func
 (paren
-id|ViceFid
+r_struct
+id|CodaFid
 op_star
 id|f
 )paren
@@ -315,7 +316,7 @@ DECL|function|coda_i2f
 r_static
 id|__inline__
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|coda_i2f
 c_func
