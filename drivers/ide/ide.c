@@ -191,7 +191,7 @@ id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|ide_scan_direction
 r_static
 r_int
@@ -6357,7 +6357,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -6375,7 +6375,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 )brace
 r_else
 (brace
@@ -7583,18 +7583,6 @@ id|generic_subdriver_entries
 op_assign
 (brace
 (brace
-l_string|&quot;capacity&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-id|proc_ide_read_capacity
-comma
-l_int|NULL
-)brace
-comma
-(brace
 l_int|NULL
 comma
 l_int|0
@@ -8450,7 +8438,7 @@ id|ch-&gt;udma_four
 op_assign
 id|old.udma_four
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 id|ch-&gt;pci_dev
 op_assign
 id|old.pci_dev
@@ -12066,7 +12054,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -13032,7 +13020,7 @@ op_minus
 l_int|7
 suffix:colon
 multiline_comment|/* ata66 */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 id|hwif-&gt;udma_four
 op_assign
 l_int|1
@@ -14180,13 +14168,6 @@ c_func
 id|ide_remove_proc_entries
 )paren
 suffix:semicolon
-DECL|variable|proc_ide_read_geometry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_ide_read_geometry
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|variable|ide_add_setting
 id|EXPORT_SYMBOL
@@ -14551,7 +14532,7 @@ c_func
 )paren
 )paren
 (brace
-macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|# ifdef CONFIG_PCI
 id|ide_scan_pcibus
 c_func
 (paren

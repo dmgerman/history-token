@@ -6,12 +6,12 @@ mdefine_line|#define __ASM_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef MAX_HWIFS
-macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|# ifdef CONFIG_PCI
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS&t;10
+macro_line|#  define MAX_HWIFS&t;10
 macro_line|# else
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS&t;6
+macro_line|#  define MAX_HWIFS&t;6
 macro_line|# endif
 macro_line|#endif
 DECL|macro|ide__sti
@@ -161,7 +161,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifndef CONFIG_PCI
 id|hw_regs_t
 id|hw
 suffix:semicolon
@@ -222,152 +222,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-)brace
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-DECL|member|head
-r_int
-id|head
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* always zeros here */
-DECL|member|unit
-r_int
-id|unit
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive select number, 0 or 1 */
-DECL|member|bit5
-r_int
-id|bit5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* always 1 */
-DECL|member|lba
-r_int
-id|lba
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* using LBA instead of CHS */
-DECL|member|bit7
-r_int
-id|bit7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* always 1 */
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|select_t
-)brace
-id|select_t
-suffix:semicolon
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-DECL|member|bit0
-r_int
-id|bit0
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|nIEN
-r_int
-id|nIEN
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* device INTRQ to host */
-DECL|member|SRST
-r_int
-id|SRST
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* host soft reset bit */
-DECL|member|bit3
-r_int
-id|bit3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA-2 thingy */
-DECL|member|reserved456
-r_int
-id|reserved456
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|HOB
-r_int
-id|HOB
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 48-bit address ordering */
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|control_t
-)brace
-id|control_t
-suffix:semicolon
-macro_line|#if defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)
-macro_line|#ifdef insl
-DECL|macro|insl
-macro_line|#undef insl
 macro_line|#endif
-macro_line|#ifdef outsl
-DECL|macro|outsl
-macro_line|#undef outsl
-macro_line|#endif
-macro_line|#ifdef insw
-DECL|macro|insw
-macro_line|#undef insw
-macro_line|#endif
-macro_line|#ifdef outsw
-DECL|macro|outsw
-macro_line|#undef outsw
-macro_line|#endif
-DECL|macro|insw
-mdefine_line|#define insw(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned short *ptr = (unsigned short *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*ptr++ = inw(p);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|insl
-mdefine_line|#define insl(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *ptr = (unsigned long *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*ptr++ = inl(p);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|outsw
-mdefine_line|#define outsw(p,a,c)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned short *ptr = (unsigned short *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;outw(*ptr++, (p));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|outsl
-mdefine_line|#define outsl(p,a,c) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *ptr = (unsigned long *)(a);&t;&t;&t;&bslash;&n;&t;unsigned int i = (c);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (i--)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;outl(*ptr++, (p));&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#endif /* defined(CONFIG_SWAP_IO_SPACE) &amp;&amp; defined(__MIPSEB__)  */
-multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
+)brace
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_fix_driveid
-mdefine_line|#define ide_fix_driveid(id)&t;&t;do {} while (0)
 DECL|macro|ide_release_lock
 mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
 DECL|macro|ide_get_lock

@@ -25371,7 +25371,7 @@ id|drive-&gt;dsc_overlap
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -25415,7 +25415,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 id|tape-&gt;drive
 op_assign
 id|drive

@@ -1857,6 +1857,8 @@ id|args-&gt;taskfile.command
 op_eq
 id|WIN_WRITEDMA_EXT
 )paren
+r_return
+op_logical_neg
 id|udma_write
 c_func
 (paren
@@ -1877,6 +1879,8 @@ id|args-&gt;taskfile.command
 op_eq
 id|WIN_READDMA_EXT
 )paren
+r_return
+op_logical_neg
 id|udma_read
 c_func
 (paren
