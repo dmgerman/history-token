@@ -184,6 +184,19 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|cifs_sb-&gt;local_nls
 op_assign
 id|load_nls_default
@@ -315,7 +328,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/*&t;rc = cifs_umount(sb);  BB is CIFS unmount routine needed? */
 r_if
 c_cond
 (paren
@@ -328,9 +340,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_umount failed with return code %d&bslash;n&quot;
-comma
-id|rc
+l_string|&quot;cifs_mount failed with no root inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -394,6 +404,27 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_sb
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;&bslash;nEmpty cifs superblock info passed to unmount&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|cifs_umount
@@ -423,12 +454,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|cifs_sb
-)paren
-(brace
 id|unload_nls
 c_func
 (paren
@@ -441,7 +466,6 @@ c_func
 id|cifs_sb
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -532,6 +556,12 @@ id|cifs_sb-&gt;local_nls
 suffix:semicolon
 multiline_comment|/*     &n;&t;   int f_type;&n;&t;   __fsid_t f_fsid;&n;&t;   int f_namelen;  */
 multiline_comment|/* BB get from info put in tcon struct at mount time with call to QFSAttrInfo */
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -957,6 +987,11 @@ op_assign
 id|cifs_lookup
 comma
 dot
+id|getattr
+op_assign
+id|cifs_getattr
+comma
+dot
 id|unlink
 op_assign
 id|cifs_unlink
@@ -1007,6 +1042,11 @@ op_assign
 id|cifs_setattr
 comma
 dot
+id|getattr
+op_assign
+id|cifs_getattr
+comma
+dot
 id|rename
 op_assign
 id|cifs_rename
@@ -1030,7 +1070,7 @@ op_assign
 id|cifs_follow_link
 comma
 multiline_comment|/* BB add the following two eventually */
-multiline_comment|/* revalidate:     cifs_revalidate,&n;   setattr:        cifs_notify_change, */
+multiline_comment|/* revalidate: cifs_revalidate,&n;&t;   setattr:    cifs_notify_change, */
 multiline_comment|/* BB do we need notify change */
 )brace
 suffix:semicolon
@@ -1043,12 +1083,12 @@ op_assign
 dot
 id|read
 op_assign
-id|cifs_read
+id|generic_file_read
 comma
 dot
 id|write
 op_assign
-id|cifs_write
+id|generic_file_write
 comma
 dot
 id|open
@@ -1069,6 +1109,11 @@ dot
 id|fsync
 op_assign
 id|cifs_fsync
+comma
+dot
+id|mmap
+op_assign
+id|cifs_file_mmap
 comma
 )brace
 suffix:semicolon
@@ -1442,6 +1487,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|GlobalCurrentXid
+op_assign
+l_int|0
+suffix:semicolon
 id|GlobalTotalActiveXid
 op_assign
 l_int|0
@@ -1449,6 +1498,14 @@ suffix:semicolon
 id|GlobalMaxActiveXid
 op_assign
 l_int|0
+suffix:semicolon
+id|GlobalSMBSeslock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+id|GlobalMid_Lock
+op_assign
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 id|rc
 op_assign

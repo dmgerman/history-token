@@ -125,7 +125,7 @@ id|EREMOTE
 )paren
 (brace
 multiline_comment|/* rc = */
-multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;   &amp;referrals,&n;   &amp;num_referrals,&n;   cifs_sb-&gt;local_nls); */
+multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;&t;&amp;referrals,&n;&t;&amp;num_referrals,&n;&t;cifs_sb-&gt;local_nls); */
 id|tmp_path
 op_assign
 id|kmalloc
@@ -327,10 +327,10 @@ suffix:semicolon
 multiline_comment|/* inc on every refresh of inode */
 id|inode-&gt;i_atime
 op_assign
-id|le64_to_cpu
+id|cifs_NTtimeToUnix
 c_func
 (paren
-id|cifs_NTtimeToUnix
+id|le64_to_cpu
 c_func
 (paren
 id|findData.LastAccessTime
@@ -339,10 +339,10 @@ id|findData.LastAccessTime
 suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign
-id|le64_to_cpu
+id|cifs_NTtimeToUnix
 c_func
 (paren
-id|cifs_NTtimeToUnix
+id|le64_to_cpu
 (paren
 id|findData.LastModificationTime
 )paren
@@ -350,10 +350,10 @@ id|findData.LastModificationTime
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
-id|le64_to_cpu
+id|cifs_NTtimeToUnix
 c_func
 (paren
-id|cifs_NTtimeToUnix
+id|le64_to_cpu
 c_func
 (paren
 id|findData.LastStatusChange
@@ -602,6 +602,11 @@ op_assign
 op_amp
 id|cifs_file_ops
 suffix:semicolon
+id|inode-&gt;i_data.a_ops
+op_assign
+op_amp
+id|cifs_addr_ops
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -820,7 +825,7 @@ id|EREMOTE
 (brace
 multiline_comment|/* BB add call to new func rc = GetDFSReferral(); */
 multiline_comment|/* rc = */
-multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;   &amp;referrals,&n;   &amp;num_referrals,&n;   cifs_sb-&gt;local_nls); */
+multiline_comment|/* CIFSGetDFSRefer(xid, pTcon-&gt;ses, search_path,&n;&t;&amp;referrals,&n;&t;&amp;num_referrals,&n;&t;cifs_sb-&gt;local_nls); */
 id|tmp_path
 op_assign
 id|kmalloc
@@ -1226,6 +1231,11 @@ id|inode-&gt;i_fop
 op_assign
 op_amp
 id|cifs_file_ops
+suffix:semicolon
+id|inode-&gt;i_data.a_ops
+op_assign
+op_amp
+id|cifs_addr_ops
 suffix:semicolon
 )brace
 r_else
@@ -2019,11 +2029,19 @@ id|pTcon
 op_ne
 id|cifs_sb_target-&gt;tcon
 )paren
+(brace
 r_return
 op_minus
 id|EXDEV
 suffix:semicolon
 multiline_comment|/* BB actually could be allowed if same server, but&n;                     different share. Might eventually add support for this */
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+)brace
 id|fromName
 op_assign
 id|build_path_from_dentry
@@ -2076,6 +2094,12 @@ id|kfree
 c_func
 (paren
 id|toName
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
 )paren
 suffix:semicolon
 r_return
@@ -2168,6 +2192,7 @@ c_func
 id|direntry-&gt;d_inode
 )paren
 suffix:semicolon
+multiline_comment|/* BB add check - do not need to revalidate oplocked files */
 r_if
 c_cond
 (paren
@@ -2271,6 +2296,54 @@ id|xid
 suffix:semicolon
 r_return
 id|rc
+suffix:semicolon
+)brace
+DECL|function|cifs_getattr
+r_int
+id|cifs_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|kstat
+op_star
+id|stat
+)paren
+(brace
+r_int
+id|err
+op_assign
+id|cifs_revalidate
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|generic_fillattr
+c_func
+(paren
+id|dentry-&gt;d_inode
+comma
+id|stat
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_void
@@ -2478,7 +2551,7 @@ comma
 id|flist
 )paren
 suffix:semicolon
-multiline_comment|/* We could check if file is open for writing first and &n;                   also we could also override the smb pid with the pid &n;                   of the file opener when sending the CIFS request */
+multiline_comment|/* We could check if file is open for writing first */
 id|rc
 op_assign
 id|CIFSSMBSetFileSize
