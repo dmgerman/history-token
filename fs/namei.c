@@ -5354,6 +5354,10 @@ r_goto
 id|exit_dput
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is subtle. Instead of calling do_follow_link() we do the&n;&t; * thing by hands. The reason is that this way we have zero link_count&n;&t; * and path_walk() (called from -&gt;follow_link) honoring LOOKUP_PARENT.&n;&t; * After that we have the parent and last component, i.e.&n;&t; * we are in the same situation as after the first path_walk().&n;&t; * Well, almost - if the last component is normal we get its copy&n;&t; * stored in nd-&gt;last.name and we will have to putname() it when we&n;&t; * are done. Procfs-like symlinks just set LAST_BIND.&n;&t; */
+id|nd-&gt;flags
+op_or_assign
+id|LOOKUP_PARENT
+suffix:semicolon
 id|error
 op_assign
 id|security_inode_follow_link
@@ -5403,6 +5407,11 @@ id|error
 )paren
 r_return
 id|error
+suffix:semicolon
+id|nd-&gt;flags
+op_and_assign
+op_complement
+id|LOOKUP_PARENT
 suffix:semicolon
 r_if
 c_cond
