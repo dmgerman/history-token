@@ -3399,7 +3399,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|__group_send_sig_info
 id|__group_send_sig_info

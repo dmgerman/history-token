@@ -824,6 +824,21 @@ id|it_real_value
 comma
 id|it_real_incr
 suffix:semicolon
+multiline_comment|/* ITIMER_PROF and ITIMER_VIRTUAL timers for the process */
+DECL|member|it_prof_expires
+DECL|member|it_virt_expires
+id|cputime_t
+id|it_prof_expires
+comma
+id|it_virt_expires
+suffix:semicolon
+DECL|member|it_prof_incr
+DECL|member|it_virt_incr
+id|cputime_t
+id|it_prof_incr
+comma
+id|it_virt_incr
+suffix:semicolon
 multiline_comment|/* job control IDs */
 DECL|member|pgrp
 id|pid_t
@@ -1665,20 +1680,6 @@ DECL|member|rt_priority
 r_int
 r_int
 id|rt_priority
-suffix:semicolon
-DECL|member|it_virt_value
-DECL|member|it_virt_incr
-id|cputime_t
-id|it_virt_value
-comma
-id|it_virt_incr
-suffix:semicolon
-DECL|member|it_prof_value
-DECL|member|it_prof_incr
-id|cputime_t
-id|it_prof_value
-comma
-id|it_prof_incr
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime

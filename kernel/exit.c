@@ -2890,14 +2890,6 @@ id|tsk-&gt;exit_state
 op_assign
 id|state
 suffix:semicolon
-id|tsk-&gt;it_virt_value
-op_assign
-id|cputime_zero
-suffix:semicolon
-id|tsk-&gt;it_prof_value
-op_assign
-id|cputime_zero
-suffix:semicolon
 id|write_unlock_irq
 c_func
 (paren
