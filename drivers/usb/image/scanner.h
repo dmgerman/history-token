@@ -350,7 +350,51 @@ l_int|0x2202
 )paren
 )brace
 comma
-multiline_comment|/* FB620U */
+multiline_comment|/* CanoScan FB620U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2204
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan FB630U/FB636U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2206
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan N650U/N656U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2207
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan N1220U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2208
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan D660U */
 (brace
 id|USB_DEVICE
 c_func
@@ -362,17 +406,6 @@ l_int|0x220b
 )brace
 comma
 multiline_comment|/* D646U */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x04a9
-comma
-l_int|0x2207
-)paren
-)brace
-comma
-multiline_comment|/* 1220U */
 multiline_comment|/* Colorado -- See Primax/Colorado below */
 multiline_comment|/* Epson -- See Seiko/Epson below */
 multiline_comment|/* Genius */

@@ -2830,7 +2830,9 @@ id|interface-&gt;dev.bus_id
 l_int|0
 )braket
 comma
-l_string|&quot;%s:%d&quot;
+l_string|&quot;%s-%s:%d&quot;
+comma
+id|dev-&gt;bus-&gt;bus_name
 comma
 id|dev-&gt;devpath
 comma

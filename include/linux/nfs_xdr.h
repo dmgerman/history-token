@@ -1177,7 +1177,9 @@ r_struct
 id|inode
 op_star
 comma
-r_int
+r_struct
+id|rpc_cred
+op_star
 comma
 r_int
 )paren

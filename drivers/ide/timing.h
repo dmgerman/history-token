@@ -1,10 +1,4 @@
-macro_line|#ifndef _ATA_TIMING_H
-DECL|macro|_ATA_TIMING_H
-mdefine_line|#define _ATA_TIMING_H
-multiline_comment|/*&n; * $Id: ata-timing.h,v 2.0 2002/03/12 13:02:22 vojtech Exp $&n; *&n; *  Copyright (C) 1996  Linus Torvalds, Igor Abramov, and Mark Lord&n; *  Copyright (C) 1999-2001 Vojtech Pavlik&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
+multiline_comment|/*&n; *  Copyright (C) 1996  Linus Torvalds, Igor Abramov, and Mark Lord&n; *  Copyright (C) 1999-2001 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 DECL|macro|XFER_PIO_5
 mdefine_line|#define XFER_PIO_5&t;&t;0x0d
 DECL|macro|XFER_UDMA_SLOW
@@ -238,5 +232,4 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

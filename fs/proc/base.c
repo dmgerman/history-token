@@ -1972,7 +1972,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|MAY_PTRACE
-mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;parent==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED))
+mdefine_line|#define MAY_PTRACE(p) &bslash;&n;(p==current||(p-&gt;parent==current&amp;&amp;(p-&gt;ptrace &amp; PT_PTRACED)&amp;&amp;p-&gt;state==TASK_STOPPED&amp;&amp;security_ops-&gt;ptrace(current,p)==0))
 DECL|function|mem_open
 r_static
 r_int

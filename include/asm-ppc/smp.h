@@ -7,6 +7,7 @@ mdefine_line|#define _PPC_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|cpuinfo_PPC
@@ -57,6 +58,11 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+id|cpu_possible_map
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|smp_proc_in_lock
 (braket
 )braket
@@ -72,15 +78,6 @@ suffix:semicolon
 r_extern
 r_int
 id|smp_tb_synchronized
-suffix:semicolon
-r_extern
-r_void
-id|smp_store_cpu_info
-c_func
-(paren
-r_int
-id|id
-)paren
 suffix:semicolon
 r_extern
 r_void
@@ -132,6 +129,8 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu) (cpu_possible_map &amp; (1&lt;&lt;(cpu)))
 DECL|function|num_online_cpus
 r_extern
 r_inline
@@ -184,6 +183,16 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|__cpu_up
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|smp_hw_index

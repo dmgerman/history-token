@@ -10,11 +10,11 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 multiline_comment|/*&n; * This flag is set in ide.c by the parameter:  ide0=cmd640_vlb&n; */
 DECL|variable|cmd640_vlb
 r_int
@@ -278,7 +278,7 @@ r_int
 r_int
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 suffix:semicolon
@@ -321,7 +321,7 @@ r_int
 r_int
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -2244,7 +2244,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|mode_wanted
 )paren
 (brace

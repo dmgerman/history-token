@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * $Id: ata-timing.c,v 2.0 2002/03/12 15:48:43 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program; if not, write to the Free Software Foundation, Inc., 59 Temple&n; * Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by e-mail -&n; * mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail: Vojtech Pavlik,&n; * Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &quot;timing.h&quot;
 multiline_comment|/*&n; * PIO 0-5, MWDMA 0-2 and UDMA 0-6 timings (in nanoseconds).  These were taken&n; * from ATA/ATAPI-6 standard, rev 0a, except for PIO 5, which is a nonstandard&n; * extension and UDMA6, which is currently supported only by Maxtor drives.&n; */
 DECL|variable|ata_timing
 r_struct

@@ -7,14 +7,14 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/*&n; * Set a new transfer mode at the drive&n; */
 DECL|function|cs5530_set_xfer_mode
@@ -27,7 +27,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|mode
 )paren
 (brace
@@ -116,10 +116,9 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
-multiline_comment|/* pio=255 means &quot;autotune&quot; */
 (brace
 r_struct
 id|ata_channel
@@ -167,7 +166,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -829,6 +828,7 @@ r_int
 id|flags
 suffix:semicolon
 id|pci_for_each_dev
+c_func
 (paren
 id|dev
 )paren
@@ -976,7 +976,7 @@ comma
 l_int|0x1e
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Set max PCI burst size (16-bytes seems to work best):&n;&t; *&t;   16bytes: set bit-1 at 0x41 (reg value of 0x16)&n;&t; *&t;all others: clear bit-1 at 0x41, and do:&n;&t; *&t;  128bytes: OR 0x00 at 0x41&n;&t; *&t;  256bytes: OR 0x04 at 0x41&n;&t; *&t;  512bytes: OR 0x08 at 0x41&n;&t; *&t; 1024bytes: OR 0x0c at 0x41&n;&t; */
+multiline_comment|/*&n;&t; * Set max PCI burst size (16-bytes seems to work best):&n;&t; *&t;   16bytes: set bit-1 at 0x41 (reg value of 0x16)&n;&t; *&t;all others: clear bit-1 at 0x41, and do:&n;&t; *&t;  128bytes: OR 0x00 at 0x41&n;&t; *&t;  256bytes: OR 0x04 at 0x41&n;&t; *&t;  512bytes: OR 0x08 at 0x41&n;&t; *&t; 1024bytes: OR 0x0c at 0x41&n;&t; */
 id|pci_write_config_byte
 c_func
 (paren

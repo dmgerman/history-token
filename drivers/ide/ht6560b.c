@@ -8,18 +8,18 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/* remove comments for DEBUG messages */
 multiline_comment|/*&n; * The special i/o-port that HT-6560B uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit2 (0x04): &quot;1&quot; enables FIFO function&n; *    bit5 (0x20): &quot;1&quot; enables prefetched data read function  (???)&n; *&n; * The special i/o-port that HT-6560A uses to configuration:&n; *    bit0 (0x01): &quot;1&quot; selects secondary interface&n; *    bit1 (0x02): &quot;1&quot; enables prefetched data read function&n; *    bit2 (0x04): &quot;0&quot; enables multi-master system&t;      (?)&n; *    bit3 (0x08): &quot;1&quot; 3 cycle time, &quot;0&quot; 2 cycle time&t;      (?)&n; */
 DECL|macro|HT_CONFIG_PORT
 mdefine_line|#define HT_CONFIG_PORT&t;  0x3e6
 DECL|macro|HT_CONFIG
-mdefine_line|#define HT_CONFIG(drivea) (byte)(((drivea)-&gt;drive_data &amp; 0xff00) &gt;&gt; 8)
+mdefine_line|#define HT_CONFIG(drivea) (u8)(((drivea)-&gt;drive_data &amp; 0xff00) &gt;&gt; 8)
 multiline_comment|/*&n; * FIFO + PREFETCH (both a/b-model)&n; */
 DECL|macro|HT_CONFIG_DEFAULT
 mdefine_line|#define HT_CONFIG_DEFAULT 0x1c /* no prefetch */
@@ -31,7 +31,7 @@ DECL|macro|HT_PREFETCH_MODE
 mdefine_line|#define HT_PREFETCH_MODE  0x20
 multiline_comment|/*&n; * ht6560b Timing values:&n; *&n; * I reviewed some assembler source listings of htide drivers and found&n; * out how they setup those cycle time interfacing values, as they at Holtek&n; * call them. IDESETUP.COM that is supplied with the drivers figures out&n; * optimal values and fetches those values to drivers. I found out that&n; * they use IDE_SELECT_REG to fetch timings to the ide board right after&n; * interface switching. After that it was quite easy to add code to&n; * ht6560b.c.&n; *&n; * IDESETUP.COM gave me values 0x24, 0x45, 0xaa, 0xff that worked fine&n; * for hda and hdc. But hdb needed higher values to work, so I guess&n; * that sometimes it is necessary to give higher value than IDESETUP&n; * gives.   [see cmd640.c for an extreme example of this. -ml]&n; *&n; * Perhaps I should explain something about these timing values:&n; * The higher nibble of value is the Recovery Time  (rt) and the lower nibble&n; * of the value is the Active Time  (at). Minimum value 2 is the fastest and&n; * the maximum value 15 is the slowest. Default values should be 15 for both.&n; * So 0x24 means 2 for rt and 4 for at. Each of the drives should have&n; * both values, and IDESETUP gives automatically rt=15 st=15 for CDROMs or&n; * similar. If value is too small there will be all sorts of failures.&n; *&n; * Timing byte consists of&n; *&t;High nibble:  Recovery Cycle Time  (rt)&n; *&t;     The valid values range from 2 to 15. The default is 15.&n; *&n; *&t;Low nibble:   Active Cycle Time&t;   (at)&n; *&t;     The valid values range from 2 to 15. The default is 15.&n; *&n; * You can obtain optimized timing values by running Holtek IDESETUP.COM&n; * for DOS. DOS drivers get their timing values from command line, where&n; * the first value is the Recovery Time and the second value is the&n; * Active Time for each drive. Smaller value gives higher speed.&n; * In case of failures you should probably fall back to a higher value.&n; */
 DECL|macro|HT_TIMING
-mdefine_line|#define HT_TIMING(drivea) (byte)((drivea)-&gt;drive_data &amp; 0x00ff)
+mdefine_line|#define HT_TIMING(drivea) (u8)((drivea)-&gt;drive_data &amp; 0x00ff)
 DECL|macro|HT_TIMING_DEFAULT
 mdefine_line|#define HT_TIMING_DEFAULT 0xff
 multiline_comment|/*&n; * This routine handles interface switching for the peculiar hardware design&n; * on the F.G.I./Holtek HT-6560B VLB IDE interface.&n; * The HT-6560B can only enable one IDE port at a time, and requires a&n; * silly sequence (below) whenever we switch between primary and secondary.&n; */
@@ -380,7 +380,7 @@ suffix:semicolon
 )brace
 DECL|function|ht_pio2timings
 r_static
-id|byte
+id|u8
 id|ht_pio2timings
 c_func
 (paren
@@ -389,7 +389,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -441,7 +441,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -564,7 +564,7 @@ suffix:semicolon
 macro_line|#endif
 r_return
 (paren
-id|byte
+id|u8
 )paren
 (paren
 (paren
@@ -607,7 +607,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|state
 )paren
 (brace
@@ -705,7 +705,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -713,7 +713,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|timing
 suffix:semicolon
 r_switch

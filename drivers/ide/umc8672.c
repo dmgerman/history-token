@@ -10,11 +10,11 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 multiline_comment|/*&n; * Default speeds.  These can be changed with &quot;auto-tune&quot; and/or hdparm.&n; */
 DECL|macro|UMC_DRIVE0
 mdefine_line|#define UMC_DRIVE0      1              /* DOS measured drive speeds */
@@ -26,7 +26,7 @@ DECL|macro|UMC_DRIVE3
 mdefine_line|#define UMC_DRIVE3      1              /* In case of crash reduce speed */
 DECL|variable|current_speeds
 r_static
-id|byte
+id|u8
 id|current_speeds
 (braket
 l_int|4
@@ -45,7 +45,7 @@ suffix:semicolon
 DECL|variable|pio_to_umc
 r_static
 r_const
-id|byte
+id|u8
 id|pio_to_umc
 (braket
 l_int|5
@@ -68,7 +68,7 @@ multiline_comment|/*       0    1    2    3    4    5    6    7    8    9    10 
 DECL|variable|speedtab
 r_static
 r_const
-id|byte
+id|u8
 id|speedtab
 (braket
 l_int|3
@@ -187,7 +187,7 @@ suffix:semicolon
 DECL|function|in_umc
 r_static
 r_inline
-id|byte
+id|u8
 id|in_umc
 (paren
 r_char
@@ -212,8 +212,9 @@ DECL|function|umc_set_speeds
 r_static
 r_void
 id|umc_set_speeds
+c_func
 (paren
-id|byte
+id|u8
 id|speeds
 (braket
 )braket
@@ -441,7 +442,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -476,7 +477,7 @@ op_assign
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma

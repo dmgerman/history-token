@@ -190,6 +190,13 @@ c_func
 id|rpc_restart_call
 )paren
 suffix:semicolon
+DECL|variable|rpc_setbufsize
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpc_setbufsize
+)paren
+suffix:semicolon
 multiline_comment|/* Client transport */
 DECL|variable|xprt_create_proto
 id|EXPORT_SYMBOL

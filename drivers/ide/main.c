@@ -20,18 +20,19 @@ macro_line|# include &lt;linux/init.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 macro_line|#include &quot;ioctl.h&quot;
 id|MODULE_DESCRIPTION
@@ -4152,10 +4153,6 @@ suffix:semicolon
 id|drive-&gt;revalidate
 op_assign
 l_int|1
-suffix:semicolon
-id|drive-&gt;suspend_reset
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 l_int|0

@@ -387,7 +387,6 @@ id|regs
 )paren
 (brace
 r_int
-r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -395,10 +394,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hardirq_enter
+id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 id|tau
@@ -415,13 +413,10 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|hardirq_exit
+id|irq_exit
 c_func
 (paren
-id|cpu
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_TAU_INT */
@@ -437,13 +432,7 @@ id|info
 )paren
 (brace
 r_int
-r_int
 id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -456,13 +445,15 @@ r_int
 id|shrink
 suffix:semicolon
 multiline_comment|/* disabling interrupts *should* be okay */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|cpu
+op_assign
+id|smp_processor_id
 c_func
 (paren
 )paren
@@ -625,7 +616,7 @@ op_or
 id|THRM3_E
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

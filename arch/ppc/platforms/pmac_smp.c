@@ -2406,6 +2406,16 @@ id|smp_psurge_kick_cpu
 comma
 id|smp_psurge_setup_cpu
 comma
+dot
+id|give_timebase
+op_assign
+id|smp_generic_give_timebase
+comma
+dot
+id|take_timebase
+op_assign
+id|smp_generic_take_timebase
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Core99 Macs (dual G4s) */
@@ -2423,6 +2433,16 @@ comma
 id|smp_core99_kick_cpu
 comma
 id|smp_core99_setup_cpu
+comma
+dot
+id|give_timebase
+op_assign
+id|smp_generic_give_timebase
+comma
+dot
+id|take_timebase
+op_assign
+id|smp_generic_take_timebase
 comma
 )brace
 suffix:semicolon

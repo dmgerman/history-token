@@ -8,16 +8,16 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 DECL|variable|m5229_revision
 r_static
-id|byte
+id|u8
 id|m5229_revision
 suffix:semicolon
 DECL|variable|chip_is_1543c_e
 r_static
-id|byte
+r_int
 id|chip_is_1543c_e
 suffix:semicolon
 DECL|variable|isa_dev
@@ -38,7 +38,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -68,7 +68,7 @@ id|a_time
 comma
 id|c_time
 suffix:semicolon
-id|byte
+id|u8
 id|s_clc
 comma
 id|a_clc
@@ -99,7 +99,7 @@ l_int|0x55
 suffix:colon
 l_int|0x54
 suffix:semicolon
-id|byte
+id|u8
 id|cd_dma_fifo
 op_assign
 l_int|0
@@ -131,7 +131,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -432,7 +432,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -443,7 +443,7 @@ id|dev
 op_assign
 id|drive-&gt;channel-&gt;pci_dev
 suffix:semicolon
-id|byte
+id|u8
 id|unit
 op_assign
 (paren
@@ -452,7 +452,7 @@ op_amp
 l_int|0x01
 )paren
 suffix:semicolon
-id|byte
+id|u8
 id|tmpbyte
 op_assign
 l_int|0x00
@@ -475,12 +475,10 @@ OL
 id|XFER_UDMA_0
 )paren
 (brace
-id|byte
+id|u8
 id|ultra_enable
 op_assign
-(paren
 id|unit
-)paren
 ques
 c_cond
 l_int|0x7f
@@ -637,7 +635,7 @@ id|tmpbyte
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_return
 id|ide_config_drive_speed
 c_func
@@ -944,7 +942,7 @@ id|ata66
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|cable_80_pin
 (braket
 l_int|2
@@ -960,7 +958,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|tmpbyte
 suffix:semicolon
 id|local_irq_save
@@ -1244,12 +1242,12 @@ id|hwif
 )paren
 (brace
 macro_line|#ifndef CONFIG_SPARC64
-id|byte
+id|u8
 id|ideic
 comma
 id|inmir
 suffix:semicolon
-id|byte
+id|u8
 id|irq_routing_table
 (braket
 )braket

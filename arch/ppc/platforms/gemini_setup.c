@@ -2152,6 +2152,16 @@ id|smp_gemini_kick_cpu
 comma
 id|smp_gemini_setup_cpu
 comma
+dot
+id|give_timebase
+op_assign
+id|smp_generic_give_timebase
+comma
+dot
+id|take_timebase
+op_assign
+id|smp_generic_take_timebase
+comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - inode_has_buffers&n; *  - invalidate_inode_buffers&n; *  - fsync_bdev&n; *  - invalidate_bdev&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * New inode.c implementation.&n; *&n; * This implementation has the basic premise of trying&n; * to be extremely low-overhead and SMP-safe, yet be&n; * simple enough to be &quot;obviously correct&quot;.&n; *&n; * Famous last words.&n; */
@@ -163,6 +164,50 @@ op_assign
 op_amp
 id|inode-&gt;i_data
 suffix:semicolon
+id|inode-&gt;i_security
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|security_ops
+op_member_access_from_pointer
+id|inode_alloc_security
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_op-&gt;destroy_inode
+)paren
+id|inode-&gt;i_sb-&gt;s_op
+op_member_access_from_pointer
+id|destroy_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_else
+id|kmem_cache_free
+c_func
+(paren
+id|inode_cachep
+comma
+(paren
+id|inode
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|inode-&gt;i_sb
 op_assign
 id|sb
@@ -339,6 +384,14 @@ id|inode
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|inode_free_security
+c_func
+(paren
+id|inode
 )paren
 suffix:semicolon
 r_if
@@ -2799,6 +2852,14 @@ op_amp
 id|inode-&gt;i_data
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|security_ops
+op_member_access_from_pointer
+id|inode_delete
+c_func
+(paren
+id|inode
 )paren
 suffix:semicolon
 r_if

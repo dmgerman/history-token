@@ -454,7 +454,7 @@ multiline_comment|/*&n;&t; *&t;Last error information&n;&t; */
 DECL|member|sense_key
 DECL|member|asc
 DECL|member|ascq
-id|byte
+id|u8
 id|sense_key
 comma
 id|asc
@@ -462,7 +462,7 @@ comma
 id|ascq
 suffix:semicolon
 DECL|member|ticks
-id|byte
+id|u8
 id|ticks
 suffix:semicolon
 multiline_comment|/* delay this long before sending packet command */

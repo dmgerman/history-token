@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ioctl.h&quot;
@@ -830,7 +831,7 @@ c_func
 id|drive-&gt;bios_head
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -850,7 +851,7 @@ c_func
 id|drive-&gt;bios_sect
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -870,8 +871,7 @@ c_func
 id|bios_cyl
 comma
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -1126,12 +1126,10 @@ id|put_user
 c_func
 (paren
 id|drive-&gt;dsc_overlap
-op_lshift
-id|IDE_NICE_DSC_OVERLAP
 op_or
 id|drive-&gt;atapi_overlap
 op_lshift
-id|IDE_NICE_ATAPI_OVERLAP
+l_int|1
 comma
 (paren
 r_int
@@ -1165,13 +1163,7 @@ op_ne
 (paren
 id|arg
 op_amp
-(paren
-(paren
 l_int|1
-op_lshift
-id|IDE_NICE_DSC_OVERLAP
-)paren
-)paren
 )paren
 )paren
 r_return
@@ -1180,11 +1172,7 @@ id|EPERM
 suffix:semicolon
 id|drive-&gt;dsc_overlap
 op_assign
-(paren
 id|arg
-op_rshift
-id|IDE_NICE_DSC_OVERLAP
-)paren
 op_amp
 l_int|1
 suffix:semicolon

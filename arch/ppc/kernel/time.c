@@ -36,20 +36,9 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern
-r_int
-id|do_sys_settimeofday
-c_func
-(paren
-r_struct
-id|timeval
-op_star
-id|tv
-comma
 r_struct
 id|timezone
-op_star
-id|tz
-)paren
+id|sys_tz
 suffix:semicolon
 multiline_comment|/* keep track of when we need to update the rtc */
 DECL|variable|last_rtc_update
@@ -293,7 +282,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * timer_interrupt - gets called when the decrementer overflows,&n; * with interrupts disabled.&n; * We set it up to overflow again in 1/HZ seconds.&n; */
 DECL|function|timer_interrupt
-r_int
+r_void
 id|timer_interrupt
 c_func
 (paren
@@ -352,10 +341,9 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|hardirq_enter
+id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_while
@@ -562,30 +550,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hardirq_exit
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
+id|irq_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution.&n; */
@@ -1089,36 +1058,27 @@ c_func
 id|tb_ticks_per_jiffy
 )paren
 suffix:semicolon
-multiline_comment|/* If platform provided a timezone (pmac), we correct the time&n;&t; * using do_sys_settimeofday() which in turn calls warp_clock()&n;&t; */
+multiline_comment|/* If platform provided a timezone (pmac), we correct the time */
 r_if
 c_cond
 (paren
 id|time_offset
 )paren
 (brace
-r_struct
-id|timezone
-id|tz
-suffix:semicolon
-id|tz.tz_minuteswest
+id|sys_tz.tz_minuteswest
 op_assign
 op_minus
 id|time_offset
 op_div
 l_int|60
 suffix:semicolon
-id|tz.tz_dsttime
+id|sys_tz.tz_dsttime
 op_assign
 l_int|0
 suffix:semicolon
-id|do_sys_settimeofday
-c_func
-(paren
-l_int|NULL
-comma
-op_amp
-id|tz
-)paren
+id|xtime.tv_sec
+op_sub_assign
+id|time_offset
 suffix:semicolon
 )brace
 )brace
@@ -1130,6 +1090,7 @@ DECL|macro|SECDAY
 mdefine_line|#define SECDAY&t;&t;&t;86400L
 DECL|macro|SECYR
 mdefine_line|#define SECYR&t;&t;&t;(SECDAY * 365)
+multiline_comment|/*&n; * Note: this is wrong for 2100, but our signed 32-bit time_t will&n; * have overflowed long before that, so who cares.  -- paulus&n; */
 DECL|macro|leapyear
 mdefine_line|#define&t;leapyear(year)&t;&t;((year) % 4 == 0)
 DECL|macro|days_in_year

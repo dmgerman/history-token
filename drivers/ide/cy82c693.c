@@ -4,9 +4,10 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/* the current version */
 DECL|macro|CY82_VERSION
@@ -154,7 +155,7 @@ id|clocks
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * compute the values for the clock registers for PIO&n; * mode and pci_clk [MHz] speed&n; *&n; * NOTE: for mode 0,1 and 2 drives 8-bit IDE command control registers are used&n; *       for mode 3 and 4 drives 8 and 16-bit timings are the same&n; *&n; */
-multiline_comment|/* FIXME: use generic ata-timings library  --bkz */
+multiline_comment|/* FIXME: use generic timings library  --bkz */
 DECL|function|compute_clocks
 r_static
 r_void
@@ -284,10 +285,10 @@ r_int
 id|single
 )paren
 (brace
-id|byte
+id|u8
 id|index
 suffix:semicolon
-id|byte
+id|u8
 id|data
 suffix:semicolon
 r_if
@@ -377,12 +378,12 @@ macro_line|#endif
 id|data
 op_assign
 (paren
-id|byte
+id|u8
 )paren
 id|mode
 op_or
 (paren
-id|byte
+id|u8
 )paren
 (paren
 id|single
@@ -609,7 +610,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace

@@ -268,14 +268,6 @@ id|system
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|migration_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|cache_decay_ticks

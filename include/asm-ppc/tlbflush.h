@@ -26,22 +26,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
-DECL|function|flush_tlb_all
-r_static
-r_inline
-r_void
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-(brace
-id|_tlbia
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|flush_tlb_mm
 r_static
 r_inline
@@ -139,22 +123,6 @@ mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
 macro_line|#elif defined(CONFIG_8xx)
 DECL|macro|__tlbia
 mdefine_line|#define __tlbia()&t;asm volatile (&quot;tlbia; sync&quot; : : : &quot;memory&quot;)
-DECL|function|flush_tlb_all
-r_static
-r_inline
-r_void
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-(brace
-id|__tlbia
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|flush_tlb_mm
 r_static
 r_inline
@@ -255,14 +223,6 @@ id|mm_struct
 suffix:semicolon
 r_struct
 id|vm_area_struct
-suffix:semicolon
-r_extern
-r_void
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_void

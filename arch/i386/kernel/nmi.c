@@ -177,6 +177,7 @@ id|nmi_hz
 )paren
 suffix:semicolon
 singleline_comment|// wait 10 ticks
+multiline_comment|/* FIXME: Only boot CPU is online at this stage.  Check CPUs&n;           as they come up. */
 r_for
 c_loop
 (paren

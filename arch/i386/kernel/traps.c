@@ -2991,14 +2991,9 @@ comma
 id|PAGE_KERNEL_RO
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * &quot;idt&quot; is magic - it overlaps the idt_descr&n;&t; * variable so that updating idt will automatically&n;&t; * update the idt descriptor..&n;&t; */
-id|idt
+multiline_comment|/*&n;&t; * Update the IDT descriptor and reload the IDT so that&n;&t; * it uses the read-only mapped virtual address.&n;&t; */
+id|idt_descr.address
 op_assign
-(paren
-r_struct
-id|desc_struct
-op_star
-)paren
 id|fix_to_virt
 c_func
 (paren

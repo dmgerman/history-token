@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  fs/partitions/msdos.c&n; *&n; *  Code extracted from 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;&t;/* IDE xlate */
 macro_line|#elif defined(CONFIG_BLK_DEV_IDE_MODULE)
 macro_line|#include &lt;linux/module.h&gt;

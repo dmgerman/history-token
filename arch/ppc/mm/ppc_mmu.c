@@ -258,10 +258,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bat_mapin_ram
-r_void
+DECL|function|mmu_mapin_ram
+r_int
+r_int
 id|__init
-id|bat_mapin_ram
+id|mmu_mapin_ram
 c_func
 (paren
 r_void
@@ -288,6 +289,14 @@ suffix:semicolon
 r_int
 r_int
 id|align
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__map_without_bats
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Set up BAT2 and if necessary BAT3 to cover RAM. */
 multiline_comment|/* Make sure we don&squot;t map a block larger than the&n;&t;   smallest alignment of the physical address. */
@@ -451,7 +460,27 @@ comma
 id|_PAGE_KERNEL
 )paren
 suffix:semicolon
+id|done
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|bat_addrs
+(braket
+l_int|3
+)braket
+dot
+id|limit
+op_minus
+id|KERNELBASE
+op_plus
+l_int|1
+suffix:semicolon
 )brace
+r_return
+id|done
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up one of the I/D BAT (block address translation) register pairs.&n; * The parameters are not checked; in particular size must be a power&n; * of 2 between 128k and 256M.&n; */
 DECL|function|setbat

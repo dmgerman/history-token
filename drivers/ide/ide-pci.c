@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -19,9 +20,8 @@ r_struct
 id|ata_pci_device
 op_star
 id|ata_pci_device_list
-op_assign
-l_int|NULL
 suffix:semicolon
+multiline_comment|/* = NULL */
 multiline_comment|/*&n; * This function supplies the data necessary to detect the particular chipset.&n; *&n; * Please note that we don&squot;t copy data over. We are just linking it in to the&n; * list.&n; */
 DECL|function|ata_register_chipset
 r_void

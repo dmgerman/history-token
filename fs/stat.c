@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|generic_fillattr
 r_void
@@ -112,6 +113,29 @@ op_star
 id|inode
 op_assign
 id|dentry-&gt;d_inode
+suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
+id|retval
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|inode_getattr
+c_func
+(paren
+id|mnt
+comma
+id|dentry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_return
+id|retval
 suffix:semicolon
 r_if
 c_cond
@@ -1052,6 +1076,23 @@ op_logical_and
 id|inode-&gt;i_op-&gt;readlink
 )paren
 (brace
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|inode_readlink
+c_func
+(paren
+id|nd.dentry
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+(brace
 id|UPDATE_ATIME
 c_func
 (paren
@@ -1072,6 +1113,7 @@ comma
 id|bufsiz
 )paren
 suffix:semicolon
+)brace
 )brace
 id|path_release
 c_func

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 multiline_comment|/*&n; * This is needed for the following functions:&n; *  - try_to_release_page&n; *  - block_invalidatepage&n; *  - page_has_buffers&n; *  - generic_osync_inode&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -4272,6 +4273,23 @@ id|retval
 r_goto
 id|fput_in
 suffix:semicolon
+id|retval
+op_assign
+id|security_ops-&gt;file_permission
+(paren
+id|in_file
+comma
+id|MAY_READ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|fput_in
+suffix:semicolon
 multiline_comment|/*&n;&t; * Get output file, and verify that it is ok..&n;&t; */
 id|retval
 op_assign
@@ -4343,6 +4361,23 @@ comma
 id|out_file-&gt;f_pos
 comma
 id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|fput_out
+suffix:semicolon
+id|retval
+op_assign
+id|security_ops-&gt;file_permission
+(paren
+id|out_file
+comma
+id|MAY_WRITE
 )paren
 suffix:semicolon
 r_if

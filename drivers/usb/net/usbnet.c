@@ -417,8 +417,9 @@ id|in
 op_assign
 l_int|2
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|2
 comma
 singleline_comment|// direction distinguishes these
@@ -451,8 +452,9 @@ id|in
 op_assign
 l_int|1
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|1
 comma
 singleline_comment|// direction distinguishes these
@@ -1532,8 +1534,9 @@ id|in
 op_assign
 l_int|1
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|2
 comma
 dot
@@ -1594,8 +1597,9 @@ id|in
 op_assign
 l_int|2
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|1
 comma
 dot
@@ -3288,8 +3292,9 @@ id|in
 op_assign
 l_int|1
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|1
 comma
 singleline_comment|// direction distinguishes these
@@ -3491,8 +3496,9 @@ id|in
 op_assign
 l_int|3
 comma
+dot
 id|out
-suffix:colon
+op_assign
 l_int|2
 comma
 dot

@@ -711,15 +711,10 @@ r_int
 r_int
 id|s
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|s
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if CHECK_STACK

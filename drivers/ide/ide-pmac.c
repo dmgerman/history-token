@@ -5,8 +5,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
@@ -21,7 +22,7 @@ macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 DECL|macro|IDE_PMAC_DEBUG
 macro_line|#undef IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
@@ -688,7 +689,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 suffix:semicolon
@@ -702,7 +703,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 suffix:semicolon
@@ -1712,7 +1713,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -1782,7 +1783,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -2089,10 +2090,10 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
+DECL|function|set_timings_udma
 r_static
 r_int
 id|__pmac
-DECL|function|set_timings_udma
 id|set_timings_udma
 c_func
 (paren
@@ -2100,7 +2101,7 @@ id|u32
 op_star
 id|timings
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -2227,7 +2228,7 @@ id|u32
 op_star
 id|timings
 comma
-id|byte
+id|u8
 id|speed
 comma
 r_int
@@ -2855,7 +2856,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -5641,14 +5642,14 @@ r_int
 id|idx
 )paren
 (brace
-id|byte
+id|u8
 id|bits
 op_assign
 id|drive-&gt;id-&gt;dma_mword
 op_amp
 l_int|0x07
 suffix:semicolon
-id|byte
+id|u8
 id|feature
 op_assign
 id|dma_bits_to_command
@@ -5821,14 +5822,14 @@ r_int
 id|high_speed
 )paren
 (brace
-id|byte
+id|u8
 id|bits
 op_assign
 id|drive-&gt;id-&gt;dma_ultra
 op_amp
 l_int|0x1f
 suffix:semicolon
-id|byte
+id|u8
 id|feature
 op_assign
 id|udma_bits_to_command

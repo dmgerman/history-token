@@ -151,10 +151,33 @@ singleline_comment|// Half of an Edgeport/16 (the kind with 2 EP/8s)
 DECL|macro|ION_DEVICE_ID_BB_EDGEPORT_8I
 mdefine_line|#define ION_DEVICE_ID_BB_EDGEPORT_8I&t;&t;0x014&t;
 singleline_comment|// Edgeport/8 RS422 (single-CPU)
-singleline_comment|// These IDs are used by the Edgeport.exe program for uninstalling.
-singleline_comment|// 
-DECL|macro|EDGEPORT_DEVICE_IDS
-mdefine_line|#define EDGEPORT_DEVICE_IDS&t;{0x001, 0x003, 0x004, 0x005, 0x006, 0x007, 0x00B, &bslash;&n;&t;&t;&t;&t; 0x00C, 0x00D, 0x00E, 0x00F, 0x010, 0x011, 0x012, &bslash;&n;&t;&t;&t;&t; 0x013, 0x014 }
+multiline_comment|/* Edgeport TI based devices */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_4
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_4&t;&t;0x0201&t;/* Edgeport/4 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_2
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_2&t;&t;0x0205&t;/* Edgeport/2 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_4I
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_4I&t;&t;0x0206&t;/* Edgeport/4i RS422 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_2I
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_2I&t;&t;0x0207&t;/* Edgeport/2i RS422/RS485 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_421
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_421&t;&t;0x020C&t;/* Edgeport/421 4 hub 2 RS232 + Parallel (lucent on a different hub port) */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_21
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_21&t;&t;0x020D&t;/* Edgeport/21 2 RS232 + Parallel (lucent on a different hub port) */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_1
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_1&t;&t;0x0215&t;/* Edgeport/1 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_42
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_42&t;&t;0x0217&t;/* Edgeport/42 4 hub 2 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_22
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_22&t;&t;0x021A&t;/* Edgeport/22  Edgeport/22I is an Edgeport/4 with ports 1&amp;2 RS422 and ports 3&amp;4 RS232 */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_421_BOOT
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_421_BOOT&t;0x0240&t;/* Edgeport/421 in boot mode */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_421_DOWN
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_421_DOWN&t;0x0241&t;/* Edgeport/421 in download mode first interface is 2 RS232 (Note that the second interface of this multi interface device should be a standard USB class 7 printer port) */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_21_BOOT
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_21_BOOT&t;0x0242&t;/* Edgeport/21 in boot mode */
+DECL|macro|ION_DEVICE_ID_TI_EDGEPORT_21_DOWN
+mdefine_line|#define ION_DEVICE_ID_TI_EDGEPORT_21_DOWN&t;0x0243&t;/*Edgeport/42 in download mode: first interface is 2 RS232 (Note that the second interface of this multi interface device should be a standard USB class 7 printer port) */
 DECL|macro|MAKE_USB_PRODUCT_ID
 mdefine_line|#define&t;MAKE_USB_PRODUCT_ID( OemId, DeviceId )&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;( (__u16) (((OemId) &lt;&lt; 10) || (DeviceId)) )
 DECL|macro|DEVICE_ID_FROM_USB_PRODUCT_ID
@@ -276,7 +299,7 @@ singleline_comment|//&t;2.&t;Any strings in the structures are in USB-defined st
 singleline_comment|//&t;&t;descriptor format, so that they may be separately retrieved,
 singleline_comment|//&t;&t;if necessary, with a minimum of work on the 930. This also
 singleline_comment|//&t;&t;requires them to be in UNICODE format, which, for English at
-singleline_comment|//&t;&t;least, simply means extending each UCHAR into a USHORT.
+singleline_comment|//&t;&t;least, simply means extending each __u8 into a __u16.
 singleline_comment|//&t;3.&t;For all fields, 00 means &squot;uninitialized&squot;.
 singleline_comment|//&t;4.&t;All unused areas should be set to 00 for future expansion.
 singleline_comment|//
@@ -659,6 +682,242 @@ singleline_comment|// Capabilities flags
 DECL|macro|BOOT_CAP_RESET_CMD
 mdefine_line|#define&t;BOOT_CAP_RESET_CMD&t;0x0001&t;
 singleline_comment|// If set, boot correctly supports ION_RESET_DEVICE
-macro_line|#endif&t;
+multiline_comment|/************************************************************************&n;                 T I   U M P   D E F I N I T I O N S&n; ***********************************************************************/
+singleline_comment|//************************************************************************
+singleline_comment|//&t;TI I2C Format Definitions
+singleline_comment|//************************************************************************
+DECL|macro|I2C_DESC_TYPE_INFO_BASIC
+mdefine_line|#define I2C_DESC_TYPE_INFO_BASIC&t;1
+DECL|macro|I2C_DESC_TYPE_FIRMWARE_BASIC
+mdefine_line|#define I2C_DESC_TYPE_FIRMWARE_BASIC&t;2
+DECL|macro|I2C_DESC_TYPE_DEVICE
+mdefine_line|#define I2C_DESC_TYPE_DEVICE&t;&t;3
+DECL|macro|I2C_DESC_TYPE_CONFIG
+mdefine_line|#define I2C_DESC_TYPE_CONFIG&t;&t;4
+DECL|macro|I2C_DESC_TYPE_STRING
+mdefine_line|#define I2C_DESC_TYPE_STRING&t;&t;5
+DECL|macro|I2C_DESC_TYPE_FIRMWARE_BLANK
+mdefine_line|#define I2C_DESC_TYPE_FIRMWARE_BLANK &t;0xf2
+DECL|macro|I2C_DESC_TYPE_MAX
+mdefine_line|#define I2C_DESC_TYPE_MAX&t;&t;5
+singleline_comment|// 3410 may define types 6, 7 for other firmware downloads
+singleline_comment|// Special section defined by ION
+DECL|macro|I2C_DESC_TYPE_ION
+mdefine_line|#define I2C_DESC_TYPE_ION&t;&t;0&t;
+singleline_comment|// Not defined by TI
+DECL|struct|ti_i2c_desc
+r_struct
+id|ti_i2c_desc
+(brace
+DECL|member|Type
+id|__u8
+id|Type
+suffix:semicolon
+singleline_comment|// Type of descriptor
+DECL|member|Size
+id|__u16
+id|Size
+suffix:semicolon
+singleline_comment|// Size of data only not including header
+DECL|member|CheckSum
+id|__u8
+id|CheckSum
+suffix:semicolon
+singleline_comment|// Checksum (8 bit sum of data only)
+DECL|member|Data
+id|__u8
+id|Data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+singleline_comment|// Data starts here
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|ti_i2c_firmware_rec
+r_struct
+id|ti_i2c_firmware_rec
+(brace
+DECL|member|Ver_Major
+id|__u8
+id|Ver_Major
+suffix:semicolon
+singleline_comment|// Firmware Major version number
+DECL|member|Ver_Minor
+id|__u8
+id|Ver_Minor
+suffix:semicolon
+singleline_comment|// Firmware Minor version number
+DECL|member|Data
+id|__u8
+id|Data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+singleline_comment|// Download starts here
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+singleline_comment|// Structure of header of download image in fw_down.h
+DECL|struct|ti_i2c_image_header
+r_struct
+id|ti_i2c_image_header
+(brace
+DECL|member|Length
+id|__u16
+id|Length
+suffix:semicolon
+DECL|member|CheckSum
+id|__u8
+id|CheckSum
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|ti_basic_descriptor
+r_struct
+id|ti_basic_descriptor
+(brace
+DECL|member|Power
+id|__u8
+id|Power
+suffix:semicolon
+singleline_comment|// Self powered
+singleline_comment|// bit 7: 1 - power switching supported
+singleline_comment|//        0 - power switching not supported
+singleline_comment|//
+singleline_comment|// bit 0: 1 - self powered
+singleline_comment|//        0 - bus powered
+singleline_comment|//
+singleline_comment|//
+DECL|member|HubVid
+id|__u16
+id|HubVid
+suffix:semicolon
+singleline_comment|// VID HUB
+DECL|member|HubPid
+id|__u16
+id|HubPid
+suffix:semicolon
+singleline_comment|// PID HUB
+DECL|member|DevPid
+id|__u16
+id|DevPid
+suffix:semicolon
+singleline_comment|// PID Edgeport
+DECL|member|HubTime
+id|__u8
+id|HubTime
+suffix:semicolon
+singleline_comment|// Time for power on to power good
+DECL|member|HubCurrent
+id|__u8
+id|HubCurrent
+suffix:semicolon
+singleline_comment|// HUB Current = 100ma
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|TI_GET_CPU_REVISION
+mdefine_line|#define TI_GET_CPU_REVISION(x)&t;&t;(__u8)((((x)&gt;&gt;4)&amp;0x0f))
+DECL|macro|TI_GET_BOARD_REVISION
+mdefine_line|#define TI_GET_BOARD_REVISION(x)&t;(__u8)(((x)&amp;0x0f))
+DECL|macro|TI_I2C_SIZE_MASK
+mdefine_line|#define TI_I2C_SIZE_MASK&t;&t;0x1f  
+singleline_comment|// 5 bits
+DECL|macro|TI_GET_I2C_SIZE
+mdefine_line|#define TI_GET_I2C_SIZE(x)&t;&t;((((x) &amp; TI_I2C_SIZE_MASK)+1)*256)
+DECL|macro|TI_MAX_I2C_SIZE
+mdefine_line|#define TI_MAX_I2C_SIZE&t;&t;&t;( 16 * 1024 )
+multiline_comment|/* TI USB 5052 definitions */
+DECL|struct|edge_ti_manuf_descriptor
+r_struct
+id|edge_ti_manuf_descriptor
+(brace
+DECL|member|IonConfig
+id|__u8
+id|IonConfig
+suffix:semicolon
+singleline_comment|//  Config byte for ION manufacturing use
+DECL|member|IonConfig2
+id|__u8
+id|IonConfig2
+suffix:semicolon
+singleline_comment|//  Expansion
+DECL|member|Version
+id|__u8
+id|Version
+suffix:semicolon
+singleline_comment|//  Verqsion
+DECL|member|CpuRev_BoardRev
+id|__u8
+id|CpuRev_BoardRev
+suffix:semicolon
+singleline_comment|//  CPU revision level (0xF0) and Board Rev Level (0x0F)
+DECL|member|NumPorts
+id|__u8
+id|NumPorts
+suffix:semicolon
+singleline_comment|//  Number of ports&t;for this UMP
+DECL|member|NumVirtualPorts
+id|__u8
+id|NumVirtualPorts
+suffix:semicolon
+singleline_comment|//  Number of Virtual ports
+DECL|member|HubConfig1
+id|__u8
+id|HubConfig1
+suffix:semicolon
+singleline_comment|//  Used to configure the Hub
+DECL|member|HubConfig2
+id|__u8
+id|HubConfig2
+suffix:semicolon
+singleline_comment|//  Used to configure the Hub
+DECL|member|TotalPorts
+id|__u8
+id|TotalPorts
+suffix:semicolon
+singleline_comment|//  Total Number of Com Ports for the entire device (All UMPs)
+DECL|member|Reserved
+id|__u8
+id|Reserved
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
 singleline_comment|// if !defined()
 eof

@@ -518,7 +518,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|reg
 suffix:semicolon
 r_struct

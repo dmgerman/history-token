@@ -17,6 +17,14 @@ macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;asm/prep_nvram.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
+r_extern
+r_char
+id|saved_command_line
+(braket
+)braket
+suffix:semicolon
 r_extern
 r_void
 id|lopec_find_bridges
@@ -24,6 +32,42 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|pckbd_translate
+c_func
+(paren
+r_int
+r_char
+id|scancode
+comma
+r_int
+r_char
+op_star
+id|keycode
+comma
+r_char
+id|raw_mode
+)paren
+suffix:semicolon
+r_extern
+r_char
+id|pckbd_unexpected_up
+c_func
+(paren
+r_int
+r_char
+id|keycode
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|pckbd_sysrq_xlate
+(braket
+l_int|128
+)braket
 suffix:semicolon
 multiline_comment|/*&n; * Define all of the IRQ senses and polarities.  Taken from the&n; * LoPEC Programmer&squot;s Reference Guide.&n; */
 DECL|variable|__initdata
@@ -1159,6 +1203,65 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPCBUG_NVRAM
+multiline_comment|/* Read in NVRAM data */
+id|init_prep_nvram
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* if no bootargs, look in NVRAM */
+r_if
+c_cond
+(paren
+id|cmd_line
+(braket
+l_int|0
+)braket
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+r_char
+op_star
+id|bootargs
+suffix:semicolon
+id|bootargs
+op_assign
+id|prep_nvram_get_var
+c_func
+(paren
+l_string|&quot;bootargs&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bootargs
+op_ne
+l_int|NULL
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|cmd_line
+comma
+id|bootargs
+)paren
+suffix:semicolon
+multiline_comment|/* again.. */
+id|strcpy
+c_func
+(paren
+id|saved_command_line
+comma
+id|cmd_line
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -1265,6 +1368,22 @@ id|ppc_md.setup_io_mappings
 op_assign
 id|lopec_map_io
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
+id|ppc_md.kbd_translate
+op_assign
+id|pckbd_translate
+suffix:semicolon
+id|ppc_md.kbd_unexpected_up
+op_assign
+id|pckbd_unexpected_up
+suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|ppc_md.ppc_kbd_sysrq_xlate
+op_assign
+id|pckbd_sysrq_xlate
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+macro_line|#endif /* CONFIG_VT */
 id|ppc_md.time_init
 op_assign
 id|todc_time_init
