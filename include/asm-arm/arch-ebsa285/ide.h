@@ -1,10 +1,10 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-ebsa285/ide.h&n; *&n; *  Copyright (C) 1998 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Modifications:&n; *   29-07-1998&t;RMK&t;Major re-work of IDE architecture specific code&n; */
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
-r_static
-id|__inline__
-r_void
 DECL|function|ide_init_hwif_ports
+r_static
+r_inline
+r_void
 id|ide_init_hwif_ports
 c_func
 (paren
@@ -13,8 +13,10 @@ op_star
 id|hw
 comma
 r_int
+r_int
 id|data_port
 comma
+r_int
 r_int
 id|ctrl_port
 comma
@@ -23,12 +25,10 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
-(paren
-id|ide_ioreg_t
-)paren
 id|data_port
 suffix:semicolon
 r_int
@@ -66,9 +66,6 @@ id|hw-&gt;io_ports
 id|IDE_CONTROL_OFFSET
 )braket
 op_assign
-(paren
-id|ide_ioreg_t
-)paren
 id|ctrl_port
 suffix:semicolon
 r_if

@@ -76,7 +76,8 @@ suffix:semicolon
 DECL|function|ide_default_io_base
 r_static
 r_inline
-id|ide_ioreg_t
+r_int
+r_int
 id|ide_default_io_base
 c_func
 (paren

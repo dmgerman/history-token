@@ -12,10 +12,10 @@ macro_line|#endif
 DECL|macro|ide_default_irq
 mdefine_line|#define ide_default_irq(base) (0)
 DECL|macro|ide_default_io_base
-mdefine_line|#define ide_default_io_base(index) ((ide_ioreg_t)0)
+mdefine_line|#define ide_default_io_base(index) (0)
 DECL|function|ide_init_hwif_ports
 r_static
-id|__inline__
+r_inline
 r_void
 id|ide_init_hwif_ports
 c_func
@@ -24,10 +24,12 @@ id|hw_regs_t
 op_star
 id|hw
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|data_port
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|ctrl_port
 comma
 r_int
@@ -35,7 +37,8 @@ op_star
 id|irq
 )paren
 (brace
-id|ide_ioreg_t
+r_int
+r_int
 id|reg
 op_assign
 id|data_port

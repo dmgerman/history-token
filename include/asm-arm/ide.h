@@ -11,7 +11,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/arch/ide.h&gt;
 multiline_comment|/*&n; * We always use the new IDE port registering,&n; * so these are fixed here.&n; */
 DECL|macro|ide_default_io_base
-mdefine_line|#define ide_default_io_base(i)&t;&t;((ide_ioreg_t)0)
+mdefine_line|#define ide_default_io_base(i)&t;&t;(0)
 DECL|macro|ide_default_irq
 mdefine_line|#define ide_default_irq(b)&t;&t;(0)
 DECL|macro|__ide_mm_insw
