@@ -1979,7 +1979,7 @@ id|return_head_blk
 op_assign
 id|first_blk
 suffix:semicolon
-multiline_comment|/* is the whole lot zeroed? */
+multiline_comment|/* Is the whole lot zeroed? */
 r_if
 c_cond
 (paren
@@ -1987,7 +1987,7 @@ op_logical_neg
 id|first_blk
 )paren
 (brace
-multiline_comment|/* Linux XFS shouldn&squot;t generate totally zeroed logs -&n;&t;     * mkfs etc write a dummy unmount record to a fresh&n;&t;     * log so we can store the uuid in there&n;&t;     */
+multiline_comment|/* Linux XFS shouldn&squot;t generate totally zeroed logs -&n;&t;&t;&t; * mkfs etc write a dummy unmount record to a fresh&n;&t;&t;&t; * log so we can store the uuid in there&n;&t;&t;&t; */
 id|xlog_warn
 c_func
 (paren
@@ -2149,7 +2149,7 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * If the 1st half cycle number is equal to the last half cycle number,&n;     * then the entire log is stamped with the same cycle number.  In this&n;     * case, head_blk can&squot;t be set to zero (which makes sense).  The below&n;     * math doesn&squot;t work out properly with head_blk equal to zero.  Instead,&n;     * we set it to log_bbnum which is an illegal block number, but this&n;     * value makes the math correct.  If head_blk doesn&squot;t changed through&n;     * all the tests below, *head_blk is set to zero at the very end rather&n;     * than log_bbnum.  In a sense, log_bbnum and zero are the same block&n;     * in a circular file.&n;     */
+multiline_comment|/*&n;&t; * If the 1st half cycle number is equal to the last half cycle number,&n;&t; * then the entire log is stamped with the same cycle number.  In this&n;&t; * case, head_blk can&squot;t be set to zero (which makes sense).  The below&n;&t; * math doesn&squot;t work out properly with head_blk equal to zero.  Instead,&n;&t; * we set it to log_bbnum which is an illegal block number, but this&n;&t; * value makes the math correct.  If head_blk doesn&squot;t changed through&n;&t; * all the tests below, *head_blk is set to zero at the very end rather&n;&t; * than log_bbnum.  In a sense, log_bbnum and zero are the same block&n;&t; * in a circular file.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2158,7 +2158,7 @@ op_eq
 id|last_half_cycle
 )paren
 (brace
-multiline_comment|/*&n;&t; * In this case we believe that the entire log should have cycle&n;&t; * number last_half_cycle.  We need to scan backwards from the&n;&t; * end verifying that there are no holes still containing&n;&t; * last_half_cycle - 1.  If we find such a hole, then the start&n;&t; * of that hole will be the new head.  The simple case looks like&n;&t; *        x | x ... | x - 1 | x&n;&t; * Another case that fits this picture would be&n;&t; *        x | x + 1 | x ... | x&n;&t; * In this case the head really is somwhere at the end of the&n;&t; * log, as one of the latest writes at the beginning was incomplete.&n;&t; * One more case is&n;&t; *        x | x + 1 | x ... | x - 1 | x&n;&t; * This is really the combination of the above two cases, and the&n;&t; * head has to end up at the start of the x-1 hole at the end of&n;&t; * the log.&n;&t; *&n;&t; * In the 256k log case, we will read from the beginning to the&n;&t; * end of the log and search for cycle numbers equal to x-1.  We&n;&t; * don&squot;t worry about the x+1 blocks that we encounter, because&n;&t; * we know that they cannot be the head since the log started with&n;&t; * x.&n;&t; */
+multiline_comment|/*&n;&t;&t; * In this case we believe that the entire log should have&n;&t;&t; * cycle number last_half_cycle.  We need to scan backwards&n;&t;&t; * from the end verifying that there are no holes still&n;&t;&t; * containing last_half_cycle - 1.  If we find such a hole,&n;&t;&t; * then the start of that hole will be the new head.  The&n;&t;&t; * simple case looks like&n;&t;&t; *        x | x ... | x - 1 | x&n;&t;&t; * Another case that fits this picture would be&n;&t;&t; *        x | x + 1 | x ... | x&n;&t;&t; * In this case the head really is somwhere at the end of the&n;&t;&t; * log, as one of the latest writes at the beginning was&n;&t;&t; * incomplete.&n;&t;&t; * One more case is&n;&t;&t; *        x | x + 1 | x ... | x - 1 | x&n;&t;&t; * This is really the combination of the above two cases, and&n;&t;&t; * the head has to end up at the start of the x-1 hole at the&n;&t;&t; * end of the log.&n;&t;&t; *&n;&t;&t; * In the 256k log case, we will read from the beginning to the&n;&t;&t; * end of the log and search for cycle numbers equal to x-1.&n;&t;&t; * We don&squot;t worry about the x+1 blocks that we encounter,&n;&t;&t; * because we know that they cannot be the head since the log&n;&t;&t; * started with x.&n;&t;&t; */
 id|head_blk
 op_assign
 id|log_bbnum
@@ -2172,7 +2172,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t; * In this case we want to find the first block with cycle number&n;&t; * matching last_half_cycle.  We expect the log to be some&n;&t; * variation on&n;&t; *        x + 1 ... | x ...&n;&t; * The first block with cycle number x (last_half_cycle) will be&n;&t; * where the new head belongs.  First we do a binary search for&n;&t; * the first occurrence of last_half_cycle.  The binary search&n;&t; * may not be totally accurate, so then we scan back from there&n;&t; * looking for occurrences of last_half_cycle before us.  If&n;&t; * that backwards scan wraps around the beginning of the log,&n;&t; * then we look for occurrences of last_half_cycle - 1 at the&n;&t; * end of the log.  The cases we&squot;re looking for look like&n;&t; *        x + 1 ... | x | x + 1 | x ...&n;&t; *                               ^ binary search stopped here&n;&t; * or&n;&t; *        x + 1 ... | x ... | x - 1 | x&n;&t; *        &lt;---------&gt; less than scan distance&n;&t; */
+multiline_comment|/*&n;&t;&t; * In this case we want to find the first block with cycle&n;&t;&t; * number matching last_half_cycle.  We expect the log to be&n;&t;&t; * some variation on&n;&t;&t; *        x + 1 ... | x ...&n;&t;&t; * The first block with cycle number x (last_half_cycle) will&n;&t;&t; * be where the new head belongs.  First we do a binary search&n;&t;&t; * for the first occurrence of last_half_cycle.  The binary&n;&t;&t; * search may not be totally accurate, so then we scan back&n;&t;&t; * from there looking for occurrences of last_half_cycle before&n;&t;&t; * us.  If that backwards scan wraps around the beginning of&n;&t;&t; * the log, then we look for occurrences of last_half_cycle - 1&n;&t;&t; * at the end of the log.  The cases we&squot;re looking for look&n;&t;&t; * like&n;&t;&t; *        x + 1 ... | x | x + 1 | x ...&n;&t;&t; *                               ^ binary search stopped here&n;&t;&t; * or&n;&t;&t; *        x + 1 ... | x ... | x - 1 | x&n;&t;&t; *        &lt;---------&gt; less than scan distance&n;&t;&t; */
 id|stop_on_cycle
 op_assign
 id|last_half_cycle
@@ -2203,7 +2203,7 @@ r_goto
 id|bp_err
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Now validate the answer.  Scan back some number of maximum possible&n;     * blocks and make sure each one has the expected cycle number.  The&n;     * maximum is determined by the total possible amount of buffering&n;     * in the in-core log.  The following number can be made tighter if&n;     * we actually look at the block size of the filesystem.&n;     */
+multiline_comment|/*&n;&t; * Now validate the answer.  Scan back some number of maximum possible&n;&t; * blocks and make sure each one has the expected cycle number.  The&n;&t; * maximum is determined by the total possible amount of buffering&n;&t; * in the in-core log.  The following number can be made tighter if&n;&t; * we actually look at the block size of the filesystem.&n;&t; */
 id|num_scan_bblks
 op_assign
 id|XLOG_TOTAL_REC_SHIFT
@@ -2220,7 +2220,7 @@ op_ge
 id|num_scan_bblks
 )paren
 (brace
-multiline_comment|/*&n;&t; * We are guaranteed that the entire check can be performed&n;&t; * in one buffer.&n;&t; */
+multiline_comment|/*&n;&t;&t; * We are guaranteed that the entire check can be performed&n;&t;&t; * in one buffer.&n;&t;&t; */
 id|start_blk
 op_assign
 id|head_blk
@@ -2268,7 +2268,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* need to read 2 parts of log */
-multiline_comment|/*&n;&t; * We are going to scan backwards in the log in two parts.  First&n;&t; * we scan the physical end of the log.  In this part of the log,&n;&t; * we are looking for blocks with cycle number last_half_cycle - 1.&n;&t; * If we find one, then we know that the log starts there, as we&squot;ve&n;&t; * found a hole that didn&squot;t get written in going around the end&n;&t; * of the physical log.  The simple case for this is&n;&t; *        x + 1 ... | x ... | x - 1 | x&n;&t; *        &lt;---------&gt; less than scan distance&n;&t; * If all of the blocks at the end of the log have cycle number&n;&t; * last_half_cycle, then we check the blocks at the start of the&n;&t; * log looking for occurrences of last_half_cycle.  If we find one,&n;&t; * then our current estimate for the location of the first&n;&t; * occurrence of last_half_cycle is wrong and we move back to the&n;&t; * hole we&squot;ve found.  This case looks like&n;&t; *        x + 1 ... | x | x + 1 | x ...&n;&t; *                               ^ binary search stopped here&n;&t; * Another case we need to handle that only occurs in 256k logs is&n;&t; *        x + 1 ... | x ... | x+1 | x ...&n;&t; *                   ^ binary search stops here&n;&t; * In a 256k log, the scan at the end of the log will see the x+1&n;&t; * blocks.  We need to skip past those since that is certainly not&n;&t; * the head of the log.  By searching for last_half_cycle-1 we&n;&t; * accomplish that.&n;&t; */
+multiline_comment|/*&n;&t;&t; * We are going to scan backwards in the log in two parts.&n;&t;&t; * First we scan the physical end of the log.  In this part&n;&t;&t; * of the log, we are looking for blocks with cycle number&n;&t;&t; * last_half_cycle - 1.&n;&t;&t; * If we find one, then we know that the log starts there, as&n;&t;&t; * we&squot;ve found a hole that didn&squot;t get written in going around&n;&t;&t; * the end of the physical log.  The simple case for this is&n;&t;&t; *        x + 1 ... | x ... | x - 1 | x&n;&t;&t; *        &lt;---------&gt; less than scan distance&n;&t;&t; * If all of the blocks at the end of the log have cycle number&n;&t;&t; * last_half_cycle, then we check the blocks at the start of&n;&t;&t; * the log looking for occurrences of last_half_cycle.  If we&n;&t;&t; * find one, then our current estimate for the location of the&n;&t;&t; * first occurrence of last_half_cycle is wrong and we move&n;&t;&t; * back to the hole we&squot;ve found.  This case looks like&n;&t;&t; *        x + 1 ... | x | x + 1 | x ...&n;&t;&t; *                               ^ binary search stopped here&n;&t;&t; * Another case we need to handle that only occurs in 256k&n;&t;&t; * logs is&n;&t;&t; *        x + 1 ... | x ... | x+1 | x ...&n;&t;&t; *                   ^ binary search stops here&n;&t;&t; * In a 256k log, the scan at the end of the log will see the&n;&t;&t; * x + 1 blocks.  We need to skip past those since that is&n;&t;&t; * certainly not the head of the log.  By searching for&n;&t;&t; * last_half_cycle-1 we accomplish that.&n;&t;&t; */
 id|start_blk
 op_assign
 id|log_bbnum
@@ -2345,7 +2345,7 @@ r_goto
 id|bad_blk
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Scan beginning of log now.  The last part of the physical log&n;&t; * is good.  This scan needs to verify that it doesn&squot;t find the&n;&t; * last_half_cycle.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Scan beginning of log now.  The last part of the physical&n;&t;&t; * log is good.  This scan needs to verify that it doesn&squot;t find&n;&t;&t; * the last_half_cycle.&n;&t;&t; */
 id|start_blk
 op_assign
 l_int|0
@@ -2401,7 +2401,7 @@ suffix:semicolon
 )brace
 id|bad_blk
 suffix:colon
-multiline_comment|/*&n;     * Now we need to make sure head_blk is not pointing to a block in&n;     * the middle of a log record.&n;     */
+multiline_comment|/*&n;&t; * Now we need to make sure head_blk is not pointing to a block in&n;&t; * the middle of a log record.&n;&t; */
 id|num_scan_bblks
 op_assign
 id|XLOG_REC_SHIFT
@@ -2642,7 +2642,7 @@ id|return_head_blk
 op_assign
 id|head_blk
 suffix:semicolon
-multiline_comment|/*&n;     * When returning here, we have a good block number.  Bad block&n;     * means that during a previous crash, we didn&squot;t have a clean break&n;     * from cycle number N to cycle number N-1.  In this case, we need&n;     * to find the first block with cycle number N-1.&n;     */
+multiline_comment|/*&n;&t; * When returning here, we have a good block number.  Bad block&n;&t; * means that during a previous crash, we didn&squot;t have a clean break&n;&t; * from cycle number N to cycle number N-1.  In this case, we need&n;&t; * to find the first block with cycle number N-1.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -2669,7 +2669,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* xlog_find_head */
 multiline_comment|/*&n; * Find the sync block number or the tail of the log.&n; *&n; * This will be the block number of the last record to have its&n; * associated buffers synced to disk.  Every log record header has&n; * a sync lsn embedded in it.  LSNs hold block numbers, so it is easy&n; * to get a sync block number.  The only concern is to figure out which&n; * log record header to believe.&n; *&n; * The following algorithm uses the log record header with the largest&n; * lsn.  The entire log record does not need to be valid.  We only care&n; * that the header is valid.&n; *&n; * We could speed up search by using current head_blk buffer, but it is not&n; * available.&n; */
 r_int
 DECL|function|xlog_find_tail
@@ -13016,6 +13015,8 @@ id|dbp
 suffix:semicolon
 r_int
 id|error
+op_assign
+l_int|0
 comma
 id|h_size
 suffix:semicolon
@@ -13038,11 +13039,7 @@ id|rhash
 id|XLOG_RHASH_SIZE
 )braket
 suffix:semicolon
-id|error
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;     * Read the header of the tail block and get the iclog buffer size from&n;     * h_size.  Use this to tell how many sectors make up the log header.&n;     */
+multiline_comment|/*&n;&t; * Read the header of the tail block and get the iclog buffer size from&n;&t; * h_size.  Use this to tell how many sectors make up the log header.&n;&t; */
 r_if
 c_cond
 (paren
@@ -13054,7 +13051,7 @@ id|log-&gt;l_mp-&gt;m_sb
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t; * When using variable length iclogs, read first sector of iclog&n;&t; * header and extract the header size from it.  Get a new hbp that&n;&t; * is the correct size.&n;&t; */
+multiline_comment|/*&n;&t;&t; * When using variable length iclogs, read first sector of&n;&t;&t; * iclog header and extract the header size from it.  Get a&n;&t;&t; * new hbp that is the correct size.&n;&t;&t; */
 id|hbp
 op_assign
 id|xlog_get_bp
@@ -13423,6 +13420,7 @@ id|INT_MAX
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* blocks in data section */
 id|bblks
 op_assign
 (paren
@@ -13440,7 +13438,6 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* blocks in data section */
 r_if
 c_cond
 (paren
@@ -13546,6 +13543,7 @@ r_goto
 id|bread_err2
 suffix:semicolon
 )brace
+multiline_comment|/* blocks in data section */
 id|bblks
 op_assign
 (paren
@@ -13563,7 +13561,6 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* blocks in data section */
 r_if
 c_cond
 (paren
@@ -13659,7 +13656,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t; * Perform recovery around the end of the physical log.  When the head&n;&t; * is not on the same cycle number as the tail, we can&squot;t do a sequential&n;&t; * recovery as above.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Perform recovery around the end of the physical log.&n;&t;&t; * When the head is not on the same cycle number as the tail,&n;&t;&t; * we can&squot;t do a sequential recovery as above.&n;&t;&t; */
 id|blk_no
 op_assign
 id|tail_blk
@@ -13672,7 +13669,7 @@ OL
 id|log-&gt;l_logBBsize
 )paren
 (brace
-multiline_comment|/*&n;&t;     * Check for header wrapping around physical end-of-log&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * Check for header wrapping around physical end-of-log&n;&t;&t;&t; */
 id|wrapped_hblks
 op_assign
 l_int|0
@@ -13727,7 +13724,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* This log record is split across physical end of log */
+multiline_comment|/* This LR is split across physical log end */
 id|offset
 op_assign
 l_int|NULL
@@ -13744,7 +13741,7 @@ op_ne
 id|log-&gt;l_logBBsize
 )paren
 (brace
-multiline_comment|/* some data is before physical end of log */
+multiline_comment|/* some data before physical log end */
 id|ASSERT
 c_func
 (paren
@@ -13807,7 +13804,7 @@ id|hbp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Note: this black magic still works with large sector&n;&t;&t; * sizes (non-512) only because:&n;&t;&t; * - we increased the buffer size originally by 1 sector&n;&t;&t; *   giving us enough extra space for the second read;&n;&t;&t; * - the log start is guaranteed to be sector aligned;&n;&t;&t; * - we read the log end (LR header start) _first_, then&n;&t;&t; *   the log start (LR header end) - order is important.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Note: this black magic still works with&n;&t;&t;&t;&t; * large sector sizes (non-512) only because:&n;&t;&t;&t;&t; * - we increased the buffer size originally&n;&t;&t;&t;&t; *   by 1 sector giving us enough extra space&n;&t;&t;&t;&t; *   for the second read;&n;&t;&t;&t;&t; * - the log start is guaranteed to be sector&n;&t;&t;&t;&t; *   aligned;&n;&t;&t;&t;&t; * - we read the log end (LR header start)&n;&t;&t;&t;&t; *   _first_, then the log start (LR header end)&n;&t;&t;&t;&t; *   - order is important.&n;&t;&t;&t;&t; */
 id|bufaddr
 op_assign
 id|XFS_BUF_PTR
@@ -13954,7 +13951,7 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* LR body must have data or it wouldn&squot;t have been written */
+multiline_comment|/* LR body must have data or it wouldn&squot;t have been&n;&t;&t;&t; * written */
 id|ASSERT
 c_func
 (paren
@@ -14078,7 +14075,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* This log record is split across physical end of log */
+multiline_comment|/* This log record is split across the&n;&t;&t;&t;&t; * physical end of log */
 id|offset
 op_assign
 l_int|NULL
@@ -14095,7 +14092,7 @@ op_ne
 id|log-&gt;l_logBBsize
 )paren
 (brace
-multiline_comment|/* some data is before physical end of log */
+multiline_comment|/* some data is before the physical&n;&t;&t;&t;&t;&t; * end of log */
 id|ASSERT
 c_func
 (paren
@@ -14165,7 +14162,7 @@ id|dbp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Note: this black magic still works with large sector&n;&t;&t; * sizes (non-512) only because:&n;&t;&t; * - we increased the buffer size originally by 1 sector&n;&t;&t; *   giving us enough extra space for the second read;&n;&t;&t; * - the log start is guaranteed to be sector aligned;&n;&t;&t; * - we read the log end (LR header start) _first_, then&n;&t;&t; *   the log start (LR header end) - order is important.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Note: this black magic still works with&n;&t;&t;&t;&t; * large sector sizes (non-512) only because:&n;&t;&t;&t;&t; * - we increased the buffer size originally&n;&t;&t;&t;&t; *   by 1 sector giving us enough extra space&n;&t;&t;&t;&t; *   for the second read;&n;&t;&t;&t;&t; * - the log start is guaranteed to be sector&n;&t;&t;&t;&t; *   aligned;&n;&t;&t;&t;&t; * - we read the log end (LR header start)&n;&t;&t;&t;&t; *   _first_, then the log start (LR header end)&n;&t;&t;&t;&t; *   - order is important.&n;&t;&t;&t;&t; */
 id|bufaddr
 op_assign
 id|XFS_BUF_PTR
@@ -14245,13 +14242,9 @@ id|log
 comma
 id|wrapped_hblks
 comma
-id|BBTOB
-c_func
-(paren
 id|bblks
 op_minus
 id|split_bblks
-)paren
 comma
 id|dbp
 )paren
