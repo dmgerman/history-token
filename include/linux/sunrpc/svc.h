@@ -479,10 +479,6 @@ op_star
 )paren
 id|vec-&gt;iov_base
 suffix:semicolon
-id|rqstp-&gt;rq_res.len
-op_assign
-id|vec-&gt;iov_len
-suffix:semicolon
 r_return
 id|vec-&gt;iov_len
 op_le
