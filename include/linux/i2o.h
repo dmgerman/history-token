@@ -14,6 +14,22 @@ macro_line|#include &lt;asm/dma-mapping.h&gt;
 multiline_comment|/* message queue empty */
 DECL|macro|I2O_QUEUE_EMPTY
 mdefine_line|#define I2O_QUEUE_EMPTY&t;&t;0xffffffff
+DECL|enum|i2o_driver_notify
+r_enum
+id|i2o_driver_notify
+(brace
+DECL|enumerator|I2O_DRIVER_NOTIFY_CONTROLLER_ADD
+id|I2O_DRIVER_NOTIFY_CONTROLLER_ADD
+op_assign
+l_int|0
+comma
+DECL|enumerator|I2O_DRIVER_NOTIFY_CONTROLLER_REMOVE
+id|I2O_DRIVER_NOTIFY_CONTROLLER_REMOVE
+op_assign
+l_int|1
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;Message structures&n; */
 DECL|struct|i2o_message
 r_struct
@@ -251,6 +267,21 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
+suffix:semicolon
+multiline_comment|/* notification of changes */
+DECL|member|notify
+r_void
+(paren
+op_star
+id|notify
+)paren
+(paren
+r_enum
+id|i2o_driver_notify
+comma
+r_void
+op_star
+)paren
 suffix:semicolon
 DECL|member|lock
 r_struct
@@ -547,6 +578,15 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* lock for controller&n;&t;&t;&t;&t;&t;&t;   configuration */
+DECL|member|driver_data
+r_void
+op_star
+id|driver_data
+(braket
+id|I2O_MAX_DRIVERS
+)braket
+suffix:semicolon
+multiline_comment|/* storage for drivers */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * I2O System table entry&n; *&n; * The system table contains information about all the IOPs in the&n; * system.  It is sent to all IOPs so that they can create peer2peer&n; * connections between them.&n; */
@@ -958,6 +998,19 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+id|u32
+id|i2o_cntxt_list_get_ptr
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 DECL|function|i2o_ptr_low
 r_static
 r_inline
@@ -1085,6 +1138,31 @@ id|ptr
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|i2o_cntxt_list_get_ptr
+r_static
+r_inline
+id|u32
+id|i2o_cntxt_list_get_ptr
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+comma
+r_void
+op_star
+id|ptr
+)paren
+(brace
+r_return
+(paren
+id|u32
+)paren
+id|ptr
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|function|i2o_ptr_low
 r_static
 r_inline
@@ -1141,6 +1219,58 @@ c_func
 (paren
 r_struct
 id|i2o_driver
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;i2o_driver_notify - Send notification to a single I2O drivers&n; *&n; *&t;Send notifications to a single registered driver.&n; */
+DECL|function|i2o_driver_notify
+r_static
+r_inline
+r_void
+id|i2o_driver_notify
+c_func
+(paren
+r_struct
+id|i2o_driver
+op_star
+id|drv
+comma
+r_enum
+id|i2o_driver_notify
+id|notify
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|drv-&gt;notify
+)paren
+(brace
+id|drv
+op_member_access_from_pointer
+id|notify
+c_func
+(paren
+id|notify
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
+)brace
+r_extern
+r_void
+id|i2o_driver_notify_all
+c_func
+(paren
+r_enum
+id|i2o_driver_notify
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -2369,6 +2499,8 @@ DECL|macro|I2O_TIMEOUT_STATUS_GET
 mdefine_line|#define I2O_TIMEOUT_STATUS_GET&t;&t;5
 DECL|macro|I2O_TIMEOUT_LCT_GET
 mdefine_line|#define I2O_TIMEOUT_LCT_GET&t;&t;20
+DECL|macro|I2O_TIMEOUT_SCSI_SCB_ABORT
+mdefine_line|#define I2O_TIMEOUT_SCSI_SCB_ABORT&t;240
 multiline_comment|/* retries */
 DECL|macro|I2O_HRT_GET_TRIES
 mdefine_line|#define I2O_HRT_GET_TRIES&t;&t;3
