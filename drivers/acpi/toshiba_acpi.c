@@ -743,8 +743,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|toshiba_proc_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|force_fan
 r_static
