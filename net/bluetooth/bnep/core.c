@@ -3150,11 +3150,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|bnep_crc32_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3170,11 +3165,6 @@ r_void
 )paren
 (brace
 id|bnep_sock_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|bnep_crc32_cleanup
 c_func
 (paren
 )paren
