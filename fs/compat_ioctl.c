@@ -13103,7 +13103,7 @@ op_or
 (paren
 id|__u64
 )paren
-id|lo_min
+id|hi_min
 )paren
 op_lshift
 l_int|32
