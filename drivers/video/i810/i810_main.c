@@ -6650,6 +6650,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
+id|par-&gt;dev_flags
+op_amp
+id|USE_HWCUR
+)paren
+op_logical_or
+op_logical_neg
 id|info-&gt;var.accel_flags
 op_logical_or
 id|par-&gt;dev_flags
