@@ -165,7 +165,7 @@ op_logical_neg
 (paren
 id|x
 op_amp
-l_int|0xffff0000
+l_int|0xffff0000u
 )paren
 )paren
 (brace
@@ -185,7 +185,7 @@ op_logical_neg
 (paren
 id|x
 op_amp
-l_int|0xff000000
+l_int|0xff000000u
 )paren
 )paren
 (brace
@@ -205,7 +205,7 @@ op_logical_neg
 (paren
 id|x
 op_amp
-l_int|0xf0000000
+l_int|0xf0000000u
 )paren
 )paren
 (brace
@@ -225,7 +225,7 @@ op_logical_neg
 (paren
 id|x
 op_amp
-l_int|0xc0000000
+l_int|0xc0000000u
 )paren
 )paren
 (brace
@@ -245,7 +245,7 @@ op_logical_neg
 (paren
 id|x
 op_amp
-l_int|0x80000000
+l_int|0x80000000u
 )paren
 )paren
 (brace
