@@ -4627,12 +4627,14 @@ comma
 id|gfar_read
 c_func
 (paren
+op_amp
 id|priv-&gt;regs-&gt;ievent
 )paren
 comma
 id|gfar_read
 c_func
 (paren
+op_amp
 id|priv-&gt;regs-&gt;imask
 )paren
 )paren
@@ -5434,6 +5436,7 @@ comma
 id|gfar_read
 c_func
 (paren
+op_amp
 id|priv-&gt;regs-&gt;rstat
 )paren
 )paren
@@ -6957,6 +6960,7 @@ comma
 id|gfar_read
 c_func
 (paren
+op_amp
 id|priv-&gt;regs-&gt;rstat
 )paren
 )paren
