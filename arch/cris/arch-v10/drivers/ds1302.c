@@ -1,4 +1,4 @@
-multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : ds1302.c&n;*!&n;*! DESCRIPTION: Implements an interface for the DS1302 RTC through Etrax I/O&n;*!&n;*! Functions exported: ds1302_readreg, ds1302_writereg, ds1302_init, get_rtc_status&n;*!&n;*! $Log: ds1302.c,v $&n;*! Revision 1.9  2003/07/04 08:27:37  starvik&n;*! Merge of Linux 2.5.74&n;*!&n;*! Revision 1.8  2003/04/09 05:20:47  starvik&n;*! Merge of Linux 2.5.67&n;*!&n;*! Revision 1.6  2003/01/09 14:42:51  starvik&n;*! Merge of Linux 2.5.55&n;*!&n;*! Revision 1.4  2002/12/11 13:13:57  starvik&n;*! Added arch/ to v10 specific includes&n;*! Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n;*!&n;*! Revision 1.3  2002/11/20 11:56:10  starvik&n;*! Merge of Linux 2.5.48&n;*!&n;*! Revision 1.2  2002/11/18 13:16:06  starvik&n;*! Linux 2.5 port of latest 2.4 drivers&n;*!&n;*! Revision 1.15  2002/10/11 16:14:33  johana&n;*! Added CONFIG_ETRAX_DS1302_TRICKLE_CHARGE and initial setting of the&n;*! trcklecharge register.&n;*!&n;*! Revision 1.14  2002/10/10 12:15:38  magnusmn&n;*! Added support for having the RST signal on bit g0&n;*!&n;*! Revision 1.13  2002/05/29 15:16:08  johana&n;*! Removed unused variables.&n;*!&n;*! Revision 1.12  2002/04/10 15:35:25  johana&n;*! Moved probe function closer to init function and marked it __init.&n;*!&n;*! Revision 1.11  2001/06/14 12:35:52  jonashg&n;*! The ATA hack is back. It is unfortunately the only way to set g27 to output.&n;*!&n;*! Revision 1.9  2001/06/14 10:00:14  jonashg&n;*! No need for tempudelay to be inline anymore (had to adjust the usec to&n;*! loops conversion because of this to make it slow enough to be a udelay).&n;*!&n;*! Revision 1.8  2001/06/14 08:06:32  jonashg&n;*! Made tempudelay delay usecs (well, just a tad more).&n;*!&n;*! Revision 1.7  2001/06/13 14:18:11  jonashg&n;*! Only allow processes with SYS_TIME capability to set time and charge.&n;*!&n;*! Revision 1.6  2001/06/12 15:22:07  jonashg&n;*! * Made init function __init.&n;*! * Parameter to out_byte() is unsigned char.&n;*! * The magic number 42 has got a name.&n;*! * Removed comment about /proc (nothing is exported there).&n;*!&n;*! Revision 1.5  2001/06/12 14:35:13  jonashg&n;*! Gave the module a name and added it to printk&squot;s.&n;*!&n;*! Revision 1.4  2001/05/31 14:53:40  jonashg&n;*! Made tempudelay() inline so that the watchdog doesn&squot;t reset (see&n;*! function comment).&n;*!&n;*! Revision 1.3  2001/03/26 16:03:06  bjornw&n;*! Needs linux/config.h&n;*!&n;*! Revision 1.2  2001/03/20 19:42:00  bjornw&n;*! Use the ETRAX prefix on the DS1302 options&n;*!&n;*! Revision 1.1  2001/03/20 09:13:50  magnusmn&n;*! Linux 2.4 port&n;*!&n;*! Revision 1.10  2000/07/05 15:38:23  bjornw&n;*! Dont update kernel time when a RTC_SET_TIME is done&n;*!&n;*! Revision 1.9  2000/03/02 15:42:59  macce&n;*! * Hack to make RTC work on all 2100/2400&n;*!&n;*! Revision 1.8  2000/02/23 16:59:18  torbjore&n;*! added setup of R_GEN_CONFIG when RTC is connected to the generic port.&n;*!&n;*! Revision 1.7  2000/01/17 15:51:43  johana&n;*! Added RTC_SET_CHARGE ioctl to enable trickle charger.&n;*!&n;*! Revision 1.6  1999/10/27 13:19:47  bjornw&n;*! Added update_xtime_from_cmos which reads back the updated RTC into the kernel.&n;*! /dev/rtc calls it now.&n;*!&n;*! Revision 1.5  1999/10/27 12:39:37  bjornw&n;*! Disabled superuser check. Anyone can now set the time.&n;*!&n;*! Revision 1.4  1999/09/02 13:27:46  pkj&n;*! Added shadow for R_PORT_PB_CONFIG.&n;*! Renamed port_g_shadow to port_g_data_shadow.&n;*!&n;*! Revision 1.3  1999/09/02 08:28:06  pkj&n;*! Made it possible to select either port PB or the generic port for the RST&n;*! signal line to the DS1302 RTC.&n;*! Also make sure the RST bit is configured as output on Port PB (if used).&n;*!&n;*! Revision 1.2  1999/09/01 14:47:20  bjornw&n;*! Added support for /dev/rtc operations with ioctl RD_TIME and SET_TIME to read&n;*! and set the date. Register as major 121.&n;*!&n;*! Revision 1.1  1999/09/01 09:45:29  bjornw&n;*! Implemented a DS1302 RTC driver.&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001  Axis Communications AB, LUND, SWEDEN&n;*!&n;*! $Id: ds1302.c,v 1.9 2003/07/04 08:27:37 starvik Exp $&n;*!&n;*!***************************************************************************/
+multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : ds1302.c&n;*!&n;*! DESCRIPTION: Implements an interface for the DS1302 RTC through Etrax I/O&n;*!&n;*! Functions exported: ds1302_readreg, ds1302_writereg, ds1302_init&n;*!&n;*! $Log: ds1302.c,v $&n;*! Revision 1.13  2004/05/28 09:26:59  starvik&n;*! Modified I2C initialization to work in 2.6.&n;*!&n;*! Revision 1.12  2004/05/14 07:58:03  starvik&n;*! Merge of changes from 2.4&n;*!&n;*! Revision 1.10  2004/02/04 09:25:12  starvik&n;*! Merge of Linux 2.6.2&n;*!&n;*! Revision 1.9  2003/07/04 08:27:37  starvik&n;*! Merge of Linux 2.5.74&n;*!&n;*! Revision 1.8  2003/04/09 05:20:47  starvik&n;*! Merge of Linux 2.5.67&n;*!&n;*! Revision 1.6  2003/01/09 14:42:51  starvik&n;*! Merge of Linux 2.5.55&n;*!&n;*! Revision 1.4  2002/12/11 13:13:57  starvik&n;*! Added arch/ to v10 specific includes&n;*! Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n;*!&n;*! Revision 1.3  2002/11/20 11:56:10  starvik&n;*! Merge of Linux 2.5.48&n;*!&n;*! Revision 1.2  2002/11/18 13:16:06  starvik&n;*! Linux 2.5 port of latest 2.4 drivers&n;*!&n;*! Revision 1.15  2002/10/11 16:14:33  johana&n;*! Added CONFIG_ETRAX_DS1302_TRICKLE_CHARGE and initial setting of the&n;*! trcklecharge register.&n;*!&n;*! Revision 1.14  2002/10/10 12:15:38  magnusmn&n;*! Added support for having the RST signal on bit g0&n;*!&n;*! Revision 1.13  2002/05/29 15:16:08  johana&n;*! Removed unused variables.&n;*!&n;*! Revision 1.12  2002/04/10 15:35:25  johana&n;*! Moved probe function closer to init function and marked it __init.&n;*!&n;*! Revision 1.11  2001/06/14 12:35:52  jonashg&n;*! The ATA hack is back. It is unfortunately the only way to set g27 to output.&n;*!&n;*! Revision 1.9  2001/06/14 10:00:14  jonashg&n;*! No need for tempudelay to be inline anymore (had to adjust the usec to&n;*! loops conversion because of this to make it slow enough to be a udelay).&n;*!&n;*! Revision 1.8  2001/06/14 08:06:32  jonashg&n;*! Made tempudelay delay usecs (well, just a tad more).&n;*!&n;*! Revision 1.7  2001/06/13 14:18:11  jonashg&n;*! Only allow processes with SYS_TIME capability to set time and charge.&n;*!&n;*! Revision 1.6  2001/06/12 15:22:07  jonashg&n;*! * Made init function __init.&n;*! * Parameter to out_byte() is unsigned char.&n;*! * The magic number 42 has got a name.&n;*! * Removed comment about /proc (nothing is exported there).&n;*!&n;*! Revision 1.5  2001/06/12 14:35:13  jonashg&n;*! Gave the module a name and added it to printk&squot;s.&n;*!&n;*! Revision 1.4  2001/05/31 14:53:40  jonashg&n;*! Made tempudelay() inline so that the watchdog doesn&squot;t reset (see&n;*! function comment).&n;*!&n;*! Revision 1.3  2001/03/26 16:03:06  bjornw&n;*! Needs linux/config.h&n;*!&n;*! Revision 1.2  2001/03/20 19:42:00  bjornw&n;*! Use the ETRAX prefix on the DS1302 options&n;*!&n;*! Revision 1.1  2001/03/20 09:13:50  magnusmn&n;*! Linux 2.4 port&n;*!&n;*! Revision 1.10  2000/07/05 15:38:23  bjornw&n;*! Dont update kernel time when a RTC_SET_TIME is done&n;*!&n;*! Revision 1.9  2000/03/02 15:42:59  macce&n;*! * Hack to make RTC work on all 2100/2400&n;*!&n;*! Revision 1.8  2000/02/23 16:59:18  torbjore&n;*! added setup of R_GEN_CONFIG when RTC is connected to the generic port.&n;*!&n;*! Revision 1.7  2000/01/17 15:51:43  johana&n;*! Added RTC_SET_CHARGE ioctl to enable trickle charger.&n;*!&n;*! Revision 1.6  1999/10/27 13:19:47  bjornw&n;*! Added update_xtime_from_cmos which reads back the updated RTC into the kernel.&n;*! /dev/rtc calls it now.&n;*!&n;*! Revision 1.5  1999/10/27 12:39:37  bjornw&n;*! Disabled superuser check. Anyone can now set the time.&n;*!&n;*! Revision 1.4  1999/09/02 13:27:46  pkj&n;*! Added shadow for R_PORT_PB_CONFIG.&n;*! Renamed port_g_shadow to port_g_data_shadow.&n;*!&n;*! Revision 1.3  1999/09/02 08:28:06  pkj&n;*! Made it possible to select either port PB or the generic port for the RST&n;*! signal line to the DS1302 RTC.&n;*! Also make sure the RST bit is configured as output on Port PB (if used).&n;*!&n;*! Revision 1.2  1999/09/01 14:47:20  bjornw&n;*! Added support for /dev/rtc operations with ioctl RD_TIME and SET_TIME to read&n;*! and set the date. Register as major 121.&n;*!&n;*! Revision 1.1  1999/09/01 09:45:29  bjornw&n;*! Implemented a DS1302 RTC driver.&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001  Axis Communications AB, LUND, SWEDEN&n;*!&n;*! $Id: ds1302.c,v 1.13 2004/05/28 09:26:59 starvik Exp $&n;*!&n;*!***************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -441,6 +441,36 @@ r_char
 id|val
 )paren
 (brace
+macro_line|#ifndef CONFIG_ETRAX_RTC_READONLY
+r_int
+id|do_writereg
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+r_int
+id|do_writereg
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg
+op_eq
+id|RTC_TRICKLECHARGER
+)paren
+id|do_writereg
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|do_writereg
+)paren
+(brace
 id|ds1302_wenable
 c_func
 (paren
@@ -480,6 +510,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_void
 DECL|function|get_rtc_time
@@ -1154,6 +1185,32 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_case
+id|RTC_VLOW_RD
+suffix:colon
+(brace
+multiline_comment|/* TODO:&n;&t;&t;&t; * Implement voltage low detection support&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;DS1302: RTC Voltage Low detection&quot;
+l_string|&quot; is not supported&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_case
+id|RTC_VLOW_SET
+suffix:colon
+(brace
+multiline_comment|/* TODO:&n;&t;&t;&t; * Nothing to do since Voltage Low detection is not supported&n;&t;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
@@ -1162,27 +1219,18 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
-r_int
-DECL|function|get_rtc_status
-id|get_rtc_status
+r_static
+r_void
+DECL|function|print_rtc_status
+id|print_rtc_status
 c_func
 (paren
-r_char
-op_star
-id|buf
+r_void
 )paren
 (brace
-r_char
-op_star
-id|p
-suffix:semicolon
 r_struct
 id|rtc_time
 id|tm
-suffix:semicolon
-id|p
-op_assign
-id|buf
 suffix:semicolon
 id|get_rtc_time
 c_func
@@ -1192,21 +1240,24 @@ id|tm
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There is no way to tell if the luser has the RTC set for local&n;&t; * time or for Universal Standard Time (GMT). Probably local though.&n;&t; */
-id|p
-op_add_assign
-id|sprintf
+id|printk
 c_func
 (paren
-id|p
-comma
+id|KERN_INFO
 l_string|&quot;rtc_time&bslash;t: %02d:%02d:%02d&bslash;n&quot;
-l_string|&quot;rtc_date&bslash;t: %04d-%02d-%02d&bslash;n&quot;
 comma
 id|tm.tm_hour
 comma
 id|tm.tm_min
 comma
 id|tm.tm_sec
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;rtc_date&bslash;t: %04d-%02d-%02d&bslash;n&quot;
 comma
 id|tm.tm_year
 op_plus
@@ -1218,11 +1269,6 @@ l_int|1
 comma
 id|tm.tm_mday
 )paren
-suffix:semicolon
-r_return
-id|p
-op_minus
-id|buf
 suffix:semicolon
 )brace
 multiline_comment|/* The various file operations we support. */
@@ -1333,12 +1379,6 @@ op_eq
 id|MAGIC_PATTERN
 )paren
 (brace
-r_char
-id|buf
-(braket
-l_int|100
-)braket
-suffix:semicolon
 id|stop
 c_func
 (paren
@@ -1352,6 +1392,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: RTC found.&bslash;n&quot;
 comma
 id|ds1302_name
@@ -1360,6 +1401,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: SDA, SCL, RST on PB%i, PB%i, %s%i&bslash;n&quot;
 comma
 id|ds1302_name
@@ -1378,16 +1420,9 @@ macro_line|#endif
 id|CONFIG_ETRAX_DS1302_RSTBIT
 )paren
 suffix:semicolon
-id|get_rtc_status
+id|print_rtc_status
 c_func
 (paren
-id|buf
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|buf
 )paren
 suffix:semicolon
 id|retval
@@ -1400,14 +1435,6 @@ r_else
 id|stop
 c_func
 (paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: RTC not found.&bslash;n&quot;
-comma
-id|ds1302_name
 )paren
 suffix:semicolon
 id|retval
@@ -1429,6 +1456,11 @@ c_func
 r_void
 )paren
 (brace
+id|i2c_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1522,11 +1554,31 @@ c_func
 (paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: RTC not found.&bslash;n&quot;
+comma
+id|ds1302_name
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: RTC not found.&bslash;n&quot;
+comma
+id|ds1302_name
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -1545,6 +1597,23 @@ op_or
 id|CONFIG_ETRAX_DS1302_TRICKLE_CHARGE
 op_amp
 l_int|0x0F
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Start clock by resetting CLOCK_HALT */
+id|ds1302_writereg
+c_func
+(paren
+id|RTC_SECONDS
+comma
+(paren
+id|ds1302_readreg
+c_func
+(paren
+id|RTC_SECONDS
+)paren
+op_amp
+l_int|0x7F
 )paren
 )paren
 suffix:semicolon

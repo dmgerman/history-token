@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fasttimer.c,v 1.4 2003/07/04 08:27:41 starvik Exp $&n; * linux/arch/cris/kernel/fasttimer.c&n; *&n; * Fast timers for ETRAX100/ETRAX100LX&n; * This may be useful in other OS than Linux so use 2 space indentation...&n; *&n; * $Log: fasttimer.c,v $&n; * Revision 1.4  2003/07/04 08:27:41  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.3  2002/12/12 08:26:32  starvik&n; * Don&squot;t use C-comments inside CVS comments&n; *&n; * Revision 1.2  2002/12/11 15:42:02  starvik&n; * Extracted v10 (ETRAX 100LX) specific stuff from arch/cris/kernel/&n; *&n; * Revision 1.1  2002/11/18 07:58:06  starvik&n; * Fast timers (from Linux 2.4)&n; *&n; * Revision 1.5  2002/10/15 06:21:39  starvik&n; * Added call to init_waitqueue_head&n; *&n; * Revision 1.4  2002/05/28 17:47:59  johana&n; * Added del_fast_timer()&n; *&n; * Revision 1.3  2002/05/28 16:16:07  johana&n; * Handle empty fast_timer_list&n; *&n; * Revision 1.2  2002/05/27 15:38:42  johana&n; * Made it compile without warnings on Linux 2.4.&n; * (includes, wait_queue, PROC_FS and snprintf)&n; *&n; * Revision 1.1  2002/05/27 15:32:25  johana&n; * arch/etrax100/kernel/fasttimer.c v1.8 from the elinux tree.&n; *&n; * Revision 1.8  2001/11/27 13:50:40  pkj&n; * Disable interrupts while stopping the timer and while modifying the&n; * list of active timers in timer1_handler() as it may be interrupted&n; * by other interrupts (e.g., the serial interrupt) which may add fast&n; * timers.&n; *&n; * Revision 1.7  2001/11/22 11:50:32  pkj&n; * * Only store information about the last 16 timers.&n; * * proc_fasttimer_read() now uses an allocated buffer, since it&n; *   requires more space than just a page even for only writing the&n; *   last 16 timers. The buffer is only allocated on request, so&n; *   unless /proc/fasttimer is read, it is never allocated.&n; * * Renamed fast_timer_started to fast_timers_started to match&n; *   fast_timers_added and fast_timers_expired.&n; * * Some clean-up.&n; *&n; * Revision 1.6  2000/12/13 14:02:08  johana&n; * Removed volatile for fast_timer_list&n; *&n; * Revision 1.5  2000/12/13 13:55:35  johana&n; * Added DEBUG_LOG, added som cli() and cleanup&n; *&n; * Revision 1.4  2000/12/05 13:48:50  johana&n; * Added range check when writing proc file, modified timer int handling&n; *&n; * Revision 1.3  2000/11/23 10:10:20  johana&n; * More debug/logging possibilities.&n; * Moved GET_JIFFIES_USEC() to timex.h and time.c&n; *&n; * Revision 1.2  2000/11/01 13:41:04  johana&n; * Clean up and bugfixes.&n; * Created new do_gettimeofday_fast() that gets a timeval struct&n; * with time based on jiffies and *R_TIMER0_DATA, uses a table&n; * for fast conversion of timer value to microseconds.&n; * (Much faster the standard do_gettimeofday() and we don&squot;t really&n; * wan&squot;t to use the true time - we wan&squot;t the &quot;uptime&quot; so timers don&squot;t screw up&n; * when we change the time.&n; * TODO: Add efficient support for continuous timers as well.&n; *&n; * Revision 1.1  2000/10/26 15:49:16  johana&n; * Added fasttimer, highresolution timers.&n; *&n; * Copyright (C) 2000,2001 2002 Axis Communications AB, Lund, Sweden&n; */
+multiline_comment|/* $Id: fasttimer.c,v 1.6 2004/05/14 10:18:39 starvik Exp $&n; * linux/arch/cris/kernel/fasttimer.c&n; *&n; * Fast timers for ETRAX100/ETRAX100LX&n; * This may be useful in other OS than Linux so use 2 space indentation...&n; *&n; * $Log: fasttimer.c,v $&n; * Revision 1.6  2004/05/14 10:18:39  starvik&n; * Export fast_timer_list&n; *&n; * Revision 1.5  2004/05/14 07:58:01  starvik&n; * Merge of changes from 2.4&n; *&n; * Revision 1.4  2003/07/04 08:27:41  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.3  2002/12/12 08:26:32  starvik&n; * Don&squot;t use C-comments inside CVS comments&n; *&n; * Revision 1.2  2002/12/11 15:42:02  starvik&n; * Extracted v10 (ETRAX 100LX) specific stuff from arch/cris/kernel/&n; *&n; * Revision 1.1  2002/11/18 07:58:06  starvik&n; * Fast timers (from Linux 2.4)&n; *&n; * Revision 1.5  2002/10/15 06:21:39  starvik&n; * Added call to init_waitqueue_head&n; *&n; * Revision 1.4  2002/05/28 17:47:59  johana&n; * Added del_fast_timer()&n; *&n; * Revision 1.3  2002/05/28 16:16:07  johana&n; * Handle empty fast_timer_list&n; *&n; * Revision 1.2  2002/05/27 15:38:42  johana&n; * Made it compile without warnings on Linux 2.4.&n; * (includes, wait_queue, PROC_FS and snprintf)&n; *&n; * Revision 1.1  2002/05/27 15:32:25  johana&n; * arch/etrax100/kernel/fasttimer.c v1.8 from the elinux tree.&n; *&n; * Revision 1.8  2001/11/27 13:50:40  pkj&n; * Disable interrupts while stopping the timer and while modifying the&n; * list of active timers in timer1_handler() as it may be interrupted&n; * by other interrupts (e.g., the serial interrupt) which may add fast&n; * timers.&n; *&n; * Revision 1.7  2001/11/22 11:50:32  pkj&n; * * Only store information about the last 16 timers.&n; * * proc_fasttimer_read() now uses an allocated buffer, since it&n; *   requires more space than just a page even for only writing the&n; *   last 16 timers. The buffer is only allocated on request, so&n; *   unless /proc/fasttimer is read, it is never allocated.&n; * * Renamed fast_timer_started to fast_timers_started to match&n; *   fast_timers_added and fast_timers_expired.&n; * * Some clean-up.&n; *&n; * Revision 1.6  2000/12/13 14:02:08  johana&n; * Removed volatile for fast_timer_list&n; *&n; * Revision 1.5  2000/12/13 13:55:35  johana&n; * Added DEBUG_LOG, added som cli() and cleanup&n; *&n; * Revision 1.4  2000/12/05 13:48:50  johana&n; * Added range check when writing proc file, modified timer int handling&n; *&n; * Revision 1.3  2000/11/23 10:10:20  johana&n; * More debug/logging possibilities.&n; * Moved GET_JIFFIES_USEC() to timex.h and time.c&n; *&n; * Revision 1.2  2000/11/01 13:41:04  johana&n; * Clean up and bugfixes.&n; * Created new do_gettimeofday_fast() that gets a timeval struct&n; * with time based on jiffies and *R_TIMER0_DATA, uses a table&n; * for fast conversion of timer value to microseconds.&n; * (Much faster the standard do_gettimeofday() and we don&squot;t really&n; * wan&squot;t to use the true time - we wan&squot;t the &quot;uptime&quot; so timers don&squot;t screw up&n; * when we change the time.&n; * TODO: Add efficient support for continuous timers as well.&n; *&n; * Revision 1.1  2000/10/26 15:49:16  johana&n; * Added fasttimer, highresolution timers.&n; *&n; * Copyright (C) 2000,2001 2002 Axis Communications AB, Lund, Sweden&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -98,7 +98,6 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|fast_timer_list
-r_static
 r_struct
 id|fast_timer
 op_star
@@ -798,6 +797,7 @@ id|t
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;timer name: %s data: 0x%08lX already in list!&bslash;n&quot;
 comma
 id|name
@@ -2755,6 +2755,7 @@ id|nextt
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;timer removed!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3806,6 +3807,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;fast_timer_init()&bslash;n&quot;
 )paren
 suffix:semicolon

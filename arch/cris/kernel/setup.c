@@ -1,5 +1,6 @@
-multiline_comment|/* $Id: setup.c,v 1.7 2003/07/04 08:27:52 starvik Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/*&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -92,6 +93,15 @@ comma
 id|romfs_in_flash
 suffix:semicolon
 multiline_comment|/* from head.S */
+r_extern
+r_void
+id|show_etrax_copyright
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* arch-vX/kernel/setup.c */
 multiline_comment|/* This mainly sets up the memory area, and can be really confusing.&n; *&n; * The physical DRAM is virtually mapped into dram_start to dram_end&n; * (usually c0000000 to c0000000 + DRAM size). The physical address is&n; * given by the macro __pa().&n; *&n; * In this DRAM, the kernel code and data is loaded, in the beginning.&n; * It really starts at c0004000 to make room for some special pages - &n; * the start address is text_start. The kernel data ends at _end. After&n; * this the ROM filesystem is appended (if there is any).&n; * &n; * Between this address and dram_end, we have RAM pages usable to the&n; * boot code and the system.&n; *&n; */
 r_void
 id|__init
@@ -325,40 +335,9 @@ id|command_line
 comma
 id|CONFIG_ETRAX_CMDLINE
 comma
-r_sizeof
-(paren
-id|command_line
-)paren
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_ETRAX_ROOT_DEVICE)
-id|strlcpy
-c_func
-(paren
-id|command_line
-comma
-l_string|&quot;root=&quot;
-comma
-r_sizeof
-(paren
-id|command_line
-)paren
-)paren
-suffix:semicolon
-id|strlcat
-c_func
-(paren
-id|command_line
-comma
-id|CONFIG_ETRAX_ROOT_DEVICE
-comma
-r_sizeof
-(paren
-id|command_line
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|command_line
 (braket
 id|COMMAND_LINE_SIZE
@@ -368,11 +347,31 @@ l_int|1
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/* give credit for the CRIS port */
-id|printk
+multiline_comment|/* Save command line for future references. */
+id|memcpy
 c_func
 (paren
-l_string|&quot;Linux/CRIS port on ETRAX 100LX (c) 2001 Axis Communications AB&bslash;n&quot;
+id|saved_command_line
+comma
+id|command_line
+comma
+id|COMMAND_LINE_SIZE
+)paren
+suffix:semicolon
+id|saved_command_line
+(braket
+id|COMMAND_LINE_SIZE
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* give credit for the CRIS port */
+id|show_etrax_copyright
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

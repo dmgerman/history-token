@@ -154,6 +154,10 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 DECL|macro|inb
 mdefine_line|#define inb(x) (0)
+DECL|macro|inw
+mdefine_line|#define inw(x) (0)
+DECL|macro|inl
+mdefine_line|#define inl(x) (0)
 DECL|macro|outb
 mdefine_line|#define outb(x,y)
 DECL|macro|outw

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.8 2003/07/04 08:27:52 starvik Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
+multiline_comment|/*&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -235,13 +235,7 @@ l_string|&quot;%2d: %10u %c %s&quot;
 comma
 id|i
 comma
-id|kstat_cpu
-c_func
-(paren
-l_int|0
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|i
 )braket
@@ -369,6 +363,8 @@ dot
 id|irqs
 (braket
 id|irq
+op_minus
+id|FIRST_IRQ
 )braket
 op_increment
 suffix:semicolon
@@ -377,6 +373,8 @@ op_assign
 id|irq_action
 (braket
 id|irq
+op_minus
+id|FIRST_IRQ
 )braket
 suffix:semicolon
 r_if
@@ -399,13 +397,6 @@ id|local_irq_enable
 c_func
 (paren
 )paren
-suffix:semicolon
-id|action
-op_assign
-id|irq_action
-(braket
-id|irq
-)braket
 suffix:semicolon
 id|do_random
 op_assign
@@ -557,6 +548,8 @@ op_assign
 id|irq_action
 op_plus
 id|irq
+op_minus
+id|FIRST_IRQ
 suffix:semicolon
 r_if
 c_cond
@@ -743,28 +736,6 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
-multiline_comment|/* interrupts 0 and 1 are hardware breakpoint and NMI and we can&squot;t support&n;&t;   these yet. interrupt 15 is the multiple irq, it&squot;s special. */
-r_if
-c_cond
-(paren
-id|irq
-OL
-l_int|2
-op_logical_or
-id|irq
-op_eq
-l_int|15
-op_logical_or
-id|irq
-op_ge
-id|NR_IRQS
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -915,6 +886,8 @@ c_loop
 id|p
 op_assign
 id|irq
+op_minus
+id|FIRST_IRQ
 op_plus
 id|irq_action
 suffix:semicolon
@@ -966,6 +939,8 @@ op_logical_neg
 id|irq_action
 (braket
 id|irq
+op_minus
+id|FIRST_IRQ
 )braket
 )paren
 (brace

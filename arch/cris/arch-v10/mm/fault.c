@@ -47,7 +47,10 @@ op_star
 id|regs
 comma
 r_int
-id|error_code
+id|protection
+comma
+r_int
+id|writeaccess
 )paren
 suffix:semicolon
 multiline_comment|/* fast TLB-fill fault handler&n; * this is called from entry.S with interrupts disabled&n; */
@@ -64,10 +67,11 @@ id|regs
 (brace
 r_int
 id|cause
-comma
-id|select
 suffix:semicolon
 macro_line|#ifdef DEBUG
+r_int
+id|select
+suffix:semicolon
 r_int
 id|index
 suffix:semicolon
@@ -95,9 +99,6 @@ id|pte_t
 id|pte
 suffix:semicolon
 r_int
-id|errcode
-suffix:semicolon
-r_int
 r_int
 id|address
 suffix:semicolon
@@ -105,11 +106,6 @@ id|cause
 op_assign
 op_star
 id|R_MMU_CAUSE
-suffix:semicolon
-id|select
-op_assign
-op_star
-id|R_TLB_SELECT
 suffix:semicolon
 id|address
 op_assign
@@ -119,6 +115,11 @@ id|PAGE_MASK
 suffix:semicolon
 multiline_comment|/* get faulting address */
 macro_line|#ifdef DEBUG
+id|select
+op_assign
+op_star
+id|R_TLB_SELECT
+suffix:semicolon
 id|page_id
 op_assign
 id|IO_EXTRACT
@@ -221,13 +222,6 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set errcode&squot;s R/W flag according to the mode which caused the&n;&t; * fault&n;&t; */
-id|errcode
-op_assign
-id|writeac
-op_lshift
-l_int|1
-suffix:semicolon
 id|D
 c_func
 (paren
@@ -288,9 +282,22 @@ op_star
 id|pmd
 )paren
 )paren
-r_goto
-id|dofault
+(brace
+id|do_page_fault
+c_func
+(paren
+id|address
+comma
+id|regs
+comma
+l_int|0
+comma
+id|writeac
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -348,9 +355,22 @@ c_func
 id|pte
 )paren
 )paren
-r_goto
-id|dofault
+(brace
+id|do_page_fault
+c_func
+(paren
+id|address
+comma
+id|regs
+comma
+l_int|0
+comma
+id|writeac
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -543,33 +563,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|errcode
-op_assign
-l_int|1
-op_or
-(paren
-id|we
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-id|dofault
-suffix:colon
-multiline_comment|/* leave it to the MM system fault handler below */
-id|D
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;do_page_fault %lx errcode %d&bslash;n&quot;
-comma
-id|address
-comma
-id|errcode
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* leave it to the MM system fault handler */
 id|do_page_fault
 c_func
 (paren
@@ -577,7 +571,9 @@ id|address
 comma
 id|regs
 comma
-id|errcode
+l_int|1
+comma
+id|we
 )paren
 suffix:semicolon
 )brace
