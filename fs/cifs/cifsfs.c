@@ -2057,6 +2057,11 @@ op_assign
 id|cifs_follow_link
 comma
 dot
+id|put_link
+op_assign
+id|cifs_put_link
+comma
+dot
 id|permission
 op_assign
 id|cifs_permission
