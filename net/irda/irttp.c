@@ -3516,10 +3516,18 @@ id|userdata
 op_ge
 id|TTP_MAX_HEADER
 comma
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 )paren
 suffix:semicolon
 )brace
@@ -3608,10 +3616,18 @@ op_plus
 id|TTP_SAR_HEADER
 )paren
 comma
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 )paren
 suffix:semicolon
 multiline_comment|/* Insert SAR parameters */
