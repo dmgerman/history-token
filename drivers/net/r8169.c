@@ -1,5 +1,6 @@
 multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;        2004&t;- Massive updates. See kernel SCM system for details.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;VERSION 1.6LK&t;&lt;2004/04/14&gt;&n;&n;&t;- Merge of Realtek&squot;s version 1.6&n;&t;- Conversion to DMA API&n;&t;- Suspend/resume&n;&t;- Endianness&n;&t;- Misc Rx/Tx bugs&n;*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -86,6 +87,13 @@ comma
 op_minus
 l_int|1
 )brace
+suffix:semicolon
+DECL|variable|num_media
+r_static
+r_int
+id|num_media
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
 DECL|variable|max_interrupt_work
@@ -1375,34 +1383,36 @@ c_func
 l_string|&quot;RealTek RTL-8169 Gigabit Ethernet driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|media
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|num_media
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|use_dac
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
