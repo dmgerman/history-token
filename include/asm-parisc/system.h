@@ -221,32 +221,28 @@ DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
 macro_line|#endif
 multiline_comment|/* interrupt control */
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x)&t;__asm__ __volatile__(&quot;ssm 0, %0&quot; : &quot;=r&quot; (x) : : &quot;memory&quot;)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) __asm__ __volatile__(&quot;mtsm %0&quot; : : &quot;r&quot; (x) : &quot;memory&quot;)
-DECL|macro|__cli
-mdefine_line|#define __cli()&t;__asm__ __volatile__(&quot;rsm %0,%%r0&bslash;n&quot; : : &quot;i&quot; (PSW_I) : &quot;memory&quot; )
-DECL|macro|__sti
-mdefine_line|#define __sti()&t;__asm__ __volatile__(&quot;ssm %0,%%r0&bslash;n&quot; : : &quot;i&quot; (PSW_I) : &quot;memory&quot; )
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x)&t;__asm__ __volatile__(&quot;ssm 0, %0&quot; : &quot;=r&quot; (x) : : &quot;memory&quot;)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x)&t;__asm__ __volatile__(&quot;mtsm %0&quot; : : &quot;r&quot; (x) : &quot;memory&quot;)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable()&t;__asm__ __volatile__(&quot;rsm %0,%%r0&bslash;n&quot; : : &quot;i&quot; (PSW_I) : &quot;memory&quot; )
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__(&quot;ssm %0,%%r0&bslash;n&quot; : : &quot;i&quot; (PSW_I) : &quot;memory&quot; )
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x) &bslash;&n;&t;__asm__ __volatile__(&quot;rsm %1,%0&quot; : &quot;=r&quot; (x) :&quot;i&quot; (PSW_I) : &quot;memory&quot; )
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsm %0&quot; : : &quot;r&quot; (x) : &quot;memory&quot; )
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable() __cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()  __sti()
 macro_line|#ifdef CONFIG_SMP
 macro_line|#else
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 macro_line|#endif
 DECL|macro|mfctl
 mdefine_line|#define mfctl(reg)&t;({&t;&t;&bslash;&n;&t;unsigned long cr;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mfctl &quot; #reg &quot;,%0&quot; :&t;&bslash;&n;&t;&t; &quot;=r&quot; (cr)&t;&t;&bslash;&n;&t;);&t;&t;&t;&t;&bslash;&n;&t;cr;&t;&t;&t;&t;&bslash;&n;})

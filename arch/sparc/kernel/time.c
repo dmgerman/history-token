@@ -1985,7 +1985,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Now that OBP ticker has been silenced, it is safe to enable IRQ. */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

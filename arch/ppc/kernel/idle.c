@@ -304,7 +304,7 @@ id|CPU_FTR_CAN_DOZE
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable interrupts to prevent a lost wakeup&n;&t; * when going to sleep.  This is necessary even with&n;&t; * RTLinux since we are not guaranteed an interrupt&n;&t; * didn&squot;t come in and is waiting for a __sti() before&n;&t; * emulating one.  This way, we really do hard disable.&n;&t; * &n;&t; * We assume that we&squot;re sti-ed when we come in here.  We&n;&t; * are in the idle loop so if we&squot;re cli-ed then it&squot;s a bug&n;&t; * anyway.&n;&t; *  -- Cort&n;&t; */
+multiline_comment|/*&n;&t; * Disable interrupts to prevent a lost wakeup&n;&t; * when going to sleep.  This is necessary even with&n;&t; * RTLinux since we are not guaranteed an interrupt&n;&t; * didn&squot;t come in and is waiting for a local_irq_enable() before&n;&t; * emulating one.  This way, we really do hard disable.&n;&t; * &n;&t; * We assume that we&squot;re sti-ed when we come in here.  We&n;&t; * are in the idle loop so if we&squot;re cli-ed then it&squot;s a bug&n;&t; * anyway.&n;&t; *  -- Cort&n;&t; */
 id|_nmask_and_or_msr
 c_func
 (paren
@@ -474,12 +474,12 @@ id|u64
 id|tb
 suffix:semicolon
 multiline_comment|/* Poll for I/O events */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -516,12 +516,12 @@ id|HvCall_MaskTimeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Check here for any of the above pending...&n;&t;&t; * IPI and Decrementers are indicated in ItLpPaca&n;&t;&t; * LpEvents are indicated on the LpQueue&n;&t;&t; *&n;&t;&t; * Disabling/enabling will check for LpEvents, IPIs&n;&t;&t; * and decrementers&n;&t;&t; */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -551,7 +551,7 @@ id|tb
 )paren
 suffix:semicolon
 multiline_comment|/* Check here for any of the above pending or timeout expired*/
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -561,7 +561,7 @@ id|paca-&gt;xLpPaca.xDecrInt
 op_assign
 l_int|1
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

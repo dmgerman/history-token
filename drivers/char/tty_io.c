@@ -329,15 +329,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|rs285_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sa1100_rs_console_init
+id|uart_console_init
 c_func
 (paren
 r_void
@@ -1753,23 +1745,24 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME! What are the locking issues here? This may me overdoing things.. */
+multiline_comment|/* FIXME! What are the locking issues here? This may me overdoing things..&n;&t;* this question is especially important now that we&squot;ve removed the irqlock. */
 (brace
 r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 r_if
 c_cond
 (paren
@@ -1819,12 +1812,13 @@ id|tty-&gt;ldisc.write_wakeup
 id|tty
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 )brace
 id|wake_up_interruptible
 c_func
@@ -7988,17 +7982,18 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8022,17 +8017,18 @@ id|tty-&gt;flip.buf_num
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;flip.char_buf_ptr
 op_assign
 id|tty-&gt;flip.char_buf
@@ -8054,12 +8050,13 @@ id|tty-&gt;flip.count
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+singleline_comment|// FIXME: is this safe?
 id|tty-&gt;ldisc
 dot
 id|receive_buf
@@ -9352,15 +9349,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_21285_CONSOLE
-id|rs285_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_SA1100_CONSOLE
-id|sa1100_rs_console_init
+macro_line|#ifdef CONFIG_SERIAL_CORE_CONSOLE
+id|uart_console_init
 c_func
 (paren
 )paren
@@ -9368,13 +9358,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARC_CONSOLE
 id|arc_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_AMBA_CONSOLE
-id|ambauart_console_init
 c_func
 (paren
 )paren

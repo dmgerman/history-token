@@ -21,6 +21,14 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 r_extern
+id|rwlock_t
+id|xtime_lock
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|get_cmos_time
@@ -612,7 +620,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are the actual BIOS calls.  Depending on APM_ZERO_SEGS and&n; * apm_info.allow_ints, we are being really paranoid here!  Not only&n; * are interrupts disabled, but all the segment registers (except SS)&n; * are saved and zeroed this means that if the BIOS tries to reference&n; * any data without explicitly loading the segment registers, the kernel&n; * will fault immediately rather than have some unforeseen circumstances&n; * for the rest of the kernel.  And it will be very obvious!  :-) Doing&n; * this depends on CS referring to the same physical memory as DS so that&n; * DS can be zeroed before the call. Unfortunately, we can&squot;t do anything&n; * about the stack segment/pointer.  Also, we tell the compiler that&n; * everything could change.&n; *&n; * Also, we KNOW that for the non error case of apm_bios_call, there&n; * is no useful data returned in the low order 8 bits of eax.&n; */
 DECL|macro|APM_DO_CLI
-mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;__sti(); &bslash;&n;&t;else &bslash;&n;&t;&t;__cli();
+mdefine_line|#define APM_DO_CLI&t;&bslash;&n;&t;if (apm_info.allow_ints) &bslash;&n;&t;&t;local_irq_enable(); &bslash;&n;&t;else &bslash;&n;&t;&t;local_irq_disable();
 macro_line|#ifdef APM_ZERO_SEGS
 DECL|macro|APM_DECL_SEGS
 macro_line|#&t;define APM_DECL_SEGS &bslash;&n;&t;&t;unsigned int saved_fs; unsigned int saved_gs;
@@ -678,7 +686,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -754,7 +762,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 id|APM_DO_RESTORE_SEGS
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -796,7 +804,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -877,7 +885,7 @@ suffix:semicolon
 )brace
 id|APM_DO_RESTORE_SEGS
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2516,28 +2524,12 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|got_clock_diff
 )paren
-(brace
 multiline_comment|/* Must know time zone in order to set clock */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|CURRENT_TIME
 op_assign
 id|get_cmos_time
@@ -2547,13 +2539,6 @@ c_func
 op_plus
 id|clock_cmos_diff
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|get_time_diff
 r_static
@@ -2565,26 +2550,11 @@ r_void
 )paren
 (brace
 macro_line|#ifndef CONFIG_APM_RTC_IS_GMT
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; * Estimate time zone so that set_time can update the clock&n;&t; */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|clock_cmos_diff
 op_assign
 op_minus
 id|get_cmos_time
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cli
 c_func
 (paren
 )paren
@@ -2597,16 +2567,11 @@ id|got_clock_diff
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|reinit_timer
 r_static
+r_inline
 r_void
 id|reinit_timer
 c_func
@@ -2615,21 +2580,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef INIT_TIMER_AFTER_SUSPEND
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* set the clock to 100 Hz */
 id|outb_p
 c_func
@@ -2678,12 +2628,6 @@ id|udelay
 c_func
 (paren
 l_int|10
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2770,12 +2714,23 @@ l_string|&quot;apm: suspend was vetoed, but suspending anyway.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|get_time_diff
+multiline_comment|/* serialize with the timer interrupt */
+id|write_lock_irq
 c_func
 (paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
-id|cli
+multiline_comment|/* protect against access to timer chip registers */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|i8253_lock
+)paren
+suffix:semicolon
+id|get_time_diff
 c_func
 (paren
 )paren
@@ -2802,9 +2757,18 @@ id|ignore_normal_resume
 op_assign
 l_int|1
 suffix:semicolon
-id|sti
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|i8253_lock
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_if
@@ -2931,10 +2895,25 @@ r_void
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* serialize with the timer interrupt */
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* If needed, notify drivers here */
 id|get_time_diff
 c_func
 (paren
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 id|err
@@ -3290,9 +3269,23 @@ l_int|0
 )paren
 )paren
 (brace
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 id|set_time
 c_func
 (paren
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 id|pm_send_all
@@ -3345,9 +3338,23 @@ suffix:semicolon
 r_case
 id|APM_UPDATE_TIME
 suffix:colon
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 id|set_time
 c_func
 (paren
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_break

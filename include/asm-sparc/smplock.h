@@ -10,7 +10,7 @@ DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;&t;&bslash;&n;&t;(spin_is_locked(&amp;kernel_flag) &amp;&amp;&bslash;&n;&t; (current-&gt;lock_depth &gt;= 0))
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
 DECL|macro|release_kernel_lock
-mdefine_line|#define release_kernel_lock(task, cpu)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0)) {&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;&t;&t;release_irqlock(cpu);&t;&t;&bslash;&n;&t;&t;__sti();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define release_kernel_lock(task, cpu)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0)) {&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;&t;&t;release_irqlock(cpu);&t;&t;&bslash;&n;&t;&t;local_irq_enable();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Re-acquire the kernel lock&n; */
 DECL|macro|reacquire_kernel_lock
 mdefine_line|#define reacquire_kernel_lock(task)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;spin_lock(&amp;kernel_flag);&t;&bslash;&n;} while (0)

@@ -112,7 +112,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

@@ -474,7 +474,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -669,7 +669,7 @@ l_int|0
 op_assign
 l_int|NULL
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -1,13 +1,5 @@
 multiline_comment|/*&n; *  fs/partitions/atari.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *  Re-organised Feb 1998 Russell King&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;atari.h&quot;
 multiline_comment|/* ++guenther: this should be settable by the user (&quot;make config&quot;)?.&n; */
@@ -88,36 +80,19 @@ suffix:semicolon
 DECL|function|atari_partition
 r_int
 id|atari_partition
+c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|minor
 )paren
 (brace
-r_int
-id|m_lim
-op_assign
-id|minor
-op_plus
-(paren
-l_int|1
-op_lshift
-id|hd-&gt;minor_shift
-)paren
-suffix:semicolon
 id|Sector
 id|sect
 suffix:semicolon
@@ -136,6 +111,9 @@ id|extensect
 suffix:semicolon
 id|u32
 id|hd_size
+suffix:semicolon
+r_int
+id|slot
 suffix:semicolon
 macro_line|#ifdef ICD_PARTS
 r_int
@@ -176,14 +154,9 @@ suffix:semicolon
 multiline_comment|/* Verify this is an Atari rootsector: */
 id|hd_size
 op_assign
-id|hd-&gt;part
-(braket
-id|minor
-op_minus
-l_int|1
-)braket
-dot
-id|nr_sects
+id|bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+l_int|9
 suffix:semicolon
 r_if
 c_cond
@@ -268,6 +241,9 @@ suffix:semicolon
 r_for
 c_loop
 (paren
+id|slot
+op_assign
+l_int|1
 suffix:semicolon
 id|pi
 OL
@@ -277,11 +253,11 @@ id|rs-&gt;part
 l_int|4
 )braket
 op_logical_and
-id|minor
+id|slot
 OL
-id|m_lim
+id|state-&gt;limit
 suffix:semicolon
-id|minor
+id|slot
 op_increment
 comma
 id|pi
@@ -328,11 +304,11 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* we don&squot;t care about other id&squot;s */
-id|add_gd_partition
+id|put_partition
 (paren
-id|hd
+id|state
 comma
-id|minor
+id|slot
 comma
 id|be32_to_cpu
 c_func
@@ -453,12 +429,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|minor
+id|slot
 comma
 id|partsect
 op_plus
@@ -568,15 +544,13 @@ c_func
 id|sect2
 )paren
 suffix:semicolon
-id|minor
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|minor
-op_ge
-id|m_lim
+op_increment
+id|slot
+op_eq
+id|state-&gt;limit
 )paren
 (brace
 id|printk
@@ -643,11 +617,11 @@ id|rs-&gt;icdpart
 l_int|8
 )braket
 op_logical_and
-id|minor
+id|slot
 OL
-id|m_lim
+id|state-&gt;limit
 suffix:semicolon
-id|minor
+id|slot
 op_increment
 comma
 id|pi
@@ -679,11 +653,11 @@ id|part_fmt
 op_assign
 l_int|2
 suffix:semicolon
-id|add_gd_partition
+id|put_partition
 (paren
-id|hd
+id|state
 comma
-id|minor
+id|slot
 comma
 id|be32_to_cpu
 c_func

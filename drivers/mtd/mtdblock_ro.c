@@ -211,14 +211,6 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
-id|invalidate_device
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|dev
 op_assign
 id|minor

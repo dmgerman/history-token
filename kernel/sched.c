@@ -1182,7 +1182,7 @@ op_star
 id|p
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1206,7 +1206,7 @@ id|current-&gt;time_slice
 op_assign
 id|MAX_TIMESLICE
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2232,22 +2232,18 @@ op_eq
 id|rq-&gt;idle
 )paren
 (brace
+multiline_comment|/* note: this timer irq context must be accounted for as well */
 r_if
 c_cond
 (paren
-id|local_bh_count
+id|preempt_count
 c_func
 (paren
-id|cpu
 )paren
-op_logical_or
-id|local_irq_count
-c_func
-(paren
-id|cpu
-)paren
-OG
-l_int|1
+op_ge
+l_int|2
+op_star
+id|IRQ_OFFSET
 )paren
 id|kstat.per_cpu_system
 (braket
@@ -2599,11 +2595,6 @@ id|release_kernel_lock
 c_func
 (paren
 id|prev
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|prepare_arch_schedule
@@ -2630,7 +2621,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|preempt_get_count
+id|preempt_count
 c_func
 (paren
 )paren
@@ -6072,13 +6063,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -6139,13 +6130,14 @@ c_func
 id|idle
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Set the preempt count _outside_ the spinlocks! */
+macro_line|#if CONFIG_PREEMPT
 id|idle-&gt;thread_info-&gt;preempt_count
 op_assign
 (paren
@@ -6154,6 +6146,7 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_extern
 r_void

@@ -1422,7 +1422,7 @@ op_amp
 id|SA_INTERRUPT
 )paren
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1469,7 +1469,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2702,7 +2702,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2712,7 +2712,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2740,7 +2740,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -2766,7 +2766,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2821,7 +2821,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2847,7 +2847,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -2956,7 +2956,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2966,7 +2966,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -46,7 +46,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -56,7 +56,7 @@ id|v-&gt;counter
 op_add_assign
 id|i
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -83,7 +83,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -93,7 +93,7 @@ id|v-&gt;counter
 op_sub_assign
 id|i
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -117,7 +117,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -127,7 +127,7 @@ id|v-&gt;counter
 op_add_assign
 l_int|1
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -151,7 +151,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -161,7 +161,7 @@ id|v-&gt;counter
 op_sub_assign
 l_int|1
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -188,7 +188,7 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -204,7 +204,7 @@ id|val
 op_sub_assign
 l_int|1
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -239,7 +239,7 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -255,7 +255,7 @@ id|val
 op_add_assign
 id|i
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -288,7 +288,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags_cli
+id|local_save_flags_cli
 c_func
 (paren
 id|flags
@@ -300,7 +300,7 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

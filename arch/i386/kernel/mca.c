@@ -130,6 +130,14 @@ id|mca_info
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n; * Motherboard register spinlock. Untested on SMP at the moment, but&n; * are there any MCA SMP boxes?&n; */
+DECL|variable|mca_lock
+r_static
+id|spinlock_t
+id|mca_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* MCA registers */
 DECL|macro|MCA_MOTHERBOARD_SETUP_REG
 mdefine_line|#define MCA_MOTHERBOARD_SETUP_REG&t;0x94
@@ -520,15 +528,12 @@ id|MCA_info
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+multiline_comment|/*&n;&t; * We do not expect many MCA interrupts during initialization,&n;&t; * but let us be safe:&n;&t; */
+id|spin_lock_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|mca_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure adapter setup is off */
@@ -912,10 +917,11 @@ id|MCA_ADAPTER_SETUP_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts and return memory start */
-id|restore_flags
+id|spin_unlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|mca_lock
 )paren
 suffix:semicolon
 r_for
@@ -1518,15 +1524,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|mca_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure motherboard setup is off */
@@ -1748,9 +1752,12 @@ id|reg
 op_assign
 id|byte
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|mca_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1829,15 +1836,13 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|mca_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure motherboard setup is off */
@@ -1884,9 +1889,12 @@ comma
 id|MCA_ADAPTER_SETUP_REG
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|mca_lock
+comma
 id|flags
 )paren
 suffix:semicolon

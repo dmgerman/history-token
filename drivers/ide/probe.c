@@ -3458,7 +3458,7 @@ id|ch-&gt;straight8
 op_assign
 l_int|0
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -4004,7 +4004,7 @@ c_func
 id|ch
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4071,7 +4071,7 @@ r_return
 suffix:semicolon
 id|not_found
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

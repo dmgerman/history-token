@@ -4788,8 +4788,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|devno
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|geom
@@ -4837,7 +4839,7 @@ op_assign
 id|scsi_bios_ptable
 c_func
 (paren
-id|devno
+id|bdev
 )paren
 )paren
 )paren
@@ -4988,8 +4990,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|devno
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|geom
@@ -5002,7 +5006,7 @@ id|scsicam_bios_param
 (paren
 id|disk
 comma
-id|devno
+id|bdev
 comma
 id|geom
 )paren
@@ -9118,7 +9122,7 @@ mdefine_line|#define SEARCH(buffer, pos, p0, var, txt, max)&t;&t;&t;&t;&t;&t;&bs
 DECL|macro|SEARCH2
 mdefine_line|#define SEARCH2(buffer, pos, p0, var, txt, max, scale)&t;&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, &amp;p0, &amp;var, txt, max, scale, &quot;&quot;)) goto einv2; &t;&t;&bslash;&n;else if (!p1) goto ok2
 DECL|macro|SEARCH3
-mdefine_line|#define SEARCH3(buffer, pos, &amp;p0, var, txt, max, scale, ign)&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, p0, &amp;var, txt, max, scale, ign)) goto einv2;&t;&t;&bslash;&n;else if (!p1) goto ok2
+mdefine_line|#define SEARCH3(buffer, pos, p0, var, txt, max, scale, ign)&t;&t;&t;&t;&bslash;&n;if (dc390_search (&amp;buffer, &amp;pos, &amp;p0, &amp;var, txt, max, scale, ign)) goto einv2;&t;&t;&bslash;&n;else if (!p1) goto ok2
 macro_line|#ifdef DC390_PARSEDEBUG
 DECL|variable|_prstr
 r_static

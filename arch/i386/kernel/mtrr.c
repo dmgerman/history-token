@@ -245,12 +245,12 @@ id|ctxt
 )paren
 (brace
 multiline_comment|/*  Disable interrupts locally  */
-id|__save_flags
+id|local_save_flags
 (paren
 id|ctxt-&gt;flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 (paren
 )paren
 suffix:semicolon
@@ -449,7 +449,7 @@ op_ne
 id|MTRR_IF_CYRIX_ARR
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 (paren
 id|ctxt-&gt;flags
 )paren
@@ -519,7 +519,7 @@ id|ctxt-&gt;cr4val
 )paren
 suffix:semicolon
 multiline_comment|/*  Re-enable interrupts locally (if enabled previously)  */
-id|__restore_flags
+id|local_irq_restore
 (paren
 id|ctxt-&gt;flags
 )paren
@@ -912,12 +912,12 @@ id|reg
 suffix:semicolon
 multiline_comment|/* avoid multiplication by 3 */
 multiline_comment|/* Save flags and disable interrupts */
-id|__save_flags
+id|local_save_flags
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 (paren
 )paren
 suffix:semicolon
@@ -1016,7 +1016,7 @@ id|ccr3
 suffix:semicolon
 multiline_comment|/* disable MAPEN */
 multiline_comment|/* Enable interrupts if it was enabled previously */
-id|__restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren

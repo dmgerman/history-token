@@ -1,7 +1,6 @@
 macro_line|#ifndef _WD7000_H
 multiline_comment|/* $Id: $&n; *&n; * Header file for the WD-7000 driver for Linux&n; *&n; * John Boyd &lt;boyd@cis.ohio-state.edu&gt;  Jan 1994:&n; * This file has been reduced to only the definitions needed for the&n; * WD7000 host structure.&n; *&n; * Revision by Miroslav Zagorac &lt;zaga@fly.cc.fer.hr&gt;  Jun 1997.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 r_int
 id|wd7000_set_info
 (paren
@@ -97,7 +96,9 @@ id|wd7000_biosparam
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

@@ -3,7 +3,6 @@ macro_line|#ifndef _PCI2000_H
 DECL|macro|_PCI2000_H
 mdefine_line|#define _PCI2000_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#ifndef&t;PSI_EIDE_SCSIOP
 DECL|macro|PSI_EIDE_SCSIOP
 mdefine_line|#define&t;PSI_EIDE_SCSIOP&t;1
@@ -469,7 +468,9 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|dev
 comma
 r_int

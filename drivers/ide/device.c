@@ -373,7 +373,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -415,7 +415,7 @@ id|timeout
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -434,7 +434,7 @@ l_string|&quot;status timeout&quot;
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

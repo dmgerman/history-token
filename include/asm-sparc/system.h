@@ -223,11 +223,11 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__cli
+DECL|function|local_irq_disable
 r_extern
 id|__inline__
 r_void
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 r_void
@@ -262,11 +262,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__sti
+DECL|function|local_irq_enable
 r_extern
 id|__inline__
 r_void
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 r_void
@@ -438,20 +438,12 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags)&t;((flags) = getipl())
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags)&t;((flags) = read_psr_and_cli())
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;setipl((flags))
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;__sti()
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;((flags) = getipl())
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
+mdefine_line|#define local_irq_save(flags)&t;((flags) = read_psr_and_cli())
 DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
+mdefine_line|#define local_irq_restore(flags)&t;setipl((flags))
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
@@ -505,15 +497,15 @@ DECL|macro|restore_flags
 mdefine_line|#define restore_flags(flags)&t;__global_restore_flags(flags)
 macro_line|#else
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) __save_and_cli(x)
+mdefine_line|#define save_and_cli(x) local_irq_save(x)
 macro_line|#endif
 multiline_comment|/* XXX Change this if we ever use a PSO mode kernel. */
 DECL|macro|mb

@@ -1573,30 +1573,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_case
-id|BLKROSET
-suffix:colon
-r_case
-id|BLKROGET
-suffix:colon
-r_case
-id|BLKSSZGET
-suffix:colon
-r_return
-id|blk_ioctl
-c_func
-(paren
-id|inode-&gt;i_bdev
-comma
-id|cmd
-comma
-id|arg
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* case BLKFLSBUF: */
-multiline_comment|/* Program, then read, what happens? Stale? */
 r_default
 suffix:colon
 suffix:semicolon

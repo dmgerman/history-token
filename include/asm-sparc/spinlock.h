@@ -164,13 +164,13 @@ id|rw
 )paren
 suffix:semicolon
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(lock)&t;&bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_read_lock(lock)&t;&bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_read_unlock
-mdefine_line|#define _raw_read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_unlock(lock, &quot;read_unlock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_read_unlock(lock, &quot;read_unlock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_write_lock
-mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_write_unlock
-mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 macro_line|#else /* !CONFIG_DEBUG_SPINLOCK */
 DECL|typedef|spinlock_t
 r_typedef
@@ -372,7 +372,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_read_lock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_read_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_read_lock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|function|_read_unlock
 r_extern
 id|__inline__
@@ -425,7 +425,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|macro|_raw_read_unlock
-mdefine_line|#define _raw_read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_read_unlock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+mdefine_line|#define _raw_read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_read_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|function|_raw_write_lock
 r_extern
 id|__inline__
