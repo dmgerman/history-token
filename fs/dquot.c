@@ -1252,6 +1252,16 @@ op_amp
 id|dqopt-&gt;dqio_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dqopt-&gt;ops
+(braket
+id|dquot-&gt;dq_type
+)braket
+op_member_access_from_pointer
+id|release_dqblk
+)paren
 id|ret
 op_assign
 id|dqopt-&gt;ops
