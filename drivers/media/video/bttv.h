@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: bttv.h,v 1.10 2004/10/13 10:39:00 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
+multiline_comment|/*&n; * $Id: bttv.h,v 1.14 2005/01/07 13:11:19 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
 macro_line|#ifndef _BTTV_H_
 DECL|macro|_BTTV_H_
 mdefine_line|#define _BTTV_H_
@@ -230,6 +230,8 @@ DECL|macro|BTTV_APAC_VIEWCOMP
 mdefine_line|#define BTTV_APAC_VIEWCOMP  0x7f
 DECL|macro|BTTV_DVICO_DVBT_LITE
 mdefine_line|#define BTTV_DVICO_DVBT_LITE  0x80
+DECL|macro|BTTV_TIBET_CS16
+mdefine_line|#define BTTV_TIBET_CS16  0x83
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -261,7 +263,7 @@ mdefine_line|#define I2C_MSP3400        0x80
 DECL|macro|I2C_MSP3400_ALT
 mdefine_line|#define I2C_MSP3400_ALT    0x88
 DECL|macro|I2C_TEA6300
-mdefine_line|#define I2C_TEA6300        0x80
+mdefine_line|#define I2C_TEA6300        0x80 /* also used by 6320 */
 DECL|macro|I2C_DPL3518
 mdefine_line|#define I2C_DPL3518&t;   0x84
 DECL|macro|I2C_TDA9887

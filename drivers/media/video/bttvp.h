@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttvp.h,v 1.12 2004/10/25 11:26:36 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot;s *private* header file  --  nobody other than bttv itself&n;    should ever include this file.&n;&n;    (c) 2000-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttvp.h,v 1.15 2004/12/14 15:33:30 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot;s *private* header file  --  nobody other than bttv itself&n;    should ever include this file.&n;&n;    (c) 2000-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;media/tveeprom.h&gt;
 macro_line|#include &lt;media/ir-common.h&gt;
 macro_line|#include &quot;bt848.h&quot;
 macro_line|#include &quot;bttv.h&quot;
@@ -736,58 +737,6 @@ suffix:semicolon
 r_extern
 r_int
 id|fini_bttv_i2c
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pvr_boot
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|bttv_common_ioctls
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bttv_reinit_bt848
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bttv_field_count
 c_func
 (paren
 r_struct
