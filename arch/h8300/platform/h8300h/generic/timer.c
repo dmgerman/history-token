@@ -48,6 +48,8 @@ op_star
 suffix:semicolon
 macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
 macro_line|#include &lt;asm/regs306x.h&gt;
+DECL|macro|CMFA
+mdefine_line|#define CMFA 6
 DECL|function|platform_timer_setup
 r_int
 id|platform_timer_setup
@@ -70,23 +72,23 @@ op_star
 )paren
 )paren
 (brace
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|H8300_TIMER_COUNT_DATA
 comma
-id|TMR8CMA2
+id|TCORA2
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x00
 comma
-id|TMR8TCSR2
+id|_8TCSR2
 )paren
 suffix:semicolon
-id|request_irq_boot
+id|request_irq
 c_func
 (paren
 l_int|40
@@ -100,7 +102,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x40
@@ -109,7 +111,7 @@ l_int|0x08
 op_or
 l_int|0x03
 comma
-id|TMR8TCNT2
+id|_8TCR2
 )paren
 suffix:semicolon
 r_return
@@ -212,7 +214,7 @@ id|TCNT
 op_assign
 l_int|0
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x23
@@ -220,7 +222,7 @@ comma
 id|TCR
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 l_int|0x00
@@ -242,7 +244,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|inb
@@ -256,7 +258,7 @@ comma
 id|TIER
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|inb
@@ -271,7 +273,7 @@ comma
 id|TSNC
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|inb
@@ -286,7 +288,7 @@ comma
 id|TMDR
 )paren
 suffix:semicolon
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|inb
@@ -312,7 +314,7 @@ c_func
 r_void
 )paren
 (brace
-id|outb
+id|ctrl_outb
 c_func
 (paren
 id|inb

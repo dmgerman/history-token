@@ -3222,6 +3222,8 @@ comma
 id|len
 )paren
 suffix:semicolon
+id|try_again
+suffix:colon
 id|skb
 op_assign
 id|skb_recv_datagram
@@ -3536,9 +3538,17 @@ comma
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|noblock
+)paren
 r_return
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_goto
+id|try_again
 suffix:semicolon
 )brace
 DECL|function|udp_connect

@@ -22,7 +22,7 @@ id|hw
 suffix:semicolon
 DECL|function|ide_default_irq
 r_static
-r_inline
+id|__inline__
 r_int
 id|ide_default_irq
 c_func
@@ -39,8 +39,9 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|ide_default_io_base
 r_static
-r_inline
-id|ide_ioreg_t
+id|__inline__
+r_int
+r_int
 id|ide_default_io_base
 c_func
 (paren

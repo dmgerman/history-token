@@ -5,8 +5,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -1376,9 +1378,11 @@ suffix:semicolon
 macro_line|#endif
 id|serial_req.flags
 op_assign
-id|ASYNC_SKIP_TEST
+id|UPF_SKIP_TEST
 op_or
-id|ASYNC_AUTOPROBE
+id|UPF_AUTOPROBE
+op_or
+id|UPF_RESOURCES
 suffix:semicolon
 id|serial_req.baud_base
 op_assign

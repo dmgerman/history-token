@@ -169,24 +169,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SYSCTL
-r_extern
-r_void
-id|ipv6_sysctl_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ipv6_sysctl_unregister
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|sysctl_ipv6_bindv6only
 r_int
 id|sysctl_ipv6_bindv6only
@@ -2283,7 +2265,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
+macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_void
 id|ipv6_sysctl_register
@@ -3167,7 +3149,7 @@ r_goto
 id|init_mib_fail
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;ipngwg API draft makes clear that the correct semantics&n;&t; *&t;for TCP and UDP is to consider one TCP and UDP instance&n;&t; *&t;in a host availiable by both INET and INET6 APIs and&n;&t; *&t;able to communicate via both network protocols.&n;&t; */
-macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
+macro_line|#ifdef CONFIG_SYSCTL
 id|ipv6_sysctl_register
 c_func
 (paren
@@ -3445,7 +3427,7 @@ c_func
 suffix:semicolon
 id|icmp_fail
 suffix:colon
-macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
+macro_line|#ifdef CONFIG_SYSCTL
 id|ipv6_sysctl_unregister
 c_func
 (paren
@@ -3470,10 +3452,10 @@ c_func
 id|inet6_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|function|inet6_exit
 r_static
 r_void
+id|__exit
 id|inet6_exit
 c_func
 (paren
@@ -3605,7 +3587,6 @@ c_func
 id|inet6_exit
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 DECL|variable|PF_INET6
 id|MODULE_ALIAS_NETPROTO
 c_func

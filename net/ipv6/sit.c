@@ -3596,9 +3596,9 @@ id|ipip6_err
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|function|sit_cleanup
 r_void
+id|__exit
 id|sit_cleanup
 c_func
 (paren
@@ -3621,7 +3621,6 @@ id|ipip6_fb_tunnel_dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|sit_init
 r_int
 id|__init
