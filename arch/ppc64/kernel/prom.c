@@ -8653,6 +8653,7 @@ op_star
 id|mem_end
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* FIXME: Apple OF doesn&squot;t map unclaimed mem.  If this&n;&t;&t; * ever happened on G5, we&squot;d need to fix. */
 r_int
 r_int
@@ -8762,6 +8763,18 @@ id|initrd_start
 op_plus
 id|initrd_len
 suffix:semicolon
+macro_line|#else
+id|prom_panic
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;No memory for copy_device_tree&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|ret
 op_assign
@@ -9573,20 +9586,8 @@ suffix:semicolon
 r_int
 r_int
 id|mem_end
-op_assign
-id|RELOC
-c_func
-(paren
-id|initrd_start
-)paren
 suffix:semicolon
 multiline_comment|/* We pass mem_end-mem_start to OF: keep it well under 32-bit */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mem_end
-)paren
 id|mem_end
 op_assign
 id|mem_start
@@ -9597,6 +9598,33 @@ l_int|1024
 op_star
 l_int|1024
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|RELOC
+c_func
+(paren
+id|initrd_start
+)paren
+op_logical_and
+id|RELOC
+c_func
+(paren
+id|initrd_start
+)paren
+OG
+id|mem_start
+)paren
+id|mem_end
+op_assign
+id|RELOC
+c_func
+(paren
+id|initrd_start
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 id|root
 op_assign
 id|call_prom
@@ -11079,6 +11107,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|prom_print
 c_func
 (paren
@@ -11129,6 +11158,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 id|prom_print
 c_func
 (paren
