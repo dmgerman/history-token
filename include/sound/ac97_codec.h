@@ -601,8 +601,14 @@ DECL|member|copy_flag
 id|copy_flag
 suffix:colon
 l_int|1
-suffix:semicolon
+comma
 multiline_comment|/* lowlevel driver must fill all entries */
+DECL|member|spdif
+id|spdif
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* spdif pcm */
 DECL|member|aslots
 r_int
 r_int
