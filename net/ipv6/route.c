@@ -3995,13 +3995,6 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-id|dst_release
-c_func
-(paren
-op_amp
-id|rt-&gt;u.dst
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|fib6_del
@@ -4012,6 +4005,13 @@ comma
 id|nlh
 comma
 id|_rtattr
+)paren
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
 )paren
 suffix:semicolon
 id|write_unlock_bh
