@@ -333,11 +333,11 @@ id|xfsstats
 id|xfsstats
 suffix:semicolon
 DECL|macro|XFS_STATS_INC
-macro_line|# define XFS_STATS_INC(count)&t;&t;( (count)++ )
+macro_line|# define XFS_STATS_INC(count)&t;&t;( xfsstats.count++ )
 DECL|macro|XFS_STATS_DEC
-macro_line|# define XFS_STATS_DEC(count)&t;&t;( (count)-- )
+macro_line|# define XFS_STATS_DEC(count)&t;&t;( xfsstats.count-- )
 DECL|macro|XFS_STATS_ADD
-macro_line|# define XFS_STATS_ADD(count, inc)&t;( (count) += (inc) )
+macro_line|# define XFS_STATS_ADD(count, inc)&t;( xfsstats.count += (inc) )
 r_extern
 r_void
 id|xfs_init_procfs

@@ -8662,6 +8662,9 @@ r_if
 c_cond
 (paren
 id|stat
+op_logical_or
+op_logical_neg
+id|toc-&gt;capacity
 )paren
 id|stat
 op_assign

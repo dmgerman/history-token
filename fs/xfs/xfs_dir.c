@@ -918,7 +918,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_create
+id|xs_dir_create
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1400,7 +1400,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_remove
+id|xs_dir_remove
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1611,7 +1611,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_lookup
+id|xs_dir_lookup
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1785,7 +1785,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_getdents
+id|xs_dir_getdents
 )paren
 suffix:semicolon
 id|ASSERT

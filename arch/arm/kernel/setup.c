@@ -3292,7 +3292,7 @@ comma
 l_string|&quot;Cache type&bslash;t: %s&bslash;n&quot;
 l_string|&quot;Cache clean&bslash;t: %s&bslash;n&quot;
 l_string|&quot;Cache lockdown&bslash;t: %s&bslash;n&quot;
-l_string|&quot;Cache unified&bslash;t: %s&bslash;n&quot;
+l_string|&quot;Cache format&bslash;t: %s&bslash;n&quot;
 comma
 id|cache_types
 (braket

@@ -20,7 +20,6 @@ macro_line|#include &quot;xfs_attr_sf.h&quot;
 macro_line|#include &quot;xfs_dir_sf.h&quot;
 macro_line|#include &quot;xfs_dir2_sf.h&quot;
 macro_line|#include &quot;xfs_dinode.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 macro_line|#include &quot;xfs_inode_item.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_itable.h&quot;
@@ -1551,7 +1550,7 @@ multiline_comment|/* number of extents in file now */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_add_exlist
+id|xs_add_exlist
 )paren
 suffix:semicolon
 id|cur
@@ -12521,7 +12520,7 @@ multiline_comment|/* for indirect length calculations */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_del_exlist
+id|xs_del_exlist
 )paren
 suffix:semicolon
 id|mp
@@ -15706,7 +15705,7 @@ id|high
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_cmp_exlist
+id|xs_cmp_exlist
 )paren
 suffix:semicolon
 id|lastx
@@ -16023,7 +16022,7 @@ multiline_comment|/* extent list size */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_look_exlist
+id|xs_look_exlist
 )paren
 suffix:semicolon
 id|ifp
@@ -21619,14 +21618,14 @@ l_int|0
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_blk_mapw
+id|xs_blk_mapw
 )paren
 suffix:semicolon
 r_else
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_blk_mapr
+id|xs_blk_mapr
 )paren
 suffix:semicolon
 id|delay
@@ -23944,7 +23943,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_blk_mapr
+id|xs_blk_mapr
 )paren
 suffix:semicolon
 r_if
@@ -24410,7 +24409,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_blk_unmap
+id|xs_blk_unmap
 )paren
 suffix:semicolon
 id|isrt
