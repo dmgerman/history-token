@@ -133,7 +133,7 @@ op_assign
 (brace
 l_string|&quot;&quot;
 comma
-l_string|&quot;PARAM_HEATBEAT_INFO&quot;
+l_string|&quot;PARAM_HEARTBEAT_INFO&quot;
 comma
 l_string|&quot;&quot;
 comma
