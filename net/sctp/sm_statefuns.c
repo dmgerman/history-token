@@ -5550,6 +5550,9 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|__u16
 id|error
 op_assign
@@ -5582,19 +5585,20 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chunk
-op_logical_and
-(paren
+multiline_comment|/* Check that chunk header looks valid.  */
+id|len
+op_assign
 id|ntohs
 c_func
 (paren
 id|chunk-&gt;chunk_hdr-&gt;length
 )paren
-op_ge
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|len
+op_ge
 r_sizeof
 (paren
 r_struct
@@ -5605,8 +5609,6 @@ r_sizeof
 (paren
 r_struct
 id|sctp_errhdr
-)paren
-)paren
 )paren
 )paren
 id|error
@@ -5648,7 +5650,6 @@ c_func
 id|SctpCurrEstab
 )paren
 suffix:semicolon
-multiline_comment|/* BUG?  This does not look complete... */
 r_return
 id|SCTP_DISPOSITION_ABORT
 suffix:semicolon
@@ -5690,6 +5691,9 @@ op_star
 id|chunk
 op_assign
 id|arg
+suffix:semicolon
+r_int
+id|len
 suffix:semicolon
 id|__u16
 id|error
@@ -5757,19 +5761,20 @@ id|SCTP_EVENT_TIMEOUT_T1_INIT
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chunk
-op_logical_and
-(paren
+multiline_comment|/* Check that chunk header looks valid.  */
+id|len
+op_assign
 id|ntohs
 c_func
 (paren
 id|chunk-&gt;chunk_hdr-&gt;length
 )paren
-op_ge
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|len
+op_ge
 r_sizeof
 (paren
 r_struct
@@ -5780,8 +5785,6 @@ r_sizeof
 (paren
 r_struct
 id|sctp_errhdr
-)paren
-)paren
 )paren
 )paren
 id|error
