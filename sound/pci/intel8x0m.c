@@ -806,10 +806,11 @@ id|DEVICE_SIS
 )brace
 comma
 multiline_comment|/* SI7013 */
+macro_line|#endif
 (brace
 l_int|0x10de
 comma
-l_int|0x01b1
+l_int|0x01c1
 comma
 id|PCI_ANY_ID
 comma
@@ -826,7 +827,7 @@ multiline_comment|/* NFORCE */
 (brace
 l_int|0x10de
 comma
-l_int|0x006a
+l_int|0x0069
 comma
 id|PCI_ANY_ID
 comma
@@ -843,7 +844,24 @@ multiline_comment|/* NFORCE2 */
 (brace
 l_int|0x10de
 comma
-l_int|0x00da
+l_int|0x0089
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_NFORCE
+)brace
+comma
+multiline_comment|/* NFORCE2s */
+(brace
+l_int|0x10de
+comma
+l_int|0x00d9
 comma
 id|PCI_ANY_ID
 comma
@@ -857,6 +875,7 @@ id|DEVICE_NFORCE
 )brace
 comma
 multiline_comment|/* NFORCE3 */
+macro_line|#if 0
 (brace
 l_int|0x1022
 comma
