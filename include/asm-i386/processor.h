@@ -1271,9 +1271,15 @@ multiline_comment|/* This can only happen when SEP is enabled, no need to test &
 r_if
 c_cond
 (paren
+(paren
+id|unlikely
+c_func
+(paren
 id|tss-&gt;ss1
 op_ne
 id|__KERNEL_CS
+)paren
+)paren
 )paren
 (brace
 id|tss-&gt;ss1
