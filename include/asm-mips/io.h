@@ -452,6 +452,97 @@ DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
+multiline_comment|/*&n; * Memory Mapped I/O&n; */
+DECL|macro|ioread8
+mdefine_line|#define ioread8(addr)&t;&t;readb(addr)
+DECL|macro|ioread16
+mdefine_line|#define ioread16(addr)&t;&t;readw(addr)
+DECL|macro|ioread32
+mdefine_line|#define ioread32(addr)&t;&t;readl(addr)
+DECL|macro|iowrite8
+mdefine_line|#define iowrite8(b,addr)&t;writeb(b,addr)
+DECL|macro|iowrite16
+mdefine_line|#define iowrite16(w,addr)&t;writew(w,addr)
+DECL|macro|iowrite32
+mdefine_line|#define iowrite32(l,addr)&t;writel(l,addr)
+DECL|macro|ioread8_rep
+mdefine_line|#define ioread8_rep(a,b,c)&t;readsb(a,b,c)
+DECL|macro|ioread16_rep
+mdefine_line|#define ioread16_rep(a,b,c)&t;readsw(a,b,c)
+DECL|macro|ioread32_rep
+mdefine_line|#define ioread32_rep(a,b,c)&t;readsl(a,b,c)
+DECL|macro|iowrite8_rep
+mdefine_line|#define iowrite8_rep(a,b,c)&t;writesb(a,b,c)
+DECL|macro|iowrite16_rep
+mdefine_line|#define iowrite16_rep(a,b,c)&t;writesw(a,b,c)
+DECL|macro|iowrite32_rep
+mdefine_line|#define iowrite32_rep(a,b,c)&t;writesl(a,b,c)
+multiline_comment|/* Create a virtual mapping cookie for an IO port range */
+r_extern
+r_void
+id|__iomem
+op_star
+id|ioport_map
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+r_int
+id|nr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ioport_unmap
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+r_struct
+id|pci_dev
+suffix:semicolon
+r_extern
+r_void
+id|__iomem
+op_star
+id|pci_iomap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|bar
+comma
+r_int
+r_int
+id|max
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_iounmap
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_void
+id|__iomem
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on currently supported MIPS systems, no need&n; * to explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
 mdefine_line|#define __ISA_IO_base ((char *)(isa_slot_offset))
