@@ -581,9 +581,21 @@ id|lp-&gt;ppp_slot
 template_param
 id|ISDN_MAX_CHANNELS
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|save_flags
 c_func
 (paren
@@ -636,6 +648,34 @@ id|lp-&gt;netdev-&gt;pb-&gt;lock
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_MPP */
+r_if
+c_cond
+(paren
+id|lp-&gt;ppp_slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: ppp_slot(%d) now invalid&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|is
 op_assign
 id|ippp_table
@@ -1067,8 +1107,20 @@ id|lp-&gt;ppp_slot
 op_ge
 id|ISDN_MAX_CHANNELS
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|ippp_table
 (braket
 id|lp-&gt;ppp_slot
@@ -1122,9 +1174,21 @@ id|slot
 op_ge
 id|ISDN_MAX_CHANNELS
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: slot(%d) out of range&bslash;n&quot;
+comma
+id|slot
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|is
 op_assign
 id|ippp_table
@@ -1492,6 +1556,30 @@ id|p
 op_assign
 id|is-&gt;lp-&gt;netdev
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: no lp-&gt;netdev&bslash;n&quot;
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|is-&gt;state
 op_and_assign
 op_complement
@@ -3089,7 +3177,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ippp: illegal slot.&bslash;n&quot;
+l_string|&quot;ippp: illegal slot(%d).&bslash;n&quot;
+comma
+id|slot
 )paren
 suffix:semicolon
 r_return
@@ -4482,7 +4572,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_receive: lp-&gt;ppp_slot %d&bslash;n&quot;
+l_string|&quot;isdn_ppp_receive: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -4743,7 +4833,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_push_higher: lp-&gt;ppp_slot %d&bslash;n&quot;
+l_string|&quot;isdn_ppp_push_higher: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -4792,7 +4882,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_push_higher: master-&gt;ppp_slot %d&bslash;n&quot;
+l_string|&quot;isdn_ppp_push_higher: master-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -4979,6 +5069,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|net_dev-&gt;local-&gt;ppp_slot
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|net_dev-&gt;local-&gt;ppp_slot
+)paren
+suffix:semicolon
+r_goto
+id|drop_packet
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|slhc_remember
 c_func
 (paren
@@ -5100,6 +5212,28 @@ comma
 id|skb_old-&gt;len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|net_dev-&gt;local-&gt;ppp_slot
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: net_dev-&gt;local-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|net_dev-&gt;local-&gt;ppp_slot
+)paren
+suffix:semicolon
+r_goto
+id|drop_packet
+suffix:semicolon
+)brace
 id|pkt_len
 op_assign
 id|slhc_uncompress
@@ -5451,7 +5585,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot %d&bslash;n&quot;
+l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|mlp-&gt;ppp_slot
 )paren
@@ -5600,7 +5734,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot %d&bslash;n&quot;
+l_string|&quot;isdn_ppp_xmit: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -6580,6 +6714,31 @@ r_struct
 id|ippp_struct
 op_star
 id|is
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;ppp_slot
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|is
 op_assign
 id|ippp_table
 (braket
@@ -6854,7 +7013,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_mp_receive: lp-&gt;ppp_slot %d&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;: lp-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lp-&gt;ppp_slot
 )paren
@@ -7020,7 +7180,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;isdn_ppp_mp_receive: lpq-&gt;ppp_slot %d&bslash;n&quot;
+id|__FUNCTION__
+l_string|&quot;: lpq-&gt;ppp_slot(%d)&bslash;n&quot;
 comma
 id|lpq-&gt;ppp_slot
 )paren
@@ -7941,6 +8102,27 @@ r_int
 r_int
 id|tot_len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;ppp_slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -11208,11 +11390,6 @@ r_struct
 id|ippp_struct
 op_star
 id|is
-op_assign
-id|ippp_table
-(braket
-id|lp-&gt;ppp_slot
-)braket
 suffix:semicolon
 r_struct
 id|ippp_struct
@@ -11237,8 +11414,38 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Received CCP frame from peer&bslash;n&quot;
+l_string|&quot;Received CCP frame from peer slot(%d)&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;ppp_slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|lp-&gt;ppp_slot
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|is
+op_assign
+id|ippp_table
+(braket
+id|lp-&gt;ppp_slot
+)braket
 suffix:semicolon
 id|isdn_ppp_frame_log
 c_func
@@ -11262,10 +11469,9 @@ c_cond
 id|lp-&gt;master
 )paren
 (brace
-id|mis
+r_int
+id|slot
 op_assign
-id|ippp_table
-(braket
 (paren
 (paren
 id|isdn_net_local
@@ -11277,6 +11483,33 @@ id|lp-&gt;master-&gt;priv
 )paren
 op_member_access_from_pointer
 id|ppp_slot
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: slot(%d) out of range&bslash;n&quot;
+comma
+id|slot
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|mis
+op_assign
+id|ippp_table
+(braket
+id|slot
 )braket
 suffix:semicolon
 )brace
@@ -11889,14 +12122,13 @@ id|mis
 comma
 op_star
 id|is
-op_assign
-id|ippp_table
-(braket
-id|lp-&gt;ppp_slot
-)braket
 suffix:semicolon
 r_int
 id|proto
+comma
+id|slot
+op_assign
+id|lp-&gt;ppp_slot
 suffix:semicolon
 r_int
 r_char
@@ -11917,6 +12149,34 @@ l_int|3
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: lp-&gt;ppp_slot(%d) out of range&bslash;n&quot;
+comma
+id|slot
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|is
+op_assign
+id|ippp_table
+(braket
+id|slot
+)braket
+suffix:semicolon
 multiline_comment|/* Daemon may send with or without address and control field comp */
 id|data
 op_assign
@@ -12026,10 +12286,8 @@ c_cond
 id|lp-&gt;master
 )paren
 (brace
-id|mis
+id|slot
 op_assign
-id|ippp_table
-(braket
 (paren
 (paren
 id|isdn_net_local
@@ -12041,6 +12299,33 @@ id|lp-&gt;master-&gt;priv
 )paren
 op_member_access_from_pointer
 id|ppp_slot
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot
+template_param
+id|ISDN_MAX_CHANNELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|__FUNCTION__
+l_string|&quot;: slot(%d) out of range&bslash;n&quot;
+comma
+id|slot
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|mis
+op_assign
+id|ippp_table
+(braket
+id|slot
 )braket
 suffix:semicolon
 )brace
@@ -12056,7 +12341,6 @@ id|mis
 op_ne
 id|is
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -12064,7 +12348,6 @@ id|KERN_DEBUG
 l_string|&quot;isdn_ppp: Ouch! Master CCP sends on slave slot!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren

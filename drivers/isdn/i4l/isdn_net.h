@@ -534,10 +534,26 @@ id|master_lp-&gt;netdev-&gt;queue
 op_eq
 id|lp
 )paren
+(brace
 id|master_lp-&gt;netdev-&gt;queue
 op_assign
 id|lp-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;next
+op_eq
+id|lp
+)paren
+(brace
+multiline_comment|/* last in queue */
+id|master_lp-&gt;netdev-&gt;queue
+op_assign
+id|master_lp-&gt;netdev-&gt;local
+suffix:semicolon
+)brace
+)brace
 id|lp-&gt;next
 op_assign
 id|lp-&gt;last
