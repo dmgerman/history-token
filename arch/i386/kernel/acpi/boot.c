@@ -60,6 +60,8 @@ macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
 macro_line|#endif&t;/* CONFIG_X86_LOCAL_APIC */
 macro_line|#endif&t;/* X86 */
+DECL|macro|BAD_MADT_ENTRY
+mdefine_line|#define BAD_MADT_ENTRY(entry, end) (&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;(!entry) || (unsigned long)entry + sizeof(*entry) &gt; end ||  &bslash;&n;&t;&t;((acpi_table_entry_header *)entry)-&gt;length != sizeof(*entry))
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 macro_line|#ifdef CONFIG_ACPI_PCI
@@ -552,6 +554,11 @@ id|acpi_parse_lapic
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -573,8 +580,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|processor
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -619,6 +631,11 @@ id|acpi_parse_lapic_addr_ovr
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -640,8 +657,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|lapic_addr_ovr
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -664,6 +686,11 @@ id|acpi_parse_lapic_nmi
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -685,8 +712,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|lapic_nmi
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -728,6 +760,11 @@ id|acpi_parse_ioapic
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -749,8 +786,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|ioapic
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -865,6 +907,11 @@ id|acpi_parse_int_src_ovr
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -886,8 +933,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|intsrc
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -970,6 +1022,11 @@ id|acpi_parse_nmi_src
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -991,8 +1048,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|nmi_src
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -2210,6 +2272,30 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|error
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Dell Precision Workstation 410, 610 come here.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;Invalid BIOS MADT, disabling ACPI&bslash;n&quot;
+)paren
+suffix:semicolon
+id|disable_acpi
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif

@@ -1188,6 +1188,13 @@ op_eq
 id|drv
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|acpi_device_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1201,6 +1208,13 @@ c_func
 id|dev
 comma
 id|ACPI_BUS_REMOVAL_NORMAL
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|acpi_device_lock
 )paren
 suffix:semicolon
 id|dev-&gt;driver
