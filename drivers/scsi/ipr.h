@@ -3062,6 +3062,12 @@ id|ipr_cmnd
 op_star
 id|sibling
 suffix:semicolon
+DECL|member|sdev
+r_struct
+id|scsi_device
+op_star
+id|sdev
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|member|ioa_cfg

@@ -10781,6 +10781,14 @@ l_int|0
 op_assign
 id|IPR_RESET_DEVICE
 suffix:semicolon
+id|ipr_sdev_err
+c_func
+(paren
+id|scsi_cmd-&gt;device
+comma
+l_string|&quot;Resetting device&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ipr_send_blocking_cmd
 c_func
 (paren
@@ -10997,6 +11005,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|ipr_sdev_err
+c_func
+(paren
+id|ipr_cmd-&gt;sdev
+comma
+l_string|&quot;Abort timed out. Resetting bus&bslash;n&quot;
+)paren
+suffix:semicolon
 id|reset_cmd
 op_assign
 id|ipr_get_free_ipr_cmnd
@@ -11271,6 +11287,23 @@ op_assign
 id|ioarcb_addr
 op_amp
 l_int|0xff
+suffix:semicolon
+id|ipr_cmd-&gt;sdev
+op_assign
+id|scsi_cmd-&gt;device
+suffix:semicolon
+id|ipr_sdev_err
+c_func
+(paren
+id|scsi_cmd-&gt;device
+comma
+l_string|&quot;Aborting command: %02X&bslash;n&quot;
+comma
+id|scsi_cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 id|ipr_send_blocking_cmd
 c_func
