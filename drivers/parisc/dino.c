@@ -259,8 +259,9 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 op_assign
 id|d-&gt;hba.base_addr
@@ -279,7 +280,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* tell HW which CFG address */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -301,7 +302,7 @@ l_int|1
 op_star
 id|val
 op_assign
-id|gsc_readb
+id|readb
 c_func
 (paren
 id|base_addr
@@ -328,10 +329,7 @@ l_int|2
 op_star
 id|val
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|gsc_readw
+id|readw
 c_func
 (paren
 id|base_addr
@@ -342,7 +340,6 @@ op_plus
 id|where
 op_amp
 l_int|2
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -359,16 +356,12 @@ l_int|4
 op_star
 id|val
 op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|gsc_readl
+id|readl
 c_func
 (paren
 id|base_addr
 op_plus
 id|DINO_CONFIG_DATA
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -456,8 +449,9 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 op_assign
 id|d-&gt;hba.base_addr
@@ -476,7 +470,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* avoid address stepping feature */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -488,7 +482,7 @@ op_plus
 id|DINO_PCI_ADDR
 )paren
 suffix:semicolon
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|base_addr
@@ -497,7 +491,7 @@ id|DINO_CONFIG_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* tell HW which CFG address */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -516,7 +510,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|gsc_writeb
+id|writeb
 c_func
 (paren
 id|val
@@ -542,14 +536,10 @@ op_eq
 l_int|2
 )paren
 (brace
-id|gsc_writew
-c_func
-(paren
-id|cpu_to_le16
+id|writew
 c_func
 (paren
 id|val
-)paren
 comma
 id|base_addr
 op_plus
@@ -572,14 +562,10 @@ op_eq
 l_int|4
 )paren
 (brace
-id|gsc_writel
-c_func
-(paren
-id|cpu_to_le32
+id|writel
 c_func
 (paren
 id|val
-)paren
 comma
 id|base_addr
 op_plus
@@ -620,12 +606,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Dino &quot;I/O Port&quot; Space Accessor Functions&n; *&n; * Many PCI devices don&squot;t require use of I/O port space (eg Tulip,&n; * NCR720) since they export the same registers to both MMIO and&n; * I/O port space.  Performance is going to stink if drivers use&n; * I/O port instead of MMIO.&n; */
-DECL|macro|cpu_to_le8
-mdefine_line|#define cpu_to_le8(x) (x)
-DECL|macro|le8_to_cpu
-mdefine_line|#define le8_to_cpu(x) (x)
 DECL|macro|DINO_PORT_IN
-mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = gsc_read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return le##size##_to_cpu(v); &bslash;&n;}
+mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;__raw_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return v; &bslash;&n;}
 id|DINO_PORT_IN
 c_func
 (paren
@@ -654,7 +636,7 @@ comma
 l_int|0
 )paren
 DECL|macro|DINO_PORT_OUT
-mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;gsc_write##type(cpu_to_le##size(val), d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
+mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO port address */ &bslash;&n;&t;__raw_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;write##type(val, d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
 id|DINO_PORT_OUT
 c_func
 (paren
@@ -1318,8 +1300,9 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 )paren
 (brace
@@ -1577,7 +1560,7 @@ op_plus
 id|DINO_IO_ADDR_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|1
@@ -1749,7 +1732,7 @@ id|DBG
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s(0x%p) bus %d sysdata 0x%p&bslash;n&quot;
+l_string|&quot;%s(0x%p) bus %d platform_data 0x%p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2306,7 +2289,7 @@ id|brdg_feat
 op_assign
 l_int|0x00784e05
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2316,7 +2299,7 @@ op_plus
 id|DINO_GMASK
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000001
@@ -2326,7 +2309,7 @@ op_plus
 id|DINO_IO_FBB_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2346,7 +2329,7 @@ l_int|0x4
 suffix:semicolon
 multiline_comment|/* UXQL */
 macro_line|#endif
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|brdg_feat
@@ -2357,7 +2340,7 @@ id|DINO_BRDG_FEAT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Don&squot;t enable address decoding until we know which I/O range&n;&t;** currently is available from the host. Only affects MMIO&n;&t;** and not I/O port space.&n;&t;*/
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2367,7 +2350,7 @@ op_plus
 id|DINO_IO_ADDR_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2377,7 +2360,7 @@ op_plus
 id|DINO_DAMODE
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00222222
@@ -2387,7 +2370,7 @@ op_plus
 id|DINO_PCIROR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00222222
@@ -2397,7 +2380,7 @@ op_plus
 id|DINO_PCIWOR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000040
@@ -2407,7 +2390,7 @@ op_plus
 id|DINO_MLTIM
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000080
@@ -2417,7 +2400,7 @@ op_plus
 id|DINO_IO_CONTROL
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000008c
@@ -2428,7 +2411,7 @@ id|DINO_TLTIM
 )paren
 suffix:semicolon
 multiline_comment|/* Disable PAMR before writing PAPR */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000007e
@@ -2438,7 +2421,7 @@ op_plus
 id|DINO_PAMR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000007f
@@ -2448,7 +2431,7 @@ op_plus
 id|DINO_PAPR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2459,7 +2442,7 @@ id|DINO_PAMR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Dino ERS encourages enabling FBB (0x6f).&n;&t;** We can&squot;t until we know *all* devices below us can support it.&n;&t;** (Something in device configuration header tells us).&n;&t;*/
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000004f
@@ -2521,7 +2504,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Decoding IO_ADDR_EN only works for Built-in Dino&n;&t; * since PDC has already initialized this.&n;&t; */
 id|io_addr
 op_assign
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -3086,7 +3069,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: request I/O Port region failed 0x%lx/%lx (hpa 0x%lx)&bslash;n&quot;
+l_string|&quot;%s: request I/O Port region failed &quot;
+l_string|&quot;0x%lx/%lx (hpa 0x%p)&bslash;n&quot;
 comma
 id|name
 comma
@@ -3187,18 +3171,6 @@ id|version
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
-r_const
-r_int
-id|name_len
-op_assign
-l_int|32
-suffix:semicolon
-r_char
-id|hw_path
-(braket
-l_int|64
-)braket
-suffix:semicolon
 r_char
 op_star
 id|name
@@ -3213,44 +3185,6 @@ id|pci_bus
 op_star
 id|bus
 suffix:semicolon
-id|name
-op_assign
-id|kmalloc
-c_func
-(paren
-id|name_len
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|name
-)paren
-(brace
-id|print_pa_hwpath
-c_func
-(paren
-id|dev
-comma
-id|hw_path
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|name
-comma
-id|name_len
-comma
-l_string|&quot;Dino [%s]&quot;
-comma
-id|hw_path
-)paren
-suffix:semicolon
-)brace
-r_else
 id|name
 op_assign
 l_string|&quot;Dino&quot;
@@ -3526,7 +3460,13 @@ id|dev
 suffix:semicolon
 id|dino_dev-&gt;hba.base_addr
 op_assign
+id|ioremap
+c_func
+(paren
 id|dev-&gt;hpa
+comma
+l_int|4096
+)paren
 suffix:semicolon
 multiline_comment|/* faster access */
 id|dino_dev-&gt;hba.lmmio_space_offset
@@ -3534,9 +3474,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* CPU addrs == bus addrs */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dino_dev-&gt;dinosaur_pen
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|dino_dev-&gt;hba.iommu
 op_assign
