@@ -15331,6 +15331,63 @@ id|pci_dev_func
 op_assign
 id|pdev-&gt;devfn
 suffix:semicolon
+multiline_comment|/*&n;&t; * The megaraid3 stuff reports the ID of the Intel part which is not&n;&t; * remotely specific to the megaraid&n;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_INTEL
+)paren
+(brace
+id|u16
+id|magic
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Don&squot;t fall over the Compaq management cards using the same&n;&t;&t; * PCI identifier&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_COMPAQ
+op_logical_and
+id|pdev-&gt;subsystem_device
+op_eq
+l_int|0xC000
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Now check the magic signature byte */
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CONF_AMISIG
+comma
+op_amp
+id|magic
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|magic
+op_ne
+id|HBA_SIGNATURE_471
+op_logical_and
+id|magic
+op_ne
+id|HBA_SIGNATURE
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Ok it is probably a megaraid */
+)brace
 multiline_comment|/*&n;&t; * For these vendor and device ids, signature offsets are not&n;&t; * valid and 64 bit is implicit&n;&t; */
 r_if
 c_cond
