@@ -3173,7 +3173,8 @@ id|subs-&gt;stream-&gt;chip-&gt;shutdown
 )paren
 multiline_comment|/* to be sure... */
 r_return
-l_int|0
+op_minus
+id|EBADFD
 suffix:semicolon
 id|async
 op_assign
@@ -3395,6 +3396,15 @@ id|i
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subs-&gt;stream-&gt;chip-&gt;shutdown
+)paren
+r_return
+op_minus
+id|EBADFD
 suffix:semicolon
 r_for
 c_loop
