@@ -7198,6 +7198,10 @@ id|skb-&gt;dev
 op_assign
 id|ndev
 suffix:semicolon
+id|skb-&gt;input_dev
+op_assign
+id|ndev
+suffix:semicolon
 id|skb-&gt;pkt_type
 op_assign
 id|PACKET_HOST
