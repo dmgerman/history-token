@@ -44,6 +44,10 @@ id|pte
 comma
 r_int
 r_int
+id|addr
+comma
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -56,6 +60,11 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|addr
+comma
 id|pte
 )paren
 suffix:semicolon

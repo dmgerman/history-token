@@ -136,6 +136,15 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_int
+id|rtc_valid_tm
+c_func
+(paren
+r_struct
+id|rtc_time
+op_star
+)paren
+suffix:semicolon
 r_void
 id|rtc_next_alarm_time
 c_func

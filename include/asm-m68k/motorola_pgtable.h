@@ -288,7 +288,7 @@ mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;({ pte_val(*(ptep)) = 0; })
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;&t;({ pte_val(*(ptep)) = 0; })
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;(mem_map + ((unsigned long)(__va(pte_val(pte)) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|macro|pte_pfn

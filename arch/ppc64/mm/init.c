@@ -474,9 +474,14 @@ c_func
 id|pa
 )paren
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+op_amp
+id|ioremap_mm
+comma
+id|ea
+comma
 id|ptep
 comma
 id|pfn_pte
@@ -1154,6 +1159,11 @@ op_assign
 id|ptep_get_and_clear
 c_func
 (paren
+op_amp
+id|ioremap_mm
+comma
+id|address
+comma
 id|pte
 )paren
 suffix:semicolon

@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -421,6 +422,15 @@ r_void
 id|tlb_batch_add
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|vaddr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -429,13 +439,22 @@ id|pte_t
 id|orig
 )paren
 suffix:semicolon
-DECL|function|set_pte
+DECL|function|set_pte_at
 r_static
 r_inline
 r_void
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -455,18 +474,36 @@ id|ptep
 op_assign
 id|pte
 suffix:semicolon
+multiline_comment|/* It is more efficient to let flush_tlb_kernel_range()&n;&t; * handle init_mm tlb flushes.&n;&t; */
 r_if
 c_cond
 (paren
-id|pte_present
+id|likely
+c_func
+(paren
+id|mm
+op_ne
+op_amp
+id|init_mm
+)paren
+op_logical_and
+(paren
+id|pte_val
 c_func
 (paren
 id|orig
+)paren
+op_amp
+id|_PAGE_VALID
 )paren
 )paren
 id|tlb_batch_add
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|orig
@@ -474,7 +511,7 @@ id|orig
 suffix:semicolon
 )brace
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0UL))
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;&t;&bslash;&n;&t;set_pte_at((mm), (addr), (ptep), __pte(0UL))
 r_extern
 id|pgd_t
 id|swapper_pg_dir

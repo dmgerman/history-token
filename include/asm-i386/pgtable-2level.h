@@ -9,12 +9,14 @@ mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08l
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) (*(pteptr) = pteval)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|set_pte_atomic
 mdefine_line|#define set_pte_atomic(pteptr, pteval) set_pte(pteptr,pteval)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = (pmdval))
 DECL|macro|ptep_get_and_clear
-mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte_low, 0))
+mdefine_line|#define ptep_get_and_clear(mm,addr,xp)&t;__pte(xchg(&amp;(xp)-&gt;pte_low, 0))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(a, b)&t;&t;((a).pte_low == (b).pte_low)
 DECL|macro|pte_page

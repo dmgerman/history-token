@@ -585,7 +585,7 @@ r_new
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign

@@ -100,7 +100,7 @@ op_amp
 id|MSG_DONTWAIT
 suffix:semicolon
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -392,7 +392,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -524,7 +524,7 @@ r_int
 id|modulus
 suffix:semicolon
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -780,7 +780,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign

@@ -137,6 +137,12 @@ comma
 id|mpnt-&gt;vm_start
 op_plus
 id|offset
+comma
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 r_if

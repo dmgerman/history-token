@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.23&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.24&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 15, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;March 4, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -13508,6 +13508,38 @@ id|tcp_opt_len
 comma
 id|ip_tcp_len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb_header_cloned
+c_func
+(paren
+id|skb
+)paren
+op_logical_and
+id|pskb_expand_head
+c_func
+(paren
+id|skb
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|GFP_ATOMIC
+)paren
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 id|tcp_opt_len
 op_assign
 (paren
@@ -16205,6 +16237,16 @@ r_int
 id|kind
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_SUN_570X
+)paren
+)paren
 id|tg3_write_mem
 c_func
 (paren
@@ -16930,6 +16972,17 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_SUN_570X
+)paren
+)paren
+(brace
 multiline_comment|/* Wait for firmware initialization to complete. */
 r_for
 c_loop
@@ -16980,13 +17033,6 @@ c_cond
 id|i
 op_ge
 l_int|100000
-op_logical_and
-op_logical_neg
-(paren
-id|tp-&gt;tg3_flags2
-op_amp
-id|TG3_FLG2_SUN_570X
-)paren
 )paren
 (brace
 id|printk
@@ -17006,6 +17052,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

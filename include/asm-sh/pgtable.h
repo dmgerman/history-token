@@ -207,7 +207,7 @@ mdefine_line|#define pte_none(x)&t;(!pte_val(x))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { set_pte_at(mm, addr, xp, __pte(0)); } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_present
@@ -914,6 +914,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep

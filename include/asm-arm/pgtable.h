@@ -282,7 +282,7 @@ mdefine_line|#define pfn_pte(pfn,prot)&t;(__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pg
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0))
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;set_pte_at((mm),(addr),(ptep), __pte(0))
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;(pfn_to_page(pte_pfn(pte)))
 DECL|macro|pte_offset_kernel
@@ -297,6 +297,8 @@ DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte)&t;do { } while (0)
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pte)&t;cpu_set_pte(ptep,pte)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; L_PTE_PRESENT)
@@ -410,8 +412,6 @@ DECL|macro|pmd_present
 mdefine_line|#define pmd_present(pmd)&t;(pmd_val(pmd))
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
-DECL|macro|set_pmd
-mdefine_line|#define set_pmd(pmdp,pmd)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;*(pmdp) = pmd;&t;&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_pmd
 mdefine_line|#define copy_pmd(pmdpd,pmdps)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;pmdpd[0] = pmdps[0];&t;&bslash;&n;&t;&t;pmdpd[1] = pmdps[1];&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdpd);&t;&bslash;&n;&t;} while (0)
 DECL|macro|pmd_clear

@@ -310,7 +310,7 @@ suffix:semicolon
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;((x).pte_low &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { set_pte_at(mm, addr, xp, __pte(0)); } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_present
@@ -696,6 +696,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -733,6 +742,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -770,6 +788,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -779,28 +806,6 @@ id|clear_bit
 c_func
 (paren
 id|_PAGE_BIT_RW
-comma
-op_amp
-id|ptep-&gt;pte_low
-)paren
-suffix:semicolon
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-id|set_bit
-c_func
-(paren
-id|_PAGE_BIT_DIRTY
 comma
 op_amp
 id|ptep-&gt;pte_low
@@ -1003,8 +1008,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

@@ -2,6 +2,7 @@ macro_line|#ifndef _NET_DN_H
 DECL|macro|_NET_DN_H
 mdefine_line|#define _NET_DN_H
 macro_line|#include &lt;linux/dn.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|typedef|dn_address
 r_typedef
@@ -354,8 +355,34 @@ id|sk
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|DN_SK
-mdefine_line|#define DN_SK(__sk) ((struct dn_scp *)(__sk)-&gt;sk_protinfo)
+DECL|function|DN_SK
+r_static
+r_inline
+r_struct
+id|dn_scp
+op_star
+id|DN_SK
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|dn_scp
+op_star
+)paren
+(paren
+id|sk
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * src,dst : Source and Destination DECnet addresses&n; * hops : Number of hops through the network&n; * dst_port, src_port : NSP port numbers&n; * services, info : Useful data extracted from conninit messages&n; * rt_flags : Routing flags byte&n; * nsp_flags : NSP layer flags byte&n; * segsize : Size of segment&n; * segnum : Number, for data, otherdata and linkservice&n; * xmit_count : Number of times we&squot;ve transmitted this skb&n; * stamp : Time stamp of most recent transmission, used in RTT calculations&n; * iif: Input interface number&n; *&n; * As a general policy, this structure keeps all addresses in network&n; * byte order, and all else in host byte order. Thus dst, src, dst_port&n; * and src_port are in network order. All else is in host order.&n; * &n; */
 DECL|macro|DN_SKB_CB
 mdefine_line|#define DN_SKB_CB(skb) ((struct dn_skb_cb *)(skb)-&gt;cb)

@@ -156,9 +156,52 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Strange magic calling convention: pointer in %ecx,&n; * value in %eax(:%edx), return value in %eax, no clobbers.&n; */
+r_extern
+r_void
+id|__put_user_1
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__put_user_2
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__put_user_4
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__put_user_8
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|__put_user_1
+mdefine_line|#define __put_user_1(x, ptr) __asm__ __volatile__(&quot;call __put_user_1&quot;:&quot;=a&quot; (__ret_pu):&quot;0&quot; ((typeof(*(ptr)))(x)), &quot;c&quot; (ptr))
+DECL|macro|__put_user_2
+mdefine_line|#define __put_user_2(x, ptr) __asm__ __volatile__(&quot;call __put_user_2&quot;:&quot;=a&quot; (__ret_pu):&quot;0&quot; ((typeof(*(ptr)))(x)), &quot;c&quot; (ptr))
+DECL|macro|__put_user_4
+mdefine_line|#define __put_user_4(x, ptr) __asm__ __volatile__(&quot;call __put_user_4&quot;:&quot;=a&quot; (__ret_pu):&quot;0&quot; ((typeof(*(ptr)))(x)), &quot;c&quot; (ptr))
+DECL|macro|__put_user_8
+mdefine_line|#define __put_user_8(x, ptr) __asm__ __volatile__(&quot;call __put_user_8&quot;:&quot;=a&quot; (__ret_pu):&quot;A&quot; ((typeof(*(ptr)))(x)), &quot;c&quot; (ptr))
+DECL|macro|__put_user_X
+mdefine_line|#define __put_user_X(x, ptr) __asm__ __volatile__(&quot;call __put_user_X&quot;:&quot;=a&quot; (__ret_pu):&quot;c&quot; (ptr))
 multiline_comment|/**&n; * put_user: - Write a simple value into user space.&n; * @x:   Value to copy to user space.&n; * @ptr: Destination address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple value from kernel space to user&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and @x must be assignable&n; * to the result of dereferencing @ptr.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; */
 DECL|macro|put_user
-mdefine_line|#define put_user(x,ptr)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __put_user_check((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
+mdefine_line|#define put_user(x,ptr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;int __ret_pu;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;switch(sizeof(*(ptr))) {&t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_1(x, ptr); break;&t;&t;&t;&bslash;&n;&t;case 2: __put_user_2(x, ptr); break;&t;&t;&t;&bslash;&n;&t;case 4: __put_user_4(x, ptr); break;&t;&t;&t;&bslash;&n;&t;case 8: __put_user_8(x, ptr); break;&t;&t;&t;&bslash;&n;&t;default:__put_user_X(x, ptr); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret_pu;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/**&n; * __get_user: - Get a simple variable from user space, with less checking.&n; * @x:   Variable to store result.&n; * @ptr: Source address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple variable from user space to kernel&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and the result of&n; * dereferencing @ptr must be assignable to @x without a cast.&n; *&n; * Caller must check the pointer with access_ok() before calling this&n; * function.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; * On error, the variable @x is set to zero.&n; */
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x,ptr) &bslash;&n;  __get_user_nocheck((x),(ptr),sizeof(*(ptr)))
@@ -167,8 +210,6 @@ DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr) &bslash;&n;  __put_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
 DECL|macro|__put_user_nocheck
 mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_size((x),(ptr),(size),__pu_err,-EFAULT);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __user *__pu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE,__pu_addr,size))&t;&t;&t;&bslash;&n;&t;&t;__put_user_size((x),__pu_addr,(size),__pu_err,-EFAULT);&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})&t;&t;&t;&t;&t;&t;&t;
 DECL|macro|__put_user_u64
 mdefine_line|#define __put_user_u64(x, addr, err)&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;movl %%eax,0(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;movl %%edx,4(%2)&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;movl %3,%0&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;jmp 3b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 1b,4b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long 2b,4b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot;(err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;A&quot; (x), &quot;r&quot; (addr), &quot;i&quot;(-EFAULT), &quot;0&quot;(err))
 macro_line|#ifdef CONFIG_X86_WP_WORKS_OK

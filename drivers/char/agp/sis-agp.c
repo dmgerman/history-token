@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SiS AGPGART routines. &n; */
+multiline_comment|/*&n; * SiS AGPGART routines.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -303,6 +303,11 @@ r_void
 id|sis_delayed_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -356,6 +361,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|bridge
+comma
 id|mode
 comma
 id|command
@@ -428,13 +435,13 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Weird: on some sis chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&t;&t; &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Weird: on some sis chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|device-&gt;device
 op_eq
-id|agp_bridge-&gt;dev-&gt;device
+id|bridge-&gt;dev-&gt;device
 )paren
 (brace
 id|printk
@@ -1409,7 +1416,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

@@ -166,6 +166,8 @@ mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08l
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(pteptr) = (pteval);&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;dcf %M0&quot; :: &quot;U&quot;(*pteptr));&t;&bslash;&n;} while(0)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|set_pte_atomic
 mdefine_line|#define set_pte_atomic(pteptr, pteval)&t;&t;set_pte((pteptr), (pteval))
 multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
@@ -510,7 +512,7 @@ macro_line|#undef TEST_VERIFY_AREA
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { set_pte_at(mm, addr, xp, __pte(0)); } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_present
@@ -884,6 +886,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -923,6 +934,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -962,6 +982,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1007,6 +1036,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1016,39 +1054,6 @@ id|set_bit
 c_func
 (paren
 id|_PAGE_BIT_WP
-comma
-id|ptep
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;dcf %M0&quot;
-op_scope_resolution
-l_string|&quot;U&quot;
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-id|set_bit
-c_func
-(paren
-id|_PAGE_BIT_DIRTY
 comma
 id|ptep
 )paren
@@ -1187,8 +1192,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

@@ -3589,6 +3589,8 @@ op_logical_or
 id|agp_copy_info
 c_func
 (paren
+id|agp_bridge
+comma
 op_amp
 id|info
 )paren

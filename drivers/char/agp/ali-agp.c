@@ -656,7 +656,10 @@ op_star
 id|m1541_alloc_page
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_void
@@ -666,6 +669,7 @@ op_assign
 id|agp_generic_alloc_page
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 id|u32
@@ -1740,7 +1744,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

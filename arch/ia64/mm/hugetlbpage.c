@@ -1188,6 +1188,10 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|pte
 )paren
 suffix:semicolon

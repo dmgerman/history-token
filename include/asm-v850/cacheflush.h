@@ -13,7 +13,7 @@ mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;((void)0)
 DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma, start, end)&t;((void)0)
 DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;((void)0)
+mdefine_line|#define flush_cache_page(vma, vmaddr, pfn)&t;((void)0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;((void)0)
 DECL|macro|flush_dcache_mmap_lock

@@ -234,6 +234,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|cancel_rearming_delayed_work
+c_func
+(paren
+r_struct
+id|work_struct
+op_star
+id|work
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Kill off a pending schedule_delayed_work().  Note that the work callback&n; * function may still be running on return from cancel_delayed_work().  Run&n; * flush_scheduled_work() to wait on it.&n; */
 DECL|function|cancel_delayed_work
 r_static
