@@ -1587,6 +1587,13 @@ c_func
 id|xfrm_ealg_get_byidx
 )paren
 suffix:semicolon
+DECL|variable|xfrm_calg_get_byidx
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_calg_get_byidx
+)paren
+suffix:semicolon
 DECL|variable|xfrm_aalg_get_byid
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -1601,6 +1608,13 @@ c_func
 id|xfrm_ealg_get_byid
 )paren
 suffix:semicolon
+DECL|variable|xfrm_calg_get_byid
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_calg_get_byid
+)paren
+suffix:semicolon
 DECL|variable|xfrm_aalg_get_byname
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -1613,6 +1627,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|xfrm_ealg_get_byname
+)paren
+suffix:semicolon
+DECL|variable|xfrm_calg_get_byname
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|xfrm_calg_get_byname
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
