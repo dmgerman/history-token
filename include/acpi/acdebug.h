@@ -261,6 +261,12 @@ id|object_arg
 )paren
 suffix:semicolon
 r_void
+id|acpi_db_display_gpes
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|acpi_db_check_integrity
 (paren
 r_void
