@@ -314,6 +314,35 @@ id|set
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|netif_security_struct
+r_struct
+id|netif_security_struct
+(brace
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* back pointer */
+DECL|member|if_sid
+id|u32
+id|if_sid
+suffix:semicolon
+multiline_comment|/* SID for this interface */
+DECL|member|msg_sid
+id|u32
+id|msg_sid
+suffix:semicolon
+multiline_comment|/* default SID for messages received on this interface */
+DECL|member|avcr
+r_struct
+id|avc_entry_ref
+id|avcr
+suffix:semicolon
+multiline_comment|/* reference to permissions */
+)brace
+suffix:semicolon
 r_extern
 r_int
 id|inode_security_set_sid
