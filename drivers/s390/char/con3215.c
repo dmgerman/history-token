@@ -2789,9 +2789,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -2824,9 +2826,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|raw-&gt;flags
 op_and_assign
