@@ -2210,6 +2210,22 @@ op_or
 id|test_bit
 c_func
 (paren
+id|LED_MISC
+comma
+id|dev-&gt;led
+)paren
+ques
+c_cond
+l_int|0x10
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+op_or
+(paren
+id|test_bit
+c_func
+(paren
 id|LED_MUTE
 comma
 id|dev-&gt;led
@@ -2280,7 +2296,7 @@ id|atkbd-&gt;oldset
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n; * For known special keyboards we can go ahead and set the correct set.&n; * We check for NCD PS/2 Sun, NorthGate OmniKey 101 and IBM RapidAccess&n; * keyboards.&n; */
+multiline_comment|/*&n; * For known special keyboards we can go ahead and set the correct set.&n; * We check for NCD PS/2 Sun, NorthGate OmniKey 101 and&n; * IBM RapidAccess / IBM EzButton / Chicony KBP-8993 keyboards.&n; */
 r_if
 c_cond
 (paren
@@ -2310,6 +2326,13 @@ r_return
 l_int|3
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|atkbd_set
+op_ne
+l_int|2
+)paren
 r_if
 c_cond
 (paren
@@ -2343,6 +2366,14 @@ r_return
 l_int|2
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|atkbd_set
+op_eq
+l_int|4
+)paren
+(brace
 id|param
 (braket
 l_int|0
@@ -2367,6 +2398,7 @@ id|ATKBD_CMD_EX_ENABLE
 r_return
 l_int|4
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * Try to set the set we want.&n; */
 id|param
 (braket
@@ -3031,6 +3063,12 @@ id|BIT
 c_func
 (paren
 id|LED_MUTE
+)paren
+op_or
+id|BIT
+c_func
+(paren
+id|LED_MISC
 )paren
 suffix:semicolon
 id|sprintf
