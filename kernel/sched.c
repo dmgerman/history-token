@@ -79,8 +79,6 @@ DECL|macro|STARVATION_LIMIT
 mdefine_line|#define STARVATION_LIMIT&t;(MAX_SLEEP_AVG)
 DECL|macro|NS_MAX_SLEEP_AVG
 mdefine_line|#define NS_MAX_SLEEP_AVG&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG))
-DECL|macro|CREDIT_LIMIT
-mdefine_line|#define CREDIT_LIMIT&t;&t;100
 multiline_comment|/*&n; * If a task is &squot;interactive&squot; then we reinsert it in the active&n; * array after it has expired its current timeslice. (it will not&n; * continue to run immediately, it will still roundrobin with&n; * other interactive tasks.)&n; *&n; * This part scales the interactivity limit depending on niceness.&n; *&n; * We scale it linearly, offset by the INTERACTIVE_DELTA delta.&n; * Here are a few examples of different nice levels:&n; *&n; *  TASK_INTERACTIVE(-20): [1,1,1,1,1,1,1,1,1,0,0]&n; *  TASK_INTERACTIVE(-10): [1,1,1,1,1,1,1,0,0,0,0]&n; *  TASK_INTERACTIVE(  0): [1,1,1,1,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 10): [1,1,0,0,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 19): [0,0,0,0,0,0,0,0,0,0,0]&n; *&n; * (the X axis represents the possible -5 ... 0 ... +5 dynamic&n; *  priority range a task can explore, a value of &squot;1&squot; means the&n; *  task is rated interactive.)&n; *&n; * Ie. nice +19 tasks can never get &squot;interactive&squot; enough to be&n; * reinserted into the active array. And only heavily CPU-hog nice -20&n; * tasks will be expired. Default nice 0 tasks are somewhere between,&n; * it takes some effort for them to get interactive, but it&squot;s not&n; * too hard.&n; */
 DECL|macro|CURRENT_BONUS
 mdefine_line|#define CURRENT_BONUS(p) &bslash;&n;&t;(NS_TO_JIFFIES((p)-&gt;sleep_avg) * MAX_BONUS / &bslash;&n;&t;&t;MAX_SLEEP_AVG)
@@ -101,10 +99,6 @@ DECL|macro|TASK_INTERACTIVE
 mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
 DECL|macro|INTERACTIVE_SLEEP
 mdefine_line|#define INTERACTIVE_SLEEP(p) &bslash;&n;&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG * &bslash;&n;&t;&t;(MAX_BONUS / 2 + DELTA((p)) + 1) / MAX_BONUS - 1))
-DECL|macro|HIGH_CREDIT
-mdefine_line|#define HIGH_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &gt; CREDIT_LIMIT)
-DECL|macro|LOW_CREDIT
-mdefine_line|#define LOW_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &lt; -CREDIT_LIMIT)
 DECL|macro|TASK_PREEMPTS_CURR
 mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio)
 multiline_comment|/*&n; * task_timeslice() scales user-nice values [ -20 ... 0 ... 19 ]&n; * to time slice values: [800ms ... 100ms ... 5ms]&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; */
@@ -1744,19 +1738,6 @@ op_minus
 id|DEF_TIMESLICE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|HIGH_CREDIT
-c_func
-(paren
-id|p
-)paren
-)paren
-id|p-&gt;interactive_credit
-op_increment
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1777,41 +1758,7 @@ c_cond
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Tasks with low interactive_credit are limited to&n;&t;&t;&t; * one timeslice worth of sleep avg bonus.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|LOW_CREDIT
-c_func
-(paren
-id|p
-)paren
-op_logical_and
-id|sleep_time
-OG
-id|JIFFIES_TO_NS
-c_func
-(paren
-id|task_timeslice
-c_func
-(paren
-id|p
-)paren
-)paren
-)paren
-id|sleep_time
-op_assign
-id|JIFFIES_TO_NS
-c_func
-(paren
-id|task_timeslice
-c_func
-(paren
-id|p
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Non high_credit tasks waking from uninterruptible&n;&t;&t;&t; * sleep are limited in their sleep_avg rise as they&n;&t;&t;&t; * are likely to be cpu hogs waiting on I/O&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Tasks waking from uninterruptible sleep are&n;&t;&t;&t; * limited in their sleep_avg rise as they&n;&t;&t;&t; * are likely to be waiting on I/O&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1819,13 +1766,6 @@ id|p-&gt;activated
 op_eq
 op_minus
 l_int|1
-op_logical_and
-op_logical_neg
-id|HIGH_CREDIT
-c_func
-(paren
-id|p
-)paren
 op_logical_and
 id|p-&gt;mm
 )paren
@@ -1886,25 +1826,10 @@ id|p-&gt;sleep_avg
 OG
 id|NS_MAX_SLEEP_AVG
 )paren
-(brace
 id|p-&gt;sleep_avg
 op_assign
 id|NS_MAX_SLEEP_AVG
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|HIGH_CREDIT
-c_func
-(paren
-id|p
-)paren
-)paren
-id|p-&gt;interactive_credit
-op_increment
-suffix:semicolon
-)brace
 )brace
 )brace
 id|p-&gt;prio
@@ -3551,10 +3476,6 @@ id|MAX_SLEEP_AVG
 op_div
 id|MAX_BONUS
 )paren
-suffix:semicolon
-id|p-&gt;interactive_credit
-op_assign
-l_int|0
 suffix:semicolon
 id|p-&gt;prio
 op_assign
@@ -8271,16 +8192,7 @@ id|run_time
 op_assign
 id|NS_MAX_SLEEP_AVG
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tasks with interactive credits get charged less run_time&n;&t; * at high sleep_avg to delay them losing their interactive&n;&t; * status&n;&t; */
-r_if
-c_cond
-(paren
-id|HIGH_CREDIT
-c_func
-(paren
-id|prev
-)paren
-)paren
+multiline_comment|/*&n;&t; * Tasks charged proportionately less run_time at high sleep_avg to&n;&t; * delay them losing their interactive status&n;&t; */
 id|run_time
 op_div_assign
 (paren
@@ -8706,33 +8618,10 @@ id|prev-&gt;sleep_avg
 op_le
 l_int|0
 )paren
-(brace
 id|prev-&gt;sleep_avg
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|HIGH_CREDIT
-c_func
-(paren
-id|prev
-)paren
-op_logical_or
-id|LOW_CREDIT
-c_func
-(paren
-id|prev
-)paren
-)paren
-)paren
-id|prev-&gt;interactive_credit
-op_decrement
-suffix:semicolon
-)brace
 id|prev-&gt;timestamp
 op_assign
 id|prev-&gt;last_ran
@@ -12524,10 +12413,6 @@ r_int
 id|flags
 suffix:semicolon
 id|idle-&gt;sleep_avg
-op_assign
-l_int|0
-suffix:semicolon
-id|idle-&gt;interactive_credit
 op_assign
 l_int|0
 suffix:semicolon
