@@ -7491,7 +7491,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|13
@@ -8923,7 +8923,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -10367,7 +10367,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -11984,7 +11984,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -13746,7 +13746,7 @@ id|smb_buffer
 comma
 id|SMB_COM_TREE_CONNECT_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/*no tid */
 comma
 l_int|4

@@ -524,7 +524,7 @@ id|smb_hdr
 op_star
 id|ret_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* We could use negotiated size instead of max_msgsize - &n;   but it may be more efficient to always alloc same size &n;   albeit slightly larger than necessary and maxbuffersize &n;   defaults to this and can not be bigger */
 id|ret_buf

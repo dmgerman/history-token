@@ -4731,7 +4731,7 @@ r_char
 op_star
 id|smb_read_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|smb_com_read_rsp
@@ -5052,7 +5052,7 @@ id|smb_read_data
 suffix:semicolon
 id|smb_read_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -5326,7 +5326,7 @@ id|smb_read_data
 suffix:semicolon
 id|smb_read_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|bytes_read
@@ -5356,7 +5356,7 @@ id|smb_read_data
 suffix:semicolon
 id|smb_read_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|FreeXid

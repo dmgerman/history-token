@@ -619,7 +619,7 @@ id|SMB_COM_NEGOTIATE
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tcon yet */
 comma
 (paren
@@ -1443,7 +1443,7 @@ id|SMB_COM_LOGOFF_ANDX
 comma
 l_int|2
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tcon anymore */
 comma
 (paren
@@ -10536,7 +10536,7 @@ id|SMB_COM_TRANSACTION2
 comma
 l_int|15
 comma
-l_int|0
+l_int|NULL
 comma
 (paren
 r_void
