@@ -1887,18 +1887,6 @@ id|xfs_extlen_t
 id|idx
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Not necessarily exported, but used outside a single file.&n; */
-r_int
-id|xfs_trans_lsn_danger
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-comma
-id|xfs_lsn_t
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_TRANS_H__ */
 eof

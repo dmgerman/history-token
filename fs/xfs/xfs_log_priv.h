@@ -470,6 +470,10 @@ DECL|member|ic_forcesema
 id|sv_t
 id|ic_forcesema
 suffix:semicolon
+DECL|member|ic_writesema
+id|sv_t
+id|ic_writesema
+suffix:semicolon
 DECL|member|ic_next
 r_struct
 id|xlog_in_core
@@ -543,11 +547,6 @@ op_star
 id|ic_datap
 suffix:semicolon
 multiline_comment|/* pointer to iclog data */
-DECL|member|ic_write_work
-r_struct
-id|work_struct
-id|ic_write_work
-suffix:semicolon
 DECL|typedef|xlog_iclog_fields_t
 )brace
 id|xlog_iclog_fields_t
@@ -603,8 +602,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Defines to save our code from this glop.&n; */
 DECL|macro|ic_forcesema
 mdefine_line|#define ic_forcesema&t;hic_fields.ic_forcesema
-DECL|macro|ic_write_work
-mdefine_line|#define ic_write_work&t;hic_fields.ic_write_work
+DECL|macro|ic_writesema
+mdefine_line|#define ic_writesema&t;hic_fields.ic_writesema
 DECL|macro|ic_next
 mdefine_line|#define ic_next&t;&t;hic_fields.ic_next
 DECL|macro|ic_prev

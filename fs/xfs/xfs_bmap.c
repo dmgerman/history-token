@@ -26035,6 +26035,14 @@ id|__int32_t
 id|oflags
 suffix:semicolon
 multiline_comment|/* getbmapx bmv_oflags field */
+id|vp
+op_assign
+id|BHV_TO_VNODE
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 id|ip
 op_assign
 id|XFS_BHVTOI
@@ -26043,13 +26051,9 @@ c_func
 id|bdp
 )paren
 suffix:semicolon
-id|vp
+id|mp
 op_assign
-id|BHV_TO_VNODE
-c_func
-(paren
-id|bdp
-)paren
+id|ip-&gt;i_mount
 suffix:semicolon
 id|whichfork
 op_assign
@@ -26228,10 +26232,6 @@ c_func
 id|EINVAL
 )paren
 suffix:semicolon
-id|mp
-op_assign
-id|ip-&gt;i_mount
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -26403,6 +26403,7 @@ op_logical_and
 id|ip-&gt;i_delayed_blks
 )paren
 (brace
+multiline_comment|/* xfs_fsize_t last_byte = xfs_file_last_byte(ip); */
 id|VOP_FLUSH_PAGES
 c_func
 (paren
@@ -26495,12 +26496,11 @@ suffix:colon
 id|XFS_BMAPI_IGSTATE
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Allocate enough space to handle &quot;subnex&quot; maps at a time.&n;&t; */
 id|subnex
 op_assign
 l_int|16
 suffix:semicolon
-multiline_comment|/* XXXjtk - need a #define?&t;*/
-multiline_comment|/*&n;&t; * Allocate enough space to handle &quot;subnex&quot; maps at a time.&n;&t; */
 id|map
 op_assign
 id|kmem_alloc
@@ -26549,20 +26549,17 @@ id|nex
 suffix:semicolon
 r_do
 (brace
-r_if
-c_cond
+id|nmap
+op_assign
 (paren
 id|nexleft
 OG
 id|subnex
 )paren
-id|nmap
-op_assign
+ques
+c_cond
 id|subnex
-suffix:semicolon
-r_else
-id|nmap
-op_assign
+suffix:colon
 id|nexleft
 suffix:semicolon
 id|error
@@ -26604,14 +26601,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|nmap
-op_le
-id|subnex
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -26620,11 +26609,17 @@ id|error
 r_goto
 id|unlock_and_return
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|nmap
+op_le
+id|subnex
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
-id|error
-op_assign
 id|i
 op_assign
 l_int|0
@@ -26646,6 +26641,20 @@ op_decrement
 suffix:semicolon
 id|oflags
 op_assign
+(paren
+id|map
+(braket
+id|i
+)braket
+dot
+id|br_state
+op_eq
+id|XFS_EXT_UNWRITTEN
+)paren
+ques
+c_cond
+id|BMV_OF_PREALLOC
+suffix:colon
 l_int|0
 suffix:semicolon
 id|out.bmv_offset
@@ -26712,15 +26721,15 @@ op_eq
 id|bmvend
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * came to hole at end of file&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * came to hole at end of file&n;&t;&t;&t;&t; */
 r_goto
 id|unlock_and_return
 suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
+id|out.bmv_block
+op_assign
 (paren
 id|map
 (braket
@@ -26731,14 +26740,11 @@ id|br_startblock
 op_eq
 id|HOLESTARTBLOCK
 )paren
-id|out.bmv_block
-op_assign
+ques
+c_cond
 op_minus
 l_int|1
-suffix:semicolon
-r_else
-id|out.bmv_block
-op_assign
+suffix:colon
 id|XFS_FSB_TO_DB
 c_func
 (paren
@@ -26752,7 +26758,7 @@ dot
 id|br_startblock
 )paren
 suffix:semicolon
-multiline_comment|/* return either a getbmap or a getbmapx structure. */
+multiline_comment|/* return either getbmap/getbmapx structure. */
 r_if
 c_cond
 (paren
@@ -26876,15 +26882,15 @@ suffix:semicolon
 id|bmv-&gt;bmv_entries
 op_increment
 suffix:semicolon
-r_if
-c_cond
+id|ap
+op_assign
 (paren
 id|interface
 op_amp
 id|BMV_IF_EXTENDED
 )paren
-id|ap
-op_assign
+ques
+c_cond
 (paren
 r_void
 op_star
@@ -26899,10 +26905,7 @@ id|ap
 op_plus
 l_int|1
 )paren
-suffix:semicolon
-r_else
-id|ap
-op_assign
+suffix:colon
 (paren
 r_void
 op_star

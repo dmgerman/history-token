@@ -232,6 +232,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|vp-&gt;v_type
@@ -310,6 +312,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -371,6 +375,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -787,6 +793,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -859,6 +867,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -878,6 +888,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Call VOP_RECLAIM and clean vp. The FSYNC_INVAL flag tells&n;&t; * vp&squot;s filesystem to flush and invalidate all cached resources.&n;&t; * When vn_reclaim returns, vp should have no private data,&n;&t; * either in a system cache or attached to v_data.&n;&t; */
@@ -959,6 +971,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1035,6 +1049,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Do not make the VOP_INACTIVE call if there&n;&t;&t; * are no behaviors attached to the vnode to call.&n;&t;&t; */
@@ -1109,6 +1125,8 @@ id|VN_UNLOCK
 c_func
 (paren
 id|vp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|vn_trace_exit

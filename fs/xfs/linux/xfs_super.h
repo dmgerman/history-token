@@ -123,6 +123,15 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|xfs_relse_buftarg
+(paren
+r_struct
+id|pb_target
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|xfs_free_buftarg
 (paren
 r_struct

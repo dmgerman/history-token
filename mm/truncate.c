@@ -336,6 +336,15 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping-&gt;nrpages
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|pagevec_init
 c_func
 (paren
