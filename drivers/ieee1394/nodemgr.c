@@ -4839,20 +4839,9 @@ id|ne
 id|HPSB_DEBUG
 c_func
 (paren
-l_string|&quot;%s removed: Node[&quot;
+l_string|&quot;Device removed: Node[&quot;
 id|NODE_BUS_FMT
 l_string|&quot;]  GUID[%016Lx]  [%s]&quot;
-comma
-(paren
-id|ne-&gt;host-&gt;node_id
-op_eq
-id|ne-&gt;nodeid
-)paren
-ques
-c_cond
-l_string|&quot;Host&quot;
-suffix:colon
-l_string|&quot;Device&quot;
 comma
 id|NODE_BUS_ARGS
 c_func

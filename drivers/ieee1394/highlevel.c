@@ -650,7 +650,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|hpsb_listen_channel
-r_void
+r_int
 id|hpsb_listen_channel
 c_func
 (paren
@@ -686,6 +686,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -700,6 +702,7 @@ op_eq
 l_int|0
 )paren
 (brace
+r_return
 id|host-&gt;driver
 op_member_access_from_pointer
 id|devctl
@@ -713,6 +716,9 @@ id|channel
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|hpsb_unlisten_channel
 r_void

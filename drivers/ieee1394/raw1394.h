@@ -1,10 +1,7 @@
 macro_line|#ifndef IEEE1394_RAW1394_H
 DECL|macro|IEEE1394_RAW1394_H
 mdefine_line|#define IEEE1394_RAW1394_H
-DECL|macro|RAW1394_DEVICE_MAJOR
-mdefine_line|#define RAW1394_DEVICE_MAJOR      171
-DECL|macro|RAW1394_DEVICE_NAME
-mdefine_line|#define RAW1394_DEVICE_NAME       &quot;raw1394&quot;
+multiline_comment|/* header for the raw1394 API that is exported to user-space */
 DECL|macro|RAW1394_KERNELAPI_VERSION
 mdefine_line|#define RAW1394_KERNELAPI_VERSION 4
 multiline_comment|/* state: opened */
@@ -166,39 +163,39 @@ r_struct
 id|arm_request
 (brace
 DECL|member|destination_nodeid
-id|nodeid_t
+id|__u16
 id|destination_nodeid
 suffix:semicolon
 DECL|member|source_nodeid
-id|nodeid_t
+id|__u16
 id|source_nodeid
 suffix:semicolon
 DECL|member|destination_offset
-id|nodeaddr_t
+id|__u64
 id|destination_offset
 suffix:semicolon
 DECL|member|tlabel
-id|u8
+id|__u8
 id|tlabel
 suffix:semicolon
 DECL|member|tcode
-id|u8
+id|__u8
 id|tcode
 suffix:semicolon
 DECL|member|extended_transaction_code
-id|u_int8_t
+id|__u8
 id|extended_transaction_code
 suffix:semicolon
 DECL|member|generation
-id|u_int32_t
+id|__u32
 id|generation
 suffix:semicolon
 DECL|member|buffer_length
-id|arm_length_t
+id|__u16
 id|buffer_length
 suffix:semicolon
 DECL|member|buffer
-id|byte_t
+id|__u8
 op_star
 id|buffer
 suffix:semicolon
@@ -213,15 +210,15 @@ r_struct
 id|arm_response
 (brace
 DECL|member|response_code
-r_int
+id|__s32
 id|response_code
 suffix:semicolon
 DECL|member|buffer_length
-id|arm_length_t
+id|__u16
 id|buffer_length
 suffix:semicolon
 DECL|member|buffer
-id|byte_t
+id|__u8
 op_star
 id|buffer
 suffix:semicolon
@@ -253,54 +250,55 @@ op_star
 id|arm_request_response_t
 suffix:semicolon
 multiline_comment|/* rawiso API */
-multiline_comment|/* ioctls */
-DECL|macro|RAW1394_ISO_XMIT_INIT
-mdefine_line|#define RAW1394_ISO_XMIT_INIT        1  /* arg: raw1394_iso_status* */
-DECL|macro|RAW1394_ISO_RECV_INIT
-mdefine_line|#define RAW1394_ISO_RECV_INIT        2  /* arg: raw1394_iso_status* */
-DECL|macro|RAW1394_ISO_RECV_START
-mdefine_line|#define RAW1394_ISO_RECV_START       3  /* arg: int, starting cycle */
-DECL|macro|RAW1394_ISO_XMIT_START
-mdefine_line|#define RAW1394_ISO_XMIT_START       8  /* arg: int[2], { starting cycle, prebuffer } */
-DECL|macro|RAW1394_ISO_STOP
-mdefine_line|#define RAW1394_ISO_STOP             4
-DECL|macro|RAW1394_ISO_GET_STATUS
-mdefine_line|#define RAW1394_ISO_GET_STATUS       5  /* arg: raw1394_iso_status* */
-DECL|macro|RAW1394_ISO_PRODUCE_CONSUME
-mdefine_line|#define RAW1394_ISO_PRODUCE_CONSUME  6  /* arg: int, # of packets */
-DECL|macro|RAW1394_ISO_SHUTDOWN
-mdefine_line|#define RAW1394_ISO_SHUTDOWN         7
+macro_line|#include &quot;ieee1394-ioctl.h&quot;
 multiline_comment|/* per-packet metadata embedded in the ringbuffer */
 multiline_comment|/* must be identical to hpsb_iso_packet_info in iso.h! */
 DECL|struct|raw1394_iso_packet_info
 r_struct
 id|raw1394_iso_packet_info
 (brace
+DECL|member|offset
+id|__u32
+id|offset
+suffix:semicolon
 DECL|member|len
-r_int
-r_int
+id|__u16
 id|len
 suffix:semicolon
 DECL|member|cycle
-r_int
-r_int
+id|__u16
 id|cycle
 suffix:semicolon
+multiline_comment|/* recv only */
 DECL|member|channel
-r_int
-r_char
+id|__u8
 id|channel
 suffix:semicolon
 multiline_comment|/* recv only */
 DECL|member|tag
-r_int
-r_char
+id|__u8
 id|tag
 suffix:semicolon
 DECL|member|sy
-r_int
-r_char
+id|__u8
 id|sy
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* argument for RAW1394_ISO_RECV/XMIT_PACKETS ioctls */
+DECL|struct|raw1394_iso_packets
+r_struct
+id|raw1394_iso_packets
+(brace
+DECL|member|n_packets
+id|__u32
+id|n_packets
+suffix:semicolon
+DECL|member|infos
+r_struct
+id|raw1394_iso_packet_info
+op_star
+id|infos
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -308,27 +306,29 @@ DECL|struct|raw1394_iso_config
 r_struct
 id|raw1394_iso_config
 (brace
+multiline_comment|/* size of packet data buffer, in bytes (will be rounded up to PAGE_SIZE) */
+DECL|member|data_buf_size
+id|__u32
+id|data_buf_size
+suffix:semicolon
+multiline_comment|/* # of packets to buffer */
 DECL|member|buf_packets
-r_int
-r_int
+id|__u32
 id|buf_packets
 suffix:semicolon
-DECL|member|max_packet_size
-r_int
-r_int
-id|max_packet_size
-suffix:semicolon
+multiline_comment|/* iso channel (set to -1 for multi-channel recv) */
 DECL|member|channel
-r_int
+id|__s32
 id|channel
 suffix:semicolon
+multiline_comment|/* xmit only - iso transmission speed */
 DECL|member|speed
-r_int
+id|__u8
 id|speed
 suffix:semicolon
-multiline_comment|/* xmit only */
+multiline_comment|/* max. latency of buffer, in packets (-1 if you don&squot;t care) */
 DECL|member|irq_interval
-r_int
+id|__s32
 id|irq_interval
 suffix:semicolon
 )brace
@@ -344,297 +344,22 @@ r_struct
 id|raw1394_iso_config
 id|config
 suffix:semicolon
-multiline_comment|/* byte offset between successive packets in the buffer */
-DECL|member|buf_stride
-r_int
-id|buf_stride
-suffix:semicolon
-multiline_comment|/* byte offset of data payload within each packet */
-DECL|member|packet_data_offset
-r_int
-id|packet_data_offset
-suffix:semicolon
-multiline_comment|/* byte offset of struct iso_packet_info within each packet */
-DECL|member|packet_info_offset
-r_int
-id|packet_info_offset
-suffix:semicolon
-multiline_comment|/* index of next packet to fill with data (ISO transmission)&n;&t;   or next packet containing data recieved (ISO reception) */
-DECL|member|first_packet
-r_int
-r_int
-id|first_packet
-suffix:semicolon
 multiline_comment|/* number of packets waiting to be filled with data (ISO transmission)&n;&t;   or containing data received (ISO reception) */
 DECL|member|n_packets
-r_int
-r_int
+id|__u32
 id|n_packets
 suffix:semicolon
 multiline_comment|/* approximate number of packets dropped due to overflow or&n;&t;   underflow of the packet buffer (a value of zero guarantees&n;&t;   that no packets have been dropped) */
 DECL|member|overflows
-r_int
-r_int
+id|__u32
 id|overflows
 suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|struct|iso_block_store
-r_struct
-id|iso_block_store
-(brace
-DECL|member|refcount
-id|atomic_t
-id|refcount
-suffix:semicolon
-DECL|member|data_size
-r_int
-id|data_size
-suffix:semicolon
-DECL|member|data
-id|quadlet_t
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* cycle number at which next packet will be transmitted;&n;&t;   -1 if not known */
+DECL|member|xmit_cycle
+id|__s16
+id|xmit_cycle
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|enum|raw1394_iso_state
-DECL|enumerator|RAW1394_ISO_INACTIVE
-r_enum
-id|raw1394_iso_state
-(brace
-id|RAW1394_ISO_INACTIVE
-op_assign
-l_int|0
-comma
-DECL|enumerator|RAW1394_ISO_RECV
-id|RAW1394_ISO_RECV
-op_assign
-l_int|1
-comma
-DECL|enumerator|RAW1394_ISO_XMIT
-id|RAW1394_ISO_XMIT
-op_assign
-l_int|2
-)brace
-suffix:semicolon
-DECL|struct|file_info
-r_struct
-id|file_info
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|enumerator|opened
-DECL|enumerator|initialized
-DECL|enumerator|connected
-DECL|member|state
-r_enum
-(brace
-id|opened
-comma
-id|initialized
-comma
-id|connected
-)brace
-id|state
-suffix:semicolon
-DECL|member|protocol_version
-r_int
-r_int
-id|protocol_version
-suffix:semicolon
-DECL|member|host
-r_struct
-id|hpsb_host
-op_star
-id|host
-suffix:semicolon
-DECL|member|req_pending
-r_struct
-id|list_head
-id|req_pending
-suffix:semicolon
-DECL|member|req_complete
-r_struct
-id|list_head
-id|req_complete
-suffix:semicolon
-DECL|member|complete_sem
-r_struct
-id|semaphore
-id|complete_sem
-suffix:semicolon
-DECL|member|reqlists_lock
-id|spinlock_t
-id|reqlists_lock
-suffix:semicolon
-DECL|member|poll_wait_complete
-id|wait_queue_head_t
-id|poll_wait_complete
-suffix:semicolon
-DECL|member|addr_list
-r_struct
-id|list_head
-id|addr_list
-suffix:semicolon
-DECL|member|fcp_buffer
-id|u8
-op_star
-id|fcp_buffer
-suffix:semicolon
-multiline_comment|/* old ISO API */
-DECL|member|listen_channels
-id|u64
-id|listen_channels
-suffix:semicolon
-DECL|member|iso_buffer
-id|quadlet_t
-op_star
-id|iso_buffer
-suffix:semicolon
-DECL|member|iso_buffer_length
-r_int
-id|iso_buffer_length
-suffix:semicolon
-DECL|member|notification
-id|u8
-id|notification
-suffix:semicolon
-multiline_comment|/* (busreset-notification) RAW1394_NOTIFY_OFF/ON */
-multiline_comment|/* new rawiso API */
-DECL|member|iso_state
-r_enum
-id|raw1394_iso_state
-id|iso_state
-suffix:semicolon
-DECL|member|iso_handle
-r_struct
-id|hpsb_iso
-op_star
-id|iso_handle
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|arm_addr
-r_struct
-id|arm_addr
-(brace
-DECL|member|addr_list
-r_struct
-id|list_head
-id|addr_list
-suffix:semicolon
-multiline_comment|/* file_info list */
-DECL|member|start
-DECL|member|end
-id|u64
-id|start
-comma
-id|end
-suffix:semicolon
-DECL|member|arm_tag
-id|u64
-id|arm_tag
-suffix:semicolon
-DECL|member|access_rights
-id|u8
-id|access_rights
-suffix:semicolon
-DECL|member|notification_options
-id|u8
-id|notification_options
-suffix:semicolon
-DECL|member|client_transactions
-id|u8
-id|client_transactions
-suffix:semicolon
-DECL|member|recvb
-id|u64
-id|recvb
-suffix:semicolon
-DECL|member|rec_length
-id|u16
-id|rec_length
-suffix:semicolon
-DECL|member|addr_space_buffer
-id|u8
-op_star
-id|addr_space_buffer
-suffix:semicolon
-multiline_comment|/* accessed by read/write/lock */
-)brace
-suffix:semicolon
-DECL|struct|pending_request
-r_struct
-id|pending_request
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|file_info
-r_struct
-id|file_info
-op_star
-id|file_info
-suffix:semicolon
-DECL|member|packet
-r_struct
-id|hpsb_packet
-op_star
-id|packet
-suffix:semicolon
-DECL|member|ibs
-r_struct
-id|iso_block_store
-op_star
-id|ibs
-suffix:semicolon
-DECL|member|data
-id|quadlet_t
-op_star
-id|data
-suffix:semicolon
-DECL|member|free_data
-r_int
-id|free_data
-suffix:semicolon
-DECL|member|req
-r_struct
-id|raw1394_request
-id|req
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|host_info
-r_struct
-id|host_info
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|host
-r_struct
-id|hpsb_host
-op_star
-id|host
-suffix:semicolon
-DECL|member|file_info_list
-r_struct
-id|list_head
-id|file_info_list
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* IEEE1394_RAW1394_H */
 eof
