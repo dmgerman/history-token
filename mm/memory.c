@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -220,10 +219,10 @@ c_func
 id|dir
 )paren
 suffix:semicolon
-id|pgtable_remove_rmap
+id|dec_page_state
 c_func
 (paren
-id|page
+id|nr_page_table_pages
 )paren
 suffix:semicolon
 id|pte_free_tlb
@@ -491,14 +490,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|pgtable_add_rmap
+id|inc_page_state
 c_func
 (paren
-r_new
-comma
-id|mm
-comma
-id|address
+id|nr_page_table_pages
 )paren
 suffix:semicolon
 id|pmd_populate
@@ -616,20 +611,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|pgtable_add_rmap
-c_func
-(paren
-id|virt_to_page
-c_func
-(paren
-r_new
-)paren
-comma
-id|mm
-comma
-id|address
-)paren
-suffix:semicolon
 id|pmd_populate_kernel
 c_func
 (paren
