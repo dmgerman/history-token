@@ -3129,8 +3129,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_return
@@ -4465,8 +4464,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|mpc-&gt;mpoad_vcc-&gt;sleep
+id|mpc-&gt;mpoad_vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_return
@@ -5871,8 +5869,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 id|dprintk

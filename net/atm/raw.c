@@ -49,8 +49,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace
@@ -102,8 +101,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace

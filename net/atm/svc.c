@@ -107,8 +107,7 @@ id|vcc-&gt;flags
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -154,8 +153,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -167,8 +165,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -540,8 +537,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -582,8 +578,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -595,8 +590,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -942,8 +936,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -977,8 +970,7 @@ id|O_NONBLOCK
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1030,8 +1022,7 @@ id|current
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1076,8 +1067,7 @@ id|sigd
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1116,8 +1106,7 @@ id|sigd
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1170,8 +1159,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1366,8 +1354,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1408,8 +1395,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1421,8 +1407,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1593,8 +1578,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|old_vcc-&gt;sleep
+id|old_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1708,8 +1692,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|old_vcc-&gt;sleep
+id|old_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1721,8 +1704,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|old_vcc-&gt;sleep
+id|old_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1859,8 +1841,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|new_vcc-&gt;sleep
+id|new_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1912,8 +1893,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|new_vcc-&gt;sleep
+id|new_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -1925,8 +1905,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|new_vcc-&gt;sleep
+id|new_vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2103,8 +2082,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2159,8 +2137,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2172,8 +2149,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait

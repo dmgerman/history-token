@@ -503,11 +503,6 @@ op_star
 id|stats
 suffix:semicolon
 multiline_comment|/* pointer to AAL stats group */
-DECL|member|sleep
-id|wait_queue_head_t
-id|sleep
-suffix:semicolon
-multiline_comment|/* if socket is busy */
 DECL|member|sk
 r_struct
 id|sock

@@ -194,8 +194,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|atmarpd-&gt;sleep
+id|atmarpd-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_return

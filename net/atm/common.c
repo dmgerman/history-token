@@ -999,7 +999,7 @@ suffix:semicolon
 id|sock_init_data
 c_func
 (paren
-l_int|NULL
+id|sock
 comma
 id|sk
 )paren
@@ -1147,18 +1147,6 @@ op_assign
 id|vcc-&gt;aal_options
 op_assign
 l_int|0
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|vcc-&gt;sleep
-)paren
-suffix:semicolon
-id|sk-&gt;sk_sleep
-op_assign
-op_amp
-id|vcc-&gt;sleep
 suffix:semicolon
 id|sk-&gt;sk_destruct
 op_assign
@@ -1383,8 +1371,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace
@@ -2738,8 +2725,7 @@ multiline_comment|/* align to word boundary */
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2861,8 +2847,7 @@ suffix:semicolon
 id|prepare_to_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2874,8 +2859,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -3036,8 +3020,7 @@ c_func
 (paren
 id|file
 comma
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 id|wait
 )paren

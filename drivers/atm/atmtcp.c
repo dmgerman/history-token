@@ -287,8 +287,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -367,8 +366,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -475,8 +473,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 r_return
@@ -1434,8 +1431,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|walk-&gt;sleep
+id|walk-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace

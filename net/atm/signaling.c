@@ -188,8 +188,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|sigd-&gt;sleep
+id|sigd-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace
@@ -606,10 +605,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;waking vcc-&gt;sleep 0x%p&bslash;n&quot;
+l_string|&quot;waking vcc-&gt;sk-&gt;sk_sleep 0x%p&bslash;n&quot;
 comma
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 id|vcc-&gt;sk
@@ -1045,8 +1043,7 @@ suffix:semicolon
 id|wake_up
 c_func
 (paren
-op_amp
-id|vcc-&gt;sleep
+id|vcc-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace
