@@ -1463,6 +1463,9 @@ l_int|0
 )paren
 id|sg-&gt;dma_address
 op_assign
+(paren
+id|dma_addr_t
+)paren
 id|map_single
 c_func
 (paren
@@ -1559,6 +1562,10 @@ c_func
 (paren
 id|hwdev
 comma
+(paren
+r_void
+op_star
+)paren
 id|sg-&gt;dma_address
 comma
 id|sg-&gt;dma_length
@@ -1657,6 +1664,10 @@ c_func
 (paren
 id|hwdev
 comma
+(paren
+r_void
+op_star
+)paren
 id|sg-&gt;dma_address
 comma
 id|sg-&gt;dma_length

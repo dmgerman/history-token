@@ -1488,6 +1488,14 @@ id|hw_interrupt_type
 op_star
 id|irq_type
 suffix:semicolon
+id|gsi_to_vector
+c_func
+(paren
+id|global_vector
+)paren
+op_assign
+id|vector
+suffix:semicolon
 id|iosapic_irq
 (braket
 id|vector
@@ -2529,8 +2537,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_get_prt
 c_func
 (paren

@@ -1713,6 +1713,8 @@ comma
 id|ctx-&gt;ctx_smpl_vaddr
 comma
 id|psb-&gt;psb_size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|up_write

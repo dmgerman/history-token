@@ -1636,14 +1636,17 @@ id|ptregs
 )paren
 (brace
 r_int
+r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|cpu
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Mask all interrupts */
-id|save_and_cli
+macro_line|#warning XXX fix me: this used to be: save_and_cli(flags);
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1682,7 +1685,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Enable all interrupts */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

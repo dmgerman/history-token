@@ -679,9 +679,6 @@ id|pcibios_scan_root
 c_func
 (paren
 r_int
-id|seg
-comma
-r_int
 id|bus
 )paren
 (brace
@@ -728,9 +725,7 @@ multiline_comment|/* Already scanned */
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: Bus (%02x:%02x) already probed&bslash;n&quot;
-comma
-id|seg
+l_string|&quot;PCI: Bus (%02x) already probed&bslash;n&quot;
 comma
 id|bus
 )paren
@@ -743,9 +738,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: Probing PCI hardware on bus (%02x:%02x)&bslash;n&quot;
-comma
-id|seg
+l_string|&quot;PCI: Probing PCI hardware on bus (%02x)&bslash;n&quot;
 comma
 id|bus
 )paren

@@ -95,8 +95,8 @@ DECL|macro|IA64_PSR_ED_BIT
 mdefine_line|#define IA64_PSR_ED_BIT&t;&t;43
 DECL|macro|IA64_PSR_BN_BIT
 mdefine_line|#define IA64_PSR_BN_BIT&t;&t;44
-DECL|macro|IA64_PSR_IA
-mdefine_line|#define IA64_PSR_IA&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_IA_BIT)
+DECL|macro|IA64_PSR_IA_BIT
+mdefine_line|#define IA64_PSR_IA_BIT&t;&t;45
 multiline_comment|/* A mask of PSR bits that we generally don&squot;t want to inherit across a clone2() or an&n;   execve().  Only list flags here that need to be cleared/set for BOTH clone2() and&n;   execve().  */
 DECL|macro|IA64_PSR_BITS_TO_CLEAR
 mdefine_line|#define IA64_PSR_BITS_TO_CLEAR&t;(IA64_PSR_MFL | IA64_PSR_MFH | IA64_PSR_DB | IA64_PSR_LP | &bslash;&n;&t;&t;&t;&t; IA64_PSR_TB  | IA64_PSR_ID  | IA64_PSR_DA | IA64_PSR_DD | &bslash;&n;&t;&t;&t;&t; IA64_PSR_SS  | IA64_PSR_ED  | IA64_PSR_IA)
@@ -141,6 +141,8 @@ mdefine_line|#define IA64_PSR_TB&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_TB_BIT)
 DECL|macro|IA64_PSR_RT
 mdefine_line|#define IA64_PSR_RT&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_RT_BIT)
 multiline_comment|/* The following are not affected by save_flags()/restore_flags(): */
+DECL|macro|IA64_PSR_CPL
+mdefine_line|#define IA64_PSR_CPL&t;(__IA64_UL(3) &lt;&lt; IA64_PSR_CPL0_BIT)
 DECL|macro|IA64_PSR_IS
 mdefine_line|#define IA64_PSR_IS&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_IS_BIT)
 DECL|macro|IA64_PSR_MC
@@ -161,6 +163,8 @@ DECL|macro|IA64_PSR_ED
 mdefine_line|#define IA64_PSR_ED&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_ED_BIT)
 DECL|macro|IA64_PSR_BN
 mdefine_line|#define IA64_PSR_BN&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_BN_BIT)
+DECL|macro|IA64_PSR_IA
+mdefine_line|#define IA64_PSR_IA&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_IA_BIT)
 multiline_comment|/* User mask bits: */
 DECL|macro|IA64_PSR_UM
 mdefine_line|#define IA64_PSR_UM&t;(IA64_PSR_BE | IA64_PSR_UP | IA64_PSR_AC | IA64_PSR_MFL | IA64_PSR_MFH)

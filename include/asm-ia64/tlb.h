@@ -2,7 +2,7 @@ macro_line|#ifndef _ASM_IA64_TLB_H
 DECL|macro|_ASM_IA64_TLB_H
 mdefine_line|#define _ASM_IA64_TLB_H
 multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * This file was derived from asm-generic/tlb.h.&n; */
-multiline_comment|/*&n; * Removing a translation from a page table (including TLB-shootdown) is a four-step&n; * procedure:&n; *&n; *&t;(1) Flush (virtual) caches --- ensures virtual memory is coherent with kernel memory&n; *&t;    (this is a no-op on ia64).&n; *&t;(2) Clear the relevant portions of the page-table&n; *&t;(3) Flush the TLBs --- ensures that stale content is gone from CPU TLBs&n; *&t;(4) Release the pages that were freed up in step (2).&n; *&n; * Note that the ordering of these steps is crucial to avoid races on MP machines.&n; *&n; * The Linux kernel defines several platform-specific hooks for TLB-shootdown.  When&n; * unmapping a portion of the virtual address space, these hooks are called according to&n; * the following template:&n; *&n; *&t;tlb &lt;- tlb_gather_mmu(mm);&t;&t;// start unmap for address space MM&n; *&t;{&n; *&t;  for each vma that needs a shootdown do {&n; *&t;    tlb_start_vma(tlb, vma);&n; *&t;      for each page-table-entry PTE that needs to be removed do {&n; *&t;&t;tlb_remove_tlb_entry(tlb, pte, address);&n; *&t;&t;if (pte refers to a normal page) {&n; *&t;&t;  tlb_remove_page(tlb, page);&n; *&t;&t;}&n; *&t;      }&n; *&t;    tlb_end_vma(tlb, vma);&n; *&t;  }&n; *&t;}&n; *&t;tlb_finish_mmu(tlb, start, end);&t;// finish unmap for address space MM&n; */
+multiline_comment|/*&n; * Removing a translation from a page table (including TLB-shootdown) is a four-step&n; * procedure:&n; *&n; *&t;(1) Flush (virtual) caches --- ensures virtual memory is coherent with kernel memory&n; *&t;    (this is a no-op on ia64).&n; *&t;(2) Clear the relevant portions of the page-table&n; *&t;(3) Flush the TLBs --- ensures that stale content is gone from CPU TLBs&n; *&t;(4) Release the pages that were freed up in step (2).&n; *&n; * Note that the ordering of these steps is crucial to avoid races on MP machines.&n; *&n; * The Linux kernel defines several platform-specific hooks for TLB-shootdown.  When&n; * unmapping a portion of the virtual address space, these hooks are called according to&n; * the following template:&n; *&n; *&t;tlb &lt;- tlb_gather_mmu(mm, full_mm_flush);&t;// start unmap for address space MM&n; *&t;{&n; *&t;  for each vma that needs a shootdown do {&n; *&t;    tlb_start_vma(tlb, vma);&n; *&t;      for each page-table-entry PTE that needs to be removed do {&n; *&t;&t;tlb_remove_tlb_entry(tlb, pte, address);&n; *&t;&t;if (pte refers to a normal page) {&n; *&t;&t;  tlb_remove_page(tlb, page);&n; *&t;&t;}&n; *&t;      }&n; *&t;    tlb_end_vma(tlb, vma);&n; *&t;  }&n; *&t;}&n; *&t;tlb_finish_mmu(tlb, start, end);&t;// finish unmap for address space MM&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -11,7 +11,7 @@ macro_line|#ifdef CONFIG_SMP
 DECL|macro|FREE_PTE_NR
 macro_line|# define FREE_PTE_NR&t;&t;2048
 DECL|macro|tlb_fast_mode
-macro_line|# define tlb_fast_mode(tlb)&t;((tlb)-&gt;nr == ~0UL)
+macro_line|# define tlb_fast_mode(tlb)&t;((tlb)-&gt;nr == ~0U)
 macro_line|#else
 DECL|macro|FREE_PTE_NR
 macro_line|# define FREE_PTE_NR&t;&t;0
@@ -32,7 +32,13 @@ r_int
 r_int
 id|nr
 suffix:semicolon
-multiline_comment|/* == ~0UL =&gt; fast mode */
+multiline_comment|/* == ~0U =&gt; fast mode */
+DECL|member|fullmm
+r_int
+r_int
+id|fullmm
+suffix:semicolon
+multiline_comment|/* non-zero means full mm flush */
 DECL|member|freed
 r_int
 r_int
@@ -97,6 +103,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|tlb-&gt;fullmm
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Tearing down the entire address space.  This happens both as a result&n;&t;&t; * of exit() and execve().  The latter case necessitates the call to&n;&t;&t; * flush_tlb_mm() here.&n;&t;&t; */
+id|flush_tlb_mm
+c_func
+(paren
+id|tlb-&gt;mm
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|unlikely
 (paren
 id|end
@@ -111,13 +132,13 @@ l_int|1024
 op_star
 l_int|1024UL
 op_logical_or
-id|rgn_index
+id|REGION_NUMBER
 c_func
 (paren
 id|start
 )paren
 op_ne
-id|rgn_index
+id|REGION_NUMBER
 c_func
 (paren
 id|end
@@ -244,6 +265,10 @@ r_struct
 id|mm_struct
 op_star
 id|mm
+comma
+r_int
+r_int
+id|full_mm_flush
 )paren
 (brace
 id|mmu_gather_t
@@ -263,25 +288,38 @@ id|tlb-&gt;mm
 op_assign
 id|mm
 suffix:semicolon
+id|tlb-&gt;nr
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|full_mm_flush
+op_logical_or
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_eq
+l_int|1
+)paren
+multiline_comment|/*&n;&t;&t; * Use fast mode if only 1 CPU is online or if we&squot;re tearing down the&n;&t;&t; * entire address space.&n;&t;&t; */
+id|tlb-&gt;nr
+op_assign
+op_complement
+l_int|0U
+suffix:semicolon
+id|tlb-&gt;fullmm
+op_assign
+id|full_mm_flush
+suffix:semicolon
 id|tlb-&gt;freed
 op_assign
 l_int|0
 suffix:semicolon
 id|tlb-&gt;start_addr
 op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-multiline_comment|/* Use fast mode if only one CPU is online */
-id|tlb-&gt;nr
-op_assign
-id|smp_num_cpus
-OG
-l_int|1
-ques
-c_cond
-l_int|0UL
-suffix:colon
 op_complement
 l_int|0UL
 suffix:semicolon
@@ -375,7 +413,8 @@ op_star
 id|tlb
 comma
 id|pte_t
-id|pte
+op_star
+id|ptep
 comma
 r_int
 r_int

@@ -81,8 +81,6 @@ macro_line|#ifdef CONFIG_IA64_GENERIC
 r_int
 r_int
 id|rsdp_phys
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|acpi20_table_rsdp
@@ -99,20 +97,16 @@ id|acpi_table_header
 op_star
 id|hdr
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-l_int|0
-op_ne
+id|rsdp_phys
+op_assign
 id|acpi_find_rsdp
 c_func
 (paren
-op_amp
-id|rsdp_phys
 )paren
-)paren
-op_logical_or
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|rsdp_phys
 )paren
@@ -257,6 +251,10 @@ macro_line|# elif defined (CONFIG_IA64_DIG)
 r_return
 l_string|&quot;dig&quot;
 suffix:semicolon
+macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
+r_return
+l_string|&quot;hpzx1&quot;
+suffix:semicolon
 macro_line|# else
 macro_line|#&t;error Unknown platform.  Fix acpi.c.
 macro_line|# endif
@@ -327,8 +325,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|result
-op_assign
+r_return
 id|acpi_get_current_resources
 c_func
 (paren
@@ -336,9 +333,6 @@ id|obj
 comma
 id|buf
 )paren
-suffix:semicolon
-r_return
-id|result
 suffix:semicolon
 )brace
 id|acpi_resource
@@ -487,6 +481,13 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+DECL|variable|acpi_irq_model
+r_enum
+id|acpi_irq_model_id
+id|acpi_irq_model
+op_assign
+id|ACPI_IRQ_MODEL_IOSAPIC
+suffix:semicolon
 multiline_comment|/*&n; * Interrupt routing API for device drivers.  Provides interrupt vector for&n; * a generic platform event.  Currently only CPEI is implemented.&n; */
 r_int
 DECL|function|acpi_request_vector
@@ -528,6 +529,28 @@ l_string|&quot;acpi_request_vector(): invalid interrupt type&bslash;n&quot;
 suffix:semicolon
 r_return
 id|vector
+suffix:semicolon
+)brace
+r_char
+op_star
+DECL|function|__acpi_map_table
+id|__acpi_map_table
+(paren
+r_int
+r_int
+id|phys_addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__va
+c_func
+(paren
+id|phys_addr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                            Boot-time Table Parsing&n;   -------------------------------------------------------------------------- */
@@ -837,25 +860,17 @@ id|iosapic
 suffix:semicolon
 r_int
 id|ver
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|max_pin
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star
 id|p
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star
 id|end
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1082,19 +1097,13 @@ id|plintsrc
 suffix:semicolon
 r_int
 id|vector
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|irq_base
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star
 id|iosapic_address
-op_assign
-l_int|NULL
 suffix:semicolon
 id|plintsrc
 op_assign
@@ -1144,8 +1153,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
 id|acpi_find_iosapic
 c_func
 (paren
@@ -1176,6 +1183,7 @@ multiline_comment|/*&n;&t; * Get vector assignment for this IRQ, set attributes,
 id|vector
 op_assign
 id|iosapic_register_platform_irq
+c_func
 (paren
 id|plintsrc-&gt;type
 comma
@@ -1520,36 +1528,26 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
+r_int
 id|__init
 DECL|function|acpi_find_rsdp
 id|acpi_find_rsdp
 (paren
-r_int
-r_int
-op_star
-id|rsdp_phys
+r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
+r_int
+r_int
 id|rsdp_phys
-)paren
-r_return
-op_minus
-id|EINVAL
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|efi.acpi20
 )paren
-(brace
-(paren
-op_star
 id|rsdp_phys
-)paren
 op_assign
 id|__pa
 c_func
@@ -1557,17 +1555,12 @@ c_func
 id|efi.acpi20
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|efi.acpi
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1576,10 +1569,8 @@ id|PREFIX
 l_string|&quot;v1.0/r0.71 tables no longer supported&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
-op_minus
-id|ENODEV
+id|rsdp_phys
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_ACPI
@@ -1682,19 +1673,13 @@ id|ACPI_SERIAL_INT_SAPIC
 (brace
 id|u32
 id|irq_base
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star
 id|iosapic_address
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|vector
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* We have a UART in memory space with an SAPIC interrupt */
 id|global_int
@@ -1739,8 +1724,7 @@ multiline_comment|/* Which iosapic does this IRQ belong to? */
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
+op_logical_neg
 id|acpi_find_iosapic
 c_func
 (paren
@@ -1753,10 +1737,10 @@ op_amp
 id|iosapic_address
 )paren
 )paren
-(brace
 id|vector
 op_assign
 id|iosapic_register_irq
+c_func
 (paren
 id|global_int
 comma
@@ -1770,12 +1754,11 @@ id|iosapic_address
 )paren
 suffix:semicolon
 )brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_SERIAL_ACPI*/
+macro_line|#endif /* CONFIG_SERIAL_ACPI */
 r_int
 id|__init
 DECL|function|acpi_boot_init
@@ -1916,7 +1899,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PREFIX
-l_string|&quot;Error parsing MADT - no IOAPIC entries&bslash;n&quot;
+l_string|&quot;Error parsing MADT - no IOSAPIC entries&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* System-Level Interrupt Routing */
@@ -2122,8 +2105,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_prts.count
-op_le
+id|acpi_prt.count
+OL
 l_int|0
 )paren
 (brace
@@ -2153,7 +2136,7 @@ r_struct
 id|pci_vector_struct
 )paren
 op_star
-id|acpi_prts.count
+id|acpi_prt.count
 comma
 id|GFP_KERNEL
 )paren
@@ -2183,7 +2166,7 @@ c_func
 id|node
 comma
 op_amp
-id|acpi_prts.entries
+id|acpi_prt.entries
 )paren
 (brace
 id|entry
@@ -2215,7 +2198,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|entry-&gt;id.dev
+id|entry-&gt;id.device
 op_lshift
 l_int|16
 )paren
@@ -2229,7 +2212,7 @@ id|i
 dot
 id|pin
 op_assign
-id|entry-&gt;id.pin
+id|entry-&gt;pin
 suffix:semicolon
 id|vector
 (braket
@@ -2238,7 +2221,7 @@ id|i
 dot
 id|irq
 op_assign
-id|entry-&gt;source.index
+id|entry-&gt;link.index
 suffix:semicolon
 id|i
 op_increment
@@ -2247,7 +2230,7 @@ suffix:semicolon
 op_star
 id|count
 op_assign
-id|acpi_prts.count
+id|acpi_prt.count
 suffix:semicolon
 r_return
 l_int|0
@@ -2277,7 +2260,7 @@ suffix:semicolon
 op_star
 id|type
 op_assign
-id|ACPI_INT_MODEL_IOSAPIC
+id|ACPI_IRQ_MODEL_IOSAPIC
 suffix:semicolon
 r_return
 l_int|0

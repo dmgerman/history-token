@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/pal.h&gt;
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
 DECL|macro|GATE_ADDR
@@ -165,6 +166,8 @@ DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value)&t;do { (var) = (value); mb(); } while (0)
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value)&t;do { (var) = (value); mb(); } while (0)
+DECL|macro|safe_halt
+mdefine_line|#define safe_halt()         ia64_pal_halt(1)                /* PAL_HALT */
 multiline_comment|/*&n; * The group barrier in front of the rsm &amp; ssm are necessary to ensure&n; * that none of the previous instructions in the same group are&n; * affected by the rsm/ssm.&n; */
 multiline_comment|/* For spinlocks etc */
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
@@ -191,63 +194,8 @@ macro_line|# define local_irq_restore(x)&t;__asm__ __volatile__ (&quot;cmp.ne p6
 macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__ (&quot;;; ssm psr.i;; srlz.d&quot; ::: &quot;memory&quot;)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;&t;local_irq_disable ()
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(flags)&t;__asm__ __volatile__ (&quot;mov %0=psr&quot; : &quot;=r&quot; (flags) :: &quot;memory&quot;)
-DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;local_irq_save(flags)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|__global_cli
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|cli
-macro_line|# define cli()&t;&t;&t;__global_cli()
-DECL|macro|sti
-macro_line|# define sti()&t;&t;&t;__global_sti()
-DECL|macro|save_flags
-macro_line|# define save_flags(flags)&t;((flags) = __global_save_flags())
-DECL|macro|restore_flags
-macro_line|# define restore_flags(flags)&t;__global_restore_flags(flags)
-macro_line|#else /* !CONFIG_SMP */
-DECL|macro|cli
-macro_line|# define cli()&t;&t;&t;local_irq_disable()
-DECL|macro|sti
-macro_line|# define sti()&t;&t;&t;local_irq_enable()
-DECL|macro|save_flags
-macro_line|# define save_flags(flags)&t;local_save_flags(flags)
-DECL|macro|restore_flags
-macro_line|# define restore_flags(flags)&t;local_irq_restore(flags)
-macro_line|#endif /* !CONFIG_SMP */
 multiline_comment|/*&n; * Force an unresolved reference if someone tries to use&n; * ia64_fetch_and_add() with a bad value.&n; */
 r_extern
 r_int
@@ -490,7 +438,9 @@ r_void
 macro_line|#endif
 multiline_comment|/*&n; * Context switch from one thread to another.  If the two threads have&n; * different address spaces, schedule() has already taken care of&n; * switching to the new address space by calling switch_mm().&n; *&n; * Disabling access to the fph partition and the debug-register&n; * context switch MUST be done before calling ia64_switch_to() since a&n; * newly created thread returns directly to&n; * ia64_ret_from_syscall_clear_r8.&n; */
 r_extern
-r_void
+r_struct
+id|task_struct
+op_star
 id|ia64_switch_to
 (paren
 r_void
@@ -534,17 +484,17 @@ DECL|macro|PERFMON_IS_SYSWIDE
 macro_line|# define PERFMON_IS_SYSWIDE() (0)
 macro_line|#endif
 DECL|macro|__switch_to
-mdefine_line|#define __switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Return true if this CPU can call the console drivers in printk() */
 DECL|macro|arch_consoles_callable
 mdefine_line|#define arch_consoles_callable() (cpu_online_map &amp; (1UL &lt;&lt; smp_processor_id()))
 multiline_comment|/*&n; * In the SMP case, we save the fph state when context-switching&n; * away from a thread that modified fph.  This way, when the thread&n; * gets scheduled on another CPU, the CPU can pick up the state from&n; * task-&gt;thread.fph, avoiding the complication of having to fetch&n; * the latest fph state from another CPU.&n; */
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#else
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = (ia64_get_fpu_owner() != (next));&t;&bslash;&n;&t;__switch_to(prev,next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(next))-&gt;dfh = (ia64_get_fpu_owner() != (next));&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */

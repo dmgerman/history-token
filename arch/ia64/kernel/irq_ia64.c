@@ -80,6 +80,14 @@ comma
 l_int|0x21
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * GSI to IA-64 vector translation table.&n; */
+DECL|variable|gsi_to_vector_map
+id|__u8
+id|gsi_to_vector_map
+(braket
+l_int|255
+)braket
+suffix:semicolon
 r_int
 DECL|function|ia64_alloc_irq
 id|ia64_alloc_irq

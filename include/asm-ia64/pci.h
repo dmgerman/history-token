@@ -29,9 +29,6 @@ id|pcibios_scan_root
 c_func
 (paren
 r_int
-id|seg
-comma
-r_int
 id|bus
 )paren
 suffix:semicolon

@@ -47,6 +47,11 @@ op_complement
 l_int|0U
 )brace
 suffix:semicolon
+DECL|variable|__per_cpu_data
+id|u8
+id|ia64_need_tlb_flush
+id|__per_cpu_data
+suffix:semicolon
 multiline_comment|/*&n; * Acquire the ia64_ctx.lock before calling this function!&n; */
 r_void
 DECL|function|wrap_mmu_context
@@ -197,7 +202,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
