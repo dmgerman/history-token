@@ -177,6 +177,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pegasus_t
@@ -2650,6 +2655,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pegasus_t
@@ -3200,6 +3210,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pegasus_t
@@ -3271,6 +3286,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pegasus_t
@@ -5446,6 +5466,8 @@ id|ctrl_callback
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|netif_wake_queue

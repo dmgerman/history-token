@@ -95,6 +95,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -191,6 +196,8 @@ op_amp
 id|ohci-&gt;hcd
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3087,6 +3094,11 @@ id|ohci
 comma
 id|u16
 id|tick
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3322,6 +3334,8 @@ id|finish_urb
 id|ohci
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|spin_lock
@@ -3549,6 +3563,11 @@ r_struct
 id|td
 op_star
 id|td
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3629,6 +3648,8 @@ id|finish_urb
 id|ohci
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

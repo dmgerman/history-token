@@ -1453,6 +1453,11 @@ r_struct
 id|urb
 op_star
 id|transfer
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_inline
@@ -1476,7 +1481,7 @@ comma
 r_int
 id|length
 comma
-id|mts_usb_urb_callback
+id|usb_complete_t
 id|callback
 )paren
 multiline_comment|/* Interrupt context! */
@@ -1607,6 +1612,11 @@ r_struct
 id|urb
 op_star
 id|transfer
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|MTS_INT_INIT
@@ -1686,6 +1696,11 @@ r_struct
 id|urb
 op_star
 id|transfer
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
@@ -1756,6 +1771,11 @@ r_struct
 id|urb
 op_star
 id|transfer
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 multiline_comment|/* Interrupt context! */
 (brace
@@ -1896,6 +1916,11 @@ r_struct
 id|urb
 op_star
 id|transfer
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
