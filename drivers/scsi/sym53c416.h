@@ -2,13 +2,6 @@ multiline_comment|/*&n; *  sym53c416.h&n; * &n; *  Copyright (C) 1998 Lieven Wil
 macro_line|#ifndef _SYM53C416_H
 DECL|macro|_SYM53C416_H
 mdefine_line|#define _SYM53C416_H
-macro_line|#if !defined(LINUX_VERSION_CODE)
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
-macro_line|#ifndef LinuxVersionCode
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
-macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|SYM53C416_SCSI_ID
 mdefine_line|#define SYM53C416_SCSI_ID 7
