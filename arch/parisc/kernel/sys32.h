@@ -9,24 +9,6 @@ r_typedef
 id|__u32
 id|__sighandler_t32
 suffix:semicolon
-macro_line|#include &lt;linux/signal.h&gt;
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_NSIG_WORDS
-op_star
-l_int|2
-)braket
-suffix:semicolon
-DECL|typedef|sigset_t32
-)brace
-id|sigset_t32
-suffix:semicolon
 DECL|struct|sigaction32
 r_struct
 id|sigaction32
@@ -41,7 +23,7 @@ r_int
 id|sa_flags
 suffix:semicolon
 DECL|member|sa_mask
-id|sigset_t32
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
