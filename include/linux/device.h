@@ -1374,6 +1374,12 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* drivers/base/platform.c */
+r_extern
+r_struct
+id|bus_type
+id|platform_bus
+suffix:semicolon
 multiline_comment|/* drivers/base/power.c */
 r_extern
 r_int
