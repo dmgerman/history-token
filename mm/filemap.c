@@ -3318,7 +3318,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|handle_ra_thrashing
+id|handle_ra_miss
 c_func
 (paren
 id|filp
@@ -4995,6 +4995,9 @@ id|pgoff
 comma
 id|endoff
 suffix:semicolon
+r_int
+id|did_readahead
+suffix:semicolon
 id|pgoff
 op_assign
 (paren
@@ -5056,7 +5059,7 @@ id|current-&gt;mm
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* The &quot;size&quot; of the file, as far as mmap is concerned, isn&squot;t bigger than the mapping */
+multiline_comment|/*&n;&t; * The &quot;size&quot; of the file, as far as mmap is concerned, isn&squot;t bigger&n;&t; * than the mapping&n;&t; */
 r_if
 c_cond
 (paren
@@ -5068,6 +5071,10 @@ id|size
 op_assign
 id|endoff
 suffix:semicolon
+id|did_readahead
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * The readahead code wants to be told about each and every page&n;&t; * so it can build and shrink its windows appropriately&n;&t; */
 r_if
 c_cond
@@ -5078,6 +5085,11 @@ c_func
 id|area
 )paren
 )paren
+(brace
+id|did_readahead
+op_assign
+l_int|1
+suffix:semicolon
 id|page_cache_readahead
 c_func
 (paren
@@ -5086,6 +5098,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If the offset is outside the mapping size we&squot;re off the end&n;&t; * of a privately mapped file, so we need to map a zero page.&n;&t; */
 r_if
 c_cond
@@ -5103,6 +5116,11 @@ c_func
 id|area
 )paren
 )paren
+(brace
+id|did_readahead
+op_assign
+l_int|1
+suffix:semicolon
 id|page_cache_readaround
 c_func
 (paren
@@ -5111,6 +5129,7 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Do we have something in the page cache already?&n;&t; */
 id|retry_find
 suffix:colon
@@ -5130,9 +5149,28 @@ c_cond
 op_logical_neg
 id|page
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|did_readahead
+)paren
+(brace
+id|handle_ra_miss
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
+id|did_readahead
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_goto
 id|no_cached_page
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Ok, found a page in the page cache, now we need to check&n;&t; * that it&squot;s up-to-date.&n;&t; */
 r_if
 c_cond
