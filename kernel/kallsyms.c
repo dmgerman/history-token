@@ -1523,6 +1523,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kallsyms_op
+r_static
 r_struct
 id|seq_operations
 id|kallsyms_op
@@ -1726,6 +1727,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|kallsyms_init
+r_static
 r_int
 id|__init
 id|kallsyms_init
