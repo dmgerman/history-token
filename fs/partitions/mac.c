@@ -9,7 +9,7 @@ r_void
 id|note_bootable_part
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
 comma
 r_int
@@ -613,11 +613,7 @@ id|found_root_goodness
 id|note_bootable_part
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|bdev-&gt;bd_dev
-)paren
 comma
 id|found_root
 comma
