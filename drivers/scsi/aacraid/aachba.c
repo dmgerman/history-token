@@ -501,7 +501,8 @@ id|fsa_dev_ptr
 suffix:semicolon
 id|u32
 id|index
-comma
+suffix:semicolon
+r_int
 id|status
 op_assign
 l_int|0
