@@ -159,17 +159,11 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|bond_proc_dir
+DECL|member|bond_proc_file
 r_struct
 id|proc_dir_entry
 op_star
-id|bond_proc_dir
-suffix:semicolon
-DECL|member|bond_proc_info_file
-r_struct
-id|proc_dir_entry
-op_star
-id|bond_proc_info_file
+id|bond_proc_file
 suffix:semicolon
 DECL|member|procdir_name
 r_char
