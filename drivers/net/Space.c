@@ -168,13 +168,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|i82596_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|i82596_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1117,14 +1118,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#if defined(CONFIG_APRICOT) || defined(CONFIG_MVME16x_NET) || defined(CONFIG_BVME6000_NET)&t;/* Intel I82596 */
-(brace
-id|i82596_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1143,6 +1136,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#if defined(CONFIG_APRICOT) || defined(CONFIG_MVME16x_NET) || defined(CONFIG_BVME6000_NET)&t;/* Intel I82596 */
+(brace
+id|i82596_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_EL1&t;&t;/* 3c501 */
 (brace
 id|el1_probe
