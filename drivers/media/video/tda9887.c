@@ -2501,7 +2501,7 @@ id|buf
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* This as-is breaks some cards, must be fixed in a&n;&t; * card-specific way, probably using TDA9887_SET_CONFIG to&n;&t;  * turn on/off port2 */
+multiline_comment|/* This as-is breaks some cards, must be fixed in a&n;&t; * card-specific way, probably using TDA9887_SET_CONFIG to&n;&t; * turn on/off port2 */
 r_if
 c_cond
 (paren
