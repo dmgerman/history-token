@@ -1699,12 +1699,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=doing PIO over DMA 0=doing normal DMA */
-DECL|member|queue_setup
-r_int
-id|queue_setup
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|addressing
 r_int
 id|addressing

@@ -1864,11 +1864,6 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_setup
-)paren
 id|HWIF
 c_func
 (paren
@@ -2055,11 +2050,7 @@ id|drive
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_setup
-)paren
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
 id|HWIF
 c_func
 (paren
@@ -2072,6 +2063,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -3575,10 +3575,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|drive-&gt;queue_setup
-op_assign
-l_int|1
-suffix:semicolon
 id|blk_queue_segment_boundary
 c_func
 (paren
@@ -3660,20 +3656,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_queued_on
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
 DECL|function|init_irq
