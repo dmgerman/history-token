@@ -12732,6 +12732,9 @@ op_star
 id|fcport
 )paren
 (brace
+r_int
+id|found
+suffix:semicolon
 r_uint16
 id|tgt
 suffix:semicolon
@@ -12774,13 +12777,22 @@ l_int|NULL
 )paren
 r_continue
 suffix:semicolon
-r_if
+id|found
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
 c_cond
 (paren
 id|ha-&gt;binding_type
-op_eq
+)paren
+(brace
+r_case
 id|BIND_BY_PORT_ID
-op_logical_and
+suffix:colon
+r_if
+c_cond
+(paren
 id|fcport-&gt;d_id.b24
 op_eq
 id|tq-&gt;d_id.b24
@@ -12806,9 +12818,15 @@ comma
 id|WWN_SIZE
 )paren
 suffix:semicolon
-r_break
+id|found
+op_increment
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|BIND_BY_PORT_NAME
+suffix:colon
 r_if
 c_cond
 (paren
@@ -12825,7 +12843,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* In case of persistent binding, update the WWNN */
+multiline_comment|/*&n;&t;&t;&t;&t; * In case of persistent binding, update the&n;&t;&t;&t;&t; * WWNN.&n;&t;&t;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -12836,9 +12854,20 @@ comma
 id|WWN_SIZE
 )paren
 suffix:semicolon
+id|found
+op_increment
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|found
+)paren
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* TODO: honor the ConfigRequired flag */
 r_if
