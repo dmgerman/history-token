@@ -209,12 +209,9 @@ multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(S1_BVD1_STSCHG + 1)
-macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER)
+macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER) || &bslash;&n;      defined(CONFIG_SA1100_H3800)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
-macro_line|#elif defined(CONFIG_SA1100_H3800)
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS                 (IRQ_BOARD_END)
 macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_START)
