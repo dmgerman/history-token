@@ -1061,7 +1061,7 @@ id|wbc
 )paren
 (brace
 r_return
-id|block_write_full_page
+id|nobh_writepage
 c_func
 (paren
 id|page
