@@ -6,8 +6,18 @@ r_extern
 id|spinlock_t
 id|kernel_flag
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;&t;&bslash;&n;&t;(spin_is_locked(&amp;kernel_flag) &amp;&amp;&bslash;&n;&t; (current-&gt;lock_depth &gt;= 0))
+macro_line|#else
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|macro|kernel_locked
+mdefine_line|#define kernel_locked()&t;&t;&t;preempt_get_count()
+macro_line|#else
+DECL|macro|kernel_locked
+mdefine_line|#define kernel_locked()&t;&t;&t;1
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
 DECL|macro|release_kernel_lock
 mdefine_line|#define release_kernel_lock(task, cpu)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(task-&gt;lock_depth &gt;= 0)) {&t;&bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag);&t;&bslash;&n;&t;&t;release_irqlock(cpu);&t;&t;&bslash;&n;&t;&t;__sti();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)

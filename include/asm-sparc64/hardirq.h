@@ -86,6 +86,8 @@ DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock(cpu)&t;do { (void)(cpu); } while(0)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;barrier()
+DECL|macro|release_irqlock
+mdefine_line|#define release_irqlock(cpu)&t;do { } while (0)
 macro_line|#else /* (CONFIG_SMP) */
 DECL|function|irqs_running
 r_static

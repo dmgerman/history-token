@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  ATI Mach64 Hardware Acceleration&n; */
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;

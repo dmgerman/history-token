@@ -21,11 +21,11 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(lock)&t;(*((volatile unsigned char *)(lock)) != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;&bslash;&n;do {&t;membar(&quot;#LoadLoad&quot;);&t;&bslash;&n;} while(*((volatile unsigned char *)lock))
-DECL|function|spin_lock
+DECL|function|_raw_spin_lock
 r_extern
 id|__inline__
 r_void
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -60,11 +60,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|spin_trylock
+DECL|function|_raw_spin_trylock
 r_extern
 id|__inline__
 r_int
-id|spin_trylock
+id|_raw_spin_trylock
 c_func
 (paren
 id|spinlock_t
@@ -104,11 +104,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_extern
 id|__inline__
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -194,12 +194,12 @@ op_star
 id|lock
 )paren
 suffix:semicolon
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lp)&t;_spin_trylock(lp)
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(lock)&t;&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lock)&t;_do_spin_unlock(lock)
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(lp)&t;_spin_trylock(lp)
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(lock)&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
+DECL|macro|_raw_spin_unlock
+mdefine_line|#define _raw_spin_unlock(lock)&t;_do_spin_unlock(lock)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 multiline_comment|/* Multi-reader locks, these are much saner than the 32-bit Sparc ones... */
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
@@ -249,14 +249,14 @@ id|rwlock_t
 op_star
 )paren
 suffix:semicolon
-DECL|macro|read_lock
-mdefine_line|#define read_lock(p)&t;__read_lock(p)
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(p)&t;__read_unlock(p)
-DECL|macro|write_lock
-mdefine_line|#define write_lock(p)&t;__write_lock(p)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(p)&t;__write_unlock(p)
+DECL|macro|_raw_read_lock
+mdefine_line|#define _raw_read_lock(p)&t;__read_lock(p)
+DECL|macro|_raw_read_unlock
+mdefine_line|#define _raw_read_unlock(p)&t;__read_unlock(p)
+DECL|macro|_raw_write_lock
+mdefine_line|#define _raw_write_lock(p)&t;__write_lock(p)
+DECL|macro|_raw_write_unlock
+mdefine_line|#define _raw_write_unlock(p)&t;__write_unlock(p)
 macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
@@ -342,14 +342,14 @@ op_star
 id|rw
 )paren
 suffix:semicolon
-DECL|macro|read_lock
-mdefine_line|#define read_lock(lock)&t;&bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
-DECL|macro|read_unlock
-mdefine_line|#define read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_unlock(lock, &quot;read_unlock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
-DECL|macro|write_lock
-mdefine_line|#define write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
-DECL|macro|write_unlock
-mdefine_line|#define write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_read_lock
+mdefine_line|#define _raw_read_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_read_unlock
+mdefine_line|#define _raw_read_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_read_unlock(lock, &quot;read_unlock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_write_lock
+mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_write_unlock
+mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;__save_and_cli(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;__restore_flags(flags); &bslash;&n;} while(0)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SPINLOCK_H) */

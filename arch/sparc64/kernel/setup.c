@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.71 2001/11/13 00:49:28 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.72 2002/02/09 19:49:30 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2304,7 +2304,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-id|init_task.thread.kregs
+id|init_task.thread_info-&gt;kregs
 op_assign
 op_amp
 id|fake_swapper_regs

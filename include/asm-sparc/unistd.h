@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: unistd.h,v 1.73 2002/01/31 03:30:13 davem Exp $ */
+multiline_comment|/* $Id: unistd.h,v 1.74 2002/02/08 03:57:18 davem Exp $ */
 macro_line|#ifndef _SPARC_UNISTD_H
 DECL|macro|_SPARC_UNISTD_H
 mdefine_line|#define _SPARC_UNISTD_H
@@ -364,7 +364,8 @@ DECL|macro|__NR_setpgid
 mdefine_line|#define __NR_setpgid            185 /* Common                                      */
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr       186 /* SunOS: pathconf                             */
-multiline_comment|/* #define __NR_fpathconf       187    SunOS Specific                              */
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill              187 /* SunOS: fpathconf                            */
 multiline_comment|/* #define __NR_sysconf         188    SunOS Specific                              */
 DECL|macro|__NR_uname
 mdefine_line|#define __NR_uname              189 /* Linux Specific                              */
@@ -487,8 +488,6 @@ DECL|macro|__NR_nfsservctl
 mdefine_line|#define __NR_nfsservctl         254
 DECL|macro|__NR_aplib
 mdefine_line|#define __NR_aplib              255
-DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill              257
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;__asm__ __volatile__ (&quot;t 0x10&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;bcc 1f&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;mov %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res)&bslash;&n;&t;&t;      : &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;o0&quot;, &quot;cc&quot;); &bslash;&n;if (__res &lt; -255 || __res &gt;= 0) &bslash;&n;    return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 DECL|macro|_syscall1

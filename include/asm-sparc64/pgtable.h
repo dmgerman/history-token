@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.155 2001/12/21 04:56:17 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.156 2002/02/09 19:49:31 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -57,13 +57,13 @@ multiline_comment|/* We the first one in this file, what we export to the kernel
 DECL|macro|REAL_PTRS_PER_PMD
 mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : (REAL_PTRS_PER_PMD)))
+mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : (REAL_PTRS_PER_PMD)))
 multiline_comment|/*&n; * We cannot use the top address range because VPTE table lives there. This&n; * formula finds the total legal virtual space in the processor, subtracts the&n; * vpte size, then aligns it to the number of bytes mapped by one pgde, and&n; * thus calculates the number of pgdes needed.&n; */
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;(((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)))
 multiline_comment|/* Kernel has a separate 44bit address space. */
 DECL|macro|USER_PTRS_PER_PGD
-mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD)))
+mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)(test_thread_flag(TIF_32BIT)) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD))
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|pte_ERROR

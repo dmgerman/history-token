@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ptrace.h,v 1.13 1997/09/17 17:27:51 davem Exp $ */
+multiline_comment|/* $Id: ptrace.h,v 1.14 2002/02/09 19:49:32 davem Exp $ */
 macro_line|#ifndef _SPARC64_PTRACE_H
 DECL|macro|_SPARC64_PTRACE_H
 mdefine_line|#define _SPARC64_PTRACE_H
@@ -346,7 +346,6 @@ DECL|macro|STACKFRAME32_SZ
 mdefine_line|#define STACKFRAME32_SZ&t;&t;0x60
 DECL|macro|REGWIN32_SZ
 mdefine_line|#define REGWIN32_SZ&t;&t;0x40
-macro_line|#include &lt;asm/asm_offsets.h&gt;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_BIAS

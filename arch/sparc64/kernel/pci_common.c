@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_common.c,v 1.28 2002/01/14 05:47:02 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.29 2002/02/01 00:56:03 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2830,6 +2830,33 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* If this is an empty EBUS device, sometimes OBP fails to&n;&t; * give it a valid fully specified interrupts property.&n;&t; * The EBUS hooked up to SunHME on PCI I/O boards of&n;&t; * Ex000 systems is one such case.&n;&t; *&n;&t; * The interrupt is not important so just ignore it.&n;&t; */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SUN_EBUS
+op_logical_and
+op_logical_neg
+id|prom_getchild
+c_func
+(paren
+id|prom_node
+)paren
+)paren
+(brace
+id|pdev-&gt;irq
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|err
 op_assign
 id|prom_getproperty
