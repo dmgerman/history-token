@@ -1476,6 +1476,17 @@ id|rac97
 )paren
 suffix:semicolon
 multiline_comment|/* create mixer controls */
+r_const
+r_char
+op_star
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 r_void
 id|snd_ac97_write
 c_func
