@@ -50,10 +50,5 @@ DECL|macro|IXDP2X01_FLASH_WINDOW_MASK
 mdefine_line|#define IXDP2X01_FLASH_WINDOW_MASK &t;(IXDP2X01_FLASH_WINDOW_SIZE - 1)
 DECL|macro|IXDP2X01_UART_CLK
 mdefine_line|#define&t;IXDP2X01_UART_CLK&t;&t;1843200
-macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/mach-types.h&gt;
-DECL|macro|machine_is_ixdp2x01
-mdefine_line|#define&t;machine_is_ixdp2x01() &t;&t;(machine_is_ixdp2401() || &bslash;&n;&t;&t;&t;&t;&t; machine_is_ixdp2801())
-macro_line|#endif
 macro_line|#endif /* __IXDP2x01_H__ */
 eof
