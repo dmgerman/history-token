@@ -3306,7 +3306,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
@@ -3429,7 +3429,7 @@ op_assign
 id|softlistp-&gt;bl_next
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We now have a list of all the pci bridges associated with&n;&t;&t; * the module_id, modules[i].  Call pci_bus_map_create() for&n;&t;&t; * each pci bridge&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We now have a list of all the pci bridges associated with&n;&t;&t; * the module_id, sn_modules[i].  Call pci_bus_map_create() for&n;&t;&t; * each pci bridge&n;&t;&t; */
 id|softlistp
 op_assign
 id|first_in_list

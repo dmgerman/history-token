@@ -25,10 +25,10 @@ macro_line|#else
 DECL|macro|DPRINTF
 mdefine_line|#define DPRINTF(x...)
 macro_line|#endif
-DECL|variable|modules
+DECL|variable|sn_modules
 id|module_t
 op_star
-id|modules
+id|sn_modules
 (braket
 id|MODULE_MAX
 )braket
@@ -151,7 +151,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
@@ -166,14 +166,14 @@ c_func
 (paren
 l_string|&quot;module_lookup: found m=0x%p&bslash;n&quot;
 comma
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
 r_return
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
@@ -351,7 +351,7 @@ id|i
 OG
 l_int|0
 op_logical_and
-id|modules
+id|sn_modules
 (braket
 id|i
 op_minus
@@ -365,19 +365,19 @@ suffix:semicolon
 id|i
 op_decrement
 )paren
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
 op_assign
-id|modules
+id|sn_modules
 (braket
 id|i
 op_minus
 l_int|1
 )braket
 suffix:semicolon
-id|modules
+id|sn_modules
 (braket
 id|i
 )braket
