@@ -2526,6 +2526,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SBUS */
 multiline_comment|/*&n; * allocation of buffers for pre-defined devices&n; */
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* FIXME: for pci only - other bus? */
 DECL|struct|prealloc_dev
 r_struct
@@ -2877,6 +2878,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#else
+DECL|macro|preallocate_cards
+mdefine_line|#define preallocate_cards()&t;/* NOP */
+macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; * proc file interface&n; */
 DECL|function|snd_mem_proc_read
