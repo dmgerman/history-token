@@ -823,6 +823,7 @@ op_star
 id|ptr
 comma
 r_int
+r_int
 id|timeout
 )paren
 (brace
