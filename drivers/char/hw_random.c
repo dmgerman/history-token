@@ -152,6 +152,7 @@ id|amd_data_read
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef __i386__
 r_static
 r_int
 id|__init
@@ -187,6 +188,7 @@ id|via_data_read
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|struct|rng_operations
 r_struct
 id|rng_operations
@@ -345,6 +347,7 @@ comma
 l_int|4
 )brace
 comma
+macro_line|#ifdef __i386__
 multiline_comment|/* rng_hw_via */
 (brace
 id|via_init
@@ -358,6 +361,7 @@ comma
 l_int|1
 )brace
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Data for PCI driver interface&n; *&n; * This data only exists for exporting the supported&n; * PCI ids via MODULE_DEVICE_TABLE.  We do not actually&n; * register a pci_driver, because someone else might one day&n; * want to register another driver on the same PCI id.&n; */
@@ -1120,6 +1124,7 @@ id|rnen
 suffix:semicolon
 multiline_comment|/* FIXME: twiddle pmio, also? */
 )brace
+macro_line|#ifdef __i386__
 multiline_comment|/***********************************************************************&n; *&n; * VIA RNG operations&n; *&n; */
 r_enum
 (brace
@@ -1455,6 +1460,7 @@ r_void
 (brace
 multiline_comment|/* do nothing */
 )brace
+macro_line|#endif
 multiline_comment|/***********************************************************************&n; *&n; * /dev/hwrandom character device handling (major 10, minor 183)&n; *&n; */
 DECL|function|rng_dev_open
 r_static
