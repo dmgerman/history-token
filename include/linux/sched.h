@@ -54,14 +54,16 @@ DECL|macro|CLONE_SYSVSEM
 mdefine_line|#define CLONE_SYSVSEM&t;0x00040000&t;/* share system V SEM_UNDO semantics */
 DECL|macro|CLONE_SETTLS
 mdefine_line|#define CLONE_SETTLS&t;0x00080000&t;/* create a new TLS for the child */
-DECL|macro|CLONE_SETTID
-mdefine_line|#define CLONE_SETTID&t;0x00100000&t;/* write the TID back to userspace */
-DECL|macro|CLONE_CLEARTID
-mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
+DECL|macro|CLONE_PARENT_SETTID
+mdefine_line|#define CLONE_PARENT_SETTID&t;0x00100000&t;/* set the TID in the parent */
+DECL|macro|CLONE_CHILD_CLEARTID
+mdefine_line|#define CLONE_CHILD_CLEARTID&t;0x00200000&t;/* clear the TID in the child */
 DECL|macro|CLONE_DETACHED
-mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
+mdefine_line|#define CLONE_DETACHED&t;&t;0x00400000&t;/* parent wants no child-exit signal */
 DECL|macro|CLONE_UNTRACED
-mdefine_line|#define CLONE_UNTRACED  0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
+mdefine_line|#define CLONE_UNTRACED&t;&t;0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
+DECL|macro|CLONE_CHILD_SETTID
+mdefine_line|#define CLONE_CHILD_SETTID&t;0x01000000&t;/* set the TID in the child */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
@@ -866,12 +868,18 @@ op_star
 id|vfork_done
 suffix:semicolon
 multiline_comment|/* for vfork() */
-DECL|member|user_tid
+DECL|member|set_child_tid
 r_int
 op_star
-id|user_tid
+id|set_child_tid
 suffix:semicolon
-multiline_comment|/* for CLONE_CLEARTID */
+multiline_comment|/* CLONE_CHILD_SETTID */
+DECL|member|clear_child_tid
+r_int
+op_star
+id|clear_child_tid
+suffix:semicolon
+multiline_comment|/* CLONE_CHILD_CLEARTID */
 DECL|member|rt_priority
 r_int
 r_int
@@ -2203,6 +2211,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+op_star
 comma
 r_int
 op_star

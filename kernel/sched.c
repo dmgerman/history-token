@@ -1315,7 +1315,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * schedule_tail - first thing a freshly forked thread must call.&n; * @prev: the thread we just switched away from.&n; */
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|function|schedule_tail
 id|asmlinkage
 r_void
@@ -1338,8 +1337,20 @@ comma
 id|prev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;set_child_tid
+)paren
+id|put_user
+c_func
+(paren
+id|current-&gt;pid
+comma
+id|current-&gt;set_child_tid
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * context_switch - switch to the new MM and the new&n; * thread&squot;s register state.&n; */
 DECL|function|context_switch
 r_static
