@@ -1762,6 +1762,8 @@ comma
 id|zone_size
 comma
 id|bdata-&gt;node_boot_start
+op_rshift
+id|PAGE_SHIFT
 comma
 id|zhole_size
 )paren
