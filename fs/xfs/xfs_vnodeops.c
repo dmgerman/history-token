@@ -327,10 +327,6 @@ op_plus
 id|ip-&gt;i_delayed_blks
 )paren
 suffix:semicolon
-id|vap-&gt;va_fsid
-op_assign
-id|mp-&gt;m_dev
-suffix:semicolon
 id|vap-&gt;va_nodeid
 op_assign
 id|ip-&gt;i_ino
@@ -6254,7 +6250,7 @@ c_func
 (paren
 id|mp
 comma
-id|bdp
+id|vp
 comma
 id|DM_RIGHT_NULL
 )paren

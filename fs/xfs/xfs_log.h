@@ -292,8 +292,10 @@ id|xfs_mount
 op_star
 id|mp
 comma
-id|dev_t
-id|log_dev
+r_struct
+id|xfs_buftarg
+op_star
+id|log_target
 comma
 id|xfs_daddr_t
 id|start_block

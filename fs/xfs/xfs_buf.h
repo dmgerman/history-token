@@ -286,8 +286,8 @@ DECL|macro|XFS_BUF_SET_TARGET
 mdefine_line|#define XFS_BUF_SET_TARGET(bp, target)&t;&bslash;&n;&t;(bp)-&gt;pb_target = (target)
 DECL|macro|XFS_BUF_TARGET
 mdefine_line|#define XFS_BUF_TARGET(bp)&t;((bp)-&gt;pb_target)
-DECL|macro|XFS_BUF_TARGET_DEV
-mdefine_line|#define XFS_BUF_TARGET_DEV(bp)&t;((bp)-&gt;pb_target-&gt;pbr_dev)
+DECL|macro|XFS_BUFTARG_NAME
+mdefine_line|#define XFS_BUFTARG_NAME(target) &bslash;&n;&t;({ char __b[BDEVNAME_SIZE]; bdevname((target-&gt;pbr_bdev), __b); __b; })
 DECL|macro|XFS_BUF_SET_VTYPE_REF
 mdefine_line|#define XFS_BUF_SET_VTYPE_REF(bp, type, ref)
 DECL|macro|XFS_BUF_SET_VTYPE
