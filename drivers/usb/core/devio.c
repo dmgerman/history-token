@@ -1459,6 +1459,12 @@ id|usb_get_intfdata
 id|intf
 )paren
 suffix:semicolon
+r_int
+r_int
+id|ifnum
+op_assign
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1468,10 +1474,22 @@ id|ps
 r_return
 suffix:semicolon
 multiline_comment|/* NOTE:  this relies on usbcore having canceled and completed&n;&t; * all pending I/O requests; 2.6 does that.&n;&t; */
+r_if
+c_cond
+(paren
+id|ifnum
+OL
+l_int|8
+op_star
+r_sizeof
+(paren
+id|ps-&gt;ifclaimed
+)paren
+)paren
 id|clear_bit
 c_func
 (paren
-id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
+id|ifnum
 comma
 op_amp
 id|ps-&gt;ifclaimed
@@ -1485,9 +1503,12 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* force async requests to complete */
-id|destroy_all_async
+id|destroy_async_on_interface
+c_func
 (paren
 id|ps
+comma
+id|ifnum
 )paren
 suffix:semicolon
 )brace
