@@ -268,6 +268,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_HT
 r_extern
 r_void
 id|detect_ht
@@ -279,6 +280,22 @@ op_star
 id|c
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|detect_ht
+r_static
+r_inline
+r_void
+id|detect_ht
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * EFLAGS bits&n; */
 DECL|macro|X86_EFLAGS_CF
 mdefine_line|#define X86_EFLAGS_CF&t;0x00000001 /* Carry Flag */

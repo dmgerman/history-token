@@ -444,14 +444,12 @@ comma
 id|p
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_HT
 id|detect_ht
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Work around errata */
 id|Intel_errata_workarounds
 c_func

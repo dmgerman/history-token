@@ -636,21 +636,6 @@ id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_HT
-r_if
-c_cond
-(paren
-id|smp_num_siblings
-OG
-l_int|1
-)paren
-(brace
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -671,10 +656,11 @@ id|m
 comma
 l_string|&quot;siblings&bslash;t: %d&bslash;n&quot;
 comma
+id|c-&gt;x86_num_cores
+op_star
 id|smp_num_siblings
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 multiline_comment|/* We use exception 16 if we have hardware math and we&squot;ve either seen it or the CPU claims it is internal */
 id|fpu_exception

@@ -1931,6 +1931,7 @@ id|boot_cpu_data
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_HT
 DECL|function|detect_ht
 r_void
 id|__init
@@ -2157,6 +2158,7 @@ id|cpu
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|print_cpu_info
 r_void
 id|__init
