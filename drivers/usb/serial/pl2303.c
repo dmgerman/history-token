@@ -253,6 +253,8 @@ DECL|macro|VENDOR_READ_REQUEST
 mdefine_line|#define VENDOR_READ_REQUEST&t;&t;0x01
 DECL|macro|UART_STATE
 mdefine_line|#define UART_STATE&t;&t;&t;0x08
+DECL|macro|UART_STATE_TRANSIENT_MASK
+mdefine_line|#define UART_STATE_TRANSIENT_MASK&t;0x74
 DECL|macro|UART_DCD
 mdefine_line|#define UART_DCD&t;&t;&t;0x01
 DECL|macro|UART_DSR
@@ -3278,6 +3280,9 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+id|u8
+id|uart_state
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3373,6 +3378,13 @@ r_goto
 m_exit
 suffix:semicolon
 multiline_comment|/* Save off the uart status for others to look at */
+id|uart_state
+op_assign
+id|data
+(braket
+id|UART_STATE
+)braket
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3382,12 +3394,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|uart_state
+op_or_assign
+(paren
+id|priv-&gt;line_status
+op_amp
+id|UART_STATE_TRANSIENT_MASK
+)paren
+suffix:semicolon
 id|priv-&gt;line_status
 op_assign
-id|data
-(braket
-id|UART_STATE
-)braket
+id|uart_state
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -3677,6 +3694,11 @@ suffix:semicolon
 id|status
 op_assign
 id|priv-&gt;line_status
+suffix:semicolon
+id|priv-&gt;line_status
+op_and_assign
+op_complement
+id|UART_STATE_TRANSIENT_MASK
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
