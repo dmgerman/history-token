@@ -1171,8 +1171,7 @@ id|addr
 suffix:semicolon
 multiline_comment|/* slave address&t;&t;&t;*/
 DECL|member|flags
-r_int
-r_int
+id|__u16
 id|flags
 suffix:semicolon
 DECL|macro|I2C_M_TEN
@@ -1188,12 +1187,12 @@ mdefine_line|#define I2C_M_IGNORE_NAK&t;0x1000
 DECL|macro|I2C_M_NO_RD_ACK
 mdefine_line|#define I2C_M_NO_RD_ACK&t;&t;0x0800
 DECL|member|len
-r_int
+id|__u16
 id|len
 suffix:semicolon
 multiline_comment|/* msg length&t;&t;&t;&t;*/
 DECL|member|buf
-r_char
+id|__u8
 op_star
 id|buf
 suffix:semicolon
