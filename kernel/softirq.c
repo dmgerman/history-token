@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;linux/kernel/softirq.c&n; *&n; *&t;Copyright (C) 1992 Linus Torvalds&n; *&n; * Rewritten. Old one was good in 2.2, but in 2.3 it was immoral. --ANK (990903)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -242,6 +243,68 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|local_bh_enable
+r_void
+id|local_bh_enable
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+op_logical_and
+id|softirq_pending
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_check_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|local_bh_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|local_bh_enable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function must run with irqs disabled!&n; */
 DECL|function|cpu_raise_softirq
 r_inline

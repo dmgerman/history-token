@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|struct|irqaction
 r_struct
@@ -120,6 +119,19 @@ macro_line|# define restore_flags(x)&t;local_irq_restore(x)
 DECL|macro|save_and_cli
 macro_line|# define save_and_cli(x)&t;local_irq_save(x)
 macro_line|#endif
+multiline_comment|/* SoftIRQ primitives.  */
+DECL|macro|local_bh_disable
+mdefine_line|#define local_bh_disable() &bslash;&n;&t;&t;do { preempt_count() += SOFTIRQ_OFFSET; barrier(); } while (0)
+DECL|macro|__local_bh_enable
+mdefine_line|#define __local_bh_enable() &bslash;&n;&t;&t;do { barrier(); preempt_count() -= SOFTIRQ_OFFSET; } while (0)
+r_extern
+r_void
+id|local_bh_enable
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* PLEASE, avoid to allocate new softirqs, if you need not _really_ high&n;   frequency threaded job scheduling. For almost all the purposes&n;   tasklets are more than enough. F.e. all serial device BHs et&n;   al. should be converted to tasklets, not to softirqs.&n; */
 r_enum
 (brace
