@@ -1259,11 +1259,6 @@ op_assign
 id|cabriolet_init_pci
 comma
 dot
-id|kill_arch
-op_assign
-l_int|NULL
-comma
-dot
 id|pci_map_irq
 op_assign
 id|cabriolet_map_irq
@@ -1352,6 +1347,11 @@ dot
 id|init_pci
 op_assign
 id|cia_cab_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|cia_kill_arch
 comma
 dot
 id|pci_map_irq
@@ -1535,6 +1535,11 @@ op_assign
 id|alphapc164_init_pci
 comma
 dot
+id|kill_arch
+op_assign
+id|cia_kill_arch
+comma
+dot
 id|pci_map_irq
 op_assign
 id|alphapc164_map_irq
@@ -1621,6 +1626,11 @@ dot
 id|init_pci
 op_assign
 id|alphapc164_init_pci
+comma
+dot
+id|kill_arch
+op_assign
+id|cia_kill_arch
 comma
 dot
 id|pci_map_irq
