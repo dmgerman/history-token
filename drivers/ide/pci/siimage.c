@@ -273,6 +273,9 @@ id|p
 op_assign
 id|buffer
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|u16
 id|i
 suffix:semicolon
@@ -324,12 +327,34 @@ id|i
 )paren
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* p - buffer must be less than 4k! */
+id|len
+op_assign
+(paren
 id|p
 op_minus
 id|buffer
+)paren
+op_minus
+id|offset
 suffix:semicolon
-multiline_comment|/* =&gt; must be less than 4k! */
+op_star
+id|addr
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|len
+OG
+id|count
+ques
+c_cond
+id|count
+suffix:colon
+id|len
+suffix:semicolon
 )brace
 macro_line|#endif&t;/* defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 DECL|function|siimage_ratemask

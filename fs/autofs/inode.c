@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;autofs_i.h&quot;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 DECL|function|autofs_put_super
 r_static

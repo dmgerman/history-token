@@ -15,8 +15,6 @@ c_func
 (paren
 id|xfs_btree_cur_t
 op_star
-comma
-r_int
 )paren
 suffix:semicolon
 id|STATIC
@@ -1292,10 +1290,6 @@ r_int
 id|level
 comma
 r_int
-id|async
-comma
-multiline_comment|/* deletion can be async */
-r_int
 op_star
 id|stat
 )paren
@@ -1944,8 +1938,6 @@ id|xfs_bmbt_killroot
 c_func
 (paren
 id|cur
-comma
-id|async
 )paren
 )paren
 )paren
@@ -2165,8 +2157,6 @@ id|xfs_bmbt_killroot
 c_func
 (paren
 id|cur
-comma
-id|async
 )paren
 )paren
 )paren
@@ -3679,18 +3669,6 @@ comma
 id|cur-&gt;bc_private.b.flist
 comma
 id|mp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|async
-)paren
-id|xfs_trans_set_sync
-c_func
-(paren
-id|cur-&gt;bc_tp
 )paren
 suffix:semicolon
 id|cur-&gt;bc_private.b.ip-&gt;i_d.di_nblocks
@@ -5223,9 +5201,6 @@ c_func
 id|xfs_btree_cur_t
 op_star
 id|cur
-comma
-r_int
-id|async
 )paren
 (brace
 id|xfs_bmbt_block_t
@@ -5729,18 +5704,6 @@ comma
 id|cur-&gt;bc_private.b.flist
 comma
 id|cur-&gt;bc_mp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|async
-)paren
-id|xfs_trans_set_sync
-c_func
-(paren
-id|cur-&gt;bc_tp
 )paren
 suffix:semicolon
 id|ip-&gt;i_d.di_nblocks
@@ -11008,10 +10971,6 @@ op_star
 id|cur
 comma
 r_int
-id|async
-comma
-multiline_comment|/* deletion can be async */
-r_int
 op_star
 id|stat
 )paren
@@ -11076,8 +11035,6 @@ c_func
 id|cur
 comma
 id|level
-comma
-id|async
 comma
 op_amp
 id|i

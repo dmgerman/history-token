@@ -2851,15 +2851,7 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.  Interruptible check on&n;&t;&t; * signal_pending() would be nice, but changes the spec?&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|need_resched
-c_func
-(paren
-)paren
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

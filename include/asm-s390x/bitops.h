@@ -45,7 +45,7 @@ id|_sb_findmap
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n; * SMP save set_bit routine based on compare and swap (CS)&n; */
+multiline_comment|/*&n; * SMP safe set_bit routine based on compare and swap (CS)&n; */
 DECL|function|set_bit_cs
 r_static
 r_inline
@@ -172,7 +172,7 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP save clear_bit routine based on compare and swap (CS)&n; */
+multiline_comment|/*&n; * SMP safe clear_bit routine based on compare and swap (CS)&n; */
 DECL|function|clear_bit_cs
 r_static
 r_inline
@@ -302,7 +302,7 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP save change_bit routine based on compare and swap (CS)&n; */
+multiline_comment|/*&n; * SMP safe change_bit routine based on compare and swap (CS)&n; */
 DECL|function|change_bit_cs
 r_static
 r_inline
@@ -429,7 +429,7 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP save test_and_set_bit routine based on compare and swap (CS)&n; */
+multiline_comment|/*&n; * SMP safe test_and_set_bit routine based on compare and swap (CS)&n; */
 r_static
 r_inline
 r_int
@@ -565,7 +565,7 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP save test_and_clear_bit routine based on compare and swap (CS)&n; */
+multiline_comment|/*&n; * SMP safe test_and_clear_bit routine based on compare and swap (CS)&n; */
 r_static
 r_inline
 r_int
@@ -704,7 +704,7 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SMP save test_and_change_bit routine based on compare and swap (CS) &n; */
+multiline_comment|/*&n; * SMP safe test_and_change_bit routine based on compare and swap (CS) &n; */
 r_static
 r_inline
 r_int

@@ -1271,8 +1271,8 @@ mdefine_line|#define XFS_FSB_SANITY_CHECK(mp,fsb)&t;&bslash;&n;&t;(XFS_FSB_TO_AG
 macro_line|#endif
 multiline_comment|/*&n; * Macros to set EFSCORRUPTED &amp; return/branch.&n; */
 DECL|macro|XFS_WANT_CORRUPTED_GOTO
-mdefine_line|#define XFS_WANT_CORRUPTED_GOTO(x,l)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (!fs_is_ok) { &bslash;&n;&t;&t;&t;error = XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;&t;goto l; &bslash;&n;&t;&t;} &bslash;&n;&t;}
+mdefine_line|#define XFS_WANT_CORRUPTED_GOTO(x,l)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_GOTO&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;error = XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;&t;goto l; &bslash;&n;&t;&t;} &bslash;&n;&t;}
 DECL|macro|XFS_WANT_CORRUPTED_RETURN
-mdefine_line|#define XFS_WANT_CORRUPTED_RETURN(x)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (!fs_is_ok) &bslash;&n;&t;&t;&t;return XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;}
+mdefine_line|#define XFS_WANT_CORRUPTED_RETURN(x)&t;&bslash;&n;&t;{ &bslash;&n;&t;&t;int fs_is_ok = (x); &bslash;&n;&t;&t;ASSERT(fs_is_ok); &bslash;&n;&t;&t;if (unlikely(!fs_is_ok)) { &bslash;&n;&t;&t;&t;XFS_ERROR_REPORT(&quot;XFS_WANT_CORRUPTED_RETURN&quot;, &bslash;&n;&t;&t;&t;&t;&t; XFS_ERRLEVEL_LOW, NULL); &bslash;&n;&t;&t;&t;return XFS_ERROR(EFSCORRUPTED); &bslash;&n;&t;&t;} &bslash;&n;&t;}
 macro_line|#endif&t;/* __XFS_BTREE_H__ */
 eof

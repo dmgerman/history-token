@@ -134,15 +134,17 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|WAVEIN_MAXBUFSIZE
-mdefine_line|#define WAVEIN_MAXBUFSIZE         65536
+mdefine_line|#define WAVEIN_MAXBUFSIZE&t;65536
 DECL|macro|WAVEIN_MINBUFSIZE
-mdefine_line|#define WAVEIN_MINBUFSIZE&t;  368
+mdefine_line|#define WAVEIN_MINBUFSIZE&t;368
 DECL|macro|WAVEIN_DEFAULTFRAGLEN
-mdefine_line|#define WAVEIN_DEFAULTFRAGLEN     100 
+mdefine_line|#define WAVEIN_DEFAULTFRAGLEN&t;100 
 DECL|macro|WAVEIN_DEFAULTBUFLEN
-mdefine_line|#define WAVEIN_DEFAULTBUFLEN      1000
+mdefine_line|#define WAVEIN_DEFAULTBUFLEN&t;1000
 DECL|macro|WAVEIN_MINFRAGSHIFT
-mdefine_line|#define WAVEIN_MINFRAGSHIFT   &t;  8 
+mdefine_line|#define WAVEIN_MINFRAGSHIFT&t;8 
+DECL|macro|WAVEIN_MINFRAGS
+mdefine_line|#define WAVEIN_MINFRAGS&t;&t;2
 r_int
 id|emu10k1_wavein_open
 c_func

@@ -3017,7 +3017,7 @@ op_star
 id|lip
 suffix:semicolon
 r_static
-id|time_t
+id|ulong
 id|lasttime
 suffix:semicolon
 r_static

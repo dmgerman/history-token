@@ -2666,7 +2666,7 @@ comma
 l_string|&quot;EtherLink IRQ number&quot;
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * init_module:&n; *&n; * When the driver is loaded as a module this function is called. We fake up&n; * a device structure with the base I/O and interrupt set as if it was being&n; * called from Space.c. This minimises the extra code that would otherwise&n; * be required.&n; *&n; * Returns 0 for success or -EIO if a card is not found. Returning an error&n; * here also causes the module to be unloaded&n; */
+multiline_comment|/**&n; * init_module:&n; *&n; * When the driver is loaded as a module this function is called. We fake up&n; * a device structure with the base I/O and interrupt set as if it were being&n; * called from Space.c. This minimises the extra code that would otherwise&n; * be required.&n; *&n; * Returns 0 for success or -EIO if a card is not found. Returning an error&n; * here also causes the module to be unloaded&n; */
 DECL|function|init_module
 r_int
 id|init_module

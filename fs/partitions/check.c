@@ -12,6 +12,7 @@ macro_line|#include &quot;atari.h&quot;
 macro_line|#include &quot;ldm.h&quot;
 macro_line|#include &quot;mac.h&quot;
 macro_line|#include &quot;msdos.h&quot;
+macro_line|#include &quot;nec98.h&quot;
 macro_line|#include &quot;osf.h&quot;
 macro_line|#include &quot;sgi.h&quot;
 macro_line|#include &quot;sun.h&quot;
@@ -69,6 +70,11 @@ macro_line|#ifdef CONFIG_LDM_PARTITION
 id|ldm_partition
 comma
 multiline_comment|/* this must come before msdos */
+macro_line|#endif
+macro_line|#ifdef CONFIG_NEC98_PARTITION
+id|nec98_partition
+comma
+multiline_comment|/* must be come before `msdos_partition&squot; */
 macro_line|#endif
 macro_line|#ifdef CONFIG_MSDOS_PARTITION
 id|msdos_partition
@@ -551,12 +557,6 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_handle_t
 id|dir
 suffix:semicolon
-r_int
-r_int
-id|devfs_flags
-op_assign
-id|DEVFS_FL_DEFAULT
-suffix:semicolon
 r_struct
 id|hd_struct
 op_star
@@ -596,17 +596,6 @@ id|dir
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;flags
-op_amp
-id|GENHD_FL_REMOVABLE
-)paren
-id|devfs_flags
-op_or_assign
-id|DEVFS_FL_REMOVABLE
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -632,7 +621,7 @@ id|dir
 comma
 id|devname
 comma
-id|devfs_flags
+l_int|0
 comma
 id|dev-&gt;major
 comma
@@ -694,12 +683,6 @@ id|dir
 comma
 id|slave
 suffix:semicolon
-r_int
-r_int
-id|devfs_flags
-op_assign
-id|DEVFS_FL_DEFAULT
-suffix:semicolon
 r_char
 id|dirname
 (braket
@@ -710,17 +693,6 @@ id|symlink
 (braket
 l_int|16
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;flags
-op_amp
-id|GENHD_FL_REMOVABLE
-)paren
-id|devfs_flags
-op_or_assign
-id|DEVFS_FL_REMOVABLE
 suffix:semicolon
 r_if
 c_cond
@@ -864,7 +836,7 @@ id|dir
 comma
 l_string|&quot;disc&quot;
 comma
-id|devfs_flags
+l_int|0
 comma
 id|dev-&gt;major
 comma

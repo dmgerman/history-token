@@ -385,8 +385,9 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __EXTERN_INLINE
+multiline_comment|/* Do not touch, this should *NOT* be static inline */
 DECL|macro|__EXTERN_INLINE
-mdefine_line|#define __EXTERN_INLINE static inline
+mdefine_line|#define __EXTERN_INLINE extern inline
 DECL|macro|__IO_EXTERN_INLINE
 mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif

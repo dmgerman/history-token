@@ -2109,7 +2109,7 @@ id|dir_handle
 comma
 id|devfs_name
 comma
-id|DEVFS_FL_REMOVABLE
+l_int|0
 comma
 id|major
 comma

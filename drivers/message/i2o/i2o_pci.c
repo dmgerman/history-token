@@ -9,10 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_MTRR
-macro_line|#include &lt;asm/mtrr.h&gt;
-macro_line|#endif 
-singleline_comment|// CONFIG_MTRR
 DECL|variable|dpt
 r_static
 r_int

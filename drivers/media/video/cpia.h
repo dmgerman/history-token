@@ -5,15 +5,21 @@ multiline_comment|/*&n; * CPiA Parallel Port Video4Linux driver&n; *&n; * Suppor
 DECL|macro|CPIA_MAJ_VER
 mdefine_line|#define CPIA_MAJ_VER&t;1
 DECL|macro|CPIA_MIN_VER
-mdefine_line|#define CPIA_MIN_VER    2
+mdefine_line|#define CPIA_MIN_VER   2
 DECL|macro|CPIA_PATCH_VER
-mdefine_line|#define CPIA_PATCH_VER&t;2
+mdefine_line|#define CPIA_PATCH_VER&t;3
 DECL|macro|CPIA_PP_MAJ_VER
-mdefine_line|#define CPIA_PP_MAJ_VER       1
+mdefine_line|#define CPIA_PP_MAJ_VER       CPIA_MAJ_VER
 DECL|macro|CPIA_PP_MIN_VER
-mdefine_line|#define CPIA_PP_MIN_VER       2
+mdefine_line|#define CPIA_PP_MIN_VER       CPIA_MIN_VER
 DECL|macro|CPIA_PP_PATCH_VER
-mdefine_line|#define CPIA_PP_PATCH_VER     2
+mdefine_line|#define CPIA_PP_PATCH_VER     CPIA_PATCH_VER
+DECL|macro|CPIA_USB_MAJ_VER
+mdefine_line|#define CPIA_USB_MAJ_VER      CPIA_MAJ_VER
+DECL|macro|CPIA_USB_MIN_VER
+mdefine_line|#define CPIA_USB_MIN_VER      CPIA_MIN_VER
+DECL|macro|CPIA_USB_PATCH_VER
+mdefine_line|#define CPIA_USB_PATCH_VER    CPIA_PATCH_VER
 DECL|macro|CPIA_MAX_FRAME_SIZE_UNALIGNED
 mdefine_line|#define CPIA_MAX_FRAME_SIZE_UNALIGNED&t;(352 * 288 * 4)   /* CIF at RGB32 */
 DECL|macro|CPIA_MAX_FRAME_SIZE

@@ -11,8 +11,6 @@ DECL|macro|DEVFS_SUPER_MAGIC
 mdefine_line|#define DEVFS_SUPER_MAGIC                0x1373
 DECL|macro|DEVFS_FL_NONE
 mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;       */
-DECL|macro|DEVFS_FL_REMOVABLE
-mdefine_line|#define DEVFS_FL_REMOVABLE      0x008 /* This is a removable media device    */
 DECL|macro|DEVFS_FL_WAIT
 mdefine_line|#define DEVFS_FL_WAIT           0x010 /* Wait for devfsd to finish           */
 DECL|macro|DEVFS_FL_CURRENT_OWNER
@@ -96,14 +94,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {SPIN_LOCK_UNLOCKED, 0, 0, 0, NULL}
-r_extern
-r_void
-id|devfs_put
-(paren
-id|devfs_handle_t
-id|de
-)paren
-suffix:semicolon
 r_extern
 id|devfs_handle_t
 id|devfs_register
@@ -270,19 +260,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {0}
-DECL|function|devfs_put
-r_static
-r_inline
-r_void
-id|devfs_put
-(paren
-id|devfs_handle_t
-id|de
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 DECL|function|devfs_register
 r_static
 r_inline

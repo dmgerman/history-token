@@ -1028,7 +1028,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
 id|probe_hwif_init
 c_func
 (paren
@@ -1049,7 +1048,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
 r_return
 l_int|0
 suffix:semicolon

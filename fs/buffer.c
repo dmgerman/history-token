@@ -1775,7 +1775,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Completion handler for block_write_full_page() - pages which are unlocked&n; * during I/O, and which have PageWriteback cleared upon I/O completion.&n; */
 DECL|function|end_buffer_async_write
-r_static
 r_void
 id|end_buffer_async_write
 c_func
