@@ -1502,7 +1502,7 @@ op_assign
 id|register_hdlc_device
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -1776,14 +1776,10 @@ suffix:semicolon
 id|unregister_hdlc_device
 c_func
 (paren
-id|dev_to_hdlc
-c_func
-(paren
 id|port_to_dev
 c_func
 (paren
 id|ptr
-)paren
 )paren
 )paren
 suffix:semicolon

@@ -20516,7 +20516,7 @@ c_cond
 id|register_hdlc_device
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 op_eq
 l_int|0
@@ -21643,16 +21643,12 @@ op_increment
 id|unregister_hdlc_device
 c_func
 (paren
-id|dev_to_hdlc
-c_func
-(paren
 id|card-&gt;chan
 (braket
 id|i
 )braket
 dot
 id|d.dev
-)paren
 )paren
 suffix:semicolon
 )brace

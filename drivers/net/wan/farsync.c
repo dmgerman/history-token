@@ -4883,11 +4883,7 @@ op_assign
 id|register_hdlc_device
 c_func
 (paren
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 )paren
 OL
@@ -5512,11 +5508,7 @@ suffix:semicolon
 id|unregister_hdlc_device
 c_func
 (paren
-id|dev_to_hdlc
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 )brace
