@@ -5644,8 +5644,8 @@ r_int
 id|ip
 )paren
 (brace
-DECL|macro|magic
-macro_line|#&t;define magic&t;0x9e3779b97f4a7c16&t;/* based on (sqrt(5)/2-1)*2^64 */
+DECL|macro|hashmagic
+macro_line|#&t;define hashmagic&t;0x9e3779b97f4a7c16&t;/* based on (sqrt(5)/2-1)*2^64 */
 r_return
 (paren
 id|ip
@@ -5653,7 +5653,7 @@ op_rshift
 l_int|4
 )paren
 op_star
-id|magic
+id|hashmagic
 op_rshift
 (paren
 l_int|64
@@ -5661,6 +5661,8 @@ op_minus
 id|UNW_LOG_HASH_SIZE
 )paren
 suffix:semicolon
+DECL|macro|hashmagic
+macro_line|#undef hashmagic
 )brace
 r_static
 r_inline
