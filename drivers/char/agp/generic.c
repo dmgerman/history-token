@@ -18,6 +18,14 @@ DECL|variable|agp_memory_reserved
 r_int
 id|agp_memory_reserved
 suffix:semicolon
+multiline_comment|/* Needed by the Nforce GART driver for the time being. Would be&n; * nice to do this some other way instead of needing this export. */
+DECL|variable|agp_memory_reserved
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|agp_memory_reserved
+)paren
+suffix:semicolon
 multiline_comment|/* &n; * Generic routines for handling agp_memory structures -&n; * They use the basic page allocation routines to do the brunt of the work.&n; */
 DECL|function|agp_free_key
 r_void
