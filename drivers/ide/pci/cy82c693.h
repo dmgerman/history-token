@@ -88,19 +88,6 @@ DECL|typedef|pio_clocks_t
 id|pio_clocks_t
 suffix:semicolon
 r_extern
-r_void
-id|init_setup_cy82c693
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|init_chipset_cy82c693
@@ -146,6 +133,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CONTAQ
@@ -157,10 +145,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;CY82C693&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_cy82c693
 comma
 id|init_chipset
 suffix:colon

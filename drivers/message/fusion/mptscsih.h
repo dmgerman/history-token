@@ -224,6 +224,7 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
 r_extern
 r_int
 id|x_scsi_bios_param
@@ -240,6 +241,22 @@ r_int
 op_star
 )paren
 suffix:semicolon
+macro_line|#else
+r_extern
+r_int
+id|x_scsi_bios_param
+c_func
+(paren
+id|Disk
+op_star
+comma
+id|kdev_t
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|x_scsi_select_queue_depths

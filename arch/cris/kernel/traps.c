@@ -754,6 +754,21 @@ id|regs
 suffix:semicolon
 macro_line|#endif&t;
 )brace
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+id|show_stack
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* This is normally the &squot;Oops&squot; routine */
 r_void
 DECL|function|die_if_kernel

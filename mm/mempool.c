@@ -686,10 +686,16 @@ l_int|NULL
 r_return
 id|element
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the pool is less than 50% full then try harder&n;&t; * to allocate an element:&n;&t; */
+multiline_comment|/*&n;&t; * If the pool is less than 50% full and we can perform effective&n;&t; * page reclaim then try harder to allocate an element.&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_FS
+)paren
+op_logical_and
 (paren
 id|gfp_mask
 op_ne

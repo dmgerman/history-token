@@ -65,19 +65,6 @@ comma
 suffix:semicolon
 macro_line|#endif&t;/* defined(DISPLAY_SLC90E66_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
-r_void
-id|init_setup_slc90e66
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_slc90e66
@@ -123,6 +110,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_EFAR
@@ -134,10 +122,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;SLC90E66&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_slc90e66
 comma
 id|init_chipset
 suffix:colon
