@@ -4317,6 +4317,8 @@ r_struct
 id|ethhdr
 op_star
 id|eth
+suffix:semicolon
+id|eth
 op_assign
 (paren
 r_struct
@@ -4332,7 +4334,15 @@ op_star
 id|hh-&gt;hh_data
 )paren
 op_plus
-l_int|2
+id|HH_DATA_OFF
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|eth
+)paren
+)paren
 )paren
 suffix:semicolon
 id|plip_rewrite_address
