@@ -112,8 +112,9 @@ id|cpu_dev
 id|default_cpu
 op_assign
 (brace
+dot
 id|c_init
-suffix:colon
+op_assign
 id|default_init
 comma
 )brace

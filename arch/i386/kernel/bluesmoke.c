@@ -1387,8 +1387,9 @@ id|tq_struct
 id|mce_task
 op_assign
 (brace
+dot
 id|routine
-suffix:colon
+op_assign
 id|do_mce_timer
 )brace
 suffix:semicolon

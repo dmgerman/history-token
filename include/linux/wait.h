@@ -111,11 +111,11 @@ id|wait_queue_head_t
 suffix:semicolon
 multiline_comment|/*&n; * Macros for declaration and initialisaton of the datatypes&n; */
 DECL|macro|__WAITQUEUE_INITIALIZER
-mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;func:&t;&t;default_wake_function,&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ NULL, NULL } }
+mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.func&t;&t;= default_wake_function,&t;&t;&t;&bslash;&n;&t;.task_list&t;= { NULL, NULL } }
 DECL|macro|DECLARE_WAITQUEUE
 mdefine_line|#define DECLARE_WAITQUEUE(name, tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t name = __WAITQUEUE_INITIALIZER(name, tsk)
 DECL|macro|__WAIT_QUEUE_HEAD_INITIALIZER
-mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list } }
+mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;.lock&t;&t;= SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;.task_list&t;= { &amp;(name).task_list, &amp;(name).task_list } }
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name) &bslash;&n;&t;wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
 DECL|function|init_waitqueue_head
