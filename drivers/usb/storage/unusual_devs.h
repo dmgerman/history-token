@@ -301,6 +301,31 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+multiline_comment|/* BENQ DC5330&n; * Reported by Manuel Fombuena &lt;mfombuena@ya.com&gt; and&n; * Frank Copeland &lt;fjc@thingy.apana.org.au&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x3010
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Reported by Simon Levitt &lt;simon@whattf.com&gt;&n; * This entry needs Sub and Proto fields */
 id|UNUSUAL_DEV
 c_func
