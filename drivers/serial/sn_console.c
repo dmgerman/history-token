@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/delay.h&gt; /* for mdelay */
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
@@ -2946,7 +2947,9 @@ comma
 id|count
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 )brace
+macro_line|#endif
 )brace
 r_else
 (brace
