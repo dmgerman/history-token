@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -487,6 +487,8 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify&t;&t;&t;1266
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
+DECL|macro|__NR_kexec_load
+mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
