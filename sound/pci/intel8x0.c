@@ -8239,17 +8239,17 @@ comma
 dot
 id|device
 op_assign
-l_int|0x129d
+l_int|0x088c
 comma
 dot
 id|name
 op_assign
-l_string|&quot;HP xw8000&quot;
+l_string|&quot;HP nc8000&quot;
 comma
 dot
 id|type
 op_assign
-id|AC97_TUNE_HP_ONLY
+id|AC97_TUNE_MUTE_LED
 )brace
 comma
 (brace
@@ -8266,12 +8266,34 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;HP NC6000&quot;
+l_string|&quot;HP nc6000&quot;
 comma
 dot
 id|type
 op_assign
 id|AC97_TUNE_MUTE_LED
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x129d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw8000&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
