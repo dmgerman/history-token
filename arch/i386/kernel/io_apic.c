@@ -5313,7 +5313,7 @@ id|t1
 op_assign
 id|jiffies
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren

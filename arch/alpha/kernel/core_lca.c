@@ -207,7 +207,7 @@ r_int
 r_int
 id|value
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -320,7 +320,7 @@ op_assign
 l_int|0xffffffff
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -353,7 +353,7 @@ id|code
 comma
 id|stat0
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -463,7 +463,7 @@ l_int|0x7
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

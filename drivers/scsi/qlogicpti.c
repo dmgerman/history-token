@@ -7177,7 +7177,7 @@ id|qpti-&gt;qhost-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

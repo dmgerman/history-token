@@ -1588,7 +1588,7 @@ op_star
 id|dummy
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2612,7 +2612,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -7464,6 +7464,7 @@ macro_line|#endif
 id|synchronize_irq
 c_func
 (paren
+id|ensoniq-&gt;irq
 )paren
 suffix:semicolon
 id|pci_set_power_state
@@ -8810,6 +8811,7 @@ macro_line|#endif
 id|synchronize_irq
 c_func
 (paren
+id|ensoniq-&gt;irq
 )paren
 suffix:semicolon
 r_if

@@ -827,7 +827,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * We have to allow irqs to arrive between __sti and __cli&n; */
+multiline_comment|/*&n; * We have to allow irqs to arrive between local_irq_enable and local_irq_disable&n; */
 DECL|macro|SYNC_OTHER_CORES
 mdefine_line|#define SYNC_OTHER_CORES(x) barrier()
 multiline_comment|/*&n; * This is called when we want to synchronize with&n; * interrupts. We may for example tell a device to&n; * stop sending interrupts: but to make sure there&n; * are no interrupts that are executing on another&n; * CPU we need to call this function.&n; */
@@ -1014,7 +1014,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1025,7 +1025,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1053,7 +1053,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1079,7 +1079,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1134,7 +1134,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1162,7 +1162,7 @@ id|local_enabled
 op_assign
 l_int|0
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1276,7 +1276,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1286,7 +1286,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -229,7 +229,7 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -243,7 +243,7 @@ comma
 id|new_thread
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

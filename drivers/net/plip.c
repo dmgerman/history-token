@@ -1810,6 +1810,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
@@ -3216,6 +3217,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_if
@@ -4645,6 +4647,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_if

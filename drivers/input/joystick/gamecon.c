@@ -348,13 +348,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n; * Request the pad to transmit data&n; */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -404,7 +404,7 @@ id|GC_N64_DWS
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1005,13 +1005,13 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1090,7 +1090,7 @@ id|id
 op_assign
 l_int|0
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -82,7 +82,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -266,7 +266,7 @@ l_string|&quot;conf_read(): finished&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -329,7 +329,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -472,7 +472,7 @@ l_string|&quot;conf_write(): finished&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -283,7 +283,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * This function determines the bios parameters for a given&n;     * harddisk.  These tend to be numbers that are made up by&n;     * the host adapter.  Parameters:&n;     * size, device number, list (heads, sectors, cylinders)&n;     */
+multiline_comment|/*&n;     * This function determines the bios parameters for a given&n;     * harddisk.  These tend to be numbers that are made up by&n;     * the host adapter.  Parameters:&n;     * size, device, list (heads, sectors, cylinders)&n;     */
 DECL|member|bios_param
 r_int
 (paren
@@ -294,7 +294,9 @@ id|bios_param
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 (braket

@@ -172,14 +172,14 @@ mdefine_line|#define cli() __asm__ __volatile__ ( &quot;di&bslash;n&bslash;tpush
 mdefine_line|#define save_flags(x) __asm__ __volatile__ (&quot;move $ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
 mdefine_line|#define restore_flags(x) __asm__ __volatile__ (&quot;move %0,$ccr&bslash;n&bslash;tbtstq 5,%0&bslash;n&bslash;tbpl 1f&bslash;n&bslash;tnop&bslash;n&bslash;tpush $r0&bslash;n&bslash;tmoveq 0,$r0&bslash;n&bslash;tmove.d $r0,[0x90000000]&bslash;n&bslash;tpop $r0&bslash;n1:&bslash;n&quot; : : &quot;r&quot; (x) : &quot;memory&quot;);
 macro_line|#else
-DECL|macro|__cli
-mdefine_line|#define __cli() __asm__ __volatile__ ( &quot;di&quot;);
-DECL|macro|__sti
-mdefine_line|#define __sti() __asm__ __volatile__ ( &quot;ei&quot; );
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) __asm__ __volatile__ (&quot;move $ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) __asm__ __volatile__ (&quot;move %0,$ccr&quot; : : &quot;rm&quot; (x) : &quot;memory&quot;);
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() __asm__ __volatile__ ( &quot;di&quot;);
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable() __asm__ __volatile__ ( &quot;ei&quot; );
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x) __asm__ __volatile__ (&quot;move $ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x) __asm__ __volatile__ (&quot;move %0,$ccr&quot; : : &quot;rm&quot; (x) : &quot;memory&quot;);
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x) __asm__ __volatile__ (&quot;move $ccr,%0&bslash;n&bslash;tdi&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;); 
@@ -191,15 +191,15 @@ DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()   sti()
 macro_line|#endif
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) do { __save_flags(x); cli(); } while(0)
+mdefine_line|#define save_and_cli(x) do { local_save_flags(x); cli(); } while(0)
 DECL|function|__xchg
 r_static
 r_inline

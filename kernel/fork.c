@@ -3001,13 +3001,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Share the timeslice between parent and child, thus the&n;&t; * total amount of pending timeslices in the system doesnt change,&n;&t; * resulting in more scheduling fairness.&n;&t; */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -3051,7 +3051,7 @@ id|p-&gt;sleep_timestamp
 op_assign
 id|jiffies
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

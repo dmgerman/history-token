@@ -880,7 +880,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1012,7 +1012,7 @@ c_func
 id|SMCUltraBase
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1032,7 +1032,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

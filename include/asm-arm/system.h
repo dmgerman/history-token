@@ -175,13 +175,7 @@ DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;__switch_to(prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(x)&t;__save_flags_cli(x)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;__restore_flags(x)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__sti()
+mdefine_line|#define local_irq_save(x)&t;local_save_flags_cli(x)
 macro_line|#ifdef CONFIG_SMP
 macro_line|#error SMP not supported
 DECL|macro|smp_mb
@@ -198,17 +192,17 @@ mdefine_line|#define smp_rmb()&t;&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;&t;barrier()
 DECL|macro|cli
-mdefine_line|#define cli()&t;&t;&t;__cli()
+mdefine_line|#define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti()&t;&t;&t;__sti()
+mdefine_line|#define sti()&t;&t;&t;local_irq_enable()
 DECL|macro|clf
 mdefine_line|#define clf()&t;&t;&t;__clf()
 DECL|macro|stf
 mdefine_line|#define stf()&t;&t;&t;__stf()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x)&t;&t;__save_flags(x)
+mdefine_line|#define save_flags(x)&t;&t;local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x)&t;__restore_flags(x)
+mdefine_line|#define restore_flags(x)&t;local_irq_restore(x)
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif

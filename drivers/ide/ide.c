@@ -919,7 +919,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME:  --bzolnier */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1267,7 +1267,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -3781,18 +3781,6 @@ l_int|NULL
 id|ide_driver_module
 c_func
 (paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|drive-&gt;busy
-)paren
-id|sleep_on
-c_func
-(paren
-op_amp
-id|drive-&gt;wqueue
 )paren
 suffix:semicolon
 op_increment
