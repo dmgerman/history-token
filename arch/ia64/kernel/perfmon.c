@@ -2933,6 +2933,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2962,6 +2963,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/* probably more to add here */
 r_return
