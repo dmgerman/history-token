@@ -73,6 +73,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * This is updated when the user sets irq affinity via /proc&n; */
 DECL|variable|pending_irq_cpumask
+r_static
 id|cpumask_t
 id|__cacheline_aligned
 id|pending_irq_cpumask
@@ -3468,7 +3469,7 @@ id|irq
 )paren
 suffix:semicolon
 r_int
-id|irq_with_redir
+id|redir
 op_assign
 id|test_bit
 c_func
@@ -3477,15 +3478,6 @@ id|irq
 comma
 id|pending_irq_redir
 )paren
-ques
-c_cond
-(paren
-id|irq
-op_or
-id|IA64_IRQ_REDIRECTED
-)paren
-suffix:colon
-id|irq
 suffix:semicolon
 r_if
 c_cond
@@ -3534,7 +3526,16 @@ op_member_access_from_pointer
 id|set_affinity
 c_func
 (paren
-id|irq_with_redir
+id|irq
+op_or
+(paren
+id|redir
+ques
+c_cond
+id|IA64_IRQ_REDIRECTED
+suffix:colon
+l_int|0
+)paren
 comma
 id|pending_irq_cpumask
 (braket
