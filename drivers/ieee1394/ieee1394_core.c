@@ -889,13 +889,13 @@ r_int
 id|nodecount
 )paren
 (brace
-r_char
+id|u8
 id|speedcap
 (braket
 id|nodecount
 )braket
 suffix:semicolon
-r_char
+id|u8
 id|cldcnt
 (braket
 id|nodecount
@@ -1293,7 +1293,7 @@ id|speedcap
 id|n
 )braket
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|speedcap
@@ -1393,7 +1393,7 @@ op_plus
 id|j
 )braket
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|map
@@ -1447,7 +1447,7 @@ op_plus
 id|j
 )braket
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|map

@@ -11,9 +11,6 @@ r_struct
 id|hpsb_packet
 op_star
 id|packet
-comma
-r_int
-id|wait
 )paren
 suffix:semicolon
 r_void

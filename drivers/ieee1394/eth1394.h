@@ -3,9 +3,9 @@ macro_line|#ifndef __ETH1394_H
 DECL|macro|__ETH1394_H
 mdefine_line|#define __ETH1394_H
 macro_line|#include &quot;ieee1394.h&quot;
-multiline_comment|/* Register for incoming packets. This is 8192 bytes, which supports up to&n; * 1600mbs. We&squot;ll need to change this if that ever becomes &quot;small&quot; :)  */
+multiline_comment|/* Register for incoming packets. This is 4096 bytes, which supports up to&n; * S3200 (per Table 16-3 of IEEE 1394b-2002). */
 DECL|macro|ETHER1394_REGION_ADDR_LEN
-mdefine_line|#define ETHER1394_REGION_ADDR_LEN&t;8192
+mdefine_line|#define ETHER1394_REGION_ADDR_LEN&t;4096
 DECL|macro|ETHER1394_REGION_ADDR
 mdefine_line|#define ETHER1394_REGION_ADDR&t;&t;0xfffff0200000ULL
 DECL|macro|ETHER1394_REGION_ADDR_END

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* The great kdev_t changeover in 2.5.x */
@@ -14,11 +14,6 @@ macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#ifndef minor
 DECL|macro|minor
 mdefine_line|#define minor(dev) MINOR(dev)
-macro_line|#endif
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 macro_line|#endif
 multiline_comment|/* Transaction Label handling */
 DECL|struct|hpsb_tlabel_pool
