@@ -966,10 +966,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|func
+id|devfn
 comma
 r_int
 id|reg
@@ -996,10 +993,7 @@ r_int
 id|bus
 comma
 r_int
-id|dev
-comma
-r_int
-id|func
+id|devfn
 comma
 r_int
 id|reg
