@@ -2660,8 +2660,10 @@ DECL|macro|get_generation
 mdefine_line|#define get_generation(s) atomic_read (&amp;fs_generation(s))
 DECL|macro|FILESYSTEM_CHANGED_TB
 mdefine_line|#define FILESYSTEM_CHANGED_TB(tb)  (get_generation((tb)-&gt;tb_sb) != (tb)-&gt;fs_gen)
+DECL|macro|__fs_changed
+mdefine_line|#define __fs_changed(gen,s) (gen != get_generation (s))
 DECL|macro|fs_changed
-mdefine_line|#define fs_changed(gen,s) (gen != get_generation (s))
+mdefine_line|#define fs_changed(gen,s) ({cond_resched(); __fs_changed(gen, s);})
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                  FIXATE NODES                                           */
 multiline_comment|/***************************************************************************/
