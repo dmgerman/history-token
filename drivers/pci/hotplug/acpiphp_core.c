@@ -1411,7 +1411,7 @@ suffix:semicolon
 id|slot-&gt;hotplug_slot-&gt;release
 op_assign
 op_amp
-id|release_slots
+id|release_slot
 suffix:semicolon
 id|slot-&gt;hotplug_slot-&gt;ops
 op_assign
@@ -1489,6 +1489,7 @@ suffix:semicolon
 id|release_slot
 c_func
 (paren
+id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 r_return
