@@ -319,7 +319,6 @@ mdefine_line|#define SWAPFILE_SUSPEND   1&t;/* This is the suspending device */
 DECL|macro|SWAPFILE_IGNORED
 mdefine_line|#define SWAPFILE_IGNORED   2&t;/* Those are other swap devices ignored for suspension */
 DECL|variable|swapfile_used
-r_static
 r_int
 r_int
 id|swapfile_used
@@ -328,7 +327,6 @@ id|MAX_SWAPFILES
 )braket
 suffix:semicolon
 DECL|variable|root_swap
-r_static
 r_int
 r_int
 id|root_swap
@@ -633,10 +631,9 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-DECL|function|read_swapfiles
-r_static
-r_void
-id|read_swapfiles
+DECL|function|swsusp_swap_check
+r_int
+id|swsusp_swap_check
 c_func
 (paren
 r_void
@@ -793,16 +790,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+(paren
+id|root_swap
+op_ne
+l_int|0xffff
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|ENODEV
+suffix:semicolon
 )brace
-DECL|function|lock_swapdevices
-r_static
+multiline_comment|/**&n; * This is called after saving image so modification&n; * will be lost after resume... and that&squot;s what we want.&n; * we make the device unusable. A new call to&n; * lock_swapdevices can unlock the devices. &n; */
+DECL|function|swsusp_swap_lock
 r_void
-id|lock_swapdevices
+id|swsusp_swap_lock
 c_func
 (paren
 r_void
 )paren
-multiline_comment|/* This is called after saving image so modification&n;&t;&t;&t;&t;      will be lost after resume... and that&squot;s what we want. */
 (brace
 r_int
 id|i
@@ -846,7 +855,6 @@ id|flags
 op_xor_assign
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/* we make the device unusable. A new call to&n;&t;&t;&t;&t;&t;&t;       lock_swapdevices can unlock the devices. */
 )brace
 id|swap_list_unlock
 c_func
@@ -2858,7 +2866,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lock_swapdevices
+id|swsusp_swap_lock
 c_func
 (paren
 )paren
@@ -2868,12 +2876,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lock_swapdevices
+multiline_comment|/* This will unlock ignored swap devices since writing is finished */
+id|swsusp_swap_lock
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* This will unlock ignored swap devices since writing is finished */
 multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n;&t; * them synced (in case something goes wrong) but we DO not want to mark&n;&t; * filesystem clean: it is not. (And it does not matter, if we resume&n;&t; * correctly, we&squot;ll mark system clean, anyway.)&n;&t; */
 )brace
 DECL|function|suspend_power_down
@@ -3217,7 +3225,7 @@ r_void
 r_int
 id|is_problem
 suffix:semicolon
-id|read_swapfiles
+id|swsusp_swap_check
 c_func
 (paren
 )paren
