@@ -147,6 +147,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|dbs_tuners_ins
+r_static
 r_struct
 id|dbs_tuners
 id|dbs_tuners_ins
