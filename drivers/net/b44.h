@@ -919,6 +919,12 @@ id|ring_info
 op_star
 id|tx_buffers
 suffix:semicolon
+DECL|member|tx_bufs
+r_int
+r_char
+op_star
+id|tx_bufs
+suffix:semicolon
 DECL|member|dma_offset
 id|u32
 id|dma_offset
@@ -999,10 +1005,13 @@ id|dev
 suffix:semicolon
 DECL|member|rx_ring_dma
 DECL|member|tx_ring_dma
+DECL|member|tx_bufs_dma
 id|dma_addr_t
 id|rx_ring_dma
 comma
 id|tx_ring_dma
+comma
+id|tx_bufs_dma
 suffix:semicolon
 DECL|member|rx_pending
 id|u32
