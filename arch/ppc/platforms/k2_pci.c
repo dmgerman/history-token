@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &quot;cpc710.h&quot;
+macro_line|#include &lt;syslib/cpc710.h&gt;
 macro_line|#include &quot;k2.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

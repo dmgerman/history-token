@@ -6,6 +6,7 @@ multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 macro_line|#ifndef ELF_ARCH

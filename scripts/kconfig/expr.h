@@ -518,7 +518,11 @@ DECL|member|lineno
 r_int
 id|lineno
 suffix:semicolon
-singleline_comment|//void *data;
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifndef SWIG

@@ -89,6 +89,14 @@ id|i
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|iSeries_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|pci_ops
 id|iSeries_pci_ops
@@ -1665,6 +1673,10 @@ c_func
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI         */
 multiline_comment|/*&n;&t;// copy the command line parameter from the primary VSP&n;&t;HvCallEvent_dmaToSp( cmd_line,&n;&t;&t;&t;     2*64*1024,&n;&t;&t;&t;     256,&n;&t;&t;&t;     HvLpDma_Direction_RemoteToLocal );&n;&n;&t;mf_init();&n;&t;viopath_init();&n;*/
+id|ppc_md.idle
+op_assign
+id|iSeries_idle
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * int iSeries_show_percpuinfo()&n; *&n; * Description:&n; *   This routine pretty-prints CPU information gathered from the VPD&n; *   for use in /proc/cpuinfo&n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU data is to be printed.&n; *&n; * Output(s):&n; *  *buffer - Buffer with CPU data.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
 r_static

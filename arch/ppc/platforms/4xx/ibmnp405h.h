@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_IBMNP405H_H__
 DECL|macro|__ASM_IBMNP405H_H__
 mdefine_line|#define __ASM_IBMNP405H_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* ibm405.h at bottom of this file */
 DECL|macro|PPC405_PCI_CONFIG_ADDR
 mdefine_line|#define PPC405_PCI_CONFIG_ADDR&t;0xeec00000
@@ -187,7 +187,7 @@ mdefine_line|#define DCRN_UIC1_VR&t;(DCRN_UIC1_BASE + 0x7)
 DECL|macro|DCRN_UIC1_VCR
 mdefine_line|#define DCRN_UIC1_VCR&t;(DCRN_UIC1_BASE + 0x8)
 macro_line|#endif
-macro_line|#include &lt;platforms/ibm405.h&gt;
+macro_line|#include &lt;asm/ibm405.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* __ASM_IBMNP405H_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof

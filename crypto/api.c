@@ -1046,7 +1046,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;name       : %s&bslash;n&quot;
+l_string|&quot;name         : %s&bslash;n&quot;
 comma
 id|alg-&gt;cra_name
 )paren
@@ -1056,7 +1056,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;module     : %s&bslash;n&quot;
+l_string|&quot;module       : %s&bslash;n&quot;
 comma
 id|alg-&gt;cra_module
 ques
@@ -1071,7 +1071,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;blocksize  : %u&bslash;n&quot;
+l_string|&quot;blocksize    : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_blocksize
 )paren
@@ -1092,9 +1092,9 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;keysize    : %u&bslash;n&quot;
+l_string|&quot;min keysize  : %u&bslash;n&quot;
 comma
-id|alg-&gt;cra_cipher.cia_keysize
+id|alg-&gt;cra_cipher.cia_min_keysize
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1102,7 +1102,17 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;ivsize     : %u&bslash;n&quot;
+l_string|&quot;max keysize  : %u&bslash;n&quot;
+comma
+id|alg-&gt;cra_cipher.cia_max_keysize
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;ivsize       : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_cipher.cia_ivsize
 )paren
@@ -1117,7 +1127,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;digestsize : %u&bslash;n&quot;
+l_string|&quot;digestsize   : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_digest.dia_digestsize
 )paren

@@ -1802,16 +1802,19 @@ id|parisc_driver
 id|eisa_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;EISA Bus Adapter&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|eisa_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|eisa_probe
 comma
 )brace

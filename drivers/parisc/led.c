@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -199,40 +200,47 @@ l_int|8
 )paren
 op_assign
 (brace
+dot
 id|model
-suffix:colon
+op_assign
 id|DISPLAY_MODEL_LCD
 comma
+dot
 id|lcd_width
-suffix:colon
+op_assign
 l_int|16
 comma
+dot
 id|lcd_cmd_reg_addr
-suffix:colon
+op_assign
 (paren
 r_char
 op_star
 )paren
 id|KITTYHAWK_LCD_CMD
 comma
+dot
 id|lcd_data_reg_addr
-suffix:colon
+op_assign
 (paren
 r_char
 op_star
 )paren
 id|KITTYHAWK_LCD_DATA
 comma
+dot
 id|min_cmd_delay
-suffix:colon
+op_assign
 l_int|40
 comma
+dot
 id|reset_cmd1
-suffix:colon
+op_assign
 l_int|0x80
 comma
+dot
 id|reset_cmd2
-suffix:colon
+op_assign
 l_int|0xc0
 comma
 )brace
@@ -1408,7 +1416,7 @@ op_increment
 )paren
 id|total
 op_add_assign
-id|kstat.dk_drive
+id|dkstat.drive
 (braket
 id|major
 )braket

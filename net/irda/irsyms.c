@@ -798,6 +798,7 @@ op_assign
 id|IRDA_DEBUG_LEVEL
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Packet type handler.&n; * Tell the kernel how IrDA packets should be handled.&n; */
 DECL|variable|irda_packet_type
 r_static
 r_struct
@@ -805,17 +806,38 @@ id|packet_type
 id|irda_packet_type
 op_assign
 (brace
-l_int|0
+dot
+id|type
+op_assign
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_IRDA
+)paren
 comma
-multiline_comment|/* MUTTER ntohs(ETH_P_IRDA),*/
+dot
+id|dev
+op_assign
 l_int|NULL
 comma
+multiline_comment|/* Wildcard : All devices */
+dot
+id|func
+op_assign
 id|irlap_driver_rcv
 comma
-l_int|NULL
+multiline_comment|/* Packet type handler irlap_frame.c */
+dot
+id|data
+op_assign
+(paren
+r_void
+op_star
+)paren
+l_int|1
 comma
-l_int|NULL
-comma
+multiline_comment|/* Understand shared skbs */
+singleline_comment|//.next&t;= NULL,
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
@@ -1027,14 +1049,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Add IrDA packet type (Start receiving packets) */
-id|irda_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_IRDA
-)paren
-suffix:semicolon
 id|dev_add_pack
 c_func
 (paren

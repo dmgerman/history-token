@@ -353,6 +353,7 @@ multiline_comment|/*&n; * clean up on module removal&n; */
 DECL|function|afs_exit
 r_static
 r_void
+id|__exit
 id|afs_exit
 c_func
 (paren

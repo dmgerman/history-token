@@ -15,27 +15,13 @@ DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, p)&t;do { } while (0)
 DECL|macro|flush_page_to_ram
 mdefine_line|#define flush_page_to_ram(page)&t;&t;do { } while (0)
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma, page)&t;do { } while (0)
 r_extern
 r_void
 id|flush_dcache_page
 c_func
 (paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_icache_page
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
 r_struct
 id|page
 op_star
