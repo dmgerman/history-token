@@ -234,6 +234,7 @@ comma
 suffix:semicolon
 multiline_comment|/* define the PCI info for the PCI cards this driver can control */
 DECL|variable|cpqarray_pci_device_id
+r_static
 r_const
 r_struct
 id|pci_device_id
@@ -450,13 +451,6 @@ mdefine_line|#define DBGP(s)  do { } while(0)
 multiline_comment|/* Debug Extra Paranoid... */
 DECL|macro|DBGPX
 mdefine_line|#define DBGPX(s) do { } while(0)
-r_int
-id|cpqarray_init_step2
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|cpqarray_pci_init
@@ -1526,25 +1520,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* This is a bit of a hack,&n; * necessary to support both eisa and pci&n; */
-DECL|function|cpqarray_init
-r_int
-id|__init
-id|cpqarray_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|cpqarray_init_step2
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|release_io_mem
 r_static
 r_void
@@ -2997,10 +2972,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  This is it.  Find all the controllers and register them.&n; *  returns the number of block devices registered.&n; */
-DECL|function|cpqarray_init_step2
+DECL|function|cpqarray_init
+r_static
 r_int
 id|__init
-id|cpqarray_init_step2
+id|cpqarray_init
 c_func
 (paren
 r_void
