@@ -1638,13 +1638,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|proteon_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|proteon_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1668,6 +1669,14 @@ id|tr_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_PROTEON
+(brace
+id|proteon_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMCTR
 (brace
 id|smctr_probe
@@ -1755,16 +1764,6 @@ op_logical_or
 macro_line|#endif
 macro_line|#ifdef CONFIG_SKISA
 id|sk_isa_probe
-c_func
-(paren
-id|dev
-)paren
-op_eq
-l_int|0
-op_logical_or
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROTEON
-id|proteon_probe
 c_func
 (paren
 id|dev
