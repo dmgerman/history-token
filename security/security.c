@@ -168,7 +168,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * register_security - registers a security framework with the kernel&n; * @ops: a pointer to the struct security_options that is to be registered&n; *&n; * This function is to allow a security module to register itself with the&n; * kernel security subsystem.  Some rudimentary checking is done on the @ops&n; * value passed to this function.  A call to unregister_security() should be&n; * done to remove this security_options structure from the kernel.&n; *&n; * If the @ops structure does not contain function pointers for all hooks in&n; * the structure, or there is already a security module registered with the&n; * kernel, an error will be returned.  Otherwise 0 is returned on success.&n; */
+multiline_comment|/**&n; * register_security - registers a security framework with the kernel&n; * @ops: a pointer to the struct security_options that is to be registered&n; *&n; * This function is to allow a security module to register itself with the&n; * kernel security subsystem.  Some rudimentary checking is done on the @ops&n; * value passed to this function.  A call to unregister_security() should be&n; * done to remove this security_options structure from the kernel.&n; *&n; * If there is already a security module registered with the kernel,&n; * an error will be returned.  Otherwise 0 is returned on success.&n; */
 DECL|function|register_security
 r_int
 id|register_security
