@@ -3604,12 +3604,7 @@ c_func
 id|edev
 )paren
 suffix:semicolon
-id|edd_create_symlink_to_scsidev
-c_func
-(paren
-id|edev
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME - as of 15-Jan-2003, there are some&n;&t;&t;   non-&quot;scsi_device&quot;s on the scsi_bus list.  The following&n;&t;&t;   function could possibly mis-access memory in that&n;&t;&t;   case.  This is actually a problem with the SCSI&n;&t;&t;   layer, which is being addressed there.  Until then,&n;&t;&t;   don&squot;t call this function.&n;&t;&t;   &t;&t;   &n;&t;&t;   edd_create_symlink_to_scsidev(edev);&n;&t;&t;*/
 )brace
 )brace
 r_static
