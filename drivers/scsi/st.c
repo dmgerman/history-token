@@ -1,11 +1,11 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2003 Kai Makisara&n;   email Kai.Makisara@kolumbus.fi&n;&n;   Last modified: Sun Apr 13 10:17:18 2003 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2003 Kai Makisara&n;   email Kai.Makisara@kolumbus.fi&n;&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
 DECL|variable|verstr
 r_static
 r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20030413&quot;
+l_string|&quot;20030622&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -7497,6 +7497,10 @@ r_else
 (brace
 id|filp-&gt;f_pos
 op_sub_assign
+id|do_count
+suffix:semicolon
+id|count
+op_add_assign
 id|do_count
 suffix:semicolon
 id|STps-&gt;drv_block
