@@ -3807,7 +3807,7 @@ comma
 id|page_save
 )paren
 suffix:semicolon
-id|down
+id|up
 c_func
 (paren
 op_amp
