@@ -957,13 +957,13 @@ DECL|macro|outsw
 mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
 mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
-multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
+multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; *&n; * We need these to be machine vectors since some platforms don&squot;t provide&n; * DMA coherence via PIO reads (PCI drivers and the spec imply that this is&n; * a good idea).  Writes are ok though for all existing ia64 platforms (and&n; * hopefully it&squot;ll stay that way).&n; */
 r_static
 r_inline
 r_int
 r_char
-DECL|function|__readb
-id|__readb
+DECL|function|__ia64_readb
+id|__ia64_readb
 (paren
 r_void
 op_star
@@ -985,8 +985,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readw
-id|__readw
+DECL|function|__ia64_readw
+id|__ia64_readw
 (paren
 r_void
 op_star
@@ -1008,8 +1008,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readl
-id|__readl
+DECL|function|__ia64_readl
+id|__ia64_readl
 (paren
 r_void
 op_star
@@ -1031,8 +1031,8 @@ r_static
 r_inline
 r_int
 r_int
-DECL|function|__readq
-id|__readq
+DECL|function|__ia64_readq
+id|__ia64_readq
 (paren
 r_void
 op_star
@@ -1158,6 +1158,14 @@ op_assign
 id|val
 suffix:semicolon
 )brace
+DECL|macro|__readb
+mdefine_line|#define __readb&t;&t;platform_readb
+DECL|macro|__readw
+mdefine_line|#define __readw&t;&t;platform_readw
+DECL|macro|__readl
+mdefine_line|#define __readl&t;&t;platform_readl
+DECL|macro|__readq
+mdefine_line|#define __readq&t;&t;platform_readq
 DECL|macro|readb
 mdefine_line|#define readb(a)&t;__readb((void *)(a))
 DECL|macro|readw

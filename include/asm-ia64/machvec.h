@@ -379,6 +379,46 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|typedef|ia64_mv_readb_t
+r_typedef
+r_int
+r_char
+id|ia64_mv_readb_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readw_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readw_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readl_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readl_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_readq_t
+r_typedef
+r_int
+r_int
+id|ia64_mv_readq_t
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|machvec_noop
@@ -460,6 +500,14 @@ DECL|macro|platform_outw
 macro_line|#  define platform_outw&t;&t;ia64_mv.outw
 DECL|macro|platform_outl
 macro_line|#  define platform_outl&t;&t;ia64_mv.outl
+DECL|macro|platform_readb
+macro_line|#  define platform_readb        ia64_mv.readb
+DECL|macro|platform_readw
+macro_line|#  define platform_readw        ia64_mv.readw
+DECL|macro|platform_readl
+macro_line|#  define platform_readl        ia64_mv.readl
+DECL|macro|platform_readq
+macro_line|#  define platform_readq        ia64_mv.readq
 macro_line|# endif
 multiline_comment|/* __attribute__((__aligned__(16))) is required to make size of the&n; * structure multiple of 16 bytes.&n; * This will fillup the holes created because of section 3.3.1 in &n; * Software Conventions guide.&n; */
 DECL|struct|ia64_machine_vector
@@ -617,21 +665,30 @@ id|ia64_mv_outl_t
 op_star
 id|outl
 suffix:semicolon
+DECL|member|readb
+id|ia64_mv_readb_t
+op_star
+id|readb
+suffix:semicolon
+DECL|member|readw
+id|ia64_mv_readw_t
+op_star
+id|readw
+suffix:semicolon
+DECL|member|readl
+id|ia64_mv_readl_t
+op_star
+id|readl
+suffix:semicolon
+DECL|member|readq
+id|ia64_mv_readq_t
+op_star
+id|readq
+suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|__aligned__
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_pci_dma_supported,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_pci_dma_supported,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -811,6 +868,22 @@ macro_line|#endif
 macro_line|#ifndef platform_outl
 DECL|macro|platform_outl
 macro_line|# define platform_outl&t;&t;__ia64_outl
+macro_line|#endif
+macro_line|#ifndef platform_readb
+DECL|macro|platform_readb
+macro_line|# define platform_readb&t;&t;__ia64_readb
+macro_line|#endif
+macro_line|#ifndef platform_readw
+DECL|macro|platform_readw
+macro_line|# define platform_readw&t;&t;__ia64_readw
+macro_line|#endif
+macro_line|#ifndef platform_readl
+DECL|macro|platform_readl
+macro_line|# define platform_readl&t;&t;__ia64_readl
+macro_line|#endif
+macro_line|#ifndef platform_readq
+DECL|macro|platform_readq
+macro_line|# define platform_readq&t;&t;__ia64_readq
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_MACHVEC_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
+multiline_comment|/*&n; * Copyright (c) 2002-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
 macro_line|#ifndef _ASM_IA64_MACHVEC_SN2_H
 DECL|macro|_ASM_IA64_MACHVEC_SN2_H
 mdefine_line|#define _ASM_IA64_MACHVEC_SN2_H
@@ -36,27 +36,43 @@ id|sn_local_vector_to_irq
 suffix:semicolon
 r_extern
 id|ia64_mv_inb_t
-id|sn_inb
+id|__sn_inb
 suffix:semicolon
 r_extern
 id|ia64_mv_inw_t
-id|sn_inw
+id|__sn_inw
 suffix:semicolon
 r_extern
 id|ia64_mv_inl_t
-id|sn_inl
+id|__sn_inl
 suffix:semicolon
 r_extern
 id|ia64_mv_outb_t
-id|sn_outb
+id|__sn_outb
 suffix:semicolon
 r_extern
 id|ia64_mv_outw_t
-id|sn_outw
+id|__sn_outw
 suffix:semicolon
 r_extern
 id|ia64_mv_outl_t
-id|sn_outl
+id|__sn_outl
+suffix:semicolon
+r_extern
+id|ia64_mv_readb_t
+id|__sn_readb
+suffix:semicolon
+r_extern
+id|ia64_mv_readw_t
+id|__sn_readw
+suffix:semicolon
+r_extern
+id|ia64_mv_readl_t
+id|__sn_readl
+suffix:semicolon
+r_extern
+id|ia64_mv_readq_t
+id|__sn_readq
 suffix:semicolon
 r_extern
 id|ia64_mv_pci_alloc_consistent
@@ -111,18 +127,28 @@ DECL|macro|platform_send_ipi
 mdefine_line|#define platform_send_ipi&t;&t;sn2_send_IPI
 DECL|macro|platform_global_tlb_purge
 mdefine_line|#define platform_global_tlb_purge       sn2_global_tlb_purge
+DECL|macro|platform_pci_fixup
+mdefine_line|#define platform_pci_fixup&t;&t;sn_pci_fixup
 DECL|macro|platform_inb
-mdefine_line|#define platform_inb&t;&t;&t;sn_inb
+mdefine_line|#define platform_inb&t;&t;&t;__sn_inb
 DECL|macro|platform_inw
-mdefine_line|#define platform_inw&t;&t;&t;sn_inw
+mdefine_line|#define platform_inw&t;&t;&t;__sn_inw
 DECL|macro|platform_inl
-mdefine_line|#define platform_inl&t;&t;&t;sn_inl
+mdefine_line|#define platform_inl&t;&t;&t;__sn_inl
 DECL|macro|platform_outb
-mdefine_line|#define platform_outb&t;&t;&t;sn_outb
+mdefine_line|#define platform_outb&t;&t;&t;__sn_outb
 DECL|macro|platform_outw
-mdefine_line|#define platform_outw&t;&t;&t;sn_outw
+mdefine_line|#define platform_outw&t;&t;&t;__sn_outw
 DECL|macro|platform_outl
-mdefine_line|#define platform_outl&t;&t;&t;sn_outl
+mdefine_line|#define platform_outl&t;&t;&t;__sn_outl
+DECL|macro|platform_readb
+mdefine_line|#define platform_readb&t;&t;&t;__sn_readb
+DECL|macro|platform_readw
+mdefine_line|#define platform_readw&t;&t;&t;__sn_readw
+DECL|macro|platform_readl
+mdefine_line|#define platform_readl&t;&t;&t;__sn_readl
+DECL|macro|platform_readq
+mdefine_line|#define platform_readq&t;&t;&t;__sn_readq
 DECL|macro|platform_irq_desc
 mdefine_line|#define platform_irq_desc&t;&t;sn_irq_desc
 DECL|macro|platform_irq_to_vector
