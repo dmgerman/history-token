@@ -503,7 +503,7 @@ id|init_input_dev
 c_func
 (paren
 op_amp
-id|amibkd_dev
+id|amikbd_dev
 )paren
 suffix:semicolon
 id|amikbd_dev.evbit
