@@ -2202,7 +2202,10 @@ id|dentry
 comma
 l_int|0
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 op_amp
 id|fileid

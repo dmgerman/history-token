@@ -702,7 +702,7 @@ multiline_comment|/*&n;&t; * A size change should have a different mtime, or sam
 id|time_t
 id|last_time
 op_assign
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 suffix:semicolon
 id|loff_t
 id|last_sz
@@ -761,7 +761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_ne
 id|last_time
 op_logical_or

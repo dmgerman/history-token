@@ -3529,7 +3529,10 @@ c_func
 id|es-&gt;s_checkinterval
 )paren
 op_le
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 )paren
 id|printk
@@ -3600,7 +3603,10 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|ext3_update_dynamic_rev
@@ -7513,7 +7519,10 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|BUFFER_TRACE

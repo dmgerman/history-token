@@ -3850,7 +3850,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;lease_get_mtime&n; *&t;@inode: the inode&n; *&n; * This is to force NFS clients to flush their caches for files with&n; * exclusive leases.  The justification is that if someone has an&n; * exclusive lease, then they could be modifiying it.&n; */
 DECL|function|lease_get_mtime
-id|time_t
+r_void
 id|lease_get_mtime
 c_func
 (paren
@@ -3858,6 +3858,11 @@ r_struct
 id|inode
 op_star
 id|inode
+comma
+r_struct
+id|timespec
+op_star
+id|time
 )paren
 (brace
 r_struct
@@ -3884,10 +3889,15 @@ op_amp
 id|F_WRLCK
 )paren
 )paren
-r_return
+op_star
+id|time
+op_assign
 id|CURRENT_TIME
 suffix:semicolon
-r_return
+r_else
+op_star
+id|time
+op_assign
 id|inode-&gt;i_mtime
 suffix:semicolon
 )brace

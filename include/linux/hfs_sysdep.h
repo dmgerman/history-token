@@ -229,7 +229,10 @@ c_func
 id|hfs_from_utc
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 op_plus
 l_int|2082844800U

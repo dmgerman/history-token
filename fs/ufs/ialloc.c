@@ -223,7 +223,10 @@ c_func
 (paren
 id|sb
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|is_directory

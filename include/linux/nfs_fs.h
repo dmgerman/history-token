@@ -1407,6 +1407,23 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+id|u32
+DECL|function|nfs_time_to_nsecs
+id|nfs_time_to_nsecs
+c_func
+(paren
+id|__u64
+id|time
+)paren
+(brace
+r_return
+id|time
+op_amp
+l_int|0xffffffff
+suffix:semicolon
+)brace
 multiline_comment|/* NFS root */
 r_extern
 r_void

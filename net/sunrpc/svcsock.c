@@ -4428,7 +4428,10 @@ multiline_comment|/* apparently the &quot;standard&quot; is that clients close&n
 r_if
 c_cond
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 op_minus
 id|svsk-&gt;sk_lastrecv
 OL
@@ -4686,7 +4689,10 @@ suffix:semicolon
 )brace
 id|svsk-&gt;sk_lastrecv
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5040,7 +5046,10 @@ id|serv
 suffix:semicolon
 id|svsk-&gt;sk_lastrecv
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func

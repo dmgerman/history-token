@@ -1947,7 +1947,10 @@ id|btimer
 op_ne
 l_int|0
 op_logical_and
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 OG
 id|btimer
 )paren
@@ -2079,7 +2082,10 @@ comma
 id|ARCH_CONVERT
 )paren
 op_logical_and
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 OG
 id|INT_GET
 c_func

@@ -1574,7 +1574,10 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|s.len
@@ -6765,7 +6768,7 @@ c_cond
 id|cpu_to_le64
 c_func
 (paren
-id|iattr-&gt;ia_mtime
+id|iattr-&gt;ia_mtime.tv_sec
 )paren
 suffix:colon
 l_int|0
@@ -6780,7 +6783,7 @@ c_cond
 id|cpu_to_le64
 c_func
 (paren
-id|iattr-&gt;ia_ctime
+id|iattr-&gt;ia_ctime.tv_sec
 )paren
 suffix:colon
 l_int|0

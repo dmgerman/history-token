@@ -56,6 +56,7 @@ multiline_comment|/* type of dst correction */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * Change timeval to jiffies, trying to avoid the&n; * most obvious overflows..&n; *&n; * And some not so obvious.&n; *&n; * Note that we don&squot;t want to return MAX_LONG, because&n; * for various timeout reasons we often end up having&n; * to wait &quot;jiffies+1&quot; in order to guarantee that we wait&n; * at _least_ &quot;jiffies&quot; - so &quot;jiffies+1&quot; had better still&n; * be positive.&n; */
 DECL|macro|MAX_JIFFY_OFFSET
 mdefine_line|#define MAX_JIFFY_OFFSET ((~0UL &gt;&gt; 1)-1)
@@ -258,6 +259,38 @@ op_div
 id|HZ
 suffix:semicolon
 )brace
+DECL|function|timespec_equal
+r_static
+id|__inline__
+r_int
+id|timespec_equal
+c_func
+(paren
+r_struct
+id|timespec
+op_star
+id|a
+comma
+r_struct
+id|timespec
+op_star
+id|b
+)paren
+(brace
+r_return
+(paren
+id|a-&gt;tv_sec
+op_eq
+id|b-&gt;tv_sec
+)paren
+op_logical_and
+(paren
+id|a-&gt;tv_nsec
+op_eq
+id|b-&gt;tv_nsec
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Converts Gregorian date to seconds since 1970-01-01 00:00:00.&n; * Assumes input in normal date format, i.e. 1980-12-31 23:59:59&n; * =&gt; year=1980, mon=12, day=31, hour=23, min=59, sec=59.&n; *&n; * [For the Julian calendar (which was used in Russia before 1917,&n; * Britain &amp; colonies before 1752, anywhere else before 1582,&n; * and is still in use by some communities) leave out the&n; * -year/100+year/400 terms, and add 10.]&n; *&n; * This algorithm was first published by Gauss (I think).&n; *&n; * WARNING: this function will overflow on 2106-02-07 06:28:16 on&n; * machines were long is 32-bit! (However, as time_t is signed, we&n; * will already get problems at other places on 2038-01-19 03:14:08)&n; */
 r_static
 r_inline
@@ -377,8 +410,35 @@ r_struct
 id|timespec
 id|xtime
 suffix:semicolon
+r_extern
+id|rwlock_t
+id|xtime_lock
+suffix:semicolon
+DECL|function|get_seconds
+r_static
+r_inline
+r_int
+r_int
+id|get_seconds
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|xtime.tv_sec
+suffix:semicolon
+)brace
+r_struct
+id|timespec
+id|current_kernel_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|CURRENT_TIME
-mdefine_line|#define CURRENT_TIME (xtime.tv_sec)
+mdefine_line|#define CURRENT_TIME (current_kernel_time())
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|NFDBITS
 mdefine_line|#define NFDBITS&t;&t;&t;__NFDBITS

@@ -242,14 +242,6 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;xtime %lx&bslash;n&quot;
-comma
-id|CURRENT_TIME
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;PC %lx RA %lx&bslash;n&quot;
 comma
 id|regs-&gt;pc

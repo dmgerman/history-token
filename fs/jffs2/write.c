@@ -2618,7 +2618,10 @@ l_int|0
 suffix:semicolon
 id|rd-&gt;mctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|rd-&gt;nsize
 op_assign
@@ -3004,7 +3007,10 @@ id|ino
 suffix:semicolon
 id|rd-&gt;mctime
 op_assign
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|rd-&gt;nsize
 op_assign

@@ -6746,7 +6746,10 @@ c_func
 op_amp
 id|cpu_time
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 id|CURRENT_UTIME
 )paren
@@ -6964,7 +6967,10 @@ c_func
 op_amp
 id|cpu_time
 comma
-id|CURRENT_TIME
+id|get_seconds
+c_func
+(paren
+)paren
 comma
 id|CURRENT_UTIME
 )paren

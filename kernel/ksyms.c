@@ -3183,4 +3183,11 @@ c_func
 id|dump_stack
 )paren
 suffix:semicolon
+DECL|variable|current_kernel_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|current_kernel_time
+)paren
+suffix:semicolon
 eof
