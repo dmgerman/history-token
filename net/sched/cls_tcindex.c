@@ -778,6 +778,8 @@ id|tcf_police_release
 c_func
 (paren
 id|r-&gt;police
+comma
+id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1698,6 +1700,8 @@ id|tcf_police_release
 c_func
 (paren
 id|police
+comma
+id|TCA_ACT_UNBIND
 )paren
 suffix:semicolon
 )brace
