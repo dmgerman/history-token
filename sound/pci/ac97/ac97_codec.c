@@ -13273,7 +13273,7 @@ id|EINVAL
 suffix:semicolon
 id|ac97
 op_assign
-id|snd_magic_kcalloc
+id|snd_magic_kmalloc
 c_func
 (paren
 id|ac97_t
@@ -13475,6 +13475,17 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* test for AC&squot;97 */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
+)paren
+(brace
 multiline_comment|/* test if we can write to the record gain volume register */
 id|snd_ac97_write_cache
 c_func
@@ -13540,6 +13551,7 @@ id|ac97-&gt;ext_id
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* test for MC&squot;97 */
 id|ac97-&gt;ext_mid

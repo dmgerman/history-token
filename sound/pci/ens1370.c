@@ -7486,6 +7486,10 @@ id|ac97.private_free
 op_assign
 id|snd_ensoniq_mixer_free_ac97
 suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_AUDIO
+suffix:semicolon
 r_if
 c_cond
 (paren

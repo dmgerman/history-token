@@ -4745,6 +4745,11 @@ id|ac97.read
 op_assign
 id|snd_nm256_ac97_read
 suffix:semicolon
+id|ac97.scaps
+op_assign
+id|AC97_SCAP_AUDIO
+suffix:semicolon
+multiline_comment|/* we support audio! */
 id|ac97.limited_regs
 op_assign
 l_int|1
