@@ -63,7 +63,9 @@ r_char
 id|vga_rcrtcs
 c_func
 (paren
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|regbase
 comma
 r_int
@@ -106,7 +108,9 @@ r_void
 id|vga_wcrtcs
 c_func
 (paren
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|regbase
 comma
 r_int
@@ -158,7 +162,9 @@ id|vgastate
 op_star
 id|state
 comma
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|fbbase
 )paren
 (brace
@@ -810,7 +816,9 @@ id|vgastate
 op_star
 id|state
 comma
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|fbbase
 )paren
 (brace
@@ -2516,7 +2524,9 @@ op_amp
 id|VGA_SAVE_FONTS
 )paren
 (brace
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|fbbase
 suffix:semicolon
 multiline_comment|/* exit if window is less than 32K */
@@ -2778,7 +2788,9 @@ op_amp
 id|VGA_SAVE_FONTS
 )paren
 (brace
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|fbbase
 op_assign
 id|ioremap
