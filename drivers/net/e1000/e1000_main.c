@@ -1507,7 +1507,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|netdev-&gt;irq
+id|adapter-&gt;pdev-&gt;irq
 comma
 op_amp
 id|e1000_intr
@@ -1573,7 +1573,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|netdev-&gt;irq
+id|adapter-&gt;pdev-&gt;irq
 comma
 id|netdev
 )paren
@@ -2218,10 +2218,6 @@ suffix:semicolon
 id|netdev-&gt;vlan_rx_kill_vid
 op_assign
 id|e1000_vlan_rx_kill_vid
-suffix:semicolon
-id|netdev-&gt;irq
-op_assign
-id|pdev-&gt;irq
 suffix:semicolon
 id|netdev-&gt;mem_start
 op_assign
@@ -8719,7 +8715,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
-id|adapter-&gt;netdev-&gt;irq
+id|adapter-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 )brace

@@ -3333,8 +3333,9 @@ r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
-id|netdev-&gt;irq
+id|adapter-&gt;pdev-&gt;irq
 comma
 op_amp
 id|e1000_test_intr
@@ -3610,7 +3611,7 @@ multiline_comment|/* Unhook test interrupt handler */
 id|free_irq
 c_func
 (paren
-id|netdev-&gt;irq
+id|adapter-&gt;pdev-&gt;irq
 comma
 id|netdev
 )paren
