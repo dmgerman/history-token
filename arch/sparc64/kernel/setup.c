@@ -336,7 +336,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -346,7 +346,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
