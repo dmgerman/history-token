@@ -6641,7 +6641,6 @@ comma
 id|frames
 comma
 id|tram_shift
-op_increment
 )paren
 suffix:semicolon
 id|tram_pos
