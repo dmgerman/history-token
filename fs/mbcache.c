@@ -2100,12 +2100,6 @@ r_int
 id|key
 )paren
 (brace
-id|DEFINE_WAIT
-c_func
-(paren
-id|wait
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
