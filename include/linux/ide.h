@@ -3657,17 +3657,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-DECL|member|special
-id|ide_startstop_t
-(paren
-op_star
-id|special
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|member|proc
 id|ide_proc_entry_t
 op_star
