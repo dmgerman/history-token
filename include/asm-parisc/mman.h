@@ -31,6 +31,10 @@ DECL|macro|MAP_NORESERVE
 mdefine_line|#define MAP_NORESERVE&t;0x4000&t;&t;/* don&squot;t check for reservations */
 DECL|macro|MAP_GROWSDOWN
 mdefine_line|#define MAP_GROWSDOWN&t;0x8000&t;&t;/* stack-like segment */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x10000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x20000&t;&t;/* do not block on IO */
 DECL|macro|MS_SYNC
 mdefine_line|#define MS_SYNC&t;&t;1&t;&t;/* synchronous memory sync */
 DECL|macro|MS_ASYNC

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -1415,7 +1416,7 @@ op_increment
 )paren
 id|total
 op_add_assign
-id|kstat.dk_drive
+id|dkstat.drive
 (braket
 id|major
 )braket
