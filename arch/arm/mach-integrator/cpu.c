@@ -910,7 +910,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|integrator_cpu_init
-id|core_initcall
+id|arch_initcall
 c_func
 (paren
 id|integrator_cpu_init
