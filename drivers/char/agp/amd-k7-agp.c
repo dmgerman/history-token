@@ -538,7 +538,7 @@ mdefine_line|#define GET_PAGE_DIR_OFF(addr) (addr &gt;&gt; 22)
 DECL|macro|GET_PAGE_DIR_IDX
 mdefine_line|#define GET_PAGE_DIR_IDX(addr) (GET_PAGE_DIR_OFF(addr) - &bslash;&n;&t;GET_PAGE_DIR_OFF(agp_bridge-&gt;gart_bus_addr))
 DECL|macro|GET_GATT_OFF
-mdefine_line|#define GET_GATT_OFF(addr) ((addr &amp; 0x003ff000) &gt;&gt; 12) 
+mdefine_line|#define GET_GATT_OFF(addr) ((addr &amp; 0x003ff000) &gt;&gt; 12)
 DECL|macro|GET_GATT
 mdefine_line|#define GET_GATT(addr) (amd_irongate_private.gatt_pages[&bslash;&n;&t;GET_PAGE_DIR_IDX(addr)]-&gt;remapped)
 DECL|function|amd_create_gatt_table
