@@ -2384,7 +2384,7 @@ id|nr
 op_ge
 id|DRM_COMMAND_BASE
 )paren
-op_logical_or
+op_logical_and
 (paren
 id|nr
 OL
