@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/vcache.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 DECL|macro|FUTEX_HASHBITS
 mdefine_line|#define FUTEX_HASHBITS 8
 multiline_comment|/*&n; * We use this hashed waitqueue instead of a normal wait_queue_t, so&n; * we can wake only the relevent ones (hashed queues may be shared):&n; */

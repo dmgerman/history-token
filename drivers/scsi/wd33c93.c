@@ -6743,8 +6743,6 @@ comma
 id|__TIME__
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|wd33c93_proc_info
 r_int
@@ -7807,8 +7805,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

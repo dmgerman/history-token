@@ -6,15 +6,20 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * This is the actual RPC procedure call info.&n; */
+r_struct
+id|rpc_procinfo
+suffix:semicolon
 DECL|struct|rpc_message
 r_struct
 id|rpc_message
 (brace
 DECL|member|rpc_proc
-id|__u32
+r_struct
+id|rpc_procinfo
+op_star
 id|rpc_proc
 suffix:semicolon
-multiline_comment|/* Procedure number */
+multiline_comment|/* Procedure information */
 DECL|member|rpc_argp
 r_void
 op_star

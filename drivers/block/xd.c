@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file contains the driver for an XT hard disk controller&n; * (at least the DTC 5150X) for Linux.&n; *&n; * Author: Pat Mackinlay, pat@it.com.au&n; * Date: 29/09/92&n; * &n; * Revised: 01/01/93, ...&n; *&n; * Ref: DTC 5150X Controller Specification (thanks to Kevin Fowler,&n; *   kevinf@agora.rain.com)&n; * Also thanks to: Salvador Abreu, Dave Thaler, Risto Kankkunen and&n; *   Wim Van Dorst.&n; *&n; * Revised: 04/04/94 by Risto Kankkunen&n; *   Moved the detection code from xd_init() to xd_geninit() as it needed&n; *   interrupts enabled and Linus didn&squot;t want to enable them in that first&n; *   phase. xd_geninit() is the place to do these kinds of things anyway,&n; *   he says.&n; *&n; * Modularized: 04/10/96 by Todd Fries, tfries@umr.edu&n; *&n; * Revised: 13/12/97 by Andrzej Krzysztofowicz, ankry@mif.pg.gda.pl&n; *   Fixed some problems with disk initialization and module initiation.&n; *   Added support for manual geometry setting (except Seagate controllers)&n; *   in form:&n; *      xd_geo=&lt;cyl_xda&gt;,&lt;head_xda&gt;,&lt;sec_xda&gt;[,&lt;cyl_xdb&gt;,&lt;head_xdb&gt;,&lt;sec_xdb&gt;]&n; *   Recovered DMA access. Abridged messages. Added support for DTC5051CX,&n; *   WD1002-27X &amp; XEBEC controllers. Driver uses now some jumper settings.&n; *   Extended ioctl() support.&n; *&n; * Bugfix: 15/02/01, Paul G. - inform queue layer of tiny xd_maxsect.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

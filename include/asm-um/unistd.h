@@ -205,9 +205,9 @@ id|sys_write
 c_func
 (paren
 r_int
-r_int
 id|fildes
 comma
+r_const
 r_char
 op_star
 id|buf

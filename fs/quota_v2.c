@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;vfsv0 quota IO operations on file&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/dqblk_v2.h&gt;
 macro_line|#include &lt;linux/quotaio_v2.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface t
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|function|device_read_name
 r_static
 id|ssize_t

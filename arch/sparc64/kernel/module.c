@@ -1,5 +1,5 @@
 multiline_comment|/* Kernel module help for sparc64.&n; *&n; * Copyright (C) 2001 Rusty Russell.&n; * Copyright (C) 2002 David S. Miller.&n; */
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

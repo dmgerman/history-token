@@ -1,6 +1,7 @@
 multiline_comment|/* Rewritten by Rusty Russell, on the backs of many others...&n;   Copyright (C) 2001 Rusty Russell, 2002 Rusty Russell IBM.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -1392,6 +1393,45 @@ op_star
 id|mod
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODULE_FORCE_UNLOAD
+DECL|function|try_force
+r_static
+r_inline
+r_int
+id|try_force
+c_func
+(paren
+r_int
+r_int
+id|flags
+)paren
+(brace
+r_return
+(paren
+id|flags
+op_amp
+id|O_TRUNC
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|try_force
+r_static
+r_inline
+r_int
+id|try_force
+c_func
+(paren
+r_int
+r_int
+id|flags
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_MODULE_FORCE_UNLOAD */
 id|asmlinkage
 r_int
 DECL|function|sys_delete_module
@@ -1421,6 +1461,10 @@ id|MODULE_NAME_LEN
 suffix:semicolon
 r_int
 id|ret
+comma
+id|forced
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1506,6 +1550,28 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mod-&gt;modules_which_use_me
+)paren
+)paren
+(brace
+multiline_comment|/* Other modules depend on us: get rid of them first. */
+id|ret
+op_assign
+op_minus
+id|EWOULDBLOCK
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* Already dying? */
 r_if
 c_cond
@@ -1514,6 +1580,7 @@ op_logical_neg
 id|mod-&gt;live
 )paren
 (brace
+multiline_comment|/* FIXME: if (force), slam module count and wake up&n;                   waiter --RR */
 id|DEBUGP
 c_func
 (paren
@@ -1542,6 +1609,21 @@ op_logical_or
 id|mod-&gt;unsafe
 )paren
 (brace
+id|forced
+op_assign
+id|try_force
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|forced
+)paren
+(brace
 multiline_comment|/* This module can&squot;t be removed */
 id|ret
 op_assign
@@ -1552,27 +1634,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mod-&gt;modules_which_use_me
-)paren
-)paren
-(brace
-multiline_comment|/* Other modules depend on us: get rid of them first. */
-id|ret
-op_assign
-op_minus
-id|EWOULDBLOCK
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 multiline_comment|/* Stop the machine so refcounts can&squot;t move: irqs disabled. */
 id|DEBUGP
@@ -1616,11 +1677,27 @@ id|mod
 op_ne
 l_int|0
 )paren
+(brace
+id|forced
+op_assign
+id|try_force
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|forced
+)paren
 id|ret
 op_assign
 op_minus
 id|EWOULDBLOCK
 suffix:semicolon
+)brace
 r_else
 (brace
 id|mod-&gt;waiter
@@ -1646,6 +1723,14 @@ l_int|0
 )paren
 r_goto
 id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|forced
+)paren
+r_goto
+id|destroy
 suffix:semicolon
 multiline_comment|/* Since we might sleep for some time, drop the semaphore first */
 id|up
@@ -1710,7 +1795,16 @@ op_amp
 id|module_mutex
 )paren
 suffix:semicolon
+id|destroy
+suffix:colon
 multiline_comment|/* Final destruction now noone is using it. */
+r_if
+c_cond
+(paren
+id|mod
+op_member_access_from_pointer
+m_exit
+)paren
 id|mod
 op_member_access_from_pointer
 m_exit
@@ -1722,10 +1816,6 @@ c_func
 (paren
 id|mod
 )paren
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 id|out
 suffix:colon
@@ -2326,9 +2416,11 @@ id|mod
 )paren
 suffix:semicolon
 multiline_comment|/* Finally, free the module structure */
-id|kfree
+id|module_free
 c_func
 (paren
+id|mod
+comma
 id|mod
 )paren
 suffix:semicolon
@@ -4169,7 +4261,7 @@ id|err
 suffix:semicolon
 id|mod
 op_assign
-id|kmalloc
+id|module_alloc
 c_func
 (paren
 r_sizeof
@@ -4181,8 +4273,6 @@ op_plus
 id|arglen
 op_plus
 l_int|1
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -4356,7 +4446,7 @@ id|sizes.core_size
 op_add_assign
 id|common_length
 suffix:semicolon
-multiline_comment|/* Set these up: arch&squot;s can add to them */
+multiline_comment|/* Set these up, and allow archs to manipulate them. */
 id|mod-&gt;core_size
 op_assign
 id|sizes.core_size
@@ -4365,10 +4455,10 @@ id|mod-&gt;init_size
 op_assign
 id|sizes.init_size
 suffix:semicolon
-multiline_comment|/* Allocate (this is arch specific) */
-id|ptr
+multiline_comment|/* Allow archs to add to them. */
+id|err
 op_assign
-id|module_core_alloc
+id|module_init_size
 c_func
 (paren
 id|hdr
@@ -4383,14 +4473,79 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_ERR
-c_func
-(paren
-id|ptr
-)paren
+id|err
+OL
+l_int|0
 )paren
 r_goto
 id|free_mod
+suffix:semicolon
+id|mod-&gt;init_size
+op_assign
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|module_core_size
+c_func
+(paren
+id|hdr
+comma
+id|sechdrs
+comma
+id|secstrings
+comma
+id|mod
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|free_mod
+suffix:semicolon
+id|mod-&gt;core_size
+op_assign
+id|err
+suffix:semicolon
+multiline_comment|/* Do the allocs. */
+id|ptr
+op_assign
+id|module_alloc
+c_func
+(paren
+id|mod-&gt;core_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ptr
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|free_mod
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|ptr
+comma
+l_int|0
+comma
+id|mod-&gt;core_size
+)paren
 suffix:semicolon
 id|mod-&gt;module_core
 op_assign
@@ -4398,29 +4553,37 @@ id|ptr
 suffix:semicolon
 id|ptr
 op_assign
-id|module_init_alloc
+id|module_alloc
 c_func
 (paren
-id|hdr
-comma
-id|sechdrs
-comma
-id|secstrings
-comma
-id|mod
+id|mod-&gt;init_size
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_ERR
+op_logical_neg
+id|ptr
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|free_core
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|ptr
+comma
+l_int|0
+comma
+id|mod-&gt;init_size
 )paren
-)paren
-r_goto
-id|free_core
 suffix:semicolon
 id|mod-&gt;module_init
 op_assign
@@ -4804,9 +4967,11 @@ id|mod-&gt;module_core
 suffix:semicolon
 id|free_mod
 suffix:colon
-id|kfree
+id|module_free
 c_func
 (paren
+id|mod
+comma
 id|mod
 )paren
 suffix:semicolon
@@ -5429,6 +5594,13 @@ r_int
 id|module_dummy_usage
 op_assign
 l_int|1
+suffix:semicolon
+DECL|variable|module_dummy_usage
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|module_dummy_usage
+)paren
 suffix:semicolon
 multiline_comment|/* Call this at boot */
 DECL|variable|init

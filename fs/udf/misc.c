@@ -200,7 +200,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|UDF_I_EXTENDED_FE
+id|UDF_I_EFE
 c_func
 (paren
 id|inode
@@ -858,7 +858,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|UDF_I_EXTENDED_FE
+id|UDF_I_EFE
 c_func
 (paren
 id|inode
@@ -1189,6 +1189,12 @@ c_func
 id|sb
 comma
 id|block
+op_plus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1204,6 +1210,12 @@ c_func
 l_string|&quot;block=%d, location=%d: read failed&bslash;n&quot;
 comma
 id|block
+op_plus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 comma
 id|location
 )paren
@@ -1249,6 +1261,12 @@ c_func
 l_string|&quot;location mismatch block %u, tag %u != %u&bslash;n&quot;
 comma
 id|block
+op_plus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 comma
 id|le32_to_cpu
 c_func
@@ -1433,6 +1451,12 @@ c_func
 l_string|&quot;Crc failure block %d: crc = %d, crclen = %d&bslash;n&quot;
 comma
 id|block
+op_plus
+id|UDF_SB_SESSION
+c_func
+(paren
+id|sb
+)paren
 comma
 id|le16_to_cpu
 c_func

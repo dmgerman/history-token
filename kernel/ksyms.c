@@ -43,6 +43,7 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1393,18 +1394,18 @@ c_func
 id|no_llseek
 )paren
 suffix:semicolon
-DECL|variable|__pollwait
+DECL|variable|poll_initwait
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__pollwait
+id|poll_initwait
 )paren
 suffix:semicolon
-DECL|variable|__pollfreewait
+DECL|variable|poll_freewait
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__pollfreewait
+id|poll_freewait
 )paren
 suffix:semicolon
 DECL|variable|ROOT_DEV

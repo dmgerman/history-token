@@ -3,7 +3,6 @@ multiline_comment|/*&n; * Any part of this program may be used in documents lice
 macro_line|#ifndef _PARPORT_H_
 DECL|macro|_PARPORT_H_
 mdefine_line|#define _PARPORT_H_
-macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* Start off with user-visible constants */
 multiline_comment|/* Maximum of 16 ports per machine */
 DECL|macro|PARPORT_MAX
@@ -152,13 +151,14 @@ DECL|macro|PARPORT_W91284PIC
 mdefine_line|#define PARPORT_W91284PIC&t;&t;(1&lt;&lt;1) /* have a Warp9 w91284pic in the device */
 multiline_comment|/* The rest is for the kernel only */
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|PARPORT_NEED_GENERIC_OPS
 mdefine_line|#define PARPORT_NEED_GENERIC_OPS
 multiline_comment|/* Define this later. */

@@ -2,11 +2,12 @@ multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (c
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/* The default system device parent. */
 DECL|variable|system_bus
 r_static

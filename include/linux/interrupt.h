@@ -126,6 +126,9 @@ id|HI_SOFTIRQ
 op_assign
 l_int|0
 comma
+DECL|enumerator|TIMER_SOFTIRQ
+id|TIMER_SOFTIRQ
+comma
 DECL|enumerator|NET_TX_SOFTIRQ
 id|NET_TX_SOFTIRQ
 comma

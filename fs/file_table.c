@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/eventpoll.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct
@@ -155,7 +156,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|ep_init_file_struct
+id|eventpoll_init_file
 c_func
 (paren
 id|f
@@ -334,7 +335,7 @@ id|filp
 )paren
 )paren
 suffix:semicolon
-id|ep_init_file_struct
+id|eventpoll_init_file
 c_func
 (paren
 id|filp
@@ -451,8 +452,8 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-multiline_comment|/*&n;&t; * The function ep_notify_file_close() should be the first called&n;&t; * in the file cleanup chain.&n;&t; */
-id|ep_notify_file_close
+multiline_comment|/*&n;&t; * The function eventpoll_release() should be the first called&n;&t; * in the file cleanup chain.&n;&t; */
+id|eventpoll_release
 c_func
 (paren
 id|file

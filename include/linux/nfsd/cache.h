@@ -3,7 +3,8 @@ macro_line|#ifndef NFSCACHE_H
 DECL|macro|NFSCACHE_H
 mdefine_line|#define NFSCACHE_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 multiline_comment|/*&n; * Representation of a reply cache entry. The first two members *must*&n; * be hash_next and hash_prev.&n; */
 DECL|struct|svc_cacherep
 r_struct

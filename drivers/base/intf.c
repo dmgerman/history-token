@@ -3,6 +3,7 @@ DECL|macro|DEBUG
 mdefine_line|#define DEBUG 1
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_intf
 mdefine_line|#define to_intf(node) container_of(node,struct device_interface,node)

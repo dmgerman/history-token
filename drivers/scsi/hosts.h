@@ -849,11 +849,10 @@ DECL|struct|Scsi_Device_Template
 r_struct
 id|Scsi_Device_Template
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|Scsi_Device_Template
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|name
 r_const

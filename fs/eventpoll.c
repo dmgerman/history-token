@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/char/eventpoll.c ( Efficent event polling implementation )&n; *  Copyright (C) 2001,...,2002&t; Davide Libenzi&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Davide Libenzi &lt;davidel@xmailserver.org&gt;&n; *&n; */
+multiline_comment|/*&n; *  fs/eventpoll.c ( Efficent event polling implementation )&n; *  Copyright (C) 2001,...,2002&t; Davide Libenzi&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  Davide Libenzi &lt;davidel@xmailserver.org&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,13 +17,14 @@ macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/eventpoll.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;linux/eventpoll.h&gt;
 DECL|macro|EVENTPOLLFS_MAGIC
 mdefine_line|#define EVENTPOLLFS_MAGIC 0x03111965 /* My birthday should work for this :) */
 DECL|macro|DEBUG_EPOLL
@@ -54,9 +55,6 @@ mdefine_line|#define EP_MAX_HASH_BITS 17
 multiline_comment|/* Minimum size of the hash in bits ( 2^N ) */
 DECL|macro|EP_MIN_HASH_BITS
 mdefine_line|#define EP_MIN_HASH_BITS 9
-multiline_comment|/* Maximum number of wait queue we can attach to */
-DECL|macro|EP_MAX_POLL_QUEUE
-mdefine_line|#define EP_MAX_POLL_QUEUE 2
 multiline_comment|/* Number of hash entries ( &quot;struct list_head&quot; ) inside a page */
 DECL|macro|EP_HENTRY_X_PAGE
 mdefine_line|#define EP_HENTRY_X_PAGE (PAGE_SIZE / sizeof(struct list_head))
@@ -72,6 +70,12 @@ mdefine_line|#define DPI_MEM_ALLOC()&t;(struct epitem *) kmem_cache_alloc(dpi_ca
 multiline_comment|/* Macro to free a &quot;struct epitem&quot; to the slab cache */
 DECL|macro|DPI_MEM_FREE
 mdefine_line|#define DPI_MEM_FREE(p) kmem_cache_free(dpi_cache, p)
+multiline_comment|/* Macro to allocate a &quot;struct eppoll_entry&quot; from the slab cache */
+DECL|macro|PWQ_MEM_ALLOC
+mdefine_line|#define PWQ_MEM_ALLOC()&t;(struct eppoll_entry *) kmem_cache_alloc(pwq_cache, SLAB_KERNEL)
+multiline_comment|/* Macro to free a &quot;struct eppoll_entry&quot; to the slab cache */
+DECL|macro|PWQ_MEM_FREE
+mdefine_line|#define PWQ_MEM_FREE(p) kmem_cache_free(pwq_cache, p)
 multiline_comment|/* Fast test to see if the file is an evenpoll file */
 DECL|macro|IS_FILE_EPOLL
 mdefine_line|#define IS_FILE_EPOLL(f) ((f)-&gt;f_op == &amp;eventpoll_fops)
@@ -141,6 +145,12 @@ DECL|struct|eppoll_entry
 r_struct
 id|eppoll_entry
 (brace
+multiline_comment|/* List header used to link this structure to the &quot;struct epitem&quot; */
+DECL|member|llink
+r_struct
+id|list_head
+id|llink
+suffix:semicolon
 multiline_comment|/* The &quot;base&quot; pointer is set to the container &quot;struct epitem&quot; */
 DECL|member|base
 r_void
@@ -182,14 +192,11 @@ DECL|member|nwait
 r_int
 id|nwait
 suffix:semicolon
-multiline_comment|/* Wait queue used to attach poll operations */
-DECL|member|wait
+multiline_comment|/* List containing poll wait queues */
+DECL|member|pwqlist
 r_struct
-id|eppoll_entry
-id|wait
-(braket
-id|EP_MAX_POLL_QUEUE
-)braket
+id|list_head
+id|pwqlist
 suffix:semicolon
 multiline_comment|/* The &quot;container&quot; of this item */
 DECL|member|ep
@@ -704,7 +711,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This semaphore is used to ensure that files are not removed&n; * while epoll is using them. Namely the f_op-&gt;poll(), since&n; * it has to be called from outside the lock, must be protected.&n; * This is read-held during the event transfer loop to userspace&n; * and it is write-held during the file cleanup path and the epoll&n; * exit code.&n; */
+multiline_comment|/*&n; * This semaphore is used to ensure that files are not removed&n; * while epoll is using them. Namely the f_op-&gt;poll(), since&n; * it has to be called from outside the lock, must be protected.&n; * This is read-held during the event transfer loop to userspace&n; * and it is write-held during the file cleanup path and the epoll&n; * file exit code.&n; */
 DECL|variable|epsem
 r_struct
 id|rw_semaphore
@@ -716,6 +723,13 @@ r_static
 id|kmem_cache_t
 op_star
 id|dpi_cache
+suffix:semicolon
+multiline_comment|/* Slab cache used to allocate &quot;struct eppoll_entry&quot; */
+DECL|variable|pwq_cache
+r_static
+id|kmem_cache_t
+op_star
+id|pwq_cache
 suffix:semicolon
 multiline_comment|/* Virtual fs used to allocate inodes for eventpoll files */
 DECL|variable|eventpoll_mnt
@@ -842,9 +856,9 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* Used to initialize the epoll bits inside the &quot;struct file&quot; */
-DECL|function|ep_init_file_struct
+DECL|function|eventpoll_init_file
 r_void
-id|ep_init_file_struct
+id|eventpoll_init_file
 c_func
 (paren
 r_struct
@@ -869,9 +883,9 @@ id|file-&gt;f_ep_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from inside fs/file_table.c:__fput() to unlink files&n; * from the eventpoll interface. We need to have this facility to cleanup&n; * correctly files that are closed without being removed from the eventpoll&n; * interface.&n; */
-DECL|function|ep_notify_file_close
+DECL|function|eventpoll_release
 r_void
-id|ep_notify_file_close
+id|eventpoll_release
 c_func
 (paren
 r_struct
@@ -893,6 +907,19 @@ id|epitem
 op_star
 id|dpi
 suffix:semicolon
+multiline_comment|/*&n;&t; * Fast check to avoid the get/release of the semaphore. Since&n;&t; * we&squot;re doing this outside the semaphore lock, it might return&n;&t; * false negatives, but we don&squot;t care. It&squot;ll help in 99.99% of cases&n;&t; * to avoid the semaphore lock. False positives simply cannot happen&n;&t; * because the file in on the way to be removed and nobody ( but&n;&t; * eventpoll ) has still a reference to this file.&n;&t; */
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+id|lsthead
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/*&n;&t; * We don&squot;t want to get &quot;file-&gt;f_ep_lock&quot; because it is not&n;&t; * necessary. It is not necessary because we&squot;re in the &quot;struct file&quot;&n;&t; * cleanup path, and this means that noone is using this file anymore.&n;&t; * The only hit might come from ep_free() but by holding the semaphore&n;&t; * will correctly serialize the operation.&n;&t; */
 id|down_write
 c_func
 (paren
@@ -2451,7 +2478,7 @@ comma
 op_star
 id|lnk
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * ep_notify_file_close() while we&squot;re freeing the&n;&t; * &quot;struct eventpoll&quot;.&n;&t; */
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; */
 id|down_write
 c_func
 (paren
@@ -2835,40 +2862,75 @@ c_func
 id|pt
 )paren
 suffix:semicolon
-multiline_comment|/* No more than EP_MAX_POLL_QUEUE wait queue are supported */
+r_struct
+id|eppoll_entry
+op_star
+id|pwq
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|dpi-&gt;nwait
-OL
-id|EP_MAX_POLL_QUEUE
+op_ge
+l_int|0
+op_logical_and
+(paren
+id|pwq
+op_assign
+id|PWQ_MEM_ALLOC
+c_func
+(paren
+)paren
+)paren
 )paren
 (brace
+id|init_waitqueue_func_entry
+c_func
+(paren
+op_amp
+id|pwq-&gt;wait
+comma
+id|ep_poll_callback
+)paren
+suffix:semicolon
+id|pwq-&gt;whead
+op_assign
+id|whead
+suffix:semicolon
+id|pwq-&gt;base
+op_assign
+id|dpi
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
 id|whead
 comma
 op_amp
-id|dpi-&gt;wait
-(braket
-id|dpi-&gt;nwait
-)braket
-dot
-id|wait
+id|pwq-&gt;wait
 )paren
 suffix:semicolon
-id|dpi-&gt;wait
-(braket
-id|dpi-&gt;nwait
-)braket
-dot
-id|whead
-op_assign
-id|whead
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|pwq-&gt;llink
+comma
+op_amp
+id|dpi-&gt;pwqlist
+)paren
 suffix:semicolon
 id|dpi-&gt;nwait
 op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* We have to signal that an error occured */
+id|dpi-&gt;nwait
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -2896,8 +2958,6 @@ id|tfile
 (brace
 r_int
 id|error
-comma
-id|i
 comma
 id|revents
 suffix:semicolon
@@ -2957,6 +3017,13 @@ op_amp
 id|dpi-&gt;fllink
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dpi-&gt;pwqlist
+)paren
+suffix:semicolon
 id|dpi-&gt;ep
 op_assign
 id|ep
@@ -2983,68 +3050,18 @@ id|dpi-&gt;nwait
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|EP_MAX_POLL_QUEUE
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|init_waitqueue_func_entry
-c_func
-(paren
-op_amp
-id|dpi-&gt;wait
-(braket
-id|i
-)braket
-dot
-id|wait
-comma
-id|ep_poll_callback
-)paren
-suffix:semicolon
-id|dpi-&gt;wait
-(braket
-id|i
-)braket
-dot
-id|whead
-op_assign
-l_int|NULL
-suffix:semicolon
-id|dpi-&gt;wait
-(braket
-id|i
-)braket
-dot
-id|base
-op_assign
-id|dpi
-suffix:semicolon
-)brace
 multiline_comment|/* Initialize the poll table using the queue callback */
 id|epq.dpi
 op_assign
 id|dpi
 suffix:semicolon
-id|poll_initwait_ex
+id|init_poll_funcptr
 c_func
 (paren
 op_amp
 id|epq.pt
 comma
 id|ep_ptable_queue_proc
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attach the item to the poll hooks and get current event bits.&n;&t; * We can safely use the file* here because its usage count has&n;&t; * been increased by the caller of this function.&n;&t; */
@@ -3061,12 +3078,16 @@ op_amp
 id|epq.pt
 )paren
 suffix:semicolon
-id|poll_freewait
-c_func
+multiline_comment|/*&n;&t; * We have to check if something went wrong during the poll wait queue&n;&t; * install process. Namely an allocation for a wait queue failed due&n;&t; * high memory pressure.&n;&t; */
+r_if
+c_cond
 (paren
-op_amp
-id|epq.pt
+id|dpi-&gt;nwait
+OL
+l_int|0
 )paren
+r_goto
+id|eexit_2
 suffix:semicolon
 multiline_comment|/* We have to drop the new item inside our item list to keep track of it */
 id|write_lock_irqsave
@@ -3218,6 +3239,58 @@ id|pfd-&gt;fd
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|eexit_2
+suffix:colon
+id|ep_unregister_pollwait
+c_func
+(paren
+id|ep
+comma
+id|dpi
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We need to do this because an event could have been arrived on some&n;&t; * allocated wait queue.&n;&t; */
+id|write_lock_irqsave
+c_func
+(paren
+op_amp
+id|ep-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|EP_IS_LINKED
+c_func
+(paren
+op_amp
+id|dpi-&gt;rdllink
+)paren
+)paren
+id|EP_LIST_DEL
+c_func
+(paren
+op_amp
+id|dpi-&gt;rdllink
+)paren
+suffix:semicolon
+id|write_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ep-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|DPI_MEM_FREE
+c_func
+(paren
+id|dpi
+)paren
 suffix:semicolon
 id|eexit_1
 suffix:colon
@@ -3386,9 +3459,20 @@ id|dpi
 )paren
 (brace
 r_int
-id|i
-comma
 id|nwait
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|lsthead
+op_assign
+op_amp
+id|dpi-&gt;pwqlist
+suffix:semicolon
+r_struct
+id|eppoll_entry
+op_star
+id|pwq
 suffix:semicolon
 multiline_comment|/* This is called without locks, so we need the atomic exchange */
 id|nwait
@@ -3402,40 +3486,60 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Removes poll wait queue hooks */
-r_for
+r_if
+c_cond
+(paren
+id|nwait
+)paren
+(brace
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|nwait
-suffix:semicolon
-id|i
-op_increment
+op_logical_neg
+id|list_empty
+c_func
+(paren
+id|lsthead
 )paren
+)paren
+(brace
+id|pwq
+op_assign
+id|list_entry
+c_func
+(paren
+id|lsthead-&gt;next
+comma
+r_struct
+id|eppoll_entry
+comma
+id|llink
+)paren
+suffix:semicolon
+id|EP_LIST_DEL
+c_func
+(paren
+op_amp
+id|pwq-&gt;llink
+)paren
+suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|dpi-&gt;wait
-(braket
-id|i
-)braket
-dot
-id|whead
+id|pwq-&gt;whead
 comma
 op_amp
-id|dpi-&gt;wait
-(braket
-id|i
-)braket
-dot
-id|wait
+id|pwq-&gt;wait
 )paren
 suffix:semicolon
+id|PWQ_MEM_FREE
+c_func
+(paren
+id|pwq
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*&n; * Unlink the &quot;struct epitem&quot; from all places it might have been hooked up.&n; * This function must be called with write IRQ lock on &quot;ep-&gt;lock&quot;.&n; */
 DECL|function|ep_unlink
@@ -4053,20 +4157,6 @@ op_amp
 id|dpi-&gt;rdllink
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the item is not linked to the main hash table this means that&n;&t;&t; * it&squot;s on the way to be removed and we don&squot;t want to send events&n;&t;&t; * for such file descriptor.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|EP_IS_LINKED
-c_func
-(paren
-op_amp
-id|dpi-&gt;llink
-)paren
-)paren
-r_continue
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We need to increase the usage count of the &quot;struct epitem&quot; because&n;&t;&t; * another thread might call EP_CTL_DEL on this target and make the&n;&t;&t; * object to vanish underneath our nose.&n;&t;&t; */
 id|ep_use_epitem
 c_func
@@ -4377,7 +4467,7 @@ id|adpi
 id|EP_MAX_COLLECT_ITEMS
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * ep_notify_file_close() while we&squot;re transfering&n;&t; * events to userspace. Read-holding &quot;epsem&quot; will lock&n;&t; * out  ep_notify_file_close() during the whole&n;&t; * transfer loop and this will garantie us that the&n;&t; * file will not vanish underneath our nose when&n;&t; * we will call f_op-&gt;poll() from ep_send_events().&n;&t; */
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re transfering&n;&t; * events to userspace. Read-holding &quot;epsem&quot; will lock&n;&t; * out eventpoll_release() during the whole&n;&t; * transfer loop and this will garantie us that the&n;&t; * file will not vanish underneath our nose when&n;&t; * we will call f_op-&gt;poll() from ep_send_events().&n;&t; */
 id|down_read
 c_func
 (paren
@@ -4896,6 +4986,7 @@ r_void
 r_int
 id|error
 suffix:semicolon
+multiline_comment|/* Initialize the semaphore used to syncronize the file cleanup code */
 id|init_rwsem
 c_func
 (paren
@@ -4914,7 +5005,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;eventpoll&quot;
+l_string|&quot;eventpoll dpi&quot;
 comma
 r_sizeof
 (paren
@@ -4924,6 +5015,8 @@ id|epitem
 comma
 l_int|0
 comma
+id|SLAB_HWCACHE_ALIGN
+op_or
 id|DPI_SLAB_DEBUG
 comma
 l_int|NULL
@@ -4939,6 +5032,43 @@ id|dpi_cache
 )paren
 r_goto
 id|eexit_1
+suffix:semicolon
+multiline_comment|/* Allocates slab cache used to allocate &quot;struct eppoll_entry&quot; */
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|pwq_cache
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;eventpoll pwq&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|eppoll_entry
+)paren
+comma
+l_int|0
+comma
+id|DPI_SLAB_DEBUG
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pwq_cache
+)paren
+r_goto
+id|eexit_2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register the virtual file system that will be the source of inodes&n;&t; * for the eventpoll files&n;&t; */
 id|error
@@ -4956,7 +5086,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|eexit_2
+id|eexit_3
 suffix:semicolon
 multiline_comment|/* Mount the above commented virtual file system */
 id|eventpoll_mnt
@@ -4986,13 +5116,13 @@ id|eventpoll_mnt
 )paren
 )paren
 r_goto
-id|eexit_3
+id|eexit_4
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;[%p] eventpoll: driver installed.&bslash;n&quot;
+l_string|&quot;[%p] eventpoll: successfully initialized.&bslash;n&quot;
 comma
 id|current
 )paren
@@ -5000,13 +5130,21 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|eexit_3
+id|eexit_4
 suffix:colon
 id|unregister_filesystem
 c_func
 (paren
 op_amp
 id|eventpoll_fs_type
+)paren
+suffix:semicolon
+id|eexit_3
+suffix:colon
+id|kmem_cache_destroy
+c_func
+(paren
+id|pwq_cache
 )paren
 suffix:semicolon
 id|eexit_2
@@ -5045,6 +5183,12 @@ id|mntput
 c_func
 (paren
 id|eventpoll_mnt
+)paren
+suffix:semicolon
+id|kmem_cache_destroy
+c_func
+(paren
+id|pwq_cache
 )paren
 suffix:semicolon
 id|kmem_cache_destroy

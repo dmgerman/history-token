@@ -1,5 +1,5 @@
 multiline_comment|/*  Kernel module help for i386.&n;    Copyright (C) 2001 Rusty Russell.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleloader.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -11,11 +11,10 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(fmt , ...)
 macro_line|#endif
-DECL|function|alloc_and_zero
-r_static
+DECL|function|module_alloc
 r_void
 op_star
-id|alloc_and_zero
+id|module_alloc
 c_func
 (paren
 r_int
@@ -23,11 +22,6 @@ r_int
 id|size
 )paren
 (brace
-r_void
-op_star
-id|ret
-suffix:semicolon
-multiline_comment|/* We handle the zero case fine, unlike vmalloc */
 r_if
 c_cond
 (paren
@@ -38,45 +32,15 @@ l_int|0
 r_return
 l_int|NULL
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|vmalloc
 c_func
 (paren
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOMEM
-)paren
-suffix:semicolon
-r_else
-id|memset
-c_func
-(paren
-id|ret
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
 )brace
-multiline_comment|/* Free memory returned from module_core_alloc/module_init_alloc */
+multiline_comment|/* Free memory returned from module_alloc */
 DECL|function|module_free
 r_void
 id|module_free
@@ -100,10 +64,10 @@ id|module_region
 suffix:semicolon
 multiline_comment|/* FIXME: If module_region == mod-&gt;init_region, trim exception&n;           table entries. */
 )brace
-DECL|function|module_core_alloc
-r_void
-op_star
-id|module_core_alloc
+multiline_comment|/* We don&squot;t need anything special. */
+DECL|function|module_core_size
+r_int
+id|module_core_size
 c_func
 (paren
 r_const
@@ -128,17 +92,12 @@ id|module
 )paren
 (brace
 r_return
-id|alloc_and_zero
-c_func
-(paren
 id|module-&gt;core_size
-)paren
 suffix:semicolon
 )brace
-DECL|function|module_init_alloc
-r_void
-op_star
-id|module_init_alloc
+DECL|function|module_init_size
+r_int
+id|module_init_size
 c_func
 (paren
 r_const
@@ -163,11 +122,7 @@ id|module
 )paren
 (brace
 r_return
-id|alloc_and_zero
-c_func
-(paren
 id|module-&gt;init_size
-)paren
 suffix:semicolon
 )brace
 DECL|function|apply_relocate

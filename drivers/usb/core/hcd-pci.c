@@ -442,7 +442,7 @@ id|dev-&gt;slot_name
 suffix:semicolon
 id|hcd-&gt;product_desc
 op_assign
-id|dev-&gt;name
+id|dev-&gt;dev.name
 suffix:semicolon
 id|hcd-&gt;controller
 op_assign
@@ -483,7 +483,7 @@ id|hcd-&gt;description
 comma
 id|dev-&gt;slot_name
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 macro_line|#ifndef __sparc__

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -24,7 +23,16 @@ r_struct
 id|poll_table_struct
 suffix:semicolon
 r_struct
+id|iovec
+suffix:semicolon
+r_struct
 id|nameidata
+suffix:semicolon
+r_struct
+id|vm_area_struct
+suffix:semicolon
+r_struct
+id|vfsmount
 suffix:semicolon
 multiline_comment|/*&n; * It&squot;s silly to have NR_OPEN bigger than NR_FILE, but you can change&n; * the file limit at runtime and only root can increase the per-process&n; * nr_file rlimit, so it&squot;s safe to set up a ridiculously high absolute&n; * upper limit on files-per-process.&n; *&n; * Some programs (notably those using select()) may have to be &n; * recompiled to take full advantage of the new limits..  &n; */
 multiline_comment|/* Fixed constants first: */
@@ -452,9 +460,8 @@ DECL|macro|ATTR_FLAG_IMMUTABLE
 mdefine_line|#define ATTR_FLAG_IMMUTABLE&t;8 &t;/* Immutable file */
 DECL|macro|ATTR_FLAG_NODIRATIME
 mdefine_line|#define ATTR_FLAG_NODIRATIME&t;16 &t;/* Don&squot;t update atime for directory */
-multiline_comment|/*&n; * Includes for diskquotas and mount structures.&n; */
+multiline_comment|/*&n; * Includes for diskquotas.&n; */
 macro_line|#include &lt;linux/quota.h&gt;
-macro_line|#include &lt;linux/mount.h&gt;
 multiline_comment|/*&n; * oh the beauties of C type declarations.&n; */
 r_struct
 id|page
@@ -1142,84 +1149,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|socket_alloc
-r_struct
-id|socket_alloc
-(brace
-DECL|member|socket
-r_struct
-id|socket
-id|socket
-suffix:semicolon
-DECL|member|vfs_inode
-r_struct
-id|inode
-id|vfs_inode
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|SOCKET_I
-r_static
-r_inline
-r_struct
-id|socket
-op_star
-id|SOCKET_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-op_amp
-id|container_of
-c_func
-(paren
-id|inode
-comma
-r_struct
-id|socket_alloc
-comma
-id|vfs_inode
-)paren
-op_member_access_from_pointer
-id|socket
-suffix:semicolon
-)brace
-DECL|function|SOCK_INODE
-r_static
-r_inline
-r_struct
-id|inode
-op_star
-id|SOCK_INODE
-c_func
-(paren
-r_struct
-id|socket
-op_star
-id|socket
-)paren
-(brace
-r_return
-op_amp
-id|container_of
-c_func
-(paren
-id|socket
-comma
-r_struct
-id|socket_alloc
-comma
-id|socket
-)paren
-op_member_access_from_pointer
-id|vfs_inode
-suffix:semicolon
-)brace
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/ext3_fs_i.h&gt;
@@ -6948,80 +6877,6 @@ r_int
 id|real_root_dev
 suffix:semicolon
 macro_line|#endif
-r_extern
-id|ssize_t
-id|char_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|block_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|char_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ssize_t
-id|block_write
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_const
-r_char
-op_star
-comma
-r_int
-comma
-id|loff_t
-op_star
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|inode_change_ok

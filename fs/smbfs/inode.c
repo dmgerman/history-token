@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;

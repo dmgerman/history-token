@@ -609,21 +609,6 @@ id|scsi_cmnd
 op_star
 id|scmd
 suffix:semicolon
-multiline_comment|/*&n;&t; * Current policy is all shosts go away on unregister.&n;&t; */
-r_if
-c_cond
-(paren
-id|shost-&gt;hostt-&gt;module
-op_logical_and
-id|GET_USE_COUNT
-c_func
-(paren
-id|shost-&gt;hostt-&gt;module
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME Do ref counting.  We force all of the devices offline to&n;&t; * help prevent race conditions where other hosts/processors could&n;&t; * try and get in and queue a command.&n;&t; */
 r_for
 c_loop
@@ -1579,8 +1564,6 @@ id|cur_cnt
 op_assign
 id|scsi_hosts_registered
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * The detect routine must carefully spinunlock/spinlock if it&n;&t; * enables interrupts, since all interrupt handlers do spinlock as&n;&t; * well.&n;&t; */
 multiline_comment|/*&n;&t; * detect should do its own locking&n;&t; * FIXME present is now set is scsi_register which breaks manual&n;&t; * registration code below.&n;&t; */
 id|shost_tp
@@ -1770,8 +1753,6 @@ l_string|&quot;&quot;
 suffix:colon
 l_string|&quot;s&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|unlock_kernel
 c_func

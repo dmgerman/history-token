@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* remove ASAP */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;

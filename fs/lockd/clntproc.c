@@ -1078,6 +1078,19 @@ suffix:semicolon
 r_struct
 id|rpc_message
 id|msg
+op_assign
+(brace
+dot
+id|rpc_argp
+op_assign
+id|argp
+comma
+dot
+id|rpc_resp
+op_assign
+id|resp
+comma
+)brace
 suffix:semicolon
 r_int
 id|status
@@ -1085,28 +1098,15 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: call procedure %s on %s&bslash;n&quot;
+l_string|&quot;lockd: call procedure %d on %s&bslash;n&quot;
 comma
-id|nlm_procname
-c_func
 (paren
-id|proc
+r_int
 )paren
+id|proc
 comma
 id|host-&gt;h_name
 )paren
-suffix:semicolon
-id|msg.rpc_proc
-op_assign
-id|proc
-suffix:semicolon
-id|msg.rpc_argp
-op_assign
-id|argp
-suffix:semicolon
-id|msg.rpc_resp
-op_assign
-id|resp
 suffix:semicolon
 r_if
 c_cond
@@ -1120,11 +1120,6 @@ c_func
 (paren
 id|filp
 )paren
-suffix:semicolon
-r_else
-id|msg.rpc_cred
-op_assign
-l_int|NULL
 suffix:semicolon
 r_do
 (brace
@@ -1166,6 +1161,14 @@ l_int|NULL
 r_return
 op_minus
 id|ENOLCK
+suffix:semicolon
+id|msg.rpc_proc
+op_assign
+op_amp
+id|clnt-&gt;cl_procinfo
+(braket
+id|proc
+)braket
 suffix:semicolon
 multiline_comment|/* Perform the RPC call. If an error occurs, try again */
 r_if
@@ -1383,24 +1386,23 @@ op_star
 id|clnt
 suffix:semicolon
 r_struct
-id|nlm_args
-op_star
-id|argp
+id|rpc_message
+id|msg
+op_assign
+(brace
+dot
+id|rpc_argp
 op_assign
 op_amp
 id|req-&gt;a_args
-suffix:semicolon
-r_struct
-id|nlm_res
-op_star
-id|resp
+comma
+dot
+id|rpc_resp
 op_assign
 op_amp
 id|req-&gt;a_res
-suffix:semicolon
-r_struct
-id|rpc_message
-id|msg
+comma
+)brace
 suffix:semicolon
 r_int
 id|status
@@ -1408,13 +1410,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: call procedure %s on %s (async)&bslash;n&quot;
+l_string|&quot;lockd: call procedure %d on %s (async)&bslash;n&quot;
 comma
-id|nlm_procname
-c_func
 (paren
-id|proc
+r_int
 )paren
+id|proc
 comma
 id|host-&gt;h_name
 )paren
@@ -1439,23 +1440,15 @@ r_return
 op_minus
 id|ENOLCK
 suffix:semicolon
-multiline_comment|/* bootstrap and kick off the async RPC call */
 id|msg.rpc_proc
 op_assign
+op_amp
+id|clnt-&gt;cl_procinfo
+(braket
 id|proc
+)braket
 suffix:semicolon
-id|msg.rpc_argp
-op_assign
-id|argp
-suffix:semicolon
-id|msg.rpc_resp
-op_assign
-id|resp
-suffix:semicolon
-id|msg.rpc_cred
-op_assign
-l_int|NULL
-suffix:semicolon
+multiline_comment|/* bootstrap and kick off the async RPC call */
 id|status
 op_assign
 id|rpc_call_async
@@ -1532,6 +1525,19 @@ suffix:semicolon
 r_struct
 id|rpc_message
 id|msg
+op_assign
+(brace
+dot
+id|rpc_argp
+op_assign
+id|argp
+comma
+dot
+id|rpc_resp
+op_assign
+id|resp
+comma
+)brace
 suffix:semicolon
 r_int
 id|status
@@ -1539,13 +1545,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: call procedure %s on %s (async)&bslash;n&quot;
+l_string|&quot;lockd: call procedure %d on %s (async)&bslash;n&quot;
 comma
-id|nlm_procname
-c_func
 (paren
-id|proc
+r_int
 )paren
+id|proc
 comma
 id|host-&gt;h_name
 )paren
@@ -1570,19 +1575,15 @@ r_return
 op_minus
 id|ENOLCK
 suffix:semicolon
-multiline_comment|/* bootstrap and kick off the async RPC call */
 id|msg.rpc_proc
 op_assign
+op_amp
+id|clnt-&gt;cl_procinfo
+(braket
 id|proc
+)braket
 suffix:semicolon
-id|msg.rpc_argp
-op_assign
-id|argp
-suffix:semicolon
-id|msg.rpc_resp
-op_assign
-id|resp
-suffix:semicolon
+multiline_comment|/* bootstrap and kick off the async RPC call */
 r_if
 c_cond
 (paren
@@ -1595,11 +1596,6 @@ c_func
 (paren
 id|file
 )paren
-suffix:semicolon
-r_else
-id|msg.rpc_cred
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Increment host refcount */
 id|nlm_get_host

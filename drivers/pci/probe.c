@@ -177,7 +177,7 @@ id|pos
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|dev-&gt;name
+id|dev-&gt;dev.name
 suffix:semicolon
 id|reg
 op_assign
@@ -612,7 +612,7 @@ suffix:semicolon
 )brace
 id|res-&gt;name
 op_assign
-id|dev-&gt;name
+id|dev-&gt;dev.name
 suffix:semicolon
 )brace
 )brace
@@ -679,7 +679,7 @@ c_func
 (paren
 l_string|&quot;Transparent bridge - %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_for
@@ -1785,7 +1785,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|dev-&gt;name
+id|dev-&gt;dev.name
 comma
 l_string|&quot;PCI device %04x:%04x&quot;
 comma
@@ -2199,14 +2199,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* now put in global tree */
-id|strcpy
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 id|strcpy
 c_func
 (paren

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */

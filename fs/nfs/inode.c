@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/nfs4_mount.h&gt;
 macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|NFSDBG_FACILITY
