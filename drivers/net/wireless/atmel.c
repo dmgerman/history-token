@@ -26,14 +26,12 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#ifdef CONFIG_FW_LOADER
 macro_line|#include &lt;linux/firmware.h&gt;
-macro_line|#endif
 macro_line|#include &quot;ieee802_11.h&quot;
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR 0
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR 7
+mdefine_line|#define DRIVER_MINOR 8
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -10653,6 +10651,8 @@ id|min
 op_plus
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -10699,8 +10699,6 @@ dot
 id|i
 op_assign
 id|i
-op_plus
-l_int|1
 suffix:semicolon
 multiline_comment|/* List index */
 id|range-&gt;freq
@@ -10713,6 +10711,8 @@ op_assign
 id|frequency_list
 (braket
 id|i
+op_minus
+l_int|1
 )braket
 op_star
 l_int|100000
@@ -16874,7 +16874,6 @@ id|CARD_TYPE_EEPROM
 )paren
 (brace
 multiline_comment|/* copy in firmware if needed */
-macro_line|#ifdef CONFIG_FW_LOADER
 r_const
 r_struct
 id|firmware
@@ -16883,7 +16882,6 @@ id|fw_entry
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 r_int
 r_char
 op_star
@@ -16905,7 +16903,6 @@ id|priv-&gt;firmware
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_FW_LOADER
 r_if
 c_cond
 (paren
@@ -16985,20 +16982,6 @@ id|len
 op_assign
 id|fw_entry-&gt;size
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;%s: no firmware supplied, cannot start.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -17101,7 +17084,6 @@ l_int|0x6000
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FW_LOADER
 r_if
 c_cond
 (paren
@@ -17113,7 +17095,6 @@ c_func
 id|fw_entry
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
