@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -11,7 +12,6 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;asm/acpi-ext.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -1159,7 +1159,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6&n;&t; *    (uncached access range)&n;&t; *&n;&t; *  The EFI memory map is the &quot;prefered&quot; location to get the I/O port&n;&t; *  space base, rather the relying on AR.KR0. This should become more&n;&t; *  clear in future SAL specs. We&squot;ll fall back to getting it out of&n;&t; *  AR.KR0 if no appropriate entry is found in the memory map.&n;&t; */
+multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6 (uncached access range).&n;&t; *&n;&t; *  The EFI memory map is the &quot;preferred&quot; location to get the I/O port space base,&n;&t; *  rather the relying on AR.KR0. This should become more clear in future SAL&n;&t; *  specs. We&squot;ll fall back to getting it out of AR.KR0 if no appropriate entry is&n;&t; *  found in the memory map.&n;&t; */
 id|phys_iobase
 op_assign
 id|efi_get_iobase
@@ -1239,35 +1239,15 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the bootstrap CPU */
-r_if
-c_cond
-(paren
-id|efi.acpi20
-)paren
-(brace
-multiline_comment|/* Parse the ACPI 2.0 tables */
-id|acpi20_parse
+macro_line|#ifdef CONFIG_ACPI_BOOT
+id|acpi_boot_init
 c_func
 (paren
-id|efi.acpi20
+op_star
+id|cmdline_p
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|efi.acpi
-)paren
-(brace
-multiline_comment|/* Parse the ACPI tables */
-id|acpi_parse
-c_func
-(paren
-id|efi.acpi
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Advanced Configuration and Power Interface&n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and&n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999, 2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000, 2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
+multiline_comment|/*&n; * Advanced Configuration and Power Interface&n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and&n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Hewlett-Packard Co.&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#ifdef CONFIG_SERIAL_ACPI
 macro_line|#include &lt;linux/acpi_serial.h&gt;
 macro_line|#endif
@@ -38,11 +37,6 @@ DECL|variable|total_cpus
 r_int
 id|__initdata
 id|total_cpus
-suffix:semicolon
-DECL|variable|pcat_compat
-r_int
-id|__initdata
-id|pcat_compat
 suffix:semicolon
 DECL|variable|pm_idle
 r_void
@@ -98,116 +92,10 @@ id|acpi_get_sysname
 r_void
 )paren
 (brace
+multiline_comment|/* the following should go away once we have an ACPI parser: */
 macro_line|#ifdef CONFIG_IA64_GENERIC
-r_if
-c_cond
-(paren
-id|efi.acpi20
-)paren
-(brace
-id|acpi20_rsdp_t
-op_star
-id|rsdp20
-suffix:semicolon
-id|acpi_xsdt_t
-op_star
-id|xsdt
-suffix:semicolon
-id|acpi_desc_table_hdr_t
-op_star
-id|hdrp
-suffix:semicolon
-id|rsdp20
-op_assign
-id|efi.acpi20
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-id|rsdp20-&gt;signature
-comma
-id|ACPI_RSDP_SIG
-comma
-id|ACPI_RSDP_SIG_LEN
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI 2.0 RSDP signature incorrect, default to DIG compatible&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-l_string|&quot;dig&quot;
-suffix:semicolon
-)brace
-id|xsdt
-op_assign
-id|__va
-c_func
-(paren
-id|rsdp20-&gt;xsdt
-)paren
-suffix:semicolon
-id|hdrp
-op_assign
-op_amp
-id|xsdt-&gt;header
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-id|hdrp-&gt;signature
-comma
-id|ACPI_XSDT_SIG
-comma
-id|ACPI_XSDT_SIG_LEN
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI 2.0 XSDT signature incorrect, default to DIG compatible&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_string|&quot;dig&quot;
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|hdrp-&gt;oem_id
-comma
-l_string|&quot;HP&quot;
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Enabling Hewlett Packard zx1 chipset support&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_string|&quot;hpzx1&quot;
-suffix:semicolon
-)brace
-)brace
-r_return
-l_string|&quot;dig&quot;
+l_string|&quot;hpsim&quot;
 suffix:semicolon
 macro_line|#else
 macro_line|# if defined (CONFIG_IA64_HP_SIM)
@@ -221,10 +109,6 @@ suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 r_return
 l_string|&quot;sn2&quot;
-suffix:semicolon
-macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
-r_return
-l_string|&quot;hpzx1&quot;
 suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_DIG)
 r_return
@@ -1081,23 +965,6 @@ comma
 id|ipi_base_addr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The PCAT_COMPAT flag indicates that the system has a dual-8259 compatible&n;&t; * setup.&n;&t; */
-macro_line|#ifdef CONFIG_ITANIUM
-id|pcat_compat
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* fw on some Itanium systems is broken... */
-macro_line|#else
-id|pcat_compat
-op_assign
-(paren
-id|madt-&gt;flags
-op_amp
-id|MADT_PCAT_COMPAT
-)paren
-suffix:semicolon
-macro_line|#endif
 id|p
 op_assign
 (paren
@@ -1220,6 +1087,7 @@ c_cond
 (paren
 id|iosapic_init
 )paren
+multiline_comment|/*&n;&t;&t;&t;&t; * The PCAT_COMPAT flag indicates that the system has a&n;&t;&t;&t;&t; * dual-8259 compatible setup.&n;&t;&t;&t;&t; */
 id|iosapic_init
 c_func
 (paren
@@ -1227,7 +1095,16 @@ id|iosapic-&gt;address
 comma
 id|iosapic-&gt;irq_base
 comma
-id|pcat_compat
+macro_line|#ifdef CONFIG_ITANIUM
+l_int|1
+multiline_comment|/* fw on some Itanium systems is broken... */
+macro_line|#else
+(paren
+id|madt-&gt;flags
+op_amp
+id|MADT_PCAT_COMPAT
+)paren
+macro_line|#endif
 )paren
 suffix:semicolon
 r_break
@@ -1516,8 +1393,6 @@ suffix:semicolon
 id|acpi_madt_t
 op_star
 id|madt
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|tables
@@ -2542,219 +2417,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI
-macro_line|#include &quot;../drivers/acpi/include/platform/acgcc.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/actypes.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acexcep.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acpixf.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/actbl.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acconfig.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acmacros.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/aclocal.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acobject.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acstruct.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acnamesp.h&quot;
-macro_line|#include &quot;../drivers/acpi/include/acutils.h&quot;
-multiline_comment|/**&n; * acpi_get_crs - Return the current resource settings for a device&n; * obj: A handle for this device&n; * buf: A buffer to be populated by this call.&n; *&n; * Pass a valid handle, typically obtained by walking the namespace and a&n; * pointer to an allocated buffer, and this function will fill in the buffer&n; * with a list of acpi_resource structures.&n; */
-DECL|function|acpi_get_crs
-id|acpi_status
-id|acpi_get_crs
-c_func
-(paren
-id|acpi_handle
-id|obj
-comma
-id|acpi_buffer
-op_star
-id|buf
-)paren
-(brace
-id|acpi_status
-id|result
-suffix:semicolon
-id|buf-&gt;length
-op_assign
-l_int|0
-suffix:semicolon
-id|buf-&gt;pointer
-op_assign
-l_int|NULL
-suffix:semicolon
-id|result
-op_assign
-id|acpi_get_current_resources
-c_func
-(paren
-id|obj
-comma
-id|buf
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-op_ne
-id|AE_BUFFER_OVERFLOW
-)paren
-r_return
-id|result
-suffix:semicolon
-id|buf-&gt;pointer
-op_assign
-id|kmalloc
-c_func
-(paren
-id|buf-&gt;length
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buf-&gt;pointer
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|result
-op_assign
-id|acpi_get_current_resources
-c_func
-(paren
-id|obj
-comma
-id|buf
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-DECL|function|acpi_get_crs_next
-id|acpi_resource
-op_star
-id|acpi_get_crs_next
-c_func
-(paren
-id|acpi_buffer
-op_star
-id|buf
-comma
-r_int
-op_star
-id|offset
-)paren
-(brace
-id|acpi_resource
-op_star
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|offset
-op_ge
-id|buf-&gt;length
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|res
-op_assign
-id|buf-&gt;pointer
-op_plus
-op_star
-id|offset
-suffix:semicolon
-op_star
-id|offset
-op_add_assign
-id|res-&gt;length
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-DECL|function|acpi_get_crs_type
-id|acpi_resource_data
-op_star
-id|acpi_get_crs_type
-c_func
-(paren
-id|acpi_buffer
-op_star
-id|buf
-comma
-r_int
-op_star
-id|offset
-comma
-r_int
-id|type
-)paren
-(brace
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-id|acpi_resource
-op_star
-id|res
-op_assign
-id|acpi_get_crs_next
-c_func
-(paren
-id|buf
-comma
-id|offset
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|res
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|res-&gt;id
-op_eq
-id|type
-)paren
-r_return
-op_amp
-id|res-&gt;data
-suffix:semicolon
-)brace
-)brace
-DECL|function|acpi_dispose_crs
-r_void
-id|acpi_dispose_crs
-c_func
-(paren
-id|acpi_buffer
-op_star
-id|buf
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|buf-&gt;pointer
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ACPI */
 eof
