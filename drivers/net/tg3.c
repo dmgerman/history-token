@@ -26347,6 +26347,27 @@ id|RDMAC_MODE_FIFO_LONG_BURST
 suffix:semicolon
 )brace
 )brace
+macro_line|#if TG3_TSO_SUPPORT != 0
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5750
+)paren
+id|rdmac_mode
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|27
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Receive/send statistics. */
 r_if
 c_cond
@@ -27216,6 +27237,29 @@ comma
 id|SNDDATAI_MODE_ENABLE
 )paren
 suffix:semicolon
+macro_line|#if TG3_TSO_SUPPORT != 0
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5750
+)paren
+id|tw32
+c_func
+(paren
+id|SNDDATAI_MODE
+comma
+id|SNDDATAI_MODE_ENABLE
+op_or
+l_int|0x8
+)paren
+suffix:semicolon
+macro_line|#endif
 id|tw32
 c_func
 (paren
