@@ -609,15 +609,6 @@ suffix:semicolon
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#endif
 r_extern
-r_void
-id|mp_config_ioapic_for_sci
-c_func
-(paren
-id|u32
-id|gsi
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|using_apic_timer
 suffix:semicolon

@@ -17,19 +17,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_bus&quot;
 )paren
-macro_line|#ifdef&t;CONFIG_X86_64
-r_extern
-r_void
-id|__init
-id|acpi_pic_sci_set_trigger
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-macro_line|#elif&t;defined(CONFIG_X86)
+macro_line|#ifdef&t;CONFIG_X86
 r_extern
 r_void
 id|__init
@@ -2145,27 +2133,7 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_64
-multiline_comment|/* Ensure the SCI is set to level-triggered, active-low */
-r_if
-c_cond
-(paren
-id|acpi_ioapic
-)paren
-id|mp_config_ioapic_for_sci
-c_func
-(paren
-id|acpi_fadt.sci_int
-)paren
-suffix:semicolon
-r_else
-id|acpi_pic_sci_set_trigger
-c_func
-(paren
-id|acpi_fadt.sci_int
-)paren
-suffix:semicolon
-macro_line|#elif defined(CONFIG_X86)
+macro_line|#ifdef CONFIG_X86
 r_if
 c_cond
 (paren

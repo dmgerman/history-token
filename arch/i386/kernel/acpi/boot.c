@@ -10,11 +10,56 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef&t;CONFIG_X86_64
+DECL|function|acpi_madt_oem_check
+r_static
+r_inline
+r_void
+id|acpi_madt_oem_check
+c_func
+(paren
+r_char
+op_star
+id|oem_id
+comma
+r_char
+op_star
+id|oem_table_id
+)paren
+(brace
+)brace
+DECL|function|clustered_apic_check
+r_static
+r_inline
+r_void
+id|clustered_apic_check
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|ioapic_setup_disabled
+r_static
+r_inline
+r_int
+id|ioapic_setup_disabled
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#else&t;/* X86 */
+macro_line|#ifdef&t;CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
-macro_line|#include &lt;asm/io_apic.h&gt;
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_X86_LOCAL_APIC */
+macro_line|#endif&t;/* X86 */
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|variable|__initdata
@@ -72,6 +117,58 @@ id|acpi_irq_model
 op_assign
 id|ACPI_IRQ_MODEL_PIC
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_X86_64
+multiline_comment|/* rely on all ACPI tables being in the direct mapping */
+DECL|function|__acpi_map_table
+r_char
+op_star
+id|__acpi_map_table
+c_func
+(paren
+r_int
+r_int
+id|phys_addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|phys_addr
+op_logical_or
+op_logical_neg
+id|size
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|phys_addr
+OL
+(paren
+id|end_pfn_map
+op_lshift
+id|PAGE_SHIFT
+)paren
+)paren
+r_return
+id|__va
+c_func
+(paren
+id|phys_addr
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#else
 multiline_comment|/*&n; * Temporarily use the virtual area starting from FIX_IO_APIC_BASE_END,&n; * to map the target physical address. The problem is that set_fixmap()&n; * provides a single page, and it is possible that the page is not&n; * sufficient.&n; * By using this area, we can map up to MAX_IO_APICS pages temporarily,&n; * i.e. until the next __va_range() call.&n; *&n; * Important Safety Note:  The fixed I/O APIC page numbers are *subtracted*&n; * from the fixed base.  That&squot;s why we start at FIX_IO_APIC_BASE_END and&n; * count idx down while incrementing the phys address.&n; */
 DECL|function|__acpi_map_table
 r_char
@@ -206,6 +303,7 @@ id|offset
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_PCI_MMCONFIG
 DECL|function|acpi_parse_mcfg
 r_static
@@ -1258,11 +1356,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HPET_TIMER
-r_extern
-r_int
-r_int
-id|hpet_address
-suffix:semicolon
 DECL|function|acpi_parse_hpet
 r_static
 r_int
@@ -1354,6 +1447,39 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef&t;CONFIG_X86_64
+id|vxtime.hpet_address
+op_assign
+id|hpet_tbl-&gt;addr.addrl
+op_or
+(paren
+(paren
+r_int
+)paren
+id|hpet_tbl-&gt;addr.addrh
+op_lshift
+l_int|32
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;HPET id: %#x base: %#lx&bslash;n&quot;
+comma
+id|hpet_tbl-&gt;id
+comma
+id|vxtime.hpet_address
+)paren
+suffix:semicolon
+macro_line|#else&t;/* X86 */
+(brace
+r_extern
+r_int
+r_int
+id|hpet_address
+suffix:semicolon
 id|hpet_address
 op_assign
 id|hpet_tbl-&gt;addr.addrl
@@ -1370,6 +1496,8 @@ comma
 id|hpet_address
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif&t;/* X86 */
 r_return
 l_int|0
 suffix:semicolon
@@ -1378,10 +1506,12 @@ macro_line|#else
 DECL|macro|acpi_parse_hpet
 mdefine_line|#define&t;acpi_parse_hpet&t;NULL
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_PM_TIMER
 r_extern
 id|u32
 id|pmtmr_ioport
 suffix:semicolon
+macro_line|#endif
 DECL|function|acpi_parse_fadt
 r_static
 r_int
@@ -1756,10 +1886,7 @@ multiline_comment|/*&n; &t; * if &quot;noapic&quot; boot option, don&squot;t loo
 r_if
 c_cond
 (paren
-id|ioapic_setup_disabled
-c_func
-(paren
-)paren
+id|skip_ioapic_setup
 )paren
 (brace
 id|printk
