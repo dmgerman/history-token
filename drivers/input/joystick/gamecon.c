@@ -3440,6 +3440,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|gc_setup
+r_static
 r_int
 id|__init
 id|gc_setup
@@ -3510,6 +3511,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_2
+r_static
 r_int
 id|__init
 id|gc_setup_2
@@ -3580,6 +3582,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_3
+r_static
 r_int
 id|__init
 id|gc_setup_3

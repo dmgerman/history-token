@@ -2471,6 +2471,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|db9_setup
+r_static
 r_int
 id|__init
 id|db9_setup
@@ -2541,6 +2542,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|db9_setup_2
+r_static
 r_int
 id|__init
 id|db9_setup_2
@@ -2611,6 +2613,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|db9_setup_3
+r_static
 r_int
 id|__init
 id|db9_setup_3
