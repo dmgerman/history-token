@@ -124,11 +124,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|packet_type
-op_star
-id|pt
 )paren
 suffix:semicolon
 r_extern
