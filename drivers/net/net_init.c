@@ -667,37 +667,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FDDI
-multiline_comment|/**&n; * init_fddidev - Register FDDI device&n; * @dev: A FDDI device structure to be filled in, or %NULL if a new&n; *&t;struct should be allocated.&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with FDDI-generic values.&n; *&n; * If no device structure is passed, a new one is constructed, complete with&n; * a private data area of size @sizeof_priv.  A 32-byte (not bit)&n; * alignment is enforced for this private data area.&n; *&n; * If an empty string area is passed as dev-&gt;name, or a new structure is made,&n; * a new name string is constructed.&n; */
-DECL|function|init_fddidev
-r_struct
-id|net_device
-op_star
-id|init_fddidev
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|sizeof_priv
-)paren
-(brace
-r_return
-id|init_netdev
-c_func
-(paren
-id|dev
-comma
-id|sizeof_priv
-comma
-l_string|&quot;fddi%d&quot;
-comma
-id|fddi_setup
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * alloc_fddidev - Register FDDI device&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this FDDI device&n; *&n; * Fill in the fields of the device structure with FDDI-generic values.&n; *&n; * Constructs a new net device, complete with a private data area of&n; * size @sizeof_priv.  A 32-byte (not bit) alignment is enforced for&n; * this private data area.&n; */
 DECL|function|alloc_fddidev
 r_struct
@@ -722,13 +691,6 @@ id|fddi_setup
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_fddidev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_fddidev
-)paren
-suffix:semicolon
 DECL|variable|alloc_fddidev
 id|EXPORT_SYMBOL
 c_func
