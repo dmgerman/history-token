@@ -157,12 +157,11 @@ id|ip_mp_alg_table
 id|rth-&gt;rt_multipath_alg
 )braket
 suffix:semicolon
+multiline_comment|/* mp_alg_select_route _MUST_ be implemented */
 r_if
 c_cond
 (paren
 id|ops
-op_logical_and
-id|ops-&gt;mp_alg_select_route
 op_logical_and
 (paren
 id|rth-&gt;u.dst.flags

@@ -52,6 +52,9 @@ c_cond
 id|n
 template_param
 id|IP_MP_ALG_MAX
+op_logical_or
+op_logical_neg
+id|ops-&gt;mp_alg_select_route
 )paren
 r_return
 op_minus
