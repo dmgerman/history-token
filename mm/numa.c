@@ -69,6 +69,11 @@ r_int
 r_int
 id|size
 suffix:semicolon
+id|pgdat
+op_assign
+op_amp
+id|contig_page_data
+suffix:semicolon
 id|contig_page_data.node_id
 op_assign
 l_int|0
