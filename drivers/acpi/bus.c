@@ -6069,7 +6069,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
 r_if
 c_cond
 (paren
@@ -6077,6 +6076,7 @@ op_logical_neg
 id|result
 )paren
 (brace
+macro_line|#ifdef CONFIG_PM
 r_if
 c_cond
 (paren
@@ -6100,14 +6100,23 @@ id|PREFIX
 l_string|&quot;APM is already active, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
 id|result
 op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-)brace
 macro_line|#endif
+)brace
+r_else
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
 id|return_VALUE
 c_func
 (paren
