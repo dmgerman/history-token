@@ -43,6 +43,12 @@ id|UNW_AR_RSC
 comma
 DECL|enumerator|UNW_AR_CCV
 id|UNW_AR_CCV
+comma
+DECL|enumerator|UNW_AR_CSD
+id|UNW_AR_CSD
+comma
+DECL|enumerator|UNW_AR_SSD
+id|UNW_AR_SSD
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The following declarations are private to the unwind&n; * implementation:&n; */

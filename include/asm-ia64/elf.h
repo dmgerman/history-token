@@ -202,7 +202,7 @@ suffix:semicolon
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;ia64_init_addr_space()
 multiline_comment|/* ELF register definitions.  This is needed for core dump support.  */
-multiline_comment|/*&n; * elf_gregset_t contains the application-level state in the following order:&n; *&t;r0-r31&n; *&t;NaT bits (for r0-r31; bit N == 1 iff rN is a NaT)&n; *&t;predicate registers (p0-p63)&n; *&t;b0-b7&n; *&t;ip cfm psr&n; *&t;ar.rsc ar.bsp ar.bspstore ar.rnat&n; *&t;ar.ccv ar.unat ar.fpsr ar.pfs ar.lc ar.ec&n; */
+multiline_comment|/*&n; * elf_gregset_t contains the application-level state in the following order:&n; *&t;r0-r31&n; *&t;NaT bits (for r0-r31; bit N == 1 iff rN is a NaT)&n; *&t;predicate registers (p0-p63)&n; *&t;b0-b7&n; *&t;ip cfm psr&n; *&t;ar.rsc ar.bsp ar.bspstore ar.rnat&n; *&t;ar.ccv ar.unat ar.fpsr ar.pfs ar.lc ar.ec ar.csd ar.ssd&n; */
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;128&t;/* we really need just 72 but let&squot;s leave some headroom... */
 DECL|macro|ELF_NFPREG

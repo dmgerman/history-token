@@ -2,7 +2,7 @@ macro_line|#ifndef _ASM_IA64_PTRACE_OFFSETS_H
 DECL|macro|_ASM_IA64_PTRACE_OFFSETS_H
 mdefine_line|#define _ASM_IA64_PTRACE_OFFSETS_H
 multiline_comment|/*&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-multiline_comment|/*&n; * The &quot;uarea&quot; that can be accessed via PEEKUSER and POKEUSER is a&n; * virtual structure that would have the following definition:&n; *&n; *&t;struct uarea {&n; *&t;&t;struct ia64_fpreg fph[96];&t;&t;// f32-f127&n; *&t;&t;struct switch_stack sw;&n; *&t;&t;struct pt_regs pt;&n; *&t;&t;unsigned long rsvd1[712];&n; *&t;&t;unsigned long dbr[8];&n; *&t;&t;unsigned long rsvd2[504];&n; *&t;&t;unsigned long ibr[8];&n; *&t;&t;unsigned long rsvd3[504];&n; *&t;&t;unsigned long pmd[4];&n; *&t;}&n; */
+multiline_comment|/*&n; * The &quot;uarea&quot; that can be accessed via PEEKUSER and POKEUSER is a&n; * virtual structure that would have the following definition:&n; *&n; *&t;struct uarea {&n; *&t;&t;struct ia64_fpreg fph[96];&t;&t;// f32-f127&n; *&t;&t;unsigned long nat_bits;&n; *&t;&t;unsigned long empty1;&n; *&t;&t;struct ia64_fpreg f2;&t;&t;&t;// f2-f5&n; *&t;&t;&t;.&n; *&t;&t;&t;.&n; *&t;&t;struct ia64_fpreg f5;&n; *&t;&t;struct ia64_fpreg f10;&t;&t;&t;// f10-f31&n; *&t;&t;&t;.&n; *&t;&t;&t;.&n; *&t;&t;struct ia64_fpreg f31;&n; *&t;&t;unsigned long r4;&t;&t;&t;// r4-r7&n; *&t;&t;&t;.&n; *&t;&t;&t;.&n; *&t;&t;unsigned long r7;&n; *&t;&t;unsigned long b1;&t;&t;&t;// b1-b5&n; *&t;&t;&t;.&n; *&t;&t;&t;.&n; *&t;&t;unsigned long b5;&n; *&t;&t;unsigned long ar_ec;&n; *&t;&t;unsigned long ar_lc;&n; *&t;&t;unsigned long empty2[5];&n; *&t;&t;unsigned long cr_ipsr;&n; *&t;&t;unsigned long cr_iip;&n; *&t;&t;unsigned long cfm;&n; *&t;&t;unsigned long ar_unat;&n; *&t;&t;unsigned long ar_pfs;&n; *&t;&t;unsigned long ar_rsc;&n; *&t;&t;unsigned long ar_rnat;&n; *&t;&t;unsigned long ar_bspstore;&n; *&t;&t;unsigned long pr;&n; *&t;&t;unsigned long b6;&n; *&t;&t;unsigned long ar_bsp;&n; *&t;&t;unsigned long r1;&n; *&t;&t;unsigned long r2;&n; *&t;&t;unsigned long r3;&n; *&t;&t;unsigned long r12;&n; *&t;&t;unsigned long r13;&n; *&t;&t;unsigned long r14;&n; *&t;&t;unsigned long r15;&n; *&t;&t;unsigned long r8;&n; *&t;&t;unsigned long r9;&n; *&t;&t;unsigned long r10;&n; *&t;&t;unsigned long r11;&n; *&t;&t;unsigned long r16;&n; *&t;&t;&t;.&n; *&t;&t;&t;.&n; *&t;&t;unsigned long r31;&n; *&t;&t;unsigned long ar_ccv;&n; *&t;&t;unsigned long ar_fpsr;&n; *&t;&t;unsigned long b0;&n; *&t;&t;unsigned long b7;&n; *&t;&t;unsigned long f6;&n; *&t;&t;unsigned long f7;&n; *&t;&t;unsigned long f8;&n; *&t;&t;unsigned long f9;&n; *&t;&t;unsigned long ar_csd;&n; *&t;&t;unsigned long ar_ssd;&n; *&t;&t;unsigned long rsvd1[710];&n; *&t;&t;unsigned long dbr[8];&n; *&t;&t;unsigned long rsvd2[504];&n; *&t;&t;unsigned long ibr[8];&n; *&t;&t;unsigned long rsvd3[504];&n; *&t;&t;unsigned long pmd[4];&n; *&t;}&n; */
 multiline_comment|/* fph: */
 DECL|macro|PT_F32
 mdefine_line|#define PT_F32&t;&t;&t;0x0000
@@ -196,7 +196,6 @@ DECL|macro|PT_F126
 mdefine_line|#define PT_F126&t;&t;&t;0x05e0
 DECL|macro|PT_F127
 mdefine_line|#define PT_F127&t;&t;&t;0x05f0
-multiline_comment|/* switch stack: */
 DECL|macro|PT_NAT_BITS
 mdefine_line|#define PT_NAT_BITS&t;&t;0x0600
 DECL|macro|PT_F2
@@ -273,7 +272,6 @@ DECL|macro|PT_AR_EC
 mdefine_line|#define PT_AR_EC&t;&t;0x0800
 DECL|macro|PT_AR_LC
 mdefine_line|#define PT_AR_LC&t;&t;0x0808
-multiline_comment|/* pt_regs */
 DECL|macro|PT_CR_IPSR
 mdefine_line|#define PT_CR_IPSR&t;&t;0x0830
 DECL|macro|PT_CR_IIP
@@ -366,6 +364,10 @@ DECL|macro|PT_F8
 mdefine_line|#define PT_F8&t;&t;&t;0x09a0
 DECL|macro|PT_F9
 mdefine_line|#define PT_F9&t;&t;&t;0x09b0
+DECL|macro|PT_AR_CSD
+mdefine_line|#define PT_AR_CSD&t;&t;0x09c0
+DECL|macro|PT_AR_SSD
+mdefine_line|#define PT_AR_SSD&t;&t;0x09c8
 DECL|macro|PT_DBR
 mdefine_line|#define PT_DBR&t;&t;&t;0x2000&t;/* data breakpoint registers */
 DECL|macro|PT_IBR
