@@ -321,6 +321,8 @@ DECL|macro|FB_ACTIVATE_ALL
 mdefine_line|#define FB_ACTIVATE_ALL&t;       64&t;/* change all VCs on this fb&t;*/
 DECL|macro|FB_ACTIVATE_FORCE
 mdefine_line|#define FB_ACTIVATE_FORCE     128&t;/* force apply even when no change*/
+DECL|macro|FB_ACTIVATE_INV_MODE
+mdefine_line|#define FB_ACTIVATE_INV_MODE  256       /* invalidate videomode */
 DECL|macro|FB_ACCELF_TEXT
 mdefine_line|#define FB_ACCELF_TEXT&t;&t;1&t;/* (OBSOLETE) see fb_info.flags and vc_mode */
 DECL|macro|FB_SYNC_HOR_HIGH_ACT
@@ -1222,6 +1224,26 @@ mdefine_line|#define FB_EVENT_SUSPEND&t;&t;0x02
 multiline_comment|/*&t;The display on this fb_info was resumed, you can restore the display&n; *&t;if you own it&n; */
 DECL|macro|FB_EVENT_RESUME
 mdefine_line|#define FB_EVENT_RESUME&t;&t;&t;0x03
+multiline_comment|/*      An entry from the modelist was removed */
+DECL|macro|FB_EVENT_MODE_DELETE
+mdefine_line|#define FB_EVENT_MODE_DELETE            0x04
+DECL|struct|fb_event
+r_struct
+id|fb_event
+(brace
+DECL|member|info
+r_struct
+id|fb_info
+op_star
+id|info
+suffix:semicolon
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_int
 id|fb_register_client
