@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.76 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.80 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -5470,12 +5470,9 @@ id|fsf_req-&gt;status
 op_amp
 id|ZFCP_STATUS_FSFREQ_ERROR
 )paren
-(brace
-multiline_comment|/* do not set ZFCP_STATUS_FSFREQ_ABORTSUCCEEDED */
 r_goto
 id|skip_fsfstatus
 suffix:semicolon
-)brace
 multiline_comment|/* evaluate FSF status in QTCB */
 r_switch
 c_cond
@@ -5568,7 +5565,7 @@ suffix:semicolon
 id|zfcp_erp_adapter_shutdown
 c_func
 (paren
-id|port-&gt;adapter
+id|adapter
 comma
 l_int|0
 )paren
@@ -5694,16 +5691,16 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied, cannot send generic command &quot;
-l_string|&quot;to port 0x%016Lx on adapter %s&bslash;n&quot;
-comma
-id|port-&gt;wwpn
+l_string|&quot;access denied, cannot send generic service &quot;
+l_string|&quot;command (adapter %s, port d_id=0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
 (paren
 id|port
 )paren
+comma
+id|port-&gt;d_id
 )paren
 suffix:semicolon
 r_for
@@ -5806,16 +5803,16 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;warning: The port 0x%016Lx on adapter %s has &quot;
-l_string|&quot;rejected a generic services command.&bslash;n&quot;
-comma
-id|port-&gt;wwpn
+l_string|&quot;generic service command rejected &quot;
+l_string|&quot;(adapter %s, port d_id=0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
 (paren
 id|port
 )paren
+comma
+id|port-&gt;d_id
 )paren
 suffix:semicolon
 id|ZFCP_LOG_INFO
@@ -5926,7 +5923,7 @@ suffix:semicolon
 id|zfcp_erp_adapter_reopen
 c_func
 (paren
-id|port-&gt;adapter
+id|adapter
 comma
 l_int|0
 )paren
@@ -5951,16 +5948,16 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
-l_string|&quot;needs to be reopened&bslash;n&quot;
-comma
-id|port-&gt;wwpn
+l_string|&quot;port needs to be reopened &quot;
+l_string|&quot;(adapter %s, port d_id=0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
 (paren
 id|port
 )paren
+comma
+id|port-&gt;d_id
 )paren
 suffix:semicolon
 id|debug_text_event
@@ -7243,8 +7240,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied, cannot send ELS &quot;
-l_string|&quot;(adapter: %s, port d_id: 0x%08x)&bslash;n&quot;
+l_string|&quot;access denied, cannot send ELS command &quot;
+l_string|&quot;(adapter %s, port d_id=0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
