@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -1326,6 +1327,15 @@ op_star
 id|addr
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|__vunmap
 c_func
 (paren
@@ -1346,6 +1356,15 @@ op_star
 id|addr
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|__vunmap
 c_func
 (paren

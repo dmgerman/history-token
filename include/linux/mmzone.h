@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
-mdefine_line|#define MAX_ORDER 10
+mdefine_line|#define MAX_ORDER 11
 macro_line|#else
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
@@ -218,7 +218,7 @@ singleline_comment|// NULL delimited
 suffix:semicolon
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x0f
-multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
+multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * Memory statistics and page replacement data structures are maintained on a&n; * per-zone basis.&n; */
 r_struct
 id|bootmem_data
 suffix:semicolon

@@ -1483,6 +1483,25 @@ id|addr
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* We can&squot;t remap across vm area boundaries */
 r_if
 c_cond

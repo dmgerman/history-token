@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptctl.c&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A big THANKS to Eddie C. Dost for fixing the ioctl path&n; *      and most importantly f/w download on sparc64 platform!&n; *      (plus Eddie&squot;s other helpful hints and insights)&n; *&n; *      Thanks to Arnaldo Carvalho de Melo for finding and patching&n; *      a potential memory leak in mptctl_do_fw_download(),&n; *      and for some kmalloc insight:-)&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston, Noah Romer&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.c,v 1.55 2002/06/20 13:28:16 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptctl.c&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A big THANKS to Eddie C. Dost for fixing the ioctl path&n; *      and most importantly f/w download on sparc64 platform!&n; *      (plus Eddie&squot;s other helpful hints and insights)&n; *&n; *      Thanks to Arnaldo Carvalho de Melo for finding and patching&n; *      a potential memory leak in mptctl_do_fw_download(),&n; *      and for some kmalloc insight:-)&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston, Noah Romer&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.c,v 1.59 2002/09/05 22:30:10 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -2113,8 +2113,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_ioctl() @%d - ioc%d not found!&bslash;n&quot;
@@ -2124,6 +2125,7 @@ comma
 id|__LINE__
 comma
 id|iocnumX
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2462,8 +2464,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s@%d::mptctl_do_reset - ioc%d not found!&bslash;n&quot;
@@ -2474,10 +2477,11 @@ id|__LINE__
 comma
 id|krinfo.hdr.iocnum
 )paren
+)paren
 suffix:semicolon
 r_return
 op_minus
-id|ENXIO
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* (-6) No such device or address */
 )brace
@@ -2820,8 +2824,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 l_string|&quot;%s@%d::_ioctl_fwdl - ioc%d not found!&bslash;n&quot;
 comma
@@ -2831,10 +2836,11 @@ id|__LINE__
 comma
 id|ioc
 )paren
+)paren
 suffix:semicolon
 r_return
 op_minus
-id|ENXIO
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* (-6) No such device or address */
 )brace
@@ -4616,8 +4622,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_getiocinfo() @%d - ioc%d not found!&bslash;n&quot;
@@ -4627,6 +4634,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -5068,8 +5076,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_gettargetinfo() @%d - ioc%d not found!&bslash;n&quot;
@@ -5079,6 +5088,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -5547,8 +5557,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_readtest() @%d - ioc%d not found!&bslash;n&quot;
@@ -5558,6 +5569,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -5758,8 +5770,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_eventquery() @%d - ioc%d not found!&bslash;n&quot;
@@ -5769,6 +5782,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -5946,8 +5960,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_eventenable() @%d - ioc%d not found!&bslash;n&quot;
@@ -5957,6 +5972,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6164,8 +6180,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_eventreport() @%d - ioc%d not found!&bslash;n&quot;
@@ -6175,6 +6192,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6415,8 +6433,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_replace_fw() @%d - ioc%d not found!&bslash;n&quot;
@@ -6426,6 +6445,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6762,8 +6782,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_mpt_command() @%d - ioc%d not found!&bslash;n&quot;
@@ -6773,6 +6794,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6936,8 +6958,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_do_mpt_command() @%d - ioc%d not found!&bslash;n&quot;
@@ -6947,6 +6970,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -7376,17 +7400,6 @@ id|qtag
 op_assign
 id|MPI_SCSIIO_CONTROL_SIMPLEQ
 suffix:semicolon
-r_else
-(brace
-id|rc
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
-r_goto
-id|done_free_mem
-suffix:semicolon
-)brace
 multiline_comment|/* Have the IOCTL driver set the direction based&n;&t;&t;&t; * on the dataOutSize (ordering issue with Sparc).&n;&t;&t;&t; */
 r_if
 c_cond
@@ -8615,8 +8628,7 @@ comma
 r_void
 op_star
 )paren
-op_amp
-id|bufOut
+id|bufOut.kptr
 comma
 id|dma_addr
 )paren
@@ -8649,8 +8661,7 @@ comma
 r_void
 op_star
 )paren
-op_amp
-id|bufIn
+id|bufIn.kptr
 comma
 id|dma_addr
 )paren
@@ -8838,8 +8849,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_compaq_ioctl() @%d - ioc%d not found!&bslash;n&quot;
@@ -8849,6 +8861,7 @@ comma
 id|__LINE__
 comma
 id|iocnumX
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -9119,8 +9132,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_pciinfo() @%d - ioc%d not found!&bslash;n&quot;
@@ -9130,6 +9144,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -9578,8 +9593,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_cpq_getdriver() @%d - ioc%d not found!&bslash;n&quot;
@@ -9589,6 +9605,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -9882,8 +9899,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_cpq_ctlr_status() @%d - ioc%d not found!&bslash;n&quot;
@@ -9893,6 +9911,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -10102,8 +10121,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_cpq_target_address() @%d - ioc%d not found!&bslash;n&quot;
@@ -10113,6 +10133,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -10550,8 +10571,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 l_string|&quot;%s::mptctl_cpq_passthru() @%d - ioc%d not found!&bslash;n&quot;
@@ -10561,6 +10583,7 @@ comma
 id|__LINE__
 comma
 id|iocnum
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -11001,28 +11024,34 @@ id|mptctl_fops
 op_assign
 (brace
 id|owner_THIS_MODULE
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|mptctl_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|mptctl_write
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|mptctl_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|mptctl_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|mptctl_release
 comma
 )brace
@@ -11230,8 +11259,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 id|MYNAM
@@ -11240,6 +11270,7 @@ comma
 id|__LINE__
 comma
 id|iocnumX
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -11449,8 +11480,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 id|MYNAM
@@ -11459,6 +11491,7 @@ comma
 id|__LINE__
 comma
 id|iocnumX
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -11741,8 +11774,9 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+id|dtmprintk
 c_func
+(paren
 (paren
 id|KERN_ERR
 id|MYNAM
@@ -11751,6 +11785,7 @@ comma
 id|__LINE__
 comma
 id|iocnumX
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -6308,14 +6308,6 @@ op_star
 id|pages_avail
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|srmmu_paging_init
 r_void
 id|__init
@@ -6673,12 +6665,6 @@ c_func
 )paren
 suffix:semicolon
 id|flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * This does not logically belong here, but we need to&n;&t; * call it at the moment we are able to use the bootmem&n;&t; * allocator.&n;&t; */
-id|sun_serial_setup
 c_func
 (paren
 )paren

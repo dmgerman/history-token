@@ -80,6 +80,7 @@ suffix:semicolon
 r_static
 r_int
 r_int
+id|__init
 id|init_chipset_piix
 c_func
 (paren
@@ -113,16 +114,18 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
 DECL|variable|__initdata
 r_static
 id|ide_pci_device_t
-id|piix_chipsets
+id|piix_pci_info
 (braket
 )braket
 id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -194,6 +197,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 1 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -265,6 +269,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 2 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -336,6 +341,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 3 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -407,6 +413,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 4 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -478,6 +485,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 5 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -549,6 +557,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 6 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -620,6 +629,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 7 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -691,6 +701,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 8 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -762,6 +773,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 9 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -833,6 +845,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 10 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -904,6 +917,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 11 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -975,6 +989,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 12 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -1046,6 +1061,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 13 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -1117,6 +1133,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 14 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL
@@ -1188,6 +1205,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 15 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_INTEL

@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -1468,6 +1469,13 @@ c_func
 id|read_cache_page
 )paren
 suffix:semicolon
+DECL|variable|mark_page_accessed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mark_page_accessed
+)paren
+suffix:semicolon
 DECL|variable|vfs_readlink
 id|EXPORT_SYMBOL
 c_func
@@ -1882,6 +1890,27 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|generic_file_direct_IO
+)paren
+suffix:semicolon
+DECL|variable|generic_file_readv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_readv
+)paren
+suffix:semicolon
+DECL|variable|generic_file_writev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_file_writev
+)paren
+suffix:semicolon
+DECL|variable|iov_shorten
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iov_shorten
 )paren
 suffix:semicolon
 multiline_comment|/* tty routines */
@@ -3183,4 +3212,12 @@ id|__per_cpu_offset
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* debug */
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 eof

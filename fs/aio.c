@@ -19,9 +19,10 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#if DEBUG &gt; 1
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;&t;printk
@@ -1357,7 +1358,7 @@ id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 )brace
-id|set_task_state
+id|__set_task_state
 c_func
 (paren
 id|tsk
@@ -1374,6 +1375,54 @@ comma
 op_amp
 id|wait
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* wait_on_sync_kiocb:&n; *&t;Waits on the given sync kiocb to complete.&n; */
+DECL|function|wait_on_sync_kiocb
+id|ssize_t
+id|wait_on_sync_kiocb
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|iocb-&gt;ki_users
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|iocb-&gt;ki_users
+)paren
+r_break
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|__set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+r_return
+id|iocb-&gt;ki_user_data
 suffix:semicolon
 )brace
 multiline_comment|/* exit_aio: called when the last user of mm goes away.  At this point, &n; * there is no way for any new requests to be submited or any of the &n; * io_* syscalls to be called on the context.  However, there may be &n; * outstanding requests which hold references to the context; as they &n; * go away, they will call put_ioctx and release any pinned memory&n; * associated with the request (held via struct page * references).&n; */
@@ -2268,9 +2317,6 @@ r_struct
 id|aio_ring_info
 op_star
 id|info
-op_assign
-op_amp
-id|ctx-&gt;ring_info
 suffix:semicolon
 r_struct
 id|aio_ring
@@ -2292,6 +2338,73 @@ id|tail
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+multiline_comment|/* Special case handling for sync iocbs: events go directly&n;&t; * into the iocb for fast handling.  Note that this will not &n;&t; * work if we allow sync kiocbs to be cancelled. in which&n;&t; * case the usage count checks will have to move under ctx_lock&n;&t; * for all cases.&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+op_amp
+id|ctx-&gt;mm-&gt;default_kioctx
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|iocb-&gt;ki_user_data
+op_assign
+id|res
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iocb-&gt;ki_users
+op_eq
+l_int|1
+)paren
+(brace
+id|iocb-&gt;ki_users
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_lock
+)paren
+suffix:semicolon
+id|iocb-&gt;ki_users
+op_decrement
+suffix:semicolon
+id|ret
+op_assign
+(paren
+l_int|0
+op_eq
+id|iocb-&gt;ki_users
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_lock
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|info
+op_assign
+op_amp
+id|ctx-&gt;ring_info
 suffix:semicolon
 multiline_comment|/* add a completion event to the ring buffer.&n;&t; * must be done holding ctx-&gt;ctx_lock to prevent&n;&t; * other code from messing with the tail&n;&t; * pointer since we might be called from irq&n;&t; * context.&n;&t; */
 id|spin_lock_irqsave

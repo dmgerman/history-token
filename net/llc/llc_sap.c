@@ -11,22 +11,6 @@ macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;linux/if_tr.h&gt;
 r_static
-r_void
-id|llc_sap_free_ev
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-r_static
 r_int
 id|llc_sap_next_state
 c_func
@@ -145,7 +129,7 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_unassign_sock - removes a connection from SAP&n; *&t;@sap: SAP&n; *&t;@sk: pointer to connection&n; *&n; *&t;This function removes a connection from connection_list of a SAP.&n; *&t;List locking is performed by caller (rtn_all_conns).&n; */
+multiline_comment|/**&n; *&t;llc_sap_unassign_sock - removes a connection from SAP&n; *&t;@sap: SAP&n; *&t;@sk: pointer to connection&n; *&n; *&t;This function removes a connection from sk_list.list of a SAP.&n; */
 DECL|function|llc_sap_unassign_sock
 r_void
 id|llc_sap_unassign_sock
@@ -196,10 +180,10 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_send_ev - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
-DECL|function|llc_sap_send_ev
+multiline_comment|/**&n; *&t;llc_sap_state_process - sends event to SAP state machine&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pointer to occurred event&n; *&n; *&t;After executing actions of the event, upper layer will be indicated&n; *&t;if needed(on receiving an UI frame).&n; */
+DECL|function|llc_sap_state_process
 r_void
-id|llc_sap_send_ev
+id|llc_sap_state_process
 c_func
 (paren
 r_struct
@@ -239,13 +223,6 @@ id|ev-&gt;ind_cfm_flag
 op_eq
 id|LLC_IND
 )paren
-(brace
-id|skb_get
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|sap
 op_member_access_from_pointer
 id|ind
@@ -254,12 +231,17 @@ c_func
 id|ev-&gt;prim
 )paren
 suffix:semicolon
-)brace
-id|llc_sap_free_ev
+r_else
+r_if
+c_cond
+(paren
+id|ev-&gt;type
+op_eq
+id|LLC_SAP_EV_TYPE_PDU
+)paren
+id|kfree_skb
 c_func
 (paren
-id|sap
-comma
 id|skb
 )paren
 suffix:semicolon
@@ -508,49 +490,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_sap_free_ev - frees an sap event&n; *&t;@sap: pointer to SAP&n; *&t;@skb: released event&n; */
-DECL|function|llc_sap_free_ev
-r_static
-r_void
-id|llc_sap_free_ev
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_struct
-id|llc_sap_state_ev
-op_star
-id|ev
-op_assign
-id|llc_sap_ev
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ev-&gt;type
-op_eq
-id|LLC_SAP_EV_TYPE_PDU
-)paren
 id|kfree_skb
 c_func
 (paren

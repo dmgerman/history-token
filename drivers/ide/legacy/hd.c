@@ -4009,4 +4009,11 @@ comma
 id|parse_hd_setup
 )paren
 suffix:semicolon
+DECL|variable|hd_init
+id|module_init
+c_func
+(paren
+id|hd_init
+)paren
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_FC.H&n; *          Title:  MPI Fibre Channel messages and structures&n; *  Creation Date:  June 12, 2000&n; *&n; *    MPI Version:  01.02.02&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-12-00  01.00.02  Added _MSG_FC_ABORT_REPLY structure.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *  12-04-00  01.01.02  Added messages for Common Transport Send and&n; *                      Primitive Send.&n; *  01-09-01  01.01.03  Modifed some of the new flags to have an MPI prefix&n; *                      and modified the FcPrimitiveSend flags.&n; *  01-25-01  01.01.04  Move InitiatorIndex in LinkServiceRsp reply to a larger&n; *                      field.&n; *                      Added FC_ABORT_TYPE_CT_SEND_REQUEST and&n; *                      FC_ABORT_TYPE_EXLINKSEND_REQUEST for FcAbort request.&n; *                      Added MPI_FC_PRIM_SEND_FLAGS_STOP_SEND.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *  03-27-01  01.01.06  Added Flags field to MSG_LINK_SERVICE_BUFFER_POST_REPLY&n; *                      and defined MPI_LS_BUF_POST_REPLY_FLAG_NO_RSP_NEEDED.&n; *                      Added MPI_FC_PRIM_SEND_FLAGS_RESET_LINK define.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added RspLength field to MSG_LINK_SERVICE_RSP_REQUEST.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Change name of reserved field in&n; *                      MSG_LINK_SERVICE_RSP_REPLY.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_FC.H&n; *          Title:  MPI Fibre Channel messages and structures&n; *  Creation Date:  June 12, 2000&n; *&n; *    MPI_FC.H Version:  01.02.03&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-12-00  01.00.02  Added _MSG_FC_ABORT_REPLY structure.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *  12-04-00  01.01.02  Added messages for Common Transport Send and&n; *                      Primitive Send.&n; *  01-09-01  01.01.03  Modifed some of the new flags to have an MPI prefix&n; *                      and modified the FcPrimitiveSend flags.&n; *  01-25-01  01.01.04  Move InitiatorIndex in LinkServiceRsp reply to a larger&n; *                      field.&n; *                      Added FC_ABORT_TYPE_CT_SEND_REQUEST and&n; *                      FC_ABORT_TYPE_EXLINKSEND_REQUEST for FcAbort request.&n; *                      Added MPI_FC_PRIM_SEND_FLAGS_STOP_SEND.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *  03-27-01  01.01.06  Added Flags field to MSG_LINK_SERVICE_BUFFER_POST_REPLY&n; *                      and defined MPI_LS_BUF_POST_REPLY_FLAG_NO_RSP_NEEDED.&n; *                      Added MPI_FC_PRIM_SEND_FLAGS_RESET_LINK define.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added RspLength field to MSG_LINK_SERVICE_RSP_REQUEST.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Change name of reserved field in&n; *                      MSG_LINK_SERVICE_RSP_REPLY.&n; *  05-31-02  01.02.03  Adding AliasIndex to FC Direct Access requests.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_FC_H
 DECL|macro|MPI_FC_H
 mdefine_line|#define MPI_FC_H
@@ -498,9 +498,9 @@ id|U8
 id|SendFlags
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|Reserved
+DECL|member|AliasIndex
 id|U8
-id|Reserved
+id|AliasIndex
 suffix:semicolon
 multiline_comment|/* 01h */
 DECL|member|ChainOffset
@@ -563,10 +563,15 @@ r_struct
 id|_MSG_EXLINK_SERVICE_SEND_REPLY
 (brace
 DECL|member|Reserved
-id|U16
+id|U8
 id|Reserved
 suffix:semicolon
 multiline_comment|/* 00h */
+DECL|member|AliasIndex
+id|U8
+id|AliasIndex
+suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
@@ -794,9 +799,9 @@ id|U8
 id|SendFlags
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|Reserved
+DECL|member|AliasIndex
 id|U8
-id|Reserved
+id|AliasIndex
 suffix:semicolon
 multiline_comment|/* 01h */
 DECL|member|ChainOffset
@@ -869,10 +874,15 @@ r_struct
 id|_MSG_FC_COMMON_TRANSPORT_SEND_REPLY
 (brace
 DECL|member|Reserved
-id|U16
+id|U8
 id|Reserved
 suffix:semicolon
 multiline_comment|/* 00h */
+DECL|member|AliasIndex
+id|U8
+id|AliasIndex
+suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength

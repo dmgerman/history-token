@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_IOC.H&n; *          Title:  MPI IOC, Port, Event, FW Download, and FW Upload messages&n; *  Creation Date:  August 11, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added _MSG_IOC_INIT_REPLY structure.&n; *  06-06-00  01.00.01  Added CurReplyFrameSize field to _MSG_IOC_FACTS_REPLY.&n; *  06-12-00  01.00.02  Added _MSG_PORT_ENABLE_REPLY structure.&n; *                      Added _MSG_EVENT_ACK_REPLY structure.&n; *                      Added _MSG_FW_DOWNLOAD_REPLY structure.&n; *                      Added _MSG_TOOLBOX_REPLY structure.&n; *  06-30-00  01.00.03  Added MaxLanBuckets to _PORT_FACT_REPLY structure.&n; *  07-27-00  01.00.04  Added _EVENT_DATA structure definitions for _SCSI,&n; *                      _LINK_STATUS, _LOOP_STATE and _LOGOUT.&n; *  08-11-00  01.00.05  Switched positions of MsgLength and Function fields in&n; *                      _MSG_EVENT_ACK_REPLY structure to match specification.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *                      Added a value for Manufacturer to WhoInit.&n; *  12-04-00  01.01.02  Modified IOCFacts reply, added FWUpload messages, and&n; *                      removed toolbox message.&n; *  01-09-01  01.01.03  Added event enabled and disabled defines.&n; *                      Added structures for FwHeader and DataHeader.&n; *                      Added ImageType to FwUpload reply.&n; *  02-20-01  01.01.04  Started using MPI_POINTER.&n; *  02-27-01  01.01.05  Added event for RAID status change and its event data.&n; *                      Added IocNumber field to MSG_IOC_FACTS_REPLY.&n; *  03-27-01  01.01.06  Added defines for ProductId field of MPI_FW_HEADER.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added structure EVENT_DATA_EVENT_CHANGE.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      New format for FWVersion and ProductId in&n; *                      MSG_IOC_FACTS_REPLY and MPI_FW_HEADER.&n; *  08-31-01  01.02.02  Addded event MPI_EVENT_SCSI_DEVICE_STATUS_CHANGE and&n; *                      related structure and defines.&n; *                      Added event MPI_EVENT_ON_BUS_TIMER_EXPIRED.&n; *                      Added MPI_IOCINIT_FLAGS_DISCARD_FW_IMAGE.&n; *                      Replaced a reserved field in MSG_IOC_FACTS_REPLY with&n; *                      IOCExceptions and changed DataImageSize to reserved.&n; *                      Added MPI_FW_DOWNLOAD_ITYPE_NVSTORE_DATA and&n; *                      MPI_FW_UPLOAD_ITYPE_NVDATA.&n; *  09-28-01  01.02.03  Modified Event Data for Integrated RAID.&n; *  11-01-01  01.02.04  Added defines for MPI_EXT_IMAGE_HEADER ImageType field.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2002 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_IOC.H&n; *          Title:  MPI IOC, Port, Event, FW Download, and FW Upload messages&n; *  Creation Date:  August 11, 2000&n; *&n; *    MPI_IOC.H Version:  01.02.06&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added _MSG_IOC_INIT_REPLY structure.&n; *  06-06-00  01.00.01  Added CurReplyFrameSize field to _MSG_IOC_FACTS_REPLY.&n; *  06-12-00  01.00.02  Added _MSG_PORT_ENABLE_REPLY structure.&n; *                      Added _MSG_EVENT_ACK_REPLY structure.&n; *                      Added _MSG_FW_DOWNLOAD_REPLY structure.&n; *                      Added _MSG_TOOLBOX_REPLY structure.&n; *  06-30-00  01.00.03  Added MaxLanBuckets to _PORT_FACT_REPLY structure.&n; *  07-27-00  01.00.04  Added _EVENT_DATA structure definitions for _SCSI,&n; *                      _LINK_STATUS, _LOOP_STATE and _LOGOUT.&n; *  08-11-00  01.00.05  Switched positions of MsgLength and Function fields in&n; *                      _MSG_EVENT_ACK_REPLY structure to match specification.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *                      Added a value for Manufacturer to WhoInit.&n; *  12-04-00  01.01.02  Modified IOCFacts reply, added FWUpload messages, and&n; *                      removed toolbox message.&n; *  01-09-01  01.01.03  Added event enabled and disabled defines.&n; *                      Added structures for FwHeader and DataHeader.&n; *                      Added ImageType to FwUpload reply.&n; *  02-20-01  01.01.04  Started using MPI_POINTER.&n; *  02-27-01  01.01.05  Added event for RAID status change and its event data.&n; *                      Added IocNumber field to MSG_IOC_FACTS_REPLY.&n; *  03-27-01  01.01.06  Added defines for ProductId field of MPI_FW_HEADER.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added structure EVENT_DATA_EVENT_CHANGE.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      New format for FWVersion and ProductId in&n; *                      MSG_IOC_FACTS_REPLY and MPI_FW_HEADER.&n; *  08-31-01  01.02.02  Addded event MPI_EVENT_SCSI_DEVICE_STATUS_CHANGE and&n; *                      related structure and defines.&n; *                      Added event MPI_EVENT_ON_BUS_TIMER_EXPIRED.&n; *                      Added MPI_IOCINIT_FLAGS_DISCARD_FW_IMAGE.&n; *                      Replaced a reserved field in MSG_IOC_FACTS_REPLY with&n; *                      IOCExceptions and changed DataImageSize to reserved.&n; *                      Added MPI_FW_DOWNLOAD_ITYPE_NVSTORE_DATA and&n; *                      MPI_FW_UPLOAD_ITYPE_NVDATA.&n; *  09-28-01  01.02.03  Modified Event Data for Integrated RAID.&n; *  11-01-01  01.02.04  Added defines for MPI_EXT_IMAGE_HEADER ImageType field.&n; *  03-14-02  01.02.05  Added HeaderVersion field to MSG_IOC_FACTS_REPLY.&n; *  05-31-02  01.02.06  Added define for&n; *                      MPI_IOCFACTS_EXCEPT_RAID_CONFIG_INVALID.&n; *                      Added AliasIndex to EVENT_DATA_LOGOUT structure.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_IOC_H
 DECL|macro|MPI_IOC_H
 mdefine_line|#define MPI_IOC_H
@@ -316,9 +316,9 @@ id|U8
 id|Function
 suffix:semicolon
 multiline_comment|/* 03h */
-DECL|member|Reserved
+DECL|member|HeaderVersion
 id|U16
-id|Reserved
+id|HeaderVersion
 suffix:semicolon
 multiline_comment|/* 04h */
 DECL|member|IOCNumber
@@ -466,8 +466,14 @@ DECL|macro|MPI_IOCFACTS_MSGVERSION_MAJOR_MASK
 mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MAJOR_MASK          (0xFF00)
 DECL|macro|MPI_IOCFACTS_MSGVERSION_MINOR_MASK
 mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MINOR_MASK          (0x00FF)
+DECL|macro|MPI_IOCFACTS_HEADERVERSION_UNIT_MASK
+mdefine_line|#define MPI_IOCFACTS_HEADERVERSION_UNIT_MASK        (0xFF00)
+DECL|macro|MPI_IOCFACTS_HEADERVERSION_DEV_MASK
+mdefine_line|#define MPI_IOCFACTS_HEADERVERSION_DEV_MASK         (0x00FF)
 DECL|macro|MPI_IOCFACTS_EXCEPT_CONFIG_CHECKSUM_FAIL
 mdefine_line|#define MPI_IOCFACTS_EXCEPT_CONFIG_CHECKSUM_FAIL    (0x0001)
+DECL|macro|MPI_IOCFACTS_EXCEPT_RAID_CONFIG_INVALID
+mdefine_line|#define MPI_IOCFACTS_EXCEPT_RAID_CONFIG_INVALID     (0x0002)
 DECL|macro|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
 mdefine_line|#define MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT         (0x01)
 DECL|macro|MPI_IOCFACTS_EVENTSTATE_DISABLED
@@ -1412,9 +1418,9 @@ id|U32
 id|NPortID
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|Reserved
+DECL|member|AliasIndex
 id|U8
-id|Reserved
+id|AliasIndex
 suffix:semicolon
 multiline_comment|/* 04h */
 DECL|member|Port
@@ -1442,6 +1448,8 @@ comma
 id|MPI_POINTER
 id|pEventDataLogout_t
 suffix:semicolon
+DECL|macro|MPI_EVENT_LOGOUT_ALL_ALIASES
+mdefine_line|#define MPI_EVENT_LOGOUT_ALL_ALIASES        (0xFF)
 multiline_comment|/* MPI Integrated RAID Event data */
 DECL|struct|_EVENT_DATA_RAID
 r_typedef

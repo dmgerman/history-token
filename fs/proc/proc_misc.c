@@ -550,9 +550,6 @@ id|page_state
 id|ps
 suffix:semicolon
 r_int
-id|cpu
-suffix:semicolon
-r_int
 r_int
 id|inactive
 suffix:semicolon
@@ -560,52 +557,6 @@ r_int
 r_int
 id|active
 suffix:semicolon
-r_int
-r_int
-id|flushes
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|non_flushes
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cpu
-op_assign
-l_int|0
-suffix:semicolon
-id|cpu
-OL
-id|NR_CPUS
-suffix:semicolon
-id|cpu
-op_increment
-)paren
-(brace
-id|flushes
-op_add_assign
-id|mmu_gathers
-(braket
-id|cpu
-)braket
-dot
-id|flushes
-suffix:semicolon
-id|non_flushes
-op_add_assign
-id|mmu_gathers
-(braket
-id|cpu
-)braket
-dot
-id|avoided_flushes
-suffix:semicolon
-)brace
 id|get_page_state
 c_func
 (paren
@@ -660,6 +611,7 @@ comma
 l_string|&quot;MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
+l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
 l_string|&quot;Active:       %8lu kB&bslash;n&quot;
@@ -672,11 +624,10 @@ l_string|&quot;SwapTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
+l_string|&quot;Mapped:       %8lu kB&bslash;n&quot;
 l_string|&quot;Committed_AS: %8u kB&bslash;n&quot;
 l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
 l_string|&quot;ReverseMaps:  %8lu&bslash;n&quot;
-l_string|&quot;TLB flushes:  %8lu&bslash;n&quot;
-l_string|&quot;non flushes:  %8lu&bslash;n&quot;
 comma
 id|K
 c_func
@@ -699,9 +650,17 @@ comma
 id|K
 c_func
 (paren
+id|i.bufferram
+)paren
+comma
+id|K
+c_func
+(paren
 id|ps.nr_pagecache
 op_minus
 id|swapper_space.nrpages
+op_minus
+id|i.bufferram
 )paren
 comma
 id|K
@@ -777,6 +736,12 @@ comma
 id|K
 c_func
 (paren
+id|ps.nr_mapped
+)paren
+comma
+id|K
+c_func
+(paren
 id|committed
 )paren
 comma
@@ -787,12 +752,41 @@ id|ps.nr_page_table_pages
 )paren
 comma
 id|ps.nr_reverse_maps
-comma
-id|flushes
-comma
-id|non_flushes
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+(brace
+r_extern
+r_int
+r_int
+id|htlbpagemem
+comma
+id|htlbzone_pages
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;HugePages:    %8lu&bslash;n&quot;
+l_string|&quot;Available:    %8lu&bslash;n&quot;
+l_string|&quot;Size:         %8lu kB&bslash;n&quot;
+comma
+id|htlbzone_pages
+comma
+id|htlbpagemem
+comma
+id|HPAGE_SIZE
+op_div
+l_int|1024
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 id|proc_calc_metrics
 c_func

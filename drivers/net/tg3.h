@@ -88,6 +88,16 @@ DECL|macro|TG3PCI_X_CAPS
 mdefine_line|#define TG3PCI_X_CAPS&t;&t;&t;0x00000040
 DECL|macro|PCIX_CAPS_RELAXED_ORDERING
 mdefine_line|#define  PCIX_CAPS_RELAXED_ORDERING&t; 0x00020000
+DECL|macro|PCIX_CAPS_SPLIT_MASK
+mdefine_line|#define  PCIX_CAPS_SPLIT_MASK&t;&t; 0x00700000
+DECL|macro|PCIX_CAPS_SPLIT_SHIFT
+mdefine_line|#define  PCIX_CAPS_SPLIT_SHIFT&t;&t; 20
+DECL|macro|PCIX_CAPS_BURST_MASK
+mdefine_line|#define  PCIX_CAPS_BURST_MASK&t;&t; 0x000c0000
+DECL|macro|PCIX_CAPS_BURST_SHIFT
+mdefine_line|#define  PCIX_CAPS_BURST_SHIFT&t;&t; 18
+DECL|macro|PCIX_CAPS_MAX_BURST_5704
+mdefine_line|#define  PCIX_CAPS_MAX_BURST_5704&t; 2
 DECL|macro|TG3PCI_PM_CAP_PTR
 mdefine_line|#define TG3PCI_PM_CAP_PTR&t;&t;0x00000041
 DECL|macro|TG3PCI_X_COMMAND
@@ -185,6 +195,10 @@ DECL|macro|CHIPREV_ID_5703_A1
 mdefine_line|#define  CHIPREV_ID_5703_A1&t;&t; 0x1001
 DECL|macro|CHIPREV_ID_5703_A2
 mdefine_line|#define  CHIPREV_ID_5703_A2&t;&t; 0x1002
+DECL|macro|CHIPREV_ID_5703_A3
+mdefine_line|#define  CHIPREV_ID_5703_A3&t;&t; 0x1003
+DECL|macro|CHIPREV_ID_5704_A0
+mdefine_line|#define  CHIPREV_ID_5704_A0&t;&t; 0x2000
 DECL|macro|GET_ASIC_REV
 mdefine_line|#define  GET_ASIC_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 12)
 DECL|macro|ASIC_REV_5700
@@ -193,6 +207,8 @@ DECL|macro|ASIC_REV_5701
 mdefine_line|#define   ASIC_REV_5701&t;&t;&t; 0x00
 DECL|macro|ASIC_REV_5703
 mdefine_line|#define   ASIC_REV_5703&t;&t;&t; 0x01
+DECL|macro|ASIC_REV_5704
+mdefine_line|#define   ASIC_REV_5704&t;&t;&t; 0x02
 DECL|macro|GET_CHIP_REV
 mdefine_line|#define  GET_CHIP_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 8)
 DECL|macro|CHIPREV_5700_AX
@@ -297,6 +313,8 @@ DECL|macro|PCISTATE_ROM_RETRY_ENABLE
 mdefine_line|#define  PCISTATE_ROM_RETRY_ENABLE&t; 0x00000040
 DECL|macro|PCISTATE_FLAT_VIEW
 mdefine_line|#define  PCISTATE_FLAT_VIEW&t;&t; 0x00000100
+DECL|macro|PCISTATE_RETRY_SAME_DMA
+mdefine_line|#define  PCISTATE_RETRY_SAME_DMA&t; 0x00002000
 DECL|macro|TG3PCI_CLOCK_CTRL
 mdefine_line|#define TG3PCI_CLOCK_CTRL&t;&t;0x00000074
 DECL|macro|CLOCK_CTRL_CORECLK_DISABLE
@@ -1566,6 +1584,10 @@ DECL|macro|RDMAC_MODE_FIFOOREAD_ENAB
 mdefine_line|#define  RDMAC_MODE_FIFOOREAD_ENAB&t; 0x00000100
 DECL|macro|RDMAC_MODE_LNGREAD_ENAB
 mdefine_line|#define  RDMAC_MODE_LNGREAD_ENAB&t; 0x00000200
+DECL|macro|RDMAC_MODE_SPLIT_ENABLE
+mdefine_line|#define  RDMAC_MODE_SPLIT_ENABLE&t; 0x00000800
+DECL|macro|RDMAC_MODE_SPLIT_RESET
+mdefine_line|#define  RDMAC_MODE_SPLIT_RESET&t;&t; 0x00001000
 DECL|macro|RDMAC_STATUS
 mdefine_line|#define RDMAC_STATUS&t;&t;&t;0x00004804
 DECL|macro|RDMAC_STATUS_TGTABORT
@@ -2098,6 +2120,10 @@ DECL|macro|GRC_MISC_CFG_BOARD_ID_5703
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5703&t;0x00000000
 DECL|macro|GRC_MISC_CFG_BOARD_ID_5703S
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5703S&t;0x00002000
+DECL|macro|GRC_MISC_CFG_BOARD_ID_5704
+mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5704&t;0x00000000
+DECL|macro|GRC_MISC_CFG_BOARD_ID_5704CIOBE
+mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5704CIOBE 0x00004000
 DECL|macro|GRC_MISC_CFG_BOARD_ID_AC91002A1
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_AC91002A1 0x00018000
 DECL|macro|GRC_LOCAL_CTRL
@@ -2319,22 +2345,32 @@ DECL|macro|NIC_SRAM_DATA_SIG_MAGIC
 mdefine_line|#define  NIC_SRAM_DATA_SIG_MAGIC&t; 0x4b657654 /* ascii for &squot;KevT&squot; */
 DECL|macro|NIC_SRAM_DATA_CFG
 mdefine_line|#define NIC_SRAM_DATA_CFG&t;&t;&t;0x00000b58
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x0000000c
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN&t; 0x00000000
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER
-mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER&t; 0x00000008
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MASK
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x00000030
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x0000000c
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN
 mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN&t; 0x00000000
 DECL|macro|NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000010
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000004
+DECL|macro|NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN&t; 0x00000004
 DECL|macro|NIC_SRAM_DATA_CFG_LED_LINK_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000020
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_LED_OUTPUT
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OUTPUT&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x00000030
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN&t; 0x00000000
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_COPPER&t; 0x00000010
+DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER
+mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_FIBER&t; 0x00000020
+DECL|macro|NIC_SRAM_DATA_CFG_WOL_ENABLE
+mdefine_line|#define  NIC_SRAM_DATA_CFG_WOL_ENABLE&t;&t; 0x00000040
+DECL|macro|NIC_SRAM_DATA_CFG_ASF_ENABLE
+mdefine_line|#define  NIC_SRAM_DATA_CFG_ASF_ENABLE&t;&t; 0x00000080
+DECL|macro|NIC_SRAM_DATA_CFG_EEPROM_WP
+mdefine_line|#define  NIC_SRAM_DATA_CFG_EEPROM_WP&t;&t; 0x00000100
 DECL|macro|NIC_SRAM_DATA_PHY_ID
 mdefine_line|#define NIC_SRAM_DATA_PHY_ID&t;&t;0x00000b74
 DECL|macro|NIC_SRAM_DATA_PHY_ID1_MASK
@@ -2393,8 +2429,10 @@ DECL|macro|NIC_SRAM_RX_JUMBO_BUFFER_DESC
 mdefine_line|#define NIC_SRAM_RX_JUMBO_BUFFER_DESC&t;0x00007000 /* 256 entries */
 DECL|macro|NIC_SRAM_MBUF_POOL_BASE
 mdefine_line|#define NIC_SRAM_MBUF_POOL_BASE&t;&t;0x00008000
-DECL|macro|NIC_SRAM_MBUF_POOL_SIZE
-mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE&t; 0x00018000
+DECL|macro|NIC_SRAM_MBUF_POOL_SIZE96
+mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE96&t; 0x00018000
+DECL|macro|NIC_SRAM_MBUF_POOL_SIZE64
+mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE64&t; 0x00018000
 multiline_comment|/* Currently this is fixed. */
 DECL|macro|PHY_ADDR
 mdefine_line|#define PHY_ADDR&t;&t;0x01
@@ -2526,6 +2564,8 @@ id|vlan_tag
 suffix:semicolon
 DECL|macro|TXD_VLAN_TAG_SHIFT
 mdefine_line|#define TXD_VLAN_TAG_SHIFT&t;&t;0
+DECL|macro|TXD_MSS_SHIFT
+mdefine_line|#define TXD_MSS_SHIFT&t;&t;&t;16
 )brace
 suffix:semicolon
 DECL|macro|TXD_ADDR
@@ -3235,6 +3275,26 @@ id|mapping
 )paren
 )brace
 suffix:semicolon
+DECL|struct|tx_ring_info
+r_struct
+id|tx_ring_info
+(brace
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|DECLARE_PCI_UNMAP_ADDR
+c_func
+(paren
+id|mapping
+)paren
+id|u32
+id|prev_vlan_tag
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|tg3_config_info
 r_struct
 id|tg3_config_info
@@ -3414,16 +3474,20 @@ DECL|macro|TG3_FLAG_USE_LINKCHG_REG
 mdefine_line|#define TG3_FLAG_USE_LINKCHG_REG&t;0x00000008
 DECL|macro|TG3_FLAG_USE_MI_INTERRUPT
 mdefine_line|#define TG3_FLAG_USE_MI_INTERRUPT&t;0x00000010
+DECL|macro|TG3_FLAG_ENABLE_ASF
+mdefine_line|#define TG3_FLAG_ENABLE_ASF&t;&t;0x00000020
 DECL|macro|TG3_FLAG_POLL_SERDES
 mdefine_line|#define TG3_FLAG_POLL_SERDES&t;&t;0x00000080
-DECL|macro|TG3_FLAG_PHY_RESET_ON_INIT
-mdefine_line|#define TG3_FLAG_PHY_RESET_ON_INIT&t;0x00000100
+DECL|macro|TG3_FLAG_MBOX_WRITE_REORDER
+mdefine_line|#define TG3_FLAG_MBOX_WRITE_REORDER&t;0x00000100
 DECL|macro|TG3_FLAG_PCIX_TARGET_HWBUG
 mdefine_line|#define TG3_FLAG_PCIX_TARGET_HWBUG&t;0x00000200
 DECL|macro|TG3_FLAG_WOL_SPEED_100MB
 mdefine_line|#define TG3_FLAG_WOL_SPEED_100MB&t;0x00000400
 DECL|macro|TG3_FLAG_WOL_ENABLE
-mdefine_line|#define TG3_FLAG_WOL_ENABLE&t;&t;0x00001000
+mdefine_line|#define TG3_FLAG_WOL_ENABLE&t;&t;0x00000800
+DECL|macro|TG3_FLAG_EEPROM_WRITE_PROT
+mdefine_line|#define TG3_FLAG_EEPROM_WRITE_PROT&t;0x00001000
 DECL|macro|TG3_FLAG_NVRAM
 mdefine_line|#define TG3_FLAG_NVRAM&t;&t;&t;0x00002000
 DECL|macro|TG3_FLAG_NVRAM_BUFFERED
@@ -3458,12 +3522,20 @@ DECL|macro|TG3_FLAG_BROKEN_CHECKSUMS
 mdefine_line|#define TG3_FLAG_BROKEN_CHECKSUMS&t;0x10000000
 DECL|macro|TG3_FLAG_GOT_SERDES_FLOWCTL
 mdefine_line|#define TG3_FLAG_GOT_SERDES_FLOWCTL&t;0x20000000
+DECL|macro|TG3_FLAG_SPLIT_MODE
+mdefine_line|#define TG3_FLAG_SPLIT_MODE&t;&t;0x40000000
 DECL|macro|TG3_FLAG_INIT_COMPLETE
 mdefine_line|#define TG3_FLAG_INIT_COMPLETE&t;&t;0x80000000
 DECL|member|msg_enable
 id|u32
 id|msg_enable
 suffix:semicolon
+DECL|member|split_mode_max_reqs
+id|u32
+id|split_mode_max_reqs
+suffix:semicolon
+DECL|macro|SPLIT_MODE_5704_MAX_REQ
+mdefine_line|#define SPLIT_MODE_5704_MAX_REQ&t;&t;3
 DECL|member|timer
 r_struct
 id|timer_list
@@ -3480,6 +3552,14 @@ suffix:semicolon
 DECL|member|timer_offset
 id|u32
 id|timer_offset
+suffix:semicolon
+DECL|member|asf_counter
+id|u16
+id|asf_counter
+suffix:semicolon
+DECL|member|asf_multiplier
+id|u16
+id|asf_multiplier
 suffix:semicolon
 DECL|member|link_config
 r_struct
@@ -3600,6 +3680,8 @@ DECL|macro|PHY_ID_BCM5701
 mdefine_line|#define PHY_ID_BCM5701&t;&t;&t;0x60008110
 DECL|macro|PHY_ID_BCM5703
 mdefine_line|#define PHY_ID_BCM5703&t;&t;&t;0x60008160
+DECL|macro|PHY_ID_BCM5704
+mdefine_line|#define PHY_ID_BCM5704&t;&t;&t;0x60008190
 DECL|macro|PHY_ID_BCM8002
 mdefine_line|#define PHY_ID_BCM8002&t;&t;&t;0x60010140
 DECL|macro|PHY_ID_SERDES
@@ -3630,7 +3712,7 @@ l_int|24
 suffix:semicolon
 multiline_comment|/* This macro assumes the passed PHY ID is already masked&n;&t; * with PHY_ID_MASK.&n;&t; */
 DECL|macro|KNOWN_PHY_ID
-mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 ||&t;&t;&t;   &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
+mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
 DECL|member|regs
 r_int
 r_int
@@ -3725,7 +3807,7 @@ id|tx_ring
 suffix:semicolon
 DECL|member|tx_buffers
 r_struct
-id|ring_info
+id|tx_ring_info
 op_star
 id|tx_buffers
 suffix:semicolon

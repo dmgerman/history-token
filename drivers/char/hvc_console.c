@@ -1233,11 +1233,7 @@ id|khvcd
 comma
 l_int|NULL
 comma
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-op_or
-id|CLONE_SIGNAL
+id|CLONE_KERNEL
 )paren
 suffix:semicolon
 r_return

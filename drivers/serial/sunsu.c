@@ -18,6 +18,7 @@ macro_line|#ifdef CONFIG_SERIO
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
@@ -4409,6 +4410,10 @@ op_logical_neg
 id|up-&gt;su_type
 )paren
 r_return
+suffix:semicolon
+id|up-&gt;port.iotype
+op_assign
+id|SERIAL_IO_MEM
 suffix:semicolon
 multiline_comment|/*&n;&t; * First we look for Ebus-bases su&squot;s&n;&t; */
 id|for_each_ebus

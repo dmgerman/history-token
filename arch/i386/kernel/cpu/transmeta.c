@@ -448,6 +448,31 @@ comma
 id|uk
 )paren
 suffix:semicolon
+multiline_comment|/* If we can run i686 user-space code, call us an i686 */
+DECL|macro|USER686
+mdefine_line|#define USER686 (X86_FEATURE_TSC|X86_FEATURE_CX8|X86_FEATURE_CMOV)
+r_if
+c_cond
+(paren
+id|c-&gt;x86
+op_eq
+l_int|5
+op_logical_and
+(paren
+id|c-&gt;x86_capability
+(braket
+l_int|0
+)braket
+op_amp
+id|USER686
+)paren
+op_eq
+id|USER686
+)paren
+id|c-&gt;x86
+op_assign
+l_int|6
+suffix:semicolon
 )brace
 DECL|function|transmeta_identify
 r_static

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* Reset and reboot the machine with the command &squot;bcommand&squot;. */
 DECL|function|prom_reboot
 r_void
@@ -104,10 +105,6 @@ id|prom_palette
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|serial_console
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern

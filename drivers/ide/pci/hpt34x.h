@@ -69,19 +69,6 @@ comma
 suffix:semicolon
 macro_line|#endif  /* defined(DISPLAY_HPT34X_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
-r_void
-id|init_setup_hpt34x
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_hpt34x
@@ -127,6 +114,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_TTI
@@ -138,10 +126,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;HPT34X&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_hpt34x
 comma
 id|init_chipset
 suffix:colon

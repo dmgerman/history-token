@@ -2087,7 +2087,7 @@ r_goto
 id|out_unlock_task
 suffix:semicolon
 )brace
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -2276,7 +2276,7 @@ r_goto
 id|out_unlock_task
 suffix:semicolon
 )brace
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p

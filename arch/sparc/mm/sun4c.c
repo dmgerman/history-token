@@ -8778,14 +8778,6 @@ r_int
 r_int
 id|last_valid_pfn
 suffix:semicolon
-r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|sun4c_paging_init
 r_void
 id|__init
@@ -8858,12 +8850,6 @@ suffix:semicolon
 id|end_pfn
 op_assign
 id|last_valid_pfn
-suffix:semicolon
-multiline_comment|/* This does not logically belong here, but we need to&n;&t; * call it at the moment we are able to use the bootmem&n;&t; * allocator.&n;&t; */
-id|sun_serial_setup
-c_func
-(paren
-)paren
 suffix:semicolon
 id|sun4c_probe_mmu
 c_func
