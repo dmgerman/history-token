@@ -562,8 +562,7 @@ l_int|0
 )paren
 (brace
 r_return
-op_minus
-id|errno
+id|new_pid
 suffix:semicolon
 )brace
 id|CATCH_EINTR

@@ -1790,7 +1790,8 @@ r_int
 id|UML_ROUND_UP
 c_func
 (paren
-id|brk_start
+op_amp
+id|_end
 )paren
 suffix:semicolon
 id|protect_memory
