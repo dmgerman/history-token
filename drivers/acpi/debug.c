@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * debug.c - ACPI debug interface to userspace.&n; */
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
@@ -362,8 +363,6 @@ id|ACPI_LV_EVENTS
 comma
 )brace
 suffix:semicolon
-DECL|macro|NUM_OF
-mdefine_line|#define NUM_OF(v)&t;( sizeof(v)/sizeof(v[0]) )
 r_static
 r_int
 DECL|function|acpi_system_read_debug
@@ -404,6 +403,7 @@ id|size
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -451,7 +451,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|acpi_debug_layers
@@ -566,7 +566,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_OF
+id|ARRAY_SIZE
 c_func
 (paren
 id|acpi_debug_levels
