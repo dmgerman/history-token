@@ -3557,6 +3557,14 @@ id|data-&gt;vrm
 op_assign
 id|LM85_INIT_VRM
 suffix:semicolon
+multiline_comment|/* Initialize the LM85 chip */
+id|lm85_init_client
+c_func
+(paren
+id|new_client
+)paren
+suffix:semicolon
+multiline_comment|/* Register sysfs hooks */
 id|device_create_file
 c_func
 (paren
@@ -3965,13 +3973,6 @@ id|new_client-&gt;dev
 comma
 op_amp
 id|dev_attr_alarms
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize the LM85 chip */
-id|lm85_init_client
-c_func
-(paren
-id|new_client
 )paren
 suffix:semicolon
 r_return
