@@ -622,6 +622,7 @@ r_int
 )paren
 id|hdr.dxferp
 suffix:semicolon
+multiline_comment|/* writing to device -&gt; reading from vm */
 r_if
 c_cond
 (paren
@@ -631,7 +632,7 @@ op_logical_neg
 id|access_ok
 c_func
 (paren
-id|VERIFY_WRITE
+id|VERIFY_READ
 comma
 id|uaddr
 comma
@@ -642,6 +643,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/* reading from device -&gt; writing to vm */
 r_else
 r_if
 c_cond
@@ -652,7 +654,7 @@ op_logical_neg
 id|access_ok
 c_func
 (paren
-id|VERIFY_READ
+id|VERIFY_WRITE
 comma
 id|uaddr
 comma
