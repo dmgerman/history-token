@@ -4640,6 +4640,14 @@ op_assign
 id|pr-&gt;throttling.state
 suffix:semicolon
 multiline_comment|/*&n;&t; * Our default policy is to only use throttling at the lowest&n;&t; * performance state.&n;&t; */
+id|px
+op_assign
+id|pr-&gt;limit.thermal.px
+suffix:semicolon
+id|tx
+op_assign
+id|pr-&gt;limit.thermal.tx
+suffix:semicolon
 r_switch
 c_cond
 (paren
