@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -958,7 +959,7 @@ c_cond
 id|shost-&gt;ehandler
 )paren
 (brace
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
 id|sem
@@ -969,17 +970,13 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
-id|send_sig
+id|up
 c_func
 (paren
-id|SIGPWR
-comma
-id|shost-&gt;ehandler
-comma
-l_int|1
+id|shost-&gt;eh_wait
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
@@ -1039,7 +1036,7 @@ suffix:semicolon
 r_int
 id|gfp_mask
 suffix:semicolon
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
 id|sem
@@ -1405,7 +1402,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now wait for the kernel error thread to initialize itself&n;&t; * as it might be needed when we scan the bus.&n;&t; */
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp

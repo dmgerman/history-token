@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -20,9 +21,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt; /* grr */
-multiline_comment|/*&n; * We must always allow SHUTDOWN_SIGS.  Even if we are not a module,&n; * the host drivers that we are using may be loaded as modules, and&n; * when we unload these,  we need to ensure that the error handler thread&n; * can be shut down.&n; *&n; * Note - when we unload a module, we send a SIGHUP.  We mustn&squot;t&n; * enable SIGTERM, as this is how the init shuts things down when you&n; * go to single-user mode.  For that matter, init also sends SIGKILL,&n; * so we mustn&squot;t enable that one either.  We use SIGHUP instead.  Other&n; * options would be SIGPWR, I suppose.&n; *&n; * Changed behavior 1/1/2003 - it turns out, that SIGHUP can get sent&n; * to error handlers from a process responsible for their creation.&n; * To sidestep that issue, we now use SIGPWR as suggested above.&n; */
-DECL|macro|SHUTDOWN_SIGS
-mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGPWR))
 macro_line|#ifdef DEBUG
 DECL|macro|SENSE_TIMEOUT
 mdefine_line|#define SENSE_TIMEOUT SCSI_TIMEOUT
@@ -4147,14 +4145,30 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We only listen to signals if the HA was loaded as a module.&n;&t; * If the HA was compiled into the kernel, then we don&squot;t listen&n;&t; * to any signals.&n;&t; */
-id|siginitsetinv
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sig-&gt;siglock
+)paren
+suffix:semicolon
+id|sigfillset
 c_func
 (paren
 op_amp
 id|current-&gt;blocked
-comma
-id|SHUTDOWN_SIGS
+)paren
+suffix:semicolon
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|lock_kernel
@@ -4208,7 +4222,7 @@ id|shost-&gt;host_no
 )paren
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 id|shost-&gt;eh_notify
@@ -4246,11 +4260,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
+id|shost-&gt;eh_kill
 )paren
 r_break
 suffix:semicolon
@@ -4345,18 +4355,13 @@ id|shost-&gt;ehandler
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * If anyone is waiting for us to exit (i.e. someone trying to unload&n;&t; * a driver), then wake up that process to let them know we are on&n;&t; * the way out the door.  This may be overkill - I *think* that we&n;&t; * could probably just unload the driver and send the signal, and when&n;&t; * the error handling thread wakes up that it would just exit without&n;&t; * needing to touch any memory associated with the driver itself.&n;&t; */
-r_if
-c_cond
-(paren
-id|shost-&gt;eh_notify
-op_ne
-l_int|NULL
-)paren
-id|up
+multiline_comment|/*&n;&t; * If anyone is waiting for us to exit (i.e. someone trying to unload&n;&t; * a driver), then wake up that process to let them know we are on&n;&t; * the way out the door.&n;&t; */
+id|complete_and_exit
 c_func
 (paren
 id|shost-&gt;eh_notify
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
