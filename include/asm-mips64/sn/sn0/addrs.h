@@ -71,13 +71,13 @@ DECL|macro|NASID_MASK
 mdefine_line|#define NASID_MASK&t;&t;(UINT64_CAST NASID_BITMASK &lt;&lt; NASID_SHFT)
 DECL|macro|NASID_GET
 mdefine_line|#define NASID_GET(_pa)&t;&t;(int) ((UINT64_CAST (_pa) &gt;&gt;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;NASID_SHFT) &amp; NASID_BITMASK)
-macro_line|#if _LANGUAGE_C &amp;&amp; !defined(_STANDALONE)
+macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(_STANDALONE)
 DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget)&t;&t;&t;&t;&t;&bslash;&n;&t;((widget == 0) ? NODE_BWIN_BASE((nasid), SWIN0_BIGWIN)&t;&t;&bslash;&n;&t;: RAW_NODE_SWIN_BASE(nasid, widget))
-macro_line|#else
+macro_line|#else /* __ASSEMBLY__ || _STANDALONE */
 DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget) &bslash;&n;     (NODE_IO_BASE(nasid) + (UINT64_CAST (widget) &lt;&lt; SWIN_SIZE_BITS))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ || _STANDALONE */
 multiline_comment|/*&n; * The following definitions pertain to the IO special address&n; * space.  They define the location of the big and little windows&n; * of any given node.&n; */
 DECL|macro|BWIN_INDEX_BITS
 mdefine_line|#define BWIN_INDEX_BITS&t;&t;3
@@ -113,10 +113,10 @@ macro_line|#else
 DECL|macro|SABLE_LOG_TRIGGER
 mdefine_line|#define SABLE_LOG_TRIGGER(_map)
 macro_line|#endif /* SABLE */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|KERN_NMI_ADDR
 mdefine_line|#define KERN_NMI_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;                    TO_NODE_UNCAC((nasid), IP27_NMI_KREGS_OFFSET + &t;&bslash;&n;&t;&t;&t;&t;  (IP27_NMI_KREGS_CPU_SIZE * (slice)))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#ifdef PROM
 DECL|macro|MISC_PROM_BASE
 mdefine_line|#define MISC_PROM_BASE&t;&t;PHYS_TO_K0(0x01300000)
@@ -258,7 +258,7 @@ DECL|macro|KL_UART_DATA
 mdefine_line|#define KL_UART_DATA&t;LOCAL_HUB_ADDR(MD_UREG0_1)&t;/* UART data reg */
 DECL|macro|KL_I2C_REG
 mdefine_line|#define KL_I2C_REG&t;MD_UREG0_0&t;&t;&t;/* I2C reg */
-macro_line|#if !_LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Address 0x400 to 0x1000 ualias points to cache error eframe + misc&n; * CACHE_ERR_SP_PTR could either contain an address to the stack, or&n; * the stack could start at CACHE_ERR_SP_PTR&n; */
 macro_line|#if defined (HUB_ERR_STS_WAR)
 DECL|macro|CACHE_ERR_EFRAME
@@ -277,12 +277,12 @@ DECL|macro|CACHE_ERR_SP
 mdefine_line|#define CACHE_ERR_SP&t;&t;(CACHE_ERR_SP_PTR - 16)
 DECL|macro|CACHE_ERR_AREA_SIZE
 mdefine_line|#define CACHE_ERR_AREA_SIZE&t;(ARCS_SPB_OFFSET - CACHE_ERR_EFRAME)
-macro_line|#endif&t;/* !_LANGUAGE_ASSEMBLY */
+macro_line|#endif&t;/* !__ASSEMBLY__ */
 DECL|macro|_ARCSPROM
 mdefine_line|#define _ARCSPROM
 macro_line|#ifdef _STANDALONE
 multiline_comment|/*&n; * The PROM needs to pass the device base address and the&n; * device pci cfg space address to the device drivers during&n; * install. The COMPONENT-&gt;Key field is used for this purpose.&n; * Macros needed by SN0 device drivers to convert the&n; * COMPONENT-&gt;Key field to the respective base address.&n; * Key field looks as follows:&n; *&n; *  +----------------------------------------------------+&n; *  |devnasid | widget  |pciid |hubwidid|hstnasid | adap |&n; *  |   2     |   1     |  1   |   1    |    2    |   1  |&n; *  +----------------------------------------------------+&n; *  |         |         |      |        |         |      |&n; *  64        48        40     32       24        8      0&n; *&n; * These are used by standalone drivers till the io infrastructure&n; * is in place.&n; */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|uchar
 mdefine_line|#define uchar unsigned char
 DECL|macro|KEY_DEVNASID_SHFT
@@ -323,7 +323,7 @@ DECL|macro|PUT_INSTALL_STATUS
 mdefine_line|#define PUT_INSTALL_STATUS(c,s)&t;&t;c-&gt;Revision = s
 DECL|macro|GET_INSTALL_STATUS
 mdefine_line|#define GET_INSTALL_STATUS(c)&t;&t;c-&gt;Revision
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _STANDALONE */
 macro_line|#if defined (HUB_ERR_STS_WAR)
 DECL|macro|ERR_STS_WAR_REGISTER

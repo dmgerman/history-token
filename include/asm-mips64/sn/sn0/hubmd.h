@@ -576,8 +576,7 @@ mdefine_line|#define MD_PROT_MIGMD_PREL&t;(UINT64_CAST 0x1 &lt;&lt; 3)
 DECL|macro|MD_PROT_MIGMD_OFF
 mdefine_line|#define MD_PROT_MIGMD_OFF&t;(UINT64_CAST 0x0 &lt;&lt; 3)
 multiline_comment|/*&n; * Operations on page migration threshold register&n; */
-macro_line|#if _LANGUAGE_C
-macro_line|#ifndef _STANDALONE
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * LED register macros&n; */
 DECL|macro|CPU_LED_ADDR
 mdefine_line|#define CPU_LED_ADDR(_nasid, _slice)&t;&t;&t;&t;&t;   &bslash;&n;&t;(private.p_sn00 ?&t;&t;&t;&t;&t;&t;   &bslash;&n;&t; REMOTE_HUB_ADDR((_nasid), MD_UREG1_0 +&t;((_slice) &lt;&lt; 5)) :&t;   &bslash;&n;&t; REMOTE_HUB_ADDR((_nasid), MD_LED0    + ((_slice) &lt;&lt; 3)))
@@ -635,7 +634,6 @@ DECL|macro|MD_SPROT_REFCNT_GET
 mdefine_line|#define MD_SPROT_REFCNT_GET(value) ( &bslash;&n;&t;((value) &amp; MD_SPROT_REFCNT_MASK) &gt;&gt; MD_SPROT_REFCNT_SHFT)
 DECL|macro|MD_SPROT_MIGMD_GET
 mdefine_line|#define MD_SPROT_MIGMD_GET(value) ( &bslash;&n;&t;((value) &amp; MD_SPROT_MIGMD_MASK) &gt;&gt; MD_SPROT_MIGMD_SHFT)
-macro_line|#endif /* _STANDALONE */
 multiline_comment|/*&n; * Format of dir_error, mem_error, protocol_error and misc_error registers&n; */
 DECL|struct|dir_error_reg
 r_struct
@@ -1348,7 +1346,7 @@ DECL|typedef|md_perf_cnt_t
 )brace
 id|md_perf_cnt_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|DIR_ERROR_VALID_MASK
 mdefine_line|#define DIR_ERROR_VALID_MASK&t;0xe000000000000000
 DECL|macro|DIR_ERROR_VALID_SHFT

@@ -3,7 +3,7 @@ macro_line|#ifndef&t;_ASM_SN_KLCONFIG_H
 DECL|macro|_ASM_SN_KLCONFIG_H
 mdefine_line|#define&t;_ASM_SN_KLCONFIG_H
 multiline_comment|/*&n; * The KLCONFIG structures store info about the various BOARDs found&n; * during Hardware Discovery. In addition, it stores info about the&n; * components found on the BOARDs.&n; */
-multiline_comment|/*&n; * WARNING:&n; *&t;Certain assembly language routines (notably xxxxx.s) in the IP27PROM &n; *&t;will depend on the format of the data structures in this file.  In &n; *      most cases, rearranging the fields can seriously break things.   &n; *      Adding fields in the beginning or middle can also break things.&n; *      Add fields if necessary, to the end of a struct in such a way&n; *      that offsets of existing fields do not change.&n; */
+multiline_comment|/*&n; * WARNING:&n; *&t;Certain assembly language routines (notably xxxxx.s) in the IP27PROM&n; *&t;will depend on the format of the data structures in this file.  In&n; *      most cases, rearranging the fields can seriously break things.&n; *      Adding fields in the beginning or middle can also break things.&n; *      Add fields if necessary, to the end of a struct in such a way&n; *      that offsets of existing fields do not change.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -58,9 +58,9 @@ DECL|macro|MAX_MODULE_ID
 mdefine_line|#define&t;MAX_MODULE_ID&t;&t;255
 DECL|macro|SIZE_PAD
 mdefine_line|#define SIZE_PAD&t;&t;4096 /* 4k padding for structures */
-multiline_comment|/* &n; * 1 NODE brd, 2 Router brd (1 8p, 1 meta), 6 Widgets, &n; * 2 Midplanes assuming no pci card cages &n; */
+multiline_comment|/*&n; * 1 NODE brd, 2 Router brd (1 8p, 1 meta), 6 Widgets,&n; * 2 Midplanes assuming no pci card cages&n; */
 DECL|macro|MAX_SLOTS_PER_NODE
-mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 2 + 6 + 2) 
+mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 2 + 6 + 2)
 multiline_comment|/* XXX if each node is guranteed to have some memory */
 DECL|macro|MAX_PCI_DEVS
 mdefine_line|#define MAX_PCI_DEVS&t;&t;8
@@ -104,7 +104,7 @@ mdefine_line|#define GB2&t;&t;0x80000000
 DECL|macro|MAX_RSV_PTRS
 mdefine_line|#define MAX_RSV_PTRS&t;32
 multiline_comment|/* Structures to manage various data storage areas */
-multiline_comment|/* The numbers must be contiguous since the array index i&n;   is used in the code to allocate various areas. &n;*/
+multiline_comment|/* The numbers must be contiguous since the array index i&n;   is used in the code to allocate various areas.&n;*/
 DECL|macro|BOARD_STRUCT
 mdefine_line|#define BOARD_STRUCT &t;&t;0
 DECL|macro|COMPONENT_STRUCT
@@ -320,7 +320,7 @@ DECL|macro|SN0_PORT_FENCE_SHFT
 mdefine_line|#define&t;SN0_PORT_FENCE_SHFT&t;0
 DECL|macro|SN0_PORT_FENCE_MASK
 mdefine_line|#define&t;SN0_PORT_FENCE_MASK&t;(1 &lt;&lt; SN0_PORT_FENCE_SHFT)
-multiline_comment|/*&n; * The KLCONFIG area is organized as a LINKED LIST of BOARDs. A BOARD&n; * can be either &squot;LOCAL&squot; or &squot;REMOTE&squot;. LOCAL means it is attached to &n; * the LOCAL/current NODE. REMOTE means it is attached to a different&n; * node.(TBD - Need a way to treat ROUTER boards.)&n; *&n; * There are 2 different structures to represent these boards -&n; * lboard - Local board, rboard - remote board. These 2 structures&n; * can be arbitrarily mixed in the LINKED LIST of BOARDs. (Refer&n; * Figure below). The first byte of the rboard or lboard structure&n; * is used to find out its type - no unions are used.&n; * If it is a lboard, then the config info of this board will be found&n; * on the local node. (LOCAL NODE BASE + offset value gives pointer to &n; * the structure.&n; * If it is a rboard, the local structure contains the node number&n; * and the offset of the beginning of the LINKED LIST on the remote node.&n; * The details of the hardware on a remote node can be built locally,&n; * if required, by reading the LINKED LIST on the remote node and &n; * ignoring all the rboards on that node.&n; *&n; * The local node uses the REMOTE NODE NUMBER + OFFSET to point to the &n; * First board info on the remote node. The remote node list is &n; * traversed as the local list, using the REMOTE BASE ADDRESS and not&n; * the local base address and ignoring all rboard values.&n; *&n; * &n; KLCONFIG&n;&n; +------------+      +------------+      +------------+      +------------+&n; |  lboard    |  +--&gt;|   lboard   |  +--&gt;|   rboard   |  +--&gt;|   lboard   |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | board info |  |   | board info |  |   |errinfo,bptr|  |   | board info |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | offset     |--+   |  offset    |--+   |  offset    |--+   |offset=NULL |&n; +------------+      +------------+      +------------+      +------------+&n;&n;&n; +------------+&n; | board info |&n; +------------+       +--------------------------------+&n; | compt 1    |------&gt;| type, rev, diaginfo, size ...  |  (CPU)&n; +------------+       +--------------------------------+&n; | compt 2    |--+&n; +------------+  |    +--------------------------------+&n; |  ...       |  +---&gt;| type, rev, diaginfo, size ...  |  (MEM_BANK)&n; +------------+       +--------------------------------+&n; | errinfo    |--+&n; +------------+  |    +--------------------------------+&n;                 +---&gt;|r/l brd errinfo,compt err flags |&n;                      +--------------------------------+&n;&n; *&n; * Each BOARD consists of COMPONENTs and the BOARD structure has &n; * pointers (offsets) to its COMPONENT structure.&n; * The COMPONENT structure has version info, size and speed info, revision,&n; * error info and the NIC info. This structure can accommodate any&n; * BOARD with arbitrary COMPONENT composition.&n; *&n; * The ERRORINFO part of each BOARD has error information&n; * that describes errors about the BOARD itself. It also has flags to&n; * indicate the COMPONENT(s) on the board that have errors. The error &n; * information specific to the COMPONENT is present in the respective &n; * COMPONENT structure.&n; *&n; * The ERRORINFO structure is also treated like a COMPONENT, ie. the &n; * BOARD has pointers(offset) to the ERRORINFO structure. The rboard&n; * structure also has a pointer to the ERRORINFO structure. This is &n; * the place to store ERRORINFO about a REMOTE NODE, if the HUB on&n; * that NODE is not working or if the REMOTE MEMORY is BAD. In cases where &n; * only the CPU of the REMOTE NODE is disabled, the ERRORINFO pointer can&n; * be a NODE NUMBER, REMOTE OFFSET combination, pointing to error info &n; * which is present on the REMOTE NODE.(TBD)&n; * REMOTE ERRINFO can be stored on any of the nearest nodes &n; * or on all the nearest nodes.(TBD)&n; * Like BOARD structures, REMOTE ERRINFO structures can be built locally&n; * using the rboard errinfo pointer.&n; *&n; * In order to get useful information from this Data organization, a set of&n; * interface routines are provided (TBD). The important thing to remember while&n; * manipulating the structures, is that, the NODE number information should&n; * be used. If the NODE is non-zero (remote) then each offset should&n; * be added to the REMOTE BASE ADDR else it should be added to the LOCAL BASE ADDR. &n; * This includes offsets for BOARDS, COMPONENTS and ERRORINFO.&n; * &n; * Note that these structures do not provide much info about connectivity.&n; * That info will be part of HWGRAPH, which is an extension of the cfg_t&n; * data structure. (ref IP27prom/cfg.h) It has to be extended to include&n; * the IO part of the Network(TBD).&n; *&n; * The data structures below define the above concepts.&n; */
+multiline_comment|/*&n; * The KLCONFIG area is organized as a LINKED LIST of BOARDs. A BOARD&n; * can be either &squot;LOCAL&squot; or &squot;REMOTE&squot;. LOCAL means it is attached to&n; * the LOCAL/current NODE. REMOTE means it is attached to a different&n; * node.(TBD - Need a way to treat ROUTER boards.)&n; *&n; * There are 2 different structures to represent these boards -&n; * lboard - Local board, rboard - remote board. These 2 structures&n; * can be arbitrarily mixed in the LINKED LIST of BOARDs. (Refer&n; * Figure below). The first byte of the rboard or lboard structure&n; * is used to find out its type - no unions are used.&n; * If it is a lboard, then the config info of this board will be found&n; * on the local node. (LOCAL NODE BASE + offset value gives pointer to&n; * the structure.&n; * If it is a rboard, the local structure contains the node number&n; * and the offset of the beginning of the LINKED LIST on the remote node.&n; * The details of the hardware on a remote node can be built locally,&n; * if required, by reading the LINKED LIST on the remote node and&n; * ignoring all the rboards on that node.&n; *&n; * The local node uses the REMOTE NODE NUMBER + OFFSET to point to the&n; * First board info on the remote node. The remote node list is&n; * traversed as the local list, using the REMOTE BASE ADDRESS and not&n; * the local base address and ignoring all rboard values.&n; *&n; *&n; KLCONFIG&n;&n; +------------+      +------------+      +------------+      +------------+&n; |  lboard    |  +--&gt;|   lboard   |  +--&gt;|   rboard   |  +--&gt;|   lboard   |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | board info |  |   | board info |  |   |errinfo,bptr|  |   | board info |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | offset     |--+   |  offset    |--+   |  offset    |--+   |offset=NULL |&n; +------------+      +------------+      +------------+      +------------+&n;&n;&n; +------------+&n; | board info |&n; +------------+       +--------------------------------+&n; | compt 1    |------&gt;| type, rev, diaginfo, size ...  |  (CPU)&n; +------------+       +--------------------------------+&n; | compt 2    |--+&n; +------------+  |    +--------------------------------+&n; |  ...       |  +---&gt;| type, rev, diaginfo, size ...  |  (MEM_BANK)&n; +------------+       +--------------------------------+&n; | errinfo    |--+&n; +------------+  |    +--------------------------------+&n;                 +---&gt;|r/l brd errinfo,compt err flags |&n;                      +--------------------------------+&n;&n; *&n; * Each BOARD consists of COMPONENTs and the BOARD structure has&n; * pointers (offsets) to its COMPONENT structure.&n; * The COMPONENT structure has version info, size and speed info, revision,&n; * error info and the NIC info. This structure can accommodate any&n; * BOARD with arbitrary COMPONENT composition.&n; *&n; * The ERRORINFO part of each BOARD has error information&n; * that describes errors about the BOARD itself. It also has flags to&n; * indicate the COMPONENT(s) on the board that have errors. The error&n; * information specific to the COMPONENT is present in the respective&n; * COMPONENT structure.&n; *&n; * The ERRORINFO structure is also treated like a COMPONENT, ie. the&n; * BOARD has pointers(offset) to the ERRORINFO structure. The rboard&n; * structure also has a pointer to the ERRORINFO structure. This is&n; * the place to store ERRORINFO about a REMOTE NODE, if the HUB on&n; * that NODE is not working or if the REMOTE MEMORY is BAD. In cases where&n; * only the CPU of the REMOTE NODE is disabled, the ERRORINFO pointer can&n; * be a NODE NUMBER, REMOTE OFFSET combination, pointing to error info&n; * which is present on the REMOTE NODE.(TBD)&n; * REMOTE ERRINFO can be stored on any of the nearest nodes&n; * or on all the nearest nodes.(TBD)&n; * Like BOARD structures, REMOTE ERRINFO structures can be built locally&n; * using the rboard errinfo pointer.&n; *&n; * In order to get useful information from this Data organization, a set of&n; * interface routines are provided (TBD). The important thing to remember while&n; * manipulating the structures, is that, the NODE number information should&n; * be used. If the NODE is non-zero (remote) then each offset should&n; * be added to the REMOTE BASE ADDR else it should be added to the LOCAL BASE ADDR.&n; * This includes offsets for BOARDS, COMPONENTS and ERRORINFO.&n; *&n; * Note that these structures do not provide much info about connectivity.&n; * That info will be part of HWGRAPH, which is an extension of the cfg_t&n; * data structure. (ref IP27prom/cfg.h) It has to be extended to include&n; * the IO part of the Network(TBD).&n; *&n; * The data structures below define the above concepts.&n; */
 multiline_comment|/*&n; * Values for CPU types&n; */
 DECL|macro|KL_CPU_R4000
 mdefine_line|#define KL_CPU_R4000&t;&t;0x1&t;/* Standard R4000 */
@@ -332,15 +332,15 @@ DECL|macro|KL_CPU_NONE
 mdefine_line|#define KL_CPU_NONE&t;&t;(-1)&t;/* no cpu present in slot */
 multiline_comment|/*&n; * IP27 BOARD classes&n; */
 DECL|macro|KLCLASS_MASK
-mdefine_line|#define KLCLASS_MASK&t;0xf0   
+mdefine_line|#define KLCLASS_MASK&t;0xf0
 DECL|macro|KLCLASS_NONE
 mdefine_line|#define KLCLASS_NONE&t;0x00
 DECL|macro|KLCLASS_NODE
 mdefine_line|#define KLCLASS_NODE&t;0x10             /* CPU, Memory and HUB board */
 DECL|macro|KLCLASS_CPU
-mdefine_line|#define KLCLASS_CPU&t;KLCLASS_NODE&t;
+mdefine_line|#define KLCLASS_CPU&t;KLCLASS_NODE
 DECL|macro|KLCLASS_IO
-mdefine_line|#define KLCLASS_IO&t;0x20             /* BaseIO, 4 ch SCSI, ethernet, FDDI &n;&t;&t;&t;&t;&t;    and the non-graphics widget boards */
+mdefine_line|#define KLCLASS_IO&t;0x20             /* BaseIO, 4 ch SCSI, ethernet, FDDI&n;&t;&t;&t;&t;&t;    and the non-graphics widget boards */
 DECL|macro|KLCLASS_ROUTER
 mdefine_line|#define KLCLASS_ROUTER&t;0x30             /* Router board */
 DECL|macro|KLCLASS_MIDPLANE
@@ -438,7 +438,7 @@ DECL|macro|KLTYPE_XBRICK
 mdefine_line|#define KLTYPE_XBRICK&t;&t;(KLCLASS_IOBRICK | 0x3)
 DECL|macro|KLTYPE_PBRICK_BRIDGE
 mdefine_line|#define KLTYPE_PBRICK_BRIDGE&t;KLTYPE_PBRICK
-multiline_comment|/* The value of type should be more than 8 so that hinv prints&n; * out the board name from the NIC string. For values less than&n; * 8 the name of the board needs to be hard coded in a few places.&n; * When bringup started nic names had not standardized and so we&n; * had to hard code. (For people interested in history.) &n; */
+multiline_comment|/* The value of type should be more than 8 so that hinv prints&n; * out the board name from the NIC string. For values less than&n; * 8 the name of the board needs to be hard coded in a few places.&n; * When bringup started nic names had not standardized and so we&n; * had to hard code. (For people interested in history.)&n; */
 DECL|macro|KLTYPE_XTHD
 mdefine_line|#define KLTYPE_XTHD   &t;(KLCLASS_PSEUDO_GFX | 0x9)
 DECL|macro|KLTYPE_UNKNOWN
@@ -449,7 +449,7 @@ DECL|macro|IS_MIO_PRESENT
 mdefine_line|#define IS_MIO_PRESENT(l)&t;((l-&gt;brd_type == KLTYPE_BASEIO) &amp;&amp; &bslash;&n;&t;&t;&t;&t; (l-&gt;brd_flags &amp; SECOND_NIC_PRESENT))
 DECL|macro|IS_MIO_IOC3
 mdefine_line|#define IS_MIO_IOC3(l,n)&t;(IS_MIO_PRESENT(l) &amp;&amp; (n &gt; 2))
-multiline_comment|/* &n; * board structures&n; */
+multiline_comment|/*&n; * board structures&n; */
 DECL|macro|MAX_COMPTS_PER_BRD
 mdefine_line|#define MAX_COMPTS_PER_BRD 24
 DECL|macro|LOCAL_BOARD
@@ -644,7 +644,7 @@ DECL|macro|KLCF_COMP_TYPE
 mdefine_line|#define KLCF_COMP_TYPE(_comp)&t;((_comp)-&gt;struct_type)
 DECL|macro|KLCF_BRIDGE_W_ID
 mdefine_line|#define KLCF_BRIDGE_W_ID(_comp)&t;((_comp)-&gt;physid)&t;/* Widget ID */
-multiline_comment|/*&n; * Generic info structure. This stores common info about a &n; * component.&n; */
+multiline_comment|/*&n; * Generic info structure. This stores common info about a&n; * component.&n; */
 DECL|struct|klinfo_s
 r_typedef
 r_struct
@@ -760,7 +760,7 @@ id|klinfo_t
 suffix:semicolon
 DECL|macro|KLCONFIG_INFO_ENABLED
 mdefine_line|#define KLCONFIG_INFO_ENABLED(_i)&t;((_i)-&gt;flags &amp; KLINFO_ENABLE)
-multiline_comment|/*&n; * Component structures.&n; * Following are the currently identified components:&n; * &t;CPU, HUB, MEM_BANK, &n; * &t;XBOW(consists of 16 WIDGETs, each of which can be HUB or GRAPHICS or BRIDGE)&n; * &t;BRIDGE, IOC3, SuperIO, SCSI, FDDI &n; * &t;ROUTER&n; * &t;GRAPHICS&n; */
+multiline_comment|/*&n; * Component structures.&n; * Following are the currently identified components:&n; * &t;CPU, HUB, MEM_BANK,&n; * &t;XBOW(consists of 16 WIDGETs, each of which can be HUB or GRAPHICS or BRIDGE)&n; * &t;BRIDGE, IOC3, SuperIO, SCSI, FDDI&n; * &t;ROUTER&n; * &t;GRAPHICS&n; */
 DECL|macro|KLSTRUCT_UNKNOWN
 mdefine_line|#define KLSTRUCT_UNKNOWN&t;0
 DECL|macro|KLSTRUCT_CPU
@@ -898,7 +898,7 @@ id|u64
 op_star
 id|router_t
 suffix:semicolon
-multiline_comment|/*&n; * The port info in ip27_cfg area translates to a lboart_t in the &n; * KLCONFIG area. But since KLCONFIG does not use pointers, lboart_t&n; * is stored in terms of a nasid and a offset from start of KLCONFIG &n; * area  on that nasid.&n; */
+multiline_comment|/*&n; * The port info in ip27_cfg area translates to a lboart_t in the&n; * KLCONFIG area. But since KLCONFIG does not use pointers, lboart_t&n; * is stored in terms of a nasid and a offset from start of KLCONFIG&n; * area  on that nasid.&n; */
 DECL|struct|klport_s
 r_typedef
 r_struct
@@ -1128,7 +1128,7 @@ DECL|typedef|klmod_serial_num_t
 )brace
 id|klmod_serial_num_t
 suffix:semicolon
-multiline_comment|/* Macros needed to access serial number structure in lboard_t.&n;   Hard coded values are necessary since we cannot treat &n;   serial number struct as a component without losing compatibility&n;   between prom versions. */
+multiline_comment|/* Macros needed to access serial number structure in lboard_t.&n;   Hard coded values are necessary since we cannot treat&n;   serial number struct as a component without losing compatibility&n;   between prom versions. */
 DECL|macro|GET_SNUM_COMP
 mdefine_line|#define GET_SNUM_COMP(_l) &t;((klmod_serial_num_t *)&bslash;&n;&t;&t;&t;&t;KLCF_COMP(_l, _l-&gt;brd_numcompts))
 DECL|macro|MAX_XBOW_LINKS
@@ -1765,8 +1765,8 @@ id|kldev_t
 suffix:semicolon
 multiline_comment|/* Data structure interface routines. TBD */
 multiline_comment|/* Include launch info in this file itself? TBD */
-multiline_comment|/*&n; * TBD - Can the ARCS and device driver related info also be included in the&n; * KLCONFIG area. On the IO4PROM, prom device driver info is part of cfgnode_t &n; * structure, viz private to the IO4prom.&n; */
-multiline_comment|/* &n; * TBD - Allocation issues. &n; *&n; * Do we need to Mark off sepatate heaps for lboard_t, rboard_t, component, &n; * errinfo and allocate from them, or have a single heap and allocate all &n; * structures from it. Debug is easier in the former method since we can&n; * dump all similar structs in one command, but there will be lots of holes, &n; * in memory and max limits are needed for number of structures.&n; * Another way to make it organized, is to have a union of all components&n; * and allocate a aligned chunk of memory greater than the biggest&n; * component.&n; */
+multiline_comment|/*&n; * TBD - Can the ARCS and device driver related info also be included in the&n; * KLCONFIG area. On the IO4PROM, prom device driver info is part of cfgnode_t&n; * structure, viz private to the IO4prom.&n; */
+multiline_comment|/*&n; * TBD - Allocation issues.&n; *&n; * Do we need to Mark off sepatate heaps for lboard_t, rboard_t, component,&n; * errinfo and allocate from them, or have a single heap and allocate all&n; * structures from it. Debug is easier in the former method since we can&n; * dump all similar structs in one command, but there will be lots of holes,&n; * in memory and max limits are needed for number of structures.&n; * Another way to make it organized, is to have a union of all components&n; * and allocate a aligned chunk of memory greater than the biggest&n; * component.&n; */
 r_typedef
 r_union
 (brace

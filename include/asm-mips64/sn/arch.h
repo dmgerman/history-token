@@ -8,7 +8,7 @@ macro_line|#if !defined(CONFIG_SGI_IO)
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sn0/arch.h&gt;
 macro_line|#endif
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#if !defined(CONFIG_SGI_IO)
 DECL|typedef|hubreg_t
 r_typedef
@@ -42,7 +42,7 @@ DECL|macro|cputoslice
 mdefine_line|#define cputoslice(cpu)&t;&t;&t;&t;&bslash;&n;               (cpu_data[(cpu)].p_slice)
 DECL|macro|makespnum
 mdefine_line|#define makespnum(_nasid, _slice)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(((_nasid) &lt;&lt; CPUS_PER_NODE_SHFT) | (_slice))
-macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INVALID_NASID
 mdefine_line|#define INVALID_NASID&t;&t;(nasid_t)-1
 DECL|macro|INVALID_CNODEID
@@ -158,7 +158,7 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C || _LANGUAGE_C_PLUS_PLUS */
+macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|SLOT_BITMASK
 mdefine_line|#define SLOT_BITMASK    &t;(MAX_MEM_SLOTS - 1)
 DECL|macro|SLOT_SIZE

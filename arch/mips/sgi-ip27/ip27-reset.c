@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
@@ -60,9 +61,10 @@ suffix:semicolon
 DECL|macro|noreturn
 mdefine_line|#define noreturn while(1);&t;&t;&t;&t;/* Silence gcc.  */
 multiline_comment|/* XXX How to pass the reboot command to the firmware??? */
-DECL|function|machine_restart
+DECL|function|ip27_machine_restart
+r_static
 r_void
-id|machine_restart
+id|ip27_machine_restart
 c_func
 (paren
 r_char
@@ -137,9 +139,10 @@ macro_line|#endif
 id|noreturn
 suffix:semicolon
 )brace
-DECL|function|machine_halt
+DECL|function|ip27_machine_halt
+r_static
 r_void
-id|machine_halt
+id|ip27_machine_halt
 c_func
 (paren
 r_void
@@ -196,9 +199,10 @@ suffix:semicolon
 id|noreturn
 suffix:semicolon
 )brace
-DECL|function|machine_power_off
+DECL|function|ip27_machine_power_off
+r_static
 r_void
-id|machine_power_off
+id|ip27_machine_power_off
 c_func
 (paren
 r_void
@@ -216,6 +220,17 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Nothing to do on IP27.  */
+id|_machine_restart
+op_assign
+id|ip27_machine_restart
+suffix:semicolon
+id|_machine_halt
+op_assign
+id|ip27_machine_halt
+suffix:semicolon
+id|_machine_power_off
+op_assign
+id|ip27_machine_power_off
+suffix:semicolon
 )brace
 eof

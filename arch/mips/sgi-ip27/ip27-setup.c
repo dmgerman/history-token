@@ -12,12 +12,14 @@ macro_line|#include &lt;asm/sn/sn0/hubni.h&gt;
 macro_line|#include &lt;asm/sn/sn0/hubio.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/pci/bridge.h&gt;
 macro_line|#include &lt;asm/paccess.h&gt;
 macro_line|#include &lt;asm/sn/sn0/ip27.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 multiline_comment|/* Check against user dumbness.  */
 macro_line|#ifdef CONFIG_VT
 macro_line|#error CONFIG_VT not allowed for IP27.
@@ -31,12 +33,14 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-DECL|variable|mips_io_port_base
-r_int
-r_int
-id|mips_io_port_base
-op_assign
-id|IO_BASE
+r_extern
+r_void
+id|ip27_be_init
+c_func
+(paren
+r_void
+)paren
+id|__init
 suffix:semicolon
 multiline_comment|/*&n; * get_nasid() returns the physical node id number of the caller.&n; */
 id|nasid_t
@@ -345,7 +349,7 @@ id|pcibr_setup_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the master is doing this for headless node, nothing to do.&n;&t; * This is because currently we require at least one of the hubs&n;&t; * (master hub) connected to the xbow to have at least one enabled &n;&t; * cpu to receive intrs. Else we need an array bus_to_intrnasid[] &n;&t; * that bridge_startup() needs to use to target intrs. All dma is&n;&t; * routed thru the widget of the master hub. The master hub wid&n;&t; * is selectable by WIDGET_A below.&n;&t; */
+multiline_comment|/*&n;&t; * If the master is doing this for headless node, nothing to do.&n;&t; * This is because currently we require at least one of the hubs&n;&t; * (master hub) connected to the xbow to have at least one enabled&n;&t; * cpu to receive intrs. Else we need an array bus_to_intrnasid[]&n;&t; * that bridge_startup() needs to use to target intrs. All dma is&n;&t; * routed thru the widget of the master hub. The master hub wid&n;&t; * is selectable by WIDGET_A below.&n;&t; */
 r_if
 c_cond
 (paren
@@ -585,7 +589,7 @@ l_string|&quot;argh&bslash;n&quot;
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;    * Okay, here&squot;s a xbow. Lets arbitrate and find&n;&t;&t;&t;    * out if we should initialize it. Set enabled &n;&t;&t;&t;    * hub connected at highest or lowest widget as &n;&t;&t;&t;    * master.&n;&t;&t;&t;    */
+multiline_comment|/*&n;&t;&t;&t;    * Okay, here&squot;s a xbow. Lets arbitrate and find&n;&t;&t;&t;    * out if we should initialize it. Set enabled&n;&t;&t;&t;    * hub connected at highest or lowest widget as&n;&t;&t;&t;    * master.&n;&t;&t;&t;    */
 macro_line|#ifdef WIDGET_A
 id|i
 op_assign
@@ -822,7 +826,7 @@ op_eq
 id|XXBOW_WIDGET_PART_NUM
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * found xbridge, assume ibrick for now &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * found xbridge, assume ibrick for now&n;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -1012,7 +1016,7 @@ id|bridge-&gt;b_wid_control
 op_or_assign
 id|BRIDGE_CTRL_MEM_SWAP
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Hmm...  IRIX sets additional bits in the address which &n;&t;&t; * are documented as reserved in the bridge docs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Hmm...  IRIX sets additional bits in the address which&n;&t;&t; * are documented as reserved in the bridge docs.&n;&t;&t; */
 id|bridge-&gt;b_int_mode
 op_assign
 l_int|0x0
@@ -1059,6 +1063,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ip27_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ip27_reboot_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|ip27_setup
 r_void
 id|__init
@@ -1077,6 +1097,11 @@ comma
 id|e
 suffix:semicolon
 id|ip27_setup_console
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ip27_reboot_setup
 c_func
 (paren
 )paren
@@ -1210,6 +1235,14 @@ id|per_cpu_init
 c_func
 (paren
 )paren
+suffix:semicolon
+id|mips_io_port_base
+op_assign
+id|IO_BASE
+suffix:semicolon
+id|board_time_init
+op_assign
+id|ip27_time_init
 suffix:semicolon
 )brace
 eof

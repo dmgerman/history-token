@@ -3,9 +3,9 @@ macro_line|#ifndef _ASM_SN_ADDRS_H
 DECL|macro|_ASM_SN_ADDRS_H
 mdefine_line|#define _ASM_SN_ADDRS_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/sn/sn0/addrs.h&gt;
 macro_line|#elif defined(CONFIG_SGI_IP35)
 macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;
 macro_line|#endif
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#if defined(CONFIG_SGI_IO)&t;/* FIXME */
 DECL|macro|PS_UINT_CAST
 mdefine_line|#define PS_UINT_CAST&t;&t;(__psunsigned_t)
@@ -28,14 +28,14 @@ mdefine_line|#define UINT64_CAST&t;&t;(unsigned long)
 macro_line|#endif&t;/* CONFIG_SGI_IO */
 DECL|macro|HUBREG_CAST
 mdefine_line|#define HUBREG_CAST&t;&t;(volatile hubreg_t *)
-macro_line|#elif _LANGUAGE_ASSEMBLY
+macro_line|#else /* __ASSEMBLY__ */
 DECL|macro|PS_UINT_CAST
 mdefine_line|#define PS_UINT_CAST
 DECL|macro|UINT64_CAST
 mdefine_line|#define UINT64_CAST
 DECL|macro|HUBREG_CAST
 mdefine_line|#define HUBREG_CAST
-macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|NASID_GET_META
 mdefine_line|#define NASID_GET_META(_n)&t;((_n) &gt;&gt; NASID_LOCAL_BITS)
 macro_line|#ifdef CONFIG_SGI_IP27
@@ -188,7 +188,7 @@ macro_line|#ifdef CONFIG_SGI_IP27
 DECL|macro|REMOTE_HUB_PI_ADDR
 mdefine_line|#define REMOTE_HUB_PI_ADDR(_n, _sn, _x)&t;(HUBREG_CAST (NODE_SWIN_BASE(_n, 1) +&t;&bslash;&n;&t;&t;&t;&t;&t;      0x800000 + (_x)))
 macro_line|#endif /* CONFIG_SGI_IP27 */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|HUB_L
 mdefine_line|#define HUB_L(_a)&t;&t;&t;*(_a)
 DECL|macro|HUB_S
@@ -205,7 +205,7 @@ DECL|macro|REMOTE_HUB_PI_L
 mdefine_line|#define REMOTE_HUB_PI_L(_n, _sn, _r)&t;HUB_L(REMOTE_HUB_PI_ADDR((_n), (_sn), (_r)))
 DECL|macro|REMOTE_HUB_PI_S
 mdefine_line|#define REMOTE_HUB_PI_S(_n, _sn, _r, _d) HUB_S(REMOTE_HUB_PI_ADDR((_n), (_sn), (_r)), (_d))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * The following macros are used to get to a hub/bridge register, given&n; * the base of the register space.&n; */
 DECL|macro|HUB_REG_PTR
 mdefine_line|#define HUB_REG_PTR(_base, _off)&t;&bslash;&n;&t;(HUBREG_CAST ((__psunsigned_t)(_base) + (__psunsigned_t)(_off)))
@@ -274,7 +274,7 @@ DECL|macro|KLI_KERN_XP
 mdefine_line|#define&t;KLI_KERN_XP&t;&t;8
 DECL|macro|KLI_KERN_PARTID
 mdefine_line|#define&t;KLI_KERN_PARTID&t;&t;9
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|KLD_BASE
 mdefine_line|#define KLD_BASE(nasid)&t;&t;((kldir_ent_t *) KLDIR_ADDR(nasid))
 DECL|macro|KLD_LAUNCH
@@ -363,6 +363,6 @@ DECL|macro|KERN_XP_SIZE
 mdefine_line|#define&t;KERN_XP_SIZE(nasid)&t;KLD_KERN_XP(nasid)-&gt;size
 DECL|macro|GPDA_ADDR
 mdefine_line|#define GPDA_ADDR(nasid)&t;TO_NODE_CAC(nasid, GPDA_OFFSET)
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_SN_ADDRS_H */
 eof

@@ -488,7 +488,7 @@ id|slot0sz
 op_assign
 id|slot_psize
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * We need to refine the hack when we have replicated&n;&t;&t;&t; * kernel text.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We need to refine the hack when we have replicated&n;&t;&t;&t; * kernel text.&n;&t;&t;&t; */
 id|nodebytes
 op_add_assign
 id|SLOT_SIZE
@@ -871,8 +871,6 @@ DECL|variable|pagenr
 r_static
 id|pfn_t
 id|pagenr
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|paging_init
 r_void
@@ -976,7 +974,7 @@ l_int|0
 comma
 id|PAGE_SIZE
 op_lshift
-id|KPTBL_PAGE_ORDER
+id|PGD_ORDER
 )paren
 suffix:semicolon
 id|memset
@@ -993,12 +991,16 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|pgd_set
+id|set_pgd
 c_func
 (paren
 id|swapper_pg_dir
 comma
+id|__pgd
+c_func
+(paren
 id|kpmdtbl
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1013,7 +1015,7 @@ OL
 (paren
 l_int|1
 op_lshift
-id|KPTBL_PAGE_ORDER
+id|PGD_ORDER
 )paren
 suffix:semicolon
 id|pmd

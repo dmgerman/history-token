@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef __ASM_SN_INTR_PUBLIC_H
 DECL|macro|__ASM_SN_INTR_PUBLIC_H
 mdefine_line|#define __ASM_SN_INTR_PUBLIC_H
@@ -11,7 +11,7 @@ DECL|macro|INTPEND0_MAXMASK
 mdefine_line|#define INTPEND0_MAXMASK&t;(N_INTPEND0_MASKS - 1)
 DECL|macro|INTPEND1_MAXMASK
 mdefine_line|#define INTPEND1_MAXMASK&t;(N_INTPEND1_MASKS - 1)
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/arch.h&gt;
 r_struct
 id|intr_vecblk_s
@@ -58,6 +58,6 @@ DECL|typedef|hub_intmasks_t
 )brace
 id|hub_intmasks_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_SN_INTR_PUBLIC_H */
 eof

@@ -27,7 +27,7 @@ DECL|macro|MAX_NONPREMIUM_REGIONS
 mdefine_line|#define MAX_NONPREMIUM_REGIONS  16
 DECL|macro|MAX_PREMIUM_REGIONS
 mdefine_line|#define MAX_PREMIUM_REGIONS     MAX_REGIONS
-multiline_comment|/*&n; * MAX_PARITIONS refers to the maximum number of logically defined &n; * partitions the system can support.&n; */
+multiline_comment|/*&n; * MAX_PARITIONS refers to the maximum number of logically defined&n; * partitions the system can support.&n; */
 DECL|macro|MAX_PARTITIONS
 mdefine_line|#define MAX_PARTITIONS&t;&t;MAX_REGIONS
 macro_line|#else

@@ -385,7 +385,7 @@ id|server_nasid
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Return pfn of first free page of memory on a node. PROM may allocate&n; * data structures on the first couple of pages of the first slot of each &n; * node. If this is the case, getfirstfree(node) &gt; getslotstart(node, 0).&n; */
+multiline_comment|/*&n; * Return pfn of first free page of memory on a node. PROM may allocate&n; * data structures on the first couple of pages of the first slot of each&n; * node. If this is the case, getfirstfree(node) &gt; getslotstart(node, 0).&n; */
 DECL|function|node_getfirstfree
 id|pfn_t
 id|node_getfirstfree

@@ -10,7 +10,7 @@ DECL|macro|KV_RW_NASID_OFFSET
 mdefine_line|#define KV_RW_NASID_OFFSET&t;0x6
 DECL|macro|KV_MAGIC
 mdefine_line|#define KV_MAGIC&t;&t;0x5f4b565f
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/types.h&gt;
 DECL|struct|kern_vars_s
 r_typedef
@@ -43,6 +43,6 @@ DECL|typedef|kern_vars_t
 )brace
 id|kern_vars_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_SN_KLKERNVARS_H */
 eof
