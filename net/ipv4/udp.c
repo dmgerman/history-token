@@ -1886,7 +1886,7 @@ id|ufh-&gt;uh.len
 comma
 id|IPPROTO_UDP
 comma
-id|ufh-&gt;wcheck
+l_int|0
 )paren
 suffix:semicolon
 id|memcpy
@@ -3010,7 +3010,7 @@ c_func
 (paren
 id|sk
 comma
-id|generic_getfrag
+id|ip_generic_getfrag
 comma
 id|msg-&gt;msg_iov
 comma
@@ -3027,6 +3027,13 @@ id|ipc
 comma
 id|rt
 comma
+id|corkreq
+ques
+c_cond
+id|msg-&gt;msg_flags
+op_or
+id|MSG_MORE
+suffix:colon
 id|msg-&gt;msg_flags
 )paren
 suffix:semicolon
