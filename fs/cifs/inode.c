@@ -10,6 +10,16 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
+r_extern
+r_int
+id|is_size_safe_to_change
+c_func
+(paren
+r_struct
+id|cifsInodeInfo
+op_star
+)paren
+suffix:semicolon
 r_int
 DECL|function|cifs_get_inode_info_unix
 id|cifs_get_inode_info_unix
@@ -69,7 +79,6 @@ r_char
 op_star
 id|tmp_path
 suffix:semicolon
-multiline_comment|/* BB add caching check so we do not go to server to overwrite inode info to cached file&n;&t;where the local file sizes are correct and the server info is stale  BB */
 id|xid
 op_assign
 id|GetXid
@@ -501,6 +510,17 @@ c_func
 id|findData.EndOfFile
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_size_safe_to_change
+c_func
+(paren
+id|cifsInfo
+)paren
+)paren
+(brace
+multiline_comment|/* can not safely change the file size here if the &n;&t;&t;   client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -527,6 +547,7 @@ id|findData.NumOfBytes
 op_rshift
 l_int|9
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1239,6 +1260,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* BB add code here - validate if device or weird share or device type? */
 )brace
+r_if
+c_cond
+(paren
+id|is_size_safe_to_change
+c_func
+(paren
+id|cifsInfo
+)paren
+)paren
+(brace
+multiline_comment|/* can not safely change the file size here if the &n;&t;&t;client is writing to it due to potential races */
 id|i_size_write
 c_func
 (paren
@@ -1249,14 +1281,6 @@ c_func
 (paren
 id|pfindData-&gt;EndOfFile
 )paren
-)paren
-suffix:semicolon
-id|pfindData-&gt;AllocationSize
-op_assign
-id|le64_to_cpu
-c_func
-(paren
-id|pfindData-&gt;AllocationSize
 )paren
 suffix:semicolon
 multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
@@ -1272,6 +1296,15 @@ id|pfindData-&gt;AllocationSize
 )paren
 op_rshift
 l_int|9
+suffix:semicolon
+)brace
+id|pfindData-&gt;AllocationSize
+op_assign
+id|le64_to_cpu
+c_func
+(paren
+id|pfindData-&gt;AllocationSize
+)paren
 suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
