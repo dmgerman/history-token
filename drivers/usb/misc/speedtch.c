@@ -77,13 +77,13 @@ mdefine_line|#define UDSL_MAX_RCV_BUF_SIZE&t;&t;1024 /* ATM cells */
 DECL|macro|UDSL_MAX_SND_BUF_SIZE
 mdefine_line|#define UDSL_MAX_SND_BUF_SIZE&t;&t;1024 /* ATM cells */
 DECL|macro|UDSL_DEFAULT_RCV_URBS
-mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;1
+mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;2
 DECL|macro|UDSL_DEFAULT_SND_URBS
-mdefine_line|#define UDSL_DEFAULT_SND_URBS&t;&t;1
+mdefine_line|#define UDSL_DEFAULT_SND_URBS&t;&t;2
 DECL|macro|UDSL_DEFAULT_RCV_BUFS
-mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;2
+mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_SND_BUFS
-mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;2
+mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;4
 DECL|macro|UDSL_DEFAULT_RCV_BUF_SIZE
 mdefine_line|#define UDSL_DEFAULT_RCV_BUF_SIZE&t;64 /* ATM cells */
 DECL|macro|UDSL_DEFAULT_SND_BUF_SIZE
