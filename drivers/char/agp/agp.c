@@ -103,6 +103,15 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|agp_memory_reserved
+r_int
+id|agp_memory_reserved
+suffix:semicolon
+DECL|variable|agp_gatt_table
+id|__u32
+op_star
+id|agp_gatt_table
+suffix:semicolon
 DECL|function|agp_backend_acquire
 r_int
 id|agp_backend_acquire
@@ -846,7 +855,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Routine to copy over information structure */
 DECL|function|agp_copy_info
-r_void
+r_int
 id|agp_copy_info
 c_func
 (paren
@@ -890,6 +899,8 @@ op_assign
 id|agp_bridge.type
 suffix:semicolon
 r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|info-&gt;version.major
@@ -972,6 +983,9 @@ id|info-&gt;page_mask
 op_assign
 op_complement
 id|page_mask
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* End - Routine to copy over information structure */
@@ -1963,6 +1977,14 @@ op_star
 )paren
 id|table
 suffix:semicolon
+id|agp_gatt_table
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|table
+suffix:semicolon
 id|CACHE_FLUSH
 c_func
 (paren
@@ -2417,6 +2439,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|num_entries
+op_sub_assign
+id|agp_memory_reserved
+op_div
+id|PAGE_SIZE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_entries
+OL
+l_int|0
+)paren
+id|num_entries
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3198,6 +3237,40 @@ comma
 )brace
 comma
 macro_line|#endif /* CONFIG_AGP_ALI */
+macro_line|#ifdef CONFIG_AGP_AMD_8151
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_AMD_8151_0
+comma
+dot
+id|vendor_id
+op_assign
+id|PCI_VENDOR_ID_AMD
+comma
+dot
+id|chipset
+op_assign
+id|AMD_8151
+comma
+dot
+id|vendor_name
+op_assign
+l_string|&quot;AMD&quot;
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;8151&quot;
+comma
+dot
+id|chipset_setup
+op_assign
+id|amd_8151_setup
+)brace
+comma
+macro_line|#endif /* CONFIG_AGP_AMD */
 macro_line|#ifdef CONFIG_AGP_AMD
 (brace
 dot
@@ -6418,7 +6491,6 @@ comma
 )brace
 suffix:semicolon
 DECL|function|agp_init
-r_static
 r_int
 id|__init
 id|agp_init
@@ -6517,6 +6589,7 @@ l_string|&quot;drm_agp&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef CONFIG_GART_IOMMU
 DECL|variable|agp_init
 id|module_init
 c_func
@@ -6531,4 +6604,5 @@ c_func
 id|agp_cleanup
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
