@@ -1,11 +1,11 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/irq.c&n; *&n; *  Copyright (C) 1992 Linus Torvalds&n; *  Modifications for ARM processor Copyright (C) 1995-2000 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the code used by various IRQ handling routines:&n; *  asking for different IRQ&squot;s should be done through these routines&n; *  instead of just grabbing them. Thus setups with different IRQ numbers&n; *  shouldn&squot;t result in any weird surprises, and installing new handlers&n; *  should be easier.&n; *&n; *  IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; *  Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -855,6 +855,8 @@ r_while
 c_loop
 (paren
 id|desc-&gt;pending
+op_logical_and
+id|desc-&gt;enabled
 )paren
 suffix:semicolon
 id|desc-&gt;running
