@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_PDA_H
 DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
@@ -10,29 +10,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 multiline_comment|/*&n; * CPU-specific data structure.&n; *&n; * One of these structures is allocated for each cpu of a NUMA system.&n; *&n; * This structure provides a convenient way of keeping together &n; * all SN per-cpu data structures. &n; */
-macro_line|#ifdef BUS_INT_WAR
-DECL|macro|POLL_ENTRIES
-mdefine_line|#define POLL_ENTRIES&t;50
-r_typedef
-r_struct
-(brace
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
-DECL|member|interval
-r_int
-id|interval
-suffix:semicolon
-DECL|member|tick
-r_int
-id|tick
-suffix:semicolon
-DECL|typedef|sn_poll_entry_t
-)brace
-id|sn_poll_entry_t
-suffix:semicolon
-macro_line|#endif
 DECL|struct|pda_s
 r_typedef
 r_struct
@@ -54,21 +31,12 @@ id|p_subnodepda
 suffix:semicolon
 multiline_comment|/* Pointer to CPU  subnode PDA */
 multiline_comment|/*&n;&t; * Support for SN LEDs&n;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
 DECL|member|led_address
 r_volatile
 r_int
 op_star
 id|led_address
 suffix:semicolon
-macro_line|#else
-DECL|member|led_address
-r_volatile
-r_int
-op_star
-id|led_address
-suffix:semicolon
-macro_line|#endif
 DECL|member|led_state
 id|u8
 id|led_state
@@ -78,6 +46,10 @@ id|u8
 id|hb_state
 suffix:semicolon
 multiline_comment|/* supports blinking heartbeat leds */
+DECL|member|shub_1_1_found
+id|u8
+id|shub_1_1_found
+suffix:semicolon
 DECL|member|hb_count
 r_int
 r_int
@@ -88,15 +60,6 @@ r_int
 r_int
 id|idle_flag
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN2
-DECL|member|p_irqpda
-r_struct
-id|irqpda_s
-op_star
-id|p_irqpda
-suffix:semicolon
-multiline_comment|/* Pointer to CPU irq data */
-macro_line|#endif
 DECL|member|bedrock_rev_id
 r_volatile
 r_int
@@ -126,7 +89,8 @@ op_star
 id|mem_write_status_addr
 suffix:semicolon
 DECL|member|cpu_bte_if
-id|bteinfo_t
+r_struct
+id|bteinfo_s
 op_star
 id|cpu_bte_if
 (braket
@@ -134,19 +98,41 @@ id|BTES_PER_NODE
 )braket
 suffix:semicolon
 multiline_comment|/* cpu interface order */
-macro_line|#ifdef BUS_INT_WAR
-DECL|member|pda_poll_entries
-id|sn_poll_entry_t
-id|pda_poll_entries
+DECL|member|sn_soft_irr
+r_int
+r_int
+id|sn_soft_irr
 (braket
-id|POLL_ENTRIES
+l_int|4
 )braket
 suffix:semicolon
-DECL|member|pda_poll_entry_count
+DECL|member|sn_in_service_ivecs
 r_int
-id|pda_poll_entry_count
+r_int
+id|sn_in_service_ivecs
+(braket
+l_int|4
+)braket
 suffix:semicolon
-macro_line|#endif
+DECL|member|cnodeid_to_nasid_table
+r_int
+id|cnodeid_to_nasid_table
+(braket
+id|NR_NODES
+)braket
+suffix:semicolon
+DECL|member|sn_lb_int_war_ticks
+r_int
+id|sn_lb_int_war_ticks
+suffix:semicolon
+DECL|member|sn_last_irq
+r_int
+id|sn_last_irq
+suffix:semicolon
+DECL|member|sn_first_irq
+r_int
+id|sn_first_irq
+suffix:semicolon
 DECL|typedef|pda_t
 )brace
 id|pda_t
@@ -167,5 +153,8 @@ DECL|macro|pda
 mdefine_line|#define pda&t;&t;(&amp;__get_cpu_var(pda_percpu))
 DECL|macro|pdacpu
 mdefine_line|#define pdacpu(cpu)&t;(&amp;per_cpu(pda_percpu, cpu))
+multiline_comment|/*&n; * Use this macro to test if shub 1.1 wars should be enabled&n; */
+DECL|macro|enable_shub_wars_1_1
+mdefine_line|#define enable_shub_wars_1_1()&t;(pda-&gt;shub_1_1_found)
 macro_line|#endif /* _ASM_IA64_SN_PDA_H */
 eof

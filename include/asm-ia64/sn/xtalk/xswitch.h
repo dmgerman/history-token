@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XSWITCH_H
 DECL|macro|_ASM_SN_XTALK_XSWITCH_H
 mdefine_line|#define _ASM_SN_XTALK_XSWITCH_H
@@ -19,7 +19,7 @@ DECL|typedef|xswitch_reset_link_f
 id|xswitch_reset_link_f
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn
 )paren
 suffix:semicolon
@@ -42,7 +42,7 @@ r_void
 id|xswitch_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|sw_vhdl
 comma
 id|xswitch_provider_t
@@ -59,7 +59,7 @@ id|xswitch_info_t
 id|xswitch_info_new
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon
@@ -86,7 +86,7 @@ comma
 id|xwidgetnum_t
 id|port
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 suffix:semicolon
@@ -101,7 +101,7 @@ comma
 id|xwidgetnum_t
 id|port
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master_vhdl
 )paren
 suffix:semicolon
@@ -110,7 +110,7 @@ id|xswitch_info_t
 id|xswitch_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 )paren
 suffix:semicolon
@@ -127,7 +127,7 @@ id|port
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitch_info_vhdl_get
 c_func
 (paren
@@ -139,7 +139,7 @@ id|port
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitch_info_master_assignment_get
 c_func
 (paren
@@ -148,27 +148,6 @@ id|xswitch_info
 comma
 id|xwidgetnum_t
 id|port
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xswitch_id_get
-c_func
-(paren
-id|devfs_handle_t
-id|vhdl
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xswitch_id_set
-c_func
-(paren
-id|devfs_handle_t
-id|vhdl
-comma
-r_int
-id|xbow_num
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */

@@ -1,8 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_LABELCL_H
 DECL|macro|_ASM_IA64_SN_LABELCL_H
 mdefine_line|#define _ASM_IA64_SN_LABELCL_H
-macro_line|#include &lt;asm/sn/hcl.h&gt;
 DECL|macro|LABELCL_MAGIC
 mdefine_line|#define LABELCL_MAGIC 0x4857434c&t;/* &squot;HWLC&squot; */
 DECL|macro|LABEL_LENGTH_MAX
@@ -174,9 +173,7 @@ r_int
 id|labelcl_info_add_LBL
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -191,9 +188,7 @@ r_int
 id|labelcl_info_remove_LBL
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -210,9 +205,7 @@ r_int
 id|labelcl_info_replace_LBL
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -233,9 +226,7 @@ r_int
 id|labelcl_info_get_LBL
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -252,9 +243,7 @@ r_int
 id|labelcl_info_get_next_LBL
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -274,9 +263,7 @@ r_int
 id|labelcl_info_replace_IDX
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -291,13 +278,9 @@ r_int
 id|labelcl_info_connectpt_set
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -305,9 +288,7 @@ r_int
 id|labelcl_info_get_IDX
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -317,14 +298,11 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|devfs_entry
-op_star
+id|devfs_handle_t
 id|device_info_connectpt_get
 c_func
 (paren
-r_struct
-id|devfs_entry
-op_star
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_LABELCL_H */

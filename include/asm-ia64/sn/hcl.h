@@ -1,21 +1,14 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_HCL_H
 DECL|macro|_ASM_IA64_SN_HCL_H
 mdefine_line|#define _ASM_IA64_SN_HCL_H
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_extern
-id|devfs_handle_t
-id|hcl_handle
-suffix:semicolon
-multiline_comment|/* HCL driver */
-r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_root
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|linux_busnum
 suffix:semicolon
 DECL|typedef|labelcl_info_place_t
@@ -67,11 +60,11 @@ DECL|macro|graph_edge_place_t
 mdefine_line|#define graph_edge_place_t uint
 multiline_comment|/*&n; * External declarations of EXPORTED SYMBOLS in hcl.c&n; */
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_const
 r_char
@@ -108,7 +101,7 @@ r_int
 id|hwgraph_mk_symlink
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_const
 r_char
@@ -127,7 +120,7 @@ comma
 r_int
 r_int
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 comma
 r_void
@@ -139,7 +132,7 @@ r_int
 id|hwgraph_vertex_destroy
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -147,9 +140,9 @@ r_int
 id|hwgraph_edge_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -160,12 +153,12 @@ r_int
 id|hwgraph_edge_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -174,7 +167,7 @@ id|arbitrary_info_t
 id|hwgraph_fastinfo_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -182,17 +175,17 @@ r_void
 id|hwgraph_fastinfo_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|arbitrary_info_t
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_mk_dir
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_const
 r_char
@@ -210,17 +203,17 @@ r_int
 id|hwgraph_connectpt_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_connectpt_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -228,12 +221,12 @@ r_int
 id|hwgraph_edge_get_next
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 comma
 id|uint
@@ -245,12 +238,12 @@ id|graph_error_t
 id|hwgraph_edge_remove
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -259,12 +252,12 @@ id|graph_error_t
 id|hwgraph_traverse
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -273,10 +266,10 @@ r_int
 id|hwgraph_vertex_get_next
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -285,7 +278,7 @@ r_int
 id|hwgraph_inventory_get_next
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|invplace_t
 op_star
@@ -300,7 +293,7 @@ r_int
 id|hwgraph_inventory_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -318,7 +311,7 @@ r_int
 id|hwgraph_inventory_remove
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -336,7 +329,7 @@ r_int
 id|hwgraph_controller_num_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -344,7 +337,7 @@ r_void
 id|hwgraph_controller_num_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 )paren
@@ -354,17 +347,17 @@ r_int
 id|hwgraph_path_ad
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_path_to_vertex
 c_func
 (paren
@@ -373,7 +366,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_path_to_dev
 c_func
 (paren
@@ -382,19 +375,19 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_block_device_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hwgraph_char_device_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -402,7 +395,7 @@ id|graph_error_t
 id|hwgraph_char_device_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -410,7 +403,7 @@ comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -419,12 +412,12 @@ r_int
 id|hwgraph_path_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 )paren
 suffix:semicolon
@@ -433,7 +426,7 @@ r_int
 id|hwgraph_info_add_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -446,7 +439,7 @@ r_int
 id|hwgraph_info_get_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -460,7 +453,7 @@ r_int
 id|hwgraph_info_replace_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -476,7 +469,7 @@ r_int
 id|hwgraph_info_get_exported_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -493,7 +486,7 @@ r_int
 id|hwgraph_info_get_next_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -510,12 +503,12 @@ r_int
 id|hwgraph_path_lookup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 op_star
 comma
 r_char
@@ -528,7 +521,7 @@ r_int
 id|hwgraph_info_export_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -541,7 +534,7 @@ r_int
 id|hwgraph_info_unexport_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -552,7 +545,7 @@ r_int
 id|hwgraph_info_remove_LBL
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -567,7 +560,7 @@ op_star
 id|vertex_to_name
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_char
 op_star
@@ -580,7 +573,7 @@ id|graph_error_t
 id|hwgraph_vertex_unref
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_HCL_H */

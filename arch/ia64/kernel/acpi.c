@@ -242,6 +242,24 @@ r_return
 l_string|&quot;hpzx1&quot;
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|hdr-&gt;oem_id
+comma
+l_string|&quot;SGI&quot;
+)paren
+)paren
+(brace
+r_return
+l_string|&quot;sn2&quot;
+suffix:semicolon
+)brace
 r_return
 l_string|&quot;dig&quot;
 suffix:semicolon
@@ -253,10 +271,6 @@ suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_HP_ZX1)
 r_return
 l_string|&quot;hpzx1&quot;
-suffix:semicolon
-macro_line|# elif defined (CONFIG_IA64_SGI_SN1)
-r_return
-l_string|&quot;sn1&quot;
 suffix:semicolon
 macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
 r_return

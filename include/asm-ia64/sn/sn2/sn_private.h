@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sn_private.h,v 1.1 2002/02/28 17:31:26 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: sn_private.h,v 1.1 2002/02/28 17:31:26 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SN_PRIVATE_H
 DECL|macro|_ASM_IA64_SN_SN2_SN_PRIVATE_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SN_PRIVATE_H
@@ -283,7 +283,7 @@ comma
 r_int
 id|err
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 comma
 r_char
@@ -338,7 +338,7 @@ id|cpuid_t
 id|intr_heuristic
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -350,7 +350,7 @@ comma
 r_int
 id|intr_resflags
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 comma
 r_char
@@ -537,14 +537,14 @@ r_void
 id|klhwg_add_all_nodes
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|klhwg_add_all_modules
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* klidbg.c */
@@ -604,15 +604,6 @@ id|npda
 comma
 id|cnodeid_t
 id|node
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|init_platform_pda
-c_func
-(paren
-id|cpuid_t
-id|cpu
 )paren
 suffix:semicolon
 r_extern
@@ -742,7 +733,7 @@ id|hpio_xtalk_info
 suffix:semicolon
 multiline_comment|/* standard crosstalk pio info */
 DECL|member|hpio_hub
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hpio_hub
 suffix:semicolon
 multiline_comment|/* which shub&squot;s mapping registers are set up */
@@ -788,7 +779,7 @@ id|hdma_xtalk_info
 suffix:semicolon
 multiline_comment|/* standard crosstalk dma info */
 DECL|member|hdma_hub
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hdma_hub
 suffix:semicolon
 multiline_comment|/* which shub we go through */
@@ -954,7 +945,7 @@ r_void
 id|xswitch_vertex_init
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitch
 )paren
 suffix:semicolon
@@ -1093,7 +1084,7 @@ r_int
 id|sndrv_attach
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vertex
 )paren
 suffix:semicolon

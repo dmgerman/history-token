@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file &quot;COPYING&quot; in the main directory of&n; * this archive for more details.&n; *&n; * Copyright (C) 1997, 2001 Silicon Graphics, Inc. All rights reserved.&n; *&n; */
+multiline_comment|/* &n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file &quot;COPYING&quot; in the main directory of&n; * this archive for more details.&n; *&n; * Copyright (C) 1997, 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; *&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIBA_H
 DECL|macro|_ASM_SN_PCI_PCIBA_H
 mdefine_line|#define _ASM_SN_PCI_PCIBA_H

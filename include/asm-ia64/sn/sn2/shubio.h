@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: shubio.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: shubio.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SHUBIO_H
 DECL|macro|_ASM_IA64_SN_SN2_SHUBIO_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SHUBIO_H
@@ -6391,44 +6391,44 @@ mdefine_line|#define IIO_SCRATCH_REG0        IIO_ISCR0
 DECL|macro|IIO_SCRATCH_REG1
 mdefine_line|#define IIO_SCRATCH_REG1        IIO_ISCR1
 DECL|macro|IIO_SCRATCH_MASK
-mdefine_line|#define IIO_SCRATCH_MASK        0xffffffffffffffff
+mdefine_line|#define IIO_SCRATCH_MASK        0xffffffffffffffffUL
 DECL|macro|IIO_SCRATCH_BIT0_0
-mdefine_line|#define IIO_SCRATCH_BIT0_0      0x0000000000000001
+mdefine_line|#define IIO_SCRATCH_BIT0_0      0x0000000000000001UL
 DECL|macro|IIO_SCRATCH_BIT0_1
-mdefine_line|#define IIO_SCRATCH_BIT0_1      0x0000000000000002
+mdefine_line|#define IIO_SCRATCH_BIT0_1      0x0000000000000002UL
 DECL|macro|IIO_SCRATCH_BIT0_2
-mdefine_line|#define IIO_SCRATCH_BIT0_2      0x0000000000000004
+mdefine_line|#define IIO_SCRATCH_BIT0_2      0x0000000000000004UL
 DECL|macro|IIO_SCRATCH_BIT0_3
-mdefine_line|#define IIO_SCRATCH_BIT0_3      0x0000000000000008
+mdefine_line|#define IIO_SCRATCH_BIT0_3      0x0000000000000008UL
 DECL|macro|IIO_SCRATCH_BIT0_4
-mdefine_line|#define IIO_SCRATCH_BIT0_4      0x0000000000000010
+mdefine_line|#define IIO_SCRATCH_BIT0_4      0x0000000000000010UL
 DECL|macro|IIO_SCRATCH_BIT0_5
-mdefine_line|#define IIO_SCRATCH_BIT0_5      0x0000000000000020
+mdefine_line|#define IIO_SCRATCH_BIT0_5      0x0000000000000020UL
 DECL|macro|IIO_SCRATCH_BIT0_6
-mdefine_line|#define IIO_SCRATCH_BIT0_6      0x0000000000000040
+mdefine_line|#define IIO_SCRATCH_BIT0_6      0x0000000000000040UL
 DECL|macro|IIO_SCRATCH_BIT0_7
-mdefine_line|#define IIO_SCRATCH_BIT0_7      0x0000000000000080
+mdefine_line|#define IIO_SCRATCH_BIT0_7      0x0000000000000080UL
 DECL|macro|IIO_SCRATCH_BIT0_8
-mdefine_line|#define IIO_SCRATCH_BIT0_8      0x0000000000000100
+mdefine_line|#define IIO_SCRATCH_BIT0_8      0x0000000000000100UL
 DECL|macro|IIO_SCRATCH_BIT0_9
-mdefine_line|#define IIO_SCRATCH_BIT0_9      0x0000000000000200
+mdefine_line|#define IIO_SCRATCH_BIT0_9      0x0000000000000200UL
 DECL|macro|IIO_SCRATCH_BIT0_A
-mdefine_line|#define IIO_SCRATCH_BIT0_A      0x0000000000000400
+mdefine_line|#define IIO_SCRATCH_BIT0_A      0x0000000000000400UL
 DECL|macro|IIO_SCRATCH_BIT1_0
-mdefine_line|#define IIO_SCRATCH_BIT1_0      0x0000000000000001
+mdefine_line|#define IIO_SCRATCH_BIT1_0      0x0000000000000001UL
 DECL|macro|IIO_SCRATCH_BIT1_1
-mdefine_line|#define IIO_SCRATCH_BIT1_1      0x0000000000000002
+mdefine_line|#define IIO_SCRATCH_BIT1_1      0x0000000000000002UL
 multiline_comment|/* IO Translation Table Entries */
 DECL|macro|IIO_NUM_ITTES
 mdefine_line|#define IIO_NUM_ITTES   7               /* ITTEs numbered 0..6 */
 multiline_comment|/* Hw manuals number them 1..7! */
 multiline_comment|/*&n; * IIO_IMEM Register fields.&n; */
 DECL|macro|IIO_IMEM_W0ESD
-mdefine_line|#define IIO_IMEM_W0ESD  0x1             /* Widget 0 shut down due to error */
+mdefine_line|#define IIO_IMEM_W0ESD  0x1UL             /* Widget 0 shut down due to error */
 DECL|macro|IIO_IMEM_B0ESD
-mdefine_line|#define IIO_IMEM_B0ESD  (1 &lt;&lt; 4)        /* BTE 0 shut down due to error */
+mdefine_line|#define IIO_IMEM_B0ESD  (1UL &lt;&lt; 4)        /* BTE 0 shut down due to error */
 DECL|macro|IIO_IMEM_B1ESD
-mdefine_line|#define IIO_IMEM_B1ESD  (1 &lt;&lt; 8)        /* BTE 1 Shut down due to error */
+mdefine_line|#define IIO_IMEM_B1ESD  (1UL &lt;&lt; 8)        /* BTE 1 Shut down due to error */
 multiline_comment|/*&n; * As a permanent workaround for a bug in the PI side of the shub, we&squot;ve&n; * redefined big window 7 as small window 0.&n; XXX does this still apply for SN1??&n; */
 DECL|macro|HUB_NUM_BIG_WINDOW
 mdefine_line|#define HUB_NUM_BIG_WINDOW      (IIO_NUM_ITTES - 1)
@@ -6545,25 +6545,25 @@ DECL|macro|IIO_ICDR_PND
 mdefine_line|#define IIO_ICDR_PND    (1 &lt;&lt; 4)
 multiline_comment|/* &n; * IO BTE Length/Status (IIO_IBLS) register bit field definitions&n; */
 DECL|macro|IBLS_BUSY
-mdefine_line|#define IBLS_BUSY&t;&t;(0x1 &lt;&lt; 20)
+mdefine_line|#define IBLS_BUSY&t;&t;(0x1UL &lt;&lt; 20)
 DECL|macro|IBLS_ERROR_SHFT
 mdefine_line|#define IBLS_ERROR_SHFT&t;&t;16
 DECL|macro|IBLS_ERROR
-mdefine_line|#define IBLS_ERROR&t;&t;(0x1 &lt;&lt; IBLS_ERROR_SHFT)
+mdefine_line|#define IBLS_ERROR&t;&t;(0x1UL &lt;&lt; IBLS_ERROR_SHFT)
 DECL|macro|IBLS_LENGTH_MASK
 mdefine_line|#define IBLS_LENGTH_MASK&t;0xffff
 multiline_comment|/*&n; * IO BTE Control/Terminate register (IBCT) register bit field definitions&n; */
 DECL|macro|IBCT_POISON
-mdefine_line|#define IBCT_POISON&t;&t;(0x1 &lt;&lt; 8)
+mdefine_line|#define IBCT_POISON&t;&t;(0x1UL &lt;&lt; 8)
 DECL|macro|IBCT_NOTIFY
-mdefine_line|#define IBCT_NOTIFY&t;&t;(0x1 &lt;&lt; 4)
+mdefine_line|#define IBCT_NOTIFY&t;&t;(0x1UL &lt;&lt; 4)
 DECL|macro|IBCT_ZFIL_MODE
-mdefine_line|#define IBCT_ZFIL_MODE&t;&t;(0x1 &lt;&lt; 0)
+mdefine_line|#define IBCT_ZFIL_MODE&t;&t;(0x1UL &lt;&lt; 0)
 multiline_comment|/*&n; * IIO Incoming Error Packet Header (IIO_IIEPH1/IIO_IIEPH2)&n; */
 DECL|macro|IIEPH1_VALID
-mdefine_line|#define IIEPH1_VALID&t;&t;(1 &lt;&lt; 44)
+mdefine_line|#define IIEPH1_VALID&t;&t;(1UL &lt;&lt; 44)
 DECL|macro|IIEPH1_OVERRUN
-mdefine_line|#define IIEPH1_OVERRUN&t;&t;(1 &lt;&lt; 40)
+mdefine_line|#define IIEPH1_OVERRUN&t;&t;(1UL &lt;&lt; 40)
 DECL|macro|IIEPH1_ERR_TYPE_SHFT
 mdefine_line|#define IIEPH1_ERR_TYPE_SHFT&t;32
 DECL|macro|IIEPH1_ERR_TYPE_MASK
@@ -6581,7 +6581,7 @@ mdefine_line|#define IIEPH1_CMD_SHFT&t;&t;0
 DECL|macro|IIEPH1_CMD_MASK
 mdefine_line|#define IIEPH1_CMD_MASK&t;&t;7
 DECL|macro|IIEPH2_TAIL
-mdefine_line|#define IIEPH2_TAIL&t;&t;(1 &lt;&lt; 40)
+mdefine_line|#define IIEPH2_TAIL&t;&t;(1UL &lt;&lt; 40)
 DECL|macro|IIEPH2_ADDRESS_SHFT
 mdefine_line|#define IIEPH2_ADDRESS_SHFT&t;0
 DECL|macro|IIEPH2_ADDRESS_MASK
@@ -6596,35 +6596,35 @@ DECL|macro|IIEPH1_ERR_LONG_REPLY
 mdefine_line|#define IIEPH1_ERR_LONG_REPLY&t;5
 multiline_comment|/*&n; * IO Error Clear register bit field definitions&n; */
 DECL|macro|IECLR_PI1_FWD_INT
-mdefine_line|#define IECLR_PI1_FWD_INT&t;(1 &lt;&lt; 31)  /* clear PI1_FORWARD_INT in iidsr */
+mdefine_line|#define IECLR_PI1_FWD_INT&t;(1UL &lt;&lt; 31)  /* clear PI1_FORWARD_INT in iidsr */
 DECL|macro|IECLR_PI0_FWD_INT
-mdefine_line|#define IECLR_PI0_FWD_INT&t;(1 &lt;&lt; 30)  /* clear PI0_FORWARD_INT in iidsr */
+mdefine_line|#define IECLR_PI0_FWD_INT&t;(1UL &lt;&lt; 30)  /* clear PI0_FORWARD_INT in iidsr */
 DECL|macro|IECLR_SPUR_RD_HDR
-mdefine_line|#define IECLR_SPUR_RD_HDR&t;(1 &lt;&lt; 29)  /* clear valid bit in ixss reg */
+mdefine_line|#define IECLR_SPUR_RD_HDR&t;(1UL &lt;&lt; 29)  /* clear valid bit in ixss reg */
 DECL|macro|IECLR_BTE1
-mdefine_line|#define IECLR_BTE1&t;&t;(1 &lt;&lt; 18)  /* clear bte error 1 */
+mdefine_line|#define IECLR_BTE1&t;&t;(1UL &lt;&lt; 18)  /* clear bte error 1 */
 DECL|macro|IECLR_BTE0
-mdefine_line|#define IECLR_BTE0&t;&t;(1 &lt;&lt; 17)  /* clear bte error 0 */
+mdefine_line|#define IECLR_BTE0&t;&t;(1UL &lt;&lt; 17)  /* clear bte error 0 */
 DECL|macro|IECLR_CRAZY
-mdefine_line|#define IECLR_CRAZY&t;&t;(1 &lt;&lt; 16)  /* clear crazy bit in wstat reg */
+mdefine_line|#define IECLR_CRAZY&t;&t;(1UL &lt;&lt; 16)  /* clear crazy bit in wstat reg */
 DECL|macro|IECLR_PRB_F
-mdefine_line|#define IECLR_PRB_F&t;&t;(1 &lt;&lt; 15)  /* clear err bit in PRB_F reg */
+mdefine_line|#define IECLR_PRB_F&t;&t;(1UL &lt;&lt; 15)  /* clear err bit in PRB_F reg */
 DECL|macro|IECLR_PRB_E
-mdefine_line|#define IECLR_PRB_E&t;&t;(1 &lt;&lt; 14)  /* clear err bit in PRB_E reg */
+mdefine_line|#define IECLR_PRB_E&t;&t;(1UL &lt;&lt; 14)  /* clear err bit in PRB_E reg */
 DECL|macro|IECLR_PRB_D
-mdefine_line|#define IECLR_PRB_D&t;&t;(1 &lt;&lt; 13)  /* clear err bit in PRB_D reg */
+mdefine_line|#define IECLR_PRB_D&t;&t;(1UL &lt;&lt; 13)  /* clear err bit in PRB_D reg */
 DECL|macro|IECLR_PRB_C
-mdefine_line|#define IECLR_PRB_C&t;&t;(1 &lt;&lt; 12)  /* clear err bit in PRB_C reg */
+mdefine_line|#define IECLR_PRB_C&t;&t;(1UL &lt;&lt; 12)  /* clear err bit in PRB_C reg */
 DECL|macro|IECLR_PRB_B
-mdefine_line|#define IECLR_PRB_B&t;&t;(1 &lt;&lt; 11)  /* clear err bit in PRB_B reg */
+mdefine_line|#define IECLR_PRB_B&t;&t;(1UL &lt;&lt; 11)  /* clear err bit in PRB_B reg */
 DECL|macro|IECLR_PRB_A
-mdefine_line|#define IECLR_PRB_A&t;&t;(1 &lt;&lt; 10)  /* clear err bit in PRB_A reg */
+mdefine_line|#define IECLR_PRB_A&t;&t;(1UL &lt;&lt; 10)  /* clear err bit in PRB_A reg */
 DECL|macro|IECLR_PRB_9
-mdefine_line|#define IECLR_PRB_9&t;&t;(1 &lt;&lt; 9)   /* clear err bit in PRB_9 reg */
+mdefine_line|#define IECLR_PRB_9&t;&t;(1UL &lt;&lt; 9)   /* clear err bit in PRB_9 reg */
 DECL|macro|IECLR_PRB_8
-mdefine_line|#define IECLR_PRB_8&t;&t;(1 &lt;&lt; 8)   /* clear err bit in PRB_8 reg */
+mdefine_line|#define IECLR_PRB_8&t;&t;(1UL &lt;&lt; 8)   /* clear err bit in PRB_8 reg */
 DECL|macro|IECLR_PRB_0
-mdefine_line|#define IECLR_PRB_0&t;&t;(1 &lt;&lt; 0)   /* clear err bit in PRB_0 reg */
+mdefine_line|#define IECLR_PRB_0&t;&t;(1UL &lt;&lt; 0)   /* clear err bit in PRB_0 reg */
 multiline_comment|/*&n; * IIO CRB control register Fields: IIO_ICCR &n; */
 DECL|macro|IIO_ICCR_PENDING
 mdefine_line|#define&t;IIO_ICCR_PENDING&t;(0x10000)
@@ -7100,7 +7100,7 @@ id|hub_piomap_t
 id|hub_piomap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mapping for this device */
@@ -7165,7 +7165,7 @@ id|caddr_t
 id|hub_piotrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate to this device */
@@ -7199,7 +7199,7 @@ id|hub_dmamap_t
 id|hub_dmamap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mappings for dev */
@@ -7275,7 +7275,7 @@ id|iopaddr_t
 id|hub_dmatrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -7301,7 +7301,7 @@ id|alenlist_t
 id|hub_dmatrans_list
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -7332,7 +7332,7 @@ r_void
 id|hub_dmaaddr_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|paddr_t
@@ -7347,7 +7347,7 @@ r_void
 id|hub_dmalist_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|alenlist_t
@@ -7367,7 +7367,7 @@ id|hub_intr_t
 id|hub_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which device */
@@ -7375,7 +7375,7 @@ id|device_desc_t
 id|dev_desc
 comma
 multiline_comment|/* device descriptor */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 suffix:semicolon
@@ -7385,7 +7385,7 @@ id|hub_intr_t
 id|hub_intr_alloc_nothd
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which device */
@@ -7393,7 +7393,7 @@ id|device_desc_t
 id|dev_desc
 comma
 multiline_comment|/* device descriptor */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 suffix:semicolon
@@ -7444,22 +7444,13 @@ id|hub_intr_t
 id|intr_hdl
 )paren
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|hub_intr_cpu_get
-c_func
-(paren
-id|hub_intr_t
-id|intr_hdl
-)paren
-suffix:semicolon
 multiline_comment|/* CONFIGURATION MANAGEMENT */
 r_extern
 r_void
 id|hub_provider_startup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub
 )paren
 suffix:semicolon
@@ -7468,7 +7459,7 @@ r_void
 id|hub_provider_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub
 )paren
 suffix:semicolon
@@ -7484,7 +7475,7 @@ r_typedef
 r_int
 id|hub_widget_flags_t
 suffix:semicolon
-multiline_comment|/* Set the PIO mode for a widget.  These two functions perform the&n; * same operation, but hub_device_flags_set() takes a hardware graph&n; * vertex while hub_widget_flags_set() takes a nasid and widget&n; * number.  In most cases, hub_device_flags_set() should be used.&n; */
+multiline_comment|/* Set the PIO mode for a widget. */
 r_extern
 r_int
 id|hub_widget_flags_set
@@ -7500,26 +7491,13 @@ id|hub_widget_flags_t
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Depending on the flags set take the appropriate actions */
-r_extern
-r_int
-id|hub_device_flags_set
-c_func
-(paren
-id|devfs_handle_t
-id|widget_dev
-comma
-id|hub_widget_flags_t
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Error Handling. */
 r_extern
 r_int
 id|hub_ioerror_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -7551,43 +7529,13 @@ id|ioerror_mode_t
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|hub_widget_reset
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|hub_error_devenable
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|hub_widgetdev_enable
-c_func
-(paren
-id|devfs_handle_t
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|hub_widgetdev_shutdown
-c_func
-(paren
-id|devfs_handle_t
 comma
 r_int
 )paren
@@ -7597,7 +7545,7 @@ r_int
 id|hub_dma_enabled
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* hubdev */
@@ -7620,7 +7568,7 @@ op_star
 id|attach_method
 )paren
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 )paren
 suffix:semicolon
@@ -7635,7 +7583,7 @@ op_star
 id|attach_method
 )paren
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 )paren
 suffix:semicolon
@@ -7644,7 +7592,7 @@ r_int
 id|hubdev_docallouts
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub
 )paren
 suffix:semicolon
@@ -7653,7 +7601,7 @@ id|caddr_t
 id|hubdev_prombase_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub
 )paren
 suffix:semicolon
@@ -7662,7 +7610,7 @@ id|cnodeid_t
 id|hubdev_cnodeid_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub
 )paren
 suffix:semicolon
