@@ -2631,6 +2631,22 @@ op_amp
 id|tgt-&gt;limits
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|len
+)paren
+(brace
+id|tgt-&gt;error
+op_assign
+l_string|&quot;zero-length target&quot;
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|tgt-&gt;type
 op_assign
 id|dm_get_target_type
