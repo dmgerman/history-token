@@ -531,10 +531,12 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|apic_timer_irqs
+id|irq_stat
 (braket
 id|j
 )braket
+dot
+id|apic_timer_irqs
 )paren
 suffix:semicolon
 id|seq_putc

@@ -36,6 +36,12 @@ r_int
 id|__nmi_count
 suffix:semicolon
 multiline_comment|/* arch dependent */
+DECL|member|apic_timer_irqs
+r_int
+r_int
+id|apic_timer_irqs
+suffix:semicolon
+multiline_comment|/* arch dependent */
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned

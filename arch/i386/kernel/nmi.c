@@ -1192,10 +1192,12 @@ c_func
 suffix:semicolon
 id|sum
 op_assign
-id|apic_timer_irqs
+id|irq_stat
 (braket
 id|cpu
 )braket
+dot
+id|apic_timer_irqs
 suffix:semicolon
 r_if
 c_cond

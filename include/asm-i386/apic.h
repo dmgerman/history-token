@@ -349,14 +349,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-r_int
-id|apic_timer_irqs
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
 id|check_nmi_watchdog
 (paren
 r_void
