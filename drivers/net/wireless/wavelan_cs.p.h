@@ -1080,7 +1080,8 @@ r_void
 id|wv_pcmcia_release
 c_func
 (paren
-id|u_long
+id|dev_link_t
+op_star
 )paren
 comma
 multiline_comment|/* Remove a device */
