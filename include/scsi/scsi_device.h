@@ -491,6 +491,11 @@ r_struct
 id|device
 id|dev
 suffix:semicolon
+DECL|member|channel
+r_int
+r_int
+id|channel
+suffix:semicolon
 DECL|member|id
 r_int
 r_int

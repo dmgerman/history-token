@@ -3161,6 +3161,10 @@ id|starget-&gt;id
 op_assign
 id|sdev-&gt;id
 suffix:semicolon
+id|starget-&gt;channel
+op_assign
+id|sdev-&gt;channel
+suffix:semicolon
 id|create
 op_assign
 id|starget-&gt;create
