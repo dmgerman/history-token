@@ -4779,7 +4779,6 @@ DECL|typedef|pkt_task_t
 id|pkt_task_t
 suffix:semicolon
 r_extern
-r_inline
 id|u32
 id|ide_read_24
 c_func
@@ -4789,7 +4788,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_DRIVE
 c_func
@@ -4799,7 +4797,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_INTERRUPT
 c_func
@@ -4809,7 +4806,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|SELECT_MASK
 c_func
@@ -4821,7 +4817,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|QUIRK_LIST
 c_func
