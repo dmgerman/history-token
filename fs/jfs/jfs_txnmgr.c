@@ -245,6 +245,11 @@ c_func
 id|jfs_commit_thread_wait
 )paren
 suffix:semicolon
+DECL|variable|jfs_commit_thread_waking
+r_static
+r_int
+id|jfs_commit_thread_waking
+suffix:semicolon
 multiline_comment|/*&n; * Retry logic exist outside these macros to protect from spurrious wakeups.&n; */
 DECL|function|TXN_SLEEP_DROP_LOCK
 r_static
@@ -8919,6 +8924,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+id|jfs_commit_thread_waking
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* OK to wake another thread */
 r_while
 c_loop
 (paren
@@ -9163,7 +9173,7 @@ op_amp
 id|TxAnchor.unlock_queue
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t wake up a commit thread if there is already one servicing&n;&t; * this superblock.&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t wake up a commit thread if there is already one servicing&n;&t; * this superblock, or if the last one we woke up hasn&squot;t started yet.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9179,7 +9189,15 @@ id|commit_state
 op_amp
 id|IN_LAZYCOMMIT
 )paren
+op_logical_and
+op_logical_neg
+id|jfs_commit_thread_waking
 )paren
+(brace
+id|jfs_commit_thread_waking
+op_assign
+l_int|1
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -9187,6 +9205,7 @@ op_amp
 id|jfs_commit_thread_wait
 )paren
 suffix:semicolon
+)brace
 id|LAZY_UNLOCK
 c_func
 (paren
