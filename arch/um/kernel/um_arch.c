@@ -1175,6 +1175,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|mode_tt
+op_assign
+l_int|1
+suffix:semicolon
 id|brk_start
 op_assign
 (paren
