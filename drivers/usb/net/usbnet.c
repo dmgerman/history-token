@@ -51,8 +51,8 @@ mdefine_line|#define&t;CONTROL_TIMEOUT_MS&t;(500)&t;&t;&t;/* msec */
 DECL|macro|CONTROL_TIMEOUT_JIFFIES
 mdefine_line|#define CONTROL_TIMEOUT_JIFFIES ((CONTROL_TIMEOUT_MS * HZ)/1000)
 singleline_comment|// between wakeups
-DECL|macro|UNLINK_TIMEOUT_JIFFIES
-mdefine_line|#define UNLINK_TIMEOUT_JIFFIES ((3  /*ms*/ * HZ)/1000)
+DECL|macro|UNLINK_TIMEOUT_MS
+mdefine_line|#define UNLINK_TIMEOUT_MS&t;3
 multiline_comment|/*-------------------------------------------------------------------------*/
 singleline_comment|// randomly generated ethernet address
 DECL|variable|node_id
@@ -9175,14 +9175,10 @@ id|dev-&gt;done
 )paren
 )paren
 (brace
-id|set_current_state
+id|msleep
+c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-id|UNLINK_TIMEOUT_JIFFIES
+id|UNLINK_TIMEOUT_MS
 )paren
 suffix:semicolon
 id|devdbg
