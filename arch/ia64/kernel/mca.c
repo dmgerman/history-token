@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2002 Dell Computer Corporation&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; */
+multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Computer Corporation&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1520,23 +1520,9 @@ op_star
 id|sw
 )paren
 (brace
-r_int
-r_int
-id|ip
-comma
-id|sp
-comma
-id|bsp
-suffix:semicolon
 r_struct
 id|unw_frame_info
 id|info
-suffix:semicolon
-r_char
-id|buf
-(braket
-l_int|80
-)braket
 suffix:semicolon
 multiline_comment|/* if a kernel debugger is available call it here else just dump the registers */
 multiline_comment|/*&n;&t; * Wait for a bit.  On some machines (e.g., HP&squot;s zx2000 and zx6000, INIT can be&n;&t; * generated via the BMC&squot;s command-line interface, but since the console is on the&n;&t; * same serial line, the user will need some time to switch out of the BMC before&n;&t; * the dump begins.&n;&t; */
@@ -1584,12 +1570,6 @@ comma
 id|sw
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;nCall Trace:&bslash;n&quot;
-)paren
-suffix:semicolon
 id|unw_init_from_interruption
 c_func
 (paren
@@ -1603,86 +1583,13 @@ comma
 id|sw
 )paren
 suffix:semicolon
-r_do
-(brace
-id|unw_get_ip
+id|ia64_do_show_stack
 c_func
 (paren
 op_amp
 id|info
 comma
-op_amp
-id|ip
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ip
-op_eq
-l_int|0
-)paren
-r_break
-suffix:semicolon
-id|unw_get_sp
-c_func
-(paren
-op_amp
-id|info
-comma
-op_amp
-id|sp
-)paren
-suffix:semicolon
-id|unw_get_bsp
-c_func
-(paren
-op_amp
-id|info
-comma
-op_amp
-id|bsp
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|buf
-comma
-r_sizeof
-(paren
-id|buf
-)paren
-comma
-l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
-comma
-id|ip
-comma
-id|sp
-comma
-id|bsp
-)paren
-suffix:semicolon
-id|print_symbol
-c_func
-(paren
-id|buf
-comma
-id|ip
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|unw_unwind
-c_func
-(paren
-op_amp
-id|info
-)paren
-op_ge
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|printk

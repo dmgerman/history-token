@@ -33,10 +33,9 @@ macro_line|#ifdef CONFIG_PERFMON
 macro_line|# include &lt;asm/perfmon.h&gt;
 macro_line|#endif
 macro_line|#include &quot;sigframe.h&quot;
-r_static
 r_void
-DECL|function|do_show_stack
-id|do_show_stack
+DECL|function|ia64_do_show_stack
+id|ia64_do_show_stack
 (paren
 r_struct
 id|unw_frame_info
@@ -117,7 +116,7 @@ r_sizeof
 id|buf
 )paren
 comma
-l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
+l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;t&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
 comma
 id|ip
 comma
@@ -184,7 +183,7 @@ id|task
 id|unw_init_running
 c_func
 (paren
-id|do_show_stack
+id|ia64_do_show_stack
 comma
 l_int|0
 )paren
@@ -204,7 +203,7 @@ comma
 id|task
 )paren
 suffix:semicolon
-id|do_show_stack
+id|ia64_do_show_stack
 c_func
 (paren
 op_amp
