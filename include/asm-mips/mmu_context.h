@@ -13,11 +13,11 @@ DECL|macro|TLBMISS_HANDLER_SETUP_PGD
 mdefine_line|#define TLBMISS_HANDLER_SETUP_PGD(pgd) &bslash;&n;&t;pgd_current[smp_processor_id()] = (unsigned long)(pgd)
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|TLBMISS_HANDLER_SETUP
-mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; (23 + 3)); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|TLBMISS_HANDLER_SETUP
-mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) &amp;pgd_current[smp_processor_id()] &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
 macro_line|#endif
 r_extern
 r_int

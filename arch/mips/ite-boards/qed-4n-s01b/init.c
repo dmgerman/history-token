@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/it8172/it8172.h&gt;
 macro_line|#include &lt;asm/it8172/it8172_dbg.h&gt;
 DECL|variable|prom_argc
@@ -78,27 +77,12 @@ l_string|&quot;ITE QED-4N-S01B&quot;
 suffix:semicolon
 )brace
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_int
@@ -111,21 +95,24 @@ id|pcicr
 suffix:semicolon
 id|prom_argc
 op_assign
-id|argc
+id|fw_arg0
 suffix:semicolon
 id|prom_argv
 op_assign
-id|argv
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg1
 suffix:semicolon
 id|prom_envp
 op_assign
-id|envp
-suffix:semicolon
-id|puts
-c_func
 (paren
-l_string|&quot;ITE board running...&quot;
+r_int
+op_star
 )paren
+id|fw_arg3
 suffix:semicolon
 id|mips_machgroup
 op_assign
@@ -211,9 +198,6 @@ id|mem_size
 comma
 id|BOOT_MEM_RAM
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

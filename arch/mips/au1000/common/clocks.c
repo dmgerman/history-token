@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; *&t;Simple Au1000 clocks routines.&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *&t;&t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute&t; it and/or modify it&n; *  under  the terms of&t; the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the&t;License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED&t;  ``AS&t;IS&squot;&squot; AND   ANY&t;EXPRESS OR IMPLIED&n; *  WARRANTIES,&t;  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO&t;EVENT  SHALL   THE AUTHOR  BE&t; LIABLE FOR ANY&t;  DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED&t;  TO, PROCUREMENT OF  SUBSTITUTE GOODS&t;OR SERVICES; LOSS OF&n; *  USE, DATA,&t;OR PROFITS; OR&t;BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN&t; CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 DECL|variable|au1x00_clock
 r_static
 r_int
@@ -166,9 +166,7 @@ multiline_comment|/* Epson MAX */
 id|printk
 c_func
 (paren
-l_string|&quot;%s: warning: LCD clock too high (%d KHz)&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;warning: LCD clock too high (%d KHz)&bslash;n&quot;
 comma
 id|lcd_clock
 )paren

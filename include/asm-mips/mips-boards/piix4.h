@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Register definitions for Intel PIIX4 South Bridge Device.&n; *&n; */
-macro_line|#ifndef PIIX4_H
-DECL|macro|PIIX4_H
-mdefine_line|#define PIIX4_H
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Register definitions for Intel PIIX4 South Bridge Device.&n; */
+macro_line|#ifndef __ASM_MIPS_BOARDS_PIIX4_H
+DECL|macro|__ASM_MIPS_BOARDS_PIIX4_H
+mdefine_line|#define __ASM_MIPS_BOARDS_PIIX4_H
 multiline_comment|/************************************************************************&n; *  IO register offsets&n; ************************************************************************/
 DECL|macro|PIIX4_ICTLR1_ICW1
 mdefine_line|#define PIIX4_ICTLR1_ICW1&t;0x20
@@ -92,5 +92,5 @@ DECL|macro|PIIX4_OCW3_IRR
 mdefine_line|#define PIIX4_OCW3_IRR          0x2
 DECL|macro|PIIX4_OCW3_ISR
 mdefine_line|#define PIIX4_OCW3_ISR          0x3
-macro_line|#endif /* !(PIIX4_H) */
+macro_line|#endif /* __ASM_MIPS_BOARDS_PIIX4_H */
 eof

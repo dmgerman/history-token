@@ -4,131 +4,14 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 macro_line|#ifdef CONFIG_MIPS_PB1000
-macro_line|#include &lt;asm/pb1000.h&gt;
+macro_line|#include &lt;asm/mac-pb1x00/pb1000.h&gt;
 macro_line|#endif
-macro_line|#include &lt;asm/pci_channel.h&gt;
 DECL|macro|PCI_ACCESS_READ
 mdefine_line|#define PCI_ACCESS_READ  0
 DECL|macro|PCI_ACCESS_WRITE
 mdefine_line|#define PCI_ACCESS_WRITE 1
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef &t;DEBUG
-DECL|macro|DBG
-mdefine_line|#define&t;DBG(x...)&t;printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define&t;DBG(x...)
-macro_line|#endif
-multiline_comment|/* TBD */
-DECL|variable|pci_io_resource
-r_static
-r_struct
-id|resource
-id|pci_io_resource
-op_assign
-(brace
-l_string|&quot;pci IO space&quot;
-comma
-(paren
-id|u32
-)paren
-id|PCI_IO_START
-comma
-(paren
-id|u32
-)paren
-id|PCI_IO_END
-comma
-id|IORESOURCE_IO
-)brace
-suffix:semicolon
-DECL|variable|pci_mem_resource
-r_static
-r_struct
-id|resource
-id|pci_mem_resource
-op_assign
-(brace
-l_string|&quot;pci memory space&quot;
-comma
-(paren
-id|u32
-)paren
-id|PCI_MEM_START
-comma
-(paren
-id|u32
-)paren
-id|PCI_MEM_END
-comma
-id|IORESOURCE_MEM
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|pci_ops
-id|au1x_pci_ops
-suffix:semicolon
-DECL|variable|mips_pci_channels
-r_struct
-id|pci_channel
-id|mips_pci_channels
-(braket
-)braket
-op_assign
-(brace
-(brace
-op_amp
-id|au1x_pci_ops
-comma
-op_amp
-id|pci_io_resource
-comma
-op_amp
-id|pci_mem_resource
-comma
-id|PCI_FIRST_DEVFN
-comma
-id|PCI_LAST_DEVFN
-)brace
-comma
-(brace
-(paren
-r_struct
-id|pci_ops
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_struct
-id|resource
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_struct
-id|resource
-op_star
-)paren
-l_int|NULL
-comma
-(paren
-r_int
-)paren
-l_int|NULL
-comma
-(paren
-r_int
-)paren
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
 macro_line|#ifdef CONFIG_MIPS_PB1000
 multiline_comment|/*&n; * &quot;Bus 2&quot; is really the first and only external slot on the pb1000.&n; * We&squot;ll call that bus 0, and limit the accesses to that single&n; * external slot only. The SDRAM is already initialized in setup.c.&n; */
 DECL|function|config_access
@@ -246,40 +129,6 @@ id|au_sync_udelay
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;config_access: %d bus %d dev_fn %x at %x *data %x, conf %x&bslash;n&quot;
-comma
-id|access_type
-comma
-id|bus
-comma
-id|dev_fn
-comma
-id|where
-comma
-op_star
-id|data
-comma
-id|config
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;bridge config reg: %x (%x)&bslash;n&quot;
-comma
-id|au_readl
-c_func
-(paren
-id|PCI_BRIDGE_CONFIG
-)paren
-comma
-op_star
-id|data
 )paren
 suffix:semicolon
 r_if
@@ -612,25 +461,6 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;config_access: %d bus %d device %d at %x *data %x, conf %x&bslash;n&quot;
-comma
-id|access_type
-comma
-id|bus-&gt;number
-comma
-id|device
-comma
-id|where
-comma
-op_star
-id|data
-comma
-id|config
-)paren
-suffix:semicolon
 multiline_comment|/* unmap io space */
 id|iounmap
 c_func
@@ -651,26 +481,6 @@ c_func
 id|Au1500_PCI_STATCMD
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|access_type
-op_eq
-id|PCI_ACCESS_READ
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;read data: %x&bslash;n&quot;
-comma
-op_star
-id|data
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1066,16 +876,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|where
-op_amp
-l_int|1
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|config_access
 c_func
 (paren
@@ -1178,16 +978,6 @@ id|u32
 id|val
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|where
-op_amp
-l_int|3
-)paren
-r_return
-id|PCIBIOS_BAD_REGISTER_NUMBER
-suffix:semicolon
 r_if
 c_cond
 (paren

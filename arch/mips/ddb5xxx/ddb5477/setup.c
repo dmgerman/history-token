@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -23,9 +22,7 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
-macro_line|#ifdef CONFIG_PC_KEYB
-macro_line|#include &lt;asm/keyboard.h&gt; 
-macro_line|#endif 
+macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 macro_line|#include &quot;lcd44780.h&quot;
 DECL|macro|USE_CPU_COUNTER_TIMER
@@ -497,14 +494,13 @@ id|rtc_base
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* mips_counter_frequency is 1/2 of the cpu core freq */
+multiline_comment|/* mips_hpt_frequency is 1/2 of the cpu core freq */
 id|i
 op_assign
 (paren
-id|read_32bit_cp0_register
+id|read_c0_config
 c_func
 (paren
-id|CP0_CONFIG
 )paren
 op_rshift
 l_int|28
@@ -531,7 +527,7 @@ id|i
 op_assign
 l_int|4
 suffix:semicolon
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|bus_frequency
 op_star
@@ -573,10 +569,6 @@ id|irq
 )paren
 (brace
 macro_line|#if defined(USE_CPU_COUNTER_TIMER)
-r_int
-r_int
-id|count
-suffix:semicolon
 multiline_comment|/* we are using the cpu counter for timer interrupts */
 id|setup_irq
 c_func
@@ -636,23 +628,30 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
 r_extern
-r_int
-r_int
-id|__rd_start
-comma
-id|__rd_end
-comma
-id|initrd_start
-comma
-id|initrd_end
-suffix:semicolon
-macro_line|#endif
-DECL|function|ddb_setup
 r_void
-id|__init
-id|ddb_setup
+(paren
+op_star
+id|irq_setup
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|pci_controller
+id|ddb5477_ext_controller
+suffix:semicolon
+r_extern
+r_struct
+id|pci_controller
+id|ddb5477_io_controller
+suffix:semicolon
+DECL|function|ddb5477_setup
+r_static
+r_int
+id|ddb5477_setup
 c_func
 (paren
 r_void
@@ -662,13 +661,6 @@ r_extern
 r_int
 id|panic_timeout
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* initialize board - we don&squot;t trust the loader */
 id|ddb5477_board_init
 c_func
@@ -727,45 +719,29 @@ id|panic_timeout
 op_assign
 l_int|180
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_BLK_DEV_INITRD)
-id|ROOT_DEV
-op_assign
-id|Root_RAM0
-suffix:semicolon
-id|initrd_start
-op_assign
+id|register_pci_controller
 (paren
-r_int
-r_int
-)paren
 op_amp
-id|__rd_start
+id|ddb5477_ext_controller
+)paren
 suffix:semicolon
-id|initrd_end
-op_assign
+id|register_pci_controller
 (paren
-r_int
-r_int
-)paren
 op_amp
-id|__rd_end
+id|ddb5477_io_controller
+)paren
 suffix:semicolon
-macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|ddb5477_setup
+id|early_initcall
+c_func
+(paren
+id|ddb5477_setup
+)paren
+suffix:semicolon
 DECL|function|ddb5477_board_init
 r_static
 r_void
@@ -776,13 +752,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PC_KEYB
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* ----------- setup PDARs ------------ */
 multiline_comment|/* SDRAM should have been set */
 id|db_assert
@@ -1483,28 +1452,6 @@ l_int|0x0
 )paren
 suffix:semicolon
 singleline_comment|// ddb_out32(DDB_GIUFUNSEL, 0xfe0fcfff);  /* NEC recommanded value */
-r_if
-c_cond
-(paren
-id|mips_machtype
-op_eq
-id|MACH_NEC_ROCKHOPPERII
-)paren
-(brace
-macro_line|#ifdef CONFIG_PC_KEYB
-id|printk
-c_func
-(paren
-l_string|&quot;kdb_ops is std&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kbd_ops
-op_assign
-op_amp
-id|std_kbd_ops
-suffix:semicolon
-macro_line|#endif                     
-)brace
 r_if
 c_cond
 (paren

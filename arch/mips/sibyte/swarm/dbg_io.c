@@ -32,9 +32,9 @@ r_int
 id|kgdb_port
 suffix:semicolon
 DECL|macro|duart_out
-mdefine_line|#define&t;duart_out(reg, val)&t;csr_out32(val, KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
+mdefine_line|#define&t;duart_out(reg, val)&t;csr_out32(val, IOADDR(A_DUART_CHANREG(kgdb_port,reg)))
 DECL|macro|duart_in
-mdefine_line|#define duart_in(reg)&t;&t;csr_in32(KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
+mdefine_line|#define duart_in(reg)&t;&t;csr_in32(IOADDR(A_DUART_CHANREG(kgdb_port,reg)))
 r_void
 id|putDebugChar
 c_func

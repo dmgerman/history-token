@@ -3,17 +3,22 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/termios.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn0/hub.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-DECL|macro|IOC3_BAUD
-mdefine_line|#define IOC3_BAUD (22000000 / (3*16))
-DECL|macro|IOC3_COM_FLAGS
-mdefine_line|#define IOC3_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
+DECL|macro|IOC3_CLK
+mdefine_line|#define IOC3_CLK&t;(22000000 / 3)
+DECL|macro|IOC3_FLAGS
+mdefine_line|#define IOC3_FLAGS&t;(0)
 DECL|function|console_uart
 r_static
 r_inline
@@ -114,45 +119,25 @@ r_void
 )paren
 (brace
 r_struct
-id|serial_struct
-id|req
+id|uart_port
+id|up
 suffix:semicolon
-multiline_comment|/* Register to interrupt zero because we share the interrupt with&n;&t;   the serial driver which we don&squot;t properly support yet.  */
+multiline_comment|/*&n;&t; * Register to interrupt zero because we share the interrupt with&n;&t; * the serial driver which we don&squot;t properly support yet.&n;&t; */
 id|memset
 c_func
 (paren
 op_amp
-id|req
+id|up
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|req
+id|up
 )paren
 )paren
 suffix:semicolon
-id|req.irq
-op_assign
-l_int|0
-suffix:semicolon
-id|req.flags
-op_assign
-id|IOC3_COM_FLAGS
-suffix:semicolon
-id|req.io_type
-op_assign
-id|SERIAL_IO_MEM
-suffix:semicolon
-id|req.iomem_reg_shift
-op_assign
-l_int|0
-suffix:semicolon
-id|req.baud_base
-op_assign
-id|IOC3_BAUD
-suffix:semicolon
-id|req.iomem_base
+id|up.membase
 op_assign
 (paren
 r_int
@@ -164,11 +149,45 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|register_serial
+id|up.irq
+op_assign
+l_int|0
+suffix:semicolon
+id|up.uartclk
+op_assign
+id|IOC3_CLK
+suffix:semicolon
+id|up.regshift
+op_assign
+l_int|0
+suffix:semicolon
+id|up.iotype
+op_assign
+id|UPIO_MEM
+suffix:semicolon
+id|up.flags
+op_assign
+id|IOC3_FLAGS
+suffix:semicolon
+id|up.line
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|early_serial_setup
 c_func
 (paren
 op_amp
-id|req
+id|up
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

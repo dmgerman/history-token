@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * ip22-nvram.c: NVRAM and serial EEPROM handling.&n; *&n; * Copyright (C) 2003 Ladislav Michl (ladis@linux-mips.org)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
 macro_line|#include &lt;asm/sgi/ip22.h&gt;
 multiline_comment|/* Control opcode for serial eeprom  */
@@ -257,6 +258,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|ip22_eeprom_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip22_eeprom_read
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Read specified register from main NVRAM&n; */
 DECL|function|ip22_nvram_read
 r_int
@@ -326,4 +334,11 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
+DECL|variable|ip22_nvram_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip22_nvram_read
+)paren
+suffix:semicolon
 eof

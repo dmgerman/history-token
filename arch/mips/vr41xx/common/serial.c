@@ -1,22 +1,23 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/common/serial.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Serial Interface Unit routines for NEC VR4100 series.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; */
+multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Added support for NEC VR4133.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
 multiline_comment|/* VR4111 and VR4121 SIU Registers */
-DECL|macro|VR4111_SIURB
-mdefine_line|#define VR4111_SIURB&t;&t;KSEG1ADDR(0x0c000000)
-DECL|macro|VR4111_SIUIRSEL
-mdefine_line|#define VR4111_SIUIRSEL&t;&t;KSEG1ADDR(0x0c000008)
-multiline_comment|/* VR4122 and VR4131 SIU Registers */
-DECL|macro|VR4122_SIURB
-mdefine_line|#define VR4122_SIURB&t;&t;KSEG1ADDR(0x0f000800)
-DECL|macro|VR4122_SIUIRSEL
-mdefine_line|#define VR4122_SIUIRSEL&t;&t;KSEG1ADDR(0x0f000808)
+DECL|macro|SIURB_TYPE1
+mdefine_line|#define SIURB_TYPE1&t;&t;KSEG1ADDR(0x0c000000)
+DECL|macro|SIUIRSEL_TYPE1
+mdefine_line|#define SIUIRSEL_TYPE1&t;&t;KSEG1ADDR(0x0c000008)
+multiline_comment|/* VR4122, VR4131 and VR4133 SIU Registers */
+DECL|macro|SIURB_TYPE2
+mdefine_line|#define SIURB_TYPE2&t;&t;KSEG1ADDR(0x0f000800)
+DECL|macro|SIUIRSEL_TYPE2
+mdefine_line|#define SIUIRSEL_TYPE2&t;&t;KSEG1ADDR(0x0f000808)
 DECL|macro|USE_RS232C
 mdefine_line|#define USE_RS232C&t;&t;0x00
 DECL|macro|USE_IRDA
@@ -37,8 +38,6 @@ DECL|macro|TMICMODE
 mdefine_line|#define TMICMODE&t;&t;0x20
 DECL|macro|SIU_BASE_BAUD
 mdefine_line|#define SIU_BASE_BAUD&t;&t;1152000
-DECL|macro|SIU_CLOCK
-mdefine_line|#define SIU_CLOCK&t;&t;0x0102
 multiline_comment|/* VR4122 and VR4131 DSIU Registers */
 DECL|macro|DSIURB
 mdefine_line|#define DSIURB&t;&t;&t;KSEG1ADDR(0x0f000820)
@@ -48,8 +47,6 @@ DECL|macro|INTDSIU
 mdefine_line|#define INTDSIU&t;&t;0x0800
 DECL|macro|DSIU_BASE_BAUD
 mdefine_line|#define DSIU_BASE_BAUD&t;&t;1152000
-DECL|macro|DSIU_CLOCK
-mdefine_line|#define DSIU_CLOCK&t;&t;0x0802
 DECL|variable|vr41xx_serial_ports
 r_int
 id|vr41xx_serial_ports
@@ -141,7 +138,7 @@ c_func
 (paren
 id|val
 comma
-id|VR4111_SIUIRSEL
+id|SIUIRSEL_TYPE1
 )paren
 suffix:semicolon
 r_break
@@ -152,12 +149,15 @@ suffix:colon
 r_case
 id|CPU_VR4131
 suffix:colon
+r_case
+id|CPU_VR4133
+suffix:colon
 id|writew
 c_func
 (paren
 id|val
 comma
-id|VR4122_SIUIRSEL
+id|SIUIRSEL_TYPE2
 )paren
 suffix:semicolon
 r_break
@@ -251,7 +251,7 @@ r_int
 r_char
 op_star
 )paren
-id|VR4111_SIURB
+id|SIURB_TYPE1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -261,6 +261,9 @@ suffix:colon
 r_case
 id|CPU_VR4131
 suffix:colon
+r_case
+id|CPU_VR4133
+suffix:colon
 id|s.iomem_base
 op_assign
 (paren
@@ -268,7 +271,7 @@ r_int
 r_char
 op_star
 )paren
-id|VR4122_SIURB
+id|SIURB_TYPE2
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -343,6 +346,10 @@ op_logical_and
 id|current_cpu_data.cputype
 op_ne
 id|CPU_VR4131
+op_logical_and
+id|current_cpu_data.cputype
+op_ne
+id|CPU_VR4133
 )paren
 r_return
 suffix:semicolon

@@ -70,6 +70,7 @@ mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#ifdef CONFIG_PREEMPT
+macro_line|# include &lt;linux/smp_lock.h&gt;
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET

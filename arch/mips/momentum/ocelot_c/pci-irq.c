@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright 2002 Momentum Computer Inc.&n; * Author: Mat
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 DECL|function|mv64340_board_pcibios_fixup_bus

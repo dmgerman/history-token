@@ -276,7 +276,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unindentified bus error %s.&bslash;n&quot;
+l_string|&quot;Unidentified bus error %s.&bslash;n&quot;
 comma
 id|kind
 )paren
@@ -927,7 +927,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dec_ecc_be_interrupt
-r_void
+id|irqreturn_t
 id|dec_ecc_be_interrupt
 c_func
 (paren
@@ -965,6 +965,7 @@ op_eq
 id|MIPS_BE_DISCARD
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: Find affected processes and kill them, otherwise we&n;&t; * must die.&n;&t; *&n;&t; * The interrupt is asynchronously delivered thus EPC and RA&n;&t; * may be irrelevant, but are printed for a reference.&n;&t; */
 id|printk

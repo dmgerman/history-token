@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * Copyright 2002 Momentum Computer&n; * Author: mdharm@momenco.com&n; *&n; * arch/mips/momentum/ocelot_c/mv-irq.c&n; *     Interrupt routines for mv64340.  Interrupt numbers are assigned from&n; *     MV64340_IRQ_BASE to MV64340_IRQ_BASE+64.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * Copyright 2002 Momentum Computer&n; * Author: mdharm@momenco.com&n; *&n; * arch/mips/momentum/ocelot_c/mv-irq.c&n; *     Interrupt routines for mv64340.  Interrupt numbers are assigned from&n; *     MV64340_IRQ_BASE to MV64340_IRQ_BASE+63.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

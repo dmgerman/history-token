@@ -1,10 +1,53 @@
 multiline_comment|/*&n; * Reset a DECstation machine.&n; *&n; * Copyright (C) 199x  the Anonymous&n; * Copyright (C) 2001, 2002, 2003  Maciej W. Rozycki&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-DECL|macro|back_to_prom
-mdefine_line|#define back_to_prom()&t;(((void (*)(void))KSEG1ADDR(0x1fc00000))())
+DECL|typedef|noret_func_t
+r_typedef
+r_void
+id|ATTRIB_NORET
+(paren
+op_star
+id|noret_func_t
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|back_to_prom
+r_static
+r_inline
+r_void
+id|ATTRIB_NORET
+id|back_to_prom
+c_func
+(paren
+r_void
+)paren
+(brace
+id|noret_func_t
+id|func
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|KSEG1ADDR
+c_func
+(paren
+l_int|0x1fc00000
+)paren
+suffix:semicolon
+id|func
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|dec_machine_restart
 r_void
+id|ATTRIB_NORET
 id|dec_machine_restart
 c_func
 (paren
@@ -21,6 +64,7 @@ suffix:semicolon
 )brace
 DECL|function|dec_machine_halt
 r_void
+id|ATTRIB_NORET
 id|dec_machine_halt
 c_func
 (paren
@@ -35,6 +79,7 @@ suffix:semicolon
 )brace
 DECL|function|dec_machine_power_off
 r_void
+id|ATTRIB_NORET
 id|dec_machine_power_off
 c_func
 (paren
@@ -49,7 +94,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|dec_intr_halt
-r_void
+id|irqreturn_t
 id|dec_intr_halt
 c_func
 (paren

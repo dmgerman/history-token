@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;drivers/char/vrc4173.c&n; * &n; * BRIEF MODULE DESCRIPTION&n; *&t;NEC VRC4173 driver for NEC VR4122/VR4131.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2001,2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -593,12 +592,10 @@ suffix:semicolon
 id|vr41xx_set_irq_trigger
 c_func
 (paren
-id|cascade_irq
-op_minus
-id|GIU_IRQ
+id|GIU_IRQ_TO_PIN
 c_func
 (paren
-l_int|0
+id|cascade_irq
 )paren
 comma
 id|TRIGGER_LEVEL
@@ -609,12 +606,10 @@ suffix:semicolon
 id|vr41xx_set_irq_level
 c_func
 (paren
-id|cascade_irq
-op_minus
-id|GIU_IRQ
+id|GIU_IRQ_TO_PIN
 c_func
 (paren
-l_int|0
+id|cascade_irq
 )paren
 comma
 id|LEVEL_LOW

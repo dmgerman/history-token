@@ -2,13 +2,12 @@ multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: J
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-DECL|function|gt64120_board_pcibios_fixup_bus
+DECL|function|pcibios_fixup_bus
 r_void
 id|__devinit
-id|gt64120_board_pcibios_fixup_bus
+id|pcibios_fixup_bus
 c_func
 (paren
 r_struct
@@ -95,8 +94,9 @@ l_int|0x1209
 )paren
 (brace
 id|panic
+c_func
 (paren
-l_string|&quot;gt64120_board_pcibios_fixup_bus: found &quot;
+l_string|&quot;pcibios_fixup_bus: found &quot;
 l_string|&quot;unexpected PCI device in slot 1.&quot;
 )paren
 suffix:semicolon

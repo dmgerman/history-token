@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_CACHEFLUSH_H
 DECL|macro|_ASM_CACHEFLUSH_H
 mdefine_line|#define _ASM_CACHEFLUSH_H
-macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Keep includes the same across arches.  */
 macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_icache_range(start, end) flush a range of instructions&n; *  - flush_dcache_page(pg) flushes(wback&amp;invalidates) a page for dcache&n; *  - flush_icache_page(vma, pg) flushes(invalidates) a page for icache&n; *&n; * MIPS specific flush operations:&n; *&n; *  - flush_cache_sigtramp() flush signal trampoline&n; *  - flush_icache_all() flush the entire instruction cache&n; *  - flush_data_cache_page() flushes a page from the data cache&n; */
@@ -122,16 +121,14 @@ r_int
 id|end
 )paren
 suffix:semicolon
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma, page, addr, len)   &bslash;&n;&t;&t;&t;&t;&t;flush_icache_page(vma, page)
 DECL|macro|flush_cache_vmap
 mdefine_line|#define flush_cache_vmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|flush_cache_vunmap
 mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;do { memcpy(dst, src, len); &bslash;&n;     flush_icache_user_range(vma, page, vaddr, len); &bslash;&n;} while (0)
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;memcpy(dst, (void *) src, len);&t;&t;&t;&t;&t;&bslash;&n;&t;flush_icache_page(vma, page);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;memcpy(dst, src, len)
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len)&t;&t;&bslash;&n;&t;memcpy(dst, src, len)
 r_extern
 r_void
 (paren

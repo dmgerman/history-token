@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Debug routines which directly access the uart.&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/galileo-boards/ev96100.h&gt;
+macro_line|#include &lt;asm/gt64120.h&gt;
 singleline_comment|//#define SERIAL_BASE    EV96100_UART0_REGS_BASE
 DECL|macro|SERIAL_BASE
 mdefine_line|#define SERIAL_BASE    0xBD000020
@@ -81,8 +81,8 @@ macro_line|#else
 DECL|macro|slow_down
 mdefine_line|#define slow_down()
 macro_line|#endif
-r_void
 DECL|function|putch
+r_void
 id|putch
 c_func
 (paren
@@ -150,8 +150,8 @@ op_assign
 id|c
 suffix:semicolon
 )brace
-r_void
 DECL|function|putchar
+r_void
 id|putchar
 c_func
 (paren
@@ -219,8 +219,8 @@ op_assign
 id|c
 suffix:semicolon
 )brace
-r_void
 DECL|function|puts
+r_void
 id|puts
 c_func
 (paren
@@ -310,8 +310,8 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|fputs
+r_void
 id|fputs
 c_func
 (paren
@@ -389,8 +389,8 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-r_void
 DECL|function|put64
+r_void
 id|put64
 c_func
 (paren
@@ -461,8 +461,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|put32
+r_void
 id|put32
 c_func
 (paren

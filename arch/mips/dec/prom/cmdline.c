@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the PROM.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; */
+multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the PROM.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; * Copyright (C) 2002, 2004  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -7,13 +7,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/prom.h&gt;
 DECL|macro|PROM_DEBUG
 macro_line|#undef PROM_DEBUG
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|prom_init_cmdline
 r_void
 id|__init
@@ -120,7 +113,7 @@ l_string|&quot; &quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef PROM_DEBUG
-id|prom_printf
+id|printk
 c_func
 (paren
 l_string|&quot;arcs_cmdline: %s&bslash;n&quot;

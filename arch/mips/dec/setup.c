@@ -2,19 +2,20 @@ multiline_comment|/*&n; * Setup the interrupt stuff.&n; *&n; * This file is subj
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/irq_cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
 macro_line|#include &lt;asm/dec/interrupts.h&gt;
@@ -54,7 +55,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|dec_intr_halt
 c_func
 (paren
@@ -80,6 +81,23 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_extern
+r_int
+r_int
+id|initrd_start
+comma
+id|initrd_end
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|__rd_start
+comma
+op_star
+id|__rd_end
+suffix:semicolon
+macro_line|#endif
 DECL|variable|ioasic_ssr_lock
 id|spinlock_t
 id|ioasic_ssr_lock
@@ -264,78 +282,6 @@ l_string|&quot;halt&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|board_time_init
-r_void
-(paren
-op_star
-id|board_time_init
-)paren
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * enable the periodic interrupts&n; */
-DECL|function|dec_time_init
-r_static
-r_void
-id|__init
-id|dec_time_init
-c_func
-(paren
-r_struct
-id|irqaction
-op_star
-id|irq
-)paren
-(brace
-multiline_comment|/*&n;&t;* Here we go, enable periodic rtc interrupts.&n;&t;*/
-macro_line|#ifndef LOG_2_HZ
-DECL|macro|LOG_2_HZ
-macro_line|#  define LOG_2_HZ 7
-macro_line|#endif
-id|CMOS_WRITE
-c_func
-(paren
-id|RTC_REF_CLCK_32KHZ
-op_or
-(paren
-l_int|16
-op_minus
-id|LOG_2_HZ
-)paren
-comma
-id|RTC_REG_A
-)paren
-suffix:semicolon
-id|CMOS_WRITE
-c_func
-(paren
-id|CMOS_READ
-c_func
-(paren
-id|RTC_REG_B
-)paren
-op_or
-id|RTC_PIE
-comma
-id|RTC_REG_B
-)paren
-suffix:semicolon
-id|setup_irq
-c_func
-(paren
-id|dec_interrupt
-(braket
-id|DEC_IRQ_RTC
-)braket
-comma
-id|irq
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Bus error (DBE/IBE exceptions and bus interrupts) handling setup.&n; */
 DECL|function|dec_be_init
 r_void
@@ -391,7 +337,26 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_extern
+r_void
+id|dec_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dec_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 DECL|function|decstation_setup
+r_static
 r_void
 id|__init
 id|decstation_setup
@@ -400,6 +365,36 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+id|ROOT_DEV
+op_assign
+id|MKDEV
+c_func
+(paren
+id|RAMDISK_MAJOR
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|initrd_start
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__rd_start
+suffix:semicolon
+id|initrd_end
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__rd_end
+suffix:semicolon
+macro_line|#endif
 id|board_be_init
 op_assign
 id|dec_be_init
@@ -407,6 +402,10 @@ suffix:semicolon
 id|board_time_init
 op_assign
 id|dec_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|dec_timer_setup
 suffix:semicolon
 id|wbflush_setup
 c_func
@@ -425,19 +424,14 @@ id|_machine_power_off
 op_assign
 id|dec_machine_power_off
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
-id|rtc_ops
-op_assign
-op_amp
-id|dec_rtc_ops
-suffix:semicolon
 )brace
+DECL|variable|decstation_setup
+id|early_initcall
+c_func
+(paren
+id|decstation_setup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Machine-specific initialisation for KN01, aka DS2100 (aka Pmin)&n; * or DS3100 (aka Pmax).&n; */
 DECL|variable|__initdata
 r_static

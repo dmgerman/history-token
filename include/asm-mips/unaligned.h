@@ -72,7 +72,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Elemental unaligned loads &n; */
 DECL|function|__uldq
-r_extern
+r_static
 r_inline
 id|__u64
 id|__uldq
@@ -103,7 +103,7 @@ id|ptr-&gt;x
 suffix:semicolon
 )brace
 DECL|function|__uldl
-r_extern
+r_static
 r_inline
 id|__u32
 id|__uldl
@@ -134,7 +134,7 @@ id|ptr-&gt;x
 suffix:semicolon
 )brace
 DECL|function|__uldw
-r_extern
+r_static
 r_inline
 id|__u16
 id|__uldw
@@ -166,7 +166,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Elemental unaligned stores &n; */
 DECL|function|__ustq
-r_extern
+r_static
 r_inline
 r_void
 id|__ustq
@@ -198,7 +198,7 @@ id|r5
 suffix:semicolon
 )brace
 DECL|function|__ustl
-r_extern
+r_static
 r_inline
 r_void
 id|__ustl
@@ -230,7 +230,7 @@ id|r5
 suffix:semicolon
 )brace
 DECL|function|__ustw
-r_extern
+r_static
 r_inline
 r_void
 id|__ustw
@@ -262,7 +262,7 @@ id|r5
 suffix:semicolon
 )brace
 DECL|function|__get_unaligned
-r_extern
+r_static
 r_inline
 id|__u64
 id|__get_unaligned
@@ -368,7 +368,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|__put_unaligned
-r_extern
+r_static
 r_inline
 r_void
 id|__put_unaligned

@@ -3,14 +3,11 @@ macro_line|#ifndef _ASM_PGTABLE_64_H
 DECL|macro|_ASM_PGTABLE_64_H
 mdefine_line|#define _ASM_PGTABLE_64_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/linkage.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 multiline_comment|/*&n; * Each address space has 2 4K pages as its page directory, giving 1024&n; * (== PTRS_PER_PGD) 8 byte pointers to pmd tables. Each pmd table is a&n; * pair of 4K pages, giving 1024 (== PTRS_PER_PMD) 8 byte pointers to&n; * page tables. Each page table is a single 4K page, giving 512 (==&n; * PTRS_PER_PTE) 8 byte ptes. Each pgde is initialized to point to&n; * invalid_pmd_table, each pmde is initialized to point to&n; * invalid_pte_table, each pte is initialized to 0. When memory is low,&n; * and a pmd table or a page table allocation fails, empty_bad_pmd_table&n; * and empty_bad_page_table is returned back to higher layer code, so&n; * that the failure is recognized later on. Linux does not seem to&n; * handle these failures very well though. The empty_bad_page_table has&n; * invalid pte entries in it, to force page faults.&n; * Vmalloc handling: vmalloc uses swapper_pg_dir[0] (returned by&n; * pgd_offset_k), which is initalized to point to kpmdtbl. kpmdtbl is&n; * the only single page pmd in the system. kpmdtbl entries point into&n; * kptbl[] array. We reserve 1 &lt;&lt; PGD_ORDER pages to hold the&n; * vmalloc range translations, which the fault handler looks at.&n; */
-macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT - 3))
@@ -25,19 +22,37 @@ DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
-multiline_comment|/* Entries per page directory level: we use two-level, so we don&squot;t really&n;   have any PMD directory physically.  */
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;1024
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;1024
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;&t;512
+multiline_comment|/*&n; * For 4kB page size we use a 3 level page tree and a 8kB pmd and pgds which&n; * permits us mapping 40 bits of virtual address space.&n; *&n; * We used to implement 41 bits by having an order 1 pmd level but that seemed&n; * rather pointless.&n; *&n; * For 16kB page size we use a 2 level page tree which permit a total of&n; * 36 bits of virtual address space.  We could add a third leve. but it seems&n; * like at the moment there&squot;s no need for this.&n; *&n; * For 64kB page size we use a 2 level page table tree for a total of 42 bits&n; * of virtual address space.&n; */
+macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PGD_ORDER
 mdefine_line|#define PGD_ORDER&t;&t;1
 DECL|macro|PMD_ORDER
 mdefine_line|#define PMD_ORDER&t;&t;1
 DECL|macro|PTE_ORDER
 mdefine_line|#define PTE_ORDER&t;&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_16KB
+DECL|macro|PGD_ORDER
+mdefine_line|#define PGD_ORDER&t;&t;0
+DECL|macro|PMD_ORDER
+mdefine_line|#define PMD_ORDER&t;&t;0
+DECL|macro|PTE_ORDER
+mdefine_line|#define PTE_ORDER&t;&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_64KB
+DECL|macro|PGD_ORDER
+mdefine_line|#define PGD_ORDER&t;&t;0
+DECL|macro|PMD_ORDER
+mdefine_line|#define PMD_ORDER&t;&t;0
+DECL|macro|PTE_ORDER
+mdefine_line|#define PTE_ORDER&t;&t;0
+macro_line|#endif
+DECL|macro|PTRS_PER_PGD
+mdefine_line|#define PTRS_PER_PGD&t;((PAGE_SIZE &lt;&lt; PGD_ORDER) / sizeof(pgd_t))
+DECL|macro|PTRS_PER_PMD
+mdefine_line|#define PTRS_PER_PMD&t;((PAGE_SIZE &lt;&lt; PMD_ORDER) / sizeof(pmd_t))
+DECL|macro|PTRS_PER_PTE
+mdefine_line|#define PTRS_PER_PTE&t;((PAGE_SIZE &lt;&lt; PTE_ORDER) / sizeof(pte_t))
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(TASK_SIZE / PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
@@ -46,7 +61,6 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;XKSEG
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&bslash;&n;&t;(VMALLOC_START + ((1 &lt;&lt; PGD_ORDER) * PTRS_PER_PTE * PAGE_SIZE))
-macro_line|#ifndef __ASSEMBLY__
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %016lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR
@@ -267,12 +281,14 @@ id|invalid_pmd_table
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (NODE_MEM_MAP(PHYSADDR_TO_NID(pte_val(x))) +&t;&bslash;&n;&t;PLAT_NODE_DATA_LOCALNR(pte_val(x), PHYSADDR_TO_NID(pte_val(x))))
+mdefine_line|#define pte_page(x)&t;&t;pfn_to_page((unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
+macro_line|#ifdef CONFIG_CPU_VR41XX
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; (PAGE_SHIFT + 2)))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; (PAGE_SHIFT + 2)) | pgprot_val(prot))
 macro_line|#else
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
 DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIFT))
 DECL|macro|pfn_pte
@@ -400,21 +416,6 @@ r_int
 id|pagetable
 )paren
 suffix:semicolon
-r_extern
-id|pgd_t
-id|swapper_pg_dir
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-r_extern
-r_void
-id|paging_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Non-present pages:  high 24 bits are offset, next 8 bits type,&n; * low 32 bits zero.&n; */
 DECL|function|mk_swap_pte
 r_static
@@ -473,6 +474,5 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_PGTABLE_64_H */
 eof

@@ -1,0 +1,12 @@
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2003 Ladislav Michl&n; */
+macro_line|#ifndef __ASM_MACH_IP32_MANGLE_PORT_H
+DECL|macro|__ASM_MACH_IP32_MANGLE_PORT_H
+mdefine_line|#define __ASM_MACH_IP32_MANGLE_PORT_H
+DECL|macro|__swizzle_addr_b
+mdefine_line|#define __swizzle_addr_b(port)&t;((port) ^ 3)
+DECL|macro|__swizzle_addr_w
+mdefine_line|#define __swizzle_addr_w(port)&t;((port) ^ 2)
+DECL|macro|__swizzle_addr_l
+mdefine_line|#define __swizzle_addr_l(port)&t;(port)
+macro_line|#endif /* __ASM_MACH_IP32_MANGLE_PORT_H */
+eof

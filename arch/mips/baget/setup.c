@@ -3000,6 +3000,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|baget_setup
+r_static
 r_void
 id|__init
 id|baget_setup
@@ -3056,4 +3057,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|baget_setup
+id|early_initcall
+c_func
+(paren
+id|baget_setup
+)paren
+suffix:semicolon
 eof

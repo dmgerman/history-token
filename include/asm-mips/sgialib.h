@@ -34,30 +34,8 @@ DECL|macro|PROM_FLAG_ARCS
 mdefine_line|#define PROM_FLAG_ARCS&t;&t;&t;1
 DECL|macro|PROM_FLAG_USE_AS_CONSOLE
 mdefine_line|#define PROM_FLAG_USE_AS_CONSOLE&t;2
-multiline_comment|/* Init the PROM library and it&squot;s internal data structures. */
-r_extern
-r_void
-id|prom_init
-c_func
-(paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
-)paren
-suffix:semicolon
+DECL|macro|PROM_FLAG_DONT_FREE_TEMP
+mdefine_line|#define PROM_FLAG_DONT_FREE_TEMP&t;4
 multiline_comment|/* Simple char-by-char console I/O. */
 r_extern
 r_void
@@ -659,6 +637,16 @@ id|ArcFlushAllCaches
 c_func
 (paren
 id|VOID
+)paren
+suffix:semicolon
+r_extern
+id|DISPLAY_STATUS
+op_star
+id|ArcGetDisplayStatus
+c_func
+(paren
+id|ULONG
+id|FileID
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_SGIALIB_H */

@@ -419,7 +419,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_c0_config
+id|clear_c0_config
 c_func
 (paren
 l_int|1
@@ -483,7 +483,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Secondary cache size %ldK, linesize 32 bytes.&bslash;n&quot;
+l_string|&quot;Secondary cache size %ldK, linesize %ld bytes.&bslash;n&quot;
 comma
 (paren
 id|scache_size
@@ -505,7 +505,9 @@ l_int|3
 op_amp
 l_int|1
 )paren
+multiline_comment|/* CONF_SE */
 r_return
+l_int|1
 suffix:semicolon
 id|printk
 c_func

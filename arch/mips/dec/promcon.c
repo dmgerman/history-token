@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * Wrap-around code for a console using the&n; * DECstation PROM io-routines.&n; *&n; * Copyright (c) 1998 Harald Koerfgen&n; */
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;

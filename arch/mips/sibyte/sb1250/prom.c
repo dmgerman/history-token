@@ -8,12 +8,6 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-r_extern
-r_char
-id|arcs_cmdline
-(braket
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_EMBEDDED_RAMDISK
 multiline_comment|/* These are symbols defined by the ramdisk linker script */
 r_extern
@@ -237,29 +231,14 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * prom_init is called just after the cpu type is determined, from init_arch()&n; */
+multiline_comment|/*&n; * prom_init is called just after the cpu type is determined, from setup_arch()&n; */
 DECL|function|prom_init
+r_void
 id|__init
-r_int
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 id|_machine_restart
@@ -301,12 +280,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
+id|__init
 id|prom_free_prom_memory
 c_func
 (paren
@@ -314,6 +292,9 @@ r_void
 )paren
 (brace
 multiline_comment|/* Not sure what I&squot;m supposed to do here.  Nothing, I think */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|prom_putchar
 r_void

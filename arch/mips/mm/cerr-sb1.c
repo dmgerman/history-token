@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
@@ -433,9 +434,11 @@ op_assign
 id|csr_in32
 c_func
 (paren
-id|IO_SPACE_BASE
-op_or
+id|IOADDR
+c_func
+(paren
 id|A_SCD_BUS_ERR_STATUS
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Bit 31 is always on, but there&squot;s no #define for that */
@@ -457,9 +460,11 @@ op_assign
 id|csr_in32
 c_func
 (paren
-id|IO_SPACE_BASE
-op_or
+id|IOADDR
+c_func
+(paren
 id|A_BUS_L2_ERRORS
+)paren
 )paren
 suffix:semicolon
 id|memio_err
@@ -467,9 +472,11 @@ op_assign
 id|csr_in32
 c_func
 (paren
-id|IO_SPACE_BASE
-op_or
+id|IOADDR
+c_func
+(paren
 id|A_BUS_MEM_IO_ERRORS
+)paren
 )paren
 suffix:semicolon
 id|prom_printf
@@ -719,8 +726,10 @@ id|cerr_i
 )paren
 )paren
 (brace
+multiline_comment|/* Check index of EPC, allowing for delay slot */
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|eepc
@@ -732,6 +741,25 @@ op_ne
 id|cerr_i
 op_amp
 id|SB1_CACHE_INDEX_MASK
+)paren
+)paren
+op_logical_and
+(paren
+(paren
+id|eepc
+op_amp
+id|SB1_CACHE_INDEX_MASK
+)paren
+op_ne
+(paren
+(paren
+id|cerr_i
+op_amp
+id|SB1_CACHE_INDEX_MASK
+)paren
+op_minus
+l_int|4
+)paren
 )paren
 )paren
 id|prom_printf

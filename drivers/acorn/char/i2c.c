@@ -1275,17 +1275,6 @@ id|client_unregister
 op_assign
 id|ioc_client_unreg
 comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;IOC/IOMD&quot;
-comma
-)brace
-comma
 )brace
 suffix:semicolon
 DECL|function|i2c_ioc_init

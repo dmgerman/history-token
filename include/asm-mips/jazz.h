@@ -307,7 +307,7 @@ multiline_comment|/*&n; * JAZZ Interrupt Level definitions&n; *&n; * This is som
 DECL|macro|JAZZ_PARALLEL_IRQ
 mdefine_line|#define JAZZ_PARALLEL_IRQ       16
 DECL|macro|JAZZ_FLOPPY_IRQ
-mdefine_line|#define JAZZ_FLOPPY_IRQ          6 /* needs to be consistent with floppy driver! */
+mdefine_line|#define JAZZ_FLOPPY_IRQ         17
 DECL|macro|JAZZ_SOUND_IRQ
 mdefine_line|#define JAZZ_SOUND_IRQ          18
 DECL|macro|JAZZ_VIDEO_IRQ
@@ -411,6 +411,7 @@ id|r4030_read_reg16
 c_func
 (paren
 r_int
+r_int
 id|addr
 )paren
 (brace
@@ -447,6 +448,7 @@ id|r4030_read_reg32
 c_func
 (paren
 r_int
+r_int
 id|addr
 )paren
 (brace
@@ -482,6 +484,7 @@ id|r4030_write_reg16
 c_func
 (paren
 r_int
+r_int
 id|addr
 comma
 r_int
@@ -514,6 +517,7 @@ r_void
 id|r4030_write_reg32
 c_func
 (paren
+r_int
 r_int
 id|addr
 comma

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -18,46 +17,12 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/it8172/it8172.h&gt;
 macro_line|#include &lt;asm/it8712.h&gt;
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
-r_extern
-r_void
-id|console_setup
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-DECL|variable|serial_console
-r_char
-id|serial_console
-(braket
-l_int|20
-)braket
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_struct
 id|resource
 id|ioport_resource
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|ide_ops
-op_star
-id|ide_ops
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PC_KEYB
+macro_line|#ifdef CONFIG_SERIO_I8042
 r_int
 id|init_8712_keyboard
 c_func
@@ -381,6 +346,7 @@ id|memsize
 suffix:semicolon
 )brace
 DECL|function|it8172_setup
+r_static
 r_void
 id|__init
 id|it8172_setup
@@ -466,7 +432,7 @@ id|_machine_power_off
 op_assign
 id|it8172_power_off
 suffix:semicolon
-multiline_comment|/*&n;&t;* IO/MEM resources.&n;&t;*&n;&t;* revisit this area.&n;&t;*/
+multiline_comment|/*&n;&t; * IO/MEM resources.&n;&t; * &n;&t; * revisit this area.&n;&t; */
 id|set_io_port_base
 c_func
 (paren
@@ -515,6 +481,7 @@ comma
 id|dsr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Fixme: This breaks when these drivers are modules!!!&n;&t; */
 macro_line|#ifdef CONFIG_SOUND_IT8172
 id|dsr
 op_and_assign
@@ -533,11 +500,6 @@ op_and_assign
 op_complement
 id|IT_PM_DSR_IDESB
 suffix:semicolon
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
 macro_line|#else
 id|dsr
 op_or_assign
@@ -552,13 +514,6 @@ comma
 id|dsr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|InitLPCInterface
 c_func
 (paren
@@ -580,7 +535,7 @@ c_func
 l_string|&quot;Found IT8712 Super IO&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|// enable IT8712 serial port
+multiline_comment|/* enable IT8712 serial port */
 id|LPCSetConfig
 c_func
 (paren
@@ -603,7 +558,7 @@ l_int|0x01
 )paren
 suffix:semicolon
 multiline_comment|/* clock selection */
-macro_line|#ifdef CONFIG_PC_KEYB
+macro_line|#ifdef CONFIG_SERIO_I8042
 r_if
 c_cond
 (paren
@@ -735,11 +690,6 @@ c_func
 (paren
 l_string|&quot;Error: keyboard or mouse not enabled&bslash;n&quot;
 )paren
-suffix:semicolon
-id|kbd_ops
-op_assign
-op_amp
-id|std_kbd_ops
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -940,13 +890,22 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_IT8172_SCR1 */
 )brace
-macro_line|#ifdef CONFIG_PC_KEYB
+DECL|variable|it8172_setup
+id|early_initcall
+c_func
+(paren
+id|it8172_setup
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SERIO_I8042
 multiline_comment|/*&n; * According to the ITE Special BIOS Note for waking up the&n; * keyboard controller...&n; */
 DECL|function|init_8712_keyboard
+r_static
 r_int
 id|init_8712_keyboard
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -961,6 +920,29 @@ id|data_port
 op_assign
 l_int|0x14000060
 suffix:semicolon
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+op_xor
+id|Somebody
+id|here
+id|doesn
+"&squot;"
+id|t
+id|grok
+id|the
+id|concept
+id|of
+id|io
+id|ports
+dot
 r_int
 r_char
 id|data

@@ -1152,6 +1152,16 @@ suffix:semicolon
 id|sigset_t
 id|blocked
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1162,12 +1172,10 @@ l_int|2
 op_eq
 l_int|1000
 )paren
-(brace
 id|base
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|context
 op_assign
 (paren

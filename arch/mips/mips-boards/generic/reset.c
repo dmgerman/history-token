@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Reset the MIPS boards.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#if defined(CONFIG_MIPS_ATLAS)
@@ -51,10 +52,20 @@ op_star
 id|softres_reg
 op_assign
 (paren
-r_void
+r_int
+r_int
 op_star
 )paren
+id|ioremap
+(paren
 id|SOFTRES_REG
+comma
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
 suffix:semicolon
 op_star
 id|softres_reg
@@ -78,10 +89,20 @@ op_star
 id|softres_reg
 op_assign
 (paren
-r_void
+r_int
+r_int
 op_star
 )paren
+id|ioremap
+(paren
 id|SOFTRES_REG
+comma
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
 suffix:semicolon
 op_star
 id|softres_reg
@@ -106,10 +127,21 @@ op_star
 id|psustby_reg
 op_assign
 (paren
-r_void
+r_int
+r_int
 op_star
 )paren
+id|ioremap
+c_func
+(paren
 id|ATLAS_PSUSTBY_REG
+comma
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
 suffix:semicolon
 op_star
 id|psustby_reg
@@ -140,7 +172,7 @@ op_assign
 id|atlas_machine_power_off
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_MIPS_MALTA)
+macro_line|#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_SEAD)
 id|_machine_power_off
 op_assign
 id|mips_machine_halt

@@ -412,7 +412,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Miscellaneous SBP2 related config rom defines&n; */
-multiline_comment|/* &n; * The status fifo address definition below is used as a status base, with a chunk&n; * separately assigned for each sbp2 device detected. For example, 0xfffe00000000ULL &n; * is used for the first sbp2 device detected, 0xfffe00000020ULL for the next sbp2 &n; * device, and so on.&n; *&n; * Note: We could use a single status fifo address for all sbp2 devices, and figure &n; * out which sbp2 device the status belongs to by looking at the source node id of&n; * the status write... but, using separate addresses for each sbp2 device allows for&n; * better code and the ability to support multiple luns within a single 1394 node.&n; *&n; * Also note that we choose the address range below as it is a region specified for&n; * write posting, where the ohci controller will automatically send an ack_complete&n; * when the status is written by the sbp2 device... saving a split transaction.   =)&n; */
+multiline_comment|/* The status fifo address definition below is used as a base for each&n; * node, which a chunk seperately assigned to each unit directory in the&n; * node.  For example, 0xfffe00000000ULL is used for the first sbp2 device&n; * detected on node 0, 0xfffe00000020ULL for the next sbp2 device on node&n; * 0, and so on.&n; *&n; * Note: We could use a single status fifo address for all sbp2 devices,&n; * and figure out which sbp2 device the status belongs to by looking at&n; * the source node id of the status write... but, using separate addresses&n; * for each sbp2 unit directory allows for better code and the ability to&n; * support multiple luns within a single 1394 node.&n; *&n; * Also note that we choose the address range below as it is a region&n; * specified for write posting, where the ohci controller will&n; * automatically send an ack_complete when the status is written by the&n; * sbp2 device... saving a split transaction.   =)&n; */
 DECL|macro|SBP2_STATUS_FIFO_ADDRESS
 mdefine_line|#define SBP2_STATUS_FIFO_ADDRESS&t;&t;&t;&t;0xfffe00000000ULL
 DECL|macro|SBP2_STATUS_FIFO_ADDRESS_HI
@@ -476,8 +476,8 @@ mdefine_line|#define SBP2_DEVICE_TYPE_LUN_UNINITIALIZED&t;&t;&t;0xffffffff
 multiline_comment|/*&n; * SCSI specific stuff&n; */
 DECL|macro|SBP2_MAX_SG_ELEMENT_LENGTH
 mdefine_line|#define SBP2_MAX_SG_ELEMENT_LENGTH&t;0xf000
-DECL|macro|SBP2SCSI_MAX_SCSI_IDS
-mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;32&t;/* Max sbp2 device instances supported */
+DECL|macro|SBP2_MAX_UDS_PER_NODE
+mdefine_line|#define SBP2_MAX_UDS_PER_NODE&t;&t;16&t;/* Maximum scsi devices per node */
 DECL|macro|SBP2_MAX_SECTORS
 mdefine_line|#define SBP2_MAX_SECTORS&t;&t;255&t;/* Max sectors supported */
 macro_line|#ifndef TYPE_SDAD
@@ -1015,13 +1015,9 @@ comma
 id|DUN
 )brace
 suffix:semicolon
-multiline_comment|/* This should be safe. If there&squot;s more than one LUN per node, we could&n; * saturate the tlabel&squot;s though.  */
-DECL|macro|SBP2_MAX_CMDS_PER_LUN
-mdefine_line|#define SBP2_MAX_CMDS_PER_LUN   8
-DECL|macro|SBP2_MAX_SCSI_QUEUE
-mdefine_line|#define SBP2_MAX_SCSI_QUEUE&t;(SBP2_MAX_CMDS_PER_LUN * SBP2SCSI_MAX_SCSI_IDS)
-DECL|macro|SBP2_MAX_COMMAND_ORBS
-mdefine_line|#define SBP2_MAX_COMMAND_ORBS&t;SBP2_MAX_SCSI_QUEUE
+multiline_comment|/* This should be safe */
+DECL|macro|SBP2_MAX_CMDS
+mdefine_line|#define SBP2_MAX_CMDS&t;&t;8
 multiline_comment|/* This is the two dma types we use for cmd_dma below */
 DECL|enum|cmd_dma_types
 r_enum
@@ -1127,11 +1123,6 @@ DECL|struct|scsi_id_instance_data
 r_struct
 id|scsi_id_instance_data
 (brace
-multiline_comment|/* SCSI ID */
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
 multiline_comment|/*&n;&t; * Various sbp2 specific structures&n;&t; */
 DECL|member|last_orb
 r_struct
@@ -1266,10 +1257,10 @@ r_struct
 id|list_head
 id|sbp2_command_orb_completed
 suffix:semicolon
-DECL|member|list
+DECL|member|scsi_list
 r_struct
 id|list_head
-id|list
+id|scsi_list
 suffix:semicolon
 multiline_comment|/* Node entry, as retrieved from NodeMgr entries */
 DECL|member|ne
@@ -1278,6 +1269,12 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+DECL|member|ud
+r_struct
+id|unit_directory
+op_star
+id|ud
+suffix:semicolon
 multiline_comment|/* A backlink to our host_info */
 DECL|member|hi
 r_struct
@@ -1285,12 +1282,18 @@ id|sbp2scsi_host_info
 op_star
 id|hi
 suffix:semicolon
-multiline_comment|/* The scsi_device associated with this scsi_id */
+multiline_comment|/* SCSI related pointers */
 DECL|member|sdev
 r_struct
 id|scsi_device
 op_star
 id|sdev
+suffix:semicolon
+DECL|member|scsi_host
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host
 suffix:semicolon
 multiline_comment|/* Device specific workarounds/brokeness */
 DECL|member|workarounds
@@ -1299,19 +1302,7 @@ id|workarounds
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Describes a per-ud scsi_id group */
-DECL|struct|scsi_id_group
-r_struct
-id|scsi_id_group
-(brace
-DECL|member|scsi_id_list
-r_struct
-id|list_head
-id|scsi_id_list
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Sbp2 host data structure (one per sbp2 host)&n; */
+multiline_comment|/* Sbp2 host data structure (one per IEEE1394 host) */
 DECL|struct|sbp2scsi_host_info
 r_struct
 id|sbp2scsi_host_info
@@ -1322,28 +1313,13 @@ id|hpsb_host
 op_star
 id|host
 suffix:semicolon
-multiline_comment|/*&n;&t; * Spin locks for command processing&n;&t; */
-DECL|member|sbp2_command_lock
-id|spinlock_t
-id|sbp2_command_lock
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is the scsi host we register with the scsi mid level.&n;&t; * We keep a reference to it here, so we can unregister it&n;&t; * when the hpsb_host is removed.&n;&t; */
-DECL|member|scsi_host
+multiline_comment|/* IEEE1394 host */
+DECL|member|scsi_ids
 r_struct
-id|Scsi_Host
-op_star
-id|scsi_host
+id|list_head
+id|scsi_ids
 suffix:semicolon
-multiline_comment|/*&n;&t; * SCSI ID instance data (one for each sbp2 device instance possible)&n;&t; */
-DECL|member|scsi_id
-r_struct
-id|scsi_id_instance_data
-op_star
-id|scsi_id
-(braket
-id|SBP2SCSI_MAX_SCSI_IDS
-)braket
-suffix:semicolon
+multiline_comment|/* List of scsi ids on this host */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
@@ -1448,30 +1424,6 @@ id|command
 suffix:semicolon
 multiline_comment|/*&n; * IEEE-1394 core driver related prototypes&n; */
 r_static
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|sbp2_add_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_static
-r_void
-id|sbp2_remove_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_static
 r_int
 id|sbp2_probe
 c_func
@@ -1498,22 +1450,6 @@ r_void
 id|sbp2_update
 c_func
 (paren
-r_struct
-id|unit_directory
-op_star
-id|ud
-)paren
-suffix:semicolon
-r_static
-r_int
-id|sbp2_start_ud
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
 r_struct
 id|unit_directory
 op_star
@@ -1818,9 +1754,9 @@ id|sbp2_parse_unit_directory
 c_func
 (paren
 r_struct
-id|scsi_id_group
+id|scsi_id_instance_data
 op_star
-id|scsi_group
+id|scsi_id
 comma
 r_struct
 id|unit_directory

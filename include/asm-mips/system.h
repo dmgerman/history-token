@@ -154,7 +154,7 @@ DECL|macro|__sync
 mdefine_line|#define __sync()&t;do { } while(0)
 macro_line|#endif
 DECL|macro|__fast_iob
-mdefine_line|#define __fast_iob()&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;push&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;noreorder&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;lw&t;$0,%0&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;pop&quot;&t;&t;&t;&bslash;&n;&t;&t;: /* no output */&t;&t;&bslash;&n;&t;&t;: &quot;m&quot; (*(int *)KSEG1)&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;)
+mdefine_line|#define __fast_iob()&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;push&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;noreorder&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;lw&t;$0,%0&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.set&t;pop&quot;&t;&t;&t;&bslash;&n;&t;&t;: /* no output */&t;&t;&bslash;&n;&t;&t;: &quot;m&quot; (*(int *)CKSEG1)&t;&t;&bslash;&n;&t;&t;: &quot;memory&quot;)
 DECL|macro|fast_wmb
 mdefine_line|#define fast_wmb()&t;__sync()
 DECL|macro|fast_rmb
@@ -170,9 +170,9 @@ mdefine_line|#define wmb()&t;&t;fast_wmb()
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;&t;fast_rmb()
 DECL|macro|mb
-mdefine_line|#define mb()&t;&t;wbflush();
+mdefine_line|#define mb()&t;&t;wbflush()
 DECL|macro|iob
-mdefine_line|#define iob()&t;&t;wbflush();
+mdefine_line|#define iob()&t;&t;wbflush()
 macro_line|#else /* !CONFIG_CPU_HAS_WB */
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;&t;fast_wmb()
@@ -232,12 +232,12 @@ id|task_struct
 suffix:semicolon
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last) &bslash;&n;do { &bslash;&n;&t;(last) = resume(prev, next, next-&gt;thread_info); &bslash;&n;} while(0)
-DECL|function|xchg_u32
+DECL|function|__xchg_u32
 r_static
 r_inline
 r_int
 r_int
-id|xchg_u32
+id|__xchg_u32
 c_func
 (paren
 r_volatile
@@ -270,7 +270,9 @@ l_string|&quot;1:&bslash;tmove&bslash;t%2, %z4&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqzl&bslash;t%2, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; ll&bslash;t%0, %3&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_SMP
 l_string|&quot;sync&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -337,11 +339,11 @@ id|retval
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MIPS64
-DECL|function|xchg_u64
+DECL|function|__xchg_u64
 r_static
 r_inline
 id|__u64
-id|xchg_u64
+id|__xchg_u64
 c_func
 (paren
 r_volatile
@@ -350,7 +352,6 @@ op_star
 id|m
 comma
 id|__u64
-r_int
 id|val
 )paren
 (brace
@@ -374,7 +375,9 @@ l_string|&quot;1:&bslash;tmove&bslash;t%2, %z4&bslash;n&bslash;t&quot;
 l_string|&quot;scd&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;beqzl&bslash;t%2, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; lld&bslash;t%0, %3&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_SMP
 l_string|&quot;sync&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
@@ -455,13 +458,18 @@ id|__u64
 id|val
 )paren
 suffix:semicolon
-DECL|macro|xchg_u64
-mdefine_line|#define xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
+DECL|macro|__xchg_u64
+mdefine_line|#define __xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
 macro_line|#endif
-DECL|macro|xchg
-mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
-DECL|macro|tas
-mdefine_line|#define tas(ptr) (xchg((ptr),1))
+multiline_comment|/* This function doesn&squot;t exist, so you&squot;ll get a linker error&n;   if something tries to do an invalid xchg().  */
+r_extern
+r_void
+id|__xchg_called_with_bad_pointer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|__xchg
 r_static
 r_inline
@@ -493,7 +501,7 @@ r_case
 l_int|4
 suffix:colon
 r_return
-id|xchg_u32
+id|__xchg_u32
 c_func
 (paren
 id|ptr
@@ -505,7 +513,7 @@ r_case
 l_int|8
 suffix:colon
 r_return
-id|xchg_u64
+id|__xchg_u64
 c_func
 (paren
 id|ptr
@@ -514,10 +522,350 @@ id|x
 )paren
 suffix:semicolon
 )brace
+id|__xchg_called_with_bad_pointer
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|x
 suffix:semicolon
 )brace
+DECL|macro|xchg
+mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
+DECL|macro|tas
+mdefine_line|#define tas(ptr) (xchg((ptr),1))
+DECL|macro|__HAVE_ARCH_CMPXCHG
+mdefine_line|#define __HAVE_ARCH_CMPXCHG 1
+DECL|function|__cmpxchg_u32
+r_static
+r_inline
+r_int
+r_int
+id|__cmpxchg_u32
+c_func
+(paren
+r_volatile
+r_int
+op_star
+id|m
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+r_new
+)paren
+(brace
+id|__u32
+id|retval
+suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_HAS_LLSC
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;.set&t;noat&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;1:&t;ll&t;%0, %2&t;&t;&t;# __cmpxchg_u32&t;&bslash;n&quot;
+l_string|&quot;&t;bne&t;%0, %z3, 2f&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;move&t;$1, %z4&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;sc&t;$1, %1&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;beqz&t;$1, 1b&t;&t;&t;&t;&t;&bslash;n&quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;&t;sync&t;&t;&t;&t;&t;&t;&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;2:&t;&t;&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;at&t;&t;&t;&t;&t;&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|m
+)paren
+suffix:colon
+l_string|&quot;R&quot;
+(paren
+op_star
+id|m
+)paren
+comma
+l_string|&quot;Jr&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;Jr&quot;
+(paren
+r_new
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|retval
+op_assign
+op_star
+id|m
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+id|old
+)paren
+op_star
+id|m
+op_assign
+r_new
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* implies memory barrier  */
+macro_line|#endif
+r_return
+id|retval
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_MIPS64
+DECL|function|__cmpxchg_u64
+r_static
+r_inline
+r_int
+r_int
+id|__cmpxchg_u64
+c_func
+(paren
+r_volatile
+r_int
+op_star
+id|m
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+r_new
+)paren
+(brace
+id|__u64
+id|retval
+suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_HAS_LLDSCD
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;.set&t;noat&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;1:&t;lld&t;%0, %2&t;&t;&t;# __cmpxchg_u64&t;&bslash;n&quot;
+l_string|&quot;&t;bne&t;%0, %z3, 2f&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;move&t;$1, %z4&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;scd&t;$1, %1&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;beqz&t;$1, 1b&t;&t;&t;&t;&t;&bslash;n&quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;&t;sync&t;&t;&t;&t;&t;&t;&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;2:&t;&t;&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;at&t;&t;&t;&t;&t;&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|m
+)paren
+suffix:colon
+l_string|&quot;R&quot;
+(paren
+op_star
+id|m
+)paren
+comma
+l_string|&quot;Jr&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;Jr&quot;
+(paren
+r_new
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|retval
+op_assign
+op_star
+id|m
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+id|old
+)paren
+op_star
+id|m
+op_assign
+r_new
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* implies memory barrier  */
+macro_line|#endif
+r_return
+id|retval
+suffix:semicolon
+)brace
+macro_line|#else
+r_extern
+r_int
+r_int
+id|__cmpxchg_u64_unsupported_on_32bit_kernels
+c_func
+(paren
+r_volatile
+r_int
+op_star
+id|m
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+r_new
+)paren
+suffix:semicolon
+DECL|macro|__cmpxchg_u64
+mdefine_line|#define __cmpxchg_u64 __cmpxchg_u64_unsupported_on_32bit_kernels
+macro_line|#endif
+multiline_comment|/* This function doesn&squot;t exist, so you&squot;ll get a linker error&n;   if something tries to do an invalid cmpxchg().  */
+r_extern
+r_void
+id|__cmpxchg_called_with_bad_pointer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|__cmpxchg
+r_static
+r_inline
+r_int
+r_int
+id|__cmpxchg
+c_func
+(paren
+r_volatile
+r_void
+op_star
+id|ptr
+comma
+r_int
+r_int
+id|old
+comma
+r_int
+r_int
+r_new
+comma
+r_int
+id|size
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|4
+suffix:colon
+r_return
+id|__cmpxchg_u32
+c_func
+(paren
+id|ptr
+comma
+id|old
+comma
+r_new
+)paren
+suffix:semicolon
+r_case
+l_int|8
+suffix:colon
+r_return
+id|__cmpxchg_u64
+c_func
+(paren
+id|ptr
+comma
+id|old
+comma
+r_new
+)paren
+suffix:semicolon
+)brace
+id|__cmpxchg_called_with_bad_pointer
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|old
+suffix:semicolon
+)brace
+DECL|macro|cmpxchg
+mdefine_line|#define cmpxchg(ptr,old,new) ((__typeof__(*(ptr)))__cmpxchg((ptr), (unsigned long)(old), (unsigned long)(new),sizeof(*(ptr))))
 r_extern
 r_void
 op_star
@@ -541,6 +889,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+id|NORET_TYPE
 r_void
 id|__die
 c_func
@@ -566,13 +915,6 @@ comma
 r_int
 r_int
 id|line
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
 )paren
 suffix:semicolon
 r_extern
@@ -634,5 +976,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Taken from include/asm-ia64/system.h; prevents deadlock on SMP&n; * systems.&n; */
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq, next)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock(&amp;(next)-&gt;switch_lock);&t;&bslash;&n;&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&t;&bslash;&n;} while (0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq, prev)&t;spin_unlock_irq(&amp;(prev)-&gt;switch_lock)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq, p) &t;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
 macro_line|#endif /* _ASM_SYSTEM_H */
 eof

@@ -5,13 +5,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 multiline_comment|/* #define DEBUG_CMDLINE */
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 r_extern
 r_int
 id|prom_argc
@@ -505,12 +498,18 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
+id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|prom_getcmdline
 id|EXPORT_SYMBOL
@@ -524,6 +523,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_ethernet_addr
+)paren
+suffix:semicolon
+DECL|variable|str2eaddr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|str2eaddr
 )paren
 suffix:semicolon
 eof

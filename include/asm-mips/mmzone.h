@@ -1,91 +1,31 @@
-multiline_comment|/*&n; * Written by Kanoj Sarcar (kanoj@sgi.com) Aug 99&n; */
+multiline_comment|/*&n; * Written by Kanoj Sarcar (kanoj@sgi.com) Aug 99&n; * Rewritten for Linux 2.6 by Christoph Hellwig (hch@lst.de) Jan 2004&n; */
 macro_line|#ifndef _ASM_MMZONE_H_
 DECL|macro|_ASM_MMZONE_H_
 mdefine_line|#define _ASM_MMZONE_H_
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
-macro_line|#include &lt;asm/sn/klkernvars.h&gt;
-DECL|struct|plat_pglist_data
-r_typedef
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;mmzone.h&gt;
+r_extern
 r_struct
-id|plat_pglist_data
-(brace
-DECL|member|gendata
-id|pg_data_t
-id|gendata
-suffix:semicolon
-DECL|member|kern_vars
-id|kern_vars_t
-id|kern_vars
-suffix:semicolon
-DECL|typedef|plat_pg_data_t
-)brace
-id|plat_pg_data_t
-suffix:semicolon
-multiline_comment|/*&n; * Following are macros that are specific to this numa platform.&n; */
-r_extern
-r_int
-id|numa_debug
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|plat_pg_data_t
+id|pglist_data
 op_star
-id|plat_node_data
+id|node_data
 (braket
 )braket
 suffix:semicolon
-DECL|macro|PHYSADDR_TO_NID
-mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;NASID_TO_COMPACT_NODEID(NASID_GET(pa))
-DECL|macro|PLAT_NODE_DATA
-mdefine_line|#define PLAT_NODE_DATA(n)&t;&t;(plat_node_data[n])
-DECL|macro|PLAT_NODE_DATA_SIZE
-mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;     (PLAT_NODE_DATA(n)-&gt;gendata.node_spanned_pages)
-DECL|macro|PLAT_NODE_DATA_LOCALNR
-mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n) &bslash;&n;&t;&t;(((p) &gt;&gt; PAGE_SHIFT) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_pfn)
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
-multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
-DECL|macro|KVADDR_TO_NID
-mdefine_line|#define KVADDR_TO_NID(kaddr) &bslash;&n;&t;((NASID_TO_COMPACT_NODEID(NASID_GET(__pa(kaddr))) != -1) ? &bslash;&n;&t;(NASID_TO_COMPACT_NODEID(NASID_GET(__pa(kaddr)))) : &bslash;&n;&t;(printk(&quot;NUMABUG: %s line %d addr 0x%lx&quot;, __FILE__, __LINE__, kaddr), &bslash;&n;&t;numa_debug(), -1))
-multiline_comment|/*&n; * Return a pointer to the node data for node n.&n; */
 DECL|macro|NODE_DATA
-mdefine_line|#define NODE_DATA(n)&t;(&amp;((PLAT_NODE_DATA(n))-&gt;gendata))
-multiline_comment|/*&n; * NODE_MEM_MAP gives the kaddr for the mem_map of the node.&n; */
-DECL|macro|NODE_MEM_MAP
-mdefine_line|#define NODE_MEM_MAP(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
-multiline_comment|/*&n; * Given a kaddr, ADDR_TO_MAPBASE finds the owning node of the memory&n; * and returns the mem_map of that node.&n; */
-DECL|macro|ADDR_TO_MAPBASE
-mdefine_line|#define ADDR_TO_MAPBASE(kaddr) &bslash;&n;&t;&t;&t;NODE_MEM_MAP(KVADDR_TO_NID((unsigned long)(kaddr)))
-multiline_comment|/*&n; * Given a kaddr, LOCAL_BASE_ADDR finds the owning node of the memory&n; * and returns the kaddr corresponding to first physical page in the&n; * node&squot;s mem_map.&n; */
-DECL|macro|LOCAL_BASE_ADDR
-mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;((unsigned long)(kaddr) &amp; ~(NODE_MAX_MEM_SIZE-1))
-DECL|macro|LOCAL_MAP_NR
-mdefine_line|#define LOCAL_MAP_NR(kvaddr) &bslash;&n;&t;(((unsigned long)(kvaddr)-LOCAL_BASE_ADDR((kvaddr))) &gt;&gt; PAGE_SHIFT)
-DECL|macro|MIPS64_NR
-mdefine_line|#define MIPS64_NR(kaddr) (((unsigned long)(kaddr) &gt; (unsigned long)high_memory)&bslash;&n;&t;&t;? (max_mapnr + 1) : (LOCAL_MAP_NR((kaddr)) + &bslash;&n;&t;&t;(((unsigned long)ADDR_TO_MAPBASE((kaddr)) - PAGE_OFFSET) / &bslash;&n;&t;&t;sizeof(struct page))))
+mdefine_line|#define NODE_DATA(n)&t;&t;(node_data[(n)])
+DECL|macro|kvaddr_to_nid
+mdefine_line|#define kvaddr_to_nid(kvaddr)&t;pa_to_nid(__pa(kvaddr))
+DECL|macro|pfn_to_nid
+mdefine_line|#define pfn_to_nid(pfn)&t;&t;pa_to_nid((pfn) &lt;&lt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;unsigned long __pfn = (pfn);&t;&t;&t;&t;&bslash;&n; &t;int __n = pfn_to_nid(__pfn);&t;&t;&t;&t;&bslash;&n;&t;((__n &gt;= 0) ? (__pfn &lt; NODE_DATA(__n)-&gt;node_start_pfn +&t;&bslash;&n;&t;&t;       NODE_DATA(__n)-&gt;node_spanned_pages) : 0);&bslash;&n;})
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; &t;unsigned long __pfn = (pfn);&t;&t;&t;&t;&bslash;&n;&t;pg_data_t *__pg = NODE_DATA(pfn_to_nid(__pfn));&t;&t;&bslash;&n;&t;__pg-&gt;node_mem_map + (__pfn - __pg-&gt;node_start_pfn);&t;&bslash;&n;})
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(p)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page *__p = (p);&t;&t;&t;&t;&t;&bslash;&n;&t;struct zone *__z = page_zone(__p);&t;&t;&t;&bslash;&n;&t;((__p - __z-&gt;zone_mem_map) + __z-&gt;zone_start_pfn);&t;&bslash;&n;})
 multiline_comment|/* XXX: FIXME -- wli */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(0)
-DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
-DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page) &bslash;&n;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) + (page)-&gt;zone-&gt;zone_start_pfn) &bslash;&n;&t; &lt;&lt; PAGE_SHIFT)
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(MIPS64_NR(kaddr))
-DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
-DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-DECL|macro|pte_pfn
-mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIFT))
-DECL|macro|pfn_pte
-mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
-macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_MMZONE_H_ */
 eof

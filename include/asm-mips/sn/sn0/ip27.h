@@ -78,16 +78,6 @@ mdefine_line|#define LED_CYCLE_SHFT  4
 DECL|macro|SEND_NMI
 mdefine_line|#define SEND_NMI(_nasid, _slice)&t;&bslash;&n;          REMOTE_HUB_S((_nasid),  (PI_NMI_A + ((_slice) * PI_NMI_OFFSET)), 1)
 multiline_comment|/* Sanity hazzard ...  Below all the Origin hacks are following.  */
-DECL|macro|CPU_RESCHED_A_IRQ
-mdefine_line|#define CPU_RESCHED_A_IRQ&t;0
-DECL|macro|CPU_RESCHED_B_IRQ
-mdefine_line|#define CPU_RESCHED_B_IRQ&t;1
-DECL|macro|CPU_CALL_A_IRQ
-mdefine_line|#define CPU_CALL_A_IRQ&t;&t;2
-DECL|macro|CPU_CALL_B_IRQ
-mdefine_line|#define CPU_CALL_B_IRQ&t;&t;3
-DECL|macro|BASE_PCI_IRQ
-mdefine_line|#define BASE_PCI_IRQ&t;&t;4
 DECL|macro|SN00_BRIDGE
 mdefine_line|#define SN00_BRIDGE&t;&t;0x9200000008000000
 DECL|macro|SN00I_BRIDGE0

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/arch/mips/vr4181/setup.c&n; *&n; * VR41xx setup routines&n; *&n; * Copyright (C) 1999 Bradley D. LaRonde&n; * Copyright (C) 1999, 2000 Michael Klar&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -50,6 +49,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|nec_osprey_setup
+r_static
 r_void
 id|__init
 id|nec_osprey_setup
@@ -78,13 +78,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|_machine_restart
 op_assign
 id|nec_osprey_restart
@@ -118,4 +111,11 @@ op_assign
 l_int|0x3000
 suffix:semicolon
 )brace
+DECL|variable|nec_osprey_setup
+id|early_initcall
+c_func
+(paren
+id|nec_osprey_setup
+)paren
+suffix:semicolon
 eof

@@ -111,16 +111,6 @@ r_static
 r_int
 id|kgdb_irq
 suffix:semicolon
-macro_line|#ifdef CONFIG_GDB_CONSOLE
-r_extern
-r_void
-id|register_gdb_console
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* kgdb is on when configured.  Pass &quot;nokgdb&quot; kernel arg to turn it off */
 DECL|variable|kgdb_flag
 r_static
@@ -248,8 +238,9 @@ op_assign
 id|____raw_readq
 c_func
 (paren
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -257,6 +248,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|cur_ints
@@ -277,8 +269,9 @@ c_func
 (paren
 id|cur_ints
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -286,6 +279,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -331,8 +325,9 @@ op_assign
 id|____raw_readq
 c_func
 (paren
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -340,6 +335,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|cur_ints
@@ -361,8 +357,9 @@ c_func
 (paren
 id|cur_ints
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -370,6 +367,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -509,8 +507,9 @@ op_assign
 id|____raw_readq
 c_func
 (paren
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -518,6 +517,7 @@ id|old_cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|int_on
@@ -563,8 +563,9 @@ c_func
 (paren
 id|cur_ints
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -572,6 +573,7 @@ id|old_cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -594,8 +596,9 @@ op_assign
 id|____raw_readq
 c_func
 (paren
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -603,6 +606,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 id|cur_ints
@@ -624,8 +628,9 @@ c_func
 (paren
 id|cur_ints
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_MAPPER
 c_func
 (paren
@@ -633,6 +638,7 @@ id|cpu
 )paren
 op_plus
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -759,8 +765,9 @@ op_assign
 id|__raw_readq
 c_func
 (paren
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -770,6 +777,7 @@ id|irq
 )braket
 comma
 id|R_IMR_LDT_INTERRUPT
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -810,24 +818,40 @@ id|i
 op_increment
 )paren
 (brace
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|cpu
+op_assign
+id|cpu_logical_map
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+macro_line|#else
+id|cpu
+op_assign
+id|i
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; * Clear for all CPUs so an affinity switch&n;&t;&t;&t; * doesn&squot;t find an old status&n;&t;&t;&t; */
 id|__raw_writeq
 c_func
 (paren
 id|pending
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
-id|cpu_logical_map
-c_func
-(paren
-id|i
-)paren
+id|cpu
 comma
 id|R_IMR_LDT_INTERRUPT_CLR
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1218,8 +1242,9 @@ c_func
 (paren
 id|IMR_IP2_VAL
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1234,14 +1259,16 @@ op_lshift
 l_int|3
 )paren
 )paren
+)paren
 suffix:semicolon
 id|__raw_writeq
 c_func
 (paren
 id|IMR_IP2_VAL
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1254,6 +1281,7 @@ op_plus
 id|i
 op_lshift
 l_int|3
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1270,8 +1298,9 @@ c_func
 (paren
 id|IMR_IP3_VAL
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1286,14 +1315,16 @@ op_lshift
 l_int|3
 )paren
 )paren
+)paren
 suffix:semicolon
 id|__raw_writeq
 c_func
 (paren
 id|IMR_IP3_VAL
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1306,6 +1337,7 @@ op_plus
 id|K_INT_MBOX_0
 op_lshift
 l_int|3
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1315,8 +1347,9 @@ c_func
 (paren
 l_int|0xffffffffffffffff
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1325,20 +1358,23 @@ comma
 id|R_IMR_MAILBOX_CLR_CPU
 )paren
 )paren
+)paren
 suffix:semicolon
 id|__raw_writeq
 c_func
 (paren
 l_int|0xffffffffffffffff
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
 l_int|1
 comma
 id|R_IMR_MAILBOX_CLR_CPU
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1369,8 +1405,9 @@ c_func
 (paren
 id|tmp
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1379,20 +1416,23 @@ comma
 id|R_IMR_INTERRUPT_MASK
 )paren
 )paren
+)paren
 suffix:semicolon
 id|__raw_writeq
 c_func
 (paren
 id|tmp
 comma
-id|KSEG1
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
 l_int|1
 comma
 id|R_IMR_INTERRUPT_MASK
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1402,13 +1442,7 @@ c_func
 id|K_INT_MBOX_0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note that the timer interrupts are also mapped, but this is&n;&t; * done in sb1250_time_init()&n;&t; */
-macro_line|#ifdef CONFIG_BCM1250_PROF
-id|imask
-op_or_assign
-id|STATUSF_IP7
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n;&t; * Note that the timer interrupts are also mapped, but this is&n;&t; * done in sb1250_time_init().  Also, the profiling driver &n;&t; * does its own management of IP7.&n;&t; */
 macro_line|#ifdef CONFIG_KGDB
 id|imask
 op_or_assign
@@ -1460,12 +1494,14 @@ c_func
 (paren
 id|M_DUART_IMR_BRK
 comma
-id|IO_SPACE_BASE
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_DUART_IMRREG
 c_func
 (paren
 id|kgdb_port
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1480,8 +1516,9 @@ c_func
 (paren
 id|IMR_IP6_VAL
 comma
-id|IO_SPACE_BASE
-op_plus
+id|IOADDR
+c_func
+(paren
 id|A_IMR_REGISTER
 c_func
 (paren
@@ -1496,6 +1533,7 @@ op_lshift
 l_int|3
 )paren
 )paren
+)paren
 suffix:semicolon
 id|sb1250_unmask_irq
 c_func
@@ -1505,13 +1543,6 @@ comma
 id|kgdb_irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_GDB_CONSOLE
-id|register_gdb_console
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|prom_printf
 c_func
 (paren
@@ -1536,9 +1567,9 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|duart_out
-mdefine_line|#define duart_out(reg, val)     csr_out32(val, KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
+mdefine_line|#define duart_out(reg, val)     csr_out32(val, IOADDR(A_DUART_CHANREG(kgdb_port,reg)))
 DECL|macro|duart_in
-mdefine_line|#define duart_in(reg)           csr_in32(KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
+mdefine_line|#define duart_in(reg)           csr_in32(IOADDR(A_DUART_CHANREG(kgdb_port,reg)))
 DECL|function|sb1250_kgdb_interrupt
 r_void
 id|sb1250_kgdb_interrupt
@@ -1553,7 +1584,7 @@ id|regs
 multiline_comment|/*&n;&t; * Clear break-change status (allow some time for the remote&n;&t; * host to stop the break, since we would see another&n;&t; * interrupt on the end-of-break too)&n;&t; */
 id|kstat_this_cpu.irqs
 (braket
-id|K_INT_UART_1
+id|kgdb_irq
 )braket
 op_increment
 suffix:semicolon

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -419,7 +418,7 @@ multiline_comment|/* What counter should be at next timer irq */
 r_extern
 r_int
 r_int
-id|mips_counter_frequency
+id|mips_hpt_frequency
 suffix:semicolon
 multiline_comment|/*&n; * Figure out the r4k offset, the amount to increment the compare&n; * register for each time tick.&n; * Use the RTC to calculate offset.&n; */
 DECL|function|cal_r4koff
@@ -506,7 +505,7 @@ id|RTC_UIP
 )paren
 )paren
 suffix:semicolon
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|read_c0_count
 c_func
@@ -522,7 +521,7 @@ id|flags
 suffix:semicolon
 r_return
 (paren
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_div
 id|HZ
 )paren

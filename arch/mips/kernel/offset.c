@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * offset.c: Calculate pt_regs and task_struct offsets.&n; *&n; * Copyright (C) 1996 David S. Miller&n; * Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; *&n; * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,7 +14,7 @@ mdefine_line|#define _offset(type, member) (&amp;(((type *)NULL)-&gt;member))
 DECL|macro|offset
 mdefine_line|#define offset(string, ptr, member) &bslash;&n;&t;__asm__(&quot;&bslash;n@@@&quot; string &quot;%0&quot; : : &quot;i&quot; (_offset(ptr, member)))
 DECL|macro|constant
-mdefine_line|#define constant(string, member) &bslash;&n;&t;__asm__(&quot;&bslash;n@@@&quot; string &quot;%x0&quot; : : &quot;i&quot; (member))
+mdefine_line|#define constant(string, member) &bslash;&n;&t;__asm__(&quot;&bslash;n@@@&quot; string &quot;%x0&quot; : : &quot;ri&quot; (member))
 DECL|macro|size
 mdefine_line|#define size(string, size) &bslash;&n;&t;__asm__(&quot;&bslash;n@@@&quot; string &quot;%0&quot; : : &quot;i&quot; (sizeof(size)))
 DECL|macro|linefeed
@@ -1466,6 +1467,8 @@ comma
 id|thread.fpu.hard.fcr31
 )paren
 suffix:semicolon
+id|linefeed
+suffix:semicolon
 )brace
 DECL|function|output_mm_defines
 r_void
@@ -1475,6 +1478,23 @@ c_func
 r_void
 )paren
 (brace
+id|text
+c_func
+(paren
+l_string|&quot;/* Size of struct page  */&quot;
+)paren
+suffix:semicolon
+id|size
+c_func
+(paren
+l_string|&quot;#define STRUCT_PAGE_SIZE   &quot;
+comma
+r_struct
+id|page
+)paren
+suffix:semicolon
+id|linefeed
+suffix:semicolon
 id|text
 c_func
 (paren
@@ -1537,10 +1557,63 @@ suffix:semicolon
 id|constant
 c_func
 (paren
-l_string|&quot;#define _PGDIR_SHIFT   &quot;
+l_string|&quot;#define _PGD_T_SIZE    &quot;
 comma
-id|PGDIR_SHIFT
+r_sizeof
+(paren
+id|pgd_t
 )paren
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PMD_T_SIZE    &quot;
+comma
+r_sizeof
+(paren
+id|pmd_t
+)paren
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PTE_T_SIZE    &quot;
+comma
+r_sizeof
+(paren
+id|pte_t
+)paren
+)paren
+suffix:semicolon
+id|linefeed
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PGD_T_LOG2    &quot;
+comma
+id|PGD_T_LOG2
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PMD_T_LOG2    &quot;
+comma
+id|PMD_T_LOG2
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PTE_T_LOG2    &quot;
+comma
+id|PTE_T_LOG2
+)paren
+suffix:semicolon
+id|linefeed
 suffix:semicolon
 id|constant
 c_func
@@ -1548,6 +1621,14 @@ c_func
 l_string|&quot;#define _PMD_SHIFT     &quot;
 comma
 id|PMD_SHIFT
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PGDIR_SHIFT   &quot;
+comma
+id|PGDIR_SHIFT
 )paren
 suffix:semicolon
 id|linefeed
@@ -1592,6 +1673,14 @@ c_func
 l_string|&quot;#define _PTRS_PER_PMD  &quot;
 comma
 id|PTRS_PER_PMD
+)paren
+suffix:semicolon
+id|constant
+c_func
+(paren
+l_string|&quot;#define _PTRS_PER_PTE  &quot;
+comma
+id|PTRS_PER_PTE
 )paren
 suffix:semicolon
 id|linefeed

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * setup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; * Moment
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -14,25 +13,17 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
-macro_line|#include &lt;asm/gt64120/gt64120.h&gt;
+macro_line|#include &lt;asm/gt64120.h&gt;
 macro_line|#include &quot;ocelot_pld.h&quot;
-r_extern
-r_struct
-id|rtc_ops
-id|no_rtc_ops
-suffix:semicolon
 DECL|variable|gt64120_base
 r_int
 r_int
@@ -287,6 +278,7 @@ l_int|0xe0000000
 suffix:semicolon
 )brace
 DECL|function|momenco_ocelot_setup
+r_static
 r_void
 id|__init
 id|momenco_ocelot_setup
@@ -333,11 +325,6 @@ op_assign
 id|momenco_ocelot_power_off
 suffix:semicolon
 multiline_comment|/*&n;&t; * initrd_start = (ulong)ocelot_initrd_start;&n;&t; * initrd_end = (ulong)ocelot_initrd_start + (ulong)ocelot_initrd_size;&n;&t; * initrd_below_start_ok = 1;&n;&t; */
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
-suffix:semicolon
 multiline_comment|/* do handoff reconfiguration */
 r_if
 c_cond
@@ -1205,6 +1192,13 @@ l_int|0xfef73
 )paren
 suffix:semicolon
 )brace
+DECL|variable|momenco_ocelot_setup
+id|early_initcall
+c_func
+(paren
+id|momenco_ocelot_setup
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|rm7k_tcache_enabled
@@ -1239,13 +1233,12 @@ l_string|&quot;Enabling L3 cache...&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the L3 cache in the GT64120A&squot;s CPU Configuration register */
+id|tmp
+op_assign
 id|GT_READ
 c_func
 (paren
 l_int|0
-comma
-op_amp
-id|tmp
 )paren
 suffix:semicolon
 id|GT_WRITE

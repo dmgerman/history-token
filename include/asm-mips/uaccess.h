@@ -1,54 +1,49 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000, 03, 04 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_UACCESS_H
 DECL|macro|_ASM_UACCESS_H
 mdefine_line|#define _ASM_UACCESS_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 multiline_comment|/*&n; * The fs value determines whether argument validity checking should be&n; * performed or not.  If get_fs() == USER_DS, checking is performed, with&n; * get_fs() == KERNEL_DS, checking is bypassed.&n; *&n; * For historical reasons, these macros are grossly misnamed.&n; */
 macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|__UA_LIMIT
+mdefine_line|#define __UA_LIMIT&t;0x80000000UL
 DECL|macro|__UA_ADDR
 mdefine_line|#define __UA_ADDR&t;&quot;.word&quot;
 DECL|macro|__UA_LA
 mdefine_line|#define __UA_LA&t;&t;&quot;la&quot;
 DECL|macro|__UA_ADDU
 mdefine_line|#define __UA_ADDU&t;&quot;addu&quot;
-DECL|macro|KERNEL_DS
-mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { (unsigned long) 0L })
-DECL|macro|USER_DS
-mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { (unsigned long) -1L })
-DECL|macro|VERIFY_READ
-mdefine_line|#define VERIFY_READ    0
-DECL|macro|VERIFY_WRITE
-mdefine_line|#define VERIFY_WRITE   1
-DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr, size, mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((signed long)((mask)&amp;(addr | ((addr) + (size)) | __ua_size(size)))) &gt;= 0)
-DECL|macro|__access_mask
-mdefine_line|#define __access_mask ((long)(get_fs().seg))
-DECL|macro|access_ok
-mdefine_line|#define access_ok(type, addr, size)&t;&t;&t;&t;&t;&bslash;&n;&t;__access_ok(((unsigned long)(addr)),(size),__access_mask)
+DECL|macro|__UA_t0
+mdefine_line|#define __UA_t0&t;&t;&quot;$8&quot;
+DECL|macro|__UA_t1
+mdefine_line|#define __UA_t1&t;&t;&quot;$9&quot;
 macro_line|#endif /* CONFIG_MIPS32 */
 macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|__UA_LIMIT
+mdefine_line|#define __UA_LIMIT&t;(- TASK_SIZE)
 DECL|macro|__UA_ADDR
 mdefine_line|#define __UA_ADDR&t;&quot;.dword&quot;
 DECL|macro|__UA_LA
 mdefine_line|#define __UA_LA&t;&t;&quot;dla&quot;
 DECL|macro|__UA_ADDU
 mdefine_line|#define __UA_ADDU&t;&quot;daddu&quot;
+DECL|macro|__UA_t0
+mdefine_line|#define __UA_t0&t;&t;&quot;$12&quot;
+DECL|macro|__UA_t1
+mdefine_line|#define __UA_t1&t;&t;&quot;$13&quot;
+macro_line|#endif /* CONFIG_MIPS64 */
+multiline_comment|/*&n; * USER_DS is a bitmask that has the bits set that may not be set in a valid&n; * userspace address.  Note that we limit 32-bit userspace to 0x7fff8000 but&n; * the arithmetic we&squot;re doing only works if the limit is a power of two, so&n; * we use 0x80000000 here on 32-bit kernels.  If a process passes an invalid&n; * address in this range it&squot;s the process&squot;s problem, not ours :-)&n; */
 DECL|macro|KERNEL_DS
 mdefine_line|#define KERNEL_DS&t;((mm_segment_t) { 0UL })
 DECL|macro|USER_DS
-mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { -TASK_SIZE })
+mdefine_line|#define USER_DS&t;&t;((mm_segment_t) { __UA_LIMIT })
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ    0
 DECL|macro|VERIFY_WRITE
 mdefine_line|#define VERIFY_WRITE   1
-DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr, size, mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((signed long)((mask) &amp; ((addr) | ((addr) + (size)) | __ua_size(size)))) == 0)
-DECL|macro|__access_mask
-mdefine_line|#define __access_mask get_fs().seg
-DECL|macro|access_ok
-mdefine_line|#define access_ok(type, addr, size)&t;&t;&t;&t;&t;&bslash;&n;&t;__access_ok((unsigned long)(addr), (size), __access_mask)
-macro_line|#endif /* CONFIG_MIPS64 */
 DECL|macro|get_ds
 mdefine_line|#define get_ds()&t;(KERNEL_DS)
 DECL|macro|get_fs
@@ -60,6 +55,14 @@ mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * Is a address valid? This does a straighforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; *&n; * __ua_size() is a trick to avoid runtime checking of positive constant&n; * sizes; for those we already know at compile time that the size is ok.&n; */
 DECL|macro|__ua_size
 mdefine_line|#define __ua_size(size)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((__builtin_constant_p(size) &amp;&amp; (signed long) (size) &gt; 0) ? 0 : (size))
+multiline_comment|/*&n; * access_ok: - Checks if a user space pointer is valid&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE.  Note that&n; *        %VERIFY_WRITE is a superset of %VERIFY_READ - if it is safe&n; *        to write to a block, it is always safe to read from it.&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns true (nonzero) if the memory block may be valid, false (zero)&n; * if it is definitely invalid.&n; *&n; * Note that, depending on architecture, this function probably just&n; * checks that the pointer is in the user space range - after calling&n; * this function, memory access functions may still return -EFAULT.&n; */
+DECL|macro|__access_mask
+mdefine_line|#define __access_mask get_fs().seg
+DECL|macro|__access_ok
+mdefine_line|#define __access_ok(addr, size, mask)&t;&t;&t;&t;&t;&bslash;&n;&t;(((signed long)((mask) &amp; ((addr) | ((addr) + (size)) | __ua_size(size)))) == 0)
+DECL|macro|access_ok
+mdefine_line|#define access_ok(type, addr, size)&t;&t;&t;&t;&t;&bslash;&n;&t;likely(__access_ok((unsigned long)(addr), (size),__access_mask))
+multiline_comment|/*&n; * verify_area: - Obsolete, use access_ok()&n; * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE&n; * @addr: User space pointer to start of block to check&n; * @size: Size of block to check&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This function has been replaced by access_ok().&n; *&n; * Checks if a pointer to a block of memory in user space is valid.&n; *&n; * Returns zero if the memory block may be valid, -EFAULT&n; * if it is definitely invalid.&n; *&n; * See access_ok() for more details.&n; */
 DECL|function|verify_area
 r_static
 r_inline
@@ -98,14 +101,16 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Uh, these should become the main single-value transfer routines ...&n; * They automatically use the right size if we just have the right&n; * pointer type ...&n; *&n; * As MIPS uses the same address space for kernel and user data, we&n; * can just do these as direct assignments.&n; *&n; * Careful to not&n; * (a) re-use the arguments for side effects (sizeof is ok)&n; * (b) require any knowledge of processes at this stage&n; */
+multiline_comment|/*&n; * put_user: - Write a simple value into user space.&n; * @x:   Value to copy to user space.&n; * @ptr: Destination address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple value from kernel space to user&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and @x must be assignable&n; * to the result of dereferencing @ptr.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; */
 DECL|macro|put_user
 mdefine_line|#define put_user(x,ptr)&t;&bslash;&n;&t;__put_user_check((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
+multiline_comment|/*&n; * get_user: - Get a simple variable from user space.&n; * @x:   Variable to store result.&n; * @ptr: Source address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple variable from user space to kernel&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and the result of&n; * dereferencing @ptr must be assignable to @x without a cast.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; * On error, the variable @x is set to zero.&n; */
 DECL|macro|get_user
 mdefine_line|#define get_user(x,ptr) &bslash;&n;&t;__get_user_check((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
-multiline_comment|/*&n; * The &quot;__xxx&quot; versions do not do address space checking, useful when&n; * doing multiple accesses to the same area (the user has to do the&n; * checks by hand with &quot;access_ok()&quot;)&n; */
+multiline_comment|/*&n; * __put_user: - Write a simple value into user space, with less checking.&n; * @x:   Value to copy to user space.&n; * @ptr: Destination address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple value from kernel space to user&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and @x must be assignable&n; * to the result of dereferencing @ptr.&n; *&n; * Caller must check the pointer with access_ok() before calling this&n; * function.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; */
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr) &bslash;&n;&t;__put_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
+multiline_comment|/*&n; * __get_user: - Get a simple variable from user space, with less checking.&n; * @x:   Variable to store result.&n; * @ptr: Source address, in user space.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * This macro copies a single simple variable from user space to kernel&n; * space.  It supports simple types like char and int, but not larger&n; * data types like structures or arrays.&n; *&n; * @ptr must have pointer-to-simple-variable type, and the result of&n; * dereferencing @ptr must be assignable to @x without a cast.&n; *&n; * Caller must check the pointer with access_ok() before calling this&n; * function.&n; *&n; * Returns zero on success, or -EFAULT on error.&n; * On error, the variable @x is set to zero.&n; */
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x,ptr) &bslash;&n;&t;__get_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
 DECL|struct|__large_struct
@@ -133,14 +138,14 @@ DECL|macro|__GET_USER_DW
 mdefine_line|#define __GET_USER_DW __get_user_asm_ll32
 macro_line|#endif
 DECL|macro|__get_user_nocheck
-mdefine_line|#define __get_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof(*(ptr)) __gu_val;&t;&t;&t;&t;&bslash;&n;&t;long __gu_addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_val));&t;&t;&t;&t;&bslash;&n;&t;__gu_addr = (long) (ptr);&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_err));&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __get_user_asm(&quot;lb&quot;); break;&t;&t;&t;&bslash;&n;&t;case 2: __get_user_asm(&quot;lh&quot;); break;&t;&t;&t;&bslash;&n;&t;case 4: __get_user_asm(&quot;lw&quot;); break;&t;&t;&t;&bslash;&n;&t;case 8: __GET_USER_DW; break;&t;&t;&t;&t;&bslash;&n;&t;default: __get_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;} x = (__typeof__(*(ptr))) __gu_val; __gu_err;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof(*(ptr)) __gu_val;&t;&t;&t;&t;&bslash;&n;&t;long __gu_addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_val));&t;&t;&t;&t;&bslash;&n;&t;__gu_addr = (long) (ptr);&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_err));&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __get_user_asm(&quot;lb&quot;); break;&t;&t;&t;&bslash;&n;&t;case 2: __get_user_asm(&quot;lh&quot;); break;&t;&t;&t;&bslash;&n;&t;case 4: __get_user_asm(&quot;lw&quot;); break;&t;&t;&t;&bslash;&n;&t;case 8: __GET_USER_DW; break;&t;&t;&t;&t;&bslash;&n;&t;default: __get_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;} x = (__typeof__(*(ptr))) __gu_val; __gu_err;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_check
-mdefine_line|#define __get_user_check(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __gu_val;&t;&t;&t;&t;&bslash;&n;&t;long __gu_addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_val));&t;&t;&t;&t;&bslash;&n;&t;__gu_addr = (long) (ptr);&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_err));&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__gu_addr,size,__access_mask)) {&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __get_user_asm(&quot;lb&quot;); break;&t;&t;&bslash;&n;&t;&t;case 2: __get_user_asm(&quot;lh&quot;); break;&t;&t;&bslash;&n;&t;&t;case 4: __get_user_asm(&quot;lw&quot;); break;&t;&t;&bslash;&n;&t;&t;case 8: __GET_USER_DW; break;&t;&t;&t;&bslash;&n;&t;&t;default: __get_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} x = (__typeof__(*(ptr))) __gu_val; __gu_err;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_check(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_addr;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_val));&t;&t;&t;&t;&t;&bslash;&n;&t;__gu_addr = (long) (ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__gu_err));&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ,__gu_addr,size)) {&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __get_user_asm(&quot;lb&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 2: __get_user_asm(&quot;lh&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 4: __get_user_asm(&quot;lw&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 8: __GET_USER_DW; break;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __get_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} x = (__typeof__(*(ptr))) __gu_val; __gu_err;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_asm
-mdefine_line|#define __get_user_asm(insn)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; insn &quot;&bslash;t%1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0,$0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;tli&bslash;t%0,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t2b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__gu_err), &quot;=r&quot; (__gu_val)&t;&t;&t;&bslash;&n;&t;:&quot;o&quot; (__m(__gu_addr)), &quot;i&quot; (-EFAULT));&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_asm(insn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; insn &quot;&bslash;t%1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0,$0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;tli&bslash;t%0,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t2b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__gu_err), &quot;=r&quot; (__gu_val)&t;&t;&t;&t;&bslash;&n;&t;:&quot;o&quot; (__m(__gu_addr)), &quot;i&quot; (-EFAULT));&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * Get a long long 64 using 32 bit registers.&n; */
 DECL|macro|__get_user_asm_ll32
-mdefine_line|#define __get_user_asm_ll32&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;tlw&bslash;t%1,%2&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;tlw&bslash;t%D1,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0,$0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;t.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;4:&bslash;tli&bslash;t%0,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%D1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t2b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__gu_err), &quot;=&amp;r&quot; (__gu_val)&t;&t;&t;&bslash;&n;&t;:&quot;o&quot; (__m(__gu_addr)), &quot;o&quot; (__m(__gu_addr + 4)),&t;&bslash;&n;&t; &quot;i&quot; (-EFAULT));&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_user_asm_ll32&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;tlw&bslash;t%1,%2&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;tlw&bslash;t%D1,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0,$0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;t.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;4:&bslash;tli&bslash;t%0,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%D1,$0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t2b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__gu_err), &quot;=&amp;r&quot; (__gu_val)&t;&t;&t;&t;&bslash;&n;&t;:&quot;o&quot; (__m(__gu_addr)), &quot;o&quot; (__m(__gu_addr + 4)),&t;&t;&bslash;&n;&t; &quot;i&quot; (-EFAULT));&t;&t;&t;&t;&t;&t;&bslash;&n;})
 r_extern
 r_void
 id|__get_user_unknown
@@ -158,11 +163,11 @@ DECL|macro|__PUT_USER_DW
 mdefine_line|#define __PUT_USER_DW __put_user_asm_ll32
 macro_line|#endif
 DECL|macro|__put_user_nocheck
-mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __pu_val;&t;&t;&t;&t;&bslash;&n;&t;long __pu_addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_val = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_addr = (long) (ptr);&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err));&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_asm(&quot;sb&quot;); break;&t;&t;&t;&bslash;&n;&t;case 2: __put_user_asm(&quot;sh&quot;); break;&t;&t;&t;&bslash;&n;&t;case 4: __put_user_asm(&quot;sw&quot;); break;&t;&t;&t;&bslash;&n;&t;case 8: __PUT_USER_DW; break;&t;&t;&t;&t;&bslash;&n;&t;default: __put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __pu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_addr;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_val = (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_addr = (long) (ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err));&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_asm(&quot;sb&quot;); break;&t;&t;&t;&t;&bslash;&n;&t;case 2: __put_user_asm(&quot;sh&quot;); break;&t;&t;&t;&t;&bslash;&n;&t;case 4: __put_user_asm(&quot;sw&quot;); break;&t;&t;&t;&t;&bslash;&n;&t;case 8: __PUT_USER_DW; break;&t;&t;&t;&t;&t;&bslash;&n;&t;default: __put_user_unknown(); break;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __pu_val;&t;&t;&t;&t;&bslash;&n;&t;long __pu_addr;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_val = (x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_addr = (long) (ptr);&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err));&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok(__pu_addr,size,__access_mask)) {&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __put_user_asm(&quot;sb&quot;); break;&t;&t;&bslash;&n;&t;&t;case 2: __put_user_asm(&quot;sh&quot;); break;&t;&t;&bslash;&n;&t;&t;case 4: __put_user_asm(&quot;sw&quot;); break;&t;&t;&bslash;&n;&t;&t;case 8: __PUT_USER_DW; break;&t;&t;&t;&bslash;&n;&t;&t;default: __put_user_unknown(); break;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __pu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_addr;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_val = (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_addr = (long) (ptr);&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err));&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __pu_addr, size)) {&t;&t;&t;&bslash;&n;&t;&t;switch (size) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 1: __put_user_asm(&quot;sb&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 2: __put_user_asm(&quot;sh&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 4: __put_user_asm(&quot;sw&quot;); break;&t;&t;&t;&bslash;&n;&t;&t;case 8: __PUT_USER_DW; break;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __put_user_unknown(); break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_asm
-mdefine_line|#define __put_user_asm(insn)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; insn &quot;&bslash;t%z1, %2&bslash;t&bslash;t&bslash;t# __put_user_asm&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $0&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;tli&bslash;t%0,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t2b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__pu_err)&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;Jr&quot; (__pu_val), &quot;o&quot; (__m(__pu_addr)), &quot;i&quot; (-EFAULT));&t;&bslash;&n;})
+mdefine_line|#define __put_user_asm(insn)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; insn &quot;&bslash;t%z1, %2&bslash;t&bslash;t&bslash;t# __put_user_asm&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;tli&bslash;t%0,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t2b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__pu_err)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;Jr&quot; (__pu_val), &quot;o&quot; (__m(__pu_addr)), &quot;i&quot; (-EFAULT));&t;&t;&bslash;&n;})
 DECL|macro|__put_user_asm_ll32
 mdefine_line|#define __put_user_asm_ll32&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;tsw&bslash;t%1, %2&bslash;t&bslash;t&bslash;t# __put_user_asm_ll32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;tsw&bslash;t%D1, %3&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;4:&bslash;tli&bslash;t%0,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;j&bslash;t3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section&bslash;t__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t1b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDR &quot;&bslash;t2b,4b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;=r&quot; (__pu_err)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&quot;r&quot; (__pu_val), &quot;o&quot; (__m(__pu_addr)),&t;&t;&t;&t;&bslash;&n;&t; &quot;o&quot; (__m(__pu_addr + 4)), &quot;i&quot; (-EFAULT));&t;&t;&t;&bslash;&n;})
 r_extern
@@ -201,16 +206,23 @@ id|__n
 suffix:semicolon
 DECL|macro|__invoke_copy_to_user
 mdefine_line|#define __invoke_copy_to_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register void *__cu_to_r __asm__ (&quot;$4&quot;);&t;&t;&t;&bslash;&n;&t;register const void *__cu_from_r __asm__ (&quot;$5&quot;);&t;&t;&bslash;&n;&t;register long __cu_len_r __asm__ (&quot;$6&quot;);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to_r = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from_r = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot; (__cu_to_r), &quot;+r&quot; (__cu_from_r), &quot;+r&quot; (__cu_len_r)&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&t;&t;&bslash;&n;&t;  &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * __copy_to_user: - Copy a block of data into user space, with less checking.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from, __cu_len);&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * copy_to_user: - Copy a block of data into user space.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
 DECL|macro|copy_to_user
-mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __cu_to, __cu_len))&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                 __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define copy_to_user(to,from,n)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE, __cu_to, __cu_len))&t;&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_to_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                 __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__invoke_copy_from_user
 mdefine_line|#define __invoke_copy_from_user(to,from,n)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register void *__cu_to_r __asm__ (&quot;$4&quot;);&t;&t;&t;&bslash;&n;&t;register const void *__cu_from_r __asm__ (&quot;$5&quot;);&t;&t;&bslash;&n;&t;register long __cu_len_r __asm__ (&quot;$6&quot;);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to_r = (to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from_r = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r = (n);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__MODULE_JAL(__copy_user)&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__UA_ADDU &quot;&bslash;t$1, %1, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $6&quot;&t;&t;/* XXX */&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot; (__cu_to_r), &quot;+r&quot; (__cu_from_r), &quot;+r&quot; (__cu_len_r)&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$15&quot;, &quot;$24&quot;, &quot;$31&quot;,&t;&t;&bslash;&n;&t;  &quot;memory&quot;);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len_r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * __copy_from_user: - Copy a block of data from user space, with less checking. * @to:   Destination address, in kernel space.&n; * @from: Source address, in user space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from user space to kernel space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; *&n; * If some data could not be copied, this function will pad the copied&n; * data to the requested size using zero bytes.&n; */
 DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&t;&bslash;&n;&t;                                   __cu_len);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&t;&bslash;&n;&t;                                   __cu_len);&t;&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * copy_from_user: - Copy a block of data from user space.&n; * @to:   Destination address, in kernel space.&n; * @from: Source address, in user space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from user space to kernel space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; *&n; * If some data could not be copied, this function will pad the copied&n; * data to the requested size using zero bytes.&n; */
 DECL|macro|copy_from_user
-mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __cu_from, __cu_len))&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                   __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void *__cu_to;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const void *__cu_from;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;might_sleep();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_to = (to);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_from = (from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__cu_len = (n);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ, __cu_from, __cu_len))&t;&t;&bslash;&n;&t;&t;__cu_len = __invoke_copy_from_user(__cu_to, __cu_from,&t;&bslash;&n;&t;&t;                                   __cu_len);&t;&t;&bslash;&n;&t;__cu_len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__copy_in_user
+mdefine_line|#define __copy_in_user(to, from, n)&t;__copy_from_user(to, from, n)
+multiline_comment|/*&n; * __clear_user: - Zero a block of memory in user space, with less checking.&n; * @to:   Destination address, in user space.&n; * @n:    Number of bytes to zero.&n; *&n; * Zero a block of memory in user space.  Caller must check&n; * the specified block with access_ok() before calling this function.&n; *&n; * Returns number of bytes that could not be cleared.&n; * On success, this will be zero.&n; */
 r_static
 r_inline
 id|__kernel_size_t
@@ -228,6 +240,11 @@ id|size
 (brace
 id|__kernel_size_t
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -264,9 +281,9 @@ l_string|&quot;$5&quot;
 comma
 l_string|&quot;$6&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
-l_string|&quot;$9&quot;
+id|__UA_t1
 comma
 l_string|&quot;$31&quot;
 )paren
@@ -276,8 +293,8 @@ id|res
 suffix:semicolon
 )brace
 DECL|macro|clear_user
-mdefine_line|#define clear_user(addr,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void * __cl_addr = (addr);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cl_size = (n);&t;&t;&t;&t;&bslash;&n;&t;if (__cl_size &amp;&amp; access_ok(VERIFY_WRITE,&t;&t;&bslash;&n;&t;&t;((unsigned long)(__cl_addr)), __cl_size))&t;&bslash;&n;&t;&t;__cl_size = __clear_user(__cl_addr, __cl_size);&t;&bslash;&n;&t;__cl_size;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/*&n; * Returns: -EFAULT if exception before terminator, N if the entire&n; * buffer filled, else strlen.&n; */
+mdefine_line|#define clear_user(addr,n)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;void * __cl_addr = (addr);&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __cl_size = (n);&t;&t;&t;&t;&t;&bslash;&n;&t;if (__cl_size &amp;&amp; access_ok(VERIFY_WRITE,&t;&t;&t;&bslash;&n;&t;&t;((unsigned long)(__cl_addr)), __cl_size))&t;&t;&bslash;&n;&t;&t;__cl_size = __clear_user(__cl_addr, __cl_size);&t;&t;&bslash;&n;&t;__cl_size;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/*&n; * __strncpy_from_user: - Copy a NUL terminated string from userspace, with less checking.&n; * @dst:   Destination address, in kernel space.  This buffer must be at&n; *         least @count bytes long.&n; * @src:   Source address, in user space.&n; * @count: Maximum number of bytes to copy, including the trailing NUL.&n; *&n; * Copies a NUL-terminated string from userspace to kernel space.&n; * Caller must check the specified block with access_ok() before calling&n; * this function.&n; *&n; * On success, returns the length of the string (not including the trailing&n; * NUL).&n; *&n; * If access to userspace fails, returns -EFAULT (some data may have been&n; * copied).&n; *&n; * If @count is smaller than the length of the string, copies @count bytes&n; * and returns @count.&n; */
 r_static
 r_inline
 r_int
@@ -300,6 +317,11 @@ id|__len
 (brace
 r_int
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -345,7 +367,7 @@ l_string|&quot;$5&quot;
 comma
 l_string|&quot;$6&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 comma
@@ -356,6 +378,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * strncpy_from_user: - Copy a NUL terminated string from userspace.&n; * @dst:   Destination address, in kernel space.  This buffer must be at&n; *         least @count bytes long.&n; * @src:   Source address, in user space.&n; * @count: Maximum number of bytes to copy, including the trailing NUL.&n; *&n; * Copies a NUL-terminated string from userspace to kernel space.&n; *&n; * On success, returns the length of the string (not including the trailing&n; * NUL).&n; *&n; * If access to userspace fails, returns -EFAULT (some data may have been&n; * copied).&n; *&n; * If @count is smaller than the length of the string, copies @count bytes&n; * and returns @count.&n; */
 r_static
 r_inline
 r_int
@@ -378,6 +401,11 @@ id|__len
 (brace
 r_int
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -423,7 +451,7 @@ l_string|&quot;$5&quot;
 comma
 l_string|&quot;$6&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 comma
@@ -451,6 +479,11 @@ id|s
 r_int
 id|res
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -477,7 +510,7 @@ l_string|&quot;$2&quot;
 comma
 l_string|&quot;$4&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 )paren
@@ -486,6 +519,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Get the size of a NUL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NUL.&n; * On exception, returns 0.&n; *&n; * If there is a limit on the length of a valid string, you may wish to&n; * consider using strnlen_user() instead.&n; */
 DECL|function|strlen_user
 r_static
 r_inline
@@ -501,6 +535,11 @@ id|s
 (brace
 r_int
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -528,7 +567,7 @@ l_string|&quot;$2&quot;
 comma
 l_string|&quot;$4&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 )paren
@@ -556,6 +595,11 @@ id|n
 (brace
 r_int
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -591,7 +635,7 @@ l_string|&quot;$4&quot;
 comma
 l_string|&quot;$5&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 )paren
@@ -600,6 +644,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Get the size of a NUL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NUL.&n; * On exception, returns 0.&n; *&n; * If there is a limit on the length of a valid string, you may wish to&n; * consider using strnlen_user() instead.&n; */
 DECL|function|strnlen_user
 r_static
 r_inline
@@ -618,6 +663,11 @@ id|n
 (brace
 r_int
 id|res
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
@@ -653,7 +703,7 @@ l_string|&quot;$4&quot;
 comma
 l_string|&quot;$5&quot;
 comma
-l_string|&quot;$8&quot;
+id|__UA_t0
 comma
 l_string|&quot;$31&quot;
 )paren
@@ -677,6 +727,17 @@ r_int
 id|nextinsn
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_int
+id|fixup_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
 suffix:semicolon
 macro_line|#endif /* _ASM_UACCESS_H */
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * ip22-int.c: Routines for generic manipulation of the INT[23] ASIC&n; *             found on INDY and Indigo2 workstations.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Andrew R. Baker (andrewb@uab.edu)&n; *                    - Indigo2 changes&n; *                    - Interrupt handling fixes&n; * Copyright (C) 2001, 2003 Ladislav Michl (ladis@linux-mips.org)&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;

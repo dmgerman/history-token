@@ -1,6 +1,18 @@
+macro_line|#ifndef __ASM_SN_SN_PRIVATE_H
+DECL|macro|__ASM_SN_SN_PRIVATE_H
+mdefine_line|#define __ASM_SN_SN_PRIVATE_H
+macro_line|#include &lt;asm/sn/types.h&gt;
 r_extern
 id|nasid_t
 id|master_nasid
+suffix:semicolon
+r_extern
+r_void
+id|cpu_node_probe
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 r_extern
 id|cnodeid_t
@@ -36,20 +48,28 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|install_cpuintr
+id|per_hub_init
 c_func
 (paren
-r_int
-id|cpu
+id|cnodeid_t
+id|cnode
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|install_tlbintr
+id|install_cpu_nmi_handler
 c_func
 (paren
 r_int
-id|cpu
+id|slice
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|install_ipi
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -76,4 +96,5 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
+macro_line|#endif /* __ASM_SN_SN_PRIVATE_H */
 eof

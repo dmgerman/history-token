@@ -9,11 +9,11 @@ DECL|macro|REG_FP
 mdefine_line|#define REG_FP&t;&t;&t;72
 DECL|macro|REG_SP
 mdefine_line|#define REG_SP&t;&t;&t;29
-multiline_comment|/*&n; * Stack layout for the GDB exception handler&n; * Derived from the stack layout described in asm-mips/stackframe.h&n; *&n; * The first PTRSIZE*5 bytes are argument save space for C subroutines.&n; */
+multiline_comment|/*&n; * Stack layout for the GDB exception handler&n; * Derived from the stack layout described in asm-mips/stackframe.h&n; *&n; * The first PTRSIZE*6 bytes are argument save space for C subroutines.&n; */
 DECL|macro|NUMREGS
 mdefine_line|#define NUMREGS&t;&t;&t;90
 DECL|macro|GDB_FR_REG0
-mdefine_line|#define GDB_FR_REG0&t;&t;(PTRSIZE*5)&t;&t;&t;/* 0 */
+mdefine_line|#define GDB_FR_REG0&t;&t;(PTRSIZE*6)&t;&t;&t;/* 0 */
 DECL|macro|GDB_FR_REG1
 mdefine_line|#define GDB_FR_REG1&t;&t;((GDB_FR_REG0) + LONGSIZE)&t;/* 1 */
 DECL|macro|GDB_FR_REG2
@@ -203,13 +203,13 @@ DECL|struct|gdb_regs
 r_struct
 id|gdb_regs
 (brace
-multiline_comment|/*&n;&t; * Pad bytes for argument save space on the stack&n;&t; * 20/40 Bytes for 32/64 bit code&n;&t; */
+multiline_comment|/*&n;&t; * Pad bytes for argument save space on the stack&n;&t; * 24/48 Bytes for 32/64 bit code&n;&t; */
 DECL|member|pad0
 r_int
 r_int
 id|pad0
 (braket
-l_int|5
+l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * saved main processor registers&n;&t; */

@@ -3,17 +3,16 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/lasat/lasat.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
+macro_line|#include &lt;asm/lasat/lasat.h&gt;
 macro_line|#include &lt;asm/lasat/serial.h&gt;
 macro_line|#ifdef CONFIG_PICVUE
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -36,26 +35,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|ide_ops
-op_star
-id|ide_ops
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
 suffix:semicolon
 r_extern
 r_void
@@ -382,36 +361,6 @@ id|INT_MIN
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-DECL|function|lasat_ide_default_irq
-r_static
-r_int
-id|lasat_ide_default_irq
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|lasat_ide_default_io_base
-r_static
-id|ide_ioreg_t
-id|lasat_ide_default_io_base
-c_func
-(paren
-r_int
-id|index
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|lasat_time_init
 r_static
 r_void
@@ -421,7 +370,7 @@ c_func
 r_void
 )paren
 (brace
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|lasat_board_info.li_cpu_hz
 op_div
@@ -448,7 +397,7 @@ c_func
 (paren
 )paren
 op_plus
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_div
 id|HZ
 )paren
@@ -615,6 +564,7 @@ macro_line|#endif
 )brace
 macro_line|#endif
 DECL|function|lasat_setup
+r_static
 r_void
 id|__init
 id|lasat_setup
@@ -681,23 +631,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-id|ide_ops-&gt;ide_default_irq
-op_assign
-op_amp
-id|lasat_ide_default_irq
-suffix:semicolon
-id|ide_ops-&gt;ide_default_io_base
-op_assign
-op_amp
-id|lasat_ide_default_io_base
-suffix:semicolon
-macro_line|#endif
 id|lasat_reboot_setup
 c_func
 (paren
@@ -752,4 +685,11 @@ l_string|&quot;Lasat specific initialization complete&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|lasat_setup
+id|early_initcall
+c_func
+(paren
+id|lasat_setup
+)paren
+suffix:semicolon
 eof

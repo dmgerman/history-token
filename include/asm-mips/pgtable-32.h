@@ -76,12 +76,6 @@ DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 multiline_comment|/*&n; * Entries per page directory level: we use two-level, so&n; * we don&squot;t really have any PMD directory physically.&n; */
 macro_line|#ifdef CONFIG_64BIT_PHYS_ADDR
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;512
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;1
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;2048
 DECL|macro|PGD_ORDER
 mdefine_line|#define PGD_ORDER&t;1
 DECL|macro|PMD_ORDER
@@ -89,12 +83,6 @@ mdefine_line|#define PMD_ORDER&t;0
 DECL|macro|PTE_ORDER
 mdefine_line|#define PTE_ORDER&t;0
 macro_line|#else
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;1024
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;1
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;1024
 DECL|macro|PGD_ORDER
 mdefine_line|#define PGD_ORDER&t;0
 DECL|macro|PMD_ORDER
@@ -102,6 +90,12 @@ mdefine_line|#define PMD_ORDER&t;0
 DECL|macro|PTE_ORDER
 mdefine_line|#define PTE_ORDER&t;0
 macro_line|#endif
+DECL|macro|PTRS_PER_PGD
+mdefine_line|#define PTRS_PER_PGD&t;((PAGE_SIZE &lt;&lt; PGD_ORDER) / sizeof(pgd_t))
+DECL|macro|PTRS_PER_PMD
+mdefine_line|#define PTRS_PER_PMD&t;1
+DECL|macro|PTRS_PER_PTE
+mdefine_line|#define PTRS_PER_PTE&t;((PAGE_SIZE &lt;&lt; PTE_ORDER) / sizeof(pte_t))
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(0x80000000UL/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
@@ -290,10 +284,17 @@ id|pgdp
 )brace
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
+macro_line|#ifdef CONFIG_CPU_VR41XX
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; (PAGE_SHIFT + 2)))
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; (PAGE_SHIFT + 2)) | pgprot_val(prot))
+macro_line|#else
 DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIFT))
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
 multiline_comment|/*&n; * Bits 0, 1, 2, 9 and 10 are taken, split up the 27 bits of offset&n; * into this range:&n; */
 DECL|macro|pte_to_pgoff
@@ -360,21 +361,6 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) ((void)(pte))
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) ((void)(pte))
-r_extern
-id|pgd_t
-id|swapper_pg_dir
-(braket
-l_int|1024
-)braket
-suffix:semicolon
-r_extern
-r_void
-id|paging_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Swap entries must have VALID and GLOBAL bits cleared. */
 macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
 DECL|macro|__swp_type

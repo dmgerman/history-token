@@ -2,83 +2,71 @@ multiline_comment|/*&n; * Definitions for the SGI O2 Crime chip.&n; *&n; * This 
 macro_line|#ifndef __ASM_CRIME_H__
 DECL|macro|__ASM_CRIME_H__
 mdefine_line|#define __ASM_CRIME_H__
-macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Address map&n; */
-macro_line|#ifndef __ASSEMBLY__
 DECL|macro|CRIME_BASE
-mdefine_line|#define CRIME_BASE&t;KSEG1ADDR(0x14000000)
-macro_line|#else
-DECL|macro|CRIME_BASE
-mdefine_line|#define CRIME_BASE&t;0xffffffffb4000000
-macro_line|#endif
-macro_line|#ifndef __ASSEMBLY__
-DECL|function|crime_read_64
+mdefine_line|#define CRIME_BASE&t;0x14000000&t;/* physical */
+r_extern
+r_void
+op_star
+id|sgi_crime
+suffix:semicolon
+DECL|function|crime_read
 r_static
 r_inline
-id|u64
-id|crime_read_64
+r_uint64
+id|crime_read
+c_func
 (paren
 r_int
 r_int
-id|__offset
+id|offset
 )paren
 (brace
 r_return
-op_star
+id|readq
+c_func
 (paren
-(paren
-r_volatile
-id|u64
-op_star
-)paren
-(paren
-id|CRIME_BASE
+id|sgi_crime
 op_plus
-id|__offset
-)paren
+id|offset
 )paren
 suffix:semicolon
 )brace
-DECL|function|crime_write_64
+DECL|function|crime_write
 r_static
 r_inline
 r_void
-id|crime_write_64
+id|crime_write
+c_func
 (paren
-r_int
-r_int
-id|__offset
+r_uint64
+id|val
 comma
-id|u64
-id|__val
+r_int
+r_int
+id|offset
 )paren
 (brace
-op_star
+id|writeq
+c_func
 (paren
-(paren
-r_volatile
-id|u64
-op_star
-)paren
-(paren
-id|CRIME_BASE
+id|val
+comma
+id|sgi_crime
 op_plus
-id|__offset
+id|offset
 )paren
-)paren
-op_assign
-id|__val
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|macro|BIT
 macro_line|#undef BIT
 DECL|macro|BIT
 mdefine_line|#define BIT(x) (1UL &lt;&lt; (x))
 multiline_comment|/* All CRIME registers are 64 bits */
 DECL|macro|CRIME_ID
-mdefine_line|#define CRIME_ID&t;&t;0
+mdefine_line|#define CRIME_ID&t;&t;0x000
 DECL|macro|CRIME_ID_MASK
 mdefine_line|#define CRIME_ID_MASK&t;&t;0xff
 DECL|macro|CRIME_ID_IDBITS
@@ -96,9 +84,9 @@ mdefine_line|#define CRIME_REV_13&t;&t;0x13
 DECL|macro|CRIME_REV_14
 mdefine_line|#define CRIME_REV_14&t;&t;0x14
 DECL|macro|CRIME_CONTROL
-mdefine_line|#define CRIME_CONTROL&t;&t;(0x00000008)
+mdefine_line|#define CRIME_CONTROL&t;&t;0x008
 DECL|macro|CRIME_CONTROL_MASK
-mdefine_line|#define CRIME_CONTROL_MASK&t;0x3fff&t;&t;/* 14-bit registers */
+mdefine_line|#define CRIME_CONTROL_MASK&t;0x3fff
 multiline_comment|/* CRIME_CONTROL register bits */
 DECL|macro|CRIME_CONTROL_TRITON_SYSADC
 mdefine_line|#define CRIME_CONTROL_TRITON_SYSADC&t;0x2000
@@ -125,13 +113,13 @@ mdefine_line|#define CRIME_CONTROL_WBUF_HWM&t;&t;0x00f0
 DECL|macro|CRIME_CONTROL_WBUF_SHFT
 mdefine_line|#define CRIME_CONTROL_WBUF_SHFT&t;&t;8
 DECL|macro|CRIME_INT_STAT
-mdefine_line|#define CRIME_INT_STAT&t;&t;&t;(0x00000010)
+mdefine_line|#define CRIME_INT_STAT&t;&t;&t;0x010
 DECL|macro|CRIME_INT_MASK
-mdefine_line|#define CRIME_INT_MASK&t;&t;&t;(0x00000018)
+mdefine_line|#define CRIME_INT_MASK&t;&t;&t;0x018
 DECL|macro|CRIME_SOFT_INT
-mdefine_line|#define CRIME_SOFT_INT&t;&t;&t;(0x00000020)
+mdefine_line|#define CRIME_SOFT_INT&t;&t;&t;0x020
 DECL|macro|CRIME_HARD_INT
-mdefine_line|#define CRIME_HARD_INT&t;&t;&t;(0x00000028)
+mdefine_line|#define CRIME_HARD_INT&t;&t;&t;0x028
 multiline_comment|/* Bits in CRIME_INT_XXX and CRIME_HARD_INT */
 DECL|macro|MACE_VID_IN1_INT
 mdefine_line|#define MACE_VID_IN1_INT&t;&t;BIT (0)
@@ -208,47 +196,39 @@ DECL|macro|CRIME_MACEPCI_INT_MASK
 mdefine_line|#define CRIME_MACEPCI_INT_MASK&t;&t;0xff00
 DECL|macro|CRIME_CRIME_INT_MASK
 mdefine_line|#define CRIME_CRIME_INT_MASK&t;&t;0xffff0000
-multiline_comment|/*&n; * XXX Todo&n; */
 DECL|macro|CRIME_DOG
-mdefine_line|#define CRIME_DOG&t;&t;&t;(0x00000030)
-multiline_comment|/* We are word-play compatible but not misspelling compatible */
-DECL|macro|MC_GRUFF
-mdefine_line|#define MC_GRUFF&t;&t;&t;CRIME_DOG
+mdefine_line|#define CRIME_DOG&t;&t;&t;0x030
 DECL|macro|CRIME_DOG_MASK
-mdefine_line|#define CRIME_DOG_MASK&t;&t;&t;(0x001fffff)
+mdefine_line|#define CRIME_DOG_MASK&t;&t;&t;0x001fffff
 multiline_comment|/* CRIME_DOG register bits */
 DECL|macro|CRIME_DOG_POWER_ON_RESET
-mdefine_line|#define CRIME_DOG_POWER_ON_RESET&t;(0x00010000)
+mdefine_line|#define CRIME_DOG_POWER_ON_RESET&t;0x00010000
 DECL|macro|CRIME_DOG_WARM_RESET
-mdefine_line|#define CRIME_DOG_WARM_RESET&t;&t;(0x00080000)
+mdefine_line|#define CRIME_DOG_WARM_RESET&t;&t;0x00080000
 DECL|macro|CRIME_DOG_TIMEOUT
 mdefine_line|#define CRIME_DOG_TIMEOUT&t;&t;(CRIME_DOG_POWER_ON_RESET|CRIME_DOG_WARM_RESET)
 DECL|macro|CRIME_DOG_VALUE
-mdefine_line|#define CRIME_DOG_VALUE&t;&t;&t;(0x00007fff)&t;/* ??? */
-DECL|macro|CRIME_TIME
-mdefine_line|#define CRIME_TIME&t;&t;&t;(0x00000038)
-DECL|macro|CRIME_TIME_MASK
-mdefine_line|#define CRIME_TIME_MASK&t;&t;&t;(0x0000ffffffffffff)
-macro_line|#ifdef MASTER_FREQ
-DECL|macro|MASTER_FREQ
-macro_line|#undef MASTER_FREQ
-macro_line|#endif
+mdefine_line|#define CRIME_DOG_VALUE&t;&t;&t;0x00007fff
+DECL|macro|CRIME_TIMER
+mdefine_line|#define CRIME_TIMER&t;&t;&t;0x038
+DECL|macro|CRIME_TIMER_MASK
+mdefine_line|#define CRIME_TIMER_MASK&t;&t;0x0000ffffffffffff
 DECL|macro|CRIME_MASTER_FREQ
 mdefine_line|#define CRIME_MASTER_FREQ&t;&t;66666500&t;/* Crime upcounter frequency */
 DECL|macro|CRIME_NS_PER_TICK
-mdefine_line|#define CRIME_NS_PER_TICK&t;&t;15&t;/* for delay_calibrate */
+mdefine_line|#define CRIME_NS_PER_TICK&t;&t;15&t;&t;/* for delay_calibrate */
 DECL|macro|CRIME_CPU_ERROR_ADDR
-mdefine_line|#define CRIME_CPU_ERROR_ADDR&t;&t;(0x00000040)
+mdefine_line|#define CRIME_CPU_ERROR_ADDR&t;&t;0x040
 DECL|macro|CRIME_CPU_ERROR_ADDR_MASK
-mdefine_line|#define CRIME_CPU_ERROR_ADDR_MASK&t;(0x3ffffffff)
+mdefine_line|#define CRIME_CPU_ERROR_ADDR_MASK&t;0x3ffffffff
 DECL|macro|CRIME_CPU_ERROR_STAT
-mdefine_line|#define CRIME_CPU_ERROR_STAT&t;&t;(0x00000048)
+mdefine_line|#define CRIME_CPU_ERROR_STAT&t;&t;0x048
 multiline_comment|/* REV_PETTY only! */
 DECL|macro|CRIME_CPU_ERROR_ENA
-mdefine_line|#define CRIME_CPU_ERROR_ENA&t;&t;(0x00000050)
+mdefine_line|#define CRIME_CPU_ERROR_ENA&t;&t;0x050
 multiline_comment|/*&n; * bit definitions for CRIME/VICE error status and enable registers&n; */
 DECL|macro|CRIME_CPU_ERROR_MASK
-mdefine_line|#define CRIME_CPU_ERROR_MASK           0x7UL   /* cpu error stat is 3 bits */
+mdefine_line|#define CRIME_CPU_ERROR_MASK           0x7&t;/* cpu error stat is 3 bits */
 DECL|macro|CRIME_CPU_ERROR_CPU_ILL_ADDR
 mdefine_line|#define CRIME_CPU_ERROR_CPU_ILL_ADDR   0x4
 DECL|macro|CRIME_CPU_ERROR_VICE_WRT_PRTY
@@ -279,11 +259,11 @@ mdefine_line|#define CRIME_CPU_ERROR_CPU_INV_ADDR_WR&t;&t;0x2
 DECL|macro|CRIME_CPU_ERROR_CPU_INV_REG_ADDR
 mdefine_line|#define CRIME_CPU_ERROR_CPU_INV_REG_ADDR&t;0x1
 DECL|macro|CRIME_VICE_ERROR_ADDR
-mdefine_line|#define CRIME_VICE_ERROR_ADDR&t;&t;(0x00000058)
+mdefine_line|#define CRIME_VICE_ERROR_ADDR&t;&t;0x058
 DECL|macro|CRIME_VICE_ERROR_ADDR_MASK
-mdefine_line|#define CRIME_VICE_ERROR_ADDR_MASK&t;(0x3fffffff)
+mdefine_line|#define CRIME_VICE_ERROR_ADDR_MASK&t;0x3fffffff
 DECL|macro|CRIME_MEM_CONTROL
-mdefine_line|#define CRIME_MEM_CONTROL&t;&t;(0x00000200)
+mdefine_line|#define CRIME_MEM_CONTROL&t;&t;0x200
 DECL|macro|CRIME_MEM_CONTROL_MASK
 mdefine_line|#define CRIME_MEM_CONTROL_MASK&t;&t;0x3&t;/* 25 cent register */
 DECL|macro|CRIME_MEM_CONTROL_ECC_ENA
@@ -292,22 +272,22 @@ DECL|macro|CRIME_MEM_CONTROL_USE_ECC_REPL
 mdefine_line|#define CRIME_MEM_CONTROL_USE_ECC_REPL&t;0x2
 multiline_comment|/*&n; * macros for CRIME memory bank control registers.&n; */
 DECL|macro|CRIME_MEM_BANK_CONTROL
-mdefine_line|#define CRIME_MEM_BANK_CONTROL(__bank)&t;&t;(0x00000208 + ((__bank) &lt;&lt; 3))
+mdefine_line|#define CRIME_MEM_BANK_CONTROL(__bank)&t;&t;(0x208 + ((__bank) &lt;&lt; 3))
 DECL|macro|CRIME_MEM_BANK_CONTROL_MASK
 mdefine_line|#define CRIME_MEM_BANK_CONTROL_MASK&t;&t;0x11f /* 9 bits 7:5 reserved */
 DECL|macro|CRIME_MEM_BANK_CONTROL_ADDR
 mdefine_line|#define CRIME_MEM_BANK_CONTROL_ADDR&t;&t;0x01f
 DECL|macro|CRIME_MEM_BANK_CONTROL_SDRAM_SIZE
 mdefine_line|#define CRIME_MEM_BANK_CONTROL_SDRAM_SIZE&t;0x100
-DECL|macro|CRIME_MEM_REFRESH_COUNTER
-mdefine_line|#define CRIME_MEM_REFRESH_COUNTER&t;(0x00000248)
-DECL|macro|CRIME_MEM_REFRESH_COUNTER_MASK
-mdefine_line|#define CRIME_MEM_REFRESH_COUNTER_MASK&t;0x7ff&t;/* 11-bit register */
 DECL|macro|CRIME_MAXBANKS
-mdefine_line|#define CRIME_MAXBANKS                 8
+mdefine_line|#define CRIME_MAXBANKS&t;&t;&t;&t;8
+DECL|macro|CRIME_MEM_REFRESH_COUNTER
+mdefine_line|#define CRIME_MEM_REFRESH_COUNTER&t;0x248
+DECL|macro|CRIME_MEM_REFRESH_COUNTER_MASK
+mdefine_line|#define CRIME_MEM_REFRESH_COUNTER_MASK&t;0x7ff&t;
 multiline_comment|/*&n; * CRIME Memory error status register bit definitions&n; */
 DECL|macro|CRIME_MEM_ERROR_STAT
-mdefine_line|#define CRIME_MEM_ERROR_STAT&t;&t;(0x00000250)
+mdefine_line|#define CRIME_MEM_ERROR_STAT&t;&t;0x250
 DECL|macro|CRIME_MEM_ERROR_STAT_MASK
 mdefine_line|#define CRIME_MEM_ERROR_STAT_MASK       0x0ff7ffff    /* 28-bit register */
 DECL|macro|CRIME_MEM_ERROR_MACE_ID
@@ -347,19 +327,19 @@ mdefine_line|#define CRIME_MEM_ERROR_INV_MEM_ADDR_WR&t;0x04000000
 DECL|macro|CRIME_MEM_ERROR_INV_MEM_ADDR_RMW
 mdefine_line|#define CRIME_MEM_ERROR_INV_MEM_ADDR_RMW&t;0x08000000
 DECL|macro|CRIME_MEM_ERROR_ADDR
-mdefine_line|#define CRIME_MEM_ERROR_ADDR&t;&t;(0x00000258)
+mdefine_line|#define CRIME_MEM_ERROR_ADDR&t;&t;0x258
 DECL|macro|CRIME_MEM_ERROR_ADDR_MASK
 mdefine_line|#define CRIME_MEM_ERROR_ADDR_MASK&t;0x3fffffff
 DECL|macro|CRIME_MEM_ERROR_ECC_SYN
-mdefine_line|#define CRIME_MEM_ERROR_ECC_SYN&t;&t;(0x00000260)
+mdefine_line|#define CRIME_MEM_ERROR_ECC_SYN&t;&t;0x260
 DECL|macro|CRIME_MEM_ERROR_ECC_SYN_MASK
 mdefine_line|#define CRIME_MEM_ERROR_ECC_SYN_MASK&t;0xffffffff
 DECL|macro|CRIME_MEM_ERROR_ECC_CHK
-mdefine_line|#define CRIME_MEM_ERROR_ECC_CHK&t;&t;(0x00000268)
+mdefine_line|#define CRIME_MEM_ERROR_ECC_CHK&t;&t;0x268
 DECL|macro|CRIME_MEM_ERROR_ECC_CHK_MASK
 mdefine_line|#define CRIME_MEM_ERROR_ECC_CHK_MASK    0xffffffff
 DECL|macro|CRIME_MEM_ERROR_ECC_REPL
-mdefine_line|#define CRIME_MEM_ERROR_ECC_REPL&t;(0x00000270)
+mdefine_line|#define CRIME_MEM_ERROR_ECC_REPL&t;0x270
 DECL|macro|CRIME_MEM_ERROR_ECC_REPL_MASK
 mdefine_line|#define CRIME_MEM_ERROR_ECC_REPL_MASK&t;0xffffffff
 macro_line|#endif /* __ASM_CRIME_H__ */

@@ -49,22 +49,6 @@ DECL|macro|EXT_IRQ5_TO_IP
 mdefine_line|#define EXT_IRQ5_TO_IP 7 /* IP 7 */
 DECL|macro|ALLINTS_NOTIMER
 mdefine_line|#define ALLINTS_NOTIMER (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4)
-DECL|variable|local_bh_count
-r_int
-r_int
-id|local_bh_count
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|variable|local_irq_count
-r_int
-r_int
-id|local_irq_count
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 r_void
 id|disable_it8172_irq
 c_func
@@ -1384,10 +1368,8 @@ suffix:semicolon
 singleline_comment|//printk(&quot;LPC int %d&bslash;n&quot;, irq);
 )brace
 r_else
-(brace
 r_return
 suffix:semicolon
-)brace
 id|do_IRQ
 c_func
 (paren

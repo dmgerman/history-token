@@ -2,7 +2,6 @@ multiline_comment|/*&n; * asmmacro.h: Assembler macros to make things easier to 
 macro_line|#ifndef _ASM_ASMMACRO_32_H
 DECL|macro|_ASM_ASMMACRO_32_H
 mdefine_line|#define _ASM_ASMMACRO_32_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/offset.h&gt;
 macro_line|#include &lt;asm/regdef.h&gt;
 macro_line|#include &lt;asm/fpregdef.h&gt;

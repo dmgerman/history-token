@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * r2300.c: R2000 and R3000 specific mmu/cache code.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * with a lot of changes to make this thing work for R3000s&n; * Tx39XX R4k style caches added. HK&n; * Copyright (C) 1998, 1999, 2000 Harald Koerfgen&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; * Copyright (C) 2002  Ralf Baechle&n; * Copyright (C) 2002  Maciej W. Rozycki&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1223,10 +1222,10 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-DECL|function|r3k_tlb_init
+DECL|function|tlb_init
 r_void
 id|__init
-id|r3k_tlb_init
+id|tlb_init
 c_func
 (paren
 r_void
