@@ -2747,6 +2747,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function w83977af_dma_xmit_complete (self)&n; *&n; *    The transfer of a frame in finished. So do the necessary things&n; *&n; *    &n; */
 DECL|function|w83977af_dma_xmit_complete
+r_static
 r_void
 id|w83977af_dma_xmit_complete
 c_func
