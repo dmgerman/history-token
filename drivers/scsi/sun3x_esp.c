@@ -283,17 +283,6 @@ op_star
 id|sp
 )paren
 suffix:semicolon
-DECL|variable|cmd_buffer
-r_static
-r_volatile
-r_int
-r_char
-id|cmd_buffer
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* This is where all commands are put&n;                                 * before they are trasfered to the ESP chip&n;                                 * via PIO.&n;                                 */
 multiline_comment|/* Detecting ESP chips on the machine.  This is the simple and easy&n; * version.&n; */
 DECL|function|sun3x_esp_detect
 r_int
@@ -481,35 +470,6 @@ op_star
 )paren
 id|SUN3X_ESP_DMA
 suffix:semicolon
-macro_line|#if 0
-id|esp-&gt;esp_command
-op_assign
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|cmd_buffer
-suffix:semicolon
-id|esp-&gt;esp_command_dvma
-op_assign
-id|dvma_map
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|cmd_buffer
-comma
-r_sizeof
-(paren
-id|cmd_buffer
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|esp-&gt;esp_command
 op_assign
 (paren
@@ -536,7 +496,6 @@ r_int
 id|esp-&gt;esp_command
 )paren
 suffix:semicolon
-macro_line|#endif
 id|esp-&gt;irq
 op_assign
 l_int|2
