@@ -3692,7 +3692,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* obj is assumed to point to allocated memory of size at least len: */
-r_static
 r_int
 DECL|function|read_bytes_from_xdr_buf
 id|read_bytes_from_xdr_buf

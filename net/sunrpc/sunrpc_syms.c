@@ -668,6 +668,13 @@ c_func
 id|xdr_buf_read_netobj
 )paren
 suffix:semicolon
+DECL|variable|read_bytes_from_xdr_buf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_bytes_from_xdr_buf
+)paren
+suffix:semicolon
 multiline_comment|/* Debugging symbols */
 macro_line|#ifdef RPC_DEBUG
 DECL|variable|rpc_debug
