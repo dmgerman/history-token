@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 multiline_comment|/*&n; * We use a start+len construction, which provides full use of the &n; * allocated memory.&n; * -- Florian Coosmann (FGC)&n; * &n; * Reads with count = 0 should always return 0.&n; * -- Julian Bradfield 1999-06-07.&n; */

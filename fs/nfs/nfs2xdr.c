@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfs/nfs2xdr.c&n; *&n; * XDR functions to encode/decode NFS RPC arguments and results.&n; *&n; * Copyright (C) 1992, 1993, 1994  Rick Sladkey&n; * Copyright (C) 1996 Olaf Kirch&n; * 04 Aug 1998  Ion Badulescu &lt;ionut@cs.columbia.edu&gt;&n; * &t;&t;FIFO&squot;s need special handling in NFSv2&n; */
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;

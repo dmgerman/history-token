@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/umsdos/rdir.c&n; *&n; *  Written 1994 by Jacques Gelinas&n; *&n; *  Extended MS-DOS directory pure MS-DOS handling functions&n; *  (For directory without EMD file).&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

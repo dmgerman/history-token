@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/fs/umsdos/namei.c&n; *&n; *      Written 1993 b
 multiline_comment|/*&n;  * You are in the maze of twisted functions - half of them shouldn&squot;t&n;  * be here...&n;  */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;

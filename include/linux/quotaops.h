@@ -4,8 +4,8 @@ DECL|macro|_LINUX_QUOTAOPS_
 mdefine_line|#define _LINUX_QUOTAOPS_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#if defined(CONFIG_QUOTA)
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#if defined(CONFIG_QUOTA)
 multiline_comment|/*&n; * declaration of quota_function calls in kernel.&n; */
 r_extern
 r_void

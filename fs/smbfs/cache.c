@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  cache.c&n; *&n; * Copyright (C) 1997 by Bill Hawes&n; *&n; * Routines to support directory cacheing using the page cache.&n; * This cache code is almost directly taken from ncpfs.&n; *&n; * Please add a note about your changes to smbfs in the ChangeLog file.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

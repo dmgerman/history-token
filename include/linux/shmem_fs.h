@@ -1,22 +1,10 @@
 macro_line|#ifndef __SHMEM_FS_H
 DECL|macro|__SHMEM_FS_H
 mdefine_line|#define __SHMEM_FS_H
+macro_line|#include &lt;linux/swap.h&gt;
 multiline_comment|/* inode in-kernel data */
 DECL|macro|SHMEM_NR_DIRECT
 mdefine_line|#define SHMEM_NR_DIRECT 16
-multiline_comment|/*&n; * A swap entry has to fit into a &quot;unsigned long&quot;, as&n; * the entry is hidden in the &quot;index&quot; field of the&n; * swapper address space.&n; *&n; * We have to move it here, since not every user of fs.h is including&n; * mm.h, but mm.h is including fs.h via sched .h :-/&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|val
-r_int
-r_int
-id|val
-suffix:semicolon
-DECL|typedef|swp_entry_t
-)brace
-id|swp_entry_t
-suffix:semicolon
 r_extern
 id|atomic_t
 id|shmem_nrpages

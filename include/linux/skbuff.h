@@ -12,6 +12,8 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 DECL|macro|HAVE_ALLOC_SKB
 mdefine_line|#define HAVE_ALLOC_SKB&t;&t;/* For the drivers to know */
 DECL|macro|HAVE_ALIGNABLE_SKB

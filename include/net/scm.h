@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_NET_SCM_H
 DECL|macro|__LINUX_NET_SCM_H
 mdefine_line|#define __LINUX_NET_SCM_H
+macro_line|#include &lt;linux/limits.h&gt;
 multiline_comment|/* Well, we should have at least one descriptor open&n; * to accept passed FDs 8)&n; */
 DECL|macro|SCM_MAX_FD
 mdefine_line|#define SCM_MAX_FD&t;(OPEN_MAX-1)

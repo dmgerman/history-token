@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface that&squot;s exported to &n; * &t;the world for all devices.&n; * Copyright (c) 2002 Patrick Mochel&n; *&t;&t; 2002 Open Source Development Lab&n; */
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 multiline_comment|/**&n; * device_read_status - report some device information&n; * @page:&t;page-sized buffer to write into&n; * @count:&t;number of bytes requested&n; * @off:&t;offset into buffer&n; * @data:&t;device-specific data&n; *&n; * Report some human-readable information about the device.&n; * This includes the name, the bus id, and the current power state.&n; */
 DECL|function|device_read_status
 r_static

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/nfs/dir.c&n; *&n; *  Copyright (C) 1992  Rick Sladkey&n; *&n; *  nfs directory handling functions&n; *&n; * 10 Apr 1996&t;Added silly rename for unlink&t;--okir&n; * 28 Sep 1996&t;Improved directory cache --okir&n; * 23 Aug 1997  Claus Heine claus@momo.math.rwth-aachen.de &n; *              Re-implemented silly rename for unlink, newly implemented&n; *              silly rename for nfs_rename() following the suggestions&n; *              of Olaf Kirch (okir) found in this file.&n; *              Following Linus comments on my original hack, this version&n; *              depends only on the dcache stuff and doesn&squot;t touch the inode&n; *              layer (iput() and friends).&n; *  6 Jun 1999&t;Cache readdir lookups in the page cache. -DaveM&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfscache.c&n; *&n; * Request reply cache. This is currently a global cache, but this may&n; * change in the future and be a per-client cache.&n; *&n; * This code is heavily inspired by the 44BSD implementation, although&n; * it does things a bit differently.&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;

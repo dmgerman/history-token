@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by r
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 multiline_comment|/* this is one and only function that is used outside (do_balance.c) */
 r_int

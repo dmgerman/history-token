@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_lookup.c,v 1.21 2002/01/02 22:00:13 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - lookup and other directory related code.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

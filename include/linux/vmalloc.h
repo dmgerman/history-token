@@ -1,7 +1,6 @@
 macro_line|#ifndef __LINUX_VMALLOC_H
 DECL|macro|__LINUX_VMALLOC_H
 mdefine_line|#define __LINUX_VMALLOC_H
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

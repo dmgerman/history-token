@@ -2,7 +2,7 @@ multiline_comment|/*&n; * QNX4 file system, Linux implementation.&n; *&n; * Vers
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/qnx4_fs.h&gt;
 multiline_comment|/*&n; * We have mostly NULL&squot;s here: the current defaults are ok for&n; * the qnx4 filesystem.&n; */
 DECL|variable|qnx4_file_operations

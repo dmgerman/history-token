@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/bitmap.c&n; *&n; *  (c) 1996 Hans-Joachim Widmaier&n; *&n; *  bitmap.c contains the code that handles all bitmap related stuff -&n; *  block allocation, deallocation, calculation of free space.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/affs_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

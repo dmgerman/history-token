@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/fs/ext2/inode.c&n; *&n; * Copyright (C) 1992, 1
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

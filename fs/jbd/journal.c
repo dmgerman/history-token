@@ -1,13 +1,12 @@
 multiline_comment|/*&n; * linux/fs/journal.c&n; *&n; * Written by Stephen C. Tweedie &lt;sct@redhat.com&gt;, 1998&n; *&n; * Copyright 1998 Red Hat corp --- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * Generic filesystem journal-writing code; part of the ext2fs&n; * journaling system.&n; *&n; * This file manages journals: areas of disk reserved for logging&n; * transactional updates.  This includes the kernel journaling thread&n; * which is responsible for scheduling updates to the log.&n; *&n; * We do not actually manage the physical storage of the journal in this&n; * file: that is left to a per-journal policy function, which allows us&n; * to store the journal within a filesystem-specified area for ext2&n; * journaling (ext2 can use a reserved inode for storing the log).&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

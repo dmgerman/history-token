@@ -2,6 +2,7 @@ multiline_comment|/*&n; * inode.c&n; *&n; * Copyright (c) 1999 Al Smith&n; *&n; 
 macro_line|#include &lt;linux/efs_fs.h&gt;
 macro_line|#include &lt;linux/efs_fs_sb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 r_extern
 r_int
 id|efs_get_block

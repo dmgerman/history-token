@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG

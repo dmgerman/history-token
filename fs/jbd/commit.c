@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/fs/commit.c&n; *&n; * Written by Stephen C. Tweedie &lt;sct@redhat.com&gt;, 1998&n; *&n; * Copyright 1998 Red Hat corp --- All Rights Reserved&n; *&n; * This file is part of the Linux kernel and is made available under&n; * the terms of the GNU General Public License, version 2, or at your&n; * option, any later version, incorporated herein by reference.&n; *&n; * Journal commit routines for the generic filesystem journaling code;&n; * part of the ext2fs journaling system.&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

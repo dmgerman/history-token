@@ -1,6 +1,7 @@
 macro_line|#ifndef _ISO_FS_I
 DECL|macro|_ISO_FS_I
 mdefine_line|#define _ISO_FS_I
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|enum|isofs_file_format
 r_enum
 id|isofs_file_format
