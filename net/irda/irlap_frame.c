@@ -376,10 +376,12 @@ id|snrm_frame
 )paren
 )paren
 (brace
-multiline_comment|/* Copy the new connection address */
+multiline_comment|/* Copy the new connection address ignoring the C/R bit */
 id|info-&gt;caddr
 op_assign
 id|frame-&gt;ncaddr
+op_amp
+l_int|0xFE
 suffix:semicolon
 multiline_comment|/* Check if the new connection address is valid */
 r_if
