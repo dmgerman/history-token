@@ -3678,6 +3678,33 @@ id|husb
 )paren
 suffix:semicolon
 )brace
+DECL|function|hci_usb_notify
+r_static
+r_void
+id|hci_usb_notify
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+comma
+r_int
+r_int
+id|evt
+)paren
+(brace
+id|BT_DBG
+c_func
+(paren
+l_string|&quot;%s evt %d&quot;
+comma
+id|hdev-&gt;name
+comma
+id|evt
+)paren
+suffix:semicolon
+)brace
 DECL|function|hci_usb_probe
 r_int
 id|hci_usb_probe
@@ -4231,6 +4258,10 @@ c_func
 l_string|&quot;Can&squot;t set isoc interface settings&quot;
 )paren
 suffix:semicolon
+id|husb-&gt;isoc_iface
+op_assign
+id|isoc_iface
+suffix:semicolon
 id|usb_driver_release_interface
 c_func
 (paren
@@ -4239,6 +4270,10 @@ id|hci_usb_driver
 comma
 id|isoc_iface
 )paren
+suffix:semicolon
+id|husb-&gt;isoc_iface
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -4374,6 +4409,10 @@ suffix:semicolon
 id|hdev-&gt;destruct
 op_assign
 id|hci_usb_destruct
+suffix:semicolon
+id|hdev-&gt;notify
+op_assign
+id|hci_usb_notify
 suffix:semicolon
 id|hdev-&gt;owner
 op_assign
