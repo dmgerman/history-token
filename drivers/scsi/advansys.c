@@ -6350,15 +6350,18 @@ mdefine_line|#define QHSTA_M_FROZEN_TIDQ         0x46 /* TID Queue frozen. */
 DECL|macro|QHSTA_M_SGBACKUP_ERROR
 mdefine_line|#define QHSTA_M_SGBACKUP_ERROR      0x47 /* Scatter-Gather backup error */
 multiline_comment|/*&n; * Default EEPROM Configuration structure defined in a_init.c.&n; */
-r_extern
+DECL|variable|Default_3550_EEPROM_Config
+r_static
 id|ADVEEP_3550_CONFIG
 id|Default_3550_EEPROM_Config
 suffix:semicolon
-r_extern
+DECL|variable|Default_38C0800_EEPROM_Config
+r_static
 id|ADVEEP_38C0800_CONFIG
 id|Default_38C0800_EEPROM_Config
 suffix:semicolon
-r_extern
+DECL|variable|Default_38C1600_EEPROM_Config
+r_static
 id|ADVEEP_38C1600_CONFIG
 id|Default_38C1600_EEPROM_Config
 suffix:semicolon
