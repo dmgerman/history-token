@@ -123,6 +123,8 @@ DECL|macro|E1000_RX_BUFFER_WRITE
 mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16&t;/* Must be power of 2 */
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
+DECL|macro|E1000_EEPROM_82544_APM
+mdefine_line|#define E1000_EEPROM_82544_APM 0x0004
 DECL|macro|E1000_EEPROM_APME
 mdefine_line|#define E1000_EEPROM_APME    0x0400
 macro_line|#ifndef E1000_MASTER_SLAVE
@@ -312,6 +314,11 @@ r_struct
 id|e1000_desc_ring
 id|tx_ring
 suffix:semicolon
+DECL|member|previous_buffer_info
+r_struct
+id|e1000_buffer
+id|previous_buffer_info
+suffix:semicolon
 DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
@@ -363,6 +370,10 @@ suffix:semicolon
 DECL|member|pcix_82544
 id|boolean_t
 id|pcix_82544
+suffix:semicolon
+DECL|member|detect_tx_hung
+id|boolean_t
+id|detect_tx_hung
 suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
