@@ -610,6 +610,19 @@ dot
 dot
 )paren
 suffix:semicolon
+multiline_comment|/* Check availability of legacy devices like i8042 */
+DECL|member|check_legacy_ioport
+r_int
+(paren
+op_star
+id|check_legacy_ioport
+)paren
+(paren
+r_int
+r_int
+id|baseport
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

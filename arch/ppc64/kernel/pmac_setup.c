@@ -1422,6 +1422,23 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
+multiline_comment|/*&n; * pmac has no legacy IO, anything calling this function has to&n; * fail or bad things will happen&n; */
+DECL|function|pmac_check_legacy_ioport
+r_static
+r_int
+id|pmac_check_legacy_ioport
+c_func
+(paren
+r_int
+r_int
+id|baseport
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 DECL|function|pmac_declare_of_platform_devices
 r_static
 r_int
@@ -1624,6 +1641,10 @@ id|progress
 op_assign
 id|pmac_progress
 comma
+dot
+id|check_legacy_ioport
+op_assign
+id|pmac_check_legacy_ioport
 )brace
 suffix:semicolon
 eof

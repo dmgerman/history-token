@@ -222,7 +222,7 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n; * On ix86 platforms touching the i8042 data register region can do really&n; * bad things. Because of this the region is always reserved on ix86 boxes.&n; */
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(__mips__)
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(__mips__) &amp;&amp; !defined (CONFIG_PPC64)
 r_if
 c_cond
 (paren
@@ -263,6 +263,39 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_PPC64)
+r_if
+c_cond
+(paren
+id|check_legacy_ioport
+c_func
+(paren
+id|I8042_DATA_REG
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|I8042_DATA_REG
+comma
+l_int|16
+comma
+l_string|&quot;i8042&quot;
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -277,7 +310,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__)
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__sh__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(CONFIG_PPC64)
 id|release_region
 c_func
 (paren

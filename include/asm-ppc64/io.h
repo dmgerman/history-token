@@ -1471,6 +1471,17 @@ DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
+multiline_comment|/* Check of existence of legacy devices */
+r_extern
+r_int
+id|check_legacy_ioport
+c_func
+(paren
+r_int
+r_int
+id|base_port
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _PPC64_IO_H */
 eof
