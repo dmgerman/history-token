@@ -1159,6 +1159,28 @@ comma
 id|AMD8111
 )brace
 suffix:semicolon
+DECL|variable|chipname
+r_static
+r_const
+r_char
+op_star
+id|chipname
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;AMD756&quot;
+comma
+l_string|&quot;AMD766&quot;
+comma
+l_string|&quot;AMD768&quot;
+comma
+l_string|&quot;nVidia nForce&quot;
+comma
+l_string|&quot;AMD8111&quot;
+comma
+)brace
+suffix:semicolon
 DECL|variable|amd756_ids
 r_static
 r_struct
@@ -1500,14 +1522,17 @@ op_assign
 op_amp
 id|pdev-&gt;dev
 suffix:semicolon
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|amd756_adapter.name
 comma
-id|I2C_NAME_SIZE
+l_string|&quot;SMBus %s adapter at %04x&quot;
 comma
-l_string|&quot;SMBus AMD756 adapter at %04x&quot;
+id|chipname
+(braket
+id|id-&gt;driver_data
+)braket
 comma
 id|amd756_ioport
 )paren
