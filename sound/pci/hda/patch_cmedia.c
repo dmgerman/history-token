@@ -2353,8 +2353,9 @@ l_string|&quot;hda_codec: Unknown model for CMI9880&bslash;n&quot;
 suffix:semicolon
 id|spec-&gt;board_config
 op_assign
-id|CMI_MINIMAL
+id|CMI_FULL_DIG
 suffix:semicolon
+multiline_comment|/* try everything */
 )brace
 r_switch
 c_cond
