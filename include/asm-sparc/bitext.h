@@ -37,6 +37,10 @@ DECL|member|first_free
 r_int
 id|first_free
 suffix:semicolon
+DECL|member|num_colors
+r_int
+id|num_colors
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
