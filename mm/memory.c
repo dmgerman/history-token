@@ -113,7 +113,8 @@ r_void
 id|free_one_pmd
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -203,7 +204,8 @@ r_void
 id|free_one_pgd
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -313,7 +315,8 @@ r_void
 id|clear_page_tables
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -1428,7 +1431,8 @@ DECL|function|zap_pte_range
 id|zap_pte_range
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -1726,13 +1730,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|zap_pmd_range
 r_static
 r_void
+DECL|function|zap_pmd_range
 id|zap_pmd_range
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -1883,7 +1888,8 @@ r_void
 id|unmap_page_range
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -2010,7 +2016,7 @@ id|vma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Dispose of an entire mmu_gather_t per rescheduling point */
+multiline_comment|/* Dispose of an entire struct mmu_gather per rescheduling point */
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
 mdefine_line|#define ZAP_BLOCK_SIZE&t;(FREE_PTE_NR * PAGE_SIZE)
@@ -2052,7 +2058,8 @@ id|mm
 op_assign
 id|vma-&gt;vm_mm
 suffix:semicolon
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 suffix:semicolon

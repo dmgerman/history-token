@@ -257,7 +257,8 @@ r_void
 id|__pte_free_tlb
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -342,7 +343,8 @@ r_int
 id|__pmd_free_tlb
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma

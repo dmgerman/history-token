@@ -19,7 +19,8 @@ r_void
 id|unmap_page_range
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 comma
 r_struct
@@ -41,7 +42,8 @@ r_void
 id|clear_page_tables
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -3769,7 +3771,8 @@ r_void
 id|free_pgtables
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -4190,7 +4193,8 @@ r_int
 id|end
 )paren
 (brace
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 suffix:semicolon
@@ -5387,7 +5391,8 @@ op_star
 id|mm
 )paren
 (brace
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 suffix:semicolon
