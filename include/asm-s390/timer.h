@@ -152,12 +152,5 @@ op_star
 id|timer
 )paren
 suffix:semicolon
-r_int
-id|stop_timers
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 eof
