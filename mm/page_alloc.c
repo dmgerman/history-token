@@ -339,6 +339,10 @@ id|page-&gt;mapping
 op_assign
 l_int|NULL
 suffix:semicolon
+id|tainted
+op_or_assign
+id|TAINT_BAD_PAGE
+suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_HUGETLB_PAGE
 DECL|macro|prep_compound_page

@@ -755,6 +755,8 @@ DECL|macro|TAINT_FORCED_RMMOD
 mdefine_line|#define TAINT_FORCED_RMMOD&t;&t;(1&lt;&lt;3)
 DECL|macro|TAINT_MACHINE_CHECK
 mdefine_line|#define TAINT_MACHINE_CHECK&t;&t;(1&lt;&lt;4)
+DECL|macro|TAINT_BAD_PAGE
+mdefine_line|#define TAINT_BAD_PAGE&t;&t;&t;(1&lt;&lt;5)
 r_extern
 r_void
 id|dump_stack
