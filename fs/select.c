@@ -1662,6 +1662,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|set_fd_set
 c_func
 (paren
@@ -1671,7 +1674,7 @@ id|inp
 comma
 id|fds.res_in
 )paren
-suffix:semicolon
+op_logical_or
 id|set_fd_set
 c_func
 (paren
@@ -1681,7 +1684,7 @@ id|outp
 comma
 id|fds.res_out
 )paren
-suffix:semicolon
+op_logical_or
 id|set_fd_set
 c_func
 (paren
@@ -1691,6 +1694,11 @@ id|exp
 comma
 id|fds.res_ex
 )paren
+)paren
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 id|out
 suffix:colon
