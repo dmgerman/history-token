@@ -1829,6 +1829,20 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t bother queuing skb if kernel socket has no input function */
+r_if
+c_cond
+(paren
+id|nlk-&gt;pid
+op_eq
+l_int|0
+op_logical_and
+op_logical_neg
+id|nlk-&gt;data_ready
+)paren
+r_goto
+id|no_dst
+suffix:semicolon
 macro_line|#ifdef NL_EMULATE_DEV
 r_if
 c_cond
