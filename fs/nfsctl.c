@@ -80,6 +80,10 @@ id|nd.flags
 op_assign
 l_int|0
 suffix:semicolon
+id|nd.depth
+op_assign
+l_int|0
+suffix:semicolon
 id|error
 op_assign
 id|path_walk
