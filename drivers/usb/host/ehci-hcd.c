@@ -94,28 +94,6 @@ comma
 l_string|&quot;log2 IRQ latency, 1-64 microframes&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* allow irqs at least every N URB completions */
-DECL|variable|max_completions
-r_static
-r_int
-id|max_completions
-op_assign
-l_int|16
-suffix:semicolon
-id|MODULE_PARM
-(paren
-id|max_completions
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|max_completions
-comma
-l_string|&quot;limit for urb completions called with irqs disenabled&quot;
-)paren
-suffix:semicolon
 DECL|macro|INTR_MASK
 mdefine_line|#define&t;INTR_MASK (STS_IAA | STS_FATAL | STS_ERR | STS_INT)
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -336,6 +314,8 @@ comma
 l_int|0
 comma
 l_int|250
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -690,10 +670,9 @@ l_int|16
 )paren
 )paren
 (brace
-id|dev_info
+id|ehci_err
 (paren
-op_star
-id|ehci-&gt;hcd.controller
+id|ehci
 comma
 l_string|&quot;BIOS handoff failed (%d, %04x)&bslash;n&quot;
 comma
@@ -886,10 +865,9 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* illegal reserved capability */
-id|dev_warn
+id|ehci_warn
 (paren
-op_star
-id|ehci-&gt;hcd.controller
+id|ehci
 comma
 l_string|&quot;illegal capability!&bslash;n&quot;
 )paren
@@ -1043,7 +1021,7 @@ op_amp
 id|ehci-&gt;regs-&gt;frame_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; */
+multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; * its dummy is used in hw_alt_next of many tds, to prevent the qh&n;&t; * from automatically advancing to the next td after short reads.&n;&t; */
 id|ehci-&gt;async-&gt;qh_next.qh
 op_assign
 l_int|0
@@ -1077,16 +1055,12 @@ id|ehci-&gt;async-&gt;qh_state
 op_assign
 id|QH_STATE_LINKED
 suffix:semicolon
-id|ehci_qtd_free
-(paren
-id|ehci
-comma
-id|ehci-&gt;async-&gt;dummy
-)paren
-suffix:semicolon
-id|ehci-&gt;async-&gt;dummy
+id|ehci-&gt;async-&gt;hw_alt_next
 op_assign
-l_int|0
+id|QTD_NEXT
+(paren
+id|ehci-&gt;async-&gt;dummy-&gt;qtd_dma
+)paren
 suffix:semicolon
 id|writel
 (paren
@@ -1128,12 +1102,11 @@ comma
 l_int|0xffffffffffffffffULL
 )paren
 )paren
-id|dev_info
+id|ehci_info
 (paren
-op_star
-id|ehci-&gt;hcd.controller
+id|ehci
 comma
-l_string|&quot;enabled 64bit PCI DMA (DAC)&bslash;n&quot;
+l_string|&quot;enabled 64bit PCI DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1313,10 +1286,9 @@ op_amp
 id|ehci-&gt;caps-&gt;hci_version
 )paren
 suffix:semicolon
-id|dev_info
+id|ehci_info
 (paren
-op_star
-id|hcd-&gt;controller
+id|ehci
 comma
 l_string|&quot;USB %x.%x enabled, EHCI %x.%02x, driver %s&bslash;n&quot;
 comma
@@ -1461,18 +1433,18 @@ id|in_interrupt
 (paren
 )paren
 )paren
-multiline_comment|/* should not happen!! */
-id|dev_err
+(brace
+multiline_comment|/* must not happen!! */
+id|ehci_err
 (paren
-op_star
-id|hcd-&gt;controller
+id|ehci
 comma
-l_string|&quot;stopped %s!&bslash;n&quot;
-comma
-id|RUN_CONTEXT
+l_string|&quot;stopped in_interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_else
+r_return
+suffix:semicolon
+)brace
 id|del_timer_sync
 (paren
 op_amp
@@ -1964,6 +1936,13 @@ op_star
 )paren
 id|param
 suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+l_int|NULL
+suffix:semicolon
 id|spin_lock_irq
 (paren
 op_amp
@@ -1978,11 +1957,15 @@ id|ehci-&gt;reclaim_ready
 id|end_unlink_async
 (paren
 id|ehci
+comma
+id|regs
 )paren
 suffix:semicolon
 id|scan_async
 (paren
 id|ehci
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -1996,6 +1979,8 @@ l_int|1
 id|scan_periodic
 (paren
 id|ehci
+comma
+id|regs
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -2057,16 +2042,11 @@ id|u32
 l_int|0
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: device removed!&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;device removed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2208,18 +2188,11 @@ l_int|0
 )paren
 )paren
 (brace
-id|err
+id|ehci_err
 (paren
-l_string|&quot;%s: fatal error, state %x&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
-comma
-id|hcd-&gt;state
+l_string|&quot;fatal error&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dead
@@ -2459,29 +2432,22 @@ r_struct
 id|ehci_qh
 op_star
 id|qh
-op_assign
-(paren
-r_struct
-id|ehci_qh
-op_star
-)paren
-id|urb-&gt;hcpriv
 suffix:semicolon
 r_int
 r_int
 id|flags
 suffix:semicolon
-id|ehci_vdbg
+r_int
+id|maybe_irq
+op_assign
+l_int|1
+suffix:semicolon
+id|spin_lock_irqsave
 (paren
-id|ehci
+op_amp
+id|ehci-&gt;lock
 comma
-l_string|&quot;urb_dequeue %p qh %p state %d&bslash;n&quot;
-comma
-id|urb
-comma
-id|qh
-comma
-id|qh-&gt;qh_state
+id|flags
 )paren
 suffix:semicolon
 r_switch
@@ -2497,73 +2463,23 @@ singleline_comment|// case PIPE_CONTROL:
 singleline_comment|// case PIPE_BULK:
 r_default
 suffix:colon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ehci-&gt;reclaim
-)paren
-(brace
-id|vdbg
-(paren
-l_string|&quot;dq %p: reclaim = %p, %s&quot;
-comma
 id|qh
-comma
-id|ehci-&gt;reclaim
-comma
-id|RUN_CONTEXT
+op_assign
+(paren
+r_struct
+id|ehci_qh
+op_star
 )paren
+id|urb-&gt;hcpriv
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|qh
-op_eq
-id|ehci-&gt;reclaim
 )paren
-(brace
-multiline_comment|/* unlinking qh for another queued urb? */
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
+r_break
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|in_interrupt
-(paren
-)paren
-)paren
-(brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -2573,9 +2489,10 @@ id|QH_STATE_LINKED
 op_logical_and
 id|ehci-&gt;reclaim
 op_logical_and
+id|HCD_IS_RUNNING
+(paren
 id|ehci-&gt;hcd.state
-op_ne
-id|USB_STATE_HALT
+)paren
 )paren
 (brace
 id|spin_unlock_irqrestore
@@ -2586,7 +2503,29 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* let pending unlinks complete */
+r_if
+c_cond
+(paren
+id|maybe_irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|in_interrupt
+(paren
+)paren
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+id|maybe_irq
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* let pending unlinks complete, so this can start */
 id|wait_ms
 (paren
 l_int|1
@@ -2601,7 +2540,25 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|ehci-&gt;hcd.state
+)paren
+op_logical_and
+id|ehci-&gt;reclaim
+)paren
+id|end_unlink_async
+(paren
+id|ehci
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* something else might have unlinked the qh by now */
 r_if
 c_cond
 (paren
@@ -2616,26 +2573,27 @@ comma
 id|qh
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
-id|spin_lock_irqsave
+id|qh
+op_assign
 (paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
+r_struct
+id|ehci_qh
+op_star
 )paren
+id|urb-&gt;hcpriv
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|qh
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -2662,6 +2620,8 @@ id|qh_completions
 id|ehci
 comma
 id|qh
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* reschedule QH iff another request is queued */
@@ -2725,14 +2685,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2748,6 +2700,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
