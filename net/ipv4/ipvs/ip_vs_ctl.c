@@ -5551,8 +5551,6 @@ id|bucket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SEQ_START_TOKEN
-mdefine_line|#define SEQ_START_TOKEN&t;((void *)1)
 multiline_comment|/*&n; *&t;Write the contents of the VS rule table to a PROCfs file.&n; *&t;(It is kept just for backward compatibility)&n; */
 DECL|function|ip_vs_fwd_name
 r_static

@@ -2180,8 +2180,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;/proc/net/ip_vs_conn entries&n; */
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|macro|SEQ_START_TOKEN
-mdefine_line|#define SEQ_START_TOKEN&t;((void *)1)
 DECL|function|ip_vs_conn_array
 r_static
 r_void

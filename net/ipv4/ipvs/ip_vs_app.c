@@ -1533,8 +1533,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; *&t;/proc/net/ip_vs_app entry function&n; */
-DECL|macro|SEQ_START_TOKEN
-mdefine_line|#define SEQ_START_TOKEN&t;((void *)1)
 DECL|function|ip_vs_app_idx
 r_static
 r_struct
