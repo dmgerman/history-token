@@ -1603,15 +1603,6 @@ id|page
 suffix:semicolon
 )brace
 )brace
-id|classzone-&gt;need_balance
-op_assign
-l_int|1
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* we&squot;re somewhat low on memory, failed to find what we needed */
 r_for
 c_loop
@@ -3866,10 +3857,6 @@ op_assign
 id|pgdat
 suffix:semicolon
 id|zone-&gt;free_pages
-op_assign
-l_int|0
-suffix:semicolon
-id|zone-&gt;need_balance
 op_assign
 l_int|0
 suffix:semicolon

@@ -90,10 +90,6 @@ id|pages_low
 comma
 id|pages_high
 suffix:semicolon
-DECL|member|need_balance
-r_int
-id|need_balance
-suffix:semicolon
 id|ZONE_PADDING
 c_func
 (paren
