@@ -1341,7 +1341,9 @@ comma
 l_string|&quot;%llu&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|p-&gt;start_sect
 )paren
@@ -1390,7 +1392,9 @@ comma
 l_string|&quot;%llu&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|p-&gt;nr_sects
 )paren
@@ -1902,7 +1906,9 @@ comma
 l_string|&quot;%llu&bslash;n&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|get_capacity
 c_func
