@@ -677,8 +677,8 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|snd_seq_autload_lock
-mdefine_line|#define snd_seq_autload_lock()
+DECL|macro|snd_seq_autoload_lock
+mdefine_line|#define snd_seq_autoload_lock()
 DECL|macro|snd_seq_autoload_unlock
 mdefine_line|#define snd_seq_autoload_unlock()
 macro_line|#endif
