@@ -775,6 +775,7 @@ suffix:semicolon
 multiline_comment|/*  End Function devfs_get  */
 multiline_comment|/**&n; *&t;devfs_put - Put (release) a reference to a devfs entry.&n; *&t;@de:  The handle to the devfs entry.&n; */
 DECL|function|devfs_put
+r_static
 r_void
 id|devfs_put
 (paren

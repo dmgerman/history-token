@@ -97,14 +97,6 @@ suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {SPIN_LOCK_UNLOCKED, 0, 0, 0, NULL}
 r_extern
-r_void
-id|devfs_put
-(paren
-id|devfs_handle_t
-id|de
-)paren
-suffix:semicolon
-r_extern
 id|devfs_handle_t
 id|devfs_register
 (paren
@@ -270,19 +262,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UNIQUE_NUMBERSPACE_INITIALISER
 mdefine_line|#define UNIQUE_NUMBERSPACE_INITIALISER {0}
-DECL|function|devfs_put
-r_static
-r_inline
-r_void
-id|devfs_put
-(paren
-id|devfs_handle_t
-id|de
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 DECL|function|devfs_register
 r_static
 r_inline
