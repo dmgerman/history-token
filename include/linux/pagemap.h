@@ -297,7 +297,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|add_to_page_cache
 c_func
@@ -315,9 +314,11 @@ comma
 r_int
 r_int
 id|index
+comma
+r_int
+id|gfp_mask
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|add_to_page_cache_lru
 c_func
@@ -335,6 +336,9 @@ comma
 r_int
 r_int
 id|index
+comma
+r_int
+id|gfp_mask
 )paren
 suffix:semicolon
 r_extern
