@@ -376,6 +376,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PROFILE: lodging TIMER2 @ %dHz as profile timer&bslash;n&quot;
 comma
 id|PROFILEHZ

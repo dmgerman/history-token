@@ -587,6 +587,11 @@ r_extern
 id|elevator_t
 id|iosched_as
 suffix:semicolon
+multiline_comment|/*&n; * completely fair queueing I/O scheduler&n; */
+r_extern
+id|elevator_t
+id|iosched_cfq
+suffix:semicolon
 r_extern
 r_int
 id|elevator_init

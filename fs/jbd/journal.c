@@ -2169,7 +2169,7 @@ op_assign
 (paren
 id|HZ
 op_star
-l_int|5
+id|JBD_DEFAULT_MAX_COMMIT_AGE
 )paren
 suffix:semicolon
 multiline_comment|/* The journal is marked for error until we succeed with recovery! */

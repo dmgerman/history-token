@@ -1,0 +1,9 @@
+r_extern
+r_void
+id|bast_init_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+eof

@@ -4,12 +4,60 @@ r_int
 r_int
 id|__machine_arch_type
 suffix:semicolon
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/arch/uncompress.h&gt;
 macro_line|#ifdef STANDALONE_DEBUG
 DECL|macro|puts
 mdefine_line|#define puts printf
+macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_ICEDCC
+DECL|macro|puts
+mdefine_line|#define puts icedcc_puts
+DECL|macro|putc
+mdefine_line|#define putc icedcc_putc
+r_extern
+r_void
+id|idedcc_putc
+c_func
+(paren
+r_int
+id|ch
+)paren
+suffix:semicolon
+r_static
+r_void
+DECL|function|icedcc_puts
+id|icedcc_puts
+c_func
+(paren
+r_const
+r_char
+op_star
+id|ptr
+)paren
+(brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+op_star
+id|ptr
+op_ne
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+id|ptr
+op_increment
+)paren
+(brace
+id|icedcc_putc
+c_func
+(paren
+op_star
+id|ptr
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#endif
 DECL|macro|__ptr_t
 mdefine_line|#define __ptr_t void *

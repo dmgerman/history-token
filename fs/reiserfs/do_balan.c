@@ -21,7 +21,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* detects whether more than one&n;                                        copy of tb exists as a means&n;                                        of checking whether schedule&n;                                        is interrupting do_balance */
 macro_line|#endif
-multiline_comment|/*&n; * AKPM: The __mark_buffer_dirty() call here will not&n; * put the buffer on the dirty buffer LRU because we&squot;ve just&n; * set BH_Dirty.  That&squot;s a thinko in reiserfs.&n; *&n; * I&squot;m reluctant to &quot;fix&quot; this bug because that would change&n; * behaviour.  Using mark_buffer_dirty() here would make the&n; * buffer eligible for VM and periodic writeback, which may&n; * violate ordering constraints.  I&squot;ll just leave the code&n; * as-is by removing the __mark_buffer_dirty call altogether.&n; *&n; * Chris says this code has &quot;probably never been run&quot; anyway.&n; * It is due to go away.&n; */
 DECL|function|do_balance_mark_leaf_dirty
 r_inline
 r_void
@@ -41,45 +40,6 @@ r_int
 id|flag
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|reiserfs_dont_log
-c_func
-(paren
-id|tb-&gt;tb_sb
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_set_buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
-(brace
-singleline_comment|//&t;    __mark_buffer_dirty(bh) ;
-id|tb-&gt;need_balance_dirty
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_int
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;do_balance&quot;
-)paren
-suffix:semicolon
 id|journal_mark_dirty
 c_func
 (paren
@@ -90,13 +50,6 @@ comma
 id|bh
 )paren
 suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|macro|do_balance_mark_internal_dirty
 mdefine_line|#define do_balance_mark_internal_dirty do_balance_mark_leaf_dirty

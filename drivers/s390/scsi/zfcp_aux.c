@@ -1,37 +1,8 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_AUX_REVISION
-mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.98 $&quot;
-multiline_comment|/********************** INCLUDES *********************************************/
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;linux/syscalls.h&gt;
+mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.105 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/ebcdic.h&gt;
-macro_line|#include &lt;asm/cpcmd.h&gt;&t;&t;/* Debugging only */
-macro_line|#include &lt;asm/processor.h&gt;&t;/* Debugging only */
-macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 multiline_comment|/* accumulated log level (module parameter) */
 DECL|variable|loglevel
 r_static
@@ -52,15 +23,6 @@ r_static
 r_int
 id|__init
 id|zfcp_module_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|__exit
-id|zfcp_module_exit
 c_func
 (paren
 r_void
@@ -274,13 +236,6 @@ id|module_init
 c_func
 (paren
 id|zfcp_module_init
-)paren
-suffix:semicolon
-DECL|variable|zfcp_module_exit
-id|module_exit
-c_func
-(paren
-id|zfcp_module_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -900,7 +855,6 @@ r_int
 id|add_length
 )paren
 (brace
-macro_line|#ifdef ZFCP_DEBUG_COMMANDS
 r_struct
 id|zfcp_adapter
 op_star
@@ -1091,7 +1045,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* XXX additionally log unit if available */
 multiline_comment|/* ---&gt; introduce new parameter for unit, see 2.4 code */
@@ -1111,7 +1064,6 @@ op_star
 id|scsi_cmnd
 )paren
 (brace
-macro_line|#ifdef ZFCP_DEBUG_COMMANDS
 r_struct
 id|zfcp_adapter
 op_star
@@ -1343,7 +1295,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|zfcp_in_els_dbf_event
@@ -1369,7 +1320,6 @@ r_int
 id|length
 )paren
 (brace
-macro_line|#ifdef ZFCP_DEBUG_INCOMING_ELS
 r_int
 id|level
 op_assign
@@ -1442,7 +1392,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**&n; * zfcp_device_setup - setup function&n; * @str: pointer to parameter string&n; *&n; * Parse &quot;device=...&quot; parameter string.&n; */
 r_static
@@ -1745,13 +1694,6 @@ c_func
 id|adapter-&gt;ccw_device
 )paren
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|zfcp_data.config_sema
-)paren
-suffix:semicolon
 id|wait_event
 c_func
 (paren
@@ -1765,6 +1707,13 @@ id|unit-&gt;scsi_add_work
 )paren
 op_eq
 l_int|0
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|zfcp_data.config_sema
 )paren
 suffix:semicolon
 id|zfcp_unit_put
@@ -1825,25 +1774,6 @@ comma
 id|loglevel
 )paren
 suffix:semicolon
-id|ZFCP_LOG_DEBUG
-c_func
-(paren
-l_string|&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ZFCP_LOG_TRACE
-c_func
-(paren
-l_string|&quot;Start Address of module: 0x%lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zfcp_module_init
-)paren
-suffix:semicolon
 multiline_comment|/* initialize adapter list */
 id|INIT_LIST_HEAD
 c_func
@@ -1889,8 +1819,7 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Cannot register a 32-bit support of &quot;
-l_string|&quot;the IOC handler&bslash;n&quot;
+l_string|&quot;registration of ioctl32 conversion failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1918,8 +1847,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Device file for the control file data channel &quot;
-l_string|&quot;cannot be registered&bslash;n&quot;
+l_string|&quot;registration of misc device &quot;
+l_string|&quot;zfcp_cfdc failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1928,11 +1857,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ZFCP_LOG_INFO
+id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Device file for the control file data channel &quot;
-l_string|&quot;has become MAJOR/MINOR numbers %d/%d&bslash;n&quot;
+l_string|&quot;major/minor for zfcp_cfdc: %d/%d&bslash;n&quot;
 comma
 id|ZFCP_CFDC_DEV_MAJOR
 comma
@@ -1991,7 +1919,7 @@ id|retval
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Registering with common I/O layer failed.&bslash;n&quot;
+l_string|&quot;registration with common I/O layer failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2054,57 +1982,6 @@ id|out
 suffix:colon
 r_return
 id|retval
-suffix:semicolon
-)brace
-r_static
-r_void
-id|__exit
-DECL|function|zfcp_module_exit
-id|zfcp_module_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|unregister_reboot_notifier
-c_func
-(paren
-op_amp
-id|zfcp_data.reboot_notifier
-)paren
-suffix:semicolon
-id|zfcp_ccw_unregister
-c_func
-(paren
-)paren
-suffix:semicolon
-id|misc_deregister
-c_func
-(paren
-op_amp
-id|zfcp_cfdc_misc
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_S390_SUPPORT
-id|unregister_ioctl32_conversion
-c_func
-(paren
-id|zfcp_ioctl_trans.cmd
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ZFCP_STAT_REQSIZES
-id|zfcp_statistics_clear_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|ZFCP_LOG_DEBUG
-c_func
-(paren
-l_string|&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called automatically by the kernel whenever a reboot or a &n; * shut-down is initiated and zfcp is still loaded&n; *&n; * locks:       zfcp_data.config_sema is taken prior to shutting down the module&n; *              and removing all structures&n; * returns:     NOTIFY_DONE in all cases&n; */
@@ -2206,12 +2083,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Control file data channel transaction opened&bslash;n&quot;
-)paren
-suffix:semicolon
 id|sg_list
 op_assign
 id|kmalloc
@@ -2234,12 +2105,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Not enough memory for the scatter-gather list&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2261,10 +2126,10 @@ op_ne
 id|ZFCP_CFDC_IOC
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;IOC request code 0x%x is not valid&bslash;n&quot;
+l_string|&quot;IOC request code 0x%x invalid&bslash;n&quot;
 comma
 id|command
 )paren
@@ -2295,10 +2160,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Sense data record is required&bslash;n&quot;
+l_string|&quot;sense data record is required&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -2333,13 +2198,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Cannot copy sense data record from user space &quot;
-l_string|&quot;memory&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2357,10 +2215,10 @@ op_ne
 id|ZFCP_CFDC_SIGNATURE
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;No valid sense data request signature 0x%08x found&bslash;n&quot;
+l_string|&quot;invalid sense data request signature 0x%08x&bslash;n&quot;
 comma
 id|ZFCP_CFDC_SIGNATURE
 )paren
@@ -2447,10 +2305,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Command code 0x%08x is not valid&bslash;n&quot;
+l_string|&quot;invalid command code 0x%08x&bslash;n&quot;
 comma
 id|sense_data.command
 )paren
@@ -2482,12 +2340,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Out of memory!&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2605,10 +2457,10 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Specified adapter does not exist&bslash;n&quot;
+l_string|&quot;invalid adapter&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2639,13 +2491,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Not enough memory for the &quot;
-l_string|&quot;scatter-gather list&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2691,13 +2536,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Cannot copy control file from user &quot;
-l_string|&quot;space memory&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2734,10 +2572,10 @@ op_minus
 id|EOPNOTSUPP
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Specified adapter does not support control file&bslash;n&quot;
+l_string|&quot;adapter does not support cfdc&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2753,10 +2591,10 @@ op_ne
 l_int|0
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Cannot create or queue FSF request or create SBALs&bslash;n&quot;
+l_string|&quot;initiation of cfdc up/download failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -2833,12 +2671,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Cannot copy sense data record to user space memory&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2875,13 +2707,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Cannot copy control file to user &quot;
-l_string|&quot;space memory&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -2950,12 +2775,6 @@ id|sg_list
 )paren
 suffix:semicolon
 )brace
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;Control file data channel transaction closed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -2982,6 +2801,7 @@ id|scatterlist
 op_star
 id|sg
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -3144,6 +2964,7 @@ op_star
 id|sg
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_int
@@ -3302,12 +3123,6 @@ id|length
 )paren
 )paren
 (brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;Memory error (copy_from_user)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -3434,12 +3249,6 @@ id|length
 )paren
 )paren
 (brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;Memory error (copy_to_user)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -3642,6 +3451,15 @@ r_struct
 id|zfcp_unit
 op_star
 id|unit
+comma
+op_star
+id|tmp_unit
+suffix:semicolon
+id|scsi_lun_t
+id|scsi_lun
+suffix:semicolon
+r_int
+id|found
 suffix:semicolon
 multiline_comment|/*&n;&t; * check that there is no unit with this FCP_LUN already in list&n;&t; * and enqueue it.&n;&t; * Note: Unlike for the adapter and the port, this is an error&n;&t; */
 id|read_lock_irq
@@ -3741,24 +3559,9 @@ id|unit-&gt;port
 op_assign
 id|port
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: reuse of scsi_luns!&n;&t; */
-id|unit-&gt;scsi_lun
-op_assign
-id|port-&gt;max_scsi_lun
-op_plus
-l_int|1
-suffix:semicolon
 id|unit-&gt;fcp_lun
 op_assign
 id|fcp_lun
-suffix:semicolon
-id|unit-&gt;common_magic
-op_assign
-id|ZFCP_MAGIC
-suffix:semicolon
-id|unit-&gt;specific_magic
-op_assign
-id|ZFCP_MAGIC_UNIT
 suffix:semicolon
 multiline_comment|/* setup for sysfs registration */
 id|snprintf
@@ -3833,31 +3636,6 @@ id|unit-&gt;sysfs_device
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * failed to create all sysfs attributes, therefore the unit&n;&t;&t; * must be put on the unit_remove listhead of the port where&n;&t;&t; * the release function expects it.&n;&t;&t; */
-id|write_lock_irq
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|unit-&gt;list
-comma
-op_amp
-id|port-&gt;unit_remove_lh
-)paren
-suffix:semicolon
-id|write_unlock_irq
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-)paren
-suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -3869,52 +3647,85 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * update max SCSI LUN of logical units attached to parent remote port&n;&t; */
-id|port-&gt;max_scsi_lun
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t; * update max SCSI LUN of logical units attached to parent adapter&n;&t; */
-r_if
-c_cond
-(paren
-id|port-&gt;adapter-&gt;max_scsi_lun
-OL
-id|port-&gt;max_scsi_lun
-)paren
-id|port-&gt;adapter-&gt;max_scsi_lun
-op_assign
-id|port-&gt;max_scsi_lun
-suffix:semicolon
-multiline_comment|/*&n;&t; * update max SCSI LUN of logical units attached to host (SCSI stack)&n;&t; */
-r_if
-c_cond
-(paren
-id|port-&gt;adapter-&gt;scsi_host
-op_logical_and
-(paren
-id|port-&gt;adapter-&gt;scsi_host-&gt;max_lun
-OL
-id|port-&gt;max_scsi_lun
-)paren
-)paren
-id|port-&gt;adapter-&gt;scsi_host-&gt;max_lun
-op_assign
-id|port-&gt;max_scsi_lun
-op_plus
-l_int|1
-suffix:semicolon
 id|zfcp_unit_get
 c_func
 (paren
 id|unit
 )paren
 suffix:semicolon
-multiline_comment|/* unit is new and needs to be added to list */
+id|scsi_lun
+op_assign
+l_int|0
+suffix:semicolon
+id|found
+op_assign
+l_int|0
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
 op_amp
 id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|tmp_unit
+comma
+op_amp
+id|port-&gt;unit_list_head
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tmp_unit-&gt;scsi_lun
+op_ne
+id|scsi_lun
+)paren
+(brace
+id|found
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|scsi_lun
+op_increment
+suffix:semicolon
+)brace
+id|unit-&gt;scsi_lun
+op_assign
+id|scsi_lun
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|found
+)paren
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|unit-&gt;list
+comma
+op_amp
+id|tmp_unit-&gt;list
+)paren
+suffix:semicolon
+r_else
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|unit-&gt;list
+comma
+op_amp
+id|port-&gt;unit_list_head
 )paren
 suffix:semicolon
 id|atomic_clear_mask
@@ -3933,16 +3744,6 @@ id|ZFCP_STATUS_COMMON_RUNNING
 comma
 op_amp
 id|unit-&gt;status
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|unit-&gt;list
-comma
-op_amp
-id|port-&gt;unit_list_head
 )paren
 suffix:semicolon
 id|write_unlock_irq
@@ -3965,7 +3766,6 @@ r_return
 id|unit
 suffix:semicolon
 )brace
-multiline_comment|/* locks:  config_sema must be held */
 r_void
 DECL|function|zfcp_unit_dequeue
 id|zfcp_unit_dequeue
@@ -3977,7 +3777,12 @@ op_star
 id|unit
 )paren
 (brace
-multiline_comment|/* remove specified unit data structure from list */
+id|zfcp_unit_wait
+c_func
+(paren
+id|unit
+)paren
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
@@ -4008,13 +3813,19 @@ c_func
 id|unit-&gt;port
 )paren
 suffix:semicolon
-id|kfree
+id|zfcp_sysfs_unit_remove_files
 c_func
 (paren
-id|unit
+op_amp
+id|unit-&gt;sysfs_device
 )paren
 suffix:semicolon
-r_return
+id|device_unregister
+c_func
+(paren
+op_amp
+id|unit-&gt;sysfs_device
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -4109,18 +3920,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.fsf_req_erp
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed (fsf_req_erp)&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|adapter-&gt;pool.fsf_req_scsi
 op_assign
 id|mempool_create
@@ -4150,18 +3953,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.fsf_req_scsi
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed (fsf_req_scsi)&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|adapter-&gt;pool.fsf_req_abort
 op_assign
 id|mempool_create
@@ -4191,19 +3986,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.fsf_req_abort
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed &quot;
-l_string|&quot;(fsf_req_abort)&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|adapter-&gt;pool.fsf_req_status_read
 op_assign
 id|mempool_create
@@ -4233,19 +4019,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.fsf_req_status_read
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed &quot;
-l_string|&quot;(fsf_req_status_read&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|adapter-&gt;pool.data_status_read
 op_assign
 id|mempool_create
@@ -4275,19 +4052,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.data_status_read
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed &quot;
-l_string|&quot;(data_status_read)&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|adapter-&gt;pool.data_gid_pn
 op_assign
 id|mempool_create
@@ -4317,18 +4085,10 @@ l_int|NULL
 op_eq
 id|adapter-&gt;pool.data_gid_pn
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: pool allocation failed (data_gid_pn)&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4413,6 +4173,346 @@ id|adapter-&gt;pool.data_gid_pn
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * zfcp_adapter_debug_register - registers debug feature for an adapter&n; * @adapter: pointer to adapter for which debug features should be registered&n; * return: -ENOMEM on error, 0 otherwise&n; */
+r_int
+DECL|function|zfcp_adapter_debug_register
+id|zfcp_adapter_debug_register
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+)paren
+(brace
+r_char
+id|dbf_name
+(braket
+l_int|20
+)braket
+suffix:semicolon
+multiline_comment|/* debug feature area which records fsf request sequence numbers */
+id|sprintf
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_REQ_DBF_NAME
+l_string|&quot;%s&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|adapter-&gt;req_dbf
+op_assign
+id|debug_register
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_REQ_DBF_INDEX
+comma
+id|ZFCP_REQ_DBF_AREAS
+comma
+id|ZFCP_REQ_DBF_LENGTH
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|adapter-&gt;req_dbf
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|adapter-&gt;req_dbf
+comma
+id|ZFCP_REQ_DBF_LEVEL
+)paren
+suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;req_dbf
+comma
+l_int|1
+comma
+l_string|&quot;zzz&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* debug feature area which records SCSI command failures (hostbyte) */
+id|rwlock_init
+c_func
+(paren
+op_amp
+id|adapter-&gt;cmd_dbf_lock
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_CMD_DBF_NAME
+l_string|&quot;%s&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|adapter-&gt;cmd_dbf
+op_assign
+id|debug_register
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_CMD_DBF_INDEX
+comma
+id|ZFCP_CMD_DBF_AREAS
+comma
+id|ZFCP_CMD_DBF_LENGTH
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|adapter-&gt;cmd_dbf
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|adapter-&gt;cmd_dbf
+comma
+id|ZFCP_CMD_DBF_LEVEL
+)paren
+suffix:semicolon
+multiline_comment|/* debug feature area which records SCSI command aborts */
+id|sprintf
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_ABORT_DBF_NAME
+l_string|&quot;%s&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|adapter-&gt;abort_dbf
+op_assign
+id|debug_register
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_ABORT_DBF_INDEX
+comma
+id|ZFCP_ABORT_DBF_AREAS
+comma
+id|ZFCP_ABORT_DBF_LENGTH
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|adapter-&gt;abort_dbf
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|adapter-&gt;abort_dbf
+comma
+id|ZFCP_ABORT_DBF_LEVEL
+)paren
+suffix:semicolon
+multiline_comment|/* debug feature area which records SCSI command aborts */
+id|sprintf
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_IN_ELS_DBF_NAME
+l_string|&quot;%s&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|adapter-&gt;in_els_dbf
+op_assign
+id|debug_register
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_IN_ELS_DBF_INDEX
+comma
+id|ZFCP_IN_ELS_DBF_AREAS
+comma
+id|ZFCP_IN_ELS_DBF_LENGTH
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|adapter-&gt;in_els_dbf
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|adapter-&gt;in_els_dbf
+comma
+id|ZFCP_IN_ELS_DBF_LEVEL
+)paren
+suffix:semicolon
+multiline_comment|/* debug feature area which records erp events */
+id|sprintf
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_ERP_DBF_NAME
+l_string|&quot;%s&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|adapter-&gt;erp_dbf
+op_assign
+id|debug_register
+c_func
+(paren
+id|dbf_name
+comma
+id|ZFCP_ERP_DBF_INDEX
+comma
+id|ZFCP_ERP_DBF_AREAS
+comma
+id|ZFCP_ERP_DBF_LENGTH
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+id|ZFCP_ERP_DBF_LEVEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter-&gt;req_dbf
+op_logical_and
+id|adapter-&gt;cmd_dbf
+op_logical_and
+id|adapter-&gt;abort_dbf
+op_logical_and
+id|adapter-&gt;in_els_dbf
+op_logical_and
+id|adapter-&gt;erp_dbf
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|zfcp_adapter_debug_unregister
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_adapter_debug_unregister - unregisters debug feature for an adapter&n; * @adapter: pointer to adapter for which debug features should be unregistered&n; */
+r_void
+DECL|function|zfcp_adapter_debug_unregister
+id|zfcp_adapter_debug_unregister
+c_func
+(paren
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+)paren
+(brace
+id|debug_unregister
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+)paren
+suffix:semicolon
+id|debug_unregister
+c_func
+(paren
+id|adapter-&gt;req_dbf
+)paren
+suffix:semicolon
+id|debug_unregister
+c_func
+(paren
+id|adapter-&gt;cmd_dbf
+)paren
+suffix:semicolon
+id|debug_unregister
+c_func
+(paren
+id|adapter-&gt;abort_dbf
+)paren
+suffix:semicolon
+id|debug_unregister
+c_func
+(paren
+id|adapter-&gt;in_els_dbf
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Enqueues an adapter at the end of the adapter list in the driver data.&n; * All adapter internal structures are set up.&n; * Proc-fs entries are also created.&n; *&n; * returns:&t;0             if a new adapter was successfully enqueued&n; *              ZFCP_KNOWN    if an adapter with this devno was already present&n; *&t;&t;-ENOMEM       if alloc failed&n; * locks:&t;config_sema must be held to serialise changes to the adapter list&n; */
 r_struct
 id|zfcp_adapter
@@ -4436,12 +4536,6 @@ r_struct
 id|zfcp_adapter
 op_star
 id|adapter
-suffix:semicolon
-r_char
-id|dbf_name
-(braket
-l_int|20
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: It is safe to release the list_lock, as any list changes &n;&t; * are protected by the config_sema, which must be held to get here&n;&t; */
 multiline_comment|/* try to allocate new adapter data structure (zeroed) */
@@ -4469,7 +4563,7 @@ id|adapter
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Allocation of base adapter &quot;
+l_string|&quot;error: allocation of base adapter &quot;
 l_string|&quot;structure failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4545,18 +4639,17 @@ c_cond
 (paren
 id|retval
 )paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;error: pool allocation failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|failed_low_mem_buffers
 suffix:semicolon
-multiline_comment|/* set magics */
-id|adapter-&gt;common_magic
-op_assign
-id|ZFCP_MAGIC
-suffix:semicolon
-id|adapter-&gt;specific_magic
-op_assign
-id|ZFCP_MAGIC_ADAPTER
-suffix:semicolon
+)brace
 multiline_comment|/* initialise reference count stuff */
 id|atomic_set
 c_func
@@ -4711,407 +4804,6 @@ id|ccw_device-&gt;dev
 r_goto
 id|sysfs_failed
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
-multiline_comment|/* debug feature area which records fsf request sequence numbers */
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_REQ_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;req_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_REQ_DBF_INDEX
-comma
-id|ZFCP_REQ_DBF_AREAS
-comma
-id|ZFCP_REQ_DBF_LENGTH
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adapter-&gt;req_dbf
-)paren
-(brace
-id|ZFCP_LOG_INFO
-(paren
-l_string|&quot;error: Out of resources. Request debug feature for &quot;
-l_string|&quot;adapter %s could not be generated.&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|failed_req_dbf
-suffix:semicolon
-)brace
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-id|ZFCP_REQ_DBF_LEVEL
-)paren
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;req_dbf
-comma
-l_int|1
-comma
-l_string|&quot;zzz&quot;
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
-macro_line|#ifdef ZFCP_DEBUG_COMMANDS
-multiline_comment|/* debug feature area which records SCSI command failures (hostbyte) */
-id|rwlock_init
-c_func
-(paren
-op_amp
-id|adapter-&gt;cmd_dbf_lock
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_CMD_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;cmd_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_CMD_DBF_INDEX
-comma
-id|ZFCP_CMD_DBF_AREAS
-comma
-id|ZFCP_CMD_DBF_LENGTH
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adapter-&gt;cmd_dbf
-)paren
-(brace
-id|ZFCP_LOG_INFO
-(paren
-l_string|&quot;error: Out of resources. Command debug feature for &quot;
-l_string|&quot;adapter %s could not be generated.&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|failed_cmd_dbf
-suffix:semicolon
-)brace
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;cmd_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;cmd_dbf
-comma
-id|ZFCP_CMD_DBF_LEVEL
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_COMMANDS */
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
-multiline_comment|/* debug feature area which records SCSI command aborts */
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_ABORT_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;abort_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_ABORT_DBF_INDEX
-comma
-id|ZFCP_ABORT_DBF_AREAS
-comma
-id|ZFCP_ABORT_DBF_LENGTH
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adapter-&gt;abort_dbf
-)paren
-(brace
-id|ZFCP_LOG_INFO
-(paren
-l_string|&quot;error: Out of resources. Abort debug feature for &quot;
-l_string|&quot;adapter %s could not be generated.&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|failed_abort_dbf
-suffix:semicolon
-)brace
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;abort_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;abort_dbf
-comma
-id|ZFCP_ABORT_DBF_LEVEL
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_ABORTS */
-macro_line|#ifdef ZFCP_DEBUG_INCOMING_ELS
-multiline_comment|/* debug feature area which records SCSI command aborts */
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_IN_ELS_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;in_els_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_IN_ELS_DBF_INDEX
-comma
-id|ZFCP_IN_ELS_DBF_AREAS
-comma
-id|ZFCP_IN_ELS_DBF_LENGTH
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adapter-&gt;in_els_dbf
-)paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: Out of resources. ELS debug feature for &quot;
-l_string|&quot;adapter %s could not be generated.&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|failed_in_els_dbf
-suffix:semicolon
-)brace
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;in_els_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;in_els_dbf
-comma
-id|ZFCP_IN_ELS_DBF_LEVEL
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_INCOMING_ELS */
-id|sprintf
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_ERP_DBF_NAME
-l_string|&quot;%s&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|adapter-&gt;erp_dbf
-op_assign
-id|debug_register
-c_func
-(paren
-id|dbf_name
-comma
-id|ZFCP_ERP_DBF_INDEX
-comma
-id|ZFCP_ERP_DBF_AREAS
-comma
-id|ZFCP_ERP_DBF_LENGTH
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|adapter-&gt;erp_dbf
-)paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;error: Out of resources. ERP debug feature for &quot;
-l_string|&quot;adapter %s could not be generated.&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|failed_erp_dbf
-suffix:semicolon
-)brace
-id|debug_register_view
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-op_amp
-id|debug_hex_ascii_view
-)paren
-suffix:semicolon
-id|debug_set_level
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-id|ZFCP_ERP_DBF_LEVEL
-)paren
-suffix:semicolon
 multiline_comment|/* put allocated adapter at list tail */
 id|write_lock_irq
 c_func
@@ -5152,55 +4844,6 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-id|failed_erp_dbf
-suffix:colon
-macro_line|#ifdef ZFCP_DEBUG_INCOMING_ELS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;in_els_dbf
-)paren
-suffix:semicolon
-id|failed_in_els_dbf
-suffix:colon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;abort_dbf
-)paren
-suffix:semicolon
-id|failed_abort_dbf
-suffix:colon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_COMMANDS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;cmd_dbf
-)paren
-suffix:semicolon
-id|failed_cmd_dbf
-suffix:colon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;req_dbf
-)paren
-suffix:semicolon
-id|failed_req_dbf
-suffix:colon
-macro_line|#endif
-id|zfcp_sysfs_adapter_remove_files
-c_func
-(paren
-op_amp
-id|ccw_device-&gt;dev
-)paren
-suffix:semicolon
 id|sysfs_failed
 suffix:colon
 id|dev_set_drvdata
@@ -5232,9 +4875,9 @@ op_ne
 l_int|0
 )paren
 id|ZFCP_LOG_NORMAL
+c_func
 (paren
-l_string|&quot;bug: could not free memory used by data transfer &quot;
-l_string|&quot;mechanism for adapter %s&bslash;n&quot;
+l_string|&quot;bug: qdio_free for adapter %s failed&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5344,9 +4987,8 @@ id|retval
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Adapter %s is still in use, &quot;
-l_string|&quot;%i requests are still outstanding &quot;
-l_string|&quot;(debug info 0x%lx)&bslash;n&quot;
+l_string|&quot;bug: adapter %s (%p) still in use, &quot;
+l_string|&quot;%i requests outstanding&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5354,18 +4996,14 @@ c_func
 id|adapter
 )paren
 comma
+id|adapter
+comma
 id|atomic_read
 c_func
 (paren
 op_amp
 id|adapter-&gt;fsf_reqs_active
 )paren
-comma
-(paren
-r_int
-r_int
-)paren
-id|adapter
 )paren
 suffix:semicolon
 id|retval
@@ -5406,13 +5044,15 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;adapter 0x%lx removed from list, &quot;
+l_string|&quot;adapter %s (%p) removed from list, &quot;
 l_string|&quot;%i adapters still in list&bslash;n&quot;
 comma
+id|zfcp_get_busid_by_adapter
+c_func
 (paren
-r_int
-r_int
+id|adapter
 )paren
+comma
 id|adapter
 comma
 id|zfcp_data.adapters
@@ -5432,9 +5072,9 @@ c_cond
 id|retval
 )paren
 id|ZFCP_LOG_NORMAL
+c_func
 (paren
-l_string|&quot;bug: could not free memory used by data transfer &quot;
-l_string|&quot;mechanism for adapter %s&bslash;n&quot;
+l_string|&quot;bug: qdio_free for adapter %s failed&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5443,44 +5083,6 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-)paren
-suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;req_dbf
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_COMMANDS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;cmd_dbf
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;abort_dbf
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ZFCP_DEBUG_INCOMING_ELS
-id|debug_unregister
-c_func
-(paren
-id|adapter-&gt;in_els_dbf
-)paren
-suffix:semicolon
-macro_line|#endif
 id|zfcp_free_low_mem_buffers
 c_func
 (paren
@@ -5497,7 +5099,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Freeing adapter structure.&bslash;n&quot;
+l_string|&quot;freeing adapter structure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -5511,7 +5113,7 @@ suffix:colon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Enqueues a remote port at the end of the port list.&n; * All port internal structures are set-up and the proc-fs entry is also &n; * allocated. Some SCSI-stack structures are modified for the port.&n; *&n; * returns:&t;0            if a new port was successfully enqueued&n; *              ZFCP_KNOWN   if a port with the requested wwpn already exists&n; *              -ENOMEM      if allocation failed&n; *              -EINVAL      if at least one of the specified parameters was wrong&n; * locks:       config_sema must be held to serialise changes to the port list&n; *              within this function (must not be held on entry)&n; */
+multiline_comment|/*&n; * Enqueues a remote port to the port list. All port internal structures&n; * are set up and the sysfs entry is also generated.&n; *&n; * returns:     pointer to port or NULL&n; * locks:       config_sema must be held to serialise changes to the port list&n; */
 r_struct
 id|zfcp_port
 op_star
@@ -5535,21 +5137,18 @@ r_struct
 id|zfcp_port
 op_star
 id|port
-suffix:semicolon
-r_int
-id|check_scsi_id
+comma
+op_star
+id|tmp_port
 suffix:semicolon
 r_int
 id|check_wwpn
 suffix:semicolon
-id|check_scsi_id
-op_assign
-op_logical_neg
-(paren
-id|status
-op_amp
-id|ZFCP_STATUS_PORT_NO_SCSI_ID
-)paren
+id|scsi_id_t
+id|scsi_id
+suffix:semicolon
+r_int
+id|found
 suffix:semicolon
 id|check_wwpn
 op_assign
@@ -5675,17 +5274,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_scsi_id
-)paren
-id|port-&gt;scsi_id
-op_assign
-id|adapter-&gt;max_scsi_id
-op_plus
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|check_wwpn
 )paren
 id|port-&gt;wwpn
@@ -5700,14 +5288,6 @@ comma
 op_amp
 id|port-&gt;status
 )paren
-suffix:semicolon
-id|port-&gt;common_magic
-op_assign
-id|ZFCP_MAGIC
-suffix:semicolon
-id|port-&gt;specific_magic
-op_assign
-id|ZFCP_MAGIC_PORT
 suffix:semicolon
 multiline_comment|/* setup for sysfs registration */
 r_if
@@ -5802,31 +5382,6 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * failed to create all sysfs attributes, therefore the port&n;&t;&t; * must be put on the port_remove listhead of the adapter&n;&t;&t; * where the release function expects it.&n;&t;&t; */
-id|write_lock_irq
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|port-&gt;list
-comma
-op_amp
-id|adapter-&gt;port_remove_lh
-)paren
-suffix:semicolon
-id|write_unlock_irq
-c_func
-(paren
-op_amp
-id|zfcp_data.config_lock
-)paren
-suffix:semicolon
 id|device_unregister
 c_func
 (paren
@@ -5838,48 +5393,99 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|check_scsi_id
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * update max. SCSI ID of remote ports attached to&n;&t;&t; * &quot;parent&quot; adapter if necessary&n;&t;&t; * (do not care about the adapters own SCSI ID)&n;&t;&t; */
-id|adapter-&gt;max_scsi_id
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * update max. SCSI ID of remote ports attached to&n;&t;&t; * &quot;parent&quot; host (SCSI stack) if necessary&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|adapter-&gt;scsi_host
-op_logical_and
-(paren
-id|adapter-&gt;scsi_host-&gt;max_id
-OL
-id|adapter-&gt;max_scsi_id
-op_plus
-l_int|1
-)paren
-)paren
-id|adapter-&gt;scsi_host-&gt;max_id
-op_assign
-id|adapter-&gt;max_scsi_id
-op_plus
-l_int|1
-suffix:semicolon
-)brace
 id|zfcp_port_get
 c_func
 (paren
 id|port
 )paren
 suffix:semicolon
+id|scsi_id
+op_assign
+l_int|1
+suffix:semicolon
+id|found
+op_assign
+l_int|0
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
 op_amp
 id|zfcp_data.config_lock
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|tmp_port
+comma
+op_amp
+id|adapter-&gt;port_list_head
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_test_mask
+c_func
+(paren
+id|ZFCP_STATUS_PORT_NO_SCSI_ID
+comma
+op_amp
+id|tmp_port-&gt;status
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp_port-&gt;scsi_id
+op_ne
+id|scsi_id
+)paren
+(brace
+id|found
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|scsi_id
+op_increment
+suffix:semicolon
+)brace
+id|port-&gt;scsi_id
+op_assign
+id|scsi_id
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|found
+)paren
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|port-&gt;list
+comma
+op_amp
+id|tmp_port-&gt;list
+)paren
+suffix:semicolon
+r_else
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|port-&gt;list
+comma
+op_amp
+id|adapter-&gt;port_list_head
 )paren
 suffix:semicolon
 id|atomic_clear_mask
@@ -5898,16 +5504,6 @@ id|ZFCP_STATUS_COMMON_RUNNING
 comma
 op_amp
 id|port-&gt;status
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|port-&gt;list
-comma
-op_amp
-id|adapter-&gt;port_list_head
 )paren
 suffix:semicolon
 id|write_unlock_irq
@@ -5930,7 +5526,6 @@ r_return
 id|port
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * returns:&t;0 - struct zfcp_port data structure successfully removed&n; *&t;&t;!0 - struct zfcp_port data structure could not be removed&n; *&t;&t;&t;(e.g. still used)&n; * locks :&t;port list write lock is assumed to be held by caller&n; */
 r_void
 DECL|function|zfcp_port_dequeue
 id|zfcp_port_dequeue
@@ -5942,7 +5537,12 @@ op_star
 id|port
 )paren
 (brace
-multiline_comment|/* remove specified port from list */
+id|zfcp_port_wait
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
@@ -5973,13 +5573,26 @@ c_func
 id|port-&gt;adapter
 )paren
 suffix:semicolon
-id|kfree
+id|zfcp_sysfs_port_remove_files
 c_func
 (paren
-id|port
+op_amp
+id|port-&gt;sysfs_device
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|port-&gt;status
+)paren
 )paren
 suffix:semicolon
-r_return
+id|device_unregister
+c_func
+(paren
+op_amp
+id|port-&gt;sysfs_device
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Enqueues a nameserver port */
@@ -6022,9 +5635,8 @@ id|port
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not establish a connection to the &quot;
-l_string|&quot;fabric name server connected to the &quot;
-l_string|&quot;adapter %s&bslash;n&quot;
+l_string|&quot;error: enqueue of nameserver port for &quot;
+l_string|&quot;adapter %s failed&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6255,8 +5867,8 @@ suffix:colon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Received RSCN with unknown &quot;
-l_string|&quot;address format.&bslash;n&quot;
+l_string|&quot;incoming RSCN with unknown &quot;
+l_string|&quot;address format&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -6310,10 +5922,10 @@ id|port-&gt;status
 )paren
 (brace
 id|ZFCP_LOG_INFO
+c_func
 (paren
-l_string|&quot;Received state change notification.&quot;
-l_string|&quot;Trying to open the port with wwpn &quot;
-l_string|&quot;0x%Lx. Hope it&squot;s there now.&bslash;n&quot;
+l_string|&quot;incoming RSCN, trying to open &quot;
+l_string|&quot;port 0x%016Lx&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 )paren
@@ -6359,17 +5971,17 @@ id|range_mask
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;reopen did 0x%x&bslash;n&quot;
+l_string|&quot;reopen did 0x%08x&bslash;n&quot;
 comma
 id|fcp_rscn_element-&gt;nport_did
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Unfortunately, an RSCN does not specify the&n;&t;&t;&t;&t; * type of change a target underwent. We assume&n;&t;&t;&t;&t; * that it makes sense to reopen the link.&n;&t;&t;&t;&t; * FIXME: Shall we try to find out more about&n;&t;&t;&t;&t; * the target and link state before closing it?&n;&t;&t;&t;&t; * How to accomplish this? (nameserver?)&n;&t;&t;&t;&t; * Where would such code be put in?&n;&t;&t;&t;&t; * (inside or outside erp)&n;&t;&t;&t;&t; */
 id|ZFCP_LOG_INFO
+c_func
 (paren
-l_string|&quot;Received state change notification.&quot;
-l_string|&quot;Trying to reopen the port with wwpn &quot;
-l_string|&quot;0x%Lx.&bslash;n&quot;
+l_string|&quot;incoming RSCN, trying to open &quot;
+l_string|&quot;port 0x%016Lx&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 )paren
@@ -6522,10 +6134,8 @@ id|els_logi-&gt;nport_wwn
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Re-open port indication received &quot;
-l_string|&quot;for the non-existing port with D_ID &quot;
-l_string|&quot;0x%3.3x, on the adapter &quot;
-l_string|&quot;%s. Ignored.&bslash;n&quot;
+l_string|&quot;ignored incoming PLOGI for nonexisting port &quot;
+l_string|&quot;with d_id 0x%08x on adapter %s&bslash;n&quot;
 comma
 id|status_buffer-&gt;d_id
 comma
@@ -6677,10 +6287,8 @@ id|els_logo-&gt;nport_wwpn
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Re-open port indication received &quot;
-l_string|&quot;for the non-existing port with D_ID &quot;
-l_string|&quot;0x%3.3x, on the adapter &quot;
-l_string|&quot;%s. Ignored.&bslash;n&quot;
+l_string|&quot;ignored incoming LOGO for nonexisting port &quot;
+l_string|&quot;with d_id 0x%08x on adapter %s&bslash;n&quot;
 comma
 id|status_buffer-&gt;d_id
 comma
@@ -6759,8 +6367,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;warning: Unknown incoming ELS (0x%x) received &quot;
-l_string|&quot;for the adapter %s&bslash;n&quot;
+l_string|&quot;warning: unknown incoming ELS 0x%08x &quot;
+l_string|&quot;for adapter %s&bslash;n&quot;
 comma
 op_star
 (paren
@@ -6967,18 +6575,10 @@ l_int|NULL
 op_eq
 id|data
 )paren
-(brace
-id|ZFCP_LOG_DEBUG
-c_func
-(paren
-l_string|&quot;Out of memory.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -7076,7 +6676,6 @@ op_ne
 l_int|0
 )paren
 )paren
-(brace
 id|mempool_free
 c_func
 (paren
@@ -7085,16 +6684,13 @@ comma
 id|gid_pn-&gt;ct.pool
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|kfree
 c_func
 (paren
 id|gid_pn
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -7152,9 +6748,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of memory. Could not allocate &quot;
-l_string|&quot;buffers for nameserver request GID_PN. &quot;
-l_string|&quot;(adapter: %s)&bslash;n&quot;
+l_string|&quot;error: buffer allocation for gid_pn nameserver &quot;
+l_string|&quot;request failed for adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -7256,8 +6851,8 @@ id|ret
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send nameserver request GID_PN.&quot;
-l_string|&quot;(adapter %s)&bslash;n&quot;
+l_string|&quot;error: initiation of gid_pn nameserver request &quot;
+l_string|&quot;failed for adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -7424,19 +7019,19 @@ id|port-&gt;wwpn
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Port WWPN returned by nameserver lookup &quot;
-l_string|&quot;does not correspond to the expected value &quot;
-l_string|&quot;(adapter: %s, debug info: 0x%016Lx, 0x%016Lx)&bslash;n&quot;
+l_string|&quot;bug: wwpn 0x%016Lx returned by nameserver &quot;
+l_string|&quot;lookup does not match expected wwpn 0x%016Lx &quot;
+l_string|&quot;for adapter %s&bslash;n&quot;
+comma
+id|ct_iu_req-&gt;wwpn
+comma
+id|port-&gt;wwpn
 comma
 id|zfcp_get_busid_by_port
 c_func
 (paren
 id|port
 )paren
-comma
-id|port-&gt;wwpn
-comma
-id|ct_iu_req-&gt;wwpn
 )paren
 suffix:semicolon
 r_goto
@@ -7462,7 +7057,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;busid %s:  WWPN=0x%Lx ---&gt; D_ID=0x%6.6x&bslash;n&quot;
+l_string|&quot;adapter %s:  wwpn=0x%016Lx ---&gt; d_id=0x%08x&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
@@ -7472,10 +7067,6 @@ id|port
 comma
 id|port-&gt;wwpn
 comma
-(paren
-r_int
-r_int
-)paren
 id|port-&gt;d_id
 )paren
 suffix:semicolon
@@ -7487,8 +7078,8 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;warning: WWPN 0x%Lx not found by nameserver lookup &quot;
-l_string|&quot;(adapter: %s)&bslash;n&quot;
+l_string|&quot;warning: failed gid_pn nameserver request for wwpn &quot;
+l_string|&quot;0x%016Lx for adapter %s&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma

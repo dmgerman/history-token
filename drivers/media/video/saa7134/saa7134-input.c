@@ -412,7 +412,7 @@ id|KEY_STOP
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Alfons Geser &lt;a.geser@cox.net&gt; */
+multiline_comment|/* Alfons Geser &lt;a.geser@cox.net&gt;&n; * updates from Job D. R. Borges &lt;jobdrb@ig.com.br&gt; */
 DECL|variable|eztv_codes
 r_static
 id|IR_KEYTAB_TYPE
@@ -439,7 +439,7 @@ singleline_comment|// DVR
 l_int|21
 )braket
 op_assign
-id|KEY_VIDEO
+id|KEY_DVD
 comma
 singleline_comment|// DVD
 (braket
@@ -461,14 +461,14 @@ singleline_comment|// mute
 l_int|2
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_LANGUAGE
 comma
-singleline_comment|// MTS/SAP / audio /autoseek
+singleline_comment|// MTS/SAP / audio / autoseek
 (braket
 l_int|30
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_SUBTITLE
 comma
 singleline_comment|// closed captioning / subtitle / seek
 (braket
@@ -482,16 +482,16 @@ singleline_comment|// full screen
 l_int|28
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_VIDEO
 comma
-singleline_comment|// video source / eject /delall
+singleline_comment|// video source / eject / delall
 (braket
 l_int|29
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_RESTART
 comma
-singleline_comment|// playback / angle /del
+singleline_comment|// playback / angle / del
 (braket
 l_int|47
 )braket
@@ -503,7 +503,7 @@ singleline_comment|// scan / menu / playlist
 l_int|48
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_CHANNEL
 comma
 singleline_comment|// CH surfing / bookmark / memo
 (braket
@@ -517,7 +517,7 @@ singleline_comment|// help
 l_int|50
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_MODE
 comma
 singleline_comment|// num/memo
 (braket
@@ -559,7 +559,7 @@ singleline_comment|// right
 l_int|3
 )braket
 op_assign
-id|KEY_ENTER
+id|KEY_SELECT
 comma
 singleline_comment|// select
 (braket
@@ -587,7 +587,7 @@ singleline_comment|// forward
 l_int|20
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_AGAIN
 comma
 singleline_comment|// repeat
 (braket
@@ -615,9 +615,9 @@ singleline_comment|// play
 l_int|46
 )braket
 op_assign
-id|KEY_RESERVED
+id|KEY_SHUFFLE
 comma
-singleline_comment|// snapshot
+singleline_comment|// snapshot / shuffle
 (braket
 l_int|0
 )braket

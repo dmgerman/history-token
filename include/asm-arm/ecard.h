@@ -572,6 +572,7 @@ id|num
 suffix:semicolon
 multiline_comment|/*&n; * Obtain the address of a card&n; */
 r_extern
+id|__deprecated
 r_int
 r_int
 id|ecard_address
@@ -586,6 +587,29 @@ id|card_type
 comma
 id|card_speed_t
 id|speed
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Request and release ecard resources&n; */
+r_extern
+r_int
+id|ecard_request_resources
+c_func
+(paren
+r_struct
+id|expansion_card
+op_star
+id|ec
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ecard_release_resources
+c_func
+(paren
+r_struct
+id|expansion_card
+op_star
+id|ec
 )paren
 suffix:semicolon
 macro_line|#ifdef ECARD_C

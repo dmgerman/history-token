@@ -57,7 +57,7 @@ mdefine_line|#define TRACE_FUN(level)&t;do {} while(0)
 DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT&t;&t;return
 DECL|macro|TRACE
-mdefine_line|#define TRACE(l, m, i...)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((ft_trace_t)(l) == FT_TRACE_TOP_LEVEL) {&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_INFO&quot;ftape&quot;__FILE__&quot;(&quot;__FUNCTION__&quot;):&bslash;n&quot;&t;&bslash;&n;&t;&t;       KERN_INFO m&quot;.&bslash;n&quot; ,##i);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define TRACE(l, m, i...)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((ft_trace_t)(l) == FT_TRACE_TOP_LEVEL) {&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_INFO&quot;ftape%s(%s):&bslash;n&quot;&t;                &bslash;&n;&t;&t;       KERN_INFO m&quot;.&bslash;n&quot; ,__FILE__, __FUNCTION__ , ##i);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|SET_TRACE_LEVEL
 mdefine_line|#define SET_TRACE_LEVEL(l)      if ((l) == (l)) do {} while(0)
 DECL|macro|TRACE_LEVEL

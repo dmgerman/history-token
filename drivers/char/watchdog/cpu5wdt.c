@@ -28,7 +28,6 @@ l_int|0x91
 suffix:semicolon
 DECL|variable|ticks
 r_static
-r_volatile
 r_int
 id|ticks
 op_assign
@@ -81,10 +80,6 @@ suffix:semicolon
 DECL|member|default_ticks
 r_int
 id|default_ticks
-suffix:semicolon
-DECL|member|min_ticks
-r_int
-id|min_ticks
 suffix:semicolon
 DECL|member|inuse
 r_int
@@ -189,17 +184,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ticks
-OL
-id|cpu5wdt_device.min_ticks
-)paren
-id|cpu5wdt_device.min_ticks
-op_assign
-id|ticks
-suffix:semicolon
 id|ticks
 op_assign
 id|cpu5wdt_device.default_ticks
@@ -884,10 +868,6 @@ suffix:semicolon
 id|cpu5wdt_device.queue
 op_assign
 l_int|0
-suffix:semicolon
-id|cpu5wdt_device.min_ticks
-op_assign
-id|ticks
 suffix:semicolon
 id|clear_bit
 c_func

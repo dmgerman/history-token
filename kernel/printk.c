@@ -2071,8 +2071,9 @@ c_func
 )paren
 )paren
 op_logical_and
-op_logical_neg
-id|system_running
+id|system_state
+op_ne
+id|SYSTEM_RUNNING
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Some console drivers may assume that per-cpu resources have&n;&t;&t; * been allocated.  So don&squot;t allow them to be called by this&n;&t;&t; * CPU until it is officially up.  We shouldn&squot;t be calling into&n;&t;&t; * random console drivers on a CPU which doesn&squot;t exist yet..&n;&t;&t; */

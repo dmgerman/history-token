@@ -570,13 +570,6 @@ id|unix_domain_find
 )paren
 suffix:semicolon
 multiline_comment|/* Generic XDR */
-DECL|variable|xdr_encode_array
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xdr_encode_array
-)paren
-suffix:semicolon
 DECL|variable|xdr_encode_string
 id|EXPORT_SYMBOL
 c_func
@@ -633,20 +626,6 @@ c_func
 id|xdr_shift_buf
 )paren
 suffix:semicolon
-DECL|variable|xdr_write_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xdr_write_pages
-)paren
-suffix:semicolon
-DECL|variable|xdr_read_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xdr_read_pages
-)paren
-suffix:semicolon
 DECL|variable|xdr_buf_from_iov
 id|EXPORT_SYMBOL
 c_func
@@ -666,6 +645,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xdr_buf_read_netobj
+)paren
+suffix:semicolon
+DECL|variable|read_bytes_from_xdr_buf
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_bytes_from_xdr_buf
 )paren
 suffix:semicolon
 multiline_comment|/* Debugging symbols */

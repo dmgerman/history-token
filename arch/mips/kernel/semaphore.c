@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 1999, 2001, 02, 03 Ralf Baechle&n; *&n; 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#ifdef CONFIG_CPU_HAS_LLDSCD
 multiline_comment|/*&n; * On machines without lld/scd we need a spinlock to make the manipulation of&n; * sem-&gt;count and sem-&gt;waking atomic.  Scalability isn&squot;t an issue because&n; * this lock is used on UP only so it&squot;s just an empty variable.&n; */
@@ -185,6 +186,7 @@ macro_line|#endif /* !CONFIG_CPU_HAS_LLSC */
 multiline_comment|/*&n; * Perform the &quot;down&quot; function.  Return zero for semaphore acquired, return&n; * negative for signalled out of the function.&n; *&n; * If called from down, the return is ignored and the wait loop is not&n; * interruptible.  This means that a task waiting on a semaphore using &quot;down()&quot;&n; * cannot be killed until someone does an &quot;up()&quot; on the semaphore.&n; *&n; * If called from down_interruptible, the return value gets checked upon return.&n; * If the return value is negative then the task continues with the negative&n; * value in the return register (it can be tested by the caller).&n; *&n; * Either form may be used in conjunction with &quot;up()&quot;.&n; */
 DECL|function|__down_failed
 r_void
+id|__sched
 id|__down_failed
 c_func
 (paren
@@ -494,6 +496,7 @@ suffix:semicolon
 macro_line|#endif /* !CONFIG_CPU_HAS_LLDSCD */
 DECL|function|__down_failed_interruptible
 r_int
+id|__sched
 id|__down_failed_interruptible
 c_func
 (paren

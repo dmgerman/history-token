@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * &n; *&n; * PowerPC-specific semaphore code.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * April 2001 - Reworked by Paul Mackerras &lt;paulus@samba.org&gt;&n; * to eliminate the SMP races in the old version between the updates&n; * of `count&squot; and `waking&squot;.  Now we use negative `count&squot; values to&n; * indicate that some process(es) are waiting for the semaphore.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -106,6 +107,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Note that when we come in to __down or __down_interruptible,&n; * we have already decremented count, but that decrement was&n; * ineffective since the result was &lt; 0, and any negative value&n; * of count is equivalent to 0.&n; * Thus it is only when we decrement count from some value &gt; 0&n; * that we have actually got the semaphore.&n; */
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -207,6 +209,7 @@ suffix:semicolon
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

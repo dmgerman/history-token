@@ -71,12 +71,11 @@ id|irq_2_pin
 id|PIN_MAP_SIZE
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|variable|vector_irq
 r_int
 id|vector_irq
 (braket
-id|NR_IRQS
+id|NR_VECTORS
 )braket
 op_assign
 (brace
@@ -85,7 +84,7 @@ l_int|0
 dot
 dot
 dot
-id|NR_IRQS
+id|NR_VECTORS
 op_minus
 l_int|1
 )braket
@@ -94,6 +93,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|macro|vector_to_irq
 mdefine_line|#define vector_to_irq(vector) &t;&bslash;&n;&t;(platform_legacy_irq(vector) ? vector : vector_irq[vector])
 macro_line|#else
@@ -4716,8 +4716,16 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifndef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
 DECL|function|assign_irq_vector
+r_int
+id|assign_irq_vector
+c_func
+(paren
+r_int
+id|irq
+)paren
+macro_line|#else
 r_int
 id|__init
 id|assign_irq_vector
@@ -4726,6 +4734,7 @@ c_func
 r_int
 id|irq
 )paren
+macro_line|#endif
 (brace
 r_static
 r_int
@@ -4748,6 +4757,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|irq
+op_ne
+id|AUTO_ASSIGN
+op_logical_and
 id|IO_APIC_VECTOR
 c_func
 (paren
@@ -4788,14 +4801,21 @@ id|FIRST_SYSTEM_VECTOR
 )paren
 (brace
 id|offset
-op_assign
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|offset
-op_plus
-l_int|1
+op_mod
+l_int|8
 )paren
-op_amp
-l_int|7
+)paren
+r_return
+op_minus
+id|ENOSPC
 suffix:semicolon
 id|current_vector
 op_assign
@@ -4804,6 +4824,20 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
+id|vector_irq
+(braket
+id|current_vector
+)braket
+op_assign
+id|irq
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_ne
+id|AUTO_ASSIGN
+)paren
 id|IO_APIC_VECTOR
 c_func
 (paren
@@ -4816,7 +4850,6 @@ r_return
 id|current_vector
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|ioapic_level_type
 r_static
 r_struct

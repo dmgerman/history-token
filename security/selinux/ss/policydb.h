@@ -324,6 +324,27 @@ DECL|member|node
 id|node
 suffix:semicolon
 multiline_comment|/* node information */
+r_struct
+(brace
+DECL|member|addr
+id|u32
+id|addr
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|mask
+id|u32
+id|mask
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|node6
+)brace
+id|node6
+suffix:semicolon
+multiline_comment|/* IPv6 node information */
 DECL|member|u
 )brace
 id|u
@@ -431,8 +452,10 @@ DECL|macro|OCON_NODE
 mdefine_line|#define OCON_NODE  4&t;/* nodes */
 DECL|macro|OCON_FSUSE
 mdefine_line|#define OCON_FSUSE 5&t;/* fs_use */
+DECL|macro|OCON_NODE6
+mdefine_line|#define OCON_NODE6 6&t;/* IPv6 nodes */
 DECL|macro|OCON_NUM
-mdefine_line|#define OCON_NUM   6
+mdefine_line|#define OCON_NUM   7
 multiline_comment|/* The policy database */
 DECL|struct|policydb
 r_struct

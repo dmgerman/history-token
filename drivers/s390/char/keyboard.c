@@ -2493,7 +2493,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * To have permissions to do most of the vt ioctls, we either have&n;&t; * to be the owner of the tty, or have CAP_SYS_TTY_CONFIG.&n;&t; */
 id|perm
 op_assign
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_eq
 id|kbd-&gt;tty
 op_logical_or

@@ -177,21 +177,14 @@ op_star
 id|lp
 )paren
 (brace
-macro_line|#ifndef __s390x__
+r_int
+r_int
+id|reg
+suffix:semicolon
 r_int
 r_int
 id|result
-comma
-id|reg
 suffix:semicolon
-macro_line|#else /* __s390x__ */
-r_int
-r_int
-id|result
-comma
-id|reg
-suffix:semicolon
-macro_line|#endif /* __s390x__ */
 id|__asm__
 id|__volatile
 c_func
@@ -406,7 +399,7 @@ id|rw-&gt;lock
 comma
 l_string|&quot;0&quot;
 (paren
-l_int|0
+l_int|0UL
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

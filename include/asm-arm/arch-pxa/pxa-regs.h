@@ -1773,6 +1773,58 @@ DECL|macro|SSITR
 mdefine_line|#define SSITR&t;&t;__REG(0x4100000C)  /* SSP Interrupt Test Register */
 DECL|macro|SSDR
 mdefine_line|#define SSDR&t;&t;__REG(0x41000010)  /* (Write / Read) SSP Data Write Register/SSP Data Read Register */
+DECL|macro|SSCR0_DSS
+mdefine_line|#define SSCR0_DSS&t;(0x0000000f)&t;/* Data Size Select (mask) */
+DECL|macro|SSCR0_DataSize
+mdefine_line|#define SSCR0_DataSize(x)  ((x) - 1)&t;/* Data Size Select [4..16] */
+DECL|macro|SSCR0_FRF
+mdefine_line|#define SSCR0_FRF&t;(0x00000030)&t;/* FRame Format (mask) */
+DECL|macro|SSCR0_Motorola
+mdefine_line|#define SSCR0_Motorola&t;(0x0 &lt;&lt; 4)&t;/* Motorola&squot;s Serial Peripheral Interface (SPI) */
+DECL|macro|SSCR0_TI
+mdefine_line|#define SSCR0_TI&t;(0x1 &lt;&lt; 4)&t;/* Texas Instruments&squot; Synchronous Serial Protocol (SSP) */
+DECL|macro|SSCR0_National
+mdefine_line|#define SSCR0_National&t;(0x2 &lt;&lt; 4)&t;/* National Microwire */
+DECL|macro|SSCR0_ECS
+mdefine_line|#define SSCR0_ECS&t;(1 &lt;&lt; 6)&t;/* External clock select */
+DECL|macro|SSCR0_SSE
+mdefine_line|#define SSCR0_SSE&t;(1 &lt;&lt; 7)&t;/* Synchronous Serial Port Enable */
+DECL|macro|SSCR0_SCR
+mdefine_line|#define SSCR0_SCR&t;(0x0000ff00)&t;/* Serial Clock Rate (mask) */
+DECL|macro|SSCR0_SerClkDiv
+mdefine_line|#define SSCR0_SerClkDiv(x) ((((x) - 2)/2) &lt;&lt; 8) /* Divisor [2..512] */
+DECL|macro|SSCR1_RIE
+mdefine_line|#define SSCR1_RIE&t;(1 &lt;&lt; 0)&t;/* Receive FIFO Interrupt Enable */
+DECL|macro|SSCR1_TIE
+mdefine_line|#define SSCR1_TIE&t;(1 &lt;&lt; 1)&t;/* Transmit FIFO Interrupt Enable */
+DECL|macro|SSCR1_LBM
+mdefine_line|#define SSCR1_LBM&t;(1 &lt;&lt; 2)&t;/* Loop-Back Mode */
+DECL|macro|SSCR1_SPO
+mdefine_line|#define SSCR1_SPO&t;(1 &lt;&lt; 3)&t;/* Motorola SPI SSPSCLK polarity setting */
+DECL|macro|SSCR1_SPH
+mdefine_line|#define SSCR1_SPH&t;(1 &lt;&lt; 4)&t;/* Motorola SPI SSPSCLK phase setting */
+DECL|macro|SSCR1_MWDS
+mdefine_line|#define SSCR1_MWDS&t;(1 &lt;&lt; 5)&t;/* Microwire Transmit Data Size */
+DECL|macro|SSCR1_TFT
+mdefine_line|#define SSCR1_TFT&t;(0x000003c0)&t;/* Transmit FIFO Threshold (mask) */
+DECL|macro|SSCR1_TxTresh
+mdefine_line|#define SSCR1_TxTresh(x) (((x) - 1) &lt;&lt; 6) /* level [1..16] */
+DECL|macro|SSCR1_RFT
+mdefine_line|#define SSCR1_RFT&t;(0x00003c00)&t;/* Receive FIFO Threshold (mask) */
+DECL|macro|SSCR1_RxTresh
+mdefine_line|#define SSCR1_RxTresh(x) (((x) - 1) &lt;&lt; 10) /* level [1..16] */
+DECL|macro|SSSR_TNF
+mdefine_line|#define SSSR_TNF&t;(1 &lt;&lt; 2)&t;/* Transmit FIFO Not Full */
+DECL|macro|SSSR_RNE
+mdefine_line|#define SSSR_RNE&t;(1 &lt;&lt; 3)&t;/* Receive FIFO Not Empty */
+DECL|macro|SSSR_BSY
+mdefine_line|#define SSSR_BSY&t;(1 &lt;&lt; 4)&t;/* SSP Busy */
+DECL|macro|SSSR_TFS
+mdefine_line|#define SSSR_TFS&t;(1 &lt;&lt; 5)&t;/* Transmit FIFO Service Request */
+DECL|macro|SSSR_RFS
+mdefine_line|#define SSSR_RFS&t;(1 &lt;&lt; 6)&t;/* Receive FIFO Service Request */
+DECL|macro|SSSR_ROR
+mdefine_line|#define SSSR_ROR&t;(1 &lt;&lt; 7)&t;/* Receive FIFO Overrun */
 multiline_comment|/*&n; * MultiMediaCard (MMC) controller&n; */
 DECL|macro|MMC_STRPCL
 mdefine_line|#define MMC_STRPCL&t;__REG(0x41100000)  /* Control to start and stop MMC clock */

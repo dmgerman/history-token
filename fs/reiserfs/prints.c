@@ -1390,11 +1390,6 @@ dot
 dot
 )paren
 (brace
-id|show_reiserfs_locks
-c_func
-(paren
-)paren
-suffix:semicolon
 id|do_reiserfs_warning
 c_func
 (paren

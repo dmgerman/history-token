@@ -2911,22 +2911,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|first_sched
 mdefine_line|#define first_sched    ((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched

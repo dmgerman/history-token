@@ -4953,7 +4953,7 @@ id|file-&gt;f_op-&gt;write
 op_ne
 id|redirected_tty_write
 op_logical_and
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_eq
 id|tty
 )paren

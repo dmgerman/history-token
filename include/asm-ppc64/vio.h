@@ -5,7 +5,6 @@ mdefine_line|#define _ASM_VIO_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -188,7 +187,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -207,7 +207,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -228,7 +229,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -249,7 +251,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -315,72 +318,6 @@ DECL|macro|vio_map_page
 mdefine_line|#define vio_map_page(dev, page, off, size, dir) &bslash;&n;&t;&t;vio_map_single(dev, (page_address(page) + (off)), size, dir)
 DECL|macro|vio_unmap_page
 mdefine_line|#define vio_unmap_page(dev,addr,sz,dir) vio_unmap_single(dev,addr,sz,dir)
-DECL|function|vio_dma_sync_single
-r_static
-r_inline
-r_void
-id|vio_dma_sync_single
-c_func
-(paren
-r_struct
-id|vio_dev
-op_star
-id|hwdev
-comma
-id|dma_addr_t
-id|dma_handle
-comma
-r_int
-id|size
-comma
-r_int
-id|direction
-)paren
-(brace
-id|BUG_ON
-c_func
-(paren
-id|direction
-op_eq
-id|PCI_DMA_NONE
-)paren
-suffix:semicolon
-multiline_comment|/* nothing to do */
-)brace
-DECL|function|vio_dma_sync_sg
-r_static
-r_inline
-r_void
-id|vio_dma_sync_sg
-c_func
-(paren
-r_struct
-id|vio_dev
-op_star
-id|hwdev
-comma
-r_struct
-id|scatterlist
-op_star
-id|sg
-comma
-r_int
-id|nelems
-comma
-r_int
-id|direction
-)paren
-(brace
-id|BUG_ON
-c_func
-(paren
-id|direction
-op_eq
-id|PCI_DMA_NONE
-)paren
-suffix:semicolon
-multiline_comment|/* nothing to do */
-)brace
 DECL|function|vio_set_dma_mask
 r_static
 r_inline
@@ -585,25 +522,6 @@ r_struct
 id|vio_dev
 comma
 id|dev
-)paren
-suffix:semicolon
-)brace
-DECL|function|vio_dma_mapping_error
-r_static
-r_inline
-r_int
-id|vio_dma_mapping_error
-c_func
-(paren
-id|dma_addr_t
-id|dma_addr
-)paren
-(brace
-r_return
-id|dma_mapping_error
-c_func
-(paren
-id|dma_addr
 )paren
 suffix:semicolon
 )brace

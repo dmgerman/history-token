@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__DQUOT_PARANOIA
 mdefine_line|#define __DQUOT_PARANOIA
-multiline_comment|/*&n; * There are two quota SMP locks. dq_list_lock protects all lists with quotas&n; * and quota formats and also dqstats structure containing statistics about the&n; * lists. dq_data_lock protects data from dq_dqb and also mem_dqinfo structures&n; * and also guards consistency of dquot-&gt;dq_dqb with inode-&gt;i_blocks, i_bytes.&n; * Note that we don&squot;t have to do the locking of i_blocks and i_bytes when the&n; * quota is disabled - i_sem should serialize the access. dq_data_lock should&n; * be always grabbed before dq_list_lock.&n; *&n; * Note that some things (eg. sb pointer, type, id) doesn&squot;t change during&n; * the life of the dquot structure and so needn&squot;t to be protected by a lock&n; */
+multiline_comment|/*&n; * There are two quota SMP locks. dq_list_lock protects all lists with quotas&n; * and quota formats and also dqstats structure containing statistics about the&n; * lists. dq_data_lock protects data from dq_dqb and also mem_dqinfo structures&n; * and also guards consistency of dquot-&gt;dq_dqb with inode-&gt;i_blocks, i_bytes.&n; * i_blocks and i_bytes updates itself are guarded by i_lock acquired directly&n; * in inode_add_bytes() and inode_sub_bytes().&n; *&n; * The spinlock ordering is hence: dq_data_lock &gt; dq_list_lock &gt; i_lock&n; *&n; * Note that some things (eg. sb pointer, type, id) doesn&squot;t change during&n; * the life of the dquot structure and so needn&squot;t to be protected by a lock&n; *&n; * Any operation working on dquots via inode pointers must hold dqptr_sem.  If&n; * operation is just reading pointers from inode (or not using them at all) the&n; * read lock is enough. If pointers are altered function must hold write lock.&n; * If operation is holding reference to dquot in other way (e.g. quotactl ops)&n; * it must be guarded by dqonoff_sem.&n; * This locking assures that:&n; *   a) update/access to dquot pointers in inode is serialized&n; *   b) everyone is guarded against invalidate_dquots()&n; *&n; * Each dquot has its dq_lock semaphore. Locked dquots might not be referenced&n; * from inodes (dquot_alloc_space() and such don&squot;t check the dq_lock).&n; * Currently dquot is locked only when it is being read to memory on the first&n; * dqget(). Write operations on dquots don&squot;t hold dq_lock as they copy data&n; * under dq_data_lock spinlock to internal buffers before writing.&n; *&n; * Lock ordering (including journal_lock) is following:&n; *  dqonoff_sem &gt; journal_lock &gt; dqptr_sem &gt; dquot-&gt;dq_lock &gt; dqio_sem&n; */
 DECL|variable|dq_list_lock
 id|spinlock_t
 id|dq_list_lock
@@ -366,7 +366,6 @@ id|fmt-&gt;qf_owner
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Dquot List Management:&n; * The quota code uses three lists for dquot management: the inuse_list,&n; * free_dquots, and dquot_hash[] array. A single dquot structure may be&n; * on all three lists, depending on its current state.&n; *&n; * All dquots are placed to the end of inuse_list when first created, and this&n; * list is used for the sync and invalidate operations, which must look&n; * at every dquot.&n; *&n; * Unused dquots (dq_count == 0) are added to the free_dquots list when freed,&n; * and this list is searched whenever we need an available dquot.  Dquots are&n; * removed from the list as soon as they are used again, and&n; * dqstats.free_dquots gives the number of dquots on the list. When&n; * dquot is invalidated it&squot;s completely released from memory.&n; *&n; * Dquots with a specific identity (device, type and id) are placed on&n; * one of the dquot_hash[] hash chains. The provides an efficient search&n; * mechanism to locate a specific dquot.&n; */
-multiline_comment|/*&n; * Note that any operation which operates on dquot data (ie. dq_dqb) must&n; * hold dq_data_lock.&n; *&n; * Any operation working with dquots must hold dqptr_sem. If operation is&n; * just reading pointers from inodes than read lock is enough. If pointers&n; * are altered function must hold write lock.&n; *&n; * Locked dquots might not be referenced in inodes. Currently dquot it locked&n; * only once in its existence - when it&squot;s being read to memory on first dqget()&n; * and at that time it can&squot;t be referenced from inode. Write operations on&n; * dquots don&squot;t hold dquot lock as they copy data to internal buffers before&n; * writing anyway and copying as well as any data update should be atomic. Also&n; * nobody can change used entries in dquot structure as this is done only when&n; * quota is destroyed and invalidate_dquots() is called only when dq_count == 0.&n; */
 r_static
 id|LIST_HEAD
 c_func
@@ -879,7 +878,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Invalidate all dquots on the list. Note that this function is called after&n; * quota is disabled so no new quota might be created. Because we hold dqptr_sem&n; * for writing and pointers were already removed from inodes we actually know that&n; * no quota for this sb+type should be held. */
+multiline_comment|/* Invalidate all dquots on the list. Note that this function is called after&n; * quota is disabled so no new quota might be created. Because we hold&n; * dqonoff_sem and pointers were already removed from inodes we actually know&n; * that no quota for this sb+type should be held. */
 DECL|function|invalidate_dquots
 r_static
 r_void
@@ -961,8 +960,7 @@ id|type
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifdef __DQUOT_PARANOIA&t;
-multiline_comment|/* There should be no users of quota - we hold dqptr_sem for writing */
+macro_line|#ifdef __DQUOT_PARANOIA
 r_if
 c_cond
 (paren
@@ -979,7 +977,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Quota now have no users and it has been written on last dqput() */
+multiline_comment|/* Quota now has no users and it has been written on last dqput() */
 id|remove_dquot_hash
 c_func
 (paren
@@ -1054,11 +1052,11 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
-id|down_read
+id|down
 c_func
 (paren
 op_amp
-id|dqopt-&gt;dqptr_sem
+id|dqopt-&gt;dqonoff_sem
 )paren
 suffix:semicolon
 id|restart
@@ -1323,11 +1321,11 @@ op_amp
 id|dq_list_lock
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
-id|dqopt-&gt;dqptr_sem
+id|dqopt-&gt;dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -1469,7 +1467,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Put reference to dquot&n; * NOTE: If you change this function please check whether dqput_blocks() works right...&n; * MUST be called with dqptr_sem held&n; */
+multiline_comment|/*&n; * Put reference to dquot&n; * NOTE: If you change this function please check whether dqput_blocks() works right...&n; * MUST be called with either dqptr_sem or dqonoff_sem held&n; */
 DECL|function|dqput
 r_static
 r_void
@@ -1768,7 +1766,7 @@ r_return
 id|dquot
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get reference to dquot&n; * MUST be called with dqptr_sem held&n; */
+multiline_comment|/*&n; * Get reference to dquot&n; * MUST be called with either dqptr_sem or dqonoff_sem held&n; */
 DECL|function|dqget
 r_static
 r_struct
@@ -2095,7 +2093,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This routine is guarded by dqptr_sem semaphore */
+multiline_comment|/* This routine is guarded by dqonoff_sem semaphore */
 DECL|function|add_dquot_ref
 r_static
 r_void
@@ -2439,6 +2437,7 @@ suffix:semicolon
 multiline_comment|/* Free list of dquots - called from inode.c */
 multiline_comment|/* dquots are removed from inodes, no new references can be got so we are the only ones holding reference */
 DECL|function|put_dquot_list
+r_static
 r_void
 id|put_dquot_list
 c_func
@@ -2504,6 +2503,90 @@ id|dquot
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Function in inode.c - remove pointers to dquots in icache */
+r_extern
+r_void
+id|remove_dquot_ref
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+r_struct
+id|list_head
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Gather all references from inodes and drop them */
+DECL|function|drop_dquot_ref
+r_static
+r_void
+id|drop_dquot_ref
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|type
+)paren
+(brace
+id|LIST_HEAD
+c_func
+(paren
+id|tofree_head
+)paren
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|dqptr_sem
+)paren
+suffix:semicolon
+id|remove_dquot_ref
+c_func
+(paren
+id|sb
+comma
+id|type
+comma
+op_amp
+id|tofree_head
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|dqptr_sem
+)paren
+suffix:semicolon
+id|put_dquot_list
+c_func
+(paren
+op_amp
+id|tofree_head
+)paren
+suffix:semicolon
 )brace
 DECL|function|dquot_incr_inodes
 r_static
@@ -2830,7 +2913,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 id|dquot-&gt;dq_sb-&gt;s_id
 )paren
@@ -2849,7 +2932,7 @@ id|BSOFTWARN
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 l_string|&quot;: warning, &quot;
 )paren
@@ -2858,7 +2941,7 @@ r_else
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 l_string|&quot;: write failed, &quot;
 )paren
@@ -2866,7 +2949,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 id|quotatypes
 (braket
@@ -2938,7 +3021,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 id|msg
 )paren
@@ -3442,6 +3525,18 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -3591,27 +3686,33 @@ id|dqptr_sem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Remove references to quota from inode&n; *&t;This function needs dqptr_sem for writing&n; */
-DECL|function|dquot_drop_iupdate
-r_static
+multiline_comment|/*&n; * &t;Release all quotas referenced by inode&n; *&t;Transaction must be started at an entry&n; */
+DECL|function|dquot_drop
 r_void
-id|dquot_drop_iupdate
+id|dquot_drop
 c_func
 (paren
 r_struct
 id|inode
 op_star
 id|inode
-comma
-r_struct
-id|dquot
-op_star
-op_star
-id|to_drop
 )paren
 (brace
 r_int
 id|cnt
+suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|dqptr_sem
+)paren
 suffix:semicolon
 id|inode-&gt;i_flags
 op_and_assign
@@ -3633,15 +3734,25 @@ id|cnt
 op_increment
 )paren
 (brace
-id|to_drop
-(braket
-id|cnt
-)braket
-op_assign
+r_if
+c_cond
+(paren
 id|inode-&gt;i_dquot
 (braket
 id|cnt
 )braket
+op_ne
+id|NODQUOT
+)paren
+(brace
+id|dqput
+c_func
+(paren
+id|inode-&gt;i_dquot
+(braket
+id|cnt
+)braket
+)paren
 suffix:semicolon
 id|inode-&gt;i_dquot
 (braket
@@ -3652,50 +3763,6 @@ id|NODQUOT
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * &t;Release all quotas referenced by inode&n; */
-DECL|function|dquot_drop
-r_void
-id|dquot_drop
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_struct
-id|dquot
-op_star
-id|to_drop
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-r_int
-id|cnt
-suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|sb_dqopt
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-op_member_access_from_pointer
-id|dqptr_sem
-)paren
-suffix:semicolon
-id|dquot_drop_iupdate
-c_func
-(paren
-id|inode
-comma
-id|to_drop
-)paren
-suffix:semicolon
 id|up_write
 c_func
 (paren
@@ -3707,104 +3774,6 @@ id|inode-&gt;i_sb
 )paren
 op_member_access_from_pointer
 id|dqptr_sem
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|cnt
-OL
-id|MAXQUOTAS
-suffix:semicolon
-id|cnt
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|to_drop
-(braket
-id|cnt
-)braket
-op_ne
-id|NODQUOT
-)paren
-id|dqput
-c_func
-(paren
-id|to_drop
-(braket
-id|cnt
-)braket
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; *&t;Release all quotas referenced by inode.&n; *&t;This function assumes dqptr_sem for writing&n; */
-DECL|function|dquot_drop_nolock
-r_void
-id|dquot_drop_nolock
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_struct
-id|dquot
-op_star
-id|to_drop
-(braket
-id|MAXQUOTAS
-)braket
-suffix:semicolon
-r_int
-id|cnt
-suffix:semicolon
-id|dquot_drop_iupdate
-c_func
-(paren
-id|inode
-comma
-id|to_drop
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|cnt
-OL
-id|MAXQUOTAS
-suffix:semicolon
-id|cnt
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|to_drop
-(braket
-id|cnt
-)braket
-op_ne
-id|NODQUOT
-)paren
-id|dqput
-c_func
-(paren
-id|to_drop
-(braket
-id|cnt
-)braket
 )paren
 suffix:semicolon
 )brace
@@ -3839,6 +3808,29 @@ id|warntype
 id|MAXQUOTAS
 )braket
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
+id|number
+)paren
+suffix:semicolon
+r_return
+id|QUOTA_OK
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -3880,6 +3872,7 @@ op_amp
 id|dq_data_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Now recheck reliably when holding dqptr_sem */
 r_if
 c_cond
 (paren
@@ -4062,6 +4055,19 @@ id|warntype
 id|MAXQUOTAS
 )braket
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+id|QUOTA_OK
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4096,6 +4102,7 @@ op_member_access_from_pointer
 id|dqptr_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Now recheck reliably when holding dqptr_sem */
 r_if
 c_cond
 (paren
@@ -4283,6 +4290,28 @@ r_int
 r_int
 id|cnt
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+id|inode_sub_bytes
+c_func
+(paren
+id|inode
+comma
+id|number
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|down_read
 c_func
 (paren
@@ -4303,6 +4332,7 @@ op_amp
 id|dq_data_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Now recheck reliably when holding dqptr_sem */
 r_if
 c_cond
 (paren
@@ -4406,6 +4436,18 @@ r_int
 r_int
 id|cnt
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -4419,6 +4461,7 @@ op_member_access_from_pointer
 id|dqptr_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Now recheck reliably when holding dqptr_sem */
 r_if
 c_cond
 (paren
@@ -4585,6 +4628,19 @@ id|warntype
 id|MAXQUOTAS
 )braket
 suffix:semicolon
+multiline_comment|/* Solve deadlock when we recurse when holding dqptr_sem... */
+r_if
+c_cond
+(paren
+id|IS_NOQUOTA
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+id|QUOTA_OK
+suffix:semicolon
 multiline_comment|/* Clear the arrays */
 r_for
 c_loop
@@ -4621,6 +4677,19 @@ op_assign
 id|NOWARN
 suffix:semicolon
 )brace
+id|down
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|dqonoff_sem
+)paren
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -4634,6 +4703,7 @@ op_member_access_from_pointer
 id|dqptr_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Now recheck reliably when holding dqptr_sem */
 r_if
 c_cond
 (paren
@@ -4656,6 +4726,19 @@ id|inode-&gt;i_sb
 )paren
 op_member_access_from_pointer
 id|dqptr_sem
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -4935,6 +5018,19 @@ op_amp
 id|dq_data_lock
 )paren
 suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|sb_dqopt
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|dqptr_sem
+)paren
+suffix:semicolon
 id|flush_warnings
 c_func
 (paren
@@ -5005,7 +5101,7 @@ id|cnt
 )paren
 suffix:semicolon
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
@@ -5015,7 +5111,7 @@ c_func
 id|inode-&gt;i_sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -5185,19 +5281,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function in inode.c - remove pointers to dquots in icache */
-r_extern
-r_void
-id|remove_dquot_ref
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Turn quota off on a device. type == -1 ==&gt; quotaoff for all types (umount)&n; */
 DECL|function|vfs_quota_off
 r_int
@@ -5242,13 +5325,6 @@ c_func
 (paren
 op_amp
 id|dqopt-&gt;dqonoff_sem
-)paren
-suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|dqopt-&gt;dqptr_sem
 )paren
 suffix:semicolon
 r_for
@@ -5303,7 +5379,7 @@ id|cnt
 )paren
 suffix:semicolon
 multiline_comment|/* Note: these are blocking operations */
-id|remove_dquot_ref
+id|drop_dquot_ref
 c_func
 (paren
 id|sb
@@ -5452,13 +5528,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|up_write
-c_func
-(paren
-op_amp
-id|dqopt-&gt;dqptr_sem
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -5527,6 +5596,16 @@ id|format_id
 suffix:semicolon
 r_int
 id|error
+comma
+id|cnt
+suffix:semicolon
+r_struct
+id|dquot
+op_star
+id|to_drop
+(braket
+id|MAXQUOTAS
+)braket
 suffix:semicolon
 r_int
 r_int
@@ -5641,13 +5720,6 @@ op_amp
 id|dqopt-&gt;dqonoff_sem
 )paren
 suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|dqopt-&gt;dqptr_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5703,10 +5775,11 @@ r_goto
 id|out_file_init
 suffix:semicolon
 multiline_comment|/* We don&squot;t want quota and atime on quota files (deadlocks possible) */
-id|dquot_drop_nolock
+id|down_write
 c_func
 (paren
-id|inode
+op_amp
+id|dqopt-&gt;dqptr_sem
 )paren
 suffix:semicolon
 id|inode-&gt;i_flags
@@ -5715,6 +5788,85 @@ id|S_NOQUOTA
 op_or
 id|S_NOATIME
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|MAXQUOTAS
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+id|to_drop
+(braket
+id|cnt
+)braket
+op_assign
+id|inode-&gt;i_dquot
+(braket
+id|cnt
+)braket
+suffix:semicolon
+id|inode-&gt;i_dquot
+(braket
+id|cnt
+)braket
+op_assign
+id|NODQUOT
+suffix:semicolon
+)brace
+id|inode-&gt;i_flags
+op_and_assign
+op_complement
+id|S_QUOTA
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|dqopt-&gt;dqptr_sem
+)paren
+suffix:semicolon
+multiline_comment|/* We must put dquots outside of dqptr_sem because we may need to&n;&t; * start transaction for write */
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|MAXQUOTAS
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|to_drop
+(braket
+id|cnt
+)braket
+)paren
+id|dqput
+c_func
+(paren
+id|to_drop
+(braket
+id|cnt
+)braket
+)paren
+suffix:semicolon
+)brace
 id|dqopt-&gt;ops
 (braket
 id|type
@@ -5785,13 +5937,6 @@ c_func
 id|dqopt
 comma
 id|type
-)paren
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|dqopt-&gt;dqptr_sem
 )paren
 suffix:semicolon
 id|add_dquot_ref
@@ -5967,7 +6112,7 @@ id|dquot
 op_star
 id|dquot
 suffix:semicolon
-id|down_read
+id|down
 c_func
 (paren
 op_amp
@@ -5977,7 +6122,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_if
@@ -5999,7 +6144,7 @@ id|type
 )paren
 )paren
 (brace
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6009,7 +6154,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6031,7 +6176,7 @@ c_func
 id|dquot
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6041,7 +6186,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6391,7 +6536,7 @@ id|dquot
 op_star
 id|dquot
 suffix:semicolon
-id|down_read
+id|down
 c_func
 (paren
 op_amp
@@ -6401,7 +6546,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_if
@@ -6423,7 +6568,7 @@ id|type
 )paren
 )paren
 (brace
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6433,7 +6578,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6455,7 +6600,7 @@ c_func
 id|dquot
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6465,7 +6610,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6497,7 +6642,7 @@ id|mem_dqinfo
 op_star
 id|mi
 suffix:semicolon
-id|down_read
+id|down
 c_func
 (paren
 op_amp
@@ -6507,7 +6652,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_if
@@ -6523,7 +6668,7 @@ id|type
 )paren
 )paren
 (brace
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6533,7 +6678,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6585,7 +6730,7 @@ op_amp
 id|dq_data_lock
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6595,7 +6740,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6627,7 +6772,7 @@ id|mem_dqinfo
 op_star
 id|mi
 suffix:semicolon
-id|down_read
+id|down
 c_func
 (paren
 op_amp
@@ -6637,7 +6782,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_if
@@ -6653,7 +6798,7 @@ id|type
 )paren
 )paren
 (brace
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6663,7 +6808,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return
@@ -6747,7 +6892,7 @@ op_amp
 id|dq_data_lock
 )paren
 suffix:semicolon
-id|up_read
+id|up
 c_func
 (paren
 op_amp
@@ -6757,7 +6902,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqptr_sem
+id|dqonoff_sem
 )paren
 suffix:semicolon
 r_return

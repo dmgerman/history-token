@@ -4,6 +4,14 @@ DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
+multiline_comment|/*&n; * The module space lives between the addresses given by TASK_SIZE&n; * and PAGE_OFFSET - it must be within 32MB of the kernel text.&n; */
+DECL|macro|MODULE_END
+mdefine_line|#define MODULE_END&t;(PAGE_OFFSET)
+DECL|macro|MODULE_START
+mdefine_line|#define MODULE_START&t;(MODULE_END - 16*1048576)
+macro_line|#if TASK_SIZE &gt; MODULE_START
+macro_line|#error Top of user space clashes with start of module space
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * PFNs are used to describe any physical page; this means&n; * PFN 0 == physical address 0.&n; *&n; * This is the PFN of the first RAM page in the kernel&n; * direct-mapped view.  We assume this is the first page&n; * of RAM in the mem_map as well.&n; */
 DECL|macro|PHYS_PFN_OFFSET

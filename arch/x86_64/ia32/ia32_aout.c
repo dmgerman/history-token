@@ -36,6 +36,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|exec_stack
 )paren
 suffix:semicolon
 r_static
@@ -1910,6 +1913,8 @@ id|ia32_setup_arg_pages
 c_func
 (paren
 id|bprm
+comma
+id|EXSTACK_DEFAULT
 )paren
 suffix:semicolon
 r_if

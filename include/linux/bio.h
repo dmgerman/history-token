@@ -204,7 +204,7 @@ DECL|macro|BIO_POOL_MASK
 mdefine_line|#define BIO_POOL_MASK&t;&t;(1UL &lt;&lt; BIO_POOL_OFFSET)
 DECL|macro|BIO_POOL_IDX
 mdefine_line|#define BIO_POOL_IDX(bio)&t;((bio)-&gt;bi_flags &gt;&gt; BIO_POOL_OFFSET)&t;
-multiline_comment|/*&n; * bio bi_rw flags&n; *&n; * bit 0 -- read (not set) or write (set)&n; * bit 1 -- rw-ahead when set&n; * bit 2 -- barrier&n; * bit 3 -- fail fast, don&squot;t want low level driver retries&n; */
+multiline_comment|/*&n; * bio bi_rw flags&n; *&n; * bit 0 -- read (not set) or write (set)&n; * bit 1 -- rw-ahead when set&n; * bit 2 -- barrier&n; * bit 3 -- fail fast, don&squot;t want low level driver retries&n; * bit 4 -- synchronous I/O hint: the block layer will unplug immediately&n; */
 DECL|macro|BIO_RW
 mdefine_line|#define BIO_RW&t;&t;0
 DECL|macro|BIO_RW_AHEAD
@@ -213,6 +213,8 @@ DECL|macro|BIO_RW_BARRIER
 mdefine_line|#define BIO_RW_BARRIER&t;2
 DECL|macro|BIO_RW_FAILFAST
 mdefine_line|#define BIO_RW_FAILFAST&t;3
+DECL|macro|BIO_RW_SYNC
+mdefine_line|#define BIO_RW_SYNC&t;4
 multiline_comment|/*&n; * various member access, note that bio_data should of course not be used&n; * on highmem page vectors&n; */
 DECL|macro|bio_iovec_idx
 mdefine_line|#define bio_iovec_idx(bio, idx)&t;(&amp;((bio)-&gt;bi_io_vec[(idx)]))
@@ -232,6 +234,8 @@ DECL|macro|bio_data
 mdefine_line|#define bio_data(bio)&t;&t;(page_address(bio_page((bio))) + bio_offset((bio)))
 DECL|macro|bio_barrier
 mdefine_line|#define bio_barrier(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_BARRIER))
+DECL|macro|bio_sync
+mdefine_line|#define bio_sync(bio)&t;&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_RW_SYNC))
 multiline_comment|/*&n; * will die&n; */
 DECL|macro|bio_to_phys
 mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + (unsigned long) bio_offset((bio)))

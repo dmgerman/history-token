@@ -332,7 +332,7 @@ mdefine_line|#define CPU_SCIx_FNS(name, sci_offset, sci_size, scif_offset, scif_
 DECL|macro|CPU_SCIF_FNS
 mdefine_line|#define CPU_SCIF_FNS(name, scif_offset, scif_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct uart_port *port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(scif_size, scif_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct uart_port *port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(scif_size, scif_offset, value);&t;&t;&t;&t;&bslash;&n;  }
 DECL|macro|CPU_SCI_FNS
-mdefine_line|#define CPU_SCI_FNS(name, sci_offset, sci_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(sci_size, sci_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(sci_size, sci_offset, value);&t;&t;&t;&t;&bslash;&n;  }
+mdefine_line|#define CPU_SCI_FNS(name, sci_offset, sci_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct uart_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(sci_size, sci_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct uart_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(sci_size, sci_offset, value);&t;&t;&t;&t;&bslash;&n;  }
 macro_line|#ifdef CONFIG_CPU_SH3
 DECL|macro|SCIx_FNS
 mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size, &bslash;&n;                 h8_sci_offset, h8_sci_size) &bslash;&n;  CPU_SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh3_scif_offset, sh3_scif_size)
@@ -1029,7 +1029,7 @@ id|sci_rxd_in
 c_func
 (paren
 r_struct
-id|sci_port
+id|uart_port
 op_star
 id|port
 )paren
@@ -1038,7 +1038,7 @@ r_int
 id|ch
 op_assign
 (paren
-id|port-&gt;base
+id|port-&gt;mapbase
 op_minus
 id|SMR0
 )paren

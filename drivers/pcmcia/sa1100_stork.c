@@ -103,8 +103,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* disable IRQs */
@@ -175,8 +176,9 @@ l_int|1
 id|printk
 c_func
 (paren
+l_string|&quot;%s GPLR=%x IRQ[1:0]=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; GPLR=%x IRQ[1:0]=%x&bslash;n&quot;
 comma
 id|levels
 comma

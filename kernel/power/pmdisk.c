@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;power.h&quot;
 r_extern
+id|asmlinkage
 r_int
 id|pmdisk_arch_suspend
 c_func
@@ -2827,11 +2828,6 @@ c_func
 r_void
 )paren
 (brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2983,6 +2979,12 @@ id|submit_bio
 c_func
 (paren
 id|rw
+op_or
+(paren
+l_int|1
+op_lshift
+id|BIO_RW_SYNC
+)paren
 comma
 id|bio
 )paren

@@ -168,7 +168,11 @@ c_func
 id|page
 )paren
 op_logical_and
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_logical_and
 id|test_bit
 c_func
@@ -714,7 +718,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 r_return
 suffix:semicolon

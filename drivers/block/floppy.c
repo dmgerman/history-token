@@ -31,7 +31,7 @@ mdefine_line|#define REALLY_SLOW_IO
 DECL|macro|DEBUGT
 mdefine_line|#define DEBUGT 2
 DECL|macro|DCL_DEBUG
-mdefine_line|#define DCL_DEBUG /* debug disk change line */
+mdefine_line|#define DCL_DEBUG&t;&t;/* debug disk change line */
 multiline_comment|/* do print messages for unexpected interrupts */
 DECL|variable|print_unex
 r_static
@@ -60,13 +60,13 @@ macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt; /* CMOS defines */
+macro_line|#include &lt;linux/mc146818rtc.h&gt;&t;/* CMOS defines */
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for invalidate_buffers() */
 multiline_comment|/*&n; * PS/2 floppies have much slower step rates than regular floppies.&n; * It&squot;s been recommended that take about 1/4 of the default speed&n; * in some more extreme cases.&n; */
 DECL|variable|slow_floppy
 r_static
@@ -162,6 +162,7 @@ suffix:semicolon
 r_static
 r_void
 id|register_devfs_entries
+c_func
 (paren
 r_int
 id|drive
@@ -190,7 +191,7 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/cdrom.h&gt; /* for the compatibility eject ioctl */
+macro_line|#include &lt;linux/cdrom.h&gt;&t;/* for the compatibility eject ioctl */
 macro_line|#include &lt;linux/completion.h&gt;
 DECL|variable|current_req
 r_static
@@ -266,7 +267,6 @@ r_return
 suffix:semicolon
 multiline_comment|/* no fallback allowed */
 id|printk
-c_func
 (paren
 l_string|&quot;DMA memory shortage. Temporarily falling back on virtual DMA&bslash;n&quot;
 )paren
@@ -308,9 +308,9 @@ mdefine_line|#define ITYPE(x) (((x)&gt;&gt;2) &amp; 0x1f)
 DECL|macro|TOMINOR
 mdefine_line|#define TOMINOR(x) ((x &amp; 3) | ((x &amp; 4) &lt;&lt; 5))
 DECL|macro|UNIT
-mdefine_line|#define UNIT(x) ((x) &amp; 0x03)&t;&t;/* drive on fdc */
+mdefine_line|#define UNIT(x) ((x) &amp; 0x03)&t;/* drive on fdc */
 DECL|macro|FDC
-mdefine_line|#define FDC(x) (((x) &amp; 0x04) &gt;&gt; 2)  /* fdc of drive */
+mdefine_line|#define FDC(x) (((x) &amp; 0x04) &gt;&gt; 2)&t;/* fdc of drive */
 DECL|macro|REVDRIVE
 mdefine_line|#define REVDRIVE(fdc, unit) ((unit) + ((fdc) &lt;&lt; 2))
 multiline_comment|/* reverse mapping from unit and fdc to drive */
@@ -384,7 +384,7 @@ DECL|macro|NR_F
 mdefine_line|#define NR_F 6
 multiline_comment|/*&n; * Maximum disk size (in kilobytes). This default is used whenever the&n; * current disk size is unknown.&n; * [Now it is rather a minimum]&n; */
 DECL|macro|MAX_DISK_SIZE
-mdefine_line|#define MAX_DISK_SIZE 4 /* 3984*/
+mdefine_line|#define MAX_DISK_SIZE 4&t;&t;/* 3984 */
 multiline_comment|/*&n; * globals used by &squot;result()&squot;&n; */
 DECL|macro|MAX_REPLIES
 mdefine_line|#define MAX_REPLIES 16
@@ -410,7 +410,7 @@ mdefine_line|#define ST1 (reply_buffer[1])
 DECL|macro|ST2
 mdefine_line|#define ST2 (reply_buffer[2])
 DECL|macro|ST3
-mdefine_line|#define ST3 (reply_buffer[0]) /* result of GETSTATUS */
+mdefine_line|#define ST3 (reply_buffer[0])&t;/* result of GETSTATUS */
 DECL|macro|R_TRACK
 mdefine_line|#define R_TRACK (reply_buffer[3])
 DECL|macro|R_HEAD
@@ -1988,7 +1988,7 @@ id|interrupt
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* this is called after the interrupt of the&n;&t;&t;&t;&t;  * main command */
+multiline_comment|/* this is called after the interrupt of the&n;&t;&t;&t;&t;&t; * main command */
 DECL|member|redo
 r_void
 (paren
@@ -2015,7 +2015,7 @@ DECL|member|done
 id|done_f
 id|done
 suffix:semicolon
-multiline_comment|/* this is called to say if the operation has &n;&t;&t;      * succeeded/failed */
+multiline_comment|/* this is called to say if the operation has&n;&t;&t;&t;&t; * succeeded/failed */
 DECL|variable|cont
 )brace
 op_star
@@ -2852,7 +2852,7 @@ op_lshift
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*USETF(FD_DISK_NEWCHANGE);*/
+multiline_comment|/*USETF(FD_DISK_NEWCHANGE); */
 r_return
 l_int|1
 suffix:semicolon
@@ -3087,7 +3087,7 @@ id|jiffies
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;We should propagate failures to grab the resources back&n;&t; *&t;nicely from here. Actually we ought to rewrite the fd&n;&t; *&t;driver some day too.&n;&t; */
+multiline_comment|/*&n;&t; *      We should propagate failures to grab the resources back&n;&t; *      nicely from here. Actually we ought to rewrite the fd&n;&t; *      driver some day too.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3396,12 +3396,10 @@ op_eq
 op_minus
 l_int|1
 )paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4235,7 +4233,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* do the reset during sleep to win time&n;&t;&t;&t;      * if we don&squot;t need to sleep, it&squot;s a good&n;&t;&t;&t;      * occasion anyways */
+multiline_comment|/* do the reset during sleep to win time&n;&t;&t;&t;&t; * if we don&squot;t need to sleep, it&squot;s a good&n;&t;&t;&t;&t; * occasion anyways */
 r_return
 l_int|1
 suffix:semicolon
@@ -4580,7 +4578,7 @@ c_func
 id|f
 )paren
 suffix:semicolon
-macro_line|#else&t;
+macro_line|#else
 id|fd_clear_dma_ff
 c_func
 (paren
@@ -4999,7 +4997,6 @@ id|initialising
 )paren
 (brace
 id|DPRINT
-c_func
 (paren
 l_string|&quot;get result error. Fdc=%d Last status=%x Read bytes=%d&bslash;n&quot;
 comma
@@ -5154,7 +5151,7 @@ id|FDCS-&gt;reset
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* convenient way to return to&n;&t;&t;&t;&t;&t;&t;  * redo without to much hassle (deep&n;&t;&t;&t;&t;&t;&t;  * stack et al. */
+multiline_comment|/* convenient way to return to&n;&t;&t;&t;&t;&t;&t; * redo without to much hassle (deep&n;&t;&t;&t;&t;&t;&t; * stack et al. */
 r_return
 suffix:semicolon
 )brace
@@ -5285,7 +5282,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* pre-compensation from track &n;&t;&t;&t;   0 upwards */
+multiline_comment|/* pre-compensation from track&n;&t;&t;&t;&t;   0 upwards */
 r_return
 l_int|1
 suffix:semicolon
@@ -5357,7 +5354,7 @@ id|FDCS-&gt;need_configure
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*DPRINT(&quot;FIFO enabled&bslash;n&quot;);*/
+multiline_comment|/*DPRINT(&quot;FIFO enabled&bslash;n&quot;); */
 )brace
 r_switch
 c_cond
@@ -5391,7 +5388,7 @@ op_ge
 id|FDC_82078
 )paren
 (brace
-multiline_comment|/* chose the default rate table, not the one&n;&t;&t;&t;&t; * where 1 = 2 Mbps */
+multiline_comment|/* chose the default rate table, not the one&n;&t;&t;&t; * where 1 = 2 Mbps */
 id|output_byte
 c_func
 (paren
@@ -5695,6 +5692,7 @@ op_amp
 l_int|3
 suffix:semicolon
 r_return
+(paren
 id|fd_wait_for_completion
 c_func
 (paren
@@ -5710,6 +5708,7 @@ comma
 id|timeout_fn
 )paren
 id|floppy_ready
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6036,7 +6035,6 @@ suffix:semicolon
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;unknown error. ST[0..2] are: 0x%x 0x%x 0x%x&quot;
 comma
@@ -6470,7 +6468,6 @@ id|FD_DEBUG
 )paren
 (brace
 id|DPRINT
-c_func
 (paren
 l_string|&quot;clearing NEWCHANGE flag because of effective seek&bslash;n&quot;
 )paren
@@ -6929,7 +6926,7 @@ l_string|&quot;recal interrupt need 1 recal:&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* after a second recalibrate, we still haven&squot;t&n;&t;&t;&t;&t; * reached track 0. Probably no drive. Raise an&n;&t;&t;&t;&t; * error, as failing immediately might upset&n;&t;&t;&t;&t; * computers possessed by the Devil :-) */
+multiline_comment|/* after a second recalibrate, we still haven&squot;t&n;&t;&t;&t; * reached track 0. Probably no drive. Raise an&n;&t;&t;&t; * error, as failing immediately might upset&n;&t;&t;&t; * computers possessed by the Devil :-) */
 id|cont
 op_member_access_from_pointer
 id|error
@@ -6957,7 +6954,7 @@ l_string|&quot;recal interrupt need 2 recal:&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we already did a recalibrate,&n;&t;&t;&t;&t; * and we are not at track 0, this&n;&t;&t;&t;&t; * means we have moved. (The only way&n;&t;&t;&t;&t; * not to move at recalibration is to&n;&t;&t;&t;&t; * be already at track 0.) Clear the&n;&t;&t;&t;&t; * new change flag */
+multiline_comment|/* If we already did a recalibrate,&n;&t;&t;&t; * and we are not at track 0, this&n;&t;&t;&t; * means we have moved. (The only way&n;&t;&t;&t; * not to move at recalibration is to&n;&t;&t;&t; * be already at track 0.) Clear the&n;&t;&t;&t; * new change flag */
 macro_line|#ifdef DCL_DEBUG
 r_if
 c_cond
@@ -6968,7 +6965,6 @@ id|FD_DEBUG
 )paren
 (brace
 id|DPRINT
-c_func
 (paren
 l_string|&quot;clearing NEWCHANGE flag because of second recalibrate&bslash;n&quot;
 )paren
@@ -6996,7 +6992,7 @@ l_string|&quot;recal interrupt default:&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Recalibrate moves the head by at&n;&t;&t;&t;&t; * most 80 steps. If after one&n;&t;&t;&t;&t; * recalibrate we don&squot;t have reached&n;&t;&t;&t;&t; * track 0, this might mean that we&n;&t;&t;&t;&t; * started beyond track 80.  Try&n;&t;&t;&t;&t; * again.  */
+multiline_comment|/* Recalibrate moves the head by at&n;&t;&t;&t; * most 80 steps. If after one&n;&t;&t;&t; * recalibrate we don&squot;t have reached&n;&t;&t;&t; * track 0, this might mean that we&n;&t;&t;&t; * started beyond track 80.  Try&n;&t;&t;&t; * again.  */
 id|DRS-&gt;track
 op_assign
 id|NEED_1_RECAL
@@ -8090,6 +8086,7 @@ id|data
 suffix:semicolon
 multiline_comment|/* wait_for_completion also schedules reset if needed. */
 r_return
+(paren
 id|fd_wait_for_completion
 c_func
 (paren
@@ -8101,6 +8098,7 @@ comma
 id|timeout_fn
 )paren
 id|function
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -8177,7 +8175,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* this clears the dcl on certain drive/controller&n;&t;&t;&t;    * combinations */
+multiline_comment|/* this clears the dcl on certain drive/controller&n;&t;&t;&t;&t; * combinations */
 macro_line|#ifdef fd_chose_dma_mode
 r_if
 c_cond
@@ -9264,6 +9262,37 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|_floppy-&gt;stretch
+op_amp
+id|FD_ZEROBASED
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+id|count
+OL
+id|F_SECT_PER_TRACK
+suffix:semicolon
+id|count
+op_increment
+)paren
+id|here
+(braket
+id|count
+)braket
+dot
+id|sect
+op_decrement
+suffix:semicolon
+)brace
 )brace
 DECL|function|redo_format
 r_static
@@ -9745,7 +9774,7 @@ op_ge
 l_int|2
 )paren
 (brace
-multiline_comment|/* some Toshiba floppy controllers occasionnally seem to&n;&t;     * return bogus interrupts after read/write operations, which&n;&t;     * can be recognized by a bad head number (&gt;= 2) */
+multiline_comment|/* some Toshiba floppy controllers occasionnally seem to&n;&t;&t; * return bogus interrupts after read/write operations, which&n;&t;&t; * can be recognized by a bad head number (&gt;= 2) */
 r_return
 suffix:semicolon
 )brace
@@ -10865,7 +10894,7 @@ id|SECT_PER_TRACK
 op_assign
 id|end_sector
 suffix:semicolon
-multiline_comment|/* make sure SECT_PER_TRACK points&n;&t;&t;&t;&t;&t;      * to end of transfer */
+multiline_comment|/* make sure SECT_PER_TRACK points&n;&t;&t;&t;&t;&t;&t; * to end of transfer */
 )brace
 )brace
 multiline_comment|/*&n; * Formulate a read/write request.&n; * this routine decides where to load the data (directly to buffer, or to&n; * tmp floppy area), how much data to load (the size of the buffer, the whole&n; * track, or a single sector)&n; * All floppy_track_buffer handling goes in here. If we ever add track buffer&n; * allocation on the fly, it should be done here. No other part should need&n; * modification.&n; */
@@ -11071,7 +11100,11 @@ c_cond
 (paren
 id|_floppy-&gt;stretch
 op_amp
+(paren
 id|FD_SWAPSIDES
+op_or
+id|FD_ZEROBASED
+)paren
 )paren
 op_logical_or
 id|TESTF
@@ -11255,7 +11288,18 @@ op_rshift
 id|SIZECODE
 )paren
 op_plus
+(paren
+(paren
+id|_floppy-&gt;stretch
+op_amp
+id|FD_ZEROBASED
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* tracksize describes the size which can be filled up with sectors&n;&t; * of size ssize.&n;&t; */
 id|tracksize
@@ -11679,7 +11723,7 @@ id|errors
 OL
 id|DP-&gt;max_errors.read_track
 op_logical_and
-multiline_comment|/*!TESTF(FD_NEED_TWADDLE) &amp;&amp;*/
+multiline_comment|/*!TESTF(FD_NEED_TWADDLE) &amp;&amp; */
 (paren
 (paren
 op_logical_neg
@@ -11725,7 +11769,6 @@ l_int|0
 )paren
 (brace
 id|DPRINT
-c_func
 (paren
 l_string|&quot;zero dma transfer attempted from make_raw_request&bslash;n&quot;
 )paren
@@ -11967,7 +12010,7 @@ op_lshift_assign
 l_int|9
 suffix:semicolon
 macro_line|#ifdef FLOPPY_SANITY_CHECK
-multiline_comment|/*check_dma_crossing(raw_cmd-&gt;kernel_data, raw_cmd-&gt;length, &n;&t;  &quot;end of make_raw_request&quot;);*/
+multiline_comment|/*check_dma_crossing(raw_cmd-&gt;kernel_data, raw_cmd-&gt;length, &n;&t;   &quot;end of make_raw_request&quot;); */
 r_if
 c_cond
 (paren
@@ -13463,7 +13506,6 @@ id|ECALL
 c_func
 (paren
 id|fd_copyout
-c_func
 (paren
 id|ptr-&gt;data
 comma
@@ -14128,7 +14170,7 @@ id|bdev
 r_int
 id|cnt
 suffix:semicolon
-multiline_comment|/* sanity checking for parameters.*/
+multiline_comment|/* sanity checking for parameters. */
 r_if
 c_cond
 (paren
@@ -14163,6 +14205,8 @@ op_complement
 id|FD_STRETCH
 op_or
 id|FD_SWAPSIDES
+op_or
+id|FD_ZEROBASED
 )paren
 )paren
 op_ne
@@ -14337,6 +14381,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_int
+id|oldStretch
+suffix:semicolon
 id|LOCK_FDC
 c_func
 (paren
@@ -14364,6 +14411,10 @@ comma
 id|FD_RAW_NEED_DISK
 )paren
 )paren
+suffix:semicolon
+id|oldStretch
+op_assign
+id|g-&gt;stretch
 suffix:semicolon
 id|user_params
 (braket
@@ -14447,6 +14498,25 @@ dot
 id|sect
 op_logical_or
 id|DRS-&gt;maxtrack
+op_logical_or
+(paren
+(paren
+id|user_params
+(braket
+id|drive
+)braket
+dot
+id|sect
+op_xor
+id|oldStretch
+)paren
+op_amp
+(paren
+id|FD_SWAPSIDES
+op_or
+id|FD_ZEROBASED
+)paren
+)paren
 )paren
 id|invalidate_drive
 c_func
@@ -15777,6 +15847,7 @@ id|name
 )paren
 suffix:semicolon
 id|register_devfs_entries
+c_func
 (paren
 id|drive
 )paren
@@ -16933,7 +17004,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*already done by another thread*/
+multiline_comment|/*already done by another thread */
 r_return
 l_int|0
 suffix:semicolon
@@ -17153,7 +17224,6 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|t360
-DECL|variable|t1200
 r_static
 r_int
 id|t360
@@ -17166,6 +17236,7 @@ comma
 l_int|0
 )brace
 comma
+DECL|variable|t1200
 id|t1200
 (braket
 )braket
@@ -17278,6 +17349,7 @@ r_static
 r_void
 id|__init
 id|register_devfs_entries
+c_func
 (paren
 r_int
 id|drive
@@ -17481,7 +17553,6 @@ l_int|10
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;FDC %d init: DUMPREGS: unexpected return of %d bytes.&bslash;n&quot;
 comma
@@ -18136,7 +18207,317 @@ id|config_params
 (braket
 )braket
 op_assign
-initialization_block
+(brace
+(brace
+l_string|&quot;allowed_drive_mask&quot;
+comma
+l_int|0
+comma
+op_amp
+id|allowed_drive_mask
+comma
+l_int|0xff
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* obsolete */
+(brace
+l_string|&quot;all_drives&quot;
+comma
+l_int|0
+comma
+op_amp
+id|allowed_drive_mask
+comma
+l_int|0xff
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* obsolete */
+(brace
+l_string|&quot;asus_pci&quot;
+comma
+l_int|0
+comma
+op_amp
+id|allowed_drive_mask
+comma
+l_int|0x33
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;irq&quot;
+comma
+l_int|0
+comma
+op_amp
+id|FLOPPY_IRQ
+comma
+l_int|6
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;dma&quot;
+comma
+l_int|0
+comma
+op_amp
+id|FLOPPY_DMA
+comma
+l_int|2
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;daring&quot;
+comma
+id|daring
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+macro_line|#if N_FDC &gt; 1
+(brace
+l_string|&quot;two_fdc&quot;
+comma
+l_int|0
+comma
+op_amp
+id|FDC2
+comma
+l_int|0x370
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;one_fdc&quot;
+comma
+l_int|0
+comma
+op_amp
+id|FDC2
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
+(brace
+l_string|&quot;thinkpad&quot;
+comma
+id|floppy_set_flags
+comma
+l_int|0
+comma
+l_int|1
+comma
+id|FD_INVERTED_DCL
+)brace
+comma
+(brace
+l_string|&quot;broken_dcl&quot;
+comma
+id|floppy_set_flags
+comma
+l_int|0
+comma
+l_int|1
+comma
+id|FD_BROKEN_DCL
+)brace
+comma
+(brace
+l_string|&quot;messages&quot;
+comma
+id|floppy_set_flags
+comma
+l_int|0
+comma
+l_int|1
+comma
+id|FTD_MSG
+)brace
+comma
+(brace
+l_string|&quot;silent_dcl_clear&quot;
+comma
+id|floppy_set_flags
+comma
+l_int|0
+comma
+l_int|1
+comma
+id|FD_SILENT_DCL_CLEAR
+)brace
+comma
+(brace
+l_string|&quot;debug&quot;
+comma
+id|floppy_set_flags
+comma
+l_int|0
+comma
+l_int|1
+comma
+id|FD_DEBUG
+)brace
+comma
+(brace
+l_string|&quot;nodma&quot;
+comma
+l_int|0
+comma
+op_amp
+id|can_use_virtual_dma
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;omnibook&quot;
+comma
+l_int|0
+comma
+op_amp
+id|can_use_virtual_dma
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;yesdma&quot;
+comma
+l_int|0
+comma
+op_amp
+id|can_use_virtual_dma
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;fifo_depth&quot;
+comma
+l_int|0
+comma
+op_amp
+id|fifo_depth
+comma
+l_int|0xa
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;nofifo&quot;
+comma
+l_int|0
+comma
+op_amp
+id|no_fifo
+comma
+l_int|0x20
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;usefifo&quot;
+comma
+l_int|0
+comma
+op_amp
+id|no_fifo
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;cmos&quot;
+comma
+id|set_cmos
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;slow&quot;
+comma
+l_int|0
+comma
+op_amp
+id|slow_floppy
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;unexpected_interrupts&quot;
+comma
+l_int|0
+comma
+op_amp
+id|print_unex
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;no_unexpected_interrupts&quot;
+comma
+l_int|0
+comma
+op_amp
+id|print_unex
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;L40SX&quot;
+comma
+l_int|0
+comma
+op_amp
+id|print_unex
+comma
+l_int|0
+comma
+l_int|0
+)brace
+id|EXTRA_FLOPPY_PARAMS
+)brace
 suffix:semicolon
 DECL|function|floppy_setup
 r_static
@@ -18699,6 +19080,7 @@ id|motor_off_callback
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
 l_string|&quot;floppy&quot;
 )paren
@@ -18877,7 +19259,7 @@ op_assign
 l_int|0x4
 suffix:semicolon
 macro_line|#if defined(__sparc__) || defined(__mc68000__)
-multiline_comment|/*sparcs/sun3x don&squot;t have a DOR reset which we can fall back on to*/
+multiline_comment|/*sparcs/sun3x don&squot;t have a DOR reset which we can fall back on to */
 macro_line|#ifdef __mc68000__
 r_if
 c_cond
@@ -19790,7 +20172,7 @@ comma
 id|FD_DOR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;The driver will try and free resources and relies on us&n;&t; *&t;to know if they were allocated or not.&n;&t; */
+multiline_comment|/*&n;&t; *      The driver will try and free resources and relies on us&n;&t; *      to know if they were allocated or not.&n;&t; */
 id|fdc
 op_assign
 l_int|0
@@ -20197,6 +20579,7 @@ DECL|function|unregister_devfs_entries
 r_static
 r_void
 id|unregister_devfs_entries
+c_func
 (paren
 r_int
 id|drive
@@ -20304,9 +20687,7 @@ suffix:semicolon
 id|cfg
 op_increment
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -20592,6 +20973,7 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 macro_line|#else
 id|__setup
+c_func
 (paren
 l_string|&quot;floppy=&quot;
 comma

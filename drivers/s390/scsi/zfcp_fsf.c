@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.29 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.43 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -352,6 +352,40 @@ id|FSF_QTCB_UPLOAD_CONTROL_FILE
 )braket
 op_assign
 id|FSF_SUPPORT_COMMAND
+)brace
+suffix:semicolon
+DECL|variable|zfcp_act_subtable_type
+r_static
+r_const
+r_char
+id|zfcp_act_subtable_type
+(braket
+l_int|5
+)braket
+(braket
+l_int|8
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;unknown&quot;
+)brace
+comma
+(brace
+l_string|&quot;OS&quot;
+)brace
+comma
+(brace
+l_string|&quot;WWPN&quot;
+)brace
+comma
+(brace
+l_string|&quot;DID&quot;
+)brace
+comma
+(brace
+l_string|&quot;LUN&quot;
+)brace
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************/
@@ -831,12 +865,8 @@ id|cleanup
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;removing FSF request 0x%lx&bslash;n&quot;
+l_string|&quot;removing FSF request %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 )paren
 suffix:semicolon
@@ -854,12 +884,8 @@ multiline_comment|/* notify initiator waiting for the requests completion */
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;waking initiator of FSF request 0x%lx&bslash;n&quot;
+l_string|&quot;waking initiator of FSF request %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 )paren
 suffix:semicolon
@@ -906,12 +932,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;QTCB is at 0x%lx&bslash;n&quot;
+l_string|&quot;QTCB is at %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req-&gt;qtcb
 )paren
 suffix:semicolon
@@ -1004,6 +1026,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 (paren
 id|fsf_req-&gt;qtcb-&gt;header.log_start
 op_plus
@@ -1104,88 +1129,6 @@ comma
 l_string|&quot;FSF_PROT_QTCB_VERSION_ERROR&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* DEBUG */
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;fsf_req=0x%lx, qtcb=0x%lx (0x%lx, 0x%lx)&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req-&gt;qtcb
-comma
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-comma
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-r_struct
-id|zfcp_fsf_req
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-)paren
-op_member_access_from_pointer
-id|qtcb
-)paren
-suffix:semicolon
-id|ZFCP_HEX_DUMP
-c_func
-(paren
-id|ZFCP_LOG_LEVEL_NORMAL
-comma
-(paren
-r_char
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-comma
-r_sizeof
-(paren
-r_struct
-id|zfcp_fsf_req
-)paren
-)paren
-suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
@@ -1279,7 +1222,6 @@ dot
 id|sequence_error.exp_req_seq_no
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -1328,7 +1270,6 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|debug_text_exception
 c_func
 (paren
@@ -1398,87 +1339,6 @@ id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
-)paren
-)paren
-suffix:semicolon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;fsf_req=0x%lx, qtcb=0x%lx (0x%lx, 0x%lx)&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req-&gt;qtcb
-comma
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-comma
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-r_struct
-id|zfcp_fsf_req
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-)paren
-op_member_access_from_pointer
-id|qtcb
-)paren
-suffix:semicolon
-id|ZFCP_HEX_DUMP
-c_func
-(paren
-id|ZFCP_LOG_LEVEL_NORMAL
-comma
-(paren
-r_char
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-comma
-r_sizeof
-(paren
-r_struct
-id|zfcp_fsf_req
 )paren
 )paren
 suffix:semicolon
@@ -1598,7 +1458,7 @@ id|fsf_req-&gt;qtcb
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The request identifier  0x%Lx &quot;
+l_string|&quot;bug: The request identifier 0x%Lx &quot;
 l_string|&quot;to the adapter %s is ambiguous. &quot;
 l_string|&quot;Stopping all operations on this &quot;
 l_string|&quot;adapter.&bslash;n&quot;
@@ -1630,17 +1490,13 @@ r_else
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The request identifier  0x%lx &quot;
+l_string|&quot;bug: The request identifier %p &quot;
 l_string|&quot;to the adapter %s is ambiguous. &quot;
 l_string|&quot;Stopping all operations on this &quot;
 l_string|&quot;adapter. &quot;
 l_string|&quot;(bug: got this for an unsolicited &quot;
 l_string|&quot;status read request)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 comma
 id|zfcp_get_busid_by_adapter
@@ -2020,105 +1876,6 @@ id|adapter
 )paren
 comma
 id|fsf_req-&gt;qtcb-&gt;prefix.prot_status
-)paren
-suffix:semicolon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;fsf_req=0x%lx, qtcb=0x%lx (0x%lx, 0x%lx)&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req-&gt;qtcb
-comma
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-comma
-(paren
-r_int
-r_int
-)paren
-(paren
-(paren
-r_struct
-id|zfcp_fsf_req
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-)paren
-op_member_access_from_pointer
-id|qtcb
-)paren
-suffix:semicolon
-id|ZFCP_HEX_DUMP
-c_func
-(paren
-id|ZFCP_LOG_LEVEL_NORMAL
-comma
-(paren
-r_char
-op_star
-)paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-)paren
-op_amp
-l_int|0xFFFFFF00
-)paren
-comma
-r_sizeof
-(paren
-r_struct
-id|zfcp_fsf_req
-)paren
-)paren
-suffix:semicolon
-id|ZFCP_HEX_DUMP
-c_func
-(paren
-id|ZFCP_LOG_LEVEL_NORMAL
-comma
-(paren
-r_char
-op_star
-)paren
-id|fsf_req-&gt;qtcb
-comma
-r_sizeof
-(paren
-r_struct
-id|fsf_qtcb
-)paren
 )paren
 suffix:semicolon
 id|debug_text_event
@@ -2729,6 +2486,20 @@ op_star
 id|fsf_req
 )paren
 (brace
+r_struct
+id|zfcp_erp_action
+op_star
+id|erp_action
+op_assign
+id|fsf_req-&gt;erp_action
+suffix:semicolon
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
+suffix:semicolon
 r_int
 id|retval
 op_assign
@@ -2749,21 +2520,11 @@ id|ZFCP_STATUS_FSFREQ_ERROR
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;fsf_req=0x%lx, QTCB=0x%lx&bslash;n&quot;
+l_string|&quot;fsf_req=%p, QTCB=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
 id|fsf_req-&gt;qtcb
-)paren
 )paren
 suffix:semicolon
 id|ZFCP_HEX_DUMP
@@ -3037,22 +2798,13 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: Command issued by the device driver is &quot;
-l_string|&quot;not supported by the adapter %s &quot;
-l_string|&quot;(debug info 0x%lx 0x%x).&bslash;n&quot;
+l_string|&quot;not supported by the adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|fsf_req-&gt;adapter
 )paren
-comma
-(paren
-r_int
-r_int
-)paren
-id|fsf_req
-comma
-id|fsf_req-&gt;fsf_command
 )paren
 suffix:semicolon
 r_if
@@ -3080,10 +2832,47 @@ id|fsf_req-&gt;qtcb-&gt;header.fsf_command
 )paren
 suffix:semicolon
 )brace
-id|zfcp_erp_fsf_req_handler
+r_if
+c_cond
+(paren
+op_logical_neg
+id|erp_action
+)paren
+r_return
+id|retval
+suffix:semicolon
+id|debug_text_event
 c_func
 (paren
-id|fsf_req
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;a_frh&quot;
+)paren
+suffix:semicolon
+id|debug_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+op_amp
+id|erp_action-&gt;action
+comma
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+suffix:semicolon
+id|zfcp_erp_async_handler
+c_func
+(paren
+id|erp_action
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -3164,9 +2953,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;unsolicited status buffer for &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create unsolicited status &quot;
+l_string|&quot;buffer for adapter %s.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -3314,8 +3102,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Status Read request initiated &quot;
-l_string|&quot;(adapter busid=%s)&bslash;n&quot;
+l_string|&quot;Status Read request initiated (adapter%s)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -3324,7 +3111,6 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -3335,7 +3121,6 @@ comma
 l_string|&quot;unso&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -3474,9 +3259,9 @@ id|ZFCP_DID_MASK
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Re-open port indication received for the &quot;
-l_string|&quot;non-existing port with DID 0x%3.3x, on &quot;
-l_string|&quot;the adapter %s. Ignored.&bslash;n&quot;
+l_string|&quot;bug: Reopen port indication received for&quot;
+l_string|&quot;nonexisting port with d_id 0x%08x on &quot;
+l_string|&quot;adapter %s. Ignored.&bslash;n&quot;
 comma
 id|status_buffer-&gt;d_id
 op_amp
@@ -3593,9 +3378,9 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: Undefined status subtype received &quot;
-l_string|&quot;for a re-open indication on the port with &quot;
-l_string|&quot;DID 0x%3.3x, on the adapter &quot;
-l_string|&quot;%s. Ignored. (debug info 0x%x)&bslash;n&quot;
+l_string|&quot;for a reopen indication on port with &quot;
+l_string|&quot;d_id 0x%08x on the adapter %s. &quot;
+l_string|&quot;Ignored. (debug info 0x%x)&bslash;n&quot;
 comma
 id|status_buffer-&gt;d_id
 comma
@@ -3811,7 +3596,43 @@ comma
 l_string|&quot;FSF_STATUS_READ_LINK_DOWN&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Unneccessary, ignoring.... */
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|0
+comma
+l_string|&quot;unsol_link_down:&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;Local link to adapter %s is down&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|atomic_set_mask
+c_func
+(paren
+id|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
+comma
+op_amp
+id|adapter-&gt;status
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_failed
+c_func
+(paren
+id|adapter
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3838,9 +3659,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The local link to the adapter %s &quot;
-l_string|&quot;was re-plugged. &quot;
-l_string|&quot;Re-starting operations on this adapter..&bslash;n&quot;
+l_string|&quot;Local link to adapter %s was replugged. &quot;
+l_string|&quot;Restarting operations on this adapter&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -3873,74 +3693,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FSF_STATUS_READ_NOTIFICATION_LOST
-suffix:colon
-id|ZFCP_LOG_FLAGS
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;FSF_STATUS_READ_NOTIFICATION_LOST&bslash;n&quot;
-)paren
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|adapter-&gt;erp_dbf
-comma
-l_int|2
-comma
-l_string|&quot;unsol_not_lost:&quot;
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|status_buffer-&gt;status_subtype
-)paren
-(brace
-r_case
-id|FSF_STATUS_READ_SUB_LOST_CFDC_UPDATED
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;The unsolicited status information about &quot;
-l_string|&quot;CFDC update on the adapter %s is lost &quot;
-l_string|&quot;due to the lack of internal resources&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|FSF_STATUS_READ_SUB_LOST_CFDC_HARDENED
-suffix:colon
-id|ZFCP_LOG_NORMAL
-c_func
-(paren
-l_string|&quot;The unsolicited status information about &quot;
-l_string|&quot;CFDC harden on the adapter %s is lost &quot;
-l_string|&quot;due to the lack of internal resources&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
 id|FSF_STATUS_READ_CFDC_UPDATED
 suffix:colon
 id|ZFCP_LOG_FLAGS
@@ -3961,7 +3713,7 @@ comma
 l_string|&quot;unsol_cfdc_update:&quot;
 )paren
 suffix:semicolon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;CFDC has been updated on the adapter %s&bslash;n&quot;
@@ -4005,11 +3757,10 @@ id|status_buffer-&gt;status_subtype
 r_case
 id|FSF_STATUS_READ_SUB_CFDC_HARDENED_ON_SE
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;CFDC of the adapter %s &quot;
-l_string|&quot;has been saved on the SE&bslash;n&quot;
+l_string|&quot;CFDC of adapter %s saved on SE&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4023,11 +3774,11 @@ suffix:semicolon
 r_case
 id|FSF_STATUS_READ_SUB_CFDC_HARDENED_ON_SE2
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;CFDC of the adapter %s &quot;
-l_string|&quot;has been copied to the secondary SE&bslash;n&quot;
+l_string|&quot;CFDC of adapter %s has been copied &quot;
+l_string|&quot;to the secondary SE&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4040,10 +3791,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;CFDC of the adapter %s has been hardened&bslash;n&quot;
+l_string|&quot;CFDC of adapter %s has been hardened&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4087,8 +3838,7 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: An unsolicited status packet of unknown &quot;
-l_string|&quot;type was received by the zfcp-driver &quot;
-l_string|&quot;(debug info 0x%x)&bslash;n&quot;
+l_string|&quot;type was received (debug info 0x%x)&bslash;n&quot;
 comma
 id|status_buffer-&gt;status_type
 )paren
@@ -4096,12 +3846,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Dump of status_read_buffer 0x%lx:&bslash;n&quot;
+l_string|&quot;Dump of status_read_buffer %p:&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|status_buffer
 )paren
 suffix:semicolon
@@ -4164,10 +3910,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Outbound queue busy. &quot;
-l_string|&quot;Could not create use an &quot;
-l_string|&quot;unsolicited status read request for &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;Failed to create unsolicited status read &quot;
+l_string|&quot;request for the adapter %s.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4195,8 +3939,8 @@ id|ZFCP_STATUS_READ_FAILED_THRESHOLD
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;restart adapter due to status read &quot;
-l_string|&quot;buffer shortage (busid %s)&bslash;n&quot;
+l_string|&quot;restart adapter %s due to status read &quot;
+l_string|&quot;buffer shortage&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4301,11 +4045,9 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;abort command request on the device with &quot;
-l_string|&quot;the FCP-LUN 0x%Lx connected to &quot;
-l_string|&quot;the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Failed to create an abort command &quot;
+l_string|&quot;request for lun 0x%016Lx on port 0x%016Lx &quot;
+l_string|&quot;on adapter %s.&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -4406,9 +4148,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send an abort command request &quot;
-l_string|&quot;for a command on the adapter %s, &quot;
-l_string|&quot;port WWPN 0x%Lx and unit LUN 0x%Lx&bslash;n&quot;
+l_string|&quot;error: Failed to send abort command request &quot;
+l_string|&quot;on adapter %s, port 0x%016Lx, unit 0x%016Lx&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4439,8 +4180,8 @@ id|ZFCP_LOG_DEBUG
 c_func
 (paren
 l_string|&quot;Abort FCP Command request initiated &quot;
-l_string|&quot;(adapter busid=%s, port d_id=0x%x, &quot;
-l_string|&quot;unit fcp_lun=0x%Lx, old_req_id=0x%lx)&bslash;n&quot;
+l_string|&quot;(adapter%s, port d_id=0x%08x, &quot;
+l_string|&quot;unit x%016Lx, old_req_id=0x%lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -4448,10 +4189,6 @@ c_func
 id|adapter
 )paren
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit-&gt;port-&gt;d_id
 comma
 id|unit-&gt;fcp_lun
@@ -4584,10 +4321,9 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s is not valid. This &quot;
-l_string|&quot;may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x for &quot;
+l_string|&quot;port 0x%016Lx on adapter %s invalid. &quot;
+l_string|&quot;This may happen occasionally.&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;handle
 comma
@@ -4701,11 +4437,9 @@ l_string|&quot;FSF_LUN_HANDLE_NOT_VALID&bslash;n&quot;
 suffix:semicolon
 id|ZFCP_LOG_INFO
 (paren
-l_string|&quot;Warning: Temporary LUN identifier (handle) 0x%x &quot;
-l_string|&quot;of the logical unit with FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s is &quot;
-l_string|&quot;not valid. This may happen in rare cases.&quot;
+l_string|&quot;Warning: Temporary LUN identifier 0x%x of LUN &quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on adapter %s is &quot;
+l_string|&quot;invalid. This may happen in rare cases. &quot;
 l_string|&quot;Trying to re-establish link.&bslash;n&quot;
 comma
 id|unit-&gt;handle
@@ -4789,8 +4523,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
-multiline_comment|/*&n;&t;&t; * debug feature area which records&n;&t;&t; * fsf request sequence numbers&n;&t;&t; */
 id|debug_text_event
 c_func
 (paren
@@ -4818,7 +4550,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|debug_text_event
 c_func
 (paren
@@ -4847,12 +4578,11 @@ comma
 l_string|&quot;FSF_PORT_BOXED&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ZFCP_LOG_DEBUG
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The remote port &quot;
-l_string|&quot;with WWPN 0x%Lx on the adapter %s &quot;
-l_string|&quot;needs to be reopened&bslash;n&quot;
+l_string|&quot;Remote port 0x%016Lx on adapter %s needs to &quot;
+l_string|&quot;be reopened&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;wwpn
 comma
@@ -5324,8 +5054,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of memory. Could not create CT &quot;
-l_string|&quot;request (FC-GS). (adapter: %s)&bslash;n&quot;
+l_string|&quot;error: Could not create CT request (FC-GS) for &quot;
+l_string|&quot;adapter: %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5502,9 +5232,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of resources (outbuf). &quot;
-l_string|&quot;Could not create CT request (FC-GS). &quot;
-l_string|&quot;(adapter: %s)&bslash;n&quot;
+l_string|&quot;error: creation of CT request failed &quot;
+l_string|&quot;on adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5569,9 +5298,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of resources (inbuf). &quot;
-l_string|&quot;Could not create a CT request (FC-GS). &quot;
-l_string|&quot;(adapter: %s)&bslash;n&quot;
+l_string|&quot;error: creation of CT request failed &quot;
+l_string|&quot;on adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5612,8 +5340,8 @@ multiline_comment|/* reject send generic request */
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: microcode does not support chained SBALs.&quot;
-l_string|&quot;CT request (FC-GS) too big. (adapter: %s)&bslash;n&quot;
+l_string|&quot;error: microcode does not support chained SBALs,&quot;
+l_string|&quot;CT request too big (adapter %s)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5668,9 +5396,8 @@ id|ret
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: out of resources. Could not send CT &quot;
-l_string|&quot;request (FC-GS). (adapter: %s, &quot;
-l_string|&quot;port WWPN 0x%Lx)&bslash;n&quot;
+l_string|&quot;error: initiation of CT request failed &quot;
+l_string|&quot;(adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5688,7 +5415,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;CT request initiated. (adapter: %s, port WWPN 0x%Lx)&bslash;n&quot;
+l_string|&quot;CT request initiated (adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -5872,8 +5599,8 @@ l_int|3
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: The adapter %s does &quot;
-l_string|&quot;not support fibre-channel class %d.&bslash;n&quot;
+l_string|&quot;error: adapter %s does not support fc &quot;
+l_string|&quot;class %d.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
@@ -6045,8 +5772,7 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;Access denied, cannot send generic command &quot;
-l_string|&quot;to a port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s&bslash;n&quot;
+l_string|&quot;to port 0x%016Lx on adapter %s&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -6057,18 +5783,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -6076,7 +5812,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -6097,7 +5836,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -6114,14 +5853,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -6152,8 +5883,7 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;warning: The port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s has &quot;
+l_string|&quot;warning: The port 0x%016Lx on adapter %s has &quot;
 l_string|&quot;rejected a generic services command.&bslash;n&quot;
 comma
 id|port-&gt;wwpn
@@ -6220,10 +5950,9 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is &quot;
-l_string|&quot;not valid. This may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x for port &quot;
+l_string|&quot;0x%016Lx on adapter %s invalid. This may &quot;
+l_string|&quot;happen occasionally.&bslash;n&quot;
 comma
 id|port-&gt;handle
 comma
@@ -6299,8 +6028,7 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: The port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s has &quot;
+l_string|&quot;error: The port 0x%016Lx on adapter %s has &quot;
 l_string|&quot;rejected a generic services command &quot;
 l_string|&quot;due to invalid request buffer.&bslash;n&quot;
 comma
@@ -6343,8 +6071,7 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: The port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s has &quot;
+l_string|&quot;error: The port 0x%016Lx on adapter %s has &quot;
 l_string|&quot;rejected a generic services command &quot;
 l_string|&quot;due to invalid response buffer.&bslash;n&quot;
 comma
@@ -6384,11 +6111,10 @@ comma
 l_string|&quot;FSF_PORT_BOXED&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ZFCP_LOG_DEBUG
+id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The remote port &quot;
-l_string|&quot;with WWPN 0x%Lx on the adapter %s &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;needs to be reopened&bslash;n&quot;
 comma
 id|port-&gt;wwpn
@@ -6578,8 +6304,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of memory. Could not create ELS &quot;
-l_string|&quot;request. (adapter: %s, port did: 0x%06x)&bslash;n&quot;
+l_string|&quot;error: creation of ELS request failed &quot;
+l_string|&quot;(adapter %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6741,9 +6467,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of resources (outbuf). &quot;
-l_string|&quot;Could not create ELS request. &quot;
-l_string|&quot;(adapter: %s, port did: 0x%06x)&bslash;n&quot;
+l_string|&quot;error: creation of ELS request failed &quot;
+l_string|&quot;(adapter %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6814,9 +6539,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of resources (inbuf). &quot;
-l_string|&quot;Could not create ELS request. &quot;
-l_string|&quot;(adapter: %s, port did: 0x%06x)&bslash;n&quot;
+l_string|&quot;error: creation of ELS request failed &quot;
+l_string|&quot;(adapter %s, port d_id: 0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6863,9 +6587,9 @@ multiline_comment|/* reject request */
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: microcode does not support chained SBALs.&quot;
-l_string|&quot;ELS request too big. &quot;
-l_string|&quot;(adapter: %s, port did: 0x%06x)&bslash;n&quot;
+l_string|&quot;error: microcode does not support chained SBALs&quot;
+l_string|&quot;, ELS request too big (adapter %s, &quot;
+l_string|&quot;port d_id: 0x%08x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6934,8 +6658,8 @@ id|ret
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: out of resources. Could not send ELS &quot;
-l_string|&quot;request. (adapter: %s, port WWPN 0x%Lx)&bslash;n&quot;
+l_string|&quot;error: initiation of ELS request failed &quot;
+l_string|&quot;(adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -6953,7 +6677,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;ELS request initiated (adapter: %s, port WWPN 0x%Lx)&bslash;n&quot;
+l_string|&quot;ELS request initiated (adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -7120,8 +6844,8 @@ l_int|3
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: The adapter %s does &quot;
-l_string|&quot;not support fibre-channel class %d.&bslash;n&quot;
+l_string|&quot;error: adapter %s does &quot;
+l_string|&quot;not support fibrechannel class %d.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
 c_func
@@ -7138,7 +6862,7 @@ r_else
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;bug: The fibre channel class at the &quot;
+l_string|&quot;bug: The fibrechannel class at &quot;
 l_string|&quot;adapter %s is invalid. &quot;
 l_string|&quot;(debug info %d)&bslash;n&quot;
 comma
@@ -7338,9 +7062,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The ELS command has been rejected because &quot;
-l_string|&quot;a command filter in the FCP channel prohibited &quot;
-l_string|&quot;sending of the ELS to the SAN &quot;
+l_string|&quot;ELS has been rejected because command filter &quot;
+l_string|&quot;prohibited sending &quot;
 l_string|&quot;(adapter: %s, wwpn=0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_port
@@ -7505,18 +7228,28 @@ comma
 id|port-&gt;wwpn
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -7524,7 +7257,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -7545,7 +7281,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -7562,14 +7298,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -7731,9 +7459,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;exchange configuration data request for&quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create exchange configuration &quot;
+l_string|&quot;data request for adapter %s.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -7804,7 +7531,7 @@ id|retval
 (brace
 id|ZFCP_LOG_INFO
 (paren
-l_string|&quot;error: Could not send an exchange configuration data &quot;
+l_string|&quot;error: Could not send exchange configuration data &quot;
 l_string|&quot;command on the adapter %s&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
@@ -7831,8 +7558,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Exchange Configuration Data request initiated &quot;
-l_string|&quot;(adapter busid=%s)&bslash;n&quot;
+l_string|&quot;exchange configuration data request initiated &quot;
+l_string|&quot;(adapter %s)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -7856,25 +7583,22 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_fsf_exchange_config_data_handler&n; *&n; * purpose:     is called for finished Exchange Configuration Data command&n; *&n; * returns:&n; */
+multiline_comment|/**&n; * zfcp_fsf_exchange_config_evaluate&n; * @fsf_req: fsf_req which belongs to xchg config data request&n; * @xchg_ok: specifies if xchg config data was incomplete or complete (0/1)&n; *&n; * returns: -EIO on error, 0 otherwise&n; */
 r_static
 r_int
-DECL|function|zfcp_fsf_exchange_config_data_handler
-id|zfcp_fsf_exchange_config_data_handler
+DECL|function|zfcp_fsf_exchange_config_evaluate
+id|zfcp_fsf_exchange_config_evaluate
 c_func
 (paren
 r_struct
 id|zfcp_fsf_req
 op_star
 id|fsf_req
+comma
+r_int
+id|xchg_ok
 )paren
 (brace
-r_int
-id|retval
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_struct
 id|fsf_qtcb_bottom_config
 op_star
@@ -7887,54 +7611,35 @@ id|adapter
 op_assign
 id|fsf_req-&gt;adapter
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fsf_req-&gt;status
-op_amp
-id|ZFCP_STATUS_FSFREQ_ERROR
-)paren
-(brace
-multiline_comment|/* don&squot;t set any value, stay with the old (unitialized) ones */
-r_goto
-id|skip_fsfstatus
-suffix:semicolon
-)brace
-multiline_comment|/* evaluate FSF status in QTCB */
-r_switch
-c_cond
-(paren
-id|fsf_req-&gt;qtcb-&gt;header.fsf_status
-)paren
-(brace
-r_case
-id|FSF_GOOD
-suffix:colon
-id|ZFCP_LOG_FLAGS
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;FSF_GOOD&bslash;n&quot;
-)paren
-suffix:semicolon
 id|bottom
 op_assign
 op_amp
 id|fsf_req-&gt;qtcb-&gt;bottom.config
 suffix:semicolon
-multiline_comment|/* only log QTCB versions for now */
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;low QTCB version 0x%x of FSF, &quot;
-l_string|&quot;high QTCB version 0x%x of FSF, &bslash;n&quot;
+l_string|&quot;low/high QTCB version 0x%x/0x%x of FSF&bslash;n&quot;
 comma
 id|bottom-&gt;low_qtcb_version
 comma
 id|bottom-&gt;high_qtcb_version
 )paren
 suffix:semicolon
+id|adapter-&gt;fsf_lic_version
+op_assign
+id|bottom-&gt;lic_version
+suffix:semicolon
+id|adapter-&gt;supported_features
+op_assign
+id|bottom-&gt;supported_features
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|xchg_ok
+)paren
+(brace
 id|adapter-&gt;wwnn
 op_assign
 id|bottom-&gt;nport_serv_param.wwnn
@@ -7949,14 +7654,6 @@ id|bottom-&gt;s_id
 op_amp
 id|ZFCP_DID_MASK
 suffix:semicolon
-id|adapter-&gt;hydra_version
-op_assign
-id|bottom-&gt;adapter_type
-suffix:semicolon
-id|adapter-&gt;fsf_lic_version
-op_assign
-id|bottom-&gt;lic_version
-suffix:semicolon
 id|adapter-&gt;fc_topology
 op_assign
 id|bottom-&gt;fc_topology
@@ -7965,10 +7662,38 @@ id|adapter-&gt;fc_link_speed
 op_assign
 id|bottom-&gt;fc_link_speed
 suffix:semicolon
-id|adapter-&gt;supported_features
+id|adapter-&gt;hydra_version
 op_assign
-id|bottom-&gt;supported_features
+id|bottom-&gt;adapter_type
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;wwnn
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;wwpn
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;s_id
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;fc_topology
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;fc_link_speed
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter-&gt;hydra_version
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7981,7 +7706,6 @@ id|adapter-&gt;hardware_version
 op_assign
 id|bottom-&gt;hardware_version
 suffix:semicolon
-multiline_comment|/* copy just first 17 bytes */
 id|memcpy
 c_func
 (paren
@@ -8007,11 +7731,10 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The adapter %s reported &quot;
-l_string|&quot;the following characteristics:&bslash;n&quot;
-l_string|&quot;WWNN 0x%16.16Lx, &quot;
-l_string|&quot;WWPN 0x%16.16Lx, &quot;
-l_string|&quot;S_ID 0x%6.6x,&bslash;n&quot;
+l_string|&quot;The adapter %s reported the following characteristics:&bslash;n&quot;
+l_string|&quot;WWNN 0x%016Lx, &quot;
+l_string|&quot;WWPN 0x%016Lx, &quot;
+l_string|&quot;S_ID 0x%08x,&bslash;n&quot;
 l_string|&quot;adapter version 0x%x, &quot;
 l_string|&quot;LIC version 0x%x, &quot;
 l_string|&quot;FC link speed %d Gb/s&bslash;n&quot;
@@ -8065,7 +7788,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -8080,8 +7803,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
@@ -8110,7 +7834,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -8125,10 +7849,83 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * function:    zfcp_fsf_exchange_config_data_handler&n; *&n; * purpose:     is called for finished Exchange Configuration Data command&n; *&n; * returns:&n; */
+r_static
+r_int
+DECL|function|zfcp_fsf_exchange_config_data_handler
+id|zfcp_fsf_exchange_config_data_handler
+c_func
+(paren
+r_struct
+id|zfcp_fsf_req
+op_star
+id|fsf_req
+)paren
+(brace
+r_struct
+id|fsf_qtcb_bottom_config
+op_star
+id|bottom
+suffix:semicolon
+r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fsf_req-&gt;status
+op_amp
+id|ZFCP_STATUS_FSFREQ_ERROR
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|fsf_req-&gt;qtcb-&gt;header.fsf_status
+)paren
+(brace
+r_case
+id|FSF_GOOD
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_GOOD&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zfcp_fsf_exchange_config_evaluate
+c_func
+(paren
+id|fsf_req
+comma
+l_int|1
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8149,10 +7946,9 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: Point-to-point fibre-channel &quot;
-l_string|&quot;configuration detected &quot;
-l_string|&quot;at the adapter %s, not &quot;
-l_string|&quot;supported, shutting down adapter&bslash;n&quot;
+l_string|&quot;error: Point-to-point fibrechannel &quot;
+l_string|&quot;configuration detected at adapter %s &quot;
+l_string|&quot;unsupported, shutting down adapter&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -8179,8 +7975,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_case
 id|FSF_TOPO_AL
@@ -8196,10 +7993,9 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: Arbitrated loop fibre-channel &quot;
-l_string|&quot;topology detected &quot;
-l_string|&quot;at the adapter %s, not &quot;
-l_string|&quot;supported, shutting down adapter&bslash;n&quot;
+l_string|&quot;error: Arbitrated loop fibrechannel &quot;
+l_string|&quot;topology detected at adapter %s &quot;
+l_string|&quot;unsupported, shutting down adapter&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -8226,8 +8022,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_case
 id|FSF_TOPO_FABRIC
@@ -8243,9 +8040,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Switched fabric fibre-channel &quot;
-l_string|&quot;network detected &quot;
-l_string|&quot;at the adapter %s.&bslash;n&quot;
+l_string|&quot;Switched fabric fibrechannel &quot;
+l_string|&quot;network detected at adapter %s.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -8261,7 +8057,7 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The fibre-channel topology &quot;
+l_string|&quot;bug: The fibrechannel topology &quot;
 l_string|&quot;reported by the exchange &quot;
 l_string|&quot;configuration command for &quot;
 l_string|&quot;the adapter %s is not &quot;
@@ -8293,10 +8089,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
+id|bottom
+op_assign
+op_amp
+id|fsf_req-&gt;qtcb-&gt;bottom.config
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8366,8 +8168,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_goto
-id|skip_fsfstatus
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|atomic_set_mask
@@ -8379,15 +8182,69 @@ op_amp
 id|adapter-&gt;status
 )paren
 suffix:semicolon
-id|retval
-op_assign
+r_break
+suffix:semicolon
+r_case
+id|FSF_EXCHANGE_CONFIG_DATA_INCOMPLETE
+suffix:colon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
 l_int|0
+comma
+l_string|&quot;xchg-inco&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zfcp_fsf_exchange_config_evaluate
+c_func
+(paren
+id|fsf_req
+comma
+l_int|0
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;Local link to adapter %s is down&bslash;n&quot;
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|atomic_set_mask
+c_func
+(paren
+id|ZFCP_STATUS_ADAPTER_XCONFIG_OK
+op_or
+id|ZFCP_STATUS_ADAPTER_LINK_UNPLUGGED
+comma
+op_amp
+id|adapter-&gt;status
+)paren
+suffix:semicolon
+id|zfcp_erp_adapter_failed
+c_func
+(paren
+id|adapter
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* retval is -EIO by default */
 id|debug_text_event
 c_func
 (paren
@@ -8414,11 +8271,21 @@ id|u32
 )paren
 )paren
 suffix:semicolon
-)brace
-id|skip_fsfstatus
-suffix:colon
+id|zfcp_erp_adapter_shutdown
+c_func
+(paren
+id|adapter
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
-id|retval
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * function:    zfcp_fsf_open_port&n; *&n; * purpose:&t;&n; *&n; * returns:&t;address of initiated FSF request&n; *&t;&t;NULL - request could not be initiated &n; */
@@ -8484,10 +8351,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;open port request for &quot;
-l_string|&quot;the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create open port request &quot;
+l_string|&quot;for port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;port-&gt;wwpn
 comma
@@ -8574,10 +8439,8 @@ id|retval
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send an &quot;
-l_string|&quot;open port request for &quot;
-l_string|&quot;the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not send open port request for &quot;
+l_string|&quot;port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;port-&gt;wwpn
 comma
@@ -8605,8 +8468,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Open Port request initiated &quot;
-l_string|&quot;(adapter busid=%s, port wwpn=0x%Lx)&bslash;n&quot;
+l_string|&quot;open port request initiated &quot;
+l_string|&quot;(adapter %s,  port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -8716,8 +8579,7 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The remote port with WWPN=0x%Lx &quot;
-l_string|&quot;connected to the adapter %s &quot;
+l_string|&quot;bug: remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;is already open.&bslash;n&quot;
 comma
 id|port-&gt;wwpn
@@ -8756,8 +8618,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied, cannot open port &quot;
-l_string|&quot;with WWPN 0x%Lx connected to the adapter %s&bslash;n&quot;
+l_string|&quot;Access denied, cannot open port 0x%016Lx &quot;
+l_string|&quot;on adapter %s&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -8768,18 +8630,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -8787,7 +8659,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -8808,7 +8683,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -8825,14 +8700,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -8870,8 +8737,7 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;error: The FSF adapter is out of resources. &quot;
-l_string|&quot;The remote port with WWPN=0x%Lx &quot;
-l_string|&quot;connected to the adapter %s &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;could not be opened. Disabling it.&bslash;n&quot;
 comma
 id|port-&gt;wwpn
@@ -8987,9 +8853,9 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;The remote port with WWPN=0x%Lx &quot;
-l_string|&quot;connected to the adapter %s &quot;
-l_string|&quot;could not be opened. Disabling it.&bslash;n&quot;
+l_string|&quot;The remote port 0x%016Lx on &quot;
+l_string|&quot;adapter %s could not be opened. &quot;
+l_string|&quot;Disabling it.&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -9087,9 +8953,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;The remote port (WWPN=0x%Lx) via adapter &quot;
-l_string|&quot;(busid=%s) was opened, it&squot;s &quot;
-l_string|&quot;port handle is 0x%x&bslash;n&quot;
+l_string|&quot;The remote port 0x%016Lx via adapter %s &quot;
+l_string|&quot;was opened, it&squot;s port handle is 0x%x&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -9209,9 +9074,9 @@ id|port-&gt;wwpn
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;warning: D_ID of port &quot;
-l_string|&quot;with WWPN 0x%Lx changed &quot;
-l_string|&quot;during open&bslash;n&quot;
+l_string|&quot;warning: d_id of port &quot;
+l_string|&quot;0x%016Lx changed during &quot;
+l_string|&quot;open&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 )paren
@@ -9363,9 +9228,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create a &quot;
-l_string|&quot;close port request for WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create a close port request &quot;
+l_string|&quot;for port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;port-&gt;wwpn
 comma
@@ -9452,9 +9316,8 @@ id|retval
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send a &quot;
-l_string|&quot;close port request for WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not send a close port request for &quot;
+l_string|&quot;port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;port-&gt;wwpn
 comma
@@ -9482,8 +9345,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Close Port request initiated &quot;
-l_string|&quot;(adapter busid=%s, port wwpn=0x%Lx)&bslash;n&quot;
+l_string|&quot;close port request initiated &quot;
+l_string|&quot;(adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -9571,10 +9434,9 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is &quot;
-l_string|&quot;not valid. This may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x for port &quot;
+l_string|&quot;0x%016Lx on adapter %s invalid. This may happen &quot;
+l_string|&quot;occasionally.&bslash;n&quot;
 comma
 id|port-&gt;handle
 comma
@@ -9668,8 +9530,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;remote port (WWPN=0x%Lx) via adapter &quot;
-l_string|&quot;(busid=%s) closed, port handle 0x%x&bslash;n&quot;
+l_string|&quot;remote port 0x016%Lx on adapter %s closed, &quot;
+l_string|&quot;port handle 0x%x&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -9808,18 +9670,16 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create a &quot;
-l_string|&quot;close physical port request for &quot;
-l_string|&quot;the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
-comma
-id|erp_action-&gt;port-&gt;wwpn
+l_string|&quot;error: Could not create close physical port &quot;
+l_string|&quot;request (adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|erp_action-&gt;adapter
 )paren
+comma
+id|erp_action-&gt;port-&gt;wwpn
 )paren
 suffix:semicolon
 r_goto
@@ -9871,17 +9731,16 @@ id|retval
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send an close physical port &quot;
-l_string|&quot;request for the port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s.&bslash;n&quot;
-comma
-id|erp_action-&gt;port-&gt;wwpn
+l_string|&quot;error: Could not send close physical port &quot;
+l_string|&quot;request (adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|erp_action-&gt;adapter
 )paren
+comma
+id|erp_action-&gt;port-&gt;wwpn
 )paren
 suffix:semicolon
 id|zfcp_fsf_req_free
@@ -9901,8 +9760,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Close Physical Port request initiated &quot;
-l_string|&quot;(adapter busid=%s, port wwpn=0x%Lx)&bslash;n&quot;
+l_string|&quot;close physical port request initiated &quot;
+l_string|&quot;(adapter %s, port 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -10012,20 +9871,19 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is not valid. This may happen &quot;
-l_string|&quot;occasionally.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x invalid&quot;
+l_string|&quot;(adapter %s, port 0x%016Lx). &quot;
+l_string|&quot;This may happen occasionally.&bslash;n&quot;
 comma
 id|port-&gt;handle
-comma
-id|port-&gt;wwpn
 comma
 id|zfcp_get_busid_by_port
 c_func
 (paren
 id|port
 )paren
+comma
+id|port-&gt;wwpn
 )paren
 suffix:semicolon
 id|ZFCP_LOG_DEBUG
@@ -10092,8 +9950,8 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;Access denied, cannot close &quot;
-l_string|&quot;physical port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s&bslash;n&quot;
+l_string|&quot;physical port 0x%016Lx on &quot;
+l_string|&quot;adapter %s&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -10104,18 +9962,28 @@ id|port
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -10123,7 +9991,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -10144,7 +10015,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -10161,14 +10032,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -10199,7 +10062,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;The remote port with WWPN 0x%Lx on the adapter &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter &quot;
 l_string|&quot;%s needs to be reopened but it was attempted &quot;
 l_string|&quot;to close it physically.&bslash;n&quot;
 comma
@@ -10374,9 +10237,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Remote port (WWPN=0x%Lx) via adapter &quot;
-l_string|&quot;(busid=%s) physically closed, &quot;
-l_string|&quot;port handle 0x%x&bslash;n&quot;
+l_string|&quot;Remote port 0x%016Lx via adapter %s &quot;
+l_string|&quot;physically closed, port handle 0x%x&bslash;n&quot;
 comma
 id|port-&gt;wwpn
 comma
@@ -10542,10 +10404,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;open unit request for FCP-LUN 0x%Lx connected &quot;
-l_string|&quot;to the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create open unit request for &quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;unit-&gt;fcp_lun
 comma
@@ -10617,10 +10477,6 @@ id|erp_action-&gt;fsf_req-&gt;erp_action
 op_assign
 id|erp_action
 suffix:semicolon
-id|erp_action-&gt;fsf_req-&gt;qtcb-&gt;bottom.support.option
-op_assign
-id|FSF_OPEN_LUN_SUPPRESS_BOXING
-suffix:semicolon
 multiline_comment|/* start QDIO request for this FSF request */
 id|retval
 op_assign
@@ -10643,8 +10499,8 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;error: Could not send an open unit request &quot;
-l_string|&quot;on the adapter %s, port WWPN 0x%Lx for &quot;
-l_string|&quot;unit LUN 0x%Lx&bslash;n&quot;
+l_string|&quot;on the adapter %s, port 0x%016Lx for &quot;
+l_string|&quot;unit 0x%016Lx&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -10674,8 +10530,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Open LUN request initiated (adapter busid=%s, &quot;
-l_string|&quot;port wwpn=0x%Lx, unit fcp_lun=0x%Lx)&bslash;n&quot;
+l_string|&quot;Open LUN request initiated (adapter %s, &quot;
+l_string|&quot;port 0x%016Lx, unit 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -10723,6 +10579,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_struct
+id|zfcp_adapter
+op_star
+id|adapter
+suffix:semicolon
+r_struct
 id|zfcp_unit
 op_star
 id|unit
@@ -10732,12 +10593,21 @@ id|fsf_qtcb_header
 op_star
 id|header
 suffix:semicolon
+r_struct
+id|fsf_qtcb_bottom_support
+op_star
+id|bottom
+suffix:semicolon
 id|u16
 id|subtable
 comma
 id|rule
 comma
 id|counter
+suffix:semicolon
+id|adapter
+op_assign
+id|fsf_req-&gt;adapter
 suffix:semicolon
 id|unit
 op_assign
@@ -10747,6 +10617,11 @@ id|header
 op_assign
 op_amp
 id|fsf_req-&gt;qtcb-&gt;header
+suffix:semicolon
+id|bottom
+op_assign
+op_amp
+id|fsf_req-&gt;qtcb-&gt;bottom.support
 suffix:semicolon
 r_if
 c_cond
@@ -10782,10 +10657,9 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is &quot;
-l_string|&quot;not valid. This may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x &quot;
+l_string|&quot;for port 0x%016Lx on adapter %s invalid &quot;
+l_string|&quot;This may happen occasionally&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;handle
 comma
@@ -10826,7 +10700,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -10861,10 +10735,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Attempted to open the logical unit &quot;
-l_string|&quot;with FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s twice.&bslash;n&quot;
+l_string|&quot;bug: Attempted to open unit 0x%016Lx on &quot;
+l_string|&quot;remote port 0x%016Lx on adapter %s twice.&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -10880,7 +10752,7 @@ suffix:semicolon
 id|debug_text_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -10907,9 +10779,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied, cannot open unit &quot;
-l_string|&quot;with FCP-LUN 0x%Lx at the remote port with &quot;
-l_string|&quot;WWPN 0x%Lx connected to the adapter %s&bslash;n&quot;
+l_string|&quot;Access denied, cannot open unit 0x%016Lx on &quot;
+l_string|&quot;remote port 0x%016Lx on adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -10922,18 +10793,28 @@ id|unit
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -10941,7 +10822,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -10962,7 +10846,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -10979,18 +10863,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11023,8 +10899,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;The remote port &quot;
-l_string|&quot;with WWPN 0x%Lx on the adapter %s &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;needs to be reopened&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;wwpn
@@ -11039,7 +10914,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|2
 comma
@@ -11073,14 +10948,24 @@ comma
 l_string|&quot;FSF_LUN_SHARING_VIOLATION&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|header-&gt;fsf_status_qual.word
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0
+)paren
+(brace
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s &quot;
-l_string|&quot;is already owned by another operating system &quot;
-l_string|&quot;instance (LPAR or VM guest)&bslash;n&quot;
+l_string|&quot;FCP-LUN 0x%Lx at the remote port &quot;
+l_string|&quot;with WWPN 0x%Lx &quot;
+l_string|&quot;connected to the adapter %s &quot;
+l_string|&quot;is already in use in LPAR%d&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -11091,8 +10976,13 @@ c_func
 (paren
 id|unit
 )paren
+comma
+id|header-&gt;fsf_status_qual.fsf_queue_designator.hla
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
@@ -11128,7 +11018,20 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
+l_string|&quot;Access to FCP-LUN 0x%Lx at the &quot;
+l_string|&quot;remote port with WWPN 0x%Lx &quot;
+l_string|&quot;connected to the adapter %s &quot;
+l_string|&quot;is denied (%s rule %d)&bslash;n&quot;
+comma
+id|unit-&gt;fcp_lun
+comma
+id|unit-&gt;port-&gt;wwpn
+comma
+id|zfcp_get_busid_by_unit
+c_func
+(paren
+id|unit
+)paren
 comma
 id|zfcp_act_subtable_type
 (braket
@@ -11141,16 +11044,17 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|ZFCP_LOG_NORMAL
+)brace
+id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Additional sense data is presented:&bslash;n&quot;
+l_string|&quot;status qualifier:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ZFCP_HEX_DUMP
 c_func
 (paren
-id|ZFCP_LOG_LEVEL_NORMAL
+id|ZFCP_LOG_LEVEL_DEBUG
 comma
 (paren
 r_char
@@ -11169,7 +11073,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|2
 comma
@@ -11204,9 +11108,8 @@ c_func
 (paren
 l_string|&quot;error: The adapter ran out of resources. &quot;
 l_string|&quot;There is no handle (temporary port identifier) &quot;
-l_string|&quot;available for the unit with FCP-LUN 0x%Lx &quot;
-l_string|&quot;at the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s&bslash;n&quot;
+l_string|&quot;available for unit 0x%016Lx on port 0x%016Lx &quot;
+l_string|&quot;on adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -11222,7 +11125,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11276,7 +11179,7 @@ multiline_comment|/* Re-establish link to port */
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11312,7 +11215,7 @@ multiline_comment|/* ERP strategy will escalate */
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|1
 comma
@@ -11340,7 +11243,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11350,7 +11253,7 @@ suffix:semicolon
 id|debug_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11367,6 +11270,43 @@ id|u32
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|FSF_INVALID_COMMAND_OPTION
+suffix:colon
+id|ZFCP_LOG_FLAGS
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;FSF_INVALID_COMMAND_OPTION&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;Invalid option 0x%x has been specified &quot;
+l_string|&quot;in QTCB bottom sent to the adapter %s&bslash;n&quot;
+comma
+id|bottom-&gt;option
+comma
+id|zfcp_get_busid_by_adapter
+c_func
+(paren
+id|adapter
+)paren
+)paren
+suffix:semicolon
+id|fsf_req-&gt;status
+op_or_assign
+id|ZFCP_STATUS_FSFREQ_ERROR
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -11388,9 +11328,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;unit (FCP_LUN=0x%Lx) of remote port &quot;
-l_string|&quot;(WWPN=0x%Lx) via adapter (busid=%s) opened, &quot;
-l_string|&quot;port handle 0x%x &bslash;n&quot;
+l_string|&quot;unit 0x%016Lx on remote port 0x%016Lx on &quot;
+l_string|&quot;adapter %s opened, port handle 0x%x&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -11435,7 +11374,7 @@ suffix:semicolon
 id|debug_text_event
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11445,7 +11384,7 @@ suffix:semicolon
 id|debug_exception
 c_func
 (paren
-id|fsf_req-&gt;adapter-&gt;erp_dbf
+id|adapter-&gt;erp_dbf
 comma
 l_int|0
 comma
@@ -11539,10 +11478,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create a &quot;
-l_string|&quot;close unit request for FCP-LUN 0x%Lx &quot;
-l_string|&quot;connected to the port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create close unit request for &quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;unit-&gt;fcp_lun
 comma
@@ -11636,8 +11573,7 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;error: Could not send a close unit request for &quot;
-l_string|&quot;FCP-LUN 0x%Lx connected to the port with &quot;
-l_string|&quot;WWPN 0x%Lx connected to the adapter %s.&bslash;n&quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx onadapter %s.&bslash;n&quot;
 comma
 id|erp_action-&gt;unit-&gt;fcp_lun
 comma
@@ -11667,8 +11603,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Close LUN request initiated (adapter busid=%s, &quot;
-l_string|&quot;port wwpn=0x%Lx, unit fcp_lun=0x%Lx)&bslash;n&quot;
+l_string|&quot;Close LUN request initiated (adapter %s, &quot;
+l_string|&quot;port 0x%016Lx, unit 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -11759,9 +11695,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is not valid. This may &quot;
+l_string|&quot;Temporary port identifier 0x%x for port &quot;
+l_string|&quot;0x%016Lx on adapter %s invalid. This may &quot;
 l_string|&quot;happen in rare circumstances&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;handle
@@ -11855,11 +11790,9 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary LUN identifier (handle) 0x%x &quot;
-l_string|&quot;of the logical unit with FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s is &quot;
-l_string|&quot;not valid. This may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary LUN identifier 0x%x of unit &quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on adapter %s is &quot;
+l_string|&quot;invalid. This may happen occasionally.&bslash;n&quot;
 comma
 id|unit-&gt;handle
 comma
@@ -11954,8 +11887,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;The remote port &quot;
-l_string|&quot;with WWPN 0x%Lx on the adapter %s &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;needs to be reopened&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;wwpn
@@ -12137,9 +12069,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;unit (FCP_LUN=0x%Lx) of remote port &quot;
-l_string|&quot;(WWPN=0x%Lx) via adapter (busid=%s) closed, &quot;
-l_string|&quot;port handle 0x%x &bslash;n&quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx on adapter %s &quot;
+l_string|&quot;closed, port handle 0x%x&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -12316,10 +12247,9 @@ l_int|0
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;FCP command request for FCP-LUN 0x%Lx &quot;
-l_string|&quot;connected to the port with WWPN 0x%Lx &quot;
-l_string|&quot;connected to the adapter %s.&bslash;n&quot;
+l_string|&quot;error: Could not create FCP command request &quot;
+l_string|&quot;for unit 0x%016Lx on port 0x%016Lx on &quot;
+l_string|&quot;adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -12357,7 +12287,6 @@ id|fsf_req-&gt;data.send_fcp_command_task.scsi_cmnd
 op_assign
 id|scsi_cmnd
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -12402,13 +12331,10 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
-macro_line|#ifdef ZFCP_DEBUG_ABORTS
 id|fsf_req-&gt;data.send_fcp_command_task.start_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
 id|fsf_req-&gt;data.send_fcp_command_task.unit
 op_assign
 id|unit
@@ -12416,12 +12342,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;unit=0x%lx, unit_fcp_lun=0x%Lx&bslash;n&quot;
+l_string|&quot;unit=%p, fcp_lun=0x%016Lx&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit
 comma
 id|unit-&gt;fcp_lun
@@ -12707,8 +12629,8 @@ c_func
 (paren
 l_string|&quot;error: No truncation implemented but &quot;
 l_string|&quot;required. Shutting down unit &quot;
-l_string|&quot;(busid=%s, WWPN=0x%16.16Lx, &quot;
-l_string|&quot;FCP_LUN=0x%16.16Lx)&bslash;n&quot;
+l_string|&quot;(adapter %s, port 0x%016Lx, &quot;
+l_string|&quot;unit 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_unit
 c_func
@@ -12794,9 +12716,8 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not send an FCP command request &quot;
-l_string|&quot;for a command on the adapter %s, &quot;
-l_string|&quot;port WWPN 0x%Lx and unit LUN 0x%Lx&bslash;n&quot;
+l_string|&quot;error: Could not send FCP command request &quot;
+l_string|&quot;on adapter %s, port 0x%016Lx, unit 0x%016Lx&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -12816,8 +12737,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Send FCP Command initiated (adapter busid=%s, &quot;
-l_string|&quot;port wwpn=0x%Lx, unit fcp_lun=0x%Lx)&bslash;n&quot;
+l_string|&quot;Send FCP Command initiated (adapter %s, &quot;
+l_string|&quot;port 0x%016Lx, unit 0x%016Lx)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -12840,7 +12761,6 @@ suffix:colon
 id|failed_scsi_cmnd
 suffix:colon
 multiline_comment|/* dequeue new FSF request previously enqueued */
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -12868,7 +12788,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 id|zfcp_fsf_req_free
 c_func
 (paren
@@ -12980,10 +12899,9 @@ l_int|0
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create an &quot;
-l_string|&quot;FCP command (task management) request for &quot;
-l_string|&quot;the adapter %s, port with &quot;
-l_string|&quot;WWPN 0x%Lx and FCP_LUN 0x%Lx.&bslash;n&quot;
+l_string|&quot;error: Could not create FCP command (task &quot;
+l_string|&quot;management) request for adapter %s, port &quot;
+l_string|&quot; 0x%016Lx, unit 0x%016Lx.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -13125,8 +13043,8 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;error: Could not send an FCP-command (task &quot;
-l_string|&quot;management) on the adapter %s, port WWPN &quot;
-l_string|&quot;0x%Lx for unit LUN 0x%Lx&bslash;n&quot;
+l_string|&quot;management) on adapter %s, port 0x%016Lx for &quot;
+l_string|&quot;unit LUN 0x%016Lx&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -13157,8 +13075,8 @@ id|ZFCP_LOG_TRACE
 c_func
 (paren
 l_string|&quot;Send FCP Command (task management function) initiated &quot;
-l_string|&quot;(adapter busid=%s, port wwpn=0x%Lx, &quot;
-l_string|&quot;unit fcp_lun=0x%Lx, tm_flags=0x%x)&bslash;n&quot;
+l_string|&quot;(adapter %s, port 0x%016Lx, unit 0x%016Lx, &quot;
+l_string|&quot;tm_flags=0x%x)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -13287,9 +13205,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary port identifier (handle) 0x%x &quot;
-l_string|&quot;for the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s is not valid.&bslash;n&quot;
+l_string|&quot;Temporary port identifier 0x%x for port &quot;
+l_string|&quot;0x%016Lx on adapter %s invalid&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;handle
 comma
@@ -13359,11 +13276,9 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;Temporary LUN identifier (handle) 0x%x &quot;
-l_string|&quot;of the logical unit with FCP-LUN 0x%Lx at &quot;
-l_string|&quot;the remote port with WWPN 0x%Lx connected &quot;
-l_string|&quot;to the adapter %s is &quot;
-l_string|&quot;not valid. This may happen occasionally.&bslash;n&quot;
+l_string|&quot;Temporary LUN identifier 0x%x for unit &quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on adapter %s is &quot;
+l_string|&quot;invalid. This may happen occasionally.&bslash;n&quot;
 comma
 id|unit-&gt;handle
 comma
@@ -13441,24 +13356,21 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The port handle (temporary port &quot;
-l_string|&quot;identifier) 0x%x has changed unexpectedly. &quot;
-l_string|&quot;This was detected upon receiveing the &quot;
-l_string|&quot;response of a command send to the unit with &quot;
-l_string|&quot;FCP-LUN 0x%Lx at the remote port with WWPN &quot;
-l_string|&quot;0x%Lx connected to the adapter %s.&bslash;n&quot;
+l_string|&quot;bug: The port handle 0x%x has changed &quot;
+l_string|&quot;unexpectedly. (adapter %s, port 0x%016Lx, &quot;
+l_string|&quot;unit 0x%016Lx)&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;handle
-comma
-id|unit-&gt;fcp_lun
-comma
-id|unit-&gt;port-&gt;wwpn
 comma
 id|zfcp_get_busid_by_unit
 c_func
 (paren
 id|unit
 )paren
+comma
+id|unit-&gt;port-&gt;wwpn
+comma
+id|unit-&gt;fcp_lun
 )paren
 suffix:semicolon
 id|ZFCP_LOG_NORMAL
@@ -13550,7 +13462,7 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;error: The adapter %s does &quot;
-l_string|&quot;not support fibre-channel class %d.&bslash;n&quot;
+l_string|&quot;not support fibrechannel class %d.&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_unit
 c_func
@@ -13567,7 +13479,7 @@ r_else
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The fibre channel class at the &quot;
+l_string|&quot;bug: The fibrechannel class at &quot;
 l_string|&quot;adapter %s is invalid. &quot;
 l_string|&quot;(debug info %d)&bslash;n&quot;
 comma
@@ -13637,10 +13549,9 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: The FCP LUN 0x%Lx behind the remote port &quot;
-l_string|&quot;of WWPN0x%Lx via the adapter %s does not have &quot;
-l_string|&quot;the correct unit handle (temporary unit &quot;
-l_string|&quot;identifier) 0x%x&bslash;n&quot;
+l_string|&quot;bug: unit 0x%016Lx on port 0x%016Lx on &quot;
+l_string|&quot;adapter %s does not have correct unit &quot;
+l_string|&quot;handle 0x%x&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -13735,9 +13646,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Access denied, cannot send FCP &quot;
-l_string|&quot;command to the unit with FCP-LUN 0x%Lx at the &quot;
-l_string|&quot;remote port with WWPN 0x%Lx connected to the &quot;
+l_string|&quot;Access denied, cannot send FCP command to &quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx on &quot;
 l_string|&quot;adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
@@ -13751,18 +13661,28 @@ id|unit
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|counter
 op_assign
 l_int|0
 suffix:semicolon
-r_do
+id|counter
+OL
+l_int|2
+suffix:semicolon
+id|counter
+op_increment
+)paren
 (brace
 id|subtable
 op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
 )braket
 suffix:semicolon
 id|rule
@@ -13770,7 +13690,10 @@ op_assign
 id|header-&gt;fsf_status_qual.halfword
 (braket
 id|counter
-op_increment
+op_star
+l_int|2
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 r_switch
@@ -13791,7 +13714,7 @@ suffix:colon
 r_case
 id|FSF_SQ_CFDC_SUBTABLE_LUN
 suffix:colon
-id|ZFCP_LOG_NORMAL
+id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;Access denied (%s rule %d)&bslash;n&quot;
@@ -13808,14 +13731,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_while
-c_loop
-(paren
-id|counter
-OL
-l_int|4
-)paren
-suffix:semicolon
 id|debug_text_event
 c_func
 (paren
@@ -13846,9 +13761,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;bug: Invalid data direction given for the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx at the remote port with &quot;
-l_string|&quot;WWPN 0x%Lx via the adapter %s &quot;
+l_string|&quot;bug: Invalid data direction given for unit &quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on adapter %s &quot;
 l_string|&quot;(debug info %d)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
@@ -13922,9 +13836,8 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: An invalid inbound data length field &quot;
-l_string|&quot;was found in a command for the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx of the remote port &quot;
-l_string|&quot;with WWPN 0x%Lx via the adapter %s.&bslash;n&quot;
+l_string|&quot;was found in a command for unit 0x%016Lx &quot;
+l_string|&quot;on port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -13995,9 +13908,8 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: An invalid outbound data length field &quot;
-l_string|&quot;was found in a command for the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx of the remote port &quot;
-l_string|&quot;with WWPN 0x%Lx via the adapter %s&bslash;n.&quot;
+l_string|&quot;was found in a command unit 0x%016Lx on port &quot;
+l_string|&quot;0x%016Lx on adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -14066,9 +13978,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 (paren
 l_string|&quot;bug: An invalid control-data-block length field &quot;
-l_string|&quot;was found in a command for the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx of the remote port &quot;
-l_string|&quot;with WWPN 0x%Lx via the adapter %s &quot;
+l_string|&quot;was found in a command for unit 0x%016Lx on port &quot;
+l_string|&quot;0x%016Lx on adapter %s &quot;
 l_string|&quot;(debug info %d)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
@@ -14140,8 +14051,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;The remote port &quot;
-l_string|&quot;with WWPN 0x%Lx on the adapter %s &quot;
+l_string|&quot;The remote port 0x%016Lx on adapter %s &quot;
 l_string|&quot;needs to be reopened&bslash;n&quot;
 comma
 id|unit-&gt;port-&gt;wwpn
@@ -14210,9 +14120,8 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;The remote unit with FCP-LUN 0x%Lx &quot;
-l_string|&quot;at the remote port with WWPN 0x%Lx &quot;
-l_string|&quot;connected to the adapter %s needs to be reopened&bslash;n&quot;
+l_string|&quot;unit 0x%016Lx on port 0x%016Lx on adapter %s needs &quot;
+l_string|&quot;to be reopened&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -14628,13 +14537,9 @@ id|scpnt
 (brace
 id|ZFCP_LOG_DEBUG
 (paren
-l_string|&quot;Command with fsf_req 0x%lx is not associated to &quot;
+l_string|&quot;Command with fsf_req %p is not associated to &quot;
 l_string|&quot;a scsi command anymore. Aborted?&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 )paren
 suffix:semicolon
@@ -14866,12 +14771,10 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: FCP response code indictates &quot;
-l_string|&quot; that the fibre-channel protocol data &quot;
+l_string|&quot;that the fibrechannel protocol data &quot;
 l_string|&quot;length differs from the burst length. &quot;
-l_string|&quot;The problem occured on the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the &quot;
-l_string|&quot;adapter %s&quot;
+l_string|&quot;The problem occured on unit 0x%016Lx &quot;
+l_string|&quot;on port 0x%016Lx on adapter %s&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -14942,11 +14845,10 @@ id|ZFCP_LOG_NORMAL
 c_func
 (paren
 l_string|&quot;bug: FCP response code indictates &quot;
-l_string|&quot;that the fibre-channel protocol data &quot;
-l_string|&quot;fields were incorrectly set-up. &quot;
+l_string|&quot;that the fibrechannel protocol data &quot;
+l_string|&quot;fields were incorrectly set up. &quot;
 l_string|&quot;The problem occured on the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the &quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on &quot;
 l_string|&quot;adapter %s&quot;
 comma
 id|unit-&gt;fcp_lun
@@ -15019,12 +14921,10 @@ c_func
 (paren
 l_string|&quot;bug: The FCP response code indicates &quot;
 l_string|&quot;that conflicting  values for the &quot;
-l_string|&quot;fibre-channel payload offset from the &quot;
+l_string|&quot;fibrechannel payload offset from the &quot;
 l_string|&quot;header were found. &quot;
-l_string|&quot;The problem occured on the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the &quot;
-l_string|&quot;adapter %s.&bslash;n&quot;
+l_string|&quot;The problem occured on unit 0x%016Lx &quot;
+l_string|&quot;on port 0x%016Lx on adapter %s.&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -15087,10 +14987,8 @@ c_func
 l_string|&quot;bug: An invalid FCP response &quot;
 l_string|&quot;code was detected for a command. &quot;
 l_string|&quot;The problem occured on the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the &quot;
-l_string|&quot;adapter %s &quot;
-l_string|&quot;(debug info 0x%x)&bslash;n&quot;
+l_string|&quot;0x%016Lx on port 0x%016Lx on &quot;
+l_string|&quot;adapter %s (debug info 0x%x)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -15288,9 +15186,7 @@ id|ZFCP_LOG_INFO
 c_func
 (paren
 l_string|&quot;A data overrun was detected for a command. &quot;
-l_string|&quot;This happened for a command to the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the adapter %s. &quot;
+l_string|&quot;unit 0x%016Lx, port 0x%016Lx, adapter %s. &quot;
 l_string|&quot;The response data length is &quot;
 l_string|&quot;%d, the original length was %d.&bslash;n&quot;
 comma
@@ -15332,9 +15228,7 @@ id|ZFCP_LOG_DEBUG
 c_func
 (paren
 l_string|&quot;A data underrun was detected for a command. &quot;
-l_string|&quot;This happened for a command to the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the adapter %s. &quot;
+l_string|&quot;unit 0x%016Lx, port 0x%016Lx, adapter %s. &quot;
 l_string|&quot;The response data length is &quot;
 l_string|&quot;%d, the original length was %d.&bslash;n&quot;
 comma
@@ -15439,7 +15333,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE:&n;&t; * according to the outcome of a discussion on linux-scsi we&n;&t; * don&squot;t need to grab the io_request_lock here since we use&n;&t; * the new eh&n;&t; */
 multiline_comment|/* always call back */
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -15501,7 +15394,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* ZFCP_DEBUG_REQUESTS */
 (paren
 id|scpnt-&gt;scsi_done
 )paren
@@ -15645,9 +15537,7 @@ c_func
 (paren
 l_string|&quot;bug: A reuested task management function &quot;
 l_string|&quot;is not supported on the target device &quot;
-l_string|&quot;The corresponding device is the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx at the port &quot;
-l_string|&quot;with WWPN 0x%Lx at the adapter %s&bslash;n &quot;
+l_string|&quot;unit 0x%016Lx, port 0x%016Lx, adapter %s&bslash;n &quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -15682,9 +15572,7 @@ c_func
 (paren
 l_string|&quot;bug: A reuested task management function &quot;
 l_string|&quot;failed to complete successfully. &quot;
-l_string|&quot;The corresponding device is the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx at the port &quot;
-l_string|&quot;with WWPN 0x%Lx at the adapter %s.&bslash;n&quot;
+l_string|&quot;unit 0x%016Lx, port 0x%016Lx, adapter %s.&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -15710,9 +15598,7 @@ c_func
 (paren
 l_string|&quot;bug: An invalid FCP response &quot;
 l_string|&quot;code was detected for a command. &quot;
-l_string|&quot;The problem occured on the unit &quot;
-l_string|&quot;with FCP LUN 0x%Lx connected to the &quot;
-l_string|&quot;port with WWPN 0x%Lx at the adapter %s &quot;
+l_string|&quot;unit 0x%016Lx, port 0x%016Lx, adapter %s &quot;
 l_string|&quot;(debug info 0x%x)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
@@ -15804,13 +15690,12 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|adapter-&gt;features
+id|adapter-&gt;supported_features
 op_amp
 id|FSF_FEATURE_CFDC
 )paren
@@ -15834,10 +15719,9 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 r_goto
-id|no_act_support
+id|no_cfdc_support
 suffix:semicolon
 )brace
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -16139,6 +16023,8 @@ id|lock_flags
 )paren
 suffix:semicolon
 id|invalid_command
+suffix:colon
+id|no_cfdc_support
 suffix:colon
 r_return
 id|retval
@@ -16797,14 +16683,10 @@ id|ZFCP_LOG_DEBUG
 c_func
 (paren
 l_string|&quot;Caught signal %i while waiting for the &quot;
-l_string|&quot;completion of the request at 0x%lx&bslash;n&quot;
+l_string|&quot;completion of the request at %p&bslash;n&quot;
 comma
 id|signal
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 )paren
 suffix:semicolon
@@ -17227,15 +17109,6 @@ r_goto
 id|failed_sbals
 suffix:semicolon
 )brace
-multiline_comment|/* set magics */
-id|fsf_req-&gt;common_magic
-op_assign
-id|ZFCP_MAGIC
-suffix:semicolon
-id|fsf_req-&gt;specific_magic
-op_assign
-id|ZFCP_MAGIC_FSFREQ
-suffix:semicolon
 id|fsf_req-&gt;adapter
 op_assign
 id|adapter
@@ -17544,20 +17417,16 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;FSF request 0x%lx of adapter 0x%lx gets &quot;
+l_string|&quot;FSF request %p of adapter %s gets &quot;
 l_string|&quot;FSF sequence counter value of %i&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 comma
+id|zfcp_get_busid_by_adapter
+c_func
 (paren
-r_int
-r_int
-)paren
 id|adapter
+)paren
 comma
 id|fsf_req-&gt;qtcb-&gt;prefix.req_seq_no
 )paren
@@ -17622,7 +17491,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;request queue of adapter with busid=%s: &quot;
+l_string|&quot;request queue of adapter %s: &quot;
 l_string|&quot;next free SBAL is %i, %i free SBALs&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
@@ -17644,8 +17513,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Calling do QDIO busid=%s, flags=0x%x, queue_no=%i, &quot;
-l_string|&quot;index_in_queue=%i, count=%i, buffers=0x%lx&bslash;n&quot;
+l_string|&quot;calling do_QDIO adapter %s, flags=0x%x, queue_no=%i, &quot;
+l_string|&quot;index_in_queue=%i, count=%i, buffers=%p&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -17661,10 +17530,6 @@ id|fsf_req-&gt;sbal_first
 comma
 id|fsf_req-&gt;sbal_number
 comma
-(paren
-r_int
-r_int
-)paren
 op_amp
 id|req_queue-&gt;buffer
 (braket
@@ -17833,7 +17698,6 @@ id|req_queue-&gt;distance_from_int
 op_assign
 id|new_distance_from_int
 suffix:semicolon
-macro_line|#ifdef ZFCP_DEBUG_REQUESTS
 id|debug_text_event
 c_func
 (paren
@@ -17901,7 +17765,6 @@ l_string|&quot;nocb&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* ZFCP_DEBUG_REQUESTS */
 multiline_comment|/*&n;&t;&t; * increase FSF sequence counter -&n;&t;&t; * this must only be done for request successfully enqueued to&n;&t;&t; * QDIO this rejected requests may be cleaned up by calling&n;&t;&t; * routines  resulting in missing sequence counter values&n;&t;&t; * otherwise,&n;&t;&t; */
 multiline_comment|/* Don&squot;t increase for unsolicited status */
 r_if
@@ -17919,14 +17782,14 @@ op_increment
 suffix:semicolon
 id|ZFCP_LOG_TRACE
 (paren
-l_string|&quot;FSF sequence counter value of adapter 0x%lx &quot;
+l_string|&quot;FSF sequence counter value of adapter %s &quot;
 l_string|&quot;increased to %i&bslash;n&quot;
 comma
+id|zfcp_get_busid_by_adapter
+c_func
 (paren
-r_int
-r_int
-)paren
 id|adapter
+)paren
 comma
 id|adapter-&gt;fsf_req_seq_no
 )paren

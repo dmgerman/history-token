@@ -1151,7 +1151,7 @@ id|h8300_sci_enable
 c_func
 (paren
 r_struct
-id|sci_port
+id|uart_port
 op_star
 id|port
 comma
@@ -1178,7 +1178,7 @@ r_int
 id|ch
 op_assign
 (paren
-id|port-&gt;base
+id|port-&gt;mapbase
 op_minus
 id|SMR0
 )paren
@@ -1231,7 +1231,7 @@ id|sci_init_pins_sci
 c_func
 (paren
 r_struct
-id|sci_port
+id|uart_port
 op_star
 id|port
 comma
@@ -1244,7 +1244,7 @@ r_int
 id|ch
 op_assign
 (paren
-id|port-&gt;base
+id|port-&gt;mapbase
 op_minus
 id|SMR0
 )paren
@@ -1687,6 +1687,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -1734,6 +1735,27 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+id|txroom
+op_assign
+(paren
+id|sci_in
+c_func
+(paren
+id|port
+comma
+id|SCxSR
+)paren
+op_amp
+id|SCI_TDRE
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|count
 op_assign
 id|txroom
@@ -1892,6 +1914,7 @@ comma
 id|SCSCR
 )paren
 suffix:semicolon
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -1924,6 +1947,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|ctrl
 op_or_assign
 id|SCI_CTRL_FLAGS_TIE
@@ -2019,6 +2043,7 @@ c_loop
 l_int|1
 )paren
 (brace
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -2066,6 +2091,31 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+id|count
+op_assign
+(paren
+id|sci_in
+c_func
+(paren
+id|port
+comma
+id|SCxSR
+)paren
+op_amp
+id|SCxSR_RDxF
+c_func
+(paren
+id|port
+)paren
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Don&squot;t copy more bytes than there is room for in the buffer */
 r_if
 c_cond
@@ -4083,6 +4133,7 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* TE=0, RE=0, CKE1=0 */
+macro_line|#if !defined(SCI_ONLY)
 r_if
 c_cond
 (paren
@@ -4104,6 +4155,7 @@ id|SCFCR_TFRST
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|smr_val
 op_assign
 id|sci_in
@@ -5706,7 +5758,7 @@ comma
 dot
 id|irqs
 op_assign
-id|H8S_IRQS1
+id|H8S_SCI_IRQS1
 comma
 dot
 id|init_pins
@@ -5770,7 +5822,7 @@ comma
 dot
 id|irqs
 op_assign
-id|H8S_IRQS2
+id|H8S_SCI_IRQS2
 comma
 dot
 id|init_pins
@@ -5888,12 +5940,19 @@ op_assign
 id|serial_console_port-&gt;type
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to set the initial uartclk here, since otherwise it will&n;&t; * only ever be setup at sci_init() time.&n;&t; */
+macro_line|#if !defined(__H8300H__) &amp;&amp; !defined(__H8300S__)
 id|port-&gt;uartclk
 op_assign
 id|current_cpu_data.module_clock
 op_star
 l_int|16
 suffix:semicolon
+macro_line|#else
+id|port-&gt;uartclk
+op_assign
+id|CONFIG_CPU_CLOCK
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6418,6 +6477,7 @@ id|sci_ports
 id|chan
 )braket
 suffix:semicolon
+macro_line|#if !defined(__H8300H__) &amp;&amp; !defined(__H8300S__)
 id|sciport-&gt;port.uartclk
 op_assign
 (paren
@@ -6426,6 +6486,12 @@ op_star
 l_int|16
 )paren
 suffix:semicolon
+macro_line|#else
+id|sciport-&gt;port.uartclk
+op_assign
+id|CONFIG_CPU_CLOCK
+suffix:semicolon
+macro_line|#endif
 id|uart_add_one_port
 c_func
 (paren

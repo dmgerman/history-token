@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#if defined(CONFIG_SYSVIPC)
 macro_line|#include &quot;util.h&quot;
 multiline_comment|/**&n; *&t;ipc_init&t;-&t;initialise IPC subsystem&n; *&n; *&t;The various system5 IPC resources (semaphores, messages and shared&n; *&t;memory are initialised&n; */
 DECL|function|ipc_init
@@ -1645,40 +1644,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* __ia64__ */
-macro_line|#else
-multiline_comment|/*&n; * Dummy functions when SYSV IPC isn&squot;t configured&n; */
-DECL|function|copy_semundo
-r_int
-id|copy_semundo
-c_func
-(paren
-r_int
-r_int
-id|clone_flags
-comma
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|exit_sem
-r_void
-id|exit_sem
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_SYSVIPC */
 eof

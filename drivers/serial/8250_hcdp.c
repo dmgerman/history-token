@@ -529,6 +529,15 @@ id|UPF_BOOT_AUTOCONF
 op_or
 id|UPF_RESOURCES
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gsi
+)paren
+id|port.flags
+op_or_assign
+id|UPF_AUTO_IRQ
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Note: the above memset() initializes port.line to 0,&n;&t;&t; * so we register this port as ttyS0.&n;&t;&t; */
 r_if
 c_cond

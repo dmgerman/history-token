@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * pSeries_lpar.c&n; * Copyright (C) 2001 Todd Inglett, IBM Corporation&n; *&n; * pSeries LPAR support.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -10,13 +11,13 @@ macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/* in pSeries_hvCall.S */
 DECL|variable|plpar_hcall
 id|EXPORT_SYMBOL
@@ -503,7 +504,8 @@ r_int
 r_int
 id|uaddr
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -539,7 +541,7 @@ c_cond
 (paren
 id|direction
 op_ne
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 id|tce.te_pciwr
 op_assign
@@ -2282,6 +2284,16 @@ c_func
 id|ppc64_tlb_batch
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_LOCKLESS_TLBIE
+)paren
+)paren
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2323,6 +2335,16 @@ comma
 id|local
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_LOCKLESS_TLBIE
+)paren
+)paren
 id|spin_unlock_irqrestore
 c_func
 (paren

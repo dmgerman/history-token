@@ -44,6 +44,7 @@ id|error_code
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;regs-&gt;sr=%#x, regs-&gt;pc=%#lx, address=%#lx, %ld&bslash;n&quot;
 comma
 id|regs-&gt;sr
@@ -88,6 +89,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot; at virtual address %08lx&bslash;n&quot;
 comma
 id|address

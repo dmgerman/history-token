@@ -43,6 +43,9 @@ comma
 DECL|enumerator|DEV_STATE_WAIT4IO
 id|DEV_STATE_WAIT4IO
 comma
+DECL|enumerator|DEV_STATE_QUIESCE
+id|DEV_STATE_QUIESCE
+comma
 multiline_comment|/* special states for devices gone not operational */
 DECL|enumerator|DEV_STATE_DISCONNECTED
 id|DEV_STATE_DISCONNECTED
@@ -209,6 +212,15 @@ r_struct
 id|ccw_device
 op_star
 id|cdev
+)paren
+suffix:semicolon
+r_int
+id|ccw_device_cancel_halt_clear
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
 )paren
 suffix:semicolon
 r_int

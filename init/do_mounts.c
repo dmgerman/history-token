@@ -554,6 +554,7 @@ suffix:semicolon
 r_int
 id|part
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSFS
 id|sys_mkdir
 c_func
 (paren
@@ -584,6 +585,7 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

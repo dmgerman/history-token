@@ -293,6 +293,10 @@ DECL|macro|MO_AGC_BURST
 mdefine_line|#define MO_AGC_BURST        0x31010c
 DECL|macro|MO_CONTR_BRIGHT
 mdefine_line|#define MO_CONTR_BRIGHT     0x310110
+DECL|macro|MO_UV_SATURATION
+mdefine_line|#define MO_UV_SATURATION    0x310114
+DECL|macro|MO_HUE
+mdefine_line|#define MO_HUE              0x310118
 DECL|macro|MO_HTOTAL
 mdefine_line|#define MO_HTOTAL           0x310120
 DECL|macro|MO_HDELAY_EVEN
@@ -356,6 +360,8 @@ mdefine_line|#define MO_FIELD_COUNT      0x310190
 singleline_comment|// field counter
 DECL|macro|MO_VIP_CONFIG
 mdefine_line|#define MO_VIP_CONFIG       0x310194
+DECL|macro|MO_VBOS_CONTROL
+mdefine_line|#define MO_VBOS_CONTROL&t;    0x3101a8
 DECL|macro|MO_AGC_BACK_VBI
 mdefine_line|#define MO_AGC_BACK_VBI     0x310200
 DECL|macro|MO_AGC_SYNC_TIP1
@@ -825,7 +831,7 @@ mdefine_line|#define AUD_PDF_DDS_CNST_BYTE0   0x320d03
 DECL|macro|AUD_PHACC_FREQ_8MSB
 mdefine_line|#define AUD_PHACC_FREQ_8MSB      0x320d2a
 DECL|macro|AUD_PHACC_FREQ_8LSB
-mdefine_line|#define AUD_PHACC_FREQ_8LSB      0x320d23
+mdefine_line|#define AUD_PHACC_FREQ_8LSB      0x320d2b
 DECL|macro|AUD_QAM_MODE
 mdefine_line|#define AUD_QAM_MODE             0x320d04
 multiline_comment|/* ---------------------------------------------------------------------- */

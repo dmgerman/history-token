@@ -192,11 +192,11 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Are we up and running (ie do we have all the infrastructure&n; * set up)&n; */
-DECL|variable|system_running
+DECL|variable|system_state
 r_int
-id|system_running
+id|system_state
 suffix:semicolon
+multiline_comment|/* SYSTEM_BOOTING/RUNNING/SHUTDOWN */
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
 mdefine_line|#define MAX_INIT_ARGS 8
@@ -2045,6 +2045,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;        * check if there is an early userspace init, if yes&n;        * let it do all the work&n;        */
+r_if
+c_cond
+(paren
+id|sys_access
+c_func
+(paren
+l_string|&quot;/init&quot;
+comma
+l_int|0
+)paren
+op_eq
+l_int|0
+)paren
+id|execute_command
+op_assign
+l_string|&quot;/init&quot;
+suffix:semicolon
+r_else
 id|prepare_namespace
 c_func
 (paren
@@ -2061,9 +2080,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|system_running
+id|system_state
 op_assign
-l_int|1
+id|SYSTEM_RUNNING
 suffix:semicolon
 r_if
 c_cond

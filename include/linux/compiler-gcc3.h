@@ -1,7 +1,7 @@
 multiline_comment|/* Never include this file directly.  Include &lt;linux/compiler.h&gt; instead.  */
 multiline_comment|/* These definitions are for GCC v3.x.  */
 macro_line|#include &lt;linux/compiler-gcc.h&gt;
-macro_line|#if __GNUC_MINOR__ &gt;= 1
+macro_line|#if __GNUC_MINOR__ &gt;= 1  &amp;&amp; __GNUC_MINOR__ &lt; 4
 DECL|macro|inline
 macro_line|# define inline&t;&t;__inline__ __attribute__((always_inline))
 DECL|macro|__inline__

@@ -17,6 +17,8 @@ id|NR_IRQ_VECTORS
 suffix:semicolon
 DECL|macro|IO_APIC_VECTOR
 mdefine_line|#define IO_APIC_VECTOR(irq)&t;(irq_vector[irq])
+DECL|macro|AUTO_ASSIGN
+mdefine_line|#define AUTO_ASSIGN&t;&t;-1
 r_extern
 r_void
 (paren

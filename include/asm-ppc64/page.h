@@ -17,6 +17,12 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PAGE_OFFSET_MASK
 mdefine_line|#define PAGE_OFFSET_MASK (PAGE_SIZE-1)
+DECL|macro|SID_SHIFT
+mdefine_line|#define SID_SHIFT       28
+DECL|macro|SID_MASK
+mdefine_line|#define SID_MASK        0xfffffffff
+DECL|macro|GET_ESID
+mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;24
@@ -31,37 +37,34 @@ DECL|macro|TASK_HPAGE_BASE
 mdefine_line|#define TASK_HPAGE_BASE &t;(0x0000010000000000UL)
 DECL|macro|TASK_HPAGE_END
 mdefine_line|#define TASK_HPAGE_END &t;(0x0000018000000000UL)
-multiline_comment|/* For 32-bit processes the hugepage range is 2-3G */
-DECL|macro|TASK_HPAGE_BASE_32
-mdefine_line|#define TASK_HPAGE_BASE_32&t;(0x80000000UL)
-DECL|macro|TASK_HPAGE_END_32
-mdefine_line|#define TASK_HPAGE_END_32&t;(0xc0000000UL)
+DECL|macro|LOW_ESID_MASK
+mdefine_line|#define LOW_ESID_MASK(addr, len)&t;(((1U &lt;&lt; (GET_ESID(addr+len-1)+1)) &bslash;&n;&t;   &t;                &t;- (1U &lt;&lt; GET_ESID(addr))) &amp; 0xffff)
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
 mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|ARCH_HAS_PREPARE_HUGEPAGE_RANGE
 mdefine_line|#define ARCH_HAS_PREPARE_HUGEPAGE_RANGE
-DECL|macro|is_hugepage_low_range
-mdefine_line|#define is_hugepage_low_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE_32-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32))
-DECL|macro|is_hugepage_high_range
-mdefine_line|#define is_hugepage_high_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END))
+DECL|macro|touches_hugepage_low_range
+mdefine_line|#define touches_hugepage_low_range(addr, len) &bslash;&n;&t;(LOW_ESID_MASK((addr), (len)) &amp; current-&gt;mm-&gt;context.htlb_segs)
+DECL|macro|touches_hugepage_high_range
+mdefine_line|#define touches_hugepage_high_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END))
+DECL|macro|__within_hugepage_low_range
+mdefine_line|#define __within_hugepage_low_range(addr, len, segmask) &bslash;&n;&t;((LOW_ESID_MASK((addr), (len)) | (segmask)) == (segmask))
+DECL|macro|within_hugepage_low_range
+mdefine_line|#define within_hugepage_low_range(addr, len) &bslash;&n;&t;__within_hugepage_low_range((addr), (len), &bslash;&n;&t;&t;&t;&t;    current-&gt;mm-&gt;context.htlb_segs)
+DECL|macro|within_hugepage_high_range
+mdefine_line|#define within_hugepage_high_range(addr, len) (((addr) &gt;= TASK_HPAGE_BASE) &bslash;&n;&t;  &amp;&amp; ((addr)+(len) &lt;= TASK_HPAGE_END) &amp;&amp; ((addr)+(len) &gt;= (addr)))
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(is_hugepage_high_range((addr), (len)) || &bslash;&n;&t; (current-&gt;mm-&gt;context.low_hpages &bslash;&n;&t;  &amp;&amp; is_hugepage_low_range((addr), (len))))
+mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(touches_hugepage_high_range((addr), (len)) || &bslash;&n;&t;  touches_hugepage_low_range((addr), (len)))
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area
-mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ((((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  ((context).low_hpages &amp;&amp; &bslash;&n;&t;   (((addr) &gt;= TASK_HPAGE_BASE_32) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32)))))
+mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ( (((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;   ( ((addr) &lt; 0x100000000L) &amp;&amp; &bslash;&n;&t;     ((1 &lt;&lt; GET_ESID(addr)) &amp; (context).htlb_segs) ) ) )
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|macro|in_hugepage_area
 mdefine_line|#define in_hugepage_area(mm, addr)&t;0
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
-DECL|macro|SID_SHIFT
-mdefine_line|#define SID_SHIFT       28
-DECL|macro|SID_MASK
-mdefine_line|#define SID_MASK        0xfffffffff
-DECL|macro|GET_ESID
-mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
 multiline_comment|/* align addr on a size boundary - adjust address up/down if needed */
 DECL|macro|_ALIGN_UP
 mdefine_line|#define _ALIGN_UP(addr,size)&t;(((addr)+((size)-1))&amp;(~((size)-1)))

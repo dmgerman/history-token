@@ -2306,7 +2306,7 @@ id|current_type
 id|printk
 c_func
 (paren
-l_string|&quot;[%1d]=0x%x  &quot;
+l_string|&quot;[%1zd]=0x%x  &quot;
 comma
 id|q
 op_minus

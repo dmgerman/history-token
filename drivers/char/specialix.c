@@ -7428,13 +7428,6 @@ op_star
 id|tty-&gt;driver_data
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
-r_int
-r_int
-id|arg
-suffix:semicolon
-r_int
 r_int
 id|flags
 suffix:semicolon

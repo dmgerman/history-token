@@ -30,10 +30,10 @@ dot
 dot
 )paren
 id|__attribute__
-c_func
 (paren
 (paren
 id|format
+c_func
 (paren
 id|printf
 comma
@@ -65,10 +65,10 @@ dot
 dot
 )paren
 id|__attribute__
-c_func
 (paren
 (paren
 id|format
+c_func
 (paren
 id|printf
 comma
@@ -110,10 +110,10 @@ dot
 dot
 )paren
 id|__attribute__
-c_func
 (paren
 (paren
 id|format
+c_func
 (paren
 id|printf
 comma
@@ -139,10 +139,10 @@ dot
 dot
 )paren
 id|__attribute__
-c_func
 (paren
 (paren
 id|format
+c_func
 (paren
 id|printf
 comma
@@ -181,7 +181,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else  /*  CONFIG_DEVFS_FS  */
+macro_line|#else&t;&t;&t;&t;/*  CONFIG_DEVFS_FS  */
 DECL|function|devfs_mk_bdev
 r_static
 r_inline
@@ -241,6 +241,7 @@ r_static
 r_inline
 r_int
 id|devfs_mk_symlink
+c_func
 (paren
 r_const
 r_char
@@ -301,6 +302,7 @@ r_static
 r_inline
 r_int
 id|devfs_register_tape
+c_func
 (paren
 r_const
 r_char
@@ -330,6 +332,7 @@ r_static
 r_inline
 r_void
 id|mount_devfs_fs
+c_func
 (paren
 r_void
 )paren
@@ -337,6 +340,6 @@ r_void
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif  /*  CONFIG_DEVFS_FS  */
-macro_line|#endif  /*  _LINUX_DEVFS_FS_KERNEL_H  */
+macro_line|#endif&t;&t;&t;&t;/*  CONFIG_DEVFS_FS  */
+macro_line|#endif&t;&t;&t;&t;/*  _LINUX_DEVFS_FS_KERNEL_H  */
 eof

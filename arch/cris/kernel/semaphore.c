@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  Generic semaphore code. Buyer beware. Do your own&n; * specific changes in &lt;asm/semaphore-helper.h&gt;&n; */
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore-helper.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to sleep, while the &quot;waking&quot; variable is&n; * incremented when the &quot;up()&quot; code goes to wake up waiting&n; * processes.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * waking_non_zero() (from asm/semaphore.h) must execute&n; * atomically.&n; *&n; * When __up() is called, the count was negative before&n; * incrementing it, and we need to wake up somebody.&n; *&n; * This routine adds one to the count of processes that need to&n; * wake up and exit.  ALL waiting processes actually wake up but&n; * only the one that gets to the &quot;waking&quot; field first will gate&n; * through and acquire the semaphore.  The others will go back&n; * to sleep.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 DECL|function|__up
@@ -36,6 +37,7 @@ DECL|macro|DOWN_TAIL
 mdefine_line|#define DOWN_TAIL(task_state)&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;state = (task_state);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;tsk-&gt;state = TASK_RUNNING;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;sem-&gt;wait, &amp;wait);
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -75,6 +77,7 @@ id|TASK_UNINTERRUPTIBLE
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

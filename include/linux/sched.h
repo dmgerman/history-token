@@ -353,6 +353,18 @@ r_int
 r_int
 id|cache_decay_ticks
 suffix:semicolon
+r_extern
+r_const
+r_int
+r_int
+id|scheduling_functions_start_here
+suffix:semicolon
+r_extern
+r_const
+r_int
+r_int
+id|scheduling_functions_end_here
+suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
 mdefine_line|#define&t;MAX_SCHEDULE_TIMEOUT&t;LONG_MAX
 r_extern
@@ -643,6 +655,37 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
+multiline_comment|/* POSIX.1b Interval Timers */
+DECL|member|posix_timers
+r_struct
+id|list_head
+id|posix_timers
+suffix:semicolon
+multiline_comment|/* job control IDs */
+DECL|member|pgrp
+id|pid_t
+id|pgrp
+suffix:semicolon
+DECL|member|tty_old_pgrp
+id|pid_t
+id|tty_old_pgrp
+suffix:semicolon
+DECL|member|session
+id|pid_t
+id|session
+suffix:semicolon
+multiline_comment|/* boolean value for session group leader */
+DECL|member|leader
+r_int
+id|leader
+suffix:semicolon
+DECL|member|tty
+r_struct
+id|tty_struct
+op_star
+id|tty
+suffix:semicolon
+multiline_comment|/* NULL if no tty */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_RT_USER_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
@@ -882,6 +925,10 @@ suffix:semicolon
 multiline_comment|/* access the groups &quot;array&quot; with this macro */
 DECL|macro|GROUP_AT
 mdefine_line|#define GROUP_AT(gi, i) &bslash;&n;    ((gi)-&gt;blocks[(i)/NGROUPS_PER_BLOCK][(i)%NGROUPS_PER_BLOCK])
+r_struct
+id|audit_context
+suffix:semicolon
+multiline_comment|/* See audit.c */
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1031,27 +1078,9 @@ DECL|member|pid
 id|pid_t
 id|pid
 suffix:semicolon
-DECL|member|__pgrp
-id|pid_t
-id|__pgrp
-suffix:semicolon
-multiline_comment|/* Accessed via process_group() */
-DECL|member|tty_old_pgrp
-id|pid_t
-id|tty_old_pgrp
-suffix:semicolon
-DECL|member|session
-id|pid_t
-id|session
-suffix:semicolon
 DECL|member|tgid
 id|pid_t
 id|tgid
-suffix:semicolon
-multiline_comment|/* boolean value for session group leader */
-DECL|member|leader
-r_int
-id|leader
 suffix:semicolon
 multiline_comment|/* &n;&t; * pointers to (original) parent process, youngest child, younger sibling,&n;&t; * older sibling, respectively.  (p-&gt;father can be replaced with &n;&t; * p-&gt;parent-&gt;pid)&n;&t; */
 DECL|member|real_parent
@@ -1154,12 +1183,6 @@ r_struct
 id|timer_list
 id|real_timer
 suffix:semicolon
-DECL|member|posix_timers
-r_struct
-id|list_head
-id|posix_timers
-suffix:semicolon
-multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
@@ -1196,23 +1219,17 @@ suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
-DECL|member|nswap
 DECL|member|cmin_flt
 DECL|member|cmaj_flt
-DECL|member|cnswap
 r_int
 r_int
 id|min_flt
 comma
 id|maj_flt
 comma
-id|nswap
-comma
 id|cmin_flt
 comma
 id|cmaj_flt
-comma
-id|cnswap
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid
@@ -1298,13 +1315,6 @@ id|link_count
 comma
 id|total_link_count
 suffix:semicolon
-DECL|member|tty
-r_struct
-id|tty_struct
-op_star
-id|tty
-suffix:semicolon
-multiline_comment|/* NULL if no tty */
 multiline_comment|/* ipc stuff */
 DECL|member|sysvsem
 r_struct
@@ -1399,6 +1409,12 @@ r_void
 op_star
 id|security
 suffix:semicolon
+DECL|member|audit_context
+r_struct
+id|audit_context
+op_star
+id|audit_context
+suffix:semicolon
 multiline_comment|/* Thread group tracking */
 DECL|member|parent_exec_id
 id|u32
@@ -1481,7 +1497,7 @@ id|tsk
 )paren
 (brace
 r_return
-id|tsk-&gt;group_leader-&gt;__pgrp
+id|tsk-&gt;signal-&gt;pgrp
 suffix:semicolon
 )brace
 r_extern
@@ -2747,7 +2763,7 @@ id|exit_itimers
 c_func
 (paren
 r_struct
-id|task_struct
+id|signal_struct
 op_star
 )paren
 suffix:semicolon

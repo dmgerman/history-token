@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.69 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.72 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -603,25 +603,6 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Skip channel paths. */
-r_if
-c_cond
-(paren
-id|dev-&gt;release
-op_ne
-op_amp
-id|css_subchannel_release
-)paren
-(brace
-id|put_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 id|sch
 op_assign
 id|to_subchannel
@@ -795,10 +776,24 @@ id|disc
 op_logical_and
 id|slow
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|sch
+)paren
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Already processed. */
+)brace
 r_if
 c_cond
 (paren
@@ -808,11 +803,25 @@ op_logical_and
 op_logical_neg
 id|slow
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|sch
+)paren
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
 multiline_comment|/* Will be done on the slow path. */
+)brace
 id|event
 op_assign
 id|css_get_subchannel_status

@@ -89,19 +89,27 @@ r_int
 id|esp0
 suffix:semicolon
 multiline_comment|/* points to SR of stack frame */
-DECL|member|debugreg
+r_struct
+(brace
+DECL|member|addr
 r_int
 r_int
-id|debugreg
-(braket
-l_int|8
-)braket
+op_star
+id|addr
 suffix:semicolon
-multiline_comment|/* debug info */
+DECL|member|inst
+r_int
+r_int
+id|inst
+suffix:semicolon
+DECL|member|breakinfo
+)brace
+id|breakinfo
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;sizeof(init_stack) + (unsigned long) init_stack, 0, &bslash;&n;&t;PS_S, &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;sizeof(init_stack) + (unsigned long) init_stack, 0, &bslash;&n;&t;PS_S,  0, {(unsigned short *)-1, 0}, &bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; *&n; * pass the data segment into user programs if it exists,&n; * it can&squot;t hurt anything as far as I can tell&n; */
 macro_line|#if defined(__H8300H__)
 DECL|macro|start_thread

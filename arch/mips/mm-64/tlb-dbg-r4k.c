@@ -47,8 +47,9 @@ suffix:semicolon
 id|panic
 c_func
 (paren
+l_string|&quot;%s called.  This Does Not Happen (TM).&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; called.  This Does Not Happen (TM).&quot;
 )paren
 suffix:semicolon
 )brace

@@ -120,6 +120,12 @@ comma
 DECL|member|tk_suid_retry
 id|tk_suid_retry
 suffix:semicolon
+DECL|member|tk_cookie
+r_int
+r_int
+id|tk_cookie
+suffix:semicolon
+multiline_comment|/* Cookie for batching tasks */
 multiline_comment|/*&n;&t; * timeout_fn   to be executed by timer bottom half&n;&t; * callback&t;to be executed after waking up&n;&t; * action&t;next procedure for async tasks&n;&t; * exit&t;&t;exit async task and report to caller&n;&t; */
 DECL|member|tk_timeout_fn
 r_void
@@ -218,12 +224,26 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Task has been activated */
+DECL|member|tk_priority
+r_int
+r_char
+id|tk_priority
+suffix:colon
+l_int|2
+suffix:semicolon
+multiline_comment|/* Task priority */
 DECL|member|tk_runstate
 r_int
 r_int
 id|tk_runstate
 suffix:semicolon
 multiline_comment|/* Task run status */
+DECL|member|tk_links
+r_struct
+id|list_head
+id|tk_links
+suffix:semicolon
+multiline_comment|/* links to related tasks */
 macro_line|#ifdef RPC_DEBUG
 DECL|member|tk_pid
 r_int
@@ -314,6 +334,15 @@ DECL|macro|rpc_set_sleeping
 mdefine_line|#define rpc_set_sleeping(t)&t;(set_bit(RPC_TASK_SLEEPING, &amp;(t)-&gt;tk_runstate))
 DECL|macro|rpc_clear_sleeping
 mdefine_line|#define rpc_clear_sleeping(t) &bslash;&n;&t;do { &bslash;&n;&t;&t;smp_mb__before_clear_bit(); &bslash;&n;&t;&t;clear_bit(RPC_TASK_SLEEPING, &amp;(t)-&gt;tk_runstate); &bslash;&n;&t;&t;smp_mb__after_clear_bit(); &bslash;&n;&t;} while(0)
+multiline_comment|/*&n; * Task priorities.&n; * Note: if you change these, you must also change&n; * the task initialization definitions below.&n; */
+DECL|macro|RPC_PRIORITY_LOW
+mdefine_line|#define RPC_PRIORITY_LOW&t;0
+DECL|macro|RPC_PRIORITY_NORMAL
+mdefine_line|#define RPC_PRIORITY_NORMAL&t;1
+DECL|macro|RPC_PRIORITY_HIGH
+mdefine_line|#define RPC_PRIORITY_HIGH&t;2
+DECL|macro|RPC_NR_PRIORITY
+mdefine_line|#define RPC_NR_PRIORITY&t;&t;(RPC_PRIORITY_HIGH+1)
 multiline_comment|/*&n; * RPC synchronization objects&n; */
 DECL|struct|rpc_wait_queue
 r_struct
@@ -323,9 +352,44 @@ DECL|member|tasks
 r_struct
 id|list_head
 id|tasks
+(braket
+id|RPC_NR_PRIORITY
+)braket
 suffix:semicolon
+multiline_comment|/* task queue for each priority level */
+DECL|member|cookie
+r_int
+r_int
+id|cookie
+suffix:semicolon
+multiline_comment|/* cookie of last task serviced */
+DECL|member|maxpriority
+r_int
+r_char
+id|maxpriority
+suffix:semicolon
+multiline_comment|/* maximum priority (0 if queue is not a priority queue) */
+DECL|member|priority
+r_int
+r_char
+id|priority
+suffix:semicolon
+multiline_comment|/* current priority */
+DECL|member|count
+r_int
+r_char
+id|count
+suffix:semicolon
+multiline_comment|/* # task groups remaining serviced so far */
+DECL|member|nr
+r_int
+r_char
+id|nr
+suffix:semicolon
+multiline_comment|/* # tasks remaining for cookie */
 macro_line|#ifdef RPC_DEBUG
 DECL|member|name
+r_const
 r_char
 op_star
 id|name
@@ -333,21 +397,20 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This is the # requests to send consecutively&n; * from a single cookie.  The aim is to improve&n; * performance of NFS operations such as read/write.&n; */
+DECL|macro|RPC_BATCH_COUNT
+mdefine_line|#define RPC_BATCH_COUNT&t;&t;&t;16
 macro_line|#ifndef RPC_DEBUG
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) ((struct rpc_wait_queue) {LIST_HEAD_INIT(var)})
-DECL|macro|RPC_WAITQ
-macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var.tasks,qname)
-DECL|macro|INIT_RPC_WAITQ
-macro_line|# define INIT_RPC_WAITQ(ptr,qname) do { &bslash;&n;&t;INIT_LIST_HEAD(&amp;(ptr)-&gt;tasks); &bslash;&n;&t;} while(0)
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;}
 macro_line|#else
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) ((struct rpc_wait_queue) {LIST_HEAD_INIT(var.tasks), qname})
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;&t;.name = qname, &bslash;&n;&t;}
+macro_line|#endif
 DECL|macro|RPC_WAITQ
 macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var,qname)
-DECL|macro|INIT_RPC_WAITQ
-macro_line|# define INIT_RPC_WAITQ(ptr,qname) do { &bslash;&n;&t;INIT_LIST_HEAD(&amp;(ptr)-&gt;tasks); (ptr)-&gt;name = qname; &bslash;&n;&t;} while(0)
-macro_line|#endif
+DECL|macro|RPC_IS_PRIORITY
+mdefine_line|#define RPC_IS_PRIORITY(q)&t;&t;((q)-&gt;maxpriority &gt; 0)
 multiline_comment|/*&n; * Function prototypes&n; */
 r_struct
 id|rpc_task
@@ -464,6 +527,32 @@ c_func
 (paren
 r_struct
 id|rpc_task
+op_star
+)paren
+suffix:semicolon
+r_void
+id|rpc_init_priority_wait_queue
+c_func
+(paren
+r_struct
+id|rpc_wait_queue
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_void
+id|rpc_init_wait_queue
+c_func
+(paren
+r_struct
+id|rpc_wait_queue
+op_star
+comma
+r_const
+r_char
 op_star
 )paren
 suffix:semicolon
@@ -614,10 +703,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
-id|__inline__
-r_void
 DECL|function|rpc_exit
+r_static
+r_inline
+r_void
 id|rpc_exit
 c_func
 (paren
@@ -640,11 +729,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef RPC_DEBUG
+DECL|function|rpc_qname
 r_static
-id|__inline__
+r_inline
+r_const
 r_char
 op_star
-DECL|function|rpc_qname
 id|rpc_qname
 c_func
 (paren
