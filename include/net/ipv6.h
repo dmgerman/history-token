@@ -106,6 +106,8 @@ id|identification
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IP6_MF
+mdefine_line|#define&t;IP6_MF&t;0x0001
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/* sysctls */

@@ -1826,7 +1826,7 @@ op_amp
 id|htons
 c_func
 (paren
-l_int|0x0001
+id|IP6_MF
 )paren
 )paren
 )paren
