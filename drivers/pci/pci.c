@@ -2857,7 +2857,7 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#endif /* !HAVE_ARCH_PCI_MWI */
-multiline_comment|/**&n; * pci_set_mwi - enables memory-write-validate PCI transaction&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Enables the Memory-Write-Invalidate transaction in %PCI_COMMAND,&n; * and then calls @pcibios_set_mwi to do the needed arch specific&n; * operations or a generic mwi-prep function.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
+multiline_comment|/**&n; * pci_set_mwi - enables memory-write-invalidate PCI transaction&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Enables the Memory-Write-Invalidate transaction in %PCI_COMMAND,&n; * and then calls @pcibios_set_mwi to do the needed arch specific&n; * operations or a generic mwi-prep function.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
 r_int
 DECL|function|pci_set_mwi
 id|pci_set_mwi
