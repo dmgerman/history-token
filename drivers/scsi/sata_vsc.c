@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_vsc&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.01&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.0&quot;
 multiline_comment|/* Interrupt register offsets (from chip base address) */
 DECL|macro|VSC_SATA_INT_STAT_OFFSET
 mdefine_line|#define VSC_SATA_INT_STAT_OFFSET&t;0x00
@@ -1270,9 +1270,13 @@ id|probe_ent
 )paren
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -1650,6 +1654,13 @@ c_func
 id|pci
 comma
 id|vsc_sata_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|vsc_sata_init

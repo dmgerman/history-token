@@ -2695,13 +2695,9 @@ comma
 id|cmd-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|qc-&gt;pci_dma_dir
+id|qc-&gt;dma_dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 suffix:semicolon
 )brace
 id|qc-&gt;complete_fn
