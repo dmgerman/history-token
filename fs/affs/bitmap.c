@@ -1320,8 +1320,8 @@ id|sbi-&gt;s_bmap_count
 op_star
 r_sizeof
 (paren
-r_struct
-id|affs_bm_info
+op_star
+id|bm
 )paren
 suffix:semicolon
 id|bm
