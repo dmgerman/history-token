@@ -132,6 +132,31 @@ op_star
 id|writeurb
 suffix:semicolon
 multiline_comment|/* urbs */
+DECL|member|ctrl_buffer
+DECL|member|read_buffer
+DECL|member|write_buffer
+id|u8
+op_star
+id|ctrl_buffer
+comma
+op_star
+id|read_buffer
+comma
+op_star
+id|write_buffer
+suffix:semicolon
+multiline_comment|/* buffers of urbs */
+DECL|member|ctrl_dma
+DECL|member|read_dma
+DECL|member|write_dma
+id|dma_addr_t
+id|ctrl_dma
+comma
+id|read_dma
+comma
+id|write_dma
+suffix:semicolon
+multiline_comment|/* dma handles of buffers */
 DECL|member|line
 r_struct
 id|acm_line
@@ -150,6 +175,11 @@ id|tasklet_struct
 id|bh
 suffix:semicolon
 multiline_comment|/* rx processing */
+DECL|member|throttle_lock
+id|spinlock_t
+id|throttle_lock
+suffix:semicolon
+multiline_comment|/* synchronize throtteling and read callback */
 DECL|member|ctrlin
 r_int
 r_int
@@ -168,6 +198,15 @@ r_int
 id|writesize
 suffix:semicolon
 multiline_comment|/* max packet size for the output bulk endpoint */
+DECL|member|readsize
+DECL|member|ctrlsize
+r_int
+r_int
+id|readsize
+comma
+id|ctrlsize
+suffix:semicolon
+multiline_comment|/* buffer sizes for freeing */
 DECL|member|used
 r_int
 r_int
@@ -198,6 +237,18 @@ r_char
 id|ready_for_write
 suffix:semicolon
 multiline_comment|/* write urb can be used */
+DECL|member|resubmit_to_unthrottle
+r_int
+r_char
+id|resubmit_to_unthrottle
+suffix:semicolon
+multiline_comment|/* throtteling has disabled the read urb */
+DECL|member|ctrl_caps
+r_int
+r_int
+id|ctrl_caps
+suffix:semicolon
+multiline_comment|/* control capabilities from the class specific header */
 )brace
 suffix:semicolon
 multiline_comment|/* &quot;Union Functional Descriptor&quot; from CDC spec 5.2.3.X */
@@ -234,8 +285,15 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* class specific descriptor types */
+DECL|macro|CDC_CALL_MANAGEMENT_TYPE
+mdefine_line|#define CDC_CALL_MANAGEMENT_TYPE&t;0x01
+DECL|macro|CDC_AC_MANAGEMENT_TYPE
+mdefine_line|#define CDC_AC_MANAGEMENT_TYPE&t;&t;0x02
 DECL|macro|CDC_UNION_TYPE
-mdefine_line|#define CDC_UNION_TYPE&t;&t;0x06
+mdefine_line|#define CDC_UNION_TYPE&t;&t;&t;0x06
+DECL|macro|CDC_COUNTRY_TYPE
+mdefine_line|#define CDC_COUNTRY_TYPE&t;&t;0x07
 DECL|macro|CDC_DATA_INTERFACE_TYPE
 mdefine_line|#define CDC_DATA_INTERFACE_TYPE&t;0x0a
 eof
