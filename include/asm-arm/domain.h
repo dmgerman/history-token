@@ -2,13 +2,13 @@ multiline_comment|/*&n; *  linux/include/asm-arm/domain.h&n; *&n; *  Copyright (
 macro_line|#ifndef __ASM_PROC_DOMAIN_H
 DECL|macro|__ASM_PROC_DOMAIN_H
 mdefine_line|#define __ASM_PROC_DOMAIN_H
-multiline_comment|/*&n; * Domain numbers&n; *&n; *  DOMAIN_IO     - domain 2 includes all IO only&n; *  DOMAIN_KERNEL - domain 1 includes all kernel memory only&n; *  DOMAIN_USER   - domain 0 includes all user memory only&n; */
-DECL|macro|DOMAIN_USER
-mdefine_line|#define DOMAIN_USER&t;0
+multiline_comment|/*&n; * Domain numbers&n; *&n; *  DOMAIN_IO     - domain 2 includes all IO only&n; *  DOMAIN_USER   - domain 1 includes all user memory only&n; *  DOMAIN_KERNEL - domain 0 includes all kernel memory only&n; */
 DECL|macro|DOMAIN_KERNEL
-mdefine_line|#define DOMAIN_KERNEL&t;1
+mdefine_line|#define DOMAIN_KERNEL&t;0
 DECL|macro|DOMAIN_TABLE
-mdefine_line|#define DOMAIN_TABLE&t;1
+mdefine_line|#define DOMAIN_TABLE&t;0
+DECL|macro|DOMAIN_USER
+mdefine_line|#define DOMAIN_USER&t;1
 DECL|macro|DOMAIN_IO
 mdefine_line|#define DOMAIN_IO&t;2
 multiline_comment|/*&n; * Domain types&n; */
