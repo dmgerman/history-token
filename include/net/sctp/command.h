@@ -113,10 +113,6 @@ DECL|enumerator|SCTP_CMD_REPORT_DUP
 id|SCTP_CMD_REPORT_DUP
 comma
 multiline_comment|/* Report a duplicate TSN.  */
-DECL|enumerator|SCTP_CMD_REPORT_BIGGAP
-id|SCTP_CMD_REPORT_BIGGAP
-comma
-multiline_comment|/* Narc on a TSN (it was too high).  */
 DECL|enumerator|SCTP_CMD_STRIKE
 id|SCTP_CMD_STRIKE
 comma
@@ -185,10 +181,14 @@ DECL|enumerator|SCTP_CMD_RTO_PENDING
 id|SCTP_CMD_RTO_PENDING
 comma
 multiline_comment|/* Set transport&squot;s rto_pending. */
-DECL|enumerator|SCTP_CMD_CHUNK_PD
-id|SCTP_CMD_CHUNK_PD
+DECL|enumerator|SCTP_CMD_PART_DELIVER
+id|SCTP_CMD_PART_DELIVER
 comma
 multiline_comment|/* Partial data delivery considerations. */
+DECL|enumerator|SCTP_CMD_RENEGE
+id|SCTP_CMD_RENEGE
+comma
+multiline_comment|/* Renege data on an association. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t

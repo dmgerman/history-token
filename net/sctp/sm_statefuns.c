@@ -6437,7 +6437,7 @@ c_func
 (paren
 id|commands
 comma
-id|SCTP_CMD_CHUNK_PD
+id|SCTP_CMD_PART_DELIVER
 comma
 id|SCTP_NULL
 c_func
@@ -6446,6 +6446,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Spill over rwnd a little bit.  Note: While allowed, this spill over&n;&t; * seems a bit troublesome in that frag_point varies based on&n;&t; * PMTU.  In cases, such as loopback, this might be a rather&n;&t; * large spill over.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6460,10 +6461,17 @@ id|asoc-&gt;frag_point
 )paren
 )paren
 (brace
-multiline_comment|/* There is absolutely no room, but this is the most&n;&t;&t; * important tsn that we are waiting on, try to &n;&t;&t; * to partial deliver or renege to make room. &n;&t;&t; */
+multiline_comment|/* If this is the next TSN, consider reneging to make&n;&t;&t; * room.   Note: Playing nice with a confused sender.  A&n;&t;&t; * malicious sender can still eat up all our buffer&n;&t;&t; * space and in the future we may want to detect and&n;&t;&t; * do more drastic reneging. &n;&t;&t; */
 r_if
 c_cond
 (paren
+id|sctp_tsnmap_has_gap
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.tsn_map
+)paren
+op_logical_and
 (paren
 id|sctp_tsnmap_get_ctsn
 c_func
@@ -6478,9 +6486,17 @@ op_eq
 id|tsn
 )paren
 (brace
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;Reneging for tsn:%u&bslash;n&quot;
+comma
+id|tsn
+)paren
+suffix:semicolon
 id|deliver
 op_assign
-id|SCTP_CMD_CHUNK_PD
+id|SCTP_CMD_RENEGE
 suffix:semicolon
 )brace
 r_else
@@ -6582,7 +6598,7 @@ c_func
 id|SctpAborteds
 )paren
 suffix:semicolon
-id|SCTP_INC_STATS
+id|SCTP_DEC_STATS
 c_func
 (paren
 id|SctpCurrEstab
@@ -6592,15 +6608,14 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* If definately accepting the DATA chunk, record its TSN, otherwise&n;&t; * wait for renege processing. &n;&t; */
+multiline_comment|/* If definately accepting the DATA chunk, record its TSN, otherwise&n;&t; * wait for renege processing.&n;&t; */
 r_if
 c_cond
 (paren
+id|SCTP_CMD_CHUNK_ULP
+op_eq
 id|deliver
-op_ne
-id|SCTP_CMD_CHUNK_PD
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6615,6 +6630,7 @@ id|tsn
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Note: Some chunks may get overcounted (if we drop) or overcounted&n;&t; * if we renege and the chunk arrives again.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6635,7 +6651,6 @@ c_func
 id|SctpInOrderChunks
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * If an endpoint receive a DATA chunk with an invalid stream&n;&t; * identifier, it shall acknowledge the reception of the DATA chunk&n;&t; * following the normal procedure, immediately send an ERROR chunk&n;&t; * with cause set to &quot;Invalid Stream Identifier&quot; (See Section 3.3.10)&n;&t; * and discard the DATA chunk.&n;&t; */
 r_if
 c_cond
@@ -7153,7 +7168,7 @@ c_func
 id|SctpAborteds
 )paren
 suffix:semicolon
-id|SCTP_INC_STATS
+id|SCTP_DEC_STATS
 c_func
 (paren
 id|SctpCurrEstab

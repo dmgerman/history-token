@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, Intel, and International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; *&n; * Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, Intel, and International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *   Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;net/sctp/constants.h&gt;
 macro_line|#ifndef __sctp_tsnmap_h__
 DECL|macro|__sctp_tsnmap_h__
@@ -223,7 +223,7 @@ r_return
 id|map-&gt;dup_tsns
 suffix:semicolon
 )brace
-multiline_comment|/* Mark a duplicate TSN.  Note:  we limit how many we are willing to&n; * store and consequently report.&n; */
+multiline_comment|/* Mark a duplicate TSN.  Note:  limit the storage of duplicate TSN&n; * information.&n; */
 DECL|function|sctp_tsnmap_mark_dup
 r_static
 r_inline
@@ -253,9 +253,26 @@ id|map-&gt;num_dup_tsns
 op_increment
 )braket
 op_assign
+id|htonl
+c_func
+(paren
 id|tsn
+)paren
 suffix:semicolon
 )brace
+multiline_comment|/* Renege a TSN that was seen.  */
+r_void
+id|sctp_tsnmap_renege
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+comma
+id|__u32
+id|tsn
+)paren
+suffix:semicolon
 multiline_comment|/* Is there a gap in the TSN map? */
 r_int
 id|sctp_tsnmap_has_gap

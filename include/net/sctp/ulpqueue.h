@@ -101,6 +101,22 @@ op_star
 id|ev
 )paren
 suffix:semicolon
+multiline_comment|/* Renege previously received chunks.  */
+r_void
+id|sctp_ulpq_renege
+c_func
+(paren
+r_struct
+id|sctp_ulpq
+op_star
+comma
+r_struct
+id|sctp_chunk
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Perform partial delivery. */
 r_void
 id|sctp_ulpq_partial_delivery
