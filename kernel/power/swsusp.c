@@ -181,29 +181,6 @@ id|name_resume
 op_assign
 l_string|&quot;Resume Machine: &quot;
 suffix:semicolon
-multiline_comment|/*&n; * Debug&n; */
-DECL|macro|DEBUG_DEFAULT
-mdefine_line|#define&t;DEBUG_DEFAULT
-DECL|macro|DEBUG_PROCESS
-macro_line|#undef&t;DEBUG_PROCESS
-DECL|macro|DEBUG_SLOW
-macro_line|#undef&t;DEBUG_SLOW
-DECL|macro|TEST_SWSUSP
-mdefine_line|#define TEST_SWSUSP 0&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
-macro_line|#ifdef DEBUG_DEFAULT
-DECL|macro|PRINTK
-macro_line|# define PRINTK(f, a...)&t;printk(f, ## a)
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|# define PRINTK(f, a...)       &t;do { } while(0)
-macro_line|#endif
-macro_line|#ifdef DEBUG_SLOW
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a) mdelay(a)
-macro_line|#else
-DECL|macro|MDELAY
-mdefine_line|#define MDELAY(a) do { } while(0)
-macro_line|#endif
 multiline_comment|/*&n; * Saving part...&n; */
 multiline_comment|/* We memorize in swapfile_used what swap devices are used for suspension */
 DECL|macro|SWAPFILE_UNUSED
@@ -919,7 +896,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
 DECL|function|dump_info
 r_static
 r_void
@@ -929,7 +905,7 @@ c_func
 r_void
 )paren
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: Version: %u&bslash;n&quot;
@@ -937,7 +913,7 @@ comma
 id|swsusp_info.version_code
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: Num Pages: %ld&bslash;n&quot;
@@ -945,7 +921,7 @@ comma
 id|swsusp_info.num_physpages
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Sys: %s&bslash;n&quot;
@@ -953,7 +929,7 @@ comma
 id|swsusp_info.uts.sysname
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Node: %s&bslash;n&quot;
@@ -961,7 +937,7 @@ comma
 id|swsusp_info.uts.nodename
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Release: %s&bslash;n&quot;
@@ -969,7 +945,7 @@ comma
 id|swsusp_info.uts.release
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Version: %s&bslash;n&quot;
@@ -977,7 +953,7 @@ comma
 id|swsusp_info.uts.version
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Machine: %s&bslash;n&quot;
@@ -985,7 +961,7 @@ comma
 id|swsusp_info.uts.machine
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: UTS Domain: %s&bslash;n&quot;
@@ -993,7 +969,7 @@ comma
 id|swsusp_info.uts.domainname
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: CPUs: %d&bslash;n&quot;
@@ -1001,7 +977,7 @@ comma
 id|swsusp_info.cpus
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: Image: %ld Pages&bslash;n&quot;
@@ -1009,7 +985,7 @@ comma
 id|swsusp_info.image_pages
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot; swsusp: Pagedir: %ld Pages&bslash;n&quot;
@@ -1018,18 +994,6 @@ id|swsusp_info.pagedir_pages
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|dump_info
-r_static
-r_void
-id|dump_info
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif
 DECL|function|init_header
 r_static
 r_void
@@ -1972,7 +1936,7 @@ id|pfn
 )paren
 )paren
 (brace
-id|PRINTK
+id|pr_debug
 c_func
 (paren
 l_string|&quot;[nosave pfn 0x%lx]&quot;
