@@ -2,10 +2,6 @@ multiline_comment|/* $Id: sgiwd93.h,v 1.5 1998/08/25 09:18:50 ralf Exp $&n; * sg
 macro_line|#ifndef _SGIWD93_H
 DECL|macro|_SGIWD93_H
 mdefine_line|#define _SGIWD93_H
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL        0
-macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 8

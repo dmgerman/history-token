@@ -78,10 +78,6 @@ DECL|macro|ATP870U_SCATTER
 mdefine_line|#define ATP870U_SCATTER 128
 DECL|macro|ATP870U_CMDLUN
 mdefine_line|#define ATP870U_CMDLUN 1
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 r_extern
 r_const
 r_char
