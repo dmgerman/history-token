@@ -5193,8 +5193,6 @@ id|msg-&gt;msg_name
 suffix:semicolon
 r_int
 id|copied
-comma
-id|qbit
 suffix:semicolon
 r_int
 r_char
@@ -5210,6 +5208,8 @@ r_int
 id|n
 comma
 id|er
+comma
+id|qbit
 suffix:semicolon
 multiline_comment|/*&n;&t; * This works for seqpacket too. The receiver has ordered the queue for&n;&t; * us! We do one quick check first though&n;&t; */
 r_if
