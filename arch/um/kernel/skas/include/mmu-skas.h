@@ -2,8 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * L
 macro_line|#ifndef __SKAS_MMU_H
 DECL|macro|__SKAS_MMU_H
 mdefine_line|#define __SKAS_MMU_H
-macro_line|#include &quot;linux/list.h&quot;
-macro_line|#include &quot;linux/spinlock.h&quot;
 DECL|struct|mmu_context_skas
 r_struct
 id|mmu_context_skas
