@@ -68,6 +68,7 @@ macro_line|# define __PREG(x)&t;io_v2p(x)
 macro_line|#endif
 macro_line|#include &quot;SA-1100.h&quot;
 multiline_comment|/*&n; * Implementation specifics.&n; *&n; * *** NOTE ***&n; * Any definitions in these files should be prefixed by an identifier -&n; * eg, ASSABET_UCB1300_IRQ  This will allow us to eleminate these&n; * ifdefs, and lots of other preprocessor gunk elsewhere.&n; */
+macro_line|#include &quot;badge4.h&quot;
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 macro_line|#include &quot;pangolin.h&quot;
 macro_line|#endif
