@@ -8617,25 +8617,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|continue_replay
-op_logical_and
-(paren
-id|p_s_sb-&gt;s_flags
-op_amp
-id|MS_RDONLY
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Warning, log replay starting on readonly filesystem&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* ok, there are transactions that need to be replayed.  start with the first log block, find&n;  ** all the valid transactions, and pick out the oldest.&n;  */
 r_while
 c_loop
