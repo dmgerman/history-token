@@ -674,7 +674,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;ldarx&t;%0,0,%3&t;&bslash;n&bslash;&n;&t;andc&t;%1,%0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%1,%5 &bslash;n&bslash;&n;&t;stdcx.&t;%1,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;ldarx&t;%0,0,%3&t;&t;# pte_update&bslash;n&bslash;&n;&t;andc&t;%1,%0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%1,%5 &bslash;n&bslash;&n;&t;stdcx.&t;%1,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
