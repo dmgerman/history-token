@@ -1612,24 +1612,12 @@ id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-id|skb-&gt;nf_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|ipip6_ecn_decapsulate
 c_func
 (paren
@@ -2495,24 +2483,12 @@ id|iph-&gt;ttl
 op_assign
 id|iph6-&gt;hop_limit
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER
-id|nf_conntrack_put
+id|nf_reset
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
-id|skb-&gt;nfct
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-id|skb-&gt;nf_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|IPTUNNEL_XMIT
 c_func
 (paren

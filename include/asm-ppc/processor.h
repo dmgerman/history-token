@@ -552,6 +552,17 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+r_extern
+r_int
+id|emulate_altivec
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_PPC_PROCESSOR_H */
 macro_line|#endif /* __KERNEL__ */

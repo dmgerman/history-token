@@ -44,6 +44,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|iop321_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_IQ80310
 r_static
@@ -205,6 +213,11 @@ id|INITIRQ
 c_func
 (paren
 id|iop321_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|iop321_init_time
 )paren
 id|MACHINE_END
 macro_line|#else

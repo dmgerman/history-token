@@ -10052,7 +10052,13 @@ op_eq
 id|CFG_ATI_REV_A11
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Map the BIOS ROM if any and retreive PLL parameters from&n;&t; * either BIOS or Open Firmware&n;&t; */
+multiline_comment|/*&n;&t; * Map the BIOS ROM if any and retreive PLL parameters from&n;&t; * the BIOS. We skip that on mobility chips as the real panel&n;&t; * values we need aren&squot;t in the ROM but in the BIOS image in&n;&t; * memory. This is definitely not the best meacnism though,&n;&t; * we really need the arch code to tell us which is the &quot;primary&quot;&n;&t; * video adapter to use the memory image (or better, the arch&n;&t; * should provide us a copy of the BIOS image to shield us from&n;&t; * archs who would store that elsewhere and/or could initialize&n;&t; * more than one adapter during boot).&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rinfo-&gt;is_mobility
+)paren
 id|radeon_map_ROM
 c_func
 (paren
@@ -10077,6 +10083,24 @@ id|rinfo
 )paren
 suffix:semicolon
 macro_line|#endif /* __i386__ */
+multiline_comment|/* If both above failed, try the BIOS ROM again for mobility&n;&t; * chips&n;&t; */
+r_if
+c_cond
+(paren
+id|rinfo-&gt;bios_seg
+op_eq
+l_int|NULL
+op_logical_and
+id|rinfo-&gt;is_mobility
+)paren
+id|radeon_map_ROM
+c_func
+(paren
+id|rinfo
+comma
+id|pdev
+)paren
+suffix:semicolon
 multiline_comment|/* Get informations about the board&squot;s PLL */
 id|radeon_get_pllinfo
 c_func

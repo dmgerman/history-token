@@ -72,6 +72,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|ixp4xx_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ixp4xx_pci_preinit
 c_func
 (paren

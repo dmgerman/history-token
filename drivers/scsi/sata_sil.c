@@ -1328,6 +1328,10 @@ id|ap-&gt;host-&gt;hostt-&gt;max_sectors
 op_assign
 l_int|15
 suffix:semicolon
+id|dev-&gt;flags
+op_or_assign
+id|ATA_DFLAG_LOCK_SECTORS
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

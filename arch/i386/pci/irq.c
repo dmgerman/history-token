@@ -4622,6 +4622,8 @@ comma
 id|PCI_INTERRUPT_LINE
 comma
 id|dev-&gt;irq
+op_amp
+l_int|15
 )paren
 suffix:semicolon
 r_return

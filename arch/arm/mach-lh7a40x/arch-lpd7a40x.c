@@ -1022,6 +1022,13 @@ id|lh7a404_init_irq
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|lh7a40x_init_time
+(paren
+r_void
+)paren
+suffix:semicolon
 id|MACHINE_START
 (paren
 id|LPD7A404
@@ -1054,6 +1061,10 @@ id|lpd7a400_map_io
 id|INITIRQ
 (paren
 id|lh7a404_init_irq
+)paren
+id|INITTIME
+(paren
+id|lh7a40x_init_time
 )paren
 id|INIT_MACHINE
 (paren

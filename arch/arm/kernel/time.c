@@ -10,10 +10,12 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -51,19 +53,6 @@ macro_line|#endif
 multiline_comment|/* change this if you have some constant time drift */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY&t;(1000000/HZ)
-DECL|function|dummy_set_rtc
-r_static
-r_int
-id|dummy_set_rtc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * hook for setting the RTC&squot;s idea of the current time.&n; */
 DECL|variable|set_rtc
 r_int
@@ -74,8 +63,6 @@ id|set_rtc
 (paren
 r_void
 )paren
-op_assign
-id|dummy_set_rtc
 suffix:semicolon
 DECL|function|dummy_gettimeoffset
 r_static
@@ -870,6 +857,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_LEDS_TIMER
 DECL|function|do_leds
 r_static
+r_inline
 r_void
 id|do_leds
 c_func
@@ -907,7 +895,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|do_leds
-mdefine_line|#define do_leds()
+mdefine_line|#define&t;do_leds()
 macro_line|#endif
 DECL|function|do_gettimeofday
 r_void
@@ -1181,25 +1169,63 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
-DECL|variable|timer_irq
-r_static
+DECL|function|timer_tick
+r_void
+id|timer_tick
+c_func
+(paren
 r_struct
-id|irqaction
-id|timer_irq
-op_assign
+id|pt_regs
+op_star
+id|regs
+)paren
 (brace
-dot
-id|name
-op_assign
-l_string|&quot;timer&quot;
-comma
-dot
-id|flags
-op_assign
-id|SA_INTERRUPT
-comma
-)brace
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
-multiline_comment|/*&n; * Include architecture specific code&n; */
-macro_line|#include &lt;asm/arch/time.h&gt;
+id|do_leds
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_set_rtc
+c_func
+(paren
+)paren
+suffix:semicolon
+id|do_timer
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
+DECL|variable|init_arch_time
+r_void
+(paren
+op_star
+id|init_arch_time
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|time_init
+r_void
+id|__init
+id|time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|init_arch_time
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 eof
