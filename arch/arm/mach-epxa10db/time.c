@@ -1,17 +1,15 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-epxa10db/time.c&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions&n; *  Copyright (C) 2001 Altera Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-r_extern
-r_int
-(paren
-op_star
-id|set_rtc
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
+DECL|macro|TIMER00_TYPE
+mdefine_line|#define TIMER00_TYPE (volatile unsigned int*)
+macro_line|#include &lt;asm/arch/timer00.h&gt;
 DECL|function|epxa10db_set_rtc
 r_static
 r_int
@@ -49,4 +47,141 @@ c_func
 id|epxa10db_rtc_init
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * IRQ handler for the timer&n; */
+r_static
+id|irqreturn_t
+DECL|function|epxa10db_timer_interrupt
+id|epxa10db_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+singleline_comment|// ...clear the interrupt
+op_star
+id|TIMER0_CR
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_or_assign
+id|TIMER0_CR_CI_MSK
+suffix:semicolon
+id|timer_tick
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+DECL|variable|epxa10db_timer_irq
+r_static
+r_struct
+id|irqaction
+id|epxa10db_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Excalibur Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|epxa10db_timer_interrupt
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+DECL|function|epxa10db_init_time
+r_void
+id|__init
+id|epxa10db_init_time
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Start the timer */
+op_star
+id|TIMER0_LIMIT
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+id|EXC_AHB2_CLK_FREQUENCY
+op_div
+l_int|200
+)paren
+suffix:semicolon
+op_star
+id|TIMER0_PRESCALE
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+l_int|1
+suffix:semicolon
+op_star
+id|TIMER0_CR
+c_func
+(paren
+id|IO_ADDRESS
+c_func
+(paren
+id|EXC_TIMER00_BASE
+)paren
+)paren
+op_assign
+id|TIMER0_CR_IE_MSK
+op_or
+id|TIMER0_CR_S_MSK
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+id|IRQ_TIMER0
+comma
+op_amp
+id|epxa10db_timer_irq
+)paren
+suffix:semicolon
+)brace
 eof

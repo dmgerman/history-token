@@ -484,5 +484,10 @@ c_func
 (paren
 id|pfs168_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|sa1100_init_time
+)paren
 id|MACHINE_END
 eof
