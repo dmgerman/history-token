@@ -311,28 +311,9 @@ c_func
 id|ip-&gt;i_d.di_mode
 )paren
 suffix:semicolon
-multiline_comment|/* If we have a real type for an on-disk inode, we can set ops(&amp;unlock)&n;&t; * now.&t; If it&squot;s a new inode being created, xfs_ialloc will handle it.&n;&t; */
-r_if
-c_cond
-(paren
-id|vp-&gt;v_type
-op_ne
-id|VNON
-)paren
-(brace
-id|linvfs_set_inode_ops
-c_func
-(paren
-id|LINVFS_GET_IP
-c_func
-(paren
-id|vp
-)paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Look up an inode by number in the given file system.&n; * The inode is looked up in the hash table for the file system&n; * represented by the mount point parameter mp.&t; Each bucket of&n; * the hash table is guarded by an individual semaphore.&n; *&n; * If the inode is found in the hash table, its corresponding vnode&n; * is obtained with a call to vn_get().&t; This call takes care of&n; * coordination with the reclamation of the inode and vnode.  Note&n; * that the vmap structure is filled in while holding the hash lock.&n; * This gives us the state of the inode/vnode when we found it and&n; * is used for coordination in vn_get().&n; *&n; * If it is not in core, read it in from the file system&squot;s device and&n; * add the inode into the hash table.&n; *&n; * The inode is locked according to the value of the lock_flags parameter.&n; * This flag parameter indicates how and if the inode&squot;s IO lock and inode lock&n; * should be taken.&n; *&n; * mp -- the mount point structure for the current file system.&t; It points&n; *&t; to the inode hash table.&n; * tp -- a pointer to the current transaction if there is one.&t;This is&n; *&t; simply passed through to the xfs_iread() call.&n; * ino -- the number of the inode desired.  This is the unique identifier&n; *&t;  within the file system for the inode being requested.&n; * lock_flags -- flags indicating how to lock the inode.  See the comment&n; *&t;&t; for xfs_ilock() for a list of valid values.&n; * bno -- the block number starting the buffer containing the inode,&n; *&t;  if known (as by bulkstat), else 0.&n; */
+id|STATIC
 r_int
 DECL|function|xfs_iget_core
 id|xfs_iget_core
@@ -1343,6 +1324,26 @@ id|ipp
 op_assign
 id|ip
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we have a real type for an on-disk inode, we can set ops(&amp;unlock)&n;&t; * now.&t; If it&squot;s a new inode being created, xfs_ialloc will handle it.&n;&t; */
+r_if
+c_cond
+(paren
+id|vp-&gt;v_type
+op_ne
+id|VNON
+)paren
+(brace
+id|linvfs_set_inode_ops
+c_func
+(paren
+id|LINVFS_GET_IP
+c_func
+(paren
+id|vp
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Update the linux inode */
 id|error
 op_assign
