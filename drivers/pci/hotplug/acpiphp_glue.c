@@ -4256,7 +4256,9 @@ suffix:semicolon
 multiline_comment|/**&n; * acpiphp_glue_init - initializes all PCI hotplug - ACPI glue data structures&n; *&n; */
 DECL|function|acpiphp_glue_init
 r_int
+id|__init
 id|acpiphp_glue_init
+c_func
 (paren
 r_void
 )paren
@@ -4305,7 +4307,9 @@ suffix:semicolon
 multiline_comment|/**&n; * acpiphp_glue_exit - terminates all PCI hotplug - ACPI glue data structures&n; *&n; * This function frees all data allocated in acpiphp_glue_init()&n; */
 DECL|function|acpiphp_glue_exit
 r_void
+id|__exit
 id|acpiphp_glue_exit
+c_func
 (paren
 r_void
 )paren
@@ -4540,7 +4544,9 @@ suffix:semicolon
 multiline_comment|/**&n; * acpiphp_get_num_slots - count number of slots in a system&n; */
 DECL|function|acpiphp_get_num_slots
 r_int
+id|__init
 id|acpiphp_get_num_slots
+c_func
 (paren
 r_void
 )paren
