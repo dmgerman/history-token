@@ -1336,7 +1336,7 @@ id|current_obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Store this object to the Node&n;&t;&t;&t;&t; * (perform the indirect store)&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Store this object to the Node (perform the indirect store)&n;&t;&t;&t;&t; * NOTE: No implicit conversion is performed, as per the ACPI&n;&t;&t;&t;&t; * specification rules on storing to Locals/Args.&n;&t;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store_object_to_node
@@ -1346,6 +1346,8 @@ comma
 id|current_obj_desc-&gt;reference.object
 comma
 id|walk_state
+comma
+id|ACPI_NO_IMPLICIT_CONVERSION
 )paren
 suffix:semicolon
 multiline_comment|/* Remove local reference if we copied the object above */

@@ -175,6 +175,22 @@ id|max_length
 suffix:semicolon
 multiline_comment|/*&n; * exfield - ACPI AML (p-code) execution - field manipulation&n; */
 id|acpi_status
+id|acpi_ex_common_buffer_setup
+(paren
+r_union
+id|acpi_operand_object
+op_star
+id|obj_desc
+comma
+id|u32
+id|buffer_length
+comma
+id|u32
+op_star
+id|datum_count
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ex_extract_from_field
 (paren
 r_union
@@ -509,11 +525,15 @@ id|acpi_ex_do_logical_op
 id|u16
 id|opcode
 comma
-id|acpi_integer
-id|operand0
+r_union
+id|acpi_operand_object
+op_star
+id|obj_desc
 comma
-id|acpi_integer
-id|operand1
+r_union
+id|acpi_operand_object
+op_star
+id|obj_desc2
 )paren
 suffix:semicolon
 id|acpi_integer
@@ -1228,8 +1248,15 @@ r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
+comma
+id|u8
+id|implicit_conversion
 )paren
 suffix:semicolon
+DECL|macro|ACPI_IMPLICIT_CONVERSION
+mdefine_line|#define ACPI_IMPLICIT_CONVERSION        TRUE
+DECL|macro|ACPI_NO_IMPLICIT_CONVERSION
+mdefine_line|#define ACPI_NO_IMPLICIT_CONVERSION     FALSE
 multiline_comment|/*&n; * exstoren&n; */
 id|acpi_status
 id|acpi_ex_resolve_object

@@ -883,7 +883,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE: The RSDp must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (ACPI 1.0 section&n; *              5.2.2; assertion #421).&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status, RSDP physical address&n; *&n; * DESCRIPTION: search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE1: The RSDp must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (From ACPI Spec.)&n; *              Only a 32-bit physical address is necessary.&n; *&n; *              NOTE2: This function is always available, regardless of the&n; *              initialization state of the rest of ACPI.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_find_rsdp
 id|acpi_tb_find_rsdp
@@ -905,13 +905,11 @@ id|u8
 op_star
 id|mem_rover
 suffix:semicolon
-id|u64
-id|phys_addr
+id|u32
+id|physical_address
 suffix:semicolon
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -931,17 +929,17 @@ op_eq
 id|ACPI_LOGICAL_ADDRESSING
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * 1) Search EBDA (low memory) paragraphs&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 1a) Get the location of the EBDA&n;&t;&t; */
 id|status
 op_assign
 id|acpi_os_map_memory
 (paren
 (paren
-id|u64
+id|acpi_physical_address
 )paren
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|ACPI_EBDA_PTR_LOCATION
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_PTR_LENGTH
 comma
 (paren
 r_void
@@ -965,11 +963,88 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
 comma
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|ACPI_EBDA_PTR_LOCATION
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_PTR_LENGTH
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|ACPI_MOVE_16_TO_32
+(paren
+op_amp
+id|physical_address
+comma
+id|table_ptr
+)paren
+suffix:semicolon
+id|physical_address
+op_lshift_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Convert segment to physical address */
+id|acpi_os_unmap_memory
+(paren
+id|table_ptr
+comma
+id|ACPI_EBDA_PTR_LENGTH
+)paren
+suffix:semicolon
+multiline_comment|/* EBDA present? */
+r_if
+c_cond
+(paren
+id|physical_address
+OG
+l_int|0x400
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * 1b) Search EBDA paragraphs (EBDa is required to be a minimum of 1_k length)&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_os_map_memory
+(paren
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
+comma
+id|ACPI_EBDA_WINDOW_SIZE
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|table_ptr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
+comma
+id|physical_address
+comma
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 )paren
 suffix:semicolon
@@ -985,14 +1060,14 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|table_ptr
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 id|acpi_os_unmap_memory
 (paren
 id|table_ptr
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1002,11 +1077,7 @@ id|mem_rover
 )paren
 (brace
 multiline_comment|/* Found it, return the physical address */
-id|phys_addr
-op_assign
-id|ACPI_LO_RSDP_WINDOW_BASE
-suffix:semicolon
-id|phys_addr
+id|physical_address
 op_add_assign
 id|ACPI_PTR_DIFF
 (paren
@@ -1017,7 +1088,10 @@ id|table_ptr
 suffix:semicolon
 id|table_info-&gt;physical_address
 op_assign
-id|phys_addr
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -1025,13 +1099,14 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-F0000h&n;&t;&t; */
+)brace
+multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-FFFFFh&n;&t;&t; */
 id|status
 op_assign
 id|acpi_os_map_memory
 (paren
 (paren
-id|u64
+id|acpi_physical_address
 )paren
 id|ACPI_HI_RSDP_WINDOW_BASE
 comma
@@ -1059,7 +1134,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
 comma
 id|ACPI_HI_RSDP_WINDOW_BASE
 comma
@@ -1096,12 +1171,10 @@ id|mem_rover
 )paren
 (brace
 multiline_comment|/* Found it, return the physical address */
-id|phys_addr
+id|physical_address
 op_assign
 id|ACPI_HI_RSDP_WINDOW_BASE
-suffix:semicolon
-id|phys_addr
-op_add_assign
+op_plus
 id|ACPI_PTR_DIFF
 (paren
 id|mem_rover
@@ -1111,7 +1184,10 @@ id|table_ptr
 suffix:semicolon
 id|table_info-&gt;physical_address
 op_assign
-id|phys_addr
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -1123,17 +1199,40 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Physical addressing&n;&t; */
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * 1) Search EBDA (low memory) paragraphs&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 1a) Get the location of the EBDA&n;&t;&t; */
+id|ACPI_MOVE_16_TO_32
+(paren
+op_amp
+id|physical_address
+comma
+id|ACPI_EBDA_PTR_LOCATION
+)paren
+suffix:semicolon
+id|physical_address
+op_lshift_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Convert segment to physical address */
+multiline_comment|/* EBDA present? */
+r_if
+c_cond
+(paren
+id|physical_address
+OG
+l_int|0x400
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * 1b) Search EBDA paragraphs (EBDa is required to be a minimum of 1_k length)&n;&t;&t;&t; */
 id|mem_rover
 op_assign
 id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|ACPI_PHYSADDR_TO_PTR
 (paren
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|physical_address
 )paren
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1156,7 +1255,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-F0000h&n;&t;&t; */
+)brace
+multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-FFFFFh&n;&t;&t; */
 id|mem_rover
 op_assign
 id|acpi_tb_scan_memory_for_rsdp

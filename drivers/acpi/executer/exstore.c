@@ -104,6 +104,8 @@ op_star
 id|dest_desc
 comma
 id|walk_state
+comma
+id|ACPI_IMPLICIT_CONVERSION
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -213,6 +215,8 @@ comma
 id|ref_desc-&gt;reference.object
 comma
 id|walk_state
+comma
+id|ACPI_IMPLICIT_CONVERSION
 )paren
 suffix:semicolon
 r_break
@@ -752,7 +756,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_object_to_node&n; *&n; * PARAMETERS:  source_desc             - Value to be stored&n; *              Node                    - Named object to receive the value&n; *              walk_state              - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; *              The Assignment of an object to a named object is handled here&n; *              The value passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              Assumes parameters are already validated.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_object_to_node&n; *&n; * PARAMETERS:  source_desc             - Value to be stored&n; *              Node                    - Named object to receive the value&n; *              walk_state              - Current walk state&n; *              implicit_conversion     - Perform implicit conversion (yes/no)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; *              The Assignment of an object to a named object is handled here&n; *              The value passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              Assumes parameters are already validated.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_object_to_node
 id|acpi_ex_store_object_to_node
@@ -771,6 +775,9 @@ r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
+comma
+id|u8
+id|implicit_conversion
 )paren
 (brace
 id|acpi_status
@@ -862,6 +869,20 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* If no implicit conversion, drop into the default case below */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|implicit_conversion
+)paren
+(brace
+multiline_comment|/* Force execution of default (no implicit conversion) */
+id|target_type
+op_assign
+id|ACPI_TYPE_ANY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Do the actual store operation&n;&t; */
