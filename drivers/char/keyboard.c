@@ -3957,7 +3957,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) || defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) || defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64) || defined(CONFIG_PARISC)
 DECL|variable|x86_keycodes
 r_static
 r_int

@@ -3007,10 +3007,10 @@ suffix:semicolon
 multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy support.&n;&t;** For Astro based systems this isn&squot;t a big deal WRT performance.&n;&t;** As long as 2.4 kernels copyin/copyout data from/to userspace,&n;&t;** we don&squot;t need the syncdma. The issue here is I/O MMU cachelines&n;&t;** are *not* coherent in all cases.  May be hwrev dependent.&n;&t;** Need to investigate more.&n;&t;asm volatile(&quot;syncdma&quot;);&t;&n;&t;*/
 )brace
 multiline_comment|/**&n; * sba_alloc_consistent - allocate/map shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+DECL|function|sba_alloc_consistent
 r_static
 r_void
 op_star
-DECL|function|sba_alloc_consistent
 id|sba_alloc_consistent
 c_func
 (paren
@@ -3025,6 +3025,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|gfp
 )paren
 (brace
 r_void
@@ -3057,7 +3060,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|gfp
 comma
 id|get_order
 c_func
