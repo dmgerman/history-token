@@ -433,6 +433,9 @@ op_star
 id|ip
 op_increment
 suffix:semicolon
+id|n
+op_decrement
+suffix:semicolon
 )brace
 )brace
 r_return
