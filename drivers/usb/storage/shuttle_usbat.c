@@ -591,7 +591,7 @@ id|i
 OL
 l_int|500
 )paren
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -606,7 +606,7 @@ id|i
 OL
 l_int|700
 )paren
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|50
@@ -621,7 +621,7 @@ id|i
 OL
 l_int|1200
 )paren
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -629,7 +629,7 @@ l_int|100
 suffix:semicolon
 singleline_comment|// 50 seconds
 r_else
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1000
@@ -2627,7 +2627,7 @@ c_func
 l_string|&quot;INIT 1&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|2000
@@ -2739,7 +2739,7 @@ c_func
 l_string|&quot;INIT 5&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|250
@@ -2920,7 +2920,7 @@ c_func
 l_string|&quot;INIT 12&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1400

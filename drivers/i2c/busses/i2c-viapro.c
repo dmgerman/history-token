@@ -2,6 +2,7 @@ multiline_comment|/*&n;    i2c-viapro.c - Part of lm_sensors, Linux kernel modul
 multiline_comment|/*&n;   Supports Via devices:&n;&t;82C596A/B (0x3050)&n;&t;82C596B (0x3051)&n;&t;82C686A/B&n;&t;8231&n;&t;8233&n;&t;8233A (0x3147 and 0x3177)&n;&t;8235&n;&t;8237&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -297,7 +298,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! &n;&t;   I don&squot;t know if VIA needs this, Intel did  */
 r_do
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1

@@ -241,7 +241,7 @@ DECL|macro|PT_FPR0
 mdefine_line|#define PT_FPR0&t;48
 multiline_comment|/* Kernel and userspace will both use this PT_FPSCR value.  32-bit apps will have&n; * visibility to the asm-ppc/ptrace.h header instead of this one.&n; */
 DECL|macro|PT_FPSCR
-mdefine_line|#define PT_FPSCR (PT_FPR0 + 32 + 1)&t;  /* each FP reg occupies 1 slot in 64-bit space */
+mdefine_line|#define PT_FPSCR (PT_FPR0 + 32)&t;  /* each FP reg occupies 1 slot in 64-bit space */
 macro_line|#ifdef __KERNEL__
 DECL|macro|PT_FPSCR32
 mdefine_line|#define PT_FPSCR32 (PT_FPR0 + 2*32 + 1)&t;  /* each FP reg occupies 2 32-bit userspace slots */

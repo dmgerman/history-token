@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * w83l785ts.c - Part of lm_sensors, Linux kernel modules for hardware&n; *               monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Inspired from the lm83 driver. The W83L785TS-S is a sensor chip made&n; * by Winbond. It reports a single external temperature with a 1 deg&n; * resolution and a 3 deg accuracy. Datasheet can be obtained from&n; * Winbond&squot;s website at:&n; *   http://www.winbond-usa.com/products/winbond_products/pdfs/PCIC/W83L785TS-S.pdf&n; *&n; * Ported to Linux 2.6 by Wolfgang Ziegler &lt;nuppla@gmx.at&gt; and Jean Delvare&n; * &lt;khali@linux-fr.org&gt;.&n; *&n; * Thanks to James Bolt &lt;james@evilpenguin.com&gt; for benchmarking the read&n; * error handling mechanism.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -903,7 +904,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|i2c_delay
+id|msleep
 c_func
 (paren
 id|i

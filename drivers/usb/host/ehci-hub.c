@@ -480,7 +480,7 @@ id|HCS_N_PORTS
 id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 (paren
 l_int|20
 )paren

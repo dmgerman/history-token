@@ -187,6 +187,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|macro|IDE_ARCH_OBSOLETE_INIT
+mdefine_line|#define IDE_ARCH_OBSOLETE_INIT
+DECL|macro|ide_default_io_ctl
+mdefine_line|#define ide_default_io_ctl(base)&t;((base) + 0x206) /* obsolete */
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;(0)

@@ -20,12 +20,14 @@ DECL|macro|SMB_COM_RENAME
 mdefine_line|#define SMB_COM_RENAME                0x07
 DECL|macro|SMB_COM_LOCKING_ANDX
 mdefine_line|#define SMB_COM_LOCKING_ANDX          0x24
+DECL|macro|SMB_COM_COPY
+mdefine_line|#define SMB_COM_COPY                  0x29
 DECL|macro|SMB_COM_READ_ANDX
 mdefine_line|#define SMB_COM_READ_ANDX             0x2E
 DECL|macro|SMB_COM_WRITE_ANDX
 mdefine_line|#define SMB_COM_WRITE_ANDX            0x2F
 DECL|macro|SMB_COM_TRANSACTION2
-mdefine_line|#define SMB_COM_TRANSACTION2&t;      0x32
+mdefine_line|#define SMB_COM_TRANSACTION2          0x32
 DECL|macro|SMB_COM_TRANSACTION2_SECONDARY
 mdefine_line|#define SMB_COM_TRANSACTION2_SECONDARY 0x33
 DECL|macro|SMB_COM_FIND_CLOSE2
@@ -1932,6 +1934,104 @@ DECL|typedef|RENAME_REQ
 )brace
 id|RENAME_REQ
 suffix:semicolon
+multiline_comment|/* copy request flags */
+DECL|macro|COPY_MUST_BE_FILE
+mdefine_line|#define COPY_MUST_BE_FILE      0x0001
+DECL|macro|COPY_MUST_BE_DIR
+mdefine_line|#define COPY_MUST_BE_DIR       0x0002
+DECL|macro|COPY_TARGET_MODE_ASCII
+mdefine_line|#define COPY_TARGET_MODE_ASCII 0x0004 /* if not set, binary */
+DECL|macro|COPY_SOURCE_MODE_ASCII
+mdefine_line|#define COPY_SOURCE_MODE_ASCII 0x0008 /* if not set, binary */
+DECL|macro|COPY_VERIFY_WRITES
+mdefine_line|#define COPY_VERIFY_WRITES     0x0010
+DECL|macro|COPY_TREE
+mdefine_line|#define COPY_TREE              0x0020 
+DECL|struct|smb_com_copy_req
+r_typedef
+r_struct
+id|smb_com_copy_req
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 3 */
+DECL|member|Tid2
+id|__u16
+id|Tid2
+suffix:semicolon
+DECL|member|OpenFunction
+id|__u16
+id|OpenFunction
+suffix:semicolon
+DECL|member|Flags
+id|__u16
+id|Flags
+suffix:semicolon
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+DECL|member|BufferFormat
+id|__u8
+id|BufferFormat
+suffix:semicolon
+multiline_comment|/* 4 = ASCII or Unicode */
+DECL|member|OldFileName
+r_int
+r_char
+id|OldFileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* followed by __u8 BufferFormat2 */
+multiline_comment|/* followed by NewFileName string */
+DECL|typedef|COPY_REQ
+)brace
+id|COPY_REQ
+suffix:semicolon
+DECL|struct|smb_com_copy_rsp
+r_typedef
+r_struct
+id|smb_com_copy_rsp
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 1 */
+DECL|member|CopyCount
+id|__u16
+id|CopyCount
+suffix:semicolon
+multiline_comment|/* number of files copied */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+multiline_comment|/* may be zero */
+DECL|member|BufferFormat
+id|__u8
+id|BufferFormat
+suffix:semicolon
+multiline_comment|/* 0x04 - only present if errored file follows */
+DECL|member|ErrorFileName
+r_int
+r_char
+id|ErrorFileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* only present if error in copy */
+DECL|typedef|COPY_RSP
+)brace
+id|COPY_RSP
+suffix:semicolon
 DECL|macro|CREATE_HARD_LINK
 mdefine_line|#define CREATE_HARD_LINK&t;&t;0x103
 DECL|macro|MOVEFILE_COPY_ALLOWED
@@ -2468,6 +2568,22 @@ DECL|macro|FILE_NOTIFY_CHANGE_STREAM_SIZE
 mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_SIZE  0x00000400
 DECL|macro|FILE_NOTIFY_CHANGE_STREAM_WRITE
 mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_WRITE 0x00000800
+DECL|macro|FILE_ACTION_ADDED
+mdefine_line|#define FILE_ACTION_ADDED&t;&t;0x00000001
+DECL|macro|FILE_ACTION_REMOVED
+mdefine_line|#define FILE_ACTION_REMOVED&t;&t;0x00000002
+DECL|macro|FILE_ACTION_MODIFIED
+mdefine_line|#define FILE_ACTION_MODIFIED&t;&t;0x00000003
+DECL|macro|FILE_ACTION_RENAMED_OLD_NAME
+mdefine_line|#define FILE_ACTION_RENAMED_OLD_NAME&t;0x00000004
+DECL|macro|FILE_ACTION_RENAMED_NEW_NAME
+mdefine_line|#define FILE_ACTION_RENAMED_NEW_NAME&t;0x00000005
+DECL|macro|FILE_ACTION_ADDED_STREAM
+mdefine_line|#define FILE_ACTION_ADDED_STREAM&t;0x00000006
+DECL|macro|FILE_ACTION_REMOVED_STREAM
+mdefine_line|#define FILE_ACTION_REMOVED_STREAM&t;0x00000007
+DECL|macro|FILE_ACTION_MODIFIED_STREAM
+mdefine_line|#define FILE_ACTION_MODIFIED_STREAM&t;0x00000008
 multiline_comment|/* response contains array of the following structures */
 DECL|struct|file_notify_information
 r_struct
@@ -2785,10 +2901,20 @@ DECL|macro|SMB_SET_FILE_BASIC_INFO2
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO2        0x3ec
 DECL|macro|SMB_SET_FILE_RENAME_INFORMATION
 mdefine_line|#define SMB_SET_FILE_RENAME_INFORMATION 0x3f2
+DECL|macro|SMB_FILE_ALL_INFO2
+mdefine_line|#define SMB_FILE_ALL_INFO2              0x3fa
 DECL|macro|SMB_SET_FILE_ALLOCATION_INFO2
 mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO2   0x3fb
 DECL|macro|SMB_SET_FILE_END_OF_FILE_INFO2
 mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO2  0x3fc
+DECL|macro|SMB_FILE_MOVE_CLUSTER_INFO
+mdefine_line|#define SMB_FILE_MOVE_CLUSTER_INFO      0x407
+DECL|macro|SMB_FILE_QUOTA_INFO
+mdefine_line|#define SMB_FILE_QUOTA_INFO             0x408
+DECL|macro|SMB_FILE_REPARSEPOINT_INFO
+mdefine_line|#define SMB_FILE_REPARSEPOINT_INFO      0x409
+DECL|macro|SMB_FILE_MAXIMUM_INFO
+mdefine_line|#define SMB_FILE_MAXIMUM_INFO           0x40d
 multiline_comment|/* Find File infolevels */
 DECL|macro|SMB_FIND_FILE_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_DIRECTORY_INFO      0x101
@@ -3771,6 +3897,7 @@ DECL|typedef|T2_FNEXT_RSP_PARMS
 )brace
 id|T2_FNEXT_RSP_PARMS
 suffix:semicolon
+multiline_comment|/* QFSInfo Levels */
 DECL|macro|SMB_INFO_ALLOCATION
 mdefine_line|#define SMB_INFO_ALLOCATION         1
 DECL|macro|SMB_INFO_VOLUME
@@ -3785,6 +3912,10 @@ DECL|macro|SMB_QUERY_FS_ATTRIBUTE_INFO
 mdefine_line|#define SMB_QUERY_FS_ATTRIBUTE_INFO 0x105
 DECL|macro|SMB_QUERY_CIFS_UNIX_INFO
 mdefine_line|#define SMB_QUERY_CIFS_UNIX_INFO    0x200
+DECL|macro|SMB_QUERY_LABEL_INFO
+mdefine_line|#define SMB_QUERY_LABEL_INFO        0x3ea
+DECL|macro|SMB_QUERY_FS_QUOTA_INFO
+mdefine_line|#define SMB_QUERY_FS_QUOTA_INFO     0x3ee
 DECL|struct|smb_com_transaction2_qfsi_req
 r_typedef
 r_struct

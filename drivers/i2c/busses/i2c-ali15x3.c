@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -738,7 +739,7 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -1015,7 +1016,7 @@ id|timeout
 op_increment
 )paren
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1

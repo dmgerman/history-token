@@ -1781,7 +1781,7 @@ id|i
 OG
 l_int|0
 )paren
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|seq
@@ -2856,7 +2856,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|ADI_INIT_DELAY
@@ -2872,7 +2872,7 @@ id|port
 )paren
 )paren
 (brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|ADI_DATA_DELAY

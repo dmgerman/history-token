@@ -1970,11 +1970,7 @@ id|size
 )paren
 suffix:semicolon
 r_return
-(paren
-r_void
-op_star
-)paren
-id|DMA_ERROR_CODE
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

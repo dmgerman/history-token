@@ -186,7 +186,9 @@ r_int
 id|elanfreq_get_cpu_frequency
 c_func
 (paren
-r_void
+r_int
+r_int
+id|cpu
 )paren
 (brace
 id|u8
@@ -326,6 +328,7 @@ op_assign
 id|elanfreq_get_cpu_frequency
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|freqs
@@ -627,6 +630,7 @@ op_assign
 id|elanfreq_get_cpu_frequency
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* table init */
@@ -688,6 +692,7 @@ op_assign
 id|elanfreq_get_cpu_frequency
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|result
@@ -808,6 +813,11 @@ id|cpufreq_driver
 id|elanfreq_driver
 op_assign
 (brace
+dot
+id|get
+op_assign
+id|elanfreq_get_cpu_frequency
+comma
 dot
 id|verify
 op_assign

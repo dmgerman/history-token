@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 DECL|macro|DECLARE_GLOBALS_HERE
@@ -18,7 +19,10 @@ macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|CIFS_MAGIC_NUMBER
-mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of all SMB PDUs */
+mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of SMB PDUs */
+multiline_comment|/* BB when mempool_resize is added back in, we will resize pool on new mount */
+DECL|macro|CIFS_MIN_RCV_POOL
+mdefine_line|#define CIFS_MIN_RCV_POOL 11 /* enough for progress to five servers */
 macro_line|#ifdef CIFS_QUOTA
 DECL|variable|cifs_quotactl_ops
 r_static
@@ -715,11 +719,13 @@ op_star
 id|cifs_inode_cachep
 suffix:semicolon
 DECL|variable|cifs_req_cachep
+r_static
 id|kmem_cache_t
 op_star
 id|cifs_req_cachep
 suffix:semicolon
 DECL|variable|cifs_mid_cachep
+r_static
 id|kmem_cache_t
 op_star
 id|cifs_mid_cachep
@@ -728,6 +734,16 @@ DECL|variable|cifs_oplock_cachep
 id|kmem_cache_t
 op_star
 id|cifs_oplock_cachep
+suffix:semicolon
+DECL|variable|cifs_req_poolp
+id|mempool_t
+op_star
+id|cifs_req_poolp
+suffix:semicolon
+DECL|variable|cifs_mid_poolp
+id|mempool_t
+op_star
+id|cifs_mid_poolp
 suffix:semicolon
 r_static
 r_struct
@@ -2345,6 +2361,39 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|cifs_req_poolp
+op_assign
+id|mempool_create
+c_func
+(paren
+id|CIFS_MIN_RCV_POOL
+comma
+id|mempool_alloc_slab
+comma
+id|mempool_free_slab
+comma
+id|cifs_req_cachep
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_req_poolp
+op_eq
+l_int|NULL
+)paren
+(brace
+id|kmem_cache_destroy
+c_func
+(paren
+id|cifs_req_cachep
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2358,6 +2407,12 @@ c_func
 r_void
 )paren
 (brace
+id|mempool_destroy
+c_func
+(paren
+id|cifs_req_poolp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2417,6 +2472,40 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|cifs_mid_poolp
+op_assign
+id|mempool_create
+c_func
+(paren
+l_int|3
+multiline_comment|/* a reasonable min simultan opers */
+comma
+id|mempool_alloc_slab
+comma
+id|mempool_free_slab
+comma
+id|cifs_mid_cachep
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifs_mid_poolp
+op_eq
+l_int|NULL
+)paren
+(brace
+id|kmem_cache_destroy
+c_func
+(paren
+id|cifs_mid_cachep
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|cifs_oplock_cachep
 op_assign
 id|kmem_cache_create
@@ -2453,6 +2542,12 @@ c_func
 id|cifs_mid_cachep
 )paren
 suffix:semicolon
+id|mempool_destroy
+c_func
+(paren
+id|cifs_mid_poolp
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -2471,6 +2566,12 @@ c_func
 r_void
 )paren
 (brace
+id|mempool_destroy
+c_func
+(paren
+id|cifs_mid_poolp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

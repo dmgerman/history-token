@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * $Id: au88x0_game.c,v 1.9 2003/09/22 03:51:28 mjander Exp $&n; *&n; *  Manuel Jander.&n; *&n; *  Based on the work of:&n; *  Vojtech Pavlik&n; *  Raymond Ingles&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; *&n; * Based 90% on Vojtech Pavlik pcigame driver.&n; * Merged and modified by Manuel Jander, for the OpenVortex&n; * driver. (email: mjander@embedded.cl).&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;au88x0.h&quot;
@@ -224,7 +225,7 @@ op_or
 id|CTRL2_GAME_ADCMODE
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|VORTEX_GAME_DWAIT

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright 2001 Mike Corrigan IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallEvent.h&gt;
@@ -111,6 +112,20 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|variable|HvLpEvent_registerHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_registerHandler
+)paren
+suffix:semicolon
+DECL|variable|HvLpEvent_unregisterHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_unregisterHandler
+)paren
+suffix:semicolon
 multiline_comment|/* (lpIndex is the partition index of the target partition.  &n; * needed only for VirtualIo, VirtualLan and SessionMgr.  Zero&n; * indicates to use our partition index - for the other types)&n; */
 DECL|function|HvLpEvent_openPath
 r_int

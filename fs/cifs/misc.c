@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   fs/cifs/misc.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
@@ -8,9 +9,9 @@ macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;smberr.h&quot;
 macro_line|#include &quot;nterr.h&quot;
 r_extern
-id|kmem_cache_t
+id|mempool_t
 op_star
-id|cifs_req_cachep
+id|cifs_req_poolp
 suffix:semicolon
 r_extern
 r_struct
@@ -527,10 +528,10 @@ r_struct
 id|smb_hdr
 op_star
 )paren
-id|kmem_cache_alloc
+id|mempool_alloc
 c_func
 (paren
-id|cifs_req_cachep
+id|cifs_req_poolp
 comma
 id|SLAB_KERNEL
 op_or
@@ -601,12 +602,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|kmem_cache_free
+id|mempool_free
 c_func
 (paren
-id|cifs_req_cachep
-comma
 id|buf_to_free
+comma
+id|cifs_req_poolp
 )paren
 suffix:semicolon
 id|atomic_dec

@@ -205,6 +205,14 @@ DECL|macro|CHIPREV_ID_5705_A0
 mdefine_line|#define  CHIPREV_ID_5705_A0&t;&t; 0x3000
 DECL|macro|CHIPREV_ID_5705_A1
 mdefine_line|#define  CHIPREV_ID_5705_A1&t;&t; 0x3001
+DECL|macro|CHIPREV_ID_5705_A2
+mdefine_line|#define  CHIPREV_ID_5705_A2&t;&t; 0x3002
+DECL|macro|CHIPREV_ID_5705_A3
+mdefine_line|#define  CHIPREV_ID_5705_A3&t;&t; 0x3003
+DECL|macro|CHIPREV_ID_5750_A0
+mdefine_line|#define  CHIPREV_ID_5750_A0&t;&t; 0x4000
+DECL|macro|CHIPREV_ID_5750_A1
+mdefine_line|#define  CHIPREV_ID_5750_A1&t;&t; 0x4001
 DECL|macro|GET_ASIC_REV
 mdefine_line|#define  GET_ASIC_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 12)
 DECL|macro|ASIC_REV_5700
@@ -217,6 +225,8 @@ DECL|macro|ASIC_REV_5704
 mdefine_line|#define   ASIC_REV_5704&t;&t;&t; 0x02
 DECL|macro|ASIC_REV_5705
 mdefine_line|#define   ASIC_REV_5705&t;&t;&t; 0x03
+DECL|macro|ASIC_REV_5750
+mdefine_line|#define   ASIC_REV_5750&t;&t;&t; 0x04
 DECL|macro|GET_CHIP_REV
 mdefine_line|#define  GET_CHIP_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 8)
 DECL|macro|CHIPREV_5700_AX
@@ -257,10 +267,16 @@ DECL|macro|DMA_RWCTRL_READ_BNDRY_DISAB
 mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_DISAB&t; 0x00000000
 DECL|macro|DMA_RWCTRL_READ_BNDRY_16
 mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_16&t; 0x00000100
+DECL|macro|DMA_RWCTRL_READ_BNDRY_128_PCIX
+mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_128_PCIX&t; 0x00000100
 DECL|macro|DMA_RWCTRL_READ_BNDRY_32
 mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_32&t; 0x00000200
+DECL|macro|DMA_RWCTRL_READ_BNDRY_256_PCIX
+mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_256_PCIX&t; 0x00000200
 DECL|macro|DMA_RWCTRL_READ_BNDRY_64
 mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_64&t; 0x00000300
+DECL|macro|DMA_RWCTRL_READ_BNDRY_384_PCIX
+mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_384_PCIX&t; 0x00000300
 DECL|macro|DMA_RWCTRL_READ_BNDRY_128
 mdefine_line|#define  DMA_RWCTRL_READ_BNDRY_128&t; 0x00000400
 DECL|macro|DMA_RWCTRL_READ_BNDRY_256
@@ -275,10 +291,16 @@ DECL|macro|DMA_RWCTRL_WRITE_BNDRY_DISAB
 mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_DISAB&t; 0x00000000
 DECL|macro|DMA_RWCTRL_WRITE_BNDRY_16
 mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_16&t; 0x00000800
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_128_PCIX
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_128_PCIX 0x00000800
 DECL|macro|DMA_RWCTRL_WRITE_BNDRY_32
 mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_32&t; 0x00001000
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_256_PCIX
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_256_PCIX 0x00001000
 DECL|macro|DMA_RWCTRL_WRITE_BNDRY_64
 mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_64&t; 0x00001800
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_384_PCIX
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_384_PCIX 0x00001800
 DECL|macro|DMA_RWCTRL_WRITE_BNDRY_128
 mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_128&t; 0x00002000
 DECL|macro|DMA_RWCTRL_WRITE_BNDRY_256
@@ -309,6 +331,12 @@ DECL|macro|DMA_RWCTRL_PCI_WRITE_CMD
 mdefine_line|#define  DMA_RWCTRL_PCI_WRITE_CMD&t; 0xf0000000
 DECL|macro|DMA_RWCTRL_PCI_WRITE_CMD_SHIFT
 mdefine_line|#define  DMA_RWCTRL_PCI_WRITE_CMD_SHIFT&t; 28
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_64_PCIE
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_64_PCIE&t; 0x10000000
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_128_PCIE
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_128_PCIE 0x30000000
+DECL|macro|DMA_RWCTRL_WRITE_BNDRY_DISAB_PCIE
+mdefine_line|#define  DMA_RWCTRL_WRITE_BNDRY_DISAB_PCIE 0x70000000
 DECL|macro|TG3PCI_PCISTATE
 mdefine_line|#define TG3PCI_PCISTATE&t;&t;&t;0x00000070
 DECL|macro|PCISTATE_FORCE_RESET
@@ -372,7 +400,14 @@ DECL|macro|TG3PCI_RCV_RET_RING_CON_IDX
 mdefine_line|#define TG3PCI_RCV_RET_RING_CON_IDX&t;0x000000a0 /* 64-bit */
 DECL|macro|TG3PCI_SND_PROD_IDX
 mdefine_line|#define TG3PCI_SND_PROD_IDX&t;&t;0x000000a8 /* 64-bit */
-multiline_comment|/* 0xb0 --&gt; 0x100 unused */
+multiline_comment|/* 0xb0 --&gt; 0xb8 unused */
+DECL|macro|TG3PCI_DUAL_MAC_CTRL
+mdefine_line|#define TG3PCI_DUAL_MAC_CTRL&t;&t;0x000000b8
+DECL|macro|DUAL_MAC_CTRL_CH_MASK
+mdefine_line|#define  DUAL_MAC_CTRL_CH_MASK&t;&t; 0x00000003
+DECL|macro|DUAL_MAC_CTRL_ID
+mdefine_line|#define  DUAL_MAC_CTRL_ID&t;&t; 0x00000004
+multiline_comment|/* 0xbc --&gt; 0x100 unused */
 multiline_comment|/* 0x100 --&gt; 0x200 unused */
 multiline_comment|/* Mailbox registers */
 DECL|macro|MAILBOX_INTERRUPT_0
@@ -626,12 +661,18 @@ DECL|macro|LED_CTRL_10MBPS_STATUS
 mdefine_line|#define  LED_CTRL_10MBPS_STATUS&t;&t; 0x00000200
 DECL|macro|LED_CTRL_TRAFFIC_STATUS
 mdefine_line|#define  LED_CTRL_TRAFFIC_STATUS&t; 0x00000400
-DECL|macro|LED_CTRL_MAC_MODE
-mdefine_line|#define  LED_CTRL_MAC_MODE&t;&t; 0x00000000
-DECL|macro|LED_CTRL_PHY_MODE_1
-mdefine_line|#define  LED_CTRL_PHY_MODE_1&t;&t; 0x00000800
-DECL|macro|LED_CTRL_PHY_MODE_2
-mdefine_line|#define  LED_CTRL_PHY_MODE_2&t;&t; 0x00001000
+DECL|macro|LED_CTRL_MODE_MAC
+mdefine_line|#define  LED_CTRL_MODE_MAC&t;&t; 0x00000000
+DECL|macro|LED_CTRL_MODE_PHY_1
+mdefine_line|#define  LED_CTRL_MODE_PHY_1&t;&t; 0x00000800
+DECL|macro|LED_CTRL_MODE_PHY_2
+mdefine_line|#define  LED_CTRL_MODE_PHY_2&t;&t; 0x00001000
+DECL|macro|LED_CTRL_MODE_SHASTA_MAC
+mdefine_line|#define  LED_CTRL_MODE_SHASTA_MAC&t; 0x00002000
+DECL|macro|LED_CTRL_MODE_SHARED
+mdefine_line|#define  LED_CTRL_MODE_SHARED&t;&t; 0x00004000
+DECL|macro|LED_CTRL_MODE_COMBO
+mdefine_line|#define  LED_CTRL_MODE_COMBO&t;&t; 0x00008000
 DECL|macro|LED_CTRL_BLINK_RATE_MASK
 mdefine_line|#define  LED_CTRL_BLINK_RATE_MASK&t; 0x7ff80000
 DECL|macro|LED_CTRL_BLINK_RATE_SHIFT
@@ -2506,6 +2547,12 @@ DECL|macro|NVRAM_BUFFERED_PAGE_SIZE
 mdefine_line|#define    NVRAM_BUFFERED_PAGE_SIZE&t;   264
 DECL|macro|NVRAM_BUFFERED_PAGE_POS
 mdefine_line|#define    NVRAM_BUFFERED_PAGE_POS&t;   9
+DECL|macro|NVRAM_ACCESS
+mdefine_line|#define NVRAM_ACCESS&t;&t;&t;0x00007024
+DECL|macro|ACCESS_ENABLE
+mdefine_line|#define  ACCESS_ENABLE&t;&t;&t; 0x00000001
+DECL|macro|ACCESS_WR_ENABLE
+mdefine_line|#define  ACCESS_WR_ENABLE&t;&t; 0x00000002
 multiline_comment|/* 0x7024 --&gt; 0x7400 unused */
 multiline_comment|/* 0x7400 --&gt; 0x8000 unused */
 multiline_comment|/* 32K Window into NIC internal memory */
@@ -2536,16 +2583,12 @@ DECL|macro|NIC_SRAM_DATA_CFG
 mdefine_line|#define NIC_SRAM_DATA_CFG&t;&t;&t;0x00000b58
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MASK
 mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x0000000c
-DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN&t; 0x00000000
-DECL|macro|NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_LED_LINK_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000008
-DECL|macro|NIC_SRAM_DATA_CFG_LED_OUTPUT
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OUTPUT&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MAC
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MAC&t;&t; 0x00000000
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_PHY_1
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_PHY_1&t; 0x00000004
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_PHY_2
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_PHY_2&t; 0x00000008
 DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
 mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x00000030
 DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
@@ -2594,8 +2637,12 @@ DECL|macro|NIC_SRAM_FW_DRV_STATE_MBOX
 mdefine_line|#define NIC_SRAM_FW_DRV_STATE_MBOX&t;0x00000c04
 DECL|macro|DRV_STATE_START
 mdefine_line|#define  DRV_STATE_START&t;&t; 0x00000001
+DECL|macro|DRV_STATE_START_DONE
+mdefine_line|#define  DRV_STATE_START_DONE&t;&t; 0x80000001
 DECL|macro|DRV_STATE_UNLOAD
 mdefine_line|#define  DRV_STATE_UNLOAD&t;&t; 0x00000002
+DECL|macro|DRV_STATE_UNLOAD_DONE
+mdefine_line|#define  DRV_STATE_UNLOAD_DONE&t;&t; 0x80000002
 DECL|macro|DRV_STATE_WOL
 mdefine_line|#define  DRV_STATE_WOL&t;&t;&t; 0x00000003
 DECL|macro|DRV_STATE_SUSPEND
@@ -2606,6 +2653,18 @@ DECL|macro|NIC_SRAM_MAC_ADDR_HIGH_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_HIGH_MBOX&t;0x00000c14
 DECL|macro|NIC_SRAM_MAC_ADDR_LOW_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_LOW_MBOX&t;0x00000c18
+DECL|macro|NIC_SRAM_DATA_CFG_2
+mdefine_line|#define NIC_SRAM_DATA_CFG_2&t;&t;0x00000d38
+DECL|macro|SHASTA_EXT_LED_MODE_MASK
+mdefine_line|#define  SHASTA_EXT_LED_MODE_MASK&t; 0x00018000
+DECL|macro|SHASTA_EXT_LED_LEGACY
+mdefine_line|#define  SHASTA_EXT_LED_LEGACY&t;&t; 0x00000000
+DECL|macro|SHASTA_EXT_LED_SHARED
+mdefine_line|#define  SHASTA_EXT_LED_SHARED&t;&t; 0x00008000
+DECL|macro|SHASTA_EXT_LED_MAC
+mdefine_line|#define  SHASTA_EXT_LED_MAC&t;&t; 0x00010000
+DECL|macro|SHASTA_EXT_LED_COMBO
+mdefine_line|#define  SHASTA_EXT_LED_COMBO&t;&t; 0x00018000
 DECL|macro|NIC_SRAM_RX_MINI_BUFFER_DESC
 mdefine_line|#define NIC_SRAM_RX_MINI_BUFFER_DESC&t;0x00001000
 DECL|macro|NIC_SRAM_DMA_DESC_POOL_BASE
@@ -3434,20 +3493,6 @@ l_int|0x9c0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|enum|phy_led_mode
-r_enum
-id|phy_led_mode
-(brace
-DECL|enumerator|led_mode_auto
-id|led_mode_auto
-comma
-DECL|enumerator|led_mode_three_link
-id|led_mode_three_link
-comma
-DECL|enumerator|led_mode_link10
-id|led_mode_link10
-)brace
-suffix:semicolon
 multiline_comment|/* &squot;mapping&squot; is superfluous as the chip does not write into&n; * the tx/rx post rings so we could just fetch it from there.&n; * But the cache behavior is better how we are doing it now.&n; */
 DECL|struct|ring_info
 r_struct
@@ -3972,6 +4017,10 @@ DECL|macro|TG3_FLG2_PHY_5704_A0_BUG
 mdefine_line|#define TG3_FLG2_PHY_5704_A0_BUG&t;0x00000080
 DECL|macro|TG3_FLG2_PHY_BER_BUG
 mdefine_line|#define TG3_FLG2_PHY_BER_BUG&t;&t;0x00000100
+DECL|macro|TG3_FLG2_PCI_EXPRESS
+mdefine_line|#define TG3_FLG2_PCI_EXPRESS&t;&t;0x00000200
+DECL|macro|TG3_FLG2_ASF_NEW_HANDSHAKE
+mdefine_line|#define TG3_FLG2_ASF_NEW_HANDSHAKE&t;0x00000400
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -4108,6 +4157,8 @@ DECL|macro|PHY_ID_BCM5704
 mdefine_line|#define PHY_ID_BCM5704&t;&t;&t;0x60008190
 DECL|macro|PHY_ID_BCM5705
 mdefine_line|#define PHY_ID_BCM5705&t;&t;&t;0x600081a0
+DECL|macro|PHY_ID_BCM5750
+mdefine_line|#define PHY_ID_BCM5750&t;&t;&t;0x60008180
 DECL|macro|PHY_ID_BCM8002
 mdefine_line|#define PHY_ID_BCM8002&t;&t;&t;0x60010140
 DECL|macro|PHY_ID_SERDES
@@ -4124,10 +4175,9 @@ DECL|macro|PHY_REV_BCM5401_C0
 mdefine_line|#define PHY_REV_BCM5401_C0&t;&t;0x6
 DECL|macro|PHY_REV_BCM5411_X0
 mdefine_line|#define PHY_REV_BCM5411_X0&t;&t;0x1 /* Found on Netgear GA302T */
-DECL|member|led_mode
-r_enum
-id|phy_led_mode
-id|led_mode
+DECL|member|led_ctrl
+id|u32
+id|led_ctrl
 suffix:semicolon
 DECL|member|board_part_number
 r_char
@@ -4152,7 +4202,7 @@ id|pdev_peer
 suffix:semicolon
 multiline_comment|/* This macro assumes the passed PHY ID is already masked&n;&t; * with PHY_ID_MASK.&n;&t; */
 DECL|macro|KNOWN_PHY_ID
-mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM5705 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
+mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM5705 || (X) == PHY_ID_BCM5750 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
 DECL|member|hw_stats
 r_struct
 id|tg3_hw_stats

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
@@ -18,7 +18,7 @@ mdefine_line|#define PFX &quot;powernow-k8: &quot;
 DECL|macro|BFX
 mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;version 1.00.08b&quot;
+mdefine_line|#define VERSION &quot;version 1.00.09b&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
 multiline_comment|/* serialize freq changes  */
 r_static
@@ -1714,53 +1714,44 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|eax
 op_amp
-id|CPUID_XFAM_MOD
+id|CPUID_USE_XFAM_XMOD
 )paren
-op_eq
-id|ATHLON64_XFAM_MOD
+op_ne
+id|CPUID_USE_XFAM_XMOD
 )paren
-(brace
-id|dprintk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;AMD Althon 64 Processor found&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
+op_logical_or
 (paren
 (paren
 id|eax
 op_amp
-id|CPUID_XFAM_MOD
+id|CPUID_XFAM
 )paren
-op_eq
-id|OPTERON_XFAM_MOD
+op_ne
+id|CPUID_XFAM_K8
 )paren
-(brace
-id|dprintk
-c_func
+op_logical_or
 (paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;AMD Opteron Processor found&bslash;n&quot;
+(paren
+id|eax
+op_amp
+id|CPUID_XMOD
 )paren
-suffix:semicolon
-)brace
-r_else
+OG
+id|CPUID_XMOD_REV_E
+)paren
+)paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;AMD Athlon 64 or AMD Opteron processor required&bslash;n&quot;
+l_string|&quot;Processor cpuid %x not supported&bslash;n&quot;
+comma
+id|eax
 )paren
 suffix:semicolon
 r_goto
@@ -2155,6 +2146,18 @@ id|j
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|data-&gt;powernow_table
+(braket
+id|j
+)braket
+dot
+id|frequency
+op_ne
+id|CPUFREQ_ENTRY_INVALID
+)paren
 id|printk
 c_func
 (paren
@@ -2950,7 +2953,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|function|powernow_k8_acpi_pst_values
 r_static
 r_void
@@ -3331,7 +3334,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;invalid freq %u kHz&bslash;n&quot;
+l_string|&quot;invalid freq %u kHz, ignoring&bslash;n&quot;
 comma
 id|powernow_table
 (braket
@@ -3339,6 +3342,37 @@ id|i
 )braket
 dot
 id|frequency
+)paren
+suffix:semicolon
+id|powernow_table
+(braket
+id|i
+)braket
+dot
+id|frequency
+op_assign
+id|CPUFREQ_ENTRY_INVALID
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* verify voltage is OK - BIOSs are using &quot;off&quot; to indicate invalid */
+r_if
+c_cond
+(paren
+id|vid
+op_eq
+l_int|0x1f
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;invalid vid %u, ignoring&bslash;n&quot;
+comma
+id|vid
 )paren
 suffix:semicolon
 id|powernow_table
@@ -4687,6 +4721,127 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|powernowk8_get
+r_static
+r_int
+r_int
+id|powernowk8_get
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+op_assign
+id|powernow_data
+(braket
+id|cpu
+)braket
+suffix:semicolon
+id|cpumask_t
+id|oldmask
+op_assign
+id|current-&gt;cpus_allowed
+suffix:semicolon
+r_int
+r_int
+id|khz
+op_assign
+l_int|0
+suffix:semicolon
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|cpumask_of_cpu
+c_func
+(paren
+id|cpu
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+op_ne
+id|cpu
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;limiting to CPU %d failed in powernowk8_get&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|oldmask
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|query_current_values_with_pending_wait
+c_func
+(paren
+id|data
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|khz
+op_assign
+id|find_khz_freq_from_fid
+c_func
+(paren
+id|data-&gt;currfid
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|oldmask
+)paren
+suffix:semicolon
+r_return
+id|khz
+suffix:semicolon
+)brace
 DECL|variable|powernow_k8_attr
 r_static
 r_struct
@@ -4730,6 +4885,11 @@ dot
 m_exit
 op_assign
 id|powernowk8_cpu_exit
+comma
+dot
+id|get
+op_assign
+id|powernowk8_get
 comma
 dot
 id|name

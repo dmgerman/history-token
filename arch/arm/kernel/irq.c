@@ -31,6 +31,8 @@ DECL|variable|irq_controller_lock
 r_static
 id|spinlock_t
 id|irq_controller_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 id|LIST_HEAD

@@ -5517,8 +5517,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -5588,8 +5586,6 @@ c_cond
 id|state-&gt;count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -5746,8 +5742,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|siccuart_wait_until_sent
@@ -6557,8 +6551,6 @@ op_assign
 id|tty-&gt;index
 suffix:semicolon
 singleline_comment|// is this a line that we&squot;ve got?
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6567,8 +6559,6 @@ op_ge
 id|SERIAL_SICC_NR
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -6650,8 +6640,6 @@ op_logical_neg
 id|page
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -6697,8 +6685,6 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
@@ -6719,8 +6705,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -6743,8 +6727,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -6920,6 +6902,10 @@ suffix:semicolon
 id|siccnormal_driver-&gt;driver_name
 op_assign
 l_string|&quot;serial_sicc&quot;
+suffix:semicolon
+id|siccnormal_driver-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|siccnormal_driver-&gt;name
 op_assign

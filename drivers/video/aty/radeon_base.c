@@ -5059,7 +5059,7 @@ id|PPLL_VGA_ATOMIC_UPDATE_EN
 )paren
 suffix:semicolon
 multiline_comment|/* We may want some locking ... oh well */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|5
