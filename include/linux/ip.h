@@ -262,17 +262,12 @@ id|saddr
 suffix:semicolon
 multiline_comment|/* Sending source */
 DECL|member|uc_ttl
-r_int
+id|__s16
 id|uc_ttl
 suffix:semicolon
 multiline_comment|/* Unicast TTL */
-DECL|member|tos
-r_int
-id|tos
-suffix:semicolon
-multiline_comment|/* TOS */
 DECL|member|cmsg_flags
-r_int
+id|__u16
 id|cmsg_flags
 suffix:semicolon
 DECL|member|opt
@@ -286,31 +281,25 @@ id|__u16
 id|sport
 suffix:semicolon
 multiline_comment|/* Source port */
-DECL|member|hdrincl
-r_int
-r_char
-id|hdrincl
-suffix:semicolon
-multiline_comment|/* Include headers ? */
-DECL|member|mc_ttl
-id|__u8
-id|mc_ttl
-suffix:semicolon
-multiline_comment|/* Multicasting TTL */
-DECL|member|mc_loop
-id|__u8
-id|mc_loop
-suffix:semicolon
-multiline_comment|/* Loopback */
-DECL|member|pmtudisc
-id|__u8
-id|pmtudisc
-suffix:semicolon
 DECL|member|id
 id|__u16
 id|id
 suffix:semicolon
 multiline_comment|/* ID counter for DF pkts */
+DECL|member|tos
+id|__u8
+id|tos
+suffix:semicolon
+multiline_comment|/* TOS */
+DECL|member|mc_ttl
+id|__u8
+id|mc_ttl
+suffix:semicolon
+multiline_comment|/* Multicasting TTL */
+DECL|member|pmtudisc
+id|__u8
+id|pmtudisc
+suffix:semicolon
 DECL|member|recverr
 r_int
 id|recverr
@@ -319,6 +308,16 @@ l_int|1
 comma
 DECL|member|freebind
 id|freebind
+suffix:colon
+l_int|1
+comma
+DECL|member|hdrincl
+id|hdrincl
+suffix:colon
+l_int|1
+comma
+DECL|member|mc_loop
+id|mc_loop
 suffix:colon
 l_int|1
 suffix:semicolon
