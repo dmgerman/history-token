@@ -144,23 +144,7 @@ op_star
 id|ru
 )paren
 suffix:semicolon
-multiline_comment|/****************************************************************************/
-multiline_comment|/*  Start of nonRT signal support                                           */
-multiline_comment|/*                                                                          */
-multiline_comment|/*     sigset_t is 32 bits for non-rt signals                               */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  System Calls                                                            */
-multiline_comment|/*       sigaction                sys32_sigaction                           */
-multiline_comment|/*       sigpending               sys32_sigpending                          */
-multiline_comment|/*       sigprocmask              sys32_sigprocmask                         */
-multiline_comment|/*       sigreturn                sys32_sigreturn                           */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  Note sigsuspend has no special 32 bit routine - uses the 64 bit routine */
-multiline_comment|/*                                                                          */
-multiline_comment|/*  Other routines                                                          */
-multiline_comment|/*        setup_frame32                                                     */
-multiline_comment|/*                                                                          */
-multiline_comment|/****************************************************************************/
+multiline_comment|/*&n; *  Start of nonRT signal support&n; *&n; *     sigset_t is 32 bits for non-rt signals&n; *&n; *  System Calls&n; *       sigaction                sys32_sigaction&n; *       sigpending               sys32_sigpending&n; *       sigprocmask              sys32_sigprocmask&n; *       sigreturn                sys32_sigreturn&n; *&n; *  Note sigsuspend has no special 32 bit routine - uses the 64 bit routine&n; *&n; *  Other routines&n; *        setup_frame32&n; */
 DECL|function|sys32_sigaction
 id|asmlinkage
 r_int
@@ -197,13 +181,11 @@ id|sig
 OL
 l_int|0
 )paren
-(brace
 id|sig
 op_assign
 op_minus
 id|sig
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -288,7 +270,6 @@ c_func
 (paren
 id|sig
 comma
-(paren
 id|act
 ques
 c_cond
@@ -296,9 +277,7 @@ op_amp
 id|new_ka
 suffix:colon
 l_int|NULL
-)paren
 comma
-(paren
 id|oact
 ques
 c_cond
@@ -306,7 +285,6 @@ op_amp
 id|old_ka
 suffix:colon
 l_int|NULL
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -413,6 +391,7 @@ c_func
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|KERNEL_DS
 )paren
@@ -427,6 +406,7 @@ id|s
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|old_fs
 )paren
@@ -435,6 +415,7 @@ r_if
 c_cond
 (paren
 id|put_user
+c_func
 (paren
 id|s
 comma
@@ -506,6 +487,7 @@ c_cond
 id|set
 op_logical_and
 id|get_user
+c_func
 (paren
 id|s
 comma
@@ -517,6 +499,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|KERNEL_DS
 )paren
@@ -549,6 +532,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|old_fs
 )paren
@@ -757,8 +741,7 @@ c_func
 id|current
 )paren
 suffix:semicolon
-multiline_comment|/* copy the 32 bit register values off the user stack */
-multiline_comment|/*   into the 32 bit register area                    */
+multiline_comment|/*&n;&t; * copy the 32 bit register values off the user stack&n;&t; * into the 32 bit register area&n;&t; */
 r_if
 c_cond
 (paren
@@ -779,19 +762,7 @@ id|sr-&gt;gp_regs
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/**********************************************************************/
-multiline_comment|/* The saved reg structure in the frame is an elf_grepset_t32, it is  */
-multiline_comment|/*   a 32 bit register save of the registers in the pt_regs structure */
-multiline_comment|/*   that was stored on the kernel stack during the system call       */
-multiline_comment|/*   when the system call was interrupted for the signal. Only 32 bits*/
-multiline_comment|/*   are saved because the sigcontext contains a pointer to the regs  */
-multiline_comment|/*   and the sig context address is passed as a pointer to the signal */
-multiline_comment|/*   handler.                                                         */
-multiline_comment|/*                                                                    */
-multiline_comment|/* The entries in the elf_grepset have the same index as the elements */
-multiline_comment|/*   in the pt_regs structure.                                        */
-multiline_comment|/*                                                                    */
-multiline_comment|/**********************************************************************/
+multiline_comment|/*&n;&t; * The saved reg structure in the frame is an elf_grepset_t32,&n;&t; * it is a 32 bit register save of the registers in the&n;&t; * pt_regs structure that was stored on the kernel stack&n;&t; * during the system call when the system call was interrupted&n;&t; * for the signal. Only 32 bits are saved because the&n;&t; * sigcontext contains a pointer to the regs and the sig&n;&t; * context address is passed as a pointer to the signal&n;&t; * handler.  &n;&t; *&n;&t; * The entries in the elf_grepset have the same index as the&n;&t; * elements in the pt_regs structure.&n;&t; */
 id|saved_regs
 (braket
 id|PT_MSR
@@ -1378,7 +1349,7 @@ id|PT_MSR
 op_amp
 l_int|0xFFFFFFFF
 suffix:semicolon
-multiline_comment|/* Insure that the interrupt mode is 64 bit, during 32 bit execution.&n;&t; * (This is necessary because we only saved lower 32 bits of msr.)&n;&t; */
+multiline_comment|/*&n;&t; * Insure that the interrupt mode is 64 bit, during 32 bit&n;&t; * execution. (This is necessary because we only saved&n;&t; * lower 32 bits of msr.)&n;&t; */
 id|regs-&gt;msr
 op_assign
 id|regs-&gt;msr
@@ -1535,9 +1506,9 @@ id|SIGSEGV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up a signal frame.&n; */
+DECL|function|setup_frame32
 r_static
 r_void
-DECL|function|setup_frame32
 id|setup_frame32
 c_func
 (paren
@@ -2988,6 +2959,23 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
+id|udbg_printf
+c_func
+(paren
+l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
+comma
+id|regs
+comma
+id|frame
+comma
+id|newsp
+)paren
+suffix:semicolon
+id|PPCDBG_ENTER_DEBUGGER
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -3143,12 +3131,9 @@ id|stack
 )paren
 )paren
 )paren
-(brace
-multiline_comment|/* unable to copy from user storage */
 r_goto
 id|badframe
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Unblock the signal that was processed &n;&t; *   After a signal handler runs - &n;&t; *     if the signal is blockable - the signal will be unblocked  &n;&t; *       ( sigkill and sigstop are not blockable)&n;&t; */
 id|sigdelsetmask
 c_func
@@ -3205,14 +3190,12 @@ id|regs-&gt;msr
 op_amp
 id|MSR_FP
 )paren
-(brace
 id|giveup_fpu
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3230,24 +3213,10 @@ id|signalregs-&gt;gp_regs
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|badframe
 suffix:semicolon
-)brace
-multiline_comment|/**********************************************************************/
-multiline_comment|/* The saved reg structure in the frame is an elf_grepset_t32, it is  */
-multiline_comment|/*   a 32 bit register save of the registers in the pt_regs structure */
-multiline_comment|/*   that was stored on the kernel stack during the system call       */
-multiline_comment|/*   when the system call was interrupted for the signal. Only 32 bits*/
-multiline_comment|/*   are saved because the sigcontext contains a pointer to the regs  */
-multiline_comment|/*   and the sig context address is passed as a pointer to the signal */
-multiline_comment|/*   handler.                                                         */
-multiline_comment|/*                                                                    */
-multiline_comment|/* The entries in the elf_grepset have the same index as the elements */
-multiline_comment|/*   in the pt_regs structure.                                        */
-multiline_comment|/*                                                                    */
-multiline_comment|/**********************************************************************/
+multiline_comment|/*&n;&t; * The saved reg structure in the frame is an elf_grepset_t32,&n;&t; * it is a 32 bit register save of the registers in the&n;&t; * pt_regs structure that was stored on the kernel stack&n;&t; * during the system call when the system call was interrupted&n;&t; * for the signal. Only 32 bits are saved because the&n;&t; * sigcontext contains a pointer to the regs and the sig&n;&t; * context address is passed as a pointer to the signal handler&n;&t; *&n;&t; * The entries in the elf_grepset have the same index as&n;&t; * the elements in the pt_regs structure.&n;&t; */
 id|saved_regs
 (braket
 id|PT_MSR
@@ -3919,11 +3888,7 @@ op_amp
 l_int|0xFFFFFFFF
 suffix:semicolon
 multiline_comment|/* regs-&gt;softe is left unchanged (like MSR.EE) */
-multiline_comment|/******************************************************/
-multiline_comment|/* the DAR and the DSISR are only relevant during a   */
-multiline_comment|/*   data or instruction storage interrupt. The value */
-multiline_comment|/*   will be set to zero.                             */
-multiline_comment|/******************************************************/
+multiline_comment|/*&n;&t; * the DAR and the DSISR are only relevant during a&n;&t; *   data or instruction storage interrupt. The value&n;&t; *   will be set to zero.&n;&t; */
 id|regs-&gt;dar
 op_assign
 l_int|0
@@ -4584,6 +4549,7 @@ suffix:semicolon
 )brace
 )brace
 id|set_fs
+c_func
 (paren
 id|KERNEL_DS
 )paren
@@ -4618,6 +4584,7 @@ id|sigsetsize
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|old_fs
 )paren
@@ -4822,6 +4789,7 @@ c_func
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|KERNEL_DS
 )paren
@@ -4838,6 +4806,7 @@ id|sigsetsize
 )paren
 suffix:semicolon
 id|set_fs
+c_func
 (paren
 id|old_fs
 )paren
@@ -4989,9 +4958,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|siginfo64to32
 id|siginfo_t32
 op_star
-DECL|function|siginfo64to32
 id|siginfo64to32
 c_func
 (paren
@@ -5053,6 +5022,7 @@ id|s-&gt;si_int
 suffix:semicolon
 )brace
 r_else
+(brace
 r_switch
 c_cond
 (paren
@@ -5130,6 +5100,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
 r_return
 id|d
 suffix:semicolon
@@ -5159,9 +5130,9 @@ r_int
 id|sigsetsize
 )paren
 suffix:semicolon
+DECL|function|sys32_rt_sigtimedwait
 id|asmlinkage
 r_int
-DECL|function|sys32_rt_sigtimedwait
 id|sys32_rt_sigtimedwait
 c_func
 (paren
@@ -5213,6 +5184,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 op_amp
 id|s32
@@ -5353,6 +5325,7 @@ id|uts
 id|ret
 op_assign
 id|get_user
+c_func
 (paren
 id|t.tv_sec
 comma
@@ -5363,6 +5336,7 @@ suffix:semicolon
 id|ret
 op_or_assign
 id|__get_user
+c_func
 (paren
 id|t.tv_nsec
 comma
@@ -5381,6 +5355,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 id|set_fs
+c_func
 (paren
 id|KERNEL_DS
 )paren
@@ -5390,7 +5365,6 @@ c_cond
 (paren
 id|uts
 )paren
-(brace
 id|ret
 op_assign
 id|sys_rt_sigtimedwait
@@ -5408,9 +5382,7 @@ comma
 id|sigsetsize
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|ret
 op_assign
 id|sys_rt_sigtimedwait
@@ -5432,8 +5404,8 @@ comma
 id|sigsetsize
 )paren
 suffix:semicolon
-)brace
 id|set_fs
+c_func
 (paren
 id|old_fs
 )paren
@@ -5480,9 +5452,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|siginfo32to64
 id|siginfo_t
 op_star
-DECL|function|siginfo32to64
 id|siginfo32to64
 c_func
 (paren
@@ -5529,6 +5501,7 @@ id|s-&gt;si_int
 suffix:semicolon
 )brace
 r_else
+(brace
 r_switch
 c_cond
 (paren
@@ -5608,6 +5581,7 @@ id|s-&gt;si_uid
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 r_return
 id|d
@@ -5729,6 +5703,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_extern
 r_int
 id|do_signal
 c_func
@@ -5817,7 +5792,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* Swap the 2 words of the 64-bit sigset_t (they are stored in the &quot;wrong&quot; endian in 32-bit user storage). */
+multiline_comment|/*&n;&t; * Swap the 2 words of the 64-bit sigset_t (they are stored&n;&t; * in the &quot;wrong&quot; endian in 32-bit user storage).&n;&t; */
 r_switch
 c_cond
 (paren
@@ -6014,9 +5989,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Set up a rt signal frame.&n; */
+DECL|function|setup_rt_frame32
 r_static
 r_void
-DECL|function|setup_rt_frame32
 id|setup_rt_frame32
 c_func
 (paren
@@ -7478,6 +7453,23 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
+id|udbg_printf
+c_func
+(paren
+l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
+comma
+id|regs
+comma
+id|frame
+comma
+id|newsp
+)paren
+suffix:semicolon
+id|PPCDBG_ENTER_DEBUGGER
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -7500,9 +7492,9 @@ id|SIGSEGV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
+DECL|function|handle_signal32
 r_static
 r_void
-DECL|function|handle_signal32
 id|handle_signal32
 c_func
 (paren
@@ -7599,8 +7591,7 @@ op_assign
 op_minus
 id|EINTR
 suffix:semicolon
-multiline_comment|/* Set up the signal frame             */
-multiline_comment|/*   Determine if an real time frame - siginfo required   */
+multiline_comment|/*&n;&t; * Set up the signal frame&n;&t; * Determine if an real time frame - siginfo required&n;&t; */
 r_if
 c_cond
 (paren
@@ -7659,11 +7650,9 @@ id|rt_stack_frame
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|badframe
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7817,15 +7806,13 @@ op_amp
 id|rt_stack_frame-&gt;uc.uc_mcontext.signal
 )paren
 )paren
-(brace
 r_goto
 id|badframe
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
-multiline_comment|/* Put a sigcontext on the stack */
+multiline_comment|/* Put another sigcontext on the stack */
 op_star
 id|newspp
 op_sub_assign
@@ -8104,7 +8091,7 @@ id|regs-&gt;gpr
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/*  Put new stack info in local 64 bit stack struct                      */
+multiline_comment|/* Put new stack info in local 64 bit stack struct */
 r_if
 c_cond
 (paren
@@ -8222,7 +8209,7 @@ c_func
 id|old_fs
 )paren
 suffix:semicolon
-multiline_comment|/* Copy the stack information to the user output buffer                  */
+multiline_comment|/* Copy the stack information to the user output buffer */
 r_if
 c_cond
 (paren
