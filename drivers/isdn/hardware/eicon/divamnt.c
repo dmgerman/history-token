@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divamnt.c,v 1.32.6.9 2005/01/31 12:22:20 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divamnt.c,v 1.32.6.10 2005/02/11 19:40:25 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -18,7 +18,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.32.6.9 $&quot;
+l_string|&quot;$Revision: 1.32.6.10 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -50,6 +50,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|buffer_length
+r_static
 r_int
 id|buffer_length
 op_assign
@@ -66,6 +67,7 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|variable|diva_dbg_mem
+r_static
 r_int
 r_int
 id|diva_dbg_mem

@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.21&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.22&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 8, 2005&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;February 11, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -38528,7 +38528,11 @@ suffix:semicolon
 id|u32
 id|nic_phy_id
 comma
+id|ver
+comma
 id|cfg2
+op_assign
+l_int|0
 suffix:semicolon
 id|tg3_read_mem
 c_func
@@ -38545,6 +38549,66 @@ id|tp-&gt;nic_sram_data_cfg
 op_assign
 id|nic_cfg
 suffix:semicolon
+id|tg3_read_mem
+c_func
+(paren
+id|tp
+comma
+id|NIC_SRAM_DATA_VER
+comma
+op_amp
+id|ver
+)paren
+suffix:semicolon
+id|ver
+op_rshift_assign
+id|NIC_SRAM_DATA_VER_SHIFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5700
+)paren
+op_logical_and
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5701
+)paren
+op_logical_and
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5703
+)paren
+op_logical_and
+(paren
+id|ver
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|ver
+OL
+l_int|0x100
+)paren
+)paren
 id|tg3_read_mem
 c_func
 (paren

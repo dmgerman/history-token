@@ -55,10 +55,10 @@ DECL|macro|MAX_REG_OFFSET
 mdefine_line|#define MAX_REG_OFFSET (FRAME_SIZE)
 DECL|macro|MAX_REG_NR
 mdefine_line|#define MAX_REG_NR ((MAX_REG_OFFSET) / sizeof(unsigned long))
-multiline_comment|/* x86_64 FC3 doesn&squot;t define this in /usr/include/linux/ptrace.h even though&n; * it&squot;s defined in the kernel&squot;s include/linux/ptrace.h&n; */
-macro_line|#ifndef PTRACE_SETOPTIONS
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS 0x4200
+multiline_comment|/* x86_64 FC3 doesn&squot;t define this in /usr/include/linux/ptrace.h even though&n; * it&squot;s defined in the kernel&squot;s include/linux/ptrace.h. Additionally, use the&n; * 2.4 name and value for 2.4 host compatibility.&n; */
+macro_line|#ifndef PTRACE_OLDSETOPTIONS
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS 21
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
