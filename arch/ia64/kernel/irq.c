@@ -73,7 +73,6 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * This is updated when the user sets irq affinity via /proc&n; */
 DECL|variable|pending_irq_cpumask
-r_static
 id|cpumask_t
 id|__cacheline_aligned
 id|pending_irq_cpumask
