@@ -1874,7 +1874,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the &squot;heart&squot; of the zoned buddy allocator:&n; */
+multiline_comment|/*&n; * This is the &squot;heart&squot; of the zoned buddy allocator.&n; *&n; * Herein lies the mysterious &quot;incremental min&quot;.  That&squot;s the&n; *&n; *&t;min += z-&gt;pages_low;&n; *&n; * thing.  The intent here is to provide additional protection to low zones for&n; * allocation requests which _could_ use higher zones.  So a GFP_HIGHMEM&n; * request is not allowed to dip as deeply into the normal zone as a GFP_KERNEL&n; * request.  This preserves additional space in those lower zones for requests&n; * which really do need memory from those zones.  It means that on a decent&n; * sized machine, GFP_HIGHMEM and GFP_KERNEL requests basically leave the DMA&n; * zone untouched.&n; */
 r_struct
 id|page
 op_star
@@ -1896,6 +1896,14 @@ op_star
 id|zonelist
 )paren
 (brace
+r_const
+r_int
+id|wait
+op_assign
+id|gfp_mask
+op_amp
+id|__GFP_WAIT
+suffix:semicolon
 r_int
 r_int
 id|min
@@ -1926,9 +1934,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gfp_mask
-op_amp
-id|__GFP_WAIT
+id|wait
 )paren
 id|might_sleep
 c_func
@@ -2008,7 +2014,6 @@ id|zones
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* the incremental min is allegedly to discourage fallback */
 id|min
 op_add_assign
 id|z-&gt;pages_low
@@ -2020,9 +2025,14 @@ id|z-&gt;free_pages
 OG
 id|min
 op_logical_or
+(paren
+op_logical_neg
+id|wait
+op_logical_and
 id|z-&gt;free_pages
 op_ge
 id|z-&gt;pages_high
+)paren
 )paren
 (brace
 id|page
@@ -2163,9 +2173,14 @@ id|z-&gt;free_pages
 OG
 id|min
 op_logical_or
+(paren
+op_logical_neg
+id|wait
+op_logical_and
 id|z-&gt;free_pages
 op_ge
 id|z-&gt;pages_high
+)paren
 )paren
 (brace
 id|page
@@ -2269,11 +2284,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_WAIT
-)paren
+id|wait
 )paren
 r_goto
 id|nopage
@@ -2352,9 +2363,14 @@ id|z-&gt;free_pages
 OG
 id|min
 op_logical_or
+(paren
+op_logical_neg
+id|wait
+op_logical_and
 id|z-&gt;free_pages
 op_ge
 id|z-&gt;pages_high
+)paren
 )paren
 (brace
 id|page

@@ -2548,7 +2548,7 @@ id|nr_mapped
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; */
+multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; *&n; * We reclaim from a zone even if that zone is over pages_high.  Because:&n; * a) The caller may be trying to free *extra* pages to satisfy a higher-order&n; *    allocation or&n; * b) The zones may be over pages_high but they must go *over* pages_high to&n; *    satisfy the `incremental min&squot; zone defense algorithm.&n; *&n; * Returns the number of reclaimed pages.&n; */
 r_static
 r_int
 DECL|function|shrink_caches
@@ -2574,9 +2574,6 @@ r_const
 r_int
 id|nr_pages
 comma
-r_int
-id|order
-comma
 r_struct
 id|page_state
 op_star
@@ -2592,11 +2589,6 @@ r_struct
 id|zone
 op_star
 id|zone
-suffix:semicolon
-r_int
-id|nr_mapped
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ret
@@ -2623,50 +2615,23 @@ op_decrement
 )paren
 (brace
 r_int
-id|max_scan
-suffix:semicolon
-r_int
-id|to_reclaim
-suffix:semicolon
-id|to_reclaim
-op_assign
-id|zone-&gt;pages_high
-op_minus
-id|zone-&gt;free_pages
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|order
-op_eq
-l_int|0
-op_logical_and
-id|to_reclaim
-OL
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* zone has enough memory */
-id|to_reclaim
-op_assign
-id|min
-c_func
-(paren
-id|to_reclaim
-comma
-id|SWAP_CLUSTER_MAX
-)paren
-suffix:semicolon
 id|to_reclaim
 op_assign
 id|max
 c_func
 (paren
-id|to_reclaim
-comma
 id|nr_pages
+comma
+id|SWAP_CLUSTER_MAX
 )paren
+suffix:semicolon
+r_int
+id|nr_mapped
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|max_scan
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we cannot reclaim `nr_pages&squot; pages by scanning twice&n;&t;&t; * that many pages then fall back to the next zone.&n;&t;&t; */
 id|max_scan
@@ -2715,10 +2680,7 @@ op_star
 id|total_scanned
 op_add_assign
 id|max_scan
-suffix:semicolon
-op_star
-id|total_scanned
-op_add_assign
+op_plus
 id|nr_mapped
 suffix:semicolon
 r_if
@@ -2822,8 +2784,6 @@ id|gfp_mask
 comma
 id|nr_pages
 comma
-id|order
-comma
 op_amp
 id|ps
 )paren
@@ -2845,10 +2805,14 @@ id|total_scanned
 op_eq
 l_int|0
 )paren
-r_return
-l_int|1
+id|printk
+c_func
+(paren
+l_string|&quot;%s: I am buggy&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
-multiline_comment|/* All zones had enough free memory */
 r_if
 c_cond
 (paren
