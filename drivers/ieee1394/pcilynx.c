@@ -3291,7 +3291,7 @@ op_plus
 l_int|1
 )paren
 (brace
-id|lock_kernel
+id|unlock_kernel
 c_func
 (paren
 )paren
@@ -3301,6 +3301,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|file-&gt;f_pos
 op_assign
 id|newoffs
