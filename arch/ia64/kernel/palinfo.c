@@ -3412,7 +3412,7 @@ c_cond
 (paren
 id|f-&gt;req_cpu
 op_eq
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -3441,6 +3441,11 @@ c_func
 id|f
 comma
 id|page
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

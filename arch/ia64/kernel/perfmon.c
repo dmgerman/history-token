@@ -5278,6 +5278,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* XXX: ctx locking may be required here */
 r_for
 c_loop
@@ -5631,11 +5636,21 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|abort_mission
 suffix:colon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * for now, we have only one possibility for error&n;&t; */
 id|PFM_REG_RETFLAG_SET
 c_func
@@ -5806,6 +5821,9 @@ id|req
 op_increment
 )paren
 (brace
+r_int
+id|me
+suffix:semicolon
 macro_line|#if __GNUC__ &lt; 3
 id|foo
 op_assign
@@ -5915,6 +5933,13 @@ r_goto
 id|abort_mission
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the task is not the current one, then we check if the&n;&t;&t; * PMU state is still in the local live register due to lazy ctxsw.&n;&t;&t; * If true, then we read directly from the registers.&n;&t;&t; */
+id|me
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5925,10 +5950,7 @@ op_amp
 id|ctx-&gt;ctx_last_cpu
 )paren
 op_eq
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|me
 )paren
 (brace
 id|ia64_srlz_d
@@ -6047,6 +6069,11 @@ c_func
 id|reg_flags
 comma
 id|ret
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 id|DBprintk
@@ -6439,6 +6466,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pfm_reset_regs
 c_func
 (paren
@@ -6482,6 +6514,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* simply unfreeze */
 id|pfm_unfreeze_pmu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
@@ -6639,6 +6676,11 @@ id|current
 )paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* simply stop monitoring but not the PMU */
 r_if
 c_cond
@@ -6712,6 +6754,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6769,6 +6816,11 @@ id|ctx
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * stop monitoring, freeze PMU, and save state in context&n;&t; * this call will clear IA64_THREAD_PM_VALID for per-task sessions.&n;&t; */
 id|pfm_flush_regs
@@ -6831,6 +6883,11 @@ suffix:semicolon
 id|ctx-&gt;ctx_flags.state
 op_assign
 id|PFM_CTX_DISABLED
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -8197,6 +8254,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8258,6 +8320,11 @@ op_eq
 l_int|0
 )paren
 (brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8295,6 +8362,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8327,6 +8399,9 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|me
+suffix:semicolon
 multiline_comment|/* we don&squot;t quite support this right now */
 r_if
 c_cond
@@ -8339,6 +8414,14 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|me
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* make sure we&squot;re not migrated or preempted */
 r_if
 c_cond
 (paren
@@ -8515,14 +8598,16 @@ c_func
 op_amp
 id|ctx-&gt;ctx_last_cpu
 comma
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|me
 )paren
 suffix:semicolon
 multiline_comment|/* simply unfreeze */
 id|pfm_unfreeze_pmu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|put_cpu
 c_func
 (paren
 )paren
@@ -9857,7 +9942,7 @@ id|current-&gt;pid
 suffix:semicolon
 id|h-&gt;cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -10025,10 +10110,7 @@ suffix:semicolon
 )brace
 id|pfm_stats
 (braket
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|h-&gt;cpu
 )braket
 dot
 id|pfm_recorded_samples_count
@@ -10082,19 +10164,26 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * XXX: must reset buffer in blocking mode and lost notified&n;&t;&t; */
 id|pfm_stats
 (braket
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|h-&gt;cpu
 )braket
 dot
 id|pfm_full_smpl_buffer_count
 op_increment
 suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10157,6 +10246,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * It is never safe to access the task for which the overflow interrupt is destinated&n;&t; * using the current variable as the interrupt may occur in the middle of a context switch&n;&t; * where current does not hold the task that is running yet.&n;&t; *&n;&t; * For monitoring, however, we do need to get access to the task which caused the overflow&n;&t; * to account for overflow on the counters.&n;&t; *&n;&t; * We accomplish this by maintaining a current owner of the PMU per CPU. During context&n;&t; * switch the ownership is changed in a way such that the reflected owner is always the&n;&t; * valid one, i.e. the one that caused the interrupt.&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|t
 op_assign
 op_amp
@@ -10189,6 +10283,11 @@ comma
 id|task-&gt;pid
 )paren
 suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0x1
 suffix:semicolon
@@ -10215,6 +10314,11 @@ comma
 id|task-&gt;pid
 comma
 id|pmc0
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -10509,6 +10613,11 @@ comma
 id|PFM_PMD_SHORT_RESET
 )paren
 suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0x0UL
 suffix:semicolon
@@ -10604,6 +10713,11 @@ id|ctx-&gt;ctx_fl_trap_reason
 )paren
 )paren
 suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0x1UL
 suffix:semicolon
@@ -10641,7 +10755,7 @@ id|ctx
 suffix:semicolon
 id|pfm_stats
 (braket
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -10667,6 +10781,11 @@ comma
 id|arg
 comma
 id|regs
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -10727,6 +10846,11 @@ l_string|&quot;perfmon: Spurious overflow interrupt: process %d has &quot;
 l_string|&quot;no PFM context&bslash;n&quot;
 comma
 id|task-&gt;pid
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -10796,6 +10920,11 @@ id|pfm_spurious_ovfl_intr_count
 op_increment
 suffix:semicolon
 )brace
+id|put_cpu_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* for debug only */
 r_static
@@ -11225,6 +11354,11 @@ r_int
 r_int
 id|dcr_pp
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dcr_pp
 op_assign
 id|info
@@ -11286,6 +11420,11 @@ id|dcr_pp
 suffix:colon
 l_int|0
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -11330,6 +11469,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -11353,6 +11497,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|pfm_save_regs
@@ -11377,6 +11526,11 @@ id|psr
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ctx
 op_assign
@@ -11486,6 +11640,11 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -11513,6 +11672,11 @@ id|mask
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|DBprintk
 c_func
@@ -11614,6 +11778,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|pfm_load_regs
@@ -11649,6 +11818,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|owner
 op_assign
 id|PMU_OWNER
@@ -11673,6 +11847,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -11805,6 +11984,11 @@ id|pfm_set_psr_l
 c_func
 (paren
 id|psr
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -11992,6 +12176,11 @@ id|psr
 op_assign
 id|ctx-&gt;ctx_saved_psr
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pfm_set_psr_l
 c_func
 (paren
@@ -12046,6 +12235,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Let&squot;s make sure the PMU is frozen */
 id|pfm_freeze_pmu
 c_func
@@ -12259,6 +12453,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called when a thread exits (from exit_thread()).&n; * This is a simplified pfm_save_regs() that simply flushes the current&n; * register state into the save area taking into account any pending&n; * overflow. This time no notification is sent because the task is dying&n; * anyway. The inline processing of overflows avoids loosing some counts.&n; * The PMU is frozen on exit from this call and is to never be reenabled&n; * again for this task.&n; *&n; */
 r_void
@@ -12309,6 +12508,11 @@ op_eq
 id|PFM_CTX_DISABLED
 )paren
 r_return
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * stop monitoring:&n;&t; * This is the only way to stop monitoring without destroying overflow&n;&t; * information in PMC[0].&n;&t; * This is the last instruction which can cause overflow when monitoring&n;&t; * in kernel.&n;&t; * By now, we could still have an overflow interrupt in-flight.&n;&t; */
 r_if
@@ -12623,6 +12827,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * task is the newly created task, pt_regs for new child&n; */
 r_int
@@ -12670,6 +12879,11 @@ id|thread
 op_assign
 op_amp
 id|task-&gt;thread
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * make sure child cannot mess up the monitoring session&n;&t; */
 id|ia64_psr
@@ -12765,6 +12979,11 @@ op_member_access_from_pointer
 id|up
 op_assign
 l_int|0
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* copy_thread() clears IA64_THREAD_PM_VALID */
 r_return
@@ -13103,6 +13322,11 @@ op_or_assign
 id|IA64_THREAD_PM_VALID
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -13126,6 +13350,11 @@ op_assign
 id|task-&gt;thread.pfm_context
 suffix:semicolon
 multiline_comment|/*&n;&t; * check sampling buffer&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13343,6 +13572,11 @@ id|UNLOCK_CTX
 c_func
 (paren
 id|ctx
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pfm_unreserve_session
@@ -13804,19 +14038,28 @@ id|hdl-&gt;handler
 op_eq
 l_int|NULL
 )paren
+(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 multiline_comment|/* do the easy test first */
 r_if
 c_cond
 (paren
 id|pfm_alternate_intr_handler
 )paren
+(brace
 r_return
 op_minus
 id|EBUSY
+suffix:semicolon
+)brace
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* reserve our session */
 id|ret
@@ -13836,15 +14079,27 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|pfm_alternate_intr_handler
 )paren
 (brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -13861,6 +14116,11 @@ suffix:semicolon
 id|pfm_alternate_intr_handler
 op_assign
 id|hdl
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -13899,6 +14159,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pfm_alternate_intr_handler
 op_assign
 l_int|NULL
@@ -13912,6 +14177,11 @@ comma
 l_int|1
 comma
 id|cpu_online_map
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -14218,13 +14488,18 @@ r_void
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_processor_id
+r_int
+id|me
+op_assign
+id|get_cpu
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|me
 op_eq
 l_int|0
 )paren
@@ -14333,6 +14608,11 @@ l_int|0UL
 )paren
 suffix:semicolon
 )brace
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pfm_freeze_pmu
 c_func
 (paren

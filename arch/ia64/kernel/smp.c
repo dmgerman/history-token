@@ -161,7 +161,7 @@ id|regs
 r_int
 id|this_cpu
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -377,7 +377,13 @@ c_func
 suffix:semicolon
 multiline_comment|/* Order data access and bit testing. */
 )brace
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called with preeemption disabled &n; */
 r_static
 r_inline
 r_void
@@ -419,6 +425,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called with preeemption disabled &n; */
 r_static
 r_inline
 r_void
@@ -473,6 +480,7 @@ id|op
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Called with preeemption disabled &n; */
 r_static
 r_inline
 r_void
@@ -518,6 +526,7 @@ id|op
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called with preeemption disabled &n; */
 r_static
 r_inline
 r_void
@@ -540,6 +549,7 @@ id|op
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called with preeemption disabled &n; */
 r_void
 DECL|function|smp_send_reschedule
 id|smp_send_reschedule
@@ -572,6 +582,15 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* disable preemption */
 r_for
 c_loop
 (paren
@@ -597,15 +616,17 @@ id|i
 op_logical_and
 id|i
 op_ne
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|cpu
 )paren
 id|smp_send_reschedule
 c_func
 (paren
 id|i
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -746,15 +767,21 @@ id|cpus
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+id|me
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* prevent preemption and reschedule on another processor */
 r_if
 c_cond
 (paren
 id|cpuid
 op_eq
-id|smp_processor_id
-c_func
-(paren
-)paren
+id|me
 )paren
 (brace
 id|printk
@@ -763,6 +790,11 @@ c_func
 l_string|&quot;%s: trying to call self&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -880,6 +912,11 @@ c_func
 (paren
 op_amp
 id|call_lock
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

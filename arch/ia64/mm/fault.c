@@ -164,7 +164,7 @@ multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user cont
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren

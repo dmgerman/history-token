@@ -1020,11 +1020,6 @@ id|regs
 multiline_comment|/*&n;&t; * We ack quickly, we don&squot;t want the irq controller&n;&t; * thinking we&squot;re snobs just because some other CPU has&n;&t; * disabled global interrupts (we have already done the&n;&t; * INT_ACK cycles, it&squot;s too late to try to pretend to the&n;&t; * controller that we aren&squot;t taking the interrupt).&n;&t; *&n;&t; * 0 return value means that this irq is already being&n;&t; * handled by some other CPU. (or is disabled)&n;&t; */
 r_int
 id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
 suffix:semicolon
 id|irq_desc_t
 op_star
@@ -1046,6 +1041,13 @@ r_int
 id|status
 suffix:semicolon
 id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu
+op_assign
+id|smp_processor_id
 c_func
 (paren
 )paren
