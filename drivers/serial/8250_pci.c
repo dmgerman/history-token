@@ -749,15 +749,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * SIIG serial cards have an PCI interface chip which also controls&n; * the UART clocking frequency. Each UART can be clocked independently&n; * (except cards equiped with 4 UARTs) and initial clocking settings&n; * are stored in the EEPROM chip. It can cause problems because this&n; * version of serial driver doesn&squot;t support differently clocked UART&squot;s&n; * on single PCI card. To prevent this, initialization functions set&n; * high frequency clocking for all UART&squot;s on given card. It is safe (I&n; * hope) because it doesn&squot;t touch EEPROM settings to prevent conflicts&n; * with other OSes (like M$ DOS).&n; *&n; *  SIIG support added by Andrey Panin &lt;pazke@mail.tp.ru&gt;, 10/1999&n; * &n; * There is two family of SIIG serial cards with different PCI&n; * interface chip and different configuration methods:&n; *     - 10x cards have control registers in IO and/or memory space;&n; *     - 20x cards have control registers in standard PCI configuration space.&n; */
+multiline_comment|/*&n; * SIIG serial cards have an PCI interface chip which also controls&n; * the UART clocking frequency. Each UART can be clocked independently&n; * (except cards equiped with 4 UARTs) and initial clocking settings&n; * are stored in the EEPROM chip. It can cause problems because this&n; * version of serial driver doesn&squot;t support differently clocked UART&squot;s&n; * on single PCI card. To prevent this, initialization functions set&n; * high frequency clocking for all UART&squot;s on given card. It is safe (I&n; * hope) because it doesn&squot;t touch EEPROM settings to prevent conflicts&n; * with other OSes (like M$ DOS).&n; *&n; *  SIIG support added by Andrey Panin &lt;pazke@mail.tp.ru&gt;, 10/1999&n; * &n; * There is two family of SIIG serial cards with different PCI&n; * interface chip and different configuration methods:&n; *     - 10x cards have control registers in IO and/or memory space;&n; *     - 20x cards have control registers in standard PCI configuration space.&n; *&n; * Note: some SIIG cards are probed by the parport_serial object.&n; */
 DECL|macro|PCI_DEVICE_ID_SIIG_1S_10x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_1S_10x (PCI_DEVICE_ID_SIIG_1S_10x_550 &amp; 0xfffc)
 DECL|macro|PCI_DEVICE_ID_SIIG_2S_10x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S_10x (PCI_DEVICE_ID_SIIG_2S_10x_550 &amp; 0xfff8)
 DECL|function|pci_siig10x_fn
-r_static
 r_int
-id|__devinit
 id|pci_siig10x_fn
 c_func
 (paren
@@ -886,14 +884,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pci_siig10x_fn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_siig10x_fn
+)paren
+suffix:semicolon
 DECL|macro|PCI_DEVICE_ID_SIIG_2S_20x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S_20x (PCI_DEVICE_ID_SIIG_2S_20x_550 &amp; 0xfffc)
 DECL|macro|PCI_DEVICE_ID_SIIG_2S1P_20x
 mdefine_line|#define PCI_DEVICE_ID_SIIG_2S1P_20x (PCI_DEVICE_ID_SIIG_2S1P_20x_550 &amp; 0xfffc)
 DECL|function|pci_siig20x_fn
-r_static
 r_int
-id|__devinit
 id|pci_siig20x_fn
 c_func
 (paren
@@ -995,6 +998,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pci_siig20x_fn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_siig20x_fn
+)paren
+suffix:semicolon
 multiline_comment|/* Added for EKF Intel i960 serial boards */
 DECL|function|pci_inteli960ni_fn
 r_static
