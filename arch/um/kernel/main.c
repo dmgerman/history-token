@@ -916,7 +916,7 @@ r_int
 )paren
 id|ptr
 suffix:semicolon
-multiline_comment|/* We need to know how the allocation happened, so it can be correctly&n;&t; * freed.  This is done by seeing what region of memory the pointer is&n;&t; * in -&n;&t; * &t;physical memory - kmalloc/kfree&n;&t; *&t;kernel virtual memory - vmalloc/vfree&n;&t; * &t;anywhere else - malloc/free&n;&t; * If kmalloc is not yet possible, then the kernel memory regions&n;&t; * may not be set up yet, and the variables not initialized.  So,&n;&t; * free is called.&n;&t; *&n;&t; * CAN_KMALLOC is checked because it would be bad to free a buffer&n;&t; * with kmalloc/vmalloc after they have been turned off during&n;&t; * shutdown.&n;&t; */
+multiline_comment|/* We need to know how the allocation happened, so it can be correctly&n;&t; * freed.  This is done by seeing what region of memory the pointer is&n;&t; * in -&n;&t; * &t;physical memory - kmalloc/kfree&n;&t; *&t;kernel virtual memory - vmalloc/vfree&n;&t; * &t;anywhere else - malloc/free&n;&t; * If kmalloc is not yet possible, then either high_physmem and/or&n;&t; * end_vm are still 0 (as at startup), in which case we call free, or&n;&t; * we have set them, but anyway addr has not been allocated from those&n;&t; * areas. So, in both cases __real_free is called.&n;&t; *&n;&t; * CAN_KMALLOC is checked because it would be bad to free a buffer&n;&t; * with kmalloc/vmalloc after they have been turned off during&n;&t; * shutdown.&n;&t; * XXX: However, we sometimes shutdown CAN_KMALLOC temporarily, so&n;&t; * there is a possibility for memory leaks.&n;&t; */
 r_if
 c_cond
 (paren
