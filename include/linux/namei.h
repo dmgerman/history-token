@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_NAMEI_H
 DECL|macro|_LINUX_NAMEI_H
 mdefine_line|#define _LINUX_NAMEI_H
+macro_line|#include &lt;linux/linkage.h&gt;
 r_struct
 id|vfsmount
 suffix:semicolon
