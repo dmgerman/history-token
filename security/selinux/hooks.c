@@ -12640,6 +12640,10 @@ c_func
 id|snum
 )paren
 suffix:semicolon
+id|ad.u.net.family
+op_assign
+id|family
+suffix:semicolon
 id|err
 op_assign
 id|avc_has_perm
