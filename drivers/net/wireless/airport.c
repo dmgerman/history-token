@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
@@ -271,18 +272,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|5
+l_int|200
 )paren
 suffix:semicolon
 id|enable_irq
@@ -500,16 +493,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|macio_set_drvdata
@@ -581,16 +568,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|pmac_call_feature
@@ -609,16 +590,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 id|enable_irq
@@ -627,10 +602,10 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -920,16 +895,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Reset it before we get the interrupt */
