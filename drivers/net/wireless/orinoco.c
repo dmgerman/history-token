@@ -7974,7 +7974,11 @@ op_star
 r_int
 r_int
 )paren
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 op_plus
 r_sizeof
 (paren

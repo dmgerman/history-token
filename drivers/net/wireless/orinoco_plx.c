@@ -482,7 +482,11 @@ suffix:semicolon
 )brace
 id|priv
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
