@@ -500,7 +500,7 @@ op_eq
 l_int|0xF
 )paren
 (brace
-multiline_comment|/* Intel Pentium 4 Mobile P4-M */
+multiline_comment|/* Intel Mobile Pentium 4-M&n;&t;&t; * or Intel Mobile Pentium 4 with 533 MHz FSB */
 r_if
 c_cond
 (paren
@@ -520,12 +520,21 @@ op_ne
 l_int|4
 )paren
 op_logical_and
+multiline_comment|/* B-stepping [M-P4-M] */
 (paren
 id|c-&gt;x86_mask
 op_ne
 l_int|7
 )paren
+op_logical_and
+multiline_comment|/* C-stepping [M-P4-M] */
+(paren
+id|c-&gt;x86_mask
+op_ne
+l_int|9
 )paren
+)paren
+multiline_comment|/* D-stepping [M-P4-M or M-P4/533] */
 r_return
 l_int|0
 suffix:semicolon
