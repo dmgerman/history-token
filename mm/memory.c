@@ -4480,6 +4480,13 @@ id|lookup_write
 op_assign
 id|write
 suffix:semicolon
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
