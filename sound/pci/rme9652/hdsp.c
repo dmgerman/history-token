@@ -22718,6 +22718,17 @@ op_amp
 id|hdsp-&gt;firmware_rev
 )paren
 suffix:semicolon
+multiline_comment|/* From Martin Bjoernsen :&n;&t;    &quot;It is important that the card&squot;s latency timer register in&n;&t;    the PCI configuration space is set to a value much larger&n;&t;    than 0 by the computer&squot;s BIOS or the driver.&n;&t;    The windows driver always sets this 8 bit register [...]&n;&t;    to its maximum 255 to avoid problems with some computers.&quot;&n;&t;*/
+id|pci_write_config_byte
+c_func
+(paren
+id|hdsp-&gt;pci
+comma
+id|PCI_LATENCY_TIMER
+comma
+l_int|0xFF
+)paren
+suffix:semicolon
 id|strcpy
 c_func
 (paren
