@@ -3774,6 +3774,7 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; *&t;&t;NOTE NOTE NOTE&n; *&n; *&t;-&gt;read_super() is going to die.  New method (-&gt;get_sb) should replace&n; * it.  The only reason why -&gt;read_super() is left for _SHORT_ transition&n; * period is to avoid a single patch touching every fs.  They will be&n; * converted one-by-one and ONCE THAT IS DONE OR TWO WEEKS HAD PASSED&n; * (whatever sooner) -&gt;read_super() WILL DISAPPEAR.  &n; */
 DECL|struct|file_system_type
 r_struct
 id|file_system_type
@@ -3787,6 +3788,28 @@ suffix:semicolon
 DECL|member|fs_flags
 r_int
 id|fs_flags
+suffix:semicolon
+DECL|member|get_sb
+r_struct
+id|super_block
+op_star
+(paren
+op_star
+id|get_sb
+)paren
+(paren
+r_struct
+id|file_system_type
+op_star
+comma
+r_int
+comma
+r_char
+op_star
+comma
+r_void
+op_star
+)paren
 suffix:semicolon
 DECL|member|read_super
 r_struct
