@@ -2373,6 +2373,17 @@ id|budget
 )paren
 suffix:semicolon
 r_static
+r_void
+id|rtl8139_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
 id|irqreturn_t
 id|rtl8139_interrupt
 (paren
@@ -3963,6 +3974,12 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|rtl8139_poll_controller
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* note: the hardware is not capable of sg/csum/highdma, however&n;&t; * through the use of skb_copy_and_csum_dev we enable these&n;&t; * features&n;&t; */
 id|dev-&gt;features
 op_or_assign
@@ -9312,6 +9329,44 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling receive - used by netconsole and other diagnostic tools&n; * to allow network i/o with interrupts disabled.&n; */
+DECL|function|rtl8139_poll_controller
+r_static
+r_void
+id|rtl8139_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|rtl8139_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|rtl8139_close
 r_static
 r_int
