@@ -745,7 +745,7 @@ id|video_audio
 op_star
 id|v
 op_assign
-l_int|0
+id|arg
 suffix:semicolon
 id|memset
 c_func
