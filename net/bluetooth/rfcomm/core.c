@@ -6215,10 +6215,14 @@ op_amp
 id|RFCOMM_RPN_PM_FLOW
 )paren
 (brace
+id|flow_ctrl
+op_assign
+id|rpn-&gt;flow_ctrl
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|rpn-&gt;flow_ctrl
+id|flow_ctrl
 op_ne
 id|RFCOMM_RPN_FLOW_NONE
 )paren
@@ -6228,7 +6232,7 @@ c_func
 (paren
 l_string|&quot;RPN flow ctrl mismatch 0x%x&quot;
 comma
-id|rpn-&gt;flow_ctrl
+id|flow_ctrl
 )paren
 suffix:semicolon
 id|flow_ctrl
@@ -6249,10 +6253,14 @@ op_amp
 id|RFCOMM_RPN_PM_XON
 )paren
 (brace
+id|xon_char
+op_assign
+id|rpn-&gt;xon_char
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|rpn-&gt;xon_char
+id|xon_char
 op_ne
 id|RFCOMM_RPN_XON_CHAR
 )paren
@@ -6262,7 +6270,7 @@ c_func
 (paren
 l_string|&quot;RPN XON char mismatch 0x%x&quot;
 comma
-id|rpn-&gt;xon_char
+id|xon_char
 )paren
 suffix:semicolon
 id|xon_char
@@ -6283,10 +6291,14 @@ op_amp
 id|RFCOMM_RPN_PM_XOFF
 )paren
 (brace
+id|xoff_char
+op_assign
+id|rpn-&gt;xoff_char
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|rpn-&gt;xoff_char
+id|xoff_char
 op_ne
 id|RFCOMM_RPN_XOFF_CHAR
 )paren
@@ -6296,7 +6308,7 @@ c_func
 (paren
 l_string|&quot;RPN XOFF char mismatch 0x%x&quot;
 comma
-id|rpn-&gt;xoff_char
+id|xoff_char
 )paren
 suffix:semicolon
 id|xoff_char
