@@ -205,6 +205,10 @@ DECL|macro|CHIPREV_ID_5705_A0
 mdefine_line|#define  CHIPREV_ID_5705_A0&t;&t; 0x3000
 DECL|macro|CHIPREV_ID_5705_A1
 mdefine_line|#define  CHIPREV_ID_5705_A1&t;&t; 0x3001
+DECL|macro|CHIPREV_ID_5705_A2
+mdefine_line|#define  CHIPREV_ID_5705_A2&t;&t; 0x3002
+DECL|macro|CHIPREV_ID_5705_A3
+mdefine_line|#define  CHIPREV_ID_5705_A3&t;&t; 0x3003
 DECL|macro|CHIPREV_ID_5750_A0
 mdefine_line|#define  CHIPREV_ID_5750_A0&t;&t; 0x4000
 DECL|macro|CHIPREV_ID_5750_A1
