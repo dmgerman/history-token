@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
@@ -8455,32 +8456,6 @@ id|PDC_HDMA_CTLSTAT
 suffix:semicolon
 multiline_comment|/* flush */
 )brace
-DECL|function|pdc_pata_possible
-r_static
-r_int
-id|pdc_pata_possible
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pdev-&gt;device
-op_eq
-l_int|0x3375
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|pdc_host_init
 r_static
 r_void
@@ -8497,13 +8472,6 @@ op_star
 id|pe
 )paren
 (brace
-r_struct
-id|pci_dev
-op_star
-id|pdev
-op_assign
-id|pe-&gt;pdev
-suffix:semicolon
 r_void
 op_star
 id|mmio
@@ -8525,7 +8493,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* change FIFO_SHD to 8 dwords. Promise driver does this...&n;&t; * dunno why.&n;&t; */
+multiline_comment|/*&n;&t; * Except for the hotplug stuff, this is voodoo from the&n;&t; * Promise driver.  Label this entire section&n;&t; * &quot;TODO: figure out why we do this&quot;&n;&t; */
+multiline_comment|/* change FIFO_SHD to 8 dwords, enable BMR_BURST */
 id|tmp
 op_assign
 id|readl
@@ -8536,31 +8505,15 @@ op_plus
 id|PDC_FLASH_CTL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|tmp
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-)paren
-op_eq
-l_int|0
-)paren
+op_or_assign
+l_int|0x12000
+suffix:semicolon
+multiline_comment|/* bit 16 (fifo 8 dw) and 13 (bmr burst?) */
 id|writel
 c_func
 (paren
 id|tmp
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
 comma
 id|mmio
 op_plus
@@ -8613,7 +8566,7 @@ op_plus
 id|PDC_SATA_PLUG_CSR
 )paren
 suffix:semicolon
-multiline_comment|/* reduce TBG clock to 133 Mhz. FIXME: why? */
+multiline_comment|/* reduce TBG clock to 133 Mhz. */
 id|tmp
 op_assign
 id|readl
@@ -8645,7 +8598,32 @@ op_plus
 id|PDC_TBG_MODE
 )paren
 suffix:semicolon
-multiline_comment|/* adjust slew rate control register. FIXME: why? */
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_TBG_MODE
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|msecs_to_jiffies
+c_func
+(paren
+l_int|10
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* adjust slew rate control register. */
 id|tmp
 op_assign
 id|readl
@@ -8676,49 +8654,6 @@ op_plus
 id|PDC_SLEW_CTL
 )paren
 suffix:semicolon
-multiline_comment|/* check for PATA port on PDC20375 */
-r_if
-c_cond
-(paren
-id|pdc_pata_possible
-c_func
-(paren
-id|pdev
-)paren
-)paren
-(brace
-id|tmp
-op_assign
-id|readl
-c_func
-(paren
-id|mmio
-op_plus
-id|PDC_PCI_CTL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
-op_amp
-id|PDC_HAS_PATA
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|DRV_NAME
-l_string|&quot;(%s): sorry, PATA port not supported yet&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|pdc_sata_init_one
 r_static
