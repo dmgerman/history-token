@@ -5956,15 +5956,17 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+id|cpu_set
+c_func
+(paren
+id|_prom-&gt;cpu
+comma
 id|RELOC
 c_func
 (paren
 id|cpu_online_map
 )paren
-op_assign
-l_int|1UL
-op_lshift
-id|_prom-&gt;cpu
+)paren
 suffix:semicolon
 macro_line|#endif
 id|RELOC

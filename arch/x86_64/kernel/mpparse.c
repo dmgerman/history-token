@@ -78,8 +78,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|mp_bus_to_cpumask
-r_int
-r_int
+id|cpumask_t
 id|mp_bus_to_cpumask
 (braket
 id|MAX_MP_BUSSES
@@ -96,8 +95,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-op_minus
-l_int|1UL
+id|CPU_MASK_ALL
 )brace
 suffix:semicolon
 DECL|variable|mp_current_pci_id
@@ -164,11 +162,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
-r_int
-r_int
+id|cpumask_t
 id|phys_cpu_present_map
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 multiline_comment|/* ACPI MADT entry parsing functions */
 macro_line|#ifdef CONFIG_ACPI_BOOT
@@ -361,11 +358,13 @@ id|ver
 op_assign
 id|m-&gt;mpc_apicver
 suffix:semicolon
-id|phys_cpu_present_map
-op_or_assign
-l_int|1
-op_lshift
+id|cpu_set
+c_func
+(paren
 id|m-&gt;mpc_apicid
+comma
+id|phys_cpu_present_map
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Validate version&n;&t; */
 r_if

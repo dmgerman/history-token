@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_GENAPIC_H
 DECL|macro|_ASM_GENAPIC_H
 mdefine_line|#define _ASM_GENAPIC_H 1
-multiline_comment|/* &n; * Generic APIC driver interface.&n; *  &n; * An straight forward mapping of the APIC related parts of the &n; * x86 subarchitecture interface to a dynamic object.&n; *&t;&n; * This is used by the &quot;generic&quot; x86 subarchitecture. &n; *&n; * Copyright 2003 Andi Kleen, SuSE Labs.&n; */
+multiline_comment|/*&n; * Generic APIC driver interface.&n; *&n; * An straight forward mapping of the APIC related parts of the&n; * x86 subarchitecture interface to a dynamic object.&n; *&n; * This is used by the &quot;generic&quot; x86 subarchitecture.&n; *&n; * Copyright 2003 Andi Kleen, SuSE Labs.&n; */
 r_struct
 id|mpc_config_translation
 suffix:semicolon
@@ -44,8 +44,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|member|target_cpus
-r_int
-r_int
+id|cpumask_t
 (paren
 op_star
 id|target_cpus
@@ -78,8 +77,7 @@ op_star
 id|check_apicid_used
 )paren
 (paren
-r_int
-r_int
+id|physid_mask_t
 id|bitmap
 comma
 r_int
@@ -113,15 +111,13 @@ r_void
 )paren
 suffix:semicolon
 DECL|member|ioapic_phys_id_map
-r_int
-r_int
+id|physid_mask_t
 (paren
 op_star
 id|ioapic_phys_id_map
 )paren
 (paren
-r_int
-r_int
+id|physid_mask_t
 id|map
 )paren
 suffix:semicolon
@@ -183,8 +179,7 @@ id|mps_cpu
 )paren
 suffix:semicolon
 DECL|member|apicid_to_cpu_present
-r_int
-r_int
+id|physid_mask_t
 (paren
 op_star
 id|apicid_to_cpu_present
@@ -342,8 +337,7 @@ op_star
 id|cpu_mask_to_apicid
 )paren
 (paren
-r_int
-r_int
+id|cpumask_const_t
 id|cpumask
 )paren
 suffix:semicolon
@@ -355,7 +349,7 @@ op_star
 id|send_IPI_mask
 )paren
 (paren
-r_int
+id|cpumask_t
 id|mask
 comma
 r_int

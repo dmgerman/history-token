@@ -637,16 +637,14 @@ multiline_comment|/*&n; * Lock APM functionality to physical CPU 0&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|function|apm_save_cpus
 r_static
-r_int
-r_int
+id|cpumask_t
 id|apm_save_cpus
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-r_int
+id|cpumask_t
 id|x
 op_assign
 id|current-&gt;cpus_allowed
@@ -657,9 +655,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -684,8 +684,7 @@ r_void
 id|apm_restore_cpus
 c_func
 (paren
-r_int
-r_int
+id|cpumask_t
 id|mask
 )paren
 (brace
@@ -701,7 +700,7 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; *&t;No CPU lockdown needed on a uniprocessor&n; */
 DECL|macro|apm_save_cpus
-mdefine_line|#define apm_save_cpus()&t;0
+mdefine_line|#define apm_save_cpus()&t;&t;(current-&gt;cpus_allowed)
 DECL|macro|apm_restore_cpus
 mdefine_line|#define apm_restore_cpus(x)&t;(void)(x)
 macro_line|#endif
@@ -765,8 +764,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpus
 suffix:semicolon
 r_int
@@ -911,8 +909,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpus
 suffix:semicolon
 r_int
@@ -1707,9 +1704,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -4947,9 +4946,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON

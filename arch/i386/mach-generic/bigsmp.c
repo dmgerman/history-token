@@ -1,6 +1,10 @@
 multiline_comment|/* &n; * APIC driver for &quot;bigsmp&quot; XAPIC machines with more than 8 virtual CPUs.&n; * Drives the local APIC in &quot;clustered mode&quot;.&n; */
 DECL|macro|APIC_DEFINITION
 mdefine_line|#define APIC_DEFINITION 1
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/genapic.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;

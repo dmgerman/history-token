@@ -126,12 +126,11 @@ id|next
 )paren
 (brace
 multiline_comment|/* stop flush ipis for the previous mm */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|prev-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
@@ -155,12 +154,11 @@ op_assign
 id|next
 suffix:semicolon
 macro_line|#endif
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|next-&gt;cpu_vm_mask
 )paren
 suffix:semicolon
@@ -222,12 +220,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|next-&gt;cpu_vm_mask
 )paren
 )paren

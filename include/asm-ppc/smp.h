@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
@@ -51,13 +52,11 @@ id|cpu_data
 )braket
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_possible_map
 suffix:semicolon
 r_extern
@@ -128,61 +127,9 @@ mdefine_line|#define PROC_CHANGE_PENALTY&t;20
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) (cpu_possible_map &amp; (1&lt;&lt;(cpu)))
-DECL|function|num_online_cpus
-r_extern
-r_inline
-r_int
-r_int
-id|num_online_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|hweight32
-c_func
-(paren
-id|cpu_online_map
-)paren
-suffix:semicolon
-)brace
-DECL|function|any_online_cpu
-r_extern
-r_inline
-r_int
-r_int
-id|any_online_cpu
-c_func
-(paren
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-r_return
-id|__ffs
-c_func
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_return
-id|NR_CPUS
-suffix:semicolon
-)brace
+mdefine_line|#define cpu_possible(cpu) cpu_isset(cpu, cpu_possible_map)
 r_extern
 r_int
 id|__cpu_up

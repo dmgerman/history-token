@@ -344,12 +344,12 @@ c_func
 l_string|&quot;Slave cpu booted successfully&bslash;n&quot;
 )paren
 suffix:semicolon
-id|CPUMASK_SETB
+id|cpu_set
 c_func
 (paren
-id|cpu_online_map
-comma
 id|cpu
+comma
+id|cpu_online_map
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -688,7 +688,7 @@ id|dummy
 )paren
 (brace
 multiline_comment|/*&n;&t; * Remove this CPU:&n;&t; */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -696,7 +696,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon

@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* PROM provided per-processor information we need&n; * to start them all up.&n; */
 DECL|struct|prom_cpuinfo
@@ -142,66 +143,19 @@ r_char
 id|boot_cpu_id
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;(phys_cpu_present_map &amp; (1UL &lt;&lt; (cpu)))
-r_extern
-r_int
-r_int
-id|cpu_online_map
-suffix:semicolon
+mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
 DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_online_map &amp; (1UL &lt;&lt; (cpu)))
-r_extern
-id|atomic_t
-id|sparc64_num_cpus_online
-suffix:semicolon
-DECL|macro|num_online_cpus
-mdefine_line|#define num_online_cpus()&t;(atomic_read(&amp;sparc64_num_cpus_online))
+mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 r_extern
 id|atomic_t
 id|sparc64_num_cpus_possible
 suffix:semicolon
 DECL|macro|num_possible_cpus
 mdefine_line|#define num_possible_cpus()&t;(atomic_read(&amp;sparc64_num_cpus_possible))
-DECL|function|any_online_cpu
-r_static
-r_inline
-r_int
-r_int
-id|any_online_cpu
-c_func
-(paren
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|mask
-op_and_assign
-id|cpu_online_map
-)paren
-op_ne
-l_int|0UL
-)paren
-r_return
-id|__ffs
-c_func
-(paren
-id|mask
-)paren
-suffix:semicolon
-r_return
-id|NR_CPUS
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;General functions that each host system must provide.&n; */
 DECL|function|hard_smp_processor_id
 r_static

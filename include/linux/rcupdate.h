@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 multiline_comment|/**&n; * struct rcu_head - callback structure for use with RCU&n; * @list: list_head to queue the update requests&n; * @func: actual update function to call after the grace period.&n; * @arg: argument to be passed to the actual update function.&n; */
 DECL|struct|rcu_head
 r_struct
@@ -64,8 +65,7 @@ id|maxbatch
 suffix:semicolon
 multiline_comment|/* Max requested batch number.        */
 DECL|member|rcu_cpu_mask
-r_int
-r_int
+id|cpumask_t
 id|rcu_cpu_mask
 suffix:semicolon
 multiline_comment|/* CPUs that need to switch in order  */
@@ -246,12 +246,11 @@ id|cpu
 )paren
 )paren
 op_logical_or
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|rcu_ctrlblk.rcu_cpu_mask
 )paren
 )paren

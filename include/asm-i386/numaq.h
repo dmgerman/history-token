@@ -4,7 +4,7 @@ DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;&t;8
+mdefine_line|#define MAX_NUMNODES&t;&t;16
 r_extern
 r_void
 id|get_memcfg_numaq
@@ -389,7 +389,7 @@ id|nid
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_X86_NUMAQ */

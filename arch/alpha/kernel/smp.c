@@ -96,9 +96,7 @@ r_int
 id|cpu_present_mask
 suffix:semicolon
 DECL|variable|cpu_online_map
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 multiline_comment|/* cpus reported in the hwrpb */
@@ -311,12 +309,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|cpuid
 comma
-op_amp
 id|cpu_online_map
 )paren
 )paren
@@ -2007,7 +2004,7 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Mark the boot cpu (current cpu) as both present and online&n;&t; */
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2015,11 +2012,10 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_present_mask
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2027,7 +2023,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon

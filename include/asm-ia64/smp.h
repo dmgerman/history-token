@@ -7,6 +7,7 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
@@ -46,14 +47,11 @@ id|no_int_routing
 id|__initdata
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
 r_extern
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 r_extern
@@ -81,59 +79,7 @@ r_int
 id|ap_wakeup_vector
 suffix:semicolon
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;(phys_cpu_present_map &amp; (1UL &lt;&lt; (cpu)))
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_online_map &amp; (1UL &lt;&lt; (cpu)))
-r_static
-r_inline
-r_int
-r_int
-DECL|function|num_online_cpus
-id|num_online_cpus
-(paren
-r_void
-)paren
-(brace
-r_return
-id|hweight64
-c_func
-(paren
-id|cpu_online_map
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|any_online_cpu
-id|any_online_cpu
-(paren
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-r_return
-id|__ffs
-c_func
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_return
-id|NR_CPUS
-suffix:semicolon
-)brace
+mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
 multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so don&squot;t use this in&n; * performance-critical code.&n; */
 r_static
 r_inline

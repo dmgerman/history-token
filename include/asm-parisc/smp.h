@@ -11,6 +11,7 @@ mdefine_line|#define PDC_OS_BOOT_RENDEZVOUS_HI  0x28
 macro_line|#ifndef ASSEMBLY
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;&t;/* for NR_CPUS */
+macro_line|#include &lt;linux/cpumask.h&gt;
 DECL|typedef|address_t
 r_typedef
 r_int
@@ -18,9 +19,7 @@ r_int
 id|address_t
 suffix:semicolon
 r_extern
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 multiline_comment|/*&n; *&t;Private routines/data&n; *&n; *&t;physical and logical are equivalent until we support CPU hotplug.&n; */
@@ -61,61 +60,9 @@ suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
 DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)       (cpu_present_mask &amp; (1&lt;&lt;(cpu)))
-DECL|function|num_online_cpus
-r_extern
-r_inline
-r_int
-r_int
-id|num_online_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|hweight32
-c_func
-(paren
-id|cpu_online_map
-)paren
-suffix:semicolon
-)brace
-DECL|function|any_online_cpu
-r_extern
-r_inline
-r_int
-r_int
-id|any_online_cpu
-c_func
-(paren
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-r_return
-id|__ffs
-c_func
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_return
-id|NR_CPUS
-suffix:semicolon
-)brace
+mdefine_line|#define cpu_possible(cpu)       cpu_isset(cpu, cpu_present_mask)
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */

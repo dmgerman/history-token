@@ -46,8 +46,7 @@ l_int|1U
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
-r_int
-r_int
+id|physid_mask_t
 id|phys_cpu_present_map
 suffix:semicolon
 multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesn&squot;t have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
@@ -66,6 +65,9 @@ r_int
 id|ver
 comma
 id|logical_apicid
+suffix:semicolon
+id|cpumask_t
+id|apic_cpus
 suffix:semicolon
 r_if
 c_cond
@@ -162,12 +164,22 @@ id|ver
 op_assign
 id|m-&gt;mpc_apicver
 suffix:semicolon
-id|phys_cpu_present_map
-op_or_assign
+id|apic_cpus
+op_assign
 id|apicid_to_cpu_present
 c_func
 (paren
 id|m-&gt;mpc_apicid
+)paren
+suffix:semicolon
+id|physids_or
+c_func
+(paren
+id|phys_cpu_present_map
+comma
+id|phys_cpu_present_map
+comma
+id|apic_cpus
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Validate version&n;&t; */

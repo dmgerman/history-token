@@ -16,14 +16,14 @@ DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS cpu_online_map
 macro_line|#else
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS 0x01
+mdefine_line|#define TARGET_CPUS cpumask_of_cpu(0)
 macro_line|#endif
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
-mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
+mdefine_line|#define check_apicid_used(bitmap, apicid)&t;physid_isset(apicid, bitmap)
 DECL|macro|check_apicid_present
-mdefine_line|#define check_apicid_present(bit) (phys_cpu_present_map &amp; (1 &lt;&lt; bit))
+mdefine_line|#define check_apicid_present(bit)&t;&t;physid_isset(bit, phys_cpu_present_map)
 DECL|function|apic_id_registered
 r_static
 r_inline
@@ -35,8 +35,7 @@ r_void
 )paren
 (brace
 r_return
-(paren
-id|test_bit
+id|physid_isset
 c_func
 (paren
 id|GET_APIC_ID
@@ -49,9 +48,7 @@ id|APIC_ID
 )paren
 )paren
 comma
-op_amp
 id|phys_cpu_present_map
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -175,8 +172,7 @@ suffix:semicolon
 DECL|function|apicid_to_cpu_present
 r_static
 r_inline
-r_int
-r_int
+id|physid_mask_t
 id|apicid_to_cpu_present
 c_func
 (paren
@@ -185,9 +181,9 @@ id|apicid
 )paren
 (brace
 r_return
+id|physid_mask_of_physid
+c_func
 (paren
-l_int|1ul
-op_lshift
 id|apicid
 )paren
 suffix:semicolon
@@ -228,12 +224,11 @@ id|boot_cpu_physical_apicid
 )paren
 (brace
 r_return
-id|test_bit
+id|physid_isset
 c_func
 (paren
 id|boot_cpu_physical_apicid
 comma
-op_amp
 id|phys_cpu_present_map
 )paren
 suffix:semicolon
@@ -244,14 +239,18 @@ r_inline
 r_int
 r_int
 id|cpu_mask_to_apicid
+c_func
 (paren
-r_int
-r_int
+id|cpumask_const_t
 id|cpumask
 )paren
 (brace
 r_return
+id|cpus_coerce_const
+c_func
+(paren
 id|cpumask
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_APIC_H */

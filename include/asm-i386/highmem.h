@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_HIGHMEM_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* declarations for highmem.c */
@@ -38,8 +39,13 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
+macro_line|#if NR_CPUS &lt;= 32
 DECL|macro|PKMAP_BASE
 mdefine_line|#define PKMAP_BASE (0xff800000UL)
+macro_line|#else
+DECL|macro|PKMAP_BASE
+mdefine_line|#define PKMAP_BASE (0xff600000UL)
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_PAE
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 512

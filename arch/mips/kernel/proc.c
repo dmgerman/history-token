@@ -339,12 +339,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|CPUMASK_TSTB
+id|cpu_isset
 c_func
 (paren
-id|cpu_online_map
-comma
 id|n
+comma
+id|cpu_online_map
 )paren
 )paren
 r_return

@@ -99,7 +99,11 @@ r_int
 r_int
 id|cpu_online_map
 op_assign
-l_int|1UL
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|cpu_possible_map
 r_int
@@ -1278,7 +1282,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -1286,11 +1290,10 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -1298,7 +1301,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_possible_map
 )paren
 suffix:semicolon
@@ -1667,12 +1669,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
