@@ -2829,9 +2829,6 @@ id|flow
 op_assign
 l_char|&squot;n&squot;
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 multiline_comment|/*&n;&t; * Check whether an invalid uart number has been specified, and&n;&t; * if so, search for the first available port that does have&n;&t; * console support.&n;&t; */
 r_if
 c_cond
