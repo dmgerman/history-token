@@ -670,7 +670,7 @@ r_int
 id|saved_framenumber
 suffix:semicolon
 multiline_comment|/* Save during PM suspend */
-multiline_comment|/* Support for port suspend/resume */
+multiline_comment|/* Support for port suspend/resume/reset */
 DECL|member|port_c_suspend
 r_int
 r_int
@@ -687,10 +687,10 @@ r_int
 r_int
 id|resuming_ports
 suffix:semicolon
-DECL|member|resume_timeout
+DECL|member|ports_timeout
 r_int
 r_int
-id|resume_timeout
+id|ports_timeout
 suffix:semicolon
 multiline_comment|/* Time to stop signalling */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */

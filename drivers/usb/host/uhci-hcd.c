@@ -364,7 +364,7 @@ op_ne
 id|UHCI_SUSPENDED
 )paren
 )paren
-id|uhci_check_resume
+id|uhci_check_ports
 c_func
 (paren
 id|uhci
