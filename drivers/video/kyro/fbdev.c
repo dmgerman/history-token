@@ -3336,10 +3336,6 @@ suffix:semicolon
 id|fb_memset
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|info-&gt;screen_base
 comma
 l_int|0
