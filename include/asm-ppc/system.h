@@ -3,7 +3,7 @@ macro_line|#ifndef __PPC_SYSTEM_H
 DECL|macro|__PPC_SYSTEM_H
 mdefine_line|#define __PPC_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
@@ -31,11 +31,11 @@ DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
-mdefine_line|#define smp_mb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
+mdefine_line|#define smp_mb()&t;barrier()
 DECL|macro|smp_rmb
-mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
+mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;: : :&quot;memory&quot;)
+mdefine_line|#define smp_wmb()&t;barrier()
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif /* CONFIG_SMP */
