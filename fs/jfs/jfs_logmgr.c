@@ -310,6 +310,7 @@ r_static
 id|bio_end_io_t
 id|lbmIODone
 suffix:semicolon
+r_static
 r_void
 id|lbmStartIO
 c_func
@@ -320,6 +321,7 @@ op_star
 id|bp
 )paren
 suffix:semicolon
+r_static
 r_void
 id|lmGCwrite
 c_func
@@ -2005,6 +2007,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;lmGCwrite()&n; *&n; * FUNCTION:&t;group commit write&n; *&t;initiate write of log page, building a group of all transactions&n; *&t;with commit records on that page.&n; *&n; * RETURN:&t;None&n; *&n; * NOTE:&n; *&t;LOGGC_LOCK must be held by caller.&n; *&t;N.B. LOG_LOCK is NOT held during lmGroupCommit().&n; */
 DECL|function|lmGCwrite
+r_static
 r_void
 id|lmGCwrite
 c_func
@@ -2482,16 +2485,7 @@ op_logical_or
 id|test_bit
 c_func
 (paren
-id|log_SYNCBARRIER
-comma
-op_amp
-id|log-&gt;flag
-)paren
-op_logical_or
-id|test_bit
-c_func
-(paren
-id|log_QUIESCE
+id|log_FLUSH
 comma
 op_amp
 id|log-&gt;flag
@@ -2507,13 +2501,24 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* no transaction are ready yet (transactions are only just&n;&t; * queued (GC_QUEUE) and not entered for group commit yet).&n;&t; * let the first transaction entering group commit&n;&t; * will elect hetself as new group leader.&n;&t; */
+multiline_comment|/* no transaction are ready yet (transactions are only just&n;&t; * queued (GC_QUEUE) and not entered for group commit yet).&n;&t; * the first transaction entering group commit&n;&t; * will elect herself as new group leader.&n;&t; */
 r_else
+(brace
 id|log-&gt;cflag
 op_and_assign
 op_complement
 id|logGC_PAGEOUT
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|log_FLUSH
+comma
+op_amp
+id|log-&gt;flag
+)paren
+suffix:semicolon
+)brace
 singleline_comment|//LOGGC_UNLOCK(log);
 id|spin_unlock_irqrestore
 c_func
@@ -2885,32 +2890,8 @@ id|log-&gt;syncpt
 )paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * We may have to initiate group commit&n;&t; */
-id|LOGGC_LOCK
-c_func
-(paren
-id|log
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|log-&gt;cqueue.head
-op_logical_and
-op_logical_neg
-(paren
-id|log-&gt;cflag
-op_amp
-id|logGC_PAGEOUT
-)paren
-)paren
-(brace
-id|log-&gt;cflag
-op_or_assign
-id|logGC_PAGEOUT
-suffix:semicolon
-id|lmGCwrite
+multiline_comment|/*&n;&t;&t; * We may have to initiate group commit&n;&t;&t; */
+id|jfs_flush_journal
 c_func
 (paren
 id|log
@@ -2919,12 +2900,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|LOGGC_UNLOCK
-c_func
-(paren
-id|log
-)paren
-suffix:semicolon
 r_return
 id|lsn
 suffix:semicolon
@@ -4191,16 +4166,19 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;lmLogWait()&n; *&n; * FUNCTION:&t;wait for all outstanding log records to be written to disk&n; */
-DECL|function|lmLogWait
+multiline_comment|/*&n; * NAME:&t;jfs_flush_journal()&n; *&n; * FUNCTION:&t;initiate write of any outstanding transactions to the journal&n; *&t;&t;and optionally wait until they are all written to disk&n; */
+DECL|function|jfs_flush_journal
 r_void
-id|lmLogWait
+id|jfs_flush_journal
 c_func
 (paren
 r_struct
 id|jfs_log
 op_star
 id|log
+comma
+r_int
+id|wait
 )paren
 (brace
 r_int
@@ -4212,9 +4190,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;lmLogWait: log:0x%p&bslash;n&quot;
+l_string|&quot;jfs_flush_journal: log:0x%p wait=%d&bslash;n&quot;
 comma
 id|log
+comma
+id|wait
 )paren
 )paren
 suffix:semicolon
@@ -4222,7 +4202,7 @@ multiline_comment|/*&n;&t; * This ensures that we will keep writing to the journ
 id|set_bit
 c_func
 (paren
-id|log_QUIESCE
+id|log_FLUSH
 comma
 op_amp
 id|log-&gt;flag
@@ -4266,6 +4246,14 @@ c_func
 (paren
 id|log
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait
+)paren
+r_return
 suffix:semicolon
 r_if
 c_cond
@@ -4350,13 +4338,12 @@ suffix:semicolon
 id|clear_bit
 c_func
 (paren
-id|log_QUIESCE
+id|log_FLUSH
 comma
 op_amp
 id|log-&gt;flag
 )paren
 suffix:semicolon
-multiline_comment|/* Probably not needed */
 )brace
 multiline_comment|/*&n; * NAME:&t;lmLogShutdown()&n; *&n; * FUNCTION:&t;log shutdown at last LogClose().&n; *&n; *&t;&t;write log syncpt record.&n; *&t;&t;update super block to set redone flag to 0.&n; *&n; * PARAMETER:&t;log&t;- log inode&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;&t;&n; * serialization: single last close thread&n; */
 DECL|function|lmLogShutdown
@@ -4412,10 +4399,12 @@ id|log
 )paren
 )paren
 suffix:semicolon
-id|lmLogWait
+id|jfs_flush_journal
 c_func
 (paren
 id|log
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to make sure all of the &quot;written&quot; metapages&n;&t; * actually make it to disk&n;&t; */
@@ -5814,6 +5803,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:&t;lbmStartIO()&n; *&n; * FUNCTION:&t;Interface to DD strategy routine&n; *&n; * RETURN:      none&n; *&n; * serialization: LCACHE_LOCK() is NOT held during log i/o;&n; */
 DECL|function|lbmStartIO
+r_static
 r_void
 id|lbmStartIO
 c_func
