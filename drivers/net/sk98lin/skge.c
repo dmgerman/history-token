@@ -10346,7 +10346,7 @@ id|i
 op_increment
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -10359,8 +10359,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -17797,7 +17795,7 @@ comma
 id|Flags
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -17810,8 +17808,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|SkGeStopPort
@@ -17842,7 +17838,7 @@ comma
 id|SK_SOFT_RST
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -17855,8 +17851,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -17953,7 +17947,7 @@ comma
 id|Flags
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -17966,8 +17960,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|pAC-&gt;ActivePort
@@ -18014,7 +18006,7 @@ id|DualNet
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -18027,8 +18019,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -18214,7 +18204,7 @@ comma
 id|ToPort
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -18227,8 +18217,6 @@ id|TX_PRIO_LOW
 )braket
 dot
 id|TxDesRingLock
-comma
-id|Flags
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
