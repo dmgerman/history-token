@@ -412,7 +412,7 @@ c_cond
 (paren
 id|p
 op_assign
-id|xdr_decode_string
+id|xdr_decode_string_inplace
 c_func
 (paren
 id|p
