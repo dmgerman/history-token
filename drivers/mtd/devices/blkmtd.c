@@ -5460,6 +5460,17 @@ id|mtd_rawdevice-&gt;as.i_shared_sem
 )paren
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+(paren
+id|mtd_rawdevice-&gt;as.truncate_count
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|mtd_rawdevice-&gt;as.a_ops
 op_assign
 op_amp

@@ -783,6 +783,11 @@ id|semaphore
 id|i_shared_sem
 suffix:semicolon
 multiline_comment|/* protect both above lists */
+DECL|member|truncate_count
+id|atomic_t
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Cover race condition with truncate */
 DECL|member|dirtied_when
 r_int
 r_int
