@@ -350,25 +350,63 @@ DECL|macro|ADC_CPU_VOLTAGE_SCALE
 mdefine_line|#define ADC_CPU_VOLTAGE_SCALE&t;0x00a0&t;/* _AD3 */
 DECL|macro|ADC_CPU_CURRENT_SCALE
 mdefine_line|#define ADC_CPU_CURRENT_SCALE&t;0x1f40&t;/* _AD4 */
-multiline_comment|/*&n; * PID factors for the U3/Backside fan control loop&n; */
-DECL|macro|BACKSIDE_FAN_PWM_ID
-mdefine_line|#define BACKSIDE_FAN_PWM_ID&t;&t;1
-DECL|macro|BACKSIDE_PID_G_d
-mdefine_line|#define BACKSIDE_PID_G_d&t;&t;0x02800000
+multiline_comment|/*&n; * PID factors for the U3/Backside fan control loop. We have 2 sets&n; * of values here, one set for U3 and one set for U3H&n; */
+DECL|macro|BACKSIDE_FAN_PWM_DEFAULT_ID
+mdefine_line|#define BACKSIDE_FAN_PWM_DEFAULT_ID&t;1
+DECL|macro|BACKSIDE_FAN_PWM_INDEX
+mdefine_line|#define BACKSIDE_FAN_PWM_INDEX&t;&t;0
+DECL|macro|BACKSIDE_PID_U3_G_d
+mdefine_line|#define BACKSIDE_PID_U3_G_d&t;&t;0x02800000
+DECL|macro|BACKSIDE_PID_U3H_G_d
+mdefine_line|#define BACKSIDE_PID_U3H_G_d&t;&t;0x01400000
 DECL|macro|BACKSIDE_PID_G_p
 mdefine_line|#define BACKSIDE_PID_G_p&t;&t;0x00500000
 DECL|macro|BACKSIDE_PID_G_r
 mdefine_line|#define BACKSIDE_PID_G_r&t;&t;0x00000000
-DECL|macro|BACKSIDE_PID_INPUT_TARGET
-mdefine_line|#define BACKSIDE_PID_INPUT_TARGET&t;0x00410000
+DECL|macro|BACKSIDE_PID_U3_INPUT_TARGET
+mdefine_line|#define BACKSIDE_PID_U3_INPUT_TARGET&t;0x00410000
+DECL|macro|BACKSIDE_PID_U3H_INPUT_TARGET
+mdefine_line|#define BACKSIDE_PID_U3H_INPUT_TARGET&t;0x004b0000
 DECL|macro|BACKSIDE_PID_INTERVAL
 mdefine_line|#define BACKSIDE_PID_INTERVAL&t;&t;5
 DECL|macro|BACKSIDE_PID_OUTPUT_MAX
 mdefine_line|#define BACKSIDE_PID_OUTPUT_MAX&t;&t;100
-DECL|macro|BACKSIDE_PID_OUTPUT_MIN
-mdefine_line|#define BACKSIDE_PID_OUTPUT_MIN&t;&t;20
+DECL|macro|BACKSIDE_PID_U3_OUTPUT_MIN
+mdefine_line|#define BACKSIDE_PID_U3_OUTPUT_MIN&t;20
+DECL|macro|BACKSIDE_PID_U3H_OUTPUT_MIN
+mdefine_line|#define BACKSIDE_PID_U3H_OUTPUT_MIN&t;30
 DECL|macro|BACKSIDE_PID_HISTORY_SIZE
 mdefine_line|#define BACKSIDE_PID_HISTORY_SIZE&t;2
+DECL|struct|basckside_pid_params
+r_struct
+id|basckside_pid_params
+(brace
+DECL|member|G_d
+id|s32
+id|G_d
+suffix:semicolon
+DECL|member|G_p
+id|s32
+id|G_p
+suffix:semicolon
+DECL|member|G_r
+id|s32
+id|G_r
+suffix:semicolon
+DECL|member|input_target
+id|s32
+id|input_target
+suffix:semicolon
+DECL|member|output_min
+id|s32
+id|output_min
+suffix:semicolon
+DECL|member|output_max
+id|s32
+id|output_max
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|backside_pid_state
 r_struct
 id|backside_pid_state
@@ -416,8 +454,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * PID factors for the Drive Bay fan control loop&n; */
-DECL|macro|DRIVES_FAN_RPM_ID
-mdefine_line|#define DRIVES_FAN_RPM_ID      &t;&t;2
+DECL|macro|DRIVES_FAN_RPM_DEFAULT_ID
+mdefine_line|#define DRIVES_FAN_RPM_DEFAULT_ID&t;2
+DECL|macro|DRIVES_FAN_RPM_INDEX
+mdefine_line|#define DRIVES_FAN_RPM_INDEX&t;&t;1
 DECL|macro|DRIVES_PID_G_d
 mdefine_line|#define DRIVES_PID_G_d&t;&t;&t;0x01e00000
 DECL|macro|DRIVES_PID_G_p
@@ -480,19 +520,29 @@ id|first
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SLOTS_FAN_PWM_ID
-mdefine_line|#define SLOTS_FAN_PWM_ID       &t;&t;2
+DECL|macro|SLOTS_FAN_PWM_DEFAULT_ID
+mdefine_line|#define SLOTS_FAN_PWM_DEFAULT_ID&t;2
+DECL|macro|SLOTS_FAN_PWM_INDEX
+mdefine_line|#define SLOTS_FAN_PWM_INDEX&t;&t;2
 DECL|macro|SLOTS_FAN_DEFAULT_PWM
 mdefine_line|#define&t;SLOTS_FAN_DEFAULT_PWM&t;&t;50 /* Do better here ! */
 multiline_comment|/*&n; * IDs in Darwin for the sensors &amp; fans&n; *&n; * CPU A AD7417_TEMP&t;10&t;(CPU A ambient temperature)&n; * CPU A AD7417_AD1&t;11&t;(CPU A diode temperature)&n; * CPU A AD7417_AD2&t;12&t;(CPU A 12V current)&n; * CPU A AD7417_AD3&t;13&t;(CPU A voltage)&n; * CPU A AD7417_AD4&t;14&t;(CPU A current)&n; *&n; * CPU A FAKE POWER&t;48&t;(I_V_inputs: 13, 14)&n; *&n; * CPU B AD7417_TEMP&t;15&t;(CPU B ambient temperature)&n; * CPU B AD7417_AD1&t;16&t;(CPU B diode temperature)&n; * CPU B AD7417_AD2&t;17&t;(CPU B 12V current)&n; * CPU B AD7417_AD3&t;18&t;(CPU B voltage)&n; * CPU B AD7417_AD4&t;19&t;(CPU B current)&n; *&n; * CPU B FAKE POWER&t;49&t;(I_V_inputs: 18, 19)&n; */
-DECL|macro|CPUA_INTAKE_FAN_RPM_ID
-mdefine_line|#define CPUA_INTAKE_FAN_RPM_ID&t;&t;3
-DECL|macro|CPUA_EXHAUST_FAN_RPM_ID
-mdefine_line|#define CPUA_EXHAUST_FAN_RPM_ID&t;&t;4
-DECL|macro|CPUB_INTAKE_FAN_RPM_ID
-mdefine_line|#define CPUB_INTAKE_FAN_RPM_ID&t;&t;5
-DECL|macro|CPUB_EXHAUST_FAN_RPM_ID
-mdefine_line|#define CPUB_EXHAUST_FAN_RPM_ID&t;&t;6
+DECL|macro|CPUA_INTAKE_FAN_RPM_DEFAULT_ID
+mdefine_line|#define CPUA_INTAKE_FAN_RPM_DEFAULT_ID&t;3
+DECL|macro|CPUA_EXHAUST_FAN_RPM_DEFAULT_ID
+mdefine_line|#define CPUA_EXHAUST_FAN_RPM_DEFAULT_ID&t;4
+DECL|macro|CPUB_INTAKE_FAN_RPM_DEFAULT_ID
+mdefine_line|#define CPUB_INTAKE_FAN_RPM_DEFAULT_ID&t;5
+DECL|macro|CPUB_EXHAUST_FAN_RPM_DEFAULT_ID
+mdefine_line|#define CPUB_EXHAUST_FAN_RPM_DEFAULT_ID&t;6
+DECL|macro|CPUA_INTAKE_FAN_RPM_INDEX
+mdefine_line|#define CPUA_INTAKE_FAN_RPM_INDEX&t;3
+DECL|macro|CPUA_EXHAUST_FAN_RPM_INDEX
+mdefine_line|#define CPUA_EXHAUST_FAN_RPM_INDEX&t;4
+DECL|macro|CPUB_INTAKE_FAN_RPM_INDEX
+mdefine_line|#define CPUB_INTAKE_FAN_RPM_INDEX&t;5
+DECL|macro|CPUB_EXHAUST_FAN_RPM_INDEX
+mdefine_line|#define CPUB_EXHAUST_FAN_RPM_INDEX&t;6
 DECL|macro|CPU_INTAKE_SCALE
 mdefine_line|#define CPU_INTAKE_SCALE&t;&t;0x0000f852
 DECL|macro|CPU_TEMP_HISTORY_SIZE
@@ -503,6 +553,14 @@ DECL|macro|CPU_PID_INTERVAL
 mdefine_line|#define CPU_PID_INTERVAL&t;&t;1
 DECL|macro|CPU_MAX_OVERTEMP
 mdefine_line|#define CPU_MAX_OVERTEMP&t;&t;30
+DECL|macro|CPUA_PUMP_RPM_INDEX
+mdefine_line|#define CPUA_PUMP_RPM_INDEX&t;&t;7
+DECL|macro|CPUB_PUMP_RPM_INDEX
+mdefine_line|#define CPUB_PUMP_RPM_INDEX&t;&t;8
+DECL|macro|CPU_PUMP_OUTPUT_MAX
+mdefine_line|#define CPU_PUMP_OUTPUT_MAX&t;&t;3700
+DECL|macro|CPU_PUMP_OUTPUT_MIN
+mdefine_line|#define CPU_PUMP_OUTPUT_MIN&t;&t;1000
 DECL|struct|cpu_pid_state
 r_struct
 id|cpu_pid_state
@@ -578,6 +636,10 @@ suffix:semicolon
 DECL|member|last_temp
 id|s32
 id|last_temp
+suffix:semicolon
+DECL|member|last_power
+id|s32
+id|last_power
 suffix:semicolon
 DECL|member|first
 r_int
