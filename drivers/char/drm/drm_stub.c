@@ -134,9 +134,12 @@ id|driver
 r_int
 id|retcode
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dev-&gt;count_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_timer
 c_func
