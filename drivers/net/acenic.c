@@ -602,13 +602,13 @@ comma
 l_string|&quot;AceNIC/3C985/GA620 ratio of NIC memory used for TX/RX descriptors (range 0-63)&quot;
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;acenic.c: v0.92 08/05/2002  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
@@ -2543,7 +2543,7 @@ suffix:semicolon
 DECL|function|ace_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|ace_init
 c_func
 (paren
@@ -11125,7 +11125,7 @@ suffix:semicolon
 DECL|function|ace_copy
 r_static
 r_void
-id|__init
+id|__devinit
 id|ace_copy
 c_func
 (paren
@@ -11305,7 +11305,7 @@ suffix:semicolon
 DECL|function|ace_clear
 r_static
 r_void
-id|__init
+id|__devinit
 id|ace_clear
 c_func
 (paren
@@ -11467,7 +11467,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Download the firmware into the SRAM on the NIC&n; *&n; * This operation requires the NIC to be halted and is performed with&n; * interrupts disabled and with the spinlock hold.&n; */
 DECL|function|ace_load_firmware
 r_int
-id|__init
+id|__devinit
 id|ace_load_firmware
 c_func
 (paren
@@ -11681,7 +11681,7 @@ multiline_comment|/*&n; * The eeprom on the AceNIC is an Atmel i2c EEPROM.&n; *&
 DECL|function|eeprom_start
 r_static
 r_void
-id|__init
+id|__devinit
 id|eeprom_start
 c_func
 (paren
@@ -11843,7 +11843,7 @@ suffix:semicolon
 DECL|function|eeprom_prep
 r_static
 r_void
-id|__init
+id|__devinit
 id|eeprom_prep
 c_func
 (paren
@@ -12043,7 +12043,7 @@ suffix:semicolon
 DECL|function|eeprom_check_ack
 r_static
 r_int
-id|__init
+id|__devinit
 id|eeprom_check_ack
 c_func
 (paren
@@ -12195,7 +12195,7 @@ suffix:semicolon
 DECL|function|eeprom_stop
 r_static
 r_void
-id|__init
+id|__devinit
 id|eeprom_stop
 c_func
 (paren
@@ -12373,7 +12373,7 @@ multiline_comment|/*&n; * Read a whole byte from the EEPROM.&n; */
 DECL|function|read_eeprom_byte
 r_static
 r_int
-id|__init
+id|__devinit
 id|read_eeprom_byte
 c_func
 (paren
