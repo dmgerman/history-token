@@ -772,12 +772,7 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|owner
@@ -806,12 +801,7 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* Currently -&gt;owner protects _only_ -&gt;probe() itself. */
-r_if
-c_cond
-(paren
-id|owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|owner

@@ -15473,12 +15473,7 @@ op_star
 id|ops
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ops-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|ops-&gt;owner

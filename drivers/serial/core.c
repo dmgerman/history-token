@@ -1138,7 +1138,8 @@ c_cond
 (paren
 id|quot
 )paren
-r_break
+r_return
+id|quot
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Oops, the quotient was zero.  Try again with&n;&t;&t; * the old baud rate if possible.&n;&t;&t; */
 id|termios-&gt;c_cflag
@@ -4806,12 +4807,7 @@ id|info-&gt;open_wait
 suffix:semicolon
 id|done
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
@@ -5986,12 +5982,7 @@ id|retval
 suffix:semicolon
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner

@@ -126,10 +126,10 @@ mdefine_line|#define late_initcall(fn)&t;&t;module_init(fn)
 multiline_comment|/* These macros create a dummy inline: gcc 2.9x does not count alias&n; as usage, hence the `unused function&squot; warning when __init functions&n; are declared static. We use the dummy __*_module_inline functions&n; both to kill the warning and check the type of the init/cleanup&n; function. */
 multiline_comment|/* Each module must use one module_init(), or one no_module_init */
 DECL|macro|module_init
-mdefine_line|#define module_init(initfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline initcall_t __inittest(void)&t;&t;&bslash;&n;&t;{ return initfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void) __attribute__((alias(#initfn)));
+mdefine_line|#define module_init(initfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline initcall_t __inittest(void)&t;&t;&bslash;&n;&t;{ return initfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;int init_module(void) __attribute__((alias(#initfn)));
 multiline_comment|/* This is only required if you want to be unloadable. */
 DECL|macro|module_exit
-mdefine_line|#define module_exit(exitfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline exitcall_t __exittest(void)&t;&t;&bslash;&n;&t;{ return exitfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;void __exitfn(void) __attribute__((alias(#exitfn)));
+mdefine_line|#define module_exit(exitfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline exitcall_t __exittest(void)&t;&t;&bslash;&n;&t;{ return exitfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#exitfn)));
 DECL|macro|__setup
 mdefine_line|#define __setup(str,func) /* nothing */
 macro_line|#endif

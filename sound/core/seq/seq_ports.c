@@ -7,31 +7,6 @@ macro_line|#include &quot;seq_ports.h&quot;
 macro_line|#include &quot;seq_clientmgr.h&quot;
 multiline_comment|/*&n;&n;   registration of client ports&n;&n; */
 multiline_comment|/* &n;&n;NOTE: the current implementation of the port structure as a linked list is&n;not optimal for clients that have many ports. For sending messages to all&n;subscribers of a port we first need to find the address of the port&n;structure, which means we have to traverse the list. A direct access table&n;(array) would be better, but big preallocated arrays waste memory.&n;&n;Possible actions:&n;&n;1) leave it this way, a client does normaly does not have more than a few&n;ports&n;&n;2) replace the linked list of ports by a array of pointers which is&n;dynamicly kmalloced. When a port is added or deleted we can simply allocate&n;a new array, copy the corresponding pointers, and delete the old one. We&n;then only need a pointer to this array, and an integer that tells us how&n;much elements are in array.&n;&n;*/
-DECL|function|dec_mod_count
-r_static
-r_inline
-r_void
-id|dec_mod_count
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|module
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* return pointer to port structure - port is locked if found */
 DECL|function|snd_seq_port_use_ptr
 id|client_port_t
@@ -1631,7 +1606,7 @@ OL
 l_int|0
 )paren
 (brace
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|port-&gt;owner
@@ -1761,7 +1736,7 @@ comma
 id|SNDRV_SEQ_EVENT_PORT_UNSUBSCRIBED
 )paren
 suffix:semicolon
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|port-&gt;owner

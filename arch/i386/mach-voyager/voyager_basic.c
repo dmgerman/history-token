@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/voyager.h&gt;
@@ -45,6 +46,59 @@ id|voyager_SUS
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_static
+r_void
+DECL|function|voyager_dump
+id|voyager_dump
+c_func
+(paren
+r_int
+id|dummy1
+comma
+r_struct
+id|pt_regs
+op_star
+id|dummy2
+comma
+r_struct
+id|tty_struct
+op_star
+id|dummy3
+)paren
+(brace
+multiline_comment|/* get here via a sysrq */
+id|voyager_smp_dump
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_voyager_dump_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_voyager_dump_op
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|voyager_dump
+comma
+dot
+id|help_msg
+op_assign
+l_string|&quot;Voyager&quot;
+comma
+dot
+id|action_msg
+op_assign
+l_string|&quot;Dump Voyager Status&bslash;n&quot;
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 r_void
 DECL|function|voyager_detect
 id|voyager_detect
@@ -152,6 +206,17 @@ id|pm_power_off
 op_assign
 id|voyager_power_off
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|register_sysrq_key
+c_func
+(paren
+l_char|&squot;v&squot;
+comma
+op_amp
+id|sysrq_voyager_dump_op
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -473,22 +538,6 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
-r_void
-DECL|function|voyager_dump
-id|voyager_dump
-c_func
-(paren
-)paren
-(brace
-multiline_comment|/* get here via a sysrq */
-macro_line|#ifdef CONFIG_SMP
-id|voyager_smp_dump
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* voyager specific handling code for timer interrupts.  Used to hand&n; * off the timer tick to the SMP code, since the VIC doesn&squot;t have an&n; * internal timer (The QIC does, but that&squot;s another story). */
 r_void

@@ -176,12 +176,12 @@ mdefine_line|#define outsw_swapw(port, buf, nr) raw_outsw_swapw(ADDR_TRANS_W(por
 macro_line|#endif /* CONFIG_ATARI || CONFIG_Q40 */
 DECL|macro|ATA_ARCH_ACK_INTR
 mdefine_line|#define ATA_ARCH_ACK_INTR
-macro_line|#ifdef CONFIG_ATARI
+macro_line|#ifdef CONFIG_BLK_DEV_FALCON_IDE
 DECL|macro|ATA_ARCH_LOCK
 mdefine_line|#define ATA_ARCH_LOCK
 r_extern
 r_int
-id|ide_intr_lock
+id|falconide_intr_lock
 suffix:semicolon
 DECL|function|ide_release_lock
 r_static
@@ -201,7 +201,7 @@ id|MACH_IS_ATARI
 r_if
 c_cond
 (paren
-id|ide_intr_lock
+id|falconide_intr_lock
 op_eq
 l_int|0
 )paren
@@ -215,7 +215,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ide_intr_lock
+id|falconide_intr_lock
 op_assign
 l_int|0
 suffix:semicolon
@@ -263,7 +263,7 @@ id|MACH_IS_ATARI
 r_if
 c_cond
 (paren
-id|ide_intr_lock
+id|falconide_intr_lock
 op_eq
 l_int|0
 )paren
@@ -292,14 +292,14 @@ comma
 id|data
 )paren
 suffix:semicolon
-id|ide_intr_lock
+id|falconide_intr_lock
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_ATARI */
+macro_line|#endif /* CONFIG_BLK_DEV_FALCON_IDE */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_IDE_H */
 eof
