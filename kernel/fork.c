@@ -1599,13 +1599,23 @@ c_cond
 id|tsk-&gt;user_tid
 )paren
 (brace
+r_int
+op_star
+id|user_tid
+op_assign
+id|tsk-&gt;user_tid
+suffix:semicolon
+id|tsk-&gt;user_tid
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
 id|put_user
 c_func
 (paren
 l_int|0
 comma
-id|tsk-&gt;user_tid
+id|user_tid
 )paren
 suffix:semicolon
 id|sys_futex
@@ -1615,7 +1625,7 @@ c_func
 r_int
 r_int
 )paren
-id|tsk-&gt;user_tid
+id|user_tid
 comma
 id|FUTEX_WAKE
 comma
