@@ -110,6 +110,26 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
+DECL|function|pressure_to_priority
+r_static
+r_int
+id|pressure_to_priority
+c_func
+(paren
+r_int
+id|pressure
+)paren
+(brace
+r_return
+id|DEF_PRIORITY
+op_minus
+(paren
+id|pressure
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The list of shrinker callbacks used by to apply pressure to&n; * ageable caches.&n; */
 DECL|struct|shrinker
 r_struct
@@ -2116,7 +2136,11 @@ id|distress
 op_assign
 l_int|100
 op_rshift
-id|priority
+id|pressure_to_priority
+c_func
+(paren
+id|zone-&gt;pressure
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The point of this algorithm is to decide when to start reclaiming&n;&t; * mapped memory instead of just pagecache.  Work out how much memory&n;&t; * is mapped.&n;&t; */
 id|mapped_ratio
