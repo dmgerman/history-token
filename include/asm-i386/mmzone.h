@@ -125,6 +125,11 @@ macro_line|#ifdef CONFIG_X86_NUMAQ
 macro_line|#include &lt;asm/numaq.h&gt;
 macro_line|#elif CONFIG_X86_SUMMIT
 macro_line|#include &lt;asm/srat.h&gt;
+macro_line|#elif CONFIG_X86_PC
+DECL|macro|get_memcfg_numa
+mdefine_line|#define get_memcfg_numa get_memcfg_numa_flat
+DECL|macro|get_zholes_size
+mdefine_line|#define get_zholes_size(n) (0)
 macro_line|#else
 DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
