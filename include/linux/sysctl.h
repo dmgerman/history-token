@@ -1672,6 +1672,11 @@ id|NET_IPV4_NF_CONNTRACK_SCTP_TIMEOUT_SHUTDOWN_ACK_SENT
 op_assign
 l_int|26
 comma
+DECL|enumerator|NET_IPV4_NF_CONNTRACK_COUNT
+id|NET_IPV4_NF_CONNTRACK_COUNT
+op_assign
+l_int|27
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6 */
