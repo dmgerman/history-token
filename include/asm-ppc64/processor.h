@@ -1216,6 +1216,8 @@ suffix:semicolon
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
 macro_line|#endif /* ASSEMBLY */
+DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
+mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 multiline_comment|/*&n; * Number of entries in the SLB. If this ever changes we should handle&n; * it with a use a cpu feature fixup.&n; */
 DECL|macro|SLB_NUM_ENTRIES
 mdefine_line|#define SLB_NUM_ENTRIES 64
