@@ -322,6 +322,8 @@ DECL|macro|vortex_t_magic
 mdefine_line|#define vortex_t_magic&t;&t;&t;&t;0xa15a4601
 DECL|macro|atiixp_t_magic
 mdefine_line|#define atiixp_t_magic&t;&t;&t;&t;0xa15a4701
+DECL|macro|amd7930_t_magic
+mdefine_line|#define amd7930_t_magic&t;&t;&t;&t;0xa15a4801
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)
