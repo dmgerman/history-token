@@ -590,7 +590,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pm_init
-id|__initcall
+id|fs_initcall
 c_func
 (paren
 id|pm_init

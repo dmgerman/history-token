@@ -650,6 +650,15 @@ l_string|&quot;16 (ALS-4000)&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SB_HW_DT019X
+suffix:colon
+id|str
+op_assign
+l_string|&quot;(DT019X/ALS007)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return

@@ -12471,6 +12471,15 @@ id|device_driver
 id|isapnp_device_driver
 op_assign
 (brace
+dot
+id|devices
+op_assign
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|isapnp_device_driver.devices
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|function|isapnp_init_device_tree

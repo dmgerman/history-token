@@ -959,7 +959,7 @@ id|sk
 )paren
 suffix:semicolon
 DECL|macro|lock_sock
-mdefine_line|#define lock_sock(__sk) &bslash;&n;do {&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;lock.users != 0) &bslash;&n;&t;&t;__lock_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.users = 1; &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
+mdefine_line|#define lock_sock(__sk) &bslash;&n;do {&t;might_sleep(); &bslash;&n;&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;lock.users != 0) &bslash;&n;&t;&t;__lock_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.users = 1; &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
 DECL|macro|release_sock
 mdefine_line|#define release_sock(__sk) &bslash;&n;do {&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;backlog.tail != NULL) &bslash;&n;&t;&t;__release_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.users = 0; &bslash;&n;        if (waitqueue_active(&amp;((__sk)-&gt;lock.wq))) wake_up(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
 multiline_comment|/* BH context may only use the following locking interface. */

@@ -251,8 +251,9 @@ id|address_space_operations
 id|efs_symlink_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|efs_symlink_readpage
 )brace
 suffix:semicolon

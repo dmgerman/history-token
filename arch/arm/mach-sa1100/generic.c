@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/generic.c&n; *&n; * Author: Nicolas Pitre&n; *&n; * Code common to all SA11x0 machines.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Since this file should be linked before any other machine specific file,&n; * the __initcall() here will be executed first.  This serves as default&n; * initialization stuff for SA1100 machines which can be overriden later if&n; * need be.&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/generic.c&n; *&n; * Author: Nicolas Pitre&n; *&n; * Code common to all SA11x0 machines.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -277,7 +277,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sa1100_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|sa1100_init

@@ -175,6 +175,19 @@ DECL|macro|AC97_CSR_SPECF_DATA
 mdefine_line|#define AC97_CSR_SPECF_DATA&t;0x6e&t;/* Special Feature Data */
 DECL|macro|AC97_CSR_BDI_STATUS
 mdefine_line|#define AC97_CSR_BDI_STATUS&t;0x7a&t;/* BDI Status */
+multiline_comment|/* specific - Conexant */
+DECL|macro|AC97_CXR_AUDIO_MISC
+mdefine_line|#define AC97_CXR_AUDIO_MISC&t;0x5c
+DECL|macro|AC97_CXR_SPDIFEN
+mdefine_line|#define AC97_CXR_SPDIFEN&t;(1&lt;&lt;3)
+DECL|macro|AC97_CXR_COPYRGT
+mdefine_line|#define AC97_CXR_COPYRGT&t;(1&lt;&lt;2)
+DECL|macro|AC97_CXR_SPDIF_MASK
+mdefine_line|#define AC97_CXR_SPDIF_MASK&t;(3&lt;&lt;0)
+DECL|macro|AC97_CXR_SPDIF_PCM
+mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
+DECL|macro|AC97_CXR_SPDIF_AC3
+mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_SURROUND_DAC
 mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;0)&t;/* surround L&amp;R DACs are present */
@@ -187,6 +200,8 @@ DECL|macro|AC97_AD_MULTI
 mdefine_line|#define AC97_AD_MULTI&t;&t;(1&lt;&lt;1)&t;/* Analog Devices - multi codecs */
 DECL|macro|AC97_CS_SPDIF
 mdefine_line|#define AC97_CS_SPDIF&t;&t;(1&lt;&lt;2)&t;/* Cirrus Logic uses funky SPDIF */
+DECL|macro|AC97_CX_SPDIF
+mdefine_line|#define AC97_CX_SPDIF&t;&t;(1&lt;&lt;3)&t;/* Conexant&squot;s spdif interface */
 multiline_comment|/*&n;&n; */
 DECL|typedef|ac97_t
 r_typedef
@@ -198,6 +213,18 @@ DECL|struct|_snd_ac97
 r_struct
 id|_snd_ac97
 (brace
+DECL|member|reset
+r_void
+(paren
+op_star
+id|reset
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 DECL|member|write
 r_void
 (paren
@@ -383,6 +410,12 @@ l_int|0x80
 )braket
 suffix:semicolon
 multiline_comment|/* register cache */
+DECL|member|limited_regs
+r_int
+r_int
+id|limited_regs
+suffix:semicolon
+multiline_comment|/* allow limited registers only */
 id|bitmap_member
 c_func
 (paren

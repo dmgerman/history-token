@@ -333,7 +333,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* enqueue cell to prioq */
 DECL|function|snd_seq_prioq_cell_in
-r_void
+r_int
 id|snd_seq_prioq_cell_in
 c_func
 (paren
@@ -358,42 +358,31 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+id|count
+suffix:semicolon
+r_int
 id|prior
 suffix:semicolon
-r_if
-c_cond
+id|snd_assert
+c_func
 (paren
 id|f
-op_eq
-l_int|NULL
-)paren
-(brace
-id|snd_printd
-c_func
-(paren
-l_string|&quot;oops: snd_seq_prioq_cell_in() called with NULL prioq&bslash;n&quot;
-)paren
-suffix:semicolon
+comma
 r_return
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
-)brace
-r_if
-c_cond
+id|snd_assert
+c_func
 (paren
 id|cell
-op_eq
-l_int|NULL
-)paren
-(brace
-id|snd_printd
-c_func
-(paren
-l_string|&quot;oops: snd_seq_prioq_cell_in() called with NULL cell&bslash;n&quot;
-)paren
-suffix:semicolon
+comma
 r_return
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/* check flags */
 id|prior
 op_assign
@@ -462,6 +451,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -476,6 +466,11 @@ op_assign
 id|f-&gt;head
 suffix:semicolon
 multiline_comment|/* cursor */
+id|count
+op_assign
+l_int|10000
+suffix:semicolon
+multiline_comment|/* FIXME: enough big, isn&squot;t it? */
 r_while
 c_loop
 (paren
@@ -531,6 +526,35 @@ id|cur
 op_assign
 id|cur-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_decrement
+id|count
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|f-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cannot find a pointer.. infinite loop?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* insert it before cursor */
 r_if
@@ -583,6 +607,9 @@ id|f-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* dequeue cell from prioq */

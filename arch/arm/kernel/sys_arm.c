@@ -1042,6 +1042,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1087,6 +1089,22 @@ id|task_struct
 op_star
 id|p
 suffix:semicolon
+multiline_comment|/*&n;&t; * We don&squot;t support SETTID / CLEARTID&n;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+(paren
+id|CLONE_SETTID
+op_or
+id|CLONE_CLEARTID
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1112,6 +1130,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1164,6 +1184,8 @@ comma
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

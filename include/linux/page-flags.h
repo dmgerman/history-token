@@ -229,6 +229,10 @@ id|swapper_space
 suffix:semicolon
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+r_struct
+id|page
+suffix:semicolon
+multiline_comment|/* forward declaration */
 r_int
 id|test_clear_page_dirty
 c_func

@@ -9473,7 +9473,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|flush_signals
@@ -9486,7 +9486,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace
