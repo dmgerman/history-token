@@ -18,6 +18,8 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
+DECL|macro|PFX
+mdefine_line|#define&t;PFX &quot;IPMI Watchdog: &quot;
 DECL|macro|IPMI_WATCHDOG_VERSION
 mdefine_line|#define IPMI_WATCHDOG_VERSION &quot;v32&quot;
 multiline_comment|/*&n; * The IPMI command/response information for the watchdog timer.&n; */
@@ -239,6 +241,11 @@ id|pretimeout_since_last_heartbeat
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|expect_close
+r_static
+r_char
+id|expect_close
+suffix:semicolon
 multiline_comment|/* If true, the driver will start running as soon as it is configured&n;   and ready. */
 DECL|variable|start_now
 r_static
@@ -412,6 +419,7 @@ suffix:semicolon
 multiline_comment|/* Is someone using the watchdog?  Only one user is allowed. */
 DECL|variable|ipmi_wdog_open
 r_static
+r_int
 r_int
 id|ipmi_wdog_open
 op_assign
@@ -829,7 +837,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;IPMI Watchdog, set timeout error: %d&bslash;n&quot;
+id|PFX
+l_string|&quot;set timeout error: %d&bslash;n&quot;
 comma
 id|rv
 )paren
@@ -1421,7 +1430,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;IPMI Watchdog, heartbeat failure: %d&bslash;n&quot;
+id|PFX
+l_string|&quot;heartbeat failure: %d&bslash;n&quot;
 comma
 id|rv
 )paren
@@ -1943,6 +1953,69 @@ c_cond
 id|len
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* In case it was set long ago */
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_ne
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_char
+id|c
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|c
+comma
+id|buf
+op_plus
+id|i
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;V&squot;
+)paren
+id|expect_close
+op_assign
+l_int|42
+suffix:semicolon
+)brace
+)brace
 id|rv
 op_assign
 id|ipmi_heartbeat
@@ -2205,16 +2278,21 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|ipmi_wdog_open
 )paren
+)paren
+(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|ipmi_wdog_open
-op_assign
-l_int|1
-suffix:semicolon
+)brace
 multiline_comment|/* Don&squot;t start the timer now, let it start on the&n;&t;&t;       first heartbeat. */
 id|ipmi_start_timer_on_heartbeat
 op_assign
@@ -2378,8 +2456,9 @@ id|WATCHDOG_MINOR
 r_if
 c_cond
 (paren
-op_logical_neg
-id|nowayout
+id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|ipmi_watchdog_state
@@ -2392,11 +2471,32 @@ c_func
 id|IPMI_SET_TIMEOUT_NO_HB
 )paren
 suffix:semicolon
-)brace
-id|ipmi_wdog_open
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|ipmi_wdog_open
+)paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+id|PFX
+l_string|&quot;Unexpected close, not stopping watchdog!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ipmi_heartbeat
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|ipmi_fasync
 (paren
@@ -2407,6 +2507,10 @@ id|filep
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|expect_close
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -2514,7 +2618,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;IPMI Watchdog response: Error %x on cmd %x&bslash;n&quot;
+id|PFX
+l_string|&quot;response: Error %x on cmd %x&bslash;n&quot;
 comma
 id|msg-&gt;msg.data
 (braket
@@ -2693,7 +2798,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;IPMI watchdog: Unable to register with ipmi&bslash;n&quot;
+id|KERN_CRIT
+id|PFX
+l_string|&quot;Unable to register with ipmi&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2742,7 +2849,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IPMI watchdog: Unable to register misc device&bslash;n&quot;
+id|KERN_CRIT
+id|PFX
+l_string|&quot;Unable to register misc device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2788,7 +2897,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Starting IPMI Watchdog now!&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Starting now!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2834,7 +2945,8 @@ id|WDOG_PREOP_PANIC
 id|panic
 c_func
 (paren
-l_string|&quot;IPMI watchdog pre-timeout&quot;
+id|PFX
+l_string|&quot;pre-timeout&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* On some machines, the heartbeat will give&n;&t;   an error and not work unless we re-enable&n;&t;   the timer.   So do so. */
@@ -3145,7 +3257,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IPMI watchdog driver version &quot;
+id|PFX
+l_string|&quot;driver version &quot;
 id|IPMI_WATCHDOG_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
@@ -3238,7 +3351,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ipmi_watchdog: Unknown action &squot;%s&squot;, defaulting to&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Unknown action &squot;%s&squot;, defaulting to&quot;
 l_string|&quot; reset&bslash;n&quot;
 comma
 id|action
@@ -3335,7 +3450,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ipmi_watchdog: Unknown preaction &squot;%s&squot;, defaulting to&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Unknown preaction &squot;%s&squot;, defaulting to&quot;
 l_string|&quot; none&bslash;n&quot;
 comma
 id|preaction
@@ -3410,7 +3527,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ipmi_watchdog: Unknown preop &squot;%s&squot;, defaulting to&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Unknown preop &squot;%s&squot;, defaulting to&quot;
 l_string|&quot; none&bslash;n&quot;
 comma
 id|preop
@@ -3438,7 +3557,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi_watchdog: Pretimeout op is to give data&quot;
+id|PFX
+l_string|&quot;Pretimeout op is to give data&quot;
 l_string|&quot; but NMI pretimeout is enabled, setting&quot;
 l_string|&quot; pretimeout op to none&bslash;n&quot;
 )paren
@@ -3461,7 +3581,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi_watchdog: nmi_watchdog is set to IO APIC&quot;
+id|PFX
+l_string|&quot;nmi_watchdog is set to IO APIC&quot;
 l_string|&quot; mode (value is %d), that is incompatible&quot;
 l_string|&quot; with using NMI in the IPMI watchdog.&quot;
 l_string|&quot; Disabling IPMI nmi pretimeout.&bslash;n&quot;
@@ -3496,7 +3617,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi_watchdog: Can&squot;t register nmi handler&bslash;n&quot;
+id|PFX
+l_string|&quot;Can&squot;t register nmi handler&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3543,7 +3665,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ipmi_watchdog: can&squot;t register smi watcher&bslash;n&quot;
+id|PFX
+l_string|&quot;can&squot;t register smi watcher&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3696,7 +3819,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;IPMI Watchdog, error unlinking from IPMI: %d&bslash;n&quot;
+id|PFX
+l_string|&quot;error unlinking from IPMI: %d&bslash;n&quot;
 comma
 id|rv
 )paren
