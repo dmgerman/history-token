@@ -453,11 +453,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -980,22 +975,12 @@ multiline_comment|/* mode &amp; 0222 == 0 */
 )brace
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|buf
-)paren
 id|kfree
 c_func
 (paren
 id|buf
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -1345,7 +1330,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 multiline_comment|/* Can not refresh inode by passing in file_info buf to be returned&n;&t;   by SMBOpen and then calling get_inode_info with returned buf &n;&t;   since file might have write behind data that needs to be flushed &n;&t;   and server version of file size can be stale. If we knew for sure&n;&t;   that inode was not dirty locally we could do this */
-multiline_comment|/*&t;buf = kmalloc(sizeof(FILE_ALL_INFO), GFP_KERNEL);&n;&t;if (buf == 0) {&n;&t;&t;up(&amp;pCifsFile-&gt;fh_sem);&n;&t;&t;if (full_path)&n;&t;&t;&t;kfree(full_path);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -ENOMEM;&n;&t;} */
+multiline_comment|/*&t;buf = kmalloc(sizeof(FILE_ALL_INFO), GFP_KERNEL);&n;&t;if (buf == 0) {&n;&t;&t;up(&amp;pCifsFile-&gt;fh_sem);&n;&t;&t;kfree(full_path);&n;&t;&t;FreeXid(xid);&n;&t;&t;return -ENOMEM;&n;&t;} */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -1586,11 +1571,6 @@ id|pCifsFile
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
 id|kfree
 c_func
 (paren
@@ -1753,11 +1733,6 @@ op_amp
 id|file-&gt;f_owner.lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pSMBFile-&gt;search_resume_name
-)paren
 id|kfree
 c_func
 (paren
