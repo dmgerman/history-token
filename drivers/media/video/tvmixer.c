@@ -10,19 +10,12 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEV_MAX
 mdefine_line|#define DEV_MAX  4
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|devnr
 r_static
 r_int
@@ -30,14 +23,6 @@ id|devnr
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -409,7 +394,11 @@ c_func
 (paren
 id|info.name
 comma
-id|client-&gt;dev.name
+id|i2c_clientname
+c_func
+(paren
+id|client
+)paren
 comma
 r_sizeof
 (paren
@@ -480,7 +469,11 @@ c_func
 (paren
 id|info.name
 comma
-id|client-&gt;dev.name
+id|i2c_clientname
+c_func
+(paren
+id|client
+)paren
 comma
 r_sizeof
 (paren
@@ -818,6 +811,9 @@ c_func
 (paren
 id|va.balance
 comma
+(paren
+id|u16
+)paren
 l_int|32768
 )paren
 op_star
@@ -1190,12 +1186,12 @@ op_assign
 id|I2C_DF_NOTIFY
 comma
 dot
-id|attach_adapter
+id|detach_adapter
 op_assign
 id|tvmixer_adapters
 comma
 dot
-id|detach_adapter
+id|attach_adapter
 op_assign
 id|tvmixer_adapters
 comma
@@ -1263,19 +1259,6 @@ id|i2c_client
 op_star
 id|client
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: adapter %s&bslash;n&quot;
-comma
-id|adap-&gt;dev.name
-)paren
-suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -1330,7 +1313,6 @@ id|i
 comma
 id|minor
 suffix:semicolon
-multiline_comment|/* TV card ??? */
 r_if
 c_cond
 (paren
@@ -1343,38 +1325,9 @@ op_amp
 id|I2C_ADAP_CLASS_TV_ANALOG
 )paren
 )paren
-(brace
-multiline_comment|/* ignore that one */
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: %s is not a tv card&bslash;n&quot;
-comma
-id|client-&gt;adapter-&gt;dev.name
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: debug: %s&bslash;n&quot;
-comma
-id|client-&gt;dev.name
-)paren
 suffix:semicolon
 multiline_comment|/* unregister ?? */
 r_for
@@ -1441,7 +1394,11 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s unregistered (#1)&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|i2c_clientname
+c_func
+(paren
+id|client
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1506,25 +1463,10 @@ l_int|NULL
 op_eq
 id|client-&gt;driver-&gt;command
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: %s: driver-&gt;command is NULL&bslash;n&quot;
-comma
-id|client-&gt;driver-&gt;name
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1557,25 +1499,10 @@ op_amp
 id|va
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: %s: VIDIOCGAUDIO failed&bslash;n&quot;
-comma
-id|client-&gt;dev.name
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1587,25 +1514,10 @@ op_amp
 id|VIDEO_AUDIO_VOLUME
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;tvmixer: %s: has no volume control&bslash;n&quot;
-comma
-id|client-&gt;dev.name
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* everything is fine, register */
 r_if
 c_cond
@@ -1793,12 +1705,16 @@ c_func
 (paren
 l_string|&quot;tvmixer: %s unregistered (#2)&bslash;n&quot;
 comma
+id|i2c_clientname
+c_func
+(paren
 id|devices
 (braket
 id|i
 )braket
 dot
-id|dev-&gt;dev.name
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace

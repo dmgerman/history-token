@@ -119,7 +119,7 @@ r_int
 id|u64
 suffix:semicolon
 multiline_comment|/* DMA addresses come in generic and 64-bit flavours.  */
-macro_line|#ifdef CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM64G
 DECL|typedef|dma_addr_t
 r_typedef
 id|u64

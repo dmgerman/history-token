@@ -2,7 +2,7 @@ multiline_comment|/*&n; * i2c bus addresses for the chips supported by tvaudio.c
 DECL|macro|I2C_TDA8425
 mdefine_line|#define I2C_TDA8425        0x82
 DECL|macro|I2C_TDA9840
-mdefine_line|#define I2C_TDA9840        0x84
+mdefine_line|#define I2C_TDA9840        0x84 /* also used by TA8874Z */
 DECL|macro|I2C_TDA985x_L
 mdefine_line|#define I2C_TDA985x_L      0xb4 /* also used by 9873 */
 DECL|macro|I2C_TDA985x_H

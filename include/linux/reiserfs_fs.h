@@ -2548,6 +2548,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Size of pointer to the unformatted node. */
 DECL|macro|UNFM_P_SIZE
 mdefine_line|#define UNFM_P_SIZE (sizeof(unp_t))
+DECL|macro|UNFM_P_SHIFT
+mdefine_line|#define UNFM_P_SHIFT 2
 singleline_comment|// in in-core inode key is stored on le form
 DECL|macro|INODE_PKEY
 mdefine_line|#define INODE_PKEY(inode) ((struct key *)(REISERFS_I(inode)-&gt;i_key))
@@ -4675,6 +4677,26 @@ id|length
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_void
+id|restart_transaction
+c_func
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|path
+op_star
+id|path
+)paren
+suffix:semicolon
+r_void
 id|reiserfs_read_locked_inode
 c_func
 (paren
@@ -6555,6 +6577,16 @@ id|sb
 comma
 r_int
 id|blocks
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_can_fit_pages
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 multiline_comment|/* hashes.c */

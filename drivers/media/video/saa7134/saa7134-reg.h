@@ -5,9 +5,17 @@ macro_line|#ifndef PCI_DEVICE_ID_PHILIPS_SAA7130
 DECL|macro|PCI_DEVICE_ID_PHILIPS_SAA7130
 macro_line|# define PCI_DEVICE_ID_PHILIPS_SAA7130 0x7130
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_PHILIPS_SAA7133
+DECL|macro|PCI_DEVICE_ID_PHILIPS_SAA7133
+macro_line|# define PCI_DEVICE_ID_PHILIPS_SAA7133 0x7133
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_PHILIPS_SAA7134
 DECL|macro|PCI_DEVICE_ID_PHILIPS_SAA7134
 macro_line|# define PCI_DEVICE_ID_PHILIPS_SAA7134 0x7134
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_PHILIPS_SAA7135
+DECL|macro|PCI_DEVICE_ID_PHILIPS_SAA7135
+macro_line|# define PCI_DEVICE_ID_PHILIPS_SAA7135 0x7135
 macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/*&n; *  registers -- 32 bit&n; */
@@ -568,6 +576,17 @@ mdefine_line|#define SAA7134_I2S_AUDIO_OUTPUT                0x1c0
 multiline_comment|/* test modes */
 DECL|macro|SAA7134_SPECIAL_MODE
 mdefine_line|#define SAA7134_SPECIAL_MODE                    0x1d0
+multiline_comment|/* audio -- saa7133 + saa7135 only */
+DECL|macro|SAA7135_DSP_RWSTATE
+mdefine_line|#define SAA7135_DSP_RWSTATE                     0x580
+DECL|macro|SAA7135_DSP_RWSTATE_ERR
+mdefine_line|#define SAA7135_DSP_RWSTATE_ERR                 (1 &lt;&lt; 3)
+DECL|macro|SAA7135_DSP_RWSTATE_IDA
+mdefine_line|#define SAA7135_DSP_RWSTATE_IDA                 (1 &lt;&lt; 2)
+DECL|macro|SAA7135_DSP_RWSTATE_RDB
+mdefine_line|#define SAA7135_DSP_RWSTATE_RDB                 (1 &lt;&lt; 1)
+DECL|macro|SAA7135_DSP_RWSTATE_WRR
+mdefine_line|#define SAA7135_DSP_RWSTATE_WRR                 (1 &lt;&lt; 0)
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

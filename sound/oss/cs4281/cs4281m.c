@@ -7916,16 +7916,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: clear_advance(): memset %d at 0x%.8x for %d size &bslash;n&quot;
+l_string|&quot;cs4281: clear_advance(): memset %d at %p for %d size &bslash;n&quot;
 comma
 (paren
 r_int
 )paren
 id|c
 comma
-(paren
-r_int
-)paren
 (paren
 (paren
 r_char
@@ -8109,11 +8106,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_update_ptr(): s=0x%.8x hwptr=%d total_bytes=%d count=%d &bslash;n&quot;
+l_string|&quot;cs4281: cs4281_update_ptr(): s=%p hwptr=%d total_bytes=%d count=%d &bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|s
 comma
 id|s-&gt;dma_adc.hwptr
@@ -8257,7 +8251,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_update_ptr(): memset %d at 0x%.8x for %d size &bslash;n&quot;
+l_string|&quot;cs4281: cs4281_update_ptr(): memset %d at %p for %d size &bslash;n&quot;
 comma
 (paren
 r_int
@@ -8277,9 +8271,6 @@ l_int|0x80
 suffix:colon
 l_int|0
 comma
-(paren
-r_int
-)paren
 id|s-&gt;dma_dac.rawbuf
 comma
 id|s-&gt;dma_dac.dmasize
@@ -8430,11 +8421,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_update_ptr(): s=0x%.8x hwptr=%d total_bytes=%d count=%d &bslash;n&quot;
+l_string|&quot;cs4281: cs4281_update_ptr(): s=%p hwptr=%d total_bytes=%d count=%d &bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|s
 comma
 id|s-&gt;dma_dac.hwptr
@@ -9112,11 +9100,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: mixer_ioctl(): s=0x%.8x cmd=0x%.8x&bslash;n&quot;
+l_string|&quot;cs4281: mixer_ioctl(): s=%p cmd=0x%.8x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|s
 comma
 id|cmd
@@ -12217,16 +12202,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; dst=0x%x src=0x%x count=%d iChannels=%d fmt=0x%x&bslash;n&quot;
+l_string|&quot; dst=%p src=%p count=%d iChannels=%d fmt=0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|dst
 comma
-(paren
-r_int
-)paren
 id|src
 comma
 (paren
@@ -12599,7 +12578,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs_copy_to_user()+ fmt=0x%x fmt_o=0x%x cnt=%d dest=0x%.8x&bslash;n&quot;
+l_string|&quot;cs_copy_to_user()+ fmt=0x%x fmt_o=0x%x cnt=%d dest=%p&bslash;n&quot;
 comma
 id|s-&gt;prop_adc.fmt
 comma
@@ -12610,9 +12589,6 @@ r_int
 )paren
 id|cnt
 comma
-(paren
-r_int
-)paren
 id|dest
 )paren
 )paren
@@ -12819,7 +12795,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_read()+ %d &bslash;n&quot;
+l_string|&quot;cs4281: cs4281_read()+ %Zu &bslash;n&quot;
 comma
 id|count
 )paren
@@ -12921,7 +12897,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;_read() count&gt;0 count=%d .count=%d .swptr=%d .hwptr=%d &bslash;n&quot;
+l_string|&quot;_read() count&gt;0 count=%Zu .count=%d .swptr=%d .hwptr=%d &bslash;n&quot;
 comma
 id|count
 comma
@@ -13106,7 +13082,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;_read() copy_to cnt=%d count=%d &quot;
+l_string|&quot;_read() copy_to cnt=%d count=%Zu &quot;
 comma
 id|cnt
 comma
@@ -13125,15 +13101,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; .dmasize=%d .count=%d buffer=0x%.8x ret=%d&bslash;n&quot;
+l_string|&quot; .dmasize=%d .count=%d buffer=%p ret=%Zd&bslash;n&quot;
 comma
 id|s-&gt;dma_adc.dmasize
 comma
 id|s-&gt;dma_adc.count
 comma
-(paren
-r_int
-)paren
 id|buffer
 comma
 id|ret
@@ -13236,7 +13209,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_read()- %d&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_read()- %Zd&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -13312,7 +13285,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_write()+ count=%d&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_write()+ count=%Zu&bslash;n&quot;
 comma
 id|count
 )paren
@@ -13661,7 +13634,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_write()- %d&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_write()- %Zd&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -14320,11 +14293,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_ioctl(): file=0x%.8x cmd=0x%.8x&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_ioctl(): file=%p cmd=0x%.8x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|cmd
@@ -16660,16 +16630,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_release(): inode=0x%.8x file=0x%.8x f_mode=%d&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_release(): inode=%p file=%p f_mode=%d&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|file-&gt;f_mode
@@ -16862,16 +16826,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_open(): inode=0x%.8x file=0x%.8x f_mode=0x%x&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_open(): inode=%p file=%p f_mode=0x%x&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inode
 comma
-(paren
-r_int
-)paren
 id|file
 comma
 id|file-&gt;f_mode
@@ -20417,7 +20375,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: probe() BA0=0x%.8x BA1=0x%.8x pBA0=0x%.8x pBA1=0x%.8x &bslash;n&quot;
+l_string|&quot;cs4281: probe() BA0=0x%.8x BA1=0x%.8x pBA0=%p pBA1=%p &bslash;n&quot;
 comma
 (paren
 r_int
@@ -20429,14 +20387,8 @@ r_int
 )paren
 id|temp2
 comma
-(paren
-r_int
-)paren
 id|s-&gt;pBA0
 comma
-(paren
-r_int
-)paren
 id|s-&gt;pBA1
 )paren
 )paren
@@ -20724,11 +20676,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: probe() pm_register() succeeded (0x%x).&bslash;n&quot;
+l_string|&quot;cs4281: probe() pm_register() succeeded (%p).&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|pmdev
 )paren
 )paren
@@ -20755,11 +20704,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: probe() pm_register() failed (0x%x).&bslash;n&quot;
+l_string|&quot;cs4281: probe() pm_register() failed (%p).&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|pmdev
 )paren
 )paren

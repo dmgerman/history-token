@@ -666,25 +666,8 @@ id|pvec
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|lstart
-op_eq
-l_int|0
-op_logical_and
-id|mapping-&gt;nrpages
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: I goofed!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/**&n; * invalidate_mapping_pages - Invalidate all the unlocked pages of one inode&n; * @inode: the address_space which holds the pages to invalidate&n; * @end: the index of the last page to invalidate (inclusive)&n; * @nr_pages: defines the pagecache span.  Invalidate up to @start + @nr_pages&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_mapping_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
+multiline_comment|/**&n; * invalidate_mapping_pages - Invalidate all the unlocked pages of one inode&n; * @mapping: the address_space which holds the pages to invalidate&n; * @start: the offset &squot;from&squot; which to invalidate&n; * @end: the offset &squot;to&squot; which to invalidate (inclusive)&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_mapping_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
 DECL|function|invalidate_mapping_pages
 r_int
 r_int

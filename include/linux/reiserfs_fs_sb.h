@@ -1162,6 +1162,11 @@ r_int
 id|reserved_blocks
 suffix:semicolon
 multiline_comment|/* amount of blocks reserved for further allocations */
+DECL|member|bitmap_lock
+id|spinlock_t
+id|bitmap_lock
+suffix:semicolon
+multiline_comment|/* this lock on now only used to protect reserved_blocks variable */
 )brace
 suffix:semicolon
 multiline_comment|/* Definitions of reiserfs on-disk properties: */

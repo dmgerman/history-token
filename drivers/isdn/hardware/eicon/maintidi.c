@@ -551,6 +551,7 @@ id|pLib
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|pLib
 comma
@@ -558,6 +559,7 @@ l_int|0x00
 comma
 r_sizeof
 (paren
+op_star
 id|pLib
 )paren
 )paren

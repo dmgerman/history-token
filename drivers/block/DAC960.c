@@ -310,9 +310,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|file
+op_logical_and
+(paren
 id|file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
+)paren
 )paren
 r_return
 id|DAC960_UserIOCTL

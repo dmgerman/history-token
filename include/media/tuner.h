@@ -83,6 +83,8 @@ DECL|macro|TUNER_PHILIPS_FM1216ME_MK3
 mdefine_line|#define TUNER_PHILIPS_FM1216ME_MK3  38
 DECL|macro|TUNER_LG_NTSC_NEW_TAPC
 mdefine_line|#define TUNER_LG_NTSC_NEW_TAPC   39
+DECL|macro|TUNER_HITACHI_NTSC
+mdefine_line|#define TUNER_HITACHI_NTSC       40
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -111,6 +113,8 @@ DECL|macro|Samsung
 mdefine_line|#define Samsung 7
 DECL|macro|Microtune
 mdefine_line|#define Microtune 8
+DECL|macro|HITACHI
+mdefine_line|#define HITACHI 9
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ
