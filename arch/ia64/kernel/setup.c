@@ -1002,6 +1002,10 @@ r_int
 r_int
 id|ia64_iobase
 suffix:semicolon
+r_int
+r_int
+id|phys_iobase
+suffix:semicolon
 id|unw_init
 c_func
 (paren
@@ -1148,7 +1152,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6&n;&t; *    (uncached access range)&n;&t; *&n;&t; *  The EFI memory map is the &quot;prefered&quot; location to get the I/O port&n;&t; *  space base, rather the relying on AR.KR0. This should become more&n;&t; *  clear in future SAL specs. We&squot;ll fall back to getting it out of&n;&t; *  AR.KR0 if no appropriate entry is found in the memory map.&n;&t; */
-id|ia64_iobase
+id|phys_iobase
 op_assign
 id|efi_get_iobase
 c_func
@@ -1158,7 +1162,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ia64_iobase
+id|phys_iobase
 )paren
 multiline_comment|/* set AR.KR0 since this is all we use it for anyway */
 id|ia64_set_kr
@@ -1166,12 +1170,12 @@ c_func
 (paren
 id|IA64_KR_IO_BASE
 comma
-id|ia64_iobase
+id|phys_iobase
 )paren
 suffix:semicolon
 r_else
 (brace
-id|ia64_iobase
+id|phys_iobase
 op_assign
 id|ia64_get_kr
 c_func
@@ -1190,19 +1194,16 @@ c_func
 (paren
 l_string|&quot;I/O port base = 0x%lx&bslash;n&quot;
 comma
-id|ia64_iobase
+id|phys_iobase
 )paren
 suffix:semicolon
 )brace
 id|ia64_iobase
 op_assign
-id|__IA64_UNCACHED_OFFSET
-op_or
+id|ioremap
+c_func
 (paren
-id|ia64_iobase
-op_amp
-op_complement
-id|PAGE_OFFSET
+id|phys_iobase
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP

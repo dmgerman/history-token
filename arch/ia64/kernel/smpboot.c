@@ -1004,6 +1004,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set I/O port base per CPU&n;&t; */
+id|ia64_set_kr
+c_func
+(paren
+id|IA64_KR_IO_BASE
+comma
+id|__pa
+c_func
+(paren
+id|ia64_iobase
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_MCA
 id|ia64_mca_cmc_vector_setup
 c_func
