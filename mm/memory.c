@@ -1554,6 +1554,10 @@ c_cond
 id|next
 OG
 id|end
+op_logical_or
+id|next
+op_le
+id|addr
 )paren
 id|next
 op_assign
@@ -1751,6 +1755,10 @@ c_cond
 id|next
 OG
 id|end
+op_logical_or
+id|next
+op_le
+id|addr
 )paren
 id|next
 op_assign
