@@ -4982,6 +4982,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_info&n; *&n; * Description:&n; *   Return a string describing the driver.&n; *-F*************************************************************************/
+r_static
 r_const
 r_char
 op_star
