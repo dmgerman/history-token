@@ -1125,9 +1125,6 @@ op_star
 id|ohci
 )paren
 (brace
-id|u32
-id|temp
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -1169,6 +1166,9 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
+id|u32
+id|temp
+suffix:semicolon
 id|ohci_dbg
 (paren
 id|ohci
@@ -3114,22 +3114,5 @@ macro_line|#include &quot;ohci-pxa27x.c&quot;
 macro_line|#endif
 macro_line|#if !(defined(CONFIG_PCI) &bslash;&n;      || defined(CONFIG_SA1111) &bslash;&n;      || defined(CONFIG_ARCH_OMAP) &bslash;&n;      || defined (CONFIG_ARCH_LH7A404) &bslash;&n;      || defined (CONFIG_PXA27x) &bslash;&n;&t;)
 macro_line|#error &quot;missing bus glue for ohci-hcd&quot;
-macro_line|#endif
-macro_line|#if&t;!defined(HAVE_HNP) &amp;&amp; defined(CONFIG_USB_OTG)
-macro_line|#warning non-OTG configuration, too many HCDs
-DECL|function|start_hnp
-r_static
-r_void
-id|start_hnp
-c_func
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-)paren
-(brace
-multiline_comment|/* &quot;can&squot;t happen&quot; */
-)brace
 macro_line|#endif
 eof
