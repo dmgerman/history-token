@@ -161,9 +161,9 @@ multiline_comment|/* The debug level */
 multiline_comment|/* A few values that may be tweaked. */
 multiline_comment|/* The ring sizes should be a power of two for efficiency. */
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;32
+mdefine_line|#define TX_RING_SIZE&t;64
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;32
+mdefine_line|#define RX_RING_SIZE&t;64
 multiline_comment|/* How much slots multicast filter setup may take.&n;   Do not descrease without changing set_rx_mode() implementaion. */
 DECL|macro|TX_MULTICAST_SIZE
 mdefine_line|#define TX_MULTICAST_SIZE   2
