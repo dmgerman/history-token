@@ -1760,6 +1760,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|bio_release_pages
+r_static
 r_void
 id|bio_release_pages
 c_func

@@ -3141,6 +3141,31 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Shared signal handlers imply shared VM. By way of the above,&n;&t; * thread groups also imply shared VM. Blocking this case allows&n;&t; * for various simplifications in other code.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SIGHAND
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|clone_flags
+op_amp
+id|CLONE_VM
+)paren
+)paren
+r_return
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * CLONE_DETACHED must match CLONE_THREAD: it&squot;s a historical&n;&t; * thing.&n;&t; */
 r_if
 c_cond

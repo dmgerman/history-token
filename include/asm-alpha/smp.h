@@ -146,7 +146,6 @@ id|cpu_present_mask
 suffix:semicolon
 r_extern
 id|cpumask_t
-r_int
 id|cpu_online_map
 suffix:semicolon
 r_extern
