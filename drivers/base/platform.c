@@ -489,13 +489,6 @@ c_cond
 id|pdev
 )paren
 (brace
-id|device_unregister
-c_func
-(paren
-op_amp
-id|pdev-&gt;dev
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -540,6 +533,13 @@ id|r
 )paren
 suffix:semicolon
 )brace
+id|device_unregister
+c_func
+(paren
+op_amp
+id|pdev-&gt;dev
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|struct|platform_object
