@@ -754,9 +754,7 @@ id|__init
 DECL|function|acpi_boot_init
 id|acpi_boot_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 (brace
 r_int
@@ -775,7 +773,6 @@ op_assign
 id|acpi_table_init
 c_func
 (paren
-id|cmdline
 )paren
 suffix:semicolon
 r_if
