@@ -495,7 +495,7 @@ id|ps-&gt;type
 (brace
 id|ps-&gt;type
 op_member_access_from_pointer
-id|dtr
+id|destroy
 c_func
 (paren
 id|ps
@@ -715,7 +715,7 @@ id|hwh-&gt;type
 (brace
 id|hwh-&gt;type
 op_member_access_from_pointer
-id|dtr
+id|destroy
 c_func
 (paren
 id|hwh
@@ -1875,7 +1875,7 @@ id|r
 op_assign
 id|pst
 op_member_access_from_pointer
-id|ctr
+id|create
 c_func
 (paren
 op_amp
@@ -2538,7 +2538,7 @@ id|r
 op_assign
 id|hwht
 op_member_access_from_pointer
-id|ctr
+id|create
 c_func
 (paren
 op_amp
@@ -4071,13 +4071,13 @@ c_cond
 (paren
 id|hwh-&gt;type
 op_logical_and
-id|hwh-&gt;type-&gt;err
+id|hwh-&gt;type-&gt;error
 )paren
 id|err_flags
 op_assign
 id|hwh-&gt;type
 op_member_access_from_pointer
-id|err
+id|error
 c_func
 (paren
 id|hwh

@@ -52,11 +52,11 @@ r_int
 id|info_args
 suffix:semicolon
 multiline_comment|/*&n;&t; * Constructs a path selector object, takes custom arguments&n;&t; */
-DECL|member|ctr
+DECL|member|create
 r_int
 (paren
 op_star
-id|ctr
+id|create
 )paren
 (paren
 r_struct
@@ -73,11 +73,11 @@ op_star
 id|argv
 )paren
 suffix:semicolon
-DECL|member|dtr
+DECL|member|destroy
 r_void
 (paren
 op_star
-id|dtr
+id|destroy
 )paren
 (paren
 r_struct
