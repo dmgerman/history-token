@@ -455,6 +455,11 @@ op_star
 id|report
 suffix:semicolon
 multiline_comment|/* associated report */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* index into report-&gt;field[] */
 )brace
 suffix:semicolon
 DECL|macro|HID_MAX_FIELDS
