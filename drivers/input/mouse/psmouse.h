@@ -3,12 +3,16 @@ DECL|macro|_PSMOUSE_H
 mdefine_line|#define _PSMOUSE_H
 DECL|macro|PSMOUSE_CMD_SETSCALE11
 mdefine_line|#define PSMOUSE_CMD_SETSCALE11&t;0x00e6
+DECL|macro|PSMOUSE_CMD_SETSCALE21
+mdefine_line|#define PSMOUSE_CMD_SETSCALE21&t;0x00e7
 DECL|macro|PSMOUSE_CMD_SETRES
 mdefine_line|#define PSMOUSE_CMD_SETRES&t;0x10e8
 DECL|macro|PSMOUSE_CMD_GETINFO
 mdefine_line|#define PSMOUSE_CMD_GETINFO&t;0x03e9
 DECL|macro|PSMOUSE_CMD_SETSTREAM
 mdefine_line|#define PSMOUSE_CMD_SETSTREAM&t;0x00ea
+DECL|macro|PSMOUSE_CMD_SETPOLL
+mdefine_line|#define PSMOUSE_CMD_SETPOLL&t;0x00f0
 DECL|macro|PSMOUSE_CMD_POLL
 mdefine_line|#define PSMOUSE_CMD_POLL&t;0x03eb
 DECL|macro|PSMOUSE_CMD_GETID
@@ -289,6 +293,9 @@ id|PSMOUSE_IMEX
 comma
 DECL|enumerator|PSMOUSE_SYNAPTICS
 id|PSMOUSE_SYNAPTICS
+comma
+DECL|enumerator|PSMOUSE_ALPS
+id|PSMOUSE_ALPS
 comma
 )brace
 suffix:semicolon

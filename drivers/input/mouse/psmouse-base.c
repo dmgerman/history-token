@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PS/2 mouse driver&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * PS/2 mouse driver&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; * Copyright (c) 2003-2004 Dmitry Torokhov&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;psmouse.h&quot;
 macro_line|#include &quot;synaptics.h&quot;
 macro_line|#include &quot;logips2pp.h&quot;
+macro_line|#include &quot;alps.h&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&quot;PS/2 mouse driver&quot;
 id|MODULE_AUTHOR
@@ -228,6 +229,8 @@ comma
 l_string|&quot;ImExPS/2&quot;
 comma
 l_string|&quot;SynPS/2&quot;
+comma
+l_string|&quot;AlpsPS/2&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * psmouse_process_byte() analyzes the PS/2 data stream and reports&n; * relevant events to the input module once full packet has arrived.&n; */
@@ -2406,6 +2409,59 @@ c_func
 (paren
 id|psmouse
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Try ALPS TouchPad&n; */
+r_if
+c_cond
+(paren
+id|max_proto
+OG
+id|PSMOUSE_IMEX
+op_logical_and
+id|alps_detect
+c_func
+(paren
+id|psmouse
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|set_properties
+)paren
+(brace
+id|psmouse-&gt;vendor
+op_assign
+l_string|&quot;ALPS&quot;
+suffix:semicolon
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;TouchPad&quot;
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|set_properties
+op_logical_or
+id|alps_init
+c_func
+(paren
+id|psmouse
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+id|PSMOUSE_ALPS
+suffix:semicolon
+multiline_comment|/*&n; * Init failed, try basic relative protocols&n; */
+id|max_proto
+op_assign
+id|PSMOUSE_IMEX
 suffix:semicolon
 )brace
 r_if
