@@ -95,21 +95,21 @@ mdefine_line|#define DIO_ID_NHPIB    0x01 /* 98624A HP-IB (normal ie slow) */
 DECL|macro|DIO_DESC_NHPIB
 mdefine_line|#define DIO_DESC_NHPIB &quot;98624A HPIB&quot;
 DECL|macro|DIO_ID_SCSI0
-mdefine_line|#define DIO_ID_SCSI0    0x07 /* 98625A SCSI */
+mdefine_line|#define DIO_ID_SCSI0    0x07 /* 98265A SCSI */
 DECL|macro|DIO_DESC_SCSI0
-mdefine_line|#define DIO_DESC_SCSI0 &quot;98625A SCSI0&quot;
+mdefine_line|#define DIO_DESC_SCSI0 &quot;98265A SCSI0&quot;
 DECL|macro|DIO_ID_SCSI1
 mdefine_line|#define DIO_ID_SCSI1    0x27 /* ditto */
 DECL|macro|DIO_DESC_SCSI1
-mdefine_line|#define DIO_DESC_SCSI1 &quot;98625A SCSI1&quot;
+mdefine_line|#define DIO_DESC_SCSI1 &quot;98265A SCSI1&quot;
 DECL|macro|DIO_ID_SCSI2
 mdefine_line|#define DIO_ID_SCSI2    0x47 /* ditto */
 DECL|macro|DIO_DESC_SCSI2
-mdefine_line|#define DIO_DESC_SCSI2 &quot;98625A SCSI2&quot;
+mdefine_line|#define DIO_DESC_SCSI2 &quot;98265A SCSI2&quot;
 DECL|macro|DIO_ID_SCSI3
 mdefine_line|#define DIO_ID_SCSI3    0x67 /* ditto */
 DECL|macro|DIO_DESC_SCSI3
-mdefine_line|#define DIO_DESC_SCSI3 &quot;98625A SCSI3&quot;
+mdefine_line|#define DIO_DESC_SCSI3 &quot;98265A SCSI3&quot;
 DECL|macro|DIO_ID_FBUFFER
 mdefine_line|#define DIO_ID_FBUFFER  0x39 /* framebuffer: flavour is distinguished by secondary ID */
 DECL|macro|DIO_DESC_FBUFFER
