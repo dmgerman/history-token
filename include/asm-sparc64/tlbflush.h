@@ -74,9 +74,25 @@ r_int
 id|r
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__flush_tlb_kernel_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|flush_tlb_all
 mdefine_line|#define flush_tlb_all()&t;&t;__flush_tlb_all()
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start,end) &bslash;&n;&t;__flush_tlb_kernel_range(start,end)
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
 DECL|macro|flush_tlb_range
@@ -124,6 +140,20 @@ id|end
 suffix:semicolon
 r_extern
 r_void
+id|smp_flush_tlb_kernel_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|smp_flush_tlb_page
 c_func
 (paren
@@ -145,6 +175,8 @@ DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;smp_flush_tlb_mm(mm)
 DECL|macro|flush_tlb_range
 mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range(vma, start, end)
+DECL|macro|flush_tlb_kernel_range
+mdefine_line|#define flush_tlb_kernel_range(start, end) &bslash;&n;&t;smp_flush_tlb_kernel_range(start, end)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
 macro_line|#endif /* ! CONFIG_SMP */
@@ -268,8 +300,5 @@ l_int|3
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* XXX For now... */
-DECL|macro|flush_tlb_kernel_range
-mdefine_line|#define flush_tlb_kernel_range(start, end)&t;flush_tlb_all()
 macro_line|#endif /* _SPARC64_TLBFLUSH_H */
 eof
