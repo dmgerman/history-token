@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_marvel.c&n; *&n; * Code common to all Marvel based systems&n; */
+multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/core_marvel.c&n; *&n; * Code common to all Marvel based systems.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -52,6 +52,12 @@ multiline_comment|/*&n; * Helper functions&n; */
 r_static
 r_int
 r_int
+id|__attribute__
+(paren
+(paren
+id|unused
+)paren
+)paren
 DECL|function|read_ev7_csr
 id|read_ev7_csr
 c_func
@@ -218,10 +224,11 @@ r_return
 id|name
 suffix:semicolon
 )brace
-DECL|function|marvel_next_io7
+r_inline
 r_struct
 id|io7
 op_star
+DECL|function|marvel_next_io7
 id|marvel_next_io7
 c_func
 (paren
@@ -231,23 +238,21 @@ op_star
 id|prev
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
-op_logical_neg
 id|prev
-)paren
-r_return
-id|io7_head
-suffix:semicolon
-r_return
+ques
+c_cond
 id|prev-&gt;next
+suffix:colon
+id|io7_head
+)paren
 suffix:semicolon
 )brace
-DECL|function|marvel_find_io7
 r_struct
 id|io7
 op_star
+DECL|function|marvel_find_io7
 id|marvel_find_io7
 c_func
 (paren
@@ -260,17 +265,12 @@ id|io7
 op_star
 id|io7
 suffix:semicolon
-id|io7
-op_assign
-id|marvel_next_io7
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
+id|io7
+op_assign
+id|io7_head
 suffix:semicolon
 id|io7
 op_logical_and
@@ -280,15 +280,10 @@ id|pe
 suffix:semicolon
 id|io7
 op_assign
-id|marvel_next_io7
-c_func
-(paren
-id|io7
+id|io7-&gt;next
 )paren
-)paren
-(brace
+r_continue
 suffix:semicolon
-)brace
 r_return
 id|io7
 suffix:semicolon
@@ -407,7 +402,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* default to disabled */
 )brace
-multiline_comment|/*&n;&t; * insert in pe sorted order&n;&t; */
+multiline_comment|/*&n;&t; * Insert in pe sorted order.&n;&t; */
 r_if
 c_cond
 (paren
@@ -557,7 +552,7 @@ suffix:semicolon
 r_int
 id|port
 suffix:semicolon
-multiline_comment|/*&n;&t; * First the IO ports&n;&t; */
+multiline_comment|/*&n;&t; * First the IO ports.&n;&t; */
 r_for
 c_loop
 (paren
@@ -585,42 +580,26 @@ id|port
 suffix:semicolon
 id|csrs-&gt;POx_ERR_SUM.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 id|csrs-&gt;POx_TLB_ERR.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 id|csrs-&gt;POx_SPL_COMPLT.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 id|csrs-&gt;POx_TRANS_SUM.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Then the common ones&n;&t; */
+multiline_comment|/*&n;&t; * Then the common ones.&n;&t; */
 id|p7csrs
 op_assign
 id|IO7_PORT7_CSRS_KERN
@@ -631,34 +610,22 @@ id|io7-&gt;pe
 suffix:semicolon
 id|p7csrs-&gt;PO7_ERROR_SUM.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 id|p7csrs-&gt;PO7_UNCRR_SYM.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 id|p7csrs-&gt;PO7_CRRCT_SYM.csr
 op_assign
-(paren
-r_int
-r_int
-)paren
 op_minus
-l_int|1L
+l_int|1UL
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * IO7 PCI, PCI/X, AGP configuration&n; */
+multiline_comment|/*&n; * IO7 PCI, PCI/X, AGP configuration.&n; */
 r_static
 r_void
 id|__init
@@ -788,7 +755,7 @@ comma
 id|port
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Base addresses and resource ranges for kernel consumption&n;&t; */
+multiline_comment|/*&n;&t; * Base addresses and resource ranges for kernel consumption.&n;&t; */
 id|hose-&gt;config_space_base
 op_assign
 (paren
@@ -925,7 +892,7 @@ comma
 id|hose-&gt;index
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Save the existing DMA window settings for later restoration&n;&t; */
+multiline_comment|/*&n;&t; * Save the existing DMA window settings for later restoration.&n;&t; */
 r_for
 c_loop
 (paren
@@ -979,7 +946,7 @@ id|csr
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB&n;&t; * Window 1 is direct access 1GB at 2GB&n;&t; * Window 2 is scatter-gather (up-to) 1GB at 3GB&n;&t; * Window 3 is disabled&n;&t; */
-multiline_comment|/*&n;&t; * tbia before modifying windows&n;&t; */
+multiline_comment|/*&n;&t; * TBIA before modifying windows.&n;&t; */
 id|marvel_pci_tbi
 c_func
 (paren
@@ -991,7 +958,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * set up window 0 for scatter-gather 8MB at 8MB&n;&t; */
+multiline_comment|/*&n;&t; * Set up window 0 for scatter-gather 8MB at 8MB.&n;&t; */
 id|hose-&gt;sg_isa
 op_assign
 id|iommu_arena_new_node
@@ -1058,7 +1025,7 @@ c_func
 id|hose-&gt;sg_isa-&gt;ptes
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * set up window 1 for direct-mapped 1GB at 2GB&n;&t; */
+multiline_comment|/*&n;&t; * Set up window 1 for direct-mapped 1GB at 2GB.&n;&t; */
 id|csrs-&gt;POx_WBASE
 (braket
 l_int|1
@@ -1094,7 +1061,7 @@ id|csr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * set up window 2 for scatter-gather (up-to) 1GB at 3GB&n;&t; */
+multiline_comment|/*&n;&t; * Set up window 2 for scatter-gather (up-to) 1GB at 3GB.&n;&t; */
 id|hose-&gt;sg_pci
 op_assign
 id|iommu_arena_new_node
@@ -1161,7 +1128,7 @@ c_func
 id|hose-&gt;sg_pci-&gt;ptes
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * disable window 3&n;&t; */
+multiline_comment|/*&n;&t; * Disable window 3.&n;&t; */
 id|csrs-&gt;POx_WBASE
 (braket
 l_int|3
@@ -1171,7 +1138,7 @@ id|csr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure that the AGP Monster Window is disabled&n;&t; */
+multiline_comment|/*&n;&t; * Make sure that the AGP Monster Window is disabled.&n;&t; */
 id|csrs-&gt;POx_CTRL.csr
 op_and_assign
 op_complement
@@ -1198,7 +1165,7 @@ l_int|14
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * tbia after modifying windows&n;&t; */
+multiline_comment|/*&n;&t; * TBIA after modifying windows.&n;&t; */
 id|marvel_pci_tbi
 c_func
 (paren
@@ -1235,7 +1202,7 @@ comma
 id|io7-&gt;pe
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the Port 7 CSR pointer&n;&t; */
+multiline_comment|/*&n;&t; * Get the Port 7 CSR pointer.&n;&t; */
 id|io7-&gt;csrs
 op_assign
 id|IO7_PORT7_CSRS_KERN
@@ -1244,7 +1211,7 @@ c_func
 id|io7-&gt;pe
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Init this IO7&squot;s hoses&n;&t; */
+multiline_comment|/*&n;&t; * Init this IO7&squot;s hoses.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1300,8 +1267,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|marvel_io7_present
 r_void
+DECL|function|marvel_io7_present
 id|marvel_io7_present
 c_func
 (paren
@@ -1514,10 +1481,10 @@ l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * In case the GCT is not complete, let the user specify PIDs with IO7s&n; * at boot time. Syntax is &squot;io7=a,b,c,...,n&squot; where a-n are the PIDs (decimal)&n; * where IO7s are connected&n; */
-DECL|function|marvel_specify_io7
 r_static
 r_int
 id|__init
+DECL|function|marvel_specify_io7
 id|marvel_specify_io7
 c_func
 (paren
@@ -1651,7 +1618,7 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-multiline_comment|/* PCI DMA Direct Mapping is 1GB at 2GB */
+multiline_comment|/* PCI DMA Direct Mapping is 1GB at 2GB.  */
 id|__direct_map_base
 op_assign
 l_int|0x80000000
@@ -1660,7 +1627,7 @@ id|__direct_map_size
 op_assign
 l_int|0x40000000
 suffix:semicolon
-multiline_comment|/* parse the config tree */
+multiline_comment|/* Parse the config tree.  */
 id|gct6_find_nodes
 c_func
 (paren
@@ -1673,7 +1640,7 @@ comma
 id|gct_wanted_node_list
 )paren
 suffix:semicolon
-multiline_comment|/* init the io7s */
+multiline_comment|/* Init the io7s.  */
 r_for
 c_loop
 (paren
@@ -1694,15 +1661,13 @@ id|io7
 )paren
 suffix:semicolon
 )paren
-(brace
 id|marvel_init_io7
 c_func
 (paren
 id|io7
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Check for graphic console location (if any) */
+multiline_comment|/* Check for graphic console location (if any).  */
 id|marvel_init_vga_hose
 c_func
 (paren
@@ -1817,7 +1782,7 @@ id|hose
 r_return
 id|addr
 suffix:semicolon
-multiline_comment|/* check for enabled... */
+multiline_comment|/* Check for enabled.  */
 id|io7_port
 op_assign
 id|hose-&gt;sysdata
@@ -1839,7 +1804,7 @@ op_eq
 id|bus
 )paren
 (brace
-multiline_comment|/* don&squot;t support idsel &gt; 20 on primary bus */
+multiline_comment|/* Don&squot;t support idsel &gt; 20 on primary bus.  */
 r_if
 c_cond
 (paren
@@ -2181,7 +2146,7 @@ comma
 )brace
 suffix:semicolon
 "&f;"
-multiline_comment|/*&n; * Other PCI helper functions&n; */
+multiline_comment|/*&n; * Other PCI helper functions.&n; */
 r_void
 DECL|function|marvel_pci_tbi
 id|marvel_pci_tbi
@@ -2232,7 +2197,7 @@ id|csrs-&gt;POx_SG_TBIA.csr
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * IO map support&n; */
+multiline_comment|/*&n; * IO map support.&n; */
 r_int
 r_int
 DECL|function|marvel_ioremap
@@ -2248,12 +2213,6 @@ r_int
 id|size
 )paren
 (brace
-r_extern
-r_struct
-id|pci_controller
-op_star
-id|hose_head
-suffix:semicolon
 r_struct
 id|pci_controller
 op_star
@@ -2283,7 +2242,7 @@ r_int
 r_int
 id|pfn
 suffix:semicolon
-multiline_comment|/*&n;&t; * Adjust the addr&n;&t; */
+multiline_comment|/*&n;&t; * Adjust the addr.&n;&t; */
 macro_line|#ifdef CONFIG_VGA_HOSE
 r_if
 c_cond
@@ -2316,7 +2275,7 @@ id|addr
 r_return
 l_int|0UL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find the hose&n;&t; */
+multiline_comment|/*&n;&t; * Find the hose.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2358,7 +2317,7 @@ id|hose
 r_return
 l_int|0UL
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have the hose - calculate the bus limits&n;&t; */
+multiline_comment|/*&n;&t; * We have the hose - calculate the bus limits.&n;&t; */
 id|baddr
 op_assign
 id|addr
@@ -2406,7 +2365,7 @@ op_minus
 id|__direct_map_base
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check the scatter-gather arena...&n;&t; */
+multiline_comment|/* &n;&t; * Check the scatter-gather arena.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2454,7 +2413,7 @@ id|last
 op_minus
 id|baddr
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Map it&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Map it.&n;&t;&t; */
 id|area
 op_assign
 id|get_vm_area
@@ -2610,7 +2569,7 @@ r_return
 id|vaddr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Not found - assume legacy ioremap&n;&t; */
+multiline_comment|/*&n;&t; * Not found - assume legacy ioremap.&n;&t; */
 r_return
 id|addr
 suffix:semicolon
@@ -2665,9 +2624,9 @@ id|addr
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * SRMCons support&n; *&n; * Marvel doesn&squot;t have a real serial console -- it&squot;s either graphics or &n; * server management based. If we&squot;re running on the server management based&n; * console, allow the srmcons callback driver to be a console device&n; */
-DECL|function|marvel_srmcons_allowed
+multiline_comment|/*&n; * SRMCons support&n; *&n; * Marvel doesn&squot;t have a real serial console -- it&squot;s either graphics or &n; * server management based. If we&squot;re running on the server management based&n; * console, allow the srmcons callback driver to be a console device.&n; */
 r_int
+DECL|function|marvel_srmcons_allowed
 id|marvel_srmcons_allowed
 c_func
 (paren
@@ -2691,8 +2650,7 @@ op_plus
 id|hwrpb-&gt;ctbt_offset
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_return
 (paren
 id|pu64
 (braket
@@ -2701,11 +2659,6 @@ l_int|7
 op_eq
 l_int|2
 )paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 "&f;"
@@ -2731,9 +2684,9 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|__marvel_access_rtc
 r_static
 r_void
+DECL|function|__marvel_access_rtc
 id|__marvel_access_rtc
 c_func
 (paren
@@ -2857,8 +2810,8 @@ op_assign
 id|__r0
 suffix:semicolon
 )brace
-DECL|function|__marvel_rtc_io
 id|u8
+DECL|function|__marvel_rtc_io
 id|__marvel_rtc_io
 c_func
 (paren
@@ -3027,8 +2980,8 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * NUMA Support&n; */
 multiline_comment|/**********&n; * FIXME - for now each cpu is a node by itself &n; *              -- no real support for striped mode &n; **********&n; */
-DECL|function|marvel_pa_to_nid
 r_int
+DECL|function|marvel_pa_to_nid
 id|marvel_pa_to_nid
 c_func
 (paren
@@ -3105,8 +3058,8 @@ id|cpuid
 )paren
 suffix:semicolon
 )brace
-DECL|function|marvel_cpuid_to_nid
 r_int
+DECL|function|marvel_cpuid_to_nid
 id|marvel_cpuid_to_nid
 c_func
 (paren
@@ -3118,9 +3071,9 @@ r_return
 id|cpuid
 suffix:semicolon
 )brace
+r_int
+r_int
 DECL|function|marvel_node_mem_start
-r_int
-r_int
 id|marvel_node_mem_start
 c_func
 (paren
@@ -3162,9 +3115,9 @@ r_return
 id|pa
 suffix:semicolon
 )brace
+r_int
+r_int
 DECL|function|marvel_node_mem_size
-r_int
-r_int
 id|marvel_node_mem_size
 c_func
 (paren
@@ -3184,7 +3137,7 @@ suffix:semicolon
 multiline_comment|/* 16GB */
 )brace
 "&f;"
-multiline_comment|/* &n; * AGP GART Support&n; */
+multiline_comment|/* &n; * AGP GART Support.&n; */
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/agp_backend.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3211,9 +3164,9 @@ id|pg_count
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|marvel_agp_setup
 r_static
 r_int
+DECL|function|marvel_agp_setup
 id|marvel_agp_setup
 c_func
 (paren
@@ -3324,9 +3277,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|marvel_agp_cleanup
 r_static
 r_void
+DECL|function|marvel_agp_cleanup
 id|marvel_agp_cleanup
 c_func
 (paren
@@ -3423,9 +3376,9 @@ id|agp
 )paren
 suffix:semicolon
 )brace
-DECL|function|marvel_agp_configure
 r_static
 r_int
+DECL|function|marvel_agp_configure
 id|marvel_agp_configure
 c_func
 (paren
@@ -3475,7 +3428,7 @@ r_int
 r_int
 id|agp_pll
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check the requested mode against the PLL setting.&n;&t; * The agpgart_be code has not programmed the card yet, so we can&n;&t; * still tweak mode here &n;&t; */
+multiline_comment|/*&n;&t; * Check the requested mode against the PLL setting.&n;&t; * The agpgart_be code has not programmed the card yet,&n;&t; * so we can still tweak mode here.&n;&t; */
 id|agp_pll
 op_assign
 id|io7-&gt;csrs-&gt;POx_RST
@@ -3499,7 +3452,7 @@ r_case
 l_int|0x4
 suffix:colon
 multiline_comment|/* 2x only */
-multiline_comment|/* &n;&t;&t; * The PLL is only programmed for 2x, so adjust the&n;&t;&t; * rate to 2x, if necessary&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * The PLL is only programmed for 2x, so adjust the&n;&t;&t; * rate to 2x, if necessary.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3517,7 +3470,7 @@ r_case
 l_int|0x6
 suffix:colon
 multiline_comment|/* 1x / 4x */
-multiline_comment|/*&n;&t;&t; * The PLL is programmed for 1x or 4x. Don&squot;t go faster&n;&t;&t; * than requested, so if the requested rate is 2x, use 1x&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The PLL is programmed for 1x or 4x.  Don&squot;t go faster&n;&t;&t; * than requested, so if the requested rate is 2x, use 1x.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3534,7 +3487,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* ??????? */
-multiline_comment|/*&n;&t;&t; * Don&squot;t know what this PLL setting is, take the requested&n;&t;&t; * rate, but warn the user&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Don&squot;t know what this PLL setting is, take the requested&n;&t;&t; * rate, but warn the user.&n;&t;&t; */
 id|printk
 c_func
 (paren
@@ -3554,7 +3507,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Set the new rate, if necessary&n;&t; */
+multiline_comment|/*&n;&t; * Set the new rate, if necessary.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3852,7 +3805,7 @@ id|io7
 op_star
 id|io7
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find the first IO7 with an AGP card&n;&t; *&n;&t; * FIXME -- there should be a better way (we want to be able to&n;&t; * specify and what if the agp card is not video???)&n;&t; */
+multiline_comment|/*&n;&t; * Find the first IO7 with an AGP card.&n;&t; *&n;&t; * FIXME -- there should be a better way (we want to be able to&n;&t; * specify and what if the agp card is not video???)&n;&t; */
 id|hose
 op_assign
 l_int|NULL
@@ -3968,7 +3921,7 @@ id|hose-&gt;sg_pci
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;&t; * Get the csrs from the hose&n;&t; */
+multiline_comment|/* &n;&t; * Get the csrs from the hose.&n;&t; */
 id|csrs
 op_assign
 (paren
@@ -3982,7 +3935,7 @@ id|hose-&gt;sysdata
 op_member_access_from_pointer
 id|csrs
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate the info structure&n;&t; */
+multiline_comment|/*&n;&t; * Allocate the info structure.&n;&t; */
 id|agp
 op_assign
 id|kmalloc
@@ -3997,7 +3950,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill it in&n;&t; */
+multiline_comment|/*&n;&t; * Fill it in.&n;&t; */
 id|agp-&gt;type
 op_assign
 l_int|0
@@ -4018,7 +3971,7 @@ op_assign
 op_amp
 id|marvel_agp_ops
 suffix:semicolon
-multiline_comment|/*&n;&t; * Aperture - not configured until ops.setup()&n;&t; */
+multiline_comment|/*&n;&t; * Aperture - not configured until ops.setup().&n;&t; */
 id|agp-&gt;aperture.bus_base
 op_assign
 l_int|0
@@ -4031,7 +3984,7 @@ id|agp-&gt;aperture.sysdata
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Capabilities&n;&t; *&n;&t; * NOTE: IO7 reports through AGP_STAT that it can support a read queue&n;&t; *       depth of 17 (rq = 0x10). It actually only supports a depth of&n;&t; * &t; 16 (rq = 0xf).&n;&t; */
+multiline_comment|/*&n;&t; * Capabilities.&n;&t; *&n;&t; * NOTE: IO7 reports through AGP_STAT that it can support a read queue&n;&t; *       depth of 17 (rq = 0x10). It actually only supports a depth of&n;&t; * &t; 16 (rq = 0xf).&n;&t; */
 id|agp-&gt;capability.lw
 op_assign
 id|csrs-&gt;AGP_STAT.csr
@@ -4040,7 +3993,7 @@ id|agp-&gt;capability.bits.rq
 op_assign
 l_int|0xf
 suffix:semicolon
-multiline_comment|/*&n;&t; * Mode&n;&t; */
+multiline_comment|/*&n;&t; * Mode.&n;&t; */
 id|agp-&gt;mode.lw
 op_assign
 id|csrs-&gt;AGP_CMD.csr

@@ -1145,13 +1145,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Register our error handlers &n;&t; */
+multiline_comment|/* &n;&t; * Register our error handlers.&n;&t; */
 id|titan_register_error_handlers
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check if the console left us any error logs&n;&t; */
+multiline_comment|/*&n;&t; * Check if the console left us any error logs.&n;&t; */
 id|cdl_check_console_data_log
 c_func
 (paren
@@ -1183,7 +1183,7 @@ suffix:semicolon
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/* get the current intline */
+multiline_comment|/* Get the current intline.  */
 id|pci_read_config_byte
 c_func
 (paren
@@ -1199,7 +1199,7 @@ id|irq
 op_assign
 id|intline
 suffix:semicolon
-multiline_comment|/* is it explicitly routed through ISA? */
+multiline_comment|/* Is it explicitly routed through ISA?  */
 r_if
 c_cond
 (paren
@@ -1214,7 +1214,7 @@ l_int|0xE0
 r_return
 id|irq
 suffix:semicolon
-multiline_comment|/* offset by 16 to make room for ISA interrupts 0 - 15 */
+multiline_comment|/* Offset by 16 to make room for ISA interrupts 0 - 15.  */
 r_return
 id|irq
 op_plus
@@ -1231,10 +1231,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|pci_probe_only
-suffix:semicolon
 multiline_comment|/*&n; &t; * This isn&squot;t really the right place, but there&squot;s some init&n; &t; * that needs to be done after everything is basically up.&n; &t; */
 id|titan_late_init
 c_func
@@ -1277,7 +1273,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Hook a couple of extra err interrupts that the&n;&t; * common titan code won&squot;t&n;&t; */
+multiline_comment|/*&n;&t; * Hook a couple of extra err interrupts that the&n;&t; * common titan code won&squot;t.&n;&t; */
 id|request_irq
 c_func
 (paren
@@ -1310,7 +1306,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finish with the common version&n;&t; */
+multiline_comment|/*&n;&t; * Finish with the common version.&n;&t; */
 r_return
 id|titan_init_pci
 c_func
@@ -1319,18 +1315,7 @@ c_func
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * The System Vectors&n; */
-macro_line|#if defined(CONFIG_ALPHA_CORE_AGP)
-r_extern
-r_void
-op_star
-id|titan_agp_info
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n; * The System Vectors.&n; */
 DECL|variable|__initmv
 r_struct
 id|alpha_machine_vector
@@ -1383,13 +1368,11 @@ l_int|80
 comma
 multiline_comment|/* 64 + 16 */
 multiline_comment|/* device_interrupt will be filled in by titan_init_irq */
-macro_line|#if defined(CONFIG_ALPHA_CORE_AGP)
 dot
 id|agp_info
 op_assign
 id|titan_agp_info
 comma
-macro_line|#endif
 dot
 id|init_arch
 op_assign
@@ -1483,13 +1466,11 @@ l_int|80
 comma
 multiline_comment|/* 64 + 16 */
 multiline_comment|/* device_interrupt will be filled in by titan_init_irq */
-macro_line|#if defined(CONFIG_ALPHA_CORE_AGP)
 dot
 id|agp_info
 op_assign
 id|titan_agp_info
 comma
-macro_line|#endif
 dot
 id|init_arch
 op_assign

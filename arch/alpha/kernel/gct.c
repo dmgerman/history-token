@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/gct.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -27,7 +28,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* first check the magic number */
+multiline_comment|/* First check the magic number.  */
 r_if
 c_cond
 (paren
@@ -48,7 +49,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* check against the search struct */
+multiline_comment|/* Check against the search struct.  */
 r_for
 c_loop
 (paren
@@ -86,7 +87,7 @@ id|wanted-&gt;subtype
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* found it -- call out */
+multiline_comment|/* Found it -- call out.  */
 r_if
 c_cond
 (paren
@@ -101,7 +102,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* now walk the tree, siblings first.. */
+multiline_comment|/* Now walk the tree, siblings first.  */
 r_if
 c_cond
 (paren
@@ -121,7 +122,7 @@ comma
 id|search
 )paren
 suffix:semicolon
-multiline_comment|/* then the children */
+multiline_comment|/* Then the children.  */
 r_if
 c_cond
 (paren

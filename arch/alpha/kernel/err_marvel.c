@@ -9,8 +9,6 @@ macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;err_impl.h&quot;
 macro_line|#include &quot;proto.h&quot;
-"&f;"
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_MARVEL)
 r_void
 DECL|function|marvel_machine_check
 id|marvel_machine_check
@@ -51,26 +49,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|srm_printk
-c_func
-(paren
-l_string|&quot;MARVEL MACHINE CHECK!!!&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* HACK */
 id|el_process_subpacket
 c_func
 (paren
 id|el_ptr
 )paren
 suffix:semicolon
-id|srm_printk
-c_func
-(paren
-l_string|&quot;...PROCESSED&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* HACK */
 r_switch
 c_cond
 (paren
@@ -110,7 +94,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* don&squot;t know it - pass it up */
+multiline_comment|/* Don&squot;t know it - pass it up.  */
 r_return
 id|ev7_machine_check
 c_func
@@ -123,7 +107,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Release the logout frame &n;&t; */
+multiline_comment|/* Release the logout frame.  */
 id|wrmces
 c_func
 (paren
@@ -150,5 +134,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALPHA_GENERIC || CONFIG_ALPHA_MARVEL */
 eof

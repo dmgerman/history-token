@@ -8,9 +8,6 @@ macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;err_impl.h&quot;
 macro_line|#include &quot;proto.h&quot;
-"&f;"
-multiline_comment|/*&n; * Titan generic&n; */
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_TITAN)
 r_static
 r_int
 DECL|function|titan_parse_c_misc
@@ -1993,23 +1990,14 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
 (paren
 id|el_titan_annotations
-)paren
-op_div
-r_sizeof
-(paren
-id|el_titan_annotations
-(braket
-l_int|1
-)braket
 )paren
 suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|cdl_register_subpacket_annotation
 c_func
 (paren
@@ -2020,7 +2008,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|cdl_register_subpacket_handler
 c_func
 (paren
@@ -2029,10 +2016,8 @@ id|titan_subpacket_handler
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALPHA_GENERIC || CONFIG_ALPHA_TITAN */
 "&f;"
 multiline_comment|/*&n; * Privateer&n; */
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_TITAN)
 r_static
 r_int
 DECL|function|privateer_process_680_frame
@@ -2350,7 +2335,7 @@ DECL|macro|PRIVATEER_680_INTERRUPT_MASK
 mdefine_line|#define PRIVATEER_680_INTERRUPT_MASK&t;&t;(0xE00UL)
 DECL|macro|PRIVATEER_HOTPLUG_INTERRUPT_MASK
 mdefine_line|#define PRIVATEER_HOTPLUG_INTERRUPT_MASK&t;(0xE00UL)
-multiline_comment|/*&n;&t; * Sync the processor&n;&t; */
+multiline_comment|/*&n;&t; * Sync the processor.&n;&t; */
 id|mb
 c_func
 (paren
@@ -2361,7 +2346,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Only handle system events here &n;&t; */
+multiline_comment|/* &n;&t; * Only handle system events here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2419,14 +2404,14 @@ id|err_print_prefix
 op_assign
 id|saved_err_prefix
 suffix:semicolon
-multiline_comment|/* &n;&t; * Convert any pending interrupts which report as 680 machine&n;&t; * checks to interrupts&n;&t; */
+multiline_comment|/* &n;&t; * Convert any pending interrupts which report as 680 machine&n;&t; * checks to interrupts.&n;&t; */
 id|irqmask
 op_assign
 id|tmchk-&gt;c_dirx
 op_amp
 id|PRIVATEER_680_INTERRUPT_MASK
 suffix:semicolon
-multiline_comment|/*&n;&t; * Dispatch the interrupt(s)&n;&t; */
+multiline_comment|/*&n;&t; * Dispatch the interrupt(s).&n;&t; */
 id|titan_dispatch_irqs
 c_func
 (paren
@@ -2435,7 +2420,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Release the logout frame &n;&t; */
+multiline_comment|/* &n;&t; * Release the logout frame.&n;&t; */
 id|wrmces
 c_func
 (paren
@@ -2448,5 +2433,4 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALPHA_GENERIC || CONFIG_ALPHA_TITAN */
 eof

@@ -141,15 +141,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|entInt
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Called by both boot and secondaries to move global data into&n; *  per-processor storage.&n; */
 r_static

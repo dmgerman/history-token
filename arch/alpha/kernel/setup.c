@@ -1027,7 +1027,7 @@ id|i
 id|printk
 c_func
 (paren
-l_string|&quot;memcluster %d, usage %01lx, start %8lu, end %8lu&bslash;n&quot;
+l_string|&quot;memcluster %lu, usage %01lx, start %8lu, end %8lu&bslash;n&quot;
 comma
 id|i
 comma

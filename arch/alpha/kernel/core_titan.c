@@ -78,6 +78,7 @@ macro_line|#endif
 "&f;"
 multiline_comment|/*&n; * Routines to access TIG registers.&n; */
 r_static
+r_inline
 r_volatile
 r_int
 r_int
@@ -108,6 +109,8 @@ l_int|6
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
 id|u8
 DECL|function|titan_read_tig
 id|titan_read_tig
@@ -144,6 +147,8 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
 r_void
 DECL|function|titan_write_tig
 id|titan_write_tig
@@ -639,7 +644,7 @@ r_int
 r_int
 id|value
 suffix:semicolon
-multiline_comment|/* Get the right hose */
+multiline_comment|/* Get the right hose.  */
 id|port
 op_assign
 op_amp
@@ -1145,7 +1150,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Note: Window 3 on Titan is Scatter-Gather ONLY&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is direct access 1GB at 2GB&n;&t; * Window 2 is scatter-gather 1GB at 3GB&n;&t; */
+multiline_comment|/*&n;&t; * Set up the PCI to main memory translation windows.&n;&t; *&n;&t; * Note: Window 3 on Titan is Scatter-Gather ONLY.&n;&t; *&n;&t; * Window 0 is scatter-gather 8MB at 8MB (for isa)&n;&t; * Window 1 is direct access 1GB at 2GB&n;&t; * Window 2 is scatter-gather 1GB at 3GB&n;&t; */
 id|hose-&gt;sg_isa
 op_assign
 id|iommu_arena_new
@@ -1306,12 +1311,12 @@ id|csr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Enable the Monster Window to make DAC pci64 possible. */
+multiline_comment|/* Enable the Monster Window to make DAC pci64 possible.  */
 id|port-&gt;pctl.csr
 op_or_assign
 id|pctl_m_mwin
 suffix:semicolon
-multiline_comment|/*&n;&t; * If it&squot;s an AGP port, initialize agplastwr&n;&t; */
+multiline_comment|/*&n;&t; * If it&squot;s an AGP port, initialize agplastwr.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1684,7 +1689,7 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-multiline_comment|/* PCI DMA Direct Mapping is 1GB at 2GB */
+multiline_comment|/* PCI DMA Direct Mapping is 1GB at 2GB.  */
 id|__direct_map_base
 op_assign
 l_int|0x80000000
@@ -1693,7 +1698,7 @@ id|__direct_map_size
 op_assign
 l_int|0x40000000
 suffix:semicolon
-multiline_comment|/* Init the PA chip(s) */
+multiline_comment|/* Init the PA chip(s).  */
 id|titan_init_pachips
 c_func
 (paren
@@ -1702,7 +1707,7 @@ comma
 id|TITAN_pachip1
 )paren
 suffix:semicolon
-multiline_comment|/* Check for graphic console location (if any) */
+multiline_comment|/* Check for graphic console location (if any).  */
 id|titan_init_vga_hose
 c_func
 (paren
@@ -1962,7 +1967,7 @@ id|titan_kill_one_pachip_port
 c_func
 (paren
 op_amp
-id|pachip0-&gt;g_port
+id|pachip1-&gt;g_port
 comma
 l_int|1
 )paren
@@ -1971,7 +1976,7 @@ id|titan_kill_one_pachip_port
 c_func
 (paren
 op_amp
-id|pachip0-&gt;a_port
+id|pachip1-&gt;a_port
 comma
 l_int|3
 )paren
@@ -2015,7 +2020,7 @@ id|TITAN_pachip1
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * IO map support&n; */
+multiline_comment|/*&n; * IO map support.&n; */
 r_int
 r_int
 DECL|function|titan_ioremap
@@ -2084,7 +2089,7 @@ r_int
 r_int
 id|pfn
 suffix:semicolon
-multiline_comment|/*&n;&t; * Adjust the addr&n;&t; */
+multiline_comment|/*&n;&t; * Adjust the addr.&n;&t; */
 macro_line|#ifdef CONFIG_VGA_HOSE
 r_if
 c_cond
@@ -2108,7 +2113,7 @@ id|pci_vga_hose-&gt;mem_space-&gt;start
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Find the hose &n;&t; */
+multiline_comment|/*&n;&t; * Find the hose.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2175,7 +2180,7 @@ id|__direct_map_base
 op_plus
 id|TITAN_MEM_BIAS
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check the scatter-gather arena...&n;&t; */
+multiline_comment|/* &n;&t; * Check the scatter-gather arena.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2387,7 +2392,7 @@ r_return
 id|vaddr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Not found - assume legacy ioremap&n;&t; */
+multiline_comment|/*&n;&t; * Not found - assume legacy ioremap.&n;&t; */
 r_return
 id|addr
 op_plus
@@ -2427,7 +2432,6 @@ c_cond
 (paren
 id|addr
 )paren
-r_return
 id|vfree
 c_func
 (paren
@@ -2458,8 +2462,7 @@ id|titan_iounmap
 )paren
 suffix:semicolon
 "&f;"
-multiline_comment|/*&n; * AGP GART Support&n; */
-macro_line|#if defined(CONFIG_ALPHA_CORE_AGP)
+multiline_comment|/*&n; * AGP GART Support.&n; */
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/agp_backend.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2486,9 +2489,9 @@ id|pg_count
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|titan_agp_setup
 r_static
 r_int
+DECL|function|titan_agp_setup
 id|titan_agp_setup
 c_func
 (paren
@@ -2599,9 +2602,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|titan_agp_cleanup
 r_static
 r_void
+DECL|function|titan_agp_cleanup
 id|titan_agp_cleanup
 c_func
 (paren
@@ -2698,9 +2701,9 @@ id|agp
 )paren
 suffix:semicolon
 )brace
-DECL|function|titan_agp_configure
 r_static
 r_int
+DECL|function|titan_agp_configure
 id|titan_agp_configure
 c_func
 (paren
@@ -2771,12 +2774,12 @@ id|pctl.pctl_r_bits.apctl_v_agp_lp_rd
 op_assign
 l_int|7
 suffix:semicolon
-multiline_comment|/*&n;&t; * AGP Enable&n;&t; */
+multiline_comment|/*&n;&t; * AGP Enable.&n;&t; */
 id|pctl.pctl_r_bits.apctl_v_agp_en
 op_assign
 id|agp-&gt;mode.bits.enable
 suffix:semicolon
-multiline_comment|/* Tell the user... */
+multiline_comment|/* Tell the user.  */
 id|printk
 c_func
 (paren
@@ -2794,12 +2797,12 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Write it */
+multiline_comment|/* Write it.  */
 id|port-&gt;pctl.csr
 op_assign
 id|pctl.pctl_q_whole
 suffix:semicolon
-multiline_comment|/* And wait at least 5000 66MHz cycles (per Titan spec) */
+multiline_comment|/* And wait at least 5000 66MHz cycles (per Titan spec).  */
 id|udelay
 c_func
 (paren
@@ -3034,12 +3037,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_struct
-id|pci_controller
-op_star
-id|hose_head
-suffix:semicolon
 id|alpha_agp_info
 op_star
 id|agp
@@ -3063,7 +3060,7 @@ r_union
 id|TPAchipPCTL
 id|pctl
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find the AGP port&n;&t; */
+multiline_comment|/*&n;&t; * Find the AGP port.&n;&t; */
 id|port
 op_assign
 op_amp
@@ -3102,7 +3099,7 @@ id|hosenum
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t; * Find the hose the port is on&n;&t; */
+multiline_comment|/*&n;&t; * Find the hose the port is on.&n;&t; */
 r_for
 c_loop
 (paren
@@ -3116,7 +3113,6 @@ id|hose
 op_assign
 id|hose-&gt;next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -3126,7 +3122,6 @@ id|hosenum
 )paren
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3139,7 +3134,7 @@ id|hose-&gt;sg_pci
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate the info structure&n;&t; */
+multiline_comment|/*&n;&t; * Allocate the info structure.&n;&t; */
 id|agp
 op_assign
 id|kmalloc
@@ -3154,7 +3149,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill it in&n;&t; */
+multiline_comment|/*&n;&t; * Fill it in.&n;&t; */
 id|agp-&gt;type
 op_assign
 l_int|0
@@ -3175,7 +3170,7 @@ op_assign
 op_amp
 id|titan_agp_ops
 suffix:semicolon
-multiline_comment|/*&n;&t; * Aperture - not configured until ops.setup()&n;&t; *&n;&t; * FIXME - should we go ahead and allocate it here?&n;&t; */
+multiline_comment|/*&n;&t; * Aperture - not configured until ops.setup().&n;&t; *&n;&t; * FIXME - should we go ahead and allocate it here?&n;&t; */
 id|agp-&gt;aperture.bus_base
 op_assign
 l_int|0
@@ -3188,7 +3183,7 @@ id|agp-&gt;aperture.sysdata
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Capabilities&n;&t; */
+multiline_comment|/*&n;&t; * Capabilities.&n;&t; */
 id|agp-&gt;capability.lw
 op_assign
 l_int|0
@@ -3207,7 +3202,7 @@ op_assign
 l_int|7
 suffix:semicolon
 multiline_comment|/* 8 - 1 */
-multiline_comment|/*&n;&t; * Mode&n;&t; */
+multiline_comment|/*&n;&t; * Mode.&n;&t; */
 id|pctl.pctl_q_whole
 op_assign
 id|port-&gt;pctl.csr
@@ -3239,5 +3234,4 @@ r_return
 id|agp
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALPHA_CORE_AGP */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/alpha/kernel/sys_io7.c&n; *&n; * Marvel / IO7 support&n; */
+multiline_comment|/*&n; * linux/arch/alpha/kernel/sys_marvel.c&n; *&n; * Marvel / IO7 support&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -22,41 +22,7 @@ macro_line|#include &quot;irq_impl.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 macro_line|#include &quot;machvec_impl.h&quot;
 "&f;"
-multiline_comment|/*&n; * private functions in core_marvel.c&n; */
-r_struct
-id|io7
-op_star
-id|marvel_find_io7
-c_func
-(paren
-r_int
-id|pe
-)paren
-suffix:semicolon
-r_struct
-id|io7
-op_star
-id|marvel_next_io7
-c_func
-(paren
-r_struct
-id|io7
-op_star
-id|prev
-)paren
-suffix:semicolon
-r_void
-id|io7_clear_errors
-c_func
-(paren
-r_struct
-id|io7
-op_star
-id|io7
-)paren
-suffix:semicolon
-"&f;"
-multiline_comment|/*&n; * Interrupt handling&n; */
+multiline_comment|/*&n; * Interrupt handling.&n; */
 DECL|macro|IRQ_VEC_PE_SHIFT
 mdefine_line|#define IRQ_VEC_PE_SHIFT (10)
 DECL|macro|IRQ_VEC_IRQ_MASK
@@ -532,9 +498,9 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|marvel_irq_noop
 r_static
 r_void
+DECL|function|marvel_irq_noop
 id|marvel_irq_noop
 c_func
 (paren
@@ -546,10 +512,10 @@ id|irq
 r_return
 suffix:semicolon
 )brace
-DECL|function|marvel_irq_noop_return
 r_static
 r_int
 r_int
+DECL|function|marvel_irq_noop_return
 id|marvel_irq_noop_return
 c_func
 (paren
@@ -1071,7 +1037,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Where should interrupts from this IO7 go?&n;&t; *&n;&t; * They really should be sent to the local CPU to avoid having to&n;&t; * traverse the mesh, but if it&squot;s not an SMP kernel, they have to&n;&t; * go to the boot CPU. Send them all to the boot CPU for now,&n;&t; * as each secondary starts, it can redirect it&squot;s local device &n;&t; * interrupts&n;&t; */
+multiline_comment|/*&n;&t; * Where should interrupts from this IO7 go?&n;&t; *&n;&t; * They really should be sent to the local CPU to avoid having to&n;&t; * traverse the mesh, but if it&squot;s not an SMP kernel, they have to&n;&t; * go to the boot CPU. Send them all to the boot CPU for now,&n;&t; * as each secondary starts, it can redirect it&squot;s local device &n;&t; * interrupts.&n;&t; */
 id|printk
 c_func
 (paren
@@ -1143,7 +1109,7 @@ comma
 id|boot_cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* set up the lsi irqs */
+multiline_comment|/* Set up the lsi irqs.  */
 r_for
 c_loop
 (paren
@@ -1184,7 +1150,7 @@ op_assign
 id|lsi_ops
 suffix:semicolon
 )brace
-multiline_comment|/* disable the implemented irqs in hardware */
+multiline_comment|/* Disable the implemented irqs in hardware.  */
 r_for
 c_loop
 (paren
@@ -1199,7 +1165,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|init_one_io7_lsi
 c_func
 (paren
@@ -1210,7 +1175,6 @@ comma
 id|boot_cpuid
 )paren
 suffix:semicolon
-)brace
 id|init_one_io7_lsi
 c_func
 (paren
@@ -1231,7 +1195,7 @@ comma
 id|boot_cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* set up the msi irqs */
+multiline_comment|/* Set up the msi irqs.  */
 r_for
 c_loop
 (paren
@@ -1290,7 +1254,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|init_one_io7_msi
 c_func
 (paren
@@ -1301,7 +1264,6 @@ comma
 id|boot_cpuid
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -1330,7 +1292,7 @@ id|io7
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* reserve the legacy irqs */
+multiline_comment|/* Reserve the legacy irqs.  */
 r_for
 c_loop
 (paren
@@ -1366,7 +1328,7 @@ op_amp
 id|marvel_legacy_irq_type
 suffix:semicolon
 )brace
-multiline_comment|/* init the io7 irqs */
+multiline_comment|/* Init the io7 irqs.  */
 r_for
 c_loop
 (paren
@@ -1387,7 +1349,6 @@ op_ne
 l_int|NULL
 suffix:semicolon
 )paren
-(brace
 id|init_io7_irqs
 c_func
 (paren
@@ -1400,7 +1361,6 @@ op_amp
 id|io7_msi_irq_type
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_int
@@ -1710,10 +1670,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|pci_probe_only
-suffix:semicolon
 r_struct
 id|io7
 op_star
@@ -1741,7 +1697,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* clear any io7 errors */
+multiline_comment|/* Clear any io7 errors.  */
 r_for
 c_loop
 (paren
@@ -1762,14 +1718,12 @@ op_ne
 l_int|NULL
 suffix:semicolon
 )paren
-(brace
 id|io7_clear_errors
 c_func
 (paren
 id|io7
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_void
@@ -1821,10 +1775,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|io7
 )paren
-(brace
-multiline_comment|/* &n;&t;&t; * There is a local IO7 - redirect all of it&squot;s interrupts here&n;&t;&t; */
+r_return
+suffix:semicolon
+multiline_comment|/* &n;&t; * There is a local IO7 - redirect all of it&squot;s interrupts here.&n;&t; */
 id|printk
 c_func
 (paren
@@ -1833,7 +1789,7 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* redirect the error IRQS here */
+multiline_comment|/* Redirect the error IRQS here.  */
 id|io7_redirect_irq
 c_func
 (paren
@@ -1889,7 +1845,7 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* redirect the implemented LSIs here */
+multiline_comment|/* Redirect the implemented LSIs here.  */
 r_for
 c_loop
 (paren
@@ -1904,7 +1860,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|io7_redirect_one_lsi
 c_func
 (paren
@@ -1915,7 +1870,6 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
-)brace
 id|io7_redirect_one_lsi
 c_func
 (paren
@@ -1936,7 +1890,7 @@ comma
 id|cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* redirect the MSIs here */
+multiline_comment|/* Redirect the MSIs here.  */
 r_for
 c_loop
 (paren
@@ -1951,7 +1905,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|io7_redirect_one_msi
 c_func
 (paren
@@ -1963,19 +1916,8 @@ id|cpuid
 )paren
 suffix:semicolon
 )brace
-)brace
-)brace
 "&f;"
 multiline_comment|/*&n; * System Vectors&n; */
-r_extern
-r_void
-op_star
-id|marvel_agp_info
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|__initmv
 r_struct
 id|alpha_machine_vector
