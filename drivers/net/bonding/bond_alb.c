@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; */
+singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -566,9 +567,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: TLB hash table is not NULL&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: %s: TLB hash table is not NULL&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 )paren
@@ -613,9 +616,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Failed to allocate TLB hash table&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: %s: Failed to allocate TLB hash table&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 )paren
@@ -1007,9 +1012,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: TLB hash table is NULL&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: %s: TLB hash table is NULL&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 )paren
@@ -1430,10 +1437,9 @@ op_logical_neg
 id|arp
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Packet has no ARP data&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1453,10 +1459,9 @@ id|arp_pkt
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Packet is too small to be an ARP&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1485,12 +1490,10 @@ comma
 id|arp
 )paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Server received an ARP Reply from client&quot;
-)paren
+l_string|&quot;Server received an ARP Reply from client&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2440,8 +2443,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Bonding: Error: found a client with no&quot;
-l_string|&quot; channel in the client&squot;s hash table&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: found a client with no channel in &quot;
+l_string|&quot;the client&squot;s hash table&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -2915,12 +2919,10 @@ id|ETH_ALEN
 )paren
 suffix:semicolon
 )brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Server sent ARP Reply packet&quot;
-)paren
+l_string|&quot;Server sent ARP Reply packet&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2960,12 +2962,10 @@ comma
 id|arp-&gt;ip_src
 )paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Server sent ARP Request packet&quot;
-)paren
+l_string|&quot;Server sent ARP Request packet&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3228,9 +3228,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: RLB hash table is not NULL&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: %s: RLB hash table is not NULL&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 )paren
@@ -3275,10 +3277,11 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Failed to allocate&quot;
-l_string|&quot; RLB hash table&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: %s: Failed to allocate RLB hash table&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 )paren
@@ -3697,12 +3700,12 @@ id|s_addr
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;bonding: Error: alb_set_slave_mac_addr:&quot;
-l_string|&quot; dev-&gt;set_mac_address of dev %s failed!&quot;
-l_string|&quot; ALB mode requires that the base driver&quot;
-l_string|&quot; support setting the hw address also when&quot;
-l_string|&quot; the network device&squot;s interface is open&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: dev-&gt;set_mac_address of dev %s failed! ALB &quot;
+l_string|&quot;mode requires that the base driver support setting &quot;
+l_string|&quot;the hw address also when the network device&squot;s &quot;
+l_string|&quot;interface is open&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4137,8 +4140,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Warning: the hw address &quot;
-l_string|&quot;of slave %s is not unique - cannot enslave it!&quot;
+id|DRV_NAME
+l_string|&quot;: Error: the hw address of slave %s is not &quot;
+l_string|&quot;unique - cannot enslave it!&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -4254,9 +4258,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: the hw address &quot;
-l_string|&quot;of slave %s is in use by the bond; &quot;
-l_string|&quot;giving it the hw address of %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: the hw address of slave %s is in use by &quot;
+l_string|&quot;the bond; giving it the hw address of %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 comma
@@ -4269,12 +4273,11 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;bonding: Error: the hw address &quot;
-l_string|&quot;of slave %s is in use by the bond; &quot;
-l_string|&quot;couldn&squot;t find a slave with a free hw &quot;
-l_string|&quot;address to give it (this should not have &quot;
-l_string|&quot;happened)&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: the hw address of slave %s is in use by the &quot;
+l_string|&quot;bond; couldn&squot;t find a slave with a free hw address to &quot;
+l_string|&quot;give it (this should not have happened)&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren

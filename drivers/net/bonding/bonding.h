@@ -6,13 +6,20 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;2.4.1&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;September 15, 2003&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
+DECL|macro|DRV_DESCRIPTION
+mdefine_line|#define DRV_DESCRIPTION&t;&quot;Ethernet Channel Bonding Driver&quot;
 macro_line|#ifdef BONDING_DEBUG
-singleline_comment|// use this like so: BOND_PRINT_DBG((&quot;foo = %d, bar = %d&quot;, foo, bar));
-DECL|macro|BOND_PRINT_DBG
-mdefine_line|#define BOND_PRINT_DBG(X)                                     &bslash;&n;do {                                                          &bslash;&n;&t;printk(KERN_DEBUG &quot;%s (%d)&quot;, __FUNCTION__, __LINE__); &bslash;&n;&t;printk X;                                             &bslash;&n;&t;printk(&quot;&bslash;n&quot;);                                         &bslash;&n;} while(0)
+DECL|macro|dprintk
+mdefine_line|#define dprintk(fmt, args...) &bslash;&n;&t;printk(KERN_DEBUG     &bslash;&n;&t;       DRV_NAME &quot;: %s() %d: &quot; fmt, __FUNCTION__, __LINE__ , ## args )
 macro_line|#else
-DECL|macro|BOND_PRINT_DBG
-mdefine_line|#define BOND_PRINT_DBG(X)
+DECL|macro|dprintk
+mdefine_line|#define dprintk(fmt, args...)
 macro_line|#endif /* BONDING_DEBUG */
 DECL|macro|IS_UP
 mdefine_line|#define IS_UP(dev)  ((((dev)-&gt;flags &amp; (IFF_UP)) == (IFF_UP)) &amp;&amp; &bslash;&n;&t;&t;     (netif_running(dev) &amp;&amp; netif_carrier_ok(dev)))

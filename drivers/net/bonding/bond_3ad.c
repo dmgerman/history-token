@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for&n; * more details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program; if not, write to the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fix long fail over time when releasing last slave of an active&n; *&t;  aggregator - send LACPDU on unbind of slave to tell partner this&n; *&t;  port is no longer aggregatable.&n; *&n; * 2003/06/25 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Send LACPDU as highest priority packet to further fix the above&n; *&t;  problem on very high Tx traffic load where packets may get dropped&n; *&t;  by the slave.&n; */
+singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -1177,16 +1178,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d Received link speed %d update from adapter&quot;
+l_string|&quot;Port %d Received link speed %d update from adapter&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|speed
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1246,14 +1245,12 @@ id|retval
 op_assign
 l_int|0x1
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d Received status full duplex update from adapter&quot;
+l_string|&quot;Port %d Received status full duplex update from adapter&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -1267,14 +1264,12 @@ id|retval
 op_assign
 l_int|0x0
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d Received status NOT full duplex update from adapter&quot;
+l_string|&quot;Port %d Received status NOT full duplex update from adapter&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -3205,18 +3200,16 @@ op_ne
 id|last_state
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Mux Machine: Port=%d, Last State=%d, Curr State=%d&quot;
+l_string|&quot;Mux Machine: Port=%d, Last State=%d, Curr State=%d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|last_state
 comma
 id|port-&gt;sm_mux_state
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -3599,18 +3592,16 @@ id|lacpdu
 )paren
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Rx Machine: Port=%d, Last State=%d, Curr State=%d&quot;
+l_string|&quot;Rx Machine: Port=%d, Last State=%d, Curr State=%d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|last_state
 comma
 id|port-&gt;sm_rx_state
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -3808,7 +3799,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: An illegal loopback occurred on adapter (%s)&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: An illegal loopback occurred on adapter (%s)&bslash;n&quot;
 comma
 id|port-&gt;slave-&gt;dev-&gt;name
 )paren
@@ -3983,14 +3975,12 @@ op_ge
 l_int|0
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Sent LACPDU on port %d&quot;
+l_string|&quot;Sent LACPDU on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// mark ntt as false, so it will not be sent again until demanded
@@ -4230,18 +4220,16 @@ op_ne
 id|last_state
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Periodic Machine: Port=%d, Last State=%d, Curr State=%d&quot;
+l_string|&quot;Periodic Machine: Port=%d, Last State=%d, Curr State=%d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|last_state
 comma
 id|port-&gt;sm_periodic_state
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -4451,16 +4439,14 @@ id|port-&gt;actor_port_aggregator_identifier
 op_assign
 l_int|0
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d left LAG %d&quot;
+l_string|&quot;Port %d left LAG %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|temp_aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// if the aggregator is empty, clear its parameters, and set it ready to be attached
@@ -4494,7 +4480,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: Port %d (on %s) was &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: Port %d (on %s) was &quot;
 l_string|&quot;related to aggregator %d but was not on its port list&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
@@ -4636,16 +4623,14 @@ id|aggregator-&gt;lag_ports
 op_assign
 id|port
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d joined LAG %d(existing LAG)&quot;
+l_string|&quot;Port %d joined LAG %d(existing LAG)&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|port-&gt;aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// mark this port as selected
@@ -4747,16 +4732,14 @@ id|port-&gt;sm_vars
 op_or_assign
 id|AD_PORT_SELECTED
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d joined LAG %d(new LAG)&quot;
+l_string|&quot;Port %d joined LAG %d(new LAG)&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|port-&gt;aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4766,7 +4749,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Port %d (on %s) did not find a suitable aggregator&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Port %d (on %s) did not find a suitable aggregator&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
@@ -5330,11 +5314,10 @@ id|aggregator
 )paren
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Agg=%d; Ports=%d; a key=%d; p key=%d; Indiv=%d; Active=%d&quot;
+l_string|&quot;Agg=%d; Ports=%d; a key=%d; p key=%d; Indiv=%d; Active=%d&bslash;n&quot;
 comma
 id|aggregator-&gt;aggregator_identifier
 comma
@@ -5347,7 +5330,6 @@ comma
 id|aggregator-&gt;is_individual
 comma
 id|aggregator-&gt;is_active
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5362,7 +5344,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: No 802.3ad response from the link partner &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: No 802.3ad response from the link partner &quot;
 l_string|&quot;for any adapters in the bond&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5376,13 +5359,11 @@ OG
 l_int|1
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
 l_string|&quot;Warning: More than one Link Aggregation Group was &quot;
-l_string|&quot;found in the bond. Only one group will function in the bond&quot;
-)paren
+l_string|&quot;found in the bond. Only one group will function in the bond&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5390,21 +5371,18 @@ id|best_aggregator-&gt;is_active
 op_assign
 l_int|1
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;LAG %d choosed as the active LAG&quot;
+l_string|&quot;LAG %d choosed as the active LAG&bslash;n&quot;
 comma
 id|best_aggregator-&gt;aggregator_identifier
 )paren
-)paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Agg=%d; Ports=%d; a key=%d; p key=%d; Indiv=%d; Active=%d&quot;
+l_string|&quot;Agg=%d; Ports=%d; a key=%d; p key=%d; Indiv=%d; Active=%d&bslash;n&quot;
 comma
 id|best_aggregator-&gt;aggregator_identifier
 comma
@@ -5417,7 +5395,6 @@ comma
 id|best_aggregator-&gt;is_individual
 comma
 id|best_aggregator-&gt;is_active
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// disable the ports that were related to the former active_aggregator
@@ -5571,14 +5548,12 @@ id|aggregator-&gt;num_of_ports
 op_assign
 l_int|0
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;LAG %d was cleared&quot;
+l_string|&quot;LAG %d was cleared&bslash;n&quot;
 comma
 id|aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5834,16 +5809,14 @@ c_cond
 id|port-&gt;aggregator-&gt;is_active
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Enabling port %d(LAG %d)&quot;
+l_string|&quot;Enabling port %d(LAG %d)&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|port-&gt;aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 id|__enable_port
@@ -5887,16 +5860,14 @@ id|null_mac_addr
 )paren
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Disabling port %d(LAG %d)&quot;
+l_string|&quot;Disabling port %d(LAG %d)&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
 comma
 id|port-&gt;aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 id|__disable_port
@@ -6073,14 +6044,12 @@ op_ge
 l_int|0
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Sent Marker Information on port %d&quot;
+l_string|&quot;Sent Marker Information on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6146,14 +6115,12 @@ op_ge
 l_int|0
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Sent Marker Response on port %d&quot;
+l_string|&quot;Sent Marker Response on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6526,7 +6493,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_CRIT
+id|KERN_ERR
 l_string|&quot;The slave %s is not attached to its bond&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
@@ -6819,7 +6786,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Trying to unbind an uninitialized port on %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Trying to unbind an uninitialized port on %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -6827,14 +6795,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Unbinding Link Aggregation Group %d&quot;
+l_string|&quot;Unbinding Link Aggregation Group %d&bslash;n&quot;
 comma
 id|aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the partner that this port is not suitable for aggregation */
@@ -6954,16 +6920,14 @@ id|new_aggregator-&gt;lag_ports-&gt;next_port_in_aggregator
 )paren
 )paren
 (brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Some port(s) related to LAG %d - replaceing with LAG %d&quot;
+l_string|&quot;Some port(s) related to LAG %d - replaceing with LAG %d&bslash;n&quot;
 comma
 id|aggregator-&gt;aggregator_identifier
 comma
 id|new_aggregator-&gt;aggregator_identifier
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6982,7 +6946,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;bonding: Removing an active aggregator&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Removing an active aggregator&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// select new active aggregator
@@ -7090,7 +7055,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: unbinding aggregator, &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: unbinding aggregator, &quot;
 l_string|&quot;and could not find a new aggregator for its ports&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7137,14 +7103,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Unbinding port %d&quot;
+l_string|&quot;Unbinding port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// find the aggregator that this port is connected to
@@ -7393,7 +7357,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: bond&squot;s first port is uninitialized&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: bond&squot;s first port is uninitialized&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -7450,7 +7415,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: Found an uninitialized port&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: Found an uninitialized port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -7615,7 +7581,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: port of slave %s is uninitialized&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: port of slave %s is uninitialized&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7638,14 +7605,12 @@ c_func
 id|lacpdu
 )paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Received LACPDU on port %d&quot;
+l_string|&quot;Received LACPDU on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 id|ad_rx_machine
@@ -7680,14 +7645,12 @@ id|tlv_type
 r_case
 id|AD_MARKER_INFORMATION_SUBTYPE
 suffix:colon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Received Marker Information on port %d&quot;
+l_string|&quot;Received Marker Information on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 id|ad_marker_info_received
@@ -7708,14 +7671,12 @@ suffix:semicolon
 r_case
 id|AD_MARKER_RESPONSE_SUBTYPE
 suffix:colon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Received Marker Response on port %d&quot;
+l_string|&quot;Received Marker Response on port %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 id|ad_marker_response_received
@@ -7735,14 +7696,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Received an unknown Marker subtype on slot %d&quot;
+l_string|&quot;Received an unknown Marker subtype on slot %d&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7791,7 +7750,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: speed changed for uninitialized port on %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: speed changed for uninitialized port on %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7818,14 +7778,12 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d changed speed&quot;
+l_string|&quot;Port %d changed speed&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// there is no need to reselect a new aggregator, just signal the
@@ -7877,7 +7835,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: duplex changed for uninitialized port on %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: duplex changed for uninitialized port on %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7900,14 +7859,12 @@ c_func
 id|port
 )paren
 suffix:semicolon
-id|BOND_PRINT_DBG
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;Port %d changed duplex&quot;
+l_string|&quot;Port %d changed duplex&bslash;n&quot;
 comma
 id|port-&gt;actor_port_number
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// there is no need to reselect a new aggregator, just signal the
@@ -7958,17 +7915,16 @@ op_logical_neg
 id|port-&gt;slave
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding: Warning: link status changed for uninitialized port on %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: link status changed for uninitialized port on %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -8252,8 +8208,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;bonding: Error: bond is NULL on device %s&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: bond is NULL on device %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -8305,7 +8262,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ERROR: bond is empty&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: bond is empty&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -8522,7 +8480,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: slave is NULL&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: slave is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -8559,7 +8518,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: Couldn&squot;t find a slave to tx on for aggregator ID %d&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: Couldn&squot;t find a slave to tx on for aggregator ID %d&bslash;n&quot;
 comma
 id|agg_id
 )paren
@@ -8609,7 +8569,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: slave is NULL&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: slave is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb

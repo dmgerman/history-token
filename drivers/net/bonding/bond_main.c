@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.  &n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address &n; *&t;will be assigned at this time.  The hw mac address will come from &n; *&t;the first slave bonded to the channel.  All slaves will then use &n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address &n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; * &n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used &n; *       rwlock_init to initialize to unlocked state to prevent deadlock when &n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info. &n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device &n; *       corresponding to a bond wasn&squot;t available from the bonding_t &n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under &n; *       certain hotswap conditions.  &n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr &n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/10 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use MIIPHY, then MIIREG, and finally&n; *       ETHTOOL to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; *&n; * 2002/08/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Removed acquisition of xmit_lock in set_multicast_list; caused&n; *       deadlock on SMP (lock is held by caller).&n; *     - Revamped SIOCGMIIPHY, SIOCGMIIREG portion of bond_check_dev_link().&n; *&n; * 2002/09/18 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - Fixed up bond_check_dev_link() (and callers): removed some magic&n; *&t; numbers, banished local MII_ defines, wrapped ioctl calls to&n; *&t; prevent EFAULT errors&n; *&n; * 2002/9/30 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *     - make sure the ip target matches the arp_target before saving the&n; *&t; hw address.&n; *&n; * 2002/9/30 - Dan Eisner &lt;eisner at 2robots dot com&gt;&n; *     - make sure my_ip is set before taking down the link, since&n; *&t; not all switches respond if the source ip is not set.&n; *&n; * 2002/10/8 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - read in the local ip address when enslaving a device&n; *     - add primary support&n; *     - make sure 2*arp_interval has passed when a new device&n; *       is brought on-line before taking it down.&n; *&n; * 2002/09/11 - Philippe De Muyter &lt;phdm at macqel dot be&gt;&n; *     - Added bond_xmit_broadcast logic.&n; *     - Added bond_mode() support function.&n; *&n; * 2002/10/26 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - allow to register multicast addresses only on active slave&n; *       (useful in active-backup mode)&n; *     - add multicast module parameter&n; *     - fix deletion of multicast groups after unloading module&n; *&n; * 2002/11/06 - Kameshwara Rayaprolu &lt;kameshwara.rao * wipro_com&gt;&n; *     - Changes to prevent panic from closing the device twice; if we close &n; *       the device in bond_release, we must set the original_flags to down &n; *       so it won&squot;t be closed again by the network layer.&n; *&n; * 2002/11/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - Fix arp_target_hw_addr memory leak&n; *     - Created activebackup_arp_monitor function to handle arp monitoring &n; *       in active backup mode - the bond_arp_monitor had several problems... &n; *       such as allowing slaves to tx arps sequentially without any delay &n; *       for a response&n; *     - Renamed bond_arp_monitor to loadbalance_arp_monitor and re-wrote&n; *       this function to just handle arp monitoring in load-balancing mode;&n; *       it is a lot more compact now&n; *     - Changes to ensure one and only one slave transmits in active-backup &n; *       mode&n; *     - Robustesize parameters; warn users about bad combinations of &n; *       parameters; also if miimon is specified and a network driver does &n; *       not support MII or ETHTOOL, inform the user of this&n; *     - Changes to support link_failure_count when in arp monitoring mode&n; *     - Fix up/down delay reported in /proc&n; *     - Added version; log version; make version available from &quot;modinfo -d&quot;&n; *     - Fixed problem in bond_check_dev_link - if the first IOCTL (SIOCGMIIPH)&n; *&t; failed, the ETHTOOL ioctl never got a chance&n; *&n; * 2002/11/16 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix multicast handling in activebackup_arp_monitor&n; *     - remove one unnecessary and confusing current_slave == slave test &n; *&t; in activebackup_arp_monitor&n; *&n; *  2002/11/17 - Laurent Deniel &lt;laurent.deniel at free.fr&gt;&n; *     - fix bond_slave_info_query when slave_id = num_slaves&n; *&n; *  2002/11/19 - Janice Girouard &lt;girouard at us dot ibm dot com&gt;&n; *     - correct ifr_data reference.  Update ifr_data reference&n; *       to mii_ioctl_data struct values to avoid confusion.&n; *&n; *  2002/11/22 - Bert Barbe &lt;bert.barbe at oracle dot com&gt;&n; *      - Add support for multiple arp_ip_target&n; *&n; *  2002/12/13 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Changed to allow text strings for mode and multicast, e.g.,&n; *&t;  insmod bonding mode=active-backup.  The numbers still work.&n; *&t;  One change: an invalid choice will cause module load failure,&n; *&t;  rather than the previous behavior of just picking one.&n; *&t;- Minor cleanups; got rid of dup ctype stuff, atoi function&n; * &n; * 2003/02/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Added use_carrier module parameter that causes miimon to&n; *&t;  use netif_carrier_ok() test instead of MII/ETHTOOL ioctls.&n; *&t;- Minor cleanups; consolidated ioctl calls to one function.&n; *&n; * 2003/02/07 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *&t;- Fix bond_mii_monitor() logic error that could result in&n; *&t;  bonding round-robin mode ignoring links after failover/recovery&n; *&n; * 2003/03/17 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- kmalloc fix (GFP_KERNEL to GFP_ATOMIC) reported by&n; *&t;  Shmulik dot Hen at intel.com.&n; *&t;- Based on discussion on mailing list, changed use of&n; *&t;  update_slave_cnt(), created wrapper functions for adding/removing&n; *&t;  slaves, changed bond_xmit_xor() to check slave_cnt instead of&n; *&t;  checking slave and slave-&gt;dev (which only worked by accident).&n; *&t;- Misc code cleanup: get arp_send() prototype from header file,&n; *&t;  add max_bonds to bonding.txt.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Make sure only bond_attach_slave() and bond_detach_slave() can&n; *&t;  manipulate the slave list, including slave_cnt, even when in&n; *&t;  bond_release_all().&n; *&t;- Fixed hang in bond_release() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed hang in bond_enslave() with traffic running:&n; *&t;  netdev_set_master() must not be called from within the bond lock.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for getting slave&squot;s speed and duplex via ethtool.&n; *&t;  Needed for 802.3ad and other future modes.&n; *&n; * 2003/03/18 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Enable support of modes that need to use the unique mac address of&n; *&t;  each slave.&n; *&t;  * bond_enslave(): Moved setting the slave&squot;s mac address, and&n; *&t;    openning it, from the application to the driver. This breaks&n; *&t;    backward comaptibility with old versions of ifenslave that open&n; *&t;     the slave before enalsving it !!!.&n; *&t;  * bond_release(): The driver also takes care of closing the slave&n; *&t;    and restoring its original mac address.&n; *&t;- Removed the code that restores all base driver&squot;s flags.&n; *&t;  Flags are automatically restored once all undo stages are done&n; *&t;  properly.&n; *&t;- Block possibility of enslaving before the master is up. This&n; *&t;  prevents putting the system in an unstable state.&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added ABI version control to restore compatibility between&n; *&t;  new/old ifenslave and new/old bonding.&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed bug in bond_release_all(): save old value of current_slave&n; *&t;  before setting it to NULL.&n; *&t;- Changed driver versioning scheme to include version number instead&n; *&t;  of release date (that is already in another field). There are 3&n; *&t;  fields X.Y.Z where:&n; *&t;&t;X - Major version - big behavior changes&n; *&t;&t;Y - Minor version - addition of features&n; *&t;&t;Z - Extra version - minor changes and bug fixes&n; *&t;  The current version is 1.0.0 as a base line.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Added support for lacp_rate module param.&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&t;  new version - 1.0.1&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Based on discussion on mailing list, changed locking scheme&n; *&t;  to use lock/unlock or lock_bh/unlock_bh appropriately instead&n; *&t;  of lock_irqsave/unlock_irqrestore. The new scheme helps exposing&n; *&t;  hidden bugs and solves system hangs that occurred due to the fact&n; *&t;  that holding lock_irqsave doesn&squot;t prevent softirqs from running.&n; *&t;  This also increases total throughput since interrupts are not&n; *&t;  blocked on each transmitted packets or monitor timeout.&n; *&t;  new version - 2.0.0&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&t;- Concentrate all assignments of current_slave to a single point&n; *&t;  so specific modes can take actions when the primary adapter is&n; *&t;  changed.&n; *&t;- Take the updelay parameter into consideration during bond_enslave&n; *&t;  since some adapters loose their link during setting the device.&n; *&t;- Renamed bond_3ad_link_status_changed() to&n; *&t;  bond_3ad_handle_link_change() for compatibility with TLB.&n; *&t;  new version - 2.1.0&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt;&n; *&t;- Added support for Adaptive load balancing mode which is&n; *&t;  equivalent to Transmit load balancing + Receive load balancing.&n; *&t;  new version - 2.2.0&n; *&n; * 2003/05/15 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Applied fix to activebackup_arp_monitor posted to bonding-devel&n; *&t;  by Tony Cureington &lt;tony.cureington * hp_com&gt;.  Fixes ARP&n; *&t;  monitor endless failover bug.  Version to 2.2.10&n; *&n; * 2003/05/20 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Fixed bug in ABI version control - Don&squot;t commit to a specific&n; *&t;  ABI version if receiving unsupported ioctl commands.&n; *&n; * 2003/05/22 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;&n; *&t;- Fix ifenslave -c causing bond to loose existing routes;&n; *&t;  added bond_set_mac_address() that doesn&squot;t require the&n; *&t;  bond to be down.&n; *&t;- In conjunction with fix for ifenslave -c, in&n; *&t;  bond_change_active(), changing to the already active slave&n; *&t;  is no longer an error (it successfully does nothing).&n; *&n; * 2003/06/30 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed bond_change_active() for ALB/TLB modes.&n; *&t;  Version to 2.2.14.&n; *&n; * 2003/07/29 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Fixed ARP monitoring bug.&n; *&t;  Version to 2.2.15.&n; *&n; * 2003/07/31 - Willy Tarreau &lt;willy at ods dot org&gt;&n; * &t;- Fixed kernel panic when using ARP monitoring without&n; *&t;  setting bond&squot;s IP address.&n; *&t;  Version to 2.2.16.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; * &t;- Back port from 2.6: use alloc_netdev(); fix /proc handling;&n; *&t;  made stats a part of bond struct so no need to allocate&n; *&t;  and free it separately; use standard list operations instead&n; *&t;  of pre-allocated array of bonds.&n; *&t;  Version to 2.3.0.&n; *&n; * 2003/08/07 - Jay Vosburgh &lt;fubar at us dot ibm dot com&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt; and&n; *&t;       Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Propagating master&squot;s settings: Distinguish between modes that&n; *&t;  use a primary slave from those that don&squot;t, and propagate settings&n; *&t;  accordingly; Consolidate change_active opeartions and add&n; *&t;  reselect_active and find_best opeartions; Decouple promiscuous&n; *&t;  handling from the multicast mode setting; Add support for changing&n; *&t;  HW address and MTU with proper unwind; Consolidate procfs code,&n; *&t;  add CHANGENAME handler; Enhance netdev notification handling.&n; *&t;  Version to 2.4.0.&n; *&n; * 2003/09/15 - Stephen Hemminger &lt;shemminger at osdl dot org&gt;,&n; *&t;       Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Convert /proc to seq_file interface.&n; *&t;  Change /proc/net/bondX/info to /proc/net/bonding/bondX.&n; *&t;  Set version to 2.4.1.&n; */
+singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -40,14 +41,6 @@ macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &quot;bonding.h&quot;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
-DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.4.1&quot;
-DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;September 15, 2003&quot;
-DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
-DECL|macro|DRV_DESCRIPTION
-mdefine_line|#define DRV_DESCRIPTION&t;&quot;Ethernet Channel Bonding Driver&quot;
 DECL|variable|version
 r_static
 r_const
@@ -912,15 +905,6 @@ op_star
 id|bond
 )paren
 suffix:semicolon
-multiline_comment|/* #define BONDING_DEBUG 1 */
-macro_line|#ifdef BONDING_DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...) printk(x...)
-macro_line|#else /* BONDING_DEBUG */
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...) do {} while (0)
-macro_line|#endif /* BONDING_DEBUG */
-multiline_comment|/* several macros */
 DECL|function|arp_send_all
 r_static
 r_void
@@ -1250,8 +1234,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bond_detach_slave(): trying to detach &quot;
-l_string|&quot;slave %p from bond %p&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: trying to detach slave %p from bond %p&bslash;n&quot;
 comma
 id|bond
 comma
@@ -1755,15 +1739,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;:: SIOCETHTOOL shows link down &bslash;n&quot;
+l_string|&quot;SIOCETHTOOL shows link down&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3708,8 +3689,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Warning : no link monitoring support for %s&bslash;n&quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning : no link monitoring support for %s&bslash;n&quot;
 comma
 id|slave_dev-&gt;name
 )paren
@@ -3727,15 +3709,12 @@ id|IFF_UP
 )paren
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Error, master_dev is not up&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EPERM
@@ -3754,15 +3733,12 @@ op_amp
 id|IFF_SLAVE
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Error, Device was already enslaved&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EBUSY
@@ -3787,15 +3763,16 @@ id|IFF_UP
 )paren
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;Error, slave_dev is up&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: %s is up&bslash;n&quot;
+comma
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EPERM
@@ -3812,17 +3789,18 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;The slave device you specified does not support&quot;
-l_string|&quot; setting the MAC address.&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: The slave device you specified does &quot;
+l_string|&quot;not support setting the MAC address.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;Your kernel likely does not support slave&quot;
-l_string|&quot; devices.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Your kernel likely does not support slave &quot;
+l_string|&quot;devices.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3845,15 +3823,16 @@ id|IFF_UP
 )paren
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;Error, slave_dev is not running&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: %s is not running&bslash;n&quot;
+comma
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -3885,8 +3864,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: to use %s mode, you must &quot;
-l_string|&quot;upgrade ifenslave.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: to use %s mode, you must upgrade &quot;
+l_string|&quot;ifenslave.&bslash;n&quot;
 comma
 id|bond_mode_name
 c_func
@@ -4005,17 +3985,14 @@ c_cond
 id|err
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Error %d calling set_mac_address&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|err_free
 suffix:semicolon
@@ -4036,17 +4013,14 @@ c_cond
 id|err
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Openning slave %s failed&bslash;n&quot;
 comma
 id|slave_dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|err_restore_mac
 suffix:semicolon
@@ -4068,17 +4042,14 @@ c_cond
 id|err
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Error %d calling netdev_set_master&bslash;n&quot;
 comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4318,8 +4289,9 @@ multiline_comment|/*&n;&t;&t;&t; * miimon is set but a bonded network driver&n;&
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bond_enslave(): MII and ETHTOOL support not &quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: MII and ETHTOOL support not &quot;
 l_string|&quot;available for interface %s, and &quot;
 l_string|&quot;arp_interval/arp_ip_target module parameters &quot;
 l_string|&quot;not specified, thus bonding will not detect &quot;
@@ -4339,16 +4311,17 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/* unable  get link status using mii/ethtool */
+multiline_comment|/* unable get link status using mii/ethtool */
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bond_enslave: can&squot;t get link status from &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: can&squot;t get link status from &quot;
 l_string|&quot;interface %s; the network driver associated &quot;
-l_string|&quot;with this interface does not support &quot;
-l_string|&quot;MII or ETHTOOL link status reporting, thus &quot;
-l_string|&quot;miimon has no effect on this interface.&bslash;n&quot;
+l_string|&quot;with this interface does not support MII or &quot;
+l_string|&quot;ETHTOOL link status reporting, thus miimon &quot;
+l_string|&quot;has no effect on this interface.&bslash;n&quot;
 comma
 id|slave_dev-&gt;name
 )paren
@@ -4384,16 +4357,13 @@ c_cond
 id|updelay
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Initial state of slave_dev is &quot;
 l_string|&quot;BOND_LINK_BACK&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|new_slave-&gt;link
 op_assign
 id|BOND_LINK_BACK
@@ -4405,16 +4375,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Initial state of slave_dev is &quot;
 l_string|&quot;BOND_LINK_UP&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|new_slave-&gt;link
 op_assign
 id|BOND_LINK_UP
@@ -4427,16 +4394,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;Initial state of slave_dev is &quot;
 l_string|&quot;BOND_LINK_DOWN&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|new_slave-&gt;link
 op_assign
 id|BOND_LINK_DOWN
@@ -4462,8 +4426,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bond_enslave(): failed to get speed/duplex from %s, &quot;
-l_string|&quot;speed forced to 100Mbps, duplex forced to Full.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: failed to get speed/duplex from %s, speed &quot;
+l_string|&quot;forced to 100Mbps, duplex forced to Full.&bslash;n&quot;
 comma
 id|new_slave-&gt;dev-&gt;name
 )paren
@@ -4480,8 +4445,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Operation of 802.3ad mode requires ETHTOOL support &quot;
-l_string|&quot;in base driver for proper aggregator selection.&bslash;n&quot;
+l_string|&quot;Operation of 802.3ad mode requires ETHTOOL &quot;
+l_string|&quot;support in base driver for proper aggregator &quot;
+l_string|&quot;selection.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4519,15 +4485,12 @@ id|BOND_LINK_DOWN
 )paren
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;This is the first active slave&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* first slave or no active slave yet, and this link&n;&t;&t;&t;   is OK, so make this interface the active one */
 id|change_active_interface
 c_func
@@ -4540,15 +4503,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;This is just a backup slave&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|bond_set_slave_inactive_flags
 c_func
 (paren
@@ -4830,15 +4790,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;This slave is always active in trunk mode&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* always active in trunk mode */
 id|new_slave-&gt;state
 op_assign
@@ -4893,17 +4850,14 @@ id|ndx
 op_increment
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Checking ndx=%d of master_dev-&gt;dev_addr&bslash;n&quot;
 comma
 id|ndx
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4915,17 +4869,14 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Found non-zero byte at ndx=%d&bslash;n&quot;
 comma
 id|ndx
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -4939,26 +4890,22 @@ id|slave_dev-&gt;addr_len
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * We got all the way through the address and it was&n;&t;&t;&t; * all 0&squot;s.&n;&t;&t;&t; */
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s doesn&squot;t have a MAC address yet.  &quot;
 comma
 id|master_dev-&gt;name
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Going to give assign it from %s.&bslash;n&quot;
 comma
 id|slave_dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 id|bond_sethwaddr
 c_func
 (paren
@@ -4970,9 +4917,11 @@ suffix:semicolon
 )brace
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: enslaving %s as a%s interface with a%s link.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: enslaving %s as a%s interface with a%s link.&bslash;n&quot;
 comma
 id|master_dev-&gt;name
 comma
@@ -5529,9 +5478,11 @@ id|bond_mode
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: making interface %s the new &quot;
+id|DRV_NAME
+l_string|&quot;: %s: making interface %s the new &quot;
 l_string|&quot;active one %d ms earlier.&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
@@ -5628,9 +5579,12 @@ id|bond_mode
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: making interface %s the new active one.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: making interface %s the new &quot;
+l_string|&quot;active one.&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 comma
@@ -5853,9 +5807,11 @@ id|IFF_SLAVE
 )paren
 (brace
 id|printk
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;%s: cannot release %s.&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: %s: cannot release %s.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -5944,11 +5900,12 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;WARNING: the permanent HWaddr of %s &quot;
-l_string|&quot;- %02X:%02X:%02X:%02X:%02X:%02X - &quot;
-l_string|&quot;is still in use by %s. Set the HWaddr &quot;
-l_string|&quot;of %s to a different address &quot;
-l_string|&quot;to avoid conflicts.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: the permanent HWaddr of %s &quot;
+l_string|&quot;- %02X:%02X:%02X:%02X:%02X:%02X - is &quot;
+l_string|&quot;still in use by %s. Set the HWaddr of &quot;
+l_string|&quot;%s to a different address to avoid &quot;
+l_string|&quot;conflicts.&bslash;n&quot;
 comma
 id|slave-&gt;name
 comma
@@ -6006,9 +5963,11 @@ id|our_slave
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: releasing %s interface %s&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: releasing %s interface %s&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -6083,7 +6042,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: now running without any active interface !&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: now running without any active &quot;
+l_string|&quot;interface !&bslash;n&quot;
 comma
 id|master-&gt;name
 )paren
@@ -6140,9 +6101,11 @@ id|bond
 (brace
 multiline_comment|/* if we get here, it&squot;s because the device was not found */
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s not enslaved&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: %s not enslaved&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -6686,9 +6649,11 @@ id|master-&gt;addr_len
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: released all slaves&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: released all slaves&bslash;n&quot;
 comma
 id|master-&gt;name
 )paren
@@ -6881,10 +6846,13 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status down for %sinterface &quot;
-l_string|&quot;%s, disabling it in %d ms.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status down for %s &quot;
+l_string|&quot;interface %s, disabling it in &quot;
+l_string|&quot;%d ms.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -6985,8 +6953,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status definitely down &quot;
-l_string|&quot;for interface %s, disabling it&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status definitely &quot;
+l_string|&quot;down for interface %s, &quot;
+l_string|&quot;disabling it&quot;
 comma
 id|master-&gt;name
 comma
@@ -7078,8 +7048,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status up again after %d ms &quot;
-l_string|&quot;for interface %s.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status up again after %d &quot;
+l_string|&quot;ms for interface %s.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7134,10 +7105,13 @@ l_int|0
 (brace
 multiline_comment|/* if updelay == 0, no need to&n;&t;&t;&t;&t;&t;   advertise about a 0 ms delay */
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status up for interface&quot;
-l_string|&quot; %s, enabling it in %d ms.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status up for &quot;
+l_string|&quot;interface %s, enabling it &quot;
+l_string|&quot;in %d ms.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7172,8 +7146,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status down again after %d ms &quot;
-l_string|&quot;for interface %s.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status down again after %d &quot;
+l_string|&quot;ms for interface %s.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7257,8 +7232,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status definitely up &quot;
-l_string|&quot;for interface %s.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status definitely &quot;
+l_string|&quot;up for interface %s.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7422,7 +7398,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: now running without any active interface !&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: now running without any active &quot;
+l_string|&quot;interface !&bslash;n&quot;
 comma
 id|master-&gt;name
 )paren
@@ -7702,8 +7680,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status definitely up &quot;
-l_string|&quot;for interface %s, &quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status definitely &quot;
+l_string|&quot;up for interface %s, &quot;
 comma
 id|master-&gt;name
 comma
@@ -7721,7 +7700,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: interface %s is now up&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: interface %s is now up&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7797,7 +7777,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: interface %s is now down.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: interface %s is now down.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -7870,7 +7851,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: now running without any active interface !&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: now running without any active &quot;
+l_string|&quot;interface !&bslash;n&quot;
 comma
 id|master-&gt;name
 )paren
@@ -8136,7 +8119,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s is up and now the &quot;
+id|DRV_NAME
+l_string|&quot;: %s: %s is up and now the &quot;
 l_string|&quot;active interface&bslash;n&quot;
 comma
 id|master-&gt;name
@@ -8151,7 +8135,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: backup interface %s is &quot;
+id|DRV_NAME
+l_string|&quot;: %s: backup interface %s is &quot;
 l_string|&quot;now up&bslash;n&quot;
 comma
 id|master-&gt;name
@@ -8248,7 +8233,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: backup interface %s is now down&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: backup interface %s is now down&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -8369,8 +8355,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: link status down for &quot;
-l_string|&quot;active interface %s, disabling it&quot;
+id|DRV_NAME
+l_string|&quot;: %s: link status down for active interface &quot;
+l_string|&quot;%s, disabling it&quot;
 comma
 id|master-&gt;name
 comma
@@ -8447,7 +8434,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: changing from interface %s to primary &quot;
+id|DRV_NAME
+l_string|&quot;: %s: changing from interface %s to primary &quot;
 l_string|&quot;interface %s&bslash;n&quot;
 comma
 id|master-&gt;name
@@ -8652,8 +8640,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: backup interface &quot;
-l_string|&quot;%s is now down.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: %s: backup interface %s is &quot;
+l_string|&quot;now down.&bslash;n&quot;
 comma
 id|master-&gt;name
 comma
@@ -8710,43 +8699,30 @@ op_star
 id|slave
 )paren
 (brace
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;bond_sethwaddr: master=%x&bslash;n&quot;
+l_string|&quot;master=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|master
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;bond_sethwaddr: slave=%x&bslash;n&quot;
+l_string|&quot;slave=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|slave
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;bond_sethwaddr: slave-&gt;addr_len=%d&bslash;n&quot;
+l_string|&quot;slave-&gt;addr_len=%d&bslash;n&quot;
 comma
 id|slave-&gt;addr_len
 )paren
 suffix:semicolon
-macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -9108,8 +9084,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: got invalid ABI&quot;
-l_string|&quot; version from application&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: got invalid ABI &quot;
+l_string|&quot;version from application&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9265,11 +9242,9 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;bond_ioctl: master=%s, cmd=%d&bslash;n&quot;
 comma
 id|master_dev-&gt;name
@@ -9277,7 +9252,6 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -9592,9 +9566,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bonding: Error: already using ifenslave ABI &quot;
-l_string|&quot;version %d; to upgrade ifenslave to version %d, &quot;
-l_string|&quot;you must first reload bonding.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: already using ifenslave ABI version %d; to &quot;
+l_string|&quot;upgrade ifenslave to version %d, you must first &quot;
+l_string|&quot;reload bonding.&bslash;n&quot;
 comma
 id|orig_app_abi_ver
 comma
@@ -9614,30 +9589,14 @@ c_func
 id|ifr-&gt;ifr_slave
 )paren
 suffix:semicolon
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;slave_dev=%x: &bslash;n&quot;
+l_string|&quot;slave_dev=%p: &bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|slave_dev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;slave_dev-&gt;name=%s: &bslash;n&quot;
-comma
-id|slave_dev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9654,6 +9613,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;slave_dev-&gt;name=%s: &bslash;n&quot;
+comma
+id|slave_dev-&gt;name
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -9985,7 +9952,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bond_xmit_broadcast: skb_clone() failed&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: bond_xmit_broadcast(): &quot;
+l_string|&quot;skb_clone() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -10819,15 +10788,12 @@ id|bond-&gt;ptrlock
 suffix:semicolon
 )brace
 multiline_comment|/* no suitable interface, frame not sent */
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;There was no suitable interface, so we don&squot;t transmit&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dev_kfree_skb
 c_func
 (paren
@@ -11934,9 +11900,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Cannot create /proc/net/bonding/%s&bslash;n&quot;
-comma
-id|dev-&gt;name
+id|DRV_NAME
+l_string|&quot;: Warning: Cannot create /proc/net/bonding/%s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -12256,12 +12221,18 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_set_mac_address %p %s&bslash;n&quot;
+l_string|&quot;bond=%p, name=%s&bslash;n&quot;
 comma
-id|dev
+id|bond
 comma
-id|dev-&gt;name
+(paren
+id|bond_dev
+ques
+c_cond
+id|bond_dev-&gt;name
+suffix:colon
+l_string|&quot;None&quot;
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -12304,8 +12275,7 @@ id|slave-&gt;prev
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_set_mac: slave %p %s&bslash;n&quot;
+l_string|&quot;slave %p %s&bslash;n&quot;
 comma
 id|slave
 comma
@@ -12328,8 +12298,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_set_mac EOPNOTSUPP %s&bslash;n&quot;
+l_string|&quot;EOPNOTSUPP %s&bslash;n&quot;
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -12360,8 +12329,7 @@ multiline_comment|/* TODO: consider downing the slave &n;&t;&t;&t; * and retry ?
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_set_mac err %d %s&bslash;n&quot;
+l_string|&quot;err %d %s&bslash;n&quot;
 comma
 id|error
 comma
@@ -12444,8 +12412,6 @@ id|tmp_error
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_set_mac_address: &quot;
 l_string|&quot;unwind err %d dev %s&bslash;n&quot;
 comma
 id|tmp_error
@@ -12492,12 +12458,20 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;CM: b %p nm %d&bslash;n&quot;
+l_string|&quot;bond=%p, name=%s, new_mtu=%d&bslash;n&quot;
 comma
 id|bond
 comma
-id|newmtu
+(paren
+id|bond_dev
+ques
+c_cond
+id|bond_dev-&gt;name
+suffix:colon
+l_string|&quot;None&quot;
+)paren
+comma
+id|new_mtu
 )paren
 suffix:semicolon
 r_for
@@ -12523,8 +12497,7 @@ id|slave-&gt;prev
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;CM: s %p s-&gt;p %p c_m %p&bslash;n&quot;
+l_string|&quot;s %p s-&gt;p %p c_m %p&bslash;n&quot;
 comma
 id|slave
 comma
@@ -12573,8 +12546,7 @@ multiline_comment|/* If we failed to set the slave&squot;s mtu to the new value&
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_change_mtu err %d %s&bslash;n&quot;
+l_string|&quot;err %d %s&bslash;n&quot;
 comma
 id|error
 comma
@@ -12897,8 +12869,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;bond_netdev_event n_b %p ev %lx ptr %p&bslash;n&quot;
+l_string|&quot;n_b %p ev %lx ptr %p&bslash;n&quot;
 comma
 id|this
 comma
@@ -13095,16 +13066,14 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-macro_line|#ifdef BONDING_DEBUG
-id|printk
+id|dprintk
+c_func
 (paren
-id|KERN_INFO
 l_string|&quot;Begin bond_init for %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 id|bond
 op_assign
 id|dev-&gt;priv
@@ -13225,7 +13194,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Unknown bonding mode %d&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Error: Unknown bonding mode %d&bslash;n&quot;
 comma
 id|bond_mode
 )paren
@@ -13279,7 +13249,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s registered with&quot;
+id|DRV_NAME
+l_string|&quot;: %s registered with&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -13333,7 +13304,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s registered with&quot;
+id|DRV_NAME
+l_string|&quot;: %s registered with&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -13371,6 +13343,7 @@ id|count
 op_increment
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; %s&quot;
 comma
@@ -13591,8 +13564,9 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bonding_init(): Invalid bonding mode &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: Invalid bonding mode &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|mode
 op_eq
@@ -13660,8 +13634,9 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bonding_init(): Invalid multicast mode &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: Invalid multicast mode &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|multicast
 op_eq
@@ -13696,8 +13671,9 @@ id|BOND_MODE_8023AD
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;lacp_rate param is irrelevant in mode %s&bslash;n&quot;
+id|KERN_INFO
+id|DRV_NAME
+l_string|&quot;: lacp_rate param is irrelevant in mode %s&bslash;n&quot;
 comma
 id|bond_mode_name
 c_func
@@ -13730,9 +13706,9 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bonding_init(): Invalid lacp rate &quot;
-l_string|&quot;&bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: Error: Invalid lacp rate &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|lacp_rate
 op_eq
@@ -13763,8 +13739,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): max_bonds (%d) not in range %d-%d, &quot;
-l_string|&quot;so it was reset to BOND_DEFAULT_MAX_BONDS (%d)&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: max_bonds (%d) not in range %d-%d, so it &quot;
+l_string|&quot;was reset to BOND_DEFAULT_MAX_BONDS (%d)&quot;
 comma
 id|max_bonds
 comma
@@ -13792,7 +13769,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): miimon module parameter (%d), &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: miimon module parameter (%d), &quot;
 l_string|&quot;not in range 0-%d, so it was reset to %d&bslash;n&quot;
 comma
 id|miimon
@@ -13819,7 +13797,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): updelay module parameter (%d), &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: updelay module parameter (%d), &quot;
 l_string|&quot;not in range 0-%d, so it was reset to 0&bslash;n&quot;
 comma
 id|updelay
@@ -13844,7 +13823,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): downdelay module parameter (%d), &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: downdelay module parameter (%d), &quot;
 l_string|&quot;not in range 0-%d, so it was reset to 0&bslash;n&quot;
 comma
 id|downdelay
@@ -13878,9 +13858,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): ARP monitoring&quot;
-l_string|&quot;can&squot;t be used simultaneously with 802.3ad, &quot;
-l_string|&quot;disabling ARP monitoring&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: ARP monitoring can&squot;t be used &quot;
+l_string|&quot;simultaneously with 802.3ad, disabling ARP &quot;
+l_string|&quot;monitoring&bslash;n&quot;
 )paren
 suffix:semicolon
 id|arp_interval
@@ -13899,17 +13880,18 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bonding_init(): miimon must be specified, &quot;
-l_string|&quot;otherwise bonding will not detect link failure, &quot;
-l_string|&quot;speed and duplex which are essential &quot;
-l_string|&quot;for 802.3ad operation&bslash;n&quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: miimon must be specified, &quot;
+l_string|&quot;otherwise bonding will not detect link &quot;
+l_string|&quot;failure, speed and duplex which are &quot;
+l_string|&quot;essential for 802.3ad operation&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;Forcing miimon to 100msec&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -13929,15 +13911,16 @@ id|BOND_MULTICAST_ALL
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bonding_init(): Multicast mode must &quot;
-l_string|&quot;be set to ALL for 802.3ad&bslash;n&quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: Multicast mode must be set to ALL &quot;
+l_string|&quot;for 802.3ad&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;Forcing Multicast mode to ALL&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -13975,17 +13958,18 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bonding_init(): miimon must be specified, &quot;
-l_string|&quot;otherwise bonding will not detect link failure &quot;
-l_string|&quot;and link speed which are essential &quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: miimon must be specified, &quot;
+l_string|&quot;otherwise bonding will not detect link &quot;
+l_string|&quot;failure and link speed which are essential &quot;
 l_string|&quot;for TLB/ALB load balancing&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;Forcing miimon to 100msec&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -14005,16 +13989,18 @@ id|BOND_MULTICAST_ACTIVE
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bonding_init(): Multicast mode must &quot;
-l_string|&quot;be set to ACTIVE for TLB/ALB&bslash;n&quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: Multicast mode must be set to &quot;
+l_string|&quot;ACTIVE for TLB/ALB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;Forcing Multicast mode to ACTIVE&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Forcing Multicast mode to &quot;
+l_string|&quot;ACTIVE&bslash;n&quot;
 )paren
 suffix:semicolon
 id|multicast_mode
@@ -14034,11 +14020,13 @@ id|BOND_MODE_ALB
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;In ALB mode you might experience client disconnections&quot;
-l_string|&quot; upon reconnection of a link if the bonding module&quot;
-l_string|&quot; updelay parameter (%d msec) is incompatible with the&quot;
-l_string|&quot; forwarding delay time of the switch&bslash;n&quot;
+id|KERN_NOTICE
+id|DRV_NAME
+l_string|&quot;: In ALB mode you might experience client &quot;
+l_string|&quot;disconnections upon reconnection of a link if the &quot;
+l_string|&quot;bonding module updelay parameter (%d msec) is &quot;
+l_string|&quot;incompatible with the forwarding delay time of the &quot;
+l_string|&quot;switch&bslash;n&quot;
 comma
 id|updelay
 )paren
@@ -14073,8 +14061,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): miimon module parameter not &quot;
-l_string|&quot;set and updelay (%d) or downdelay (%d) module &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: miimon module parameter not set &quot;
+l_string|&quot;and updelay (%d) or downdelay (%d) module &quot;
 l_string|&quot;parameter is set; updelay and downdelay have &quot;
 l_string|&quot;no effect unless miimon is set&bslash;n&quot;
 comma
@@ -14100,9 +14089,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): miimon (%d) and arp_interval &quot;
-l_string|&quot;(%d) can&squot;t be used simultaneously, &quot;
-l_string|&quot;disabling ARP monitoring&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: miimon (%d) and arp_interval (%d) &quot;
+l_string|&quot;can&squot;t be used simultaneously, disabling ARP &quot;
+l_string|&quot;monitoring&bslash;n&quot;
 comma
 id|miimon
 comma
@@ -14131,7 +14121,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): updelay (%d) is not a multiple &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: updelay (%d) is not a multiple &quot;
 l_string|&quot;of miimon (%d), updelay rounded to %d ms&bslash;n&quot;
 comma
 id|updelay
@@ -14165,9 +14156,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): downdelay (%d) is not a &quot;
-l_string|&quot;multiple of miimon (%d), downdelay rounded &quot;
-l_string|&quot;to %d ms&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: downdelay (%d) is not a multiple &quot;
+l_string|&quot;of miimon (%d), downdelay rounded to %d ms&bslash;n&quot;
 comma
 id|downdelay
 comma
@@ -14196,8 +14187,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): arp_interval module parameter (%d), &quot;
-l_string|&quot;not in range 0-%d, so it was reset to %d&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: arp_interval module parameter (%d) &quot;
+l_string|&quot;, not in range 0-%d, so it was reset to %d&bslash;n&quot;
 comma
 id|arp_interval
 comma
@@ -14255,9 +14247,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): bad arp_ip_target module &quot;
-l_string|&quot;parameter (%s), ARP monitoring will not be &quot;
-l_string|&quot;performed&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: bad arp_ip_target module parameter &quot;
+l_string|&quot;(%s), ARP monitoring will not be performed&bslash;n&quot;
 comma
 id|arp_ip_target
 (braket
@@ -14314,8 +14306,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): arp_interval module parameter &quot;
-l_string|&quot;(%d) specified without providing an arp_ip_target &quot;
+id|DRV_NAME
+l_string|&quot;: Warning: arp_interval module parameter (%d) &quot;
+l_string|&quot;specified without providing an arp_ip_target &quot;
 l_string|&quot;parameter, arp_interval was reset to 0&bslash;n&quot;
 comma
 id|arp_interval
@@ -14346,11 +14339,12 @@ multiline_comment|/* miimon and arp_interval not set, we need one so things&n;&t
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;bonding_init(): either miimon or &quot;
-l_string|&quot;arp_interval and arp_ip_target module parameters &quot;
-l_string|&quot;must be specified, otherwise bonding will not detect &quot;
-l_string|&quot;link failures! see bonding.txt for details.&bslash;n&quot;
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: Warning: either miimon or arp_interval and &quot;
+l_string|&quot;arp_ip_target module parameters must be specified, &quot;
+l_string|&quot;otherwise bonding will not detect link failures! see &quot;
+l_string|&quot;bonding.txt for details.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -14376,8 +14370,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;bonding_init(): %s primary device specified but has &quot;
-l_string|&quot;no effect in %s mode&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Warning: %s primary device specified but has no &quot;
+l_string|&quot;effect in %s mode&bslash;n&quot;
 comma
 id|primary
 comma
