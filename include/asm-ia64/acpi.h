@@ -40,14 +40,6 @@ r_void
 )paren
 suffix:semicolon
 r_int
-id|acpi_boot_init
-(paren
-r_char
-op_star
-id|cdline
-)paren
-suffix:semicolon
-r_int
 id|acpi_request_vector
 (paren
 id|u32
@@ -83,14 +75,28 @@ id|u32
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-DECL|macro|NODE_ARRAY_INDEX
-mdefine_line|#define NODE_ARRAY_INDEX(x)&t;((x) / 8)&t;/* 8 bits/char */
-DECL|macro|NODE_ARRAY_OFFSET
-mdefine_line|#define NODE_ARRAY_OFFSET(x)&t;((x) % 8)&t;/* 8 bits/char */
+macro_line|#ifdef CONFIG_ACPI_NUMA
+macro_line|#include &lt;asm/numa.h&gt;
+multiline_comment|/* Proximity bitmap length; _PXM is at most 255 (8 bit)*/
 DECL|macro|MAX_PXM_DOMAINS
-mdefine_line|#define MAX_PXM_DOMAINS&t;&t;(256)
-macro_line|#endif /* CONFIG_DISCONTIGMEM */
+mdefine_line|#define MAX_PXM_DOMAINS (256)
+r_extern
+r_int
+id|__initdata
+id|pxm_to_nid_map
+(braket
+id|MAX_PXM_DOMAINS
+)braket
+suffix:semicolon
+r_extern
+r_int
+id|__initdata
+id|nid_to_pxm_map
+(braket
+id|NR_NODES
+)braket
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof

@@ -902,6 +902,14 @@ id|timeout
 op_assign
 id|rq-&gt;timeout
 suffix:semicolon
+id|SCpnt-&gt;transfersize
+op_assign
+id|rq-&gt;data_len
+suffix:semicolon
+id|SCpnt-&gt;underflow
+op_assign
+id|rq-&gt;data_len
+suffix:semicolon
 r_goto
 id|queue
 suffix:semicolon
@@ -1288,8 +1296,6 @@ op_amp
 l_int|0xff
 suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldn&squot;t disconnect in the middle of a sector, so with a dumb&n;&t; * host adapter, it&squot;s safe to assume that we can at least transfer&n;&t; * this many bytes between each connect / disconnect.&n;&t; */
-id|queue
-suffix:colon
 id|SCpnt-&gt;transfersize
 op_assign
 id|cd-&gt;device-&gt;sector_size
@@ -1300,6 +1306,8 @@ id|this_count
 op_lshift
 l_int|9
 suffix:semicolon
+id|queue
+suffix:colon
 id|SCpnt-&gt;allowed
 op_assign
 id|MAX_RETRIES
