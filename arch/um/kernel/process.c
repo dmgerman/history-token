@@ -1066,6 +1066,11 @@ l_string|&quot;    To make it working, you need a kernel patch for your host, to
 l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Ugly hack for now... --cw */
+macro_line|#ifndef PTRACE_SYSEMU
+DECL|macro|PTRACE_SYSEMU
+mdefine_line|#define PTRACE_SYSEMU 31
+macro_line|#endif
 DECL|function|check_sysemu
 r_static
 r_void
@@ -1100,10 +1105,12 @@ c_func
 l_string|&quot;Checking syscall emulation patch for ptrace...&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_SKAS
 id|sysemu_supported
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_MODE_SKAS */
 id|pid
 op_assign
 id|start_ptraced_child
@@ -1266,10 +1273,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_SKAS
 id|sysemu_supported
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif /* CONFIG_MODE_SKAS */
 id|printk
 c_func
 (paren
@@ -1289,10 +1298,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_SKAS
 id|sysemu_supported
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_MODE_SKAS */
 id|printk
 c_func
 (paren
@@ -1300,6 +1311,7 @@ l_string|&quot;missing&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MODE_SKAS
 id|set_using_sysemu
 c_func
 (paren
@@ -1307,6 +1319,7 @@ op_logical_neg
 id|force_sysemu_disabled
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|check_ptrace
 r_void
