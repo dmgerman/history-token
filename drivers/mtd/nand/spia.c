@@ -321,7 +321,7 @@ id|this-&gt;NCE
 op_assign
 l_int|0x04
 suffix:semicolon
-multiline_comment|/* Scan to find existance of the device */
+multiline_comment|/* Scan to find existence of the device */
 r_if
 c_cond
 (paren

@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 r_static
 r_int
 id|nfsctl_svc

@@ -40,6 +40,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/fcntl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -7188,6 +7189,29 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|BLKROSET
+suffix:colon
+r_case
+id|BLKROGET
+suffix:colon
+r_case
+id|BLKFLSBUF
+suffix:colon
+r_case
+id|BLKSSZGET
+suffix:colon
+r_return
+id|blk_ioctl
+c_func
+(paren
+id|ip-&gt;i_bdev
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
 r_case
 id|CDROMSUBCHNL
 suffix:colon

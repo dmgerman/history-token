@@ -878,7 +878,7 @@ comma
 l_int|0x0021
 )paren
 comma
-multiline_comment|/* ??? */
+multiline_comment|/* Yamaha OPL3-SA2 */
 id|ISAPNP_OPL3SA2
 c_func
 (paren

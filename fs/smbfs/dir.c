@@ -787,7 +787,9 @@ id|read_really
 suffix:colon
 id|result
 op_assign
-id|smb_proc_readdir
+id|server-&gt;ops
+op_member_access_from_pointer
+id|readdir
 c_func
 (paren
 id|filp

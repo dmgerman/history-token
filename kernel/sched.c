@@ -1083,7 +1083,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|function|schedule_tail
 id|asmlinkage
 r_void
@@ -5192,6 +5192,15 @@ id|__restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Set the preempt count _outside_ the spinlocks! */
+id|idle-&gt;thread_info-&gt;preempt_count
+op_assign
+(paren
+id|idle-&gt;lock_depth
+op_ge
+l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -301,25 +301,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;(process,opc,uniq)=(%d,%ld,%ld), nbytes %ld&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|hdr.opcode
-comma
-id|hdr.unique
-comma
-(paren
-r_int
-)paren
-id|nbytes
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -362,14 +343,6 @@ op_logical_neg
 id|sb
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;coda_psdev_write: downcall, no SB!&bslash;n&quot;
-)paren
-suffix:semicolon
 id|count
 op_assign
 id|nbytes
@@ -378,14 +351,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;handling downcall&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -625,16 +590,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;Eureka: uniq %ld on queue!&bslash;n&quot;
-comma
-id|hdr.unique
-)paren
-suffix:semicolon
 multiline_comment|/* move data into response buffer. */
 r_if
 c_cond
@@ -744,26 +699,6 @@ id|outp-&gt;fd
 )paren
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;Found! Count %ld for (opc,uniq)=(%ld,%ld), upc_req at %p&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|count
-comma
-id|hdr.opcode
-comma
-id|hdr.unique
-comma
-op_amp
-id|req
-)paren
-suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -1045,18 +980,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;vcread: signal msg (%d, %d)&bslash;n&quot;
-comma
-id|req-&gt;uc_opcode
-comma
-id|req-&gt;uc_unique
-)paren
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -1215,18 +1138,6 @@ id|file-&gt;private_data
 op_assign
 id|vcp
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;device %i - inuse: %d&bslash;n&quot;
-comma
-id|idx
-comma
-id|vcp-&gt;vc_inuse
-)paren
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -1306,16 +1217,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;psdev_release: inuse %d&bslash;n&quot;
-comma
-id|vcp-&gt;vc_inuse
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1333,14 +1234,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Wakeup clients so they can return. */
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;wake up pending clients&bslash;n&quot;
-)paren
-suffix:semicolon
 id|lh
 op_assign
 id|vcp-&gt;vc_pending.next
@@ -1426,14 +1319,6 @@ op_assign
 op_amp
 id|vcp-&gt;vc_processing
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;wake up processing clients&bslash;n&quot;
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1472,14 +1357,6 @@ id|req-&gt;uc_sleep
 )paren
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PSDEV
-comma
-l_string|&quot;Done.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

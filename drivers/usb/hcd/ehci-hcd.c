@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -13,10 +13,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#ifndef CONFIG_USB_DEBUG
-DECL|macro|CONFIG_USB_DEBUG
-mdefine_line|#define CONFIG_USB_DEBUG&t;/* this is still experimental! */
-macro_line|#endif
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -34,15 +30,15 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 singleline_comment|//#undef KERN_DEBUG
 singleline_comment|//#define KERN_DEBUG &quot;&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; *&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.26 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.27 $&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 2.0 &squot;Enhanced&squot; Host Controller (EHCI) Driver&quot;
 singleline_comment|// #define EHCI_VERBOSE_DEBUG
-singleline_comment|// #define have_iso
+singleline_comment|// #define have_split_iso
 macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 DECL|macro|EHCI_SLAB_FLAGS
 macro_line|#&t;define&t;EHCI_SLAB_FLAGS&t;&t;(SLAB_POISON)
@@ -336,6 +332,15 @@ comma
 l_string|&quot;ehci_start&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* cache this readonly data; minimize PCI reads */
+id|ehci-&gt;hcs_params
+op_assign
+id|readl
+(paren
+op_amp
+id|ehci-&gt;caps-&gt;hcs_params
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * hw default: 1K periodic list heads, one per frame.&n;&t; * periodic_size can shrink by USBCMD update if hcc_params allows.&n;&t; */
 id|ehci-&gt;periodic_size
 op_assign
@@ -403,7 +408,7 @@ id|ehci-&gt;reclaim
 op_assign
 l_int|0
 suffix:semicolon
-id|ehci-&gt;next_frame
+id|ehci-&gt;next_uframe
 op_assign
 op_minus
 l_int|1
@@ -788,7 +793,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ehci-&gt;next_frame
+id|ehci-&gt;next_uframe
 op_ne
 op_minus
 l_int|1
@@ -879,9 +884,6 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-id|u32
-id|params
-suffix:semicolon
 r_int
 id|ports
 suffix:semicolon
@@ -897,19 +899,11 @@ comma
 id|state
 )paren
 suffix:semicolon
-id|params
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcs_params
-)paren
-suffix:semicolon
 id|ports
 op_assign
 id|HCS_N_PORTS
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
 singleline_comment|// FIXME:  This assumes what&squot;s probably a D3 level suspend...
@@ -1064,9 +1058,6 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-id|u32
-id|params
-suffix:semicolon
 r_int
 id|ports
 suffix:semicolon
@@ -1080,19 +1071,11 @@ comma
 id|hcd-&gt;bus_name
 )paren
 suffix:semicolon
-id|params
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcs_params
-)paren
-suffix:semicolon
 id|ports
 op_assign
 id|HCS_N_PORTS
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
 singleline_comment|// FIXME:  if controller didn&squot;t retain state,
@@ -1260,7 +1243,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ehci-&gt;next_frame
+id|ehci-&gt;next_uframe
 op_ne
 op_minus
 l_int|1
@@ -1307,14 +1290,21 @@ id|ehci-&gt;regs-&gt;status
 suffix:semicolon
 r_int
 id|bh
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* clear (just) interrupts */
 id|status
 op_and_assign
 id|INTR_MASK
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|status
+)paren
+multiline_comment|/* irq sharing? */
+r_return
+suffix:semicolon
+multiline_comment|/* clear (just) interrupts */
 id|writel
 (paren
 id|status
@@ -1330,28 +1320,12 @@ id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
 multiline_comment|/* unblock posted write */
-r_if
-c_cond
-(paren
-id|unlikely
-(paren
-id|hcd-&gt;state
-op_eq
-id|USB_STATE_HALT
-)paren
-)paren
-multiline_comment|/* irq sharing? */
-r_return
+id|bh
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef&t;EHCI_VERBOSE_DEBUG
 multiline_comment|/* unrequested/ignored: Port Change Detect, Frame List Rollover */
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|INTR_MASK
-)paren
 id|dbg_status
 (paren
 id|ehci
@@ -1593,7 +1567,6 @@ suffix:semicolon
 r_case
 id|PIPE_ISOCHRONOUS
 suffix:colon
-macro_line|#ifdef have_iso
 r_if
 c_cond
 (paren
@@ -1607,8 +1580,11 @@ id|itd_submit
 id|ehci
 comma
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
+macro_line|#ifdef have_split_iso
 r_else
 r_return
 id|sitd_submit
@@ -1616,21 +1592,21 @@ id|sitd_submit
 id|ehci
 comma
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 macro_line|#else
-singleline_comment|// FIXME highspeed iso stuff is written but never run/tested.
-singleline_comment|// and the split iso support isn&squot;t even written yet.
 id|dbg
 (paren
-l_string|&quot;no iso support yet&quot;
+l_string|&quot;no split iso support yet&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
 id|ENOSYS
 suffix:semicolon
-macro_line|#endif /* have_iso */
+macro_line|#endif /* have_split_iso */
 )brace
 r_return
 l_int|0

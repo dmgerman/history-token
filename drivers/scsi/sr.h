@@ -265,8 +265,8 @@ r_void
 id|sr_vendor_init
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
 )paren
 suffix:semicolon
 r_int

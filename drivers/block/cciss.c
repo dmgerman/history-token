@@ -2216,7 +2216,7 @@ r_return
 id|blk_ioctl
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 comma
 id|cmd
 comma

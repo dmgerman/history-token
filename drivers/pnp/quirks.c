@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#if 0
+mdefine_line|#define ISAPNP_DEBUG
+macro_line|#endif
 DECL|function|quirk_awe32_resources
 r_static
 r_void
@@ -665,6 +668,7 @@ id|dev-&gt;device
 )paren
 )paren
 (brace
+macro_line|#ifdef ISAPNP_DEBUG
 id|printk
 c_func
 (paren
@@ -676,6 +680,7 @@ comma
 id|dev-&gt;devfn
 )paren
 suffix:semicolon
+macro_line|#endif
 id|isapnp_fixups
 (braket
 id|i

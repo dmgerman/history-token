@@ -99,6 +99,8 @@ DECL|macro|ETH_P_IRDA
 mdefine_line|#define ETH_P_IRDA&t;0x0017&t;&t;/* Linux-IrDA&t;&t;&t;*/
 DECL|macro|ETH_P_ECONET
 mdefine_line|#define ETH_P_ECONET&t;0x0018&t;&t;/* Acorn Econet&t;&t;&t;*/
+DECL|macro|ETH_P_HDLC
+mdefine_line|#define ETH_P_HDLC&t;0x0019&t;&t;/* HDLC frames&t;&t;&t;*/
 multiline_comment|/*&n; *&t;This is an Ethernet frame header.&n; */
 DECL|struct|ethhdr
 r_struct

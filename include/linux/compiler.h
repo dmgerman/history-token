@@ -10,5 +10,8 @@ DECL|macro|likely
 mdefine_line|#define likely(x)&t;__builtin_expect((x),1)
 DECL|macro|unlikely
 mdefine_line|#define unlikely(x)&t;__builtin_expect((x),0)
+multiline_comment|/* This macro obfuscates arithmetic on a variable address so that gcc&n;   shouldn&squot;t recognize the original var, and make assumptions about it */
+DECL|macro|RELOC_HIDE
+mdefine_line|#define RELOC_HIDE(var, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ __typeof__(&amp;(var)) __ptr;&t;&t;&t;&t;&t;&bslash;&n;    __asm__ (&quot;&quot; : &quot;=g&quot;(__ptr) : &quot;0&quot;((void *)&amp;(var) + (off)));&t;&bslash;&n;    *__ptr; })
 macro_line|#endif /* __LINUX_COMPILER_H */
 eof

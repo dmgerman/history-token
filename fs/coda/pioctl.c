@@ -184,16 +184,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* &n;         * Look up the pathname. Note that the pathname is in &n;         * user memory, and namei takes care of this&n;         */
-id|CDEBUG
-c_func
-(paren
-id|D_PIOCTL
-comma
-l_string|&quot;namei, data.follow = %d&bslash;n&quot;
-comma
-id|data.follow
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -232,14 +222,6 @@ c_cond
 id|error
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_PIOCTL
-comma
-l_string|&quot;error: lookup fails.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -251,22 +233,6 @@ op_assign
 id|nd.dentry-&gt;d_inode
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_PIOCTL
-comma
-l_string|&quot;target ino: 0x%ld, dev: 0x%x&bslash;n&quot;
-comma
-id|target_inode-&gt;i_ino
-comma
-id|kdev_val
-c_func
-(paren
-id|target_inode-&gt;i_dev
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* return if it is not a Coda inode */
 r_if
 c_cond
@@ -313,40 +279,6 @@ id|cmd
 comma
 op_amp
 id|data
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_PIOCTL
-comma
-l_string|&quot;ioctl on inode %ld&bslash;n&quot;
-comma
-id|target_inode-&gt;i_ino
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;dput on ino: %ld, icount %d, dcount %d&bslash;n&quot;
-comma
-id|target_inode-&gt;i_ino
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|target_inode-&gt;i_count
-)paren
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|nd.dentry-&gt;d_count
-)paren
 )paren
 suffix:semicolon
 id|path_release

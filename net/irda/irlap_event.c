@@ -883,6 +883,11 @@ id|self-&gt;txq
 )paren
 )paren
 (brace
+multiline_comment|/* Prevent race conditions with irlap_data_request() */
+id|self-&gt;local_busy
+op_assign
+id|TRUE
+suffix:semicolon
 multiline_comment|/* Try to send away all queued data frames */
 r_while
 c_loop
@@ -938,6 +943,11 @@ r_break
 suffix:semicolon
 multiline_comment|/* Try again later! */
 )brace
+multiline_comment|/* Finished transmitting */
+id|self-&gt;local_busy
+op_assign
+id|FALSE
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -984,6 +994,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_next_state (self, state)&n; *&n; *    Switches state and provides debug information&n; *&n; */
 DECL|function|irlap_next_state
+r_static
+r_inline
 r_void
 id|irlap_next_state
 c_func
@@ -997,57 +1009,11 @@ id|IRLAP_STATE
 id|state
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|self
-op_logical_or
-id|self-&gt;magic
-op_ne
-id|LAP_MAGIC
-)paren
-r_return
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-l_string|&quot;next LAP state = %s&bslash;n&quot;
-comma
-id|irlap_state
-(braket
-id|state
-)braket
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;if (!self || self-&gt;magic != LAP_MAGIC)&n;&t;&t;return;&n;&t;&n;&t;IRDA_DEBUG(4, &quot;next LAP state = %s&bslash;n&quot;, irlap_state[state]);&n;&t;*/
 id|self-&gt;state
 op_assign
 id|state
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
-multiline_comment|/*&n;&t; *  If we are swithing away from a XMIT state then we are allowed to &n;&t; *  transmit a maximum number of bytes again when we enter the XMIT &n;&t; *  state again. Since its possible to &quot;switch&quot; from XMIT to XMIT,&n;&t; *  we cannot do this when swithing into the XMIT state :-)&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|state
-op_ne
-id|LAP_XMIT_P
-)paren
-op_logical_and
-(paren
-id|state
-op_ne
-id|LAP_XMIT_S
-)paren
-)paren
-id|self-&gt;bytes_left
-op_assign
-id|self-&gt;line_capacity
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 )brace
 multiline_comment|/*&n; * Function irlap_state_ndm (event, skb, frame)&n; *&n; *    NDM (Normal Disconnected Mode) state&n; *&n; */
 DECL|function|irlap_state_ndm
@@ -3354,6 +3320,18 @@ comma
 id|CMD_FRAME
 )paren
 suffix:semicolon
+multiline_comment|/* Return to NRM properly - Jean II  */
+id|self-&gt;window
+op_assign
+id|self-&gt;window_size
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
+multiline_comment|/* Allowed to transmit a maximum number of bytes again. */
+id|self-&gt;bytes_left
+op_assign
+id|self-&gt;line_capacity
+suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 id|irlap_start_final_timer
 c_func
 (paren
@@ -3423,6 +3401,12 @@ comma
 id|LAP_PCLOSE
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|DATA_REQUEST
+suffix:colon
+multiline_comment|/* Nothing to do, irlap_do_event() will send the packet&n;&t;&t; * when we return... - Jean II */
 r_break
 suffix:semicolon
 r_default
@@ -5674,6 +5658,22 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *  Switch to NRM_S, this is only possible&n;&t;&t;&t;&t; *  when we are in secondary mode, since we &n;&t;&t;&t;&t; *  must be sure that we don&squot;t miss any RR&n;&t;&t;&t;&t; *  frames&n;&t;&t;&t;&t; */
+id|self-&gt;window
+op_assign
+id|self-&gt;window_size
+suffix:semicolon
+id|self-&gt;bytes_left
+op_assign
+id|self-&gt;line_capacity
+suffix:semicolon
+id|irlap_start_wd_timer
+c_func
+(paren
+id|self
+comma
+id|self-&gt;wd_timeout
+)paren
+suffix:semicolon
 id|irlap_next_state
 c_func
 (paren
@@ -5819,6 +5819,12 @@ comma
 id|LAP_SCLOSE
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|DATA_REQUEST
+suffix:colon
+multiline_comment|/* Nothing to do, irlap_do_event() will send the packet&n;&t;&t; * when we return... - Jean II */
 r_break
 suffix:semicolon
 r_default

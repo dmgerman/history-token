@@ -69,7 +69,7 @@ DECL|macro|BBD_ERR
 mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
 DECL|macro|ICRC_ERR
 mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
-multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; *&t;HDIO_DRIVE_CMD, HDIO_DRIVE_TASK, and HDIO_DRIVE_TASKFILE&n; */
+multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; *&t;HDIO_DRIVE_CMD and HDIO_DRIVE_TASK&n; */
 macro_line|#if 0
 macro_line|#include &lt;asm/hdreg.h&gt;
 r_typedef
@@ -799,8 +799,6 @@ DECL|macro|HDIO_TRISTATE_HWIF
 mdefine_line|#define HDIO_TRISTATE_HWIF&t;0x031b&t;/* execute a channel tristate */
 DECL|macro|HDIO_DRIVE_RESET
 mdefine_line|#define HDIO_DRIVE_RESET&t;0x031c&t;/* execute a device reset */
-DECL|macro|HDIO_DRIVE_TASKFILE
-mdefine_line|#define HDIO_DRIVE_TASKFILE&t;0x031d&t;/* execute raw taskfile */
 DECL|macro|HDIO_DRIVE_TASK
 mdefine_line|#define HDIO_DRIVE_TASK&t;&t;0x031e&t;/* execute task and special drive command */
 DECL|macro|HDIO_DRIVE_CMD

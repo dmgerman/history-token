@@ -19447,7 +19447,7 @@ l_int|0x0200
 id|printk
 c_func
 (paren
-l_string|&quot;IXJ cidcw phone%d did not recieve ACK from display %ld&bslash;n&quot;
+l_string|&quot;IXJ cidcw phone%d did not receive ACK from display %ld&bslash;n&quot;
 comma
 id|j-&gt;board
 comma

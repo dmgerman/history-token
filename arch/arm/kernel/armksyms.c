@@ -571,15 +571,6 @@ id|__bus_to_virt
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef CONFIG_NO_PGT_CACHE
-DECL|variable|quicklists
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|quicklists
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* string / mem functions */
 DECL|variable|strcpy
 id|EXPORT_SYMBOL_NOVERS

@@ -1,8 +1,5 @@
-multiline_comment|/*&n; *  linux/drivers/ide/qd65xx.c&t;&t;Version 0.07&t;Sep 30, 2001&n; *&n; *  Copyright (C) 1996-2001  Linus Torvalds &amp; author (see below)&n; */
-multiline_comment|/*&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;Added dos driver&squot;s list&n; *  Version 0.07&t;Second channel bug fix &n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; * &t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; */
-multiline_comment|/*&n; * Rewritten from the work of Colten Edwards &lt;pje120@cs.usask.ca&gt; by&n; * Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
-DECL|macro|REALLY_SLOW_IO
-macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
+multiline_comment|/*&n; *  Copyright (C) 1996-2001  Linus Torvalds &amp; author (see below)&n; */
+multiline_comment|/*&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;Added dos driver&squot;s list&n; *  Version 0.07&t;Second channel bug fix&n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; *&t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; *&n; * Rewritten from the work of Colten Edwards &lt;pje120@cs.usask.ca&gt; by&n; * Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -824,7 +821,7 @@ id|d
 suffix:semicolon
 id|pio
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|pio

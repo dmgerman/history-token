@@ -31,9 +31,9 @@ macro_line|#ifndef IRDA_MIN /* Lets not mix this MIN with other header files */
 DECL|macro|IRDA_MIN
 mdefine_line|#define IRDA_MIN(a, b) (((a) &lt; (b)) ? (a) : (b))
 macro_line|#endif
-macro_line|#ifndef ALIGN
-DECL|macro|ALIGN
-macro_line|#  define ALIGN __attribute__((aligned))
+macro_line|#ifndef IRDA_ALIGN
+DECL|macro|IRDA_ALIGN
+macro_line|#  define IRDA_ALIGN __attribute__((aligned))
 macro_line|#endif
 macro_line|#ifndef PACK
 DECL|macro|PACK

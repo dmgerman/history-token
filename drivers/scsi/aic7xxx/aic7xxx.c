@@ -10893,7 +10893,7 @@ id|ATNI
 op_eq
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Read the latched byte, but turn off SPIOEN first&n;&t;&t; * so that we don&squot;t inadvertantly cause a REQ for the&n;&t;&t; * next byte.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Read the latched byte, but turn off SPIOEN first&n;&t;&t; * so that we don&squot;t inadvertently cause a REQ for the&n;&t;&t; * next byte.&n;&t;&t; */
 id|ahc_outb
 c_func
 (paren

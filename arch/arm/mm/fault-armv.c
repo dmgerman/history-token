@@ -658,7 +658,7 @@ id|bad_pmd
 suffix:semicolon
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -724,6 +724,12 @@ id|address
 )paren
 suffix:semicolon
 )brace
+id|pte_unmap
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 id|bad_pgd

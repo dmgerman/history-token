@@ -6012,7 +6012,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* perform existance check and diagnostics */
+multiline_comment|/* perform existence check and diagnostics */
 r_if
 c_cond
 (paren

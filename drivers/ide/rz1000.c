@@ -1,7 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/rz1000.c&t;&t;Version 0.05&t;December 8, 1997&n; *&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; author (see below)&n; */
-multiline_comment|/*&n; *  Principal Author:  mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for disabling the buggy read-ahead&n; *  mode of the RZ1000 IDE chipset, commonly used on Intel motherboards.&n; *&n; *  Dunno if this fixes both ports, or only the primary port (?).&n; */
-DECL|macro|REALLY_SLOW_IO
-macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
+multiline_comment|/*&n; *  Copyright (C) 1995-1998  Linus Torvalds &amp; author (see below)&n; *&n; *  Principal Author:  mlord@pobox.com (Mark Lord)&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; *  This file provides support for disabling the buggy read-ahead&n; *  mode of the RZ1000 IDE chipset, commonly used on Intel motherboards.&n; *&n; *  Dunno if this fixes both ports, or only the primary port (?).&n; */
 macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_BLK_DEV_IDEPCI */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

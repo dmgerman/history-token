@@ -5,12 +5,12 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
@@ -72,7 +72,7 @@ l_string|&quot;detect&quot;
 comma
 l_string|&quot;devices&quot;
 comma
-l_string|&quot;oss-devices&quot;
+l_string|&quot;oss&quot;
 comma
 l_string|&quot;cards&quot;
 comma
@@ -333,6 +333,15 @@ id|snd_seq_root
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_OSSEMUL
+DECL|variable|snd_oss_root
+id|snd_info_entry_t
+op_star
+id|snd_oss_root
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef LINUX_2_2
 DECL|function|snd_info_fill_inode
 r_static
@@ -487,11 +496,8 @@ id|snd_info_entry
 op_star
 id|entry
 suffix:semicolon
-r_int
+id|loff_t
 id|ret
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 id|data
 op_assign
@@ -511,11 +517,13 @@ id|entry
 op_assign
 id|data-&gt;entry
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 3)
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -567,6 +575,11 @@ suffix:colon
 multiline_comment|/* SEEK_END */
 r_default
 suffix:colon
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -614,11 +627,13 @@ id|ENXIO
 suffix:semicolon
 id|out
 suffix:colon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 3)
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
@@ -2674,6 +2689,72 @@ id|snd_proc_dev
 op_assign
 id|p
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_OSSEMUL
+(brace
+id|snd_info_entry_t
+op_star
+id|entry
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|entry
+op_assign
+id|snd_info_create_module_entry
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;oss&quot;
+comma
+l_int|NULL
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|entry-&gt;mode
+op_assign
+id|S_IFDIR
+op_or
+id|S_IRUGO
+op_or
+id|S_IXUGO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|snd_info_register
+c_func
+(paren
+id|entry
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_info_free_entry
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|snd_oss_root
+op_assign
+id|entry
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
 (brace
 id|snd_info_entry_t
@@ -2827,6 +2908,19 @@ id|snd_info_unregister
 c_func
 (paren
 id|snd_seq_root
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SND_OSSEMUL
+r_if
+c_cond
+(paren
+id|snd_oss_root
+)paren
+id|snd_info_unregister
+c_func
+(paren
+id|snd_oss_root
 )paren
 suffix:semicolon
 macro_line|#endif

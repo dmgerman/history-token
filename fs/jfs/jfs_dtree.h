@@ -399,6 +399,9 @@ DECL|macro|JFS_RENAME
 mdefine_line|#define JFS_RENAME 4
 DECL|macro|DIRENTSIZ
 mdefine_line|#define DIRENTSIZ(namlen) &bslash;&n;    ( (sizeof(struct dirent) - 2*(JFS_NAME_MAX+1) + 2*((namlen)+1) + 3) &amp;~ 3 )
+multiline_comment|/*&n; * Maximum file offset for directories.&n; */
+DECL|macro|DIREND
+mdefine_line|#define DIREND&t;INT_MAX
 multiline_comment|/*&n; *&t;external declarations&n; */
 r_extern
 r_void

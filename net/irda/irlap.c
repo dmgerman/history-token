@@ -322,13 +322,9 @@ id|dev-&gt;atalk_ptr
 op_assign
 id|self
 suffix:semicolon
-id|irlap_next_state
-c_func
-(paren
-id|self
-comma
+id|self-&gt;state
+op_assign
 id|LAP_OFFLINE
-)paren
 suffix:semicolon
 multiline_comment|/* Initialize transmit queue */
 id|skb_queue_head_init
@@ -443,13 +439,9 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* # connections attemts to try before giving up */
-id|irlap_next_state
-c_func
-(paren
-id|self
-comma
+id|self-&gt;state
+op_assign
 id|LAP_NDM
-)paren
 suffix:semicolon
 id|hashbin_insert
 c_func
@@ -1137,6 +1129,16 @@ l_int|1
 op_assign
 id|I_FRAME
 suffix:semicolon
+multiline_comment|/* Add at the end of the queue (keep ordering) - Jean II */
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|self-&gt;txq
+comma
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; *  Send event if this frame only if we are in the right state &n;&t; *  FIXME: udata should be sent first! (skb_queue_head?)&n;&t; */
 r_if
 c_cond
@@ -1154,78 +1156,42 @@ id|LAP_XMIT_S
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Check if the transmit queue contains some unsent frames,&n;&t;&t; *  and if so, make sure they are sent first&n;&t;&t; */
+multiline_comment|/* If we are not already processing the Tx queue, trigger&n;&t;&t; * transmission immediately - Jean II */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|skb_queue_empty
+(paren
+id|skb_queue_len
 c_func
 (paren
 op_amp
 id|self-&gt;txq
+)paren
+op_le
+l_int|1
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|self-&gt;local_busy
 )paren
 )paren
 (brace
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;txq
-comma
-id|skb
-)paren
-suffix:semicolon
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|self-&gt;txq
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|skb
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-)brace
 id|irlap_do_event
 c_func
 (paren
 id|self
 comma
-id|SEND_I_CMD
+id|DATA_REQUEST
 comma
 id|skb
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
-r_else
-id|skb_queue_tail
-c_func
-(paren
-op_amp
-id|self-&gt;txq
-comma
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* Otherwise, the packets will be sent normally at the&n;&t;&t; * next pf-poll - Jean II */
+)brace
 )brace
 multiline_comment|/*&n; * Function irlap_unitdata_request (self, skb)&n; *&n; *    Send Ultra data. This is data that must be sent outside any connection&n; *&n; */
 macro_line|#ifdef CONFIG_IRDA_ULTRA
@@ -3289,6 +3255,7 @@ id|self-&gt;window
 op_assign
 id|self-&gt;qos_tx.window_size.value
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
 multiline_comment|/*&n;&t; *  Calculate how many bytes it is possible to transmit before the&n;&t; *  link must be turned around&n;&t; */
 id|self-&gt;line_capacity
 op_assign
@@ -3300,6 +3267,11 @@ comma
 id|self-&gt;qos_tx.max_turn_time.value
 )paren
 suffix:semicolon
+id|self-&gt;bytes_left
+op_assign
+id|self-&gt;line_capacity
+suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 multiline_comment|/* &n;&t; *  Initialize timeout values, some of the rules are listed on &n;&t; *  page 92 in IrLAP.&n;&t; */
 id|ASSERT
 c_func
@@ -3400,59 +3372,6 @@ comma
 l_string|&quot;Setting N2 = %d&bslash;n&quot;
 comma
 id|self-&gt;N2
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function irlap_set_local_busy (self, status)&n; *&n; *    &n; *&n; */
-DECL|function|irlap_set_local_busy
-r_void
-id|irlap_set_local_busy
-c_func
-(paren
-r_struct
-id|irlap_cb
-op_star
-id|self
-comma
-r_int
-id|status
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|self-&gt;local_busy
-op_assign
-id|status
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-)paren
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), local busy ON&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), local busy OFF&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

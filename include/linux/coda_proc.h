@@ -31,7 +31,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda.h&gt;
-multiline_comment|/* these four files are presented to show the result of the statistics:&n; *&n; *&t;/proc/fs/coda/vfs_stats&n; *&t;&t;      upcall_stats&n; *&t;&t;      permission_stats&n; *&t;&t;      cache_inv_stats&n; *&n; * these four files are presented to reset the statistics to 0:&n; *&n; *&t;/proc/sys/coda/vfs_stats&n; *&t;&t;       upcall_stats&n; *&t;&t;       permission_stats&n; *&t;&t;       cache_inv_stats&n; */
+multiline_comment|/* these four files are presented to show the result of the statistics:&n; *&n; *&t;/proc/fs/coda/vfs_stats&n; *&t;&t;      upcall_stats&n; *&t;&t;      cache_inv_stats&n; *&n; * these four files are presented to reset the statistics to 0:&n; *&n; *&t;/proc/sys/coda/vfs_stats&n; *&t;&t;       upcall_stats&n; *&t;&t;       cache_inv_stats&n; */
 multiline_comment|/* VFS operation statistics */
 DECL|struct|coda_vfs_stats
 r_struct
@@ -127,21 +127,6 @@ id|time_squared_sum
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* cache hits for permissions statistics */
-DECL|struct|coda_permission_stats
-r_struct
-id|coda_permission_stats
-(brace
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-DECL|member|hit_count
-r_int
-id|hit_count
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* cache invalidation statistics */
 DECL|struct|coda_cache_inv_stats
 r_struct
@@ -185,11 +170,6 @@ id|coda_vfs_stat
 suffix:semicolon
 r_extern
 r_struct
-id|coda_permission_stats
-id|coda_permission_stat
-suffix:semicolon
-r_extern
-r_struct
 id|coda_cache_inv_stats
 id|coda_cache_inv_stat
 suffix:semicolon
@@ -207,13 +187,6 @@ r_void
 suffix:semicolon
 r_void
 id|reset_coda_upcall_stats
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|reset_coda_permission_stats
 c_func
 (paren
 r_void
@@ -318,31 +291,6 @@ id|lenp
 )paren
 suffix:semicolon
 r_int
-id|do_reset_coda_permission_stats
-c_func
-(paren
-id|ctl_table
-op_star
-id|table
-comma
-r_int
-id|write
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|lenp
-)paren
-suffix:semicolon
-r_int
 id|do_reset_coda_cache_inv_stats
 c_func
 (paren
@@ -390,26 +338,6 @@ id|length
 suffix:semicolon
 r_int
 id|coda_upcall_stats_get_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-)paren
-suffix:semicolon
-r_int
-id|coda_permission_stats_get_info
 c_func
 (paren
 r_char

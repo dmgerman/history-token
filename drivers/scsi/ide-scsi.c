@@ -296,7 +296,8 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;sg-&gt;length
 op_minus
@@ -416,7 +417,8 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;sg-&gt;length
 op_minus
@@ -1375,7 +1377,7 @@ c_func
 (paren
 id|scsi_buf
 comma
-id|IDE_MIN
+id|min
 c_func
 (paren
 l_int|16
@@ -1461,7 +1463,7 @@ id|pc
 )paren
 (brace
 r_return
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|WAIT_CMD
@@ -2105,7 +2107,8 @@ id|pc-&gt;buffer
 suffix:semicolon
 id|bcount
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;request_transfer
 comma
@@ -2779,16 +2782,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|idescsi_revalidate
 r_static
-r_int
-id|idescsi_reinit
+r_void
+id|idescsi_revalidate
 c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
+id|_dummy
 )paren
-suffix:semicolon
+(brace
+multiline_comment|/* The partition information will be handled by the SCSI layer.&n;&t; */
+)brace
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idescsi_driver
 r_static
@@ -2806,10 +2812,6 @@ suffix:colon
 id|idescsi_cleanup
 comma
 id|standby
-suffix:colon
-l_int|NULL
-comma
-id|flushcache
 suffix:colon
 l_int|NULL
 comma
@@ -2833,13 +2835,13 @@ id|release
 suffix:colon
 id|idescsi_ide_release
 comma
-id|media_change
+id|check_media_change
 suffix:colon
 l_int|NULL
 comma
 id|revalidate
 suffix:colon
-l_int|NULL
+id|idescsi_revalidate
 comma
 id|pre_reset
 suffix:colon
@@ -2856,27 +2858,8 @@ comma
 id|proc
 suffix:colon
 l_int|NULL
-comma
-id|driver_reinit
-suffix:colon
-id|idescsi_reinit
-comma
 )brace
 suffix:semicolon
-DECL|function|idescsi_reinit
-r_static
-r_int
-id|idescsi_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;idescsi_init will register the driver for each scsi.&n; */
 DECL|function|idescsi_init
 r_static
@@ -3191,7 +3174,7 @@ op_increment
 )paren
 id|last_lun
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|last_lun
