@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -143,31 +144,6 @@ r_extern
 r_int
 id|smp_tb_synchronized
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_cpu_mask
-suffix:semicolon
-r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
 r_void
 id|ppc_adjtimex
 c_func
@@ -182,17 +158,62 @@ id|adjusting_time
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|ppc_do_profile
+multiline_comment|/*&n; * The profiling function is SMP safe. (nothing can mess&n; * around with &quot;current&quot;, and the profiling counters are&n; * updated with atomic operations). This is especially&n; * useful with a profiling multiplier != 1&n; */
+DECL|function|ppc64_do_profile
 r_static
 r_inline
 r_void
-id|ppc_do_profile
+id|ppc64_do_profile
+c_func
 (paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
 r_int
 r_int
 id|nip
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|prof_cpu_mask
+suffix:semicolon
+r_extern
+r_char
+id|_stext
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
+r_extern
+r_void
+id|ppc64_profile_hook
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
 )paren
-(brace
+suffix:semicolon
+id|ppc64_profile_hook
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -200,6 +221,14 @@ op_logical_neg
 id|prof_buffer
 )paren
 r_return
+suffix:semicolon
+id|nip
+op_assign
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
 r_if
@@ -701,24 +730,10 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_PPC_ISERIES
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
+id|ppc64_do_profile
 c_func
 (paren
 id|regs
-)paren
-)paren
-id|ppc_do_profile
-c_func
-(paren
-id|instruction_pointer
-c_func
-(paren
-id|regs
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
