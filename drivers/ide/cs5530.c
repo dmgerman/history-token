@@ -1431,6 +1431,10 @@ op_assign
 op_amp
 id|cs5530_dmaproc
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#else
 id|hwif-&gt;autodma
 op_assign

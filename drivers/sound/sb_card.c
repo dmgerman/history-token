@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;sb_mixer.h&quot;
 macro_line|#include &quot;sb.h&quot;
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|macro|SB_CARDS_MAX
 mdefine_line|#define SB_CARDS_MAX 5
 macro_line|#else
@@ -562,7 +562,7 @@ op_assign
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|variable|isapnp
 r_static
 r_int
@@ -748,7 +748,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
@@ -918,7 +918,7 @@ comma
 l_string|&quot;Set this to detect cards in some ACER notebooks&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 multiline_comment|/* Please add new entries at the end of the table */
 r_static
 r_struct
@@ -7426,8 +7426,8 @@ id|sb_cards_num
 op_increment
 )paren
 (brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
-multiline_comment|/* Please remember that even with CONFIG_ISAPNP defined one&n;&t;&t; * should still be able to disable PNP support for this &n;&t;&t; * single driver! */
+macro_line|#ifdef __ISAPNP__
+multiline_comment|/* Please remember that even with __ISAPNP__ defined one&n;&t;&t; * should still be able to disable PNP support for this &n;&t;&t; * single driver! */
 r_if
 c_cond
 (paren
@@ -7837,7 +7837,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren

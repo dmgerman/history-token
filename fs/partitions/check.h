@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * add_partition adds a partitions details to the devices partition&n; * description.&n; */
+multiline_comment|/*&n; * add_gd_partition adds a partitions details to the devices partition&n; * description.&n; */
 r_void
 id|add_gd_partition
 c_func

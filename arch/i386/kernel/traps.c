@@ -2633,11 +2633,9 @@ id|pt_regs
 id|regs
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|clts
 c_func
 (paren
-l_string|&quot;clts&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Allow maths ops (or we recurse) */

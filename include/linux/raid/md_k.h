@@ -758,9 +758,9 @@ r_int
 id|rw
 comma
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|bh
+id|bio
 )paren
 suffix:semicolon
 DECL|member|run

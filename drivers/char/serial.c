@@ -48,7 +48,7 @@ macro_line|#ifdef CONFIG_SERIAL_ACPI
 DECL|macro|ENABLE_SERIAL_ACPI
 mdefine_line|#define ENABLE_SERIAL_ACPI
 macro_line|#endif
-macro_line|#if defined(CONFIG_ISAPNP)|| (defined(CONFIG_ISAPNP_MODULE) &amp;&amp; defined(MODULE))
+macro_line|#ifdef __ISAPNP__
 macro_line|#ifndef ENABLE_SERIAL_PNP
 DECL|macro|ENABLE_SERIAL_PNP
 mdefine_line|#define ENABLE_SERIAL_PNP

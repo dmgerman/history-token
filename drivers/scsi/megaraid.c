@@ -168,9 +168,13 @@ mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
 mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
-mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(&amp;(host)-&gt;host_lock,io_flags)
 DECL|macro|IO_UNLOCK
-mdefine_line|#define IO_UNLOCK spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(&amp;(host)-&gt;host_lock,io_flags)
+DECL|macro|IO_LOCK_IRQ
+mdefine_line|#define IO_LOCK_IRQ(host) spin_lock_irq(&amp;(host)-&gt;host_lock)
+DECL|macro|IO_UNLOCK_IRQ
+mdefine_line|#define IO_UNLOCK_IRQ(host) spin_unlock_irq(&amp;(host)-&gt;host_lock)
 DECL|macro|queue_task_irq
 mdefine_line|#define queue_task_irq(a,b)     queue_task(a,b)
 DECL|macro|queue_task_irq_off
@@ -207,9 +211,9 @@ mdefine_line|#define DRIVER_UNLOCK(p)
 DECL|macro|IO_LOCK_T
 mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0
 DECL|macro|IO_LOCK
-mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_LOCK(host) spin_lock_irqsave(&amp;io_request_lock,io_flags);
 DECL|macro|IO_UNLOCK
-mdefine_line|#define IO_UNLOCK spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
+mdefine_line|#define IO_UNLOCK(host) spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
 DECL|macro|pci_free_consistent
 mdefine_line|#define pci_free_consistent(a,b,c,d)
 DECL|macro|pci_unmap_single
@@ -5850,6 +5854,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|IO_LOCK
+c_func
+(paren
+id|megaCfg-&gt;host
+)paren
 suffix:semicolon
 id|megaCfg-&gt;nInterrupts
 op_increment
@@ -6272,6 +6280,10 @@ id|megaCfg
 )paren
 suffix:semicolon
 id|IO_UNLOCK
+c_func
+(paren
+id|megaCfg-&gt;host
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -9261,16 +9273,7 @@ id|mega_register_mailbox
 (paren
 id|megaCfg
 comma
-id|virt_to_bus
-(paren
-(paren
-r_void
-op_star
-)paren
-id|megaCfg
-op_member_access_from_pointer
-id|mailbox64ptr
-)paren
+id|megaCfg-&gt;dma_handle64
 )paren
 suffix:semicolon
 macro_line|#else
@@ -12044,10 +12047,10 @@ op_amp
 id|pScb-&gt;ioctl_sem
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|IO_UNLOCK_IRQ
+c_func
 (paren
-op_amp
-id|io_request_lock
+id|megaCfg-&gt;host
 )paren
 suffix:semicolon
 id|down
@@ -12102,10 +12105,10 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irq
+id|IO_LOCK_IRQ
+c_func
 (paren
-op_amp
-id|io_request_lock
+id|megaCfg-&gt;host
 )paren
 suffix:semicolon
 id|DRIVER_LOCK
@@ -15542,6 +15545,10 @@ id|mimd_ioctl_sem
 )paren
 suffix:semicolon
 id|IO_LOCK
+c_func
+(paren
+id|shpnt
+)paren
 suffix:semicolon
 id|megaraid_queue
 c_func
@@ -15552,6 +15559,10 @@ id|megadev_ioctl_done
 )paren
 suffix:semicolon
 id|IO_UNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -16185,6 +16196,10 @@ id|mimd_ioctl_sem
 )paren
 suffix:semicolon
 id|IO_LOCK
+c_func
+(paren
+id|shpnt
+)paren
 suffix:semicolon
 id|megaraid_queue
 (paren
@@ -16194,6 +16209,10 @@ id|megadev_ioctl_done
 )paren
 suffix:semicolon
 id|IO_UNLOCK
+c_func
+(paren
+id|shpnt
+)paren
 suffix:semicolon
 id|down
 (paren

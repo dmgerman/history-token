@@ -53,7 +53,7 @@ DECL|macro|CHIPSET_OPL3SA2
 mdefine_line|#define CHIPSET_OPL3SA2 0
 DECL|macro|CHIPSET_OPL3SA3
 mdefine_line|#define CHIPSET_OPL3SA3 1
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|macro|OPL3SA2_CARDS_MAX
 mdefine_line|#define OPL3SA2_CARDS_MAX 4
 macro_line|#else
@@ -279,7 +279,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 multiline_comment|/* PnP specific parameters */
 DECL|variable|isapnp
 r_static
@@ -478,7 +478,7 @@ comma
 l_string|&quot;Set A/D input source. Useful for echo cancellation (0 = Mic Rch (default), 1 = Mono output loopback)&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
@@ -3236,7 +3236,7 @@ id|card
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|variable|__initdata
 r_struct
 id|isapnp_device_id
@@ -3598,7 +3598,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
+macro_line|#endif /* __ISAPNP__ */
 multiline_comment|/* End of component functions */
 multiline_comment|/*&n; * Install OPL3-SA2 based card(s).&n; *&n; * Need to have ad1848 and mpu401 loaded ready.&n; */
 DECL|function|init_opl3sa2
@@ -3671,8 +3671,8 @@ id|opl3sa2_cards_num
 op_increment
 )paren
 (brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
-multiline_comment|/*&n;&t;&t; * Please remember that even with CONFIG_ISAPNP defined one&n;&t;&t; * should still be able to disable PNP support for this &n;&t;&t; * single driver!&n;&t;&t; */
+macro_line|#ifdef __ISAPNP__
+multiline_comment|/*&n;&t;&t; * Please remember that even with __ISAPNP__ defined one&n;&t;&t; * should still be able to disable PNP support for this &n;&t;&t; * single driver!&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4264,7 +4264,7 @@ comma
 id|card
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -4341,7 +4341,7 @@ id|str
 )paren
 (brace
 multiline_comment|/* io, irq, dma, dma2,... */
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_int
 id|ints
 (braket
@@ -4428,7 +4428,7 @@ id|ints
 l_int|8
 )braket
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 id|isapnp
 op_assign
 id|ints

@@ -5777,6 +5777,10 @@ op_assign
 op_amp
 id|pdc202xx_dmaproc
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

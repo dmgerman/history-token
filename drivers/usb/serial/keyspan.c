@@ -258,7 +258,9 @@ mdefine_line|#define&t;dbg&t;printk
 macro_line|#endif
 multiline_comment|/* Functions used by new usb-serial code. */
 DECL|function|keyspan_init
+r_static
 r_int
+id|__init
 id|keyspan_init
 (paren
 r_void
@@ -368,7 +370,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|keyspan_exit
+r_static
 r_void
+id|__exit
 id|keyspan_exit
 (paren
 r_void
@@ -4340,6 +4344,7 @@ id|urb
 suffix:semicolon
 )brace
 DECL|struct|callbacks
+r_static
 r_struct
 id|callbacks
 (brace

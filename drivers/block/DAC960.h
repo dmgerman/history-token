@@ -8198,7 +8198,7 @@ multiline_comment|/*&n;  Define types for some of the structures that interface 
 DECL|typedef|BufferHeader_T
 r_typedef
 r_struct
-id|buffer_head
+id|bio
 id|BufferHeader_T
 suffix:semicolon
 DECL|typedef|File_T
@@ -9429,13 +9429,6 @@ id|BlockSizes
 id|DAC960_MinorCount
 )braket
 suffix:semicolon
-DECL|member|MaxSectorsPerRequest
-r_int
-id|MaxSectorsPerRequest
-(braket
-id|DAC960_MinorCount
-)braket
-suffix:semicolon
 DECL|member|ProgressBuffer
 r_int
 r_char
@@ -9492,7 +9485,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
 id|ProcessorFlags
@@ -9520,14 +9513,14 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
 id|ProcessorFlags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;  DAC960_AcquireControllerLockRF acquires exclusive access to Controller,&n;  but is only called from the request function with the io_request_lock held.&n;*/
+multiline_comment|/*&n;  DAC960_AcquireControllerLockRF acquires exclusive access to Controller,&n;  but is only called from the request function with the queue lock held.&n;*/
 r_static
 r_inline
 DECL|function|DAC960_AcquireControllerLockRF
@@ -9545,7 +9538,7 @@ id|ProcessorFlags
 )paren
 (brace
 )brace
-multiline_comment|/*&n;  DAC960_ReleaseControllerLockRF releases exclusive access to Controller,&n;  but is only called from the request function with the io_request_lock held.&n;*/
+multiline_comment|/*&n;  DAC960_ReleaseControllerLockRF releases exclusive access to Controller,&n;  but is only called from the request function with the queue lock held.&n;*/
 r_static
 r_inline
 DECL|function|DAC960_ReleaseControllerLockRF
@@ -9584,7 +9577,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
 id|ProcessorFlags
@@ -9612,7 +9605,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Controller-&gt;RequestQueue-&gt;queue_lock
 comma
 op_star
 id|ProcessorFlags

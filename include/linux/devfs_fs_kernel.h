@@ -3,7 +3,7 @@ DECL|macro|_LINUX_DEVFS_FS_KERNEL_H
 mdefine_line|#define _LINUX_DEVFS_FS_KERNEL_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

@@ -413,6 +413,7 @@ id|id_table
 suffix:semicolon
 multiline_comment|/* All of the device info needed for the Handspring Visor */
 DECL|variable|handspring_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|handspring_device
@@ -513,6 +514,7 @@ comma
 suffix:semicolon
 multiline_comment|/* device info for the Palm 4.0 devices */
 DECL|variable|palm_4_0_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|palm_4_0_device

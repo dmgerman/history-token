@@ -370,7 +370,8 @@ suffix:semicolon
 macro_line|#endif
 id|ep
 op_assign
-l_int|NULL
+op_amp
+id|default_exec_domain
 suffix:semicolon
 id|out
 suffix:colon
@@ -610,17 +611,6 @@ c_func
 (paren
 id|personality
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 r_if
 c_cond

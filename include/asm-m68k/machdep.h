@@ -14,9 +14,6 @@ r_struct
 id|hwclk_time
 suffix:semicolon
 r_struct
-id|gendisk
-suffix:semicolon
-r_struct
 id|buffer_head
 suffix:semicolon
 r_extern

@@ -575,11 +575,7 @@ r_return
 id|port
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ISAPNP) || (defined(CONFIG_ISAPNP_MODULE) &amp;&amp; defined(MODULE))
-DECL|macro|NSS558_ISAPNP
-mdefine_line|#define NSS558_ISAPNP
-macro_line|#endif
-macro_line|#ifdef NSS558_ISAPNP
+macro_line|#ifdef __ISAPNP__
 DECL|variable|pnp_devids
 r_static
 r_struct
@@ -1126,7 +1122,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef NSS558_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_struct
 id|isapnp_device_id
 op_star
@@ -1164,7 +1160,7 @@ id|ns558
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Probe for PnP ports.&n; */
-macro_line|#ifdef NSS558_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_for
 c_loop
 (paren
@@ -1259,7 +1255,7 @@ c_cond
 id|port-&gt;type
 )paren
 (brace
-macro_line|#ifdef NSS558_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_case
 id|NS558_PNP
 suffix:colon

@@ -322,6 +322,7 @@ comma
 id|d_child
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * See comment on top of function on why we&n;&t;&t;&t;&t; * can just drop the lock here..&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren

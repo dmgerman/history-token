@@ -9542,6 +9542,12 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

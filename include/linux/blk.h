@@ -5,11 +5,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-multiline_comment|/*&n; * Spinlock for protecting the request queue which&n; * is mucked around with in interrupts on potentially&n; * multiple CPU&squot;s..&n; */
-r_extern
-id|spinlock_t
-id|io_request_lock
-suffix:semicolon
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Initialization functions.&n; */
 r_extern
 r_int
@@ -394,11 +390,33 @@ op_star
 id|req
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|req-&gt;bio
+)paren
+id|bio_hash_remove
+c_func
+(paren
+id|req-&gt;bio
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req-&gt;biotail
+)paren
+id|bio_hash_remove
+c_func
+(paren
+id|req-&gt;biotail
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
-id|req-&gt;queue
+id|req-&gt;queuelist
 )paren
 suffix:semicolon
 )brace
@@ -409,14 +427,12 @@ c_func
 r_struct
 id|request
 op_star
-id|req
 comma
 r_int
 id|uptodate
 comma
-r_char
-op_star
-id|name
+r_int
+id|nr_sectors
 )paren
 suffix:semicolon
 r_void
@@ -426,7 +442,6 @@ c_func
 r_struct
 id|request
 op_star
-id|req
 )paren
 suffix:semicolon
 macro_line|#if defined(MAJOR_NR) || defined(IDE_DRIVER)
@@ -719,11 +734,15 @@ macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
 macro_line|#if !defined(IDE_DRIVER)
 macro_line|#ifndef CURRENT
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT blkdev_entry_next_request(&amp;blk_dev[MAJOR_NR].request_queue.queue_head)
+mdefine_line|#define CURRENT elv_next_request(&amp;blk_dev[MAJOR_NR].request_queue)
+macro_line|#endif
+macro_line|#ifndef QUEUE
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;blk_dev[MAJOR_NR].request_queue)
 macro_line|#endif
 macro_line|#ifndef QUEUE_EMPTY
 DECL|macro|QUEUE_EMPTY
-mdefine_line|#define QUEUE_EMPTY list_empty(&amp;blk_dev[MAJOR_NR].request_queue.queue_head)
+mdefine_line|#define QUEUE_EMPTY blk_queue_empty(QUEUE)
 macro_line|#endif
 macro_line|#ifndef DEVICE_NAME
 DECL|macro|DEVICE_NAME
@@ -768,7 +787,7 @@ DECL|macro|CLEAR_INTR
 mdefine_line|#define CLEAR_INTR
 macro_line|#endif
 DECL|macro|INIT_REQUEST
-mdefine_line|#define INIT_REQUEST &bslash;&n;&t;if (QUEUE_EMPTY) {&bslash;&n;&t;&t;CLEAR_INTR; &bslash;&n;&t;&t;return; &bslash;&n;&t;} &bslash;&n;&t;if (MAJOR(CURRENT-&gt;rq_dev) != MAJOR_NR) &bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: request list destroyed&quot;); &bslash;&n;&t;if (CURRENT-&gt;bh) { &bslash;&n;&t;&t;if (!buffer_locked(CURRENT-&gt;bh)) &bslash;&n;&t;&t;&t;panic(DEVICE_NAME &quot;: block not locked&quot;); &bslash;&n;&t;}
+mdefine_line|#define INIT_REQUEST &bslash;&n;&t;if (QUEUE_EMPTY) { &bslash;&n;&t;&t;CLEAR_INTR; &bslash;&n;&t;&t;return;&t; &bslash;&n;&t;} &bslash;&n;&t;if (MAJOR(CURRENT-&gt;rq_dev) != MAJOR_NR) &bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: request list destroyed&quot;); &bslash;&n;&t;if (!CURRENT-&gt;bio) &bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: no bio&quot;); &bslash;&n;
 macro_line|#endif /* !defined(IDE_DRIVER) */
 macro_line|#ifndef LOCAL_END_REQUEST&t;/* If we have our own end_request, we do not want to include this mess */
 macro_line|#if ! SCSI_BLK_MAJOR(MAJOR_NR) &amp;&amp; (MAJOR_NR != COMPAQ_SMART2_MAJOR)
@@ -800,7 +819,7 @@ id|req
 comma
 id|uptodate
 comma
-id|DEVICE_NAME
+id|CURRENT-&gt;hard_cur_sectors
 )paren
 )paren
 r_return

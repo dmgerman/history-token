@@ -1069,9 +1069,9 @@ mdefine_line|#define&t;NCR_LOCK_NCB(np, flags)    spin_lock_irqsave(&amp;np-&gt;
 DECL|macro|NCR_UNLOCK_NCB
 mdefine_line|#define&t;NCR_UNLOCK_NCB(np, flags)  spin_unlock_irqrestore(&amp;np-&gt;smp_lock, flags)
 DECL|macro|NCR_LOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(np, flags) &bslash;&n;&t;&t;spin_lock_irqsave(&amp;io_request_lock, flags)
+mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_lock_irqsave(&amp;((host)-&gt;host_lock), flags)
 DECL|macro|NCR_UNLOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(np, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;io_request_lock, flags)
+mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;((host)-&gt;host_lock), flags)
 macro_line|#else
 DECL|macro|NCR_LOCK_DRIVER
 mdefine_line|#define&t;NCR_LOCK_DRIVER(flags)     do { save_flags(flags); cli(); } while (0)
@@ -1084,9 +1084,9 @@ mdefine_line|#define&t;NCR_LOCK_NCB(np, flags)    do { save_flags(flags); cli();
 DECL|macro|NCR_UNLOCK_NCB
 mdefine_line|#define&t;NCR_UNLOCK_NCB(np, flags)  do { restore_flags(flags); } while (0)
 DECL|macro|NCR_LOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(np, flags)    do {;} while (0)
+mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags)    do {;} while (0)
 DECL|macro|NCR_UNLOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(np, flags)  do {;} while (0)
+mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags)  do {;} while (0)
 macro_line|#endif
 multiline_comment|/*&n;**&t;Memory mapped IO&n;**&n;**&t;Since linux-2.1, we must use ioremap() to map the io memory space.&n;**&t;iounmap() to unmap it. That allows portability.&n;**&t;Linux 1.3.X and 2.0.X allow to remap physical pages addresses greater &n;**&t;than the highest physical memory address to kernel virtual pages with &n;**&t;vremap() / vfree(). That was not portable but worked with i386 &n;**&t;architecture.&n;*/
 macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
@@ -42751,7 +42751,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -42765,7 +42765,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -42842,7 +42842,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -42856,7 +42856,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren

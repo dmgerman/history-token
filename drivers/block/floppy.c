@@ -2171,11 +2171,11 @@ r_static
 r_int
 id|current_count_sectors
 suffix:semicolon
-DECL|variable|sector_t
+DECL|variable|fsector_t
 r_static
 r_int
 r_char
-id|sector_t
+id|fsector_t
 suffix:semicolon
 multiline_comment|/* sector in track */
 DECL|variable|in_sector_offset
@@ -9299,11 +9299,11 @@ id|uptodate
 )paren
 (brace
 r_int
-id|block
-suffix:semicolon
-r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|block
 suffix:semicolon
 id|probing
 op_assign
@@ -9371,7 +9371,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -9412,7 +9412,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -9506,7 +9506,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -9521,7 +9521,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -9715,7 +9715,7 @@ l_string|&quot;spt=%d st=%d ss=%d&bslash;n&quot;
 comma
 id|SECT_PER_TRACK
 comma
-id|sector_t
+id|fsector_t
 comma
 id|ssize
 )paren
@@ -9953,7 +9953,7 @@ id|buffer_max
 comma
 id|nr_sectors
 op_plus
-id|sector_t
+id|fsector_t
 )paren
 suffix:semicolon
 )brace
@@ -9976,9 +9976,9 @@ r_void
 )paren
 (brace
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|bh
+id|bio
 suffix:semicolon
 r_int
 id|size
@@ -9997,26 +9997,30 @@ id|CURRENT-&gt;current_nr_sectors
 op_lshift
 l_int|9
 suffix:semicolon
-id|bh
+id|bio
 op_assign
-id|CURRENT-&gt;bh
+id|CURRENT-&gt;bio
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|bh
+id|bio
 )paren
 (brace
-id|bh
+id|bio
 op_assign
-id|bh-&gt;b_reqnext
+id|bio-&gt;bi_next
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|bh
+id|bio
 op_logical_and
-id|bh-&gt;b_data
+id|bio_data
+c_func
+(paren
+id|bio
+)paren
 op_eq
 id|base
 op_plus
@@ -10025,11 +10029,15 @@ id|size
 (brace
 id|size
 op_add_assign
-id|bh-&gt;b_size
+id|bio_size
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
-id|bh
+id|bio
 op_assign
-id|bh-&gt;b_reqnext
+id|bio-&gt;bi_next
 suffix:semicolon
 )brace
 )brace
@@ -10061,7 +10069,7 @@ c_func
 (paren
 id|max_sector
 comma
-id|sector_t
+id|fsector_t
 op_plus
 id|max_size
 )paren
@@ -10082,7 +10090,7 @@ id|current_count_sectors
 op_assign
 id|max_sector
 op_minus
-id|sector_t
+id|fsector_t
 suffix:semicolon
 r_return
 id|max_sector
@@ -10110,9 +10118,9 @@ id|remaining
 suffix:semicolon
 multiline_comment|/* number of transferred 512-byte sectors */
 r_struct
-id|buffer_head
+id|bio
 op_star
-id|bh
+id|bio
 suffix:semicolon
 r_char
 op_star
@@ -10159,7 +10167,7 @@ id|FD_WRITE
 op_logical_and
 id|buffer_max
 OG
-id|sector_t
+id|fsector_t
 op_plus
 id|CURRENT-&gt;nr_sectors
 )paren
@@ -10170,7 +10178,7 @@ c_func
 (paren
 id|buffer_max
 op_minus
-id|sector_t
+id|fsector_t
 comma
 id|CURRENT-&gt;nr_sectors
 )paren
@@ -10237,7 +10245,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CURRENT-&gt;current_nr_sectors=%ld&bslash;n&quot;
+l_string|&quot;CURRENT-&gt;current_nr_sectors=%u&bslash;n&quot;
 comma
 id|CURRENT-&gt;current_nr_sectors
 )paren
@@ -10276,7 +10284,7 @@ id|floppy_track_buffer
 op_plus
 (paren
 (paren
-id|sector_t
+id|fsector_t
 op_minus
 id|buffer_min
 )paren
@@ -10284,9 +10292,9 @@ op_lshift
 l_int|9
 )paren
 suffix:semicolon
-id|bh
+id|bio
 op_assign
-id|CURRENT-&gt;bh
+id|CURRENT-&gt;bio
 suffix:semicolon
 id|size
 op_assign
@@ -10357,9 +10365,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sector_t=%d buffer_min=%d&bslash;n&quot;
+l_string|&quot;fsector_t=%d buffer_min=%d&bslash;n&quot;
 comma
-id|sector_t
+id|fsector_t
 comma
 id|buffer_min
 )paren
@@ -10479,16 +10487,16 @@ id|dma_buffer
 op_add_assign
 id|size
 suffix:semicolon
-id|bh
+id|bio
 op_assign
-id|bh-&gt;b_reqnext
+id|bio-&gt;bi_next
 suffix:semicolon
 macro_line|#ifdef FLOPPY_SANITY_CHECK
 r_if
 c_cond
 (paren
 op_logical_neg
-id|bh
+id|bio
 )paren
 (brace
 id|DPRINT
@@ -10503,11 +10511,19 @@ suffix:semicolon
 macro_line|#endif
 id|size
 op_assign
-id|bh-&gt;b_size
+id|bio_size
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 id|buffer
 op_assign
-id|bh-&gt;b_data
+id|bio_data
+c_func
+(paren
+id|bio
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef FLOPPY_SANITY_CHECK
@@ -10820,7 +10836,7 @@ id|CURRENT-&gt;sector
 op_div
 id|max_sector
 suffix:semicolon
-id|sector_t
+id|fsector_t
 op_assign
 id|CURRENT-&gt;sector
 op_mod
@@ -10859,7 +10875,7 @@ suffix:semicolon
 )brace
 id|HEAD
 op_assign
-id|sector_t
+id|fsector_t
 op_div
 id|_floppy-&gt;sect
 suffix:semicolon
@@ -10880,7 +10896,7 @@ id|FD_NEED_TWADDLE
 )paren
 )paren
 op_logical_and
-id|sector_t
+id|fsector_t
 OL
 id|_floppy-&gt;sect
 )paren
@@ -10920,7 +10936,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sector_t
+id|fsector_t
 op_ge
 id|max_sector
 )paren
@@ -10932,7 +10948,7 @@ c_func
 (paren
 id|_floppy-&gt;sect
 op_minus
-id|sector_t
+id|fsector_t
 comma
 id|CURRENT-&gt;nr_sectors
 )paren
@@ -11042,7 +11058,7 @@ id|SECTOR
 op_assign
 (paren
 (paren
-id|sector_t
+id|fsector_t
 op_mod
 id|_floppy-&gt;sect
 )paren
@@ -11079,7 +11095,7 @@ c_cond
 (paren
 id|tracksize
 op_le
-id|sector_t
+id|fsector_t
 op_mod
 id|_floppy-&gt;sect
 )paren
@@ -11092,7 +11108,7 @@ c_loop
 (paren
 id|tracksize
 op_le
-id|sector_t
+id|fsector_t
 op_mod
 id|_floppy-&gt;sect
 )paren
@@ -11185,7 +11201,7 @@ suffix:semicolon
 id|in_sector_offset
 op_assign
 (paren
-id|sector_t
+id|fsector_t
 op_mod
 id|_floppy-&gt;sect
 )paren
@@ -11194,7 +11210,7 @@ id|ssize
 suffix:semicolon
 id|aligned_sector_t
 op_assign
-id|sector_t
+id|fsector_t
 op_minus
 id|in_sector_offset
 suffix:semicolon
@@ -11218,13 +11234,13 @@ id|buffer_drive
 )paren
 op_logical_and
 (paren
-id|sector_t
+id|fsector_t
 op_ge
 id|buffer_min
 )paren
 op_logical_and
 (paren
-id|sector_t
+id|fsector_t
 OL
 id|buffer_max
 )paren
@@ -11284,13 +11300,13 @@ id|FD_WRITE
 r_if
 c_cond
 (paren
-id|sector_t
+id|fsector_t
 op_plus
 id|CURRENT-&gt;nr_sectors
 OG
 id|ssize
 op_logical_and
-id|sector_t
+id|fsector_t
 op_plus
 id|CURRENT-&gt;nr_sectors
 OL
@@ -11366,7 +11382,7 @@ op_star
 l_int|2
 )paren
 op_minus
-id|sector_t
+id|fsector_t
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Do NOT use minimum() here---MAX_DMA_ADDRESS is 64 bits wide&n;&t;&t; * on a 64 bit machine!&n;&t;&t; */
 id|max_size
@@ -11453,7 +11469,7 @@ comma
 id|max_size
 )paren
 op_minus
-id|sector_t
+id|fsector_t
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We try to read tracks, but if we get too many errors, we&n;&t;&t; * go back to reading just one sector at a time.&n;&t;&t; *&n;&t;&t; * This means we should be able to read a sector even if there&n;&t;&t; * are other bad sectors on this track.&n;&t;&t; */
 r_if
@@ -11530,13 +11546,13 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-l_string|&quot;indirect=%d direct=%d sector_t=%d&quot;
+l_string|&quot;indirect=%d direct=%d fsector_t=%d&quot;
 comma
 id|indirect
 comma
 id|direct
 comma
-id|sector_t
+id|fsector_t
 )paren
 suffix:semicolon
 r_return
@@ -11584,11 +11600,11 @@ op_ne
 id|current_drive
 op_logical_or
 multiline_comment|/* bad drive */
-id|sector_t
+id|fsector_t
 OG
 id|buffer_max
 op_logical_or
-id|sector_t
+id|fsector_t
 OL
 id|buffer_min
 op_logical_or
@@ -11622,7 +11638,7 @@ id|buffer_min
 op_logical_and
 id|max_size
 op_plus
-id|sector_t
+id|fsector_t
 OG
 l_int|2
 op_star
@@ -11866,7 +11882,7 @@ c_func
 (paren
 l_string|&quot;st=%d ast=%d mse=%d msi=%d&bslash;n&quot;
 comma
-id|sector_t
+id|fsector_t
 comma
 id|aligned_sector_t
 comma
@@ -11974,9 +11990,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sector_t=%d buffer_min=%d current_count=%ld&bslash;n&quot;
+l_string|&quot;fsector_t=%d buffer_min=%d current_count=%ld&bslash;n&quot;
 comma
-id|sector_t
+id|fsector_t
 comma
 id|buffer_min
 comma
@@ -12214,25 +12230,6 @@ c_func
 (paren
 id|DEVICE_NAME
 l_string|&quot;: request list destroyed&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-op_logical_and
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
 )paren
 suffix:semicolon
 id|device
@@ -18273,6 +18270,8 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+l_string|&quot;floppy&quot;
 )paren
 suffix:semicolon
 id|reschedule_timeout

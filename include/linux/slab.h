@@ -47,6 +47,8 @@ DECL|macro|SLAB_HWCACHE_ALIGN
 mdefine_line|#define&t;SLAB_HWCACHE_ALIGN&t;0x00002000UL&t;/* align objs on a h/w cache lines */
 DECL|macro|SLAB_CACHE_DMA
 mdefine_line|#define SLAB_CACHE_DMA&t;&t;0x00004000UL&t;/* use GFP_DMA memory */
+DECL|macro|SLAB_MUST_HWCACHE_ALIGN
+mdefine_line|#define SLAB_MUST_HWCACHE_ALIGN&t;0x00008000UL&t;/* force alignment */
 multiline_comment|/* flags passed to a constructor func */
 DECL|macro|SLAB_CTOR_CONSTRUCTOR
 mdefine_line|#define&t;SLAB_CTOR_CONSTRUCTOR&t;0x001UL&t;&t;/* if not set, then deconstructor */
@@ -304,6 +306,11 @@ r_extern
 id|kmem_cache_t
 op_star
 id|sigact_cachep
+suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|bio_cachep
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_SLAB_H */

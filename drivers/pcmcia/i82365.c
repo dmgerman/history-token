@@ -4018,11 +4018,7 @@ suffix:semicolon
 multiline_comment|/* add_pcic */
 multiline_comment|/*====================================================================*/
 macro_line|#ifdef CONFIG_ISA
-macro_line|#if defined(CONFIG_ISAPNP) || (defined(CONFIG_ISAPNP_MODULE) &amp;&amp; defined(MODULE))
-DECL|macro|I82365_ISAPNP
-mdefine_line|#define I82365_ISAPNP
-macro_line|#endif
-macro_line|#ifdef I82365_ISAPNP
+macro_line|#ifdef __ISAPNP__
 DECL|variable|__initdata
 r_static
 r_struct
@@ -4164,7 +4160,7 @@ suffix:semicolon
 id|ioaddr_t
 id|port
 suffix:semicolon
-macro_line|#ifdef I82365_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_struct
 id|isapnp_device_id
 op_star
@@ -8985,7 +8981,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(I82365_ISAPNP)
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(__ISAPNP__)
 r_if
 c_cond
 (paren

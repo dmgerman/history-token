@@ -16,31 +16,46 @@ mdefine_line|#define pgtable_cache_size (current_cpu_data.pgtable_cache_sz)
 DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
-macro_line|#if CONFIG_X86_PAE
+macro_line|#if defined (CONFIG_X86_PAE)
+multiline_comment|/*&n; * We can&squot;t include &lt;linux/slab.h&gt; here, thus these uglinesses.&n; */
+r_struct
+id|kmem_cache_s
+suffix:semicolon
+r_extern
+r_struct
+id|kmem_cache_s
+op_star
+id|pae_pgd_cachep
+suffix:semicolon
 r_extern
 r_void
 op_star
-id|kmalloc
+id|kmem_cache_alloc
 c_func
 (paren
-r_int
+r_struct
+id|kmem_cache_s
+op_star
 comma
 r_int
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
-r_const
+r_struct
+id|kmem_cache_s
+op_star
+comma
 r_void
 op_star
 )paren
 suffix:semicolon
 DECL|function|get_pgd_slow
 r_static
-id|__inline__
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_slow
@@ -56,15 +71,10 @@ id|pgd_t
 op_star
 id|pgd
 op_assign
-id|kmalloc
+id|kmem_cache_alloc
 c_func
 (paren
-id|PTRS_PER_PGD
-op_star
-r_sizeof
-(paren
-id|pgd_t
-)paren
+id|pae_pgd_cachep
 comma
 id|GFP_KERNEL
 )paren
@@ -201,9 +211,11 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|pae_pgd_cachep
+comma
 id|pgd
 )paren
 suffix:semicolon
@@ -214,7 +226,7 @@ suffix:semicolon
 macro_line|#else
 DECL|function|get_pgd_slow
 r_static
-id|__inline__
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_slow
@@ -286,10 +298,10 @@ r_return
 id|pgd
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_X86_PAE */
 DECL|function|get_pgd_fast
 r_static
-id|__inline__
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_fast
@@ -361,7 +373,7 @@ suffix:semicolon
 )brace
 DECL|function|free_pgd_fast
 r_static
-id|__inline__
+r_inline
 r_void
 id|free_pgd_fast
 c_func
@@ -400,7 +412,7 @@ suffix:semicolon
 )brace
 DECL|function|free_pgd_slow
 r_static
-id|__inline__
+r_inline
 r_void
 id|free_pgd_slow
 c_func
@@ -410,7 +422,7 @@ op_star
 id|pgd
 )paren
 (brace
-macro_line|#if CONFIG_X86_PAE
+macro_line|#if defined(CONFIG_X86_PAE)
 r_int
 id|i
 suffix:semicolon
@@ -451,9 +463,11 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|kfree
+id|kmem_cache_free
 c_func
 (paren
+id|pae_pgd_cachep
+comma
 id|pgd
 )paren
 suffix:semicolon
@@ -595,7 +609,7 @@ suffix:semicolon
 )brace
 DECL|function|pte_free_fast
 r_static
-id|__inline__
+r_inline
 r_void
 id|pte_free_fast
 c_func
@@ -656,18 +670,11 @@ id|pte
 suffix:semicolon
 )brace
 DECL|macro|pte_free
-mdefine_line|#define pte_free(pte)&t;&t;pte_free_fast(pte)
-macro_line|#ifdef CONFIG_X86_PAE
-DECL|macro|pgd_alloc
-mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_slow()
+mdefine_line|#define pte_free(pte)&t;&t;pte_free_slow(pte)
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_slow(pgd)
-macro_line|#else
 DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
-DECL|macro|pgd_free
-mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
-macro_line|#endif
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; * (In the PAE case we free the pmds as part of the pgd.)&n; */
 DECL|macro|pmd_alloc_one_fast
 mdefine_line|#define pmd_alloc_one_fast(mm, addr)&t;({ BUG(); ((pmd_t *)1); })

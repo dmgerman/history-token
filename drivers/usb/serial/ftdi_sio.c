@@ -320,6 +320,7 @@ id|break_state
 suffix:semicolon
 multiline_comment|/* Should rename most ftdi_sio&squot;s to ftdi_ now since there are two devices &n;   which share common code */
 DECL|variable|ftdi_sio_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|ftdi_sio_device
@@ -408,6 +409,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ftdi_8U232AM_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|ftdi_8U232AM_device
@@ -2246,6 +2248,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ftdi_sio_serial_read_bulk_callback */
 DECL|function|translate_baudrate_to_ftdi
+r_static
 id|__u16
 id|translate_baudrate_to_ftdi
 c_func

@@ -169,6 +169,13 @@ op_star
 id|SCpnt
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|SCpnt-&gt;host
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -177,7 +184,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -237,7 +244,7 @@ c_func
 (paren
 l_string|&quot;SCSI host %d abort (pid %ld) timed out - resetting&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host_no
 comma
 id|SCpnt-&gt;pid
 )paren
@@ -273,7 +280,7 @@ c_func
 l_string|&quot;SCSI host %d channel %d reset (pid %ld) timed out - &quot;
 l_string|&quot;trying harder&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host_no
 comma
 id|SCpnt-&gt;channel
 comma
@@ -317,7 +324,7 @@ c_func
 (paren
 l_string|&quot;SCSI host %d reset (pid %ld) timed out - trying to shake it loose&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host_no
 comma
 id|SCpnt-&gt;pid
 )paren
@@ -354,7 +361,7 @@ c_func
 (paren
 l_string|&quot;SCSI host %d reset (pid %ld) timed out again -&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host_no
 comma
 id|SCpnt-&gt;pid
 )paren
@@ -372,13 +379,13 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  From what I can find in scsi_obsolete.c, this function is only called&n; *  by scsi_old_done and scsi_reset.  Both of these functions run with the&n; *  io_request_lock already held, so we need do nothing here about grabbing&n; *  any locks.&n; */
+multiline_comment|/*&n; *  From what I can find in scsi_obsolete.c, this function is only called&n; *  by scsi_old_done and scsi_reset.  Both of these functions run with the&n; *  host_lock already held, so we need do nothing here about grabbing&n; *  any locks.&n; */
 DECL|function|scsi_request_sense
 r_static
 r_void
@@ -508,7 +515,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_dispatch_cmd
@@ -521,7 +528,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -1874,7 +1881,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 id|scsi_dispatch_cmd
@@ -1887,7 +1894,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -1963,7 +1970,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 id|SRpnt
@@ -2017,7 +2024,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -2087,7 +2094,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -2106,7 +2113,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -2657,7 +2664,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 r_while
@@ -2676,7 +2683,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace

@@ -248,6 +248,7 @@ id|serial
 )paren
 suffix:semicolon
 DECL|variable|whiteheat_fake_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|whiteheat_fake_device
@@ -298,6 +299,7 @@ id|whiteheat_startup
 )brace
 suffix:semicolon
 DECL|variable|whiteheat_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|whiteheat_device

@@ -13,7 +13,7 @@ DECL|macro|KIO_STATIC_PAGES
 mdefine_line|#define KIO_STATIC_PAGES&t;(KIO_MAX_ATOMIC_IO / (PAGE_SIZE &gt;&gt; 10) + 1)
 DECL|macro|KIO_MAX_SECTORS
 mdefine_line|#define KIO_MAX_SECTORS&t;&t;(KIO_MAX_ATOMIC_IO * 2)
-multiline_comment|/* The main kiobuf struct used for all our IO! */
+multiline_comment|/* The main kiobuf struct */
 DECL|struct|kiobuf
 r_struct
 id|kiobuf
@@ -64,18 +64,8 @@ id|map_array
 id|KIO_STATIC_PAGES
 )braket
 suffix:semicolon
-DECL|member|bh
-r_struct
-id|buffer_head
-op_star
-id|bh
-(braket
-id|KIO_MAX_SECTORS
-)braket
-suffix:semicolon
 DECL|member|blocks
-r_int
-r_int
+id|sector_t
 id|blocks
 (braket
 id|KIO_MAX_SECTORS
@@ -188,7 +178,7 @@ id|bytes
 )paren
 suffix:semicolon
 multiline_comment|/* fs/iobuf.c */
-r_void
+r_int
 id|end_kio_request
 c_func
 (paren
@@ -295,14 +285,32 @@ comma
 id|kdev_t
 id|dev
 comma
-r_int
-r_int
-id|b
+id|sector_t
 (braket
 )braket
 comma
 r_int
 id|size
+)paren
+suffix:semicolon
+multiline_comment|/* fs/bio.c */
+r_void
+id|ll_rw_kio
+c_func
+(paren
+r_int
+id|rw
+comma
+r_struct
+id|kiobuf
+op_star
+id|kio
+comma
+id|kdev_t
+id|dev
+comma
+id|sector_t
+id|block
 )paren
 suffix:semicolon
 macro_line|#endif /* __LINUX_IOBUF_H */

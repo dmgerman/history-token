@@ -479,6 +479,12 @@ id|pci_dev
 op_star
 id|device
 suffix:semicolon
+DECL|member|host
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
 DECL|member|bus
 id|u_char
 id|bus
@@ -489,11 +495,6 @@ id|u_char
 id|device_fn
 suffix:semicolon
 multiline_comment|/* PCI BUS device and function&t;*/
-DECL|member|smp_lock
-id|spinlock_t
-id|smp_lock
-suffix:semicolon
-multiline_comment|/* Lock for SMP threading       */
 DECL|member|mmio_va
 id|vm_offset_t
 id|mmio_va

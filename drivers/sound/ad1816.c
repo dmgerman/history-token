@@ -5569,7 +5569,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|variable|ad1816_dev
 r_struct
 id|pci_dev
@@ -5672,7 +5672,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|function|activate_dev
 r_static
 r_struct
@@ -6333,7 +6333,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -6507,7 +6507,7 @@ id|nr_ad1816_devs
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren

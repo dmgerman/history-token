@@ -104,7 +104,7 @@ l_int|0x0132
 )brace
 comma
 singleline_comment|// Kodak DC-3400
-multiline_comment|/* These have a different application level protocol which&n;&t; * is part of the Flashpoint &quot;DigitaOS&quot;.  That supports some&n;&t; * non-camera devices, and some non-Kodak cameras.&n;&t; */
+multiline_comment|/* These have a different application level protocol which&n;&t; * is part of the Flashpoint &quot;DigitaOS&quot;.  That supports some&n;&t; * non-camera devices, and some non-Kodak cameras.&n;&t; * Use this driver to get USB and &quot;OpenDis&quot; to talk.&n;&t; */
 (brace
 id|USB_DEVICE
 c_func
@@ -160,6 +160,28 @@ l_int|0x6002
 )brace
 comma
 singleline_comment|// HP PhotoSmart C500
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x4102
+)paren
+)brace
+comma
+singleline_comment|// HP PhotoSmart C618
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x1001
+)paren
+)brace
+comma
+singleline_comment|// Pentax EI-200
 multiline_comment|/* Other USB devices may well work here too, so long as they&n;&t; * just stick to half duplex bulk packet exchanges.  That&n;&t; * means, among other things, no iso or interrupt endpoints.&n;&t; */
 (brace
 )brace

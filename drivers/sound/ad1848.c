@@ -508,7 +508,7 @@ id|CAP_F_TIMER
 multiline_comment|/* MD_1845_SSCAPE */
 )brace
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|variable|isapnp
 r_static
 r_int
@@ -13230,7 +13230,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* More special magic for SoundPro chips */
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
@@ -14232,7 +14232,7 @@ id|KERN_INFO
 l_string|&quot;ad1848/cs4248 codec driver Copyright (C) by Hannu Savolainen 1993-1996&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -14386,7 +14386,7 @@ id|cfg
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren

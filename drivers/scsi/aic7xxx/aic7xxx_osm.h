@@ -1128,12 +1128,6 @@ r_struct
 id|ahc_completeq
 id|completeq
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,0)
-DECL|member|spin_lock
-id|spinlock_t
-id|spin_lock
-suffix:semicolon
-macro_line|#endif
 DECL|member|qfrozen
 id|u_int
 id|qfrozen
@@ -1728,7 +1722,7 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
@@ -1759,7 +1753,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 comma
 op_star
 id|flags
@@ -1788,7 +1782,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ahc-&gt;platform_data-&gt;spin_lock
+id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
 comma
 op_star
 id|flags
@@ -1828,6 +1822,13 @@ op_star
 id|flags
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|ahc-&gt;platform_data-&gt;host
+suffix:semicolon
 op_star
 id|flags
 op_assign
@@ -1837,7 +1838,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 op_star
 id|flags
@@ -1862,11 +1863,18 @@ op_star
 id|flags
 )paren
 (brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|ahc-&gt;platform_data-&gt;host
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 op_star
 id|flags

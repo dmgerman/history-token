@@ -1840,10 +1840,17 @@ id|flags_390irq
 comma
 id|flags_ior
 suffix:semicolon
+id|request_queue_t
+op_star
+id|q
+op_assign
+op_amp
+id|tape-&gt;request_queue
+suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 comma
 id|flags_ior
 )paren
@@ -1882,7 +1889,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 comma
 id|flags_ior
 )paren

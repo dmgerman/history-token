@@ -19,6 +19,11 @@ r_int
 r_int
 id|min_low_pfn
 suffix:semicolon
+DECL|variable|max_pfn
+r_int
+r_int
+id|max_pfn
+suffix:semicolon
 multiline_comment|/* return the number of _pages_ that will be allocated for the boot bitmap */
 DECL|function|bootmem_bootmap_pages
 r_int

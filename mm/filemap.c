@@ -3881,15 +3881,6 @@ c_func
 id|gfp_mask
 )paren
 suffix:semicolon
-id|page
-op_assign
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOMEM
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -164,6 +164,11 @@ DECL|macro|DRIVE_READY
 mdefine_line|#define DRIVE_READY&t;&t;(READY_STAT  | SEEK_STAT)
 DECL|macro|DATA_READY
 mdefine_line|#define DATA_READY&t;&t;(DRQ_STAT)
+multiline_comment|/*&n; * Our Physical Region Descriptor (PRD) table should be large enough&n; * to handle the biggest I/O request we are likely to see.  Since requests&n; * can have no more than 256 sectors, and since the typical blocksize is&n; * two or more sectors, we could get by with a limit of 128 entries here for&n; * the usual worst case.  Most requests seem to include some contiguous blocks,&n; * further reducing the number of table entries required.&n; *&n; * As it turns out though, we must allocate a full 4KB page for this,&n; * so the two PRD tables (ide0 &amp; ide1) will each get half of that,&n; * allowing each to have about 256 entries (8 bytes each) from this.&n; */
+DECL|macro|PRD_BYTES
+mdefine_line|#define PRD_BYTES&t;8
+DECL|macro|PRD_ENTRIES
+mdefine_line|#define PRD_ENTRIES&t;(PAGE_SIZE / (2 * PRD_BYTES))
 multiline_comment|/*&n; * Some more useful definitions&n; */
 DECL|macro|IDE_MAJOR_NAME
 mdefine_line|#define IDE_MAJOR_NAME&t;&quot;hd&quot;&t;/* the same for all i/f; see also genhd.c */
@@ -233,6 +238,68 @@ macro_line|#ifndef NO_DMA
 DECL|macro|NO_DMA
 mdefine_line|#define NO_DMA  255
 macro_line|#endif
+multiline_comment|/*&n; * hwif_chipset_t is used to keep track of the specific hardware&n; * chipset used by each IDE interface, if known.&n; */
+DECL|enumerator|ide_unknown
+DECL|enumerator|ide_generic
+DECL|enumerator|ide_pci
+r_typedef
+r_enum
+(brace
+id|ide_unknown
+comma
+id|ide_generic
+comma
+id|ide_pci
+comma
+DECL|enumerator|ide_cmd640
+DECL|enumerator|ide_dtc2278
+DECL|enumerator|ide_ali14xx
+id|ide_cmd640
+comma
+id|ide_dtc2278
+comma
+id|ide_ali14xx
+comma
+DECL|enumerator|ide_qd65xx
+DECL|enumerator|ide_umc8672
+DECL|enumerator|ide_ht6560b
+id|ide_qd65xx
+comma
+id|ide_umc8672
+comma
+id|ide_ht6560b
+comma
+DECL|enumerator|ide_pdc4030
+DECL|enumerator|ide_rz1000
+DECL|enumerator|ide_trm290
+id|ide_pdc4030
+comma
+id|ide_rz1000
+comma
+id|ide_trm290
+comma
+DECL|enumerator|ide_cmd646
+DECL|enumerator|ide_cy82c693
+DECL|enumerator|ide_4drives
+id|ide_cmd646
+comma
+id|ide_cy82c693
+comma
+id|ide_4drives
+comma
+DECL|enumerator|ide_pmac
+DECL|enumerator|ide_etrax100
+id|ide_pmac
+comma
+id|ide_etrax100
+DECL|typedef|hwif_chipset_t
+)brace
+id|hwif_chipset_t
+suffix:semicolon
+DECL|macro|IDE_CHIPSET_PCI_MASK
+mdefine_line|#define IDE_CHIPSET_PCI_MASK    &bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
+DECL|macro|IDE_CHIPSET_IS_PCI
+mdefine_line|#define IDE_CHIPSET_IS_PCI(c)   ((IDE_CHIPSET_PCI_MASK &gt;&gt; (c)) &amp; 1)
 multiline_comment|/*&n; * Structure to hold all information about the location of this port&n; */
 DECL|struct|hw_regs_s
 r_typedef
@@ -269,6 +336,10 @@ op_star
 id|priv
 suffix:semicolon
 multiline_comment|/* interface specific data */
+DECL|member|chipset
+id|hwif_chipset_t
+id|chipset
+suffix:semicolon
 DECL|typedef|hw_regs_t
 )brace
 id|hw_regs_t
@@ -1071,68 +1142,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * hwif_chipset_t is used to keep track of the specific hardware&n; * chipset used by each IDE interface, if known.&n; */
-DECL|enumerator|ide_unknown
-DECL|enumerator|ide_generic
-DECL|enumerator|ide_pci
-r_typedef
-r_enum
-(brace
-id|ide_unknown
-comma
-id|ide_generic
-comma
-id|ide_pci
-comma
-DECL|enumerator|ide_cmd640
-DECL|enumerator|ide_dtc2278
-DECL|enumerator|ide_ali14xx
-id|ide_cmd640
-comma
-id|ide_dtc2278
-comma
-id|ide_ali14xx
-comma
-DECL|enumerator|ide_qd65xx
-DECL|enumerator|ide_umc8672
-DECL|enumerator|ide_ht6560b
-id|ide_qd65xx
-comma
-id|ide_umc8672
-comma
-id|ide_ht6560b
-comma
-DECL|enumerator|ide_pdc4030
-DECL|enumerator|ide_rz1000
-DECL|enumerator|ide_trm290
-id|ide_pdc4030
-comma
-id|ide_rz1000
-comma
-id|ide_trm290
-comma
-DECL|enumerator|ide_cmd646
-DECL|enumerator|ide_cy82c693
-DECL|enumerator|ide_4drives
-id|ide_cmd646
-comma
-id|ide_cy82c693
-comma
-id|ide_4drives
-comma
-DECL|enumerator|ide_pmac
-DECL|enumerator|ide_etrax100
-id|ide_pmac
-comma
-id|ide_etrax100
-DECL|typedef|hwif_chipset_t
-)brace
-id|hwif_chipset_t
-suffix:semicolon
-DECL|macro|IDE_CHIPSET_PCI_MASK
-mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
-DECL|macro|IDE_CHIPSET_IS_PCI
-mdefine_line|#define IDE_CHIPSET_IS_PCI(c)&t;((IDE_CHIPSET_PCI_MASK &gt;&gt; (c)) &amp; 1)
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|struct|ide_pci_devid_s
 r_typedef
@@ -1293,11 +1302,6 @@ r_int
 id|sg_dma_direction
 suffix:semicolon
 multiline_comment|/* dma transfer direction */
-DECL|member|sg_dma_active
-r_int
-id|sg_dma_active
-suffix:semicolon
-multiline_comment|/* is it in use */
 DECL|member|mate
 r_struct
 id|hwif_s
@@ -1412,6 +1416,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=ATA-66 capable, 0=default */
+DECL|member|highmem
+r_int
+id|highmem
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* can do full 32-bit dma */
 DECL|member|channel
 id|byte
 id|channel
@@ -1504,6 +1515,10 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+DECL|macro|IDE_BUSY
+mdefine_line|#define IDE_BUSY&t;0
+DECL|macro|IDE_SLEEP
+mdefine_line|#define IDE_SLEEP&t;1
 DECL|struct|hwgroup_s
 r_typedef
 r_struct
@@ -1515,17 +1530,12 @@ op_star
 id|handler
 suffix:semicolon
 multiline_comment|/* irq handler, if active */
-DECL|member|busy
-r_volatile
+DECL|member|flags
 r_int
-id|busy
-suffix:semicolon
-multiline_comment|/* BOOL: protects all fields below */
-DECL|member|sleeping
 r_int
-id|sleeping
+id|flags
 suffix:semicolon
-multiline_comment|/* BOOL: wake us up on timer expiry */
+multiline_comment|/* BUSY, SLEEPING */
 DECL|member|drive
 id|ide_drive_t
 op_star
@@ -2255,7 +2265,20 @@ mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
 macro_line|#include &lt;linux/blk.h&gt;
-r_void
+r_inline
+r_int
+id|__ide_end_request
+c_func
+(paren
+id|ide_hwgroup_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
 id|ide_end_request
 c_func
 (paren
@@ -2500,6 +2523,15 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Revalidate (read partition tables)&n; */
+r_void
+id|ide_revalidate_drive
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 id|ide_startstop_t
 id|ide_do_reset
@@ -2549,6 +2581,70 @@ DECL|typedef|ide_action_t
 )brace
 id|ide_action_t
 suffix:semicolon
+multiline_comment|/*&n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
+DECL|macro|ide_rq_offset
+mdefine_line|#define ide_rq_offset(rq) (((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
+DECL|function|ide_map_buffer
+r_extern
+r_inline
+r_void
+op_star
+id|ide_map_buffer
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+r_return
+id|bio_kmap_irq
+c_func
+(paren
+id|rq-&gt;bio
+comma
+id|flags
+)paren
+op_plus
+id|ide_rq_offset
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+)brace
+DECL|function|ide_unmap_buffer
+r_extern
+r_inline
+r_void
+id|ide_unmap_buffer
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|bio_kunmap_irq
+c_func
+(paren
+id|buffer
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This function issues a special IDE device request&n; * onto the request queue.&n; *&n; * If action is ide_wait, then the rq is queued at the end of the&n; * request queue, and the function sleeps until it has been processed.&n; * This is for use when invoked from an ioctl handler.&n; *&n; * If action is ide_preempt, then the rq is queued at the head of&n; * the request queue, displacing the currently-being-processed&n; * request and this function returns immediately without waiting&n; * for the new rq to be completed.  This is VERY DANGEROUS, and is&n; * intended for careful use by the ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_next, then the rq is queued immediately after&n; * the currently-being-processed-request (if any), and the function&n; * returns without waiting for the new rq to be completed.  As above,&n; * This is VERY DANGEROUS, and is intended for careful use by the&n; * ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_end, then the rq is queued at the end of the&n; * request queue, and the function returns immediately without waiting&n; * for the new rq to be completed. This is again intended for careful&n; * use by the ATAPI tape/cdrom driver code.&n; */
 r_int
 id|ide_do_drive_cmd
@@ -3079,6 +3175,12 @@ id|ide_hwif_t
 op_star
 id|hwif
 )paren
+suffix:semicolon
+DECL|macro|DRIVE_LOCK
+mdefine_line|#define DRIVE_LOCK(drive)&t;(&amp;(drive)-&gt;queue.queue_lock)
+r_extern
+id|spinlock_t
+id|ide_lock
 suffix:semicolon
 macro_line|#endif /* _IDE_H */
 eof

@@ -2073,13 +2073,13 @@ id|retv
 suffix:semicolon
 )brace
 DECL|macro|SET_BIT
-macro_line|#undef SET_BIT 0
+macro_line|#undef SET_BIT
 DECL|macro|CLR_BIT
-macro_line|#undef CLR_BIT 1
+macro_line|#undef CLR_BIT
 DECL|macro|SET_CLK
-macro_line|#undef SET_CLK 2
+macro_line|#undef SET_CLK
 DECL|macro|CLR_CLK
-macro_line|#undef CLR_CLK 3
+macro_line|#undef CLR_CLK
 multiline_comment|/*&n; *  Try reading Symbios NVRAM.&n; *  Return 0 if OK.&n; */
 DECL|function|sym_read_Symbios_nvram
 r_static

@@ -3093,6 +3093,10 @@ c_cond
 id|hwif-&gt;dma_base
 )paren
 (brace
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 id|hwif-&gt;dmaproc
 op_assign
 op_amp

@@ -4838,6 +4838,10 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 eof

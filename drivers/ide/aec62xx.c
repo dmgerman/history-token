@@ -3911,6 +3911,10 @@ op_assign
 op_amp
 id|aec62xx_dmaproc
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
 id|hwif-&gt;drives
 (braket

@@ -590,7 +590,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
+macro_line|#ifdef __ISAPNP__
 DECL|variable|__initdata
 r_static
 r_struct
@@ -820,7 +820,7 @@ l_int|8
 l_int|3
 )braket
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
+macro_line|#endif /* __ISAPNP__ */
 DECL|variable|nopnp
 r_static
 r_int
@@ -873,12 +873,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
+macro_line|#ifdef __ISAPNP__
 r_static
 r_int
 id|pnp_cards
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
+macro_line|#endif /* __ISAPNP__ */
 r_if
 c_cond
 (paren
@@ -1348,7 +1348,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MCA */
-macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -1600,7 +1600,7 @@ suffix:semicolon
 )brace
 id|no_pnp
 suffix:colon
-macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
+macro_line|#endif /* __ISAPNP__ */
 multiline_comment|/* Select an open I/O location at 0x1*0 to do contention select. */
 r_for
 c_loop
@@ -1811,7 +1811,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ISAPNP) || defined(CONFIG_ISAPNP_MODULE)
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -1952,7 +1952,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_ISAPNP || CONFIG_ISAPNP_MODULE */
+macro_line|#endif /* __ISAPNP__ */
 (brace
 r_int
 r_int
@@ -5120,7 +5120,7 @@ comma
 l_string|&quot;EtherLink III maximum events handled per interrupt&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
@@ -5137,7 +5137,7 @@ comma
 l_string|&quot;EtherLink III disable ISA PnP support (0-1)&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_ISAPNP */
+macro_line|#endif&t;/* __ISAPNP__ */
 r_int
 DECL|function|init_module
 id|init_module

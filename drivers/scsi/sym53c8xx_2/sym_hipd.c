@@ -16497,10 +16497,9 @@ id|clrack
 )paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 id|out_stuck
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Acquire a control block&n; */
 DECL|function|sym_get_ccb
@@ -18185,10 +18184,9 @@ id|lp-&gt;itlq_tbl
 )paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 id|fail
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Queue a SCSI IO to the controller.&n; */
 DECL|function|sym_queue_scsiio

@@ -1521,7 +1521,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|block
 comma
 r_struct
@@ -1585,7 +1585,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|block
 comma
 r_struct
@@ -1914,7 +1914,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|block
 comma
 r_struct
@@ -8508,7 +8508,7 @@ id|address_space
 op_star
 id|as
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

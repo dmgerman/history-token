@@ -3301,6 +3301,10 @@ op_assign
 op_amp
 id|svwks_dmaproc
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace

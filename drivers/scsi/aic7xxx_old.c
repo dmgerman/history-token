@@ -13924,7 +13924,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|p-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -14241,7 +14241,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|p-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -26497,7 +26497,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|p-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -26556,7 +26556,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|p-&gt;host-&gt;host_lock
 comma
 id|cpu_flags
 )paren
@@ -42582,7 +42582,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|p-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_for

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -658,6 +659,62 @@ DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn), args))!=0) goto cs_failed
 DECL|macro|CFG_CHECK
 mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
+DECL|function|idecs_register
+r_int
+id|idecs_register
+(paren
+r_int
+id|io_base
+comma
+r_int
+id|ctl_base
+comma
+r_int
+id|irq
+)paren
+(brace
+id|hw_regs_t
+id|hw
+suffix:semicolon
+id|ide_init_hwif_ports
+c_func
+(paren
+op_amp
+id|hw
+comma
+(paren
+id|ide_ioreg_t
+)paren
+id|io_base
+comma
+(paren
+id|ide_ioreg_t
+)paren
+id|ctl_base
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|hw.irq
+op_assign
+id|irq
+suffix:semicolon
+id|hw.chipset
+op_assign
+id|ide_pci
+suffix:semicolon
+singleline_comment|// this enables IRQ sharing w/ PCI irqs
+r_return
+id|ide_register_hw
+c_func
+(paren
+op_amp
+id|hw
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 DECL|function|ide_config
 r_void
 id|ide_config
@@ -1295,6 +1352,22 @@ comma
 id|link-&gt;io.NumPorts2
 )paren
 suffix:semicolon
+multiline_comment|/* disable drive interrupts during IDE probe */
+r_if
+c_cond
+(paren
+id|ctl_base
+)paren
+(brace
+id|outb
+c_func
+(paren
+l_int|0x02
+comma
+id|ctl_base
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* retry registration in case device is still spinning up */
 r_for
 c_loop
@@ -1313,7 +1386,7 @@ op_increment
 (brace
 id|hd
 op_assign
-id|ide_register
+id|idecs_register
 c_func
 (paren
 id|io_base
@@ -1342,7 +1415,7 @@ l_int|0x20
 (brace
 id|hd
 op_assign
-id|ide_register
+id|idecs_register
 c_func
 (paren
 id|io_base

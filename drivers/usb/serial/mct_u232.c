@@ -324,6 +324,7 @@ id|id_table_combined
 )paren
 suffix:semicolon
 DECL|variable|mct_u232_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|mct_u232_device
@@ -413,6 +414,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|mct_u232_sitecom_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|mct_u232_sitecom_device
@@ -502,6 +504,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|mct_u232_du_h3sp_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|mct_u232_du_h3sp_device

@@ -860,11 +860,7 @@ op_or_assign
 id|PCI_COMMAND_IO
 suffix:semicolon
 )brace
-multiline_comment|/* ??? Always turn on bus mastering.  If the device doesn&squot;t support&n;&t;   it, the bit will go into the bucket. */
-id|cmd
-op_or_assign
-id|PCI_COMMAND_MASTER
-suffix:semicolon
+multiline_comment|/* Do not enable bus mastering.  A device could corrupt&n;&t; * system memory by DMAing before a driver is ready for it. */
 multiline_comment|/* Set the cache line and default latency (32).  */
 id|pci_write_config_word
 c_func

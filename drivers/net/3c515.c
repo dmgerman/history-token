@@ -1339,7 +1339,7 @@ l_int|10000
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#ifdef __ISAPNP__
 DECL|variable|corkscrew_isapnp_adapters
 r_static
 r_struct
@@ -1402,7 +1402,7 @@ r_static
 r_int
 id|nopnp
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* __ISAPNP__ */
 r_static
 r_int
 id|corkscrew_scan
@@ -1776,7 +1776,7 @@ r_static
 r_int
 id|ioaddr
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_int
 id|i
 suffix:semicolon
@@ -1785,7 +1785,7 @@ r_int
 id|pnp_cards
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
@@ -2173,7 +2173,7 @@ suffix:semicolon
 )brace
 id|no_pnp
 suffix:colon
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* __ISAPNP__ */
 multiline_comment|/* Check all locations on the ISA bus -- evil! */
 r_for
 c_loop
@@ -2194,7 +2194,7 @@ l_int|0x20
 r_int
 id|irq
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#ifdef __ISAPNP__
 multiline_comment|/* Make sure this was not already picked up by isapnp */
 r_if
 c_cond
@@ -2238,7 +2238,7 @@ l_int|2
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* __ISAPNP__ */
 r_if
 c_cond
 (paren

@@ -245,6 +245,7 @@ id|id_table
 )paren
 suffix:semicolon
 DECL|variable|empeg_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|empeg_device

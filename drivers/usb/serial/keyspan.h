@@ -1619,6 +1619,7 @@ multiline_comment|/* Terminating entry */
 suffix:semicolon
 multiline_comment|/* Structs for the devices, pre and post renumeration. */
 DECL|variable|keyspan_usa18x_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa18x_pre_device
@@ -1666,6 +1667,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa19_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa19_pre_device
@@ -1713,6 +1715,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa19w_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa19w_pre_device
@@ -1760,6 +1763,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28_pre_device
@@ -1807,6 +1811,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28x_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28x_pre_device
@@ -1854,6 +1859,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28xa_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28xa_pre_device
@@ -1901,6 +1907,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28xb_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28xb_pre_device
@@ -1948,6 +1955,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa49w_pre_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa49w_pre_device
@@ -1995,6 +2003,7 @@ id|keyspan_fake_startup
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa18x_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa18x_device
@@ -2089,6 +2098,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa19_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa19_device
@@ -2183,6 +2193,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa19w_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa19w_device
@@ -2277,6 +2288,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28_device
@@ -2341,6 +2353,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28x_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28x_device
@@ -2435,6 +2448,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa28xa_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa28xa_device
@@ -2529,6 +2543,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|keyspan_usa49w_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_usa49w_device

@@ -75,7 +75,7 @@ r_int
 id|ioaddr
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_static
 r_int
 id|ultra_probe_isapnp
@@ -251,7 +251,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|variable|__initdata
 r_static
 r_struct
@@ -392,7 +392,7 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 multiline_comment|/* Look for any installed ISAPnP cards */
 r_if
 c_cond
@@ -1154,7 +1154,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 DECL|function|ultra_probe_isapnp
 r_static
 r_int
@@ -2580,7 +2580,7 @@ id|dev-&gt;base_addr
 op_minus
 id|ULTRA_NIC_OFFSET
 suffix:semicolon
-macro_line|#if defined CONFIG_ISAPNP || defined CONFIG_ISAPNP_MODULE
+macro_line|#ifdef __ISAPNP__
 r_struct
 id|pci_dev
 op_star

@@ -9120,8 +9120,6 @@ op_or
 id|FMODE_WRITE
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -9341,8 +9339,6 @@ c_func
 op_amp
 id|s-&gt;open_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -9660,8 +9656,6 @@ id|card
 op_assign
 id|devs
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9705,8 +9699,6 @@ op_logical_neg
 id|card
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -9737,8 +9729,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9801,6 +9791,10 @@ id|file_operations
 id|m3_mixer_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 id|no_llseek
@@ -11478,6 +11472,10 @@ id|file_operations
 id|m3_audio_fops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|llseek
 suffix:colon
 op_amp

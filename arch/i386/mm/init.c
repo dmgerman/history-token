@@ -18,6 +18,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1504,9 +1505,9 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;movl %%ecx,%%cr3&bslash;n&quot;
+l_string|&quot;movl %0,%%cr3&bslash;n&quot;
 op_scope_resolution
-l_string|&quot;c&quot;
+l_string|&quot;r&quot;
 (paren
 id|__pa
 c_func
@@ -2618,4 +2619,55 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_X86_PAE)
+DECL|variable|pae_pgd_cachep
+r_struct
+id|kmem_cache_s
+op_star
+id|pae_pgd_cachep
+suffix:semicolon
+DECL|function|pgtable_cache_init
+r_void
+id|__init
+id|pgtable_cache_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * PAE pgds must be 16-byte aligned:&n;&t; */
+id|pae_pgd_cachep
+op_assign
+id|kmem_cache_create
+c_func
+(paren
+l_string|&quot;pae_pgd&quot;
+comma
+l_int|32
+comma
+l_int|0
+comma
+id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_MUST_HWCACHE_ALIGN
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pae_pgd_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;init_pae(): Cannot alloc pae_pgd SLAB cache&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_X86_PAE */
 eof

@@ -3251,9 +3251,15 @@ id|pdev-&gt;type
 OL
 l_int|675
 op_logical_or
+(paren
+id|pdev-&gt;type
+OL
+l_int|730
+op_logical_and
 id|pdev-&gt;release
 OL
 l_int|6
+)paren
 )paren
 r_return
 l_int|0

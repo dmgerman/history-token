@@ -56,6 +56,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|request_queue_t
+op_star
+id|q
+op_assign
+op_amp
+id|cmd-&gt;device-&gt;request_queue
+suffix:semicolon
 id|SCSI_LOG_MLQUEUE
 c_func
 (paren
@@ -172,7 +179,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 comma
 id|flags
 )paren
@@ -187,7 +194,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 comma
 id|flags
 )paren

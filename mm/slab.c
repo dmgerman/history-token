@@ -32,10 +32,10 @@ mdefine_line|#define&t;BYTES_PER_WORD&t;&t;sizeof(void *)
 multiline_comment|/* Legal flag mask for kmem_cache_create(). */
 macro_line|#if DEBUG
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA)
+macro_line|# define CREATE_MASK&t;(SLAB_DEBUG_INITIAL | SLAB_RED_ZONE | &bslash;&n;&t;&t;&t; SLAB_POISON | SLAB_HWCACHE_ALIGN | &bslash;&n;&t;&t;&t; SLAB_NO_REAP | SLAB_CACHE_DMA | &bslash;&n;&t;&t;&t; SLAB_MUST_HWCACHE_ALIGN)
 macro_line|#else
 DECL|macro|CREATE_MASK
-macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | SLAB_CACHE_DMA)
+macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&n;&t;&t;&t; SLAB_CACHE_DMA | SLAB_MUST_HWCACHE_ALIGN)
 macro_line|#endif
 multiline_comment|/*&n; * kmem_bufctl_t:&n; *&n; * Bufctl&squot;s are used for linking objs within a slab&n; * linked offsets.&n; *&n; * This implementaion relies on &quot;struct page&quot; for locating the cache &amp;&n; * slab an object belongs to.&n; * This allows the bufctl structure to be small (one int), but limits&n; * the number of objects a slab (not a cache) can contain when off-slab&n; * bufctls are used. The limit is the size of the largest general cache&n; * that does not use off-slab slabs.&n; * For 32bit archs with 4 kB pages, is this 56.&n; * This is not serious, as it is only for large objects, when it is unwise&n; * to have too many per slab.&n; * Note: This limit can be raised by introducing a general cache whose size&n; * is less than 512 (PAGE_SIZE&lt;&lt;3), but greater than 256.&n; */
 DECL|macro|BUFCTL_END
@@ -1753,12 +1753,21 @@ macro_line|#if FORCED_DEBUG
 r_if
 c_cond
 (paren
+(paren
 id|size
 OL
 (paren
 id|PAGE_SIZE
 op_rshift
 l_int|3
+)paren
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|SLAB_MUST_HWCACHE_ALIGN
 )paren
 )paren
 multiline_comment|/*&n;&t;&t; * do not red zone large object, causes severe&n;&t;&t; * fragmentation.&n;&t;&t; */

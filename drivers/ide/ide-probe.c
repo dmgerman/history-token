@@ -2808,6 +2808,9 @@ op_assign
 op_amp
 id|drive-&gt;queue
 suffix:semicolon
+r_int
+id|max_sectors
+suffix:semicolon
 id|q-&gt;queuedata
 op_assign
 id|HWGROUP
@@ -2822,7 +2825,34 @@ c_func
 id|q
 comma
 id|do_ide_request
+comma
+id|drive-&gt;name
 )paren
+suffix:semicolon
+multiline_comment|/* IDE can do up to 128K per request, pdc4030 needs smaller limit */
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+id|max_sectors
+op_assign
+l_int|127
+suffix:semicolon
+macro_line|#else
+id|max_sectors
+op_assign
+l_int|255
+suffix:semicolon
+macro_line|#endif
+id|blk_queue_max_sectors
+c_func
+(paren
+id|q
+comma
+id|max_sectors
+)paren
+suffix:semicolon
+multiline_comment|/* IDE DMA can do PRD_ENTRIES number of segments */
+id|q-&gt;max_segments
+op_assign
+id|PRD_ENTRIES
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
@@ -3098,7 +3128,7 @@ id|hwgroup-&gt;drive
 op_assign
 l_int|NULL
 suffix:semicolon
-id|hwgroup-&gt;busy
+id|hwgroup-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -3451,9 +3481,6 @@ op_star
 id|bs
 comma
 op_star
-id|max_sect
-comma
-op_star
 id|max_ra
 suffix:semicolon
 r_extern
@@ -3557,20 +3584,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|max_sect
-op_assign
-id|kmalloc
-(paren
-id|minors
-op_star
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 id|max_ra
 op_assign
 id|kmalloc
@@ -3609,13 +3622,6 @@ id|hwif-&gt;major
 op_assign
 id|bs
 suffix:semicolon
-id|max_sectors
-(braket
-id|hwif-&gt;major
-)braket
-op_assign
-id|max_sect
-suffix:semicolon
 id|max_readahead
 (braket
 id|hwif-&gt;major
@@ -3644,33 +3650,6 @@ op_increment
 op_assign
 id|BLOCK_SIZE
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-op_star
-id|max_sect
-op_increment
-op_assign
-(paren
-(paren
-id|hwif-&gt;chipset
-op_eq
-id|ide_pdc4030
-)paren
-ques
-c_cond
-l_int|127
-suffix:colon
-l_int|255
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* IDE can do up to 128K per request. */
-op_star
-id|max_sect
-op_increment
-op_assign
-l_int|255
-suffix:semicolon
-macro_line|#endif
 op_star
 id|max_ra
 op_increment
@@ -4209,33 +4188,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* success */
-macro_line|#if (DEBUG_SPINLOCK &gt; 0)
-(brace
-r_static
-r_int
-id|done
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|done
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;io_request_lock is %p&bslash;n&quot;
-comma
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME */
-)brace
-macro_line|#endif
 r_return
 id|hwif-&gt;present
 suffix:semicolon

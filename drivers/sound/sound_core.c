@@ -276,8 +276,6 @@ id|list
 op_assign
 id|s
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|n
 suffix:semicolon
@@ -337,8 +335,6 @@ c_func
 (paren
 id|p
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 suffix:semicolon

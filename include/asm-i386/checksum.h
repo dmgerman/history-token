@@ -189,112 +189,23 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|movl
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|subl
-"$"
-l_int|4
-comma
-op_mod
-l_int|2
-id|jbe
-l_float|2f
-id|addl
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|8
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|12
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-l_int|1
-suffix:colon
-id|adcl
-l_int|16
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|lea
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|1
-id|decl
-op_mod
-l_int|2
-id|jne
-l_int|1
-id|b
-id|adcl
-"$"
-l_int|0
-comma
-op_mod
-l_int|0
-id|movl
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-id|shrl
-"$"
-l_int|16
-comma
-op_mod
-l_int|0
-id|addw
-op_mod
-id|w2
-comma
-op_mod
-id|w0
-id|adcl
-"$"
-l_int|0
-comma
-op_mod
-l_int|0
-id|notl
-op_mod
-l_int|0
-l_int|2
-suffix:colon
-"&quot;"
+l_string|&quot;movl (%1), %0&t;;&bslash;n&quot;
+l_string|&quot;subl $4, %2&t;;&bslash;n&quot;
+l_string|&quot;jbe 2f&t;&t;;&bslash;n&quot;
+l_string|&quot;addl 4(%1), %0&t;;&bslash;n&quot;
+l_string|&quot;adcl 8(%1), %0&t;;&bslash;n&quot;
+l_string|&quot;adcl 12(%1), %0&t;;&bslash;n&quot;
+l_string|&quot;1:&t;    adcl 16(%1), %0&t;;&bslash;n&quot;
+l_string|&quot;lea 4(%1), %1&t;;&bslash;n&quot;
+l_string|&quot;decl %2&t;&t;;&bslash;n&quot;
+l_string|&quot;jne 1b&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl $0, %0&t;;&bslash;n&quot;
+l_string|&quot;movl %0, %2&t;;&bslash;n&quot;
+l_string|&quot;shrl $16, %0&t;;&bslash;n&quot;
+l_string|&quot;addw %w2, %w0&t;;&bslash;n&quot;
+l_string|&quot;adcl $0, %0&t;;&bslash;n&quot;
+l_string|&quot;notl %0&t;&t;;&bslash;n&quot;
+l_string|&quot;2:&t;&t;&t;&t;;&bslash;n&quot;
 multiline_comment|/* Since the input registers which are loaded with iph and ipl&n;&t;   are modified, we must also specify them as outputs, or gcc&n;&t;   will assume they contain their original values. */
 suffix:colon
 l_string|&quot;=r&quot;
@@ -344,20 +255,8 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|addl
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|adcl
-"$"
-l_int|0xffff
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;addl %1, %0&t;&t;;&bslash;n&quot;
+l_string|&quot;adcl $0xffff, %0&t;;&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -420,32 +319,10 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|addl
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|adcl
-op_mod
-l_int|2
-comma
-op_mod
-l_int|0
-id|adcl
-op_mod
-l_int|3
-comma
-op_mod
-l_int|0
-id|adcl
-"$"
-l_int|0
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;addl %1, %0&t;;&bslash;n&quot;
+l_string|&quot;adcl %2, %0&t;;&bslash;n&quot;
+l_string|&quot;adcl %3, %0&t;;&bslash;n&quot;
+l_string|&quot;adcl $0, %0&t;;&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -609,98 +486,17 @@ id|sum
 id|__asm__
 c_func
 (paren
-"&quot;"
-id|addl
-l_int|0
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|4
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|8
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|12
-(paren
-op_mod
-l_int|1
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|0
-(paren
-op_mod
-l_int|2
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|4
-(paren
-op_mod
-l_int|2
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|8
-(paren
-op_mod
-l_int|2
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-l_int|12
-(paren
-op_mod
-l_int|2
-)paren
-comma
-op_mod
-l_int|0
-id|adcl
-op_mod
-l_int|3
-comma
-op_mod
-l_int|0
-id|adcl
-op_mod
-l_int|4
-comma
-op_mod
-l_int|0
-id|adcl
-"$"
-l_int|0
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;addl 0(%1), %0&quot;
+l_string|&quot;adcl 4(%1), %0&quot;
+l_string|&quot;adcl 8(%1), %0&quot;
+l_string|&quot;adcl 12(%1), %0&quot;
+l_string|&quot;adcl 0(%2), %0&quot;
+l_string|&quot;adcl 4(%2), %0&quot;
+l_string|&quot;adcl 8(%2), %0&quot;
+l_string|&quot;adcl 12(%2), %0&quot;
+l_string|&quot;adcl %3, %0&quot;
+l_string|&quot;adcl %4, %0&quot;
+l_string|&quot;adcl $0, %0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

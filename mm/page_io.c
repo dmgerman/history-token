@@ -28,7 +28,7 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-r_int
+id|sector_t
 id|zones
 (braket
 id|PAGE_SIZE

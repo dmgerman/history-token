@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000 (kernel hotplug, usb_device_id)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
+multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -543,6 +543,7 @@ id|usb_bus_list_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; */
 DECL|function|usb_ifnum_to_if
 r_struct
 id|usb_interface
@@ -604,6 +605,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_epnum_to_ep_desc - get the endpoint object with a given endpoint number&n; * @dev: the device whose current configuration is considered&n; * @epnum: the desired endpoint&n; *&n; * This walks the device descriptor for the currently active configuration,&n; * and returns a pointer to the endpoint with that particular endpoint&n; * number, or null.&n; *&n; * Note that interface descriptors are not required to assign endpont&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first endpoint in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; */
 DECL|function|usb_epnum_to_ep_desc
 r_struct
 id|usb_endpoint_descriptor
@@ -1237,7 +1239,7 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_alloc_bus - creates a new USB host controller structure&n; *&t;@op: pointer to a struct usb_operations that this bus structure should use&n; *&n; *&t;Creates a USB host controller bus structure with the specified &n; *&t;usb_operations and initializes all the necessary internal objects.&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;The caller should call usb_free_bus() when it is finished with the structure.&n; */
+multiline_comment|/**&n; *&t;usb_alloc_bus - creates a new USB host controller structure (usbcore-internal)&n; *&t;@op: pointer to a struct usb_operations that this bus structure should use&n; *&n; *&t;Creates a USB host controller bus structure with the specified &n; *&t;usb_operations and initializes all the necessary internal objects.&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;The caller should call usb_free_bus() when it is finished with the structure.&n; */
 DECL|function|usb_alloc_bus
 r_struct
 id|usb_bus
@@ -1356,7 +1358,7 @@ r_return
 id|bus
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_free_bus - frees the memory used by a bus structure&n; *&t;@bus: pointer to the bus to free&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
+multiline_comment|/**&n; *&t;usb_free_bus - frees the memory used by a bus structure (usbcore-internal)&n; *&t;@bus: pointer to the bus to free&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
 DECL|function|usb_free_bus
 r_void
 id|usb_free_bus
@@ -1383,7 +1385,7 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_register_bus - registers the USB host controller with the usb core&n; *&t;@bus: pointer to the bus to register&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
+multiline_comment|/**&n; *&t;usb_register_bus - registers the USB host controller with the usb core (usbcore-internal)&n; *&t;@bus: pointer to the bus to register&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_register_bus
 r_void
 id|usb_register_bus
@@ -1482,7 +1484,7 @@ id|bus-&gt;busnum
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_deregister_bus - deregisters the USB host controller&n; *&t;@bus: pointer to the bus to deregister&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
+multiline_comment|/**&n; *&t;usb_deregister_bus - deregisters the USB host controller (usbcore-internal)&n; *&t;@bus: pointer to the bus to deregister&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_deregister_bus
 r_void
 id|usb_deregister_bus
@@ -1645,7 +1647,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is intended to be used by usb device drivers that need to&n; * claim more than one interface on a device at once when probing&n; * (audio and acm are good examples).  No device driver should have&n; * to mess with the internal usb_interface or usb_device structure&n; * members.&n; */
+multiline_comment|/**&n; * usb_driver_claim_interface - bind a driver to an interface&n; * @driver: the driver to be bound&n; * @iface: the interface to which it will be bound&n; * @priv: driver data associated with that interface&n; *&n; * This is used by usb device drivers that need to claim more than one&n; * interface on a device when probing (audio and acm are current examples).&n; * No device driver should directly modify internal usb_interface or&n; * usb_device structure members.&n; *&n; * Few drivers should need to use this routine, since the most natural&n; * way to bind to an interface is to return the private data from&n; * the driver&squot;s probe() method.  Any driver that does use this must&n; * first be sure that no other driver has claimed the interface, by&n; * checking with usb_interface_claimed().&n; */
 DECL|function|usb_driver_claim_interface
 r_void
 id|usb_driver_claim_interface
@@ -1677,6 +1679,24 @@ id|driver
 )paren
 r_return
 suffix:semicolon
+singleline_comment|// FIXME change API to report an error in this case
+r_if
+c_cond
+(paren
+id|iface-&gt;driver
+)paren
+id|err
+(paren
+l_string|&quot;%s driver booted %s off interface %p&quot;
+comma
+id|driver-&gt;name
+comma
+id|iface-&gt;driver-&gt;name
+comma
+id|iface
+)paren
+suffix:semicolon
+r_else
 id|dbg
 c_func
 (paren
@@ -1697,7 +1717,7 @@ id|priv
 suffix:semicolon
 )brace
 multiline_comment|/* usb_driver_claim_interface() */
-multiline_comment|/*&n; * This should be used by drivers to check other interfaces to see if&n; * they are available or not.&n; */
+multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * This should be used by drivers to check other interfaces to see if&n; * they are available or not.  If another driver has claimed the interface,&n; * they may not claim it.  Otherwise it&squot;s OK to claim it using&n; * usb_driver_claim_interface().&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; */
 DECL|function|usb_interface_claimed
 r_int
 id|usb_interface_claimed
@@ -1727,7 +1747,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* usb_interface_claimed() */
-multiline_comment|/*&n; * This should be used by drivers to release their claimed interfaces&n; */
+multiline_comment|/**&n; * usb_driver_release_interface - unbind a driver from an interface&n; * @driver: the driver to be unbound&n; * @iface: the interface from which it will be unbound&n; * &n; * This should be used by drivers to release their claimed interfaces.&n; * It is normally called in their disconnect() methods, and only for&n; * drivers that bound to more than one interface in their probe().&n; *&n; * When the USB subsystem disconnect()s a driver from some interface,&n; * it automatically invokes this method for that interface.  That&n; * means that even drivers that used usb_driver_claim_interface()&n; * usually won&squot;t need to call this.&n; */
 DECL|function|usb_driver_release_interface
 r_void
 id|usb_driver_release_interface
@@ -2925,7 +2945,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-multiline_comment|/*&n; * Only HC&squot;s should call usb_alloc_dev and usb_free_dev directly&n; * Anybody may use usb_inc_dev_use or usb_dec_dev_use&n; */
+multiline_comment|/**&n; * usb_alloc_dev - allocate a usb device structure (usbcore-internal)&n; * @parent: hub to which device is connected&n; * @bus: bus used to access the device&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_alloc_dev
 r_struct
 id|usb_device
@@ -3042,6 +3062,8 @@ r_return
 id|dev
 suffix:semicolon
 )brace
+singleline_comment|// usbcore-internal ...
+singleline_comment|// but usb_dec_dev_use() is #defined to this, and that&squot;s public!!
 DECL|function|usb_free_dev
 r_void
 id|usb_free_dev
@@ -3092,6 +3114,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Device drivers should normally record such references in their&n; * open() methods.&n; * Drivers should then release them, using usb_dec_dev_use(), in their&n; * close() methods.&n; */
 DECL|function|usb_inc_dev_use
 r_void
 id|usb_inc_dev_use
@@ -3111,7 +3134,7 @@ id|dev-&gt;refcnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ------------------------------------------------------------------------------------- &n; * New USB Core Functions&n; * -------------------------------------------------------------------------------------*/
+multiline_comment|/* ---------------------------------------------------------------------- &n; * New USB Core Functions&n; * ----------------------------------------------------------------------*/
 multiline_comment|/**&n; *&t;usb_alloc_urb - creates a new urb for a USB driver to use&n; *&t;@iso_packets: number of iso packets for this urb&n; *&n; *&t;Creates an urb for the USB driver to use and returns a pointer to it.&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;If the driver want to use this urb for interrupt, control, or bulk&n; *&t;endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; *&t;The driver should call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
 id|urb_t
@@ -3225,6 +3248,7 @@ id|urb
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
+multiline_comment|/**&n; * usb_submit_urb - asynchronously issue a transfer request for an endpoint&n; * @urb: pointer to the urb describing the request&n; *&n; * This submits a transfer request, and transfers control of the URB&n; * describing that request to the USB subsystem.  Request completion will&n; * indicated later, asynchronously, by calling the completion handler.&n; * This call may be issued in interrupt context.&n; *&n; * The caller must have correctly initialized the URB before submitting&n; * it.  Macros such as FILL_BULK_URB() and FILL_CONTROL_URB() are&n; * available to ensure that most fields are correctly initialized, for&n; * the particular kind of transfer, although they will not initialize&n; * any transfer flags.&n; *&n; * Successful submissions return 0; otherwise this routine returns a&n; * negative error number.&n; *&n; * Unreserved Bandwidth Transfers:&n; *&n; * Bulk or control requests complete only once.  When the completion&n; * function is called, control of the URB is returned to the device&n; * driver which issued the request.  The completion handler may then&n; * immediately free or reuse that URB.&n; *&n; * Bulk URBs will be queued if the USB_QUEUE_BULK transfer flag is set&n; * in the URB.  This can be used to maximize bandwidth utilization by&n; * letting the USB controller start work on the next URB without any&n; * delay to report completion (scheduling and processing an interrupt)&n; * and then submit that next request.&n; *&n; * For control endpoints, the synchronous usb_control_msg() call is&n; * often used (in non-interrupt context) instead of this call.&n; *&n; * Reserved Bandwidth Transfers:&n; *&n; * Periodic URBs (interrupt or isochronous) are completed repeatedly,&n; * until the original request is aborted.  When the completion callback&n; * indicates the URB has been unlinked (with a special status code),&n; * control of that URB returns to the device driver.  Otherwise, the&n; * completion handler does not control the URB, and should not change&n; * any of its fields.&n; *&n; * Note that isochronous URBs should be submitted in a &quot;ring&quot; data&n; * structure (using urb-&gt;next) to ensure that they are resubmitted&n; * appropriately.&n; *&n; * If the USB subsystem can&squot;t reserve sufficient bandwidth to perform&n; * the periodic request, and bandwidth reservation is being done for&n; * this controller, submitting such a periodic request will fail. &n; */
 DECL|function|usb_submit_urb
 r_int
 id|usb_submit_urb
@@ -3262,6 +3286,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
+multiline_comment|/**&n; * usb_unlink_urb - abort/cancel a transfer request for an endpoint&n; * @urb: pointer to urb describing a previously submitted request&n; *&n; * This routine cancels an in-progress request.  The requests&squot;s&n; * completion handler will be called with a status code indicating&n; * that the request has been canceled, and that control of the URB&n; * has been returned to that device driver.  This is the only way&n; * to stop an interrupt transfer, so long as the device is connected.&n; *&n; * When the USB_ASYNC_UNLINK transfer flag for the URB is clear, this&n; * request is synchronous.  Success is indicated by returning zero,&n; * at which time the urb will have been unlinked,&n; * and the completion function will see status -ENOENT.  Failure is&n; * indicated by any other return value.  This mode may not be used&n; * when unlinking an urb from an interrupt context, such as a bottom&n; * half or a completion handler,&n; *&n; * When the USB_ASYNC_UNLINK transfer flag for the URB is set, this&n; * request is asynchronous.  Success is indicated by returning -EINPROGRESS,&n; * at which time the urb will normally not have been unlinked,&n; * and the completion function will see status -ECONNRESET.  Failure is&n; * indicated by any other return value.&n; */
 DECL|function|usb_unlink_urb
 r_int
 id|usb_unlink_urb
@@ -3340,7 +3365,7 @@ id|awd-&gt;wqh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*-------------------------------------------------------------------*&n; *                         COMPATIBILITY STUFF                       *&n; *-------------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------------*&n; *                         SYNCHRONOUS CALLS                         *&n; *-------------------------------------------------------------------*/
 singleline_comment|// Starts urb and waits for completion or timeout
 DECL|function|usb_start_wait_urb
 r_static
@@ -3691,7 +3716,7 @@ r_return
 id|length
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_control_msg - Builds a control urb, sends it off and waits for completion&n; *&t;@dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@request: USB message request value&n; *&t;@requesttype: USB message request type value&n; *&t;@value: USB message value&n; *&t;@index: USB message index value&n; *&t;@data: pointer to the data to send&n; *&t;@size: length in bytes of the data to send&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple control message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, othwise a negative error number.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to send&n; *&t;a message from within interrupt context, use usb_submit_urb()&n; */
+multiline_comment|/**&n; *&t;usb_control_msg - Builds a control urb, sends it off and waits for completion&n; *&t;@dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@request: USB message request value&n; *&t;@requesttype: USB message request type value&n; *&t;@value: USB message value&n; *&t;@index: USB message index value&n; *&t;@data: pointer to the data to send&n; *&t;@size: length in bytes of the data to send&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple control message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, otherwise a negative error number.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to send&n; *&t;a message from within interrupt context, use usb_submit_urb()&n; */
 DECL|function|usb_control_msg
 r_int
 id|usb_control_msg
@@ -3821,7 +3846,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transferred in bytes&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, othwise a negative error number.&n; *&t;The number of actual bytes transferred will be plaed in the &n; *&t;actual_timeout paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; */
+multiline_comment|/**&n; *&t;usb_bulk_msg - Builds a bulk urb, sends it off and waits for completion&n; *&t;@usb_dev: pointer to the usb device to send the message to&n; *&t;@pipe: endpoint &quot;pipe&quot; to send the message to&n; *&t;@data: pointer to the data to send&n; *&t;@len: length in bytes of the data to send&n; *&t;@actual_length: pointer to a location to put the actual length transferred in bytes&n; *&t;@timeout: time to wait for the message to complete before timing out (if 0 the wait is forever)&n; *&n; *&t;This function sends a simple bulk message to a specified endpoint&n; *&t;and waits for the message to complete, or timeout.&n; *&t;&n; *&t;If successful, it returns 0, otherwise a negative error number.&n; *&t;The number of actual bytes transferred will be stored in the &n; *&t;actual_length paramater.&n; *&n; *&t;Don&squot;t use this function from within an interrupt context, like a&n; *&t;bottom half handler.  If you need a asyncronous message, or need to&n; *&t;send a message from within interrupt context, use usb_submit_urb()&n; */
 DECL|function|usb_bulk_msg
 r_int
 id|usb_bulk_msg
@@ -3914,7 +3939,7 @@ id|actual_length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usb_get_current_frame_number()&n; *&n; * returns the current frame number for the parent USB bus/controller&n; * of the given USB device.&n; */
+multiline_comment|/**&n; * usb_get_current_frame_number - return current bus frame number&n; * @dev: the device whose bus is being queried&n; *&n; * Returns the current frame number for the USB host controller&n; * used with the given USB device.  This can be used when scheduling&n; * isochronous requests.&n; */
 DECL|function|usb_get_current_frame_number
 r_int
 id|usb_get_current_frame_number
@@ -3923,13 +3948,13 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|usb_dev
+id|dev
 )paren
 (brace
 r_return
-id|usb_dev-&gt;bus-&gt;op-&gt;get_frame_number
+id|dev-&gt;bus-&gt;op-&gt;get_frame_number
 (paren
-id|usb_dev
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -5343,6 +5368,7 @@ r_return
 id|size
 suffix:semicolon
 )brace
+singleline_comment|// usbcore-internal:  enumeration/hub only!!
 DECL|function|usb_destroy_configuration
 r_void
 id|usb_destroy_configuration
@@ -5905,7 +5931,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Something got disconnected. Get rid of it, and all of its children.&n; */
+multiline_comment|/**&n; * usb_disconnect - disconnect a device (usbcore-internal)&n; * @pdev: pointer to device being disconnected&n; *&n; * Something got disconnected. Get rid of it, and all of its children.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_disconnect
 r_void
 id|usb_disconnect
@@ -6116,7 +6142,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Connect a new USB device. This basically just initializes&n; * the USB device information and sets up the topology - it&squot;s&n; * up to the low-level driver to reset the port and actually&n; * do the setup (the upper levels don&squot;t know how to do that).&n; */
+multiline_comment|/**&n; * usb_connect - connects a new device during enumeration (usbcore-internal)&n; * @dev: partially enumerated device&n; *&n; * Connect a new USB device. This basically just initializes&n; * the USB device information and sets up the topology - it&squot;s&n; * up to the low-level driver to reset the port and actually&n; * do the setup (the upper levels don&squot;t know how to do that).&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
 DECL|function|usb_connect
 r_void
 id|usb_connect
@@ -6132,7 +6158,7 @@ r_int
 id|devnum
 suffix:semicolon
 singleline_comment|// FIXME needs locking for SMP!!
-multiline_comment|/* why? this is called only from the hub thread, &n;&t; * which hopefully doesn&squot;t run on multiple CPU&squot;s simultaneously 8-)&n;&t; */
+multiline_comment|/* why? this is called only from the hub thread, &n;&t; * which hopefully doesn&squot;t run on multiple CPU&squot;s simultaneously 8-)&n;&t; * ... it&squot;s also called from modprobe/rmmod/apmd threads as part&n;&t; * of virtual root hub init/reinit.  In the init case, the hub code &n;&t; * won&squot;t have seen this, but not so for reinit ... &n;&t; */
 id|dev-&gt;descriptor.bMaxPacketSize0
 op_assign
 l_int|8
@@ -6232,6 +6258,7 @@ mdefine_line|#define GET_TIMEOUT 3
 macro_line|#endif
 DECL|macro|SET_TIMEOUT
 mdefine_line|#define SET_TIMEOUT 3
+singleline_comment|// hub driver only!!! for enumeration
 DECL|function|usb_set_address
 r_int
 id|usb_set_address
@@ -6273,6 +6300,7 @@ id|GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_get_descriptor - issues a generic GET_DESCRIPTOR request&n; * @dev: the device whose descriptor is being retrieved&n; * @type: the descriptor type (USB_DT_*)&n; * @index: the number of the descriptor&n; * @buf: where to put the descriptor&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Gets a USB descriptor.  Convenience functions exist to simplify&n; * getting some types of descriptors.  Use&n; * usb_get_device_descriptor() for USB_DT_DEVICE,&n; * and usb_get_string() or usb_string() for USB_DT_STRING.&n; * Configuration descriptors (USB_DT_CONFIG) are part of the device&n; * structure, at least for the current configuration.&n; * In addition to a number of USB-standard descriptors, some&n; * devices also use vendor-specific descriptors.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_get_descriptor
 r_int
 id|usb_get_descriptor
@@ -6383,6 +6411,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+singleline_comment|// FIXME  Doesn&squot;t use USB_DT_CLASS ... but hid-core.c expects it this way
 DECL|function|usb_get_class_descriptor
 r_int
 id|usb_get_class_descriptor
@@ -6452,6 +6481,7 @@ id|GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_get_string - gets a string descriptor&n; * @dev: the device whose string descriptor is being retrieved&n; * @langid: code for language chosen (from string descriptor zero)&n; * @index: the number of the descriptor&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Retrieves a string, encoded using UTF-16LE (Unicode, 16 bits per character,&n; * in little-endian byte order).&n; * The usb_string() function will often be a convenient way to turn&n; * these strings into kernel-printable form.&n; *&n; * Strings may be referenced in device, configuration, interface, or other&n; * descriptors, and could also be used in vendor-specific ways.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_get_string
 r_int
 id|usb_get_string
@@ -6516,6 +6546,7 @@ id|GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_get_device_descriptor - (re)reads the device descriptor&n; * @dev: the device whose device descriptor is being updated&n; *&n; * Updates the copy of the device descriptor stored in the device structure,&n; * which dedicates space for this purpose.  Note that several fields are&n; * converted to the host CPU&squot;s byte order:  the USB version (bcdUSB), and&n; * vendors product and version fields (idVendor, idProduct, and bcdDevice).&n; * That lets device drivers compare against non-byteswapped constants.&n; *&n; * There&squot;s normally no need to use this call, although some devices&n; * will change their descriptors after events like updating firmware.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_get_device_descriptor
 r_int
 id|usb_get_device_descriptor
@@ -6589,6 +6620,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_get_status - issues a GET_STATUS call&n; * @dev: the device whose status is being checked&n; * @type: USB_RECIP_*; for device, interface, or endpoint&n; * @target: zero (for device), else interface or endpoint number&n; * @data: pointer to two bytes of bitmap data&n; *&n; * Returns device, interface, or endpoint status.  Normally only of&n; * interest to see if the device is self powered, or has enabled the&n; * remote wakeup facility; or whether a bulk or interrupt endpoint&n; * is halted (&quot;stalled&quot;).&n; *&n; * Bits in these status bitmaps are set using the SET_FEATURE request,&n; * and cleared using the CLEAR_FEATURE request.  The usb_clear_halt()&n; * function should be used to clear halt (&quot;stall&quot;) status.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_get_status
 r_int
 id|usb_get_status
@@ -6644,6 +6676,7 @@ id|GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// FIXME hid-specific !!  DOES NOT BELONG HERE
 DECL|function|usb_get_protocol
 r_int
 id|usb_get_protocol
@@ -6716,6 +6749,7 @@ r_return
 id|type
 suffix:semicolon
 )brace
+singleline_comment|// FIXME hid-specific !!  DOES NOT BELONG HERE
 DECL|function|usb_set_protocol
 r_int
 id|usb_set_protocol
@@ -6767,6 +6801,7 @@ id|SET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// FIXME hid-specific !!  DOES NOT BELONG HERE
 DECL|function|usb_set_idle
 r_int
 id|usb_set_idle
@@ -6827,6 +6862,7 @@ id|SET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// hub-only!!
 DECL|function|usb_set_maxpacket
 r_void
 id|usb_set_maxpacket
@@ -7032,7 +7068,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * endp: endpoint number in bits 0-3;&n; *&t;direction flag in bit 7 (1 = IN, 0 = OUT)&n; */
+multiline_comment|/**&n; * usb_clear_halt - tells device to clear endpoint halt/stall condition&n; * @dev: device whose endpoint is halted&n; * @pipe: endpoint &quot;pipe&quot; being cleared&n; *&n; * This is used to clear halt conditions for bulk and interrupt endpoints,&n; * as reported by URB completion status.  Endpoints that are halted are&n; * sometimes referred to as being &quot;stalled&quot;.  Such endpoints are unable&n; * to transmit or receive data until the halt status is cleared.  Any URBs&n; * queued queued for such an endpoint should normally be unlinked before&n; * clearing the halt condition.&n; *&n; * Note that control and isochronous endpoints don&squot;t halt, although control&n; * endpoints report &quot;protocol stall&quot; (for unsupported requests) using the&n; * same status code used to report a true stall.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_clear_halt
 r_int
 id|usb_clear_halt
@@ -7278,6 +7314,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_set_interface - Makes a particular alternate setting be current&n; * @dev: the device whose interface is being updated&n; * @interface: the interface being updated&n; * @alternate: the setting being chosen.&n; *&n; * This is used to enable data transfers on interfaces that may not&n; * be enabled by default.  Not all devices support such configurability.&n; *&n; * Within any given configuration, each interface may have several&n; * alternative settings.  These are often used to control levels of&n; * bandwidth consumption.  For example, the default setting for a high&n; * speed interrupt endpoint may not send more than about 4KBytes per&n; * microframe, and isochronous endpoints may never be part of a an&n; * interface&squot;s default setting.  To access such bandwidth, alternate&n; * interface setting must be made current.&n; *&n; * Note that in the Linux USB subsystem, bandwidth associated with&n; * an endpoint in a given alternate setting is not reserved until an&n; * is submitted that needs that bandwidth.  Some other operating systems&n; * allocate bandwidth early, when a configuration is chosen.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_set_interface
 r_int
 id|usb_set_interface
@@ -7404,6 +7441,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * support this kind of configurability.  By default, configuration&n; * zero is selected after enumeration; many devices only have a single&n; * configuration.&n; *&n; * USB devices may support one or more configurations, which affect&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality will be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are presented as independent 64Kb/s interfaces or as one&n; * bonded 128Kb/s interface.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying usb_control_msg() call.&n; */
 DECL|function|usb_set_configuration
 r_int
 id|usb_set_configuration
@@ -7560,6 +7598,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+singleline_comment|// FIXME hid-specific !!  DOES NOT BELONG HERE
 DECL|function|usb_get_report
 r_int
 id|usb_get_report
@@ -7631,6 +7670,7 @@ id|GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// FIXME hid-specific !!  DOES NOT BELONG HERE
 DECL|function|usb_set_report
 r_int
 id|usb_set_report
@@ -7698,6 +7738,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// hub driver only !!
 DECL|function|usb_get_configuration
 r_int
 id|usb_get_configuration
@@ -8171,7 +8212,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usb_string:&n; *&t;returns string length (&gt; 0) or error (&lt; 0)&n; */
+multiline_comment|/**&n; * usb_string - returns ISO 8859-1 version of a string descriptor&n; * @dev: the device whose string descriptor is being retrieved&n; * @index: the number of the descriptor&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; * &n; * This converts the UTF-16LE encoded strings returned by devices, from&n; * usb_get_string_descriptor(), to null-terminated ISO-8859-1 encoded ones&n; * that are more usable in most kernel contexts.  Note that all characters&n; * in the chosen descriptor that can&squot;t be encoded using ISO-8859-1&n; * are converted to the question mark (&quot;?&quot;) character, and this function&n; * chooses strings in the first language supported by the device.&n; *&n; * The ASCII (or, redundantly, &quot;US-ASCII&quot;) character set is the seven-bit&n; * subset of ISO 8859-1. ISO-8859-1 is the eight-bit subset of Unicode,&n; * and is appropriate for use many uses of English and several other&n; * Western European languages.  (But it doesn&squot;t include the &quot;Euro&quot; symbol.)&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Returns length of the string (&gt;= 0) or usb_control_msg status (&lt; 0).&n; */
 DECL|function|usb_string
 r_int
 id|usb_string
@@ -8437,7 +8478,7 @@ op_increment
 op_assign
 l_char|&squot;?&squot;
 suffix:semicolon
-multiline_comment|/* non-ASCII character */
+multiline_comment|/* non ISO-8859-1 character */
 r_else
 id|buf
 (braket
@@ -8474,7 +8515,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * By the time we get here, the device has gotten a new device ID&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; */
+multiline_comment|/*&n; * By the time we get here, the device has gotten a new device ID&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
 DECL|function|usb_new_device
 r_int
 id|usb_new_device

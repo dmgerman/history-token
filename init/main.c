@@ -2454,6 +2454,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|pgtable_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mempages
 op_assign
 id|num_physpages
@@ -2482,6 +2487,12 @@ id|mempages
 )paren
 suffix:semicolon
 id|page_cache_init
+c_func
+(paren
+id|mempages
+)paren
+suffix:semicolon
+id|bio_hash_init
 c_func
 (paren
 id|mempages

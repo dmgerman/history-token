@@ -487,7 +487,7 @@ id|SERIAL_TTY_MINORS
 )braket
 suffix:semicolon
 multiline_comment|/* initially all NULL */
-DECL|variable|usb_serial_driver_list
+r_static
 id|LIST_HEAD
 c_func
 (paren
@@ -5003,7 +5003,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usb_serial_init
+r_static
 r_int
+id|__init
 id|usb_serial_init
 c_func
 (paren
@@ -5168,7 +5170,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usb_serial_exit
+r_static
 r_void
+id|__exit
 id|usb_serial_exit
 c_func
 (paren

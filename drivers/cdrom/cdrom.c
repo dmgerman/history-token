@@ -8640,12 +8640,8 @@ r_if
 c_cond
 (paren
 id|lba
-OL
-l_int|0
-op_logical_or
-id|ra.nframes
-op_le
-l_int|0
+template_param
+l_int|64
 )paren
 r_return
 op_minus

@@ -340,9 +340,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_AMD_VIPER_7411
+)paren
+op_logical_or
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_AMD_VIPER_7441
+)paren
 )paren
 r_return
 l_int|0
@@ -583,9 +591,13 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;%s: UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x &quot;
+l_string|&quot;%s:%d: Speed 0x%02x UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
+comma
+id|drive-&gt;dn
+comma
+id|speed
 comma
 id|ultra_timing
 comma
@@ -618,7 +630,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;:: UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x &quot;
+l_string|&quot;%s: UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x&bslash;n&quot;
+comma
+id|drive-&gt;name
 comma
 id|ultra_timing
 comma
@@ -636,11 +650,18 @@ id|speed
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_case
+id|XFER_UDMA_7
+suffix:colon
+r_case
+id|XFER_UDMA_6
+suffix:colon
+id|speed
+op_assign
+id|XFER_UDMA_5
+suffix:semicolon
+r_case
 id|XFER_UDMA_5
 suffix:colon
-DECL|macro|__CAN_MODE_5
-macro_line|#undef __CAN_MODE_5
-macro_line|#ifdef __CAN_MODE_5
 id|ultra_timing
 op_or_assign
 l_int|0x46
@@ -651,20 +672,6 @@ l_int|0x20
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%s: setting to mode 4, driver problems in mode 5.&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-id|speed
-op_assign
-id|XFER_UDMA_4
-suffix:semicolon
-macro_line|#endif /* __CAN_MODE_5 */
 r_case
 id|XFER_UDMA_4
 suffix:colon
@@ -938,7 +945,9 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;:: UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x&bslash;n&quot;
+l_string|&quot;%s: UDMA 0x%02x DMAPIO 0x%02x PIO 0x%02x&bslash;n&quot;
+comma
+id|drive-&gt;name
 comma
 id|ultra_timing
 comma
@@ -1403,9 +1412,17 @@ id|byte
 id|udma_100
 op_assign
 (paren
+(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_AMD_VIPER_7411
+)paren
+op_logical_or
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_AMD_VIPER_7441
+)paren
 )paren
 ques
 c_cond
@@ -1603,7 +1620,7 @@ op_rshift
 l_int|11
 )paren
 op_amp
-l_int|3
+l_int|7
 )paren
 ques
 c_cond
@@ -1722,7 +1739,7 @@ c_cond
 (paren
 id|id-&gt;dma_ultra
 op_amp
-l_int|0x002F
+l_int|0x003F
 )paren
 (brace
 multiline_comment|/* Force if Capable UltraDMA */

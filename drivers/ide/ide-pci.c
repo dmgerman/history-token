@@ -119,6 +119,8 @@ DECL|macro|DEVID_AMD7409
 mdefine_line|#define DEVID_AMD7409&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_VIPER_7409})
 DECL|macro|DEVID_AMD7411
 mdefine_line|#define DEVID_AMD7411&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_VIPER_7411})
+DECL|macro|DEVID_AMD7441
+mdefine_line|#define DEVID_AMD7441&t;((ide_pci_devid_t){PCI_VENDOR_ID_AMD,     PCI_DEVICE_ID_AMD_VIPER_7441})
 DECL|macro|DEVID_PDCADMA
 mdefine_line|#define DEVID_PDCADMA&t;((ide_pci_devid_t){PCI_VENDOR_ID_PDC,     PCI_DEVICE_ID_PDC_1841})
 DECL|macro|DEVID_SLC90E66
@@ -3270,6 +3272,42 @@ comma
 id|DEVID_AMD7411
 comma
 l_string|&quot;AMD7411&quot;
+comma
+id|PCI_AMD74XX
+comma
+id|ATA66_AMD74XX
+comma
+id|INIT_AMD74XX
+comma
+id|DMA_AMD74XX
+comma
+(brace
+(brace
+l_int|0x40
+comma
+l_int|0x01
+comma
+l_int|0x01
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+)brace
+comma
+(brace
+id|DEVID_AMD7441
+comma
+l_string|&quot;AMD7441&quot;
 comma
 id|PCI_AMD74XX
 comma

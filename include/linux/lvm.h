@@ -677,6 +677,11 @@ DECL|typedef|lv_bmap_t
 )brace
 id|lv_bmap_t
 suffix:semicolon
+multiline_comment|/*&n; * fixme...&n; */
+DECL|macro|LVM_MAX_ATOMIC_IO
+mdefine_line|#define LVM_MAX_ATOMIC_IO&t;512
+DECL|macro|LVM_MAX_SECTORS
+mdefine_line|#define LVM_MAX_SECTORS&t;&t;(LVM_MAX_ATOMIC_IO * 2)
 multiline_comment|/*&n; * Structure Logical Volume (LV) Version 3&n; */
 multiline_comment|/* core */
 DECL|struct|lv_v5
@@ -827,6 +832,13 @@ r_struct
 id|kiobuf
 op_star
 id|lv_iobuf
+suffix:semicolon
+DECL|member|blocks
+id|sector_t
+id|blocks
+(braket
+id|LVM_MAX_SECTORS
+)braket
 suffix:semicolon
 DECL|member|lv_COW_table_iobuf
 r_struct

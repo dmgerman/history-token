@@ -884,15 +884,6 @@ suffix:semicolon
 r_int
 id|saved_result
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1489,23 +1480,21 @@ r_struct
 id|Scsi_Host
 op_star
 id|host
+op_assign
+id|SCpnt-&gt;host
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|host
-op_assign
-id|SCpnt-&gt;host
-suffix:semicolon
 id|retry
 suffix:colon
-multiline_comment|/*&n;&t; * We will use a queued command if possible, otherwise we will emulate the&n;&t; * queuing and calling of completion function ourselves.&n;&t; */
+multiline_comment|/*&n;&t; * We will use a queued command if possible, otherwise we will&n;&t; * emulate the queuing and calling of completion function ourselves.&n;&t; */
 id|SCpnt-&gt;owner
 op_assign
 id|SCSI_OWNER_LOWLEVEL
@@ -1550,7 +1539,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1569,7 +1558,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1603,7 +1592,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1625,7 +1614,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1665,12 +1654,12 @@ r_else
 r_int
 id|temp
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We damn well had better never use this code.  There is no timeout&n;&t;&t; * protection here, since we would end up waiting in the actual low&n;&t;&t; * level driver, we don&squot;t know how to wake it up.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We damn well had better never use this code.  There is no&n;&t;&t; * timeout protection here, since we would end up waiting in&n;&t;&t; * the actual low level driver, we don&squot;t know how to wake it up.&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1689,7 +1678,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -1704,7 +1693,7 @@ op_assign
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now examine the actual status codes to see whether the command actually&n;&t; * did complete normally.&n;&t; */
+multiline_comment|/*&n;&t; * Now examine the actual status codes to see whether the command&n;&t; * actually did complete normally.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1993,7 +1982,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2012,7 +2001,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2068,7 +2057,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2087,7 +2076,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2155,7 +2144,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2174,7 +2163,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2294,7 +2283,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2313,7 +2302,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3001,7 +2990,7 @@ id|ASSERT_LOCK
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 l_int|0
 )paren
@@ -3031,7 +3020,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3053,6 +3042,9 @@ id|SDpnt-&gt;next
 id|request_queue_t
 op_star
 id|q
+op_assign
+op_amp
+id|SDpnt-&gt;request_queue
 suffix:semicolon
 r_if
 c_cond
@@ -3085,10 +3077,12 @@ id|SDpnt-&gt;device_blocked
 r_break
 suffix:semicolon
 )brace
-id|q
-op_assign
+id|spin_lock
+c_func
+(paren
 op_amp
-id|SDpnt-&gt;request_queue
+id|q-&gt;queue_lock
+)paren
 suffix:semicolon
 id|q
 op_member_access_from_pointer
@@ -3098,12 +3092,19 @@ c_func
 id|q
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|q-&gt;queue_lock
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3166,7 +3167,7 @@ id|ASSERT_LOCK
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|host-&gt;host_lock
 comma
 l_int|0
 )paren

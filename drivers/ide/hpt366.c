@@ -3908,6 +3908,10 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace

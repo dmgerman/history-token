@@ -3061,7 +3061,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 )paren
 suffix:semicolon
 id|error
@@ -3243,7 +3243,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|q-&gt;queue_lock
 )paren
 suffix:semicolon
 id|end_request

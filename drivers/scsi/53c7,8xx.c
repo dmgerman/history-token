@@ -3743,7 +3743,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef __powerpc__
 r_if
 c_cond
 (paren
@@ -3758,6 +3757,7 @@ id|PCI_COMMAND_MASTER
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;SCSI: PCI Master Bit has not been set. Setting...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3777,6 +3777,8 @@ comma
 id|command
 )paren
 suffix:semicolon
+)brace
+macro_line|#ifdef __powerpc__
 r_if
 c_cond
 (paren
@@ -3833,7 +3835,6 @@ l_int|0
 op_assign
 id|io_port
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 multiline_comment|/* &n;     * Bit 0 is the address space indicator and must be one for I/O&n;     * space mappings, bit 1 is reserved, discard them after checking&n;     * that they have the correct value of 1.&n;     */

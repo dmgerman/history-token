@@ -258,20 +258,11 @@ mdefine_line|#define&t;SYM_LOCK_DRIVER(flags)    spin_lock_irqsave(&amp;sym53c8x
 DECL|macro|SYM_UNLOCK_DRIVER
 mdefine_line|#define&t;SYM_UNLOCK_DRIVER(flags)  spin_unlock_irqrestore(&amp;sym53c8xx_lock,flags)
 DECL|macro|SYM_INIT_LOCK_HCB
-mdefine_line|#define SYM_INIT_LOCK_HCB(np)     spin_lock_init(&amp;np-&gt;s.smp_lock);
+mdefine_line|#define SYM_INIT_LOCK_HCB(np)&t;&t;spin_lock_init(&amp;np-&gt;s.host-&gt;host_lock);
 DECL|macro|SYM_LOCK_HCB
-mdefine_line|#define&t;SYM_LOCK_HCB(np, flags)   spin_lock_irqsave(&amp;np-&gt;s.smp_lock, flags)
+mdefine_line|#define&t;SYM_LOCK_HCB(np, flags)&t;&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave(&amp;np-&gt;s.host-&gt;host_lock, flags)
 DECL|macro|SYM_UNLOCK_HCB
-mdefine_line|#define&t;SYM_UNLOCK_HCB(np, flags) spin_unlock_irqrestore(&amp;np-&gt;s.smp_lock, flags)
-DECL|macro|SYM_LOCK_SCSI
-mdefine_line|#define&t;SYM_LOCK_SCSI(np, flags) &bslash;&n;&t;&t;spin_lock_irqsave(&amp;io_request_lock, flags)
-DECL|macro|SYM_UNLOCK_SCSI
-mdefine_line|#define&t;SYM_UNLOCK_SCSI(np, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;io_request_lock, flags)
-multiline_comment|/* Ugly, but will make things easier if this locking will ever disappear */
-DECL|macro|SYM_LOCK_SCSI_NOSAVE
-mdefine_line|#define&t;SYM_LOCK_SCSI_NOSAVE(np)&t;spin_lock_irq(&amp;io_request_lock)
-DECL|macro|SYM_UNLOCK_SCSI_NORESTORE
-mdefine_line|#define&t;SYM_UNLOCK_SCSI_NORESTORE(np)&t;spin_unlock_irq(&amp;io_request_lock)
+mdefine_line|#define&t;SYM_UNLOCK_HCB(np, flags)&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore(&amp;np-&gt;s.host-&gt;host_lock, flags)
 multiline_comment|/*&n; *  These simple macros limit expression involving &n; *  kernel time values (jiffies) to some that have &n; *  chance not to be too much incorrect. :-)&n; */
 DECL|macro|ktime_get
 mdefine_line|#define ktime_get(o)&t;&t;(jiffies + (u_long) o)
@@ -3121,14 +3112,16 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|u_long
-id|flags
-suffix:semicolon
 r_int
 id|sts
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if 0
+id|u_long
+id|flags
+suffix:semicolon
+macro_line|#endif
 id|cmd-&gt;scsi_done
 op_assign
 id|done
@@ -3151,6 +3144,7 @@ id|ucp
 )paren
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|SYM_LOCK_HCB
 c_func
 (paren
@@ -3159,6 +3153,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *  Shorten our settle_time if needed for &n;&t; *  this command not to time out.&n;&t; */
 r_if
 c_cond
@@ -3283,6 +3278,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+macro_line|#if 0
 id|SYM_UNLOCK_HCB
 c_func
 (paren
@@ -3291,6 +3287,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3319,10 +3316,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
-id|flags1
-suffix:semicolon
 id|hcb_p
 id|np
 op_assign
@@ -3343,14 +3336,6 @@ id|printf_debug
 l_string|&quot;[&quot;
 )paren
 suffix:semicolon
-id|SYM_LOCK_SCSI
-c_func
-(paren
-id|np
-comma
-id|flags1
-)paren
-suffix:semicolon
 id|SYM_LOCK_HCB
 c_func
 (paren
@@ -3365,6 +3350,7 @@ c_func
 id|np
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * push queue walk-through to tasklet&n;&t; */
 r_if
 c_cond
 (paren
@@ -3391,14 +3377,6 @@ c_func
 id|np
 comma
 id|flags
-)paren
-suffix:semicolon
-id|SYM_UNLOCK_SCSI
-c_func
-(paren
-id|np
-comma
-id|flags1
 )paren
 suffix:semicolon
 r_if
@@ -3437,18 +3415,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_int
-r_int
-id|flags1
-suffix:semicolon
-id|SYM_LOCK_SCSI
-c_func
-(paren
-id|np
-comma
-id|flags1
-)paren
 suffix:semicolon
 id|SYM_LOCK_HCB
 c_func
@@ -3490,14 +3456,6 @@ c_func
 id|np
 comma
 id|flags
-)paren
-suffix:semicolon
-id|SYM_UNLOCK_SCSI
-c_func
-(paren
-id|np
-comma
-id|flags1
 )paren
 suffix:semicolon
 )brace
@@ -4099,23 +4057,11 @@ op_amp
 id|ep-&gt;timer
 )paren
 suffix:semicolon
-id|SYM_UNLOCK_SCSI_NORESTORE
-c_func
-(paren
-id|np
-)paren
-suffix:semicolon
 id|down
 c_func
 (paren
 op_amp
 id|ep-&gt;sem
-)paren
-suffix:semicolon
-id|SYM_LOCK_SCSI_NOSAVE
-c_func
-(paren
-id|np
 )paren
 suffix:semicolon
 r_if
@@ -7229,6 +7175,10 @@ id|host_data-&gt;ncb
 op_assign
 id|np
 suffix:semicolon
+id|np-&gt;s.host
+op_assign
+id|instance
+suffix:semicolon
 id|SYM_INIT_LOCK_HCB
 c_func
 (paren
@@ -7766,6 +7716,10 @@ macro_line|#endif
 id|instance-&gt;select_queue_depths
 op_assign
 id|sym53c8xx_select_queue_depths
+suffix:semicolon
+id|instance-&gt;highmem_io
+op_assign
+l_int|1
 suffix:semicolon
 id|SYM_UNLOCK_HCB
 c_func

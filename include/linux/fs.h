@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_struct
@@ -111,6 +112,10 @@ DECL|macro|FMODE_READ
 mdefine_line|#define FMODE_READ 1
 DECL|macro|FMODE_WRITE
 mdefine_line|#define FMODE_WRITE 2
+DECL|macro|RW_MASK
+mdefine_line|#define RW_MASK&t;&t;1
+DECL|macro|RWA_MASK
+mdefine_line|#define RWA_MASK&t;2
 DECL|macro|READ
 mdefine_line|#define READ 0
 DECL|macro|WRITE
@@ -275,6 +280,15 @@ DECL|macro|UPDATE_ATIME
 mdefine_line|#define UPDATE_ATIME(inode) update_atime (inode)
 r_extern
 r_void
+id|bio_hash_init
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|buffer_init
 c_func
 (paren
@@ -365,8 +379,7 @@ id|b_next
 suffix:semicolon
 multiline_comment|/* Hash queue list */
 DECL|member|b_blocknr
-r_int
-r_int
+id|sector_t
 id|b_blocknr
 suffix:semicolon
 multiline_comment|/* block number */
@@ -392,11 +405,6 @@ id|atomic_t
 id|b_count
 suffix:semicolon
 multiline_comment|/* users using this block */
-DECL|member|b_rdev
-id|kdev_t
-id|b_rdev
-suffix:semicolon
-multiline_comment|/* Real device */
 DECL|member|b_state
 r_int
 r_int
@@ -430,13 +438,6 @@ op_star
 id|b_this_page
 suffix:semicolon
 multiline_comment|/* circular list of buffers in one page */
-DECL|member|b_reqnext
-r_struct
-id|buffer_head
-op_star
-id|b_reqnext
-suffix:semicolon
-multiline_comment|/* request queue */
 DECL|member|b_pprev
 r_struct
 id|buffer_head
@@ -481,12 +482,6 @@ op_star
 id|b_private
 suffix:semicolon
 multiline_comment|/* reserved for b_end_io */
-DECL|member|b_rsector
-r_int
-r_int
-id|b_rsector
-suffix:semicolon
-multiline_comment|/* Real buffer location on disk */
 DECL|member|b_wait
 id|wait_queue_head_t
 id|b_wait
@@ -3286,6 +3281,9 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|seq_file
+suffix:semicolon
 multiline_comment|/*&n; * NOTE: write_inode, delete_inode, clear_inode, put_inode can be called&n; * without the big kernel lock held in all filesystems.&n; */
 DECL|struct|super_operations
 r_struct
@@ -3525,6 +3523,22 @@ id|lenp
 comma
 r_int
 id|need_parent
+)paren
+suffix:semicolon
+DECL|member|show_options
+r_int
+(paren
+op_star
+id|show_options
+)paren
+(paren
+r_struct
+id|seq_file
+op_star
+comma
+r_struct
+id|vfsmount
+op_star
 )paren
 suffix:semicolon
 )brace
@@ -4924,7 +4938,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * b_end_io has to clear the BH_Uptodate bitflag in the error case!&n;&t; */
+multiline_comment|/*&n;&t; * b_end_io has to clear the BH_Uptodate bitflag in the read error&n;&t; * case, however buffer contents are not necessarily bad if a&n;&t; * write fails&n;&t; */
 id|bh
 op_member_access_from_pointer
 id|b_end_io
@@ -4932,10 +4946,23 @@ c_func
 (paren
 id|bh
 comma
-l_int|0
+id|test_bit
+c_func
+(paren
+id|BH_Uptodate
+comma
+op_amp
+id|bh-&gt;b_state
+)paren
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * return READ, READA, or WRITE&n; */
+DECL|macro|bio_rw
+mdefine_line|#define bio_rw(bio)&t;&t;((bio)-&gt;bi_rw &amp; (RW_MASK | RWA_MASK))
+multiline_comment|/*&n; * return data direction, READ or WRITE&n; */
+DECL|macro|bio_data_dir
+mdefine_line|#define bio_data_dir(bio)&t;((bio)-&gt;bi_rw &amp; 1)
 r_extern
 r_void
 id|buffer_insert_inode_queue
@@ -6022,7 +6049,7 @@ c_func
 (paren
 id|kdev_t
 comma
-r_int
+id|sector_t
 comma
 r_int
 )paren
@@ -6036,7 +6063,7 @@ c_func
 (paren
 id|kdev_t
 comma
-r_int
+id|sector_t
 comma
 r_int
 )paren
@@ -6059,7 +6086,7 @@ id|bh
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|submit_bh
 c_func
 (paren
@@ -6067,6 +6094,18 @@ r_int
 comma
 r_struct
 id|buffer_head
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|submit_bio
+c_func
+(paren
+r_int
+comma
+r_struct
+id|bio
 op_star
 )paren
 suffix:semicolon
@@ -6215,7 +6254,7 @@ op_star
 comma
 id|kdev_t
 comma
-r_int
+id|sector_t
 (braket
 )braket
 comma
@@ -6233,7 +6272,7 @@ r_struct
 id|inode
 op_star
 comma
-r_int
+id|sector_t
 comma
 r_struct
 id|buffer_head
@@ -6383,7 +6422,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
-r_int
+id|sector_t
 id|generic_block_bmap
 c_func
 (paren
@@ -6391,7 +6430,7 @@ r_struct
 id|address_space
 op_star
 comma
-r_int
+id|sector_t
 comma
 id|get_block_t
 op_star

@@ -1411,7 +1411,7 @@ id|blksize_snap
 suffix:semicolon
 id|max_sectors
 op_assign
-id|KIO_MAX_SECTORS
+id|LVM_MAX_SECTORS
 op_star
 (paren
 id|min_blksize
@@ -1466,7 +1466,7 @@ op_logical_neg
 id|lvm_snapshot_prepare_blocks
 c_func
 (paren
-id|iobuf-&gt;blocks
+id|lv_snap-&gt;blocks
 comma
 id|org_start
 comma
@@ -1495,7 +1495,7 @@ id|iobuf
 comma
 id|org_phys_dev
 comma
-id|iobuf-&gt;blocks
+id|lv_snap-&gt;blocks
 comma
 id|blksize_org
 )paren
@@ -1516,7 +1516,7 @@ op_logical_neg
 id|lvm_snapshot_prepare_blocks
 c_func
 (paren
-id|iobuf-&gt;blocks
+id|lv_snap-&gt;blocks
 comma
 id|snap_start
 comma
@@ -1545,7 +1545,7 @@ id|iobuf
 comma
 id|snap_phys_dev
 comma
-id|iobuf-&gt;blocks
+id|lv_snap-&gt;blocks
 comma
 id|blksize_snap
 )paren
@@ -2056,7 +2056,7 @@ id|out
 suffix:semicolon
 id|max_sectors
 op_assign
-id|KIO_MAX_SECTORS
+id|LVM_MAX_SECTORS
 op_lshift
 (paren
 id|PAGE_SHIFT
@@ -2216,11 +2216,6 @@ op_star
 id|lv
 )paren
 (brace
-r_int
-id|nbhs
-op_assign
-id|KIO_MAX_SECTORS
-suffix:semicolon
 r_if
 c_cond
 (paren

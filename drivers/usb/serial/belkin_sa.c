@@ -349,6 +349,7 @@ id|id_table_combined
 suffix:semicolon
 multiline_comment|/* All of the device info needed for the Belkin dockstation serial converter */
 DECL|variable|belkin_dockstation_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|belkin_dockstation_device
@@ -431,6 +432,7 @@ comma
 suffix:semicolon
 multiline_comment|/* All of the device info needed for the Belkin serial converter */
 DECL|variable|belkin_sa_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|belkin_sa_device
@@ -513,6 +515,7 @@ comma
 suffix:semicolon
 multiline_comment|/* This driver also supports the &quot;old&quot; school Belkin single port adaptor */
 DECL|variable|belkin_old_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|belkin_old_device
@@ -595,6 +598,7 @@ comma
 suffix:semicolon
 multiline_comment|/* this driver also works for the Peracom single port adapter */
 DECL|variable|peracom_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|peracom_device
@@ -677,6 +681,7 @@ comma
 suffix:semicolon
 multiline_comment|/* the GoHubs Go-COM232 device is the same as the Peracom single port adapter */
 DECL|variable|gocom232_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|gocom232_device

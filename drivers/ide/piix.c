@@ -2944,6 +2944,10 @@ id|hwif-&gt;dma_base
 )paren
 r_return
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;autodma
 op_assign

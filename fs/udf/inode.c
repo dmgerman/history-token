@@ -187,7 +187,7 @@ r_struct
 id|inode
 op_star
 comma
-r_int
+id|sector_t
 comma
 r_struct
 id|buffer_head
@@ -1471,7 +1471,7 @@ id|inode
 op_star
 id|inode
 comma
-r_int
+id|sector_t
 id|block
 comma
 r_struct

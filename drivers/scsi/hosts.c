@@ -208,6 +208,10 @@ suffix:semicolon
 )brace
 )def_block
 multiline_comment|/* We call this when we come across a new host adapter. We only do this&n; * once we are 100% sure that we want to use this host adapter -  it is a&n; * pain to reverse this, so we try to avoid it &n; */
+r_extern
+r_int
+id|blk_nohighio
+suffix:semicolon
 DECL|function|scsi_register
 r_struct
 id|Scsi_Host
@@ -404,6 +408,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|retval-&gt;host_lock
+)paren
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -709,6 +720,16 @@ suffix:semicolon
 id|retval-&gt;use_clustering
 op_assign
 id|tpnt-&gt;use_clustering
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blk_nohighio
+)paren
+id|retval-&gt;highmem_io
+op_assign
+id|tpnt-&gt;highmem_io
 suffix:semicolon
 id|retval-&gt;select_queue_depths
 op_assign

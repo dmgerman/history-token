@@ -145,117 +145,28 @@ macro_line|#endif
 macro_line|#ifndef NO_FLOPPY_ASSEMBLER
 id|__asm__
 (paren
-"&quot;"
-id|testl
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-id|je
-l_float|3f
-l_int|1
-suffix:colon
-id|inb
-op_mod
-id|w4
-comma
-op_mod
-id|b0
-id|andb
-"$"
-l_int|160
-comma
-op_mod
-id|b0
-id|cmpb
-"$"
-l_int|160
-comma
-op_mod
-id|b0
-id|jne
-l_float|2f
-id|incw
-op_mod
-id|w4
-id|testl
-op_mod
-l_int|3
-comma
-op_mod
-l_int|3
-id|jne
-l_float|4f
-id|inb
-op_mod
-id|w4
-comma
-op_mod
-id|b0
-id|movb
-op_mod
-l_int|0
-comma
-(paren
-op_mod
-l_int|2
-)paren
-id|jmp
-l_float|5f
-l_int|4
-suffix:colon
-id|movb
-(paren
-op_mod
-l_int|2
-)paren
-comma
-op_mod
-l_int|0
-id|outb
-op_mod
-id|b0
-comma
-op_mod
-id|w4
-l_int|5
-suffix:colon
-id|decw
-op_mod
-id|w4
-id|outb
-op_mod
-l_int|0
-comma
-"$"
-l_int|0x80
-id|decl
-op_mod
-l_int|1
-id|incl
-op_mod
-l_int|2
-id|testl
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-id|jne
-l_int|1
-id|b
-l_int|3
-suffix:colon
-id|inb
-op_mod
-id|w4
-comma
-op_mod
-id|b0
-l_int|2
-suffix:colon
-"&quot;"
+l_string|&quot;testl %1,%1&quot;
+l_string|&quot;je 3f&quot;
+l_string|&quot;1:&t;inb %w4,%b0&quot;
+l_string|&quot;andb $160,%b0&quot;
+l_string|&quot;cmpb $160,%b0&quot;
+l_string|&quot;jne 2f&quot;
+l_string|&quot;incw %w4&quot;
+l_string|&quot;testl %3,%3&quot;
+l_string|&quot;jne 4f&quot;
+l_string|&quot;inb %w4,%b0&quot;
+l_string|&quot;movb %0,(%2)&quot;
+l_string|&quot;jmp 5f&quot;
+l_string|&quot;4:    &t;movb (%2),%0&quot;
+l_string|&quot;outb %b0,%w4&quot;
+l_string|&quot;5:&t;decw %w4&quot;
+l_string|&quot;outb %0,$0x80&quot;
+l_string|&quot;decl %1&quot;
+l_string|&quot;incl %2&quot;
+l_string|&quot;testl %1,%1&quot;
+l_string|&quot;jne 1b&quot;
+l_string|&quot;3:&t;inb %w4,%b0&quot;
+l_string|&quot;2:&t;&quot;
 suffix:colon
 l_string|&quot;=a&quot;
 (paren

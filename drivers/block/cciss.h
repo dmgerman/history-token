@@ -15,21 +15,6 @@ DECL|macro|IO_ERROR
 mdefine_line|#define IO_ERROR&t;1
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR COMPAQ_CISS_MAJOR 
-DECL|struct|my_sg
-r_struct
-id|my_sg
-(brace
-DECL|member|len
-r_int
-id|len
-suffix:semicolon
-DECL|member|start_addr
-r_char
-op_star
-id|start_addr
-suffix:semicolon
-)brace
-suffix:semicolon
 r_struct
 id|ctlr_info
 suffix:semicolon
@@ -326,13 +311,6 @@ suffix:semicolon
 DECL|member|blocksizes
 r_int
 id|blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|member|hardsizes
-r_int
-id|hardsizes
 (braket
 l_int|256
 )braket
@@ -775,5 +753,7 @@ id|access
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CCISS_LOCK
+mdefine_line|#define CCISS_LOCK(i)&t;(&amp;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock))
 macro_line|#endif /* CCISS_H */
 eof

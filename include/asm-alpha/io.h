@@ -144,6 +144,8 @@ id|IDENT_ADDR
 )paren
 suffix:semicolon
 )brace
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;(((page) - (page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/*&n; * Change addresses as seen by the kernel (virtual) to addresses as&n; * seen by a device (bus), and vice versa.&n; *&n; * Note that this only works for a limited range of kernel addresses,&n; * and very well may not span all memory.  Consider this interface &n; * deprecated in favour of the mapping functions in &lt;asm/pci.h&gt;.&n; */
 r_extern
 r_int

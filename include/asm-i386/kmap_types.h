@@ -20,6 +20,9 @@ comma
 DECL|enumerator|KM_USER1
 id|KM_USER1
 comma
+DECL|enumerator|KM_BIO_IRQ
+id|KM_BIO_IRQ
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace

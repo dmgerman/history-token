@@ -167,6 +167,7 @@ id|id_table
 )paren
 suffix:semicolon
 DECL|variable|zyxel_omninet_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|zyxel_omninet_device

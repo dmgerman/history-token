@@ -31,7 +31,7 @@ DECL|macro|QUEUE_PLUGGED
 mdefine_line|#define QUEUE_PLUGGED (blk_dev[MAJOR_NR].plug_tq.sync)
 macro_line|#else
 DECL|macro|QUEUE_PLUGGED
-mdefine_line|#define QUEUE_PLUGGED (blk_dev[MAJOR_NR].request_queue.plugged)
+mdefine_line|#define QUEUE_PLUGGED (blk_queue_plugged(QUEUE))
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -1537,7 +1537,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This is a special request_fn because it is executed in a process context &n; * to be able to sleep independently of the caller.  The io_request_lock &n; * is held upon entry and exit.&n; * The head of our request queue is considered active so there is no need &n; * to dequeue requests before we are done.&n; */
+multiline_comment|/* &n; * This is a special request_fn because it is executed in a process context &n; * to be able to sleep independently of the caller.  The queue_lock &n; * is held upon entry and exit.&n; * The head of our request queue is considered active so there is no need &n; * to dequeue requests before we are done.&n; */
 DECL|function|handle_mtdblock_request
 r_static
 r_void
@@ -1578,7 +1578,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
 id|mtdblk
@@ -1755,7 +1755,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
 id|end_request
@@ -1916,7 +1916,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
 r_if
@@ -1931,7 +1931,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
 id|schedule
@@ -1977,7 +1977,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
 )brace

@@ -1318,7 +1318,7 @@ id|byte
 id|nslots
 suffix:semicolon
 DECL|member|slot_tablelen
-id|__u8
+id|__u16
 r_int
 id|slot_tablelen
 suffix:semicolon

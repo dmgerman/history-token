@@ -18,6 +18,12 @@ r_int
 r_int
 id|min_low_pfn
 suffix:semicolon
+multiline_comment|/*&n; * highest page&n; */
+r_extern
+r_int
+r_int
+id|max_pfn
+suffix:semicolon
 multiline_comment|/*&n; * node_bootmem_map is a map pointer - the bits represent all physical &n; * memory pages (including holes) on the node.&n; */
 DECL|struct|bootmem_data
 r_typedef

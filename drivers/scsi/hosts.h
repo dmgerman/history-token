@@ -380,6 +380,12 @@ id|emulated
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|highmem_io
+r_int
+id|highmem_io
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;     * Name of proc directory&n;     */
 DECL|member|proc_name
 r_char
@@ -407,6 +413,10 @@ DECL|member|host_queue
 id|Scsi_Device
 op_star
 id|host_queue
+suffix:semicolon
+DECL|member|host_lock
+id|spinlock_t
+id|host_lock
 suffix:semicolon
 DECL|member|ehandler
 r_struct
@@ -588,6 +598,12 @@ suffix:semicolon
 DECL|member|use_clustering
 r_int
 id|use_clustering
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|highmem_io
+r_int
+id|highmem_io
 suffix:colon
 l_int|1
 suffix:semicolon

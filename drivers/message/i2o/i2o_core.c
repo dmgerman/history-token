@@ -280,6 +280,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/* &n; * Function table to send to bus specific layers&n; * See &lt;include/linux/i2o.h&gt; for explanation of this&n; */
+macro_line|#ifdef CONFIG_I2O_PCI_MODULE
 DECL|variable|i2o_core_functions
 r_static
 r_struct
@@ -300,7 +301,6 @@ comma
 id|i2o_delete_controller
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_I2O_PCI_MODULE
 r_extern
 r_int
 id|i2o_pci_core_attach

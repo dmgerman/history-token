@@ -112,17 +112,6 @@ comma
 multiline_comment|/* Expect header byte 3 (for status hdrs only) */
 )brace
 suffix:semicolon
-multiline_comment|/* the info for all of the devices that this driver supports */
-DECL|variable|EdgeportDevices
-r_int
-id|EdgeportDevices
-(braket
-)braket
-op_assign
-id|EDGEPORT_DEVICE_IDS
-suffix:semicolon
-DECL|macro|NUM_EDGEPORT_DEVICES
-mdefine_line|#define NUM_EDGEPORT_DEVICES (sizeof(EdgeportDevices) / sizeof(int))
 multiline_comment|/* Transmit Fifo &n; * This Transmit queue is an extension of the edgeport Rx buffer. &n; * The maximum amount of data buffered in both the edgeport &n; * Rx buffer (maxTxCredits) and this buffer will never exceed maxTxCredits.&n; */
 DECL|struct|TxFifo
 r_struct
@@ -1069,9 +1058,9 @@ singleline_comment|// **********************************************************
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
-singleline_comment|// These functions should be in firmware.c
-multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; *&t;update_edgeport_E2PROM()&t;Compare current versions of&t;&t;*&n; *&t;&t;&t;&t;Boot ROM and Manufacture &t;&t;*&n; *&t;&t;&t;&t;Descriptors with versions&t;&t;*&n; *&t;&t;&t;&t;embedded in this driver&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************/
+multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; * update_edgeport_E2PROM()&t;Compare current versions of&t;&t;*&n; *&t;&t;&t;&t;Boot ROM and Manufacture &t;&t;*&n; *&t;&t;&t;&t;Descriptors with versions&t;&t;*&n; *&t;&t;&t;&t;embedded in this driver&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************/
 DECL|function|update_edgeport_E2PROM
+r_static
 r_void
 id|update_edgeport_E2PROM
 (paren

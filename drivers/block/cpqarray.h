@@ -56,21 +56,6 @@ DECL|typedef|drv_info_t
 id|drv_info_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-DECL|struct|my_sg
-r_struct
-id|my_sg
-(brace
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-DECL|member|start_addr
-r_char
-op_star
-id|start_addr
-suffix:semicolon
-)brace
-suffix:semicolon
 r_struct
 id|ctlr_info
 suffix:semicolon
@@ -346,6 +331,8 @@ id|misc_tflags
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IDA_LOCK
+mdefine_line|#define IDA_LOCK(i)&t;(&amp;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock))
 macro_line|#endif
 macro_line|#endif /* CPQARRAY_H */
 eof

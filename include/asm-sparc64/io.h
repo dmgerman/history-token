@@ -40,6 +40,8 @@ id|addr
 suffix:semicolon
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;(((page) - mem_map) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/* Different PCI controllers we support have their PCI MEM space&n; * mapped to an either 2GB (Psycho) or 4GB (Sabre) aligned area,&n; * so need to chop off the top 33 or 32 bits.&n; */
 r_extern
 r_int

@@ -506,6 +506,13 @@ c_func
 id|memmove
 )paren
 suffix:semicolon
+DECL|variable|memscan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memscan
+)paren
+suffix:semicolon
 DECL|variable|__memcpy
 id|EXPORT_SYMBOL
 c_func
