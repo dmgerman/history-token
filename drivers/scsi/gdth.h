@@ -2924,6 +2924,7 @@ suffix:semicolon
 multiline_comment|/* BMIC address (EISA) */
 DECL|member|brd
 r_void
+id|__iomem
 op_star
 id|brd
 suffix:semicolon
