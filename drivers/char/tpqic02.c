@@ -3212,7 +3212,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if OBSOLETE
+macro_line|#ifdef OBSOLETE
 multiline_comment|/* wait for ready since it may not be active immediately after reading status */
 r_while
 c_loop
@@ -5220,7 +5220,7 @@ id|TE_OK
 r_return
 id|stat
 suffix:semicolon
-macro_line|#if OBSOLETE
+macro_line|#ifdef OBSOLETE
 multiline_comment|/************* not needed iff rd_status() would wait for ready!!!!!! **********/
 r_if
 c_cond

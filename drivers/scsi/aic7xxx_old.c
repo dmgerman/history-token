@@ -17645,7 +17645,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#if AIC7XXX_NOT_YET 
+macro_line|#ifdef AIC7XXX_NOT_YET 
 r_case
 id|TRACEPOINT2
 suffix:colon
