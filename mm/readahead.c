@@ -1412,10 +1412,6 @@ id|newsize
 op_assign
 l_int|1
 suffix:semicolon
-id|ra-&gt;prev_page
-op_assign
-id|offset
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -1451,14 +1447,6 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* First sequential */
-id|ra-&gt;prev_page
-op_assign
-id|offset
-op_plus
-id|newsize
-op_minus
-l_int|1
-suffix:semicolon
 id|ra-&gt;size
 op_assign
 id|get_init_ra_size
@@ -1573,14 +1561,6 @@ c_func
 (paren
 id|ra
 )paren
-suffix:semicolon
-id|ra-&gt;prev_page
-op_assign
-id|offset
-op_plus
-id|newsize
-op_minus
-l_int|1
 suffix:semicolon
 id|blockable_page_cache_readahead
 c_func
