@@ -2533,30 +2533,30 @@ suffix:semicolon
 DECL|macro|find_first_zero_le_bit
 mdefine_line|#define find_first_zero_le_bit(addr, size) &bslash;&n;        find_next_zero_le_bit((addr), (size), 0)
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit&t;&t;&t;__test_and_set_le_bit
+mdefine_line|#define ext2_set_bit(nr,addr)&t;&bslash;&n;&t;__test_and_set_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit&t;&t;&t;__test_and_clear_le_bit
+mdefine_line|#define ext2_clear_bit(nr,addr)&t;&bslash;&n;&t;__test_and_clear_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_set_bit_atomic
-mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_set_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_set_bit((nr), (unsigned long *)(addr)); &bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|ext2_clear_bit_atomic
-mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_clear_bit((nr), (addr));&t;&bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr)&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret = ext2_clear_bit((nr), (unsigned long *)(addr)); &bslash;&n;&t;&t;spin_unlock(lock);&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit&t;&t;&t;test_le_bit
+mdefine_line|#define ext2_test_bit(nr,addr)&t;&bslash;&n;&t;test_le_bit((nr),(unsigned long *)(addr))
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit&t;find_first_zero_le_bit
+mdefine_line|#define ext2_find_first_zero_bit(addr, size) &bslash;&n;&t;find_first_zero_le_bit((unsigned long *)(addr), (size))
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit&t;&t;find_next_zero_le_bit
+mdefine_line|#define ext2_find_next_zero_bit(addr, size, off) &bslash;&n;&t;find_next_zero_le_bit((unsigned long *)(addr), (size), (off))
 multiline_comment|/* Bitmap functions for the minix filesystem.  */
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&t;test_and_set_bit(nr,addr)
+mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&bslash;&n;&t;test_and_set_bit((nr),(unsigned long *)(addr))
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,addr)&t;&t;&t;set_bit(nr,addr)
+mdefine_line|#define minix_set_bit(nr,addr)&t;&t;&bslash;&n;&t;set_bit((nr),(unsigned long *)(addr))
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,addr)&t;test_and_clear_bit(nr,addr)
+mdefine_line|#define minix_test_and_clear_bit(nr,addr) &bslash;&n;&t;test_and_clear_bit((nr),(unsigned long *)(addr))
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,addr)&t;&t;&t;test_bit(nr,addr)
+mdefine_line|#define minix_test_bit(nr,addr)&t;&t;&bslash;&n;&t;test_bit((nr),(unsigned long *)(addr))
 DECL|macro|minix_find_first_zero_bit
-mdefine_line|#define minix_find_first_zero_bit(addr,size)&t;find_first_zero_bit(addr,size)
+mdefine_line|#define minix_find_first_zero_bit(addr,size) &bslash;&n;&t;find_first_zero_bit((unsigned long *)(addr),(size))
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* defined(_SPARC_BITOPS_H) */
 eof
