@@ -2841,8 +2841,10 @@ DECL|macro|FLAG_RADIO_OFF
 mdefine_line|#define FLAG_RADIO_OFF 0x02
 DECL|macro|FLAG_LOCKED
 mdefine_line|#define FLAG_LOCKED    2
+DECL|macro|FLAG_FLASHING
+mdefine_line|#define FLAG_FLASHING  0x10
 DECL|macro|FLAG_802_11
-mdefine_line|#define FLAG_802_11&t;   0x10
+mdefine_line|#define FLAG_802_11    0x200
 DECL|member|bap_read
 r_int
 (paren
@@ -4451,6 +4453,20 @@ op_star
 id|info
 op_assign
 id|dev-&gt;priv
+suffix:semicolon
+id|Resp
+id|rsp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/* Make sure the card is configured.&n;&t; * Wireless Extensions may postpone config changes until the card&n;&t; * is open (to pipeline changes and speed-up card setup). If&n;&t; * those changes are not yet commited, do it now - Jean II */
 r_if
@@ -19135,9 +19151,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|apriv-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+op_logical_and
+(paren
 id|linkstat
 op_ne
 l_int|0x400
+)paren
 )paren
 (brace
 multiline_comment|/* We don&squot;t have a link so try changing the authtype */
@@ -27434,6 +27459,24 @@ id|iobuf
 l_int|2048
 )braket
 suffix:semicolon
+r_struct
+id|airo_info
+op_star
+id|ai
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -27719,6 +27762,17 @@ id|CAP_NET_ADMIN
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ai-&gt;flags
+op_amp
+id|FLAG_FLASHING
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 id|ridcode
 op_assign
@@ -28490,6 +28544,10 @@ op_star
 id|ai
 )paren
 (brace
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_FLASHING
+suffix:semicolon
 id|OUT4500
 c_func
 (paren
@@ -28594,6 +28652,11 @@ id|ai
 )paren
 )paren
 (brace
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_FLASHING
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -29051,6 +29114,11 @@ id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* Added 12/7/00 */
+id|ai-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_FLASHING
+suffix:semicolon
 id|status
 op_assign
 id|setup_card
