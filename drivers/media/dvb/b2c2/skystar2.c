@@ -891,6 +891,7 @@ op_amp
 l_int|3
 )paren
 suffix:semicolon
+r_else
 op_star
 id|ret
 op_assign
