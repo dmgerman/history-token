@@ -7818,7 +7818,7 @@ op_assign
 l_int|0x11d4
 comma
 dot
-id|vendor
+id|device
 op_assign
 l_int|0x5375
 comma
