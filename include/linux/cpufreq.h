@@ -350,6 +350,9 @@ DECL|macro|CPUFREQ_RELATION_L
 mdefine_line|#define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
 DECL|macro|CPUFREQ_RELATION_H
 mdefine_line|#define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
+r_struct
+id|freq_attr
+suffix:semicolon
 DECL|struct|cpufreq_driver
 r_struct
 id|cpufreq_driver
@@ -448,6 +451,13 @@ id|cpufreq_policy
 op_star
 id|policy
 )paren
+suffix:semicolon
+DECL|member|attr
+r_struct
+id|freq_attr
+op_star
+op_star
+id|attr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -983,6 +993,35 @@ r_int
 r_int
 op_star
 id|index
+)paren
+suffix:semicolon
+multiline_comment|/* the following are really really optional */
+r_extern
+r_struct
+id|freq_attr
+id|cpufreq_freq_attr_scaling_available_freqs
+suffix:semicolon
+r_void
+id|cpufreq_frequency_table_get_attr
+c_func
+(paren
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+comma
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_void
+id|cpufreq_frequency_table_put_attr
+c_func
+(paren
+r_int
+r_int
+id|cpu
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CPU_FREQ_TABLE */
