@@ -19,8 +19,6 @@ DECL|macro|KIOCB_C_COMPLETE
 mdefine_line|#define KIOCB_C_COMPLETE&t;0x02
 DECL|macro|KIOCB_SYNC_KEY
 mdefine_line|#define KIOCB_SYNC_KEY&t;&t;(~0U)
-DECL|macro|KIOCB_PRIVATE_SIZE
-mdefine_line|#define KIOCB_PRIVATE_SIZE&t;(24 * sizeof(long))
 multiline_comment|/* ki_flags bits */
 DECL|macro|KIF_LOCKED
 mdefine_line|#define KIF_LOCKED&t;&t;0
@@ -113,6 +111,18 @@ id|kiocb
 op_star
 )paren
 suffix:semicolon
+DECL|member|ki_dtor
+r_void
+(paren
+op_star
+id|ki_dtor
+)paren
+(paren
+r_struct
+id|kiocb
+op_star
+)paren
+suffix:semicolon
 DECL|member|ki_list
 r_struct
 id|list_head
@@ -147,18 +157,16 @@ id|loff_t
 id|ki_pos
 suffix:semicolon
 DECL|member|private
-r_char
+r_void
+op_star
 r_private
-(braket
-id|KIOCB_PRIVATE_SIZE
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|is_sync_kiocb
 mdefine_line|#define is_sync_kiocb(iocb)&t;((iocb)-&gt;ki_key == KIOCB_SYNC_KEY)
 DECL|macro|init_sync_kiocb
-mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_flags = 0;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_obj.tsk = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define init_sync_kiocb(x, filp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct task_struct *tsk = current;&t;&bslash;&n;&t;&t;(x)-&gt;ki_flags = 0;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_users = 1;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_key = KIOCB_SYNC_KEY;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_filp = (filp);&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_ctx = &amp;tsk-&gt;active_mm-&gt;default_kioctx;&t;&bslash;&n;&t;&t;(x)-&gt;ki_cancel = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_dtor = NULL;&t;&t;&t;&bslash;&n;&t;&t;(x)-&gt;ki_obj.tsk = tsk;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|AIO_RING_MAGIC
 mdefine_line|#define AIO_RING_MAGIC&t;&t;&t;0xa10a10a1
 DECL|macro|AIO_RING_COMPAT_FEATURES

@@ -1986,6 +1986,10 @@ id|nd-&gt;flags
 op_assign
 id|LOOKUP_PARENT
 suffix:semicolon
+id|nd-&gt;depth
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
