@@ -2468,14 +2468,7 @@ id|ll
 op_ge
 l_int|1ULL
 op_lshift
-(paren
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_star
-l_int|8
+l_int|32
 )paren
 )paren
 (brace
@@ -2484,15 +2477,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Cannot handle %i-bit clusters. Sorry.&quot;
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_star
-l_int|4
+l_string|&quot;Cannot handle 64-bit clusters. Sorry.&quot;
 )paren
 suffix:semicolon
 r_return
