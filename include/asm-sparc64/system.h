@@ -132,6 +132,14 @@ mdefine_line|#define reset_pic()    &t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __vo
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
+id|sun_do_break
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|synchronize_user_stack
 c_func
 (paren

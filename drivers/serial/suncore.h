@@ -12,14 +12,6 @@ mdefine_line|#define SUNKBD_UP&t;&t;0x80
 DECL|macro|SUNKBD_A
 mdefine_line|#define SUNKBD_A&t;&t;0x4d
 r_extern
-r_void
-id|sun_do_break
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|suncore_mouse_baud_cflag_next
