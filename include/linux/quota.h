@@ -690,6 +690,32 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Ordinary dquot write */
+DECL|member|acquire_dquot
+r_int
+(paren
+op_star
+id|acquire_dquot
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Quota is going to be created on disk */
+DECL|member|release_dquot
+r_int
+(paren
+op_star
+id|release_dquot
+)paren
+(paren
+r_struct
+id|dquot
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Quota is going to be deleted from disk */
 DECL|member|mark_dirty
 r_int
 (paren
