@@ -1159,7 +1159,7 @@ id|TxLock
 suffix:semicolon
 id|TxLock
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|vfree
 c_func
@@ -1169,7 +1169,7 @@ id|TxBlock
 suffix:semicolon
 id|TxBlock
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:        txBegin()&n; *&n; * FUNCTION:    start a transaction.&n; *&n; * PARAMETER:   sb&t;- superblock&n; *              flag&t;- force for nested tx;&n; *&n; * RETURN:&t;tid&t;- transaction id&n; *&n; * note: flag force allows to start tx for nested tx&n; * to prevent deadlock on logsync barrier;&n; */
@@ -4714,7 +4714,7 @@ id|mp
 suffix:semicolon
 id|tlck-&gt;mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -7048,7 +7048,7 @@ id|metapage
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ipimap
 op_assign
@@ -7293,7 +7293,7 @@ id|mp
 suffix:semicolon
 id|tlck-&gt;mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

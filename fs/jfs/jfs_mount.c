@@ -342,7 +342,7 @@ r_else
 multiline_comment|/* Secondary aggregate inode table is not valid */
 id|sbi-&gt;ipaimap2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *      mount (the only/single) fileset&n;&t; */
 multiline_comment|/*&n;&t; * open fileset inode allocation map (aka fileset inode)&n;&t; */
