@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -510,6 +511,9 @@ op_eq
 id|PTRACE_TRACEME
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* are we already being traced? */
 r_if
 c_cond
@@ -525,6 +529,37 @@ c_func
 id|regs
 comma
 id|EPERM
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|ptrace
+c_func
+(paren
+id|current-&gt;parent
+comma
+id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|pt_error_return
+c_func
+(paren
+id|regs
+comma
+op_minus
+id|ret
 )paren
 suffix:semicolon
 r_goto
