@@ -2899,28 +2899,6 @@ id|KERN_INFO
 id|PMC551_VERSION
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;pmc551: PCI not enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/*&n;         * PCU-bus chipset probe.&n;         */
 r_for
 c_loop
