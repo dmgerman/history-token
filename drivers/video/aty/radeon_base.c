@@ -255,7 +255,7 @@ comma
 id|CHIP_DEF
 c_func
 (paren
-id|PCI_CHIP_RADEON_LW
+id|PCI_CHIP_RADEON_LX
 comma
 id|RV200
 comma
