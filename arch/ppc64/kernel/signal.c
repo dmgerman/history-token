@@ -898,10 +898,6 @@ suffix:semicolon
 id|stack_t
 id|st
 suffix:semicolon
-r_int
-r_int
-id|prevsp
-suffix:semicolon
 id|rt_sf
 op_assign
 (paren
@@ -1530,10 +1526,6 @@ suffix:semicolon
 multiline_comment|/* an array of ELF_NGREG unsigned longs */
 id|sigset_t
 id|set
-suffix:semicolon
-r_int
-r_int
-id|prevsp
 suffix:semicolon
 id|sc
 op_assign
