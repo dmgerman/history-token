@@ -4436,6 +4436,15 @@ id|inode
 r_if
 c_cond
 (paren
+id|inode-&gt;i_atime
+op_eq
+id|CURRENT_TIME
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|IS_NOATIME
 (paren
 id|inode
