@@ -83,12 +83,22 @@ DECL|macro|SPEED_1600
 mdefine_line|#define SPEED_1600&t;&t;0x04
 DECL|macro|SPEED_3200
 mdefine_line|#define SPEED_3200&t;&t;0x05
+multiline_comment|/* The current highest tested speed supported by the subsystem */
+DECL|macro|SPEED_MAX
+mdefine_line|#define SPEED_MAX&t;&t;SPEED_800
 multiline_comment|/* Maps speed values above to a string representation */
 r_extern
 r_const
 r_char
 op_star
 id|hpsb_speedto_str
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_const
+id|u8
+id|hpsb_speedto_maxrec
 (braket
 )braket
 suffix:semicolon

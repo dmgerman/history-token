@@ -168,6 +168,10 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
 DECL|member|device
 r_struct
 id|device
