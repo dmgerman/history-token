@@ -18,10 +18,6 @@ DECL|macro|TTY_DEBUG_WAIT_UNTIL_SENT
 macro_line|#undef TTY_DEBUG_WAIT_UNTIL_SENT
 DECL|macro|DEBUG
 macro_line|#undef&t;DEBUG
-r_extern
-id|spinlock_t
-id|tty_termios_lock
-suffix:semicolon
 multiline_comment|/*&n; * Internal flag options for termios setting behavior&n; */
 DECL|macro|TERMIOS_FLUSH
 mdefine_line|#define TERMIOS_FLUSH&t;1
@@ -378,19 +374,13 @@ id|tty_ldisc
 op_star
 id|ld
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Perform the actual termios internal changes under lock.&n;&t; */
 multiline_comment|/* FIXME: we need to decide on some locking/ordering semantics&n;&t;   for the set_termios notification eventually */
-id|spin_lock_irqsave
+id|down
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 op_star
@@ -578,16 +568,6 @@ id|tty-&gt;link-&gt;read_wait
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Fixme! We should really try to protect the driver and ldisc&n;&t; * termios usage too. But they need to be able to sleep, so&n;&t; * the global termios spinlock is not the right thing.&n;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|tty_termios_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -642,6 +622,13 @@ id|ld
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|tty-&gt;termios_sem
+)paren
+suffix:semicolon
 )brace
 DECL|function|set_termios
 r_static
@@ -1091,17 +1078,11 @@ r_struct
 id|sgttyb
 id|tmp
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|down
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 id|tmp.sg_ispeed
@@ -1134,13 +1115,11 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 r_return
@@ -1334,10 +1313,6 @@ r_struct
 id|termios
 id|termios
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|retval
 op_assign
 id|tty_check_change
@@ -1375,13 +1350,11 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 id|termios
@@ -1412,13 +1385,11 @@ comma
 id|tmp.sg_flags
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 id|change_termios
@@ -1920,10 +1891,6 @@ r_struct
 id|tty_ldisc
 op_star
 id|ld
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -2678,13 +2645,11 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
@@ -2707,13 +2672,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 c_func
 (paren
 op_amp
-id|tty_termios_lock
-comma
-id|flags
+id|tty-&gt;termios_sem
 )paren
 suffix:semicolon
 r_return
