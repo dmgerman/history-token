@@ -1942,10 +1942,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * NOTE: we explicitly do not check return status here because it is&n;&t; * &quot;normal&quot; for early boot code to map io regions for which a partition&n;&t; * has no access.  However, we will die if we actually fault on these&n;&t; * &quot;permission denied&quot; pages.&n;&t; */
 )brace
-DECL|function|pSeries_lpar_insert_hpte
+DECL|function|pSeries_lpar_hpte_insert
 r_static
 r_int
-id|pSeries_lpar_insert_hpte
+id|pSeries_lpar_hpte_insert
 c_func
 (paren
 r_int
@@ -2170,10 +2170,10 @@ id|pSeries_lpar_tlbie_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|function|pSeries_lpar_remove_hpte
+DECL|function|pSeries_lpar_hpte_remove
 r_static
 r_int
-id|pSeries_lpar_remove_hpte
+id|pSeries_lpar_hpte_remove
 c_func
 (paren
 r_int
@@ -2930,13 +2930,13 @@ id|ppc_md.hpte_updateboltedpp
 op_assign
 id|pSeries_lpar_hpte_updateboltedpp
 suffix:semicolon
-id|ppc_md.insert_hpte
+id|ppc_md.hpte_insert
 op_assign
-id|pSeries_lpar_insert_hpte
+id|pSeries_lpar_hpte_insert
 suffix:semicolon
-id|ppc_md.remove_hpte
+id|ppc_md.hpte_remove
 op_assign
-id|pSeries_lpar_remove_hpte
+id|pSeries_lpar_hpte_remove
 suffix:semicolon
 id|ppc_md.make_pte
 op_assign

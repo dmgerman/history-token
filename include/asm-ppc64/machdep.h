@@ -166,11 +166,11 @@ r_int
 id|ea
 )paren
 suffix:semicolon
-DECL|member|insert_hpte
+DECL|member|hpte_insert
 r_int
 (paren
 op_star
-id|insert_hpte
+id|hpte_insert
 )paren
 (paren
 r_int
@@ -199,11 +199,11 @@ r_int
 id|large
 )paren
 suffix:semicolon
-DECL|member|remove_hpte
+DECL|member|hpte_remove
 r_int
 (paren
 op_star
-id|remove_hpte
+id|hpte_remove
 )paren
 (paren
 r_int

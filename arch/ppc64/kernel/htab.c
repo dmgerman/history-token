@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; */
+multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; *&n; * Execution context:&n; *   htab_initialize is called with the MMU off (of course), but&n; *   the kernel has been copied down to zero so it can directly&n; *   reference global data.  At this point it is very difficult&n; *   to print debug info.&n; *&n; */
 DECL|variable|htab_data
 id|HTAB
 id|htab_data
@@ -53,25 +53,41 @@ r_int
 r_int
 id|klimit
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|reloc_offset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|PTRRELOC
-mdefine_line|#define PTRRELOC(x)&t;((typeof(x))((unsigned long)(x) - offset))
-DECL|macro|PTRUNRELOC
-mdefine_line|#define PTRUNRELOC(x)&t;((typeof(x))((unsigned long)(x) + offset))
-DECL|macro|RELOC
-mdefine_line|#define RELOC(x)&t;(*PTRRELOC(&amp;(x)))
 DECL|macro|KB
 mdefine_line|#define KB (1024)
 DECL|macro|MB
 mdefine_line|#define MB (1024*KB)
+r_static
+r_inline
+r_void
+DECL|function|loop_forever
+id|loop_forever
+c_func
+(paren
+r_void
+)paren
+(brace
+r_volatile
+r_int
+r_int
+id|x
+op_assign
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|x
+suffix:semicolon
+id|x
+op_or_assign
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+)brace
 r_static
 r_inline
 r_void
@@ -102,24 +118,6 @@ id|large
 r_int
 r_int
 id|addr
-comma
-id|offset
-op_assign
-id|reloc_offset
-c_func
-(paren
-)paren
-suffix:semicolon
-id|HTAB
-op_star
-id|_htab_data
-op_assign
-id|PTRRELOC
-c_func
-(paren
-op_amp
-id|htab_data
-)paren
 suffix:semicolon
 id|HPTE
 op_star
@@ -132,7 +130,7 @@ op_star
 id|__v2a
 c_func
 (paren
-id|_htab_data-&gt;htab
+id|htab_data.htab
 )paren
 suffix:semicolon
 r_int
@@ -281,43 +279,12 @@ id|mode_rw
 comma
 id|mask
 suffix:semicolon
-r_int
-r_int
-id|offset
-op_assign
-id|reloc_offset
-c_func
-(paren
-)paren
-suffix:semicolon
-r_struct
-id|naca_struct
-op_star
-id|_naca
-op_assign
-id|RELOC
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
-id|HTAB
-op_star
-id|_htab_data
-op_assign
-id|PTRRELOC
-c_func
-(paren
-op_amp
-id|htab_data
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate the required size of the htab.  We want the number of&n;&t; * PTEGs to equal one half the number of real pages.&n;&t; */
 id|htab_size_bytes
 op_assign
 l_int|1UL
 op_lshift
-id|_naca-&gt;pftSize
+id|naca-&gt;pftSize
 suffix:semicolon
 id|pteg_count
 op_assign
@@ -343,11 +310,11 @@ op_lshift
 l_int|7
 suffix:semicolon
 )brace
-id|_htab_data-&gt;htab_num_ptegs
+id|htab_data.htab_num_ptegs
 op_assign
 id|pteg_count
 suffix:semicolon
-id|_htab_data-&gt;htab_hash_mask
+id|htab_data.htab_hash_mask
 op_assign
 id|pteg_count
 op_minus
@@ -378,13 +345,22 @@ c_cond
 op_logical_neg
 id|table
 )paren
-id|panic
+(brace
+id|ppc64_terminate_msg
 c_func
 (paren
-l_string|&quot;ERROR, cannot find space for HPTE&bslash;n&quot;
+l_int|0x20
+comma
+l_string|&quot;hpt space&quot;
 )paren
 suffix:semicolon
-id|_htab_data-&gt;htab
+id|loop_forever
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|htab_data.htab
 op_assign
 (paren
 id|HPTE
@@ -397,11 +373,7 @@ id|table
 )paren
 suffix:semicolon
 multiline_comment|/* htab absolute addr + encoded htabsize */
-id|RELOC
-c_func
-(paren
 id|_SDR1
-)paren
 op_assign
 id|table
 op_plus
@@ -431,15 +403,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|_htab_data-&gt;htab
+multiline_comment|/* Using a hypervisor which owns the htab */
+id|htab_data.htab
 op_assign
 l_int|NULL
 suffix:semicolon
-id|RELOC
-c_func
-(paren
 id|_SDR1
-)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -467,7 +436,7 @@ c_func
 (paren
 )paren
 op_logical_and
-id|_naca-&gt;physicalMemorySize
+id|naca-&gt;physicalMemorySize
 OG
 l_int|256
 op_star
@@ -512,7 +481,7 @@ comma
 id|KERNELBASE
 op_plus
 (paren
-id|_naca-&gt;physicalMemorySize
+id|naca-&gt;physicalMemorySize
 )paren
 comma
 id|mode_rw
@@ -537,7 +506,7 @@ comma
 id|KERNELBASE
 op_plus
 (paren
-id|_naca-&gt;physicalMemorySize
+id|naca-&gt;physicalMemorySize
 )paren
 comma
 id|mode_rw
@@ -1222,7 +1191,7 @@ id|slot
 op_assign
 id|ppc_md
 dot
-id|insert_hpte
+id|hpte_insert
 c_func
 (paren
 id|hpte_group
@@ -1281,7 +1250,7 @@ id|slot
 op_assign
 id|ppc_md
 dot
-id|insert_hpte
+id|hpte_insert
 c_func
 (paren
 id|hpte_group
@@ -1335,7 +1304,7 @@ l_int|0x7UL
 suffix:semicolon
 id|ppc_md
 dot
-id|remove_hpte
+id|hpte_remove
 c_func
 (paren
 id|hpte_group
@@ -1501,59 +1470,14 @@ suffix:semicolon
 r_case
 id|IO_UNMAPPED_REGION_ID
 suffix:colon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;EEH Error ea = 0x%lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;EEH Error ea = 0x%lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Should only be hit if there is an access to MMIO space&n;&t;&t; * which is protected by EEH.&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
 r_case
 id|KERNEL_REGION_ID
 suffix:colon
-multiline_comment|/*&n;&t;&t; * As htab_initialize is now, we shouldn&squot;t ever get here since&n;&t;&t; * we&squot;re bolting the entire 0xC0... region.&n;&t;&t; */
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;Little faulted on kernel address 0x%lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;Little faulted on kernel address 0x%lx&bslash;n&quot;
-comma
-id|ea
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Should never get here - entire 0xC0... region is bolted.&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
 r_default
 suffix:colon
-multiline_comment|/* Not a valid range, send the problem up to do_page_fault */
+multiline_comment|/* Not a valid range&n;&t;&t; * Send the problem up to do_page_fault &n;&t;&t; */
 r_return
 l_int|1
 suffix:semicolon
