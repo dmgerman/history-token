@@ -9108,13 +9108,11 @@ op_amp
 id|PCIDAC
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|tp-&gt;dirty_rx
-op_eq
+op_logical_and
+op_logical_neg
 id|tp-&gt;cur_rx
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 id|printk
