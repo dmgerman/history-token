@@ -2,15 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; *
 macro_line|#ifndef _LINUX_DEVICE_MAPPER_H
 DECL|macro|_LINUX_DEVICE_MAPPER_H
 mdefine_line|#define _LINUX_DEVICE_MAPPER_H
-DECL|macro|DM_DIR
-mdefine_line|#define DM_DIR &quot;mapper&quot;&t;/* Slashes not supported */
-DECL|macro|DM_MAX_TYPE_NAME
-mdefine_line|#define DM_MAX_TYPE_NAME 16
-DECL|macro|DM_NAME_LEN
-mdefine_line|#define DM_NAME_LEN 128
-DECL|macro|DM_UUID_LEN
-mdefine_line|#define DM_UUID_LEN 129
-macro_line|#ifdef __KERNEL__
 r_struct
 id|dm_target
 suffix:semicolon
@@ -311,6 +302,5 @@ op_star
 id|t
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 macro_line|#endif&t;&t;&t;&t;/* _LINUX_DEVICE_MAPPER_H */
 eof
