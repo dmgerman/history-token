@@ -25156,8 +25156,6 @@ id|i
 suffix:semicolon
 r_int
 id|e1
-comma
-id|e2
 suffix:semicolon
 r_int
 r_int

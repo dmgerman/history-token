@@ -3187,8 +3187,6 @@ id|b
 id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
-l_int|21
-id|e3
 op_star
 id|retlen
 op_assign
