@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPER_H__
 DECL|macro|__XFS_SUPER_H__
 mdefine_line|#define __XFS_SUPER_H__
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 DECL|macro|XFS_ACL_STRING
 macro_line|# define XFS_ACL_STRING&t;&t;&quot;ACLs, &quot;
 macro_line|#else

@@ -64,7 +64,7 @@ op_assign
 id|va.va_nblocks
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 multiline_comment|/*&n; * Determine whether a process has a valid fs_struct (kernel daemons&n; * like knfsd don&squot;t have an fs_struct).&n; */
 id|STATIC
 r_int
@@ -162,8 +162,6 @@ c_func
 id|dvp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
-multiline_comment|/*&n;&t; * Conditionally compiled so that the ACL base kernel changes can be&n;&t; * split out into separate patches - remove this once MS_POSIXACL is&n;&t; * accepted, or some other way to implement this exists.&n;&t; */
 r_if
 c_cond
 (paren
@@ -187,7 +185,6 @@ op_and_assign
 op_complement
 id|current-&gt;fs-&gt;umask
 suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren

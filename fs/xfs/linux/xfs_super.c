@@ -38,7 +38,7 @@ macro_line|#else
 DECL|macro|set_max_bytes
 macro_line|# define set_max_bytes(sb)&t;do { } while (0)
 macro_line|#endif
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 DECL|macro|set_posix_acl
 macro_line|# define set_posix_acl(sb)&t;((sb)-&gt;s_flags |= MS_POSIXACL)
 macro_line|#else
