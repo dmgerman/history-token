@@ -860,8 +860,6 @@ DECL|macro|SPRINTF
 macro_line|#undef SPRINTF
 DECL|macro|SPRINTF
 mdefine_line|#define SPRINTF(args...) &bslash;&n;&t;do { if (pos &lt; buffer+length) pos += sprintf(pos, ## args); } while (0)
-DECL|macro|DO_FLAG
-mdefine_line|#define DO_FLAG(a) &bslash;&n;&t;do { if (us-&gt;flags &amp; US_FL_##a) pos += sprintf(pos, &quot; &quot; #a); } while(0)
 DECL|function|proc_info
 r_static
 r_int
@@ -1062,30 +1060,11 @@ comma
 l_string|&quot;       Quirks:&quot;
 )paren
 suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|SINGLE_LUN
-)paren
-suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|SCM_MULT_TARG
-)paren
-suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|FIX_INQUIRY
-)paren
-suffix:semicolon
-id|DO_FLAG
-c_func
-(paren
-id|FIX_CAPACITY
-)paren
-suffix:semicolon
+DECL|macro|US_FLAG
+mdefine_line|#define US_FLAG(name, value) &bslash;&n;&t;if (us-&gt;flags &amp; value) pos += sprintf(pos, &quot; &quot; #name);
+id|US_DO_ALL_FLAGS
+DECL|macro|US_FLAG
+macro_line|#undef US_FLAG
 op_star
 (paren
 id|pos
