@@ -4124,6 +4124,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|fontwidthvalid
 c_func
 (paren
@@ -4134,13 +4135,13 @@ id|vc-&gt;vc_font.width
 )paren
 (brace
 multiline_comment|/* If we are not the first console on this&n;&t;&t;&t;   fb, copy the font from that console */
-id|tmp-&gt;vc_font.width
-op_assign
 id|vc-&gt;vc_font.width
-suffix:semicolon
-id|tmp-&gt;vc_font.height
 op_assign
+id|tmp-&gt;vc_font.width
+suffix:semicolon
 id|vc-&gt;vc_font.height
+op_assign
+id|tmp-&gt;vc_font.height
 suffix:semicolon
 id|p-&gt;fontdata
 op_assign

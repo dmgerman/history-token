@@ -4878,7 +4878,7 @@ op_assign
 id|var.yres
 suffix:semicolon
 )brace
-id|gen_set_var
+id|fb_set_var
 c_func
 (paren
 op_amp
