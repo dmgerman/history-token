@@ -247,6 +247,11 @@ DECL|member|count
 id|__u32
 id|count
 suffix:semicolon
+DECL|member|buffer
+id|u32
+op_star
+id|buffer
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfsd_attrstat

@@ -321,6 +321,11 @@ id|__u32
 op_star
 id|verf
 suffix:semicolon
+DECL|member|buffer
+id|u32
+op_star
+id|buffer
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfsd3_commitargs

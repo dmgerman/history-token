@@ -1858,10 +1858,6 @@ op_star
 id|resp
 )paren
 (brace
-id|u32
-op_star
-id|buffer
-suffix:semicolon
 r_int
 id|nfserr
 comma
@@ -1887,38 +1883,15 @@ comma
 id|argp-&gt;cookie
 )paren
 suffix:semicolon
-multiline_comment|/* Reserve buffer space for status */
-id|svcbuf_reserve
-c_func
-(paren
-op_amp
-id|rqstp-&gt;rq_res
-comma
-op_amp
-id|buffer
-comma
-op_amp
-id|count
-comma
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* Shrink to the client read size */
-r_if
-c_cond
-(paren
 id|count
-OG
+op_assign
 (paren
 id|argp-&gt;count
 op_rshift
 l_int|2
 )paren
-)paren
-id|count
-op_assign
-id|argp-&gt;count
-op_rshift
+op_minus
 l_int|2
 suffix:semicolon
 multiline_comment|/* Make sure we&squot;ve room for the NULL ptr &amp; eof flag */
@@ -1939,7 +1912,7 @@ l_int|0
 suffix:semicolon
 id|resp-&gt;buffer
 op_assign
-id|buffer
+id|argp-&gt;buffer
 suffix:semicolon
 id|resp-&gt;offset
 op_assign
@@ -1981,7 +1954,7 @@ id|resp-&gt;count
 op_assign
 id|resp-&gt;buffer
 op_minus
-id|buffer
+id|argp-&gt;buffer
 suffix:semicolon
 r_if
 c_cond
