@@ -5756,8 +5756,10 @@ id|i
 op_increment
 )paren
 (brace
-id|runqueue_t
+id|prio_array_t
 op_star
+id|array
+suffix:semicolon
 id|rq
 op_assign
 id|cpu_rq
@@ -5765,10 +5767,6 @@ c_func
 (paren
 id|i
 )paren
-suffix:semicolon
-id|prio_array_t
-op_star
-id|array
 suffix:semicolon
 id|rq-&gt;active
 op_assign
