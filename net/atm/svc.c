@@ -2378,6 +2378,7 @@ id|value
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -3064,6 +3065,7 @@ id|sa
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3134,6 +3136,7 @@ id|ep_ref
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

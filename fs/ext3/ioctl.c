@@ -701,6 +701,7 @@ id|rsv_window_size
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -780,6 +781,7 @@ id|rsv_window_size
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -867,6 +869,7 @@ id|n_blocks_count
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|arg
@@ -991,6 +994,7 @@ comma
 (paren
 r_struct
 id|ext3_new_group_input
+id|__user
 op_star
 )paren
 id|arg
