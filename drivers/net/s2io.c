@@ -9503,6 +9503,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* If the Rx buffer count is below the panic threshold then reallocate the&n; * buffers from the interrupt handler itself, else schedule a tasklet to &n; * reallocate the buffers.&n; */
 macro_line|#if 1
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9559,6 +9563,9 @@ id|TASKLET_IN_USE
 )paren
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|DBG_PRINT
 c_func
 (paren
@@ -9679,6 +9686,7 @@ op_amp
 id|sp-&gt;task
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#else
