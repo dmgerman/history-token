@@ -3735,6 +3735,12 @@ r_struct
 id|module
 op_star
 id|md
+comma
+r_const
+r_struct
+id|usb_device_id
+op_star
+id|id_table
 )paren
 (brace
 r_static
@@ -4191,6 +4197,10 @@ suffix:semicolon
 id|cams-&gt;usbdrv.disconnect
 op_assign
 id|cams-&gt;cb.disconnect
+suffix:semicolon
+id|cams-&gt;usbdrv.id_table
+op_assign
+id|id_table
 suffix:semicolon
 macro_line|#if USES_PROC_FS
 r_if

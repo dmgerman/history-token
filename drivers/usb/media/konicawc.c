@@ -3881,6 +3881,8 @@ op_amp
 id|cbTbl
 comma
 id|THIS_MODULE
+comma
+id|id_table
 )paren
 suffix:semicolon
 )brace
