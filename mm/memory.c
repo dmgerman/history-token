@@ -4548,8 +4548,12 @@ id|new_page
 )paren
 suffix:semicolon
 )brace
-r_return
+id|lru_add_drain
+c_func
+(paren
+)paren
 suffix:semicolon
+multiline_comment|/* Push any new pages onto the LRU now */
 )brace
 multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and&n; * should release the pagetable lock on exit..&n; */
 DECL|function|do_swap_page
@@ -4710,8 +4714,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Had to read the page from swap area: Major fault */
@@ -4795,8 +4799,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|VM_FAULT_MINOR
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* The page isn&squot;t present yet, go ahead with the fault. */
@@ -4916,6 +4924,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon

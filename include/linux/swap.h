@@ -460,6 +460,13 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_void
+id|lru_add_drain
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|swap_setup
