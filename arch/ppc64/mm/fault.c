@@ -663,6 +663,8 @@ r_if
 c_cond
 (paren
 id|debugger_kernel_faults
+op_logical_and
+id|debugger
 )paren
 id|debugger
 c_func
