@@ -434,7 +434,7 @@ id|net_device
 op_star
 id|netdev
 comma
-r_uint16
+id|u16
 id|vid
 )paren
 suffix:semicolon
@@ -448,7 +448,7 @@ id|net_device
 op_star
 id|netdev
 comma
-r_uint16
+id|u16
 id|vid
 )paren
 suffix:semicolon
@@ -678,7 +678,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-r_uint32
+id|u32
 id|state
 )paren
 suffix:semicolon
@@ -2484,10 +2484,10 @@ op_star
 id|adapter
 )paren
 (brace
-r_uint32
+id|u32
 id|tctl
 suffix:semicolon
-r_uint32
+id|u32
 id|tdlen
 op_assign
 id|adapter-&gt;tx_ring.count
@@ -2821,7 +2821,7 @@ op_star
 id|adapter
 )paren
 (brace
-r_uint32
+id|u32
 id|rctl
 suffix:semicolon
 id|rctl
@@ -2945,7 +2945,7 @@ id|rdba
 op_assign
 id|adapter-&gt;rx_ring.dma
 suffix:semicolon
-r_uint32
+id|u32
 id|rdlen
 op_assign
 id|adapter-&gt;rx_ring.count
@@ -2964,10 +2964,10 @@ op_assign
 op_amp
 id|adapter-&gt;hw
 suffix:semicolon
-r_uint32
+id|u32
 id|rctl
 suffix:semicolon
-r_uint32
+id|u32
 id|rxcsum
 suffix:semicolon
 id|IXGB_DBG
@@ -3072,7 +3072,7 @@ l_int|0
 )paren
 suffix:semicolon
 (brace
-r_uint32
+id|u32
 id|rxdctl
 suffix:semicolon
 multiline_comment|/* burst 16 or burst when RXT0 */
@@ -3107,10 +3107,10 @@ c_cond
 id|adapter-&gt;raidc
 )paren
 (brace
-r_uint32
+id|u32
 id|raidc
 suffix:semicolon
-r_uint8
+id|u8
 id|poll_threshold
 suffix:semicolon
 multiline_comment|/* Poll every rx_int_delay period, if RBD exists&n;&t;&t; * Receive Backlog Detection is set to &lt;threshold&gt; &n;&t;&t; * Rx Descriptors&n;&t;&t; * max is 0x3F == set to poll when 504 RxDesc left &n;&t;&t; * min is 0 */
@@ -3697,7 +3697,7 @@ op_assign
 op_amp
 id|adapter-&gt;hw
 suffix:semicolon
-r_uint32
+id|u32
 id|rctl
 suffix:semicolon
 r_int
@@ -3801,7 +3801,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_uint8
+id|u8
 id|mta
 (braket
 id|netdev-&gt;mc_count
@@ -4171,7 +4171,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_uint8
+id|u8
 id|ipcss
 comma
 id|ipcso
@@ -4182,7 +4182,7 @@ id|tucso
 comma
 id|hdr_len
 suffix:semicolon
-r_uint16
+id|u16
 id|ipcse
 comma
 id|tucse
@@ -4452,7 +4452,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_uint8
+id|u8
 id|css
 comma
 id|cso
@@ -4514,7 +4514,7 @@ suffix:semicolon
 multiline_comment|/* zero out any previously existing data in one instruction */
 op_star
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 op_amp
@@ -4893,17 +4893,17 @@ id|tx_desc
 op_assign
 l_int|NULL
 suffix:semicolon
-r_uint32
+id|u32
 id|cmd_type_len
 op_assign
 id|adapter-&gt;tx_cmd_type
 suffix:semicolon
-r_uint8
+id|u8
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-r_uint8
+id|u8
 id|popts
 op_assign
 l_int|0
@@ -5462,7 +5462,7 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-r_uint32
+id|u32
 id|old_mtu
 op_assign
 id|adapter-&gt;rx_buffer_len
@@ -5642,7 +5642,7 @@ op_plus
 id|ENET_FCS_LENGTH
 )paren
 (brace
-r_uint32
+id|u32
 id|ctrl0
 op_assign
 id|IXGB_READ_REG
@@ -6714,7 +6714,7 @@ op_assign
 op_amp
 id|adapter-&gt;hw
 suffix:semicolon
-r_uint32
+id|u32
 id|icr
 suffix:semicolon
 id|uint
@@ -6854,7 +6854,7 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-r_uint32
+id|u32
 id|icr
 suffix:semicolon
 r_int
@@ -7104,7 +7104,7 @@ suffix:semicolon
 )brace
 op_star
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 op_amp
@@ -7223,7 +7223,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_uint32
+id|u32
 id|length
 suffix:semicolon
 r_int
@@ -7688,7 +7688,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_uint32
+id|u32
 id|length
 suffix:semicolon
 r_int
@@ -8336,7 +8336,7 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-r_uint32
+id|u32
 id|ctrl
 comma
 id|rctl
@@ -8495,7 +8495,7 @@ id|net_device
 op_star
 id|netdev
 comma
-r_uint16
+id|u16
 id|vid
 )paren
 (brace
@@ -8506,7 +8506,7 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-r_uint32
+id|u32
 id|vfta
 comma
 id|index
@@ -8571,7 +8571,7 @@ id|net_device
 op_star
 id|netdev
 comma
-r_uint16
+id|u16
 id|vid
 )paren
 (brace
@@ -8582,7 +8582,7 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-r_uint32
+id|u32
 id|vfta
 comma
 id|index
@@ -8687,7 +8687,7 @@ c_cond
 id|adapter-&gt;vlgrp
 )paren
 (brace
-r_uint16
+id|u16
 id|vid
 suffix:semicolon
 r_for
@@ -8819,10 +8819,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint32
+id|u32
 id|reg
 comma
-r_uint16
+id|u16
 op_star
 id|value
 )paren
@@ -8938,7 +8938,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-r_uint32
+id|u32
 id|state
 )paren
 (brace

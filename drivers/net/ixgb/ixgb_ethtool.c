@@ -213,7 +213,7 @@ op_star
 id|pmode
 )paren
 (brace
-r_uint32
+id|u32
 id|rctl
 op_assign
 id|IXGB_READ_REG
@@ -287,7 +287,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|IXGB_REG_DUMP_LEN
-mdefine_line|#define IXGB_REG_DUMP_LEN  136*sizeof(uint32_t)
+mdefine_line|#define IXGB_REG_DUMP_LEN  136*sizeof(u32)
 r_static
 r_void
 DECL|function|ixgb_ethtool_gdrvinfo
@@ -380,7 +380,7 @@ id|ethtool_regs
 op_star
 id|regs
 comma
-r_uint8
+id|u8
 op_star
 id|regs_buff
 )paren
@@ -393,23 +393,23 @@ op_assign
 op_amp
 id|adapter-&gt;hw
 suffix:semicolon
-r_uint32
+id|u32
 op_star
 id|reg
 op_assign
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 id|regs_buff
 suffix:semicolon
-r_uint32
+id|u32
 op_star
 id|reg_start
 op_assign
 id|reg
 suffix:semicolon
-r_uint8
+id|u8
 id|i
 suffix:semicolon
 id|regs-&gt;version
@@ -1914,7 +1914,7 @@ id|reg_start
 op_star
 r_sizeof
 (paren
-r_uint32
+id|u32
 )paren
 suffix:semicolon
 )brace
@@ -1935,7 +1935,7 @@ id|ethtool_eeprom
 op_star
 id|eeprom
 comma
-r_uint16
+id|u16
 op_star
 id|eeprom_buff
 )paren
@@ -2114,7 +2114,7 @@ op_assign
 op_amp
 id|adapter-&gt;hw
 suffix:semicolon
-r_uint16
+id|u16
 id|eeprom_buff
 (braket
 l_int|256
@@ -2559,7 +2559,7 @@ id|addr
 op_assign
 id|ifr-&gt;ifr_data
 suffix:semicolon
-r_uint32
+id|u32
 id|cmd
 suffix:semicolon
 r_if
@@ -2571,7 +2571,7 @@ c_func
 id|cmd
 comma
 (paren
-r_uint32
+id|u32
 op_star
 )paren
 id|addr
@@ -2829,7 +2829,7 @@ op_assign
 id|ETHTOOL_GREGS
 )brace
 suffix:semicolon
-r_uint8
+id|u8
 id|regs_buff
 (braket
 id|IXGB_REG_DUMP_LEN
@@ -3050,7 +3050,7 @@ op_assign
 id|ETHTOOL_GEEPROM
 )brace
 suffix:semicolon
-r_uint16
+id|u16
 id|eeprom_buff
 (braket
 id|IXGB_EEPROM_SIZE

@@ -594,23 +594,23 @@ r_uint64
 id|buff_addr
 suffix:semicolon
 DECL|member|length
-r_uint16
+id|u16
 id|length
 suffix:semicolon
 DECL|member|reserved
-r_uint16
+id|u16
 id|reserved
 suffix:semicolon
 DECL|member|status
-r_uint8
+id|u8
 id|status
 suffix:semicolon
 DECL|member|errors
-r_uint8
+id|u8
 id|errors
 suffix:semicolon
 DECL|member|special
-r_uint16
+id|u16
 id|special
 suffix:semicolon
 )brace
@@ -646,19 +646,19 @@ r_uint64
 id|buff_addr
 suffix:semicolon
 DECL|member|cmd_type_len
-r_uint32
+id|u32
 id|cmd_type_len
 suffix:semicolon
 DECL|member|status
-r_uint8
+id|u8
 id|status
 suffix:semicolon
 DECL|member|popts
-r_uint8
+id|u8
 id|popts
 suffix:semicolon
 DECL|member|vlan
-r_uint16
+id|u16
 id|vlan
 suffix:semicolon
 )brace
@@ -686,43 +686,43 @@ r_struct
 id|ixgb_context_desc
 (brace
 DECL|member|ipcss
-r_uint8
+id|u8
 id|ipcss
 suffix:semicolon
 DECL|member|ipcso
-r_uint8
+id|u8
 id|ipcso
 suffix:semicolon
 DECL|member|ipcse
-r_uint16
+id|u16
 id|ipcse
 suffix:semicolon
 DECL|member|tucss
-r_uint8
+id|u8
 id|tucss
 suffix:semicolon
 DECL|member|tucso
-r_uint8
+id|u8
 id|tucso
 suffix:semicolon
 DECL|member|tucse
-r_uint16
+id|u16
 id|tucse
 suffix:semicolon
 DECL|member|cmd_type_len
-r_uint32
+id|u32
 id|cmd_type_len
 suffix:semicolon
 DECL|member|status
-r_uint8
+id|u8
 id|status
 suffix:semicolon
 DECL|member|hdr_len
-r_uint8
+id|u8
 id|hdr_len
 suffix:semicolon
 DECL|member|mss
-r_uint16
+id|u16
 id|mss
 suffix:semicolon
 )brace
@@ -761,27 +761,27 @@ mdefine_line|#define IXGB_MAX_JUMBO_FRAME_SIZE       0x3F00
 multiline_comment|/* Phy Addresses */
 multiline_comment|/*&n; * This is a little-endian specific check.&n; */
 DECL|macro|IS_MULTICAST
-mdefine_line|#define IS_MULTICAST(Address) &bslash;&n;    (boolean_t)(((uint8_t *)(Address))[0] &amp; ((uint8_t)0x01))
+mdefine_line|#define IS_MULTICAST(Address) &bslash;&n;    (boolean_t)(((u8 *)(Address))[0] &amp; ((u8)0x01))
 multiline_comment|/*&n; * Check whether an address is broadcast.&n; */
 DECL|macro|IS_BROADCAST
-mdefine_line|#define IS_BROADCAST(Address)               &bslash;&n;    ((((uint8_t *)(Address))[0] == ((uint8_t)0xff)) &amp;&amp; (((uint8_t *)(Address))[1] == ((uint8_t)0xff)))
+mdefine_line|#define IS_BROADCAST(Address)               &bslash;&n;    ((((u8 *)(Address))[0] == ((u8)0xff)) &amp;&amp; (((u8 *)(Address))[1] == ((u8)0xff)))
 multiline_comment|/* Flow control parameters */
 DECL|struct|ixgb_fc
 r_struct
 id|ixgb_fc
 (brace
 DECL|member|high_water
-r_uint32
+id|u32
 id|high_water
 suffix:semicolon
 multiline_comment|/* Flow Control High-water          */
 DECL|member|low_water
-r_uint32
+id|u32
 id|low_water
 suffix:semicolon
 multiline_comment|/* Flow Control Low-water           */
 DECL|member|pause_time
-r_uint16
+id|u16
 id|pause_time
 suffix:semicolon
 multiline_comment|/* Flow Control Pause timer         */
@@ -829,7 +829,7 @@ r_struct
 id|ixgb_hw
 (brace
 DECL|member|hw_addr
-r_uint8
+id|u8
 op_star
 id|hw_addr
 suffix:semicolon
@@ -853,12 +853,12 @@ id|bus
 suffix:semicolon
 multiline_comment|/* Bus parameters                   */
 DECL|member|phy_id
-r_uint32
+id|u32
 id|phy_id
 suffix:semicolon
 multiline_comment|/* Phy Identifier                   */
 DECL|member|phy_addr
-r_uint32
+id|u32
 id|phy_addr
 suffix:semicolon
 multiline_comment|/* XGMII address of Phy             */
@@ -868,22 +868,22 @@ id|mac_type
 suffix:semicolon
 multiline_comment|/* Identifier for MAC controller    */
 DECL|member|max_frame_size
-r_uint32
+id|u32
 id|max_frame_size
 suffix:semicolon
 multiline_comment|/* Maximum frame size supported     */
 DECL|member|mc_filter_type
-r_uint32
+id|u32
 id|mc_filter_type
 suffix:semicolon
 multiline_comment|/* Multicast filter hash type       */
 DECL|member|num_mc_addrs
-r_uint32
+id|u32
 id|num_mc_addrs
 suffix:semicolon
 multiline_comment|/* Number of current Multicast addrs */
 DECL|member|curr_mac_addr
-r_uint8
+id|u8
 id|curr_mac_addr
 (braket
 id|IXGB_ETH_LENGTH_OF_ADDRESS
@@ -891,17 +891,17 @@ id|IXGB_ETH_LENGTH_OF_ADDRESS
 suffix:semicolon
 multiline_comment|/* Individual address currently programmed in MAC */
 DECL|member|num_tx_desc
-r_uint32
+id|u32
 id|num_tx_desc
 suffix:semicolon
 multiline_comment|/* Number of Transmit descriptors   */
 DECL|member|num_rx_desc
-r_uint32
+id|u32
 id|num_rx_desc
 suffix:semicolon
 multiline_comment|/* Number of Receive descriptors    */
 DECL|member|rx_buffer_size
-r_uint32
+id|u32
 id|rx_buffer_size
 suffix:semicolon
 multiline_comment|/* Size of Receive buffer           */
@@ -916,37 +916,37 @@ id|adapter_stopped
 suffix:semicolon
 multiline_comment|/* State of adapter                 */
 DECL|member|device_id
-r_uint16
+id|u16
 id|device_id
 suffix:semicolon
 multiline_comment|/* device id from PCI configuration space */
 DECL|member|vendor_id
-r_uint16
+id|u16
 id|vendor_id
 suffix:semicolon
 multiline_comment|/* vendor id from PCI configuration space */
 DECL|member|revision_id
-r_uint8
+id|u8
 id|revision_id
 suffix:semicolon
 multiline_comment|/* revision id from PCI configuration space */
 DECL|member|subsystem_vendor_id
-r_uint16
+id|u16
 id|subsystem_vendor_id
 suffix:semicolon
 multiline_comment|/* subsystem vendor id from PCI configuration space */
 DECL|member|subsystem_id
-r_uint16
+id|u16
 id|subsystem_id
 suffix:semicolon
 multiline_comment|/* subsystem id from PCI configuration space */
 DECL|member|pci_cmd_word
-r_uint16
+id|u16
 id|pci_cmd_word
 suffix:semicolon
 multiline_comment|/* PCI command register id from PCI configuration space */
 DECL|member|eeprom
-r_uint16
+id|u16
 id|eeprom
 (braket
 id|IXGB_EEPROM_SIZE
@@ -959,11 +959,11 @@ id|io_base
 suffix:semicolon
 multiline_comment|/* Our I/O mapped location */
 DECL|member|lastLFC
-r_uint32
+id|u32
 id|lastLFC
 suffix:semicolon
 DECL|member|lastRFC
-r_uint32
+id|u32
 id|lastRFC
 suffix:semicolon
 )brace
@@ -1308,13 +1308,13 @@ id|boolean_t
 id|mac_addr_valid
 c_func
 (paren
-r_uint8
+id|u8
 op_star
 id|mac_addr
 )paren
 suffix:semicolon
 r_extern
-r_uint16
+id|u16
 id|ixgb_read_phy_reg
 c_func
 (paren
@@ -1323,13 +1323,13 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint32
+id|u32
 id|reg_addr
 comma
-r_uint32
+id|u32
 id|phy_addr
 comma
-r_uint32
+id|u32
 id|device_type
 )paren
 suffix:semicolon
@@ -1343,16 +1343,16 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint32
+id|u32
 id|reg_addr
 comma
-r_uint32
+id|u32
 id|phy_addr
 comma
-r_uint32
+id|u32
 id|device_type
 comma
-r_uint16
+id|u16
 id|data
 )paren
 suffix:semicolon
@@ -1366,11 +1366,11 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint8
+id|u8
 op_star
 id|addr
 comma
-r_uint32
+id|u32
 id|index
 )paren
 suffix:semicolon
@@ -1385,14 +1385,14 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint8
+id|u8
 op_star
 id|mc_addr_list
 comma
-r_uint32
+id|u32
 id|mc_addr_count
 comma
-r_uint32
+id|u32
 id|pad
 )paren
 suffix:semicolon
@@ -1407,10 +1407,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint32
+id|u32
 id|offset
 comma
-r_uint32
+id|u32
 id|value
 )paren
 suffix:semicolon
@@ -1435,12 +1435,12 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint8
+id|u8
 op_star
 id|mac_addr
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_compatibility
 c_func
 (paren
@@ -1450,7 +1450,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint32
+id|u32
 id|ixgb_get_ee_pba_number
 c_func
 (paren
@@ -1460,7 +1460,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_init_ctrl_reg_1
 c_func
 (paren
@@ -1470,7 +1470,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_init_ctrl_reg_2
 c_func
 (paren
@@ -1480,7 +1480,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_subsystem_id
 c_func
 (paren
@@ -1490,7 +1490,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_subvendor_id
 c_func
 (paren
@@ -1500,7 +1500,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_device_id
 c_func
 (paren
@@ -1510,7 +1510,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_vendor_id
 c_func
 (paren
@@ -1520,7 +1520,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint16
+id|u16
 id|ixgb_get_ee_swdpins_reg
 c_func
 (paren
@@ -1530,7 +1530,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint8
+id|u8
 id|ixgb_get_ee_d3_power
 c_func
 (paren
@@ -1540,7 +1540,7 @@ op_star
 id|hw
 )paren
 suffix:semicolon
-r_uint8
+id|u8
 id|ixgb_get_ee_d0_power
 c_func
 (paren
@@ -1590,10 +1590,10 @@ id|ixgb_hw
 op_star
 id|hw
 comma
-r_uint32
+id|u32
 id|reg
 comma
-r_uint16
+id|u16
 op_star
 id|value
 )paren
