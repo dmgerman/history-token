@@ -751,12 +751,6 @@ id|drv
 op_assign
 (brace
 dot
-id|devclass
-op_assign
-op_amp
-id|shost_devclass
-comma
-dot
 id|name
 op_assign
 l_string|&quot;oakscsi&quot;

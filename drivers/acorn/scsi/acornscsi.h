@@ -597,14 +597,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* this command can be disconnected&t;*/
-DECL|member|interrupt
-r_int
-r_char
-id|interrupt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* interrupt active&t;&t;&t;*/
 DECL|member|scsi
 )brace
 id|scsi

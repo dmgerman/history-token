@@ -10948,25 +10948,15 @@ comma
 id|siblings
 )paren
 (brace
-r_int
-id|len
-suffix:semicolon
-id|proc_print_scsidevice
-c_func
-(paren
-id|scd
-comma
-id|p
-comma
-op_amp
-id|len
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|p
 op_add_assign
-id|len
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;Device/Lun TaggedQ      Sync&bslash;n&quot;
+)paren
 suffix:semicolon
 id|p
 op_add_assign
@@ -10975,7 +10965,11 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Extensions: &quot;
+l_string|&quot;     %d/%d   &quot;
+comma
+id|scd-&gt;id
+comma
+id|scd-&gt;lun
 )paren
 suffix:semicolon
 r_if
@@ -10990,7 +10984,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;TAG %sabled [%d] &quot;
+l_string|&quot;%3sabled(%3d) &quot;
 comma
 id|scd-&gt;tagged_queue
 ques
@@ -11002,6 +10996,7 @@ comma
 id|scd-&gt;current_tag
 )paren
 suffix:semicolon
+r_else
 id|p
 op_add_assign
 id|sprintf
@@ -11009,7 +11004,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nTransfers: &quot;
+l_string|&quot;unsupported  &quot;
 )paren
 suffix:semicolon
 r_if
@@ -11031,7 +11026,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;sync, offset %d, %d ns&bslash;n&quot;
+l_string|&quot;offset %d, %d ns&bslash;n&quot;
 comma
 id|host-&gt;device
 (braket
@@ -11840,12 +11835,6 @@ dot
 id|drv
 op_assign
 (brace
-dot
-id|devclass
-op_assign
-op_amp
-id|shost_devclass
-comma
 dot
 id|name
 op_assign
