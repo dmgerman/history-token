@@ -731,12 +731,12 @@ op_assign
 (brace
 (brace
 dot
-id|poff
+id|voff
 op_assign
 id|CG3_MMAP_OFFSET
 comma
 dot
-id|voff
+id|poff
 op_assign
 id|CG3_RAM_OFFSET
 comma
