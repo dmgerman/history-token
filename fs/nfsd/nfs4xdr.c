@@ -9235,6 +9235,17 @@ r_if
 c_cond
 (paren
 id|nfserr
+op_eq
+id|nfserr_symlink
+)paren
+id|nfserr
+op_assign
+id|nfserr_inval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfserr
 )paren
 r_return
 id|nfserr

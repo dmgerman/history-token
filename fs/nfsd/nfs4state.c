@@ -8160,6 +8160,17 @@ c_func
 l_string|&quot;NFSD: nfsd4_lockt: fh_verify() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|nfserr_symlink
+)paren
+id|status
+op_assign
+id|nfserr_inval
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
