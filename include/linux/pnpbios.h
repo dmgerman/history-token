@@ -352,6 +352,17 @@ id|u32
 id|nvram_base
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pnp_bios_dock_station_info
+c_func
+(paren
+r_struct
+id|pnp_docking_station_info
+op_star
+id|data
+)paren
+suffix:semicolon
 macro_line|#if needed
 r_extern
 r_int
