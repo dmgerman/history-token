@@ -621,7 +621,7 @@ c_func
 id|p
 comma
 op_amp
-id|fattr-&gt;fsid
+id|fattr-&gt;fsid_u.nfs3
 )paren
 suffix:semicolon
 id|p
