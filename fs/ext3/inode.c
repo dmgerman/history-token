@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/mpage.h&gt;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO
@@ -4627,10 +4628,44 @@ id|page
 )paren
 (brace
 r_return
-id|block_read_full_page
+id|mpage_readpage
 c_func
 (paren
 id|page
+comma
+id|ext3_get_block
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|ext3_readpages
+id|ext3_readpages
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_struct
+id|list_head
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+)paren
+(brace
+r_return
+id|mpage_readpages
+c_func
+(paren
+id|mapping
+comma
+id|pages
+comma
+id|nr_pages
 comma
 id|ext3_get_block
 )paren
@@ -4720,6 +4755,11 @@ op_assign
 id|readpage
 suffix:colon
 id|ext3_readpage
+comma
+multiline_comment|/* BKL not held.  Don&squot;t need */
+id|readpages
+suffix:colon
+id|ext3_readpages
 comma
 multiline_comment|/* BKL not held.  Don&squot;t need */
 id|writepage
