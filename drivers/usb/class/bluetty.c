@@ -4382,6 +4382,12 @@ id|bluetooth-&gt;bulk_out_endpointAddress
 op_assign
 id|endpoint-&gt;bEndpointAddress
 suffix:semicolon
+id|bluetooth-&gt;bulk_out_buffer_size
+op_assign
+id|endpoint-&gt;wMaxPacketSize
+op_star
+l_int|2
+suffix:semicolon
 multiline_comment|/* create our write urb pool */
 r_for
 c_loop
@@ -4464,12 +4470,6 @@ op_assign
 id|urb
 suffix:semicolon
 )brace
-id|bluetooth-&gt;bulk_out_buffer_size
-op_assign
-id|endpoint-&gt;wMaxPacketSize
-op_star
-l_int|2
-suffix:semicolon
 id|endpoint
 op_assign
 id|interrupt_in_endpoint
