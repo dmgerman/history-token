@@ -329,25 +329,6 @@ DECL|macro|v_error_skip_env_set
 mdefine_line|#define v_error_skip_env_set(v, l, r)&t;&t;&bslash;&n;(r ? &t;&t;&t;&t;&t;&t;&bslash;&n; hwgraph_info_replace_LBL(v, INFO_LBL_ERROR_SKIP_ENV, (arbitrary_info_t)l,0) :&bslash;&n; hwgraph_info_add_LBL(v, INFO_LBL_ERROR_SKIP_ENV, (arbitrary_info_t)l))
 DECL|macro|v_error_skip_env_clear
 mdefine_line|#define v_error_skip_env_clear(v)&t;&t;&bslash;&n;hwgraph_info_remove_LBL(v, INFO_LBL_ERROR_SKIP_ENV, 0)
-multiline_comment|/* Skip point interfaces */
-r_extern
-id|error_return_code_t
-id|error_skip_point_jump
-c_func
-(paren
-id|vertex_hdl_t
-comma
-id|boolean_t
-)paren
-suffix:semicolon
-r_extern
-id|error_return_code_t
-id|error_skip_point_clear
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 multiline_comment|/* REFERENCED */
 macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
 r_inline
@@ -530,19 +511,6 @@ suffix:semicolon
 multiline_comment|/* Except for the PIO Read error typically the other errors are handled in&n; * the context of an asynchronous error interrupt.&n; */
 DECL|macro|IS_ERROR_INTR_CONTEXT
 mdefine_line|#define&t;IS_ERROR_INTR_CONTEXT(_ec)&t;((_ec &amp; IOECODE_DMA) &t;&t;|| &bslash;&n;&t;&t;&t;&t;&t; (_ec == IOECODE_PIO_WRITE))
-multiline_comment|/* Some convenience macros on device state. This state is accessed only &n; * thru the calls the io error handling layer.&n; */
-macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
-r_extern
-id|boolean_t
-id|is_device_shutdown
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
-DECL|macro|IS_DEVICE_SHUTDOWN
-mdefine_line|#define IS_DEVICE_SHUTDOWN(_d) &t;(is_device_shutdown(_d))
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_SN_IOERROR_HANDLING_H */
 eof

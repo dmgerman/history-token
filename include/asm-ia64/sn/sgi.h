@@ -18,18 +18,6 @@ macro_line|#ifndef MAXDEVNAME
 DECL|macro|MAXDEVNAME
 mdefine_line|#define MAXDEVNAME 256
 macro_line|#endif
-DECL|enumerator|B_FALSE
-DECL|enumerator|B_TRUE
-DECL|typedef|boolean_t
-r_typedef
-r_enum
-(brace
-id|B_FALSE
-comma
-id|B_TRUE
-)brace
-id|boolean_t
-suffix:semicolon
 multiline_comment|/*&n; * Possible return values from graph routines.&n; */
 DECL|enum|graph_error_e
 r_typedef
