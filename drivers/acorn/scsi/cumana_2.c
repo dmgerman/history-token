@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -360,6 +361,17 @@ op_star
 )paren
 id|host-&gt;hostdata
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+id|scsi_get_device
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_int
 id|dmach
 op_assign
@@ -394,7 +406,7 @@ l_int|512
 r_int
 id|bufs
 comma
-id|pci_dir
+id|map_dir
 comma
 id|dma_dir
 comma
@@ -423,9 +435,9 @@ id|direction
 op_eq
 id|DMA_OUT
 )paren
-id|pci_dir
+id|map_dir
 op_assign
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 comma
 id|dma_dir
 op_assign
@@ -436,9 +448,9 @@ op_assign
 id|ALATCH_DMA_OUT
 suffix:semicolon
 r_else
-id|pci_dir
+id|map_dir
 op_assign
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 comma
 id|dma_dir
 op_assign
@@ -448,10 +460,10 @@ id|alatch_dir
 op_assign
 id|ALATCH_DMA_IN
 suffix:semicolon
-id|pci_map_sg
+id|dma_map_sg
 c_func
 (paren
-l_int|NULL
+id|dev
 comma
 id|info-&gt;sg
 comma
@@ -459,7 +471,7 @@ id|bufs
 op_plus
 l_int|1
 comma
-id|pci_dir
+id|map_dir
 )paren
 suffix:semicolon
 id|disable_dma
