@@ -3742,7 +3742,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/* PCI IRQ setup can easily be broken so that USB controllers&n;&t; * never get completion IRQs ... maybe even the ones we need to&n;&t; * finish unlinking the initial failed usb_set_address().&n;&t; */
+multiline_comment|/* IRQ setup can easily be broken so that USB controllers&n;&t; * never get completion IRQs ... maybe even the ones we need to&n;&t; * finish unlinking the initial failed usb_set_address()&n;&t; * or device descriptor fetch.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3759,7 +3759,7 @@ id|dev_warn
 id|hcd-&gt;self.controller
 comma
 l_string|&quot;Unlink after no-IRQ?  &quot;
-l_string|&quot;Different ACPI or APIC settings may help.&quot;
+l_string|&quot;Controller is probably using the wrong IRQ.&quot;
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
