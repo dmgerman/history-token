@@ -8938,7 +8938,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
