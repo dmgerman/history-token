@@ -105,5 +105,21 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|udp_sk
 mdefine_line|#define udp_sk(__sk) (&amp;((struct udp_sock *)__sk)-&gt;udp)
+r_extern
+r_int
+id|udp_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|udp_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _LINUX_UDP_H */
 eof
