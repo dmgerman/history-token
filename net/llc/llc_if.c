@@ -307,7 +307,7 @@ id|llc_no_rsp_handler
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@nw_indicate: pointer to indicate function of upper layer.&n; *&t;@nw_confirm: pointer to confirm function of upper layer.&n; *&t;@lsap: SAP number.&n; *&t;@sap: pointer to allocated SAP (output argument).&n; *&n; *&t;Interface function to upper layer. each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns 0 for&n; *&t;success, 1 for failure.&n; */
+multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@nw_indicate: pointer to indicate function of upper layer.&n; *&t;@nw_confirm: pointer to confirm function of upper layer.&n; *&t;@lsap: SAP number.&n; *&t;@sap: pointer to allocated SAP (output argument).&n; *&n; *&t;Interface function to upper layer. each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
 DECL|function|llc_sap_open
 r_struct
 id|llc_sap

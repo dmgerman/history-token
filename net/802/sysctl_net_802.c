@@ -2,24 +2,12 @@ multiline_comment|/* -*- linux-c -*-&n; *&t;&t;sysctl_net_802.c: sysctl interfac
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-DECL|variable|e802_table
-id|ctl_table
-id|e802_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
-macro_line|#ifdef CONFIG_TR
 r_extern
 r_int
 id|sysctl_tr_rif_timeout
 suffix:semicolon
 DECL|variable|tr_table
+r_struct
 id|ctl_table
 id|tr_table
 (braket
@@ -27,22 +15,38 @@ id|tr_table
 op_assign
 (brace
 (brace
+dot
+id|ctl_name
+op_assign
 id|NET_TR_RIF_TIMEOUT
 comma
+dot
+id|procname
+op_assign
 l_string|&quot;rif_timeout&quot;
 comma
+dot
+id|data
+op_assign
 op_amp
 id|sysctl_tr_rif_timeout
 comma
+dot
+id|maxlen
+op_assign
 r_sizeof
 (paren
 r_int
 )paren
 comma
+dot
+id|mode
+op_assign
 l_int|0644
 comma
-l_int|NULL
-comma
+dot
+id|proc_handler
+op_assign
 op_amp
 id|proc_dointvec
 )brace
@@ -50,7 +54,7 @@ comma
 (brace
 l_int|0
 )brace
+comma
 )brace
 suffix:semicolon
-macro_line|#endif
 eof
