@@ -1079,6 +1079,10 @@ id|rdev-&gt;raid_disk
 op_assign
 id|path
 suffix:semicolon
+id|rdev-&gt;in_sync
+op_assign
+l_int|1
+suffix:semicolon
 id|found
 op_assign
 l_int|1

@@ -1044,19 +1044,19 @@ r_int
 r_int
 id|host_id
 op_assign
-id|SCpnt-&gt;host-&gt;this_id
+id|SCpnt-&gt;device-&gt;host-&gt;this_id
 suffix:semicolon
 r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 r_int
 id|time_out
@@ -1467,7 +1467,7 @@ r_int
 r_char
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 singleline_comment|//&t;unsigned char&t;       lun    = SCpnt-&gt;lun;
 id|sync_data
@@ -1702,7 +1702,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 singleline_comment|//DEBUG(0, &quot;%s: in SCpnt=0x%p, time=%d&bslash;n&quot;, __FUNCTION__, SCpnt, time);
 id|data-&gt;TimerCount
@@ -1744,7 +1744,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
@@ -1849,7 +1849,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 id|time_out
@@ -1980,7 +1980,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_char
 op_star
@@ -2259,7 +2259,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
@@ -2345,7 +2345,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_int
@@ -2463,13 +2463,13 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_int
 id|mmio_base
 op_assign
-id|SCpnt-&gt;host-&gt;base
+id|SCpnt-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_int
 id|time_out
@@ -2854,13 +2854,13 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_int
 id|mmio_base
 op_assign
-id|SCpnt-&gt;host-&gt;base
+id|SCpnt-&gt;device-&gt;host-&gt;base
 suffix:semicolon
 r_int
 id|time_out
@@ -3246,13 +3246,13 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 singleline_comment|//&t;unsigned char  lun    = SCpnt-&gt;lun;
 id|sync_data
@@ -3656,11 +3656,11 @@ id|data-&gt;CurrentSC
 suffix:semicolon
 id|target
 op_assign
-id|tmpSC-&gt;target
+id|tmpSC-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|tmpSC-&gt;lun
+id|tmpSC-&gt;device-&gt;lun
 suffix:semicolon
 id|sync_neg
 op_assign
@@ -5579,7 +5579,7 @@ r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 id|i
@@ -7890,7 +7890,7 @@ id|info-&gt;stop
 op_assign
 l_int|0
 suffix:semicolon
-id|tmp.host
+id|tmp.device-&gt;host
 op_assign
 id|info-&gt;host
 suffix:semicolon

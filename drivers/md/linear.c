@@ -349,8 +349,18 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * This code was restructured to work around a gcc-2.95.3 internal&n;&t; * compiler error.  Alter it with care.&n;&t; */
 (brace
 id|sector_t
+id|sz
+suffix:semicolon
+r_int
+id|round
+suffix:semicolon
+r_int
+r_int
+id|base
+suffix:semicolon
 id|sz
 op_assign
 id|md_size
@@ -362,7 +372,10 @@ id|mddev
 )paren
 )braket
 suffix:semicolon
-r_int
+id|base
+op_assign
+id|conf-&gt;smallest-&gt;size
+suffix:semicolon
 id|round
 op_assign
 id|sector_div
@@ -370,7 +383,7 @@ c_func
 (paren
 id|sz
 comma
-id|conf-&gt;smallest-&gt;size
+id|base
 )paren
 suffix:semicolon
 id|nb_zone

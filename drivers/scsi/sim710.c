@@ -4,12 +4,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/eisa.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;53c700.h&quot;
@@ -39,42 +36,6 @@ op_assign
 l_int|7
 )brace
 suffix:semicolon
-multiline_comment|/* info is used to communicate global data across the driver register&n; * because the struct device_driver doesn&squot;t have any info fields.  Sigh */
-DECL|struct|sim710_info
-r_struct
-id|sim710_info
-(brace
-DECL|member|tpnt
-id|Scsi_Host_Template
-op_star
-id|tpnt
-suffix:semicolon
-DECL|member|found
-r_int
-id|found
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|variable|sim710_global_info
-r_static
-id|__initdata
-r_struct
-id|sim710_info
-id|sim710_global_info
-suffix:semicolon
-macro_line|#if defined(CONFIG_MCA)
-multiline_comment|/* CARD ID 01BB and 01BA use the same pos values */
-DECL|macro|MCA_01BB_IO_PORTS
-mdefine_line|#define MCA_01BB_IO_PORTS { 0x0000, 0x0000, 0x0800, 0x0C00, 0x1000, 0x1400, &bslash;&n;&t;&t;&t;    0x1800, 0x1C00, 0x2000, 0x2400, 0x2800, &bslash;&n;&t;&t;&t;    0x2C00, 0x3000, 0x3400, 0x3800, 0x3C00, &bslash;&n;&t;&t;&t;    0x4000, 0x4400, 0x4800, 0x4C00, 0x5000  }
-DECL|macro|MCA_01BB_IRQS
-mdefine_line|#define MCA_01BB_IRQS { 3, 5, 11, 14 }
-multiline_comment|/* CARD ID 004f */
-DECL|macro|MCA_004F_IO_PORTS
-mdefine_line|#define MCA_004F_IO_PORTS { 0x0000, 0x0200, 0x0300, 0x0400, 0x0500,  0x0600 }
-DECL|macro|MCA_004F_IRQS
-mdefine_line|#define MCA_004F_IRQS { 5, 9, 14 }
-macro_line|#endif
-macro_line|#ifdef MODULE
 DECL|variable|sim710
 r_char
 op_star
@@ -107,7 +68,6 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef MODULE
 DECL|macro|ARG_SEP
 mdefine_line|#define ARG_SEP &squot; &squot;
@@ -292,7 +252,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
 id|__setup
 c_func
 (paren
@@ -301,8 +260,31 @@ comma
 id|param_setup
 )paren
 suffix:semicolon
-macro_line|#endif
-id|__init
+DECL|variable|sim710_driver_template
+r_static
+id|Scsi_Host_Template
+id|sim710_driver_template
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LSI (Symbios) 710 MCA/EISA&quot;
+comma
+dot
+id|proc_name
+op_assign
+l_string|&quot;sim710&quot;
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+)brace
+suffix:semicolon
+r_static
+id|__devinit
 r_int
 DECL|function|sim710_probe_common
 id|sim710_probe_common
@@ -467,7 +449,8 @@ op_assign
 id|NCR_700_detect
 c_func
 (paren
-id|sim710_global_info.tpnt
+op_amp
+id|sim710_driver_template
 comma
 id|hostdata
 )paren
@@ -526,7 +509,7 @@ r_goto
 id|out_unregister
 suffix:semicolon
 )brace
-id|scsi_set_device
+id|scsi_add_host
 c_func
 (paren
 id|host
@@ -537,9 +520,6 @@ suffix:semicolon
 id|hostdata-&gt;dev
 op_assign
 id|dev
-suffix:semicolon
-id|sim710_global_info.found
-op_increment
 suffix:semicolon
 r_return
 l_int|0
@@ -577,7 +557,86 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_static
+id|__devexit
+r_int
+DECL|function|sim710_device_remove
+id|sim710_device_remove
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|to_scsi_host
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_struct
+id|NCR_700_Host_Parameters
+op_star
+id|hostdata
+op_assign
+(paren
+r_struct
+id|NCR_700_Host_Parameters
+op_star
+)paren
+id|host-&gt;hostdata
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|scsi_remove_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|NCR_700_release
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|hostdata
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|host-&gt;irq
+comma
+id|host
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_MCA
+multiline_comment|/* CARD ID 01BB and 01BA use the same pos values */
+DECL|macro|MCA_01BB_IO_PORTS
+mdefine_line|#define MCA_01BB_IO_PORTS { 0x0000, 0x0000, 0x0800, 0x0C00, 0x1000, 0x1400, &bslash;&n;&t;&t;&t;    0x1800, 0x1C00, 0x2000, 0x2400, 0x2800, &bslash;&n;&t;&t;&t;    0x2C00, 0x3000, 0x3400, 0x3800, 0x3C00, &bslash;&n;&t;&t;&t;    0x4000, 0x4400, 0x4800, 0x4C00, 0x5000  }
+DECL|macro|MCA_01BB_IRQS
+mdefine_line|#define MCA_01BB_IRQS { 3, 5, 11, 14 }
+multiline_comment|/* CARD ID 004f */
+DECL|macro|MCA_004F_IO_PORTS
+mdefine_line|#define MCA_004F_IO_PORTS { 0x0000, 0x0200, 0x0300, 0x0400, 0x0500,  0x0600 }
+DECL|macro|MCA_004F_IRQS
+mdefine_line|#define MCA_004F_IRQS { 5, 9, 14 }
 DECL|variable|sim710_mca_id_table
 r_static
 r_int
@@ -595,6 +654,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+r_static
 id|__init
 r_int
 DECL|function|sim710_mca_probe
@@ -916,6 +976,7 @@ id|slot
 suffix:semicolon
 )brace
 DECL|variable|sim710_mca_driver
+r_static
 r_struct
 id|mca_driver
 id|sim710_mca_driver
@@ -946,6 +1007,15 @@ id|probe
 op_assign
 id|sim710_mca_probe
 comma
+dot
+id|remove
+op_assign
+id|__devexit_p
+c_func
+(paren
+id|sim710_device_remove
+)paren
+comma
 )brace
 comma
 )brace
@@ -953,6 +1023,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
 macro_line|#ifdef CONFIG_EISA
 DECL|variable|sim710_eisa_ids
+r_static
 r_struct
 id|eisa_device_id
 id|sim710_eisa_ids
@@ -977,6 +1048,7 @@ l_string|&quot;&quot;
 )brace
 )brace
 suffix:semicolon
+r_static
 id|__init
 r_int
 DECL|function|sim710_eisa_probe
@@ -1135,6 +1207,8 @@ id|io_addr
 op_plus
 l_int|0xc88
 )paren
+op_amp
+l_int|0x07
 suffix:semicolon
 )brace
 r_if
@@ -1224,75 +1298,23 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_EISA */
-r_int
-DECL|function|sim710_release
-id|sim710_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|host
-)paren
-(brace
-r_struct
-id|D700_Host_Parameters
-op_star
-id|hostdata
-op_assign
-(paren
-r_struct
-id|D700_Host_Parameters
-op_star
-)paren
-id|host-&gt;hostdata
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|NCR_700_release
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hostdata
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|host-&gt;irq
-comma
-id|host
-)paren
-suffix:semicolon
-multiline_comment|/* should do a refcount here and unregister the drivers when&n;&t; * it reaches zero */
-r_return
-l_int|1
-suffix:semicolon
-)brace
+DECL|function|sim710_init
+r_static
 r_int
 id|__init
-DECL|function|sim710_detect
-id|sim710_detect
+id|sim710_init
 c_func
 (paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
+r_void
 )paren
 (brace
-id|sim710_global_info.tpnt
+r_int
+id|err
 op_assign
-id|tpnt
-suffix:semicolon
-id|sim710_global_info.found
-op_assign
-l_int|0
+op_minus
+id|ENODEV
+comma
+id|err2
 suffix:semicolon
 macro_line|#ifdef MODULE
 r_if
@@ -1313,7 +1335,8 @@ c_cond
 (paren
 id|MCA_bus
 )paren
-(brace
+id|err
+op_assign
 id|mca_register_driver
 c_func
 (paren
@@ -1321,9 +1344,10 @@ op_amp
 id|sim710_mca_driver
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
+id|err2
+op_assign
 id|eisa_driver_register
 c_func
 (paren
@@ -1331,43 +1355,92 @@ op_amp
 id|sim710_eisa_driver
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The eise_driver_register return values are strange.  I have&n;&t; * no idea why we don&squot;t just use river_register directly anyway..&n;&t; */
+r_if
+c_cond
+(paren
+id|err2
+op_eq
+l_int|1
+)paren
+id|err2
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+op_logical_or
+id|err2
+OL
+l_int|0
+)paren
 r_return
-id|sim710_global_info.found
+(paren
+id|err
+OL
+l_int|0
+)paren
+ques
+c_cond
+id|err
+suffix:colon
+id|err2
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
-DECL|variable|driver_template
+DECL|function|sim710_exit
 r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
+r_void
+id|__exit
+id|sim710_exit
+c_func
+(paren
+r_void
+)paren
 (brace
-dot
-id|name
-op_assign
-l_string|&quot;LSI (Symbios) 710 MCA/EISA&quot;
-comma
-dot
-id|proc_name
-op_assign
-l_string|&quot;sim710&quot;
-comma
-dot
-id|detect
-op_assign
-id|sim710_detect
-comma
-dot
-id|release
-op_assign
-id|sim710_release
-comma
-dot
-id|this_id
-op_assign
-l_int|7
-comma
-)brace
+macro_line|#ifdef CONFIG_MCA
+r_if
+c_cond
+(paren
+id|MCA_bus
+)paren
+id|mca_unregister_driver
+c_func
+(paren
+op_amp
+id|sim710_mca_driver
+)paren
 suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_EISA
+id|eisa_driver_unregister
+c_func
+(paren
+op_amp
+id|sim710_eisa_driver
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+DECL|variable|sim710_init
+id|module_init
+c_func
+(paren
+id|sim710_init
+)paren
+suffix:semicolon
+DECL|variable|sim710_exit
+id|module_exit
+c_func
+(paren
+id|sim710_exit
+)paren
+suffix:semicolon
 eof

@@ -313,6 +313,8 @@ r_struct
 id|Scsi_Host
 op_star
 id|hreg
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|ports

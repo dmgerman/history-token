@@ -6585,12 +6585,13 @@ id|host-&gt;base
 op_assign
 id|data-&gt;MmioAddress
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|host
 comma
-id|data-&gt;Pci
+op_amp
+id|data-&gt;Pci-&gt;dev
 )paren
 suffix:semicolon
 id|data-&gt;Host

@@ -8170,7 +8170,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* begin the command here */
-multiline_comment|/* no need to check for NULL, test for command_slot_cound above&n;&t; * ensures a slot is free */
+multiline_comment|/* no need to check for NULL, test for command_slot_count above&n;&t; * ensures a slot is free */
 id|slot
 op_assign
 id|find_empty_slot

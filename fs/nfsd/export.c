@@ -3272,7 +3272,7 @@ c_func
 op_amp
 r_new
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 r_if

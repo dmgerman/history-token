@@ -26,6 +26,8 @@ DECL|macro|LEVEL_LINEAR
 mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
 DECL|macro|MaxSector
 mdefine_line|#define MaxSector (~(sector_t)0)
+DECL|macro|MD_THREAD_NAME_MAX
+mdefine_line|#define MD_THREAD_NAME_MAX 14
 DECL|function|pers_to_level
 r_static
 r_inline
@@ -705,6 +707,15 @@ suffix:semicolon
 DECL|member|recovery_cp
 id|sector_t
 id|recovery_cp
+suffix:semicolon
+DECL|member|safemode
+r_int
+id|safemode
+suffix:semicolon
+multiline_comment|/* if set, update &quot;clean&quot; superblock&n;&t;&t;&t;&t;&t;&t;&t; * when no writes pending.&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|writes_pending
+id|atomic_t
+id|writes_pending
 suffix:semicolon
 DECL|member|queue
 id|request_queue_t

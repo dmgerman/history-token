@@ -2135,12 +2135,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|instance
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|hostdata

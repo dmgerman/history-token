@@ -2742,12 +2742,13 @@ id|shpnt-&gt;io_port
 op_assign
 id|port_base
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|shpnt
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|shpnt-&gt;n_io_port

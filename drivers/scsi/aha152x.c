@@ -69,7 +69,7 @@ mdefine_line|#define ERR_LEAD&t;KERN_ERR&t;LEAD
 DECL|macro|DEBUG_LEAD
 mdefine_line|#define DEBUG_LEAD&t;KERN_DEBUG&t;LEAD
 DECL|macro|CMDINFO
-mdefine_line|#define CMDINFO(cmd) &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;host-&gt;host_no) : -1, &bslash;&n;                        (cmd) ? ((cmd)-&gt;target &amp; 0x0f) : -1, &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;lun &amp; 0x07) : -1
+mdefine_line|#define CMDINFO(cmd) &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;device-&gt;host-&gt;host_no) : -1, &bslash;&n;                        (cmd) ? ((cmd)-&gt;device-&gt;id &amp; 0x0f) : -1, &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;device-&gt;lun &amp; 0x07) : -1
 DECL|macro|DELAY_DEFAULT
 mdefine_line|#define DELAY_DEFAULT 1000
 macro_line|#if defined(PCMCIA)
@@ -1106,9 +1106,9 @@ mdefine_line|#define ADDMSGI(x)&t;&t;(MSGILEN&lt;256 ? MSGI(MSGILEN++)=x : aha15
 DECL|macro|DATA_LEN
 mdefine_line|#define DATA_LEN&t;&t;(HOSTDATA(shpnt)-&gt;data_len)
 DECL|macro|SYNCRATE
-mdefine_line|#define SYNCRATE&t;&t;(HOSTDATA(shpnt)-&gt;syncrate[CURRENT_SC-&gt;target])
+mdefine_line|#define SYNCRATE&t;&t;(HOSTDATA(shpnt)-&gt;syncrate[CURRENT_SC-&gt;device-&gt;id])
 DECL|macro|SYNCNEG
-mdefine_line|#define SYNCNEG&t;&t;&t;(HOSTDATA(shpnt)-&gt;syncneg[CURRENT_SC-&gt;target])
+mdefine_line|#define SYNCNEG&t;&t;&t;(HOSTDATA(shpnt)-&gt;syncneg[CURRENT_SC-&gt;device-&gt;id])
 DECL|macro|DELAY
 mdefine_line|#define DELAY&t;&t;&t;(HOSTDATA(shpnt)-&gt;delay)
 DECL|macro|EXT_TRANS
@@ -2084,13 +2084,13 @@ id|ptr
 op_logical_and
 (paren
 (paren
-id|ptr-&gt;target
+id|ptr-&gt;device-&gt;id
 op_ne
 id|target
 )paren
 op_logical_or
 (paren
-id|ptr-&gt;lun
+id|ptr-&gt;device-&gt;lun
 op_ne
 id|lun
 )paren
@@ -6409,7 +6409,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 r_int
 r_int
@@ -6870,7 +6870,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -7092,7 +7092,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* remove command from issue queue */
 r_if
@@ -7159,7 +7159,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|DECLARE_MUTEX_LOCKED
 c_func
@@ -7172,7 +7172,11 @@ id|timer_list
 id|timer
 suffix:semicolon
 id|Scsi_Cmnd
-id|cmnd
+op_star
+id|cmd
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 macro_line|#if defined(AHA152X_DEBUG)
 r_if
@@ -7237,31 +7241,64 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-id|cmnd.cmd_len
+id|spin_unlock_irq
+c_func
+(paren
+id|shpnt-&gt;host_lock
+)paren
+suffix:semicolon
+id|cmd
+op_assign
+id|scsi_get_command
+c_func
+(paren
+id|SCpnt-&gt;device
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cmd
+)paren
+(brace
+id|spin_lock_irq
+c_func
+(paren
+id|shpnt-&gt;host_lock
+)paren
+suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+id|cmd-&gt;cmd_len
 op_assign
 l_int|0
 suffix:semicolon
-id|cmnd.host
+id|cmd-&gt;device-&gt;host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
-id|cmnd.target
+id|cmd-&gt;device-&gt;id
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
-id|cmnd.lun
+id|cmd-&gt;device-&gt;lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
-id|cmnd.use_sg
-op_assign
-l_int|0
-suffix:semicolon
-id|cmnd.request_buffer
+id|cmd-&gt;use_sg
 op_assign
 l_int|0
 suffix:semicolon
-id|cmnd.request_bufflen
+id|cmd-&gt;request_buffer
+op_assign
+l_int|0
+suffix:semicolon
+id|cmd-&gt;request_bufflen
 op_assign
 l_int|0
 suffix:semicolon
@@ -7278,8 +7315,7 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
-id|cmnd
+id|cmd
 suffix:semicolon
 id|timer.expires
 op_assign
@@ -7307,8 +7343,7 @@ suffix:semicolon
 id|aha152x_internal_queue
 c_func
 (paren
-op_amp
-id|cmnd
+id|cmd
 comma
 op_amp
 id|sem
@@ -7344,21 +7379,38 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cmnd.SCp.phase
+id|cmd-&gt;SCp.phase
 op_amp
 id|resetted
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|SUCCESS
 suffix:semicolon
 )brace
 r_else
 (brace
-r_return
+id|ret
+op_assign
 id|FAILED
 suffix:semicolon
 )brace
+id|scsi_put_command
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|shpnt-&gt;host_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|free_hard_reset_SCs
 r_void
@@ -7491,7 +7543,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 r_int
 r_int
@@ -7866,7 +7918,7 @@ suffix:semicolon
 id|reset_ports
 c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -8972,17 +9024,17 @@ id|cmnd-&gt;cmd_len
 op_assign
 l_int|6
 suffix:semicolon
-id|cmnd-&gt;host
+id|cmnd-&gt;device-&gt;host
 op_assign
-id|ptr-&gt;host
+id|ptr-&gt;device-&gt;host
 suffix:semicolon
-id|cmnd-&gt;target
+id|cmnd-&gt;device-&gt;id
 op_assign
-id|ptr-&gt;target
+id|ptr-&gt;device-&gt;id
 suffix:semicolon
-id|cmnd-&gt;lun
+id|cmnd-&gt;device-&gt;lun
 op_assign
-id|ptr-&gt;lun
+id|ptr-&gt;device-&gt;lun
 suffix:semicolon
 id|cmnd-&gt;use_sg
 op_assign
@@ -9272,7 +9324,7 @@ op_lshift
 id|OID_
 )paren
 op_or
-id|CURRENT_SC-&gt;target
+id|CURRENT_SC-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|SETPORT
@@ -9467,7 +9519,7 @@ c_func
 (paren
 id|RECONNECT
 comma
-id|CURRENT_SC-&gt;lun
+id|CURRENT_SC-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -11018,7 +11070,7 @@ c_func
 (paren
 id|RECONNECT
 comma
-id|CURRENT_SC-&gt;lun
+id|CURRENT_SC-&gt;device-&gt;lun
 )paren
 )paren
 suffix:semicolon
@@ -15653,9 +15705,9 @@ r_int
 )paren
 id|ptr
 comma
-id|ptr-&gt;target
+id|ptr-&gt;device-&gt;id
 comma
-id|ptr-&gt;lun
+id|ptr-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -15976,9 +16028,9 @@ r_int
 )paren
 id|ptr
 comma
-id|ptr-&gt;target
+id|ptr-&gt;device-&gt;id
 comma
-id|ptr-&gt;lun
+id|ptr-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_for

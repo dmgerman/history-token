@@ -1174,7 +1174,7 @@ id|fhp-&gt;fh_pre_size
 suffix:semicolon
 id|cinfo-&gt;before_ctime
 op_assign
-id|fhp-&gt;fh_pre_ctime
+id|fhp-&gt;fh_pre_ctime.tv_sec
 suffix:semicolon
 id|cinfo-&gt;after_size
 op_assign
@@ -1182,7 +1182,7 @@ id|fhp-&gt;fh_post_size
 suffix:semicolon
 id|cinfo-&gt;after_ctime
 op_assign
-id|fhp-&gt;fh_post_ctime
+id|fhp-&gt;fh_post_ctime.tv_sec
 suffix:semicolon
 )brace
 r_int

@@ -3787,7 +3787,17 @@ op_assign
 id|TW_MAX_SECTORS
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+id|scsi_set_device
+c_func
+(paren
+id|host
+comma
+op_amp
+id|tw_pci_dev-&gt;dev
+)paren
+suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
 id|scsi_set_pci_device
 c_func
 (paren

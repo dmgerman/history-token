@@ -1725,7 +1725,7 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-id|tmp.host
+id|tmp.device-&gt;host
 op_assign
 id|info-&gt;host
 suffix:semicolon

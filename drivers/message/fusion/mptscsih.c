@@ -6150,12 +6150,13 @@ id|numSGE
 suffix:semicolon
 )brace
 multiline_comment|/* Set the pci device pointer in Scsi_Host structure.&n;&t;&t;&t;&t; */
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|sh
 comma
-id|this-&gt;pcidev
+op_amp
+id|this-&gt;pcidev-&gt;dev
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

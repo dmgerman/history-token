@@ -10880,12 +10880,13 @@ id|pcidev
 r_goto
 id|unregister
 suffix:semicolon
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|pshost
 comma
-id|pcidev
+op_amp
+id|pcidev-&gt;dev
 )paren
 suffix:semicolon
 id|pshost-&gt;max_id

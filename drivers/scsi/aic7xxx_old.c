@@ -30862,12 +30862,13 @@ op_assign
 id|host-&gt;host_no
 suffix:semicolon
 )brace
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|host
 comma
-id|p-&gt;pdev
+op_amp
+id|p-&gt;pdev-&gt;dev
 )paren
 suffix:semicolon
 r_return

@@ -7762,12 +7762,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|scsi_set_pci_device
+id|scsi_set_device
 c_func
 (paren
 id|psh
 comma
-id|pdev
+op_amp
+id|pdev-&gt;dev
 )paren
 suffix:semicolon
 id|pACB

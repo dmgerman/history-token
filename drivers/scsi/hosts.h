@@ -5,7 +5,6 @@ mdefine_line|#define _HOSTS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 r_struct
 id|scsi_host_cmd_pool
 suffix:semicolon
@@ -829,34 +828,6 @@ id|shost
 (brace
 r_return
 id|shost-&gt;host_gendev
-suffix:semicolon
-)brace
-DECL|function|scsi_set_pci_device
-r_static
-r_inline
-r_void
-id|scsi_set_pci_device
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-comma
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-id|scsi_set_device
-c_func
-(paren
-id|shost
-comma
-op_amp
-id|pdev-&gt;dev
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
