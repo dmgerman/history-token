@@ -31,14 +31,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-l_int|1
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Low-level SAL-based PCI configuration access functions. Note that SAL&n; * calls are already serialized (via sal_lock), so we don&squot;t need another&n; * synchronization mechanism here.&n; */
 DECL|macro|PCI_SAL_ADDRESS
 mdefine_line|#define PCI_SAL_ADDRESS(seg, bus, devfn, reg)&t;&bslash;&n;&t;((u64)(seg &lt;&lt; 24) | (u64)(bus &lt;&lt; 16) |&t;&bslash;&n;&t; (u64)(devfn &lt;&lt; 8) | (u64)(reg))
