@@ -3,6 +3,7 @@ macro_line|#ifndef _SR_H
 DECL|macro|_SR_H
 mdefine_line|#define _SR_H
 macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;linux/genhd.h&gt;
 r_typedef
 r_struct
 (brace
@@ -67,6 +68,12 @@ DECL|member|cdi
 r_struct
 id|cdrom_device_info
 id|cdi
+suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
 suffix:semicolon
 DECL|typedef|Scsi_CD
 )brace
