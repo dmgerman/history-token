@@ -77,12 +77,22 @@ macro_line|#else
 DECL|macro|debug_printf
 mdefine_line|#define debug_printf(x...) do { } while (0)
 macro_line|#endif
-DECL|macro|PIXFORMAT_8BPP
-mdefine_line|#define PIXFORMAT_8BPP&t;&t;0
-DECL|macro|PIXFORMAT_16BPP
-mdefine_line|#define PIXFORMAT_16BPP&t;&t;1
-DECL|macro|PIXFORMAT_24BPP
-mdefine_line|#define PIXFORMAT_24BPP&t;&t;2
+DECL|macro|RAMDAC_RAMPWRDN
+mdefine_line|#define RAMDAC_RAMPWRDN&t;&t;0x01
+DECL|macro|RAMDAC_DAC8BIT
+mdefine_line|#define RAMDAC_DAC8BIT&t;&t;0x02
+DECL|macro|RAMDAC_VREFEN
+mdefine_line|#define RAMDAC_VREFEN&t;&t;0x04
+DECL|macro|RAMDAC_BYPASS
+mdefine_line|#define RAMDAC_BYPASS&t;&t;0x10
+DECL|macro|RAMDAC_DACPWRDN
+mdefine_line|#define RAMDAC_DACPWRDN&t;&t;0x40
+DECL|macro|EXT_CRT_VRTOFL
+mdefine_line|#define EXT_CRT_VRTOFL&t;&t;0x11
+DECL|macro|EXT_CRT_VRTOFL_LINECOMP10
+mdefine_line|#define EXT_CRT_VRTOFL_LINECOMP10&t;0x10
+DECL|macro|EXT_CRT_VRTOFL_INTERLACE
+mdefine_line|#define EXT_CRT_VRTOFL_INTERLACE&t;0x20
 DECL|macro|EXT_CRT_IRQ
 mdefine_line|#define EXT_CRT_IRQ&t;&t;0x12
 DECL|macro|EXT_CRT_IRQ_ENABLE
@@ -119,8 +129,10 @@ DECL|macro|EXT_BUS_CTL_LIN_4MB
 mdefine_line|#define EXT_BUS_CTL_LIN_4MB&t;&t;0x02
 DECL|macro|EXT_BUS_CTL_ZEROWAIT
 mdefine_line|#define EXT_BUS_CTL_ZEROWAIT&t;&t;0x04
-DECL|macro|EXT_BUS_CTL_PCIBURST
-mdefine_line|#define EXT_BUS_CTL_PCIBURST&t;&t;0x20
+DECL|macro|EXT_BUS_CTL_PCIBURST_WRITE
+mdefine_line|#define EXT_BUS_CTL_PCIBURST_WRITE&t;0x20
+DECL|macro|EXT_BUS_CTL_PCIBURST_READ
+mdefine_line|#define EXT_BUS_CTL_PCIBURST_READ&t;0x80&t;/* CyberPro 5000 only */
 DECL|macro|EXT_SEG_WRITE_PTR
 mdefine_line|#define EXT_SEG_WRITE_PTR&t;0x31
 DECL|macro|EXT_SEG_READ_PTR
@@ -690,38 +702,92 @@ mdefine_line|#define TV_FLICK_YMIN&t;&t;0xbe51c
 DECL|macro|TV_FLICK_YMAX
 mdefine_line|#define TV_FLICK_YMAX&t;&t;0xbe520
 multiline_comment|/*&n; * Graphics Co-processor&n; */
-DECL|macro|CO_CMD_L_PATTERN_FGCOL
-mdefine_line|#define CO_CMD_L_PATTERN_FGCOL&t;0x8000
-DECL|macro|CO_CMD_L_INC_LEFT
-mdefine_line|#define CO_CMD_L_INC_LEFT&t;0x0004
-DECL|macro|CO_CMD_L_INC_UP
-mdefine_line|#define CO_CMD_L_INC_UP&t;&t;0x0002
-DECL|macro|CO_CMD_H_SRC_PIXMAP
-mdefine_line|#define CO_CMD_H_SRC_PIXMAP&t;0x2000
-DECL|macro|CO_CMD_H_BLITTER
-mdefine_line|#define CO_CMD_H_BLITTER&t;0x0800
 DECL|macro|CO_REG_CONTROL
 mdefine_line|#define CO_REG_CONTROL&t;&t;0xbf011
+DECL|macro|CO_CTRL_BUSY
+mdefine_line|#define CO_CTRL_BUSY&t;&t;&t;0x80
+DECL|macro|CO_CTRL_CMDFULL
+mdefine_line|#define CO_CTRL_CMDFULL&t;&t;&t;0x04
+DECL|macro|CO_CTRL_FIFOEMPTY
+mdefine_line|#define CO_CTRL_FIFOEMPTY&t;&t;0x02
+DECL|macro|CO_CTRL_READY
+mdefine_line|#define CO_CTRL_READY&t;&t;&t;0x01
 DECL|macro|CO_REG_SRC_WIDTH
 mdefine_line|#define CO_REG_SRC_WIDTH&t;0xbf018
-DECL|macro|CO_REG_PIX_FORMAT
-mdefine_line|#define CO_REG_PIX_FORMAT&t;0xbf01c
-DECL|macro|CO_REG_FORE_MIX
-mdefine_line|#define CO_REG_FORE_MIX&t;&t;0xbf048
-DECL|macro|CO_REG_FOREGROUND
-mdefine_line|#define CO_REG_FOREGROUND&t;0xbf058
-DECL|macro|CO_REG_WIDTH
-mdefine_line|#define CO_REG_WIDTH&t;&t;0xbf060
-DECL|macro|CO_REG_HEIGHT
-mdefine_line|#define CO_REG_HEIGHT&t;&t;0xbf062
+DECL|macro|CO_REG_PIXFMT
+mdefine_line|#define CO_REG_PIXFMT&t;&t;0xbf01c
+DECL|macro|CO_PIXFMT_32BPP
+mdefine_line|#define CO_PIXFMT_32BPP&t;&t;&t;0x03
+DECL|macro|CO_PIXFMT_24BPP
+mdefine_line|#define CO_PIXFMT_24BPP&t;&t;&t;0x02
+DECL|macro|CO_PIXFMT_16BPP
+mdefine_line|#define CO_PIXFMT_16BPP&t;&t;&t;0x01
+DECL|macro|CO_PIXFMT_8BPP
+mdefine_line|#define CO_PIXFMT_8BPP&t;&t;&t;0x00
+DECL|macro|CO_REG_FGMIX
+mdefine_line|#define CO_REG_FGMIX&t;&t;0xbf048
+DECL|macro|CO_FG_MIX_ZERO
+mdefine_line|#define CO_FG_MIX_ZERO&t;&t;&t;0x00
+DECL|macro|CO_FG_MIX_SRC_AND_DST
+mdefine_line|#define CO_FG_MIX_SRC_AND_DST&t;&t;0x01
+DECL|macro|CO_FG_MIX_SRC_AND_NDST
+mdefine_line|#define CO_FG_MIX_SRC_AND_NDST&t;&t;0x02
+DECL|macro|CO_FG_MIX_SRC
+mdefine_line|#define CO_FG_MIX_SRC&t;&t;&t;0x03
+DECL|macro|CO_FG_MIX_NSRC_AND_DST
+mdefine_line|#define CO_FG_MIX_NSRC_AND_DST&t;&t;0x04
+DECL|macro|CO_FG_MIX_DST
+mdefine_line|#define CO_FG_MIX_DST&t;&t;&t;0x05
+DECL|macro|CO_FG_MIX_SRC_XOR_DST
+mdefine_line|#define CO_FG_MIX_SRC_XOR_DST&t;&t;0x06
+DECL|macro|CO_FG_MIX_SRC_OR_DST
+mdefine_line|#define CO_FG_MIX_SRC_OR_DST&t;&t;0x07
+DECL|macro|CO_FG_MIX_NSRC_AND_NDST
+mdefine_line|#define CO_FG_MIX_NSRC_AND_NDST&t;&t;0x08
+DECL|macro|CO_FG_MIX_SRC_XOR_NDST
+mdefine_line|#define CO_FG_MIX_SRC_XOR_NDST&t;&t;0x09
+DECL|macro|CO_FG_MIX_NDST
+mdefine_line|#define CO_FG_MIX_NDST&t;&t;&t;0x0a
+DECL|macro|CO_FG_MIX_SRC_OR_NDST
+mdefine_line|#define CO_FG_MIX_SRC_OR_NDST&t;&t;0x0b
+DECL|macro|CO_FG_MIX_NSRC
+mdefine_line|#define CO_FG_MIX_NSRC&t;&t;&t;0x0c
+DECL|macro|CO_FG_MIX_NSRC_OR_DST
+mdefine_line|#define CO_FG_MIX_NSRC_OR_DST&t;&t;0x0d
+DECL|macro|CO_FG_MIX_NSRC_OR_NDST
+mdefine_line|#define CO_FG_MIX_NSRC_OR_NDST&t;&t;0x0e
+DECL|macro|CO_FG_MIX_ONES
+mdefine_line|#define CO_FG_MIX_ONES&t;&t;&t;0x0f
+DECL|macro|CO_REG_FGCOLOUR
+mdefine_line|#define CO_REG_FGCOLOUR&t;&t;0xbf058
+DECL|macro|CO_REG_BGCOLOUR
+mdefine_line|#define CO_REG_BGCOLOUR&t;&t;0xbf05c
+DECL|macro|CO_REG_PIXWIDTH
+mdefine_line|#define CO_REG_PIXWIDTH&t;&t;0xbf060
+DECL|macro|CO_REG_PIXHEIGHT
+mdefine_line|#define CO_REG_PIXHEIGHT&t;0xbf062
 DECL|macro|CO_REG_X_PHASE
 mdefine_line|#define CO_REG_X_PHASE&t;&t;0xbf078
 DECL|macro|CO_REG_CMD_L
 mdefine_line|#define CO_REG_CMD_L&t;&t;0xbf07c
+DECL|macro|CO_CMD_L_PATTERN_FGCOL
+mdefine_line|#define CO_CMD_L_PATTERN_FGCOL&t;&t;0x8000
+DECL|macro|CO_CMD_L_INC_LEFT
+mdefine_line|#define CO_CMD_L_INC_LEFT&t;&t;0x0004
+DECL|macro|CO_CMD_L_INC_UP
+mdefine_line|#define CO_CMD_L_INC_UP&t;&t;&t;0x0002
 DECL|macro|CO_REG_CMD_H
 mdefine_line|#define CO_REG_CMD_H&t;&t;0xbf07e
-DECL|macro|CO_REG_SRC_PTR
-mdefine_line|#define CO_REG_SRC_PTR&t;&t;0xbf170
+DECL|macro|CO_CMD_H_BGSRCMAP
+mdefine_line|#define CO_CMD_H_BGSRCMAP&t;&t;0x8000&t;/* otherwise bg colour */
+DECL|macro|CO_CMD_H_FGSRCMAP
+mdefine_line|#define CO_CMD_H_FGSRCMAP&t;&t;0x2000&t;/* otherwise fg colour */
+DECL|macro|CO_CMD_H_BLITTER
+mdefine_line|#define CO_CMD_H_BLITTER&t;&t;0x0800
+DECL|macro|CO_REG_SRC1_PTR
+mdefine_line|#define CO_REG_SRC1_PTR&t;&t;0xbf170
+DECL|macro|CO_REG_SRC2_PTR
+mdefine_line|#define CO_REG_SRC2_PTR&t;&t;0xbf174
 DECL|macro|CO_REG_DEST_PTR
 mdefine_line|#define CO_REG_DEST_PTR&t;&t;0xbf178
 DECL|macro|CO_REG_DEST_WIDTH

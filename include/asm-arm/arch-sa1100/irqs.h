@@ -183,8 +183,8 @@ DECL|macro|AUDSTO
 mdefine_line|#define AUDSTO&t;&t;&t;(IRQ_BOARD_END + 42)
 DECL|macro|IRQ_USBPWR
 mdefine_line|#define IRQ_USBPWR&t;&t;(IRQ_BOARD_END + 43)
-DECL|macro|IRQ_NHCIM
-mdefine_line|#define IRQ_NHCIM&t;&t;(IRQ_BOARD_END + 44)
+DECL|macro|IRQ_HCIM
+mdefine_line|#define IRQ_HCIM&t;&t;(IRQ_BOARD_END + 44)
 DECL|macro|IRQ_HCIBUFFACC
 mdefine_line|#define IRQ_HCIBUFFACC&t;&t;(IRQ_BOARD_END + 45)
 DECL|macro|IRQ_HCIRMTWKP

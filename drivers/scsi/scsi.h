@@ -2322,5 +2322,17 @@ DECL|macro|SCSI_EH_REC_TIMEOUT
 mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0008&t;/* Recovery cmd timeout */
 DECL|macro|SCSI_SENSE_VALID
 mdefine_line|#define SCSI_SENSE_VALID(scmd) ((scmd-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
+r_int
+id|scsi_set_medium_removal
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|dev
+comma
+r_char
+id|state
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

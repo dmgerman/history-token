@@ -959,6 +959,7 @@ r_int
 id|partial
 suffix:semicolon
 r_int
+r_int
 id|pipe
 suffix:semicolon
 multiline_comment|/* calculate the appropriate pipe information */
@@ -971,24 +972,12 @@ id|SCSI_DATA_READ
 )paren
 id|pipe
 op_assign
-id|usb_rcvbulkpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|us-&gt;ep_in
-)paren
+id|us-&gt;recv_bulk_pipe
 suffix:semicolon
 r_else
 id|pipe
 op_assign
-id|usb_sndbulkpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|us-&gt;ep_out
-)paren
+id|us-&gt;send_bulk_pipe
 suffix:semicolon
 multiline_comment|/* transfer the data */
 id|US_DEBUGP
@@ -1402,9 +1391,6 @@ r_int
 id|result
 suffix:semicolon
 r_int
-id|pipe
-suffix:semicolon
-r_int
 id|partial
 suffix:semicolon
 r_int
@@ -1492,17 +1478,6 @@ id|bcb.Length
 op_assign
 id|AtaCdbLength
 suffix:semicolon
-multiline_comment|/* construct the pipe handle */
-id|pipe
-op_assign
-id|usb_sndbulkpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|us-&gt;ep_out
-)paren
-suffix:semicolon
 multiline_comment|/* copy the command payload */
 id|memset
 c_func
@@ -1574,7 +1549,7 @@ comma
 op_amp
 id|bcb
 comma
-id|pipe
+id|us-&gt;send_bulk_pipe
 comma
 id|US_BULK_CB_WRAP_LEN
 comma
@@ -1624,7 +1599,7 @@ c_func
 (paren
 l_string|&quot;clearing endpoint halt for pipe 0x%x&bslash;n&quot;
 comma
-id|pipe
+id|us-&gt;send_bulk_pipe
 )paren
 suffix:semicolon
 r_if
@@ -1635,7 +1610,7 @@ c_func
 (paren
 id|us
 comma
-id|pipe
+id|us-&gt;send_bulk_pipe
 )paren
 OL
 l_int|0
@@ -1691,17 +1666,6 @@ id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* See flow chart on pg 15 of the Bulk Only Transport spec for&n;         * an explanation of how this code works.&n;         */
-multiline_comment|/* construct the pipe handle */
-id|pipe
-op_assign
-id|usb_rcvbulkpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|us-&gt;ep_in
-)paren
-suffix:semicolon
 multiline_comment|/* get CSW for device status */
 id|US_DEBUGP
 c_func
@@ -1719,7 +1683,7 @@ comma
 op_amp
 id|bcs
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 comma
 id|US_BULK_CS_WRAP_LEN
 comma
@@ -1760,7 +1724,7 @@ c_func
 (paren
 l_string|&quot;clearing endpoint halt for pipe 0x%x&bslash;n&quot;
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 )paren
 suffix:semicolon
 r_if
@@ -1771,7 +1735,7 @@ c_func
 (paren
 id|us
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 )paren
 OL
 l_int|0
@@ -1796,7 +1760,7 @@ comma
 op_amp
 id|bcs
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 comma
 id|US_BULK_CS_WRAP_LEN
 comma
@@ -1837,7 +1801,7 @@ c_func
 (paren
 l_string|&quot;clearing halt for pipe 0x%x&bslash;n&quot;
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 )paren
 suffix:semicolon
 id|usb_stor_clear_halt
@@ -1845,7 +1809,7 @@ c_func
 (paren
 id|us
 comma
-id|pipe
+id|us-&gt;recv_bulk_pipe
 )paren
 suffix:semicolon
 r_return
@@ -2890,13 +2854,7 @@ c_func
 (paren
 id|us
 comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
+id|us-&gt;send_ctrl_pipe
 comma
 l_int|0x01
 comma
@@ -3010,13 +2968,7 @@ c_func
 (paren
 id|us
 comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-l_int|0
-)paren
+id|us-&gt;recv_ctrl_pipe
 comma
 l_int|0x02
 comma

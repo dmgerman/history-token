@@ -4143,11 +4143,11 @@ id|tty-&gt;disc_data
 op_assign
 id|pInfo
 suffix:semicolon
-id|INIT_LIST_HEAD
+id|init_timer
 c_func
 (paren
 op_amp
-id|pInfo-&gt;tmr.list
+id|pInfo-&gt;tmr
 )paren
 suffix:semicolon
 id|pInfo-&gt;tmr.data
