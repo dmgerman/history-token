@@ -7104,15 +7104,15 @@ id|KERN_ERR
 l_string|&quot;md: pers-&gt;run() failed ...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mddev-&gt;pers
-op_assign
-l_int|NULL
-suffix:semicolon
 id|module_put
 c_func
 (paren
 id|mddev-&gt;pers-&gt;owner
 )paren
+suffix:semicolon
+id|mddev-&gt;pers
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
