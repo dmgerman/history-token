@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Version 3.37&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235, vt8237&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; * Documentation:&n; *&t;Obsolete device documentation publically available from via.com.tw&n; *&t;Current device documentation available under NDA only&n; */
+multiline_comment|/*&n; *&n; * Version 3.38&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235, vt8237&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; * Documentation:&n; *&t;Obsolete device documentation publically available from via.com.tw&n; *&t;Current device documentation available under NDA only&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -349,12 +349,6 @@ id|via_isa_bridge
 op_star
 id|via_config
 suffix:semicolon
-DECL|variable|via_enabled
-r_static
-r_int
-r_char
-id|via_enabled
-suffix:semicolon
 DECL|variable|via_80w
 r_static
 r_int
@@ -560,7 +554,7 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.37&quot;
+l_string|&quot;Driver Version:                     3.38&quot;
 )paren
 suffix:semicolon
 id|via_print
@@ -2306,28 +2300,6 @@ id|pio
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
-id|via_enabled
-op_rshift
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|channel
-)paren
-op_amp
-l_int|1
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|pio
 op_eq
 l_int|255
@@ -2979,34 +2951,6 @@ op_amp
 id|v
 )paren
 suffix:semicolon
-id|via_enabled
-op_assign
-(paren
-(paren
-id|v
-op_amp
-l_int|1
-)paren
-ques
-c_cond
-l_int|2
-suffix:colon
-l_int|0
-)paren
-op_or
-(paren
-(paren
-id|v
-op_amp
-l_int|2
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set up FIFO sizes and thresholds.&n;&t; */
 id|pci_read_config_byte
 c_func
@@ -3054,11 +2998,13 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|via_enabled
+id|v
+op_amp
+l_int|3
 )paren
 (brace
 r_case
-l_int|1
+l_int|2
 suffix:colon
 id|t
 op_or_assign
@@ -3068,7 +3014,7 @@ r_break
 suffix:semicolon
 multiline_comment|/* 16 on primary */
 r_case
-l_int|2
+l_int|1
 suffix:colon
 id|t
 op_or_assign
@@ -3380,18 +3326,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
 id|hwif-&gt;udma_four
-)paren
 )paren
 id|hwif-&gt;udma_four
 op_assign
 (paren
-(paren
-id|via_enabled
-op_amp
 id|via_80w
-)paren
 op_rshift
 id|hwif-&gt;channel
 )paren
@@ -3430,45 +3370,6 @@ dot
 id|autodma
 op_assign
 id|hwif-&gt;autodma
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;init_dma_via82cxxx&t;-&t;set up for IDE DMA&n; *&t;@hwif: IDE interface&n; *&t;@dmabase: DMA base address&n; *&n; *&t;We allow the BM-DMA driver to only work on enabled interfaces.&n; */
-DECL|function|init_dma_via82cxxx
-r_static
-r_void
-id|__init
-id|init_dma_via82cxxx
-c_func
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-comma
-r_int
-r_int
-id|dmabase
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|via_enabled
-op_rshift
-id|hwif-&gt;channel
-)paren
-op_amp
-l_int|1
-)paren
-id|ide_setup_dma
-c_func
-(paren
-id|hwif
-comma
-id|dmabase
-comma
-l_int|8
-)paren
 suffix:semicolon
 )brace
 r_extern
