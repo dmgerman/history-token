@@ -110,6 +110,10 @@ r_int
 r_int
 op_star
 id|handle
+comma
+r_int
+r_int
+id|align_order
 )paren
 (brace
 r_int
@@ -137,6 +141,20 @@ r_int
 id|pass
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|align_mask
+suffix:semicolon
+id|align_mask
+op_assign
+l_int|0xffffffffffffffffl
+op_rshift
+(paren
+l_int|64
+op_minus
+id|align_order
+)paren
 suffix:semicolon
 multiline_comment|/* This allocator was derived from x86_64&squot;s bit string search */
 multiline_comment|/* Sanity check */
@@ -246,6 +264,18 @@ id|limit
 comma
 id|start
 )paren
+suffix:semicolon
+multiline_comment|/* Align allocation */
+id|n
+op_assign
+(paren
+id|n
+op_plus
+id|align_mask
+)paren
+op_amp
+op_complement
+id|align_mask
 suffix:semicolon
 id|end
 op_assign
@@ -444,6 +474,10 @@ comma
 r_enum
 id|dma_data_direction
 id|direction
+comma
+r_int
+r_int
+id|align_order
 )paren
 (brace
 r_int
@@ -478,6 +512,8 @@ comma
 id|npages
 comma
 l_int|NULL
+comma
+id|align_order
 )paren
 suffix:semicolon
 r_if
@@ -1068,6 +1104,8 @@ id|npages
 comma
 op_amp
 id|handle
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|DBG
@@ -1925,6 +1963,8 @@ comma
 id|npages
 comma
 id|direction
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2170,6 +2210,8 @@ comma
 id|npages
 comma
 id|DMA_BIDIRECTIONAL
+comma
+id|order
 )paren
 suffix:semicolon
 r_if
