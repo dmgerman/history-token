@@ -6904,7 +6904,7 @@ id|skb
 suffix:semicolon
 id|urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 singleline_comment|// FIXME urb-&gt;timeout = ... jiffies ... ;
 id|spin_lock_irqsave

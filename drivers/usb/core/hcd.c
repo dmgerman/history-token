@@ -3233,7 +3233,7 @@ c_cond
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_TIMEOUT_KILLED
+id|URB_TIMEOUT_KILLED
 )paren
 )paren
 id|urb-&gt;status
@@ -3249,7 +3249,7 @@ op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 )paren
 )paren
 (brace
