@@ -841,6 +841,7 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 DECL|member|resume
 r_void
 (paren
@@ -853,6 +854,7 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|_snd_ac97_bus_ops
@@ -1173,14 +1175,15 @@ r_int
 r_int
 id|subsystem_device
 suffix:semicolon
-DECL|member|reg_lock
-id|spinlock_t
-id|reg_lock
-suffix:semicolon
-DECL|member|mutex
+DECL|member|reg_mutex
 r_struct
 id|semaphore
-id|mutex
+id|reg_mutex
+suffix:semicolon
+DECL|member|page_mutex
+r_struct
+id|semaphore
+id|page_mutex
 suffix:semicolon
 multiline_comment|/* mutex for AD18xx multi-codecs and paging (2.3) */
 DECL|member|num
@@ -1645,6 +1648,10 @@ DECL|enumerator|AC97_TUNE_INV_EAPD
 id|AC97_TUNE_INV_EAPD
 comma
 multiline_comment|/* inverted EAPD implementation */
+DECL|enumerator|AC97_TUNE_MUTE_LED
+id|AC97_TUNE_MUTE_LED
+comma
+multiline_comment|/* EAPD bit works as mute LED */
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk
@@ -1702,7 +1709,9 @@ id|ac97_quirk
 op_star
 id|quirk
 comma
-r_int
+r_const
+r_char
+op_star
 id|override
 )paren
 suffix:semicolon

@@ -271,6 +271,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|__snd_kmalloc
+r_static
 r_void
 op_star
 id|__snd_kmalloc
@@ -509,23 +510,8 @@ id|obj
 op_eq
 l_int|NULL
 )paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;null kfree (called from %p)&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|snd_alloc_track_entry
@@ -724,23 +710,8 @@ id|obj
 op_eq
 l_int|NULL
 )paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;null vfree (called from %p)&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|snd_alloc_track_entry
@@ -1031,6 +1002,7 @@ op_star
 id|dst
 comma
 r_const
+r_volatile
 r_void
 id|__iomem
 op_star
@@ -1154,6 +1126,7 @@ r_int
 id|copy_from_user_toio
 c_func
 (paren
+r_volatile
 r_void
 id|__iomem
 op_star

@@ -4216,11 +4216,6 @@ id|ypcm
 op_assign
 id|runtime-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ypcm
-)paren
 id|kfree
 c_func
 (paren
@@ -8875,6 +8870,11 @@ id|chip-&gt;ac97_bus-&gt;private_free
 op_assign
 id|snd_ymfpci_mixer_free_ac97_bus
 suffix:semicolon
+id|chip-&gt;ac97_bus-&gt;no_vra
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* YMFPCI doesn&squot;t need VRA */
 id|memset
 c_func
 (paren
@@ -8920,6 +8920,21 @@ l_int|0
 )paren
 r_return
 id|err
+suffix:semicolon
+multiline_comment|/* to be sure */
+id|snd_ac97_update_bits
+c_func
+(paren
+id|chip-&gt;ac97
+comma
+id|AC97_EXTENDED_STATUS
+comma
+id|AC97_EA_VRA
+op_or
+id|AC97_EA_VRM
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -10962,11 +10977,6 @@ l_int|3
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|chip-&gt;saved_regs
-)paren
 id|vfree
 c_func
 (paren
@@ -11332,14 +11342,6 @@ c_func
 id|chip-&gt;pci
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -11487,14 +11489,6 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -11926,14 +11920,6 @@ id|chip
 )paren
 suffix:semicolon
 macro_line|#endif
-id|snd_ymfpci_proc_init
-c_func
-(paren
-id|card
-comma
-id|chip
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11967,6 +11953,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_ymfpci_proc_init
+c_func
+(paren
+id|card
+comma
+id|chip
+)paren
+suffix:semicolon
 id|snd_card_set_dev
 c_func
 (paren

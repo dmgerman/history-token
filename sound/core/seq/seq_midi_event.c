@@ -757,11 +757,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|dev-&gt;buf
-)paren
 id|kfree
 c_func
 (paren
@@ -1017,11 +1012,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|old_buf
-)paren
 id|kfree
 c_func
 (paren

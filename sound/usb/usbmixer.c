@@ -2507,10 +2507,6 @@ id|kctl-&gt;private_data
 id|kfree
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|kctl-&gt;private_data
 )paren
 suffix:semicolon

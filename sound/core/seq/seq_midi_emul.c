@@ -186,6 +186,7 @@ op_star
 id|chan
 )paren
 suffix:semicolon
+r_static
 r_void
 id|snd_midi_reset_controllers
 c_func
@@ -2625,6 +2626,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialise a single midi channel control block.&n; */
 DECL|function|snd_midi_channel_init
+r_static
 r_void
 id|snd_midi_channel_init
 c_func
@@ -2703,6 +2705,7 @@ multiline_comment|/* Default ch 10 as drums */
 )brace
 multiline_comment|/*&n; * Allocate and initialise a set of midi channel control blocks.&n; */
 DECL|function|snd_midi_channel_init_set
+r_static
 id|snd_midi_channel_t
 op_star
 id|snd_midi_channel_init_set
@@ -2902,6 +2905,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reset the midi controllers on a particular channel to default values.&n; */
 DECL|function|snd_midi_reset_controllers
+r_static
 r_void
 id|snd_midi_reset_controllers
 c_func
@@ -2957,13 +2961,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chset-&gt;channels
-op_ne
-l_int|NULL
-)paren
 id|kfree
 c_func
 (paren
@@ -3023,20 +3020,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_midi_channel_set_clear
-)paren
-suffix:semicolon
-DECL|variable|snd_midi_channel_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_midi_channel_init
-)paren
-suffix:semicolon
-DECL|variable|snd_midi_channel_init_set
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_midi_channel_init_set
 )paren
 suffix:semicolon
 DECL|variable|snd_midi_channel_alloc_set

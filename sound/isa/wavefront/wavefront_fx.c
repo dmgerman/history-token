@@ -6784,11 +6784,6 @@ multiline_comment|/* cnt */
 id|pd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|page_data
-)paren
 id|kfree
 c_func
 (paren

@@ -11606,13 +11606,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vortex-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12734,13 +12727,6 @@ id|nr_ch
 op_assign
 id|nr_ch
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|vortex-&gt;lock
-)paren
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* AC97 Codec channel setup. FIXME: this has no effect on some cards !! */
 r_if
@@ -13333,6 +13319,13 @@ id|IRQ_PCMOUT
 )paren
 (brace
 multiline_comment|/* ALSA period acknowledge. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13373,6 +13366,13 @@ id|i
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|snd_pcm_period_elapsed
 c_func
 (paren
@@ -13382,6 +13382,13 @@ id|i
 )braket
 dot
 id|substream
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -13427,6 +13434,13 @@ id|i
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|snd_pcm_period_elapsed
 c_func
 (paren
@@ -13438,9 +13452,23 @@ dot
 id|substream
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|handled
 op_assign
 l_int|1
@@ -13566,10 +13594,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 )brace
@@ -13589,10 +13617,10 @@ comma
 l_int|0x8068
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13605,10 +13633,10 @@ comma
 l_int|0x00e8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -13624,10 +13652,10 @@ comma
 l_int|0x00a8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13640,10 +13668,10 @@ comma
 l_int|0x80a8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13656,10 +13684,10 @@ comma
 l_int|0x80e8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13672,10 +13700,10 @@ comma
 l_int|0x80a8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13688,10 +13716,10 @@ comma
 l_int|0x00a8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|2000
+l_int|2
 )paren
 suffix:semicolon
 id|hwwrite
@@ -13738,10 +13766,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|5000
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -13755,10 +13783,10 @@ comma
 l_int|0xe8
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Enable codec channels 0 and 1. */
@@ -13812,22 +13840,9 @@ id|codec-&gt;private_data
 suffix:semicolon
 r_int
 r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
 id|lifeboat
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* wait for transactions to clear */
 r_while
@@ -13867,15 +13882,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;vortex: ac97 codec stuck busy&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -13922,15 +13928,6 @@ comma
 id|VORTEX_CODEC_IO
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|vortex_codec_read
 r_static
@@ -13964,22 +13961,9 @@ comma
 id|data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|lifeboat
 op_assign
 l_int|0
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* wait for transactions to clear */
 r_while
@@ -14021,15 +14005,6 @@ id|KERN_ERR
 l_string|&quot;vortex: ac97 codec stuck busy&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0xffff
 suffix:semicolon
@@ -14059,6 +14034,7 @@ id|read_addr
 )paren
 suffix:semicolon
 multiline_comment|/* wait for address */
+r_do
 (brace
 id|udelay
 c_func
@@ -14092,15 +14068,6 @@ id|KERN_ERR
 l_string|&quot;vortex: ac97 address never arrived&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0xffff
 suffix:semicolon
@@ -14120,16 +14087,6 @@ id|addr
 op_lshift
 id|VORTEX_CODEC_ADDSHIFT
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Unlock. */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|card-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* return data. */
@@ -14569,10 +14526,10 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|5000
+l_int|5
 )paren
 suffix:semicolon
 id|hwwrite
@@ -14593,10 +14550,10 @@ op_amp
 l_int|0xffdfffff
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|5000
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Reset IRQ flags */
@@ -14841,10 +14798,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|udelay
+id|msleep
 c_func
 (paren
-l_int|5000
+l_int|5
 )paren
 suffix:semicolon
 id|hwwrite

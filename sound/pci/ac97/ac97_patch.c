@@ -122,7 +122,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 id|page_save
@@ -179,7 +179,7 @@ id|up
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* unlock paging */
@@ -3792,6 +3792,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Analog Device AD18xx, AD19xx codecs&n; */
+macro_line|#ifdef CONFIG_PM
 DECL|function|ad18xx_resume
 r_static
 r_void
@@ -4167,6 +4168,7 @@ id|ac97
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|patch_ad1819
 r_int
 id|patch_ad1819
@@ -4636,11 +4638,13 @@ id|snd_ac97_build_ops
 id|patch_ad1881_build_ops
 op_assign
 (brace
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 op_amp
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1881
@@ -5145,11 +5149,13 @@ op_assign
 op_amp
 id|patch_ad1885_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 op_amp
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1885
@@ -5597,10 +5603,12 @@ id|build_specific
 op_assign
 id|patch_ad1981a_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1981a
@@ -5751,10 +5759,12 @@ id|build_specific
 op_assign
 id|patch_ad1981b_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1981b
@@ -6371,10 +6381,12 @@ id|build_specific
 op_assign
 id|patch_ad1888_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1888
@@ -6504,10 +6516,12 @@ id|build_specific
 op_assign
 id|patch_ad1980_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1980
@@ -6638,10 +6652,12 @@ id|build_specific
 op_assign
 id|patch_ad1985_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1985
@@ -7125,7 +7141,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -7705,7 +7721,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -8572,7 +8588,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -8615,7 +8631,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -9452,7 +9468,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -9643,9 +9659,35 @@ multiline_comment|/* bit 13: enable internal vref output for mic */
 multiline_comment|/* bit 12: disable center/lfe (swithable) */
 multiline_comment|/* bit 10: disable surround/line (switchable) */
 multiline_comment|/* bit 9: mix 2 surround off */
+multiline_comment|/* bit 4: undocumented; 0 mutes the CM9739A, which defaults to 1 */
+multiline_comment|/* bit 3: undocumented; surround? */
 multiline_comment|/* bit 0: dB */
 id|val
 op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_CM9739_MULTI_CHAN
+)paren
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+suffix:semicolon
+id|val
+op_or_assign
 (paren
 l_int|1
 op_lshift
@@ -10011,7 +10053,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get
@@ -10054,7 +10096,7 @@ comma
 dot
 id|info
 op_assign
-id|snd_ac97_info_single
+id|snd_ac97_info_volsw
 comma
 dot
 id|get

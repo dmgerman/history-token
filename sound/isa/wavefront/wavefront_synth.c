@@ -6816,6 +6816,7 @@ id|section
 id|WF_SECTION_MAX
 )braket
 suffix:semicolon
+r_int
 r_char
 id|section_length
 suffix:semicolon
