@@ -15470,7 +15470,7 @@ mdefine_line|#define COMPATIBLE_IOCTL(cmd) HANDLE_IOCTL(cmd, sys_ioctl)
 DECL|macro|IOCTL_TABLE_START
 mdefine_line|#define IOCTL_TABLE_START  struct ioctl_trans ioctl_start[] = {
 DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END    }; struct ioctl_trans ioctl_end[0];
+mdefine_line|#define IOCTL_TABLE_END    };
 id|IOCTL_TABLE_START
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 multiline_comment|/* Might be moved to compat_ioctl.h with some ifdefs... */
@@ -16481,4 +16481,14 @@ id|drm32_res_ctx
 suffix:semicolon
 macro_line|#endif /* DRM */
 id|IOCTL_TABLE_END
+DECL|variable|ioctl_table_size
+r_int
+id|ioctl_table_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|ioctl_start
+)paren
+suffix:semicolon
 eof

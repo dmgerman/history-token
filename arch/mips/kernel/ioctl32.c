@@ -4601,7 +4601,7 @@ mdefine_line|#define HANDLE_IOCTL(cmd,handler)&t;{ (cmd), (ioctl32_handler_t)(ha
 DECL|macro|IOCTL_TABLE_START
 mdefine_line|#define IOCTL_TABLE_START &bslash;&n;&t;struct ioctl_trans ioctl_start[] = {
 DECL|macro|IOCTL_TABLE_END
-mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;}; struct ioctl_trans ioctl_end[0];
+mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;};
 id|IOCTL_TABLE_START
 macro_line|#include &lt;linux/compat_ioctl.h&gt;
 id|COMPATIBLE_IOCTL
@@ -6436,6 +6436,15 @@ c_func
 id|RTC_WKALM_RD
 )paren
 id|IOCTL_TABLE_END
+r_int
+id|ioctl_table_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|ioctl_start
+)paren
+suffix:semicolon
 DECL|macro|NR_IOCTL_TRANS
 mdefine_line|#define NR_IOCTL_TRANS&t;&t;(sizeof(ioctl_translations) /&t;&bslash;&n;&t;&t;&t;&t; sizeof(ioctl_translations[0]))
 eof
