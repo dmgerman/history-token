@@ -1,9 +1,11 @@
 multiline_comment|/*&n; *  arch/s390/kernel/s390_ksyms.c&n; *&n; *  S390 version&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#if CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#endif
@@ -29,18 +31,25 @@ c_func
 id|_zb_findmap
 )paren
 suffix:semicolon
-DECL|variable|__copy_from_user_fixup
+DECL|variable|__copy_from_user_asm
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|__copy_from_user_fixup
+id|__copy_from_user_asm
 )paren
 suffix:semicolon
-DECL|variable|__copy_to_user_fixup
+DECL|variable|__copy_to_user_asm
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|__copy_to_user_fixup
+id|__copy_to_user_asm
+)paren
+suffix:semicolon
+DECL|variable|__clear_user_asm
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__clear_user_asm
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * semaphore ops&n; */
@@ -65,13 +74,6 @@ c_func
 id|__down_interruptible
 )paren
 suffix:semicolon
-DECL|variable|__down_trylock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_trylock
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * string functions&n; */
 DECL|variable|memcmp
 id|EXPORT_SYMBOL_NOVERS
@@ -92,6 +94,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memmove
+)paren
+suffix:semicolon
+DECL|variable|memscan
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memscan
 )paren
 suffix:semicolon
 DECL|variable|strlen
@@ -155,13 +164,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|strstr
-)paren
-suffix:semicolon
-DECL|variable|strsep
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|strsep
 )paren
 suffix:semicolon
 DECL|variable|strpbrk

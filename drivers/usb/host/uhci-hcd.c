@@ -6628,22 +6628,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* not yet checked/allocated */
-r_if
-c_cond
-(paren
-id|urb-&gt;number_of_packets
-op_le
-l_int|0
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|bustime
 op_assign
 id|usb_check_bandwidth

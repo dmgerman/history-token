@@ -19,8 +19,6 @@ DECL|macro|CISCO_CTRL
 mdefine_line|#define CISCO_CTRL            0x00
 DECL|macro|CISCO_TYPE_CDP
 mdefine_line|#define CISCO_TYPE_CDP        0x2000
-DECL|macro|CISCO_TYPE_INET
-mdefine_line|#define CISCO_TYPE_INET       0x0800
 DECL|macro|CISCO_TYPE_SLARP
 mdefine_line|#define CISCO_TYPE_SLARP      0x8035
 DECL|macro|CISCO_SLARP_REQUEST
@@ -536,10 +534,26 @@ id|master_lp-&gt;netdev-&gt;queue
 op_eq
 id|lp
 )paren
+(brace
 id|master_lp-&gt;netdev-&gt;queue
 op_assign
 id|lp-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;next
+op_eq
+id|lp
+)paren
+(brace
+multiline_comment|/* last in queue */
+id|master_lp-&gt;netdev-&gt;queue
+op_assign
+id|master_lp-&gt;netdev-&gt;local
+suffix:semicolon
+)brace
+)brace
 id|lp-&gt;next
 op_assign
 id|lp-&gt;last

@@ -178,8 +178,7 @@ DECL|typedef|hwc_ioctls_t
 )brace
 id|hwc_ioctls_t
 suffix:semicolon
-DECL|variable|_hwc_ioctls
-r_static
+r_extern
 id|hwc_ioctls_t
 id|_hwc_ioctls
 suffix:semicolon

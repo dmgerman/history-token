@@ -8,29 +8,125 @@ r_typedef
 r_struct
 id|_mci
 (brace
+DECL|member|sd
+id|__u32
+id|sd
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 00 system damage */
+DECL|member|pd
+id|__u32
+id|pd
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 01 instruction-processing damage */
+DECL|member|sr
+id|__u32
+id|sr
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 02 system recovery */
 DECL|member|to_be_defined_1
 id|__u32
 id|to_be_defined_1
 suffix:colon
-l_int|9
+l_int|4
 suffix:semicolon
+multiline_comment|/* 03-06 */
+DECL|member|dg
+id|__u32
+id|dg
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 07 degradation */
+DECL|member|w
+id|__u32
+id|w
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 08 warning pending */
 DECL|member|cp
 id|__u32
 id|cp
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* channel-report pending */
+multiline_comment|/* 09 channel-report pending */
 DECL|member|to_be_defined_2
 id|__u32
 id|to_be_defined_2
 suffix:colon
-l_int|22
+l_int|6
 suffix:semicolon
+multiline_comment|/* 10-15 */
+DECL|member|se
+id|__u32
+id|se
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 16 storage error uncorrected */
+DECL|member|sc
+id|__u32
+id|sc
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 17 storage error corrected */
+DECL|member|ke
+id|__u32
+id|ke
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 18 storage-key error uncorrected */
+DECL|member|ds
+id|__u32
+id|ds
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 19 storage degradation */
 DECL|member|to_be_defined_3
 id|__u32
 id|to_be_defined_3
+suffix:colon
+l_int|4
 suffix:semicolon
+multiline_comment|/* 20-23 */
+DECL|member|fa
+id|__u32
+id|fa
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 24 failing storage address validity */
+DECL|member|to_be_defined_4
+id|__u32
+id|to_be_defined_4
+suffix:colon
+l_int|7
+suffix:semicolon
+multiline_comment|/* 25-31 */
+DECL|member|ie
+id|__u32
+id|ie
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 32 indirect storage error */
+DECL|member|to_be_defined_5
+id|__u32
+id|to_be_defined_5
+suffix:colon
+l_int|31
+suffix:semicolon
+multiline_comment|/* 33-63 */
 DECL|typedef|mci_t
 )brace
 id|mci_t

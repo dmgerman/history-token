@@ -170,9 +170,9 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 DECL|macro|BUG
 mdefine_line|#define BUG() do { &bslash;&n;        printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;        __asm__ __volatile__(&quot;.word 0x0000&quot;); &bslash;&n;} while (0)                                       
 DECL|macro|PAGE_BUG
@@ -323,11 +323,17 @@ mdefine_line|#define PAGE_OFFSET             0x0UL
 DECL|macro|__pa
 mdefine_line|#define __pa(x)                 (unsigned long)(x)
 DECL|macro|__va
-mdefine_line|#define __va(x)                 (void *)(x)
+mdefine_line|#define __va(x)                 (void *)(unsigned long)(x)
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

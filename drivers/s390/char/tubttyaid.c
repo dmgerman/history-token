@@ -12,6 +12,7 @@ DECL|macro|PF11_STR
 mdefine_line|#define PF11_STR &quot;&bslash;033j&quot;
 multiline_comment|/* other AID-key default strings */
 DECL|variable|aidtab
+r_static
 id|aid_t
 id|aidtab
 (braket

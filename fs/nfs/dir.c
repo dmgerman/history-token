@@ -2284,6 +2284,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* When creating a negative dentry, we want to renew d_time */
+id|nfs_renew_times
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren
@@ -4454,6 +4461,12 @@ c_func
 (paren
 id|old_dentry
 comma
+id|new_dentry
+)paren
+suffix:semicolon
+id|nfs_renew_times
+c_func
+(paren
 id|new_dentry
 )paren
 suffix:semicolon

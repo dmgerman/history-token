@@ -1,5 +1,25 @@
 multiline_comment|/*&n; *  IBM/3270 Driver -- Copyright (C) 2000 UTS Global LLC&n; *&n; *  tubttyrcl.c -- Linemode Command-recall functionality&n; *&n; *&n; *&n; *&n; *&n; *  Author:  Richard Hitt&n; */
 macro_line|#include &quot;tubio.h&quot;
+r_static
+r_void
+id|tty3270_rcl_sync
+c_func
+(paren
+id|tub_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|tty3270_rcl_resize
+c_func
+(paren
+id|tub_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_int
 DECL|function|tty3270_rcl_init
 id|tty3270_rcl_init
@@ -20,6 +40,7 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tty3270_rcl_resize
 id|tty3270_rcl_resize
@@ -973,6 +994,7 @@ id|tubp
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|tty3270_rcl_sync
 id|tty3270_rcl_sync

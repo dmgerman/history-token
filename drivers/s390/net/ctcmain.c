@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.51 2001/09/24 10:38:02 mschwide Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.51 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.55 2001/12/03 14:28:45 felfert Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.55 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -55,12 +55,14 @@ c_func
 l_string|&quot;Linux for S/390 CTC/Escon Driver&quot;
 )paren
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,12))
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef CTC_CHANDEV
 id|MODULE_PARM
 c_func
@@ -531,7 +533,7 @@ id|tbusy
 )paren
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -598,7 +600,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.51 $&quot;
+l_string|&quot;$Revision: 1.55 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -663,7 +665,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;CTC driver Version%s initialized&bslash;n&quot;
+l_string|&quot;CTC driver Version%swith&quot;
+macro_line|#ifndef CTC_CHANDEV
+l_string|&quot;out&quot;
+macro_line|#endif
+l_string|&quot; CHANDEV support&quot;
+macro_line|#ifdef DEBUG
+l_string|&quot; (DEBUG-VERSION, &quot;
+id|__DATE__
+id|__TIME__
+l_string|&quot;)&quot;
+macro_line|#endif
+l_string|&quot; initialized&bslash;n&quot;
 comma
 id|version
 )paren
@@ -1509,6 +1522,12 @@ c_func
 id|pskb
 )paren
 )paren
+op_logical_or
+(paren
+id|header-&gt;length
+OG
+id|len
+)paren
 )paren
 (brace
 id|printk
@@ -1516,7 +1535,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s Illegal packet size %d &quot;
-l_string|&quot;received (MTU=%d), &quot;
+l_string|&quot;received (MTU=%d blocklen=%d), &quot;
 l_string|&quot;dropping&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1524,6 +1543,8 @@ comma
 id|header-&gt;length
 comma
 id|dev-&gt;mtu
+comma
+id|len
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -1693,6 +1714,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: [kj] Net drivers should set dev-&gt;last_rx immediately after netif_rx
 id|privptr-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
@@ -2281,10 +2303,14 @@ l_int|1
 suffix:semicolon
 id|ch-&gt;trans_skb
 op_assign
-id|dev_alloc_skb
+id|__dev_alloc_skb
 c_func
 (paren
 id|ch-&gt;max_bufsize
+comma
+id|GFP_ATOMIC
+op_or
+id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -2350,11 +2376,7 @@ id|ch-&gt;ccw
 l_int|1
 )braket
 comma
-id|virt_to_phys
-c_func
-(paren
 id|ch-&gt;trans_skb-&gt;data
-)paren
 )paren
 )paren
 (brace
@@ -2711,17 +2733,6 @@ op_amp
 id|ch-&gt;collect_queue
 )paren
 suffix:semicolon
-id|ch-&gt;ccw
-(braket
-l_int|1
-)braket
-dot
-id|count
-op_assign
-id|ch-&gt;collect_len
-op_plus
-l_int|2
-suffix:semicolon
 op_star
 (paren
 (paren
@@ -2806,6 +2817,22 @@ id|ch-&gt;collect_len
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ch-&gt;collect_lock
+)paren
+suffix:semicolon
+id|ch-&gt;ccw
+(braket
+l_int|1
+)braket
+dot
+id|count
+op_assign
+id|ch-&gt;trans_skb-&gt;len
+suffix:semicolon
 id|fsm_addtimer
 c_func
 (paren
@@ -2823,22 +2850,6 @@ id|ch-&gt;prof.send_stamp
 op_assign
 id|xtime
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[1].cda = %08x&bslash;n&quot;
-comma
-id|ch-&gt;ccw
-(braket
-l_int|1
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|do_IO
@@ -2899,6 +2910,14 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ch-&gt;collect_lock
+)paren
+suffix:semicolon
 id|fsm_newstate
 c_func
 (paren
@@ -2907,17 +2926,11 @@ comma
 id|CH_STATE_TXIDLE
 )paren
 suffix:semicolon
+)brace
 id|ctc_clear_busy
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ch-&gt;collect_lock
 )paren
 suffix:semicolon
 )brace
@@ -3280,22 +3293,6 @@ id|count
 op_assign
 id|ch-&gt;max_bufsize
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[1].cda = %08x&bslash;n&quot;
-comma
-id|ch-&gt;ccw
-(braket
-l_int|1
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|do_IO
@@ -3585,22 +3582,6 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* Transfer only length */
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[1].cda = %08x&bslash;n&quot;
-comma
-id|ch-&gt;ccw
-(braket
-l_int|1
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|fsm_newstate
 c_func
 (paren
@@ -3834,22 +3815,6 @@ comma
 id|CH_STATE_RXIDLE
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[1].cda = %08x&bslash;n&quot;
-comma
-id|ch-&gt;ccw
-(braket
-l_int|1
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|do_IO
@@ -6122,11 +6087,7 @@ id|ch-&gt;ccw
 l_int|4
 )braket
 comma
-id|virt_to_phys
-c_func
-(paren
 id|skb-&gt;data
-)paren
 )paren
 )paren
 (brace
@@ -6199,22 +6160,6 @@ comma
 id|saveflags
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[4].cda = %08x&bslash;n&quot;
-comma
-id|ch-&gt;ccw
-(braket
-l_int|4
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|do_IO
@@ -9679,6 +9624,15 @@ suffix:semicolon
 r_int
 id|ccw_idx
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|nskb
+suffix:semicolon
+r_int
+r_int
+id|hi
+suffix:semicolon
 multiline_comment|/**&n;&t;&t; * Protect skb against beeing free&squot;d by upper&n;&t;&t; * layers.&n;&t;&t; */
 id|atomic_inc
 c_func
@@ -9745,6 +9699,112 @@ l_int|2
 op_assign
 id|block_len
 suffix:semicolon
+multiline_comment|/**&n;&t;&t; * IDAL support in CTC is broken, so we have to&n;&t;&t; * care about skb&squot;s above 2G ourselves.&n;&t;&t; */
+id|hi
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|skb-&gt;tail
+op_plus
+id|LL_HEADER_LENGTH
+)paren
+op_rshift
+l_int|31
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hi
+)paren
+(brace
+id|nskb
+op_assign
+id|alloc_skb
+c_func
+(paren
+id|skb-&gt;len
+comma
+id|GFP_ATOMIC
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nskb
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|skb-&gt;users
+)paren
+suffix:semicolon
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+id|LL_HEADER_LENGTH
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_else
+(brace
+id|memcpy
+c_func
+(paren
+id|skb_put
+c_func
+(paren
+id|nskb
+comma
+id|skb-&gt;len
+)paren
+comma
+id|skb-&gt;data
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|nskb-&gt;users
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|skb-&gt;users
+)paren
+suffix:semicolon
+id|dev_kfree_skb_irq
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb
+op_assign
+id|nskb
+suffix:semicolon
+)brace
+)brace
 id|ch-&gt;ccw
 (braket
 l_int|4
@@ -9766,11 +9826,7 @@ id|ch-&gt;ccw
 l_int|4
 )braket
 comma
-id|virt_to_phys
-c_func
-(paren
 id|skb-&gt;data
-)paren
 )paren
 )paren
 (brace
@@ -9788,6 +9844,13 @@ l_int|1
 )paren
 (brace
 multiline_comment|/**&n;&t;&t;&t;&t; * Remove our header. It gets added&n;&t;&t;&t;&t; * again on retransmit.&n;&t;&t;&t;&t; */
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|skb-&gt;users
+)paren
+suffix:semicolon
 id|skb_pull
 c_func
 (paren
@@ -9874,16 +9937,6 @@ id|ch-&gt;retry
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|ctc_dump_skb
-c_func
-(paren
-id|skb
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|fsm_newstate
 c_func
 (paren
@@ -9917,28 +9970,6 @@ id|ch-&gt;prof.send_stamp
 op_assign
 id|xtime
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ccw[%d].cda = %08x&bslash;n&quot;
-comma
-id|ccw_idx
-op_plus
-l_int|1
-comma
-id|ch-&gt;ccw
-(braket
-id|ccw_idx
-op_plus
-l_int|1
-)braket
-dot
-id|cda
-)paren
-suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|do_IO
@@ -14611,6 +14642,7 @@ mdefine_line|#define ctc_init init_module
 macro_line|#endif MODULE
 multiline_comment|/**&n; * Initialize module.&n; * This is called just after the module is loaded.&n; *&n; * @return 0 on success, !0 on error.&n; */
 DECL|function|ctc_init
+r_static
 r_int
 id|ctc_init
 c_func

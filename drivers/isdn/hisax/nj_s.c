@@ -816,6 +816,42 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* 2001/10/04 Christoph Ersfeld, Formula-n Europe AG www.formula-n.com */
+r_if
+c_cond
+(paren
+(paren
+id|dev_netjet-&gt;subsystem_vendor
+op_eq
+l_int|0x55
+)paren
+op_logical_and
+(paren
+id|dev_netjet-&gt;subsystem_device
+op_eq
+l_int|0x02
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Netjet: You tried to load this driver with an incompatible TigerJet-card&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Use type=41 for Formula-n enter:now ISDN PCI and compatible&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* end new code */
 id|cs-&gt;hw.njet.pdev
 op_assign
 id|dev_netjet

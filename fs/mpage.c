@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * fs/mpage.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * Contains functions related to preparing and submitting BIOs which contain&n; * multiple pagecache pages.&n; *&n; * 15May2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;

@@ -244,23 +244,6 @@ l_string|&quot;HYCAPI hycapi_remove_ctr&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif 
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hy_di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;No capi_driver_interface set!&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|cinfo
 op_assign
 (paren
@@ -3218,23 +3201,6 @@ c_func
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hy_di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;HyDI allready set&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

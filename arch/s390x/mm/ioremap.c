@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  arch/s390/mm/ioremap.c&n; *&n; *  S390 version&n; *  
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
 r_inline
@@ -224,7 +226,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp

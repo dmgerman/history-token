@@ -266,9 +266,8 @@ suffix:semicolon
 r_extern
 r_struct
 id|variable
+op_star
 id|vartable
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_int

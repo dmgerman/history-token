@@ -29,25 +29,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Caches aren&squot;t brain-dead on S390. */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()                       do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)                      do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)      do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)           do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)                 do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_icache_range
-mdefine_line|#define flush_icache_range(start, end)          do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)               do { } while (0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/*&n; * The S390 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma, address, pte)     do { } while (0)
@@ -112,8 +93,10 @@ multiline_comment|/*&n; * A pagetable entry of S390 has following format:&n; * |
 multiline_comment|/* Bits in the page table entry */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT   0x001          /* Software                         */
-DECL|macro|_PAGE_MKCLEAR
-mdefine_line|#define _PAGE_MKCLEAR   0x002          /* Software                         */
+DECL|macro|_PAGE_MKCLEAN
+mdefine_line|#define _PAGE_MKCLEAN   0x002          /* Software                         */
+DECL|macro|_PAGE_ISCLEAN
+mdefine_line|#define _PAGE_ISCLEAN   0x004          /* Software                         */
 DECL|macro|_PAGE_RO
 mdefine_line|#define _PAGE_RO        0x200          /* HW read-only                     */
 DECL|macro|_PAGE_INVALID
@@ -144,46 +127,50 @@ DECL|macro|_PAGE_REFERENCED
 mdefine_line|#define _PAGE_REFERENCED 0x04          /* HW referenced bit                */
 multiline_comment|/*&n; * No mapping available&n; */
 DECL|macro|PAGE_INVALID
-mdefine_line|#define PAGE_INVALID    __pgprot(_PAGE_INVALID)
-DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE       __pgprot(_PAGE_PRESENT | _PAGE_INVALID)
+mdefine_line|#define PAGE_INVALID&t;  __pgprot(_PAGE_INVALID)
+DECL|macro|PAGE_NONE_SHARED
+mdefine_line|#define PAGE_NONE_SHARED  __pgprot(_PAGE_PRESENT|_PAGE_INVALID)
+DECL|macro|PAGE_NONE_PRIVATE
+mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_PRESENT|_PAGE_INVALID|_PAGE_ISCLEAN)
+DECL|macro|PAGE_RO_SHARED
+mdefine_line|#define PAGE_RO_SHARED&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO)
+DECL|macro|PAGE_RO_PRIVATE
+mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO|_PAGE_ISCLEAN)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY       __pgprot(_PAGE_PRESENT | _PAGE_RO)
-DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY   __pgprot(_PAGE_PRESENT | _PAGE_RO)
+mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO|_PAGE_ISCLEAN)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED     __pgprot(_PAGE_PRESENT )
+mdefine_line|#define PAGE_SHARED&t;  __pgprot(_PAGE_PRESENT)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL     __pgprot(_PAGE_PRESENT )
+mdefine_line|#define PAGE_KERNEL&t;  __pgprot(_PAGE_PRESENT)
 multiline_comment|/*&n; * The S390 can&squot;t do page protection for execute, and considers that the&n; * same are read. Also, write permissions imply read permissions. This is&n; * the closest we can get..&n; */
 DECL|macro|__P000
-mdefine_line|#define __P000  PAGE_NONE
+mdefine_line|#define __P000  PAGE_NONE_PRIVATE
 DECL|macro|__P001
-mdefine_line|#define __P001  PAGE_READONLY
+mdefine_line|#define __P001  PAGE_RO_PRIVATE
 DECL|macro|__P010
 mdefine_line|#define __P010  PAGE_COPY
 DECL|macro|__P011
 mdefine_line|#define __P011  PAGE_COPY
 DECL|macro|__P100
-mdefine_line|#define __P100  PAGE_READONLY
+mdefine_line|#define __P100  PAGE_RO_PRIVATE
 DECL|macro|__P101
-mdefine_line|#define __P101  PAGE_READONLY
+mdefine_line|#define __P101  PAGE_RO_PRIVATE
 DECL|macro|__P110
 mdefine_line|#define __P110  PAGE_COPY
 DECL|macro|__P111
 mdefine_line|#define __P111  PAGE_COPY
 DECL|macro|__S000
-mdefine_line|#define __S000  PAGE_NONE
+mdefine_line|#define __S000  PAGE_NONE_SHARED
 DECL|macro|__S001
-mdefine_line|#define __S001  PAGE_READONLY
+mdefine_line|#define __S001  PAGE_RO_SHARED
 DECL|macro|__S010
 mdefine_line|#define __S010  PAGE_SHARED
 DECL|macro|__S011
 mdefine_line|#define __S011  PAGE_SHARED
 DECL|macro|__S100
-mdefine_line|#define __S100  PAGE_READONLY
+mdefine_line|#define __S100  PAGE_RO_SHARED
 DECL|macro|__S101
-mdefine_line|#define __S101  PAGE_READONLY
+mdefine_line|#define __S101  PAGE_RO_SHARED
 DECL|macro|__S110
 mdefine_line|#define __S110  PAGE_SHARED
 DECL|macro|__S111
@@ -215,13 +202,13 @@ id|pteval
 )paren
 op_amp
 (paren
-id|_PAGE_MKCLEAR
+id|_PAGE_MKCLEAN
 op_or
 id|_PAGE_INVALID
 )paren
 )paren
 op_eq
-id|_PAGE_MKCLEAR
+id|_PAGE_MKCLEAN
 )paren
 (brace
 id|pte_val
@@ -231,7 +218,7 @@ id|pteval
 )paren
 op_and_assign
 op_complement
-id|_PAGE_MKCLEAR
+id|_PAGE_MKCLEAN
 suffix:semicolon
 id|asm
 r_volatile
@@ -261,8 +248,6 @@ op_assign
 id|pteval
 suffix:semicolon
 )brace
-DECL|macro|pages_to_mb
-mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * pgd/pmd/pte query functions&n; */
 DECL|function|pgd_present
 r_extern
@@ -516,6 +501,20 @@ id|pte
 r_int
 id|skey
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_ISCLEAN
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -664,8 +663,6 @@ op_assign
 id|_PAGE_INVALID
 suffix:semicolon
 )brace
-DECL|macro|PTE_INIT
-mdefine_line|#define PTE_INIT(x) pte_clear(x)
 multiline_comment|/*&n; * The following pte_modification functions only work if &n; * pte_present() is true. Undefined behaviour if not..&n; */
 DECL|function|pte_modify
 r_extern
@@ -686,22 +683,25 @@ c_func
 (paren
 id|pte
 )paren
-op_assign
-(paren
+op_and_assign
+id|PAGE_MASK
+op_or
+id|_PAGE_ISCLEAN
+suffix:semicolon
 id|pte_val
 c_func
 (paren
 id|pte
 )paren
-op_amp
-id|PAGE_MASK
-)paren
-op_or
+op_or_assign
 id|pgprot_val
 c_func
 (paren
 id|newprot
 )paren
+op_amp
+op_complement
+id|_PAGE_ISCLEAN
 suffix:semicolon
 r_return
 id|pte
@@ -781,30 +781,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-multiline_comment|/* We can&squot;t set the changed bit atomically either. For now we&n;         * set (!) the page referenced bit. */
-id|asm
-r_volatile
-(paren
-l_string|&quot;sske %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|_PAGE_CHANGED
-op_or
-id|_PAGE_REFERENCED
-)paren
-comma
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* We do not explicitly set the dirty bit because the&n;&t; * sske instruction is slow. It is faster to let the&n;&t; * next instruction set the dirty bit.&n;&t; */
 id|pte_val
 c_func
 (paren
@@ -812,7 +789,11 @@ id|pte
 )paren
 op_and_assign
 op_complement
-id|_PAGE_MKCLEAR
+(paren
+id|_PAGE_MKCLEAN
+op_or
+id|_PAGE_ISCLEAN
+)paren
 suffix:semicolon
 r_return
 id|pte
@@ -947,6 +928,21 @@ id|ptep
 (brace
 r_int
 id|skey
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte_val
+c_func
+(paren
+op_star
+id|ptep
+)paren
+op_amp
+id|_PAGE_ISCLEAN
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|asm
 r_volatile
@@ -1119,27 +1115,47 @@ id|__pte
 suffix:semicolon
 )brace
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(pg, pgprot)                                                &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = (pg);                                       &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, (pgprot));                  &bslash;&n;&t;                                                                  &bslash;&n;&t;if (__page != ZERO_PAGE(__physpage)) {                            &bslash;&n;&t;&t;int __users = page_count(__page);                         &bslash;&n;&t;&t;__users -= !!PagePrivate(page) + !!__page-&gt;mapping;       &bslash;&n;&t;                                                                  &bslash;&n;&t;&t;if (__users == 1)                                         &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAR;                  &bslash;&n;        }                                                                 &bslash;&n;&t;                                                                  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+mdefine_line|#define mk_pte(pg, pgprot)                                                &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = (pg);                                       &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n; &t;                                                                  &bslash;&n;&t;if (!(pgprot_val(__pgprot) &amp; _PAGE_ISCLEAN)) {&t;&t;&t;  &bslash;&n;&t;&t;int __users = !!PagePrivate(__page) + !!__page-&gt;mapping;  &bslash;&n;&t;&t;if (__users + page_count(__page) == 1)                    &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAN;                  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, pgprot)                                              &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = mem_map+(pfn);                              &bslash;&n;&t;pgprot_t __pgprot = (pgprot);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((pfn) &lt;&lt; PAGE_SHIFT);             &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, __pgprot);                  &bslash;&n;&t;                                                                  &bslash;&n;&t;if (!(pgprot_val(__pgprot) &amp; _PAGE_ISCLEAN)) {&t;&t;&t;  &bslash;&n;&t;&t;int __users = !!PagePrivate(__page) + !!__page-&gt;mapping;  &bslash;&n;&t;&t;if (__users + page_count(__page) == 1)                    &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAN;                  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
+DECL|macro|pfn_pmd
+mdefine_line|#define pfn_pmd(pfn, pgprot)                                              &bslash;&n;({                                                                        &bslash;&n;&t;pgprot_t __pgprot = (pgprot);                                     &bslash;&n;&t;unsigned long __physpage = __pa((pfn) &lt;&lt; PAGE_SHIFT);             &bslash;&n;&t;pmd_t __pmd = __pmd(__physpage + pgprot_val(__pgprot));           &bslash;&n;&t;__pmd;                                                            &bslash;&n;})
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x) (pte_val(x) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
+mdefine_line|#define pte_page(x) pfn_to_page(pte_pfn(x))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) (pmd_val(pmd) &amp; PAGE_MASK)
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;        ((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page(pmd) (mem_map+(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pgd_page_kernel
+mdefine_line|#define pgd_page_kernel(pgd) (pgd_val(pgd) &amp; PAGE_MASK)
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 DECL|macro|pgd_offset
-mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
-DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pmd) &bslash;&n;        ((unsigned long) __va(pgd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd + pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
+DECL|macro|__pmd_offset
+mdefine_line|#define __pmd_offset(address) (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
+mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page_kernel(*(dir)) + __pmd_offset(addr))
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir,addr) &bslash;&n;&t;((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE-1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(pmd, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(pmd)) + __pte_offset(address))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(pmd, address) pte_offset_kernel(pmd, address)
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(pmd, address) pte_offset_kernel(pmd, address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
 multiline_comment|/*&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 52 and bit 55 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 53 and bit 54 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 63 is used as the software page present bit. If a page is&n; * swapped this obviously has to be zero.&n; * This leaves the bits 0-51 and bits 56-62 to store type and offset.&n; * We use the 7 bits from 56-62 for the type and the 52 bits from 0-51&n; * for the offset.&n; * |                     offset                       |0110|type |0&n; * 0000000000111111111122222222223333333333444444444455555555556666&n; * 0123456789012345678901234567890123456789012345678901234567890123&n; */
 DECL|function|mk_swap_pte
 r_extern

@@ -23,6 +23,7 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|tubxcorrect
+r_static
 r_int
 id|tubxcorrect
 op_assign
@@ -72,6 +73,7 @@ id|TUBMAXMINS
 )braket
 suffix:semicolon
 DECL|variable|tubirqs
+r_static
 id|tub_t
 op_star
 (paren
@@ -104,6 +106,7 @@ id|tub_ebcasc
 l_int|256
 )braket
 suffix:semicolon
+r_static
 r_int
 id|tubinitminors
 c_func
@@ -111,6 +114,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|tubfiniminors
 c_func
@@ -118,6 +122,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|tubint
 c_func
@@ -132,7 +137,33 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
+r_static
+r_int
+id|tubmakemin
+c_func
+(paren
+r_int
+comma
+id|dev_info_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+r_static
+r_int
+id|tubmakemin
+c_func
+(paren
+r_int
+comma
+id|s390_dev_info_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Lookup-by-irq functions */
+r_static
 r_int
 id|tubaddbyirq
 c_func
@@ -143,6 +174,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 id|tub_t
 op_star
 id|tubfindbyirq
@@ -151,6 +183,7 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_static
 r_void
 id|tubdelbyirq
 c_func
@@ -161,6 +194,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_void
 id|tubfiniirqs
 c_func
@@ -168,6 +202,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: put extern declarations in a header */
 r_extern
 r_int
 id|fs3270_init
@@ -434,6 +469,7 @@ id|tub3270_con_bcblock
 suffix:semicolon
 multiline_comment|/* Lock for the buffer */
 DECL|variable|tub3270_con_irq
+r_static
 r_int
 id|tub3270_con_irq
 op_assign
@@ -625,7 +661,7 @@ id|conp
 )paren
 (brace
 r_return
-id|MKDEV
+id|tub_mkdev
 c_func
 (paren
 id|IBM_TTY3270_MAJOR
@@ -647,14 +683,6 @@ r_void
 (brace
 multiline_comment|/* flush everything:  panic has occurred */
 )brace
-DECL|variable|tub3270_con_write_deadlock_ct
-r_int
-id|tub3270_con_write_deadlock_ct
-suffix:semicolon
-DECL|variable|tub3270_con_write_deadlock_bytes
-r_int
-id|tub3270_con_write_deadlock_bytes
-suffix:semicolon
 r_static
 r_void
 DECL|function|tub3270_con_write
@@ -1484,6 +1512,7 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * receive an interrupt&n; */
+r_static
 r_void
 DECL|function|tubint
 id|tubint
@@ -1540,6 +1569,7 @@ id|dsp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize array of pointers to minor structures tub_t.&n; * Returns 0 or -ENOMEM.&n; */
+r_static
 r_int
 DECL|function|tubinitminors
 id|tubinitminors
@@ -1598,6 +1628,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add a minor 327x device.  Argument is an irq value.&n; *&n; * Point elements of two arrays to the newly created tub_t:&n; * 1. (*tubminors)[minor]&n; * 2. (*(*tubirqs)[irqhi])[irqlo]&n; * The first looks up from minor number at context time; the second&n; * looks up from irq at interrupt time.&n; */
+r_static
 r_int
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 DECL|function|tubmakemin
@@ -1949,6 +1980,7 @@ id|minor
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Release array of pointers to minor structures tub_t, but first&n; * release any storage pointed to by them.&n; */
+r_static
 r_void
 DECL|function|tubfiniminors
 id|tubfiniminors
@@ -2080,6 +2112,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tubaddbyirq() -- Add tub_t for irq lookup in tubint()&n; */
+r_static
 r_int
 DECL|function|tubaddbyirq
 id|tubaddbyirq
@@ -2330,6 +2363,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tubfindbyirq(irq)&n; */
+r_static
 id|tub_t
 op_star
 DECL|function|tubfindbyirq
@@ -2419,6 +2453,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tubdelbyirq(tub_t*, irq)&n; */
+r_static
 r_void
 DECL|function|tubdelbyirq
 id|tubdelbyirq
@@ -2571,6 +2606,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tubfiniirqs() -- clean up storage in tub_t *(*(*tubirqs)[256])[256]&n; */
+r_static
 r_void
 DECL|function|tubfiniirqs
 id|tubfiniirqs

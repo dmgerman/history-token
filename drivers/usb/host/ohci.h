@@ -81,14 +81,18 @@ DECL|member|int_load
 id|u8
 id|int_load
 suffix:semicolon
+DECL|member|intr_info
 )brace
+id|intr_info
 suffix:semicolon
 DECL|member|last_iso
 id|u16
 id|last_iso
 suffix:semicolon
 multiline_comment|/* isochronous */
+DECL|member|intriso
 )brace
+id|intriso
 suffix:semicolon
 DECL|member|state
 id|u8
@@ -747,6 +751,13 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+multiline_comment|/*&n;&t; * parent device&n;&t; */
+DECL|member|parent_dev
+r_struct
+id|device
+op_star
+id|parent_dev
+suffix:semicolon
 multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (uncached);&n;&t; */
 DECL|member|regs
 r_struct
@@ -793,7 +804,6 @@ op_star
 id|ed_isotail
 suffix:semicolon
 multiline_comment|/* last in iso list */
-macro_line|#ifdef CONFIG_PCI
 DECL|member|td_cache
 r_struct
 id|pci_pool
@@ -822,7 +832,6 @@ id|ed_hash
 id|ED_HASH_SIZE
 )braket
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * driver state&n;&t; */
 DECL|member|disabled
 r_int

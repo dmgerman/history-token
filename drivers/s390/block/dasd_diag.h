@@ -4,17 +4,15 @@ mdefine_line|#define MDSK_WRITE_REQ 0x01
 DECL|macro|MDSK_READ_REQ
 mdefine_line|#define MDSK_READ_REQ  0x02
 DECL|macro|INIT_BIO
-mdefine_line|#define INIT_BIO        0x00
+mdefine_line|#define INIT_BIO&t;0x00
 DECL|macro|RW_BIO
-mdefine_line|#define RW_BIO          0x01
+mdefine_line|#define RW_BIO&t;&t;0x01
 DECL|macro|TERM_BIO
-mdefine_line|#define TERM_BIO        0x02
+mdefine_line|#define TERM_BIO&t;0x02
 DECL|macro|DEV_CLASS_FBA
-mdefine_line|#define DEV_CLASS_FBA   0x01
+mdefine_line|#define DEV_CLASS_FBA&t;0x01
 DECL|macro|DEV_CLASS_ECKD
-mdefine_line|#define DEV_CLASS_ECKD  0x04
-DECL|macro|DEV_CLASS_CKD
-mdefine_line|#define DEV_CLASS_CKD   0x04
+mdefine_line|#define DEV_CLASS_ECKD&t;0x04
 DECL|struct|dasd_diag_characteristics_t
 r_typedef
 r_struct
@@ -67,6 +65,7 @@ id|__attribute__
 id|packed
 comma
 id|aligned
+c_func
 (paren
 l_int|4
 )paren
@@ -111,6 +110,7 @@ id|__attribute__
 id|packed
 comma
 id|aligned
+c_func
 (paren
 l_int|8
 )paren
@@ -165,6 +165,7 @@ id|__attribute__
 id|packed
 comma
 id|aligned
+c_func
 (paren
 l_int|8
 )paren
@@ -231,6 +232,7 @@ id|__attribute__
 id|packed
 comma
 id|aligned
+c_func
 (paren
 l_int|8
 )paren
@@ -241,12 +243,14 @@ id|diag_rw_io_t
 suffix:semicolon
 r_int
 id|dasd_diag_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
 id|dasd_diag_cleanup
+c_func
 (paren
 r_void
 )paren

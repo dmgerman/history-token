@@ -4,25 +4,28 @@ DECL|macro|DASD_3990_ERP_H
 mdefine_line|#define DASD_3990_ERP_H
 id|dasd_era_t
 id|dasd_3990_erp_examine
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 comma
 id|devstat_t
 op_star
 )paren
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|dasd_3990_erp_action
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 )paren
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|dasd_2105_erp_action
+c_func
 (paren
 id|ccw_req_t
 op_star
@@ -30,6 +33,7 @@ op_star
 suffix:semicolon
 r_void
 id|dasd_3990_erp_restart_queue
+c_func
 (paren
 r_int
 r_int
@@ -51,7 +55,7 @@ r_int
 r_char
 id|modifier
 suffix:semicolon
-multiline_comment|/* Subcommand modifier                 */
+multiline_comment|/* Subcommand modifier&t;&t;       */
 DECL|member|res
 r_int
 r_int

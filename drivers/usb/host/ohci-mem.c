@@ -84,10 +84,6 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef CONFIG_PCI
-macro_line|#&t;error &quot;usb-ohci currently requires PCI-based controllers&quot;
-multiline_comment|/* to support non-PCI OHCIs, you need custom bus/mem/... glue */
-macro_line|#endif
 multiline_comment|/* Recover a TD/ED using its collision chain */
 r_static
 r_inline

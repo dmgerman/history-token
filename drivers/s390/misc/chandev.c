@@ -369,6 +369,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|chandev_irqinfo_head
+r_static
 id|chandev_irqinfo
 op_star
 id|chandev_irqinfo_head
@@ -419,6 +420,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|chandev_parms_head
+r_static
 id|chandev_parms
 op_star
 id|chandev_parms_head
@@ -552,6 +554,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE&gt;=KERNEL_VERSION(2,3,0)
+multiline_comment|/* not static, see comment in chandev.h */
 DECL|variable|chandev_use_devno_names
 r_int
 id|chandev_use_devno_names
@@ -868,7 +871,7 @@ id|spinlock_t
 id|chandev_not_oper_spinlock
 suffix:semicolon
 DECL|macro|chandev_interrupt_check
-mdefine_line|#define chandev_interrupt_check() &bslash;&n;if(in_interrupt())                &bslash;&n;     printk(KERN_WARNING __FUNCTION__ &quot; called under interrupt this shouldn&squot;t happen&bslash;n&quot;)
+mdefine_line|#define chandev_interrupt_check(name) &bslash;&n;if(in_interrupt())                &bslash;&n;     printk(KERN_WARNING name &quot; called under interrupt this shouldn&squot;t happen&bslash;n&quot;)
 DECL|macro|for_each
 mdefine_line|#define for_each(variable,head) &bslash;&n;for((variable)=(head);(variable)!=NULL;(variable)=(variable)-&gt;next)
 DECL|macro|for_each_allow_delete
@@ -892,6 +895,7 @@ suffix:semicolon
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_lock&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1092,6 +1096,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_alloc
+r_static
 r_void
 op_star
 id|chandev_alloc
@@ -1293,6 +1298,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|chandev_free_listmember
+r_static
 r_void
 id|chandev_free_listmember
 c_func
@@ -1358,6 +1364,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_free_queuemember
+r_static
 r_void
 id|chandev_free_queuemember
 c_func
@@ -1422,6 +1429,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_free_all_list
+r_static
 r_void
 id|chandev_free_all_list
 c_func
@@ -1469,6 +1477,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_free_all_queue
+r_static
 r_void
 id|chandev_free_all_queue
 c_func
@@ -1737,8 +1746,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2005,6 +2014,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|chandev_allocstr
+r_static
 r_void
 op_star
 id|chandev_allocstr
@@ -2261,6 +2271,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_oper_func
+r_static
 r_int
 id|chandev_oper_func
 c_func
@@ -2418,6 +2429,7 @@ id|status
 suffix:semicolon
 )brace
 DECL|function|chandev_get_irqinfo_by_irq
+r_static
 id|chandev_irqinfo
 op_star
 id|chandev_get_irqinfo_by_irq
@@ -2455,6 +2467,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chandev_get_by_irq
+r_static
 id|chandev
 op_star
 id|chandev_get_by_irq
@@ -2496,6 +2509,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chandev_get_activelist_by_irq
+r_static
 id|chandev_activelist
 op_star
 id|chandev_get_activelist_by_irq
@@ -2547,6 +2561,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chandev_remove_irqinfo_by_irq
+r_static
 r_void
 id|chandev_remove_irqinfo_by_irq
 c_func
@@ -2666,6 +2681,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_add_schib_info
+r_static
 r_int
 id|chandev_add_schib_info
 c_func
@@ -3064,6 +3080,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This should be safe even if chandev_free_irq is already called by the device */
 DECL|function|chandev_free_irq_by_irqinfo
+r_static
 r_void
 id|chandev_free_irq_by_irqinfo
 c_func
@@ -3090,6 +3107,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_sprint_type_model
+r_static
 r_void
 id|chandev_sprint_type_model
 c_func
@@ -3179,6 +3197,7 @@ id|model
 suffix:semicolon
 )brace
 DECL|function|chandev_sprint_devinfo
+r_static
 r_void
 id|chandev_sprint_devinfo
 c_func
@@ -3230,6 +3249,7 @@ id|dev_model
 suffix:semicolon
 )brace
 DECL|function|chandev_remove_parms
+r_static
 r_void
 id|chandev_remove_parms
 c_func
@@ -3331,6 +3351,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_add_parms
+r_static
 r_void
 id|chandev_add_parms
 c_func
@@ -3821,6 +3842,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_remove
+r_static
 r_void
 id|chandev_remove
 c_func
@@ -3845,6 +3867,7 @@ id|member
 suffix:semicolon
 )brace
 DECL|function|chandev_remove_all
+r_static
 r_void
 id|chandev_remove_all
 c_func
@@ -3861,6 +3884,7 @@ id|chandev_head
 suffix:semicolon
 )brace
 DECL|function|chandev_remove_model
+r_static
 r_void
 id|chandev_remove_model
 c_func
@@ -3949,6 +3973,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_remove_all_models
+r_static
 r_void
 id|chandev_remove_all_models
 c_func
@@ -4290,8 +4315,34 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
+multiline_comment|/* ficon attached ctc */
+id|chandev_add_model
+c_func
+(paren
+id|chandev_type_escon
+comma
+l_int|0x3088
+comma
+l_int|0x1E
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+l_int|0
+comma
+id|default_msck_bits
+comma
+id|FALSE
+comma
+id|FALSE
+)paren
+suffix:semicolon
 )brace
 DECL|function|chandev_del_noauto
+r_static
 r_void
 id|chandev_del_noauto
 c_func
@@ -4359,6 +4410,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_del_msck
+r_static
 r_void
 id|chandev_del_msck
 c_func
@@ -4426,6 +4478,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_add
+r_static
 r_void
 id|chandev_add
 c_func
@@ -4528,6 +4581,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_unregister_probe
+r_static
 r_void
 id|chandev_unregister_probe
 c_func
@@ -4591,6 +4645,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_unregister_probe_by_chan_type
+r_static
 r_void
 id|chandev_unregister_probe_by_chan_type
 c_func
@@ -4654,6 +4709,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_reset
+r_static
 r_void
 id|chandev_reset
 c_func
@@ -4736,6 +4792,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_is_chandev
+r_static
 r_int
 id|chandev_is_chandev
 c_func
@@ -5008,6 +5065,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|chandev_collect_devices
+r_static
 r_void
 id|chandev_collect_devices
 c_func
@@ -5115,6 +5173,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_add_force
+r_static
 r_int
 id|chandev_add_force
 c_func
@@ -5389,6 +5448,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|chandev_del_force
+r_static
 r_void
 id|chandev_del_force
 c_func
@@ -5459,6 +5519,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_shutdown
+r_static
 r_void
 id|chandev_shutdown
 c_func
@@ -5587,6 +5648,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_shutdown_all
+r_static
 r_void
 id|chandev_shutdown_all
 c_func
@@ -5609,6 +5671,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_shutdown_by_name
+r_static
 r_void
 id|chandev_shutdown_by_name
 c_func
@@ -5714,6 +5777,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chandev_shutdown_by_devno
+r_static
 r_void
 id|chandev_shutdown_by_devno
 c_func
@@ -5759,6 +5823,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|chandev_pack_args
+r_static
 r_int
 id|chandev_pack_args
 c_func
@@ -5915,6 +5980,7 @@ DECL|typedef|chandev_strval
 id|chandev_strval
 suffix:semicolon
 DECL|function|chandev_strcmp
+r_static
 id|chandev_strval
 id|chandev_strcmp
 c_func
@@ -6087,6 +6153,7 @@ suffix:semicolon
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_initdevice&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6458,8 +6525,7 @@ op_eq
 l_int|0
 )paren
 (brace
-r_goto
-id|next_idx
+r_continue
 suffix:semicolon
 )brace
 )brace
@@ -6479,8 +6545,6 @@ suffix:semicolon
 r_return
 id|destnamebuff
 suffix:semicolon
-id|next_idx
-suffix:colon
 )brace
 id|printk
 c_func
@@ -6637,6 +6701,7 @@ macro_line|#endif
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_init_netdev&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6978,6 +7043,7 @@ suffix:semicolon
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_initnetdevice&quot;
 )paren
 suffix:semicolon
 id|retdevice
@@ -7058,6 +7124,7 @@ id|retdevice
 suffix:semicolon
 )brace
 DECL|function|chandev_compare_chpid_info
+r_static
 r_int
 id|chandev_compare_chpid_info
 c_func
@@ -7086,6 +7153,7 @@ id|chan2-&gt;chpid
 suffix:semicolon
 )brace
 DECL|function|chandev_compare_cu_dev_info
+r_static
 r_int
 id|chandev_compare_cu_dev_info
 c_func
@@ -7128,6 +7196,7 @@ id|chan2-&gt;dev_model
 suffix:semicolon
 )brace
 DECL|function|chandev_compare_subchannel_info
+r_static
 r_int
 id|chandev_compare_subchannel_info
 c_func
@@ -7188,6 +7257,7 @@ id|chan2-&gt;chpid
 suffix:semicolon
 )brace
 DECL|function|chandev_doprobe
+r_static
 r_int
 id|chandev_doprobe
 c_func
@@ -7786,6 +7856,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|chandev_request_irq_from_irqinfo
+r_static
 r_int
 id|chandev_request_irq_from_irqinfo
 c_func
@@ -7840,6 +7911,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|chandev_irqallocerr
+r_static
 r_void
 id|chandev_irqallocerr
 c_func
@@ -7866,6 +7938,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|chandev_call_notification_func
+r_static
 r_void
 id|chandev_call_notification_func
 c_func
@@ -7988,6 +8061,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_find_eligible_channels
+r_static
 r_int
 id|chandev_find_eligible_channels
 c_func
@@ -8399,6 +8473,7 @@ id|eligible_found
 suffix:semicolon
 )brace
 DECL|function|chandev_get_free_chandev_by_devno
+r_static
 id|chandev
 op_star
 id|chandev_get_free_chandev_by_devno
@@ -8468,6 +8543,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chandev_probe
+r_static
 r_void
 id|chandev_probe
 c_func
@@ -8526,6 +8602,7 @@ suffix:semicolon
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_probe&quot;
 )paren
 suffix:semicolon
 id|chandev_read_conf_if_necessary
@@ -9686,6 +9763,7 @@ DECL|typedef|chandev_str_enum
 id|chandev_str_enum
 suffix:semicolon
 DECL|function|chandev_add_noauto
+r_static
 r_void
 id|chandev_add_noauto
 c_func
@@ -9743,6 +9821,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_add_msck_range
+r_static
 r_void
 id|chandev_add_msck_range
 c_func
@@ -12481,6 +12560,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|chandev_do_setup
+r_static
 r_int
 id|chandev_do_setup
 c_func
@@ -12982,6 +13062,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|chandev_printf
 mdefine_line|#define chandev_printf(exitchan,args...)     &bslash;&n;splen=sprintf(spbuff,##args);                &bslash;&n;spoffset+=splen;                             &bslash;&n;if(spoffset&gt;offset) {                        &bslash;&n;       spbuff+=splen;                        &bslash;&n;       currlen+=splen;                       &bslash;&n;}                                            &bslash;&n;if(currlen&gt;=length)                          &bslash;&n;       goto exitchan;
 DECL|function|sprintf_msck
+r_static
 r_void
 id|sprintf_msck
 c_func
@@ -14148,7 +14229,7 @@ c_func
 (paren
 id|chan_exit
 comma
-l_string|&quot;0x%04x 0x%04x 0x%02x  0x%04x 0x%02x  0x%04x 0x%02x 0x%02x 0x%016Lx  %-5s %-5s&bslash;n&quot;
+l_string|&quot;0x%04x 0x%04x 0x%02x  0x%04x 0x%02x  0x%04x 0x%02x 0x%02x 0x%016Lx  %-5s%-5s&bslash;n&quot;
 comma
 id|curr_irq
 comma
@@ -14388,6 +14469,10 @@ r_char
 op_star
 id|buff
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|buff
 op_assign
 id|vmalloc
@@ -14397,15 +14482,17 @@ id|count
 op_plus
 l_int|1
 )paren
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|buff
-)paren
-(brace
-id|rc
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -14415,21 +14502,10 @@ id|buffer
 comma
 id|count
 )paren
-ques
-c_cond
-op_minus
-id|EFAULT
-suffix:colon
+op_eq
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
 )paren
-r_goto
-id|chandev_write_exit
-suffix:semicolon
+(brace
 id|chandev_do_setup
 c_func
 (paren
@@ -14444,8 +14520,15 @@ id|rc
 op_assign
 id|count
 suffix:semicolon
-id|chandev_write_exit
-suffix:colon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 id|vfree
 c_func
 (paren
@@ -14454,15 +14537,6 @@ id|buff
 suffix:semicolon
 r_return
 id|rc
-suffix:semicolon
-)brace
-r_else
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|chandev_create_proc
@@ -14660,6 +14734,7 @@ multiline_comment|/* are initialised. */
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_register_and_probe&quot;
 )paren
 suffix:semicolon
 r_if
@@ -14827,6 +14902,7 @@ suffix:semicolon
 id|chandev_interrupt_check
 c_func
 (paren
+l_string|&quot;chandev_unregister&quot;
 )paren
 suffix:semicolon
 id|chandev_lock
@@ -14968,6 +15044,7 @@ c_func
 id|chandev_initnetdevice
 )paren
 suffix:semicolon
+multiline_comment|/* see chandev.h as to why this is exported */
 DECL|variable|chandev_init_netdev
 id|EXPORT_SYMBOL
 c_func
@@ -14989,6 +15066,7 @@ c_func
 id|chandev_free_irq
 )paren
 suffix:semicolon
+multiline_comment|/* see chandev.h as to why chandev_add_model and chandev_del_model &n; * are exported */
 DECL|variable|chandev_add_model
 id|EXPORT_SYMBOL
 c_func

@@ -600,11 +600,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_bus_bind - Tell if a PCI device structure has a matching PCI device id structure&n; * @ids: array of PCI device id structures to search in&n; * @dev: the PCI device structure to match against&n; * &n; * Used by a driver to check whether a PCI device present in the&n; * system is in its list of supported devices.Returns the matching&n; * pci_device_id structure or %NULL if there is no match.&n; */
-DECL|function|pci_bus_bind
+multiline_comment|/**&n; * pci_bus_match - Tell if a PCI device structure has a matching PCI device id structure&n; * @ids: array of PCI device id structures to search in&n; * @dev: the PCI device structure to match against&n; * &n; * Used by a driver to check whether a PCI device present in the&n; * system is in its list of supported devices.Returns the matching&n; * pci_device_id structure or %NULL if there is no match.&n; */
+DECL|function|pci_bus_match
 r_static
 r_int
-id|pci_bus_bind
+id|pci_bus_match
 c_func
 (paren
 r_struct
@@ -756,9 +756,9 @@ id|name
 suffix:colon
 l_string|&quot;pci&quot;
 comma
-id|bind
+id|match
 suffix:colon
-id|pci_bus_bind
+id|pci_bus_match
 comma
 )brace
 suffix:semicolon

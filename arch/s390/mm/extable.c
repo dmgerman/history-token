@@ -136,10 +136,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 id|addr
 op_and_assign
@@ -178,6 +174,10 @@ r_return
 id|ret
 suffix:semicolon
 macro_line|#else
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
 r_struct
 id|module

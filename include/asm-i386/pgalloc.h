@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for struct page */
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + __pa(pte)))
 DECL|function|pmd_populate

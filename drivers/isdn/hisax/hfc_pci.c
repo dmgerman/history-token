@@ -297,6 +297,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;HiSax: release hfcpci at %p&bslash;n&quot;
+comma
+id|cs-&gt;hw.hfcpci.pci_io
+)paren
+suffix:semicolon
 id|save_flags
 c_func
 (paren
@@ -375,7 +384,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Reset Off */
-macro_line|#if CONFIG_PCI
 id|pcibios_write_config_word
 c_func
 (paren
@@ -389,7 +397,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* disable memory mapped ports + busmaster */
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 id|del_timer
 c_func
 (paren

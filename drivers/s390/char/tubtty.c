@@ -247,6 +247,7 @@ id|devstat_t
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|tty3270_try_logging
 c_func
@@ -323,6 +324,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|variable|tty3270_major
+r_static
 r_int
 id|tty3270_major
 op_assign
@@ -335,10 +337,12 @@ id|tty_driver
 id|tty3270_driver
 suffix:semicolon
 DECL|variable|tty3270_refcount
+r_static
 r_int
 id|tty3270_refcount
 suffix:semicolon
 DECL|variable|tty3270_table
+r_static
 r_struct
 id|tty_struct
 op_star
@@ -348,6 +352,7 @@ id|TUBMAXMINS
 )braket
 suffix:semicolon
 DECL|variable|tty3270_termios
+r_static
 r_struct
 id|termios
 op_star
@@ -357,6 +362,7 @@ id|TUBMAXMINS
 )braket
 suffix:semicolon
 DECL|variable|tty3270_termios_locked
+r_static
 r_struct
 id|termios
 op_star
@@ -367,6 +373,7 @@ id|TUBMAXMINS
 suffix:semicolon
 macro_line|#ifdef CONFIG_TN3270_CONSOLE
 DECL|variable|con3270_major
+r_static
 r_int
 id|con3270_major
 op_assign
@@ -374,15 +381,19 @@ op_minus
 l_int|1
 suffix:semicolon
 DECL|variable|con3270_driver
+r_static
 r_struct
 id|tty_driver
 id|con3270_driver
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 DECL|variable|con3270_refcount
+r_static
 r_int
 id|con3270_refcount
 suffix:semicolon
 DECL|variable|con3270_table
+r_static
 r_struct
 id|tty_struct
 op_star
@@ -392,6 +403,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|variable|con3270_termios
+r_static
 r_struct
 id|termios
 op_star
@@ -401,6 +413,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|variable|con3270_termios_locked
+r_static
 r_struct
 id|termios
 op_star
@@ -409,20 +422,25 @@ id|con3270_termios_locked
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* CONFIG_TN3270_CONSOLE */
 DECL|variable|tty3270_proc_index
+r_static
 r_int
 id|tty3270_proc_index
 suffix:semicolon
 DECL|variable|tty3270_proc_data
+r_static
 r_int
 id|tty3270_proc_data
 suffix:semicolon
 DECL|variable|tty3270_proc_misc
+r_static
 r_int
 id|tty3270_proc_misc
 suffix:semicolon
 DECL|variable|tty3270_proc_what
+r_static
 r_enum
 id|tubwhat
 id|tty3270_proc_what
@@ -2180,7 +2198,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;%.3x CONSOLE %d&bslash;n&quot;
+l_string|&quot;%.4x CONSOLE %d&bslash;n&quot;
 comma
 id|tubp-&gt;devno
 comma
@@ -2198,7 +2216,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;%.3x %d %d&bslash;n&quot;
+l_string|&quot;%.4x %d %d&bslash;n&quot;
 comma
 id|tubp-&gt;devno
 comma
@@ -2446,9 +2464,6 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-id|kdev_t
-id|device
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -2500,28 +2515,19 @@ id|tty
 op_assign
 id|current-&gt;tty
 suffix:semicolon
-id|device
-op_assign
-id|tty
-ques
-c_cond
-id|tty-&gt;device
-suffix:colon
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|device
+id|tty
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|MAJOR
+id|tub_major
 c_func
 (paren
-id|device
+id|tty-&gt;device
 )paren
 op_eq
 id|IBM_TTY3270_MAJOR
@@ -2533,10 +2539,10 @@ op_star
 id|tubminors
 )paren
 (braket
-id|MINOR
+id|tub_minor
 c_func
 (paren
-id|device
+id|tty-&gt;device
 )paren
 )braket
 suffix:semicolon
@@ -2547,7 +2553,7 @@ c_cond
 (paren
 id|CONSOLE_IS_3270
 op_logical_and
-id|device
+id|tty-&gt;device
 op_eq
 id|S390_CONSOLE_DEV
 )paren
@@ -2913,29 +2919,72 @@ op_star
 id|data
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 id|tub_t
 op_star
 id|tubp
+suffix:semicolon
+id|ioinfo_t
+op_star
+id|ioinfop
+suffix:semicolon
+r_int
+id|flags
 suffix:semicolon
 r_struct
 id|tty_struct
 op_star
 id|tty
 suffix:semicolon
+id|ioinfop
+op_assign
+id|ioinfo
+(braket
+(paren
 id|tubp
 op_assign
 id|data
+)paren
+op_member_access_from_pointer
+id|irq
+)braket
 suffix:semicolon
-id|TUBLOCK
+r_while
+c_loop
+(paren
+id|TUBTRYLOCK
 c_func
 (paren
 id|tubp-&gt;irq
 comma
 id|flags
 )paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ioinfop-&gt;ui.flags.unready
+op_eq
+l_int|1
+)paren
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ioinfop-&gt;ui.flags.unready
+op_eq
+l_int|1
+op_logical_or
+id|ioinfop-&gt;ui.flags.ready
+op_eq
+l_int|0
+)paren
+r_goto
+id|do_unlock
 suffix:semicolon
 id|tubp-&gt;flags
 op_and_assign
@@ -3273,6 +3322,7 @@ op_ne
 l_int|0
 )paren
 (brace
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -3291,6 +3341,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_RUNNING
@@ -3567,6 +3618,7 @@ id|tubp
 suffix:semicolon
 )brace
 )brace
+r_static
 r_int
 DECL|function|tty3270_try_logging
 id|tty3270_try_logging

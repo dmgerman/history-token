@@ -91,6 +91,12 @@ DECL|macro|DL_FLUSH
 mdefine_line|#define DL_FLUSH&t;0x0224
 DECL|macro|DL_UNIT_DATA
 mdefine_line|#define DL_UNIT_DATA&t;0x0230
+DECL|macro|MDL_BC_RELEASE
+mdefine_line|#define MDL_BC_RELEASE  0x0278  
+singleline_comment|// Formula-n enter:now
+DECL|macro|MDL_BC_ASSIGN
+mdefine_line|#define MDL_BC_ASSIGN   0x027C  
+singleline_comment|// Formula-n enter:now
 DECL|macro|MDL_ASSIGN
 mdefine_line|#define MDL_ASSIGN&t;0x0280
 DECL|macro|MDL_REMOVE
@@ -3145,6 +3151,69 @@ id|ph_state
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|amd7930_chip
+r_struct
+id|amd7930_chip
+(brace
+DECL|member|lmr1
+id|u_char
+id|lmr1
+suffix:semicolon
+DECL|member|ph_state
+id|u_char
+id|ph_state
+suffix:semicolon
+DECL|member|old_state
+id|u_char
+id|old_state
+suffix:semicolon
+DECL|member|flg_t3
+id|u_char
+id|flg_t3
+suffix:semicolon
+DECL|member|tx_xmtlen
+r_int
+r_int
+id|tx_xmtlen
+suffix:semicolon
+DECL|member|timer3
+r_struct
+id|timer_list
+id|timer3
+suffix:semicolon
+DECL|member|ph_command
+r_void
+(paren
+op_star
+id|ph_command
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+comma
+id|u_char
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|setIrqMask
+r_void
+(paren
+op_star
+id|setIrqMask
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+comma
+id|u_char
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|icc_chip
 r_struct
 id|icc_chip
@@ -3693,6 +3762,11 @@ r_struct
 id|w6692_chip
 id|w6692
 suffix:semicolon
+DECL|member|amd7930
+r_struct
+id|amd7930_chip
+id|amd7930
+suffix:semicolon
 DECL|member|icc
 r_struct
 id|icc_chip
@@ -3839,8 +3913,10 @@ DECL|macro|ISDN_CTYPE_HFC_SP_PCMCIA
 mdefine_line|#define  ISDN_CTYPE_HFC_SP_PCMCIA      39
 DECL|macro|ISDN_CTYPE_DYNAMIC
 mdefine_line|#define  ISDN_CTYPE_DYNAMIC     40
+DECL|macro|ISDN_CTYPE_ENTERNOW
+mdefine_line|#define  ISDN_CTYPE_ENTERNOW&t;41
 DECL|macro|ISDN_CTYPE_COUNT
-mdefine_line|#define  ISDN_CTYPE_COUNT&t;40
+mdefine_line|#define  ISDN_CTYPE_COUNT&t;41
 macro_line|#ifdef ISDN_CHIP_ISAC
 DECL|macro|ISDN_CHIP_ISAC
 macro_line|#undef ISDN_CHIP_ISAC
@@ -4153,6 +4229,10 @@ macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_NETJET_U
 mdefine_line|#define CARD_NETJET_U 0
+macro_line|#endif
+macro_line|#ifdef CONFIG_HISAX_ENTERNOW_PCI
+DECL|macro|CARD_FN_ENTERNOW_PCI
+mdefine_line|#define CARD_FN_ENTERNOW_PCI 1
 macro_line|#endif
 DECL|macro|TEI_PER_CARD
 mdefine_line|#define TEI_PER_CARD 1

@@ -1,56 +1,63 @@
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
-macro_line|#include &quot;dasd_3990_erp.h&quot;
-macro_line|#include &quot;dasd_9343_erp.h&quot;
+multiline_comment|/*******************************************************************************&n; * SECTION: CCW Definitions&n; ******************************************************************************/
 DECL|macro|DASD_ECKD_CCW_WRITE
-mdefine_line|#define DASD_ECKD_CCW_WRITE 0x05
+mdefine_line|#define DASD_ECKD_CCW_WRITE&t;&t; 0x05
 DECL|macro|DASD_ECKD_CCW_READ
-mdefine_line|#define DASD_ECKD_CCW_READ 0x06
+mdefine_line|#define DASD_ECKD_CCW_READ&t;&t; 0x06
 DECL|macro|DASD_ECKD_CCW_WRITE_HOME_ADDRESS
 mdefine_line|#define DASD_ECKD_CCW_WRITE_HOME_ADDRESS 0x09
 DECL|macro|DASD_ECKD_CCW_READ_HOME_ADDRESS
-mdefine_line|#define DASD_ECKD_CCW_READ_HOME_ADDRESS 0x0a
+mdefine_line|#define DASD_ECKD_CCW_READ_HOME_ADDRESS&t; 0x0a
 DECL|macro|DASD_ECKD_CCW_WRITE_KD
-mdefine_line|#define DASD_ECKD_CCW_WRITE_KD 0x0d
+mdefine_line|#define DASD_ECKD_CCW_WRITE_KD&t;&t; 0x0d
 DECL|macro|DASD_ECKD_CCW_READ_KD
-mdefine_line|#define DASD_ECKD_CCW_READ_KD 0x0e
+mdefine_line|#define DASD_ECKD_CCW_READ_KD&t;&t; 0x0e
 DECL|macro|DASD_ECKD_CCW_ERASE
-mdefine_line|#define DASD_ECKD_CCW_ERASE 0x11
+mdefine_line|#define DASD_ECKD_CCW_ERASE&t;&t; 0x11
 DECL|macro|DASD_ECKD_CCW_READ_COUNT
-mdefine_line|#define DASD_ECKD_CCW_READ_COUNT 0x12
-DECL|macro|DASD_ECKD_CCW_WRITE_RECORD_ZERO
-mdefine_line|#define DASD_ECKD_CCW_WRITE_RECORD_ZERO 0x15
-DECL|macro|DASD_ECKD_CCW_READ_RECORD_ZERO
-mdefine_line|#define DASD_ECKD_CCW_READ_RECORD_ZERO 0x16
-DECL|macro|DASD_ECKD_CCW_WRITE_CKD
-mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD 0x1d
-DECL|macro|DASD_ECKD_CCW_READ_CKD
-mdefine_line|#define DASD_ECKD_CCW_READ_CKD 0x1e
-DECL|macro|DASD_ECKD_CCW_LOCATE_RECORD
-mdefine_line|#define DASD_ECKD_CCW_LOCATE_RECORD 0x47
-DECL|macro|DASD_ECKD_CCW_DEFINE_EXTENT
-mdefine_line|#define DASD_ECKD_CCW_DEFINE_EXTENT 0x63
-DECL|macro|DASD_ECKD_CCW_WRITE_MT
-mdefine_line|#define DASD_ECKD_CCW_WRITE_MT 0x85
-DECL|macro|DASD_ECKD_CCW_READ_MT
-mdefine_line|#define DASD_ECKD_CCW_READ_MT 0x86
-DECL|macro|DASD_ECKD_CCW_WRITE_KD_MT
-mdefine_line|#define DASD_ECKD_CCW_WRITE_KD_MT 0x8d
-DECL|macro|DASD_ECKD_CCW_READ_KD_MT
-mdefine_line|#define DASD_ECKD_CCW_READ_KD_MT 0x8e
-DECL|macro|DASD_ECKD_CCW_RELEASE
-mdefine_line|#define DASD_ECKD_CCW_RELEASE 0x94
-DECL|macro|DASD_ECKD_CCW_READ_CKD_MT
-mdefine_line|#define DASD_ECKD_CCW_READ_CKD_MT 0x9e
-DECL|macro|DASD_ECKD_CCW_WRITE_CKD_MT
-mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD_MT 0x9d
-DECL|macro|DASD_ECKD_CCW_RESERVE
-mdefine_line|#define DASD_ECKD_CCW_RESERVE 0xB4
+mdefine_line|#define DASD_ECKD_CCW_READ_COUNT&t; 0x12
 DECL|macro|DASD_ECKD_CCW_SLCK
-mdefine_line|#define DASD_ECKD_CCW_SLCK 0x14&t;/* steal lock - unconditional reserve */
-r_typedef
+mdefine_line|#define DASD_ECKD_CCW_SLCK&t;&t; 0x14
+DECL|macro|DASD_ECKD_CCW_WRITE_RECORD_ZERO
+mdefine_line|#define DASD_ECKD_CCW_WRITE_RECORD_ZERO&t; 0x15
+DECL|macro|DASD_ECKD_CCW_READ_RECORD_ZERO
+mdefine_line|#define DASD_ECKD_CCW_READ_RECORD_ZERO&t; 0x16
+DECL|macro|DASD_ECKD_CCW_WRITE_CKD
+mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD&t;&t; 0x1d
+DECL|macro|DASD_ECKD_CCW_READ_CKD
+mdefine_line|#define DASD_ECKD_CCW_READ_CKD&t;&t; 0x1e
+DECL|macro|DASD_ECKD_CCW_PSF
+mdefine_line|#define DASD_ECKD_CCW_PSF&t;&t; 0x27
+DECL|macro|DASD_ECKD_CCW_RSSD
+mdefine_line|#define DASD_ECKD_CCW_RSSD&t;&t; 0x3e
+DECL|macro|DASD_ECKD_CCW_LOCATE_RECORD
+mdefine_line|#define DASD_ECKD_CCW_LOCATE_RECORD&t; 0x47
+DECL|macro|DASD_ECKD_CCW_DEFINE_EXTENT
+mdefine_line|#define DASD_ECKD_CCW_DEFINE_EXTENT&t; 0x63
+DECL|macro|DASD_ECKD_CCW_WRITE_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_MT&t;&t; 0x85
+DECL|macro|DASD_ECKD_CCW_READ_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_MT&t;&t; 0x86
+DECL|macro|DASD_ECKD_CCW_WRITE_KD_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_KD_MT&t; 0x8d
+DECL|macro|DASD_ECKD_CCW_READ_KD_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_KD_MT&t; 0x8e
+DECL|macro|DASD_ECKD_CCW_RELEASE
+mdefine_line|#define DASD_ECKD_CCW_RELEASE&t;&t; 0x94
+DECL|macro|DASD_ECKD_CCW_READ_CKD_MT
+mdefine_line|#define DASD_ECKD_CCW_READ_CKD_MT&t; 0x9e
+DECL|macro|DASD_ECKD_CCW_WRITE_CKD_MT
+mdefine_line|#define DASD_ECKD_CCW_WRITE_CKD_MT&t; 0x9d
+DECL|macro|DASD_ECKD_CCW_RESERVE
+mdefine_line|#define DASD_ECKD_CCW_RESERVE&t;&t; 0xB4
+multiline_comment|/*&n; *Perform Subsystem Function / Sub-Orders&n; */
+DECL|macro|PSF_ORDER_PRSSD
+mdefine_line|#define PSF_ORDER_PRSSD&t;&t;&t; 0x18
+multiline_comment|/*******************************************************************************&n; * SECTION: Type Definitions&n; ******************************************************************************/
 DECL|struct|eckd_count_t
+r_typedef
 r_struct
 id|eckd_count_t
 (brace
@@ -74,6 +81,7 @@ DECL|member|dl
 id|__u16
 id|dl
 suffix:semicolon
+DECL|typedef|eckd_count_t
 )brace
 id|__attribute__
 (paren
@@ -81,11 +89,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|eckd_count_t
 id|eckd_count_t
 suffix:semicolon
-r_typedef
 DECL|struct|ch_t
+r_typedef
 r_struct
 id|ch_t
 (brace
@@ -97,6 +104,7 @@ DECL|member|head
 id|__u16
 id|head
 suffix:semicolon
+DECL|typedef|ch_t
 )brace
 id|__attribute__
 (paren
@@ -104,11 +112,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|ch_t
 id|ch_t
 suffix:semicolon
-r_typedef
 DECL|struct|chs_t
+r_typedef
 r_struct
 id|chs_t
 (brace
@@ -124,6 +131,7 @@ DECL|member|sector
 id|__u32
 id|sector
 suffix:semicolon
+DECL|typedef|chs_t
 )brace
 id|__attribute__
 (paren
@@ -131,11 +139,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|chs_t
 id|chs_t
 suffix:semicolon
-r_typedef
 DECL|struct|chr_t
+r_typedef
 r_struct
 id|chr_t
 (brace
@@ -151,6 +158,7 @@ DECL|member|record
 id|__u8
 id|record
 suffix:semicolon
+DECL|typedef|chr_t
 )brace
 id|__attribute__
 (paren
@@ -158,11 +166,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|chr_t
 id|chr_t
 suffix:semicolon
-r_typedef
 DECL|struct|geom_t
+r_typedef
 r_struct
 id|geom_t
 (brace
@@ -178,6 +185,7 @@ DECL|member|sector
 id|__u32
 id|sector
 suffix:semicolon
+DECL|typedef|geom_t
 )brace
 id|__attribute__
 (paren
@@ -185,7 +193,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|geom_t
 id|geom_t
 suffix:semicolon
 DECL|struct|eckd_home_t
@@ -234,6 +241,7 @@ id|reserved2
 l_int|2
 )braket
 suffix:semicolon
+DECL|typedef|eckd_home_t
 )brace
 id|__attribute__
 (paren
@@ -241,11 +249,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|eckd_home_t
 id|eckd_home_t
 suffix:semicolon
-r_typedef
 DECL|struct|DE_eckd_data_t
+r_typedef
 r_struct
 id|DE_eckd_data_t
 (brace
@@ -362,14 +369,16 @@ DECL|member|fast_write_id
 id|__u16
 id|fast_write_id
 suffix:semicolon
-DECL|member|unused
+DECL|member|ga_additional
 id|__u8
-id|unused
+id|ga_additional
 suffix:semicolon
-DECL|member|reserved
+multiline_comment|/* Global Attributes Additional */
+DECL|member|ga_extended
 id|__u8
-id|reserved
+id|ga_extended
 suffix:semicolon
+multiline_comment|/* Global Attributes Extended&t;*/
 DECL|member|beg_ext
 id|ch_t
 id|beg_ext
@@ -378,6 +387,7 @@ DECL|member|end_ext
 id|ch_t
 id|end_ext
 suffix:semicolon
+DECL|typedef|DE_eckd_data_t
 )brace
 id|__attribute__
 (paren
@@ -385,11 +395,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|DE_eckd_data_t
 id|DE_eckd_data_t
 suffix:semicolon
-r_typedef
 DECL|struct|LO_eckd_data_t
+r_typedef
 r_struct
 id|LO_eckd_data_t
 (brace
@@ -476,6 +485,7 @@ DECL|member|length
 id|__u16
 id|length
 suffix:semicolon
+DECL|typedef|LO_eckd_data_t
 )brace
 id|__attribute__
 (paren
@@ -483,11 +493,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|LO_eckd_data_t
 id|LO_eckd_data_t
 suffix:semicolon
-r_typedef
 DECL|struct|dasd_eckd_characteristics_t
+r_typedef
 r_struct
 id|dasd_eckd_characteristics_t
 (brace
@@ -862,6 +871,7 @@ id|reserved3
 l_int|10
 )braket
 suffix:semicolon
+DECL|typedef|dasd_eckd_characteristics_t
 )brace
 id|__attribute__
 (paren
@@ -869,7 +879,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|dasd_eckd_characteristics_t
 id|dasd_eckd_characteristics_t
 suffix:semicolon
 DECL|struct|dasd_eckd_confdata_t
@@ -1613,6 +1622,7 @@ id|packed
 )paren
 id|neq
 suffix:semicolon
+DECL|typedef|dasd_eckd_confdata_t
 )brace
 id|__attribute__
 (paren
@@ -1620,17 +1630,65 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|dasd_eckd_confdata_t
 id|dasd_eckd_confdata_t
+suffix:semicolon
+multiline_comment|/*&n; * Perform Subsystem Function - Prepare for Read Subsystem Data&t; &n; */
+DECL|struct|dasd_psf_prssd_data_t
+r_typedef
+r_struct
+id|dasd_psf_prssd_data_t
+(brace
+DECL|member|order
+r_int
+r_char
+id|order
+suffix:semicolon
+DECL|member|flags
+r_int
+r_char
+id|flags
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|suborder
+r_int
+r_char
+id|suborder
+suffix:semicolon
+DECL|member|varies
+r_int
+r_char
+id|varies
+(braket
+l_int|9
+)braket
+suffix:semicolon
+DECL|typedef|dasd_psf_prssd_data_t
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|dasd_psf_prssd_data_t
 suffix:semicolon
 r_int
 id|dasd_eckd_init
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
 id|dasd_eckd_cleanup
+c_func
 (paren
 r_void
 )paren

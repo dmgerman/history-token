@@ -66,6 +66,8 @@ DECL|macro|__LC_CPUADDR
 mdefine_line|#define __LC_CPUADDR                    0xC68
 DECL|macro|__LC_IPLDEV
 mdefine_line|#define __LC_IPLDEV                     0xC7C
+DECL|macro|__LC_JIFFY_TIMER
+mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xC80
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
 DECL|macro|__LC_PFAULT_INTPARM
@@ -527,9 +529,9 @@ suffix:semicolon
 multiline_comment|/* 0xc7c */
 multiline_comment|/* entry.S sensitive area end */
 multiline_comment|/* SMP info area: defined by DJB */
-DECL|member|jiffy_timer_cc
+DECL|member|jiffy_timer
 id|__u64
-id|jiffy_timer_cc
+id|jiffy_timer
 suffix:semicolon
 multiline_comment|/* 0xc80 */
 DECL|member|ext_call_fast
@@ -613,14 +615,14 @@ id|lowcore_ptr
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)    S390_lowcore
+mdefine_line|#define get_cpu_lowcore(cpu)      (&amp;S390_lowcore)
 DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) S390_lowcore
+mdefine_line|#define safe_get_cpu_lowcore(cpu) (&amp;S390_lowcore)
 macro_line|#else
 DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)    (*lowcore_ptr[cpu])
+mdefine_line|#define get_cpu_lowcore(cpu)      (lowcore_ptr[(cpu)])
 DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu)==smp_processor_id() ? S390_lowcore:(*lowcore_ptr[(cpu)]))
+mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu) == smp_processor_id() ? &amp;S390_lowcore : lowcore_ptr[(cpu)])
 macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|__PANIC_MAGIC

@@ -60,7 +60,6 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* device memory/io */
-macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/* a few non-PCI controllers exist, mostly for OHCI */
 DECL|member|pdev
 r_struct
@@ -69,6 +68,7 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* pci is typical */
+macro_line|#ifdef&t;CONFIG_PCI
 DECL|member|region
 r_int
 id|region
@@ -498,6 +498,31 @@ op_star
 id|urb
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|usb_bus_init
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_rh_status_dequeue
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+comma
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_struct
 id|pci_dev
@@ -560,6 +585,39 @@ suffix:semicolon
 singleline_comment|// extern int usb_hcd_pci_enable_wake (struct pci_dev *dev, u32 state, int flg);
 macro_line|#endif /* CONFIG_PM */
 macro_line|#endif /* CONFIG_PCI */
+multiline_comment|/* generic bus glue, needed for host controllers that don&squot;t use PCI */
+r_extern
+r_struct
+id|usb_operations
+id|usb_hcd_operations
+suffix:semicolon
+r_extern
+r_void
+id|usb_hcd_irq
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|__hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|r
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_hc_died
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
 r_extern

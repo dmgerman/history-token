@@ -13,8 +13,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;  /* for in_interrupt() */
+macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
-macro_line|#undef DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#else
+DECL|macro|DEBUG
+macro_line|#&t;undef DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -10506,10 +10511,17 @@ op_star
 )paren
 id|ohci
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 id|ohci-&gt;bus-&gt;bus_name
 op_assign
 id|dev-&gt;slot_name
 suffix:semicolon
+macro_line|#else
+id|ohci-&gt;bus-&gt;bus_name
+op_assign
+l_string|&quot;ohci-hc&quot;
+suffix:semicolon
+macro_line|#endif
 r_return
 id|ohci
 suffix:semicolon
@@ -10624,12 +10636,6 @@ suffix:semicolon
 id|ohci_mem_cleanup
 (paren
 id|ohci
-)paren
-suffix:semicolon
-multiline_comment|/* unmap the IO address space */
-id|iounmap
-(paren
-id|ohci-&gt;regs
 )paren
 suffix:semicolon
 id|pci_free_consistent

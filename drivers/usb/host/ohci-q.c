@@ -42,7 +42,6 @@ id|urb_priv-&gt;td
 l_int|0
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 r_int
 id|len
 op_assign
@@ -120,9 +119,6 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#&t;warning &quot;assuming no buffer unmapping is needed&quot;
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -308,7 +304,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 singleline_comment|// FIXME rewrite this resubmit path.  use pci_dma_sync_single()
 singleline_comment|// and requeue more cheaply, and only if needed.
 singleline_comment|// Better yet ... abolish the notion of automagic resubmission.
@@ -336,7 +331,6 @@ suffix:colon
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME: MP race.  If another CPU partially unlinks&n;&t; * this URB (urb-&gt;status was updated, hasn&squot;t yet told&n;&t; * us to dequeue) before we call complete() here, an&n;&t; * extra &quot;unlinked&quot; completion will be reported...&n;&t; */
 id|spin_lock_irqsave
 (paren
@@ -835,13 +829,13 @@ id|PIPE_INTERRUPT
 suffix:colon
 id|load
 op_assign
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 suffix:semicolon
 id|interval
 op_assign
 id|ep_2_n_interval
 (paren
-id|ed-&gt;int_period
+id|ed-&gt;intriso.intr_info.int_period
 )paren
 suffix:semicolon
 id|ed-&gt;interval
@@ -859,7 +853,7 @@ comma
 id|load
 )paren
 suffix:semicolon
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 op_assign
 id|int_branch
 suffix:semicolon
@@ -1465,7 +1459,7 @@ id|ohci
 comma
 id|ed
 comma
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 comma
 id|ed-&gt;interval
 )paren
@@ -1475,7 +1469,7 @@ c_loop
 (paren
 id|i
 op_assign
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 suffix:semicolon
 id|i
 OL
@@ -1490,7 +1484,7 @@ id|ohci-&gt;ohci_int_load
 id|i
 )braket
 op_sub_assign
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 suffix:semicolon
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|ohci_dump_periodic
@@ -1911,11 +1905,11 @@ op_eq
 id|ED_UNLINK
 )paren
 (brace
-id|ed-&gt;int_period
+id|ed-&gt;intriso.intr_info.int_period
 op_assign
 id|interval
 suffix:semicolon
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 op_assign
 id|load
 suffix:semicolon
@@ -2224,7 +2218,7 @@ op_amp
 l_int|0xFFFFF000
 )paren
 suffix:semicolon
-id|td-&gt;ed-&gt;last_iso
+id|td-&gt;ed-&gt;intriso.last_iso
 op_assign
 id|info
 op_amp
@@ -2408,7 +2402,6 @@ c_cond
 id|data_len
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
 id|data
 op_assign
 id|pci_map_single
@@ -2430,9 +2423,6 @@ suffix:colon
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#&t;error &quot;what dma addr to use&quot;
-macro_line|#endif
 )brace
 r_else
 id|data
@@ -2681,7 +2671,6 @@ id|ohci
 comma
 id|info
 comma
-macro_line|#ifdef CONFIG_PCI
 id|pci_map_single
 (paren
 id|ohci-&gt;hcd.pdev
@@ -2693,9 +2682,6 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 comma
-macro_line|#else
-macro_line|#&t;error &quot;what dma addr to use&quot;&t;&t;&t;&t;
-macro_line|#endif
 l_int|8
 comma
 id|urb

@@ -7,6 +7,9 @@ multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo
 suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Most things should be clean enough to redefine this at will, if care&n;   is taken to make libc match.  */
 macro_line|#include &lt;asm/sigcontext.h&gt;

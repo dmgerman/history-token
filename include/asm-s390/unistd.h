@@ -399,10 +399,46 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise            219
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;220
+DECL|macro|__NR_fcntl64
+mdefine_line|#define __NR_fcntl64&t;&t;221
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;222
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;223
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;224
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;225
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;226
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;227
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;228
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;229
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;230
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;231
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;232
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;233
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;234
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;235
 DECL|macro|__NR_gettid
-mdefine_line|#define __NR_gettid&t;&t;226
+mdefine_line|#define __NR_gettid&t;&t;236
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill&t;&t;227
+mdefine_line|#define __NR_tkill&t;&t;237
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;238
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;239
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;240
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)
@@ -421,6 +457,7 @@ mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,&bslas
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,&bslash;&n;                  type4,name4,type5,name5)                   &bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4,    &bslash;&n;          type5 arg5) {                                      &bslash;&n;        register type1 __arg1 asm(&quot;2&quot;) = arg1;               &bslash;&n;        register type2 __arg2 asm(&quot;3&quot;) = arg2;               &bslash;&n;        register type3 __arg3 asm(&quot;4&quot;) = arg3;               &bslash;&n;        register type4 __arg4 asm(&quot;5&quot;) = arg4;               &bslash;&n;        register type5 __arg5 asm(&quot;6&quot;) = arg5;               &bslash;&n;        long __res;                                          &bslash;&n;        __asm__ __volatile__ (                               &bslash;&n;                &quot;    svc %b1&bslash;n&quot;                              &bslash;&n;                &quot;    lr  %0,2&quot;                               &bslash;&n;                : &quot;=d&quot; (__res)                               &bslash;&n;                : &quot;i&quot; (__NR_##name),                         &bslash;&n;                  &quot;d&quot; (__arg1),                              &bslash;&n;                  &quot;d&quot; (__arg2),                              &bslash;&n;                  &quot;d&quot; (__arg3),                              &bslash;&n;                  &quot;d&quot; (__arg4),                              &bslash;&n;                  &quot;d&quot; (__arg5)                               &bslash;&n;                : _svc_clobber );                            &bslash;&n;        __syscall_return(type,__res);                        &bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
+macro_line|#include &lt;asm/stat.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
 mdefine_line|#define __NR__exit __NR_exit
@@ -650,6 +687,27 @@ op_star
 comma
 id|statbuf
 )paren
+r_struct
+id|rusage
+suffix:semicolon
+r_extern
+r_int
+id|sys_wait4
+c_func
+(paren
+id|pid_t
+comma
+r_int
+r_int
+op_star
+comma
+r_int
+comma
+r_struct
+id|rusage
+op_star
+)paren
+suffix:semicolon
 DECL|function|waitpid
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: netjet.c,v 1.24.6.6 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologie Australia for documents and information&n; *&n; */
+multiline_comment|/* $Id: netjet.c,v 1.24.6.6 2001/09/23 22:24:50 kai Exp $&n; *&n; * low level stuff for Traverse Technologie NETJet ISDN cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to Traverse Technologies Australia for documents and information&n; *&n; * 16-Apr-2002 - led code added - Guy Ellis (guy@traverse.com.au)&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -909,6 +909,9 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
+id|u_char
+id|led
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1035,6 +1038,50 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|cs-&gt;typ
+op_eq
+id|ISDN_CTYPE_NETJET_S
+)paren
+(brace
+singleline_comment|// led off
+id|led
+op_assign
+id|bc
+op_amp
+l_int|0x01
+suffix:semicolon
+id|led
+op_assign
+l_int|0x01
+op_lshift
+(paren
+l_int|6
+op_plus
+id|led
+)paren
+suffix:semicolon
+singleline_comment|// convert to mask
+id|led
+op_assign
+op_complement
+id|led
+suffix:semicolon
+id|cs-&gt;hw.njet.auxd
+op_and_assign
+id|led
+suffix:semicolon
+id|byteout
+c_func
+(paren
+id|cs-&gt;hw.njet.auxa
+comma
+id|cs-&gt;hw.njet.auxd
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1157,6 +1204,45 @@ op_amp
 id|bcs-&gt;Flag
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cs-&gt;typ
+op_eq
+id|ISDN_CTYPE_NETJET_S
+)paren
+(brace
+singleline_comment|// led on
+id|led
+op_assign
+id|bc
+op_amp
+l_int|0x01
+suffix:semicolon
+id|led
+op_assign
+l_int|0x01
+op_lshift
+(paren
+l_int|6
+op_plus
+id|led
+)paren
+suffix:semicolon
+singleline_comment|// convert to mask
+id|cs-&gt;hw.njet.auxd
+op_or_assign
+id|led
+suffix:semicolon
+id|byteout
+c_func
+(paren
+id|cs-&gt;hw.njet.auxa
+comma
+id|cs-&gt;hw.njet.auxd
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -4627,6 +4713,26 @@ comma
 id|st-&gt;l1.bc
 )paren
 suffix:semicolon
+multiline_comment|/* 2001/10/04 Christoph Ersfeld, Formula-n Europe AG */
+id|st-&gt;l1.bcs-&gt;cs
+op_member_access_from_pointer
+id|cardmsg
+c_func
+(paren
+id|st-&gt;l1.bcs-&gt;cs
+comma
+id|MDL_BC_ASSIGN
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+op_amp
+id|st-&gt;l1.bc
+)paren
+)paren
+suffix:semicolon
 id|l1_msg_b
 c_func
 (paren
@@ -4646,6 +4752,26 @@ op_or
 id|REQUEST
 )paren
 suffix:colon
+multiline_comment|/* 2001/10/04 Christoph Ersfeld, Formula-n Europe AG */
+id|st-&gt;l1.bcs-&gt;cs
+op_member_access_from_pointer
+id|cardmsg
+c_func
+(paren
+id|st-&gt;l1.bcs-&gt;cs
+comma
+id|MDL_BC_RELEASE
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+op_amp
+id|st-&gt;l1.bc
+)paren
+)paren
+suffix:semicolon
 id|l1_msg_b
 c_func
 (paren

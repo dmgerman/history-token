@@ -174,11 +174,15 @@ DECL|macro|ACR_SIZE
 mdefine_line|#define ACR_SIZE&t;4
 DECL|macro|STACK_FRAME_OVERHEAD
 mdefine_line|#define STACK_FRAME_OVERHEAD&t;96&t;/* size of minimum stack frame */
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS         21
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD     0x00000001
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/* this typedef defines how a Program Status Word looks like */
 r_typedef
@@ -194,7 +198,6 @@ id|addr
 suffix:semicolon
 DECL|typedef|psw_t
 )brace
-id|psw_t
 id|__attribute__
 (paren
 (paren
@@ -205,6 +208,7 @@ l_int|8
 )paren
 )paren
 )paren
+id|psw_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|macro|FIX_PSW
@@ -273,7 +277,7 @@ DECL|macro|FPC_RM_MASK
 mdefine_line|#define FPC_RM_MASK             0x00000003
 DECL|macro|FPC_VALID_MASK
 mdefine_line|#define FPC_VALID_MASK          0xF8F8FF03
-multiline_comment|/*&n; * The first entries in pt_regs, gdb_pt_regs and user_regs_struct&n; * are common for all three structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
+multiline_comment|/*&n; * The first entries in pt_regs and user_regs_struct&n; * are common for the two structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
 r_typedef
 r_struct
 (brace
@@ -334,62 +338,8 @@ DECL|member|trap
 id|__u32
 id|trap
 suffix:semicolon
-DECL|member|old_ilc
-id|__u32
-id|old_ilc
-suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * The gdb_pt_regs struct is used instead of the pt_regs structure&n; * if kernel remote debugging is used.&n; */
-macro_line|#if CONFIG_REMOTE_DEBUG
-DECL|struct|gdb_pt_regs
-r_struct
-id|gdb_pt_regs
-(brace
-DECL|member|psw
-id|psw_t
-id|psw
-suffix:semicolon
-DECL|member|gprs
-id|__u32
-id|gprs
-(braket
-id|NUM_GPRS
-)braket
-suffix:semicolon
-DECL|member|acrs
-id|__u32
-id|acrs
-(braket
-id|NUM_ACRS
-)braket
-suffix:semicolon
-DECL|member|orig_gpr2
-id|__u32
-id|orig_gpr2
-suffix:semicolon
-DECL|member|trap
-id|__u32
-id|trap
-suffix:semicolon
-DECL|member|crs
-id|__u32
-id|crs
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|fp_regs
-id|s390_fp_regs
-id|fp_regs
-suffix:semicolon
-DECL|member|old_ilc
-id|__u32
-id|old_ilc
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Now for the program event recording (trace) definitions.&n; */
 r_typedef
 r_struct
@@ -404,13 +354,6 @@ suffix:semicolon
 DECL|typedef|per_cr_words
 )brace
 id|per_cr_words
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|macro|PER_EM_MASK
 mdefine_line|#define PER_EM_MASK 0xE8000000
@@ -483,13 +426,6 @@ suffix:semicolon
 DECL|typedef|per_cr_bits
 )brace
 id|per_cr_bits
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -512,13 +448,6 @@ multiline_comment|/* 0x0a1 */
 DECL|typedef|per_lowcore_words
 )brace
 id|per_lowcore_words
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -613,13 +542,6 @@ suffix:semicolon
 DECL|typedef|per_lowcore_bits
 )brace
 id|per_lowcore_bits
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -637,13 +559,6 @@ suffix:semicolon
 DECL|member|control_regs
 )brace
 id|control_regs
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Use these flags instead of setting em_instruction_fetch&n;&t; * directly they are used so that single stepping can be&n;&t; * switched on &amp; off while not affecting other tracing&n;&t; */
 DECL|member|single_step
@@ -688,13 +603,6 @@ suffix:semicolon
 DECL|typedef|per_struct
 )brace
 id|per_struct
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct
@@ -831,22 +739,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|task_show_regs
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
-r_char
-op_star
-id|buffer
 )paren
 suffix:semicolon
 macro_line|#endif

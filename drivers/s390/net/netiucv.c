@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.12 2001/09/24 10:38:02 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.12 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.17 2002/02/12 21:52:20 felfert Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.17 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -49,7 +49,7 @@ id|MODULE_PARM_DESC
 id|iucv
 comma
 l_string|&quot;Specify the initial remote userids for iucv0 .. iucvn:&bslash;n&quot;
-l_string|&quot;iucv=userid0:userid1:...:useridN&bslash;n&quot;
+l_string|&quot;iucv=userid0:userid1:...:useridN&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -203,6 +203,7 @@ DECL|macro|CONN_FLAGS_BUFSIZE_CHANGED
 mdefine_line|#define CONN_FLAGS_BUFSIZE_CHANGED 1
 multiline_comment|/**&n; * Linked list of all connection structs.&n; */
 DECL|variable|connections
+r_static
 id|iucv_connection
 op_star
 id|connections
@@ -345,7 +346,7 @@ id|tbusy
 )paren
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -392,6 +393,7 @@ suffix:semicolon
 DECL|macro|SET_DEVICE_START
 mdefine_line|#define SET_DEVICE_START(device, value)
 DECL|variable|iucv_host
+r_static
 id|__u8
 id|iucv_host
 (braket
@@ -417,6 +419,7 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|iucvMagic
+r_static
 id|__u8
 id|iucvMagic
 (braket
@@ -459,6 +462,7 @@ l_int|0x40
 suffix:semicolon
 multiline_comment|/**&n; * This mask means the 16-byte IUCV &quot;magic&quot; and the origin userid must&n; * match exactly as specified in order to give connection_pending()&n; * control.&n; */
 DECL|variable|mask
+r_static
 id|__u8
 id|mask
 (braket
@@ -1378,7 +1382,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Ilegal next field in iucv header: %d &gt; %d&bslash;n&quot;
+l_string|&quot;%s: Illegal next field in iucv header: %d &gt; %d&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1474,6 +1478,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: [kj] Net drivers should set dev-&gt;last_rx immediately after netif_rx
 id|privptr-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
@@ -1714,6 +1719,7 @@ id|privptr
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Shut up, gcc! skb is always below 2G. */
 r_struct
 id|sk_buff
 op_star
@@ -1723,6 +1729,10 @@ op_assign
 r_struct
 id|sk_buff
 op_star
+)paren
+(paren
+r_int
+r_int
 )paren
 id|eib-&gt;ipmsgtag
 suffix:semicolon
@@ -1816,8 +1826,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|conn-&gt;tx_buff-&gt;data
 op_assign
 id|conn-&gt;tx_buff-&gt;tail
@@ -1828,7 +1836,6 @@ id|conn-&gt;tx_buff-&gt;len
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2501,6 +2508,11 @@ comma
 id|netdev-&gt;name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|conn-&gt;handle
+)paren
 id|iucv_unregister_program
 c_func
 (paren
@@ -2997,6 +3009,11 @@ op_amp
 id|conn-&gt;collect_queue
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|conn-&gt;handle
+)paren
 id|iucv_unregister_program
 c_func
 (paren
@@ -4019,10 +4036,21 @@ l_int|0
 comma
 l_int|0
 comma
+multiline_comment|/* Shut up, gcc! nskb is always below 2G. */
 (paren
 id|__u32
 )paren
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|nskb
+)paren
+op_amp
+l_int|0xffffffff
+)paren
 comma
 l_int|0
 comma
@@ -4121,6 +4149,14 @@ id|dev
 )paren
 (brace
 id|MOD_INC_USE_COUNT
+suffix:semicolon
+id|SET_DEVICE_START
+c_func
+(paren
+id|dev
+comma
+l_int|1
+)paren
 suffix:semicolon
 id|fsm_event
 c_func
@@ -5868,23 +5904,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;RX channel FSM state: %s&bslash;n&quot;
-comma
-id|fsm_getstate_str
-c_func
-(paren
-id|privptr-&gt;conn-&gt;fsm
-)paren
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;TX channel FSM state: %s&bslash;n&quot;
+l_string|&quot;Connection FSM state: %s&bslash;n&quot;
 comma
 id|fsm_getstate_str
 c_func
@@ -6946,14 +6966,6 @@ id|dev-&gt;tx_queue_len
 op_assign
 id|NETIUCV_QUEUELEN_DEFAULT
 suffix:semicolon
-id|SET_DEVICE_START
-c_func
-(paren
-id|dev
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|dev_init_buffers
 c_func
 (paren
@@ -7064,7 +7076,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.12 $&quot;
+l_string|&quot;$Revision: 1.17 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -7129,8 +7141,6 @@ id|version
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-DECL|macro|init_return
-macro_line|#  define init_return(a) return a
 r_static
 r_int
 id|__init
@@ -7148,11 +7158,8 @@ id|iucv
 op_assign
 id|param
 suffix:semicolon
-id|init_return
-c_func
-(paren
+r_return
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|__setup
@@ -7165,6 +7172,7 @@ suffix:semicolon
 macro_line|#else
 r_static
 r_void
+id|__exit
 DECL|function|netiucv_exit
 id|netiucv_exit
 c_func
@@ -7212,9 +7220,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|netiucv_exit
+id|module_exit
+c_func
+(paren
+id|netiucv_exit
+)paren
+suffix:semicolon
 macro_line|#endif
 r_static
 r_int
+id|__init
 DECL|function|netiucv_init
 id|netiucv_init
 c_func
@@ -7532,19 +7548,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|netiucv_init
 id|module_init
 c_func
 (paren
 id|netiucv_init
-)paren
-suffix:semicolon
-DECL|variable|netiucv_exit
-id|module_exit
-c_func
-(paren
-id|netiucv_exit
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -7553,5 +7561,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

@@ -143,7 +143,7 @@ id|filp
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 (paren
 id|tty-&gt;device
 )paren
@@ -210,7 +210,7 @@ id|filp
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 (paren
 id|tty-&gt;device
 )paren

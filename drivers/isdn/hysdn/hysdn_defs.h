@@ -899,12 +899,6 @@ r_int
 id|hycapi_enable
 suffix:semicolon
 r_extern
-r_struct
-id|capi_driver_interface
-op_star
-id|hy_di
-suffix:semicolon
-r_extern
 r_int
 id|hycapi_capi_create
 c_func

@@ -8,6 +8,8 @@ DECL|macro|PROT_WRITE
 mdefine_line|#define PROT_WRITE&t;0x2&t;&t;/* page can be written */
 DECL|macro|PROT_EXEC
 mdefine_line|#define PROT_EXEC&t;0x4&t;&t;/* page can be executed */
+DECL|macro|PROT_SEM
+mdefine_line|#define PROT_SEM&t;0x8&t;&t;/* page may be used for atomic ops */
 DECL|macro|PROT_NONE
 mdefine_line|#define PROT_NONE&t;0x0&t;&t;/* page can not be accessed */
 DECL|macro|MAP_SHARED

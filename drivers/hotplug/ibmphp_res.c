@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;ibmphp.h&quot;
 DECL|variable|flags
 r_static
@@ -112,6 +113,7 @@ r_static
 r_struct
 id|bus_node
 op_star
+id|__init
 id|alloc_error_bus
 (paren
 r_struct
@@ -189,6 +191,7 @@ r_static
 r_struct
 id|resource_node
 op_star
+id|__init
 id|alloc_resources
 (paren
 r_struct
@@ -273,6 +276,7 @@ suffix:semicolon
 DECL|function|alloc_bus_range
 r_static
 r_int
+id|__init
 id|alloc_bus_range
 (paren
 r_struct
@@ -656,6 +660,7 @@ multiline_comment|/* Notes:&n; * 1. The ranges are ordered.  The buses are not o
 multiline_comment|/*****************************************************************************&n; * This is the Resource Management initialization function.  It will go through&n; * the Resource list taken from EBDA and fill in this module&squot;s data structures&n; *&n; * THIS IS NOT TAKING INTO CONSIDERATION IO RESTRICTIONS OF PRIMARY BUSES, &n; * SINCE WE&squot;RE GOING TO ASSUME FOR NOW WE DON&squot;T HAVE THOSE ON OUR BUSES FOR NOW&n; *&n; * Input: ptr to the head of the resource list from EBDA&n; * Output: 0, -1 or error codes&n; ***************************************************************************/
 DECL|function|ibmphp_rsrc_init
 r_int
+id|__init
 id|ibmphp_rsrc_init
 (paren
 r_void
@@ -6440,6 +6445,7 @@ multiline_comment|/*************************************************************
 DECL|function|once_over
 r_static
 r_int
+id|__init
 id|once_over
 (paren
 r_void
@@ -7380,6 +7386,7 @@ multiline_comment|/* This routine will read the windows for any PPB we have and 
 DECL|function|update_bridge_ranges
 r_static
 r_int
+id|__init
 id|update_bridge_ranges
 (paren
 r_struct
@@ -7465,7 +7472,9 @@ id|bus_cur-&gt;busno
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;inside update_bridge_ranges &bslash;n&quot;
+l_string|&quot;inside %s &bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|debug

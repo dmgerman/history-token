@@ -3,13 +3,18 @@ macro_line|#ifndef TAPECHAR_H
 DECL|macro|TAPECHAR_H
 mdefine_line|#define TAPECHAR_H
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|TAPECHAR_DEFAULTMODE
-mdefine_line|#define TAPECHAR_DEFAULTMODE 0020644
-DECL|macro|TAPE_MAJOR
-mdefine_line|#define  TAPE_MAJOR                    0        /* get dynamic major since no major officialy defined for tape */
-multiline_comment|/*&n; * Prototypes for tape_fops&n; */
+DECL|macro|TAPECHAR_DEVFSMODE
+mdefine_line|#define TAPECHAR_DEVFSMODE 0020644 
+singleline_comment|// chardev, rwx for user, rw for group&amp;others
+DECL|macro|TAPECHAR_MAJOR
+mdefine_line|#define TAPECHAR_MAJOR 0  /* get dynamic major since no major officialy defined for tape */
+DECL|macro|TAPECHAR_NOREW_MINOR
+mdefine_line|#define TAPECHAR_NOREW_MINOR(x) x    /* Minor for nonrewinding device */
+DECL|macro|TAPECHAR_REW_MINOR
+mdefine_line|#define TAPECHAR_REW_MINOR(x)  (x+1) /* Minor for rewinding device */
+multiline_comment|/*&n; * Prototypes&n; */
 id|ssize_t
-id|tape_read
+id|tapechar_read
 c_func
 (paren
 r_struct
@@ -26,7 +31,7 @@ op_star
 )paren
 suffix:semicolon
 id|ssize_t
-id|tape_write
+id|tapechar_write
 c_func
 (paren
 r_struct
@@ -44,7 +49,7 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|tape_ioctl
+id|tapechar_ioctl
 c_func
 (paren
 r_struct
@@ -63,7 +68,7 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|tape_open
+id|tapechar_open
 (paren
 r_struct
 id|inode
@@ -75,7 +80,7 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|tape_release
+id|tapechar_release
 (paren
 r_struct
 id|inode
@@ -87,12 +92,20 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
-r_void
+id|devfs_handle_t
 id|tapechar_mkdevfstree
 (paren
-id|tape_info_t
+id|tape_dev_t
 op_star
-id|ti
+id|td
+)paren
+suffix:semicolon
+r_void
+id|tapechar_rmdevfstree
+(paren
+id|tape_dev_t
+op_star
+id|td
 )paren
 suffix:semicolon
 macro_line|#endif

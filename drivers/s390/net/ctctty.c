@@ -259,6 +259,7 @@ id|CTC_TTY_NAME
 suffix:semicolon
 macro_line|#endif
 DECL|variable|ctc_tty_revision
+r_static
 r_char
 op_star
 id|ctc_tty_revision
@@ -1409,13 +1410,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ctc_tty: null info_struct for (%d, %d) in %s&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -1442,13 +1443,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ctc_tty: bad magic for info struct (%d, %d) in %s&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -2446,6 +2447,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#warning FIXME [kj] Consider using spinlocks.
 id|save_flags
 c_func
 (paren
@@ -3936,6 +3938,7 @@ id|info-&gt;flags
 op_amp
 id|CTC_ASYNC_CLOSING
 )paren
+macro_line|#warning: FIXME [kj] Using sleep_on derivative, is racy. consider using wait_event instead
 id|interruptible_sleep_on
 c_func
 (paren
@@ -4287,7 +4290,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

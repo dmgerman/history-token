@@ -89,7 +89,7 @@ id|dev
 suffix:semicolon
 r_extern
 r_int
-id|driver_bind
+id|driver_attach
 c_func
 (paren
 r_struct
@@ -100,7 +100,7 @@ id|drv
 suffix:semicolon
 r_extern
 r_void
-id|driver_unbind
+id|driver_detach
 c_func
 (paren
 r_struct

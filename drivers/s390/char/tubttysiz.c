@@ -1247,6 +1247,7 @@ l_int|0
 )paren
 )paren
 (brace
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -1265,6 +1266,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#warning FIXME: [kj] use set_current_state instead of current-&gt;state=
 id|current-&gt;state
 op_assign
 id|TASK_RUNNING

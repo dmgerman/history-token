@@ -2,6 +2,7 @@ multiline_comment|/*&n; * 2.5 block I/O model&n; *&n; * Copyright (C) 2001 Jens 
 macro_line|#ifndef __LINUX_BIO_H
 DECL|macro|__LINUX_BIO_H
 mdefine_line|#define __LINUX_BIO_H
+macro_line|#include &lt;linux/kdev_t.h&gt;
 multiline_comment|/* Platforms may set this to teach the BIO layer about IOMMU hardware. */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef BIO_VMERGE_BOUNDARY

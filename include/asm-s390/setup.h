@@ -10,7 +10,7 @@ DECL|macro|RAMDISK_ORIGIN
 mdefine_line|#define RAMDISK_ORIGIN&t;&t;0x800000
 DECL|macro|RAMDISK_SIZE
 mdefine_line|#define RAMDISK_SIZE&t;&t;0x800000
-macro_line|#ifndef __ASSEMBLER__
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|IPL_DEVICE
 mdefine_line|#define IPL_DEVICE        (*(unsigned long *)  (0x10404))
 DECL|macro|INITRD_START

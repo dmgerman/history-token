@@ -1,5 +1,6 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;cpu.h&quot;

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  IBM/3270 Driver -- Copyright (C) 2000 UTS Global LLC&
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#ifndef IBM_TTY3270_MAJOR
 DECL|macro|IBM_TTY3270_MAJOR
@@ -679,15 +680,36 @@ DECL|macro|TUB_UE_BUSY
 mdefine_line|#define&t;TUB_UE_BUSY&t;0x0800
 DECL|macro|TUB_INPUT_HACK
 mdefine_line|#define&t;TUB_INPUT_HACK&t;0x1000&t;&t;/* Early init of command line */
-macro_line|#ifdef CONFIG_TN3270_CONSOLE
-multiline_comment|/*&n; * Extra stuff for 3270 console support&n; */
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 DECL|macro|S390_CONSOLE_DEV
 mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTY_MAJOR, 64)
-macro_line|#else
+DECL|macro|tub_major
+mdefine_line|#define tub_major(x) MAJOR(x)
+DECL|macro|tub_minor
+mdefine_line|#define tub_minor(x) MINOR(x)
+DECL|macro|tub_mkdev
+mdefine_line|#define tub_mkdev(x, y) MKDEV(x, y)
+macro_line|#elif (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
 DECL|macro|S390_CONSOLE_DEV
 mdefine_line|#define&t;S390_CONSOLE_DEV MKDEV(TTYAUX_MAJOR, 1)
+DECL|macro|tub_major
+mdefine_line|#define tub_major(x) MAJOR(x)
+DECL|macro|tub_minor
+mdefine_line|#define tub_minor(x) MINOR(x)
+DECL|macro|tub_mkdev
+mdefine_line|#define tub_mkdev(x, y) MKDEV(x, y)
+macro_line|#else
+DECL|macro|S390_CONSOLE_DEV
+mdefine_line|#define S390_CONSOLE_DEV mk_kdev(TTYAUX_MAJOR, 1)
+DECL|macro|tub_major
+mdefine_line|#define tub_major(x) major(x)
+DECL|macro|tub_minor
+mdefine_line|#define tub_minor(x) minor(x)
+DECL|macro|tub_mkdev
+mdefine_line|#define tub_mkdev(x, y) mk_kdev(x, y)
 macro_line|#endif
+multiline_comment|/*&n; * Extra stuff for 3270 console support&n; */
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
 r_extern
 r_int
 id|tub3270_con_devno
@@ -849,6 +871,7 @@ mdefine_line|#define TUBTRYLOCK(irq, flags) &bslash;&n;&t;s390irq_spin_trylock_i
 DECL|macro|TUBUNLOCK
 mdefine_line|#define TUBUNLOCK(irq, flags) &bslash;&n;&t;s390irq_spin_unlock_irqrestore(irq, flags)
 multiline_comment|/*&n; * Find tub_t * given fullscreen device&squot;s irq (subchannel number)&n; */
+macro_line|#if 0
 r_extern
 id|tub_t
 op_star
@@ -858,6 +881,7 @@ c_func
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|macro|IRQ2TUB
 mdefine_line|#define IRQ2TUB(irq) tubfindbyirq(irq)
 multiline_comment|/*&n; * Find tub_t * given fullscreen device&squot;s inode pointer&n; * This algorithm takes into account /dev/3270/tub.&n; */
@@ -879,7 +903,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|ip-&gt;i_rdev
@@ -926,7 +950,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|MAJOR
+id|tub_major
 c_func
 (paren
 id|current-&gt;tty-&gt;device
@@ -936,7 +960,7 @@ id|IBM_TTY3270_MAJOR
 )paren
 id|minor
 op_assign
-id|MINOR
+id|tub_minor
 c_func
 (paren
 id|current-&gt;tty-&gt;device
@@ -987,7 +1011,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -1070,6 +1094,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#if 0
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
 r_extern
 r_int
@@ -1094,6 +1119,7 @@ id|s390_dev_info_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_extern
 r_int
@@ -1168,16 +1194,18 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|tty3270_rcl_sync
+id|tty3270_rcl_purge
 c_func
 (paren
 id|tub_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* these appear to be unused outside of tubttyrcl */
 r_extern
 r_void
-id|tty3270_rcl_purge
+id|tty3270_rcl_sync
 c_func
 (paren
 id|tub_t
@@ -1195,6 +1223,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|tty3270_size

@@ -4,48 +4,6 @@ mdefine_line|#define _S390_BYTEORDER_H
 multiline_comment|/*&n; *  include/asm-s390/byteorder.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef __GNUC__
-DECL|function|___arch__swab32
-r_static
-id|__inline__
-id|__const__
-id|__u32
-id|___arch__swab32
-c_func
-(paren
-id|__u32
-id|x
-)paren
-(brace
-id|__u32
-id|temp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;        st    %0,0(%1)&bslash;n&quot;
-l_string|&quot;        icm   %0,8,3(%1)&bslash;n&quot;
-l_string|&quot;        icm   %0,4,2(%1)&bslash;n&quot;
-l_string|&quot;        icm   %0,2,1(%1)&bslash;n&quot;
-l_string|&quot;        ic    %0,0(%1)&quot;
-suffix:colon
-l_string|&quot;+&amp;d&quot;
-(paren
-id|x
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-op_amp
-id|temp
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|x
-suffix:semicolon
-)brace
 DECL|function|___arch__swab32p
 r_static
 id|__inline__
@@ -87,6 +45,27 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|___arch__swab32
+r_static
+id|__inline__
+id|__const__
+id|__u32
+id|___arch__swab32
+c_func
+(paren
+id|__u32
+id|x
+)paren
+(brace
+r_return
+id|___arch__swab32p
+c_func
+(paren
+op_amp
+id|x
+)paren
+suffix:semicolon
+)brace
 DECL|function|___arch__swab32s
 r_static
 id|__inline__
@@ -99,69 +78,14 @@ op_star
 id|x
 )paren
 (brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;        icm   0,8,3(%0)&bslash;n&quot;
-l_string|&quot;        icm   0,4,2(%0)&bslash;n&quot;
-l_string|&quot;        icm   0,2,1(%0)&bslash;n&quot;
-l_string|&quot;        ic    0,0(%0)&bslash;n&quot;
-l_string|&quot;        st    0,0(%0)&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
+op_star
 id|x
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|___arch__swab16
-r_static
-id|__inline__
-id|__const__
-id|__u16
-id|___arch__swab16
+op_assign
+id|___arch__swab32p
 c_func
 (paren
-id|__u16
 id|x
 )paren
-(brace
-id|__u16
-id|temp
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;        sth   %0,0(%1)&bslash;n&quot;
-l_string|&quot;        icm   %0,2,1(%1)&bslash;n&quot;
-l_string|&quot;        ic    %0,0(%1)&bslash;n&quot;
-suffix:colon
-l_string|&quot;+&amp;d&quot;
-(paren
-id|x
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-op_amp
-id|temp
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|x
 suffix:semicolon
 )brace
 DECL|function|___arch__swab16p
@@ -183,7 +107,6 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;        sr    %0,%0&bslash;n&quot;
 l_string|&quot;        icm   %0,2,1(%1)&bslash;n&quot;
 l_string|&quot;        ic    %0,0(%1)&bslash;n&quot;
 suffix:colon
@@ -204,6 +127,27 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|___arch__swab16
+r_static
+id|__inline__
+id|__const__
+id|__u16
+id|___arch__swab16
+c_func
+(paren
+id|__u16
+id|x
+)paren
+(brace
+r_return
+id|___arch__swab16p
+c_func
+(paren
+op_amp
+id|x
+)paren
+suffix:semicolon
+)brace
 DECL|function|___arch__swab16s
 r_static
 id|__inline__
@@ -216,25 +160,13 @@ op_star
 id|x
 )paren
 (brace
-id|__asm__
-id|__volatile__
+op_star
+id|x
+op_assign
+id|___arch__swab16p
 c_func
 (paren
-l_string|&quot;        icm   0,2,1(%0)&bslash;n&quot;
-l_string|&quot;        ic    0,0(%0)&bslash;n&quot;
-l_string|&quot;        sth   0,0(%0)&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;a&quot;
-(paren
 id|x
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace

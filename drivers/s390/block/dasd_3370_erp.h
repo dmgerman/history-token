@@ -4,8 +4,9 @@ DECL|macro|DASD_3370_ERP_H
 mdefine_line|#define DASD_3370_ERP_H
 id|dasd_era_t
 id|dasd_3370_erp_examine
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 comma
 id|devstat_t

@@ -460,6 +460,11 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
+DECL|variable|ext_int_info_hwc
+r_static
+id|ext_int_info_t
+id|ext_int_info_hwc
+suffix:semicolon
 DECL|macro|DELAYED_WRITE
 mdefine_line|#define DELAYED_WRITE 0
 DECL|macro|IMMEDIATE_WRITE
@@ -6528,11 +6533,14 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|register_external_interrupt
+id|register_early_external_interrupt
 (paren
 l_int|0x2401
 comma
 id|hwc_interrupt_handler
+comma
+op_amp
+id|ext_int_info_hwc
 )paren
 op_ne
 l_int|0
@@ -7104,8 +7112,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+r_break
+suffix:semicolon
 )brace
 )brace
 )brace

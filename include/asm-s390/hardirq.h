@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* entry.S is sensitive to the offsets of these fields */
 r_typedef
 r_struct

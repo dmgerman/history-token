@@ -9,28 +9,12 @@ DECL|macro|__MAX_SUBCHANNELS
 mdefine_line|#define __MAX_SUBCHANNELS 65536
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS           __MAX_SUBCHANNELS
+DECL|macro|NR_CHPIDS
+mdefine_line|#define NR_CHPIDS 256
 DECL|macro|LPM_ANYPATH
 mdefine_line|#define LPM_ANYPATH 0xff /* doesn&squot;t really belong here, Ingo? */
 DECL|macro|INVALID_STORAGE_AREA
 mdefine_line|#define INVALID_STORAGE_AREA ((void *)(-1 - 0x3FFF ))
-r_extern
-r_int
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * path management control word&n; */
 r_typedef
 r_struct
@@ -1332,6 +1316,381 @@ l_int|4
 )paren
 id|senseid_t
 suffix:semicolon
+multiline_comment|/*&n; * where we put the ssd info&n; */
+DECL|struct|_ssd_info
+r_typedef
+r_struct
+id|_ssd_info
+(brace
+DECL|member|valid
+id|__u8
+id|valid
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|type
+id|__u8
+id|type
+suffix:colon
+l_int|7
+suffix:semicolon
+multiline_comment|/* subchannel type */
+DECL|member|chpid
+id|__u8
+id|chpid
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* chpids */
+DECL|member|fla
+id|__u16
+id|fla
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* full link addresses */
+DECL|typedef|ssd_info_t
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|ssd_info_t
+suffix:semicolon
+multiline_comment|/*&n; * area for store event information&n; */
+DECL|struct|chsc_area_t
+r_typedef
+r_struct
+id|chsc_area_t
+(brace
+r_struct
+(brace
+multiline_comment|/* word 0 */
+DECL|member|command_code1
+id|__u16
+id|command_code1
+suffix:semicolon
+DECL|member|command_code2
+id|__u16
+id|command_code2
+suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
+multiline_comment|/* word 1 */
+DECL|member|reserved1
+id|__u32
+id|reserved1
+suffix:semicolon
+multiline_comment|/* word 2 */
+DECL|member|reserved2
+id|__u32
+id|reserved2
+suffix:semicolon
+DECL|member|sei_req
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|sei_req
+suffix:semicolon
+r_struct
+(brace
+multiline_comment|/* word 1 */
+DECL|member|reserved1
+id|__u16
+id|reserved1
+suffix:semicolon
+DECL|member|f_sch
+id|__u16
+id|f_sch
+suffix:semicolon
+multiline_comment|/* first subchannel */
+multiline_comment|/* word 2 */
+DECL|member|reserved2
+id|__u16
+id|reserved2
+suffix:semicolon
+DECL|member|l_sch
+id|__u16
+id|l_sch
+suffix:semicolon
+multiline_comment|/* last subchannel */
+DECL|member|ssd_req
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|ssd_req
+suffix:semicolon
+DECL|member|request_block_data
+)brace
+id|request_block_data
+suffix:semicolon
+multiline_comment|/* word 3 */
+DECL|member|reserved3
+id|__u32
+id|reserved3
+suffix:semicolon
+DECL|member|request_block
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|request_block
+suffix:semicolon
+r_struct
+(brace
+multiline_comment|/* word 0 */
+DECL|member|length
+id|__u16
+id|length
+suffix:semicolon
+DECL|member|response_code
+id|__u16
+id|response_code
+suffix:semicolon
+multiline_comment|/* word 1 */
+DECL|member|reserved1
+id|__u32
+id|reserved1
+suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
+multiline_comment|/* word 2 */
+DECL|member|flags
+id|__u8
+id|flags
+suffix:semicolon
+DECL|member|vf
+id|__u8
+id|vf
+suffix:semicolon
+multiline_comment|/* validity flags */
+DECL|member|rs
+id|__u8
+id|rs
+suffix:semicolon
+multiline_comment|/* reporting source */
+DECL|member|cc
+id|__u8
+id|cc
+suffix:semicolon
+multiline_comment|/* content code */
+multiline_comment|/* word 3 */
+DECL|member|fla
+id|__u16
+id|fla
+suffix:semicolon
+multiline_comment|/* full link address */
+DECL|member|rsid
+id|__u16
+id|rsid
+suffix:semicolon
+multiline_comment|/* reporting source id */
+multiline_comment|/* word 4 */
+DECL|member|reserved2
+id|__u32
+id|reserved2
+suffix:semicolon
+multiline_comment|/* word 5 */
+DECL|member|reserved3
+id|__u32
+id|reserved3
+suffix:semicolon
+multiline_comment|/* word 6 */
+DECL|member|ccdf
+id|__u32
+id|ccdf
+suffix:semicolon
+multiline_comment|/* content-code dependent field */
+multiline_comment|/* word 7 */
+DECL|member|reserved4
+id|__u32
+id|reserved4
+suffix:semicolon
+multiline_comment|/* word 8 */
+DECL|member|reserved5
+id|__u32
+id|reserved5
+suffix:semicolon
+multiline_comment|/* word 9 */
+DECL|member|reserved6
+id|__u32
+id|reserved6
+suffix:semicolon
+DECL|member|sei_res
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|sei_res
+suffix:semicolon
+r_struct
+(brace
+multiline_comment|/* word 2 */
+DECL|member|sch_valid
+id|__u8
+id|sch_valid
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|dev_valid
+id|__u8
+id|dev_valid
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|st
+id|__u8
+id|st
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* subchannel type */
+DECL|member|zeroes
+id|__u8
+id|zeroes
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|unit_addr
+id|__u8
+id|unit_addr
+suffix:semicolon
+multiline_comment|/* unit address */
+DECL|member|devno
+id|__u16
+id|devno
+suffix:semicolon
+multiline_comment|/* device number */
+multiline_comment|/* word 3 */
+DECL|member|path_mask
+id|__u8
+id|path_mask
+suffix:semicolon
+DECL|member|fla_valid_mask
+id|__u8
+id|fla_valid_mask
+suffix:semicolon
+DECL|member|sch
+id|__u16
+id|sch
+suffix:semicolon
+multiline_comment|/* subchannel */
+multiline_comment|/* words 4-5 */
+DECL|member|chpid
+id|__u8
+id|chpid
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* chpids 0-7 */
+multiline_comment|/* words 6-9 */
+DECL|member|fla
+id|__u16
+id|fla
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* full link addresses 0-7 */
+DECL|member|ssd_res
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|ssd_res
+suffix:semicolon
+DECL|member|response_block_data
+)brace
+id|response_block_data
+suffix:semicolon
+DECL|member|response_block
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+l_int|8
+)paren
+)paren
+)paren
+id|response_block
+suffix:semicolon
+DECL|typedef|chsc_area_t
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+comma
+id|aligned
+c_func
+(paren
+id|PAGE_SIZE
+)paren
+)paren
+)paren
+id|chsc_area_t
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * sense data&n; */
 r_typedef
@@ -1719,37 +2078,11 @@ DECL|macro|DOIO_TIMEOUT
 mdefine_line|#define DOIO_TIMEOUT             0x0080 /* 3 secs. timeout for sync. I/O */
 DECL|macro|DOIO_DONT_CALL_INTHDLR
 mdefine_line|#define DOIO_DONT_CALL_INTHDLR   0x0100 /* don&squot;t call interrupt handler */
+DECL|macro|DOIO_CANCEL_ON_TIMEOUT
+mdefine_line|#define DOIO_CANCEL_ON_TIMEOUT   0x0200 /* cancel I/O if it timed out */
 multiline_comment|/*&n; * do_IO()&n; *&n; *  Start a S/390 channel program. When the interrupt arrives, the&n; *  IRQ handler is called, either immediately, delayed (dev-end missing,&n; *  or sense required) or never (no IRQ handler registered -&n; *  should never occur, as the IRQ (subchannel ID) should be&n; *  disabled if no handler is present. Depending on the action&n; *  taken, do_IO() returns :  0      - Success&n; *                           -EIO    - Status pending&n; *                                        see : action-&gt;dev_id-&gt;cstat&n; *                                              action-&gt;dev_id-&gt;dstat&n; *                           -EBUSY  - Device busy&n; *                           -ENODEV - Device not operational&n; */
 r_int
 id|do_IO
-c_func
-(paren
-r_int
-id|irq
-comma
-multiline_comment|/* IRQ aka. subchannel number */
-id|ccw1_t
-op_star
-id|cpa
-comma
-multiline_comment|/* logical channel program address */
-r_int
-r_int
-id|intparm
-comma
-multiline_comment|/* interruption parameter */
-id|__u8
-id|lpm
-comma
-multiline_comment|/* logical path mask */
-r_int
-r_int
-id|flag
-)paren
-suffix:semicolon
-multiline_comment|/* flags : see above */
-r_int
-id|start_IO
 c_func
 (paren
 r_int
@@ -1831,38 +2164,6 @@ id|flag
 )paren
 suffix:semicolon
 multiline_comment|/* possible DOIO_WAIT_FOR_INTERRUPT */
-r_int
-id|process_IRQ
-c_func
-(paren
-r_struct
-id|pt_regs
-id|regs
-comma
-r_int
-r_int
-id|irq
-comma
-r_int
-r_int
-id|intparm
-)paren
-suffix:semicolon
-r_int
-id|enable_cpu_sync_isc
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_int
-id|disable_cpu_sync_isc
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -1891,18 +2192,6 @@ DECL|typedef|s390_dev_info_t
 )brace
 id|s390_dev_info_t
 suffix:semicolon
-r_int
-id|get_dev_info
-c_func
-(paren
-r_int
-id|irq
-comma
-id|s390_dev_info_t
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* to be eliminated - don&squot;t use */
 r_int
 id|get_dev_info_by_irq
 (paren
@@ -1994,17 +2283,6 @@ id|lpm
 )paren
 suffix:semicolon
 r_int
-id|s390_DevicePathVerification
-c_func
-(paren
-r_int
-id|irq
-comma
-id|__u8
-id|domask
-)paren
-suffix:semicolon
-r_int
 id|s390_request_irq_special
 c_func
 (paren
@@ -2034,15 +2312,6 @@ suffix:semicolon
 r_extern
 r_int
 id|set_cons_dev
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|reset_cons_dev
 c_func
 (paren
 r_int
@@ -2232,11 +2501,6 @@ l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 8&bslash;n&quot;
 l_string|&quot;   .quad 0b,2b&bslash;n&quot;
 l_string|&quot;.previous&quot;
-l_string|&quot;    lr   1,%1&bslash;n&quot;
-l_string|&quot;    msch 0(%2)&bslash;n&quot;
-l_string|&quot;0:  ipm  %0&bslash;n&quot;
-l_string|&quot;    srl  %0,28&bslash;n&quot;
-l_string|&quot;1:&bslash;n&quot;
 macro_line|#else
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:  l    %0,%3&bslash;n&quot;
@@ -2565,6 +2829,50 @@ r_return
 id|ccode
 suffix:semicolon
 )brace
+DECL|function|xsch
+r_extern
+id|__inline__
+r_int
+id|xsch
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_int
+id|ccode
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;   lr    1,%1&bslash;n&quot;
+l_string|&quot;   .insn rre,0xb2760000,%1,0&bslash;n&quot;
+l_string|&quot;   ipm   %0&bslash;n&quot;
+l_string|&quot;   srl   %0,28&quot;
+suffix:colon
+l_string|&quot;=d&quot;
+(paren
+id|ccode
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|irq
+op_or
+l_int|0x10000L
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;1&quot;
+)paren
+suffix:semicolon
+r_return
+id|ccode
+suffix:semicolon
+)brace
 DECL|function|iac
 r_extern
 id|__inline__
@@ -2792,31 +3100,46 @@ r_return
 id|ccode
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
-r_void
-id|mask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_void
-id|unmask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|MAX_IRQ_SOURCES
-mdefine_line|#define MAX_IRQ_SOURCES 128
+DECL|function|chsc
 r_extern
-id|spinlock_t
-id|irq_controller_lock
+id|__inline__
+r_int
+id|chsc
+c_func
+(paren
+id|chsc_area_t
+op_star
+id|chsc_area
+)paren
+(brace
+r_int
+id|cc
 suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;.insn&t;rre,0xb25f0000,%1,0&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ipm&t;%0&t;&bslash;n&bslash;t&quot;
+l_string|&quot;srl&t;%0,28&t;&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=d&quot;
+(paren
+id|cc
+)paren
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+id|chsc_area
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+id|cc
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|function|irq_enter
@@ -2898,10 +3221,7 @@ DECL|macro|__STR
 mdefine_line|#define __STR(x) #x
 DECL|macro|STR
 mdefine_line|#define STR(x) __STR(x)
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n; *      SMP has a few special interrupts for IPI messages&n; */
-macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/*&n; * x86 profiling function, SMP safe. We might want to do this in&n; * assembly totally?&n; */
+multiline_comment|/*&n; * x86 profiling function, SMP safe. We might want to do this in&n; * assembly totally?&n; * is this ever used anyway?&n; */
 r_extern
 r_char
 id|_stext
@@ -2977,14 +3297,16 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#include &lt;asm/s390io.h&gt;
+DECL|macro|get_irq_lock
+mdefine_line|#define get_irq_lock(irq) &amp;ioinfo[irq]-&gt;irq_lock
 DECL|macro|s390irq_spin_lock
-mdefine_line|#define s390irq_spin_lock(irq) &bslash;&n;        spin_lock(&amp;(ioinfo[irq]-&gt;irq_lock))
+mdefine_line|#define s390irq_spin_lock(irq) &bslash;&n;        spin_lock(get_irq_lock(irq))
 DECL|macro|s390irq_spin_unlock
-mdefine_line|#define s390irq_spin_unlock(irq) &bslash;&n;        spin_unlock(&amp;(ioinfo[irq]-&gt;irq_lock))
+mdefine_line|#define s390irq_spin_unlock(irq) &bslash;&n;        spin_unlock(get_irq_lock(irq))
 DECL|macro|s390irq_spin_lock_irqsave
-mdefine_line|#define s390irq_spin_lock_irqsave(irq,flags) &bslash;&n;        spin_lock_irqsave(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
+mdefine_line|#define s390irq_spin_lock_irqsave(irq,flags) &bslash;&n;        spin_lock_irqsave(get_irq_lock(irq), flags)
 DECL|macro|s390irq_spin_unlock_irqrestore
-mdefine_line|#define s390irq_spin_unlock_irqrestore(irq,flags) &bslash;&n;        spin_unlock_irqrestore(&amp;(ioinfo[irq]-&gt;irq_lock), flags)
+mdefine_line|#define s390irq_spin_unlock_irqrestore(irq,flags) &bslash;&n;        spin_unlock_irqrestore(get_irq_lock(irq), flags)
 DECL|macro|touch_nmi_watchdog
 mdefine_line|#define touch_nmi_watchdog() do { } while(0)
 macro_line|#endif /* __KERNEL__ */
