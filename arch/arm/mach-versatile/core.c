@@ -19,9 +19,7 @@ macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#ifdef CONFIG_MMC
 macro_line|#include &lt;asm/mach/mmc.h&gt;
-macro_line|#endif
 macro_line|#include &quot;core.h&quot;
 macro_line|#include &quot;clock.h&quot;
 multiline_comment|/*&n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Versatile Vectored Interrupt Controller.&n; */
@@ -1193,7 +1191,6 @@ comma
 suffix:semicolon
 DECL|macro|VERSATILE_SYSMCI
 mdefine_line|#define VERSATILE_SYSMCI&t;(IO_ADDRESS(VERSATILE_SYS_BASE) + VERSATILE_SYS_MCI_OFFSET)
-macro_line|#ifdef CONFIG_MMC
 DECL|function|mmc_status
 r_int
 r_int
@@ -1272,7 +1269,6 @@ id|mmc_status
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Clock handling&n; */
 DECL|variable|versatile_oscvco_params
 r_static
@@ -2547,7 +2543,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MMC
 id|AMBA_DEVICE
 c_func
 (paren
@@ -2561,7 +2556,6 @@ op_amp
 id|mmc0_plat_data
 )paren
 suffix:semicolon
-macro_line|#endif
 id|AMBA_DEVICE
 c_func
 (paren
@@ -2812,11 +2806,9 @@ comma
 op_amp
 id|aaci_device
 comma
-macro_line|#ifdef CONFIG_MMC
 op_amp
 id|mmc0_device
 comma
-macro_line|#endif
 op_amp
 id|kmi0_device
 comma
