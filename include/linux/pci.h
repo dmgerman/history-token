@@ -2433,9 +2433,6 @@ id|align
 comma
 r_int
 id|allocation
-comma
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_void

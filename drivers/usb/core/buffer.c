@@ -39,7 +39,7 @@ multiline_comment|/* bigger --&gt; allocate pages */
 )brace
 suffix:semicolon
 multiline_comment|/* SETUP primitives */
-multiline_comment|/**&n; * hcd_buffer_create - initialize buffer pools&n; * @hcd: the bus whose buffer pools are to be initialized&n; *&n; * Call this as part of initializing a host controller that uses the pci dma&n; * memory allocators.  It initializes some pools of dma-consistent memory that&n; * will be shared by all drivers using that controller, or returns a negative&n; * errno value on error.&n; *&n; * Call hcd_buffer_destroy() to clean up after using those pools.&n; */
+multiline_comment|/**&n; * hcd_buffer_create - initialize buffer pools&n; * @hcd: the bus whose buffer pools are to be initialized&n; * Context: !in_interrupt()&n; *&n; * Call this as part of initializing a host controller that uses the pci dma&n; * memory allocators.  It initializes some pools of dma-consistent memory that&n; * will be shared by all drivers using that controller, or returns a negative&n; * errno value on error.&n; *&n; * Call hcd_buffer_destroy() to clean up after using those pools.&n; */
 DECL|function|hcd_buffer_create
 r_int
 id|hcd_buffer_create
@@ -119,8 +119,6 @@ comma
 id|size
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -154,7 +152,7 @@ id|EXPORT_SYMBOL
 id|hcd_buffer_create
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * hcd_buffer_destroy - deallocate buffer pools&n; * @hcd: the bus whose buffer pools are to be destroyed&n; *&n; * This frees the buffer pools created by hcd_buffer_create().&n; */
+multiline_comment|/**&n; * hcd_buffer_destroy - deallocate buffer pools&n; * @hcd: the bus whose buffer pools are to be destroyed&n; * Context: !in_interrupt()&n; *&n; * This frees the buffer pools created by hcd_buffer_create().&n; */
 DECL|function|hcd_buffer_destroy
 r_void
 id|hcd_buffer_destroy

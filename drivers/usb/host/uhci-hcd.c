@@ -9329,8 +9329,6 @@ comma
 l_int|16
 comma
 l_int|0
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9368,8 +9366,6 @@ comma
 l_int|16
 comma
 l_int|0
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

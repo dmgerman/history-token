@@ -492,8 +492,6 @@ multiline_comment|/* byte alignment */
 comma
 l_int|0
 multiline_comment|/* no page-crossing issues */
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -525,8 +523,6 @@ multiline_comment|/* byte alignment */
 comma
 l_int|0
 multiline_comment|/* no page-crossing issues */
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -667,6 +663,33 @@ id|dma
 suffix:semicolon
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+singleline_comment|// DEBUG ONLY want to see if these tds are really getting
+singleline_comment|// allocated.  the last one in a page shouldn&squot;t be getting
+singleline_comment|// allocated during these tests!
+r_if
+c_cond
+(paren
+(paren
+id|dma
+op_amp
+l_int|0x0fff
+)paren
+op_eq
+l_int|0x0fc0
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;td = %p&quot;
+comma
+id|td
+)paren
+suffix:semicolon
+id|dump_stack
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace
