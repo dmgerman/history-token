@@ -534,7 +534,7 @@ r_int
 id|ehci
 suffix:semicolon
 multiline_comment|/* wire up the root hub */
-id|hcd-&gt;bus-&gt;root_hub
+id|hcd-&gt;self.root_hub
 op_assign
 id|udev
 op_assign
@@ -542,7 +542,8 @@ id|usb_alloc_dev
 (paren
 l_int|NULL
 comma
-id|hcd-&gt;bus
+op_amp
+id|hcd-&gt;self
 )paren
 suffix:semicolon
 r_if
@@ -693,8 +694,7 @@ id|ehci_reset
 id|ehci
 )paren
 suffix:semicolon
-singleline_comment|// usb_disconnect (udev); 
-id|hcd-&gt;bus-&gt;root_hub
+id|hcd-&gt;self.root_hub
 op_assign
 l_int|0
 suffix:semicolon
@@ -742,7 +742,7 @@ id|dbg
 (paren
 l_string|&quot;%s: stop&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 r_if
@@ -892,7 +892,7 @@ id|dbg
 (paren
 l_string|&quot;%s: suspend to %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|state
 )paren
@@ -961,7 +961,7 @@ id|dbg
 (paren
 l_string|&quot;%s: suspend port %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|i
 )paren
@@ -1066,7 +1066,7 @@ id|dbg
 (paren
 l_string|&quot;%s: resume&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|ports
@@ -1140,7 +1140,7 @@ id|dbg
 (paren
 l_string|&quot;%s: resume port %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|i
 )paren
@@ -1398,7 +1398,7 @@ id|err
 (paren
 l_string|&quot;%s: fatal error, state %x&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|hcd-&gt;state
 )paren
@@ -1659,7 +1659,7 @@ id|dbg
 (paren
 l_string|&quot;%s urb_dequeue %p qh state %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|urb
 comma
@@ -1907,7 +1907,7 @@ id|dbg
 (paren
 l_string|&quot;%s: free_config devnum %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|udev-&gt;devnum
 )paren

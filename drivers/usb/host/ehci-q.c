@@ -2828,7 +2828,7 @@ id|vdbg
 (paren
 l_string|&quot;%s: submit_async urb %p len %d ep %d-%s qtd %p [qh %p]&quot;
 comma
-id|ehci-&gt;hcd.bus_name
+id|ehci-&gt;hcd.self.bus_name
 comma
 id|urb
 comma

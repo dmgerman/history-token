@@ -1855,24 +1855,6 @@ r_int
 id|alternate
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|usb_make_path
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * timeouts, in seconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; */
 macro_line|#ifdef CONFIG_USB_LONG_TIMEOUT
 DECL|macro|USB_CTRL_GET_TIMEOUT
@@ -1900,6 +1882,12 @@ r_int
 id|busnum
 suffix:semicolon
 multiline_comment|/* Bus number (in order of reg) */
+DECL|member|bus_name
+r_char
+op_star
+id|bus_name
+suffix:semicolon
+multiline_comment|/* stable id (PCI slot_name etc) */
 macro_line|#ifdef DEVNUM_ROUND_ROBIN
 DECL|member|devnum_next
 r_int
@@ -2374,6 +2362,58 @@ op_star
 id|id
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * usb_make_path - returns stable device path in the usb tree&n; * @dev: the device whose path is being constructed&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Returns length of the string (&gt; 0) or negative if size was too small.&n; *&n; * This identifier is intended to be &quot;stable&quot;, reflecting physical paths in&n; * hardware such as physical bus addresses for host controllers or ports on&n; * USB hubs.  That makes it stay the same until systems are physically&n; * reconfigured, by re-cabling a tree of USB devices or by moving USB host&n; * controllers.  Adding and removing devices, including virtual root hubs&n; * in host controller driver modules, does not change these path identifers;&n; * neither does rebooting or re-enumerating.  These are more useful identifiers&n; * than changeable (&quot;unstable&quot;) ones like bus numbers or device addresses.&n; * &n; * With a partial exception for devices connected to USB 2.0 root hubs, these&n; * identifiers are also predictable:  so long as the device tree isn&squot;t changed,&n; * plugging any USB device into a given hub port always gives it the same path.&n; * Because of the use of &quot;companion&quot; controllers, devices connected to ports on&n; * USB 2.0 root hubs (EHCI host controllers) will get one path ID if they are&n; * high speed, and a different one if they are full or low speed.&n; */
+DECL|function|usb_make_path
+r_static
+r_inline
+r_int
+id|usb_make_path
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+)paren
+(brace
+r_int
+id|actual
+suffix:semicolon
+id|actual
+op_assign
+id|snprintf
+(paren
+id|buf
+comma
+id|size
+comma
+l_string|&quot;usb-%s-%s&quot;
+comma
+id|dev-&gt;bus-&gt;bus_name
+comma
+id|dev-&gt;devpath
+)paren
+suffix:semicolon
+r_return
+(paren
+id|actual
+op_ge
+id|size
+)paren
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
+id|actual
+suffix:semicolon
+)brace
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 DECL|macro|PIPE_ISOCHRONOUS

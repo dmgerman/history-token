@@ -10532,6 +10532,10 @@ op_star
 )paren
 id|ohci
 suffix:semicolon
+id|ohci-&gt;bus-&gt;bus_name
+op_assign
+id|dev-&gt;slot_name
+suffix:semicolon
 r_return
 id|ohci
 suffix:semicolon
