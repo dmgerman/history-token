@@ -3,9 +3,9 @@ DECL|macro|_ASMARM_PAGE_H
 mdefine_line|#define _ASMARM_PAGE_H
 macro_line|#include &lt;asm/proc/page.h&gt;
 DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE       (1UL &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
-mdefine_line|#define PAGE_MASK       (~(PAGE_SIZE-1))
+mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|STRICT_MM_TYPECHECKS
@@ -27,9 +27,9 @@ id|from
 )paren
 suffix:semicolon
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(page, vaddr)&t;cpu_clear_user_page(page,vaddr)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr)&t;cpu_copy_user_page(to,from,vaddr)
 macro_line|#ifdef STRICT_MM_TYPECHECKS
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
@@ -144,6 +144,7 @@ multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 r_extern
 r_void
 id|__bug
@@ -162,10 +163,18 @@ op_star
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* give file/line information */
 DECL|macro|BUG
 mdefine_line|#define BUG()&t;&t;__bug(__FILE__, __LINE__, NULL)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;__bug(__FILE__, __LINE__, page)
+macro_line|#else
+multiline_comment|/* these just cause an oops */
+DECL|macro|BUG
+mdefine_line|#define BUG()&t;&t;(*(int *)0 = 0)
+DECL|macro|PAGE_BUG
+mdefine_line|#define PAGE_BUG(page)&t;(*(int *)0 = 0)
+macro_line|#endif
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static

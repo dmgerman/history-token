@@ -122,7 +122,5 @@ DECL|macro|outw
 mdefine_line|#define outw(v,p)&t;&t;outw_t(v,p)
 DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;&t;outl_t(v,p)
-DECL|macro|__arch_ioremap
-mdefine_line|#define __arch_ioremap&t;&t;__ioremap
 macro_line|#endif
 eof

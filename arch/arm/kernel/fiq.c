@@ -379,9 +379,9 @@ id|regs-&gt;ARM_r8
 comma
 l_string|&quot;I&quot;
 (paren
-id|I_BIT
+id|PSR_I_BIT
 op_or
-id|F_BIT
+id|PSR_F_BIT
 op_or
 id|FIQ_MODE
 )paren
@@ -547,9 +547,9 @@ id|regs-&gt;ARM_r8
 comma
 l_string|&quot;I&quot;
 (paren
-id|I_BIT
+id|PSR_I_BIT
 op_or
-id|F_BIT
+id|PSR_F_BIT
 op_or
 id|FIQ_MODE
 )paren

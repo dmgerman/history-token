@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 multiline_comment|/* Page table mapping for I/O region */
 DECL|variable|__initdata

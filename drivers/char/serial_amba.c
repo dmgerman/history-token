@@ -3558,7 +3558,7 @@ c_func
 (paren
 l_string|&quot;ambauart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6101,7 +6101,7 @@ c_func
 (paren
 l_string|&quot;ambauart_wait_until_sent(%d), jiff=%lu, expire=%lu...&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6935,7 +6935,7 @@ id|retval
 comma
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -7808,7 +7808,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|SERIAL_AMBA_MAJOR

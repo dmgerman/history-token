@@ -2,10 +2,6 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/io.h&n; *&n; * by Ale
 macro_line|#ifndef __ASM_ARM_ARCH_IO_H
 DECL|macro|__ASM_ARM_ARCH_IO_H
 mdefine_line|#define __ASM_ARM_ARCH_IO_H
-DECL|macro|iomem_valid_addr
-mdefine_line|#define iomem_valid_addr(off,sz)&t;(1)
-DECL|macro|iomem_to_phys
-mdefine_line|#define iomem_to_phys(off)&t;&t;(off)
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 multiline_comment|/*&n; * We use two different types of addressing - PC style addresses, and ARM&n; * addresses.  PC style accesses the PC hardware with the normal PC IO&n; * addresses, eg 0x3f8 for serial#1.  ARM addresses are 0x80000000+&n; * and are translated to the start of IO.&n; */
@@ -135,10 +131,6 @@ DECL|macro|outw
 mdefine_line|#define outw(v,p)&t;(__builtin_constant_p((p)) ? __outwc(v,p) : __outw(v,p))
 DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;(__builtin_constant_p((p)) ? __outlc(v,p) : __outl(v,p))
-DECL|macro|__arch_getw
-mdefine_line|#define __arch_getw(addr)&t;(*(volatile unsigned short *)(addr))
-DECL|macro|__arch_putw
-mdefine_line|#define __arch_putw(b,addr)&t;(*(volatile unsigned short *)(addr) = (b))
 multiline_comment|/*&n; * Translated address IO functions&n; *&n; * IO address has already been translated to a virtual address&n; */
 DECL|macro|outb_t
 mdefine_line|#define outb_t(v,p)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(*(volatile unsigned char *)(p) = (v))

@@ -5,9 +5,9 @@ mdefine_line|#define __ASMARM_HARDWARE_IOC_H
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * We use __raw_base variants here so that we give the compiler the&n; * chance to keep IOC_BASE in a register.&n; */
 DECL|macro|ioc_readb
-mdefine_line|#define ioc_readb(off)&t;&t;__raw_base_readb(IOC_BASE, (off))
+mdefine_line|#define ioc_readb(off)&t;&t;__raw_readb(IOC_BASE + (off))
 DECL|macro|ioc_writeb
-mdefine_line|#define ioc_writeb(val,off)&t;__raw_base_writeb(val, IOC_BASE, (off))
+mdefine_line|#define ioc_writeb(val,off)&t;__raw_writeb(val, IOC_BASE + (off))
 macro_line|#endif
 DECL|macro|IOC_CONTROL
 mdefine_line|#define IOC_CONTROL&t;(0x00)

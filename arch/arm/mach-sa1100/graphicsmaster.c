@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -51,6 +52,7 @@ op_assign
 id|sa1111_probe
 c_func
 (paren
+l_int|0x18000000
 )paren
 suffix:semicolon
 r_if
@@ -610,11 +612,6 @@ op_assign
 id|ADS_unmask_irq1
 suffix:semicolon
 )brace
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO0
-suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
@@ -749,25 +746,6 @@ op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
 (brace
-l_int|0xe8000000
-comma
-l_int|0x08000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 1 */
-(brace
 l_int|0xf0000000
 comma
 l_int|0x10000000
@@ -866,16 +844,6 @@ id|GPSR
 op_assign
 id|GPIO_GPIO15
 suffix:semicolon
-id|GPDR
-op_or_assign
-id|GPIO_GPIO15
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO14
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -897,16 +865,6 @@ id|GPSR
 op_assign
 id|GPIO_GPIO17
 suffix:semicolon
-id|GPDR
-op_or_assign
-id|GPIO_GPIO17
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO16
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -922,16 +880,6 @@ id|GPSR
 op_assign
 id|GPIO_GPIO19
 suffix:semicolon
-id|GPDR
-op_or_assign
-id|GPIO_GPIO19
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO18
-suffix:semicolon
 )brace
 r_return
 id|ret
@@ -939,7 +887,7 @@ suffix:semicolon
 )brace
 DECL|function|graphicsmaster_get_mctrl
 r_static
-r_int
+id|u_int
 id|graphicsmaster_get_mctrl
 c_func
 (paren
@@ -949,7 +897,7 @@ op_star
 id|port
 )paren
 (brace
-r_int
+id|u_int
 id|result
 op_assign
 id|TIOCM_CD
@@ -1247,6 +1195,26 @@ c_func
 l_int|2
 comma
 l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* set GPDR now */
+id|GPDR
+op_or_assign
+id|GPIO_GPIO15
+op_or
+id|GPIO_GPIO17
+op_or
+id|GPIO_GPIO19
+suffix:semicolon
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|GPIO_GPIO14
+op_or
+id|GPIO_GPIO16
+op_or
+id|GPIO_GPIO18
 )paren
 suffix:semicolon
 )brace

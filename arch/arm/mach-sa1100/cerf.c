@@ -13,6 +13,7 @@ r_static
 r_void
 id|__init
 id|cerf_init_irq
+c_func
 (paren
 r_void
 )paren
@@ -22,59 +23,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Need to register these as rising edge interrupts&n;   * For standard 16550 serial driver support&n;   * Basically - I copied it from pfs168.c :)&n;   */
+multiline_comment|/* Need to register these as rising edge interrupts&n;&t; * For standard 16550 serial driver support&n;&t; * Basically - I copied it from pfs168.c :)&n;&t; */
 macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
-id|set_GPIO_IRQ_edge
-c_func
-(paren
-id|GPIO_GPIO
-c_func
-(paren
-l_int|3
-)paren
-comma
-id|GPIO_RISING_EDGE
-)paren
-suffix:semicolon
 multiline_comment|/* PDA Full serial port */
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_GPIO
-c_func
-(paren
-l_int|2
-)paren
+id|GPIO_GPIO3
 comma
 id|GPIO_RISING_EDGE
 )paren
 suffix:semicolon
 multiline_comment|/* PDA Bluetooth */
-id|GPDR
-op_and_assign
-op_complement
-(paren
-id|GPIO_GPIO
+id|set_GPIO_IRQ_edge
 c_func
 (paren
-l_int|3
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Set the direction of serial port GPIO pin to in */
-id|GPDR
-op_and_assign
-op_complement
-(paren
-id|GPIO_GPIO
-c_func
-(paren
-l_int|2
-)paren
+id|GPIO_GPIO2
+comma
+id|GPIO_RISING_EDGE
 )paren
 suffix:semicolon
-multiline_comment|/* Set the direction of bluetooth GPIO pin to in */
 macro_line|#endif /* CONFIG_SA1100_CERF_CPLD */
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_UCB1200_IRQ
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -105,7 +82,6 @@ id|mi
 )paren
 (brace
 macro_line|#if defined(CONFIG_SA1100_CERF_64MB)
-singleline_comment|// 64MB RAM
 id|SET_BANK
 c_func
 (paren
@@ -124,8 +100,7 @@ id|mi-&gt;nr_banks
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#elif defined(CONFIG_SA1100_CERF_32MB)&t;
-singleline_comment|// 32MB RAM
+macro_line|#elif defined(CONFIG_SA1100_CERF_32MB)
 id|SET_BANK
 c_func
 (paren
@@ -144,8 +119,7 @@ id|mi-&gt;nr_banks
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#elif defined(CONFIG_SA1100_CERF_16MB)&t;
-singleline_comment|// 16Meg Ram.
+macro_line|#elif defined(CONFIG_SA1100_CERF_16MB)
 id|SET_BANK
 c_func
 (paren
@@ -179,7 +153,6 @@ op_assign
 l_int|2
 suffix:semicolon
 macro_line|#elif defined(CONFIG_SA1100_CERF_8MB)
-singleline_comment|// 8Meg Ram.
 id|SET_BANK
 c_func
 (paren
@@ -216,26 +189,7 @@ id|cerf_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
+multiline_comment|/* virtual&t; physical    length&t; domain     r  w  c  b */
 (brace
 l_int|0xf0000000
 comma
@@ -371,6 +325,17 @@ l_int|2
 comma
 l_int|1
 )paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* set some GPDR bits here while it&squot;s safe */
+id|GPDR
+op_or_assign
+id|GPIO_CF_RESET
+suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+id|GPDR
+op_or_assign
+id|GPIO_PWR_SHUTDOWN
 suffix:semicolon
 macro_line|#endif
 )brace

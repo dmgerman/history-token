@@ -13,17 +13,23 @@ id|ptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * What is the most efficient way of loading/storing an unaligned value?&n; *&n; * That is the subject of this file.  Efficiency here is defined as&n; * minimum code size with minimum register usage for the common cases.&n; * It is currently not believed that long longs are common, so we&n; * trade efficiency for the chars, shorts and longs against the long&n; * longs.&n; *&n; * Current stats with gcc 2.7.2.2 for these functions:&n; *&n; *&t;ptrsize&t;get:&t;code&t;regs&t;put:&t;code&t;regs&n; *&t;1&t;&t;1&t;1&t;&t;1&t;2&n; *&t;2&t;&t;3&t;2&t;&t;3&t;2&n; *&t;4&t;&t;7&t;3&t;&t;7&t;3&n; *&t;8&t;&t;20&t;6&t;&t;16&t;6&n; *&n; * gcc 2.95.1 seems to code differently:&n; *&n; *&t;ptrsize&t;get:&t;code&t;regs&t;put:&t;code&t;regs&n; *&t;1&t;&t;1&t;1&t;&t;1&t;2&n; *&t;2&t;&t;3&t;2&t;&t;3&t;2&n; *&t;4&t;&t;7&t;4&t;&t;7&t;4&n; *&t;8&t;&t;19&t;8&t;&t;15&t;6&n; *&n; * which may or may not be more efficient (depending upon whether&n; * you can afford the extra registers).  Hopefully the gcc 2.95&n; * is inteligent enough to decide if it is better to use the&n; * extra register, but evidence so far seems to suggest otherwise.&n; *&n; * Unfortunately, gcc is not able to optimise the high word&n; * out of long long &gt;&gt; 32, or the low word from long long &lt;&lt; 32&n; */
-DECL|macro|__get_unaligned_2
-mdefine_line|#define __get_unaligned_2(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] | __p[1] &lt;&lt; 8)
-DECL|macro|__get_unaligned_4
-mdefine_line|#define __get_unaligned_4(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] | __p[1] &lt;&lt; 8 | __p[2] &lt;&lt; 16 | __p[3] &lt;&lt; 24)
-DECL|macro|get_unaligned
-mdefine_line|#define get_unaligned(ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__typeof__(*(ptr)) __v;&t;&t;&t;&t;&bslash;&n;&t;&t;__u8 *__p = (__u8 *)(ptr);&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;__v = *(ptr);&t;&t;&t;break;&t;&bslash;&n;&t;&t;case 2: __v = __get_unaligned_2(__p);&t;break;&t;&bslash;&n;&t;&t;case 4: __v = __get_unaligned_4(__p);&t;break;&t;&bslash;&n;&t;&t;case 8: {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;unsigned int __v1, __v2;&t;&bslash;&n;&t;&t;&t;&t;__v2 = __get_unaligned_4((__p+4)); &bslash;&n;&t;&t;&t;&t;__v1 = __get_unaligned_4(__p);&t;&bslash;&n;&t;&t;&t;&t;__v = ((unsigned long long)__v2 &lt;&lt; 32 | __v1);&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __v = __bug_unaligned_x(__p);&t;break;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__v;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-DECL|function|__put_unaligned_2
+DECL|macro|__get_unaligned_2_le
+mdefine_line|#define __get_unaligned_2_le(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] | __p[1] &lt;&lt; 8)
+DECL|macro|__get_unaligned_2_be
+mdefine_line|#define __get_unaligned_2_be(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] &lt;&lt; 8 | __p[1])
+DECL|macro|__get_unaligned_4_le
+mdefine_line|#define __get_unaligned_4_le(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] | __p[1] &lt;&lt; 8 | __p[2] &lt;&lt; 16 | __p[3] &lt;&lt; 24)
+DECL|macro|__get_unaligned_4_be
+mdefine_line|#define __get_unaligned_4_be(__p)&t;&t;&t;&t;&t;&bslash;&n;&t;(__p[0] &lt;&lt; 24 | __p[1] &lt;&lt; 16 | __p[2] &lt;&lt; 8 | __p[3])
+DECL|macro|__get_unaligned_le
+mdefine_line|#define __get_unaligned_le(ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__typeof__(*(ptr)) __v;&t;&t;&t;&t;&bslash;&n;&t;&t;__u8 *__p = (__u8 *)(ptr);&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;__v = *(ptr);&t;&t;&t;break;&t;&bslash;&n;&t;&t;case 2: __v = __get_unaligned_2_le(__p);&t;break;&t;&bslash;&n;&t;&t;case 4: __v = __get_unaligned_4_le(__p);&t;break;&t;&bslash;&n;&t;&t;case 8: {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;unsigned int __v1, __v2;&t;&bslash;&n;&t;&t;&t;&t;__v2 = __get_unaligned_4_le((__p+4)); &bslash;&n;&t;&t;&t;&t;__v1 = __get_unaligned_4_le(__p);&t;&bslash;&n;&t;&t;&t;&t;__v = ((unsigned long long)__v2 &lt;&lt; 32 | __v1);&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __v = __bug_unaligned_x(__p);&t;break;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__v;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|__get_unaligned_be
+mdefine_line|#define __get_unaligned_be(ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__typeof__(*(ptr)) __v;&t;&t;&t;&t;&bslash;&n;&t;&t;__u8 *__p = (__u8 *)(ptr);&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;__v = *(ptr);&t;&t;&t;break;&t;&bslash;&n;&t;&t;case 2: __v = __get_unaligned_2_be(__p);&t;break;&t;&bslash;&n;&t;&t;case 4: __v = __get_unaligned_4_be(__p);&t;break;&t;&bslash;&n;&t;&t;case 8: {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;unsigned int __v1, __v2;&t;&bslash;&n;&t;&t;&t;&t;__v2 = __get_unaligned_4_be(__p); &bslash;&n;&t;&t;&t;&t;__v1 = __get_unaligned_4_be((__p+4));&t;&bslash;&n;&t;&t;&t;&t;__v = ((unsigned long long)__v2 &lt;&lt; 32 | __v1);&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __v = __bug_unaligned_x(__p);&t;break;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__v;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|function|__put_unaligned_2_le
 r_static
 r_inline
 r_void
-id|__put_unaligned_2
+id|__put_unaligned_2_le
 c_func
 (paren
 id|__u32
@@ -50,11 +56,11 @@ op_rshift
 l_int|8
 suffix:semicolon
 )brace
-DECL|function|__put_unaligned_4
+DECL|function|__put_unaligned_2_be
 r_static
 r_inline
 r_void
-id|__put_unaligned_4
+id|__put_unaligned_2_be
 c_func
 (paren
 id|__u32
@@ -66,7 +72,38 @@ op_star
 id|__p
 )paren
 (brace
-id|__put_unaligned_2
+op_star
+id|__p
+op_increment
+op_assign
+id|__v
+op_rshift
+l_int|8
+suffix:semicolon
+op_star
+id|__p
+op_increment
+op_assign
+id|__v
+suffix:semicolon
+)brace
+DECL|function|__put_unaligned_4_le
+r_static
+r_inline
+r_void
+id|__put_unaligned_4_le
+c_func
+(paren
+id|__u32
+id|__v
+comma
+r_register
+id|__u8
+op_star
+id|__p
+)paren
+(brace
+id|__put_unaligned_2_le
 c_func
 (paren
 id|__v
@@ -78,7 +115,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|__put_unaligned_2
+id|__put_unaligned_2_le
 c_func
 (paren
 id|__v
@@ -87,11 +124,48 @@ id|__p
 )paren
 suffix:semicolon
 )brace
-DECL|function|__put_unaligned_8
+DECL|function|__put_unaligned_4_be
 r_static
 r_inline
 r_void
-id|__put_unaligned_8
+id|__put_unaligned_4_be
+c_func
+(paren
+id|__u32
+id|__v
+comma
+r_register
+id|__u8
+op_star
+id|__p
+)paren
+(brace
+id|__put_unaligned_2_be
+c_func
+(paren
+id|__v
+op_rshift
+l_int|16
+comma
+id|__p
+)paren
+suffix:semicolon
+id|__put_unaligned_2_be
+c_func
+(paren
+id|__v
+comma
+id|__p
+op_plus
+l_int|2
+)paren
+suffix:semicolon
+)brace
+DECL|function|__put_unaligned_8_le
+r_static
+r_inline
+r_void
+id|__put_unaligned_8_le
 c_func
 (paren
 r_const
@@ -107,7 +181,7 @@ id|__p
 )paren
 (brace
 multiline_comment|/*&n;&t; * tradeoff: 8 bytes of stack for all unaligned puts (2&n;&t; * instructions), or an extra register in the long long&n;&t; * case - go for the extra register.&n;&t; */
-id|__put_unaligned_4
+id|__put_unaligned_4_le
 c_func
 (paren
 id|__v
@@ -119,7 +193,7 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-id|__put_unaligned_4
+id|__put_unaligned_4_le
 c_func
 (paren
 id|__v
@@ -128,8 +202,63 @@ id|__p
 )paren
 suffix:semicolon
 )brace
+DECL|function|__put_unaligned_8_be
+r_static
+r_inline
+r_void
+id|__put_unaligned_8_be
+c_func
+(paren
+r_const
+r_int
+r_int
+r_int
+id|__v
+comma
+r_register
+id|__u8
+op_star
+id|__p
+)paren
+(brace
+multiline_comment|/*&n;&t; * tradeoff: 8 bytes of stack for all unaligned puts (2&n;&t; * instructions), or an extra register in the long long&n;&t; * case - go for the extra register.&n;&t; */
+id|__put_unaligned_4_be
+c_func
+(paren
+id|__v
+op_rshift
+l_int|32
+comma
+id|__p
+)paren
+suffix:semicolon
+id|__put_unaligned_4_be
+c_func
+(paren
+id|__v
+comma
+id|__p
+op_plus
+l_int|4
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Try to store an unaligned value as efficiently as possible.&n; */
+DECL|macro|__put_unaligned_le
+mdefine_line|#define __put_unaligned_le(val,ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*(ptr) = (val);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2: __put_unaligned_2_le((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 4:&t;__put_unaligned_4_le((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 8:&t;__put_unaligned_8_le((val),(__u8 *)(ptr)); &bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __bug_unaligned_x(ptr);&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(void) 0;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|put_unaligned_be
+mdefine_line|#define put_unaligned_be(val,ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*(ptr) = (val);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2: __put_unaligned_2_be((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 4:&t;__put_unaligned_4_be((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 8:&t;__put_unaligned_8_be((val),(__u8 *)(ptr)); &bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __bug_unaligned_x(ptr);&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(void) 0;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+multiline_comment|/*&n; * Select endianness&n; */
+macro_line|#ifndef __ARMEB__
+DECL|macro|get_unaligned
+mdefine_line|#define get_unaligned&t;__get_unaligned_le
 DECL|macro|put_unaligned
-mdefine_line|#define put_unaligned(val,ptr)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*(ptr) = (val);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2: __put_unaligned_2((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 4:&t;__put_unaligned_4((val),(__u8 *)(ptr));&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 8:&t;__put_unaligned_8((val),(__u8 *)(ptr)); &bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __bug_unaligned_x(ptr);&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(void) 0;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define put_unaligned&t;__put_unaligned_le
+macro_line|#else
+DECL|macro|get_unaligned
+mdefine_line|#define get_unaligned&t;__get_unaligned_be
+DECL|macro|put_unaligned
+mdefine_line|#define put_unaligned&t;__put_unaligned_be
+macro_line|#endif
 macro_line|#endif
 eof

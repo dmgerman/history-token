@@ -7,10 +7,14 @@ mdefine_line|#define CLPS7111_PHYS_BASE&t;(0x80000000)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|clps_readb
 mdefine_line|#define clps_readb(off)&t;&t;__raw_readb(CLPS7111_BASE + (off))
+DECL|macro|clps_readw
+mdefine_line|#define clps_readw(off)&t;&t;__raw_readw(CLPS7111_BASE + (off))
 DECL|macro|clps_readl
 mdefine_line|#define clps_readl(off)&t;&t;__raw_readl(CLPS7111_BASE + (off))
 DECL|macro|clps_writeb
 mdefine_line|#define clps_writeb(val,off)&t;__raw_writeb(val, CLPS7111_BASE + (off))
+DECL|macro|clps_writew
+mdefine_line|#define clps_writew(val,off)&t;__raw_writew(val, CLPS7111_BASE + (off))
 DECL|macro|clps_writel
 mdefine_line|#define clps_writel(val,off)&t;__raw_writel(val, CLPS7111_BASE + (off))
 macro_line|#endif
@@ -46,6 +50,8 @@ DECL|macro|INTMR1
 mdefine_line|#define INTMR1&t;&t;(0x0280)
 DECL|macro|LCDCON
 mdefine_line|#define LCDCON&t;&t;(0x02c0)
+DECL|macro|TC1D
+mdefine_line|#define TC1D            (0x0300)
 DECL|macro|TC2D
 mdefine_line|#define TC2D&t;&t;(0x0340)
 DECL|macro|RTCDR

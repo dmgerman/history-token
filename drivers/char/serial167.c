@@ -740,13 +740,13 @@ c_func
 (paren
 id|badinfo
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -800,13 +800,13 @@ c_func
 (paren
 id|badrange
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -832,13 +832,13 @@ c_func
 (paren
 id|badmagic
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -9213,7 +9213,7 @@ suffix:semicolon
 multiline_comment|/* CP(&squot;O&squot;); */
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -12077,7 +12077,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR

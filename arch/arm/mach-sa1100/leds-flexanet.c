@@ -58,7 +58,7 @@ suffix:colon
 multiline_comment|/* start using LEDs and enable its hardware */
 id|hw_led_bcr
 op_assign
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 suffix:semicolon
 id|hw_led_gpio
 op_assign
@@ -158,7 +158,7 @@ id|LED_STATE_CLAIMED
 id|hw_led_bcr
 op_and_assign
 op_complement
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -178,7 +178,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_bcr
 op_or_assign
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -201,7 +201,7 @@ id|LED_STATE_CLAIMED
 )paren
 id|hw_led_bcr
 op_or_assign
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -218,7 +218,7 @@ id|LED_STATE_CLAIMED
 id|hw_led_bcr
 op_and_assign
 op_complement
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -279,15 +279,15 @@ id|LED_STATE_ENABLED
 )paren
 (brace
 multiline_comment|/* update LEDs */
-id|BCR
+id|FHH_BCR
 op_assign
-id|BCR_value
+id|flexanet_BCR
 op_assign
 (paren
-id|BCR_value
+id|flexanet_BCR
 op_amp
 op_complement
-id|BCR_LED_GREEN
+id|FHH_BCR_LED_GREEN
 )paren
 op_or
 id|hw_led_bcr

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Modifications for ARM (C) 1994, 1995, 1996,1997 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the ARM-specific time handling details:&n; *  reading the RTC at bootup, etc...&n; *&n; *  1994-07-02  Alan Modra&n; *              fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; *  1998-12-20  Updated NTP code according to technical memorandum Jan &squot;96&n; *              &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Modifications for ARM (C) 1994-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the ARM-specific time handling details:&n; *  reading the RTC at bootup, etc...&n; *&n; *  1994-07-02  Alan Modra&n; *              fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; *  1998-12-20  Updated NTP code according to technical memorandum Jan &squot;96&n; *              &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,11 +7,11 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
 r_extern
 r_int
 id|setup_arm_irq
@@ -269,7 +269,6 @@ l_int|660
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_LEDS
-macro_line|#include &lt;asm/leds.h&gt;
 DECL|function|dummy_leds_event
 r_static
 r_void
@@ -293,7 +292,6 @@ id|led_event_t
 op_assign
 id|dummy_leds_event
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODULES
 DECL|variable|leds_event
 id|EXPORT_SYMBOL
 c_func
@@ -301,7 +299,6 @@ c_func
 id|leds_event
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_LEDS_TIMER
 DECL|function|do_leds
@@ -365,6 +362,8 @@ r_int
 id|usec
 comma
 id|sec
+comma
+id|lost
 suffix:semicolon
 id|read_lock_irqsave
 c_func
@@ -382,9 +381,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-(brace
-r_int
-r_int
 id|lost
 op_assign
 id|jiffies
@@ -402,7 +398,6 @@ id|lost
 op_star
 id|USECS_PER_JIFFY
 suffix:semicolon
-)brace
 id|sec
 op_assign
 id|xtime.tv_sec
@@ -464,7 +459,7 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * done, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|gettimeoffset
@@ -543,28 +538,4 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Include architecture specific code&n; */
 macro_line|#include &lt;asm/arch/time.h&gt;
-multiline_comment|/*&n; * This must cause the timer to start ticking.&n; * It doesn&squot;t have to set the current time though&n; * from an RTC - it can be done later once we have&n; * some buses initialised.&n; */
-DECL|function|time_init
-r_void
-id|__init
-id|time_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|xtime.tv_usec
-op_assign
-l_int|0
-suffix:semicolon
-id|xtime.tv_sec
-op_assign
-l_int|0
-suffix:semicolon
-id|setup_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 eof

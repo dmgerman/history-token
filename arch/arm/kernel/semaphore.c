@@ -437,14 +437,6 @@ c_func
 (paren
 "&quot;"
 dot
-id|section
-dot
-id|text.lock
-comma
-"&bslash;&quot;"
-id|ax
-"&bslash;&quot;"
-dot
 id|align
 l_int|5
 dot
@@ -600,8 +592,6 @@ comma
 id|pc
 )brace
 op_xor
-dot
-id|previous
 "&quot;"
 )paren
 suffix:semicolon
@@ -612,14 +602,6 @@ c_func
 (paren
 "&quot;"
 dot
-id|section
-dot
-id|text.lock
-comma
-"&bslash;&quot;"
-id|ax
-"&bslash;&quot;"
-dot
 id|align
 l_int|5
 dot
@@ -771,8 +753,6 @@ id|r3
 comma
 id|pc
 )brace
-dot
-id|previous
 "&quot;"
 )paren
 suffix:semicolon

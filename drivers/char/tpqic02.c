@@ -6159,7 +6159,7 @@ id|TPQIC02_NAME
 l_string|&quot;: request READ, minor=%x, buf=%p, count=%lx&quot;
 l_string|&quot;, pos=%lx, flags=%x&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -6718,7 +6718,7 @@ id|TPQIC02_NAME
 l_string|&quot;: request WRITE, minor=%x, buf=%p&quot;
 l_string|&quot;, count=%lx, pos=%lx, flags=%x&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -7294,7 +7294,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -7979,7 +7979,7 @@ suffix:semicolon
 multiline_comment|/* force reset */
 id|current_tape_dev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 multiline_comment|/* earlier 0xff80 */
 r_return
@@ -8481,7 +8481,7 @@ suffix:semicolon
 r_int
 id|dev_maj
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -9692,7 +9692,7 @@ suffix:semicolon
 )brace
 id|current_tape_dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|QIC02_TAPE_MAJOR

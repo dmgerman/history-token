@@ -7,5 +7,5 @@ mdefine_line|#define VMALLOC_START&t;  (((unsigned long)high_memory + VMALLOC_OF
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END       (PAGE_OFFSET + 0x10000000)
+mdefine_line|#define VMALLOC_END       (PAGE_OFFSET + 0x1f000000)
 eof

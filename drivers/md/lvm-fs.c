@@ -752,7 +752,7 @@ id|lv-&gt;lv_name
 suffix:semicolon
 id|lv_devfs_handle
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -773,7 +773,7 @@ id|DEVFS_FL_DEFAULT
 comma
 id|LVM_BLK_MAJOR
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -825,7 +825,7 @@ suffix:semicolon
 r_return
 id|lv_devfs_handle
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -852,7 +852,7 @@ c_func
 (paren
 id|lv_devfs_handle
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -862,7 +862,7 @@ id|lv-&gt;lv_dev
 suffix:semicolon
 id|lv_devfs_handle
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -1595,13 +1595,13 @@ id|sz
 comma
 l_string|&quot;device:       %02u:%02u&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|lv-&gt;lv_dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|lv-&gt;lv_dev
@@ -1798,13 +1798,13 @@ id|sz
 comma
 l_string|&quot;device:       %02u:%02u&bslash;n&quot;
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|pv-&gt;pv_dev
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|pv-&gt;pv_dev

@@ -59,11 +59,10 @@ id|regs
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
-DECL|function|setup_timer
-r_extern
-id|__inline__
+DECL|function|time_init
 r_void
-id|setup_timer
+id|__init
+id|time_init
 c_func
 (paren
 r_void
@@ -102,7 +101,7 @@ r_int
 (paren
 id|EXC_AHB2_CLK_FREQUENCY
 op_div
-l_int|50
+l_int|200
 )paren
 suffix:semicolon
 op_star

@@ -457,7 +457,7 @@ l_string|&quot;Flags: %c%c%c%c&quot;
 comma
 id|flags
 op_amp
-id|CC_N_BIT
+id|PSR_N_BIT
 ques
 c_cond
 l_char|&squot;N&squot;
@@ -466,7 +466,7 @@ l_char|&squot;n&squot;
 comma
 id|flags
 op_amp
-id|CC_Z_BIT
+id|PSR_Z_BIT
 ques
 c_cond
 l_char|&squot;Z&squot;
@@ -475,7 +475,7 @@ l_char|&squot;z&squot;
 comma
 id|flags
 op_amp
-id|CC_C_BIT
+id|PSR_C_BIT
 ques
 c_cond
 l_char|&squot;C&squot;
@@ -484,7 +484,7 @@ l_char|&squot;c&squot;
 comma
 id|flags
 op_amp
-id|CC_V_BIT
+id|PSR_V_BIT
 ques
 c_cond
 l_char|&squot;V&squot;

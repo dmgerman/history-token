@@ -87,5 +87,5 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Populate the pmdp entry with a pointer to the pte.  This pmd is part&n; * of the mm address space.&n; *&n; * If &squot;mm&squot; is the init tasks mm, then we are doing a vmalloc, and we&n; * need to set stuff up correctly for it.&n; */
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(mm,pmdp,pte)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __prot;&t;&t;&t;&bslash;&n;&t;&t;if (mm == &amp;init_mm)&t;&t;&t;&bslash;&n;&t;&t;&t;__prot = _PAGE_KERNEL_TABLE;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__prot = _PAGE_USER_TABLE;&t;&bslash;&n;&t;&t;set_pmd(pmdp, __mk_pmd(pte, __prot));&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define pmd_populate(mm,pmdp,pte)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __prot;&t;&t;&t;&t;&bslash;&n;&t;&t;if (mm == &amp;init_mm)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__prot = _PAGE_KERNEL_TABLE;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__prot = _PAGE_USER_TABLE;&t;&t;&bslash;&n;&t;&t;set_pmd(pmdp, __mk_pmd(pte, __prot));&t;&t;&bslash;&n;&t;} while (0)
 eof

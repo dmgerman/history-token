@@ -148,6 +148,13 @@ id|sjcd_error_reported
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|sjcd_lock
+r_static
+id|spinlock_t
+id|sjcd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|sjcd_open_count
 r_static
 r_int
@@ -1476,7 +1483,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|full_dev
@@ -3925,7 +3932,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Take care of the different block sizes between cdrom and Linux.&n; * When Linux gets variable block sizes this will probably go away.&n; */
 DECL|macro|CURRENT_IS_VALID
-mdefine_line|#define CURRENT_IS_VALID                                      &bslash;&n;    ( !QUEUE_EMPTY &amp;&amp; MAJOR( CURRENT-&gt;rq_dev ) == MAJOR_NR &amp;&amp; &bslash;&n;      CURRENT-&gt;cmd == READ &amp;&amp; CURRENT-&gt;sector != -1 )
+mdefine_line|#define CURRENT_IS_VALID                                      &bslash;&n;    ( !QUEUE_EMPTY &amp;&amp; major( CURRENT-&gt;rq_dev ) == MAJOR_NR &amp;&amp; &bslash;&n;      CURRENT-&gt;cmd == READ &amp;&amp; CURRENT-&gt;sector != -1 )
 DECL|function|sjcd_transfer
 r_static
 r_void
@@ -5168,26 +5175,6 @@ c_loop
 id|CURRENT_IS_VALID
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Who of us are paranoiac?&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-op_logical_and
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
 id|sjcd_transfer
 c_func
 (paren
@@ -5812,6 +5799,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|sjcd_lock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -5826,7 +5816,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

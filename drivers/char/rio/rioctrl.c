@@ -7612,7 +7612,7 @@ id|caddr_t
 id|drv_makedev
 c_func
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
@@ -7652,7 +7652,7 @@ id|caddr_t
 id|drv_makedev
 c_func
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
@@ -7696,7 +7696,7 @@ id|caddr_t
 id|drv_makedev
 c_func
 (paren
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev

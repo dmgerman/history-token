@@ -5079,7 +5079,7 @@ op_assign
 id|RC_BOARD
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -5128,7 +5128,7 @@ op_plus
 id|RC_PORT
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

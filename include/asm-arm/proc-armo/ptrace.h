@@ -3,13 +3,13 @@ macro_line|#ifndef __ASM_PROC_PTRACE_H
 DECL|macro|__ASM_PROC_PTRACE_H
 mdefine_line|#define __ASM_PROC_PTRACE_H
 DECL|macro|USR26_MODE
-mdefine_line|#define USR26_MODE&t;0x00
+mdefine_line|#define USR26_MODE&t;0x00000000
 DECL|macro|FIQ26_MODE
-mdefine_line|#define FIQ26_MODE&t;0x01
+mdefine_line|#define FIQ26_MODE&t;0x00000001
 DECL|macro|IRQ26_MODE
-mdefine_line|#define IRQ26_MODE&t;0x02
+mdefine_line|#define IRQ26_MODE&t;0x00000002
 DECL|macro|SVC26_MODE
-mdefine_line|#define SVC26_MODE&t;0x03
+mdefine_line|#define SVC26_MODE&t;0x00000003
 DECL|macro|USR_MODE
 mdefine_line|#define USR_MODE&t;USR26_MODE
 DECL|macro|FIQ_MODE
@@ -19,19 +19,19 @@ mdefine_line|#define IRQ_MODE&t;IRQ26_MODE
 DECL|macro|SVC_MODE
 mdefine_line|#define SVC_MODE&t;SVC26_MODE
 DECL|macro|MODE_MASK
-mdefine_line|#define MODE_MASK&t;0x03
-DECL|macro|F_BIT
-mdefine_line|#define F_BIT&t;&t;(1 &lt;&lt; 26)
-DECL|macro|I_BIT
-mdefine_line|#define I_BIT&t;&t;(1 &lt;&lt; 27)
-DECL|macro|CC_V_BIT
-mdefine_line|#define CC_V_BIT&t;(1 &lt;&lt; 28)
-DECL|macro|CC_C_BIT
-mdefine_line|#define CC_C_BIT&t;(1 &lt;&lt; 29)
-DECL|macro|CC_Z_BIT
-mdefine_line|#define CC_Z_BIT&t;(1 &lt;&lt; 30)
-DECL|macro|CC_N_BIT
-mdefine_line|#define CC_N_BIT&t;(1 &lt;&lt; 31)
+mdefine_line|#define MODE_MASK&t;0x00000003
+DECL|macro|PSR_F_BIT
+mdefine_line|#define PSR_F_BIT&t;0x04000000
+DECL|macro|PSR_I_BIT
+mdefine_line|#define PSR_I_BIT&t;0x08000000
+DECL|macro|PSR_V_BIT
+mdefine_line|#define PSR_V_BIT&t;0x10000000
+DECL|macro|PSR_C_BIT
+mdefine_line|#define PSR_C_BIT&t;0x20000000
+DECL|macro|PSR_Z_BIT
+mdefine_line|#define PSR_Z_BIT&t;0x40000000
+DECL|macro|PSR_N_BIT
+mdefine_line|#define PSR_N_BIT&t;0x80000000
 DECL|macro|PCMASK
 mdefine_line|#define PCMASK&t;&t;0xfc000003
 macro_line|#ifndef __ASSEMBLY__
@@ -91,11 +91,11 @@ mdefine_line|#define user_mode(regs) &bslash;&n;&t;(processor_mode(regs) == USR2
 DECL|macro|thumb_mode
 mdefine_line|#define thumb_mode(regs) (0)
 DECL|macro|interrupts_enabled
-mdefine_line|#define interrupts_enabled(regs) &bslash;&n;&t;(!((regs)-&gt;ARM_pc &amp; I_BIT))
+mdefine_line|#define interrupts_enabled(regs) &bslash;&n;&t;(!((regs)-&gt;ARM_pc &amp; PSR_I_BIT))
 DECL|macro|fast_interrupts_enabled
-mdefine_line|#define fast_interrupts_enabled(regs) &bslash;&n;&t;(!((regs)-&gt;ARM_pc &amp; F_BIT))
+mdefine_line|#define fast_interrupts_enabled(regs) &bslash;&n;&t;(!((regs)-&gt;ARM_pc &amp; PSR_F_BIT))
 DECL|macro|condition_codes
-mdefine_line|#define condition_codes(regs) &bslash;&n;&t;((regs)-&gt;ARM_pc &amp; (CC_V_BIT|CC_C_BIT|CC_Z_BIT|CC_N_BIT))
+mdefine_line|#define condition_codes(regs) &bslash;&n;&t;((regs)-&gt;ARM_pc &amp; (PSR_V_BIT|PSR_C_BIT|PSR_Z_BIT|PSR_N_BIT))
 multiline_comment|/* Are the current registers suitable for user mode?&n; * (used to maintain security in signal handlers)&n; */
 DECL|function|valid_user_regs
 r_static
@@ -123,9 +123,9 @@ op_logical_and
 id|regs-&gt;ARM_pc
 op_amp
 (paren
-id|F_BIT
+id|PSR_F_BIT
 op_or
-id|I_BIT
+id|PSR_I_BIT
 )paren
 )paren
 op_eq
@@ -141,9 +141,9 @@ op_complement
 (paren
 id|MODE_MASK
 op_or
-id|F_BIT
+id|PSR_F_BIT
 op_or
-id|I_BIT
+id|PSR_I_BIT
 )paren
 suffix:semicolon
 r_return

@@ -433,6 +433,13 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise&t;&t;&t;(__NR_SYSCALL_BASE+220)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_SYSCALL_BASE+221)
+multiline_comment|/* 222 for tux */
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;&t;(__NR_SYSCALL_BASE+223)
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_SYSCALL_BASE+224)
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;&t;(__NR_SYSCALL_BASE+225)
 multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
 DECL|macro|__ARM_NR_BASE
 mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
@@ -467,6 +474,31 @@ mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5)&t;&bslash;&n;type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5) {&t;&t;&t;&bslash;&n;  long __res;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __asm__ __volatile__ (&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr1,%2&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr2,%3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr3,%4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;tr4,%5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall(name)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &quot;mov&bslash;t%0,r0&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;=r&quot; (__res)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;: &quot;r&quot; ((long)(arg1)),&quot;r&quot; ((long)(arg2)),&quot;r&quot; ((long)(arg3)),&quot;r&quot; ((long)(arg4)),&t;&bslash;&n;&t;  &quot;r&quot; ((long)(arg5))&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r0&quot;,&quot;r1&quot;,&quot;r2&quot;,&quot;r3&quot;,&quot;r4&quot;,&quot;lr&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;  __syscall_return(type,__res);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
+r_struct
+id|rusage
+suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_wait4
+c_func
+(paren
+id|pid_t
+id|pid
+comma
+r_int
+r_int
+op_star
+id|stat_addr
+comma
+r_int
+id|options
+comma
+r_struct
+id|rusage
+op_star
+id|ru
+)paren
+suffix:semicolon
 DECL|function|idle
 r_static
 r_inline

@@ -1,23 +1,20 @@
 multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; */
-multiline_comment|/*&n; * Debug macros&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
-macro_line|#ifdef DEBUG
-DECL|macro|DPRINTK
-macro_line|#  define DPRINTK(fmt, args...)&t;printk(&quot;%s: &quot; fmt, __FUNCTION__ , ## args)
-macro_line|#else
-DECL|macro|DPRINTK
-macro_line|#  define DPRINTK(fmt, args...)
-macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &quot;sleep.h&quot;
+multiline_comment|/*&n; * Debug macros&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 r_extern
 r_void
 id|sa1100_cpu_suspend
@@ -66,6 +63,7 @@ multiline_comment|/* set up pointer to sleep parameters */
 id|sleep_save
 op_assign
 id|kmalloc
+c_func
 (paren
 id|SLEEP_SAVE_SIZE
 op_star
@@ -95,39 +93,15 @@ c_func
 id|sleep_save
 )paren
 suffix:semicolon
-id|retval
-op_assign
-id|pm_send_all
-c_func
-(paren
-id|PM_SUSPEND
-comma
-(paren
-r_void
-op_star
-)paren
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|sleep_save
-)paren
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-)brace
 id|cli
 c_func
 (paren
+)paren
+suffix:semicolon
+id|leds_event
+c_func
+(paren
+id|led_stop
 )paren
 suffix:semicolon
 multiline_comment|/* preserve current time */
@@ -276,12 +250,14 @@ id|PSPR
 op_assign
 l_int|0
 suffix:semicolon
-id|DPRINTK
+macro_line|#ifdef DEBUG
+id|printk
 c_func
 (paren
 l_string|&quot;*** made it back from resume&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* restore registers */
 id|RESTORE
 c_func
@@ -401,6 +377,12 @@ id|xtime.tv_sec
 op_assign
 id|RCNR
 suffix:semicolon
+id|leds_event
+c_func
+(paren
+id|led_start
+)paren
+suffix:semicolon
 id|sti
 c_func
 (paren
@@ -411,8 +393,88 @@ id|kfree
 id|sleep_save
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Restore the CPU frequency settings.&n;&t; */
+macro_line|#ifdef CONFIG_CPU_FREQ
+id|cpufreq_restore
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_SYSCTL
+multiline_comment|/*&n; * ARGH!  ACPI people defined CTL_ACPI in linux/acpi.h rather than&n; * linux/sysctl.h.&n; *&n; * This means our interface here won&squot;t survive long - it needs a new&n; * interface.  Quick hack to get this working - use sysctl id 9999.&n; */
+macro_line|#warning ACPI broke the kernel, this interface needs to be fixed up.
+DECL|macro|CTL_ACPI
+mdefine_line|#define CTL_ACPI 9999
+DECL|macro|ACPI_S1_SLP_TYP
+mdefine_line|#define ACPI_S1_SLP_TYP 19
+multiline_comment|/*&n; * Send us to sleep.  We must not be called from IRQ context.&n; */
+DECL|function|sysctl_pm_do_suspend
+r_static
+r_int
+id|sysctl_pm_do_suspend
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|retval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;pm_do_suspend() called from IRQ&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|retval
 op_assign
+id|pm_send_all
+c_func
+(paren
+id|PM_SUSPEND
+comma
+(paren
+r_void
+op_star
+)paren
+l_int|3
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
+(brace
+id|retval
+op_assign
+id|__pm_do_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pm_send_all
 c_func
 (paren
@@ -425,16 +487,9 @@ op_star
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
+)brace
 r_return
 id|retval
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pm_table
@@ -464,7 +519,7 @@ id|proc_handler
 op_star
 )paren
 op_amp
-id|pm_do_suspend
+id|sysctl_pm_do_suspend
 )brace
 comma
 (brace
@@ -530,4 +585,5 @@ c_func
 id|pm_init
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

@@ -6,13 +6,13 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * We use __raw_base variants here so that we give the compiler the&n; * chance to keep IOC_BASE in a register.&n; */
 DECL|macro|iomd_readb
-mdefine_line|#define iomd_readb(off)&t;&t;__raw_base_readb(IOMD_BASE, (off))
+mdefine_line|#define iomd_readb(off)&t;&t;__raw_readb(IOMD_BASE + (off))
 DECL|macro|iomd_readl
-mdefine_line|#define iomd_readl(off)&t;&t;__raw_base_readl(IOMD_BASE, (off))
+mdefine_line|#define iomd_readl(off)&t;&t;__raw_readl(IOMD_BASE + (off))
 DECL|macro|iomd_writeb
-mdefine_line|#define iomd_writeb(val,off)&t;__raw_base_writeb(val, IOMD_BASE, (off))
+mdefine_line|#define iomd_writeb(val,off)&t;__raw_writeb(val, IOMD_BASE + (off))
 DECL|macro|iomd_writel
-mdefine_line|#define iomd_writel(val,off)&t;__raw_base_writel(val, IOMD_BASE, (off))
+mdefine_line|#define iomd_writel(val,off)&t;__raw_writel(val, IOMD_BASE + (off))
 macro_line|#endif
 DECL|macro|IOMD_CONTROL
 mdefine_line|#define IOMD_CONTROL&t;(0x000)

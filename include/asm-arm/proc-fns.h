@@ -15,6 +15,7 @@ macro_line|# define CPU_INCLUDE_NAME &quot;asm/cpu-multi26.h&quot;
 DECL|macro|MULTI_CPU
 macro_line|# define MULTI_CPU
 macro_line|#endif
+multiline_comment|/*&n; * CPU_NAME - the prefix for CPU related functions&n; * CPU_ABRT - the prefix for the CPU abort decoding function&n; * MMU_ARCH - the prefix for copy_user_page/clear_user_page&n; */
 macro_line|#ifdef CONFIG_CPU_32
 DECL|macro|CPU_INCLUDE_NAME
 macro_line|# define CPU_INCLUDE_NAME &quot;asm/cpu-multi32.h&quot;
@@ -26,7 +27,11 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME arm6
+macro_line|#   define CPU_NAME cpu_arm6
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT cpu_arm6
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv3
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_ARM710
@@ -37,7 +42,11 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME arm7
+macro_line|#   define CPU_NAME cpu_arm7
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT cpu_arm7
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv3
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_ARM720T
@@ -48,7 +57,11 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME arm720
+macro_line|#   define CPU_NAME cpu_arm720
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4t_late
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_ARM920T
@@ -59,7 +72,26 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME arm920
+macro_line|#   define CPU_NAME cpu_arm920
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4t_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
+macro_line|#  endif
+macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_ARM922T
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_arm922
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4t_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_ARM926T
@@ -70,7 +102,11 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME arm926
+macro_line|#   define CPU_NAME cpu_arm926
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv5ej_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_SA110
@@ -81,7 +117,11 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME sa110
+macro_line|#   define CPU_NAME cpu_sa110
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
 macro_line|#  endif
 macro_line|# endif
 macro_line|# ifdef CONFIG_CPU_SA1100
@@ -92,7 +132,41 @@ DECL|macro|MULTI_CPU
 macro_line|#   define MULTI_CPU
 macro_line|#  else
 DECL|macro|CPU_NAME
-macro_line|#   define CPU_NAME sa1100
+macro_line|#   define CPU_NAME cpu_sa1100
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4_mc
+macro_line|#  endif
+macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_ARM1020
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_arm1020
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4t_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv4
+macro_line|#  endif
+macro_line|# endif
+macro_line|# ifdef CONFIG_CPU_XSCALE
+macro_line|#  ifdef CPU_NAME
+DECL|macro|MULTI_CPU
+macro_line|#   undef  MULTI_CPU
+DECL|macro|MULTI_CPU
+macro_line|#   define MULTI_CPU
+macro_line|#  else
+DECL|macro|CPU_NAME
+macro_line|#   define CPU_NAME cpu_xscale
+DECL|macro|CPU_ABRT
+macro_line|#   define CPU_ABRT armv4t_early
+DECL|macro|MMU_ARCH
+macro_line|#   define MMU_ARCH armv5te
 macro_line|#  endif
 macro_line|# endif
 macro_line|#endif

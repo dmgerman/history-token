@@ -3827,7 +3827,7 @@ suffix:semicolon
 macro_line|#endif
 id|minordev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -20924,7 +20924,7 @@ suffix:semicolon
 macro_line|#endif
 id|brdnr
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|fp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -21177,7 +21177,7 @@ suffix:semicolon
 macro_line|#endif
 id|brdnr
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|fp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -22748,7 +22748,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Now handle the board specific ioctls. These all depend on the&n; *&t;minor number of the device they were called from.&n; */
 id|brdnr
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|ip-&gt;i_rdev

@@ -154,12 +154,22 @@ r_if
 c_cond
 (paren
 id|sp
-template_param
+OL
+id|PAGE_OFFSET
+op_logical_or
+(paren
+id|sp
+OG
 (paren
 r_int
 r_int
 )paren
 id|high_memory
+op_logical_and
+id|high_memory
+op_ne
+l_int|0
+)paren
 )paren
 r_return
 op_minus
@@ -171,10 +181,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Dump out the contents of some memory nicely...&n; */
 DECL|function|dump_mem
+r_static
 r_void
 id|dump_mem
 c_func
 (paren
+r_const
+r_char
+op_star
+id|str
+comma
 r_int
 r_int
 id|bottom
@@ -196,6 +212,24 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s&quot;
+comma
+id|str
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;(0x%08lx to 0x%08lx)&bslash;n&quot;
+comma
+id|bottom
+comma
+id|top
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -215,9 +249,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%08lx: &quot;
+l_string|&quot;%04lx: &quot;
 comma
 id|p
+op_amp
+l_int|0xffff
 )paren
 suffix:semicolon
 r_for
@@ -284,19 +320,6 @@ id|val
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|3
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
 )brace
 id|printk
 (paren
@@ -305,11 +328,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * These constants are for searching for possible module text&n; * segments.  VMALLOC_OFFSET comes from mm/vmalloc.c; MODULE_RANGE is&n; * a guess of how much space is likely to be vmalloced.&n; */
-DECL|macro|VMALLOC_OFFSET
-mdefine_line|#define VMALLOC_OFFSET (8*1024*1024)
-DECL|macro|MODULE_RANGE
-mdefine_line|#define MODULE_RANGE (8*1024*1024)
 DECL|function|dump_instr
 r_static
 r_void
@@ -488,15 +506,11 @@ r_int
 id|sp
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Stack:&bslash;n&quot;
-)paren
-suffix:semicolon
 id|dump_mem
 c_func
 (paren
+l_string|&quot;Stack: &quot;
+comma
 id|sp
 op_minus
 l_int|16
@@ -1182,7 +1196,7 @@ id|proc_mode
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to switch to kernel mode so that we can&n;&t; * use __get_user to safely read from kernel space.&n;&t; * Note that we now dump the code first, just in case&n;&t; * the backtrace kills us.&n;&t; */
+multiline_comment|/*&n;&t; * We need to switch to kernel mode so that we can use __get_user&n;&t; * to safely read from kernel space.  Note that we now dump the&n;&t; * code first, just in case the backtrace kills us.&n;&t; */
 id|fs
 op_assign
 id|get_fs
@@ -1197,35 +1211,31 @@ id|KERNEL_DS
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Dump out the vectors and stub routines.  Maybe a better solution&n;&t; * would be to dump them out only if we detect that they are corrupted.&n;&t; */
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;Vectors:&bslash;n&quot;
-)paren
-suffix:semicolon
 id|dump_mem
 c_func
 (paren
+id|KERN_CRIT
+l_string|&quot;Vectors: &quot;
+comma
 id|vectors
 comma
+id|vectors
+op_plus
 l_int|0x40
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;Stubs:&bslash;n&quot;
-)paren
-suffix:semicolon
 id|dump_mem
 c_func
 (paren
+id|KERN_CRIT
+l_string|&quot;Stubs: &quot;
+comma
 id|vectors
 op_plus
 l_int|0x200
 comma
+id|vectors
+op_plus
 l_int|0x4b8
 )paren
 suffix:semicolon
@@ -2128,26 +2138,6 @@ m_abort
 r_void
 )paren
 (brace
-r_void
-op_star
-id|lr
-op_assign
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;abort() called from %p!  (Please &quot;
-l_string|&quot;report to rmk@arm.linux.org.uk)&bslash;n&quot;
-comma
-id|lr
-)paren
-suffix:semicolon
 id|BUG
 c_func
 (paren

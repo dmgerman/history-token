@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -377,6 +378,361 @@ DECL|macro|lp1
 mdefine_line|#define lp1 io_res[1]
 DECL|macro|lp2
 mdefine_line|#define lp2 io_res[2]
+macro_line|#ifdef CONFIG_CPU_32
+DECL|variable|cache_types
+r_static
+r_const
+r_char
+op_star
+id|cache_types
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_string|&quot;write-through&quot;
+comma
+l_string|&quot;write-back&quot;
+comma
+l_string|&quot;write-back&quot;
+comma
+l_string|&quot;undefined 3&quot;
+comma
+l_string|&quot;undefined 4&quot;
+comma
+l_string|&quot;undefined 5&quot;
+comma
+l_string|&quot;write-back&quot;
+comma
+l_string|&quot;write-back&quot;
+comma
+l_string|&quot;undefined 8&quot;
+comma
+l_string|&quot;undefined 9&quot;
+comma
+l_string|&quot;undefined 10&quot;
+comma
+l_string|&quot;undefined 11&quot;
+comma
+l_string|&quot;undefined 12&quot;
+comma
+l_string|&quot;undefined 13&quot;
+comma
+l_string|&quot;undefined 14&quot;
+comma
+l_string|&quot;undefined 15&quot;
+comma
+)brace
+suffix:semicolon
+DECL|variable|cache_clean
+r_static
+r_const
+r_char
+op_star
+id|cache_clean
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_string|&quot;not required&quot;
+comma
+l_string|&quot;read-block&quot;
+comma
+l_string|&quot;cp15 c7 ops&quot;
+comma
+l_string|&quot;undefined 3&quot;
+comma
+l_string|&quot;undefined 4&quot;
+comma
+l_string|&quot;undefined 5&quot;
+comma
+l_string|&quot;cp15 c7 ops&quot;
+comma
+l_string|&quot;cp15 c7 ops&quot;
+comma
+l_string|&quot;undefined 8&quot;
+comma
+l_string|&quot;undefined 9&quot;
+comma
+l_string|&quot;undefined 10&quot;
+comma
+l_string|&quot;undefined 11&quot;
+comma
+l_string|&quot;undefined 12&quot;
+comma
+l_string|&quot;undefined 13&quot;
+comma
+l_string|&quot;undefined 14&quot;
+comma
+l_string|&quot;undefined 15&quot;
+comma
+)brace
+suffix:semicolon
+DECL|variable|cache_lockdown
+r_static
+r_const
+r_char
+op_star
+id|cache_lockdown
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_string|&quot;not supported&quot;
+comma
+l_string|&quot;not supported&quot;
+comma
+l_string|&quot;not supported&quot;
+comma
+l_string|&quot;undefined 3&quot;
+comma
+l_string|&quot;undefined 4&quot;
+comma
+l_string|&quot;undefined 5&quot;
+comma
+l_string|&quot;format A&quot;
+comma
+l_string|&quot;format B&quot;
+comma
+l_string|&quot;undefined 8&quot;
+comma
+l_string|&quot;undefined 9&quot;
+comma
+l_string|&quot;undefined 10&quot;
+comma
+l_string|&quot;undefined 11&quot;
+comma
+l_string|&quot;undefined 12&quot;
+comma
+l_string|&quot;undefined 13&quot;
+comma
+l_string|&quot;undefined 14&quot;
+comma
+l_string|&quot;undefined 15&quot;
+comma
+)brace
+suffix:semicolon
+DECL|macro|CACHE_TYPE
+mdefine_line|#define CACHE_TYPE(x)&t;(((x) &gt;&gt; 25) &amp; 15)
+DECL|macro|CACHE_S
+mdefine_line|#define CACHE_S(x)&t;((x) &amp; (1 &lt;&lt; 24))
+DECL|macro|CACHE_DSIZE
+mdefine_line|#define CACHE_DSIZE(x)&t;(((x) &gt;&gt; 12) &amp; 4095)&t;/* only if S=1 */
+DECL|macro|CACHE_ISIZE
+mdefine_line|#define CACHE_ISIZE(x)&t;((x) &amp; 4095)
+DECL|macro|CACHE_SIZE
+mdefine_line|#define CACHE_SIZE(y)&t;(((y) &gt;&gt; 6) &amp; 7)
+DECL|macro|CACHE_ASSOC
+mdefine_line|#define CACHE_ASSOC(y)&t;(((y) &gt;&gt; 3) &amp; 7)
+DECL|macro|CACHE_M
+mdefine_line|#define CACHE_M(y)&t;((y) &amp; (1 &lt;&lt; 2))
+DECL|macro|CACHE_LINE
+mdefine_line|#define CACHE_LINE(y)&t;((y) &amp; 3)
+DECL|function|dump_cache
+r_static
+r_inline
+r_void
+id|dump_cache
+c_func
+(paren
+r_const
+r_char
+op_star
+id|prefix
+comma
+r_int
+r_int
+id|cache
+)paren
+(brace
+r_int
+r_int
+id|mult
+op_assign
+l_int|2
+op_plus
+id|CACHE_M
+c_func
+(paren
+id|cache
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s size %dK associativity %d line length %d sets %d&bslash;n&quot;
+comma
+id|prefix
+comma
+id|mult
+op_lshift
+(paren
+l_int|8
+op_plus
+id|CACHE_SIZE
+c_func
+(paren
+id|cache
+)paren
+)paren
+comma
+(paren
+id|mult
+op_lshift
+id|CACHE_ASSOC
+c_func
+(paren
+id|cache
+)paren
+)paren
+op_rshift
+l_int|1
+comma
+l_int|8
+op_lshift
+id|CACHE_LINE
+c_func
+(paren
+id|cache
+)paren
+comma
+l_int|1
+op_lshift
+(paren
+l_int|6
+op_plus
+id|CACHE_SIZE
+c_func
+(paren
+id|cache
+)paren
+op_minus
+id|CACHE_ASSOC
+c_func
+(paren
+id|cache
+)paren
+op_minus
+id|CACHE_LINE
+c_func
+(paren
+id|cache
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|dump_cpu_cache_id
+r_static
+r_inline
+r_void
+id|dump_cpu_cache_id
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|cache_info
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;mrc p15, 0, %0, c0, c0, 1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_info
+op_eq
+id|processor_id
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CPU: D %s cache&bslash;n&quot;
+comma
+id|cache_types
+(braket
+id|CACHE_TYPE
+c_func
+(paren
+id|cache_info
+)paren
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|CACHE_S
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+(brace
+id|dump_cache
+c_func
+(paren
+l_string|&quot;CPU: I cache&quot;
+comma
+id|CACHE_ISIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+id|dump_cache
+c_func
+(paren
+l_string|&quot;CPU: D cache&quot;
+comma
+id|CACHE_DSIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dump_cache
+c_func
+(paren
+l_string|&quot;CPU: cache&quot;
+comma
+id|CACHE_ISIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+DECL|macro|dump_cpu_cache_id
+mdefine_line|#define dump_cpu_cache_id() do { } while (0)
+macro_line|#endif
 DECL|function|setup_processor
 r_static
 r_void
@@ -484,6 +840,11 @@ op_amp
 l_int|15
 )paren
 suffix:semicolon
+id|dump_cpu_cache_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -518,13 +879,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|setup_architecture
+DECL|function|setup_machine
 r_static
 r_struct
 id|machine_desc
 op_star
 id|__init
-id|setup_architecture
+id|setup_machine
 c_func
 (paren
 r_int
@@ -599,7 +960,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Architecture: %s&bslash;n&quot;
+l_string|&quot;Machine: %s&bslash;n&quot;
 comma
 id|list-&gt;name
 )paren
@@ -880,6 +1241,12 @@ macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
 r_int
 id|rd_size
+comma
+id|rd_image_start
+comma
+id|rd_prompt
+comma
+id|rd_doload
 suffix:semicolon
 id|rd_image_start
 op_assign
@@ -1812,7 +2179,7 @@ id|default_command_line
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 l_int|0
@@ -1827,7 +2194,7 @@ c_func
 suffix:semicolon
 id|mdesc
 op_assign
-id|setup_architecture
+id|setup_machine
 c_func
 (paren
 id|machine_arch_type
@@ -2100,6 +2467,164 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|variable|proc_arch
+r_static
+r_const
+r_char
+op_star
+id|proc_arch
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_string|&quot;undefined 0&quot;
+comma
+l_string|&quot;4&quot;
+comma
+l_string|&quot;4T&quot;
+comma
+l_string|&quot;5&quot;
+comma
+l_string|&quot;5T&quot;
+comma
+l_string|&quot;5TE&quot;
+comma
+l_string|&quot;undefined 6&quot;
+comma
+l_string|&quot;undefined 7&quot;
+comma
+l_string|&quot;undefined 8&quot;
+comma
+l_string|&quot;undefined 9&quot;
+comma
+l_string|&quot;undefined 10&quot;
+comma
+l_string|&quot;undefined 11&quot;
+comma
+l_string|&quot;undefined 12&quot;
+comma
+l_string|&quot;undefined 13&quot;
+comma
+l_string|&quot;undefined 14&quot;
+comma
+l_string|&quot;undefined 15&quot;
+)brace
+suffix:semicolon
+r_static
+r_void
+DECL|function|c_show_cache
+id|c_show_cache
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_const
+r_char
+op_star
+id|type
+comma
+r_int
+r_int
+id|cache
+)paren
+(brace
+r_int
+r_int
+id|mult
+op_assign
+l_int|2
+op_plus
+id|CACHE_M
+c_func
+(paren
+id|cache
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;%s size&bslash;t&bslash;t: %d&bslash;n&quot;
+l_string|&quot;%s assoc&bslash;t&bslash;t: %d&bslash;n&quot;
+l_string|&quot;%s line length&bslash;t: %d&bslash;n&quot;
+l_string|&quot;%s sets&bslash;t&bslash;t: %d&bslash;n&quot;
+comma
+id|type
+comma
+id|mult
+op_lshift
+(paren
+l_int|8
+op_plus
+id|CACHE_SIZE
+c_func
+(paren
+id|cache
+)paren
+)paren
+comma
+id|type
+comma
+(paren
+id|mult
+op_lshift
+id|CACHE_ASSOC
+c_func
+(paren
+id|cache
+)paren
+)paren
+op_rshift
+l_int|1
+comma
+id|type
+comma
+l_int|8
+op_lshift
+id|CACHE_LINE
+c_func
+(paren
+id|cache
+)paren
+comma
+id|type
+comma
+l_int|1
+op_lshift
+(paren
+l_int|6
+op_plus
+id|CACHE_SIZE
+c_func
+(paren
+id|cache
+)paren
+op_minus
+id|CACHE_ASSOC
+c_func
+(paren
+id|cache
+)paren
+op_minus
+id|CACHE_LINE
+c_func
+(paren
+id|cache
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|c_show
 r_static
 r_int
@@ -2221,7 +2746,291 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0x0000f000
+)paren
+op_eq
+l_int|0x00000000
+)paren
+(brace
+multiline_comment|/* pre-ARM7 */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU part&bslash;t&bslash;t: %07x&bslash;n&quot;
+comma
+id|processor_id
+op_rshift
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0x0000f000
+)paren
+op_eq
+l_int|0x00007000
+)paren
+(brace
+multiline_comment|/* ARM7 */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU implementor&bslash;t: 0x%02x&bslash;n&quot;
+l_string|&quot;CPU architecture: %s&bslash;n&quot;
+l_string|&quot;CPU variant&bslash;t: 0x%02x&bslash;n&quot;
+l_string|&quot;CPU part&bslash;t: 0x%03x&bslash;n&quot;
+comma
+id|processor_id
+op_rshift
+l_int|24
+comma
+id|processor_id
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|23
+)paren
+ques
+c_cond
+l_string|&quot;4T&quot;
+suffix:colon
+l_string|&quot;3&quot;
+comma
+(paren
+id|processor_id
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|127
+comma
+(paren
+id|processor_id
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xfff
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* post-ARM7 */
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU implementor&bslash;t: 0x%02x&bslash;n&quot;
+l_string|&quot;CPU architecture: %s&bslash;n&quot;
+l_string|&quot;CPU variant&bslash;t: 0x%x&bslash;n&quot;
+l_string|&quot;CPU part&bslash;t: 0x%03x&bslash;n&quot;
+comma
+id|processor_id
+op_rshift
+l_int|24
+comma
+id|proc_arch
+(braket
+(paren
+id|processor_id
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|15
+)braket
+comma
+(paren
+id|processor_id
+op_rshift
+l_int|20
+)paren
+op_amp
+l_int|15
+comma
+(paren
+id|processor_id
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xfff
+)paren
+suffix:semicolon
+)brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU revision&bslash;t: %d&bslash;n&quot;
+comma
+id|processor_id
+op_amp
+l_int|15
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_32
+(brace
+r_int
+r_int
+id|cache_info
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;mrc p15, 0, %0, c0, c0, 1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_info
+op_ne
+id|processor_id
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;Cache type&bslash;t: %s&bslash;n&quot;
+l_string|&quot;Cache clean&bslash;t: %s&bslash;n&quot;
+l_string|&quot;Cache lockdown&bslash;t: %s&bslash;n&quot;
+l_string|&quot;Cache unified&bslash;t: %s&bslash;n&quot;
+comma
+id|cache_types
+(braket
+id|CACHE_TYPE
+c_func
+(paren
+id|cache_info
+)paren
+)braket
+comma
+id|cache_clean
+(braket
+id|CACHE_TYPE
+c_func
+(paren
+id|cache_info
+)paren
+)braket
+comma
+id|cache_lockdown
+(braket
+id|CACHE_TYPE
+c_func
+(paren
+id|cache_info
+)paren
+)braket
+comma
+id|CACHE_S
+c_func
+(paren
+id|cache_info
+)paren
+ques
+c_cond
+l_string|&quot;separate I,D&quot;
+suffix:colon
+l_string|&quot;unified&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|CACHE_S
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+(brace
+id|c_show_cache
+c_func
+(paren
+id|m
+comma
+l_string|&quot;I&quot;
+comma
+id|CACHE_ISIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+id|c_show_cache
+c_func
+(paren
+id|m
+comma
+l_string|&quot;D&quot;
+comma
+id|CACHE_DSIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|c_show_cache
+c_func
+(paren
+id|m
+comma
+l_string|&quot;Cache&quot;
+comma
+id|CACHE_ISIZE
+c_func
+(paren
+id|cache_info
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
+id|seq_puts
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|seq_printf

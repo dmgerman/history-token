@@ -9455,7 +9455,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

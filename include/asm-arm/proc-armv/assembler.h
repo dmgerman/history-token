@@ -40,7 +40,7 @@ id|mov
 "&bslash;"
 id|temp
 comma
-macro_line|#I_BIT | MODE_SVC
+macro_line|#PSR_I_BIT | MODE_SVC
 DECL|variable|cpsr_c
 id|msr
 id|cpsr_c

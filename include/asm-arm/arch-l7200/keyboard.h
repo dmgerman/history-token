@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-l7200/keyboard.h&n; *&n; *  Keyboard driver definitions for LinkUp Systems L7200 architecture&n; *&n; *  Copyright (C) 2000 Scott A McConnell (samcconn@cotw.com)&n; *                     Steve Hill (sjhill@cotw.com)&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; *&n; * Changelog:&n; *   07-18-2000&t;SAM&t;Created file&n; *   07-28-2000&t;SJH&t;Complete rewrite&n; */
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#error This needs fixing --rmk
 multiline_comment|/*&n; * Layout of L7200 keyboard registers&n; */
 DECL|struct|KBD_Port
 r_struct

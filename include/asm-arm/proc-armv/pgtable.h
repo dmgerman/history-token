@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgtable.h&n; *&n; *  
 macro_line|#ifndef __ASM_PROC_PGTABLE_H
 DECL|macro|__ASM_PROC_PGTABLE_H
 mdefine_line|#define __ASM_PROC_PGTABLE_H
-macro_line|#include &lt;asm/proc/domain.h&gt;
-macro_line|#include &lt;asm/arch/vmalloc.h&gt;
 multiline_comment|/*&n; * entries per page directory level: they are two-level, so&n; * we don&squot;t really have any PMD directory.&n; */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;&t;256
@@ -11,28 +9,91 @@ DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;&t;1
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD&t;&t;4096
-multiline_comment|/****************&n;* PMD functions *&n;****************/
-multiline_comment|/* PMD types (actually level 1 descriptor) */
+multiline_comment|/*&n; * Hardware page table definitions.&n; *&n; * + Level 1 descriptor (PMD)&n; *   - common&n; */
 DECL|macro|PMD_TYPE_MASK
-mdefine_line|#define PMD_TYPE_MASK&t;&t;0x0003
+mdefine_line|#define PMD_TYPE_MASK&t;&t;(3 &lt;&lt; 0)
 DECL|macro|PMD_TYPE_FAULT
-mdefine_line|#define PMD_TYPE_FAULT&t;&t;0x0000
+mdefine_line|#define PMD_TYPE_FAULT&t;&t;(0 &lt;&lt; 0)
 DECL|macro|PMD_TYPE_TABLE
-mdefine_line|#define PMD_TYPE_TABLE&t;&t;0x0001
+mdefine_line|#define PMD_TYPE_TABLE&t;&t;(1 &lt;&lt; 0)
 DECL|macro|PMD_TYPE_SECT
-mdefine_line|#define PMD_TYPE_SECT&t;&t;0x0002
+mdefine_line|#define PMD_TYPE_SECT&t;&t;(2 &lt;&lt; 0)
 DECL|macro|PMD_UPDATABLE
-mdefine_line|#define PMD_UPDATABLE&t;&t;0x0010
-DECL|macro|PMD_SECT_CACHEABLE
-mdefine_line|#define PMD_SECT_CACHEABLE&t;0x0008
-DECL|macro|PMD_SECT_BUFFERABLE
-mdefine_line|#define PMD_SECT_BUFFERABLE&t;0x0004
-DECL|macro|PMD_SECT_AP_WRITE
-mdefine_line|#define PMD_SECT_AP_WRITE&t;0x0400
-DECL|macro|PMD_SECT_AP_READ
-mdefine_line|#define PMD_SECT_AP_READ&t;0x0800
+mdefine_line|#define PMD_UPDATABLE&t;&t;(1 &lt;&lt; 4)
 DECL|macro|PMD_DOMAIN
 mdefine_line|#define PMD_DOMAIN(x)&t;&t;((x) &lt;&lt; 5)
+DECL|macro|PMD_PROTECTION
+mdefine_line|#define PMD_PROTECTION&t;&t;(1 &lt;&lt; 9)&t;/* v5 */
+multiline_comment|/*&n; *   - section&n; */
+DECL|macro|PMD_SECT_BUFFERABLE
+mdefine_line|#define PMD_SECT_BUFFERABLE&t;(1 &lt;&lt; 2)
+DECL|macro|PMD_SECT_CACHEABLE
+mdefine_line|#define PMD_SECT_CACHEABLE&t;(1 &lt;&lt; 3)
+DECL|macro|PMD_SECT_AP_WRITE
+mdefine_line|#define PMD_SECT_AP_WRITE&t;(1 &lt;&lt; 10)
+DECL|macro|PMD_SECT_AP_READ
+mdefine_line|#define PMD_SECT_AP_READ&t;(1 &lt;&lt; 11)
+DECL|macro|PMD_SECT_TEX
+mdefine_line|#define PMD_SECT_TEX(x)&t;&t;((x) &lt;&lt; 12)&t;/* v5 */
+multiline_comment|/*&n; *   - coarse table (not used)&n; */
+multiline_comment|/*&n; * + Level 2 descriptor (PTE)&n; *   - common&n; */
+DECL|macro|PTE_TYPE_MASK
+mdefine_line|#define PTE_TYPE_MASK&t;&t;(3 &lt;&lt; 0)
+DECL|macro|PTE_TYPE_FAULT
+mdefine_line|#define PTE_TYPE_FAULT&t;&t;(0 &lt;&lt; 0)
+DECL|macro|PTE_TYPE_LARGE
+mdefine_line|#define PTE_TYPE_LARGE&t;&t;(1 &lt;&lt; 0)
+DECL|macro|PTE_TYPE_SMALL
+mdefine_line|#define PTE_TYPE_SMALL&t;&t;(2 &lt;&lt; 0)
+DECL|macro|PTE_TYPE_EXT
+mdefine_line|#define PTE_TYPE_EXT&t;&t;(3 &lt;&lt; 0)&t;/* v5 */
+DECL|macro|PTE_BUFFERABLE
+mdefine_line|#define PTE_BUFFERABLE&t;&t;(1 &lt;&lt; 2)
+DECL|macro|PTE_CACHEABLE
+mdefine_line|#define PTE_CACHEABLE&t;&t;(1 &lt;&lt; 3)
+multiline_comment|/*&n; *   - extended small page/tiny page&n; */
+DECL|macro|PTE_EXT_AP_UNO_SRO
+mdefine_line|#define PTE_EXT_AP_UNO_SRO&t;(0 &lt;&lt; 4)
+DECL|macro|PTE_EXT_AP_UNO_SRW
+mdefine_line|#define PTE_EXT_AP_UNO_SRW&t;(1 &lt;&lt; 4)
+DECL|macro|PTE_EXT_AP_URO_SRW
+mdefine_line|#define PTE_EXT_AP_URO_SRW&t;(2 &lt;&lt; 4)
+DECL|macro|PTE_EXT_AP_URW_SRW
+mdefine_line|#define PTE_EXT_AP_URW_SRW&t;(3 &lt;&lt; 4)
+DECL|macro|PTE_EXT_TEX
+mdefine_line|#define PTE_EXT_TEX(x)&t;&t;((x) &lt;&lt; 6)&t;/* v5 */
+multiline_comment|/*&n; *   - small page&n; */
+DECL|macro|PTE_SMALL_AP_UNO_SRO
+mdefine_line|#define PTE_SMALL_AP_UNO_SRO&t;(0x00 &lt;&lt; 4)
+DECL|macro|PTE_SMALL_AP_UNO_SRW
+mdefine_line|#define PTE_SMALL_AP_UNO_SRW&t;(0x55 &lt;&lt; 4)
+DECL|macro|PTE_SMALL_AP_URO_SRW
+mdefine_line|#define PTE_SMALL_AP_URO_SRW&t;(0xaa &lt;&lt; 4)
+DECL|macro|PTE_SMALL_AP_URW_SRW
+mdefine_line|#define PTE_SMALL_AP_URW_SRW&t;(0xff &lt;&lt; 4)
+DECL|macro|PTE_AP_READ
+mdefine_line|#define PTE_AP_READ&t;&t;PTE_SMALL_AP_URO_SRW
+DECL|macro|PTE_AP_WRITE
+mdefine_line|#define PTE_AP_WRITE&t;&t;PTE_SMALL_AP_UNO_SRW
+multiline_comment|/*&n; * &quot;Linux&quot; PTE definitions.&n; *&n; * We keep two sets of PTEs - the hardware and the linux version.&n; * This allows greater flexibility in the way we map the Linux bits&n; * onto the hardware tables, and allows us to have YOUNG and DIRTY&n; * bits.&n; *&n; * The PTE table pointer refers to the hardware entries; the &quot;Linux&quot;&n; * entries are stored 1024 bytes below.&n; */
+DECL|macro|L_PTE_PRESENT
+mdefine_line|#define L_PTE_PRESENT&t;&t;(1 &lt;&lt; 0)
+DECL|macro|L_PTE_YOUNG
+mdefine_line|#define L_PTE_YOUNG&t;&t;(1 &lt;&lt; 1)
+DECL|macro|L_PTE_BUFFERABLE
+mdefine_line|#define L_PTE_BUFFERABLE&t;(1 &lt;&lt; 2)&t;/* matches PTE */
+DECL|macro|L_PTE_CACHEABLE
+mdefine_line|#define L_PTE_CACHEABLE&t;&t;(1 &lt;&lt; 3)&t;/* matches PTE */
+DECL|macro|L_PTE_USER
+mdefine_line|#define L_PTE_USER&t;&t;(1 &lt;&lt; 4)
+DECL|macro|L_PTE_WRITE
+mdefine_line|#define L_PTE_WRITE&t;&t;(1 &lt;&lt; 5)
+DECL|macro|L_PTE_EXEC
+mdefine_line|#define L_PTE_EXEC&t;&t;(1 &lt;&lt; 6)
+DECL|macro|L_PTE_DIRTY
+mdefine_line|#define L_PTE_DIRTY&t;&t;(1 &lt;&lt; 7)
+macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/proc/domain.h&gt;
 DECL|macro|_PAGE_USER_TABLE
 mdefine_line|#define _PAGE_USER_TABLE&t;(PMD_TYPE_TABLE | PMD_DOMAIN(DOMAIN_USER))
 DECL|macro|_PAGE_KERNEL_TABLE
@@ -40,7 +101,7 @@ mdefine_line|#define _PAGE_KERNEL_TABLE&t;(PMD_TYPE_TABLE | PMD_DOMAIN(DOMAIN_KE
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
-mdefine_line|#define set_pmd(pmdp,pmd)&t;cpu_set_pmd(pmdp,pmd)
+mdefine_line|#define set_pmd(pmdp,pmd)&t;cpu_set_pmd(pmdp, pmd)
 DECL|function|__mk_pmd
 r_static
 r_inline
@@ -154,43 +215,8 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************&n;* PTE functions *&n;****************/
-multiline_comment|/* PTE types (actually level 2 descriptor) */
-DECL|macro|PTE_TYPE_MASK
-mdefine_line|#define PTE_TYPE_MASK&t;&t;0x0003
-DECL|macro|PTE_TYPE_FAULT
-mdefine_line|#define PTE_TYPE_FAULT&t;&t;0x0000
-DECL|macro|PTE_TYPE_LARGE
-mdefine_line|#define PTE_TYPE_LARGE&t;&t;0x0001
-DECL|macro|PTE_TYPE_SMALL
-mdefine_line|#define PTE_TYPE_SMALL&t;&t;0x0002
-DECL|macro|PTE_AP_READ
-mdefine_line|#define PTE_AP_READ&t;&t;0x0aa0
-DECL|macro|PTE_AP_WRITE
-mdefine_line|#define PTE_AP_WRITE&t;&t;0x0550
-DECL|macro|PTE_CACHEABLE
-mdefine_line|#define PTE_CACHEABLE&t;&t;0x0008
-DECL|macro|PTE_BUFFERABLE
-mdefine_line|#define PTE_BUFFERABLE&t;&t;0x0004
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pte)&t;cpu_set_pte(ptep,pte)
-multiline_comment|/* We now keep two sets of ptes - the physical and the linux version.&n; * This gives us many advantages, and allows us greater flexibility.&n; *&n; * The Linux pte&squot;s contain:&n; *  bit   meaning&n; *   0    page present&n; *   1    young&n; *   2    bufferable&t;- matches physical pte&n; *   3    cacheable&t;- matches physical pte&n; *   4    user&n; *   5    write&n; *   6    execute&n; *   7    dirty&n; *  8-11  unused&n; *  12-31 virtual page address&n; *&n; * These are stored at the pte pointer; the physical PTE is at -1024bytes&n; */
-DECL|macro|L_PTE_PRESENT
-mdefine_line|#define L_PTE_PRESENT&t;&t;(1 &lt;&lt; 0)
-DECL|macro|L_PTE_YOUNG
-mdefine_line|#define L_PTE_YOUNG&t;&t;(1 &lt;&lt; 1)
-DECL|macro|L_PTE_BUFFERABLE
-mdefine_line|#define L_PTE_BUFFERABLE&t;(1 &lt;&lt; 2)
-DECL|macro|L_PTE_CACHEABLE
-mdefine_line|#define L_PTE_CACHEABLE&t;&t;(1 &lt;&lt; 3)
-DECL|macro|L_PTE_USER
-mdefine_line|#define L_PTE_USER&t;&t;(1 &lt;&lt; 4)
-DECL|macro|L_PTE_WRITE
-mdefine_line|#define L_PTE_WRITE&t;&t;(1 &lt;&lt; 5)
-DECL|macro|L_PTE_EXEC
-mdefine_line|#define L_PTE_EXEC&t;&t;(1 &lt;&lt; 6)
-DECL|macro|L_PTE_DIRTY
-mdefine_line|#define L_PTE_DIRTY&t;&t;(1 &lt;&lt; 7)
 multiline_comment|/*&n; * The following macros handle the cache and bufferable bits...&n; */
 DECL|macro|_L_PTE_DEFAULT
 mdefine_line|#define _L_PTE_DEFAULT&t;L_PTE_PRESENT | L_PTE_YOUNG
@@ -304,5 +330,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Mark the prot value as uncacheable and unbufferable.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;__pgprot(pgprot_val(prot) &amp; ~(L_PTE_CACHEABLE | L_PTE_BUFFERABLE))
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof

@@ -1178,7 +1178,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -1753,7 +1753,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|SERIAL_21285_MAJOR

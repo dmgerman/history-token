@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -11,6 +13,7 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
+macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;sa1111.h&quot;
 multiline_comment|/*&n; * Install handler for Neponset IRQ.  Yes, yes... we are way down the IRQ&n; * cascade which is not good for IRQ latency, but the hardware has been&n; * designed that way...&n; */
 DECL|function|neponset_IRQ_demux
@@ -82,7 +85,7 @@ id|IRR_ETHERNET
 id|do_IRQ
 c_func
 (paren
-id|NEPONSET_ETHERNET_IRQ
+id|IRQ_NEPONSET_SMC9196
 comma
 id|regs
 )paren
@@ -99,7 +102,7 @@ id|IRR_USAR
 id|do_IRQ
 c_func
 (paren
-id|NEPONSET_USAR_IRQ
+id|IRQ_NEPONSET_USAR
 comma
 id|regs
 )paren
@@ -156,9 +159,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|irq
-suffix:semicolon
 id|sa1111_init_irq
 c_func
 (paren
@@ -168,13 +168,9 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* SA1111 IRQ not routed to a GPIO */
 multiline_comment|/* setup extra Neponset IRQs */
-id|irq
-op_assign
-id|NEPONSET_ETHERNET_IRQ
-suffix:semicolon
 id|irq_desc
 (braket
-id|irq
+id|IRQ_NEPONSET_SMC9196
 )braket
 dot
 id|valid
@@ -183,20 +179,16 @@ l_int|1
 suffix:semicolon
 id|irq_desc
 (braket
-id|irq
+id|IRQ_NEPONSET_SMC9196
 )braket
 dot
 id|probe_ok
 op_assign
 l_int|1
 suffix:semicolon
-id|irq
-op_assign
-id|NEPONSET_USAR_IRQ
-suffix:semicolon
 id|irq_desc
 (braket
-id|irq
+id|IRQ_NEPONSET_USAR
 )braket
 dot
 id|valid
@@ -205,7 +197,7 @@ l_int|1
 suffix:semicolon
 id|irq_desc
 (braket
-id|irq
+id|IRQ_NEPONSET_USAR
 )braket
 dot
 id|probe_ok
@@ -215,7 +207,7 @@ suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|ASSABET_GPIO_NEP_IRQ
+id|GPIO_GPIO25
 comma
 id|GPIO_RISING_EDGE
 )paren
@@ -223,7 +215,7 @@ suffix:semicolon
 id|setup_arm_irq
 c_func
 (paren
-id|ASSABET_IRQ_GPIO_NEP_IRQ
+id|IRQ_GPIO25
 comma
 op_amp
 id|neponset_irq
@@ -308,6 +300,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Disable GPIO 0/1 drivers so the buttons work on the module.&n;&t; */
+id|NCR_0
+op_or_assign
+id|NCR_GP01_OFF
+suffix:semicolon
 multiline_comment|/*&n;&t; * Neponset has SA1111 connected to CS4.  We know that after&n;&t; * reset the chip will be configured for variable latency IO.&n;&t; */
 multiline_comment|/* FIXME: setup MSC2 */
 multiline_comment|/*&n;&t; * Probe for a SA1111.&n;&t; */
@@ -316,6 +313,7 @@ op_assign
 id|sa1111_probe
 c_func
 (paren
+l_int|0x40000000
 )paren
 suffix:semicolon
 r_if
@@ -550,7 +548,7 @@ suffix:semicolon
 )brace
 DECL|function|neponset_get_mctrl
 r_static
-r_int
+id|u_int
 id|neponset_get_mctrl
 c_func
 (paren

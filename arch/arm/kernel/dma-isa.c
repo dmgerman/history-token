@@ -340,7 +340,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 comma
 id|dma-&gt;buf.length
 comma

@@ -84,14 +84,5 @@ mdefine_line|#define __mem_pci(a)&t;&t;___mem_pci((unsigned long)(a))
 DECL|macro|__mem_isa
 mdefine_line|#define __mem_isa(a)&t;&t;___mem_isa((unsigned long)(a))
 macro_line|#endif
-multiline_comment|/*&n; * Generic virtual read/write&n; */
-DECL|macro|__arch_getw
-mdefine_line|#define __arch_getw(a)&t;&t;(*(volatile unsigned short *)(a))
-DECL|macro|__arch_putw
-mdefine_line|#define __arch_putw(v,a)&t;(*(volatile unsigned short *)(a) = (v))
-DECL|macro|iomem_valid_addr
-mdefine_line|#define iomem_valid_addr(iomem,sz)&t;(1)
-DECL|macro|iomem_to_phys
-mdefine_line|#define iomem_to_phys(iomem)&t;&t;(iomem)
 macro_line|#endif
 eof

@@ -22,7 +22,9 @@ r_int
 id|sa1111_probe
 c_func
 (paren
-r_void
+r_int
+r_int
+id|phys
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wake up a SA1111 chip.&n; */

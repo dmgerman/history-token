@@ -33,6 +33,7 @@ mdefine_line|#define io_p2v( x )             &bslash;&n;   ( (((x)&amp;0x00fffff
 DECL|macro|io_v2p
 mdefine_line|#define io_v2p( x )             &bslash;&n;   ( (((x)&amp;0x00ffffff) | (((x)&amp;(0x30000000&gt;&gt;VIO_SHIFT))&lt;&lt;VIO_SHIFT)) + PIO_START )
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#if 0
 macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))
 macro_line|#else
@@ -67,6 +68,8 @@ macro_line|# define __PREG(x)&t;io_v2p(x)
 macro_line|#endif
 macro_line|#include &quot;SA-1100.h&quot;
 multiline_comment|/*&n; * SA1100 GPIO edge detection for IRQs:&n; * IRQs are generated on Falling-Edge, Rising-Edge, or both.&n; * This must be called *before* the corresponding IRQ is registered.&n; * Use this instead of directly setting GRER/GFER.&n; */
+DECL|macro|GPIO_NO_EDGES
+mdefine_line|#define GPIO_NO_EDGES&t;&t;0
 DECL|macro|GPIO_FALLING_EDGE
 mdefine_line|#define GPIO_FALLING_EDGE       1
 DECL|macro|GPIO_RISING_EDGE
@@ -84,16 +87,6 @@ id|gpio_mask
 comma
 r_int
 id|edge_mask
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Return the current CPU clock frequency in units of 100kHz&n; */
-r_extern
-r_int
-r_int
-id|get_cclk_frequency
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -119,9 +112,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_EMPEG
 macro_line|#include &quot;empeg.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_H3600
 macro_line|#include &quot;h3600.h&quot;
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_ITSY
 macro_line|#include &quot;itsy.h&quot;
 macro_line|#endif
@@ -149,6 +140,7 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SA1100_ADSBITSY)
 macro_line|#include &quot;adsbitsy.h&quot;
 macro_line|#endif
+macro_line|#include &quot;system3.h&quot;
 macro_line|#ifdef CONFIG_SA1101
 multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */
 DECL|macro|SA1101_p2v
@@ -165,16 +157,6 @@ macro_line|#include &quot;jornada720.h&quot;
 macro_line|#endif
 macro_line|#if defined(CONFIG_SA1100_FLEXANET)
 macro_line|#include &quot;flexanet.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1111
-multiline_comment|/*&n; * The SA1111 is always located at virtual 0xf4000000.&n; */
-DECL|macro|SA1111_VBASE
-mdefine_line|#define SA1111_VBASE&t;&t;0xf4000000
-DECL|macro|SA1111_p2v
-mdefine_line|#define SA1111_p2v( x )         ((x) - SA1111_BASE + SA1111_VBASE)
-DECL|macro|SA1111_v2p
-mdefine_line|#define SA1111_v2p( x )         ((x) - SA1111_VBASE + SA1111_BASE)
-macro_line|#include &quot;SA-1111.h&quot;
 macro_line|#endif
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof

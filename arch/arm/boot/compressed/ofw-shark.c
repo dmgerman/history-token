@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/boot/compressed/ofw-shark.c&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * This file is used to get some basic information&n; * about the memory layout of the shark we are running&n; * on. Memory is usually divided in blocks a 8 MB.&n; * And bootargs are copied from OpenFirmware.&n; */
+multiline_comment|/*&n; * linux/arch/arm/boot/compressed/ofw-shark.c&n; *&n; * by Alexander Schulz&n; *&n; * This file is used to get some basic information&n; * about the memory layout of the shark we are running&n; * on. Memory is usually divided in blocks a 8 MB.&n; * And bootargs are copied from OpenFirmware.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;

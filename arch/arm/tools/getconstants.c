@@ -6,10 +6,17 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Make sure that the compiler and target are compatible.&n; */
 macro_line|#if defined(__APCS_32__) &amp;&amp; defined(CONFIG_CPU_26)
-macro_line|#error Your compiler targets APCS-32 but this kernel requires APCS-26
+macro_line|#error Sorry, your compiler targets APCS-32 but this kernel requires APCS-26
 macro_line|#endif
 macro_line|#if defined(__APCS_26__) &amp;&amp; defined(CONFIG_CPU_32)
-macro_line|#error Your compiler targets APCS-26 but this kernel requires APCS-32
+macro_line|#error Sorry, your compiler targets APCS-26 but this kernel requires APCS-32
+macro_line|#endif
+macro_line|#if __GNUC__ &lt; 2 || (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 95)
+macro_line|#error Sorry, your compiler is known to miscompile kernels.  Only use gcc 2.95.3 and later.
+macro_line|#endif
+macro_line|#if __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ == 95
+multiline_comment|/* shame we can&squot;t detect the .1 or .2 releases */
+macro_line|#warning GCC 2.95.2 and earlier miscompiles kernels.
 macro_line|#endif
 DECL|macro|OFF_TSK
 mdefine_line|#define OFF_TSK(n) (unsigned long)&amp;(((struct task_struct *)0)-&gt;n)

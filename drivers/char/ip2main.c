@@ -6126,7 +6126,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6135,7 +6135,7 @@ id|tty-&gt;device
 suffix:semicolon
 id|ip2trace
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6186,13 +6186,13 @@ id|pFile
 comma
 id|tty-&gt;device
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|tty-&gt;device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -7008,7 +7008,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;IP2:close ttyF%02X:&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -8360,7 +8360,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -8432,7 +8432,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -8505,7 +8505,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -12280,7 +12280,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|pInode-&gt;i_rdev
@@ -12313,7 +12313,7 @@ r_int
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|pFile-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -12833,7 +12833,7 @@ r_int
 r_int
 id|iplminor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|pInode-&gt;i_rdev
@@ -13701,7 +13701,7 @@ r_int
 r_int
 id|iplminor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|pInode-&gt;i_rdev

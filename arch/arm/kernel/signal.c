@@ -1637,6 +1637,7 @@ op_amp
 id|SA_ONSTACK
 )paren
 op_logical_and
+op_logical_neg
 id|sas_ss_flags
 c_func
 (paren
@@ -1764,13 +1765,13 @@ id|thumb
 )paren
 id|cpsr
 op_or_assign
-id|T_BIT
+id|PSR_T_BIT
 suffix:semicolon
 r_else
 id|cpsr
 op_and_assign
 op_complement
-id|T_BIT
+id|PSR_T_BIT
 suffix:semicolon
 )brace
 macro_line|#endif

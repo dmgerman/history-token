@@ -94,11 +94,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
-DECL|function|setup_timer
-r_static
-r_inline
+DECL|function|time_init
 r_void
-id|setup_timer
+id|__init
+id|time_init
 c_func
 (paren
 r_void

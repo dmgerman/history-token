@@ -10283,7 +10283,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

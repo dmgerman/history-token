@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -33,6 +34,15 @@ r_int
 id|edge
 )paren
 (brace
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -66,6 +76,22 @@ id|GPIO_IRQ_rising_edge
 op_and_assign
 op_complement
 id|gpio_mask
+suffix:semicolon
+id|GPDR
+op_and_assign
+op_complement
+id|gpio_mask
+suffix:semicolon
+id|GAFR
+op_and_assign
+op_complement
+id|gpio_mask
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 )brace
 DECL|variable|set_GPIO_IRQ_edge
@@ -366,12 +392,13 @@ id|i
 )paren
 (brace
 id|do_IRQ
-(paren
-id|IRQ_GPIO_11_27
 c_func
 (paren
+id|IRQ_GPIO11
+op_plus
 id|i
-)paren
+op_minus
+l_int|11
 comma
 id|regs
 )paren
@@ -599,6 +626,27 @@ id|mask
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irq_resource
+r_static
+r_struct
+id|resource
+id|irq_resource
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;irqs&quot;
+comma
+id|start
+suffix:colon
+l_int|0x90050000
+comma
+id|end
+suffix:colon
+l_int|0x9005ffff
+comma
+)brace
+suffix:semicolon
 DECL|function|sa1100_init_irq
 r_void
 id|__init
@@ -610,6 +658,16 @@ r_void
 (brace
 r_int
 id|irq
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|iomem_resource
+comma
+op_amp
+id|irq_resource
+)paren
 suffix:semicolon
 multiline_comment|/* disable all IRQs */
 id|ICMR

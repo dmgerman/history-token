@@ -334,10 +334,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|FPA11
-op_star
-id|fpa11
-suffix:semicolon
 id|save_flags
 c_func
 (paren

@@ -57,10 +57,6 @@ mdefine_line|#define sem_init(sem,v) printk (&quot;sreset:     &quot; __FILE__ &
 macro_line|#endif
 DECL|macro|getpid
 mdefine_line|#define getpid()    (current-&gt;pid)
-DECL|macro|major
-mdefine_line|#define major(dev) MAJOR(dev)
-DECL|macro|minor
-mdefine_line|#define minor(dev) MINOR(dev)
 DECL|macro|QSIZE
 mdefine_line|#define QSIZE SERIAL_XMIT_SIZE
 DECL|macro|pseterr

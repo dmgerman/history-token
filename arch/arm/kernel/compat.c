@@ -349,6 +349,12 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FOOTBRIDGE
+r_if
+c_cond
+(paren
+id|params-&gt;u1.s.mem_fclk_21285
+)paren
+(brace
 id|tag
 op_assign
 id|tag_next
@@ -373,6 +379,7 @@ id|tag-&gt;u.memclk.fmemclk
 op_assign
 id|params-&gt;u1.s.mem_fclk_21285
 suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_ACORN
 id|tag

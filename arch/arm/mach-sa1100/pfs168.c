@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -48,6 +49,7 @@ op_assign
 id|sa1111_probe
 c_func
 (paren
+l_int|0x40000000
 )paren
 suffix:semicolon
 r_if
@@ -100,26 +102,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_GPIO_IRQ_edge
-c_func
-(paren
-id|GPIO_GPIO
-c_func
-(paren
-l_int|25
-)paren
-comma
-id|GPIO_RISING_EDGE
-)paren
-suffix:semicolon
 id|sa1111_init_irq
 c_func
 (paren
-id|SA1100_GPIO_TO_IRQ
-c_func
-(paren
-l_int|25
-)paren
+id|IRQ_GPIO25
 )paren
 suffix:semicolon
 multiline_comment|/* SA1111 IRQ on GPIO 25 */
@@ -170,6 +156,26 @@ c_func
 (paren
 l_int|20
 )paren
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_GPIO
+c_func
+(paren
+l_int|25
+)paren
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_UCB1300_IRQ
 comma
 id|GPIO_RISING_EDGE
 )paren

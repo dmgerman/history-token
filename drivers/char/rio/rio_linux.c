@@ -929,7 +929,7 @@ id|device
 )paren
 (brace
 r_return
-id|MINOR
+id|minor
 (paren
 id|device
 )paren
@@ -938,7 +938,7 @@ l_int|256
 op_star
 (paren
 (paren
-id|MAJOR
+id|major
 (paren
 id|device
 )paren
@@ -947,7 +947,7 @@ id|RIO_NORMAL_MAJOR1
 )paren
 op_logical_or
 (paren
-id|MAJOR
+id|major
 (paren
 id|device
 )paren
@@ -967,7 +967,7 @@ id|device
 (brace
 r_return
 (paren
-id|MAJOR
+id|major
 (paren
 id|device
 )paren
@@ -976,7 +976,7 @@ id|RIO_NORMAL_MAJOR0
 )paren
 op_logical_or
 (paren
-id|MAJOR
+id|major
 (paren
 id|device
 )paren
@@ -1094,7 +1094,7 @@ suffix:semicolon
 id|modem
 op_assign
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|tty-&gt;device
@@ -1104,7 +1104,7 @@ id|RIO_NORMAL_MAJOR0
 )paren
 op_logical_or
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|tty-&gt;device

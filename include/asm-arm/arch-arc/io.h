@@ -324,5 +324,10 @@ mdefine_line|#define __ioaddr(p)&t;(__builtin_constant_p((p)) ? __ioaddr(p)  : _
 multiline_comment|/* the following macro is depreciated */
 DECL|macro|ioaddr
 mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
+multiline_comment|/*&n; * No ioremap support here.&n; */
+DECL|macro|__arch_ioremap
+mdefine_line|#define __arch_ioremap(c,s,f)&t;((void *)(c))
+DECL|macro|__arch_iounmap
+mdefine_line|#define __arch_iounmap(c)&t;do { }  while (0)
 macro_line|#endif
 eof

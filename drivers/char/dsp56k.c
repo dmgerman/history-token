@@ -1110,7 +1110,7 @@ suffix:semicolon
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1415,7 +1415,7 @@ suffix:semicolon
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1714,7 +1714,7 @@ id|arg
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2177,7 +2177,7 @@ id|wait
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -2238,7 +2238,7 @@ id|file
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2333,7 +2333,7 @@ id|file
 r_int
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

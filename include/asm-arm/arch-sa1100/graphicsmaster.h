@@ -69,5 +69,4 @@ mdefine_line|#define ADS_DCR&t;&t;(*((volatile u_char *) ADS_p2v(_ADS_DCR)))
 macro_line|#endif
 DECL|macro|SA1111_BASE
 mdefine_line|#define&t;SA1111_BASE&t;(0x18000000)
-macro_line|#include &quot;SA-1111.h&quot;
 eof

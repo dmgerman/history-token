@@ -237,11 +237,11 @@ macro_line|#ifdef DEBUG
 DECL|macro|rio_dprintk
 mdefine_line|#define rio_dprintk(f, str...) do { if (rio_debug &amp; f) printk (str);} while (0)
 DECL|macro|func_enter
-mdefine_line|#define func_enter() rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: enter &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_enter() rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
-mdefine_line|#define func_exit()  rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: exit  &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_exit()  rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: exit  %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_enter2
-mdefine_line|#define func_enter2() rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: enter &quot; __FUNCTION__ &bslash;&n;                                   &quot;(port %d)&bslash;n&quot;, port-&gt;line)
+mdefine_line|#define func_enter2() rio_dprintk (RIO_DEBUG_FLOW, &quot;rio: enter %s (port %d)&bslash;n&quot;,__FUNCTION__, port-&gt;line)
 macro_line|#else
 DECL|macro|rio_dprintk
 mdefine_line|#define rio_dprintk(f, str...) /* nothing */

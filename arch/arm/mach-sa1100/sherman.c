@@ -92,39 +92,6 @@ l_int|8192
 suffix:semicolon
 singleline_comment|//&t;setup_initrd( 0xc0400000, 8*1024*1024 );
 )brace
-DECL|variable|__initdata
-r_static
-r_struct
-id|map_desc
-id|sherman_io_desc
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash*/
-id|LAST_DESC
-)brace
-suffix:semicolon
 DECL|function|sherman_map_io
 r_static
 r_void
@@ -138,12 +105,6 @@ r_void
 id|sa1100_map_io
 c_func
 (paren
-)paren
-suffix:semicolon
-id|iotable_init
-c_func
-(paren
-id|sherman_io_desc
 )paren
 suffix:semicolon
 id|sa1100_register_uart

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -67,6 +68,7 @@ op_assign
 id|sa1111_probe
 c_func
 (paren
+l_int|0x18000000
 )paren
 suffix:semicolon
 r_if
@@ -153,11 +155,7 @@ suffix:semicolon
 id|sa1111_init_irq
 c_func
 (paren
-id|SA1100_GPIO_TO_IRQ
-c_func
-(paren
-l_int|0
-)paren
+id|IRQ_GPIO0
 )paren
 suffix:semicolon
 r_return
@@ -286,25 +284,6 @@ op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
 (brace
-l_int|0xe8000000
-comma
-l_int|0x08000000
-comma
-l_int|0x01000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 1 */
-(brace
 l_int|0xf4000000
 comma
 l_int|0x18000000
@@ -355,20 +334,11 @@ id|Ser1SDCR0
 op_or_assign
 id|SDCR0_UART
 suffix:semicolon
-singleline_comment|// Set RTS Output and High (should be done in the set_mctrl fn)
-id|GPDR
-op_or_assign
-id|GPIO_GPIO15
-suffix:semicolon
+macro_line|#error Fixme&t;
+singleline_comment|// Set RTS High (should be done in the set_mctrl fn)
 id|GPCR
-op_or_assign
+op_assign
 id|GPIO_GPIO15
-suffix:semicolon
-singleline_comment|// Set CTS Input
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO14
 suffix:semicolon
 )brace
 r_else
@@ -386,20 +356,11 @@ id|Ser2HSCR0
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Set RTS Output and High (should be done in the set_mctrl fn)
-id|GPDR
-op_or_assign
-id|GPIO_GPIO17
-suffix:semicolon
+macro_line|#error Fixme&t;
+singleline_comment|// Set RTS High (should be done in the set_mctrl fn)
 id|GPCR
-op_or_assign
+op_assign
 id|GPIO_GPIO17
-suffix:semicolon
-singleline_comment|// Set CTS Input
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO16
 suffix:semicolon
 )brace
 r_else
@@ -411,20 +372,11 @@ op_eq
 id|_Ser2UTCR0
 )paren
 (brace
-singleline_comment|// Set RTS Output and High (should be done in the set_mctrl fn)
-id|GPDR
-op_or_assign
-id|GPIO_GPIO19
-suffix:semicolon
+macro_line|#error Fixme&t;
+singleline_comment|// Set RTS High (should be done in the set_mctrl fn)
 id|GPCR
-op_or_assign
+op_assign
 id|GPIO_GPIO19
-suffix:semicolon
-singleline_comment|// Set CTS Input
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO18
 suffix:semicolon
 )brace
 r_return
@@ -466,7 +418,7 @@ c_func
 id|adsbitsy_io_desc
 )paren
 suffix:semicolon
-id|sa1110_register_uart_fns
+id|sa1100_register_uart_fns
 c_func
 (paren
 op_amp
@@ -495,6 +447,25 @@ c_func
 l_int|2
 comma
 l_int|2
+)paren
+suffix:semicolon
+id|GPDR
+op_or_assign
+id|GPIO_GPIO15
+op_or
+id|GPIO_GPIO17
+op_or
+id|GPIO_GPIO19
+suffix:semicolon
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|GPIO_GPIO14
+op_or
+id|GPIO_GPIO16
+op_or
+id|GPIO_GPIO18
 )paren
 suffix:semicolon
 )brace

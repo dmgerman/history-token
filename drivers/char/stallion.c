@@ -4252,7 +4252,7 @@ suffix:semicolon
 macro_line|#endif
 id|minordev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -13703,7 +13703,7 @@ suffix:semicolon
 macro_line|#endif
 id|brdnr
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|ip-&gt;i_rdev

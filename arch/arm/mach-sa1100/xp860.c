@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -20,6 +21,11 @@ c_func
 r_void
 )paren
 (brace
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|GPDR
 op_or_assign
 id|GPIO_GPIO20
@@ -68,6 +74,7 @@ op_assign
 id|sa1111_probe
 c_func
 (paren
+l_int|0x40000000
 )paren
 suffix:semicolon
 r_if

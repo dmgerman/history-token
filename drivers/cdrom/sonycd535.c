@@ -351,7 +351,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|full_dev
@@ -2327,7 +2327,7 @@ id|INIT_REQUEST
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3385,7 +3385,7 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -6392,7 +6392,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

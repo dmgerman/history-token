@@ -823,13 +823,13 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|MAJOR
+id|major
 c_func
 (paren
 id|tty-&gt;device
 )paren
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

@@ -959,7 +959,7 @@ mdefine_line|#define __test_and_change_bit(nr,p)&t;NONATOMIC_BITOP_LE(test_and_c
 DECL|macro|__test_bit
 mdefine_line|#define __test_bit(nr,p)&t;&t;____test_bit(nr,p)
 macro_line|#else
-multiline_comment|/*&n; * These are the little endian, atomic definitions.&n; */
+multiline_comment|/*&n; * These are the big endian, atomic definitions.&n; */
 DECL|macro|set_bit
 mdefine_line|#define set_bit(nr,p)&t;&t;&t;ATOMIC_BITOP_BE(set_bit,nr,p)
 DECL|macro|clear_bit
@@ -978,7 +978,7 @@ DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_be(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_be(p,sz,off)
-multiline_comment|/*&n; * These are the little endian, non-atomic definitions.&n; */
+multiline_comment|/*&n; * These are the big endian, non-atomic definitions.&n; */
 DECL|macro|__set_bit
 mdefine_line|#define __set_bit(nr,p)&t;&t;&t;NONATOMIC_BITOP_BE(set_bit,nr,p)
 DECL|macro|__clear_bit

@@ -12,24 +12,12 @@ DECL|macro|MAX_DMA_CHANNELS
 mdefine_line|#define MAX_DMA_CHANNELS&t;0
 multiline_comment|/*&n; * The SA1100 has six internal DMA channels.&n; */
 DECL|macro|SA1100_DMA_CHANNELS
-mdefine_line|#define SA1100_DMA_CHANNELS     6
-multiline_comment|/*&n; * The SA-1111 SAC has two DMA channels.&n; */
-DECL|macro|SA1111_SAC_DMA_CHANNELS
-mdefine_line|#define SA1111_SAC_DMA_CHANNELS 2
-DECL|macro|SA1111_SAC_XMT_CHANNEL
-mdefine_line|#define SA1111_SAC_XMT_CHANNEL  0
-DECL|macro|SA1111_SAC_RCV_CHANNEL
-mdefine_line|#define SA1111_SAC_RCV_CHANNEL  1
-multiline_comment|/*&n; * The SA-1111 SAC channels will reside in the same index space as&n; * the built-in SA-1100 channels, and will take on the next available&n; * identifiers after the 1100.&n; */
-DECL|macro|SA1111_SAC_DMA_BASE
-mdefine_line|#define SA1111_SAC_DMA_BASE     SA1100_DMA_CHANNELS
-macro_line|#ifdef CONFIG_SA1111
-DECL|macro|MAX_SA1100_DMA_CHANNELS
-macro_line|# define MAX_SA1100_DMA_CHANNELS (SA1100_DMA_CHANNELS + SA1111_SAC_DMA_CHANNELS)
-macro_line|#else
-DECL|macro|MAX_SA1100_DMA_CHANNELS
-macro_line|# define MAX_SA1100_DMA_CHANNELS SA1100_DMA_CHANNELS
-macro_line|#endif
+mdefine_line|#define SA1100_DMA_CHANNELS&t;6
+multiline_comment|/*&n; * Maximum physical DMA buffer size&n; */
+DECL|macro|MAX_DMA_SIZE
+mdefine_line|#define MAX_DMA_SIZE&t;&t;0x1fff
+DECL|macro|CUT_DMA_SIZE
+mdefine_line|#define CUT_DMA_SIZE&t;&t;0x1000
 multiline_comment|/*&n; * All possible SA1100 devices a DMA channel can be attached to.&n; */
 r_typedef
 r_enum
@@ -145,6 +133,53 @@ DECL|typedef|dma_device_t
 )brace
 id|dma_device_t
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|DDAR
+r_volatile
+id|u_long
+id|DDAR
+suffix:semicolon
+DECL|member|SetDCSR
+r_volatile
+id|u_long
+id|SetDCSR
+suffix:semicolon
+DECL|member|ClrDCSR
+r_volatile
+id|u_long
+id|ClrDCSR
+suffix:semicolon
+DECL|member|RdDCSR
+r_volatile
+id|u_long
+id|RdDCSR
+suffix:semicolon
+DECL|member|DBSA
+r_volatile
+id|dma_addr_t
+id|DBSA
+suffix:semicolon
+DECL|member|DBTA
+r_volatile
+id|u_long
+id|DBTA
+suffix:semicolon
+DECL|member|DBSB
+r_volatile
+id|dma_addr_t
+id|DBSB
+suffix:semicolon
+DECL|member|DBTB
+r_volatile
+id|u_long
+id|DBTB
+suffix:semicolon
+DECL|typedef|dma_regs_t
+)brace
+id|dma_regs_t
+suffix:semicolon
 DECL|typedef|dma_callback_t
 r_typedef
 r_void
@@ -155,120 +190,34 @@ id|dma_callback_t
 (paren
 r_void
 op_star
-id|buf_id
-comma
-r_int
-id|size
+id|data
 )paren
 suffix:semicolon
-multiline_comment|/* SA1100 DMA API */
+multiline_comment|/*&n; * DMA function prototypes&n; */
 r_extern
 r_int
 id|sa1100_request_dma
 c_func
 (paren
-id|dmach_t
-op_star
-id|channel
+id|dma_device_t
+id|device
 comma
 r_const
 r_char
 op_star
 id|device_id
 comma
-id|dma_device_t
-id|device
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_set_callback
-c_func
-(paren
-id|dmach_t
-id|channel
-comma
 id|dma_callback_t
-id|cb
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_set_spin
-c_func
-(paren
-id|dmach_t
-id|channel
-comma
-id|dma_addr_t
-id|addr
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_queue_buffer
-c_func
-(paren
-id|dmach_t
-id|channel
+id|callback
 comma
 r_void
 op_star
-id|buf_id
-comma
-id|dma_addr_t
 id|data
 comma
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_get_current
-c_func
-(paren
-id|dmach_t
-id|channel
-comma
-r_void
+id|dma_regs_t
 op_star
 op_star
-id|buf_id
-comma
-id|dma_addr_t
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_stop
-c_func
-(paren
-id|dmach_t
-id|channel
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_resume
-c_func
-(paren
-id|dmach_t
-id|channel
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_flush_all
-c_func
-(paren
-id|dmach_t
-id|channel
+id|regs
 )paren
 suffix:semicolon
 r_extern
@@ -276,57 +225,56 @@ r_void
 id|sa1100_free_dma
 c_func
 (paren
-id|dmach_t
-id|channel
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_sleep
-c_func
-(paren
-id|dmach_t
-id|channel
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sa1100_dma_wakeup
-c_func
-(paren
-id|dmach_t
-id|channel
-)paren
-suffix:semicolon
-multiline_comment|/* Sa1111 DMA interface (all but registration uses the above) */
-r_extern
-r_int
-id|sa1111_sac_request_dma
-c_func
-(paren
-id|dmach_t
+id|dma_regs_t
 op_star
-id|channel
-comma
-r_const
-r_char
-op_star
-id|device_id
-comma
-r_int
-r_int
-id|direction
+id|regs
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|sa1111_check_dma_bug
+id|sa1100_start_dma
 c_func
 (paren
+id|dma_regs_t
+op_star
+id|regs
+comma
 id|dma_addr_t
-id|addr
+id|dma_ptr
+comma
+id|u_int
+id|size
 )paren
 suffix:semicolon
+r_extern
+id|dma_addr_t
+id|sa1100_get_dma_pos
+c_func
+(paren
+id|dma_regs_t
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sa1100_reset_dma
+c_func
+(paren
+id|dma_regs_t
+op_star
+id|regs
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * &t;sa1100_stop_dma - stop DMA in progress&n; * &t;@regs: identifier for the channel to use&n; *&n; * &t;This stops DMA without clearing buffer pointers. Unlike&n; * &t;sa1100_clear_dma() this allows subsequent use of sa1100_resume_dma()&n; * &t;or sa1100_get_dma_pos().&n; *&n; * &t;The @regs identifier is provided by a successful call to&n; * &t;sa1100_request_dma().&n; **/
+DECL|macro|sa1100_stop_dma
+mdefine_line|#define sa1100_stop_dma(regs)&t;((regs)-&gt;ClrDCSR = DCSR_IE|DCSR_RUN)
+multiline_comment|/**&n; * &t;sa1100_resume_dma - resume DMA on a stopped channel&n; * &t;@regs: identifier for the channel to use&n; *&n; * &t;This resumes DMA on a channel previously stopped with&n; * &t;sa1100_stop_dma().&n; *&n; * &t;The @regs identifier is provided by a successful call to&n; * &t;sa1100_request_dma().&n; **/
+DECL|macro|sa1100_resume_dma
+mdefine_line|#define sa1100_resume_dma(regs)&t;((regs)-&gt;SetDCSR = DCSR_IE|DCSR_RUN)
+multiline_comment|/**&n; * &t;sa1100_clear_dma - clear DMA pointers&n; * &t;@regs: identifier for the channel to use&n; *&n; * &t;This clear any DMA state so the DMA engine is ready to restart&n; * &t;with new buffers through sa1100_start_dma(). Any buffers in flight&n; * &t;are discarded.&n; *&n; * &t;The @regs identifier is provided by a successful call to&n; * &t;sa1100_request_dma().&n; **/
+DECL|macro|sa1100_clear_dma
+mdefine_line|#define sa1100_clear_dma(regs)&t;((regs)-&gt;ClrDCSR = DCSR_IE|DCSR_RUN|DCSR_STRTA|DCSR_STRTB)
 macro_line|#ifdef CONFIG_SA1111
 r_static
 r_inline

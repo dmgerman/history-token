@@ -183,11 +183,11 @@ mdefine_line|#define&t;RIO_MODEM_MASK&t;&t;0x1FF
 DECL|macro|RIO_MODEM_BIT
 mdefine_line|#define&t;RIO_MODEM_BIT&t;&t;0x200
 DECL|macro|RIO_UNMODEM
-mdefine_line|#define&t;RIO_UNMODEM(DEV)&t;(minor(DEV) &amp; RIO_MODEM_MASK)
+mdefine_line|#define&t;RIO_UNMODEM(DEV)&t;(MINOR(DEV) &amp; RIO_MODEM_MASK)
 DECL|macro|RIO_ISMODEM
-mdefine_line|#define&t;RIO_ISMODEM(DEV)&t;(minor(DEV) &amp; RIO_MODEM_BIT)
+mdefine_line|#define&t;RIO_ISMODEM(DEV)&t;(MINOR(DEV) &amp; RIO_MODEM_BIT)
 DECL|macro|RIO_PORT
-mdefine_line|#define RIO_PORT(DEV,FIRST_MAJ)&t;( (major(DEV) - FIRST_MAJ) * PORTS_PER_HOST) &bslash;&n;&t;&t;&t;&t;&t;+ minor(DEV)
+mdefine_line|#define RIO_PORT(DEV,FIRST_MAJ)&t;( (MAJOR(DEV) - FIRST_MAJ) * PORTS_PER_HOST) &bslash;&n;&t;&t;&t;&t;&t;+ MINOR(DEV)
 DECL|macro|splrio
 mdefine_line|#define&t;splrio&t;spltty
 DECL|macro|RIO_IPL

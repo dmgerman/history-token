@@ -324,5 +324,13 @@ mdefine_line|#define __ioaddr(p)&t;(__builtin_constant_p((p)) ? __ioaddr(p)  : _
 multiline_comment|/* the following macro is depreciated */
 DECL|macro|ioaddr
 mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
+DECL|macro|insb
+mdefine_line|#define insb(p,d,l)&t;__raw_readsb(__ioaddr(p),d,l)
+DECL|macro|insw
+mdefine_line|#define insw(p,d,l)&t;__raw_readsw(__ioaddr(p),d,l)
+DECL|macro|outsb
+mdefine_line|#define outsb(p,d,l)&t;__raw_writesb(__ioaddr(p),d,l)
+DECL|macro|outsw
+mdefine_line|#define outsw(p,d,l)&t;__raw_writesw(__ioaddr(p),d,l)
 macro_line|#endif
 eof

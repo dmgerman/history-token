@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
-macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 DECL|variable|__initdata
 r_static
 r_int
@@ -132,25 +131,29 @@ id|personal_server_pci
 id|__initdata
 op_assign
 (brace
-id|setup_resources
-suffix:colon
-id|dc21285_setup_resources
-comma
-id|init
-suffix:colon
-id|dc21285_init
-comma
-id|mem_offset
-suffix:colon
-id|DC21285_PCI_MEM
-comma
-id|swizzle
-suffix:colon
-id|no_swizzle
-comma
 id|map_irq
 suffix:colon
 id|personal_server_map_irq
+comma
+id|nr_controllers
+suffix:colon
+l_int|1
+comma
+id|setup
+suffix:colon
+id|dc21285_setup
+comma
+id|scan
+suffix:colon
+id|dc21285_scan_bus
+comma
+id|preinit
+suffix:colon
+id|dc21285_preinit
+comma
+id|postinit
+suffix:colon
+id|dc21285_postinit
 comma
 )brace
 suffix:semicolon

@@ -127,7 +127,11 @@ id|no_write
 r_if
 c_cond
 (paren
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 )paren
 (brace
 id|printk
@@ -148,7 +152,11 @@ id|no_write
 op_assign
 l_int|0xdead0000
 op_plus
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 suffix:semicolon
 )brace
 )brace

@@ -12,6 +12,19 @@ op_star
 id|address
 suffix:semicolon
 multiline_comment|/* virtual address&t;&t; */
+DECL|member|page
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+multiline_comment|/* Location for highmem page, if any */
+DECL|member|offset
+r_int
+r_int
+id|offset
+suffix:semicolon
+multiline_comment|/* for highmem, page offset&t; */
 DECL|member|dma_address
 id|dma_addr_t
 id|dma_address
@@ -23,6 +36,12 @@ r_int
 id|length
 suffix:semicolon
 multiline_comment|/* length&t;&t;&t; */
+DECL|member|__address
+r_char
+op_star
+id|__address
+suffix:semicolon
+multiline_comment|/* for set_dma_addr&t;&t; */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */

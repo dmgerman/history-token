@@ -65,7 +65,7 @@ mdefine_line|#define &t;UART_MCR_AFE&t;&t;0x20
 DECL|macro|UART_LSR_SPECIAL
 mdefine_line|#define &t;UART_LSR_SPECIAL&t;0x1E
 DECL|macro|PORTNO
-mdefine_line|#define PORTNO(x)&t;&t;(MINOR((x)-&gt;device) - (x)-&gt;driver.minor_start)
+mdefine_line|#define PORTNO(x)&t;&t;(minor((x)-&gt;device) - (x)-&gt;driver.minor_start)
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
 DECL|macro|IRQ_T

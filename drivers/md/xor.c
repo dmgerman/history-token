@@ -3,6 +3,7 @@ DECL|macro|BH_TRACE
 mdefine_line|#define BH_TRACE 0
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/raid/md_compatible.h&gt;
 macro_line|#include &lt;linux/raid/xor.h&gt;
 macro_line|#include &lt;asm/xor.h&gt;
 multiline_comment|/* The xor routines to use.  */

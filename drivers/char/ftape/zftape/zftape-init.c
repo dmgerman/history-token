@@ -293,7 +293,7 @@ id|ft_t_flow
 comma
 l_string|&quot;called for minor %d&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -329,7 +329,7 @@ r_if
 c_cond
 (paren
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -383,7 +383,7 @@ op_assign
 id|_zft_open
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -487,7 +487,7 @@ op_amp
 id|busy_flag
 )paren
 op_logical_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -611,7 +611,7 @@ op_amp
 id|busy_flag
 )paren
 op_logical_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -716,7 +716,7 @@ op_amp
 id|busy_flag
 )paren
 op_logical_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|filep-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
@@ -867,7 +867,7 @@ op_amp
 id|busy_flag
 )paren
 op_logical_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev
@@ -1005,7 +1005,7 @@ op_amp
 id|busy_flag
 )paren
 op_logical_or
-id|MINOR
+id|minor
 c_func
 (paren
 id|ino-&gt;i_rdev

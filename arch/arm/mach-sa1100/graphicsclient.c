@@ -476,11 +476,6 @@ op_assign
 id|ADS_unmask_irq1
 suffix:semicolon
 )brace
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GPIO0
-suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
@@ -610,25 +605,6 @@ id|__initdata
 op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x08000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 1 */
 (brace
 l_int|0xf0000000
 comma
@@ -884,19 +860,9 @@ op_or_assign
 id|SDCR0_UART
 suffix:semicolon
 multiline_comment|/* Set RTS Output */
-id|GPDR
-op_or_assign
-id|GPIO_GC_UART0_RTS
-suffix:semicolon
 id|GPSR
 op_assign
 id|GPIO_GC_UART0_RTS
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
-id|GPIO_GC_UART0_CTS
 suffix:semicolon
 id|gc_uart_ctrl_data
 (braket
@@ -959,18 +925,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Set RTS Output */
-id|GPDR
-op_or_assign
-id|GPIO_GC_UART1_RTS
-suffix:semicolon
 id|GPSR
 op_assign
-id|GPIO_GC_UART1_RTS
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
 id|GPIO_GC_UART1_RTS
 suffix:semicolon
 id|gc_uart_ctrl_data
@@ -1028,18 +984,8 @@ id|_Ser3UTCR0
 )paren
 (brace
 multiline_comment|/* Set RTS Output */
-id|GPDR
-op_or_assign
-id|GPIO_GC_UART2_RTS
-suffix:semicolon
 id|GPSR
 op_assign
-id|GPIO_GC_UART2_RTS
-suffix:semicolon
-multiline_comment|/* Set CTS Input */
-id|GPDR
-op_and_assign
-op_complement
 id|GPIO_GC_UART2_RTS
 suffix:semicolon
 id|gc_uart_ctrl_data
@@ -1179,7 +1125,7 @@ suffix:semicolon
 )brace
 DECL|function|graphicsclient_get_mctrl
 r_static
-r_int
+id|u_int
 id|graphicsclient_get_mctrl
 c_func
 (paren
@@ -1189,7 +1135,7 @@ op_star
 id|port
 )paren
 (brace
-r_int
+id|u_int
 id|result
 op_assign
 id|TIOCM_CD
@@ -1491,6 +1437,25 @@ c_func
 l_int|2
 comma
 l_int|2
+)paren
+suffix:semicolon
+id|GPDR
+op_or_assign
+id|GPIO_GC_UART0_RTS
+op_or
+id|GPIO_GC_UART1_RTS
+op_or
+id|GPIO_GC_UART2_RTS
+suffix:semicolon
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|GPIO_GC_UART0_CTS
+op_or
+id|GPIO_GC_UART1_RTS
+op_or
+id|GPIO_GC_UART2_RTS
 )paren
 suffix:semicolon
 )brace

@@ -5983,7 +5983,7 @@ op_assign
 id|SX_BOARD
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6032,7 +6032,7 @@ op_plus
 id|SX_PORT
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -6054,7 +6054,7 @@ comma
 id|SX_PORT
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

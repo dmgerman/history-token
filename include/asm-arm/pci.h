@@ -2,7 +2,14 @@ macro_line|#ifndef ASMARM_PCI_H
 DECL|macro|ASMARM_PCI_H
 mdefine_line|#define ASMARM_PCI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/mm.h&gt; /* bah! */
 macro_line|#include &lt;asm/arch/hardware.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+r_struct
+id|pci_dev
+suffix:semicolon
 DECL|function|pcibios_set_master
 r_static
 r_inline
@@ -31,11 +38,9 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
-macro_line|#include &lt;asm/scatterlist.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-r_struct
-id|pci_dev
-suffix:semicolon
+multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS     (0)
 multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void
@@ -281,22 +286,87 @@ id|sg
 op_increment
 )paren
 (brace
-id|consistent_sync
-c_func
+r_char
+op_star
+id|virt
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|sg-&gt;address
-comma
-id|sg-&gt;length
-comma
-id|direction
+op_logical_and
+id|sg-&gt;page
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sg-&gt;address
+op_logical_and
+op_logical_neg
+id|sg-&gt;page
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sg-&gt;address
+)paren
+(brace
 id|sg-&gt;dma_address
 op_assign
 id|virt_to_bus
 c_func
 (paren
 id|sg-&gt;address
+)paren
+suffix:semicolon
+id|virt
+op_assign
+id|sg-&gt;address
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sg-&gt;dma_address
+op_assign
+id|page_to_bus
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
+id|virt
+op_assign
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
+)brace
+id|consistent_sync
+c_func
+(paren
+id|virt
+comma
+id|sg-&gt;length
+comma
+id|direction
 )paren
 suffix:semicolon
 )brace
@@ -414,16 +484,42 @@ comma
 id|sg
 op_increment
 )paren
+(brace
+r_char
+op_star
+id|virt
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sg-&gt;address
+)paren
+id|virt
+op_assign
+id|sg-&gt;address
+suffix:semicolon
+r_else
+id|virt
+op_assign
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+suffix:semicolon
 id|consistent_sync
 c_func
 (paren
-id|sg-&gt;address
+id|virt
 comma
 id|sg-&gt;length
 comma
 id|direction
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported

@@ -28,11 +28,10 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
+DECL|function|time_init
 r_void
-DECL|function|setup_timer
-id|setup_timer
+id|__init
+id|time_init
 c_func
 (paren
 r_void

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/time.h&n; *&n; * Copyright (C) 1998 Deborah Wallach.&n; * Twiddles  (C) 1999 &t;Hugo Fiennes &lt;hugo@empeg.com&gt;&n; * &n; * 2000/03/29 (C) Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Rewritten: big cleanup, much simpler, better HZ accuracy.&n; *&n; */
 DECL|macro|RTC_DEF_DIVIDER
-mdefine_line|#define RTC_DEF_DIVIDER&t;&t;32768 - 1
+mdefine_line|#define RTC_DEF_DIVIDER&t;&t;(32768 - 1)
 DECL|macro|RTC_DEF_TRIM
 mdefine_line|#define RTC_DEF_TRIM            0
 DECL|function|sa1100_get_rtc_time
@@ -158,6 +158,7 @@ r_return
 id|usec
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * We will be entered with IRQs enabled.&n; *&n; * Loop until we get ahead of the free running timer.&n; * This ensures an exact clock tick count and time acuracy.&n; * IRQs are disabled inside the loop to ensure coherence between&n; * lost_ticks (updated in do_timer()) and the match reg value, so we&n; * can use do_gettimeofday() from interrupt handlers.&n; */
 DECL|function|sa1100_timer_interrupt
 r_static
 r_void
@@ -178,12 +179,13 @@ id|regs
 )paren
 (brace
 r_int
-id|flags
-suffix:semicolon
 r_int
 id|next_match
 suffix:semicolon
-multiline_comment|/* Loop until we get ahead of the free running timer.&n;&t; * This ensures an exact clock tick count and time acuracy.&n;&t; * IRQs are disabled inside the loop to ensure coherence between&n;&t; * lost_ticks (updated in do_timer()) and the match reg value, so we&n;&t; * can use do_gettimeofday() from interrupt handlers.&n;&t; */
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_do
 (brace
 id|do_leds
@@ -191,12 +193,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|do_set_rtc
-c_func
-(paren
-)paren
-suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -221,10 +218,15 @@ op_add_assign
 id|LATCH
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|do_set_rtc
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -243,15 +245,19 @@ id|OSCR
 op_le
 l_int|0
 )paren
-(brace
+suffix:semicolon
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 )brace
-)brace
-DECL|function|setup_timer
-r_static
-r_inline
+DECL|function|time_init
 r_void
-id|setup_timer
+id|__init
+id|time_init
+c_func
 (paren
 r_void
 )paren

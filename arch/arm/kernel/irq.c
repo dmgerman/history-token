@@ -309,6 +309,8 @@ id|show_fiq_list
 c_func
 (paren
 id|p
+comma
+id|v
 )paren
 suffix:semicolon
 macro_line|#endif

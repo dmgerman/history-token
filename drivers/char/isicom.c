@@ -4949,7 +4949,7 @@ suffix:semicolon
 macro_line|#endif&t;
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

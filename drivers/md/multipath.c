@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * multipath.c : Multiple Devices driver for Linux&n; *&n; * Copyright (C) 1999, 2000, 2001 Ingo Molnar, Red Hat&n; *&n; * Copyright (C) 1996, 1997, 1998 Ingo Molnar, Miguel de Icaza, Gadi Oxman&n; *&n; * MULTIPATH management functions.&n; *&n; * derived from raid1.c.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/raid/multipath.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAJOR_NR
@@ -1289,14 +1290,18 @@ op_increment
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|multipaths
 (braket
 id|i
 )braket
 dot
 id|dev
-op_eq
+comma
 id|dev
+)paren
 op_logical_and
 op_logical_neg
 id|multipaths
@@ -1337,14 +1342,18 @@ op_increment
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|multipaths
 (braket
 id|i
 )braket
 dot
 id|dev
-op_eq
+comma
 id|dev
+)paren
 op_logical_and
 id|multipaths
 (braket
@@ -2310,14 +2319,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdisk-&gt;dev
-op_eq
-id|MKDEV
+id|kdev_none
 c_func
 (paren
-l_int|0
-comma
-l_int|0
+id|sdisk-&gt;dev
 )paren
 )paren
 id|sdisk-&gt;used_slot
@@ -2371,13 +2376,7 @@ suffix:semicolon
 )brace
 id|rdisk-&gt;dev
 op_assign
-id|MKDEV
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
+id|NODEV
 suffix:semicolon
 id|rdisk-&gt;used_slot
 op_assign
@@ -2433,7 +2432,7 @@ id|added_desc-&gt;raid_disk
 suffix:semicolon
 id|adisk-&gt;dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|added_desc-&gt;major
@@ -2617,9 +2616,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|bh-&gt;b_dev
-op_eq
+comma
 id|dev
+)paren
 )paren
 (brace
 id|printk

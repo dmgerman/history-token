@@ -458,7 +458,7 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-id|NODEV
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * command&n; */

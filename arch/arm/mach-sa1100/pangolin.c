@@ -101,25 +101,6 @@ op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
 (brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x04000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
-(brace
 l_int|0xf2800000
 comma
 l_int|0x4b800000
@@ -182,6 +163,17 @@ id|Ser1SDCR0
 op_or_assign
 id|SDCR0_UART
 suffix:semicolon
+multiline_comment|/* set some GPDR bits while it&squot;s safe */
+id|GPDR
+op_or_assign
+id|GPIO_PCMCIA_RESET
+suffix:semicolon
+macro_line|#ifndef CONFIG_SA1100_PANGOLIN_PCMCIA_IDE
+id|GPDR
+op_or_assign
+id|GPIO_PCMCIA_BUS_ON
+suffix:semicolon
+macro_line|#endif
 )brace
 id|MACHINE_START
 c_func

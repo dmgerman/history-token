@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-cl7500/keyboard.h&n; *  from linux/include/asm-arm/arch-rpc/keyboard.h&n; *&n; * Keyboard driver definitions for CL7500 architecture&n; *&n; * Copyright (C) 1998-2001 Russell King&n; */
+macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|NR_SCANCODES
 mdefine_line|#define NR_SCANCODES 128
 r_extern

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
@@ -272,7 +273,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
-mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym##[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
+mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
 id|EXPORT_SYMBOL_ALIAS
 c_func
@@ -396,6 +397,7 @@ c_func
 id|system_serial_high
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 DECL|variable|__bug
 id|EXPORT_SYMBOL
 c_func
@@ -403,6 +405,7 @@ c_func
 id|__bug
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__bad_xchg
 id|EXPORT_SYMBOL
 c_func
@@ -913,62 +916,120 @@ id|__umodsi3
 )paren
 suffix:semicolon
 multiline_comment|/* bitops */
-DECL|variable|set_bit
+DECL|variable|_set_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|set_bit
+id|_set_bit_le
 )paren
 suffix:semicolon
-DECL|variable|test_and_set_bit
+DECL|variable|_test_and_set_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|test_and_set_bit
+id|_test_and_set_bit_le
 )paren
 suffix:semicolon
-DECL|variable|clear_bit
+DECL|variable|_clear_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|clear_bit
+id|_clear_bit_le
 )paren
 suffix:semicolon
-DECL|variable|test_and_clear_bit
+DECL|variable|_test_and_clear_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|test_and_clear_bit
+id|_test_and_clear_bit_le
 )paren
 suffix:semicolon
-DECL|variable|change_bit
+DECL|variable|_change_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|change_bit
+id|_change_bit_le
 )paren
 suffix:semicolon
-DECL|variable|test_and_change_bit
+DECL|variable|_test_and_change_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|test_and_change_bit
+id|_test_and_change_bit_le
 )paren
 suffix:semicolon
-DECL|variable|find_first_zero_bit
+DECL|variable|_find_first_zero_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|find_first_zero_bit
+id|_find_first_zero_bit_le
 )paren
 suffix:semicolon
-DECL|variable|find_next_zero_bit
+DECL|variable|_find_next_zero_bit_le
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|find_next_zero_bit
+id|_find_next_zero_bit_le
 )paren
 suffix:semicolon
+macro_line|#ifdef __ARMEB__
+DECL|variable|_set_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_set_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_test_and_set_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_test_and_set_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_clear_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_clear_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_test_and_clear_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_test_and_clear_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_change_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_change_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_test_and_change_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_test_and_change_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_find_first_zero_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_first_zero_bit_be
+)paren
+suffix:semicolon
+DECL|variable|_find_next_zero_bit_be
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_find_next_zero_bit_be
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* elf */
 DECL|variable|elf_platform
 id|EXPORT_SYMBOL

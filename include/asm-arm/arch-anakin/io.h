@@ -5,15 +5,7 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffff
 DECL|macro|__io
-mdefine_line|#define __io(a)&t;&t;&t;a
-DECL|macro|__arch_getw
-mdefine_line|#define __arch_getw(a)&t;&t;(*(volatile unsigned short *) (a))
-DECL|macro|__arch_putw
-mdefine_line|#define __arch_putw(b, a)&t;(*(volatile unsigned short *) (a) = (b))
-DECL|macro|iomem_valid_addr
-mdefine_line|#define iomem_valid_addr(i, s)&t;1
-DECL|macro|iomem_to_phys
-mdefine_line|#define iomem_to_phys(i)&t;i
+mdefine_line|#define __io(a)&t;&t;&t;(a)
 multiline_comment|/*&n; * We don&squot;t support ins[lb]/outs[lb].  Make them fault.&n; */
 DECL|macro|__raw_readsb
 mdefine_line|#define __raw_readsb(p,d,l)&t;do { *(int *)0 = 0; } while (0)

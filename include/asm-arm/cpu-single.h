@@ -1,57 +1,61 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/cpu-single.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 multiline_comment|/*&n; * Single CPU&n; */
 macro_line|#ifdef __STDC__
-DECL|macro|__cpu_fn
-mdefine_line|#define __cpu_fn(name,x)&t;cpu_##name##x
+DECL|macro|__catify_fn
+mdefine_line|#define __catify_fn(name,x)&t;name##x
 macro_line|#else
-DECL|macro|__cpu_fn
-mdefine_line|#define __cpu_fn(name,x)&t;cpu_/**/name/**/x
+DECL|macro|__catify_fn
+mdefine_line|#define __catify_fn(name,x)&t;name/**/x
 macro_line|#endif
-DECL|macro|cpu_fn
-mdefine_line|#define cpu_fn(name,x)&t;&t;__cpu_fn(name,x)
+DECL|macro|__cpu_fn
+mdefine_line|#define __cpu_fn(name,x)&t;__catify_fn(name,x)
 multiline_comment|/*&n; * If we are supporting multiple CPUs, then we must use a table of&n; * function pointers for this lot.  Otherwise, we can optimise the&n; * table away.&n; */
 DECL|macro|cpu_data_abort
-mdefine_line|#define cpu_data_abort&t;&t;&t;cpu_fn(CPU_NAME,_data_abort)
+mdefine_line|#define cpu_data_abort&t;&t;&t;__cpu_fn(CPU_ABRT,_abort)
 DECL|macro|cpu_check_bugs
-mdefine_line|#define cpu_check_bugs&t;&t;&t;cpu_fn(CPU_NAME,_check_bugs)
+mdefine_line|#define cpu_check_bugs&t;&t;&t;__cpu_fn(CPU_NAME,_check_bugs)
 DECL|macro|cpu_proc_init
-mdefine_line|#define cpu_proc_init&t;&t;&t;cpu_fn(CPU_NAME,_proc_init)
+mdefine_line|#define cpu_proc_init&t;&t;&t;__cpu_fn(CPU_NAME,_proc_init)
 DECL|macro|cpu_proc_fin
-mdefine_line|#define cpu_proc_fin&t;&t;&t;cpu_fn(CPU_NAME,_proc_fin)
+mdefine_line|#define cpu_proc_fin&t;&t;&t;__cpu_fn(CPU_NAME,_proc_fin)
 DECL|macro|cpu_reset
-mdefine_line|#define cpu_reset&t;&t;&t;cpu_fn(CPU_NAME,_reset)
+mdefine_line|#define cpu_reset&t;&t;&t;__cpu_fn(CPU_NAME,_reset)
 DECL|macro|cpu_do_idle
-mdefine_line|#define cpu_do_idle&t;&t;&t;cpu_fn(CPU_NAME,_do_idle)
+mdefine_line|#define cpu_do_idle&t;&t;&t;__cpu_fn(CPU_NAME,_do_idle)
 DECL|macro|cpu_cache_clean_invalidate_all
-mdefine_line|#define cpu_cache_clean_invalidate_all&t;cpu_fn(CPU_NAME,_cache_clean_invalidate_all)
+mdefine_line|#define cpu_cache_clean_invalidate_all&t;__cpu_fn(CPU_NAME,_cache_clean_invalidate_all)
 DECL|macro|cpu_cache_clean_invalidate_range
-mdefine_line|#define cpu_cache_clean_invalidate_range cpu_fn(CPU_NAME,_cache_clean_invalidate_range)
+mdefine_line|#define cpu_cache_clean_invalidate_range __cpu_fn(CPU_NAME,_cache_clean_invalidate_range)
 DECL|macro|cpu_flush_ram_page
-mdefine_line|#define cpu_flush_ram_page&t;&t;cpu_fn(CPU_NAME,_flush_ram_page)
+mdefine_line|#define cpu_flush_ram_page&t;&t;__cpu_fn(CPU_NAME,_flush_ram_page)
 DECL|macro|cpu_dcache_invalidate_range
-mdefine_line|#define cpu_dcache_invalidate_range&t;cpu_fn(CPU_NAME,_dcache_invalidate_range)
+mdefine_line|#define cpu_dcache_invalidate_range&t;__cpu_fn(CPU_NAME,_dcache_invalidate_range)
 DECL|macro|cpu_dcache_clean_range
-mdefine_line|#define cpu_dcache_clean_range&t;&t;cpu_fn(CPU_NAME,_dcache_clean_range)
+mdefine_line|#define cpu_dcache_clean_range&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_range)
 DECL|macro|cpu_dcache_clean_page
-mdefine_line|#define cpu_dcache_clean_page&t;&t;cpu_fn(CPU_NAME,_dcache_clean_page)
+mdefine_line|#define cpu_dcache_clean_page&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_page)
 DECL|macro|cpu_dcache_clean_entry
-mdefine_line|#define cpu_dcache_clean_entry&t;&t;cpu_fn(CPU_NAME,_dcache_clean_entry)
+mdefine_line|#define cpu_dcache_clean_entry&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_entry)
 DECL|macro|cpu_icache_invalidate_range
-mdefine_line|#define cpu_icache_invalidate_range&t;cpu_fn(CPU_NAME,_icache_invalidate_range)
+mdefine_line|#define cpu_icache_invalidate_range&t;__cpu_fn(CPU_NAME,_icache_invalidate_range)
 DECL|macro|cpu_icache_invalidate_page
-mdefine_line|#define cpu_icache_invalidate_page&t;cpu_fn(CPU_NAME,_icache_invalidate_page)
+mdefine_line|#define cpu_icache_invalidate_page&t;__cpu_fn(CPU_NAME,_icache_invalidate_page)
 DECL|macro|cpu_tlb_invalidate_all
-mdefine_line|#define cpu_tlb_invalidate_all&t;&t;cpu_fn(CPU_NAME,_tlb_invalidate_all)
+mdefine_line|#define cpu_tlb_invalidate_all&t;&t;__cpu_fn(CPU_NAME,_tlb_invalidate_all)
 DECL|macro|cpu_tlb_invalidate_range
-mdefine_line|#define cpu_tlb_invalidate_range&t;cpu_fn(CPU_NAME,_tlb_invalidate_range)
+mdefine_line|#define cpu_tlb_invalidate_range&t;__cpu_fn(CPU_NAME,_tlb_invalidate_range)
 DECL|macro|cpu_tlb_invalidate_page
-mdefine_line|#define cpu_tlb_invalidate_page&t;&t;cpu_fn(CPU_NAME,_tlb_invalidate_page)
+mdefine_line|#define cpu_tlb_invalidate_page&t;&t;__cpu_fn(CPU_NAME,_tlb_invalidate_page)
 DECL|macro|cpu_set_pgd
-mdefine_line|#define cpu_set_pgd&t;&t;&t;cpu_fn(CPU_NAME,_set_pgd)
+mdefine_line|#define cpu_set_pgd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pgd)
 DECL|macro|cpu_set_pmd
-mdefine_line|#define cpu_set_pmd&t;&t;&t;cpu_fn(CPU_NAME,_set_pmd)
+mdefine_line|#define cpu_set_pmd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pmd)
 DECL|macro|cpu_set_pte
-mdefine_line|#define cpu_set_pte&t;&t;&t;cpu_fn(CPU_NAME,_set_pte)
+mdefine_line|#define cpu_set_pte&t;&t;&t;__cpu_fn(CPU_NAME,_set_pte)
+DECL|macro|cpu_copy_user_page
+mdefine_line|#define cpu_copy_user_page&t;&t;__cpu_fn(MMU_ARCH,_copy_user_page)
+DECL|macro|cpu_clear_user_page
+mdefine_line|#define cpu_clear_user_page&t;&t;__cpu_fn(MMU_ARCH,_clear_user_page)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -279,6 +283,38 @@ id|ptep
 comma
 id|pte_t
 id|pte
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpu_copy_user_page
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+comma
+r_int
+r_int
+id|u_addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpu_clear_user_page
+c_func
+(paren
+r_void
+op_star
+id|page
+comma
+r_int
+r_int
+id|u_addr
 )paren
 suffix:semicolon
 r_extern

@@ -22,10 +22,6 @@ DECL|macro|ASSABET_BCR_BASE
 mdefine_line|#define ASSABET_BCR_BASE  0xf1000000
 DECL|macro|ASSABET_BCR
 mdefine_line|#define ASSABET_BCR (*(volatile unsigned int *)(ASSABET_BCR_BASE))
-DECL|macro|ASSABET_BCR_DB1110
-mdefine_line|#define ASSABET_BCR_DB1110 &bslash;&n;&t;(ASSABET_BCR_SPK_OFF    | ASSABET_BCR_QMUTE     | &bslash;&n;&t; ASSABET_BCR_LED_GREEN  | ASSABET_BCR_LED_RED   | &bslash;&n;&t; ASSABET_BCR_RS232EN    | ASSABET_BCR_LCD_12RGB | &bslash;&n;&t; ASSABET_BCR_IRDA_MD0)
-DECL|macro|ASSABET_BCR_DB1111
-mdefine_line|#define ASSABET_BCR_DB1111 &bslash;&n;&t;(ASSABET_BCR_SPK_OFF    | ASSABET_BCR_QMUTE     | &bslash;&n;&t; ASSABET_BCR_LED_GREEN  | ASSABET_BCR_LED_RED   | &bslash;&n;&t; ASSABET_BCR_RS232EN    | ASSABET_BCR_LCD_12RGB | &bslash;&n;&t; ASSABET_BCR_CF_BUS_OFF | ASSABET_BCR_STEREO_LB | &bslash;&n;&t; ASSABET_BCR_IRDA_MD0   | ASSABET_BCR_CF_RST)
 DECL|macro|ASSABET_BCR_CF_PWR
 mdefine_line|#define ASSABET_BCR_CF_PWR&t;(1&lt;&lt;0)&t;/* Compact Flash Power (1 = 3.3v, 0 = off) */
 DECL|macro|ASSABET_BCR_CF_RST
@@ -81,15 +77,29 @@ r_int
 r_int
 id|SCR_value
 suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_ASSABET
 r_extern
+r_void
+id|ASSABET_BCR_frob
+c_func
+(paren
 r_int
 r_int
-id|BCR_value
+id|mask
+comma
+r_int
+r_int
+id|set
+)paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|ASSABET_BCR_frob
+mdefine_line|#define ASSABET_BCR_frob(x)&t;do { } while (0)
+macro_line|#endif
 DECL|macro|ASSABET_BCR_set
-mdefine_line|#define ASSABET_BCR_set(x)&t;ASSABET_BCR = (BCR_value |= (x))
+mdefine_line|#define ASSABET_BCR_set(x)&t;ASSABET_BCR_frob((x), (x))
 DECL|macro|ASSABET_BCR_clear
-mdefine_line|#define ASSABET_BCR_clear(x)&t;ASSABET_BCR = (BCR_value &amp;= ~(x))
+mdefine_line|#define ASSABET_BCR_clear(x)&t;ASSABET_BCR_frob((x), 0)
 DECL|macro|ASSABET_BSR_BASE
 mdefine_line|#define ASSABET_BSR_BASE&t;0xf1000000
 DECL|macro|ASSABET_BSR
@@ -113,30 +123,20 @@ mdefine_line|#define ASSABET_BSR_RAD_RI&t;(1 &lt;&lt; 31)
 multiline_comment|/* GPIOs for which the generic definition doesn&squot;t say much */
 DECL|macro|ASSABET_GPIO_RADIO_IRQ
 mdefine_line|#define ASSABET_GPIO_RADIO_IRQ&t;&t;GPIO_GPIO (14)&t;/* Radio interrupt request  */
-DECL|macro|ASSABET_GPIO_L3_I2C_SDA
-mdefine_line|#define ASSABET_GPIO_L3_I2C_SDA&t;&t;GPIO_GPIO (15)&t;/* L3 and SMB control ports */
 DECL|macro|ASSABET_GPIO_PS_MODE_SYNC
 mdefine_line|#define ASSABET_GPIO_PS_MODE_SYNC&t;GPIO_GPIO (16)&t;/* Power supply mode/sync   */
-DECL|macro|ASSABET_GPIO_L3_MODE
-mdefine_line|#define ASSABET_GPIO_L3_MODE&t;&t;GPIO_GPIO (17)&t;/* L3 mode signal with LED  */
-DECL|macro|ASSABET_GPIO_L3_I2C_SCL
-mdefine_line|#define ASSABET_GPIO_L3_I2C_SCL&t;&t;GPIO_GPIO (18)&t;/* L3 and I2C control ports */
 DECL|macro|ASSABET_GPIO_STEREO_64FS_CLK
 mdefine_line|#define ASSABET_GPIO_STEREO_64FS_CLK&t;GPIO_GPIO (19)&t;/* SSP UDA1341 clock input  */
 DECL|macro|ASSABET_GPIO_CF_IRQ
 mdefine_line|#define ASSABET_GPIO_CF_IRQ&t;&t;GPIO_GPIO (21)&t;/* CF IRQ   */
 DECL|macro|ASSABET_GPIO_CF_CD
 mdefine_line|#define ASSABET_GPIO_CF_CD&t;&t;GPIO_GPIO (22)&t;/* CF CD */
-DECL|macro|ASSABET_GPIO_UCB1300_IRQ
-mdefine_line|#define ASSABET_GPIO_UCB1300_IRQ&t;GPIO_GPIO (23)&t;/* UCB GPIO and touchscreen */
 DECL|macro|ASSABET_GPIO_CF_BVD2
 mdefine_line|#define ASSABET_GPIO_CF_BVD2&t;&t;GPIO_GPIO (24)&t;/* CF BVD */
 DECL|macro|ASSABET_GPIO_GFX_IRQ
 mdefine_line|#define ASSABET_GPIO_GFX_IRQ&t;&t;GPIO_GPIO (24)&t;/* Graphics IRQ */
 DECL|macro|ASSABET_GPIO_CF_BVD1
 mdefine_line|#define ASSABET_GPIO_CF_BVD1&t;&t;GPIO_GPIO (25)&t;/* CF BVD */
-DECL|macro|ASSABET_GPIO_NEP_IRQ
-mdefine_line|#define ASSABET_GPIO_NEP_IRQ&t;&t;GPIO_GPIO (25)&t;/* Neponset IRQ */
 DECL|macro|ASSABET_GPIO_BATT_LOW
 mdefine_line|#define ASSABET_GPIO_BATT_LOW&t;&t;GPIO_GPIO (26)&t;/* Low battery */
 DECL|macro|ASSABET_GPIO_RCLK
@@ -145,21 +145,11 @@ DECL|macro|ASSABET_IRQ_GPIO_CF_IRQ
 mdefine_line|#define ASSABET_IRQ_GPIO_CF_IRQ&t;&t;IRQ_GPIO21
 DECL|macro|ASSABET_IRQ_GPIO_CF_CD
 mdefine_line|#define ASSABET_IRQ_GPIO_CF_CD&t;&t;IRQ_GPIO22
-DECL|macro|ASSABET_IRQ_GPIO_UCB1300_IRQ
-mdefine_line|#define ASSABET_IRQ_GPIO_UCB1300_IRQ&t;IRQ_GPIO23
 DECL|macro|ASSABET_IRQ_GPIO_CF_BVD2
 mdefine_line|#define ASSABET_IRQ_GPIO_CF_BVD2&t;IRQ_GPIO24
 DECL|macro|ASSABET_IRQ_GPIO_CF_BVD1
 mdefine_line|#define ASSABET_IRQ_GPIO_CF_BVD1&t;IRQ_GPIO25
-DECL|macro|ASSABET_IRQ_GPIO_NEP_IRQ
-mdefine_line|#define ASSABET_IRQ_GPIO_NEP_IRQ&t;IRQ_GPIO25
 multiline_comment|/*&n; * Neponset definitions: &n; */
-DECL|macro|SA1111_BASE
-mdefine_line|#define SA1111_BASE             (0x40000000)
-DECL|macro|NEPONSET_ETHERNET_IRQ
-mdefine_line|#define NEPONSET_ETHERNET_IRQ&t;MISC_IRQ0
-DECL|macro|NEPONSET_USAR_IRQ
-mdefine_line|#define NEPONSET_USAR_IRQ&t;MISC_IRQ1
 DECL|macro|NEPONSET_CPLD_BASE
 mdefine_line|#define NEPONSET_CPLD_BASE      (0x10000000)
 DECL|macro|Nep_p2v

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -78,12 +79,12 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
-id|SKCR
+id|SBI_SKCR
 op_assign
 id|JORSKCR_RCLK
 suffix:semicolon
 multiline_comment|/* turn on the RCLOCK */
-id|SMCR
+id|SBI_SMCR
 op_assign
 l_int|0x35
 suffix:semicolon
@@ -113,11 +114,7 @@ multiline_comment|/* initialize extra IRQs */
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_GPIO
-c_func
-(paren
-l_int|1
-)paren
+id|GPIO_GPIO1
 comma
 id|GPIO_RISING_EDGE
 )paren
@@ -125,30 +122,11 @@ suffix:semicolon
 id|sa1111_init_irq
 c_func
 (paren
-id|SA1100_GPIO_TO_IRQ
-c_func
-(paren
-l_int|1
+id|IRQ_GPIO1
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* chained on GPIO 1 */
-id|sa1100_register_uart
-c_func
-(paren
-l_int|0
-comma
-l_int|3
-)paren
-suffix:semicolon
-id|sa1100_register_uart
-c_func
-(paren
-l_int|1
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -218,25 +196,6 @@ id|__initdata
 op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
 (brace
 l_int|0xf0000000
 comma
@@ -316,6 +275,22 @@ id|iotable_init
 c_func
 (paren
 id|jornada720_io_desc
+)paren
+suffix:semicolon
+id|sa1100_register_uart
+c_func
+(paren
+l_int|0
+comma
+l_int|3
+)paren
+suffix:semicolon
+id|sa1100_register_uart
+c_func
+(paren
+l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

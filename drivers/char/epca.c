@@ -4419,7 +4419,7 @@ suffix:semicolon
 )brace
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -9108,7 +9108,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;overrun! DigiBoard device minor = %d&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device

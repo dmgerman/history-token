@@ -9325,7 +9325,7 @@ id|speed
 r_int
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -9517,7 +9517,7 @@ id|cdi
 r_int
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -10986,7 +10986,7 @@ l_int|0
 suffix:semicolon
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -22943,7 +22943,7 @@ op_logical_neg
 (paren
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -22963,7 +22963,7 @@ c_cond
 (paren
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -22982,7 +22982,7 @@ c_cond
 (paren
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -23005,7 +23005,7 @@ c_cond
 (paren
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -23597,7 +23597,7 @@ id|ms_infp-&gt;addr.lba
 op_assign
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -23611,7 +23611,7 @@ c_cond
 (paren
 id|D_S
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -23666,7 +23666,7 @@ id|DBG_IO2
 comma
 l_string|&quot;ioctl(%d, 0x%08lX, 0x%08lX)&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -23679,7 +23679,7 @@ id|arg
 suffix:semicolon
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -25724,7 +25724,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|kdev_none
+c_func
 (paren
 id|cdi-&gt;dev
 )paren
@@ -25756,7 +25757,7 @@ suffix:semicolon
 )brace
 id|read_ahead
 (braket
-id|MAJOR
+id|major
 c_func
 (paren
 id|cdi-&gt;dev
@@ -25826,7 +25827,7 @@ id|DBG_IO2
 comma
 l_string|&quot;ioctl(%d, 0x%08lX, 0x%08p)&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -25839,7 +25840,7 @@ id|arg
 suffix:semicolon
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -28179,7 +28180,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -28214,7 +28214,7 @@ suffix:semicolon
 )brace
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -28391,7 +28391,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -28602,7 +28601,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -28662,7 +28660,6 @@ multiline_comment|/* wait a bit, try again */
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -31140,7 +31137,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -31346,7 +31343,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -34018,6 +34015,14 @@ id|full_dev
 r_int
 id|i
 suffix:semicolon
+id|i
+op_assign
+id|minor
+c_func
+(paren
+id|full_dev
+)paren
+suffix:semicolon
 id|msg
 c_func
 (paren
@@ -34025,19 +34030,7 @@ id|DBG_CHK
 comma
 l_string|&quot;media_check (%d) called&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|full_dev
-)paren
-)paren
-suffix:semicolon
 id|i
-op_assign
-id|MINOR
-c_func
-(paren
-id|full_dev
 )paren
 suffix:semicolon
 r_if

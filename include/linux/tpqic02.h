@@ -663,12 +663,12 @@ DECL|macro|TPQDBG
 mdefine_line|#define TPQDBG(f)&t;((QIC02_TAPE_DEBUG) &amp; (TPQD_##f))
 multiline_comment|/* Minor device codes for tapes:&n; * |7|6|5|4|3|2|1|0|&n; *  | &bslash; | / &bslash; | / |_____ 1=rewind on close, 0=no rewind on close&n; *  |  &bslash;|/    |_________ Density: 000=none, 001=QIC-11, 010=24, 011=120,&n; *  |   |                100=QIC-150, 101..111 reserved.&n; *  |   |_______________ Reserved for unit numbers.&n; *  |___________________ Reserved for diagnostics during debugging.&n; */
 DECL|macro|TP_REWCLOSE
-mdefine_line|#define&t;TP_REWCLOSE(d)&t;((MINOR(d)&amp;0x01) == 1)&t;   &t;&t;/* rewind bit */
+mdefine_line|#define&t;TP_REWCLOSE(d)&t;((minor(d)&amp;0x01) == 1)&t;   &t;&t;/* rewind bit */
 multiline_comment|/* rewind is only done if data has been transferred */
 DECL|macro|TP_DENS
-mdefine_line|#define&t;TP_DENS(dev)&t;((MINOR(dev) &gt;&gt; 1) &amp; 0x07) &t;      /* tape density */
+mdefine_line|#define&t;TP_DENS(dev)&t;((minor(dev) &gt;&gt; 1) &amp; 0x07) &t;      /* tape density */
 DECL|macro|TP_UNIT
-mdefine_line|#define TP_UNIT(dev)&t;((MINOR(dev) &gt;&gt; 4) &amp; 0x07)&t;       /* unit number */
+mdefine_line|#define TP_UNIT(dev)&t;((minor(dev) &gt;&gt; 4) &amp; 0x07)&t;       /* unit number */
 multiline_comment|/* print excessive diagnostics */
 DECL|macro|TP_DIAGS
 mdefine_line|#define TP_DIAGS(dev)&t;(QIC02_TAPE_DEBUG &amp; TPQD_DIAGS)
