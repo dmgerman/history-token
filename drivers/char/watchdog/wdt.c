@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 2.1.x&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Release 0.09.&n; *&n; *&t;Fixes&n; *&t;&t;Dave Gregorich&t;:&t;Modularisation and minor bugs&n; *&t;&t;Alan Cox&t;:&t;Added the watchdog ioctl() stuff&n; *&t;&t;Alan Cox&t;:&t;Fixed the reboot problem (as noted by&n; *&t;&t;&t;&t;&t;Matt Crocker).&n; *&t;&t;Alan Cox&t;:&t;Added wdt= boot option&n; *&t;&t;Alan Cox&t;:&t;Cleaned up copy/user stuff&n; *&t;&t;Tim Hockin&t;:&t;Added insmod parameters, comment cleanup&n; *&t;&t;&t;&t;&t;Parameterized timeout&n; *&t;&t;Tigran Aivazian&t;:&t;Restructured wdt_init() to handle failures&n; *&t;&t;Matt Domsch&t;:&t;added nowayout and timeout module options&n; */
+multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 2.1.x&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Release 0.09.&n; *&n; *&t;Fixes&n; *&t;&t;Dave Gregorich&t;:&t;Modularisation and minor bugs&n; *&t;&t;Alan Cox&t;:&t;Added the watchdog ioctl() stuff&n; *&t;&t;Alan Cox&t;:&t;Fixed the reboot problem (as noted by&n; *&t;&t;&t;&t;&t;Matt Crocker).&n; *&t;&t;Alan Cox&t;:&t;Added wdt= boot option&n; *&t;&t;Alan Cox&t;:&t;Cleaned up copy/user stuff&n; *&t;&t;Tim Hockin&t;:&t;Added insmod parameters, comment cleanup&n; *&t;&t;&t;&t;&t;Parameterized timeout&n; *&t;&t;Tigran Aivazian&t;:&t;Restructured wdt_init() to handle failures&n; *&t;&t;Joel Becker&t;:&t;Added WDIOC_GET/SETTIMEOUT&n; *&t;&t;Matt Domsch&t;:&t;Added nowayout module option&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -39,39 +39,15 @@ id|irq
 op_assign
 l_int|11
 suffix:semicolon
+multiline_comment|/* Default margin */
 DECL|macro|WD_TIMO
 mdefine_line|#define WD_TIMO (100*60)&t;&t;/* 1 minute */
-DECL|variable|timeout_val
+DECL|variable|wd_margin
 r_static
 r_int
-id|timeout_val
+id|wd_margin
 op_assign
 id|WD_TIMO
-suffix:semicolon
-multiline_comment|/* value passed to card */
-DECL|variable|timeout
-r_static
-r_int
-id|timeout
-op_assign
-l_int|60
-suffix:semicolon
-multiline_comment|/* in seconds */
-id|MODULE_PARM
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;Watchdog timeout in seconds (default=60)&quot;
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -106,23 +82,6 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-r_static
-r_void
-id|__init
-DECL|function|wdt_validate_timeout
-id|wdt_validate_timeout
-c_func
-(paren
-r_void
-)paren
-(brace
-id|timeout_val
-op_assign
-id|timeout
-op_star
-l_int|100
-suffix:semicolon
-)brace
 macro_line|#ifndef MODULE
 multiline_comment|/**&n; *&t;wdt_setup:&n; *&t;@str: command line string&n; *&n; *&t;Setup options. The board isn&squot;t really probe-able so we have to&n; *&t;get the user to tell us the configuration. Sane people build it &n; *&t;modular but the others come here.&n; */
 DECL|function|wdt_setup
@@ -654,7 +613,7 @@ c_func
 (paren
 l_int|1
 comma
-id|timeout_val
+id|wd_margin
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout */
@@ -922,6 +881,9 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|new_margin
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -1049,6 +1011,78 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+multiline_comment|/* Arbitrary, can&squot;t find the card&squot;s limits */
+r_if
+c_cond
+(paren
+(paren
+id|new_margin
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|new_margin
+OG
+l_int|60
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|wd_margin
+op_assign
+id|new_margin
+op_star
+l_int|100
+suffix:semicolon
+id|wdt_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|wd_margin
+op_div
+l_int|100
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; *&t;wdt_open:&n; *&t;@inode: inode of device&n; *&t;@file: file handle to device&n; *&n; *&t;One of our two misc devices has been opened. The watchdog device is&n; *&t;single open and on opening we load the counters. Counter zero is a &n; *&t;100Hz cascade, into counter 1 which downcounts to reboot. When the&n; *&t;counter triggers counter 2 downcounts the length of the reset pulse&n; *&t;which set set to be as long as possible. &n; */
@@ -1100,16 +1134,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
+id|wdt_is_open
+op_assign
+l_int|1
+suffix:semicolon
 id|inb_p
 c_func
 (paren
@@ -1155,10 +1184,10 @@ c_func
 (paren
 l_int|1
 comma
-id|timeout_val
+id|wd_margin
 )paren
 suffix:semicolon
-multiline_comment|/* Timeout */
+multiline_comment|/* Timeout 120 seconds */
 id|wdt_ctr_load
 c_func
 (paren
@@ -1479,11 +1508,6 @@ r_void
 (brace
 r_int
 id|ret
-suffix:semicolon
-id|wdt_validate_timeout
-c_func
-(paren
-)paren
 suffix:semicolon
 id|ret
 op_assign
