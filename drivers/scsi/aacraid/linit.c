@@ -22,6 +22,7 @@ macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &quot;aacraid.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -489,40 +490,6 @@ multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
 (brace
 l_int|0x9005
 comma
-l_int|0x0250
-comma
-l_int|0x1014
-comma
-l_int|0x0279
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|21
-)brace
-comma
-multiline_comment|/* (Marco)*/
-(brace
-l_int|0x9005
-comma
-l_int|0x0250
-comma
-l_int|0x1014
-comma
-l_int|0x028c
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|22
-)brace
-comma
-multiline_comment|/* (Sebring)*/
-(brace
-l_int|0x9005
-comma
 l_int|0x0285
 comma
 l_int|0x1028
@@ -533,7 +500,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|23
+l_int|21
 )brace
 comma
 multiline_comment|/* Perc 320/DC*/
@@ -550,7 +517,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|24
+l_int|22
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -567,7 +534,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|25
+l_int|23
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -584,7 +551,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|26
+l_int|24
 )brace
 comma
 multiline_comment|/* Dell PERC2 &quot;Quad Channel&quot; */
@@ -601,10 +568,112 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|27
+l_int|25
 )brace
 comma
 multiline_comment|/* HP NetRAID-4M */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1028
+comma
+l_int|0x0291
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|26
+)brace
+comma
+multiline_comment|/* CERC SATA RAID 2 PCI SATA 6ch (DellCorsair) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0292
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|27
+)brace
+comma
+multiline_comment|/* AAR-2810SA PCI SATA 8ch (Corsair-8) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0293
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|28
+)brace
+comma
+multiline_comment|/* AAR-21610SA PCI SATA 16ch (Corsair-16) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0294
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|29
+)brace
+comma
+multiline_comment|/* ESD SO-DIMM PCI-X SATA ZCR (Prowler) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x0E11
+comma
+l_int|0x0295
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* SATA 6Ch (Bearcat) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x028c
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|31
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
 (brace
 l_int|0
 comma
@@ -937,32 +1006,6 @@ multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
 (brace
 id|aac_rx_init
 comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;Adaptec         &quot;
-comma
-l_int|2
-)brace
-comma
-multiline_comment|/* (Marco)*/
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;Adaptec         &quot;
-comma
-l_int|2
-)brace
-comma
-multiline_comment|/* (Sebring)*/
-(brace
-id|aac_rx_init
-comma
 l_string|&quot;percraid&quot;
 comma
 l_string|&quot;DELL    &quot;
@@ -1027,7 +1070,86 @@ l_string|&quot;NetRAID         &quot;
 comma
 l_int|4
 )brace
+comma
 multiline_comment|/* HP NetRAID-4M */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;CERC SR2        &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* CERC SATA RAID 2 PCI SATA 6ch (DellCorsair) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-2810SA SATA &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-2810SA PCI SATA 8ch (Corsair-8) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-21610SA SATA&quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-21610SA PCI SATA 16ch (Corsair-16) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;SO-DIMM SATA ZCR&quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ESD SO-DIMM PCI-X SATA ZCR (Prowler) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;SATA 6Channel   &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* SATA 6Ch (Bearcat) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2230S PCI-X &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;aac_queuecommand&t;-&t;queue a SCSI command&n; *&t;@cmd:&t;&t;SCSI command to queue&n; *&t;@done:&t;&t;Function to call on command completion&n; *&n; *&t;Queues a command for execution by the associated Host Adapter.&n; *&n; *&t;TODO: unify with aac_scsi_cmd().&n; */
@@ -1626,6 +1748,188 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;aac_eh_reset&t;- Reset command handling&n; *&t;@scsi_cmd:&t;SCSI command block causing the reset&n; *&n; */
+DECL|function|aac_eh_reset
+r_static
+r_int
+id|aac_eh_reset
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_struct
+id|scsi_device
+op_star
+id|dev
+op_assign
+id|cmd-&gt;device
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|dev-&gt;host
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+op_star
+id|command
+suffix:semicolon
+r_int
+id|count
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Host adapter reset request. SCSI hang ?&bslash;n&quot;
+comma
+id|AAC_DRIVERNAME
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|aac_adapter_check_health
+c_func
+(paren
+(paren
+r_struct
+id|aac_dev
+op_star
+)paren
+id|host-&gt;hostdata
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Host adapter appears dead&bslash;n&quot;
+comma
+id|AAC_DRIVERNAME
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Wait for all commands to complete to this specific&n;&t; * target (block maximum 60 seconds).&n;&t; */
+r_for
+c_loop
+(paren
+id|count
+op_assign
+l_int|60
+suffix:semicolon
+id|count
+suffix:semicolon
+op_decrement
+id|count
+)paren
+(brace
+id|__shost_for_each_device
+c_func
+(paren
+id|dev
+comma
+id|host
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dev-&gt;list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|command
+comma
+op_amp
+id|dev-&gt;cmd_list
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|command-&gt;serial_number
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev-&gt;list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev-&gt;list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+id|host-&gt;host_lock
+)paren
+suffix:semicolon
+id|scsi_sleep
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host-&gt;host_lock
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: SCSI bus appears hung&bslash;n&quot;
+comma
+id|AAC_DRIVERNAME
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ETIMEDOUT
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;aac_cfg_open&t;&t;-&t;open a configuration file&n; *&t;@inode: inode being opened&n; *&t;@file: file handle attached&n; *&n; *&t;Called when the configuration device is opened. Does the needed&n; *&t;set up on the handle and then returns&n; *&n; *&t;Bugs: This needs extending to check a given adapter is present&n; *&t;so we can support hot plugging, and to ref count adapters.&n; */
 DECL|function|aac_cfg_open
 r_static
@@ -1792,6 +2096,11 @@ dot
 id|eh_abort_handler
 op_assign
 id|aac_eh_abort
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|aac_eh_reset
 comma
 dot
 id|can_queue
