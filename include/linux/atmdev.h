@@ -515,16 +515,6 @@ op_star
 id|sk
 suffix:semicolon
 multiline_comment|/* socket backpointer */
-DECL|member|prev
-DECL|member|next
-r_struct
-id|atm_vcc
-op_star
-id|prev
-comma
-op_star
-id|next
-suffix:semicolon
 multiline_comment|/* SVC part --- may move later ------------------------------------- */
 DECL|member|itf
 r_int
@@ -630,20 +620,6 @@ r_int
 id|number
 suffix:semicolon
 multiline_comment|/* device index */
-DECL|member|vccs
-r_struct
-id|atm_vcc
-op_star
-id|vccs
-suffix:semicolon
-multiline_comment|/* VCC table (or NULL) */
-DECL|member|last
-r_struct
-id|atm_vcc
-op_star
-id|last
-suffix:semicolon
-multiline_comment|/* last VCC (or undefined) */
 DECL|member|dev_data
 r_void
 op_star
@@ -1166,6 +1142,16 @@ suffix:semicolon
 multiline_comment|/* ATM layer options */
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|sock
+op_star
+id|vcc_sklist
+suffix:semicolon
+r_extern
+id|rwlock_t
+id|vcc_sklist_lock
+suffix:semicolon
 DECL|macro|ATM_SKB
 mdefine_line|#define ATM_SKB(skb) (((struct atm_skb_data *) (skb)-&gt;cb))
 r_struct
@@ -1226,18 +1212,23 @@ id|dev
 )paren
 suffix:semicolon
 r_void
-id|bind_vcc
+id|vcc_insert_socket
 c_func
 (paren
 r_struct
-id|atm_vcc
+id|sock
 op_star
-id|vcc
-comma
+id|sk
+)paren
+suffix:semicolon
+r_void
+id|vcc_remove_socket
+c_func
+(paren
 r_struct
-id|atm_dev
+id|sock
 op_star
-id|dev
+id|sk
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is approximately the algorithm used by alloc_skb.&n; *&n; */
@@ -1376,11 +1367,11 @@ id|dev-&gt;refcnt
 )paren
 suffix:semicolon
 )brace
-DECL|function|atm_dev_release
+DECL|function|atm_dev_put
 r_static
 r_inline
 r_void
-id|atm_dev_release
+id|atm_dev_put
 c_func
 (paren
 r_struct
