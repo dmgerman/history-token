@@ -234,22 +234,26 @@ id|usb_driver
 id|pwc_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Philips webcam&quot;
 comma
 multiline_comment|/* name */
+dot
 id|id_table
-suffix:colon
+op_assign
 id|pwc_device_table
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|usb_pwc_probe
 comma
 multiline_comment|/* probe() */
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|usb_pwc_disconnect
 comma
 multiline_comment|/* disconnect() */
@@ -496,36 +500,44 @@ id|file_operations
 id|pwc_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|pwc_video_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|pwc_video_close
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|pwc_video_read
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|pwc_video_poll
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|pwc_video_mmap
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|pwc_video_ioctl
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
 )brace
@@ -537,25 +549,30 @@ id|video_device
 id|pwc_template
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Philips Webcam&quot;
 comma
 multiline_comment|/* Filled in later */
+dot
 id|type
-suffix:colon
+op_assign
 id|VID_TYPE_CAPTURE
 comma
+dot
 id|hardware
-suffix:colon
+op_assign
 id|VID_HARDWARE_PWC
 comma
+dot
 id|fops
-suffix:colon
+op_assign
 op_amp
 id|pwc_fops
 comma
@@ -7108,7 +7125,8 @@ c_func
 l_string|&quot;pwc_disconnect() Called without private pointer.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -7127,7 +7145,8 @@ comma
 id|pdev
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -7144,7 +7163,8 @@ c_func
 l_string|&quot;pwc_disconnect() Woops: pointer mismatch udev/pdev.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 macro_line|#ifdef PWC_MAGIC&t;
@@ -7162,10 +7182,11 @@ c_func
 l_string|&quot;pwc_disconnect() Magic number failed. Consult your scrolls and try again.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 id|pdev-&gt;unplugged
 op_assign
 l_int|1
@@ -7204,7 +7225,7 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. &n;&t;&t;&t; */
+multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close()&n;&t;&t;&t;   is finished.&n;&t;&t;&t; */
 id|Trace
 c_func
 (paren
@@ -7333,6 +7354,8 @@ id|pdev-&gt;udev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|out_err
+suffix:colon
 id|unlock_kernel
 c_func
 (paren
