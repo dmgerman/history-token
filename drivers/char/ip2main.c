@@ -3448,8 +3448,6 @@ id|boardnum
 (brace
 r_int
 id|i
-comma
-id|rc
 suffix:semicolon
 r_int
 id|nports
