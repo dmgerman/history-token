@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_CPUMASK_H
 DECL|macro|__LINUX_CPUMASK_H
 mdefine_line|#define __LINUX_CPUMASK_H
 multiline_comment|/*&n; * Cpumasks provide a bitmap suitable for representing the&n; * set of CPU&squot;s in a system, one bit position per CPU number.&n; *&n; * See detailed comments in the file linux/bitmap.h describing the&n; * data type on which these cpumasks are based.&n; *&n; * For details of cpumask_scnprintf() and cpumask_parse(),&n; * see bitmap_scnprintf() and bitmap_parse() in lib/bitmap.c.&n; *&n; * The available cpumask operations are:&n; *&n; * void cpu_set(cpu, mask)&t;&t;turn on bit &squot;cpu&squot; in mask&n; * void cpu_clear(cpu, mask)&t;&t;turn off bit &squot;cpu&squot; in mask&n; * void cpus_setall(mask)&t;&t;set all bits&n; * void cpus_clear(mask)&t;&t;clear all bits&n; * int cpu_isset(cpu, mask)&t;&t;true iff bit &squot;cpu&squot; set in mask&n; * int cpu_test_and_set(cpu, mask)&t;test and set bit &squot;cpu&squot; in mask&n; *&n; * void cpus_and(dst, src1, src2)&t;dst = src1 &amp; src2  [intersection]&n; * void cpus_or(dst, src1, src2)&t;dst = src1 | src2  [union]&n; * void cpus_xor(dst, src1, src2)&t;dst = src1 ^ src2&n; * void cpus_andnot(dst, src1, src2)&t;dst = src1 &amp; ~src2&n; * void cpus_complement(dst, src)&t;dst = ~src&n; *&n; * int cpus_equal(mask1, mask2)&t;&t;Does mask1 == mask2?&n; * int cpus_intersects(mask1, mask2)&t;Do mask1 and mask2 intersect?&n; * int cpus_subset(mask1, mask2)&t;Is mask1 a subset of mask2?&n; * int cpus_empty(mask)&t;&t;&t;Is mask empty (no bits sets)?&n; * int cpus_full(mask)&t;&t;&t;Is mask full (all bits sets)?&n; * int cpus_weight(mask)&t;&t;Hamming weigh - number of set bits&n; *&n; * void cpus_shift_right(dst, src, n)&t;Shift right&n; * void cpus_shift_left(dst, src, n)&t;Shift left&n; *&n; * int first_cpu(mask)&t;&t;&t;Number lowest set bit, or NR_CPUS&n; * int next_cpu(cpu, mask)&t;&t;Next cpu past &squot;cpu&squot;, or NR_CPUS&n; *&n; * cpumask_t cpumask_of_cpu(cpu)&t;Return cpumask with bit &squot;cpu&squot; set&n; * CPU_MASK_ALL&t;&t;&t;&t;Initializer - all bits set&n; * CPU_MASK_NONE&t;&t;&t;Initializer - no bits set&n; * unsigned long *cpus_addr(mask)&t;Array of unsigned long&squot;s in mask&n; *&n; * int cpumask_scnprintf(buf, len, mask) Format cpumask for printing&n; * int cpumask_parse(ubuf, ulen, mask)&t;Parse ascii string as cpumask&n; *&n; * for_each_cpu_mask(cpu, mask)&t;&t;for-loop cpu over mask&n; *&n; * int num_online_cpus()&t;&t;Number of online CPUs&n; * int num_possible_cpus()&t;&t;Number of all possible CPUs&n; * int num_present_cpus()&t;&t;Number of present CPUs&n; *&n; * int cpu_online(cpu)&t;&t;&t;Is some cpu online?&n; * int cpu_possible(cpu)&t;&t;Is some cpu possible?&n; * int cpu_present(cpu)&t;&t;&t;Is some cpu present (can schedule)?&n; *&n; * int any_online_cpu(mask)&t;&t;First online cpu in mask&n; *&n; * for_each_cpu(cpu)&t;&t;&t;for-loop cpu over cpu_possible_map&n; * for_each_online_cpu(cpu)&t;&t;for-loop cpu over cpu_online_map&n; * for_each_present_cpu(cpu)&t;&t;for-loop cpu over cpu_present_map&n; *&n; * Subtlety:&n; * 1) The &squot;type-checked&squot; form of cpu_isset() causes gcc (3.3.2, anyway)&n; *    to generate slightly worse code.  Note for example the additional&n; *    40 lines of assembly code compiling the &quot;for each possible cpu&quot;&n; *    loops buried in the disk_stat_read() macros calls when compiling&n; *    drivers/block/genhd.c (arch i386, CONFIG_SMP=y).  So use a simple&n; *    one-line #define for cpu_isset(), instead of wrapping an inline&n; *    inside a macro, the way we do the other calls.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/bitmap.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
@@ -637,12 +638,20 @@ id|nbits
 )paren
 (brace
 r_return
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|nbits
+comma
 id|find_first_bit
 c_func
 (paren
 id|srcp-&gt;bits
 comma
 id|nbits
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -668,6 +677,13 @@ id|nbits
 )paren
 (brace
 r_return
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|nbits
+comma
 id|find_next_bit
 c_func
 (paren
@@ -678,6 +694,7 @@ comma
 id|n
 op_plus
 l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
