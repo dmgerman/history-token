@@ -4241,6 +4241,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;devfs_generate_path - Generate a pathname for an entry, relative to the devfs root.&n; *&t;@de: The devfs entry.&n; *&t;@path: The buffer to write the pathname to. The pathname and &squot;&bslash;0&squot;&n; *&t;&t;terminator will be written at the end of the buffer.&n; *&t;@buflen: The length of the buffer.&n; *&n; *&t;Returns the offset in the buffer where the pathname starts on success,&n; *&t;else a negative error code.&n; */
 DECL|function|devfs_generate_path
+r_static
 r_int
 id|devfs_generate_path
 (paren
@@ -4875,13 +4876,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_remove
-)paren
-suffix:semicolon
-DECL|variable|devfs_generate_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_generate_path
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;try_modload - Notify devfsd of an inode lookup by a non-devfsd process.&n; *&t;@parent: The parent devfs entry.&n; *&t;@fs_info: The filesystem info.&n; *&t;@name: The device name.&n; *&t;@namelen: The number of characters in @name.&n; *&t;@buf: A working area that will be used. This must not go out of scope&n; *            until devfsd is idle again.&n; *&n; *&t;Returns 0 on success (event was queued), else a negative error code.&n; */
