@@ -7361,18 +7361,18 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * kmalloc_percpu - allocate one copy of the object for every present&n; * cpu in the system.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; * The @flags argument may be one of:&n; *&n; * %GFP_USER - Allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_ATOMIC - Allocation will not sleep.  Use inside interrupt handlers.&n; */
+multiline_comment|/**&n; * __alloc_percpu - allocate one copy of the object for every present&n; * cpu in the system, zeroing them.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @align: the alignment, which can&squot;t be greater than SMP_CACHE_BYTES.&n; */
+DECL|function|__alloc_percpu
 r_void
 op_star
-DECL|function|kmalloc_percpu
-id|kmalloc_percpu
+id|__alloc_percpu
 c_func
 (paren
 r_int
 id|size
 comma
 r_int
-id|flags
+id|align
 )paren
 (brace
 r_int
@@ -7392,7 +7392,7 @@ op_star
 id|pdata
 )paren
 comma
-id|flags
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7441,7 +7441,7 @@ c_func
 (paren
 id|size
 comma
-id|flags
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7455,6 +7455,19 @@ id|i
 )paren
 r_goto
 id|unwind_oom
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|pdata-&gt;ptrs
+(braket
+id|i
+)braket
+comma
+l_int|0
+comma
+id|size
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Catch derefs w/o wrappers */
@@ -7626,10 +7639,10 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * kfree_percpu - free previously allocated percpu memory&n; * @objp: pointer returned by kmalloc_percpu.&n; *&n; * Don&squot;t free memory not originally allocated by kmalloc_percpu()&n; * The complemented objp is to check for that.&n; */
+multiline_comment|/**&n; * free_percpu - free previously allocated percpu memory&n; * @objp: pointer returned by alloc_percpu.&n; *&n; * Don&squot;t free memory not originally allocated by alloc_percpu()&n; * The complemented objp is to check for that.&n; */
 r_void
-DECL|function|kfree_percpu
-id|kfree_percpu
+DECL|function|free_percpu
+id|free_percpu
 c_func
 (paren
 r_const

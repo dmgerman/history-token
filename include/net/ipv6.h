@@ -196,6 +196,9 @@ l_int|2
 comma
 r_int
 id|mibsize
+comma
+r_int
+id|mibalign
 )paren
 suffix:semicolon
 r_void
