@@ -136,27 +136,24 @@ l_int|5
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x7B-0x7F */
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_2 0x0080 - 0x00FF&n; *=====================================================================================&n; */
-DECL|member|pgd_cache
+DECL|member|spare1
 id|u64
-op_star
-id|pgd_cache
+id|spare1
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x00 */
-DECL|member|pmd_cache
+DECL|member|spare2
 id|u64
-op_star
-id|pmd_cache
+id|spare2
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x08 */
-DECL|member|pte_cache
+DECL|member|spare3
 id|u64
-op_star
-id|pte_cache
+id|spare3
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x10 */
-DECL|member|pgtable_cache_sz
+DECL|member|spare4
 id|u64
-id|pgtable_cache_sz
+id|spare4
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;&t;0x18 */
 DECL|member|next_jiffy_update_tb

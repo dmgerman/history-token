@@ -2583,7 +2583,7 @@ id|pm
 (brace
 id|pt
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pm

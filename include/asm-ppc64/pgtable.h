@@ -216,6 +216,8 @@ DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;(pmd_val(*(pmdp)) = 0)
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;(__bpn_to_ba(pmd_val(pmd)))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;pmd_page(pmd)
 DECL|macro|pgd_set
 mdefine_line|#define pgd_set(pgdp, pmdp)&t;(pgd_val(*(pgdp)) = (__ba_to_bpn(pmdp)))
 DECL|macro|pgd_none
@@ -237,8 +239,16 @@ multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;  ((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir,addr) &bslash;&n;  ((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir,addr) &bslash;&n;  ((pte_t *) pmd_page(*(dir)) + (((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel((dir), (addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,addr)&t;pte_offset_kernel((dir), (addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while(0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while(0)
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 multiline_comment|/* This now only contains the vmalloc pages */
 DECL|macro|pgd_offset_k
@@ -246,9 +256,6 @@ mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* to find an entry in the ioremap page-table-directory */
 DECL|macro|pgd_offset_i
 mdefine_line|#define pgd_offset_i(address) (ioremap_pgd + pgd_index(address))
-multiline_comment|/*&n; * Given a pointer to an mem_map[] entry, return the kernel virtual&n; * address corresponding to that page.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page) ((page)-&gt;virtual)
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
