@@ -1462,7 +1462,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|xfs_setsize_buftarg
 c_func
 (paren
