@@ -414,20 +414,10 @@ mdefine_line|#define check_arg_vec(vec) &bslash;&n;    if (vec &lt; 0 || vec &gt
 DECL|macro|check_arg_pri
 mdefine_line|#define check_arg_pri(pri) &bslash;&n;    if (pri &lt; 0 || pri &gt;= OPENPIC_NUM_PRI) &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal priority %d&bslash;n&quot;, __LINE__, pri);
 multiline_comment|/*&n; * Print out a backtrace if it&squot;s out of range, since if it&squot;s larger than NR_IRQ&squot;s&n; * data has probably been corrupted and we&squot;re going to panic or deadlock later&n; * anyway --Troy&n; */
-r_extern
-r_int
-r_int
-op_star
-id|_get_SP
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|check_arg_irq
-mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= NumSources+open_pic_irq_offset &bslash;&n;&t;|| ISR[irq - open_pic_irq_offset] == 0) { &bslash;&n;      printk(&quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      print_backtrace(_get_SP()); }
+mdefine_line|#define check_arg_irq(irq) &bslash;&n;    if (irq &lt; open_pic_irq_offset || irq &gt;= NumSources+open_pic_irq_offset &bslash;&n;&t;|| ISR[irq - open_pic_irq_offset] == 0) { &bslash;&n;      printk(&quot;open_pic.c:%d: illegal irq %d&bslash;n&quot;, __LINE__, irq); &bslash;&n;      show_stack(NULL); }
 DECL|macro|check_arg_cpu
-mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= NumProcessors){ &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;print_backtrace(_get_SP()); }
+mdefine_line|#define check_arg_cpu(cpu) &bslash;&n;    if (cpu &lt; 0 || cpu &gt;= NumProcessors){ &bslash;&n;&t;printk(&quot;open_pic.c:%d: illegal cpu %d&bslash;n&quot;, __LINE__, cpu); &bslash;&n;&t;show_stack(NULL); }
 macro_line|#else
 DECL|macro|check_arg_ipi
 mdefine_line|#define check_arg_ipi(ipi)&t;do {} while (0)
