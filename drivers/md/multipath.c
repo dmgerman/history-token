@@ -18,20 +18,6 @@ DECL|macro|MAX_WORK_PER_DISK
 mdefine_line|#define MAX_WORK_PER_DISK 128
 DECL|macro|NR_RESERVED_BUFS
 mdefine_line|#define&t;NR_RESERVED_BUFS&t;32
-multiline_comment|/*&n; * The following can be used to debug the driver&n; */
-DECL|macro|MULTIPATH_DEBUG
-mdefine_line|#define MULTIPATH_DEBUG&t;0
-macro_line|#if MULTIPATH_DEBUG
-DECL|macro|PRINTK
-mdefine_line|#define PRINTK(x...)   printk(x)
-DECL|macro|inline
-mdefine_line|#define inline
-DECL|macro|__inline__
-mdefine_line|#define __inline__
-macro_line|#else
-DECL|macro|PRINTK
-mdefine_line|#define PRINTK(x...)  do { } while (0)
-macro_line|#endif
 DECL|variable|multipath_personality
 r_static
 id|mdk_personality_t

@@ -37,16 +37,13 @@ macro_line|#else
 DECL|macro|CHECK_DEVLOCK
 macro_line|# define CHECK_DEVLOCK()
 macro_line|#endif
-macro_line|#if RAID5_DEBUG
 DECL|macro|PRINTK
-mdefine_line|#define PRINTK(x...) printk(x)
+mdefine_line|#define PRINTK(x...) ((void)(RAID5_DEBUG &amp;&amp; printk(x)))
+macro_line|#if RAID5_DEBUG
 DECL|macro|inline
 mdefine_line|#define inline
 DECL|macro|__inline__
 mdefine_line|#define __inline__
-macro_line|#else
-DECL|macro|PRINTK
-mdefine_line|#define PRINTK(x...) do { } while (0)
 macro_line|#endif
 r_static
 r_void
@@ -6327,7 +6324,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;for %ld schedule op %d on disc %d&bslash;n&quot;
+l_string|&quot;for %ld schedule op %ld on disc %d&bslash;n&quot;
 comma
 id|sh-&gt;sector
 comma
@@ -6389,7 +6386,7 @@ r_else
 id|PRINTK
 c_func
 (paren
-l_string|&quot;skip op %d on disc %d for sector %ld&bslash;n&quot;
+l_string|&quot;skip op %ld on disc %d for sector %ld&bslash;n&quot;
 comma
 id|bi-&gt;bi_rw
 comma
@@ -6782,10 +6779,20 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid5: make_request, sector %ul logical %ul&bslash;n&quot;
+l_string|&quot;raid5: make_request, sector %Lu logical %Lu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|new_sector
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|logical_sector
 )paren
 suffix:semicolon

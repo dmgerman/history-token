@@ -25,13 +25,8 @@ mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
-macro_line|#if DEBUG
 DECL|macro|dprintk
-macro_line|# define dprintk(x...) printk(x)
-macro_line|#else
-DECL|macro|dprintk
-macro_line|# define dprintk(x...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(x...) ((void)(DEBUG &amp;&amp; printk(x)))
 macro_line|#ifndef MODULE
 r_static
 r_void
@@ -10250,13 +10245,13 @@ comma
 id|MAJOR
 c_func
 (paren
-id|bdev-&gt;bd_dev
+id|rdev-&gt;bdev-&gt;bd_dev
 )paren
 comma
 id|MINOR
 c_func
 (paren
-id|bdev-&gt;bd_dev
+id|rdev-&gt;bdev-&gt;bd_dev
 )paren
 comma
 id|__builtin_return_address
