@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Real VM (paging to/from disk) started 18.12.91. Much m
 multiline_comment|/*&n; * 05.04.94  -  Multi-page memory management added for v1.1.&n; * &t;&t;Idea by Alex Bligh (alex@cconcepts.co.uk)&n; *&n; * 16.07.99  -  Support of BIGMEM added by Gerhard Wichert, Siemens AG&n; *&t;&t;(Gerhard.Wichert@pdb.siemens.de)&n; */
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;

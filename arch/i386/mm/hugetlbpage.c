@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1759,11 +1760,6 @@ r_struct
 id|address_space
 op_star
 id|mapping
-suffix:semicolon
-r_struct
-id|page
-op_star
-id|page
 suffix:semicolon
 r_int
 id|idx
