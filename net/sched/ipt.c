@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/tc_act/tc_ipt.h&gt;
@@ -92,13 +93,12 @@ id|p-&gt;t
 suffix:semicolon
 id|target
 op_assign
-id|__ipt_find_target_lock
+id|ipt_find_target
 c_func
 (paren
 id|t-&gt;u.user.name
 comma
-op_amp
-id|ret
+id|t-&gt;u.user.revision
 )paren
 suffix:semicolon
 r_if
@@ -129,16 +129,9 @@ comma
 id|target-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* we really need proper ref counting&n;&t; seems to be only needed for modules?? Talk to laforge */
-multiline_comment|/*      if (target-&gt;me)&n;              __MOD_INC_USE_COUNT(target-&gt;me);&n;*/
 id|t-&gt;u.kernel.target
 op_assign
 id|target
-suffix:semicolon
-id|__ipt_mutex_up
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -169,13 +162,18 @@ id|p-&gt;hook
 )paren
 )paren
 (brace
-multiline_comment|/*              if (t-&gt;u.kernel.target-&gt;me)&n;&t;      __MOD_DEC_USE_COUNT(t-&gt;u.kernel.target-&gt;me);&n;*/
 id|DPRINTK
 c_func
 (paren
 l_string|&quot;ip_tables: check failed for `%s&squot;.&bslash;n&quot;
 comma
 id|t-&gt;u.kernel.target-&gt;name
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|t-&gt;u.kernel.target-&gt;me
 )paren
 suffix:semicolon
 id|ret
@@ -1006,6 +1004,27 @@ l_int|NULL
 op_ne
 id|p
 )paren
+(brace
+r_struct
+id|ipt_entry_target
+op_star
+id|t
+op_assign
+id|p-&gt;t
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+op_logical_and
+id|t-&gt;u.kernel.target
+)paren
+id|module_put
+c_func
+(paren
+id|t-&gt;u.kernel.target-&gt;me
+)paren
+suffix:semicolon
 r_return
 id|tcf_hash_release
 c_func
@@ -1015,6 +1034,7 @@ comma
 id|bind
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

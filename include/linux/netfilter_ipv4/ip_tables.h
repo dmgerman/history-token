@@ -1055,6 +1055,23 @@ id|me
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* net/sched/ipt.c: Gimme access to your targets!  Gets target-&gt;me. */
+r_extern
+r_struct
+id|ipt_target
+op_star
+id|ipt_find_target
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+id|u8
+id|revision
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|ipt_register_table
