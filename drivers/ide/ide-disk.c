@@ -167,6 +167,11 @@ c_func
 (paren
 l_string|&quot;48-bit Drive: %llu &bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|id-&gt;lba_capacity_2
 )paren
 suffix:semicolon
