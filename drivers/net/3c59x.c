@@ -1379,11 +1379,11 @@ comma
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 comma
-multiline_comment|/* 0 terminated list. */
+multiline_comment|/* NULL terminated list. */
 )brace
 suffix:semicolon
 DECL|variable|vortex_pci_tbl
@@ -8070,7 +8070,7 @@ id|vp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|outl
 c_func
@@ -8555,7 +8555,7 @@ id|vp-&gt;rx_skbuff
 id|j
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -9575,7 +9575,7 @@ id|dev-&gt;irq
 comma
 id|dev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_else
@@ -9586,7 +9586,7 @@ id|dev-&gt;irq
 comma
 id|dev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|local_irq_restore
@@ -12333,7 +12333,7 @@ id|vp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -14215,7 +14215,7 @@ id|vp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -14368,7 +14368,7 @@ id|vp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
