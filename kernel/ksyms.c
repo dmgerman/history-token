@@ -35,7 +35,6 @@ macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
@@ -1718,21 +1717,6 @@ c_func
 id|autoremove_wake_function
 )paren
 suffix:semicolon
-multiline_comment|/* completion handling */
-DECL|variable|wait_for_completion
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|wait_for_completion
-)paren
-suffix:semicolon
-DECL|variable|complete
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|complete
-)paren
-suffix:semicolon
 multiline_comment|/* The notion of irq probe/assignment is foreign to S/390 */
 macro_line|#if !defined(CONFIG_ARCH_S390)
 DECL|variable|probe_irq_on
@@ -1861,20 +1845,6 @@ c_func
 id|complete_and_exit
 )paren
 suffix:semicolon
-DECL|variable|default_wake_function
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|default_wake_function
-)paren
-suffix:semicolon
-DECL|variable|__wake_up
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__wake_up
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|__wake_up_sync
 id|EXPORT_SYMBOL_GPL
@@ -1885,97 +1855,11 @@ id|__wake_up_sync
 suffix:semicolon
 multiline_comment|/* internal use only */
 macro_line|#endif
-DECL|variable|wake_up_process
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|wake_up_process
-)paren
-suffix:semicolon
-DECL|variable|sleep_on
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sleep_on
-)paren
-suffix:semicolon
-DECL|variable|sleep_on_timeout
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sleep_on_timeout
-)paren
-suffix:semicolon
-DECL|variable|interruptible_sleep_on
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|interruptible_sleep_on
-)paren
-suffix:semicolon
-DECL|variable|interruptible_sleep_on_timeout
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|interruptible_sleep_on_timeout
-)paren
-suffix:semicolon
-DECL|variable|schedule
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|schedule
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|variable|preempt_schedule
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|preempt_schedule
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|schedule_timeout
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|schedule_timeout
-)paren
-suffix:semicolon
-DECL|variable|yield
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|yield
-)paren
-suffix:semicolon
-DECL|variable|io_schedule
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|io_schedule
-)paren
-suffix:semicolon
-DECL|variable|__cond_resched
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__cond_resched
-)paren
-suffix:semicolon
-DECL|variable|set_user_nice
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_user_nice
-)paren
-suffix:semicolon
-DECL|variable|task_nice
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|task_nice
 )paren
 suffix:semicolon
 DECL|variable|idle_cpu
@@ -2051,31 +1935,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_jiffies_64
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
-DECL|variable|__might_sleep
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__might_sleep
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
-DECL|variable|__preempt_spin_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__preempt_spin_lock
-)paren
-suffix:semicolon
-DECL|variable|__preempt_write_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__preempt_write_lock
 )paren
 suffix:semicolon
 macro_line|#endif
