@@ -25,11 +25,9 @@ op_assign
 op_amp
 id|timer_tsc
 comma
-macro_line|#ifndef CONFIG_X86_TSC
 op_amp
 id|timer_pit
 comma
-macro_line|#endif
 l_int|NULL
 comma
 )brace

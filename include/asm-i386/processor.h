@@ -13,6 +13,11 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+multiline_comment|/* flag for disabling the tsc */
+r_extern
+r_int
+id|tsc_disable
+suffix:semicolon
 DECL|struct|desc_struct
 r_struct
 id|desc_struct

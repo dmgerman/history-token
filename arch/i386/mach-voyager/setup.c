@@ -75,6 +75,11 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* Voyagers run their CPUs from independent clocks, so disable&n;&t; * the TSC code because we can&squot;t sync them */
+id|tsc_disable
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|trap_init_hook
 r_void

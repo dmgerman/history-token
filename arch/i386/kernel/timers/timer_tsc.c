@@ -6,6 +6,15 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* processor.h for distable_tsc flag */
+macro_line|#include &lt;asm/processor.h&gt;
+DECL|variable|__initdata
+r_int
+id|tsc_disable
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 r_extern
 r_int
 id|x86_udelay_tsc
@@ -963,6 +972,35 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* disable flag for tsc.  Takes effect by clearing the TSC cpu flag&n; * in cpu/common.c */
+DECL|function|tsc_setup
+r_static
+r_int
+id|__init
+id|tsc_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|tsc_disable
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;notsc&quot;
+comma
+id|tsc_setup
+)paren
+suffix:semicolon
 multiline_comment|/************************************************************/
 multiline_comment|/* tsc timer_opts struct */
 DECL|variable|timer_tsc
