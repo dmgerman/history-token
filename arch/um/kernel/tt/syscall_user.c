@@ -34,8 +34,6 @@ r_int
 id|result
 suffix:semicolon
 r_int
-id|index
-comma
 id|syscall
 suffix:semicolon
 id|syscall
@@ -60,14 +58,6 @@ c_func
 id|sc
 )paren
 suffix:semicolon
-id|index
-op_assign
-id|record_syscall_start
-c_func
-(paren
-id|syscall
-)paren
-suffix:semicolon
 id|syscall_trace
 c_func
 (paren
@@ -78,7 +68,7 @@ l_int|0
 suffix:semicolon
 id|result
 op_assign
-id|execute_syscall
+id|execute_syscall_tt
 c_func
 (paren
 id|regs
@@ -107,14 +97,6 @@ c_func
 id|regs
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|record_syscall_end
-c_func
-(paren
-id|index
-comma
-id|result
 )paren
 suffix:semicolon
 )brace

@@ -5,6 +5,7 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
+macro_line|#include &quot;skas.h&quot;
 DECL|function|handle_syscall
 r_void
 id|handle_syscall
@@ -19,21 +20,6 @@ id|regs
 r_int
 id|result
 suffix:semicolon
-r_int
-id|index
-suffix:semicolon
-id|index
-op_assign
-id|record_syscall_start
-c_func
-(paren
-id|UPT_SYSCALL_NR
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
 id|syscall_trace
 c_func
 (paren
@@ -44,7 +30,7 @@ l_int|0
 suffix:semicolon
 id|result
 op_assign
-id|execute_syscall
+id|execute_syscall_skas
 c_func
 (paren
 id|regs
@@ -64,14 +50,6 @@ c_func
 id|regs
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|record_syscall_end
-c_func
-(paren
-id|index
-comma
-id|result
 )paren
 suffix:semicolon
 )brace
