@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if ALLOW_DMA
@@ -3880,18 +3881,10 @@ id|POWER_ON_RESET
 )paren
 suffix:semicolon
 multiline_comment|/* wait 30 ms */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 l_int|30
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_IXDP2X01
