@@ -302,6 +302,12 @@ id|ib_mad_private
 op_star
 id|mad_priv
 suffix:semicolon
+DECL|member|recv_mad_agent
+r_struct
+id|ib_mad_agent_private
+op_star
+id|recv_mad_agent
+suffix:semicolon
 DECL|member|send_wr
 r_struct
 id|ib_send_wr
