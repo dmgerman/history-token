@@ -822,12 +822,6 @@ id|hostptr-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-id|scsi_host_put
-c_func
-(paren
-id|hostptr
-)paren
-suffix:semicolon
 multiline_comment|/* if we couldn&squot;t find it, we return an error */
 r_if
 c_cond
@@ -890,6 +884,13 @@ c_func
 l_string|&quot;    Transport: %s&bslash;n&quot;
 comma
 id|us-&gt;transport_name
+)paren
+suffix:semicolon
+multiline_comment|/* release the reference count on this host */
+id|scsi_host_put
+c_func
+(paren
+id|hostptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
