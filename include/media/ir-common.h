@@ -8,7 +8,7 @@ mdefine_line|#define IR_TYPE_OTHER  99
 DECL|macro|IR_KEYTAB_TYPE
 mdefine_line|#define IR_KEYTAB_TYPE&t;u32
 DECL|macro|IR_KEYTAB_SIZE
-mdefine_line|#define IR_KEYTAB_SIZE&t;64  
+mdefine_line|#define IR_KEYTAB_SIZE&t;128  
 singleline_comment|// enougth for rc5, probably need more some day ...
 DECL|macro|IR_KEYCODE
 mdefine_line|#define IR_KEYCODE(tab,code)&t;(((unsigned)code &lt; IR_KEYTAB_SIZE) &bslash;&n;&t;&t;&t;&t; ? tab[code] : KEY_RESERVED)
