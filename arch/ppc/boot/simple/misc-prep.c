@@ -405,6 +405,11 @@ id|OFW_interface
 )paren
 suffix:semicolon
 )brace
+id|board_isa_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_VGA_CONSOLE)
 id|vga_init
 c_func

@@ -26,8 +26,6 @@ DECL|macro|SPRUCE_PCI_CONFIG_ADDR
 mdefine_line|#define SPRUCE_PCI_CONFIG_ADDR&t;0xfec00000
 DECL|macro|SPRUCE_PCI_CONFIG_DATA
 mdefine_line|#define SPRUCE_PCI_CONFIG_DATA&t;0xfec00004
-DECL|macro|SPRUCE_ISA_IO_BASE
-mdefine_line|#define SPRUCE_ISA_IO_BASE&t;0xf8000000
 multiline_comment|/* PCI configuration space access routines. */
 DECL|variable|pci_config_address
 r_int
@@ -497,13 +495,6 @@ id|val
 )paren
 suffix:semicolon
 )brace
-DECL|variable|isa_io_base
-r_int
-r_int
-id|isa_io_base
-op_assign
-id|SPRUCE_ISA_IO_BASE
-suffix:semicolon
 DECL|macro|PCNET32_WIO_RDP
 mdefine_line|#define PCNET32_WIO_RDP&t;&t;0x10
 DECL|macro|PCNET32_WIO_RAP
