@@ -36,6 +36,17 @@ DECL|macro|EX
 macro_line|# define EX(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.;&t;&bslash;&n;  [99:]&t;x
 DECL|macro|EXCLR
 macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, 99f-., y-.+4;&t;&bslash;&n;  [99:]&t;x
+multiline_comment|/*&n; * Mark instructions that need a load of a virtual address patched to be&n; * a load of a physical address.  We use this either in critical performance&n; * path (ivt.S - TLB miss processing) or in places where it might not be&n; * safe to use a &quot;tpa&quot; instruction (mca_asm.S - error recovery).&n; */
+dot
+id|section
+l_string|&quot;__vtop_patchlist&quot;
+comma
+l_string|&quot;a&quot;
+singleline_comment|// declare section &amp; section attributes
+dot
+id|previous
+DECL|macro|LOAD_PHYSICAL
+mdefine_line|#define&t;LOAD_PHYSICAL(op, preg, reg, obj)&t;&bslash;&n;1: {&t;.mlx;&t;&t;&t;&t;&t;&bslash;&n;&t;op;&t;&t;&t;&t;&t;&bslash;&n;(preg)&t;movl reg = obj;&t;&t;&t;&t;&bslash;&n;   };&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata8 &quot;__vtop_patchlist&quot;, 1b
 multiline_comment|/*&n; * For now, we always put in the McKinley E9 workaround.  On CPUs that don&squot;t need it,&n; * we&squot;ll patch out the work-around bundles with NOPs, so their impact is minimal.&n; */
 DECL|macro|DO_MCKINLEY_E9_WORKAROUND
 mdefine_line|#define DO_MCKINLEY_E9_WORKAROUND
