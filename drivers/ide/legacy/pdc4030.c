@@ -1000,9 +1000,10 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
