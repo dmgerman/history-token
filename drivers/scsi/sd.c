@@ -2060,35 +2060,6 @@ c_func
 id|sd_template.module
 )paren
 suffix:semicolon
-multiline_comment|/* check that we actually have a write back cache to synchronize */
-r_if
-c_cond
-(paren
-id|sdkp-&gt;WCE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Synchronizing SCSI cache: &quot;
-)paren
-suffix:semicolon
-id|sd_synchronize_cache
-c_func
-(paren
-id|dsk_nr
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5795,15 +5766,6 @@ op_eq
 id|sdp
 )paren
 (brace
-id|sdkp-&gt;device
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sdkp-&gt;capacity
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* sdkp-&gt;detaching = 1; */
 r_break
 suffix:semicolon
 )brace
@@ -5826,6 +5788,44 @@ id|sd_template.dev_max
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* check that we actually have a write back cache to synchronize */
+r_if
+c_cond
+(paren
+id|sdkp-&gt;WCE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Synchronizing SCSI cache: &quot;
+)paren
+suffix:semicolon
+id|sd_synchronize_cache
+c_func
+(paren
+id|dsk_nr
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|sdkp-&gt;device
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sdkp-&gt;capacity
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* sdkp-&gt;detaching = 1; */
 r_if
 c_cond
 (paren
