@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: generic.c,v 1.14 2000/08/09 00:00:15 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: generic.c,v 1.15 2001/03/24 09:36:01 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -527,6 +527,8 @@ op_assign
 id|pte_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|pmd
 comma
 id|address
@@ -696,6 +698,8 @@ op_assign
 id|pmd_alloc
 c_func
 (paren
+id|current-&gt;mm
+comma
 id|dir
 comma
 id|from

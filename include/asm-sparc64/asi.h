@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: asi.h,v 1.2 2001/03/01 21:28:37 davem Exp $ */
+multiline_comment|/* $Id: asi.h,v 1.4 2001/03/15 02:08:46 davem Exp $ */
 macro_line|#ifndef _SPARC64_ASI_H
 DECL|macro|_SPARC64_ASI_H
 mdefine_line|#define _SPARC64_ASI_H
@@ -36,11 +36,11 @@ multiline_comment|/* SpitFire and later extended ASIs.  The &quot;(III)&quot; ma
 DECL|macro|ASI_PHYS_USE_EC
 mdefine_line|#define ASI_PHYS_USE_EC&t;&t;0x14 /* PADDR, E-cachable&t;&t;&t;*/
 DECL|macro|ASI_PHYS_BYPASS_EC_E
-mdefine_line|#define ASI_PHYS_BYPASS_EC_E&t;0x15 /* PADDR, E-cachable, E-bit&t;&t;*/
+mdefine_line|#define ASI_PHYS_BYPASS_EC_E&t;0x15 /* PADDR, E-bit&t;&t;&t;&t;*/
 DECL|macro|ASI_PHYS_USE_EC_L
 mdefine_line|#define ASI_PHYS_USE_EC_L&t;0x1c /* PADDR, E-cachable, little endian&t;*/
 DECL|macro|ASI_PHYS_BYPASS_EC_E_L
-mdefine_line|#define ASI_PHYS_BYPASS_EC_E_L&t;0x1d /* PADDR, E-cachable, E-bit, little endian&t;*/
+mdefine_line|#define ASI_PHYS_BYPASS_EC_E_L&t;0x1d /* PADDR, E-bit, little endian&t;&t;*/
 DECL|macro|ASI_NUCLEUS_QUAD_LDD
 mdefine_line|#define ASI_NUCLEUS_QUAD_LDD&t;0x24 /* Cachable, qword load&t;&t;&t;*/
 DECL|macro|ASI_NUCLEUS_QUAD_LDD_L
@@ -151,8 +151,8 @@ DECL|macro|ASI_UDB_ERROR_W
 mdefine_line|#define ASI_UDB_ERROR_W&t;&t;0x77 /* External UDB error registers write&t;*/
 DECL|macro|ASI_UDB_CONTROL_W
 mdefine_line|#define ASI_UDB_CONTROL_W&t;0x77 /* External UDB control registers write&t;*/
-DECL|macro|ASI_UDB_INTR_W
-mdefine_line|#define ASI_UDB_INTR_W&t;&t;0x77 /* External UDB IRQ vector dispatch write&t;*/
+DECL|macro|ASI_INTR_W
+mdefine_line|#define ASI_INTR_W&t;&t;0x77 /* IRQ vector dispatch write&t;&t;*/
 DECL|macro|ASI_INTR_DATAN_W
 mdefine_line|#define ASI_INTR_DATAN_W&t;0x77 /* (III) Outgoing irq vector data reg N&t;*/
 DECL|macro|ASI_INTR_DISPATCH_W
@@ -171,8 +171,8 @@ DECL|macro|ASI_UDBH_CONTROL_R
 mdefine_line|#define ASI_UDBH_CONTROL_R&t;0x7f /* External UDB control registers read hi&t;*/
 DECL|macro|ASI_UDBL_CONTROL_R
 mdefine_line|#define ASI_UDBL_CONTROL_R&t;0x7f /* External UDB control registers read low&t;*/
-DECL|macro|ASI_UDB_INTR_R
-mdefine_line|#define ASI_UDB_INTR_R&t;&t;0x7f /* External UDB IRQ vector dispatch read&t;*/
+DECL|macro|ASI_INTR_R
+mdefine_line|#define ASI_INTR_R&t;&t;0x7f /* IRQ vector dispatch read&t;&t;*/
 DECL|macro|ASI_INTR_DATAN_R
 mdefine_line|#define ASI_INTR_DATAN_R&t;0x7f /* (III) Incoming irq vector data reg N&t;*/
 DECL|macro|ASI_PST8_P

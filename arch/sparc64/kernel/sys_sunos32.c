@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sunos32.c,v 1.57 2001/02/13 01:16:44 davem Exp $&n; * sys_sunos32.c: SunOS binary compatability layer on sparc64.&n; *&n; * Copyright (C) 1995, 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * Based upon preliminary work which is:&n; *&n; * Copyright (C) 1995 Adrian M. Rodriguez (adrian@remus.rutgers.edu)&n; */
+multiline_comment|/* $Id: sys_sunos32.c,v 1.59 2001/03/24 09:36:11 davem Exp $&n; * sys_sunos32.c: SunOS binary compatability layer on sparc64.&n; *&n; * Copyright (C) 1995, 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *&n; * Based upon preliminary work which is:&n; *&n; * Copyright (C) 1995 Adrian M. Rodriguez (adrian@remus.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2044,6 +2044,27 @@ id|regs
 op_assign
 id|current-&gt;thread.kregs
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGSYS

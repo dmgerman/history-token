@@ -49,12 +49,16 @@ DECL|macro|ARPHRD_HWX25
 mdefine_line|#define ARPHRD_HWX25&t;272&t;&t;/* Boards with X.25 in firmware&t;*/
 DECL|macro|ARPHRD_PPP
 mdefine_line|#define ARPHRD_PPP&t;512
+DECL|macro|ARPHRD_CISCO
+mdefine_line|#define ARPHRD_CISCO&t;513&t;&t;/* Cisco HDLC&t; &t;&t;*/
 DECL|macro|ARPHRD_HDLC
-mdefine_line|#define ARPHRD_HDLC&t;513&t;&t;/* (Cisco) HDLC &t;&t;*/
+mdefine_line|#define ARPHRD_HDLC&t;ARPHRD_CISCO
 DECL|macro|ARPHRD_LAPB
 mdefine_line|#define ARPHRD_LAPB&t;516&t;&t;/* LAPB&t;&t;&t;&t;*/
 DECL|macro|ARPHRD_DDCMP
 mdefine_line|#define ARPHRD_DDCMP    517&t;&t;/* Digital&squot;s DDCMP protocol     */
+DECL|macro|ARPHRD_RAWHDLC
+mdefine_line|#define ARPHRD_RAWHDLC&t;518&t;&t;/* Raw HDLC&t;&t;&t;*/
 DECL|macro|ARPHRD_TUNNEL
 mdefine_line|#define ARPHRD_TUNNEL&t;768&t;&t;/* IPIP tunnel&t;&t;&t;*/
 DECL|macro|ARPHRD_TUNNEL6

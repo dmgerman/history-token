@@ -626,7 +626,7 @@ id|err
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%d) failed.&quot;
+l_string|&quot;- kmalloc(%Zd) failed.&quot;
 comma
 r_sizeof
 (paren
@@ -707,7 +707,7 @@ id|err
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%d) failed.&quot;
+l_string|&quot;- kmalloc(%Zd) failed.&quot;
 comma
 r_sizeof
 (paren

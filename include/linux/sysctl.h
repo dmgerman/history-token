@@ -1359,6 +1359,19 @@ l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipx */
+r_enum
+(brace
+DECL|enumerator|NET_IPX_PPROP_BROADCASTING
+id|NET_IPX_PPROP_BROADCASTING
+op_assign
+l_int|1
+comma
+DECL|enumerator|NET_IPX_FORWARDING
+id|NET_IPX_FORWARDING
+op_assign
+l_int|2
+)brace
+suffix:semicolon
 multiline_comment|/* /proc/sys/net/appletalk */
 r_enum
 (brace

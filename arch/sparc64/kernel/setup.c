@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.62 2001/03/03 10:34:45 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.63 2001/03/09 22:04:25 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -34,8 +34,6 @@ macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#ifdef CONFIG_IP_PNP
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#endif
-DECL|macro|PROM_DEBUG_CONSOLE
-macro_line|#undef PROM_DEBUG_CONSOLE
 DECL|variable|screen_info
 r_struct
 id|screen_info
@@ -1198,7 +1196,6 @@ id|cmdline_memory_size
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef PROM_DEBUG_CONSOLE
 DECL|variable|prom_debug_console
 r_static
 r_struct
@@ -1225,7 +1222,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* XXX Implement this at some point... */
 DECL|function|kernel_enter_debugger
 r_void
@@ -1319,6 +1315,19 @@ suffix:semicolon
 id|prom_halt
 c_func
 (paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;p&squot;
+suffix:colon
+multiline_comment|/* Use PROM debug console. */
+id|register_console
+c_func
+(paren
+op_amp
+id|prom_debug_console
 )paren
 suffix:semicolon
 r_break
@@ -1918,15 +1927,6 @@ op_star
 id|cmdline_p
 )paren
 suffix:semicolon
-macro_line|#ifdef PROM_DEBUG_CONSOLE
-id|register_console
-c_func
-(paren
-op_amp
-id|prom_debug_console
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren

@@ -1575,7 +1575,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdrv_ioctl
 (paren
 r_struct
 id|net_device
@@ -1864,10 +1864,8 @@ suffix:semicolon
 multiline_comment|/* dev zeroed in init_etherdev */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -2110,7 +2108,7 @@ id|pci_request_regions
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+l_string|&quot;pci-skeleton&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2392,6 +2390,21 @@ dot
 id|name
 )paren
 suffix:semicolon
+id|i
+op_assign
+id|register_netdev
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_goto
+id|err_out_unmap
+suffix:semicolon
 id|DPRINTK
 (paren
 l_string|&quot;EXIT, returning 0&bslash;n&quot;
@@ -2410,22 +2423,25 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out_unmap
+suffix:colon
 macro_line|#ifndef USE_IO_OPS
+id|iounmap
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
 id|err_out_free_res
 suffix:colon
+macro_line|#endif
 id|pci_release_regions
 (paren
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#endif /* !USE_IO_OPS */
 id|err_out
 suffix:colon
-id|unregister_netdev
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|dev
@@ -2681,7 +2697,7 @@ id|netdrv_set_rx_mode
 suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
-id|mii_ioctl
+id|netdrv_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -6080,17 +6096,6 @@ l_string|&quot;.&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* E. Gill */
-multiline_comment|/* Note from BSD driver:&n;&t;&t; * Here&squot;s a totally undocumented fact for you. When the&n;&t;&t; * RealTek chip is in the process of copying a packet into&n;&t;&t; * RAM for you, the length will be 0xfff0. If you spot a&n;&t;&t; * packet header with this value, you need to stop. The&n;&t;&t; * datasheet makes absolutely no mention of this and&n;&t;&t; * RealTek should be shot for this.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|rx_size
-op_eq
-l_int|0xfff0
-)paren
-r_break
-suffix:semicolon
 multiline_comment|/* If Rx err or invalid rx_size/rx_status received&n;&t;&t; * (which happens if we get lost in the ring),&n;&t;&t; * Rx process gets reset, so we abort any further&n;&t;&t; * Rx processing.&n;&t;&t; */
 r_if
 c_cond
@@ -7014,10 +7019,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdrv_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdrv_ioctl
 (paren
 r_struct
 id|net_device

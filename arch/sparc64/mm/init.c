@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.164 2001/03/03 10:34:45 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.172 2001/03/24 09:36:01 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -167,7 +167,7 @@ l_int|0
 id|free_pte_slow
 c_func
 (paren
-id|get_pte_fast
+id|pte_alloc_one_fast
 c_func
 (paren
 l_int|0
@@ -188,10 +188,16 @@ l_int|1
 id|free_pte_slow
 c_func
 (paren
-id|get_pte_fast
+id|pte_alloc_one_fast
 c_func
 (paren
 l_int|1
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_plus
+l_int|10
+)paren
 )paren
 )paren
 comma
@@ -419,7 +425,11 @@ id|page
 op_member_access_from_pointer
 r_virtual
 comma
-l_int|1
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
 )paren
 suffix:semicolon
 id|clear_bit
@@ -467,6 +477,15 @@ r_int
 id|end
 )paren
 (brace
+multiline_comment|/* Cheetah has coherent I-cache. */
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+(brace
 r_int
 r_int
 id|kaddr
@@ -496,6 +515,7 @@ id|kaddr
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * BAD_PAGE is the page that is used for page faults when linux&n; * is out-of-memory. Older versions of linux just did a&n; * do_exit(), but using this instead means there is less risk&n; * for a process dying in kernel mode, possibly leaving an inode&n; * unused etc..&n; *&n; * BAD_PAGETABLE is the accompanying page-table: it is initialized&n; * to point to BAD_PAGE entries.&n; *&n; * ZERO_PAGE is a special page that is used for zero-initialized&n; * data and COW.&n; */
 DECL|function|__bad_page
@@ -1322,7 +1342,7 @@ id|cheetah
 suffix:colon
 id|phys_page
 op_assign
-id|cheetah_get_ldtlb_data
+id|cheetah_get_litlb_data
 c_func
 (paren
 id|sparc64_highest_locked_tlbent
@@ -1671,7 +1691,7 @@ id|_PAGE_PADDR
 )paren
 suffix:colon
 (paren
-id|cheetah_get_ldtlb_data
+id|cheetah_get_litlb_data
 c_func
 (paren
 id|sparc64_highest_locked_tlbent
@@ -2067,7 +2087,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -2082,24 +2103,12 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|spitfire_put_dtlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2123,7 +2132,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|511
+l_int|512
 suffix:semicolon
 id|i
 op_increment
@@ -2164,7 +2173,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -2179,24 +2189,12 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|cheetah_put_dtlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2355,7 +2353,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %0, [%1] %2&quot;
+l_string|&quot;stxa %0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2377,12 +2376,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_DMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2436,12 +2429,6 @@ dot
 id|tlb_data
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2461,7 +2448,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %0, [%1] %2&quot;
+l_string|&quot;stxa %0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2483,12 +2471,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_IMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2540,12 +2522,6 @@ id|i
 )braket
 dot
 id|tlb_data
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2586,7 +2562,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2598,12 +2575,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_DMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2640,12 +2611,6 @@ comma
 l_int|0x0UL
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2665,7 +2630,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2677,12 +2643,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_IMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2717,12 +2677,6 @@ dot
 id|tlb_ent
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2965,7 +2919,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -2979,24 +2934,12 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|spitfire_put_dtlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 id|dtlb_seen
@@ -3162,7 +3105,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -3176,24 +3120,12 @@ id|ASI_IMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|spitfire_put_itlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 id|itlb_seen
@@ -3317,7 +3249,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -3331,24 +3264,12 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|cheetah_put_ldtlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 id|dtlb_seen
@@ -3462,7 +3383,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -3476,24 +3398,12 @@ id|ASI_IMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|cheetah_put_litlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 id|itlb_seen
@@ -3575,7 +3485,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %0, [%1] %2&quot;
+l_string|&quot;stxa %0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -3597,12 +3508,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_DMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3656,12 +3561,6 @@ dot
 id|tlb_data
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3681,7 +3580,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %0, [%1] %2&quot;
+l_string|&quot;stxa %0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
@@ -3703,12 +3603,6 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_IMMU
 )paren
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3755,12 +3649,6 @@ dot
 id|tlb_data
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 )brace
 )brace
 )brace
@@ -3782,6 +3670,14 @@ r_int
 r_int
 id|va
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+(brace
 r_int
 id|n
 op_assign
@@ -3825,12 +3721,76 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|start
+op_assign
+id|__pa
+c_func
+(paren
+id|start
+)paren
+suffix:semicolon
+id|end
+op_assign
+id|__pa
+c_func
+(paren
+id|end
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|va
+op_assign
+id|start
+suffix:semicolon
+id|va
+OL
+id|end
+suffix:semicolon
+id|va
+op_add_assign
+l_int|32
+)paren
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|va
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_DCACHE_INVALIDATE
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|__flush_cache_all
 r_void
 id|__flush_cache_all
 c_func
 (paren
 r_void
+)paren
+(brace
+multiline_comment|/* Cheetah should be fine here too. */
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
 )paren
 (brace
 r_int
@@ -3869,6 +3829,14 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;flush %g6&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If not locked, zap it. */
 DECL|function|__flush_tlb_all
@@ -3973,7 +3941,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -3988,24 +3957,12 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|spitfire_put_dtlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4054,7 +4011,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %%g0, [%0] %1&quot;
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4069,24 +4027,12 @@ id|ASI_IMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
-)paren
-suffix:semicolon
 id|spitfire_put_itlb_data
 c_func
 (paren
 id|i
 comma
 l_int|0x0UL
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#Sync&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4418,90 +4364,16 @@ id|pgtable_cache_struct
 id|pgt_quicklists
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* For PMDs we don&squot;t care about the color, writes are&n; * only done via Dcache which is write-thru, so non-Dcache&n; * reads will always see correct data.&n; */
-DECL|function|get_pmd_slow
-id|pmd_t
-op_star
-id|get_pmd_slow
-c_func
-(paren
-id|pgd_t
-op_star
-id|pgd
-comma
-r_int
-r_int
-id|offset
-)paren
-(brace
-id|pmd_t
-op_star
-id|pmd
-suffix:semicolon
-id|pmd
-op_assign
-(paren
-id|pmd_t
-op_star
-)paren
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pmd
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|pmd
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-id|pgd_set
-c_func
-(paren
-id|pgd
-comma
-id|pmd
-)paren
-suffix:semicolon
-r_return
-id|pmd
-op_plus
-id|offset
-suffix:semicolon
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/* OK, we have to color these pages because during DTLB&n; * protection faults we set the dirty bit via a non-Dcache&n; * enabled mapping in the VPTE area.  The kernel can end&n; * up missing the dirty bit resulting in processes crashing&n; * _iff_ the VPTE mapping of the ptes have a virtual address&n; * bit 13 which is different from bit 13 of the physical address.&n; *&n; * The sequence is:&n; *&t;1) DTLB protection fault, write dirty bit into pte via VPTE&n; *&t;   mappings.&n; *&t;2) Swapper checks pte, does not see dirty bit, frees page.&n; *&t;3) Process faults back in the page, the old pre-dirtied copy&n; *&t;   is provided and here is the corruption.&n; */
-DECL|function|get_pte_slow
+DECL|function|pte_alloc_one
 id|pte_t
 op_star
-id|get_pte_slow
+id|pte_alloc_one
 c_func
 (paren
-id|pmd_t
-op_star
-id|pmd
-comma
 r_int
 r_int
-id|offset
-comma
-r_int
-r_int
-id|color
+id|address
 )paren
 (brace
 r_struct
@@ -4515,6 +4387,24 @@ c_func
 id|GFP_KERNEL
 comma
 l_int|1
+)paren
+suffix:semicolon
+r_int
+r_int
+id|color
+op_assign
+(paren
+(paren
+id|address
+op_rshift
+(paren
+id|PAGE_SHIFT
+op_plus
+l_int|10
+)paren
+)paren
+op_amp
+l_int|1UL
 )paren
 suffix:semicolon
 r_if
@@ -4658,18 +4548,8 @@ suffix:semicolon
 id|pgtable_cache_size
 op_increment
 suffix:semicolon
-id|pmd_set
-c_func
-(paren
-id|pmd
-comma
-id|pte
-)paren
-suffix:semicolon
 r_return
 id|pte
-op_plus
-id|offset
 suffix:semicolon
 )brace
 r_return

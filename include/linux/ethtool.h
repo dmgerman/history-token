@@ -69,11 +69,70 @@ l_int|4
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* these strings are set to whatever the driver author decides... */
+DECL|struct|ethtool_drvinfo
+r_struct
+id|ethtool_drvinfo
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+DECL|member|driver
+r_char
+id|driver
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* driver short name, &quot;tulip&quot;, &quot;eepro100&quot; */
+DECL|member|version
+r_char
+id|version
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* driver version string */
+DECL|member|fw_version
+r_char
+id|fw_version
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* firmware version string, if applicable */
+DECL|member|bus_info
+r_char
+id|bus_info
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* Bus info for this interface.  For PCI&n;&t;&t;&t;&t; * devices, use pci_dev-&gt;slot_name. */
+DECL|member|reserved1
+r_char
+id|reserved1
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|reserved2
+r_char
+id|reserved2
+(braket
+l_int|32
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
-mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings, non-privileged. */
+mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
 DECL|macro|ETHTOOL_SSET
 mdefine_line|#define ETHTOOL_SSET&t;&t;0x00000002 /* Set settings, privileged. */
+DECL|macro|ETHTOOL_GDRVINFO
+mdefine_line|#define ETHTOOL_GDRVINFO&t;0x00000003 /* Get driver info. */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET

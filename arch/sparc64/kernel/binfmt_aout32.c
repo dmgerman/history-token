@@ -1542,7 +1542,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&bslash;t%0, [%1] %2&quot;
+l_string|&quot;stxa&bslash;t%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

@@ -687,6 +687,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|hub-&gt;descriptor-&gt;wHubCharacteristics
+)paren
+suffix:semicolon
 id|hub-&gt;nports
 op_assign
 id|dev-&gt;maxchild
@@ -4054,7 +4061,7 @@ r_else
 id|err
 c_func
 (paren
-l_string|&quot;USB device descriptor short read (expected %i, got %i)&quot;
+l_string|&quot;USB device descriptor short read (expected %Zi, got %i)&quot;
 comma
 r_sizeof
 (paren

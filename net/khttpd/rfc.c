@@ -258,7 +258,7 @@ id|__kernel_size_t
 op_star
 id|Len
 )paren
-multiline_comment|/*&n;&n;&t;The returned string is for READ ONLY, ownership of the memory is NOT&n;&t;transfered.&n;&n;*/
+multiline_comment|/*&n;&n;&t;The returned string is for READ ONLY, ownership of the memory is NOT&n;&t;transferred.&n;&n;*/
 (brace
 id|__u32
 op_star

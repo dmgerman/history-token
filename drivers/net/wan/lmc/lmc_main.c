@@ -6110,6 +6110,10 @@ suffix:semicolon
 id|sc-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
+id|sc-&gt;stats.rx_bytes
+op_add_assign
+id|len
+suffix:semicolon
 id|LMC_CONSOLE_LOG
 c_func
 (paren

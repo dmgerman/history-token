@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* PROM provided per-processor information we need&n; * to start them all up.&n; */
 DECL|struct|prom_cpuinfo
@@ -225,6 +226,48 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+(brace
+r_int
+r_int
+id|safari_config
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ldxa [%%g0] %1, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|safari_config
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|ASI_SAFARI_CONFIG
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+(paren
+id|safari_config
+op_rshift
+l_int|17
+)paren
+op_amp
+l_int|0x3ff
+)paren
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren

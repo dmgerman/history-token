@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: unaligned.c,v 1.20 2000/04/29 08:05:21 anton Exp $&n; * unaligned.c: Unaligned load/store trap handling with special&n; *              cases for the kernel to do them more quickly.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: unaligned.c,v 1.21 2001/03/21 11:46:20 davem Exp $&n; * unaligned.c: Unaligned load/store trap handling with special&n; *              cases for the kernel to do them more quickly.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -918,6 +918,27 @@ id|regs-&gt;tnpc
 op_add_assign
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 )brace
 DECL|function|floating_point_load_or_store_p
 r_static

@@ -110,7 +110,7 @@ l_string|&quot;UltraSparc IIe integrated FPU&quot;
 )brace
 comma
 (brace
-l_int|0x17
+l_int|0x3e
 comma
 l_int|0x14
 comma

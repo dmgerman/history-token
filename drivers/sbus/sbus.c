@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.94 2001/02/13 07:34:40 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.95 2001/03/15 02:11:10 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1240,6 +1240,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|firetruck_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|sbus_init
 r_void
 id|__init
@@ -1360,14 +1376,6 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#ifdef __sparc_v9__
-r_extern
-r_void
-id|firetruck_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|firetruck_init
 c_func
 (paren
@@ -2266,6 +2274,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|rs_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef __sparc_v9__
 r_if
 c_cond
@@ -2275,14 +2288,6 @@ op_eq
 id|sun4u
 )paren
 (brace
-r_extern
-r_void
-id|firetruck_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|firetruck_init
 c_func
 (paren

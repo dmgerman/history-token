@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || defined(__mips__)
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || defined(__mips__) || defined(CONFIG_SPARC64)
 DECL|variable|x86_sysrq_alt
 r_static
 r_int
@@ -16,6 +16,23 @@ id|x86_sysrq_alt
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC64
+DECL|variable|sparc_l1_a_state
+r_static
+r_int
+id|sparc_l1_a_state
+op_assign
+l_int|0
+suffix:semicolon
+r_extern
+r_void
+id|batten_down_hatches
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|x86_keycodes
 r_static
 r_int
@@ -596,6 +613,28 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SPARC64
+r_if
+c_cond
+(paren
+id|keycode
+op_eq
+id|KEY_A
+op_logical_and
+id|sparc_l1_a_state
+)paren
+(brace
+id|sparc_l1_a_state
+op_assign
+l_int|0
+suffix:semicolon
+id|batten_down_hatches
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -667,6 +706,19 @@ id|x86_sysrq_alt
 op_assign
 id|down
 suffix:semicolon
+macro_line|#ifdef CONFIG_SPARC64
+r_if
+c_cond
+(paren
+id|keycode
+op_eq
+id|KEY_STOP
+)paren
+id|sparc_l1_a_state
+op_assign
+id|down
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

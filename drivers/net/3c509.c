@@ -1,13 +1,5 @@
 multiline_comment|/* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1993-1998 by Donald Becker.&n;&n;&t;Copyright 1994-1998 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@cesdis.gsfc.nasa.gov or&n;&t;C/O Center of Excellence in Space Data and Information Sciences&n;&t;&t;Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;*/
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;3c509.c:1.16 (2.2) 2/3/98 becker@cesdis.gsfc.nasa.gov.&bslash;n&quot;
-suffix:semicolon
+multiline_comment|/*&n;&t;Written 1993-2000 by Donald Becker.&n;&n;&t;Copyright 1994-2000 by Donald Becker.&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&t; This software may be used and&n;&t;distributed according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;This driver is for the 3Com EtherLinkIII series.&n;&n;&t;The author may be reached as becker@cesdis.gsfc.nasa.gov or&n;&t;C/O Center of Excellence in Space Data and Information Sciences&n;&t;&t;Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;Known limitations:&n;&t;Because of the way 3c509 ISA detection works it&squot;s difficult to predict&n;&t;a priori which of several ISA-mode cards will be detected first.&n;&n;&t;This driver does not use predictive interrupt mode, resulting in higher&n;&t;packet latency but lower overhead.  If interrupts are disabled for an&n;&t;unusually long time it could also result in missed packets, but in&n;&t;practice this rarely happens.&n;&n;&n;&t;FIXES:&n;&t;&t;Alan Cox:       Removed the &squot;Unexpected interrupt&squot; bug.&n;&t;&t;Michael Meskes:&t;Upgraded to Donald Becker&squot;s version 1.07.&n;&t;&t;Alan Cox:&t;Increased the eeprom delay. Regardless of &n;&t;&t;&t;&t;what the docs say some people definitely&n;&t;&t;&t;&t;get problems with lower (but in card spec)&n;&t;&t;&t;&t;delays&n;&t;&t;v1.10 4/21/97 Fixed module code so that multiple cards may be detected,&n;&t;&t;&t;&t;other cleanups.  -djb&n;&t;&t;Andrea Arcangeli:&t;Upgraded to Donald Becker&squot;s version 1.12.&n;&t;&t;Rick Payne:&t;Fixed SMP race condition&n;&t;&t;v1.13 9/8/97 Made &squot;max_interrupt_work&squot; an insmod-settable variable -djb&n;&t;&t;v1.14 10/15/97 Avoided waiting..discard message for fast machines -djb&n;&t;&t;v1.15 1/31/98 Faster recovery for Tx errors. -djb&n;&t;&t;v1.16 2/3/98 Different ID port handling to avoid sound cards. -djb&n;&t;&t;v1.18 12Mar2001 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;&t;&t;&t;- Avoid bogus detect of 3c590&squot;s (Andrzej Krzysztofowicz)&n;&t;&t;&t;- Reviewed against 1.18 from scyld.com&n;*/
 multiline_comment|/* A few values that may be tweaked. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -31,6 +23,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -39,6 +32,26 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+DECL|variable|__initdata
+r_static
+r_char
+id|versionA
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;3c509.c:1.18 12Mar2001 becker@scyld.com&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|versionB
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;http://www.scyld.com/network/3c509.html&bslash;n&quot;
+suffix:semicolon
 macro_line|#ifdef EL3_DEBUG
 DECL|variable|el3_debug
 r_static
@@ -363,10 +376,11 @@ id|mca_slot
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|id_port
+DECL|variable|__initdata
 r_static
 r_int
 id|id_port
+id|__initdata
 op_assign
 l_int|0x110
 suffix:semicolon
@@ -529,13 +543,14 @@ id|id
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|el3_mca_adapters
+DECL|variable|__initdata
 r_static
 r_struct
 id|el3_mca_adapters_struct
 id|el3_mca_adapters
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -578,13 +593,14 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
 macro_line|#ifdef CONFIG_ISAPNP
-DECL|variable|el3_isapnp_adapters
+DECL|variable|__initdata
 r_static
 r_struct
 id|isapnp_device_id
 id|el3_isapnp_adapters
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace
@@ -781,6 +797,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ISAPNP */
 DECL|function|el3_probe
 r_int
+id|__init
 id|el3_probe
 c_func
 (paren
@@ -867,6 +884,9 @@ OL
 l_int|0x9000
 )paren
 (brace
+r_int
+id|device_id
+suffix:semicolon
 id|ioaddr
 op_assign
 id|eisa_addr
@@ -891,6 +911,44 @@ l_int|0x6d50
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* Avoid conflict with 3c590, 3c592, 3c597, etc */
+id|device_id
+op_assign
+(paren
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+l_int|0xC82
+)paren
+op_lshift
+l_int|8
+)paren
+op_plus
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+l_int|0xC83
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|device_id
+op_amp
+l_int|0xFF00
+)paren
+op_eq
+l_int|0x5900
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* Change the register set to the configuration window 0. */
 id|outw
 c_func
@@ -2170,7 +2228,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: 3c509 at %#3.3lx, %s port, address &quot;
+l_string|&quot;%s: 3c5x9 at %#3.3lx, %s port, address &quot;
 comma
 id|dev-&gt;name
 comma
@@ -2297,7 +2355,14 @@ l_int|0
 id|printk
 c_func
 (paren
-id|version
+id|KERN_INFO
+l_string|&quot;%s&quot;
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
+id|versionA
+comma
+id|versionB
 )paren
 suffix:semicolon
 multiline_comment|/* The EL3-specific entries in the device structure. */
@@ -2349,6 +2414,7 @@ multiline_comment|/* Read a word from the EEPROM using the regular EEPROM access
 DECL|function|read_eeprom
 r_static
 id|ushort
+id|__init
 id|read_eeprom
 c_func
 (paren
@@ -2391,6 +2457,7 @@ multiline_comment|/* Read a word from the EEPROM when in the ISA ID probe state.
 DECL|function|id_read_eeprom
 r_static
 id|ushort
+id|__init
 id|id_read_eeprom
 c_func
 (paren

@@ -970,10 +970,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
@@ -1390,10 +1386,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -2525,10 +2517,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|DBG_printk
@@ -2712,10 +2700,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|DBG_printk
@@ -3343,10 +3327,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|PI_UINT32
@@ -3445,11 +3425,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|dev_id
 suffix:semicolon
 id|DFX_board_t
@@ -3464,10 +3439,6 @@ multiline_comment|/* used for disabling/enabling ints */
 multiline_comment|/* Get board pointer only if device structure is valid */
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock
@@ -3622,10 +3593,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Fill the bp-&gt;stats structure with driver-maintained counters */
@@ -4532,10 +4499,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -4740,10 +4703,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -6613,10 +6572,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
@@ -7227,10 +7182,6 @@ id|DFX_board_t
 op_star
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|unregister_netdev

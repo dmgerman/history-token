@@ -5008,12 +5008,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|// too big size
 r_return
 l_int|NULL
 suffix:semicolon

@@ -1275,11 +1275,13 @@ id|out
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
+id|read_lock
+c_func
 (paren
-op_logical_neg
-(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 id|child
 op_assign
 id|find_task_by_pid
@@ -1287,7 +1289,30 @@ c_func
 (paren
 id|pid
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|child
 )paren
+id|get_task_struct
+c_func
+(paren
+id|child
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|child
 )paren
 (brace
 id|pt_error_return
@@ -1348,7 +1373,7 @@ id|EPERM
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_if
@@ -1423,7 +1448,7 @@ id|EPERM
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 multiline_comment|/* the same process cannot be attached many times */
@@ -1444,7 +1469,7 @@ id|EPERM
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|child-&gt;ptrace
@@ -1513,7 +1538,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_if
@@ -1536,7 +1561,7 @@ id|ESRCH
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_if
@@ -1564,7 +1589,7 @@ id|ESRCH
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 )brace
@@ -1585,7 +1610,7 @@ id|ESRCH
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_switch
@@ -1656,7 +1681,7 @@ id|EIO
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -1679,7 +1704,7 @@ id|data
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_case
 id|PTRACE_POKEUSR
@@ -1695,7 +1720,7 @@ id|child
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 r_case
 id|PTRACE_POKETEXT
@@ -1749,7 +1774,7 @@ id|EIO
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -1810,7 +1835,7 @@ id|rval
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|__put_user
@@ -1917,7 +1942,7 @@ l_int|15
 suffix:semicolon
 macro_line|#endif
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -1989,7 +2014,7 @@ id|i
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|__get_user
@@ -2121,7 +2146,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2218,7 +2243,7 @@ id|i
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_for
@@ -2365,7 +2390,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2462,7 +2487,7 @@ id|i
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|copy_from_user
@@ -2580,7 +2605,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2626,7 +2651,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 multiline_comment|/* Partial read is an IO failure */
@@ -2652,7 +2677,7 @@ id|res
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2698,7 +2723,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 multiline_comment|/* Partial write is an IO failure */
@@ -2724,7 +2749,7 @@ id|res
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2761,7 +2786,7 @@ id|EIO
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_if
@@ -2789,7 +2814,7 @@ id|EINVAL
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_PTRACE
@@ -2879,7 +2904,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill. &n; * perhaps it should be put in the status that it wants to &n; * exit.&n; */
@@ -2905,7 +2930,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|wake_up_process
@@ -2927,7 +2952,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 r_case
@@ -2960,7 +2985,7 @@ id|EIO
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 id|child-&gt;ptrace
@@ -3025,7 +3050,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
 multiline_comment|/* PTRACE_DUMPCORE unsupported... */
@@ -3040,9 +3065,22 @@ id|EIO
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_tsk
 suffix:semicolon
 )brace
+id|out_tsk
+suffix:colon
+r_if
+c_cond
+(paren
+id|child
+)paren
+id|free_task_struct
+c_func
+(paren
+id|child
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 id|unlock_kernel

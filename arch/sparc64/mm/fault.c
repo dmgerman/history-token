@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.51 2000/09/14 06:22:32 anton Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.54 2001/03/24 09:36:11 davem Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -965,6 +965,27 @@ id|mm
 r_goto
 id|handle_kernel_fault
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|address
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|down_read
 c_func
 (paren
@@ -1156,9 +1177,14 @@ id|VM_WRITE
 r_goto
 id|bad_area
 suffix:semicolon
+multiline_comment|/* Spitfire has an icache which does not snoop&n;&t;&t; * processor stores.  Later processors do...&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|tlb_type
+op_eq
+id|spitfire
+op_logical_and
 (paren
 id|vma-&gt;vm_flags
 op_amp

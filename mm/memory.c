@@ -5014,6 +5014,9 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* no need to invalidate: a not-present page shouldn&squot;t be cached */
 id|update_mmu_cache
@@ -5472,6 +5475,7 @@ op_assign
 id|pte_alloc_one_fast
 c_func
 (paren
+id|address
 )paren
 suffix:semicolon
 r_if
@@ -5493,6 +5497,7 @@ op_assign
 id|pte_alloc_one
 c_func
 (paren
+id|address
 )paren
 suffix:semicolon
 id|spin_lock

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun4c.c,v 1.202 2000/12/01 03:17:31 anton Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@linuxcare.com)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: sun4c.c,v 1.205 2001/03/16 06:57:41 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@linuxcare.com)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 DECL|macro|NR_TASK_BUCKETS
 mdefine_line|#define NR_TASK_BUCKETS 512
 macro_line|#include &lt;linux/config.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -21,6 +22,7 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/sun4paddr.h&gt;
+macro_line|#include &lt;asm/highmem.h&gt;
 multiline_comment|/* Because of our dynamic kernel TLB miss strategy, and how&n; * our DVMA mapping allocation works, you _MUST_:&n; *&n; * 1) Disable interrupts _and_ not touch any dynamic kernel&n; *    memory while messing with kernel MMU state.  By&n; *    dynamic memory I mean any object which is not in&n; *    the kernel image itself or a task_struct (both of&n; *    which are locked into the MMU).&n; * 2) Disable interrupts while messing with user MMU state.&n; */
 r_extern
 r_int
@@ -11603,11 +11605,15 @@ r_int
 id|end
 suffix:semicolon
 r_extern
-r_void
+r_int
+r_int
 id|bootmem_init
 c_func
 (paren
-r_void
+r_int
+r_int
+op_star
+id|pages_avail
 )paren
 suffix:semicolon
 r_extern
@@ -11651,6 +11657,8 @@ suffix:semicolon
 r_int
 r_int
 id|end_pfn
+comma
+id|pages_avail
 suffix:semicolon
 id|kernel_end
 op_assign
@@ -11677,9 +11685,17 @@ c_func
 id|kernel_end
 )paren
 suffix:semicolon
+id|pages_avail
+op_assign
+l_int|0
+suffix:semicolon
+id|last_valid_pfn
+op_assign
 id|bootmem_init
 c_func
 (paren
+op_amp
+id|pages_avail
 )paren
 suffix:semicolon
 id|end_pfn
@@ -11926,26 +11942,112 @@ id|zones_size
 (braket
 id|MAX_NR_ZONES
 )braket
+suffix:semicolon
+r_int
+r_int
+id|zholes_size
+(braket
+id|MAX_NR_ZONES
+)braket
+suffix:semicolon
+r_int
+r_int
+id|npages
+suffix:semicolon
+r_int
+id|znum
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|znum
 op_assign
-(brace
 l_int|0
-comma
+suffix:semicolon
+id|znum
+OL
+id|MAX_NR_ZONES
+suffix:semicolon
+id|znum
+op_increment
+)paren
+id|zones_size
+(braket
+id|znum
+)braket
+op_assign
+id|zholes_size
+(braket
+id|znum
+)braket
+op_assign
 l_int|0
-comma
-l_int|0
-)brace
+suffix:semicolon
+id|npages
+op_assign
+id|max_low_pfn
+op_minus
+(paren
+id|phys_base
+op_rshift
+id|PAGE_SHIFT
+)paren
 suffix:semicolon
 id|zones_size
 (braket
 id|ZONE_DMA
 )braket
 op_assign
-id|end_pfn
+id|npages
 suffix:semicolon
-id|free_area_init
+id|zholes_size
+(braket
+id|ZONE_DMA
+)braket
+op_assign
+id|npages
+op_minus
+id|pages_avail
+suffix:semicolon
+id|npages
+op_assign
+id|highend_pfn
+op_minus
+id|max_low_pfn
+suffix:semicolon
+id|zones_size
+(braket
+id|ZONE_HIGHMEM
+)braket
+op_assign
+id|npages
+suffix:semicolon
+id|zholes_size
+(braket
+id|ZONE_HIGHMEM
+)braket
+op_assign
+id|npages
+op_minus
+id|calc_highpages
 c_func
 (paren
+)paren
+suffix:semicolon
+id|free_area_init_node
+c_func
+(paren
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
 id|zones_size
+comma
+id|phys_base
+comma
+id|zholes_size
 )paren
 suffix:semicolon
 )brace

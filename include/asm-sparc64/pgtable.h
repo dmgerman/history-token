@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.137 2001/03/02 03:12:01 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.138 2001/03/08 09:55:56 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -13,6 +13,7 @@ mdefine_line|#define PG_dcache_dirty&t;&t;PG_arch_1
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
+multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3))
@@ -81,7 +82,7 @@ mdefine_line|#define _PAGE_NFO&t;0x1000000000000000&t;/* No Fault Only          
 DECL|macro|_PAGE_IE
 mdefine_line|#define _PAGE_IE&t;0x0800000000000000&t;/* Invert Endianness                  */
 DECL|macro|_PAGE_SN
-mdefine_line|#define _PAGE_SN&t;0x0000800000000000&t;/* Snoop                              */
+mdefine_line|#define _PAGE_SN&t;0x0000800000000000&t;/* (Cheetah) Snoop                    */
 DECL|macro|_PAGE_PADDR_SF
 mdefine_line|#define _PAGE_PADDR_SF&t;0x000001FFFFFFE000&t;/* (Spitfire) Phys Address [40:13]    */
 DECL|macro|_PAGE_PADDR

@@ -364,7 +364,7 @@ c_func
 id|CPUNR
 )paren
 suffix:semicolon
-multiline_comment|/* Test for incomming connections _again_, because it is possible&n;&t;&t;&t;   one came in during the other steps, and the wakeup doesn&squot;t happen&n;&t;&t;&t;   then.&n;&t;&t;&t;*/
+multiline_comment|/* Test for incoming connections _again_, because it is possible&n;&t;&t;&t;   one came in during the other steps, and the wakeup doesn&squot;t happen&n;&t;&t;&t;   then.&n;&t;&t;&t;*/
 id|changes
 op_add_assign
 id|AcceptConnections

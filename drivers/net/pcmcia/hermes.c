@@ -8,6 +8,7 @@ id|version
 op_assign
 l_string|&quot;hermes.c: 12 Dec 2000 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 suffix:semicolon
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -799,9 +800,22 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;hermes @ 0x%x: Frame allocation command failed (0x%X).&bslash;n&quot;
+comma
+id|hw-&gt;iobase
+comma
+id|err
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 id|reg
 op_assign
 id|hermes_read_regn

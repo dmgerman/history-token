@@ -10,14 +10,6 @@ id|ipv4_table
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IPX
-r_extern
-id|ctl_table
-id|ipx_table
-(braket
-)braket
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|ctl_table
 id|core_table
@@ -124,22 +116,6 @@ comma
 l_int|0555
 comma
 id|ipv4_table
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_IPX
-(brace
-id|NET_IPX
-comma
-l_string|&quot;ipx&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0555
-comma
-id|ipx_table
 )brace
 comma
 macro_line|#endif

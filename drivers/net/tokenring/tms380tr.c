@@ -8617,6 +8617,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|skb
+op_logical_and
+(paren
 id|rpl-&gt;SkbStat
 op_eq
 id|SKB_DATA_COPY
@@ -8624,6 +8627,7 @@ op_logical_or
 id|rpl-&gt;SkbStat
 op_eq
 id|SKB_DMA_DIRECT
+)paren
 )paren
 (brace
 r_if
@@ -8634,7 +8638,7 @@ op_eq
 id|SKB_DATA_COPY
 )paren
 (brace
-id|memmove
+id|memcpy
 c_func
 (paren
 id|skb-&gt;data

@@ -1185,6 +1185,16 @@ id|sonic_local
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/* methinks this will always be true but better safe than sorry */
 r_if
 c_cond
@@ -1193,6 +1203,7 @@ id|dev-&gt;priv
 op_eq
 l_int|NULL
 )paren
+(brace
 id|dev-&gt;priv
 op_assign
 id|kmalloc
@@ -1207,6 +1218,18 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;priv
+)paren
+multiline_comment|/* FIXME: kfree dev if necessary */
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace

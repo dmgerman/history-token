@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.68 2000/12/31 10:05:43 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: processor.h,v 1.69 2001/03/08 22:08:51 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __ASM_SPARC64_PROCESSOR_H
 DECL|macro|__ASM_SPARC64_PROCESSOR_H
 mdefine_line|#define __ASM_SPARC64_PROCESSOR_H
@@ -132,16 +132,11 @@ id|utraps
 suffix:semicolon
 DECL|member|gsr
 r_int
-r_char
+r_int
 id|gsr
 (braket
 l_int|7
 )braket
-suffix:semicolon
-DECL|member|__pad3
-r_int
-r_char
-id|__pad3
 suffix:semicolon
 DECL|member|xfsr
 r_int
@@ -214,7 +209,7 @@ mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP { &amp;init_mm, 0xfffff80000000000, 0xfffff80001000000, &bslash;&n;&t;&t;    NULL, PAGE_SHARED , VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   __pad3, xfsr, */&t;&t;&t;&bslash;&n;   0,&t;   { 0 }, 0,      { 0 },&t;&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   xfsr, */&t;&t;&t;&t;&bslash;&n;   0,&t;   { 0 }, { 0 },&t;&t;&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Return saved PC of a blocked thread. */
 DECL|function|thread_saved_pc

@@ -3199,12 +3199,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;proc_entry
-)paren
-suffix:semicolon
 id|fail0
 suffix:colon
 id|kfree

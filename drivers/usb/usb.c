@@ -8387,7 +8387,7 @@ r_else
 id|err
 c_func
 (paren
-l_string|&quot;USB device descriptor short read (expected %i, got %i)&quot;
+l_string|&quot;USB device descriptor short read (expected %Zi, got %i)&quot;
 comma
 r_sizeof
 (paren

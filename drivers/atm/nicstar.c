@@ -106,8 +106,6 @@ mdefine_line|#define ns_grab_res_lock(card,flags) &bslash;&n;        spin_lock_i
 DECL|macro|ns_grab_scq_lock
 mdefine_line|#define ns_grab_scq_lock(card,scq,flags) &bslash;&n;        spin_lock_irqsave(&amp;(scq)-&gt;lock,flags)
 macro_line|#endif /* NS_DEBUG_SPINLOCKS */
-multiline_comment|/* Version definition *********************************************************/
-multiline_comment|/*&n;#include &lt;linux/version.h&gt;&n;char kernel_version[] = UTS_RELEASE;&n;*/
 multiline_comment|/* Function declarations ******************************************************/
 r_static
 id|u32
@@ -3451,7 +3449,7 @@ l_int|0
 op_assign
 l_int|0x00000000
 suffix:semicolon
-macro_line|#endif RCQ_SUPPORT
+macro_line|#endif /* RCQ_SUPPORT */
 id|u32d
 (braket
 l_int|1

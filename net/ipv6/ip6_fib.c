@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&t;Forwarding Information Database&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_fib.c,v 1.22 2000/09/12 00:38:34 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&t;Forwarding Information Database&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_fib.c,v 1.23 2001/03/19 20:31:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -125,7 +125,9 @@ id|rt
 )paren
 suffix:semicolon
 r_static
-r_void
+r_struct
+id|fib6_node
+op_star
 id|fib6_repair_tree
 c_func
 (paren
@@ -2407,7 +2409,9 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Called to trim the tree of intermediate nodes when possible. &quot;fn&quot;&n; *&t;is the node we want to try and remove.&n; */
 DECL|function|fib6_repair_tree
 r_static
-r_void
+r_struct
+id|fib6_node
+op_star
 id|fib6_repair_tree
 c_func
 (paren
@@ -2588,6 +2592,7 @@ id|fn-&gt;leaf-&gt;rt6i_ref
 )paren
 suffix:semicolon
 r_return
+id|fn-&gt;parent
 suffix:semicolon
 )brace
 id|pn
@@ -2884,6 +2889,7 @@ id|pn
 )paren
 )paren
 r_return
+id|pn
 suffix:semicolon
 id|rt6_release
 c_func
@@ -3030,10 +3036,93 @@ suffix:semicolon
 id|rt6_stats.fib_route_nodes
 op_decrement
 suffix:semicolon
+id|fn
+op_assign
 id|fib6_repair_tree
 c_func
 (paren
 id|fn
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rt-&gt;rt6i_ref
+)paren
+op_ne
+l_int|1
+)paren
+(brace
+multiline_comment|/* This route is used as dummy address holder in some split&n;&t;&t; * nodes. It is not leaked, but it still holds other resources,&n;&t;&t; * which must be released in time. So, scan ascendant nodes&n;&t;&t; * and replace dummy references to this route with references&n;&t;&t; * to still alive ones.&n;&t;&t; */
+r_while
+c_loop
+(paren
+id|fn
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|fn-&gt;fn_flags
+op_amp
+id|RTN_RTINFO
+)paren
+op_logical_and
+id|fn-&gt;leaf
+op_eq
+id|rt
+)paren
+(brace
+id|fn-&gt;leaf
+op_assign
+id|fib6_find_prefix
+c_func
+(paren
+id|fn
+)paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|fn-&gt;leaf-&gt;rt6i_ref
+)paren
+suffix:semicolon
+id|rt6_release
+c_func
+(paren
+id|rt
+)paren
+suffix:semicolon
+)brace
+id|fn
+op_assign
+id|fn-&gt;parent
+suffix:semicolon
+)brace
+multiline_comment|/* No more references are possiible at this point. */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|rt-&gt;rt6i_ref
+)paren
+op_ne
+l_int|1
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

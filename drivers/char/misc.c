@@ -125,14 +125,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pc110pad_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|pmu_device_init
 c_func
 (paren
@@ -913,13 +905,6 @@ l_int|NULL
 suffix:semicolon
 macro_line|#if defined CONFIG_82C710_MOUSE
 id|qpmouse_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PC110_PAD
-id|pc110pad_init
 c_func
 (paren
 )paren

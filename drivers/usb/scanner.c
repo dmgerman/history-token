@@ -1000,7 +1000,7 @@ id|scn-&gt;bulk_in_ep
 id|err
 c_func
 (paren
-l_string|&quot;read_scanner(%d): Failure to clear endpoint halt condition (%d).&quot;
+l_string|&quot;read_scanner(%d): Failure to clear endpoint halt condition (%Zd).&quot;
 comma
 id|scn_minor
 comma

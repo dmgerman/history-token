@@ -375,7 +375,7 @@ l_int|10
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;read (%d) - 0x%x %d&quot;
+l_string|&quot;read (%Zd) - 0x%x %d&quot;
 comma
 id|len
 comma
@@ -435,7 +435,7 @@ id|RETRY_TIMEOUT
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;read (%d) - retry&quot;
+l_string|&quot;read (%Zd) - retry&quot;
 comma
 id|len
 )paren
@@ -766,7 +766,7 @@ id|camera-&gt;sem
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;wrote %d&quot;
+l_string|&quot;wrote %Zd&quot;
 comma
 id|bytes_written
 )paren

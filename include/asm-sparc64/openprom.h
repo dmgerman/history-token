@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: openprom.h,v 1.8 2000/08/12 19:55:25 anton Exp $ */
+multiline_comment|/* $Id: openprom.h,v 1.9 2001/03/16 10:22:02 davem Exp $ */
 macro_line|#ifndef __SPARC64_OPENPROM_H
 DECL|macro|__SPARC64_OPENPROM_H
 mdefine_line|#define __SPARC64_OPENPROM_H
@@ -1018,6 +1018,29 @@ r_int
 r_int
 id|ot_parent_space
 suffix:semicolon
+DECL|member|ot_parent_base
+r_int
+r_int
+id|ot_parent_base
+suffix:semicolon
+multiline_comment|/* CPU looks from here */
+DECL|member|or_size
+r_int
+r_int
+id|or_size
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|linux_prom64_ranges
+r_struct
+id|linux_prom64_ranges
+(brace
+DECL|member|ot_child_base
+r_int
+r_int
+id|ot_child_base
+suffix:semicolon
+multiline_comment|/* Bus feels this */
 DECL|member|ot_parent_base
 r_int
 r_int

@@ -803,7 +803,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|event_occured
+id|event_occurred
 op_assign
 l_int|0
 suffix:semicolon
@@ -1010,7 +1010,7 @@ id|smc-&gt;srf.any_report
 op_assign
 id|TRUE
 suffix:semicolon
-id|event_occured
+id|event_occurred
 op_assign
 id|TRUE
 suffix:semicolon
@@ -1088,7 +1088,7 @@ multiline_comment|/* SR01c */
 r_if
 c_cond
 (paren
-id|event_occured
+id|event_occurred
 op_logical_and
 id|tsr
 OL
@@ -1164,7 +1164,7 @@ multiline_comment|/* SR00d */
 r_if
 c_cond
 (paren
-id|event_occured
+id|event_occurred
 op_logical_and
 id|tsr
 op_ge

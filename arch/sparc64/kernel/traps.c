@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.70 2001/02/09 05:46:44 davem Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: traps.c,v 1.73 2001/03/22 07:26:03 davem Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
 multiline_comment|/*&n; * I like traps on v9, :))))&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 macro_line|#include &lt;asm/lsu.h&gt;
+macro_line|#include &lt;asm/dcu.h&gt;
 macro_line|#include &lt;asm/psrcompat.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -1943,6 +1944,27 @@ comma
 id|regs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGILL
@@ -2065,6 +2087,27 @@ l_string|&quot;Iax&quot;
 comma
 id|regs
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
 suffix:semicolon
 )brace
 id|info.si_signo
@@ -2275,7 +2318,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* This is really pathetic... */
-multiline_comment|/* #define DEBUG_PCI_POKES */
 r_extern
 r_volatile
 r_int
@@ -2290,7 +2332,6 @@ macro_line|#endif
 multiline_comment|/* When access exceptions happen, we must do this. */
 DECL|function|clean_and_reenable_l1_caches
 r_static
-id|__inline__
 r_void
 id|clean_and_reenable_l1_caches
 c_func
@@ -2302,6 +2343,14 @@ r_int
 r_int
 id|va
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+(brace
 multiline_comment|/* Clean &squot;em. */
 r_for
 c_loop
@@ -2340,7 +2389,7 @@ l_int|0x0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Re-enable. */
+multiline_comment|/* Re-enable in LSU. */
 id|__asm__
 id|__volatile__
 c_func
@@ -2371,6 +2420,63 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+(brace
+multiline_comment|/* Flush D-cache */
+r_for
+c_loop
+(paren
+id|va
+op_assign
+l_int|0
+suffix:semicolon
+id|va
+OL
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|va
+op_add_assign
+(paren
+l_int|1
+op_lshift
+l_int|5
+)paren
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa %%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|va
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_DCACHE_TAG
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 DECL|function|do_iae
 r_void
@@ -2445,41 +2551,32 @@ c_cond
 id|pci_poke_in_progress
 )paren
 (brace
-macro_line|#ifdef DEBUG_PCI_POKES
-id|prom_printf
+id|clean_and_reenable_l1_caches
 c_func
 (paren
-l_string|&quot; (POKE tpc[%016lx] tnpc[%016lx] &quot;
-comma
-id|regs-&gt;tpc
-comma
-id|regs-&gt;tnpc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pci_poke_faulted
 op_assign
 l_int|1
+suffix:semicolon
+multiline_comment|/* Why the fuck did they have to change this? */
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+id|regs-&gt;tpc
+op_add_assign
+l_int|4
 suffix:semicolon
 id|regs-&gt;tnpc
 op_assign
 id|regs-&gt;tpc
 op_plus
 l_int|4
-suffix:semicolon
-macro_line|#ifdef DEBUG_PCI_POKES
-id|prom_printf
-c_func
-(paren
-l_string|&quot;PCI) &quot;
-)paren
-suffix:semicolon
-multiline_comment|/* prom_halt(); */
-macro_line|#endif
-id|clean_and_reenable_l1_caches
-c_func
-(paren
-)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3365,6 +3462,27 @@ suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGFPE
@@ -3646,6 +3764,27 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGEMT
@@ -3696,6 +3835,27 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGFPE
@@ -4279,6 +4439,28 @@ id|regs-&gt;tpc
 suffix:semicolon
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|user_instruction_dump
 (paren
 (paren
@@ -4289,6 +4471,7 @@ op_star
 id|regs-&gt;tpc
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 id|smp_report_regs
 c_func
@@ -4644,6 +4827,27 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 id|info.si_signo
 op_assign
 id|SIGILL
@@ -5260,6 +5464,27 @@ id|regs-&gt;tnpc
 op_add_assign
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 )brace
 DECL|function|trap_init
 r_void

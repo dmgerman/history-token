@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|variable|__initdata
 r_struct
 id|prom_cpuinfo
@@ -237,6 +238,18 @@ id|prom_node
 op_assign
 id|scan
 suffix:semicolon
+id|thismid
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|spitfire
+)paren
+(brace
 id|prom_getproperty
 c_func
 (paren
@@ -257,6 +270,37 @@ id|thismid
 )paren
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+(brace
+id|prom_getproperty
+c_func
+(paren
+id|scan
+comma
+l_string|&quot;portid&quot;
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|thismid
+comma
+r_sizeof
+(paren
+id|thismid
+)paren
+)paren
+suffix:semicolon
+)brace
 id|linux_cpus
 (braket
 id|cpu_ctr

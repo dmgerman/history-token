@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc.c,v 1.48 2001/02/13 01:16:44 davem Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
+multiline_comment|/* $Id: sys_sparc.c,v 1.50 2001/03/24 09:36:10 davem Exp $&n; * linux/arch/sparc64/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1497,6 +1497,27 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG_SPARC_BREAKPOINT
 id|printk
 (paren
@@ -1706,6 +1727,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_increment
 id|count
 op_le
@@ -1765,6 +1807,27 @@ id|regs-&gt;tnpc
 op_add_assign
 l_int|4
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.flags
+op_amp
+id|SPARC_FLAG_32BIT
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|regs-&gt;tpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+id|regs-&gt;tnpc
+op_and_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

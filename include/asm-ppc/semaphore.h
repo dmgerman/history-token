@@ -383,16 +383,18 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|RW_LOCK_BIAS
+mdefine_line|#define RW_LOCK_BIAS&t;2&t;/* XXX bogus */
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name, rd, wr)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;(rd), (wr),&t;&t;&t;&t;&t;&bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;&t;__SEM_DEBUG_INIT(name)&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define __RWSEM_INITIALIZER(name, count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;&t;(count) == 1, (count) == 0,&t;&t;&t;&bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;&t;__SEM_DEBUG_INIT(name)&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|__DECLARE_RWSEM_GENERIC
-mdefine_line|#define __DECLARE_RWSEM_GENERIC(name, rd, wr)&t;&t;&bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name, rd, wr)
+mdefine_line|#define __DECLARE_RWSEM_GENERIC(name, count)&t;&t;&bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name, count)
 DECL|macro|DECLARE_RWSEM
-mdefine_line|#define DECLARE_RWSEM(name) __DECLARE_RWSEM_GENERIC(name, 0, 0)
+mdefine_line|#define DECLARE_RWSEM(name) __DECLARE_RWSEM_GENERIC(name, RW_LOCK_BIAS)
 DECL|macro|DECLARE_RWSEM_READ_LOCKED
-mdefine_line|#define DECLARE_RWSEM_READ_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 1, 0)
+mdefine_line|#define DECLARE_RWSEM_READ_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, RW_LOCK_BIAS-1)
 DECL|macro|DECLARE_RWSEM_WRITE_LOCKED
-mdefine_line|#define DECLARE_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 0, 1)
+mdefine_line|#define DECLARE_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 0)
 DECL|function|init_rwsem
 r_extern
 r_inline

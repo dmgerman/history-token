@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sysctl_net_ipv4.c: sysctl interface to net IPV4 subsystem.&n; *&n; * $Id: sysctl_net_ipv4.c,v 1.47 2000/10/19 15:51:02 davem Exp $&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/ipv4 directory entry (empty =) ). [MS]&n; */
+multiline_comment|/*&n; * sysctl_net_ipv4.c: sysctl interface to net IPV4 subsystem.&n; *&n; * $Id: sysctl_net_ipv4.c,v 1.48 2001/02/23 01:39:05 davem Exp $&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/ipv4 directory entry (empty =) ). [MS]&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -85,6 +85,7 @@ r_extern
 r_int
 id|inet_peer_gc_maxtime
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|tcp_retr1_max
 r_static
 r_int
@@ -118,6 +119,7 @@ comma
 l_int|65535
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|ipv4_config
 r_struct
 id|ipv4_config

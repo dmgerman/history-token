@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: iommu.h,v 1.9 1999/09/21 14:39:39 davem Exp $&n; * iommu.h: Definitions for the sun5 IOMMU.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: iommu.h,v 1.10 2001/03/08 09:55:56 davem Exp $&n; * iommu.h: Definitions for the sun5 IOMMU.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_IOMMU_H
 DECL|macro|_SPARC64_IOMMU_H
 mdefine_line|#define _SPARC64_IOMMU_H
@@ -14,7 +14,7 @@ mdefine_line|#define IOPTE_INTRA         0x0800000000000000 /* SBUS slot--&gt;sl
 DECL|macro|IOPTE_CONTEXT
 mdefine_line|#define IOPTE_CONTEXT&t;    0x07ff800000000000 /* Context number&t;&t;   */
 DECL|macro|IOPTE_PAGE
-mdefine_line|#define IOPTE_PAGE          0x00007fffffffe000 /* Physical page number (PA[40:13]) */
+mdefine_line|#define IOPTE_PAGE          0x00007fffffffe000 /* Physical page number (PA[42:13]) */
 DECL|macro|IOPTE_CACHE
 mdefine_line|#define IOPTE_CACHE         0x0000000000000010 /* Cached (in UPA E-cache)          */
 DECL|macro|IOPTE_WRITE

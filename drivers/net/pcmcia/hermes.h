@@ -196,6 +196,8 @@ DECL|macro|HERMES_RID_CNF_PM_MCAST_RX
 mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_MCAST_RX&t;((uint16_t)0xfc0b)
 DECL|macro|HERMES_RID_CNF_PM_PERIOD
 mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_PERIOD&t;((uint16_t)0xfc0c)
+DECL|macro|HERMES_RID_CNF_PM_HOLDOVER
+mdefine_line|#define&t;&t;HERMES_RID_CNF_PM_HOLDOVER&t;((uint16_t)0xfc0d)
 DECL|macro|HERMES_RID_CNF_NICKNAME
 mdefine_line|#define&t;&t;HERMES_RID_CNF_NICKNAME&t;&t;((uint16_t)0xfc0e)
 DECL|macro|HERMES_RID_CNF_WEP_ON
@@ -232,6 +234,13 @@ DECL|macro|HERMES_RID_CNF_PRISM2_KEY2
 mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY2&t;((uint16_t)0xfc26)
 DECL|macro|HERMES_RID_CNF_PRISM2_KEY3
 mdefine_line|#define&t;&t;HERMES_RID_CNF_PRISM2_KEY3&t;((uint16_t)0xfc27)
+DECL|macro|HERMES_RID_CNF_SYMBOL_AUTH_TYPE
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_AUTH_TYPE&t;&t;((uint16_t)0xfc2A)
+multiline_comment|/* This one is read only */
+DECL|macro|HERMES_RID_CNF_SYMBOL_KEY_LENGTH
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_KEY_LENGTH&t;((uint16_t)0xfc2B)
+DECL|macro|HERMES_RID_CNF_SYMBOL_BASIC_RATES
+mdefine_line|#define&t;&t;HERMES_RID_CNF_SYMBOL_BASIC_RATES&t;((uint16_t)0xfc8A)
 multiline_comment|/*&n; * Information RIDs&n; */
 DECL|macro|HERMES_RID_CHANNEL_LIST
 mdefine_line|#define&t;&t;HERMES_RID_CHANNEL_LIST&t;&t;((uint16_t)0xfd10)
@@ -808,6 +817,8 @@ DECL|macro|HERMES_READ_RECORD
 mdefine_line|#define HERMES_READ_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_read_ltv((hw),(bap),(rid), sizeof(*buf), NULL, (buf)))
 DECL|macro|HERMES_WRITE_RECORD
 mdefine_line|#define HERMES_WRITE_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_write_ltv((hw),(bap),(rid),HERMES_BYTES_TO_RECLEN(sizeof(*buf)),(buf)))
+DECL|macro|HERMES_WRITE_RECORD_LEN
+mdefine_line|#define HERMES_WRITE_RECORD_LEN(hw, bap, rid, buf, len) &bslash;&n;&t;(hermes_write_ltv((hw),(bap),(rid),HERMES_BYTES_TO_RECLEN(len),(buf)))
 DECL|function|hermes_read_wordrec
 r_static
 r_inline

@@ -1955,7 +1955,7 @@ id|tcp_tw_bucket
 op_star
 id|tw
 suffix:semicolon
-id|write_lock
+id|write_lock_bh
 c_func
 (paren
 op_amp

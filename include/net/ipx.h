@@ -31,6 +31,8 @@ DECL|macro|ipx_broadcast_node
 mdefine_line|#define ipx_broadcast_node&t;&quot;&bslash;377&bslash;377&bslash;377&bslash;377&bslash;377&bslash;377&quot;
 DECL|macro|ipx_this_node
 mdefine_line|#define ipx_this_node           &quot;&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&quot;
+DECL|macro|IPX_MAX_PPROP_HOPS
+mdefine_line|#define IPX_MAX_PPROP_HOPS 8
 DECL|struct|ipxhdr
 r_struct
 id|ipxhdr
@@ -76,7 +78,7 @@ mdefine_line|#define IPX_TYPE_SPX&t;&t;0x05&t;/* SPX protocol */
 DECL|macro|IPX_TYPE_NCP
 mdefine_line|#define IPX_TYPE_NCP&t;&t;0x11&t;/* $lots for docs on this (SPIT) */
 DECL|macro|IPX_TYPE_PPROP
-mdefine_line|#define IPX_TYPE_PPROP&t;&t;0x14&t;/* complicated flood fill brdcast [Not supported] */
+mdefine_line|#define IPX_TYPE_PPROP&t;&t;0x14&t;/* complicated flood fill brdcast */
 DECL|member|ipx_dest
 id|ipx_address
 id|ipx_dest
@@ -213,6 +215,10 @@ id|ipx_route
 op_star
 id|ir_next
 suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 DECL|typedef|ipx_route
 )brace
 id|ipx_route
@@ -234,9 +240,19 @@ DECL|member|ipx_source_net
 id|u32
 id|ipx_source_net
 suffix:semicolon
-DECL|member|last_hop_index
+r_struct
+(brace
+DECL|member|netnum
+id|u32
+id|netnum
+suffix:semicolon
+DECL|member|index
 r_int
-id|last_hop_index
+id|index
+suffix:semicolon
+DECL|member|last_hop
+)brace
+id|last_hop
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: spitfire.h,v 1.11 2001/03/03 10:34:45 davem Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: spitfire.h,v 1.14 2001/03/22 07:26:04 davem Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_SPITFIRE_H
 DECL|macro|_SPARC64_SPITFIRE_H
 mdefine_line|#define _SPARC64_SPITFIRE_H
@@ -44,6 +44,8 @@ r_enum
 id|ultra_tlb_layout
 id|tlb_type
 suffix:semicolon
+DECL|macro|SPARC64_USE_STICK
+mdefine_line|#define SPARC64_USE_STICK&t;(tlb_type == cheetah)
 DECL|macro|SPITFIRE_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define SPITFIRE_HIGHEST_LOCKED_TLBENT&t;(64 - 1)
 DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
@@ -189,8 +191,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -225,8 +229,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -302,7 +308,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -324,10 +331,14 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
+id|__asm__
+id|__volatile__
 (paren
-l_string|&quot;#Sync&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -388,7 +399,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -410,10 +422,14 @@ id|ASI_DMMU
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
+id|__asm__
+id|__volatile__
 (paren
-l_string|&quot;#Sync&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -438,7 +454,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -458,10 +475,14 @@ id|ASI_DCACHE_TAG
 )paren
 )paren
 suffix:semicolon
-id|membar
-c_func
+id|__asm__
+id|__volatile__
 (paren
-l_string|&quot;#Sync&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -486,7 +507,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -620,7 +642,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -756,7 +779,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -795,7 +819,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -825,7 +850,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -855,7 +881,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -885,7 +912,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -915,7 +943,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -945,7 +974,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -978,7 +1008,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1010,7 +1041,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1042,7 +1074,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1076,7 +1109,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1110,7 +1144,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1144,7 +1179,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1177,7 +1213,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1207,7 +1244,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%%g0, [%0] %1&quot;
+l_string|&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1451,7 +1489,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1501,7 +1540,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1655,7 +1695,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon
@@ -1809,7 +1850,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa&t;%0, [%1] %2&quot;
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
 suffix:colon
 multiline_comment|/* No outputs */
 suffix:colon

@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: process.c,v 1.114 2001/02/13 01:16:44 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: process.c,v 1.116 2001/03/24 09:36:01 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -2080,7 +2080,7 @@ id|pmd_t
 op_star
 id|page
 op_assign
-id|get_pmd_fast
+id|pmd_alloc_one_fast
 c_func
 (paren
 )paren
@@ -2091,18 +2091,13 @@ c_cond
 op_logical_neg
 id|page
 )paren
-(paren
-r_void
-)paren
-id|get_pmd_slow
+id|page
+op_assign
+id|pmd_alloc_one
 c_func
 (paren
-id|pgd0
-comma
-l_int|0
 )paren
 suffix:semicolon
-r_else
 id|pgd_set
 c_func
 (paren
@@ -2127,7 +2122,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stxa %0, [%1] %2&quot;
+l_string|&quot;stxa %0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

@@ -409,14 +409,6 @@ c_func
 l_string|&quot;OV511 USB Camera Driver&quot;
 )paren
 suffix:semicolon
-DECL|variable|kernel_version
-r_char
-id|kernel_version
-(braket
-)braket
-op_assign
-id|UTS_RELEASE
-suffix:semicolon
 DECL|variable|ov511_driver
 r_static
 r_struct

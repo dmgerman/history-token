@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: b1dma.c,v 1.11.6.1 2001/02/13 11:43:29 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * $Log: b1dma.c,v $&n; * Revision 1.11.6.1  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.11  2000/11/19 17:02:47  kai&n; * compatibility cleanup - part 3&n; *&n; * Revision 1.10  2000/11/19 17:01:53  kai&n; * compatibility cleanup - part 2&n; *&n; * Revision 1.9  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.8  2000/10/10 17:44:19  kai&n; * changes from/for 2.2.18&n; *&n; * Revision 1.7  2000/08/04 12:20:08  calle&n; * - Fix unsigned/signed warning in the right way ...&n; *&n; * Revision 1.6  2000/06/29 13:59:06  calle&n; * Bugfix: reinit txdma without interrupt will confuse some AMCC chips.&n; *&n; * Revision 1.5  2000/06/19 16:51:53  keil&n; * don&squot;t free skb in irq context&n; *&n; * Revision 1.4  2000/04/03 16:38:05  calle&n; * made suppress_pollack static.&n; *&n; * Revision 1.3  2000/02/26 01:00:53  keil&n; * changes from 2.3.47&n; *&n; * Revision 1.2  2000/01/25 14:44:47  calle&n; * typo in b1pciv4_detect().&n; *&n; * Revision 1.1  2000/01/25 14:36:43  calle&n; * common function for  T1 PCI and B1 PCI V4.&n; *&n; *&n; */
+multiline_comment|/*&n; * $Id: b1dma.c,v 1.11.6.3 2001/03/21 08:52:21 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * $Log: b1dma.c,v $&n; * Revision 1.11.6.3  2001/03/21 08:52:21  kai&n; * merge from main branch: fix buffer for revision string (calle)&n; *&n; * Revision 1.11.6.2  2001/03/15 15:11:23  kai&n; * *** empty log message ***&n; *&n; * Revision 1.11.6.1  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.11  2000/11/19 17:02:47  kai&n; * compatibility cleanup - part 3&n; *&n; * Revision 1.10  2000/11/19 17:01:53  kai&n; * compatibility cleanup - part 2&n; *&n; * Revision 1.9  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.8  2000/10/10 17:44:19  kai&n; * changes from/for 2.2.18&n; *&n; * Revision 1.7  2000/08/04 12:20:08  calle&n; * - Fix unsigned/signed warning in the right way ...&n; *&n; * Revision 1.6  2000/06/29 13:59:06  calle&n; * Bugfix: reinit txdma without interrupt will confuse some AMCC chips.&n; *&n; * Revision 1.5  2000/06/19 16:51:53  keil&n; * don&squot;t free skb in irq context&n; *&n; * Revision 1.4  2000/04/03 16:38:05  calle&n; * made suppress_pollack static.&n; *&n; * Revision 1.3  2000/02/26 01:00:53  keil&n; * changes from 2.3.47&n; *&n; * Revision 1.2  2000/01/25 14:44:47  calle&n; * typo in b1pciv4_detect().&n; *&n; * Revision 1.1  2000/01/25 14:36:43  calle&n; * common function for  T1 PCI and B1 PCI V4.&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,7 +22,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.1 $&quot;
+l_string|&quot;$Revision: 1.11.6.3 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_AUTHOR
@@ -5244,7 +5244,7 @@ suffix:semicolon
 r_char
 id|rev
 (braket
-l_int|10
+l_int|32
 )braket
 suffix:semicolon
 r_if
@@ -5261,6 +5261,13 @@ comma
 l_char|&squot;:&squot;
 )paren
 )paren
+op_ne
+l_int|0
+op_logical_and
+id|p
+(braket
+l_int|1
+)braket
 )paren
 (brace
 id|strncpy
@@ -5270,7 +5277,7 @@ id|rev
 comma
 id|p
 op_plus
-l_int|1
+l_int|2
 comma
 r_sizeof
 (paren
@@ -5278,6 +5285,22 @@ id|rev
 )paren
 )paren
 suffix:semicolon
+id|rev
+(braket
+r_sizeof
+(paren
+id|rev
+)paren
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|p
 op_assign
 id|strchr
@@ -5287,9 +5310,20 @@ id|rev
 comma
 l_char|&squot;$&squot;
 )paren
-suffix:semicolon
-op_star
+)paren
+op_ne
+l_int|0
+op_logical_and
 id|p
+OG
+id|rev
+)paren
+op_star
+(paren
+id|p
+op_minus
+l_int|1
+)paren
 op_assign
 l_int|0
 suffix:semicolon

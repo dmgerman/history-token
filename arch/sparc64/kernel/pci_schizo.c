@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.8 2001/03/01 08:05:32 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.13 2001/03/21 00:29:58 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/upa.h&gt;
 macro_line|#include &quot;pci_impl.h&quot;
 multiline_comment|/* All SCHIZO registers are 64-bits.  The following accessor&n; * routines are how they are accessed.  The REG parameter&n; * is a physical address.&n; */
 DECL|macro|schizo_read
@@ -962,7 +963,7 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 0  Int A, B, C, D */
+multiline_comment|/* PCI slot 0  Int A, B, C, D&t;*/
 multiline_comment|/*0x04*/
 l_int|0
 comma
@@ -972,7 +973,7 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 1  Int A, B, C, D */
+multiline_comment|/* PCI slot 1  Int A, B, C, D&t;*/
 multiline_comment|/*0x08*/
 l_int|0
 comma
@@ -982,7 +983,7 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 2  Int A, B, C, D */
+multiline_comment|/* PCI slot 2  Int A, B, C, D&t;*/
 multiline_comment|/*0x0c*/
 l_int|0
 comma
@@ -992,7 +993,7 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 3  Int A, B, C, D */
+multiline_comment|/* PCI slot 3  Int A, B, C, D&t;*/
 multiline_comment|/*0x10*/
 l_int|0
 comma
@@ -1002,7 +1003,7 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 4  Int A, B, C, D */
+multiline_comment|/* PCI slot 4  Int A, B, C, D&t;*/
 multiline_comment|/*0x14*/
 l_int|0
 comma
@@ -1012,33 +1013,39 @@ l_int|0
 comma
 l_int|0
 comma
-multiline_comment|/* PCI slot 5  Int A, B, C, D */
+multiline_comment|/* PCI slot 5  Int A, B, C, D&t;*/
 multiline_comment|/*0x18*/
+l_int|3
+comma
+multiline_comment|/* SCSI&t;&t;&t;&t;*/
+multiline_comment|/*0x19*/
+l_int|3
+comma
+multiline_comment|/* second SCSI&t;&t;&t;*/
+multiline_comment|/*0x1a*/
 l_int|0
 comma
+multiline_comment|/* UNKNOWN&t;&t;&t;*/
+multiline_comment|/*0x1b*/
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* PCI slot 6  Int A, B, C, D */
+multiline_comment|/* UNKNOWN&t;&t;&t;*/
 multiline_comment|/*0x1c*/
 l_int|8
 comma
 multiline_comment|/* Parallel&t;&t;&t;*/
 multiline_comment|/*0x1d*/
-l_int|0
+l_int|5
 comma
-multiline_comment|/* UNKNOWN&t;&t;&t;*/
+multiline_comment|/* Ethernet&t;&t;&t;*/
 multiline_comment|/*0x1e*/
-l_int|0
+l_int|8
 comma
-multiline_comment|/* UNKNOWN&t;&t;&t;*/
+multiline_comment|/* Firewire-1394&t;&t;*/
 multiline_comment|/*0x1f*/
-l_int|0
+l_int|9
 comma
-multiline_comment|/* UNKNOWN&t;&t;&t;*/
+multiline_comment|/* USB&t;&t;&t;&t;*/
 multiline_comment|/*0x20*/
 l_int|13
 comma
@@ -1414,13 +1421,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|ino
-op_amp
-l_int|0x20
-)paren
-op_eq
-l_int|0
+OL
+l_int|0x18
 )paren
 id|inofixup
 op_assign
@@ -1510,6 +1513,50 @@ id|stc_line_buf
 l_int|16
 )braket
 suffix:semicolon
+DECL|function|schizo_clear_other_err_intr
+r_static
+r_void
+id|schizo_clear_other_err_intr
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_struct
+id|ino_bucket
+op_star
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_int
+r_int
+id|iclr
+op_assign
+id|bucket-&gt;iclr
+suffix:semicolon
+id|iclr
+op_add_assign
+(paren
+id|SCHIZO_PBM_B_REGS_OFF
+op_minus
+id|SCHIZO_PBM_A_REGS_OFF
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|ICLR_IDLE
+comma
+id|iclr
+)paren
+suffix:semicolon
+)brace
 DECL|macro|SCHIZO_STC_ERR
 mdefine_line|#define SCHIZO_STC_ERR&t;0xb800UL /* --&gt; 0xba00 */
 DECL|macro|SCHIZO_STC_TAG
@@ -3070,6 +3117,12 @@ comma
 id|UE_ERR
 )paren
 suffix:semicolon
+id|schizo_clear_other_err_intr
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 )brace
 DECL|macro|SCHIZO_CE_AFSR
 mdefine_line|#define SCHIZO_CE_AFSR&t;0x10040UL
@@ -3430,6 +3483,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;]&bslash;n&quot;
+)paren
+suffix:semicolon
+id|schizo_clear_other_err_intr
+c_func
+(paren
+id|irq
 )paren
 suffix:semicolon
 )brace
@@ -4000,6 +4059,12 @@ comma
 id|pbm-&gt;pci_bus
 )paren
 suffix:semicolon
+id|schizo_clear_other_err_intr
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 )brace
 DECL|macro|SCHIZO_SAFARI_ERRLOG
 mdefine_line|#define SCHIZO_SAFARI_ERRLOG&t;0x10018UL
@@ -4117,6 +4182,12 @@ comma
 id|errlog
 )paren
 suffix:semicolon
+id|schizo_clear_other_err_intr
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4134,6 +4205,12 @@ c_func
 id|p
 comma
 id|SAFARI_ERR
+)paren
+suffix:semicolon
+id|schizo_clear_other_err_intr
+c_func
+(paren
+id|irq
 )paren
 suffix:semicolon
 )brace
@@ -4168,6 +4245,16 @@ DECL|macro|SCHIZO_PCIA_CTRL
 mdefine_line|#define SCHIZO_PCIA_CTRL&t;(SCHIZO_PBM_A_REGS_OFF + 0x2000UL)
 DECL|macro|SCHIZO_PCIB_CTRL
 mdefine_line|#define SCHIZO_PCIB_CTRL&t;(SCHIZO_PBM_B_REGS_OFF + 0x2000UL)
+DECL|macro|SCHIZO_PCICTRL_BUNUS
+mdefine_line|#define SCHIZO_PCICTRL_BUNUS&t;(1UL &lt;&lt; 63UL)
+DECL|macro|SCHIZO_PCICTRL_ESLCK
+mdefine_line|#define SCHIZO_PCICTRL_ESLCK&t;(1UL &lt;&lt; 51UL)
+DECL|macro|SCHIZO_PCICTRL_TTO_ERR
+mdefine_line|#define SCHIZO_PCICTRL_TTO_ERR&t;(1UL &lt;&lt; 38UL)
+DECL|macro|SCHIZO_PCICTRL_RTRY_ERR
+mdefine_line|#define SCHIZO_PCICTRL_RTRY_ERR&t;(1UL &lt;&lt; 37UL)
+DECL|macro|SCHIZO_PCICTRL_DTO_ERR
+mdefine_line|#define SCHIZO_PCICTRL_DTO_ERR&t;(1UL &lt;&lt; 36UL)
 DECL|macro|SCHIZO_PCICTRL_SBH_ERR
 mdefine_line|#define SCHIZO_PCICTRL_SBH_ERR&t;(1UL &lt;&lt; 35UL)
 DECL|macro|SCHIZO_PCICTRL_SERR
@@ -4176,7 +4263,6 @@ DECL|macro|SCHIZO_PCICTRL_SBH_INT
 mdefine_line|#define SCHIZO_PCICTRL_SBH_INT&t;(1UL &lt;&lt; 18UL)
 DECL|macro|SCHIZO_PCICTRL_EEN
 mdefine_line|#define SCHIZO_PCICTRL_EEN&t;(1UL &lt;&lt; 17UL)
-multiline_comment|/* XXX It is not entirely clear if I need to enable the PCI controller interrupts&n; * XXX in both PBMs, the documentation is very vague about this point.  For now&n; * XXX I&squot;ll just enable it on PBM A but this needs to be verified! -DaveM&n; */
 DECL|function|schizo_register_error_handlers
 r_static
 r_void
@@ -4193,12 +4279,19 @@ id|p
 r_struct
 id|pci_pbm_info
 op_star
-id|pbm
+id|pbm_a
 op_assign
 op_amp
 id|p-&gt;pbm_A
 suffix:semicolon
-multiline_comment|/* XXX verify me XXX */
+r_struct
+id|pci_pbm_info
+op_star
+id|pbm_b
+op_assign
+op_amp
+id|p-&gt;pbm_B
+suffix:semicolon
 r_int
 r_int
 id|base
@@ -4213,6 +4306,11 @@ id|portid
 op_assign
 id|p-&gt;portid
 suffix:semicolon
+r_struct
+id|ino_bucket
+op_star
+id|bucket
+suffix:semicolon
 id|u64
 id|tmp
 suffix:semicolon
@@ -4222,7 +4320,7 @@ op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm
+id|pbm_a
 comma
 l_int|NULL
 comma
@@ -4269,12 +4367,48 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|readl
+c_func
+(paren
+id|bucket-&gt;imap
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|tmp
+comma
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|schizo_imap_offset
+c_func
+(paren
+id|SCHIZO_UE_INO
+)paren
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|irq
 op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm
+id|pbm_a
 comma
 l_int|NULL
 comma
@@ -4321,12 +4455,48 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|upa_readl
+c_func
+(paren
+id|bucket-&gt;imap
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|tmp
+comma
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|schizo_imap_offset
+c_func
+(paren
+id|SCHIZO_CE_INO
+)paren
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|irq
 op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm
+id|pbm_a
 comma
 l_int|NULL
 comma
@@ -4353,8 +4523,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;SCHIZO PCIERR&quot;
 comma
-op_amp
-id|p-&gt;pbm_A
+id|pbm_a
 )paren
 OL
 l_int|0
@@ -4374,12 +4543,48 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|upa_readl
+c_func
+(paren
+id|bucket-&gt;imap
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|tmp
+comma
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|schizo_imap_offset
+c_func
+(paren
+id|SCHIZO_PCIERR_A_INO
+)paren
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|irq
 op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm
+id|pbm_a
 comma
 l_int|NULL
 comma
@@ -4406,8 +4611,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;SCHIZO PCIERR&quot;
 comma
-op_amp
-id|p-&gt;pbm_B
+id|pbm_b
 )paren
 OL
 l_int|0
@@ -4427,12 +4631,48 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|upa_readl
+c_func
+(paren
+id|bucket-&gt;imap
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|tmp
+comma
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|schizo_imap_offset
+c_func
+(paren
+id|SCHIZO_PCIERR_B_INO
+)paren
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|irq
 op_assign
 id|schizo_irq_build
 c_func
 (paren
-id|pbm
+id|pbm_a
 comma
 l_int|NULL
 comma
@@ -4479,6 +4719,42 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|bucket
+op_assign
+id|__bucket
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|upa_readl
+c_func
+(paren
+id|bucket-&gt;imap
+)paren
+suffix:semicolon
+id|upa_writel
+c_func
+(paren
+id|tmp
+comma
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|schizo_imap_offset
+c_func
+(paren
+id|SCHIZO_SERR_INO
+)paren
+op_plus
+l_int|4
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Enable UE and CE interrupts for controller. */
 id|schizo_write
 c_func
@@ -4496,7 +4772,7 @@ id|SCHIZO_ECCCTRL_CE
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Enable PCI Error interrupts and clear error&n;&t; * bits for each PBM.&n;&t; *&n;&t; * XXX More error bits should be cleared, this is&n;&t; * XXX just the stuff which is identical on Psycho. -DaveM&n;&t; */
+multiline_comment|/* Enable PCI Error interrupts and clear error&n;&t; * bits for each PBM.&n;&t; */
 id|tmp
 op_assign
 id|schizo_read
@@ -4510,6 +4786,16 @@ suffix:semicolon
 id|tmp
 op_or_assign
 (paren
+id|SCHIZO_PCICTRL_BUNUS
+op_or
+id|SCHIZO_PCICTRL_ESLCK
+op_or
+id|SCHIZO_PCICTRL_TTO_ERR
+op_or
+id|SCHIZO_PCICTRL_RTRY_ERR
+op_or
+id|SCHIZO_PCICTRL_DTO_ERR
+op_or
 id|SCHIZO_PCICTRL_SBH_ERR
 op_or
 id|SCHIZO_PCICTRL_SERR
@@ -4542,6 +4828,16 @@ suffix:semicolon
 id|tmp
 op_or_assign
 (paren
+id|SCHIZO_PCICTRL_BUNUS
+op_or
+id|SCHIZO_PCICTRL_ESLCK
+op_or
+id|SCHIZO_PCICTRL_TTO_ERR
+op_or
+id|SCHIZO_PCICTRL_RTRY_ERR
+op_or
+id|SCHIZO_PCICTRL_DTO_ERR
+op_or
 id|SCHIZO_PCICTRL_SBH_ERR
 op_or
 id|SCHIZO_PCICTRL_SERR
@@ -4559,6 +4855,78 @@ op_plus
 id|SCHIZO_PCIB_CTRL
 comma
 id|tmp
+)paren
+suffix:semicolon
+id|schizo_write
+c_func
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_A_REGS_OFF
+op_plus
+id|SCHIZO_PCI_AFSR
+comma
+(paren
+id|SCHIZO_PCIAFSR_PMA
+op_or
+id|SCHIZO_PCIAFSR_PTA
+op_or
+id|SCHIZO_PCIAFSR_PRTRY
+op_or
+id|SCHIZO_PCIAFSR_PPERR
+op_or
+id|SCHIZO_PCIAFSR_PTTO
+op_or
+id|SCHIZO_PCIAFSR_PUNUS
+op_or
+id|SCHIZO_PCIAFSR_SMA
+op_or
+id|SCHIZO_PCIAFSR_STA
+op_or
+id|SCHIZO_PCIAFSR_SRTRY
+op_or
+id|SCHIZO_PCIAFSR_SPERR
+op_or
+id|SCHIZO_PCIAFSR_STTO
+op_or
+id|SCHIZO_PCIAFSR_SUNUS
+)paren
+)paren
+suffix:semicolon
+id|schizo_write
+c_func
+(paren
+id|base
+op_plus
+id|SCHIZO_PBM_B_REGS_OFF
+op_plus
+id|SCHIZO_PCI_AFSR
+comma
+(paren
+id|SCHIZO_PCIAFSR_PMA
+op_or
+id|SCHIZO_PCIAFSR_PTA
+op_or
+id|SCHIZO_PCIAFSR_PRTRY
+op_or
+id|SCHIZO_PCIAFSR_PPERR
+op_or
+id|SCHIZO_PCIAFSR_PTTO
+op_or
+id|SCHIZO_PCIAFSR_PUNUS
+op_or
+id|SCHIZO_PCIAFSR_SMA
+op_or
+id|SCHIZO_PCIAFSR_STA
+op_or
+id|SCHIZO_PCIAFSR_SRTRY
+op_or
+id|SCHIZO_PCIAFSR_SPERR
+op_or
+id|SCHIZO_PCIAFSR_STTO
+op_or
+id|SCHIZO_PCIAFSR_SUNUS
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Make all Safari error conditions fatal except unmapped errors&n;&t; * which we make generate interrupts.&n;&t; */
@@ -7211,7 +7579,7 @@ op_assign
 op_amp
 id|schizo_ops
 suffix:semicolon
-multiline_comment|/* Three OBP regs:&n;&t; * 1) PBM controller regs&n;&t; * 2) Schizo front-end controller regs (same for both PBMs)&n;&t; * 3) Unknown... (0x7ffec000000 and 0x7ffee000000 on Excalibur)&n;&t; */
+multiline_comment|/* Three OBP regs:&n;&t; * 1) PBM controller regs&n;&t; * 2) Schizo front-end controller regs (same for both PBMs)&n;&t; * 3) PBM PCI config space&n;&t; */
 id|err
 op_assign
 id|prom_getproperty

@@ -62,7 +62,7 @@ DECL|macro|SA_PMD_TYPE
 mdefine_line|#define SA_PMD_TYPE&t;(8)&t;/* start addr. PMD-Type */
 DECL|macro|SKFDDI_PSZ
 mdefine_line|#define&t;SKFDDI_PSZ&t;32&t;&t;/* address PROM size */
-multiline_comment|/*&n; * address transmision from logical to physical offset address on board&n; */
+multiline_comment|/*&n; * address transmission from logical to physical offset address on board&n; */
 DECL|macro|FMA
 mdefine_line|#define FMA(a)&t;(0x0400|((a)&lt;&lt;1))&t;/* FORMAC+ (r/w) */
 DECL|macro|P1A
@@ -377,7 +377,7 @@ DECL|macro|PRA_OFF
 mdefine_line|#define&t;PRA_OFF&t;(0)
 DECL|macro|SA_PMD_TYPE
 mdefine_line|#define SA_PMD_TYPE&t;(8)&t;/* start addr. PMD-Type&t;*/
-multiline_comment|/*&n; * address transmision from logical to physical offset address on board&n; */
+multiline_comment|/*&n; * address transmission from logical to physical offset address on board&n; */
 DECL|macro|FMA
 mdefine_line|#define&t;FMA(a)&t;(0x0100|((a)&lt;&lt;1))&t;/* FORMAC+ (r/w) */
 DECL|macro|P2
@@ -768,7 +768,7 @@ DECL|macro|CHECK_TC
 mdefine_line|#define CHECK_TC(smc,k)&t;{(k) = 10000 ;&bslash;&n;&t;while ((k) &amp;&amp; (~inpw(ISR2_A) &amp; IS_TC)) (k)-- ;&bslash;&n;&t;if (!k) SMT_PANIC(smc,HWM_E0018,HWM_E0018_MSG) ; }
 macro_line|#endif&t;/* MCA */
 macro_line|#ifdef&t;ISA
-multiline_comment|/*&n; * address transmision from logic NPADDR6-0 to physical offset address on board&n; */
+multiline_comment|/*&n; * address transmission from logic NPADDR6-0 to physical offset address on board&n; */
 DECL|macro|FMA
 mdefine_line|#define FMA(a)&t;(0x8000|(((a)&amp;0x07)&lt;&lt;1)|(((a)&amp;0x78)&lt;&lt;7))  /* FORMAC+ (r/w) */
 DECL|macro|PRA
@@ -1117,7 +1117,7 @@ multiline_comment|/*&t;PCI_SUB_VID&t;16 bit&t;Subsystem Vendor ID */
 multiline_comment|/*&t;PCI_SUB_ID&t;16 bit&t;Subsystem ID */
 multiline_comment|/*&t;PCI_BASE_ROM&t;32 bit&t;Expansion ROM Base Address */
 DECL|macro|PCI_ROMBASE
-mdefine_line|#define&t;PCI_ROMBASE&t;0xfffe0000L  /* Bit 31..17: ROM BASE addres (1st) */
+mdefine_line|#define&t;PCI_ROMBASE&t;0xfffe0000L  /* Bit 31..17: ROM BASE address (1st) */
 DECL|macro|PCI_ROMBASZ
 mdefine_line|#define&t;PCI_ROMBASZ&t;0x0001c000L  /* Bit 16..14: Treat as BASE or SIZE */
 DECL|macro|PCI_ROMSIZE
@@ -2175,7 +2175,7 @@ DECL|macro|PCI_SUB_CLASS
 mdefine_line|#define PCI_SUB_CLASS&t;0x02&t;&t;/* PCI subclass ID: FDDI device */
 DECL|macro|PCI_PROG_INTFC
 mdefine_line|#define PCI_PROG_INTFC&t;0x00&t;&t;/* PCI programming Interface (=0) */
-multiline_comment|/*&n; * address transmision from logical to physical offset address on board&n; */
+multiline_comment|/*&n; * address transmission from logical to physical offset address on board&n; */
 DECL|macro|FMA
 mdefine_line|#define&t;FMA(a)&t;(0x0400|((a)&lt;&lt;2))&t;/* FORMAC+ (r/w) (SN3) */
 DECL|macro|P1

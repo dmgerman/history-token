@@ -243,27 +243,6 @@ id|pg0
 l_int|1024
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Handling allocation failures during page table setup.&n; */
-r_extern
-r_void
-id|__handle_bad_pmd
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__handle_bad_pmd_kernel
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;((x).pte_low &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&t;&t;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;1) The RTL-8139 has a serious problem with motherboards which do&n;posted MMIO writes to PCI space.  This driver works around the&n;problem by having an MMIO  register write be immediately followed by&n;an MMIO register read.&n;&n;2) The RTL-8129 is only supported in Donald Becker&squot;s rtl8139 driver.&n;&n;*/
+multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&t;&t;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;1) The RTL-8139 has a serious problem with motherboards which do&n;posted MMIO writes to PCI space.  This driver works around the&n;problem by having an MMIO  register write be immediately followed by&n;an MMIO register read.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|RTL8139_VERSION
-mdefine_line|#define RTL8139_VERSION &quot;0.9.15&quot;
+mdefine_line|#define RTL8139_VERSION &quot;0.9.15c&quot;
 DECL|macro|MODNAME
 mdefine_line|#define MODNAME &quot;8139too&quot;
 DECL|macro|RTL8139_DRIVER_NAME
@@ -400,6 +400,7 @@ comma
 id|DFE538TX
 )brace
 comma
+macro_line|#ifdef CONFIG_8139TOO_8129
 (brace
 l_int|0x10ec
 comma
@@ -416,6 +417,7 @@ comma
 id|RTL8129
 )brace
 comma
+macro_line|#endif
 multiline_comment|/* some crazy cards report invalid vendor ids like&n;&t; * 0x0001 here.  The other ids are valid and constant,&n;&t; * so we simply don&squot;t match on the main vendor id.&n;&t; */
 (brace
 id|PCI_ANY_ID
@@ -1002,11 +1004,12 @@ id|Cfg1_MMIO
 op_assign
 l_int|0x08
 comma
-DECL|enumerator|Cfg1_LWAKE
-id|Cfg1_LWAKE
+DECL|enumerator|LWAKE
+id|LWAKE
 op_assign
 l_int|0x10
 comma
+multiline_comment|/* not on 8139, 8139A */
 DECL|enumerator|Cfg1_Driver_Load
 id|Cfg1_Driver_Load
 op_assign
@@ -1022,6 +1025,43 @@ id|Cfg1_LED1
 op_assign
 l_int|0x80
 comma
+DECL|enumerator|SLEEP
+id|SLEEP
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* only on 8139, 8139A */
+DECL|enumerator|PWRDN
+id|PWRDN
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+multiline_comment|/* only on 8139, 8139A */
+)brace
+suffix:semicolon
+multiline_comment|/* Bits in Config4 */
+DECL|enum|Config4Bits
+r_enum
+id|Config4Bits
+(brace
+DECL|enumerator|LWPTN
+id|LWPTN
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+multiline_comment|/* not on 8139, 8139A */
 )brace
 suffix:semicolon
 DECL|enum|RxConfigBits
@@ -1272,6 +1312,30 @@ DECL|typedef|chip_t
 )brace
 id|chip_t
 suffix:semicolon
+DECL|enum|chip_flags
+r_enum
+id|chip_flags
+(brace
+DECL|enumerator|HasPwrDn
+id|HasPwrDn
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+DECL|enumerator|HasLWake
+id|HasLWake
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* directly indexed by chip_t, above */
 r_const
 r_static
@@ -1293,6 +1357,10 @@ id|u32
 id|RxConfigMask
 suffix:semicolon
 multiline_comment|/* should clear the bits supported by this chip */
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
 DECL|variable|rtl_chip_info
 )brace
 id|rtl_chip_info
@@ -1308,6 +1376,8 @@ comma
 l_int|0xf0fe0040
 comma
 multiline_comment|/* XXX copied from RTL8139A, verify */
+id|HasPwrDn
+comma
 )brace
 comma
 (brace
@@ -1316,6 +1386,8 @@ comma
 l_int|0x60
 comma
 l_int|0xf0fe0040
+comma
+id|HasPwrDn
 comma
 )brace
 comma
@@ -1326,6 +1398,8 @@ l_int|0x70
 comma
 l_int|0xf0fe0040
 comma
+l_int|0
+comma
 )brace
 comma
 (brace
@@ -1334,6 +1408,9 @@ comma
 l_int|0x78
 comma
 l_int|0xf0fc0040
+comma
+id|HasLWake
+comma
 )brace
 comma
 (brace
@@ -1344,6 +1421,8 @@ comma
 l_int|0xf0fe0040
 comma
 multiline_comment|/* XXX copied from RTL8139A, verify */
+id|HasLWake
+comma
 )brace
 comma
 (brace
@@ -1354,6 +1433,8 @@ comma
 l_int|0xf0fc0040
 comma
 multiline_comment|/* XXX copied from RTL8139B, verify */
+id|HasLWake
+comma
 )brace
 comma
 )brace
@@ -1909,6 +1990,109 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
+DECL|function|__rtl8139_cleanup_dev
+r_static
+r_void
+id|__rtl8139_cleanup_dev
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|rtl8139_private
+op_star
+id|tp
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+m_assert
+(paren
+id|dev
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+m_assert
+(paren
+id|dev-&gt;priv
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+id|tp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+m_assert
+(paren
+id|tp-&gt;pci_dev
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+id|pdev
+op_assign
+id|tp-&gt;pci_dev
+suffix:semicolon
+macro_line|#ifndef USE_IO_OPS
+r_if
+c_cond
+(paren
+id|tp-&gt;mmio_addr
+)paren
+id|iounmap
+(paren
+id|tp-&gt;mmio_addr
+)paren
+suffix:semicolon
+macro_line|#endif /* !USE_IO_OPS */
+multiline_comment|/* it&squot;s ok to call this even if we have no regions to free */
+id|pci_release_regions
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#ifndef RTL8139_NDEBUG
+multiline_comment|/* poison memory before freeing */
+id|memset
+(paren
+id|dev
+comma
+l_int|0xBC
+comma
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|rtl8139_private
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* RTL8139_NDEBUG */
+id|kfree
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+(paren
+id|pdev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 DECL|function|rtl8139_init_board
 r_static
 r_int
@@ -1925,18 +2109,11 @@ id|net_device
 op_star
 op_star
 id|dev_out
-comma
-r_void
-op_star
-op_star
-id|ioaddr_out
 )paren
 (brace
 r_void
 op_star
 id|ioaddr
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|net_device
@@ -1990,30 +2167,16 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-m_assert
-(paren
-id|ioaddr_out
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-op_star
-id|ioaddr_out
-op_assign
-l_int|NULL
-suffix:semicolon
 op_star
 id|dev_out
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* dev zeroed in init_etherdev */
+multiline_comment|/* dev and dev-&gt;priv zeroed in alloc_etherdev */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -2033,7 +2196,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;unable to alloc new ethernet&bslash;n&quot;
+l_string|&quot;%s: Unable to alloc new net device&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -2055,6 +2220,10 @@ suffix:semicolon
 id|tp
 op_assign
 id|dev-&gt;priv
+suffix:semicolon
+id|tp-&gt;pci_dev
+op_assign
+id|pdev
 suffix:semicolon
 multiline_comment|/* enable device (incl. PCI PM wakeup and hotplug setup) */
 id|rc
@@ -2188,7 +2357,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;region #0 not a PIO resource, aborting&bslash;n&quot;
+l_string|&quot;%s: region #0 not a PIO resource, aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|rc
@@ -2216,7 +2387,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;region #1 not an MMIO resource, aborting&bslash;n&quot;
+l_string|&quot;%s: region #1 not an MMIO resource, aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|rc
@@ -2249,7 +2422,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Invalid PCI region size(s), aborting&bslash;n&quot;
+l_string|&quot;%s: Invalid PCI region size(s), aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|rc
@@ -2267,7 +2442,7 @@ id|pci_request_regions
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+l_string|&quot;8139too&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2293,6 +2468,10 @@ op_star
 )paren
 id|pio_start
 suffix:semicolon
+id|dev-&gt;base_addr
+op_assign
+id|pio_start
+suffix:semicolon
 macro_line|#else
 multiline_comment|/* ioremap MMIO region */
 id|ioaddr
@@ -2316,7 +2495,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;cannot remap MMIO, aborting&bslash;n&quot;
+l_string|&quot;%s: cannot remap MMIO, aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 id|rc
@@ -2325,10 +2506,194 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|err_out_free_res
+id|err_out
 suffix:semicolon
 )brace
+id|dev-&gt;base_addr
+op_assign
+(paren
+r_int
+)paren
+id|ioaddr
+suffix:semicolon
+id|tp-&gt;mmio_addr
+op_assign
+id|ioaddr
+suffix:semicolon
 macro_line|#endif /* USE_IO_OPS */
+multiline_comment|/* Bring the chip out of low-power mode. */
+r_if
+c_cond
+(paren
+id|rtl_chip_info
+(braket
+id|tp-&gt;chipset
+)braket
+dot
+id|flags
+op_amp
+id|HasPwrDn
+)paren
+(brace
+id|tmp8
+op_assign
+id|RTL_R8
+(paren
+id|Config1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp8
+op_amp
+(paren
+id|SLEEP
+op_or
+id|PWRDN
+)paren
+)paren
+(brace
+id|RTL_W8_F
+(paren
+id|Cfg9346
+comma
+id|Cfg9346_Unlock
+)paren
+suffix:semicolon
+id|RTL_W8
+(paren
+id|Config1
+comma
+id|tmp8
+op_amp
+op_complement
+(paren
+id|SLEEP
+op_or
+id|PWRDN
+)paren
+)paren
+suffix:semicolon
+id|RTL_W8_F
+(paren
+id|Cfg9346
+comma
+id|Cfg9346_Lock
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|u8
+id|new_tmp8
+op_assign
+id|tmp8
+op_assign
+id|RTL_R8
+(paren
+id|Config1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rtl_chip_info
+(braket
+id|tp-&gt;chipset
+)braket
+dot
+id|flags
+op_amp
+id|HasLWake
+)paren
+op_logical_and
+(paren
+id|tmp8
+op_amp
+id|LWAKE
+)paren
+)paren
+id|new_tmp8
+op_and_assign
+op_complement
+id|LWAKE
+suffix:semicolon
+id|new_tmp8
+op_or_assign
+id|Cfg1_PM_Enable
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_tmp8
+op_ne
+id|tmp8
+)paren
+(brace
+id|RTL_W8_F
+(paren
+id|Cfg9346
+comma
+id|Cfg9346_Unlock
+)paren
+suffix:semicolon
+id|RTL_W8
+(paren
+id|Config1
+comma
+id|tmp8
+)paren
+suffix:semicolon
+id|RTL_W8_F
+(paren
+id|Cfg9346
+comma
+id|Cfg9346_Lock
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|rtl_chip_info
+(braket
+id|tp-&gt;chipset
+)braket
+dot
+id|flags
+op_amp
+id|HasLWake
+)paren
+(brace
+id|tmp8
+op_assign
+id|RTL_R8
+(paren
+id|Config4
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp8
+op_amp
+id|LWPTN
+)paren
+id|RTL_W8
+(paren
+id|Config4
+comma
+id|tmp8
+op_amp
+op_complement
+id|LWPTN
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Soft reset the chip. */
 id|RTL_W8
 (paren
@@ -2361,6 +2726,17 @@ suffix:semicolon
 id|i
 op_decrement
 )paren
+(brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|udelay
+(paren
+l_int|10
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2376,67 +2752,6 @@ op_eq
 l_int|0
 )paren
 r_break
-suffix:semicolon
-r_else
-id|udelay
-(paren
-l_int|10
-)paren
-suffix:semicolon
-multiline_comment|/* Bring the chip out of low-power mode. */
-r_if
-c_cond
-(paren
-id|tp-&gt;chipset
-op_eq
-id|CH_8139B
-)paren
-(brace
-id|RTL_W8
-(paren
-id|Config1
-comma
-id|RTL_R8
-(paren
-id|Config1
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|4
-)paren
-)paren
-suffix:semicolon
-id|RTL_W8
-(paren
-id|Config4
-comma
-id|RTL_R8
-(paren
-id|Config4
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* handle RTL8139A and RTL8139 cases */
-multiline_comment|/* XXX from becker driver. is this right?? */
-id|RTL_W8
-(paren
-id|Config1
-comma
-l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* make sure chip thinks PIO and MMIO are enabled */
@@ -2463,7 +2778,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;PIO not enabled, Cfg1=%02X, aborting&bslash;n&quot;
+l_string|&quot;%s: PIO not enabled, Cfg1=%02X, aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 comma
 id|tmp8
 )paren
@@ -2474,7 +2791,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|err_out_iounmap
+id|err_out
 suffix:semicolon
 )brace
 r_if
@@ -2493,7 +2810,9 @@ id|printk
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;MMIO not enabled, Cfg1=%02X, aborting&bslash;n&quot;
+l_string|&quot;%s: MMIO not enabled, Cfg1=%02X, aborting&bslash;n&quot;
+comma
+id|pdev-&gt;slot_name
 comma
 id|tmp8
 )paren
@@ -2504,7 +2823,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|err_out_iounmap
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* identify chip attached to board */
@@ -2560,7 +2879,7 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;PCI device %s: unknown chip version, assuming RTL-8139&bslash;n&quot;
+l_string|&quot;%s: unknown chip version, assuming RTL-8139&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -2569,7 +2888,7 @@ id|printk
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;PCI device %s: TxConfig = 0x%lx&bslash;n&quot;
+l_string|&quot;%s: TxConfig = 0x%lx&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 comma
@@ -2607,11 +2926,6 @@ l_string|&quot;EXIT, returning 0&bslash;n&quot;
 )paren
 suffix:semicolon
 op_star
-id|ioaddr_out
-op_assign
-id|ioaddr
-suffix:semicolon
-op_star
 id|dev_out
 op_assign
 id|dev
@@ -2619,37 +2933,9 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_out_iounmap
-suffix:colon
-m_assert
-(paren
-id|ioaddr
-OG
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#ifndef USE_IO_OPS
-id|iounmap
-(paren
-id|ioaddr
-)paren
-suffix:semicolon
-id|err_out_free_res
-suffix:colon
-macro_line|#endif /* !USE_IO_OPS */
-id|pci_release_regions
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|err_out
 suffix:colon
-id|unregister_netdev
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|kfree
+id|__rtl8139_cleanup_dev
 (paren
 id|dev
 )paren
@@ -2705,8 +2991,6 @@ suffix:semicolon
 r_void
 op_star
 id|ioaddr
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int
@@ -2718,9 +3002,6 @@ suffix:semicolon
 r_static
 r_int
 id|printed_version
-suffix:semicolon
-id|u8
-id|tmp
 suffix:semicolon
 id|DPRINTK
 (paren
@@ -2771,9 +3052,6 @@ id|pdev
 comma
 op_amp
 id|dev
-comma
-op_amp
-id|ioaddr
 )paren
 suffix:semicolon
 r_if
@@ -2798,6 +3076,10 @@ suffix:semicolon
 id|tp
 op_assign
 id|dev-&gt;priv
+suffix:semicolon
+id|ioaddr
+op_assign
+id|tp-&gt;mmio_addr
 suffix:semicolon
 m_assert
 (paren
@@ -2916,14 +3198,6 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-id|dev-&gt;base_addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ioaddr
-suffix:semicolon
 multiline_comment|/* dev-&gt;priv/tp zeroed and aligned in init_etherdev */
 id|tp
 op_assign
@@ -2938,10 +3212,6 @@ id|ent-&gt;driver_data
 )braket
 dot
 id|hw_flags
-suffix:semicolon
-id|tp-&gt;pci_dev
-op_assign
-id|pdev
 suffix:semicolon
 id|tp-&gt;mmio_addr
 op_assign
@@ -2965,8 +3235,33 @@ op_amp
 id|tp-&gt;thr_exited
 )paren
 suffix:semicolon
-id|pci_set_drvdata
+multiline_comment|/* dev is fully set up and ready to use now */
+id|DPRINTK
 c_func
+(paren
+l_string|&quot;about to register device named %s (%p)...&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev
+)paren
+suffix:semicolon
+id|i
+op_assign
+id|register_netdev
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_goto
+id|err_out
+suffix:semicolon
+id|pci_set_drvdata
 (paren
 id|pdev
 comma
@@ -3040,6 +3335,7 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/* Find the connected MII xcvrs.&n;&t;   Doing this in open() would allow detecting external xcvrs later, but&n;&t;   takes too much time. */
+macro_line|#ifdef CONFIG_8139TOO_8129
 r_if
 c_cond
 (paren
@@ -3168,6 +3464,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+macro_line|#endif
 id|tp-&gt;phys
 (braket
 l_int|0
@@ -3176,6 +3473,19 @@ op_assign
 l_int|32
 suffix:semicolon
 multiline_comment|/* Put the chip into low-power mode. */
+r_if
+c_cond
+(paren
+id|rtl_chip_info
+(braket
+id|tp-&gt;chipset
+)braket
+dot
+id|flags
+op_amp
+id|HasPwrDn
+)paren
+(brace
 id|RTL_W8_F
 (paren
 id|Cfg9346
@@ -3183,34 +3493,16 @@ comma
 id|Cfg9346_Unlock
 )paren
 suffix:semicolon
-id|tmp
-op_assign
-id|RTL_R8
-(paren
-id|Config1
-)paren
-op_amp
-id|Config1Clear
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|tp-&gt;chipset
-op_eq
-id|CH_8139B
-)paren
-ques
-c_cond
-l_int|3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Enable PM/VPD */
 id|RTL_W8_F
 (paren
 id|Config1
 comma
-id|tmp
+id|RTL_R8
+(paren
+id|Config1
+)paren
+op_or
+id|PWRDN
 )paren
 suffix:semicolon
 id|RTL_W8_F
@@ -3221,6 +3513,14 @@ l_char|&squot;H&squot;
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;R&squot; would leave the clock running. */
+id|RTL_W8_F
+(paren
+id|Cfg9346
+comma
+id|Cfg9346_Lock
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The lower four bits are the media type. */
 id|option
 op_assign
@@ -3395,6 +3695,23 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_out
+suffix:colon
+id|__rtl8139_cleanup_dev
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|DPRINTK
+(paren
+l_string|&quot;EXIT - returning %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
 )brace
 DECL|function|rtl8139_remove_one
 r_static
@@ -3437,14 +3754,7 @@ l_int|NULL
 suffix:semicolon
 id|np
 op_assign
-(paren
-r_struct
-id|rtl8139_private
-op_star
-)paren
-(paren
 id|dev-&gt;priv
-)paren
 suffix:semicolon
 m_assert
 (paren
@@ -3458,50 +3768,9 @@ id|unregister_netdev
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifndef USE_IO_OPS
-id|iounmap
-(paren
-id|np-&gt;mmio_addr
-)paren
-suffix:semicolon
-macro_line|#endif /* !USE_IO_OPS */
-id|pci_release_regions
-(paren
-id|pdev
-)paren
-suffix:semicolon
-macro_line|#ifndef RTL8139_NDEBUG
-multiline_comment|/* poison memory before freeing */
-id|memset
+id|__rtl8139_cleanup_dev
 (paren
 id|dev
-comma
-l_int|0xBC
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|rtl8139_private
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif /* RTL8139_NDEBUG */
-id|kfree
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|pci_set_drvdata
-(paren
-id|pdev
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -3979,6 +4248,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_8139TOO_8129
 id|mdio_sync
 (paren
 id|mdio_addr
@@ -4114,6 +4384,7 @@ id|mdio_addr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|DPRINTK
 (paren
 l_string|&quot;EXIT, returning %d&bslash;n&quot;
@@ -4274,6 +4545,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_8139TOO_8129
 id|mdio_sync
 (paren
 id|mdio_addr
@@ -4381,8 +4653,7 @@ id|mdio_addr
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|rtl8139_open
 r_static
@@ -4939,82 +5210,18 @@ id|mii_reg5
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tp-&gt;chipset
-op_ge
-id|CH_8139A
-)paren
-(brace
-id|tmp
-op_assign
-id|RTL_R8
-(paren
-id|Config1
-)paren
-op_amp
-id|Config1Clear
-suffix:semicolon
-id|tmp
-op_or_assign
-id|Cfg1_Driver_Load
-suffix:semicolon
-id|tmp
-op_or_assign
-(paren
-id|tp-&gt;chipset
-op_eq
-id|CH_8139B
-)paren
-ques
-c_cond
-l_int|3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Enable PM/VPD */
-id|RTL_W8_F
-(paren
-id|Config1
-comma
-id|tmp
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|u8
-id|foo
-op_assign
-id|RTL_R8
-(paren
-id|Config1
-)paren
-op_amp
-id|Config1Clear
-suffix:semicolon
 id|RTL_W8
 (paren
 id|Config1
 comma
-id|tp-&gt;full_duplex
-ques
-c_cond
+id|RTL_R8
 (paren
-id|foo
-op_or
-l_int|0x60
+id|Config1
 )paren
-suffix:colon
-(paren
-id|foo
 op_or
-l_int|0x20
-)paren
+id|Cfg1_Driver_Load
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5053,7 +5260,7 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-multiline_comment|/* disable magic packet scanning, which is enabled&n;&t;&t; * when PM is enabled above (Config1) */
+multiline_comment|/* disable magic packet scanning, which is enabled&n;&t;&t; * when PM is enabled in Config1 */
 id|RTL_W8
 (paren
 id|Config3
@@ -5779,6 +5986,7 @@ comma
 id|mii_reg5
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|RTL_W8
 (paren
 id|Cfg9346
@@ -5805,6 +6013,7 @@ comma
 id|Cfg9346_Lock
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 id|next_tick
@@ -7654,6 +7863,7 @@ id|tp-&gt;full_duplex
 op_assign
 id|duplex
 suffix:semicolon
+macro_line|#if 0
 id|RTL_W8
 (paren
 id|Cfg9346
@@ -7680,6 +7890,7 @@ comma
 id|Cfg9346_Lock
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|status
 op_and_assign
@@ -7995,6 +8206,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|netif_running
+(paren
+id|dev
+)paren
+op_logical_and
 id|status
 op_amp
 (paren
@@ -8020,6 +8236,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|netif_running
+(paren
+id|dev
+)paren
+op_logical_and
 id|status
 op_amp
 (paren
@@ -8305,6 +8526,19 @@ comma
 id|Cfg9346_Unlock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtl_chip_info
+(braket
+id|tp-&gt;chipset
+)braket
+dot
+id|flags
+op_amp
+id|HasPwrDn
+)paren
+(brace
 id|RTL_W8
 (paren
 id|Config1
@@ -8320,6 +8554,7 @@ l_char|&squot;H&squot;
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;R&squot; would leave the clock running. */
+)brace
 id|DPRINTK
 (paren
 l_string|&quot;EXIT&bslash;n&quot;
@@ -9088,6 +9323,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+(paren
+id|dev
+)paren
+)paren
+r_return
+suffix:semicolon
 id|netif_device_detach
 (paren
 id|dev
@@ -9167,6 +9413,17 @@ id|pci_get_drvdata
 (paren
 id|pdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_running
+(paren
+id|dev
+)paren
+)paren
+r_return
 suffix:semicolon
 id|netif_device_attach
 (paren

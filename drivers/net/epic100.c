@@ -1448,11 +1448,9 @@ id|pdev
 suffix:semicolon
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -1494,7 +1492,7 @@ c_func
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+l_string|&quot;epic100&quot;
 )paren
 )paren
 r_goto
@@ -1725,26 +1723,6 @@ op_amp
 id|ep-&gt;lock
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %s at %#lx, IRQ %d, &quot;
-comma
-id|dev-&gt;name
-comma
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|name
-comma
-id|ioaddr
-comma
-id|dev-&gt;irq
-)paren
-suffix:semicolon
 multiline_comment|/* Bring the chip out of low-power mode. */
 id|outl
 c_func
@@ -1867,42 +1845,6 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|5
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x:&quot;
-comma
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x.&bslash;n&quot;
-comma
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1915,9 +1857,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: EEPROM contents&bslash;n&quot;
+l_string|&quot;epic100(%s): EEPROM contents&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 r_for
@@ -2045,10 +1987,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: MII transceiver #%d control &quot;
+l_string|&quot;epic100(%s): MII transceiver #%d control &quot;
 l_string|&quot;%4.4x status %4.4x.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|phy
 comma
@@ -2102,10 +2044,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Autonegotiation advertising %4.4x link &quot;
+l_string|&quot;epic100(%s): Autonegotiation advertising %4.4x link &quot;
 l_string|&quot;partner %4.4x.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 comma
 id|ep-&gt;advertising
 comma
@@ -2137,9 +2079,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ***WARNING***: No MII transceiver found!&bslash;n&quot;
+l_string|&quot;epic100(%s): ***WARNING***: No MII transceiver found!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 multiline_comment|/* Use the known PHY address of the EPII. */
@@ -2206,9 +2148,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s:  Forced full duplex operation requested.&bslash;n&quot;
+l_string|&quot;epic100(%s):  Forced full duplex operation requested.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 )brace
@@ -2267,6 +2209,78 @@ op_assign
 op_amp
 id|epic_tx_timeout
 suffix:semicolon
+id|i
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_goto
+id|err_out_unmap_tx
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: %s at %#lx, IRQ %d, &quot;
+comma
+id|dev-&gt;name
+comma
+id|pci_id_tbl
+(braket
+id|chip_idx
+)braket
+dot
+id|name
+comma
+id|ioaddr
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|5
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x:&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x.&bslash;n&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2304,12 +2318,6 @@ id|pdev
 suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2649,6 +2657,12 @@ suffix:semicolon
 id|i
 op_decrement
 )paren
+(brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2712,6 +2726,7 @@ op_plus
 id|MIIData
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0xffff
@@ -2793,6 +2808,11 @@ id|i
 op_decrement
 )paren
 (brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4993,11 +5013,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|dev_instance
 suffix:semicolon
 r_struct
@@ -6943,10 +6958,6 @@ id|epic_private
 op_star
 id|ep
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int

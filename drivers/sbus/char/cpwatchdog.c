@@ -290,6 +290,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|wd_timer
+r_static
 r_struct
 id|timer_list
 id|wd_timer
@@ -380,6 +381,7 @@ l_string|&quot;watchdog&quot;
 suffix:semicolon
 macro_line|#endif /* ifdef MODULE */
 multiline_comment|/* Forward declarations of internal methods&n; */
+r_static
 r_void
 id|wd_dumpregs
 c_func
@@ -387,6 +389,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_interrupt
 c_func
@@ -404,6 +407,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_toggleintr
 c_func
@@ -417,6 +421,7 @@ r_int
 id|enable
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_pingtimer
 c_func
@@ -427,6 +432,7 @@ op_star
 id|pTimer
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_starttimer
 c_func
@@ -437,6 +443,7 @@ op_star
 id|pTimer
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_resetbrokentimer
 c_func
@@ -447,6 +454,7 @@ op_star
 id|pTimer
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_stoptimer
 c_func
@@ -457,6 +465,7 @@ op_star
 id|pTimer
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wd_brokentimer
 c_func
@@ -466,6 +475,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
+r_static
 r_int
 id|wd_getstatus
 c_func
@@ -478,6 +488,7 @@ id|pTimer
 suffix:semicolon
 multiline_comment|/* PLD expects words to be written in LSB format,&n; * so we must flip all words prior to writing them to regs&n; */
 DECL|function|flip_word
+r_static
 r_inline
 r_int
 r_int
@@ -1073,7 +1084,6 @@ r_sizeof
 (paren
 r_struct
 id|watchdog_info
-op_star
 )paren
 )paren
 )paren
@@ -1083,6 +1093,33 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|WDIOC_GETSTATUS
+suffix:colon
+r_case
+id|WDIOC_GETBOOTSTATUS
+suffix:colon
+r_if
+c_cond
+(paren
+id|put_user
+c_func
+(paren
+l_int|0
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1329,6 +1366,24 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ppos
+op_ne
+op_amp
+id|file-&gt;f_pos
+)paren
+r_return
+op_minus
+id|ESPIPE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
+(brace
 id|wd_pingtimer
 c_func
 (paren
@@ -1336,7 +1391,11 @@ id|pTimer
 )paren
 suffix:semicolon
 r_return
-id|count
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|wd_read
@@ -1379,6 +1438,7 @@ suffix:semicolon
 macro_line|#endif /* ifdef WD_DEBUG */
 )brace
 DECL|function|wd_interrupt
+r_static
 r_void
 id|wd_interrupt
 c_func
@@ -1529,6 +1589,7 @@ id|wd_fops
 )brace
 suffix:semicolon
 DECL|function|wd_dumpregs
+r_static
 r_void
 id|wd_dumpregs
 c_func
@@ -1704,6 +1765,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Enable or disable watchdog interrupts&n; * Because of the CP1400 defect this should only be&n; * called during initialzation or by wd_[start|stop]timer()&n; *&n; * pTimer &t;- pointer to timer device, or NULL to indicate all timers &n; * enable&t;- non-zero to enable interrupts, zero to disable&n; */
 DECL|function|wd_toggleintr
+r_static
 r_void
 id|wd_toggleintr
 c_func
@@ -1785,6 +1847,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Reset countdown timer with &squot;limit&squot; value and continue countdown.&n; * This will not start a stopped timer.&n; *&n; * pTimer&t;- pointer to timer device&n; */
 DECL|function|wd_pingtimer
+r_static
 r_void
 id|wd_pingtimer
 c_func
@@ -1819,6 +1882,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Stop a running watchdog timer-- the timer actually keeps&n; * running, but the interrupt is masked so that no action is&n; * taken upon expiration.&n; *&n; * pTimer&t;- pointer to timer device&n; */
 DECL|function|wd_stoptimer
+r_static
 r_void
 id|wd_stoptimer
 c_func
@@ -1876,6 +1940,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Start a watchdog timer with the specified limit value&n; * If the watchdog is running, it will be restarted with&n; * the provided limit value.&n; *&n; * This function will enable interrupts on the specified&n; * watchdog.&n; *&n; * pTimer&t;- pointer to timer device&n; * limit&t;- limit (countdown) value in 1/10th seconds&n; */
 DECL|function|wd_starttimer
+r_static
 r_void
 id|wd_starttimer
 c_func
@@ -1923,6 +1988,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Restarts timer with maximum limit value and&n; * does not unset &squot;brokenstop&squot; value.&n; */
 DECL|function|wd_resetbrokentimer
+r_static
 r_void
 id|wd_resetbrokentimer
 c_func
@@ -1953,6 +2019,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Timer device initialization helper.&n; * Returns 0 on success, other on failure&n; */
 DECL|function|wd_inittimer
+r_static
 r_int
 id|wd_inittimer
 c_func
@@ -2249,6 +2316,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Timer method called to reset stopped watchdogs--&n; * because of the PLD bug on CP1400, we cannot mask&n; * interrupts within the PLD so me must continually&n; * reset the timers ad infinitum.&n; */
 DECL|function|wd_brokentimer
+r_static
 r_void
 id|wd_brokentimer
 c_func
@@ -2361,6 +2429,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|wd_getstatus
+r_static
 r_int
 id|wd_getstatus
 c_func

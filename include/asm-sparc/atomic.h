@@ -1,4 +1,4 @@
-multiline_comment|/* atomic.h: These still suck, but the I-cache hit rate is higher.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* atomic.h: These still suck, but the I-cache hit rate is higher.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com.au)&n; */
 macro_line|#ifndef __ARCH_SPARC_ATOMIC__
 DECL|macro|__ARCH_SPARC_ATOMIC__
 mdefine_line|#define __ARCH_SPARC_ATOMIC__
@@ -66,14 +66,11 @@ suffix:semicolon
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v, i)&t;(((v)-&gt;counter) = ((i) &lt;&lt; 8))
 macro_line|#endif
-multiline_comment|/* Make sure gcc doesn&squot;t try to be clever and move things around&n; * on us. We need to use _exactly_ the address the user gave us,&n; * not some alias that contains the same information.&n; */
-DECL|macro|__atomic_fool_gcc
-mdefine_line|#define __atomic_fool_gcc(x) ((struct { int a[100]; } *)x)
-DECL|function|atomic_add
+DECL|function|__atomic_add
 r_static
 id|__inline__
-r_void
-id|atomic_add
+r_int
+id|__atomic_add
 c_func
 (paren
 r_int
@@ -85,7 +82,8 @@ id|v
 )paren
 (brace
 r_register
-id|atomic_t
+r_volatile
+r_int
 op_star
 id|ptr
 id|asm
@@ -104,228 +102,9 @@ l_string|&quot;g2&quot;
 )paren
 suffix:semicolon
 id|ptr
-op_assign
-(paren
-id|atomic_t
-op_star
-)paren
-id|__atomic_fool_gcc
-c_func
-(paren
-id|v
-)paren
-suffix:semicolon
-id|increment
-op_assign
-id|i
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___atomic_add
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
 op_assign
 op_amp
-id|r
-"&quot;"
-(paren
-id|increment
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|increment
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|ptr
-)paren
-suffix:colon
-l_string|&quot;g3&quot;
-comma
-l_string|&quot;g4&quot;
-comma
-l_string|&quot;g7&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|atomic_sub
-r_static
-id|__inline__
-r_void
-id|atomic_sub
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|ptr
-id|asm
-c_func
-(paren
-l_string|&quot;g1&quot;
-)paren
-suffix:semicolon
-r_register
-r_int
-id|increment
-id|asm
-c_func
-(paren
-l_string|&quot;g2&quot;
-)paren
-suffix:semicolon
-id|ptr
-op_assign
-(paren
-id|atomic_t
-op_star
-)paren
-id|__atomic_fool_gcc
-c_func
-(paren
-id|v
-)paren
-suffix:semicolon
-id|increment
-op_assign
-id|i
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___atomic_sub
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
-(paren
-id|increment
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|increment
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|ptr
-)paren
-suffix:colon
-l_string|&quot;g3&quot;
-comma
-l_string|&quot;g4&quot;
-comma
-l_string|&quot;g7&quot;
-comma
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|atomic_add_return
-r_static
-id|__inline__
-r_int
-id|atomic_add_return
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_register
-id|atomic_t
-op_star
-id|ptr
-id|asm
-c_func
-(paren
-l_string|&quot;g1&quot;
-)paren
-suffix:semicolon
-r_register
-r_int
-id|increment
-id|asm
-c_func
-(paren
-l_string|&quot;g2&quot;
-)paren
-suffix:semicolon
-id|ptr
-op_assign
-(paren
-id|atomic_t
-op_star
-)paren
-id|__atomic_fool_gcc
-c_func
-(paren
-id|v
-)paren
+id|v-&gt;counter
 suffix:semicolon
 id|increment
 op_assign
@@ -390,11 +169,11 @@ r_return
 id|increment
 suffix:semicolon
 )brace
-DECL|function|atomic_sub_return
+DECL|function|__atomic_sub
 r_static
 id|__inline__
 r_int
-id|atomic_sub_return
+id|__atomic_sub
 c_func
 (paren
 r_int
@@ -406,7 +185,8 @@ id|v
 )paren
 (brace
 r_register
-id|atomic_t
+r_volatile
+r_int
 op_star
 id|ptr
 id|asm
@@ -426,15 +206,8 @@ l_string|&quot;g2&quot;
 suffix:semicolon
 id|ptr
 op_assign
-(paren
-id|atomic_t
-op_star
-)paren
-id|__atomic_fool_gcc
-c_func
-(paren
-id|v
-)paren
+op_amp
+id|v-&gt;counter
 suffix:semicolon
 id|increment
 op_assign
@@ -499,20 +272,24 @@ r_return
 id|increment
 suffix:semicolon
 )brace
+DECL|macro|atomic_add
+mdefine_line|#define atomic_add(i, v) ((void)__atomic_add((i), (v)))
+DECL|macro|atomic_sub
+mdefine_line|#define atomic_sub(i, v) ((void)__atomic_sub((i), (v)))
 DECL|macro|atomic_dec_return
-mdefine_line|#define atomic_dec_return(v) atomic_sub_return(1,(v))
+mdefine_line|#define atomic_dec_return(v) __atomic_sub(1, (v))
 DECL|macro|atomic_inc_return
-mdefine_line|#define atomic_inc_return(v) atomic_add_return(1,(v))
+mdefine_line|#define atomic_inc_return(v) __atomic_add(1, (v))
 DECL|macro|atomic_sub_and_test
-mdefine_line|#define atomic_sub_and_test(i, v) (atomic_sub_return((i), (v)) == 0)
+mdefine_line|#define atomic_sub_and_test(i, v) (__atomic_sub((i), (v)) == 0)
 DECL|macro|atomic_dec_and_test
-mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
+mdefine_line|#define atomic_dec_and_test(v) (__atomic_sub(1, (v)) == 0)
 DECL|macro|atomic_inc
-mdefine_line|#define atomic_inc(v) atomic_add(1,(v))
+mdefine_line|#define atomic_inc(v) ((void)__atomic_add(1, (v)))
 DECL|macro|atomic_dec
-mdefine_line|#define atomic_dec(v) atomic_sub(1,(v))
+mdefine_line|#define atomic_dec(v) ((void)__atomic_sub(1, (v)))
 DECL|macro|atomic_add_negative
-mdefine_line|#define atomic_add_negative(i, v) (atomic_add_return((i), (v)) &lt; 0)
+mdefine_line|#define atomic_add_negative(i, v) (__atomic_add((i), (v)) &lt; 0)
 macro_line|#endif /* !(__KERNEL__) */
 macro_line|#endif /* !(__ARCH_SPARC_ATOMIC__) */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.h,v 1.19 2000/06/26 19:40:27 davem Exp $&n; * irq.h: IRQ registers on the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: irq.h,v 1.20 2001/03/09 01:31:40 davem Exp $&n; * irq.h: IRQ registers on the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#ifndef _SPARC64_IRQ_H
 DECL|macro|_SPARC64_IRQ_H
 mdefine_line|#define _SPARC64_IRQ_H
@@ -101,8 +101,12 @@ macro_line|#endif
 multiline_comment|/* IMAP/ICLR register defines */
 DECL|macro|IMAP_VALID
 mdefine_line|#define IMAP_VALID&t;&t;0x80000000&t;/* IRQ Enabled&t;&t;*/
-DECL|macro|IMAP_TID
-mdefine_line|#define IMAP_TID&t;&t;0x7c000000&t;/* UPA TargetID&t;&t;*/
+DECL|macro|IMAP_TID_UPA
+mdefine_line|#define IMAP_TID_UPA&t;&t;0x7c000000&t;/* UPA TargetID&t;&t;*/
+DECL|macro|IMAP_AID_SAFARI
+mdefine_line|#define IMAP_AID_SAFARI&t;&t;0x7c000000&t;/* Safari AgentID&t;*/
+DECL|macro|IMAP_NID_SAFARI
+mdefine_line|#define IMAP_NID_SAFARI&t;&t;0x03e00000&t;/* Safari NodeID&t;*/
 DECL|macro|IMAP_IGN
 mdefine_line|#define IMAP_IGN&t;&t;0x000007c0&t;/* IRQ Group Number&t;*/
 DECL|macro|IMAP_INO

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.100 2001/01/11 15:07:09 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.102 2001/03/24 09:36:01 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -899,6 +899,13 @@ c_func
 id|__flushw_user
 )paren
 suffix:semicolon
+DECL|variable|tlb_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tlb_type
+)paren
+suffix:semicolon
 DECL|variable|flush_icache_range
 id|EXPORT_SYMBOL
 c_func
@@ -1187,18 +1194,11 @@ c_func
 id|dump_fpu
 )paren
 suffix:semicolon
-DECL|variable|get_pmd_slow
+DECL|variable|pte_alloc_one
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|get_pmd_slow
-)paren
-suffix:semicolon
-DECL|variable|get_pte_slow
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_pte_slow
+id|pte_alloc_one
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP

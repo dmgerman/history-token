@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.h,v 1.9 1999/08/30 10:14:37 davem Exp $&n; * ebus.h: PCI to Ebus pseudo driver software state.&n; *&n; * Copyright (C) 1997 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ebus.h,v 1.10 2001/03/14 05:00:55 davem Exp $&n; * ebus.h: PCI to Ebus pseudo driver software state.&n; *&n; * Copyright (C) 1997 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_EBUS_H
 DECL|macro|__SPARC64_EBUS_H
 mdefine_line|#define __SPARC64_EBUS_H
@@ -153,6 +153,10 @@ suffix:semicolon
 DECL|member|index
 r_int
 id|index
+suffix:semicolon
+DECL|member|is_rio
+r_int
+id|is_rio
 suffix:semicolon
 DECL|member|prom_node
 r_int

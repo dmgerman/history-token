@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mmu_context.h,v 1.45 2000/08/12 13:25:52 davem Exp $ */
+multiline_comment|/* $Id: mmu_context.h,v 1.47 2001/03/22 07:26:04 davem Exp $ */
 macro_line|#ifndef __SPARC64_MMU_CONTEXT_H
 DECL|macro|__SPARC64_MMU_CONTEXT_H
 mdefine_line|#define __SPARC64_MMU_CONTEXT_H
@@ -74,13 +74,22 @@ DECL|macro|destroy_context
 mdefine_line|#define destroy_context(__mm)&t;&t;&t;&t;&t;&bslash;&n;do {&t;spin_lock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;&t;if (CTX_VALID((__mm)-&gt;context)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long nr = CTX_HWBITS((__mm)-&gt;context);&t;&bslash;&n;&t;&t;mmu_context_bmap[nr&gt;&gt;6] &amp;= ~(1UL &lt;&lt; (nr &amp; 63));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;ctx_alloc_lock);&t;&t;&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* Reload the two core values used by TLB miss handler&n; * processing on sparc64.  They are:&n; * 1) The physical address of mm-&gt;pgd, when full page&n; *    table walks are necessary, this is where the&n; *    search begins.&n; * 2) A &quot;PGD cache&quot;.  For 32-bit tasks only pgd[0] is&n; *    ever used since that maps the entire low 4GB&n; *    completely.  To speed up TLB miss processing we&n; *    make this value available to the handlers.  This&n; *    decreases the amount of memory traffic incurred.&n; */
 DECL|macro|reload_tlbmiss_state
-mdefine_line|#define reload_tlbmiss_state(__tsk, __mm) &bslash;&n;do { &bslash;&n;&t;register unsigned long paddr asm(&quot;o5&quot;); &bslash;&n;&t;register unsigned long pgd_cache asm(&quot;o4&quot;); &bslash;&n;&t;paddr = __pa((__mm)-&gt;pgd); &bslash;&n;&t;pgd_cache = 0UL; &bslash;&n;&t;if ((__tsk)-&gt;thread.flags &amp; SPARC_FLAG_32BIT) &bslash;&n;&t;&t;pgd_cache = pgd_val((__mm)-&gt;pgd[0]) &lt;&lt; 11UL; &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;%%g0, 0x494, %%pstate&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%3, %%g4&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%0, %%g7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;stxa&t;%1, [%%g4] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;wrpr&t;%%g0, 0x096, %%pstate&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (paddr), &quot;r&quot; (pgd_cache),&bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_DMMU), &quot;i&quot; (TSB_REG)); &bslash;&n;} while(0)
+mdefine_line|#define reload_tlbmiss_state(__tsk, __mm) &bslash;&n;do { &bslash;&n;&t;register unsigned long paddr asm(&quot;o5&quot;); &bslash;&n;&t;register unsigned long pgd_cache asm(&quot;o4&quot;); &bslash;&n;&t;paddr = __pa((__mm)-&gt;pgd); &bslash;&n;&t;pgd_cache = 0UL; &bslash;&n;&t;if ((__tsk)-&gt;thread.flags &amp; SPARC_FLAG_32BIT) &bslash;&n;&t;&t;pgd_cache = pgd_val((__mm)-&gt;pgd[0]) &lt;&lt; 11UL; &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;%%g0, 0x494, %%pstate&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%3, %%g4&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;mov&t;%0, %%g7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;stxa&t;%1, [%%g4] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;membar&t;#Sync&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;wrpr&t;%%g0, 0x096, %%pstate&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (paddr), &quot;r&quot; (pgd_cache),&bslash;&n;&t;&t;&t;       &quot;i&quot; (ASI_DMMU), &quot;i&quot; (TSB_REG)); &bslash;&n;} while(0)
 multiline_comment|/* Set MMU context in the actual hardware. */
 DECL|macro|load_secondary_context
-mdefine_line|#define load_secondary_context(__mm) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;flush&t;%%g6&quot; &bslash;&n;&t;&t;&t;     : /* No outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (CTX_HWBITS((__mm)-&gt;context)), &bslash;&n;&t;&t;&t;       &quot;r&quot; (0x10), &quot;i&quot; (0x58))
-multiline_comment|/* Clean out potential stale TLB entries due to previous&n; * users of this TLB context.  We flush TLB contexts&n; * lazily on sparc64.&n; */
-DECL|macro|clean_secondary_context
-mdefine_line|#define clean_secondary_context() &bslash;&n;&t;__asm__ __volatile__(&quot;stxa&t;%%g0, [%0] %1&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;stxa&t;%%g0, [%0] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;flush&t;%%g6&quot; &bslash;&n;&t;&t;&t;     : /* No outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (0x50), &quot;i&quot; (0x5f), &quot;i&quot; (0x57))
+mdefine_line|#define load_secondary_context(__mm) &bslash;&n;&t;__asm__ __volatile__(&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;flush&t;%%g6&quot; &bslash;&n;&t;&t;&t;     : /* No outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (CTX_HWBITS((__mm)-&gt;context)), &bslash;&n;&t;&t;&t;       &quot;r&quot; (0x10), &quot;i&quot; (ASI_DMMU))
+r_extern
+r_void
+id|__flush_tlb_mm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Switch the current MM context. */
 DECL|function|switch_mm
 r_static
@@ -207,9 +216,16 @@ id|mm-&gt;cpu_vm_mask
 op_or_assign
 id|vm_mask
 suffix:semicolon
-id|clean_secondary_context
+id|__flush_tlb_mm
 c_func
 (paren
+id|CTX_HWBITS
+c_func
+(paren
+id|mm-&gt;context
+)paren
+comma
+id|SECONDARY_CONTEXT
 )paren
 suffix:semicolon
 )brace
@@ -306,9 +322,16 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|clean_secondary_context
+id|__flush_tlb_mm
 c_func
 (paren
+id|CTX_HWBITS
+c_func
+(paren
+id|mm-&gt;context
+)paren
+comma
+id|SECONDARY_CONTEXT
 )paren
 suffix:semicolon
 id|reload_tlbmiss_state

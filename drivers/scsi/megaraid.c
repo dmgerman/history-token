@@ -136,14 +136,6 @@ multiline_comment|/*&n; *&t;Linux 2.4 and higher&n; *&n; *&t;No driver private l
 macro_line|#include &lt;linux/smp.h&gt;
 DECL|macro|cpuid
 mdefine_line|#define cpuid smp_processor_id()
-DECL|variable|kernel_version
-r_char
-id|kernel_version
-(braket
-)braket
-op_assign
-id|UTS_RELEASE
-suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;American Megatrends Inc.&quot;
@@ -177,14 +169,6 @@ multiline_comment|/*&n; *&t;Linux 2.2 and higher&n; *&n; *&t;No driver private l
 macro_line|#include &lt;linux/smp.h&gt;
 DECL|macro|cpuid
 mdefine_line|#define cpuid smp_processor_id()
-DECL|variable|kernel_version
-r_char
-id|kernel_version
-(braket
-)braket
-op_assign
-id|UTS_RELEASE
-suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;American Megatrends Inc.&quot;

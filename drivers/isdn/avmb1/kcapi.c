@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: kcapi.c,v 1.21.6.2 2001/02/13 11:43:29 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * $Log: kcapi.c,v $&n; * Revision 1.21.6.2  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.21.6.1  2000/12/10 23:39:19  kai&n; * in 2.4 we don&squot;t have tq_scheduler anymore.&n; * also add one supported card to hfc_pci.c&n; * (from main branch)&n; *&n; * Revision 1.21  2000/11/23 20:45:14  kai&n; * fixed module_init/exit stuff&n; * Note: compiled-in kernel doesn&squot;t work pre 2.2.18 anymore.&n; *&n; * Revision 1.20  2000/11/19 17:01:53  kai&n; * compatibility cleanup - part 2&n; *&n; * Revision 1.19  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.18  2000/07/20 10:22:27  calle&n; * - Made procfs function cleaner and removed variable &quot;begin&quot;.&n; *&n; * Revision 1.17  2000/04/21 13:00:56  calle&n; * Bugfix: driver_proc_info was also wrong.&n; *&n; * Revision 1.16  2000/04/21 12:38:42  calle&n; * Bugfix: error in proc_ functions, begin-off =&gt; off-begin&n; *&n; * Revision 1.15  2000/04/06 15:01:25  calle&n; * Bugfix: crash in capidrv.c when reseting a capi controller.&n; * - changed code order on remove of controller.&n; * - using tq_schedule for notifier in kcapi.c.&n; * - now using spin_lock_irqsave() and spin_unlock_irqrestore().&n; * strange: sometimes even MP hang on unload of isdn.o ...&n; *&n; * Revision 1.14  2000/04/03 13:29:25  calle&n; * make Tim Waugh happy (module unload races in 2.3.99-pre3).&n; * no real problem there, but now it is much cleaner ...&n; *&n; * Revision 1.13  2000/03/03 15:50:42  calle&n; * - kernel CAPI:&n; *   - Changed parameter &quot;param&quot; in capi_signal from __u32 to void *.&n; *   - rewrote notifier handling in kcapi.c&n; *   - new notifier NCCI_UP and NCCI_DOWN&n; * - User CAPI:&n; *   - /dev/capi20 is now a cloning device.&n; *   - middleware extentions prepared.&n; * - capidrv.c&n; *   - locking of list operations and module count updates.&n; *&n; * Revision 1.12  2000/01/28 16:45:39  calle&n; * new manufacturer command KCAPI_CMD_ADDCARD (generic addcard),&n; * will search named driver and call the add_card function if one exist.&n; *&n; * Revision 1.11  1999/11/23 13:29:29  calle&n; * Bugfix: incoming capi message were never traced.&n; *&n; * Revision 1.10  1999/10/26 15:30:32  calle&n; * Generate error message if user want to add card, but driver module is&n; * not loaded.&n; *&n; * Revision 1.9  1999/10/11 22:04:12  keil&n; * COMPAT_NEED_UACCESS (no include in isdn_compat.h)&n; *&n; * Revision 1.8  1999/09/10 17:24:18  calle&n; * Changes for proposed standard for CAPI2.0:&n; * - AK148 &quot;Linux Exention&quot;&n; *&n; * Revision 1.7  1999/09/04 06:20:05  keil&n; * Changes from kernel set_current_state()&n; *&n; * Revision 1.6  1999/07/20 06:41:49  calle&n; * Bugfix: After the redesign of the AVM B1 driver, the driver didn&squot;t even&n; *         compile, if not selected as modules.&n; *&n; * Revision 1.5  1999/07/09 15:05:48  keil&n; * compat.h is now isdn_compat.h&n; *&n; * Revision 1.4  1999/07/08 14:15:17  calle&n; * Forgot to count down ncards in drivercb_detach_ctr.&n; *&n; * Revision 1.3  1999/07/06 07:42:02  calle&n; * - changes in /proc interface&n; * - check and changed calls to [dev_]kfree_skb and [dev_]alloc_skb.&n; *&n; * Revision 1.2  1999/07/05 15:09:52  calle&n; * - renamed &quot;appl_release&quot; to &quot;appl_released&quot;.&n; * - version und profile data now cleared on controller reset&n; * - extended /proc interface, to allow driver and controller specific&n; *   informations to include by driver hackers.&n; *&n; * Revision 1.1  1999/07/01 15:26:42  calle&n; * complete new version (I love it):&n; * + new hardware independed &quot;capi_driver&quot; interface that will make it easy to:&n; *   - support other controllers with CAPI-2.0 (i.e. USB Controller)&n; *   - write a CAPI-2.0 for the passive cards&n; *   - support serial link CAPI-2.0 boxes.&n; * + wrote &quot;capi_driver&quot; for all supported cards.&n; * + &quot;capi_driver&quot; (supported cards) now have to be configured with&n; *   make menuconfig, in the past all supported cards where included&n; *   at once.&n; * + new and better informations in /proc/capi/&n; * + new ioctl to switch trace of capi messages per controller&n; *   using &quot;avmcapictrl trace [contr] on|off|....&quot;&n; * + complete testcircle with all supported cards and also the&n; *   PCMCIA cards (now patch for pcmcia-cs-3.0.13 needed) done.&n; *&n; */
+multiline_comment|/*&n; * $Id: kcapi.c,v 1.21.6.5 2001/03/21 08:52:21 kai Exp $&n; * &n; * Kernel CAPI 2.0 Module&n; * &n; * (c) Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; * $Log: kcapi.c,v $&n; * Revision 1.21.6.5  2001/03/21 08:52:21  kai&n; * merge from main branch: fix buffer for revision string (calle)&n; *&n; * Revision 1.21.6.4  2001/03/15 15:11:24  kai&n; * *** empty log message ***&n; *&n; * Revision 1.21.6.3  2001/03/13 16:17:08  kai&n; * spelling fixes from 2.4.3-pre&n; *&n; * Revision 1.21.6.2  2001/02/13 11:43:29  kai&n; * more compatility changes for 2.2.19&n; *&n; * Revision 1.21.6.1  2000/12/10 23:39:19  kai&n; * in 2.4 we don&squot;t have tq_scheduler anymore.&n; * also add one supported card to hfc_pci.c&n; * (from main branch)&n; *&n; * Revision 1.21  2000/11/23 20:45:14  kai&n; * fixed module_init/exit stuff&n; * Note: compiled-in kernel doesn&squot;t work pre 2.2.18 anymore.&n; *&n; * Revision 1.20  2000/11/19 17:01:53  kai&n; * compatibility cleanup - part 2&n; *&n; * Revision 1.19  2000/11/01 14:05:02  calle&n; * - use module_init/module_exit from linux/init.h.&n; * - all static struct variables are initialized with &quot;membername:&quot; now.&n; * - avm_cs.c, let it work with newer pcmcia-cs.&n; *&n; * Revision 1.18  2000/07/20 10:22:27  calle&n; * - Made procfs function cleaner and removed variable &quot;begin&quot;.&n; *&n; * Revision 1.17  2000/04/21 13:00:56  calle&n; * Bugfix: driver_proc_info was also wrong.&n; *&n; * Revision 1.16  2000/04/21 12:38:42  calle&n; * Bugfix: error in proc_ functions, begin-off =&gt; off-begin&n; *&n; * Revision 1.15  2000/04/06 15:01:25  calle&n; * Bugfix: crash in capidrv.c when reseting a capi controller.&n; * - changed code order on remove of controller.&n; * - using tq_schedule for notifier in kcapi.c.&n; * - now using spin_lock_irqsave() and spin_unlock_irqrestore().&n; * strange: sometimes even MP hang on unload of isdn.o ...&n; *&n; * Revision 1.14  2000/04/03 13:29:25  calle&n; * make Tim Waugh happy (module unload races in 2.3.99-pre3).&n; * no real problem there, but now it is much cleaner ...&n; *&n; * Revision 1.13  2000/03/03 15:50:42  calle&n; * - kernel CAPI:&n; *   - Changed parameter &quot;param&quot; in capi_signal from __u32 to void *.&n; *   - rewrote notifier handling in kcapi.c&n; *   - new notifier NCCI_UP and NCCI_DOWN&n; * - User CAPI:&n; *   - /dev/capi20 is now a cloning device.&n; *   - middleware extentions prepared.&n; * - capidrv.c&n; *   - locking of list operations and module count updates.&n; *&n; * Revision 1.12  2000/01/28 16:45:39  calle&n; * new manufacturer command KCAPI_CMD_ADDCARD (generic addcard),&n; * will search named driver and call the add_card function if one exist.&n; *&n; * Revision 1.11  1999/11/23 13:29:29  calle&n; * Bugfix: incoming capi message were never traced.&n; *&n; * Revision 1.10  1999/10/26 15:30:32  calle&n; * Generate error message if user want to add card, but driver module is&n; * not loaded.&n; *&n; * Revision 1.9  1999/10/11 22:04:12  keil&n; * COMPAT_NEED_UACCESS (no include in isdn_compat.h)&n; *&n; * Revision 1.8  1999/09/10 17:24:18  calle&n; * Changes for proposed standard for CAPI2.0:&n; * - AK148 &quot;Linux Exention&quot;&n; *&n; * Revision 1.7  1999/09/04 06:20:05  keil&n; * Changes from kernel set_current_state()&n; *&n; * Revision 1.6  1999/07/20 06:41:49  calle&n; * Bugfix: After the redesign of the AVM B1 driver, the driver didn&squot;t even&n; *         compile, if not selected as modules.&n; *&n; * Revision 1.5  1999/07/09 15:05:48  keil&n; * compat.h is now isdn_compat.h&n; *&n; * Revision 1.4  1999/07/08 14:15:17  calle&n; * Forgot to count down ncards in drivercb_detach_ctr.&n; *&n; * Revision 1.3  1999/07/06 07:42:02  calle&n; * - changes in /proc interface&n; * - check and changed calls to [dev_]kfree_skb and [dev_]alloc_skb.&n; *&n; * Revision 1.2  1999/07/05 15:09:52  calle&n; * - renamed &quot;appl_release&quot; to &quot;appl_released&quot;.&n; * - version und profile data now cleared on controller reset&n; * - extended /proc interface, to allow driver and controller specific&n; *   informations to include by driver hackers.&n; *&n; * Revision 1.1  1999/07/01 15:26:42  calle&n; * complete new version (I love it):&n; * + new hardware independed &quot;capi_driver&quot; interface that will make it easy to:&n; *   - support other controllers with CAPI-2.0 (i.e. USB Controller)&n; *   - write a CAPI-2.0 for the passive cards&n; *   - support serial link CAPI-2.0 boxes.&n; * + wrote &quot;capi_driver&quot; for all supported cards.&n; * + &quot;capi_driver&quot; (supported cards) now have to be configured with&n; *   make menuconfig, in the past all supported cards where included&n; *   at once.&n; * + new and better informations in /proc/capi/&n; * + new ioctl to switch trace of capi messages per controller&n; *   using &quot;avmcapictrl trace [contr] on|off|....&quot;&n; * + complete testcircle with all supported cards and also the&n; *   PCMCIA cards (now patch for pcmcia-cs-3.0.13 needed) done.&n; *&n; */
 DECL|macro|CONFIG_AVMB1_COMPAT
 mdefine_line|#define CONFIG_AVMB1_COMPAT
 macro_line|#include &lt;linux/config.h&gt;
@@ -28,7 +28,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.21.6.2 $&quot;
+l_string|&quot;$Revision: 1.21.6.5 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|macro|CARD_FREE
@@ -8299,7 +8299,7 @@ suffix:semicolon
 r_char
 id|rev
 (braket
-l_int|10
+l_int|32
 )braket
 suffix:semicolon
 id|MOD_INC_USE_COUNT
@@ -8346,18 +8346,46 @@ comma
 l_char|&squot;:&squot;
 )paren
 )paren
+op_ne
+l_int|0
+op_logical_and
+id|p
+(braket
+l_int|1
+)braket
 )paren
 (brace
-id|strcpy
+id|strncpy
 c_func
 (paren
 id|rev
 comma
 id|p
 op_plus
-l_int|1
+l_int|2
+comma
+r_sizeof
+(paren
+id|rev
+)paren
 )paren
 suffix:semicolon
+id|rev
+(braket
+r_sizeof
+(paren
+id|rev
+)paren
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|p
 op_assign
 id|strchr
@@ -8367,9 +8395,20 @@ id|rev
 comma
 l_char|&squot;$&squot;
 )paren
-suffix:semicolon
-op_star
+)paren
+op_ne
+l_int|0
+op_logical_and
 id|p
+OG
+id|rev
+)paren
+op_star
+(paren
+id|p
+op_minus
+l_int|1
+)paren
 op_assign
 l_int|0
 suffix:semicolon
@@ -8388,7 +8427,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;CAPI-driver Rev%s: loaded&bslash;n&quot;
+l_string|&quot;CAPI-driver Rev %s: loaded&bslash;n&quot;
 comma
 id|rev
 )paren
@@ -8398,7 +8437,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;CAPI-driver Rev%s: started&bslash;n&quot;
+l_string|&quot;CAPI-driver Rev %s: started&bslash;n&quot;
 comma
 id|rev
 )paren

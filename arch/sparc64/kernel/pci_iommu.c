@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_iommu.c,v 1.12 2001/01/11 16:26:45 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_iommu.c,v 1.13 2001/03/14 08:42:38 davem Exp $&n; * pci_iommu.c: UltraSparc PCI controller IOM/STC support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1999, 2000 Jakub Jelinek (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -876,22 +876,6 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|iommu-&gt;iommu_ctxflush
-)paren
-(brace
-id|pci_iommu_write
-c_func
-(paren
-id|iommu-&gt;iommu_ctxflush
-comma
-id|ctx
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 r_int
 id|i

@@ -7165,6 +7165,11 @@ id|h
 op_increment
 )paren
 (brace
+r_struct
+id|cbq_class
+op_star
+id|next
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7179,8 +7184,13 @@ id|cl
 suffix:semicolon
 id|cl
 op_assign
-id|cl-&gt;next
+id|next
 )paren
+(brace
+id|next
+op_assign
+id|cl-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7195,6 +7205,7 @@ c_func
 id|cl
 )paren
 suffix:semicolon
+)brace
 )brace
 id|qdisc_put_rtab
 c_func

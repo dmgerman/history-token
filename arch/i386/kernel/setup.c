@@ -592,6 +592,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Silicon Graphics %s (rev %d)&bslash;n&quot;
 comma
 id|visws_board_type
@@ -1165,6 +1166,7 @@ id|E820MAX
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Ooops! Too many entries in the memory map!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1592,6 +1594,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;BIOS-provided physical RAM map:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1918,6 +1921,7 @@ id|usermem
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;user-defined physical RAM map:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2676,6 +2680,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;initrd extends beyond end of memory &quot;
 l_string|&quot;(0x%08lx &gt; 0x%08lx)&bslash;ndisabling initrd&bslash;n&quot;
 comma
@@ -3234,6 +3239,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: L1 I Cache: %dK (%d bytes/line), D cache %dK (%d bytes/line)&bslash;n&quot;
 comma
 id|edx
@@ -3335,6 +3341,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: L2 Cache: %dK (%d bytes/line)&bslash;n&quot;
 comma
 id|l2size
@@ -5140,6 +5147,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Disabling bugged TSC.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5305,6 +5313,7 @@ id|lo
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Centaur FCR was 0x%X now 0x%X&bslash;n&quot;
 comma
 id|lo
@@ -5328,6 +5337,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Centaur FCR is 0x%X&bslash;n&quot;
 comma
 id|lo
@@ -5606,6 +5616,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: Processor revision %u.%u.%u.%u, %u MHz&bslash;n&quot;
 comma
 (paren
@@ -5669,6 +5680,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: Code Morphing Software revision %u.%u.%u-%u-%u&bslash;n&quot;
 comma
 (paren
@@ -5905,6 +5917,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: %s&bslash;n&quot;
 comma
 id|cpu_info
@@ -6053,7 +6066,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_NOTICE
 l_string|&quot;Intel Pentium with F0 0F bug - workaround enabled.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6486,6 +6499,7 @@ id|l1d
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: L1 I cache: %dK, L1 D cache: %dK&bslash;n&quot;
 comma
 id|l1i
@@ -6501,6 +6515,7 @@ id|l2
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: L2 cache: %dK&bslash;n&quot;
 comma
 id|l2
@@ -6514,6 +6529,7 @@ id|l3
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU: L3 cache: %dK&bslash;n&quot;
 comma
 id|l3
@@ -7412,7 +7428,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_NOTICE
 l_string|&quot;CPU serial number disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -8132,6 +8148,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CPU: Before vendor init, caps: %08x %08x %08x, vendor = %d&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
@@ -8236,6 +8253,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CPU: After vendor init, caps: %08x %08x %08x %08x&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
@@ -8365,6 +8383,7 @@ multiline_comment|/* Now the feature flags better reflect actual CPU features! *
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CPU: After generic, caps: %08x %08x %08x %08x&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
@@ -8427,6 +8446,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;CPU: Common caps: %08x %08x %08x %08x&bslash;n&quot;
 comma
 id|boot_cpu_data.x86_capability
@@ -9327,6 +9347,7 @@ id|cpu_initialized
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;CPU#%d already initialized!&bslash;n&quot;
 comma
 id|nr
@@ -9347,6 +9368,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Initializing CPU#%d&bslash;n&quot;
 comma
 id|nr
@@ -9385,6 +9407,7 @@ id|cpu_has_tsc
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Disabling TSC...&bslash;n&quot;
 )paren
 suffix:semicolon

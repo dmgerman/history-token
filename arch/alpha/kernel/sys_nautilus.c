@@ -1582,7 +1582,7 @@ id|DEFAULT_IO_BASE
 comma
 id|min_mem_address
 suffix:colon
-id|DEFAULT_MEM_BASE
+id|IRONGATE_DEFAULT_MEM_BASE
 comma
 id|nr_irqs
 suffix:colon

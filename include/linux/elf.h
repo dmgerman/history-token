@@ -539,6 +539,8 @@ DECL|macro|HWCAP_SPARC_MULDIV
 mdefine_line|#define HWCAP_SPARC_MULDIV      8
 DECL|macro|HWCAP_SPARC_V9
 mdefine_line|#define HWCAP_SPARC_V9&t;&t;16
+DECL|macro|HWCAP_SPARC_ULTRA3
+mdefine_line|#define HWCAP_SPARC_ULTRA3&t;32
 multiline_comment|/*&n; * 68k ELF relocation types&n; */
 DECL|macro|R_68K_NONE
 mdefine_line|#define R_68K_NONE&t;0

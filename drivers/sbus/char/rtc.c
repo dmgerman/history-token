@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: rtc.c,v 1.25 2001/02/13 01:17:00 davem Exp $&n; *&n; * Linux/SPARC Real Time Clock Driver&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is a little driver that lets a user-level program access&n; * the SPARC Mostek real time clock chip. It is no use unless you&n; * use the modified clock utility.&n; *&n; * Get the modified clock utility from:&n; *   ftp://vger.kernel.org/pub/linux/Sparc/userland/clock.c&n; */
+multiline_comment|/* $Id: rtc.c,v 1.26 2001/03/14 09:30:31 davem Exp $&n; *&n; * Linux/SPARC Real Time Clock Driver&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * This is a little driver that lets a user-level program access&n; * the SPARC Mostek real time clock chip. It is no use unless you&n; * use the modified clock utility.&n; *&n; * Get the modified clock utility from:&n; *   ftp://vger.kernel.org/pub/linux/Sparc/userland/clock.c&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -614,6 +614,7 @@ r_void
 r_int
 id|error
 suffix:semicolon
+multiline_comment|/* It is possible we are being driven by some other RTC chip&n;&t; * and thus another RTC driver is handling things.&n;&t; */
 r_if
 c_cond
 (paren
@@ -621,20 +622,10 @@ id|mstk48t02_regs
 op_eq
 l_int|0
 )paren
-(brace
-multiline_comment|/* This diagnostic is a debugging aid... But a useful one. */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;rtc: no Mostek in this computer&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|error
 op_assign
 id|misc_register

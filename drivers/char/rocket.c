@@ -7,8 +7,6 @@ macro_line|#ifdef CONFIG_PCI
 DECL|macro|ENABLE_PCI
 mdefine_line|#define ENABLE_PCI
 macro_line|#endif
-DECL|macro|NEW_MODULES
-mdefine_line|#define NEW_MODULES
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -85,18 +83,6 @@ DECL|macro|TIME_STAT_VERBOSE
 macro_line|#undef TIME_STAT_VERBOSE   /* Undef this if you want a terse log message. */
 DECL|macro|_INLINE_
 mdefine_line|#define _INLINE_ inline
-macro_line|#ifndef NEW_MODULES
-multiline_comment|/*&n; * NB. we must include the kernel idenfication string in to install the module.&n; */
-DECL|variable|kernel_version
-multiline_comment|/*static*/
-r_char
-id|kernel_version
-(braket
-)braket
-op_assign
-id|UTS_RELEASE
-suffix:semicolon
-macro_line|#endif
 DECL|variable|rp_table
 r_static
 r_struct

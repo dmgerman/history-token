@@ -1829,7 +1829,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;uss720: sendbulk ep 1 buf %p len %u rlen %u&bslash;n&quot;
+l_string|&quot;uss720: sendbulk ep 1 buf %p len %Zu rlen %u&bslash;n&quot;
 comma
 id|buf
 comma
@@ -2216,7 +2216,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;uss720: sendbulk ep 1 buf %p len %u rlen %u&bslash;n&quot;
+l_string|&quot;uss720: sendbulk ep 1 buf %p len %Zu rlen %u&bslash;n&quot;
 comma
 id|buffer
 comma
@@ -2338,7 +2338,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;uss720: recvbulk ep 2 buf %p len %u rlen %u&bslash;n&quot;
+l_string|&quot;uss720: recvbulk ep 2 buf %p len %Zu rlen %u&bslash;n&quot;
 comma
 id|buffer
 comma
@@ -2561,7 +2561,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;uss720: sendbulk ep 1 buf %p len %u rlen %u&bslash;n&quot;
+l_string|&quot;uss720: sendbulk ep 1 buf %p len %Zu rlen %u&bslash;n&quot;
 comma
 id|buffer
 comma

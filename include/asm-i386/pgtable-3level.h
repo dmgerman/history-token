@@ -21,11 +21,21 @@ DECL|macro|pmd_ERROR
 mdefine_line|#define pmd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pmd %p(%016Lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pmd_val(e))
 DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %p(%016Lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pgd_val(e))
-multiline_comment|/*&n; * Subtle, in PAE mode we cannot have zeroes in the top level&n; * page directory, the CPU enforces this. (ie. the PGD entry&n; * always has to have the present bit set.) The CPU caches&n; * the 4 pgd entries internally, so there is no extra memory&n; * load on TLB miss, despite one more level of indirection.&n; */
-DECL|macro|EMPTY_PGD
-mdefine_line|#define EMPTY_PGD (__pa(empty_zero_page) + 1)
-DECL|macro|pgd_none
-mdefine_line|#define pgd_none(x)&t;(pgd_val(x) == EMPTY_PGD)
+DECL|function|pgd_none
+r_extern
+r_inline
+r_int
+id|pgd_none
+c_func
+(paren
+id|pgd_t
+id|pgd
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|pgd_bad
 r_extern
 r_inline
@@ -53,12 +63,7 @@ id|pgd
 )paren
 (brace
 r_return
-op_logical_neg
-id|pgd_none
-c_func
-(paren
-id|pgd
-)paren
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Rules for using set_pte: the pte being assigned *must* be&n; * either not present or in a state where the hardware will&n; * not attempt to update the pte.  In places where this is&n; * not possible, use pte_get_and_clear to obtain the old pte&n; * value and then use set_pte to update it.  -ben&n; */
@@ -95,31 +100,7 @@ DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr,pmdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pmdptr),pmd_val(pmdval))
 DECL|macro|set_pgd
 mdefine_line|#define set_pgd(pgdptr,pgdval) &bslash;&n;&t;&t;set_64bit((unsigned long long *)(pgdptr),pgd_val(pgdval))
-multiline_comment|/*&n; * Pentium-II errata A13: in PAE mode we explicitly have to flush&n; * the TLB via cr3 if the top-level pgd is changed... This was one tough&n; * thing to find out - guess i should first read all the documentation&n; * next time around ;)&n; */
-DECL|function|__pgd_clear
-r_extern
-r_inline
-r_void
-id|__pgd_clear
-(paren
-id|pgd_t
-op_star
-id|pgd
-)paren
-(brace
-id|set_pgd
-c_func
-(paren
-id|pgd
-comma
-id|__pgd
-c_func
-(paren
-id|EMPTY_PGD
-)paren
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * Pentium-II erratum A13: in PAE mode we explicitly have to flush&n; * the TLB via cr3 if the top-level pgd is changed...&n; * We do not let the generic code free and clear pgd entries due to&n; * this erratum.&n; */
 DECL|function|pgd_clear
 r_extern
 r_inline
@@ -131,17 +112,6 @@ op_star
 id|pgd
 )paren
 (brace
-id|__pgd_clear
-c_func
-(paren
-id|pgd
-)paren
-suffix:semicolon
-id|__flush_tlb
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
