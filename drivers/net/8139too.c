@@ -60,7 +60,7 @@ DECL|macro|assert
 macro_line|#  define assert(expr) do {} while (0)
 macro_line|#else
 DECL|macro|assert
-macro_line|#  define assert(expr) BUG_ON((expr) == 0)
+macro_line|#  define assert(expr) &bslash;&n;        if(unlikely(!(expr))) {&t;&t;&t;&t;        &bslash;&n;        printk(KERN_ERR &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&t;&bslash;&n;        #expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;        &bslash;&n;        }
 macro_line|#endif
 multiline_comment|/* A few user-configurable values. */
 multiline_comment|/* media options */
