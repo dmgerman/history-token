@@ -210,6 +210,34 @@ comma
 l_string|&quot;Disable the AUX Loopback command while probing for the AUX port&quot;
 )paren
 suffix:semicolon
+DECL|variable|i8042_blink_frequency
+r_static
+r_int
+r_int
+id|i8042_blink_frequency
+op_assign
+l_int|500
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|panicblink
+comma
+id|i8042_blink_frequency
+comma
+id|uint
+comma
+l_int|0600
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|panicblink
+comma
+l_string|&quot;Frequency with which keyboard LEDs should blink when kernel panics&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI
 DECL|variable|i8042_noacpi
 r_static
@@ -2888,29 +2916,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|blink_frequency
-r_static
-r_int
-id|blink_frequency
-op_assign
-l_int|500
-suffix:semicolon
-id|module_param_named
-c_func
-(paren
-id|panicblink
-comma
-id|blink_frequency
-comma
-r_int
-comma
-l_int|0600
-)paren
-suffix:semicolon
-multiline_comment|/* Catch the case when the kbd interrupt is off */
+multiline_comment|/*&n; * i8042_panic_blink() will flash the keyboard LEDs and is called when&n; * kernel panics. Flashing LEDs is useful for users running X who may&n; * not see the console and will help distingushing panics from &quot;real&quot;&n; * lockups.&n; *&n; * Note that DELAY has a limit of 10ms so we will not get stuck here&n; * waiting for KBC to free up even if KBD interrupt is off&n; */
 DECL|macro|DELAY
 mdefine_line|#define DELAY do { mdelay(1); if (++delay &gt; 10) return delay; } while(0)
-multiline_comment|/* Tell the user who may be running in X and not see the console that we have&n;   panic&squot;ed. This is to distingush panics from &quot;real&quot; lockups.  */
 DECL|function|i8042_panic_blink
 r_static
 r_int
@@ -2934,12 +2942,12 @@ r_static
 r_char
 id|led
 suffix:semicolon
-multiline_comment|/* Roughly 1/2s frequency. KDB uses about 1s. Make sure it is&n;&t;   different. */
+multiline_comment|/*&n;&t; * We expect frequency to be about 1/2s. KDB uses about 1s.&n;&t; * Make sure they are different.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|blink_frequency
+id|i8042_blink_frequency
 )paren
 r_return
 l_int|0
@@ -2951,7 +2959,7 @@ id|count
 op_minus
 id|last_blink
 OL
-id|blink_frequency
+id|i8042_blink_frequency
 )paren
 r_return
 l_int|0
