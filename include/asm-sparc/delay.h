@@ -52,5 +52,15 @@ r_int
 id|usecs
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ndelay
+c_func
+(paren
+r_int
+r_int
+id|usecs
+)paren
+suffix:semicolon
 macro_line|#endif /* defined(__SPARC_DELAY_H) */
 eof
