@@ -3963,6 +3963,7 @@ comma
 id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3971,7 +3972,6 @@ id|error
 r_goto
 id|out_unlock_internal
 suffix:semicolon
-)brace
 )brace
 id|xfs_rwunlock
 c_func
