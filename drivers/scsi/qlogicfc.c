@@ -2321,6 +2321,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* this busy loop should not be needed but the isp2x00 seems to need &n;&t;   some time before recognizing it is attached to a fabric */
 macro_line|#if ISP2x00_FABRIC
+r_if
+c_cond
+(paren
+id|hosts
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -2352,6 +2358,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|LEAVE

@@ -8,8 +8,10 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
@@ -262,6 +264,8 @@ DECL|macro|REQUEST_ENTRY_CNT_2100
 mdefine_line|#define REQUEST_ENTRY_CNT_2100&t;&t;128&t;/* Number of request entries. */
 DECL|macro|REQUEST_ENTRY_CNT_2200
 mdefine_line|#define REQUEST_ENTRY_CNT_2200&t;&t;2048&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2XXX_EXT_MEM
+mdefine_line|#define REQUEST_ENTRY_CNT_2XXX_EXT_MEM&t;4096&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300
@@ -4822,6 +4826,37 @@ id|fw_info
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Return data from MBC_GET_ID_LIST call. */
+DECL|struct|gid_list_info
+r_struct
+id|gid_list_info
+(brace
+DECL|member|al_pa
+r_uint8
+id|al_pa
+suffix:semicolon
+DECL|member|area
+r_uint8
+id|area
+suffix:semicolon
+DECL|member|domain
+r_uint8
+id|domain
+suffix:semicolon
+DECL|member|loop_id_2100
+r_uint8
+id|loop_id_2100
+suffix:semicolon
+multiline_comment|/* ISP2100/ISP2200 -- 4 bytes. */
+DECL|member|loop_id
+r_uint16
+id|loop_id
+suffix:semicolon
+multiline_comment|/* ISP23XX         -- 6 bytes. */
+)brace
+suffix:semicolon
+DECL|macro|GID_LIST_SIZE
+mdefine_line|#define GID_LIST_SIZE (sizeof(struct gid_list_info) * MAX_FIBRE_DEVICES)
 multiline_comment|/*&n; * Linux Host Adapter structure&n; */
 DECL|struct|scsi_qla_host
 r_typedef
@@ -5465,15 +5500,6 @@ DECL|member|iodesc_signature
 r_uint16
 id|iodesc_signature
 suffix:semicolon
-DECL|member|iodesc_pd
-id|port_database_t
-op_star
-id|iodesc_pd
-suffix:semicolon
-DECL|member|iodesc_pd_dma
-id|dma_addr_t
-id|iodesc_pd_dma
-suffix:semicolon
 multiline_comment|/* OS target queue pointers. */
 DECL|member|otgt
 id|os_tgt_t
@@ -5588,16 +5614,51 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-multiline_comment|/* Firmware Initialization Control Block data */
+DECL|member|gid_list_dma
+id|dma_addr_t
+id|gid_list_dma
+suffix:semicolon
+DECL|member|gid_list
+r_struct
+id|gid_list_info
+op_star
+id|gid_list
+suffix:semicolon
+DECL|member|rlc_rsp_dma
+id|dma_addr_t
+id|rlc_rsp_dma
+suffix:semicolon
+DECL|member|rlc_rsp
+id|rpt_lun_cmd_rsp_t
+op_star
+id|rlc_rsp
+suffix:semicolon
+multiline_comment|/* Small DMA pool allocations -- maximum 256 bytes in length. */
+DECL|macro|DMA_POOL_SIZE
+mdefine_line|#define DMA_POOL_SIZE&t;256
+DECL|member|s_dma_pool
+r_struct
+id|dma_pool
+op_star
+id|s_dma_pool
+suffix:semicolon
 DECL|member|init_cb_dma
 id|dma_addr_t
 id|init_cb_dma
 suffix:semicolon
-multiline_comment|/* Physical address. */
 DECL|member|init_cb
 id|init_cb_t
 op_star
 id|init_cb
+suffix:semicolon
+DECL|member|iodesc_pd_dma
+id|dma_addr_t
+id|iodesc_pd_dma
+suffix:semicolon
+DECL|member|iodesc_pd
+id|port_database_t
+op_star
+id|iodesc_pd
 suffix:semicolon
 multiline_comment|/* These are used by mailbox operations. */
 DECL|member|mailbox_out
