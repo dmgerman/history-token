@@ -6049,6 +6049,13 @@ suffix:semicolon
 DECL|function|resolv_event
 r_static
 r_void
+id|__attribute__
+c_func
+(paren
+(paren
+id|unused
+)paren
+)paren
 id|resolv_event
 c_func
 (paren
