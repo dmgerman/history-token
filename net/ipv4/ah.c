@@ -741,9 +741,16 @@ id|dst
 op_eq
 l_int|NULL
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
 r_goto
 id|error_nolock
 suffix:semicolon
+)brace
 r_return
 id|NET_XMIT_BYPASS
 suffix:semicolon
