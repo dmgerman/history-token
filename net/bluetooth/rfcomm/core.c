@@ -1093,26 +1093,18 @@ id|rfcomm_session
 op_star
 id|s
 suffix:semicolon
-id|u8
-id|dlci
-op_assign
-id|__dlci
-c_func
-(paren
-l_int|0
-comma
-id|channel
-)paren
-suffix:semicolon
 r_int
 id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|u8
+id|dlci
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;dlc %p state %ld %s %s channel %d dlci %d&quot;
+l_string|&quot;dlc %p state %ld %s %s channel %d&quot;
 comma
 id|d
 comma
@@ -1131,16 +1123,14 @@ id|dst
 )paren
 comma
 id|channel
-comma
-id|dlci
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dlci
+id|channel
 template_param
-l_int|62
+l_int|30
 )paren
 r_return
 op_minus
@@ -1200,6 +1190,17 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|dlci
+op_assign
+id|__dlci
+c_func
+(paren
+op_logical_neg
+id|s-&gt;initiator
+comma
+id|channel
+)paren
+suffix:semicolon
 multiline_comment|/* Check if DLCI already exists */
 r_if
 c_cond
@@ -3364,7 +3365,7 @@ op_assign
 id|__mcc_type
 c_func
 (paren
-id|s-&gt;initiator
+id|cr
 comma
 id|RFCOMM_NSC
 )paren
@@ -3553,7 +3554,7 @@ op_assign
 id|__mcc_type
 c_func
 (paren
-id|s-&gt;initiator
+id|cr
 comma
 id|RFCOMM_PN
 )paren
