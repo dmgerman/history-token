@@ -52,6 +52,10 @@ r_int
 id|vrows
 suffix:semicolon
 multiline_comment|/* number of virtual rows */
+DECL|member|cursor_shape
+r_int
+id|cursor_shape
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */
