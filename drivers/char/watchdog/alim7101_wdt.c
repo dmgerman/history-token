@@ -1,11 +1,11 @@
-multiline_comment|/*&n; *&t;60xx Single Board Computer Watchdog Timer driver for Linux 2.2.x&n; *&n; *      Based on acquirewdt.c by Alan Cox.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;The author does NOT admit liability nor provide warranty for &n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in &n; *      the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2000    Jakob Oestergaard &lt;jakob@ostenfeld.dk&gt;&n; *&n; *           12/4 - 2000      [Initial revision]&n; *           25/4 - 2000      Added /dev/watchdog support&n; *           09/5 - 2001      [smj@oro.net] fixed fop_write to &quot;return 1&quot; on success&n; *&n; *&n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from the other Linux WDT &n; *  drivers in several ways:&n; *  *)  The driver will ping the watchdog by itself, because this&n; *      particular WDT has a very short timeout (one second) and it&n; *      would be insane to count on any userspace daemon always&n; *      getting scheduled within that time frame.&n; *  *)  This driver expects the userspace daemon to send a specific&n; *      character code (&squot;V&squot;) to /dev/watchdog before closing the&n; *      /dev/watchdog file.  If the userspace daemon closes the file&n; *      without sending this special character, the driver will assume&n; *      that the daemon (and userspace in general) died, and will&n; *      stop pinging the WDT without disabling it first.  This will&n; *      cause a reboot.&n; *&n; *  Why `V&squot; ?  Well, `V&squot; is the character in ASCII for the value 86,&n; *  and we all know that 86 is _the_ most random number in the universe.&n; *  Therefore it is the letter that has the slightest chance of occuring&n; *  by chance, when the system becomes corrupted.&n; *&n; */
+multiline_comment|/*&n; *&t;ALi M7101 PMU Computer Watchdog Timer driver for Linux 2.4.x&n; *&n; *&t;Based on w83877f_wdt.c by Scott Jennings &lt;management@oro.net&gt;&n; *&t;and the Cobalt kernel WDT timer driver by Tim Hockin&n; *&t;                                      &lt;thockin@cobaltnet.com&gt;&n; *&n; *&t;(c)2002 Steve Hill &lt;steve@navaho.co.uk&gt;&n; * &n; *  Theory of operation:&n; *  A Watchdog Timer (WDT) is a hardware circuit that can &n; *  reset the computer system in case of a software fault.&n; *  You probably knew that already.&n; *&n; *  Usually a userspace daemon will notify the kernel WDT driver&n; *  via the /proc/watchdog special device file that userspace is&n; *  still alive, at regular intervals.  When such a notification&n; *  occurs, the driver will usually tell the hardware watchdog&n; *  that everything is in order, and that the watchdog should wait&n; *  for yet another little while to reset the system.&n; *  If userspace fails (RAM error, kernel bug, whatever), the&n; *  notifications cease to occur, and the hardware watchdog will&n; *  reset the system (causing a reboot) after the timeout occurs.&n; *&n; *  This WDT driver is different from most other Linux WDT&n; *  drivers in that the driver will ping the watchdog by itself,&n; *  because this particular WDT has a very short timeout (1.6&n; *  seconds) and it would be insane to count on any userspace&n; *  daemon always getting scheduled within that time frame.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -18,19 +18,23 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|macro|OUR_NAME
-mdefine_line|#define OUR_NAME &quot;sbc60xxwdt&quot;
-multiline_comment|/*&n; * You must set these - The driver cannot probe for the settings&n; */
-DECL|macro|WDT_STOP
-mdefine_line|#define WDT_STOP 0x45
-DECL|macro|WDT_START
-mdefine_line|#define WDT_START 0x443
-multiline_comment|/*&n; * The 60xx board can use watchdog timeout values from one second&n; * to several minutes.  The default is one second, so if we reset&n; * the watchdog every ~250ms we should be safe.&n; */
+mdefine_line|#define OUR_NAME &quot;alim7101_wdt&quot;
+DECL|macro|WDT_ENABLE
+mdefine_line|#define WDT_ENABLE 0x9C
+DECL|macro|WDT_DISABLE
+mdefine_line|#define WDT_DISABLE 0x8C
+DECL|macro|ALI_7101_WDT
+mdefine_line|#define ALI_7101_WDT    0x92
+DECL|macro|ALI_WDT_ARM
+mdefine_line|#define ALI_WDT_ARM     0x01
+multiline_comment|/*&n; * We&squot;re going to use a 1 second timeout.&n; * If we reset the watchdog every ~250ms we should be safe.  */
 DECL|macro|WDT_INTERVAL
 mdefine_line|#define WDT_INTERVAL (HZ/4+1)
-multiline_comment|/*&n; * We must not require too good response from the userspace daemon.&n; * Here we require the userspace daemon to send us a heartbeat&n; * char to /dev/watchdog every 10 seconds.&n; * If the daemon pulses us every 5 seconds, we can still afford&n; * a 5 second scheduling delay on the (high priority) daemon. That&n; * should be sufficient for a box under any load.&n; */
+multiline_comment|/*&n; * We must not require too good response from the userspace daemon.&n; * Here we require the userspace daemon to send us a heartbeat&n; * char to /dev/watchdog every 30 seconds.&n; */
 DECL|macro|WDT_HEARTBEAT
-mdefine_line|#define WDT_HEARTBEAT (HZ * 10)
+mdefine_line|#define WDT_HEARTBEAT (HZ * 30)
 r_static
 r_void
 id|wdt_timer_ping
@@ -55,12 +59,20 @@ suffix:semicolon
 DECL|variable|wdt_is_open
 r_static
 r_int
+r_int
 id|wdt_is_open
 suffix:semicolon
 DECL|variable|wdt_expect_close
 r_static
 r_int
 id|wdt_expect_close
+suffix:semicolon
+DECL|variable|alim7101_pmu
+r_static
+r_struct
+id|pci_dev
+op_star
+id|alim7101_pmu
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -108,6 +120,9 @@ id|data
 )paren
 (brace
 multiline_comment|/* If we got a heartbeat pulse within the WDT_US_INTERVAL&n;&t; * we agree to ping the WDT &n;&t; */
+r_char
+id|tmp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -120,13 +135,58 @@ id|next_heartbeat
 )paren
 )paren
 (brace
-multiline_comment|/* Ping the WDT by reading from WDT_START */
-id|inb_p
+multiline_comment|/* Ping the WDT (this is actually a disarm/arm sequence) */
+id|pci_read_config_byte
 c_func
 (paren
-id|WDT_START
+id|alim7101_pmu
+comma
+l_int|0x92
+comma
+op_amp
+id|tmp
 )paren
 suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+id|ALI_7101_WDT
+comma
+(paren
+id|tmp
+op_amp
+op_complement
+id|ALI_WDT_ARM
+)paren
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+id|ALI_7101_WDT
+comma
+(paren
+id|tmp
+op_or
+id|ALI_WDT_ARM
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|OUR_NAME
+l_string|&quot;: Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Re-set the timer interval */
 id|timer.expires
 op_assign
@@ -142,18 +202,69 @@ id|timer
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|printk
+multiline_comment|/* &n; * Utility routines&n; */
+DECL|function|wdt_change
+r_static
+r_void
+id|wdt_change
 c_func
 (paren
-id|OUR_NAME
-l_string|&quot;: Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
+r_int
+id|writeval
+)paren
+(brace
+r_char
+id|tmp
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+l_int|0x92
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|writeval
+op_eq
+id|WDT_ENABLE
+)paren
+id|pci_write_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+id|ALI_7101_WDT
+comma
+(paren
+id|tmp
+op_or
+id|ALI_WDT_ARM
+)paren
+)paren
+suffix:semicolon
+r_else
+id|pci_write_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+id|ALI_7101_WDT
+comma
+(paren
+id|tmp
+op_amp
+op_complement
+id|ALI_WDT_ARM
+)paren
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* &n; * Utility routines&n; */
 DECL|function|wdt_startup
 r_static
 r_void
@@ -168,6 +279,13 @@ op_assign
 id|jiffies
 op_plus
 id|WDT_HEARTBEAT
+suffix:semicolon
+multiline_comment|/* We must enable before we kick off the timer in case the timer&n;&t;   occurs as we ping it */
+id|wdt_change
+c_func
+(paren
+id|WDT_ENABLE
+)paren
 suffix:semicolon
 multiline_comment|/* Start the timer */
 id|timer.expires
@@ -201,17 +319,17 @@ r_void
 )paren
 (brace
 multiline_comment|/* Stop the timer */
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
 id|timer
 )paren
 suffix:semicolon
-id|inb_p
+id|wdt_change
 c_func
 (paren
-id|WDT_STOP
+id|WDT_DISABLE
 )paren
 suffix:semicolon
 id|printk
@@ -269,10 +387,17 @@ c_cond
 id|count
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|ofs
 suffix:semicolon
-multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t; * five months ago... */
+multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago... */
 id|wdt_expect_close
 op_assign
 l_int|0
@@ -309,12 +434,10 @@ op_plus
 id|ofs
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -322,14 +445,13 @@ id|c
 op_eq
 l_char|&squot;V&squot;
 )paren
-(brace
 id|wdt_expect_close
 op_assign
 l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Well, anyhow someone wrote to us, we should return that favour */
+multiline_comment|/* someone wrote to us, we should restart timer */
 id|next_heartbeat
 op_assign
 id|jiffies
@@ -340,6 +462,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -390,24 +513,18 @@ op_star
 id|file
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-(brace
-r_case
-id|WATCHDOG_MINOR
-suffix:colon
 multiline_comment|/* Just in case we&squot;re already talking to someone... */
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|wdt_is_open
+)paren
 )paren
 (brace
 r_return
@@ -415,20 +532,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|nowayout
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/* Good, fire up the show */
-id|wdt_is_open
-op_assign
-l_int|1
-suffix:semicolon
 id|wdt_startup
 c_func
 (paren
@@ -437,13 +541,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 )brace
 DECL|function|fop_close
 r_static
@@ -465,22 +562,7 @@ id|file
 r_if
 c_cond
 (paren
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-op_eq
-id|WATCHDOG_MINOR
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|wdt_expect_close
-op_logical_and
-op_logical_neg
-id|nowayout
 )paren
 (brace
 id|wdt_turnoff
@@ -490,14 +572,6 @@ c_func
 suffix:semicolon
 )brace
 r_else
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|timer
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -505,11 +579,14 @@ id|OUR_NAME
 l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-)brace
-id|wdt_is_open
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|wdt_is_open
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -559,7 +636,7 @@ comma
 dot
 id|identity
 op_assign
-l_string|&quot;SB60xx&quot;
+l_string|&quot;ALiM7101&quot;
 )brace
 suffix:semicolon
 r_switch
@@ -568,12 +645,6 @@ c_cond
 id|cmd
 )paren
 (brace
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENOTTY
-suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
 suffix:colon
@@ -613,6 +684,12 @@ id|WDT_HEARTBEAT
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENOTTY
 suffix:semicolon
 )brace
 )brace
@@ -666,10 +743,19 @@ id|miscdevice
 id|wdt_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|wdt_fops
 )brace
@@ -706,10 +792,31 @@ id|code
 op_eq
 id|SYS_HALT
 )paren
-(brace
 id|wdt_turnoff
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|code
+op_eq
+id|SYS_RESTART
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Cobalt devices have no way of rebooting themselves other than&n;&t;&t; * getting the watchdog to pull reset, so we restart the watchdog on&n;&t;&t; * reboot with no heartbeat&n;&t;&t; */
+id|wdt_change
+c_func
+(paren
+id|WDT_ENABLE
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|OUR_NAME
+l_string|&quot;: Watchdog timer is now enabled with no heartbeat - should reboot in ~1 second.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -725,18 +832,27 @@ id|notifier_block
 id|wdt_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|wdt_notify_sys
 comma
+dot
+id|next
+op_assign
 l_int|0
 comma
+dot
+id|priority
+op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|function|sbc60xxwdt_unload
+DECL|function|alim7101_wdt_unload
 r_static
 r_void
 id|__exit
-id|sbc60xxwdt_unload
+id|alim7101_wdt_unload
 c_func
 (paren
 r_void
@@ -762,21 +878,12 @@ op_amp
 id|wdt_notifier
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|WDT_START
-comma
-l_int|1
-)paren
-suffix:semicolon
-singleline_comment|//&t;release_region(WDT_STOP,1);
 )brace
-DECL|function|sbc60xxwdt_init
+DECL|function|alim7101_wdt_init
 r_static
 r_int
 id|__init
-id|sbc60xxwdt_init
+id|alim7101_wdt_init
 c_func
 (paren
 r_void
@@ -788,26 +895,133 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-singleline_comment|//&t;We cannot reserve 0x45 - the kernel already has!
-singleline_comment|//&t;if (!request_region(WDT_STOP, 1, &quot;SBC 60XX WDT&quot;))
-singleline_comment|//&t;&t;goto err_out;
+r_struct
+id|pci_dev
+op_star
+id|ali1543_south
+suffix:semicolon
+r_char
+id|tmp
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|OUR_NAME
+l_string|&quot;: Steve Hill &lt;steve@navaho.co.uk&gt;.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|alim7101_pmu
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_AL
+comma
+id|PCI_DEVICE_ID_AL_M7101
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|request_region
+id|alim7101_pmu
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|WDT_START
-comma
-l_int|1
-comma
-l_string|&quot;SBC 60XX WDT&quot;
+id|KERN_INFO
+id|OUR_NAME
+l_string|&quot;: ALi M7101 PMU not present - WDT not set&bslash;n&quot;
 )paren
-)paren
-r_goto
-id|err_out_region1
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+multiline_comment|/* Set the WDT in the PMU to 1 second */
+id|pci_write_config_byte
+c_func
+(paren
+id|alim7101_pmu
+comma
+id|ALI_7101_WDT
+comma
+l_int|0x02
+)paren
+suffix:semicolon
+id|ali1543_south
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_AL
+comma
+id|PCI_DEVICE_ID_AL_M1533
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ali1543_south
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|OUR_NAME
+l_string|&quot;: ALi 1543 South-Bridge not present - WDT not set&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|pci_read_config_byte
+c_func
+(paren
+id|ali1543_south
+comma
+l_int|0x5e
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+l_int|0x1e
+)paren
+op_ne
+l_int|0x12
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|OUR_NAME
+l_string|&quot;: ALi 1543 South-Bridge does not have the correct revision number (???1001?) - WDT not set&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 id|init_timer
 c_func
 (paren
@@ -821,7 +1035,7 @@ id|wdt_timer_ping
 suffix:semicolon
 id|timer.data
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|rc
 op_assign
@@ -837,8 +1051,8 @@ c_cond
 (paren
 id|rc
 )paren
-r_goto
-id|err_out_region2
+r_return
+id|rc
 suffix:semicolon
 id|rc
 op_assign
@@ -854,22 +1068,7 @@ c_cond
 (paren
 id|rc
 )paren
-r_goto
-id|err_out_miscdev
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|OUR_NAME
-l_string|&quot;: WDT driver for 60XX single board computer initialised.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-id|err_out_miscdev
-suffix:colon
+(brace
 id|misc_deregister
 c_func
 (paren
@@ -877,43 +1076,40 @@ op_amp
 id|wdt_miscdev
 )paren
 suffix:semicolon
-id|err_out_region2
-suffix:colon
-id|release_region
-c_func
-(paren
-id|WDT_START
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|err_out_region1
-suffix:colon
-id|release_region
-c_func
-(paren
-id|WDT_STOP
-comma
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* err_out: */
 r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|variable|sbc60xxwdt_init
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|OUR_NAME
+l_string|&quot;: WDT driver for ALi M7101 initialised.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|alim7101_wdt_init
 id|module_init
 c_func
 (paren
-id|sbc60xxwdt_init
+id|alim7101_wdt_init
 )paren
 suffix:semicolon
-DECL|variable|sbc60xxwdt_unload
+DECL|variable|alim7101_wdt_unload
 id|module_exit
 c_func
 (paren
-id|sbc60xxwdt_unload
+id|alim7101_wdt_unload
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Steve Hill&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -208,6 +208,8 @@ dot
 id|options
 op_assign
 id|WDIOF_KEEPALIVEPING
+op_or
+id|WDIOF_MAGICCLOSE
 comma
 dot
 id|firmware_version
@@ -841,7 +843,7 @@ c_cond
 id|count
 )paren
 (brace
-multiline_comment|/*&n; * no need to check for close confirmation&n; * no way to disable watchdog ;)&n; */
+multiline_comment|/*&n;&t;&t; * no need to check for close confirmation&n;&t;&t; * no way to disable watchdog ;)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1139,10 +1141,8 @@ c_cond
 (paren
 id|nowayout
 )paren
-(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-)brace
 id|zf_is_open
 op_assign
 l_int|1
