@@ -251,6 +251,12 @@ comma
 id|host_no
 )paren
 suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|parport_unregister_device
 c_func
 (paren

@@ -1227,6 +1227,8 @@ id|scsi_allocate_request
 c_func
 (paren
 id|STp-&gt;device
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 op_eq

@@ -52,8 +52,6 @@ macro_line|#include &quot;sym_misc.h&quot;
 macro_line|#include &quot;sym_conf.h&quot;
 macro_line|#include &quot;sym_defs.h&quot;
 multiline_comment|/*&n; * Configuration addendum for Linux.&n; */
-DECL|macro|SYM_LINUX_DYNAMIC_DMA_MAPPING
-mdefine_line|#define&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|macro|SYM_CONF_TIMER_INTERVAL
 mdefine_line|#define&t;SYM_CONF_TIMER_INTERVAL&t;&t;((HZ+1)/2)
 DECL|macro|SYM_OPT_HANDLE_DIR_UNKNOWN
@@ -68,10 +66,8 @@ DECL|macro|SYM_OPT_LIMIT_COMMAND_REORDERING
 mdefine_line|#define SYM_OPT_LIMIT_COMMAND_REORDERING
 DECL|macro|SYM_OPT_ANNOUNCE_TRANSFER_RATE
 mdefine_line|#define&t;SYM_OPT_ANNOUNCE_TRANSFER_RATE
-macro_line|#ifdef&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|macro|SYM_OPT_BUS_DMA_ABSTRACTION
 mdefine_line|#define&t;SYM_OPT_BUS_DMA_ABSTRACTION
-macro_line|#endif
 multiline_comment|/*&n; *  Print a message with severity.&n; */
 DECL|macro|printf_emerg
 mdefine_line|#define printf_emerg(args...)&t;printk(KERN_EMERG args)
@@ -92,22 +88,10 @@ mdefine_line|#define&t;printf_debug(args...)&t;printk(KERN_DEBUG args)
 DECL|macro|printf
 mdefine_line|#define&t;printf(args...)&t;&t;printk(args)
 multiline_comment|/*&n; *  Insert a delay in micro-seconds and milli-seconds.&n; */
-r_void
-id|sym_udelay
-c_func
-(paren
-r_int
-id|us
-)paren
-suffix:semicolon
-r_void
-id|sym_mdelay
-c_func
-(paren
-r_int
-id|ms
-)paren
-suffix:semicolon
+DECL|macro|sym_udelay
+mdefine_line|#define sym_udelay(us)&t;udelay(us)
+DECL|macro|sym_mdelay
+mdefine_line|#define sym_mdelay(ms)&t;mdelay(ms)
 multiline_comment|/*&n; *  Let the compiler know about driver data structure names.&n; */
 DECL|typedef|tcb_p
 r_typedef
@@ -453,16 +437,6 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-DECL|member|bus
-id|u_char
-id|bus
-suffix:semicolon
-multiline_comment|/* PCI BUS number&t;&t;*/
-DECL|member|device_fn
-id|u_char
-id|device_fn
-suffix:semicolon
-multiline_comment|/* PCI BUS device and function&t;*/
 DECL|member|mmio_va
 id|vm_offset_t
 id|mmio_va
@@ -526,14 +500,6 @@ multiline_comment|/*&n; *  Data structure used as input for the NVRAM reading.&n
 r_typedef
 r_struct
 (brace
-DECL|member|bus
-r_int
-id|bus
-suffix:semicolon
-DECL|member|device_fn
-id|u_char
-id|device_fn
-suffix:semicolon
 DECL|member|base
 id|u_long
 id|base
@@ -580,12 +546,6 @@ r_struct
 id|sym_nvram
 id|sym_nvram
 suffix:semicolon
-DECL|typedef|sym_chip
-r_typedef
-r_struct
-id|sym_pci_chip
-id|sym_chip
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -600,7 +560,8 @@ id|sym_slot
 id|s
 suffix:semicolon
 DECL|member|chip
-id|sym_chip
+r_struct
+id|sym_pci_chip
 id|chip
 suffix:semicolon
 DECL|member|nvram
@@ -651,7 +612,6 @@ macro_line|#ifdef&t;MODULE
 DECL|macro|SYM_MEM_FREE_UNUSED
 mdefine_line|#define SYM_MEM_FREE_UNUSED&t;/* Free unused pages immediately */
 macro_line|#endif
-macro_line|#ifdef&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|typedef|m_pool_ident_t
 r_typedef
 r_struct
@@ -659,7 +619,6 @@ id|pci_dev
 op_star
 id|m_pool_ident_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *  Include driver soft definitions.&n; */
 macro_line|#include &quot;sym_fw.h&quot;
 macro_line|#include &quot;sym_hipd.h&quot;
@@ -701,16 +660,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
-macro_line|#ifndef&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
-multiline_comment|/*&n; *  Simple case.&n; *  All the memory assummed DMAable and O/S providing virtual &n; *  to bus physical address translation.&n; */
-DECL|macro|__sym_calloc_dma
-mdefine_line|#define __sym_calloc_dma(pool_id, size, name)&t;sym_calloc(size, name)
-DECL|macro|__sym_mfree_dma
-mdefine_line|#define __sym_mfree_dma(pool_id, m, size, name)&t;sym_mfree(m, size, name)
-DECL|macro|__vtobus
-mdefine_line|#define __vtobus(b, p)&t;&t;&t;&t;virt_to_bus(p)
-macro_line|#else&t;/* SYM_LINUX_DYNAMIC_DMA_MAPPING */
-multiline_comment|/*&n; *  Complex case.&n; *  We have to provide the driver memory allocator with methods for &n; *  it to maintain virtual to bus physical address translations.&n; */
+multiline_comment|/*&n; *  We have to provide the driver memory allocator with methods for &n; *  it to maintain virtual to bus physical address translations.&n; */
 DECL|macro|sym_m_pool_match
 mdefine_line|#define sym_m_pool_match(mp_id1, mp_id2)&t;(mp_id1 == mp_id2)
 DECL|function|sym_m_get_dma_mem_cluster
@@ -864,7 +814,6 @@ op_star
 id|m
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* SYM_LINUX_DYNAMIC_DMA_MAPPING */
 multiline_comment|/*&n; *  Set the status field of a CAM CCB.&n; */
 r_static
 id|__inline
