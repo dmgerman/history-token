@@ -56,6 +56,12 @@ id|numnodes
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|sysctl_lower_zone_protection
+r_int
+id|sysctl_lower_zone_protection
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; * Used by page_zone() to look up the address of the struct zone whose&n; * id is encoded in the upper bits of page-&gt;flags&n; */
 DECL|variable|zone_table
 r_struct
@@ -2073,6 +2079,12 @@ r_return
 id|page
 suffix:semicolon
 )brace
+id|min
+op_add_assign
+id|z-&gt;pages_low
+op_star
+id|sysctl_lower_zone_protection
+suffix:semicolon
 )brace
 multiline_comment|/* we&squot;re somewhat low on memory, failed to find what we needed */
 r_for
@@ -2197,6 +2209,12 @@ r_return
 id|page
 suffix:semicolon
 )brace
+id|min
+op_add_assign
+id|local_min
+op_star
+id|sysctl_lower_zone_protection
+suffix:semicolon
 )brace
 multiline_comment|/* here we&squot;re in the low on memory slow path */
 id|rebalance
@@ -2381,6 +2399,12 @@ r_return
 id|page
 suffix:semicolon
 )brace
+id|min
+op_add_assign
+id|z-&gt;pages_low
+op_star
+id|sysctl_lower_zone_protection
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Don&squot;t let big-order allocations loop.  Yield for kswapd, try again.&n;&t; */
 r_if
