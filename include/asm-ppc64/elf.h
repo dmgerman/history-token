@@ -97,12 +97,12 @@ DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (0x08000000)
 multiline_comment|/* Common routine for both 32-bit and 64-bit processes */
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(gregs, regs) elf_core_copy_regs(gregs, regs);
+mdefine_line|#define ELF_CORE_COPY_REGS(gregs, regs) ppc64_elf_core_copy_regs(gregs, regs);
 r_static
 r_inline
 r_void
-DECL|function|elf_core_copy_regs
-id|elf_core_copy_regs
+DECL|function|ppc64_elf_core_copy_regs
+id|ppc64_elf_core_copy_regs
 c_func
 (paren
 id|elf_gregset_t
