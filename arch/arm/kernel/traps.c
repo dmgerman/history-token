@@ -1346,7 +1346,7 @@ suffix:semicolon
 id|die
 c_func
 (paren
-l_string|&quot;Oops&quot;
+l_string|&quot;Oops - bad mode&quot;
 comma
 id|regs
 comma
@@ -1489,7 +1489,7 @@ suffix:semicolon
 id|die_if_kernel
 c_func
 (paren
-l_string|&quot;Oops&quot;
+l_string|&quot;Oops - bad syscall&quot;
 comma
 id|regs
 comma
@@ -1922,7 +1922,7 @@ suffix:semicolon
 id|die_if_kernel
 c_func
 (paren
-l_string|&quot;Oops&quot;
+l_string|&quot;Oops - bad syscall(2)&quot;
 comma
 id|regs
 comma
