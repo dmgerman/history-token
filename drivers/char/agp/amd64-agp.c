@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * Copyright 2001-2003 SuSE Labs.&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD Opteron/Athlon64 on-CPU northbridge.&n; * It also includes support for the AMD 8151 AGP bridge,&n; * although it doesn&squot;t actually do much, as all the real&n; * work is done in the northbridge(s).&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
