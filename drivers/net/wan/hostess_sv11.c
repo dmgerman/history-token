@@ -788,7 +788,7 @@ id|z8530_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;Hostess SV/11&quot;
+l_string|&quot;Hostess SV11&quot;
 comma
 id|dev
 )paren
