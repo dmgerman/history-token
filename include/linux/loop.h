@@ -34,10 +34,6 @@ DECL|member|lo_refcnt
 r_int
 id|lo_refcnt
 suffix:semicolon
-DECL|member|lo_device
-id|kdev_t
-id|lo_device
-suffix:semicolon
 DECL|member|lo_offset
 r_int
 id|lo_offset
@@ -133,6 +129,12 @@ r_struct
 id|file
 op_star
 id|lo_backing_file
+suffix:semicolon
+DECL|member|lo_device
+r_struct
+id|block_device
+op_star
+id|lo_device
 suffix:semicolon
 DECL|member|key_data
 r_void
