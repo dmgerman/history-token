@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#include &lt;asm/sn/geo.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 singleline_comment|// SGI Specific Calls
 DECL|macro|SN_SAL_POD_MODE
@@ -766,7 +767,7 @@ id|ret_stuff.v2
 op_assign
 l_int|0
 suffix:semicolon
-id|SAL_CALL_NOLOCK
+id|SAL_CALL_REENTRANT
 c_func
 (paren
 id|ret_stuff
