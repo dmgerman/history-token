@@ -566,7 +566,7 @@ id|dst
 (brace
 id|transport-&gt;pmtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -696,7 +696,7 @@ id|dst
 (brace
 id|transport-&gt;pmtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst

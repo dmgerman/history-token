@@ -8263,7 +8263,7 @@ id|dst
 id|u32
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst

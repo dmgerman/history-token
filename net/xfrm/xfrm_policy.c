@@ -5403,7 +5403,7 @@ id|route_mtu_cached
 suffix:semicolon
 id|pmtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst-&gt;child
@@ -5425,7 +5425,7 @@ id|pmtu
 suffix:semicolon
 id|route_mtu_cached
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|xdst-&gt;route
@@ -5586,7 +5586,7 @@ l_int|0
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst-&gt;child
@@ -5626,7 +5626,7 @@ l_int|0
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|xdst-&gt;route
