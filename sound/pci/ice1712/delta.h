@@ -14,6 +14,8 @@ DECL|macro|ICE1712_SUBDEVICE_DELTA44
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA44&t;0x121433d6
 DECL|macro|ICE1712_SUBDEVICE_AUDIOPHILE
 mdefine_line|#define ICE1712_SUBDEVICE_AUDIOPHILE&t;0x121434d6
+DECL|macro|ICE1712_SUBDEVICE_DELTA410
+mdefine_line|#define ICE1712_SUBDEVICE_DELTA410&t;0x121438d6
 DECL|macro|ICE1712_SUBDEVICE_DELTA1010LT
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010LT&t;0x12143bd6
 multiline_comment|/* entry point */
@@ -91,7 +93,8 @@ multiline_comment|/* 0x10 = CODEC_SERIAL_DATA */
 multiline_comment|/* 0x20 = CODEC_SERIAL_CLOCK */
 multiline_comment|/* 0x40 = CODEC_CHIP_A */
 multiline_comment|/* 0x80 = CODEC_CHIP_B */
-multiline_comment|/* MidiMan M-Audio Audiophile definitions */
+multiline_comment|/* MidiMan M-Audio Audiophile/Delta410 definitions */
+multiline_comment|/* thanks to Kristof Pelckmans &lt;Kristof.Pelckmans@antwerpen.be&gt; for Delta410 info */
 multiline_comment|/* 0x01 = DFS */
 DECL|macro|ICE1712_DELTA_AP_CCLK
 mdefine_line|#define ICE1712_DELTA_AP_CCLK&t;0x02&t;/* SPI clock */
@@ -104,7 +107,7 @@ DECL|macro|ICE1712_DELTA_AP_CS_DIGITAL
 mdefine_line|#define ICE1712_DELTA_AP_CS_DIGITAL 0x10 /* CS8427 chip select */
 multiline_comment|/* low signal = select */
 DECL|macro|ICE1712_DELTA_AP_CS_CODEC
-mdefine_line|#define ICE1712_DELTA_AP_CS_CODEC 0x20&t;/* AK4528 chip select */
+mdefine_line|#define ICE1712_DELTA_AP_CS_CODEC 0x20&t;/* AK4528 (audiophile), AK4529 (Delta410) chip select */
 multiline_comment|/* low signal = select */
 multiline_comment|/* MidiMan M-Audio Delta1010LT definitions */
 multiline_comment|/* thanks to Anders Johansson &lt;ajh@watri.uwa.edu.au&gt; */

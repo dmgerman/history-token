@@ -2,6 +2,9 @@ macro_line|#ifndef _LINUX_HUGETLB_H
 DECL|macro|_LINUX_HUGETLB_H
 mdefine_line|#define _LINUX_HUGETLB_H
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
+r_struct
+id|ctl_table
+suffix:semicolon
 DECL|function|is_vm_hugetlb_page
 r_static
 r_inline
@@ -21,6 +24,27 @@ op_amp
 id|VM_HUGETLB
 suffix:semicolon
 )brace
+r_int
+id|hugetlb_sysctl_handler
+c_func
+(paren
+r_struct
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
 r_int
 id|copy_hugetlb_page_range
 c_func
@@ -122,6 +146,18 @@ id|page
 op_star
 )paren
 suffix:semicolon
+r_int
+id|hugetlb_report_meminfo
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|htlbpage_max
+suffix:semicolon
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|function|is_vm_hugetlb_page
 r_static
@@ -152,6 +188,8 @@ DECL|macro|unmap_hugepage_range
 mdefine_line|#define unmap_hugepage_range(vma, start, end)&t;BUG()
 DECL|macro|huge_page_release
 mdefine_line|#define huge_page_release(page)&t;&t;&t;BUG()
+DECL|macro|hugetlb_report_meminfo
+mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
 r_extern

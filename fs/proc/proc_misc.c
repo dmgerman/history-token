@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -755,39 +756,16 @@ comma
 id|ps.nr_reverse_maps
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-(brace
-r_extern
-r_int
-r_int
-id|htlbpagemem
-comma
-id|htlbzone_pages
-suffix:semicolon
 id|len
 op_add_assign
-id|sprintf
+id|hugetlb_report_meminfo
 c_func
 (paren
 id|page
 op_plus
 id|len
-comma
-l_string|&quot;HugePages_Total: %5lu&bslash;n&quot;
-l_string|&quot;HugePages_Free:  %5lu&bslash;n&quot;
-l_string|&quot;Hugepagesize:    %5lu kB&bslash;n&quot;
-comma
-id|htlbzone_pages
-comma
-id|htlbpagemem
-comma
-id|HPAGE_SIZE
-op_div
-l_int|1024
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|proc_calc_metrics
 c_func
@@ -1535,11 +1513,6 @@ id|iowait
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|major
-comma
-id|disk
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1789,7 +1762,7 @@ c_func
 id|i
 )paren
 dot
-id|cpustat.idle
+id|cpustat.iowait
 )paren
 )paren
 suffix:semicolon
@@ -1851,143 +1824,11 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;ndisk_io: &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|major
-op_assign
-l_int|0
-suffix:semicolon
-id|major
-OL
-id|DK_MAX_MAJOR
-suffix:semicolon
-id|major
-op_increment
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|disk
-op_assign
-l_int|0
-suffix:semicolon
-id|disk
-OL
-id|DK_MAX_DISK
-suffix:semicolon
-id|disk
-op_increment
-)paren
-(brace
-r_int
-id|active
-op_assign
-id|dkstat.drive
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-op_plus
-id|dkstat.drive_rblk
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-op_plus
-id|dkstat.drive_wblk
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|active
-)paren
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|page
-op_plus
-id|len
-comma
-l_string|&quot;(%u,%u):(%u,%u,%u,%u,%u) &quot;
-comma
-id|major
-comma
-id|disk
-comma
-id|dkstat.drive
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-comma
-id|dkstat.drive_rio
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-comma
-id|dkstat.drive_rblk
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-comma
-id|dkstat.drive_wio
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-comma
-id|dkstat.drive_wblk
-(braket
-id|major
-)braket
-(braket
-id|disk
-)braket
-)paren
-suffix:semicolon
-)brace
-)brace
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|page
-op_plus
-id|len
-comma
 l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
 l_string|&quot;procs_running %lu&bslash;n&quot;
-l_string|&quot;procs_blocked %u&bslash;n&quot;
+l_string|&quot;procs_blocked %lu&bslash;n&quot;
 comma
 id|nr_context_switches
 c_func
@@ -2007,11 +1848,9 @@ c_func
 (paren
 )paren
 comma
-id|atomic_read
+id|nr_iowait
 c_func
 (paren
-op_amp
-id|nr_iowait_tasks
 )paren
 )paren
 suffix:semicolon

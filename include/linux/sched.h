@@ -118,6 +118,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|nr_iowait
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/resource.h&gt;
@@ -236,6 +245,21 @@ c_func
 r_struct
 id|pt_regs
 op_star
+)paren
+suffix:semicolon
+r_void
+id|io_schedule
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|io_schedule_timeout
+c_func
+(paren
+r_int
+id|timeout
 )paren
 suffix:semicolon
 r_extern

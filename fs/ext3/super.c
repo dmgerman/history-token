@@ -4686,6 +4686,12 @@ id|sbi-&gt;s_resgid
 op_assign
 id|EXT3_DEF_RESGID
 suffix:semicolon
+id|setup_ro_after
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 id|blocksize
 op_assign
 id|sb_min_blocksize

@@ -169,7 +169,7 @@ op_logical_neg
 id|sgbuf-&gt;table
 )paren
 (brace
-id|snd_pcm_sgbuf_free
+id|snd_pcm_sgbuf_delete
 c_func
 (paren
 id|substream
@@ -564,11 +564,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get the page pointer on the given offset&n; * used as the page callback of pcm ops&n; */
-DECL|function|snd_pcm_sgbuf_ops_page
+multiline_comment|/*&n; * get the page pointer on the given offset&n; */
+DECL|function|sgbuf_get_addr
+r_static
 r_void
 op_star
-id|snd_pcm_sgbuf_ops_page
+id|sgbuf_get_addr
 c_func
 (paren
 id|snd_pcm_substream_t
@@ -625,6 +626,52 @@ id|idx
 )braket
 dot
 id|buf
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * get the page struct at the given offset&n; * used as the page callback of pcm ops&n; */
+DECL|function|snd_pcm_sgbuf_ops_page
+r_struct
+id|page
+op_star
+id|snd_pcm_sgbuf_ops_page
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_void
+op_star
+id|addr
+op_assign
+id|sgbuf_get_addr
+c_func
+(paren
+id|substream
+comma
+id|offset
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
+r_return
+id|virt_to_page
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_else
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * do copy_from_user to the sg buffer&n; */
@@ -686,7 +733,7 @@ suffix:semicolon
 (brace
 id|addr
 op_assign
-id|snd_pcm_sgbuf_ops_page
+id|sgbuf_get_addr
 c_func
 (paren
 id|substream
@@ -827,7 +874,7 @@ suffix:semicolon
 (brace
 id|addr
 op_assign
-id|snd_pcm_sgbuf_ops_page
+id|sgbuf_get_addr
 c_func
 (paren
 id|substream
@@ -988,7 +1035,7 @@ suffix:semicolon
 (brace
 id|addr
 op_assign
-id|snd_pcm_sgbuf_ops_page
+id|sgbuf_get_addr
 c_func
 (paren
 id|substream

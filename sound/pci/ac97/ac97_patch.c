@@ -648,7 +648,7 @@ id|SNDRV_PCM_RATE_32000
 suffix:semicolon
 id|ac97-&gt;ext_id
 op_or_assign
-id|AC97_EA_SPDIF
+id|AC97_EI_SPDIF
 suffix:semicolon
 multiline_comment|/* force the detection of spdif */
 id|snd_ac97_write_cache
@@ -704,7 +704,7 @@ id|AC97_CX_SPDIF
 suffix:semicolon
 id|ac97-&gt;ext_id
 op_or_assign
-id|AC97_EA_SPDIF
+id|AC97_EI_SPDIF
 suffix:semicolon
 multiline_comment|/* force the detection of spdif */
 r_return
@@ -1567,6 +1567,39 @@ comma
 id|misc
 op_or
 l_int|0x0420
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|patch_alc650
+r_int
+id|patch_alc650
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+multiline_comment|/* enable spdif in */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_CLOCK
+comma
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_CLOCK
+)paren
+op_or
+l_int|0x03
 )paren
 suffix:semicolon
 r_return

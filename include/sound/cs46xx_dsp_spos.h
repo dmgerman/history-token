@@ -23,9 +23,9 @@ mdefine_line|#define SEGTYPE_SP_COEFFICIENT          0x00000004
 DECL|macro|DSP_SPOS_UU
 mdefine_line|#define DSP_SPOS_UU      0x0deadul     /* unused */
 DECL|macro|DSP_SPOS_DC
-mdefine_line|#define DSP_SPOS_DC      0x0badul     /* dont care */
+mdefine_line|#define DSP_SPOS_DC      0x0badul      /* dont care */
 DECL|macro|DSP_SPOS_DC_DC
-mdefine_line|#define DSP_SPOS_DC_DC   0x0bad0badul     /* dont care */
+mdefine_line|#define DSP_SPOS_DC_DC   0x0bad0badul  /* dont care */
 DECL|macro|DSP_SPOS_UUUU
 mdefine_line|#define DSP_SPOS_UUUU    0xdeadc0edul  /* unused */
 DECL|macro|DSP_SPOS_UUHI
@@ -33,25 +33,43 @@ mdefine_line|#define DSP_SPOS_UUHI    0xdeadul
 DECL|macro|DSP_SPOS_UULO
 mdefine_line|#define DSP_SPOS_UULO    0xc0edul
 DECL|macro|DSP_SPOS_DCDC
-mdefine_line|#define DSP_SPOS_DCDC    0x0badf1d0ul /* dont care */
+mdefine_line|#define DSP_SPOS_DCDC    0x0badf1d0ul  /* dont care */
 DECL|macro|DSP_SPOS_DCDCHI
 mdefine_line|#define DSP_SPOS_DCDCHI  0x0badul
 DECL|macro|DSP_SPOS_DCDCLO
 mdefine_line|#define DSP_SPOS_DCDCLO  0xf1d0ul
 DECL|macro|DSP_MAX_TASK_NAME
-mdefine_line|#define DSP_MAX_TASK_NAME 60
+mdefine_line|#define DSP_MAX_TASK_NAME   60
 DECL|macro|DSP_MAX_SYMBOL_NAME
 mdefine_line|#define DSP_MAX_SYMBOL_NAME 100
 DECL|macro|DSP_MAX_SCB_NAME
-mdefine_line|#define DSP_MAX_SCB_NAME  60
+mdefine_line|#define DSP_MAX_SCB_NAME    60
 DECL|macro|DSP_MAX_SCB_DESC
-mdefine_line|#define DSP_MAX_SCB_DESC  200
+mdefine_line|#define DSP_MAX_SCB_DESC    200
 DECL|macro|DSP_MAX_TASK_DESC
-mdefine_line|#define DSP_MAX_TASK_DESC 50
+mdefine_line|#define DSP_MAX_TASK_DESC   50
 DECL|macro|DSP_MAX_PCM_CHANNELS
 mdefine_line|#define DSP_MAX_PCM_CHANNELS 32
 DECL|macro|DSP_MAX_SRC_NR
 mdefine_line|#define DSP_MAX_SRC_NR       6
+DECL|macro|DSP_PCM_MAIN_CHANNEL
+mdefine_line|#define DSP_PCM_MAIN_CHANNEL    1
+DECL|macro|DSP_PCM_REAR_CHANNEL
+mdefine_line|#define DSP_PCM_REAR_CHANNEL    2
+DECL|macro|DSP_PCM_CENTER_CHANNEL
+mdefine_line|#define DSP_PCM_CENTER_CHANNEL  3
+DECL|macro|DSP_PCM_LFE_CHANNEL
+mdefine_line|#define DSP_PCM_LFE_CHANNEL     4
+DECL|macro|DSP_IEC958_CHANNEL
+mdefine_line|#define DSP_IEC958_CHANNEL      5
+DECL|macro|DSP_SPDIF_STATUS_OUTPUT_ENABLED
+mdefine_line|#define DSP_SPDIF_STATUS_OUTPUT_ENABLED 1
+DECL|macro|DSP_SPDIF_STATUS_PLAYBACK_OPEN
+mdefine_line|#define DSP_SPDIF_STATUS_PLAYBACK_OPEN  2
+DECL|macro|DSP_SPDIF_STATUS_HW_ENABLED
+mdefine_line|#define DSP_SPDIF_STATUS_HW_ENABLED     4
+DECL|macro|DSP_SPDIF_STATUS_AC3_MODE
+mdefine_line|#define DSP_SPDIF_STATUS_AC3_MODE       8
 r_struct
 id|_dsp_module_desc_t
 suffix:semicolon
@@ -311,6 +329,15 @@ id|dsp_scb_descriptor_t
 op_star
 id|src_scb
 suffix:semicolon
+DECL|member|mixer_scb
+id|dsp_scb_descriptor_t
+op_star
+id|mixer_scb
+suffix:semicolon
+DECL|member|pcm_channel_id
+r_int
+id|pcm_channel_id
+suffix:semicolon
 DECL|member|private_data
 r_void
 op_star
@@ -344,11 +371,25 @@ DECL|member|code
 id|segment_desc_t
 id|code
 suffix:semicolon
-multiline_comment|/* PCM playback */
+multiline_comment|/* Main PCM playback mixer */
 DECL|member|master_mix_scb
 id|dsp_scb_descriptor_t
 op_star
 id|master_mix_scb
+suffix:semicolon
+DECL|member|dac_volume_right
+id|u16
+id|dac_volume_right
+suffix:semicolon
+DECL|member|dac_volume_left
+id|u16
+id|dac_volume_left
+suffix:semicolon
+multiline_comment|/* Rear PCM playback mixer */
+DECL|member|rear_mix_scb
+id|dsp_scb_descriptor_t
+op_star
+id|rear_mix_scb
 suffix:semicolon
 DECL|member|npcm_channels
 r_int
@@ -468,9 +509,13 @@ DECL|member|spdif_status_in
 r_int
 id|spdif_status_in
 suffix:semicolon
-DECL|member|spdif_input_volume
-id|u32
-id|spdif_input_volume
+DECL|member|spdif_input_volume_right
+id|u16
+id|spdif_input_volume_right
+suffix:semicolon
+DECL|member|spdif_input_volume_left
+id|u16
+id|spdif_input_volume_left
 suffix:semicolon
 multiline_comment|/* SPDIF input sample rate converter */
 DECL|member|spdif_in_src
@@ -501,6 +546,18 @@ DECL|member|ref_snoop_scb
 id|dsp_scb_descriptor_t
 op_star
 id|ref_snoop_scb
+suffix:semicolon
+multiline_comment|/* SPDIF output  PCM reference  */
+DECL|member|spdif_pcm_input_scb
+id|dsp_scb_descriptor_t
+op_star
+id|spdif_pcm_input_scb
+suffix:semicolon
+multiline_comment|/* asynch TX task */
+DECL|member|asynch_tx_scb
+id|dsp_scb_descriptor_t
+op_star
+id|asynch_tx_scb
 suffix:semicolon
 multiline_comment|/* record sources */
 DECL|member|pcm_input

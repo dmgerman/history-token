@@ -650,6 +650,15 @@ id|entry
 )paren
 suffix:semicolon
 r_int
+id|snd_info_card_create
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+suffix:semicolon
+r_int
 id|snd_info_card_register
 c_func
 (paren
@@ -659,7 +668,7 @@ id|card
 )paren
 suffix:semicolon
 r_int
-id|snd_info_card_unregister
+id|snd_info_card_free
 c_func
 (paren
 id|snd_card_t

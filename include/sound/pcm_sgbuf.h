@@ -223,7 +223,8 @@ id|snd_pcm_uframes_t
 id|count
 )paren
 suffix:semicolon
-r_void
+r_struct
+id|page
 op_star
 id|snd_pcm_sgbuf_ops_page
 c_func
