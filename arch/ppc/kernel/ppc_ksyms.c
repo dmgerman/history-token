@@ -816,6 +816,13 @@ c_func
 id|flush_tlb_page
 )paren
 suffix:semicolon
+DECL|variable|_tlbie
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_tlbie
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 DECL|variable|last_task_used_altivec
 id|EXPORT_SYMBOL
