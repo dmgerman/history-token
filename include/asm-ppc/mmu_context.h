@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/*&n; * On 32-bit PowerPC 6xx/7xx/7xxx CPUs, we use a set of 16 VSIDs&n; * (virtual segment identifiers) for each context.  Although the&n; * hardware supports 24-bit VSIDs, and thus &gt;1 million contexts,&n; * we only use 32,768 of them.  That is ample, since there can be&n; * at most around 30,000 tasks in the system anyway, and it means&n; * that we can use a bitmap to indicate which contexts are in use.&n; * Using a bitmap means that we entirely avoid all of the problems&n; * that we used to have when the context number overflowed,&n; * particularly on SMP systems.&n; *  -- paulus.&n; */
 multiline_comment|/*&n; * This function defines the mapping from contexts to VSIDs (virtual&n; * segment IDs).  We use a skew on both the context and the high 4 bits&n; * of the 32-bit virtual address (the &quot;effective segment ID&quot;) in order&n; * to spread out the entries in the MMU hash table.  Note, if this&n; * function is changed then arch/ppc/mm/hashtable.S will have to be&n; * changed to correspond.&n; */
 DECL|macro|CTX_TO_VSID
@@ -290,10 +291,41 @@ op_star
 id|tsk
 )paren
 (brace
+macro_line|#ifdef CONFIG_ALTIVEC
+id|asm
+r_volatile
+(paren
+id|BEGIN_FTR_SECTION
+l_string|&quot;dssall;&bslash;n&quot;
+macro_line|#ifndef CONFIG_POWER4
+l_string|&quot;sync;&bslash;n&quot;
+multiline_comment|/* G4 needs a sync here, G5 apparently not */
+macro_line|#endif
+id|END_FTR_SECTION_IFSET
+c_func
+(paren
+id|CPU_FTR_ALTIVEC
+)paren
+suffix:colon
+suffix:colon
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|tsk-&gt;thread.pgdir
 op_assign
 id|next-&gt;pgd
 suffix:semicolon
+multiline_comment|/* No need to flush userspace segments if the mm doesnt change */
+r_if
+c_cond
+(paren
+id|prev
+op_eq
+id|next
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Setup new userspace context */
 id|get_mmu_context
 c_func
 (paren
@@ -312,43 +344,8 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
-DECL|function|activate_mm
-r_static
-r_inline
-r_void
-id|activate_mm
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|active_mm
-comma
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-(brace
-id|current-&gt;thread.pgdir
-op_assign
-id|mm-&gt;pgd
-suffix:semicolon
-id|get_mmu_context
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
-id|set_context
-c_func
-(paren
-id|mm-&gt;context
-comma
-id|mm-&gt;pgd
-)paren
-suffix:semicolon
-)brace
+DECL|macro|activate_mm
+mdefine_line|#define activate_mm(active_mm, mm)   switch_mm(active_mm, mm, current)
 r_extern
 r_void
 id|mmu_context_init
