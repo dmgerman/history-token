@@ -1545,11 +1545,6 @@ id|u8
 id|unmask
 suffix:semicolon
 multiline_comment|/* okay to unmask other irqs */
-DECL|member|slow
-id|u8
-id|slow
-suffix:semicolon
-multiline_comment|/* slow data port */
 DECL|member|bswap
 id|u8
 id|bswap
@@ -1635,13 +1630,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* disallow enabling 32bit I/O */
-DECL|member|nobios
-r_int
-id|nobios
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* do not probe bios for drive */
 DECL|member|atapi_overlap
 r_int
 id|atapi_overlap
@@ -1684,13 +1672,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0=noremap, 1=remap 0-&gt;1 (for EZDrive) */
-DECL|member|ata_flash
-r_int
-id|ata_flash
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 1=present, 0=default */
 DECL|member|blocked
 r_int
 id|blocked
