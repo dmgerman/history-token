@@ -1304,30 +1304,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ABORTED
-suffix:semicolon
-)brace
 multiline_comment|/* a stall indicates a protocol error */
 r_if
 c_cond
@@ -1520,30 +1496,6 @@ id|USB_STOR_XFER_ERROR
 suffix:semicolon
 r_return
 id|USB_STOR_XFER_STALLED
-suffix:semicolon
-)brace
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* NAK - that means we&squot;ve retried a few times already */
@@ -3262,39 +3214,6 @@ op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_control_msg(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|result
-op_ne
-id|USB_STOR_XFER_GOOD
-)paren
-(brace
 multiline_comment|/* Uh oh... serious problem here */
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -3343,28 +3262,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* report any errors */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_XFER_ABORTED
-)paren
-(brace
-id|clear_bit
-c_func
-(paren
-id|US_FLIDX_IP_WANTED
-comma
-op_amp
-id|us-&gt;flags
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3419,7 +3316,7 @@ l_string|&quot;CBI interrupt aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_ABORTED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 id|US_DEBUGP
@@ -3609,30 +3506,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_CB_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3689,19 +3562,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* report any errors */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_XFER_ABORTED
-)paren
-(brace
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3709,11 +3569,9 @@ id|result
 op_eq
 id|USB_STOR_XFER_ERROR
 )paren
-(brace
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* STATUS STAGE */
 multiline_comment|/* NOTE: CB does not have a status stage.  Silly, I know.  So&n;&t; * we have to catch this at a higher level.&n;&t; */
@@ -3992,30 +3850,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4069,17 +3903,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* if it was aborted, we need to indicate that */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_XFER_ABORTED
-)paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4120,30 +3943,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond
@@ -4181,30 +3980,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* if we still have a failure at this point, we&squot;re in trouble */
 id|US_DEBUGP

@@ -109,8 +109,6 @@ DECL|macro|ISD200_TRANSPORT_FAILED
 mdefine_line|#define ISD200_TRANSPORT_FAILED     1   /* Transport good, command failed   */
 DECL|macro|ISD200_TRANSPORT_ERROR
 mdefine_line|#define ISD200_TRANSPORT_ERROR      2   /* Transport bad (i.e. device dead) */
-DECL|macro|ISD200_TRANSPORT_ABORTED
-mdefine_line|#define ISD200_TRANSPORT_ABORTED    3   /* Transport aborted                */
 DECL|macro|ISD200_TRANSPORT_SHORT
 mdefine_line|#define ISD200_TRANSPORT_SHORT      4   /* Transport short                  */
 multiline_comment|/* driver action codes */
@@ -1139,24 +1137,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-r_return
-id|ISD200_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1209,17 +1189,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* if it was aborted, we need to indicate that */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-id|USB_STOR_XFER_ABORTED
-)paren
-r_return
-id|ISD200_TRANSPORT_ABORTED
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1260,24 +1229,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* did we abort this command? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-r_return
-id|ISD200_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond
@@ -1315,24 +1266,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* if the command was aborted, indicate that */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-r_return
-id|ISD200_TRANSPORT_ABORTED
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* if we still have a failure at this point, we&squot;re in trouble */
 id|US_DEBUGP
@@ -2015,24 +1948,6 @@ op_assign
 id|GOOD
 op_lshift
 l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ISD200_TRANSPORT_ABORTED
-suffix:colon
-multiline_comment|/* if the command gets aborted by the higher layers, we need to&n;&t;&t; * short-circuit all other processing&n;&t;&t; */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transport indicates command was aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-id|srb-&gt;result
-op_assign
-id|DID_ABORT
-op_lshift
-l_int|16
 suffix:semicolon
 r_break
 suffix:semicolon
