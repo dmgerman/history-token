@@ -118,10 +118,10 @@ comma
 id|pcnet32_pci_tbl
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|cards_found
+r_static
 r_int
 id|cards_found
-id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * VLB I/O addresses&n; */
 DECL|variable|__initdata
