@@ -394,6 +394,10 @@ id|__u16
 id|ipc_tid
 suffix:semicolon
 multiline_comment|/* special tid for connection to IPC share */
+DECL|member|flags
+id|__u16
+id|flags
+suffix:semicolon
 DECL|member|mac_signing_key
 r_char
 id|mac_signing_key
@@ -470,6 +474,9 @@ id|password
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* session flags */
+DECL|macro|CIFS_SES_NT4
+mdefine_line|#define CIFS_SES_NT4 1
 multiline_comment|/*&n; * there is one of these for each connection to a resource on a particular&n; * session &n; */
 DECL|struct|cifsTconInfo
 r_struct

@@ -1899,6 +1899,17 @@ c_func
 id|ATTR_NORMAL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pTcon-&gt;ses-&gt;flags
+op_amp
+id|CIFS_SES_NT4
+)paren
+)paren
+(brace
 id|rc
 op_assign
 id|CIFSSMBSetTimes
@@ -1914,6 +1925,13 @@ id|pinfo_buf
 comma
 id|cifs_sb-&gt;local_nls
 )paren
+suffix:semicolon
+)brace
+r_else
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 r_if
 c_cond
@@ -1948,9 +1966,11 @@ id|full_path
 comma
 id|FILE_OPEN
 comma
+id|SYNCHRONIZE
+op_or
 id|FILE_WRITE_ATTRIBUTES
 comma
-id|CREATE_NOT_DIR
+l_int|0
 comma
 op_amp
 id|netfid
@@ -4541,6 +4561,17 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* do not change */
 multiline_comment|/* In the future we should experiment - try setting timestamps&n;&t;&t;&t; via Handle (SetFileInfo) instead of by path */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pTcon-&gt;ses-&gt;flags
+op_amp
+id|CIFS_SES_NT4
+)paren
+)paren
+(brace
 id|rc
 op_assign
 id|CIFSSMBSetTimes
@@ -4557,6 +4588,13 @@ id|time_buf
 comma
 id|cifs_sb-&gt;local_nls
 )paren
+suffix:semicolon
+)brace
+r_else
+id|rc
+op_assign
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 r_if
 c_cond
@@ -4600,6 +4638,8 @@ id|full_path
 comma
 id|FILE_OPEN
 comma
+id|SYNCHRONIZE
+op_or
 id|FILE_WRITE_ATTRIBUTES
 comma
 id|CREATE_NOT_DIR

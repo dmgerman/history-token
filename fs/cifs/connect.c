@@ -8544,13 +8544,13 @@ comma
 id|nls_codepage
 )paren
 suffix:semicolon
+multiline_comment|/* convert number of 16 bit words to bytes */
 id|bcc_ptr
 op_add_assign
 l_int|2
 op_star
 id|bytes_returned
 suffix:semicolon
-multiline_comment|/* convert num 16 bit words to bytes */
 id|bcc_ptr
 op_add_assign
 l_int|2
@@ -9238,6 +9238,37 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ses-&gt;serverNOS
+comma
+l_string|&quot;NT LAN Manager 4&quot;
+comma
+l_int|16
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;NT4 server&quot;
+)paren
+)paren
+suffix:semicolon
+id|ses-&gt;flags
+op_or_assign
+id|CIFS_SES_NT4
+suffix:semicolon
+)brace
 id|remaining_words
 op_sub_assign
 id|len
