@@ -2184,6 +2184,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#if 0
+multiline_comment|/*&n;   * note: these IOCTLs no longer reach here.  Use&n;   * tiocmset/tiocmget driver methods instead.  The&n;   * #if 0 disablement predates this comment.&n;   */
 r_case
 id|TIOCMGET
 suffix:colon
