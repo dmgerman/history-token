@@ -61,11 +61,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CPU_SH7708
+id|CPU_SH7705
 dot
 dot
 dot
-id|CPU_SH7729
+id|CPU_SH7300
 suffix:colon
 op_star
 id|p

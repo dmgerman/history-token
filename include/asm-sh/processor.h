@@ -27,11 +27,13 @@ DECL|enumerator|CPU_SH7604
 id|CPU_SH7604
 comma
 multiline_comment|/* SH-3 types */
+DECL|enumerator|CPU_SH7705
 DECL|enumerator|CPU_SH7707
 DECL|enumerator|CPU_SH7708
 DECL|enumerator|CPU_SH7708S
 DECL|enumerator|CPU_SH7708R
-DECL|enumerator|CPU_SH7709
+id|CPU_SH7705
+comma
 id|CPU_SH7707
 comma
 id|CPU_SH7708
@@ -40,11 +42,12 @@ id|CPU_SH7708S
 comma
 id|CPU_SH7708R
 comma
-id|CPU_SH7709
-comma
+DECL|enumerator|CPU_SH7709
 DECL|enumerator|CPU_SH7709A
 DECL|enumerator|CPU_SH7729
 DECL|enumerator|CPU_SH7300
+id|CPU_SH7709
+comma
 id|CPU_SH7709A
 comma
 id|CPU_SH7729
