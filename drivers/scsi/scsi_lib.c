@@ -5045,6 +5045,11 @@ l_int|0
 suffix:semicolon
 id|illegal
 suffix:colon
+id|SCSI_LOG_ERROR_RECOVERY
+c_func
+(paren
+l_int|1
+comma
 id|dev_printk
 c_func
 (paren
@@ -5067,11 +5072,6 @@ c_func
 id|state
 )paren
 )paren
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 r_return
