@@ -7,8 +7,8 @@ id|x86_summit
 suffix:semicolon
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (x86_summit ? 1 : 0)
-DECL|macro|no_balance_irq
-mdefine_line|#define no_balance_irq (0)
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ (0)
 DECL|macro|XAPIC_DEST_CPUS_MASK
 mdefine_line|#define XAPIC_DEST_CPUS_MASK    0x0Fu
 DECL|macro|XAPIC_DEST_CLUSTER_MASK

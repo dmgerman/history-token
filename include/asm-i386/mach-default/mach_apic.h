@@ -10,8 +10,8 @@ macro_line|#else
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS 0x01
 macro_line|#endif
-DECL|macro|no_balance_irq
-mdefine_line|#define no_balance_irq (0)
+DECL|macro|NO_BALANCE_IRQ
+mdefine_line|#define NO_BALANCE_IRQ (0)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (0)
 DECL|macro|INT_DELIVERY_MODE
