@@ -6,15 +6,6 @@ mdefine_line|#define BASE_BAUD ( 1843200 / 16 )
 multiline_comment|/* Standard COM flags */
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-macro_line|#ifdef CONFIG_ARCH_IQ80310
-DECL|macro|IRQ_UART1
-mdefine_line|#define IRQ_UART1&t;IRQ_IQ80310_UART1
-DECL|macro|IRQ_UART2
-mdefine_line|#define IRQ_UART2&t;IRQ_IQ80310_UART2
-DECL|macro|STD_SERIAL_PORT_DEFNS
-mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;       /* UART CLK      PORT        IRQ        FLAGS        */&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, IQ80310_UART2, IRQ_UART2, STD_COM_FLAGS },  /* ttyS0 */&t;&bslash;&n;&t;{ 0, BASE_BAUD, IQ80310_UART1, IRQ_UART1, STD_COM_FLAGS }  /* ttyS1 */
-macro_line|#endif 
-singleline_comment|// CONFIG_ARCH_IQ80310
 macro_line|#ifdef CONFIG_ARCH_IQ80321
 DECL|macro|IRQ_UART1
 mdefine_line|#define IRQ_UART1&t;IRQ_IQ80321_UART

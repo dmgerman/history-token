@@ -165,11 +165,7 @@ r_void
 id|u32
 id|timer_ctl
 suffix:semicolon
-id|u32
-id|latch
-op_assign
-id|LATCH
-suffix:semicolon
+multiline_comment|/*&t;u32 latch = LATCH; */
 id|gettimeoffset
 op_assign
 id|iop321_gettimeoffset
