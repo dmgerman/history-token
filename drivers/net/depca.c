@@ -5257,7 +5257,6 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;** ISA bus I/O device probe&n;*/
