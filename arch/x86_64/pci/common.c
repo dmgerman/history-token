@@ -545,6 +545,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_GART_IOMMU
+id|pci_iommu_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* may eventually need to do ACPI sort here. */
 r_return
 l_int|0
@@ -833,6 +840,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 r_int
@@ -848,6 +858,8 @@ id|pcibios_enable_resources
 c_func
 (paren
 id|dev
+comma
+id|mask
 )paren
 )paren
 OL
