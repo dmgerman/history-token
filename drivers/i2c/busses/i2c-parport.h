@@ -237,7 +237,7 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* type 4: ADM1025 and ADM1032 evaluation boards */
+multiline_comment|/* type 4: ADM1032 evaluation board */
 (brace
 dot
 id|setsda
@@ -283,7 +283,43 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* ADM1025 doesn&squot;t need this,&n;&t;&t;&t;&t;&t;&t;but it doesn&squot;t hurt */
+)brace
+comma
+multiline_comment|/* type 5: ADM1025, ADM1030 and ADM1031 evaluation boards */
+(brace
+dot
+id|setsda
+op_assign
+(brace
+l_int|0x02
+comma
+id|DATA
+comma
+l_int|1
+)brace
+comma
+dot
+id|setscl
+op_assign
+(brace
+l_int|0x01
+comma
+id|DATA
+comma
+l_int|1
+)brace
+comma
+dot
+id|getsda
+op_assign
+(brace
+l_int|0x10
+comma
+id|STAT
+comma
+l_int|1
+)brace
+comma
 )brace
 comma
 )brace
@@ -311,7 +347,8 @@ l_string|&quot; 0 = Philips adapter&bslash;n&quot;
 l_string|&quot; 1 = home brew teletext adapter&bslash;n&quot;
 l_string|&quot; 2 = Velleman K8000 adapter&bslash;n&quot;
 l_string|&quot; 3 = ELV adapter&bslash;n&quot;
-l_string|&quot; 4 = ADM1025 and ADM1032 evaluation boards&bslash;n&quot;
+l_string|&quot; 4 = ADM1032 evaluation board&bslash;n&quot;
+l_string|&quot; 5 = ADM1025, ADM1030 and ADM1031 evaluation boards&bslash;n&quot;
 )paren
 suffix:semicolon
 eof
