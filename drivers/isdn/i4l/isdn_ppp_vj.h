@@ -2,8 +2,7 @@ multiline_comment|/* Linux ISDN subsystem, PPP VJ header compression&n; *&n; * C
 macro_line|#ifndef __ISDN_PPP_VJ_H__
 DECL|macro|__ISDN_PPP_VJ_H__
 mdefine_line|#define __ISDN_PPP_VJ_H__
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/isdn.h&gt;
+macro_line|#include &quot;isdn_net_lib.h&quot;
 macro_line|#ifdef CONFIG_ISDN_PPP_VJ
 r_struct
 id|slcompress

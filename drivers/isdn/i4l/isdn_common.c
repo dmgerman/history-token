@@ -92,10 +92,10 @@ r_int
 id|m_idx
 suffix:semicolon
 multiline_comment|/* Index for mdm....          */
-DECL|member|idev
+DECL|member|priv
 id|isdn_net_dev
 op_star
-id|idev
+id|priv
 suffix:semicolon
 multiline_comment|/* pointer to isdn_net_dev    */
 )brace
@@ -10182,16 +10182,16 @@ id|num
 suffix:semicolon
 )brace
 r_void
-DECL|function|isdn_slot_set_idev
-id|isdn_slot_set_idev
+DECL|function|isdn_slot_set_priv
+id|isdn_slot_set_priv
 c_func
 (paren
 r_int
 id|sl
 comma
-id|isdn_net_dev
+r_void
 op_star
-id|idev
+id|priv
 )paren
 (brace
 id|BUG_ON
@@ -10207,15 +10207,15 @@ id|slot
 id|sl
 )braket
 dot
-id|idev
+id|priv
 op_assign
-id|idev
+id|priv
 suffix:semicolon
 )brace
-id|isdn_net_dev
+r_void
 op_star
-DECL|function|isdn_slot_idev
-id|isdn_slot_idev
+DECL|function|isdn_slot_priv
+id|isdn_slot_priv
 c_func
 (paren
 r_int
@@ -10236,7 +10236,7 @@ id|slot
 id|sl
 )braket
 dot
-id|idev
+id|priv
 suffix:semicolon
 )brace
 r_int
