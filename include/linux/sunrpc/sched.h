@@ -300,6 +300,8 @@ DECL|macro|RPC_TASK_KILLED
 mdefine_line|#define RPC_TASK_KILLED&t;&t;0x0100&t;&t;/* task was killed */
 DECL|macro|RPC_TASK_SOFT
 mdefine_line|#define RPC_TASK_SOFT&t;&t;0x0200&t;&t;/* Use soft timeouts */
+DECL|macro|RPC_TASK_NOINTR
+mdefine_line|#define RPC_TASK_NOINTR&t;&t;0x0400&t;&t;/* uninterruptible task */
 DECL|macro|RPC_IS_ASYNC
 mdefine_line|#define RPC_IS_ASYNC(t)&t;&t;((t)-&gt;tk_flags &amp; RPC_TASK_ASYNC)
 DECL|macro|RPC_IS_SETUID
@@ -318,6 +320,8 @@ DECL|macro|RPC_DO_CALLBACK
 mdefine_line|#define RPC_DO_CALLBACK(t)&t;((t)-&gt;tk_callback != NULL)
 DECL|macro|RPC_IS_SOFT
 mdefine_line|#define RPC_IS_SOFT(t)&t;&t;((t)-&gt;tk_flags &amp; RPC_TASK_SOFT)
+DECL|macro|RPC_TASK_UNINTERRUPTIBLE
+mdefine_line|#define RPC_TASK_UNINTERRUPTIBLE(t) ((t)-&gt;tk_flags &amp; RPC_TASK_NOINTR)
 DECL|macro|RPC_TASK_SLEEPING
 mdefine_line|#define RPC_TASK_SLEEPING&t;0
 DECL|macro|RPC_TASK_RUNNING

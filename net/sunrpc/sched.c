@@ -2512,8 +2512,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|task-&gt;tk_client-&gt;cl_intr
+id|RPC_TASK_UNINTERRUPTIBLE
+c_func
+(paren
+id|task
+)paren
 )paren
 (brace
 id|__wait_event
@@ -3209,6 +3212,16 @@ id|clnt-&gt;cl_softrtry
 id|task-&gt;tk_flags
 op_or_assign
 id|RPC_TASK_SOFT
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|clnt-&gt;cl_intr
+)paren
+id|task-&gt;tk_flags
+op_or_assign
+id|RPC_TASK_NOINTR
 suffix:semicolon
 )brace
 macro_line|#ifdef RPC_DEBUG

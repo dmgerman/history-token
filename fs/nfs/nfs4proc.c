@@ -854,7 +854,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_seqid
@@ -1256,7 +1256,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_seqid
@@ -1525,7 +1525,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_seqid
@@ -2523,7 +2523,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_seqid
@@ -3338,7 +3338,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 multiline_comment|/* hmm. we are done with the inode, and in the process of freeing&n;&t; * the state_owner. we keep this around to process errors&n;&t; */
@@ -3615,7 +3615,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_seqid
@@ -12109,7 +12109,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 id|nfs4_increment_lock_seqid
@@ -12531,7 +12531,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 multiline_comment|/* increment open_owner seqid on success, and &n;&t;&t;* seqid mutating errors */
@@ -12604,7 +12604,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_NOINTR
 )paren
 suffix:semicolon
 )brace
