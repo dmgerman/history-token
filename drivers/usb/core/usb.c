@@ -375,6 +375,8 @@ op_eq
 l_int|0
 )paren
 (brace
+singleline_comment|// FIXME this happens even when we just rmmod
+singleline_comment|// drivers that aren&squot;t in active use... 
 id|err
 c_func
 (paren
@@ -3256,7 +3258,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_alloc - allocate dma-consistent buffer for URB_NO_DMA_MAP&n; * @dev: device the buffer will be used with&n; * @size: requested buffer size&n; * @mem_flags: affect whether allocation may block&n; * @dma: used to return DMA address of buffer&n; *&n; * Return value is either null (indicating no buffer could be allocated), or&n; * the cpu-space pointer to a buffer that may be used to perform DMA to the&n; * specified device.  Such cpu-space buffers are returned along with the DMA&n; * address (through the pointer provided).&n; *&n; * These buffers are used with URB_NO_DMA_MAP set in urb-&gt;transfer_flags to&n; * avoid behaviors like using &quot;DMA bounce buffers&quot;, or tying down I/O mapping&n; * hardware for long idle periods.  The implementation varies between&n; * platforms, depending on details of how DMA will work to this device.&n; *&n; * When the buffer is no longer used, free it with usb_buffer_free().&n; */
+multiline_comment|/**&n; * usb_buffer_alloc - allocate dma-consistent buffer for URB_NO_DMA_MAP&n; * @dev: device the buffer will be used with&n; * @size: requested buffer size&n; * @mem_flags: affect whether allocation may block&n; * @dma: used to return DMA address of buffer&n; *&n; * Return value is either null (indicating no buffer could be allocated), or&n; * the cpu-space pointer to a buffer that may be used to perform DMA to the&n; * specified device.  Such cpu-space buffers are returned along with the DMA&n; * address (through the pointer provided).&n; *&n; * These buffers are used with URB_NO_DMA_MAP set in urb-&gt;transfer_flags to&n; * avoid behaviors like using &quot;DMA bounce buffers&quot;, or tying down I/O mapping&n; * hardware for long idle periods.  The implementation varies between&n; * platforms, depending on details of how DMA will work to this device.&n; * Using these buffers also helps prevent cacheline sharing problems on&n; * architectures where CPU caches are not DMA-coherent.&n; *&n; * When the buffer is no longer used, free it with usb_buffer_free().&n; */
 DECL|function|usb_buffer_alloc
 r_void
 op_star

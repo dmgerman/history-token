@@ -2264,16 +2264,16 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|hub_ioctl
 r_static
 r_int
+DECL|function|hub_ioctl
 id|hub_ioctl
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|hub
+id|intf
 comma
 r_int
 r_int
@@ -2284,6 +2284,16 @@ op_star
 id|user_data
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|hub
+op_assign
+id|interface_to_usbdev
+(paren
+id|intf
+)paren
+suffix:semicolon
 multiline_comment|/* assert ifno == 0 (part of hub spec) */
 r_switch
 c_cond
