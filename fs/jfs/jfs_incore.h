@@ -88,11 +88,12 @@ id|unchar
 id|agno
 suffix:semicolon
 multiline_comment|/* ag number&t;&t;&t;*/
-DECL|member|pad
-id|unchar
-id|pad
+DECL|member|active_ag
+r_int
+r_char
+id|active_ag
 suffix:semicolon
-multiline_comment|/* pad&t;&t;&t;*/
+multiline_comment|/* ag currently allocating from&t;*/
 DECL|member|blid
 id|lid_t
 id|blid
