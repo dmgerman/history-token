@@ -1101,14 +1101,6 @@ id|loop_dev-&gt;bus-&gt;number
 op_eq
 l_int|0
 op_logical_and
-id|PCI_FUNC
-c_func
-(paren
-id|loop_dev-&gt;devfn
-)paren
-op_eq
-l_int|3
-op_logical_and
 id|PCI_SLOT
 c_func
 (paren
@@ -1449,14 +1441,6 @@ id|loop_dev-&gt;devfn
 )paren
 op_eq
 l_int|24
-op_logical_and
-id|PCI_FUNC
-c_func
-(paren
-id|loop_dev-&gt;devfn
-)paren
-op_eq
-l_int|3
 )paren
 (brace
 multiline_comment|/* For UP, we only care about the first GART. */
