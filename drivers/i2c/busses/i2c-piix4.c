@@ -72,6 +72,9 @@ DECL|macro|SMBSLVEVT
 mdefine_line|#define SMBSLVEVT&t;(0xA + piix4_smba)
 DECL|macro|SMBSLVDAT
 mdefine_line|#define SMBSLVDAT&t;(0xC + piix4_smba)
+multiline_comment|/* count for request_region */
+DECL|macro|SMBIOSIZE
+mdefine_line|#define SMBIOSIZE&t;8
 multiline_comment|/* PCI Address Constants */
 DECL|macro|SMBBA
 mdefine_line|#define SMBBA&t;&t;0x090
@@ -204,6 +207,7 @@ multiline_comment|/*&n; * Get DMI information.&n; */
 DECL|function|ibm_dmi_probe
 r_static
 r_int
+id|__devinit
 id|ibm_dmi_probe
 c_func
 (paren
@@ -227,6 +231,7 @@ macro_line|#endif
 DECL|function|piix4_setup
 r_static
 r_int
+id|__devinit
 id|piix4_setup
 c_func
 (paren
@@ -242,11 +247,6 @@ op_star
 id|id
 )paren
 (brace
-r_int
-id|error_return
-op_assign
-l_int|0
-suffix:semicolon
 r_int
 r_char
 id|temp
@@ -302,13 +302,9 @@ l_string|&quot;may corrupt your serial eeprom! Refusing to load &quot;
 l_string|&quot;module!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|error_return
-op_assign
+r_return
 op_minus
 id|EPERM
-suffix:semicolon
-r_goto
-id|END
 suffix:semicolon
 )brace
 multiline_comment|/* Determine the address of the SMBus areas */
@@ -380,7 +376,7 @@ c_func
 (paren
 id|piix4_smba
 comma
-l_int|8
+id|SMBIOSIZE
 comma
 l_string|&quot;piix4-smbus&quot;
 )paren
@@ -397,13 +393,9 @@ comma
 id|piix4_smba
 )paren
 suffix:semicolon
-id|error_return
-op_assign
+r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-r_goto
-id|END
 suffix:semicolon
 )brace
 id|pci_read_config_byte
@@ -591,13 +583,21 @@ comma
 l_string|&quot;Host SMBus controller not enabled!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|error_return
+id|release_region
+c_func
+(paren
+id|piix4_smba
+comma
+id|SMBIOSIZE
+)paren
+suffix:semicolon
+id|piix4_smba
 op_assign
+l_int|0
+suffix:semicolon
+r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-r_goto
-id|END
 suffix:semicolon
 )brace
 )brace
@@ -686,10 +686,8 @@ comma
 id|piix4_smba
 )paren
 suffix:semicolon
-id|END
-suffix:colon
 r_return
-id|error_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Another internally used function */
@@ -1948,6 +1946,10 @@ comma
 id|piix4_smba
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|retval
 op_assign
 id|i2c_add_adapter
@@ -1956,7 +1958,31 @@ c_func
 op_amp
 id|piix4_adapter
 )paren
+)paren
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;Couldn&squot;t register adapter!&bslash;n&quot;
+)paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|piix4_smba
+comma
+id|SMBIOSIZE
+)paren
+suffix:semicolon
+id|piix4_smba
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
@@ -1974,6 +2000,12 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|piix4_smba
+)paren
+(brace
 id|i2c_del_adapter
 c_func
 (paren
@@ -1981,6 +2013,19 @@ op_amp
 id|piix4_adapter
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|piix4_smba
+comma
+id|SMBIOSIZE
+)paren
+suffix:semicolon
+id|piix4_smba
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 DECL|variable|piix4_driver
 r_static
@@ -2051,18 +2096,12 @@ op_amp
 id|piix4_driver
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|piix4_smba
-comma
-l_int|8
-)paren
-suffix:semicolon
 )brace
 id|MODULE_AUTHOR
+c_func
 (paren
-l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt; and Philip Edelbrock &lt;phil@netroedge.com&gt;&quot;
+l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt; and &quot;
+l_string|&quot;Philip Edelbrock &lt;phil@netroedge.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

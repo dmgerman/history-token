@@ -2212,7 +2212,10 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SA1111
 macro_line|#include &quot;ohci-sa1111.c&quot;
 macro_line|#endif
-macro_line|#if !(defined(CONFIG_PCI) || defined(CONFIG_SA1111))
+macro_line|#ifdef CONFIG_ARCH_OMAP
+macro_line|#include &quot;ohci-omap.c&quot;
+macro_line|#endif
+macro_line|#if !(defined(CONFIG_PCI) || defined(CONFIG_SA1111) || defined(CONFIG_ARCH_OMAP))
 macro_line|#error &quot;missing bus glue for ohci-hcd&quot;
 macro_line|#endif
 eof

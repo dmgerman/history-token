@@ -3009,7 +3009,6 @@ c_func
 op_amp
 id|policy
 comma
-op_amp
 id|data
 comma
 r_sizeof
