@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Implements an IPX socket layer.&n; *&n; *&t;This code is derived from work by&n; *&t;&t;Ross Biro&t;: &t;Writing the original IP stack&n; *&t;&t;Fred Van Kempen :&t;Tidying up the TCP/IP&n; *&n; *&t;Many thanks go to Keith Baker, Institute For Industrial Information&n; *&t;Technology Ltd, Swansea University for allowing me to work on this&n; *&t;in my own time even though it was in some ways related to commercial&n; *&t;work I am currently employed to do there.&n; *&n; *&t;All the material in this file is subject to the Gnu license version 2.&n; *&t;Neither Alan Cox nor the Swansea University Computer Society admit &n; *&t;liability nor provide warranty for any of this software. This material&n; *&t;is provided as is and at no charge.&n; *&n; *&t;Portions Copyright (c) 2000-2002 Conectiva, Inc. &lt;acme@conectiva.com.br&gt;&n; *&t;Neither Arnaldo Carvalho de Melo nor Conectiva, Inc. admit liability nor&n; *&t;provide warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; * &t;Portions Copyright (c) 1995 Caldera, Inc. &lt;greg@caldera.com&gt;&n; *&t;Neither Greg Page nor Caldera, Inc. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;See net/ipx/ChangeLog.&n; */
+multiline_comment|/*&n; *&t;Implements an IPX socket layer.&n; *&n; *&t;This code is derived from work by&n; *&t;&t;Ross Biro&t;: &t;Writing the original IP stack&n; *&t;&t;Fred Van Kempen :&t;Tidying up the TCP/IP&n; *&n; *&t;Many thanks go to Keith Baker, Institute For Industrial Information&n; *&t;Technology Ltd, Swansea University for allowing me to work on this&n; *&t;in my own time even though it was in some ways related to commercial&n; *&t;work I am currently employed to do there.&n; *&n; *&t;All the material in this file is subject to the Gnu license version 2.&n; *&t;Neither Alan Cox nor the Swansea University Computer Society admit &n; *&t;liability nor provide warranty for any of this software. This material&n; *&t;is provided as is and at no charge.&n; *&n; *&t;Portions Copyright (c) 2000-2003 Conectiva, Inc. &lt;acme@conectiva.com.br&gt;&n; *&t;Neither Arnaldo Carvalho de Melo nor Conectiva, Inc. admit liability nor&n; *&t;provide warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; * &t;Portions Copyright (c) 1995 Caldera, Inc. &lt;greg@caldera.com&gt;&n; *&t;Neither Greg Page nor Caldera, Inc. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;See net/ipx/ChangeLog.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1324,6 +1324,12 @@ id|kfree
 c_func
 (paren
 id|intrfc
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
@@ -3770,6 +3776,12 @@ c_func
 (paren
 op_amp
 id|intrfc-&gt;if_sklist_lock
+)paren
+suffix:semicolon
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
@@ -9795,12 +9807,12 @@ id|ipx_banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;NET4: Linux IPX 0.50 for NET4.0&bslash;n&quot;
+l_string|&quot;NET4: Linux IPX 0.51 for NET4.0&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;IPX Portions Copyright (c) 1995 Caldera, Inc.&bslash;n&quot;
 "&bslash;"
 id|KERN_INFO
-l_string|&quot;IPX Portions Copyright (c) 2000-2002 Conectiva, Inc.&bslash;n&quot;
+l_string|&quot;IPX Portions Copyright (c) 2000-2003 Conectiva, Inc.&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -9997,6 +10009,46 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * No need to worry about having anything on the ipx_interfaces list,&n;&t; * when a interface is created we increment the module usage count, so&n;&t; * the module will only be unloaded when there are no more interfaces&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|ipx_interfaces
+)paren
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|ipx_routes
+)paren
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ipx_proc_exit
 c_func
 (paren
