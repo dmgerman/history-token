@@ -22,7 +22,7 @@ mdefine_line|#define DRV_NAME&t;&t;&quot;e100&quot;
 DECL|macro|DRV_EXT
 mdefine_line|#define DRV_EXT&t;&t;&quot;-NAPI&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;3.2.3-k2&quot;DRV_EXT
+mdefine_line|#define DRV_VERSION&t;&t;&quot;3.3.6-k2&quot;DRV_EXT
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&t;&quot;Intel(R) PRO/100 Network Driver&quot;
 DECL|macro|DRV_COPYRIGHT
