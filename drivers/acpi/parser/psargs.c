@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -285,7 +285,7 @@ id|end
 )paren
 )paren
 (brace
-multiline_comment|/* include prefix &squot;&bslash;&bslash;&squot; or &squot;^&squot; */
+multiline_comment|/* Include prefix &squot;&bslash;&bslash;&squot; or &squot;^&squot; */
 id|end
 op_increment
 suffix:semicolon
@@ -384,225 +384,8 @@ id|start
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              Arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              Method_call         - Whether the namepath can be the start&n; *                                    of a method call&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get next name (if method call, push appropriate # args).  Names&n; *              are looked up in either the parsed or internal namespace to&n; *              determine if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
-macro_line|#ifdef PARSER_ONLY
-r_void
-DECL|function|acpi_ps_get_next_namepath
-id|acpi_ps_get_next_namepath
-(paren
-id|acpi_parse_state
-op_star
-id|parser_state
-comma
-id|acpi_parse_object
-op_star
-id|arg
-comma
-id|u32
-op_star
-id|arg_count
-comma
-id|u8
-id|method_call
-)paren
-(brace
-id|NATIVE_CHAR
-op_star
-id|path
-suffix:semicolon
-id|acpi_parse_object
-op_star
-id|name_op
-suffix:semicolon
-id|acpi_parse_object
-op_star
-id|op
-suffix:semicolon
-id|acpi_parse_object
-op_star
-id|count
-suffix:semicolon
-id|ACPI_FUNCTION_TRACE
-(paren
-l_string|&quot;Ps_get_next_namepath&quot;
-)paren
-suffix:semicolon
-id|path
-op_assign
-id|acpi_ps_get_next_namestring
-(paren
-id|parser_state
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|path
-op_logical_or
-op_logical_neg
-id|method_call
-)paren
-(brace
-multiline_comment|/* Null name case, create a null namepath object */
-id|acpi_ps_init_op
-(paren
-id|arg
-comma
-id|AML_INT_NAMEPATH_OP
-)paren
-suffix:semicolon
-id|arg-&gt;common.value.name
-op_assign
-id|path
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|acpi_gbl_parsed_namespace_root
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Lookup the name in the parsed namespace&n;&t;&t; */
-id|op
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|method_call
-)paren
-(brace
-id|op
-op_assign
-id|acpi_ps_find
-(paren
-id|acpi_ps_get_parent_scope
-(paren
-id|parser_state
-)paren
-comma
-id|path
-comma
-id|AML_METHOD_OP
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|op
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|op-&gt;common.aml_opcode
-op_eq
-id|AML_METHOD_OP
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * The name refers to a control method, so this namepath is a&n;&t;&t;&t;&t; * method invocation.  We need to 1) Get the number of arguments&n;&t;&t;&t;&t; * associated with this method, and 2) Change the NAMEPATH&n;&t;&t;&t;&t; * object into a METHODCALL object.&n;&t;&t;&t;&t; */
-id|count
-op_assign
-id|acpi_ps_get_arg
-(paren
-id|op
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-op_logical_and
-id|count-&gt;common.aml_opcode
-op_eq
-id|AML_BYTE_OP
-)paren
-(brace
-id|name_op
-op_assign
-id|acpi_ps_alloc_op
-(paren
-id|AML_INT_NAMEPATH_OP
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|name_op
-)paren
-(brace
-multiline_comment|/* Change arg into a METHOD CALL and attach the name */
-id|acpi_ps_init_op
-(paren
-id|arg
-comma
-id|AML_INT_METHODCALL_OP
-)paren
-suffix:semicolon
-id|name_op-&gt;common.value.name
-op_assign
-id|path
-suffix:semicolon
-multiline_comment|/* Point METHODCALL/NAME to the METHOD Node */
-id|name_op-&gt;common.node
-op_assign
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|op
-suffix:semicolon
-id|acpi_ps_append_arg
-(paren
-id|arg
-comma
-id|name_op
-)paren
-suffix:semicolon
-op_star
-id|arg_count
-op_assign
-(paren
-id|u32
-)paren
-id|count-&gt;common.value.integer
-op_amp
-id|METHOD_FLAGS_ARG_COUNT
-suffix:semicolon
-)brace
-)brace
-id|return_VOID
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * Else this is normal named object reference.&n;&t;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t;&t; * (See code below)&n;&t;&t;&t; */
-)brace
-)brace
-multiline_comment|/*&n;&t; * Either we didn&squot;t find the object in the namespace, or the object is&n;&t; * something other than a control method.  Just initialize the Op with the&n;&t; * pathname&n;&t; */
-id|acpi_ps_init_op
-(paren
-id|arg
-comma
-id|AML_INT_NAMEPATH_OP
-)paren
-suffix:semicolon
-id|arg-&gt;common.value.name
-op_assign
-id|path
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
-macro_line|#else
-r_void
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              Arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              Method_call         - Whether the namepath can be the start&n; *                                    of a method call&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next name (if method call, return # of required args).&n; *              Names are looked up in the internal namespace to determine&n; *              if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ps_get_next_namepath
 id|acpi_ps_get_next_namepath
 (paren
@@ -632,6 +415,8 @@ id|name_op
 suffix:semicolon
 id|acpi_status
 id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|acpi_operand_object
 op_star
@@ -656,32 +441,14 @@ id|acpi_ps_get_next_namestring
 id|parser_state
 )paren
 suffix:semicolon
+multiline_comment|/* Null path case is allowed */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|path
-op_logical_or
-op_logical_neg
-id|method_call
 )paren
 (brace
-multiline_comment|/* Null name case, create a null namepath object */
-id|acpi_ps_init_op
-(paren
-id|arg
-comma
-id|AML_INT_NAMEPATH_OP
-)paren
-suffix:semicolon
-id|arg-&gt;common.value.name
-op_assign
-id|path
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Lookup the name in the internal namespace&n;&t; */
+multiline_comment|/*&n;&t;&t; * Lookup the name in the internal namespace&n;&t;&t; */
 id|scope_info.scope.node
 op_assign
 l_int|NULL
@@ -701,7 +468,7 @@ op_assign
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Lookup object.  We don&squot;t want to add anything new to the namespace&n;&t; * here, however.  So we use MODE_EXECUTE.  Allow searching of the&n;&t; * parent tree, but don&squot;t open a new scope -- we just want to lookup the&n;&t; * object  (MUST BE mode EXECUTE to perform upsearch)&n;&t; */
+multiline_comment|/*&n;&t;&t; * Lookup object.  We don&squot;t want to add anything new to the namespace&n;&t;&t; * here, however.  So we use MODE_EXECUTE.  Allow searching of the&n;&t;&t; * parent tree, but don&squot;t open a new scope -- we just want to lookup the&n;&t;&t; * object  (MUST BE mode EXECUTE to perform upsearch)&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -732,6 +499,8 @@ id|ACPI_SUCCESS
 (paren
 id|status
 )paren
+op_logical_and
+id|method_call
 )paren
 (brace
 r_if
@@ -778,7 +547,10 @@ op_logical_neg
 id|name_op
 )paren
 (brace
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Change arg into a METHOD CALL and attach name to it */
@@ -823,7 +595,10 @@ id|node
 )paren
 )paren
 suffix:semicolon
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
+)paren
 suffix:semicolon
 )brace
 id|ACPI_DEBUG_PRINT
@@ -844,12 +619,16 @@ id|arg_count
 op_assign
 id|method_desc-&gt;method.param_count
 suffix:semicolon
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Else this is normal named object reference.&n;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t; * (See code below)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Else this is normal named object reference.&n;&t;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t;&t; * (See code below)&n;&t;&t;&t; */
 )brace
-multiline_comment|/*&n;&t; * Either we didn&squot;t find the object in the namespace, or the object is&n;&t; * something other than a control method.  Just initialize the Op with the&n;&t; * pathname.&n;&t; */
+)brace
+multiline_comment|/*&n;&t; * Regardless of success/failure above,&n;&t; * Just initialize the Op with the pathname.&n;&t; */
 id|acpi_ps_init_op
 (paren
 id|arg
@@ -861,10 +640,12 @@ id|arg-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_simple_arg&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg_type            - The argument type (AML_*_ARG)&n; *              Arg                 - Where the argument is returned&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get the next simple argument (constant, string, or namestring)&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_get_next_simple_arg
@@ -1271,9 +1052,8 @@ id|field
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_arg&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg_type            - The argument type (AML_*_ARG)&n; *              Arg_count           - If the argument points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *&n; * RETURN:      An op object containing the next argument.&n; *&n; * DESCRIPTION: Get next argument (including complex list arguments that require&n; *              pushing the parser stack)&n; *&n; ******************************************************************************/
-id|acpi_parse_object
-op_star
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_arg&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg_type            - The argument type (AML_*_ARG)&n; *              Arg_count           - If the argument points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *&n; * RETURN:      Status, and an op object containing the next argument.&n; *&n; * DESCRIPTION: Get next argument (including complex list arguments that require&n; *              pushing the parser stack)&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ps_get_next_arg
 id|acpi_ps_get_next_arg
 (paren
@@ -1287,6 +1067,11 @@ comma
 id|u32
 op_star
 id|arg_count
+comma
+id|acpi_parse_object
+op_star
+op_star
+id|return_arg
 )paren
 (brace
 id|acpi_parse_object
@@ -1307,6 +1092,11 @@ id|field
 suffix:semicolon
 id|u32
 id|subop
+suffix:semicolon
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
@@ -1350,9 +1140,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|arg
 )paren
 (brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
 id|acpi_ps_get_next_simple_arg
 (paren
 id|parser_state
@@ -1362,13 +1159,12 @@ comma
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|ARGP_PKGLENGTH
 suffix:colon
-multiline_comment|/* package length, nothing returned */
+multiline_comment|/* Package length, nothing returned */
 id|parser_state-&gt;pkg_end
 op_assign
 id|acpi_ps_get_next_package_end
@@ -1389,7 +1185,7 @@ OL
 id|parser_state-&gt;pkg_end
 )paren
 (brace
-multiline_comment|/* non-empty list */
+multiline_comment|/* Non-empty list */
 r_while
 c_loop
 (paren
@@ -1412,7 +1208,10 @@ op_logical_neg
 id|field
 )paren
 (brace
-r_break
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1438,7 +1237,7 @@ op_assign
 id|field
 suffix:semicolon
 )brace
-multiline_comment|/* skip to End of byte data */
+multiline_comment|/* Skip to End of byte data */
 id|parser_state-&gt;aml
 op_assign
 id|parser_state-&gt;pkg_end
@@ -1457,7 +1256,7 @@ OL
 id|parser_state-&gt;pkg_end
 )paren
 (brace
-multiline_comment|/* non-empty list */
+multiline_comment|/* Non-empty list */
 id|arg
 op_assign
 id|acpi_ps_alloc_op
@@ -1468,10 +1267,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|arg
 )paren
 (brace
-multiline_comment|/* fill in bytelist data */
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Fill in bytelist data */
 id|arg-&gt;common.value.size
 op_assign
 id|ACPI_PTR_DIFF
@@ -1485,8 +1291,7 @@ id|arg-&gt;named.data
 op_assign
 id|parser_state-&gt;aml
 suffix:semicolon
-)brace
-multiline_comment|/* skip to End of byte data */
+multiline_comment|/* Skip to End of byte data */
 id|parser_state-&gt;aml
 op_assign
 id|parser_state-&gt;pkg_end
@@ -1503,7 +1308,6 @@ suffix:colon
 r_case
 id|ARGP_SIMPLENAME
 suffix:colon
-(brace
 id|subop
 op_assign
 id|acpi_ps_peek_opcode
@@ -1540,9 +1344,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|arg
 )paren
 (brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_ps_get_next_namepath
 (paren
 id|parser_state
@@ -1555,7 +1368,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
 multiline_comment|/* single complex argument, nothing returned */
@@ -1564,7 +1376,6 @@ id|arg_count
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -1619,12 +1430,21 @@ id|arg_type
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|return_PTR
-(paren
+op_star
+id|return_arg
+op_assign
 id|arg
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
 )paren
 suffix:semicolon
 )brace

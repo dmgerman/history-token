@@ -6787,7 +6787,7 @@ suffix:colon
 id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;ACPI&quot;
+id|ACPI_BUS_FILE_ROOT
 comma
 l_int|NULL
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 173 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 175 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -51,7 +51,7 @@ DECL|macro|MAX_MTX
 mdefine_line|#define MAX_MTX                         12
 DECL|macro|NUM_MTX
 mdefine_line|#define NUM_MTX                         MAX_MTX+1
-macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
+macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/* Names for the mutexes used in the subsystem */
 DECL|variable|acpi_gbl_mutex_names
@@ -1039,7 +1039,7 @@ r_typedef
 r_struct
 id|acpi_opcode_info
 (brace
-macro_line|#if defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUG)
+macro_line|#if defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUG_OUTPUT)
 DECL|member|name
 id|NATIVE_CHAR
 op_star

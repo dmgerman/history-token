@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 100 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -284,6 +284,13 @@ l_string|&quot;[Init] Going into ACPI mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|acpi_gbl_original_mode
+op_assign
+id|acpi_hw_get_mode
+c_func
+(paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_enable
@@ -564,7 +571,7 @@ id|acpi_ut_mutex_terminate
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef ENABLE_DEBUGGER
+macro_line|#ifdef ACPI_DEBUGGER
 multiline_comment|/* Shut down the debugger */
 id|acpi_db_terminate
 (paren

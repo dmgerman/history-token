@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 128 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 130 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -259,8 +259,13 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
 DECL|macro|NUM_NS_TYPES
 mdefine_line|#define NUM_NS_TYPES                    INTERNAL_TYPE_INVALID+1
+macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
+DECL|macro|NUM_PREDEFINED_NAMES
+mdefine_line|#define NUM_PREDEFINED_NAMES            10
+macro_line|#else
 DECL|macro|NUM_PREDEFINED_NAMES
 mdefine_line|#define NUM_PREDEFINED_NAMES            9
+macro_line|#endif
 DECL|variable|acpi_gbl_root_node_struct
 id|ACPI_EXTERN
 id|acpi_namespace_node
@@ -288,7 +293,7 @@ id|acpi_gbl_pre_defined_names
 id|NUM_PREDEFINED_NAMES
 )braket
 suffix:semicolon
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|variable|acpi_gbl_current_node_count
 id|ACPI_EXTERN
 id|u32
@@ -434,7 +439,7 @@ id|u8
 id|acpi_gbl_db_opt_verbose
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef ENABLE_DEBUGGER
+macro_line|#ifdef ACPI_DEBUGGER
 r_extern
 id|u8
 id|acpi_gbl_method_executing
@@ -610,6 +615,6 @@ id|ACPI_EXTERN
 id|u32
 id|acpi_gbl_size_of_acpi_objects
 suffix:semicolon
-macro_line|#endif /* ENABLE_DEBUGGER */
+macro_line|#endif /* ACPI_DEBUGGER */
 macro_line|#endif /* __ACGLOBAL_H__ */
 eof

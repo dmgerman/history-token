@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 165 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 168 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -225,7 +225,7 @@ suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Static global variable initialization.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * We want the debug switches statically initialized so they&n; * are already set when the debugger is entered.&n; */
 multiline_comment|/* Debug switch - level and trace mask */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|variable|acpi_dbg_level
 id|u32
 id|acpi_dbg_level
@@ -405,6 +405,16 @@ comma
 l_string|&quot;0&quot;
 )brace
 comma
+macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
+(brace
+l_string|&quot;_OSI&quot;
+comma
+id|ACPI_TYPE_METHOD
+comma
+l_string|&quot;1&quot;
+)brace
+comma
+macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1403,7 +1413,7 @@ id|obj_desc
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
+macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 multiline_comment|/*&n; * Strings and procedures used for debug only&n; *&n; */
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 id|NATIVE_CHAR
@@ -2230,7 +2240,7 @@ id|acpi_gbl_root_node_struct.flags
 op_assign
 id|ANOBJ_END_OF_PEER_LIST
 suffix:semicolon
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 id|acpi_gbl_lowest_stack_pointer
 op_assign
 id|ACPI_SIZE_MAX

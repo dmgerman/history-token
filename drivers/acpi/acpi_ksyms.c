@@ -139,6 +139,13 @@ c_func
 id|acpi_get_table
 )paren
 suffix:semicolon
+DECL|variable|acpi_get_firmware_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_get_firmware_table
+)paren
+suffix:semicolon
 DECL|variable|acpi_install_notify_handler
 id|EXPORT_SYMBOL
 c_func

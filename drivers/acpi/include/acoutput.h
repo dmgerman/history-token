@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 87 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 90 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
@@ -23,19 +23,21 @@ DECL|macro|ACPI_EXECUTER
 mdefine_line|#define ACPI_EXECUTER               0x00000080
 DECL|macro|ACPI_RESOURCES
 mdefine_line|#define ACPI_RESOURCES              0x00000100
-DECL|macro|ACPI_DEBUGGER
-mdefine_line|#define ACPI_DEBUGGER               0x00000200
+DECL|macro|ACPI_CA_DEBUGGER
+mdefine_line|#define ACPI_CA_DEBUGGER            0x00000200
 DECL|macro|ACPI_OS_SERVICES
 mdefine_line|#define ACPI_OS_SERVICES            0x00000400
-DECL|macro|ACPI_ALL_COMPONENTS
-mdefine_line|#define ACPI_ALL_COMPONENTS         0x00000FFF
-DECL|macro|ACPI_COMPONENT_DEFAULT
-mdefine_line|#define ACPI_COMPONENT_DEFAULT      (ACPI_ALL_COMPONENTS)
+DECL|macro|ACPI_CA_DISASSEMBLER
+mdefine_line|#define ACPI_CA_DISASSEMBLER        0x00000800
 multiline_comment|/* Component IDs for ACPI tools and utilities */
 DECL|macro|ACPI_COMPILER
 mdefine_line|#define ACPI_COMPILER               0x00001000
 DECL|macro|ACPI_TOOLS
 mdefine_line|#define ACPI_TOOLS                  0x00002000
+DECL|macro|ACPI_ALL_COMPONENTS
+mdefine_line|#define ACPI_ALL_COMPONENTS         0x00003FFF
+DECL|macro|ACPI_COMPONENT_DEFAULT
+mdefine_line|#define ACPI_COMPONENT_DEFAULT      (ACPI_ALL_COMPONENTS)
 multiline_comment|/* Component IDs reserved for ACPI drivers */
 DECL|macro|ACPI_ALL_DRIVERS
 mdefine_line|#define ACPI_ALL_DRIVERS            0xFFFF0000
@@ -90,8 +92,10 @@ DECL|macro|ACPI_LV_ALLOCATIONS
 mdefine_line|#define ACPI_LV_ALLOCATIONS         0x00100000
 DECL|macro|ACPI_LV_FUNCTIONS
 mdefine_line|#define ACPI_LV_FUNCTIONS           0x00200000
+DECL|macro|ACPI_LV_OPTIMIZATIONS
+mdefine_line|#define ACPI_LV_OPTIMIZATIONS       0x00400000
 DECL|macro|ACPI_LV_VERBOSITY2
-mdefine_line|#define ACPI_LV_VERBOSITY2          0x00300000 | ACPI_LV_VERBOSITY1
+mdefine_line|#define ACPI_LV_VERBOSITY2          0x00700000 | ACPI_LV_VERBOSITY1
 DECL|macro|ACPI_LV_ALL
 mdefine_line|#define ACPI_LV_ALL                 ACPI_LV_VERBOSITY2
 multiline_comment|/* Trace verbosity level 3 [Threading, I/O, and Interrupts] */
@@ -155,6 +159,8 @@ DECL|macro|ACPI_DB_TABLES
 mdefine_line|#define ACPI_DB_TABLES              ACPI_DEBUG_LEVEL (ACPI_LV_TABLES)
 DECL|macro|ACPI_DB_FUNCTIONS
 mdefine_line|#define ACPI_DB_FUNCTIONS           ACPI_DEBUG_LEVEL (ACPI_LV_FUNCTIONS)
+DECL|macro|ACPI_DB_OPTIMIZATIONS
+mdefine_line|#define ACPI_DB_OPTIMIZATIONS       ACPI_DEBUG_LEVEL (ACPI_LV_OPTIMIZATIONS)
 DECL|macro|ACPI_DB_VALUES
 mdefine_line|#define ACPI_DB_VALUES              ACPI_DEBUG_LEVEL (ACPI_LV_VALUES)
 DECL|macro|ACPI_DB_OBJECTS

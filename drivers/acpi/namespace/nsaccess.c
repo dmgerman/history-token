@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 156 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 161 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -196,6 +196,36 @@ c_cond
 id|init_val-&gt;type
 )paren
 (brace
+r_case
+id|ACPI_TYPE_METHOD
+suffix:colon
+id|obj_desc-&gt;method.param_count
+op_assign
+(paren
+id|u8
+)paren
+id|ACPI_STRTOUL
+(paren
+id|init_val-&gt;val
+comma
+l_int|NULL
+comma
+l_int|10
+)paren
+suffix:semicolon
+id|obj_desc-&gt;common.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
+macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
+multiline_comment|/* Compiler cheats by putting parameter count in the Owner_iD */
+id|new_node-&gt;owner_id
+op_assign
+id|obj_desc-&gt;method.param_count
+suffix:semicolon
+macro_line|#endif
+r_break
+suffix:semicolon
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
@@ -426,6 +456,12 @@ id|return_node
 id|acpi_status
 id|status
 suffix:semicolon
+id|NATIVE_CHAR
+op_star
+id|path
+op_assign
+id|pathname
+suffix:semicolon
 id|acpi_namespace_node
 op_star
 id|prefix_node
@@ -455,12 +491,21 @@ id|acpi_object_type
 id|this_search_type
 suffix:semicolon
 id|u32
+id|search_parent_flag
+op_assign
+id|ACPI_NS_SEARCH_PARENT
+suffix:semicolon
+id|u32
 id|local_flags
 op_assign
 id|flags
 op_amp
 op_complement
+(paren
 id|ACPI_NS_ERROR_IF_FOUND
+op_or
+id|ACPI_NS_SEARCH_PARENT
+)paren
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -538,6 +583,57 @@ id|prefix_node
 op_assign
 id|scope_info-&gt;scope.node
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|prefix_node
+)paren
+op_ne
+id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;[%p] Not a namespace node&bslash;n&quot;
+comma
+id|prefix_node
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * This node might not be a actual &quot;scope&quot; node (such as a&n;&t;&t; * Device/Method, etc.)  It could be a Package or other object node.&n;&t;&t; * Backup up the tree to find the containing scope node.&n;&t;&t; */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|acpi_ns_opens_scope
+(paren
+id|prefix_node-&gt;type
+)paren
+op_logical_and
+id|prefix_node-&gt;type
+op_ne
+id|ACPI_TYPE_ANY
+)paren
+(brace
+id|prefix_node
+op_assign
+id|acpi_ns_get_parent_node
+(paren
+id|prefix_node
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * This check is explicitly split to relax the Type_to_check_for&n;&t; * conditions for Bank_field_defn. Originally, both Bank_field_defn and&n;&t; * Def_field_defn caused Type_to_check_for to be set to ACPI_TYPE_REGION,&n;&t; * but the Bank_field_defn may also check for a Field definition as well&n;&t; * as an Operation_region.&n;&t; */
 r_if
@@ -593,7 +689,7 @@ id|this_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
-id|pathname
+id|path
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
@@ -616,7 +712,7 @@ r_if
 c_cond
 (paren
 op_star
-id|pathname
+id|path
 op_eq
 (paren
 id|u8
@@ -629,8 +725,12 @@ id|this_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
+id|search_parent_flag
+op_assign
+id|ACPI_NS_NO_UPSEARCH
+suffix:semicolon
 multiline_comment|/* Point to name segment part */
-id|pathname
+id|path
 op_increment
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -638,7 +738,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching from root [%p]&bslash;n&quot;
+l_string|&quot;Path is absolute from root [%p]&bslash;n&quot;
 comma
 id|this_node
 )paren
@@ -653,7 +753,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching relative to pfx scope [%p]&bslash;n&quot;
+l_string|&quot;Searching relative to prefix scope [%p]&bslash;n&quot;
 comma
 id|prefix_node
 )paren
@@ -668,7 +768,7 @@ r_while
 c_loop
 (paren
 op_star
-id|pathname
+id|path
 op_eq
 (paren
 id|u8
@@ -676,8 +776,13 @@ id|u8
 id|AML_PARENT_PREFIX
 )paren
 (brace
+multiline_comment|/* Name is fully qualified, no search rules apply */
+id|search_parent_flag
+op_assign
+id|ACPI_NS_NO_UPSEARCH
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Point past this prefix to the name segment&n;&t;&t;&t;&t; * part or the next Parent Prefix&n;&t;&t;&t;&t; */
-id|pathname
+id|path
 op_increment
 suffix:semicolon
 multiline_comment|/* Backup to the parent node */
@@ -710,13 +815,31 @@ id|AE_NOT_FOUND
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|search_parent_flag
+op_eq
+id|ACPI_NS_NO_UPSEARCH
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Path is absolute with one or more carats&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t;&t; * Determine the number of ACPI name segments in this pathname.&n;&t;&t; *&n;&t;&t; * The segment part consists of either:&n;&t;&t; *  - A Null name segment (0)&n;&t;&t; *  - A Dual_name_prefix followed by two 4-byte name segments&n;&t;&t; *  - A Multi_name_prefix followed by a byte indicating the&n;&t;&t; *      number of segments and the segments themselves.&n;&t;&t; *  - A single 4-byte name segment&n;&t;&t; *&n;&t;&t; * Examine the name prefix opcode, if any, to determine the number of&n;&t;&t; * segments.&n;&t;&t; */
 r_switch
 c_cond
 (paren
 op_star
-id|pathname
+id|path
 )paren
 (brace
 r_case
@@ -743,12 +866,17 @@ suffix:semicolon
 r_case
 id|AML_DUAL_NAME_PREFIX
 suffix:colon
+multiline_comment|/* More than one Name_seg, search rules do not apply */
+id|search_parent_flag
+op_assign
+id|ACPI_NS_NO_UPSEARCH
+suffix:semicolon
 multiline_comment|/* Two segments, point to first name segment */
 id|num_segments
 op_assign
 l_int|2
 suffix:semicolon
-id|pathname
+id|path
 op_increment
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -767,8 +895,13 @@ suffix:semicolon
 r_case
 id|AML_MULTI_NAME_PREFIX_OP
 suffix:colon
+multiline_comment|/* More than one Name_seg, search rules do not apply */
+id|search_parent_flag
+op_assign
+id|ACPI_NS_NO_UPSEARCH
+suffix:semicolon
 multiline_comment|/* Extract segment count, point to first name segment */
-id|pathname
+id|path
 op_increment
 suffix:semicolon
 id|num_segments
@@ -780,9 +913,9 @@ id|u32
 id|u8
 )paren
 op_star
-id|pathname
+id|path
 suffix:semicolon
-id|pathname
+id|path
 op_increment
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -827,12 +960,16 @@ id|acpi_ns_print_pathname
 (paren
 id|num_segments
 comma
-id|pathname
+id|path
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Search namespace for each segment of the name.  Loop through and&n;&t; * verify/add each name segment.&n;&t; */
+multiline_comment|/*&n;&t; * Search namespace for each segment of the name.  Loop through and&n;&t; * verify (or add to the namespace) each name segment.&n;&t; *&n;&t; * The object type is significant only at the last name&n;&t; * segment.  (We don&squot;t care about the types along the path, only&n;&t; * the type of the final target object.)&n;&t; */
+id|this_search_type
+op_assign
+id|ACPI_TYPE_ANY
+suffix:semicolon
 id|current_node
 op_assign
 id|this_node
@@ -845,11 +982,6 @@ op_logical_and
 id|current_node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Search for the current name segment under the current&n;&t;&t; * named object.  The Type is significant only at the last name&n;&t;&t; * segment.  (We don&squot;t care about the types along the path, only&n;&t;&t; * the type of the final target object.)&n;&t;&t; */
-id|this_search_type
-op_assign
-id|ACPI_TYPE_ANY
-suffix:semicolon
 id|num_segments
 op_decrement
 suffix:semicolon
@@ -860,14 +992,47 @@ op_logical_neg
 id|num_segments
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * This is the last segment, enable typechecking&n;&t;&t;&t; */
 id|this_search_type
 op_assign
 id|type
 suffix:semicolon
-id|local_flags
-op_assign
+multiline_comment|/*&n;&t;&t;&t; * Only allow automatic parent search (search rules) if the caller&n;&t;&t;&t; * requested it AND we have a single, non-fully-qualified Name_seg&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|search_parent_flag
+op_ne
+id|ACPI_NS_NO_UPSEARCH
+)paren
+op_logical_and
+(paren
 id|flags
+op_amp
+id|ACPI_NS_SEARCH_PARENT
+)paren
+)paren
+(brace
+id|local_flags
+op_or_assign
+id|ACPI_NS_SEARCH_PARENT
 suffix:semicolon
+)brace
+multiline_comment|/* Set error flag according to caller */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_NS_ERROR_IF_FOUND
+)paren
+(brace
+id|local_flags
+op_or_assign
+id|ACPI_NS_ERROR_IF_FOUND
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Extract one ACPI name from the front of the pathname */
 id|ACPI_MOVE_UNALIGNED32_TO_32
@@ -875,10 +1040,10 @@ id|ACPI_MOVE_UNALIGNED32_TO_32
 op_amp
 id|simple_name
 comma
-id|pathname
+id|path
 )paren
 suffix:semicolon
-multiline_comment|/* Try to find the ACPI name */
+multiline_comment|/* Try to find the single (4 character) ACPI name */
 id|status
 op_assign
 id|acpi_ns_search_and_enter
@@ -1045,7 +1210,7 @@ id|this_node-&gt;type
 suffix:semicolon
 )brace
 multiline_comment|/* Point to next name segment and make this node current */
-id|pathname
+id|path
 op_add_assign
 id|ACPI_NAME_SIZE
 suffix:semicolon

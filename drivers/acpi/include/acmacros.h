@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 126 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 128 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -221,7 +221,7 @@ DECL|macro|ACPI_IS_IN_ACPI_TABLE
 mdefine_line|#define ACPI_IS_IN_ACPI_TABLE(a,b)      (_segment)(a) == (_segment)(b) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; (((u8 *)(a) &gt;= (u8 *)(b + 1)) &amp;&amp;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((u8 *)(a) &lt; ((u8 *)b + b-&gt;length)))
 macro_line|#endif
 multiline_comment|/*&n; * Macros for the master AML opcode table&n; */
-macro_line|#if defined(ACPI_DISASSEMBLER) || defined (ACPI_DEBUG)
+macro_line|#if defined(ACPI_DISASSEMBLER) || defined (ACPI_DEBUG_OUTPUT)
 DECL|macro|ACPI_OP
 mdefine_line|#define ACPI_OP(name,Pargs,Iargs,obj_type,class,type,flags)    {name,Pargs,Iargs,flags,obj_type,class,type}
 macro_line|#else
@@ -286,8 +286,8 @@ mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTR
 multiline_comment|/*&n; * Reporting macros that are never compiled out&n; */
 DECL|macro|ACPI_PARAM_LIST
 mdefine_line|#define ACPI_PARAM_LIST(pl)                  pl
-multiline_comment|/*&n; * Error reporting.  These versions add callers module and line#.  Since&n; * _THIS_MODULE gets compiled out when ACPI_DEBUG isn&squot;t defined, only&n; * use it in debug mode.&n; */
-macro_line|#ifdef ACPI_DEBUG
+multiline_comment|/*&n; * Error reporting.  These versions add callers module and line#.  Since&n; * _THIS_MODULE gets compiled out when ACPI_DEBUG_OUTPUT isn&squot;t defined, only&n; * use it in debug mode.&n; */
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_REPORT_INFO
 mdefine_line|#define ACPI_REPORT_INFO(fp)                {acpi_ut_report_info(_THIS_MODULE,__LINE__,_COMPONENT); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 DECL|macro|ACPI_REPORT_ERROR
@@ -310,7 +310,7 @@ mdefine_line|#define _ACPI_REPORT_ERROR(a,b,c,fp)        {acpi_ut_report_error(a
 DECL|macro|_ACPI_REPORT_WARNING
 mdefine_line|#define _ACPI_REPORT_WARNING(a,b,c,fp)      {acpi_ut_report_warning(a,b,c); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_os_printf ACPI_PARAM_LIST(fp);}
 multiline_comment|/*&n; * Debug macros that are conditionally compiled&n; */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_Proc_name) so that it can be also used by the function exit macros below.&n; */
@@ -446,15 +446,15 @@ mdefine_line|#define return_VALUE(s)                 return(s)
 DECL|macro|return_PTR
 mdefine_line|#define return_PTR(s)                   return(s)
 macro_line|#endif
-multiline_comment|/*&n; * Some code only gets executed when the debugger is built in.&n; * Note that this is entirely independent of whether the&n; * DEBUG_PRINT stuff (set by ACPI_DEBUG) is on, or not.&n; */
-macro_line|#ifdef ENABLE_DEBUGGER
+multiline_comment|/*&n; * Some code only gets executed when the debugger is built in.&n; * Note that this is entirely independent of whether the&n; * DEBUG_PRINT stuff (set by ACPI_DEBUG_OUTPUT) is on, or not.&n; */
+macro_line|#ifdef ACPI_DEBUGGER
 DECL|macro|ACPI_DEBUGGER_EXEC
 mdefine_line|#define ACPI_DEBUGGER_EXEC(a)           a
 macro_line|#else
 DECL|macro|ACPI_DEBUGGER_EXEC
 mdefine_line|#define ACPI_DEBUGGER_EXEC(a)
 macro_line|#endif
-multiline_comment|/*&n; * For 16-bit code, we want to shrink some things even though&n; * we are using ACPI_DEBUG to get the debug output&n; */
+multiline_comment|/*&n; * For 16-bit code, we want to shrink some things even though&n; * we are using ACPI_DEBUG_OUTPUT to get the debug output&n; */
 macro_line|#if ACPI_MACHINE_WIDTH == 16
 DECL|macro|ACPI_DEBUG_ONLY_MEMBERS
 macro_line|#undef ACPI_DEBUG_ONLY_MEMBERS
@@ -463,7 +463,7 @@ macro_line|#undef _VERBOSE_STRUCTURES
 DECL|macro|ACPI_DEBUG_ONLY_MEMBERS
 mdefine_line|#define ACPI_DEBUG_ONLY_MEMBERS(a)
 macro_line|#endif
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 multiline_comment|/*&n; * 1) Set name to blanks&n; * 2) Copy the object name&n; */
 DECL|macro|ACPI_ADD_OBJECT_NAME
 mdefine_line|#define ACPI_ADD_OBJECT_NAME(a,b)       ACPI_MEMSET (a-&gt;common.name, &squot; &squot;, sizeof (a-&gt;common.name));&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;ACPI_STRNCPY (a-&gt;common.name, acpi_gbl_ns_type_names[b], sizeof (a-&gt;common.name))

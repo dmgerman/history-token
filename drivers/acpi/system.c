@@ -435,10 +435,15 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_switch
@@ -480,7 +485,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

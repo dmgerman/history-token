@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -94,6 +94,55 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Hw_set_mode&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ACPI 2.0 clarified that if SMI_CMD in FADT is zero,&n;&t; * system does not support mode transition.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_FADT-&gt;smi_cmd
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;No SMI_CMD in FADT, mode transition failed.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_HARDWARE_RESPONSE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * ACPI 2.0 clarified the meaning of ACPI_ENABLE and ACPI_DISABLE&n;&t; * in FADT: If it is zero, enabling or disabling is not supported.&n;&t; * As old systems may have used zero for mode transition,&n;&t; * we make sure both the numbers are zero to determine these&n;&t; * transitions are not supported.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_FADT-&gt;acpi_enable
+op_logical_and
+op_logical_neg
+id|acpi_gbl_FADT-&gt;acpi_disable
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;No mode transition supported in this system.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
