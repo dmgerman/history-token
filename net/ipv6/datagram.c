@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;common UDP/RAW code&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: datagram.c,v 1.21 2000/11/28 13:42:08 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;common UDP/RAW code&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: datagram.c,v 1.22 2000/12/13 18:31:50 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -157,7 +157,7 @@ id|skb-&gt;h.raw
 op_assign
 id|payload
 suffix:semicolon
-id|skb_pull
+id|__skb_pull
 c_func
 (paren
 id|skb
@@ -341,7 +341,7 @@ id|skb-&gt;h.raw
 op_assign
 id|skb-&gt;tail
 suffix:semicolon
-id|skb_pull
+id|__skb_pull
 c_func
 (paren
 id|skb
@@ -473,12 +473,14 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|memcpy_toiovec
+id|skb_copy_datagram_iovec
 c_func
 (paren
-id|msg-&gt;msg_iov
+id|skb
 comma
-id|skb-&gt;data
+l_int|0
+comma
+id|msg-&gt;msg_iov
 comma
 id|copied
 )paren

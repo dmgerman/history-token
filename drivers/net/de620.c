@@ -88,15 +88,11 @@ DECL|variable|bnc
 r_static
 r_int
 id|bnc
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|utp
 r_static
 r_int
 id|utp
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|io
 r_static
@@ -2319,8 +2315,6 @@ suffix:semicolon
 r_static
 r_int
 id|was_down
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

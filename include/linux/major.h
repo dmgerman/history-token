@@ -209,6 +209,8 @@ DECL|macro|IDE8_MAJOR
 mdefine_line|#define IDE8_MAJOR&t;90
 DECL|macro|IDE9_MAJOR
 mdefine_line|#define IDE9_MAJOR&t;91
+DECL|macro|UBD_MAJOR
+mdefine_line|#define UBD_MAJOR&t;98
 DECL|macro|AURORA_MAJOR
 mdefine_line|#define AURORA_MAJOR 79
 DECL|macro|JSFD_MAJOR
@@ -245,6 +247,10 @@ DECL|macro|CPUID_MAJOR
 mdefine_line|#define CPUID_MAJOR&t;&t;203
 DECL|macro|OSST_MAJOR
 mdefine_line|#define OSST_MAJOR&t;206&t;/* OnStream-SCx0 SCSI tape */
+DECL|macro|IBM_TTY3270_MAJOR
+mdefine_line|#define IBM_TTY3270_MAJOR       227&t;/* Official allocations now */
+DECL|macro|IBM_FS3270_MAJOR
+mdefine_line|#define IBM_FS3270_MAJOR        228
 multiline_comment|/*&n; * Tests for SCSI devices.&n; */
 DECL|macro|SCSI_DISK_MAJOR
 mdefine_line|#define SCSI_DISK_MAJOR(M) ((M) == SCSI_DISK0_MAJOR || &bslash;&n;  ((M) &gt;= SCSI_DISK1_MAJOR &amp;&amp; (M) &lt;= SCSI_DISK7_MAJOR))

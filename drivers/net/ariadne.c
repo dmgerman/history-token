@@ -195,8 +195,6 @@ r_struct
 id|ariadne_private
 op_star
 id|root_ariadne_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 r_static

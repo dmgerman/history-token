@@ -26,26 +26,36 @@ DECL|macro|SCREEN_END
 mdefine_line|#define SCREEN_END&t;&t;0x02078000
 DECL|macro|SCREEN_BASE
 mdefine_line|#define SCREEN_BASE&t;&t;0x02000000
+DECL|macro|EXPMASK_BASE
+mdefine_line|#define EXPMASK_BASE&t;&t;0x03360000
+DECL|macro|IOEB_BASE
+mdefine_line|#define IOEB_BASE&t;&t;0x03350000
+DECL|macro|VIDC_BASE
+mdefine_line|#define VIDC_BASE&t;&t;0x03400000
+DECL|macro|LATCHA_BASE
+mdefine_line|#define LATCHA_BASE&t;&t;0x03250040
+DECL|macro|LATCHB_BASE
+mdefine_line|#define LATCHB_BASE&t;&t;0x03250018
+DECL|macro|IOC_BASE
+mdefine_line|#define IOC_BASE&t;&t;0x03200000
+DECL|macro|FLOPPYDMA_BASE
+mdefine_line|#define FLOPPYDMA_BASE&t;&t;0x0302a000
+DECL|macro|PCIO_BASE
+mdefine_line|#define PCIO_BASE&t;&t;0x03010000
+DECL|macro|vidc_writel
+mdefine_line|#define vidc_writel(val)&t;__raw_writel(val, VIDC_BASE)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * for use with inb/outb&n; */
-DECL|macro|IO_VIDC_BASE
-mdefine_line|#define IO_VIDC_BASE&t;&t;0x80100000
 macro_line|#ifdef CONFIG_ARCH_A5K
 DECL|macro|IOEB_VID_CTL
-mdefine_line|#define IOEB_VID_CTL&t;&t;0x800d4012
+mdefine_line|#define IOEB_VID_CTL&t;&t;(IOEB_BASE + 0x48)
 DECL|macro|IOEB_PRESENT
-mdefine_line|#define IOEB_PRESENT&t;&t;0x800d4014
+mdefine_line|#define IOEB_PRESENT&t;&t;(IOEB_BASE + 0x50)
 DECL|macro|IOEB_PSCLR
-mdefine_line|#define IOEB_PSCLR&t;&t;0x800d4016
+mdefine_line|#define IOEB_PSCLR&t;&t;(IOEB_BASE + 0x58)
 DECL|macro|IOEB_MONTYPE
-mdefine_line|#define IOEB_MONTYPE&t;&t;0x800d401c
+mdefine_line|#define IOEB_MONTYPE&t;&t;(IOEB_BASE + 0x70)
 macro_line|#endif
-DECL|macro|LATCHAADDR
-mdefine_line|#define LATCHAADDR&t;&t;0x80094010
-DECL|macro|LATCHBADDR
-mdefine_line|#define LATCHBADDR&t;&t;0x80094006
-DECL|macro|IOC_BASE
-mdefine_line|#define IOC_BASE&t;&t;0x80080000
 DECL|macro|IO_EC_IOC4_BASE
 mdefine_line|#define IO_EC_IOC4_BASE&t;&t;0x8009c000
 DECL|macro|IO_EC_IOC_BASE
@@ -63,40 +73,10 @@ mdefine_line|#define Z8530_BASE&t;&t;0x032b0008
 DECL|macro|SCSI_BASE
 mdefine_line|#define SCSI_BASE&t;&t;0x03100000
 macro_line|#endif
-multiline_comment|/*&n; * IO definitions&n; */
-DECL|macro|EXPMASK_BASE
-mdefine_line|#define EXPMASK_BASE&t;&t;((volatile unsigned char *)0x03360000)
-DECL|macro|IOEB_BASE
-mdefine_line|#define IOEB_BASE&t;&t;((volatile unsigned char *)0x03350050)
-DECL|macro|PCIO_FLOPPYDMABASE
-mdefine_line|#define PCIO_FLOPPYDMABASE&t;((volatile unsigned char *)0x0302a000)
-DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t;&t;0x03010000
-multiline_comment|/*&n; * RAM definitions&n; */
-DECL|macro|GET_MEMORY_END
-mdefine_line|#define GET_MEMORY_END(p)&t;(PAGE_OFFSET + (p-&gt;u1.s.page_size) * (p-&gt;u1.s.nr_pages))
-DECL|macro|PARAMS_OFFSET
-mdefine_line|#define PARAMS_OFFSET&t;&t;0x7c000
-macro_line|#else
-DECL|macro|IOEB_BASE
-mdefine_line|#define IOEB_BASE&t;&t;0x03350050
-DECL|macro|IOC_BASE
-mdefine_line|#define IOC_BASE&t;&t;0x03200000
-DECL|macro|PCIO_FLOPPYDMABASE
-mdefine_line|#define PCIO_FLOPPYDMABASE&t;0x0302a000
-DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t;&t;0x03010000
-macro_line|#endif
-macro_line|#ifndef __ASSEMBLY__
-DECL|macro|__EXPMASK
-mdefine_line|#define __EXPMASK(offset)&t;(((volatile unsigned char *)EXPMASK_BASE)[offset])
-macro_line|#else
-DECL|macro|__EXPMASK
-mdefine_line|#define __EXPMASK(offset)&t;offset
 macro_line|#endif
 DECL|macro|EXPMASK_STATUS
-mdefine_line|#define&t;EXPMASK_STATUS&t;__EXPMASK(0x00)
+mdefine_line|#define&t;EXPMASK_STATUS&t;&t;(EXPMASK_BASE + 0x00)
 DECL|macro|EXPMASK_ENABLE
-mdefine_line|#define EXPMASK_ENABLE&t;__EXPMASK(0x04)
+mdefine_line|#define EXPMASK_ENABLE&t;&t;(EXPMASK_BASE + 0x04)
 macro_line|#endif
 eof

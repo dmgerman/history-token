@@ -30,23 +30,6 @@ r_char
 id|mode
 )paren
 (brace
-r_extern
-r_void
-id|ecard_reset
-c_func
-(paren
-r_int
-id|card
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Reset all expansion cards.&n;&t; */
-id|ecard_reset
-c_func
-(paren
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * copy branch instruction to reset location and call it&n;&t; */
 op_star
 (paren

@@ -40,7 +40,7 @@ r_case
 l_int|0x0170
 suffix:colon
 r_return
-l_int|77
+l_int|78
 suffix:semicolon
 r_default
 suffix:colon

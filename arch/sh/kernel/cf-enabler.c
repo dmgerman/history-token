@@ -1,7 +1,52 @@
 multiline_comment|/* $Id: cf-enabler.c,v 1.2 2000/06/08 05:50:10 gniibe Exp $&n; *&n; *  linux/drivers/block/cf-enabler.c&n; *&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2000  Toshiharu Nozawa&n; *&n; *  Enable the CF configuration.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+DECL|macro|CF_CIS_BASE
+mdefine_line|#define CF_CIS_BASE&t;0xb8000000
+multiline_comment|/*&n; * You can connect Compact Flash directly to the bus of SuperH.&n; * This is the enabler for that.&n; *&n; * SIM: How generic is this really? It looks pretty board, or at&n; * least SH sub-type, specific to me.&n; * I know it doesn&squot;t work on the Overdrive!&n; */
+multiline_comment|/*&n; * 0xB8000000 : Attribute&n; * 0xB8001000 : Common Memory&n; * 0xBA000000 : I/O&n; */
+DECL|function|cf_init_default
+r_static
+r_int
+id|__init
+id|cf_init_default
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_IDE
+multiline_comment|/* Enable the card, and set the level interrupt */
+id|ctrl_outw
+c_func
+(paren
+l_int|0x0042
+comma
+id|CF_CIS_BASE
+op_plus
+l_int|0x0200
+)paren
+suffix:semicolon
+macro_line|#endif
+id|make_imask_irq
+c_func
+(paren
+l_int|14
+)paren
+suffix:semicolon
+id|disable_irq
+c_func
+(paren
+l_int|14
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_SOLUTION_ENGINE)
 macro_line|#include &lt;asm/hitachi_se.h&gt;
 multiline_comment|/*&n; * SolutionEngine&n; *&n; * 0xB8400000 : Common Memory&n; * 0xB8500000 : Attribute&n; * 0xB8600000 : I/O&n; */
 DECL|function|cf_init_se
@@ -247,47 +292,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|CF_CIS_BASE
-mdefine_line|#define CF_CIS_BASE&t;0xb8000000
-multiline_comment|/*&n; * You can connect Compact Flash directly to the bus of SuperH.&n; * This is the enabler for that.&n; *&n; * SIM: How generic is this really? It looks pretty board, or at&n; * least SH sub-type, specific to me.&n; * I know it doesn&squot;t work on the Overdrive!&n; */
-multiline_comment|/*&n; * 0xB8000000 : Attribute&n; * 0xB8001000 : Common Memory&n; * 0xBA000000 : I/O&n; */
-DECL|function|cf_init_default
-r_static
-r_int
-id|__init
-id|cf_init_default
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Enable the card, and set the level interrupt */
-id|ctrl_outw
-c_func
-(paren
-l_int|0x0042
-comma
-id|CF_CIS_BASE
-op_plus
-l_int|0x0200
-)paren
-suffix:semicolon
-id|make_imask_irq
-c_func
-(paren
-l_int|14
-)paren
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-l_int|14
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+macro_line|#endif
 DECL|function|cf_init
 r_int
 id|__init
@@ -297,19 +302,19 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_SOLUTION_ENGINE)
 r_if
 c_cond
 (paren
 id|MACH_SE
 )paren
-(brace
 r_return
 id|cf_init_se
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
 r_return
 id|cf_init_default
 c_func

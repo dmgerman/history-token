@@ -1191,13 +1191,7 @@ id|p-&gt;physport-&gt;private_data
 suffix:semicolon
 id|s-&gt;u.pc.ctr
 op_assign
-id|inb
-(paren
-id|CONTROL
-(paren
-id|p
-)paren
-)paren
+id|priv-&gt;ctr
 suffix:semicolon
 r_if
 c_cond
@@ -1231,7 +1225,6 @@ op_star
 id|s
 )paren
 (brace
-r_const
 r_struct
 id|parport_pc_private
 op_star
@@ -1248,6 +1241,10 @@ id|CONTROL
 id|p
 )paren
 )paren
+suffix:semicolon
+id|priv-&gt;ctr
+op_assign
+id|s-&gt;u.pc.ctr
 suffix:semicolon
 r_if
 c_cond

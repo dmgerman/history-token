@@ -148,11 +148,6 @@ id|ioremap
 id|UNKNOWN_ALIAS
 c_func
 (paren
-id|ioremap_nocache
-)paren
-id|UNKNOWN_ALIAS
-c_func
-(paren
 id|iounmap
 )paren
 eof

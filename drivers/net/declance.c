@@ -4978,8 +4978,6 @@ r_void
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE
 id|root_lance_dev

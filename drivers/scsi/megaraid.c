@@ -131,8 +131,8 @@ l_int|0x2C
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)&t;/* 0x020100 */
-multiline_comment|/*&n; *&t;Linux 2.4 and higher&n; *&n; *&t;No driver private lock&n; *&t;Use the io_request_lock not cli/sti&n; *&t;queue task is a simple api without irq forms&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)&t;/* 0x020200 */
+multiline_comment|/*&n; *&t;Linux 2.2 and higher&n; *&n; *&t;No driver private lock&n; *&t;Use the io_request_lock not cli/sti&n; *&t;queue task is a simple api without irq forms&n; */
 macro_line|#include &lt;linux/smp.h&gt;
 DECL|macro|cpuid
 mdefine_line|#define cpuid smp_processor_id()
@@ -160,39 +160,7 @@ DECL|macro|IO_LOCK
 mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
 DECL|macro|IO_UNLOCK
 mdefine_line|#define IO_UNLOCK spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
-DECL|macro|queue_task_irq
-mdefine_line|#define queue_task_irq(a,b)     queue_task(a,b)
-DECL|macro|queue_task_irq_off
-mdefine_line|#define queue_task_irq_off(a,b) queue_task(a,b)
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)&t;/* 0x020200 */
-multiline_comment|/*&n; *&t;Linux 2.2 and higher&n; *&n; *&t;No driver private lock&n; *&t;Use the io_request_lock not cli/sti&n; *&t;No pci region api&n; *&t;queue_task is now a single simple API&n; */
-macro_line|#include &lt;linux/smp.h&gt;
-DECL|macro|cpuid
-mdefine_line|#define cpuid smp_processor_id()
-id|MODULE_AUTHOR
-(paren
-l_string|&quot;American Megatrends Inc.&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-(paren
-l_string|&quot;AMI MegaRAID driver&quot;
-)paren
-suffix:semicolon
-DECL|macro|DRIVER_LOCK_T
-mdefine_line|#define DRIVER_LOCK_T
-DECL|macro|DRIVER_LOCK_INIT
-mdefine_line|#define DRIVER_LOCK_INIT(p)
-DECL|macro|DRIVER_LOCK
-mdefine_line|#define DRIVER_LOCK(p)
-DECL|macro|DRIVER_UNLOCK
-mdefine_line|#define DRIVER_UNLOCK(p)
-DECL|macro|IO_LOCK_T
-mdefine_line|#define IO_LOCK_T unsigned long io_flags = 0;
-DECL|macro|IO_LOCK
-mdefine_line|#define IO_LOCK spin_lock_irqsave(&amp;io_request_lock,io_flags);
-DECL|macro|IO_UNLOCK
-mdefine_line|#define IO_UNLOCK spin_unlock_irqrestore(&amp;io_request_lock,io_flags);
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)&t;/* 0x020400 */
 DECL|macro|pci_free_consistent
 mdefine_line|#define pci_free_consistent(a,b,c,d)
 DECL|macro|pci_unmap_single
@@ -201,12 +169,13 @@ DECL|macro|init_MUTEX_LOCKED
 mdefine_line|#define init_MUTEX_LOCKED(x)&t;((x)=MUTEX_LOCKED)
 DECL|macro|init_MUTEX
 mdefine_line|#define init_MUTEX(x)&t;&t;((x)=MUTEX)
+DECL|macro|DECLARE_WAIT_QUEUE_HEAD
+mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(x)&t;struct wait_queue *x = NULL
+macro_line|#endif
 DECL|macro|queue_task_irq
 mdefine_line|#define queue_task_irq(a,b)     queue_task(a,b)
 DECL|macro|queue_task_irq_off
 mdefine_line|#define queue_task_irq_off(a,b) queue_task(a,b)
-DECL|macro|DECLARE_WAIT_QUEUE_HEAD
-mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(x)&t;struct wait_queue *x = NULL
 macro_line|#else
 multiline_comment|/*&n; *&t;Linux 2.0 macros. Here we have to provide some of our own&n; *&t;functionality. We also only work little endian 32bit.&n; *&t;Again no pci_alloc/free api&n; *&t;IO_LOCK/IO_LOCK_T were never used in 2.0 so now are empty &n; */
 DECL|macro|cpuid
@@ -14448,16 +14417,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|MEGARAID
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#else
-macro_line|#ifdef MODULE
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) || defined(MODULE)
 DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template
@@ -14465,6 +14427,5 @@ op_assign
 id|MEGARAID
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
-macro_line|#endif&t;&t;&t;&t;/* LINUX VERSION 2.4.XX  test */
+macro_line|#endif
 eof

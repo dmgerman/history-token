@@ -243,8 +243,6 @@ DECL|macro|IA64_THREAD_UAC_SIGBUS
 mdefine_line|#define IA64_THREAD_UAC_SIGBUS&t;(__IA64_UL(1) &lt;&lt; 4)&t;/* generate SIGBUS on unaligned acc. */
 DECL|macro|IA64_THREAD_KRBS_SYNCED
 mdefine_line|#define IA64_THREAD_KRBS_SYNCED&t;(__IA64_UL(1) &lt;&lt; 5)&t;/* krbs synced with process vm? */
-DECL|macro|IA64_THREAD_MAP_SHARED
-mdefine_line|#define IA64_THREAD_MAP_SHARED&t;(__IA64_UL(1) &lt;&lt; 6)&t;/* ugly: just a tmp flag for mmap() */
 DECL|macro|IA64_KERNEL_DEATH
 mdefine_line|#define IA64_KERNEL_DEATH&t;(__IA64_UL(1) &lt;&lt; 63)&t;/* see die_if_kernel()... */
 DECL|macro|IA64_THREAD_UAC_SHIFT

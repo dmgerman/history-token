@@ -278,7 +278,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HD64461: spurious interrupt, nirr: 0x%lx nimr: 0x%lx&bslash;n&quot;
+l_string|&quot;HD64461: spurious interrupt, nirr: 0x%x nimr: 0x%x&bslash;n&quot;
 comma
 id|inw
 c_func
@@ -389,7 +389,11 @@ id|HD64461_IRQBASE
 suffix:semicolon
 )brace
 r_return
+id|__irq_demux
+c_func
+(paren
 id|irq
+)paren
 suffix:semicolon
 )brace
 DECL|variable|irq0
@@ -450,18 +454,15 @@ op_plus
 l_int|15
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_SUBTYPE_SH7709
-multiline_comment|/* IRQ line for HD64461 should be set level trigger mode(&quot;10&quot;). */
-multiline_comment|/* And this should be done earlier than the kernel starts. */
-id|ctrl_outw
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7709) /* Should be at processor specific part.. */
+id|outw
 c_func
 (paren
-l_int|0x0200
+l_int|0x2240
 comma
 id|INTC_ICR1
 )paren
 suffix:semicolon
-multiline_comment|/* when connected to IRQ4. */
 macro_line|#endif
 id|outw
 c_func
@@ -519,7 +520,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-l_int|0x04
+l_int|0x4c
 comma
 id|HD64461_PCC1CSCIER
 )paren

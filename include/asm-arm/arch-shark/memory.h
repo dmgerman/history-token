@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/memory.h&n; *&n; * by Alexander.Schulz@stud.uni-karlsruhe.de&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa110/memory.h&n; * Copyright (c) 1996-1999 Russell King.&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/memory.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa110/memory.h&n; * Copyright (c) 1996-1999 Russell King.&n; */
 macro_line|#ifndef __ASM_ARCH_MEMORY_H
 DECL|macro|__ASM_ARCH_MEMORY_H
 mdefine_line|#define __ASM_ARCH_MEMORY_H

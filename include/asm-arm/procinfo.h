@@ -90,12 +90,20 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
 DECL|macro|HWCAP_SWP
-mdefine_line|#define HWCAP_SWP&t;1
+mdefine_line|#define HWCAP_SWP&t; 1
 DECL|macro|HWCAP_HALF
-mdefine_line|#define HWCAP_HALF&t;2
+mdefine_line|#define HWCAP_HALF&t; 2
 DECL|macro|HWCAP_THUMB
-mdefine_line|#define HWCAP_THUMB&t;4
+mdefine_line|#define HWCAP_THUMB&t; 4
 DECL|macro|HWCAP_26BIT
-mdefine_line|#define HWCAP_26BIT&t;8&t;/* Play it safe */
+mdefine_line|#define HWCAP_26BIT&t; 8&t;/* Play it safe */
+DECL|macro|HWCAP_FAST_MULT
+mdefine_line|#define HWCAP_FAST_MULT&t; 16
+DECL|macro|HWCAP_FPA
+mdefine_line|#define HWCAP_FPA        32
+DECL|macro|HWCAP_VFP
+mdefine_line|#define HWCAP_VFP        64
+DECL|macro|HWCAP_EDSP
+mdefine_line|#define HWCAP_EDSP&t; 128
 macro_line|#endif
 eof

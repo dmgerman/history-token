@@ -29,7 +29,6 @@ macro_line|#if ALLOW_DMA
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -1128,8 +1127,6 @@ suffix:semicolon
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -7335,22 +7332,16 @@ DECL|variable|io
 r_static
 r_int
 id|io
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|media
 r_static
@@ -7372,16 +7363,12 @@ DECL|variable|use_dma
 r_static
 r_int
 id|use_dma
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* These generate unused var warnings if ALLOW_DMA = 0 */
 DECL|variable|dma
 r_static
 r_int
 id|dma
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dmasize
 r_static

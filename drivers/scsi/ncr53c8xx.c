@@ -28990,15 +28990,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;**&t;Module stuff&n;*/
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
-DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|NCR53C8XX
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#elif defined(MODULE)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
 DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * A collection of structures, addresses, and values asso
 macro_line|#ifndef __MACH_TQM8xx_DEFS
 DECL|macro|__MACH_TQM8xx_DEFS
 mdefine_line|#define __MACH_TQM8xx_DEFS
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|interrupt_handler_t
 r_typedef

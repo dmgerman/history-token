@@ -19,8 +19,6 @@ r_struct
 id|net_device
 op_star
 id|mace_devs
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|macro|N_RX_RING
 mdefine_line|#define N_RX_RING&t;8

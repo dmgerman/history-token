@@ -54,7 +54,7 @@ DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
 macro_line|#ifdef __ARMEB__
 DECL|macro|ELF_DATA
-mdefine_line|#define ELF_DATA&t;ELFDATA2LSB;
+mdefine_line|#define ELF_DATA&t;ELFDATA2MSB;
 macro_line|#else
 DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2LSB;

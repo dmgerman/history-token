@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ttable.h,v 1.15 2000/04/03 10:36:42 davem Exp $ */
+multiline_comment|/* $Id: ttable.h,v 1.16 2001/03/28 10:56:34 davem Exp $ */
 macro_line|#ifndef _SPARC64_TTABLE_H
 DECL|macro|_SPARC64_TTABLE_H
 mdefine_line|#define _SPARC64_TTABLE_H
@@ -18,8 +18,6 @@ DECL|macro|TRAP_NOSAVE
 mdefine_line|#define TRAP_NOSAVE(routine)&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, routine;&t;&t;&t;&t;&bslash;&n;&t; nop;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop; nop; nop; nop; nop; nop;
 DECL|macro|TRAPTL1
 mdefine_line|#define TRAPTL1(routine)&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etraptl1;&t;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;&t;&t;&t;&t;&t;&bslash;&n;&t;nop;
-DECL|macro|TRAPTL1_CEE
-mdefine_line|#define TRAPTL1_CEE&t;&t;&t;&bslash;&n;&t;ldxa&t;[%g0] ASI_AFSR, %g1;&t;&bslash;&n;&t;membar&t;#Sync;&t;&t;&t;&bslash;&n;&t;stxa&t;%g1, [%g0] ASI_AFSR;&t;&bslash;&n;&t;membar&t;#Sync;&t;&t;&t;&bslash;&n;&t;retry; nop; nop; nop;
 DECL|macro|TRAP_ARG
 mdefine_line|#define TRAP_ARG(routine, arg)&t;&t;&t;&t;&bslash;&n;&t;sethi&t;%hi(109f), %g7;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etrap;&t;&t;&t;&t;&bslash;&n;109:&t; or&t;%g7, %lo(109b), %g7;&t;&t;&t;&bslash;&n;&t;add&t;%sp, STACK_BIAS + REGWIN_SZ, %o0;&t;&bslash;&n;&t;call&t;routine;&t;&t;&t;&t;&bslash;&n;&t; mov&t;arg, %o1;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap;&t;&t;&t;&t;&bslash;&n;&t; clr&t;%l6;
 DECL|macro|TRAPTL1_ARG

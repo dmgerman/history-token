@@ -259,6 +259,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
+r_int
 id|memparse
 c_func
 (paren

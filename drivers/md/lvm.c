@@ -24,13 +24,6 @@ multiline_comment|/* lvm_do_lv_create calls fsync_dev_lockfs()/unlockfs() */
 multiline_comment|/* #define&t;LVM_VFS_ENHANCEMENT */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifdef MODVERSIONS
-DECL|macro|MODULE
-macro_line|#undef MODULE
-DECL|macro|MODULE
-mdefine_line|#define MODULE
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

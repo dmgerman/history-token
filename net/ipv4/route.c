@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;ROUTE - implementation of the IP router.&n; *&n; * Version:&t;$Id: route.c,v 1.91 2000/10/03 07:29:00 anton Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Linus Torvalds, &lt;Linus.Torvalds@helsinki.fi&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Verify area fixes.&n; *&t;&t;Alan Cox&t;:&t;cli() protects routing changes&n; *&t;&t;Rui Oliveira&t;:&t;ICMP routing table updates&n; *&t;&t;(rco@di.uminho.pt)&t;Routing table insertion and update&n; *&t;&t;Linus Torvalds&t;:&t;Rewrote bits to be sensible&n; *&t;&t;Alan Cox&t;:&t;Added BSD route gw semantics&n; *&t;&t;Alan Cox&t;:&t;Super /proc &gt;4K &n; *&t;&t;Alan Cox&t;:&t;MTU in route table&n; *&t;&t;Alan Cox&t;: &t;MSS actually. Also added the window&n; *&t;&t;&t;&t;&t;clamper.&n; *&t;&t;Sam Lantinga&t;:&t;Fixed route matching in rt_del()&n; *&t;&t;Alan Cox&t;:&t;Routing cache support.&n; *&t;&t;Alan Cox&t;:&t;Removed compatibility cruft.&n; *&t;&t;Alan Cox&t;:&t;RTF_REJECT support.&n; *&t;&t;Alan Cox&t;:&t;TCP irtt support.&n; *&t;&t;Jonathan Naylor&t;:&t;Added Metric support.&n; *&t;Miquel van Smoorenburg&t;:&t;BSD API fixes.&n; *&t;Miquel van Smoorenburg&t;:&t;Metrics.&n; *&t;&t;Alan Cox&t;:&t;Use __u32 properly&n; *&t;&t;Alan Cox&t;:&t;Aligned routing errors more closely with BSD&n; *&t;&t;&t;&t;&t;our system is still very different.&n; *&t;&t;Alan Cox&t;:&t;Faster /proc handling&n; *&t;Alexey Kuznetsov&t;:&t;Massive rework to support tree based routing,&n; *&t;&t;&t;&t;&t;routing caches and better behaviour.&n; *&t;&t;&n; *&t;&t;Olaf Erb&t;:&t;irtt wasn&squot;t being copied right.&n; *&t;&t;Bjorn Ekwall&t;:&t;Kerneld route support.&n; *&t;&t;Alan Cox&t;:&t;Multicast fixed (I hope)&n; * &t;&t;Pavel Krauz&t;:&t;Limited broadcast fixed&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Alexey Kuznetsov&t;:&t;End of old history. Splitted to fib.c and&n; *&t;&t;&t;&t;&t;route.c and rewritten from scratch.&n; *&t;&t;Andi Kleen&t;:&t;Load-limit warning messages.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;Vitaly E. Lavrov&t;:&t;Race condition in ip_route_input_slow.&n; *&t;Tobias Ringstrom&t;:&t;Uninitialized res.type in ip_route_output_slow.&n; *&t;Vladimir V. Ivanov&t;:&t;IP rule info (flowid) is really useful.&n; *&t;&t;Marc Boucher&t;:&t;routing by fwmark&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;ROUTE - implementation of the IP router.&n; *&n; * Version:&t;$Id: route.c,v 1.93 2001/02/22 01:03:05 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Linus Torvalds, &lt;Linus.Torvalds@helsinki.fi&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Verify area fixes.&n; *&t;&t;Alan Cox&t;:&t;cli() protects routing changes&n; *&t;&t;Rui Oliveira&t;:&t;ICMP routing table updates&n; *&t;&t;(rco@di.uminho.pt)&t;Routing table insertion and update&n; *&t;&t;Linus Torvalds&t;:&t;Rewrote bits to be sensible&n; *&t;&t;Alan Cox&t;:&t;Added BSD route gw semantics&n; *&t;&t;Alan Cox&t;:&t;Super /proc &gt;4K &n; *&t;&t;Alan Cox&t;:&t;MTU in route table&n; *&t;&t;Alan Cox&t;: &t;MSS actually. Also added the window&n; *&t;&t;&t;&t;&t;clamper.&n; *&t;&t;Sam Lantinga&t;:&t;Fixed route matching in rt_del()&n; *&t;&t;Alan Cox&t;:&t;Routing cache support.&n; *&t;&t;Alan Cox&t;:&t;Removed compatibility cruft.&n; *&t;&t;Alan Cox&t;:&t;RTF_REJECT support.&n; *&t;&t;Alan Cox&t;:&t;TCP irtt support.&n; *&t;&t;Jonathan Naylor&t;:&t;Added Metric support.&n; *&t;Miquel van Smoorenburg&t;:&t;BSD API fixes.&n; *&t;Miquel van Smoorenburg&t;:&t;Metrics.&n; *&t;&t;Alan Cox&t;:&t;Use __u32 properly&n; *&t;&t;Alan Cox&t;:&t;Aligned routing errors more closely with BSD&n; *&t;&t;&t;&t;&t;our system is still very different.&n; *&t;&t;Alan Cox&t;:&t;Faster /proc handling&n; *&t;Alexey Kuznetsov&t;:&t;Massive rework to support tree based routing,&n; *&t;&t;&t;&t;&t;routing caches and better behaviour.&n; *&t;&t;&n; *&t;&t;Olaf Erb&t;:&t;irtt wasn&squot;t being copied right.&n; *&t;&t;Bjorn Ekwall&t;:&t;Kerneld route support.&n; *&t;&t;Alan Cox&t;:&t;Multicast fixed (I hope)&n; * &t;&t;Pavel Krauz&t;:&t;Limited broadcast fixed&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Alexey Kuznetsov&t;:&t;End of old history. Splitted to fib.c and&n; *&t;&t;&t;&t;&t;route.c and rewritten from scratch.&n; *&t;&t;Andi Kleen&t;:&t;Load-limit warning messages.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;Vitaly E. Lavrov&t;:&t;Race condition in ip_route_input_slow.&n; *&t;Tobias Ringstrom&t;:&t;Uninitialized res.type in ip_route_output_slow.&n; *&t;Vladimir V. Ivanov&t;:&t;IP rule info (flowid) is really useful.&n; *&t;&t;Marc Boucher&t;:&t;routing by fwmark&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -158,7 +158,7 @@ DECL|variable|ip_rt_min_advmss
 r_int
 id|ip_rt_min_advmss
 op_assign
-l_int|536
+l_int|256
 suffix:semicolon
 DECL|variable|rt_deadline
 r_static
@@ -2607,9 +2607,13 @@ id|iph-&gt;daddr
 suffix:semicolon
 id|iph-&gt;id
 op_assign
+id|htons
+c_func
+(paren
 id|salt
 op_amp
 l_int|0xFFFF
+)paren
 suffix:semicolon
 id|ip_fallback_id
 op_assign
@@ -2681,10 +2685,14 @@ id|rt-&gt;peer
 (brace
 id|iph-&gt;id
 op_assign
+id|htons
+c_func
+(paren
 id|inet_getid
 c_func
 (paren
 id|rt-&gt;peer
+)paren
 )paren
 suffix:semicolon
 r_return

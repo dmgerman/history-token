@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) module.&n; *&n; * Version:&t;$Id: ip_input.c,v 1.51 2000/12/08 17:15:53 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Commented a couple of minor bits of surplus code&n; *&t;&t;Alan Cox&t;:&t;Undefining IP_FORWARD doesn&squot;t include the code&n; *&t;&t;&t;&t;&t;(just stops a compiler warning).&n; *&t;&t;Alan Cox&t;:&t;Frames with &gt;=MAX_ROUTE record routes, strict routes or loose routes&n; *&t;&t;&t;&t;&t;are junked rather than corrupting things.&n; *&t;&t;Alan Cox&t;:&t;Frames to bad broadcast subnets are dumped&n; *&t;&t;&t;&t;&t;We used to process them non broadcast and&n; *&t;&t;&t;&t;&t;boy could that cause havoc.&n; *&t;&t;Alan Cox&t;:&t;ip_forward sets the free flag on the&n; *&t;&t;&t;&t;&t;new frame it queues. Still crap because&n; *&t;&t;&t;&t;&t;it copies the frame but at least it&n; *&t;&t;&t;&t;&t;doesn&squot;t eat memory too.&n; *&t;&t;Alan Cox&t;:&t;Generic queue code and memory fixes.&n; *&t;&t;Fred Van Kempen :&t;IP fragment support (borrowed from NET2E)&n; *&t;&t;Gerhard Koerting:&t;Forward fragmented frames correctly.&n; *&t;&t;Gerhard Koerting: &t;Fixes to my fix of the above 8-).&n; *&t;&t;Gerhard Koerting:&t;IP interface addressing fix.&n; *&t;&t;Linus Torvalds&t;:&t;More robustness checks&n; *&t;&t;Alan Cox&t;:&t;Even more checks: Still not as robust as it ought to be&n; *&t;&t;Alan Cox&t;:&t;Save IP header pointer for later&n; *&t;&t;Alan Cox&t;:&t;ip option setting&n; *&t;&t;Alan Cox&t;:&t;Use ip_tos/ip_ttl settings&n; *&t;&t;Alan Cox&t;:&t;Fragmentation bogosity removed&n; *&t;&t;&t;&t;&t;(Thanks to Mark.Bush@prg.ox.ac.uk)&n; *&t;&t;Dmitry Gorodchanin :&t;Send of a raw packet crash fix.&n; *&t;&t;Alan Cox&t;:&t;Silly ip bug when an overlength&n; *&t;&t;&t;&t;&t;fragment turns up. Now frees the&n; *&t;&t;&t;&t;&t;queue.&n; *&t;&t;Linus Torvalds/ :&t;Memory leakage on fragmentation&n; *&t;&t;Alan Cox&t;:&t;handling.&n; *&t;&t;Gerhard Koerting:&t;Forwarding uses IP priority hints&n; *&t;&t;Teemu Rantanen&t;:&t;Fragment problems.&n; *&t;&t;Alan Cox&t;:&t;General cleanup, comments and reformat&n; *&t;&t;Alan Cox&t;:&t;SNMP statistics&n; *&t;&t;Alan Cox&t;:&t;BSD address rule semantics. Also see&n; *&t;&t;&t;&t;&t;UDP as there is a nasty checksum issue&n; *&t;&t;&t;&t;&t;if you do things the wrong way.&n; *&t;&t;Alan Cox&t;:&t;Always defrag, moved IP_FORWARD to the config.in file&n; *&t;&t;Alan Cox&t;: &t;IP options adjust sk-&gt;priority.&n; *&t;&t;Pedro Roque&t;:&t;Fix mtu/length error in ip_forward.&n; *&t;&t;Alan Cox&t;:&t;Avoid ip_chk_addr when possible.&n; *&t;Richard Underwood&t;:&t;IP multicasting.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up multicast handlers.&n; *&t;&t;Alan Cox&t;:&t;RAW sockets demultiplex in the BSD style.&n; *&t;&t;Gunther Mayer&t;:&t;Fix the SNMP reporting typo&n; *&t;&t;Alan Cox&t;:&t;Always in group 224.0.0.1&n; *&t;Pauline Middelink&t;:&t;Fast ip_checksum update when forwarding&n; *&t;&t;&t;&t;&t;Masquerading support.&n; *&t;&t;Alan Cox&t;:&t;Multicast loopback error for 224.0.0.1&n; *&t;&t;Alan Cox&t;:&t;IP_MULTICAST_LOOP option.&n; *&t;&t;Alan Cox&t;:&t;Use notifiers.&n; *&t;&t;Bjorn Ekwall&t;:&t;Removed ip_csum (from slhc.c too)&n; *&t;&t;Bjorn Ekwall&t;:&t;Moved ip_fast_csum to ip.h (inline!)&n; *&t;&t;Stefan Becker   :       Send out ICMP HOST REDIRECT&n; *&t;Arnt Gulbrandsen&t;:&t;ip_build_xmit&n; *&t;&t;Alan Cox&t;:&t;Per socket routing cache&n; *&t;&t;Alan Cox&t;:&t;Fixed routing cache, added header cache.&n; *&t;&t;Alan Cox&t;:&t;Loopback didn&squot;t work right in original ip_build_xmit - fixed it.&n; *&t;&t;Alan Cox&t;:&t;Only send ICMP_REDIRECT if src/dest are the same net.&n; *&t;&t;Alan Cox&t;:&t;Incoming IP option handling.&n; *&t;&t;Alan Cox&t;:&t;Set saddr on raw output frames as per BSD.&n; *&t;&t;Alan Cox&t;:&t;Stopped broadcast source route explosions.&n; *&t;&t;Alan Cox&t;:&t;Can disable source routing&n; *&t;&t;Takeshi Sone    :&t;Masquerading didn&squot;t work.&n; *&t;Dave Bonn,Alan Cox&t;:&t;Faster IP forwarding whenever possible.&n; *&t;&t;Alan Cox&t;:&t;Memory leaks, tramples, misc debugging.&n; *&t;&t;Alan Cox&t;:&t;Fixed multicast (by popular demand 8))&n; *&t;&t;Alan Cox&t;:&t;Fixed forwarding (by even more popular demand 8))&n; *&t;&t;Alan Cox&t;:&t;Fixed SNMP statistics [I think]&n; *&t;Gerhard Koerting&t;:&t;IP fragmentation forwarding fix&n; *&t;&t;Alan Cox&t;:&t;Device lock against page fault.&n; *&t;&t;Alan Cox&t;:&t;IP_HDRINCL facility.&n; *&t;Werner Almesberger&t;:&t;Zero fragment bug&n; *&t;&t;Alan Cox&t;:&t;RAW IP frame length bug&n; *&t;&t;Alan Cox&t;:&t;Outgoing firewall on build_xmit&n; *&t;&t;A.N.Kuznetsov&t;:&t;IP_OPTIONS support throughout the kernel&n; *&t;&t;Alan Cox&t;:&t;Multicast routing hooks&n; *&t;&t;Jos Vos&t;&t;:&t;Do accounting *before* call_in_firewall&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support&n; *&n; *  &n; *&n; * To Fix:&n; *&t;&t;IP fragmentation wants rewriting cleanly. The RFC815 algorithm is much more efficient&n; *&t;&t;and could be made very efficient with the addition of some virtual memory hacks to permit&n; *&t;&t;the allocation of a buffer that can then be &squot;grown&squot; by twiddling page tables.&n; *&t;&t;Output fragmentation wants updating along with the buffer management to use a single &n; *&t;&t;interleaved copy algorithm so that fragmenting has a one copy overhead. Actual packet&n; *&t;&t;output should probably do its own fragmentation at the UDP/RAW layer. TCP shouldn&squot;t cause&n; *&t;&t;fragmentation anyway.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) module.&n; *&n; * Version:&t;$Id: ip_input.c,v 1.53 2000/12/18 19:01:50 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Commented a couple of minor bits of surplus code&n; *&t;&t;Alan Cox&t;:&t;Undefining IP_FORWARD doesn&squot;t include the code&n; *&t;&t;&t;&t;&t;(just stops a compiler warning).&n; *&t;&t;Alan Cox&t;:&t;Frames with &gt;=MAX_ROUTE record routes, strict routes or loose routes&n; *&t;&t;&t;&t;&t;are junked rather than corrupting things.&n; *&t;&t;Alan Cox&t;:&t;Frames to bad broadcast subnets are dumped&n; *&t;&t;&t;&t;&t;We used to process them non broadcast and&n; *&t;&t;&t;&t;&t;boy could that cause havoc.&n; *&t;&t;Alan Cox&t;:&t;ip_forward sets the free flag on the&n; *&t;&t;&t;&t;&t;new frame it queues. Still crap because&n; *&t;&t;&t;&t;&t;it copies the frame but at least it&n; *&t;&t;&t;&t;&t;doesn&squot;t eat memory too.&n; *&t;&t;Alan Cox&t;:&t;Generic queue code and memory fixes.&n; *&t;&t;Fred Van Kempen :&t;IP fragment support (borrowed from NET2E)&n; *&t;&t;Gerhard Koerting:&t;Forward fragmented frames correctly.&n; *&t;&t;Gerhard Koerting: &t;Fixes to my fix of the above 8-).&n; *&t;&t;Gerhard Koerting:&t;IP interface addressing fix.&n; *&t;&t;Linus Torvalds&t;:&t;More robustness checks&n; *&t;&t;Alan Cox&t;:&t;Even more checks: Still not as robust as it ought to be&n; *&t;&t;Alan Cox&t;:&t;Save IP header pointer for later&n; *&t;&t;Alan Cox&t;:&t;ip option setting&n; *&t;&t;Alan Cox&t;:&t;Use ip_tos/ip_ttl settings&n; *&t;&t;Alan Cox&t;:&t;Fragmentation bogosity removed&n; *&t;&t;&t;&t;&t;(Thanks to Mark.Bush@prg.ox.ac.uk)&n; *&t;&t;Dmitry Gorodchanin :&t;Send of a raw packet crash fix.&n; *&t;&t;Alan Cox&t;:&t;Silly ip bug when an overlength&n; *&t;&t;&t;&t;&t;fragment turns up. Now frees the&n; *&t;&t;&t;&t;&t;queue.&n; *&t;&t;Linus Torvalds/ :&t;Memory leakage on fragmentation&n; *&t;&t;Alan Cox&t;:&t;handling.&n; *&t;&t;Gerhard Koerting:&t;Forwarding uses IP priority hints&n; *&t;&t;Teemu Rantanen&t;:&t;Fragment problems.&n; *&t;&t;Alan Cox&t;:&t;General cleanup, comments and reformat&n; *&t;&t;Alan Cox&t;:&t;SNMP statistics&n; *&t;&t;Alan Cox&t;:&t;BSD address rule semantics. Also see&n; *&t;&t;&t;&t;&t;UDP as there is a nasty checksum issue&n; *&t;&t;&t;&t;&t;if you do things the wrong way.&n; *&t;&t;Alan Cox&t;:&t;Always defrag, moved IP_FORWARD to the config.in file&n; *&t;&t;Alan Cox&t;: &t;IP options adjust sk-&gt;priority.&n; *&t;&t;Pedro Roque&t;:&t;Fix mtu/length error in ip_forward.&n; *&t;&t;Alan Cox&t;:&t;Avoid ip_chk_addr when possible.&n; *&t;Richard Underwood&t;:&t;IP multicasting.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up multicast handlers.&n; *&t;&t;Alan Cox&t;:&t;RAW sockets demultiplex in the BSD style.&n; *&t;&t;Gunther Mayer&t;:&t;Fix the SNMP reporting typo&n; *&t;&t;Alan Cox&t;:&t;Always in group 224.0.0.1&n; *&t;Pauline Middelink&t;:&t;Fast ip_checksum update when forwarding&n; *&t;&t;&t;&t;&t;Masquerading support.&n; *&t;&t;Alan Cox&t;:&t;Multicast loopback error for 224.0.0.1&n; *&t;&t;Alan Cox&t;:&t;IP_MULTICAST_LOOP option.&n; *&t;&t;Alan Cox&t;:&t;Use notifiers.&n; *&t;&t;Bjorn Ekwall&t;:&t;Removed ip_csum (from slhc.c too)&n; *&t;&t;Bjorn Ekwall&t;:&t;Moved ip_fast_csum to ip.h (inline!)&n; *&t;&t;Stefan Becker   :       Send out ICMP HOST REDIRECT&n; *&t;Arnt Gulbrandsen&t;:&t;ip_build_xmit&n; *&t;&t;Alan Cox&t;:&t;Per socket routing cache&n; *&t;&t;Alan Cox&t;:&t;Fixed routing cache, added header cache.&n; *&t;&t;Alan Cox&t;:&t;Loopback didn&squot;t work right in original ip_build_xmit - fixed it.&n; *&t;&t;Alan Cox&t;:&t;Only send ICMP_REDIRECT if src/dest are the same net.&n; *&t;&t;Alan Cox&t;:&t;Incoming IP option handling.&n; *&t;&t;Alan Cox&t;:&t;Set saddr on raw output frames as per BSD.&n; *&t;&t;Alan Cox&t;:&t;Stopped broadcast source route explosions.&n; *&t;&t;Alan Cox&t;:&t;Can disable source routing&n; *&t;&t;Takeshi Sone    :&t;Masquerading didn&squot;t work.&n; *&t;Dave Bonn,Alan Cox&t;:&t;Faster IP forwarding whenever possible.&n; *&t;&t;Alan Cox&t;:&t;Memory leaks, tramples, misc debugging.&n; *&t;&t;Alan Cox&t;:&t;Fixed multicast (by popular demand 8))&n; *&t;&t;Alan Cox&t;:&t;Fixed forwarding (by even more popular demand 8))&n; *&t;&t;Alan Cox&t;:&t;Fixed SNMP statistics [I think]&n; *&t;Gerhard Koerting&t;:&t;IP fragmentation forwarding fix&n; *&t;&t;Alan Cox&t;:&t;Device lock against page fault.&n; *&t;&t;Alan Cox&t;:&t;IP_HDRINCL facility.&n; *&t;Werner Almesberger&t;:&t;Zero fragment bug&n; *&t;&t;Alan Cox&t;:&t;RAW IP frame length bug&n; *&t;&t;Alan Cox&t;:&t;Outgoing firewall on build_xmit&n; *&t;&t;A.N.Kuznetsov&t;:&t;IP_OPTIONS support throughout the kernel&n; *&t;&t;Alan Cox&t;:&t;Multicast routing hooks&n; *&t;&t;Jos Vos&t;&t;:&t;Do accounting *before* call_in_firewall&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support&n; *&n; *  &n; *&n; * To Fix:&n; *&t;&t;IP fragmentation wants rewriting cleanly. The RFC815 algorithm is much more efficient&n; *&t;&t;and could be made very efficient with the addition of some virtual memory hacks to permit&n; *&t;&t;the allocation of a buffer that can then be &squot;grown&squot; by twiddling page tables.&n; *&t;&t;Output fragmentation wants updating along with the buffer management to use a single &n; *&t;&t;interleaved copy algorithm so that fragmenting has a one copy overhead. Actual packet&n; *&t;&t;output should probably do its own fragmentation at the UDP/RAW layer. TCP shouldn&squot;t cause&n; *&t;&t;fragmentation anyway.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -318,18 +318,6 @@ id|handler
 c_func
 (paren
 id|skb2
-comma
-id|ntohs
-c_func
-(paren
-id|iph-&gt;tot_len
-)paren
-op_minus
-(paren
-id|iph-&gt;ihl
-op_star
-l_int|4
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -371,12 +359,12 @@ op_star
 id|skb
 )paren
 (brace
-r_struct
-id|iphdr
-op_star
-id|iph
+r_int
+id|ihl
 op_assign
-id|skb-&gt;nh.iph
+id|skb-&gt;nh.iph-&gt;ihl
+op_star
+l_int|4
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 id|nf_debug_ip_local_deliver
@@ -386,21 +374,61 @@ id|skb
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_NETFILTER_DEBUG*/
+multiline_comment|/* Pull out additionl 8 bytes to save some space in protocols. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+id|ihl
+op_plus
+l_int|8
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|__skb_pull
+c_func
+(paren
+id|skb
+comma
+id|ihl
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER
+multiline_comment|/* Free reference early: we don&squot;t need it any more, and it may&n;           hold ip_conntrack module loaded indefinitely. */
+id|nf_conntrack_put
+c_func
+(paren
+id|skb-&gt;nfct
+)paren
+suffix:semicolon
+id|skb-&gt;nfct
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif /*CONFIG_NETFILTER*/
 multiline_comment|/* Point into the IP datagram, just past the header. */
 id|skb-&gt;h.raw
 op_assign
-id|skb-&gt;nh.raw
-op_plus
-id|iph-&gt;ihl
-op_star
-l_int|4
+id|skb-&gt;data
 suffix:semicolon
 (brace
 multiline_comment|/* Note: See raw.c and net/raw.h, RAWV4_HTABLE_SIZE==MAX_INET_PROTOS */
 r_int
+id|protocol
+op_assign
+id|skb-&gt;nh.iph-&gt;protocol
+suffix:semicolon
+r_int
 id|hash
 op_assign
-id|iph-&gt;protocol
+id|protocol
 op_amp
 (paren
 id|MAX_INET_PROTOS
@@ -442,7 +470,7 @@ c_func
 (paren
 id|skb
 comma
-id|iph
+id|skb-&gt;nh.iph
 comma
 id|hash
 )paren
@@ -485,7 +513,7 @@ l_int|NULL
 op_logical_and
 id|ipprot-&gt;protocol
 op_eq
-id|iph-&gt;protocol
+id|protocol
 )paren
 (brace
 r_int
@@ -500,20 +528,6 @@ id|handler
 c_func
 (paren
 id|skb
-comma
-(paren
-id|ntohs
-c_func
-(paren
-id|iph-&gt;tot_len
-)paren
-op_minus
-(paren
-id|iph-&gt;ihl
-op_star
-l_int|4
-)paren
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -529,7 +543,7 @@ c_func
 (paren
 id|skb
 comma
-id|iph
+id|skb-&gt;nh.iph
 comma
 id|ipprot
 comma
@@ -588,6 +602,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree_skb
 c_func
 (paren
@@ -612,18 +628,11 @@ op_star
 id|skb
 )paren
 (brace
-r_struct
-id|iphdr
-op_star
-id|iph
-op_assign
-id|skb-&gt;nh.iph
-suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Reassemble IP fragments.&n;&t; */
 r_if
 c_cond
 (paren
-id|iph-&gt;frag_off
+id|skb-&gt;nh.iph-&gt;frag_off
 op_amp
 id|htons
 c_func
@@ -819,8 +828,9 @@ op_star
 id|opt
 suffix:semicolon
 multiline_comment|/* It looks as overkill, because not all&n;&t;&t;   IP options require packet mangling.&n;&t;&t;   But it is the easiest for now, especially taking&n;&t;&t;   into account that combination of IP options&n;&t;&t;   and running sniffer is extremely rare condition.&n;&t;&t;                                      --ANK (980813)&n;&t;&t;*/
-id|skb
-op_assign
+r_if
+c_cond
+(paren
 id|skb_cow
 c_func
 (paren
@@ -832,16 +842,9 @@ c_func
 id|skb
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-op_eq
-l_int|NULL
 )paren
-r_return
-id|NET_RX_DROP
+r_goto
+id|drop
 suffix:semicolon
 id|iph
 op_assign
@@ -1071,29 +1074,30 @@ l_int|NULL
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;RFC1122: 3.1.2.2 MUST silently discard any IP frame that fails the checksum.&n;&t; *&n;&t; *&t;Is the datagram acceptable?&n;&t; *&n;&t; *&t;1.&t;Length at least the size of an ip header&n;&t; *&t;2.&t;Version of 4&n;&t; *&t;3.&t;Checksums correctly. [Speed optimisation for later, skip loopback checksums]&n;&t; *&t;4.&t;Doesn&squot;t have a bogus length&n;&t; */
 r_if
 c_cond
 (paren
-id|skb-&gt;len
-OL
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
 r_sizeof
 (paren
 r_struct
 id|iphdr
 )paren
-op_logical_or
-id|skb-&gt;len
-OL
-(paren
-id|iph-&gt;ihl
-op_lshift
-l_int|2
 )paren
 )paren
 r_goto
 id|inhdr_error
 suffix:semicolon
+id|iph
+op_assign
+id|skb-&gt;nh.iph
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;RFC1122: 3.1.2.2 MUST silently discard any IP frame that fails the checksum.&n;&t; *&n;&t; *&t;Is the datagram acceptable?&n;&t; *&n;&t; *&t;1.&t;Length at least the size of an ip header&n;&t; *&t;2.&t;Version of 4&n;&t; *&t;3.&t;Checksums correctly. [Speed optimisation for later, skip loopback checksums]&n;&t; *&t;4.&t;Doesn&squot;t have a bogus length&n;&t; */
 r_if
 c_cond
 (paren
@@ -1104,7 +1108,30 @@ op_logical_or
 id|iph-&gt;version
 op_ne
 l_int|4
-op_logical_or
+)paren
+r_goto
+id|inhdr_error
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+id|iph-&gt;ihl
+op_star
+l_int|4
+)paren
+)paren
+r_goto
+id|inhdr_error
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ip_fast_csum
 c_func
 (paren
@@ -1151,7 +1178,15 @@ r_goto
 id|inhdr_error
 suffix:semicolon
 multiline_comment|/* Our transport medium may have padded the buffer out. Now we know it&n;&t;&t; * is IP we can trim to the true length of the frame.&n;&t;&t; * Note this now means skb-&gt;len holds ntohs(iph-&gt;tot_len).&n;&t;&t; */
-id|__skb_trim
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|len
+)paren
+(brace
+id|__pskb_trim
 c_func
 (paren
 id|skb
@@ -1159,6 +1194,18 @@ comma
 id|len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
+)brace
 )brace
 r_return
 id|NF_HOOK

@@ -2,7 +2,6 @@ macro_line|#ifndef _ASM_IA64_MODULE_H
 DECL|macro|_ASM_IA64_MODULE_H
 mdefine_line|#define _ASM_IA64_MODULE_H
 multiline_comment|/*&n; * This file contains the ia64 architecture specific module code.&n; *&n; * Copyright (C) 2000 Intel Corporation.&n; * Copyright (C) 2000 Mike Stephens &lt;mike.stephens@intel.com&gt;&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;

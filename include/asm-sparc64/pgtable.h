@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.138 2001/03/08 09:55:56 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.139 2001/03/27 02:36:37 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -581,9 +581,36 @@ id|space
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
-macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+multiline_comment|/* We provide a special get_unmapped_area for framebuffer mmaps to try and use&n; * the largest alignment possible such that larget PTEs can be used.&n; */
+r_extern
+r_int
+r_int
+id|get_fb_unmapped_area
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|macro|HAVE_ARCH_FB_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_FB_UNMAPPED_AREA
+macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_SPARC64_PGTABLE_H) */
 eof

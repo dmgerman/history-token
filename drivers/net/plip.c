@@ -5122,8 +5122,6 @@ DECL|variable|timid
 r_static
 r_int
 id|timid
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -5237,8 +5235,6 @@ id|port
 r_static
 r_int
 id|i
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5569,8 +5565,6 @@ DECL|variable|parport_ptr
 r_static
 r_int
 id|parport_ptr
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|plip_setup
 r_static

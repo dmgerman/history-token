@@ -1,6 +1,13 @@
 macro_line|#ifndef _ACENIC_H_
 DECL|macro|_ACENIC_H_
 mdefine_line|#define _ACENIC_H_
+multiline_comment|/*&n; * Generate TX index update each time, when TX ring is closed.&n; * Normally, this is not useful, because results in more dma (and irqs&n; * without TX_COAL_INTS_ONLY).&n; */
+DECL|macro|USE_TX_COAL_NOW
+mdefine_line|#define USE_TX_COAL_NOW&t; 0
+macro_line|#ifndef MAX_SKB_FRAGS
+DECL|macro|MAX_SKB_FRAGS
+mdefine_line|#define MAX_SKB_FRAGS 0
+macro_line|#endif
 multiline_comment|/*&n; * Addressing:&n; *&n; * The Tigon uses 64-bit host addresses, regardless of their actual&n; * length, and it expects a big-endian format. For 32 bit systems the&n; * upper 32 bits of the address are simply ignored (zero), however for&n; * little endian 64 bit systems (Alpha) this looks strange with the&n; * two parts of the address word being swapped.&n; *&n; * The addresses are split in two 32 bit words for all architectures&n; * as some of them are in PCI shared memory and it is necessary to use&n; * readl/writel to access them.&n; *&n; * The addressing code is derived from Pete Wyckoff&squot;s work, but&n; * modified to deal properly with readl/writel usage.&n; */
 DECL|struct|ace_regs
 r_struct
@@ -618,8 +625,18 @@ mdefine_line|#define ACE_NO_JUMBO_FRAG&t;0x200
 DECL|macro|ACE_FATAL
 mdefine_line|#define ACE_FATAL&t;&t;0x40000000
 multiline_comment|/*&n; * DMA config&n; */
+DECL|macro|DMA_THRESH_1W
+mdefine_line|#define DMA_THRESH_1W&t;&t;0x10
+DECL|macro|DMA_THRESH_2W
+mdefine_line|#define DMA_THRESH_2W&t;&t;0x20
+DECL|macro|DMA_THRESH_4W
+mdefine_line|#define DMA_THRESH_4W&t;&t;0x40
 DECL|macro|DMA_THRESH_8W
 mdefine_line|#define DMA_THRESH_8W&t;&t;0x80
+DECL|macro|DMA_THRESH_16W
+mdefine_line|#define DMA_THRESH_16W&t;&t;0x100
+DECL|macro|DMA_THRESH_32W
+mdefine_line|#define DMA_THRESH_32W&t;&t;0x0&t;/* not described in doc, but exists. */
 multiline_comment|/*&n; * Tuning parameters&n; */
 DECL|macro|TICKS_PER_SEC
 mdefine_line|#define TICKS_PER_SEC&t;&t;1000000
@@ -846,6 +863,8 @@ DECL|macro|BD_FLG_END
 mdefine_line|#define BD_FLG_END&t;&t;0x04
 DECL|macro|BD_FLG_JUMBO
 mdefine_line|#define BD_FLG_JUMBO&t;&t;0x10
+DECL|macro|BD_FLG_COAL_NOW
+mdefine_line|#define BD_FLG_COAL_NOW&t;&t;0x800
 DECL|macro|BD_FLG_MINI
 mdefine_line|#define BD_FLG_MINI&t;&t;0x1000
 multiline_comment|/*&n; * Ring Control block flags&n; */
@@ -853,6 +872,8 @@ DECL|macro|RCB_FLG_TCP_UDP_SUM
 mdefine_line|#define RCB_FLG_TCP_UDP_SUM&t;0x01
 DECL|macro|RCB_FLG_IP_SUM
 mdefine_line|#define RCB_FLG_IP_SUM&t;&t;0x02
+DECL|macro|RCB_FLG_NO_PSEUDO_HDR
+mdefine_line|#define RCB_FLG_NO_PSEUDO_HDR&t;0x08
 DECL|macro|RCB_FLG_VLAN_ASSIST
 mdefine_line|#define RCB_FLG_VLAN_ASSIST&t;0x10
 DECL|macro|RCB_FLG_COAL_INT_ONLY
@@ -1263,6 +1284,11 @@ id|stats2_ptr
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_PPC)
+multiline_comment|/* Intel has null pci_unmap_single, no reasons to remember mapping. */
+DECL|macro|DUMMY_PCI_UNMAP
+mdefine_line|#define DUMMY_PCI_UNMAP
+macro_line|#endif
 DECL|struct|ring_info
 r_struct
 id|ring_info
@@ -1273,10 +1299,35 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+macro_line|#ifndef DUMMY_PCI_UNMAP
 DECL|member|mapping
 id|dma_addr_t
 id|mapping
 suffix:semicolon
+macro_line|#endif
+)brace
+suffix:semicolon
+multiline_comment|/* Funny... As soon as we add maplen on alpha, it starts to work&n; * much slower. Hmm... is it because struct does not fit to one cacheline?&n; * So, split tx_ring_info.&n; */
+DECL|struct|tx_ring_info
+r_struct
+id|tx_ring_info
+(brace
+DECL|member|skb
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+macro_line|#ifndef DUMMY_PCI_UNMAP
+DECL|member|mapping
+id|dma_addr_t
+id|mapping
+suffix:semicolon
+DECL|member|maplen
+r_int
+id|maplen
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * struct ace_skb holding the rings of skb&squot;s. This is an awful lot of&n; * pointers, but I don&squot;t see any other smart mode to do this in an&n; * efficient manner ;-(&n; */
@@ -1286,7 +1337,7 @@ id|ace_skb
 (brace
 DECL|member|tx_skbuff
 r_struct
-id|ring_info
+id|tx_ring_info
 id|tx_skbuff
 (braket
 id|TX_RING_ENTRIES
@@ -1367,33 +1418,20 @@ r_struct
 id|tx_desc
 op_star
 id|tx_ring
-id|__attribute__
-(paren
-(paren
-id|aligned
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+suffix:semicolon
+DECL|member|tx_prd
+id|u32
+id|tx_prd
+suffix:semicolon
+DECL|member|tx_ret_csm
+r_volatile
+id|u32
+id|tx_ret_csm
 suffix:semicolon
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
-suffix:semicolon
-multiline_comment|/* used by TX handling only */
-DECL|member|tx_prd
-id|u32
-id|tx_prd
-suffix:semicolon
-DECL|member|tx_full
-DECL|member|tx_ret_csm
-r_volatile
-id|u32
-id|tx_full
-comma
-id|tx_ret_csm
 suffix:semicolon
 multiline_comment|/*&n;&t; * RX elements&n;&t; */
 DECL|member|std_refill_busy
@@ -1598,6 +1636,46 @@ id|stats
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|TX_RESERVED
+mdefine_line|#define TX_RESERVED&t;MAX_SKB_FRAGS
+DECL|function|tx_space
+r_static
+r_inline
+r_int
+id|tx_space
+(paren
+id|u32
+id|csm
+comma
+id|u32
+id|prd
+)paren
+(brace
+r_return
+(paren
+id|csm
+op_minus
+id|prd
+op_minus
+l_int|1
+)paren
+op_amp
+(paren
+id|TX_RING_ENTRIES
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|macro|tx_free
+mdefine_line|#define tx_free(ap) &t;&t;tx_space((ap)-&gt;tx_ret_csm, (ap)-&gt;tx_prd)
+macro_line|#if MAX_SKB_FRAGS
+DECL|macro|tx_ring_full
+mdefine_line|#define tx_ring_full(csm, prd)&t;(tx_space(csm, prd) &lt;= TX_RESERVED)
+macro_line|#else
+DECL|macro|tx_ring_full
+mdefine_line|#define tx_ring_full&t;&t;0
+macro_line|#endif
 DECL|function|set_aceaddr
 r_static
 r_inline
@@ -1912,16 +1990,6 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|ace_timer
-c_func
-(paren
-r_int
-r_int
-id|data
-)paren
-suffix:semicolon
-r_static
-r_void
 id|ace_tasklet
 c_func
 (paren
@@ -1966,19 +2034,6 @@ r_int
 id|new_mtu
 )paren
 suffix:semicolon
-macro_line|#ifdef SKB_RECYCLE
-r_extern
-r_int
-id|ace_recycle
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|ace_ioctl

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* sdla_ppp.h&t;Sangoma PPP firmware API definitions.&n;*&n;* Author:&t;Gene Kozin&t;&lt;74604.152@compuserve.com&gt;&n;*&n;* Copyright:&t;(c) 1995-1997 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jan 06, 1997&t;Gene Kozin&t;v2.0&n;* Apr 11, 1996&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* sdla_ppp.h&t;Sangoma PPP firmware API definitions.&n;*&n;* Author:&t;Nenad Corbic&t;&lt;ncorbic@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 1995-1997 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Feb 24, 2000  Nenad Corbic    v2.1.2&n;* Jan 06, 1997&t;Gene Kozin&t;v2.0&n;* Apr 11, 1996&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
 macro_line|#ifndef&t;_SDLA_PPP_H
 DECL|macro|_SDLA_PPP_H
 mdefine_line|#define&t;_SDLA_PPP_H
@@ -511,10 +511,16 @@ suffix:semicolon
 multiline_comment|/* 02: pointer to the buffer ctl. */
 DECL|member|PACKED
 r_int
+r_int
+id|txb_nxt
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
 r_char
 id|rsrv1
 (braket
-l_int|26
+l_int|22
 )braket
 id|PACKED
 suffix:semicolon

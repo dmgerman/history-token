@@ -23,6 +23,8 @@ DECL|macro|SH3_IRDA_IRQS
 mdefine_line|#define SH3_IRDA_IRQS { 52,  53,  55,  54 }
 DECL|macro|SH4_SCIF_IRQS
 mdefine_line|#define SH4_SCIF_IRQS { 40,  41,  43,  42 }
+DECL|macro|STB1_SCIF1_IRQS
+mdefine_line|#define STB1_SCIF1_IRQS {23, 24,  26,  25 }
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7708)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 1
@@ -56,14 +58,27 @@ DECL|macro|SCSPTR1
 macro_line|# define SCSPTR1 0xffe0001c /* 8  bit SCI */
 DECL|macro|SCSPTR2
 macro_line|# define SCSPTR2 0xFFE80020 /* 16 bit SCIF */
-DECL|macro|SCLSR2
-macro_line|# define SCLSR2  0xFFE80024 /* 16 bit SCIF */
 DECL|macro|SCIF_ORER
 macro_line|# define SCIF_ORER 0x0001   /* overrun error bit */
 DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port) (((port)-&gt;type == PORT_SCI) ? &bslash;&n;&t;0x30 /* TIE=0,RIE=0,TE=1,RE=1 */ : &bslash;&n;&t;0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */ )
 DECL|macro|SCI_AND_SCIF
 macro_line|# define SCI_AND_SCIF
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 2
+DECL|macro|SCI_INIT
+macro_line|# define SCI_INIT { &bslash;&n;  { {}, PORT_SCIF, 0xffe00000, STB1_SCIF1_IRQS, sci_init_pins_scif }, &bslash;&n;  { {}, PORT_SCIF, 0xffe80000, SH4_SCIF_IRQS,   sci_init_pins_scif }  &bslash;&n;}
+DECL|macro|SCSPTR1
+macro_line|# define SCSPTR1 0xffe00020 /* 16 bit SCIF */
+DECL|macro|SCSPTR2
+macro_line|# define SCSPTR2 0xffe80020 /* 16 bit SCIF */
+DECL|macro|SCIF_ORER
+macro_line|# define SCIF_ORER 0x0001   /* overrun error bit */
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port)          0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */
+DECL|macro|SCIF_ONLY
+macro_line|# define SCIF_ONLY
 macro_line|#else
 macro_line|# error CPU subtype not defined
 macro_line|#endif
@@ -456,6 +471,19 @@ l_int|0x1C
 comma
 l_int|16
 )paren
+id|SCIF_FNS
+c_func
+(paren
+id|SCLSR
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0x24
+comma
+l_int|16
+)paren
 DECL|macro|sci_in
 mdefine_line|#define sci_in(port, reg) sci_##reg##_in(port)
 DECL|macro|sci_out
@@ -596,6 +624,7 @@ op_star
 id|port
 )paren
 (brace
+macro_line|#ifndef SCIF_ONLY
 r_if
 c_cond
 (paren
@@ -618,6 +647,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 multiline_comment|/* SCI */
+macro_line|#endif
+macro_line|#ifndef SCI_ONLY
 r_if
 c_cond
 (paren
@@ -640,9 +671,62 @@ suffix:colon
 l_int|0
 suffix:semicolon
 multiline_comment|/* SCIF */
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+r_static
+r_inline
+r_int
+id|sci_rxd_in
+c_func
+(paren
+r_struct
+id|sci_port
+op_star
+id|port
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|port-&gt;base
+op_eq
+l_int|0xffe00000
+)paren
+r_return
+id|ctrl_inw
+c_func
+(paren
+id|SCSPTR1
+)paren
+op_amp
+l_int|0x0001
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
+r_else
+r_return
+id|ctrl_inw
+c_func
+(paren
+id|SCSPTR2
+)paren
+op_amp
+l_int|0x0001
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * Values for the BitRate Register (SCBRR)&n; *&n; * The values are actually divisors for a frequency which can&n; * be internal to the SH3 (14.7456MHz) or derived from an external&n; * clock source.  This driver assumes the internal clock is used;&n; * to support using an external clock source, config options or&n; * possibly command-line options would need to be added.&n; *&n; * Also, to support speeds below 2400 (why?) the lower 2 bits of&n; * the SCSMR register would also need to be set to non-zero values.&n; *&n; * -- Greg Banks 27Feb2000&n; *&n; * Answer: The SCBRR register is only eight bits, and the value in&n; * it gets larger with lower baud rates. At around 2400 (depending on&n; * the peripherial module clock) you run out of bits. However the&n; * lower two bits of SCSMR allow the module clock to be divided down,&n; * scaling the value which is needed in SCBRR.&n; *&n; * -- Stuart Menefy - 23 May 2000&n; *&n; * I meant, why would anyone bother with bitrates below 2400.&n; *&n; * -- Greg Banks - 7Jul2000&n; *&n; * You &quot;speedist&quot;!  How will I use my 110bps ASR-33 teletype with paper&n; * tape reader as a console!&n; *&n; * -- Mitch Davis - 15 Jul 2000&n; */

@@ -22,6 +22,9 @@ macro_line|#include &lt;net/protocol.h&gt;&t;&t;/* struct inet_protocol */
 macro_line|#if defined(CONFIG_X25) || defined(CONFIG_X25_MODULE)
 macro_line|#include &lt;net/x25.h&gt;
 macro_line|#endif
+macro_line|#if defined(CONFIG_WAN_ROUTER) || defined(CONFIG_WAN_ROUTER_MODULE)
+macro_line|#include &lt;linux/if_wanpipe.h&gt;
+macro_line|#endif
 macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#if defined(CONFIG_NETROM) || defined(CONFIG_NETROM_MODULE)
@@ -404,6 +407,11 @@ id|freebind
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|id
+id|__u16
+id|id
+suffix:semicolon
+multiline_comment|/* ID counter for DF pkts */
 DECL|member|pmtudisc
 id|__u8
 id|pmtudisc
@@ -818,6 +826,18 @@ op_star
 id|send_head
 suffix:semicolon
 multiline_comment|/* Front of stuff to transmit&t;&t;&t;*/
+DECL|member|sndmsg_page
+r_struct
+id|page
+op_star
+id|sndmsg_page
+suffix:semicolon
+multiline_comment|/* Cached page for sendmsg&t;&t;&t;*/
+DECL|member|sndmsg_off
+id|u32
+id|sndmsg_off
+suffix:semicolon
+multiline_comment|/* Cached offset for sendmsg&t;&t;&t;*/
 DECL|member|rcv_wnd
 id|__u32
 id|rcv_wnd
@@ -1012,16 +1032,6 @@ r_int
 id|undo_retrans
 suffix:semicolon
 multiline_comment|/* number of undoable retransmissions. */
-DECL|member|syn_seq
-id|__u32
-id|syn_seq
-suffix:semicolon
-multiline_comment|/* Seq of received SYN. */
-DECL|member|fin_seq
-id|__u32
-id|fin_seq
-suffix:semicolon
-multiline_comment|/* Seq of received FIN. */
 DECL|member|urg_seq
 id|__u32
 id|urg_seq
@@ -1356,6 +1366,10 @@ r_int
 r_char
 id|userlocks
 suffix:semicolon
+DECL|member|route_caps
+r_int
+id|route_caps
+suffix:semicolon
 DECL|member|proc
 r_int
 id|proc
@@ -1634,6 +1648,14 @@ r_struct
 id|irda_sock
 op_star
 id|irda
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_WAN_ROUTER) || defined(CONFIG_WAN_ROUTER_MODULE)
+DECL|member|af_wanpipe
+r_struct
+id|wanpipe_opt
+op_star
+id|af_wanpipe
 suffix:semicolon
 macro_line|#endif
 DECL|member|protinfo
@@ -2449,10 +2471,6 @@ r_int
 id|size
 comma
 r_int
-r_int
-id|fallback
-comma
-r_int
 id|noblock
 comma
 r_int
@@ -2494,25 +2512,6 @@ id|mem
 comma
 r_int
 id|size
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|copy_and_csum_toiovec
-c_func
-(paren
-r_struct
-id|iovec
-op_star
-id|iov
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_int
-id|hlen
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Functions to fill in entries in struct proto_ops when a protocol&n; * does not implement a particular function.&n; */
@@ -2784,6 +2783,31 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
+)paren
+suffix:semicolon
+r_extern
+id|ssize_t
+id|sock_no_sendpage
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Default socket callbacks and setup code&n; */

@@ -4062,8 +4062,6 @@ id|len
 op_plus
 id|self-&gt;max_header_size
 comma
-l_int|0
-comma
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
@@ -4988,8 +4986,6 @@ id|len
 op_plus
 id|self-&gt;max_header_size
 comma
-l_int|0
-comma
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
@@ -5236,8 +5232,6 @@ comma
 id|len
 op_plus
 id|self-&gt;max_header_size
-comma
-l_int|0
 comma
 id|msg-&gt;msg_flags
 op_amp
@@ -7718,6 +7712,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 DECL|variable|irda_seqpacket_ops
@@ -7794,6 +7792,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon
@@ -7872,6 +7874,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_ULTRA
@@ -7949,6 +7955,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon

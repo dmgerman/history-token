@@ -2182,6 +2182,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#include &lt;linux/smp_lock.h&gt;

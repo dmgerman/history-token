@@ -359,8 +359,6 @@ r_static
 r_volatile
 r_int
 id|rx_page
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|TX_PAGES
 mdefine_line|#define TX_PAGES 2
@@ -378,16 +376,12 @@ r_static
 r_volatile
 r_int
 id|tx_fifo_in
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tx_fifo_out
 r_static
 r_volatile
 r_int
 id|tx_fifo_out
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|free_tx_pages
 r_static
@@ -401,8 +395,6 @@ DECL|variable|was_down
 r_static
 r_int
 id|was_down
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Convenience macros/functions for D-Link adapter&n; */
 DECL|macro|select_prn

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/cache.h&n; *&n; *  Copyright (C) 1999-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/cache.h&n; *&n; *  Copyright (C) 1999-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Cache handling for 32-bit ARM processors.&n; *&n; * Note that on ARM, we have a more accurate specification than that&n; * Linux&squot;s &quot;flush&quot;.  We therefore do not use &quot;flush&quot; here, but instead&n; * use:&n; *&n; * clean:      the act of pushing dirty cache entries out to memory.&n; * invalidate: the act of discarding data held within the cache,&n; *             whether it is dirty or not.&n; */
 multiline_comment|/*&n; * Generic I + D cache&n; */
@@ -75,4 +75,7 @@ mdefine_line|#define flush_tlb_range(_mm,_start,_end)&t;&t;&t;&t;&bslash;&n;&t;d
 multiline_comment|/*&n; * Flush the specified user virtual address space translation.&n; */
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(_vma,_page)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_vma)-&gt;vm_mm == current-&gt;active_mm)&t;&t;&bslash;&n;&t;&t;&t;cpu_tlb_invalidate_page((_page),&t;&t;&bslash;&n;&t;&t;&t;&t; ((_vma)-&gt;vm_flags &amp; VM_EXEC));&t;&t;&bslash;&n;&t;} while (0)
+multiline_comment|/*&n; * 32-bit ARM Processors don&squot;t have any MMU cache&n; */
+DECL|macro|update_mmu_cache
+mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
 eof

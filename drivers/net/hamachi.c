@@ -40,8 +40,6 @@ DECL|variable|mtu
 r_static
 r_int
 id|mtu
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Default values selected by testing on a dual processor PIII-450 */
 multiline_comment|/* These six interrupt control parameters may be set directly when loading the&n; * module, or through the rx_params and tx_params variables&n; */
@@ -92,16 +90,12 @@ DECL|variable|rx_copybreak
 r_static
 r_int
 id|rx_copybreak
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* An override for the hardware detection of bus width.&n;&t;Set to 1 to force 32 bit PCI bus detection.  Set to 4 to force 64 bit.&n;&t;Add 2 to disable parity detection.&n;*/
 DECL|variable|force32
 r_static
 r_int
 id|force32
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Used to pass the media type, etc.&n;   These exist for driver interoperability.&n;   No media types are currently defined.&n;&t;&t;- The lower 4 bits are reserved for the media type.&n;&t;&t;- The next three bits may be set to one of the following:&n;&t;&t;&t;0x00000000 : Autodetect PCI bus&n;&t;&t;&t;0x00000010 : Force 32 bit PCI bus&n;&t;&t;&t;0x00000020 : Disable parity detection&n;&t;&t;&t;0x00000040 : Force 64 bit PCI bus&n;&t;&t;&t;Default is autodetect&n;&t;&t;- The next bit can be used to force half-duplex.  This is a bad&n;&t;&t;  idea since no known implementations implement half-duplex, and,&n;&t;&t;  in general, half-duplex for gigabit ethernet is a bad idea.&n;&t;&t;&t;0x00000080 : Force half-duplex &n;&t;&t;&t;Default is full-duplex.&n;&t;&t;- In the original driver, the ninth bit could be used to force&n;&t;&t;  full-duplex.  Maintain that for compatibility&n;&t;&t;   0x00000200 : Force full-duplex&n;*/
 DECL|macro|MAX_UNITS
@@ -1340,8 +1334,6 @@ id|ent
 r_static
 r_int
 id|did_version
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Already printed version info. */
 r_struct
@@ -1374,8 +1366,6 @@ suffix:semicolon
 r_static
 r_int
 id|card_idx
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|net_device

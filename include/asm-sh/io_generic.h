@@ -9,7 +9,7 @@ id|generic_io_base
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|generic_inb
 c_func
 (paren
@@ -46,7 +46,7 @@ id|generic_outb
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -84,7 +84,7 @@ id|port
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|generic_inb_p
 c_func
 (paren
@@ -121,7 +121,7 @@ id|generic_outb_p
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -270,7 +270,7 @@ id|count
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|generic_readb
 c_func
 (paren
@@ -348,20 +348,6 @@ r_void
 op_star
 id|generic_ioremap
 c_func
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|generic_ioremap_nocache
 (paren
 r_int
 r_int

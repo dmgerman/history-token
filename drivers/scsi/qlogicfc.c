@@ -8296,6 +8296,12 @@ op_plus
 id|ISP_CTRL_STATUS
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
 id|outw
 c_func
 (paren
@@ -8304,6 +8310,12 @@ comma
 id|host-&gt;io_port
 op_plus
 id|HOST_HCCR
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
 )paren
 suffix:semicolon
 id|outw

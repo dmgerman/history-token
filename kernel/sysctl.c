@@ -137,7 +137,7 @@ id|stop_a_enabled
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_S390
-macro_line|#ifdef CONFIG_IEEEFPU_EMULATION
+macro_line|#ifdef CONFIG_MATHEMU
 r_extern
 r_int
 id|sysctl_ieee_emulation_warnings
@@ -1311,7 +1311,7 @@ id|maxolduid
 )brace
 comma
 macro_line|#ifdef CONFIG_ARCH_S390
-macro_line|#ifdef CONFIG_IEEEFPU_EMULATION
+macro_line|#ifdef CONFIG_MATHEMU
 (brace
 id|KERN_IEEE_EMULATION_WARNINGS
 comma

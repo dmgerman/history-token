@@ -2,6 +2,7 @@ multiline_comment|/*&n; * advansys.h - Linux Host Driver for AdvanSys SCSI Adapt
 macro_line|#ifndef _ADVANSYS_H
 DECL|macro|_ADVANSYS_H
 mdefine_line|#define _ADVANSYS_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif /* LINUX_VERSION_CODE */

@@ -135,65 +135,6 @@ id|un
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/ip.h&gt;
-multiline_comment|/*&n; *&t;Build xmit assembly blocks&n; */
-DECL|struct|icmp_bxm
-r_struct
-id|icmp_bxm
-(brace
-DECL|member|data_ptr
-r_void
-op_star
-id|data_ptr
-suffix:semicolon
-DECL|member|data_len
-r_int
-id|data_len
-suffix:semicolon
-DECL|member|icmph
-r_struct
-id|icmphdr
-id|icmph
-suffix:semicolon
-DECL|member|csum
-r_int
-r_int
-id|csum
-suffix:semicolon
-DECL|member|replyopts
-r_struct
-id|ip_options
-id|replyopts
-suffix:semicolon
-DECL|member|optbuf
-r_int
-r_char
-id|optbuf
-(braket
-l_int|40
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-r_struct
-id|sk_buff
-suffix:semicolon
-r_extern
-r_void
-id|icmp_reply
-c_func
-(paren
-r_struct
-id|icmp_bxm
-op_star
-comma
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *&t;constants for (set|get)sockopt&n; */
 DECL|macro|ICMP_FILTER
 mdefine_line|#define ICMP_FILTER&t;&t;&t;1

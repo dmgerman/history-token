@@ -65,8 +65,18 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|pgd_clear
-mdefine_line|#define pgd_clear(xp)&t;do { } while (0)
+DECL|function|pgd_clear
+r_static
+r_inline
+r_void
+id|pgd_clear
+(paren
+id|pgd_t
+op_star
+id|pgd
+)paren
+(brace
+)brace
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) (*(pteptr) = pteval)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.87 2000/10/25 20:07:22 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.91 2001/03/29 06:25:55 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -97,7 +97,7 @@ id|newskb-&gt;mac.raw
 op_assign
 id|newskb-&gt;data
 suffix:semicolon
-id|skb_pull
+id|__skb_pull
 c_func
 (paren
 id|newskb
@@ -322,6 +322,8 @@ id|iph
 comma
 op_amp
 id|rt-&gt;u.dst
+comma
+id|sk
 )paren
 suffix:semicolon
 id|skb-&gt;nh.iph
@@ -984,6 +986,8 @@ id|iph
 comma
 op_amp
 id|rt-&gt;u.dst
+comma
+id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Add an IP checksum. */
@@ -1075,7 +1079,32 @@ id|iph
 comma
 op_amp
 id|rt-&gt;u.dst
+comma
+id|sk
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+op_logical_and
+(paren
+id|skb
+op_assign
+id|skb_checksum_help
+c_func
+(paren
+id|skb
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_return
 id|ip_fragment
@@ -1205,6 +1234,10 @@ comma
 op_amp
 id|rt-&gt;u.dst
 )paren
+suffix:semicolon
+id|sk-&gt;route_caps
+op_assign
+id|rt-&gt;u.dst.dev-&gt;features
 suffix:semicolon
 )brace
 id|skb-&gt;dst
@@ -1460,8 +1493,6 @@ id|mtu
 suffix:semicolon
 id|u16
 id|id
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|hh_len
@@ -1715,6 +1746,18 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Begin outputting the bytes.&n;&t; */
+id|id
+op_assign
+(paren
+id|sk
+ques
+c_cond
+id|sk-&gt;protinfo.af_inet.id
+op_increment
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
 r_do
 (brace
 r_char
@@ -1739,8 +1782,6 @@ op_plus
 id|hh_len
 op_plus
 l_int|15
-comma
-l_int|0
 comma
 id|flags
 op_amp
@@ -2370,8 +2411,6 @@ id|hh_len
 op_plus
 l_int|15
 comma
-l_int|0
-comma
 id|flags
 op_amp
 id|MSG_DONTWAIT
@@ -2473,6 +2512,8 @@ id|iph
 comma
 op_amp
 id|rt-&gt;u.dst
+comma
+id|sk
 )paren
 suffix:semicolon
 r_if
@@ -2678,13 +2719,11 @@ op_star
 id|iph
 suffix:semicolon
 r_int
-r_char
-op_star
 id|raw
+op_assign
+l_int|0
 suffix:semicolon
 r_int
-r_char
-op_star
 id|ptr
 suffix:semicolon
 r_struct
@@ -2735,18 +2774,9 @@ op_assign
 id|rt-&gt;u.dst.dev
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Point into the IP datagram header.&n;&t; */
-id|raw
-op_assign
-id|skb-&gt;nh.raw
-suffix:semicolon
 id|iph
 op_assign
-(paren
-r_struct
-id|iphdr
-op_star
-)paren
-id|raw
+id|skb-&gt;nh.iph
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Setup starting values.&n;&t; */
 id|hlen
@@ -2757,11 +2787,7 @@ l_int|4
 suffix:semicolon
 id|left
 op_assign
-id|ntohs
-c_func
-(paren
-id|iph-&gt;tot_len
-)paren
+id|skb-&gt;len
 op_minus
 id|hlen
 suffix:semicolon
@@ -2966,20 +2992,30 @@ c_func
 (paren
 id|skb2-&gt;nh.raw
 comma
-id|raw
+id|skb-&gt;data
 comma
 id|hlen
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Copy a block of the IP datagram.&n;&t;&t; */
-id|memcpy
+r_if
+c_cond
+(paren
+id|skb_copy_bits
 c_func
 (paren
-id|skb2-&gt;h.raw
+id|skb
 comma
 id|ptr
 comma
+id|skb2-&gt;h.raw
+comma
 id|len
+)paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|left
@@ -3016,6 +3052,23 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+multiline_comment|/* Copy the flags to each fragment. */
+id|IPCB
+c_func
+(paren
+id|skb2
+)paren
+op_member_access_from_pointer
+id|flags
+op_assign
+id|IPCB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Added AC : If we are fragmenting a fragment that&squot;s not the&n;&t;&t; *&t;&t;   last fragment then keep MF on each bit&n;&t;&t; */
 r_if

@@ -2,6 +2,11 @@ multiline_comment|/* rwsem.h: R/W semaphores based on spinlocks&n; *&n; * Writte
 macro_line|#ifndef _I386_RWSEM_SPIN_H
 DECL|macro|_I386_RWSEM_SPIN_H
 mdefine_line|#define _I386_RWSEM_SPIN_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef _LINUX_RWSEM_H
+macro_line|#error please dont include asm/rwsem-spin.h directly, use linux/rwsem.h instead
+macro_line|#endif
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef __KERNEL__
 DECL|macro|CONFIG_USING_SPINLOCK_BASED_RWSEM
 mdefine_line|#define CONFIG_USING_SPINLOCK_BASED_RWSEM 1
@@ -11,7 +16,8 @@ r_struct
 id|rw_semaphore
 (brace
 DECL|member|count
-id|atomic_t
+r_int
+r_int
 id|count
 suffix:semicolon
 DECL|macro|RWSEM_UNLOCKED_VALUE
@@ -78,7 +84,7 @@ DECL|macro|__RWSEM_DEBUG_MINIT
 mdefine_line|#define __RWSEM_DEBUG_MINIT(name)&t;/* */
 macro_line|#endif
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name,count) &bslash;&n;{ ATOMIC_INIT(RWSEM_UNLOCKED_VALUE), SPIN_LOCK_UNLOCKED, &bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
+mdefine_line|#define __RWSEM_INITIALIZER(name,count) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, SPIN_LOCK_UNLOCKED, &bslash;&n;&t;__WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
 DECL|macro|__DECLARE_RWSEM_GENERIC
 mdefine_line|#define __DECLARE_RWSEM_GENERIC(name,count) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name,count)
 DECL|macro|DECLARE_RWSEM
@@ -100,14 +106,9 @@ op_star
 id|sem
 )paren
 (brace
-id|atomic_set
-c_func
-(paren
-op_amp
 id|sem-&gt;count
-comma
+op_assign
 id|RWSEM_UNLOCKED_VALUE
-)paren
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -210,7 +211,7 @@ l_string|&quot;  jle       3b&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;4:&bslash;n&bslash;t&quot;
-l_string|&quot;  call      __down_read_failed&bslash;n&bslash;t&quot;
+l_string|&quot;  call      __rwsem_down_read_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       2b&bslash;n&quot;
 l_string|&quot;.previous&quot;
 l_string|&quot;# ending __down_read&bslash;n&bslash;t&quot;
@@ -307,7 +308,7 @@ l_string|&quot;  jle       3b&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
 macro_line|#endif
 l_string|&quot;4:&bslash;n&bslash;t&quot;
-l_string|&quot;  call     __down_write_failed&bslash;n&bslash;t&quot;
+l_string|&quot;  call     __rwsem_down_write_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp      2b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;# ending down_write&quot;
@@ -547,6 +548,181 @@ id|sem-&gt;lock
 suffix:colon
 l_string|&quot;memory&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * implement exchange and add functionality&n; */
+DECL|function|rwsem_atomic_update
+r_static
+r_inline
+r_int
+id|rwsem_atomic_update
+c_func
+(paren
+r_int
+id|delta
+comma
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|tmp
+op_assign
+id|delta
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;# beginning rwsem_atomic_update&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_SMP
+id|LOCK_PREFIX
+l_string|&quot;  decb      &quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%1)&bslash;n&bslash;t&quot;
+multiline_comment|/* try to grab the spinlock */
+l_string|&quot;  js        3f&bslash;n&quot;
+multiline_comment|/* jump if failed */
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+macro_line|#endif
+l_string|&quot;  xchgl     %0,(%1)&bslash;n&bslash;t&quot;
+multiline_comment|/* retrieve the old value */
+l_string|&quot;  addl      %0,(%1)&bslash;n&bslash;t&quot;
+multiline_comment|/* add 0xffff0001, result in memory */
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;  movb      $1,&quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%1)&bslash;n&bslash;t&quot;
+multiline_comment|/* release the spinlock */
+macro_line|#endif
+l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;3:&bslash;n&bslash;t&quot;
+multiline_comment|/* spin on the spinlock till we get it */
+l_string|&quot;  cmpb      $0,&quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%1)&bslash;n&bslash;t&quot;
+l_string|&quot;  rep;nop   &bslash;n&bslash;t&quot;
+l_string|&quot;  jle       3b&bslash;n&bslash;t&quot;
+l_string|&quot;  jmp       1b&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;# ending rwsem_atomic_update&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|sem
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|tmp
+op_plus
+id|delta
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * implement compare and exchange functionality on the rw-semaphore count LSW&n; */
+DECL|function|rwsem_cmpxchgw
+r_static
+r_inline
+id|__u16
+id|rwsem_cmpxchgw
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+comma
+id|__u16
+id|old
+comma
+id|__u16
+r_new
+)paren
+(brace
+id|__u16
+id|prev
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;# beginning rwsem_cmpxchgw&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_SMP
+id|LOCK_PREFIX
+l_string|&quot;  decb      &quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%3)&bslash;n&bslash;t&quot;
+multiline_comment|/* try to grab the spinlock */
+l_string|&quot;  js        3f&bslash;n&quot;
+multiline_comment|/* jump if failed */
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+macro_line|#endif
+l_string|&quot;  cmpw      %w1,(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;  jne       4f&bslash;n&bslash;t&quot;
+multiline_comment|/* jump if old doesn&squot;t match sem-&gt;count LSW */
+l_string|&quot;  movw      %w2,(%3)&bslash;n&bslash;t&quot;
+multiline_comment|/* replace sem-&gt;count LSW with the new value */
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;  movb      $1,&quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%3)&bslash;n&bslash;t&quot;
+multiline_comment|/* release the spinlock */
+macro_line|#endif
+l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+macro_line|#ifdef CONFIG_SMP
+l_string|&quot;3:&bslash;n&bslash;t&quot;
+multiline_comment|/* spin on the spinlock till we get it */
+l_string|&quot;  cmpb      $0,&quot;
+id|RWSEM_SPINLOCK_OFFSET_STR
+l_string|&quot;(%3)&bslash;n&bslash;t&quot;
+l_string|&quot;  rep;nop   &bslash;n&bslash;t&quot;
+l_string|&quot;  jle       3b&bslash;n&bslash;t&quot;
+l_string|&quot;  jmp       1b&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;4:&bslash;n&bslash;t&quot;
+l_string|&quot;  movw      (%3),%w0&bslash;n&quot;
+multiline_comment|/* we&squot;ll want to return the current value */
+l_string|&quot;  jmp       2b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;# ending rwsem_cmpxchgw&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|prev
+)paren
+suffix:colon
+l_string|&quot;r0&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+r_new
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|sem
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|prev
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */

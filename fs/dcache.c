@@ -987,8 +987,7 @@ op_amp
 id|dentry_unused
 )paren
 suffix:semicolon
-r_goto
-id|next
+r_continue
 suffix:semicolon
 )brace
 id|dentry_stat.nr_unused
@@ -1016,8 +1015,6 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
-id|next
-suffix:colon
 r_if
 c_cond
 (paren

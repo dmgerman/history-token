@@ -6226,8 +6226,6 @@ id|sk
 comma
 id|size
 comma
-l_int|0
-comma
 (paren
 id|flags
 op_amp
@@ -7368,6 +7366,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -7617,7 +7619,7 @@ id|atalk_init
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
-multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented untill atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
+multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented until atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
 DECL|function|atalk_exit
 r_static
 r_void

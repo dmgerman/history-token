@@ -790,8 +790,6 @@ id|dev
 r_static
 r_int
 id|slots
-op_assign
-l_int|0
 suffix:semicolon
 r_volatile
 r_int
@@ -816,8 +814,6 @@ r_struct
 id|nubus_dev
 op_star
 id|ndev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Find the first card that hasn&squot;t already been seen */
 r_while

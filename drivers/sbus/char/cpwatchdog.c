@@ -381,6 +381,7 @@ l_string|&quot;watchdog&quot;
 suffix:semicolon
 macro_line|#endif /* ifdef MODULE */
 multiline_comment|/* Forward declarations of internal methods&n; */
+macro_line|#ifdef WD_DEBUG
 r_static
 r_void
 id|wd_dumpregs
@@ -389,6 +390,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|wd_interrupt
@@ -1588,6 +1590,7 @@ op_amp
 id|wd_fops
 )brace
 suffix:semicolon
+macro_line|#ifdef WD_DEBUG
 DECL|function|wd_dumpregs
 r_static
 r_void
@@ -1763,6 +1766,7 @@ id|wd_dev.regs-&gt;pld_regs.status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Enable or disable watchdog interrupts&n; * Because of the CP1400 defect this should only be&n; * called during initialzation or by wd_[start|stop]timer()&n; *&n; * pTimer &t;- pointer to timer device, or NULL to indicate all timers &n; * enable&t;- non-zero to enable interrupts, zero to disable&n; */
 DECL|function|wd_toggleintr
 r_static

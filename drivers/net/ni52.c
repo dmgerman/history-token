@@ -4,24 +4,18 @@ DECL|variable|debuglevel
 r_static
 r_int
 id|debuglevel
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* debug-printk 0: off 1: a few 2: more */
 DECL|variable|automatic_resume
 r_static
 r_int
 id|automatic_resume
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* experimental .. better should be zero */
 DECL|variable|rfdadd
 r_static
 r_int
 id|rfdadd
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* rfdadd=1 may be better for 8K MEM cards */
 DECL|variable|fifo
@@ -5816,16 +5810,12 @@ DECL|variable|memstart
 r_static
 r_int
 id|memstart
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* e.g 0xd0000 */
 DECL|variable|memend
 r_static
 r_int
 id|memend
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* e.g 0xd4000 */
 id|MODULE_PARM

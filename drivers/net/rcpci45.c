@@ -58,8 +58,6 @@ DECL|variable|DriverControlWord
 r_static
 id|U32
 id|DriverControlWord
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/pgtable.h&n; *&n; *  Copyright (C) 1995-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  18-Oct-1997&t;RMK&t;Now two-level (32x32)&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/pgtable.h&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  18-Oct-1997&t;RMK&t;Now two-level (32x32)&n; */
 macro_line|#ifndef __ASM_PROC_PGTABLE_H
 DECL|macro|__ASM_PROC_PGTABLE_H
 mdefine_line|#define __ASM_PROC_PGTABLE_H
@@ -23,8 +23,8 @@ mdefine_line|#define pmd_bad(pmd)&t;&t;((pmd_val(pmd) &amp; 0xfc000002))
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdp,pmd)&t;((*(pmdp)) = (pmd))
 DECL|function|__mk_pmd
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pmd_t
 id|__mk_pmd
 c_func
@@ -69,14 +69,9 @@ r_return
 id|pmd
 suffix:semicolon
 )brace
-multiline_comment|/* these are aliases for the above function */
-DECL|macro|mk_user_pmd
-mdefine_line|#define mk_user_pmd(ptep)&t;__mk_pmd(ptep, _PAGE_TABLE)
-DECL|macro|mk_kernel_pmd
-mdefine_line|#define mk_kernel_pmd(ptep)&t;__mk_pmd(ptep, _PAGE_TABLE)
 DECL|function|pmd_page
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|pmd_page
@@ -139,21 +134,6 @@ DECL|macro|pte_dirty
 mdefine_line|#define pte_dirty(pte)&t;&t;&t;(!(pte_val(pte) &amp; _PAGE_CLEAN))
 DECL|macro|pte_young
 mdefine_line|#define pte_young(pte)&t;&t;&t;(!(pte_val(pte) &amp; _PAGE_OLD))
-DECL|function|pte_nocache
-r_extern
-r_inline
-id|pte_t
-id|pte_nocache
-c_func
-(paren
-id|pte_t
-id|pte
-)paren
-(brace
-r_return
-id|pte
-suffix:semicolon
-)brace
 DECL|function|pte_wrprotect
 r_extern
 r_inline

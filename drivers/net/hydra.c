@@ -69,8 +69,6 @@ r_struct
 id|net_device
 op_star
 id|root_hydra_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 r_static

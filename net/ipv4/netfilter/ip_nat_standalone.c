@@ -139,9 +139,9 @@ op_star
 id|pskb
 )paren
 op_member_access_from_pointer
-id|pkt_type
-op_ne
-id|PACKET_LOOPBACK
+id|ip_summed
+op_eq
+id|CHECKSUM_HW
 )paren
 (paren
 op_star

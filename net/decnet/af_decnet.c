@@ -9036,6 +9036,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL

@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: io_generic.c,v 1.3 2000/05/07 23:31:58 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if defined(__sh3__)
 multiline_comment|/* I&squot;m not sure SH7709 has this kind of bug */
 DECL|macro|SH3_PCMCIA_BUG_WORKAROUND
@@ -34,7 +35,7 @@ suffix:semicolon
 )brace
 DECL|function|generic_inb
 r_int
-r_int
+r_char
 id|generic_inb
 c_func
 (paren
@@ -112,7 +113,7 @@ suffix:semicolon
 )brace
 DECL|function|generic_inb_p
 r_int
-r_int
+r_char
 id|generic_inb_p
 c_func
 (paren
@@ -373,7 +374,7 @@ id|generic_outb
 c_func
 (paren
 r_int
-r_int
+r_char
 id|b
 comma
 r_int
@@ -463,7 +464,7 @@ id|generic_outb_p
 c_func
 (paren
 r_int
-r_int
+r_char
 id|b
 comma
 r_int
@@ -716,7 +717,7 @@ macro_line|#endif
 )brace
 DECL|function|generic_readb
 r_int
-r_int
+r_char
 id|generic_readb
 c_func
 (paren
@@ -885,32 +886,13 @@ id|offset
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_ioremap_nocache
-r_void
-op_star
-id|generic_ioremap_nocache
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-(paren
-r_void
-op_star
-)paren
-id|P2SEGADDR
+DECL|variable|generic_ioremap
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|offset
+id|generic_ioremap
 )paren
 suffix:semicolon
-)brace
 DECL|function|generic_iounmap
 r_void
 id|generic_iounmap
@@ -922,6 +904,13 @@ id|addr
 )paren
 (brace
 )brace
+DECL|variable|generic_iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_iounmap
+)paren
+suffix:semicolon
 DECL|function|generic_isa_port2addr
 r_int
 r_int

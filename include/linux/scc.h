@@ -588,11 +588,6 @@ DECL|struct|scc_channel
 r_struct
 id|scc_channel
 (brace
-DECL|member|magic
-r_int
-id|magic
-suffix:semicolon
-multiline_comment|/* magic word */
 DECL|member|init
 r_int
 id|init

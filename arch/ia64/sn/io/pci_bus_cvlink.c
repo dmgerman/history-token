@@ -2,7 +2,6 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -22,7 +21,6 @@ macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 singleline_comment|// #include &lt;sys/ql.h&gt;
@@ -32,7 +30,6 @@ r_extern
 r_int
 id|bridge_rev_b_data_check_disable
 suffix:semicolon
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 DECL|macro|MAX_PCI_XWIDGET
 mdefine_line|#define MAX_PCI_XWIDGET 256

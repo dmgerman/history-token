@@ -431,6 +431,8 @@ DECL|macro|TCP_WINDOW_CLAMP
 mdefine_line|#define TCP_WINDOW_CLAMP&t;10&t;/* Bound advertised window */
 DECL|macro|TCP_INFO
 mdefine_line|#define TCP_INFO&t;&t;11&t;/* Information about this connection. */
+DECL|macro|TCP_QUICKACK
+mdefine_line|#define TCP_QUICKACK&t;&t;12&t;/* Block/reenable quick acks */
 DECL|macro|TCPI_OPT_TIMESTAMPS
 mdefine_line|#define TCPI_OPT_TIMESTAMPS&t;1
 DECL|macro|TCPI_OPT_SACK

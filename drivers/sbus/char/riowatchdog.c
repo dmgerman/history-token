@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: riowatchdog.c,v 1.1 2001/03/24 06:04:24 davem Exp $&n; * riowatchdog.c - driver for hw watchdog inside Super I/O of RIO&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: riowatchdog.c,v 1.2 2001/03/26 23:47:18 davem Exp $&n; * riowatchdog.c - driver for hw watchdog inside Super I/O of RIO&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/bbc.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/watchdog.h&gt;
-multiline_comment|/* RIO uses the NatSemi Super I/O power management logical device&n; * as its&squot; watchdog.&n; *&n; * When the watchdog triggers, it asserts a line to the BBC (Boot Bus&n; * Controller) of the machine.  The BBC can be configured to treat the&n; * assertion of this signal in different ways.  It can trigger an XIR&n; * (external CPU reset) to all the processors or it can trigger a true&n; * power-on reset which triggers the RST signal of all devices in the machine.&n; *&n; * The only Super I/O device register we care about is at index&n; * 0x05 (WDTO_INDEX) which is the watchdog time-out in minutes (1-255).&n; * If set to zero, this disables the watchdog.  When set, the system&n; * must periodically (before watchdog expires) clear (set to zero) and&n; * re-set the watchdog else it will trigger.&n; *&n; * There are two other indexed watchdog registers inside this Super I/O&n; * logical device, but they are unused.  The first, at index 0x06 is&n; * the watchdog control and can be used to make the watchdog timer re-set&n; * when the PS/2 mouse or serial lines show activity.  The second, at&n; * index 0x07 is merely a sampling of the line from the watchdog to the&n; * BBC.&n; *&n; * The watchdog device generates no interrupts.&n; */
+multiline_comment|/* RIO uses the NatSemi Super I/O power management logical device&n; * as its&squot; watchdog.&n; *&n; * When the watchdog triggers, it asserts a line to the BBC (Boot Bus&n; * Controller) of the machine.  The BBC can only be configured to&n; * trigger a power-on reset when the signal is asserted.  The BBC&n; * can be configured to ignore the signal entirely as well.&n; *&n; * The only Super I/O device register we care about is at index&n; * 0x05 (WDTO_INDEX) which is the watchdog time-out in minutes (1-255).&n; * If set to zero, this disables the watchdog.  When set, the system&n; * must periodically (before watchdog expires) clear (set to zero) and&n; * re-set the watchdog else it will trigger.&n; *&n; * There are two other indexed watchdog registers inside this Super I/O&n; * logical device, but they are unused.  The first, at index 0x06 is&n; * the watchdog control and can be used to make the watchdog timer re-set&n; * when the PS/2 mouse or serial lines show activity.  The second, at&n; * index 0x07 is merely a sampling of the line from the watchdog to the&n; * BBC.&n; *&n; * The watchdog device generates no interrupts.&n; */
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -42,6 +42,12 @@ id|riowd_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|bbc_regs
+r_static
+r_void
+op_star
+id|bbc_regs
+suffix:semicolon
 DECL|variable|riowd_regs
 r_static
 r_void
@@ -58,14 +64,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* in minutes */
-DECL|variable|riowd_xir
-r_static
-r_int
-id|riowd_xir
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* watchdog generates XIR? */
 id|MODULE_PARM
 c_func
 (paren
@@ -80,22 +78,6 @@ c_func
 id|riowd_timeout
 comma
 l_string|&quot;Watchdog timeout in minutes&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|riowd_xir
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|riowd_xir
-comma
-l_string|&quot;Watchdog generates XIR reset if non-zero&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0 /* Currently unused. */
@@ -241,12 +223,40 @@ c_func
 r_void
 )paren
 (brace
+id|u8
+id|val
+suffix:semicolon
 id|riowd_writereg
 c_func
 (paren
 l_int|0
 comma
 id|WDTO_INDEX
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|readb
+c_func
+(paren
+id|bbc_regs
+op_plus
+id|BBC_WDACTION
+)paren
+suffix:semicolon
+id|val
+op_and_assign
+op_complement
+id|BBC_WDACTION_RST
+suffix:semicolon
+id|writeb
+c_func
+(paren
+id|val
+comma
+id|bbc_regs
+op_plus
+id|BBC_WDACTION
 )paren
 suffix:semicolon
 )brace
@@ -259,12 +269,39 @@ c_func
 r_void
 )paren
 (brace
+id|u8
+id|val
+suffix:semicolon
 id|riowd_writereg
 c_func
 (paren
 id|riowd_timeout
 comma
 id|WDTO_INDEX
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|readb
+c_func
+(paren
+id|bbc_regs
+op_plus
+id|BBC_WDACTION
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+id|BBC_WDACTION_RST
+suffix:semicolon
+id|writeb
+c_func
+(paren
+id|val
+comma
+id|bbc_regs
+op_plus
+id|BBC_WDACTION
 )paren
 suffix:semicolon
 )brace
@@ -653,10 +690,6 @@ id|edev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_void
-op_star
-id|bbc_regs
-suffix:semicolon
 id|u8
 id|val
 suffix:semicolon
@@ -728,6 +761,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* Turn it off. */
 id|val
 op_assign
 id|readb
@@ -738,21 +772,9 @@ op_plus
 id|BBC_WDACTION
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|riowd_xir
-op_ne
-l_int|0
-)paren
 id|val
 op_and_assign
 op_complement
-id|BBC_WDACTION_RST
-suffix:semicolon
-r_else
-id|val
-op_or_assign
 id|BBC_WDACTION_RST
 suffix:semicolon
 id|writeb
@@ -763,12 +785,6 @@ comma
 id|bbc_regs
 op_plus
 id|BBC_WDACTION
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-id|bbc_regs
 )paren
 suffix:semicolon
 r_return
@@ -922,19 +938,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;pmc: Hardware watchdog [%i minutes, %s reset], &quot;
+l_string|&quot;pmc: Hardware watchdog [%i minutes], &quot;
 l_string|&quot;regs at %p&bslash;n&quot;
 comma
 id|riowd_timeout
-comma
-(paren
-id|riowd_xir
-ques
-c_cond
-l_string|&quot;XIR&quot;
-suffix:colon
-l_string|&quot;POR&quot;
-)paren
 comma
 id|riowd_regs
 )paren
@@ -957,6 +964,23 @@ id|riowd_regs
 )paren
 suffix:semicolon
 id|riowd_regs
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|bbc_regs
+)paren
+(brace
+id|iounmap
+c_func
+(paren
+id|bbc_regs
+)paren
+suffix:semicolon
+id|bbc_regs
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -990,6 +1014,16 @@ id|riowd_regs
 )paren
 suffix:semicolon
 id|riowd_regs
+op_assign
+l_int|NULL
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|bbc_regs
+)paren
+suffix:semicolon
+id|bbc_regs
 op_assign
 l_int|NULL
 suffix:semicolon

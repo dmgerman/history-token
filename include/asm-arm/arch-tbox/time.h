@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-tbox/time.h&n; *&n; * Copyright (c) 1997, 1999 Phil Blundell.&n; * Copyright (c) 2000 FutureTV Labs Ltd&n; *&n; * Tbox has no real-time clock -- we get millisecond ticks to update&n; * our soft copy.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 DECL|macro|update_rtc

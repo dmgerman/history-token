@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 over IPv4 tunnel device - Simple Internet Transition (SIT)&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: sit.c,v 1.47 2000/11/28 13:49:22 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; * Roger Venning &lt;r.venning@telstra.com&gt;:&t;6to4 support&n; * Nate Thompson &lt;nate@thebog.net&gt;:&t;&t;6to4 support&n; */
+multiline_comment|/*&n; *&t;IPv6 over IPv4 tunnel device - Simple Internet Transition (SIT)&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: sit.c,v 1.49 2001/03/19 20:31:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; * Roger Venning &lt;r.venning@telstra.com&gt;:&t;6to4 support&n; * Nate Thompson &lt;nate@thebog.net&gt;:&t;&t;6to4 support&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -1056,13 +1056,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
-r_char
-op_star
-id|dp
-comma
-r_int
-id|len
+id|u32
+id|info
 )paren
 (brace
 macro_line|#ifndef I_WISH_WORLD_WERE_PERFECT
@@ -1077,7 +1072,7 @@ r_struct
 id|iphdr
 op_star
 )paren
-id|dp
+id|skb-&gt;data
 suffix:semicolon
 r_int
 id|type
@@ -1093,19 +1088,6 @@ r_struct
 id|ip_tunnel
 op_star
 id|t
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OL
-r_sizeof
-(paren
-r_struct
-id|iphdr
-)paren
-)paren
-r_return
 suffix:semicolon
 r_switch
 c_cond
@@ -1644,10 +1626,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -1659,6 +1637,25 @@ r_struct
 id|ip_tunnel
 op_star
 id|tunnel
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+)paren
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|iph
 op_assign
@@ -1695,15 +1692,7 @@ id|skb-&gt;nh.raw
 suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-id|skb-&gt;h.raw
-op_minus
 id|skb-&gt;data
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -1735,10 +1724,6 @@ c_func
 (paren
 id|ETH_P_IPV6
 )paren
-suffix:semicolon
-id|skb-&gt;ip_summed
-op_assign
-l_int|0
 suffix:semicolon
 id|skb-&gt;pkt_type
 op_assign
@@ -1833,6 +1818,8 @@ op_amp
 id|ipip6_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 l_int|0
 suffix:semicolon
@@ -3772,7 +3759,7 @@ op_amp
 id|sit_protocol
 )paren
 suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 op_amp
@@ -3814,7 +3801,6 @@ comma
 id|ipip6_fb_tunnel.parms.name
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|register_netdev
 c_func
 (paren
@@ -3822,25 +3808,6 @@ op_amp
 id|ipip6_fb_tunnel_dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|register_netdevice
-c_func
-(paren
-op_amp
-id|ipip6_fb_tunnel_dev
-)paren
-suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|inet_add_protocol
 c_func
 (paren

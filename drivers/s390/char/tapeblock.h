@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef TAPEBLOCK_H
 DECL|macro|TAPEBLOCK_H
 mdefine_line|#define TAPEBLOCK_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|PARTN_BITS
 mdefine_line|#define PARTN_BITS 0
 DECL|macro|TAPEBLOCK_READAHEAD

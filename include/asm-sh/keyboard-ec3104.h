@@ -1,0 +1,89 @@
+r_extern
+r_int
+r_char
+id|ec3104_kbd_sysrq_xlate
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+id|ec3104_kbd_setkeycode
+c_func
+(paren
+r_int
+r_int
+id|scancode
+comma
+r_int
+r_int
+id|keycode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ec3104_kbd_getkeycode
+c_func
+(paren
+r_int
+r_int
+id|scancode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ec3104_kbd_translate
+c_func
+(paren
+r_int
+r_char
+comma
+r_int
+r_char
+op_star
+comma
+r_char
+)paren
+suffix:semicolon
+r_extern
+r_char
+id|ec3104_kbd_unexpected_up
+c_func
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ec3104_kbd_leds
+c_func
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ec3104_kbd_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|SYSRQ_KEY
+mdefine_line|#define SYSRQ_KEY 0x54
+DECL|macro|kbd_sysrq_xlate
+mdefine_line|#define kbd_sysrq_xlate ec3104_kbd_sysrq_xlate
+DECL|macro|kbd_setkeycode
+mdefine_line|#define kbd_setkeycode ec3104_kbd_setkeycode
+DECL|macro|kbd_getkeycode
+mdefine_line|#define kbd_getkeycode ec3104_kbd_getkeycode
+DECL|macro|kbd_translate
+mdefine_line|#define kbd_translate ec3104_kbd_translate
+DECL|macro|kbd_unexpected_up
+mdefine_line|#define kbd_unexpected_up ec3104_kbd_unexpected_up
+DECL|macro|kbd_leds
+mdefine_line|#define kbd_leds ec3104_kbd_leds
+DECL|macro|kbd_init_hw
+mdefine_line|#define kbd_init_hw ec3104_kbd_init_hw
+eof

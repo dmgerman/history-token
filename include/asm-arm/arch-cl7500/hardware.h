@@ -45,46 +45,22 @@ DECL|macro|SCREEN_BASE
 mdefine_line|#define SCREEN_BASE&t;&t;0xdf800000
 DECL|macro|FLUSH_BASE
 mdefine_line|#define FLUSH_BASE&t;&t;0xdf000000
-macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * for use with inb/outb&n; */
-DECL|macro|IO_VIDC_AUDIO_BASE
-mdefine_line|#define IO_VIDC_AUDIO_BASE&t;0x80140000
-DECL|macro|IO_VIDC_BASE
-mdefine_line|#define IO_VIDC_BASE&t;&t;0x80100000
-DECL|macro|IO_IOMD_BASE
-mdefine_line|#define IO_IOMD_BASE&t;&t;0x80080000
-DECL|macro|IOC_BASE
-mdefine_line|#define IOC_BASE&t;&t;0x80080000
-multiline_comment|/*&n; * IO definitions&n; */
-DECL|macro|EXPMASK_BASE
-mdefine_line|#define EXPMASK_BASE&t;&t;((volatile unsigned char *)0xe0360000)
-DECL|macro|IOEB_BASE
-mdefine_line|#define IOEB_BASE&t;&t;((volatile unsigned char *)0xe0350050)
-DECL|macro|PCIO_FLOPPYDMABASE
-mdefine_line|#define PCIO_FLOPPYDMABASE&t;((volatile unsigned char *)0xe002a000)
-DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t;&t;0xe0010000
-multiline_comment|/* in/out bias for the ISA slot region */
-DECL|macro|ISASLOT_IO
-mdefine_line|#define ISASLOT_IO&t;&t;0x80400000
-multiline_comment|/*&n; * RAM definitions&n; */
-DECL|macro|GET_MEMORY_END
-mdefine_line|#define GET_MEMORY_END(p)&t;(PAGE_OFFSET + p-&gt;u1.s.page_size * &bslash;&n;&t;&t;&t;&t;&t;&t;(p-&gt;u1.s.pages_in_bank[0] + &bslash;&n;&t;&t;&t;&t;&t;&t; p-&gt;u1.s.pages_in_bank[1] + &bslash;&n;&t;&t;&t;&t;&t;&t; p-&gt;u1.s.pages_in_bank[2] + &bslash;&n;&t;&t;&t;&t;&t;&t; p-&gt;u1.s.pages_in_bank[3]))
-DECL|macro|FLUSH_BASE_PHYS
-mdefine_line|#define FLUSH_BASE_PHYS&t;&t;0x00000000&t;/* ROM */
-macro_line|#else
-DECL|macro|VIDC_SND_BASE
-mdefine_line|#define VIDC_SND_BASE&t;&t;0xe0500000
 DECL|macro|VIDC_BASE
 mdefine_line|#define VIDC_BASE&t;&t;0xe0400000
 DECL|macro|IOMD_BASE
 mdefine_line|#define IOMD_BASE&t;&t;0xe0200000
 DECL|macro|IOC_BASE
 mdefine_line|#define IOC_BASE&t;&t;0xe0200000
-DECL|macro|PCIO_FLOPPYDMABASE
-mdefine_line|#define PCIO_FLOPPYDMABASE&t;0xe002a000
+DECL|macro|FLOPPYDMA_BASE
+mdefine_line|#define FLOPPYDMA_BASE&t;&t;0xe002a000
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0xe0010000
-macro_line|#endif
+DECL|macro|FLUSH_BASE_PHYS
+mdefine_line|#define FLUSH_BASE_PHYS&t;&t;0x00000000&t;/* ROM */
+DECL|macro|vidc_writel
+mdefine_line|#define vidc_writel(val)&t;__raw_writel(val, VIDC_BASE)
+multiline_comment|/* in/out bias for the ISA slot region */
+DECL|macro|ISASLOT_IO
+mdefine_line|#define ISASLOT_IO&t;&t;0x80400000
 macro_line|#endif
 eof

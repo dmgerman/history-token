@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef TAPECHAR_H
 DECL|macro|TAPECHAR_H
 mdefine_line|#define TAPECHAR_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|TAPECHAR_DEFAULTMODE
 mdefine_line|#define TAPECHAR_DEFAULTMODE 0020644
 DECL|macro|TAPE_MAJOR

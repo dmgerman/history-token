@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* sdla_fr.h&t;Sangoma frame relay firmware API definitions.&n;*&n;* Author:       Gideon Hack  &t;&n;*&t;&t;Nenad Corbic &lt;ncorbic@sangoma.com&gt; &t;&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Oct 04, 1999  Gideon Hack     Updated API structures&n;* Jun 02, 1999  Gideon Hack &t;Modifications for S514 support&n;* Oct 12, 1997&t;Jaspreet Singh&t;Added FR_READ_DLCI_IB_MAPPING&n;* Jul 21, 1997 &t;Jaspreet Singh&t;Changed FRRES_TOO_LONG and FRRES_TOO_MANY to &n;*&t;&t;&t;&t;0x05 and 0x06 respectively.&n;* Dec 23, 1996&t;Gene Kozin&t;v2.0&n;* Apr 29, 1996&t;Gene Kozin&t;v1.0 (merged version S502 &amp; S508 definitions).&n;* Sep 26, 1995&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* sdla_fr.h&t;Sangoma frame relay firmware API definitions.&n;*&n;* Author:       Gideon Hack  &t;&n;*&t;&t;Nenad Corbic &lt;ncorbic@sangoma.com&gt; &t;&n;*&n;* Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Oct 04, 1999  Gideon Hack     Updated API structures&n;* Jun 02, 1999  Gideon Hack &t;Modifications for S514 support&n;* Oct 12, 1997&t;Jaspreet Singh&t;Added FR_READ_DLCI_IB_MAPPING&n;* Jul 21, 1997 &t;Jaspreet Singh&t;Changed FRRES_TOO_LONG and FRRES_TOO_MANY to &n;*&t;&t;&t;&t;0x05 and 0x06 respectively.&n;* Dec 23, 1996&t;Gene Kozin&t;v2.0&n;* Apr 29, 1996&t;Gene Kozin&t;v1.0 (merged version S502 &amp; S508 definitions).&n;* Sep 26, 1995&t;Gene Kozin&t;Initial version.&n;*****************************************************************************/
 macro_line|#ifndef&t;_SDLA_FR_H
 DECL|macro|_SDLA_FR_H
 mdefine_line|#define&t;_SDLA_FR_H
@@ -1712,11 +1712,7 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|PACKED
-id|fr_encap_hdr_t
-id|fr_encap_hdr
-id|PACKED
-suffix:semicolon
+singleline_comment|//&t;fr_encap_hdr_t &t;&t;fr_encap_hdr&t;PACKED;
 DECL|member|PACKED
 id|ip_pkt_t
 id|ip_pkt

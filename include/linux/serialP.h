@@ -515,7 +515,7 @@ DECL|macro|SPCI_FL_IRQBASE4
 mdefine_line|#define SPCI_FL_IRQBASE4       (0x0004 &lt;&lt; 4)
 DECL|macro|SPCI_FL_GET_IRQBASE
 mdefine_line|#define SPCI_FL_GET_IRQBASE(x)        ((x &amp; SPCI_FL_IRQ_MASK) &gt;&gt; 4)
-multiline_comment|/* Use sucessive BARs (PCI base address registers), &n;   else use offset into some specified BAR */
+multiline_comment|/* Use successive BARs (PCI base address registers), &n;   else use offset into some specified BAR */
 DECL|macro|SPCI_FL_BASE_TABLE
 mdefine_line|#define SPCI_FL_BASE_TABLE&t;0x0100
 multiline_comment|/* Use successive entries in the irq resource table */

@@ -22,11 +22,6 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/iobus.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 multiline_comment|/*&n; * this is REALLY ugly, blame it on gcc&squot;s lame inlining that we&n; * have to put procedures in header files&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bbc.h,v 1.1 2001/03/24 06:03:03 davem Exp $&n; * bbc.h: Defines for BootBus Controller found on UltraSPARC-III&n; *        systems.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: bbc.h,v 1.2 2001/03/26 23:47:18 davem Exp $&n; * bbc.h: Defines for BootBus Controller found on UltraSPARC-III&n; *        systems.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SPARC64_BBC_H
 DECL|macro|_SPARC64_BBC_H
 mdefine_line|#define _SPARC64_BBC_H
@@ -106,7 +106,7 @@ DECL|macro|BBC_QUIESCE_FD3
 mdefine_line|#define BBC_QUIESCE_FD3 0x80&t;/* Disable Fatal_Error[3] reporting&t;  */
 multiline_comment|/* Watchdog Action register.  When the watchdog device timer expires&n; * a line is enabled to the BBC.  The action BBC takes when this line&n; * is asserted can be controlled by this regiser.&n; */
 DECL|macro|BBC_WDACTION_RST
-mdefine_line|#define BBC_WDACTION_RST  0x01&t;/* When set, watchdog causes system reset.&n;&t;&t;&t;&t; * When clear, all cpus receive XIR reset.&n;&t;&t;&t;&t; */
+mdefine_line|#define BBC_WDACTION_RST  0x01&t;/* When set, watchdog causes system reset.&n;&t;&t;&t;&t; * When clear, BBC ignores watchdog signal.&n;&t;&t;&t;&t; */
 DECL|macro|BBC_WDACTION_RESV
 mdefine_line|#define BBC_WDACTION_RESV 0xfe&t;/* Reserved */
 multiline_comment|/* Soft_POR_GEN register.  The POR (Power On Reset) signal may be asserted&n; * for specific processors or all processors via this register.&n; */

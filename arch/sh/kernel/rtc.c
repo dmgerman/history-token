@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/arch/sh/kernel/rtc.c -- SH3 / SH4 on-chip RTC support&n; *&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
@@ -60,6 +61,8 @@ DECL|macro|RCR1
 mdefine_line|#define RCR1    &t;0xfffffedc
 DECL|macro|RCR2
 mdefine_line|#define RCR2    &t;0xfffffede
+DECL|macro|RTC_BIT_INVERTED
+mdefine_line|#define RTC_BIT_INVERTED&t;0&t;/* No bug on SH7708, SH7709A */
 macro_line|#elif defined(__SH4__)
 multiline_comment|/* SH-4 RTC */
 DECL|macro|R64CNT
@@ -94,6 +97,8 @@ DECL|macro|RCR1
 mdefine_line|#define RCR1    &t;0xffc80038
 DECL|macro|RCR2
 mdefine_line|#define RCR2    &t;0xffc8003c
+DECL|macro|RTC_BIT_INVERTED
+mdefine_line|#define RTC_BIT_INVERTED&t;0x40&t;/* bug on SH7750, SH7750S */
 macro_line|#endif
 macro_line|#ifndef BCD_TO_BIN
 DECL|macro|BCD_TO_BIN
@@ -152,7 +157,7 @@ op_assign
 id|ctrl_inb
 c_func
 (paren
-id|RSECCNT
+id|R64CNT
 )paren
 suffix:semicolon
 id|sec
@@ -264,6 +269,27 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if RTC_BIT_INVERTED != 0
+multiline_comment|/* Work around to avoid reading correct value. */
+r_if
+c_cond
+(paren
+id|sec128
+op_eq
+id|RTC_BIT_INVERTED
+)paren
+(brace
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|again
+suffix:semicolon
+)brace
+macro_line|#endif
 id|BCD_TO_BIN
 c_func
 (paren
@@ -457,7 +483,11 @@ suffix:semicolon
 id|tv-&gt;tv_usec
 op_assign
 (paren
+(paren
 id|sec128
+op_xor
+id|RTC_BIT_INVERTED
+)paren
 op_star
 l_int|1000000
 )paren
@@ -650,6 +680,17 @@ op_star
 id|tv
 )paren
 (brace
+macro_line|#if RTC_BIT_INVERTED != 0
+multiline_comment|/* This is not accurate, but better than nothing. */
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|2
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|set_rtc_time
 c_func

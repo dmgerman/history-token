@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/irq.c&n; *&n; *  Copyright (C) 1992 Linus Torvalds&n; *  Modifications for ARM processor Copyright (C) 1995-1998 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the code used by various IRQ handling routines:&n; *  asking for different IRQ&squot;s should be done through these routines&n; *  instead of just grabbing them. Thus setups with different IRQ numbers&n; *  shouldn&squot;t result in any weird surprises, and installing new handlers&n; *  should be easier.&n; *&n; *  IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; *  Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/irq.c&n; *&n; *  Copyright (C) 1992 Linus Torvalds&n; *  Modifications for ARM processor Copyright (C) 1995-2000 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This file contains the code used by various IRQ handling routines:&n; *  asking for different IRQ&squot;s should be done through these routines&n; *  instead of just grabbing them. Thus setups with different IRQ numbers&n; *  shouldn&squot;t result in any weird surprises, and installing new handlers&n; *  should be easier.&n; *&n; *  IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; *  Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -10,183 +10,13 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/arch/irq.h&gt;&t;/* pick up fixup_irq definition */
 multiline_comment|/*&n; * Maximum IRQ count.  Currently, this is arbitary.  However, it should&n; * not be set too low to prevent false triggering.  Conversely, if it&n; * is set too high, then you could miss a stuck IRQ.&n; *&n; * Maybe we ought to set a timer and re-enable the IRQ at a later time?&n; */
 DECL|macro|MAX_IRQ_CNT
 mdefine_line|#define MAX_IRQ_CNT&t;100000
-DECL|variable|irq_controller_lock
-id|spinlock_t
-id|irq_controller_lock
-suffix:semicolon
-r_int
-id|setup_arm_irq
-c_func
-(paren
-r_int
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|get_fiq_list
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|init_FIQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|struct|irqdesc
-r_struct
-id|irqdesc
-(brace
-DECL|member|nomask
-r_int
-r_int
-id|nomask
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ does not mask in IRQ   */
-DECL|member|enabled
-r_int
-r_int
-id|enabled
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ is currently enabled   */
-DECL|member|triggered
-r_int
-r_int
-id|triggered
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ has occurred&t;      */
-DECL|member|probing
-r_int
-r_int
-id|probing
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ in use for a probe     */
-DECL|member|probe_ok
-r_int
-r_int
-id|probe_ok
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ can be used for probe  */
-DECL|member|valid
-r_int
-r_int
-id|valid
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* IRQ claimable&t;      */
-DECL|member|noautoenable
-r_int
-r_int
-id|noautoenable
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* don&squot;t automatically enable IRQ */
-DECL|member|unused
-r_int
-r_int
-id|unused
-suffix:colon
-l_int|25
-suffix:semicolon
-DECL|member|mask_ack
-r_void
-(paren
-op_star
-id|mask_ack
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* Mask and acknowledge IRQ   */
-DECL|member|mask
-r_void
-(paren
-op_star
-id|mask
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* Mask IRQ&t;&t;      */
-DECL|member|unmask
-r_void
-(paren
-op_star
-id|unmask
-)paren
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* Unmask IRQ&t;&t;      */
-DECL|member|action
-r_struct
-id|irqaction
-op_star
-id|action
-suffix:semicolon
-multiline_comment|/*&n;&t; * IRQ lock detection&n;&t; */
-DECL|member|lck_cnt
-r_int
-r_int
-id|lck_cnt
-suffix:semicolon
-DECL|member|lck_pc
-r_int
-r_int
-id|lck_pc
-suffix:semicolon
-DECL|member|lck_jif
-r_int
-r_int
-id|lck_jif
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|variable|irq_desc
-r_static
-r_struct
-id|irqdesc
-id|irq_desc
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 DECL|variable|irq_err_count
 r_static
 r_volatile
@@ -194,8 +24,31 @@ r_int
 r_int
 id|irq_err_count
 suffix:semicolon
-multiline_comment|/*&n; * Get architecture specific interrupt handlers&n; * and interrupt initialisation.&n; */
-macro_line|#include &lt;asm/arch/irq.h&gt;
+DECL|variable|irq_controller_lock
+r_static
+id|spinlock_t
+id|irq_controller_lock
+suffix:semicolon
+DECL|variable|irq_desc
+r_struct
+id|irqdesc
+id|irq_desc
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
+r_void
+(paren
+op_star
+id|init_arch_irq
+)paren
+(paren
+r_void
+)paren
+id|__initdata
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n; * Dummy mask/unmask handler&n; */
 DECL|function|dummy_mask_unmask_irq
 r_static
@@ -209,6 +62,7 @@ id|irq
 )paren
 (brace
 )brace
+multiline_comment|/**&n; *&t;disable_irq - disable an irq and wait for completion&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.&n; *&n; *&t;This function may be called - with care - from IRQ context.&n; */
 DECL|function|disable_irq
 r_void
 id|disable_irq
@@ -262,6 +116,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;enable_irq - enable interrupt handling on an irq&n; *&t;@irq: Interrupt to enable&n; *&n; *&t;Re-enables the processing of interrupts on this IRQ line&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|enable_irq
 r_void
 id|enable_irq
@@ -1031,6 +886,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|irqdesc
+op_star
+id|desc
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some drivers like serial.c use request_irq() heavily,&n;&t; * so we have to be careful not to interfere with a&n;&t; * running system.&n;&t; */
 r_if
 c_cond
@@ -1051,6 +911,12 @@ id|irq
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The following block of code has to be executed atomically&n;&t; */
+id|desc
+op_assign
+id|irq_desc
+op_plus
+id|irq
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1063,12 +929,7 @@ suffix:semicolon
 id|p
 op_assign
 op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|action
+id|desc-&gt;action
 suffix:semicolon
 r_if
 c_cond
@@ -1150,12 +1011,7 @@ op_logical_neg
 id|shared
 )paren
 (brace
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|nomask
+id|desc-&gt;nomask
 op_assign
 (paren
 r_new
@@ -1170,12 +1026,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|probing
+id|desc-&gt;probing
 op_assign
 l_int|0
 suffix:semicolon
@@ -1183,28 +1034,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|noautoenable
+id|desc-&gt;noautoenable
 )paren
 (brace
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|enabled
+id|desc-&gt;enabled
 op_assign
 l_int|1
 suffix:semicolon
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
+id|desc
+op_member_access_from_pointer
 id|unmask
 c_func
 (paren
@@ -1226,6 +1064,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;request_irq - allocate an interrupt line&n; *&t;@irq: Interrupt line to allocate&n; *&t;@handler: Function to be called when the IRQ occurs&n; *&t;@irqflags: Interrupt type flags&n; *&t;@devname: An ascii name for the claiming device&n; *&t;@dev_id: A cookie passed back to the handler function&n; *&n; *&t;This call allocates interrupt resources and enables the&n; *&t;interrupt line and IRQ handling. From the point this&n; *&t;call is made your handler function may be invoked. Since&n; *&t;your handler function must clear any interrupt the board&n; *&t;raises, you must take care both to initialise your hardware&n; *&t;and to set up the interrupt handler in the right order.&n; *&n; *&t;Dev_id must be globally unique. Normally the address of the&n; *&t;device data structure is used as the cookie. Since the handler&n; *&t;receives this value it makes sense to use it.&n; *&n; *&t;If your interrupt is shared you must pass a non NULL dev_id&n; *&t;as this is required when freeing the interrupt.&n; *&n; *&t;Flags:&n; *&n; *&t;SA_SHIRQ&t;&t;Interrupt is shared&n; *&n; *&t;SA_INTERRUPT&t;&t;Disable local interrupts while processing&n; *&n; *&t;SA_SAMPLE_RANDOM&t;The interrupt can be used for entropy&n; *&n; */
 DECL|function|request_irq
 r_int
 id|request_irq
@@ -1291,6 +1130,15 @@ id|valid
 op_logical_or
 op_logical_neg
 id|handler
+op_logical_or
+(paren
+id|irq_flags
+op_amp
+id|SA_SHIRQ
+op_logical_and
+op_logical_neg
+id|dev_id
+)paren
 )paren
 r_return
 op_minus
@@ -1374,6 +1222,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function.&n; *&n; *&t;This function may be called from interrupt context.&n; */
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -1939,7 +1788,7 @@ op_assign
 id|dummy_mask_unmask_irq
 suffix:semicolon
 )brace
-id|irq_init_irq
+id|init_arch_irq
 c_func
 (paren
 )paren

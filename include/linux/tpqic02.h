@@ -664,7 +664,7 @@ mdefine_line|#define TPQDBG(f)&t;((QIC02_TAPE_DEBUG) &amp; (TPQD_##f))
 multiline_comment|/* Minor device codes for tapes:&n; * |7|6|5|4|3|2|1|0|&n; *  | &bslash; | / &bslash; | / |_____ 1=rewind on close, 0=no rewind on close&n; *  |  &bslash;|/    |_________ Density: 000=none, 001=QIC-11, 010=24, 011=120,&n; *  |   |                100=QIC-150, 101..111 reserved.&n; *  |   |_______________ Reserved for unit numbers.&n; *  |___________________ Reserved for diagnostics during debugging.&n; */
 DECL|macro|TP_REWCLOSE
 mdefine_line|#define&t;TP_REWCLOSE(d)&t;((MINOR(d)&amp;0x01) == 1)&t;   &t;&t;/* rewind bit */
-multiline_comment|/* rewind is only done if data has been transfered */
+multiline_comment|/* rewind is only done if data has been transferred */
 DECL|macro|TP_DENS
 mdefine_line|#define&t;TP_DENS(dev)&t;((MINOR(dev) &gt;&gt; 1) &amp; 0x07) &t;      /* tape density */
 DECL|macro|TP_UNIT
@@ -751,9 +751,9 @@ mdefine_line|#define EXC_EOM&t;&t;4&t;/* EOM */
 DECL|macro|EXC_RWA
 mdefine_line|#define EXC_RWA&t;&t;5&t;/* read/write abort */
 DECL|macro|EXC_XBAD
-mdefine_line|#define EXC_XBAD&t;6&t;/* read error, bad block transfered */
+mdefine_line|#define EXC_XBAD&t;6&t;/* read error, bad block transferred */
 DECL|macro|EXC_XFILLER
-mdefine_line|#define EXC_XFILLER&t;7&t;/* read error, filler block transfered */
+mdefine_line|#define EXC_XFILLER&t;7&t;/* read error, filler block transferred */
 DECL|macro|EXC_NDT
 mdefine_line|#define EXC_NDT&t;&t;8&t;/* read error, no data */
 DECL|macro|EXC_NDTEOM

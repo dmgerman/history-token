@@ -210,8 +210,6 @@ DECL|variable|dgrs_nicmode
 r_static
 r_int
 id|dgrs_nicmode
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Chain of device structures&n; */
 DECL|variable|dgrs_root_dev

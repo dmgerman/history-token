@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux NET3:&t;IP/IP protocol decoder. &n; *&n; *&t;Version: $Id: ipip.c,v 1.41 2000/11/28 13:13:27 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Sam Lantinga (slouken@cs.ucdavis.edu)  02/01/95&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Merged and made usable non modular (its so tiny its silly as&n; *&t;&t;&t;&t;&t;a module taking up 2 pages).&n; *&t;&t;Alan Cox&t;: &t;Fixed bug with 1.3.18 and IPIP not working (now needs to set skb-&gt;h.iph)&n; *&t;&t;&t;&t;&t;to keep ip_forward happy.&n; *&t;&t;Alan Cox&t;:&t;More fixes for 1.3.21, and firewall fix. Maybe this will work soon 8).&n; *&t;&t;Kai Schulte&t;:&t;Fixed #defines for IP_FIREWALL-&gt;FIREWALL&n; *              David Woodhouse :       Perform some basic ICMP handling.&n; *                                      IPIP Routing without decapsulation.&n; *              Carlos Picoto   :       GRE over IP support&n; *&t;&t;Alexey Kuznetsov:&t;Reworked. Really, now it is truncated version of ipv4/ip_gre.c.&n; *&t;&t;&t;&t;&t;I do not want to merge them together.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *&t;Linux NET3:&t;IP/IP protocol decoder. &n; *&n; *&t;Version: $Id: ipip.c,v 1.44 2001/03/29 06:29:09 davem Exp $&n; *&n; *&t;Authors:&n; *&t;&t;Sam Lantinga (slouken@cs.ucdavis.edu)  02/01/95&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Merged and made usable non modular (its so tiny its silly as&n; *&t;&t;&t;&t;&t;a module taking up 2 pages).&n; *&t;&t;Alan Cox&t;: &t;Fixed bug with 1.3.18 and IPIP not working (now needs to set skb-&gt;h.iph)&n; *&t;&t;&t;&t;&t;to keep ip_forward happy.&n; *&t;&t;Alan Cox&t;:&t;More fixes for 1.3.21, and firewall fix. Maybe this will work soon 8).&n; *&t;&t;Kai Schulte&t;:&t;Fixed #defines for IP_FIREWALL-&gt;FIREWALL&n; *              David Woodhouse :       Perform some basic ICMP handling.&n; *                                      IPIP Routing without decapsulation.&n; *              Carlos Picoto   :       GRE over IP support&n; *&t;&t;Alexey Kuznetsov:&t;Reworked. Really, now it is truncated version of ipv4/ip_gre.c.&n; *&t;&t;&t;&t;&t;I do not want to merge them together.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/* tunnel.c: an IP tunnel driver&n;&n;&t;The purpose of this driver is to provide an IP tunnel through&n;&t;which you can tunnel network traffic transparently across subnets.&n;&n;&t;This was written by looking at Nick Holloway&squot;s dummy driver&n;&t;Thanks for the great code!&n;&n;&t;&t;-Sam Lantinga&t;(slouken@cs.ucdavis.edu)  02/01/95&n;&t;&t;&n;&t;Minor tweaks:&n;&t;&t;Cleaned up the code a little and added some pre-1.3.0 tweaks.&n;&t;&t;dev-&gt;hard_header/hard_header_len changed to use no headers.&n;&t;&t;Comments/bracketing tweaked.&n;&t;&t;Made the tunnels use dev-&gt;name not tunnel: when error reporting.&n;&t;&t;Added tx_dropped stat&n;&t;&t;&n;&t;&t;-Alan Cox&t;(Alan.Cox@linux.org) 21 March 95&n;&n;&t;Reworked:&n;&t;&t;Changed to tunnel to destination gateway in addition to the&n;&t;&t;&t;tunnel&squot;s pointopoint address&n;&t;&t;Almost completely rewritten&n;&t;&t;Note:  There is currently no firewall or ICMP handling done.&n;&n;&t;&t;-Sam Lantinga&t;(slouken@cs.ucdavis.edu) 02/13/96&n;&t;&t;&n;*/
 multiline_comment|/* Things I wish I had known when writing the tunnel driver:&n;&n;&t;When the tunnel_xmit() function is called, the skb contains the&n;&t;packet to be sent (plus a great deal of extra info), and dev&n;&t;contains the tunnel device that _we_ are.&n;&n;&t;When we are passed a packet, we are expected to fill in the&n;&t;source address with our source IP address.&n;&n;&t;What is the proper way to allocate, copy and free a buffer?&n;&t;After you allocate it, it is a &quot;0 length&quot; chunk of memory&n;&t;starting at zero.  If you want to add headers to the buffer&n;&t;later, you&squot;ll have to call &quot;skb_reserve(skb, amount)&quot; with&n;&t;the amount of memory you want reserved.  Then, you call&n;&t;&quot;skb_put(skb, amount)&quot; with the amount of space you want in&n;&t;the buffer.  skb_put() returns a pointer to the top (#0) of&n;&t;that buffer.  skb-&gt;len is set to the amount of space you have&n;&t;&quot;allocated&quot; with skb_put().  You can then write up to skb-&gt;len&n;&t;bytes to that buffer.  If you need more, you can call skb_put()&n;&t;again with the additional amount of space you need.  You can&n;&t;find out how much more space you can allocate by calling &n;&t;&quot;skb_tailroom(skb)&quot;.&n;&t;Now, to add header space, call &quot;skb_push(skb, header_len)&quot;.&n;&t;This creates space at the beginning of the buffer and returns&n;&t;a pointer to this new space.  If later you need to strip a&n;&t;header from a buffer, call &quot;skb_pull(skb, header_len)&quot;.&n;&t;skb_headroom() will return how much space is left at the top&n;&t;of the buffer (before the main data).  Remember, this headroom&n;&t;space must be reserved before the skb_put() function is called.&n;&t;*/
 multiline_comment|/*&n;   This version of net/ipv4/ipip.c is cloned of net/ipv4/ip_gre.c&n;&n;   For comments look at net/ipv4/ip_gre.c --ANK&n; */
@@ -56,28 +56,12 @@ id|net_device
 id|ipip_fb_tunnel_dev
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;tunl0&quot;
 comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0x0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+id|init
+suffix:colon
 id|ipip_fb_tunnel_init
 comma
 )brace
@@ -89,31 +73,16 @@ id|ip_tunnel
 id|ipip_fb_tunnel
 op_assign
 (brace
-l_int|NULL
-comma
+id|dev
+suffix:colon
 op_amp
 id|ipip_fb_tunnel_dev
 comma
+id|parms
+suffix:colon
 (brace
-l_int|0
-comma
-)brace
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(brace
+id|name
+suffix:colon
 l_string|&quot;tunl0&quot;
 comma
 )brace
@@ -1010,15 +979,8 @@ op_amp
 id|ipip_lock
 )paren
 suffix:semicolon
-id|dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 r_else
-(brace
 id|ipip_tunnel_unlink
 c_func
 (paren
@@ -1037,7 +999,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|ipip_err
 r_void
 id|ipip_err
@@ -1048,13 +1009,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
-r_char
-op_star
-id|dp
-comma
-r_int
-id|len
+id|u32
+id|info
 )paren
 (brace
 macro_line|#ifndef I_WISH_WORLD_WERE_PERFECT
@@ -1069,7 +1025,7 @@ r_struct
 id|iphdr
 op_star
 )paren
-id|dp
+id|skb-&gt;data
 suffix:semicolon
 r_int
 id|type
@@ -1085,19 +1041,6 @@ r_struct
 id|ip_tunnel
 op_star
 id|t
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OL
-r_sizeof
-(paren
-r_struct
-id|iphdr
-)paren
-)paren
-r_return
 suffix:semicolon
 r_switch
 c_cond
@@ -1785,10 +1728,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -1801,6 +1740,25 @@ id|ip_tunnel
 op_star
 id|tunnel
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+r_sizeof
+(paren
+r_struct
+id|iphdr
+)paren
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|iph
 op_assign
 id|skb-&gt;nh.iph
@@ -1811,15 +1769,7 @@ id|skb-&gt;nh.raw
 suffix:semicolon
 id|skb-&gt;nh.raw
 op_assign
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-id|skb-&gt;h.raw
-op_minus
 id|skb-&gt;data
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -1851,10 +1801,6 @@ c_func
 (paren
 id|ETH_P_IP
 )paren
-suffix:semicolon
-id|skb-&gt;ip_summed
-op_assign
-l_int|0
 suffix:semicolon
 id|skb-&gt;pkt_type
 op_assign
@@ -1968,6 +1914,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree_skb
 c_func
 (paren
@@ -3696,37 +3644,36 @@ id|inet_protocol
 id|ipip_protocol
 op_assign
 (brace
+id|handler
+suffix:colon
 id|ipip_rcv
 comma
-multiline_comment|/* IPIP handler          */
+id|err_handler
+suffix:colon
 id|ipip_err
 comma
-multiline_comment|/* TUNNEL error control */
-l_int|0
-comma
-multiline_comment|/* next                 */
+id|protocol
+suffix:colon
 id|IPPROTO_IPIP
 comma
-multiline_comment|/* protocol ID          */
-l_int|0
-comma
-multiline_comment|/* copy                 */
-l_int|NULL
-comma
-multiline_comment|/* data                 */
+id|name
+suffix:colon
 l_string|&quot;IPIP&quot;
-multiline_comment|/* name                 */
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;IPv4 over IPv4 tunneling driver&bslash;n&quot;
+suffix:semicolon
+DECL|function|ipip_init
 r_int
 id|__init
 id|ipip_init
@@ -3734,13 +3681,11 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;IPv4 over IPv4 tunneling driver&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 id|ipip_fb_tunnel_dev.priv
@@ -3752,7 +3697,6 @@ op_star
 op_amp
 id|ipip_fb_tunnel
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|register_netdev
 c_func
 (paren
@@ -3760,25 +3704,6 @@ op_amp
 id|ipip_fb_tunnel_dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|register_netdevice
-c_func
-(paren
-op_amp
-id|ipip_fb_tunnel_dev
-)paren
-suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|inet_add_protocol
 c_func
 (paren
@@ -3790,10 +3715,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|ipip_fini
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|ipip_fini
 c_func
 (paren
 r_void
@@ -3818,7 +3744,7 @@ id|KERN_INFO
 l_string|&quot;ipip close: can&squot;t remove protocol&bslash;n&quot;
 )paren
 suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 op_amp
@@ -3826,5 +3752,20 @@ id|ipip_fb_tunnel_dev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
+DECL|variable|ipip_init
+id|module_init
+c_func
+(paren
+id|ipip_init
+)paren
+suffix:semicolon
 macro_line|#endif
+DECL|variable|ipip_fini
+id|module_exit
+c_func
+(paren
+id|ipip_fini
+)paren
+suffix:semicolon
 eof

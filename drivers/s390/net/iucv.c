@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/net/iucv.c&n; *    Support for VM IUCV functions for use by other part of the&n; *    kernel or loadable modules.&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Corporation&n; *    Author(s): Xenia Tkatschow (xenia@us.ibm.com)&n; *               Alan Altmark (Alan_Altmark@us.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

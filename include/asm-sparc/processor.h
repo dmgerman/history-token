@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.80 2000/12/31 10:05:43 davem Exp $&n; * include/asm-sparc/processor.h&n; *&n; * Copyright (C) 1994 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: processor.h,v 1.81 2001/03/27 02:36:37 davem Exp $&n; * include/asm-sparc/processor.h&n; *&n; * Copyright (C) 1994 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __ASM_SPARC_PROCESSOR_H
 DECL|macro|__ASM_SPARC_PROCESSOR_H
 mdefine_line|#define __ASM_SPARC_PROCESSOR_H
@@ -242,8 +242,6 @@ DECL|macro|SPARC_FLAG_KTHREAD
 mdefine_line|#define SPARC_FLAG_KTHREAD      0x1    /* task is a kernel thread */
 DECL|macro|SPARC_FLAG_UNALIGNED
 mdefine_line|#define SPARC_FLAG_UNALIGNED    0x2    /* is allowed to do unaligned accesses */
-DECL|macro|SPARC_FLAG_MMAPSHARED
-mdefine_line|#define SPARC_FLAG_MMAPSHARED&t;0x4    /* task wants a shared mmap */
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP { &amp;init_mm, (0), (0), &bslash;&n;&t;&t;    NULL, __pgprot(0x0) , VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunhme.h,v 1.31 2000/11/12 10:23:30 davem Exp $&n; * sunhme.h: Definitions for Sparc HME/BigMac 10/100baseT ethernet driver.&n; *           Also known as the &quot;Happy Meal&quot;.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunhme.h,v 1.32 2000/12/13 18:31:47 davem Exp $&n; * sunhme.h: Definitions for Sparc HME/BigMac 10/100baseT ethernet driver.&n; *           Also known as the &quot;Happy Meal&quot;.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNHME_H
 DECL|macro|_SUNHME_H
 mdefine_line|#define _SUNHME_H
@@ -252,7 +252,7 @@ mdefine_line|#define ERX_CFG_SIZE256      0x00000600 /* Receive ring size == 256
 DECL|macro|ERX_CFG_RESV3
 mdefine_line|#define ERX_CFG_RESV3        0x0000f800 /* Unused...                 */
 DECL|macro|ERX_CFG_CSUMSTART
-mdefine_line|#define ERX_CFG_CSUMSTART    0x007f0000 /* Offset of checksum start  */
+mdefine_line|#define ERX_CFG_CSUMSTART    0x007f0000 /* Offset of checksum start,&n;&t;&t;&t;&t;&t; * in halfwords. */
 multiline_comment|/* I&squot;d like a Big Mac, small fries, small coke, and SparcLinux please. */
 DECL|macro|BMAC_XIFCFG
 mdefine_line|#define BMAC_XIFCFG&t;0x0000UL&t;/* XIF config register                */
@@ -735,13 +735,35 @@ DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE       32         /* Must be &gt;16 and &lt;255, multiple of 16  */
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE       32         /* see ERX_CFG_SIZE* for possible values */
+macro_line|#if (TX_RING_SIZE &lt; 16 || TX_RING_SIZE &gt; 256 || (TX_RING_SIZE % 16) != 0)
+macro_line|#error TX_RING_SIZE holds illegal value
+macro_line|#endif
 DECL|macro|TX_RING_MAXSIZE
 mdefine_line|#define TX_RING_MAXSIZE    256
 DECL|macro|RX_RING_MAXSIZE
 mdefine_line|#define RX_RING_MAXSIZE    256
-multiline_comment|/* 34 byte offset for checksum computation.  This works because ip_input() will clear out&n; * the skb-&gt;csum and skb-&gt;ip_summed fields and recompute the csum if IP options are&n; * present in the header.  34 == (ethernet header len) + sizeof(struct iphdr)&n; */
+multiline_comment|/* We use a 14 byte offset for checksum computation. */
+macro_line|#if (RX_RING_SIZE == 32)
 DECL|macro|ERX_CFG_DEFAULT
-mdefine_line|#define ERX_CFG_DEFAULT(off) (ERX_CFG_DMAENABLE|((off)&lt;&lt;3)|ERX_CFG_SIZE32|(0x22&lt;&lt;16))
+mdefine_line|#define ERX_CFG_DEFAULT(off) (ERX_CFG_DMAENABLE|((off)&lt;&lt;3)|ERX_CFG_SIZE32|((14/2)&lt;&lt;16))
+macro_line|#else
+macro_line|#if (RX_RING_SIZE == 64)
+DECL|macro|ERX_CFG_DEFAULT
+mdefine_line|#define ERX_CFG_DEFAULT(off) (ERX_CFG_DMAENABLE|((off)&lt;&lt;3)|ERX_CFG_SIZE64|((14/2)&lt;&lt;16))
+macro_line|#else
+macro_line|#if (RX_RING_SIZE == 128)
+DECL|macro|ERX_CFG_DEFAULT
+mdefine_line|#define ERX_CFG_DEFAULT(off) (ERX_CFG_DMAENABLE|((off)&lt;&lt;3)|ERX_CFG_SIZE128|((14/2)&lt;&lt;16))
+macro_line|#else
+macro_line|#if (RX_RING_SIZE == 256)
+DECL|macro|ERX_CFG_DEFAULT
+mdefine_line|#define ERX_CFG_DEFAULT(off) (ERX_CFG_DMAENABLE|((off)&lt;&lt;3)|ERX_CFG_SIZE256|((14/2)&lt;&lt;16))
+macro_line|#else
+macro_line|#error RX_RING_SIZE holds illegal value
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 DECL|macro|NEXT_RX
 mdefine_line|#define NEXT_RX(num)       (((num) + 1) &amp; (RX_RING_SIZE - 1))
 DECL|macro|NEXT_TX

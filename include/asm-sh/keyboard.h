@@ -2,7 +2,11 @@ macro_line|#ifndef&t;__ASM_SH_KEYBOARD_H
 DECL|macro|__ASM_SH_KEYBOARD_H
 mdefine_line|#define&t;__ASM_SH_KEYBOARD_H
 multiline_comment|/*&n; *&t;$Id: keyboard.h,v 1.1 2000/06/10 21:45:48 yaegashi Exp $&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#ifdef CONFIG_SH_EC3104
+macro_line|#include &lt;asm/keyboard-ec3104.h&gt;
+macro_line|#else
 DECL|function|kbd_setkeycode
 r_static
 id|__inline__
@@ -114,6 +118,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|dreamcast_kbd_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|kbd_init_hw
 r_static
 id|__inline__
@@ -137,5 +149,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 macro_line|#endif
 eof

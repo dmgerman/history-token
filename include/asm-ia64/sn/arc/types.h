@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_SN_ARC_TYPES_H
 DECL|macro|_ASM_SN_ARC_TYPES_H
 mdefine_line|#define _ASM_SN_ARC_TYPES_H
-macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|CHAR
 r_typedef
 r_char

@@ -91,6 +91,23 @@ l_string|&quot;CPU: SH7750&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|CPU_ST40STB1
+suffix:colon
+op_star
+id|p
+op_increment
+op_assign
+l_char|&squot;4&squot;
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;CPU: ST40STB1&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk

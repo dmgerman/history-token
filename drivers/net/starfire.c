@@ -172,9 +172,6 @@ macro_line|#endif
 multiline_comment|/* Include files, designed to support most kernel versions 2.0.0 and later. */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20300  &amp;&amp;  defined(MODVERSIONS)
-macro_line|#include &lt;linux/modversions.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

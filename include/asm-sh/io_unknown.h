@@ -4,7 +4,7 @@ DECL|macro|_ASM_SH_IO_UNKNOWN_H
 mdefine_line|#define _ASM_SH_IO_UNKNOWN_H
 r_extern
 r_int
-r_int
+r_char
 id|unknown_inb
 c_func
 (paren
@@ -41,7 +41,7 @@ id|unknown_outb
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -79,7 +79,7 @@ id|port
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|unknown_inb_p
 c_func
 (paren
@@ -116,7 +116,7 @@ id|unknown_outb_p
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -265,7 +265,7 @@ id|count
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|unknown_readb
 c_func
 (paren
@@ -366,20 +366,6 @@ id|size
 suffix:semicolon
 r_extern
 r_void
-op_star
-id|unknown_ioremap_nocache
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|unknown_iounmap
 c_func
 (paren
@@ -441,8 +427,6 @@ DECL|macro|__isa_port2addr
 macro_line|# define __isa_port2addr&t;unknown_isa_port2addr
 DECL|macro|__ioremap
 macro_line|# define __ioremap&t;&t;unknown_ioremap
-DECL|macro|__ioremap_nocache
-macro_line|# define __ioremap_nocache&t;unknown_ioremap_nocache
 DECL|macro|__iounmap
 macro_line|# define __iounmap&t;&t;unknown_iounmap
 macro_line|#endif

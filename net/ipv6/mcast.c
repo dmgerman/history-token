@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.33 2000/09/18 05:59:48 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.36 2001/03/03 01:20:10 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/* Changes:&n; *&n; *&t;yoshfuji&t;: fix format of router-alert option&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -1654,14 +1655,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|icmp6hdr
-op_star
-id|hdr
-comma
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -1683,26 +1676,39 @@ id|inet6_dev
 op_star
 id|idev
 suffix:semicolon
+r_struct
+id|icmp6hdr
+op_star
+id|hdr
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|len
-OL
-r_sizeof
+op_logical_neg
+id|pskb_may_pull
+c_func
 (paren
-r_struct
-id|icmp6hdr
-)paren
-op_plus
+id|skb
+comma
 r_sizeof
 (paren
 r_struct
 id|in6_addr
 )paren
 )paren
+)paren
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|hdr
+op_assign
+(paren
+r_struct
+id|icmp6hdr
+op_star
+)paren
+id|skb-&gt;h.raw
 suffix:semicolon
 multiline_comment|/* Drop queries with not link local source */
 r_if
@@ -1887,14 +1893,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|icmp6hdr
-op_star
-id|hdr
-comma
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -1912,6 +1910,11 @@ id|inet6_dev
 op_star
 id|idev
 suffix:semicolon
+r_struct
+id|icmp6hdr
+op_star
+id|hdr
+suffix:semicolon
 multiline_comment|/* Our own report looped back. Ignore it. */
 r_if
 c_cond
@@ -1926,23 +1929,31 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|len
-OL
-r_sizeof
+op_logical_neg
+id|pskb_may_pull
+c_func
 (paren
-r_struct
-id|icmp6hdr
-)paren
-op_plus
+id|skb
+comma
 r_sizeof
 (paren
 r_struct
 id|in6_addr
 )paren
 )paren
+)paren
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|hdr
+op_assign
+(paren
+r_struct
+id|icmp6hdr
+op_star
+)paren
+id|skb-&gt;h.raw
 suffix:semicolon
 multiline_comment|/* Drop reports with not link local source */
 r_if
@@ -2170,7 +2181,7 @@ l_int|0
 comma
 id|IPV6_TLV_ROUTERALERT
 comma
-l_int|0
+l_int|2
 comma
 l_int|0
 comma
@@ -2251,8 +2262,6 @@ op_plus
 id|full_len
 op_plus
 l_int|15
-comma
-l_int|0
 comma
 l_int|0
 comma

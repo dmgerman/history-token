@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;9&t;16.10.99&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file define a set of standard wireless extensions&n; *&n; * Version :&t;11&t;28.3.01&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _LINUX_WIRELESS_H
 DECL|macro|_LINUX_WIRELESS_H
 mdefine_line|#define _LINUX_WIRELESS_H
@@ -12,8 +12,8 @@ multiline_comment|/**************************** CONSTANTS **********************
 multiline_comment|/* --------------------------- VERSION --------------------------- */
 multiline_comment|/*&n; * This constant is used to know the availability of the wireless&n; * extensions and to know which version of wireless extensions it is&n; * (there is some stuff that will be added in the future...)&n; * I just plan to increment with each new version.&n; */
 DECL|macro|WIRELESS_EXT
-mdefine_line|#define WIRELESS_EXT&t;10
-multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; */
+mdefine_line|#define WIRELESS_EXT&t;11
+multiline_comment|/*&n; * Changes :&n; *&n; * V2 to V3&n; * --------&n; *&t;Alan Cox start some incompatibles changes. I&squot;ve integrated a bit more.&n; *&t;- Encryption renamed to Encode to avoid US regulation problems&n; *&t;- Frequency changed from float to struct to avoid problems on old 386&n; *&n; * V3 to V4&n; * --------&n; *&t;- Add sensitivity&n; *&n; * V4 to V5&n; * --------&n; *&t;- Missing encoding definitions in range&n; *&t;- Access points stuff&n; *&n; * V5 to V6&n; * --------&n; *&t;- 802.11 support (ESSID ioctls)&n; *&n; * V6 to V7&n; * --------&n; *&t;- define IW_ESSID_MAX_SIZE and IW_MAX_AP&n; *&n; * V7 to V8&n; * --------&n; *&t;- Changed my e-mail address&n; *&t;- More 802.11 support (nickname, rate, rts, frag)&n; *&t;- List index in frequencies&n; *&n; * V8 to V9&n; * --------&n; *&t;- Support for &squot;mode of operation&squot; (ad-hoc, managed...)&n; *&t;- Support for unicast and multicast power saving&n; *&t;- Change encoding to support larger tokens (&gt;64 bits)&n; *&t;- Updated iw_params (disable, flags) and use it for NWID&n; *&t;- Extracted iw_point from iwreq for clarity&n; *&n; * V9 to V10&n; * ---------&n; *&t;- Add PM capability to range structure&n; *&t;- Add PM modifier : MAX/MIN/RELATIVE&n; *&t;- Add encoding option : IW_ENCODE_NOKEY&n; *&t;- Add TxPower ioctls (work like TxRate)&n; *&n; * V10 to V11&n; * ----------&n; *&t;- Add WE version in range (help backward/forward compatibility)&n; *&t;- Add retry ioctls (work like PM)&n; */
 multiline_comment|/* -------------------------- IOCTL LIST -------------------------- */
 multiline_comment|/* Basic operations */
 DECL|macro|SIOCSIWNAME
@@ -67,7 +67,7 @@ mdefine_line|#define SIOCSIWNICKN&t;0x8B1C&t;&t;/* set node name/nickname */
 DECL|macro|SIOCGIWNICKN
 mdefine_line|#define SIOCGIWNICKN&t;0x8B1D&t;&t;/* get node name/nickname */
 multiline_comment|/* As the ESSID and NICKN are strings up to 32 bytes long, it doesn&squot;t fit&n; * within the &squot;iwreq&squot; structure, so we need to use the &squot;data&squot; member to&n; * point to a string in user space, like it is done for RANGE...&n; * The &quot;flags&quot; member indicate if the ESSID is active or not (promiscuous).&n; */
-multiline_comment|/* Other parameters usefull in 802.11 and some other devices */
+multiline_comment|/* Other parameters useful in 802.11 and some other devices */
 DECL|macro|SIOCSIWRATE
 mdefine_line|#define SIOCSIWRATE&t;0x8B20&t;&t;/* set default bit rate (bps) */
 DECL|macro|SIOCGIWRATE
@@ -84,6 +84,10 @@ DECL|macro|SIOCSIWTXPOW
 mdefine_line|#define SIOCSIWTXPOW&t;0x8B26&t;&t;/* set transmit power (dBm) */
 DECL|macro|SIOCGIWTXPOW
 mdefine_line|#define SIOCGIWTXPOW&t;0x8B27&t;&t;/* get transmit power (dBm) */
+DECL|macro|SIOCSIWRETRY
+mdefine_line|#define SIOCSIWRETRY&t;0x8B28&t;&t;/* set retry limits and lifetime */
+DECL|macro|SIOCGIWRETRY
+mdefine_line|#define SIOCGIWRETRY&t;0x8B29&t;&t;/* get retry limits and lifetime */
 multiline_comment|/* Encoding stuff (scrambling, hardware security, WEP...) */
 DECL|macro|SIOCSIWENCODE
 mdefine_line|#define SIOCSIWENCODE&t;0x8B2A&t;&t;/* set encoding token &amp; mode */
@@ -214,6 +218,23 @@ DECL|macro|IW_TXPOW_DBM
 mdefine_line|#define IW_TXPOW_DBM&t;&t;0x0000&t;/* Value is in dBm */
 DECL|macro|IW_TXPOW_MWATT
 mdefine_line|#define IW_TXPOW_MWATT&t;&t;0x0001&t;/* Value is in mW */
+multiline_comment|/* Retry limits and lifetime flags available */
+DECL|macro|IW_RETRY_ON
+mdefine_line|#define IW_RETRY_ON&t;&t;0x0000&t;/* No details... */
+DECL|macro|IW_RETRY_TYPE
+mdefine_line|#define IW_RETRY_TYPE&t;&t;0xF000&t;/* Type of parameter */
+DECL|macro|IW_RETRY_LIMIT
+mdefine_line|#define IW_RETRY_LIMIT&t;&t;0x1000&t;/* Maximum number of retries*/
+DECL|macro|IW_RETRY_LIFETIME
+mdefine_line|#define IW_RETRY_LIFETIME&t;0x2000&t;/* Maximum duration of retries in us */
+DECL|macro|IW_RETRY_MODIFIER
+mdefine_line|#define IW_RETRY_MODIFIER&t;0x000F&t;/* Modify a parameter */
+DECL|macro|IW_RETRY_MIN
+mdefine_line|#define IW_RETRY_MIN&t;&t;0x0001&t;/* Value is a minimum  */
+DECL|macro|IW_RETRY_MAX
+mdefine_line|#define IW_RETRY_MAX&t;&t;0x0002&t;/* Value is a maximum */
+DECL|macro|IW_RETRY_RELATIVE
+mdefine_line|#define IW_RETRY_RELATIVE&t;0x0004&t;/* Value is not in seconds/ms/us */
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* --------------------------- SUBTYPES --------------------------- */
 multiline_comment|/*&n; *&t;Generic format for most parameters that fit in an int&n; */
@@ -243,7 +264,7 @@ suffix:semicolon
 multiline_comment|/* Various specifc flags (if any) */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;For all data larger than 16 octets, we need to use a&n; *&t;pointer to memory alocated in user space.&n; */
+multiline_comment|/*&n; *&t;For all data larger than 16 octets, we need to use a&n; *&t;pointer to memory allocated in user space.&n; */
 DECL|struct|iw_point
 r_struct
 id|iw_point
@@ -446,6 +467,12 @@ id|__u32
 id|mode
 suffix:semicolon
 multiline_comment|/* Operation mode */
+DECL|member|retry
+r_struct
+id|iw_param
+id|retry
+suffix:semicolon
+multiline_comment|/* Retry limits &amp; lifetime */
 DECL|member|encoding
 r_struct
 id|iw_point
@@ -644,6 +671,53 @@ id|IW_MAX_TXPOWER
 )braket
 suffix:semicolon
 multiline_comment|/* list, in bps */
+multiline_comment|/* Wireless Extension version info */
+DECL|member|we_version_compiled
+id|__u8
+id|we_version_compiled
+suffix:semicolon
+multiline_comment|/* Must be WIRELESS_EXT */
+DECL|member|we_version_source
+id|__u8
+id|we_version_source
+suffix:semicolon
+multiline_comment|/* Last update of source */
+multiline_comment|/* Retry limits and lifetime */
+DECL|member|retry_capa
+id|__u16
+id|retry_capa
+suffix:semicolon
+multiline_comment|/* What retry options are supported */
+DECL|member|retry_flags
+id|__u16
+id|retry_flags
+suffix:semicolon
+multiline_comment|/* How to decode max/min retry limit */
+DECL|member|r_time_flags
+id|__u16
+id|r_time_flags
+suffix:semicolon
+multiline_comment|/* How to decode max/min retry life */
+DECL|member|min_retry
+id|__s32
+id|min_retry
+suffix:semicolon
+multiline_comment|/* Minimal number of retries */
+DECL|member|max_retry
+id|__s32
+id|max_retry
+suffix:semicolon
+multiline_comment|/* Maximal number of retries */
+DECL|member|min_r_time
+id|__s32
+id|min_r_time
+suffix:semicolon
+multiline_comment|/* Minimal retry lifetime */
+DECL|member|max_r_time
+id|__s32
+id|max_r_time
+suffix:semicolon
+multiline_comment|/* Maximal retry lifetime */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Private ioctl interface information&n; */

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Machine dependent access functions for RTC registers.&
 macro_line|#ifndef __ASM_SPARC64_MC146818RTC_H
 DECL|macro|__ASM_SPARC64_MC146818RTC_H
 mdefine_line|#define __ASM_SPARC64_MC146818RTC_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef RTC_PORT
 macro_line|#ifdef CONFIG_PCI

@@ -191,10 +191,10 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|maybebadio
-mdefine_line|#define maybebadio(name,port) &bslash;&n;  printk(&quot;bad PC-like io %s for port 0x%x at 0x%08x&bslash;n&quot;, &bslash;&n;&t; #name, (port), (__u32) __builtin_return_address(0))
+mdefine_line|#define maybebadio(name,port) &bslash;&n;  printk(&quot;bad PC-like io %s for port 0x%lx at 0x%08x&bslash;n&quot;, &bslash;&n;&t; #name, (port), (__u32) __builtin_return_address(0))
 DECL|function|se_inb
 r_int
-r_int
+r_char
 id|se_inb
 c_func
 (paren
@@ -266,7 +266,7 @@ suffix:semicolon
 )brace
 DECL|function|se_inb_p
 r_int
-r_int
+r_char
 id|se_inb_p
 c_func
 (paren
@@ -429,7 +429,7 @@ id|se_outb
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -503,7 +503,7 @@ id|se_outb_p
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -1072,7 +1072,7 @@ suffix:semicolon
 )brace
 DECL|function|se_readb
 r_int
-r_int
+r_char
 id|se_readb
 c_func
 (paren

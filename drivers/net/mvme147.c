@@ -175,8 +175,6 @@ r_struct
 id|m147lance_private
 op_star
 id|root_m147lance_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Initialise the one and only on-board 7990 */
@@ -195,8 +193,6 @@ id|dev
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_const

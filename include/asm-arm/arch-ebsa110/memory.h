@@ -18,18 +18,19 @@ mdefine_line|#define PHYS_OFFSET&t;(0x00000000UL)
 DECL|macro|__virt_to_phys__is_a_macro
 mdefine_line|#define __virt_to_phys__is_a_macro
 DECL|macro|__virt_to_phys
-mdefine_line|#define __virt_to_phys(vpage) ((vpage) - PAGE_OFFSET)
+mdefine_line|#define __virt_to_phys(vpage)&t;((vpage) - PAGE_OFFSET)
 DECL|macro|__phys_to_virt__is_a_macro
 mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
-mdefine_line|#define __phys_to_virt(ppage) ((ppage) + PAGE_OFFSET)
+mdefine_line|#define __phys_to_virt(ppage)&t;((ppage) + PAGE_OFFSET)
+multiline_comment|/*&n; * We keep this 1:1 so that we don&squot;t interfere&n; * with the PCMCIA memory regions&n; */
 DECL|macro|__virt_to_bus__is_a_macro
 mdefine_line|#define __virt_to_bus__is_a_macro
 DECL|macro|__virt_to_bus
-mdefine_line|#define __virt_to_bus(x)&t;__virt_to_phys(x)
+mdefine_line|#define __virt_to_bus(x)&t;(x)
 DECL|macro|__bus_to_virt__is_a_macro
 mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
-mdefine_line|#define __bus_to_virt(x)&t;__phys_to_virt(x)
+mdefine_line|#define __bus_to_virt(x)&t;(x)
 macro_line|#endif
 eof

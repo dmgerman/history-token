@@ -613,12 +613,8 @@ DECL|variable|loading_module
 r_static
 r_int
 id|autoprobed
-op_assign
-l_int|0
 comma
 id|loading_module
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
 DECL|variable|name
@@ -636,12 +632,8 @@ DECL|variable|num_eth
 r_static
 r_int
 id|num_ewrk3s
-op_assign
-l_int|0
 comma
 id|num_eth
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;   ** Miscellaneous defines...&n; */
 DECL|macro|INIT_EWRK3

@@ -1173,8 +1173,6 @@ multiline_comment|/* HP on-board ethernet. */
 r_static
 r_int
 id|did_version
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Already printed version info. */
 r_int

@@ -437,6 +437,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_HIPPI) || defined(CONFIG_TR) || defined(CONFIG_NET_FC)
 DECL|function|__register_netdev
 r_static
 r_int
@@ -486,6 +487,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * init_etherdev - Register ethernet device&n; * @dev: An ethernet device structure to be filled in, or %NULL if a new&n; *&t;struct should be allocated.&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with ethernet-generic values.&n; *&n; * If no device structure is passed, a new one is constructed, complete with&n; * a private data area of size @sizeof_priv.  A 32-byte (not bit)&n; * alignment is enforced for this private data area.&n; *&n; * If an empty string area is passed as dev-&gt;name, or a new structure is made,&n; * a new name string is constructed.&n; */
 DECL|function|init_etherdev
 r_struct

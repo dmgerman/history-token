@@ -1,4 +1,5 @@
 multiline_comment|/* stnic.c : A SH7750 specific part of driver for NS DP83902A ST-NIC.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999 kaz Kojima&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -12,6 +13,9 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hitachi_se.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS 
+macro_line|#include &lt;asm/sh_bios.h&gt;
+macro_line|#endif
 macro_line|#include &quot;8390.h&quot;
 DECL|macro|byte
 mdefine_line|#define byte&t;unsigned char
@@ -214,6 +218,15 @@ op_star
 )paren
 l_int|0xa0000000
 suffix:semicolon
+id|trash
+op_assign
+op_star
+(paren
+id|vword
+op_star
+)paren
+l_int|0xa0000000
+suffix:semicolon
 )brace
 r_static
 r_inline
@@ -378,6 +391,7 @@ id|dev
 (brace
 id|printk
 (paren
+id|KERN_EMERG
 l_string|&quot;Unable to get memory for dev-&gt;priv.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -386,6 +400,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SH_STANDARD_BIOS 
+id|sh_bios_get_node_addr
+(paren
+id|stnic_eadr
+)paren
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -453,6 +474,7 @@ id|i
 (brace
 id|printk
 (paren
+id|KERN_EMERG
 l_string|&quot; unable to get IRQ %d.&bslash;n&quot;
 comma
 id|dev-&gt;irq
@@ -551,6 +573,7 @@ id|dev
 macro_line|#if 0
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;stnic open&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -617,8 +640,8 @@ OG
 l_int|1
 )paren
 id|printk
-c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;8390 reset done (%ld).&bslash;n&quot;
 comma
 id|jiffies
@@ -797,6 +820,7 @@ l_int|1
 )paren
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;ring %x status %02x next %02x count %04x.&bslash;n&quot;
 comma
 id|ring_page
@@ -1008,7 +1032,6 @@ r_int
 id|output_page
 )paren
 (brace
-macro_line|#if 0
 id|STNIC_WRITE
 (paren
 id|PG0_RBCR0
@@ -1016,46 +1039,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|STNIC_WRITE
-(paren
-id|STNIC_CR
-comma
-id|CR_RRD
-op_or
-id|CR_PG0
-op_or
-id|CR_STA
-)paren
-suffix:semicolon
-macro_line|#else  /* XXX: I don&squot;t know why but this works.  -- gniibe  */
-id|STNIC_WRITE
-(paren
-id|PG0_RBCR0
-comma
-l_int|0x42
-)paren
-suffix:semicolon
-id|STNIC_WRITE
-(paren
-id|PG0_RBCR1
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-id|STNIC_WRITE
-(paren
-id|PG0_RBCR0
-comma
-l_int|0x42
-)paren
-suffix:semicolon
-id|STNIC_WRITE
-(paren
-id|PG0_RBCR1
-comma
-l_int|0x00
-)paren
-suffix:semicolon
+multiline_comment|/* Write non-zero value */
 id|STNIC_WRITE
 (paren
 id|STNIC_CR
@@ -1069,21 +1053,6 @@ id|CR_STA
 suffix:semicolon
 id|STNIC_DELAY
 (paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|STNIC_WRITE
-(paren
-id|PG0_RSAR0
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|STNIC_WRITE
-(paren
-id|PG0_RSAR1
-comma
-id|output_page
 )paren
 suffix:semicolon
 id|STNIC_WRITE
@@ -1102,6 +1071,20 @@ comma
 id|length
 op_rshift
 l_int|8
+)paren
+suffix:semicolon
+id|STNIC_WRITE
+(paren
+id|PG0_RSAR0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|STNIC_WRITE
+(paren
+id|PG0_RSAR1
+comma
+id|output_page
 )paren
 suffix:semicolon
 id|STNIC_WRITE

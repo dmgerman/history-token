@@ -387,7 +387,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a kernel thread&n; */
-multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; * NOTE! Only a kernel-only process(ie the swapper or direct descendants&n; * who haven&squot;t done an &quot;execve()&quot;) should use this: it will work within&n; * a system call from a &quot;real&quot; process, but the process memory space will&n; * not be free&squot;d until both the parent and the child have exited.&n; */
+multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; */
 DECL|function|kernel_thread
 r_int
 id|kernel_thread
@@ -493,7 +493,7 @@ c_func
 (paren
 l_string|&quot;trapa&t;#0x12&bslash;n&bslash;t&quot;
 multiline_comment|/* Linux/SH system call */
-l_string|&quot;tst&t;#0xff, r0&bslash;n&bslash;t&quot;
+l_string|&quot;tst&t;r0, r0&bslash;n&bslash;t&quot;
 multiline_comment|/* child or parent? */
 l_string|&quot;bf&t;1f&bslash;n&bslash;t&quot;
 multiline_comment|/* parent - jump */

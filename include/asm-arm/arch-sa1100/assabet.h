@@ -25,7 +25,7 @@ mdefine_line|#define BCR (*(volatile unsigned int *)(BCR_BASE))
 DECL|macro|BCR_DB1110
 mdefine_line|#define BCR_DB1110&t;(0x00A07410)
 DECL|macro|BCR_DB1111
-mdefine_line|#define BCR_DB1111&t;(0x00A07462)
+mdefine_line|#define BCR_DB1111&t;(0x00A074E2)
 DECL|macro|BCR_CF_PWR
 mdefine_line|#define BCR_CF_PWR&t;(1&lt;&lt;0)&t;/* Compact Flash Power (1 = 3.3v, 0 = off) */
 DECL|macro|BCR_CF_RST
@@ -131,6 +131,8 @@ DECL|macro|IRQ_GPIO_CF_IRQ
 mdefine_line|#define IRQ_GPIO_CF_IRQ&t;&t;IRQ_GPIO21
 DECL|macro|IRQ_GPIO_CF_CD
 mdefine_line|#define IRQ_GPIO_CF_CD&t;&t;IRQ_GPIO22
+DECL|macro|IRQ_GPIO_MBREQ
+mdefine_line|#define IRQ_GPIO_MBREQ&t;&t;IRQ_GPIO22
 DECL|macro|IRQ_GPIO_UCB1300_IRQ
 mdefine_line|#define IRQ_GPIO_UCB1300_IRQ&t;IRQ_GPIO23
 DECL|macro|IRQ_GPIO_CF_BVD2
@@ -200,6 +202,10 @@ DECL|macro|IRR_USAR
 mdefine_line|#define IRR_USAR&t;&t;(1&lt;&lt;1)
 DECL|macro|IRR_SA1111
 mdefine_line|#define IRR_SA1111&t;&t;(1&lt;&lt;2)
+DECL|macro|AUD_SEL_1341
+mdefine_line|#define AUD_SEL_1341            (1&lt;&lt;0)
+DECL|macro|AUD_MUTE_1341
+mdefine_line|#define AUD_MUTE_1341           (1&lt;&lt;1)
 DECL|macro|NCR_GP01_OFF
 mdefine_line|#define NCR_GP01_OFF&t;&t;(1&lt;&lt;0)
 DECL|macro|NCR_TP_PWR_EN

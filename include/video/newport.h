@@ -1502,7 +1502,7 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * DCBMODE register defines:&n; */
-multiline_comment|/* Widht of the data being transfered for each DCBDATA[01] word */
+multiline_comment|/* Width of the data being transferred for each DCBDATA[01] word */
 DECL|macro|DCB_DATAWIDTH_4
 mdefine_line|#define DCB_DATAWIDTH_4 0x0
 DECL|macro|DCB_DATAWIDTH_1

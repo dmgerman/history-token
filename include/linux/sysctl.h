@@ -361,6 +361,17 @@ op_assign
 l_int|49
 comma
 multiline_comment|/* string: path to hotplug policy agent */
+DECL|enumerator|KERN_IEEE_EMULATION_WARNINGS
+id|KERN_IEEE_EMULATION_WARNINGS
+op_assign
+l_int|50
+comma
+multiline_comment|/* int: unimplemented ieee instructions */
+DECL|enumerator|KERN_S390_USER_DEBUG_LOGGING
+id|KERN_S390_USER_DEBUG_LOGGING
+op_assign
+l_int|51
+multiline_comment|/* int: dumps of user faults */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/sh/kernel/mach_se.c&n; *&n; * Copyright (C)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
 macro_line|#include &lt;asm/io_se.h&gt;
 r_void
@@ -153,10 +154,6 @@ id|mv_ioremap
 suffix:colon
 id|generic_ioremap
 comma
-id|mv_ioremap_nocache
-suffix:colon
-id|generic_ioremap_nocache
-comma
 id|mv_iounmap
 suffix:colon
 id|generic_iounmap
@@ -179,6 +176,14 @@ suffix:colon
 id|heartbeat_se
 comma
 macro_line|#endif
+id|mv_rtc_gettimeofday
+suffix:colon
+id|sh_rtc_gettimeofday
+comma
+id|mv_rtc_settimeofday
+suffix:colon
+id|sh_rtc_settimeofday
+comma
 id|mv_hw_se
 suffix:colon
 l_int|1

@@ -61,8 +61,7 @@ comma
 r_int
 id|code
 comma
-r_int
-r_int
+id|u32
 id|info
 )paren
 suffix:semicolon
@@ -75,10 +74,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 r_extern

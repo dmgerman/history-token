@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Jack Steiner (steiner@sgi.com)&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;

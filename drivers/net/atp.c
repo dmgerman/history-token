@@ -495,8 +495,6 @@ r_struct
 id|net_device
 op_star
 id|root_atp_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Check for a network adapter of this type, and return &squot;0&squot; iff one exists.&n;   If dev-&gt;base_addr == 0, probe all likely locations.&n;   If dev-&gt;base_addr == 1, always return failure.&n;   If dev-&gt;base_addr == 2, allocate space for the device and return success&n;   (detachable devices only).&n;   */
 DECL|function|atp_init
@@ -2471,8 +2469,6 @@ suffix:semicolon
 r_static
 r_int
 id|num_tx_since_rx
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|boguscount

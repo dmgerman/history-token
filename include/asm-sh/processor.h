@@ -24,6 +24,9 @@ multiline_comment|/* Represents 7709A, 7729 */
 DECL|enumerator|CPU_SH7750
 id|CPU_SH7750
 comma
+DECL|enumerator|CPU_ST40STB1
+id|CPU_ST40STB1
+comma
 DECL|enumerator|CPU_SH_NONE
 id|CPU_SH_NONE
 )brace

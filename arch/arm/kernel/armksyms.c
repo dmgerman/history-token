@@ -149,23 +149,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|sys_wait4
-c_func
-(paren
-r_int
-comma
-r_int
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * libgcc functions - functions that are used internally by the&n; * compiler...  (prototypes are not correct though, but that&n; * doesn&squot;t really matter since they&squot;re not versioned).&n; */
 r_extern
 r_void
@@ -328,8 +311,8 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
-mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig) &bslash;&n; const char __kstrtab_##sym##[] __attribute__((section(&quot;.kstrtab&quot;))) = &bslash;&n;    __MODULE_STRING(##sym##); &bslash;&n; const struct module_symbol __ksymtab_##sym __attribute__((section(&quot;__ksymtab&quot;))) = &bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
-multiline_comment|/*&n;&t; * floating point math emulator support.&n;&t; * These symbols will never change their calling convention...&n;&t; */
+mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym##[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
+multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
 id|EXPORT_SYMBOL_ALIAS
 c_func
 (paren
@@ -370,6 +353,7 @@ id|ret_from_exception
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 DECL|variable|kd_mksound
 id|EXPORT_SYMBOL
 c_func
@@ -377,6 +361,7 @@ c_func
 id|kd_mksound
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* platform dependent support */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
@@ -611,20 +596,6 @@ id|quicklists
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__handle_bad_pmd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__handle_bad_pmd
-)paren
-suffix:semicolon
-DECL|variable|__handle_bad_pmd_kernel
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__handle_bad_pmd_kernel
-)paren
-suffix:semicolon
 multiline_comment|/* string / mem functions */
 DECL|variable|strcpy
 id|EXPORT_SYMBOL_NOVERS

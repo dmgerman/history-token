@@ -222,8 +222,6 @@ DECL|variable|apne_owned
 r_static
 r_int
 id|apne_owned
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* signal if card already owned */
 DECL|function|apne_probe
@@ -442,8 +440,6 @@ macro_line|#endif
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 id|u32

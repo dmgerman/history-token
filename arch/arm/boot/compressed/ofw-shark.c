@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * linux/arch/arm/boot/compressed/ofw-shark.c&n; *&n; * by Alexander.Schulz@stud.uni-karlsruhe.de&n; *&n; * This file is used to get some basic information&n; * about the memory layout of the shark we are running&n; * on. Memory is usually divided in blocks a 8 MB.&n; * And bootargs are copied from OpenFirmware.&n; */
+multiline_comment|/*&n; * linux/arch/arm/boot/compressed/ofw-shark.c&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * This file is used to get some basic information&n; * about the memory layout of the shark we are running&n; * on. Memory is usually divided in blocks a 8 MB.&n; * And bootargs are copied from OpenFirmware.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 id|asmlinkage
@@ -13,7 +14,7 @@ op_star
 id|buffer
 )paren
 (brace
-multiline_comment|/* Is there a better address? Also change in kernel/arch.c */
+multiline_comment|/* Is there a better address? Also change in mach-shark/arch.c */
 r_struct
 id|param_struct
 op_star

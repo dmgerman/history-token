@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.27 2000/06/21 17:18:40 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; */
+multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.30 2001/03/03 01:20:10 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -201,7 +201,7 @@ id|newskb-&gt;mac.raw
 op_assign
 id|newskb-&gt;data
 suffix:semicolon
-id|skb_pull
+id|__skb_pull
 c_func
 (paren
 id|newskb
@@ -333,7 +333,7 @@ id|newskb
 id|NF_HOOK
 c_func
 (paren
-id|PF_INET
+id|PF_INET6
 comma
 id|NF_IP6_POST_ROUTING
 comma
@@ -1546,8 +1546,6 @@ id|dst-&gt;dev-&gt;hard_header_len
 op_plus
 l_int|15
 comma
-l_int|0
-comma
 id|flags
 op_amp
 id|MSG_DONTWAIT
@@ -2497,8 +2495,6 @@ l_int|15
 op_plus
 id|dev-&gt;hard_header_len
 comma
-l_int|0
-comma
 id|flags
 op_amp
 id|MSG_DONTWAIT
@@ -2929,8 +2925,6 @@ c_func
 id|last
 comma
 id|skb2
-comma
-id|skb2-&gt;len
 )paren
 suffix:semicolon
 )brace
@@ -2952,8 +2946,6 @@ c_func
 id|last
 comma
 id|skb
-comma
-id|skb-&gt;len
 )paren
 suffix:semicolon
 id|read_unlock
@@ -3050,7 +3042,11 @@ op_eq
 l_int|0
 )paren
 r_goto
-id|drop
+id|error
+suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;We DO NOT make any processing on&n;&t; *&t;RA packets, pushing them to user level AS IS&n;&t; *&t;without ane WARRANTY that application will be able&n;&t; *&t;to interpret them. The reason is that we&n;&t; *&t;cannot make anything clever here.&n;&t; *&n;&t; *&t;We are not end-node, so that if packet contains&n;&t; *&t;AH/ESP, we cannot make anything.&n;&t; *&t;Defragmentation also would be mistake, RA packets&n;&t; *&t;cannot be fragmented, because there is no warranty&n;&t; *&t;that different fragments will go along one path. --ANK&n;&t; */
 r_if
@@ -3249,7 +3245,7 @@ id|IPV6_ADDR_LINKLOCAL
 (brace
 multiline_comment|/* This check is security critical. */
 r_goto
-id|drop
+id|error
 suffix:semicolon
 )brace
 r_if
@@ -3299,9 +3295,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|skb
-op_assign
 id|skb_cow
 c_func
 (paren
@@ -3310,11 +3303,8 @@ comma
 id|dst-&gt;dev-&gt;hard_header_len
 )paren
 )paren
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 id|hdr
 op_assign
@@ -3347,7 +3337,7 @@ comma
 id|ip6_forward_finish
 )paren
 suffix:semicolon
-id|drop
+id|error
 suffix:colon
 id|IP6_INC_STATS_BH
 c_func
@@ -3355,6 +3345,8 @@ c_func
 id|Ip6InAddrErrors
 )paren
 suffix:semicolon
+id|drop
+suffix:colon
 id|kfree_skb
 c_func
 (paren

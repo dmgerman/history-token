@@ -641,12 +641,8 @@ r_static
 r_int
 r_char
 id|init_ID_done
-op_assign
-l_int|0
 comma
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -3366,8 +3362,6 @@ DECL|variable|irq
 r_static
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

@@ -254,8 +254,6 @@ r_struct
 id|lance_private
 op_star
 id|root_a2065_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|macro|TX_BUFFS_AVAIL

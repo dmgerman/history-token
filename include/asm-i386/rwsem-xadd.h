@@ -1,7 +1,10 @@
-multiline_comment|/* rwsem-xadd.h: R/W semaphores implemented using XADD/CMPXCHG&n; *&n; * Written by David Howells (dhowells@redhat.com), 2001.&n; * Derived from asm-i386/semaphore.h&n; *&n; *&n; * The MSW of the count is the negated number of active writers and waiting&n; * lockers, and the LSW is the total number of active locks&n; *&n; * The lock count is initialized to 0 (no active and no waiting lockers).&n; *&n; * When a writer subtracts WRITE_BIAS, it&squot;ll get 0xffff0001 for the case of an&n; * uncontended lock. This can be determined because XADD returns the old value.&n; * Readers increment by 1 and see a positive value when uncontended, negative&n; * if there are writers (and maybe) readers waiting (in which case it goes to&n; * sleep).&n; *&n; * The value of WAITING_BIAS supports up to 32766 waiting processes. This can&n; * be extended to 65534 by manually checking the whole MSW rather than relying&n; * on the S flag.&n; *&n; * The value of ACTIVE_BIAS supports up to 65535 active processes.&n; *&n; * This should be totally fair - if anything is waiting, a process that wants a&n; * lock will go to the back of the queue. When the currently active lock is&n; * released, if there&squot;s a writer at the front of the queue, then that and only&n; * that will be woken up; if there&squot;s a bunch of consequtive readers at the&n; * front, then they&squot;ll all be woken up, but no other readers will be.&n; */
+multiline_comment|/* rwsem-xadd.h: R/W semaphores implemented using XADD/CMPXCHG&n; *&n; * Written by David Howells (dhowells@redhat.com), 2001.&n; * Derived from asm-i386/semaphore.h&n; */
 macro_line|#ifndef _I386_RWSEM_XADD_H
 DECL|macro|_I386_RWSEM_XADD_H
 mdefine_line|#define _I386_RWSEM_XADD_H
+macro_line|#ifndef _LINUX_RWSEM_H
+macro_line|#error please dont include asm/rwsem-xadd.h directly, use linux/rwsem.h instead
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
@@ -9,7 +12,8 @@ r_struct
 id|rw_semaphore
 (brace
 DECL|member|count
-id|atomic_t
+r_int
+r_int
 id|count
 suffix:semicolon
 DECL|macro|RWSEM_UNLOCKED_VALUE
@@ -70,7 +74,7 @@ DECL|macro|__RWSEM_DEBUG_MINIT
 mdefine_line|#define __RWSEM_DEBUG_MINIT(name)&t;/* */
 macro_line|#endif
 DECL|macro|__RWSEM_INITIALIZER
-mdefine_line|#define __RWSEM_INITIALIZER(name,count) &bslash;&n;{ ATOMIC_INIT(RWSEM_UNLOCKED_VALUE), __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
+mdefine_line|#define __RWSEM_INITIALIZER(name,count) &bslash;&n;{ RWSEM_UNLOCKED_VALUE, __WAIT_QUEUE_HEAD_INITIALIZER((name).wait) &bslash;&n;&t;__RWSEM_DEBUG_INIT __RWSEM_DEBUG_MINIT(name) }
 DECL|macro|__DECLARE_RWSEM_GENERIC
 mdefine_line|#define __DECLARE_RWSEM_GENERIC(name,count) &bslash;&n;&t;struct rw_semaphore name = __RWSEM_INITIALIZER(name,count)
 DECL|macro|DECLARE_RWSEM
@@ -92,14 +96,9 @@ op_star
 id|sem
 )paren
 (brace
-id|atomic_set
-c_func
-(paren
-op_amp
 id|sem-&gt;count
-comma
+op_assign
 id|RWSEM_UNLOCKED_VALUE
-)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -170,7 +169,7 @@ multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
-l_string|&quot;  call      __down_read_failed&bslash;n&bslash;t&quot;
+l_string|&quot;  call      __rwsem_down_read_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
 l_string|&quot;.previous&quot;
 l_string|&quot;# ending down_read&bslash;n&bslash;t&quot;
@@ -230,7 +229,7 @@ multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
-l_string|&quot;  call      __down_write_failed&bslash;n&bslash;t&quot;
+l_string|&quot;  call      __rwsem_down_write_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;# ending down_write&quot;
@@ -387,6 +386,91 @@ id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * implement exchange and add functionality&n; */
+DECL|function|rwsem_atomic_update
+r_static
+r_inline
+r_int
+id|rwsem_atomic_update
+c_func
+(paren
+r_int
+id|delta
+comma
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+id|tmp
+op_assign
+id|delta
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+id|LOCK_PREFIX
+l_string|&quot;xadd %0,(%1)&quot;
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|sem
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|tmp
+op_plus
+id|delta
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * implement compare and exchange functionality on the rw-semaphore count LSW&n; */
+DECL|function|rwsem_cmpxchgw
+r_static
+r_inline
+id|__u16
+id|rwsem_cmpxchgw
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+comma
+id|__u16
+id|old
+comma
+id|__u16
+r_new
+)paren
+(brace
+r_return
+id|cmpxchg
+c_func
+(paren
+(paren
+id|__u16
+op_star
+)paren
+op_amp
+id|sem-&gt;count
+comma
+l_int|0
+comma
+id|RWSEM_ACTIVE_BIAS
 )paren
 suffix:semicolon
 )brace

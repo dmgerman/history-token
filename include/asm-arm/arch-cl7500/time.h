@@ -29,6 +29,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
 (brace
 multiline_comment|/* Twinkle the lights. */
 r_static
@@ -37,7 +43,7 @@ id|count
 comma
 id|state
 op_assign
-l_int|0xff
+l_int|0xff00
 suffix:semicolon
 r_if
 c_cond
@@ -50,7 +56,7 @@ l_int|0
 (brace
 id|state
 op_xor_assign
-l_int|1
+l_int|0x100
 suffix:semicolon
 id|count
 op_assign
@@ -64,21 +70,13 @@ r_int
 r_int
 op_star
 )paren
-(paren
-l_int|0xe002ba00
-)paren
+id|LED_ADDRESS
 )paren
 op_assign
 id|state
 suffix:semicolon
 )brace
 )brace
-id|do_profile
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt.&n; */
 DECL|function|setup_timer
@@ -91,6 +89,19 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_void
+id|ioctime_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|ioctime_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|timer_irq.handler
 op_assign
 id|timer_interrupt

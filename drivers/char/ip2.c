@@ -5,7 +5,6 @@ singleline_comment|// macro doesn&squot;t always works on all platforms so we us
 singleline_comment|// If not compiled as a module it just makes fip_firm avaliable then
 singleline_comment|//  __initdata should work as advertized
 singleline_comment|//
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

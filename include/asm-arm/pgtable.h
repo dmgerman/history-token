@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/pgtable.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/pgtable.h&n; *&n; *  Copyright (C) 2000-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _ASMARM_PGTABLE_H
 DECL|macro|_ASMARM_PGTABLE_H
 mdefine_line|#define _ASMARM_PGTABLE_H
@@ -129,27 +129,6 @@ id|empty_zero_page
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(empty_zero_page)
-multiline_comment|/*&n; * Handling allocation failures during page table setup.&n; */
-r_extern
-r_void
-id|__handle_bad_pmd
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__handle_bad_pmd_kernel
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_clear
@@ -164,6 +143,8 @@ mdefine_line|#define pte_page(x)&t;&t;(virt_to_page(__va(pte_val((x)))))
 macro_line|#endif
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
+DECL|macro|pmd_present
+mdefine_line|#define pmd_present(pmd)&t;(pmd_val(pmd))
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;set_pmd(pmdp, __pmd(0))
 multiline_comment|/*&n; * Permanent address of a page. We never have highmem, so this is trivial.&n; */
@@ -289,8 +270,6 @@ id|swapper_pg_dir
 id|PTRS_PER_PGD
 )braket
 suffix:semicolon
-DECL|macro|update_mmu_cache
-mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
 multiline_comment|/* Encode and decode a swap entry.&n; *&n; * We support up to 32GB of swap on 4k machines&n; */
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(x)&t;&t;(((x).val &gt;&gt; 2) &amp; 0x7f)

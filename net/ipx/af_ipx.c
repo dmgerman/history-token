@@ -64,7 +64,6 @@ r_char
 id|ipxcfg_auto_create_interfaces
 suffix:semicolon
 DECL|variable|sysctl_ipx_pprop_broadcasting
-r_static
 r_int
 id|sysctl_ipx_pprop_broadcasting
 op_assign
@@ -5869,8 +5868,6 @@ id|sk
 comma
 id|size
 comma
-l_int|0
-comma
 id|noblock
 comma
 op_amp
@@ -10270,6 +10267,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon

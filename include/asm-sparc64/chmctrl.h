@@ -1,0 +1,338 @@
+multiline_comment|/* $Id: chmctrl.h,v 1.1 2001/03/29 11:43:28 davem Exp $ */
+macro_line|#ifndef _SPARC64_CHMCTRL_H
+DECL|macro|_SPARC64_CHMCTRL_H
+mdefine_line|#define _SPARC64_CHMCTRL_H
+multiline_comment|/* Cheetah memory controller programmable registers. */
+DECL|macro|CHMCTRL_TCTRL1
+mdefine_line|#define CHMCTRL_TCTRL1&t;&t;0x00 /* Memory Timing Control I&t;&t;*/
+DECL|macro|CHMCTRL_TCTRL2
+mdefine_line|#define CHMCTRL_TCTRL2&t;&t;0x08 /* Memory Timing Control II&t;*/
+DECL|macro|CHMCTRL_TCTRL3
+mdefine_line|#define CHMCTRL_TCTRL3&t;&t;0x38 /* Memory Timing Control III&t;*/
+DECL|macro|CHMCTRL_TCTRL4
+mdefine_line|#define CHMCTRL_TCTRL4&t;&t;0x40 /* Memory Timing Control IV&t;*/
+DECL|macro|CHMCTRL_DECODE1
+mdefine_line|#define CHMCTRL_DECODE1&t;&t;0x10 /* Memory Address Decode I&t;&t;*/
+DECL|macro|CHMCTRL_DECODE2
+mdefine_line|#define CHMCTRL_DECODE2&t;&t;0x18 /* Memory Address Decode II&t;*/
+DECL|macro|CHMCTRL_DECODE3
+mdefine_line|#define CHMCTRL_DECODE3&t;&t;0x20 /* Memory Address Decode III&t;*/
+DECL|macro|CHMCTRL_DECODE4
+mdefine_line|#define CHMCTRL_DECODE4&t;&t;0x28 /* Memory Address Decode IV&t;*/
+DECL|macro|CHMCTRL_MACTRL
+mdefine_line|#define CHMCTRL_MACTRL&t;&t;0x30 /* Memory Address Control&t;&t;*/
+multiline_comment|/* Memory Timing Control I */
+DECL|macro|TCTRL1_SDRAMCTL_DLY
+mdefine_line|#define TCTRL1_SDRAMCTL_DLY&t;0xf000000000000000
+DECL|macro|TCTRL1_SDRAMCTL_DLY_SHIFT
+mdefine_line|#define TCTRL1_SDRAMCTL_DLY_SHIFT     60
+DECL|macro|TCTRL1_SDRAMCLK_DLY
+mdefine_line|#define TCTRL1_SDRAMCLK_DLY&t;0x0e00000000000000
+DECL|macro|TCTRL1_SDRAMCLK_DLY_SHIFT
+mdefine_line|#define TCTRL1_SDRAMCLK_DLY_SHIFT     57
+DECL|macro|TCTRL1_R
+mdefine_line|#define TCTRL1_R&t;&t;0x0100000000000000
+DECL|macro|TCTRL1_R_SHIFT
+mdefine_line|#define TCTRL1_R_SHIFT &t;&t;      56
+DECL|macro|TCTRL1_AUTORFR_CYCLE
+mdefine_line|#define TCTRL1_AUTORFR_CYCLE&t;0x00fe000000000000
+DECL|macro|TCTRL1_AUTORFR_CYCLE_SHIFT
+mdefine_line|#define TCTRL1_AUTORFR_CYCLE_SHIFT    49
+DECL|macro|TCTRL1_RD_WAIT
+mdefine_line|#define TCTRL1_RD_WAIT&t;&t;0x0001f00000000000
+DECL|macro|TCTRL1_RD_WAIT_SHIFT
+mdefine_line|#define TCTRL1_RD_WAIT_SHIFT&t;      44
+DECL|macro|TCTRL1_PC_CYCLE
+mdefine_line|#define TCTRL1_PC_CYCLE&t;&t;0x00000fc000000000
+DECL|macro|TCTRL1_PC_CYCLE_SHIFT
+mdefine_line|#define TCTRL1_PC_CYCLE_SHIFT&t;      38
+DECL|macro|TCTRL1_WR_MORE_RAS_PW
+mdefine_line|#define TCTRL1_WR_MORE_RAS_PW&t;0x0000003f00000000
+DECL|macro|TCTRL1_WR_MORE_RAS_PW_SHIFT
+mdefine_line|#define TCTRL1_WR_MORE_RAS_PW_SHIFT   32
+DECL|macro|TCTRL1_RD_MORE_RAW_PW
+mdefine_line|#define TCTRL1_RD_MORE_RAW_PW&t;0x00000000fc000000
+DECL|macro|TCTRL1_RD_MORE_RAS_PW_SHIFT
+mdefine_line|#define TCTRL1_RD_MORE_RAS_PW_SHIFT   26
+DECL|macro|TCTRL1_ACT_WR_DLY
+mdefine_line|#define TCTRL1_ACT_WR_DLY&t;0x0000000003f00000
+DECL|macro|TCTRL1_ACT_WR_DLY_SHIFT
+mdefine_line|#define TCTRL1_ACT_WR_DLY_SHIFT&t;      20
+DECL|macro|TCTRL1_ACT_RD_DLY
+mdefine_line|#define TCTRL1_ACT_RD_DLY&t;0x00000000000fc000
+DECL|macro|TCTRL1_ACT_RD_DLY_SHIFT
+mdefine_line|#define TCTRL1_ACT_RD_DLY_SHIFT&t;      14
+DECL|macro|TCTRL1_BANK_PRESENT
+mdefine_line|#define TCTRL1_BANK_PRESENT&t;0x0000000000003000
+DECL|macro|TCTRL1_BANK_PRESENT_SHIFT
+mdefine_line|#define TCTRL1_BANK_PRESENT_SHIFT     12
+DECL|macro|TCTRL1_RFR_INT
+mdefine_line|#define TCTRL1_RFR_INT&t;&t;0x0000000000000ff8
+DECL|macro|TCTRL1_RFR_INT_SHIFT
+mdefine_line|#define TCTRL1_RFR_INT_SHIFT&t;      3
+DECL|macro|TCTRL1_SET_MODE_REG
+mdefine_line|#define TCTRL1_SET_MODE_REG&t;0x0000000000000004
+DECL|macro|TCTRL1_SET_MODE_REG_SHIFT
+mdefine_line|#define TCTRL1_SET_MODE_REG_SHIFT     2
+DECL|macro|TCTRL1_RFR_ENABLE
+mdefine_line|#define TCTRL1_RFR_ENABLE&t;0x0000000000000002
+DECL|macro|TCTRL1_RFR_ENABLE_SHIFT
+mdefine_line|#define TCTRL1_RFR_ENABLE_SHIFT&t;      1
+DECL|macro|TCTRL1_PRECHG_ALL
+mdefine_line|#define TCTRL1_PRECHG_ALL&t;0x0000000000000001
+DECL|macro|TCTRL1_PRECHG_ALL_SHIFT
+mdefine_line|#define TCTRL1_PRECHG_ALL_SHIFT&t;      0
+multiline_comment|/* Memory Timing Control II */
+DECL|macro|TCTRL2_WR_MSEL_DLY
+mdefine_line|#define TCTRL2_WR_MSEL_DLY&t;0xfc00000000000000
+DECL|macro|TCTRL2_WR_MSEL_DLY_SHIFT
+mdefine_line|#define TCTRL2_WR_MSEL_DLY_SHIFT      58
+DECL|macro|TCTRL2_RD_MSEL_DLY
+mdefine_line|#define TCTRL2_RD_MSEL_DLY&t;0x03f0000000000000
+DECL|macro|TCTRL2_RD_MSEL_DLY_SHIFT
+mdefine_line|#define TCTRL2_RD_MSEL_DLY_SHIFT      52
+DECL|macro|TCTRL2_WRDATA_THLD
+mdefine_line|#define TCTRL2_WRDATA_THLD&t;0x000c000000000000
+DECL|macro|TCTRL2_WRDATA_THLD_SHIFT
+mdefine_line|#define TCTRL2_WRDATA_THLD_SHIFT      50
+DECL|macro|TCTRL2_RDWR_RD_TI_DLY
+mdefine_line|#define TCTRL2_RDWR_RD_TI_DLY&t;0x0003f00000000000
+DECL|macro|TCTRL2_RDWR_RD_TI_DLY_SHIFT
+mdefine_line|#define TCTRL2_RDWR_RD_TI_DLY_SHIFT   44
+DECL|macro|TCTRL2_AUTOPRECHG_ENBL
+mdefine_line|#define TCTRL2_AUTOPRECHG_ENBL&t;0x0000080000000000
+DECL|macro|TCTRL2_AUTOPRECHG_ENBL_SHIFT
+mdefine_line|#define TCTRL2_AUTOPRECHG_ENBL_SHIFT  43
+DECL|macro|TCTRL2_RDWR_PI_MORE_DLY
+mdefine_line|#define TCTRL2_RDWR_PI_MORE_DLY&t;0x000007c000000000
+DECL|macro|TCTRL2_RDWR_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL2_RDWR_PI_MORE_DLY_SHIFT 38
+DECL|macro|TCTRL2_RDWR_1_DLY
+mdefine_line|#define TCTRL2_RDWR_1_DLY&t;0x0000003f00000000
+DECL|macro|TCTRL2_RDWR_1_DLY_SHIFT
+mdefine_line|#define TCTRL2_RDWR_1_DLY_SHIFT       32
+DECL|macro|TCTRL2_WRWR_PI_MORE_DLY
+mdefine_line|#define TCTRL2_WRWR_PI_MORE_DLY&t;0x00000000f8000000
+DECL|macro|TCTRL2_WRWR_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL2_WRWR_PI_MORE_DLY_SHIFT 27
+DECL|macro|TCTRL2_WRWR_1_DLY
+mdefine_line|#define TCTRL2_WRWR_1_DLY&t;0x0000000007e00000
+DECL|macro|TCTRL2_WRWR_1_DLY_SHIFT
+mdefine_line|#define TCTRL2_WRWR_1_DLY_SHIFT       21
+DECL|macro|TCTRL2_RDWR_RD_PI_MORE_DLY
+mdefine_line|#define TCTRL2_RDWR_RD_PI_MORE_DLY 0x00000000001f0000
+DECL|macro|TCTRL2_RDWR_RD_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL2_RDWR_RD_PI_MORE_DLY_SHIFT 16
+DECL|macro|TCTRL2_R
+mdefine_line|#define TCTRL2_R&t;&t;0x0000000000008000
+DECL|macro|TCTRL2_R_SHIFT
+mdefine_line|#define TCTRL2_R_SHIFT&t;&t;      15
+DECL|macro|TCTRL2_SDRAM_MODE_REG_DATA
+mdefine_line|#define TCTRL2_SDRAM_MODE_REG_DATA 0x0000000000007fff
+DECL|macro|TCTRL2_SDRAM_MODE_REG_DATA_SHIFT
+mdefine_line|#define TCTRL2_SDRAM_MODE_REG_DATA_SHIFT 0
+multiline_comment|/* Memory Timing Control III */
+DECL|macro|TCTRL3_SDRAM_CTL_DLY
+mdefine_line|#define TCTRL3_SDRAM_CTL_DLY&t;0xf000000000000000
+DECL|macro|TCTRL3_SDRAM_CTL_DLY_SHIFT
+mdefine_line|#define TCTRL3_SDRAM_CTL_DLY_SHIFT    60
+DECL|macro|TCTRL3_SDRAM_CLK_DLY
+mdefine_line|#define TCTRL3_SDRAM_CLK_DLY&t;0x0e00000000000000
+DECL|macro|TCTRL3_SDRAM_CLK_DLY_SHIFT
+mdefine_line|#define TCTRL3_SDRAM_CLK_DLY_SHIFT    57
+DECL|macro|TCTRL3_R
+mdefine_line|#define TCTRL3_R&t;&t;0x0100000000000000
+DECL|macro|TCTRL3_R_SHIFT
+mdefine_line|#define TCTRL3_R_SHIFT&t;&t;      56
+DECL|macro|TCTRL3_AUTO_RFR_CYCLE
+mdefine_line|#define TCTRL3_AUTO_RFR_CYCLE&t;0x00fe000000000000
+DECL|macro|TCTRL3_AUTO_RFR_CYCLE_SHIFT
+mdefine_line|#define TCTRL3_AUTO_RFR_CYCLE_SHIFT   49
+DECL|macro|TCTRL3_RD_WAIT
+mdefine_line|#define TCTRL3_RD_WAIT&t;&t;0x0001f00000000000
+DECL|macro|TCTRL3_RD_WAIT_SHIFT
+mdefine_line|#define TCTRL3_RD_WAIT_SHIFT&t;      44
+DECL|macro|TCTRL3_PC_CYCLE
+mdefine_line|#define TCTRL3_PC_CYCLE&t;&t;0x00000fc000000000
+DECL|macro|TCTRL3_PC_CYCLE_SHIFT
+mdefine_line|#define TCTRL3_PC_CYCLE_SHIFT&t;      38
+DECL|macro|TCTRL3_WR_MORE_RAW_PW
+mdefine_line|#define TCTRL3_WR_MORE_RAW_PW&t;0x0000003f00000000
+DECL|macro|TCTRL3_WR_MORE_RAW_PW_SHIFT
+mdefine_line|#define TCTRL3_WR_MORE_RAW_PW_SHIFT   32
+DECL|macro|TCTRL3_RD_MORE_RAW_PW
+mdefine_line|#define TCTRL3_RD_MORE_RAW_PW&t;0x00000000fc000000
+DECL|macro|TCTRL3_RD_MORE_RAW_PW_SHIFT
+mdefine_line|#define TCTRL3_RD_MORE_RAW_PW_SHIFT   26
+DECL|macro|TCTRL3_ACT_WR_DLY
+mdefine_line|#define TCTRL3_ACT_WR_DLY&t;0x0000000003f00000
+DECL|macro|TCTRL3_ACT_WR_DLY_SHIFT
+mdefine_line|#define TCTRL3_ACT_WR_DLY_SHIFT       20
+DECL|macro|TCTRL3_ACT_RD_DLY
+mdefine_line|#define TCTRL3_ACT_RD_DLY&t;0x00000000000fc000
+DECL|macro|TCTRL3_ACT_RD_DLY_SHIFT
+mdefine_line|#define TCTRL3_ACT_RD_DLY_SHIFT       14
+DECL|macro|TCTRL3_BANK_PRESENT
+mdefine_line|#define TCTRL3_BANK_PRESENT&t;0x0000000000003000
+DECL|macro|TCTRL3_BANK_PRESENT_SHIFT
+mdefine_line|#define TCTRL3_BANK_PRESENT_SHIFT     12
+DECL|macro|TCTRL3_RFR_INT
+mdefine_line|#define TCTRL3_RFR_INT&t;&t;0x0000000000000ff8
+DECL|macro|TCTRL3_RFR_INT_SHIFT
+mdefine_line|#define TCTRL3_RFR_INT_SHIFT&t;      3
+DECL|macro|TCTRL3_SET_MODE_REG
+mdefine_line|#define TCTRL3_SET_MODE_REG&t;0x0000000000000004
+DECL|macro|TCTRL3_SET_MODE_REG_SHIFT
+mdefine_line|#define TCTRL3_SET_MODE_REG_SHIFT     2
+DECL|macro|TCTRL3_RFR_ENABLE
+mdefine_line|#define TCTRL3_RFR_ENABLE&t;0x0000000000000002
+DECL|macro|TCTRL3_RFR_ENABLE_SHIFT
+mdefine_line|#define TCTRL3_RFR_ENABLE_SHIFT       1
+DECL|macro|TCTRL3_PRECHG_ALL
+mdefine_line|#define TCTRL3_PRECHG_ALL&t;0x0000000000000001
+DECL|macro|TCTRL3_PRECHG_ALL_SHIFT
+mdefine_line|#define TCTRL3_PRECHG_ALL_SHIFT&t;      0
+multiline_comment|/* Memory Timing Control IV */
+DECL|macro|TCTRL4_WR_MSEL_DLY
+mdefine_line|#define TCTRL4_WR_MSEL_DLY&t;0xfc00000000000000
+DECL|macro|TCTRL4_WR_MSEL_DLY_SHIFT
+mdefine_line|#define TCTRL4_WR_MSEL_DLY_SHIFT      58
+DECL|macro|TCTRL4_RD_MSEL_DLY
+mdefine_line|#define TCTRL4_RD_MSEL_DLY&t;0x03f0000000000000
+DECL|macro|TCTRL4_RD_MSEL_DLY_SHIFT
+mdefine_line|#define TCTRL4_RD_MSEL_DLY_SHIFT      52
+DECL|macro|TCTRL4_WRDATA_THLD
+mdefine_line|#define TCTRL4_WRDATA_THLD&t;0x000c000000000000
+DECL|macro|TCTRL4_WRDATA_THLD_SHIFT
+mdefine_line|#define TCTRL4_WRDATA_THLD_SHIFT      50
+DECL|macro|TCTRL4_RDWR_RD_RI_DLY
+mdefine_line|#define TCTRL4_RDWR_RD_RI_DLY&t;0x0003f00000000000
+DECL|macro|TCTRL4_RDWR_RD_RI_DLY_SHIFT
+mdefine_line|#define TCTRL4_RDWR_RD_RI_DLY_SHIFT   44
+DECL|macro|TCTRL4_AUTO_PRECHG_ENBL
+mdefine_line|#define TCTRL4_AUTO_PRECHG_ENBL&t;0x0000080000000000
+DECL|macro|TCTRL4_AUTO_PRECHG_ENBL_SHIFT
+mdefine_line|#define TCTRL4_AUTO_PRECHG_ENBL_SHIFT 43
+DECL|macro|TCTRL4_RD_WR_PI_MORE_DLY
+mdefine_line|#define TCTRL4_RD_WR_PI_MORE_DLY 0x000007c000000000
+DECL|macro|TCTRL4_RD_WR_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL4_RD_WR_PI_MORE_DLY_SHIFT 38
+DECL|macro|TCTRL4_RD_WR_TI_DLY
+mdefine_line|#define TCTRL4_RD_WR_TI_DLY&t;0x0000003f00000000
+DECL|macro|TCTRL4_RD_WR_TI_DLY_SHIFT
+mdefine_line|#define TCTRL4_RD_WR_TI_DLY_SHIFT     32
+DECL|macro|TCTRL4_WR_WR_PI_MORE_DLY
+mdefine_line|#define TCTRL4_WR_WR_PI_MORE_DLY 0x00000000f8000000
+DECL|macro|TCTRL4_WR_WR_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL4_WR_WR_PI_MORE_DLY_SHIFT 27
+DECL|macro|TCTRL4_WR_WR_TI_DLY
+mdefine_line|#define TCTRL4_WR_WR_TI_DLY&t;0x0000000007e00000
+DECL|macro|TCTRL4_WR_WR_TI_DLY_SHIFT
+mdefine_line|#define TCTRL4_WR_WR_TI_DLY_SHIFT     21
+DECL|macro|TCTRL4_RDWR_RD_PI_MORE_DLY
+mdefine_line|#define TCTRL4_RDWR_RD_PI_MORE_DLY 0x00000000001f0000
+DECL|macro|TCTRL4_RDWR_RD_PI_MORE_DLY_SHIFT
+mdefine_line|#define TCTRL4_RDWR_RD_PI_MORE_DLY_SHIFT 16
+DECL|macro|TCTRL4_R
+mdefine_line|#define TCTRL4_R&t;&t;0x0000000000008000
+DECL|macro|TCTRL4_R_SHIFT
+mdefine_line|#define TCTRL4_R_SHIFT&t;&t;      15
+DECL|macro|TCTRL4_SDRAM_MODE_REG_DATA
+mdefine_line|#define TCTRL4_SDRAM_MODE_REG_DATA 0x0000000000007fff
+DECL|macro|TCTRL4_SDRAM_MODE_REG_DATA_SHIFT
+mdefine_line|#define TCTRL4_SDRAM_MODE_REG_DATA_SHIFT 0
+multiline_comment|/* All 4 memory address decoding registers have the&n; * same layout.&n; */
+DECL|macro|MEM_DECODE_VALID
+mdefine_line|#define MEM_DECODE_VALID&t;0x8000000000000000 /* Valid */
+DECL|macro|MEM_DECODE_VALID_SHIFT
+mdefine_line|#define MEM_DECODE_VALID_SHIFT&t;      63
+DECL|macro|MEM_DECODE_UK
+mdefine_line|#define MEM_DECODE_UK&t;&t;0x001ffe0000000000 /* Upper mask */
+DECL|macro|MEM_DECODE_UK_SHIFT
+mdefine_line|#define MEM_DECODE_UK_SHIFT&t;      41
+DECL|macro|MEM_DECODE_UM
+mdefine_line|#define MEM_DECODE_UM&t;&t;0x0000001ffff00000 /* Upper match */
+DECL|macro|MEM_DECODE_UM_SHIFT
+mdefine_line|#define MEM_DECODE_UM_SHIFT&t;      20
+DECL|macro|MEM_DECODE_LK
+mdefine_line|#define MEM_DECODE_LK&t;&t;0x000000000003c000 /* Lower mask */
+DECL|macro|MEM_DECODE_LK_SHIFT
+mdefine_line|#define MEM_DECODE_LK_SHIFT&t;      14
+DECL|macro|MEM_DECODE_LM
+mdefine_line|#define MEM_DECODE_LM&t;&t;0x0000000000000f00 /* Lower match */
+DECL|macro|MEM_DECODE_LM_SHIFT
+mdefine_line|#define MEM_DECODE_LM_SHIFT           8
+DECL|macro|PA_UPPER_BITS
+mdefine_line|#define PA_UPPER_BITS&t;&t;0x000007fffc000000
+DECL|macro|PA_UPPER_BITS_SHIFT
+mdefine_line|#define PA_UPPER_BITS_SHIFT&t;26
+DECL|macro|PA_LOWER_BITS
+mdefine_line|#define PA_LOWER_BITS&t;&t;0x00000000000003c0
+DECL|macro|PA_LOWER_BITS_SHIFT
+mdefine_line|#define PA_LOWER_BITS_SHIFT&t;6
+DECL|macro|MACTRL_R0
+mdefine_line|#define MACTRL_R0&t;&t;         0x8000000000000000
+DECL|macro|MACTRL_R0_SHIFT
+mdefine_line|#define MACTRL_R0_SHIFT&t;&t;         63
+DECL|macro|MACTRL_ADDR_LE_PW
+mdefine_line|#define MACTRL_ADDR_LE_PW                0x7000000000000000
+DECL|macro|MACTRL_ADDR_LE_PW_SHIFT
+mdefine_line|#define MACTRL_ADDR_LE_PW_SHIFT&t;&t; 60
+DECL|macro|MACTRL_CMD_PW
+mdefine_line|#define MACTRL_CMD_PW                    0x0f00000000000000
+DECL|macro|MACTRL_CMD_PW_SHIFT
+mdefine_line|#define MACTRL_CMD_PW_SHIFT&t;&t; 56
+DECL|macro|MACTRL_HALF_MODE_WR_MSEL_DLY
+mdefine_line|#define MACTRL_HALF_MODE_WR_MSEL_DLY     0x00fc000000000000
+DECL|macro|MACTRL_HALF_MODE_WR_MSEL_DLY_SHIFT
+mdefine_line|#define MACTRL_HALF_MODE_WR_MSEL_DLY_SHIFT 50
+DECL|macro|MACTRL_HALF_MODE_RD_MSEL_DLY
+mdefine_line|#define MACTRL_HALF_MODE_RD_MSEL_DLY     0x0003f00000000000
+DECL|macro|MACTRL_HALF_MODE_RD_MSEL_DLY_SHIFT
+mdefine_line|#define MACTRL_HALF_MODE_RD_MSEL_DLY_SHIFT 44
+DECL|macro|MACTRL_HALF_MODE_SDRAM_CTL_DLY
+mdefine_line|#define MACTRL_HALF_MODE_SDRAM_CTL_DLY   0x00000f0000000000
+DECL|macro|MACTRL_HALF_MODE_SDRAM_CTL_DLY_SHIFT
+mdefine_line|#define MACTRL_HALF_MODE_SDRAM_CTL_DLY_SHIFT 40
+DECL|macro|MACTRL_HALF_MODE_SDRAM_CLK_DLY
+mdefine_line|#define MACTRL_HALF_MODE_SDRAM_CLK_DLY   0x000000e000000000
+DECL|macro|MACTRL_HALF_MODE_SDRAM_CLK_DLY_SHIFT
+mdefine_line|#define MACTRL_HALF_MODE_SDRAM_CLK_DLY_SHIFT 37
+DECL|macro|MACTRL_R1
+mdefine_line|#define MACTRL_R1                        0x0000001000000000
+DECL|macro|MACTRL_R1_SHIFT
+mdefine_line|#define MACTRL_R1_SHIFT                      36
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B3
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B3 0x0000000f00000000
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B3_SHIFT
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B3_SHIFT 32
+DECL|macro|MACTRL_ENC_INTLV_B3
+mdefine_line|#define MACTRL_ENC_INTLV_B3              0x00000000f8000000
+DECL|macro|MACTRL_ENC_INTLV_B3_SHIFT
+mdefine_line|#define MACTRL_ENC_INTLV_B3_SHIFT              27
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B2
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B2 0x0000000007800000
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B2_SHIFT
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B2_SHIFT 23
+DECL|macro|MACTRL_ENC_INTLV_B2
+mdefine_line|#define MACTRL_ENC_INTLV_B2              0x00000000007c0000
+DECL|macro|MACTRL_ENC_INTLV_B2_SHIFT
+mdefine_line|#define MACTRL_ENC_INTLV_B2_SHIFT              18
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B1
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B1 0x000000000003c000
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B1_SHIFT
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B1_SHIFT 14
+DECL|macro|MACTRL_ENC_INTLV_B1
+mdefine_line|#define MACTRL_ENC_INTLV_B1              0x0000000000003e00
+DECL|macro|MACTRL_ENC_INTLV_B1_SHIFT
+mdefine_line|#define MACTRL_ENC_INTLV_B1_SHIFT               9
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B0
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B0 0x00000000000001e0
+DECL|macro|MACTRL_BANKSEL_N_ROWADDR_SIZE_B0_SHIFT
+mdefine_line|#define MACTRL_BANKSEL_N_ROWADDR_SIZE_B0_SHIFT  5
+DECL|macro|MACTRL_ENC_INTLV_B0
+mdefine_line|#define MACTRL_ENC_INTLV_B0              0x000000000000001f
+DECL|macro|MACTRL_ENC_INTLV_B0_SHIFT
+mdefine_line|#define MACTRL_ENC_INTLV_B0_SHIFT               0
+macro_line|#endif /* _SPARC64_CHMCTRL_H */
+eof

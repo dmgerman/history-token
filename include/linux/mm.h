@@ -1265,6 +1265,16 @@ r_int
 id|get_unmapped_area
 c_func
 (paren
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
 r_int
 r_int
 comma

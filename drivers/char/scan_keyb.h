@@ -6,7 +6,7 @@ r_int
 id|register_scan_keyboard
 c_func
 (paren
-r_void
+r_int
 (paren
 op_star
 id|scan

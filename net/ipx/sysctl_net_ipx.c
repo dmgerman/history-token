@@ -1,4 +1,5 @@
 multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_ipx.c: sysctl interface to net IPX subsystem.&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/ipx directory entry (empty =) ). [MS]&n; * Added /proc/sys/net/ipx/ipx_pprop_broadcasting - acme March 4, 2001&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/* From af_ipx.c */

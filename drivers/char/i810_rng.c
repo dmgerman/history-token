@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * core module and version information&n; */
 DECL|macro|RNG_VERSION
-mdefine_line|#define RNG_VERSION &quot;0.9.5&quot;
+mdefine_line|#define RNG_VERSION &quot;0.9.6&quot;
 DECL|macro|RNG_MODULE_NAME
 mdefine_line|#define RNG_MODULE_NAME &quot;i810_rng&quot;
 DECL|macro|RNG_DRIVER_NAME
@@ -59,20 +59,9 @@ DECL|macro|RNG_ADDR
 mdefine_line|#define RNG_ADDR&t;&t;&t;0xFFBC015F
 DECL|macro|RNG_ADDR_LEN
 mdefine_line|#define RNG_ADDR_LEN&t;&t;&t;3
-DECL|macro|RNG_MAX_ENTROPY
-mdefine_line|#define RNG_MAX_ENTROPY&t;&t;&t;8 /* max entropy h/w is capable of */
 DECL|macro|RNG_MISCDEV_MINOR
 mdefine_line|#define RNG_MISCDEV_MINOR&t;&t;183 /* official */
-multiline_comment|/*&n; * number of bytes required for a FIPS test.&n; * do not alter unless you really, I mean&n; * REALLY know what you are doing.&n; */
-DECL|macro|RNG_FIPS_TEST_THRESHOLD
-mdefine_line|#define RNG_FIPS_TEST_THRESHOLD&t;2500
 multiline_comment|/*&n; * various RNG status variables.  they are globals&n; * as we only support a single RNG device&n; */
-DECL|variable|rng_hw_enabled
-r_static
-r_int
-id|rng_hw_enabled
-suffix:semicolon
-multiline_comment|/* is the RNG h/w enabled? */
 DECL|variable|rng_mem
 r_static
 r_void
@@ -80,14 +69,6 @@ op_star
 id|rng_mem
 suffix:semicolon
 multiline_comment|/* token to our ioremap&squot;d RNG register area */
-DECL|variable|rng_pdev
-r_static
-r_struct
-id|pci_dev
-op_star
-id|rng_pdev
-suffix:semicolon
-multiline_comment|/* Firmware Hub PCI device found during PCI probe */
 DECL|variable|rng_open_sem
 r_static
 r_struct
@@ -124,7 +105,7 @@ suffix:semicolon
 DECL|function|rng_hwstatus_set
 r_static
 r_inline
-r_void
+id|u8
 id|rng_hwstatus_set
 (paren
 id|u8
@@ -147,6 +128,11 @@ op_plus
 id|RNG_HW_STATUS
 )paren
 suffix:semicolon
+r_return
+id|rng_hwstatus
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|rng_data_present
 r_static
@@ -162,13 +148,6 @@ m_assert
 id|rng_mem
 op_ne
 l_int|NULL
-)paren
-suffix:semicolon
-m_assert
-(paren
-id|rng_hw_enabled
-OG
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -205,13 +184,6 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-m_assert
-(paren
-id|rng_hw_enabled
-OG
-l_int|0
-)paren
-suffix:semicolon
 r_return
 id|readb
 (paren
@@ -221,22 +193,17 @@ id|RNG_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * rng_enable - enable or disable the RNG hardware&n; */
+multiline_comment|/*&n; * rng_enable - enable the RNG hardware&n; */
 DECL|function|rng_enable
 r_static
 r_int
 id|rng_enable
 (paren
-r_int
-id|enable
+r_void
 )paren
 (brace
 r_int
 id|rc
-op_assign
-l_int|0
-comma
-id|action
 op_assign
 l_int|0
 suffix:semicolon
@@ -259,36 +226,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|enable
-)paren
-(brace
-id|rng_hw_enabled
-op_increment
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|rng_hw_enabled
-)paren
-(brace
-id|rng_hw_enabled
-op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|rng_hw_enabled
-op_logical_and
-(paren
 (paren
 id|hw_status
 op_amp
@@ -297,8 +234,9 @@ id|RNG_ENABLED
 op_eq
 l_int|0
 )paren
-)paren
 (brace
+id|new_status
+op_assign
 id|rng_hwstatus_set
 (paren
 id|hw_status
@@ -306,52 +244,6 @@ op_or
 id|RNG_ENABLED
 )paren
 suffix:semicolon
-id|action
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rng_hw_enabled
-op_logical_and
-(paren
-id|hw_status
-op_amp
-id|RNG_ENABLED
-)paren
-)paren
-(brace
-id|rng_hwstatus_set
-(paren
-id|hw_status
-op_amp
-op_complement
-id|RNG_ENABLED
-)paren
-suffix:semicolon
-id|action
-op_assign
-l_int|2
-suffix:semicolon
-)brace
-id|new_status
-op_assign
-id|rng_hwstatus
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|action
-op_eq
-l_int|1
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -367,6 +259,7 @@ l_string|&quot;RNG h/w enabled&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
 id|printk
 (paren
 id|KERN_ERR
@@ -374,16 +267,68 @@ id|PFX
 l_string|&quot;Unable to enable the RNG&bslash;n&quot;
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 )brace
-r_else
+)brace
+id|DPRINTK
+(paren
+l_string|&quot;EXIT, returning %d&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * rng_disable - disable the RNG hardware&n; */
+DECL|function|rng_disable
+r_static
+r_void
+id|rng_disable
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u8
+id|hw_status
+comma
+id|new_status
+suffix:semicolon
+id|DPRINTK
+(paren
+l_string|&quot;ENTER&bslash;n&quot;
+)paren
+suffix:semicolon
+id|hw_status
+op_assign
+id|rng_hwstatus
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|action
-op_eq
-l_int|2
+id|hw_status
+op_amp
+id|RNG_ENABLED
 )paren
 (brace
+id|new_status
+op_assign
+id|rng_hwstatus_set
+(paren
+id|hw_status
+op_amp
+op_complement
+id|RNG_ENABLED
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -403,6 +348,7 @@ l_string|&quot;RNG h/w disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
 id|printk
 (paren
 id|KERN_ERR
@@ -411,15 +357,11 @@ l_string|&quot;Unable to disable the RNG&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
 id|DPRINTK
 (paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-id|rc
+l_string|&quot;EXIT&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-id|rc
 suffix:semicolon
 )brace
 DECL|function|rng_dev_open
@@ -438,6 +380,9 @@ op_star
 id|filp
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -503,13 +448,16 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
+id|rc
+op_assign
+id|rng_enable
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|rng_enable
-(paren
-l_int|1
-)paren
+id|rc
 )paren
 (brace
 id|up
@@ -519,8 +467,7 @@ id|rng_open_sem
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|rc
 suffix:semicolon
 )brace
 r_return
@@ -543,10 +490,8 @@ op_star
 id|filp
 )paren
 (brace
-id|rng_enable
-c_func
+id|rng_disable
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|up
@@ -900,17 +845,29 @@ id|err_out_free_map
 suffix:semicolon
 )brace
 multiline_comment|/* turn RNG h/w off, if it&squot;s on */
-id|rc
-op_assign
-id|rng_enable
+r_if
+c_cond
 (paren
-l_int|0
+id|hw_status
+op_amp
+id|RNG_ENABLED
+)paren
+id|hw_status
+op_assign
+id|rng_hwstatus_set
+(paren
+id|hw_status
+op_amp
+op_complement
+id|RNG_ENABLED
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|rc
+id|hw_status
+op_amp
+id|RNG_ENABLED
 )paren
 (brace
 id|printk
@@ -1107,10 +1064,6 @@ id|RNG_DRIVER_NAME
 l_string|&quot; loaded&bslash;n&quot;
 )paren
 suffix:semicolon
-id|rng_pdev
-op_assign
-id|pdev
-suffix:semicolon
 id|DPRINTK
 (paren
 l_string|&quot;EXIT, returning 0&bslash;n&quot;
@@ -1135,13 +1088,6 @@ id|DPRINTK
 l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
-m_assert
-(paren
-id|rng_hw_enabled
-op_eq
-l_int|0
-)paren
-suffix:semicolon
 id|misc_deregister
 (paren
 op_amp
@@ -1152,10 +1098,6 @@ id|iounmap
 (paren
 id|rng_mem
 )paren
-suffix:semicolon
-id|rng_pdev
-op_assign
-l_int|NULL
 suffix:semicolon
 id|DPRINTK
 (paren

@@ -333,6 +333,8 @@ DECL|macro|UDCCR_UDD
 mdefine_line|#define UDCCR_UDD&t;0x00000001&t;/* UDC Disable                     */
 DECL|macro|UDCCR_UDA
 mdefine_line|#define UDCCR_UDA&t;0x00000002&t;/* UDC Active (read)               */
+DECL|macro|UDCCR_RESIM
+mdefine_line|#define UDCCR_RESIM&t;0x00000004&t;/* Resume Interrupt Mask, per errata */
 DECL|macro|UDCCR_EIM
 mdefine_line|#define UDCCR_EIM&t;0x00000008&t;/* End-point 0 Interrupt Mask      */
 multiline_comment|/* (disable)                       */
@@ -345,6 +347,8 @@ multiline_comment|/* (disable)                       */
 DECL|macro|UDCCR_SRM
 mdefine_line|#define UDCCR_SRM&t;0x00000040&t;/* Suspend/Resume interrupt Mask   */
 multiline_comment|/* (disable)                       */
+DECL|macro|UDCCR_SUSIM
+mdefine_line|#define UDCCR_SUSIM&t;UDCCR_SRM&t;/* Per errata, SRM just masks suspend */
 DECL|macro|UDCCR_REM
 mdefine_line|#define UDCCR_REM&t;0x00000080&t;/* REset interrupt Mask (disable)  */
 DECL|macro|UDCAR_ADD
@@ -526,6 +530,51 @@ DECL|macro|Ser3UTSR0
 mdefine_line|#define Ser3UTSR0&t;        &t;/* Ser. port 3 UART Status Reg. 0  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTSR0)))
 DECL|macro|Ser3UTSR1
 mdefine_line|#define Ser3UTSR1&t;        &t;/* Ser. port 3 UART Status Reg. 1  */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser3UTSR1)))
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|Ser1UTCR0
+mdefine_line|#define Ser1UTCR0&t;( io_p2v (_Ser1UTCR0))
+DECL|macro|Ser1UTCR1
+mdefine_line|#define Ser1UTCR1&t;( io_p2v (_Ser1UTCR1))
+DECL|macro|Ser1UTCR2
+mdefine_line|#define Ser1UTCR2&t;( io_p2v (_Ser1UTCR2))
+DECL|macro|Ser1UTCR3
+mdefine_line|#define Ser1UTCR3&t;( io_p2v (_Ser1UTCR3))
+DECL|macro|Ser1UTDR
+mdefine_line|#define Ser1UTDR&t;( io_p2v (_Ser1UTDR))
+DECL|macro|Ser1UTSR0
+mdefine_line|#define Ser1UTSR0&t;( io_p2v (_Ser1UTSR0))
+DECL|macro|Ser1UTSR1
+mdefine_line|#define Ser1UTSR1&t;( io_p2v (_Ser1UTSR1))
+DECL|macro|Ser2UTCR0
+mdefine_line|#define Ser2UTCR0&t;( io_p2v (_Ser2UTCR0))
+DECL|macro|Ser2UTCR1
+mdefine_line|#define Ser2UTCR1&t;( io_p2v (_Ser2UTCR1))
+DECL|macro|Ser2UTCR2
+mdefine_line|#define Ser2UTCR2&t;( io_p2v (_Ser2UTCR2))
+DECL|macro|Ser2UTCR3
+mdefine_line|#define Ser2UTCR3&t;( io_p2v (_Ser2UTCR3))
+DECL|macro|Ser2UTCR4
+mdefine_line|#define Ser2UTCR4&t;( io_p2v (_Ser2UTCR4))
+DECL|macro|Ser2UTDR
+mdefine_line|#define Ser2UTDR&t;( io_p2v (_Ser2UTDR))
+DECL|macro|Ser2UTSR0
+mdefine_line|#define Ser2UTSR0&t;( io_p2v (_Ser2UTSR0))
+DECL|macro|Ser2UTSR1
+mdefine_line|#define Ser2UTSR1&t;( io_p2v (_Ser2UTSR1))
+DECL|macro|Ser3UTCR0
+mdefine_line|#define Ser3UTCR0&t;( io_p2v (_Ser3UTCR0))
+DECL|macro|Ser3UTCR1
+mdefine_line|#define Ser3UTCR1&t;( io_p2v (_Ser3UTCR1))
+DECL|macro|Ser3UTCR2
+mdefine_line|#define Ser3UTCR2&t;( io_p2v (_Ser3UTCR2))
+DECL|macro|Ser3UTCR3
+mdefine_line|#define Ser3UTCR3&t;( io_p2v (_Ser3UTCR3))
+DECL|macro|Ser3UTDR
+mdefine_line|#define Ser3UTDR&t;( io_p2v (_Ser3UTDR))
+DECL|macro|Ser3UTSR0
+mdefine_line|#define Ser3UTSR0&t;( io_p2v (_Ser3UTSR0))
+DECL|macro|Ser3UTSR1
+mdefine_line|#define Ser3UTSR1&t;( io_p2v (_Ser3UTSR1))
 macro_line|#endif /* LANGUAGE == C */
 DECL|macro|UTCR0_PE
 mdefine_line|#define UTCR0_PE&t;0x00000001&t;/* Parity Enable                   */
@@ -1282,6 +1331,23 @@ DECL|macro|PGSR
 mdefine_line|#define PGSR    &t;        &t;/* PM GPIO Sleep state Reg.        */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_PGSR)))
 DECL|macro|POSR
 mdefine_line|#define POSR    &t;        &t;/* PM Oscillator Status Reg.       */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_POSR)))
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|PMCR
+mdefine_line|#define PMCR          &t;(io_p2v (_PMCR))
+DECL|macro|PSSR
+mdefine_line|#define PSSR          &t;(io_p2v (_PSSR))
+DECL|macro|PSPR
+mdefine_line|#define PSPR          &t;(io_p2v (_PSPR))
+DECL|macro|PWER
+mdefine_line|#define PWER          &t;(io_p2v (_PWER))
+DECL|macro|PCFR
+mdefine_line|#define PCFR          &t;(io_p2v (_PCFR))
+DECL|macro|PPCR
+mdefine_line|#define PPCR          &t;(io_p2v (_PPCR))
+DECL|macro|PGSR
+mdefine_line|#define PGSR          &t;(io_p2v (_PGSR))
+DECL|macro|POSR
+mdefine_line|#define POSR          &t;(io_p2v (_POSR))
 macro_line|#endif /* LANGUAGE == C */
 DECL|macro|PMCR_SF
 mdefine_line|#define PMCR_SF &t;0x00000001&t;/* Sleep Force (set only)          */
@@ -1585,6 +1651,23 @@ DECL|macro|GEDR
 mdefine_line|#define GEDR    &t;        &t;/* GPIO Edge Detect status Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GEDR)))
 DECL|macro|GAFR
 mdefine_line|#define GAFR    &t;        &t;/* GPIO Alternate Function Reg.    */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_GAFR)))
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|GPLR
+mdefine_line|#define GPLR  (io_p2v (_GPLR))
+DECL|macro|GPDR
+mdefine_line|#define GPDR  (io_p2v (_GPDR))
+DECL|macro|GPSR
+mdefine_line|#define GPSR  (io_p2v (_GPSR))
+DECL|macro|GPCR
+mdefine_line|#define GPCR  (io_p2v (_GPCR))
+DECL|macro|GRER
+mdefine_line|#define GRER  (io_p2v (_GRER))
+DECL|macro|GFER
+mdefine_line|#define GFER  (io_p2v (_GFER))
+DECL|macro|GEDR
+mdefine_line|#define GEDR  (io_p2v (_GEDR))
+DECL|macro|GAFR
+mdefine_line|#define GAFR  (io_p2v (_GAFR))
 macro_line|#endif /* LANGUAGE == C */
 DECL|macro|GPIO_MIN
 mdefine_line|#define GPIO_MIN&t;(0)
@@ -1967,6 +2050,9 @@ DECL|macro|MDCAS1
 mdefine_line|#define MDCAS1  &t;(MDCAS [1])&t;/*  DRAM CAS shift reg. 1          */
 DECL|macro|MDCAS2
 mdefine_line|#define MDCAS2  &t;(MDCAS [2])&t;/*  DRAM CAS shift reg. 2          */
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|MDCNFG
+mdefine_line|#define MDCNFG&t;&t;(io_p2v(_MDCNFG))
 macro_line|#endif /* LANGUAGE == C */
 multiline_comment|/* SA1100 MDCNFG values */
 DECL|macro|MDCNFG_DE
@@ -2064,6 +2150,13 @@ DECL|macro|MSC0
 mdefine_line|#define MSC0    &t;(MSC [0])&t;/*  Static memory Control reg. 0   */
 DECL|macro|MSC1
 mdefine_line|#define MSC1    &t;(MSC [1])&t;/*  Static memory Control reg. 1   */
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|MSC0
+mdefine_line|#define MSC0&t;&t;io_p2v(0xa0000010)
+DECL|macro|MSC1
+mdefine_line|#define MSC1&t;&t;io_p2v(0xa0000014)
+DECL|macro|MSC2
+mdefine_line|#define MSC2&t;&t;io_p2v(0xa000002c)
 macro_line|#endif /* LANGUAGE == C */
 DECL|macro|MSC_Bnk
 mdefine_line|#define MSC_Bnk(Nb)&t;        &t;/* static memory Bank [0..3]       */ &bslash;&n;                &t;Fld (16, ((Nb) Modulo 2)*16)
@@ -2095,31 +2188,31 @@ DECL|macro|MSC_RDF
 mdefine_line|#define MSC_RDF &t;Fld (5, 3)&t;/* ROM/static memory read Delay    */
 multiline_comment|/* First access - 1(.5) [Tmem]     */
 DECL|macro|MSC_1stRdAcc
-mdefine_line|#define MSC_1stRdAcc(Tcpu)      &t;/*  1st Read Access time (burst    */ &bslash;&n;                &t;        &t;/*  static memory) [3..65 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 3)/2 &lt;&lt; FShft (MSC_RDF))
+mdefine_line|#define MSC_1stRdAcc(Tcpu)      &t;/*  1st Read Access time (burst    */ &bslash;&n;                &t;        &t;/*  static memory) [3..65 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 3)/2) &lt;&lt; FShft (MSC_RDF))
 DECL|macro|MSC_Ceil1stRdAcc
-mdefine_line|#define MSC_Ceil1stRdAcc(Tcpu)  &t;/*  Ceil. of 1stRdAcc [3..65 Tcpu] */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MSC_RDF))
+mdefine_line|#define MSC_Ceil1stRdAcc(Tcpu)  &t;/*  Ceil. of 1stRdAcc [3..65 Tcpu] */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MSC_RDF))
 DECL|macro|MSC_RdAcc
-mdefine_line|#define MSC_RdAcc(Tcpu)&t;        &t;/*  Read Access time (non-burst    */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MSC_RDF))
+mdefine_line|#define MSC_RdAcc(Tcpu)&t;        &t;/*  Read Access time (non-burst    */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MSC_RDF))
 DECL|macro|MSC_CeilRdAcc
-mdefine_line|#define MSC_CeilRdAcc(Tcpu)     &t;/*  Ceil. of RdAcc [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MSC_RDF))
+mdefine_line|#define MSC_CeilRdAcc(Tcpu)     &t;/*  Ceil. of RdAcc [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MSC_RDF))
 DECL|macro|MSC_RDN
 mdefine_line|#define MSC_RDN &t;Fld (5, 8)&t;/* ROM/static memory read Delay    */
 multiline_comment|/* Next access - 1 [Tmem]          */
 DECL|macro|MSC_NxtRdAcc
-mdefine_line|#define MSC_NxtRdAcc(Tcpu)      &t;/*  Next Read Access time (burst   */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MSC_RDN))
+mdefine_line|#define MSC_NxtRdAcc(Tcpu)      &t;/*  Next Read Access time (burst   */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MSC_RDN))
 DECL|macro|MSC_CeilNxtRdAcc
-mdefine_line|#define MSC_CeilNxtRdAcc(Tcpu)  &t;/*  Ceil. of NxtRdAcc [2..64 Tcpu] */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MSC_RDN))
+mdefine_line|#define MSC_CeilNxtRdAcc(Tcpu)  &t;/*  Ceil. of NxtRdAcc [2..64 Tcpu] */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MSC_RDN))
 DECL|macro|MSC_WrAcc
-mdefine_line|#define MSC_WrAcc(Tcpu)&t;        &t;/*  Write Access time (non-burst   */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MSC_RDN))
+mdefine_line|#define MSC_WrAcc(Tcpu)&t;        &t;/*  Write Access time (non-burst   */ &bslash;&n;                &t;        &t;/*  static memory) [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MSC_RDN))
 DECL|macro|MSC_CeilWrAcc
-mdefine_line|#define MSC_CeilWrAcc(Tcpu)     &t;/*  Ceil. of WrAcc [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MSC_RDN))
+mdefine_line|#define MSC_CeilWrAcc(Tcpu)     &t;/*  Ceil. of WrAcc [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MSC_RDN))
 DECL|macro|MSC_RRR
 mdefine_line|#define MSC_RRR &t;Fld (3, 13)&t;/* ROM/static memory RecoveRy      */
 multiline_comment|/* time/2 [Tmem]                   */
 DECL|macro|MSC_Rec
-mdefine_line|#define MSC_Rec(Tcpu)&t;        &t;/*  Recovery time [0..28 Tcpu]     */ &bslash;&n;                &t;((Tcpu)/4 &lt;&lt; FShft (MSC_RRR))
+mdefine_line|#define MSC_Rec(Tcpu)&t;        &t;/*  Recovery time [0..28 Tcpu]     */ &bslash;&n;                &t;(((Tcpu)/4) &lt;&lt; FShft (MSC_RRR))
 DECL|macro|MSC_CeilRec
-mdefine_line|#define MSC_CeilRec(Tcpu)       &t;/*  Ceil. of Rec [0..28 Tcpu]      */ &bslash;&n;                &t;(((Tcpu) + 3)/4 &lt;&lt; FShft (MSC_RRR))
+mdefine_line|#define MSC_CeilRec(Tcpu)       &t;/*  Ceil. of Rec [0..28 Tcpu]      */ &bslash;&n;                &t;((((Tcpu) + 3)/4) &lt;&lt; FShft (MSC_RRR))
 multiline_comment|/*&n; * Personal Computer Memory Card International Association (PCMCIA) control&n; * register&n; *&n; * Register&n; *    MECR      &t;Memory system: Expansion memory bus (PCMCIA)&n; *              &t;Configuration Register (read/write).&n; *&n; * Clocks&n; *    fcpu, Tcpu&t;Frequency, period of the CPU core clock (CCLK).&n; *    fmem, Tmem&t;Frequency, period of the memory clock (fmem = fcpu/2).&n; *    fbclk, Tbclk&t;Frequency, period of the PCMCIA clock (BCLK).&n; */
 multiline_comment|/* Memory system:                  */
 DECL|macro|_MECR
@@ -2139,22 +2232,22 @@ mdefine_line|#define MECR_PCMCIA1&t;MECR_PCMCIA (1)&t;/* PCMCIA 1               
 DECL|macro|MECR_BSIO
 mdefine_line|#define MECR_BSIO&t;Fld (5, 0)&t;/* BCLK Select I/O - 1 [Tmem]      */
 DECL|macro|MECR_IOClk
-mdefine_line|#define MECR_IOClk(Tcpu)        &t;/*  I/O Clock [2..64 Tcpu]         */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MECR_BSIO))
+mdefine_line|#define MECR_IOClk(Tcpu)        &t;/*  I/O Clock [2..64 Tcpu]         */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MECR_BSIO))
 DECL|macro|MECR_CeilIOClk
-mdefine_line|#define MECR_CeilIOClk(Tcpu)    &t;/*  Ceil. of IOClk [2..64 Tcpu]    */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MECR_BSIO))
+mdefine_line|#define MECR_CeilIOClk(Tcpu)    &t;/*  Ceil. of IOClk [2..64 Tcpu]    */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MECR_BSIO))
 DECL|macro|MECR_BSA
 mdefine_line|#define MECR_BSA&t;Fld (5, 5)&t;/* BCLK Select Attribute - 1       */
 multiline_comment|/* [Tmem]                          */
 DECL|macro|MECR_AttrClk
-mdefine_line|#define MECR_AttrClk(Tcpu)      &t;/*  Attribute Clock [2..64 Tcpu]   */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MECR_BSA))
+mdefine_line|#define MECR_AttrClk(Tcpu)      &t;/*  Attribute Clock [2..64 Tcpu]   */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MECR_BSA))
 DECL|macro|MECR_CeilAttrClk
-mdefine_line|#define MECR_CeilAttrClk(Tcpu)  &t;/*  Ceil. of AttrClk [2..64 Tcpu]  */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MECR_BSA))
+mdefine_line|#define MECR_CeilAttrClk(Tcpu)  &t;/*  Ceil. of AttrClk [2..64 Tcpu]  */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MECR_BSA))
 DECL|macro|MECR_BSM
 mdefine_line|#define MECR_BSM&t;Fld (5, 10)&t;/* BCLK Select Memory - 1 [Tmem]   */
 DECL|macro|MECR_MemClk
-mdefine_line|#define MECR_MemClk(Tcpu)       &t;/*  Memory Clock [2..64 Tcpu]      */ &bslash;&n;                &t;(((Tcpu) - 2)/2 &lt;&lt; FShft (MECR_BSM))
+mdefine_line|#define MECR_MemClk(Tcpu)       &t;/*  Memory Clock [2..64 Tcpu]      */ &bslash;&n;                &t;((((Tcpu) - 2)/2) &lt;&lt; FShft (MECR_BSM))
 DECL|macro|MECR_CeilMemClk
-mdefine_line|#define MECR_CeilMemClk(Tcpu)   &t;/*  Ceil. of MemClk [2..64 Tcpu]   */ &bslash;&n;                &t;(((Tcpu) - 1)/2 &lt;&lt; FShft (MECR_BSM))
+mdefine_line|#define MECR_CeilMemClk(Tcpu)   &t;/*  Ceil. of MemClk [2..64 Tcpu]   */ &bslash;&n;                &t;((((Tcpu) - 1)/2) &lt;&lt; FShft (MECR_BSM))
 multiline_comment|/*&n; * On SA1110 only&n; */
 DECL|macro|_MDREFR
 mdefine_line|#define _MDREFR&t;&t;0xA000001C
@@ -2162,6 +2255,9 @@ macro_line|#if LANGUAGE == C
 multiline_comment|/* Memory system:                  */
 DECL|macro|MDREFR
 mdefine_line|#define MDREFR &bslash;&n;                &t;(*((volatile Word *) io_p2v (_MDREFR)))
+macro_line|#elif LANGUAGE == Assembly
+DECL|macro|MDREFR
+mdefine_line|#define MDREFR&t;&t;(io_p2v(_MDREFR))
 macro_line|#endif /* LANGUAGE == C */
 DECL|macro|MDREFR_TRASR
 mdefine_line|#define MDREFR_TRASR&t;&t;Fld (4, 0)
@@ -2539,13 +2635,13 @@ mdefine_line|#define DDAR_Ser3UARTWr&t;        &t;/* Ser. port 3 UART Write     
 DECL|macro|DDAR_Ser3UARTRd
 mdefine_line|#define DDAR_Ser3UARTRd&t;        &t;/* Ser. port 3 UART Read           */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_8BitDev + &bslash;&n;                &t; DDAR_Ser3UARTRc + DDAR_DevAdd (_Ser3UTDR))
 DECL|macro|DDAR_Ser4MCP0Wr
-mdefine_line|#define DDAR_Ser4MCP0Wr&t;        &t;/* Ser. port 4 MCP 0 Write (audio) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Tr + DDAR_DevAdd (_Ser4MCDR0))
+mdefine_line|#define DDAR_Ser4MCP0Wr&t;        &t;/* Ser. port 4 MCP 0 Write (audio) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Tr + DDAR_DevAdd (_Ser4MCDR0))
 DECL|macro|DDAR_Ser4MCP0Rd
-mdefine_line|#define DDAR_Ser4MCP0Rd&t;        &t;/* Ser. port 4 MCP 0 Read (audio)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Rc + DDAR_DevAdd (_Ser4MCDR0))
+mdefine_line|#define DDAR_Ser4MCP0Rd&t;        &t;/* Ser. port 4 MCP 0 Read (audio)  */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP0Rc + DDAR_DevAdd (_Ser4MCDR0))
 DECL|macro|DDAR_Ser4MCP1Wr
-mdefine_line|#define DDAR_Ser4MCP1Wr&t;        &t;/* Ser. port 4 MCP 1 Write         */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst8 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Tr + DDAR_DevAdd (_Ser4MCDR1))
+mdefine_line|#define DDAR_Ser4MCP1Wr&t;        &t;/* Ser. port 4 MCP 1 Write         */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Tr + DDAR_DevAdd (_Ser4MCDR1))
 DECL|macro|DDAR_Ser4MCP1Rd
-mdefine_line|#define DDAR_Ser4MCP1Rd&t;        &t;/* Ser. port 4 MCP 1 Read          */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst8 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Rc + DDAR_DevAdd (_Ser4MCDR1))
+mdefine_line|#define DDAR_Ser4MCP1Rd&t;        &t;/* Ser. port 4 MCP 1 Read          */ &bslash;&n;                &t;        &t;/* (telecom)                       */ &bslash;&n;                &t;(DDAR_DevRd + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4MCP1Rc + DDAR_DevAdd (_Ser4MCDR1))
 DECL|macro|DDAR_Ser4SSPWr
 mdefine_line|#define DDAR_Ser4SSPWr&t;        &t;/* Ser. port 4 SSP Write (16 bits) */ &bslash;&n;                &t;(DDAR_DevWr + DDAR_Brst4 + DDAR_16BitDev + &bslash;&n;                &t; DDAR_Ser4SSPTr + DDAR_DevAdd (_Ser4SSDR))
 DECL|macro|DDAR_Ser4SSPRd

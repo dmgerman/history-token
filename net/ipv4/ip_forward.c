@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP forwarding functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_forward.c,v 1.47 2000/10/24 22:54:26 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip_input.c for &n; *&t;&t;&t;&t;&t;history.&n; *&t;&t;Dave Gregorich&t;:&t;NULL ip_rt_put fix for multicast &n; *&t;&t;&t;&t;&t;routing.&n; *&t;&t;Jos Vos&t;&t;:&t;Add call_out_firewall before sending,&n; *&t;&t;&t;&t;&t;use output device for accounting.&n; *&t;&t;Jos Vos&t;&t;:&t;Call forward firewall after routing&n; *&t;&t;&t;&t;&t;(always use output device).&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP forwarding functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_forward.c,v 1.48 2000/12/13 18:31:48 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip_input.c for &n; *&t;&t;&t;&t;&t;history.&n; *&t;&t;Dave Gregorich&t;:&t;NULL ip_rt_put fix for multicast &n; *&t;&t;&t;&t;&t;routing.&n; *&t;&t;Jos Vos&t;&t;:&t;Add call_out_firewall before sending,&n; *&t;&t;&t;&t;&t;use output device for accounting.&n; *&t;&t;Jos Vos&t;&t;:&t;Call forward firewall after routing&n; *&t;&t;&t;&t;&t;(always use output device).&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -263,6 +263,10 @@ id|PACKET_HOST
 r_goto
 id|drop
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;According to the RFC, we must first decrease the TTL field. If&n;&t; *&t;that reaches zero, we must reply an ICMP control message telling&n;&t; *&t;that the packet&squot;s lifetime expired.&n;&t; */
 id|iph
 op_assign
@@ -337,9 +341,6 @@ multiline_comment|/* We are about to mangle packet. Copy it! */
 r_if
 c_cond
 (paren
-(paren
-id|skb
-op_assign
 id|skb_cow
 c_func
 (paren
@@ -348,28 +349,12 @@ comma
 id|dev2-&gt;hard_header_len
 )paren
 )paren
-op_eq
-l_int|NULL
-)paren
-r_return
-id|NET_RX_DROP
+r_goto
+id|drop
 suffix:semicolon
 id|iph
 op_assign
 id|skb-&gt;nh.iph
-suffix:semicolon
-id|opt
-op_assign
-op_amp
-(paren
-id|IPCB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|opt
-)paren
 suffix:semicolon
 multiline_comment|/* Decrease ttl after skb cow done */
 id|ip_decrease_ttl

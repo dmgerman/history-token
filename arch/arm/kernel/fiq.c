@@ -282,7 +282,8 @@ comma
 op_mod
 l_int|1
 comma
-macro_line|#0x0c000001
+op_mod
+l_int|3
 id|teqp
 op_mod
 l_int|1
@@ -323,7 +324,8 @@ id|mov
 op_mod
 l_int|1
 comma
-macro_line|#0xc1
+op_mod
+l_int|3
 id|msr
 id|cpsr_c
 comma
@@ -377,6 +379,15 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|regs-&gt;ARM_r8
+)paren
+comma
+l_string|&quot;I&quot;
+(paren
+id|I_BIT
+op_or
+id|F_BIT
+op_or
+id|FIQ_MODE
 )paren
 multiline_comment|/* These registers aren&squot;t modified by the above code in a way&n;&t;   visible to the compiler, but we mark them as clobbers anyway&n;&t;   so that GCC won&squot;t put any of the input or output operands in&n;&t;   them.  */
 suffix:colon
@@ -439,7 +450,8 @@ comma
 op_mod
 l_int|1
 comma
-macro_line|#0x0c000001
+op_mod
+l_int|3
 id|teqp
 op_mod
 l_int|1
@@ -480,7 +492,8 @@ id|mov
 op_mod
 l_int|1
 comma
-macro_line|#0xc1
+op_mod
+l_int|3
 id|msr
 id|cpsr_c
 comma
@@ -534,6 +547,15 @@ l_string|&quot;r&quot;
 (paren
 op_amp
 id|regs-&gt;ARM_r8
+)paren
+comma
+l_string|&quot;I&quot;
+(paren
+id|I_BIT
+op_or
+id|F_BIT
+op_or
+id|FIQ_MODE
 )paren
 multiline_comment|/* These registers aren&squot;t modified by the above code in a way&n;&t;   visible to the compiler, but we mark them as clobbers anyway&n;&t;   so that GCC won&squot;t put any of the input or output operands in&n;&t;   them.  */
 suffix:colon

@@ -464,11 +464,11 @@ c_cond
 id|size_wanted
 )paren
 (brace
-multiline_comment|/* 0x00900000 bytes long */
+multiline_comment|/* 0x00900000 bytes long (0xff700000) */
 op_star
 id|value
 op_assign
-l_int|0xff700000
+l_int|0xff000000
 suffix:semicolon
 id|size_wanted
 op_assign

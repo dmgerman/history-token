@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-cl7500.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *  Copyright (C) 1999 Nexus Electronics Ltd&n; *&n; * Extra MM routines for CL7500 architecture&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

@@ -146,8 +146,6 @@ r_struct
 id|hplance_private
 op_star
 id|root_hplance_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Find all the HP Lance boards and initialise them... */

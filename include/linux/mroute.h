@@ -564,9 +564,6 @@ c_func
 r_struct
 id|sk_buff
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -577,10 +574,6 @@ c_func
 r_struct
 id|sk_buff
 op_star
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 r_struct

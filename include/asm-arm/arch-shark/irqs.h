@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/irqs.h&n; *&n; * by Alexander.Schulz@stud.uni-karlsruhe.de&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/irqs.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;16
 DECL|macro|IRQ_ISA_KEYBOARD

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/leds-ebsa110.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  EBSA-110 LED control routines.  We use the led as follows:&n; *&n; *   - Red - toggles state every 50 timer interrupts&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-ebsa110/leds.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  EBSA-110 LED control routines.  We use the led as follows:&n; *&n; *   - Red - toggles state every 50 timer interrupts&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -50,7 +50,7 @@ r_int
 r_char
 op_star
 )paren
-l_int|0xf2400000
+id|SOFT_BASE
 op_xor_assign
 l_int|128
 suffix:semicolon

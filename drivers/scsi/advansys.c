@@ -15146,16 +15146,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * --- Loadable Driver Support&n; */
 macro_line|#if ASC_LINUX_KERNEL24
-DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|ADVANSYS
-suffix:semicolon
-macro_line|# include &quot;scsi_module.c&quot;
-macro_line|#elif ASC_LINUX_KERNEL22
-macro_line|#ifdef MODULE
+macro_line|#endif
+macro_line|#if ASC_LINUX_KERNEL24 || (ASC_LINUX_KERNEL22 &amp;&amp; defined(MODULE))
 DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template
@@ -15163,7 +15156,6 @@ op_assign
 id|ADVANSYS
 suffix:semicolon
 macro_line|# include &quot;scsi_module.c&quot;
-macro_line|#endif /* MODULE */
 macro_line|#endif
 multiline_comment|/*&n; * --- Miscellaneous Driver Functions&n; */
 multiline_comment|/*&n; * First-level interrupt handler.&n; *&n; * &squot;dev_id&squot; is a pointer to the interrupting adapter&squot;s asc_board_t. Because&n; * all boards are currently checked for interrupts on each interrupt, &squot;dev_id&squot;&n; * is not referenced. &squot;dev_id&squot; could be used to identify an interrupt passed&n; * to the AdvanSys driver which is for a device sharing an interrupt with&n; * an AdvanSys adapter.&n; */

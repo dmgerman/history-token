@@ -106,8 +106,6 @@ DECL|variable|ethertap_debug
 r_static
 r_int
 id|ethertap_debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tap_map
 r_static

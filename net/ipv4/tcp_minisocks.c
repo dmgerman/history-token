@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_minisocks.c,v 1.5 2000/11/28 17:04:10 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_minisocks.c,v 1.9 2001/03/06 22:42:56 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -331,7 +331,7 @@ id|tw
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * * Main purpose of TIME-WAIT state is to close connection gracefully,&n; *   when one of ends sits in LAST-ACK or CLOSING retransmitting FIN&n; *   (and, probably, tail of data) and one or more our ACKs are lost.&n; * * What is TIME-WAIT timeout? It is associated with maximal packet&n; *   lifetime in the internet, which results in wrong conclusion, that&n; *   it is set to catch &quot;old duplicate segments&quot; wandering out of their path.&n; *   It is not quite correct. This timeout is calculated so that it exceeds&n; *   maximal retransmision timeout enough to allow to lose one (or more)&n; *   segments sent by peer and our ACKs. This time may be calculated from RTO.&n; * * When TIME-WAIT socket receives RST, it means that another end&n; *   finally closed and we are allowed to kill TIME-WAIT too.&n; * * Second purpose of TIME-WAIT is catching old duplicate segments.&n; *   Well, certainly it is pure paranoia, but if we load TIME-WAIT&n; *   with this semantics, we MUST NOT kill TIME-WAIT state with RSTs.&n; * * If we invented some more clever way to catch duplicates&n; *   (f.e. based on PAWS), we could truncate TIME-WAIT to several RTOs.&n; *&n; * The algorithm below is based on FORMAL INTERPRETATION of RFCs.&n; * When you compare it to RFCs, please, read section SEGMENT ARRIVES&n; * from the very beginning.&n; *&n; * NOTE. With recycling (and later with fin-wait-2) TW bucket&n; * is _not_ stateless. It means, that strictly speaking we must&n; * spinlock it. I do not want! Well, probability of misbehaviour&n; * is ridiculously low and, seems, we could use some mb() tricks&n; * to avoid misread sequence numbers, states etc.  --ANK&n; */
+multiline_comment|/* &n; * * Main purpose of TIME-WAIT state is to close connection gracefully,&n; *   when one of ends sits in LAST-ACK or CLOSING retransmitting FIN&n; *   (and, probably, tail of data) and one or more our ACKs are lost.&n; * * What is TIME-WAIT timeout? It is associated with maximal packet&n; *   lifetime in the internet, which results in wrong conclusion, that&n; *   it is set to catch &quot;old duplicate segments&quot; wandering out of their path.&n; *   It is not quite correct. This timeout is calculated so that it exceeds&n; *   maximal retransmission timeout enough to allow to lose one (or more)&n; *   segments sent by peer and our ACKs. This time may be calculated from RTO.&n; * * When TIME-WAIT socket receives RST, it means that another end&n; *   finally closed and we are allowed to kill TIME-WAIT too.&n; * * Second purpose of TIME-WAIT is catching old duplicate segments.&n; *   Well, certainly it is pure paranoia, but if we load TIME-WAIT&n; *   with this semantics, we MUST NOT kill TIME-WAIT state with RSTs.&n; * * If we invented some more clever way to catch duplicates&n; *   (f.e. based on PAWS), we could truncate TIME-WAIT to several RTOs.&n; *&n; * The algorithm below is based on FORMAL INTERPRETATION of RFCs.&n; * When you compare it to RFCs, please, read section SEGMENT ARRIVES&n; * from the very beginning.&n; *&n; * NOTE. With recycling (and later with fin-wait-2) TW bucket&n; * is _not_ stateless. It means, that strictly speaking we must&n; * spinlock it. I do not want! Well, probability of misbehaviour&n; * is ridiculously low and, seems, we could use some mb() tricks&n; * to avoid misread sequence numbers, states etc.  --ANK&n; */
 r_enum
 id|tcp_tw_status
 DECL|function|tcp_timewait_state_process
@@ -484,6 +484,10 @@ c_cond
 (paren
 id|th-&gt;syn
 op_logical_and
+op_logical_neg
+id|before
+c_func
+(paren
 id|TCP_SKB_CB
 c_func
 (paren
@@ -491,8 +495,9 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|seq
-op_ne
-id|tw-&gt;syn_seq
+comma
+id|tw-&gt;rcv_nxt
+)paren
 )paren
 r_goto
 id|kill_with_rst
@@ -1296,10 +1301,6 @@ c_func
 (paren
 id|tp
 )paren
-suffix:semicolon
-id|tw-&gt;syn_seq
-op_assign
-id|tp-&gt;syn_seq
 suffix:semicolon
 id|tw-&gt;ts_recent
 op_assign
@@ -2629,12 +2630,6 @@ id|req-&gt;snt_isn
 op_plus
 l_int|1
 suffix:semicolon
-id|tcp_delack_init
-c_func
-(paren
-id|newtp
-)paren
-suffix:semicolon
 id|tcp_prequeue_init
 c_func
 (paren
@@ -2766,14 +2761,6 @@ suffix:semicolon
 id|newtp-&gt;num_sacks
 op_assign
 l_int|0
-suffix:semicolon
-id|newtp-&gt;syn_seq
-op_assign
-id|req-&gt;rcv_isn
-suffix:semicolon
-id|newtp-&gt;fin_seq
-op_assign
-id|req-&gt;rcv_isn
 suffix:semicolon
 id|newtp-&gt;urg_data
 op_assign
@@ -3172,7 +3159,7 @@ id|th-&gt;rst
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Check for pure retransmited SYN. */
+multiline_comment|/* Check for pure retransmitted SYN. */
 r_if
 c_cond
 (paren

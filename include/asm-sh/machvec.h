@@ -4,6 +4,9 @@ DECL|macro|_ASM_SH_MACHVEC_H
 mdefine_line|#define _ASM_SH_MACHVEC_H 1
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+r_struct
+id|timeval
+suffix:semicolon
 DECL|struct|sh_machine_vector
 r_struct
 id|sh_machine_vector
@@ -20,7 +23,7 @@ id|mv_nr_irqs
 suffix:semicolon
 DECL|member|mv_inb
 r_int
-r_int
+r_char
 (paren
 op_star
 id|mv_inb
@@ -62,7 +65,7 @@ id|mv_outb
 )paren
 (paren
 r_int
-r_int
+r_char
 comma
 r_int
 r_int
@@ -98,7 +101,7 @@ r_int
 suffix:semicolon
 DECL|member|mv_inb_p
 r_int
-r_int
+r_char
 (paren
 op_star
 id|mv_inb_p
@@ -140,7 +143,7 @@ id|mv_outb_p
 )paren
 (paren
 r_int
-r_int
+r_char
 comma
 r_int
 r_int
@@ -299,7 +302,7 @@ id|count
 suffix:semicolon
 DECL|member|mv_readb
 r_int
-r_int
+r_char
 (paren
 op_star
 id|mv_readb
@@ -392,23 +395,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-DECL|member|mv_ioremap_nocache
-r_void
-op_star
-(paren
-op_star
-id|mv_ioremap_nocache
-)paren
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
 DECL|member|mv_iounmap
 r_void
 (paren
@@ -419,19 +405,6 @@ id|mv_iounmap
 r_void
 op_star
 id|addr
-)paren
-suffix:semicolon
-DECL|member|mv_port2addr
-r_int
-r_int
-(paren
-op_star
-id|mv_port2addr
-)paren
-(paren
-r_int
-r_int
-id|offset
 )paren
 suffix:semicolon
 DECL|member|mv_isa_port2addr
@@ -508,6 +481,33 @@ id|mv_heartbeat
 r_void
 )paren
 suffix:semicolon
+DECL|member|mv_rtc_gettimeofday
+r_void
+(paren
+op_star
+id|mv_rtc_gettimeofday
+)paren
+(paren
+r_struct
+id|timeval
+op_star
+id|tv
+)paren
+suffix:semicolon
+DECL|member|mv_rtc_settimeofday
+r_int
+(paren
+op_star
+id|mv_rtc_settimeofday
+)paren
+(paren
+r_const
+r_struct
+id|timeval
+op_star
+id|tv
+)paren
+suffix:semicolon
 DECL|member|mv_hw_se
 r_int
 r_int
@@ -522,10 +522,45 @@ id|mv_hw_hp600
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|mv_hw_hp620
+r_int
+r_int
+id|mv_hw_hp620
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_hp680
+r_int
+r_int
+id|mv_hw_hp680
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_hp690
+r_int
+r_int
+id|mv_hw_hp690
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|mv_hw_hd64461
 r_int
 r_int
 id|mv_hw_hd64461
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_hd64465
+r_int
+r_int
+id|mv_hw_hd64465
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|mv_hw_dreamcast
+r_int
+r_int
+id|mv_hw_dreamcast
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -542,8 +577,18 @@ DECL|macro|MACH_SE
 mdefine_line|#define MACH_SE&t;&t;(sh_mv.mv_hw_se)
 DECL|macro|MACH_HP600
 mdefine_line|#define MACH_HP600&t;(sh_mv.mv_hw_hp600)
+DECL|macro|MACH_HP620
+mdefine_line|#define MACH_HP620&t;(sh_mv.mv_hw_hp620)
+DECL|macro|MACH_HP680
+mdefine_line|#define MACH_HP680&t;(sh_mv.mv_hw_hp680)
+DECL|macro|MACH_HP690
+mdefine_line|#define MACH_HP690&t;(sh_mv.mv_hw_hp690)
 DECL|macro|MACH_HD64461
 mdefine_line|#define MACH_HD64461&t;(sh_mv.mv_hw_hd64461)
+DECL|macro|MACH_HD64465
+mdefine_line|#define MACH_HD64465&t;(sh_mv.mv_hw_hd64465)
+DECL|macro|MACH_DREAMCAST
+mdefine_line|#define MACH_DREAMCAST&t;(sh_mv.mv_hw_dreamcast)
 macro_line|#else
 macro_line|# ifdef CONFIG_SH_SOLUTION_ENGINE
 DECL|macro|MACH_SE
@@ -559,12 +604,54 @@ macro_line|# else
 DECL|macro|MACH_HP600
 macro_line|#  define MACH_HP600&t;&t;0
 macro_line|# endif
+macro_line|# ifdef CONFIG_SH_HP620
+DECL|macro|MACH_HP620
+macro_line|#  define MACH_HP620&t;&t;1
+macro_line|# else
+DECL|macro|MACH_HP620
+macro_line|#  define MACH_HP620&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_HP680
+DECL|macro|MACH_HP680
+macro_line|#  define MACH_HP680&t;&t;1
+macro_line|# else
+DECL|macro|MACH_HP680
+macro_line|#  define MACH_HP680&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_HP690
+DECL|macro|MACH_HP690
+macro_line|#  define MACH_HP690&t;&t;1
+macro_line|# else
+DECL|macro|MACH_HP690
+macro_line|#  define MACH_HP690&t;&t;0
+macro_line|# endif
 macro_line|# ifdef CONFIG_HD64461
 DECL|macro|MACH_HD64461
 macro_line|#  define MACH_HD64461&t;&t;1
 macro_line|# else
 DECL|macro|MACH_HD64461
 macro_line|#  define MACH_HD64461&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_HD64465
+DECL|macro|MACH_HD64465
+macro_line|#  define MACH_HD64465&t;&t;1
+macro_line|# else
+DECL|macro|MACH_HD64465
+macro_line|#  define MACH_HD64465&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_EC3104
+DECL|macro|MACH_EC3104
+macro_line|#  define MACH_EC3104&t;&t;1
+macro_line|# else
+DECL|macro|MACH_EC3104
+macro_line|#  define MACH_EC3104&t;&t;0
+macro_line|# endif
+macro_line|# ifdef CONFIG_SH_DREAMCAST
+DECL|macro|MACH_DREAMCAST
+macro_line|#  define MACH_DREAMCAST&t;1
+macro_line|# else
+DECL|macro|MACH_DREAMCAST
+macro_line|#  define MACH_DREAMCAST&t;0
 macro_line|# endif
 macro_line|#endif
 macro_line|#endif /* _ASM_SH_MACHVEC_H */

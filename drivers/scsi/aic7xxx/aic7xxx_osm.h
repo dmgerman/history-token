@@ -746,9 +746,6 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
 DECL|macro|AIC7XXX_DRIVER_VERSION
 mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.1.5&quot;
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#ifndef KERNEL_VERSION
 DECL|macro|KERNEL_VERSION
 mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))

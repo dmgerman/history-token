@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/io.h&n; *&n; * by Alexander.Schulz@stud.uni-karlsruhe.de&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa110/io.h&n; * Copyright (C) 1997,1998 Russell King&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/io.h&n; *&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * derived from:&n; * linux/include/asm-arm/arch-ebsa110/io.h&n; * Copyright (C) 1997,1998 Russell King&n; */
 macro_line|#ifndef __ASM_ARM_ARCH_IO_H
 DECL|macro|__ASM_ARM_ARCH_IO_H
 mdefine_line|#define __ASM_ARM_ARCH_IO_H

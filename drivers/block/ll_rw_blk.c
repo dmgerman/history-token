@@ -464,7 +464,7 @@ id|q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_queue_headactive - indicate whether head of request queue may be active&n; * @q:       The queue which this applies to.&n; * @active:  A flag indication where the head of the queue is active.&n; *&n; * Description:&n; *    The driver for a block device may choose to leave the currently active&n; *    request on the request queue, removing it only when it has completed.&n; *    The queue handling routines assume this by default for safety reasons&n; *    and will not involve the head of the request queue in any merging or&n; *    reordering of requests when the queue is unplugged (and thus may be&n; *    working on this particular request).&n; *&n; *    If a driver removes requests from the queue before processing them, then&n; *    it may indicate that it does so, there by allowing the head of the queue&n; *    to be involved in merging and reordering.  This is done be calling&n; *    blk_queue_headactive() with an @active flag of %0.&n; *&n; *    If a driver processes several requests at once, it must remove them (or&n; *    at least all but one of them) from the request queue.&n; *&n; *    When a queue is plugged (see blk_queue_pluggable()) the head will be&n; *    assumed to be inactive.&n; **/
+multiline_comment|/**&n; * blk_queue_headactive - indicate whether head of request queue may be active&n; * @q:       The queue which this applies to.&n; * @active:  A flag indication where the head of the queue is active.&n; *&n; * Description:&n; *    The driver for a block device may choose to leave the currently active&n; *    request on the request queue, removing it only when it has completed.&n; *    The queue handling routines assume this by default for safety reasons&n; *    and will not involve the head of the request queue in any merging or&n; *    reordering of requests when the queue is unplugged (and thus may be&n; *    working on this particular request).&n; *&n; *    If a driver removes requests from the queue before processing them, then&n; *    it may indicate that it does so, there by allowing the head of the queue&n; *    to be involved in merging and reordering.  This is done be calling&n; *    blk_queue_headactive() with an @active flag of %0.&n; *&n; *    If a driver processes several requests at once, it must remove them (or&n; *    at least all but one of them) from the request queue.&n; *&n; *    When a queue is plugged the head will be assumed to be inactive.&n; **/
 DECL|function|blk_queue_headactive
 r_void
 id|blk_queue_headactive
@@ -481,25 +481,6 @@ id|active
 id|q-&gt;head_active
 op_assign
 id|active
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * blk_queue_pluggable - define a plugging function for a request queue&n; * @q:   the request queue to which the function will apply&n; * @plug: the function to be called to plug a queue&n; *&n; * Description:&n; *   A request queue will be &quot;plugged&quot; if a request is added to it&n; *   while it is empty.  This allows a number of requests to be added&n; *   before any are processed, thus providing an opportunity for these&n; *   requests to be merged or re-ordered.&n; *   The default plugging function (generic_plug_device()) sets the&n; *   &quot;plugged&quot; flag for the queue and adds a task to the $tq_disk task&n; *   queue to unplug the queue and call the request function at a&n; *   later time.&n; *&n; *   A device driver may provide an alternate plugging function by&n; *   passing it to blk_queue_pluggable().  This function should set&n; *   the &quot;plugged&quot; flag if it want calls to the request_function to be&n; *   blocked, and should place a task on $tq_disk which will unplug&n; *   the queue.  Alternately it can simply do nothing and there-by&n; *   disable plugging of the device.&n; **/
-DECL|function|blk_queue_pluggable
-r_void
-id|blk_queue_pluggable
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-id|plug_device_fn
-op_star
-id|plug
-)paren
-(brace
-id|q-&gt;plug_device_fn
-op_assign
-id|plug
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * blk_queue_make_request - define an alternate make_request function for a device&n; * @q:  the request queue for the device to be affected&n; * @mfn: the alternate make_request function&n; *&n; * Description:&n; *    The normal way for &amp;struct buffer_heads to be passed to a device&n; *    driver is for them to be collected into requests on a request&n; *    queue, and then to allow the device driver to select requests&n; *    off that queue when it is ready.  This works well for many block&n; *    devices. However some block devices (typically virtual devices&n; *    such as md or lvm) do not benefit from the processing on the&n; *    request queue, and are served best by having the requests passed&n; *    directly to them.  This can be achieved by providing a function&n; *    to blk_queue_make_request().&n; *&n; * Caveat:&n; *    The driver that does this *must* be able to deal appropriately&n; *    with buffers in &quot;highmemory&quot;, either by calling bh_kmap() to get&n; *    a kernel mapping, to by calling create_bounce() to create a&n; *    buffer in normal memory.&n; **/
@@ -1743,8 +1724,8 @@ id|insert_here
 suffix:semicolon
 )brace
 DECL|function|blk_refill_freelist
-r_void
 r_inline
+r_void
 id|blk_refill_freelist
 c_func
 (paren
@@ -1802,8 +1783,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Must be called with io_request_lock held and interrupts disabled&n; */
 DECL|function|blkdev_release_request
-r_void
 r_inline
+r_void
 id|blkdev_release_request
 c_func
 (paren
@@ -4352,13 +4333,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_headactive
-)paren
-suffix:semicolon
-DECL|variable|blk_queue_pluggable
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blk_queue_pluggable
 )paren
 suffix:semicolon
 DECL|variable|blk_queue_make_request

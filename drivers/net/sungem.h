@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.5 2001/03/21 23:02:04 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.7 2001/04/04 14:49:40 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -691,7 +691,7 @@ DECL|macro|PCS_DMODE_MGM
 mdefine_line|#define PCS_DMODE_MGM&t;0x00000004&t;/* MII/GMII mode&t;&t;*/
 DECL|macro|PCS_DMODE_GMOE
 mdefine_line|#define PCS_DMODE_GMOE&t;0x00000008&t;/* GMII Output Enable&t;&t;*/
-multiline_comment|/* Serialink Control Register. */
+multiline_comment|/* Serialink Control Register.&n; *&n; * NOTE: When in SERDES mode, the loopback bit has inverse logic.&n; */
 DECL|macro|PCS_SCTRL_LOOP
 mdefine_line|#define PCS_SCTRL_LOOP&t;0x00000001&t;/* Loopback enable&t;&t;*/
 DECL|macro|PCS_SCTRL_ESCD
@@ -826,7 +826,7 @@ mdefine_line|#define RXDCTRL_ALTMAC&t;0x2000000000000000&t;/* Matched ALT MAC&t;
 DECL|macro|RXDCTRL_BAD
 mdefine_line|#define RXDCTRL_BAD&t;0x4000000000000000&t;/* Frame has bad CRC&t;*/
 DECL|macro|RXDCTRL_FRESH
-mdefine_line|#define RXDCTRL_FRESH&t;&bslash;&n;&t;((((RX_BUF_ALLOC_SIZE - RX_OFFSET) &lt;&lt; 16) &amp; RXDCTRL_BUFSZ) | &bslash;&n;&t; RXDCTRL_OWN)
+mdefine_line|#define RXDCTRL_FRESH(gp)&t;&bslash;&n;&t;((((RX_BUF_ALLOC_SIZE(gp) - RX_OFFSET) &lt;&lt; 16) &amp; RXDCTRL_BUFSZ) | &bslash;&n;&t; RXDCTRL_OWN)
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE 128
 DECL|macro|RX_RING_SIZE
@@ -900,7 +900,7 @@ mdefine_line|#define TX_BUFFS_AVAIL(GP)&t;&t;&t;&t;&t;&bslash;&n;&t;(((GP)-&gt;t
 DECL|macro|RX_OFFSET
 mdefine_line|#define RX_OFFSET          2
 DECL|macro|RX_BUF_ALLOC_SIZE
-mdefine_line|#define RX_BUF_ALLOC_SIZE  (1546 + RX_OFFSET + 64)
+mdefine_line|#define RX_BUF_ALLOC_SIZE(gp)&t;((gp)-&gt;dev-&gt;mtu + 46 + RX_OFFSET + 64)
 DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD  256
 DECL|struct|gem_init_block

@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 r_extern
 r_void
@@ -164,6 +165,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|strcat
+)paren
+suffix:semicolon
+DECL|variable|strncat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncat
 )paren
 suffix:semicolon
 multiline_comment|/* mem exports */

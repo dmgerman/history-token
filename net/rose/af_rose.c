@@ -102,10 +102,7 @@ r_static
 r_struct
 id|sock
 op_star
-r_volatile
 id|rose_list
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|rose_proto_ops
 r_static
@@ -1780,6 +1777,17 @@ id|optlen
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_switch
 c_cond
@@ -4484,8 +4492,6 @@ id|sk
 comma
 id|size
 comma
-l_int|0
-comma
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
@@ -4750,8 +4756,6 @@ comma
 id|frontlen
 op_plus
 id|ROSE_PACLEN
-comma
-l_int|0
 comma
 l_int|0
 comma
@@ -6198,6 +6202,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon

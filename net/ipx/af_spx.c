@@ -1829,8 +1829,6 @@ id|sk
 comma
 id|size
 comma
-l_int|1
-comma
 l_int|0
 comma
 op_amp
@@ -3276,8 +3274,6 @@ id|sk
 comma
 id|size
 comma
-l_int|0
-comma
 id|flags
 op_amp
 id|MSG_DONTWAIT
@@ -4085,6 +4081,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon

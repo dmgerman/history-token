@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: unaligned.c,v 1.21 2001/03/21 11:46:20 davem Exp $&n; * unaligned.c: Unaligned load/store trap handling with special&n; *              cases for the kernel to do them more quickly.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: unaligned.c,v 1.23 2001/04/09 04:29:03 davem Exp $&n; * unaligned.c: Unaligned load/store trap handling with special&n; *              cases for the kernel to do them more quickly.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1165,6 +1166,19 @@ id|UREG_G2
 )braket
 op_assign
 id|g2
+suffix:semicolon
+id|regs-&gt;tstate
+op_and_assign
+op_complement
+id|TSTATE_ASI
+suffix:semicolon
+id|regs-&gt;tstate
+op_or_assign
+(paren
+id|ASI_AIUS
+op_lshift
+l_int|24UL
+)paren
 suffix:semicolon
 )brace
 DECL|function|kernel_unaligned_trap

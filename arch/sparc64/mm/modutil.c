@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: modutil.c,v 1.7 2001/02/13 01:16:44 davem Exp $&n; *  arch/sparc64/mm/modutil.c&n; *&n; *  Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Based upon code written by Linus Torvalds and others.&n; */
+multiline_comment|/*  $Id: modutil.c,v 1.8 2001/04/04 00:49:39 davem Exp $&n; *  arch/sparc64/mm/modutil.c&n; *&n; *  Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Based upon code written by Linus Torvalds and others.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -327,7 +327,7 @@ id|PAGE_KERNEL
 )paren
 )paren
 (brace
-id|vfree
+id|module_unmap
 c_func
 (paren
 id|addr

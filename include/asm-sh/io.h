@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Depending on which platform we are running on, we need different&n; * I/O functions.&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_SH_GENERIC
+macro_line|#if defined(CONFIG_SH_GENERIC) || defined(CONFIG_SH_CQREEK) || defined(CONFIG_SH_UNKNOWN)
 multiline_comment|/* In a generic kernel, we always go through the machine vector.  */
 macro_line|#include &lt;asm/machvec.h&gt;
 DECL|macro|__inb
@@ -61,8 +61,6 @@ DECL|macro|__writel
 macro_line|# define __writel(v,a)&t;sh_mv.mv_writel((v),(a))
 DECL|macro|__ioremap
 macro_line|# define __ioremap(a,s)&t;sh_mv.mv_ioremap((a), (s))
-DECL|macro|__ioremap_nocache
-macro_line|# define __ioremap_nocache(a,s)&t;sh_mv.mv_ioremap_nocache((a), (s))
 DECL|macro|__iounmap
 macro_line|# define __iounmap(a)&t;sh_mv.mv_iounmap((a))
 DECL|macro|__isa_port2addr
@@ -121,10 +119,18 @@ DECL|macro|__WANT_IO_DEF
 macro_line|# define __WANT_IO_DEF
 macro_line|# if defined(CONFIG_SH_HP600)
 macro_line|#  include &lt;asm/io_hd64461.h&gt;
-macro_line|# elif defined(CONFIG_SH_OVERDRIVE)
+macro_line|# elif defined(CONFIG_SH_7750_OVERDRIVE)
 macro_line|#  include &lt;asm/io_od.h&gt;
 macro_line|# elif defined(CONFIG_SH_SOLUTION_ENGINE)
 macro_line|#  include &lt;asm/io_se.h&gt;
+macro_line|# elif defined(CONFIG_SH_DMIDA) || &bslash;&n;       defined(CONFIG_SH_STB1_HARP) || &bslash;&n;       defined(CONFIG_SH_STB1_OVERDRIVE)
+macro_line|#  include &lt;asm/io_hd64465.h&gt;
+macro_line|# elif defined(CONFIG_SH_EC3104)
+macro_line|#  include &lt;asm/io_ec3104.h&gt;
+macro_line|# elif defined(CONFIG_SH_DREAMCAST)
+macro_line|#  include &lt;asm/io_dc.h&gt;
+macro_line|# elif defined(CONFIG_SH_CAT68701)
+macro_line|#  include &lt;asm/io_cat68701.h&gt;
 macro_line|# elif defined(CONFIG_SH_UNKNOWN)
 macro_line|#  include &lt;asm/io_unknown.h&gt;
 macro_line|# else
@@ -137,7 +143,7 @@ macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* These are always function calls, in both kernel and user space */
 r_extern
 r_int
-r_int
+r_char
 id|_inb
 (paren
 r_int
@@ -206,7 +212,7 @@ id|port
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|_inb_p
 (paren
 r_int
@@ -380,7 +386,7 @@ id|count
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|_readb
 c_func
 (paren
@@ -456,7 +462,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int
-r_int
+r_char
 id|___raw_readb
 c_func
 (paren
@@ -480,17 +486,6 @@ r_extern
 r_int
 r_int
 id|___raw_readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|___raw_readq
 c_func
 (paren
 r_int
@@ -529,20 +524,6 @@ suffix:semicolon
 r_extern
 r_void
 id|___raw_writel
-c_func
-(paren
-r_int
-r_int
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|___raw_writeq
 c_func
 (paren
 r_int
@@ -705,7 +686,7 @@ macro_line|#else
 multiline_comment|/* Userspace declarations.  */
 r_extern
 r_int
-r_int
+r_char
 id|inb
 c_func
 (paren
@@ -781,6 +762,7 @@ suffix:semicolon
 r_extern
 r_void
 id|insb
+c_func
 (paren
 r_int
 r_int
@@ -798,6 +780,7 @@ suffix:semicolon
 r_extern
 r_void
 id|insw
+c_func
 (paren
 r_int
 r_int
@@ -815,6 +798,7 @@ suffix:semicolon
 r_extern
 r_void
 id|insl
+c_func
 (paren
 r_int
 r_int
@@ -832,6 +816,7 @@ suffix:semicolon
 r_extern
 r_void
 id|outsb
+c_func
 (paren
 r_int
 r_int
@@ -850,6 +835,7 @@ suffix:semicolon
 r_extern
 r_void
 id|outsw
+c_func
 (paren
 r_int
 r_int
@@ -868,6 +854,7 @@ suffix:semicolon
 r_extern
 r_void
 id|outsl
+c_func
 (paren
 r_int
 r_int
@@ -885,7 +872,7 @@ id|count
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|readb
 c_func
 (paren
@@ -1051,7 +1038,7 @@ DECL|function|ctrl_inb
 r_extern
 id|__inline__
 r_int
-r_int
+r_char
 id|ctrl_inb
 c_func
 (paren
@@ -1286,33 +1273,6 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This one maps high address device memory and turns off caching for that area.&n; * it&squot;s useful if some control registers are in such an area and write combining&n; * or read caching is not desirable:&n; */
-DECL|function|ioremap_nocache
-r_static
-id|__inline__
-r_void
-op_star
-id|ioremap_nocache
-(paren
-r_int
-r_int
-id|offset
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-id|__ioremap_nocache
-c_func
-(paren
-id|offset
-comma
-id|size
-)paren
-suffix:semicolon
-)brace
 DECL|function|iounmap
 r_static
 id|__inline__
@@ -1333,6 +1293,8 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|macro|ioremap_nocache
+mdefine_line|#define ioremap_nocache(off,size) ioremap(off,size)
 DECL|function|check_signature
 r_static
 id|__inline__

@@ -103,6 +103,31 @@ l_int|1
 id|b
 l_int|3
 suffix:colon
+id|ldrb
+op_mod
+l_int|1
+comma
+(braket
+op_mod
+l_int|3
+comma
+macro_line|#0x14]
+op_logical_and
+op_mod
+l_int|1
+comma
+op_mod
+l_int|1
+comma
+macro_line|#0x60
+id|teq
+op_mod
+l_int|1
+comma
+macro_line|#0x60
+id|bne
+l_int|3
+id|b
 l_string|&quot; : : &quot;
 id|r
 l_string|&quot; (0), &quot;

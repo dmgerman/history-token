@@ -601,7 +601,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Memory map description&n; */
 DECL|macro|NR_BANKS
-mdefine_line|#define NR_BANKS 4
+mdefine_line|#define NR_BANKS 8
 DECL|struct|meminfo
 r_struct
 id|meminfo

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
 macro_line|#include &lt;asm/io_unknown.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 multiline_comment|/*&n; * The Machine Vector&n; */
 DECL|variable|__initmv
 r_struct
@@ -132,10 +133,6 @@ id|mv_ioremap
 suffix:colon
 id|unknown_ioremap
 comma
-id|mv_ioremap_nocache
-suffix:colon
-id|unknown_ioremap_nocache
-comma
 id|mv_iounmap
 suffix:colon
 id|unknown_iounmap
@@ -143,6 +140,14 @@ comma
 id|mv_isa_port2addr
 suffix:colon
 id|unknown_isa_port2addr
+comma
+id|mv_rtc_gettimeofday
+suffix:colon
+id|sh_rtc_gettimeofday
+comma
+id|mv_rtc_settimeofday
+suffix:colon
+id|sh_rtc_settimeofday
 comma
 )brace
 suffix:semicolon

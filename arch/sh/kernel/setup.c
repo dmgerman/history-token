@@ -55,6 +55,13 @@ r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
+DECL|variable|aux_device_present
+r_int
+r_char
+id|aux_device_present
+op_assign
+l_int|0xaa
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
 r_int
@@ -79,6 +86,47 @@ id|sh_machine_vector
 id|sh_mv
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* We need this to satisfy some external references. */
+DECL|variable|screen_info
+r_struct
+id|screen_info
+id|screen_info
+op_assign
+(brace
+l_int|0
+comma
+l_int|25
+comma
+multiline_comment|/* orig-x, orig-y */
+l_int|0
+comma
+multiline_comment|/* unused */
+l_int|0
+comma
+multiline_comment|/* orig-video-page */
+l_int|0
+comma
+multiline_comment|/* orig-video-mode */
+l_int|80
+comma
+multiline_comment|/* orig-video-cols */
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* ega_ax, ega_bx, ega_cx */
+l_int|25
+comma
+multiline_comment|/* orig-video-lines */
+l_int|0
+comma
+multiline_comment|/* orig-video-isVGA */
+l_int|16
+multiline_comment|/* orig-video-points */
+)brace
+suffix:semicolon
 r_extern
 r_void
 id|fpu_init
@@ -299,7 +347,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|memory_start
 DECL|variable|memory_end
-r_static
 r_int
 r_int
 id|memory_start

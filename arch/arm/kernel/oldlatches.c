@@ -176,7 +176,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|oldlatch_init
-id|initcall
+id|__initcall
 c_func
 (paren
 id|oldlatch_init

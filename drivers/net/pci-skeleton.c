@@ -2511,8 +2511,6 @@ suffix:semicolon
 r_static
 r_int
 id|printed_version
-op_assign
-l_int|0
 suffix:semicolon
 id|u8
 id|tmp

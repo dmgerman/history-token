@@ -38,8 +38,6 @@ r_static
 r_int
 r_int
 id|bufsize_rcv
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|jumpered_interrupts
 mdefine_line|#define jumpered_interrupts&t;/* IRQ line jumpered on board */
@@ -641,8 +639,6 @@ id|ioaddr
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|i

@@ -20,11 +20,6 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
-macro_line|#if defined (CONFIG_SGI_IP35)
-macro_line|#include &lt;asm/sn/pci/pciio.h&gt;&t;&t;/* For SN1 + pcibr Addressing Limitation */
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;&t;&t;/* For SN1 + pcibr Addressing Limitation */
-macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;&t;/* For SN1 + pcibr Addressing Limitation */
-macro_line|#endif /* SN1 */
 macro_line|#if DEBUG_INTR_TSTAMP_DEBUG
 macro_line|#include &lt;sys/debug.h&gt;
 macro_line|#include &lt;sys/idbg.h&gt;

@@ -45,7 +45,7 @@ l_int|0
 suffix:semicolon
 id|status1
 op_assign
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_IRQREQA
@@ -55,7 +55,7 @@ id|barrier
 (paren
 )paren
 suffix:semicolon
-id|outb
+id|ioc_writeb
 (paren
 l_int|0
 comma
@@ -68,14 +68,14 @@ id|barrier
 suffix:semicolon
 id|count1
 op_assign
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_T0CNTL
 )paren
 op_or
 (paren
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_T0CNTH
@@ -90,7 +90,7 @@ id|barrier
 suffix:semicolon
 id|status2
 op_assign
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_IRQREQA
@@ -100,7 +100,7 @@ id|barrier
 (paren
 )paren
 suffix:semicolon
-id|outb
+id|ioc_writeb
 (paren
 l_int|0
 comma
@@ -113,14 +113,14 @@ id|barrier
 suffix:semicolon
 id|count2
 op_assign
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_T0CNTL
 )paren
 op_or
 (paren
-id|inb
+id|ioc_readb
 c_func
 (paren
 id|IOC_T0CNTH
@@ -205,7 +205,7 @@ c_func
 r_void
 )paren
 (brace
-id|outb
+id|ioc_writeb
 c_func
 (paren
 id|LATCH
@@ -215,7 +215,7 @@ comma
 id|IOC_T0LTCHL
 )paren
 suffix:semicolon
-id|outb
+id|ioc_writeb
 c_func
 (paren
 id|LATCH
@@ -225,7 +225,7 @@ comma
 id|IOC_T0LTCHH
 )paren
 suffix:semicolon
-id|outb
+id|ioc_writeb
 c_func
 (paren
 l_int|0

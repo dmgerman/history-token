@@ -4,9 +4,9 @@ mdefine_line|#define __ASM_SH_PCI_H
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
-mdefine_line|#define pcibios_assign_all_busses()&t;0
+mdefine_line|#define pcibios_assign_all_busses()&t;1
 multiline_comment|/* These are currently the correct values for the STM overdrive board. &n; * We need some way of setting this on a board specific way, it will &n; * not be the same on other boards I think&n; */
-macro_line|#if 1 /* def CONFIG_SH_OVERDRIVE */
+macro_line|#if 1 /* def CONFIG_SH_7750_OVERDRIVE || def CONFIG_CPU_SUBTYPE_ST40STB1 */
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
 DECL|macro|PCIBIOS_MIN_MEM
@@ -115,6 +115,11 @@ r_int
 id|directoin
 )paren
 (brace
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|virt_to_bus
 c_func
@@ -173,6 +178,11 @@ r_int
 id|direction
 )paren
 (brace
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|nents
 suffix:semicolon
@@ -255,6 +265,27 @@ id|direction
 )paren
 (brace
 multiline_comment|/* Nothing to do */
+)brace
+multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
+DECL|function|pci_dma_supported
+r_extern
+r_inline
+r_int
+id|pci_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|mask
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address

@@ -4435,6 +4435,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 DECL|variable|netlink_family_ops

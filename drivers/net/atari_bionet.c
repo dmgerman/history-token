@@ -970,14 +970,10 @@ suffix:semicolon
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
 id|no_more_found
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* avoid &quot;Probing for...&quot; printed 4 times */
 r_int

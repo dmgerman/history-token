@@ -344,8 +344,7 @@ comma
 r_int
 id|code
 comma
-r_void
-op_star
+r_int
 id|pos
 )paren
 suffix:semicolon

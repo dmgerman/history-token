@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.69 2001/03/08 22:08:51 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: processor.h,v 1.70 2001/03/27 02:36:38 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __ASM_SPARC64_PROCESSOR_H
 DECL|macro|__ASM_SPARC64_PROCESSOR_H
 mdefine_line|#define __ASM_SPARC64_PROCESSOR_H
@@ -196,8 +196,6 @@ DECL|macro|SPARC_FLAG_NEWCHILD
 mdefine_line|#define SPARC_FLAG_NEWCHILD     0x08    /* task is just-spawned child process&t;*/
 DECL|macro|SPARC_FLAG_PERFCTR
 mdefine_line|#define SPARC_FLAG_PERFCTR&t;0x10    /* task has performance counters active&t;*/
-DECL|macro|SPARC_FLAG_MMAPSHARED
-mdefine_line|#define SPARC_FLAG_MMAPSHARED&t;0x20    /* task wants a shared mmap             */
 DECL|macro|FAULT_CODE_WRITE
 mdefine_line|#define FAULT_CODE_WRITE&t;0x01&t;/* Write access, implies D-TLB&t;&t;*/
 DECL|macro|FAULT_CODE_DTLB

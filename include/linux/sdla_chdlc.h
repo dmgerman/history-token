@@ -1,4 +1,4 @@
-multiline_comment|/*************************************************************************&n; sdla_chdlc.h&t;Sangoma Cisco HDLC firmware API definitions&n;&n; Author:      &t;Gideon Hack&n;&t;&t;Nenad Corbic &lt;ncorbic@sangoma.com&gt;&t;&n;&n; Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;&n;&t;&t;This program is free software; you can redistribute it and/or&n;&t;&t;modify it under the term of the GNU General Public License&n;&t;&t;as published by the Free Software Foundation; either version&n;&t;&t;2 of the License, or (at your option) any later version.&n;&n;===========================================================================&n;  Oct 04, 1999  Nenad Corbic    Updated API support&n;  Jun 02, 1999  Gideon Hack     Changes for S514 usage.&n;  Oct 28, 1998&t;Jaspreet Singh&t;Made changes for Dual Port CHDLC.&n;  Jun 11, 1998&t;David Fong&t;Initial version.&n;===========================================================================&n;&n; Organization&n;&t;- Compatibility notes&n;&t;- Constants defining the shared memory control block (mailbox)&n;&t;- Interface commands&n;&t;- Return code from interface commands&n;&t;- Constants for the commands (structures for casting data)&n;&t;- UDP Management constants and structures&n;&n;*************************************************************************/
+multiline_comment|/*************************************************************************&n; sdla_chdlc.h&t;Sangoma Cisco HDLC firmware API definitions&n;&n; Author:      &t;Gideon Hack&n;&t;&t;Nenad Corbic &lt;ncorbic@sangoma.com&gt;&t;&n;&n; Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;&n;&t;&t;This program is free software; you can redistribute it and/or&n;&t;&t;modify it under the term of the GNU General Public License&n;&t;&t;as published by the Free Software Foundation; either version&n;&t;&t;2 of the License, or (at your option) any later version.&n;&n;===========================================================================&n;  Oct 04, 1999  Nenad Corbic    Updated API support&n;  Jun 02, 1999  Gideon Hack     Changes for S514 usage.&n;  Oct 28, 1998&t;Jaspreet Singh&t;Made changes for Dual Port CHDLC.&n;  Jun 11, 1998&t;David Fong&t;Initial version.&n;===========================================================================&n;&n; Organization&n;&t;- Compatibility notes&n;&t;- Constants defining the shared memory control block (mailbox)&n;&t;- Interface commands&n;&t;- Return code from interface commands&n;&t;- Constants for the commands (structures for casting data)&n;&t;- UDP Management constants and structures&n;&n;*************************************************************************/
 macro_line|#ifndef _SDLA_CHDLC_H
 DECL|macro|_SDLC_CHDLC_H
 macro_line|#  define _SDLC_CHDLC_H
@@ -189,6 +189,8 @@ DECL|macro|TRACE_PROT
 mdefine_line|#define TRACE_PROT&t;&t;&t;0x01
 DECL|macro|TRACE_DATA
 mdefine_line|#define TRACE_DATA&t;&t;&t;0x02
+DECL|macro|DISCARD_RX_ERROR_FRAMES
+mdefine_line|#define DISCARD_RX_ERROR_FRAMES&t;0x0001
 multiline_comment|/* ----------------------------------------------------------------------------&n; *                     Return codes from interface commands&n; * --------------------------------------------------------------------------*/
 DECL|macro|COMMAND_OK
 mdefine_line|#define COMMAND_OK&t;&t;&t;&t;0x00
@@ -741,6 +743,9 @@ multiline_comment|/* ignore CTS in determining the CHDLC link status */
 DECL|macro|IGNORE_KPALV_FOR_LINK_STAT
 mdefine_line|#define IGNORE_KPALV_FOR_LINK_STAT&t;&t;0x0004
 multiline_comment|/* ignore keepalive frames in determining the CHDLC link status */
+DECL|macro|SINGLE_TX_BUFFER
+mdefine_line|#define SINGLE_TX_BUFFER&t;&t;&t;0x4000 
+multiline_comment|/* configure a single transmit buffer */
 DECL|macro|HDLC_STREAMING_MODE
 mdefine_line|#define HDLC_STREAMING_MODE&t;&t;&t;0x8000
 multiline_comment|/*   settings for the &squot;CHDLC_statistics_options&squot; */
@@ -1070,7 +1075,7 @@ id|reserved_CDP_stat6
 id|PACKED
 suffix:semicolon
 multiline_comment|/* reserved for later */
-multiline_comment|/* Incomming frames with a format error statistics */
+multiline_comment|/* Incoming frames with a format error statistics */
 DECL|member|PACKED
 r_int
 r_int
@@ -1162,7 +1167,7 @@ r_int
 id|SLARP_Rx_keepalive_TO_count
 id|PACKED
 suffix:semicolon
-multiline_comment|/* timeout count for incomming SLARP frames */
+multiline_comment|/* timeout count for incoming SLARP frames */
 DECL|member|PACKED
 r_int
 r_int

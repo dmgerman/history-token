@@ -194,13 +194,15 @@ multiline_comment|/*&n; * Generic ioremap support.&n; *&n; * Define:&n; *  iomem
 macro_line|#ifdef iomem_valid_addr
 DECL|macro|__arch_ioremap
 mdefine_line|#define __arch_ioremap(off,sz,nocache)&t;&t;&t;&t;&bslash;&n; ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _off = (off), _size = (sz);&t;&t;&bslash;&n;&t;void *_ret = (void *)0;&t;&t;&t;&t;&t;&bslash;&n;&t;if (iomem_valid_addr(_off, _size))&t;&t;&t;&bslash;&n;&t;&t;_ret = __ioremap(iomem_to_phys(_off),_size,0);&t;&bslash;&n;&t;_ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; })
+DECL|macro|__arch_iounmap
+mdefine_line|#define __arch_iounmap __iounmap
 macro_line|#endif
 DECL|macro|ioremap
 mdefine_line|#define ioremap(off,sz)&t;&t;&t;__arch_ioremap((off),(sz),0)
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(off,sz)&t;&t;__arch_ioremap((off),(sz),1)
 DECL|macro|iounmap
-mdefine_line|#define iounmap(_addr)&t;&t;&t;__iounmap(_addr)
+mdefine_line|#define iounmap(_addr)&t;&t;&t;__arch_iounmap(_addr)
 multiline_comment|/*&n; * DMA-consistent mapping functions.  These allocate/free a region of&n; * uncached, unwrite-buffered mapped memory space for use with DMA&n; * devices.  This is the &quot;generic&quot; version.  The PCI specific version&n; * is in pci.h&n; */
 r_extern
 r_void
@@ -415,7 +417,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#else&t;/* __mem_pci */
+macro_line|#elif !defined(readb)
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;&t;(__readwrite_bug(&quot;readb&quot;),0)
 DECL|macro|readw

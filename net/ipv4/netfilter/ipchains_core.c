@@ -3020,7 +3020,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* If pointer writes are atomic then turning off&n;&t;&t; * interupts is not necessary. */
+multiline_comment|/* If pointer writes are atomic then turning off&n;&t;&t; * interrupts is not necessary. */
 id|chainptr-&gt;chain
 op_assign
 id|rule

@@ -670,8 +670,6 @@ r_void
 r_static
 r_int
 id|once
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|sgiseeq_rx_desc
@@ -2732,8 +2730,6 @@ id|irq
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -3227,8 +3223,6 @@ id|dev
 r_static
 r_int
 id|initialized
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star

@@ -1,8 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-sa1100.c&n; *&n; *  Copyright (C) 1998-1999 Russell King&n; *  Copyright (C) 1999 Hugo Fiennes&n; *&n; *  Extra MM routines for the SA1100 architecture&n; *&n; *  1999/12/04 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Converted memory definition for struct meminfo initialisations.&n; *&t;Memory is listed physically now.&n; *&n; *  2000/04/07 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Reworked for run-time selection of memory definitions&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -570,20 +569,19 @@ DECL|variable|__initdata
 r_static
 r_struct
 id|map_desc
-id|thinclient_io_desc
+id|sherman_io_desc
 (braket
 )braket
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_SA1100_THINCLIENT
-macro_line|#if 0
+macro_line|#ifdef CONFIG_SA1100_SHERMAN
 (brace
 l_int|0xe8000000
 comma
 l_int|0x00000000
 comma
-l_int|0x01000000
+l_int|0x02000000
 comma
 id|DOMAIN_IO
 comma
@@ -596,100 +594,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* Flash bank 0 when JP1 2-4 */
-macro_line|#else
-(brace
-l_int|0xe8000000
-comma
-l_int|0x08000000
-comma
-l_int|0x01000000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 1 when JP1 3-4 */
-macro_line|#endif
-(brace
-l_int|0xf0000000
-comma
-l_int|0x10000000
-comma
-l_int|0x00400000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* CPLD */
-macro_line|#endif
-id|LAST_DESC
-)brace
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_struct
-id|map_desc
-id|tifon_io_desc
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-macro_line|#ifdef CONFIG_SA1100_TIFON
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x00800000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 1 */
-(brace
-l_int|0xe8800000
-comma
-l_int|0x08000000
-comma
-l_int|0x00800000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 2 */
+multiline_comment|/* Flash*/
 macro_line|#endif
 id|LAST_DESC
 )brace
@@ -740,25 +645,6 @@ op_assign
 (brace
 macro_line|#ifdef CONFIG_SA1100_XP860
 (brace
-l_int|0xf4000000
-comma
-l_int|0x40000000
-comma
-l_int|0x00800000
-comma
-id|DOMAIN_IO
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* SA-1111 */
-(brace
 l_int|0xf0000000
 comma
 l_int|0x10000000
@@ -796,6 +682,59 @@ l_int|0
 )brace
 comma
 multiline_comment|/* LAN */
+(brace
+l_int|0xf4000000
+comma
+l_int|0x40000000
+comma
+l_int|0x00800000
+comma
+id|DOMAIN_IO
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* SA-1111 */
+macro_line|#endif
+id|LAST_DESC
+)brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|map_desc
+id|pangolin_io_desc
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+macro_line|#ifdef CONFIG_SA1100_PANGOLIN
+(brace
+l_int|0xe8000000
+comma
+l_int|0x00000000
+comma
+l_int|0x02000000
+comma
+id|DOMAIN_IO
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* Flash bank 0 */
 macro_line|#endif
 id|LAST_DESC
 )brace
@@ -833,19 +772,6 @@ c_func
 id|desc
 op_assign
 id|assabet_io_desc
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|machine_is_nanoengine
-c_func
-(paren
-)paren
-)paren
-id|desc
-op_assign
-id|nanoengine_io_desc
 suffix:semicolon
 r_else
 r_if
@@ -916,27 +842,27 @@ r_else
 r_if
 c_cond
 (paren
-id|machine_is_thinclient
+id|machine_is_nanoengine
 c_func
 (paren
 )paren
 )paren
 id|desc
 op_assign
-id|thinclient_io_desc
+id|nanoengine_io_desc
 suffix:semicolon
 r_else
 r_if
 c_cond
 (paren
-id|machine_is_tifon
+id|machine_is_sherman
 c_func
 (paren
 )paren
 )paren
 id|desc
 op_assign
-id|tifon_io_desc
+id|sherman_io_desc
 suffix:semicolon
 r_else
 r_if
@@ -964,6 +890,19 @@ id|desc
 op_assign
 id|xp860_io_desc
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_pangolin
+c_func
+(paren
+)paren
+)paren
+id|desc
+op_assign
+id|pangolin_io_desc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -976,66 +915,6 @@ id|desc
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-multiline_comment|/*&n; * Our node_data structure for discontigous memory.&n; * There is 4 possible nodes i.e. the 4 SA1100 RAM banks.&n; */
-DECL|variable|node_bootmem_data
-r_static
-id|bootmem_data_t
-id|node_bootmem_data
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|variable|sa1100_node_data
-id|pg_data_t
-id|sa1100_node_data
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-(brace
-id|bdata
-suffix:colon
-op_amp
-id|node_bootmem_data
-(braket
-l_int|0
-)braket
-)brace
-comma
-(brace
-id|bdata
-suffix:colon
-op_amp
-id|node_bootmem_data
-(braket
-l_int|1
-)braket
-)brace
-comma
-(brace
-id|bdata
-suffix:colon
-op_amp
-id|node_bootmem_data
-(braket
-l_int|2
-)braket
-)brace
-comma
-(brace
-id|bdata
-suffix:colon
-op_amp
-id|node_bootmem_data
-(braket
-l_int|3
-)braket
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * On Assabet, we must probe for the Neponset board *before* paging_init() &n; * has occurred to actually determine the amount of RAM available.  To do so, &n; * we map the appropriate IO section in the page table here in order to &n; * access GPIO registers.&n; */
 DECL|function|map_sa1100_gpio_regs
 r_void

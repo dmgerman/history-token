@@ -5,7 +5,7 @@ mdefine_line|#define _ASM_SH_IO_SE_H
 macro_line|#include &lt;asm/io_generic.h&gt;
 r_extern
 r_int
-r_int
+r_char
 id|se_inb
 c_func
 (paren
@@ -42,7 +42,7 @@ id|se_outb
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -80,7 +80,7 @@ id|port
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|se_inb_p
 c_func
 (paren
@@ -95,7 +95,7 @@ id|se_outb_p
 c_func
 (paren
 r_int
-r_int
+r_char
 id|value
 comma
 r_int
@@ -216,7 +216,7 @@ id|count
 suffix:semicolon
 r_extern
 r_int
-r_int
+r_char
 id|se_readb
 c_func
 (paren
@@ -353,8 +353,6 @@ DECL|macro|__isa_port2addr
 macro_line|# define __isa_port2addr&t;se_isa_port2addr
 DECL|macro|__ioremap
 macro_line|# define __ioremap&t;&t;generic_ioremap
-DECL|macro|__ioremap_nocache
-macro_line|# define __ioremap_nocache&t;generic_ioremap_nocache
 DECL|macro|__iounmap
 macro_line|# define __iounmap&t;&t;generic_iounmap
 macro_line|#endif

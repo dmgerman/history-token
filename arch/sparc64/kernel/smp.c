@@ -1907,9 +1907,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;stxa&t;%0, [%3] %6&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#Sync&bslash;n&bslash;t&quot;
 l_string|&quot;stxa&t;%1, [%4] %6&bslash;n&bslash;t&quot;
-l_string|&quot;membar&t;#Sync&bslash;n&bslash;t&quot;
 l_string|&quot;stxa&t;%2, [%5] %6&bslash;n&bslash;t&quot;
 l_string|&quot;membar&t;#Sync&bslash;n&bslash;t&quot;
 suffix:colon
@@ -4193,6 +4191,15 @@ DECL|variable|cacheflush_time
 id|cycles_t
 id|cacheflush_time
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|cheetah_tune_scheduling
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -4233,6 +4240,25 @@ c_func
 l_string|&quot;SMP: Calibrating ecache flush... &quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tlb_type
+op_eq
+id|cheetah
+)paren
+(brace
+id|cacheflush_time
+op_assign
+id|cheetah_tune_scheduling
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|report
+suffix:semicolon
+)brace
 id|ecache_size
 op_assign
 id|prom_getintdefault
@@ -4557,6 +4583,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|report
+suffix:colon
 id|printk
 c_func
 (paren

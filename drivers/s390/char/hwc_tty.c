@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  drivers/s390/char/hwc_tty.c&n; *    HWC line mode terminal driver.&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Peschke &lt;peschke@fh-brandenburg.de&gt;&n; *&n; *  Thanks to Martin Schwidefsky.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

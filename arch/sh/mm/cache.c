@@ -453,10 +453,19 @@ id|CPU_SH7729
 suffix:semicolon
 )brace
 macro_line|#elif defined(__SH4__)
+macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+id|cpu_data-&gt;type
+op_assign
+id|CPU_ST40STB1
+suffix:semicolon
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750)
 id|cpu_data-&gt;type
 op_assign
 id|CPU_SH7750
 suffix:semicolon
+macro_line|#else
+macro_line|#error Unknown SH4 CPU type
+macro_line|#endif
 macro_line|#endif
 )brace
 DECL|function|cache_init

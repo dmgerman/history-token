@@ -59,13 +59,12 @@ id|sc_fpregs
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|sc_xdregs
+DECL|member|sc_xfpregs
 r_int
 r_int
-r_int
-id|sc_xdregs
+id|sc_xfpregs
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|sc_fpscr

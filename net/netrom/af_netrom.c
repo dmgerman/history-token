@@ -1367,6 +1367,17 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3851,8 +3862,6 @@ id|sk
 comma
 id|size
 comma
-l_int|0
-comma
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
@@ -4811,9 +4820,14 @@ id|net_proto_family
 id|nr_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_NETROM
 comma
+id|create
+suffix:colon
 id|nr_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|nr_proto_ops
@@ -4891,6 +4905,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -4909,9 +4927,10 @@ id|notifier_block
 id|nr_dev_notifier
 op_assign
 (brace
+id|notifier_call
+suffix:colon
 id|nr_device_event
 comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|dev_nr
@@ -4920,6 +4939,18 @@ r_struct
 id|net_device
 op_star
 id|dev_nr
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;G4KLX NET/ROM for Linux. Version 0.7 for AX25.037 Linux 2.4&bslash;n&quot;
 suffix:semicolon
 DECL|function|nr_proto_init
 r_static
@@ -4934,6 +4965,32 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nr_ndevs
+op_star
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+op_ge
+id|KMALLOC_MAXSIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;NET/ROM: nr_proto_init - nr_ndevs parameter to large&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5053,8 +5110,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;G4KLX NET/ROM for Linux. Version 0.7 for AX25.037 Linux 2.4&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 id|ax25_protocol_register

@@ -2576,6 +2576,19 @@ op_star
 id|master
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|sk_buff
+op_star
+id|skb_checksum_help
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE
 r_extern
 r_int

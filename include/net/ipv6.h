@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;$Id: ipv6.h,v 1.22 2000/09/18 05:54:13 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;$Id: ipv6.h,v 1.23 2000/12/13 18:31:48 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _NET_IPV6_H
 DECL|macro|_NET_IPV6_H
 mdefine_line|#define _NET_IPV6_H
@@ -464,8 +464,7 @@ id|sel
 )paren
 suffix:semicolon
 r_extern
-id|u8
-op_star
+r_int
 id|ipv6_reassembly
 c_func
 (paren
@@ -475,14 +474,11 @@ op_star
 op_star
 id|skb
 comma
-id|u8
-op_star
-id|nhptr
+r_int
 )paren
 suffix:semicolon
 r_extern
-id|u8
-op_star
+r_int
 id|ipv6_parse_hopopts
 c_func
 (paren
@@ -491,14 +487,11 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|u8
-op_star
-id|nhptr
+r_int
 )paren
 suffix:semicolon
 r_extern
-id|u8
-op_star
+r_int
 id|ipv6_parse_exthdrs
 c_func
 (paren
@@ -508,9 +501,7 @@ op_star
 op_star
 id|skb
 comma
-id|u8
-op_star
-id|nhptr
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1052,15 +1043,16 @@ id|proto
 )paren
 suffix:semicolon
 r_extern
-id|u8
-op_star
+r_int
 id|ipv6_skip_exthdr
 c_func
 (paren
 r_struct
-id|ipv6_opt_hdr
+id|sk_buff
 op_star
-id|hdr
+comma
+r_int
+id|start
 comma
 id|u8
 op_star
@@ -1068,6 +1060,15 @@ id|nexthdrp
 comma
 r_int
 id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ipv6_ext_hdr
+c_func
+(paren
+id|u8
+id|nexthdr
 )paren
 suffix:semicolon
 r_extern

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-shark/mm.c&n; *&n; *  by Alexander.Schulz@stud.uni-karlsruhe.de&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-shark/mm.c&n; *&n; *  by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -22,42 +22,6 @@ comma
 id|IO_START
 comma
 id|IO_SIZE
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-(brace
-id|FB_BASE
-comma
-id|FB_START
-comma
-id|FB_SIZE
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-(brace
-id|FBREG_BASE
-comma
-id|FBREG_START
-comma
-id|FBREG_SIZE
 comma
 id|DOMAIN_IO
 comma

@@ -461,8 +461,6 @@ r_static
 r_char
 op_star
 id|args
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|struct|parameters
@@ -565,8 +563,6 @@ DECL|variable|dec_only
 r_static
 r_int
 id|dec_only
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#else
 DECL|variable|dec_only
@@ -2925,8 +2921,6 @@ DECL|variable|loading_module
 r_static
 r_int
 id|loading_module
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif /* MODULE */
 DECL|variable|name
@@ -2953,8 +2947,6 @@ DECL|variable|lastEISA
 r_static
 r_int
 id|lastEISA
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#  ifdef DE4X5_FORCE_EISA                 /* Force an EISA bus probe or not */
 DECL|variable|forceEISA
@@ -2969,8 +2961,6 @@ DECL|variable|forceEISA
 r_static
 r_int
 id|forceEISA
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#  endif
 macro_line|#endif
@@ -2978,20 +2968,14 @@ DECL|variable|num_de4x5s
 r_static
 r_int
 id|num_de4x5s
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|cfrv
 DECL|variable|useSROM
 r_static
 r_int
 id|cfrv
-op_assign
-l_int|0
 comma
 id|useSROM
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lastPCI
 r_static
@@ -3007,8 +2991,6 @@ r_struct
 id|net_device
 op_star
 id|lastModule
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|pdev
 r_static
@@ -3016,8 +2998,6 @@ r_struct
 id|pci_dev
 op_star
 id|pdev
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;** List the SROM infoleaf functions and chipsets&n;*/
 DECL|struct|InfoLeaf

@@ -115,16 +115,16 @@ id|size
 dot
 macro_line|#else
 multiline_comment|/* However, note that as of G++ 2.7.3.2, g++ was unable to&n;&t;correctly parse *type* __attribute__ tags. It will do the&n;&t;right thing if we use the &quot;packed&quot; attribute on each struct&n;&t;member, which has the same semantics anyway. &n;     */
-macro_line|#endif __GNUC__
+macro_line|#endif /* __GNUC__ */
 multiline_comment|/***************************** WARNING ********************************&n;  PLEASE DO NOT MODIFY THIS FILE IN ANY WAY THAT AFFECTS ITS ABILITY TO &n;  BE USED WITH EITHER C *OR* C++.&n; **********************************************************************/
 macro_line|#ifndef NUM_MIDIKEYS 
 DECL|macro|NUM_MIDIKEYS
 mdefine_line|#define NUM_MIDIKEYS 128
-macro_line|#endif  NUM_MIDIKEYS
+macro_line|#endif  /* NUM_MIDIKEYS */
 macro_line|#ifndef NUM_MIDICHANNELS
 DECL|macro|NUM_MIDICHANNELS
 mdefine_line|#define NUM_MIDICHANNELS 16
-macro_line|#endif  NUM_MIDICHANNELS
+macro_line|#endif  /* NUM_MIDICHANNELS */
 multiline_comment|/* These are very useful/important. the original wavefront interface&n;   was developed on a 16 bit system, where sizeof(int) = 2&n;   bytes. Defining things like this makes the code much more portable, and&n;   easier to understand without having to toggle back and forth&n;   between a 16-bit view of the world and a 32-bit one. &n; */
 DECL|typedef|INT16
 r_typedef
@@ -1624,8 +1624,8 @@ DECL|macro|WFFX_SRSSETMODE
 mdefine_line|#define WFFX_SRSSETMODE&t;        &t;66
 DECL|macro|WFFX_SRSSETDEF
 mdefine_line|#define WFFX_SRSSETDEF&t;&t;        68
-multiline_comment|/* Allow direct user-space control over FX memory/coefficient data.&n;   In theory this could be used to download the FX microprogram,&n;   but it would be a little slower, and involve some wierd code.&n; */
+multiline_comment|/* Allow direct user-space control over FX memory/coefficient data.&n;   In theory this could be used to download the FX microprogram,&n;   but it would be a little slower, and involve some weird code.&n; */
 DECL|macro|WFFX_MEMSET
 mdefine_line|#define WFFX_MEMSET              69
-macro_line|#endif __wavefront_h__
+macro_line|#endif /* __wavefront_h__ */
 eof

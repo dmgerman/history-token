@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* sdlapci.h&t;WANPIPE(tm) Multiprotocol WAN Link Driver.&n;*&t;&t;Definitions for the SDLA PCI adapter.&n;*&n;* Author:&t;Gideon Hack&t;&lt;ghack@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jun 02, 1999&t;Gideon Hack&t;Initial version.&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* sdlapci.h&t;WANPIPE(tm) Multiprotocol WAN Link Driver.&n;*&t;&t;Definitions for the SDLA PCI adapter.&n;*&n;* Author:&t;Gideon Hack&t;&lt;ghack@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 1999-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jun 02, 1999&t;Gideon Hack&t;Initial version.&n;*****************************************************************************/
 macro_line|#ifndef&t;_SDLAPCI_H
 DECL|macro|_SDLAPCI_H
 mdefine_line|#define&t;_SDLAPCI_H
@@ -70,6 +70,12 @@ DECL|macro|S514_CPU_START
 mdefine_line|#define S514_CPU_START&t;&t;0x01
 multiline_comment|/* The maximum number of S514 adapters supported */
 DECL|macro|MAX_S514_CARDS
-mdefine_line|#define MAX_S514_CARDS&t;&t;8
+mdefine_line|#define MAX_S514_CARDS&t;&t;20&t;
+DECL|macro|PCI_CARD_TYPE
+mdefine_line|#define PCI_CARD_TYPE&t;&t;0x2E
+DECL|macro|S514_DUAL_CPU
+mdefine_line|#define S514_DUAL_CPU&t;&t;0x12
+DECL|macro|S514_SINGLE_CPU
+mdefine_line|#define S514_SINGLE_CPU&t;&t;0x11
 macro_line|#endif&t;/* _SDLAPCI_H */
 eof

@@ -91,8 +91,6 @@ r_struct
 id|myri_eth
 op_star
 id|root_myri_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|function|myri_reset_off
@@ -4751,8 +4749,6 @@ id|num
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|myri_eth
@@ -5998,8 +5994,6 @@ suffix:semicolon
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|cards

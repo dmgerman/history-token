@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/s390/math-emu/math.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999-2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *&n; * &squot;math.c&squot; emulates IEEE instructions on a S390 processor&n; *          that does not have the IEEE fpu (all processors before G5).&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

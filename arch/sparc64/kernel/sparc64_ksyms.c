@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.102 2001/03/24 09:36:01 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.104 2001/04/05 11:08:11 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -768,6 +768,13 @@ id|_do_write_unlock
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* semaphores */
 DECL|variable|__down
@@ -904,6 +911,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tlb_type
+)paren
+suffix:semicolon
+DECL|variable|get_fb_unmapped_area
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_fb_unmapped_area
 )paren
 suffix:semicolon
 DECL|variable|flush_icache_range

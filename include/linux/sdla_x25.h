@@ -1,20 +1,12 @@
-multiline_comment|/*****************************************************************************&n;* sdla_x25.h&t;Sangoma X.25 firmware API definitions.&n;*&n;* Author:&t;Gene Kozin&t;&lt;74604.152@compuserve.com&gt;&n;*&n;* Copyright:&t;(c) 1995-1996 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* sdla_x25.h&t;Sangoma X.25 firmware API definitions.&n;*&n;* Author:&t;Nenad Corbic&t;&lt;ncorbic@sangoma.com&gt;&n;*&n;* Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Feb 28, 2000  Nenad Corbic    Updated for socket based x25api&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version&n;*****************************************************************************/
 macro_line|#ifndef&t;_SDLA_X25_H
 DECL|macro|_SDLA_X25_H
 mdefine_line|#define&t;_SDLA_X25_H
-multiline_comment|/*----------------------------------------------------------------------------&n; * Notes:&n; * ------&n; * 1. All structures defined in this file are byte-aligned.  To ensure&n; *    portability of this code between different platforms and compilers, one&n; *    of the following defines must be defined before including this file:&n; *&n; *&t;Compiler&t;Platform&t;Define&t;&t;Use option&n; *&t;--------&t;--------&t;------&t;&t;----------&n; *&t;GNU C&t;&t;Linux&t;&t;_GNUC_&t;&t;-&n; *&t;Microsoft C&t;DOS/Windows&t;_MSC_&t;&t;-&n; *&n; */
-macro_line|#ifdef&t;&t;_GNUC_
-macro_line|#  ifndef&t;PACKED
+multiline_comment|/*----------------------------------------------------------------------------&n; * Notes:&n; * ------&n; * 1. All structures defined in this file are byte-alined.  &n; *&t;Compiler&t;Platform&t;&n; *&t;--------&t;--------&n; *&t;GNU C&t;&t;Linux&n; *&n; */
+macro_line|#ifndef&t;PACKED
 DECL|macro|PACKED
-macro_line|#    define&t;PACKED&t;__attribute__((packed))
-macro_line|#  endif&t;/* PACKED */
-macro_line|#else
-DECL|macro|PACKED
-macro_line|#  define&t;PACKED
-macro_line|#endif
-macro_line|#ifdef&t;&t;_MSC_
-macro_line|#  pragma&t;pack(1)
-macro_line|#endif
+macro_line|#&t;define&t;PACKED&t;__attribute__((packed))
+macro_line|#endif&t;/* PACKED */
 multiline_comment|/******&t;CONSTANTS DEFINITIONS ***********************************************/
 DECL|macro|X25_MAX_CHAN
 mdefine_line|#define&t;X25_MAX_CHAN&t;255&t;/* max number of open X.25 circuits */
@@ -27,6 +19,19 @@ DECL|macro|X25_RXMBOX_OFFS
 mdefine_line|#define&t;X25_RXMBOX_OFFS&t;0x1AD0&t;/* receive mailbox */
 DECL|macro|X25_STATUS_OFFS
 mdefine_line|#define&t;X25_STATUS_OFFS&t;0x1EF0&t;/* X.25 status structure */
+DECL|macro|X25_MB_VECTOR
+mdefine_line|#define X25_MB_VECTOR&t;0xE000&t;/* S514 mailbox window vecotr */
+DECL|macro|X25_MISC_HDLC_BITS
+mdefine_line|#define X25_MISC_HDLC_BITS 0x1F00 /*X.25 miscallaneous HDLC bits */
+multiline_comment|/* code levels */
+DECL|macro|HDLC_LEVEL
+mdefine_line|#define HDLC_LEVEL 0x01
+DECL|macro|X25_LEVEL
+mdefine_line|#define X25_LEVEL  0x02
+DECL|macro|X25_AND_HDLC_LEVEL
+mdefine_line|#define X25_AND_HDLC_LEVEL 0x03
+DECL|macro|DO_HDLC_LEVEL_ERROR_CHECKING
+mdefine_line|#define DO_HDLC_LEVEL_ERROR_CHECKING 0x04
 multiline_comment|/****** DATA STRUCTURES *****************************************************/
 multiline_comment|/*----------------------------------------------------------------------------&n; * X.25 Command Block.&n; */
 DECL|struct|X25Cmd
@@ -162,6 +167,8 @@ DECL|macro|X25_HDLC_READ_CONFIG
 mdefine_line|#define X25_HDLC_READ_CONFIG&t;0x12&t;/* read HDLC configuration */
 DECL|macro|X25_HDLC_SET_CONFIG
 mdefine_line|#define X25_HDLC_SET_CONFIG&t;0x13&t;/* set HDLC configuration */
+DECL|macro|SET_PROTOCOL_LEVEL
+mdefine_line|#define SET_PROTOCOL_LEVEL&t;0x1F&t;/* set protocol level */
 multiline_comment|/*----- X.25-level commands -----------*/
 DECL|macro|X25_READ
 mdefine_line|#define X25_READ&t;&t;0x22&t;/* read X.25 packet */
@@ -170,7 +177,7 @@ mdefine_line|#define X25_WRITE&t;&t;0x23&t;/* send X.25 packet */
 DECL|macro|X25_PLACE_CALL
 mdefine_line|#define X25_PLACE_CALL&t;&t;0x30&t;/* place a call on SVC */
 DECL|macro|X25_ACCEPT_CALL
-mdefine_line|#define X25_ACCEPT_CALL&t;&t;0x31&t;/* accept incoming call */
+mdefine_line|#define X25_ACCEPT_CALL&t;&t;0x31&t;/* accept incomming call */
 DECL|macro|X25_CLEAR_CALL
 mdefine_line|#define X25_CLEAR_CALL&t;&t;0x32&t;/* clear call */
 DECL|macro|X25_CLEAR_CONFRM
@@ -193,8 +200,8 @@ DECL|macro|X25_REGISTRATION_CONFRM
 mdefine_line|#define X25_REGISTRATION_CONFRM&t;0x3B&t;/* send registration confirmation */
 DECL|macro|X25_IS_DATA_AVAILABLE
 mdefine_line|#define X25_IS_DATA_AVAILABLE&t;0x40&t;/* querry receive queue */
-DECL|macro|X25_INCOMING_CALL_CTL
-mdefine_line|#define X25_INCOMING_CALL_CTL&t;0x41&t;/* select incoming call options */
+DECL|macro|X25_INCOMMING_CALL_CTL
+mdefine_line|#define X25_INCOMMING_CALL_CTL&t;0x41&t;/* select incomming call options */
 DECL|macro|X25_CONFIGURE_PVC
 mdefine_line|#define X25_CONFIGURE_PVC&t;0x42&t;/* configure PVC */
 DECL|macro|X25_GET_ACTIVE_CHANNELS
@@ -208,7 +215,7 @@ mdefine_line|#define X25_READ_HISTORY_TABLE&t;0x46&t;/* read asynchronous event 
 DECL|macro|X25_HISTORY_TABLE_CTL
 mdefine_line|#define X25_HISTORY_TABLE_CTL&t;0x47&t;/* control asynchronous event log */
 DECL|macro|X25_GET_TX_D_BIT_STATUS
-mdefine_line|#define&t;X25_GET_TX_D_BIT_STATUS&t;0x48&t;/* is packet with D-bit acknowledged */
+mdefine_line|#define&t;X25_GET_TX_D_BIT_STATUS&t;0x48&t;/* is packet with D-bit acknowleged */
 DECL|macro|X25_READ_STATISTICS
 mdefine_line|#define&t;X25_READ_STATISTICS&t;0x49&t;/* read X.25-level statistics */
 DECL|macro|X25_FLUSH_STATISTICS
@@ -232,7 +239,7 @@ mdefine_line|#define X25RES_INVAL_LENGTH&t;0x04
 DECL|macro|X25RES_INVAL_CMD
 mdefine_line|#define X25RES_INVAL_CMD&t;0x05
 DECL|macro|X25RES_UNNUMBERED_FRAME
-mdefine_line|#define X25RES_UNNUMBERED_FRAME&t;0x06&t;/* unnumbered frame received */
+mdefine_line|#define X25RES_UNNUMBERED_FRAME&t;0x06&t;/* unnunbered frame received */
 DECL|macro|X25RES_FRM_REJECT_MODE
 mdefine_line|#define X25RES_FRM_REJECT_MODE&t;0x07&t;/* link is in Frame Reject mode */
 DECL|macro|X25RES_MODEM_FAILURE
@@ -260,18 +267,18 @@ mdefine_line|#define X25RES_D_BIT_NOT_SUPPRT&t;0x38&t;/* D-bit pragmatics not su
 DECL|macro|X25RES_FACIL_NOT_SUPPRT
 mdefine_line|#define X25RES_FACIL_NOT_SUPPRT&t;0x39&t;/* Call facility not supported */
 DECL|macro|X25RES_INVAL_CALL_ARG
-mdefine_line|#define X25RES_INVAL_CALL_ARG&t;0x3A&t;/* erroneous call arguments */
+mdefine_line|#define X25RES_INVAL_CALL_ARG&t;0x3A&t;/* errorneous call arguments */
 DECL|macro|X25RES_INVAL_CALL_DATA
-mdefine_line|#define X25RES_INVAL_CALL_DATA&t;0x3B&t;/* erroneous call user data */
+mdefine_line|#define X25RES_INVAL_CALL_DATA&t;0x3B&t;/* errorneous call user data */
 DECL|macro|X25RES_ASYNC_PACKET
 mdefine_line|#define X25RES_ASYNC_PACKET&t;0x40&t;/* asynchronous packet received */
 DECL|macro|X25RES_PROTO_VIOLATION
-mdefine_line|#define X25RES_PROTO_VIOLATION&t;0x41&t;/* protocol violation occurred */
+mdefine_line|#define X25RES_PROTO_VIOLATION&t;0x41&t;/* protocol violation occured */
 DECL|macro|X25RES_PKT_TIMEOUT
 mdefine_line|#define X25RES_PKT_TIMEOUT&t;0x42&t;/* X.25 packet time out */
 DECL|macro|X25RES_PKT_RETRY_LIMIT
 mdefine_line|#define X25RES_PKT_RETRY_LIMIT&t;0x43&t;/* X.25 packet retry limit exceeded */
-multiline_comment|/*----- Command-dependent results -----*/
+multiline_comment|/*----- Command-dependant results -----*/
 DECL|macro|X25RES_LINK_DISC
 mdefine_line|#define X25RES_LINK_DISC&t;0x00&t;/* HDLC_LINK_STATUS */
 DECL|macro|X25RES_LINK_IN_ABM
@@ -287,7 +294,7 @@ mdefine_line|#define X25RES_LINK_IS_DISC&t;0x02&t;/* HDLC_LINK_DISC */
 DECL|macro|X25RES_LINK_IS_CLOSED
 mdefine_line|#define X25RES_LINK_IS_CLOSED&t;0x03&t;/* HDLC_LINK_CLOSE */
 DECL|macro|X25RES_INVAL_PARAM
-mdefine_line|#define X25RES_INVAL_PARAM&t;0x31&t;/* INCOMING_CALL_CTL */
+mdefine_line|#define X25RES_INVAL_PARAM&t;0x31&t;/* INCOMMING_CALL_CTL */
 DECL|macro|X25RES_INVAL_CONFIG
 mdefine_line|#define X25RES_INVAL_CONFIG&t;0x35&t;/* REGISTR_RQST/CONFRM */
 multiline_comment|/*&n; * Defines for the &squot;qdm_bits&squot; field.&n; */
@@ -347,6 +354,34 @@ DECL|macro|PVE_RESTART_RQST
 mdefine_line|#define PVE_RESTART_RQST&t;0x34
 DECL|macro|PVE_DIAGNOSTIC
 mdefine_line|#define PVE_DIAGNOSTIC&t;&t;0x37
+DECL|macro|INTR_ON_RX_FRAME
+mdefine_line|#define INTR_ON_RX_FRAME            0x01
+DECL|macro|INTR_ON_TX_FRAME
+mdefine_line|#define INTR_ON_TX_FRAME            0x02
+DECL|macro|INTR_ON_MODEM_STATUS_CHANGE
+mdefine_line|#define INTR_ON_MODEM_STATUS_CHANGE 0x04
+DECL|macro|INTR_ON_COMMAND_COMPLETE
+mdefine_line|#define INTR_ON_COMMAND_COMPLETE    0x08
+DECL|macro|INTR_ON_X25_ASY_TRANSACTION
+mdefine_line|#define INTR_ON_X25_ASY_TRANSACTION 0x10
+DECL|macro|INTR_ON_TIMER
+mdefine_line|#define INTR_ON_TIMER&t;&t;    0x40
+DECL|macro|DIRECT_RX_INTR_USAGE
+mdefine_line|#define DIRECT_RX_INTR_USAGE        0x80
+DECL|macro|NO_INTR_PENDING
+mdefine_line|#define NO_INTR_PENDING  &t;        0x00
+DECL|macro|RX_INTR_PENDING
+mdefine_line|#define RX_INTR_PENDING&t;&t;&t;0x01&t;
+DECL|macro|TX_INTR_PENDING
+mdefine_line|#define TX_INTR_PENDING&t;&t;&t;0x02
+DECL|macro|MODEM_INTR_PENDING
+mdefine_line|#define MODEM_INTR_PENDING&t;&t;0x04
+DECL|macro|COMMAND_COMPLETE_INTR_PENDING
+mdefine_line|#define COMMAND_COMPLETE_INTR_PENDING &t;0x08
+DECL|macro|X25_ASY_TRANS_INTR_PENDING
+mdefine_line|#define X25_ASY_TRANS_INTR_PENDING&t;0x10
+DECL|macro|TIMER_INTR_PENDING
+mdefine_line|#define TIMER_INTR_PENDING&t;&t;0x40
 multiline_comment|/*----------------------------------------------------------------------------&n; * X.25 Mailbox.&n; *&t;This structure is located at offsets X25_MBOX_OFFS and X25_RXMBOX_OFFS&n; *&t;into shared memory window.&n; */
 DECL|struct|X25Mbox
 r_typedef
@@ -439,7 +474,7 @@ r_int
 id|icc_map
 id|PACKED
 suffix:semicolon
-multiline_comment|/* 02h: Incoming Chan. map */
+multiline_comment|/* 02h: Incomming Chan. map */
 DECL|member|PACKED
 r_int
 r_int
@@ -510,7 +545,7 @@ mdefine_line|#define X25_TX_INTR&t;0x02&t;/* transmit interrupt */
 DECL|macro|X25_MODEM_INTR
 mdefine_line|#define X25_MODEM_INTR&t;0x04&t;/* modem status interrupt (CTS/DCD) */
 DECL|macro|X25_EVENT_INTR
-mdefine_line|#define X25_EVENT_INTR&t;0x10&t;/* asynchronous event encountered */
+mdefine_line|#define X25_EVENT_INTR&t;0x10&t;/* asyncronous event encountered */
 DECL|macro|X25_CMD_INTR
 mdefine_line|#define X25_CMD_INTR&t;0x08&t;/* interface command complete */
 multiline_comment|/*&n; * Bitmasks for the &squot;gflags&squot; field.&n; */
@@ -972,14 +1007,14 @@ multiline_comment|/* 13h:  */
 DECL|member|PACKED
 r_int
 r_int
-id|loIncomingSVC
+id|loIncommingSVC
 id|PACKED
 suffix:semicolon
 multiline_comment|/* 15h:  */
 DECL|member|PACKED
 r_int
 r_int
-id|hiIncomingSVC
+id|hiIncommingSVC
 id|PACKED
 suffix:semicolon
 multiline_comment|/* 17h:  */
@@ -1151,14 +1186,14 @@ multiline_comment|/* 02h: highest PVC number */
 DECL|member|PACKED
 r_int
 r_int
-id|loIncomingSVC
+id|loIncommingSVC
 id|PACKED
 suffix:semicolon
 multiline_comment|/* 04h: lowest incoming SVC */
 DECL|member|PACKED
 r_int
 r_int
-id|hiIncomingSVC
+id|hiIncommingSVC
 id|PACKED
 suffix:semicolon
 multiline_comment|/* 06h: highest incoming SVC */
@@ -1521,8 +1556,8 @@ DECL|typedef|TX25EventLog
 id|TX25EventLog
 suffix:semicolon
 multiline_comment|/*&n; * Defines for the &squot;type&squot; field.&n; */
-DECL|macro|X25LOG_INCOMING
-mdefine_line|#define X25LOG_INCOMING&t;&t;0x00
+DECL|macro|X25LOG_INCOMMING
+mdefine_line|#define X25LOG_INCOMMING&t;0x00
 DECL|macro|X25LOG_APPLICATION
 mdefine_line|#define X25LOG_APPLICATION &t;0x01
 DECL|macro|X25LOG_AUTOMATIC
@@ -1672,7 +1707,7 @@ mdefine_line|#define X25_TRCERR_RX_OVERRUN&t;0x30&t;/* receiver overrun error */
 DECL|macro|X25_TRCERR_RX_TOO_LONG
 mdefine_line|#define X25_TRCERR_RX_TOO_LONG&t;0x40&t;/* excessive frame length error */
 DECL|macro|X25_TRCERR_TX_ABORT
-mdefine_line|#define X25_TRCERR_TX_ABORT&t;0x70&t;/* aborted frame transmission error */
+mdefine_line|#define X25_TRCERR_TX_ABORT&t;0x70&t;/* aborted frame transmittion error */
 DECL|macro|X25_TRCERR_TX_UNDERRUN
 mdefine_line|#define X25_TRCERR_TX_UNDERRUN&t;0x80&t;/* transmit underrun error */
 multiline_comment|/*****************************************************************************&n; * Following definitions describe HDLC frame and X.25 packet formats.&n; ****************************************************************************/
@@ -1713,7 +1748,7 @@ DECL|struct|X25Pkt
 r_typedef
 r_struct
 id|X25Pkt
-multiline_comment|/*----- X.25 Packet Format ----------*/
+multiline_comment|/*----- X.25 Paket Format ----------*/
 (brace
 DECL|member|PACKED
 r_int
@@ -1792,8 +1827,521 @@ DECL|macro|X25PKT_RR_MASKED
 mdefine_line|#define&t;X25PKT_RR_MASKED&t;0x01&t;/* Receive Ready packet after masking */
 DECL|macro|X25PKT_RNR_MASKED
 mdefine_line|#define&t;X25PKT_RNR_MASKED&t;0x05&t;/* Receive Not Ready after masking  */
-macro_line|#ifdef&t;&t;_MSC_
-macro_line|#  pragma&t;pack()
-macro_line|#endif
+r_typedef
+r_struct
+(brace
+DECL|member|PACKED
+id|TX25Cmd
+id|cmd
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_char
+id|data
+(braket
+id|X25_MAX_DATA
+)braket
+id|PACKED
+suffix:semicolon
+DECL|typedef|mbox_cmd_t
+)brace
+id|mbox_cmd_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|PACKED
+r_int
+r_char
+id|qdm
+id|PACKED
+suffix:semicolon
+multiline_comment|/* Q/D/M bits */
+DECL|member|PACKED
+r_int
+r_char
+id|cause
+id|PACKED
+suffix:semicolon
+multiline_comment|/* cause field */
+DECL|member|PACKED
+r_int
+r_char
+id|diagn
+id|PACKED
+suffix:semicolon
+multiline_comment|/* diagnostics */
+DECL|member|PACKED
+r_int
+r_char
+id|pktType
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|length
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|result
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|lcn
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_char
+id|reserved
+(braket
+l_int|7
+)braket
+id|PACKED
+suffix:semicolon
+DECL|typedef|x25api_hdr_t
+)brace
+id|x25api_hdr_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|PACKED
+id|x25api_hdr_t
+id|hdr
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_char
+id|data
+(braket
+id|X25_MAX_DATA
+)braket
+id|PACKED
+suffix:semicolon
+DECL|typedef|x25api_t
+)brace
+id|x25api_t
+suffix:semicolon
+multiline_comment|/* &n; * XPIPEMON Definitions&n; */
+multiline_comment|/* valid ip_protocol for UDP management */
+DECL|macro|UDPMGMT_UDP_PROTOCOL
+mdefine_line|#define UDPMGMT_UDP_PROTOCOL 0x11
+DECL|macro|UDPMGMT_XPIPE_SIGNATURE
+mdefine_line|#define UDPMGMT_XPIPE_SIGNATURE         &quot;XLINK8ND&quot;
+DECL|macro|UDPMGMT_DRVRSTATS_SIGNATURE
+mdefine_line|#define UDPMGMT_DRVRSTATS_SIGNATURE     &quot;DRVSTATS&quot;
+multiline_comment|/* values for request/reply byte */
+DECL|macro|UDPMGMT_REQUEST
+mdefine_line|#define UDPMGMT_REQUEST&t;0x01
+DECL|macro|UDPMGMT_REPLY
+mdefine_line|#define UDPMGMT_REPLY&t;0x02
+DECL|macro|UDP_OFFSET
+mdefine_line|#define UDP_OFFSET&t;12
+r_typedef
+r_struct
+(brace
+DECL|member|PACKED
+r_int
+r_char
+id|opp_flag
+id|PACKED
+suffix:semicolon
+multiline_comment|/* the opp flag */
+DECL|member|PACKED
+r_int
+r_char
+id|command
+id|PACKED
+suffix:semicolon
+multiline_comment|/* command code */
+DECL|member|PACKED
+r_int
+r_int
+id|length
+id|PACKED
+suffix:semicolon
+multiline_comment|/* transfer data length */
+DECL|member|PACKED
+r_int
+r_char
+id|result
+id|PACKED
+suffix:semicolon
+multiline_comment|/* return code */
+DECL|member|PACKED
+r_int
+r_char
+id|pf
+id|PACKED
+suffix:semicolon
+multiline_comment|/* P/F bit */
+DECL|member|PACKED
+r_int
+r_int
+id|lcn
+id|PACKED
+suffix:semicolon
+multiline_comment|/* logical channel */
+DECL|member|PACKED
+r_int
+r_char
+id|qdm
+id|PACKED
+suffix:semicolon
+multiline_comment|/* Q/D/M bits */
+DECL|member|PACKED
+r_int
+r_char
+id|cause
+id|PACKED
+suffix:semicolon
+multiline_comment|/* cause field */
+DECL|member|PACKED
+r_int
+r_char
+id|diagn
+id|PACKED
+suffix:semicolon
+multiline_comment|/* diagnostics */
+DECL|member|PACKED
+r_int
+r_char
+id|pktType
+id|PACKED
+suffix:semicolon
+multiline_comment|/* packet type */
+DECL|member|PACKED
+r_int
+r_char
+id|resrv
+(braket
+l_int|4
+)braket
+id|PACKED
+suffix:semicolon
+multiline_comment|/* reserved */
+DECL|typedef|cblock_t
+)brace
+id|cblock_t
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|PACKED
+id|ip_pkt_t
+id|ip_pkt
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+id|udp_pkt_t
+id|udp_pkt
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+id|wp_mgmt_t
+id|wp_mgmt
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+id|cblock_t
+id|cblock
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|data
+(braket
+l_int|4080
+)braket
+id|PACKED
+suffix:semicolon
+DECL|typedef|x25_udp_pkt_t
+)brace
+id|x25_udp_pkt_t
+suffix:semicolon
+DECL|struct|read_hdlc_stat
+r_typedef
+r_struct
+id|read_hdlc_stat
+(brace
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_ok
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_out_of_seq
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_no_data
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_dropped
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_data_too_long
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_rx_invalid_addr
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_tx_ok
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|inf_frames_tx_retransmit
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|T1_timeouts
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|SABM_frames_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|DISC_frames_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|DM_frames_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|FRMR_frames_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|SABM_frames_tx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|DISC_frames_tx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|DM_frames_tx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|FRMR_frames_tx
+id|PACKED
+suffix:semicolon
+DECL|typedef|read_hdlc_stat_t
+)brace
+id|read_hdlc_stat_t
+suffix:semicolon
+DECL|struct|read_comms_err_stats
+r_typedef
+r_struct
+id|read_comms_err_stats
+(brace
+DECL|member|PACKED
+r_int
+r_char
+id|overrun_err_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|CRC_err
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|abort_frames_rx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|frames_dropped_buf_full
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|abort_frames_tx
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|transmit_underruns
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|missed_tx_underruns_intr
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|reserved
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|DCD_drop
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|CTS_drop
+id|PACKED
+suffix:semicolon
+DECL|typedef|read_comms_err_stats_t
+)brace
+id|read_comms_err_stats_t
+suffix:semicolon
+DECL|struct|trace_data
+r_typedef
+r_struct
+id|trace_data
+(brace
+DECL|member|PACKED
+r_int
+r_int
+id|length
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|type
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|trace_dropped
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|reserved
+(braket
+l_int|5
+)braket
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_int
+id|timestamp
+id|PACKED
+suffix:semicolon
+DECL|member|PACKED
+r_int
+r_char
+id|data
+id|PACKED
+suffix:semicolon
+DECL|typedef|trace_data_t
+)brace
+id|trace_data_t
+suffix:semicolon
+DECL|enumerator|UDP_XPIPE_TYPE
+r_enum
+(brace
+id|UDP_XPIPE_TYPE
+)brace
+suffix:semicolon
+DECL|macro|XPIPE_ENABLE_TRACING
+mdefine_line|#define XPIPE_ENABLE_TRACING                    0x14
+DECL|macro|XPIPE_DISABLE_TRACING
+mdefine_line|#define XPIPE_DISABLE_TRACING                   0x14
+DECL|macro|XPIPE_GET_TRACE_INFO
+mdefine_line|#define XPIPE_GET_TRACE_INFO                    0x16
+DECL|macro|XPIPE_FT1_READ_STATUS
+mdefine_line|#define XPIPE_FT1_READ_STATUS                   0x74
+DECL|macro|XPIPE_DRIVER_STAT_IFSEND
+mdefine_line|#define XPIPE_DRIVER_STAT_IFSEND                0x75
+DECL|macro|XPIPE_DRIVER_STAT_INTR
+mdefine_line|#define XPIPE_DRIVER_STAT_INTR                  0x76
+DECL|macro|XPIPE_DRIVER_STAT_GEN
+mdefine_line|#define XPIPE_DRIVER_STAT_GEN                   0x77
+DECL|macro|XPIPE_FLUSH_DRIVER_STATS
+mdefine_line|#define XPIPE_FLUSH_DRIVER_STATS                0x78
+DECL|macro|XPIPE_ROUTER_UP_TIME
+mdefine_line|#define XPIPE_ROUTER_UP_TIME                    0x79        
+DECL|macro|XPIPE_SET_FT1_MODE
+mdefine_line|#define XPIPE_SET_FT1_MODE&t;&t;&t;0x81
+DECL|macro|XPIPE_FT1_STATUS_CTRL
+mdefine_line|#define XPIPE_FT1_STATUS_CTRL&t;&t;&t;0x80
+multiline_comment|/* error messages */
+DECL|macro|NO_BUFFS_OR_CLOSED_WIN
+mdefine_line|#define NO_BUFFS_OR_CLOSED_WIN  0x33
+DECL|macro|DATA_LENGTH_TOO_BIG
+mdefine_line|#define DATA_LENGTH_TOO_BIG     0x32
+DECL|macro|NO_DATA_AVAILABLE
+mdefine_line|#define NO_DATA_AVAILABLE       0x33
+DECL|macro|Z80_TIMEOUT_ERROR
+mdefine_line|#define Z80_TIMEOUT_ERROR       0x0a   
+DECL|macro|NO_BUFFS
+mdefine_line|#define&t;NO_BUFFS&t;&t;0x08
+multiline_comment|/* Trace options */
+DECL|macro|TRACE_DEFAULT
+mdefine_line|#define TRACE_DEFAULT&t;&t;0x03
+DECL|macro|TRACE_SUPERVISOR_FRMS
+mdefine_line|#define TRACE_SUPERVISOR_FRMS&t;0x10
+DECL|macro|TRACE_ASYNC_FRMS
+mdefine_line|#define TRACE_ASYNC_FRMS&t;0x20
+DECL|macro|TRACE_ALL_HDLC_FRMS
+mdefine_line|#define TRACE_ALL_HDLC_FRMS&t;0x40
+DECL|macro|TRACE_DATA_FRMS
+mdefine_line|#define TRACE_DATA_FRMS&t;&t;0x08
 macro_line|#endif&t;/* _SDLA_X25_H */
 eof

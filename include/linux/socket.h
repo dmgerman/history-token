@@ -344,6 +344,8 @@ DECL|macro|AF_IRDA
 mdefine_line|#define AF_IRDA&t;&t;23&t;/* IRDA sockets&t;&t;&t;*/
 DECL|macro|AF_PPPOX
 mdefine_line|#define AF_PPPOX&t;24&t;/* PPPoX sockets&t;&t;*/
+DECL|macro|AF_WANPIPE
+mdefine_line|#define AF_WANPIPE&t;25&t;/* Wanpipe API Sockets */
 DECL|macro|AF_MAX
 mdefine_line|#define AF_MAX&t;&t;32&t;/* For now.. */
 multiline_comment|/* Protocol families, same as address families. */
@@ -399,6 +401,8 @@ DECL|macro|PF_IRDA
 mdefine_line|#define PF_IRDA&t;&t;AF_IRDA
 DECL|macro|PF_PPPOX
 mdefine_line|#define PF_PPPOX&t;AF_PPPOX
+DECL|macro|PF_WANPIPE
+mdefine_line|#define PF_WANPIPE&t;AF_WANPIPE
 DECL|macro|PF_MAX
 mdefine_line|#define PF_MAX&t;&t;AF_MAX
 multiline_comment|/* Maximum queue length specifiable by listen.  */
@@ -437,6 +441,8 @@ DECL|macro|MSG_ERRQUEUE
 mdefine_line|#define MSG_ERRQUEUE&t;0x2000&t;/* Fetch message from error queue */
 DECL|macro|MSG_NOSIGNAL
 mdefine_line|#define MSG_NOSIGNAL&t;0x4000&t;/* Do not generate SIGPIPE */
+DECL|macro|MSG_MORE
+mdefine_line|#define MSG_MORE&t;0x8000&t;/* Sender will send more */
 DECL|macro|MSG_EOF
 mdefine_line|#define MSG_EOF         MSG_FIN
 multiline_comment|/* Setsockoptions(2) level. Thanks to BSD these must match IPPROTO_xxx */

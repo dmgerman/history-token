@@ -18,8 +18,6 @@ r_struct
 id|ptifddi
 op_star
 id|root_pti_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 DECL|function|pti_reset
@@ -639,8 +637,6 @@ id|num
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|ptifddi
@@ -892,8 +888,6 @@ suffix:semicolon
 r_static
 r_int
 id|called
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|cards

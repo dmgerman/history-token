@@ -11,18 +11,10 @@ mdefine_line|#define ISDN_TTYAUX_MAJOR 44
 DECL|macro|ISDN_MAJOR
 mdefine_line|#define ISDN_MAJOR        45
 multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
-macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
-multiline_comment|/* Save memory */
-DECL|macro|ISDN_MAX_DRIVERS
-mdefine_line|#define ISDN_MAX_DRIVERS    2
-DECL|macro|ISDN_MAX_CHANNELS
-mdefine_line|#define ISDN_MAX_CHANNELS   8
-macro_line|#else
 DECL|macro|ISDN_MAX_DRIVERS
 mdefine_line|#define ISDN_MAX_DRIVERS    32
 DECL|macro|ISDN_MAX_CHANNELS
 mdefine_line|#define ISDN_MAX_CHANNELS   64
-macro_line|#endif
 DECL|macro|ISDN_MINOR_B
 mdefine_line|#define ISDN_MINOR_B        0
 DECL|macro|ISDN_MINOR_BMAX
@@ -981,7 +973,7 @@ id|ippp_bundle
 op_star
 id|pb
 suffix:semicolon
-multiline_comment|/* pointer to the common bundle structure&n;   &t;&t;&t;         * with the the per-bundle data */
+multiline_comment|/* pointer to the common bundle structure&n;   &t;&t;&t;         * with the per-bundle data */
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|cprot

@@ -46869,15 +46869,9 @@ suffix:semicolon
 macro_line|#endif&t;/* SCSI_NCR_NVRAM_SUPPORT */
 multiline_comment|/*&n;**&t;Module stuff&n;*/
 macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
-DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|SYM53C8XX
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#elif defined(MODULE)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
 DECL|variable|driver_template
 id|Scsi_Host_Template
 id|driver_template

@@ -307,27 +307,6 @@ DECL|macro|__S110
 mdefine_line|#define __S110&t;PAGE_SHARED
 DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED
-multiline_comment|/*&n; * Handling allocation failures during page table setup.&n; */
-r_extern
-r_void
-id|__handle_bad_pmd
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__handle_bad_pmd_kernel
-c_func
-(paren
-id|pmd_t
-op_star
-id|pmd
-)paren
-suffix:semicolon
 DECL|macro|pte_none
 mdefine_line|#define pte_none(x)&t;(!pte_val(x))
 DECL|macro|pte_present

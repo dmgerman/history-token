@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * include/asm-arm/arch-l7200/irq.h&n; *&n; * Copyright (C) 2000 Rob Scott (rscott@mtrob.fdns.ne&n; *                    Steve Hill (sjhill@cotw.com)&n; *&n; * Changelog:&n; *   01-02-2000&t;RS&t;Created l7200 version, derived from ebsa110 code&n; *   04-15-2000 RS      Made dependent on hardware.h&n; *   05-05-2000 SJH     Complete rewrite&n; */
+macro_line|#include &lt;asm/arch/hardware.h&gt;
 multiline_comment|/*&n; * IRQ base register&n; */
 DECL|macro|IRQ_BASE
 mdefine_line|#define&t;IRQ_BASE&t;(IO_BASE_2 + 0x1000)

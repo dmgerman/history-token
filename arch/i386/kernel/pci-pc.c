@@ -3741,8 +3741,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#if 0
+multiline_comment|/* Until we get proper handling pray the BIOS gets it right */
 multiline_comment|/*&n; * ServerWorks host bridges -- Find and scan all secondary buses.&n; * Register 0x44 contains first, 0x45 last bus number routed there.&n; */
-DECL|function|pci_fixup_serverworks
 r_static
 r_void
 id|__init
@@ -3815,6 +3816,7 @@ id|pcibios_last_bus
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 macro_line|#if 0
 multiline_comment|/* Our bus code shouldnt need this fixup any more. Delete once verified */
 multiline_comment|/*&t;&n; * Compaq host bridges -- Find and scan all secondary buses.&n; * This time registers 0xc8 and 0xc9.&n; */

@@ -7,7 +7,7 @@ multiline_comment|/*&n; * SMP- and interrupt-safe semaphores..&n; *&n; * (C) Cop
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;asm/rwsem.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 DECL|struct|semaphore
 r_struct
 id|semaphore

@@ -10,12 +10,9 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
+r_if
+c_cond
 (paren
-op_logical_neg
-id|current-&gt;need_resched
-op_logical_and
 op_logical_neg
 id|hlt_counter
 )paren

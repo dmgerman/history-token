@@ -1618,8 +1618,6 @@ r_struct
 id|net_device
 op_star
 id|root_corkscrew_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|init_module
 r_int
@@ -1761,8 +1759,6 @@ suffix:semicolon
 r_static
 r_int
 id|pnp_cards
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISAPNP
@@ -6019,8 +6015,6 @@ l_int|0xE000
 r_static
 r_int
 id|donedidthis
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Some interrupt controllers store a bogus interrupt from boot-time.&n;&t;&t;   Ignore a single early interrupt, but don&squot;t hang the machine for&n;&t;&t;   other interrupt problems. */
 r_if
@@ -6379,8 +6373,6 @@ multiline_comment|/* Empty statistics. */
 r_static
 r_int
 id|DoneDidThat
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

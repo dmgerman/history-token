@@ -58,31 +58,33 @@ mdefine_line|#define IRQ_IOP6&t;&t;30
 DECL|macro|IRQ_IOP7
 mdefine_line|#define IRQ_IOP7&t;&t;31
 DECL|macro|IRQ_MOUSERX
-mdefine_line|#define IRQ_MOUSERX&t;&t;32
+mdefine_line|#define IRQ_MOUSERX&t;&t;40
 DECL|macro|IRQ_MOUSETX
-mdefine_line|#define IRQ_MOUSETX&t;&t;33
+mdefine_line|#define IRQ_MOUSETX&t;&t;41
 DECL|macro|IRQ_ADC
-mdefine_line|#define IRQ_ADC&t;&t;&t;34
+mdefine_line|#define IRQ_ADC&t;&t;&t;42
 DECL|macro|IRQ_EVENT1
-mdefine_line|#define IRQ_EVENT1&t;&t;35
+mdefine_line|#define IRQ_EVENT1&t;&t;43
 DECL|macro|IRQ_EVENT2
-mdefine_line|#define IRQ_EVENT2&t;&t;36
+mdefine_line|#define IRQ_EVENT2&t;&t;44
+DECL|macro|IRQ_ISA_BASE
+mdefine_line|#define IRQ_ISA_BASE&t;&t;48
 DECL|macro|IRQ_ISA_3
-mdefine_line|#define IRQ_ISA_3&t;&t;40
+mdefine_line|#define IRQ_ISA_3&t;&t;48
 DECL|macro|IRQ_ISA_4
-mdefine_line|#define IRQ_ISA_4&t;&t;41
+mdefine_line|#define IRQ_ISA_4&t;&t;49
 DECL|macro|IRQ_ISA_5
-mdefine_line|#define IRQ_ISA_5&t;&t;42
+mdefine_line|#define IRQ_ISA_5&t;&t;50
 DECL|macro|IRQ_ISA_7
-mdefine_line|#define IRQ_ISA_7&t;&t;43
+mdefine_line|#define IRQ_ISA_7&t;&t;51
 DECL|macro|IRQ_ISA_9
-mdefine_line|#define IRQ_ISA_9&t;&t;44
+mdefine_line|#define IRQ_ISA_9&t;&t;52
 DECL|macro|IRQ_ISA_10
-mdefine_line|#define IRQ_ISA_10&t;&t;45
+mdefine_line|#define IRQ_ISA_10&t;&t;53
 DECL|macro|IRQ_ISA_11
-mdefine_line|#define IRQ_ISA_11&t;&t;46
+mdefine_line|#define IRQ_ISA_11&t;&t;54
 DECL|macro|IRQ_ISA_14
-mdefine_line|#define IRQ_ISA_14&t;&t;47&t;
+mdefine_line|#define IRQ_ISA_14&t;&t;55&t;
 DECL|macro|FIQ_INT9
 mdefine_line|#define FIQ_INT9&t;&t;0
 DECL|macro|FIQ_INT5

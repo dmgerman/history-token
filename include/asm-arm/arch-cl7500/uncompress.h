@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-cl7500/uncompress.h&n; *&n; * Copyright (C) 1999 Nexus Electronics Ltd.&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-cl7500/uncompress.h&n; *&n; * Copyright (C) 1999, 2000 Nexus Electronics Ltd.&n; */
 DECL|macro|BASE
 mdefine_line|#define BASE 0x03010000
 DECL|macro|SERBASE
-mdefine_line|#define SERBASE (BASE + (0x3f8 &lt;&lt; 2))
+mdefine_line|#define SERBASE (BASE + (0x2f8 &lt;&lt; 2))
 DECL|function|putc
 r_static
 id|__inline__

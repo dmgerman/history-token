@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_impl.h,v 1.6 2000/03/25 05:18:11 davem Exp $&n; * pci_impl.h: Helper definitions for PCI controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_impl.h,v 1.7 2001/03/28 10:56:34 davem Exp $&n; * pci_impl.h: Helper definitions for PCI controller support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef PCI_IMPL_H
 DECL|macro|PCI_IMPL_H
 mdefine_line|#define PCI_IMPL_H
@@ -201,6 +201,11 @@ suffix:semicolon
 r_extern
 r_volatile
 r_int
+id|pci_poke_cpu
+suffix:semicolon
+r_extern
+r_volatile
+r_int
 id|pci_poke_faulted
 suffix:semicolon
 DECL|function|pci_config_read8
@@ -233,6 +238,13 @@ op_amp
 id|pci_poke_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pci_poke_in_progress
@@ -272,6 +284,11 @@ suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|0
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -326,6 +343,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|1
@@ -363,6 +387,11 @@ suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|0
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -417,6 +446,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|1
@@ -454,6 +490,11 @@ suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|0
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -504,6 +545,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|1
@@ -544,6 +592,11 @@ id|pci_poke_in_progress
 op_assign
 l_int|0
 suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -580,6 +633,13 @@ op_amp
 id|pci_poke_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pci_poke_in_progress
@@ -622,6 +682,11 @@ id|pci_poke_in_progress
 op_assign
 l_int|0
 suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -658,6 +723,13 @@ op_amp
 id|pci_poke_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pci_poke_in_progress
@@ -699,6 +771,11 @@ suffix:semicolon
 id|pci_poke_in_progress
 op_assign
 l_int|0
+suffix:semicolon
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func

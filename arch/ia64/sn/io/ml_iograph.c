@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;

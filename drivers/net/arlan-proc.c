@@ -4584,8 +4584,6 @@ r_struct
 id|ctl_table_header
 op_star
 id|arlan_device_sysctl_header
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|init_arlan_proc
 r_int

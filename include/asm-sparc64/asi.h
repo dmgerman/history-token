@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: asi.h,v 1.4 2001/03/15 02:08:46 davem Exp $ */
+multiline_comment|/* $Id: asi.h,v 1.5 2001/03/29 11:47:47 davem Exp $ */
 macro_line|#ifndef _SPARC64_ASI_H
 DECL|macro|_SPARC64_ASI_H
 mdefine_line|#define _SPARC64_ASI_H
@@ -141,6 +141,8 @@ DECL|macro|ASI_BLK_AIUP
 mdefine_line|#define ASI_BLK_AIUP&t;&t;0x70 /* Primary, user, block load/store&t;&t;*/
 DECL|macro|ASI_BLK_AIUS
 mdefine_line|#define ASI_BLK_AIUS&t;&t;0x71 /* Secondary, user, block load/store&t;*/
+DECL|macro|ASI_MCU_CTRL_REG
+mdefine_line|#define ASI_MCU_CTRL_REG&t;0x72 /* (III) Memory controller registers&t;*/
 DECL|macro|ASI_EC_DATA
 mdefine_line|#define ASI_EC_DATA&t;&t;0x74 /* (III) E-cache data staging register&t;*/
 DECL|macro|ASI_EC_CTRL

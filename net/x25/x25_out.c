@@ -197,8 +197,6 @@ id|frontlen
 op_plus
 id|max_len
 comma
-l_int|0
-comma
 id|noblock
 comma
 op_amp

@@ -131,6 +131,8 @@ DECL|macro|TP_STATUS_COPY
 mdefine_line|#define TP_STATUS_COPY&t;&t;2
 DECL|macro|TP_STATUS_LOSING
 mdefine_line|#define TP_STATUS_LOSING&t;4
+DECL|macro|TP_STATUS_CSUMNOTREADY
+mdefine_line|#define TP_STATUS_CSUMNOTREADY&t;8
 DECL|member|tp_len
 r_int
 r_int

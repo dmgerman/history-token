@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 r_extern

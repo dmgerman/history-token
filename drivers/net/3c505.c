@@ -119,8 +119,6 @@ r_static
 r_const
 r_int
 id|elp_debug
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *  0 = no messages (well, some)&n; *  1 = messages when high level commands performed&n; *  2 = messages when low level commands performed&n; *  3 = messages when interrupts received&n; */

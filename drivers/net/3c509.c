@@ -391,8 +391,6 @@ r_struct
 id|net_device
 op_star
 id|el3_root_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 id|ushort
@@ -835,8 +833,6 @@ suffix:semicolon
 r_static
 r_int
 id|current_tag
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|mca_slot
@@ -848,8 +844,6 @@ macro_line|#ifdef CONFIG_ISAPNP
 r_static
 r_int
 id|pnp_cards
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISAPNP */
 r_if
@@ -4677,8 +4671,6 @@ l_int|1
 r_static
 r_int
 id|old
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

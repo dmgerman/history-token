@@ -864,8 +864,6 @@ id|dev-&gt;hard_header_len
 op_plus
 l_int|15
 comma
-l_int|0
-comma
 id|msg-&gt;msg_flags
 op_amp
 id|MSG_DONTWAIT
@@ -1386,8 +1384,6 @@ id|sock_alloc_send_skb
 c_func
 (paren
 id|sk
-comma
-l_int|0
 comma
 l_int|0
 comma
@@ -2683,6 +2679,10 @@ comma
 id|mmap
 suffix:colon
 id|sock_no_mmap
+comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
 comma
 )brace
 suffix:semicolon

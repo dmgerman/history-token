@@ -11,23 +11,22 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
+multiline_comment|/* fixme: this needs to be cleaned up (converted from ASM code) --rmk */
+op_star
 (paren
-op_logical_neg
-id|current-&gt;need_resched
-op_logical_and
-op_logical_neg
-id|hlt_counter
+r_int
+r_int
+op_star
 )paren
-(brace
-id|cpu_do_idle
-c_func
 (paren
-id|IDLE_WAIT_SLOW
+id|IO_BASE
+op_plus
+l_int|0x50004
 )paren
+op_assign
+l_int|1
 suffix:semicolon
-)brace
+multiline_comment|/* idle mode */
 )brace
 DECL|function|arch_reset
 r_extern

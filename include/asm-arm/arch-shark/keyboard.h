@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/keyboard.h&n; * by Alexander.Schulz@stud.uni-karlsruhe.de&n; * &n; * Derived from linux/include/asm-arm/arch-ebsa285/keyboard.h&n; * (C) 1998 Russell King&n; * (C) 1998 Phil Blundell&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/keyboard.h&n; * by Alexander Schulz &lt;aschulz@netwinder.org&gt;&n; * &n; * Derived from linux/include/asm-arm/arch-ebsa285/keyboard.h&n; * (C) 1998 Russell King&n; * (C) 1998 Phil Blundell&n; */
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

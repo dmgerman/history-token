@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci.c,v 1.23 2001/03/14 04:17:14 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: pci.c,v 1.24 2001/03/28 10:56:34 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -141,6 +141,14 @@ DECL|variable|pci_poke_in_progress
 r_volatile
 r_int
 id|pci_poke_in_progress
+suffix:semicolon
+DECL|variable|pci_poke_cpu
+r_volatile
+r_int
+id|pci_poke_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|pci_poke_faulted
 r_volatile

@@ -172,6 +172,7 @@ multiline_comment|/**&n; *&t;memparse - parse a string with mem suffixes into a 
 DECL|function|memparse
 r_int
 r_int
+r_int
 id|memparse
 (paren
 r_char
@@ -186,9 +187,10 @@ id|retptr
 (brace
 r_int
 r_int
+r_int
 id|ret
 op_assign
-id|simple_strtoul
+id|simple_strtoull
 (paren
 id|ptr
 comma

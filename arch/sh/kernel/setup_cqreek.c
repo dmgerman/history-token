@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup_cqreek.c,v 1.5 2000/09/18 05:51:24 gniibe Exp $&n; *&n; * arch/sh/kernel/setup_cqreek.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * CqREEK IDE/ISA Bridge Support.&n; *&n; */
+multiline_comment|/* $Id: setup_cqreek.c,v 1.6 2001/02/14 09:36:42 gniibe Exp $&n; *&n; * arch/sh/kernel/setup_cqreek.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * CqREEK IDE/ISA Bridge Support.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/io_generic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
 DECL|macro|BRIDGE_FEATURE
 mdefine_line|#define BRIDGE_FEATURE&t;&t;0x0002
 DECL|macro|BRIDGE_IDE_CTRL
@@ -938,6 +939,22 @@ comma
 id|mv_isa_port2addr
 suffix:colon
 id|cqreek_port2addr
+comma
+id|mv_ioremap
+suffix:colon
+id|generic_ioremap
+comma
+id|mv_iounmap
+suffix:colon
+id|generic_iounmap
+comma
+id|mv_rtc_gettimeofday
+suffix:colon
+id|sh_rtc_gettimeofday
+comma
+id|mv_rtc_settimeofday
+suffix:colon
+id|sh_rtc_settimeofday
 comma
 )brace
 suffix:semicolon

@@ -1085,9 +1085,15 @@ id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_INTERG
 op_logical_and
+(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_INTERG_2000
+op_logical_or
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTERG_2010
+)paren
 )paren
 id|busdata-&gt;features
 op_and_assign
@@ -1408,6 +1414,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|hw_pci
+id|shark_pci
+suffix:semicolon
+r_extern
+r_struct
+id|hw_pci
 id|integrator_pci
 suffix:semicolon
 DECL|function|pcibios_init
@@ -1449,6 +1460,25 @@ id|hw_pci
 op_assign
 op_amp
 id|ebsa285_pci
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_SHARK
+r_if
+c_cond
+(paren
+id|machine_is_shark
+c_func
+(paren
+)paren
+)paren
+(brace
+id|hw_pci
+op_assign
+op_amp
+id|shark_pci
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1511,11 +1541,11 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_NEXUSPCI
+macro_line|#ifdef CONFIG_ARCH_FTVPCI
 r_if
 c_cond
 (paren
-id|machine_is_nexuspci
+id|machine_is_ftvpci
 c_func
 (paren
 )paren

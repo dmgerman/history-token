@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP to API glue.&n; *&t;&t;&n; * Version:&t;$Id: ip_sockglue.c,v 1.54 2000/11/28 13:34:56 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip.c for history.&n; *&t;&t;Martin Mares&t;:&t;TOS setting fixed.&n; *&t;&t;Alan Cox&t;:&t;Fixed a couple of oopses in Martin&squot;s &n; *&t;&t;&t;&t;&t;TOS tweaks.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP to API glue.&n; *&t;&t;&n; * Version:&t;$Id: ip_sockglue.c,v 1.56 2001/02/18 09:07:58 davem Exp $&n; *&n; * Authors:&t;see ip.c&n; *&n; * Fixes:&n; *&t;&t;Many&t;&t;:&t;Split from ip.c , see ip.c for history.&n; *&t;&t;Martin Mares&t;:&t;TOS setting fixed.&n; *&t;&t;Alan Cox&t;:&t;Fixed a couple of oopses in Martin&squot;s &n; *&t;&t;&t;&t;&t;TOS tweaks.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1064,6 +1064,10 @@ id|skb-&gt;h.raw
 op_assign
 id|payload
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|skb_pull
 c_func
 (paren
@@ -1073,10 +1077,7 @@ id|payload
 op_minus
 id|skb-&gt;data
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|sock_queue_err_skb
 c_func
 (paren
@@ -1242,7 +1243,7 @@ id|skb-&gt;h.raw
 op_assign
 id|skb-&gt;tail
 suffix:semicolon
-id|skb_pull
+id|__skb_pull
 c_func
 (paren
 id|skb
@@ -1374,12 +1375,14 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|memcpy_toiovec
+id|skb_copy_datagram_iovec
 c_func
 (paren
-id|msg-&gt;msg_iov
+id|skb
 comma
-id|skb-&gt;data
+l_int|0
+comma
+id|msg-&gt;msg_iov
 comma
 id|copied
 )paren
@@ -1446,6 +1449,20 @@ id|sin-&gt;sin_port
 op_assign
 id|serr-&gt;port
 suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|sin-&gt;sin_zero
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|sin-&gt;sin_zero
+)paren
+)paren
+suffix:semicolon
 )brace
 id|memcpy
 c_func
@@ -1487,6 +1504,24 @@ suffix:semicolon
 id|sin-&gt;sin_addr.s_addr
 op_assign
 id|skb-&gt;nh.iph-&gt;saddr
+suffix:semicolon
+id|sin-&gt;sin_port
+op_assign
+l_int|0
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|sin-&gt;sin_zero
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|sin-&gt;sin_zero
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2933,6 +2968,19 @@ id|optlen
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|lock_sock

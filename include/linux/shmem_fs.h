@@ -25,6 +25,11 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|max_index
+r_int
+r_int
+id|max_index
+suffix:semicolon
 DECL|member|i_direct
 id|swp_entry_t
 id|i_direct

@@ -104,11 +104,7 @@ r_struct
 id|sk_buff
 op_star
 comma
-r_int
-r_char
-op_star
-comma
-r_int
+id|u32
 )paren
 suffix:semicolon
 r_extern
@@ -158,10 +154,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 r_extern

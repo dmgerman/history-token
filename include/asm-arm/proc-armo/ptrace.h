@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/ptrace.h&n; *&n; *  Copyright (C) 1996-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/ptrace.h&n; *&n; *  Copyright (C) 1996-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef __ASM_PROC_PTRACE_H
 DECL|macro|__ASM_PROC_PTRACE_H
 mdefine_line|#define __ASM_PROC_PTRACE_H
@@ -10,6 +10,14 @@ DECL|macro|IRQ26_MODE
 mdefine_line|#define IRQ26_MODE&t;0x02
 DECL|macro|SVC26_MODE
 mdefine_line|#define SVC26_MODE&t;0x03
+DECL|macro|USR_MODE
+mdefine_line|#define USR_MODE&t;USR26_MODE
+DECL|macro|FIQ_MODE
+mdefine_line|#define FIQ_MODE&t;FIQ26_MODE
+DECL|macro|IRQ_MODE
+mdefine_line|#define IRQ_MODE&t;IRQ26_MODE
+DECL|macro|SVC_MODE
+mdefine_line|#define SVC_MODE&t;SVC26_MODE
 DECL|macro|MODE_MASK
 mdefine_line|#define MODE_MASK&t;0x03
 DECL|macro|F_BIT

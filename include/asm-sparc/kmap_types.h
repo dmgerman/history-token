@@ -11,6 +11,12 @@ comma
 DECL|enumerator|KM_BOUNCE_WRITE
 id|KM_BOUNCE_WRITE
 comma
+DECL|enumerator|KM_SKB_DATA
+id|KM_SKB_DATA
+comma
+DECL|enumerator|KM_SKB_DATA_SOFTIRQ
+id|KM_SKB_DATA_SOFTIRQ
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace

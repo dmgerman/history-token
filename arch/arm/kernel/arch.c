@@ -9,43 +9,18 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
+r_extern
+r_void
+id|genarch_init_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|vram_size
 r_int
 r_int
 id|vram_size
-suffix:semicolon
-r_extern
-r_void
-id|setup_initrd
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|setup_ramdisk
-c_func
-(paren
-r_int
-id|doload
-comma
-r_int
-id|prompt
-comma
-r_int
-id|start
-comma
-r_int
-r_int
-id|rd_sz
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_ACORN
 DECL|variable|memc_ctrl_reg
@@ -280,6 +255,11 @@ c_func
 (paren
 id|rpc_map_io
 )paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_ARC
@@ -304,6 +284,11 @@ id|FIXUP
 c_func
 (paren
 id|fixup_acorn
+)paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -330,10 +315,24 @@ c_func
 (paren
 id|fixup_acorn
 )paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_L7200
+r_extern
+r_void
+id|__init
+id|l7200_map_io
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -418,7 +417,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|8192
+id|CONFIG_BLK_DEV_RAM_SIZE
 )paren
 suffix:semicolon
 id|setup_initrd
@@ -430,30 +429,35 @@ c_func
 l_int|0xf1000000
 )paren
 comma
-l_int|0x00162b0d
+l_int|0x005dac7b
 )paren
 suffix:semicolon
-)brace
-r_extern
-r_void
-id|__init
-id|l7200_map_io
+multiline_comment|/* Serial Console COM2 and LCD */
+id|strcpy
 c_func
 (paren
-r_void
+op_star
+id|cmdline
+comma
+l_string|&quot;console=tty0 console=ttyLU1,115200&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Serial Console COM1 and LCD */
+singleline_comment|//strcpy( *cmdline, &quot;console=tty0 console=ttyLU0,115200&quot;);
+multiline_comment|/* Console on LCD */
+singleline_comment|//strcpy( *cmdline, &quot;console=tty0&quot;);
+)brace
 id|MACHINE_START
 c_func
 (paren
 id|L7200
 comma
-l_string|&quot;LinkUp Systems L7200SDB&quot;
+l_string|&quot;LinkUp Systems L7200&quot;
 )paren
 id|MAINTAINER
 c_func
 (paren
-l_string|&quot;Steve Hill&quot;
+l_string|&quot;Steve Hill / Scott McConnell&quot;
 )paren
 id|BOOT_MEM
 c_func
@@ -474,59 +478,10 @@ c_func
 (paren
 id|l7200_map_io
 )paren
-id|MACHINE_END
-macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_EBSA110
-r_extern
-r_void
-id|__init
-id|ebsa110_map_io
+id|INITIRQ
 c_func
 (paren
-r_void
-)paren
-suffix:semicolon
-id|MACHINE_START
-c_func
-(paren
-id|EBSA110
-comma
-l_string|&quot;EBSA110&quot;
-)paren
-id|MAINTAINER
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-id|BOOT_MEM
-c_func
-(paren
-l_int|0x00000000
-comma
-l_int|0xe0000000
-comma
-l_int|0xe0000000
-)paren
-id|BOOT_PARAMS
-c_func
-(paren
-l_int|0x00000400
-)paren
-id|DISABLE_PARPORT
-c_func
-(paren
-l_int|0
-)paren
-id|DISABLE_PARPORT
-c_func
-(paren
-l_int|2
-)paren
-id|SOFT_REBOOT
-id|MAPIO
-c_func
-(paren
-id|ebsa110_map_io
+id|genarch_init_irq
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -566,6 +521,11 @@ c_func
 (paren
 id|nexuspci_map_io
 )paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_TBOX
@@ -604,6 +564,11 @@ c_func
 (paren
 id|tbox_map_io
 )paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_CLPS7110
@@ -618,6 +583,11 @@ id|MAINTAINER
 c_func
 (paren
 l_string|&quot;Werner Almesberger&quot;
+)paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -634,6 +604,11 @@ c_func
 (paren
 l_string|&quot;Alex de Vries&quot;
 )paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
+)paren
 id|MACHINE_END
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_LACIE_NAS
@@ -648,6 +623,11 @@ id|MAINTAINER
 c_func
 (paren
 l_string|&quot;Benjamin Herrenschmidt&quot;
+)paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
 )paren
 id|MACHINE_END
 macro_line|#endif
@@ -686,6 +666,11 @@ id|MAPIO
 c_func
 (paren
 id|clps7500_map_io
+)paren
+id|INITIRQ
+c_func
+(paren
+id|genarch_init_irq
 )paren
 id|MACHINE_END
 macro_line|#endif

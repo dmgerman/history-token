@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt; /* for ia64_get_itc() */
 macro_line|#ifdef CONFIG_PERFMON
@@ -1475,9 +1474,15 @@ op_assign
 id|get_unmapped_area
 c_func
 (paren
+l_int|NULL
+comma
 l_int|0
 comma
 id|size
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -31,10 +31,6 @@ id|skb
 comma
 r_int
 id|nexthdr
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 r_extern
@@ -78,10 +74,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 suffix:semicolon
 r_extern
@@ -100,11 +92,6 @@ op_star
 id|skb
 comma
 r_struct
-id|ipv6hdr
-op_star
-id|hdr
-comma
-r_struct
 id|inet6_skb_parm
 op_star
 id|opt
@@ -116,9 +103,7 @@ r_int
 id|code
 comma
 r_int
-r_char
-op_star
-id|buff
+id|offset
 comma
 id|u32
 id|info

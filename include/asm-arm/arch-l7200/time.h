@@ -34,7 +34,7 @@ DECL|macro|RTC_EN_TIC
 mdefine_line|#define RTC_EN_TIC&t;0x04      /* Enable counter */
 DECL|macro|RTC_EN_STWDOG
 mdefine_line|#define RTC_EN_STWDOG&t;0x08      /* Enable watchdog */
-multiline_comment|/*&n; * Handler for timer interrupt&n; */
+multiline_comment|/*&n; * Handler for RTC timer interrupt&n; */
 DECL|function|timer_interrupt
 r_static
 r_void
@@ -72,7 +72,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Clear interrupt */
 )brace
-multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+multiline_comment|/*&n; * Set up RTC timer interrupt, and return the current time in seconds.&n; */
 DECL|function|setup_timer
 r_extern
 id|__inline__

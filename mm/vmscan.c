@@ -1946,7 +1946,7 @@ id|cleaned_pages
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Unlock the page and drop the extra reference.&n;&t;&t;&t; * We can only do it here because we ar accessing&n;&t;&t;&t; * the page struct above.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Unlock the page and drop the extra reference.&n;&t;&t;&t; * We can only do it here because we are accessing&n;&t;&t;&t; * the page struct above.&n;&t;&t;&t; */
 id|UnlockPage
 c_func
 (paren

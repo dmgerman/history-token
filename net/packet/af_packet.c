@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PACKET - implements raw packet sockets.&n; *&n; * Version:&t;$Id: af_packet.c,v 1.47 2000/12/08 17:15:54 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&n; * Fixes:&t;&n; *&t;&t;Alan Cox&t;:&t;verify_area() now used correctly&n; *&t;&t;Alan Cox&t;:&t;new skbuff lists, look ma no backlogs!&n; *&t;&t;Alan Cox&t;:&t;tidied skbuff lists.&n; *&t;&t;Alan Cox&t;:&t;Now uses generic datagram routines I&n; *&t;&t;&t;&t;&t;added. Also fixed the peek/read crash&n; *&t;&t;&t;&t;&t;from all old Linux datagram code.&n; *&t;&t;Alan Cox&t;:&t;Uses the improved datagram code.&n; *&t;&t;Alan Cox&t;:&t;Added NULL&squot;s for socket options.&n; *&t;&t;Alan Cox&t;:&t;Re-commented the code.&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addressing&n; *&t;&t;Rob Janssen&t;:&t;Correct MTU usage.&n; *&t;&t;Dave Platt&t;:&t;Counter leaks caused by incorrect&n; *&t;&t;&t;&t;&t;interrupt locking and some slightly&n; *&t;&t;&t;&t;&t;dubious gcc output. Can you read&n; *&t;&t;&t;&t;&t;compiler: it said _VOLATILE_&n; *&t;Richard Kooijman&t;:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;New buffers. Use sk-&gt;mac.raw.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg support.&n; *&t;&t;Alan Cox&t;:&t;Protocol setting support&n; *&t;Alexey Kuznetsov&t;:&t;Untied from IPv4 stack.&n; *&t;Cyrus Durgin&t;&t;:&t;Fixed kerneld for kmod.&n; *&t;Michal Ostrowski        :       Module initialization cleanup.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PACKET - implements raw packet sockets.&n; *&n; * Version:&t;$Id: af_packet.c,v 1.54 2001/03/03 01:20:11 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&n; * Fixes:&t;&n; *&t;&t;Alan Cox&t;:&t;verify_area() now used correctly&n; *&t;&t;Alan Cox&t;:&t;new skbuff lists, look ma no backlogs!&n; *&t;&t;Alan Cox&t;:&t;tidied skbuff lists.&n; *&t;&t;Alan Cox&t;:&t;Now uses generic datagram routines I&n; *&t;&t;&t;&t;&t;added. Also fixed the peek/read crash&n; *&t;&t;&t;&t;&t;from all old Linux datagram code.&n; *&t;&t;Alan Cox&t;:&t;Uses the improved datagram code.&n; *&t;&t;Alan Cox&t;:&t;Added NULL&squot;s for socket options.&n; *&t;&t;Alan Cox&t;:&t;Re-commented the code.&n; *&t;&t;Alan Cox&t;:&t;Use new kernel side addressing&n; *&t;&t;Rob Janssen&t;:&t;Correct MTU usage.&n; *&t;&t;Dave Platt&t;:&t;Counter leaks caused by incorrect&n; *&t;&t;&t;&t;&t;interrupt locking and some slightly&n; *&t;&t;&t;&t;&t;dubious gcc output. Can you read&n; *&t;&t;&t;&t;&t;compiler: it said _VOLATILE_&n; *&t;Richard Kooijman&t;:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;New buffers. Use sk-&gt;mac.raw.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg support.&n; *&t;&t;Alan Cox&t;:&t;Protocol setting support&n; *&t;Alexey Kuznetsov&t;:&t;Untied from IPv4 stack.&n; *&t;Cyrus Durgin&t;&t;:&t;Fixed kerneld for kmod.&n; *&t;Michal Ostrowski        :       Module initialization cleanup.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -58,8 +58,6 @@ r_struct
 id|sock
 op_star
 id|packet_sklist
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|packet_sklist_lock
 r_static
@@ -859,6 +857,11 @@ id|skb_head
 op_assign
 id|skb-&gt;data
 suffix:semicolon
+r_int
+id|skb_len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 macro_line|#ifdef CONFIG_FILTER
 r_int
 id|snaplen
@@ -1083,9 +1086,7 @@ id|skb_head
 suffix:semicolon
 id|skb-&gt;len
 op_assign
-id|skb-&gt;tail
-op_minus
-id|skb-&gt;data
+id|skb_len
 suffix:semicolon
 )brace
 id|kfree_skb
@@ -1153,17 +1154,16 @@ macro_line|#ifdef CONFIG_FILTER
 r_if
 c_cond
 (paren
-id|skb-&gt;len
-OG
-id|snaplen
-)paren
-id|__skb_trim
+id|pskb_trim
 c_func
 (paren
 id|skb
 comma
 id|snaplen
 )paren
+)paren
+r_goto
+id|drop_n_acct
 suffix:semicolon
 macro_line|#endif
 id|skb_set_owner_r
@@ -1260,9 +1260,7 @@ id|skb_head
 suffix:semicolon
 id|skb-&gt;len
 op_assign
-id|skb-&gt;tail
-op_minus
-id|skb-&gt;data
+id|skb_len
 suffix:semicolon
 )brace
 id|drop
@@ -1325,6 +1323,11 @@ op_star
 id|skb_head
 op_assign
 id|skb-&gt;data
+suffix:semicolon
+r_int
+id|skb_len
+op_assign
+id|skb-&gt;len
 suffix:semicolon
 r_int
 id|snaplen
@@ -1415,6 +1418,17 @@ id|skb-&gt;nh.raw
 op_minus
 id|skb-&gt;data
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;ip_summed
+op_eq
+id|CHECKSUM_HW
+)paren
+id|status
+op_or_assign
+id|TP_STATUS_CSUMNOTREADY
 suffix:semicolon
 )brace
 )brace
@@ -1654,6 +1668,21 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|snaplen
+OG
+id|skb-&gt;len
+op_minus
+id|skb-&gt;data_len
+)paren
+id|snaplen
+op_assign
+id|skb-&gt;len
+op_minus
+id|skb-&gt;data_len
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1877,9 +1906,7 @@ id|skb_head
 suffix:semicolon
 id|skb-&gt;len
 op_assign
-id|skb-&gt;tail
-op_minus
-id|skb-&gt;data
+id|skb_len
 suffix:semicolon
 )brace
 id|drop
@@ -2122,8 +2149,6 @@ op_plus
 id|dev-&gt;hard_header_len
 op_plus
 l_int|15
-comma
-l_int|0
 comma
 id|msg-&gt;msg_flags
 op_amp
@@ -3434,15 +3459,16 @@ op_or_assign
 id|MSG_TRUNC
 suffix:semicolon
 )brace
-multiline_comment|/* We can&squot;t use skb_copy_datagram here */
 id|err
 op_assign
-id|memcpy_toiovec
+id|skb_copy_datagram_iovec
 c_func
 (paren
-id|msg-&gt;msg_iov
+id|skb
 comma
-id|skb-&gt;data
+l_int|0
+comma
+id|msg-&gt;msg_iov
 comma
 id|copied
 )paren
@@ -4690,6 +4716,17 @@ id|optlen
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_switch
 c_cond
@@ -6911,6 +6948,10 @@ id|mmap
 suffix:colon
 id|sock_no_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -6984,6 +7025,10 @@ id|mmap
 suffix:colon
 id|packet_mmap
 comma
+id|sendpage
+suffix:colon
+id|sock_no_sendpage
+comma
 )brace
 suffix:semicolon
 DECL|variable|packet_family_ops
@@ -6993,17 +7038,28 @@ id|net_proto_family
 id|packet_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_PACKET
 comma
+id|create
+suffix:colon
 id|packet_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|packet_netdev_notifier
+r_static
 r_struct
 id|notifier_block
 id|packet_netdev_notifier
 op_assign
-initialization_block
+(brace
+id|notifier_call
+suffix:colon
+id|packet_notifier
+comma
+)brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|packet_read_proc
@@ -7259,7 +7315,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -7268,7 +7323,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|unregister_netdevice_notifier
 c_func
 (paren

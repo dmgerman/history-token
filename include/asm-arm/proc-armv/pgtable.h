@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgtable.h&n; *&n; *  Copyright (C) 1995-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  12-Jan-1997&t;RMK&t;Altered flushing routines to use function pointers&n; *&t;&t;&t;now possible to combine ARM6, ARM7 and StrongARM versions.&n; *  17-Apr-1999&t;RMK&t;Now pass an area size to clean_cache_area and&n; *&t;&t;&t;flush_icache_area.&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/pgtable.h&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  12-Jan-1997&t;RMK&t;Altered flushing routines to use function pointers&n; *&t;&t;&t;now possible to combine ARM6, ARM7 and StrongARM versions.&n; *  17-Apr-1999&t;RMK&t;Now pass an area size to clean_cache_area and&n; *&t;&t;&t;flush_icache_area.&n; */
 macro_line|#ifndef __ASM_PROC_PGTABLE_H
 DECL|macro|__ASM_PROC_PGTABLE_H
 mdefine_line|#define __ASM_PROC_PGTABLE_H
@@ -42,8 +42,8 @@ mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdp,pmd)&t;cpu_set_pmd(pmdp,pmd)
 DECL|function|__mk_pmd
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pmd_t
 id|__mk_pmd
 c_func
@@ -99,14 +99,9 @@ r_return
 id|pmd
 suffix:semicolon
 )brace
-multiline_comment|/* these are aliases for the above function */
-DECL|macro|mk_user_pmd
-mdefine_line|#define mk_user_pmd(ptep)&t;__mk_pmd(ptep, _PAGE_USER_TABLE)
-DECL|macro|mk_kernel_pmd
-mdefine_line|#define mk_kernel_pmd(ptep)&t;__mk_pmd(ptep, _PAGE_KERNEL_TABLE)
 DECL|function|pmd_page
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|pmd_page
@@ -304,16 +299,6 @@ id|mkyoung
 comma
 op_or_assign
 id|L_PTE_YOUNG
-)paren
-suffix:semicolon
-id|PTE_BIT_FUNC
-c_func
-(paren
-id|nocache
-comma
-op_and_assign
-op_complement
-id|L_PTE_CACHEABLE
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Mark the prot value as uncacheable and unbufferable.&n; */

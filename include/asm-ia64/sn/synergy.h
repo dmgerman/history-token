@@ -1,6 +1,7 @@
 macro_line|#ifndef ASM_IA64_SN_SYNERGY_H
 DECL|macro|ASM_IA64_SN_SYNERGY_H
 mdefine_line|#define ASM_IA64_SN_SYNERGY_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;asm/io.h&quot;
 macro_line|#include &quot;asm/sn/nodepda.h&quot;
 macro_line|#include &quot;asm/sn/intr_public.h&quot;

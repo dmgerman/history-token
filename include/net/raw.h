@@ -19,6 +19,9 @@ comma
 r_struct
 id|sk_buff
 op_star
+comma
+id|u32
+id|info
 )paren
 suffix:semicolon
 r_extern

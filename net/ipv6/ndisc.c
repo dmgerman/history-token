@@ -1393,8 +1393,6 @@ l_int|15
 comma
 l_int|0
 comma
-l_int|0
-comma
 op_amp
 id|err
 )paren
@@ -1687,8 +1685,6 @@ op_plus
 id|dev-&gt;hard_header_len
 op_plus
 l_int|15
-comma
-l_int|0
 comma
 l_int|0
 comma
@@ -1992,8 +1988,6 @@ op_plus
 id|dev-&gt;hard_header_len
 op_plus
 l_int|15
-comma
-l_int|0
 comma
 l_int|0
 comma
@@ -3856,8 +3850,6 @@ l_int|15
 comma
 l_int|0
 comma
-l_int|0
-comma
 op_amp
 id|err
 )paren
@@ -4310,8 +4302,6 @@ id|ndisc_rcv
 c_func
 (paren
 id|skb
-comma
-id|skb-&gt;len
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -4330,10 +4320,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -4380,6 +4366,16 @@ r_struct
 id|inet6_ifaddr
 op_star
 id|ifp
+suffix:semicolon
+id|__skb_push
+c_func
+(paren
+id|skb
+comma
+id|skb-&gt;data
+op_minus
+id|skb-&gt;h.raw
+)paren
 suffix:semicolon
 r_switch
 c_cond

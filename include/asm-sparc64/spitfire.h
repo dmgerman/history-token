@@ -1,17 +1,27 @@
-multiline_comment|/* $Id: spitfire.h,v 1.14 2001/03/22 07:26:04 davem Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: spitfire.h,v 1.15 2001/03/27 00:10:15 davem Exp $&n; * spitfire.h: SpitFire/BlackBird/Cheetah inline MMU operations.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_SPITFIRE_H
 DECL|macro|_SPARC64_SPITFIRE_H
 mdefine_line|#define _SPARC64_SPITFIRE_H
 macro_line|#include &lt;asm/asi.h&gt;
 multiline_comment|/* The following register addresses are accessible via ASI_DMMU&n; * and ASI_IMMU, that is there is a distinct and unique copy of&n; * each these registers for each TLB.&n; */
 DECL|macro|TSB_TAG_TARGET
-mdefine_line|#define TSB_TAG_TARGET&t;&t;0x0000000000000000
+mdefine_line|#define TSB_TAG_TARGET&t;&t;0x0000000000000000 /* All chips&t;&t;&t;&t;*/
 DECL|macro|TLB_SFSR
-mdefine_line|#define TLB_SFSR&t;&t;0x0000000000000018
+mdefine_line|#define TLB_SFSR&t;&t;0x0000000000000018 /* All chips&t;&t;&t;&t;*/
 DECL|macro|TSB_REG
-mdefine_line|#define TSB_REG&t;&t;&t;0x0000000000000028
+mdefine_line|#define TSB_REG&t;&t;&t;0x0000000000000028 /* All chips&t;&t;&t;&t;*/
 DECL|macro|TLB_TAG_ACCESS
-mdefine_line|#define TLB_TAG_ACCESS&t;&t;0x0000000000000030
+mdefine_line|#define TLB_TAG_ACCESS&t;&t;0x0000000000000030 /* All chips&t;&t;&t;&t;*/
+DECL|macro|VIRT_WATCHPOINT
+mdefine_line|#define VIRT_WATCHPOINT&t;&t;0x0000000000000038 /* All chips&t;&t;&t;&t;*/
+DECL|macro|PHYS_WATCHPOINT
+mdefine_line|#define PHYS_WATCHPOINT&t;&t;0x0000000000000040 /* All chips&t;&t;&t;&t;*/
+DECL|macro|TSB_EXTENSION_P
+mdefine_line|#define TSB_EXTENSION_P&t;&t;0x0000000000000048 /* Ultra-III and later&t;&t;*/
+DECL|macro|TSB_EXTENSION_S
+mdefine_line|#define TSB_EXTENSION_S&t;&t;0x0000000000000050 /* Ultra-III and later, D-TLB only&t;*/
+DECL|macro|TSB_EXTENSION_N
+mdefine_line|#define TSB_EXTENSION_N&t;&t;0x0000000000000058 /* Ultra-III and later&t;&t;*/
 multiline_comment|/* These registers only exist as one entity, and are accessed&n; * via ASI_DMMU only.&n; */
 DECL|macro|PRIMARY_CONTEXT
 mdefine_line|#define PRIMARY_CONTEXT&t;&t;0x0000000000000008

@@ -212,6 +212,22 @@ comma
 id|BEM
 op_assign
 l_int|0x00000001
+comma
+multiline_comment|/* 635 &amp; 900B Specific */
+DECL|enumerator|RND_CNT
+DECL|enumerator|FAIR_BACKOFF
+id|RND_CNT
+op_assign
+l_int|0x00000400
+comma
+id|FAIR_BACKOFF
+op_assign
+l_int|0x00000200
+comma
+DECL|enumerator|EDB_MASTER_EN
+id|EDB_MASTER_EN
+op_assign
+l_int|0x00002000
 )brace
 suffix:semicolon
 DECL|enum|sis900_eeprom_access_reigster_bits
@@ -397,10 +413,21 @@ DECL|macro|TxMXDMA_shift
 mdefine_line|#define TxMXDMA_shift   &t;20
 DECL|macro|RxMXDMA_shift
 mdefine_line|#define RxMXDMA_shift    20
-DECL|macro|TX_DMA_BURST
-mdefine_line|#define TX_DMA_BURST    &t;0
-DECL|macro|RX_DMA_BURST
-mdefine_line|#define RX_DMA_BURST    &t;0
+DECL|enum|sis900_tx_rx_dma
+r_enum
+id|sis900_tx_rx_dma
+(brace
+DECL|enumerator|DMA_BURST_512
+DECL|enumerator|DMA_BURST_64
+id|DMA_BURST_512
+op_assign
+l_int|0
+comma
+id|DMA_BURST_64
+op_assign
+l_int|5
+)brace
+suffix:semicolon
 multiline_comment|/* transmit FIFO threshholds */
 DECL|macro|TX_FILL_THRESH
 mdefine_line|#define TX_FILL_THRESH   16&t;/* 1/4 FIFO size */
@@ -1157,6 +1184,16 @@ comma
 id|SIS630EA1_900_REV
 op_assign
 l_int|0x83
+comma
+DECL|enumerator|SIS635A_900_REV
+DECL|enumerator|SIS900B_900_REV
+id|SIS635A_900_REV
+op_assign
+l_int|0x90
+comma
+id|SIS900B_900_REV
+op_assign
+l_int|0x03
 )brace
 suffix:semicolon
 DECL|enum|sis630_revision_id
@@ -1218,9 +1255,9 @@ mdefine_line|#define PCI_DEVICE_ID_SI_900&t;0x900
 DECL|macro|PCI_DEVICE_ID_SI_7016
 mdefine_line|#define PCI_DEVICE_ID_SI_7016&t;0x7016
 DECL|macro|SIS630_VENDOR_ID
-mdefine_line|#define SIS630_VENDOR_ID        0x0630
+mdefine_line|#define SIS630_VENDOR_ID        0x1039
 DECL|macro|SIS630_DEVICE_ID
-mdefine_line|#define SIS630_DEVICE_ID        0x1039
+mdefine_line|#define SIS630_DEVICE_ID        0x0630
 multiline_comment|/* ioctl for accessing MII transceiver */
 DECL|macro|SIOCGMIIPHY
 mdefine_line|#define SIOCGMIIPHY (SIOCDEVPRIVATE)&t;&t;/* Get the PHY in use. */

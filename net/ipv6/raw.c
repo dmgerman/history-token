@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.42 2000/11/28 13:38:38 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.45 2001/02/18 09:10:42 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -377,6 +377,22 @@ op_assign
 op_amp
 id|sk-&gt;tp_pinfo.tp_raw
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+r_sizeof
+(paren
+r_struct
+id|icmp6hdr
+)paren
+)paren
+)paren
+(brace
 id|icmph
 op_assign
 (paren
@@ -384,11 +400,7 @@ r_struct
 id|icmp6hdr
 op_star
 )paren
-(paren
-id|skb-&gt;nh.ipv6h
-op_plus
-l_int|1
-)paren
+id|skb-&gt;data
 suffix:semicolon
 r_return
 id|test_bit
@@ -399,6 +411,10 @@ comma
 op_amp
 id|opt-&gt;filter
 )paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;demultiplex raw sockets.&n; *&t;(should consider queueing the skb in the sock receive_queue&n; *&t;without calling rawv6.c)&n; */
@@ -416,10 +432,6 @@ id|skb
 comma
 r_int
 id|nexthdr
-comma
-r_int
-r_int
-id|len
 )paren
 (brace
 r_struct
@@ -576,8 +588,6 @@ c_func
 id|sk2
 comma
 id|buff
-comma
-id|len
 )paren
 suffix:semicolon
 )brace
@@ -882,11 +892,6 @@ op_star
 id|skb
 comma
 r_struct
-id|ipv6hdr
-op_star
-id|hdr
-comma
-r_struct
 id|inet6_skb_parm
 op_star
 id|opt
@@ -898,9 +903,7 @@ r_int
 id|code
 comma
 r_int
-r_char
-op_star
-id|buff
+id|offset
 comma
 id|u32
 id|info
@@ -911,15 +914,6 @@ id|err
 suffix:semicolon
 r_int
 id|harderr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|buff
-OG
-id|skb-&gt;tail
-)paren
-r_return
 suffix:semicolon
 multiline_comment|/* Report error on raw socket, if:&n;&t;   1. User requested recverr.&n;&t;   2. Socket is connected (otherwise the error indication&n;&t;      is useless without recverr and error is hard.&n;&t; */
 r_if
@@ -967,6 +961,23 @@ c_cond
 (paren
 id|sk-&gt;net_pinfo.af_inet6.recverr
 )paren
+(brace
+id|u8
+op_star
+id|payload
+op_assign
+id|skb-&gt;data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sk-&gt;protinfo.af_inet.hdrincl
+)paren
+id|payload
+op_add_assign
+id|offset
+suffix:semicolon
 id|ipv6_icmp_error
 c_func
 (paren
@@ -984,9 +995,10 @@ c_func
 id|info
 )paren
 comma
-id|buff
+id|payload
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1083,10 +1095,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|len
 )paren
 (brace
 r_if
@@ -1094,10 +1102,22 @@ c_cond
 (paren
 id|sk-&gt;protinfo.af_inet.hdrincl
 )paren
+(brace
+id|__skb_push
+c_func
+(paren
+id|skb
+comma
+id|skb-&gt;nh.raw
+op_minus
+id|skb-&gt;data
+)paren
+suffix:semicolon
 id|skb-&gt;h.raw
 op_assign
 id|skb-&gt;nh.raw
 suffix:semicolon
+)brace
 id|rawv6_rcv_skb
 c_func
 (paren
@@ -1231,9 +1251,7 @@ id|out
 suffix:semicolon
 id|copied
 op_assign
-id|skb-&gt;tail
-op_minus
-id|skb-&gt;h.raw
+id|skb-&gt;len
 suffix:semicolon
 r_if
 c_cond
@@ -2436,6 +2454,17 @@ id|optlen
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
