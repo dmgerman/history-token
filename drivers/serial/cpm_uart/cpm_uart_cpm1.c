@@ -363,6 +363,7 @@ c_func
 id|dp_offset
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -513,6 +514,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|cpm_uart_freebuf
 r_void
 id|cpm_uart_freebuf
 c_func
@@ -557,6 +559,7 @@ id|pinfo-&gt;dp_addr
 suffix:semicolon
 )brace
 multiline_comment|/* Setup any dynamic params in the uart desc */
+DECL|function|cpm_uart_init_portdesc
 r_int
 id|cpm_uart_init_portdesc
 c_func
