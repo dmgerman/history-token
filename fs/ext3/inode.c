@@ -1442,40 +1442,50 @@ id|goal
 )paren
 (brace
 r_struct
-id|ext3_inode_info
+id|ext3_block_alloc_info
 op_star
-id|ei
+id|block_i
 op_assign
 id|EXT3_I
 c_func
 (paren
 id|inode
 )paren
+op_member_access_from_pointer
+id|i_block_alloc_info
 suffix:semicolon
-multiline_comment|/* Writer: -&gt;i_next_alloc* */
+multiline_comment|/*&n;&t; * try the heuristic for sequential allocation,&n;&t; * failing that at least try to get decent locality.&n;&t; */
 r_if
 c_cond
 (paren
+id|block_i
+op_logical_and
 (paren
 id|block
 op_eq
-id|ei-&gt;i_next_alloc_block
+id|block_i-&gt;last_alloc_logical_block
 op_plus
 l_int|1
 )paren
 op_logical_and
-id|ei-&gt;i_next_alloc_goal
+(paren
+id|block_i-&gt;last_alloc_physical_block
+op_ne
+l_int|0
+)paren
 )paren
 (brace
-id|ei-&gt;i_next_alloc_block
-op_increment
+op_star
+id|goal
+op_assign
+id|block_i-&gt;last_alloc_physical_block
+op_plus
+l_int|1
 suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
-op_increment
+r_return
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Writer: end */
-multiline_comment|/* Reader: pointers, -&gt;i_next_alloc* */
 r_if
 c_cond
 (paren
@@ -1488,26 +1498,6 @@ id|partial
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * try the heuristic for sequential allocation,&n;&t;&t; * failing that at least try to get decent locality.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|block
-op_eq
-id|ei-&gt;i_next_alloc_block
-)paren
-op_star
-id|goal
-op_assign
-id|ei-&gt;i_next_alloc_goal
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-op_star
-id|goal
-)paren
 op_star
 id|goal
 op_assign
@@ -1523,7 +1513,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Reader: end */
 r_return
 op_minus
 id|EAGAIN
@@ -1975,15 +1964,17 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|ext3_inode_info
+id|ext3_block_alloc_info
 op_star
-id|ei
+id|block_i
 op_assign
 id|EXT3_I
 c_func
 (paren
 id|inode
 )paren
+op_member_access_from_pointer
+id|i_block_alloc_info
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re splicing into a [td]indirect block (as opposed to the&n;&t; * inode) then we need to get write access to the [td]indirect block&n;&t; * before the splice.&n;&t; */
 r_if
@@ -2020,7 +2011,6 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Verify that place we are splicing to is still there and vacant */
-multiline_comment|/* Writer: pointers, -&gt;i_next_alloc* */
 r_if
 c_cond
 (paren
@@ -2048,11 +2038,18 @@ id|where-&gt;p
 op_assign
 id|where-&gt;key
 suffix:semicolon
-id|ei-&gt;i_next_alloc_block
+multiline_comment|/*&n;&t; * update the most recently allocated logical &amp; physical block&n;&t; * in i_block_alloc_info, to assist find the proper goal block for next&n;&t; * allocation&n;&t; */
+r_if
+c_cond
+(paren
+id|block_i
+)paren
+(brace
+id|block_i-&gt;last_alloc_logical_block
 op_assign
 id|block
 suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
+id|block_i-&gt;last_alloc_physical_block
 op_assign
 id|le32_to_cpu
 c_func
@@ -2067,7 +2064,7 @@ dot
 id|key
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: end */
+)brace
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
 op_assign
@@ -2339,13 +2336,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|inode-&gt;i_sb
-suffix:semicolon
 id|J_ASSERT
 c_func
 (paren
@@ -2531,14 +2521,6 @@ multiline_comment|/* lazy initialize the block allocation info here if necessary
 r_if
 c_cond
 (paren
-id|test_opt
-c_func
-(paren
-id|sb
-comma
-id|RESERVATION
-)paren
-op_logical_and
 id|S_ISREG
 c_func
 (paren
@@ -2547,11 +2529,11 @@ id|inode-&gt;i_mode
 op_logical_and
 (paren
 op_logical_neg
-id|ei-&gt;i_rsv_window
+id|ei-&gt;i_block_alloc_info
 )paren
 )paren
 (brace
-id|ext3_alloc_init_reservation
+id|ext3_init_block_alloc_info
 c_func
 (paren
 id|inode
@@ -9403,7 +9385,7 @@ op_assign
 id|EXT3_ACL_NOT_CACHED
 suffix:semicolon
 macro_line|#endif
-id|ei-&gt;i_rsv_window
+id|ei-&gt;i_block_alloc_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -9551,14 +9533,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|ei-&gt;i_state
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_next_alloc_block
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
 op_assign
 l_int|0
 suffix:semicolon

@@ -2358,14 +2358,6 @@ id|ei-&gt;i_data
 )paren
 )paren
 suffix:semicolon
-id|ei-&gt;i_next_alloc_block
-op_assign
-l_int|0
-suffix:semicolon
-id|ei-&gt;i_next_alloc_goal
-op_assign
-l_int|0
-suffix:semicolon
 id|ei-&gt;i_dir_start_lookup
 op_assign
 l_int|0
@@ -2447,7 +2439,7 @@ id|ei-&gt;i_dtime
 op_assign
 l_int|0
 suffix:semicolon
-id|ei-&gt;i_rsv_window
+id|ei-&gt;i_block_alloc_info
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -45,6 +45,28 @@ id|rsv_window
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|ext3_block_alloc_info
+r_struct
+id|ext3_block_alloc_info
+(brace
+multiline_comment|/* information about reservation window */
+DECL|member|rsv_window_node
+r_struct
+id|ext3_reserve_window_node
+id|rsv_window_node
+suffix:semicolon
+multiline_comment|/*&n;&t; * was i_next_alloc_block in ext3_inode_info&n;&t; * is the logical (file-relative) number of the&n;&t; * most-recently-allocated block in this file.&n;&t; * We use this for detecting linearly ascending allocation requests.&n;&t; */
+DECL|member|last_alloc_logical_block
+id|__u32
+id|last_alloc_logical_block
+suffix:semicolon
+multiline_comment|/*&n;&t; * Was i_next_alloc_goal in ext3_inode_info&n;&t; * is the *physical* companion to i_next_alloc_block.&n;&t; * it the the physical block number of the block which was most-recentl&n;&t; * allocated to this file.  This give us the goal (target) for the next&n;&t; * allocation when we detect linearly ascending requests.&n;&t; */
+DECL|member|last_alloc_physical_block
+id|__u32
+id|last_alloc_physical_block
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|rsv_start
 mdefine_line|#define rsv_start rsv_window._rsv_start
 DECL|macro|rsv_end
@@ -102,22 +124,12 @@ id|__u32
 id|i_state
 suffix:semicolon
 multiline_comment|/* Dynamic state flags for ext3 */
-multiline_comment|/*&n;&t; * i_next_alloc_block is the logical (file-relative) number of the&n;&t; * most-recently-allocated block in this file.  Yes, it is misnamed.&n;&t; * We use this for detecting linearly ascending allocation requests.&n;&t; */
-DECL|member|i_next_alloc_block
-id|__u32
-id|i_next_alloc_block
-suffix:semicolon
-multiline_comment|/*&n;&t; * i_next_alloc_goal is the *physical* companion to i_next_alloc_block.&n;&t; * it the the physical block number of the block which was most-recently&n;&t; * allocated to this file.  This give us the goal (target) for the next&n;&t; * allocation when we detect linearly ascending requests.&n;&t; */
-DECL|member|i_next_alloc_goal
-id|__u32
-id|i_next_alloc_goal
-suffix:semicolon
 multiline_comment|/* block reservation info */
-DECL|member|i_rsv_window
+DECL|member|i_block_alloc_info
 r_struct
-id|ext3_reserve_window_node
+id|ext3_block_alloc_info
 op_star
-id|i_rsv_window
+id|i_block_alloc_info
 suffix:semicolon
 DECL|member|i_dir_start_lookup
 id|__u32

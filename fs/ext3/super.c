@@ -1757,7 +1757,7 @@ op_assign
 id|EXT3_ACL_NOT_CACHED
 suffix:semicolon
 macro_line|#endif
-id|ei-&gt;i_rsv_window
+id|ei-&gt;i_block_alloc_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1959,7 +1959,7 @@ id|inode
 )paren
 (brace
 r_struct
-id|ext3_reserve_window_node
+id|ext3_block_alloc_info
 op_star
 id|rsv
 op_assign
@@ -1969,7 +1969,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_rsv_window
+id|i_block_alloc_info
 suffix:semicolon
 macro_line|#ifdef CONFIG_EXT3_FS_POSIX_ACL
 r_if
@@ -2075,7 +2075,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_rsv_window
+id|i_block_alloc_info
 op_assign
 l_int|NULL
 suffix:semicolon

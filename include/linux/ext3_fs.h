@@ -1541,7 +1541,7 @@ id|retries
 suffix:semicolon
 r_extern
 r_void
-id|ext3_alloc_init_reservation
+id|ext3_init_block_alloc_info
 c_func
 (paren
 r_struct
