@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -868,8 +869,17 @@ op_amp
 l_int|0x80
 )paren
 (brace
-id|wait_queue_head_t
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
+id|wq
+)paren
+suffix:semicolon
+id|DEFINE_WAIT
+c_func
+(paren
 id|wait
+)paren
 suffix:semicolon
 r_int
 r_char
@@ -922,22 +932,34 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Wait until the command reaches the baseband */
-id|init_waitqueue_head
+id|prepare_to_wait
 c_func
 (paren
 op_amp
-id|wait
-)paren
-suffix:semicolon
-id|interruptible_sleep_on_timeout
-c_func
-(paren
+id|wq
+comma
 op_amp
 id|wait
 comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|10
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|wq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* Set baud on baseband */
@@ -977,13 +999,32 @@ id|REG_CONTROL
 )paren
 suffix:semicolon
 multiline_comment|/* Wait before the next HCI packet can be send */
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
+id|wq
+comma
+op_amp
 id|wait
 comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|wq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 )brace
