@@ -24,27 +24,27 @@ mdefine_line|#define NE_CMD&t; &t;&t;0x00
 DECL|macro|NE_DATAPORT
 mdefine_line|#define NE_DATAPORT&t;&t;0x10            /* NatSemi-defined port window offset. */
 DECL|macro|NE_RESET
-mdefine_line|#define NE_RESET&t;&t;0x1f+GAYLE_ODD  /* Issue a read to reset, a write to clear. */
+mdefine_line|#define NE_RESET&t;&t;0x1f            /* Issue a read to reset, a write to clear. */
 DECL|macro|NE_IO_EXTENT
-mdefine_line|#define NE_IO_EXTENT&t;0x20
+mdefine_line|#define NE_IO_EXTENT&t;        0x20
 DECL|macro|NE_EN0_ISR
-mdefine_line|#define NE_EN0_ISR&t;&t;0x07+GAYLE_ODD
+mdefine_line|#define NE_EN0_ISR&t;&t;0x07
 DECL|macro|NE_EN0_DCFG
 mdefine_line|#define NE_EN0_DCFG&t;&t;0x0e
 DECL|macro|NE_EN0_RSARLO
-mdefine_line|#define NE_EN0_RSARLO&t;0x08
+mdefine_line|#define NE_EN0_RSARLO&t;        0x08
 DECL|macro|NE_EN0_RSARHI
-mdefine_line|#define NE_EN0_RSARHI&t;0x09+GAYLE_ODD
+mdefine_line|#define NE_EN0_RSARHI&t;        0x09
 DECL|macro|NE_EN0_RCNTLO
-mdefine_line|#define NE_EN0_RCNTLO&t;0x0a
+mdefine_line|#define NE_EN0_RCNTLO&t;        0x0a
 DECL|macro|NE_EN0_RXCR
 mdefine_line|#define NE_EN0_RXCR&t;&t;0x0c
 DECL|macro|NE_EN0_TXCR
-mdefine_line|#define NE_EN0_TXCR&t;&t;0x0d+GAYLE_ODD
+mdefine_line|#define NE_EN0_TXCR&t;&t;0x0d
 DECL|macro|NE_EN0_RCNTHI
-mdefine_line|#define NE_EN0_RCNTHI&t;0x0b+GAYLE_ODD
+mdefine_line|#define NE_EN0_RCNTHI&t;        0x0b
 DECL|macro|NE_EN0_IMR
-mdefine_line|#define NE_EN0_IMR&t;&t;0x0f+GAYLE_ODD
+mdefine_line|#define NE_EN0_IMR&t;&t;0x0f
 DECL|macro|NE1SM_START_PG
 mdefine_line|#define NE1SM_START_PG&t;0x20&t;/* First page of TX buffer */
 DECL|macro|NE1SM_STOP_PG
@@ -376,8 +376,6 @@ c_func
 id|dev
 comma
 id|IOBASE
-op_plus
-id|GAYLE_IO
 )paren
 suffix:semicolon
 r_else
@@ -442,15 +440,6 @@ r_static
 r_int
 id|version_printed
 suffix:semicolon
-r_static
-id|u32
-id|pcmcia_offsets
-(braket
-l_int|16
-)braket
-op_assign
-initialization_block
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -481,10 +470,10 @@ id|reset_start_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
-id|readb
+id|inb
 c_func
 (paren
 id|ioaddr
@@ -501,7 +490,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|inb
 c_func
 (paren
 id|ioaddr
@@ -539,7 +528,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0xff
@@ -687,7 +676,7 @@ id|i
 op_increment
 )paren
 (brace
-id|writeb
+id|outb
 c_func
 (paren
 id|program_seq
@@ -731,7 +720,7 @@ id|SA_prom
 id|i
 )braket
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|ioaddr
@@ -746,7 +735,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|ioaddr
@@ -817,7 +806,7 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* We must set the 8390 for word mode. */
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0x49
@@ -968,7 +957,7 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* We must set the 8390 for word mode. */
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0x49
@@ -1176,10 +1165,6 @@ op_assign
 op_amp
 id|apne_get_8390_hdr
 suffix:semicolon
-id|ei_status.reg_offset
-op_assign
-id|pcmcia_offsets
-suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
@@ -1319,10 +1304,10 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -1348,7 +1333,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -1386,7 +1371,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RESET
@@ -1464,7 +1449,7 @@ id|ei_status.dmaing
 op_or_assign
 l_int|0x01
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_NODMA
@@ -1478,7 +1463,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -1488,7 +1473,7 @@ op_plus
 id|NE_EN0_ISR
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 r_sizeof
@@ -1502,7 +1487,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0
@@ -1512,7 +1497,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0
@@ -1523,7 +1508,7 @@ id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
 multiline_comment|/* On page boundary */
-id|writeb
+id|outb
 c_func
 (paren
 id|ring_page
@@ -1533,7 +1518,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_RREAD
@@ -1586,7 +1571,7 @@ op_star
 id|ptrs
 op_increment
 op_assign
-id|readw
+id|inw
 c_func
 (paren
 id|NE_BASE
@@ -1629,7 +1614,7 @@ op_star
 id|ptrc
 op_increment
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -1639,7 +1624,7 @@ id|NE_DATAPORT
 suffix:semicolon
 )brace
 )brace
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -1664,7 +1649,7 @@ op_complement
 l_int|0x01
 suffix:semicolon
 )brace
-multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using writeb. */
+multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using outb. */
 r_static
 r_void
 DECL|function|apne_block_input
@@ -1739,7 +1724,7 @@ id|ei_status.dmaing
 op_or_assign
 l_int|0x01
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_NODMA
@@ -1753,7 +1738,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -1763,7 +1748,7 @@ op_plus
 id|NE_EN0_ISR
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|count
@@ -1775,7 +1760,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|count
@@ -1787,7 +1772,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|ring_offset
@@ -1799,7 +1784,7 @@ op_plus
 id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|ring_offset
@@ -1811,7 +1796,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_RREAD
@@ -1859,7 +1844,7 @@ op_star
 id|ptrs
 op_increment
 op_assign
-id|readw
+id|inw
 c_func
 (paren
 id|NE_BASE
@@ -1882,7 +1867,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -1920,7 +1905,7 @@ op_star
 id|ptrc
 op_increment
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -1929,7 +1914,7 @@ id|NE_DATAPORT
 )paren
 suffix:semicolon
 )brace
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -2036,7 +2021,7 @@ op_or_assign
 l_int|0x01
 suffix:semicolon
 multiline_comment|/* We should already be in page 0, but to be safe... */
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_PAGE0
@@ -2050,7 +2035,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -2061,7 +2046,7 @@ id|NE_EN0_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Now the normal output. */
-id|writeb
+id|outb
 c_func
 (paren
 id|count
@@ -2073,7 +2058,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|count
@@ -2085,7 +2070,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 l_int|0x00
@@ -2095,7 +2080,7 @@ op_plus
 id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|start_page
@@ -2105,7 +2090,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 id|E8390_RWRITE
@@ -2147,7 +2132,7 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
-id|writew
+id|outw
 c_func
 (paren
 op_star
@@ -2184,7 +2169,7 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
-id|writeb
+id|outb
 c_func
 (paren
 op_star
@@ -2205,7 +2190,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|inb
 c_func
 (paren
 id|NE_BASE
@@ -2258,7 +2243,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|writeb
+id|outb
 c_func
 (paren
 id|ENISR_RDC
@@ -2636,18 +2621,24 @@ id|offset_len
 suffix:semicolon
 )brace
 macro_line|#endif
-id|writeb
+id|out_8
 c_func
 (paren
-id|config
-comma
 id|GAYLE_ATTRIBUTE
 op_plus
 id|offset
+comma
+id|config
 )paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

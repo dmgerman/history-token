@@ -3470,11 +3470,9 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-r_return
-id|rc
+r_goto
+id|err_out
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Get ether address of board&n;&t; */
 id|printk
 c_func
@@ -3551,11 +3549,13 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-r_return
-(paren
+id|rc
+op_assign
 op_minus
 id|ENXIO
-)paren
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;ACK outstanding interrupts, hook the interrupt,&n;&t; *&t;and verify that we are getting interrupts from the board.&n;&t; */
@@ -3596,10 +3596,8 @@ c_cond
 (paren
 id|rc
 )paren
-r_return
-(paren
-id|rc
-)paren
+r_goto
+id|err_out
 suffix:semicolon
 id|priv-&gt;intrcnt
 op_assign
@@ -3657,6 +3655,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Not interrupting on IRQ %d (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3666,14 +3665,20 @@ comma
 id|priv-&gt;intrcnt
 )paren
 suffix:semicolon
-r_return
-(paren
+id|rc
+op_assign
 op_minus
 id|ENXIO
-)paren
+suffix:semicolon
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Register the /proc/ioports information...&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -3683,7 +3688,28 @@ l_int|256
 comma
 l_string|&quot;RightSwitch&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: io 0x%3lX, which is busy.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;base_addr
+)paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
+r_goto
+id|err_free_irq
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Entry points...&n;&t; */
 id|dev-&gt;open
 op_assign
@@ -3716,9 +3742,22 @@ op_amp
 id|dgrs_ioctl
 suffix:semicolon
 r_return
+id|rc
+suffix:semicolon
+id|err_free_irq
+suffix:colon
+id|free_irq
+c_func
 (paren
-l_int|0
+id|dev-&gt;irq
+comma
+id|dev
 )paren
+suffix:semicolon
+id|err_out
+suffix:colon
+r_return
+id|rc
 suffix:semicolon
 )brace
 r_int
