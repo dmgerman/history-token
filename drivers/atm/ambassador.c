@@ -9902,7 +9902,8 @@ id|housekeeping.data
 op_assign
 l_int|0
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
+c_func
 (paren
 op_amp
 id|housekeeping
