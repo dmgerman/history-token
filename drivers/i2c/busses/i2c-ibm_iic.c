@@ -87,17 +87,17 @@ macro_line|#undef DBG2
 macro_line|#endif
 macro_line|#if DBG_LEVEL &gt; 0
 DECL|macro|DBG
-macro_line|#  define DBG(x...)&t;printk(KERN_DEBUG &quot;ibm-iic&quot; ##x)
+macro_line|#  define DBG(f,x...)&t;printk(KERN_DEBUG &quot;ibm-iic&quot; f, ##x)
 macro_line|#else
 DECL|macro|DBG
-macro_line|#  define DBG(x...)&t;((void)0)
+macro_line|#  define DBG(f,x...)&t;((void)0)
 macro_line|#endif
 macro_line|#if DBG_LEVEL &gt; 1
 DECL|macro|DBG2
-macro_line|#  define DBG2(x...) &t;DBG( ##x )
+macro_line|#  define DBG2(f,x...) &t;DBG(f, ##x)
 macro_line|#else
 DECL|macro|DBG2
-macro_line|#  define DBG2(x...) &t;((void)0)
+macro_line|#  define DBG2(f,x...) &t;((void)0)
 macro_line|#endif
 macro_line|#if DBG_LEVEL &gt; 2
 DECL|function|dump_iic_regs
