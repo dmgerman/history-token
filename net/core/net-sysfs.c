@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net-sysfs.c - network device class and attributes&n; *&n; * Copyright (c) 2003 Stephen Hemminger &lt;shemminger@osdl.org&gt;&n; * &n; */
+multiline_comment|/*&n; * net-sysfs.c - network device class and attributes&n; *&n; * Copyright (c) 2003 Stephen Hemminger &lt;shemminger@osdl.org&gt;&n; * &n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -9,6 +9,33 @@ DECL|macro|to_class_dev
 mdefine_line|#define to_class_dev(obj) container_of(obj,struct class_device,kobj)
 DECL|macro|to_net_dev
 mdefine_line|#define to_net_dev(class) container_of(class, struct net_device, class_dev)
+DECL|variable|fmt_hex
+r_static
+r_const
+r_char
+op_star
+id|fmt_hex
+op_assign
+l_string|&quot;%#x&bslash;n&quot;
+suffix:semicolon
+DECL|variable|fmt_dec
+r_static
+r_const
+r_char
+op_star
+id|fmt_dec
+op_assign
+l_string|&quot;%d&bslash;n&quot;
+suffix:semicolon
+DECL|variable|fmt_ulong
+r_static
+r_const
+r_char
+op_star
+id|fmt_ulong
+op_assign
+l_string|&quot;%lu&bslash;n&quot;
+suffix:semicolon
 DECL|function|dev_isalive
 r_static
 r_inline
@@ -276,7 +303,7 @@ c_func
 (paren
 id|addr_len
 comma
-l_string|&quot;%d&bslash;n&quot;
+id|fmt_dec
 )paren
 suffix:semicolon
 id|NETDEVICE_ATTR
@@ -284,7 +311,7 @@ c_func
 (paren
 id|iflink
 comma
-l_string|&quot;%d&bslash;n&quot;
+id|fmt_dec
 )paren
 suffix:semicolon
 id|NETDEVICE_ATTR
@@ -292,7 +319,7 @@ c_func
 (paren
 id|ifindex
 comma
-l_string|&quot;%d&bslash;n&quot;
+id|fmt_dec
 )paren
 suffix:semicolon
 id|NETDEVICE_ATTR
@@ -300,7 +327,7 @@ c_func
 (paren
 id|features
 comma
-l_string|&quot;%#x&bslash;n&quot;
+id|fmt_hex
 )paren
 suffix:semicolon
 id|NETDEVICE_ATTR
@@ -308,7 +335,7 @@ c_func
 (paren
 id|type
 comma
-l_string|&quot;%d&bslash;n&quot;
+id|fmt_dec
 )paren
 suffix:semicolon
 multiline_comment|/* use same locking rules as GIFHWADDR ioctl&squot;s */
@@ -340,13 +367,6 @@ op_star
 id|cp
 op_assign
 id|buf
-suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -390,13 +410,6 @@ suffix:colon
 l_char|&squot;:&squot;
 )paren
 suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
-suffix:semicolon
 r_return
 id|cp
 op_minus
@@ -430,6 +443,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|ssize_t
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|dev_base_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -439,7 +465,8 @@ c_func
 id|net
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|format_addr
 c_func
 (paren
@@ -450,9 +477,15 @@ comma
 id|net-&gt;addr_len
 )paren
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|dev_base_lock
+)paren
+suffix:semicolon
 r_return
-op_minus
-id|EINVAL
+id|ret
 suffix:semicolon
 )brace
 DECL|function|show_broadcast
@@ -539,7 +572,7 @@ c_func
 (paren
 id|mtu
 comma
-l_string|&quot;%d&bslash;n&quot;
+id|fmt_dec
 )paren
 suffix:semicolon
 DECL|function|change_mtu
@@ -625,7 +658,7 @@ c_func
 (paren
 id|flags
 comma
-l_string|&quot;%#x&bslash;n&quot;
+id|fmt_hex
 )paren
 suffix:semicolon
 DECL|function|change_flags
@@ -711,7 +744,7 @@ c_func
 (paren
 id|tx_queue_len
 comma
-l_string|&quot;%lu&bslash;n&quot;
+id|fmt_ulong
 )paren
 suffix:semicolon
 DECL|function|change_tx_queue_len
@@ -896,7 +929,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%lu&bslash;n&quot;
+id|fmt_ulong
 comma
 id|var
 )paren
