@@ -400,7 +400,6 @@ id|LCCR0_Sngl
 op_or
 id|LCCR0_Act
 comma
-singleline_comment|//&t;lccr3:&t;&t;LCCR3_ACBsCntOff | LCCR3_PixFlEdg | LCCR3_OutEnH,
 id|lccr3
 suffix:colon
 id|LCCR3_ACBsDiv
@@ -408,6 +407,10 @@ c_func
 (paren
 l_int|2
 )paren
+op_or
+id|LCCR3_PixRsEdg
+op_or
+id|LCCR3_OutEnH
 op_or
 id|LCCR3_ACBsCntOff
 comma
@@ -479,16 +482,6 @@ id|LCCR0_Sngl
 op_or
 id|LCCR0_Act
 comma
-macro_line|#if 0
-id|lccr3
-suffix:colon
-id|LCCR3_ACBsCntOff
-op_or
-id|LCCR3_OutEnH
-op_or
-id|LCCR3_PixFlEdg
-comma
-macro_line|#else
 id|lccr3
 suffix:colon
 id|LCCR3_ACBsDiv
@@ -497,9 +490,12 @@ c_func
 l_int|2
 )paren
 op_or
+id|LCCR3_PixRsEdg
+op_or
+id|LCCR3_OutEnH
+op_or
 id|LCCR3_ACBsCntOff
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|h3600_rgb_16
