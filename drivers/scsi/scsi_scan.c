@@ -2010,6 +2010,19 @@ id|sdev-&gt;borken
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Apparently some really broken devices (contrary to the SCSI&n;&t; * standards) need to be selected without asserting ATN&n;&t; */
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_SELECT_NO_ATN
+)paren
+id|sdev-&gt;select_no_atn
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some devices may not want to have a start command automatically&n;&t; * issued when a device is added.&n;&t; */
 r_if
 c_cond
