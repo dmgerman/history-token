@@ -2424,8 +2424,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/*&n; * Find the controller and initialize it&n; *  Cannot use the class code to search, because older array controllers use&n; *    0x018000 and new ones use 0x010400.  So I might as well search for each&n; *    each device IDs, being there are only going to be three of them. &n; */
+DECL|function|cpqarray_pci_detect
 r_static
 r_int
 id|cpqarray_pci_detect
@@ -2439,6 +2439,7 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+DECL|macro|IDA_BOARD_TYPES
 mdefine_line|#define IDA_BOARD_TYPES 3
 r_static
 r_int
@@ -2730,6 +2731,7 @@ id|nr_ctlr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the IO address of the controller, its IRQ and so forth.  Fill&n; * in some basic stuff into the ctlr_info_t structure.&n; */
+DECL|function|cpqarray_pci_init
 r_static
 r_int
 id|cpqarray_pci_init
@@ -3192,6 +3194,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Map (physical) PCI mem into (virtual) kernel space&n; */
+DECL|function|remap_pci_mem
 r_static
 r_void
 op_star
@@ -3261,6 +3264,7 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 multiline_comment|/*&n; * Config string is a comma seperated set of i/o addresses of EISA cards.&n; */
+DECL|function|cpqarray_setup
 r_static
 r_int
 id|cpqarray_setup
@@ -3345,6 +3349,7 @@ id|cpqarray_setup
 suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * Copy the contents of the ints[] array passed to us by init.&n; */
+DECL|function|cpqarray_setup
 r_void
 id|cpqarray_setup
 c_func
@@ -3400,6 +3405,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Find an EISA controller&squot;s signature.  Set up an hba if we find it.&n; */
+DECL|function|cpqarray_eisa_detect
 r_static
 r_int
 id|cpqarray_eisa_detect
@@ -3790,6 +3796,7 @@ id|nr_ctlr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Open.  Make sure the device is really there.&n; */
+DECL|function|ida_open
 r_static
 r_int
 id|ida_open
@@ -3930,6 +3937,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close.  Sync first.&n; */
+DECL|function|ida_release
 r_static
 r_int
 id|ida_release
@@ -3970,6 +3978,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Enqueuing and dequeuing functions for cmdlists.&n; */
+DECL|function|addQ
 r_static
 r_inline
 r_void
@@ -4045,6 +4054,7 @@ id|c
 suffix:semicolon
 )brace
 )brace
+DECL|function|removeQ
 r_static
 r_inline
 id|cmdlist_t
@@ -4107,6 +4117,7 @@ id|c
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get a request and submit it to the controller.&n; * This routine needs to grab all the requests it possibly can from the&n; * req Q and submit them.  Interrupts are off (and need to be off) when you&n; * are in here (either via the dummy do_ida_request functions or by being&n; * called from the interrupt handler&n; */
+DECL|function|do_ida_request
 r_static
 r_void
 id|do_ida_request
@@ -4531,6 +4542,7 @@ id|h
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * start_io submits everything on a controller&squot;s request queue&n; * and moves it to the completion queue.&n; *&n; * Interrupts had better be off if you&squot;re in here&n; */
+DECL|function|start_io
 r_static
 r_void
 id|start_io
@@ -4609,6 +4621,7 @@ id|c
 suffix:semicolon
 )brace
 )brace
+DECL|function|complete_buffers
 r_static
 r_inline
 r_void
@@ -4683,6 +4696,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Mark all buffers that cmd was responsible for&n; */
+DECL|function|complete_command
 r_static
 r_inline
 r_void
@@ -4905,6 +4919,7 @@ id|cmd-&gt;rq
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The controller will interrupt us upon completion of commands.&n; *  Find the command on the completion queue, remove it, tell the OS and&n; *  try to queue up more IO&n; */
+DECL|function|do_ida_intr
 r_static
 r_void
 id|do_ida_intr
@@ -5175,6 +5190,7 @@ id|h-&gt;ctlr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This timer was for timing out requests that haven&squot;t happened after&n; * IDA_TIMEOUT.  That wasn&squot;t such a good idea.  This timer is used to&n; * reset a flags structure so we don&squot;t flood the user with&n; * &quot;Non-Fatal error&quot; messages.&n; */
+DECL|function|ida_timer
 r_static
 r_void
 id|ida_timer
@@ -5214,6 +5230,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  ida_ioctl does some miscellaneous stuff like reporting drive geometry,&n; *  setting readahead and submitting commands from userspace to the controller.&n; */
+DECL|function|ida_ioctl
 r_static
 r_int
 id|ida_ioctl
@@ -5735,6 +5752,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * ida_ctlr_ioctl is for passing commands to the controller from userspace.&n; * The command block (io) has already been copied to kernel space for us,&n; * however, any elements in the sglist need to be copied to kernel space&n; * or copied back to userspace.&n; *&n; * Only root may perform a controller passthru command, however I&squot;m not doing&n; * any serious sanity checking on the arguments.  Doing an IDA_WRITE_MEDIA and&n; * putting a 64M buffer in the sglist is probably a *bad* idea.&n; */
+DECL|function|ida_ctlr_ioctl
 r_static
 r_int
 id|ida_ctlr_ioctl
@@ -6505,6 +6523,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Commands are pre-allocated in a large block.  Here we use a simple bitmap&n; * scheme to suballocte them to the driver.  Operations that are not time&n; * critical (and can wait for kmalloc and possibly sleep) can pass in NULL&n; * as the first argument to get a new command.&n; */
+DECL|function|cmd_alloc
 r_static
 id|cmdlist_t
 op_star
@@ -6664,6 +6683,7 @@ r_return
 id|c
 suffix:semicolon
 )brace
+DECL|function|cmd_free
 r_static
 r_void
 id|cmd_free
@@ -6741,6 +6761,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/***********************************************************************&n;    name:        sendcmd&n;    Send a command to an IDA using the memory mapped FIFO interface&n;    and wait for it to complete.  &n;    This routine should only be called at init time.&n;***********************************************************************/
+DECL|function|sendcmd
 r_static
 r_int
 id|sendcmd
@@ -7195,6 +7216,7 @@ id|IO_OK
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * revalidate_allvol is for online array config utilities.  After a&n; * utility reconfigures the drives in the array, it can use this function&n; * (through an ioctl) to make the driver zap any previous disk structs for&n; * that controller and get new ones.&n; *&n; * Right now I&squot;m using the getgeometry() function to do this, but this&n; * function should probably be finer grained and allow you to revalidate one&n; * particualar logical volume (instead of all of them on a particular&n; * controller).&n; */
+DECL|function|revalidate_allvol
 r_static
 r_int
 id|revalidate_allvol
@@ -7511,6 +7533,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ida_revalidate
 r_static
 r_int
 id|ida_revalidate
@@ -7576,6 +7599,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n;    name: pollcomplete&n;    Wait polling for a command to complete.&n;    The memory mapped FIFO is polled for the completion.&n;    Used only at init time, interrupts disabled.&n; ********************************************************************/
+DECL|function|pollcomplete
 r_static
 r_int
 id|pollcomplete
@@ -7654,6 +7678,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************&n;    start_fwbk&n;    Starts controller firmwares background processing. &n;    Currently only the Integrated Raid controller needs this done.&n;    If the PCI mem address registers are written to after this, &n;&t; data corruption may occur&n;*****************************************************************/
+DECL|function|start_fwbk
 r_static
 r_void
 id|start_fwbk
@@ -7790,6 +7815,7 @@ id|id_ctlr_buf
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************&n;    getgeometry&n;    Get ida logical volume geometry from the controller &n;    This is a large bit of code which once existed in two flavors,&n;    It is used only at init time.&n;*****************************************************************/
+DECL|function|getgeometry
 r_static
 r_void
 id|getgeometry
