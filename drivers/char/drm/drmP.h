@@ -140,6 +140,8 @@ DECL|macro|DRM_MEM_STUB
 mdefine_line|#define DRM_MEM_STUB      19
 DECL|macro|DRM_MEM_SGLISTS
 mdefine_line|#define DRM_MEM_SGLISTS   20
+DECL|macro|DRM_MEM_CTXLIST
+mdefine_line|#define DRM_MEM_CTXLIST  21
 DECL|macro|DRM_MAX_CTXBITMAP
 mdefine_line|#define DRM_MAX_CTXBITMAP (PAGE_SIZE * 8)
 multiline_comment|/*@}*/
@@ -1292,6 +1294,33 @@ r_typedef
 id|drm_map_t
 id|drm_local_map_t
 suffix:semicolon
+multiline_comment|/**&n; * Context handle list&n; */
+DECL|struct|drm_ctx_list
+r_typedef
+r_struct
+id|drm_ctx_list
+(brace
+DECL|member|head
+r_struct
+id|list_head
+id|head
+suffix:semicolon
+multiline_comment|/**&lt; list head */
+DECL|member|handle
+id|drm_context_t
+id|handle
+suffix:semicolon
+multiline_comment|/**&lt; context handle */
+DECL|member|tag
+id|drm_file_t
+op_star
+id|tag
+suffix:semicolon
+multiline_comment|/**&lt; associated fd private data */
+DECL|typedef|drm_ctx_list_t
+)brace
+id|drm_ctx_list_t
+suffix:semicolon
 macro_line|#if __HAVE_VBL_IRQ
 DECL|struct|drm_vbl_sig
 r_typedef
@@ -1481,6 +1510,25 @@ r_int
 id|map_count
 suffix:semicolon
 multiline_comment|/**&lt; Number of mappable regions */
+multiline_comment|/** &bslash;name Context handle management */
+multiline_comment|/*@{*/
+DECL|member|ctxlist
+id|drm_ctx_list_t
+op_star
+id|ctxlist
+suffix:semicolon
+multiline_comment|/**&lt; Linked list of context handles */
+DECL|member|ctx_count
+r_int
+id|ctx_count
+suffix:semicolon
+multiline_comment|/**&lt; Number of context handles */
+DECL|member|ctxlist_sem
+r_struct
+id|semaphore
+id|ctxlist_sem
+suffix:semicolon
+multiline_comment|/**&lt; For ctxlist */
 DECL|member|context_sareas
 id|drm_map_t
 op_star
