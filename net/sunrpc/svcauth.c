@@ -686,7 +686,7 @@ op_logical_neg
 id|set
 )paren
 r_goto
-id|out_noset
+id|out_nada
 suffix:semicolon
 id|auth_domain_cache.entries
 op_increment
@@ -741,6 +741,12 @@ id|item-&gt;h
 suffix:semicolon
 r_return
 id|item
+suffix:semicolon
+id|out_nada
+suffix:colon
+id|tmp
+op_assign
+l_int|NULL
 suffix:semicolon
 id|out_noset
 suffix:colon

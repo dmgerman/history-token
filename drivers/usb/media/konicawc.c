@@ -1703,7 +1703,7 @@ c_func
 (paren
 id|uvd
 comma
-id|urb
+id|cam-&gt;last_data_urb
 )paren
 suffix:semicolon
 id|resubmit_urb
@@ -1711,7 +1711,7 @@ c_func
 (paren
 id|uvd
 comma
-id|cam-&gt;last_data_urb
+id|urb
 )paren
 suffix:semicolon
 id|cam-&gt;last_data_urb

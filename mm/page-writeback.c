@@ -282,14 +282,22 @@ id|dirty_ratio
 op_assign
 l_int|5
 suffix:semicolon
-multiline_comment|/*&n;&t; * Keep the ratio between dirty_ratio and background_ratio roughly&n;&t; * what the sysctls are after dirty_ratio has been scaled (above).&n;&t; */
 id|background_ratio
 op_assign
 id|dirty_background_ratio
-op_star
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|background_ratio
+op_ge
+id|dirty_ratio
+)paren
+id|background_ratio
+op_assign
 id|dirty_ratio
 op_div
-id|vm_dirty_ratio
+l_int|2
 suffix:semicolon
 id|background
 op_assign

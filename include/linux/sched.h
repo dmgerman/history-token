@@ -1454,7 +1454,8 @@ id|nivcsw
 suffix:semicolon
 multiline_comment|/* context switch counts */
 DECL|member|start_time
-id|u64
+r_struct
+id|timespec
 id|start_time
 suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */

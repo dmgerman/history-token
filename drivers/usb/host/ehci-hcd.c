@@ -2187,6 +2187,18 @@ comma
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/* another CPU may drop ehci-&gt;lock during a schedule scan while&n;&t; * it reports urb completions.  this flag guards against bogus&n;&t; * attempts at re-entrant schedule scanning.&n;&t; */
+r_if
+c_cond
+(paren
+id|ehci-&gt;scanning
+)paren
+r_return
+suffix:semicolon
+id|ehci-&gt;scanning
+op_assign
+l_int|1
+suffix:semicolon
 id|scan_async
 (paren
 id|ehci
@@ -2208,6 +2220,10 @@ id|ehci
 comma
 id|regs
 )paren
+suffix:semicolon
+id|ehci-&gt;scanning
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* the IO watchdog guards against hardware or driver bugs that&n;&t; * misplace IRQs, and should let us run completely without IRQs.&n;&t; * such lossage has been observed on both VT6202 and VT8235. &n;&t; */
 r_if

@@ -232,6 +232,13 @@ id|copy_from_user_skas
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|uml_strdup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|uml_strdup
+)paren
+suffix:semicolon
 DECL|variable|os_stat_fd
 id|EXPORT_SYMBOL
 c_func

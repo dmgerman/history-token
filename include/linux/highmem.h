@@ -122,6 +122,12 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure this page is cleared on other CPU&squot;s too before using it */
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|clear_highpage
 r_static
@@ -315,6 +321,12 @@ c_func
 id|vto
 comma
 id|KM_USER1
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure this page is cleared on other CPU&squot;s too before using it */
+id|smp_wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
