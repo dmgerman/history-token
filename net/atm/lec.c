@@ -4159,23 +4159,6 @@ id|i
 op_member_access_from_pointer
 id|priv
 suffix:semicolon
-macro_line|#if defined(CONFIG_TR)
-r_if
-c_cond
-(paren
-id|priv-&gt;is_trdev
-)paren
-id|unregister_trdev
-c_func
-(paren
-id|dev_lec
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-r_else
-macro_line|#endif
 id|unregister_netdev
 c_func
 (paren

@@ -384,7 +384,7 @@ id|dev
 op_member_access_from_pointer
 r_class
 op_rshift
-l_int|8
+l_int|16
 )paren
 op_eq
 id|PCI_BASE_CLASS_BRIDGE

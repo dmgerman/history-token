@@ -1,6 +1,8 @@
 macro_line|#ifndef _LINUX_SIGNAL_H
 DECL|macro|_LINUX_SIGNAL_H
 mdefine_line|#define _LINUX_SIGNAL_H
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
@@ -9,11 +11,19 @@ DECL|struct|sigqueue
 r_struct
 id|sigqueue
 (brace
-DECL|member|next
+DECL|member|list
 r_struct
-id|sigqueue
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
 op_star
-id|next
+id|lock
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
 DECL|member|info
 id|siginfo_t
@@ -21,20 +31,17 @@ id|info
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* flags values. */
+DECL|macro|SIGQUEUE_PREALLOC
+mdefine_line|#define SIGQUEUE_PREALLOC&t;1
 DECL|struct|sigpending
 r_struct
 id|sigpending
 (brace
-DECL|member|head
-DECL|member|tail
+DECL|member|list
 r_struct
-id|sigqueue
-op_star
-id|head
-comma
-op_star
-op_star
-id|tail
+id|list_head
+id|list
 suffix:semicolon
 DECL|member|signal
 id|sigset_t
@@ -672,14 +679,12 @@ op_amp
 id|sig-&gt;signal
 )paren
 suffix:semicolon
-id|sig-&gt;head
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sig-&gt;tail
-op_assign
+id|INIT_LIST_HEAD
+c_func
+(paren
 op_amp
-id|sig-&gt;head
+id|sig-&gt;list
+)paren
 suffix:semicolon
 )brace
 r_extern

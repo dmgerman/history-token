@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * kernel ISO transmission/reception&n; *&n; * Copyright (C) 2002 Maas Digital LLC&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;iso.h&quot;
 DECL|function|hpsb_iso_stop
 r_void

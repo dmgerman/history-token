@@ -561,7 +561,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcf                      = 0x%p&bslash;n&quot;
+l_string|&quot;systemcfg                      = 0x%p&bslash;n&quot;
 comma
 id|systemcfg
 )paren
@@ -827,7 +827,7 @@ op_logical_neg
 id|cpu_online_map
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu_id
 )paren
@@ -2336,7 +2336,7 @@ op_logical_and
 (paren
 id|val
 op_le
-id|MAX_PACAS
+id|NR_CPUS
 )paren
 )paren
 (brace

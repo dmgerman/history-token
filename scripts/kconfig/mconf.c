@@ -1829,6 +1829,15 @@ comma
 id|menu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sym_is_changable
+c_func
+(paren
+id|sym
+)paren
+)paren
 id|cprint1
 c_func
 (paren
@@ -1842,6 +1851,13 @@ c_cond
 l_char|&squot; &squot;
 suffix:colon
 l_char|&squot;*&squot;
+)paren
+suffix:semicolon
+r_else
+id|cprint1
+c_func
+(paren
+l_string|&quot;---&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1890,12 +1906,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sym_is_changable
+c_func
+(paren
+id|sym
+)paren
+)paren
 id|cprint1
 c_func
 (paren
 l_string|&quot;&lt;%c&gt;&quot;
 comma
 id|ch
+)paren
+suffix:semicolon
+r_else
+id|cprint1
+c_func
+(paren
+l_string|&quot;---&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1958,10 +1990,19 @@ c_func
 id|menu
 )paren
 comma
+(paren
 id|sym_has_value
 c_func
 (paren
 id|sym
+)paren
+op_logical_or
+op_logical_neg
+id|sym_is_changable
+c_func
+(paren
+id|sym
+)paren
 )paren
 ques
 c_cond
@@ -1997,10 +2038,19 @@ c_func
 id|menu
 )paren
 comma
+(paren
 id|sym_has_value
 c_func
 (paren
 id|sym
+)paren
+op_logical_or
+op_logical_neg
+id|sym_is_changable
+c_func
+(paren
+id|sym
+)paren
 )paren
 ques
 c_cond
@@ -3909,8 +3959,8 @@ c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n&quot;
 l_string|&quot;*** End of Linux kernel configuration.&bslash;n&quot;
-l_string|&quot;*** Check the top-level Makefile for additional configuration.&bslash;n&quot;
-l_string|&quot;*** Next, you may run &squot;make bzImage&squot;, &squot;make bzdisk&squot;, or &squot;make install&squot;.&bslash;n&bslash;n&quot;
+l_string|&quot;*** Execute &squot;make&squot; to build the kernel or try &squot;make help&squot;.&quot;
+l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3918,7 +3968,9 @@ r_else
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;n&bslash;nYour kernel configuration changes were NOT saved.&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;n&bslash;n&quot;
+l_string|&quot;Your kernel configuration changes were NOT saved.&quot;
+l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
