@@ -1086,11 +1086,13 @@ id|iobase_mmio_phys
 suffix:semicolon
 DECL|member|ac97base_mmio
 id|u_int8_t
+id|__iomem
 op_star
 id|ac97base_mmio
 suffix:semicolon
 DECL|member|iobase_mmio
 id|u_int8_t
+id|__iomem
 op_star
 id|iobase_mmio
 suffix:semicolon

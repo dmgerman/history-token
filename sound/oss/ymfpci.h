@@ -535,6 +535,7 @@ suffix:semicolon
 multiline_comment|/* PCI revision */
 DECL|member|reg_area_virt
 r_void
+id|__iomem
 op_star
 id|reg_area_virt
 suffix:semicolon
