@@ -4685,6 +4685,7 @@ id|CR_W_FD
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Take lock before calling this */
 DECL|function|allocate_rx_buffers
 r_static
 r_void
@@ -4813,13 +4814,6 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
-id|next_tick
-op_assign
-l_int|10
-op_star
-id|HZ
-suffix:semicolon
-r_int
 id|old_crvalue
 op_assign
 id|np-&gt;crvalue
@@ -4829,6 +4823,10 @@ r_int
 id|old_linkok
 op_assign
 id|np-&gt;linkok
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -4859,6 +4857,15 @@ id|ioaddr
 op_plus
 id|TCRRCR
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -4933,12 +4940,23 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|np-&gt;timer.expires
 op_assign
 id|RUN_AT
 c_func
 (paren
-id|next_tick
+l_int|10
+op_star
+id|HZ
 )paren
 suffix:semicolon
 id|add_timer
@@ -6037,7 +6055,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Stop rx before calling this */
+multiline_comment|/* Take lock and stop rx before calling this */
 DECL|function|reset_rx_descriptors
 r_static
 r_void
