@@ -283,6 +283,11 @@ r_struct
 id|iw_spy_data
 id|spy_data
 suffix:semicolon
+DECL|member|wireless_data
+r_struct
+id|iw_public_data
+id|wireless_data
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef HISTOGRAM
 DECL|member|his_number
@@ -687,6 +692,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Give stats /proc/net/dev */
+r_static
+id|iw_stats
+op_star
+id|wavelan_get_wireless_stats
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
 r_static
 r_void
 id|wavelan_set_multicast_list
