@@ -2831,6 +2831,11 @@ id|scatterlist
 op_star
 id|sg_table
 suffix:semicolon
+DECL|member|sg_max_nents
+r_int
+id|sg_max_nents
+suffix:semicolon
+multiline_comment|/* Maximum number of entries in it */
 DECL|member|sg_nents
 r_int
 id|sg_nents

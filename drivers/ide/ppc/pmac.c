@@ -5065,6 +5065,10 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+id|hwif-&gt;sg_max_nents
+op_assign
+id|MAX_DCMDS
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
 multiline_comment|/* has a DBDMA controller channel */
 r_if
@@ -8660,55 +8664,6 @@ id|KERN_ERR
 l_string|&quot;%s: unable to allocate DMA command list&bslash;n&quot;
 comma
 id|hwif-&gt;name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|hwif-&gt;sg_table
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|scatterlist
-)paren
-op_star
-id|MAX_DCMDS
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;sg_table
-op_eq
-l_int|NULL
-)paren
-(brace
-id|pci_free_consistent
-c_func
-(paren
-id|hwif-&gt;pci_dev
-comma
-(paren
-id|MAX_DCMDS
-op_plus
-l_int|2
-)paren
-op_star
-r_sizeof
-(paren
-r_struct
-id|dbdma_cmd
-)paren
-comma
-id|pmif-&gt;dma_table_cpu
-comma
-id|hwif-&gt;dmatable_dma
 )paren
 suffix:semicolon
 r_return

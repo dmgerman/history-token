@@ -2420,6 +2420,10 @@ id|hwif-&gt;INSL
 op_assign
 id|tmp_hwif-&gt;INSL
 suffix:semicolon
+id|hwif-&gt;sg_max_nents
+op_assign
+id|tmp_hwif-&gt;sg_max_nents
+suffix:semicolon
 id|hwif-&gt;mmio
 op_assign
 id|tmp_hwif-&gt;mmio
@@ -3125,6 +3129,12 @@ id|disk
 )paren
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|hwif-&gt;sg_table
+)paren
+suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
