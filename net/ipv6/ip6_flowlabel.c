@@ -3021,7 +3021,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;%05X %-1d %-6d %-6d %-6d %-8ld &quot;
+l_string|&quot;%05X %-1d %-6d %-6d %-6ld %-8ld &quot;
 l_string|&quot;%02x%02x%02x%02x%02x%02x%02x%02x &quot;
 l_string|&quot;%-4d&bslash;n&quot;
 comma
