@@ -501,6 +501,15 @@ id|ctl_addr
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm/ide.h&gt;
+multiline_comment|/* needed on alpha, x86/x86_64, ia64, mips, ppc32 and sh */
+macro_line|#ifndef IDE_ARCH_OBSOLETE_DEFAULTS
+DECL|macro|ide_default_io_base
+macro_line|# define ide_default_io_base(index)&t;(0)
+DECL|macro|ide_default_irq
+macro_line|# define ide_default_irq(base)&t;&t;(0)
+DECL|macro|ide_init_default_irq
+macro_line|# define ide_init_default_irq(base)&t;(0)
+macro_line|#endif
 multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; */
 macro_line|#ifdef IDE_ARCH_OBSOLETE_INIT
 DECL|function|ide_init_hwif_ports

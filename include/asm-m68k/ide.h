@@ -21,40 +21,6 @@ macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;4&t;/* same as the other archs */
 macro_line|#endif
-DECL|function|ide_default_irq
-r_static
-id|__inline__
-r_int
-id|ide_default_irq
-c_func
-(paren
-r_int
-r_int
-id|base
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|ide_default_io_base
-r_static
-id|__inline__
-r_int
-r_int
-id|ide_default_io_base
-c_func
-(paren
-r_int
-id|index
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|macro|ide_init_default_irq
-mdefine_line|#define ide_init_default_irq(base)&t;(0)
 multiline_comment|/*&n; * Get rid of defs from io.h - ide has its private and conflicting versions&n; * Since so far no single m68k platform uses ISA/PCI I/O space for IDE, we&n; * always use the `raw&squot; MMIO versions&n; */
 DECL|macro|inb
 macro_line|#undef inb

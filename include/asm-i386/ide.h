@@ -14,6 +14,8 @@ DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;6
 macro_line|# endif
 macro_line|#endif
+DECL|macro|IDE_ARCH_OBSOLETE_DEFAULTS
+mdefine_line|#define IDE_ARCH_OBSOLETE_DEFAULTS
 DECL|function|ide_default_irq
 r_static
 id|__inline__
