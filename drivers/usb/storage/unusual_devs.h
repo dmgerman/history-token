@@ -1127,6 +1127,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by Olaf Hering, &lt;olh@suse.de&gt; SuSE Bugzilla #49049 */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x002c
+comma
+l_int|0x0501
+comma
+l_int|0x0501
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;USB Floppy Drive&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
