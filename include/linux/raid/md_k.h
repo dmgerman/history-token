@@ -668,10 +668,6 @@ DECL|member|sb_dirty
 r_int
 id|sb_dirty
 suffix:semicolon
-DECL|member|param
-id|mdu_param_t
-id|param
-suffix:semicolon
 DECL|member|ro
 r_int
 id|ro

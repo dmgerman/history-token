@@ -779,7 +779,7 @@ id|sz
 comma
 l_string|&quot; %dk rounding&quot;
 comma
-id|mddev-&gt;param.chunk_size
+id|mddev-&gt;sb-&gt;chunk_size
 op_div
 l_int|1024
 )paren

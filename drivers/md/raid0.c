@@ -925,7 +925,7 @@ id|rsect
 suffix:semicolon
 id|chunk_size
 op_assign
-id|mddev-&gt;param.chunk_size
+id|mddev-&gt;sb-&gt;chunk_size
 op_rshift
 l_int|10
 suffix:semicolon
@@ -1423,7 +1423,7 @@ id|sz
 comma
 l_string|&quot; %dk chunks&quot;
 comma
-id|mddev-&gt;param.chunk_size
+id|mddev-&gt;sb-&gt;chunk_size
 op_div
 l_int|1024
 )paren

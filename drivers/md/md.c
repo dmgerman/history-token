@@ -6443,14 +6443,6 @@ c_func
 id|mddev-&gt;sb-&gt;level
 )paren
 suffix:semicolon
-id|mddev-&gt;param.chunk_size
-op_assign
-id|chunk_size
-suffix:semicolon
-id|mddev-&gt;param.personality
-op_assign
-id|pnum
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11271,7 +11263,6 @@ r_case
 id|RUN_ARRAY
 suffix:colon
 (brace
-multiline_comment|/* The data is never used....&n;&t;&t;&t;mdu_param_t param;&n;&t;&t;&t;err = copy_from_user(&amp;param, (mdu_param_t *)arg,&n;&t;&t;&t;&t;&t;&t;&t; sizeof(param));&n;&t;&t;&t;if (err)&n;&t;&t;&t;&t;goto abort_unlock;&n;*/
 id|err
 op_assign
 id|do_md_run
