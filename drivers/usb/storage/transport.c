@@ -703,6 +703,7 @@ id|srb-&gt;request_bufflen
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;USB len=%d, request_bufflen=%d&bslash;n&quot;
 comma
 id|len
@@ -710,10 +711,11 @@ comma
 id|srb-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|show_trace
+id|printk
 c_func
 (paren
-l_int|NULL
+id|KERN_ERR
+l_string|&quot;Fix this -- future 2.5 kernels will not work if this is not fixed!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

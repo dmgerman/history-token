@@ -4033,7 +4033,7 @@ comma
 op_star
 id|dest
 suffix:semicolon
-id|ata_fix_driveid
+id|ide_fix_driveid
 c_func
 (paren
 op_amp
