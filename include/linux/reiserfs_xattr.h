@@ -157,7 +157,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef CONFIG_REISERFS_FS_XATTR
 DECL|macro|is_reiserfs_priv_object
-mdefine_line|#define is_reiserfs_priv_object(inode) (REISERFS_I(inode)-&gt;i_flags &amp; i_priv_object)
+mdefine_line|#define is_reiserfs_priv_object(inode) IS_PRIVATE(inode)
 DECL|macro|has_xattr_dir
 mdefine_line|#define has_xattr_dir(inode) (REISERFS_I(inode)-&gt;i_flags &amp; i_has_xattr_dir)
 id|ssize_t
@@ -598,15 +598,9 @@ op_star
 id|inode
 )paren
 (brace
-id|REISERFS_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_flags
+id|inode-&gt;i_flags
 op_or_assign
-id|i_priv_object
+id|S_PRIVATE
 suffix:semicolon
 )brace
 macro_line|#else
