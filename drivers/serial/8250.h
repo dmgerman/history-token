@@ -99,6 +99,11 @@ r_int
 r_int
 id|tx_loadsz
 suffix:semicolon
+DECL|member|fcr
+r_int
+r_char
+id|fcr
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
