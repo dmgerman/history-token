@@ -835,14 +835,6 @@ id|smp_setup_percpu_timer
 r_void
 )paren
 (brace
-id|local_cpu_data-&gt;prof_counter
-op_assign
-l_int|1
-suffix:semicolon
-id|local_cpu_data-&gt;prof_multiplier
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_static
 r_void
