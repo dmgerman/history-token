@@ -93,58 +93,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Primitive-specific data */
-DECL|struct|llc_prim_conn
-r_struct
-id|llc_prim_conn
-(brace
-DECL|member|saddr
-r_struct
-id|llc_addr
-id|saddr
-suffix:semicolon
-multiline_comment|/* used by request only */
-DECL|member|daddr
-r_struct
-id|llc_addr
-id|daddr
-suffix:semicolon
-multiline_comment|/* used by request only */
-DECL|member|status
-id|u8
-id|status
-suffix:semicolon
-multiline_comment|/* reason for failure */
-DECL|member|pri
-id|u8
-id|pri
-suffix:semicolon
-multiline_comment|/* service_class */
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-multiline_comment|/* returned from REQUEST */
-DECL|member|link
-id|u16
-id|link
-suffix:semicolon
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-multiline_comment|/* received SABME  */
-)brace
-suffix:semicolon
 DECL|struct|llc_prim_disc
 r_struct
 id|llc_prim_disc
@@ -297,11 +245,6 @@ DECL|union|llc_u_prim_data
 r_union
 id|llc_u_prim_data
 (brace
-DECL|member|conn
-r_struct
-id|llc_prim_conn
-id|conn
-suffix:semicolon
 DECL|member|disc
 r_struct
 id|llc_prim_disc
@@ -401,6 +344,28 @@ r_struct
 id|llc_sap
 op_star
 id|sap
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|llc_establish_connection
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|u8
+op_star
+id|lmac
+comma
+id|u8
+op_star
+id|dmac
+comma
+id|u8
+id|dsap
 )paren
 suffix:semicolon
 r_extern
