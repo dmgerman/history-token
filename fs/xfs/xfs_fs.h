@@ -1242,19 +1242,5 @@ DECL|macro|BTOBBT
 mdefine_line|#define BTOBBT(bytes)&t;((__u64)(bytes) &gt;&gt; BBSHIFT)
 DECL|macro|BBTOB
 mdefine_line|#define BBTOB(bbs)&t;((bbs) &lt;&lt; BBSHIFT)
-DECL|macro|OFFTOBB
-mdefine_line|#define OFFTOBB(bytes)&t;(((__u64)(bytes) + BBSIZE - 1) &gt;&gt; BBSHIFT)
-DECL|macro|OFFTOBBT
-mdefine_line|#define OFFTOBBT(bytes) ((__u64)(bytes) &gt;&gt; BBSHIFT)
-DECL|macro|BBTOOFF
-mdefine_line|#define BBTOOFF(bbs)&t;((__u64)(bbs) &lt;&lt; BBSHIFT)
-DECL|macro|SEEKLIMIT32
-mdefine_line|#define SEEKLIMIT32&t;0x7fffffff
-DECL|macro|BBSEEKLIMIT32
-mdefine_line|#define BBSEEKLIMIT32&t;BTOBBT(SEEKLIMIT32)
-DECL|macro|SEEKLIMIT
-mdefine_line|#define SEEKLIMIT&t;0x7fffffffffffffffLL
-DECL|macro|BBSEEKLIMIT
-mdefine_line|#define BBSEEKLIMIT&t;OFFTOBBT(SEEKLIMIT)
 macro_line|#endif&t;/* _LINUX_XFS_FS_H */
 eof
