@@ -4,16 +4,7 @@ mdefine_line|#define _ASM_IRQ_H
 multiline_comment|/*&n; *&t;linux/include/asm/irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-DECL|macro|TIMER_IRQ
-mdefine_line|#define TIMER_IRQ 0
-multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sources.&n; * Right now the APIC is mostly only used for SMP.&n; * 256 vectors is an architectural limit. (we can have&n; * more than 256 devices theoretically, but they will&n; * have to use shared interrupts)&n; * Since vectors 0x00-0x1f are used/reserved for the CPU,&n; * the usable vector space is 0x20-0xff (224 vectors)&n; */
-macro_line|#ifdef CONFIG_X86_IO_APIC
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 224
-macro_line|#else
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 16
-macro_line|#endif
+macro_line|#include &lt;asm/irq_vectors.h&gt;
 DECL|function|irq_cannonicalize
 r_static
 id|__inline__
