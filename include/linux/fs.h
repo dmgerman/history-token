@@ -856,26 +856,18 @@ DECL|struct|block_device
 r_struct
 id|block_device
 (brace
-DECL|member|bd_hash
-r_struct
-id|list_head
-id|bd_hash
+DECL|member|bd_dev
+id|dev_t
+id|bd_dev
 suffix:semicolon
-DECL|member|bd_count
-id|atomic_t
-id|bd_count
-suffix:semicolon
+multiline_comment|/* not a kdev_t - it&squot;s a search key */
 DECL|member|bd_inode
 r_struct
 id|inode
 op_star
 id|bd_inode
 suffix:semicolon
-DECL|member|bd_dev
-id|dev_t
-id|bd_dev
-suffix:semicolon
-multiline_comment|/* not a kdev_t - it&squot;s a search key */
+multiline_comment|/* will die */
 DECL|member|bd_openers
 r_int
 id|bd_openers
@@ -927,6 +919,11 @@ r_struct
 id|gendisk
 op_star
 id|bd_disk
+suffix:semicolon
+DECL|member|bd_list
+r_struct
+id|list_head
+id|bd_list
 suffix:semicolon
 )brace
 suffix:semicolon
