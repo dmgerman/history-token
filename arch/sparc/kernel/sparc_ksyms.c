@@ -469,6 +469,13 @@ c_func
 id|phys_base
 )paren
 suffix:semicolon
+DECL|variable|pfn_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfn_base
+)paren
+suffix:semicolon
 multiline_comment|/* Atomic operations. */
 DECL|variable|___atomic24_add
 id|EXPORT_SYMBOL

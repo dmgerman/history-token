@@ -9259,11 +9259,7 @@ id|npages
 op_assign
 id|max_low_pfn
 op_minus
-(paren
-id|phys_base
-op_rshift
-id|PAGE_SHIFT
-)paren
+id|pfn_base
 suffix:semicolon
 id|zones_size
 (braket
@@ -9318,9 +9314,7 @@ l_int|NULL
 comma
 id|zones_size
 comma
-id|phys_base
-op_rshift
-id|PAGE_SHIFT
+id|pfn_base
 comma
 id|zholes_size
 )paren

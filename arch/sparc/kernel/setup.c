@@ -1308,6 +1308,12 @@ op_assign
 id|top
 suffix:semicolon
 )brace
+id|pfn_base
+op_assign
+id|phys_base
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 r_if
 c_cond
 (paren
