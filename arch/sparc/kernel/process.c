@@ -1,7 +1,5 @@
 multiline_comment|/*  $Id: process.c,v 1.161 2002/01/23 11:27:32 davem Exp $&n; *  linux/arch/sparc/kernel/process.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,7 +8,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;

@@ -7,9 +7,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -3317,6 +3317,28 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+multiline_comment|/* could be an AMD 768MPX chipset. Reserve a page  before VGA to prevent&n;       PCI prefetch into it (errata #56). Usually the page is reserved anyways,&n;       unless you have no PS/2 mouse plugged in. */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+op_logical_and
+id|boot_cpu_data.x86
+op_eq
+l_int|6
+)paren
+id|reserve_bootmem
+c_func
+(paren
+l_int|0xa0000
+op_minus
+l_int|4096
+comma
+l_int|4096
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * But first pinch a few for the stack/trampoline stuff&n;&t; * FIXME: Don&squot;t need the extra page at 4K, but need to fix&n;&t; * trampoline before removing it. (see the GDT stuff)&n;&t; */
 id|reserve_bootmem

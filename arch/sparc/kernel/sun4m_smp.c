@@ -19,9 +19,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 DECL|macro|IRQ_RESCHEDULE
 mdefine_line|#define IRQ_RESCHEDULE&t;&t;13
 DECL|macro|IRQ_STOP_CPU

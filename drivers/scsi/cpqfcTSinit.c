@@ -16,11 +16,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;  
 singleline_comment|// request_region() prototype
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#ifdef __alpha__
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#endif
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;   
 singleline_comment|// ioctl related

@@ -1,6 +1,4 @@
 multiline_comment|/*&n;** SMP Support&n;**&n;** Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n;** Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n;** Copyright (C) 2001 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n;** &n;** Lots of stuff stolen from arch/alpha/kernel/smp.c&n;** ...and then parisc stole from arch/ia64/kernel/smp.c. Thanks David! :^)&n;**&n;** Thanks to John Curry and Ullas Ponnadi. I learned alot from their work.&n;** -grant (1/12/2001)&n;**&n;**&t;This program is free software; you can redistribute it and/or modify&n;**&t;it under the terms of the GNU General Public License as published by&n;**      the Free Software Foundation; either version 2 of the License, or&n;**      (at your option) any later version.&n;*/
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 DECL|macro|ENTRY_SYS_CPUS
 macro_line|#undef ENTRY_SYS_CPUS&t;/* syscall support for iCOD-like functionality */
 macro_line|#include &lt;linux/autoconf.h&gt;

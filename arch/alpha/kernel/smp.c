@@ -25,9 +25,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 DECL|macro|DEBUG_SMP

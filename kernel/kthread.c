@@ -322,12 +322,6 @@ c_func
 id|pid
 )paren
 suffix:semicolon
-id|wait_task_inactive
-c_func
-(paren
-id|create-&gt;result
-)paren
-suffix:semicolon
 )brace
 id|complete
 c_func
@@ -513,9 +507,20 @@ op_ne
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|k-&gt;thread_info-&gt;cpu
-op_assign
+multiline_comment|/* Must have done schedule() in kthread() before we set_task_cpu */
+id|wait_task_inactive
+c_func
+(paren
+id|k
+)paren
+suffix:semicolon
+id|set_task_cpu
+c_func
+(paren
+id|k
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|k-&gt;cpus_allowed
 op_assign
