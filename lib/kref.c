@@ -55,9 +55,9 @@ id|kref-&gt;refcount
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kref_put - decrement refcount for object.&n; * @kref: object.&n; * @release: pointer to the function that will clean up the object when the&n; *&t;     last reference to the object is released.&n; *&t;     This pointer is required, and it is not acceptable to pass kfree&n; *&t;     in as this function.&n; *&n; * Decrement the refcount, and if 0, call release().&n; */
+multiline_comment|/**&n; * kref_put - decrement refcount for object.&n; * @kref: object.&n; * @release: pointer to the function that will clean up the object when the&n; *&t;     last reference to the object is released.&n; *&t;     This pointer is required, and it is not acceptable to pass kfree&n; *&t;     in as this function.&n; *&n; * Decrement the refcount, and if 0, call release().&n; * Return 1 if the object was removed, otherwise return 0.  Beware, if this&n; * function returns 0, you still can not count on the kref from remaining in&n; * memory.  Only use the return value if you want to see if the kref is now&n; * gone, not present.&n; */
 DECL|function|kref_put
-r_void
+r_int
 id|kref_put
 c_func
 (paren
@@ -116,11 +116,19 @@ op_amp
 id|kref-&gt;refcount
 )paren
 )paren
+(brace
 id|release
 c_func
 (paren
 id|kref
 )paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|kref_init
