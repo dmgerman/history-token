@@ -811,7 +811,6 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -915,7 +914,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gx
 (braket
@@ -926,7 +924,6 @@ l_string|&quot;mach64GX (ATI888GX00)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_cx
 (braket
@@ -937,7 +934,6 @@ l_string|&quot;mach64CX (ATI888CX00)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ct
 (braket
@@ -948,7 +944,6 @@ l_string|&quot;mach64CT (ATI264CT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_et
 (braket
@@ -959,7 +954,6 @@ l_string|&quot;mach64ET (ATI264ET)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vta3
 (braket
@@ -970,7 +964,6 @@ l_string|&quot;mach64VTA3 (ATI264VT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vta4
 (braket
@@ -981,7 +974,6 @@ l_string|&quot;mach64VTA4 (ATI264VT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vtb
 (braket
@@ -992,7 +984,6 @@ l_string|&quot;mach64VTB (ATI264VTB)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vt4
 (braket
@@ -1003,7 +994,6 @@ l_string|&quot;mach64VT4 (ATI264VT4)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gt
 (braket
@@ -1014,7 +1004,6 @@ l_string|&quot;3D RAGE (GT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtb
 (braket
@@ -1025,7 +1014,6 @@ l_string|&quot;3D RAGE II+ (GTB)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_iic_p
 (braket
@@ -1036,7 +1024,6 @@ l_string|&quot;3D RAGE IIC (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_iic_a
 (braket
@@ -1047,7 +1034,6 @@ l_string|&quot;3D RAGE IIC (AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_lt
 (braket
@@ -1058,7 +1044,6 @@ l_string|&quot;3D RAGE LT&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltg
 (braket
@@ -1069,7 +1054,6 @@ l_string|&quot;3D RAGE LT-G&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ba
 (braket
@@ -1080,7 +1064,6 @@ l_string|&quot;3D RAGE PRO (BGA, AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ba1
 (braket
@@ -1091,7 +1074,6 @@ l_string|&quot;3D RAGE PRO (BGA, AGP, 1x only)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_bp
 (braket
@@ -1102,7 +1084,6 @@ l_string|&quot;3D RAGE PRO (BGA, PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_pp
 (braket
@@ -1113,7 +1094,6 @@ l_string|&quot;3D RAGE PRO (PQFP, PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ppl
 (braket
@@ -1124,7 +1104,6 @@ l_string|&quot;3D RAGE PRO (PQFP, PCI, limited 3D)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_xl
 (braket
@@ -1135,7 +1114,6 @@ l_string|&quot;3D RAGE (XL)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltp_a
 (braket
@@ -1146,7 +1124,6 @@ l_string|&quot;3D RAGE LT PRO (AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltp_p
 (braket
@@ -1157,7 +1134,6 @@ l_string|&quot;3D RAGE LT PRO (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_mob_p
 (braket
@@ -1168,7 +1144,6 @@ l_string|&quot;3D RAGE Mobility (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_mob_a
 (braket
@@ -1178,7 +1153,6 @@ op_assign
 l_string|&quot;3D RAGE Mobility (AGP)&quot;
 suffix:semicolon
 r_static
-r_const
 r_struct
 (brace
 DECL|member|pci_id
@@ -2023,7 +1997,6 @@ macro_line|#endif /* CONFIG_FB_ATY_CT */
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_dram
 (braket
@@ -2034,7 +2007,6 @@ l_string|&quot;DRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_vram
 (braket
@@ -2045,7 +2017,6 @@ l_string|&quot;VRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_edo
 (braket
@@ -2056,7 +2027,6 @@ l_string|&quot;EDO&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_sdram
 (braket
@@ -2067,7 +2037,6 @@ l_string|&quot;SDRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_sgram
 (braket
@@ -2078,7 +2047,6 @@ l_string|&quot;SGRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_wram
 (braket
@@ -2089,7 +2057,6 @@ l_string|&quot;WRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_off
 (braket
@@ -2100,7 +2067,6 @@ l_string|&quot;OFF&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_resv
 (braket
@@ -2112,7 +2078,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_FB_ATY_GX
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|aty_gx_ram
@@ -2143,7 +2108,6 @@ macro_line|#endif /* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|aty_ct_ram

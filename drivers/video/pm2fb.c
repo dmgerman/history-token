@@ -278,7 +278,6 @@ op_assign
 l_int|1
 suffix:semicolon
 r_static
-r_const
 r_struct
 (brace
 DECL|member|name

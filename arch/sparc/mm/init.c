@@ -2074,6 +2074,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Memory: %dk available (%dk kernel code, %dk data, %dk init, %ldk highmem) [%08lx,%08lx]&bslash;n&quot;
 comma
 id|nr_free_pages
@@ -2227,6 +2228,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %dk freed&bslash;n&quot;
 comma
 (paren
@@ -2265,6 +2267,7 @@ id|end
 )paren
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;Freeing initrd memory: %ldk freed&bslash;n&quot;
 comma
 (paren

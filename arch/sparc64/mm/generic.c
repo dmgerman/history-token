@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|forget_pte
 r_static
 r_inline

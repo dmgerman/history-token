@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1362,6 +1363,14 @@ id|EXPORT_SYMBOL_DOT
 c_func
 (paren
 id|udiv
+)paren
+suffix:semicolon
+multiline_comment|/* Sun Power Management Idle Handler */
+DECL|variable|pm_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_idle
 )paren
 suffix:semicolon
 eof

@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: signal.c,v 1.7 2000/09/05 21:44:54 davem Exp $&n; * signal.c: Signal emulation for Solaris&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/svr4.h&gt;
 macro_line|#include &lt;asm/string.h&gt;

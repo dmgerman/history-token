@@ -29,6 +29,16 @@ macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 multiline_comment|/* #define VERBOSE_SHOWREGS */
+multiline_comment|/*&n; * Nothing special yet...&n; */
+DECL|function|default_idle
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#ifndef CONFIG_SMP
 multiline_comment|/*&n; * the idle loop on a Sparc... ;)&n; */
 DECL|function|cpu_idle
@@ -208,17 +218,11 @@ c_func
 id|TIF_NEED_RESCHED
 )paren
 )paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_extern
@@ -2160,6 +2164,21 @@ op_assign
 id|current_thread_info
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;flags
+op_amp
+id|_TIF_ABI_PENDING
+)paren
+id|t-&gt;flags
+op_xor_assign
+(paren
+id|_TIF_ABI_PENDING
+op_or
+id|_TIF_32BIT
 )paren
 suffix:semicolon
 r_if

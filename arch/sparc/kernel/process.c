@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -29,6 +30,28 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/psr.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
+multiline_comment|/* &n; * Power management idle function &n; * Set in pm platform drivers&n; */
+DECL|variable|pm_idle
+r_void
+(paren
+op_star
+id|pm_idle
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* &n; * Power-off handler instantiation for pm.h compliance&n; * This is done via auxio, but could be used as a fallback&n; * handler when auxio is not present-- unused for now...&n; */
+DECL|variable|pm_power_off
+r_void
+(paren
+op_star
+id|pm_power_off
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|fpsave
@@ -249,12 +272,31 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|check_pgt_cache
+r_while
+c_loop
+(paren
+(paren
+op_logical_neg
+id|current-&gt;need_resched
+)paren
+op_logical_and
+id|pm_idle
+)paren
+(brace
+(paren
+op_star
+id|pm_idle
+)paren
+(paren
+)paren
+suffix:semicolon
+)brace
+id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-id|schedule
+id|check_pgt_cache
 c_func
 (paren
 )paren
