@@ -5810,7 +5810,7 @@ id|rq-&gt;migration_queue
 suffix:semicolon
 id|current-&gt;state
 op_assign
-id|TASK_UNINTERRUPTIBLE
+id|TASK_INTERRUPTIBLE
 suffix:semicolon
 r_if
 c_cond
