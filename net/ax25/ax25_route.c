@@ -1690,26 +1690,6 @@ r_return
 id|ax25_rt
 suffix:semicolon
 )brace
-DECL|function|ax25_put_route
-r_static
-r_inline
-r_void
-id|ax25_put_route
-c_func
-(paren
-id|ax25_route
-op_star
-id|ax25_rt
-)paren
-(brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|ax25_rt-&gt;ref
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Adjust path: If you specify a default route and want to connect&n; *      a target on the digipeater path but w/o having a special route&n; *&t;set before, the path has to be truncated from your target on.&n; */
 DECL|function|ax25_adjust_path
 r_static
