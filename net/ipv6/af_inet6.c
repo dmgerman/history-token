@@ -3338,7 +3338,6 @@ suffix:semicolon
 macro_line|#endif
 id|igmp_fail
 suffix:colon
-macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren
