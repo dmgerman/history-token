@@ -3,8 +3,13 @@ DECL|macro|_ASM_GENERIC_PGTABLE_H
 mdefine_line|#define _ASM_GENERIC_PGTABLE_H
 macro_line|#ifndef __HAVE_ARCH_PTEP_ESTABLISH
 multiline_comment|/*&n; * Establish a new mapping:&n; *  - flush the old one&n; *  - update the page tables&n; *  - inform the TLB about the new one&n; *&n; * We hold the mm semaphore for reading and vma-&gt;vm_mm-&gt;page_table_lock.&n; *&n; * Note: the old pte is known to not be writable, so we don&squot;t need to&n; * worry about dirty bits etc getting lost.&n; */
+macro_line|#ifndef __HAVE_ARCH_SET_PTE_ATOMIC
 DECL|macro|ptep_establish
 mdefine_line|#define ptep_establish(__vma, __address, __ptep, __entry)&t;&t;&bslash;&n;do {&t;&t;&t;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(__ptep, __entry);&t;&t;&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else /* __HAVE_ARCH_SET_PTE_ATOMIC */
+DECL|macro|ptep_establish
+mdefine_line|#define ptep_establish(__vma, __address, __ptep, __entry)&t;&t;&bslash;&n;do {&t;&t;&t;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t;set_pte_atomic(__ptep, __entry);&t;&t;&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif /* __HAVE_ARCH_SET_PTE_ATOMIC */
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
 multiline_comment|/*&n; * Largely same as above, but only sets the access flags (dirty,&n; * accessed, and writable). Furthermore, we know it always gets set&n; * to a &quot;more permissive&quot; setting, which allows most architectures&n; * to optimize this.&n; */
