@@ -17,7 +17,6 @@ id|ppc4xx_core_uic_cfg
 id|NR_UICS
 )braket
 id|__attribute__
-c_func
 (paren
 (paren
 id|weak
@@ -31,7 +30,6 @@ id|ppc4xx_uic_ext_irq_cfg
 (braket
 )braket
 id|__attribute__
-c_func
 (paren
 (paren
 id|weak
@@ -47,7 +45,7 @@ mdefine_line|#define IRQ_MASK_UIC1(irq)&t;&t;IRQ_MASK_UICx(irq)
 DECL|macro|IRQ_MASK_UIC2
 mdefine_line|#define IRQ_MASK_UIC2(irq)&t;&t;IRQ_MASK_UICx(irq)
 DECL|macro|UIC_HANDLERS
-mdefine_line|#define UIC_HANDLERS(n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_enable(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] |= IRQ_MASK_UIC##n(irq);&t;&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_disable(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] &amp;= ~IRQ_MASK_UIC##n(irq);&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_ack(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 mask = IRQ_MASK_UIC##n(irq);&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] &amp;= ~mask;&t;&t;&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_SR(UIC##n), mask);&t;&t;&t;&t;&bslash;&n;&t;ACK_UIC##n##_PARENT&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_end(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int status = irq_desc[irq].status;&t;&t;&t;&bslash;&n;&t;u32 mask = IRQ_MASK_UIC##n(irq);&t;&t;&t;&t;&bslash;&n;&t;if (status &amp; IRQ_LEVEL){&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mtdcr(DCRN_UIC_SR(UIC##n), mask);&t;&t;&t;&bslash;&n;&t;&t;ACK_UIC##n##_PARENT&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(status &amp; (IRQ_DISABLED | IRQ_INPROGRESS))){&t;&t;&bslash;&n;&t;&t;ppc_cached_irq_mask[n] |= mask;&t;&t;&t;&t;&bslash;&n;&t;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define UIC_HANDLERS(n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_enable(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] |= IRQ_MASK_UIC##n(irq);&t;&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_disable(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] &amp;= ~IRQ_MASK_UIC##n(irq);&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_ack(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 mask = IRQ_MASK_UIC##n(irq);&t;&t;&t;&t;&bslash;&n;&t;ppc_cached_irq_mask[n] &amp;= ~mask;&t;&t;&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&t;&bslash;&n;&t;mtdcr(DCRN_UIC_SR(UIC##n), mask);&t;&t;&t;&t;&bslash;&n;&t;ACK_UIC##n##_PARENT&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static void ppc4xx_uic##n##_end(unsigned int irq)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int status = irq_desc[irq].status;&t;&t;&t;&bslash;&n;&t;u32 mask = IRQ_MASK_UIC##n(irq);&t;&t;&t;&t;&bslash;&n;&t;if (status &amp; IRQ_LEVEL) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mtdcr(DCRN_UIC_SR(UIC##n), mask);&t;&t;&t;&bslash;&n;&t;&t;ACK_UIC##n##_PARENT&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(status &amp; (IRQ_DISABLED | IRQ_INPROGRESS))) {&t;&t;&bslash;&n;&t;&t;ppc_cached_irq_mask[n] |= mask;&t;&t;&t;&t;&bslash;&n;&t;&t;mtdcr(DCRN_UIC_ER(UIC##n), ppc_cached_irq_mask[n]);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|DECLARE_UIC
 mdefine_line|#define DECLARE_UIC(n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.typename &t;= &quot;UIC&quot;#n,&t;&t;&t;&t;&t;&bslash;&n;&t;.enable &t;= ppc4xx_uic##n##_enable,&t;&t;&t;&bslash;&n;&t;.disable &t;= ppc4xx_uic##n##_disable,&t;&t;&t;&bslash;&n;&t;.ack &t;&t;= ppc4xx_uic##n##_ack,&t;&t;&t;&t;&bslash;&n;&t;.end &t;&t;= ppc4xx_uic##n##_end,&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 macro_line|#if NR_UICS == 3
@@ -439,6 +437,13 @@ DECL|function|ppc4xx_pic_impl_init
 r_static
 r_inline
 r_void
+id|ppc4xx_pic_impl_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif
 DECL|struct|ppc4xx_uic_impl
 r_static
