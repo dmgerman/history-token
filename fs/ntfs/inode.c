@@ -3854,7 +3854,7 @@ id|ni-&gt;name
 comma
 id|ni-&gt;name_len
 comma
-id|IGNORE_CASE
+id|CASE_SENSITIVE
 comma
 l_int|0
 comma
@@ -8113,7 +8113,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|IGNORE_CASE
+id|CASE_SENSITIVE
 comma
 l_int|0
 comma
