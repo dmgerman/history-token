@@ -8557,7 +8557,8 @@ id|sk
 op_member_access_from_pointer
 id|src
 comma
-id|bdaddr
+op_amp
+id|hdev-&gt;bdaddr
 )paren
 )paren
 (brace
