@@ -9685,7 +9685,7 @@ r_int
 id|srmmu_fault
 suffix:semicolon
 DECL|macro|PATCH_BRANCH
-mdefine_line|#define PATCH_BRANCH(insn, dest) do { &bslash;&n;&t;&t;iaddr = &amp;(insn); &bslash;&n;&t;&t;daddr = &amp;(dest); &bslash;&n;&t;&t;*iaddr = SPARC_BRANCH((unsigned long) daddr, (unsigned long) iaddr); &bslash;&n;&t;} while(0);
+mdefine_line|#define PATCH_BRANCH(insn, dest) do { &bslash;&n;&t;&t;iaddr = &amp;(insn); &bslash;&n;&t;&t;daddr = &amp;(dest); &bslash;&n;&t;&t;*iaddr = SPARC_BRANCH((unsigned long) daddr, (unsigned long) iaddr); &bslash;&n;&t;} while(0)
 DECL|function|patch_window_trap_handlers
 r_static
 r_void

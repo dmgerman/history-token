@@ -416,7 +416,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|flush_tlb
-mdefine_line|#define flush_tlb() do { &bslash;&n;        flush_data_tlb(); &bslash;&n;&t;flush_instruction_tlb(); &bslash;&n;} while(0);
+mdefine_line|#define flush_tlb() do { &bslash;&n;        flush_data_tlb(); &bslash;&n;&t;flush_instruction_tlb(); &bslash;&n;} while(0)
 DECL|macro|flush_tlb_all
 mdefine_line|#define flush_tlb_all() &t;flush_tlb()&t;/* XXX p[id]tlb */
 DECL|function|flush_tlb_pgtables

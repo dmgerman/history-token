@@ -1416,7 +1416,7 @@ comma
 id|vac_hwflush_patch2_on
 suffix:semicolon
 DECL|macro|PATCH_INSN
-mdefine_line|#define PATCH_INSN(src, dst) do {&t;&bslash;&n;&t;&t;daddr = &amp;(dst);&t;&t;&bslash;&n;&t;&t;iaddr = &amp;(src);&t;&t;&bslash;&n;&t;&t;*daddr = *iaddr;&t;&bslash;&n;&t;} while (0);
+mdefine_line|#define PATCH_INSN(src, dst) do {&t;&bslash;&n;&t;&t;daddr = &amp;(dst);&t;&t;&bslash;&n;&t;&t;iaddr = &amp;(src);&t;&t;&bslash;&n;&t;&t;*daddr = *iaddr;&t;&bslash;&n;&t;} while (0)
 DECL|function|patch_kernel_fault_handler
 r_static
 r_void

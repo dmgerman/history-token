@@ -27,7 +27,7 @@ mdefine_line|#define BEGIN_LP_RING(n) do {&t;&t;&t;&t;&bslash;&n;&t;if (I810_VER
 DECL|macro|ADVANCE_LP_RING
 mdefine_line|#define ADVANCE_LP_RING() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (I810_VERBOSE) DRM_DEBUG(&quot;ADVANCE_LP_RING&bslash;n&quot;);&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = outring;&t;&t;&t;&t;&bslash;&n;&t;I810_WRITE(LP_RING + RING_TAIL, outring);&t;&t;&bslash;&n;} while(0)
 DECL|macro|OUT_RING
-mdefine_line|#define OUT_RING(n) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (I810_VERBOSE) DRM_DEBUG(&quot;   OUT_RING %x&bslash;n&quot;, (int)(n));&t;&bslash;&n;&t;*(volatile unsigned int *)(virt + outring) = n;&t;&t;&t;&bslash;&n;&t;outring += 4;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outring &amp;= ringmask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0);
+mdefine_line|#define OUT_RING(n) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (I810_VERBOSE) DRM_DEBUG(&quot;   OUT_RING %x&bslash;n&quot;, (int)(n));&t;&bslash;&n;&t;*(volatile unsigned int *)(virt + outring) = n;&t;&t;&t;&bslash;&n;&t;outring += 4;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outring &amp;= ringmask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|function|i810_print_status_page
 r_static
 r_inline

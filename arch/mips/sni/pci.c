@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/sni.h&gt;
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|mkaddr
-mdefine_line|#define mkaddr(dev, where)                                                   &bslash;&n;do {                                                                         &bslash;&n;&t;if ((dev)-&gt;bus-&gt;number == 0)                                         &bslash;&n;&t;&t;return -1;                                                   &bslash;&n;&t;*(volatile u32 *)PCIMT_CONFIG_ADDRESS =                              &bslash;&n;&t;&t; ((dev-&gt;bus-&gt;number    &amp; 0xff) &lt;&lt; 0x10) |                    &bslash;&n;&t;         ((dev-&gt;devfn &amp; 0xff) &lt;&lt; 0x08) |                             &bslash;&n;&t;         (where  &amp; 0xfc);                                            &bslash;&n;} while(0);
+mdefine_line|#define mkaddr(dev, where)                                                   &bslash;&n;do {                                                                         &bslash;&n;&t;if ((dev)-&gt;bus-&gt;number == 0)                                         &bslash;&n;&t;&t;return -1;                                                   &bslash;&n;&t;*(volatile u32 *)PCIMT_CONFIG_ADDRESS =                              &bslash;&n;&t;&t; ((dev-&gt;bus-&gt;number    &amp; 0xff) &lt;&lt; 0x10) |                    &bslash;&n;&t;         ((dev-&gt;devfn &amp; 0xff) &lt;&lt; 0x08) |                             &bslash;&n;&t;         (where  &amp; 0xfc);                                            &bslash;&n;} while(0)
 macro_line|#if 0
 multiline_comment|/* To do:  Bring this uptodate ...  */
 r_static

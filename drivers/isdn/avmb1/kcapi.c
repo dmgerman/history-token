@@ -291,9 +291,9 @@ mdefine_line|#define&t;VALID_APPLID(a)&t;   ((a) &amp;&amp; (a) &lt;= CAPI_MAXAP
 DECL|macro|APPL_IS_FREE
 mdefine_line|#define APPL_IS_FREE(a)    (APPL(a)-&gt;applid == 0)
 DECL|macro|APPL_MARK_FREE
-mdefine_line|#define APPL_MARK_FREE(a)  do{ APPL(a)-&gt;applid=0; MOD_DEC_USE_COUNT; }while(0);
+mdefine_line|#define APPL_MARK_FREE(a)  do{ APPL(a)-&gt;applid=0; MOD_DEC_USE_COUNT; }while(0)
 DECL|macro|APPL_MARK_USED
-mdefine_line|#define APPL_MARK_USED(a)  do{ APPL(a)-&gt;applid=(a); MOD_INC_USE_COUNT; }while(0);
+mdefine_line|#define APPL_MARK_USED(a)  do{ APPL(a)-&gt;applid=(a); MOD_INC_USE_COUNT; }while(0)
 DECL|macro|NCCI2CTRL
 mdefine_line|#define NCCI2CTRL(ncci)    (((ncci) &gt;&gt; 24) &amp; 0x7f)
 DECL|macro|VALID_CARD
