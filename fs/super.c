@@ -556,7 +556,6 @@ id|s-&gt;s_umount
 suffix:semicolon
 )brace
 DECL|function|generic_shutdown_super
-r_static
 r_void
 id|generic_shutdown_super
 c_func

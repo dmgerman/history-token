@@ -1606,6 +1606,13 @@ c_func
 id|kill_litter_super
 )paren
 suffix:semicolon
+DECL|variable|generic_shutdown_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_shutdown_super
+)paren
+suffix:semicolon
 DECL|variable|deactivate_super
 id|EXPORT_SYMBOL
 c_func

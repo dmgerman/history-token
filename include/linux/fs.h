@@ -3952,6 +3952,16 @@ r_int
 )paren
 suffix:semicolon
 r_void
+id|generic_shutdown_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+r_void
 id|kill_block_super
 c_func
 (paren
