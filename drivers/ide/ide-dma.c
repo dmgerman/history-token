@@ -949,7 +949,7 @@ id|drive
 op_member_access_from_pointer
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_TASKFILE
+id|REQ_DRIVE_ACB
 )paren
 (brace
 id|hwif-&gt;sg_nents
@@ -2464,7 +2464,7 @@ id|drive
 op_member_access_from_pointer
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_TASKFILE
+id|REQ_DRIVE_ACB
 )paren
 op_logical_and
 (paren

@@ -202,12 +202,9 @@ DECL|enumerator|__REQ_DONTPREP
 id|__REQ_DONTPREP
 comma
 multiline_comment|/* don&squot;t call prep for this one */
-multiline_comment|/*&n;&t; * for IDE&n; &t;*/
+multiline_comment|/*&n;&t; * for ATA/ATAPI devices&n;&t; */
 DECL|enumerator|__REQ_DRIVE_CMD
 id|__REQ_DRIVE_CMD
-comma
-DECL|enumerator|__REQ_DRIVE_TASK
-id|__REQ_DRIVE_TASK
 comma
 DECL|enumerator|__REQ_DRIVE_ACB
 id|__REQ_DRIVE_ACB
@@ -227,7 +224,7 @@ multiline_comment|/* sense retrival */
 DECL|enumerator|__REQ_SPECIAL
 id|__REQ_SPECIAL
 comma
-multiline_comment|/* driver special command */
+multiline_comment|/* driver special command (currently reset) */
 DECL|enumerator|__REQ_NR_BITS
 id|__REQ_NR_BITS
 comma
@@ -250,20 +247,16 @@ DECL|macro|REQ_DONTPREP
 mdefine_line|#define REQ_DONTPREP&t;(1 &lt;&lt; __REQ_DONTPREP)
 DECL|macro|REQ_DRIVE_CMD
 mdefine_line|#define REQ_DRIVE_CMD&t;(1 &lt;&lt; __REQ_DRIVE_CMD)
-DECL|macro|REQ_DRIVE_TASK
-mdefine_line|#define REQ_DRIVE_TASK&t;(1 &lt;&lt; __REQ_DRIVE_TASK)
 DECL|macro|REQ_DRIVE_ACB
 mdefine_line|#define REQ_DRIVE_ACB&t;(1 &lt;&lt; __REQ_DRIVE_ACB)
 DECL|macro|REQ_PC
 mdefine_line|#define REQ_PC&t;&t;(1 &lt;&lt; __REQ_PC)
-DECL|macro|REQ_SENSE
-mdefine_line|#define REQ_SENSE&t;(1 &lt;&lt; __REQ_SENSE)
 DECL|macro|REQ_BLOCK_PC
 mdefine_line|#define REQ_BLOCK_PC&t;(1 &lt;&lt; __REQ_BLOCK_PC)
+DECL|macro|REQ_SENSE
+mdefine_line|#define REQ_SENSE&t;(1 &lt;&lt; __REQ_SENSE)
 DECL|macro|REQ_SPECIAL
 mdefine_line|#define REQ_SPECIAL&t;(1 &lt;&lt; __REQ_SPECIAL)
-DECL|macro|REQ_DRIVE_TASKFILE
-mdefine_line|#define REQ_DRIVE_TASKFILE&t;REQ_DRIVE_ACB
 macro_line|#include &lt;linux/elevator.h&gt;
 DECL|typedef|merge_request_fn
 r_typedef
