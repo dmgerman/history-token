@@ -5988,9 +5988,12 @@ id|sop-&gt;so_seqid
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sop-&gt;so_replay.rp_buflen
 )paren
+r_return
+id|NFSERR_REPLAY_ME
+suffix:semicolon
+r_else
 (brace
 multiline_comment|/* The original OPEN failed so spectacularly&n;&t;&t;&t;&t; * that we don&squot;t even have replay data saved!&n;&t;&t;&t;&t; * Therefore, we have no choice but to continue&n;&t;&t;&t;&t; * processing this OPEN; presumably, we&squot;ll&n;&t;&t;&t;&t; * fail again for the same reason.&n;&t;&t;&t;&t; */
 id|dprintk
@@ -6008,14 +6011,8 @@ r_goto
 id|renew
 suffix:semicolon
 )brace
-id|status
-op_assign
-id|NFSERR_REPLAY_ME
-suffix:semicolon
-r_return
-id|status
-suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -6048,7 +6045,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* If we get here, we received an OPEN for an unconfirmed&n;&t;&t; * nfs4_stateowner. &n;&t;&t; * Since the sequid&squot;s are different, purge the &n;&t;&t; * existing nfs4_stateowner, and instantiate a new one.&n;&t;&t; */
+r_else
+(brace
+multiline_comment|/* If we get here, we received an OPEN for an&n;&t;&t;&t; * unconfirmed nfs4_stateowner. Since the seqid&squot;s are&n;&t;&t;&t; * different, purge the existing nfs4_stateowner, and&n;&t;&t;&t; * instantiate a new one.&n;&t;&t;&t; */
 id|clp
 op_assign
 id|sop-&gt;so_client
@@ -6059,11 +6058,11 @@ c_func
 id|sop
 )paren
 suffix:semicolon
-r_goto
-id|instantiate_new_owner
-suffix:semicolon
 )brace
-multiline_comment|/* nfs4_stateowner not found. &n;&t;* verify clientid and instantiate new nfs4_stateowner&n;&t;* if verify fails this is presumably the result of the &n;&t;* client&squot;s lease expiring.&n;&t;*&n;&t;* XXX compare clp-&gt;cl_addr with rqstp addr? &n;&t;*/
+)brace
+r_else
+(brace
+multiline_comment|/* nfs4_stateowner not found.&n;&t;&t; * Verify clientid and instantiate new nfs4_stateowner.&n;&t;&t; * If verify fails this is presumably the result of the&n;&t;&t; * client&squot;s lease expiring.&n;&t;&t; */
 id|status
 op_assign
 id|nfserr_expired
@@ -6084,8 +6083,7 @@ id|clientid
 r_goto
 id|out
 suffix:semicolon
-id|instantiate_new_owner
-suffix:colon
+)brace
 id|status
 op_assign
 id|nfserr_resource
