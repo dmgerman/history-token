@@ -770,7 +770,7 @@ suffix:semicolon
 r_int
 id|retries
 op_assign
-l_int|3
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -778,7 +778,7 @@ c_loop
 (paren
 id|retries
 op_increment
-op_le
+OL
 l_int|3
 )paren
 op_logical_and

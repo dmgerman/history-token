@@ -1,6 +1,4 @@
-multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.9 2003/05/23 11:35:07 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
+multiline_comment|/* &n; * inftlmount.c -- INFTL mount code with extensive checks.&n; *&n; * Author: Greg Ungerer (gerg@snapgear.com)&n; * (C) Copyright 2002-2003, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlmount.c code which is:&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: inftlmount.c,v 1.11 2003/06/23 07:39:21 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
@@ -22,7 +20,7 @@ id|inftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.9 $&quot;
+l_string|&quot;$Revision: 1.11 $&quot;
 suffix:semicolon
 multiline_comment|/*&n; * find_boot_record: Find the INFTL Media Header and its Spare copy which&n; *&t;contains the various device information of the INFTL partition and&n; *&t;Bad Unit Table. Update the PUtable[] table according to the Bad&n; *&t;Unit Table. PUtable[] is used for management of Erase Unit in&n; *&t;other routines in inftlcore.c and inftlmount.c.&n; */
 DECL|function|find_boot_record
@@ -733,7 +731,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: Media Header &quot;
-l_string|&quot;Parition %d sanity check failed&bslash;n&quot;
+l_string|&quot;Partition %d sanity check failed&bslash;n&quot;
 l_string|&quot;    firstUnit %d : lastUnit %d  &gt;  &quot;
 l_string|&quot;virtualUnits %d&bslash;n&quot;
 comma
@@ -764,7 +762,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: Media Header &quot;
-l_string|&quot;Parition %d sanity check failed: &quot;
+l_string|&quot;Partition %d sanity check failed: &quot;
 l_string|&quot;Reserved1 %d != 0&bslash;n&quot;
 comma
 id|i
@@ -799,7 +797,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;INFTL: Media Header Parition &quot;
+l_string|&quot;INFTL: Media Header Partition &quot;
 l_string|&quot;sanity check failed:&bslash;n       No partition &quot;
 l_string|&quot;marked as Disk Partition&bslash;n&quot;
 )paren
@@ -2383,7 +2381,7 @@ id|prev_block
 op_add_assign
 id|s-&gt;firstEUN
 suffix:semicolon
-multiline_comment|/* Already explored paritial chain? */
+multiline_comment|/* Already explored partial chain? */
 r_if
 c_cond
 (paren

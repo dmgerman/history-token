@@ -19,8 +19,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
 macro_line|#include &lt;linux/mca.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -298,15 +298,17 @@ r_void
 id|show_trace
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
 id|stack
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_int
 r_int
 id|addr
@@ -341,10 +343,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|i
-op_assign
-l_int|1
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -447,6 +445,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+id|tsk
+comma
 (paren
 r_int
 r_int
@@ -461,6 +461,11 @@ r_void
 id|show_stack
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
@@ -576,6 +581,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+id|task
+comma
 id|esp
 )paren
 suffix:semicolon
@@ -596,6 +603,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+id|current
+comma
 op_amp
 id|stack
 )paren
@@ -780,6 +789,8 @@ suffix:semicolon
 id|show_stack
 c_func
 (paren
+l_int|NULL
+comma
 (paren
 r_int
 r_int

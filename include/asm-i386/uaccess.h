@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|VERIFY_READ
 mdefine_line|#define VERIFY_READ 0
@@ -627,6 +628,17 @@ c_func
 id|to
 comma
 id|from
+comma
+id|n
+)paren
+suffix:semicolon
+r_else
+id|memset
+c_func
+(paren
+id|to
+comma
+l_int|0
 comma
 id|n
 )paren

@@ -2529,7 +2529,7 @@ id|resp
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|stat
 op_assign

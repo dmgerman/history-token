@@ -36,15 +36,6 @@ id|sb
 op_assign
 id|inode-&gt;i_sb
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* swapper_space */
 multiline_comment|/*&n;&t; * Don&squot;t do this for I_DIRTY_PAGES - that doesn&squot;t actually&n;&t; * dirty the inode itself&n;&t; */
 r_if
 c_cond
@@ -145,6 +136,16 @@ multiline_comment|/*&n;&t;&t; * Only add valid (hashed) inodes to the superblock
 r_if
 c_cond
 (paren
+op_logical_neg
+id|S_ISBLK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+)paren
+(brace
+r_if
+c_cond
 (paren
 id|hlist_unhashed
 c_func
@@ -152,7 +153,12 @@ c_func
 op_amp
 id|inode-&gt;i_hash
 )paren
-op_logical_or
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|inode-&gt;i_state
 op_amp
@@ -162,18 +168,10 @@ op_or
 id|I_CLEAR
 )paren
 )paren
-)paren
-op_logical_and
-op_logical_neg
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-)paren
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If the inode was already on s_dirty or s_io, don&squot;t&n;&t;&t; * reposition it (that would break s_dirty time-ordering).&n;&t;&t; */
 r_if
 c_cond
@@ -1124,7 +1122,7 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; *&n; * A finite limit is set on the number of pages which will be written.&n; * To prevent infinite livelock of sys_sync().&n; */
+multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; *&n; * A finite limit is set on the number of pages which will be written.&n; * To prevent infinite livelock of sys_sync().&n; *&n; * We add in the number of potentially dirty inodes, because each inode write&n; * can dirty pagecache in the underlying blockdev.&n; */
 DECL|function|sync_inodes_sb
 r_void
 id|sync_inodes_sb
@@ -1189,13 +1187,22 @@ op_plus
 id|ps.nr_unstable
 op_plus
 (paren
+id|inodes_stat.nr_inodes
+op_minus
+id|inodes_stat.nr_unused
+)paren
+op_plus
 id|ps.nr_dirty
 op_plus
 id|ps.nr_unstable
-)paren
-op_div
-l_int|4
 suffix:semicolon
+id|wbc.nr_to_write
+op_add_assign
+id|wbc.nr_to_write
+op_div
+l_int|2
+suffix:semicolon
+multiline_comment|/* Bit more for luck */
 id|spin_lock
 c_func
 (paren

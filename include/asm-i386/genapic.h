@@ -233,6 +233,16 @@ r_int
 id|boot_cpu_physical_apicid
 )paren
 suffix:semicolon
+DECL|member|enable_apic_mode
+r_void
+(paren
+op_star
+id|enable_apic_mode
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* mpparse */
 DECL|member|mpc_oem_bus_info
 r_void
@@ -379,7 +389,7 @@ suffix:semicolon
 DECL|macro|APICFUNC
 mdefine_line|#define APICFUNC(x) .x = x
 DECL|macro|APIC_INIT
-mdefine_line|#define APIC_INIT(aname, aprobe) { &bslash;&n;&t;.name = aname, &bslash;&n;&t;.probe = aprobe, &bslash;&n;&t;.int_delivery_mode = INT_DELIVERY_MODE, &bslash;&n;&t;.int_dest_mode = INT_DEST_MODE, &bslash;&n;&t;.apic_broadcast_id = APIC_BROADCAST_ID, &bslash;&n;&t;.no_balance_irq = NO_BALANCE_IRQ, &bslash;&n;&t;APICFUNC(apic_id_registered), &bslash;&n;&t;APICFUNC(target_cpus), &bslash;&n;&t;APICFUNC(check_apicid_used), &bslash;&n;&t;APICFUNC(check_apicid_present), &bslash;&n;&t;APICFUNC(init_apic_ldr), &bslash;&n;&t;APICFUNC(ioapic_phys_id_map), &bslash;&n;&t;APICFUNC(clustered_apic_check), &bslash;&n;&t;APICFUNC(multi_timer_check), &bslash;&n;&t;APICFUNC(apicid_to_node), &bslash;&n;&t;APICFUNC(cpu_to_logical_apicid), &bslash;&n;&t;APICFUNC(cpu_present_to_apicid), &bslash;&n;&t;APICFUNC(apicid_to_cpu_present), &bslash;&n;&t;APICFUNC(mpc_apic_id), &bslash;&n;&t;APICFUNC(setup_portio_remap), &bslash;&n;&t;APICFUNC(check_phys_apicid_present), &bslash;&n;&t;APICFUNC(mpc_oem_bus_info), &bslash;&n;&t;APICFUNC(mpc_oem_pci_bus), &bslash;&n;&t;APICFUNC(mps_oem_check), &bslash;&n;&t;APICFUNC(get_apic_id), &bslash;&n;&t;.apic_id_mask = APIC_ID_MASK, &bslash;&n;&t;APICFUNC(cpu_mask_to_apicid), &bslash;&n;&t;APICFUNC(acpi_madt_oem_check), &bslash;&n;&t;APICFUNC(send_IPI_mask), &bslash;&n;&t;APICFUNC(send_IPI_allbutself), &bslash;&n;&t;APICFUNC(send_IPI_all), &bslash;&n;&t;}
+mdefine_line|#define APIC_INIT(aname, aprobe) { &bslash;&n;&t;.name = aname, &bslash;&n;&t;.probe = aprobe, &bslash;&n;&t;.int_delivery_mode = INT_DELIVERY_MODE, &bslash;&n;&t;.int_dest_mode = INT_DEST_MODE, &bslash;&n;&t;.apic_broadcast_id = APIC_BROADCAST_ID, &bslash;&n;&t;.no_balance_irq = NO_BALANCE_IRQ, &bslash;&n;&t;APICFUNC(apic_id_registered), &bslash;&n;&t;APICFUNC(target_cpus), &bslash;&n;&t;APICFUNC(check_apicid_used), &bslash;&n;&t;APICFUNC(check_apicid_present), &bslash;&n;&t;APICFUNC(init_apic_ldr), &bslash;&n;&t;APICFUNC(ioapic_phys_id_map), &bslash;&n;&t;APICFUNC(clustered_apic_check), &bslash;&n;&t;APICFUNC(multi_timer_check), &bslash;&n;&t;APICFUNC(apicid_to_node), &bslash;&n;&t;APICFUNC(cpu_to_logical_apicid), &bslash;&n;&t;APICFUNC(cpu_present_to_apicid), &bslash;&n;&t;APICFUNC(apicid_to_cpu_present), &bslash;&n;&t;APICFUNC(mpc_apic_id), &bslash;&n;&t;APICFUNC(setup_portio_remap), &bslash;&n;&t;APICFUNC(check_phys_apicid_present), &bslash;&n;&t;APICFUNC(mpc_oem_bus_info), &bslash;&n;&t;APICFUNC(mpc_oem_pci_bus), &bslash;&n;&t;APICFUNC(mps_oem_check), &bslash;&n;&t;APICFUNC(get_apic_id), &bslash;&n;&t;.apic_id_mask = APIC_ID_MASK, &bslash;&n;&t;APICFUNC(cpu_mask_to_apicid), &bslash;&n;&t;APICFUNC(acpi_madt_oem_check), &bslash;&n;&t;APICFUNC(send_IPI_mask), &bslash;&n;&t;APICFUNC(send_IPI_allbutself), &bslash;&n;&t;APICFUNC(send_IPI_all), &bslash;&n;&t;APICFUNC(enable_apic_mode), &bslash;&n;&t;}
 r_extern
 r_struct
 id|genapic

@@ -1,8 +1,11 @@
-multiline_comment|/*&n; * $Id: blktrans.h,v 1.4 2003/05/21 01:01:32 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux block layer for MTD &squot;translation layers&squot;.&n; *&n; */
+multiline_comment|/*&n; * $Id: blktrans.h,v 1.5 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * (C) 2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to Linux block layer for MTD &squot;translation layers&squot;.&n; *&n; */
 macro_line|#ifndef __MTD_TRANS_H__
 DECL|macro|__MTD_TRANS_H__
 mdefine_line|#define __MTD_TRANS_H__
 macro_line|#include &lt;asm/semaphore.h&gt;
+r_struct
+id|hd_geometry
+suffix:semicolon
 r_struct
 id|mtd_info
 suffix:semicolon
@@ -130,12 +133,12 @@ op_star
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/* HDIO_GETGEO and HDIO_GETGEO_BIG are the only non-private&n;&t;   ioctls which are expected to be passed through */
-DECL|member|ioctl
+multiline_comment|/* Block layer ioctls */
+DECL|member|getgeo
 r_int
 (paren
 op_star
-id|ioctl
+id|getgeo
 )paren
 (paren
 r_struct
@@ -144,22 +147,22 @@ op_star
 id|dev
 comma
 r_struct
-id|inode
+id|hd_geometry
 op_star
-id|inode
-comma
+id|geo
+)paren
+suffix:semicolon
+DECL|member|flush
+r_int
+(paren
+op_star
+id|flush
+)paren
+(paren
 r_struct
-id|file
+id|mtd_blktrans_dev
 op_star
-id|file
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Called with mtd_table_mutex held; no race with add/remove */
@@ -174,16 +177,6 @@ r_struct
 id|mtd_blktrans_dev
 op_star
 id|dev
-comma
-r_struct
-id|inode
-op_star
-id|i
-comma
-r_struct
-id|file
-op_star
-id|f
 )paren
 suffix:semicolon
 DECL|member|release
@@ -197,16 +190,6 @@ r_struct
 id|mtd_blktrans_dev
 op_star
 id|dev
-comma
-r_struct
-id|inode
-op_star
-id|i
-comma
-r_struct
-id|file
-op_star
-id|f
 )paren
 suffix:semicolon
 multiline_comment|/* Called on {de,}registration and on subsequent addition/removal&n;&t;   of devices, with mtd_table_mutex held. */

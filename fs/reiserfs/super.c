@@ -195,7 +195,7 @@ op_star
 id|s
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
@@ -6865,7 +6865,7 @@ op_star
 id|s
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren
@@ -6888,16 +6888,6 @@ id|REISERFS_MAX_NAME
 id|s-&gt;s_blocksize
 )paren
 )paren
-suffix:semicolon
-id|buf-&gt;f_ffree
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|buf-&gt;f_files
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|buf-&gt;f_bfree
 op_assign

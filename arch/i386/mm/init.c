@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1533,6 +1534,15 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+DECL|variable|kcore_mem
+DECL|variable|kcore_vmalloc
+r_static
+r_struct
+id|kcore_list
+id|kcore_mem
+comma
+id|kcore_vmalloc
+suffix:semicolon
 DECL|function|mem_init
 r_void
 id|__init
@@ -1779,6 +1789,40 @@ r_int
 )paren
 op_amp
 id|__init_begin
+suffix:semicolon
+id|kclist_add
+c_func
+(paren
+op_amp
+id|kcore_mem
+comma
+id|__va
+c_func
+(paren
+l_int|0
+)paren
+comma
+id|max_low_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|kclist_add
+c_func
+(paren
+op_amp
+id|kcore_vmalloc
+comma
+(paren
+r_void
+op_star
+)paren
+id|VMALLOC_START
+comma
+id|VMALLOC_END
+op_minus
+id|VMALLOC_START
+)paren
 suffix:semicolon
 id|printk
 c_func

@@ -482,7 +482,7 @@ op_star
 id|bdp
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|sp
 comma

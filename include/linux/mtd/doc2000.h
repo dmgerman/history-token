@@ -1,7 +1,7 @@
 multiline_comment|/* Linux driver for Disk-On-Chip 2000       */
 multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.   */
 multiline_comment|/* Author: David Woodhouse &lt;dwmw2@mvhi.com&gt; */
-multiline_comment|/* $Id: doc2000.h,v 1.16 2003/05/23 11:29:33 dwmw2 Exp $ */
+multiline_comment|/* $Id: doc2000.h,v 1.17 2003/06/12 01:20:46 gerg Exp $ */
 macro_line|#ifndef __MTD_DOC2000_H__
 DECL|macro|__MTD_DOC2000_H__
 mdefine_line|#define __MTD_DOC2000_H__
@@ -69,7 +69,7 @@ mdefine_line|#define DoC_Mplus_DeviceSelect&t;&t;0x1008
 DECL|macro|DoC_Mplus_Configuration
 mdefine_line|#define DoC_Mplus_Configuration&t;&t;0x100a
 DECL|macro|DoC_Mplus_OutputControl
-mdefine_line|#define DoC_Mplus_OutputControl&t;&t;0x1002
+mdefine_line|#define DoC_Mplus_OutputControl&t;&t;0x100c
 DECL|macro|DoC_Mplus_FlashControl
 mdefine_line|#define DoC_Mplus_FlashControl&t;&t;0x1020
 DECL|macro|DoC_Mplus_FlashSelect

@@ -355,6 +355,27 @@ c_func
 id|MCFSIM_IMR_MASKALL
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BOOTPARAM)
+id|strncpy
+c_func
+(paren
+id|commandp
+comma
+id|CONFIG_BOOTPARAM_STRING
+comma
+id|size
+)paren
+suffix:semicolon
+id|commandp
+(braket
+id|size
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 id|memset
 c_func
 (paren
@@ -365,6 +386,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+macro_line|#endif
 id|mach_sched_init
 op_assign
 id|coldfire_timer_init

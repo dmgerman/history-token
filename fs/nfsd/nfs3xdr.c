@@ -4898,7 +4898,7 @@ id|resp
 )paren
 (brace
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|s
 op_assign

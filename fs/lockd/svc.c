@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
 macro_line|#include &lt;linux/lockd/lockd.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 DECL|macro|NLMDBG_FACILITY
 mdefine_line|#define NLMDBG_FACILITY&t;&t;NLMDBG_SVC
 DECL|macro|LOCKD_BUFSIZE
@@ -293,6 +294,19 @@ r_int
 id|timeout
 op_assign
 id|MAX_SCHEDULE_TIMEOUT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
 suffix:semicolon
 r_if
 c_cond

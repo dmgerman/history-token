@@ -186,7 +186,7 @@ mdefine_line|#define jffs2_flash_write_oob(c, ofs, len, retlen, buf) ((c)-&gt;mt
 DECL|macro|jffs2_flash_read_oob
 mdefine_line|#define jffs2_flash_read_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;read_oob((c)-&gt;mtd, ofs, len, retlen, buf))
 r_struct
-id|statfs
+id|kstatfs
 suffix:semicolon
 multiline_comment|/* wbuf.c */
 r_int
@@ -576,7 +576,7 @@ id|super_block
 op_star
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 )paren
 suffix:semicolon
