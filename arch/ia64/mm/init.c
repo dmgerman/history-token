@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -1301,6 +1302,29 @@ id|list_head
 id|htlbpage_freelist
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+r_void
+DECL|function|paging_init
+id|paging_init
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_void
+id|discontig_paging_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|discontig_paging_init
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_DISCONTIGMEM */
 r_void
 DECL|function|paging_init
 id|paging_init
@@ -1385,6 +1409,7 @@ id|zones_size
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 r_static
 r_int
 DECL|function|count_pages
@@ -1457,6 +1482,36 @@ id|page
 op_star
 id|pg
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|start
+OL
+id|end
+suffix:semicolon
+id|start
+op_add_assign
+id|PAGE_SIZE
+)paren
+r_if
+c_cond
+(paren
+id|PageReserved
+c_func
+(paren
+id|virt_to_page
+c_func
+(paren
+id|start
+)paren
+)paren
+)paren
+op_increment
+id|num_reserved
+suffix:semicolon
+macro_line|#else
 r_for
 c_loop
 (paren
@@ -1491,6 +1546,7 @@ id|pg
 op_increment
 id|num_reserved
 suffix:semicolon
+macro_line|#endif
 op_star
 id|count
 op_add_assign
@@ -1526,6 +1582,10 @@ r_int
 r_int
 id|num_pgt_pages
 suffix:semicolon
+id|pg_data_t
+op_star
+id|pgdat
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * This needs to be called _after_ the command line has been parsed but _before_&n;&t; * any drivers that may need the PCI DMA interface are initialized or bootmem has&n;&t; * been freed.&n;&t; */
 id|platform_pci_dma_init
@@ -1534,6 +1594,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_if
 c_cond
 (paren
@@ -1545,6 +1606,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|max_mapnr
+op_assign
+id|max_low_pfn
+suffix:semicolon
+macro_line|#endif
 id|num_physpages
 op_assign
 l_int|0
@@ -1558,10 +1624,6 @@ op_amp
 id|num_physpages
 )paren
 suffix:semicolon
-id|max_mapnr
-op_assign
-id|max_low_pfn
-suffix:semicolon
 id|high_memory
 op_assign
 id|__va
@@ -1572,11 +1634,17 @@ op_star
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|totalram_pages
-op_add_assign
-id|free_all_bootmem
+id|for_each_pgdat
 c_func
 (paren
+id|pgdat
+)paren
+id|totalram_pages
+op_add_assign
+id|free_all_bootmem_node
+c_func
+(paren
+id|pgdat
 )paren
 suffix:semicolon
 id|reserved_pages
@@ -1660,7 +1728,7 @@ op_minus
 l_int|10
 )paren
 comma
-id|max_mapnr
+id|num_physpages
 op_lshift
 (paren
 id|PAGE_SHIFT
@@ -1740,6 +1808,11 @@ l_int|1
 )braket
 op_assign
 id|num_pgt_pages
+suffix:semicolon
+id|show_mem
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* install the gate page in the global page table: */
 id|put_gate_page

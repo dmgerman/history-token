@@ -5,10 +5,8 @@ mdefine_line|#define _ASM_IA64_NUMA_H
 macro_line|#ifdef CONFIG_NUMA
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|# include &lt;asm/mmzone.h&gt;
-DECL|macro|NR_NODES
-macro_line|# define NR_NODES     (PLAT_MAX_COMPACT_NODES)
 DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS   (PLAT_MAXCLUMPS)
+macro_line|# define NR_MEMBLKS   (NR_BANKS)
 macro_line|#else
 DECL|macro|NR_NODES
 macro_line|# define NR_NODES     (8)
