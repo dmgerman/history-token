@@ -2534,6 +2534,26 @@ r_int
 id|buffer_length
 )paren
 (brace
+multiline_comment|/* ignore padding bytes at end of buffer */
+r_while
+c_loop
+(paren
+id|buffer_length
+OG
+l_int|0
+op_logical_and
+id|buffer
+(braket
+id|buffer_length
+op_minus
+l_int|1
+)braket
+op_eq
+l_int|0xff
+)paren
+op_decrement
+id|buffer_length
+suffix:semicolon
 multiline_comment|/* handle F5 at end of last buffer */
 r_if
 c_cond
