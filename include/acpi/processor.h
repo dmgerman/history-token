@@ -2,6 +2,7 @@ macro_line|#ifndef __ACPI_PROCESSOR_H
 DECL|macro|__ACPI_PROCESSOR_H
 mdefine_line|#define __ACPI_PROCESSOR_H
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|ACPI_PROCESSOR_BUSY_METRIC
 mdefine_line|#define ACPI_PROCESSOR_BUSY_METRIC&t;10
 DECL|macro|ACPI_PROCESSOR_MAX_POWER
@@ -467,5 +468,118 @@ op_star
 id|calling_module
 )paren
 suffix:semicolon
+multiline_comment|/* for communication between multiple parts of the processor kernel module */
+r_extern
+r_struct
+id|acpi_processor
+op_star
+id|processors
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+multiline_comment|/* in processor_perflib.c */
+macro_line|#ifdef CONFIG_CPU_FREQ
+r_void
+id|acpi_processor_ppc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|acpi_processor_ppc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|acpi_processor_ppc_has_changed
+c_func
+(paren
+r_struct
+id|acpi_processor
+op_star
+id|pr
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|acpi_processor_ppc_init
+r_static
+r_inline
+r_void
+id|acpi_processor_ppc_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+DECL|function|acpi_processor_ppc_exit
+r_static
+r_inline
+r_void
+id|acpi_processor_ppc_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+DECL|function|acpi_processor_ppc_has_changed
+r_static
+r_inline
+r_int
+id|acpi_processor_ppc_has_changed
+c_func
+(paren
+r_struct
+id|acpi_processor
+op_star
+id|pr
+)paren
+(brace
+r_static
+r_int
+r_int
+id|printout
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|printout
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Warning: Processor Platform Limit event detected, but not handled.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Consider compiling CPUfreq support into your kernel.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printout
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_CPU_FREQ */
 macro_line|#endif
 eof
