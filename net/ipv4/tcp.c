@@ -5616,34 +5616,6 @@ op_member_access_from_pointer
 id|bind_hash
 )paren
 suffix:semicolon
-macro_line|#ifdef TCP_DEBUG
-r_if
-c_cond
-(paren
-id|sk-&gt;sk_zapped
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;TCP: double destroy sk=%p&bslash;n&quot;
-comma
-id|sk
-)paren
-suffix:semicolon
-id|sock_hold
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-)brace
-id|sk-&gt;sk_zapped
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|destroy
