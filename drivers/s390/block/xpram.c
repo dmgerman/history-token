@@ -1809,12 +1809,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|XPRAM_MAJOR
-)paren
-suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren

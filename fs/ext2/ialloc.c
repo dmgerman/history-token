@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free inodes are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.&n; */
@@ -499,6 +500,37 @@ r_struct
 id|ext2_group_desc
 op_star
 id|gdp
+suffix:semicolon
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+suffix:semicolon
+id|bdi
+op_assign
+id|inode-&gt;i_mapping-&gt;backing_dev_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdi_read_congested
+c_func
+(paren
+id|bdi
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdi_write_congested
+c_func
+(paren
+id|bdi
+)paren
+)paren
+r_return
 suffix:semicolon
 id|block_group
 op_assign

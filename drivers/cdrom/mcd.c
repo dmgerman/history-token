@@ -667,7 +667,7 @@ dot
 id|flags
 op_assign
 id|GENHD_FL_CD
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 macro_line|#ifndef MODULE

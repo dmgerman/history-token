@@ -913,6 +913,8 @@ op_logical_and
 op_logical_neg
 id|embedded
 op_logical_and
+id|udph-&gt;check
+op_logical_and
 id|csum_tcpudp_magic
 c_func
 (paren

@@ -280,8 +280,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|PCI_DMA_TODEVICE
 )paren
 )paren
 )paren
@@ -522,8 +520,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|PCI_DMA_FROMDEVICE
 )paren
 )paren
 )paren

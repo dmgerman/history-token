@@ -47,6 +47,8 @@ id|rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|macro|TICK_SIZE
+mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 multiline_comment|/*&n; * Shift amount by which scaled_ticks_per_cycle is scaled.  Shifting&n; * by 48 gives us 16 bits for HZ while keeping the accuracy good even&n; * for large CPU clock rates.&n; */
 DECL|macro|FIX_SHIFT
 mdefine_line|#define FIX_SHIFT&t;48
@@ -250,7 +252,7 @@ id|state.last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_ge
 l_int|500000
 op_minus
@@ -258,12 +260,12 @@ op_minus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_le
 l_int|500000
 op_plus
@@ -271,7 +273,7 @@ op_plus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
@@ -1359,7 +1361,7 @@ comma
 id|sec
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -1496,7 +1498,11 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_assign
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 id|partial_tick
 op_assign
@@ -1745,9 +1751,13 @@ id|xtime.tv_sec
 op_assign
 id|sec
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
+(paren
 id|usec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 id|time_adjust
 op_assign

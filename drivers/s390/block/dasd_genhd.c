@@ -591,12 +591,6 @@ id|queue
 op_assign
 l_int|NULL
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|major
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|unregister_blkdev

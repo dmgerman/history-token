@@ -699,12 +699,6 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -1025,12 +1019,6 @@ c_func
 id|ps2esdi_gendisk
 op_plus
 id|i
-)paren
-suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
 )paren
 suffix:semicolon
 )brace

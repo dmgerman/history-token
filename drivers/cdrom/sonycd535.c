@@ -5487,7 +5487,11 @@ dot
 id|major_name
 op_assign
 l_string|&quot;cdu&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Initialize the driver.&n; */
+DECL|function|sony535_init
 r_static
 r_int
 id|__init
@@ -6527,6 +6531,7 @@ multiline_comment|/*&n; * accept &quot;kernel command line&quot; parameters&n; *
 r_static
 r_int
 id|__init
+DECL|function|sonycd535_setup
 id|sonycd535_setup
 c_func
 (paren

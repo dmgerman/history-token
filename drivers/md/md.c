@@ -14298,12 +14298,6 @@ id|queue
 op_assign
 l_int|NULL
 suffix:semicolon
-id|blk_clear
-c_func
-(paren
-id|MAJOR_NR
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|md_size

@@ -5306,9 +5306,9 @@ multiline_comment|/* BKL not held.  Don&squot;t need */
 )brace
 suffix:semicolon
 multiline_comment|/* For writeback mode, we can use mpage_writepages() */
+macro_line|#if 0&t;/* Doesn&squot;t work for shared mappings */
 r_static
 r_int
-DECL|function|ext3_writepages
 id|ext3_writepages
 c_func
 (paren
@@ -5363,6 +5363,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|ext3_writeback_aops
 r_struct
 id|address_space_operations
@@ -5387,12 +5388,6 @@ op_assign
 id|ext3_writepage
 comma
 multiline_comment|/* BKL not held.  We take it */
-dot
-id|writepages
-op_assign
-id|ext3_writepages
-comma
-multiline_comment|/* BKL not held.  Don&squot;t need */
 dot
 id|sync_page
 op_assign
