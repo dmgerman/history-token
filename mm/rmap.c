@@ -1504,6 +1504,12 @@ id|page-&gt;pte.direct
 op_assign
 l_int|0
 suffix:semicolon
+id|dec_page_state
+c_func
+(paren
+id|nr_reverse_maps
+)paren
+suffix:semicolon
 id|ClearPageDirect
 c_func
 (paren
