@@ -229,7 +229,7 @@ DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 multiline_comment|/* work to do on interrupt/exception return */
 DECL|macro|_TIF_WORK_MASK
-mdefine_line|#define _TIF_WORK_MASK &bslash;&n;  (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT))
+mdefine_line|#define _TIF_WORK_MASK &bslash;&n;  (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SINGLESTEP))
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
 multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */
