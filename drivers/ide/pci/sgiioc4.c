@@ -2176,6 +2176,14 @@ id|ddir
 )paren
 (brace
 multiline_comment|/* try PIO instead of DMA */
+id|ide_map_sg
+c_func
+(paren
+id|drive
+comma
+id|rq
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

@@ -1872,9 +1872,19 @@ comma
 id|rq
 )paren
 )paren
+(brace
+id|ide_map_sg
+c_func
+(paren
+id|drive
+comma
+id|rq
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* PRD table */
 id|hwif
 op_member_access_from_pointer
