@@ -565,6 +565,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|scsi_sysfs_init_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|scsi_sysfs_add_host
 c_func
