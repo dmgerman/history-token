@@ -203,6 +203,7 @@ id|page
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Bad page state at %s (in process &squot;%s&squot;, page %p)&bslash;n&quot;
 comma
 id|function
@@ -215,6 +216,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;flags:0x%08lx mapping:%p mapped:%d count:%d&bslash;n&quot;
 comma
 (paren
@@ -241,6 +243,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Backtrace:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -252,6 +255,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Trying to fix it up, but a reboot is needed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -303,7 +307,7 @@ mdefine_line|#define prep_compound_page(page, order) do { } while (0)
 DECL|macro|destroy_compound_page
 mdefine_line|#define destroy_compound_page(page, order) do { } while (0)
 macro_line|#else
-multiline_comment|/*&n; * Higher-order pages are called &quot;compound pages&quot;.  They are structured thusly:&n; *&n; * The first PAGE_SIZE page is called the &quot;head page&quot;.&n; *&n; * The remaining PAGE_SIZE pages are called &quot;tail pages&quot;.&n; *&n; * All pages have PG_compound set.  All pages have their lru.next pointing at&n; * the head page (even the head page has this).&n; *&n; * The head page&squot;s lru.prev, if non-zero, holds the address of the compound&n; * page&squot;s put_page() function.&n; *&n; * The order of the allocation is stored in the first tail page&squot;s lru.prev.&n; * This is only for debug at present.  This usage means that zero-order pages&n; * may not be compound.&n; */
+multiline_comment|/*&n; * Higher-order pages are called &quot;compound pages&quot;.  They are structured thusly:&n; *&n; * The first PAGE_SIZE page is called the &quot;head page&quot;.&n; *&n; * The remaining PAGE_SIZE pages are called &quot;tail pages&quot;.&n; *&n; * All pages have PG_compound set.  All pages have their -&gt;private pointing at&n; * the head page (even the head page has this).&n; *&n; * The first tail page&squot;s -&gt;mapping, if non-zero, holds the address of the&n; * compound page&squot;s put_page() function.&n; *&n; * The order of the allocation is stored in the first tail page&squot;s -&gt;index&n; * This is only for debug at present.  This usage means that zero-order pages&n; * may not be compound.&n; */
 DECL|function|prep_compound_page
 r_static
 r_void
@@ -330,21 +334,22 @@ l_int|1
 op_lshift
 id|order
 suffix:semicolon
-id|page-&gt;lru.prev
+id|page
+(braket
+l_int|1
+)braket
+dot
+id|mapping
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
 id|page
 (braket
 l_int|1
 )braket
 dot
-id|lru.prev
+id|index
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|order
 suffix:semicolon
 r_for
@@ -377,11 +382,13 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|p-&gt;lru.next
+id|p
+op_member_access_from_pointer
+r_private
 op_assign
 (paren
-r_void
-op_star
+r_int
+r_int
 )paren
 id|page
 suffix:semicolon
@@ -421,12 +428,8 @@ id|page
 l_int|1
 )braket
 dot
-id|lru.prev
+id|index
 op_ne
-(paren
-r_void
-op_star
-)paren
 id|order
 )paren
 id|bad_page
@@ -482,11 +485,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;lru.next
+id|p
+op_member_access_from_pointer
+r_private
 op_ne
 (paren
-r_void
-op_star
+r_int
+r_int
 )paren
 id|page
 )paren
@@ -2218,21 +2223,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|order
-op_logical_and
-id|page
-)paren
-id|prep_compound_page
-c_func
-(paren
-id|page
-comma
-id|order
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2267,6 +2257,19 @@ id|order
 )paren
 suffix:semicolon
 id|prep_new_page
+c_func
+(paren
+id|page
+comma
+id|order
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|order
+)paren
+id|prep_compound_page
 c_func
 (paren
 id|page

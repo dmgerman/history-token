@@ -1238,12 +1238,6 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|page-&gt;mapping
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

@@ -439,7 +439,9 @@ r_struct
 id|page
 op_star
 )paren
-id|p-&gt;lru.next
+id|p
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_return
 id|atomic_read
@@ -483,7 +485,9 @@ r_struct
 id|page
 op_star
 )paren
-id|page-&gt;lru.next
+id|page
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|atomic_inc
 c_func
@@ -523,7 +527,9 @@ r_struct
 id|page
 op_star
 )paren
-id|page-&gt;lru.next
+id|page
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_if
 c_cond
@@ -538,7 +544,12 @@ id|page
 r_if
 c_cond
 (paren
-id|page-&gt;lru.prev
+id|page
+(braket
+l_int|1
+)braket
+dot
+id|mapping
 )paren
 (brace
 multiline_comment|/* destructor? */
@@ -555,7 +566,12 @@ id|page
 op_star
 )paren
 )paren
-id|page-&gt;lru.prev
+id|page
+(braket
+l_int|1
+)braket
+dot
+id|mapping
 )paren
 (paren
 id|page
