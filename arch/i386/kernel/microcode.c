@@ -2198,4 +2198,10 @@ c_func
 (paren
 id|microcode_exit
 )paren
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|MICROCODE_MINOR
+)paren
+suffix:semicolon
 eof

@@ -27529,4 +27529,11 @@ c_func
 id|idetape_exit
 )paren
 suffix:semicolon
+DECL|variable|IDETAPE_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|IDETAPE_MAJOR
+)paren
+suffix:semicolon
 eof

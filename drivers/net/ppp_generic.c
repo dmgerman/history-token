@@ -11482,4 +11482,10 @@ c_func
 id|PPP_MAJOR
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;/dev/ppp&quot;
+)paren
+suffix:semicolon
 eof
