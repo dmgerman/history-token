@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_dbg.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -5043,12 +5044,10 @@ c_loop
 id|sdev-&gt;device_busy
 )paren
 (brace
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|5
+l_int|200
 )paren
 suffix:semicolon
 id|scsi_run_queue
