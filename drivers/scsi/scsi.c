@@ -862,6 +862,8 @@ id|likely
 c_func
 (paren
 id|cmd
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
@@ -988,6 +990,8 @@ id|likely
 c_func
 (paren
 id|cmd
+op_ne
+l_int|NULL
 )paren
 )paren
 id|kmem_cache_free
