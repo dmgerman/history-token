@@ -1322,13 +1322,23 @@ id|serial
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* shutdown our urbs */
+id|usb_unlink_urb
+(paren
+id|port-&gt;read_urb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|serial-&gt;dev
+id|port-&gt;interrupt_in_urb
 )paren
-(brace
-multiline_comment|/* only send a shutdown message if the &n;&t;&t; * device is still here */
+id|usb_unlink_urb
+(paren
+id|port-&gt;interrupt_in_urb
+)paren
+suffix:semicolon
+multiline_comment|/* Try to send shutdown message, if the device is gone, this will just fail. */
 id|transfer_buffer
 op_assign
 id|kmalloc
@@ -1341,27 +1351,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|port-&gt;dev
-comma
-l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-l_int|0x12
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* send a shutdown message to the device */
 id|usb_control_msg
 (paren
 id|serial-&gt;dev
@@ -1392,23 +1384,6 @@ suffix:semicolon
 id|kfree
 (paren
 id|transfer_buffer
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* shutdown our bulk read */
-id|usb_unlink_urb
-(paren
-id|port-&gt;read_urb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;interrupt_in_urb
-)paren
-id|usb_unlink_urb
-(paren
-id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
 )brace
