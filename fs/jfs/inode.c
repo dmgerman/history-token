@@ -384,7 +384,6 @@ r_int
 id|wait
 )paren
 (brace
-multiline_comment|/*&n;&t; * If COMMIT_DIRTY is not set, the inode isn&squot;t really dirty.&n;&t; * It has been committed since the last change, but was still&n;&t; * on the dirty inode list&n;&t; */
 r_if
 c_cond
 (paren
@@ -395,7 +394,13 @@ id|COMMIT_Nolink
 comma
 id|inode
 )paren
-op_logical_or
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/*&n;&t; * If COMMIT_DIRTY is not set, the inode isn&squot;t really dirty.&n;&t; * It has been committed since the last change, but was still&n;&t; * on the dirty inode list.&n;&t; */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|test_cflag
 c_func
@@ -405,8 +410,25 @@ comma
 id|inode
 )paren
 )paren
+(brace
+multiline_comment|/* Make sure committed changes hit the disk */
+id|jfs_flush_journal
+c_func
+(paren
+id|JFS_SBI
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|log
+comma
+id|wait
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
