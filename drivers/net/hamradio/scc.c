@@ -8398,6 +8398,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|io_port
