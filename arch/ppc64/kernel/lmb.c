@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&n; * Procedures for interfacing to Open Firmware.&n; *&n; * Peter Bergner, IBM Corp.&t;June 2001.&n; * Copyright (C) 2001 Peter Bergner.&n; * &n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -46,6 +47,8 @@ id|lmb
 id|lmb
 op_assign
 (brace
+l_int|0
+comma
 l_int|0
 comma
 (brace
@@ -630,6 +633,18 @@ op_amp
 (paren
 id|_lmb-&gt;memory
 )paren
+suffix:semicolon
+multiline_comment|/* On pSeries LPAR systems, the first LMB is our RMO region. */
+r_if
+c_cond
+(paren
+id|base
+op_eq
+l_int|0
+)paren
+id|_lmb-&gt;rmo_size
+op_assign
+id|size
 suffix:semicolon
 r_return
 id|lmb_add_region
@@ -1270,6 +1285,37 @@ r_int
 id|align
 )paren
 (brace
+r_return
+id|lmb_alloc_base
+c_func
+(paren
+id|size
+comma
+id|align
+comma
+id|LMB_ALLOC_ANYWHERE
+)paren
+suffix:semicolon
+)brace
+r_int
+r_int
+DECL|function|lmb_alloc_base
+id|lmb_alloc_base
+c_func
+(paren
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|align
+comma
+r_int
+r_int
+id|max_addr
+)paren
+(brace
 r_int
 id|i
 comma
@@ -1278,6 +1324,8 @@ suffix:semicolon
 r_int
 r_int
 id|base
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -1379,6 +1427,13 @@ id|LMB_MEMORY_AREA
 )paren
 r_continue
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_addr
+op_eq
+id|LMB_ALLOC_ANYWHERE
+)paren
 id|base
 op_assign
 id|_ALIGN_DOWN
@@ -1392,6 +1447,37 @@ id|size
 comma
 id|align
 )paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|lmbbase
+OL
+id|max_addr
+)paren
+id|base
+op_assign
+id|_ALIGN_DOWN
+c_func
+(paren
+id|min
+c_func
+(paren
+id|lmbbase
+op_plus
+id|lmbsize
+comma
+id|max_addr
+)paren
+op_minus
+id|size
+comma
+id|align
+)paren
+suffix:semicolon
+r_else
+r_continue
 suffix:semicolon
 r_while
 c_loop

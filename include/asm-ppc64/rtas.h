@@ -6,6 +6,8 @@ macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * Definitions for talking to the RTAS on CHRP machines.&n; *&n; * Copyright (C) 2001 Peter Bergner&n; * Copyright (C) 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 DECL|macro|RTAS_UNKNOWN_SERVICE
 mdefine_line|#define RTAS_UNKNOWN_SERVICE (-1)
+DECL|macro|RTAS_INSTANTIATE_MAX
+mdefine_line|#define RTAS_INSTANTIATE_MAX (1UL&lt;&lt;30) /* Don&squot;t instantiate rtas at/above this value */
 multiline_comment|/*&n; * In general to call RTAS use rtas_token(&quot;string&quot;) to lookup&n; * an RTAS token for the given string (e.g. &quot;event-scan&quot;).&n; * To actually perform the call use&n; *    ret = rtas_call(token, n_in, n_out, ...)&n; * Where n_in is the number of input parameters and&n; *       n_out is the number of output parameters&n; *&n; * If the &quot;string&quot; is invalid on this system, RTAS_UNKOWN_SERVICE&n; * will be returned as a token.  rtas_call() does look for this&n; * token and error out gracefully so rtas_call(rtas_token(&quot;str&quot;), ...)&n; * may be safely used for one-shot calls to RTAS.&n; *&n; */
 DECL|typedef|rtas_arg_t
 r_typedef

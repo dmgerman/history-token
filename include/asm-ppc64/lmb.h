@@ -41,6 +41,10 @@ DECL|macro|LMB_MEMORY_AREA
 mdefine_line|#define LMB_MEMORY_AREA&t;1
 DECL|macro|LMB_IO_AREA
 mdefine_line|#define LMB_IO_AREA&t;2
+DECL|macro|LMB_ALLOC_ANYWHERE
+mdefine_line|#define LMB_ALLOC_ANYWHERE&t;0
+DECL|macro|LMB_ALLOC_FIRST4GBYTE
+mdefine_line|#define LMB_ALLOC_FIRST4GBYTE&t;(1UL&lt;&lt;32)
 DECL|struct|lmb_property
 r_struct
 id|lmb_property
@@ -112,6 +116,11 @@ DECL|member|debug
 r_int
 r_int
 id|debug
+suffix:semicolon
+DECL|member|rmo_size
+r_int
+r_int
+id|rmo_size
 suffix:semicolon
 DECL|member|memory
 r_struct
@@ -192,6 +201,22 @@ r_int
 id|lmb_alloc
 c_func
 (paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|lmb_alloc_base
+c_func
+(paren
+r_int
+r_int
+comma
 r_int
 r_int
 comma
