@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/omap16xx.h&gt;
 macro_line|#include &lt;asm/arch/pm.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
+macro_line|#include &lt;asm/arch/tc.h&gt;
 macro_line|#include &lt;asm/arch/tps65010.h&gt;
 macro_line|#include &quot;clock.h&quot;
 DECL|variable|arm_sleep_save

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2005&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_txnmgr.c: transaction manager&n; *&n; * notes:&n; * transaction starts with txBegin() and ends with txCommit()&n; * or txAbort().&n; *&n; * tlock is acquired at the time of update;&n; * (obviate scan at commit time for xtree and dtree)&n; * tlock and mp points to each other;&n; * (no hashlist for mp -&gt; tlock).&n; *&n; * special cases:&n; * tlock on in-memory inode:&n; * in-place tlock in the in-memory inode itself;&n; * converted to page lock by iWrite() at commit time.&n; *&n; * tlock during write()/mmap() under anonymous transaction (tid = 0):&n; * transferred (?) to transaction at commit time.&n; *&n; * use the page itself to update allocation maps&n; * (obviate intermediate replication of allocation/deallocation data)&n; * hold on to mp+lock thru update of maps&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -4782,15 +4782,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|JFS_IP
+id|jfs_dirtable_inline
 c_func
 (paren
 id|tlck-&gt;ip
 )paren
-op_member_access_from_pointer
-id|next_index
-OL
-id|MAX_INLINE_DIRTABLE_ENTRY
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The table has been truncated, we&squot;ve must have deleted&n;&t;&t; * the last entry, so don&squot;t bother logging this&n;&t;&t; */
@@ -9027,6 +9023,11 @@ id|WorkDone
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* In case a wakeup came while all threads were active */
+id|jfs_commit_thread_waking
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -76,6 +76,18 @@ DECL|macro|MMC_APP_CMD
 mdefine_line|#define MMC_APP_CMD              55   /* ac   [31:16] RCA        R1  */
 DECL|macro|MMC_GEN_CMD
 mdefine_line|#define MMC_GEN_CMD              56   /* adtc [0] RD/WR          R1b */
+multiline_comment|/* SD commands                           type  argument     response */
+multiline_comment|/* class 8 */
+multiline_comment|/* This is basically the same command as for MMC with some quirks. */
+DECL|macro|SD_SEND_RELATIVE_ADDR
+mdefine_line|#define SD_SEND_RELATIVE_ADDR     3   /* ac                      R6  */
+multiline_comment|/* Application commands */
+DECL|macro|SD_APP_SET_BUS_WIDTH
+mdefine_line|#define SD_APP_SET_BUS_WIDTH      6   /* ac   [1:0] bus width    R1  */
+DECL|macro|SD_APP_OP_COND
+mdefine_line|#define SD_APP_OP_COND           41   /* bcr  [31:0] OCR         R3  */
+DECL|macro|SD_APP_SEND_SCR
+mdefine_line|#define SD_APP_SEND_SCR          51   /* adtc                    R1  */
 multiline_comment|/*&n;  MMC status in R1&n;  Type&n;  &t;e : error bit&n;&t;s : status bit&n;&t;r : detected and set for the actual command response&n;&t;x : detected and set during command execution. the host must poll&n;            the card by sending status command in order to read these bits.&n;  Clear condition&n;  &t;a : according to the card state&n;&t;b : always related to the previous command. Reception of&n;            a valid command will clear it (with a delay of one command)&n;&t;c : clear by read&n; */
 DECL|macro|R1_OUT_OF_RANGE
 mdefine_line|#define R1_OUT_OF_RANGE&t;&t;(1 &lt;&lt; 31)&t;/* er, c */
@@ -122,7 +134,7 @@ mdefine_line|#define R1_CURRENT_STATE(x)    &t;((x &amp; 0x00001E00) &gt;&gt; 9)
 DECL|macro|R1_READY_FOR_DATA
 mdefine_line|#define R1_READY_FOR_DATA&t;(1 &lt;&lt; 8)&t;/* sx, a */
 DECL|macro|R1_APP_CMD
-mdefine_line|#define R1_APP_CMD&t;&t;(1 &lt;&lt; 7)&t;/* sr, c */
+mdefine_line|#define R1_APP_CMD&t;&t;(1 &lt;&lt; 5)&t;/* sr, c */
 multiline_comment|/* These are unpacked versions of the actual responses */
 DECL|struct|_mmc_csd
 r_struct

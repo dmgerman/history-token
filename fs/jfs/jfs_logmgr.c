@@ -3195,6 +3195,13 @@ op_amp
 id|log-&gt;sb_list
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|log-&gt;syncwait
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *      external log as separate logical volume&n;&t; *&n;&t; * file systems to log may have n-to-1 relationship;&n;&t; */
 id|bdev
 op_assign
@@ -3481,6 +3488,13 @@ op_amp
 id|log-&gt;sb_list
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|log-&gt;syncwait
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -3688,6 +3702,13 @@ op_amp
 id|dummy_log-&gt;sb_list
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|dummy_log-&gt;syncwait
+)paren
+suffix:semicolon
 id|dummy_log-&gt;no_integrity
 op_assign
 l_int|1
@@ -3865,13 +3886,6 @@ c_func
 (paren
 op_amp
 id|log-&gt;synclist
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|log-&gt;syncwait
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
