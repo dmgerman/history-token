@@ -73,6 +73,7 @@ id|kiocb
 op_star
 id|iocb
 comma
+r_const
 r_char
 op_star
 id|buf
@@ -2092,6 +2093,7 @@ id|kiocb
 op_star
 id|iocb
 comma
+r_const
 r_char
 op_star
 id|ubuf
