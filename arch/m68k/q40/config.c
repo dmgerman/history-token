@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
 r_extern

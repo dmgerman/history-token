@@ -2817,6 +2817,11 @@ dot
 id|shift
 op_assign
 l_int|10
+comma
+dot
+id|mask
+op_assign
+l_int|0xffffffffffffffffLL
 )brace
 suffix:semicolon
 macro_line|#endif

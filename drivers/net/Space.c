@@ -1170,14 +1170,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_HPLANCE&t;&t;/* HP300 internal Ethernet */
-(brace
-id|hplance_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_MVME147_NET&t;/* MVME147 internal Ethernet */
 (brace
 id|mvme147lance_probe

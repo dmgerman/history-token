@@ -1489,7 +1489,7 @@ comma
 dot
 id|maxlen
 op_assign
-id|KMOD_PATH_LEN
+id|HOTPLUG_PATH_LEN
 comma
 dot
 id|mode

@@ -1850,6 +1850,7 @@ id|task_in_intr
 suffix:semicolon
 multiline_comment|/*&n; * Handler for command with PIO data-out phase (Write/Write Multiple).&n; */
 DECL|function|task_out_intr
+r_static
 id|ide_startstop_t
 id|task_out_intr
 (paren
@@ -1994,13 +1995,6 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
-DECL|variable|task_out_intr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|task_out_intr
-)paren
-suffix:semicolon
 DECL|function|pre_task_out_intr
 id|ide_startstop_t
 id|pre_task_out_intr

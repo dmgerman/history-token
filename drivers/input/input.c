@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/device.h&gt;

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be loosely based on bvme6000ints.c&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

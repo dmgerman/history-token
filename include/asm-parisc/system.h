@@ -222,7 +222,7 @@ mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash
 DECL|macro|mfctl
 mdefine_line|#define mfctl(reg)&t;({&t;&t;&bslash;&n;&t;unsigned long cr;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mfctl &quot; #reg &quot;,%0&quot; :&t;&bslash;&n;&t;&t; &quot;=r&quot; (cr)&t;&t;&bslash;&n;&t;);&t;&t;&t;&t;&bslash;&n;&t;cr;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|mtctl
-mdefine_line|#define mtctl(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtctl %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr))
+mdefine_line|#define mtctl(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtctl %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr) : &quot;memory&quot;)
 multiline_comment|/* these are here to de-mystefy the calling code, and to provide hooks */
 multiline_comment|/* which I needed for debugging EIEM problems -PB */
 DECL|macro|get_eiem
@@ -251,7 +251,7 @@ suffix:semicolon
 DECL|macro|mfsp
 mdefine_line|#define mfsp(reg)&t;({&t;&t;&bslash;&n;&t;unsigned long cr;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&bslash;&n;&t;&t;&quot;mfsp &quot; #reg &quot;,%0&quot; :&t;&bslash;&n;&t;&t; &quot;=r&quot; (cr)&t;&t;&bslash;&n;&t;);&t;&t;&t;&t;&bslash;&n;&t;cr;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|mtsp
-mdefine_line|#define mtsp(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsp %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr))
+mdefine_line|#define mtsp(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsp %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr) : &quot;memory&quot;)
 multiline_comment|/*&n;** This is simply the barrier() macro from linux/kernel.h but when serial.c&n;** uses tqueue.h uses smp_mb() defined using barrier(), linux/kernel.h&n;** hasn&squot;t yet been included yet so it fails, thus repeating the macro here.&n;**&n;** PA-RISC architecture allows for weakly ordered memory accesses although&n;** none of the processors use it. There is a strong ordered bit that is&n;** set in the O-bit of the page directory entry. Operating systems that&n;** can not tolerate out of order accesses should set this bit when mapping&n;** pages. The O-bit of the PSW should also be set to 1 (I don&squot;t believe any&n;** of the processor implemented the PSW O-bit). The PCX-W ERS states that&n;** the TLB O-bit is not implemented so the page directory does not need to&n;** have the O-bit set when mapping pages (section 3.1). This section also&n;** states that the PSW Y, Z, G, and O bits are not implemented.&n;** So it looks like nothing needs to be done for parisc-linux (yet).&n;** (thanks to chada for the above comment -ggg)&n;**&n;** The __asm__ op below simple prevents gcc/ld from reordering&n;** instructions across the mb() &quot;call&quot;.&n;*/
 DECL|macro|mb
 mdefine_line|#define mb()&t;&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);&t;/* barrier() */
@@ -280,7 +280,7 @@ multiline_comment|/* Because kmalloc only guarantees 8-byte alignment for kmallo
 DECL|macro|__PA_LDCW_ALIGNMENT
 mdefine_line|#define __PA_LDCW_ALIGNMENT 16
 DECL|macro|__ldcw_align
-mdefine_line|#define __ldcw_align(a) ({ &bslash;&n;  unsigned long __ret = (unsigned long) a;                     &t;&t;&bslash;&n;  __ret = (__ret + __PA_LDCW_ALIGNMENT - 1) &amp; ~(__PA_LDCW_ALIGNMENT - 1); &bslash;&n;  (volatile unsigned int *) __ret;                                      &bslash;&n;})
+mdefine_line|#define __ldcw_align(a) ({ &bslash;&n;  unsigned long __ret = (unsigned long) &amp;(a)-&gt;lock[0];        &t;&t;&bslash;&n;  __ret = (__ret + __PA_LDCW_ALIGNMENT - 1) &amp; ~(__PA_LDCW_ALIGNMENT - 1); &bslash;&n;  (volatile unsigned int *) __ret;                                      &bslash;&n;})
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef
@@ -347,5 +347,21 @@ mdefine_line|#define __lock_aligned __attribute__((__section__(&quot;.data.lock_
 macro_line|#endif
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START (0x10100000 - 0x1000)
+multiline_comment|/* This is for the serialisation of PxTLB broadcasts.  At least on the&n; * N class systems, only one PxTLB inter processor broadcast can be&n; * active at any one time on the Merced bus.  This tlb purge&n; * synchronisation is fairly lightweight and harmless so we activate&n; * it on all SMP systems not just the N class. */
+macro_line|#ifdef CONFIG_SMP
+r_extern
+id|spinlock_t
+id|pa_tlb_lock
+suffix:semicolon
+DECL|macro|purge_tlb_start
+mdefine_line|#define purge_tlb_start(x) spin_lock(&amp;pa_tlb_lock)
+DECL|macro|purge_tlb_end
+mdefine_line|#define purge_tlb_end(x) spin_unlock(&amp;pa_tlb_lock)
+macro_line|#else
+DECL|macro|purge_tlb_start
+mdefine_line|#define purge_tlb_start(x) do { } while(0)
+DECL|macro|purge_tlb_end
+mdefine_line|#define purge_tlb_end(x) do { } while (0)
+macro_line|#endif
 macro_line|#endif
 eof

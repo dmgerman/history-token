@@ -21,7 +21,6 @@ macro_line|#ifdef CONFIG_ARCH_EP80219
 macro_line|#include &lt;linux/kernel.h&gt;
 multiline_comment|/*&n; * Default power-off for EP80219&n; */
 macro_line|#include &lt;asm/mach-types.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
 DECL|function|ep80219_send_to_pic
 r_static
 r_inline

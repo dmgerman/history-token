@@ -5096,8 +5096,7 @@ suffix:semicolon
 DECL|function|time_interpolator_get_cycles
 r_static
 r_inline
-r_int
-r_int
+id|u64
 id|time_interpolator_get_cycles
 c_func
 (paren
@@ -5168,8 +5167,7 @@ suffix:semicolon
 DECL|function|time_interpolator_get_counter
 r_static
 r_inline
-r_int
-r_int
+id|u64
 id|time_interpolator_get_counter
 c_func
 (paren
@@ -5188,12 +5186,10 @@ c_cond
 id|time_interpolator-&gt;jitter
 )paren
 (brace
-r_int
-r_int
+id|u64
 id|lcycle
 suffix:semicolon
-r_int
-r_int
+id|u64
 id|now
 suffix:semicolon
 r_do
@@ -5282,34 +5278,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|time_interpolator_resolution
-r_int
-r_int
-id|time_interpolator_resolution
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|time_interpolator-&gt;frequency
-OL
-id|NSEC_PER_SEC
-)paren
-r_return
-id|NSEC_PER_SEC
-op_div
-id|time_interpolator-&gt;frequency
-suffix:semicolon
-r_else
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|macro|GET_TI_NSECS
-mdefine_line|#define GET_TI_NSECS(count,i) ((((count) - i-&gt;last_counter) * i-&gt;nsec_per_cyc) &gt;&gt; i-&gt;shift)
+mdefine_line|#define GET_TI_NSECS(count,i) (((((count) - i-&gt;last_counter) &amp; (i)-&gt;mask) * (i)-&gt;nsec_per_cyc) &gt;&gt; (i)-&gt;shift)
 DECL|function|time_interpolator_get_offset
 r_int
 r_int
@@ -5319,6 +5289,16 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* If we do not have a time interpolator set up then just return zero */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|time_interpolator
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|time_interpolator-&gt;offset
 op_plus
@@ -5334,6 +5314,10 @@ id|time_interpolator
 )paren
 suffix:semicolon
 )brace
+DECL|macro|INTERPOLATOR_ADJUST
+mdefine_line|#define INTERPOLATOR_ADJUST 65536
+DECL|macro|INTERPOLATOR_MAX_SKIP
+mdefine_line|#define INTERPOLATOR_MAX_SKIP 10*INTERPOLATOR_ADJUST
 DECL|function|time_interpolator_update
 r_static
 r_void
@@ -5344,8 +5328,23 @@ r_int
 id|delta_nsec
 )paren
 (brace
+id|u64
+id|counter
+suffix:semicolon
 r_int
 r_int
+id|offset
+suffix:semicolon
+multiline_comment|/* If there is no time interpolator set up then do nothing */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|time_interpolator
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* The interpolator compensates for late ticks by accumulating&n;         * the late time in time_interpolator-&gt;offset. A tick earlier than&n;&t; * expected will lead to a reset of the offset and a corresponding&n;&t; * jump of the clock forward. Again this only works if the&n;&t; * interpolator clock is running slightly slower than the regular clock&n;&t; * and the tuning logic insures that.&n;         */
 id|counter
 op_assign
 id|time_interpolator_get_counter
@@ -5353,8 +5352,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
-r_int
 id|offset
 op_assign
 id|time_interpolator-&gt;offset
@@ -5367,7 +5364,6 @@ comma
 id|time_interpolator
 )paren
 suffix:semicolon
-multiline_comment|/* The interpolator compensates for late ticks by accumulating&n;         * the late time in time_interpolator-&gt;offset. A tick earlier than&n;&t; * expected will lead to a reset of the offset and a corresponding&n;&t; * jump of the clock forward. Again this only works if the&n;&t; * interpolator clock is running slightly slower than the regular clock&n;&t; * and the tuning logic insures that.&n;         */
 r_if
 c_cond
 (paren
@@ -5519,9 +5515,29 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* Sanity check */
+r_if
+c_cond
+(paren
+id|ti-&gt;frequency
+op_eq
+l_int|0
+op_logical_or
+id|ti-&gt;mask
+op_eq
+l_int|0
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ti-&gt;nsec_per_cyc
 op_assign
 (paren
+(paren
+id|u64
+)paren
 id|NSEC_PER_SEC
 op_lshift
 id|ti-&gt;shift

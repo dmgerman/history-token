@@ -157,7 +157,6 @@ id|array
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Expand the fd array in the files_struct.  Called with the files&n; * spinlock held for write.&n; */
-DECL|function|expand_fd_array
 r_int
 id|expand_fd_array
 c_func
@@ -169,6 +168,16 @@ id|files
 comma
 r_int
 id|nr
+)paren
+id|__releases
+c_func
+(paren
+id|files-&gt;file_lock
+)paren
+id|__acquires
+c_func
+(paren
+id|files-&gt;file_lock
 )paren
 (brace
 r_struct
@@ -577,7 +586,6 @@ id|array
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Expand the fdset in the files_struct.  Called with the files spinlock&n; * held for write.&n; */
-DECL|function|expand_fdset
 r_int
 id|expand_fdset
 c_func
@@ -589,6 +597,16 @@ id|files
 comma
 r_int
 id|nr
+)paren
+id|__releases
+c_func
+(paren
+id|file-&gt;file_lock
+)paren
+id|__acquires
+c_func
+(paren
+id|file-&gt;file_lock
 )paren
 (brace
 id|fd_set

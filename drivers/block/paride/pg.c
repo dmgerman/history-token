@@ -661,7 +661,7 @@ op_assign
 op_amp
 id|dev-&gt;pia
 suffix:semicolon
-id|set_bit
+id|clear_bit
 c_func
 (paren
 l_int|0

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;

@@ -25,19 +25,6 @@ macro_line|#ifndef CONFIG_PPC64
 macro_line|#include &lt;asm/mediabay.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ide-timing.h&quot;
-r_extern
-r_void
-id|ide_do_request
-c_func
-(paren
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-comma
-r_int
-id|masked_irq
-)paren
-suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 mdefine_line|#define IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT

@@ -56,17 +56,17 @@ mdefine_line|#define __cpu_to_le16(x) ((__force __le16)(__u16)(x))
 DECL|macro|__le16_to_cpu
 mdefine_line|#define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
 DECL|macro|__cpu_to_be64
-mdefine_line|#define __cpu_to_be64(x) ((__force __be64)___swab64((x)))
+mdefine_line|#define __cpu_to_be64(x) ((__force __be64)__swab64((x)))
 DECL|macro|__be64_to_cpu
-mdefine_line|#define __be64_to_cpu(x) ___swab64((__force __u64)(__be64)(x))
+mdefine_line|#define __be64_to_cpu(x) __swab64((__force __u64)(__be64)(x))
 DECL|macro|__cpu_to_be32
-mdefine_line|#define __cpu_to_be32(x) ((__force __be32)___swab32((x)))
+mdefine_line|#define __cpu_to_be32(x) ((__force __be32)__swab32((x)))
 DECL|macro|__be32_to_cpu
-mdefine_line|#define __be32_to_cpu(x) ___swab32((__force __u32)(__be32)(x))
+mdefine_line|#define __be32_to_cpu(x) __swab32((__force __u32)(__be32)(x))
 DECL|macro|__cpu_to_be16
-mdefine_line|#define __cpu_to_be16(x) ((__force __be16)___swab16((x)))
+mdefine_line|#define __cpu_to_be16(x) ((__force __be16)__swab16((x)))
 DECL|macro|__be16_to_cpu
-mdefine_line|#define __be16_to_cpu(x) ___swab16((__force __u16)(__be16)(x))
+mdefine_line|#define __be16_to_cpu(x) __swab16((__force __u16)(__be16)(x))
 DECL|function|__cpu_to_le64p
 r_static
 r_inline

@@ -13,7 +13,7 @@ DECL|macro|MCF_MBAR2
 mdefine_line|#define&t;MCF_MBAR2&t;0x80000000
 DECL|macro|MCF_IPSBAR
 mdefine_line|#define&t;MCF_IPSBAR&t;0x40000000
-macro_line|#ifdef CONFIG_M5282
+macro_line|#if defined(CONFIG_M527x) || defined(CONFIG_M528x)
 DECL|macro|MCF_MBAR
 macro_line|#undef MCF_MBAR
 DECL|macro|MCF_MBAR
@@ -65,14 +65,23 @@ mdefine_line|#define&t;MCF_CLK&t;&t;66000000
 macro_line|#elif defined(CONFIG_CLOCK_70MHz)
 DECL|macro|MCF_CLK
 mdefine_line|#define&t;MCF_CLK&t;&t;70000000
+macro_line|#elif defined(CONFIG_CLOCK_100MHz)
+DECL|macro|MCF_CLK
+mdefine_line|#define&t;MCF_CLK&t;&t;100000000
 macro_line|#elif defined(CONFIG_CLOCK_140MHz)
 DECL|macro|MCF_CLK
 mdefine_line|#define&t;MCF_CLK&t;&t;140000000
+macro_line|#elif defined(CONFIG_CLOCK_150MHz)
+DECL|macro|MCF_CLK
+mdefine_line|#define&t;MCF_CLK&t;&t;150000000
+macro_line|#elif defined(CONFIG_CLOCK_166MHz)
+DECL|macro|MCF_CLK
+mdefine_line|#define&t;MCF_CLK&t;&t;166000000
 macro_line|#else
 macro_line|#error &quot;Don&squot;t know what your ColdFire CPU clock frequency is??&quot;
 macro_line|#endif
 multiline_comment|/*&n; *&t;One some ColdFire family members the bus clock (used by internal&n; *&t;peripherals) is not the same as the CPU clock.&n; */
-macro_line|#ifdef CONFIG_M5249
+macro_line|#if defined(CONFIG_M5249) || defined(CONFIG_M527x)
 DECL|macro|MCF_BUSCLK
 mdefine_line|#define&t;MCF_BUSCLK&t;(MCF_CLK / 2)
 macro_line|#else

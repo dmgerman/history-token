@@ -112,6 +112,8 @@ id|dir
 comma
 op_star
 id|attr
+comma
+id|SYSFS_KOBJ_ATTR
 )paren
 suffix:semicolon
 )brace
@@ -156,6 +158,16 @@ id|dir
 suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|kobj
+op_logical_or
+op_logical_neg
+id|kobj-&gt;dentry
+)paren
 suffix:semicolon
 r_if
 c_cond

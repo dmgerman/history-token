@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m68knommu/kernel/setup.c&n; *&n; *  Copyright (C) 1999-2002  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com) &n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *&n; *  68VZ328 Fixes/support    Evan Stawnyczy &lt;e@lineo.ca&gt;&n; */
+multiline_comment|/*&n; *  linux/arch/m68knommu/kernel/setup.c&n; *&n; *  Copyright (C) 1999-2004  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com) &n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *&n; *  68VZ328 Fixes/support    Evan Stawnyczy &lt;e@lineo.ca&gt;&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of system setup&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -426,13 +426,17 @@ macro_line|#if defined(CONFIG_M5249)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;COLDFIRE(m5249)&quot;
 macro_line|#endif
+macro_line|#if defined(CONFIG_M527x)
+DECL|macro|CPU
+mdefine_line|#define CPU &quot;COLDFIRE(m5270/5271/5274/5275)&quot;
+macro_line|#endif
 macro_line|#if defined(CONFIG_M5272)
 DECL|macro|CPU
 mdefine_line|#define CPU &quot;COLDFIRE(m5272)&quot;
 macro_line|#endif
-macro_line|#if defined(CONFIG_M5282)
+macro_line|#if defined(CONFIG_M528x)
 DECL|macro|CPU
-mdefine_line|#define CPU &quot;COLDFIRE(m5282)&quot;
+mdefine_line|#define CPU &quot;COLDFIRE(m5280/5282)&quot;
 macro_line|#endif
 macro_line|#if defined(CONFIG_M5307)
 DECL|macro|CPU

@@ -1526,7 +1526,6 @@ macro_line|#endif
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * We need to finalize in a non-__init function or else race conditions&n; * between the root thread and the init thread may cause start_kernel to&n; * be reaped by free_initmem before the root thread has proceeded to&n; * cpu_idle.&n; *&n; * gcc-3.4 accidentally inlines this function, so use noinline.&n; */
-DECL|function|rest_init
 r_static
 r_void
 id|noinline
@@ -1534,6 +1533,12 @@ id|rest_init
 c_func
 (paren
 r_void
+)paren
+DECL|function|__releases
+id|__releases
+c_func
+(paren
+id|kernel_lock
 )paren
 (brace
 id|kernel_thread

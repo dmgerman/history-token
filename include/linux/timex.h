@@ -431,35 +431,28 @@ mdefine_line|#define TIME_SOURCE_MMIO32 2
 DECL|macro|TIME_SOURCE_FUNCTION
 mdefine_line|#define TIME_SOURCE_FUNCTION 3
 multiline_comment|/* For proper operations time_interpolator clocks must run slightly slower&n; * than the standard clock since the interpolator may only correct by having&n; * time jump forward during a tick. A slower clock is usually a side effect&n; * of the integer divide of the nanoseconds in a second by the frequency.&n; * The accuracy of the division can be increased by specifying a shift.&n; * However, this may cause the clock not to be slow enough.&n; * The interpolator will self-tune the clock by slowing down if no&n; * resets occur or speeding up if the time jumps per analysis cycle&n; * become too high.&n; *&n; * Setting jitter compensates for a fluctuating timesource by comparing&n; * to the last value read from the timesource to insure that an earlier value&n; * is not returned by a later call. The price to pay&n; * for the compensation is that the timer routines are not as scalable anymore.&n; */
-DECL|macro|INTERPOLATOR_ADJUST
-mdefine_line|#define INTERPOLATOR_ADJUST 65536
-DECL|macro|INTERPOLATOR_MAX_SKIP
-mdefine_line|#define INTERPOLATOR_MAX_SKIP 10*INTERPOLATOR_ADJUST
 DECL|struct|time_interpolator
 r_struct
 id|time_interpolator
 (brace
 DECL|member|source
-r_int
-r_int
+id|u16
 id|source
 suffix:semicolon
 multiline_comment|/* time source flags */
 DECL|member|shift
-r_int
-r_char
+id|u8
 id|shift
 suffix:semicolon
 multiline_comment|/* increases accuracy of multiply by shifting. */
 multiline_comment|/* Note that bits may be lost if shift is set too high */
 DECL|member|jitter
-r_int
-r_char
+id|u8
 id|jitter
 suffix:semicolon
 multiline_comment|/* if set compensate for fluctuations */
 DECL|member|nsec_per_cyc
-r_int
+id|u32
 id|nsec_per_cyc
 suffix:semicolon
 multiline_comment|/* set by register_time_interpolator() */
@@ -469,6 +462,11 @@ op_star
 id|addr
 suffix:semicolon
 multiline_comment|/* address of counter or function */
+DECL|member|mask
+id|u64
+id|mask
+suffix:semicolon
+multiline_comment|/* mask the valid bits of the counter */
 DECL|member|offset
 r_int
 r_int
@@ -476,20 +474,17 @@ id|offset
 suffix:semicolon
 multiline_comment|/* nsec offset at last update of interpolator */
 DECL|member|last_counter
-r_int
-r_int
+id|u64
 id|last_counter
 suffix:semicolon
 multiline_comment|/* counter value in units of the counter at last update */
 DECL|member|last_cycle
-r_int
-r_int
+id|u64
 id|last_cycle
 suffix:semicolon
 multiline_comment|/* Last timer value if TIME_SOURCE_JITTER is set */
 DECL|member|frequency
-r_int
-r_int
+id|u64
 id|frequency
 suffix:semicolon
 multiline_comment|/* frequency in counts/second */
@@ -541,15 +536,6 @@ suffix:semicolon
 r_extern
 r_void
 id|time_interpolator_reset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|time_interpolator_resolution
 c_func
 (paren
 r_void

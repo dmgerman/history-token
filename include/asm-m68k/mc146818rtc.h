@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Machine dependent access functions for RTC registers.&
 macro_line|#ifndef _ASM_MC146818RTC_H
 DECL|macro|_ASM_MC146818RTC_H
 mdefine_line|#define _ASM_MC146818RTC_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_ATARI
 multiline_comment|/* RTC in Atari machines */
 macro_line|#include &lt;asm/atarihw.h&gt;
