@@ -1481,7 +1481,7 @@ id|D_RCVBUFREADY
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Packet to long, overflow */
+multiline_comment|/* Packet too long, overflow */
 r_if
 c_cond
 (paren

@@ -3138,7 +3138,7 @@ id|tp-&gt;TplBusy
 )paren
 )paren
 (brace
-multiline_comment|/* Anything to send, but stalled to long */
+multiline_comment|/* Anything to send, but stalled too long */
 id|tp-&gt;LastSendTime
 op_assign
 id|jiffies

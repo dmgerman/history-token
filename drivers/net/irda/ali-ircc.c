@@ -3427,7 +3427,7 @@ id|UART_RX
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we don&squot;t stay here to long */
+multiline_comment|/* Make sure we don&squot;t stay here too long */
 r_if
 c_cond
 (paren

@@ -23,7 +23,7 @@ mdefine_line|#define ERR_POF_TIMEOUT   1007 /* timeout waiting for card pof read
 DECL|macro|ERR_NOT_BOOTED
 mdefine_line|#define ERR_NOT_BOOTED    1008 /* operation only allowed when booted */
 DECL|macro|ERR_CONF_LONG
-mdefine_line|#define ERR_CONF_LONG     1009 /* conf line is to long */ 
+mdefine_line|#define ERR_CONF_LONG     1009 /* conf line is too long */ 
 DECL|macro|ERR_INV_CHAN
 mdefine_line|#define ERR_INV_CHAN      1010 /* invalid channel number */ 
 DECL|macro|ERR_ASYNC_TIME

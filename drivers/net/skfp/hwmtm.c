@@ -4050,7 +4050,7 @@ l_int|4
 id|DB_RX
 c_func
 (paren
-l_string|&quot;Frame to long error&quot;
+l_string|&quot;Frame too long error&quot;
 comma
 l_int|0
 comma
