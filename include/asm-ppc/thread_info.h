@@ -104,6 +104,8 @@ DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;8
 DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;12
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */
