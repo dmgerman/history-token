@@ -3947,6 +3947,42 @@ id|id_table_combined
 comma
 )brace
 suffix:semicolon
+DECL|variable|ftdi_chip_name
+r_static
+r_char
+op_star
+id|ftdi_chip_name
+(braket
+)braket
+op_assign
+(brace
+(braket
+id|SIO
+)braket
+op_assign
+l_string|&quot;SIO&quot;
+comma
+multiline_comment|/* the serial part of FT8U100AX */
+(braket
+id|FT8U232AM
+)braket
+op_assign
+l_string|&quot;FT8U232AM&quot;
+comma
+(braket
+id|FT232BM
+)braket
+op_assign
+l_string|&quot;FT232BM&quot;
+comma
+(braket
+id|FT2232C
+)braket
+op_assign
+l_string|&quot;FT2232C&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Constants for read urb and write urb */
 DECL|macro|BUFSZ
 mdefine_line|#define BUFSZ 512
@@ -5822,12 +5858,6 @@ id|div_okay
 op_assign
 l_int|1
 suffix:semicolon
-r_char
-op_star
-id|chip_name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_int
 id|baud
 suffix:semicolon
@@ -5914,10 +5944,6 @@ r_case
 id|SIO
 suffix:colon
 multiline_comment|/* SIO chip */
-id|chip_name
-op_assign
-l_string|&quot;SIO&quot;
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6049,10 +6075,6 @@ r_case
 id|FT8U232AM
 suffix:colon
 multiline_comment|/* 8U232AM chip */
-id|chip_name
-op_assign
-l_string|&quot;FT8U232AM&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6103,26 +6125,6 @@ r_case
 id|FT2232C
 suffix:colon
 multiline_comment|/* FT2232C chip */
-r_if
-c_cond
-(paren
-id|priv-&gt;chip_type
-op_eq
-id|FT2232C
-)paren
-(brace
-id|chip_name
-op_assign
-l_string|&quot;FT2232C&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|chip_name
-op_assign
-l_string|&quot;FT232BM&quot;
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6188,7 +6190,10 @@ r_int
 )paren
 id|div_value
 comma
-id|chip_name
+id|ftdi_chip_name
+(braket
+id|priv-&gt;chip_type
+)braket
 )paren
 suffix:semicolon
 )brace
