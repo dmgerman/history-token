@@ -227,9 +227,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -1622,9 +1619,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -1742,18 +1736,9 @@ multiline_comment|/* frame too big */
 id|CPC_TTY_DBG
 c_func
 (paren
-l_string|&quot;%s: cpc_tty_write %s data len=%i&bslash;n&quot;
+l_string|&quot;%s: cpc_tty_write data len=%i&bslash;n&quot;
 comma
 id|cpc_tty-&gt;name
-comma
-(paren
-id|from_user
-)paren
-ques
-c_cond
-l_string|&quot;from user&quot;
-suffix:colon
-l_string|&quot;from kernel&quot;
 comma
 id|count
 )paren
@@ -1914,83 +1899,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|from_user
-)paren
-(brace
-r_int
-r_char
-op_star
-id|buf_tmp
-suffix:semicolon
-id|buf_tmp
-op_assign
-id|cpc_tty-&gt;buf_tx
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|buf_tmp
-comma
-id|buf
-comma
-id|count
-)paren
-)paren
-(brace
-multiline_comment|/* failed to copy from user */
-id|CPC_TTY_DBG
-c_func
-(paren
-l_string|&quot;%s: error in copy from user&bslash;n&quot;
-comma
-id|cpc_tty-&gt;name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|cpc_tty_send_to_card
-c_func
-(paren
-id|cpc_tty-&gt;pc300dev
-comma
-(paren
-r_void
-op_star
-)paren
-id|buf_tmp
-comma
-id|count
-)paren
-)paren
-(brace
-multiline_comment|/* failed to send */
-id|CPC_TTY_DBG
-c_func
-(paren
-l_string|&quot;%s: transmission error&bslash;n&quot;
-comma
-id|cpc_tty-&gt;name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
 id|cpc_tty_send_to_card
 c_func
 (paren
@@ -2018,7 +1926,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_return
 id|count

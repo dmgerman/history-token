@@ -343,7 +343,6 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|buf
 comma
@@ -4721,7 +4720,6 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|data
 comma
@@ -4757,9 +4755,6 @@ op_star
 id|new_data
 suffix:semicolon
 r_int
-id|status
-suffix:semicolon
-r_int
 id|pid
 suffix:semicolon
 id|TRACE_L
@@ -4781,29 +4776,6 @@ id|pInfo
 r_return
 op_minus
 id|EIO
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|verify_area
-(paren
-id|VERIFY_READ
-comma
-id|data
-comma
-id|count
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-op_ne
-l_int|0
-)paren
-(brace
-r_return
-id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ensure that the caller does not wish to send too much.&n; */
@@ -4840,7 +4812,7 @@ op_assign
 id|R3964_MTU
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allocate a buffer for the data and fetch it from the user space.&n; */
+multiline_comment|/*&n; * Allocate a buffer for the data and copy it from the buffer with header prepended&n; */
 id|new_data
 op_assign
 id|kmalloc
@@ -4951,7 +4923,7 @@ op_assign
 id|pClient
 suffix:semicolon
 )brace
-id|__copy_from_user
+id|memcpy
 c_func
 (paren
 id|pHeader-&gt;data

@@ -1013,7 +1013,6 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|buf
 comma
@@ -2598,8 +2597,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|ap-&gt;tpkt-&gt;data
 comma
