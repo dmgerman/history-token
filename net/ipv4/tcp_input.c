@@ -89,6 +89,10 @@ DECL|variable|sysctl_tcp_vegas_cong_avoid
 r_int
 id|sysctl_tcp_vegas_cong_avoid
 suffix:semicolon
+DECL|variable|sysctl_tcp_moderate_rcvbuf
+r_int
+id|sysctl_tcp_moderate_rcvbuf
+suffix:semicolon
 multiline_comment|/* Default values of the Vegas variables, in fixed-point representation&n; * with V_PARAM_SHIFT bits to the right of the binary point.&n; */
 DECL|macro|V_PARAM_SHIFT
 mdefine_line|#define V_PARAM_SHIFT 1
@@ -1400,7 +1404,13 @@ id|tp-&gt;rcvq_space.space
 op_assign
 id|space
 suffix:semicolon
-multiline_comment|/* Receive space grows, normalize in order to&n;&t;&t; * take into account packet headers and sk_buff&n;&t;&t; * structure overhead.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|sysctl_tcp_moderate_rcvbuf
+)paren
+(brace
+multiline_comment|/* Receive space grows, normalize in order to&n;&t;&t;&t; * take into account packet headers and sk_buff&n;&t;&t;&t; * structure overhead.&n;&t;&t;&t; */
 id|space
 op_div_assign
 id|tp-&gt;advmss
@@ -1459,6 +1469,7 @@ id|sk-&gt;sk_rcvbuf
 op_assign
 id|space
 suffix:semicolon
+)brace
 )brace
 id|new_measure
 suffix:colon

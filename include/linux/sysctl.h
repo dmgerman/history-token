@@ -1305,6 +1305,11 @@ id|NET_TCP_DEFAULT_WIN_SCALE
 op_assign
 l_int|105
 comma
+DECL|enumerator|NET_TCP_MODERATE_RCVBUF
+id|NET_TCP_MODERATE_RCVBUF
+op_assign
+l_int|106
+comma
 )brace
 suffix:semicolon
 r_enum
