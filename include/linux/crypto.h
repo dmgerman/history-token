@@ -15,8 +15,8 @@ DECL|macro|CRYPTO_ALG_TYPE_CIPHER
 mdefine_line|#define CRYPTO_ALG_TYPE_CIPHER&t;&t;0x00000001
 DECL|macro|CRYPTO_ALG_TYPE_DIGEST
 mdefine_line|#define CRYPTO_ALG_TYPE_DIGEST&t;&t;0x00000002
-DECL|macro|CRYPTO_ALG_TYPE_COMP
-mdefine_line|#define CRYPTO_ALG_TYPE_COMP&t;&t;0x00000004
+DECL|macro|CRYPTO_ALG_TYPE_COMPRESS
+mdefine_line|#define CRYPTO_ALG_TYPE_COMPRESS&t;0x00000004
 multiline_comment|/*&n; * Transform masks and values (for crt_flags).&n; */
 DECL|macro|CRYPTO_TFM_MODE_MASK
 mdefine_line|#define CRYPTO_TFM_MODE_MASK&t;&t;0x000000ff
@@ -694,6 +694,18 @@ op_star
 id|tfm
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|crypto_tfm_alg_type
+c_func
+(paren
+id|tfm
+)paren
+op_ne
+id|CRYPTO_ALG_TYPE_CIPHER
+)paren
+suffix:semicolon
 r_return
 id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_min_keysize
 suffix:semicolon
@@ -712,6 +724,18 @@ op_star
 id|tfm
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|crypto_tfm_alg_type
+c_func
+(paren
+id|tfm
+)paren
+op_ne
+id|CRYPTO_ALG_TYPE_CIPHER
+)paren
+suffix:semicolon
 r_return
 id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_max_keysize
 suffix:semicolon
@@ -730,6 +754,18 @@ op_star
 id|tfm
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|crypto_tfm_alg_type
+c_func
+(paren
+id|tfm
+)paren
+op_ne
+id|CRYPTO_ALG_TYPE_CIPHER
+)paren
+suffix:semicolon
 r_return
 id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_ivsize
 suffix:semicolon
@@ -766,6 +802,18 @@ op_star
 id|tfm
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|crypto_tfm_alg_type
+c_func
+(paren
+id|tfm
+)paren
+op_ne
+id|CRYPTO_ALG_TYPE_DIGEST
+)paren
+suffix:semicolon
 r_return
 id|tfm-&gt;__crt_alg-&gt;cra_digest.dia_digestsize
 suffix:semicolon
@@ -1200,7 +1248,7 @@ c_func
 id|tfm
 )paren
 op_ne
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 )paren
 suffix:semicolon
 id|tfm-&gt;crt_compress
@@ -1234,7 +1282,7 @@ c_func
 id|tfm
 )paren
 op_ne
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 )paren
 suffix:semicolon
 id|tfm-&gt;crt_compress

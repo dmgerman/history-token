@@ -57,7 +57,7 @@ r_int
 r_int
 id|vlan_release
 op_assign
-l_int|7
+l_int|8
 suffix:semicolon
 DECL|variable|vlan_copyright
 r_static
@@ -692,8 +692,6 @@ id|vlan_id
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|br_write_lock
 c_func
 (paren
@@ -713,7 +711,6 @@ c_func
 id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Caller unregisters (and if necessary, puts)&n;&t;&t;&t; * VLAN device, but we get rid of the reference to&n;&t;&t;&t; * real_dev here.&n;&t;&t;&t; */
 id|dev_put
 c_func
@@ -790,6 +787,17 @@ c_func
 op_amp
 id|vlan_group_lock
 )paren
+suffix:semicolon
+multiline_comment|/* Free the group, after we have removed it&n;&t;&t;&t;&t; * from the hash.&n;&t;&t;&t;&t; */
+id|kfree
+c_func
+(paren
+id|grp
+)paren
+suffix:semicolon
+id|grp
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
@@ -2101,6 +2109,12 @@ id|vlandev
 )paren
 op_member_access_from_pointer
 id|vlan_id
+)paren
+suffix:semicolon
+id|dev_put
+c_func
+(paren
+id|vlandev
 )paren
 suffix:semicolon
 id|unregister_netdevice
