@@ -433,7 +433,7 @@ id|update_wall_time_hook
 )paren
 (paren
 op_star
-id|update_wall_time_hook
+id|reset_wall_time_hook
 )paren
 (paren
 )paren
