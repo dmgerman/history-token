@@ -1017,7 +1017,6 @@ multiline_comment|/* Enable power to the ports */
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hubdev
 c_func
 (paren
@@ -1227,7 +1226,6 @@ id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;%d port%s detected&bslash;n&quot;
@@ -1333,7 +1331,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;compound device; port removable status: %s&bslash;n&quot;
@@ -1346,7 +1343,6 @@ r_else
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;standalone hub&bslash;n&quot;
@@ -1366,7 +1362,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;ganged power switching&bslash;n&quot;
@@ -1380,7 +1375,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;individual port power switching&bslash;n&quot;
@@ -1397,7 +1391,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;unknown reserved power switching mode&bslash;n&quot;
@@ -1420,7 +1413,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;global over-current protection&bslash;n&quot;
@@ -1434,7 +1426,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;individual port over-current protection&bslash;n&quot;
@@ -1451,7 +1442,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;no over-current protection&bslash;n&quot;
@@ -1499,7 +1489,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;Single TT&bslash;n&quot;
@@ -1517,7 +1506,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;TT per port&bslash;n&quot;
@@ -1538,7 +1526,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;Unrecognized hub protocol %d&bslash;n&quot;
@@ -1570,7 +1557,6 @@ l_int|0
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;TT requires at most 8 FS bit times&bslash;n&quot;
@@ -1584,7 +1570,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;TT requires at most 16 FS bit times&bslash;n&quot;
@@ -1598,7 +1583,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;TT requires at most 24 FS bit times&bslash;n&quot;
@@ -1612,7 +1596,6 @@ suffix:colon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;TT requires at most 32 FS bit times&bslash;n&quot;
@@ -1624,7 +1607,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;Port indicators are %s supported&bslash;n&quot;
@@ -1644,7 +1626,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;power on to power good time: %dms&bslash;n&quot;
@@ -1657,7 +1638,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;hub controller current requirement: %dmA&bslash;n&quot;
@@ -1702,7 +1682,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;local power source is %s&bslash;n&quot;
@@ -1722,7 +1701,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|hub_dev
 comma
 l_string|&quot;%sover-current condition exists&bslash;n&quot;
@@ -1878,6 +1856,7 @@ id|fail
 suffix:colon
 id|dev_err
 (paren
+op_amp
 id|hub-&gt;intf-&gt;dev
 comma
 l_string|&quot;config failed, %s (err %d)&bslash;n&quot;
@@ -2131,6 +2110,7 @@ id|descriptor_error
 suffix:colon
 id|dev_err
 (paren
+op_amp
 id|intf-&gt;dev
 comma
 l_string|&quot;bad descriptor, ignoring hub&bslash;n&quot;
@@ -2204,7 +2184,6 @@ suffix:semicolon
 multiline_comment|/* We found a hub */
 id|dev_info
 (paren
-op_star
 id|hubdev
 (paren
 id|dev
@@ -3023,7 +3002,6 @@ id|HUB_LONG_RESET_TIME
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hubdev
 (paren
 id|hub
@@ -3144,7 +3122,6 @@ suffix:semicolon
 )brace
 id|dev_dbg
 (paren
-op_star
 id|hubdev
 (paren
 id|hub
@@ -3164,7 +3141,6 @@ suffix:semicolon
 )brace
 id|dev_err
 (paren
-op_star
 id|hubdev
 (paren
 id|hub
@@ -3399,7 +3375,6 @@ suffix:semicolon
 multiline_comment|/* XXX Replace this with dbg() when 2.6 is about to ship. */
 id|dev_info
 (paren
-op_star
 id|hubdev
 (paren
 id|hub
@@ -3481,6 +3456,7 @@ id|i
 suffix:semicolon
 id|dev_dbg
 (paren
+op_amp
 id|hubstate-&gt;intf-&gt;dev
 comma
 l_string|&quot;port %d, status %x, change %x, %s&bslash;n&quot;
@@ -3575,6 +3551,7 @@ id|port
 (brace
 id|dev_err
 (paren
+op_amp
 id|hubstate-&gt;intf-&gt;dev
 comma
 l_string|&quot;connect-debounce failed, port %d disabled&bslash;n&quot;
@@ -3658,6 +3635,7 @@ id|dev
 (brace
 id|dev_err
 (paren
+op_amp
 id|hubstate-&gt;intf-&gt;dev
 comma
 l_string|&quot;couldn&squot;t allocate usb_device&bslash;n&quot;
@@ -3809,6 +3787,7 @@ id|dev-&gt;devpath
 )paren
 id|dev_err
 (paren
+op_amp
 id|hubstate-&gt;intf-&gt;dev
 comma
 l_string|&quot;devpath size! usb/%03d/%03d path %s&bslash;n&quot;
@@ -3822,6 +3801,7 @@ id|dev-&gt;devpath
 suffix:semicolon
 id|dev_info
 (paren
+op_amp
 id|hubstate-&gt;intf-&gt;dev
 comma
 l_string|&quot;new USB device on port %d, assigned address %d&bslash;n&quot;
@@ -4164,7 +4144,6 @@ id|USB_PORT_STAT_C_ENABLE
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hubdev
 (paren
 id|dev

@@ -171,7 +171,6 @@ suffix:semicolon
 id|dev_dbg
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s&bslash;n&quot;
@@ -201,7 +200,6 @@ id|driver-&gt;owner
 (brace
 id|dev_err
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;Can&squot;t get a module reference for %s&bslash;n&quot;
@@ -230,7 +228,6 @@ id|id
 (brace
 id|dev_dbg
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s - got id&bslash;n&quot;
@@ -332,7 +329,6 @@ id|driver
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;%s does not have a valid driver to work with!&quot;
@@ -361,7 +357,6 @@ singleline_comment|// drivers that aren&squot;t in active use...
 id|dev_err
 c_func
 (paren
-op_star
 id|dev
 comma
 l_string|&quot;Dieing driver still bound to device.&bslash;n&quot;
@@ -2214,6 +2209,7 @@ l_int|NULL
 suffix:semicolon
 id|dev_info
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;USB disconnect, address %d&bslash;n&quot;
@@ -2262,6 +2258,7 @@ suffix:semicolon
 )brace
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;unregistering interfaces&bslash;n&quot;
@@ -2311,6 +2308,7 @@ suffix:semicolon
 )brace
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;unregistering device&bslash;n&quot;
@@ -2608,6 +2606,7 @@ id|dev_printk
 (paren
 id|KERN_INFO
 comma
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;Product: %s&bslash;n&quot;
@@ -2648,6 +2647,7 @@ id|dev_printk
 (paren
 id|KERN_INFO
 comma
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;Manufacturer: %s&bslash;n&quot;
@@ -2958,6 +2958,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;USB device not accepting new address=%d (error=%d)&bslash;n&quot;
@@ -3043,6 +3044,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;USB device not responding, giving up (error=%d)&bslash;n&quot;
@@ -3054,6 +3056,7 @@ r_else
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;USB device descriptor short read (expected %i, got %i)&bslash;n&quot;
@@ -3136,6 +3139,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;unable to get device descriptor (error=%d)&bslash;n&quot;
@@ -3147,6 +3151,7 @@ r_else
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;USB device descriptor short read (expected %Zi, got %i)&bslash;n&quot;
@@ -3195,6 +3200,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;unable to get device %d configuration (error=%d)&bslash;n&quot;
@@ -3246,6 +3252,7 @@ id|err
 id|dev_err
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;failed to set device %d default configuration (error=%d)&bslash;n&quot;
@@ -3276,6 +3283,7 @@ multiline_comment|/* USB device state == configured ... tell the world! */
 id|dev_dbg
 c_func
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;new device strings: Mfr=%d, Product=%d, SerialNumber=%d&bslash;n&quot;
@@ -3450,6 +3458,7 @@ suffix:semicolon
 )brace
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;%s - registering interface %s&bslash;n&quot;
