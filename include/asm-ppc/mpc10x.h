@@ -201,5 +201,15 @@ op_star
 id|hose
 )paren
 suffix:semicolon
+r_int
+id|mpc10x_disable_store_gathering
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __PPC_KERNEL_MPC10X_H */
 eof
