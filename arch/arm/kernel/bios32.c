@@ -2163,8 +2163,12 @@ c_cond
 (paren
 op_logical_neg
 id|strcmp
+c_func
+(paren
+id|str
 comma
 l_string|&quot;firmware&quot;
+)paren
 )paren
 (brace
 id|use_firmware

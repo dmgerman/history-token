@@ -1009,6 +1009,7 @@ id|style
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|local_irq_save

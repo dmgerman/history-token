@@ -108,7 +108,7 @@ DECL|macro|IXP2000_BOARD_IRQ
 mdefine_line|#define&t;IXP2000_BOARD_IRQ(x)&t;&t;(NR_IXP2000_IRQS + (x))
 DECL|macro|IXP2000_BOARD_IRQ_MASK
 mdefine_line|#define&t;IXP2000_BOARD_IRQ_MASK(irq)&t;(1 &lt;&lt; (irq - NR_IXP2000_IRQS))&t;
-multiline_comment|/*&n; * This allows for all the on-chip sources plus up to 32 CPLD based&n; * IRQs. Should be more then enough.&n; */
+multiline_comment|/*&n; * This allows for all the on-chip sources plus up to 32 CPLD based&n; * IRQs. Should be more than enough.&n; */
 DECL|macro|IXP2000_BOARD_IRQS
 mdefine_line|#define&t;IXP2000_BOARD_IRQS&t;&t;32
 DECL|macro|NR_IRQS
