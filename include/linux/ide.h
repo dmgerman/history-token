@@ -2521,6 +2521,23 @@ op_star
 id|pnp_dev
 suffix:semicolon
 multiline_comment|/* for PnP devices */
+DECL|member|rw_disk
+id|ide_startstop_t
+(paren
+op_star
+id|rw_disk
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+id|sector_t
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|ide_hwif_ops_t
 op_star
@@ -5447,6 +5464,23 @@ id|drive
 comma
 id|u8
 op_star
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|__ide_do_rw_disk
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+id|sector_t
+id|block
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */
