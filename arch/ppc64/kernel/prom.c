@@ -2373,6 +2373,13 @@ r_return
 id|mem
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PMAC_DART
+DECL|variable|dart_force_on
+r_static
+r_int
+id|dart_force_on
+suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 r_int
@@ -2528,11 +2535,9 @@ id|opt
 op_eq
 l_char|&squot; &squot;
 )paren
-(brace
 id|opt
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2552,6 +2557,33 @@ l_int|3
 )paren
 )paren
 id|nodart
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|opt
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;on&quot;
+)paren
+comma
+l_int|2
+)paren
+)paren
+id|RELOC
+c_func
+(paren
+id|dart_force_on
+)paren
 op_assign
 l_int|1
 suffix:semicolon
@@ -3796,7 +3828,7 @@ r_int
 r_int
 id|dart_tablesize
 suffix:semicolon
-multiline_comment|/* Only reserve DART space if machine has more than 2Gb of RAM */
+multiline_comment|/* Only reserve DART space if machine has more than 2GB of RAM&n;&t; * or if requested with iommu=on on cmdline.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3806,6 +3838,13 @@ c_func
 )paren
 op_le
 l_int|0x80000000ull
+op_logical_and
+op_logical_neg
+id|RELOC
+c_func
+(paren
+id|dart_force_on
+)paren
 )paren
 r_return
 suffix:semicolon
