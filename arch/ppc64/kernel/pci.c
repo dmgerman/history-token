@@ -4,14 +4,9 @@ macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/capability.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -20,11 +15,8 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &quot;pci.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
@@ -47,7 +39,7 @@ id|pci_assign_all_buses
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n;   devices we don&squot;t have access to. */
+multiline_comment|/*&n; * legal IO pages under MAX_ISA_PORT.  This is to ensure we don&squot;t touch&n; * devices we don&squot;t have access to.&n; */
 DECL|variable|io_page_mask
 r_int
 r_int
@@ -2548,11 +2540,9 @@ c_func
 id|size
 )paren
 suffix:semicolon
-id|PPCDBG
+id|DBG
 c_func
 (paren
-id|PPCDBG_PHBINIT
-comma
 l_string|&quot;phb%d io_base_phys 0x%lx io_base_virt 0x%lx&bslash;n&quot;
 comma
 id|hose-&gt;global_number
@@ -2687,11 +2677,9 @@ comma
 id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
-id|PPCDBG
+id|DBG
 c_func
 (paren
-id|PPCDBG_PHBINIT
-comma
 l_string|&quot;phb%d io_base_phys 0x%lx io_base_virt 0x%lx&bslash;n&quot;
 comma
 id|hose-&gt;global_number
@@ -3148,7 +3136,7 @@ id|hose-&gt;bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*********************************************************************** &n; * pci_find_hose_for_OF_device&n; *&n; * This function finds the PHB that matching device_node in the &n; * OpenFirmware by scanning all the pci_controllers.&n; * &n; ***********************************************************************/
+multiline_comment|/*&n; * This function finds the PHB that matching device_node in the &n; * OpenFirmware by scanning all the pci_controllers.&n; */
 DECL|function|pci_find_hose_for_OF_device
 r_struct
 id|pci_controller
@@ -3782,7 +3770,7 @@ c_func
 id|pcibios_fixup_bus
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************&n; * pci_read_irq_line&n; *&n; * Reads the Interrupt Pin to determine if interrupt is use by card.&n; * If the interrupt is used, then gets the interrupt line from the &n; * openfirmware and sets it in the pci_dev and pci_config line.&n; *&n; ******************************************************************/
+multiline_comment|/*&n; * Reads the interrupt pin to determine if interrupt is use by card.&n; * If the interrupt is used, then gets the interrupt line from the &n; * openfirmware and sets it in the pci_dev and pci_config line.&n; */
 DECL|function|pci_read_irq_line
 r_int
 id|pci_read_irq_line
@@ -3820,25 +3808,9 @@ id|intpin
 op_eq
 l_int|0
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s No Interrupt used by device.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|node
 op_assign
 id|pci_device_to_OF_node
@@ -3854,26 +3826,10 @@ id|node
 op_eq
 l_int|NULL
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s Device Node not found.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3881,26 +3837,10 @@ id|node-&gt;n_intrs
 op_eq
 l_int|0
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s No Device OF interrupts defined.&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|pci_dev-&gt;irq
 op_assign
 id|node-&gt;intrs
@@ -3916,22 +3856,6 @@ c_func
 id|pci_dev
 comma
 id|PCI_INTERRUPT_LINE
-comma
-id|pci_dev-&gt;irq
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_BUSWALK
-comma
-l_string|&quot;&bslash;tDevice: %s pci_dev-&gt;irq = 0x%02X&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pci_dev
-)paren
 comma
 id|pci_dev-&gt;irq
 )paren

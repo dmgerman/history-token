@@ -21,21 +21,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-r_extern
-r_int
-id|pci_probe_only
-suffix:semicolon
-r_extern
-r_int
-id|pci_read_irq_line
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-)paren
-suffix:semicolon
 DECL|variable|u3_agp
 DECL|variable|u3_ht
 r_static
@@ -1600,24 +1585,10 @@ c_func
 l_string|&quot; -&gt; maple_pcibios_fixup&bslash;n&quot;
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 id|pci_read_irq_line
 c_func

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * pSeries_pci.c&n; *&n; * Copyright (C) 2001 Dave Engebr
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -12,7 +11,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -43,11 +41,6 @@ DECL|variable|s7a_workaround
 r_static
 r_int
 id|s7a_workaround
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|pci_probe_only
 suffix:semicolon
 r_extern
 r_struct
@@ -1004,6 +997,7 @@ id|type
 suffix:semicolon
 )brace
 DECL|function|get_phb_reg_prop
+r_static
 r_int
 id|get_phb_reg_prop
 c_func
@@ -1058,19 +1052,9 @@ id|ui_ptr
 op_eq
 l_int|NULL
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_PHBINIT
-comma
-l_string|&quot;&bslash;tget reg failed.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1127,6 +1111,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|phb_set_bus_ranges
+r_static
 r_int
 id|phb_set_bus_ranges
 c_func

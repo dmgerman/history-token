@@ -860,7 +860,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* pci_assign_all_busses = 0;&t;&t;SFRXXX*/
 id|PPCDBG
 c_func
 (paren

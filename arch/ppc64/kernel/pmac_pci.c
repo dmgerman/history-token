@@ -23,21 +23,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-r_extern
-r_int
-id|pci_probe_only
-suffix:semicolon
-r_extern
-r_int
-id|pci_read_irq_line
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-)paren
-suffix:semicolon
 multiline_comment|/* XXX Could be per-controller, but I don&squot;t think we risk anything by&n; * assuming we won&squot;t have both UniNorth and Bandit */
 DECL|variable|has_uninorth
 r_static

@@ -80,7 +80,6 @@ r_extern
 r_int
 id|global_phb_number
 suffix:semicolon
-multiline_comment|/*******************************************************************&n; * Platform functions that are brand specific implementation. &n; *******************************************************************/
 r_extern
 r_int
 r_int
@@ -97,7 +96,7 @@ op_star
 id|ppc64_isabridge_dev
 suffix:semicolon
 multiline_comment|/* may be NULL if no ISA bus */
-multiline_comment|/*******************************************************************&n; * PCI device_node operations&n; *******************************************************************/
+multiline_comment|/* PCI device_node operations */
 r_struct
 id|device_node
 suffix:semicolon
@@ -211,6 +210,21 @@ id|get_phb_buid
 r_struct
 id|device_node
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pci_probe_only
+suffix:semicolon
+r_extern
+r_int
+id|pci_read_irq_line
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 )paren
 suffix:semicolon
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */
