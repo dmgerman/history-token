@@ -1415,6 +1415,13 @@ id|list_head
 id|dma_pools
 suffix:semicolon
 multiline_comment|/* dma pools (if dma&squot;ble) */
+DECL|member|dma_mem
+r_struct
+id|dma_coherent_mem
+op_star
+id|dma_mem
+suffix:semicolon
+multiline_comment|/* internal for coherent mem&n;&t;&t;&t;&t;&t;     override */
 DECL|member|release
 r_void
 (paren
