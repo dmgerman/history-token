@@ -1277,6 +1277,10 @@ id|symbol
 op_star
 id|s
 suffix:semicolon
+r_int
+r_int
+id|crc
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1320,6 +1324,14 @@ op_eq
 l_int|0
 )paren
 (brace
+id|crc
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|sym-&gt;st_value
+suffix:semicolon
 id|add_exported_symbol
 c_func
 (paren
@@ -1330,7 +1342,7 @@ comma
 id|mod
 comma
 op_amp
-id|sym-&gt;st_value
+id|crc
 )paren
 suffix:semicolon
 id|modversions
