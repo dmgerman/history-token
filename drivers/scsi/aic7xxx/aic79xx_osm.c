@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#113 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#115 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 multiline_comment|/*&n; * This is the only file where module.h should&n; * embed module global version info.&n; */
 DECL|macro|AHD_MODVERSION_FILE
 mdefine_line|#define AHD_MODVERSION_FILE
@@ -2454,7 +2454,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************** Macros **************************************/
 DECL|macro|BUILD_SCSIID
-mdefine_line|#define BUILD_SCSIID(ahd, cmd)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((((cmd)-&gt;target &lt;&lt; TID_SHIFT) &amp; TID) | (ahd)-&gt;our_id)
+mdefine_line|#define BUILD_SCSIID(ahd, cmd)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((((cmd)-&gt;device-&gt;id &lt;&lt; TID_SHIFT) &amp; TID) | (ahd)-&gt;our_id)
 multiline_comment|/************************  Host template entry points *************************/
 r_static
 r_int
@@ -9718,13 +9718,13 @@ op_star
 id|ahd
 )paren
 (brace
-r_int
-id|i
+id|u_int
+id|target_id
 suffix:semicolon
-r_int
+id|u_int
 id|numtarg
 suffix:semicolon
-id|i
+id|target_id
 op_assign
 l_int|0
 suffix:semicolon
@@ -9785,11 +9785,11 @@ r_for
 c_loop
 (paren
 suffix:semicolon
-id|i
+id|target_id
 OL
 id|numtarg
 suffix:semicolon
-id|i
+id|target_id
 op_increment
 )paren
 (brace
@@ -9807,27 +9807,6 @@ id|ahd_tmode_tstate
 op_star
 id|tstate
 suffix:semicolon
-id|u_int
-id|our_id
-suffix:semicolon
-id|u_int
-id|target_id
-suffix:semicolon
-r_char
-id|channel
-suffix:semicolon
-id|channel
-op_assign
-l_char|&squot;A&squot;
-suffix:semicolon
-id|our_id
-op_assign
-id|ahd-&gt;our_id
-suffix:semicolon
-id|target_id
-op_assign
-id|i
-suffix:semicolon
 id|tinfo
 op_assign
 id|ahd_fetch_transinfo
@@ -9835,9 +9814,9 @@ c_func
 (paren
 id|ahd
 comma
-id|channel
+l_char|&squot;A&squot;
 comma
-id|our_id
+id|ahd-&gt;our_id
 comma
 id|target_id
 comma
@@ -9851,13 +9830,13 @@ c_func
 op_amp
 id|devinfo
 comma
-id|our_id
+id|ahd-&gt;our_id
 comma
 id|target_id
 comma
 id|CAM_LUN_WILDCARD
 comma
-id|channel
+l_char|&squot;A&squot;
 comma
 id|ROLE_INITIATOR
 )paren
@@ -16240,6 +16219,7 @@ id|ahd_debug
 op_amp
 id|AHD_SHOW_DV
 )paren
+(brace
 id|printf
 c_func
 (paren
@@ -16257,6 +16237,13 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+id|ahd_dump_card_state
+c_func
+(paren
+id|ahd
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Guard against &quot;done race&quot;.  No action is&n;&t; * required if we just completed.&n;&t; */
 r_if
