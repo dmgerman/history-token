@@ -1256,7 +1256,7 @@ suffix:semicolon
 multiline_comment|/* GCC needs that stuff */
 id|next
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 (paren
@@ -1305,7 +1305,7 @@ suffix:semicolon
 multiline_comment|/* GCC needs that stuff */
 id|next
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 (paren
@@ -1460,7 +1460,7 @@ op_rshift
 l_int|2
 )braket
 op_assign
-id|CT_LE_L
+id|cpu_to_le32
 c_func
 (paren
 id|new_value
@@ -1497,7 +1497,7 @@ op_rshift
 l_int|1
 )braket
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|new_value

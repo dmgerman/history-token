@@ -4085,7 +4085,7 @@ suffix:semicolon
 )brace
 id|logical_sector_size
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|get_unaligned
@@ -4337,7 +4337,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t know yet */
 id|sbi-&gt;fat_start
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|b-&gt;reserved
@@ -4345,7 +4345,7 @@ id|b-&gt;reserved
 suffix:semicolon
 id|sbi-&gt;fat_length
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|b-&gt;fat_length
@@ -4392,7 +4392,7 @@ l_int|32
 suffix:semicolon
 id|sbi-&gt;fat_length
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|b-&gt;fat32_length
@@ -4400,7 +4400,7 @@ id|b-&gt;fat32_length
 suffix:semicolon
 id|sbi-&gt;root_cluster
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|b-&gt;root_cluster
@@ -4413,7 +4413,7 @@ suffix:semicolon
 multiline_comment|/* MC - if info_sector is 0, don&squot;t multiply by 0 */
 id|sbi-&gt;fsinfo_sector
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|b-&gt;info_sector
@@ -4496,13 +4496,13 @@ l_string|&quot;FAT: Did not find valid FSINFO signature.&bslash;n&quot;
 l_string|&quot;     Found signature1 0x%08x signature2 0x%08x&quot;
 l_string|&quot; (sector = %lu)&bslash;n&quot;
 comma
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;signature1
 )paren
 comma
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;signature2
@@ -4516,7 +4516,7 @@ r_else
 (brace
 id|sbi-&gt;free_clusters
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;free_clusters
@@ -4524,7 +4524,7 @@ id|fsinfo-&gt;free_clusters
 suffix:semicolon
 id|sbi-&gt;prev_free
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|fsinfo-&gt;next_cluster
@@ -4568,7 +4568,7 @@ id|sbi-&gt;fat_length
 suffix:semicolon
 id|sbi-&gt;dir_entries
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|get_unaligned
@@ -4641,7 +4641,7 @@ id|rootdir_sectors
 suffix:semicolon
 id|total_sectors
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|get_unaligned
@@ -4665,7 +4665,7 @@ l_int|0
 )paren
 id|total_sectors
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|b-&gt;total_sect
@@ -5785,7 +5785,7 @@ id|inode
 op_member_access_from_pointer
 id|i_start
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;start
@@ -5807,7 +5807,7 @@ op_member_access_from_pointer
 id|i_start
 op_or_assign
 (paren
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;starthi
@@ -5917,7 +5917,7 @@ id|inode
 op_member_access_from_pointer
 id|i_start
 op_assign
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;start
@@ -5939,7 +5939,7 @@ op_member_access_from_pointer
 id|i_start
 op_or_assign
 (paren
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;starthi
@@ -5966,7 +5966,7 @@ id|i_start
 suffix:semicolon
 id|inode-&gt;i_size
 op_assign
-id|CF_LE_L
+id|le32_to_cpu
 c_func
 (paren
 id|de-&gt;size
@@ -6064,13 +6064,13 @@ op_assign
 id|date_dos2unix
 c_func
 (paren
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;time
 )paren
 comma
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;date
@@ -6097,13 +6097,13 @@ c_cond
 id|date_dos2unix
 c_func
 (paren
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;ctime
 )paren
 comma
-id|CF_LE_W
+id|le16_to_cpu
 c_func
 (paren
 id|de-&gt;cdate
@@ -6342,7 +6342,7 @@ id|ATTR_NONE
 suffix:semicolon
 id|raw_entry-&gt;size
 op_assign
-id|CT_LE_L
+id|cpu_to_le32
 c_func
 (paren
 id|inode-&gt;i_size
@@ -6367,7 +6367,7 @@ id|i_attrs
 suffix:semicolon
 id|raw_entry-&gt;start
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
@@ -6381,7 +6381,7 @@ id|i_logstart
 suffix:semicolon
 id|raw_entry-&gt;starthi
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I

@@ -116,7 +116,7 @@ mdefine_line|#define FAT_FSINFO_SIG1&t;0x41615252
 DECL|macro|FAT_FSINFO_SIG2
 mdefine_line|#define FAT_FSINFO_SIG2&t;0x61417272
 DECL|macro|IS_FSINFO
-mdefine_line|#define IS_FSINFO(x)&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t;&bslash;&n;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
+mdefine_line|#define IS_FSINFO(x)&t;(le32_to_cpu((x)-&gt;signature1) == FAT_FSINFO_SIG1 &bslash;&n;&t;&t;&t; &amp;&amp; le32_to_cpu((x)-&gt;signature2) == FAT_FSINFO_SIG2)
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|VFAT_IOCTL_READDIR_BOTH
 mdefine_line|#define&t;VFAT_IOCTL_READDIR_BOTH&t;&t;_IOR(&squot;r&squot;, 1, struct dirent [2])

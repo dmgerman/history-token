@@ -4471,7 +4471,7 @@ l_int|0
 dot
 id|start
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
@@ -4490,7 +4490,7 @@ l_int|0
 dot
 id|starthi
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
@@ -4511,7 +4511,7 @@ l_int|1
 dot
 id|start
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
@@ -4530,7 +4530,7 @@ l_int|1
 dot
 id|starthi
 op_assign
-id|CT_LE_W
+id|cpu_to_le16
 c_func
 (paren
 id|MSDOS_I
