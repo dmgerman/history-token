@@ -1765,8 +1765,7 @@ id|link-&gt;irq.possible
 l_int|0
 )braket
 suffix:semicolon
-)brace
-multiline_comment|/* &n;&t; * Select the best IRQ.  This is done in reverse to promote &n;&t; * the use of IRQs 9, 10, 11, and &gt;15.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Select the best IRQ.  This is done in reverse to promote&n;&t;&t; * the use of IRQs 9, 10, 11, and &gt;15.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1809,6 +1808,7 @@ id|link-&gt;irq.possible
 id|i
 )braket
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Attempt to enable the link device at this IRQ. */
 r_if
