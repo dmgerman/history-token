@@ -400,6 +400,9 @@ id|ecx
 comma
 id|edx
 suffix:semicolon
+id|u32
+id|try_hi
+suffix:semicolon
 r_struct
 id|cpuinfo_x86
 op_star
@@ -580,15 +583,28 @@ op_amp
 id|edx
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* try decreasing in 10% steps, some processors react only&n;&t; * on some barrier values */
+r_for
+c_loop
 (paren
+id|try_hi
+op_assign
+l_int|80
+suffix:semicolon
+id|try_hi
+OG
+l_int|0
+op_logical_and
 id|ecx
 OG
 l_int|90
+suffix:semicolon
+id|try_hi
+op_sub_assign
+l_int|10
 )paren
 (brace
-multiline_comment|/* set to 0 to 80 perf_pctg */
+multiline_comment|/* set to 0 to try_hi perf_pctg */
 id|msr_lo
 op_and_assign
 l_int|0xFFFFFF80
@@ -603,7 +619,7 @@ l_int|0
 suffix:semicolon
 id|msr_hi
 op_or_assign
-l_int|80
+id|try_hi
 suffix:semicolon
 id|wrmsr
 c_func
