@@ -1522,12 +1522,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.teles3.cfg_reg
 comma
 l_int|8
+comma
+l_string|&quot;S0Box parallel I/O&quot;
 )paren
 )paren
 (brace
@@ -1553,17 +1556,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_else
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.teles3.cfg_reg
-comma
-l_int|8
-comma
-l_string|&quot;S0Box parallel I/O&quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
