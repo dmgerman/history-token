@@ -1,17 +1,13 @@
-multiline_comment|/*&n; * $Id: cx88.h,v 1.37 2004/10/12 07:33:22 kraxel Exp $&n; *&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88.h,v 1.40 2004/11/03 09:04:51 kraxel Exp $&n; *&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;dvbdev.h&gt;
-macro_line|#include &lt;dmxdev.h&gt;
-macro_line|#include &lt;dvb_demux.h&gt;
-macro_line|#include &lt;dvb_net.h&gt;
-macro_line|#include &lt;dvb_frontend.h&gt;
-macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/video-buf.h&gt;
+macro_line|#include &lt;media/video-buf-dvb.h&gt;
 macro_line|#include &quot;btcx-risc.h&quot;
 macro_line|#include &quot;cx88-reg.h&quot;
 macro_line|#include &lt;linux/version.h&gt;
@@ -306,6 +302,8 @@ DECL|macro|CX88_BOARD_CONEXANT_DVB_T1
 mdefine_line|#define CX88_BOARD_CONEXANT_DVB_T1         19
 DECL|macro|CX88_BOARD_PROVIDEO_PV259
 mdefine_line|#define CX88_BOARD_PROVIDEO_PV259          20
+DECL|macro|CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS
+mdefine_line|#define CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS 21
 DECL|enum|cx88_itype
 r_enum
 id|cx88_itype
@@ -889,18 +887,6 @@ DECL|struct|cx8802_suspend_state
 r_struct
 id|cx8802_suspend_state
 (brace
-DECL|member|pci_cfg
-id|u32
-id|pci_cfg
-(braket
-l_int|64
-op_div
-r_sizeof
-(paren
-id|u32
-)paren
-)braket
-suffix:semicolon
 DECL|member|disabled
 r_int
 id|disabled
@@ -955,19 +941,6 @@ DECL|member|ts_packet_count
 id|u32
 id|ts_packet_count
 suffix:semicolon
-multiline_comment|/* error stats */
-DECL|member|stopper_count
-id|u32
-id|stopper_count
-suffix:semicolon
-DECL|member|error_count
-id|u32
-id|error_count
-suffix:semicolon
-DECL|member|timeout_count
-id|u32
-id|timeout_count
-suffix:semicolon
 multiline_comment|/* other global state info */
 DECL|member|state
 r_struct
@@ -991,51 +964,10 @@ id|u32
 id|mailbox
 suffix:semicolon
 multiline_comment|/* for dvb only */
-DECL|member|dvb_adapter
+DECL|member|dvb
 r_struct
-id|dvb_adapter
-op_star
-id|dvb_adapter
-suffix:semicolon
-DECL|member|dvbq
-r_struct
-id|videobuf_queue
-id|dvbq
-suffix:semicolon
-DECL|member|dvb_thread
-r_struct
-id|task_struct
-op_star
-id|dvb_thread
-suffix:semicolon
-DECL|member|demux
-r_struct
-id|dvb_demux
-id|demux
-suffix:semicolon
-DECL|member|dmxdev
-r_struct
-id|dmxdev
-id|dmxdev
-suffix:semicolon
-DECL|member|fe_hw
-r_struct
-id|dmx_frontend
-id|fe_hw
-suffix:semicolon
-DECL|member|fe_mem
-r_struct
-id|dmx_frontend
-id|fe_mem
-suffix:semicolon
-DECL|member|dvbnet
-r_struct
-id|dvb_net
-id|dvbnet
-suffix:semicolon
-DECL|member|nfeeds
-r_int
-id|nfeeds
+id|videobuf_dvb
+id|dvb
 suffix:semicolon
 DECL|member|fe_handle
 r_void
