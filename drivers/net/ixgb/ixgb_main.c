@@ -74,6 +74,22 @@ comma
 l_int|0
 )brace
 comma
+(brace
+id|INTEL_VENDOR_ID
+comma
+id|IXGB_DEVICE_ID_82597EX_LR
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* required last entry */
 (brace
 l_int|0
@@ -2194,13 +2210,21 @@ op_logical_or
 (paren
 id|hw-&gt;device_id
 op_eq
+id|IXGB_DEVICE_ID_82597EX_LR
+)paren
+op_logical_or
+(paren
+id|hw-&gt;device_id
+op_eq
 id|IXGB_DEVICE_ID_82597EX_SR
 )paren
 )paren
+(brace
 id|hw-&gt;mac_type
 op_assign
 id|ixgb_82597
 suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/* should never have loaded on this device */

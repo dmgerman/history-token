@@ -571,6 +571,21 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|IXGB_DEVICE_ID_82597EX_LR
+suffix:colon
+id|DEBUGOUT
+c_func
+(paren
+l_string|&quot;Identified G6104 optics&bslash;n&quot;
+)paren
+suffix:semicolon
+id|phy_type
+op_assign
+id|ixgb_phy_type_g6104
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DEBUGOUT

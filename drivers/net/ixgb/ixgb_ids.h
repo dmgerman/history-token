@@ -23,6 +23,8 @@ DECL|macro|IXGB_SUBDEVICE_ID_A12F
 mdefine_line|#define IXGB_SUBDEVICE_ID_A12F  0xA12F
 DECL|macro|IXGB_SUBDEVICE_ID_A02F
 mdefine_line|#define IXGB_SUBDEVICE_ID_A02F  0xA02F
+DECL|macro|IXGB_DEVICE_ID_82597EX_LR
+mdefine_line|#define IXGB_DEVICE_ID_82597EX_LR   0x1B48
 macro_line|#endif&t;&t;&t;&t;/* #ifndef _IXGB_IDS_H_ */
 multiline_comment|/* End of File */
 eof
