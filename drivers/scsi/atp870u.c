@@ -16260,7 +16260,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0xFFFFFFUL
+l_int|0xFFFFFFFFUL
 )paren
 )paren
 (brace
