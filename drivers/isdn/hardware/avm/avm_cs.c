@@ -1488,20 +1488,6 @@ op_star
 id|link
 )paren
 (brace
-multiline_comment|/*&n;       If the device is currently in use, we won&squot;t release until it&n;       is actually closed.&n;    */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|b1pcmcia_delcard
 c_func
 (paren

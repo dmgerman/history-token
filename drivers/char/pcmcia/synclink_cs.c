@@ -2681,34 +2681,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_level
-op_ge
-id|DEBUG_LEVEL_INFO
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;synclink_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Unlink the device chain */
 id|link-&gt;dev
 op_assign
