@@ -407,7 +407,7 @@ id|e100_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;2.1.29-k3&quot;
+l_string|&quot;2.1.29-k4&quot;
 suffix:semicolon
 DECL|variable|e100_full_driver_name
 r_const
@@ -707,7 +707,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|e100_tco_walkaround
+id|e100_tco_workaround
 c_func
 (paren
 r_struct
@@ -5028,8 +5028,8 @@ suffix:semicolon
 r_static
 r_void
 id|__devinit
-DECL|function|e100_tco_walkaround
-id|e100_tco_walkaround
+DECL|function|e100_tco_workaround
+id|e100_tco_workaround
 c_func
 (paren
 r_struct
@@ -5075,6 +5075,8 @@ c_func
 id|HZ
 op_div
 l_int|50
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* disable interrupts since they are enabled */
@@ -5095,7 +5097,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|1000
+l_int|100
 suffix:semicolon
 id|i
 op_increment
@@ -5125,7 +5127,9 @@ c_func
 (paren
 id|HZ
 op_div
-l_int|1000
+l_int|100
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5139,7 +5143,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|500
+l_int|50
 suffix:semicolon
 id|i
 op_increment
@@ -5173,7 +5177,9 @@ c_func
 (paren
 id|HZ
 op_div
-l_int|1000
+l_int|100
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5213,7 +5219,7 @@ comma
 id|PORT_SELECTIVE_RESET
 )paren
 suffix:semicolon
-multiline_comment|/* Only 82559 or above needs TCO walkaround */
+multiline_comment|/* Only 82559 or above needs TCO workaround */
 r_if
 c_cond
 (paren
@@ -5221,7 +5227,7 @@ id|bdp-&gt;rev_id
 op_ge
 id|D101MA_REV_ID
 )paren
-id|e100_tco_walkaround
+id|e100_tco_workaround
 c_func
 (paren
 id|bdp
