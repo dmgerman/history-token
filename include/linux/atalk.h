@@ -648,6 +648,57 @@ suffix:semicolon
 macro_line|#endif /* MODULE */
 DECL|macro|at_sk
 mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;protinfo)
+r_extern
+r_struct
+id|sock
+op_star
+id|atalk_sockets
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|atalk_sockets_lock
+suffix:semicolon
+r_extern
+r_struct
+id|atalk_route
+op_star
+id|atalk_routes
+suffix:semicolon
+r_extern
+id|rwlock_t
+id|atalk_routes_lock
+suffix:semicolon
+r_extern
+r_struct
+id|atalk_iface
+op_star
+id|atalk_interfaces
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|atalk_interfaces_lock
+suffix:semicolon
+r_extern
+r_struct
+id|atalk_route
+id|atrtr_default
+suffix:semicolon
+r_extern
+r_int
+id|atalk_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|atalk_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_ATALK_H__ */
 eof
