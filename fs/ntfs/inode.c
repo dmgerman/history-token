@@ -2764,11 +2764,26 @@ multiline_comment|/*&n;&t;&t; * If write extends beyond _allocated_ size, extend
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|attr-&gt;resident
+op_logical_and
 id|offset
 op_plus
 id|l
 OG
 id|attr-&gt;allocated
+)paren
+op_logical_or
+(paren
+id|attr-&gt;resident
+op_logical_and
+id|offset
+op_plus
+id|l
+OG
+id|attr-&gt;size
+)paren
 )paren
 (brace
 id|error
@@ -2794,7 +2809,14 @@ r_return
 id|error
 suffix:semicolon
 )brace
-r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|attr-&gt;resident
+)paren
+(brace
+multiline_comment|/* Has amount of data increased? */
 r_if
 c_cond
 (paren
@@ -2804,14 +2826,13 @@ id|l
 OG
 id|attr-&gt;size
 )paren
-multiline_comment|/* If amount of data has increased: update. */
 id|attr-&gt;size
 op_assign
 id|offset
 op_plus
 id|l
 suffix:semicolon
-multiline_comment|/* If amount of initialised data has increased: update. */
+multiline_comment|/* Has amount of initialised data increased? */
 r_if
 c_cond
 (paren
@@ -2822,13 +2843,14 @@ OG
 id|attr-&gt;initialized
 )paren
 (brace
-multiline_comment|/* FIXME: Zero-out the section between the old&n;&t;&t;&t; * initialised length and the write start. (AIA) */
+multiline_comment|/* FIXME: Clear the section between the old&n;&t;&t;&t; &t; * initialised length and the write start.&n;&t;&t;&t;&t; * (AIA) */
 id|attr-&gt;initialized
 op_assign
 id|offset
 op_plus
 id|l
 suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -2924,11 +2946,9 @@ id|dest-&gt;size
 op_assign
 id|chunk
 op_assign
-id|offset
-op_plus
-id|l
-op_minus
 id|attr-&gt;initialized
+op_minus
+id|offset
 suffix:semicolon
 id|error
 op_assign
@@ -2948,9 +2968,30 @@ r_if
 c_cond
 (paren
 id|error
+op_logical_or
+(paren
+id|dest-&gt;size
+op_ne
+id|chunk
+op_logical_and
+(paren
+id|error
+op_assign
+op_minus
+id|EIO
+comma
+l_int|1
+)paren
+)paren
 )paren
 r_return
 id|error
+suffix:semicolon
+id|dest-&gt;size
+op_add_assign
+id|l
+op_minus
+id|chunk
 suffix:semicolon
 r_return
 id|ntfs_read_zero
@@ -3452,6 +3493,7 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* -2 = error, -1 = hole, &gt;= 0 means real disk cluster (lcn). */
 DECL|function|ntfs_vcn_to_lcn
 r_int
 id|ntfs_vcn_to_lcn
@@ -3484,7 +3526,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* It&squot;s hard to give an error code. */
 r_if
 c_cond
 (paren
@@ -3503,7 +3544,7 @@ id|ATTR_IS_ENCRYPTED
 )paren
 r_return
 op_minus
-l_int|1
+l_int|2
 suffix:semicolon
 r_if
 c_cond
@@ -3519,9 +3560,8 @@ id|ino-&gt;vol-&gt;cluster_size_bits
 )paren
 r_return
 op_minus
-l_int|1
+l_int|2
 suffix:semicolon
-multiline_comment|/*&n;&t; * For Linux, block number 0 represents a hole. - No problem as we do&n;&t; * not support bmap in any form whatsoever. The FIBMAP sys call is&n;&t; * deprecated anyway and NTFS is not a block based file system so&n;&t; * allowing bmapping is complete and utter garbage IMO. Use mmap once&n;&t; * we implement it... (AIA)&n;&t; */
 r_if
 c_cond
 (paren
@@ -3535,7 +3575,8 @@ op_lshift
 id|ino-&gt;vol-&gt;cluster_size_bits
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -3569,7 +3610,28 @@ id|rnum
 dot
 id|len
 suffix:semicolon
-multiline_comment|/* We need to cope with sparse runs. (AIA) */
+r_if
+c_cond
+(paren
+id|data-&gt;d.r.runlist
+(braket
+id|rnum
+)braket
+dot
+id|lcn
+op_ge
+l_int|0
+)paren
+r_return
+id|data-&gt;d.r.runlist
+(braket
+id|rnum
+)braket
+dot
+id|lcn
+op_plus
+id|vcn
+suffix:semicolon
 r_return
 id|data-&gt;d.r.runlist
 (braket

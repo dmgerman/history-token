@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/ntfs_fs.h&gt;
@@ -5103,6 +5104,8 @@ r_int
 id|i
 comma
 id|to_read
+comma
+id|blocksize
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -5145,15 +5148,51 @@ id|options
 r_goto
 id|ntfs_read_super_vol
 suffix:semicolon
-multiline_comment|/* Assume a 512 bytes block device for now. */
+id|blocksize
+op_assign
+id|get_hardsect_size
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|blocksize
+OL
+l_int|512
+)paren
+id|blocksize
+op_assign
+l_int|512
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|set_blocksize
 c_func
 (paren
 id|sb-&gt;s_dev
 comma
-l_int|512
+id|blocksize
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+l_string|&quot;Unable to set blocksize %d.&bslash;n&quot;
+comma
+id|blocksize
 )paren
 suffix:semicolon
+r_goto
+id|ntfs_read_super_vol
+suffix:semicolon
+)brace
 multiline_comment|/* Read the super block (boot block). */
 r_if
 c_cond
@@ -5169,7 +5208,7 @@ id|sb-&gt;s_dev
 comma
 l_int|0
 comma
-l_int|512
+id|blocksize
 )paren
 )paren
 )paren
@@ -5192,7 +5231,7 @@ comma
 l_string|&quot;Done reading boot block&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Check for &squot;NTFS&squot; magic number */
+multiline_comment|/* Check for valid &squot;NTFS&squot; boot sector. */
 r_if
 c_cond
 (paren
@@ -5272,7 +5311,7 @@ comma
 id|vol-&gt;mft_lcn
 )paren
 suffix:semicolon
-id|bforget
+id|brelse
 c_func
 (paren
 id|bh
@@ -5318,28 +5357,17 @@ id|sb-&gt;s_blocksize
 op_assign
 id|vol-&gt;cluster_size
 suffix:semicolon
-r_for
-c_loop
+id|sb-&gt;s_blocksize_bits
+op_assign
+id|vol-&gt;cluster_size_bits
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|i
-op_assign
-id|sb-&gt;s_blocksize
-comma
-id|sb-&gt;s_blocksize_bits
-op_assign
-l_int|0
-suffix:semicolon
-id|i
+id|blocksize
 op_ne
-l_int|1
-suffix:semicolon
-id|i
-op_rshift_assign
-l_int|1
-)paren
-id|sb-&gt;s_blocksize_bits
-op_increment
-suffix:semicolon
+id|vol-&gt;cluster_size
+op_logical_and
 id|set_blocksize
 c_func
 (paren
@@ -5347,7 +5375,20 @@ id|sb-&gt;s_dev
 comma
 id|sb-&gt;s_blocksize
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+l_string|&quot;Cluster size too small for device.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|ntfs_read_super_unl
+suffix:semicolon
+)brace
 id|ntfs_debug
 c_func
 (paren

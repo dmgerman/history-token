@@ -86,17 +86,9 @@ id|sysctl_overcommit_memory
 r_return
 l_int|1
 suffix:semicolon
+multiline_comment|/* The page cache contains buffer pages these days.. */
 id|free
 op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-suffix:semicolon
-id|free
-op_add_assign
 id|atomic_read
 c_func
 (paren
