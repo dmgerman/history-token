@@ -24,8 +24,41 @@ macro_line|#if defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;asm/s390mach.h&gt;
 macro_line|#include &lt;asm/ccwcache.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_DIO
+macro_line|#include &lt;linux/dio.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_ZORRO
+macro_line|#include &lt;linux/zorro.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#  include &lt;asm/mtrr.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUBUS
+macro_line|#include &lt;linux/nubus.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISAPNP
+macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_IRDA
+r_extern
+r_int
+id|irda_proto_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|irda_device_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/smp.h&gt;
@@ -105,6 +138,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|ppc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|sysctl_init
 c_func
 (paren
@@ -114,6 +155,14 @@ suffix:semicolon
 r_extern
 r_void
 id|signals_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|init_pcmcia_ds
 c_func
 (paren
 r_void
@@ -137,6 +186,14 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+r_extern
+r_void
+id|ecard_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_SYSVIPC)
 r_extern
 r_void
@@ -1402,6 +1459,76 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+id|pci_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+id|sbus_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_PPC)
+id|ppc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MCA
+id|mca_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_ACORN
+id|ecard_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ZORRO
+id|zorro_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_DIO
+id|dio_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUBUS
+id|nubus_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISAPNP
+id|isapnp_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_TC
+id|tc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Networking initialization needs a process context */
 id|sock_init
 c_func
@@ -1418,6 +1545,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA
+id|irda_proto_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irda_device_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Must be done after protocol initialization */
+macro_line|#endif
+macro_line|#ifdef CONFIG_PCMCIA
+id|init_pcmcia_ds
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Do this last */
+macro_line|#endif
 )brace
 r_extern
 r_void

@@ -4395,14 +4395,23 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|init_pcmcia_ds
-id|late_initcall
+macro_line|#ifdef MODULE
+DECL|function|init_module
+r_int
+id|__init
+id|init_module
 c_func
 (paren
+r_void
+)paren
+(brace
+r_return
 id|init_pcmcia_ds
+c_func
+(paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
+)brace
 DECL|function|cleanup_module
 r_void
 id|__exit

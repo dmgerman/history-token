@@ -7586,8 +7586,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|pci_init
-r_static
-r_int
+r_void
 id|__devinit
 id|pci_init
 c_func
@@ -7632,9 +7631,6 @@ id|pci_pm_callback
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|pci_setup
 r_static
@@ -7717,13 +7713,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|pci_init
-id|subsys_initcall
-c_func
-(paren
-id|pci_init
-)paren
-suffix:semicolon
 id|__setup
 c_func
 (paren

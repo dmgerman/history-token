@@ -1493,6 +1493,13 @@ id|dev_fn
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions used internally */
+r_void
+id|pci_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|pci_bus_exists
 c_func

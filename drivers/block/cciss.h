@@ -184,6 +184,16 @@ DECL|member|paddr
 id|__u32
 id|paddr
 suffix:semicolon
+DECL|member|io_mem_addr
+r_int
+r_int
+id|io_mem_addr
+suffix:semicolon
+DECL|member|io_mem_length
+r_int
+r_int
+id|io_mem_length
+suffix:semicolon
 DECL|member|cfgtable
 id|CfgTable_struct
 op_star
@@ -209,6 +219,10 @@ multiline_comment|/* Debug */
 DECL|member|num_luns
 r_int
 id|num_luns
+suffix:semicolon
+DECL|member|highest_lun
+r_int
+id|highest_lun
 suffix:semicolon
 DECL|member|usage_count
 r_int

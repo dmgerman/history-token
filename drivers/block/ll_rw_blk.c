@@ -5954,17 +5954,10 @@ id|blk_max_low_pfn
 op_assign
 id|max_low_pfn
 suffix:semicolon
-macro_line|#ifdef CONFIG_HIGHMEM
 id|blk_max_pfn
 op_assign
 id|max_pfn
 suffix:semicolon
-macro_line|#else
-id|blk_max_pfn
-op_assign
-id|max_low_pfn
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE)
 id|ide_init
 c_func

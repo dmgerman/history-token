@@ -538,5 +538,12 @@ DECL|macro|CCISS_REVALIDVOLS
 mdefine_line|#define CCISS_REVALIDVOLS  _IO(CCISS_IOC_MAGIC, 10)
 DECL|macro|CCISS_PASSTHRU
 mdefine_line|#define CCISS_PASSTHRU&t;   _IOWR(CCISS_IOC_MAGIC, 11, IOCTL_Command_struct)
+DECL|macro|CCISS_DEREGDISK
+mdefine_line|#define CCISS_DEREGDISK&t;   _IO(CCISS_IOC_MAGIC, 12)
+multiline_comment|/* no longer used... use REGNEWD instead */
+DECL|macro|CCISS_REGNEWDISK
+mdefine_line|#define CCISS_REGNEWDISK  _IOW(CCISS_IOC_MAGIC, 13, int)
+DECL|macro|CCISS_REGNEWD
+mdefine_line|#define CCISS_REGNEWD&t;   _IO(CCISS_IOC_MAGIC, 14)
 macro_line|#endif  
 eof

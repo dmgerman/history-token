@@ -2192,13 +2192,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ppc_init
-id|subsys_initcall
-c_func
-(paren
-id|ppc_init
-)paren
-suffix:semicolon
 multiline_comment|/* Warning, IO base is not yet inited */
 DECL|function|setup_arch
 r_void

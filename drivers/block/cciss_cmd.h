@@ -247,6 +247,16 @@ singleline_comment|// Read(10)
 DECL|macro|CCISS_WRITE
 mdefine_line|#define CCISS_WRITE  0x2a    
 singleline_comment|// Write(10)
+singleline_comment|// BMIC commands 
+DECL|macro|BMIC_READ
+mdefine_line|#define BMIC_READ 0x26
+DECL|macro|BMIC_WRITE
+mdefine_line|#define BMIC_WRITE 0x27
+DECL|macro|BMIC_CACHE_FLUSH
+mdefine_line|#define BMIC_CACHE_FLUSH 0xc2
+DECL|macro|CCISS_CACHE_FLUSH
+mdefine_line|#define CCISS_CACHE_FLUSH 0x01&t;
+singleline_comment|//C2 was already being used by CCISS
 singleline_comment|//Command List Structure
 DECL|union|_SCSI3Addr_struct
 r_typedef

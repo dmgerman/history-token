@@ -8848,22 +8848,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 id|irda_device_init
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Called by init/main.c when non-modular */
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 DECL|variable|irda_proto_init
-id|late_initcall
+id|module_init
 c_func
 (paren
 id|irda_proto_init
 )paren
 suffix:semicolon
+multiline_comment|/* If non-module, called from init/main.c */
+macro_line|#endif
 multiline_comment|/*&n; * Function irda_proto_cleanup (void)&n; *&n; *    Remove IrDA protocol layer&n; *&n; */
 macro_line|#ifdef MODULE
 DECL|function|irda_proto_cleanup

@@ -4079,13 +4079,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ecard_init
-id|subsys_initcall
-c_func
-(paren
-id|ecard_init
-)paren
-suffix:semicolon
 DECL|variable|ecard_startfind
 id|EXPORT_SYMBOL
 c_func
