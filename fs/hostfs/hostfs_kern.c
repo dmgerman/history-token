@@ -1277,12 +1277,6 @@ op_member_access_from_pointer
 id|fd
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Closing host fd in .delete_inode&bslash;n&quot;
-)paren
-suffix:semicolon
 id|HOSTFS_I
 c_func
 (paren
@@ -1339,6 +1333,7 @@ id|host_filename
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*XXX: This should not happen, probably. The check is here for&n;&t; * additional safety.*/
 r_if
 c_cond
 (paren
@@ -1370,6 +1365,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Closing host fd in .destroy_inode&bslash;n&quot;
 )paren
 suffix:semicolon
