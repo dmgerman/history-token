@@ -7441,45 +7441,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Only queuing supported in this ESP driver. */
-DECL|function|esp_command
-r_static
-r_int
-id|esp_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_struct
-id|esp
-op_star
-id|esp
-op_assign
-(paren
-r_struct
-id|esp
-op_star
-)paren
-id|SCpnt-&gt;device-&gt;host-&gt;hostdata
-suffix:semicolon
-id|ESPLOG
-c_func
-(paren
-(paren
-l_string|&quot;esp%d: esp_command() called...&bslash;n&quot;
-comma
-id|esp-&gt;esp_id
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Dump driver state. */
 DECL|function|esp_dump_cmd
 r_static
@@ -18120,11 +18081,6 @@ dot
 id|info
 op_assign
 id|esp_info
-comma
-dot
-id|command
-op_assign
-id|esp_command
 comma
 dot
 id|queuecommand

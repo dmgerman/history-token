@@ -173,11 +173,10 @@ op_star
 id|bond_proc_info_file
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
-DECL|member|next_bond
+DECL|member|bond_list
 r_struct
-id|bonding
-op_star
-id|next_bond
+id|list_head
+id|bond_list
 suffix:semicolon
 DECL|member|device
 r_struct

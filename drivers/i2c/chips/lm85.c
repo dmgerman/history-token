@@ -251,23 +251,22 @@ DECL|macro|INS_TO_REG
 mdefine_line|#define INS_TO_REG(n,val)&t;&t;(SENSORS_LIMIT(SCALE(val,lm85_scaling[n],192),0,255))
 DECL|macro|INSEXT_FROM_REG
 mdefine_line|#define INSEXT_FROM_REG(n,val,ext)&t;(SCALE((val)*4 + (ext),192*4,lm85_scaling[n]))
-multiline_comment|/*&n;#define INS_FROM_REG(n,val)&t;&t;(INSEXT_FROM_REG(n,val,0))&n;*/
 DECL|macro|INS_FROM_REG
-mdefine_line|#define INS_FROM_REG(n,val)&t;&t;( ( (val*4*lm85_scaling[n]) + (192*4/2) ) / (192*4) )
+mdefine_line|#define INS_FROM_REG(n,val)&t;&t;(INSEXT_FROM_REG(n,val,0))
 multiline_comment|/* FAN speed is measured using 90kHz clock */
 DECL|macro|FAN_TO_REG
 mdefine_line|#define FAN_TO_REG(val)&t;&t;(SENSORS_LIMIT( (val)&lt;=0?0: 5400000/(val),0,65534))
 DECL|macro|FAN_FROM_REG
 mdefine_line|#define FAN_FROM_REG(val)&t;((val)==0?-1:(val)==0xffff?0:5400000/(val))
-multiline_comment|/* Temperature is reported in .01 degC increments */
+multiline_comment|/* Temperature is reported in .001 degC increments */
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val)+50)/100,-127,127))
+mdefine_line|#define TEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val)+500)/1000,-127,127))
 DECL|macro|TEMPEXT_FROM_REG
-mdefine_line|#define TEMPEXT_FROM_REG(val,ext)&t;((val)*100 + (ext)*25)
+mdefine_line|#define TEMPEXT_FROM_REG(val,ext)&t;((val)*1000 + (ext)*250)
 DECL|macro|TEMP_FROM_REG
 mdefine_line|#define TEMP_FROM_REG(val)&t;&t;(TEMPEXT_FROM_REG(val,0))
 DECL|macro|EXTTEMP_TO_REG
-mdefine_line|#define EXTTEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT((val)/25,-127,127))
+mdefine_line|#define EXTTEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT((val)/250,-127,127))
 DECL|macro|PWM_TO_REG
 mdefine_line|#define PWM_TO_REG(val)&t;&t;&t;(SENSORS_LIMIT(val,0,255))
 DECL|macro|PWM_FROM_REG
@@ -1364,6 +1363,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -1401,6 +1409,13 @@ id|data-&gt;fan_min
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -1838,6 +1853,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -1875,6 +1899,13 @@ id|data-&gt;pwm
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -2169,6 +2200,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -2208,6 +2248,13 @@ id|data-&gt;in_min
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -2329,6 +2376,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -2368,6 +2424,13 @@ id|data-&gt;in_max
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -2586,6 +2649,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -2623,6 +2695,13 @@ id|data-&gt;temp_min
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -2742,6 +2821,15 @@ id|client
 suffix:semicolon
 r_int
 id|val
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|val
 op_assign
 id|simple_strtol
 c_func
@@ -2779,6 +2867,13 @@ id|data-&gt;temp_max
 (braket
 id|nr
 )braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return

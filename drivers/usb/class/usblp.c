@@ -967,7 +967,6 @@ id|status
 op_amp
 id|LP_PERRORP
 )paren
-(brace
 id|newerr
 op_assign
 l_int|3
@@ -995,7 +994,6 @@ id|newerr
 op_assign
 l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1542,8 +1540,6 @@ id|i
 suffix:semicolon
 r_int
 r_char
-id|lpstatus
-comma
 id|newChannel
 suffix:semicolon
 r_int
@@ -1680,8 +1676,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1802,8 +1798,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2055,8 +2051,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2160,8 +2156,8 @@ id|copy_to_user
 c_func
 (paren
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2236,8 +2232,7 @@ c_func
 (paren
 id|usblp
 comma
-op_amp
-id|lpstatus
+id|usblp-&gt;statusbuf
 )paren
 )paren
 (brace
@@ -2260,7 +2255,8 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|lpstatus
+op_star
+id|usblp-&gt;statusbuf
 suffix:semicolon
 r_if
 c_cond
@@ -2268,7 +2264,8 @@ c_cond
 id|copy_to_user
 (paren
 (paren
-r_int
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2322,6 +2319,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2710,6 +2708,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -3446,11 +3445,11 @@ l_int|NULL
 suffix:semicolon
 id|usblp-&gt;writeurb-&gt;transfer_flags
 op_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 id|usblp-&gt;readurb-&gt;transfer_flags
 op_assign
-id|URB_NO_DMA_MAP
+id|URB_NO_TRANSFER_DMA_MAP
 suffix:semicolon
 multiline_comment|/* Malloc write &amp; read buffers.  We somewhat wastefully&n;&t; * malloc both regardless of bidirectionality, because the&n;&t; * alternate setting can be changed later via an ioctl. */
 r_if

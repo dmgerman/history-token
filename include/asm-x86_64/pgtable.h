@@ -1354,6 +1354,8 @@ DECL|macro|pmd_bad
 mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PTE_MASK &amp; ~_PAGE_USER)) != _KERNPG_TABLE )
 DECL|macro|pfn_pmd
 mdefine_line|#define pfn_pmd(nr,prot) (__pmd(((nr) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot)))
+DECL|macro|pmd_pfn
+mdefine_line|#define pmd_pfn(x)  ((pmd_val(x) &gt;&gt; PAGE_SHIFT) &amp; __PHYSICAL_MASK)
 DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(pte) ((pte_val(pte) &amp; PHYSICAL_PAGE_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pgoff_to_pte
@@ -1483,10 +1485,16 @@ op_star
 id|pte_addr_t
 suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(addr)&t;(1)
-macro_line|#endif
+r_extern
+r_int
+id|kern_addr_valid
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
@@ -1495,5 +1503,10 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()      do { } while (0)
+multiline_comment|/* fs/proc/kcore.c */
+DECL|macro|kc_vaddr_to_offset
+mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) &amp; __VIRTUAL_MASK)
+DECL|macro|kc_offset_to_vaddr
+mdefine_line|#define&t;kc_offset_to_vaddr(o) &bslash;&n;   (((o) &amp; (1UL &lt;&lt; (__VIRTUAL_MASK_SHIFT-1))) ? ((o) | (~__VIRTUAL_MASK)) : (o))
 macro_line|#endif /* _X86_64_PGTABLE_H */
 eof

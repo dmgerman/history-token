@@ -12,7 +12,6 @@ id|message
 )paren
 suffix:semicolon
 r_void
-id|__init
 id|parisc_pdc_chassis_init
 c_func
 (paren

@@ -1141,5 +1141,13 @@ mdefine_line|#define dma_cache_wback(_start,_size)           do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)       do { } while (0)
 macro_line|# endif /* __KERNEL__ */
+multiline_comment|/*&n; * It makes no sense at all to have this BIO_VMERGE_BOUNDARY macro here.  Should be&n; * replaced by dma_merge_mask() or something of that sort.  Note: the only way&n; * BIO_VMERGE_BOUNDARY is used is to mask off bits.  Effectively, our definition gets&n; * expanded into:&n; *&n; *&t;addr &amp; ((ia64_max_iommu_merge_mask + 1) - 1) == (addr &amp; ia64_max_iommu_vmerge_mask)&n; *&n; * which is precisely what we want.&n; */
+r_extern
+r_int
+r_int
+id|ia64_max_iommu_merge_mask
+suffix:semicolon
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;(ia64_max_iommu_merge_mask + 1)
 macro_line|#endif /* _ASM_IA64_IO_H */
 eof

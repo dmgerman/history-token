@@ -9835,6 +9835,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|frequency_list
+r_static
 r_const
 r_int
 id|frequency_list

@@ -320,12 +320,6 @@ suffix:semicolon
 multiline_comment|/* IP protocol */
 r_int
 r_int
-DECL|member|rq_userset
-id|rq_userset
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* auth-&gt;setuser OK */
 DECL|member|rq_secure
 id|rq_secure
 suffix:colon
@@ -602,6 +596,14 @@ r_while
 c_loop
 (paren
 id|rqstp-&gt;rq_resused
+op_logical_and
+id|rqstp-&gt;rq_res.pages
+op_ne
+op_amp
+id|rqstp-&gt;rq_respages
+(braket
+id|rqstp-&gt;rq_resused
+)braket
 )paren
 (brace
 r_if
@@ -635,19 +637,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|rqstp-&gt;rq_res.pages
-op_eq
-op_amp
-id|rqstp-&gt;rq_respages
-(braket
-id|rqstp-&gt;rq_resused
-)braket
-)paren
-r_break
-suffix:semicolon
 )brace
 )brace
 DECL|function|svc_free_allpages
@@ -704,12 +693,6 @@ DECL|struct|svc_deferred_req
 r_struct
 id|svc_deferred_req
 (brace
-DECL|member|serv
-r_struct
-id|svc_serv
-op_star
-id|serv
-suffix:semicolon
 DECL|member|prot
 id|u32
 id|prot

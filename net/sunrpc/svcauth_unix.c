@@ -1018,6 +1018,7 @@ c_cond
 (paren
 id|dom
 )paren
+(brace
 id|ipm.m_client
 op_assign
 id|container_of
@@ -1031,6 +1032,11 @@ comma
 id|h
 )paren
 suffix:semicolon
+id|ipm.m_add_change
+op_assign
+id|ipm.m_client-&gt;addr_changes
+suffix:semicolon
+)brace
 r_else
 id|set_bit
 c_func
@@ -1044,10 +1050,6 @@ suffix:semicolon
 id|ipm.h.expiry_time
 op_assign
 id|expiry
-suffix:semicolon
-id|ipm.m_add_change
-op_assign
-id|ipm.m_client-&gt;addr_changes
 suffix:semicolon
 id|ipmp
 op_assign

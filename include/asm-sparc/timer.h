@@ -215,12 +215,12 @@ multiline_comment|/* FIXME: Make do_[gs]ettimeofday btfixup calls */
 id|BTFIXUPDEF_CALL
 c_func
 (paren
-r_void
+r_int
 comma
 id|bus_do_settimeofday
 comma
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren

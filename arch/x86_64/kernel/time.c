@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
@@ -37,21 +38,6 @@ id|spinlock_t
 id|i8253_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-r_extern
-r_int
-id|using_apic_timer
-suffix:semicolon
-r_extern
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
 suffix:semicolon
 DECL|macro|HPET_HACK_ENABLE_DANGEROUS
 macro_line|#undef HPET_HACK_ENABLE_DANGEROUS
@@ -335,16 +321,31 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * settimeofday() first undoes the correction that gettimeofday would do&n; * on the time, and then saves it. This is ugly, but has been like this for&n; * ages already.&n; */
 DECL|function|do_settimeofday
-r_void
+r_int
 id|do_settimeofday
 c_func
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|tv-&gt;tv_nsec
+op_ge
+id|NSEC_PER_SEC
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|write_seqlock_irq
 c_func
 (paren
@@ -352,12 +353,14 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_sub_assign
 id|do_gettimeoffset
 c_func
 (paren
 )paren
+op_star
+l_int|1000
 op_plus
 (paren
 id|jiffies
@@ -366,7 +369,7 @@ id|wall_jiffies
 )paren
 op_star
 (paren
-id|USEC_PER_SEC
+id|NSEC_PER_SEC
 op_div
 id|HZ
 )paren
@@ -374,14 +377,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 OL
 l_int|0
 )paren
 (brace
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_add_assign
-l_int|1000000
+id|NSEC_PER_SEC
 suffix:semicolon
 id|tv-&gt;tv_sec
 op_decrement
@@ -393,11 +396,7 @@ id|tv-&gt;tv_sec
 suffix:semicolon
 id|xtime.tv_nsec
 op_assign
-(paren
-id|tv-&gt;tv_usec
-op_star
-l_int|1000
-)paren
+id|tv-&gt;tv_nsec
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -427,6 +426,9 @@ id|clock_was_set
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be called 500&n; * ms after the second nowtime has started, because when nowtime is written&n; * into the registers of the CMOS clock, it will jump to the next second&n; * precisely 500 ms later. Check the Motorola MC146818A or Dallas DS12887 data&n; * sheet for details.&n; */

@@ -407,7 +407,18 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * We use physical apicids here, not logical, so just return the default&n; * physical broadcast to stop people from breaking us&n; */
+DECL|function|enable_apic_mode
+r_static
+r_inline
+r_void
+id|enable_apic_mode
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+multiline_comment|/*&n; * We use physical apicids here, not logical, so just return the default&n; * physical broadcast to stop people from breaking us&n; */
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline

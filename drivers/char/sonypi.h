@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;18
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;20
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
@@ -1181,6 +1181,13 @@ id|SONYPI_BUF_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* We enable input subsystem event forwarding if the input &n; * subsystem is compiled in, but only if sonypi is not into the&n; * kernel and input as a module... */
+macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+macro_line|#if ! (defined(CONFIG_SONYPI) &amp;&amp; defined(CONFIG_INPUT_MODULE))
+DECL|macro|SONYPI_USE_INPUT
+mdefine_line|#define SONYPI_USE_INPUT
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/* The name of the Jog Dial for the input device drivers */
 DECL|macro|SONYPI_INPUTNAME
 mdefine_line|#define SONYPI_INPUTNAME&t;&quot;Sony VAIO Jog Dial&quot;
@@ -1240,7 +1247,7 @@ DECL|member|model
 r_int
 id|model
 suffix:semicolon
-macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+macro_line|#ifdef SONYPI_USE_INPUT
 DECL|member|jog_dev
 r_struct
 id|input_dev
@@ -1263,16 +1270,26 @@ DECL|macro|ITERATIONS_SHORT
 mdefine_line|#define ITERATIONS_SHORT&t;10
 DECL|macro|wait_on_command
 mdefine_line|#define wait_on_command(quiet, command, iterations) { &bslash;&n;&t;unsigned int n = iterations; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at %s : %s (line %d)&bslash;n&quot;, __FILE__, __FUNCTION__, __LINE__); &bslash;&n;}
-macro_line|#ifndef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI
+r_extern
+r_int
+id|acpi_disabled
+suffix:semicolon
+DECL|macro|SONYPI_ACPI_ACTIVE
+mdefine_line|#define SONYPI_ACPI_ACTIVE (!acpi_disabled)
+macro_line|#else
+DECL|macro|SONYPI_ACPI_ACTIVE
+mdefine_line|#define SONYPI_ACPI_ACTIVE 0
+macro_line|#endif /* CONFIG_ACPI */
 r_extern
 r_int
 id|verbose
 suffix:semicolon
-DECL|function|ec_write
+DECL|function|sonypi_ec_write
 r_static
 r_inline
 r_int
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|u8
@@ -1282,6 +1299,22 @@ id|u8
 id|value
 )paren
 (brace
+macro_line|#ifdef CONFIG_ACPI_EC
+r_if
+c_cond
+(paren
+id|SONYPI_ACPI_ACTIVE
+)paren
+r_return
+id|ec_write
+c_func
+(paren
+id|addr
+comma
+id|value
+)paren
+suffix:semicolon
+macro_line|#endif
 id|wait_on_command
 c_func
 (paren
@@ -1374,11 +1407,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ec_read
+DECL|function|sonypi_ec_read
 r_static
 r_inline
 r_int
-id|ec_read
+id|sonypi_ec_read
 c_func
 (paren
 id|u8
@@ -1389,6 +1422,22 @@ op_star
 id|value
 )paren
 (brace
+macro_line|#ifdef CONFIG_ACPI_EC
+r_if
+c_cond
+(paren
+id|SONYPI_ACPI_ACTIVE
+)paren
+r_return
+id|ec_read
+c_func
+(paren
+id|addr
+comma
+id|value
+)paren
+suffix:semicolon
+macro_line|#endif
 id|wait_on_command
 c_func
 (paren
@@ -1466,7 +1515,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_ACPI */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SONYPI_PRIV_H_ */
 eof

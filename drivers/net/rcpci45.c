@@ -424,10 +424,9 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * Allocate and fill new device structure. &n;&t; * We need enough for struct net_device plus DPA plus the LAN &n;&t; * API private area, which requires a minimum of 16KB.  The top &n;&t; * of the allocated area will be assigned to struct net_device; &n;&t; * the next chunk will be assigned to DPA; and finally, the rest &n;&t; * will be assigned to the LAN API layer.&n;&t; */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
+c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 op_star
@@ -445,7 +444,7 @@ id|dev
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;(rcpci45 driver:) init_etherdev alloc failed&bslash;n&quot;
+l_string|&quot;(rcpci45 driver:) alloc_etherdev alloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|error
@@ -745,6 +744,22 @@ op_assign
 op_amp
 id|RCconfig
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|error
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+)paren
+r_goto
+id|err_out_free_region
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -771,11 +786,6 @@ id|pDpa-&gt;msgbuf_dma
 suffix:semicolon
 id|err_out_free_dev
 suffix:colon
-id|unregister_netdev
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|kfree
 (paren
 id|dev
@@ -1670,50 +1680,6 @@ id|RCreset_callback
 )paren
 suffix:semicolon
 )brace
-r_int
-DECL|function|broadcast_packet
-id|broadcast_packet
-(paren
-r_int
-r_char
-op_star
-id|address
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|6
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|address
-(braket
-id|i
-)braket
-op_ne
-l_int|0xff
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * RCrecv_callback()&n; * &n; * The receive packet callback routine.  This is called by&n; * RCProcI2OMsgQ() after the adapter posts buffers which have been&n; * filled (one ethernet packet per buffer).&n; */
 r_static
 r_void
@@ -2280,7 +2246,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;%s decrementing driver and closing interface&bslash;n&quot;
+l_string|&quot;%s shutting down interface&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -2295,9 +2261,6 @@ op_and_assign
 op_complement
 id|IFF_UP
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* FIXME: kill MOD_DEC_USE_COUNT, use dev_put */
 )brace
 r_else
 (brace

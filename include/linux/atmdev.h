@@ -1486,7 +1486,7 @@ id|tp
 )paren
 suffix:semicolon
 r_void
-id|atm_async_release_vcc
+id|vcc_release_async
 c_func
 (paren
 r_struct

@@ -11,15 +11,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-r_extern
-r_void
-id|load_gs_index
-c_func
-(paren
-r_int
-id|gs
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#ifdef CONFIG_SMP /* avoids &quot;defined but not used&quot; warnig */
 DECL|function|flush_ldt
 r_static

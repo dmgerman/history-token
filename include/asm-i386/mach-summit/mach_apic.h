@@ -412,6 +412,17 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|enable_apic_mode
+r_static
+r_inline
+r_void
+id|enable_apic_mode
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline

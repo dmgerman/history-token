@@ -6,8 +6,7 @@ DECL|macro|RAWV6_HTABLE_SIZE
 mdefine_line|#define RAWV6_HTABLE_SIZE&t;MAX_INET_PROTOS
 r_extern
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|raw_v6_htable
 (braket
 id|RAWV6_HTABLE_SIZE

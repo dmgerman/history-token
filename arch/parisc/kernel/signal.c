@@ -1422,7 +1422,9 @@ id|frame-&gt;tramp
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if CACHE_FLUSHING_IS_NOT_BROKEN
+DECL|macro|CACHE_FLUSHING_IS_NOT_BROKEN
+macro_line|#undef CACHE_FLUSHING_IS_NOT_BROKEN
+macro_line|#ifdef CACHE_FLUSHING_IS_NOT_BROKEN
 id|flush_user_icache_range
 c_func
 (paren

@@ -205,6 +205,17 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|enable_apic_mode
+r_static
+r_inline
+r_void
+id|enable_apic_mode
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|function|check_phys_apicid_present
 r_static
 r_inline

@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
 macro_line|#include &lt;asm/sn/prio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
-macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern
@@ -43,23 +42,17 @@ id|count
 suffix:semicolon
 DECL|macro|PCI_BUS_NO_1
 mdefine_line|#define PCI_BUS_NO_1 1
-DECL|variable|pic_devflag
-r_int
-id|pic_devflag
-op_assign
-id|D_MP
-suffix:semicolon
 r_extern
 r_int
 id|pcibr_attach2
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|bridge_t
 op_star
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -72,7 +65,7 @@ r_void
 id|pcibr_driver_reg_callback
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -86,7 +79,7 @@ r_void
 id|pcibr_driver_unreg_callback
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -95,49 +88,16 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_void
-DECL|function|pic_init
-id|pic_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|PCIBR_DEBUG_ALWAYS
-c_func
-(paren
-(paren
-id|PCIBR_DEBUG_INIT
-comma
-l_int|NULL
-comma
-l_string|&quot;pic_init()&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|xwidget_driver_register
-c_func
-(paren
-id|PIC_WIDGET_PART_NUM_BUS0
-comma
-id|PIC_WIDGET_MFGR_NUM
-comma
-l_string|&quot;pic_&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * copy inventory_t from conn_v to peer_conn_v&n; */
 r_int
 DECL|function|pic_bus1_inventory_dup
 id|pic_bus1_inventory_dup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn_v
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|peer_conn_v
 )paren
 (brace
@@ -178,8 +138,17 @@ suffix:semicolon
 id|bcopy
 c_func
 (paren
+(paren
+r_const
+r_char
+op_star
+)paren
 id|pinv
 comma
+(paren
+r_char
+op_star
+)paren
 id|peer_pinv
 comma
 r_sizeof
@@ -226,6 +195,9 @@ c_func
 (paren
 l_string|&quot;pic_bus1_inventory_dup: cannot get INFO_LBL_INVENT from 0x%lx&bslash;n &quot;
 comma
+(paren
+r_uint64
+)paren
 id|conn_v
 )paren
 suffix:semicolon
@@ -239,10 +211,10 @@ DECL|function|pic_bus1_widget_info_dup
 id|pic_bus1_widget_info_dup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn_v
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|peer_conn_v
 comma
 id|cnodeid_t
@@ -260,11 +232,7 @@ id|peer_path
 l_int|256
 )braket
 suffix:semicolon
-r_char
-op_star
-id|p
-suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|peer_hubv
 suffix:semicolon
 id|hubinfo_t
@@ -431,6 +399,9 @@ c_func
 l_string|&quot;pic_bus1_widget_info_dup: &quot;
 l_string|&quot;cannot get INFO_LBL_XWIDGET from 0x%lx&bslash;n&quot;
 comma
+(paren
+r_uint64
+)paren
 id|conn_v
 )paren
 suffix:semicolon
@@ -439,7 +410,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If this PIC is attached to two Cbricks (&quot;dual-ported&quot;) then&n; * attach each bus to opposite Cbricks.&n; *&n; * If successful, return a new vertex suitable for attaching the PIC bus.&n; * If not successful, return zero and both buses will attach to the&n; * vertex passed into pic_attach().&n; */
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|pic_bus1_redist
 id|pic_bus1_redist
 c_func
@@ -447,7 +418,7 @@ c_func
 id|nasid_t
 id|nasid
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn_v
 )paren
 (brace
@@ -489,7 +460,7 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|peer_conn_v
 suffix:semicolon
 r_int
@@ -532,7 +503,7 @@ id|xbow_peer
 suffix:semicolon
 id|pos
 op_assign
-id|devfs_generate_path
+id|hwgfs_generate_path
 c_func
 (paren
 id|conn_v
@@ -655,6 +626,9 @@ c_func
 (paren
 l_string|&quot;pic_attach: found unexpected vertex: 0x%lx&bslash;n&quot;
 comma
+(paren
+r_uint64
+)paren
 id|peer_conn_v
 )paren
 suffix:semicolon
@@ -783,7 +757,7 @@ DECL|function|pic_attach
 id|pic_attach
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn_v
 )paren
 (brace
@@ -803,13 +777,13 @@ op_star
 )paren
 l_int|0
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcibr_vhdl0
 comma
 id|pcibr_vhdl1
 op_assign
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 l_int|0
 suffix:semicolon
@@ -823,7 +797,7 @@ id|pcibr_soft_t
 )paren
 l_int|0
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn_v0
 comma
 id|conn_v1
@@ -907,8 +881,10 @@ multiline_comment|/* If dual-ported then split the two PIC buses across both Cbr
 r_if
 c_cond
 (paren
+(paren
 id|peer_conn_v
 op_assign
+(paren
 id|pic_bus1_redist
 c_func
 (paren
@@ -921,11 +897,13 @@ comma
 id|conn_v
 )paren
 )paren
+)paren
+)paren
 id|conn_v1
 op_assign
 id|peer_conn_v
 suffix:semicolon
-multiline_comment|/*&n;&t; * Create the vertex for the PCI buses, which week&n;&t; * will also use to hold the pcibr_soft and&n;&t; * which will be the &quot;master&quot; vertex for all the&n;&t; * pciio connection points we will hang off it.&n;&t; * This needs to happen before we call nic_bridge_vertex_info&n;&t; * as we are some of the *_vmc functions need access to the edges.&n;&t; *&n;&t; * Opening this vertex will provide access to&n;&t; * the Bridge registers themselves.&n;&t; */
+multiline_comment|/*&n;&t; * Create the vertex for the PCI buses, which we&n;&t; * will also use to hold the pcibr_soft and&n;&t; * which will be the &quot;master&quot; vertex for all the&n;&t; * pciio connection points we will hang off it.&n;&t; * This needs to happen before we call nic_bridge_vertex_info&n;&t; * as we are some of the *_vmc functions need access to the edges.&n;&t; *&n;&t; * Opening this vertex will provide access to&n;&t; * the Bridge registers themselves.&n;&t; */
 multiline_comment|/* FIXME: what should the hwgraph path look like ? */
 id|rc
 op_assign
@@ -1055,13 +1033,6 @@ id|bus1_soft-&gt;bs_peers_soft
 op_assign
 id|bus0_soft
 suffix:semicolon
-id|bus0_soft-&gt;bs_peers_soft
-op_assign
-(paren
-id|pcibr_soft_t
-)paren
-l_int|0
-suffix:semicolon
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -1149,12 +1120,6 @@ op_star
 id|pcibr_dmamap_addr
 comma
 (paren
-id|pciio_dmamap_list_f
-op_star
-)paren
-id|pcibr_dmamap_list
-comma
-(paren
 id|pciio_dmamap_done_f
 op_star
 )paren
@@ -1165,12 +1130,6 @@ id|pciio_dmatrans_addr_f
 op_star
 )paren
 id|pcibr_dmatrans_addr
-comma
-(paren
-id|pciio_dmatrans_list_f
-op_star
-)paren
-id|pcibr_dmatrans_list
 comma
 (paren
 id|pciio_dmamap_drain_f

@@ -547,6 +547,11 @@ l_int|0x23
 )paren
 suffix:semicolon
 )brace
+id|enable_apic_mode
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|disconnect_bsp_APIC
 r_void

@@ -11798,7 +11798,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|board.port
+id|ints
+(braket
+id|index
+)braket
 op_le
 l_int|0
 )paren
@@ -11851,7 +11854,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|board.membase
+id|ints
+(braket
+id|index
+)braket
 op_le
 l_int|0
 )paren

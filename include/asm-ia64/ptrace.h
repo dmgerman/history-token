@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PTRACE_H
 DECL|macro|_ASM_IA64_PTRACE_H
 mdefine_line|#define _ASM_IA64_PTRACE_H
-multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2003 Intel Co&n; *&t;Suresh Siddha &lt;suresh.b.siddha@intel.com&gt;&n; *&t;Fenghua Yu &lt;fenghua.yu@intel.com&gt;&n; *&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
 multiline_comment|/*&n; * When a user process is blocked, its state looks as follows:&n; *&n; *            +----------------------+&t;-------&t;IA64_STK_OFFSET&n; *     &t;      |&t;&t;&t;     |&t; ^&n; *            | struct pt_regs       |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *     &t;      |&t;   memory stack&t;     |&t; |&n; *&t;      |&t;(growing downwards)  |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *            | struct switch_stack  |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      |&t; register stack&t;     |&t; |&n; *&t;      |&t;(growing upwards)    |&t; |&n; *            |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |  ---&t;IA64_RBS_OFFSET&n; *            |  struct thread_info  |&t; |  ^&n; *&t;      +----------------------+&t; |  |&n; *&t;      |&t;&t;&t;     |&t; |  |&n; *            |  struct task_struct  |&t; |  |&n; * current -&gt; |&t;&t;&t;     |   |  |&n; *&t;      +----------------------+ -------&n; *&n; * Note that ar.ec is not saved explicitly in pt_reg or switch_stack.&n; * This is because ar.ec is saved as part of ar.pfs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
@@ -35,6 +35,54 @@ r_struct
 id|pt_regs
 (brace
 multiline_comment|/* The following registers are saved by SAVE_MIN: */
+DECL|member|b6
+r_int
+r_int
+id|b6
+suffix:semicolon
+multiline_comment|/* scratch */
+DECL|member|b7
+r_int
+r_int
+id|b7
+suffix:semicolon
+multiline_comment|/* scratch */
+DECL|member|ar_csd
+r_int
+r_int
+id|ar_csd
+suffix:semicolon
+multiline_comment|/* used by cmp8xchg16 (scratch) */
+DECL|member|ar_ssd
+r_int
+r_int
+id|ar_ssd
+suffix:semicolon
+multiline_comment|/* reserved for future use (scratch) */
+DECL|member|r8
+r_int
+r_int
+id|r8
+suffix:semicolon
+multiline_comment|/* scratch (return value register 0) */
+DECL|member|r9
+r_int
+r_int
+id|r9
+suffix:semicolon
+multiline_comment|/* scratch (return value register 1) */
+DECL|member|r10
+r_int
+r_int
+id|r10
+suffix:semicolon
+multiline_comment|/* scratch (return value register 2) */
+DECL|member|r11
+r_int
+r_int
+id|r11
+suffix:semicolon
+multiline_comment|/* scratch (return value register 3) */
 DECL|member|cr_ipsr
 r_int
 r_int
@@ -90,12 +138,12 @@ r_int
 id|pr
 suffix:semicolon
 multiline_comment|/* 64 predicate registers (1 bit each) */
-DECL|member|b6
+DECL|member|b0
 r_int
 r_int
-id|b6
+id|b0
 suffix:semicolon
-multiline_comment|/* scratch */
+multiline_comment|/* return pointer (bp) */
 DECL|member|loadrs
 r_int
 r_int
@@ -108,18 +156,6 @@ r_int
 id|r1
 suffix:semicolon
 multiline_comment|/* the gp pointer */
-DECL|member|r2
-r_int
-r_int
-id|r2
-suffix:semicolon
-multiline_comment|/* scratch */
-DECL|member|r3
-r_int
-r_int
-id|r3
-suffix:semicolon
-multiline_comment|/* scratch */
 DECL|member|r12
 r_int
 r_int
@@ -132,42 +168,37 @@ r_int
 id|r13
 suffix:semicolon
 multiline_comment|/* thread pointer */
-DECL|member|r14
+DECL|member|ar_fpsr
 r_int
 r_int
-id|r14
+id|ar_fpsr
 suffix:semicolon
-multiline_comment|/* scratch */
+multiline_comment|/* floating point status (preserved) */
 DECL|member|r15
 r_int
 r_int
 id|r15
 suffix:semicolon
 multiline_comment|/* scratch */
-DECL|member|r8
+multiline_comment|/* The remaining registers are NOT saved for system calls.  */
+DECL|member|r14
 r_int
 r_int
-id|r8
+id|r14
 suffix:semicolon
-multiline_comment|/* scratch (return value register 0) */
-DECL|member|r9
+multiline_comment|/* scratch */
+DECL|member|r2
 r_int
 r_int
-id|r9
+id|r2
 suffix:semicolon
-multiline_comment|/* scratch (return value register 1) */
-DECL|member|r10
+multiline_comment|/* scratch */
+DECL|member|r3
 r_int
 r_int
-id|r10
+id|r3
 suffix:semicolon
-multiline_comment|/* scratch (return value register 2) */
-DECL|member|r11
-r_int
-r_int
-id|r11
-suffix:semicolon
-multiline_comment|/* scratch (return value register 3) */
+multiline_comment|/* scratch */
 multiline_comment|/* The following registers are saved by SAVE_REST: */
 DECL|member|r16
 r_int
@@ -271,25 +302,7 @@ r_int
 id|ar_ccv
 suffix:semicolon
 multiline_comment|/* compare/exchange value (scratch) */
-DECL|member|ar_fpsr
-r_int
-r_int
-id|ar_fpsr
-suffix:semicolon
-multiline_comment|/* floating point status (preserved) */
-DECL|member|b0
-r_int
-r_int
-id|b0
-suffix:semicolon
-multiline_comment|/* return pointer (bp) */
-DECL|member|b7
-r_int
-r_int
-id|b7
-suffix:semicolon
-multiline_comment|/* scratch */
-multiline_comment|/*&n;&t; * Floating point registers that the kernel considers&n;&t; * scratch:&n;&t; */
+multiline_comment|/*&n;&t; * Floating point registers that the kernel considers scratch:&n;&t; */
 DECL|member|f6
 r_struct
 id|ia64_fpreg
@@ -312,6 +325,18 @@ DECL|member|f9
 r_struct
 id|ia64_fpreg
 id|f9
+suffix:semicolon
+multiline_comment|/* scratch */
+DECL|member|f10
+r_struct
+id|ia64_fpreg
+id|f10
+suffix:semicolon
+multiline_comment|/* scratch */
+DECL|member|f11
+r_struct
+id|ia64_fpreg
+id|f11
 suffix:semicolon
 multiline_comment|/* scratch */
 )brace
@@ -357,18 +382,6 @@ id|ia64_fpreg
 id|f5
 suffix:semicolon
 multiline_comment|/* preserved */
-DECL|member|f10
-r_struct
-id|ia64_fpreg
-id|f10
-suffix:semicolon
-multiline_comment|/* scratch, but untouched by kernel */
-DECL|member|f11
-r_struct
-id|ia64_fpreg
-id|f11
-suffix:semicolon
-multiline_comment|/* scratch, but untouched by kernel */
 DECL|member|f12
 r_struct
 id|ia64_fpreg
@@ -594,6 +607,9 @@ DECL|macro|user_stack
 macro_line|# define user_stack(task,regs)&t;((long) regs - (long) task == IA64_STK_OFFSET - sizeof(*regs))
 DECL|macro|fsys_mode
 macro_line|# define fsys_mode(task,regs)&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  struct task_struct *_task = (task);&t;&t;&t;&bslash;&n;&t;  struct pt_regs *_regs = (regs);&t;&t;&t;&bslash;&n;&t;  !user_mode(_regs) &amp;&amp; user_stack(_task, _regs);&t;&bslash;&n;  })
+multiline_comment|/*&n;   * System call handlers that, upon successful completion, need to return a negative value&n;   * should call force_successful_syscall_return() right before returning.  On architectures&n;   * where the syscall convention provides for a separate error flag (e.g., alpha, ia64,&n;   * ppc{,64}, sparc{,64}, possibly others), this macro can be used to ensure that the error&n;   * flag will not get set.  On architectures which do not support a separate error flag,&n;   * the macro is a no-op and the spurious error condition needs to be filtered out by some&n;   * other means (e.g., in user-level, by passing an extra argument to the syscall handler,&n;   * or something along those lines).&n;   *&n;   * On ia64, we can clear the user&squot;s pt_regs-&gt;r8 to force a successful syscall.&n;   */
+DECL|macro|force_successful_syscall_return
+macro_line|# define force_successful_syscall_return()&t;(ia64_task_regs(current)-&gt;r8 = 0)
 r_struct
 id|task_struct
 suffix:semicolon
@@ -773,8 +789,6 @@ op_star
 id|pt
 )paren
 suffix:semicolon
-DECL|macro|force_successful_syscall_return
-mdefine_line|#define force_successful_syscall_return()&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_task_regs(current)-&gt;r8 = 0;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* !__KERNEL__ */
 multiline_comment|/* pt_all_user_regs is used for PTRACE_GETREGS PTRACE_SETREGS */
 DECL|struct|pt_all_user_regs

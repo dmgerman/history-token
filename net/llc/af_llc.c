@@ -552,8 +552,12 @@ c_cond
 (paren
 id|llc-&gt;sap
 op_logical_and
-op_logical_neg
+id|hlist_empty
+c_func
+(paren
+op_amp
 id|llc-&gt;sap-&gt;sk_list.list
+)paren
 )paren
 id|llc_sap_close
 c_func

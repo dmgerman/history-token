@@ -40,15 +40,15 @@ DECL|macro|SHIFT_KH
 mdefine_line|#define SHIFT_KH 2&t;&t;/* FLL frequency factor (shift) */
 DECL|macro|MAXTC
 mdefine_line|#define MAXTC 6&t;&t;&t;/* maximum time constant (shift) */
-multiline_comment|/*&n; * The SHIFT_SCALE define establishes the decimal point of the time_phase&n; * variable which serves as an extension to the low-order bits of the&n; * system clock variable. The SHIFT_UPDATE define establishes the decimal&n; * point of the time_offset variable which represents the current offset&n; * with respect to standard time. The FINEUSEC define represents 1 usec in&n; * scaled units.&n; *&n; * SHIFT_USEC defines the scaling (shift) of the time_freq and&n; * time_tolerance variables, which represent the current frequency&n; * offset and maximum frequency tolerance.&n; *&n; * FINEUSEC is 1 us in SHIFT_UPDATE units of the time_phase variable.&n; */
+multiline_comment|/*&n; * The SHIFT_SCALE define establishes the decimal point of the time_phase&n; * variable which serves as an extension to the low-order bits of the&n; * system clock variable. The SHIFT_UPDATE define establishes the decimal&n; * point of the time_offset variable which represents the current offset&n; * with respect to standard time. The FINENSEC define represents 1 nsec in&n; * scaled units.&n; *&n; * SHIFT_USEC defines the scaling (shift) of the time_freq and&n; * time_tolerance variables, which represent the current frequency&n; * offset and maximum frequency tolerance.&n; *&n; * FINENSEC is 1 ns in SHIFT_UPDATE units of the time_phase variable.&n; */
 DECL|macro|SHIFT_SCALE
 mdefine_line|#define SHIFT_SCALE 22&t;&t;/* phase scale (shift) */
 DECL|macro|SHIFT_UPDATE
 mdefine_line|#define SHIFT_UPDATE (SHIFT_KG + MAXTC) /* time offset scale (shift) */
 DECL|macro|SHIFT_USEC
 mdefine_line|#define SHIFT_USEC 16&t;&t;/* frequency offset scale (shift) */
-DECL|macro|FINEUSEC
-mdefine_line|#define FINEUSEC (1L &lt;&lt; SHIFT_SCALE) /* 1 us in phase units */
+DECL|macro|FINENSEC
+mdefine_line|#define FINENSEC (1L &lt;&lt; (SHIFT_SCALE - 10)) /* ~1 ns in phase units */
 DECL|macro|MAXPHASE
 mdefine_line|#define MAXPHASE 512000L        /* max phase error (us) */
 DECL|macro|MAXFREQ
@@ -77,19 +77,22 @@ macro_line|#include &lt;asm/timex.h&gt;
 multiline_comment|/* LATCH is used in the interval timer and ftape setup. */
 DECL|macro|LATCH
 mdefine_line|#define LATCH  ((CLOCK_TICK_RATE + HZ/2) / HZ)&t;/* For divider */
-multiline_comment|/* Suppose we want to devide two numbers NOM and DEN: NOM/DEN, the we can&n; * improve accuracy by shifting LSH bits, hence calculating:&n; *     (NOM &lt;&lt; LSH) / DEN&n; * This however means trouble for large NOM, because (NOM &lt;&lt; LSH) may no&n; * longer fit in 32 bits. The following way of calculating this gives us&n; * some slack, under the following onditions:&n; *   - (NOM / DEN) fits in (32 - LSH) bits.&n; *   - (NOM % DEN) fits in (32 - LSH) bits.&n; */
+multiline_comment|/* Suppose we want to devide two numbers NOM and DEN: NOM/DEN, the we can&n; * improve accuracy by shifting LSH bits, hence calculating:&n; *     (NOM &lt;&lt; LSH) / DEN&n; * This however means trouble for large NOM, because (NOM &lt;&lt; LSH) may no&n; * longer fit in 32 bits. The following way of calculating this gives us&n; * some slack, under the following conditions:&n; *   - (NOM / DEN) fits in (32 - LSH) bits.&n; *   - (NOM % DEN) fits in (32 - LSH) bits.&n; */
 DECL|macro|SH_DIV
 mdefine_line|#define SH_DIV(NOM,DEN,LSH) (   ((NOM / DEN) &lt;&lt; LSH)                    &bslash;&n;                             + (((NOM % DEN) &lt;&lt; LSH) + DEN / 2) / DEN)
 multiline_comment|/* HZ is the requested value. ACTHZ is actual HZ (&quot;&lt;&lt; 8&quot; is for accuracy) */
 DECL|macro|ACTHZ
 mdefine_line|#define ACTHZ (SH_DIV (CLOCK_TICK_RATE, LATCH, 8))
+multiline_comment|/* TICK_NSEC is the time between ticks in nsec assuming real ACTHZ */
+DECL|macro|TICK_NSEC
+mdefine_line|#define TICK_NSEC (SH_DIV (1000000UL * 1000, ACTHZ, 8))
 multiline_comment|/* TICK_USEC is the time between ticks in usec assuming fake USER_HZ */
 DECL|macro|TICK_USEC
-mdefine_line|#define TICK_USEC ((1000000UL + USER_HZ/2) / USER_HZ)
-multiline_comment|/* TICK_NSEC is the time between ticks in nsec assuming real ACTHZ and&t;*/
+mdefine_line|#define TICK_USEC ((TICK_NSEC + 1000UL/2) / 1000UL)
+multiline_comment|/* TICK_USEC_TO_NSEC is the time between ticks in nsec assuming real ACTHZ and&t;*/
 multiline_comment|/* a value TUSEC for TICK_USEC (can be set bij adjtimex)&t;&t;*/
-DECL|macro|TICK_NSEC
-mdefine_line|#define TICK_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
+DECL|macro|TICK_USEC_TO_NSEC
+mdefine_line|#define TICK_USEC_TO_NSEC(TUSEC) (SH_DIV (TUSEC * USER_HZ * 1000, ACTHZ, 8))
 macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*&n; * syscall interface - used (mainly by NTP daemon)&n; * to discipline kernel clock oscillator&n; */
 DECL|struct|timex

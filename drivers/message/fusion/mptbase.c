@@ -6662,6 +6662,9 @@ suffix:semicolon
 id|u32
 id|state
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* Disable the FW */
 id|state
 op_assign
@@ -6714,7 +6717,7 @@ r_if
 c_cond
 (paren
 (paren
-id|state
+id|ret
 op_assign
 id|mpt_downloadboot
 c_func
@@ -6735,7 +6738,7 @@ id|KERN_WARNING
 id|MYNAM
 l_string|&quot;: firmware downloadboot failure (%d)!&bslash;n&quot;
 comma
-id|state
+id|ret
 )paren
 suffix:semicolon
 )brace

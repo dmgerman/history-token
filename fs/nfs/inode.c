@@ -3190,10 +3190,6 @@ c_func
 id|fattr-&gt;size
 )paren
 suffix:semicolon
-id|inode-&gt;i_mode
-op_assign
-id|fattr-&gt;mode
-suffix:semicolon
 id|inode-&gt;i_nlink
 op_assign
 id|fattr-&gt;nlink

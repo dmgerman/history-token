@@ -22,7 +22,7 @@ macro_line|#undef DEBUG_IRQ
 DECL|macro|PARISC_IRQ_CR16_COUNTS
 macro_line|#undef PARISC_IRQ_CR16_COUNTS
 r_extern
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -37,7 +37,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ipi_interrupt
 c_func
 (paren
@@ -2258,7 +2258,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

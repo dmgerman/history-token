@@ -5,7 +5,7 @@ mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;6
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;7
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

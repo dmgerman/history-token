@@ -24,6 +24,8 @@ DECL|macro|US_SC_MIN
 mdefine_line|#define US_SC_MIN&t;US_SC_RBC
 DECL|macro|US_SC_MAX
 mdefine_line|#define US_SC_MAX&t;US_SC_ISD200
+DECL|macro|US_SC_DEVICE
+mdefine_line|#define US_SC_DEVICE&t;0xff&t;&t;/* Use device&squot;s value */
 r_extern
 r_void
 id|usb_stor_ATAPI_command

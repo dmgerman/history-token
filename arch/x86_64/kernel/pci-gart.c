@@ -16,6 +16,8 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 DECL|variable|iommu_bus_base
 r_int
 r_int
@@ -66,14 +68,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|fallback_aper_order
-suffix:semicolon
-r_extern
-r_int
-id|fallback_aper_force
-suffix:semicolon
 multiline_comment|/* Allocation bitmap for the remapping area */
 DECL|variable|iommu_bitmap_lock
 r_static
@@ -398,13 +392,17 @@ r_int
 id|i
 suffix:semicolon
 r_int
+id|flush
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 r_int
 id|iommu_page
 suffix:semicolon
 r_int
-id|flush
-op_assign
-l_int|0
+r_int
+id|dma_mask
 suffix:semicolon
 r_if
 c_cond
@@ -412,8 +410,39 @@ c_cond
 id|hwdev
 op_eq
 l_int|NULL
-op_logical_or
-id|hwdev-&gt;dma_mask
+)paren
+(brace
+id|gfp
+op_or_assign
+id|GFP_DMA
+suffix:semicolon
+id|dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dma_mask
+op_assign
+id|hwdev-&gt;consistent_dma_mask
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|dma_mask
+op_eq
+l_int|0
+)paren
+id|dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_mask
 OL
 l_int|0xffffffff
 op_logical_or
@@ -490,7 +519,7 @@ op_plus
 id|size
 )paren
 OG
-l_int|0xffffffffUL
+id|dma_mask
 )paren
 id|high
 op_assign
@@ -876,16 +905,6 @@ r_int
 id|iommu_leak_pages
 op_assign
 l_int|20
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|printk_address
-c_func
-(paren
-r_int
-r_int
-)paren
 suffix:semicolon
 DECL|function|dump_leak
 r_void
@@ -2057,7 +2076,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|pci_iommu_init
-r_void
+r_int
 id|__init
 id|pci_iommu_init
 c_func
@@ -2083,6 +2102,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#else
+multiline_comment|/* Makefile puts PCI initialization via subsys_initcall first. */
 multiline_comment|/* Add other K8 AGP bridge drivers here */
 id|no_agp
 op_assign
@@ -2138,6 +2158,8 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -2203,6 +2225,8 @@ op_assign
 l_int|1
 suffix:semicolon
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -2405,7 +2429,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+multiline_comment|/* Must execute after PCI subsystem */
+DECL|variable|pci_iommu_init
+id|fs_initcall
+c_func
+(paren
+id|pci_iommu_init
+)paren
+suffix:semicolon
 multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Should be fastest.&n;   force  Force IOMMU and turn on unmap debugging.&n;*/
 DECL|function|iommu_setup
 id|__init

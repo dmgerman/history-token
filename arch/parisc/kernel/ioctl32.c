@@ -11692,8 +11692,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_GENRTC
-macro_line|#endif
 macro_line|#if defined(CONFIG_DRM) || defined(CONFIG_DRM_MODULE)
 multiline_comment|/* This really belongs in include/linux/drm.h -DaveM */
 macro_line|#include &quot;../../../drivers/char/drm/drm.h&quot;

@@ -203,13 +203,6 @@ c_func
 id|xfrm6_rcv
 )paren
 suffix:semicolon
-DECL|variable|xfrm6_clear_mutable_options
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm6_clear_mutable_options
-)paren
-suffix:semicolon
 DECL|variable|rt6_lookup
 id|EXPORT_SYMBOL
 c_func

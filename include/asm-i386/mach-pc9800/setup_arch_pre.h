@@ -80,10 +80,6 @@ multiline_comment|/* ACTHZ          period (usec) */
 id|tick_nsec
 op_assign
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 multiline_comment|/* USER_HZ period (nsec) */
 id|pc9800_misc_flags

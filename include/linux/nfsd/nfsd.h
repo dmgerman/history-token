@@ -168,6 +168,28 @@ r_void
 )paren
 suffix:semicolon
 r_int
+id|nfsd_cross_mnt
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|dentry
+op_star
+op_star
+id|dpp
+comma
+r_struct
+id|svc_export
+op_star
+op_star
+id|expp
+)paren
+suffix:semicolon
+r_int
 id|nfsd_lookup
 c_func
 (paren
@@ -802,6 +824,8 @@ DECL|macro|COMPOUND_ERR_SLACK_SPACE
 mdefine_line|#define COMPOUND_ERR_SLACK_SPACE&t;12     /* OP_SETATTR */
 DECL|macro|NFSD_LEASE_TIME
 mdefine_line|#define NFSD_LEASE_TIME&t;&t;&t;60  /* seconds */
+DECL|macro|NFSD_LAUNDROMAT_MINTIMEOUT
+mdefine_line|#define NFSD_LAUNDROMAT_MINTIMEOUT      10   /* seconds */
 multiline_comment|/*&n; * The following attributes are currently not supported by the NFSv4 server:&n; *    ACL           (will be supported in a forthcoming patch)&n; *    ARCHIVE       (deprecated anyway)&n; *    FS_LOCATIONS  (will be supported eventually)&n; *    HIDDEN        (unlikely to be supported any time soon)&n; *    MIMETYPE      (unlikely to be supported any time soon)&n; *    QUOTA_*       (will be supported in a forthcoming patch)&n; *    SYSTEM        (unlikely to be supported any time soon)&n; *    TIME_BACKUP   (unlikely to be supported any time soon)&n; *    TIME_CREATE   (unlikely to be supported any time soon)&n; */
 DECL|macro|NFSD_SUPPORTED_ATTRS_WORD0
 mdefine_line|#define NFSD_SUPPORTED_ATTRS_WORD0                                                          &bslash;&n;(FATTR4_WORD0_SUPPORTED_ATTRS   | FATTR4_WORD0_TYPE         | FATTR4_WORD0_FH_EXPIRE_TYPE   &bslash;&n; | FATTR4_WORD0_CHANGE          | FATTR4_WORD0_SIZE         | FATTR4_WORD0_LINK_SUPPORT     &bslash;&n; | FATTR4_WORD0_SYMLINK_SUPPORT | FATTR4_WORD0_NAMED_ATTR   | FATTR4_WORD0_FSID             &bslash;&n; | FATTR4_WORD0_UNIQUE_HANDLES  | FATTR4_WORD0_LEASE_TIME   | FATTR4_WORD0_RDATTR_ERROR     &bslash;&n; | FATTR4_WORD0_ACLSUPPORT      | FATTR4_WORD0_CANSETTIME   | FATTR4_WORD0_CASE_INSENSITIVE &bslash;&n; | FATTR4_WORD0_CASE_PRESERVING | FATTR4_WORD0_CHOWN_RESTRICTED                             &bslash;&n; | FATTR4_WORD0_FILEHANDLE      | FATTR4_WORD0_FILEID       | FATTR4_WORD0_FILES_AVAIL      &bslash;&n; | FATTR4_WORD0_FILES_FREE      | FATTR4_WORD0_FILES_TOTAL  | FATTR4_WORD0_HOMOGENEOUS      &bslash;&n; | FATTR4_WORD0_MAXFILESIZE     | FATTR4_WORD0_MAXLINK      | FATTR4_WORD0_MAXNAME          &bslash;&n; | FATTR4_WORD0_MAXREAD         | FATTR4_WORD0_MAXWRITE)

@@ -1202,11 +1202,6 @@ op_assign
 id|blz1230_esp_release
 comma
 dot
-id|command
-op_assign
-id|esp_command
-comma
-dot
 id|queuecommand
 op_assign
 id|esp_queue

@@ -1125,6 +1125,12 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * rename and move the name cell.&n;&t; */
+id|unregister_with_devfs
+c_func
+(paren
+id|hc
+)paren
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -1156,12 +1162,6 @@ id|new_name
 )paren
 suffix:semicolon
 multiline_comment|/* rename the device node in devfs */
-id|unregister_with_devfs
-c_func
-(paren
-id|hc
-)paren
-suffix:semicolon
 id|register_with_devfs
 c_func
 (paren
@@ -2242,12 +2242,6 @@ id|mapped_device
 op_star
 id|md
 suffix:semicolon
-r_int
-r_int
-id|minor
-op_assign
-l_int|0
-suffix:semicolon
 id|r
 op_assign
 id|check_name
@@ -2320,8 +2314,11 @@ id|param-&gt;flags
 op_amp
 id|DM_PERSISTENT_DEV_FLAG
 )paren
-id|minor
+id|r
 op_assign
+id|dm_create_with_minor
+c_func
+(paren
 id|minor
 c_func
 (paren
@@ -2331,14 +2328,19 @@ c_func
 id|param-&gt;dev
 )paren
 )paren
+comma
+id|t
+comma
+op_amp
+id|md
+)paren
 suffix:semicolon
+r_else
 id|r
 op_assign
 id|dm_create
 c_func
 (paren
-id|minor
-comma
 id|t
 comma
 op_amp

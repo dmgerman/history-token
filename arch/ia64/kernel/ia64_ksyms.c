@@ -288,6 +288,15 @@ c_func
 id|cpu_info__per_cpu
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|variable|__per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__per_cpu_offset
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
 c_func
@@ -350,6 +359,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpu_online_map
+)paren
+suffix:semicolon
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
 )paren
 suffix:semicolon
 DECL|variable|ia64_cpu_to_sapicid
@@ -533,6 +549,68 @@ c_func
 id|__umoddi3
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_MD_RAID5) || defined(CONFIG_MD_RAID5_MODULE)
+r_extern
+r_void
+id|xor_ia64_2
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xor_ia64_3
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xor_ia64_4
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xor_ia64_5
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|xor_ia64_2
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|xor_ia64_2
+)paren
+suffix:semicolon
+DECL|variable|xor_ia64_3
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|xor_ia64_3
+)paren
+suffix:semicolon
+DECL|variable|xor_ia64_4
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|xor_ia64_4
+)paren
+suffix:semicolon
+DECL|variable|xor_ia64_5
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|xor_ia64_5
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 r_int
@@ -631,20 +709,55 @@ c_func
 id|machvec_noop
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PERFMON
-macro_line|#include &lt;asm/perfmon.h&gt;
-DECL|variable|pfm_install_alternate_syswide_subsystem
+DECL|variable|machvec_memory_fence
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pfm_install_alternate_syswide_subsystem
+id|machvec_memory_fence
 )paren
 suffix:semicolon
-DECL|variable|pfm_remove_alternate_syswide_subsystem
+DECL|variable|zero_page_memmap_ptr
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pfm_remove_alternate_syswide_subsystem
+id|zero_page_memmap_ptr
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PERFMON
+macro_line|#include &lt;asm/perfmon.h&gt;
+DECL|variable|pfm_register_buffer_fmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_register_buffer_fmt
+)paren
+suffix:semicolon
+DECL|variable|pfm_unregister_buffer_fmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_unregister_buffer_fmt
+)paren
+suffix:semicolon
+DECL|variable|pfm_mod_fast_read_pmds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_fast_read_pmds
+)paren
+suffix:semicolon
+DECL|variable|pfm_mod_read_pmds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_read_pmds
+)paren
+suffix:semicolon
+DECL|variable|pfm_mod_write_pmcs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfm_mod_write_pmcs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -722,13 +835,12 @@ c_func
 id|unw_access_pr
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+macro_line|#ifdef CONFIG_SMP
+macro_line|# if __GNUC__ &lt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &lt; 4)
+multiline_comment|/*&n; * This is not a normal routine and we don&squot;t want a function descriptor for it, so we use&n; * a fake declaration here.&n; */
 r_extern
-r_void
+r_char
 id|ia64_spinlock_contention_pre3_4
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|ia64_spinlock_contention_pre3_4
 id|EXPORT_SYMBOL
@@ -737,13 +849,11 @@ c_func
 id|ia64_spinlock_contention_pre3_4
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|# else
+multiline_comment|/*&n; * This is not a normal routine and we don&squot;t want a function descriptor for it, so we use&n; * a fake declaration here.&n; */
 r_extern
-r_void
+r_char
 id|ia64_spinlock_contention
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|ia64_spinlock_contention
 id|EXPORT_SYMBOL
@@ -752,5 +862,21 @@ c_func
 id|ia64_spinlock_contention
 )paren
 suffix:semicolon
+macro_line|# endif
 macro_line|#endif
+DECL|variable|ia64_max_iommu_merge_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_max_iommu_merge_mask
+)paren
+suffix:semicolon
+macro_line|#include &lt;linux/pm.h&gt;
+DECL|variable|pm_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_idle
+)paren
+suffix:semicolon
 eof

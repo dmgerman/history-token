@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_FETCHOP_H
 DECL|macro|_ASM_IA64_SN_FETCHOP_H
 mdefine_line|#define _ASM_IA64_SN_FETCHOP_H
@@ -30,43 +30,17 @@ mdefine_line|#define FETCHOP_LOAD_OP(addr, op) ( &bslash;&n;         *(volatile 
 DECL|macro|FETCHOP_STORE_OP
 mdefine_line|#define FETCHOP_STORE_OP(addr, op, x) ( &bslash;&n;         *(volatile long *)((char*) (addr) + (op)) = (long) (x))
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Initialize a FETCHOP line. The argument should point to the beginning&n; * of the line.&n; * &t;SN1 - region mask is in word 0, data in word 1&n; * &t;SN2 - no region mask. Data in word 0&n; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|macro|FETCHOP_INIT_LINE
-mdefine_line|#define FETCHOP_INIT_LINE(p)&t;*(p) = 0xffffffffffffffffUL
-macro_line|#elif CONFIG_IA64_SGI_SN2
-DECL|macro|FETCHOP_INIT_LINE
-mdefine_line|#define FETCHOP_INIT_LINE(p)
-macro_line|#endif
-multiline_comment|/*&n; * Convert a region 7 (kaddr) address to the address of the fetchop variable&n; */
+multiline_comment|/*&n; * Convert a region 6 (kaddr) address to the address of the fetchop variable&n; */
 DECL|macro|FETCHOP_KADDR_TO_MSPEC_ADDR
 mdefine_line|#define FETCHOP_KADDR_TO_MSPEC_ADDR(kaddr)&t;TO_MSPEC(kaddr)
-multiline_comment|/*&n; * Convert a page struct (page) address to the address of the first&n; * fetchop variable in the page&n; */
-DECL|macro|FETCHOP_PAGE_TO_MSPEC_ADDR
-mdefine_line|#define FETCHOP_PAGE_TO_MSPEC_ADDR(page)&t;FETCHOP_KADDR_TO_MSPEC_ADDR(__pa(page_address(page)))
 multiline_comment|/*&n; * Each Atomic Memory Operation (AMO formerly known as fetchop)&n; * variable is 64 bytes long.  The first 8 bytes are used.  The&n; * remaining 56 bytes are unaddressable due to the operation taking&n; * that portion of the address.&n; * &n; * NOTE: The AMO_t _MUST_ be placed in either the first or second half&n; * of the cache line.  The cache line _MUST NOT_ be used for anything&n; * other than additional AMO_t entries.  This is because there are two&n; * addresses which reference the same physical cache line.  One will&n; * be a cached entry with the memory type bits all set.  This address&n; * may be loaded into processor cache.  The AMO_t will be referenced&n; * uncached via the memory special memory type.  If any portion of the&n; * cached cache-line is modified, when that line is flushed, it will&n; * overwrite the uncached value in physical memory and lead to&n; * inconsistency.&n; */
 r_typedef
 r_struct
 (brace
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|member|permissions
-id|u64
-id|permissions
-suffix:semicolon
-macro_line|#endif
 DECL|member|variable
 id|u64
 id|variable
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|member|unused
-id|u64
-id|unused
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#else
 DECL|member|unused
 id|u64
 id|unused
@@ -74,10 +48,28 @@ id|unused
 l_int|7
 )braket
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|AMO_t
 )brace
 id|AMO_t
+suffix:semicolon
+multiline_comment|/*&n; * The following APIs are externalized to the kernel to allocate/free fetchop variables.&n; * &t;fetchop_kalloc_one&t;- Allocate/initialize 1 fetchop variable on the specified cnode.&n; * &t;fetchop_kfree_one&t;- Free a previously allocated fetchop variable &n; */
+r_int
+r_int
+id|fetchop_kalloc_one
+c_func
+(paren
+r_int
+id|nid
+)paren
+suffix:semicolon
+r_void
+id|fetchop_kfree_one
+c_func
+(paren
+r_int
+r_int
+id|maddr
+)paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_SN_FETCHOP_H */

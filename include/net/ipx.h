@@ -174,8 +174,7 @@ id|if_sknum
 suffix:semicolon
 DECL|member|if_sklist
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|if_sklist
 suffix:semicolon
 DECL|member|if_sklist_lock

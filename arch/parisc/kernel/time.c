@@ -176,7 +176,7 @@ id|pc
 suffix:semicolon
 )brace
 DECL|function|timer_interrupt
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -369,6 +369,9 @@ op_amp
 id|power_tasklet
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*** converted from ia64 ***/
 multiline_comment|/*&n; * Return the number of micro-seconds that elapsed since the last&n; * update to wall time (aka xtime aka wall_jiffies).  The xtime_lock&n; * must be at least read-locked when calling this routine.&n; */
@@ -535,7 +538,7 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
-r_void
+r_int
 DECL|function|do_settimeofday
 id|do_settimeofday
 (paren
@@ -545,6 +548,21 @@ op_star
 id|tv
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|tv-&gt;tv_nsec
+op_ge
+id|NSEC_PER_SEC
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|write_seqlock_irq
 c_func
 (paren
@@ -554,14 +572,16 @@ id|xtime_lock
 suffix:semicolon
 (brace
 multiline_comment|/*&n;&t;&t; * This is revolting. We need to set &quot;xtime&quot;&n;&t;&t; * correctly. However, the value in this location is&n;&t;&t; * the value at the most recent update of wall time.&n;&t;&t; * Discover what correction gettimeofday would have&n;&t;&t; * done, and then undo it!&n;&t;&t; */
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_sub_assign
 id|gettimeoffset
 c_func
 (paren
 )paren
+op_star
+l_int|1000
 suffix:semicolon
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_sub_assign
 (paren
 id|jiffies
@@ -570,7 +590,7 @@ id|wall_jiffies
 )paren
 op_star
 (paren
-l_int|1000000
+id|NSEC_PER_SEC
 op_div
 id|HZ
 )paren
@@ -578,14 +598,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 OL
 l_int|0
 )paren
 (brace
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_add_assign
-l_int|1000000
+id|NSEC_PER_SEC
 suffix:semicolon
 id|tv-&gt;tv_sec
 op_decrement
@@ -597,11 +617,7 @@ id|tv-&gt;tv_sec
 suffix:semicolon
 id|xtime.tv_nsec
 op_assign
-(paren
-id|tv-&gt;tv_usec
-op_star
-l_int|1000
-)paren
+id|tv-&gt;tv_nsec
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -627,6 +643,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|time_init

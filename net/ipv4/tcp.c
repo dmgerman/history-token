@@ -7098,8 +7098,11 @@ multiline_comment|/* It cannot be in hash table! */
 id|BUG_TRAP
 c_func
 (paren
-op_logical_neg
-id|sk-&gt;sk_pprev
+id|sk_unhashed
+c_func
+(paren
+id|sk
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* If it has not 0 inet_sk(sk)-&gt;num, it must be bound */
@@ -7115,7 +7118,13 @@ id|sk
 op_member_access_from_pointer
 id|num
 op_logical_or
-id|sk-&gt;sk_prev
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|bind_hash
 )paren
 suffix:semicolon
 macro_line|#ifdef TCP_DEBUG
@@ -8092,7 +8101,7 @@ c_func
 op_logical_neg
 id|inet-&gt;num
 op_logical_or
-id|sk-&gt;sk_prev
+id|tp-&gt;bind_hash
 )paren
 suffix:semicolon
 id|sk
@@ -10039,14 +10048,17 @@ id|lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+id|INIT_HLIST_HEAD
+c_func
+(paren
+op_amp
 id|tcp_ehash
 (braket
 id|i
 )braket
 dot
 id|chain
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_do
@@ -10150,14 +10162,17 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|INIT_HLIST_HEAD
+c_func
+(paren
+op_amp
 id|tcp_bhash
 (braket
 id|i
 )braket
 dot
 id|chain
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Try to be a bit smarter and adjust defaults depending&n;&t; * on available memory.&n;&t; */

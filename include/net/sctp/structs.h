@@ -104,11 +104,10 @@ op_star
 op_star
 id|pprev
 suffix:semicolon
-DECL|member|sk
+DECL|member|sk_list
 r_struct
-id|sock
-op_star
-id|sk
+id|hlist_head
+id|sk_list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -961,6 +960,12 @@ r_struct
 id|sctp_endpoint
 op_star
 id|ep
+suffix:semicolon
+DECL|member|bind_hash
+r_struct
+id|sctp_bind_bucket
+op_star
+id|bind_hash
 suffix:semicolon
 multiline_comment|/* Various Socket Options.  */
 DECL|member|default_stream

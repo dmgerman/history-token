@@ -399,5 +399,16 @@ r_return
 id|cpumask
 suffix:semicolon
 )brace
+DECL|function|enable_apic_mode
+r_static
+r_inline
+r_void
+id|enable_apic_mode
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

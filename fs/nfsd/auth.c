@@ -36,13 +36,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rqstp-&gt;rq_userset
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|exp-&gt;ex_flags
 op_amp
 id|NFSEXP_ALLSQUASH
@@ -244,9 +237,5 @@ id|current-&gt;cap_permitted
 )paren
 suffix:semicolon
 )brace
-id|rqstp-&gt;rq_userset
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 eof

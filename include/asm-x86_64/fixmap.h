@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
+macro_line|#include &lt;asm/vsyscall32.h&gt;
 multiline_comment|/*&n; * Here we define all the compile-time &squot;special&squot; virtual&n; * addresses. The point is to have a constant address at&n; * compile time, but to set the physical address only&n; * in the boot process.&n; *&n; * these &squot;compile-time allocated&squot; memory buffers are&n; * fixed-size 4k pages. (or larger if used with an increment&n; * highger than 1) use fixmap_set(idx,phys) to associate&n; * physical memory with fixmap indices.&n; *&n; * TLB entries of such buffers will not be flushed across&n; * task switches.&n; */
 DECL|enum|fixed_addresses
 r_enum
@@ -89,6 +90,11 @@ DECL|macro|FIXADDR_SIZE
 mdefine_line|#define FIXADDR_SIZE&t;(__end_of_fixed_addresses &lt;&lt; PAGE_SHIFT)
 DECL|macro|FIXADDR_START
 mdefine_line|#define FIXADDR_START&t;(FIXADDR_TOP - FIXADDR_SIZE)
+multiline_comment|/* Only covers 32bit vsyscalls currently. Need another set for 64bit. */
+DECL|macro|FIXADDR_USER_START
+mdefine_line|#define FIXADDR_USER_START&t;((unsigned long)VSYSCALL32_VSYSCALL)
+DECL|macro|FIXADDR_USER_END
+mdefine_line|#define FIXADDR_USER_END&t;(FIXADDR_USER_START + PAGE_SIZE)
 DECL|macro|__fix_to_virt
 mdefine_line|#define __fix_to_virt(x)&t;(FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))
 r_extern

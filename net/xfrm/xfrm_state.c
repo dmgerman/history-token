@@ -2426,7 +2426,11 @@ c_func
 op_amp
 id|x-&gt;id.daddr
 comma
-id|minspi
+id|htonl
+c_func
+(paren
+id|spi
+)paren
 comma
 id|x-&gt;id.proto
 comma

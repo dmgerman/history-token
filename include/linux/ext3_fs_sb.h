@@ -5,6 +5,8 @@ mdefine_line|#define _LINUX_EXT3_FS_SB
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/blockgroup_lock.h&gt;
+macro_line|#include &lt;linux/percpu_counter.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * third extended-fs super-block data in memory&n; */
 DECL|struct|ext3_sb_info
@@ -146,15 +148,30 @@ DECL|member|s_def_hash_version
 r_int
 id|s_def_hash_version
 suffix:semicolon
-DECL|member|s_dir_count
-r_int
-r_int
-id|s_dir_count
-suffix:semicolon
 DECL|member|s_debts
 id|u8
 op_star
 id|s_debts
+suffix:semicolon
+DECL|member|s_freeblocks_counter
+r_struct
+id|percpu_counter
+id|s_freeblocks_counter
+suffix:semicolon
+DECL|member|s_freeinodes_counter
+r_struct
+id|percpu_counter
+id|s_freeinodes_counter
+suffix:semicolon
+DECL|member|s_dirs_counter
+r_struct
+id|percpu_counter
+id|s_dirs_counter
+suffix:semicolon
+DECL|member|s_blockgroup_lock
+r_struct
+id|blockgroup_lock
+id|s_blockgroup_lock
 suffix:semicolon
 multiline_comment|/* Journaling */
 DECL|member|s_journal_inode

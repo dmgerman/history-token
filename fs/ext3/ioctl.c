@@ -523,10 +523,10 @@ r_if
 c_cond
 (paren
 id|err
+op_eq
+l_int|0
 )paren
-r_return
-id|err
-suffix:semicolon
+(brace
 id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
@@ -548,6 +548,7 @@ op_amp
 id|iloc
 )paren
 suffix:semicolon
+)brace
 id|ext3_journal_stop
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SHUB_MMR_H
 DECL|macro|_ASM_IA64_SN_SN2_SHUB_MMR_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SHUB_MMR_H
@@ -30386,9 +30386,9 @@ multiline_comment|/*                          Register &quot;SH_RTC&quot;       
 multiline_comment|/*                           Real-time Clock                            */
 multiline_comment|/* ==================================================================== */
 DECL|macro|SH_RTC
-mdefine_line|#define SH_RTC                                   0x00000001101c0000
+mdefine_line|#define SH_RTC                                   0x00000001101c0000UL
 DECL|macro|SH_RTC_MASK
-mdefine_line|#define SH_RTC_MASK                              0x007fffffffffffff
+mdefine_line|#define SH_RTC_MASK                              0x007fffffffffffffUL
 DECL|macro|SH_RTC_INIT
 mdefine_line|#define SH_RTC_INIT                              0x0000000000000000
 multiline_comment|/*   SH_RTC_REAL_TIME_CLOCK                                             */
@@ -30396,7 +30396,7 @@ multiline_comment|/*   Description:  Real-time Clock                            
 DECL|macro|SH_RTC_REAL_TIME_CLOCK_SHFT
 mdefine_line|#define SH_RTC_REAL_TIME_CLOCK_SHFT              0
 DECL|macro|SH_RTC_REAL_TIME_CLOCK_MASK
-mdefine_line|#define SH_RTC_REAL_TIME_CLOCK_MASK              0x007fffffffffffff
+mdefine_line|#define SH_RTC_REAL_TIME_CLOCK_MASK              0x007fffffffffffffUL
 multiline_comment|/* ==================================================================== */
 multiline_comment|/*                        Register &quot;SH_SCRATCH0&quot;                        */
 multiline_comment|/*                          Scratch Register 0                          */

@@ -512,6 +512,10 @@ id|nhoff
 suffix:semicolon
 id|raw_sk
 op_assign
+id|sk_head
+c_func
+(paren
+op_amp
 id|raw_v6_htable
 (braket
 id|nexthdr
@@ -522,6 +526,7 @@ op_minus
 l_int|1
 )paren
 )braket
+)paren
 suffix:semicolon
 r_if
 c_cond
