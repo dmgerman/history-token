@@ -1,4 +1,4 @@
-multiline_comment|/* Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * $Header: /cvsroot/lksctp/lksctp/sctp_cvs/net/sctp/sctp_socket.c,v 1.62 2002/08/16 19:30:50 jgrimm Exp $&n; * &n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; * &n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * $Header: /cvsroot/lksctp/lksctp/sctp_cvs/net/sctp/sctp_socket.c,v 1.63 2002/08/21 18:34:04 jgrimm Exp $&n; * &n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; * &n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 DECL|variable|cvs_id
 r_static
 r_char
@@ -11,7 +11,7 @@ id|unused
 )paren
 )paren
 op_assign
-l_string|&quot;$Id: sctp_socket.c,v 1.62 2002/08/16 19:30:50 jgrimm Exp $&quot;
+l_string|&quot;$Id: sctp_socket.c,v 1.63 2002/08/21 18:34:04 jgrimm Exp $&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2291,21 +2291,19 @@ id|sinfo_flags
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Support MSG_ABORT. */
-multiline_comment|/* If MSG_EOF is set, no data can be sent.  Disallow sending 0-length &n;&t; * messages when MSG_EOF is not set.&n;&t; */
+multiline_comment|/* If MSG_EOF|MSG_ABORT is set, no data can be sent.  Disallow sending 0-length&n;&t; * messages when MSG_EOF|MSG_ABORT is not set.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
+(paren
 id|sinfo_flags
 op_amp
+(paren
+id|MSG_EOF
+op_or
 id|MSG_ABORT
 )paren
-op_logical_or
-(paren
-(paren
-id|sinfo_flags
-op_amp
-id|MSG_EOF
 )paren
 op_logical_and
 (paren
@@ -2320,7 +2318,11 @@ op_logical_neg
 (paren
 id|sinfo_flags
 op_amp
+(paren
 id|MSG_EOF
+op_or
+id|MSG_ABORT
+)paren
 )paren
 op_logical_and
 (paren
@@ -2489,6 +2491,38 @@ id|asoc
 )paren
 suffix:semicolon
 id|sctp_primitive_SHUTDOWN
+c_func
+(paren
+id|asoc
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sinfo_flags
+op_amp
+id|MSG_ABORT
+)paren
+(brace
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;Aborting association: %p&bslash;n&quot;
+comma
+id|asoc
+)paren
+suffix:semicolon
+id|sctp_primitive_ABORT
 c_func
 (paren
 id|asoc
@@ -8174,10 +8208,8 @@ id|sockaddr
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 id|sa
@@ -8249,10 +8281,8 @@ id|sockaddr_in6
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_break
@@ -8262,10 +8292,8 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Disallow any illegal addresses to be used as destinations.  */

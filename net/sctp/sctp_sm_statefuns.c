@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * $Header: /cvsroot/lksctp/lksctp/sctp_cvs/net/sctp/sctp_sm_statefuns.c,v 1.48 2002/08/16 19:30:50 jgrimm Exp $&n; * &n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * $Header: /cvsroot/lksctp/lksctp/sctp_cvs/net/sctp/sctp_sm_statefuns.c,v 1.49 2002/08/21 18:34:04 jgrimm Exp $&n; * &n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 DECL|variable|cvs_id
 r_static
 r_char
@@ -11,7 +11,7 @@ id|unused
 )paren
 )paren
 op_assign
-l_string|&quot;$Id: sctp_sm_statefuns.c,v 1.48 2002/08/16 19:30:50 jgrimm Exp $&quot;
+l_string|&quot;$Id: sctp_sm_statefuns.c,v 1.49 2002/08/21 18:34:04 jgrimm Exp $&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -277,7 +277,7 @@ id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
 multiline_comment|/* sctp_sf_pdiscard() */
-multiline_comment|/*&n; * Respond to a normal INIT chunk.&n; * We are the side that is being asked for an association.&n; * &n; * Section: 5.1 Normal Establishment of an Association, B&n; * B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  The &n; *    destination IP address of the INIT ACK MUST be set to the source &n; *    IP address of the INIT to which this INIT ACK is responding.  In &n; *    the response, besides filling in other parameters, &quot;Z&quot; must set the&n; *    Verification Tag field to Tag_A, and also provide its own &n; *    Verification Tag (Tag_Z) in the Initiate Tag field. &n; *&n; * Verification Tag: No checking.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * Respond to a normal INIT chunk.&n; * We are the side that is being asked for an association.&n; * &n; * Section: 5.1 Normal Establishment of an Association, B&n; * B) &quot;Z&quot; shall respond immediately with an INIT ACK chunk.  The&n; *    destination IP address of the INIT ACK MUST be set to the source &n; *    IP address of the INIT to which this INIT ACK is responding.  In &n; *    the response, besides filling in other parameters, &quot;Z&quot; must set the&n; *    Verification Tag field to Tag_A, and also provide its own &n; *    Verification Tag (Tag_Z) in the Initiate Tag field. &n; *&n; * Verification Tag: No checking.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; * &n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 id|sctp_disposition_t
 DECL|function|sctp_sf_do_5_1B_init
 id|sctp_sf_do_5_1B_init
@@ -7524,6 +7524,124 @@ id|disposition
 suffix:semicolon
 )brace
 multiline_comment|/* sctp_sf_do_9_2_prm_shutdown() */
+multiline_comment|/*&n; * Process the ABORT primitive.&n; *&n; * Section: 10.1:&n; * C) Abort&n; *&n; * Format: Abort(association id [, cause code])&n; * -&gt; result&n; *&n; * Ungracefully closes an association. Any locally queued user data&n; * will be discarded and an ABORT chunk is sent to the peer.  A success code&n; * will be returned on successful abortion of the association. If&n; * attempting to abort the association results in a failure, an error&n; * code shall be returned.&n; *&n; * Mandatory attributes:&n; *&n; *  o association id - local handle to the SCTP association&n; *&n; * Optional attributes:&n; *&n; *  o cause code - reason of the abort to be passed to the peer&n; *&n; * None.&n; *&n; * The return value is the disposition.&n; */
+id|sctp_disposition_t
+DECL|function|sctp_sf_do_9_1_prm_abort
+id|sctp_sf_do_9_1_prm_abort
+c_func
+(paren
+r_const
+id|sctp_endpoint_t
+op_star
+id|ep
+comma
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+r_const
+id|sctp_subtype_t
+id|type
+comma
+r_void
+op_star
+id|arg
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+)paren
+(brace
+multiline_comment|/* From 9.1 Abort of an Association&n;         * Upon receipt of the ABORT primitive from its upper&n;         * layer, the endpoint enters CLOSED state and&n;         * discard all outstanding data has been&n;         * acknowledged by its peer. The endpoint accepts no new data&n;         * from its upper layer, but retransmits data to the far end&n;         * if necessary to fill gaps.&n;         */
+id|sctp_chunk_t
+op_star
+m_abort
+suffix:semicolon
+id|sctp_disposition_t
+id|retval
+suffix:semicolon
+id|retval
+op_assign
+id|SCTP_DISPOSITION_CONSUME
+suffix:semicolon
+multiline_comment|/* Generate ABORT chunk to send the peer */
+m_abort
+op_assign
+id|sctp_make_abort
+c_func
+(paren
+id|asoc
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+m_abort
+)paren
+(brace
+id|retval
+op_assign
+id|SCTP_DISPOSITION_NOMEM
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_REPLY
+comma
+id|SCTP_CHUNK
+c_func
+(paren
+m_abort
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Even if we can&squot;t send the ABORT due to low memory delete the&n;&t; * TCB.  This is a departure from our typical NOMEM handling.&n;&t; */
+multiline_comment|/* Change to CLOSED state */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_NEW_STATE
+comma
+id|SCTP_STATE
+c_func
+(paren
+id|SCTP_STATE_CLOSED
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Delete the established association */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_DELETE_TCB
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/* sctp_sf_do_9_1_prm_abort() */
 multiline_comment|/* We tried an illegal operation on an association which is closed.  */
 id|sctp_disposition_t
 DECL|function|sctp_sf_error_closed
@@ -7746,6 +7864,116 @@ id|commands
 suffix:semicolon
 )brace
 multiline_comment|/* sctp_sf_cookie_echoed_prm_shutdown()  */
+multiline_comment|/*&n; * sctp_cookie_wait_prm_abort&n; *&n; * Section: 4 Note: 2&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explicitly address this issue, but is the route through the&n; * state table when someone issues an abort while in COOKIE_WAIT state.&n; *&n; * Outputs&n; * (timers)&n; */
+id|sctp_disposition_t
+DECL|function|sctp_sf_cookie_wait_prm_abort
+(def_block
+id|sctp_sf_cookie_wait_prm_abort
+c_func
+(paren
+r_const
+id|sctp_endpoint_t
+op_star
+id|ep
+comma
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+r_const
+id|sctp_subtype_t
+id|type
+comma
+r_void
+op_star
+id|arg
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+)paren
+(brace
+multiline_comment|/* Stop T1-init timer */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_TIMER_STOP
+comma
+id|SCTP_TO
+c_func
+(paren
+id|SCTP_EVENT_TIMEOUT_T1_INIT
+)paren
+)paren
+suffix:semicolon
+r_return
+id|sctp_sf_do_9_1_prm_abort
+c_func
+(paren
+id|ep
+comma
+id|asoc
+comma
+id|type
+comma
+id|arg
+comma
+id|commands
+)paren
+suffix:semicolon
+)brace
+)def_block
+multiline_comment|/* sctp_sf_cookie_wait_prm_abort()  */
+multiline_comment|/*&n; * sctp_cookie_echoed_prm_abort&n; *&n; * Section: 4 Note: 3&n; * Verification Tag:&n; * Inputs&n; * (endpoint, asoc)&n; *&n; * The RFC does not explcitly address this issue, but is the route through the&n; * state table when someone issues an abort while in COOKIE_ECHOED state.&n; *&n; * Outputs&n; * (timers)&n; */
+id|sctp_disposition_t
+DECL|function|sctp_sf_cookie_echoed_prm_abort
+id|sctp_sf_cookie_echoed_prm_abort
+c_func
+(paren
+r_const
+id|sctp_endpoint_t
+op_star
+id|ep
+comma
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+r_const
+id|sctp_subtype_t
+id|type
+comma
+r_void
+op_star
+id|arg
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+)paren
+(brace
+multiline_comment|/* There is a single T1 timer, so we should be able to use&n;&t; * common function with the COOKIE-WAIT state.&n;&t; */
+r_return
+id|sctp_sf_cookie_wait_prm_abort
+c_func
+(paren
+id|ep
+comma
+id|asoc
+comma
+id|type
+comma
+id|arg
+comma
+id|commands
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* sctp_sf_cookie_echoed_prm_abort()  */
 multiline_comment|/*&n; * Ignore the primitive event&n; *&n; * The return value is the disposition of the primitive.&n; */
 id|sctp_disposition_t
 DECL|function|sctp_sf_ignore_primitive
