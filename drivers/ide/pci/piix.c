@@ -3226,16 +3226,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;PIIX IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|piix_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|piix_init_one
 comma
 )brace

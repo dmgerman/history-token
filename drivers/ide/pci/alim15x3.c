@@ -3631,16 +3631,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ALI15x3 IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|alim15x3_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|alim15x3_init_one
 comma
 )brace

@@ -4575,16 +4575,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;CMD64x IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|cmd64x_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|cmd64x_init_one
 comma
 )brace

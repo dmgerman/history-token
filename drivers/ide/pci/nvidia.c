@@ -1508,16 +1508,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;nForce IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|nforce_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|nforce_init_one
 comma
 )brace

@@ -385,89 +385,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#if defined(__alpha__) &amp;&amp; !defined(CONFIG_PCI)
-multiline_comment|/*&n; * Digital did something really horribly wrong with the OUT1 and OUT2&n; * lines on at least some ALPHA&squot;s.  The failure mode is that if either&n; * is cleared, the machine locks up with endless interrupts.&n; */
+multiline_comment|/*&n; * Digital did something really horribly wrong with the OUT1 and OUT2&n; * lines on at least some ALPHA&squot;s.  The failure mode is that if either&n; * is cleared, the machine locks up with endless interrupts.&n; *&n; * This is still used by arch/mips/au1000/common/serial.c for some weird&n; * reason (mips != alpha!)&n; */
 DECL|macro|ALPHA_KLUDGE_MCR
 mdefine_line|#define ALPHA_KLUDGE_MCR  (UART_MCR_OUT2 | UART_MCR_OUT1)
 macro_line|#else
 DECL|macro|ALPHA_KLUDGE_MCR
 mdefine_line|#define ALPHA_KLUDGE_MCR 0
 macro_line|#endif
-multiline_comment|/*&n; * Structures and definitions for PCI support&n; */
-r_struct
-id|pci_dev
-suffix:semicolon
-DECL|struct|pci_board
-r_struct
-id|pci_board
-(brace
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-DECL|member|num_ports
-r_int
-id|num_ports
-suffix:semicolon
-DECL|member|base_baud
-r_int
-id|base_baud
-suffix:semicolon
-DECL|member|uart_offset
-r_int
-id|uart_offset
-suffix:semicolon
-DECL|member|reg_shift
-r_int
-id|reg_shift
-suffix:semicolon
-DECL|member|init_fn
-r_int
-(paren
-op_star
-id|init_fn
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_struct
-id|pci_board
-op_star
-id|board
-comma
-r_int
-id|enable
-)paren
-suffix:semicolon
-DECL|member|first_uart_offset
-r_int
-id|first_uart_offset
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|pci_board_inst
-r_struct
-id|pci_board_inst
-(brace
-DECL|member|board
-r_struct
-id|pci_board
-id|board
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#ifndef PCI_ANY_ID
-DECL|macro|PCI_ANY_ID
-mdefine_line|#define PCI_ANY_ID (~0)
-macro_line|#endif
+multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|SPCI_FL_BASE_MASK
 mdefine_line|#define SPCI_FL_BASE_MASK&t;0x0007
 DECL|macro|SPCI_FL_BASE0

@@ -3633,16 +3633,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Promise IDE&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|pdc202new_pci_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|pdc202new_init_one
 comma
 )brace
