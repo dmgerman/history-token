@@ -615,7 +615,7 @@ op_eq
 id|NFS4_OPEN_CLAIM_NULL
 )paren
 (brace
-multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo, &n;&t; * (3) set open-&gt;op_truncate if the file is to be truncated &n;&t; * after opening, (4) do permission checking.&n;&t; */
+multiline_comment|/*&n;&t; * This block of code will (1) set CURRENT_FH to the file being opened,&n;&t; * creating it if necessary, (2) set open-&gt;op_cinfo,&n;&t; * (3) set open-&gt;op_truncate if the file is to be truncated&n;&t; * after opening, (4) do permission checking.&n;&t; */
 id|status
 op_assign
 id|do_open_lookup
