@@ -436,7 +436,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-id|CONFIG_KERNEL_STACK_ORDER
+id|UML_CONFIG_KERNEL_STACK_ORDER
 )paren
 op_minus
 l_int|2
