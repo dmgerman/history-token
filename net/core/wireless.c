@@ -3000,7 +3000,7 @@ c_cond
 id|iwr-&gt;u.data.length
 OG
 (paren
-id|descr-&gt;get_args
+id|descr-&gt;set_args
 op_amp
 id|IW_PRIV_SIZE_MASK
 )paren
