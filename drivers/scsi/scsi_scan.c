@@ -797,15 +797,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|get_device
-c_func
-(paren
-op_amp
-id|sdev-&gt;host-&gt;shost_gendev
-)paren
-op_eq
-l_int|NULL
-op_logical_or
 id|scsi_sysfs_device_initialize
 c_func
 (paren
