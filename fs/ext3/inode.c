@@ -3592,15 +3592,6 @@ id|inode
 op_assign
 id|page-&gt;mapping-&gt;host
 suffix:semicolon
-id|handle_t
-op_star
-id|handle
-op_assign
-id|ext3_journal_current_handle
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|ret
 comma
@@ -3611,6 +3602,10 @@ c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+id|handle_t
+op_star
+id|handle
 suffix:semicolon
 id|lock_kernel
 c_func
