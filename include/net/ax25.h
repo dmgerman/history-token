@@ -1429,6 +1429,9 @@ op_star
 id|ax25_rt_find_route
 c_func
 (paren
+id|ax25_route
+op_star
+comma
 id|ax25_address
 op_star
 comma
