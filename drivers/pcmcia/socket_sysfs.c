@@ -1,0 +1,235 @@
+multiline_comment|/*&n; * socket_sysfs.c -- most of socket-related sysfs output&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * (C) 2003 - 2004&t;&t;Dominik Brodowski&n; */
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+DECL|macro|IN_CARD_SERVICES
+mdefine_line|#define IN_CARD_SERVICES
+macro_line|#include &lt;pcmcia/version.h&gt;
+macro_line|#include &lt;pcmcia/cs_types.h&gt;
+macro_line|#include &lt;pcmcia/ss.h&gt;
+macro_line|#include &lt;pcmcia/cs.h&gt;
+macro_line|#include &lt;pcmcia/bulkmem.h&gt;
+macro_line|#include &lt;pcmcia/cistpl.h&gt;
+macro_line|#include &lt;pcmcia/cisreg.h&gt;
+macro_line|#include &lt;pcmcia/ds.h&gt;
+macro_line|#include &quot;cs_internal.h&quot;
+DECL|macro|to_socket
+mdefine_line|#define to_socket(_dev) container_of(_dev, struct pcmcia_socket, dev)
+DECL|function|pccard_show_type
+r_static
+id|ssize_t
+id|pccard_show_type
+c_func
+(paren
+r_struct
+id|class_device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_int
+id|val
+suffix:semicolon
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+op_assign
+id|to_socket
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|s-&gt;state
+op_amp
+id|SOCKET_PRESENT
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|s-&gt;ops
+op_member_access_from_pointer
+id|get_status
+c_func
+(paren
+id|s
+comma
+op_amp
+id|val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|SS_CARDBUS
+)paren
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;32-bit&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|SS_DETECT
+)paren
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;16-bit&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;invalid&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_static
+id|CLASS_DEVICE_ATTR
+c_func
+(paren
+id|card_type
+comma
+l_int|0400
+comma
+id|pccard_show_type
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+DECL|variable|pccard_socket_attributes
+r_static
+r_struct
+id|class_device_attribute
+op_star
+id|pccard_socket_attributes
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|class_device_attr_card_type
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
+DECL|function|pccard_sysfs_init
+r_int
+id|pccard_sysfs_init
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+)paren
+(brace
+r_struct
+id|class_device_attribute
+op_star
+id|attr
+suffix:semicolon
+r_int
+r_int
+id|i
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|attr
+op_assign
+id|pccard_socket_attributes
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
+id|class_device_create_file
+c_func
+(paren
+op_amp
+id|s-&gt;dev
+comma
+id|attr
+)paren
+)paren
+)paren
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+eof
