@@ -665,7 +665,7 @@ l_string|&quot; in addition of frequency scaling. You should use &quot;
 l_string|&quot;that instead of p4-clockmod, if possible.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* on P-4s, the TSC runs with constant frequency independent wether&n;&t;&t; * throttling is active or not. */
+multiline_comment|/* on P-4s, the TSC runs with constant frequency independent whether&n;&t;&t; * throttling is active or not. */
 id|p4clockmod_driver.flags
 op_or_assign
 id|CPUFREQ_CONST_LOOPS
@@ -698,7 +698,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* on P-4s, the TSC runs with constant frequency independent wether&n;&t; * throttling is active or not. */
+multiline_comment|/* on P-4s, the TSC runs with constant frequency independent whether&n;&t; * throttling is active or not. */
 id|p4clockmod_driver.flags
 op_or_assign
 id|CPUFREQ_CONST_LOOPS
