@@ -285,6 +285,16 @@ DECL|member|wqe_shift
 r_int
 id|wqe_shift
 suffix:semicolon
+DECL|member|db_index
+r_int
+id|db_index
+suffix:semicolon
+multiline_comment|/* Arbel only */
+DECL|member|db
+id|u32
+op_star
+id|db
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|mthca_qp
