@@ -552,7 +552,7 @@ id|inode
 op_star
 id|root
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|coda_sb_info

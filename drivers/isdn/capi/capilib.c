@@ -92,11 +92,11 @@ id|i
 suffix:semicolon
 id|np-&gt;msgidqueue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|np-&gt;msgidlast
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|np-&gt;nmsg
 op_assign
@@ -202,7 +202,7 @@ id|msgid
 suffix:semicolon
 id|mq-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -313,7 +313,7 @@ id|np-&gt;msgidlast
 )paren
 id|np-&gt;msgidlast
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mq-&gt;next
 op_assign

@@ -1314,11 +1314,7 @@ id|concap_proto
 op_star
 id|cprot
 op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
+id|lp-&gt;netdev-&gt;cprot
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -1328,11 +1324,9 @@ op_assign
 id|cprot
 ques
 c_cond
-id|cprot
-op_member_access_from_pointer
-id|pops
+id|cprot-&gt;pops
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 r_switch
@@ -2132,7 +2126,7 @@ c_func
 op_amp
 id|p-&gt;dev
 comma
-l_int|0
+l_int|NULL
 comma
 id|s
 )paren
@@ -2303,7 +2297,7 @@ c_func
 op_amp
 id|p-&gt;dev
 comma
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;dial: timed out&quot;
 )paren
@@ -2433,7 +2427,7 @@ c_func
 op_amp
 id|p-&gt;dev
 comma
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;dial: tried all numbers dialmax times&quot;
 )paren
@@ -3024,11 +3018,7 @@ id|concap_proto
 op_star
 id|cprot
 op_assign
-id|lp
-op_member_access_from_pointer
-id|netdev
-op_member_access_from_pointer
-id|cprot
+id|lp-&gt;netdev-&gt;cprot
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -3038,11 +3028,9 @@ op_assign
 id|cprot
 ques
 c_cond
-id|cprot
-op_member_access_from_pointer
-id|pops
+id|cprot-&gt;pops
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -5473,10 +5461,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|skb
 )paren
-(brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+id|hl
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -5485,18 +5480,6 @@ comma
 id|__FILE__
 comma
 id|__LINE__
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|skb_reserve
-c_func
-(paren
-id|skb
-comma
-id|hl
 )paren
 suffix:semicolon
 r_return
@@ -8773,7 +8756,7 @@ multiline_comment|/* skip to allow a match */
 r_else
 id|my_eaz
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* force non match */
 )brace

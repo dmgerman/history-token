@@ -5888,11 +5888,18 @@ id|key_len
 op_ne
 l_int|32
 )paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|CRYPTO_TFM_RES_BAD_KEY_LEN
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* unsupported key length */
+)brace
 multiline_comment|/* Compute the first two words of the S vector.  The magic numbers are&n;&t; * the entries of the RS matrix, preprocessed through poly_to_exp. The&n;&t; * numbers in the comments are the original (polynomial form) matrix&n;&t; * entries. */
 id|CALC_S
 (paren

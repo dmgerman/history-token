@@ -918,7 +918,7 @@ id|capi_driver
 op_star
 id|drv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head
@@ -967,7 +967,7 @@ id|drv
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|capi_driver_start
@@ -1058,7 +1058,7 @@ op_amp
 id|capi_drivers
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|list_entry

@@ -2,6 +2,7 @@ multiline_comment|/* $Id: act2000.h,v 1.8.6.3 2001/09/23 22:24:32 kai Exp $&n; *
 macro_line|#ifndef act2000_h
 DECL|macro|act2000_h
 mdefine_line|#define act2000_h
+macro_line|#include &lt;linux/compiler.h&gt;
 DECL|macro|ACT2000_IOCTL_SETPORT
 mdefine_line|#define ACT2000_IOCTL_SETPORT    1
 DECL|macro|ACT2000_IOCTL_GETPORT
@@ -78,6 +79,7 @@ suffix:semicolon
 multiline_comment|/* Length of code */
 DECL|member|buffer
 r_char
+id|__user
 op_star
 id|buffer
 suffix:semicolon

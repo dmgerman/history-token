@@ -2640,6 +2640,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6580,7 +6581,7 @@ l_string|&quot;cpia&quot;
 comma
 id|S_IFDIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6615,7 +6616,7 @@ c_func
 (paren
 l_string|&quot;cpia&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -7450,7 +7451,7 @@ id|CPIA_MAX_FRAME_SIZE
 suffix:semicolon
 id|cam-&gt;frame_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -16000,6 +16001,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -2107,7 +2107,7 @@ comma
 op_star
 id|unbh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|item_head
@@ -5953,7 +5953,7 @@ id|inode
 suffix:semicolon
 id|inode
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -6759,7 +6759,7 @@ id|make_le_item_head
 (paren
 id|ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|KEY_FORMAT_3_5
 comma
@@ -6802,7 +6802,7 @@ id|make_le_item_head
 (paren
 id|ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|KEY_FORMAT_3_5
 comma
@@ -7002,7 +7002,7 @@ id|make_le_item_head
 (paren
 id|ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|KEY_FORMAT_3_5
 comma
@@ -7412,7 +7412,7 @@ id|inode
 op_member_access_from_pointer
 id|i_jl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|REISERFS_I
 c_func
@@ -7491,7 +7491,7 @@ id|make_le_item_head
 op_amp
 id|ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|KEY_FORMAT_3_5
 comma
@@ -7510,7 +7510,7 @@ id|make_le_item_head
 op_amp
 id|ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|KEY_FORMAT_3_6
 comma

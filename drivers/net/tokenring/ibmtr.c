@@ -1548,7 +1548,7 @@ r_void
 op_star
 id|t_mmio
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|tok_info

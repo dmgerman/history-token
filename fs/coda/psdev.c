@@ -1125,7 +1125,7 @@ id|vcp-&gt;vc_waitq
 suffix:semicolon
 id|vcp-&gt;vc_sb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|vcp-&gt;vc_seq
 op_assign

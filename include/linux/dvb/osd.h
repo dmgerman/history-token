@@ -172,6 +172,7 @@ id|color
 suffix:semicolon
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon

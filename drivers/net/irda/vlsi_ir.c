@@ -8757,7 +8757,7 @@ id|PROC_DIR
 comma
 id|S_IFDIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -8793,7 +8793,7 @@ c_func
 (paren
 id|PROC_DIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -8827,7 +8827,7 @@ c_func
 (paren
 id|PROC_DIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

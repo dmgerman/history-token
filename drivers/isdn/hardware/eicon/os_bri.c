@@ -1209,7 +1209,7 @@ id|a-&gt;resources.pci.addr
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;resources.pci.bar
 (braket
@@ -1281,7 +1281,7 @@ id|a-&gt;resources.pci.addr
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;resources.pci.bar
 (braket
@@ -1316,7 +1316,7 @@ id|a-&gt;xdi_adapter.req_soft_isr
 suffix:semicolon
 id|a-&gt;xdi_adapter.isr_soft_isr.object
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_destroy_spin_lock
 c_func
@@ -1353,7 +1353,7 @@ id|a-&gt;xdi_adapter.e_tbl
 suffix:semicolon
 id|a-&gt;xdi_adapter.e_tbl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1657,7 +1657,7 @@ id|a-&gt;resources.pci.addr
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|sprintf
@@ -3638,7 +3638,7 @@ id|a
 suffix:semicolon
 id|a-&gt;clear_interrupts_proc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DBG_ERR
 c_func

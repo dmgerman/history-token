@@ -1123,7 +1123,7 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Send raw D-Channel-Commands&n;   * Parameters:&n;   *             u_char pointer data&n;   *             int    length of data&n;   *             int    Flag: 0 = Call form Kernel-Space (use memcpy,&n;   *                              no schedule allowed) &n;   *                          1 = Data is in User-Space (use memcpy_fromfs,&n;   *                              may schedule)&n;   *             int    driverId&n;   *             int    local channel-number (0 ...)&n;   */
+multiline_comment|/* Send raw D-Channel-Commands&n;   * Parameters:&n;   *             u_char pointer data&n;   *             int    length of data&n;   *             int    driverId&n;   *             int    local channel-number (0 ...)&n;   */
 DECL|member|writecmd
 r_int
 (paren
@@ -1133,9 +1133,8 @@ id|writecmd
 (paren
 r_const
 id|u_char
+id|__user
 op_star
-comma
-r_int
 comma
 r_int
 comma
@@ -1144,7 +1143,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Read raw Status replies&n;   *             u_char pointer data (volatile)&n;   *             int    length of buffer&n;   *             int    Flag: 0 = Call form Kernel-Space (use memcpy,&n;   *                              no schedule allowed) &n;   *                          1 = Data is in User-Space (use memcpy_fromfs,&n;   *                              may schedule)&n;   *             int    driverId&n;   *             int    local channel-number (0 ...)&n;   */
+multiline_comment|/* Read raw Status replies&n;   *             u_char pointer data (volatile)&n;   *             int    length of buffer&n;   *             int    driverId&n;   *             int    local channel-number (0 ...)&n;   */
 DECL|member|readstat
 r_int
 (paren
@@ -1153,9 +1152,8 @@ id|readstat
 )paren
 (paren
 id|u_char
+id|__user
 op_star
-comma
-r_int
 comma
 r_int
 comma

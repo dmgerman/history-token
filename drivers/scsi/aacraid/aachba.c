@@ -4945,6 +4945,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5173,6 +5174,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5258,6 +5260,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -5363,6 +5366,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren

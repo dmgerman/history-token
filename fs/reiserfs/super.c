@@ -3398,7 +3398,7 @@ id|p
 suffix:semicolon
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* &quot;resize=NNN&quot; */
 op_star
@@ -3450,7 +3450,7 @@ r_char
 op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -3520,7 +3520,7 @@ r_char
 op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|val

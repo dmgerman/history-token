@@ -126,6 +126,8 @@ op_amp
 id|queue-&gt;in
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 id|sctp_chunk_free
 c_func

@@ -734,7 +734,7 @@ id|meye.mchip_dmahandle
 suffix:semicolon
 id|meye.mchip_ptable_toc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|meye.mchip_dmahandle
 op_assign
@@ -850,7 +850,7 @@ id|meye.mchip_ptable
 suffix:semicolon
 id|meye.mchip_ptable_toc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|meye.mchip_dmahandle
 op_assign

@@ -6328,7 +6328,7 @@ id|MemWriteHSCX_IPACX
 suffix:semicolon
 id|cs-&gt;BC_Send_Data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 singleline_comment|// function located in ipacx module
 id|cs-&gt;irq_func

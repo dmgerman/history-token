@@ -710,6 +710,18 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|br_min_mtu
+c_func
+(paren
+r_const
+r_struct
+id|net_bridge
+op_star
+id|br
+)paren
+suffix:semicolon
 multiline_comment|/* br_input.c */
 r_extern
 r_int

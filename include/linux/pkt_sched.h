@@ -164,89 +164,6 @@ suffix:semicolon
 multiline_comment|/* Map: logical priority -&gt; PRIO band */
 )brace
 suffix:semicolon
-multiline_comment|/* CSZ section */
-DECL|struct|tc_csz_qopt
-r_struct
-id|tc_csz_qopt
-(brace
-DECL|member|flows
-r_int
-id|flows
-suffix:semicolon
-multiline_comment|/* Maximal number of guaranteed flows */
-DECL|member|R_log
-r_int
-r_char
-id|R_log
-suffix:semicolon
-multiline_comment|/* Fixed point position for round number */
-DECL|member|delta_log
-r_int
-r_char
-id|delta_log
-suffix:semicolon
-multiline_comment|/* Log of maximal managed time interval */
-DECL|member|priomap
-id|__u8
-id|priomap
-(braket
-id|TC_PRIO_MAX
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Map: logical priority -&gt; CSZ band */
-)brace
-suffix:semicolon
-DECL|struct|tc_csz_copt
-r_struct
-id|tc_csz_copt
-(brace
-DECL|member|slice
-r_struct
-id|tc_ratespec
-id|slice
-suffix:semicolon
-DECL|member|rate
-r_struct
-id|tc_ratespec
-id|rate
-suffix:semicolon
-DECL|member|peakrate
-r_struct
-id|tc_ratespec
-id|peakrate
-suffix:semicolon
-DECL|member|limit
-id|__u32
-id|limit
-suffix:semicolon
-DECL|member|buffer
-id|__u32
-id|buffer
-suffix:semicolon
-DECL|member|mtu
-id|__u32
-id|mtu
-suffix:semicolon
-)brace
-suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|TCA_CSZ_UNSPEC
-id|TCA_CSZ_UNSPEC
-comma
-DECL|enumerator|TCA_CSZ_PARMS
-id|TCA_CSZ_PARMS
-comma
-DECL|enumerator|TCA_CSZ_RTAB
-id|TCA_CSZ_RTAB
-comma
-DECL|enumerator|TCA_CSZ_PTAB
-id|TCA_CSZ_PTAB
-comma
-)brace
-suffix:semicolon
 multiline_comment|/* TBF section */
 DECL|struct|tc_tbf_qopt
 r_struct
@@ -1042,11 +959,11 @@ id|__u32
 id|duplicate
 suffix:semicolon
 multiline_comment|/* random packet dup  (0=none ~0=100%) */
-DECL|member|rate
+DECL|member|jitter
 id|__u32
-id|rate
+id|jitter
 suffix:semicolon
-multiline_comment|/* maximum transmit rate (bytes/sec) */
+multiline_comment|/* random jitter in latency (us) */
 )brace
 suffix:semicolon
 macro_line|#endif

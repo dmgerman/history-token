@@ -5097,7 +5097,6 @@ id|btv
 suffix:semicolon
 )brace
 DECL|function|bttv_reinit_bt848
-r_extern
 r_void
 id|bttv_reinit_bt848
 c_func
@@ -10650,6 +10649,7 @@ op_assign
 (paren
 r_struct
 id|v4l2_clip
+id|__user
 op_star
 )paren
 id|win-&gt;clips
@@ -13274,6 +13274,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|data
 comma

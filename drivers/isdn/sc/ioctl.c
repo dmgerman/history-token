@@ -301,10 +301,6 @@ c_func
 (paren
 id|srec
 comma
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 r_sizeof
@@ -510,10 +506,6 @@ c_func
 op_amp
 id|switchtype
 comma
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 r_sizeof
@@ -679,7 +671,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -753,10 +745,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 op_amp
@@ -855,7 +843,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -925,10 +913,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 id|spid
@@ -1024,10 +1008,6 @@ c_func
 (paren
 id|spid
 comma
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 id|SCIOC_SPIDSIZE
@@ -1204,7 +1184,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -1308,10 +1288,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 id|dn
@@ -1395,10 +1371,6 @@ c_func
 (paren
 id|dn
 comma
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 id|SCIOC_DNSIZE
@@ -1634,10 +1606,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|boardInfo
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 id|bi
@@ -1707,7 +1675,7 @@ id|data-&gt;channel
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|rcvmsg
 comma
@@ -1787,10 +1755,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|data-&gt;dataptr
 comma
 op_amp

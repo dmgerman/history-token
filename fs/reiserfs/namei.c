@@ -1290,7 +1290,7 @@ id|dir-&gt;i_sb
 suffix:semicolon
 id|de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign
@@ -1561,7 +1561,7 @@ suffix:semicolon
 )brace
 id|de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|reiserfs_write_lock
 c_func
@@ -2650,7 +2650,7 @@ id|dir
 comma
 id|mode
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 multiline_comment|/*i_size*/
@@ -2937,7 +2937,7 @@ id|dir
 comma
 id|mode
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 multiline_comment|/*i_size*/
@@ -3241,7 +3241,7 @@ id|dir
 comma
 id|mode
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/*symlink*/
 comma
 id|old_format_only
@@ -3510,7 +3510,7 @@ id|jbegin_count
 suffix:semicolon
 id|de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -3863,7 +3863,7 @@ id|jbegin_count
 suffix:semicolon
 id|de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4824,7 +4824,7 @@ id|de-&gt;de_entry_num
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-7042: entry_points_to_object: entry must be visible&quot;
 )paren
@@ -4855,7 +4855,7 @@ id|de-&gt;de_entry_num
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-7043: entry_points_to_object: entry must be visible&quot;
 )paren
@@ -5011,7 +5011,7 @@ singleline_comment|// make sure, that oldname still exists and points to an obje
 singleline_comment|// are going to rename
 id|old_de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|reiserfs_write_lock
 c_func
@@ -5133,7 +5133,7 @@ suffix:semicolon
 multiline_comment|/* directory is renamed, its parent directory will be changed, &n;&t;** so find &quot;..&quot; entry &n;&t;*/
 id|dot_dot_de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign
@@ -5368,7 +5368,7 @@ suffix:semicolon
 singleline_comment|// look for new name by reiserfs_find_entry
 id|new_de.de_gen_number_bit_string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign

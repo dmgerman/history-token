@@ -693,7 +693,7 @@ comma
 op_minus
 l_int|1
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|leaf_move_items
@@ -714,7 +714,7 @@ comma
 op_minus
 l_int|1
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|reiserfs_invalidate_buffer
@@ -750,7 +750,7 @@ comma
 op_minus
 l_int|1
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|leaf_move_items
@@ -771,7 +771,7 @@ comma
 op_minus
 l_int|1
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* right_delimiting_key is correct in R[0] */
@@ -4515,7 +4515,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -4669,7 +4669,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -4912,7 +4912,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -5144,7 +5144,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -5412,7 +5412,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -6325,7 +6325,7 @@ id|i
 suffix:semicolon
 id|bi.bi_parent
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bi.bi_position
 op_assign
@@ -6348,7 +6348,7 @@ id|tb-&gt;FEB
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tb-&gt;used
 (braket
