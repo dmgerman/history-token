@@ -499,8 +499,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2625,8 +2623,6 @@ id|hci_sk_list
 comma
 id|sk
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
