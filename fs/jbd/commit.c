@@ -752,7 +752,7 @@ c_func
 (paren
 id|jh
 comma
-id|jh-&gt;b_transaction
+id|commit_transaction
 comma
 id|BJ_Locked
 )paren
@@ -904,10 +904,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
@@ -1117,10 +1113,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
@@ -1890,21 +1882,6 @@ comma
 id|jh
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * akpm: don&squot;t put back a buffer_head with stale pointers&n;&t;&t; * dangling around.&n;&t;&t; */
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|jh-&gt;b_transaction
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * -&gt;t_iobuf_list should contain only dummy buffer_heads&n;&t;&t; * which were created by journal_write_metadata_buffer().&n;&t;&t; */
 id|BUFFER_TRACE
 c_func
@@ -2125,10 +2102,6 @@ id|journal
 comma
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 id|journal_put_journal_head
 c_func
@@ -2728,10 +2701,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 id|jbd_unlock_bh_state
 c_func

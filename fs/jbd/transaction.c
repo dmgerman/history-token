@@ -2910,10 +2910,6 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/* The buffer will be refiled below */
 )brace
@@ -2953,10 +2949,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 id|JBUFFER_TRACE
 c_func
@@ -3448,10 +3440,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * We are no longer going to journal this buffer.&n;&t;&t; * However, the commit of this transaction is still&n;&t;&t; * important to the buffer: the delete that we are now&n;&t;&t; * processing might obsolete an old log entry, so by&n;&t;&t; * committing, we can satisfy the buffer&squot;s checkpoint.&n;&t;&t; *&n;&t;&t; * So, if we have a checkpoint on the buffer, we should&n;&t;&t; * now refile the buffer on our BJ_Forget list so that&n;&t;&t; * we know to remove the checkpoint after we commit. &n;&t;&t; */
 r_if
@@ -4273,7 +4261,8 @@ id|jh-&gt;b_jlist
 r_case
 id|BJ_None
 suffix:colon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|BJ_SyncData
@@ -4397,6 +4386,12 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* Expose it to the VM */
+id|out
+suffix:colon
+id|jh-&gt;b_transaction
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|journal_unfile_buffer
 r_void
@@ -4557,10 +4552,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 id|journal_remove_journal_head
 c_func
@@ -4821,10 +4812,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5644,7 +5631,6 @@ c_func
 id|jh
 )paren
 suffix:semicolon
-r_else
 id|jh-&gt;b_transaction
 op_assign
 id|transaction
@@ -5913,10 +5899,6 @@ c_func
 (paren
 id|jh
 )paren
-suffix:semicolon
-id|jh-&gt;b_transaction
-op_assign
-l_int|NULL
 suffix:semicolon
 r_return
 suffix:semicolon
