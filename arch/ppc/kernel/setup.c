@@ -128,6 +128,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|power4_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 id|boot_infos_t
 op_star
 id|boot_infos
@@ -2170,10 +2178,16 @@ id|CONFIG_CMDLINE
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
-macro_line|#if defined(CONFIG_6xx)
+macro_line|#ifdef CONFIG_6xx
 id|ppc_md.power_save
 op_assign
 id|ppc6xx_idle
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_POWER4
+id|ppc_md.power_save
+op_assign
+id|power4_idle
 suffix:semicolon
 macro_line|#endif
 id|platform_init
