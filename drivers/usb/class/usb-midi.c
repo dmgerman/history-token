@@ -3401,7 +3401,7 @@ c_func
 (paren
 id|m-&gt;min.ep-&gt;urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 )paren
 (brace
