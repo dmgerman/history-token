@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.44.2.22 2002/03/13 01:18:12 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001, 2002, 2003 David S. Miller (davem@redhat.com)&n; * &n; * Support for Apple GMAC and assorted PHYs by&n; * Benjamin Herrenscmidt (benh@kernel.crashing.org)&n; * &n; * TODO: &n; *  - Get rid of all those nasty mdelay&squot;s and replace them&n; * with schedule_timeout.&n; *  - Implement WOL&n; */
+multiline_comment|/* $Id: sungem.c,v 1.44.2.22 2002/03/13 01:18:12 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001, 2002, 2003 David S. Miller (davem@redhat.com)&n; * &n; * Support for Apple GMAC and assorted PHYs by&n; * Benjamin Herrenscmidt (benh@kernel.crashing.org)&n; *&n; * NAPI and NETPOLL support&n; * (C) 2004 by Eric Lemoine (eric.lemoine@gmail.com)&n; * &n; * TODO: &n; *  - Get rid of all those nasty mdelay&squot;s and replace them&n; * with schedule_timeout.&n; *  - Implement WOL&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3849,6 +3849,32 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|gem_poll_controller
+r_static
+r_void
+id|gem_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* gem_interrupt is safe to reentrance so no need&n;&t; * to disable_irq here.&n;&t; */
+id|gem_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|gem_tx_timeout
 r_static
 r_void
@@ -13086,6 +13112,12 @@ id|dev-&gt;dma
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|gem_poll_controller
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
