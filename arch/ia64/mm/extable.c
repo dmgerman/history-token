@@ -336,8 +336,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-DECL|function|handle_exception
-id|handle_exception
+DECL|function|ia64_handle_exception
+id|ia64_handle_exception
 (paren
 r_struct
 id|pt_regs

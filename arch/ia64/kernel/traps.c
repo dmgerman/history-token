@@ -2144,7 +2144,7 @@ r_else
 r_if
 c_cond
 (paren
-id|done_with_exception
+id|ia64_done_with_exception
 c_func
 (paren
 id|regs

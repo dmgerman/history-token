@@ -420,7 +420,7 @@ multiline_comment|/* location-relative continuation addr.; if bit 2 is set, r9 i
 suffix:semicolon
 r_extern
 r_void
-id|handle_exception
+id|ia64_handle_exception
 (paren
 r_struct
 id|pt_regs
@@ -449,8 +449,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|done_with_exception
-id|done_with_exception
+DECL|function|ia64_done_with_exception
+id|ia64_done_with_exception
 (paren
 r_struct
 id|pt_regs
@@ -486,7 +486,7 @@ c_cond
 id|e
 )paren
 (brace
-id|handle_exception
+id|ia64_handle_exception
 c_func
 (paren
 id|regs
