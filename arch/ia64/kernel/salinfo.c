@@ -670,9 +670,9 @@ id|data-&gt;sem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Check for outstanding MCA/INIT records every 5 minutes (arbitrary) */
+multiline_comment|/* Check for outstanding MCA/INIT records every minute (arbitrary) */
 DECL|macro|SALINFO_TIMER_DELAY
-mdefine_line|#define SALINFO_TIMER_DELAY (5*60*HZ)
+mdefine_line|#define SALINFO_TIMER_DELAY (60*HZ)
 DECL|variable|salinfo_timer
 r_static
 r_struct
