@@ -240,6 +240,36 @@ id|APIC_LVT_MASKED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* lets not touch this if we didn&squot;t frob it */
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+r_if
+c_cond
+(paren
+id|maxlvt
+op_ge
+l_int|5
+)paren
+(brace
+id|v
+op_assign
+id|apic_read
+c_func
+(paren
+id|APIC_LVTTHMR
+)paren
+suffix:semicolon
+id|apic_write_around
+c_func
+(paren
+id|APIC_LVTTHMR
+comma
+id|v
+op_or
+id|APIC_LVT_MASKED
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Clean APIC state for other OSs:&n;&t; */
 id|apic_write_around
 c_func
@@ -295,6 +325,23 @@ comma
 id|APIC_LVT_MASKED
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+r_if
+c_cond
+(paren
+id|maxlvt
+op_ge
+l_int|5
+)paren
+id|apic_write_around
+c_func
+(paren
+id|APIC_LVTTHMR
+comma
+id|APIC_LVT_MASKED
+)paren
+suffix:semicolon
+macro_line|#endif
 id|v
 op_assign
 id|GET_APIC_VERSION
