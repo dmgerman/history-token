@@ -728,11 +728,7 @@ id|md_error
 (paren
 id|mp_bh-&gt;mddev
 comma
-id|to_kdev_t
-c_func
-(paren
-id|bio-&gt;bi_bdev-&gt;bd_dev
-)paren
+id|bio-&gt;bi_bdev
 )paren
 suffix:semicolon
 r_else

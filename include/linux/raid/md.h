@@ -281,8 +281,10 @@ id|mddev_t
 op_star
 id|mddev
 comma
-id|kdev_t
-id|rdev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 suffix:semicolon
 r_extern
