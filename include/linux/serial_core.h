@@ -1095,9 +1095,6 @@ r_struct
 id|uart_port
 op_star
 id|port
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 r_int
@@ -1113,9 +1110,6 @@ r_struct
 id|uart_port
 op_star
 id|port
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 DECL|macro|uart_circ_empty

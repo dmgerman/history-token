@@ -8676,9 +8676,6 @@ c_func
 (paren
 r_int
 id|line
-comma
-id|u32
-id|level
 )paren
 (brace
 id|uart_suspend_port
@@ -8694,8 +8691,6 @@ id|line
 )braket
 dot
 id|port
-comma
-id|level
 )paren
 suffix:semicolon
 )brace
@@ -8707,9 +8702,6 @@ c_func
 (paren
 r_int
 id|line
-comma
-id|u32
-id|level
 )paren
 (brace
 id|uart_resume_port
@@ -8725,8 +8717,6 @@ id|line
 )braket
 dot
 id|port
-comma
-id|level
 )paren
 suffix:semicolon
 )brace

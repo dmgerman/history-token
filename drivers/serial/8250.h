@@ -84,9 +84,6 @@ c_func
 (paren
 r_int
 id|line
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 r_void
@@ -95,9 +92,6 @@ c_func
 (paren
 r_int
 id|line
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 DECL|struct|old_serial_port
