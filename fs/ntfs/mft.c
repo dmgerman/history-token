@@ -1235,6 +1235,8 @@ id|ntfs_new_extent_inode
 c_func
 (paren
 id|base_ni-&gt;vol-&gt;sb
+comma
+id|mft_no
 )paren
 suffix:semicolon
 r_if
@@ -1270,10 +1272,6 @@ suffix:semicolon
 id|ni-&gt;vol
 op_assign
 id|base_ni-&gt;vol
-suffix:semicolon
-id|ni-&gt;mft_no
-op_assign
-id|mft_no
 suffix:semicolon
 id|ni-&gt;seq_no
 op_assign
