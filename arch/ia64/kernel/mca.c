@@ -615,6 +615,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * platform dependent error handling&n; */
 macro_line|#ifndef PLATFORM_MCA_HANDLERS
+macro_line|#ifdef CONFIG_ACPI
 r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_handler
@@ -665,6 +666,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ACPI */
 r_static
 r_void
 DECL|function|show_min_state
@@ -3036,6 +3038,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  ia64_mca_cpe_int_caller&n; *&n; * &t;Triggered by sw interrupt from CPE polling routine.  Calls&n; * &t;real interrupt handler and either triggers a sw interrupt&n; * &t;on the next cpu or does cleanup at the end.&n; *&n; * Inputs&n; *&t;interrupt number&n; *&t;client data arg ptr&n; *&t;saved registers ptr&n; * Outputs&n; * &t;handled&n; */
+macro_line|#ifdef CONFIG_ACPI
 r_static
 id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_caller
@@ -3212,6 +3215,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ACPI */
 multiline_comment|/*&n; *  ia64_mca_cpe_poll&n; *&n; *&t;Poll for Corrected Platform Errors (CPEs), trigger interrupt&n; *&t;on first cpu, from there it will trickle through all the cpus.&n; *&n; * Inputs   :   dummy(unused)&n; * Outputs  :   None&n; *&n; */
 r_static
 r_void
