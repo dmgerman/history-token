@@ -659,22 +659,77 @@ id|status
 op_assign
 id|urb-&gt;status
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|status
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - urb shutting down with status: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|status
 )paren
-id|dbg
+id|err
 (paren
-l_string|&quot;gl_interrupt_complete fail - %X&quot;
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
 comma
 id|status
-)paren
-suffix:semicolon
-r_else
-id|dbg
-(paren
-l_string|&quot;gl_interrupt_complete success...&quot;
 )paren
 suffix:semicolon
 )brace
