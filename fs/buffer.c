@@ -90,20 +90,17 @@ comma
 id|line
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86
 id|printk
 c_func
 (paren
 l_string|&quot;Pass this trace through ksymoops for reporting&bslash;n&quot;
 )paren
 suffix:semicolon
-id|show_stack
+id|dump_stack
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|__buffer_error
 id|EXPORT_SYMBOL

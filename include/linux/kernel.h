@@ -514,6 +514,14 @@ DECL|macro|TAINT_FORCED_MODULE
 mdefine_line|#define TAINT_FORCED_MODULE&t;&t;(1&lt;&lt;1)
 DECL|macro|TAINT_UNSAFE_SMP
 mdefine_line|#define TAINT_UNSAFE_SMP&t;&t;(1&lt;&lt;2)
+r_extern
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#if DEBUG
 DECL|macro|pr_debug
 mdefine_line|#define pr_debug(fmt,arg...) &bslash;&n;&t;printk(KERN_DEBUG fmt,##arg)

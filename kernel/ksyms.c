@@ -3205,4 +3205,12 @@ id|__per_cpu_offset
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* debug */
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 eof
