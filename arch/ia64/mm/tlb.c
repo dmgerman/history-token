@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
+multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,17 +10,24 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|variable|purge_pgbits
 r_static
+r_struct
+(brace
+DECL|member|mask
 r_int
 r_int
-id|purge_pgbits
+id|mask
 suffix:semicolon
-DECL|variable|max_purge_size
-r_static
+multiline_comment|/* mask of supported purge page-sizes */
+DECL|member|max_bits
 r_int
 r_int
-id|max_purge_size
+id|max_bits
+suffix:semicolon
+multiline_comment|/* log2() of largest supported purge page-size */
+DECL|variable|purge
+)brace
+id|purge
 suffix:semicolon
 DECL|variable|ia64_ctx
 r_struct
@@ -551,6 +558,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|unlikely
 (paren
 (paren
 (paren
@@ -559,7 +567,7 @@ op_lshift
 id|nbits
 )paren
 op_amp
-id|purge_pgbits
+id|purge.mask
 )paren
 op_eq
 l_int|0
@@ -568,7 +576,7 @@ op_logical_and
 (paren
 id|nbits
 OL
-id|max_purge_size
+id|purge.max_bits
 )paren
 )paren
 op_increment
@@ -579,11 +587,11 @@ c_cond
 (paren
 id|nbits
 OG
-id|max_purge_size
+id|purge.max_bits
 )paren
 id|nbits
 op_assign
-id|max_purge_size
+id|purge.max_bits
 suffix:semicolon
 id|start
 op_and_assign
@@ -698,26 +706,34 @@ op_amp
 id|tr_pgbits
 comma
 op_amp
-id|purge_pgbits
+id|purge.mask
 )paren
 )paren
 op_ne
 l_int|0
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;ia64_pal_vm_page_size=%ld&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;PAL_VM_PAGE_SIZE failed with status=%ld;&quot;
+l_string|&quot;defaulting to architected purge page-sizes.&bslash;n&quot;
 comma
 id|status
 )paren
 suffix:semicolon
-id|max_purge_size
+id|purge.mask
+op_assign
+l_int|0x15557000
+suffix:semicolon
+)brace
+id|purge.max_bits
 op_assign
 id|ia64_fls
 c_func
 (paren
-id|purge_pgbits
+id|purge.mask
 )paren
 suffix:semicolon
 id|ia64_get_ptce
