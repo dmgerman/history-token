@@ -4253,6 +4253,10 @@ c_func
 id|pSMB-&gt;DataCount
 )paren
 suffix:semicolon
+id|pSMB-&gt;TotalDataCount
+op_assign
+id|pSMB-&gt;DataCount
+suffix:semicolon
 id|pSMB-&gt;Fid
 op_assign
 id|netfid
