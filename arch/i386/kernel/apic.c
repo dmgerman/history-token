@@ -16,29 +16,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
-multiline_comment|/*&n; * every pentium local APIC has two &squot;local interrupts&squot;, with a&n; * soft-definable vector attached to both interrupts, one of&n; * which is a timer interrupt, the other one is error counter&n; * overflow. Linux uses the local APIC timer interrupt to get&n; * a much simpler SMP time architecture:&n; */
-DECL|function|BUILD_SMP_INTERRUPT
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|apic_timer_interrupt
-comma
-id|LOCAL_TIMER_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|error_interrupt
-comma
-id|ERROR_APIC_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|spurious_interrupt
-comma
-id|SPURIOUS_APIC_VECTOR
-)paren
+DECL|function|apic_intr_init
 r_void
 id|__init
 id|apic_intr_init
