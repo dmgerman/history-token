@@ -761,16 +761,6 @@ id|EAGAIN
 )paren
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|0
-comma
-(paren
-l_string|&quot;ERESTARTSYS returned from sock_recvmsg&quot;
-)paren
-)paren
-suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
@@ -786,75 +776,7 @@ r_if
 c_cond
 (paren
 id|length
-OL
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|length
-op_eq
-op_minus
-id|ECONNRESET
-)paren
-(brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Connection reset by peer &quot;
-)paren
-)paren
-suffix:semicolon
-id|cifs_reconnect
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
-id|csocket
-op_assign
-id|server-&gt;ssocket
-suffix:semicolon
-)brace
-r_else
-(brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Unexpected error on sock_recvmsg(peek) = %d&quot;
-comma
-id|length
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* there may be other non-fatal &n;&t;&t;&t;&t;&t;errors that the tcp stack can return &n;&t;&t;&t;&t;&t;to kernel that are not documented yet&n;&t;&t;&t;&t;&t;and that are not checked above. */
-id|cifs_reconnect
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
-id|csocket
-op_assign
-id|server-&gt;ssocket
-suffix:semicolon
-)brace
-r_continue
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|length
-op_eq
+op_le
 l_int|0
 )paren
 (brace
@@ -864,7 +786,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Zero length peek received - dead session?&quot;
+l_string|&quot;Reconnecting after unexpected rcvmsg error &quot;
 )paren
 )paren
 suffix:semicolon
@@ -1046,7 +968,17 @@ comma
 id|length
 )paren
 suffix:semicolon
-r_break
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 r_else
@@ -1124,9 +1056,18 @@ id|smb_hdr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB fix by finding next smb signature - and reading off data until next smb ? BB */
-multiline_comment|/* BB add reconnect here */
-r_break
+multiline_comment|/* could we fix this network corruption by finding next &n;&t;&t;&t;&t;&t;&t;smb header (instead of killing the session) and&n;&t;&t;&t;&t;&t;&t;restart reading from next valid SMB found? */
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 r_else
@@ -1200,8 +1141,17 @@ id|total_read
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB add reconnect here */
-r_break
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 )brace
