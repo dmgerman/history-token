@@ -1619,11 +1619,10 @@ id|u8
 id|pci_latency
 suffix:semicolon
 DECL|member|name
+r_const
 r_char
+op_star
 id|name
-(braket
-l_int|48
-)braket
 suffix:semicolon
 macro_line|#ifdef INDEX_DEBUG
 DECL|member|debug_lock

@@ -1,5 +1,5 @@
 multiline_comment|/* 8390.c: A general NS8390 ethernet driver core for linux. */
-multiline_comment|/*&n;&t;Written 1992-94 by Donald Becker.&n;  &n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;  &n;  This is the chip-specific code for many 8390-based ethernet adaptors.&n;  This is not a complete driver, it must be combined with board-specific&n;  code such as ne.c, wd.c, 3c503.c, etc.&n;&n;  Seeing how at least eight drivers use this code, (not counting the&n;  PCMCIA ones either) it is easy to break some card by what seems like&n;  a simple innocent change. Please contact me or Donald if you think&n;  you have found something that needs changing. -- PG&n;&n;&n;  Changelog:&n;&n;  Paul Gortmaker&t;: remove set_bit lock, other cleanups.&n;  Paul Gortmaker&t;: add ei_get_8390_hdr() so we can pass skb&squot;s to &n;&t;&t;&t;  ei_block_input() for eth_io_copy_and_sum().&n;  Paul Gortmaker&t;: exchange static int ei_pingpong for a #define,&n;&t;&t;&t;  also add better Tx error handling.&n;  Paul Gortmaker&t;: rewrite Rx overrun handling as per NS specs.&n;  Alexey Kuznetsov&t;: use the 8390&squot;s six bit hash multicast filter.&n;  Paul Gortmaker&t;: tweak ANK&squot;s above multicast changes a bit.&n;  Paul Gortmaker&t;: update packet statistics for v2.1.x&n;  Alan Cox&t;&t;: support arbitary stupid port mappings on the&n;  &t;&t;&t;  68K Macintosh. Support &gt;16bit I/O spaces&n;  Paul Gortmaker&t;: add kmod support for auto-loading of the 8390&n;&t;&t;&t;  module by all drivers that require it.&n;  Alan Cox&t;&t;: Spinlocking work, added &squot;BUG_83C690&squot;&n;  Paul Gortmaker&t;: Separate out Tx timeout code from Tx path.&n;&n;  Sources:&n;  The National Semiconductor LAN Databook, and the 3Com 3c503 databook.&n;&n;  */
+multiline_comment|/*&n;&t;Written 1992-94 by Donald Becker.&n;  &n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;  &n;  This is the chip-specific code for many 8390-based ethernet adaptors.&n;  This is not a complete driver, it must be combined with board-specific&n;  code such as ne.c, wd.c, 3c503.c, etc.&n;&n;  Seeing how at least eight drivers use this code, (not counting the&n;  PCMCIA ones either) it is easy to break some card by what seems like&n;  a simple innocent change. Please contact me or Donald if you think&n;  you have found something that needs changing. -- PG&n;&n;&n;  Changelog:&n;&n;  Paul Gortmaker&t;: remove set_bit lock, other cleanups.&n;  Paul Gortmaker&t;: add ei_get_8390_hdr() so we can pass skb&squot;s to &n;&t;&t;&t;  ei_block_input() for eth_io_copy_and_sum().&n;  Paul Gortmaker&t;: exchange static int ei_pingpong for a #define,&n;&t;&t;&t;  also add better Tx error handling.&n;  Paul Gortmaker&t;: rewrite Rx overrun handling as per NS specs.&n;  Alexey Kuznetsov&t;: use the 8390&squot;s six bit hash multicast filter.&n;  Paul Gortmaker&t;: tweak ANK&squot;s above multicast changes a bit.&n;  Paul Gortmaker&t;: update packet statistics for v2.1.x&n;  Alan Cox&t;&t;: support arbitary stupid port mappings on the&n;  &t;&t;&t;  68K Macintosh. Support &gt;16bit I/O spaces&n;  Paul Gortmaker&t;: add kmod support for auto-loading of the 8390&n;&t;&t;&t;  module by all drivers that require it.&n;  Alan Cox&t;&t;: Spinlocking work, added &squot;BUG_83C690&squot;&n;  Paul Gortmaker&t;: Separate out Tx timeout code from Tx path.&n;  Paul Gortmaker&t;: Remove old unused single Tx buffer code.&n;&n;  Sources:&n;  The National Semiconductor LAN Databook, and the 3Com 3c503 databook.&n;&n;  */
 DECL|variable|version
 r_static
 r_const
@@ -624,7 +624,6 @@ id|length
 suffix:colon
 id|ETH_ZLEN
 suffix:semicolon
-macro_line|#ifdef EI_PINGPONG
 multiline_comment|/*&n;&t; * We have two Tx slots available for use. Find the first free&n;&t; * slot, and then perform some sanity checks. With two Tx bufs,&n;&t; * you get very close to transmitting back-to-back packets. With&n;&t; * only one Tx buf, the transmitter sits idle while you reload the&n;&t; * card, leaving a substantial gap between each transmitted packet.&n;&t; */
 r_if
 c_cond
@@ -680,7 +679,9 @@ id|output_page
 op_assign
 id|ei_local-&gt;tx_start_page
 op_plus
-id|TX_1X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 suffix:semicolon
 id|ei_local-&gt;tx2
 op_assign
@@ -911,87 +912,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else&t;/* EI_PINGPONG */
-multiline_comment|/*&n;&t; * Only one Tx buffer in use. You need two Tx bufs to come close to&n;&t; * back-to-back transmits. Expect a 20 -&gt; 25% performance hit on&n;&t; * reasonable hardware if you only use one Tx buffer.&n;&t; */
-r_if
-c_cond
-(paren
-id|length
-op_eq
-id|send_length
-)paren
-id|ei_block_output
-c_func
-(paren
-id|dev
-comma
-id|length
-comma
-id|skb-&gt;data
-comma
-id|ei_local-&gt;tx_start_page
-)paren
-suffix:semicolon
-r_else
-(brace
-id|memset
-c_func
-(paren
-id|scratch
-comma
-l_int|0
-comma
-id|ETH_ZLEN
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|scratch
-comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-id|ei_block_output
-c_func
-(paren
-id|dev
-comma
-id|ETH_ZLEN
-comma
-id|scratch
-comma
-id|ei_local-&gt;tx_start_page
-)paren
-suffix:semicolon
-)brace
-id|ei_local-&gt;txing
-op_assign
-l_int|1
-suffix:semicolon
-id|NS8390_trigger_send
-c_func
-(paren
-id|dev
-comma
-id|send_length
-comma
-id|ei_local-&gt;tx_start_page
-)paren
-suffix:semicolon
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* EI_PINGPONG */
 multiline_comment|/* Turn 8390 interrupts back on. */
 id|ei_local-&gt;irqlock
 op_assign
@@ -1813,7 +1733,6 @@ id|EN0_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Ack intr. */
-macro_line|#ifdef EI_PINGPONG
 multiline_comment|/*&n;&t; * There are two Tx buffers, see which one finished, and trigger&n;&t; * the send of another one if it exists.&n;&t; */
 id|ei_local-&gt;txqueue
 op_decrement
@@ -1988,13 +1907,6 @@ suffix:semicolon
 )brace
 singleline_comment|//&t;else printk(KERN_WARNING &quot;%s: unexpected TX-done interrupt, lasttx=%d.&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;dev-&gt;name, ei_local-&gt;lasttx);
-macro_line|#else&t;/* EI_PINGPONG */
-multiline_comment|/*&n;&t; *  Single Tx buffer: mark it free so another packet can be loaded.&n;&t; */
-id|ei_local-&gt;txing
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Minimize Tx latency: update the statistics after we restart TXing. */
 r_if
 c_cond
