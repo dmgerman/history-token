@@ -1383,8 +1383,6 @@ suffix:semicolon
 id|mpt_free_msg_frame
 c_func
 (paren
-id|mptctl_id
-comma
 id|ioctl-&gt;ioc
 comma
 id|mf
@@ -1651,8 +1649,6 @@ suffix:semicolon
 id|mpt_free_msg_frame
 c_func
 (paren
-id|mptctl_id
-comma
 id|ioc
 comma
 id|ioctl-&gt;tmPtr
@@ -6888,10 +6884,6 @@ id|dma_addr_t
 id|dma_addr_out
 suffix:semicolon
 r_int
-id|dir
-suffix:semicolon
-multiline_comment|/* PCI data direction */
-r_int
 id|sgSize
 op_assign
 l_int|0
@@ -7985,10 +7977,6 @@ OG
 l_int|0
 )paren
 (brace
-id|dir
-op_assign
-id|PCI_DMA_TODEVICE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8001,6 +7989,8 @@ id|flagsLength
 op_assign
 (paren
 id|MPI_SGE_FLAGS_SIMPLE_ELEMENT
+op_or
+id|MPI_SGE_FLAGS_END_OF_BUFFER
 op_or
 id|MPI_SGE_FLAGS_DIRECTION
 op_or
@@ -8134,10 +8124,6 @@ OG
 l_int|0
 )paren
 (brace
-id|dir
-op_assign
-id|PCI_DMA_FROMDEVICE
-suffix:semicolon
 id|flagsLength
 op_assign
 id|MPT_SGE_FLAGS_SSIMPLE_READ
@@ -8337,8 +8323,6 @@ suffix:semicolon
 id|mpt_free_msg_frame
 c_func
 (paren
-id|mptctl_id
-comma
 id|ioc
 comma
 id|mf
@@ -8734,8 +8718,6 @@ id|mf
 id|mpt_free_msg_frame
 c_func
 (paren
-id|mptctl_id
-comma
 id|ioc
 comma
 id|mf

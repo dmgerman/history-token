@@ -5294,8 +5294,6 @@ suffix:semicolon
 id|mpt_free_msg_frame
 c_func
 (paren
-id|LanCtx
-comma
 id|mpt_dev
 comma
 id|mf
