@@ -2282,7 +2282,7 @@ l_int|2
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* register must be odd */
+multiline_comment|/* register must be even */
 r_if
 c_cond
 (paren
