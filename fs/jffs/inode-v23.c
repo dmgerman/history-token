@@ -7724,6 +7724,7 @@ comma
 r_char
 op_star
 )paren
+op_amp
 id|val
 comma
 l_int|0
