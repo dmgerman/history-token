@@ -64,10 +64,40 @@ DECL|member|ip6_u
 )brace
 id|ip6_u
 suffix:semicolon
+r_struct
+(brace
+DECL|member|daddr
+id|__u16
+id|daddr
+suffix:semicolon
+DECL|member|saddr
+id|__u16
+id|saddr
+suffix:semicolon
+DECL|member|fwmark
+id|__u32
+id|fwmark
+suffix:semicolon
+DECL|member|scope
+id|__u8
+id|scope
+suffix:semicolon
+DECL|member|dn_u
+)brace
+id|dn_u
+suffix:semicolon
 DECL|member|nl_u
 )brace
 id|nl_u
 suffix:semicolon
+DECL|macro|fld_dst
+mdefine_line|#define fld_dst&t;&t;nl_u.dn_u.daddr
+DECL|macro|fld_src
+mdefine_line|#define fld_src&t;&t;nl_u.dn_u.saddr
+DECL|macro|fld_fwmark
+mdefine_line|#define fld_fwmark&t;nl_u.dn_u.fwmark
+DECL|macro|fld_scope
+mdefine_line|#define fld_scope&t;nl_u.dn_u.scope
 DECL|macro|fl6_dst
 mdefine_line|#define fl6_dst&t;&t;nl_u.ip6_u.daddr
 DECL|macro|fl6_src
@@ -121,6 +151,37 @@ suffix:semicolon
 DECL|member|icmpt
 )brace
 id|icmpt
+suffix:semicolon
+r_struct
+(brace
+DECL|member|sport
+id|__u16
+id|sport
+suffix:semicolon
+DECL|member|dport
+id|__u16
+id|dport
+suffix:semicolon
+DECL|member|objnum
+id|__u8
+id|objnum
+suffix:semicolon
+DECL|member|objnamel
+id|__u8
+id|objnamel
+suffix:semicolon
+multiline_comment|/* Not 16 bits since max val is 16 */
+DECL|member|objname
+id|__u8
+id|objname
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* Not zero terminated */
+DECL|member|dnports
+)brace
+id|dnports
 suffix:semicolon
 DECL|member|spi
 id|__u32

@@ -1,9 +1,6 @@
 macro_line|#ifndef _NET_DN_FIB_H
 DECL|macro|_NET_DN_FIB_H
 mdefine_line|#define _NET_DN_FIB_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_DECNET_ROUTER
-macro_line|#include &lt;linux/rtnetlink.h&gt;
 DECL|struct|dn_kern_rta
 r_struct
 id|dn_kern_rta
@@ -72,37 +69,6 @@ r_struct
 id|rta_cacheinfo
 op_star
 id|rta_ci
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|dn_fib_key
-r_struct
-id|dn_fib_key
-(brace
-DECL|member|src
-id|dn_address
-id|src
-suffix:semicolon
-DECL|member|dst
-id|dn_address
-id|dst
-suffix:semicolon
-DECL|member|iif
-r_int
-id|iif
-suffix:semicolon
-DECL|member|oif
-r_int
-id|oif
-suffix:semicolon
-DECL|member|fwmark
-id|u32
-id|fwmark
-suffix:semicolon
-DECL|member|scope
-r_int
-r_char
-id|scope
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -222,9 +188,24 @@ id|dn_address
 id|fib_prefsrc
 suffix:semicolon
 DECL|member|fib_priority
-id|u32
+id|__u32
 id|fib_priority
 suffix:semicolon
+DECL|member|fib_metrics
+id|__u32
+id|fib_metrics
+(braket
+id|RTAX_MAX
+)braket
+suffix:semicolon
+DECL|macro|dn_fib_mtu
+mdefine_line|#define dn_fib_mtu  fib_metrics[RTAX_MTU-1]
+DECL|macro|dn_fib_window
+mdefine_line|#define dn_fib_window fib_metrics[RTAX_WINDOW-1]
+DECL|macro|dn_fib_rtt
+mdefine_line|#define dn_fib_rtt fib_metrics[RTAX_RTT-1]
+DECL|macro|dn_fib_advmss
+mdefine_line|#define dn_fib_advmss fib_metrics[RTAX_ADVMSS-1]
 DECL|member|fib_nhs
 r_int
 id|fib_nhs
@@ -241,14 +222,16 @@ id|fib_nh
 l_int|0
 )braket
 suffix:semicolon
-DECL|macro|fib_dev
-mdefine_line|#define fib_dev&t;&t;fib_nh[0].nh_dev
+DECL|macro|dn_fib_dev
+mdefine_line|#define dn_fib_dev&t;&t;fib_nh[0].nh_dev
 )brace
 suffix:semicolon
-DECL|macro|DN_FIB_RES_NH
-mdefine_line|#define DN_FIB_RES_NH(res)&t;((res).fi-&gt;fib_nh[(res).nh_sel])
 DECL|macro|DN_FIB_RES_RESET
 mdefine_line|#define DN_FIB_RES_RESET(res)&t;((res).nh_sel = 0)
+DECL|macro|DN_FIB_RES_NH
+mdefine_line|#define DN_FIB_RES_NH(res)&t;((res).fi-&gt;fib_nh[(res).nh_sel])
+DECL|macro|DN_FIB_RES_PREFSRC
+mdefine_line|#define DN_FIB_RES_PREFSRC(res)&t;((res).fi-&gt;fib_prefsrc ? : __dn_fib_res_prefsrc(&amp;res))
 DECL|macro|DN_FIB_RES_GW
 mdefine_line|#define DN_FIB_RES_GW(res)&t;(DN_FIB_RES_NH(res).nh_gw)
 DECL|macro|DN_FIB_RES_DEV
@@ -412,9 +395,9 @@ id|t
 comma
 r_const
 r_struct
-id|dn_fib_key
+id|flowi
 op_star
-id|key
+id|fl
 comma
 r_struct
 id|dn_fib_res
@@ -493,6 +476,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_DECNET_ROUTER
 multiline_comment|/*&n; * dn_fib.c&n; */
 r_extern
 r_void
@@ -584,9 +568,9 @@ id|fi
 comma
 r_const
 r_struct
-id|dn_fib_key
+id|flowi
 op_star
-id|key
+id|fl
 comma
 r_struct
 id|dn_fib_res
@@ -637,9 +621,9 @@ c_func
 (paren
 r_const
 r_struct
-id|dn_fib_key
+id|flowi
 op_star
-id|key
+id|fl
 comma
 r_struct
 id|dn_fib_res
@@ -744,14 +728,42 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+id|__u16
+id|dn_fib_rules_policy
+c_func
+(paren
+id|__u16
+id|saddr
+comma
+r_struct
+id|dn_fib_res
+op_star
+id|res
+comma
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dnet_addr_type
+c_func
+(paren
+id|__u16
+id|addr
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|dn_fib_lookup
 c_func
 (paren
+r_const
 r_struct
-id|dn_fib_key
+id|flowi
 op_star
-id|key
+id|fl
 comma
 r_struct
 id|dn_fib_res
@@ -872,16 +884,6 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-DECL|macro|DN_NUM_TABLES
-mdefine_line|#define DN_NUM_TABLES 255
-DECL|macro|DN_MIN_TABLE
-mdefine_line|#define DN_MIN_TABLE 1
-DECL|macro|DN_DEFAULT_TABLE
-mdefine_line|#define DN_DEFAULT_TABLE 1
-DECL|macro|DN_L1_TABLE
-mdefine_line|#define DN_L1_TABLE 1
-DECL|macro|DN_L2_TABLE
-mdefine_line|#define DN_L2_TABLE 2
 r_extern
 r_void
 id|dn_fib_free_info
@@ -895,7 +897,7 @@ id|fi
 suffix:semicolon
 DECL|function|dn_fib_info_put
 r_static
-id|__inline__
+r_inline
 r_void
 id|dn_fib_info_put
 c_func
@@ -925,7 +927,7 @@ suffix:semicolon
 )brace
 DECL|function|dn_fib_res_put
 r_static
-id|__inline__
+r_inline
 r_void
 id|dn_fib_res_put
 c_func
@@ -959,9 +961,29 @@ id|res-&gt;r
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|dn_fib_table
+op_star
+id|dn_fib_tables
+(braket
+)braket
+suffix:semicolon
+macro_line|#else /* Endnode */
+DECL|macro|dn_fib_lookup
+mdefine_line|#define dn_fib_lookup(fl, res) (-ESRCH)
+DECL|macro|dn_fib_info_put
+mdefine_line|#define dn_fib_info_put(fi) do { } while(0)
+DECL|macro|dn_fib_select_multipath
+mdefine_line|#define dn_fib_select_multipath(fl, res) do { } while(0)
+DECL|macro|dn_fib_rules_policy
+mdefine_line|#define dn_fib_rules_policy(saddr,res,flags) (0)
+DECL|macro|dn_fib_res_put
+mdefine_line|#define dn_fib_res_put(res) do { } while(0)
+macro_line|#endif /* CONFIG_DECNET_ROUTER */
 DECL|function|dnet_make_mask
 r_static
-id|__inline__
+r_inline
 id|u16
 id|dnet_make_mask
 c_func
@@ -999,6 +1021,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_DECNET_ROUTER */
 macro_line|#endif /* _NET_DN_FIB_H */
 eof

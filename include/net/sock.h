@@ -3243,7 +3243,7 @@ macro_line|#else
 DECL|macro|NETDEBUG
 mdefine_line|#define NETDEBUG(x)&t;do { x; } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * Macros for sleeping on a socket. Use them like this:&n; *&n; * SOCK_SLEEP_PRE(sk)&n; * if (condition)&n; * &t;schedule();&n; * SOCK_SLEEP_POST(sk)&n; *&n; */
+multiline_comment|/*&n; * Macros for sleeping on a socket. Use them like this:&n; *&n; * SOCK_SLEEP_PRE(sk)&n; * if (condition)&n; * &t;schedule();&n; * SOCK_SLEEP_POST(sk)&n; *&n; * N.B. These are now obsolete and were, afaik, only ever used in DECnet&n; * and when the last use of them in DECnet has gone, I&squot;m intending to&n; * remove them.&n; */
 DECL|macro|SOCK_SLEEP_PRE
 mdefine_line|#define SOCK_SLEEP_PRE(sk) &t;{ struct task_struct *tsk = current; &bslash;&n;&t;&t;&t;&t;DECLARE_WAITQUEUE(wait, tsk); &bslash;&n;&t;&t;&t;&t;tsk-&gt;state = TASK_INTERRUPTIBLE; &bslash;&n;&t;&t;&t;&t;add_wait_queue((sk)-&gt;sleep, &amp;wait); &bslash;&n;&t;&t;&t;&t;release_sock(sk);
 DECL|macro|SOCK_SLEEP_POST

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
+macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/dn.h&gt;
 macro_line|#include &lt;net/dn_dev.h&gt;
