@@ -1374,10 +1374,6 @@ id|command
 op_star
 id|my_slot
 suffix:semicolon
-r_int
-r_int
-id|timeout
-suffix:semicolon
 id|PRINTD
 (paren
 id|DBG_FLOW
@@ -1476,20 +1472,6 @@ id|ptrs-&gt;in
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// prepare to wait for cq-&gt;pending milliseconds
-singleline_comment|// effectively one centisecond on i386
-id|timeout
-op_assign
-(paren
-id|cq-&gt;pending
-op_star
-id|HZ
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1507,28 +1489,15 @@ op_amp
 id|cq-&gt;lock
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|timeout
-)paren
-(brace
+singleline_comment|// these comments were in a while-loop before, msleep removes the loop
 singleline_comment|// go to sleep
 singleline_comment|// PRINTD (DBG_CMD, &quot;wait: sleeping %lu for command&quot;, timeout);
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+id|cq-&gt;pending
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|schedule_timeout
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
 singleline_comment|// wait for my slot to be reached (all waiters are here or above, until...)
 r_while
 c_loop
@@ -6656,9 +6625,7 @@ id|command_timeouts
 id|cmd
 )braket
 op_star
-id|HZ
-op_div
-l_int|100
+l_int|10
 suffix:semicolon
 r_while
 c_loop
@@ -6679,15 +6646,10 @@ c_cond
 id|timeout
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
+c_func
 (paren
 id|timeout
 )paren
@@ -6732,9 +6694,7 @@ id|adapter_start
 singleline_comment|// wait for start command to acknowledge...
 id|timeout
 op_assign
-id|HZ
-op_div
-l_int|10
+l_int|100
 suffix:semicolon
 r_while
 c_loop
@@ -6759,7 +6719,8 @@ id|timeout
 (brace
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
+c_func
 (paren
 id|timeout
 )paren
@@ -7337,40 +7298,16 @@ r_int
 id|timeout
 suffix:semicolon
 singleline_comment|// 4.2 second wait
-id|timeout
-op_assign
-id|HZ
-op_star
-l_int|42
-op_div
-l_int|10
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|timeout
-)paren
-(brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+l_int|4200
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|schedule_timeout
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
 singleline_comment|// half second time-out
 id|timeout
 op_assign
-id|HZ
-op_div
-l_int|2
+l_int|500
 suffix:semicolon
 r_while
 c_loop
@@ -7394,15 +7331,10 @@ c_cond
 id|timeout
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
+c_func
 (paren
 id|timeout
 )paren
@@ -8003,32 +7935,16 @@ id|a
 )paren
 suffix:semicolon
 singleline_comment|// 2.2 second wait (must not touch doorbell during 2 second DMA test)
-id|timeout
-op_assign
-id|HZ
-op_star
-l_int|22
-op_div
-l_int|10
-suffix:semicolon
-r_while
-c_loop
+id|msleep
+c_func
 (paren
-id|timeout
-)paren
-id|timeout
-op_assign
-id|schedule_timeout
-(paren
-id|timeout
+l_int|2200
 )paren
 suffix:semicolon
 singleline_comment|// give the adapter another half second?
 id|timeout
 op_assign
-id|HZ
-op_div
-l_int|2
+l_int|500
 suffix:semicolon
 r_while
 c_loop
@@ -8053,7 +7969,8 @@ id|timeout
 (brace
 id|timeout
 op_assign
-id|schedule_timeout
+id|msleep_interruptible
+c_func
 (paren
 id|timeout
 )paren
