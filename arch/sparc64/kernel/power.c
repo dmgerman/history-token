@@ -13,6 +13,13 @@ macro_line|#include &lt;asm/auxio.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
+multiline_comment|/*&n; * sysctl - toggle power-off restriction for serial console &n; * systems in machine_power_off()&n; */
+DECL|variable|scons_pwroff
+r_int
+id|scons_pwroff
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|power_reg
 r_static
@@ -121,6 +128,8 @@ c_cond
 (paren
 op_logical_neg
 id|serial_console
+op_logical_or
+id|scons_pwroff
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI

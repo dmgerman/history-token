@@ -482,10 +482,9 @@ id|bw2_mmap_map
 op_assign
 (brace
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|size
+op_assign
 id|SBUS_MMAP_FBSIZE
 c_func
 (paren
@@ -494,10 +493,9 @@ l_int|1
 )brace
 comma
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|size
+op_assign
 l_int|0
 )brace
 )brace

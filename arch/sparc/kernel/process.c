@@ -53,6 +53,13 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * sysctl - toggle power-off restriction for serial console &n; * systems in machine_power_off()&n; */
+DECL|variable|scons_pwroff
+r_int
+id|scons_pwroff
+op_assign
+l_int|1
+suffix:semicolon
 r_extern
 r_void
 id|fpsave
@@ -558,8 +565,12 @@ c_cond
 (paren
 id|auxio_power_register
 op_logical_and
+(paren
 op_logical_neg
 id|serial_console
+op_logical_or
+id|scons_pwroff
+)paren
 )paren
 op_star
 id|auxio_power_register
