@@ -865,7 +865,6 @@ multiline_comment|/* the ctl_table entry for each CPU */
 DECL|macro|CPU_ENUM
 mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                .ctl_name&t;= (CPU_NR + s), &bslash;&n;                .procname&t;= #s, &bslash;&n;                .mode&t;&t;= 0555, &bslash;&n;                .child&t;&t;= ctl_cpu_vars_##s }
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
-macro_line|#if defined(CONFIG_CPU_FREQ_TABLE) || defined(CONFIG_CPU_FREQ_TABLE_MODULE)
 multiline_comment|/*********************************************************************&n; *                     FREQUENCY TABLE HELPERS                       *&n; *********************************************************************/
 DECL|macro|CPUFREQ_ENTRY_INVALID
 mdefine_line|#define CPUFREQ_ENTRY_INVALID ~0
@@ -889,6 +888,7 @@ suffix:semicolon
 multiline_comment|/* kHz - doesn&squot;t need to be in ascending&n;&t;&t;&t;&t;    * order */
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_FREQ_TABLE) || defined(CONFIG_CPU_FREQ_TABLE_MODULE)
 r_int
 id|cpufreq_frequency_table_cpuinfo
 c_func
