@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#190 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx.c#191 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
@@ -20816,25 +20816,25 @@ op_amp
 id|ahd-&gt;stat_timer
 )paren
 suffix:semicolon
-id|ahd-&gt;int_coalessing_timer
+id|ahd-&gt;int_coalescing_timer
 op_assign
-id|AHD_INT_COALESSING_TIMER_DEFAULT
+id|AHD_INT_COALESCING_TIMER_DEFAULT
 suffix:semicolon
-id|ahd-&gt;int_coalessing_maxcmds
+id|ahd-&gt;int_coalescing_maxcmds
 op_assign
-id|AHD_INT_COALESSING_MAXCMDS_DEFAULT
+id|AHD_INT_COALESCING_MAXCMDS_DEFAULT
 suffix:semicolon
-id|ahd-&gt;int_coalessing_mincmds
+id|ahd-&gt;int_coalescing_mincmds
 op_assign
-id|AHD_INT_COALESSING_MINCMDS_DEFAULT
+id|AHD_INT_COALESCING_MINCMDS_DEFAULT
 suffix:semicolon
-id|ahd-&gt;int_coalessing_threshold
+id|ahd-&gt;int_coalescing_threshold
 op_assign
-id|AHD_INT_COALESSING_THRESHOLD_DEFAULT
+id|AHD_INT_COALESCING_THRESHOLD_DEFAULT
 suffix:semicolon
-id|ahd-&gt;int_coalessing_stop_threshold
+id|ahd-&gt;int_coalescing_stop_threshold
 op_assign
-id|AHD_INT_COALESSING_STOP_THRESHOLD_DEFAULT
+id|AHD_INT_COALESCING_STOP_THRESHOLD_DEFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -27840,13 +27840,13 @@ op_amp
 l_int|0xFF
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Default to coalessing disabled.&n;&t; */
+multiline_comment|/*&n;&t; * Default to coalescing disabled.&n;&t; */
 id|ahd_outw
 c_func
 (paren
 id|ahd
 comma
-id|INT_COALESSING_CMDCOUNT
+id|INT_COALESCING_CMDCOUNT
 comma
 l_int|0
 )paren
@@ -27861,19 +27861,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|ahd_update_coalessing_values
+id|ahd_update_coalescing_values
 c_func
 (paren
 id|ahd
 comma
-id|ahd-&gt;int_coalessing_timer
+id|ahd-&gt;int_coalescing_timer
 comma
-id|ahd-&gt;int_coalessing_maxcmds
+id|ahd-&gt;int_coalescing_maxcmds
 comma
-id|ahd-&gt;int_coalessing_mincmds
+id|ahd-&gt;int_coalescing_mincmds
 )paren
 suffix:semicolon
-id|ahd_enable_coalessing
+id|ahd_enable_coalescing
 c_func
 (paren
 id|ahd
@@ -28847,8 +28847,8 @@ id|hcntrl
 suffix:semicolon
 )brace
 r_void
-DECL|function|ahd_update_coalessing_values
-id|ahd_update_coalessing_values
+DECL|function|ahd_update_coalescing_values
+id|ahd_update_coalescing_values
 c_func
 (paren
 r_struct
@@ -28877,7 +28877,7 @@ id|timer
 op_assign
 id|AHD_TIMER_MAX_US
 suffix:semicolon
-id|ahd-&gt;int_coalessing_timer
+id|ahd-&gt;int_coalescing_timer
 op_assign
 id|timer
 suffix:semicolon
@@ -28886,24 +28886,24 @@ c_cond
 (paren
 id|maxcmds
 OG
-id|AHD_INT_COALESSING_MAXCMDS_MAX
+id|AHD_INT_COALESCING_MAXCMDS_MAX
 )paren
 id|maxcmds
 op_assign
-id|AHD_INT_COALESSING_MAXCMDS_MAX
+id|AHD_INT_COALESCING_MAXCMDS_MAX
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|mincmds
 OG
-id|AHD_INT_COALESSING_MINCMDS_MAX
+id|AHD_INT_COALESCING_MINCMDS_MAX
 )paren
 id|mincmds
 op_assign
-id|AHD_INT_COALESSING_MINCMDS_MAX
+id|AHD_INT_COALESCING_MINCMDS_MAX
 suffix:semicolon
-id|ahd-&gt;int_coalessing_maxcmds
+id|ahd-&gt;int_coalescing_maxcmds
 op_assign
 id|maxcmds
 suffix:semicolon
@@ -28912,7 +28912,7 @@ c_func
 (paren
 id|ahd
 comma
-id|INT_COALESSING_TIMER
+id|INT_COALESCING_TIMER
 comma
 id|timer
 op_div
@@ -28924,7 +28924,7 @@ c_func
 (paren
 id|ahd
 comma
-id|INT_COALESSING_MAXCMDS
+id|INT_COALESCING_MAXCMDS
 comma
 op_minus
 id|maxcmds
@@ -28935,7 +28935,7 @@ c_func
 (paren
 id|ahd
 comma
-id|INT_COALESSING_MINCMDS
+id|INT_COALESCING_MINCMDS
 comma
 op_minus
 id|mincmds
@@ -28943,8 +28943,8 @@ id|mincmds
 suffix:semicolon
 )brace
 r_void
-DECL|function|ahd_enable_coalessing
-id|ahd_enable_coalessing
+DECL|function|ahd_enable_coalescing
+id|ahd_enable_coalescing
 c_func
 (paren
 r_struct
@@ -28959,7 +28959,7 @@ id|enable
 id|ahd-&gt;hs_mailbox
 op_and_assign
 op_complement
-id|ENINT_COALESS
+id|ENINT_COALESCE
 suffix:semicolon
 r_if
 c_cond
@@ -28968,7 +28968,7 @@ id|enable
 )paren
 id|ahd-&gt;hs_mailbox
 op_or_assign
-id|ENINT_COALESS
+id|ENINT_COALESCE
 suffix:semicolon
 id|ahd_outb
 c_func
@@ -34504,18 +34504,18 @@ id|enint_coal
 op_assign
 id|ahd-&gt;hs_mailbox
 op_amp
-id|ENINT_COALESS
+id|ENINT_COALESCE
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ahd-&gt;cmdcmplt_total
 OG
-id|ahd-&gt;int_coalessing_threshold
+id|ahd-&gt;int_coalescing_threshold
 )paren
 id|enint_coal
 op_or_assign
-id|ENINT_COALESS
+id|ENINT_COALESCE
 suffix:semicolon
 r_else
 r_if
@@ -34523,12 +34523,12 @@ c_cond
 (paren
 id|ahd-&gt;cmdcmplt_total
 OL
-id|ahd-&gt;int_coalessing_stop_threshold
+id|ahd-&gt;int_coalescing_stop_threshold
 )paren
 id|enint_coal
 op_and_assign
 op_complement
-id|ENINT_COALESS
+id|ENINT_COALESCE
 suffix:semicolon
 r_if
 c_cond
@@ -34538,11 +34538,11 @@ op_ne
 (paren
 id|ahd-&gt;hs_mailbox
 op_amp
-id|ENINT_COALESS
+id|ENINT_COALESCE
 )paren
 )paren
 (brace
-id|ahd_enable_coalessing
+id|ahd_enable_coalescing
 c_func
 (paren
 id|ahd
@@ -34557,7 +34557,7 @@ c_cond
 (paren
 id|ahd_debug
 op_amp
-id|AHD_SHOW_INT_COALESSING
+id|AHD_SHOW_INT_COALESCING
 )paren
 op_ne
 l_int|0
@@ -34565,7 +34565,7 @@ l_int|0
 id|printf
 c_func
 (paren
-l_string|&quot;%s: Interrupt coalessing &quot;
+l_string|&quot;%s: Interrupt coalescing &quot;
 l_string|&quot;now %sabled. Cmds %d&bslash;n&quot;
 comma
 id|ahd_name
@@ -34577,7 +34577,7 @@ comma
 (paren
 id|enint_coal
 op_amp
-id|ENINT_COALESS
+id|ENINT_COALESCE
 )paren
 ques
 c_cond
