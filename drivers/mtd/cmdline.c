@@ -564,7 +564,7 @@ c_cond
 id|name
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|extra_mem
@@ -572,14 +572,9 @@ comma
 id|name
 comma
 id|name_len
+op_plus
+l_int|1
 )paren
-suffix:semicolon
-id|extra_mem
-(braket
-id|name_len
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -847,7 +842,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|this_mtd-&gt;mtd_id
@@ -855,14 +850,9 @@ comma
 id|mtd_id
 comma
 id|mtd_id_len
+op_plus
+l_int|1
 )paren
-suffix:semicolon
-id|this_mtd-&gt;mtd_id
-(braket
-id|mtd_id_len
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* link into chain */
 id|this_mtd-&gt;next

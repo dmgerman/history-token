@@ -325,6 +325,8 @@ DECL|macro|CCW_CMD_BASIC_SENSE
 mdefine_line|#define CCW_CMD_BASIC_SENSE&t;0x04
 DECL|macro|CCW_CMD_TIC
 mdefine_line|#define CCW_CMD_TIC&t;&t;0x08
+DECL|macro|CCW_CMD_STLCK
+mdefine_line|#define CCW_CMD_STLCK           0x14
 DECL|macro|CCW_CMD_SENSE_PGID
 mdefine_line|#define CCW_CMD_SENSE_PGID&t;0x34
 DECL|macro|CCW_CMD_SUSPEND_RECONN

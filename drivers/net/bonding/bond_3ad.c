@@ -2205,7 +2205,7 @@ singleline_comment|// just to satisfy the compiler
 singleline_comment|// This function does nothing since the parser/multiplexer of the receive
 singleline_comment|// and the parser/multiplexer of the aggregator are already combined
 )brace
-multiline_comment|/**&n; * __detach_bond_to_agg&n; * @port: the port we&squot;re looking at&n; *&n; * Handle the detaching of the port&squot;s control parser/multiplexer from the&n; * aggregator. This function does nothing since the parser/multiplexer of the&n; * receive and the parser/multiplexer of the aggregator are already combined.&n; */
+multiline_comment|/**&n; * __detach_bond_from_agg&n; * @port: the port we&squot;re looking at&n; *&n; * Handle the detaching of the port&squot;s control parser/multiplexer from the&n; * aggregator. This function does nothing since the parser/multiplexer of the&n; * receive and the parser/multiplexer of the aggregator are already combined.&n; */
 DECL|function|__detach_bond_from_agg
 r_static
 r_void
@@ -2499,6 +2499,88 @@ suffix:semicolon
 )brace
 r_return
 id|retval
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * __update_lacpdu_from_port - update a port&squot;s lacpdu fields&n; * @port: the port we&squot;re looking at&n; *&n; */
+DECL|function|__update_lacpdu_from_port
+r_static
+r_inline
+r_void
+id|__update_lacpdu_from_port
+c_func
+(paren
+r_struct
+id|port
+op_star
+id|port
+)paren
+(brace
+r_struct
+id|lacpdu
+op_star
+id|lacpdu
+op_assign
+op_amp
+id|port-&gt;lacpdu
+suffix:semicolon
+multiline_comment|/* update current actual Actor parameters */
+multiline_comment|/* lacpdu-&gt;subtype                   initialized&n;&t; * lacpdu-&gt;version_number            initialized&n;&t; * lacpdu-&gt;tlv_type_actor_info       initialized&n;&t; * lacpdu-&gt;actor_information_length  initialized&n;&t; */
+id|lacpdu-&gt;actor_system_priority
+op_assign
+id|port-&gt;actor_system_priority
+suffix:semicolon
+id|lacpdu-&gt;actor_system
+op_assign
+id|port-&gt;actor_system
+suffix:semicolon
+id|lacpdu-&gt;actor_key
+op_assign
+id|port-&gt;actor_oper_port_key
+suffix:semicolon
+id|lacpdu-&gt;actor_port_priority
+op_assign
+id|port-&gt;actor_port_priority
+suffix:semicolon
+id|lacpdu-&gt;actor_port
+op_assign
+id|port-&gt;actor_port_number
+suffix:semicolon
+id|lacpdu-&gt;actor_state
+op_assign
+id|port-&gt;actor_oper_port_state
+suffix:semicolon
+multiline_comment|/* lacpdu-&gt;reserved_3_1              initialized&n;&t; * lacpdu-&gt;tlv_type_partner_info     initialized&n;&t; * lacpdu-&gt;partner_information_length initialized&n;&t; */
+id|lacpdu-&gt;partner_system_priority
+op_assign
+id|port-&gt;partner_oper_system_priority
+suffix:semicolon
+id|lacpdu-&gt;partner_system
+op_assign
+id|port-&gt;partner_oper_system
+suffix:semicolon
+id|lacpdu-&gt;partner_key
+op_assign
+id|port-&gt;partner_oper_key
+suffix:semicolon
+id|lacpdu-&gt;partner_port_priority
+op_assign
+id|port-&gt;partner_oper_port_priority
+suffix:semicolon
+id|lacpdu-&gt;partner_port
+op_assign
+id|port-&gt;partner_oper_port_number
+suffix:semicolon
+id|lacpdu-&gt;partner_state
+op_assign
+id|port-&gt;partner_oper_port_state
+suffix:semicolon
+multiline_comment|/* lacpdu-&gt;reserved_3_2              initialized&n;&t; * lacpdu-&gt;tlv_type_collector_info   initialized&n;&t; * lacpdu-&gt;collector_information_length initialized&n;&t; * collector_max_delay                initialized&n;&t; * reserved_12[12]                   initialized&n;&t; * tlv_type_terminator               initialized&n;&t; * terminator_length                 initialized&n;&t; * reserved_50[50]                   initialized&n;&t; */
+multiline_comment|/* Convert all non u8 parameters to Big Endian for transmit */
+id|__ntohs_lacpdu
+c_func
+(paren
+id|lacpdu
+)paren
 suffix:semicolon
 )brace
 singleline_comment|//////////////////////////////////////////////////////////////////////////////////////
@@ -3851,14 +3933,6 @@ op_star
 id|port
 )paren
 (brace
-r_struct
-id|lacpdu
-op_star
-id|lacpdu
-op_assign
-op_amp
-id|port-&gt;lacpdu
-suffix:semicolon
 singleline_comment|// check if tx timer expired, to verify that we do not send more than 3 packets per second
 r_if
 c_cond
@@ -3885,75 +3959,10 @@ id|AD_PORT_LACP_ENABLED
 )paren
 )paren
 (brace
-singleline_comment|//update current actual Actor parameters
-singleline_comment|//lacpdu-&gt;subtype                   initialized
-singleline_comment|//lacpdu-&gt;version_number            initialized
-singleline_comment|//lacpdu-&gt;tlv_type_actor_info       initialized
-singleline_comment|//lacpdu-&gt;actor_information_length  initialized
-id|lacpdu-&gt;actor_system_priority
-op_assign
-id|port-&gt;actor_system_priority
-suffix:semicolon
-id|lacpdu-&gt;actor_system
-op_assign
-id|port-&gt;actor_system
-suffix:semicolon
-id|lacpdu-&gt;actor_key
-op_assign
-id|port-&gt;actor_oper_port_key
-suffix:semicolon
-id|lacpdu-&gt;actor_port_priority
-op_assign
-id|port-&gt;actor_port_priority
-suffix:semicolon
-id|lacpdu-&gt;actor_port
-op_assign
-id|port-&gt;actor_port_number
-suffix:semicolon
-id|lacpdu-&gt;actor_state
-op_assign
-id|port-&gt;actor_oper_port_state
-suffix:semicolon
-singleline_comment|//lacpdu-&gt;reserved_3_1              initialized
-singleline_comment|//lacpdu-&gt;tlv_type_partner_info     initialized
-singleline_comment|//lacpdu-&gt;partner_information_length initialized
-id|lacpdu-&gt;partner_system_priority
-op_assign
-id|port-&gt;partner_oper_system_priority
-suffix:semicolon
-id|lacpdu-&gt;partner_system
-op_assign
-id|port-&gt;partner_oper_system
-suffix:semicolon
-id|lacpdu-&gt;partner_key
-op_assign
-id|port-&gt;partner_oper_key
-suffix:semicolon
-id|lacpdu-&gt;partner_port_priority
-op_assign
-id|port-&gt;partner_oper_port_priority
-suffix:semicolon
-id|lacpdu-&gt;partner_port
-op_assign
-id|port-&gt;partner_oper_port_number
-suffix:semicolon
-id|lacpdu-&gt;partner_state
-op_assign
-id|port-&gt;partner_oper_port_state
-suffix:semicolon
-singleline_comment|//lacpdu-&gt;reserved_3_2              initialized
-singleline_comment|//lacpdu-&gt;tlv_type_collector_info   initialized
-singleline_comment|//lacpdu-&gt;collector_information_length initialized
-singleline_comment|//collector_max_delay                initialized
-singleline_comment|//reserved_12[12]                   initialized
-singleline_comment|//tlv_type_terminator               initialized
-singleline_comment|//terminator_length                 initialized
-singleline_comment|//reserved_50[50]                   initialized
-singleline_comment|// We need to convert all non u8 parameters to Big Endian for transmit
-id|__ntohs_lacpdu
+id|__update_lacpdu_from_port
 c_func
 (paren
-id|lacpdu
+id|port
 )paren
 suffix:semicolon
 singleline_comment|// send the lacpdu
@@ -6813,20 +6822,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// disable the port
-id|ad_disable_collecting_distributing
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
-singleline_comment|// deinitialize port&squot;s locks if necessary(os-specific)
-id|__deinitialize_port_locks
-c_func
-(paren
-id|port
-)paren
-suffix:semicolon
 id|BOND_PRINT_DBG
 c_func
 (paren
@@ -6835,6 +6830,24 @@ l_string|&quot;Unbinding Link Aggregation Group %d&quot;
 comma
 id|aggregator-&gt;aggregator_identifier
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Tell the partner that this port is not suitable for aggregation */
+id|port-&gt;actor_oper_port_state
+op_and_assign
+op_complement
+id|AD_STATE_AGGREGATION
+suffix:semicolon
+id|__update_lacpdu_from_port
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+id|ad_lacpdu_send
+c_func
+(paren
+id|port
 )paren
 suffix:semicolon
 singleline_comment|// check if this aggregator is occupied

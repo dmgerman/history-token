@@ -2801,6 +2801,11 @@ r_int
 id|generic_NCR5380_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_ptr
+comma
 r_char
 op_star
 id|buffer
@@ -2815,9 +2820,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -2844,11 +2846,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_ptr
-suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|ptr
@@ -2874,15 +2871,6 @@ id|MAX_SCSI_DEVICE_CODE
 )braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* For now this is constant so we may walk it */
-id|scsi_ptr
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
 id|NCR5380_setup
 c_func
 (paren

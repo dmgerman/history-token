@@ -3,6 +3,8 @@ macro_line|#ifndef __SCLP_TTY_H__
 DECL|macro|__SCLP_TTY_H__
 mdefine_line|#define __SCLP_TTY_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/termios.h&gt;
+macro_line|#include &lt;linux/tty_driver.h&gt;
 multiline_comment|/* This is the type of data structures storing sclp ioctl setting. */
 DECL|struct|sclp_ioctls
 r_struct
@@ -104,5 +106,10 @@ mdefine_line|#define TIOCSCLPGDELIM&t;_IOR(SCLP_IOCTL_LETTER, 19, unsigned char)
 multiline_comment|/* get the number of buffers/pages got from kernel at startup */
 DECL|macro|TIOCSCLPGKBUF
 mdefine_line|#define TIOCSCLPGKBUF&t;_IOR(SCLP_IOCTL_LETTER, 20, unsigned short)
+r_extern
+r_struct
+id|tty_driver
+id|sclp_tty_driver
+suffix:semicolon
 macro_line|#endif&t;/* __SCLP_TTY_H__ */
 eof

@@ -5065,7 +5065,7 @@ id|qd.unmapped
 op_assign
 l_int|0
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|qd.name
@@ -5075,7 +5075,10 @@ id|fsa_dev_ptr-&gt;devname
 id|qd.cnum
 )braket
 comma
-l_int|8
+r_sizeof
+(paren
+id|qd.name
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -983,6 +983,11 @@ op_assign
 l_string|&quot;IPIP&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|proto
 op_assign
 id|IPPROTO_IPIP
@@ -1037,10 +1042,6 @@ c_func
 r_void
 )paren
 (brace
-id|ipip_type.owner
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 r_if
 c_cond
 (paren

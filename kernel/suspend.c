@@ -376,7 +376,9 @@ r_void
 (brace
 r_int
 id|todo
-comma
+suffix:semicolon
+r_int
+r_int
 id|start_time
 suffix:semicolon
 r_struct

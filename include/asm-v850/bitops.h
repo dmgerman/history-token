@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/bitops.h -- Bit operations&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1992  Linus Torvalds.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+multiline_comment|/*&n; * include/asm-v850/bitops.h -- Bit operations&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1992  Linus Torvalds.&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
 macro_line|#ifndef __V850_BITOPS_H__
 DECL|macro|__V850_BITOPS_H__
 mdefine_line|#define __V850_BITOPS_H__
@@ -98,6 +98,7 @@ id|__test_bit
 r_int
 id|nr
 comma
+r_const
 r_void
 op_star
 id|addr

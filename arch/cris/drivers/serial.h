@@ -240,16 +240,6 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process */
 DECL|member|xmit
 r_struct
 id|circ_buf
@@ -281,11 +271,6 @@ DECL|member|normal_termios
 r_struct
 id|termios
 id|normal_termios
-suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
 suffix:semicolon
 macro_line|#ifdef DECLARE_WAITQUEUE
 DECL|member|open_wait

@@ -9,7 +9,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;sclp.h&quot;
 DECL|macro|SCLP_CORE_PRINT_HEADER
 mdefine_line|#define SCLP_CORE_PRINT_HEADER &quot;sclp low level driver: &quot;
@@ -105,6 +107,7 @@ id|retry_timer
 suffix:semicolon
 DECL|variable|sclp_status
 r_static
+r_volatile
 r_int
 r_int
 id|sclp_status
@@ -1000,6 +1003,13 @@ comma
 op_star
 id|tmp
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sclp_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Only process interrupt if sclp is initialized.&n;&t; * This avoids strange effects for a pending request&n;&t; * from before the last re-ipl.&n;&t; */
 r_if
 c_cond
@@ -1014,8 +1024,27 @@ op_amp
 id|sclp_status
 )paren
 )paren
+(brace
+multiline_comment|/* Now clear the running bit */
+id|clear_bit
+c_func
+(paren
+id|SCLP_RUNNING
+comma
+op_amp
+id|sclp_status
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sclp_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|ext_int_param
 op_assign
 id|S390_lowcore.ext_params
@@ -1044,13 +1073,6 @@ suffix:semicolon
 id|req
 op_assign
 l_int|NULL
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|sclp_lock
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1112,17 +1134,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Head queue a read sccb if an event buffer is pending */
-r_if
-c_cond
-(paren
-id|evbuf_pending
-)paren
-id|__sclp_unconditional_read
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1161,6 +1172,24 @@ id|req-&gt;callback_data
 )paren
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sclp_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Head queue a read sccb if an event buffer is pending */
+r_if
+c_cond
+(paren
+id|evbuf_pending
+)paren
+id|__sclp_unconditional_read
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Now clear the running bit */
 id|clear_bit
 c_func
@@ -1169,6 +1198,13 @@ id|SCLP_RUNNING
 comma
 op_amp
 id|sclp_status
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sclp_lock
 )paren
 suffix:semicolon
 multiline_comment|/* and start next request on the queue */
@@ -1268,11 +1304,18 @@ op_amp
 id|sclp_status
 )paren
 )paren
+(brace
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* disable external interruptions */
 id|asm
 r_volatile
@@ -2376,27 +2419,6 @@ multiline_comment|/* Already initialized. */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * request the 0x2401 external interrupt&n;&t; * The sclp driver is initialized early (before kmalloc works). We&n;&t; * need to use register_early_external_interrupt.&n;&t; */
-r_if
-c_cond
-(paren
-id|register_early_external_interrupt
-c_func
-(paren
-l_int|0x2401
-comma
-id|sclp_interrupt_handler
-comma
-op_amp
-id|ext_int_info_hwc
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -2438,6 +2460,27 @@ comma
 op_amp
 id|sclp_reg_list
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * request the 0x2401 external interrupt&n;&t; * The sclp driver is initialized early (before kmalloc works). We&n;&t; * need to use register_early_external_interrupt.&n;&t; */
+r_if
+c_cond
+(paren
+id|register_early_external_interrupt
+c_func
+(paren
+l_int|0x2401
+comma
+id|sclp_interrupt_handler
+comma
+op_amp
+id|ext_int_info_hwc
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 multiline_comment|/* enable service-signal external interruptions,&n;&t; * Control Register 0 bit 22 := 1&n;&t; * (besides PSW bit 7 must be set to 1 sometimes for external&n;&t; * interruptions)&n;&t; */
 id|ctl_set_bit
@@ -2835,6 +2878,13 @@ r_return
 id|unprocessed
 suffix:semicolon
 )brace
+DECL|variable|sclp_init
+id|module_init
+c_func
+(paren
+id|sclp_init
+)paren
+suffix:semicolon
 DECL|variable|sclp_add_request
 id|EXPORT_SYMBOL
 c_func

@@ -3398,6 +3398,7 @@ op_assign
 op_amp
 id|current-&gt;blocked
 suffix:semicolon
+multiline_comment|/* This lets the debugger run, ... */
 id|signr
 op_assign
 id|get_signal_to_deliver
@@ -3409,6 +3410,15 @@ comma
 id|regs
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* ... so re-check the single stepping. */
+id|single_stepping
+op_or_assign
+id|ptrace_cancel_bpt
+c_func
+(paren
+id|current
 )paren
 suffix:semicolon
 r_if

@@ -169,10 +169,6 @@ id|task_struct
 op_star
 id|tsk
 suffix:semicolon
-id|inode-&gt;i_state
-op_assign
-id|I_CLEAR
-suffix:semicolon
 multiline_comment|/* Let go of any associated process */
 id|tsk
 op_assign
@@ -230,6 +226,12 @@ id|de
 )paren
 suffix:semicolon
 )brace
+id|clear_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 )brace
 DECL|variable|proc_mnt
 r_struct

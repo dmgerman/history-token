@@ -7396,11 +7396,9 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|vdev
-)paren
+id|vdev-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|pdev-&gt;vdev
 op_assign

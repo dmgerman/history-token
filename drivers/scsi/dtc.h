@@ -85,32 +85,6 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_static
-r_int
-id|dtc_proc_info
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-comma
-r_int
-id|hostno
-comma
-r_int
-id|inout
-)paren
-suffix:semicolon
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2

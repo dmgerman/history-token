@@ -85,10 +85,6 @@ DECL|macro|u_int8_t
 mdefine_line|#define u_int8_t&t;u8
 DECL|macro|tulip_uint32_t
 mdefine_line|#define tulip_uint32_t&t;u32
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20155
-DECL|macro|u_int32_t
-mdefine_line|#define u_int32_t&t;u32
-macro_line|#endif
 DECL|macro|LMC_REG_RANGE
 mdefine_line|#define LMC_REG_RANGE 0x80
 DECL|macro|LMC_PRINTF_FMT
@@ -1196,12 +1192,10 @@ DECL|member|num_int
 id|u32
 id|num_int
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20200
 DECL|member|lmc_lock
 id|spinlock_t
 id|lmc_lock
 suffix:semicolon
-macro_line|#endif
 DECL|member|if_type
 id|u_int16_t
 id|if_type
@@ -1411,10 +1405,6 @@ DECL|macro|LMC_CRC_LEN_16
 mdefine_line|#define LMC_CRC_LEN_16 2  /* 16-bit CRC */
 DECL|macro|LMC_CRC_LEN_32
 mdefine_line|#define LMC_CRC_LEN_32 4
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20100
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit(val, addr) set_bit(val, addr)
-macro_line|#endif
 macro_line|#ifdef LMC_HDLC
 multiline_comment|/* definition of an hdlc header. */
 DECL|struct|hdlc_hdr

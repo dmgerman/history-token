@@ -275,7 +275,7 @@ op_amp
 id|css_bus_type
 suffix:semicolon
 multiline_comment|/* Set a name for the subchannel */
-id|strncpy
+id|strlcpy
 (paren
 id|sch-&gt;dev.name
 comma

@@ -507,7 +507,7 @@ c_func
 op_amp
 id|st-&gt;ma.tei_m
 comma
-l_string|&quot;assign request for allready asigned tei %d&quot;
+l_string|&quot;assign request for already assigned tei %d&quot;
 comma
 id|st-&gt;l2.tei
 )paren

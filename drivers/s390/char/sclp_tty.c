@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ctrlchar.h&quot;
 macro_line|#include &quot;sclp.h&quot;
@@ -89,7 +91,6 @@ r_int
 id|sclp_tty_chars_count
 suffix:semicolon
 DECL|variable|sclp_tty_driver
-r_static
 r_struct
 id|tty_driver
 id|sclp_tty_driver
@@ -2822,7 +2823,8 @@ op_assign
 id|sclp_tty_receiver
 )brace
 suffix:semicolon
-r_void
+r_int
+id|__init
 DECL|function|sclp_tty_init
 id|sclp_tty_init
 c_func
@@ -2847,6 +2849,7 @@ op_logical_neg
 id|CONSOLE_IS_SCLP
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|rc
 op_assign
@@ -2859,8 +2862,6 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
@@ -2875,6 +2876,7 @@ id|rc
 )paren
 suffix:semicolon
 r_return
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate pages for output buffering */
@@ -2922,6 +2924,8 @@ op_eq
 l_int|NULL
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|list_add_tail
 c_func
@@ -3003,19 +3007,22 @@ id|sclp_tty
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|rc
+op_assign
 id|sclp_register
 c_func
 (paren
 op_amp
 id|sclp_input_event
 )paren
-op_ne
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
 )paren
 r_return
+id|rc
 suffix:semicolon
 id|memset
 (paren
@@ -3209,8 +3216,6 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 )paren
 id|printk
 c_func
@@ -3218,10 +3223,20 @@ c_func
 id|KERN_ERR
 id|SCLP_TTY_PRINT_HEADER
 l_string|&quot;could not register tty - &quot;
-l_string|&quot;sclp_drv_register returned %d&bslash;n&quot;
+l_string|&quot;tty_register_driver returned %d&bslash;n&quot;
 comma
 id|rc
 )paren
 suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
 )brace
+DECL|variable|sclp_tty_init
+id|module_init
+c_func
+(paren
+id|sclp_tty_init
+)paren
+suffix:semicolon
 eof

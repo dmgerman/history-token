@@ -1091,7 +1091,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HYSDN: apl %d allready registered&bslash;n&quot;
+l_string|&quot;HYSDN: apl %d already registered&bslash;n&quot;
 comma
 id|appl
 )paren

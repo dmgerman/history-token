@@ -4412,7 +4412,7 @@ r_int
 id|blank
 )paren
 (brace
-multiline_comment|/* ??? Varible sized stack allocation.  */
+multiline_comment|/* ??? Variable sized stack allocation.  */
 id|u16
 id|black
 (braket

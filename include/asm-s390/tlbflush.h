@@ -151,24 +151,47 @@ suffix:semicolon
 )brace
 macro_line|#endif /* __s390x__ */
 (brace
+r_register
 r_int
+r_int
+id|addr
+id|asm
+c_func
+(paren
+l_string|&quot;4&quot;
+)paren
+suffix:semicolon
+r_int
+id|dummy
+suffix:semicolon
 id|dummy
 op_assign
 l_int|0
 suffix:semicolon
+id|addr
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|dummy
+)paren
+op_plus
+l_int|1
+suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;    la   4,1(%0)&bslash;n&quot;
 l_string|&quot;    slr  2,2&bslash;n&quot;
 l_string|&quot;    slr  3,3&bslash;n&quot;
-l_string|&quot;    csp  2,4&quot;
+l_string|&quot;    csp  2,%0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
 (paren
-op_amp
-id|dummy
+id|addr
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -176,8 +199,6 @@ comma
 l_string|&quot;2&quot;
 comma
 l_string|&quot;3&quot;
-comma
-l_string|&quot;4&quot;
 )paren
 suffix:semicolon
 )brace

@@ -137,11 +137,11 @@ mdefine_line|#define _PAGE_INVALID_MASK&t;0x601
 DECL|macro|_PAGE_INVALID_EMPTY
 mdefine_line|#define _PAGE_INVALID_EMPTY&t;0x400
 DECL|macro|_PAGE_INVALID_NONE
-mdefine_line|#define _PAGE_INVALID_NONE&t;0x001
+mdefine_line|#define _PAGE_INVALID_NONE&t;0x401
 DECL|macro|_PAGE_INVALID_SWAP
-mdefine_line|#define _PAGE_INVALID_SWAP&t;0x200
+mdefine_line|#define _PAGE_INVALID_SWAP&t;0x600
 DECL|macro|_PAGE_INVALID_FILE
-mdefine_line|#define _PAGE_INVALID_FILE&t;0x201
+mdefine_line|#define _PAGE_INVALID_FILE&t;0x601
 macro_line|#ifndef __s390x__
 multiline_comment|/* Bits in the segment table entry */
 DECL|macro|_PAGE_TABLE_LEN

@@ -970,7 +970,7 @@ DECL|macro|MTD_DEBUG_LEVEL3
 mdefine_line|#define MTD_DEBUG_LEVEL3&t;(3)&t;/* Noisy   */
 macro_line|#ifdef CONFIG_MTD_DEBUG
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)&t;&t;&t;&bslash;&n;&t;if (n &lt;=  CONFIG_MTD_DEBUG_VERBOSE) {&t;&bslash;&n;&t;&t;printk(KERN_INFO args);&t;&bslash;&n;&t;}
+mdefine_line|#define DEBUG(n, args...)&t;&t;&t;&t;&bslash;&n; &t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (n &lt;= CONFIG_MTD_DEBUG_VERBOSE)&t;&bslash;&n;&t;&t;&t;printk(KERN_INFO args);&t;&t;&bslash;&n;&t;} while(0)
 macro_line|#else /* CONFIG_MTD_DEBUG */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...)

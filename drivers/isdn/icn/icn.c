@@ -2176,7 +2176,7 @@ op_increment
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd.parm.setup.phone
@@ -2279,7 +2279,7 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd.parm.setup.eazmsn
@@ -2349,7 +2349,7 @@ suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd.parm.num
@@ -2362,8 +2362,6 @@ r_sizeof
 (paren
 id|cmd.parm.num
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -2371,10 +2369,15 @@ suffix:semicolon
 r_case
 l_int|6
 suffix:colon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|cmd.parm.num
+comma
+r_sizeof
+(paren
+id|cmd.parm.num
+)paren
 comma
 l_string|&quot;%d&quot;
 comma
@@ -2414,10 +2417,15 @@ id|status
 op_eq
 l_int|4
 )paren
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|cmd.parm.num
+comma
+r_sizeof
+(paren
+id|cmd.parm.num
+)paren
 comma
 l_string|&quot;%s%c%c&quot;
 comma
@@ -2437,7 +2445,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_else
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cmd.parm.num
@@ -2450,8 +2458,6 @@ r_sizeof
 (paren
 id|cmd.parm.num
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -7536,7 +7542,7 @@ id|card-&gt;ptype
 op_assign
 id|ISDN_PTYPE_UNKNOWN
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|card-&gt;interface.id
@@ -7547,8 +7553,6 @@ r_sizeof
 (paren
 id|card-&gt;interface.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|card-&gt;msg_buf_write

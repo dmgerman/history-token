@@ -11726,7 +11726,7 @@ id|mach64_str
 l_int|80
 )braket
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mach64_str
@@ -11735,7 +11735,10 @@ id|this_opt
 op_plus
 l_int|7
 comma
-l_int|80
+r_sizeof
+(paren
+id|mach64_str
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -135,6 +135,11 @@ r_int
 DECL|function|aic7xxx_proc_info
 id|aic7xxx_proc_info
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|HBAptr
+comma
 r_char
 op_star
 id|buffer
@@ -151,17 +156,9 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|HBAptr
-suffix:semicolon
 r_struct
 id|aic7xxx_host
 op_star
@@ -201,9 +198,9 @@ id|p
 op_assign
 id|first_aic7xxx
 suffix:semicolon
-id|p-&gt;host-&gt;host_no
+id|p-&gt;host
 op_ne
-id|hostno
+id|HBAptr
 suffix:semicolon
 id|p
 op_assign
@@ -228,7 +225,7 @@ id|buffer
 comma
 l_string|&quot;Can&squot;t find adapter for host number %d&bslash;n&quot;
 comma
-id|hostno
+id|HBAptr-&gt;host_no
 )paren
 suffix:semicolon
 r_if
@@ -254,10 +251,6 @@ id|length
 suffix:semicolon
 )brace
 )brace
-id|HBAptr
-op_assign
-id|p-&gt;host
-suffix:semicolon
 r_if
 c_cond
 (paren
