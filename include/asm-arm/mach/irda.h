@@ -58,6 +58,7 @@ id|device
 op_star
 comma
 r_int
+r_int
 id|speed
 )paren
 suffix:semicolon
