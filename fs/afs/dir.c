@@ -238,7 +238,9 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* if any char of the name (inc NUL) reaches here, consume&n;&t;&t;&t;&t;&t; * the next dirent too */
+DECL|member|parts
 )brace
+id|parts
 suffix:semicolon
 DECL|member|extended_name
 id|u8
@@ -1040,7 +1042,7 @@ op_assign
 id|strnlen
 c_func
 (paren
-id|dire-&gt;name
+id|dire-&gt;parts.name
 comma
 r_sizeof
 (paren
@@ -1232,7 +1234,7 @@ c_func
 (paren
 id|cookie
 comma
-id|dire-&gt;name
+id|dire-&gt;parts.name
 comma
 id|nlen
 comma
@@ -1248,7 +1250,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|dire-&gt;vnode
+id|dire-&gt;parts.vnode
 )paren
 comma
 id|filldir
@@ -1256,7 +1258,7 @@ op_eq
 id|afs_dir_lookup_filldir
 ques
 c_cond
-id|dire-&gt;unique
+id|dire-&gt;parts.unique
 suffix:colon
 id|DT_UNKNOWN
 )paren
