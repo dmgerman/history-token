@@ -1130,20 +1130,20 @@ DECL|struct|sa_drawbridge_CSR
 r_struct
 id|sa_drawbridge_CSR
 (brace
-singleline_comment|//&t; Offset |&t;Name
+multiline_comment|/*&t;Offset &t;|  Name */
 DECL|member|reserved
-id|u32
+id|__le32
 id|reserved
 (braket
 l_int|10
 )braket
 suffix:semicolon
-singleline_comment|//&t;00h-27h |   Reserved
+multiline_comment|/*&t;00h-27h |  Reserved */
 DECL|member|LUT_Offset
 id|u8
 id|LUT_Offset
 suffix:semicolon
-singleline_comment|//&t;28h&t;|&t;Looup Table Offset
+multiline_comment|/*&t;28h&t;|  Lookup Table Offset */
 DECL|member|reserved1
 id|u8
 id|reserved1
@@ -1151,130 +1151,126 @@ id|reserved1
 l_int|3
 )braket
 suffix:semicolon
-singleline_comment|// &t;29h-2bh&t;|&t;Reserved
+multiline_comment|/* &t;29h-2bh&t;|  Reserved */
 DECL|member|LUT_Data
-id|u32
+id|__le32
 id|LUT_Data
 suffix:semicolon
-singleline_comment|//&t;2ch&t;|&t;Looup Table Data&t;
+multiline_comment|/*&t;2ch&t;|  Looup Table Data */
 DECL|member|reserved2
-id|u32
+id|__le32
 id|reserved2
 (braket
 l_int|26
 )braket
 suffix:semicolon
-singleline_comment|//&t;30h-97h&t;|&t;Reserved
+multiline_comment|/*&t;30h-97h&t;|  Reserved */
 DECL|member|PRICLEARIRQ
-id|u16
+id|__le16
 id|PRICLEARIRQ
 suffix:semicolon
-singleline_comment|//&t;98h&t;|&t;Primary Clear Irq
+multiline_comment|/*&t;98h&t;|  Primary Clear Irq */
 DECL|member|SECCLEARIRQ
-id|u16
+id|__le16
 id|SECCLEARIRQ
 suffix:semicolon
-singleline_comment|//&t;9ah&t;|&t;Secondary Clear Irq
+multiline_comment|/*&t;9ah&t;|  Secondary Clear Irq */
 DECL|member|PRISETIRQ
-id|u16
+id|__le16
 id|PRISETIRQ
 suffix:semicolon
-singleline_comment|//&t;9ch&t;|&t;Primary Set Irq
+multiline_comment|/*&t;9ch&t;|  Primary Set Irq */
 DECL|member|SECSETIRQ
-id|u16
+id|__le16
 id|SECSETIRQ
 suffix:semicolon
-singleline_comment|//&t;9eh&t;|&t;Secondary Set Irq
+multiline_comment|/*&t;9eh&t;|  Secondary Set Irq */
 DECL|member|PRICLEARIRQMASK
-id|u16
+id|__le16
 id|PRICLEARIRQMASK
 suffix:semicolon
-singleline_comment|//&t;a0h&t;|&t;Primary Clear Irq Mask
+multiline_comment|/*&t;a0h&t;|  Primary Clear Irq Mask */
 DECL|member|SECCLEARIRQMASK
-id|u16
+id|__le16
 id|SECCLEARIRQMASK
 suffix:semicolon
-singleline_comment|//&t;a2h&t;|&t;Secondary Clear Irq Mask
+multiline_comment|/*&t;a2h&t;|  Secondary Clear Irq Mask */
 DECL|member|PRISETIRQMASK
-id|u16
+id|__le16
 id|PRISETIRQMASK
 suffix:semicolon
-singleline_comment|//&t;a4h&t;|&t;Primary Set Irq Mask
+multiline_comment|/*&t;a4h&t;|  Primary Set Irq Mask */
 DECL|member|SECSETIRQMASK
-id|u16
+id|__le16
 id|SECSETIRQMASK
 suffix:semicolon
-singleline_comment|//&t;a6h&t;|&t;Secondary Set Irq Mask
+multiline_comment|/*&t;a6h&t;|  Secondary Set Irq Mask */
 DECL|member|MAILBOX0
-id|u32
+id|__le32
 id|MAILBOX0
 suffix:semicolon
-singleline_comment|//&t;a8h&t;|&t;Scratchpad 0
+multiline_comment|/*&t;a8h&t;|  Scratchpad 0 */
 DECL|member|MAILBOX1
-id|u32
+id|__le32
 id|MAILBOX1
 suffix:semicolon
-singleline_comment|//&t;ach&t;|&t;Scratchpad 1
+multiline_comment|/*&t;ach&t;|  Scratchpad 1 */
 DECL|member|MAILBOX2
-id|u32
+id|__le32
 id|MAILBOX2
 suffix:semicolon
-singleline_comment|//&t;b0h&t;|&t;Scratchpad 2
+multiline_comment|/*&t;b0h&t;|  Scratchpad 2 */
 DECL|member|MAILBOX3
-id|u32
+id|__le32
 id|MAILBOX3
 suffix:semicolon
-singleline_comment|//&t;b4h&t;|&t;Scratchpad 3
+multiline_comment|/*&t;b4h&t;|  Scratchpad 3 */
 DECL|member|MAILBOX4
-id|u32
+id|__le32
 id|MAILBOX4
 suffix:semicolon
-singleline_comment|//&t;b8h&t;|&t;Scratchpad 4
+multiline_comment|/*&t;b8h&t;|  Scratchpad 4 */
 DECL|member|MAILBOX5
-id|u32
+id|__le32
 id|MAILBOX5
 suffix:semicolon
-singleline_comment|//&t;bch&t;|&t;Scratchpad 5
+multiline_comment|/*&t;bch&t;|  Scratchpad 5 */
 DECL|member|MAILBOX6
-id|u32
+id|__le32
 id|MAILBOX6
 suffix:semicolon
-singleline_comment|//&t;c0h&t;|&t;Scratchpad 6
+multiline_comment|/*&t;c0h&t;|  Scratchpad 6 */
 DECL|member|MAILBOX7
-id|u32
+id|__le32
 id|MAILBOX7
 suffix:semicolon
-singleline_comment|//&t;c4h&t;|&t;Scratchpad 7
+multiline_comment|/*&t;c4h&t;|  Scratchpad 7 */
 DECL|member|ROM_Setup_Data
-id|u32
+id|__le32
 id|ROM_Setup_Data
 suffix:semicolon
-singleline_comment|//&t;c8h | &t;Rom Setup and Data
+multiline_comment|/*&t;c8h &t;|  Rom Setup and Data */
 DECL|member|ROM_Control_Addr
-id|u32
+id|__le32
 id|ROM_Control_Addr
 suffix:semicolon
-singleline_comment|//&t;cch | &t;Rom Control and Address
+multiline_comment|/*&t;cch &t;|  Rom Control and Address */
 DECL|member|reserved3
-id|u32
+id|__le32
 id|reserved3
 (braket
 l_int|12
 )braket
 suffix:semicolon
-singleline_comment|//&t;d0h-ffh&t;| &t;reserved
+multiline_comment|/*&t;d0h-ffh&t;|  reserved */
 DECL|member|LUT
-id|u32
+id|__le32
 id|LUT
 (braket
 l_int|64
 )braket
 suffix:semicolon
-singleline_comment|// 100h-1ffh|&t;Lookup Table Entries
-singleline_comment|//
-singleline_comment|//  TO DO
-singleline_comment|//&t;need to add DMA, I2O, UART, etc registers form 80h to 364h
-singleline_comment|//
+multiline_comment|/*    100h-1ffh&t;|  Lookup Table Entries */
 )brace
 suffix:semicolon
 DECL|macro|Mailbox0
@@ -1298,19 +1294,19 @@ mdefine_line|#define DoorbellReg_s SaDbCSR.SECSETIRQ
 DECL|macro|DoorbellClrReg_p
 mdefine_line|#define DoorbellClrReg_p SaDbCSR.PRICLEARIRQ
 DECL|macro|DOORBELL_0
-mdefine_line|#define&t;DOORBELL_0&t;cpu_to_le16(0x0001)
+mdefine_line|#define&t;DOORBELL_0&t;0x0001
 DECL|macro|DOORBELL_1
-mdefine_line|#define DOORBELL_1&t;cpu_to_le16(0x0002)
+mdefine_line|#define DOORBELL_1&t;0x0002
 DECL|macro|DOORBELL_2
-mdefine_line|#define DOORBELL_2&t;cpu_to_le16(0x0004)
+mdefine_line|#define DOORBELL_2&t;0x0004
 DECL|macro|DOORBELL_3
-mdefine_line|#define DOORBELL_3&t;cpu_to_le16(0x0008)
+mdefine_line|#define DOORBELL_3&t;0x0008
 DECL|macro|DOORBELL_4
-mdefine_line|#define DOORBELL_4&t;cpu_to_le16(0x0010)
+mdefine_line|#define DOORBELL_4&t;0x0010
 DECL|macro|DOORBELL_5
-mdefine_line|#define DOORBELL_5&t;cpu_to_le16(0x0020)
+mdefine_line|#define DOORBELL_5&t;0x0020
 DECL|macro|DOORBELL_6
-mdefine_line|#define DOORBELL_6&t;cpu_to_le16(0x0040)
+mdefine_line|#define DOORBELL_6&t;0x0040
 DECL|macro|PrintfReady
 mdefine_line|#define PrintfReady&t;DOORBELL_5
 DECL|macro|PrintfDone
@@ -1342,75 +1338,74 @@ DECL|struct|rx_mu_registers
 r_struct
 id|rx_mu_registers
 (brace
-singleline_comment|//&t; Local&t;|   PCI*&t;|&t;Name
-singleline_comment|//&t;&t;&t;|&t;&t;|
+multiline_comment|/*&t;Local  | PCI*| Name */
 DECL|member|ARSR
-id|u32
+id|__le32
 id|ARSR
 suffix:semicolon
-singleline_comment|//&t;1300h&t;|&t;00h&t;|&t;APIC Register Select Register
+multiline_comment|/*&t;1300h  | 00h | APIC Register Select Register */
 DECL|member|reserved0
-id|u32
+id|__le32
 id|reserved0
 suffix:semicolon
-singleline_comment|//&t;1304h&t;|&t;04h&t;|&t;Reserved
+multiline_comment|/*&t;1304h  | 04h | Reserved */
 DECL|member|AWR
-id|u32
+id|__le32
 id|AWR
 suffix:semicolon
-singleline_comment|//&t;1308h&t;|&t;08h&t;|&t;APIC Window Register
+multiline_comment|/*&t;1308h  | 08h | APIC Window Register */
 DECL|member|reserved1
-id|u32
+id|__le32
 id|reserved1
 suffix:semicolon
-singleline_comment|//&t;130Ch&t;|&t;0Ch&t;|&t;Reserved
+multiline_comment|/*&t;130Ch  | 0Ch | Reserved */
 DECL|member|IMRx
-id|u32
+id|__le32
 id|IMRx
 (braket
 l_int|2
 )braket
 suffix:semicolon
-singleline_comment|//&t;1310h&t;|&t;10h&t;|&t;Inbound Message Registers
+multiline_comment|/*&t;1310h  | 10h | Inbound Message Registers */
 DECL|member|OMRx
-id|u32
+id|__le32
 id|OMRx
 (braket
 l_int|2
 )braket
 suffix:semicolon
-singleline_comment|//&t;1318h&t;|&t;18h&t;|&t;Outbound Message Registers
+multiline_comment|/*&t;1318h  | 18h | Outbound Message Registers */
 DECL|member|IDR
-id|u32
+id|__le32
 id|IDR
 suffix:semicolon
-singleline_comment|//&t;1320h&t;|&t;20h&t;|&t;Inbound Doorbell Register
+multiline_comment|/*&t;1320h  | 20h | Inbound Doorbell Register */
 DECL|member|IISR
-id|u32
+id|__le32
 id|IISR
 suffix:semicolon
-singleline_comment|//&t;1324h&t;|&t;24h&t;|&t;Inbound Interrupt Status Register
+multiline_comment|/*&t;1324h  | 24h | Inbound Interrupt &n;&t;&t;&t;&t;&t;&t;Status Register */
 DECL|member|IIMR
-id|u32
+id|__le32
 id|IIMR
 suffix:semicolon
-singleline_comment|//&t;1328h&t;|&t;28h&t;|&t;Inbound Interrupt Mask Register
+multiline_comment|/*&t;1328h  | 28h | Inbound Interrupt &n;&t;&t;&t;&t;&t; &t;Mask Register */
 DECL|member|ODR
-id|u32
+id|__le32
 id|ODR
 suffix:semicolon
-singleline_comment|//&t;132Ch&t;|&t;2Ch&t;|&t;Outbound Doorbell Register
+multiline_comment|/*&t;132Ch  | 2Ch | Outbound Doorbell Register */
 DECL|member|OISR
-id|u32
+id|__le32
 id|OISR
 suffix:semicolon
-singleline_comment|//&t;1330h&t;|&t;30h&t;|&t;Outbound Interrupt Status Register
+multiline_comment|/*&t;1330h  | 30h | Outbound Interrupt &n;&t;&t;&t;&t;&t;&t;Status Register */
 DECL|member|OIMR
-id|u32
+id|__le32
 id|OIMR
 suffix:semicolon
-singleline_comment|//&t;1334h&t;|&t;34h&t;|&t;Outbound Interrupt Mask Register
-singleline_comment|// * Must access through ATU Inbound Translation Window
+multiline_comment|/*&t;1334h  | 34h | Outbound Interrupt &n;&t;&t;&t;&t;&t;&t;Mask Register */
+multiline_comment|/* * Must access through ATU Inbound &n;&t;&t;&t;     &t; Translation Window */
 )brace
 suffix:semicolon
 DECL|struct|rx_inbound
@@ -1418,7 +1413,7 @@ r_struct
 id|rx_inbound
 (brace
 DECL|member|Mailbox
-id|u32
+id|__le32
 id|Mailbox
 (braket
 l_int|8
@@ -1440,32 +1435,30 @@ DECL|macro|InboundMailbox5
 mdefine_line|#define&t;InboundMailbox5&t;&t;IndexRegs.Mailbox[5]
 DECL|macro|InboundMailbox6
 mdefine_line|#define&t;InboundMailbox6&t;&t;IndexRegs.Mailbox[6]
-DECL|macro|InboundMailbox7
-mdefine_line|#define&t;InboundMailbox7&t;&t;IndexRegs.Mailbox[7]
 DECL|macro|INBOUNDDOORBELL_0
-mdefine_line|#define&t;INBOUNDDOORBELL_0&t;cpu_to_le32(0x00000001)
+mdefine_line|#define&t;INBOUNDDOORBELL_0&t;0x00000001
 DECL|macro|INBOUNDDOORBELL_1
-mdefine_line|#define INBOUNDDOORBELL_1&t;cpu_to_le32(0x00000002)
+mdefine_line|#define INBOUNDDOORBELL_1&t;0x00000002
 DECL|macro|INBOUNDDOORBELL_2
-mdefine_line|#define INBOUNDDOORBELL_2&t;cpu_to_le32(0x00000004)
+mdefine_line|#define INBOUNDDOORBELL_2&t;0x00000004
 DECL|macro|INBOUNDDOORBELL_3
-mdefine_line|#define INBOUNDDOORBELL_3&t;cpu_to_le32(0x00000008)
+mdefine_line|#define INBOUNDDOORBELL_3&t;0x00000008
 DECL|macro|INBOUNDDOORBELL_4
-mdefine_line|#define INBOUNDDOORBELL_4&t;cpu_to_le32(0x00000010)
+mdefine_line|#define INBOUNDDOORBELL_4&t;0x00000010
 DECL|macro|INBOUNDDOORBELL_5
-mdefine_line|#define INBOUNDDOORBELL_5&t;cpu_to_le32(0x00000020)
+mdefine_line|#define INBOUNDDOORBELL_5&t;0x00000020
 DECL|macro|INBOUNDDOORBELL_6
-mdefine_line|#define INBOUNDDOORBELL_6&t;cpu_to_le32(0x00000040)
+mdefine_line|#define INBOUNDDOORBELL_6&t;0x00000040
 DECL|macro|OUTBOUNDDOORBELL_0
-mdefine_line|#define&t;OUTBOUNDDOORBELL_0&t;cpu_to_le32(0x00000001)
+mdefine_line|#define&t;OUTBOUNDDOORBELL_0&t;0x00000001
 DECL|macro|OUTBOUNDDOORBELL_1
-mdefine_line|#define OUTBOUNDDOORBELL_1&t;cpu_to_le32(0x00000002)
+mdefine_line|#define OUTBOUNDDOORBELL_1&t;0x00000002
 DECL|macro|OUTBOUNDDOORBELL_2
-mdefine_line|#define OUTBOUNDDOORBELL_2&t;cpu_to_le32(0x00000004)
+mdefine_line|#define OUTBOUNDDOORBELL_2&t;0x00000004
 DECL|macro|OUTBOUNDDOORBELL_3
-mdefine_line|#define OUTBOUNDDOORBELL_3&t;cpu_to_le32(0x00000008)
+mdefine_line|#define OUTBOUNDDOORBELL_3&t;0x00000008
 DECL|macro|OUTBOUNDDOORBELL_4
-mdefine_line|#define OUTBOUNDDOORBELL_4&t;cpu_to_le32(0x00000010)
+mdefine_line|#define OUTBOUNDDOORBELL_4&t;0x00000010
 DECL|macro|InboundDoorbellReg
 mdefine_line|#define InboundDoorbellReg&t;MUnit.IDR
 DECL|macro|OutboundDoorbellReg
@@ -1479,15 +1472,15 @@ r_struct
 id|rx_mu_registers
 id|MUnit
 suffix:semicolon
-singleline_comment|// 1300h - 1334h
+multiline_comment|/* 1300h - 1334h */
 DECL|member|reserved1
-id|u32
+id|__le32
 id|reserved1
 (braket
 l_int|6
 )braket
 suffix:semicolon
-singleline_comment|// 1338h - 134ch
+multiline_comment|/* 1338h - 134ch */
 DECL|member|IndexRegs
 r_struct
 id|rx_inbound
@@ -1519,7 +1512,7 @@ id|MUnit
 suffix:semicolon
 multiline_comment|/* 1300h - 1334h */
 DECL|member|reserved1
-id|u32
+id|__le32
 id|reserved1
 (braket
 l_int|1010
@@ -2030,6 +2023,12 @@ DECL|macro|AAC_OPT_SCSI_MANAGED
 mdefine_line|#define AAC_OPT_SCSI_MANAGED    &t;cpu_to_le32(1&lt;&lt;13)
 DECL|macro|AAC_OPT_RAID_SCSI_MODE
 mdefine_line|#define AAC_OPT_RAID_SCSI_MODE&t;&t;cpu_to_le32(1&lt;&lt;14)
+DECL|macro|AAC_OPT_SUPPLEMENT_ADAPTER_INFO
+mdefine_line|#define AAC_OPT_SUPPLEMENT_ADAPTER_INFO&t;cpu_to_le32(1&lt;&lt;16)
+DECL|macro|AAC_OPT_NEW_COMM
+mdefine_line|#define AAC_OPT_NEW_COMM&t;&t;cpu_to_le32(1&lt;&lt;17)
+DECL|macro|AAC_OPT_NEW_COMM_64
+mdefine_line|#define AAC_OPT_NEW_COMM_64&t;&t;cpu_to_le32(1&lt;&lt;18)
 DECL|struct|aac_dev
 r_struct
 id|aac_dev
@@ -3562,54 +3561,55 @@ mdefine_line|#define&t;FIB_COUNTER_INCREMENT(counter)&t;&t;
 macro_line|#endif
 multiline_comment|/*&n; *&t;Adapter direct commands&n; *&t;Monitor/Kernel API&n; */
 DECL|macro|BREAKPOINT_REQUEST
-mdefine_line|#define&t;BREAKPOINT_REQUEST&t;&t;cpu_to_le32(0x00000004)
+mdefine_line|#define&t;BREAKPOINT_REQUEST&t;&t;0x00000004
 DECL|macro|INIT_STRUCT_BASE_ADDRESS
-mdefine_line|#define&t;INIT_STRUCT_BASE_ADDRESS&t;cpu_to_le32(0x00000005)
+mdefine_line|#define&t;INIT_STRUCT_BASE_ADDRESS&t;0x00000005
 DECL|macro|READ_PERMANENT_PARAMETERS
-mdefine_line|#define READ_PERMANENT_PARAMETERS&t;cpu_to_le32(0x0000000a)
+mdefine_line|#define READ_PERMANENT_PARAMETERS&t;0x0000000a
 DECL|macro|WRITE_PERMANENT_PARAMETERS
-mdefine_line|#define WRITE_PERMANENT_PARAMETERS&t;cpu_to_le32(0x0000000b)
+mdefine_line|#define WRITE_PERMANENT_PARAMETERS&t;0x0000000b
 DECL|macro|HOST_CRASHING
-mdefine_line|#define HOST_CRASHING&t;&t;&t;cpu_to_le32(0x0000000d)
+mdefine_line|#define HOST_CRASHING&t;&t;&t;0x0000000d
 DECL|macro|SEND_SYNCHRONOUS_FIB
-mdefine_line|#define&t;SEND_SYNCHRONOUS_FIB&t;&t;cpu_to_le32(0x0000000c)
+mdefine_line|#define&t;SEND_SYNCHRONOUS_FIB&t;&t;0x0000000c
 DECL|macro|COMMAND_POST_RESULTS
-mdefine_line|#define&t;COMMAND_POST_RESULTS&t;&t;cpu_to_le32(0x00000014)
+mdefine_line|#define COMMAND_POST_RESULTS&t;&t;0x00000014
 DECL|macro|GET_ADAPTER_PROPERTIES
-mdefine_line|#define GET_ADAPTER_PROPERTIES&t;&t;cpu_to_le32(0x00000019)
+mdefine_line|#define GET_ADAPTER_PROPERTIES&t;&t;0x00000019
+DECL|macro|GET_DRIVER_BUFFER_PROPERTIES
+mdefine_line|#define GET_DRIVER_BUFFER_PROPERTIES&t;0x00000023
+DECL|macro|RCV_TEMP_READINGS
+mdefine_line|#define RCV_TEMP_READINGS&t;&t;0x00000025
+DECL|macro|GET_COMM_PREFERRED_SETTINGS
+mdefine_line|#define GET_COMM_PREFERRED_SETTINGS&t;0x00000026
+DECL|macro|IOP_RESET
+mdefine_line|#define IOP_RESET&t;&t;&t;0x00001000
 DECL|macro|RE_INIT_ADAPTER
-mdefine_line|#define RE_INIT_ADAPTER&t;&t;&t;cpu_to_le32(0x000000ee)
+mdefine_line|#define RE_INIT_ADAPTER&t;&t;&t;0x000000ee
 multiline_comment|/*&n; *&t;Adapter Status Register&n; *&n; *  Phase Staus mailbox is 32bits:&n; *&t;&lt;31:16&gt; = Phase Status&n; *&t;&lt;15:0&gt;  = Phase&n; *&n; *&t;The adapter reports is present state through the phase.  Only&n; *&t;a single phase should be ever be set.  Each phase can have multiple&n; *&t;phase status bits to provide more detailed information about the &n; *&t;state of the board.  Care should be taken to ensure that any phase &n; *&t;status bits that are set when changing the phase are also valid&n; *&t;for the new phase or be cleared out.  Adapter software (monitor,&n; *&t;iflash, kernel) is responsible for properly maintining the phase &n; *&t;status mailbox when it is running.&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&n; *&t;MONKER_API Phases&t;&t;&t;&t;&t;&t;&t;&n; *&n; *&t;Phases are bit oriented.  It is NOT valid  to have multiple bits set&t;&t;&t;&t;&t;&t;&n; */
 DECL|macro|SELF_TEST_FAILED
-mdefine_line|#define&t;SELF_TEST_FAILED&t;&t;(cpu_to_le32(0x00000004))
+mdefine_line|#define&t;SELF_TEST_FAILED&t;&t;0x00000004
 DECL|macro|MONITOR_PANIC
-mdefine_line|#define MONITOR_PANIC&t;&t;&t;(cpu_to_le32(0x00000020))
+mdefine_line|#define&t;MONITOR_PANIC&t;&t;&t;0x00000020
 DECL|macro|KERNEL_UP_AND_RUNNING
-mdefine_line|#define&t;KERNEL_UP_AND_RUNNING&t;&t;(cpu_to_le32(0x00000080))
+mdefine_line|#define&t;KERNEL_UP_AND_RUNNING&t;&t;0x00000080
 DECL|macro|KERNEL_PANIC
-mdefine_line|#define&t;KERNEL_PANIC&t;&t;&t;(cpu_to_le32(0x00000100))
+mdefine_line|#define&t;KERNEL_PANIC&t;&t;&t;0x00000100
 multiline_comment|/*&n; *&t;Doorbell bit defines&n; */
 DECL|macro|DoorBellSyncCmdAvailable
-mdefine_line|#define DoorBellSyncCmdAvailable&t;cpu_to_le32(1&lt;&lt;0)&t;
-singleline_comment|// Host -&gt; Adapter
+mdefine_line|#define DoorBellSyncCmdAvailable&t;(1&lt;&lt;0)&t;/* Host -&gt; Adapter */
 DECL|macro|DoorBellPrintfDone
-mdefine_line|#define DoorBellPrintfDone&t;&t;cpu_to_le32(1&lt;&lt;5)&t;
-singleline_comment|// Host -&gt; Adapter
+mdefine_line|#define DoorBellPrintfDone&t;&t;(1&lt;&lt;5)&t;/* Host -&gt; Adapter */
 DECL|macro|DoorBellAdapterNormCmdReady
-mdefine_line|#define DoorBellAdapterNormCmdReady&t;cpu_to_le32(1&lt;&lt;1)&t;
-singleline_comment|// Adapter -&gt; Host
+mdefine_line|#define DoorBellAdapterNormCmdReady&t;(1&lt;&lt;1)&t;/* Adapter -&gt; Host */
 DECL|macro|DoorBellAdapterNormRespReady
-mdefine_line|#define DoorBellAdapterNormRespReady&t;cpu_to_le32(1&lt;&lt;2)&t;
-singleline_comment|// Adapter -&gt; Host
+mdefine_line|#define DoorBellAdapterNormRespReady&t;(1&lt;&lt;2)&t;/* Adapter -&gt; Host */
 DECL|macro|DoorBellAdapterNormCmdNotFull
-mdefine_line|#define DoorBellAdapterNormCmdNotFull&t;cpu_to_le32(1&lt;&lt;3)&t;
-singleline_comment|// Adapter -&gt; Host
+mdefine_line|#define DoorBellAdapterNormCmdNotFull&t;(1&lt;&lt;3)&t;/* Adapter -&gt; Host */
 DECL|macro|DoorBellAdapterNormRespNotFull
-mdefine_line|#define DoorBellAdapterNormRespNotFull&t;cpu_to_le32(1&lt;&lt;4)&t;
-singleline_comment|// Adapter -&gt; Host
+mdefine_line|#define DoorBellAdapterNormRespNotFull&t;(1&lt;&lt;4)&t;/* Adapter -&gt; Host */
 DECL|macro|DoorBellPrintfReady
-mdefine_line|#define DoorBellPrintfReady&t;&t;cpu_to_le32(1&lt;&lt;5)&t;
-singleline_comment|// Adapter -&gt; Host
+mdefine_line|#define DoorBellPrintfReady&t;&t;(1&lt;&lt;5)&t;/* Adapter -&gt; Host */
 multiline_comment|/*&n; *&t;For FIB communication, we need all of the following things&n; *&t;to send back to the user.&n; */
 DECL|macro|AifCmdEventNotify
 mdefine_line|#define &t;AifCmdEventNotify&t;1&t;/* Notify of event */
@@ -3861,21 +3861,6 @@ id|aac_entry
 op_star
 op_star
 id|entry
-)paren
-suffix:semicolon
-r_int
-id|aac_consumer_avail
-c_func
-(paren
-r_struct
-id|aac_dev
-op_star
-id|dev
-comma
-r_struct
-id|aac_queue
-op_star
-id|q
 )paren
 suffix:semicolon
 r_void

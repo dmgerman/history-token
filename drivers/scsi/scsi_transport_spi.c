@@ -1143,7 +1143,9 @@ op_eq
 op_minus
 l_int|1
 )paren
-r_return
+(brace
+id|len
+op_assign
 id|sprintf
 c_func
 (paren
@@ -1152,6 +1154,9 @@ comma
 l_string|&quot;reserved&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
 id|len
 op_assign
 id|sprint_frac
@@ -1164,6 +1169,7 @@ comma
 l_int|1000
 )paren
 suffix:semicolon
+)brace
 id|buf
 (braket
 id|len

@@ -1014,9 +1014,6 @@ suffix:semicolon
 multiline_comment|/* The first 1k of the memory buffer is a memory map of the registers&n;&t; */
 id|mem_base
 op_assign
-(paren
-id|__u32
-)paren
 id|dma_mark_declared_memory_occupied
 c_func
 (paren

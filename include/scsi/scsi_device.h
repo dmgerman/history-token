@@ -430,6 +430,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* READ_CAPACITY is too high by 1 */
+DECL|member|retry_hwerror
+r_int
+id|retry_hwerror
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Retry HARDWARE_ERROR */
 DECL|member|device_blocked
 r_int
 r_int

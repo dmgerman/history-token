@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   3w-9xxx.h -- 3ware 9000 Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linuxraid@amcc.com&gt;&n;&n;   Copyright (C) 2004 Applied Micro Circuits Corporation.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   NO WARRANTY&n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;   solely responsible for determining the appropriateness of using and&n;   distributing the Program and assumes all risks associated with its&n;   exercise of rights under this Agreement, including but not limited to&n;   the risks and costs of program errors, damage to or loss of data,&n;   programs or equipment, and unavailability or interruption of operations.&n;&n;   DISCLAIMER OF LIABILITY&n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;   Bugs/Comments/Suggestions should be mailed to:&n;   linuxraid@amcc.com&n;&n;   For more information, goto:&n;   http://www.amcc.com&n;*/
+multiline_comment|/*&n;   3w-9xxx.h -- 3ware 9000 Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linuxraid@amcc.com&gt;&n;&n;   Copyright (C) 2004-2005 Applied Micro Circuits Corporation.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   NO WARRANTY&n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;   solely responsible for determining the appropriateness of using and&n;   distributing the Program and assumes all risks associated with its&n;   exercise of rights under this Agreement, including but not limited to&n;   the risks and costs of program errors, damage to or loss of data,&n;   programs or equipment, and unavailability or interruption of operations.&n;&n;   DISCLAIMER OF LIABILITY&n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;   Bugs/Comments/Suggestions should be mailed to:&n;   linuxraid@amcc.com&n;&n;   For more information, goto:&n;   http://www.amcc.com&n;*/
 macro_line|#ifndef _3W_9XXX_H
 DECL|macro|_3W_9XXX_H
 mdefine_line|#define _3W_9XXX_H
@@ -1253,8 +1253,6 @@ multiline_comment|/* RESPONSE QUEUE BIT DEFINITIONS */
 DECL|macro|TW_RESPONSE_ID_MASK
 mdefine_line|#define TW_RESPONSE_ID_MASK&t;&t;       0x00000FF0
 multiline_comment|/* PCI related defines */
-DECL|macro|TW_DEVICE_NAME
-mdefine_line|#define TW_DEVICE_NAME&t;&t;&t;       &quot;3w-9xxx&quot;
 DECL|macro|TW_NUMDEVICES
 mdefine_line|#define TW_NUMDEVICES 1
 DECL|macro|TW_PCI_CLEAR_PARITY_ERRORS
@@ -1305,12 +1303,12 @@ mdefine_line|#define TW_S_FINISHED  0x20 /* I/O completely done */
 multiline_comment|/* Compatibility defines */
 DECL|macro|TW_9000_ARCH_ID
 mdefine_line|#define TW_9000_ARCH_ID 0x5
-DECL|macro|TW_CURRENT_FW_SRL
-mdefine_line|#define TW_CURRENT_FW_SRL 24
-DECL|macro|TW_CURRENT_FW_BUILD
-mdefine_line|#define TW_CURRENT_FW_BUILD 5
-DECL|macro|TW_CURRENT_FW_BRANCH
-mdefine_line|#define TW_CURRENT_FW_BRANCH 1
+DECL|macro|TW_CURRENT_DRIVER_SRL
+mdefine_line|#define TW_CURRENT_DRIVER_SRL 28
+DECL|macro|TW_CURRENT_DRIVER_BUILD
+mdefine_line|#define TW_CURRENT_DRIVER_BUILD 9
+DECL|macro|TW_CURRENT_DRIVER_BRANCH
+mdefine_line|#define TW_CURRENT_DRIVER_BRANCH 4
 multiline_comment|/* Phase defines */
 DECL|macro|TW_PHASE_INITIAL
 mdefine_line|#define TW_PHASE_INITIAL 0
@@ -1342,28 +1340,13 @@ mdefine_line|#define TW_CTLR_FW_RECOMMENDS_FLASH&t;      0x8
 DECL|macro|TW_CTLR_FW_COMPATIBLE
 mdefine_line|#define TW_CTLR_FW_COMPATIBLE&t;&t;      0x2
 DECL|macro|TW_BASE_FW_SRL
-mdefine_line|#define TW_BASE_FW_SRL&t;&t;&t;      0x17
+mdefine_line|#define TW_BASE_FW_SRL&t;&t;&t;      24
 DECL|macro|TW_BASE_FW_BRANCH
 mdefine_line|#define TW_BASE_FW_BRANCH&t;&t;      0
 DECL|macro|TW_BASE_FW_BUILD
 mdefine_line|#define TW_BASE_FW_BUILD&t;&t;      1
-macro_line|#if BITS_PER_LONG &gt; 32
-DECL|macro|TW_APACHE_MAX_SGL_LENGTH
-mdefine_line|#define TW_APACHE_MAX_SGL_LENGTH 72
-DECL|macro|TW_ESCALADE_MAX_SGL_LENGTH
-mdefine_line|#define TW_ESCALADE_MAX_SGL_LENGTH 41
-DECL|macro|TW_APACHE_CMD_PKT_SIZE
-mdefine_line|#define TW_APACHE_CMD_PKT_SIZE 5
-macro_line|#else
-DECL|macro|TW_APACHE_MAX_SGL_LENGTH
-mdefine_line|#define TW_APACHE_MAX_SGL_LENGTH 109
-DECL|macro|TW_ESCALADE_MAX_SGL_LENGTH
-mdefine_line|#define TW_ESCALADE_MAX_SGL_LENGTH 62
-DECL|macro|TW_APACHE_CMD_PKT_SIZE
-mdefine_line|#define TW_APACHE_CMD_PKT_SIZE 4
-macro_line|#endif
-DECL|macro|TW_ATA_PASS_SGL_MAX
-mdefine_line|#define TW_ATA_PASS_SGL_MAX                   60
+DECL|macro|TW_FW_SRL_LUNS_SUPPORTED
+mdefine_line|#define TW_FW_SRL_LUNS_SUPPORTED              28
 DECL|macro|TW_Q_LENGTH
 mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      256
 DECL|macro|TW_Q_START
@@ -1378,8 +1361,8 @@ DECL|macro|TW_MAX_RESPONSE_DRAIN
 mdefine_line|#define TW_MAX_RESPONSE_DRAIN&t;&t;      256
 DECL|macro|TW_MAX_AEN_DRAIN
 mdefine_line|#define TW_MAX_AEN_DRAIN&t;&t;      40
-DECL|macro|TW_IN_IOCTL
-mdefine_line|#define TW_IN_IOCTL                           2
+DECL|macro|TW_IN_RESET
+mdefine_line|#define TW_IN_RESET                           2
 DECL|macro|TW_IN_CHRDEV_IOCTL
 mdefine_line|#define TW_IN_CHRDEV_IOCTL                    3
 DECL|macro|TW_IN_ATTENTION_LOOP
@@ -1506,17 +1489,6 @@ DECL|macro|TW_MESSAGE_SOURCE_LINUX_OS
 mdefine_line|#define TW_MESSAGE_SOURCE_LINUX_OS            9
 DECL|macro|TW_OS
 mdefine_line|#define TW_OS TW_MESSAGE_SOURCE_LINUX_OS
-macro_line|#if BITS_PER_LONG &gt; 32
-DECL|macro|TW_COMMAND_SIZE
-mdefine_line|#define TW_COMMAND_SIZE&t;&t;&t;      5
-DECL|macro|TW_DMA_MASK
-mdefine_line|#define TW_DMA_MASK&t;&t;&t;      DMA_64BIT_MASK
-macro_line|#else
-DECL|macro|TW_COMMAND_SIZE
-mdefine_line|#define TW_COMMAND_SIZE&t;&t;&t;      4
-DECL|macro|TW_DMA_MASK
-mdefine_line|#define TW_DMA_MASK&t;&t;&t;      DMA_32BIT_MASK
-macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_3WARE_9000
 DECL|macro|PCI_DEVICE_ID_3WARE_9000
 mdefine_line|#define PCI_DEVICE_ID_3WARE_9000 0x1002
@@ -1538,18 +1510,18 @@ mdefine_line|#define TW_SEV_OUT(x) (x &amp; 0x7)
 multiline_comment|/* reserved_1: 4, response_id: 8, reserved_2: 20 */
 DECL|macro|TW_RESID_OUT
 mdefine_line|#define TW_RESID_OUT(x) ((x &gt;&gt; 4) &amp; 0xff)
+multiline_comment|/* request_id: 12, lun: 4 */
+DECL|macro|TW_REQ_LUN_IN
+mdefine_line|#define TW_REQ_LUN_IN(lun, request_id) (((lun &lt;&lt; 12) &amp; 0xf000) | (request_id &amp; 0xfff))
+DECL|macro|TW_LUN_OUT
+mdefine_line|#define TW_LUN_OUT(lun) ((lun &gt;&gt; 12) &amp; 0xf)
 multiline_comment|/* Macros */
 DECL|macro|TW_CONTROL_REG_ADDR
 mdefine_line|#define TW_CONTROL_REG_ADDR(x) (x-&gt;base_addr)
 DECL|macro|TW_STATUS_REG_ADDR
 mdefine_line|#define TW_STATUS_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x4)
-macro_line|#if BITS_PER_LONG &gt; 32
 DECL|macro|TW_COMMAND_QUEUE_REG_ADDR
-mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x20)
-macro_line|#else
-DECL|macro|TW_COMMAND_QUEUE_REG_ADDR
-mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0x8)
-macro_line|#endif
+mdefine_line|#define TW_COMMAND_QUEUE_REG_ADDR(x) (sizeof(dma_addr_t) &gt; 4 ? ((unsigned char __iomem *)x-&gt;base_addr + 0x20) : ((unsigned char __iomem *)x-&gt;base_addr + 0x8))
 DECL|macro|TW_RESPONSE_QUEUE_REG_ADDR
 mdefine_line|#define TW_RESPONSE_QUEUE_REG_ADDR(x) ((unsigned char __iomem *)x-&gt;base_addr + 0xC)
 DECL|macro|TW_CLEAR_ALL_INTERRUPTS
@@ -1570,6 +1542,16 @@ DECL|macro|TW_SOFT_RESET
 mdefine_line|#define TW_SOFT_RESET(x) (writel(TW_CONTROL_ISSUE_SOFT_RESET | &bslash;&n;&t;&t;&t;TW_CONTROL_CLEAR_HOST_INTERRUPT | &bslash;&n;&t;&t;&t;TW_CONTROL_CLEAR_ATTENTION_INTERRUPT | &bslash;&n;&t;&t;&t;TW_CONTROL_MASK_COMMAND_INTERRUPT | &bslash;&n;&t;&t;&t;TW_CONTROL_MASK_RESPONSE_INTERRUPT | &bslash;&n;&t;&t;&t;TW_CONTROL_CLEAR_ERROR_STATUS | &bslash;&n;&t;&t;&t;TW_CONTROL_DISABLE_INTERRUPTS, TW_CONTROL_REG_ADDR(x)))
 DECL|macro|TW_PRINTK
 mdefine_line|#define TW_PRINTK(h,a,b,c) { &bslash;&n;if (h) &bslash;&n;printk(KERN_WARNING &quot;3w-9xxx: scsi%d: ERROR: (0x%02X:0x%04X): %s.&bslash;n&quot;,h-&gt;host_no,a,b,c); &bslash;&n;else &bslash;&n;printk(KERN_WARNING &quot;3w-9xxx: ERROR: (0x%02X:0x%04X): %s.&bslash;n&quot;,a,b,c); &bslash;&n;}
+DECL|macro|TW_MAX_LUNS
+mdefine_line|#define TW_MAX_LUNS(srl) (srl &lt; TW_FW_SRL_LUNS_SUPPORTED ? 1 : 16)
+DECL|macro|TW_COMMAND_SIZE
+mdefine_line|#define TW_COMMAND_SIZE (sizeof(dma_addr_t) &gt; 4 ? 5 : 4)
+DECL|macro|TW_APACHE_MAX_SGL_LENGTH
+mdefine_line|#define TW_APACHE_MAX_SGL_LENGTH (sizeof(dma_addr_t) &gt; 4 ? 72 : 109)
+DECL|macro|TW_ESCALADE_MAX_SGL_LENGTH
+mdefine_line|#define TW_ESCALADE_MAX_SGL_LENGTH (sizeof(dma_addr_t) &gt; 4 ? 41 : 62)
+DECL|macro|TW_PADDING_LENGTH
+mdefine_line|#define TW_PADDING_LENGTH (sizeof(dma_addr_t) &gt; 4 ? 8 : 0)
 macro_line|#pragma pack(1)
 multiline_comment|/* Scatter Gather List Entry */
 DECL|struct|TAG_TW_SG_Entry
@@ -1578,8 +1560,7 @@ r_struct
 id|TAG_TW_SG_Entry
 (brace
 DECL|member|address
-r_int
-r_int
+id|dma_addr_t
 id|address
 suffix:semicolon
 DECL|member|length
@@ -1658,21 +1639,10 @@ id|sgl
 id|TW_ESCALADE_MAX_SGL_LENGTH
 )braket
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
 DECL|member|padding
-id|u32
-id|padding
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* pad to 512 bytes */
-macro_line|#else
-DECL|member|padding
-id|u32
+id|dma_addr_t
 id|padding
 suffix:semicolon
-macro_line|#endif
 DECL|member|io
 )brace
 id|io
@@ -1686,23 +1656,14 @@ id|sgl
 id|TW_ESCALADE_MAX_SGL_LENGTH
 )braket
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
 DECL|member|padding
 id|u32
 id|padding
-(braket
-l_int|3
-)braket
 suffix:semicolon
-macro_line|#else
-DECL|member|padding
-id|u32
-id|padding
-(braket
-l_int|2
-)braket
+DECL|member|padding2
+id|dma_addr_t
+id|padding2
 suffix:semicolon
-macro_line|#endif
 DECL|member|param
 )brace
 id|param
@@ -1714,25 +1675,6 @@ suffix:semicolon
 DECL|typedef|TW_Command
 )brace
 id|TW_Command
-suffix:semicolon
-multiline_comment|/* Scatter gather element for 9000+ controllers */
-DECL|struct|TAG_TW_SG_Apache
-r_typedef
-r_struct
-id|TAG_TW_SG_Apache
-(brace
-DECL|member|address
-r_int
-r_int
-id|address
-suffix:semicolon
-DECL|member|length
-id|u32
-id|length
-suffix:semicolon
-DECL|typedef|TW_SG_Apache
-)brace
-id|TW_SG_Apache
 suffix:semicolon
 multiline_comment|/* Command Packet for 9000+ controllers */
 DECL|struct|TAG_TW_Command_Apache
@@ -1750,10 +1692,10 @@ r_int
 r_char
 id|unit
 suffix:semicolon
-DECL|member|request_id
+DECL|member|request_id__lunl
 r_int
 r_int
-id|request_id
+id|request_id__lunl
 suffix:semicolon
 DECL|member|status
 r_int
@@ -1765,10 +1707,10 @@ r_int
 r_char
 id|sgl_offset
 suffix:semicolon
-DECL|member|sgl_entries
+DECL|member|sgl_entries__lunh
 r_int
 r_int
-id|sgl_entries
+id|sgl_entries__lunh
 suffix:semicolon
 DECL|member|cdb
 r_int
@@ -1779,22 +1721,20 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|sg_list
-id|TW_SG_Apache
+id|TW_SG_Entry
 id|sg_list
 (braket
 id|TW_APACHE_MAX_SGL_LENGTH
 )braket
 suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
 DECL|member|padding
 r_int
 r_char
 id|padding
 (braket
-l_int|8
+id|TW_PADDING_LENGTH
 )braket
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|TW_Command_Apache
 )brace
 id|TW_Command_Apache
@@ -2235,6 +2175,36 @@ r_int
 r_int
 id|working_build
 suffix:semicolon
+DECL|member|driver_srl_high
+r_int
+r_int
+id|driver_srl_high
+suffix:semicolon
+DECL|member|driver_branch_high
+r_int
+r_int
+id|driver_branch_high
+suffix:semicolon
+DECL|member|driver_build_high
+r_int
+r_int
+id|driver_build_high
+suffix:semicolon
+DECL|member|driver_srl_low
+r_int
+r_int
+id|driver_srl_low
+suffix:semicolon
+DECL|member|driver_branch_low
+r_int
+r_int
+id|driver_branch_low
+suffix:semicolon
+DECL|member|driver_build_low
+r_int
+r_int
+id|driver_build_low
+suffix:semicolon
 DECL|typedef|TW_Compatibility_Info
 )brace
 id|TW_Compatibility_Info
@@ -2260,8 +2230,7 @@ id|TW_Q_LENGTH
 )braket
 suffix:semicolon
 DECL|member|generic_buffer_phys
-r_int
-r_int
+id|dma_addr_t
 id|generic_buffer_phys
 (braket
 id|TW_Q_LENGTH
@@ -2276,8 +2245,7 @@ id|TW_Q_LENGTH
 )braket
 suffix:semicolon
 DECL|member|command_packet_phys
-r_int
-r_int
+id|dma_addr_t
 id|command_packet_phys
 (braket
 id|TW_Q_LENGTH
@@ -2370,11 +2338,6 @@ DECL|member|sgl_entries
 r_int
 r_int
 id|sgl_entries
-suffix:semicolon
-DECL|member|num_aborts
-r_int
-r_int
-id|num_aborts
 suffix:semicolon
 DECL|member|num_resets
 r_int

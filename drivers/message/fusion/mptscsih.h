@@ -26,27 +26,5 @@ DECL|macro|MPTSCSIH_MIN_SYNC
 mdefine_line|#define MPTSCSIH_MIN_SYNC               0x08
 DECL|macro|MPTSCSIH_SAF_TE
 mdefine_line|#define MPTSCSIH_SAF_TE                 0
-DECL|struct|mptscsih_driver_setup
-r_struct
-id|mptscsih_driver_setup
-(brace
-DECL|member|dv
-id|u8
-id|dv
-suffix:semicolon
-DECL|member|max_width
-id|u8
-id|max_width
-suffix:semicolon
-DECL|member|min_sync_factor
-id|u8
-id|min_sync_factor
-suffix:semicolon
-DECL|member|saf_te
-id|u8
-id|saf_te
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif
 eof

@@ -103,7 +103,7 @@ multiline_comment|/*&n;&t; *&t;Since we copy based on the fib header size, make 
 r_if
 c_cond
 (paren
-id|le32_to_cpu
+id|le16_to_cpu
 c_func
 (paren
 id|kfib-&gt;header.Size
@@ -139,15 +139,11 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|kfib
 comma
 id|arg
 comma
-id|le32_to_cpu
+id|le16_to_cpu
 c_func
 (paren
 id|kfib-&gt;header.Size
@@ -208,7 +204,7 @@ id|kfib-&gt;header.Command
 comma
 id|fibptr
 comma
-id|le32_to_cpu
+id|le16_to_cpu
 c_func
 (paren
 id|kfib-&gt;header.Size
@@ -2027,7 +2023,11 @@ op_plus
 (paren
 (paren
 (paren
+id|le32_to_cpu
+c_func
+(paren
 id|srbcmd-&gt;sg.count
+)paren
 op_amp
 l_int|0xff
 )paren

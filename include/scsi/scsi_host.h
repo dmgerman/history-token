@@ -958,6 +958,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|scsi_flush_work
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|Scsi_Host
 op_star

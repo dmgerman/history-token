@@ -15,7 +15,6 @@ macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
-macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SENSE_TIMEOUT
@@ -908,17 +907,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|scsi_get_device_flags
-c_func
-(paren
-id|scmd-&gt;device
-comma
-id|scmd-&gt;device-&gt;vendor
-comma
-id|scmd-&gt;device-&gt;model
-)paren
-op_amp
-id|BLIST_RETRY_HWERROR
+id|scmd-&gt;device-&gt;retry_hwerror
 )paren
 r_return
 id|NEEDS_RETRY
