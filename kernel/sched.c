@@ -1864,9 +1864,8 @@ id|out_activate
 suffix:semicolon
 id|new_cpu
 op_assign
-id|this_cpu
+id|cpu
 suffix:semicolon
-multiline_comment|/* Wake to this CPU if we can */
 r_if
 c_cond
 (paren
@@ -1890,7 +1889,6 @@ id|p-&gt;cpus_allowed
 r_goto
 id|out_set_cpu
 suffix:semicolon
-multiline_comment|/* Passive load balancing */
 id|load
 op_assign
 id|get_low_cpu_load
@@ -1906,15 +1904,36 @@ c_func
 (paren
 id|this_cpu
 )paren
-op_plus
-id|SCHED_LOAD_SCALE
 suffix:semicolon
+multiline_comment|/* Don&squot;t pull the task off an idle CPU to a busy one */
+r_if
+c_cond
+(paren
+id|load
+template_param
+id|SCHED_LOAD_SCALE
+op_div
+l_int|2
+)paren
+r_goto
+id|out_set_cpu
+suffix:semicolon
+id|new_cpu
+op_assign
+id|this_cpu
+suffix:semicolon
+multiline_comment|/* Wake to this CPU if we can */
+multiline_comment|/*&n;&t; * Passive load balancing. If the queues are very out of balance&n;&t; * we might as well balance here rather than the periodic load&n;&t; * balancing.&n;&t; */
 r_if
 c_cond
 (paren
 id|load
 OG
 id|this_load
+op_plus
+id|SCHED_LOAD_SCALE
+op_star
+l_int|2
 )paren
 r_goto
 id|out_set_cpu
@@ -1950,7 +1969,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|now
+id|rq-&gt;timestamp_last_tick
 op_minus
 id|p-&gt;timestamp
 OL
@@ -3745,11 +3764,9 @@ id|sd-&gt;cache_nice_tries
 r_if
 c_cond
 (paren
-(paren
 id|rq-&gt;timestamp_last_tick
 op_minus
 id|p-&gt;timestamp
-)paren
 OL
 id|sd-&gt;cache_hot_time
 )paren
