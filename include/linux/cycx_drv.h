@@ -26,10 +26,6 @@ DECL|macro|DATA_OFFSET
 mdefine_line|#define&t;DATA_OFFSET&t;0x0100&t;/* For code and data files load */
 DECL|macro|START_OFFSET
 mdefine_line|#define&t;START_OFFSET&t;0x3ff0&t;/* 80186 starts here */
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/**&n; *&t;struct cycx_hw - Adapter hardware configuration&n; *&t;@fwid - firmware ID&n; *&t;@irq - interrupt request level&n; *&t;@dpmbase - dual-port memory base&n; *&t;@dpmsize - dual-port memory size&n; *&t;@reserved - reserved for future use&n; */
 DECL|struct|cycx_hw
 r_struct
