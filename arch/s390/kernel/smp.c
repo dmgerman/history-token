@@ -2122,12 +2122,7 @@ id|p
 )paren
 )paren
 suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
+multiline_comment|/* Make this the idle thread */
 id|init_idle
 c_func
 (paren
@@ -2136,6 +2131,7 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/* Remove it from the pidhash */
 id|unhash_process
 c_func
 (paren

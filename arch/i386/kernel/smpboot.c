@@ -2769,13 +2769,7 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
+multiline_comment|/* Make this the idle thread */
 id|init_idle
 c_func
 (paren
@@ -2792,6 +2786,7 @@ r_int
 )paren
 id|start_secondary
 suffix:semicolon
+multiline_comment|/* Remove it from the pidhash */
 id|unhash_process
 c_func
 (paren

@@ -1417,12 +1417,6 @@ id|p
 )paren
 )paren
 suffix:semicolon
-id|wake_up_forked_process
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|init_idle
 c_func
 (paren

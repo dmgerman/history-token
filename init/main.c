@@ -1633,6 +1633,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make us the idle thread. Technically, schedule() should not be&n;&t; * called from this thread, however somewhere below it might be,&n;&t; * but because we are the idle thread, we just pick up running again&n;&t; * when this runqueue becomes &quot;idle&quot;.&n;&t; */
+id|init_idle
+c_func
+(paren
+id|current
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|build_all_zonelists
 c_func
 (paren
@@ -1911,18 +1923,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* before LAPIC and SMP init */
-multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
-id|init_idle
-c_func
-(paren
-id|current
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Do the rest non-__init&squot;ed, we&squot;re now alive */
 id|rest_init
 c_func
