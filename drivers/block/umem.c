@@ -2128,7 +2128,7 @@ suffix:semicolon
 multiline_comment|/*&n;-----------------------------------------------------------------------------------&n;--                              mm_interrupt&n;-----------------------------------------------------------------------------------&n;*/
 DECL|function|mm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mm_interrupt
 c_func
 (paren
@@ -2202,6 +2202,7 @@ id|DMASCR_CHAIN_COMPLETE
 (brace
 multiline_comment|/* interrupt wasn&squot;t for me ... */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* clear COMPLETION interrupts */
@@ -2643,6 +2644,9 @@ c_func
 (paren
 l_int|0x36
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;-----------------------------------------------------------------------------------&n;--                         set_fault_to_battery_status&n;-----------------------------------------------------------------------------------&n;*/
