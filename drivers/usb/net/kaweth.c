@@ -2080,11 +2080,6 @@ op_logical_or
 id|urb-&gt;status
 op_eq
 op_minus
-id|ECONNABORTED
-op_logical_or
-id|urb-&gt;status
-op_eq
-op_minus
 id|ESHUTDOWN
 )paren
 )paren
