@@ -1714,9 +1714,14 @@ id|g4fan_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
-l_string|&quot;Apple G4 Thermostat/Fan&quot;
+l_string|&quot;therm_windtunnel&quot;
 comma
 dot
 id|id
@@ -1731,19 +1736,12 @@ comma
 dot
 id|attach_adapter
 op_assign
-op_amp
 id|do_attach
 comma
 dot
 id|detach_client
 op_assign
-op_amp
 id|do_detach
-comma
-dot
-id|command
-op_assign
-l_int|NULL
 comma
 )brace
 suffix:semicolon
