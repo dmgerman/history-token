@@ -11747,6 +11747,9 @@ comma
 DECL|enumerator|aks_0100
 id|aks_0100
 comma
+DECL|enumerator|mobility_pp
+id|mobility_pp
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* each element directly indexed from enum list, above &n; * (but offset by last_sio) */
@@ -12735,6 +12738,20 @@ comma
 )brace
 )brace
 comma
+multiline_comment|/* mobility_pp */
+(brace
+l_int|1
+comma
+(brace
+(brace
+l_int|0
+comma
+l_int|1
+)brace
+comma
+)brace
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -13532,6 +13549,22 @@ comma
 l_int|0
 comma
 id|timedia_9018a
+)brace
+comma
+(brace
+l_int|0x14f2
+comma
+l_int|0x0121
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|mobility_pp
 )brace
 comma
 (brace
