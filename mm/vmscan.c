@@ -513,6 +513,11 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pagevec_init
 c_func
 (paren
