@@ -750,16 +750,16 @@ id|paging_init
 r_void
 )paren
 suffix:semicolon
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xff)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;&t;(((entry).val &lt;&lt; 1) &gt;&gt; 10)
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type,offset)&t;&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((long) (offset) &lt;&lt; 9) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(entry)&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xff)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(entry)&t;&t;(((entry).val &lt;&lt; 1) &gt;&gt; 10)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type,offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((long) (offset) &lt;&lt; 9) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range&t;/* XXX is this right? */
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */

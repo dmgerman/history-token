@@ -976,16 +976,16 @@ id|pte
 suffix:semicolon
 multiline_comment|/* Encode and de-code a swap entry */
 multiline_comment|/*&n; * NOTE: We should set ZEROs at the position of _PAGE_PRESENT&n; *       and _PAGE_PROTONOE bits&n; */
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(x)&t;&t;((x).val &amp; 0xff)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(x)&t;&t;((x).val &gt;&gt; 10)
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)&t;((swp_entry_t) { (type) | ((offset) &lt;&lt; 10) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;((x).val &amp; 0xff)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 10)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset) ((swp_entry_t) { (type) | ((offset) &lt;&lt; 10) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
 multiline_comment|/*&n; * Routines for update of PTE &n; *&n; * We just can use generic implementation, as SuperH has no SMP feature.&n; * (We needed atomic implementation for SMP)&n; *&n; */
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))

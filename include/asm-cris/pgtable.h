@@ -1143,16 +1143,16 @@ id|pte
 )brace
 multiline_comment|/* Encode and de-code a swap entry (must be !pte_none(e) &amp;&amp; !pte_present(e)) */
 multiline_comment|/* Since the PAGE_PRESENT bit is bit 4, we can use the bits above */
-DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(x)                     (((x).val &gt;&gt; 5) &amp; 0x7f)
-DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(x)                   ((x).val &gt;&gt; 12)
-DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)         ((swp_entry_t) { ((type) &lt;&lt; 5) | ((offset) &lt;&lt; 12) })
-DECL|macro|pte_to_swp_entry
-mdefine_line|#define pte_to_swp_entry(pte)           ((swp_entry_t) { pte_val(pte) })
-DECL|macro|swp_entry_to_pte
-mdefine_line|#define swp_entry_to_pte(x)             ((pte_t) { (x).val })
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 5) &amp; 0x7f)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 12)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { ((type) &lt;&lt; 5) | ((offset) &lt;&lt; 12) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

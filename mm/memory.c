@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|max_mapnr
 r_int
 r_int
@@ -5019,10 +5020,10 @@ op_assign
 id|read_swap_cache_async
 c_func
 (paren
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for block_flushpage() */
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
 id|spinlock_t
 id|swaplock
@@ -434,7 +435,7 @@ id|offset
 (brace
 id|entry
 op_assign
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 id|type
@@ -581,7 +582,7 @@ id|out
 suffix:semicolon
 id|type
 op_assign
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -620,7 +621,7 @@ id|bad_device
 suffix:semicolon
 id|offset
 op_assign
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -883,7 +884,7 @@ c_func
 (paren
 id|p
 comma
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -948,7 +949,7 @@ c_cond
 (paren
 id|p-&gt;swap_map
 (braket
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -1219,7 +1220,7 @@ c_cond
 (paren
 id|p-&gt;swap_map
 (braket
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -1364,7 +1365,7 @@ c_func
 (paren
 id|p
 comma
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -2297,7 +2298,7 @@ id|i
 suffix:semicolon
 id|entry
 op_assign
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 id|type
@@ -3996,7 +3997,7 @@ c_func
 (paren
 id|READ
 comma
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 id|type
@@ -4283,10 +4284,10 @@ l_int|1
 suffix:semicolon
 id|maxpages
 op_assign
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 l_int|0
@@ -4939,7 +4940,7 @@ l_int|0
 suffix:semicolon
 id|type
 op_assign
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -4963,7 +4964,7 @@ id|swap_info
 suffix:semicolon
 id|offset
 op_assign
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -5126,7 +5127,7 @@ id|bad_entry
 suffix:semicolon
 id|type
 op_assign
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -5150,7 +5151,7 @@ id|swap_info
 suffix:semicolon
 id|offset
 op_assign
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -5283,7 +5284,7 @@ id|p
 suffix:semicolon
 id|type
 op_assign
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -5322,7 +5323,7 @@ suffix:semicolon
 op_star
 id|offset
 op_assign
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry
@@ -5449,7 +5450,7 @@ id|swap_info_struct
 op_star
 id|swapdev
 op_assign
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -5470,7 +5471,7 @@ suffix:semicolon
 id|toff
 op_assign
 (paren
-id|SWP_OFFSET
+id|swp_offset
 c_func
 (paren
 id|entry

@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|software_suspend_enabled
 r_int
 r_char
@@ -841,7 +842,7 @@ suffix:semicolon
 multiline_comment|/* XXX: this is dirty hack to get first page of swap file */
 id|entry
 op_assign
-id|SWP_ENTRY
+id|swp_entry
 c_func
 (paren
 id|root_swap
@@ -1415,7 +1416,7 @@ c_cond
 (paren
 id|swapfile_used
 (braket
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -1628,7 +1629,7 @@ c_cond
 (paren
 id|swapfile_used
 (braket
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -1795,7 +1796,7 @@ c_cond
 (paren
 id|swapfile_used
 (braket
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -1884,7 +1885,7 @@ macro_line|#if 0
 r_if
 c_cond
 (paren
-id|SWP_TYPE
+id|swp_type
 c_func
 (paren
 id|entry
@@ -4511,7 +4512,7 @@ suffix:semicolon
 DECL|macro|READTO
 mdefine_line|#define READTO(pos, ptr) &bslash;&n;&t;if (bdev_read_page(resume_device, pos, ptr)) { error = -EIO; goto resume_read_error; }
 DECL|macro|PREPARENEXT
-mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = SWP_OFFSET(next) * PAGE_SIZE; &bslash;&n;        }
+mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = swp_offset(next) * PAGE_SIZE; &bslash;&n;        }
 id|error
 op_assign
 op_minus
@@ -4928,7 +4929,8 @@ l_string|&quot;.&quot;
 suffix:semicolon
 id|next.val
 op_assign
-id|SWP_OFFSET
+id|swp_offset
+c_func
 (paren
 id|swap_address
 )paren
