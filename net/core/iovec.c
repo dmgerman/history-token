@@ -77,12 +77,14 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+)brace
 id|m-&gt;msg_name
 op_assign
 id|address
 suffix:semicolon
 )brace
 r_else
+(brace
 id|m-&gt;msg_name
 op_assign
 l_int|NULL
