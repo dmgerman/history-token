@@ -396,12 +396,12 @@ r_static
 id|capidrv_data
 id|global
 suffix:semicolon
-DECL|variable|global_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|global_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
