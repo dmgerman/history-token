@@ -131,12 +131,6 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;(major_nr)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
-multiline_comment|/*  For the directory */
 DECL|struct|cardinfo
 r_struct
 id|cardinfo
@@ -4896,8 +4890,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -5111,20 +5103,11 @@ id|i
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|devfs_handle
-)paren
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;umem&quot;
 )paren
-suffix:semicolon
-id|devfs_handle
-op_assign
-l_int|NULL
 suffix:semicolon
 id|pci_unregister_driver
 c_func
