@@ -2239,7 +2239,7 @@ id|strcpy
 (paren
 id|intf-&gt;dev.name
 comma
-l_string|&quot;Hub/Port Status Changes&quot;
+l_string|&quot;Hub&quot;
 )paren
 suffix:semicolon
 r_return
