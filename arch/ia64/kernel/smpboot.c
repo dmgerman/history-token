@@ -1685,7 +1685,7 @@ c_cond
 id|cpu_online_map
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu
 )paren

@@ -9,18 +9,18 @@ macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * No irq_cpustat_t for IA-64.  The data is held in the per-CPU data structure.&n; */
 DECL|macro|softirq_pending
 mdefine_line|#define softirq_pending(cpu)&t;&t;(cpu_data(cpu)-&gt;softirq_pending)
-DECL|macro|ksoftirqd_task
-mdefine_line|#define ksoftirqd_task(cpu)&t;&t;(cpu_data(cpu)-&gt;ksoftirqd)
 DECL|macro|syscall_count
 mdefine_line|#define syscall_count(cpu)&t;&t;/* unused on IA-64 */
+DECL|macro|ksoftirqd_task
+mdefine_line|#define ksoftirqd_task(cpu)&t;&t;(cpu_data(cpu)-&gt;ksoftirqd)
 DECL|macro|nmi_count
 mdefine_line|#define nmi_count(cpu)&t;&t;&t;0
 DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending()&t;&t;(local_cpu_data-&gt;softirq_pending)
-DECL|macro|local_ksoftirqd_task
-mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
 DECL|macro|local_syscall_count
 mdefine_line|#define local_syscall_count()&t;&t;/* unused on IA-64 */
+DECL|macro|local_ksoftirqd_task
+mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
 DECL|macro|local_nmi_count
 mdefine_line|#define local_nmi_count()&t;&t;0
 multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption counter. The bitmask has the&n; * following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-31 are the hardirq count (max # of hardirqs: 65536)&n; *&n; * - (bit 63 is the PREEMPT_ACTIVE flag---not currently implemented.)&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * SOFTIRQ_MASK: 0x0000ff00&n; * HARDIRQ_MASK: 0xffff0000&n; */
