@@ -661,6 +661,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We want less throttling in balance_dirty_pages() so that nfs to&n;&t; * localhost doesn&squot;t cause nfsd to lock up due to all the client&squot;s&n;&t; * dirty pages.&n;&t; */
+id|current-&gt;flags
+op_or_assign
+id|PF_LESS_THROTTLE
+suffix:semicolon
 multiline_comment|/*&n;&t; * The main request loop&n;&t; */
 r_for
 c_loop
