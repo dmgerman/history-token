@@ -8457,7 +8457,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 r_if

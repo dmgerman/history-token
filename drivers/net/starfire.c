@@ -9817,7 +9817,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 multiline_comment|/* go to sleep in D3 mode */

@@ -7970,7 +7970,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|1
 )paren
@@ -7980,12 +7980,11 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* D3 cold */
 )brace
 r_else
 (brace
@@ -7994,7 +7993,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -8004,12 +8003,11 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* 4 == D3 cold */
 )brace
 id|pci_save_state
 c_func
@@ -8022,7 +8020,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 r_return
@@ -8081,7 +8079,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state
@@ -8095,7 +8093,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -8105,7 +8103,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|0
 )paren

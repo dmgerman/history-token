@@ -4505,7 +4505,7 @@ c_func
 (paren
 id|sp-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the Tx queue early.. */
@@ -9423,7 +9423,7 @@ c_func
 (paren
 id|sp-&gt;pdev
 comma
-l_int|2
+id|PCI_D2
 )paren
 suffix:semicolon
 r_return
@@ -10056,7 +10056,7 @@ c_func
 (paren
 id|sp-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|t
@@ -10133,7 +10133,7 @@ c_func
 (paren
 id|sp-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|t
