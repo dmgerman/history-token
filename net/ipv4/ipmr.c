@@ -4947,7 +4947,11 @@ suffix:semicolon
 )brace
 id|encap
 op_add_assign
-id|dev-&gt;hard_header_len
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond

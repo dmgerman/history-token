@@ -954,14 +954,11 @@ id|out
 suffix:semicolon
 id|hh_len
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-id|rt-&gt;u.dst.dev-&gt;hard_header_len
-op_amp
-op_complement
-l_int|15
+id|rt-&gt;u.dst.dev
 )paren
-op_plus
-l_int|16
 suffix:semicolon
 id|skb
 op_assign

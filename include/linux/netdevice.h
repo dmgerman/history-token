@@ -70,6 +70,9 @@ macro_line|#else
 DECL|macro|MAX_HEADER
 mdefine_line|#define MAX_HEADER (LL_MAX_HEADER + 48)
 macro_line|#endif
+multiline_comment|/* Reserve 16byte aligned hard_header_len, but at least 16.&n; * Alternative is: dev-&gt;hard_header_len ? (dev-&gt;hard_header_len + 15)&amp;~15 : 0&n; */
+DECL|macro|LL_RESERVED_SPACE
+mdefine_line|#define LL_RESERVED_SPACE(dev) (((dev)-&gt;hard_header_len&amp;~15) + 16)
 multiline_comment|/*&n; *&t;Network device statistics. Akin to the 2.0 ether stats but&n; *&t;with byte counters.&n; */
 DECL|struct|net_device_stats
 r_struct

@@ -2371,23 +2371,16 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Okay, now see if we can stuff it in the buffer as-is.&n;&t; */
 id|max_headroom
 op_assign
+id|LL_RESERVED_SPACE
+c_func
 (paren
-(paren
-(paren
-id|tdev-&gt;hard_header_len
-op_plus
-l_int|15
-)paren
-op_amp
-op_complement
-l_int|15
+id|tdev
 )paren
 op_plus
 r_sizeof
 (paren
 r_struct
 id|iphdr
-)paren
 )paren
 suffix:semicolon
 r_if
