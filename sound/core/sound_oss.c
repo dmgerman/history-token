@@ -424,10 +424,6 @@ id|preg-&gt;device
 op_assign
 id|dev
 suffix:semicolon
-id|preg-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|down
 c_func
 (paren

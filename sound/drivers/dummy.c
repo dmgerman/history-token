@@ -943,8 +943,8 @@ id|dpcm-&gt;pcm_buf_pos
 op_mod_assign
 id|dpcm-&gt;pcm_size
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|dpcm-&gt;pcm_irq_pos
 op_ge
@@ -952,7 +952,7 @@ id|dpcm-&gt;pcm_count
 )paren
 (brace
 id|dpcm-&gt;pcm_irq_pos
-op_sub_assign
+op_mod_assign
 id|dpcm-&gt;pcm_count
 suffix:semicolon
 id|snd_pcm_period_elapsed

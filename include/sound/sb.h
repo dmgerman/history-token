@@ -47,13 +47,15 @@ multiline_comment|/* Diamond Tech. DT-019X / Avance Logic ALS-007 */
 )brace
 suffix:semicolon
 DECL|macro|SB_OPEN_PCM
-mdefine_line|#define SB_OPEN_PCM&t;&t;0x01
+mdefine_line|#define SB_OPEN_PCM&t;&t;&t;0x01
 DECL|macro|SB_OPEN_MIDI_INPUT
-mdefine_line|#define SB_OPEN_MIDI_INPUT&t;0x02
+mdefine_line|#define SB_OPEN_MIDI_INPUT&t;&t;0x02
 DECL|macro|SB_OPEN_MIDI_OUTPUT
-mdefine_line|#define SB_OPEN_MIDI_OUTPUT&t;0x04
-DECL|macro|SB_OPEN_MIDI_TRIGGER
-mdefine_line|#define SB_OPEN_MIDI_TRIGGER&t;0x08
+mdefine_line|#define SB_OPEN_MIDI_OUTPUT&t;&t;0x04
+DECL|macro|SB_OPEN_MIDI_INPUT_TRIGGER
+mdefine_line|#define SB_OPEN_MIDI_INPUT_TRIGGER&t;0x08
+DECL|macro|SB_OPEN_MIDI_OUTPUT_TRIGGER
+mdefine_line|#define SB_OPEN_MIDI_OUTPUT_TRIGGER&t;0x10
 DECL|macro|SB_MODE_HALT
 mdefine_line|#define SB_MODE_HALT&t;&t;0x00
 DECL|macro|SB_MODE_PLAYBACK_8
@@ -384,6 +386,8 @@ DECL|macro|SB_DSP_STEREO_16BIT
 mdefine_line|#define SB_DSP_STEREO_16BIT&t;0xac
 DECL|macro|SB_DSP_MIDI_INPUT_IRQ
 mdefine_line|#define SB_DSP_MIDI_INPUT_IRQ&t;0x31
+DECL|macro|SB_DSP_MIDI_UART_IRQ
+mdefine_line|#define SB_DSP_MIDI_UART_IRQ&t;0x35
 DECL|macro|SB_DSP_MIDI_OUTPUT
 mdefine_line|#define SB_DSP_MIDI_OUTPUT&t;0x38
 DECL|macro|SB_DSP4_OUT8_AI
@@ -746,7 +750,7 @@ id|rpcm
 )paren
 suffix:semicolon
 multiline_comment|/* sb8.c */
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_interrupt
 c_func
 (paren
@@ -792,7 +796,7 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/* midi8.c */
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_midi_interrupt
 c_func
 (paren
