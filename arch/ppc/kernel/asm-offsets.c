@@ -1,12 +1,11 @@
-multiline_comment|/*&n; * Generate definitions needed by assembly language modules.&n; * This code generates raw asm output which is post-processed to extract&n; * and format the required data.&n; */
+multiline_comment|/*&n; * This program is used to generate definitions needed by&n; * assembly language modules.&n; *&n; * We use the technique used in the OSF Mach kernel code:&n; * generate asm statements containing #defines,&n; * compile this file to assembler, and then extract the&n; * #defines from the assembly-language output.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -22,9 +21,8 @@ macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#endif /* CONFIG_PPC_ISERIES */
-multiline_comment|/* Use marker if you need to separate the values later */
 DECL|macro|DEFINE
-mdefine_line|#define DEFINE(sym, val, marker) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt; &quot; #sym &quot; %0 &quot; #val &quot; &quot; #marker : : &quot;i&quot; (val))
+mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
 mdefine_line|#define BLANK() asm volatile(&quot;&bslash;n-&gt;&quot; : : )
 r_int
@@ -47,7 +45,6 @@ id|task_struct
 comma
 id|thread
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -62,7 +59,6 @@ id|task_struct
 comma
 id|thread_info
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -77,7 +73,6 @@ id|task_struct
 comma
 id|mm
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -92,7 +87,6 @@ id|thread_struct
 comma
 id|ksp
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -107,7 +101,6 @@ id|thread_struct
 comma
 id|pgdir
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -122,7 +115,6 @@ id|thread_struct
 comma
 id|last_syscall
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -137,7 +129,6 @@ id|thread_struct
 comma
 id|regs
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -152,7 +143,6 @@ id|thread_struct
 comma
 id|fpexc_mode
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -170,7 +160,6 @@ id|fpr
 l_int|0
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -185,7 +174,6 @@ id|thread_struct
 comma
 id|fpscr
 )paren
-comma
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
@@ -204,7 +192,6 @@ id|vr
 l_int|0
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -219,7 +206,6 @@ id|thread_struct
 comma
 id|vrsave
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -234,11 +220,18 @@ id|thread_struct
 comma
 id|vscr
 )paren
-comma
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 multiline_comment|/* Interrupt register frame */
+id|DEFINE
+c_func
+(paren
+id|STACK_FRAME_OVERHEAD
+comma
+id|STACK_FRAME_OVERHEAD
+)paren
+suffix:semicolon
 id|DEFINE
 c_func
 (paren
@@ -251,7 +244,6 @@ r_sizeof
 r_struct
 id|pt_regs
 )paren
-comma
 )paren
 suffix:semicolon
 multiline_comment|/* in fact we only use gpr0 - gpr9 and gpr20 - gpr23 */
@@ -272,7 +264,6 @@ id|gpr
 l_int|0
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -292,7 +283,6 @@ id|gpr
 l_int|1
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -312,7 +302,6 @@ id|gpr
 l_int|2
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -332,7 +321,6 @@ id|gpr
 l_int|3
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -352,7 +340,6 @@ id|gpr
 l_int|4
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -372,7 +359,6 @@ id|gpr
 l_int|5
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -392,7 +378,6 @@ id|gpr
 l_int|6
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -412,7 +397,6 @@ id|gpr
 l_int|7
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -432,7 +416,6 @@ id|gpr
 l_int|8
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -452,7 +435,6 @@ id|gpr
 l_int|9
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -472,7 +454,6 @@ id|gpr
 l_int|10
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -492,7 +473,6 @@ id|gpr
 l_int|11
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -512,7 +492,6 @@ id|gpr
 l_int|12
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -532,7 +511,6 @@ id|gpr
 l_int|13
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -552,7 +530,6 @@ id|gpr
 l_int|14
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -572,7 +549,6 @@ id|gpr
 l_int|15
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -592,7 +568,6 @@ id|gpr
 l_int|16
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -612,7 +587,6 @@ id|gpr
 l_int|17
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -632,7 +606,6 @@ id|gpr
 l_int|18
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -652,7 +625,6 @@ id|gpr
 l_int|19
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -672,7 +644,6 @@ id|gpr
 l_int|20
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -692,7 +663,6 @@ id|gpr
 l_int|21
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -712,7 +682,6 @@ id|gpr
 l_int|22
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -732,7 +701,6 @@ id|gpr
 l_int|23
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -752,7 +720,6 @@ id|gpr
 l_int|24
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -772,7 +739,6 @@ id|gpr
 l_int|25
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -792,7 +758,6 @@ id|gpr
 l_int|26
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -812,7 +777,6 @@ id|gpr
 l_int|27
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -832,7 +796,6 @@ id|gpr
 l_int|28
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -852,7 +815,6 @@ id|gpr
 l_int|29
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -872,7 +834,6 @@ id|gpr
 l_int|30
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -892,7 +853,6 @@ id|gpr
 l_int|31
 )braket
 )paren
-comma
 )paren
 suffix:semicolon
 multiline_comment|/* Note: these symbols include _ because they overlap with special&n;&t; * register names&n;&t; */
@@ -910,7 +870,6 @@ id|pt_regs
 comma
 id|nip
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -927,7 +886,6 @@ id|pt_regs
 comma
 id|msr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -944,7 +902,6 @@ id|pt_regs
 comma
 id|ctr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -961,7 +918,6 @@ id|pt_regs
 comma
 id|link
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -978,7 +934,6 @@ id|pt_regs
 comma
 id|ccr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -995,7 +950,6 @@ id|pt_regs
 comma
 id|mq
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1012,7 +966,6 @@ id|pt_regs
 comma
 id|xer
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1029,7 +982,6 @@ id|pt_regs
 comma
 id|dar
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1046,10 +998,9 @@ id|pt_regs
 comma
 id|dsisr
 )paren
-comma
 )paren
 suffix:semicolon
-multiline_comment|/* The PowerPC 400-class processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.&n;&t; */
+multiline_comment|/* The PowerPC 400-class processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.  For critical interrupts we use them to&n;&t; * hold SRR0 and SRR1.&n;&t; */
 id|DEFINE
 c_func
 (paren
@@ -1064,7 +1015,6 @@ id|pt_regs
 comma
 id|dar
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1081,7 +1031,6 @@ id|pt_regs
 comma
 id|dsisr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1098,7 +1047,6 @@ id|pt_regs
 comma
 id|orig_gpr3
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1115,7 +1063,6 @@ id|pt_regs
 comma
 id|result
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1132,7 +1079,6 @@ id|pt_regs
 comma
 id|trap
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1141,7 +1087,6 @@ c_func
 id|CLONE_VM
 comma
 id|CLONE_VM
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1156,7 +1101,6 @@ id|mm_struct
 comma
 id|pgd
 )paren
-comma
 )paren
 suffix:semicolon
 multiline_comment|/* About the CPU features table */
@@ -1170,7 +1114,6 @@ r_sizeof
 r_struct
 id|cpu_spec
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1185,7 +1128,6 @@ id|cpu_spec
 comma
 id|pvr_mask
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1200,7 +1142,6 @@ id|cpu_spec
 comma
 id|pvr_value
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1215,7 +1156,6 @@ id|cpu_spec
 comma
 id|cpu_features
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1230,7 +1170,6 @@ id|cpu_spec
 comma
 id|cpu_setup
 )paren
-comma
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -1246,7 +1185,6 @@ id|Paca
 comma
 id|xProcEnabled
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1261,7 +1199,6 @@ id|Paca
 comma
 id|xPacaIndex
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1276,7 +1213,6 @@ id|Paca
 comma
 id|xProcStart
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1291,7 +1227,6 @@ id|Paca
 comma
 id|xKsave
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1306,7 +1241,6 @@ id|Paca
 comma
 id|xSavedMsr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1321,7 +1255,6 @@ id|Paca
 comma
 id|xSavedLr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1336,7 +1269,6 @@ id|Paca
 comma
 id|xContextOverflow
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1351,7 +1283,6 @@ id|Paca
 comma
 id|xR21
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1366,7 +1297,6 @@ id|Paca
 comma
 id|xR22
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1381,7 +1311,6 @@ id|Paca
 comma
 id|lpQueuePtr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1396,7 +1325,6 @@ id|Paca
 comma
 id|xLpPaca
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1409,7 +1337,6 @@ r_sizeof
 r_struct
 id|Paca
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1424,7 +1351,6 @@ id|Paca
 comma
 id|xRegSav
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1439,7 +1365,6 @@ id|Paca
 comma
 id|default_decr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1454,7 +1379,6 @@ id|ItLpPaca
 comma
 id|xRsvd
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1469,7 +1393,6 @@ id|ItLpPaca
 comma
 id|xSavedSrr0
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1484,7 +1407,6 @@ id|ItLpPaca
 comma
 id|xSavedSrr1
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1499,7 +1421,6 @@ id|ItLpPaca
 comma
 id|xDecrInt
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1514,7 +1435,6 @@ id|ItLpPaca
 comma
 id|xIpiCnt
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1529,7 +1449,6 @@ id|ItLpQueue
 comma
 id|xSlicCurEventPtr
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1544,7 +1463,6 @@ id|ItLpQueue
 comma
 id|xPlicOverflowIntPending
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1559,7 +1477,6 @@ id|ItLpQueue
 comma
 id|xInUseWord
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1574,7 +1491,6 @@ id|HvLpEvent
 comma
 id|xFlags
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1589,7 +1505,6 @@ id|mm_struct
 comma
 id|context
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1606,7 +1521,6 @@ id|pt_regs
 comma
 id|mq
 )paren
-comma
 )paren
 suffix:semicolon
 id|DEFINE
@@ -1621,7 +1535,6 @@ id|Paca
 comma
 id|ext_ints
 )paren
-comma
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
@@ -1633,7 +1546,6 @@ comma
 id|TASK_SIZE
 op_rshift
 l_int|28
-comma
 )paren
 suffix:semicolon
 r_return
