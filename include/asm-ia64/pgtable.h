@@ -335,13 +335,8 @@ multiline_comment|/*&n; * Macro to a page protection value as &quot;uncacheable&
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_UC)
 multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;write-combining&quot;.&n; * Note that &quot;protection&quot; is really a misnomer here as the protection&n; * value contains the memory attribute bits, dirty bits, and various&n; * other bits as well.  Accesses through a write-combining translation&n; * works bypasses the caches, but does allow for consecutive writes to&n; * be combined into single (but larger) write transactions.&n; */
-macro_line|#ifdef CONFIG_MCKINLEY_A0_SPECIFIC
 DECL|macro|pgprot_writecombine
-macro_line|# define pgprot_writecombine(prot)&t;prot
-macro_line|#else
-DECL|macro|pgprot_writecombine
-macro_line|# define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
-macro_line|#endif
+mdefine_line|#define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
 r_static
 r_inline
 r_int
