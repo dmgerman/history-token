@@ -298,6 +298,12 @@ op_star
 id|cmdline_p
 )paren
 (brace
+macro_line|#ifdef __LP64__
+r_extern
+r_int
+id|parisc_narrow_firmware
+suffix:semicolon
+macro_line|#endif
 id|init_per_cpu
 c_func
 (paren
@@ -331,10 +337,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef __LP64__
-r_extern
-r_int
-id|parisc_narrow_firmware
-suffix:semicolon
 r_if
 c_cond
 (paren
