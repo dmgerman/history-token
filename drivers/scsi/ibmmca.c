@@ -8459,7 +8459,7 @@ id|IM_IO_PORT
 suffix:semicolon
 r_else
 (brace
-multiline_comment|/* if disabled, no IRQs will be generated, as the chip won&squot;t&n;&t;      * listen to the incomming commands and will do really nothing,&n;&t;      * except for listening to the pos-register settings. If this&n;&t;      * happens, I need to hugely think about it, as one has to&n;&t;      * write something to the MCA-Bus pos register in order to&n;&t;      * enable the chip. Normally, IBM-SCSI won&squot;t pass the POST,&n;&t;      * when the chip is disabled (see IBM tech. ref.). */
+multiline_comment|/* if disabled, no IRQs will be generated, as the chip won&squot;t&n;&t;      * listen to the incoming commands and will do really nothing,&n;&t;      * except for listening to the pos-register settings. If this&n;&t;      * happens, I need to hugely think about it, as one has to&n;&t;      * write something to the MCA-Bus pos register in order to&n;&t;      * enable the chip. Normally, IBM-SCSI won&squot;t pass the POST,&n;&t;      * when the chip is disabled (see IBM tech. ref.). */
 id|port
 op_assign
 id|IM_IO_PORT

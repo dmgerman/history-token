@@ -620,7 +620,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; ** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n; ** but can be disabled and re-enabled through these two function calls.&n; ** Packets will still be put into any posted recieved buffers and packets will&n; ** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n; ** will prevent hardware interrupt to host even though the outbound I2O msg&n; ** queue is not emtpy.&n; */
+multiline_comment|/*&n; ** Disable and Enable I2O interrupts.  I2O interrupts are enabled at Init time&n; ** but can be disabled and re-enabled through these two function calls.&n; ** Packets will still be put into any posted received buffers and packets will&n; ** be sent through RCI2OSendPacket() functions.  Disabling I2O interrupts&n; ** will prevent hardware interrupt to host even though the outbound I2O msg&n; ** queue is not emtpy.&n; */
 id|RC_RETURN
 id|RCEnableI2OInterrupts
 c_func

@@ -406,6 +406,12 @@ op_amp
 id|driver-&gt;serialize
 )paren
 suffix:semicolon
+multiline_comment|/* if driver-&gt;disconnect didn&squot;t release the interface */
+r_if
+c_cond
+(paren
+id|interface-&gt;driver
+)paren
 id|usb_driver_release_interface
 c_func
 (paren
@@ -1163,7 +1169,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_alloc_bus - creates a new USB host controller structure&n; *&t;@op: pointer to a struct usb_operations that this bus structure should use&n; *&n; *&t;Creates a USB host controller bus structure with the specified &n; *&t;usb_operations and initializes all the necessary internal objects.&n; *&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;The caller should call usb_free_bus() when it is finished with the structure.&n; */
+multiline_comment|/**&n; *&t;usb_alloc_bus - creates a new USB host controller structure&n; *&t;@op: pointer to a struct usb_operations that this bus structure should use&n; *&n; *&t;Creates a USB host controller bus structure with the specified &n; *&t;usb_operations and initializes all the necessary internal objects.&n; *&t;(For use only by USB Host Controller Drivers.)&n; *&n; *&t;If no memory is available, NULL is returned.&n; *&n; *&t;The caller should call usb_free_bus() when it is finished with the structure.&n; */
 DECL|function|usb_alloc_bus
 r_struct
 id|usb_bus
@@ -1267,7 +1273,7 @@ r_return
 id|bus
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_free_bus - frees the memory used by a bus structure&n; *&t;@bus: pointer to the bus to free&n; *&n; */
+multiline_comment|/**&n; *&t;usb_free_bus - frees the memory used by a bus structure&n; *&t;@bus: pointer to the bus to free&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
 DECL|function|usb_free_bus
 r_void
 id|usb_free_bus
@@ -1294,7 +1300,7 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;usb_register_bus - registers the USB host controller with the usb core&n; *&t;@bus: pointer to the bus to register&n; *&n; */
+multiline_comment|/**&n; *&t;usb_register_bus - registers the USB host controller with the usb core&n; *&t;@bus: pointer to the bus to register&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
 DECL|function|usb_register_bus
 r_void
 id|usb_register_bus
@@ -1375,6 +1381,7 @@ id|bus-&gt;busnum
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;usb_deregister_bus - deregisters the USB host controller&n; *&t;@bus: pointer to the bus to deregister&n; *&n; *&t;(For use only by USB Host Controller Drivers.)&n; */
 DECL|function|usb_deregister_bus
 r_void
 id|usb_deregister_bus
@@ -1640,7 +1647,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* usb_match_id searches an array of usb_device_id&squot;s and returns&n;   the first one that matches the device and interface.&n;&n;   Parameters:&n;   &t;&quot;id&quot; is an array of usb_device_id&squot;s is terminated by an entry&n;&t; containing all zeroes.&n;&n;&t; &quot;dev&quot; and &quot;interface&quot; are the device and interface for which&n;&t; a match is sought.&n;&n;   If no match is found or if the &quot;id&quot; pointer is NULL, then&n;   usb_match_id returns NULL.&n;&n;&n;   What constitutes a match:&n;&n;   A zero in any element of a usb_device_id entry is a wildcard&n;   (i.e., that field always matches).  For there to be a match,&n;   *every* nonzero element of the usb_device_id must match the&n;   provided device and interface in.  The comparison is for equality,&n;   except for one pair of fields: usb_match_id.bcdDevice_{lo,hi} define&n;   an inclusive range that dev-&gt;descriptor.bcdDevice must be in.&n;&n;   If interface-&gt;altsettings does not exist (i.e., there are no&n;   interfaces defined), then bInterface{Class,SubClass,Protocol}&n;   only match if they are all zeroes.&n;&n;&n;   What constitutes a good &quot;usb_device_id&quot;?&n;&n;   The match algorithm is very simple, so that intelligence in&n;   driver selection must come from smart driver id records.&n;   Unless you have good reasons to use another selection policy,&n;   provide match elements only in related groups:&n;&n;    * device specifiers (vendor and product IDs; and maybe&n;      a revision range for that product);&n;    * generic device specs (class/subclass/protocol);&n;    * interface specs (class/subclass/protocol).&n;    &n;   Within those groups, work from least specific to most specific.&n;   For example, don&squot;t give a product version range without vendor&n;   and product IDs.&n;&n;   &quot;driver_info&quot; is not considered by the kernel matching algorithm,&n;   but you can create a wildcard &quot;matches anything&quot; usb_device_id&n;   as your driver&squot;s &quot;modules.usbmap&quot; entry if you provide only an&n;   id with a nonzero &quot;driver_info&quot; field.&n;*/
+multiline_comment|/**&n; * usb_match_id - find first usb_device_id matching device or interface&n; * @dev: the device whose descriptors are considered when matching&n; * @interface: the interface of interest&n; * @id: array of usb_device_id structures, terminated by zero entry&n; *&n; * usb_match_id searches an array of usb_device_id&squot;s and returns&n; * the first one matching the device or interface, or null.&n; * This is used when binding (or rebinding) a driver to an interface.&n; * Most USB device drivers will use this indirectly, through the usb core,&n; * but some layered driver frameworks use it directly.&n; * These device tables are exported with MODULE_DEVICE_TABLE, through&n; * modutils and &quot;modules.usbmap&quot;, to support the driver loading&n; * functionality of USB hotplugging.&n; *&n; * What Matches:&n; *&n; * The &quot;match_flags&quot; element in a usb_device_id controls which&n; * members are used.  If the corresponding bit is set, the&n; * value in the device_id must match its corresponding member&n; * in the device or interface descriptor, or else the device_id&n; * does not match.&n; *&n; * &quot;driver_info&quot; is normally used only by device drivers,&n; * but you can create a wildcard &quot;matches anything&quot; usb_device_id&n; * as a driver&squot;s &quot;modules.usbmap&quot; entry if you provide an id with&n; * only a nonzero &quot;driver_info&quot; field.  If you do this, the USB device&n; * driver&squot;s probe() routine should use additional intelligence to&n; * decide whether to bind to the specified interface.&n; * &n; * What Makes Good usb_device_id Tables:&n; *&n; * The match algorithm is very simple, so that intelligence in&n; * driver selection must come from smart driver id records.&n; * Unless you have good reasons to use another selection policy,&n; * provide match elements only in related groups, and order match&n; * specifiers from specific to general.  Use the macros provided&n; * for that purpose if you can.&n; *&n; * The most specific match specifiers use device descriptor&n; * data.  These are commonly used with product-specific matches;&n; * the USB_DEVICE macro lets you provide vendor and product IDs,&n; * and you can also matche against ranges of product revisions.&n; * These are widely used for devices with application or vendor&n; * specific bDeviceClass values.&n; *&n; * Matches based on device class/subclass/protocol specifications&n; * are slightly more general; use the USB_DEVICE_INFO macro, or&n; * its siblings.  These are used with single-function devices&n; * where bDeviceClass doesn&squot;t specify that each interface has&n; * its own class. &n; *&n; * Matches based on interface class/subclass/protocol are the&n; * most general; they let drivers bind to any interface on a&n; * multiple-function device.  Use the USB_INTERFACE_INFO&n; * macro, or its siblings, to match class-per-interface style &n; * devices (as recorded in bDeviceClass).&n; *  &n; * Within those groups, remember that not all combinations are&n; * meaningful.  For example, don&squot;t give a product version range&n; * without vendor and product IDs; or specify a protocol without&n; * its associated class and subclass.&n; */
 r_const
 r_struct
 id|usb_device_id
@@ -2638,7 +2645,7 @@ id|dev
 )paren
 (brace
 )brace
-macro_line|#endif&t;/* KMOD */
+macro_line|#endif&t;/* CONFIG_HOTPLUG */
 multiline_comment|/*&n; * This entrypoint gets called for each new device.&n; *&n; * All interfaces are scanned for matching drivers.&n; */
 DECL|function|usb_find_drivers
 r_static
@@ -5823,6 +5830,12 @@ op_amp
 id|driver-&gt;serialize
 )paren
 suffix:semicolon
+multiline_comment|/* if driver-&gt;disconnect didn&squot;t release the interface */
+r_if
+c_cond
+(paren
+id|interface-&gt;driver
+)paren
 id|usb_driver_release_interface
 c_func
 (paren

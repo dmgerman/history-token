@@ -20,11 +20,14 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_RPXCLASSIC
 macro_line|#include &lt;asm/rpxclassic.h&gt;
 macro_line|#endif
-macro_line|#if (defined(CONFIG_TQM860) || defined(CONFIG_TQM860L))
-macro_line|#include &lt;asm/tqm860.h&gt;
+macro_line|#if (defined(CONFIG_TQM860) || defined(CONFIG_TQM8xxL))
+macro_line|#include &lt;asm/tqm8xx.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_TQM8xxL
-macro_line|#include &lt;asm/tqm8xxL.h&gt;
+macro_line|#if defined(CONFIG_SPD823TS)
+macro_line|#include &lt;asm/spd8xx.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_IVMS8)
+macro_line|#include &lt;asm/ivms8.h&gt;
 macro_line|#endif
 multiline_comment|/* I need this to get pt_regs.......&n;*/
 macro_line|#include &lt;asm/ptrace.h&gt;

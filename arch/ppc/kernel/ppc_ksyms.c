@@ -44,6 +44,9 @@ macro_line|#include &lt;asm/smplock.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#ifdef  CONFIG_8xx
+macro_line|#include &quot;../8xx_io/commproc.h&quot;
+macro_line|#endif
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -362,7 +365,7 @@ id|ISA_DMA_THRESHOLD
 )paren
 suffix:semicolon
 DECL|variable|DMA_MODE_READ
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|DMA_MODE_READ
@@ -819,6 +822,27 @@ id|giveup_altivec
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 macro_line|#ifdef CONFIG_SMP
+DECL|variable|global_irq_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_lock
+)paren
+suffix:semicolon
+DECL|variable|global_irq_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_count
+)paren
+suffix:semicolon
+DECL|variable|global_irq_holder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|global_irq_holder
+)paren
+suffix:semicolon
 DECL|variable|__global_cli
 id|EXPORT_SYMBOL
 c_func
@@ -1077,13 +1101,6 @@ id|register_backlight_controller
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
-DECL|variable|sys_ctrler
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|sys_ctrler
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_MACH_SPECIFIC
 DECL|variable|have_of
 id|EXPORT_SYMBOL_NOVERS
@@ -1094,6 +1111,13 @@ id|have_of
 suffix:semicolon
 macro_line|#endif /* CONFIG_MACH_SPECIFIC */
 macro_line|#if defined(CONFIG_ALL_PPC)
+DECL|variable|sys_ctrler
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|sys_ctrler
+)paren
+suffix:semicolon
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func
@@ -1295,6 +1319,7 @@ id|note_scsi_host
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 DECL|variable|kd_mksound
 id|EXPORT_SYMBOL
 c_func
@@ -1302,6 +1327,7 @@ c_func
 id|kd_mksound
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NVRAM
 DECL|variable|nvram_read_byte
 id|EXPORT_SYMBOL
@@ -1672,6 +1698,29 @@ id|debugger_fault_handler
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef  CONFIG_8xx
+DECL|variable|request_8xxirq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_8xxirq
+)paren
+suffix:semicolon
+DECL|variable|cpm_install_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpm_install_handler
+)paren
+suffix:semicolon
+DECL|variable|cpm_free_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpm_free_handler
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_8xx */
 DECL|variable|ret_to_user_hook
 id|EXPORT_SYMBOL
 c_func
@@ -1705,6 +1754,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|mmu_context_overflow
+)paren
+suffix:semicolon
+DECL|variable|disarm_decr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|disarm_decr
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx)

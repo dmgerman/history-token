@@ -1042,12 +1042,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
 r_struct
 id|device_node
 op_star
@@ -1092,14 +1086,6 @@ l_int|0x0802
 )paren
 suffix:semicolon
 multiline_comment|/* sda2 (sda1 is for the kernel) */
-id|printk
-c_func
-(paren
-l_string|&quot;Boot arguments: %s&bslash;n&quot;
-comma
-id|cmd_line
-)paren
-suffix:semicolon
 multiline_comment|/* Lookup PCI host bridges */
 id|chrp_find_bridges
 c_func

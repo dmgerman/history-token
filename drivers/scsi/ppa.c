@@ -1,4 +1,4 @@
-multiline_comment|/* ppa.c   --  low level driver for the IOMEGA PPA3 &n; * parallel port SCSI host adapter.&n; * &n; * (The PPA3 is the embedded controller in the ZIP drive.)&n; * &n; * (c) 1995,1996 Grant R. Guenther, grant@torque.net,&n; * under the terms of the GNU Public License.&n; * &n; * Current Maintainer: David Campbell (Perth, Western Australia, GMT+0800)&n; *                     campbell@torque.net&n; */
+multiline_comment|/* ppa.c   --  low level driver for the IOMEGA PPA3 &n; * parallel port SCSI host adapter.&n; * &n; * (The PPA3 is the embedded controller in the ZIP drive.)&n; * &n; * (c) 1995,1996 Grant R. Guenther, grant@torque.net,&n; * under the terms of the GNU General Public License.&n; * &n; * Current Maintainer: David Campbell (Perth, Western Australia, GMT+0800)&n; *                     campbell@torque.net&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* The following #define is to avoid a clash with hosts.c */
 DECL|macro|PPA_CODE
@@ -63,7 +63,7 @@ r_struct
 id|tq_struct
 id|ppa_tq
 suffix:semicolon
-multiline_comment|/* Polling interupt stuff       */
+multiline_comment|/* Polling interrupt stuff       */
 DECL|member|jstart
 r_int
 r_int

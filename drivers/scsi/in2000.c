@@ -1705,7 +1705,7 @@ id|cmd-&gt;SCp.have_data_in
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* nothing transfered yet */
+multiline_comment|/* nothing transferred yet */
 )brace
 )brace
 r_else

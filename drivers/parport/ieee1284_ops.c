@@ -95,18 +95,6 @@ id|no_irq
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Clear out previous irqs. */
-r_while
-c_loop
-(paren
-op_logical_neg
-id|down_trylock
-(paren
-op_amp
-id|port-&gt;physport-&gt;ieee1284.irq
-)paren
-)paren
-suffix:semicolon
 )brace
 id|port-&gt;physport-&gt;ieee1284.phase
 op_assign
@@ -575,6 +563,15 @@ comma
 id|i
 op_div
 l_int|2
+)paren
+suffix:semicolon
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break

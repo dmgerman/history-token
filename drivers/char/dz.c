@@ -2690,6 +2690,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 (paren
 op_amp
@@ -2702,7 +2705,13 @@ r_sizeof
 id|new_serial
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|old_info
 op_assign
 op_star
@@ -2712,9 +2721,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return

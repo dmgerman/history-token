@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: irq.c,v 1.113 1999/09/17 17:22:56 cort Exp $&n; *&n; *  arch/ppc/kernel/irq.c&n; *&n; *  Derived from arch/i386/kernel/irq.c&n; *    Copyright (C) 1992 Linus Torvalds&n; *  Adapted from arch/i386 by Gary Thomas&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Cort Dougan&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  &n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * The MPC8xx has an interrupt mask in the SIU.  If a bit is set, the&n; * interrupt is _enabled_.  As expected, IRQ0 is bit 0 in the 32-bit&n; * mask register (of which only 16 are defined), hence the weird shifting&n; * and compliment of the cached_irq_mask.  I want to be able to stuff&n; * this right into the SIU SMASK register.&n; * Many of the prep/chrp functions are conditional compiled on CONFIG_8xx&n; * to reduce code space and undefined function references.&n; */
+multiline_comment|/*&n; * $Id: irq.c,v 1.113 1999/09/17 17:22:56 cort Exp $&n; *&n; *  arch/ppc/kernel/irq.c&n; *&n; *  Derived from arch/i386/kernel/irq.c&n; *    Copyright (C) 1992 Linus Torvalds&n; *  Adapted from arch/i386 by Gary Thomas&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *  Updated and modified by Cort Dougan &lt;cort@fsmlabs.com&gt;&n; *    Copyright (C) 1996-2001 Cort Dougan&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  &n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * The MPC8xx has an interrupt mask in the SIU.  If a bit is set, the&n; * interrupt is _enabled_.  As expected, IRQ0 is bit 0 in the 32-bit&n; * mask register (of which only 16 are defined), hence the weird shifting&n; * and compliment of the cached_irq_mask.  I want to be able to stuff&n; * this right into the SIU SMASK register.&n; * Many of the prep/chrp functions are conditional compiled on CONFIG_8xx&n; * to reduce code space and undefined function references.&n; */
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -837,12 +837,17 @@ c_cond
 (paren
 id|retval
 )paren
+(brace
 id|kfree
 c_func
 (paren
 id|action
 )paren
 suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1777,27 +1782,20 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* We can&squot;t call disable_irq here, it would deadlock */
-r_if
-c_cond
-(paren
-op_logical_neg
+op_increment
 id|desc-&gt;depth
-)paren
-id|desc-&gt;depth
-op_assign
-l_int|1
 suffix:semicolon
 id|desc-&gt;status
 op_or_assign
 id|IRQ_DISABLED
 suffix:semicolon
-multiline_comment|/* This is not a real spurrious interrupt, we&n;&t;&t;&t; * have to eoi it, so we jump to out&n;&t;&t;&t; */
 id|mask_irq
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
+multiline_comment|/* This is a real interrupt, we have to eoi it,&n;&t;&t;&t;   so we jump to out */
 r_goto
 id|out
 suffix:semicolon

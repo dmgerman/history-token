@@ -32009,6 +32009,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PCMCIA */
 macro_line|#if defined(CONFIG_ISAPNP)
 DECL|function|ixj_probe_isa
 r_extern
@@ -32692,7 +32693,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ISAPNP */
-macro_line|#endif /* CONFIG_PCMCIA */
 macro_line|#if defined(CONFIG_PCI)
 DECL|function|ixj_probe_pci
 r_int

@@ -641,12 +641,12 @@ multiline_comment|/* Default settings for PCI command configuration register */
 DECL|macro|CMD_DFLT
 mdefine_line|#define CMD_DFLT (PCI_COMMAND_IO|PCI_COMMAND_MEMORY| &bslash;&n;&t;&t;  PCI_COMMAND_MASTER|PCI_COMMAND_WAIT)
 multiline_comment|/* These definitions must match the pcic table! */
+macro_line|#ifdef CONFIG_ISA
 DECL|enum|pcic_id
 r_typedef
 r_enum
 id|pcic_id
 (brace
-macro_line|#ifdef CONFIG_ISA
 DECL|enumerator|IS_I82365A
 DECL|enumerator|IS_I82365B
 DECL|enumerator|IS_I82365DF
@@ -680,11 +680,11 @@ id|IS_PD672X
 comma
 id|IS_VT83C469
 comma
-macro_line|#endif
 DECL|typedef|pcic_id
 )brace
 id|pcic_id
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Flags for classifying groups of controllers */
 DECL|macro|IS_VADEM
 mdefine_line|#define IS_VADEM&t;0x0001

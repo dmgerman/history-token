@@ -52,7 +52,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Base address and interupt of the SONIC controller on JAZZ boards&n; */
+multiline_comment|/*&n; * Base address and interrupt of the SONIC controller on JAZZ boards&n; */
 r_static
 r_struct
 (brace

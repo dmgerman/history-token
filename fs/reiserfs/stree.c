@@ -2628,7 +2628,7 @@ r_return
 id|IO_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/* It is possible that schedule occured. We must check whether the key&n;&t;   to search is still in the tree rooted from the current buffer. If&n;&t;   not then repeat search from the root. */
+multiline_comment|/* It is possible that schedule occurred. We must check whether the key&n;&t;   to search is still in the tree rooted from the current buffer. If&n;&t;   not then repeat search from the root. */
 r_if
 c_cond
 (paren
@@ -5681,7 +5681,7 @@ id|IO_ERROR
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-: reiserfs_delete_solid_item: &quot;
-l_string|&quot;i/o failure occured trying to delete %K&bslash;n&quot;
+l_string|&quot;i/o failure occurred trying to delete %K&bslash;n&quot;
 comma
 op_amp
 id|cpu_key
@@ -7132,7 +7132,7 @@ id|IO_ERROR
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-5657: reiserfs_do_truncate: &quot;
-l_string|&quot;i/o failure occured trying to truncate %K&bslash;n&quot;
+l_string|&quot;i/o failure occurred trying to truncate %K&bslash;n&quot;
 comma
 op_amp
 id|s_item_key

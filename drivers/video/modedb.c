@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/modedb.c -- Standard video mode database management&n; *&n; *&t;Copyright (C) 1999 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/modedb.c -- Standard video mode database management&n; *&n; *&t;Copyright (C) 1999 Geert Uytterhoeven&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
@@ -1618,6 +1618,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;__fb_try_mode - test a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode: frame buffer video mode structure&n; *&t;@bpp: color depth in bits per pixel&n; *&n; *&t;Tries a video mode to test it&squot;s validity for device @info.&n; *&n; *&t;Returns 1 on success.&n; *&n; */
 DECL|function|__fb_try_mode
 r_int
 id|__fb_try_mode
@@ -1764,7 +1765,7 @@ op_logical_neg
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *&n;     *  Find a suitable video mode&n;     *&n;     *  Valid mode specifiers (mode_option):&n;     *&n;     *&t;&lt;xres&gt;x&lt;yres&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&n;     *&t;&lt;name&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&n;     *&n;     *  with &lt;xres&gt;, &lt;yres&gt;, &lt;bpp&gt; and &lt;refresh&gt; decimal numbers and &lt;name&gt; a&n;     *  string&n;     *&n;     *  The passed struct fb_var_screeninfo is _not_ cleared! This allows you&n;     *  to supply values for e.g. the grayscale and accel_flags fields.&n;     */
+multiline_comment|/**&n; *&t;fb_find_mode - finds a valid video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode_option: string video mode to find&n; *&t;@db: video mode database&n; *&t;@dbsize: size of @db&n; *&t;@default_mode: default video mode to fall back to&n; *&t;@default_bpp: default color depth in bits per pixel&n; *&n; *&t;Finds a suitable video mode, starting with the specified mode&n; *&t;in @mode_option with fallback to @default_mode.  If&n; *&t;@default_mode fails, all modes in the video mode database will&n; *&t;be tried.&n; *&n; *&t;Valid mode specifiers for @mode_option:&n; *&n; *&t;&lt;xres&gt;x&lt;yres&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;] or&n; *&t;&lt;name&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&n; *&n; *&t;with &lt;xres&gt;, &lt;yres&gt;, &lt;bpp&gt; and &lt;refresh&gt; decimal numbers and&n; *&t;&lt;name&gt; a string.&n; *&n; *&t;NOTE: The passed struct @var is _not_ cleared!  This allows you&n; *&t;to supply values for e.g. the grayscale and accel_flags fields.&n; *&n; *&t;Returns zero for failure, 1 if using specified @mode_option,&n; *&t;2 if using specified @mode_option with an ignored refresh rate,&n; *&t;3 if default mode is used, 4 if fall back to any valid mode.&n; *&n; */
 DECL|function|fb_find_mode
 r_int
 id|__init

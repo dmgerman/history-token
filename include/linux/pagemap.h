@@ -19,12 +19,35 @@ DECL|macro|PAGE_CACHE_ALIGN
 mdefine_line|#define PAGE_CACHE_ALIGN(addr)&t;(((addr)+PAGE_CACHE_SIZE-1)&amp;PAGE_CACHE_MASK)
 DECL|macro|page_cache_get
 mdefine_line|#define page_cache_get(x)&t;get_page(x)
-DECL|macro|page_cache_alloc
-mdefine_line|#define page_cache_alloc()&t;alloc_pages(GFP_HIGHUSER, 0)
 DECL|macro|page_cache_free
 mdefine_line|#define page_cache_free(x)&t;__free_page(x)
 DECL|macro|page_cache_release
 mdefine_line|#define page_cache_release(x)&t;__free_page(x)
+DECL|function|page_cache_alloc
+r_static
+r_inline
+r_struct
+id|page
+op_star
+id|page_cache_alloc
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|x
+)paren
+(brace
+r_return
+id|alloc_pages
+c_func
+(paren
+id|x-&gt;gfp_mask
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * From a kernel address, get the &quot;struct page *&quot;&n; */
 DECL|macro|page_cache_entry
 mdefine_line|#define page_cache_entry(x)&t;virt_to_page(x)

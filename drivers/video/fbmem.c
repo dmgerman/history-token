@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/fbmem.c&n; *&n; *  Copyright (C) 1994 Martin Schaller&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/fbmem.c&n; *&n; *  Copyright (C) 1994 Martin Schaller&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -626,6 +626,23 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|radeonfb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeonfb_setup
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
 r_static
 r_struct
 (brace
@@ -783,6 +800,16 @@ comma
 id|rivafb_init
 comma
 id|rivafb_setup
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_RADEON
+(brace
+l_string|&quot;radeon&quot;
+comma
+id|radeonfb_init
+comma
+id|radeonfb_setup
 )brace
 comma
 macro_line|#endif
@@ -3376,6 +3403,7 @@ r_static
 id|devfs_handle_t
 id|devfs_handle
 suffix:semicolon
+multiline_comment|/**&n; *&t;register_framebuffer - registers a frame buffer device&n; *&t;@fb_info: frame buffer info structure&n; *&n; *&t;Registers a frame buffer device @fb_info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 r_int
 DECL|function|register_framebuffer
 id|register_framebuffer
@@ -3628,6 +3656,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;unregister_framebuffer - releases a frame buffer device&n; *&t;@fb_info: frame buffer info structure&n; *&n; *&t;Unregisters a frame buffer device @fb_info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 r_int
 DECL|function|unregister_framebuffer
 id|unregister_framebuffer
@@ -3725,6 +3754,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;fbmem_init - init frame buffer subsystem&n; *&n; *&t;Initialize the frame buffer subsystem.&n; *&n; *&t;NOTE: This function is _only_ to be called by drivers/char/mem.c.&n; *&n; */
 r_void
 id|__init
 DECL|function|fbmem_init
@@ -3857,7 +3887,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Command line options&n;     */
+multiline_comment|/**&n; *&t;video_setup - process command line options&n; *&t;@options: string of options&n; *&n; *&t;Process command line options for frame buffer subsystem.&n; *&n; *&t;NOTE: This function is a __setup and __init function.&n; *&n; *&t;Returns zero.&n; *&n; */
 DECL|function|video_setup
 r_int
 id|__init

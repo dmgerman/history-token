@@ -141,27 +141,6 @@ op_star
 op_amp
 id|imp-&gt;im_cpm
 suffix:semicolon
-macro_line|#ifdef notdef
-multiline_comment|/* We can&squot;t do this.  It seems to blow away the microcode&n;&t; * patch that EPPC-Bug loaded for us.  EPPC-Bug uses SCC1 for&n;&t; * Ethernet, SMC1 for the console, and I2C for serial EEPROM.&n;&t; * Our own drivers quickly reset all of these.&n;&t; */
-multiline_comment|/* Perform a reset.&n;&t;*/
-id|commproc-&gt;cp_cpcr
-op_assign
-(paren
-id|CPM_CR_RST
-op_or
-id|CPM_CR_FLG
-)paren
-suffix:semicolon
-multiline_comment|/* Wait for it.&n;&t;*/
-r_while
-c_loop
-(paren
-id|commproc-&gt;cp_cpcr
-op_amp
-id|CPM_CR_FLG
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Set SDMA Bus Request priority 5.&n;&t; * On 860T, this also enables FEC priority 6.  I am not sure&n;&t; * this is what we realy want for some applications, but the&n;&t; * manual recommends it.&n;&t; * Bit 25, FAM can also be set to use FEC aggressive mode (860T).&n;&t;*/
 id|imp-&gt;im_siu_conf.sc_sdcr
 op_assign
@@ -486,6 +465,23 @@ op_star
 id|dev_id
 )paren
 (brace
+multiline_comment|/* If null handler, assume we are trying to free the IRQ.&n;&t;*/
+r_if
+c_cond
+(paren
+op_logical_neg
+id|handler
+)paren
+(brace
+id|cpm_free_handler
+c_func
+(paren
+id|vec
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -680,9 +676,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set a baud rate generator.  This needs lots of work.  There are&n; * four BRGs, any of which can be wired to any channel.&n; * The internal baud rate clock is the system clock divided by 16.&n; * This assumes the baudrate is 16x oversampled by the uart.&n; */
 DECL|macro|BRG_INT_CLK
-mdefine_line|#define BRG_INT_CLK&t;(((bd_t *)__res)-&gt;bi_intfreq * 1000000)
+mdefine_line|#define BRG_INT_CLK&t;&t;(((bd_t *)__res)-&gt;bi_intfreq * 1000000)
 DECL|macro|BRG_UART_CLK
-mdefine_line|#define BRG_UART_CLK&t;(BRG_INT_CLK/16)
+mdefine_line|#define BRG_UART_CLK&t;&t;(BRG_INT_CLK/16)
+DECL|macro|BRG_UART_CLK_DIV16
+mdefine_line|#define BRG_UART_CLK_DIV16&t;(BRG_UART_CLK/16)
 r_void
 DECL|function|m8xx_cpm_setbrg
 id|m8xx_cpm_setbrg
@@ -714,20 +712,62 @@ id|bp
 op_add_assign
 id|brg
 suffix:semicolon
-op_star
-id|bp
-op_assign
+multiline_comment|/* The BRG has a 12-bit counter.  For really slow baud rates (or&n;&t; * really fast processors), we may have to further divide by 16.&n;&t; */
+r_if
+c_cond
+(paren
 (paren
 (paren
 id|BRG_UART_CLK
 op_div
 id|rate
 )paren
+op_minus
+l_int|1
+)paren
+OL
+l_int|4096
+)paren
+op_star
+id|bp
+op_assign
+(paren
+(paren
+(paren
+id|BRG_UART_CLK
+op_div
+id|rate
+)paren
+op_minus
+l_int|1
+)paren
 op_lshift
 l_int|1
 )paren
 op_or
 id|CPM_BRG_EN
+suffix:semicolon
+r_else
+op_star
+id|bp
+op_assign
+(paren
+(paren
+(paren
+id|BRG_UART_CLK_DIV16
+op_div
+id|rate
+)paren
+op_minus
+l_int|1
+)paren
+op_lshift
+l_int|1
+)paren
+op_or
+id|CPM_BRG_EN
+op_or
+id|CPM_BRG_DIV16
 suffix:semicolon
 )brace
 eof

@@ -2991,6 +2991,13 @@ id|AUX_INTS_ON
 )paren
 suffix:semicolon
 multiline_comment|/* Enable controller ints */
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Ensure we follow the kbc access delay rules.. */
 id|send_data
 c_func
 (paren

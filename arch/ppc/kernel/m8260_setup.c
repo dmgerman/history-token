@@ -224,20 +224,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Boot arguments: %s&bslash;n&quot;
-comma
-id|cmd_line
-)paren
-suffix:semicolon
 multiline_comment|/* Reset the Communication Processor Module.&n;&t;*/
 id|m8260_cpm_reset
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * printer.c  Version 0.6&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;randy.dunlap@intel.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; *&t;v0.? - fixed bulk-IN read and poll (David Paschal, paschal@rcsis.com)&n; */
+multiline_comment|/*&n; * printer.c  Version 0.8&n; *&n; * Copyright (c) 1999 Michael Gee&t;&lt;michael@linuxspecific.com&gt;&n; * Copyright (c) 1999 Pavel Machek&t;&lt;pavel@suse.cz&gt;&n; * Copyright (c) 2000 Randy Dunlap&t;&lt;randy.dunlap@intel.com&gt;&n; * Copyright (c) 2000 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *&n; * USB Printer Device Class driver for USB printers and printer cables&n; *&n; * Sponsored by SuSE&n; *&n; * ChangeLog:&n; *&t;v0.1 - thorough cleaning, URBification, almost a rewrite&n; *&t;v0.2 - some more cleanups&n; *&t;v0.3 - cleaner again, waitqueue fixes&n; *&t;v0.4 - fixes in unidirectional mode&n; *&t;v0.5 - add DEVICE_ID string support&n; *&t;v0.6 - never time out&n; *&t;v0.7 - fixed bulk-IN read and poll (David Paschal, paschal@rcsis.com)&n; *&t;v0.8 - add devfs support&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/lp.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/usb.h&gt;
@@ -47,6 +48,11 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* USB device */
+DECL|member|devfs
+id|devfs_handle_t
+id|devfs
+suffix:semicolon
+multiline_comment|/* devfs device */
 DECL|member|readurb
 DECL|member|writeurb
 r_struct
@@ -104,6 +110,11 @@ multiline_comment|/* IEEE 1284 DEVICE ID string (ptr) */
 multiline_comment|/* first 2 bytes are (big-endian) length */
 )brace
 suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|usb_devfs_handle
+suffix:semicolon
+multiline_comment|/* /dev/usb dir. */
 DECL|variable|usblp_table
 r_static
 r_struct
@@ -742,6 +753,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|devfs_unregister
+c_func
+(paren
+id|usblp-&gt;devfs
+)paren
+suffix:semicolon
 id|usblp_table
 (braket
 id|usblp-&gt;minor
@@ -1682,6 +1699,43 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|usblp_fops
+r_static
+r_struct
+id|file_operations
+id|usblp_fops
+op_assign
+(brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|read
+suffix:colon
+id|usblp_read
+comma
+id|write
+suffix:colon
+id|usblp_write
+comma
+id|poll
+suffix:colon
+id|usblp_poll
+comma
+id|ioctl
+suffix:colon
+id|usblp_ioctl
+comma
+id|open
+suffix:colon
+id|usblp_open
+comma
+id|release
+suffix:colon
+id|usblp_release
+comma
+)brace
+suffix:semicolon
 DECL|function|usblp_probe
 r_static
 r_void
@@ -1752,6 +1806,12 @@ suffix:semicolon
 r_char
 op_star
 id|buf
+suffix:semicolon
+r_char
+id|name
+(braket
+l_int|6
+)braket
 suffix:semicolon
 multiline_comment|/* If a bidirectional interface exists, use it. */
 r_for
@@ -2361,6 +2421,65 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;lp%d&quot;
+comma
+id|minor
+)paren
+suffix:semicolon
+multiline_comment|/* Create with perms=664 */
+id|usblp-&gt;devfs
+op_assign
+id|devfs_register
+c_func
+(paren
+id|usb_devfs_handle
+comma
+id|name
+comma
+id|DEVFS_FL_DEFAULT
+comma
+id|USB_MAJOR
+comma
+id|USBLP_MINOR_BASE
+op_plus
+id|minor
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+op_amp
+id|usblp_fops
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usblp-&gt;devfs
+op_eq
+l_int|NULL
+)paren
+id|err
+c_func
+(paren
+l_string|&quot;usblp%d: device node registration failed&quot;
+comma
+id|minor
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren
@@ -2475,6 +2594,12 @@ c_func
 id|usblp-&gt;device_id_string
 )paren
 suffix:semicolon
+id|devfs_unregister
+c_func
+(paren
+id|usblp-&gt;devfs
+)paren
+suffix:semicolon
 id|usblp_table
 (braket
 id|usblp-&gt;minor
@@ -2489,43 +2614,6 @@ id|usblp
 )paren
 suffix:semicolon
 )brace
-DECL|variable|usblp_fops
-r_static
-r_struct
-id|file_operations
-id|usblp_fops
-op_assign
-(brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
-id|read
-suffix:colon
-id|usblp_read
-comma
-id|write
-suffix:colon
-id|usblp_write
-comma
-id|poll
-suffix:colon
-id|usblp_poll
-comma
-id|ioctl
-suffix:colon
-id|usblp_ioctl
-comma
-id|open
-suffix:colon
-id|usblp_open
-comma
-id|release
-suffix:colon
-id|usblp_release
-comma
-)brace
-suffix:semicolon
 DECL|variable|usblp_ids
 r_static
 r_struct

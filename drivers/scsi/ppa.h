@@ -87,7 +87,7 @@ mdefine_line|#define PPA_SPIN_TMO    50000&t;/* ppa_wait loop limiter */
 DECL|macro|PPA_RECON_TMO
 mdefine_line|#define PPA_RECON_TMO   500&t;/* scsi reconnection loop limiter */
 DECL|macro|PPA_DEBUG
-mdefine_line|#define PPA_DEBUG&t;0&t;/* debuging option */
+mdefine_line|#define PPA_DEBUG&t;0&t;/* debugging option */
 DECL|macro|IN_EPP_MODE
 mdefine_line|#define IN_EPP_MODE(x) (x == PPA_EPP_8 || x == PPA_EPP_16 || x == PPA_EPP_32)
 multiline_comment|/* args to ppa_connect */

@@ -241,8 +241,8 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; . This is a separate procedure to handle the receipt of a packet, to&n; . leave the interrupt code looking slightly cleaner&n;*/
-r_inline
 r_static
+r_inline
 r_void
 id|smc_rcv
 c_func
@@ -254,8 +254,8 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; . This handles a TX interrupt, which is only called when an error&n; . relating to a packet is sent.&n;*/
-r_inline
 r_static
+r_inline
 r_void
 id|smc_tx
 c_func
@@ -1302,7 +1302,7 @@ id|CARDNAME
 l_string|&quot;: Memory allocation failed. &bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_kfree_skb_irq
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
@@ -1599,7 +1599,7 @@ id|lp-&gt;saved_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dev_kfree_skb_irq
+id|dev_kfree_skb_any
 (paren
 id|skb
 )paren
@@ -3802,6 +3802,9 @@ suffix:semicolon
 id|lp-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; ! This should work without alignment, but it could be&n;&t;&t; ! in the worse case&n;&t;&t;*/
 id|skb_reserve
@@ -4047,6 +4050,8 @@ id|lp-&gt;stats.rx_crc_errors
 op_increment
 suffix:semicolon
 )brace
+id|done
+suffix:colon
 multiline_comment|/*  error or good, tell the card to get rid of this packet */
 id|outw
 c_func

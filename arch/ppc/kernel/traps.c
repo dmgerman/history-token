@@ -883,6 +883,7 @@ id|regs-&gt;nip
 )paren
 )paren
 r_return
+op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/* Emulate the mfspr rD, PVR.&n;&t; */
@@ -1077,6 +1078,7 @@ c_cond
 (paren
 id|errcode
 op_eq
+op_minus
 id|EFAULT
 )paren
 id|_exception

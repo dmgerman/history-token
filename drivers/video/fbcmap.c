@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/fbcmap.c -- Colormap handling for frame buffer devices&n; *&n; *&t;Created 15 Jun 1997 by Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/fbcmap.c -- Colormap handling for frame buffer devices&n; *&n; *&t;Created 15 Jun 1997 by Geert Uytterhoeven&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -373,7 +373,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n;     *  Allocate a colormap&n;     */
+multiline_comment|/**&n; *&t;fb_alloc_cmap - allocate a colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@len: length of @cmap&n; *&t;@transp: boolean, 1 if there is transparency, 0 otherwise&n; *&n; *&t;Allocates memory for a colormap @cmap.  @len is the&n; *&t;number of entries in the palette.&n; *&n; *&t;Returns -1 errno on error, or zero on success.&n; *&n; */
 DECL|function|fb_alloc_cmap
 r_int
 id|fb_alloc_cmap
@@ -595,7 +595,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Copy a colormap&n;     */
+multiline_comment|/**&n; *&t;fb_copy_cmap - copy a colormap&n; *&t;@from: frame buffer colormap structure&n; *&t;@to: frame buffer colormap structure&n; *&t;@fsfromto: determine copy method&n; *&n; *&t;Copy contents of colormap from @from to @to.&n; *&n; *&t;@fsfromto accepts the following integer parameters:&n; *&t;0: memcpy function&n; *&t;1: copy_from_user() function to copy from userspace&n; *&t;2: copy_to_user() function to copy to userspace&n; *&n; */
 DECL|function|fb_copy_cmap
 r_void
 id|fb_copy_cmap
@@ -896,7 +896,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     *  Get the colormap for a screen&n;     */
+multiline_comment|/**&n; *&t;fb_get_cmap - get a colormap&n; *&t;@cmap: frame buffer colormap&n; *&t;@kspc: boolean, 0 copy local, 1 put_user() function&n; *&t;@getcolreg: pointer to a function to get a color register&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Get a colormap @cmap for a screen of device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|fb_get_cmap
 r_int
 id|fb_get_cmap
@@ -1135,7 +1135,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Set the colormap for a screen&n;     */
+multiline_comment|/**&n; *&t;fb_set_cmap - set the colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@kspc: boolean, 0 copy local, 1 get_user() function&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Sets the colormap @cmap for a screen of device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|fb_set_cmap
 r_int
 id|fb_set_cmap
@@ -1371,7 +1371,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Get the default colormap for a specific screen depth&n;     */
+multiline_comment|/**&n; *&t;fb_default_cmap - get default colormap&n; *&t;@len: size of palette for a depth&n; *&n; *&t;Gets the default colormap for a specific screen depth.  @len&n; *&t;is the size of the palette for a particular screen depth.&n; *&n; *&t;Returns pointer to a frame buffer colormap structure.&n; *&n; */
 DECL|function|fb_default_cmap
 r_struct
 id|fb_cmap
@@ -1421,7 +1421,7 @@ op_amp
 id|default_16_colors
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Invert all default colormaps&n;     */
+multiline_comment|/**&n; *&t;fb_invert_cmaps - invert all defaults colormaps&n; *&n; *&t;Invert all default colormaps.&n; *&n; */
 DECL|function|fb_invert_cmaps
 r_void
 id|fb_invert_cmaps

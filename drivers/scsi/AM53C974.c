@@ -2118,6 +2118,24 @@ id|AM53C974_hostdata
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;AM53C974: Unable to register host, aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|hostdata
 op_assign
 (paren

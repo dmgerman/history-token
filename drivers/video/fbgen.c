@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/fbgen.c -- Generic routines for frame buffer devices&n; *&n; *  Created 3 Jan 1998 by Geert Uytterhoeven&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/fbgen.c -- Generic routines for frame buffer devices&n; *&n; *  Created 3 Jan 1998 by Geert Uytterhoeven&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -15,7 +15,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* ---- `Generic&squot; versions of the frame buffer device operations ----------- */
-multiline_comment|/*&n;     *  Get the Fixed Part of the Display&n;     */
+multiline_comment|/**&n; *&t;fbgen_get_fix - get fixed part of display&n; *&t;@fix: fb_fix_screeninfo structure&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Get the fixed information part of the display and place it&n; *&t;into @fix for virtual console @con on device @info.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; *&n; */
 DECL|function|fbgen_get_fix
 r_int
 id|fbgen_get_fix
@@ -143,7 +143,7 @@ id|info2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Get the User Defined Part of the Display&n;     */
+multiline_comment|/**&n; *&t;fbgen_get_var - get user defined part of display&n; *&t;@var: fb_var_screeninfo structure&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Get the user defined part of the display and place it into @var&n; *&t;for virtual console @con on device @info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_get_var
 r_int
 id|fbgen_get_var
@@ -237,7 +237,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Set the User Defined Part of the Display&n;     */
+multiline_comment|/**&n; *&t;fbgen_set_var - set the user defined part of display&n; *&t;@var: fb_var_screeninfo user defined part of the display&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Set the user defined part of the display as dictated by @var&n; *&t;for virtual console @con on device @info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_set_var
 r_int
 id|fbgen_set_var
@@ -476,7 +476,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Get the Colormap&n;     */
+multiline_comment|/**&n; *&t;fbgen_get_cmap - get the colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@kspc: boolean, 0 copy local, 1 put_user() function&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Gets the colormap for virtual console @con and places it into&n; *&t;@cmap for device @info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_get_cmap
 r_int
 id|fbgen_get_cmap
@@ -615,7 +615,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Set the Colormap&n;     */
+multiline_comment|/**&n; *&t;fbgen_set_cmap - set the colormap&n; *&t;@cmap: frame buffer colormap structure&n; *&t;@kspc: boolean, 0 copy local, 1 get_user() function&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Sets the colormap @cmap for virtual console @con on&n; *&t;device @info.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_set_cmap
 r_int
 id|fbgen_set_cmap
@@ -764,7 +764,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Pan or Wrap the Display&n;     *&n;     *  This call looks only at xoffset, yoffset and the FB_VMODE_YWRAP flag&n;     */
+multiline_comment|/**&n; *&t;fbgen_pan_display - pan or wrap the display&n; *&t;@var: frame buffer user defined part of display&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Pan or wrap virtual console @con for device @info.&n; *&n; *&t;This call looks only at xoffset, yoffset and the&n; *&t;FB_VMODE_YWRAP flag in @var.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_pan_display
 r_int
 id|fbgen_pan_display
@@ -932,7 +932,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ---- Helper functions --------------------------------------------------- */
-multiline_comment|/*&n;     *  Change the video mode&n;     */
+multiline_comment|/**&n; *&t;fbgen_do_set_var - change the video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@isactive: boolean, 0 inactive, 1 active&n; *&t;@info: generic frame buffer info structure&n; *&n; *&t;Change the video mode settings for device @info.  If @isactive&n; *&t;is non-zero, the changes will be activated immediately.&n; *&n; *&t;Return negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_do_set_var
 r_int
 id|fbgen_do_set_var
@@ -1044,6 +1044,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;fbgen_set_disp - set generic display&n; *&t;@con: virtual console number&n; *&t;@info: generic frame buffer info structure&n; *&n; *&t;Sets a display on virtual console @con for device @info.&n; *&n; */
 DECL|function|fbgen_set_disp
 r_void
 id|fbgen_set_disp
@@ -1252,7 +1253,7 @@ id|FB_VISUAL_MONO01
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n;     *  Install the current colormap&n;     */
+multiline_comment|/**&n; *&t;fbgen_install_cmap - install the current colormap&n; *&t;@con: virtual console number&n; *&t;@info: generic frame buffer info structure&n; *&n; *&t;Installs the current colormap for virtual console @con on&n; *&t;device @info.&n; *&n; */
 DECL|function|fbgen_install_cmap
 r_void
 id|fbgen_install_cmap
@@ -1350,7 +1351,7 @@ id|info-&gt;info
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;     *  Update the `var&squot; structure (called by fbcon.c)&n;     */
+multiline_comment|/**&n; *&t;fbgen_update_var - update user defined part of display&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Updates the user defined part of the display (&squot;var&squot;&n; *&t;structure) on virtual console @con for device @info.&n; *&t;This function is called by fbcon.c.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|fbgen_update_var
 r_int
 id|fbgen_update_var
@@ -1424,7 +1425,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Switch to a different virtual console&n;     */
+multiline_comment|/**&n; *&t;fbgen_switch - switch to a different virtual console.&n; *&t;@con: virtual console number&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Switch to virtuall console @con on device @info.&n; *&n; *&t;Returns zero.&n; *&n; */
 DECL|function|fbgen_switch
 r_int
 id|fbgen_switch
@@ -1521,7 +1522,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Blank the screen&n;     */
+multiline_comment|/**&n; *&t;fbgen_blank - blank the screen&n; *&t;@blank: boolean, 0 unblank, 1 blank&n; *&t;@info: frame buffer info structure&n; *&n; *&t;Blank the screen on device @info.&n; *&n; */
 DECL|function|fbgen_blank
 r_void
 id|fbgen_blank

@@ -731,10 +731,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|j
+id|adapter
 )paren
 (brace
-multiline_comment|/* &squot;j&squot; = card-# in const array above [hs] */
+multiline_comment|/* card-# in const array above [hs] */
 r_case
 id|_61c8_SMC_Ethercard_PLUS_Elite_A_BNC_AUI_WD8013EP_A
 suffix:colon
@@ -1380,7 +1380,7 @@ l_int|8
 suffix:semicolon
 macro_line|#ifdef notdef
 multiline_comment|/* Officially this is what we are doing, but the readl() is faster */
-id|memcpy_fromio
+id|isa_memcpy_fromio
 c_func
 (paren
 id|hdr
@@ -1407,7 +1407,7 @@ id|hdr
 l_int|0
 )braket
 op_assign
-id|readl
+id|isa_readl
 c_func
 (paren
 id|hdr_start
@@ -1471,7 +1471,7 @@ id|dev-&gt;rmem_end
 op_minus
 id|xfer_start
 suffix:semicolon
-id|memcpy_fromio
+id|isa_memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -1485,7 +1485,7 @@ id|count
 op_sub_assign
 id|semi_count
 suffix:semicolon
-id|memcpy_fromio
+id|isa_memcpy_fromio
 c_func
 (paren
 id|skb-&gt;data
@@ -1501,7 +1501,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Packet is in one chunk -- we can copy + cksum. */
-id|eth_io_copy_and_sum
+id|isa_eth_io_copy_and_sum
 c_func
 (paren
 id|skb
@@ -1555,7 +1555,7 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
-id|memcpy_toio
+id|isa_memcpy_toio
 c_func
 (paren
 id|shmem

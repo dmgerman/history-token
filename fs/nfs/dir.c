@@ -1343,9 +1343,10 @@ suffix:semicolon
 )brace
 id|page
 op_assign
-id|page_cache_alloc
+id|alloc_page
 c_func
 (paren
+id|GFP_HIGHUSER
 )paren
 suffix:semicolon
 r_if

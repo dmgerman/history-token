@@ -2943,7 +2943,7 @@ id|KERN_INFO
 comma
 id|aic-&gt;id
 comma
-l_string|&quot;bus reset occured&quot;
+l_string|&quot;bus reset occurred&quot;
 )paren
 suffix:semicolon
 r_if

@@ -34,13 +34,13 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;aic7xxx.h&quot;
-macro_line|#include &quot;aic7xxx/sequencer.h&quot;
-macro_line|#include &quot;aic7xxx/scsi_message.h&quot;
-macro_line|#include &quot;aic7xxx_reg.h&quot;
+macro_line|#include &quot;aic7xxx_old/aic7xxx.h&quot;
+macro_line|#include &quot;aic7xxx_old/sequencer.h&quot;
+macro_line|#include &quot;aic7xxx_old/scsi_message.h&quot;
+macro_line|#include &quot;aic7xxx_old/aic7xxx_reg.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
+macro_line|#include &lt;linux/malloc.h&gt;        /* for kmalloc() */
 macro_line|#include &lt;linux/config.h&gt;        /* for CONFIG_PCI */
 multiline_comment|/*&n; * To generate the correct addresses for the controller to issue&n; * on the bus.  Originally added for DEC Alpha support.&n; */
 DECL|macro|VIRT_TO_BUS
@@ -93,15 +93,15 @@ DECL|macro|DRIVER_UNLOCK
 macro_line|#    define DRIVER_UNLOCK
 macro_line|#  endif
 multiline_comment|/*&n; * You can try raising me if tagged queueing is enabled, or lowering&n; * me if you only have 4 SCBs.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_CMDS_PER_DEVICE
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_CMDS_PER_DEVICE
 DECL|macro|AIC7XXX_CMDS_PER_DEVICE
-mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE CONFIG_AIC7XXX_CMDS_PER_DEVICE
+mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE CONFIG_AIC7XXX_OLD_CMDS_PER_DEVICE
 macro_line|#else
 DECL|macro|AIC7XXX_CMDS_PER_DEVICE
 mdefine_line|#define AIC7XXX_CMDS_PER_DEVICE 8
 macro_line|#endif
 multiline_comment|/*&n; * Control collection of SCSI transfer statistics for the /proc filesystem.&n; *&n; * NOTE: Do NOT enable this when running on kernels version 1.2.x and below.&n; * NOTE: This does affect performance since it has to maintain statistics.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_PROC_STATS
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_PROC_STATS
 DECL|macro|AIC7XXX_PROC_STATS
 mdefine_line|#define AIC7XXX_PROC_STATS
 macro_line|#endif
@@ -123,7 +123,7 @@ DECL|typedef|adapter_tag_info_t
 id|adapter_tag_info_t
 suffix:semicolon
 multiline_comment|/*&n; * Make a define that will tell the driver not to use tagged queueing&n; * by default.&n; */
-macro_line|#ifdef CONFIG_AIC7XXX_TCQ_ON_BY_DEFAULT
+macro_line|#ifdef CONFIG_AIC7XXX_OLD_TCQ_ON_BY_DEFAULT
 DECL|macro|DEFAULT_TAG_COMMANDS
 mdefine_line|#define DEFAULT_TAG_COMMANDS {0, 0, 0, 0, 0, 0, 0, 0,&bslash;&n;                              0, 0, 0, 0, 0, 0, 0, 0}
 macro_line|#else
@@ -1569,7 +1569,7 @@ multiline_comment|/*&n;   *  This is the first 64 bytes in the host struct&n;   
 multiline_comment|/*&n;   * We are grouping things here....first, items that get either read or&n;   * written with nearly every interrupt&n;   */
 DECL|member|flags
 r_volatile
-id|ahc_flag_type
+r_int
 id|flags
 suffix:semicolon
 DECL|member|features
@@ -3822,7 +3822,7 @@ id|SEQCTL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We include the aic7xxx_seq.c file here so that the other defines have&n; * already been made, and so that it comes before the code that actually&n; * downloads the instructions (since we don&squot;t typically use function&n; * prototype, our code has to be ordered that way, it&squot;s a left-over from&n; * the original driver days.....I should fix it some time DL).&n; */
-macro_line|#include &quot;aic7xxx_seq.c&quot;
+macro_line|#include &quot;aic7xxx_old/aic7xxx_seq.c&quot;
 multiline_comment|/*+F*************************************************************************&n; * Function:&n; *   aic7xxx_check_patch&n; *&n; * Description:&n; *   See if the next patch to download should be downloaded.&n; *-F*************************************************************************/
 r_static
 r_int
@@ -43836,7 +43836,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;p-&gt;flags=0x%x, p-&gt;chip=0x%x, p-&gt;features=0x%x, &quot;
+l_string|&quot;p-&gt;flags=0x%lx, p-&gt;chip=0x%x, p-&gt;features=0x%x, &quot;
 l_string|&quot;sequencer %s paused&bslash;n&quot;
 comma
 id|p-&gt;flags
@@ -47811,7 +47811,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#include &quot;aic7xxx_proc.c&quot;
+macro_line|#include &quot;aic7xxx_old/aic7xxx_proc.c&quot;
 multiline_comment|/* Eventually this will go into an include file, but this will be later */
 DECL|variable|driver_template
 r_static

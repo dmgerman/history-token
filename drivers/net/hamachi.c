@@ -777,6 +777,8 @@ comma
 suffix:semicolon
 DECL|macro|PRIV_ALIGN
 mdefine_line|#define PRIV_ALIGN   15    &t;&t;&t;&t;/* Required alignment mask */
+DECL|macro|MII_CNT
+mdefine_line|#define MII_CNT&t;&t;4
 DECL|struct|hamachi_private
 r_struct
 id|hamachi_private
@@ -922,10 +924,10 @@ r_int
 r_char
 id|phys
 (braket
-l_int|2
+id|MII_CNT
 )braket
 suffix:semicolon
-multiline_comment|/* MII device addresses. */
+multiline_comment|/* MII device addresses, only first one used. */
 DECL|member|rx_int_var
 DECL|member|tx_int_var
 id|u_int32_t
@@ -1369,8 +1371,6 @@ id|ent-&gt;driver_data
 suffix:semicolon
 r_int
 id|irq
-op_assign
-id|pdev-&gt;irq
 suffix:semicolon
 r_int
 id|ioaddr
@@ -1404,6 +1404,19 @@ c_func
 id|version
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
 id|ioaddr
 op_assign
 id|pci_resource_start
@@ -1430,24 +1443,15 @@ l_int|32
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-r_return
-op_minus
-id|EIO
-suffix:semicolon
 id|pci_set_master
 c_func
 (paren
 id|pdev
 )paren
+suffix:semicolon
+id|irq
+op_assign
+id|pdev-&gt;irq
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -2247,7 +2251,7 @@ l_int|32
 op_logical_and
 id|phy_idx
 OL
-l_int|4
+id|MII_CNT
 suffix:semicolon
 id|phy
 op_increment

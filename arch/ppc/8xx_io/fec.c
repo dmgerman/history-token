@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Right now, I am very watseful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; */
+multiline_comment|/*&n; * Fast Ethernet Controller (FEC) driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is specific to the FADS implementation,&n; * since the board contains control registers external to the processor&n; * for the control of the LevelOne LXT970 transceiver.  The MPC860T manual&n; * describes connections using the internal parallel port I/O, which&n; * is basically all of Port D.&n; *&n; * Includes support for the following PHYs: QS6612, LXT970, LXT971/2.&n; *&n; * Right now, I am very wasteful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; * Much better multiple PHY support by Magnus Damm.&n; * Copyright (c) 2000 Ericsson Radio Systems AB.&n; *&n; * Make use of MII for PHY control configurable.&n; * Some fixes.&n; * Copyright (c) 2000 Wolfgang Denk, DENX Software Engineering.&n; */
 multiline_comment|/* List of PHYs we wish to support.&n;*/
 DECL|macro|CONFIG_FEC_LXT970
-mdefine_line|#define CONFIG_FEC_LXT970
+macro_line|#undef&t;CONFIG_FEC_LXT970
 DECL|macro|CONFIG_FEC_LXT971
-mdefine_line|#define CONFIG_FEC_LXT971
+mdefine_line|#define&t;CONFIG_FEC_LXT971
 DECL|macro|CONFIG_FEC_QS6612
-mdefine_line|#define CONFIG_FEC_QS6612
+macro_line|#undef&t;CONFIG_FEC_QS6612
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,6 +32,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;commproc.h&quot;
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Forward declarations of some structures to support different PHYs&n;*/
 r_typedef
 r_struct
@@ -100,21 +101,9 @@ DECL|typedef|phy_info_t
 )brace
 id|phy_info_t
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 multiline_comment|/* The number of Tx and Rx buffers.  These are allocated from the page&n; * pool.  The code may assume these are power of two, so it is best&n; * to keep them that size.&n; * We don&squot;t need to allocate pages for the transmitter.  We just use&n; * the skbuffer directly.&n; */
-macro_line|#if 1
-DECL|macro|FEC_ENET_RX_PAGES
-mdefine_line|#define FEC_ENET_RX_PAGES&t;4
-DECL|macro|FEC_ENET_RX_FRSIZE
-mdefine_line|#define FEC_ENET_RX_FRSIZE&t;2048
-DECL|macro|FEC_ENET_RX_FRPPG
-mdefine_line|#define FEC_ENET_RX_FRPPG&t;(PAGE_SIZE / FEC_ENET_RX_FRSIZE)
-DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;&t;(FEC_ENET_RX_FRPPG * FEC_ENET_RX_PAGES)
-DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;&t;8&t;/* Must be power of two */
-DECL|macro|TX_RING_MOD_MASK
-mdefine_line|#define TX_RING_MOD_MASK&t;7&t;/*   for this to work */
-macro_line|#else
+macro_line|#ifdef CONFIG_ENET_BIG_BUFFERS
 DECL|macro|FEC_ENET_RX_PAGES
 mdefine_line|#define FEC_ENET_RX_PAGES&t;16
 DECL|macro|FEC_ENET_RX_FRSIZE
@@ -127,6 +116,19 @@ DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;&t;16&t;/* Must be power of two */
 DECL|macro|TX_RING_MOD_MASK
 mdefine_line|#define TX_RING_MOD_MASK&t;15&t;/*   for this to work */
+macro_line|#else
+DECL|macro|FEC_ENET_RX_PAGES
+mdefine_line|#define FEC_ENET_RX_PAGES&t;4
+DECL|macro|FEC_ENET_RX_FRSIZE
+mdefine_line|#define FEC_ENET_RX_FRSIZE&t;2048
+DECL|macro|FEC_ENET_RX_FRPPG
+mdefine_line|#define FEC_ENET_RX_FRPPG&t;(PAGE_SIZE / FEC_ENET_RX_FRSIZE)
+DECL|macro|RX_RING_SIZE
+mdefine_line|#define RX_RING_SIZE&t;&t;(FEC_ENET_RX_FRPPG * FEC_ENET_RX_PAGES)
+DECL|macro|TX_RING_SIZE
+mdefine_line|#define TX_RING_SIZE&t;&t;8&t;/* Must be power of two */
+DECL|macro|TX_RING_MOD_MASK
+mdefine_line|#define TX_RING_MOD_MASK&t;7&t;/*   for this to work */
 macro_line|#endif
 multiline_comment|/* Interrupt events/masks.&n;*/
 DECL|macro|FEC_ENET_HBERR
@@ -149,6 +151,32 @@ DECL|macro|FEC_ENET_MII
 mdefine_line|#define FEC_ENET_MII&t;((uint)0x00800000)&t;/* MII interrupt */
 DECL|macro|FEC_ENET_EBERR
 mdefine_line|#define FEC_ENET_EBERR&t;((uint)0x00400000)&t;/* SDMA bus error */
+multiline_comment|/*&n;*/
+DECL|macro|FEC_ECNTRL_PINMUX
+mdefine_line|#define FEC_ECNTRL_PINMUX&t;0x00000004
+DECL|macro|FEC_ECNTRL_ETHER_EN
+mdefine_line|#define FEC_ECNTRL_ETHER_EN&t;0x00000002
+DECL|macro|FEC_ECNTRL_RESET
+mdefine_line|#define FEC_ECNTRL_RESET&t;0x00000001
+DECL|macro|FEC_RCNTRL_BC_REJ
+mdefine_line|#define FEC_RCNTRL_BC_REJ&t;0x00000010
+DECL|macro|FEC_RCNTRL_PROM
+mdefine_line|#define FEC_RCNTRL_PROM&t;&t;0x00000008
+DECL|macro|FEC_RCNTRL_MII_MODE
+mdefine_line|#define FEC_RCNTRL_MII_MODE&t;0x00000004
+DECL|macro|FEC_RCNTRL_DRT
+mdefine_line|#define FEC_RCNTRL_DRT&t;&t;0x00000002
+DECL|macro|FEC_RCNTRL_LOOP
+mdefine_line|#define FEC_RCNTRL_LOOP&t;&t;0x00000001
+DECL|macro|FEC_TCNTRL_FDEN
+mdefine_line|#define FEC_TCNTRL_FDEN&t;&t;0x00000004
+DECL|macro|FEC_TCNTRL_HBC
+mdefine_line|#define FEC_TCNTRL_HBC&t;&t;0x00000002
+DECL|macro|FEC_TCNTRL_GTS
+mdefine_line|#define FEC_TCNTRL_GTS&t;&t;0x00000001
+multiline_comment|/* Delay to wait for FEC reset command to complete (in us)&n;*/
+DECL|macro|FEC_RESET_DELAY
+mdefine_line|#define FEC_RESET_DELAY&t;&t;50
 multiline_comment|/* The FEC stores dest/src/type, data, and checksum for receive packets.&n; */
 DECL|macro|PKT_MAXBUF_SIZE
 mdefine_line|#define PKT_MAXBUF_SIZE&t;&t;1518
@@ -225,6 +253,7 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 DECL|member|phy_id
 id|uint
 id|phy_id
@@ -259,6 +288,7 @@ DECL|member|phy_addr
 id|uint
 id|phy_addr
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 DECL|member|link
 r_int
 id|link
@@ -332,6 +362,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 r_static
 r_void
 id|fec_enet_mii
@@ -343,6 +374,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 r_static
 r_void
 id|fec_enet_interrupt
@@ -482,6 +514,7 @@ id|my_enet_addr
 l_int|3
 )braket
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* MII processing.  We keep this as simple as possible.  Requests are&n; * placed on the list (if there is room).  When the request is finished&n; * by the MII, an optional function may be called.&n; */
 DECL|struct|mii_list
 r_typedef
@@ -576,9 +609,11 @@ DECL|macro|mk_mii_write
 mdefine_line|#define mk_mii_write(REG, VAL)&t;(0x50020000 | ((REG &amp; 0x1f) &lt;&lt; 18) | &bslash;&n;&t;&t;&t;&t;&t;&t;(VAL &amp; 0xffff))
 DECL|macro|mk_mii_end
 mdefine_line|#define mk_mii_end&t;0
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 multiline_comment|/* Transmitter timeout.&n;*/
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT (2*HZ)
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Register definitions for the PHY.&n;*/
 DECL|macro|MII_REG_CR
 mdefine_line|#define MII_REG_CR          0  /* Control Register                         */
@@ -589,7 +624,7 @@ mdefine_line|#define MII_REG_PHYIR1      2  /* PHY Identification Register 1    
 DECL|macro|MII_REG_PHYIR2
 mdefine_line|#define MII_REG_PHYIR2      3  /* PHY Identification Register 2            */
 DECL|macro|MII_REG_ANAR
-mdefine_line|#define MII_REG_ANAR        4  /* A-N Advertisement Register               */ 
+mdefine_line|#define MII_REG_ANAR        4  /* A-N Advertisement Register               */
 DECL|macro|MII_REG_ANLPAR
 mdefine_line|#define MII_REG_ANLPAR      5  /* A-N Link Partner Ability Register        */
 DECL|macro|MII_REG_ANER
@@ -608,11 +643,11 @@ mdefine_line|#define PHY_CONF_SPMASK&t;0x00f0  /* mask for speed */
 DECL|macro|PHY_CONF_10HDX
 mdefine_line|#define PHY_CONF_10HDX&t;0x0010  /* 10 Mbit half duplex supported */
 DECL|macro|PHY_CONF_10FDX
-mdefine_line|#define PHY_CONF_10FDX&t;0x0020  /* 10 Mbit full duplex supported */ 
+mdefine_line|#define PHY_CONF_10FDX&t;0x0020  /* 10 Mbit full duplex supported */
 DECL|macro|PHY_CONF_100HDX
 mdefine_line|#define PHY_CONF_100HDX&t;0x0040  /* 100 Mbit half duplex supported */
 DECL|macro|PHY_CONF_100FDX
-mdefine_line|#define PHY_CONF_100FDX&t;0x0080  /* 100 Mbit full duplex supported */ 
+mdefine_line|#define PHY_CONF_100FDX&t;0x0080  /* 100 Mbit full duplex supported */
 DECL|macro|PHY_STAT_LINK
 mdefine_line|#define PHY_STAT_LINK&t;0x0100  /* 1 up - 0 down */
 DECL|macro|PHY_STAT_FAULT
@@ -624,11 +659,12 @@ mdefine_line|#define PHY_STAT_SPMASK&t;0xf000  /* mask for speed */
 DECL|macro|PHY_STAT_10HDX
 mdefine_line|#define PHY_STAT_10HDX&t;0x1000  /* 10 Mbit half duplex selected&t;*/
 DECL|macro|PHY_STAT_10FDX
-mdefine_line|#define PHY_STAT_10FDX&t;0x2000  /* 10 Mbit full duplex selected&t;*/ 
+mdefine_line|#define PHY_STAT_10FDX&t;0x2000  /* 10 Mbit full duplex selected&t;*/
 DECL|macro|PHY_STAT_100HDX
 mdefine_line|#define PHY_STAT_100HDX&t;0x4000  /* 100 Mbit half duplex selected */
 DECL|macro|PHY_STAT_100FDX
-mdefine_line|#define PHY_STAT_100FDX&t;0x8000  /* 100 Mbit full duplex selected */ 
+mdefine_line|#define PHY_STAT_100FDX&t;0x8000  /* 100 Mbit full duplex selected */
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 macro_line|#ifdef CONFIG_FEC_PACKETHOOK
 r_int
 DECL|function|fec_register_ph
@@ -1423,12 +1459,27 @@ op_amp
 id|FEC_ENET_MII
 )paren
 (brace
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 id|fec_enet_mii
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;%s[%d] %s: unexpected FEC_ENET_MII event&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 )brace
 )brace
 )brace
@@ -1686,8 +1737,7 @@ id|fep-&gt;skb_dirty
 )paren
 suffix:semicolon
 macro_line|#endif
-id|dev_kfree_skb
-c_func
+id|dev_kfree_skb_irq
 (paren
 id|skb
 multiline_comment|/*, FREE_WRITE*/
@@ -2226,6 +2276,7 @@ l_int|0x01000000
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 r_static
 r_void
 DECL|function|fec_enet_mii
@@ -2346,10 +2397,12 @@ id|mii_head
 op_ne
 l_int|NULL
 )paren
+(brace
 id|ep-&gt;fec_mii_data
 op_assign
 id|mip-&gt;mii_regval
 suffix:semicolon
+)brace
 )brace
 r_static
 r_int
@@ -3149,7 +3202,7 @@ DECL|macro|MII_LXT971_LCR
 mdefine_line|#define MII_LXT971_LCR       20  /* LED Control Register      */
 DECL|macro|MII_LXT971_TCR
 mdefine_line|#define MII_LXT971_TCR       30  /* Transmit Control Register */
-multiline_comment|/* &n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * weird, so 2.5 MHz ought to be enough for anyone...&n; */
+multiline_comment|/*&n; * I had some nice ideas of running the MDIO faster...&n; * The 971 should support 8MHz and I tried it, but things acted really&n; * weird, so 2.5 MHz ought to be enough for anyone...&n; */
 DECL|function|mii_parse_lxt971_sr2
 r_static
 r_void
@@ -3269,20 +3322,7 @@ id|phy_cmd_t
 )paren
 (brace
 multiline_comment|/* config */
-multiline_comment|/* limit to 10MBit because my protorype board &n;&t;&t; * doesn&squot;t work with 100. */
-(brace
-id|mk_mii_write
-c_func
-(paren
-id|MII_REG_ANAR
-comma
-l_int|0x061
-)paren
-comma
-l_int|NULL
-)brace
-comma
-multiline_comment|/* 10 MBit */
+singleline_comment|//&t;&t;{ mk_mii_write(MII_REG_ANAR, 0x021), NULL }, /* 10  Mbps, HD */
 (brace
 id|mk_mii_read
 c_func
@@ -3562,8 +3602,8 @@ id|phy_cmd_t
 )paren
 (brace
 multiline_comment|/* config */
-singleline_comment|//&t;{ mk_mii_write(MII_REG_ANAR, 0x061), NULL }, /* 10 MBit */
-multiline_comment|/* The PHY powers up isolated on the RPX, &n;&t;&t; * so send a command to allow operation.&n;&t;&t; */
+singleline_comment|//&t;{ mk_mii_write(MII_REG_ANAR, 0x061), NULL }, /* 10  Mbps */
+multiline_comment|/* The PHY powers up isolated on the RPX,&n;&t;&t; * so send a command to allow operation.&n;&t;&t; */
 (brace
 id|mk_mii_write
 c_func
@@ -3842,7 +3882,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;, 100MBit Full Duplex&quot;
+l_string|&quot;, 100 Mbps Full Duplex&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3853,7 +3893,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;, 100MBit Half Duplex&quot;
+l_string|&quot;, 100 Mbps Half Duplex&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3864,7 +3904,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;, 10MBit Full Duplex&quot;
+l_string|&quot;, 10 Mbps Full Duplex&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3875,7 +3915,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;, 10MBit Half Duplex&quot;
+l_string|&quot;, 10 Mbps Half Duplex&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4342,16 +4382,6 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fec: Phy @ 0x%x, type 0x%08x&bslash;n&quot;
-comma
-id|fep-&gt;phy_addr
-comma
-id|fep-&gt;phy_id
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4419,6 +4449,20 @@ id|fep-&gt;phy_id_done
 op_assign
 l_int|1
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Phy @ 0x%x, type %s (0x%08x)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|fep-&gt;phy_addr
+comma
+id|fep-&gt;phy-&gt;name
+comma
+id|fep-&gt;phy_id
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Scan all of the MII PHY addresses looking for someone to respond&n; * with a valid ID.  This usually happens quickly.&n; */
 r_static
@@ -4451,14 +4495,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fep-&gt;phy_addr
-OL
-l_int|32
-)paren
-(brace
-r_if
-c_cond
-(paren
 (paren
 id|phytype
 op_assign
@@ -4472,7 +4508,7 @@ op_ne
 l_int|0xffff
 )paren
 (brace
-multiline_comment|/* Got first part of ID, now get remainder.&n;&t;&t;&t;*/
+multiline_comment|/* Got first part of ID, now get remainder.&n;&t;&t;*/
 id|fep-&gt;phy_id
 op_assign
 id|phytype
@@ -4499,6 +4535,14 @@ r_else
 id|fep-&gt;phy_addr
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fep-&gt;phy_addr
+OL
+l_int|32
+)paren
+(brace
 id|mii_queue
 c_func
 (paren
@@ -4514,17 +4558,18 @@ id|mii_discover_phy
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;FEC: No PHY device found.&bslash;n&quot;
+l_string|&quot;fec: No PHY device found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
+)brace
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 multiline_comment|/* This interrupt occurs when the PHY detects a link change.&n;*/
 r_static
 r_void
@@ -4555,6 +4600,7 @@ id|regs
 )paren
 macro_line|#endif
 (brace
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 r_struct
 id|net_device
 op_star
@@ -4569,6 +4615,52 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_volatile
+id|immap_t
+op_star
+id|immap
+op_assign
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+suffix:semicolon
+r_volatile
+id|fec_t
+op_star
+id|fecp
+op_assign
+op_amp
+(paren
+id|immap-&gt;im_cpm.cp_fec
+)paren
+suffix:semicolon
+r_int
+r_int
+id|ecntrl
+op_assign
+id|fecp-&gt;fec_ecntrl
+suffix:semicolon
+multiline_comment|/* We need the FEC enabled to access the MII&n;&t;*/
+r_if
+c_cond
+(paren
+(paren
+id|ecntrl
+op_amp
+id|FEC_ECNTRL_ETHER_EN
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|fecp-&gt;fec_ecntrl
+op_or_assign
+id|FEC_ECNTRL_ETHER_EN
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 macro_line|#if 0
 id|disable_irq
 c_func
@@ -4578,6 +4670,7 @@ id|fep-&gt;mii_irq
 suffix:semicolon
 multiline_comment|/* disable now, enable later */
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 id|mii_do_cmd
 c_func
 (paren
@@ -4595,6 +4688,38 @@ id|phy_cmd_relink
 )paren
 suffix:semicolon
 multiline_comment|/* restart and display status */
+r_if
+c_cond
+(paren
+(paren
+id|ecntrl
+op_amp
+id|FEC_ECNTRL_ETHER_EN
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|fecp-&gt;fec_ecntrl
+op_assign
+id|ecntrl
+suffix:semicolon
+multiline_comment|/* restore old settings */
+)brace
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;%s[%d] %s: unexpected Link interrupt&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 )brace
 r_static
 r_int
@@ -4616,6 +4741,7 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* I should reset the ring buffers here, but I don&squot;t yet know&n;&t; * a simple way to do that.&n;&t; */
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 id|fep-&gt;sequence_done
 op_assign
 l_int|0
@@ -4692,6 +4818,22 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/* No PHY we understand */
+macro_line|#else
+id|fep-&gt;link
+op_assign
+l_int|1
+suffix:semicolon
+id|netif_start_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Success */
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 )brace
 r_static
 r_int
@@ -4819,7 +4961,7 @@ id|dev-&gt;name
 suffix:semicolon
 id|ep-&gt;fec_r_cntrl
 op_or_assign
-l_int|0x0008
+id|FEC_RCNTRL_PROM
 suffix:semicolon
 )brace
 r_else
@@ -4827,7 +4969,7 @@ r_else
 id|ep-&gt;fec_r_cntrl
 op_and_assign
 op_complement
-l_int|0x0008
+id|FEC_RCNTRL_PROM
 suffix:semicolon
 r_if
 c_cond
@@ -5049,7 +5191,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RPXCLASSIC
+macro_line|#ifdef CONFIG_SCC_ENET
 r_int
 r_char
 id|tmpaddr
@@ -5139,14 +5281,54 @@ suffix:semicolon
 multiline_comment|/* Whack a reset.  We should wait for this.&n;&t;*/
 id|fecp-&gt;fec_ecntrl
 op_assign
-l_int|1
+id|FEC_ECNTRL_PINMUX
+op_or
+id|FEC_ECNTRL_RESET
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|fecp-&gt;fec_ecntrl
+op_amp
+id|FEC_ECNTRL_RESET
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|FEC_RESET_DELAY
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
 id|udelay
 c_func
 (paren
-l_int|10
+l_int|1
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|FEC_RESET_DELAY
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;FEC Reset timeout!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set the Ethernet address.  If using multiple Enets on the 8xx,&n;&t; * this needs some work to get unique addresses.&n;&t; */
 id|eap
 op_assign
@@ -5161,8 +5343,8 @@ id|iap
 op_assign
 id|bd-&gt;bi_enetaddr
 suffix:semicolon
-macro_line|#ifdef CONFIG_RPXCLASSIC
-multiline_comment|/* The Embedded Planet boards have only one MAC address in&n;&t; * the EEPROM, but can have two Ethernet ports.  For the&n;&t; * FEC port, we create another address by setting one of&n;&t; * the address bits above something that would have (up to&n;&t; * now) been allocated.&n;&t; */
+macro_line|#ifdef CONFIG_SCC_ENET
+multiline_comment|/*&n;         * If a board has Ethernet configured both on a SCC and the&n;         * FEC, it needs (at least) 2 MAC addresses (we know that Sun&n;         * disagrees, but anyway). For the FEC port, we create&n;         * another address by setting one of the address bits above&n;         * something that would have (up to now) been allocated.&n;&t; */
 r_for
 c_loop
 (paren
@@ -5212,6 +5394,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|dev-&gt;dev_addr
 (braket
 id|i
@@ -5225,6 +5408,7 @@ op_star
 id|iap
 op_increment
 suffix:semicolon
+)brace
 multiline_comment|/* Allocate memory for buffer descriptors.&n;&t;*/
 r_if
 c_cond
@@ -5313,16 +5497,6 @@ op_assign
 id|cbd_base
 op_plus
 id|RX_RING_SIZE
-suffix:semicolon
-id|fep-&gt;dirty_tx
-op_assign
-id|fep-&gt;cur_tx
-op_assign
-id|fep-&gt;tx_bd_base
-suffix:semicolon
-id|fep-&gt;cur_rx
-op_assign
-id|fep-&gt;rx_bd_base
 suffix:semicolon
 id|fep-&gt;skb_cur
 op_assign
@@ -5525,14 +5699,14 @@ op_complement
 id|BCSR2_FETHLEDMODE
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FADS
+macro_line|#ifdef PHY_INTERRUPT
 r_if
 c_cond
 (paren
 id|request_8xxirq
 c_func
 (paren
-id|SIU_IRQ2
+id|PHY_INTERRUPT
 comma
 id|mii_link_interrupt
 comma
@@ -5549,6 +5723,22 @@ id|panic
 c_func
 (paren
 l_string|&quot;Could not allocate MII IRQ!&quot;
+)paren
+suffix:semicolon
+(paren
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_siu_conf.sc_siel
+op_or_assign
+(paren
+l_int|0x80000000
+op_rshift
+id|PHY_INTERRUPT
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5593,6 +5783,7 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|set_multicast_list
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 r_for
 c_loop
 (paren
@@ -5628,6 +5819,7 @@ id|mii_free
 op_assign
 id|mii_cmds
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 multiline_comment|/* Configure all of port D for MII.&n;&t;*/
 id|immap-&gt;im_ioport.iop_pdpar
 op_assign
@@ -5659,6 +5851,7 @@ op_assign
 l_int|0x1fff
 suffix:semicolon
 multiline_comment|/* Rev. D and later */
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Set MII speed to 2.5 MHz&n;&t;*/
 id|fecp-&gt;fec_mii_speed
 op_assign
@@ -5666,22 +5859,48 @@ id|fep-&gt;phy_speed
 op_assign
 (paren
 (paren
-id|bd-&gt;bi_busfreq
+(paren
+(paren
+id|bd-&gt;bi_intfreq
 op_star
 l_int|1000000
 )paren
+op_plus
+l_int|500000
+)paren
 op_div
 l_int|2500000
+op_div
+l_int|2
 )paren
 op_amp
-l_int|0x7e
+l_int|0x3F
+)paren
+op_lshift
+l_int|1
 suffix:semicolon
+macro_line|#else
+id|fecp-&gt;fec_mii_speed
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* turn off MDIO */
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 id|printk
-c_func
 (paren
-l_string|&quot;%s: FEC ENET Version 0.2, &quot;
+l_string|&quot;%s: FEC ENET Version 0.2, FEC irq %d&quot;
+macro_line|#ifdef PHY_INTERRUPT
+l_string|&quot;, MII irq %d&quot;
+macro_line|#endif
+l_string|&quot;, addr &quot;
 comma
 id|dev-&gt;name
+comma
+id|FEC_INTERRUPT
+macro_line|#ifdef PHY_INTERRUPT
+comma
+id|PHY_INTERRUPT
+macro_line|#endif
 )paren
 suffix:semicolon
 r_for
@@ -5693,7 +5912,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|5
+l_int|6
 suffix:semicolon
 id|i
 op_increment
@@ -5701,25 +5920,43 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;%02x:&quot;
+l_string|&quot;%02x%c&quot;
 comma
 id|dev-&gt;dev_addr
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%02x&bslash;n&quot;
 comma
-id|dev-&gt;dev_addr
-(braket
+(paren
+id|i
+op_eq
 l_int|5
-)braket
+)paren
+ques
+c_cond
+l_char|&squot;&bslash;n&squot;
+suffix:colon
+l_char|&squot;:&squot;
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO&t;/* start in full duplex mode, and negotiate speed */
+id|fec_restart
+(paren
+id|dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#else&t;&t;&t;/* always use half duplex mode only */
+id|fec_restart
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Queue up command to detect the PHY and initialize the&n;&t; * remainder of the interface.&n;&t; */
 id|fep-&gt;phy_id_done
 op_assign
@@ -5743,6 +5980,7 @@ comma
 id|mii_discover_phy
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 r_return
 l_int|0
 suffix:semicolon
@@ -5770,11 +6008,6 @@ id|fep
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_int
-r_char
-op_star
-id|eap
 suffix:semicolon
 r_volatile
 id|cbd_t
@@ -5814,44 +6047,54 @@ suffix:semicolon
 multiline_comment|/* Whack a reset.  We should wait for this.&n;&t;*/
 id|fecp-&gt;fec_ecntrl
 op_assign
-l_int|1
+id|FEC_ECNTRL_PINMUX
+op_or
+id|FEC_ECNTRL_RESET
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|fecp-&gt;fec_ecntrl
+op_amp
+id|FEC_ECNTRL_RESET
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|FEC_RESET_DELAY
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
 id|udelay
 c_func
 (paren
-l_int|10
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Enable interrupts we wish to service.&n;&t;*/
-id|fecp-&gt;fec_imask
-op_assign
+)brace
+r_if
+c_cond
 (paren
-id|FEC_ENET_TXF
-op_or
-id|FEC_ENET_TXB
-op_or
-id|FEC_ENET_RXF
-op_or
-id|FEC_ENET_RXB
-op_or
-id|FEC_ENET_MII
+id|i
+op_eq
+id|FEC_RESET_DELAY
 )paren
-suffix:semicolon
-multiline_comment|/* Clear any outstanding interrupt.&n;&t;*/
-id|fecp-&gt;fec_ievent
-op_assign
-l_int|0xffc0
-suffix:semicolon
-id|fecp-&gt;fec_ivec
-op_assign
+(brace
+id|printk
 (paren
-id|FEC_INTERRUPT
-op_div
-l_int|2
+l_string|&quot;FEC Reset timeout!&bslash;n&quot;
 )paren
-op_lshift
-l_int|29
 suffix:semicolon
+)brace
 multiline_comment|/* Set station address.&n;&t;*/
 id|fecp-&gt;fec_addr_low
 op_assign
@@ -5875,42 +6118,6 @@ id|my_enet_addr
 (braket
 l_int|2
 )braket
-suffix:semicolon
-id|eap
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-op_amp
-id|my_enet_addr
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|6
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-op_assign
-op_star
-id|eap
-op_increment
 suffix:semicolon
 multiline_comment|/* Reset all multicast.&n;&t;*/
 id|fecp-&gt;fec_hash_table_high
@@ -6105,12 +6312,12 @@ id|duplex
 (brace
 id|fecp-&gt;fec_r_cntrl
 op_assign
-l_int|0x04
+id|FEC_RCNTRL_MII_MODE
 suffix:semicolon
 multiline_comment|/* MII enable */
 id|fecp-&gt;fec_x_cntrl
 op_assign
-l_int|0x04
+id|FEC_TCNTRL_FDEN
 suffix:semicolon
 multiline_comment|/* FD enable */
 )brace
@@ -6118,12 +6325,13 @@ r_else
 (brace
 id|fecp-&gt;fec_r_cntrl
 op_assign
-l_int|0x06
+id|FEC_RCNTRL_MII_MODE
+op_or
+id|FEC_RCNTRL_DRT
 suffix:semicolon
-multiline_comment|/* MII enable|No Rcv on Xmit */
 id|fecp-&gt;fec_x_cntrl
 op_assign
-l_int|0x00
+l_int|0
 suffix:semicolon
 )brace
 id|fep-&gt;full_duplex
@@ -6135,15 +6343,49 @@ id|fecp-&gt;fec_fun_code
 op_assign
 l_int|0x78000000
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Set MII speed.&n;&t;*/
 id|fecp-&gt;fec_mii_speed
 op_assign
 id|fep-&gt;phy_speed
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
+multiline_comment|/* Clear any outstanding interrupt.&n;&t;*/
+id|fecp-&gt;fec_ievent
+op_assign
+l_int|0xffc0
+suffix:semicolon
+id|fecp-&gt;fec_ivec
+op_assign
+(paren
+id|FEC_INTERRUPT
+op_div
+l_int|2
+)paren
+op_lshift
+l_int|29
+suffix:semicolon
+multiline_comment|/* Enable interrupts we wish to service.&n;&t;*/
+id|fecp-&gt;fec_imask
+op_assign
+(paren
+id|FEC_ENET_TXF
+op_or
+id|FEC_ENET_TXB
+op_or
+id|FEC_ENET_RXF
+op_or
+id|FEC_ENET_RXB
+op_or
+id|FEC_ENET_MII
+)paren
+suffix:semicolon
 multiline_comment|/* And last, enable the transmit and receive processing.&n;&t;*/
 id|fecp-&gt;fec_ecntrl
 op_assign
-l_int|6
+id|FEC_ECNTRL_PINMUX
+op_or
+id|FEC_ECNTRL_ETHER_EN
 suffix:semicolon
 id|fecp-&gt;fec_r_des_active
 op_assign
@@ -6177,6 +6419,9 @@ id|fec_enet_private
 op_star
 id|fep
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|immap
 op_assign
 (paren
@@ -6193,6 +6438,20 @@ op_amp
 id|immap-&gt;im_cpm.cp_fec
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|fecp-&gt;fec_ecntrl
+op_amp
+id|FEC_ECNTRL_ETHER_EN
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* already down */
 id|fep
 op_assign
 id|dev-&gt;priv
@@ -6202,36 +6461,60 @@ op_assign
 l_int|0x01
 suffix:semicolon
 multiline_comment|/* Graceful transmit stop */
-r_while
+r_for
 c_loop
 (paren
-op_logical_neg
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+(paren
 (paren
 id|fecp-&gt;fec_ievent
 op_amp
 l_int|0x10000000
 )paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|i
+OL
+id|FEC_RESET_DELAY
+)paren
+suffix:semicolon
+op_increment
+id|i
 )paren
 (brace
-suffix:semicolon
-)brace
-multiline_comment|/* Whack a reset.  We should wait for this.&n;&t;*/
-id|fecp-&gt;fec_ecntrl
-op_assign
-l_int|1
-suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|10
+l_int|1
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|FEC_RESET_DELAY
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;FEC timeout on graceful transmit stop&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Clear outstanding MII command interrupts.&n;&t;*/
 id|fecp-&gt;fec_ievent
 op_assign
 id|FEC_ENET_MII
 suffix:semicolon
-multiline_comment|/* Enable MII command finihed interrupt &n;&t;*/
+multiline_comment|/* Enable MII command finished interrupt&n;&t;*/
 id|fecp-&gt;fec_ivec
 op_assign
 (paren
@@ -6246,10 +6529,20 @@ id|fecp-&gt;fec_imask
 op_assign
 id|FEC_ENET_MII
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Set MII speed.&n;&t;*/
 id|fecp-&gt;fec_mii_speed
 op_assign
 id|fep-&gt;phy_speed
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
+multiline_comment|/* Disable FEC&n;&t;*/
+id|fecp-&gt;fec_ecntrl
+op_and_assign
+op_complement
+(paren
+id|FEC_ECNTRL_ETHER_EN
+)paren
 suffix:semicolon
 )brace
 eof

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DCACHE_PARANOIA
 mdefine_line|#define DCACHE_PARANOIA 1
@@ -3971,6 +3972,13 @@ DECL|variable|bh_cachep
 id|kmem_cache_t
 op_star
 id|bh_cachep
+suffix:semicolon
+DECL|variable|bh_cachep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bh_cachep
+)paren
 suffix:semicolon
 DECL|function|vfs_caches_init
 r_void

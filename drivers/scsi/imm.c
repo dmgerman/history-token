@@ -77,7 +77,7 @@ r_struct
 id|tq_struct
 id|imm_tq
 suffix:semicolon
-multiline_comment|/* Polling interupt stuff       */
+multiline_comment|/* Polling interrupt stuff       */
 DECL|member|jstart
 r_int
 r_int

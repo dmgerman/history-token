@@ -2,6 +2,16 @@ multiline_comment|/*&n; *&t;3COM &quot;EtherLink MC/32&quot; Descriptions&n; */
 multiline_comment|/*&n; *&t;Registers&n; */
 DECL|macro|HOST_CMD
 mdefine_line|#define HOST_CMD&t;&t;0
+DECL|macro|HOST_CMD_START_RX
+mdefine_line|#define         HOST_CMD_START_RX   (1&lt;&lt;3)
+DECL|macro|HOST_CMD_SUSPND_RX
+mdefine_line|#define         HOST_CMD_SUSPND_RX  (3&lt;&lt;3)
+DECL|macro|HOST_CMD_RESTRT_RX
+mdefine_line|#define         HOST_CMD_RESTRT_RX  (5&lt;&lt;3)
+DECL|macro|HOST_CMD_SUSPND_TX
+mdefine_line|#define         HOST_CMD_SUSPND_TX  3
+DECL|macro|HOST_CMD_RESTRT_TX
+mdefine_line|#define         HOST_CMD_RESTRT_TX  5
 DECL|macro|HOST_STATUS
 mdefine_line|#define HOST_STATUS&t;&t;2
 DECL|macro|HOST_STATUS_CRR
@@ -18,6 +28,43 @@ DECL|macro|HOST_CTRL_INTE
 mdefine_line|#define &t;HOST_CTRL_INTE&t;(1&lt;&lt;2)
 DECL|macro|HOST_RAMPAGE
 mdefine_line|#define HOST_RAMPAGE&t;&t;8
+DECL|macro|RX_HALTED
+mdefine_line|#define RX_HALTED (1&lt;&lt;0)
+DECL|macro|TX_HALTED
+mdefine_line|#define TX_HALTED (1&lt;&lt;1)  
+DECL|macro|HALTED
+mdefine_line|#define HALTED (RX_HALTED | TX_HALTED)
+DECL|macro|RUNNING
+mdefine_line|#define RUNNING 0
+DECL|struct|mc32_mailbox
+r_struct
+id|mc32_mailbox
+(brace
+id|u16
+id|mbox
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u16
+id|data
+(braket
+l_int|1
+)braket
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|skb_header
 r_struct
 id|skb_header
@@ -75,18 +122,187 @@ id|packed
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|mc32_stats
+r_struct
+id|mc32_stats
+(brace
+multiline_comment|/* RX Errors */
+id|u32
+id|rx_crc_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_alignment_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_overrun_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_tooshort_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_toolong_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_outofresource_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|rx_discarded
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* via card pattern match filter */
+multiline_comment|/* TX Errors */
+id|u32
+id|tx_max_collisions
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|tx_carrier_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|tx_underrun_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|tx_cts_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|tx_timeout_errors
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* various cruft */
+id|u32
+id|dataA
+(braket
+l_int|6
+)braket
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u16
+id|dataB
+(braket
+l_int|5
+)braket
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+id|u32
+id|dataC
+(braket
+l_int|14
+)braket
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|STATUS_MASK
 mdefine_line|#define STATUS_MASK&t;0x0F
 DECL|macro|COMPLETED
-mdefine_line|#define COMPLETED&t;0x80
+mdefine_line|#define COMPLETED&t;(1&lt;&lt;7)
 DECL|macro|COMPLETED_OK
-mdefine_line|#define COMPLETED_OK&t;0x40
+mdefine_line|#define COMPLETED_OK&t;(1&lt;&lt;6)
 DECL|macro|BUFFER_BUSY
-mdefine_line|#define BUFFER_BUSY&t;0x20
+mdefine_line|#define BUFFER_BUSY&t;(1&lt;&lt;5)
 DECL|macro|CONTROL_EOP
-mdefine_line|#define CONTROL_EOP&t;0x80&t;/* End Of Packet */
-DECL|macro|CONTROL_EL
-mdefine_line|#define CONTROL_EL&t;0x40&t;/* End of List */
+mdefine_line|#define CONTROL_EOP&t;(1&lt;&lt;7)&t;/* End Of Packet */
+DECL|macro|CONTROL_EOL
+mdefine_line|#define CONTROL_EOL&t;(1&lt;&lt;6)&t;/* End of List */
 DECL|macro|MCA_MC32_ID
 mdefine_line|#define MCA_MC32_ID&t;0x0041&t;/* Our MCA ident */
 eof

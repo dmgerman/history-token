@@ -906,6 +906,22 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|version_printed
 )paren
 (brace
@@ -1864,7 +1880,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Probe unsucessful.&bslash;n&quot;
+l_string|&quot;Probe unsuccessful.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2607,7 +2623,8 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_INC_USE_COUNT
+r_int
+id|ret
 suffix:semicolon
 id|ei_open
 c_func
@@ -2620,9 +2637,8 @@ multiline_comment|/* getting interrupts right away, so the driver needs to be   
 multiline_comment|/* completely initialized before enabling the interrupt.        */
 multiline_comment|/*                             - funaho@jurai.org (1999-05-17) */
 multiline_comment|/* Non-slow interrupt, works around issues with the SONIC driver */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|request_irq
 c_func
 (paren
@@ -2632,10 +2648,15 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-l_string|&quot;8390 Ethernet&quot;
+id|dev-&gt;name
 comma
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -2647,11 +2668,8 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
-op_minus
-id|EAGAIN
+id|ret
 suffix:semicolon
 )brace
 r_return
@@ -2702,8 +2720,6 @@ c_func
 l_string|&quot;reset not supported&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|ns8390_close_card
 r_static
@@ -2745,8 +2761,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

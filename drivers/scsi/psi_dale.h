@@ -1273,7 +1273,7 @@ id|Valid_54_58
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// 53 words 54 - 58 are vaild
+singleline_comment|// 53 words 54 - 58 are valid
 DECL|member|Valid_64_70
 id|USHORT
 id|Valid_64_70

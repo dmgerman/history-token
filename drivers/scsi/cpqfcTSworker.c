@@ -968,7 +968,7 @@ suffix:colon
 singleline_comment|// need to send ELS PRLI
 singleline_comment|//      printk(&quot; *ELS %Xh* &quot;, fcLQ-&gt;Qitem[QconsumerNdx].Type);
 singleline_comment|// if PortDiscDone is not set, it means the SendLogins routine
-singleline_comment|// failed to complete -- assume that LDn occured, so login frames
+singleline_comment|// failed to complete -- assume that LDn occurred, so login frames
 singleline_comment|// are invalid
 r_if
 c_cond
@@ -11407,7 +11407,7 @@ suffix:semicolon
 id|ULONG
 id|fcp_dl
 suffix:semicolon
-singleline_comment|// total byte length of DATA transfered
+singleline_comment|// total byte length of DATA transferred
 id|ULONG
 id|fl
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/fonts.c -- `Soft&squot; font definitions&n; *&n; *    Created 1995 by Geert Uytterhoeven&n; *    Rewritten 1998 by Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/fonts.c -- `Soft&squot; font definitions&n; *&n; *    Created 1995 by Geert Uytterhoeven&n; *    Rewritten 1998 by Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -78,7 +78,7 @@ mdefine_line|#define num_fonts (sizeof(fbcon_fonts)/sizeof(*fbcon_fonts))
 macro_line|#ifdef NO_FONTS
 macro_line|#error No fonts configured.
 macro_line|#endif
-multiline_comment|/*&n;    *    Find a font with a specific name&n;    */
+multiline_comment|/**&n; *&t;fbcon_find_font - find a font&n; *&t;@name: string name of a font&n; *&n; *&t;Find a specified font with string name @name.&n; *&n; *&t;Returns %NULL if no font found, or a pointer to the&n; *&t;specified font.&n; *&n; */
 DECL|function|fbcon_find_font
 r_struct
 id|fbcon_font_desc
@@ -136,7 +136,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    *    Get the default font for a specific screen size&n;    */
+multiline_comment|/**&n; *&t;fbcon_get_default_font - get default font&n; *&t;@xres: screen size of X&n; *&t;@yres: screen size of Y&n; *&n; *&t;Get the default font for a specified screen size.&n; *&t;Dimensions are in pixels.&n; *&n; *&t;Returns %NULL if no font is found, or a pointer to the&n; *&t;chosen font.&n; *&n; */
 DECL|function|fbcon_get_default_font
 r_struct
 id|fbcon_font_desc

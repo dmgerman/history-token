@@ -1683,21 +1683,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
-(paren
-id|dev-&gt;priv
-)paren
-)paren
-op_member_access_from_pointer
-id|rx_packets
-op_increment
-suffix:semicolon
-multiline_comment|/* count all receives */
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -1714,6 +1699,42 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+multiline_comment|/* update stats */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+(paren
+(paren
+r_struct
+id|net_device_stats
+op_star
+)paren
+(paren
+id|dev-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|rx_packets
+op_increment
+suffix:semicolon
+multiline_comment|/* count all receives */
+(paren
+(paren
+r_struct
+id|net_device_stats
+op_star
+)paren
+(paren
+id|dev-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|rx_bytes
+op_add_assign
+id|size
+suffix:semicolon
+multiline_comment|/* count all received bytes */
 multiline_comment|/*&n;&t; * If any worth-while packets have been received, netif_rx()&n;&t; * has done a mark_bh(INET_BH) for us and will work on them&n;&t; * when we get to the bottom-half routine.&n;&t; */
 )brace
 r_int

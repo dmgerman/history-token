@@ -216,8 +216,17 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Get this from various configuration locations (depends on board).&n;*/
 multiline_comment|/*static&t;ushort&t;my_enet_addr[] = { 0x0800, 0x3e26, 0x1559 };*/
-multiline_comment|/* Typically, 860(T) boards use SCC1 for Ethernet, and other 8xx boards&n; * use SCC2.  This is easily extended if necessary.&n; */
-macro_line|#ifdef CONFIG_SCC2_ENET
+multiline_comment|/* Typically, 860(T) boards use SCC1 for Ethernet, and other 8xx boards&n; * use SCC2. Some even may use SCC3.&n; * This is easily extended if necessary.&n; */
+macro_line|#if defined(CONFIG_SCC3_ENET)
+DECL|macro|CPM_CR_ENET
+mdefine_line|#define CPM_CR_ENET&t;CPM_CR_CH_SCC3
+DECL|macro|PROFF_ENET
+mdefine_line|#define PROFF_ENET&t;PROFF_SCC3
+DECL|macro|SCC_ENET
+mdefine_line|#define SCC_ENET&t;2&t;&t;/* Index, not number! */
+DECL|macro|CPMVEC_ENET
+mdefine_line|#define CPMVEC_ENET&t;CPMVEC_SCC3
+macro_line|#elif defined(CONFIG_SCC2_ENET)
 DECL|macro|CPM_CR_ENET
 mdefine_line|#define CPM_CR_ENET&t;CPM_CR_CH_SCC2
 DECL|macro|PROFF_ENET
@@ -226,16 +235,17 @@ DECL|macro|SCC_ENET
 mdefine_line|#define SCC_ENET&t;1&t;&t;/* Index, not number! */
 DECL|macro|CPMVEC_ENET
 mdefine_line|#define CPMVEC_ENET&t;CPMVEC_SCC2
-macro_line|#endif
-macro_line|#ifdef CONFIG_SCC1_ENET
+macro_line|#elif defined(CONFIG_SCC1_ENET)
 DECL|macro|CPM_CR_ENET
-mdefine_line|#define CPM_CR_ENET CPM_CR_CH_SCC1
+mdefine_line|#define CPM_CR_ENET&t;CPM_CR_CH_SCC1
 DECL|macro|PROFF_ENET
 mdefine_line|#define PROFF_ENET&t;PROFF_SCC1
 DECL|macro|SCC_ENET
-mdefine_line|#define SCC_ENET&t;0
+mdefine_line|#define SCC_ENET&t;0&t;&t;/* Index, not number! */
 DECL|macro|CPMVEC_ENET
 mdefine_line|#define CPMVEC_ENET&t;CPMVEC_SCC1
+macro_line|#else
+macro_line|#error CONFIG_SCCx_ENET not defined
 macro_line|#endif
 r_static
 r_int
@@ -1638,6 +1648,15 @@ id|immap_t
 op_star
 id|immap
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|_get_IMMR
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|cp
 op_assign
 id|cpmp
@@ -1649,7 +1668,14 @@ op_assign
 id|immap_t
 op_star
 )paren
-id|IMAP_ADDR
+(paren
+id|_get_IMMR
+c_func
+(paren
+)paren
+op_amp
+l_int|0xFFFF0000
+)paren
 suffix:semicolon
 multiline_comment|/* and to internal registers */
 id|bd
@@ -1772,6 +1798,7 @@ id|SCC_GSMRL_ENT
 )paren
 suffix:semicolon
 multiline_comment|/* Cookbook style from the MPC860 manual.....&n;&t; * Not all of this is necessary if EPPC-Bug has initialized&n;&t; * the network.&n;&t; * So far we are lucky, all board configurations use the same&n;&t; * pins, or at least the same I/O Port for these functions.....&n;&t; * It can&squot;t last though......&n;&t; */
+macro_line|#if (defined(PA_ENET_RXD) &amp;&amp; defined(PA_ENET_TXD))
 multiline_comment|/* Configure port A pins for Txd and Rxd.&n;&t;*/
 id|immap-&gt;im_ioport.iop_papar
 op_or_assign
@@ -1795,6 +1822,56 @@ op_and_assign
 op_complement
 id|PA_ENET_TXD
 suffix:semicolon
+macro_line|#elif (defined(PB_ENET_RXD) &amp;&amp; defined(PB_ENET_TXD))
+multiline_comment|/* Configure port B pins for Txd and Rxd.&n;&t;*/
+id|immap-&gt;im_cpm.cp_pbpar
+op_or_assign
+(paren
+id|PB_ENET_RXD
+op_or
+id|PB_ENET_TXD
+)paren
+suffix:semicolon
+id|immap-&gt;im_cpm.cp_pbdir
+op_and_assign
+op_complement
+(paren
+id|PB_ENET_RXD
+op_or
+id|PB_ENET_TXD
+)paren
+suffix:semicolon
+id|immap-&gt;im_cpm.cp_pbodr
+op_and_assign
+op_complement
+id|PB_ENET_TXD
+suffix:semicolon
+macro_line|#else
+macro_line|#error Exactly ONE pair of PA_ENET_[RT]XD, PB_ENET_[RT]XD must be defined
+macro_line|#endif
+macro_line|#if defined(PC_ENET_LBK)
+multiline_comment|/* Configure port C pins to disable External Loopback&n;&t; */
+id|immap-&gt;im_ioport.iop_pcpar
+op_and_assign
+op_complement
+id|PC_ENET_LBK
+suffix:semicolon
+id|immap-&gt;im_ioport.iop_pcdir
+op_or_assign
+id|PC_ENET_LBK
+suffix:semicolon
+id|immap-&gt;im_ioport.iop_pcso
+op_and_assign
+op_complement
+id|PC_ENET_LBK
+suffix:semicolon
+id|immap-&gt;im_ioport.iop_pcdat
+op_and_assign
+op_complement
+id|PC_ENET_LBK
+suffix:semicolon
+multiline_comment|/* Disable Loopback */
+macro_line|#endif&t;/* PC_ENET_LBK */
 multiline_comment|/* Configure port C pins to enable CLSN and RENA.&n;&t;*/
 id|immap-&gt;im_ioport.iop_pcpar
 op_and_assign
@@ -2336,7 +2413,7 @@ id|SCC_PMSR_NIB22
 )paren
 suffix:semicolon
 multiline_comment|/* It is now OK to enable the Ethernet transmitter.&n;&t; * Unfortunately, there are board implementation differences here.&n;&t; */
-macro_line|#if (defined(CONFIG_MBX) || defined(CONFIG_TQM860) || defined(CONFIG_TQM860L) || defined(CONFIG_FPS850))
+macro_line|#if   (!defined (PB_ENET_TENA) &amp;&amp;  defined (PC_ENET_TENA))
 id|immap-&gt;im_ioport.iop_pcpar
 op_or_assign
 id|PC_ENET_TENA
@@ -2346,8 +2423,7 @@ op_and_assign
 op_complement
 id|PC_ENET_TENA
 suffix:semicolon
-macro_line|#endif
-macro_line|#if (defined(CONFIG_TQM8xxL) &amp;&amp; !defined(CONFIG_FPS850))
+macro_line|#elif ( defined (PB_ENET_TENA) &amp;&amp; !defined (PC_ENET_TENA))
 id|cp-&gt;cp_pbpar
 op_or_assign
 id|PB_ENET_TENA
@@ -2356,16 +2432,10 @@ id|cp-&gt;cp_pbdir
 op_or_assign
 id|PB_ENET_TENA
 suffix:semicolon
+macro_line|#else
+macro_line|#error Configuration Error: define exactly ONE of PB_ENET_TENA, PC_ENET_TENA
 macro_line|#endif
 macro_line|#if defined(CONFIG_RPXLITE) || defined(CONFIG_RPXCLASSIC)
-id|cp-&gt;cp_pbpar
-op_or_assign
-id|PB_ENET_TENA
-suffix:semicolon
-id|cp-&gt;cp_pbdir
-op_or_assign
-id|PB_ENET_TENA
-suffix:semicolon
 multiline_comment|/* And while we are here, set the configuration to enable ethernet.&n;&t;*/
 op_star
 (paren
@@ -2400,14 +2470,6 @@ id|BCSR0_FULLDPLXDIS
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BSEIP
-id|cp-&gt;cp_pbpar
-op_or_assign
-id|PB_ENET_TENA
-suffix:semicolon
-id|cp-&gt;cp_pbdir
-op_or_assign
-id|PB_ENET_TENA
-suffix:semicolon
 multiline_comment|/* BSE uses port B and C for PHY control.&n;&t;*/
 id|cp-&gt;cp_pbpar
 op_and_assign
@@ -2513,9 +2575,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: CPM ENET Version 0.2, &quot;
+l_string|&quot;%s: CPM ENET Version 0.2 on SCC%d, &quot;
 comma
 id|dev-&gt;name
+comma
+id|SCC_ENET
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_for

@@ -912,12 +912,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
 r_int
 r_char
 id|reg
@@ -1115,14 +1109,6 @@ id|cmd_line
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;Boot arguments: %s&bslash;n&quot;
-comma
-id|cmd_line
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_CS4232
 multiline_comment|/*&n;&t; * setup proper values for the cs4232 driver so we don&squot;t have&n;&t; * to recompile for the motorola or ibm workstations sound systems.&n;&t; * This is a really nasty hack, but unless we change the driver&n;&t; * it&squot;s the only way to support both addrs from one binary.&n;&t; * -- Cort&n;&t; */
 r_if

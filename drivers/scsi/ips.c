@@ -18241,7 +18241,7 @@ id|j
 op_ge
 l_int|45
 )paren
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 r_return
 (paren
 l_int|0
@@ -18373,7 +18373,7 @@ id|j
 op_ge
 l_int|240
 )paren
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 r_return
 (paren
 l_int|0
@@ -18632,7 +18632,7 @@ id|j
 op_ge
 l_int|45
 )paren
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 r_return
 (paren
 l_int|0
@@ -18764,7 +18764,7 @@ id|j
 op_ge
 l_int|240
 )paren
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 r_return
 (paren
 l_int|0
@@ -18846,7 +18846,7 @@ id|i
 op_ge
 l_int|240
 )paren
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 r_return
 (paren
 l_int|0
@@ -19003,7 +19003,7 @@ op_ge
 l_int|45
 )paren
 (brace
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 id|printk
 c_func
 (paren
@@ -19131,7 +19131,7 @@ op_ge
 l_int|240
 )paren
 (brace
-multiline_comment|/* error occured */
+multiline_comment|/* error occurred */
 id|printk
 c_func
 (paren
@@ -21095,7 +21095,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-multiline_comment|/*&n;             * controller generated an interupt to&n;             * acknowledge completion of the command&n;             * and ips_intr() has serviced the interrupt.&n;             */
+multiline_comment|/*&n;             * controller generated an interrupt to&n;             * acknowledge completion of the command&n;             * and ips_intr() has serviced the interrupt.&n;             */
 id|ret
 op_assign
 id|IPS_SUCCESS
@@ -21161,7 +21161,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-multiline_comment|/*&n;             * controller generated an interupt to&n;             * acknowledge completion of the command&n;             * and ips_intr() has serviced the interrupt.&n;             */
+multiline_comment|/*&n;             * controller generated an interrupt to&n;             * acknowledge completion of the command&n;             * and ips_intr() has serviced the interrupt.&n;             */
 id|ret
 op_assign
 id|IPS_SUCCESS

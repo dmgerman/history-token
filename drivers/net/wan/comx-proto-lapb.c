@@ -1616,6 +1616,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|ch-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 r_for
 c_loop
@@ -1797,6 +1801,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|ch-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 r_for

@@ -85,7 +85,7 @@ mdefine_line|#define IMM_SELECT_TMO  500&t;/* 500 how long to wait for target ? 
 DECL|macro|IMM_SPIN_TMO
 mdefine_line|#define IMM_SPIN_TMO    5000&t;/* 50000 imm_wait loop limiter */
 DECL|macro|IMM_DEBUG
-mdefine_line|#define IMM_DEBUG&t;0&t;/* debuging option */
+mdefine_line|#define IMM_DEBUG&t;0&t;/* debugging option */
 DECL|macro|IN_EPP_MODE
 mdefine_line|#define IN_EPP_MODE(x) (x == IMM_EPP_8 || x == IMM_EPP_16 || x == IMM_EPP_32)
 multiline_comment|/* args to imm_connect */

@@ -3761,13 +3761,12 @@ id|prom_disp_node
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If OpenFirmware version &gt;= 3, then use quiesce call */
+multiline_comment|/* If pmac, then use quiesce call. We can&squot;t rely on prom_version&n;&t; * since some old iMacs appear to have an incorrect /openprom/model&n;&t; * entry in the device tree&n;&t; */
 r_if
 c_cond
 (paren
-id|prom_version
-op_ge
-l_int|3
+op_logical_neg
+id|chrp
 )paren
 (brace
 id|prom_print

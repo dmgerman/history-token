@@ -423,6 +423,13 @@ c_func
 id|highmem_start_page
 )paren
 suffix:semicolon
+DECL|variable|create_bounce
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|create_bounce
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* filesystem internal functions */
 DECL|variable|def_blk_fops

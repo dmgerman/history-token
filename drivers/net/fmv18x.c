@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -122,6 +123,10 @@ id|ushort
 id|tx_queue_len
 suffix:semicolon
 multiline_comment|/* Current length of the Tx queue. */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Offsets from the base address. */
@@ -458,6 +463,11 @@ comma
 id|irq
 comma
 id|retval
+suffix:semicolon
+r_struct
+id|net_local
+op_star
+id|lp
 suffix:semicolon
 multiline_comment|/* Resetting the chip doesn&squot;t reset the ISA interface, so don&squot;t bother.&n;&t;   That means we have to be careful with the register values we probe for.&n;&t;   */
 r_if
@@ -1045,6 +1055,17 @@ id|net_local
 )paren
 )paren
 suffix:semicolon
+id|lp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 id|net_open
@@ -1127,11 +1148,6 @@ id|net_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -1255,11 +1271,6 @@ id|net_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -1447,15 +1458,13 @@ id|lp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 multiline_comment|/* ToDo: We should try to restart the adaptor... */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize LAN Controller and LAN Card */
@@ -1509,10 +1518,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
+)paren
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1538,11 +1556,6 @@ id|net_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -1569,13 +1582,11 @@ id|buf
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* Block a transmit from overlapping.  */
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
+r_int
+r_int
+id|flags
 suffix:semicolon
+multiline_comment|/* Block a transmit from overlapping.  */
 r_if
 c_cond
 (paren
@@ -1625,6 +1636,15 @@ id|skb-&gt;len
 )paren
 suffix:semicolon
 multiline_comment|/* We may not start transmitting unless we finish transferring&n;&t;   a packet into the Tx queue. During executing the following&n;&t;   codes we possibly catch a Tx interrupt. Thus we flag off&n;&t;   tx_queue_ready, so that we prevent the interrupt routine&n;&t;   (net_interrupt) to start transmitting. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|lp-&gt;tx_queue_ready
 op_assign
 l_int|0
@@ -1672,6 +1692,15 @@ id|lp-&gt;tx_queue_ready
 op_assign
 l_int|1
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1709,12 +1738,6 @@ id|lp-&gt;tx_started
 op_assign
 l_int|1
 suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1727,7 +1750,8 @@ op_minus
 l_int|1502
 )paren
 multiline_comment|/* Yes, there is room for one more packet. */
-id|netif_wake_queue
+r_else
+id|netif_stop_queue
 c_func
 (paren
 id|dev
@@ -1787,11 +1811,6 @@ id|dev-&gt;base_addr
 suffix:semicolon
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|status
@@ -1952,6 +1971,13 @@ op_amp
 l_int|0x82
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|lp-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
@@ -2009,6 +2035,13 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Inform upper layers. */
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -2032,11 +2065,6 @@ id|net_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -2600,11 +2628,6 @@ id|net_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|net_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_return

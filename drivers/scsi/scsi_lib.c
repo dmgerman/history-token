@@ -1153,7 +1153,7 @@ op_assign
 op_amp
 id|SCpnt-&gt;device-&gt;request_queue
 suffix:semicolon
-multiline_comment|/*&n;&t; * We must do one of several things here:&n;&t; *&n;&t; *&t;Call scsi_end_request.  This will finish off the specified&n;&t; *&t;number of sectors.  If we are done, the command block will&n;&t; *&t;be released, and the queue function will be goosed.  If we&n;&t; *&t;are not done, then scsi_end_request will directly goose&n;&t; *&t;the the queue.&n;&t; *&n;&t; *&t;We can just use scsi_queue_next_request() here.  This&n;&t; *&t;would be used if we just wanted to retry, for example.&n;&t; *&n;&t; */
+multiline_comment|/*&n;&t; * We must do one of several things here:&n;&t; *&n;&t; *&t;Call scsi_end_request.  This will finish off the specified&n;&t; *&t;number of sectors.  If we are done, the command block will&n;&t; *&t;be released, and the queue function will be goosed.  If we&n;&t; *&t;are not done, then scsi_end_request will directly goose&n;&t; *&t;the queue.&n;&t; *&n;&t; *&t;We can just use scsi_queue_next_request() here.  This&n;&t; *&t;would be used if we just wanted to retry, for example.&n;&t; *&n;&t; */
 id|ASSERT_LOCK
 c_func
 (paren

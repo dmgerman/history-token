@@ -952,8 +952,6 @@ op_amp
 op_complement
 (paren
 id|PAGE_MASK
-op_minus
-l_int|1
 )paren
 )paren
 suffix:semicolon

@@ -391,8 +391,8 @@ DECL|macro|DECLARE_RWSEM
 mdefine_line|#define DECLARE_RWSEM(name) __DECLARE_RWSEM_GENERIC(name, 0, 0)
 DECL|macro|DECLARE_RWSEM_READ_LOCKED
 mdefine_line|#define DECLARE_RWSEM_READ_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 1, 0)
-DECL|macro|DECLAER_RWSEM_WRITE_LOCKED
-mdefine_line|#define DECLAER_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 0, 1)
+DECL|macro|DECLARE_RWSEM_WRITE_LOCKED
+mdefine_line|#define DECLARE_RWSEM_WRITE_LOCKED(name) __DECLARE_RWSEM_GENERIC(name, 0, 1)
 DECL|function|init_rwsem
 r_extern
 r_inline

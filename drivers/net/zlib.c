@@ -738,7 +738,7 @@ id|nice_match
 suffix:semicolon
 multiline_comment|/* Stop searching when current match exceeds this */
 multiline_comment|/* used by trees.c: */
-multiline_comment|/* Didn&squot;t use ct_data typedef below to supress compiler warning */
+multiline_comment|/* Didn&squot;t use ct_data typedef below to suppress compiler warning */
 DECL|member|dyn_ltree
 r_struct
 id|ct_data_s
@@ -1470,10 +1470,10 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* for buggy compilers */
 macro_line|#endif
-multiline_comment|/* ===========================================================================&n; * Update a hash value with the given input byte&n; * IN  assertion: all calls to to UPDATE_HASH are made with consecutive&n; *    input characters, so that a running hash key can be computed from the&n; *    previous key instead of complete recalculation each time.&n; */
+multiline_comment|/* ===========================================================================&n; * Update a hash value with the given input byte&n; * IN  assertion: all calls to UPDATE_HASH are made with consecutive&n; *    input characters, so that a running hash key can be computed from the&n; *    previous key instead of complete recalculation each time.&n; */
 DECL|macro|UPDATE_HASH
 mdefine_line|#define UPDATE_HASH(s,h,c) (h = (((h)&lt;&lt;s-&gt;hash_shift) ^ (c)) &amp; s-&gt;hash_mask)
-multiline_comment|/* ===========================================================================&n; * Insert string str in the dictionary and set match_head to the previous head&n; * of the hash chain (the most recent string with same hash key). Return&n; * the previous length of the hash chain.&n; * IN  assertion: all calls to to INSERT_STRING are made with consecutive&n; *    input characters and the first MIN_MATCH bytes of str are valid&n; *    (except for the last MIN_MATCH-1 bytes of the input file).&n; */
+multiline_comment|/* ===========================================================================&n; * Insert string str in the dictionary and set match_head to the previous head&n; * of the hash chain (the most recent string with same hash key). Return&n; * the previous length of the hash chain.&n; * IN  assertion: all calls to INSERT_STRING are made with consecutive&n; *    input characters and the first MIN_MATCH bytes of str are valid&n; *    (except for the last MIN_MATCH-1 bytes of the input file).&n; */
 DECL|macro|INSERT_STRING
 mdefine_line|#define INSERT_STRING(s, str, match_head) &bslash;&n;   (UPDATE_HASH(s, s-&gt;ins_h, s-&gt;window[(str) + (MIN_MATCH-1)]), &bslash;&n;    s-&gt;prev[(str) &amp; s-&gt;w_mask] = match_head = s-&gt;head[s-&gt;ins_h], &bslash;&n;    s-&gt;head[s-&gt;ins_h] = (Pos)(str))
 multiline_comment|/* ===========================================================================&n; * Initialize the hash table (avoiding 64K overflow for 16 bit systems).&n; * prev[] will be initialized on the fly.&n; */

@@ -2,12 +2,26 @@ macro_line|#ifndef _LINUX_LOOP_H
 DECL|macro|_LINUX_LOOP_H
 mdefine_line|#define _LINUX_LOOP_H
 macro_line|#include &lt;linux/kdev_t.h&gt;
-multiline_comment|/*&n; * include/linux/loop.h&n; *&n; * Written by Theodore Ts&squot;o, 3/29/93.&n; *&n; * Copyright 1993 by Theodore Ts&squot;o.  Redistribution of this file is&n; * permitted under the GNU Public License.&n; */
+multiline_comment|/*&n; * include/linux/loop.h&n; *&n; * Written by Theodore Ts&squot;o, 3/29/93.&n; *&n; * Copyright 1993 by Theodore Ts&squot;o.  Redistribution of this file is&n; * permitted under the GNU General Public License.&n; */
 DECL|macro|LO_NAME_SIZE
 mdefine_line|#define LO_NAME_SIZE&t;64
 DECL|macro|LO_KEY_SIZE
 mdefine_line|#define LO_KEY_SIZE&t;32
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* Possible states of device */
+r_enum
+(brace
+DECL|enumerator|Lo_unbound
+id|Lo_unbound
+comma
+DECL|enumerator|Lo_bound
+id|Lo_bound
+comma
+DECL|enumerator|Lo_rundown
+id|Lo_rundown
+comma
+)brace
+suffix:semicolon
 DECL|struct|loop_device
 r_struct
 id|loop_device
@@ -15,12 +29,6 @@ id|loop_device
 DECL|member|lo_number
 r_int
 id|lo_number
-suffix:semicolon
-DECL|member|lo_dentry
-r_struct
-id|dentry
-op_star
-id|lo_dentry
 suffix:semicolon
 DECL|member|lo_refcnt
 r_int
@@ -139,6 +147,53 @@ l_int|48
 )braket
 suffix:semicolon
 multiline_comment|/* for use by the filter modules */
+DECL|member|lo_blksize
+r_int
+id|lo_blksize
+suffix:semicolon
+DECL|member|old_gfp_mask
+r_int
+id|old_gfp_mask
+suffix:semicolon
+DECL|member|lo_lock
+id|spinlock_t
+id|lo_lock
+suffix:semicolon
+DECL|member|lo_bh
+r_struct
+id|buffer_head
+op_star
+id|lo_bh
+suffix:semicolon
+DECL|member|lo_bhtail
+r_struct
+id|buffer_head
+op_star
+id|lo_bhtail
+suffix:semicolon
+DECL|member|lo_state
+r_int
+id|lo_state
+suffix:semicolon
+DECL|member|lo_sem
+r_struct
+id|semaphore
+id|lo_sem
+suffix:semicolon
+DECL|member|lo_ctl_mutex
+r_struct
+id|semaphore
+id|lo_ctl_mutex
+suffix:semicolon
+DECL|member|lo_bh_mutex
+r_struct
+id|semaphore
+id|lo_bh_mutex
+suffix:semicolon
+DECL|member|lo_pending
+id|atomic_t
+id|lo_pending
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|transfer_proc_t
@@ -171,12 +226,74 @@ r_int
 id|real_block
 )paren
 suffix:semicolon
+DECL|function|lo_do_transfer
+r_extern
+r_inline
+r_int
+id|lo_do_transfer
+c_func
+(paren
+r_struct
+id|loop_device
+op_star
+id|lo
+comma
+r_int
+id|cmd
+comma
+r_char
+op_star
+id|rbuf
+comma
+r_char
+op_star
+id|lbuf
+comma
+r_int
+id|size
+comma
+r_int
+id|rblock
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lo-&gt;transfer
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|lo
+op_member_access_from_pointer
+id|transfer
+c_func
+(paren
+id|lo
+comma
+id|cmd
+comma
+id|rbuf
+comma
+id|lbuf
+comma
+id|size
+comma
+id|rblock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * used to throttle loop_thread so bdflush/kswapd doesn&squot;t go nuts&n; */
+DECL|macro|LOOP_MAX_BUFFERS
+mdefine_line|#define LOOP_MAX_BUFFERS&t;2048
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Loop flags&n; */
 DECL|macro|LO_FLAGS_DO_BMAP
-mdefine_line|#define LO_FLAGS_DO_BMAP&t;0x00000001
+mdefine_line|#define LO_FLAGS_DO_BMAP&t;1
 DECL|macro|LO_FLAGS_READ_ONLY
-mdefine_line|#define LO_FLAGS_READ_ONLY&t;0x00000002
+mdefine_line|#define LO_FLAGS_READ_ONLY&t;2
 multiline_comment|/* &n; * Note that this structure gets the wrong offsets when directly used&n; * from a glibc program, because glibc has a 32bit dev_t.&n; * Prevent people from shooting in their own foot.  &n; */
 macro_line|#if __GLIBC__ &gt;= 2 &amp;&amp; !defined(dev_t)
 macro_line|#error &quot;Wrong dev_t in loop.h&quot;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/macmodes.c -- Standard MacOS video modes&n; *&n; *&t;Copyright (C) 1998 Geert Uytterhoeven&n; *&n; *      2000 - Removal of OpenFirmware dependencies by:&n; *      - Ani Joshi&n; *      - Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/macmodes.c -- Standard MacOS video modes&n; *&n; *&t;Copyright (C) 1998 Geert Uytterhoeven&n; *&n; *      2000 - Removal of OpenFirmware dependencies by:&n; *      - Ani Joshi&n; *      - Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *&t;2001 - Documented with DocBook&n; *&t;- Brad Douglas &lt;brad@neruo.com&gt;&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
@@ -1025,6 +1025,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+multiline_comment|/**&n; *&t;console_getmode - get current mode&n; *&t;@mode: virtual console mode structure&n; *&n; *&t;Populates @mode with the current mode held in the global&n; *&t;display_info structure.&n; *&n; *&t;Note, this function is only for XPMAC compatibility.&n; *&n; *&t;Returns zero.&n; */
 DECL|function|console_getmode
 r_int
 id|console_getmode
@@ -1045,6 +1046,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;console_setmode - sets current console mode&n; *&t;@mode: virtual console mode structure&n; *&t;@doit: boolean, 0 test mode, 1 test and activate mode&n; *&n; *&t;Sets @mode for all virtual consoles if @doit is non-zero,&n; *&t;otherwise, test a mode for validity.&n; *&n; *&t;Note, this function is only for XPMAC compatibility.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|console_setmode
 r_int
 id|console_setmode
@@ -1239,6 +1241,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;console_setcmap - sets palette color map for console&n; *&t;@n_entries: number of entries in the palette (max 16)&n; *&t;@red: value for red component of palette&n; *&t;@green: value for green component of palette&n; *&t;@blue: value for blue component of palette&n; *&n; *&t;Sets global palette_cmap structure and activates the palette&n; *&t;on the current console.&n; *&n; *&t;Note, this function is only for XPMAC compatibility.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|console_setcmap
 r_int
 id|console_setcmap
@@ -1440,6 +1443,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;console_powermode - sets monitor power mode&n; *&t;@mode: power state to set&n; *&n; *&t;Sets power state as dictated by @mode.&n; *&n; *&t;Note that this function is only for XPMAC compatibility and&n; *&t;doesn&squot;t do much.&n; *&n; *&t;Returns 0 for %VC_POWERMODE_INQUIRY, -EINVAL for VESA power&n; *&t;settings, or -ENIXIO on failure.&n; *&n; */
 DECL|function|console_powermode
 r_int
 id|console_powermode
@@ -1477,7 +1481,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
-multiline_comment|/*&n;     *  Convert a MacOS vmode/cmode pair to a frame buffer video mode structure&n;     */
+multiline_comment|/**&n; *&t;mac_vmode_to_var - converts vmode/cmode pair to var structure&n; *&t;@vmode: MacOS video mode&n; *&t;@cmode: MacOS color mode&n; *&t;@var: frame buffer video mode structure&n; *&n; *&t;Converts a MacOS vmode/cmode pair to a frame buffer video&n; *&t;mode structure.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|mac_vmode_to_var
 r_int
 id|mac_vmode_to_var
@@ -1749,7 +1753,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Convert a frame buffer video mode structure to a MacOS vmode/cmode pair&n;     */
+multiline_comment|/**&n; *&t;mac_var_to_vmode - convert var structure to MacOS vmode/cmode pair&n; *&t;@var: frame buffer video mode structure&n; *&t;@vmode: MacOS video mode&n; *&t;@cmode: MacOS color mode&n; *&n; *&t;Converts a frame buffer video mode structure to a MacOS&n; *&t;vmode/cmode pair.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|mac_var_to_vmode
 r_int
 id|mac_var_to_vmode
@@ -1909,7 +1913,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Convert a Mac monitor sense number to a MacOS vmode number&n;     */
+multiline_comment|/**&n; *&t;mac_map_monitor_sense - Convert monitor sense to vmode&n; *&t;@sense: Macintosh monitor sense number&n; *&n; *&t;Converts a Macintosh monitor sense number to a MacOS&n; *&t;vmode number.&n; *&n; *&t;Returns MacOS vmode video mode number.&n; *&n; */
 DECL|function|mac_map_monitor_sense
 r_int
 id|mac_map_monitor_sense
@@ -1953,7 +1957,7 @@ r_return
 id|map-&gt;vmode
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Find a suitable video mode&n;     *&n;     *  If the name of the wanted mode begins with `mac&squot;, use the Mac video&n;     *  mode database, else fall back to the standard video mode database.&n;     */
+multiline_comment|/**&n; *&t;mac_find_mode - find a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode_option: video mode name (see mac_modedb[])&n; *&t;@default_bpp: default color depth in bits per pixel&n; *&n; *&t;Finds a suitable video mode.  Tries to set mode specified&n; *&t;by @mode_option.  If the name of the wanted mode begins with&n; *&t;&squot;mac&squot;, the Mac video mode database will be used, otherwise it&n; *&t;will fall back to the standard video mode database.&n; *&n; *&t;Note: Function marked as __init and can only be used during&n; *&t;system boot.&n; *&n; *&t;Returns error code from fb_find_mode (see fb_find_mode&n; *&t;function).&n; *&n; */
 DECL|function|mac_find_mode
 r_int
 id|__init

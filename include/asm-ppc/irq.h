@@ -120,20 +120,28 @@ DECL|macro|SIU_IRQ7
 mdefine_line|#define&t;SIU_IRQ7&t;(14)
 DECL|macro|SIU_LEVEL7
 mdefine_line|#define&t;SIU_LEVEL7&t;(15)
+multiline_comment|/* Now include the board configuration specific associations.&n;*/
+macro_line|#include &lt;asm/mpc8xx.h&gt;
 multiline_comment|/* The internal interrupts we can configure as we see fit.&n; * My personal preference is CPM at level 2, which puts it above the&n; * MBX PCI/ISA/IDE interrupts.&n; */
+macro_line|#ifndef PIT_INTERRUPT
 DECL|macro|PIT_INTERRUPT
 mdefine_line|#define PIT_INTERRUPT&t;&t;SIU_LEVEL0
+macro_line|#endif
+macro_line|#ifndef&t;CPM_INTERRUPT
 DECL|macro|CPM_INTERRUPT
 mdefine_line|#define CPM_INTERRUPT&t;&t;SIU_LEVEL2
+macro_line|#endif
+macro_line|#ifndef&t;PCMCIA_INTERRUPT
 DECL|macro|PCMCIA_INTERRUPT
 mdefine_line|#define PCMCIA_INTERRUPT&t;SIU_LEVEL6
+macro_line|#endif
+macro_line|#ifndef&t;DEC_INTERRUPT
 DECL|macro|DEC_INTERRUPT
 mdefine_line|#define DEC_INTERRUPT&t;&t;SIU_LEVEL7
+macro_line|#endif
 multiline_comment|/* Some internal interrupt registers use an 8-bit mask for the interrupt&n; * level instead of a number.&n; */
 DECL|macro|mk_int_int_mask
 mdefine_line|#define&t;mk_int_int_mask(IL) (1 &lt;&lt; (7 - (IL/2)))
-multiline_comment|/* Now include the board configuration specific associations.&n;*/
-macro_line|#include &lt;asm/mpc8xx.h&gt;
 multiline_comment|/* always the same on 8xx -- Cort */
 DECL|function|irq_cannonicalize
 r_static

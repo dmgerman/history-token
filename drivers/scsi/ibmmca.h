@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Low Level Driver for the IBM Microchannel SCSI Subsystem&n; * (Headerfile, see README.ibmmca for description of the IBM MCA SCSI-driver&n; * For use under the GNU public license within the Linux-kernel project.&n; * This include file works only correctly with kernel 2.4.0 or higher!!! */
+multiline_comment|/* &n; * Low Level Driver for the IBM Microchannel SCSI Subsystem&n; * (Headerfile, see README.ibmmca for description of the IBM MCA SCSI-driver&n; * For use under the GNU General Public License within the Linux-kernel project.&n; * This include file works only correctly with kernel 2.4.0 or higher!!! */
 macro_line|#ifndef _IBMMCA_H
 DECL|macro|_IBMMCA_H
 mdefine_line|#define _IBMMCA_H

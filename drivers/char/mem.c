@@ -2728,6 +2728,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
+id|tapechar_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_ADB)
 id|adbdev_init
 c_func

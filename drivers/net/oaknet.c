@@ -46,8 +46,6 @@ r_struct
 id|net_device
 op_star
 id|oaknet_devs
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Function Prototypes */
 r_static
@@ -183,6 +181,9 @@ id|reg0
 comma
 id|regd
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_struct
 id|net_device
 id|tmp
@@ -223,6 +224,16 @@ op_star
 )paren
 id|__res
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioaddr
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/*&n;&t; * This MUST happen here because of the nic_* macros&n;&t; * which have an implicit dependency on dev-&gt;base_addr.&n;&t; */
 id|tmp.base_addr
 op_assign
@@ -232,6 +243,11 @@ id|dev
 op_assign
 op_amp
 id|tmp
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 r_if
 c_cond
@@ -247,11 +263,15 @@ comma
 id|name
 )paren
 )paren
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out_unmap
 suffix:semicolon
 multiline_comment|/* Quick register check to see if the device is really there. */
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -267,21 +287,9 @@ id|ioaddr
 op_eq
 l_int|0xFF
 )paren
-(brace
-id|release_region
-c_func
-(paren
-id|OAKNET_IO_BASE
-comma
-id|OAKNET_IO_SIZE
-)paren
+r_goto
+id|out_region
 suffix:semicolon
-r_return
-(paren
-id|ENODEV
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * That worked. Now a more thorough check, using the multicast&n;&t; * address registers, that the device is definitely out there&n;&t; * and semi-functional.&n;&t; */
 id|ei_obp
 c_func
@@ -338,6 +346,11 @@ id|EN0_COUNTER0
 )paren
 suffix:semicolon
 multiline_comment|/* It&squot;s no good. Fix things back up and leave. */
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -370,23 +383,8 @@ op_plus
 l_int|0x0D
 )paren
 suffix:semicolon
-id|dev-&gt;base_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|OAKNET_IO_SIZE
-)paren
-suffix:semicolon
-r_return
-(paren
-op_minus
-id|ENODEV
-)paren
+r_goto
+id|out_region
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We&squot;re not using the old-style probing API, so we have to allocate&n;&t; * our own device structure.&n;&t; */
@@ -400,28 +398,20 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|dev
 )paren
-(brace
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|OAKNET_IO_SIZE
-)paren
+r_goto
+id|out_region
 suffix:semicolon
-r_return
-(paren
-op_minus
-id|ENOMEM
-)paren
-suffix:semicolon
-)brace
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -442,6 +432,11 @@ op_assign
 id|OAKNET_INT
 suffix:semicolon
 multiline_comment|/* Allocate 8390-specific device-private area and fields. */
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -458,19 +453,8 @@ c_func
 l_string|&quot; unable to get memory for dev-&gt;priv.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|OAKNET_IO_SIZE
-)paren
-suffix:semicolon
-r_return
-(paren
-op_minus
-id|ENOMEM
-)paren
+r_goto
+id|out_dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Disable all chip interrupts for now and ACK all pending&n;&t; * interrupts.&n;&t; */
@@ -495,6 +479,11 @@ id|EN0_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Attempt to get the interrupt line */
+id|ret
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -523,24 +512,8 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|OAKNET_IO_SIZE
-)paren
-suffix:semicolon
-r_return
-(paren
-id|EAGAIN
-)paren
+r_goto
+id|out_priv
 suffix:semicolon
 )brace
 multiline_comment|/* Tell the world about what and where we&squot;ve found. */
@@ -674,6 +647,49 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
+id|out_priv
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev-&gt;priv
+)paren
+suffix:semicolon
+id|out_dev
+suffix:colon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|out_region
+suffix:colon
+id|release_region
+c_func
+(paren
+id|OAKNET_IO_BASE
+comma
+id|OAKNET_IO_SIZE
+)paren
+suffix:semicolon
+id|out_unmap
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * static int oaknet_open()&n; *&n; * Description:&n; *   This routine is a modest wrapper around ei_open, the 8390-generic,&n; *   driver open routine. This just increments the module usage count&n; *   and passes along the status from ei_open.&n; *&n; * Input(s):&n; *  *dev - Pointer to the device structure for this driver.&n; *&n; * Output(s):&n; *  *dev - Pointer to the device structure for this driver, potentially&n; *         modified by ei_open.&n; *&n; * Returns:&n; *   0 if OK, otherwise &lt; 0 on error.&n; *&n; */
 r_static
@@ -779,8 +795,6 @@ suffix:semicolon
 id|ei_status.dmaing
 op_assign
 l_int|0
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * static void oaknet_get_8390_hdr()&n; *&n; * Description:&n; *   This routine grabs the 8390-specific header. It&squot;s similar to the&n; *   block input routine, but we don&squot;t need to be concerned with ring wrap&n; *   as the header will be at the start of a page, so we optimize accordingly.&n; *&n; * Input(s):&n; *  *dev       - Pointer to the device structure for this driver.&n; *  *hdr       - Pointer to storage for the 8390-specific packet header.&n; *   ring_page - ?&n; *&n; * Output(s):&n; *  *hdr       - Pointer to the 8390-specific packet header for the just-&n; *               received frame.&n; *&n; * Returns:&n; *   N/A&n; *&n; */
@@ -966,8 +980,6 @@ id|ei_status.dmaing
 op_and_assign
 op_complement
 l_int|0x01
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * XXX - Document me.&n; */
@@ -1300,8 +1312,6 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * static void oaknet_block_output()&n; *&n; * Description:&n; *   This routine...&n; *&n; * Input(s):&n; *  *dev        - Pointer to the device structure for this driver.&n; *   count      - Number of bytes to be transferred.&n; *  *buf        - &n; *   start_page - &n; *&n; * Output(s):&n; *   N/A&n; *&n; * Returns:&n; *   N/A&n; *&n; */
 r_static
@@ -1953,10 +1963,8 @@ op_and_assign
 op_complement
 l_int|0x01
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * static void oaknet_dma_error()&n; *&n; * Description:&n; *   This routine prints out a last-ditch informative message to the console&n; *   indicating that a DMA error occured. If you see this, it&squot;s the last&n; *   thing you&squot;ll see.&n; *&n; * Input(s):&n; *  *dev  - Pointer to the device structure for this driver.&n; *  *name - Informative text (e.g. function name) indicating where the&n; *          DMA error occurred.&n; *&n; * Output(s):&n; *   N/A&n; *&n; * Returns:&n; *   N/A&n; *&n; */
+multiline_comment|/*&n; * static void oaknet_dma_error()&n; *&n; * Description:&n; *   This routine prints out a last-ditch informative message to the console&n; *   indicating that a DMA error occurred. If you see this, it&squot;s the last&n; *   thing you&squot;ll see.&n; *&n; * Input(s):&n; *  *dev  - Pointer to the device structure for this driver.&n; *  *name - Informative text (e.g. function name) indicating where the&n; *          DMA error occurred.&n; *&n; * Output(s):&n; *   N/A&n; *&n; * Returns:&n; *   N/A&n; *&n; */
 r_static
 r_void
 DECL|function|oaknet_dma_error
@@ -1991,8 +1999,6 @@ id|ei_status.irqlock
 comma
 id|dev-&gt;interrupt
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Oak Ethernet module load interface.&n; */
@@ -2081,6 +2087,12 @@ comma
 id|OAKNET_IO_SIZE
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -2094,9 +2106,12 @@ id|priv
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Convert to loop once driver supports multiple devices. */
+id|kfree
+c_func
+(paren
 id|oaknet_devs
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 )brace
 DECL|variable|oaknet_init_module

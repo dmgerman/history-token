@@ -5135,7 +5135,7 @@ id|IO_ERROR
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-13080: reiserfs_new_directory: &quot;
-l_string|&quot;i/o failure occured creating new directory&bslash;n&quot;
+l_string|&quot;i/o failure occurred creating new directory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5300,7 +5300,7 @@ id|IO_ERROR
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-13080: reiserfs_new_symlinik: &quot;
-l_string|&quot;i/o failure occured creating new symlink&bslash;n&quot;
+l_string|&quot;i/o failure occurred creating new symlink&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -109,10 +109,10 @@ op_assign
 id|alloc_page
 c_func
 (paren
-id|GFP_HIGHMEM
+id|GFP_HIGHUSER
 )paren
 suffix:semicolon
-multiline_comment|/* ncpfs has nothing against GFP_HIGHMEM&n;&t;           as long as recvmsg and memset works on it */
+multiline_comment|/* ncpfs has nothing against high pages&n;&t;           as long as recvmsg and memset works on it */
 r_if
 c_cond
 (paren

@@ -2082,6 +2082,10 @@ id|inode-&gt;i_data.host
 op_assign
 id|inode
 suffix:semicolon
+id|inode-&gt;i_data.gfp_mask
+op_assign
+id|GFP_HIGHUSER
+suffix:semicolon
 id|inode-&gt;i_mapping
 op_assign
 op_amp

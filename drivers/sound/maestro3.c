@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; *      ESS Maestro3/Allegro driver for Linux 2.4.x&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    (c) Copyright 2000 Zach Brown &lt;zab@zabbo.net&gt;&n; *&n; * I need to thank many people for helping make this driver happen.  &n; * As always, Eric Brombaugh was a hacking machine and killed many bugs&n; * that I was too dumb to notice.  Howard Kim at ESS provided reference boards &n; * and as much docs as he could.  Todd and Mick at Dell tested snapshots on &n; * an army of laptops.  msw and deviant at Red Hat also humoured me by hanging&n; * their laptops every few hours in the name of science.&n; * &n; * Shouts go out to Mike &quot;DJ XPCom&quot; Ang.&n; *&n; * History&n; *  v1.21 - Feb 04 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   fix up really dumb notifier -&gt; suspend oops&n; *  v1.20 - Jan 30 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   get rid of pm callback and use pci_dev suspend/resume instead&n; *   m3_probe cleanups, including pm oops think-o&n; *  v1.10 - Jan 6 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   revert to lame remap_page_range mmap() just to make it work&n; *   record mmap fixed.&n; *   fix up incredibly broken open/release resource management&n; *   duh.  fix record format setting.&n; *   add SMP locking and cleanup formatting here and there&n; *  v1.00 - Dec 16 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   port to sexy 2.4 interfaces&n; *   properly align instance allocations so recording works&n; *   clean up function namespace a little :/&n; *   update PCI IDs based on mail from ESS&n; *   arbitrarily bump version number to show its 2.4 now, &n; *      2.2 will stay 0., oss_audio port gets 2.&n; *  v0.03 - Nov 05 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   disable recording but allow dsp to be opened read &n; *   pull out most silly compat defines&n; *  v0.02 - Nov 04 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   changed clocking setup for m3, slowdown fixed.&n; *   codec reset is hopefully reliable now&n; *   rudimentary apm/power management makes suspend/resume work&n; *  v0.01 - Oct 31 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   first release&n; *  v0.00 - Sep 09 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   first pass derivation from maestro.c&n; *&n; * TODO&n; *  in/out allocated contiguously so fullduplex mmap will work?&n; *  no beep on init (mute)&n; *  resetup msrc data memory if freq changes?&n; *&n; *  --&n; *&n; *  Allow me to ramble a bit about the m3 architecture.  The core of the&n; *  chip is the &squot;assp&squot;, the custom ESS dsp that runs the show.  It has&n; *  a small amount of code and data ram.  ESS drops binary dsp code images&n; *  on our heads, but we don&squot;t get to see specs on the dsp.  &n; *&n; *  The constant piece of code on the dsp is the &squot;kernel&squot;.  It also has a &n; *  chunk of the dsp memory that is statically set aside for its control&n; *  info.  This is the KDATA defines in maestro3.h.  Part of its core&n; *  data is a list of code addresses that point to the pieces of DSP code&n; *  that it should walk through in its loop.  These other pieces of code&n; *  do the real work.  The kernel presumably jumps into each of them in turn.&n; *  These code images tend to have their own data area, and one can have&n; *  multiple data areas representing different states for each of the &squot;client&n; *  instance&squot; code portions.  There is generaly a list in the kernel data&n; *  that points to the data instances for a given piece of code.&n; *&n; *  We&squot;ve only been given the binary image for the &squot;minisrc&squot;, mini sample &n; *  rate converter.  This is rather annoying because it limits the work&n; *  we can do on the dsp, but it also greatly simplifies the job of managing&n; *  dsp data memory for the code and data for our playing streams :).  We&n; *  statically allocate the minisrc code into a region we &squot;know&squot; to be free&n; *  based on the map of the binary kernel image we&squot;re loading.  We also &n; *  statically allocate the data areas for the maximum number of pcm streams&n; *  we can be dealing with.  This max is set by the length of the static list&n; *  in the kernel data that records the number of minisrc data regions we&n; *  can have.  Thats right, all software dsp mixing with static code list&n; *  limits.  Rock.&n; *&n; *  How sound goes in and out is still a relative mystery.  It appears&n; *  that the dsp has the ability to get input and output through various&n; *  &squot;connections&squot;.  To do IO from or to a connection, you put the address&n; *  of the minisrc client area in the static kernel data lists for that &n; *  input or output.  so for pcm -&gt; dsp -&gt; mixer, we put the minisrc data&n; *  instance in the DMA list and also in the list for the mixer.  I guess&n; *  it Just Knows which is in/out, and we give some dma control info that&n; *  helps.  There are all sorts of cool inputs/outputs that it seems we can&squot;t&n; *  use without dsp code images that know how to use them.&n; *&n; *  So at init time we preload all the memory allocation stuff and set some&n; *  system wide parameters.  When we really get a sound to play we build&n; *  up its minisrc header (stream parameters, buffer addresses, input/output&n; *  settings).  Then we throw its header on the various lists.  We also&n; *  tickle some KDATA settings that ask the assp to raise clock interrupts&n; *  and do some amount of software mixing before handing data to the ac97.&n; *&n; *  Sorry for the vague details.  Feel free to ask Eric or myself if you&n; *  happen to be trying to use this driver elsewhere.  Please accept my&n; *  apologies for the quality of the OSS support code, its passed through&n; *  too many hands now and desperately wants to be rethought.&n; */
+multiline_comment|/*****************************************************************************&n; *&n; *      ESS Maestro3/Allegro driver for Linux 2.4.x&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    (c) Copyright 2000 Zach Brown &lt;zab@zabbo.net&gt;&n; *&n; * I need to thank many people for helping make this driver happen.  &n; * As always, Eric Brombaugh was a hacking machine and killed many bugs&n; * that I was too dumb to notice.  Howard Kim at ESS provided reference boards &n; * and as much docs as he could.  Todd and Mick at Dell tested snapshots on &n; * an army of laptops.  msw and deviant at Red Hat also humoured me by hanging&n; * their laptops every few hours in the name of science.&n; * &n; * Shouts go out to Mike &quot;DJ XPCom&quot; Ang.&n; *&n; * History&n; *  v1.22 - Feb 28 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   allocate mem at insmod/setup, rather than open&n; *   limit pci dma addresses to 28bit, thanks guys.&n; *  v1.21 - Feb 04 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   fix up really dumb notifier -&gt; suspend oops&n; *  v1.20 - Jan 30 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   get rid of pm callback and use pci_dev suspend/resume instead&n; *   m3_probe cleanups, including pm oops think-o&n; *  v1.10 - Jan 6 2001 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   revert to lame remap_page_range mmap() just to make it work&n; *   record mmap fixed.&n; *   fix up incredibly broken open/release resource management&n; *   duh.  fix record format setting.&n; *   add SMP locking and cleanup formatting here and there&n; *  v1.00 - Dec 16 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   port to sexy 2.4 interfaces&n; *   properly align instance allocations so recording works&n; *   clean up function namespace a little :/&n; *   update PCI IDs based on mail from ESS&n; *   arbitrarily bump version number to show its 2.4 now, &n; *      2.2 will stay 0., oss_audio port gets 2.&n; *  v0.03 - Nov 05 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   disable recording but allow dsp to be opened read &n; *   pull out most silly compat defines&n; *  v0.02 - Nov 04 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   changed clocking setup for m3, slowdown fixed.&n; *   codec reset is hopefully reliable now&n; *   rudimentary apm/power management makes suspend/resume work&n; *  v0.01 - Oct 31 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   first release&n; *  v0.00 - Sep 09 2000 - Zach Brown &lt;zab@zabbo.net&gt;&n; *   first pass derivation from maestro.c&n; *&n; * TODO&n; *  in/out allocated contiguously so fullduplex mmap will work?&n; *  no beep on init (mute)&n; *  resetup msrc data memory if freq changes?&n; *&n; *  --&n; *&n; *  Allow me to ramble a bit about the m3 architecture.  The core of the&n; *  chip is the &squot;assp&squot;, the custom ESS dsp that runs the show.  It has&n; *  a small amount of code and data ram.  ESS drops binary dsp code images&n; *  on our heads, but we don&squot;t get to see specs on the dsp.  &n; *&n; *  The constant piece of code on the dsp is the &squot;kernel&squot;.  It also has a &n; *  chunk of the dsp memory that is statically set aside for its control&n; *  info.  This is the KDATA defines in maestro3.h.  Part of its core&n; *  data is a list of code addresses that point to the pieces of DSP code&n; *  that it should walk through in its loop.  These other pieces of code&n; *  do the real work.  The kernel presumably jumps into each of them in turn.&n; *  These code images tend to have their own data area, and one can have&n; *  multiple data areas representing different states for each of the &squot;client&n; *  instance&squot; code portions.  There is generaly a list in the kernel data&n; *  that points to the data instances for a given piece of code.&n; *&n; *  We&squot;ve only been given the binary image for the &squot;minisrc&squot;, mini sample &n; *  rate converter.  This is rather annoying because it limits the work&n; *  we can do on the dsp, but it also greatly simplifies the job of managing&n; *  dsp data memory for the code and data for our playing streams :).  We&n; *  statically allocate the minisrc code into a region we &squot;know&squot; to be free&n; *  based on the map of the binary kernel image we&squot;re loading.  We also &n; *  statically allocate the data areas for the maximum number of pcm streams&n; *  we can be dealing with.  This max is set by the length of the static list&n; *  in the kernel data that records the number of minisrc data regions we&n; *  can have.  Thats right, all software dsp mixing with static code list&n; *  limits.  Rock.&n; *&n; *  How sound goes in and out is still a relative mystery.  It appears&n; *  that the dsp has the ability to get input and output through various&n; *  &squot;connections&squot;.  To do IO from or to a connection, you put the address&n; *  of the minisrc client area in the static kernel data lists for that &n; *  input or output.  so for pcm -&gt; dsp -&gt; mixer, we put the minisrc data&n; *  instance in the DMA list and also in the list for the mixer.  I guess&n; *  it Just Knows which is in/out, and we give some dma control info that&n; *  helps.  There are all sorts of cool inputs/outputs that it seems we can&squot;t&n; *  use without dsp code images that know how to use them.&n; *&n; *  So at init time we preload all the memory allocation stuff and set some&n; *  system wide parameters.  When we really get a sound to play we build&n; *  up its minisrc header (stream parameters, buffer addresses, input/output&n; *  settings).  Then we throw its header on the various lists.  We also&n; *  tickle some KDATA settings that ask the assp to raise clock interrupts&n; *  and do some amount of software mixing before handing data to the ac97.&n; *&n; *  Sorry for the vague details.  Feel free to ask Eric or myself if you&n; *  happen to be trying to use this driver elsewhere.  Please accept my&n; *  apologies for the quality of the OSS support code, its passed through&n; *  too many hands now and desperately wants to be rethought.&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -28,7 +28,7 @@ macro_line|#include &quot;maestro3.h&quot;
 DECL|macro|M_DEBUG
 mdefine_line|#define M_DEBUG 1
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION      &quot;1.21&quot;
+mdefine_line|#define DRIVER_VERSION      &quot;1.22&quot;
 DECL|macro|M3_MODULE_NAME
 mdefine_line|#define M3_MODULE_NAME      &quot;maestro3&quot;
 DECL|macro|PFX
@@ -517,6 +517,9 @@ comma
 id|m3_id_table
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * reports seem to indicate that the m3 is limited&n; * to 28bit bus addresses.  aaaargggh...&n; */
+DECL|macro|M3_PCI_DMA_MASK
+mdefine_line|#define M3_PCI_DMA_MASK 0x0fffffff
 r_static
 r_int
 DECL|function|ld2
@@ -8665,6 +8668,17 @@ op_star
 id|db
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|db-&gt;rawbuf
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|DPRINTK
 c_func
 (paren
@@ -8798,10 +8812,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|i
-comma
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_char
@@ -9007,30 +9017,6 @@ op_amp
 id|FMODE_READ
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|allocate_dmabuf
-c_func
-(paren
-id|s-&gt;card-&gt;pcidev
-comma
-op_amp
-(paren
-id|s-&gt;dma_adc
-)paren
-)paren
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|fmtm
 op_and_assign
 op_complement
@@ -9086,30 +9072,6 @@ op_amp
 id|FMODE_WRITE
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|allocate_dmabuf
-c_func
-(paren
-id|s-&gt;card-&gt;pcidev
-comma
-op_amp
-(paren
-id|s-&gt;dma_dac
-)paren
-)paren
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|fmtm
 op_and_assign
 op_complement
@@ -9179,8 +9141,6 @@ id|FMODE_WRITE
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -9318,17 +9278,6 @@ id|s-&gt;dma_dac
 )paren
 suffix:semicolon
 )brace
-id|free_dmabuf
-c_func
-(paren
-id|s-&gt;card-&gt;pcidev
-comma
-op_amp
-(paren
-id|s-&gt;dma_dac
-)paren
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -9375,17 +9324,6 @@ id|s-&gt;dma_adc
 )paren
 suffix:semicolon
 )brace
-id|free_dmabuf
-c_func
-(paren
-id|s-&gt;card-&gt;pcidev
-comma
-op_amp
-(paren
-id|s-&gt;dma_adc
-)paren
-)paren
-suffix:semicolon
 )brace
 id|s-&gt;open_mode
 op_and_assign
@@ -11733,7 +11671,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0xffffffff
+id|M3_PCI_DMA_MASK
 )paren
 )paren
 (brace
@@ -11742,7 +11680,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;architecture does not support 32bit PCI busmaster DMA&bslash;n&quot;
+l_string|&quot;architecture does not support limiting to 28bit PCI bus addresses&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -11768,6 +11706,10 @@ c_func
 (paren
 id|pci_dev
 )paren
+suffix:semicolon
+id|pci_dev-&gt;dma_mask
+op_assign
+id|M3_PCI_DMA_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -12196,6 +12138,41 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|allocate_dmabuf
+c_func
+(paren
+id|card-&gt;pcidev
+comma
+op_amp
+(paren
+id|s-&gt;dma_adc
+)paren
+)paren
+op_logical_or
+id|allocate_dmabuf
+c_func
+(paren
+id|card-&gt;pcidev
+comma
+op_amp
+(paren
+id|s-&gt;dma_dac
+)paren
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -12458,18 +12435,37 @@ r_if
 c_cond
 (paren
 id|s-&gt;dev_audio
-op_ne
-op_minus
-l_int|1
+OL
+l_int|0
 )paren
 (brace
+r_continue
+suffix:semicolon
+)brace
 id|unregister_sound_dsp
 c_func
 (paren
 id|s-&gt;dev_audio
 )paren
 suffix:semicolon
-)brace
+id|free_dmabuf
+c_func
+(paren
+id|card-&gt;pcidev
+comma
+op_amp
+id|s-&gt;dma_adc
+)paren
+suffix:semicolon
+id|free_dmabuf
+c_func
+(paren
+id|card-&gt;pcidev
+comma
+op_amp
+id|s-&gt;dma_dac
+)paren
+suffix:semicolon
 )brace
 id|release_region
 c_func

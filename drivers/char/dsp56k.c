@@ -1374,6 +1374,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
 comma
 id|dev
@@ -1678,6 +1679,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
 comma
 id|dev
@@ -2147,6 +2149,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
 comma
 id|dev
@@ -2306,6 +2309,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
 comma
 id|dev
@@ -2378,6 +2382,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
 comma
 id|dev
@@ -2431,10 +2436,23 @@ r_static
 id|devfs_handle_t
 id|devfs_handle
 suffix:semicolon
-DECL|function|dsp56k_init
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;DSP56k driver installed&bslash;n&quot;
+suffix:semicolon
+DECL|function|dsp56k_init_driver
+r_static
 r_int
 id|__init
-id|dsp56k_init
+id|dsp56k_init_driver
 c_func
 (paren
 r_void
@@ -2494,6 +2512,7 @@ suffix:semicolon
 id|devfs_handle
 op_assign
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -2517,39 +2536,28 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|dsp56k.in_use
-op_assign
-l_int|0
-suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;DSP56k driver installed&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|dsp56k_init_driver
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
-id|dsp56k_init
-c_func
-(paren
+id|dsp56k_init_driver
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
+DECL|function|dsp56k_cleanup_driver
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|dsp56k_cleanup_driver
 c_func
 (paren
 r_void
@@ -2564,10 +2572,17 @@ l_string|&quot;dsp56k&quot;
 )paren
 suffix:semicolon
 id|devfs_unregister
+c_func
 (paren
 id|devfs_handle
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|dsp56k_cleanup_driver
+id|module_exit
+c_func
+(paren
+id|dsp56k_cleanup_driver
+)paren
+suffix:semicolon
 eof

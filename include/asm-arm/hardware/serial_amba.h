@@ -109,5 +109,9 @@ DECL|macro|ARM_BAUD_2400
 mdefine_line|#define ARM_BAUD_2400                   383
 DECL|macro|ARM_BAUD_1200
 mdefine_line|#define ARM_BAUD_1200                   767
+DECL|macro|AMBA_UARTRSR_ANY
+mdefine_line|#define AMBA_UARTRSR_ANY&t;(AMBA_UARTRSR_OE|AMBA_UARTRSR_BE|AMBA_UARTRSR_PE|AMBA_UARTRSR_FE)
+DECL|macro|AMBA_UARTFR_MODEM_ANY
+mdefine_line|#define AMBA_UARTFR_MODEM_ANY&t;(AMBA_UARTFR_DCD|AMBA_UARTFR_DSR|AMBA_UARTFR_CTS)
 macro_line|#endif
 eof

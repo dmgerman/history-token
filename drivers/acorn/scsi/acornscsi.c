@@ -4813,7 +4813,7 @@ id|host-&gt;dma.xfer_length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function: void acornscsi_dma_adjust(AS_Host *host)&n; * Purpose : adjust DMA pointers &amp; count for bytes transfered to&n; *&t;     SBIC but not SCSI bus.&n; * Params  : host - host to adjust DMA count for&n; */
+multiline_comment|/*&n; * Function: void acornscsi_dma_adjust(AS_Host *host)&n; * Purpose : adjust DMA pointers &amp; count for bytes transferred to&n; *&t;     SBIC but not SCSI bus.&n; * Params  : host - host to adjust DMA count for&n; */
 r_static
 DECL|function|acornscsi_dma_adjust
 r_void

@@ -769,6 +769,10 @@ comma
 id|header
 )paren
 suffix:semicolon
+id|dlp-&gt;stats.rx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -777,6 +781,10 @@ id|skb
 suffix:semicolon
 id|dlp-&gt;stats.rx_packets
 op_increment
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 r_else

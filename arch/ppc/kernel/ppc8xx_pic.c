@@ -559,12 +559,52 @@ id|dev_id
 )paren
 suffix:semicolon
 macro_line|#else
+multiline_comment|/*&n;&t; * Handle other &quot;well-known&quot; interrupts, but panic on unknown ones.&n;&t; */
+r_switch
+c_cond
+(paren
+id|irq
+)paren
+(brace
+macro_line|#ifdef&t;IDE0_INTERRUPT
+r_case
+id|IDE0_INTERRUPT
+suffix:colon
+multiline_comment|/* fall through */
+macro_line|#endif
+macro_line|#ifdef&t;IDE1_INTERRUPT
+r_case
+id|IDE1_INTERRUPT
+suffix:colon
+multiline_comment|/* fall through */
+macro_line|#endif
+r_return
+(paren
+id|request_8xxirq
+c_func
+(paren
+id|irq
+comma
+id|handler
+comma
+id|irqflags
+comma
+id|devname
+comma
+id|dev_id
+)paren
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* unknown IRQ -&gt; panic */
 id|panic
 c_func
 (paren
 l_string|&quot;request_irq&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;&t;Hardware driver for Intel i810 Random Number Generator (RNG)&n;&t;Copyright 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000 Philipp Rumpf &lt;prumpf@tux.org&gt;&n;&n;&t;Driver Web site:  http://sourceforge.net/projects/gkernel/&n;&n;&n;&n;&t;Based on:&n;&t;Intel 82802AB/82802AC Firmware Hub (FWH) Datasheet&n;&t;&t;May 1999 Order Number: 290658-002 R&n;&n;&t;Intel 82802 Firmware Hub: Random Number Generator&n;&t;Programmer&squot;s Reference Manual&n;&t;&t;December 1999 Order Number: 298029-001 R&n;&n;&t;Intel 82802 Firmware HUB Random Number Generator Driver&n;&t;Copyright (c) 2000 Matt Sottek &lt;msottek@quiknet.com&gt;&n;&n;&t;Special thanks to Matt Sottek.  I did the &quot;guts&quot;, he&n;&t;did the &quot;brains&quot; and all the testing.  (Anybody wanna send&n;&t;me an i810 or i820?)&n;&n;&t;----------------------------------------------------------&n;&n;&t;This software may be used and distributed according to the terms&n;        of the GNU General Public License, incorporated herein by reference.&n;&n;&t;----------------------------------------------------------&n;&n;&t;From the firmware hub datasheet:&n;&n;&t;The Firmware Hub integrates a Random Number Generator (RNG)&n;&t;using thermal noise generated from inherently random quantum&n;&t;mechanical properties of silicon. When not generating new random&n;&t;bits the RNG circuitry will enter a low power state. Intel will&n;&t;provide a binary software driver to give third party software&n;&t;access to our RNG for use as a security feature. At this time,&n;&t;the RNG is only to be used with a system in an OS-present state.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Theory of operation:&n;&n;&t;This driver has TWO modes of operation:&n;&n;&t;Mode 1&n;&t;------&n;&t;Character driver.  Using the standard open()&n;&t;and read() system calls, you can read random data from&n;&t;the i810 RNG device.  This data is NOT CHECKED by any&n;&t;fitness tests, and could potentially be bogus (if the&n;&t;hardware is faulty or has been tampered with).&n;&n;&t;/dev/intel_rng is char device major 10, minor 183.&n;&n;&n;&t;Mode 2&n;&t;------&n;&t;Injection of entropy into the kernel entropy pool via a&n;&t;timer function.&n;&n;&t;A timer is run at rng_timer_len intervals, reading 8 bits&n;&t;of data from the RNG.  If the RNG has previously passed a&n;&t;FIPS test, then the data will be added to the /dev/random&n;&t;entropy pool.  Then, those 8 bits are added to an internal&n;&t;test data pool.  When that pool is full, a FIPS test is&n;&t;run to verify that the last N bytes read are decently random.&n;&n;&t;Thus, the RNG will never be enabled until it passes a&n;&t;FIPS test.  And, data will stop flowing into the system&n;&t;entropy pool if the data is determined to be non-random.&n;&n;&t;Finally, note that the timer defaults to OFF.  This ensures&n;&t;that the system entropy pool will not be polluted with&n;&t;RNG-originated data unless a conscious decision is made&n;&t;by the user.&n;&n;&t;HOWEVER NOTE THAT UP TO 2499 BYTES OF DATA CAN BE BOGUS&n;&t;BEFORE THE SYSTEM WILL NOTICE VIA THE FIPS TEST.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Driver notes:&n;&n;&t;* You may enable and disable the RNG timer via sysctl:&n;&n;&t;&t;# disable RNG&n;&t;&t;echo 0 &gt; /proc/sys/dev/i810_rng_timer&n;&n;&t;&t;# enable RNG&n;&t;&t;echo 1 &gt; /proc/sys/dev/i810_rng_timer&n;&n;&t;* The default number of entropy bits added by default is&n;&t;the full 8 bits.  If you wish to reduce this value for&n;&t;paranoia&squot;s sake, you can do so via sysctl as well:&n;&n;&t;&t;# Add only 4 bits of entropy to /dev/random&n;&t;&t;echo 4 &gt; /proc/sys/dev/i810_rng_entropy&n;&n;&t;* The default number of entropy bits can also be set via&n;&t;a module parameter &quot;rng_entropy&quot; at module load time.&n;&n;&t;* When the RNG timer is enabled, the driver reads 1 byte&n;&t;from the hardware RNG every N jiffies.  By default, every&n;&t;half-second.  If you would like to change the timer interval,&n;&t;do so via another sysctl:&n;&n;&t;&t;echo 200 &gt; /proc/sys/dev/i810_rng_interval&n;&n;&t;NOTE THIS VALUE IS IN JIFFIES, NOT SECONDS OR MILLISECONDS.&n;&t;Minimum interval is 1 jiffy, maximum interval is 24 hours.&n;&n;&t;* In order to unload the i810_rng module, you must first&n;&t;disable the hardware via sysctl i810_rng_timer, as shown above,&n;&t;and make sure all users of the character device have closed&n;&n;&t;* The timer and the character device may be used simultaneously,&n;&t;if desired.&n;&n;&t;* FIXME: support poll(2)&n;&n;&t;* FIXME: It is possible for the timer function to read,&n;&t;and shove into the kernel entropy pool, 2499 bytes of data&n;&t;before the internal FIPS test notices that the data is bad.&n;&t;The kernel should handle this (I think???), but we should use a&n;&t;2500-byte array, and re-run the FIPS test for every byte read.&n;&t;This will slow things down but guarantee that bad data is&n;&t;never passed upstream.&n;&n;&t;* FIXME: module unload is racy.  To fix this, struct ctl_table&n;&t;needs an owner member a la struct file_operations.&n;&n;&t;* FIXME: Timer interval should not be in jiffies, but in a more&n;&t;user-understandable value like milliseconds.&n;&n;&t;* Since the RNG is accessed from a timer as well as normal&n;&t;kernel code, but not from interrupts, we use spin_lock_bh&n;&t;in regular code, and spin_lock in the timer function, to&n;&t;serialize access to the RNG hardware area.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Change history:&n;&n;&t;Version 0.6.2:&n;&t;* Clean up spinlocks.  Since we don&squot;t have any interrupts&n;&t;  to worry about, but we do have a timer to worry about,&n;&t;  we use spin_lock_bh everywhere except the timer function&n;&t;  itself.&n;&t;* Fix module load/unload.&n;&t;* Fix timer function and h/w enable/disable logic&n;&t;* New timer interval sysctl&n;&t;* Clean up sysctl names&n;&n;&t;Version 0.9.0:&n;&t;* Don&squot;t register a pci_driver, because we are really&n;&t;  using PCI bridge vendor/device ids, and someone&n;&t;  may want to register a driver for the bridge. (bug fix)&n;&t;* Don&squot;t let the usage count go negative (bug fix)&n;&t;* Clean up spinlocks (bug fix)&n;&t;* Enable PCI device, if necessary (bug fix)&n;&t;* iounmap on module unload (bug fix)&n;&t;* If RNG chrdev is already in use when open(2) is called,&n;&t;  sleep until it is available.&n;&t;* Remove redundant globals rng_allocated, rng_use_count&n;&t;* Convert numeric globals to unsigned&n;&t;* Module unload cleanup&n;&n;&t;Version 0.9.1:&n;&t;* Support i815 chipsets too (Matt Sottek)&n;&t;* Fix reference counting when statically compiled (prumpf)&n;&t;* Rewrite rng_dev_read (prumpf)&n;&t;* Make module races less likely (prumpf)&n;&t;* Small miscellaneous bug fixes (prumpf)&n;&t;* Use pci table for PCI id list&n;&n;&t;Version 0.9.2:&n;&t;* Simplify open blocking logic&n;&n;&t;Version 0.9.3:&n;&t;* Clean up rng_read a bit.&n;&t;* Update i810_rng driver Web site URL.&n;&t;* Increase default timer interval to 4 samples per second.&n;&t;* Abort if mem region is not available.&n;&t;* BSS zero-initialization cleanup.&n;&t;* Call misc_register() from rng_init_one.&n;&t;* Fix O_NONBLOCK to occur before we schedule.&n;&n; */
+multiline_comment|/*&n;&n;&t;Hardware driver for Intel i810 Random Number Generator (RNG)&n;&t;Copyright 2000,2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Philipp Rumpf &lt;prumpf@mandrakesoft.com&gt;&n;&n;&t;Driver Web site:  http://sourceforge.net/projects/gkernel/&n;&n;&n;&n;&t;Based on:&n;&t;Intel 82802AB/82802AC Firmware Hub (FWH) Datasheet&n;&t;&t;May 1999 Order Number: 290658-002 R&n;&n;&t;Intel 82802 Firmware Hub: Random Number Generator&n;&t;Programmer&squot;s Reference Manual&n;&t;&t;December 1999 Order Number: 298029-001 R&n;&n;&t;Intel 82802 Firmware HUB Random Number Generator Driver&n;&t;Copyright (c) 2000 Matt Sottek &lt;msottek@quiknet.com&gt;&n;&n;&t;Special thanks to Matt Sottek.  I did the &quot;guts&quot;, he&n;&t;did the &quot;brains&quot; and all the testing.  (Anybody wanna send&n;&t;me an i810 or i820?)&n;&n;&t;----------------------------------------------------------&n;&n;&t;This software may be used and distributed according to the terms&n;        of the GNU General Public License, incorporated herein by reference.&n;&n;&t;----------------------------------------------------------&n;&n;&t;From the firmware hub datasheet:&n;&n;&t;The Firmware Hub integrates a Random Number Generator (RNG)&n;&t;using thermal noise generated from inherently random quantum&n;&t;mechanical properties of silicon. When not generating new random&n;&t;bits the RNG circuitry will enter a low power state. Intel will&n;&t;provide a binary software driver to give third party software&n;&t;access to our RNG for use as a security feature. At this time,&n;&t;the RNG is only to be used with a system in an OS-present state.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Theory of operation:&n;&n;&t;This driver has TWO modes of operation:&n;&n;&t;Mode 1&n;&t;------&n;&t;Character driver.  Using the standard open()&n;&t;and read() system calls, you can read random data from&n;&t;the i810 RNG device.  This data is NOT CHECKED by any&n;&t;fitness tests, and could potentially be bogus (if the&n;&t;hardware is faulty or has been tampered with).&n;&n;&t;/dev/intel_rng is char device major 10, minor 183.&n;&n;&n;&t;Mode 2&n;&t;------&n;&t;Injection of entropy into the kernel entropy pool via a&n;&t;timer function.&n;&n;&t;A timer is run at rng_timer_len intervals, reading 8 bits&n;&t;of data from the RNG.  If the RNG has previously passed a&n;&t;FIPS test, then the data will be added to the /dev/random&n;&t;entropy pool.  Then, those 8 bits are added to an internal&n;&t;test data pool.  When that pool is full, a FIPS test is&n;&t;run to verify that the last N bytes read are decently random.&n;&n;&t;Thus, the RNG will never be enabled until it passes a&n;&t;FIPS test.  And, data will stop flowing into the system&n;&t;entropy pool if the data is determined to be non-random.&n;&n;&t;Finally, note that the timer defaults to OFF.  This ensures&n;&t;that the system entropy pool will not be polluted with&n;&t;RNG-originated data unless a conscious decision is made&n;&t;by the user.&n;&n;&t;HOWEVER NOTE THAT UP TO 2499 BYTES OF DATA CAN BE BOGUS&n;&t;BEFORE THE SYSTEM WILL NOTICE VIA THE FIPS TEST.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Driver notes:&n;&n;&t;* You may enable and disable the RNG timer via sysctl:&n;&n;&t;&t;# disable RNG&n;&t;&t;echo 0 &gt; /proc/sys/dev/i810_rng_timer&n;&n;&t;&t;# enable RNG&n;&t;&t;echo 1 &gt; /proc/sys/dev/i810_rng_timer&n;&n;&t;* The default number of entropy bits added by default is&n;&t;the full 8 bits.  If you wish to reduce this value for&n;&t;paranoia&squot;s sake, you can do so via sysctl as well:&n;&n;&t;&t;# Add only 4 bits of entropy to /dev/random&n;&t;&t;echo 4 &gt; /proc/sys/dev/i810_rng_entropy&n;&n;&t;* The default number of entropy bits can also be set via&n;&t;a module parameter &quot;rng_entropy&quot; at module load time.&n;&n;&t;* When the RNG timer is enabled, the driver reads 1 byte&n;&t;from the hardware RNG every N jiffies.  By default, every&n;&t;half-second.  If you would like to change the timer interval,&n;&t;do so via another sysctl:&n;&n;&t;&t;echo 200 &gt; /proc/sys/dev/i810_rng_interval&n;&n;&t;NOTE THIS VALUE IS IN JIFFIES, NOT SECONDS OR MILLISECONDS.&n;&t;Minimum interval is 1 jiffy, maximum interval is 24 hours.&n;&n;&t;* In order to unload the i810_rng module, you must first&n;&t;disable the hardware via sysctl i810_rng_timer, as shown above,&n;&t;and make sure all users of the character device have closed&n;&n;&t;* The timer and the character device may be used simultaneously,&n;&t;if desired.&n;&n;&t;* FIXME: support poll(2)&n;&n;&t;* FIXME: It is possible for the timer function to read,&n;&t;and shove into the kernel entropy pool, 2499 bytes of data&n;&t;before the internal FIPS test notices that the data is bad.&n;&t;The kernel should handle this (I think???), but we should use a&n;&t;2500-byte array, and re-run the FIPS test for every byte read.&n;&t;This will slow things down but guarantee that bad data is&n;&t;never passed upstream.&n;&n;&t;* FIXME: module unload is racy.  To fix this, struct ctl_table&n;&t;needs an owner member a la struct file_operations.&n;&n;&t;* FIXME: Timer interval should not be in jiffies, but in a more&n;&t;user-understandable value like milliseconds.&n;&n;&t;* Since the RNG is accessed from a timer as well as normal&n;&t;kernel code, but not from interrupts, we use spin_lock_bh&n;&t;in regular code, and spin_lock in the timer function, to&n;&t;serialize access to the RNG hardware area.&n;&n;&t;NOTE: request_mem_region was removed, for two reasons:&n;&t;1) Only one RNG is supported by this driver, 2) The location&n;&t;used by the RNG is a fixed location in MMIO-addressable memory,&n;&t;3) users with properly working BIOS e820 handling will always&n;&t;have the region in which the RNG is located reserved, so&n;&t;request_mem_region calls always fail for proper setups.&n;&t;However, for people who use mem=XX, BIOS e820 information is&n;&t;-not- in /proc/iomem, and request_mem_region(RNG_ADDR) can&n;&t;succeed.&n;&n;&t;----------------------------------------------------------&n;&n;&t;Change history:&n;&n;&t;Version 0.6.2:&n;&t;* Clean up spinlocks.  Since we don&squot;t have any interrupts&n;&t;  to worry about, but we do have a timer to worry about,&n;&t;  we use spin_lock_bh everywhere except the timer function&n;&t;  itself.&n;&t;* Fix module load/unload.&n;&t;* Fix timer function and h/w enable/disable logic&n;&t;* New timer interval sysctl&n;&t;* Clean up sysctl names&n;&n;&t;Version 0.9.0:&n;&t;* Don&squot;t register a pci_driver, because we are really&n;&t;  using PCI bridge vendor/device ids, and someone&n;&t;  may want to register a driver for the bridge. (bug fix)&n;&t;* Don&squot;t let the usage count go negative (bug fix)&n;&t;* Clean up spinlocks (bug fix)&n;&t;* Enable PCI device, if necessary (bug fix)&n;&t;* iounmap on module unload (bug fix)&n;&t;* If RNG chrdev is already in use when open(2) is called,&n;&t;  sleep until it is available.&n;&t;* Remove redundant globals rng_allocated, rng_use_count&n;&t;* Convert numeric globals to unsigned&n;&t;* Module unload cleanup&n;&n;&t;Version 0.9.1:&n;&t;* Support i815 chipsets too (Matt Sottek)&n;&t;* Fix reference counting when statically compiled (prumpf)&n;&t;* Rewrite rng_dev_read (prumpf)&n;&t;* Make module races less likely (prumpf)&n;&t;* Small miscellaneous bug fixes (prumpf)&n;&t;* Use pci table for PCI id list&n;&n;&t;Version 0.9.2:&n;&t;* Simplify open blocking logic&n;&n;&t;Version 0.9.3:&n;&t;* Clean up rng_read a bit.&n;&t;* Update i810_rng driver Web site URL.&n;&t;* Increase default timer interval to 4 samples per second.&n;&t;* Abort if mem region is not available.&n;&t;* BSS zero-initialization cleanup.&n;&t;* Call misc_register() from rng_init_one.&n;&t;* Fix O_NONBLOCK to occur before we schedule.&n;&n;&t;Version 0.9.4:&n;&t;* Fix: Remove request_mem_region&n;&t;* Fix: Horrible bugs in FIPS calculation and test execution&n;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * core module and version information&n; */
 DECL|macro|RNG_VERSION
-mdefine_line|#define RNG_VERSION &quot;0.9.3&quot;
+mdefine_line|#define RNG_VERSION &quot;0.9.4&quot;
 DECL|macro|RNG_MODULE_NAME
 mdefine_line|#define RNG_MODULE_NAME &quot;i810_rng&quot;
 DECL|macro|RNG_DRIVER_NAME
@@ -24,7 +24,7 @@ DECL|macro|PFX
 mdefine_line|#define PFX RNG_MODULE_NAME &quot;: &quot;
 multiline_comment|/*&n; * debugging macros&n; */
 DECL|macro|RNG_DEBUG
-macro_line|#undef RNG_DEBUG /* define to 1 to enable copious debugging info */
+macro_line|#undef RNG_DEBUG /* define to enable copious debugging info */
 macro_line|#ifdef RNG_DEBUG
 multiline_comment|/* note: prints function name for you */
 DECL|macro|DPRINTK
@@ -34,8 +34,8 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(fmt, args...)
 macro_line|#endif
 DECL|macro|RNG_NDEBUG
-mdefine_line|#define RNG_NDEBUG 0        /* define to 1 to disable lightweight runtime checks */
-macro_line|#if RNG_NDEBUG
+macro_line|#undef RNG_NDEBUG        /* define to disable lightweight runtime checks */
+macro_line|#ifdef RNG_NDEBUG
 DECL|macro|assert
 mdefine_line|#define assert(expr)
 macro_line|#else
@@ -375,17 +375,26 @@ id|rng_fips_test_store
 id|rng_data
 )paren
 suffix:semicolon
+id|rng_fips_counter
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|rng_fips_counter
-OG
+op_eq
 id|RNG_FIPS_TEST_THRESHOLD
 )paren
+(brace
 id|rng_run_fips_test
 (paren
 )paren
 suffix:semicolon
+id|rng_fips_counter
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -1690,37 +1699,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-(paren
-id|RNG_ADDR
-comma
-id|RNG_ADDR_LEN
-comma
-id|RNG_MODULE_NAME
-)paren
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;cannot reserve RNG region&bslash;n&quot;
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning -EBUSY&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 id|rc
 op_assign
 id|misc_register
@@ -1750,7 +1728,7 @@ id|rc
 )paren
 suffix:semicolon
 r_goto
-id|err_out_free_res
+id|err_out
 suffix:semicolon
 )brace
 id|rng_mem
@@ -1907,15 +1885,8 @@ op_amp
 id|rng_miscdev
 )paren
 suffix:semicolon
-id|err_out_free_res
+id|err_out
 suffix:colon
-id|release_mem_region
-(paren
-id|RNG_ADDR
-comma
-id|RNG_ADDR_LEN
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -2149,13 +2120,6 @@ id|iounmap
 id|rng_mem
 )paren
 suffix:semicolon
-id|release_mem_region
-(paren
-id|RNG_ADDR
-comma
-id|RNG_ADDR_LEN
-)paren
-suffix:semicolon
 id|rng_pdev
 op_assign
 l_int|NULL
@@ -2346,7 +2310,7 @@ op_ge
 l_int|33
 )paren
 id|rng_test
-op_and_assign
+op_or_assign
 l_int|8
 suffix:semicolon
 id|rlength
@@ -2433,7 +2397,7 @@ op_ge
 l_int|33
 )paren
 id|rng_test
-op_and_assign
+op_or_assign
 l_int|8
 suffix:semicolon
 )brace
@@ -2454,7 +2418,7 @@ l_int|9654
 )paren
 )paren
 id|rng_test
-op_and_assign
+op_or_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Poker calcs */
@@ -2504,7 +2468,7 @@ l_int|1562821
 )paren
 )paren
 id|rng_test
-op_and_assign
+op_or_assign
 l_int|2
 suffix:semicolon
 r_if
@@ -2728,7 +2692,7 @@ l_int|223
 )paren
 (brace
 id|rng_test
-op_and_assign
+op_or_assign
 l_int|4
 suffix:semicolon
 )brace

@@ -20,6 +20,14 @@ macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+DECL|variable|disarm_decr
+r_int
+r_int
+id|disarm_decr
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -457,6 +465,18 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disarm_decr
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+)paren
 id|set_dec
 c_func
 (paren

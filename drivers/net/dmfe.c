@@ -1448,6 +1448,9 @@ suffix:semicolon
 id|u32
 id|dev_rev
 suffix:semicolon
+id|u16
+id|pci_command
+suffix:semicolon
 id|DMFE_DBUG
 c_func
 (paren
@@ -1456,6 +1459,55 @@ comma
 l_string|&quot;dmfe_probe()&quot;
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Master/IO access, Disable memory access */
+id|i
+op_assign
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+r_return
+id|i
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|pci_command
+)paren
+suffix:semicolon
+id|pci_command
+op_and_assign
+op_complement
+id|PCI_COMMAND_MEMORY
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+id|pci_command
 )paren
 suffix:semicolon
 id|pci_iobase
@@ -1514,25 +1566,6 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
-multiline_comment|/* Enable Master/IO access, Disable memory access */
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-r_goto
-id|err_out
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 macro_line|#if 0&t;/* pci_{enable_device,set_master} sets minimum latency for us now */
 multiline_comment|/* Set Latency Timer 80h */
 multiline_comment|/* FIXME: setting values &gt; 32 breaks some SiS 559x stuff.&n;&t;   Need a PCI quirk.. */
@@ -2137,7 +2170,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Enter the check mode */
 )brace
-multiline_comment|/* Initilize DM910X board */
+multiline_comment|/* Initialize DM910X board */
 id|dmfe_init_dm910x
 c_func
 (paren
@@ -2186,7 +2219,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Initilize DM910X board&n;   Reset DM910X board&n;   Initilize TX/Rx descriptor chain structure&n;   Send the set-up frame&n;   Enable Tx/Rx machine&n; */
+multiline_comment|/* Initialize DM910X board&n;   Reset DM910X board&n;   Initialize TX/Rx descriptor chain structure&n;   Send the set-up frame&n;   Enable Tx/Rx machine&n; */
 DECL|function|dmfe_init_dm910x
 r_static
 r_void
@@ -2312,7 +2345,7 @@ c_func
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* Initiliaze Transmit/Receive decriptor and CR3/4 */
+multiline_comment|/* Initialize Transmit/Receive decriptor and CR3/4 */
 id|dmfe_descriptor_init
 c_func
 (paren
@@ -2573,7 +2606,7 @@ op_plus
 id|DCR1
 )paren
 suffix:semicolon
-multiline_comment|/* Issue Tx polling comand */
+multiline_comment|/* Issue Tx polling command */
 )brace
 r_else
 (brace
@@ -2591,7 +2624,7 @@ op_plus
 id|DCR1
 )paren
 suffix:semicolon
-multiline_comment|/* Issue Tx polling comand */
+multiline_comment|/* Issue Tx polling command */
 )brace
 multiline_comment|/* Tx resource check */
 r_if
@@ -2713,7 +2746,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   DM9102 insterrupt handler&n;   receive the packet to upper layer, free the transmitted packet&n; */
+multiline_comment|/*&n;   DM9102 interrupt handler&n;   receive the packet to upper layer, free the transmitted packet&n; */
 DECL|function|dmfe_interrupt
 r_static
 r_void
@@ -4163,7 +4196,7 @@ id|db-&gt;timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Dynamic reset the DM910X board&n;   Stop DM910X board&n;   Free Tx/Rx allocated memory&n;   Reset DM910X board&n;   Re-initilize DM910X board&n; */
+multiline_comment|/*&n;   Dynamic reset the DM910X board&n;   Stop DM910X board&n;   Free Tx/Rx allocated memory&n;   Reset DM910X board&n;   Re-initialize DM910X board&n; */
 DECL|function|dmfe_dynamic_reset
 r_static
 r_void
@@ -4255,7 +4288,7 @@ id|db-&gt;rx_error_cnt
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Re-initilize DM910X board */
+multiline_comment|/* Re-initialize DM910X board */
 id|dmfe_init_dm910x
 c_func
 (paren
@@ -4811,7 +4844,7 @@ id|DCR6
 suffix:semicolon
 multiline_comment|/* printk(&quot;CR6 update %x &quot;, cr6_tmp); */
 )brace
-multiline_comment|/* Send a setup frame for DM9132&n;   This setup frame initilize DM910X addres filter mode&n; */
+multiline_comment|/* Send a setup frame for DM9132&n;   This setup frame initialize DM910X address filter mode&n; */
 DECL|function|dm9132_id_table
 r_static
 r_void
@@ -5043,7 +5076,7 @@ id|ioaddr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Send a setup frame for DM9102/DM9102A&n;   This setup frame initilize DM910X addres filter mode&n; */
+multiline_comment|/* Send a setup frame for DM9102/DM9102A&n;   This setup frame initialize DM910X address filter mode&n; */
 DECL|function|send_filter_frame
 r_static
 r_void
@@ -6139,7 +6172,7 @@ comma
 id|PHY_DATA_1
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy addres */
+multiline_comment|/* Send Phy address */
 r_for
 c_loop
 (paren
@@ -6172,7 +6205,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register addres */
+multiline_comment|/* Send register address */
 r_for
 c_loop
 (paren
@@ -6378,7 +6411,7 @@ comma
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy addres */
+multiline_comment|/* Send Phy address */
 r_for
 c_loop
 (paren
@@ -6411,7 +6444,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register addres */
+multiline_comment|/* Send register address */
 r_for
 c_loop
 (paren
@@ -6801,7 +6834,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&t;Description: &n; *&t;when user used insmod to add module, system invoked init_module()&n; *&t;to initilize and register.&n; */
+multiline_comment|/*&t;Description: &n; *&t;when user used insmod to add module, system invoked init_module()&n; *&t;to initialize and register.&n; */
 DECL|function|dmfe_init_module
 r_static
 r_int
@@ -6896,14 +6929,6 @@ l_int|0
 r_return
 id|rc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_ge
-l_int|0
-)paren
-(brace
 id|printk
 (paren
 id|KERN_INFO
@@ -6914,11 +6939,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Description: &n; *&t;when user used rmmod to delete module, system invoked clean_module()&n; *&t;to un-register all registered services.&n; */

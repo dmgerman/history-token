@@ -4055,13 +4055,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_LOOP
-id|loop_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ISP16_CDI
 id|isp16_init
 c_func

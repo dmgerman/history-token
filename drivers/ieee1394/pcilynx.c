@@ -5230,7 +5230,7 @@ id|KERN_INFO
 comma
 id|lynx-&gt;id
 comma
-l_string|&quot;PHY timeout occured&quot;
+l_string|&quot;PHY timeout occurred&quot;
 )paren
 suffix:semicolon
 )brace

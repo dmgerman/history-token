@@ -250,9 +250,9 @@ mdefine_line|#define PSURGE_QUAD_CKSTOP_RDBK&t;8
 DECL|macro|PSURGE_QUAD_RESET_CTL
 mdefine_line|#define PSURGE_QUAD_RESET_CTL&t;11
 DECL|macro|PSURGE_QUAD_OUT
-mdefine_line|#define PSURGE_QUAD_OUT(r, v)&t;(out_8((u8 *)(quad_base+((r)&lt;&lt;2)+1), (v)))
+mdefine_line|#define PSURGE_QUAD_OUT(r, v)&t;(out_8(quad_base + ((r) &lt;&lt; 4) + 4, (v)))
 DECL|macro|PSURGE_QUAD_IN
-mdefine_line|#define PSURGE_QUAD_IN(r)&t;(in_8((u8 *)(quad_base+((r)&lt;&lt;2)+1)) &amp; 0x0f)
+mdefine_line|#define PSURGE_QUAD_IN(r)&t;(in_8(quad_base + ((r) &lt;&lt; 4) + 4) &amp; 0x0f)
 DECL|macro|PSURGE_QUAD_BIS
 mdefine_line|#define PSURGE_QUAD_BIS(r, v)&t;(PSURGE_QUAD_OUT((r), PSURGE_QUAD_IN(r) | (v)))
 DECL|macro|PSURGE_QUAD_BIC
@@ -268,7 +268,7 @@ suffix:semicolon
 DECL|variable|quad_base
 r_static
 r_volatile
-id|u32
+id|u8
 op_star
 id|quad_base
 suffix:semicolon
@@ -673,7 +673,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Determine a quad card presence. We read the board ID register, we&n; * for the data bus to change to something else, and we read it again.&n; * It it&squot;s stable, then the register probably exist (ugh !)&n; */
+multiline_comment|/*&n; * Determine a quad card presence. We read the board ID register, we&n; * force the data bus to change to something else, and we read it again.&n; * It it&squot;s stable, then the register probably exist (ugh !)&n; */
 DECL|function|psurge_quad_probe
 r_static
 r_int
@@ -1132,7 +1132,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* I believe we could &quot;count&quot; CPUs by counting 1 bits&n;&t;&t; * in procbits on a quad board. For now, we assume 4,&n;&t;&t; * non-present CPUs will just be seen as &quot;stuck&quot;.&n;&t;&t; * (hope they are the higher-numbered ones -- paulus)&n;&t;&t; */
+multiline_comment|/* All released cards using this HW design have 4 CPUs */
 id|ncpus
 op_assign
 l_int|4
@@ -1611,13 +1611,10 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|smp_hw_index
-(braket
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
 )paren
 )paren
 suffix:semicolon
@@ -1630,12 +1627,9 @@ c_func
 (paren
 id|msg
 comma
-id|smp_hw_index
-(braket
 l_int|1
 op_lshift
 id|target
-)braket
 )paren
 suffix:semicolon
 r_break
@@ -1655,10 +1649,6 @@ r_struct
 id|device_node
 op_star
 id|cpus
-suffix:semicolon
-r_int
-op_star
-id|pp
 suffix:semicolon
 r_int
 id|i
@@ -1682,53 +1672,6 @@ comma
 l_int|0x345
 )paren
 suffix:semicolon
-macro_line|#if 0&t;/* Paulus method.. doesn&squot;t seem to work on earlier dual G4&squot;s??*/
-id|cpus
-op_assign
-id|find_devices
-c_func
-(paren
-l_string|&quot;cpus&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpus
-op_ne
-l_int|0
-)paren
-(brace
-id|pp
-op_assign
-(paren
-r_int
-op_star
-)paren
-id|get_property
-c_func
-(paren
-id|cpus
-comma
-l_string|&quot;#cpus&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pp
-op_ne
-l_int|NULL
-)paren
-id|ncpus
-op_assign
-op_star
-id|pp
-suffix:semicolon
-)brace
-macro_line|#else&t;/* My original method -- Troy &lt;hozer@drgw.net&gt; */
 id|cpus
 op_assign
 id|find_type_devices
@@ -1742,31 +1685,24 @@ c_cond
 (paren
 id|cpus
 )paren
-(brace
-r_for
+r_while
 c_loop
 (paren
-id|ncpus
-op_assign
-l_int|1
-suffix:semicolon
-id|cpus-&gt;next
-suffix:semicolon
+(paren
 id|cpus
 op_assign
 id|cpus-&gt;next
 )paren
-(brace
-id|ncpus
+op_ne
+l_int|NULL
+)paren
 op_increment
+id|ncpus
 suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;smp_core99_probe: OF reports %d cpus&bslash;n&quot;
+l_string|&quot;smp_core99_probe: found %d cpus&bslash;n&quot;
 comma
 id|ncpus
 )paren
@@ -3822,6 +3758,17 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|smp_num_cpus
+OL
+l_int|2
+)paren
+id|smp_tb_synchronized
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|smp_software_tb_sync
 r_void
@@ -3865,37 +3812,6 @@ id|temp
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_num_cpus
-OL
-l_int|2
-)paren
-(brace
-id|smp_tb_synchronized
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* This code need fixing on &gt;2 CPUs --BenH/paulus */
-r_if
-c_cond
-(paren
-id|smp_num_cpus
-OG
-l_int|2
-)paren
-(brace
-id|smp_tb_synchronized
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|set_tb
 c_func
 (paren
@@ -4236,12 +4152,16 @@ id|smp_commenced
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* if the smp_ops-&gt;setup_cpu function has not already synched the&n;&t; * timebases with a nicer hardware-based method, do so now&n;&t; *&n;&t; * I am open to suggestions for improvements to this method&n;&t; * -- Troy &lt;hozer@drgw.net&gt;&n;&t; *&n;&t; * NOTE: if you are debugging, set smp_tb_synchronized for now&n;&t; * since if this code runs pretty early and needs all cpus that&n;&t; * reported in in smp_callin_map to be working&n;&t; *&n;&t; * NOTE2: this code doesn&squot;t seem to work on &gt; 2 cpus. -- paulus&n;&t; */
+multiline_comment|/* if the smp_ops-&gt;setup_cpu function has not already synched the&n;&t; * timebases with a nicer hardware-based method, do so now&n;&t; *&n;&t; * I am open to suggestions for improvements to this method&n;&t; * -- Troy &lt;hozer@drgw.net&gt;&n;&t; *&n;&t; * NOTE: if you are debugging, set smp_tb_synchronized for now&n;&t; * since if this code runs pretty early and needs all cpus that&n;&t; * reported in in smp_callin_map to be working&n;&t; *&n;&t; * NOTE2: this code doesn&squot;t seem to work on &gt; 2 cpus. -- paulus/BenH&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|smp_tb_synchronized
+op_logical_and
+id|smp_num_cpus
+op_eq
+l_int|2
 )paren
 (brace
 r_int
@@ -4333,6 +4253,10 @@ c_cond
 (paren
 op_logical_neg
 id|smp_tb_synchronized
+op_logical_and
+id|smp_num_cpus
+op_eq
+l_int|2
 )paren
 (brace
 id|smp_software_tb_sync

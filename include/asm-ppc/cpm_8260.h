@@ -201,7 +201,7 @@ DECL|typedef|cbd_t
 id|cbd_t
 suffix:semicolon
 DECL|macro|BD_SC_EMPTY
-mdefine_line|#define BD_SC_EMPTY&t;((ushort)0x8000)&t;/* Recieve is empty */
+mdefine_line|#define BD_SC_EMPTY&t;((ushort)0x8000)&t;/* Receive is empty */
 DECL|macro|BD_SC_READY
 mdefine_line|#define BD_SC_READY&t;((ushort)0x8000)&t;/* Transmit is ready */
 DECL|macro|BD_SC_WRAP

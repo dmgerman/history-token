@@ -57,11 +57,25 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#include &lt;linux/console.h&gt;
 multiline_comment|/* this defines the index into rs_table for the port to use&n;*/
-macro_line|#ifndef CONFIG_SERIAL_CONSOLE_PORT
+macro_line|# ifndef CONFIG_SERIAL_CONSOLE_PORT
+macro_line|#  ifdef CONFIG_SCC3_ENET
+macro_line|#   ifdef CONFIG_8xx_CONS_SMC2
 DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
-mdefine_line|#define CONFIG_SERIAL_CONSOLE_PORT&t;0
-macro_line|#endif
-macro_line|#endif
+macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;0&t;/* Console on SMC2 is 1st port */
+macro_line|#   else
+macro_line|#    error &quot;Can&squot;t use SMC1 for console with Ethernet on SCC3&quot;
+macro_line|#   endif
+macro_line|#  else&t;/* ! CONFIG_SCC3_ENET */
+macro_line|#   ifdef CONFIG_8xx_CONS_SMC2&t;&t;&t;/* Console on SMC2 */
+DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
+macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;1
+macro_line|#   else&t;&t;&t;&t;&t;/* Console on SMC1 */
+DECL|macro|CONFIG_SERIAL_CONSOLE_PORT
+macro_line|#    define CONFIG_SERIAL_CONSOLE_PORT&t;0
+macro_line|#   endif /* CONFIG_8xx_CONS_SMC2 */
+macro_line|#  endif  /* CONFIG_SCC3_ENET */
+macro_line|# endif&t;  /* CONFIG_SERIAL_CONSOLE_PORT */
+macro_line|#endif&t;  /* CONFIG_SERIAL_CONSOLE */
 macro_line|#if 0
 multiline_comment|/* SCC2 for console&n;*/
 macro_line|#undef CONFIG_SERIAL_CONSOLE_PORT
@@ -159,6 +173,7 @@ id|rs_table
 op_assign
 (brace
 multiline_comment|/* UART CLK   PORT          IRQ      FLAGS  NUM   */
+macro_line|#ifndef CONFIG_SCC3_ENET&t;/* SMC1 not usable with Ethernet on SCC3 */
 (brace
 l_int|0
 comma
@@ -174,7 +189,9 @@ l_int|0
 )brace
 comma
 multiline_comment|/* SMC1 ttyS0 */
-macro_line|#ifdef CONFIG_8xxSMC2
+macro_line|#endif
+macro_line|#if !defined(CONFIG_USB_MPC8xx) &amp;&amp; !defined(CONFIG_USB_CLIENT_MPC8xx)
+macro_line|# ifdef CONFIG_8xxSMC2
 (brace
 l_int|0
 comma
@@ -190,8 +207,8 @@ l_int|1
 )brace
 comma
 multiline_comment|/* SMC2 ttyS1 */
-macro_line|#endif
-macro_line|#ifdef CONFIG_8xxSCC
+macro_line|# endif
+macro_line|# ifdef CONFIG_8xxSCC
 (brace
 l_int|0
 comma
@@ -230,7 +247,30 @@ l_int|2
 )brace
 comma
 multiline_comment|/* SCC3 ttyS3 */
-macro_line|#endif
+macro_line|# endif
+macro_line|#else /* CONFIG_USB_xxx */
+macro_line|# ifdef CONFIG_8xxSCC
+(brace
+l_int|0
+comma
+l_int|0
+comma
+id|PROFF_SCC3
+comma
+id|CPMVEC_SCC3
+comma
+l_int|0
+comma
+(paren
+id|NUM_IS_SCC
+op_or
+l_int|2
+)paren
+)brace
+comma
+multiline_comment|/* SCC3 ttyS3 */
+macro_line|# endif
+macro_line|#endif&t;/* CONFIG_USB_xxx */
 )brace
 suffix:semicolon
 DECL|macro|NR_PORTS
@@ -9960,6 +10000,10 @@ op_complement
 id|iobits
 suffix:semicolon
 macro_line|#else
+id|iobits
+op_assign
+l_int|0xc0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9969,10 +10013,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* SMC1 on Port B, like all 8xx.&n;&t;&t;&t;&t;&t;*/
-id|iobits
-op_assign
-l_int|0xc0
-suffix:semicolon
 id|cp-&gt;cp_pbpar
 op_or_assign
 id|iobits
@@ -9991,10 +10031,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* SMC2 is on Port A.&n;&t;&t;&t;&t;&t;*/
-id|iobits
-op_assign
-l_int|0x300
-suffix:semicolon
 id|immap-&gt;im_ioport.iop_papar
 op_or_assign
 id|iobits
@@ -10274,6 +10310,29 @@ id|bidx
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* make sure we have a useful value */
+r_if
+c_cond
+(paren
+id|bidx
+op_eq
+(paren
+r_sizeof
+(paren
+id|baud_table
+)paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+)paren
+id|bidx
+op_assign
+l_int|13
+suffix:semicolon
+multiline_comment|/* B9600 */
 id|co-&gt;cflag
 op_assign
 id|CREAD
@@ -10673,6 +10732,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 l_string|&quot;&quot;
 )paren
 suffix:semicolon

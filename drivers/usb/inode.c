@@ -3186,7 +3186,7 @@ l_string|&quot;usbdevfs&quot;
 comma
 id|usbdevfs_read_super
 comma
-l_int|0
+id|FS_SINGLE
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -3690,6 +3690,13 @@ op_amp
 id|usbdevfs_driver
 )paren
 suffix:semicolon
+id|kern_mount
+c_func
+(paren
+op_amp
+id|usbdevice_fs_type
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS&t;&t;
 multiline_comment|/* create mount point for usbdevfs */
 id|usbdir
@@ -3728,6 +3735,12 @@ c_func
 (paren
 op_amp
 id|usbdevice_fs_type
+)paren
+suffix:semicolon
+id|kern_umount
+c_func
+(paren
+id|usbdevice_fs_type.kern_mnt
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS&t;

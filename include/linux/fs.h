@@ -801,6 +801,11 @@ id|spinlock_t
 id|i_shared_lock
 suffix:semicolon
 multiline_comment|/* and spinlock protecting it */
+DECL|member|gfp_mask
+r_int
+id|gfp_mask
+suffix:semicolon
+multiline_comment|/* how to allocate the pages */
 )brace
 suffix:semicolon
 DECL|struct|block_device

@@ -3648,6 +3648,19 @@ r_int
 id|end
 )paren
 (brace
+id|printk
+(paren
+l_string|&quot;Freeing initrd memory: %ldk freed&bslash;n&quot;
+comma
+(paren
+id|end
+op_minus
+id|start
+)paren
+op_rshift
+l_int|10
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3693,19 +3706,6 @@ id|totalram_pages
 op_increment
 suffix:semicolon
 )brace
-id|printk
-(paren
-l_string|&quot;Freeing initrd memory: %ldk freed&bslash;n&quot;
-comma
-(paren
-id|end
-op_minus
-id|start
-)paren
-op_rshift
-l_int|10
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 r_extern

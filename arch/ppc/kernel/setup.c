@@ -1505,7 +1505,11 @@ op_plus
 l_int|2500
 )paren
 op_div
+(paren
 l_int|500000
+op_div
+id|HZ
+)paren
 comma
 (paren
 id|bogosum
@@ -1513,7 +1517,11 @@ op_plus
 l_int|2500
 )paren
 op_div
+(paren
 l_int|5000
+op_div
+id|HZ
+)paren
 op_mod
 l_int|100
 )paren

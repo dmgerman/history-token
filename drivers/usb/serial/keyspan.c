@@ -3340,20 +3340,6 @@ r_private
 )paren
 suffix:semicolon
 multiline_comment|/* Set some sane defaults */
-id|p_priv-&gt;baud
-op_assign
-l_int|9600
-suffix:semicolon
-id|p_priv-&gt;cflag
-op_assign
-id|CREAD
-op_or
-id|CLOCAL
-suffix:semicolon
-id|p_priv-&gt;flow_control
-op_assign
-id|flow_none
-suffix:semicolon
 id|p_priv-&gt;rts_state
 op_assign
 l_int|1
@@ -3427,11 +3413,12 @@ id|err
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*    Now done in startup routine&n;&t;if (atomic_inc_return(&amp;s_priv-&gt;active_count) == 1) {&n;&t;&t;s_priv-&gt;instat_urb-&gt;dev = serial-&gt;dev;&n;&t;&t;if ((err = usb_submit_urb(s_priv-&gt;instat_urb)) != 0) {&n;&t;&t;&t;dbg(__FUNCTION__ &quot; submit instat urb failed %d&quot;, err);&n;&t;&t;}&n;&t;}&n;*/
-id|keyspan_send_setup
+id|keyspan_set_termios
 c_func
 (paren
 id|port
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

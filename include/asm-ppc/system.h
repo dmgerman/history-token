@@ -60,37 +60,6 @@ op_star
 id|excp
 )paren
 suffix:semicolon
-multiline_comment|/* Data cache block flush - write out the cache line containing the&n;   specified address and then invalidate it in the cache. */
-DECL|function|dcbf
-r_extern
-id|__inline__
-r_void
-id|dcbf
-c_func
-(paren
-r_void
-op_star
-id|line
-)paren
-(brace
-id|asm
-c_func
-(paren
-l_string|&quot;dcbf %0,%1; sync&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|line
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|print_backtrace

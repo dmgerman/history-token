@@ -2732,6 +2732,20 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|lp-&gt;cur_tx
+op_eq
+op_minus
+l_int|1
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * The typical workload of the driver: Handle the network interface&n; * interrupts. Establish which device needs attention, and call the correct&n; * chipset interrupt handler.&n; */
 DECL|function|arcnet_interrupt

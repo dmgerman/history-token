@@ -99,6 +99,7 @@ id|MAX_ECARDS
 suffix:semicolon
 multiline_comment|/*&n; * Use term=0,1,0,0,0 to turn terminators on/off&n; */
 DECL|variable|term
+r_static
 r_int
 id|term
 (braket

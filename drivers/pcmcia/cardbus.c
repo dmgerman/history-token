@@ -949,13 +949,6 @@ id|r
 )paren
 suffix:semicolon
 )brace
-id|pci_enable_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* XXX check return */
 multiline_comment|/* Does this function have an interrupt at all? */
 id|pci_readb
 c_func
@@ -989,6 +982,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+id|pci_enable_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* XXX check return */
 id|pci_insert_device
 c_func
 (paren

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Sun3 SCSI stuff by Erik Verbruggen (erik@bigmama.xtdnet.nl)&n; *&n; * Sun3 DMA routines added by Sam Creasey (sammy@oh.verio.com)&n; *&n; * Adapted from mac_scsinew.c:&n; */
 multiline_comment|/*&n; * Generic Macintosh NCR5380 driver&n; *&n; * Copyright 1998, Michael Schmitz &lt;mschmitz@lbl.gov&gt;&n; *&n; * derived in part from:&n; */
 multiline_comment|/*&n; * Generic Generic NCR5380 driver&n; *&n; * Copyright 1995, Russell King&n; *&n; * ALPHA RELEASE 1.&n; *&n; * For more information, please consult&n; *&n; * NCR 5380 Family&n; * SCSI Protocol Controller&n; * Databook&n; *&n; * NCR Microelectronics&n; * 1635 Aeroplaza Drive&n; * Colorado Springs, CO 80916&n; * 1+ (719) 578-3400&n; * 1+ (800) 334-5454&n; */
-multiline_comment|/*&n; * This is from mac_scsi.h, but hey, maybe this is usefull for Sun3 too! :)&n; *&n; * Options :&n; *&n; * PARITY - enable parity checking.  Not supported.&n; *&n; * SCSI2 - enable support for SCSI-II tagged queueing.  Untested.&n; *&n; * USLEEP - enable support for devices that don&squot;t disconnect.  Untested.&n; */
+multiline_comment|/*&n; * This is from mac_scsi.h, but hey, maybe this is useful for Sun3 too! :)&n; *&n; * Options :&n; *&n; * PARITY - enable parity checking.  Not supported.&n; *&n; * SCSI2 - enable support for SCSI-II tagged queueing.  Untested.&n; *&n; * USLEEP - enable support for devices that don&squot;t disconnect.  Untested.&n; */
 multiline_comment|/*&n; * $Log: sun3_NCR5380.c,v $&n; */
 DECL|macro|AUTOSENSE
 mdefine_line|#define AUTOSENSE
@@ -146,7 +146,7 @@ mdefine_line|#define SUN3_DMA_DELAY 5
 multiline_comment|/* dvma buffer to allocate -- 32k should hopefully be more than sufficient */
 DECL|macro|SUN3_DVMA_BUFSIZE
 mdefine_line|#define SUN3_DVMA_BUFSIZE 0xe000
-multiline_comment|/* minimum number of bytes to to dma on */
+multiline_comment|/* minimum number of bytes to do dma on */
 DECL|macro|SUN3_DMA_MINSIZE
 mdefine_line|#define SUN3_DMA_MINSIZE 128
 DECL|variable|sun3_scsi_regp

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tpqic02.c,v 1.10 1997/01/26 07:13:20 davem Exp $&n; *&n; * Driver for tape drive support for Linux-i386&n; *&n; * Copyright (c) 1992--1996 by H. H. Bergman. All rights reserved.&n; * Current e-mail address: hennus@cybercomm.nl&n; *&n; * Distribution of this program in executable form is only allowed if&n; * all of the corresponding source files are made available through the same&n; * medium at no extra cost.&n; *&n; * I will not accept any responsibility for damage caused directly or&n; * indirectly by this program, or code derived from this program.&n; *&n; * Use this code at your own risk. Don&squot;t blame me if it destroys your data!&n; * Make sure you have a backup before you try this code.&n; *&n; * If you make changes to my code and redistribute it in source or binary&n; * form you must make it clear to even casual users of your code that you&n; * have modified my code, clearly point out what the changes exactly are&n; * (preferably in the form of a context diff file), how to undo your changes,&n; * where the original can be obtained, and that complaints/requests about the&n; * modified code should be directed to you instead of me.&n; *&n; * This driver was partially inspired by the &squot;wt&squot; driver in the 386BSD&n; * source distribution, which carries the following copyright notice:&n; *&n; *  Copyright (c) 1991 The Regents of the University of California.&n; *  All rights reserved.&n; *&n; * You are not allowed to change this line nor the text above.&n; *&n; * 1996/10/10   Emerald changes&n; *&n; * 1996/05/21&t;Misc changes+merges+cleanups + I/O reservations&n; *&n; * 1996/05/20&t;Module support patches submitted by Brian McCauley.&n; *&n; * 1994/05/03&t;Initial attempt at Mountain support for the Mountain 7150.&n; * Based on patches provided by Erik Jacobson. Still incomplete, I suppose.&n; *&n; * 1994/02/07&t;Archive changes &amp; some cleanups by Eddy Olk.&n; *&n; * 1994/01/19&t;Speed measuring stuff moved from aperf.h to delay.h.&n; *&t;&t;BogoMips (tm) introduced by Linus.&n; *&n; * 1993/01/25&t;Kernel udelay. Eof fixups.&n; * &n; * 1992/09/19&t;Some changes based on patches by Eddy Olk to support&n; * &t;&t;Archive SC402/SC499R controller cards.&n; *&n; * 1992/05/27&t;First release.&n; *&n; * 1992/05/26&t;Initial version. Copyright H. H. Bergman 1992&n; */
+multiline_comment|/* $Id: tpqic02.c,v 1.10 1997/01/26 07:13:20 davem Exp $&n; *&n; * Driver for tape drive support for Linux-i386&n; *&n; * Copyright (c) 1992--1996 by H. H. Bergman. All rights reserved.&n; * Current e-mail address: hennus@cybercomm.nl&n; *&n; * Distribution of this program in executable form is only allowed if&n; * all of the corresponding source files are made available through the same&n; * medium at no extra cost.&n; *&n; * I will not accept any responsibility for damage caused directly or&n; * indirectly by this program, or code derived from this program.&n; *&n; * Use this code at your own risk. Don&squot;t blame me if it destroys your data!&n; * Make sure you have a backup before you try this code.&n; *&n; * If you make changes to my code and redistribute it in source or binary&n; * form you must make it clear to even casual users of your code that you&n; * have modified my code, clearly point out what the changes exactly are&n; * (preferably in the form of a context diff file), how to undo your changes,&n; * where the original can be obtained, and that complaints/requests about the&n; * modified code should be directed to you instead of me.&n; *&n; * This driver was partially inspired by the &squot;wt&squot; driver in the 386BSD&n; * source distribution, which carries the following copyright notice:&n; *&n; *  Copyright (c) 1991 The Regents of the University of California.&n; *  All rights reserved.&n; *&n; * You are not allowed to change this line nor the text above.&n; *&n; * 2001/02/26&t;Minor s/suser/capable/&n; *&n; * 1996/10/10   Emerald changes&n; *&n; * 1996/05/21&t;Misc changes+merges+cleanups + I/O reservations&n; *&n; * 1996/05/20&t;Module support patches submitted by Brian McCauley.&n; *&n; * 1994/05/03&t;Initial attempt at Mountain support for the Mountain 7150.&n; * Based on patches provided by Erik Jacobson. Still incomplete, I suppose.&n; *&n; * 1994/02/07&t;Archive changes &amp; some cleanups by Eddy Olk.&n; *&n; * 1994/01/19&t;Speed measuring stuff moved from aperf.h to delay.h.&n; *&t;&t;BogoMips (tm) introduced by Linus.&n; *&n; * 1993/01/25&t;Kernel udelay. Eof fixups.&n; * &n; * 1992/09/19&t;Some changes based on patches by Eddy Olk to support&n; * &t;&t;Archive SC402/SC499R controller cards.&n; *&n; * 1992/05/27&t;First release.&n; *&n; * 1992/05/26&t;Initial version. Copyright H. H. Bergman 1992&n; */
 multiline_comment|/* After the legalese, now the important bits:&n; * &n; * This is a driver for the Wangtek 5150 tape drive with &n; * a QIC-02 controller for ISA-PC type computers.&n; * Hopefully it will work with other QIC-02 tape drives as well.&n; *&n; * Make sure your setup matches the configuration parameters.&n; * Also, be careful to avoid IO conflicts with other devices!&n; */
 multiline_comment|/*&n;#define TDEBUG&n;*/
 DECL|macro|REALLY_SLOW_IO
@@ -346,11 +346,11 @@ suffix:semicolon
 multiline_comment|/* This is a pointer to the actual kernel buffer where the interrupt routines&n; * read from/write to. It is needed because the DMA channels 1 and 3 cannot&n; * always access the user buffers. [The kernel buffer must reside in the&n; * lower 16MBytes of system memory because of the DMA controller.] The user&n; * must ensure that a large enough buffer is passed to the kernel, in order&n; * to reduce tape repositioning wear and tear.&n; */
 DECL|variable|buffaddr
 r_static
-r_int
-r_int
+r_void
+op_star
 id|buffaddr
 suffix:semicolon
-multiline_comment|/* physical address of buffer */
+multiline_comment|/* virtual address of buffer */
 multiline_comment|/* This translates minor numbers to the corresponding recording format: */
 DECL|variable|format_names
 r_static
@@ -4946,12 +4946,15 @@ c_func
 (paren
 id|QIC02_TAPE_DMA
 comma
+id|virt_to_bus
+c_func
+(paren
 id|buffaddr
+)paren
 op_plus
 id|dma_bytes_done
 )paren
 suffix:semicolon
-multiline_comment|/* full address */
 id|set_dma_count
 c_func
 (paren
@@ -6535,21 +6538,9 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|buf
 comma
-(paren
-r_void
-op_star
-)paren
-id|bus_to_virt
-c_func
-(paren
 id|buffaddr
-)paren
 comma
 id|bytes_done
 )paren
@@ -6976,21 +6967,8 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|bus_to_virt
-c_func
-(paren
 id|buffaddr
-)paren
 comma
-(paren
-r_const
-r_void
-op_star
-)paren
 id|buf
 comma
 id|bytes_todo
@@ -7354,9 +7332,10 @@ multiline_comment|/* special case for resetting */
 r_if
 c_cond
 (paren
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 (brace
@@ -8708,9 +8687,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 (brace
@@ -9375,6 +9355,10 @@ id|buffaddr
 id|free_pages
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|buffaddr
 comma
 id|get_order
@@ -9536,9 +9520,12 @@ id|TPQIC02_NAME
 )paren
 suffix:semicolon
 multiline_comment|/* Setup the page-address for the dma transfer. */
-multiline_comment|/*** TODO: does _get_dma_pages() really return the physical address?? ****/
 id|buffaddr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|__get_dma_pages
 c_func
 (paren
@@ -9572,10 +9559,6 @@ multiline_comment|/* Not ideal, EAGAIN perhaps? */
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|buffaddr
 comma
 l_int|0

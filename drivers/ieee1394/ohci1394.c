@@ -4246,7 +4246,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Problem: How can I ensure that the AT bottom half will be&n;&t;&t; * executed before the AR bottom half (both events may have&n;&t;&t; * occured within a single irq event)&n;&t;&t; * Quick hack: just launch it within the IRQ handler&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Problem: How can I ensure that the AT bottom half will be&n;&t;&t; * executed before the AR bottom half (both events may have&n;&t;&t; * occurred within a single irq event)&n;&t;&t; * Quick hack: just launch it within the IRQ handler&n;&t;&t; */
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
+multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
 macro_line|#ifndef _3W_XXXX_H
 DECL|macro|_3W_XXXX_H
 mdefine_line|#define _3W_XXXX_H
@@ -77,6 +77,10 @@ DECL|macro|TW_VENDOR_ID
 mdefine_line|#define TW_VENDOR_ID (0x13C1)&t;/* 3ware */
 DECL|macro|TW_DEVICE_ID
 mdefine_line|#define TW_DEVICE_ID (0x1000)&t;/* Storage Controller */
+DECL|macro|TW_DEVICE_ID2
+mdefine_line|#define TW_DEVICE_ID2 (0x1001)  /* 7000 series controller */
+DECL|macro|TW_NUMDEVICES
+mdefine_line|#define TW_NUMDEVICES 2
 multiline_comment|/* Command packet opcodes */
 DECL|macro|TW_OP_NOP
 mdefine_line|#define TW_OP_NOP&t;      0x0
@@ -1156,6 +1160,18 @@ id|request_id
 suffix:semicolon
 r_int
 id|tw_scsiop_read_write
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+id|request_id
+)paren
+suffix:semicolon
+r_int
+id|tw_scsiop_request_sense
 c_func
 (paren
 id|TW_Device_Extension

@@ -2222,6 +2222,10 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* deliver it &quot;upstairs&quot; */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 multiline_comment|/* count all receives */
 (paren
 (paren
@@ -2236,6 +2240,21 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|rx_packets
 op_increment
+suffix:semicolon
+(paren
+(paren
+r_struct
+id|net_device_stats
+op_star
+)paren
+(paren
+id|dev-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|rx_bytes
+op_add_assign
+id|size
 suffix:semicolon
 )brace
 )brace

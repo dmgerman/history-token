@@ -13,6 +13,25 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+r_extern
+r_void
+id|process_bridge_ranges
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+comma
+r_struct
+id|device_node
+op_star
+id|dev
+comma
+r_int
+id|primary
+)paren
+suffix:semicolon
 r_static
 r_void
 id|add_bridges
@@ -1415,7 +1434,7 @@ id|bp-&gt;cfg_data
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 id|__init
 DECL|function|setup_uninorth
 id|setup_uninorth
@@ -1469,6 +1488,7 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
+macro_line|#if 0 /* done in process_bridge_ranges now - paulus */
 id|hose-&gt;io_base_phys
 op_assign
 id|addr-&gt;address
@@ -1503,6 +1523,13 @@ r_int
 r_int
 )paren
 id|hose-&gt;io_base_virt
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* We &quot;know&quot; that the bridge at f2000000 has the PCI slots. */
+r_return
+id|addr-&gt;address
+op_eq
+l_int|0xf2000000
 suffix:semicolon
 )brace
 r_static
@@ -1564,6 +1591,7 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
+macro_line|#if 0 /* done in process_bridge_ranges now - paulus */
 id|hose-&gt;io_base_phys
 op_assign
 id|addr-&gt;address
@@ -1582,6 +1610,7 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
+macro_line|#endif
 id|init_bandit
 c_func
 (paren
@@ -1649,6 +1678,7 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
+macro_line|#if 0 /* done in process_bridge_ranges now - paulus */
 id|hose-&gt;io_base_phys
 op_assign
 id|addr-&gt;address
@@ -1667,6 +1697,7 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 id|__init
@@ -1693,6 +1724,7 @@ comma
 l_int|0xfee00000
 )paren
 suffix:semicolon
+macro_line|#if 0 /* done in process_bridge_ranges now - paulus */
 id|hose-&gt;io_base_phys
 op_assign
 l_int|0xfe000000
@@ -1727,6 +1759,7 @@ r_int
 )paren
 id|hose-&gt;io_base_virt
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1789,6 +1822,13 @@ suffix:semicolon
 r_int
 op_star
 id|bus_range
+suffix:semicolon
+r_int
+id|first
+op_assign
+l_int|1
+comma
+id|primary
 suffix:semicolon
 r_for
 c_loop
@@ -1940,6 +1980,10 @@ id|disp_name
 op_assign
 l_int|NULL
 suffix:semicolon
+id|primary
+op_assign
+id|first
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1952,6 +1996,8 @@ l_string|&quot;uni-north&quot;
 )paren
 )paren
 (brace
+id|primary
+op_assign
 id|setup_uninorth
 c_func
 (paren
@@ -2049,6 +2095,10 @@ id|disp_name
 op_assign
 l_string|&quot;Chaos&quot;
 suffix:semicolon
+id|primary
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|printk
 c_func
@@ -2079,21 +2129,17 @@ id|hose-&gt;cfg_data
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;
-multiline_comment|/* Setup a default isa_io_base */
-r_if
-c_cond
+multiline_comment|/* Interpret the &quot;ranges&quot; property */
+multiline_comment|/* This also maps the I/O region and sets isa_io/mem_base */
+id|process_bridge_ranges
+c_func
 (paren
-id|isa_io_base
-op_eq
-l_int|0
+id|hose
+comma
+id|dev
+comma
+id|primary
 )paren
-id|isa_io_base
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|hose-&gt;io_base_virt
 suffix:semicolon
 multiline_comment|/* Fixup &quot;bus-range&quot; OF property */
 id|fixup_bus_range
@@ -2101,6 +2147,11 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|first
+op_and_assign
+op_logical_neg
+id|primary
 suffix:semicolon
 )brace
 )brace

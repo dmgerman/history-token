@@ -74,6 +74,17 @@ multiline_comment|/*&n; * The PCI bus bridge can translate addresses issued by t
 r_extern
 r_int
 r_int
+id|phys_to_bus
+c_func
+(paren
+r_int
+r_int
+id|pa
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|pci_phys_to_bus
 c_func
 (paren

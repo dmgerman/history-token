@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2000 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;*/
+multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;   1.02.00.003 - Fix tw_interrupt() to report error to scsi layer when&n;                 controller status is non-zero.&n;                 Added handling of request_sense opcode.&n;                 Fix possible null pointer dereference in &n;                 tw_reset_device_extension()&n;   1.02.00.004 - Add support for device id of 3ware 7000 series controllers.&n;                 Make tw_setfeature() call with interrupts disabled.&n;                 Register interrupt handler before enabling interrupts.&n;                 Clear attention interrupt before draining aen queue.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_AUTHOR
 (paren
@@ -125,7 +125,7 @@ r_char
 op_star
 id|tw_driver_version
 op_assign
-l_string|&quot;1.02.00.002&quot;
+l_string|&quot;1.02.00.004&quot;
 suffix:semicolon
 DECL|variable|tw_device_extension_list
 id|TW_Device_Extension
@@ -2251,6 +2251,21 @@ id|c
 op_assign
 l_int|1
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|u16
+id|device
+(braket
+id|TW_NUMDEVICES
+)braket
+op_assign
+(brace
+id|TW_DEVICE_ID
+comma
+id|TW_DEVICE_ID2
+)brace
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -2258,6 +2273,21 @@ id|KERN_NOTICE
 l_string|&quot;3w-xxxx: tw_findcards()&bslash;n&quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|TW_NUMDEVICES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_while
 c_loop
 (paren
@@ -2269,7 +2299,10 @@ c_func
 (paren
 id|TW_VENDOR_ID
 comma
-id|TW_DEVICE_ID
+id|device
+(braket
+id|i
+)braket
 comma
 id|tw_pci_dev
 )paren
@@ -3022,11 +3055,18 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* Re-enable interrupts on the card */
-id|tw_enable_interrupts
+multiline_comment|/* Tell the firmware we support shutdown notification*/
+id|tw_setfeature
 c_func
 (paren
 id|tw_dev2
+comma
+l_int|2
+comma
+l_int|1
+comma
+op_amp
+id|c
 )paren
 suffix:semicolon
 multiline_comment|/* Now setup the interrupt handler */
@@ -3094,6 +3134,13 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* Re-enable interrupts on the card */
+id|tw_enable_interrupts
+c_func
+(paren
+id|tw_dev2
+)paren
+suffix:semicolon
 multiline_comment|/* Free the temporary device extension */
 r_if
 c_cond
@@ -3106,20 +3153,7 @@ c_func
 id|tw_dev
 )paren
 suffix:semicolon
-multiline_comment|/* Tell the firmware we support shutdown notification*/
-id|tw_setfeature
-c_func
-(paren
-id|tw_dev2
-comma
-l_int|2
-comma
-l_int|1
-comma
-op_amp
-id|c
-)paren
-suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -4721,6 +4755,19 @@ id|KERN_NOTICE
 l_string|&quot;3w-xxxx: tw_interrupt(): Received attention interrupt.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: tw_interrupt(): Clearing attention interrupt.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_clear_attention_interrupt
+c_func
+(paren
+id|tw_dev
+)paren
+suffix:semicolon
 id|tw_state_request_start
 c_func
 (paren
@@ -4766,22 +4813,6 @@ c_func
 id|tw_dev
 comma
 id|request_id
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dprintk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;3w-xxxx: tw_interrupt(): Clearing attention interrupt.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|tw_clear_attention_interrupt
-c_func
-(paren
-id|tw_dev
 )paren
 suffix:semicolon
 )brace
@@ -4936,6 +4967,10 @@ id|tw_dev-&gt;command_packet_virtual_address
 id|request_id
 )braket
 suffix:semicolon
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4948,12 +4983,18 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: tw_interrupt(): Bad response, status = 0x%x, flags = 0x%x.&bslash;n&quot;
+l_string|&quot;3w-xxxx: tw_interrupt(): Bad response, status = 0x%x, flags = 0x%x, unit = 0x%x.&bslash;n&quot;
 comma
 id|command_packet-&gt;status
 comma
 id|command_packet-&gt;flags
+comma
+id|command_packet-&gt;byte3.unit
 )paren
+suffix:semicolon
+id|error
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -4978,11 +5019,11 @@ comma
 id|command_packet-&gt;byte0.opcode
 )paren
 suffix:semicolon
-)brace
 id|error
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
@@ -5242,7 +5283,7 @@ id|error
 )paren
 (brace
 multiline_comment|/* Tell scsi layer there was an error */
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -5257,7 +5298,7 @@ op_member_access_from_pointer
 id|result
 op_assign
 (paren
-id|DID_ERROR
+id|DID_RESET
 op_lshift
 l_int|16
 )paren
@@ -6784,6 +6825,21 @@ id|tw_dev-&gt;srb
 id|i
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|srb
+op_ne
+l_int|NULL
+)paren
+(brace
+id|srb
+op_assign
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+suffix:semicolon
 id|srb-&gt;result
 op_assign
 (paren
@@ -6806,6 +6862,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Reset queues and counts */
@@ -8508,6 +8565,28 @@ suffix:semicolon
 id|error
 op_assign
 id|tw_scsiop_read_capacity
+c_func
+(paren
+id|tw_dev
+comma
+id|request_id
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|REQUEST_SENSE
+suffix:colon
+id|dprintk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;3w-xxxx: tw_scsi_queue(): caught REQUEST_SENSE.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|error
+op_assign
+id|tw_scsiop_request_sense
 c_func
 (paren
 id|tw_dev
@@ -10403,6 +10482,96 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* End tw_scsiop_read_write() */
+multiline_comment|/* This function will handle the request sense scsi command */
+DECL|function|tw_scsiop_request_sense
+r_int
+id|tw_scsiop_request_sense
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+id|request_id
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;3w-xxxx: tw_scsiop_request_sense()&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* For now we just zero the sense buffer */
+id|memset
+c_func
+(paren
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_member_access_from_pointer
+id|request_buffer
+comma
+l_int|0
+comma
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_member_access_from_pointer
+id|request_bufflen
+)paren
+suffix:semicolon
+id|tw_dev-&gt;state
+(braket
+id|request_id
+)braket
+op_assign
+id|TW_S_COMPLETED
+suffix:semicolon
+id|tw_state_request_finish
+c_func
+(paren
+id|tw_dev
+comma
+id|request_id
+)paren
+suffix:semicolon
+multiline_comment|/* If we got a request_sense, we probably want a reset, return error */
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_member_access_from_pointer
+id|result
+op_assign
+(paren
+id|DID_ERROR
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_member_access_from_pointer
+id|scsi_done
+c_func
+(paren
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* End tw_scsiop_request_sense() */
 multiline_comment|/* This function will handle test unit ready scsi command */
 DECL|function|tw_scsiop_test_unit_ready
 r_int

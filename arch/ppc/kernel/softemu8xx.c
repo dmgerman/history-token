@@ -191,6 +191,7 @@ r_float
 )paren
 id|retval
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_break
@@ -216,6 +217,7 @@ r_float
 )paren
 id|retval
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_else
@@ -275,6 +277,7 @@ r_float
 )paren
 id|retval
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_break
@@ -324,6 +327,7 @@ r_float
 )paren
 id|retval
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_break
@@ -349,6 +353,7 @@ r_float
 )paren
 id|retval
 op_assign
+op_minus
 id|EFAULT
 suffix:semicolon
 r_else

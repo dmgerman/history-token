@@ -5536,7 +5536,7 @@ singleline_comment|// these functions to only be called at HBA initialization an
 singleline_comment|// removal time (load and unload times)
 singleline_comment|// ALGORITHM notes:
 singleline_comment|// Memory allocation varies by compiler and platform.  In the worst case,
-singleline_comment|// we are only assured BYTE allignment, but in the best case, we can
+singleline_comment|// we are only assured BYTE alignment, but in the best case, we can
 singleline_comment|// request allocation on any desired boundary.  Our strategy: pad the
 singleline_comment|// allocation request size (i.e. waste memory) so that we are assured
 singleline_comment|// of passing desired boundary near beginning of contiguous space, then

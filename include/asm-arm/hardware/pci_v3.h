@@ -109,55 +109,55 @@ DECL|macro|V3_QBA_MAP
 mdefine_line|#define V3_QBA_MAP                      0x000000DC
 multiline_comment|/*  PCI COMMAND REGISTER bits&n; */
 DECL|macro|V3_COMMAND_M_FBB_EN
-mdefine_line|#define V3_COMMAND_M_FBB_EN             BIT9
+mdefine_line|#define V3_COMMAND_M_FBB_EN             (1 &lt;&lt; 9)
 DECL|macro|V3_COMMAND_M_SERR_EN
-mdefine_line|#define V3_COMMAND_M_SERR_EN            BIT8
+mdefine_line|#define V3_COMMAND_M_SERR_EN            (1 &lt;&lt; 8)
 DECL|macro|V3_COMMAND_M_PAR_EN
-mdefine_line|#define V3_COMMAND_M_PAR_EN             BIT6
+mdefine_line|#define V3_COMMAND_M_PAR_EN             (1 &lt;&lt; 6)
 DECL|macro|V3_COMMAND_M_MASTER_EN
-mdefine_line|#define V3_COMMAND_M_MASTER_EN          BIT2
+mdefine_line|#define V3_COMMAND_M_MASTER_EN          (1 &lt;&lt; 2)
 DECL|macro|V3_COMMAND_M_MEM_EN
-mdefine_line|#define V3_COMMAND_M_MEM_EN             BIT1
+mdefine_line|#define V3_COMMAND_M_MEM_EN             (1 &lt;&lt; 1)
 DECL|macro|V3_COMMAND_M_IO_EN
-mdefine_line|#define V3_COMMAND_M_IO_EN              BIT0
+mdefine_line|#define V3_COMMAND_M_IO_EN              (1 &lt;&lt; 0)
 multiline_comment|/*  SYSTEM REGISTER bits&n; */
 DECL|macro|V3_SYSTEM_M_RST_OUT
-mdefine_line|#define V3_SYSTEM_M_RST_OUT             BIT15
+mdefine_line|#define V3_SYSTEM_M_RST_OUT             (1 &lt;&lt; 15)
 DECL|macro|V3_SYSTEM_M_LOCK
-mdefine_line|#define V3_SYSTEM_M_LOCK                BIT14 
+mdefine_line|#define V3_SYSTEM_M_LOCK                (1 &lt;&lt; 14)
 multiline_comment|/*  PCI_CFG bits&n; */
 DECL|macro|V3_PCI_CFG_M_RETRY_EN
-mdefine_line|#define V3_PCI_CFG_M_RETRY_EN           BIT10
+mdefine_line|#define V3_PCI_CFG_M_RETRY_EN           (1 &lt;&lt; 10)
 DECL|macro|V3_PCI_CFG_M_AD_LOW1
-mdefine_line|#define V3_PCI_CFG_M_AD_LOW1            BIT9
+mdefine_line|#define V3_PCI_CFG_M_AD_LOW1            (1 &lt;&lt; 9)
 DECL|macro|V3_PCI_CFG_M_AD_LOW0
-mdefine_line|#define V3_PCI_CFG_M_AD_LOW0            BIT8
+mdefine_line|#define V3_PCI_CFG_M_AD_LOW0            (1 &lt;&lt; 8)
 multiline_comment|/*  PCI_BASE register bits (PCI -&gt; Local Bus)&n; */
 DECL|macro|V3_PCI_BASE_M_ADR_BASE
 mdefine_line|#define V3_PCI_BASE_M_ADR_BASE          0xFFF00000
 DECL|macro|V3_PCI_BASE_M_ADR_BASEL
 mdefine_line|#define V3_PCI_BASE_M_ADR_BASEL         0x000FFF00
 DECL|macro|V3_PCI_BASE_M_PREFETCH
-mdefine_line|#define V3_PCI_BASE_M_PREFETCH          BIT3
+mdefine_line|#define V3_PCI_BASE_M_PREFETCH          (1 &lt;&lt; 3)
 DECL|macro|V3_PCI_BASE_M_TYPE
-mdefine_line|#define V3_PCI_BASE_M_TYPE              BIT2+BIT1
+mdefine_line|#define V3_PCI_BASE_M_TYPE              (3 &lt;&lt; 1)
 DECL|macro|V3_PCI_BASE_M_IO
-mdefine_line|#define V3_PCI_BASE_M_IO                BIT0
+mdefine_line|#define V3_PCI_BASE_M_IO                (1 &lt;&lt; 0)
 multiline_comment|/*  PCI MAP register bits (PCI -&gt; Local bus)&n; */
 DECL|macro|V3_PCI_MAP_M_MAP_ADR
 mdefine_line|#define V3_PCI_MAP_M_MAP_ADR            0xFFF00000
 DECL|macro|V3_PCI_MAP_M_RD_POST_INH
-mdefine_line|#define V3_PCI_MAP_M_RD_POST_INH        BIT15
+mdefine_line|#define V3_PCI_MAP_M_RD_POST_INH        (1 &lt;&lt; 15)
 DECL|macro|V3_PCI_MAP_M_ROM_SIZE
-mdefine_line|#define V3_PCI_MAP_M_ROM_SIZE           BIT11+BIT10
+mdefine_line|#define V3_PCI_MAP_M_ROM_SIZE           (3 &lt;&lt; 10)
 DECL|macro|V3_PCI_MAP_M_SWAP
-mdefine_line|#define V3_PCI_MAP_M_SWAP               BIT9+BIT8
+mdefine_line|#define V3_PCI_MAP_M_SWAP               (3 &lt;&lt; 8)
 DECL|macro|V3_PCI_MAP_M_ADR_SIZE
 mdefine_line|#define V3_PCI_MAP_M_ADR_SIZE           0x000000F0
 DECL|macro|V3_PCI_MAP_M_REG_EN
-mdefine_line|#define V3_PCI_MAP_M_REG_EN             BIT1&t;
+mdefine_line|#define V3_PCI_MAP_M_REG_EN             (1 &lt;&lt; 1)
 DECL|macro|V3_PCI_MAP_M_ENABLE
-mdefine_line|#define V3_PCI_MAP_M_ENABLE             BIT0
+mdefine_line|#define V3_PCI_MAP_M_ENABLE             (1 &lt;&lt; 0)
 multiline_comment|/*  9 =&gt; 512M window size&n; */
 DECL|macro|V3_PCI_MAP_M_ADR_SIZE_512M
 mdefine_line|#define V3_PCI_MAP_M_ADR_SIZE_512M      0x00000090
@@ -168,19 +168,19 @@ multiline_comment|/*  LB_BASE register bits (Local bus -&gt; PCI)&n; */
 DECL|macro|V3_LB_BASE_M_MAP_ADR
 mdefine_line|#define V3_LB_BASE_M_MAP_ADR            0xFFF00000
 DECL|macro|V3_LB_BASE_M_SWAP
-mdefine_line|#define V3_LB_BASE_M_SWAP               BIT9+BIT8
+mdefine_line|#define V3_LB_BASE_M_SWAP               (3 &lt;&lt; 8)
 DECL|macro|V3_LB_BASE_M_ADR_SIZE
 mdefine_line|#define V3_LB_BASE_M_ADR_SIZE           0x000000F0
 DECL|macro|V3_LB_BASE_M_PREFETCH
-mdefine_line|#define V3_LB_BASE_M_PREFETCH           BIT3
+mdefine_line|#define V3_LB_BASE_M_PREFETCH           (1 &lt;&lt; 3)
 DECL|macro|V3_LB_BASE_M_ENABLE
-mdefine_line|#define V3_LB_BASE_M_ENABLE             BIT0
+mdefine_line|#define V3_LB_BASE_M_ENABLE             (1 &lt;&lt; 0)
 multiline_comment|/*  LB_MAP register bits (Local bus -&gt; PCI)&n; */
 DECL|macro|V3_LB_MAP_M_MAP_ADR
 mdefine_line|#define V3_LB_MAP_M_MAP_ADR             0xFFF0
 DECL|macro|V3_LB_MAP_M_TYPE
 mdefine_line|#define V3_LB_MAP_M_TYPE                0x000E
 DECL|macro|V3_LB_MAP_M_AD_LOW_EN
-mdefine_line|#define V3_LB_MAP_M_AD_LOW_EN           BIT0
+mdefine_line|#define V3_LB_MAP_M_AD_LOW_EN           (1 &lt;&lt; 0)
 macro_line|#endif
 eof

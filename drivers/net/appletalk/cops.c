@@ -206,7 +206,7 @@ r_struct
 id|at_addr
 id|node_addr
 suffix:semicolon
-multiline_comment|/* Full node addres */
+multiline_comment|/* Full node address */
 )brace
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */

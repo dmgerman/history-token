@@ -875,7 +875,7 @@ id|rra
 id|SONIC_NUM_RRS
 )braket
 suffix:semicolon
-multiline_comment|/* receive resource arrea */
+multiline_comment|/* receive resource area */
 DECL|member|rda
 id|sonic_rd_t
 id|rda

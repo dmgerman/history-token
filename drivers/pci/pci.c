@@ -83,7 +83,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_subsys - begin or continue searching for a PCI device by vendor/subvendor/device/subdevice id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all vendor ids&n; * @ss_vendor: PCI subsystem vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @ss_device: PCI subsystem device id to match, or %PCI_ANY_ID to match all vendor ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor, @device, @ss_vendor and @ss_device, a pointer to its&n; * device structure is returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; */
+multiline_comment|/**&n; * pci_find_subsys - begin or continue searching for a PCI device by vendor/subvendor/device/subdevice id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all device ids&n; * @ss_vendor: PCI subsystem vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @ss_device: PCI subsystem device id to match, or %PCI_ANY_ID to match all device ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor, @device, @ss_vendor and @ss_device, a pointer to its&n; * device structure is returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; */
 r_struct
 id|pci_dev
 op_star
@@ -201,7 +201,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_device - begin or continue searching for a PCI device by vendor/device id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all vendor ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor and @device, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; */
+multiline_comment|/**&n; * pci_find_device - begin or continue searching for a PCI device by vendor/device id&n; * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids&n; * @device: PCI device id to match, or %PCI_ANY_ID to match all device ids&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @vendor and @device, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; */
 r_struct
 id|pci_dev
 op_star
@@ -240,7 +240,7 @@ id|from
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_class - begin or continue searching for a PCI device by class&n; * @class: search for a PCI device with this class designation&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @class, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device on the global list.&n; */
+multiline_comment|/**&n; * pci_find_class - begin or continue searching for a PCI device by class&n; * @class: search for a PCI device with this class designation&n; * @from: Previous PCI device found in search, or %NULL for new search.&n; *&n; * Iterates through the list of known PCI devices.  If a PCI device is&n; * found with a matching @class, a pointer to its device structure is&n; * returned.  Otherwise, %NULL is returned.&n; * A new search is initiated by passing %NULL to the @from argument.&n; * Otherwise if @from is not %NULL, searches continue from next device&n; * on the global list.&n; */
 r_struct
 id|pci_dev
 op_star
@@ -312,7 +312,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_find_capability - query for devices&squot; capabilities &n; * @dev: PCI device to query&n; * @cap: capability code&n; *&n; * Tell if a device supports a given PCI capability.&n; * Returns the address of the requested capability structure within the device&squot;s PCI &n; * configuration space or 0 in case the device does not support it.&n; * Possible values for @flags:&n; *&n; *  %PCI_CAP_ID_PM           Power Management &n; *&n; *  %PCI_CAP_ID_AGP          Accelerated Graphics Port &n; *&n; *  %PCI_CAP_ID_VPD          Vital Product Data &n; *&n; *  %PCI_CAP_ID_SLOTID       Slot Identification &n; *&n; *  %PCI_CAP_ID_MSI          Message Signalled Interrupts&n; *&n; *  %PCI_CAP_ID_CHSWP        CompactPCI HotSwap &n; */
+multiline_comment|/**&n; * pci_find_capability - query for devices&squot; capabilities &n; * @dev: PCI device to query&n; * @cap: capability code&n; *&n; * Tell if a device supports a given PCI capability.&n; * Returns the address of the requested capability structure within the&n; * device&squot;s PCI configuration space or 0 in case the device does not&n; * support it.  Possible values for @cap:&n; *&n; *  %PCI_CAP_ID_PM           Power Management &n; *&n; *  %PCI_CAP_ID_AGP          Accelerated Graphics Port &n; *&n; *  %PCI_CAP_ID_VPD          Vital Product Data &n; *&n; *  %PCI_CAP_ID_SLOTID       Slot Identification &n; *&n; *  %PCI_CAP_ID_MSI          Message Signalled Interrupts&n; *&n; *  %PCI_CAP_ID_CHSWP        CompactPCI HotSwap &n; */
 r_int
 DECL|function|pci_find_capability
 id|pci_find_capability
@@ -1391,7 +1391,7 @@ c_func
 id|pci_drivers
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * pci_match_device - Tell if a PCI device structure has a matching PCI device&n; * @ids: array of PCI device id structures to search in&n; * @dev: the PCI device structure to match against&n; *&n; * Used by a driver to check whether a PCI device present in the&n; * system is in its list of supported devices.Returns the matching&n; * pci_device_id structure or %NULL if there is no match.&n; */
+multiline_comment|/**&n; * pci_match_device - Tell if a PCI device structure has a matching PCI device id structure&n; * @ids: array of PCI device id structures to search in&n; * @dev: the PCI device structure to match against&n; * &n; * Used by a driver to check whether a PCI device present in the&n; * system is in its list of supported devices.Returns the matching&n; * pci_device_id structure or %NULL if there is no match.&n; */
 r_const
 r_struct
 id|pci_device_id
@@ -1598,7 +1598,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers&n; * Returns the number of pci devices which were claimed by the driver&n; * during registration.&n; */
+multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers&n; * Returns the number of pci devices which were claimed by the driver&n; * during registration.  The driver remains registered even if the&n; * return value is zero.&n; */
 r_int
 DECL|function|pci_register_driver
 id|pci_register_driver
@@ -1661,7 +1661,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_unregister_driver - unregister a pci driver&n; * @drv: the driver structure to unregister&n; * &n; * Deletes the driver structure from the list of registered PCI drivers,&n; * gives it a chance to clean up and marks the devices for which it&n; * was responsible as driverless.&n; */
+multiline_comment|/**&n; * pci_unregister_driver - unregister a pci driver&n; * @drv: the driver structure to unregister&n; * &n; * Deletes the driver structure from the list of registered PCI drivers,&n; * gives it a chance to clean up by calling its remove() function for&n; * each device it was responsible for, and marks those devices as&n; * driverless.&n; */
 r_void
 DECL|function|pci_unregister_driver
 id|pci_unregister_driver
@@ -5710,6 +5710,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_find_capability
+)paren
+suffix:semicolon
+DECL|variable|pci_release_regions
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_release_regions
+)paren
+suffix:semicolon
+DECL|variable|pci_request_regions
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_request_regions
 )paren
 suffix:semicolon
 DECL|variable|pci_find_class

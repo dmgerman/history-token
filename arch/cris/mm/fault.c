@@ -561,7 +561,7 @@ id|errcode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * Notice that the address we&squot;re given is aligned to the page the fault&n; * occured in, since we only get the PFN in R_MMU_CAUSE not the complete&n; * address.&n; *&n; * error_code:&n; *&t;bit 0 == 0 means no page found, 1 means protection fault&n; *&t;bit 1 == 0 means read, 1 means write&n; *&n; * If this routine detects a bad access, it returns 1, otherwise it&n; * returns 0.&n; */
+multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * Notice that the address we&squot;re given is aligned to the page the fault&n; * occurred in, since we only get the PFN in R_MMU_CAUSE not the complete&n; * address.&n; *&n; * error_code:&n; *&t;bit 0 == 0 means no page found, 1 means protection fault&n; *&t;bit 1 == 0 means read, 1 means write&n; *&n; * If this routine detects a bad access, it returns 1, otherwise it&n; * returns 0.&n; */
 id|asmlinkage
 r_void
 DECL|function|do_page_fault
@@ -1199,13 +1199,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pmd_present
-c_func
-(paren
-op_star
-id|pmd
-)paren
-op_logical_or
 op_logical_neg
 id|pmd_present
 c_func

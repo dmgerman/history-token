@@ -2328,6 +2328,7 @@ op_assign
 id|page_cache_alloc
 c_func
 (paren
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -4191,6 +4192,7 @@ op_assign
 id|page_cache_alloc
 c_func
 (paren
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -5444,9 +5446,10 @@ id|page
 op_star
 id|new_page
 op_assign
-id|page_cache_alloc
+id|alloc_page
 c_func
 (paren
+id|GFP_HIGHUSER
 )paren
 suffix:semicolon
 r_if
@@ -8944,6 +8947,7 @@ op_assign
 id|page_cache_alloc
 c_func
 (paren
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -9279,6 +9283,7 @@ op_assign
 id|page_cache_alloc
 c_func
 (paren
+id|mapping
 )paren
 suffix:semicolon
 r_if

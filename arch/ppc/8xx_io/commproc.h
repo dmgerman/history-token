@@ -721,7 +721,7 @@ suffix:semicolon
 multiline_comment|/* Function code bits.&n;*/
 DECL|macro|SCC_EB
 mdefine_line|#define SCC_EB&t;((u_char)0x10)&t;/* Set big endian byte order */
-multiline_comment|/* CPM Ethernet through SCC1.&n; */
+multiline_comment|/* CPM Ethernet through SCCx.&n; */
 DECL|struct|scc_enet
 r_typedef
 r_struct
@@ -953,6 +953,7 @@ DECL|typedef|scc_enet_t
 )brace
 id|scc_enet_t
 suffix:semicolon
+multiline_comment|/***  MBX  ************************************************************/
 macro_line|#ifdef CONFIG_MBX
 multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.  The TCLK and RCLK seem unique&n; * to the MBX860 board.  Any two of the four available clocks could be&n; * used, and the MPC860 cookbook manual has an example using different&n; * clock pins.&n; */
 DECL|macro|PA_ENET_RXD
@@ -974,7 +975,8 @@ DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x000000ff)
 DECL|macro|SICR_ENET_CLKRT
 mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x0000003d)
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_MBX */
+multiline_comment|/***  RPXLITE  ********************************************************/
 macro_line|#ifdef CONFIG_RPXLITE
 multiline_comment|/* This ENET stuff is for the MPC850 with ethernet on SCC2.  Some of&n; * this may be unique to the RPX-Lite configuration.&n; * Note TENA is on Port B.&n; */
 DECL|macro|PA_ENET_RXD
@@ -995,7 +997,8 @@ DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
 DECL|macro|SICR_ENET_CLKRT
 mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00003d00)
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_RPXLITE */
+multiline_comment|/***  BSEIP  **********************************************************/
 macro_line|#ifdef CONFIG_BSEIP
 multiline_comment|/* This ENET stuff is for the MPC823 with ethernet on SCC2.&n; * This is unique to the BSE ip-Engine board.&n; */
 DECL|macro|PA_ENET_RXD
@@ -1023,7 +1026,8 @@ DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
 DECL|macro|SICR_ENET_CLKRT
 mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00002c00)
-macro_line|#endif
+macro_line|#endif&t;/* CONFIG_BSEIP */
+multiline_comment|/***  RPXCLASSIC  *****************************************************/
 macro_line|#ifdef CONFIG_RPXCLASSIC
 multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.&n; */
 DECL|macro|PA_ENET_RXD
@@ -1045,17 +1049,64 @@ DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x000000ff)
 DECL|macro|SICR_ENET_CLKRT
 mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x0000003d)
-macro_line|#endif
-macro_line|#if (defined(CONFIG_TQM860) || defined(CONFIG_TQM860L))
-multiline_comment|/*&n; * TQM860 and TQM860L Configuration:&n; *&n; * Signal       PAR     DIR     ODR     DAT     Function&n; * Port A,  5    1       0       -       -       TCLK (CLK3) for Ethernet&n; * Port A,  7    1       0       -       -       RCLK (CLK1) for Ethernet&n; * Port A, 14    1       0       -       -       TXD for Ethernet (SCC1)&n; * Port A, 15    1       0       -       -       RXD for Ethernet (SCC1)&n; * Port C,  7    0       0       0       -       -&gt; ETH-LOOP&n; * Port C, 10    0       0       1       -       CD  for Ethernet (SCC1)&n; * Port C, 11    0       0       1       -       CTS for Ethernet (SCC1)&n; * Port C, 15    *       *       0       -       TENA/RTS for Ethernet&n; */
+macro_line|#endif&t;/* CONFIG_RPXCLASSIC */
+multiline_comment|/***  TQM823L, TQM850L  ***********************************************/
+macro_line|#if defined(CONFIG_TQM823L) || defined(CONFIG_TQM850L)
+multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.&n; */
+DECL|macro|PA_ENET_RXD
+mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0004)&t;/* PA 13 */
+DECL|macro|PA_ENET_TXD
+mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0008)&t;/* PA 12 */
+DECL|macro|PA_ENET_RCLK
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0100)&t;/* PA  7 */
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
+DECL|macro|PB_ENET_TENA
+mdefine_line|#define PB_ENET_TENA&t;((uint)0x00002000)&t;/* PB 18 */
+DECL|macro|PC_ENET_CLSN
+mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0040)&t;/* PC  9 */
+DECL|macro|PC_ENET_RENA
+mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0080)&t;/* PC  8 */
+multiline_comment|/* Control bits in the SICR to route TCLK (CLK3) and RCLK (CLK1) to&n; * SCC2.  Also, make sure GR2 (bit 16) and SC2 (bit 17) are zero.&n; */
+DECL|macro|SICR_ENET_MASK
+mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
+DECL|macro|SICR_ENET_CLKRT
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00002600)
+macro_line|#endif&t;/* CONFIG_TQM823L, CONFIG_TQM850L */
+multiline_comment|/***  FPS850L  *********************************************************/
+macro_line|#ifdef CONFIG_FPS850L
+multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.&n; */
+DECL|macro|PA_ENET_RXD
+mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0004)&t;/* PA 13 */
+DECL|macro|PA_ENET_TXD
+mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0008)&t;/* PA 12 */
+DECL|macro|PA_ENET_RCLK
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0100)&t;/* PA  7 */
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
+DECL|macro|PC_ENET_TENA
+mdefine_line|#define PC_ENET_TENA&t;((ushort)0x0002)&t;/* PC 14 */
+DECL|macro|PC_ENET_CLSN
+mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0040)&t;/* PC  9 */
+DECL|macro|PC_ENET_RENA
+mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0080)&t;/* PC  8 */
+multiline_comment|/* Control bits in the SICR to route TCLK (CLK2) and RCLK (CLK4) to&n; * SCC2.  Also, make sure GR2 (bit 16) and SC2 (bit 17) are zero.&n; */
+DECL|macro|SICR_ENET_MASK
+mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
+DECL|macro|SICR_ENET_CLKRT
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00002600)
+macro_line|#endif&t;/* CONFIG_FPS850L */
+multiline_comment|/***  TQM860L  ********************************************************/
+macro_line|#ifdef CONFIG_TQM860L
+multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC1 use.&n; */
 DECL|macro|PA_ENET_RXD
 mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0001)&t;/* PA 15 */
 DECL|macro|PA_ENET_TXD
 mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0002)&t;/* PA 14 */
-DECL|macro|PA_ENET_TCLK
-mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
 DECL|macro|PA_ENET_RCLK
 mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0100)&t;/* PA  7 */
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
 DECL|macro|PC_ENET_TENA
 mdefine_line|#define PC_ENET_TENA&t;((ushort)0x0001)&t;/* PC 15 */
 DECL|macro|PC_ENET_CLSN
@@ -1067,35 +1118,62 @@ DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x000000ff)
 DECL|macro|SICR_ENET_CLKRT
 mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00000026)
-macro_line|#endif&t;/* CONFIG_TQM860, TQM860L */
-macro_line|#ifdef CONFIG_TQM8xxL
-multiline_comment|/*&n; * TQM8xxL Configuration (except TQM860L):&n; *&n; * Signal       PAR     DIR     ODR     DAT     Function&n; * Port A,  5    1       0       -       -       TCLK (CLK3) for Ethernet&n; * Port A,  7    1       0       -       -       RCLK (CLK1) for Ethernet&n; * Port A, 12    1       0       -       -       TXD for Ethernet (SCC2)&n; * Port A, 13    1       0       -       -       RXD for Ethernet (SCC2)&n; * Port B, 18    1       1       -       -       TENA/RTS for Ethernet on STK8xx&n; * Port C,  7    0       0       0       -       -&gt; ETH-LOOP&n; * Port C,  8    0       0       1       -       CD  for Ethernet (SCC2)&n; * Port C,  9    0       0       1       -       CTS for Ethernet (SCC2)&n; * Port C, 14    *       *       0       -       TENA/RTS for Ethernet on FPS850&n; *&n; * Note: Using PC14 as RTS2 (TENA) does not work on the TQM850L when&n; * used with the starter-kit mainboard; we *must* use PB18 instead.&n; * For the FPS850 system, we *must* use PC14 :-(&n; */
+macro_line|#endif&t;/* CONFIG_TQM860L */
+multiline_comment|/***  SPD823TS  *******************************************************/
+macro_line|#ifdef CONFIG_SPD823TS
+multiline_comment|/* Bits in parallel I/O port registers that have to be set/cleared&n; * to configure the pins for SCC2 use.&n; */
+DECL|macro|PA_ENET_MDC
+mdefine_line|#define PA_ENET_MDC&t;((ushort)0x0001)&t;/* PA 15 !!! */
+DECL|macro|PA_ENET_MDIO
+mdefine_line|#define PA_ENET_MDIO&t;((ushort)0x0002)&t;/* PA 14 !!! */
 DECL|macro|PA_ENET_RXD
 mdefine_line|#define PA_ENET_RXD&t;((ushort)0x0004)&t;/* PA 13 */
 DECL|macro|PA_ENET_TXD
 mdefine_line|#define PA_ENET_TXD&t;((ushort)0x0008)&t;/* PA 12 */
 DECL|macro|PA_ENET_RCLK
-mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0100)&t;/* PA  7 */
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0200)&t;/* PA  6 */
 DECL|macro|PA_ENET_TCLK
 mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
-macro_line|#ifndef&t;CONFIG_FPS850&t;/* not valid on FPS board */
 DECL|macro|PB_ENET_TENA
-mdefine_line|#define&t;PB_ENET_TENA&t;((uint)0x00002000)
-macro_line|#endif&t;/* !CONFIG_FPS850 */
-macro_line|#ifdef&t;CONFIG_FPS850&t;/* FPS uses default configuration */
-DECL|macro|PC_ENET_TENA
-mdefine_line|#define PC_ENET_TENA&t;((ushort)0x0002)&t;/* PC 14 */
-macro_line|#endif&t;/* CONFIG_FPS850 */
+mdefine_line|#define PB_ENET_TENA&t;((uint)0x00002000)&t;/* PB 18 */
 DECL|macro|PC_ENET_CLSN
 mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0040)&t;/* PC  9 */
 DECL|macro|PC_ENET_RENA
 mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0080)&t;/* PC  8 */
-multiline_comment|/* Control bits in the SICR to route TCLK (CLK3) and RCLK (CLK1) to&n; * SCC2.  Also, make sure GR2 (bit 16) and SC2 (bit 17) are zero.&n; */
+DECL|macro|PC_ENET_RESET
+mdefine_line|#define&t;PC_ENET_RESET&t;((ushort)0x0100)&t;/* PC  7 !!! */
+multiline_comment|/* Control bits in the SICR to route TCLK (CLK3) and RCLK (CLK2) to&n; * SCC2.  Also, make sure GR2 (bit 16) and SC2 (bit 17) are zero.&n; */
 DECL|macro|SICR_ENET_MASK
 mdefine_line|#define SICR_ENET_MASK&t;((uint)0x0000ff00)
 DECL|macro|SICR_ENET_CLKRT
-mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00002600)
-macro_line|#endif&t;/* CONFIG_TQM8xxL */
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00002E00)
+macro_line|#endif&t;/* CONFIG_SPD823TS */
+multiline_comment|/***  SM850  *********************************************************/
+multiline_comment|/* The SM850 Service Module uses SCC2 for IrDA and SCC3 for Ethernet */
+macro_line|#ifdef CONFIG_SM850
+DECL|macro|PB_ENET_RXD
+mdefine_line|#define PB_ENET_RXD&t;((uint)0x00000004)&t;/* PB 29 */
+DECL|macro|PB_ENET_TXD
+mdefine_line|#define PB_ENET_TXD&t;((uint)0x00000002)&t;/* PB 30 */
+DECL|macro|PA_ENET_RCLK
+mdefine_line|#define PA_ENET_RCLK&t;((ushort)0x0100)&t;/* PA  7 */
+DECL|macro|PA_ENET_TCLK
+mdefine_line|#define PA_ENET_TCLK&t;((ushort)0x0400)&t;/* PA  5 */
+DECL|macro|PC_ENET_LBK
+mdefine_line|#define PC_ENET_LBK&t;((ushort)0x0008)&t;/* PC 12 */
+DECL|macro|PC_ENET_TENA
+mdefine_line|#define PC_ENET_TENA&t;((ushort)0x0004)&t;/* PC 13 */
+DECL|macro|PC_ENET_RENA
+mdefine_line|#define PC_ENET_RENA&t;((ushort)0x0800)&t;/* PC  4 */
+DECL|macro|PC_ENET_CLSN
+mdefine_line|#define PC_ENET_CLSN&t;((ushort)0x0400)&t;/* PC  5 */
+multiline_comment|/* Control bits in the SICR to route TCLK (CLK3) and RCLK (CLK1) to&n; * SCC3.  Also, make sure GR3 (bit 8) and SC3 (bit 9) are zero.&n; */
+DECL|macro|SICR_ENET_MASK
+mdefine_line|#define SICR_ENET_MASK&t;((uint)0x00FF0000)
+DECL|macro|SICR_ENET_CLKRT
+mdefine_line|#define SICR_ENET_CLKRT&t;((uint)0x00260000)
+macro_line|#endif&t;/* CONFIG_SM850 */
+multiline_comment|/*********************************************************************/
 multiline_comment|/* SCC Event register as used by Ethernet.&n;*/
 DECL|macro|SCCE_ENET_GRA
 mdefine_line|#define SCCE_ENET_GRA&t;((ushort)0x0080)&t;/* Graceful stop complete */
@@ -1555,6 +1633,23 @@ DECL|macro|CPMVEC_PIO_PC4
 mdefine_line|#define&t;CPMVEC_PIO_PC4&t;&t;((ushort)0x01)
 DECL|macro|CPMVEC_ERROR
 mdefine_line|#define&t;CPMVEC_ERROR&t;&t;((ushort)0x00)
+multiline_comment|/* CPM interrupt configuration vector.&n;*/
+DECL|macro|CICR_SCD_SCC4
+mdefine_line|#define&t;CICR_SCD_SCC4&t;&t;((uint)0x00c00000)&t;/* SCC4 @ SCCd */
+DECL|macro|CICR_SCC_SCC3
+mdefine_line|#define&t;CICR_SCC_SCC3&t;&t;((uint)0x00200000)&t;/* SCC3 @ SCCc */
+DECL|macro|CICR_SCB_SCC2
+mdefine_line|#define&t;CICR_SCB_SCC2&t;&t;((uint)0x00040000)&t;/* SCC2 @ SCCb */
+DECL|macro|CICR_SCA_SCC1
+mdefine_line|#define&t;CICR_SCA_SCC1&t;&t;((uint)0x00000000)&t;/* SCC1 @ SCCa */
+DECL|macro|CICR_IRL_MASK
+mdefine_line|#define CICR_IRL_MASK&t;&t;((uint)0x0000e000)&t;/* Core interrrupt */
+DECL|macro|CICR_HP_MASK
+mdefine_line|#define CICR_HP_MASK&t;&t;((uint)0x00001f00)&t;/* Hi-pri int. */
+DECL|macro|CICR_IEN
+mdefine_line|#define CICR_IEN&t;&t;((uint)0x00000080)&t;/* Int. enable */
+DECL|macro|CICR_SPS
+mdefine_line|#define CICR_SPS&t;&t;((uint)0x00000001)&t;/* SCC Spread */
 r_extern
 r_void
 id|cpm_install_handler
@@ -1578,22 +1673,14 @@ op_star
 id|dev_id
 )paren
 suffix:semicolon
-multiline_comment|/* CPM interrupt configuration vector.&n;*/
-DECL|macro|CICR_SCD_SCC4
-mdefine_line|#define&t;CICR_SCD_SCC4&t;&t;((uint)0x00c00000)&t;/* SCC4 @ SCCd */
-DECL|macro|CICR_SCC_SCC3
-mdefine_line|#define&t;CICR_SCC_SCC3&t;&t;((uint)0x00200000)&t;/* SCC3 @ SCCc */
-DECL|macro|CICR_SCB_SCC2
-mdefine_line|#define&t;CICR_SCB_SCC2&t;&t;((uint)0x00040000)&t;/* SCC2 @ SCCb */
-DECL|macro|CICR_SCA_SCC1
-mdefine_line|#define&t;CICR_SCA_SCC1&t;&t;((uint)0x00000000)&t;/* SCC1 @ SCCa */
-DECL|macro|CICR_IRL_MASK
-mdefine_line|#define CICR_IRL_MASK&t;&t;((uint)0x0000e000)&t;/* Core interrrupt */
-DECL|macro|CICR_HP_MASK
-mdefine_line|#define CICR_HP_MASK&t;&t;((uint)0x00001f00)&t;/* Hi-pri int. */
-DECL|macro|CICR_IEN
-mdefine_line|#define CICR_IEN&t;&t;((uint)0x00000080)&t;/* Int. enable */
-DECL|macro|CICR_SPS
-mdefine_line|#define CICR_SPS&t;&t;((uint)0x00000001)&t;/* SCC Spread */
+r_extern
+r_void
+id|cpm_free_handler
+c_func
+(paren
+r_int
+id|vec
+)paren
+suffix:semicolon
 macro_line|#endif /* __CPM_8XX__ */
 eof

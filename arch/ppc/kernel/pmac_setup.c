@@ -147,7 +147,7 @@ id|raw_mode
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_char
 id|mackbd_unexpected_up
 c_func
 (paren
@@ -1141,6 +1141,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;../../../drivers/scsi/scsi.h&quot;
 macro_line|#include &quot;../../../drivers/scsi/sd.h&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 multiline_comment|/*&n; * Dummy mksound function that does nothing.&n; * The real one is in the dmasound driver.&n; */
 id|__pmac
 r_static
@@ -1159,6 +1160,7 @@ id|ticks
 )paren
 (brace
 )brace
+macro_line|#endif /* CONFIG_VT */
 DECL|variable|sysctrl_regs
 r_static
 r_volatile
@@ -1516,10 +1518,12 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 id|kd_mksound
 op_assign
 id|pmac_mksound
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond

@@ -94,8 +94,10 @@ DECL|macro|__FINIT
 mdefine_line|#define __FINIT&t;&t;.previous
 DECL|macro|__INITDATA
 mdefine_line|#define __INITDATA&t;.section&t;&quot;.data.init&quot;,&quot;aw&quot;
+multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will add the driver initialization routine in&n; * the &quot;__initcall.int&quot; code segment if the driver is checked as&n; * &quot;y&quot; or static, or else it will wrap the driver initialization&n; * routine with init_module() which is used by insmod and&n; * modprobe when the driver is used as a module.&n; */
 DECL|macro|module_init
 mdefine_line|#define module_init(x)&t;__initcall(x);
+multiline_comment|/**&n; * module_exit() - driver exit entry point&n; * @x: function to be run when driver is removed&n; * &n; * module_exit() will wrap the driver clean-up code&n; * with cleanup_module() when used with rmmod when&n; * the driver is a module.  If the driver is statically&n; * compiled into the kernel, module_exit() has no effect.&n; */
 DECL|macro|module_exit
 mdefine_line|#define module_exit(x)&t;__exitcall(x);
 macro_line|#else

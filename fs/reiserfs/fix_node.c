@@ -3156,7 +3156,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Get new buffers for storing new nodes that are created while balancing.&n; * Returns:&t;SCHEDULE_OCCURED - schedule occured while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; *&t;        NO_DISK_SPACE - no disk space.&n; */
+multiline_comment|/* Get new buffers for storing new nodes that are created while balancing.&n; * Returns:&t;SCHEDULE_OCCURRED - schedule occurred while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; *&t;        NO_DISK_SPACE - no disk space.&n; */
 multiline_comment|/* The function is NOT SCHEDULE-SAFE! */
 DECL|function|get_empty_nodes
 r_static
@@ -4110,7 +4110,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif /*0*/
 )brace
-multiline_comment|/* Calculate far left/right parent of the left/right neighbor of the current node, that&n; * is calculate the left/right (FL[h]/FR[h]) neighbor of the parent F[h].&n; * Calculate left/right common parent of the current node and L[h]/R[h].&n; * Calculate left/right delimiting key position.&n; * Returns:&t;PATH_INCORRECT   - path in the tree is not correct;&n; &t;&t;SCHEDULE_OCCURRED - schedule occured while the function worked;&n; *&t;        CARRY_ON         - schedule didn&squot;t occur while the function worked;&n; */
+multiline_comment|/* Calculate far left/right parent of the left/right neighbor of the current node, that&n; * is calculate the left/right (FL[h]/FR[h]) neighbor of the parent F[h].&n; * Calculate left/right common parent of the current node and L[h]/R[h].&n; * Calculate left/right delimiting key position.&n; * Returns:&t;PATH_INCORRECT   - path in the tree is not correct;&n; &t;&t;SCHEDULE_OCCURRED - schedule occurred while the function worked;&n; *&t;        CARRY_ON         - schedule didn&squot;t occur while the function worked;&n; */
 DECL|function|get_far_parent
 r_static
 r_int
@@ -4633,7 +4633,7 @@ r_return
 id|CARRY_ON
 suffix:semicolon
 )brace
-multiline_comment|/* Get parents of neighbors of node in the path(S[n_path_offset]) and common parents of&n; * S[n_path_offset] and L[n_path_offset]/R[n_path_offset]: F[n_path_offset], FL[n_path_offset],&n; * FR[n_path_offset], CFL[n_path_offset], CFR[n_path_offset].&n; * Calculate numbers of left and right delimiting keys position: lkey[n_path_offset], rkey[n_path_offset].&n; * Returns:&t;SCHEDULE_OCCURRED - schedule occured while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; */
+multiline_comment|/* Get parents of neighbors of node in the path(S[n_path_offset]) and common parents of&n; * S[n_path_offset] and L[n_path_offset]/R[n_path_offset]: F[n_path_offset], FL[n_path_offset],&n; * FR[n_path_offset], CFL[n_path_offset], CFR[n_path_offset].&n; * Calculate numbers of left and right delimiting keys position: lkey[n_path_offset], rkey[n_path_offset].&n; * Returns:&t;SCHEDULE_OCCURRED - schedule occurred while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; */
 DECL|function|get_parents
 r_static
 r_int
@@ -5443,7 +5443,7 @@ op_logical_neg
 id|NO_BALANCING_NEEDED
 suffix:semicolon
 )brace
-multiline_comment|/* Check whether current node S[h] is balanced when increasing its size by&n; * Inserting or Pasting.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occured; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
+multiline_comment|/* Check whether current node S[h] is balanced when increasing its size by&n; * Inserting or Pasting.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occurred; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
 multiline_comment|/* ip means Inserting or Pasting */
 DECL|function|ip_check_balance
 r_static
@@ -6780,7 +6780,7 @@ id|CARRY_ON
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Cutting for INTERNAL node of S+tree.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occured; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; *&n; * Note: Items of internal nodes have fixed size, so the balance condition for&n; * the internal part of S+tree is as for the B-trees.&n; */
+multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Cutting for INTERNAL node of S+tree.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occurred; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; *&n; * Note: Items of internal nodes have fixed size, so the balance condition for&n; * the internal part of S+tree is as for the B-trees.&n; */
 DECL|function|dc_check_balance_internal
 r_static
 r_int
@@ -7813,7 +7813,7 @@ r_return
 id|CARRY_ON
 suffix:semicolon
 )brace
-multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Truncating for LEAF node of S+tree.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occured; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
+multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Truncating for LEAF node of S+tree.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste;&n; * Returns:&t;1 - schedule occurred; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
 DECL|function|dc_check_balance_leaf
 r_static
 r_int
@@ -8219,7 +8219,7 @@ r_return
 id|NO_BALANCING_NEEDED
 suffix:semicolon
 )brace
-multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Cutting.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;d - delete, c - cut.&n; * Returns:&t;1 - schedule occured; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
+multiline_comment|/* Check whether current node S[h] is balanced when Decreasing its size by&n; * Deleting or Cutting.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&t;tb&t;tree_balance structure;&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;d - delete, c - cut.&n; * Returns:&t;1 - schedule occurred; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
 DECL|function|dc_check_balance
 r_static
 r_int
@@ -8280,7 +8280,7 @@ id|h
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check whether current node S[h] is balanced.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&n; *&t;tb&t;tree_balance structure:&n; *&n; *              tb is a large structure that must be read about in the header file&n; *              at the same time as this procedure if the reader is to successfully&n; *              understand this procedure&n; *&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste, d - delete, c - cut.&n; * Returns:&t;1 - schedule occured; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
+multiline_comment|/* Check whether current node S[h] is balanced.&n; * Calculate parameters for balancing for current level h.&n; * Parameters:&n; *&n; *&t;tb&t;tree_balance structure:&n; *&n; *              tb is a large structure that must be read about in the header file&n; *              at the same time as this procedure if the reader is to successfully&n; *              understand this procedure&n; *&n; *&t;h&t;current level of the node;&n; *&t;inum&t;item number in S[h];&n; *&t;mode&t;i - insert, p - paste, d - delete, c - cut.&n; * Returns:&t;1 - schedule occurred; &n; *&t;        0 - balancing for higher levels needed;&n; *&t;       -1 - no balancing for higher levels needed;&n; *&t;       -2 - no disk space.&n; */
 DECL|function|check_balance
 r_static
 r_int
@@ -8642,7 +8642,7 @@ id|CARRY_ON
 suffix:semicolon
 multiline_comment|/* Parent in the path is unlocked and really parent of the current node.  */
 )brace
-multiline_comment|/* Using lnum[n_h] and rnum[n_h] we should determine what neighbors&n; * of S[n_h] we&n; * need in order to balance S[n_h], and get them if necessary.&n; * Returns:&t;SCHEDULE_OCCURRED - schedule occured while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; */
+multiline_comment|/* Using lnum[n_h] and rnum[n_h] we should determine what neighbors&n; * of S[n_h] we&n; * need in order to balance S[n_h], and get them if necessary.&n; * Returns:&t;SCHEDULE_OCCURRED - schedule occurred while the function worked;&n; *&t;        CARRY_ON - schedule didn&squot;t occur while the function worked;&n; */
 DECL|function|get_neighbors
 r_static
 r_int

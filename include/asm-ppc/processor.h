@@ -925,6 +925,10 @@ DECL|macro|_MACH_tqm860
 mdefine_line|#define _MACH_tqm860&t;0x00004000&t;/* TQM860/L */
 DECL|macro|_MACH_tqm8xxL
 mdefine_line|#define _MACH_tqm8xxL&t;0x00008000&t;/* TQM8xxL */
+DECL|macro|_MACH_spd8xxL
+mdefine_line|#define _MACH_spd8xxL&t;0x00010000&t;/* SPD8xx */
+DECL|macro|_MACH_ibms8
+mdefine_line|#define _MACH_ibms8&t;0x00020000&t;/* IVMS8 */
 multiline_comment|/* see residual.h for these */
 DECL|macro|_PREP_Motorola
 mdefine_line|#define _PREP_Motorola 0x01  /* motorola prep */

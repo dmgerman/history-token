@@ -2468,7 +2468,7 @@ l_string|&quot;mace: jabbering transceiver&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;A transmit error has occured. (We kick the transmit side from&n; *&t;the DMA completion)&n; */
+multiline_comment|/*&n; *&t;A transmit error has occurred. (We kick the transmit side from&n; *&t;the DMA completion)&n; */
 DECL|function|mace68k_xmit_error
 r_static
 r_void
@@ -2571,7 +2571,7 @@ id|NET_BH
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;A receive interrupt occured.&n; */
+multiline_comment|/*&n; *&t;A receive interrupt occurred.&n; */
 DECL|function|mace68k_recv_interrupt
 r_static
 r_void

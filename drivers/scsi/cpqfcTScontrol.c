@@ -3363,7 +3363,7 @@ singleline_comment|// also, we want to invalidate (i.e. INITIATOR_ABORT) any
 singleline_comment|// open Login exchanges, in case the LinkDown happened in the
 singleline_comment|// middle of logins.  It&squot;s possible that some ports already
 singleline_comment|// ACCepted login commands which we have not processed before
-singleline_comment|// another LinkDown occured.  Any accepted Login exhanges are
+singleline_comment|// another LinkDown occurred.  Any accepted Login exhanges are
 singleline_comment|// invalidated by LinkDown, even before they are acknowledged.
 singleline_comment|// It&squot;s also possible for a port to have a Queued Reply or Request
 singleline_comment|// for login which was interrupted by LinkDown; it may come later,

@@ -8465,7 +8465,7 @@ id|DEB
 (paren
 id|printk
 (paren
-l_string|&quot;&bslash;npci2220i Interupt hanlder return error&quot;
+l_string|&quot;&bslash;npci2220i Interrupt handler return error&quot;
 )paren
 )paren
 suffix:semicolon

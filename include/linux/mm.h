@@ -1433,9 +1433,6 @@ mdefine_line|#define GFP_KSWAPD&t;(                          __GFP_IO)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA
-multiline_comment|/* Flag - indicates that the buffer can be taken from high memory which is not&n;   permanently mapped by the kernel */
-DECL|macro|GFP_HIGHMEM
-mdefine_line|#define GFP_HIGHMEM&t;__GFP_HIGHMEM
 multiline_comment|/* vma is the first one with  address &lt; vma-&gt;vm_end,&n; * and even  address &lt; vma-&gt;vm_start. Have to extend vma. */
 DECL|function|expand_stack
 r_static
