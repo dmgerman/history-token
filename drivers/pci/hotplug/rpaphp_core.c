@@ -18,8 +18,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|rpaphp_sem
 r_static
@@ -3365,10 +3363,6 @@ l_string|&quot; version: &quot;
 id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
-suffix:semicolon
-id|rpaphp_debug
-op_assign
-id|debug
 suffix:semicolon
 multiline_comment|/* read all the PRA info from the system */
 id|retval
