@@ -1686,6 +1686,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|imap.br_state
+op_eq
+id|XFS_EXT_UNWRITTEN
+op_logical_or
 id|imap.br_startblock
 op_eq
 id|HOLESTARTBLOCK
