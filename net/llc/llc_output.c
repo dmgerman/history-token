@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * llc_output.c - LLC output path&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License version 2 as published by the Free Software&n; * Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License version 2 for more details.&n; */
+multiline_comment|/*&n; * llc_output.c - LLC minimal output path&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License version 2 as published by the Free Software&n; * Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License version 2 for more details.&n; */
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_tr.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
+macro_line|#include &lt;net/llc_pdu.h&gt;
 multiline_comment|/**&n; *&t;llc_mac_hdr_init - fills MAC header fields&n; *&t;@skb: Address of the frame to initialize its MAC header&n; *&t;@sa: The MAC source address&n; *&t;@da: The MAC destination address&n; *&n; *&t;Fills MAC header fields, depending on MAC type. Returns 0, If MAC type&n; *&t;is a valid type and initialization completes correctly 1, otherwise.&n; */
 DECL|function|llc_mac_hdr_init
 r_int
@@ -234,11 +236,97 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;llc_build_and_send_ui_pkt - unitdata request interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@dmac: destination mac address&n; *&t;@dsap: destination sap&n; *&n; *&t;Upper layers calls this function when upper layer wants to send data&n; *&t;using connection-less mode communication (UI pdu).&n; *&n; *&t;Accept data frame from network layer to be sent using connection-&n; *&t;less mode communication; timeout/retries handled by network layer;&n; *&t;package primitive as an event and send to SAP event handler&n; */
+DECL|function|llc_build_and_send_ui_pkt
+r_int
+id|llc_build_and_send_ui_pkt
+c_func
+(paren
+r_struct
+id|llc_sap
+op_star
+id|sap
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+r_char
+op_star
+id|dmac
+comma
+r_int
+r_char
+id|dsap
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|llc_pdu_header_init
+c_func
+(paren
+id|skb
+comma
+id|LLC_PDU_TYPE_U
+comma
+id|sap-&gt;laddr.lsap
+comma
+id|dsap
+comma
+id|LLC_PDU_CMD
+)paren
+suffix:semicolon
+id|llc_pdu_init_as_ui_cmd
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|llc_mac_hdr_init
+c_func
+(paren
+id|skb
+comma
+id|skb-&gt;dev-&gt;dev_addr
+comma
+id|dmac
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
+id|dev_queue_xmit
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 DECL|variable|llc_mac_hdr_init
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|llc_mac_hdr_init
+)paren
+suffix:semicolon
+DECL|variable|llc_build_and_send_ui_pkt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_build_and_send_ui_pkt
 )paren
 suffix:semicolon
 eof

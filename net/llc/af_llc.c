@@ -4396,6 +4396,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|llc_station_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|llc_ui_sap_last_autoport
 op_assign
 id|LLC_SAP_DYN_START
@@ -4452,6 +4457,11 @@ c_func
 r_void
 )paren
 (brace
+id|llc_station_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 id|llc_remove_pack
 c_func
 (paren

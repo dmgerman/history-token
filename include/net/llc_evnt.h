@@ -87,6 +87,9 @@ op_star
 id|skb-&gt;cb
 suffix:semicolon
 )brace
+r_struct
+id|llc_station
+suffix:semicolon
 DECL|typedef|llc_station_ev_t
 r_typedef
 r_int

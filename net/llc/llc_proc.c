@@ -7,12 +7,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_c_ac.h&gt;
 macro_line|#include &lt;net/llc_c_ev.h&gt;
 macro_line|#include &lt;net/llc_c_st.h&gt;
 macro_line|#include &lt;net/llc_conn.h&gt;
-macro_line|#include &lt;net/llc_main.h&gt;
-macro_line|#include &lt;net/llc_sap.h&gt;
 DECL|function|llc_ui_format_mac
 r_static
 r_void
@@ -109,7 +108,7 @@ c_func
 id|sap_entry
 comma
 op_amp
-id|llc_main_station.sap_list.list
+id|llc_sap_list
 )paren
 (brace
 id|sap
@@ -218,7 +217,7 @@ id|read_lock_bh
 c_func
 (paren
 op_amp
-id|llc_main_station.sap_list.lock
+id|llc_sap_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -360,7 +359,7 @@ c_cond
 id|sap-&gt;node.next
 op_eq
 op_amp
-id|llc_main_station.sap_list.list
+id|llc_sap_list
 )paren
 r_break
 suffix:semicolon
@@ -481,7 +480,7 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|llc_main_station.sap_list.lock
+id|llc_sap_list_lock
 )paren
 suffix:semicolon
 )brace
