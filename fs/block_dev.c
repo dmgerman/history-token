@@ -580,7 +580,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|blkdev_direct_IO
 id|blkdev_direct_IO
 c_func

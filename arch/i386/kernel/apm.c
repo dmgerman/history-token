@@ -4965,7 +4965,7 @@ l_string|&quot;kapmd&quot;
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* 2002/08/01 - WT&n;&t; * This is to avoid random crashes at boot time during initialization&n;&t; * on SMP systems in case of &quot;apm=power-off&quot; mode. Seen on ASUS A7M266D.&n;&t; * Some bioses don&squot;t like being called from CPU != 0.&n;&t; * Method suggested by Ingo Molnar.&n;&t; */

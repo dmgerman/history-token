@@ -513,8 +513,26 @@ DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;254
 DECL|macro|__NR_rtas
 mdefine_line|#define __NR_rtas&t;&t;255
+multiline_comment|/* Number 256 is reserved for sys_debug_setcontext */
+multiline_comment|/* Number 257 is reserved for vserver */
+multiline_comment|/* Number 258 is reserved for new sys_remap_file_pages */
+multiline_comment|/* Number 259 is reserved for new sys_mbind */
+multiline_comment|/* Number 260 is reserved for new sys_get_mempolicy */
+multiline_comment|/* Number 261 is reserved for new sys_set_mempolicy */
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;262
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;263
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;264
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;265
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;266
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;267
 DECL|macro|__NR_syscalls
-mdefine_line|#define __NR_syscalls&t;&t;256
+mdefine_line|#define __NR_syscalls&t;&t;268
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;__NR_syscalls

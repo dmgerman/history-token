@@ -4715,7 +4715,7 @@ id|shost-&gt;host_no
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 id|shost-&gt;eh_wait
 op_assign

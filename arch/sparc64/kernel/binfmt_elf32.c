@@ -423,5 +423,9 @@ DECL|macro|MODULE_DESCRIPTION
 macro_line|#undef MODULE_DESCRIPTION
 DECL|macro|MODULE_AUTHOR
 macro_line|#undef MODULE_AUTHOR
+DECL|macro|TASK_SIZE
+macro_line|#undef TASK_SIZE
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE 0xf0000000
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 eof

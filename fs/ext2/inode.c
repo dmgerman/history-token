@@ -2511,7 +2511,7 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|ext2_direct_IO
 id|ext2_direct_IO
 c_func

@@ -47,8 +47,8 @@ DECL|macro|any_online_cpu
 mdefine_line|#define any_online_cpu(map)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cpumask_t __tmp__;&t;&t;&t;&bslash;&n;&t;cpus_and(__tmp__, map, cpu_online_map);&t;&bslash;&n;&t;find_first_bit(__tmp__.mask, NR_CPUS);&t;&bslash;&n;})
 multiline_comment|/*&n; * um, these need to be usable as static initializers&n; */
 DECL|macro|CPU_MASK_ALL
-mdefine_line|#define CPU_MASK_ALL&t;{ {[0 ... CPU_ARRAY_SIZE-1] = ~0UL} }
+mdefine_line|#define CPU_MASK_ALL&t;((cpumask_t) { {[0 ... CPU_ARRAY_SIZE-1] = ~0UL} })
 DECL|macro|CPU_MASK_NONE
-mdefine_line|#define CPU_MASK_NONE&t;{ {[0 ... CPU_ARRAY_SIZE-1] =  0UL} }
+mdefine_line|#define CPU_MASK_NONE&t;((cpumask_t) { {[0 ... CPU_ARRAY_SIZE-1] =  0UL} })
 macro_line|#endif /* __ASM_GENERIC_CPUMASK_ARRAY_H */
 eof

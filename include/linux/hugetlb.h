@@ -180,33 +180,12 @@ id|mm_struct
 op_star
 id|mm
 comma
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
 r_int
 r_int
 id|address
 comma
 r_int
 id|write
-)paren
-suffix:semicolon
-r_struct
-id|vm_area_struct
-op_star
-id|hugepage_vma
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|address
 )paren
 suffix:semicolon
 r_struct
@@ -376,7 +355,7 @@ suffix:semicolon
 DECL|macro|follow_hugetlb_page
 mdefine_line|#define follow_hugetlb_page(m,v,p,vs,a,b,i)&t;({ BUG(); 0; })
 DECL|macro|follow_huge_addr
-mdefine_line|#define follow_huge_addr(mm, vma, addr, write)&t;0
+mdefine_line|#define follow_huge_addr(mm, addr, write)&t;ERR_PTR(-EINVAL)
 DECL|macro|copy_hugetlb_page_range
 mdefine_line|#define copy_hugetlb_page_range(src, dst, vma)&t;({ BUG(); 0; })
 DECL|macro|hugetlb_prefault
@@ -391,8 +370,6 @@ DECL|macro|is_hugepage_mem_enough
 mdefine_line|#define is_hugepage_mem_enough(size)&t;&t;0
 DECL|macro|hugetlb_report_meminfo
 mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
-DECL|macro|hugepage_vma
-mdefine_line|#define hugepage_vma(mm, addr)&t;&t;&t;0
 DECL|macro|mark_mm_hugetlb
 mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
 DECL|macro|follow_huge_pmd

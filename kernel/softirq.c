@@ -1157,7 +1157,7 @@ l_int|19
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 id|set_current_state
 c_func
