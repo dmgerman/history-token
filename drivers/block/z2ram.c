@@ -1187,7 +1187,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUES
+id|DEVICE_REQUEST
 comma
 op_amp
 id|z2ram_lock
