@@ -799,6 +799,19 @@ op_star
 l_int|8
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|tsk-&gt;thread.tls_array
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|tsk-&gt;thread.tls_array
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Forget coprocessor state..&n;&t; */
 id|clear_fpu
 c_func
