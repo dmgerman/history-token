@@ -2045,9 +2045,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-op_increment
-id|priv-&gt;outstanding_urbs
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
