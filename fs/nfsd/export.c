@@ -4857,7 +4857,7 @@ l_string|&quot;&quot;
 )brace
 comma
 (brace
-id|NFSEXP_CROSSMNT
+id|NFSEXP_CROSSMOUNT
 comma
 (brace
 l_string|&quot;crossmnt&quot;

@@ -43,8 +43,8 @@ DECL|macro|NFSEXP_MSNFS
 mdefine_line|#define NFSEXP_MSNFS&t;&t;0x1000&t;/* do silly things that MS clients expect */
 DECL|macro|NFSEXP_FSID
 mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
-DECL|macro|NFSEXP_CROSSMNT
-mdefine_line|#define&t;NFSEXP_CROSSMNT&t;&t;0x4000
+DECL|macro|NFSEXP_CROSSMOUNT
+mdefine_line|#define&t;NFSEXP_CROSSMOUNT&t;0x4000
 DECL|macro|NFSEXP_ALLFLAGS
 mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x7FFF
 macro_line|#ifdef __KERNEL__

@@ -231,7 +231,7 @@ op_logical_and
 (paren
 id|exp-&gt;ex_flags
 op_amp
-id|NFSEXP_CROSSMNT
+id|NFSEXP_CROSSMOUNT
 )paren
 op_logical_or
 id|EX_NOHIDE
