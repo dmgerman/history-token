@@ -1783,6 +1783,46 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Check VTAG of the packet matches the sender&squot;s own tag. */
+r_static
+r_inline
+r_int
+DECL|function|sctp_vtag_verify
+id|sctp_vtag_verify
+c_func
+(paren
+r_const
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
+comma
+r_const
+r_struct
+id|sctp_association
+op_star
+id|asoc
+)paren
+(brace
+multiline_comment|/* RFC 2960 Sec 8.5 When receiving an SCTP packet, the endpoint&n;&t; * MUST ensure that the value in the Verification Tag field of&n;&t; * the received SCTP packet matches its own Tag. If the received&n;&t; * Verification Tag value does not match the receiver&squot;s own&n;&t; * tag value, the receiver shall silently discard the packet...&n;&t; */
+r_if
+c_cond
+(paren
+id|ntohl
+c_func
+(paren
+id|chunk-&gt;sctp_hdr-&gt;vtag
+)paren
+op_eq
+id|asoc-&gt;c.my_vtag
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Check VTAG of the packet matches the sender&squot;s own tag OR its peer&squot;s&n; * tag and the T bit is set in the Chunk Flags.&n; */
 r_static
 r_inline
