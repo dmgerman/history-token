@@ -2148,7 +2148,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;protocol %04x is &quot;
 l_string|&quot;buggy, dev %s&bslash;n&quot;
 comma
@@ -2738,7 +2738,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;Virtual device %s asks to &quot;
 l_string|&quot;queue packet!&bslash;n&quot;
 comma
@@ -2763,7 +2763,7 @@ c_func
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_CRIT
 l_string|&quot;Dead loop on virtual device &quot;
 l_string|&quot;%s, fix it urgently!&bslash;n&quot;
 comma
@@ -3988,40 +3988,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
-multiline_comment|/**&n; *&t;net_call_rx_atomic&n; *&t;@fn: function to call&n; *&n; *&t;Make a function call that is atomic with respect to the protocol&n; *&t;layers.&n; */
-DECL|function|net_call_rx_atomic
-r_void
-id|net_call_rx_atomic
-c_func
-(paren
-r_void
-(paren
-op_star
-id|fn
-)paren
-(paren
-r_void
-)paren
-)paren
-(brace
-id|br_write_lock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|fn
-c_func
-(paren
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
 DECL|variable|br_handle_frame_hook

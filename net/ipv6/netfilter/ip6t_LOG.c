@@ -389,7 +389,7 @@ c_cond
 (paren
 id|fhdr-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|0x0001

@@ -292,7 +292,7 @@ id|rt-&gt;u.dst
 )paren
 id|iph-&gt;frag_off
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -547,7 +547,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -636,7 +636,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -1470,7 +1470,7 @@ id|rt-&gt;u.dst
 )paren
 id|iph-&gt;frag_off
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -1698,7 +1698,7 @@ id|rt-&gt;u.dst
 )paren
 id|df
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -2165,7 +2165,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *&t;Any further fragments will have MF set.&n;&t;&t;&t;&t; */
 id|mf
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_MF
@@ -2592,7 +2592,7 @@ id|rt-&gt;u.dst
 )paren
 id|df
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -3039,7 +3039,7 @@ id|not_last_frag
 op_assign
 id|iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_MF
@@ -3304,7 +3304,7 @@ id|not_last_frag
 )paren
 id|iph-&gt;frag_off
 op_or_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_MF

@@ -1288,7 +1288,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 id|IN_CLASSA_NET
@@ -1310,7 +1310,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 id|IN_CLASSB_NET
@@ -1332,7 +1332,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 id|IN_CLASSC_NET
@@ -1600,7 +1600,7 @@ c_cond
 (paren
 id|rarp-&gt;ar_op
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ARPOP_RREPLY
@@ -1615,7 +1615,7 @@ c_cond
 (paren
 id|rarp-&gt;ar_pro
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -2580,7 +2580,7 @@ id|bootp_pkt
 suffix:semicolon
 id|h-&gt;frag_off
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -2616,7 +2616,7 @@ suffix:semicolon
 multiline_comment|/* Construct UDP header */
 id|b-&gt;udph.source
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|68
@@ -2624,7 +2624,7 @@ l_int|68
 suffix:semicolon
 id|b-&gt;udph.dest
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|67
@@ -2763,7 +2763,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -3347,7 +3347,7 @@ id|IPPROTO_UDP
 op_logical_or
 id|b-&gt;udph.source
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|67
@@ -3355,7 +3355,7 @@ l_int|67
 op_logical_or
 id|b-&gt;udph.dest
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|68
@@ -3388,7 +3388,7 @@ c_cond
 (paren
 id|h-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_OFFSET

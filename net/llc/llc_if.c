@@ -107,10 +107,8 @@ id|func
 suffix:semicolon
 id|sap-&gt;station
 op_assign
-id|llc_station_get
-c_func
-(paren
-)paren
+op_amp
+id|llc_main_station
 suffix:semicolon
 multiline_comment|/* initialized SAP; add it to list of SAPs this station manages */
 id|llc_sap_save

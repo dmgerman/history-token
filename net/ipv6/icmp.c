@@ -588,7 +588,7 @@ op_logical_neg
 (paren
 id|type
 op_amp
-l_int|0x80
+id|ICMPV6_INFOMSG_MASK
 )paren
 )paren
 r_return
@@ -646,7 +646,7 @@ c_cond
 (paren
 id|type
 op_amp
-l_int|0x80
+id|ICMPV6_INFOMSG_MASK
 )paren
 r_return
 l_int|1
@@ -1954,7 +1954,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|0
 )braket
@@ -1963,7 +1963,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|1
 )braket
@@ -1972,7 +1972,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|2
 )braket
@@ -1981,7 +1981,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|3
 )braket
@@ -1990,7 +1990,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|4
 )braket
@@ -1999,7 +1999,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|5
 )braket
@@ -2008,7 +2008,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|6
 )braket
@@ -2017,7 +2017,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|saddr-&gt;in6_u.u6_addr16
+id|saddr-&gt;s6_addr16
 (braket
 l_int|7
 )braket
@@ -2026,7 +2026,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|0
 )braket
@@ -2035,7 +2035,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|1
 )braket
@@ -2044,7 +2044,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|2
 )braket
@@ -2053,7 +2053,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|3
 )braket
@@ -2062,7 +2062,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|4
 )braket
@@ -2071,7 +2071,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|5
 )braket
@@ -2080,7 +2080,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|6
 )braket
@@ -2089,7 +2089,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|daddr-&gt;in6_u.u6_addr16
+id|daddr-&gt;s6_addr16
 (braket
 l_int|7
 )braket
@@ -2413,7 +2413,7 @@ c_cond
 (paren
 id|type
 op_amp
-l_int|0x80
+id|ICMPV6_INFOMSG_MASK
 )paren
 r_break
 suffix:semicolon

@@ -1515,8 +1515,9 @@ id|timer_list
 id|tcp_tw_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|tcp_twkill
 )brace
 suffix:semicolon
@@ -1794,8 +1795,9 @@ id|timer_list
 id|tcp_twcal_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|tcp_twcal_tick
 )brace
 suffix:semicolon

@@ -239,8 +239,8 @@ r_typedef
 r_enum
 (brace
 multiline_comment|/* RFC 2960 Section 3.3.5 */
-DECL|enumerator|SCTP_PARAM_HEATBEAT_INFO
-id|SCTP_PARAM_HEATBEAT_INFO
+DECL|enumerator|SCTP_PARAM_HEARTBEAT_INFO
+id|SCTP_PARAM_HEARTBEAT_INFO
 op_assign
 id|__constant_htons
 c_func
@@ -424,6 +424,19 @@ comma
 DECL|typedef|sctp_param_action_t
 )brace
 id|sctp_param_action_t
+suffix:semicolon
+DECL|enumerator|SCTP_PARAM_ACTION_MASK
+r_enum
+(brace
+id|SCTP_PARAM_ACTION_MASK
+op_assign
+id|__constant_htons
+c_func
+(paren
+l_int|0xc000
+)paren
+comma
+)brace
 suffix:semicolon
 multiline_comment|/* RFC 2960 Section 3.3.1 Payload Data (DATA) (0) */
 DECL|struct|sctp_datahdr
