@@ -8504,7 +8504,7 @@ multiline_comment|/* So... tx_ret_csm is advanced _after_ check for device wakeu
 )brace
 DECL|function|ace_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ace_interrupt
 c_func
 (paren
@@ -8583,6 +8583,7 @@ id|IN_INT
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * ACK intr now. Otherwise we will lose updates to rx_ret_prd,&n;&t; * which happened _after_ rxretprd = *ap-&gt;rx_ret_prd; but before&n;&t; * writel(0, &amp;regs-&gt;Mb0Lo).&n;&t; *&n;&t; * &quot;IRQ avoidance&quot; recommended in docs applies to IRQs served&n;&t; * threads and it is wrong even for that case.&n;&t; */
 id|writel
@@ -8967,6 +8968,9 @@ id|ap-&gt;ace_tasklet
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#if ACENIC_DO_VLAN
 DECL|function|ace_vlan_rx_register
