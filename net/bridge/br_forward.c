@@ -125,6 +125,12 @@ id|skb-&gt;dev
 op_assign
 id|to-&gt;dev
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+id|skb-&gt;nf_debug
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|NF_HOOK
 c_func
 (paren

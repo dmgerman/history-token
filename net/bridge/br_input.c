@@ -39,6 +39,12 @@ op_star
 id|skb
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+id|skb-&gt;nf_debug
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|netif_rx
 c_func
 (paren
@@ -411,7 +417,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|br_handle_frame
-r_void
+r_int
 id|br_handle_frame
 c_func
 (paren
@@ -565,6 +571,22 @@ op_eq
 id|BR_STATE_FORWARDING
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|br_should_route_hook
+op_logical_and
+id|br_should_route_hook
+c_func
+(paren
+op_amp
+id|skb
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|NF_HOOK
 c_func
 (paren
@@ -589,6 +611,7 @@ id|br-&gt;lock
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|err
@@ -609,6 +632,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 id|handle_special_frame
 suffix:colon
@@ -636,6 +660,7 @@ id|br-&gt;lock
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|kfree_skb
@@ -650,6 +675,9 @@ c_func
 op_amp
 id|br-&gt;lock
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof
