@@ -117,7 +117,7 @@ mdefine_line|#define PGDIR_SIZE&t;&t;(__IA64_UL(1) &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;&t;(~(PGDIR_SIZE-1))
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
+mdefine_line|#define PTRS_PER_PGD&t;&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;(5*PTRS_PER_PGD/8)&t;/* regions 0-4 are user regions */
 DECL|macro|FIRST_USER_PGD_NR
