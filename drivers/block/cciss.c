@@ -6256,7 +6256,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;      blocks= %d block_size= %d&bslash;n&quot;
+l_string|&quot;      blocks= %u block_size= %d&bslash;n&quot;
 comma
 op_star
 id|total_size
