@@ -643,7 +643,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page
