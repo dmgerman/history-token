@@ -498,6 +498,8 @@ op_amp
 id|_DRM_CONTAINS_LOCK
 )paren
 (brace
+id|dev-&gt;sigdata.lock
+op_assign
 id|dev-&gt;lock.hw_lock
 op_assign
 id|map-&gt;handle

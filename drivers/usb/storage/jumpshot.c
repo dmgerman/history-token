@@ -44,7 +44,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -106,7 +106,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -519,7 +519,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -608,7 +608,7 @@ id|buffer
 )paren
 suffix:semicolon
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|jumpshot_write_data
@@ -889,7 +889,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -1012,7 +1012,7 @@ id|buffer
 )paren
 suffix:semicolon
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|jumpshot_id_device
@@ -1136,10 +1136,10 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 id|info-&gt;sectors
 op_assign

@@ -258,7 +258,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|set_sense_info
@@ -272,7 +272,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* hardware error */
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 id|result
@@ -295,7 +295,11 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_SHORT
+id|USB_STOR_XFER_SHORT
+op_logical_or
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
 )paren
 (brace
 multiline_comment|/* had a short transfer, no card inserted, free map memory */
@@ -348,7 +352,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* not ready, medium not present */
 r_return
-id|result
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 r_if
@@ -356,7 +360,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|set_sense_info
@@ -370,7 +374,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* hardware error */
 r_return
-id|result
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* check write protect status */
@@ -405,7 +409,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|set_sense_info
@@ -420,7 +424,16 @@ suffix:semicolon
 multiline_comment|/* hardware error */
 )brace
 r_return
+(paren
 id|result
+op_eq
+id|USB_STOR_XFER_GOOD
+ques
+c_cond
+id|USB_STOR_TRANSPORT_GOOD
+suffix:colon
+id|USB_STOR_TRANSPORT_FAILED
+)paren
 suffix:semicolon
 )brace
 DECL|function|sddr55_read_data
@@ -750,11 +763,17 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
+(brace
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
+)brace
 multiline_comment|/* read data */
 id|result
 op_assign
@@ -777,11 +796,17 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
+(brace
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
+)brace
 multiline_comment|/* now read status */
 id|result
 op_assign
@@ -802,11 +827,17 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
+(brace
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
+)brace
 multiline_comment|/* check status for error */
 r_if
 c_cond
@@ -877,6 +908,10 @@ id|content
 comma
 id|use_sg
 )paren
+suffix:semicolon
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 id|leave
 suffix:colon
@@ -1408,7 +1443,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|US_DEBUGP
@@ -1430,6 +1465,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* peripheral write error */
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
@@ -1456,7 +1495,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|US_DEBUGP
@@ -1478,6 +1517,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* peripheral write error */
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
@@ -1502,7 +1545,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|US_DEBUGP
@@ -1524,6 +1567,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* peripheral write error */
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
 r_goto
 id|leave
 suffix:semicolon
@@ -1706,6 +1753,10 @@ id|info-&gt;pageshift
 )paren
 suffix:semicolon
 )brace
+id|result
+op_assign
+id|USB_STOR_TRANSPORT_GOOD
+suffix:semicolon
 id|leave
 suffix:colon
 r_if
@@ -1807,10 +1858,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 id|result
 op_assign
@@ -1831,10 +1882,10 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 op_star
 id|manufacturerID
@@ -1879,7 +1930,7 @@ l_int|2
 suffix:semicolon
 )brace
 r_return
-id|result
+id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 DECL|function|sddr55_reset
@@ -1966,7 +2017,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
 l_int|0
@@ -2311,7 +2362,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|kfree
@@ -2345,7 +2396,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|kfree
@@ -2377,7 +2428,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|kfree

@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *      Copyright (C) 1999, 2000&n; *          Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; */
+multiline_comment|/*&n; * USB ConnectTech WhiteHEAT driver&n; *&n; *      Copyright (C) 2002&n; *          Connect Tech Inc.&t;&n; *&n; *      Copyright (C) 1999, 2000&n; *          Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_WHITEHEAT_H
 DECL|macro|__LINUX_USB_SERIAL_WHITEHEAT_H
 mdefine_line|#define __LINUX_USB_SERIAL_WHITEHEAT_H
 DECL|macro|FALSE
-mdefine_line|#define FALSE&t;&t;&t;&t;0
+mdefine_line|#define FALSE&t;0
 DECL|macro|TRUE
-mdefine_line|#define TRUE&t;&t;&t;&t;1
+mdefine_line|#define TRUE&t;1
 multiline_comment|/* WhiteHEAT commands */
 DECL|macro|WHITEHEAT_OPEN
 mdefine_line|#define WHITEHEAT_OPEN&t;&t;&t;1&t;/* open the port */
@@ -41,15 +41,50 @@ DECL|macro|WHITEHEAT_CMD_COMPLETE
 mdefine_line|#define WHITEHEAT_CMD_COMPLETE&t;&t;16&t;/* reply for certain commands */
 DECL|macro|WHITEHEAT_CMD_FAILURE
 mdefine_line|#define WHITEHEAT_CMD_FAILURE&t;&t;17&t;/* reply for failed commands */
-multiline_comment|/* Data for the WHITEHEAT_SETUP_PORT command */
-DECL|macro|WHITEHEAT_CTS_FLOW
-mdefine_line|#define WHITEHEAT_CTS_FLOW&t;&t;0x08
-DECL|macro|WHITEHEAT_RTS_FLOW
-mdefine_line|#define WHITEHEAT_RTS_FLOW&t;&t;0x80
-DECL|macro|WHITEHEAT_DSR_FLOW
-mdefine_line|#define WHITEHEAT_DSR_FLOW&t;&t;0x10
-DECL|macro|WHITEHEAT_DTR_FLOW
-mdefine_line|#define WHITEHEAT_DTR_FLOW&t;&t;0x02
+multiline_comment|/*&n; * Commands to the firmware&n; */
+multiline_comment|/*&n; * WHITEHEAT_OPEN&n; * WHITEHEAT_CLOSE&n; * WHITEHEAT_STATUS&n; * WHITEHEAT_GET_DTR_RTS&n; * WHITEHEAT_REPORT_TX_DONE&n;*/
+DECL|struct|whiteheat_simple
+r_struct
+id|whiteheat_simple
+(brace
+DECL|member|port
+id|__u8
+id|port
+suffix:semicolon
+multiline_comment|/* port number (1 to N) */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * WHITEHEAT_SETUP_PORT&n; */
+DECL|macro|WHITEHEAT_PAR_NONE
+mdefine_line|#define WHITEHEAT_PAR_NONE&t;&squot;n&squot;&t;/* no parity */
+DECL|macro|WHITEHEAT_PAR_EVEN
+mdefine_line|#define WHITEHEAT_PAR_EVEN&t;&squot;e&squot;&t;/* even parity */
+DECL|macro|WHITEHEAT_PAR_ODD
+mdefine_line|#define WHITEHEAT_PAR_ODD&t;&squot;o&squot;&t;/* odd parity */
+DECL|macro|WHITEHEAT_PAR_SPACE
+mdefine_line|#define WHITEHEAT_PAR_SPACE&t;&squot;0&squot;&t;/* space (force 0) parity */
+DECL|macro|WHITEHEAT_PAR_MARK
+mdefine_line|#define WHITEHEAT_PAR_MARK&t;&squot;1&squot;&t;/* mark (force 1) parity */
+DECL|macro|WHITEHEAT_SFLOW_NONE
+mdefine_line|#define WHITEHEAT_SFLOW_NONE&t;&squot;n&squot;&t;/* no software flow control */
+DECL|macro|WHITEHEAT_SFLOW_RX
+mdefine_line|#define WHITEHEAT_SFLOW_RX&t;&squot;r&squot;&t;/* XOFF/ON is sent when RX fills/empties */
+DECL|macro|WHITEHEAT_SFLOW_TX
+mdefine_line|#define WHITEHEAT_SFLOW_TX&t;&squot;t&squot;&t;/* when received XOFF/ON will stop/start TX */
+DECL|macro|WHITEHEAT_SFLOW_RXTX
+mdefine_line|#define WHITEHEAT_SFLOW_RXTX&t;&squot;b&squot;&t;/* both SFLOW_RX and SFLOW_TX */
+DECL|macro|WHITEHEAT_HFLOW_NONE
+mdefine_line|#define WHITEHEAT_HFLOW_NONE&t;&t;0x00&t;/* no hardware flow control */
+DECL|macro|WHITEHEAT_HFLOW_RTS_TOGGLE
+mdefine_line|#define WHITEHEAT_HFLOW_RTS_TOGGLE&t;0x01&t;/* RTS is on during transmit, off otherwise */
+DECL|macro|WHITEHEAT_HFLOW_DTR
+mdefine_line|#define WHITEHEAT_HFLOW_DTR&t;&t;0x02&t;/* DTR is off/on when RX fills/empties */
+DECL|macro|WHITEHEAT_HFLOW_CTS
+mdefine_line|#define WHITEHEAT_HFLOW_CTS&t;&t;0x08&t;/* when received CTS off/on will stop/start TX */
+DECL|macro|WHITEHEAT_HFLOW_DSR
+mdefine_line|#define WHITEHEAT_HFLOW_DSR&t;&t;0x10&t;/* when received DSR off/on will stop/start TX */
+DECL|macro|WHITEHEAT_HFLOW_RTS
+mdefine_line|#define WHITEHEAT_HFLOW_RTS&t;&t;0x80&t;/* RTS is off/on when RX fills/empties */
 DECL|struct|whiteheat_port_settings
 r_struct
 id|whiteheat_port_settings
@@ -63,12 +98,12 @@ DECL|member|baud
 id|__u32
 id|baud
 suffix:semicolon
-multiline_comment|/* any value allowed, default 9600, arrives little endian, range is 7 - 460800 */
+multiline_comment|/* any value 7 - 460800, firmware calculates best fit; arrives little endian */
 DECL|member|bits
 id|__u8
 id|bits
 suffix:semicolon
-multiline_comment|/* 5, 6, 7, or 8, default 8 */
+multiline_comment|/* 5, 6, 7, or 8 */
 DECL|member|stop
 id|__u8
 id|stop
@@ -78,32 +113,32 @@ DECL|member|parity
 id|__u8
 id|parity
 suffix:semicolon
-multiline_comment|/* &squot;n, e, o, 0, or 1&squot; (ascii), default &squot;n&squot;&n;&t;&t;&t;&t; *&t;n = none&t;e = even&t;o = odd&n;&t;&t;&t;&t; *&t;0 = force 0&t;1 = force 1&t;*/
+multiline_comment|/* see WHITEHEAT_PAR_* above */
 DECL|member|sflow
 id|__u8
 id|sflow
 suffix:semicolon
-multiline_comment|/* &squot;n, r, t, or b&squot; (ascii), default &squot;n&squot;&n;&t;&t;&t;&t; *&t;n = none&n;&t;&t;&t;&t; *&t;r = receive (XOFF/XON transmitted when receiver fills / empties)&n;&t;&t;&t;&t; *&t;t = transmit (XOFF/XON received will stop/start TX)&n;&t;&t;&t;&t; *&t;b = both &t;*/
+multiline_comment|/* see WHITEHEAT_SFLOW_* above */
 DECL|member|xoff
 id|__u8
 id|xoff
 suffix:semicolon
-multiline_comment|/* XOFF byte value, default 0x13 */
+multiline_comment|/* XOFF byte value */
 DECL|member|xon
 id|__u8
 id|xon
 suffix:semicolon
-multiline_comment|/* XON byte value, default 0x11 */
+multiline_comment|/* XON byte value */
 DECL|member|hflow
 id|__u8
 id|hflow
 suffix:semicolon
-multiline_comment|/* bits indicate mode as follows:&n;&t;&t;&t;&t; *&t;CTS (0x08) (CTS off/on will control/cause TX off/on)&n;&t;&t;&t;&t; *&t;DSR (0x10) (DSR off/on will control/cause TX off/on)&n;&t;&t;&t;&t; *&t;RTS (0x80) (RTS off/on when receiver fills/empties)&n;&t;&t;&t;&t; *&t;DTR (0x02) (DTR off/on when receiver fills/empties) */
+multiline_comment|/* see WHITEHEAT_HFLOW_* above */
 DECL|member|lloop
 id|__u8
 id|lloop
 suffix:semicolon
-multiline_comment|/* local loopback 0 or 1, default 0 */
+multiline_comment|/* 0/1 turns local loopback mode off/on */
 )brace
 id|__attribute__
 (paren
@@ -112,10 +147,22 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* data for WHITEHEAT_SET_RTS, WHITEHEAT_SET_DTR, and WHITEHEAT_SET_BREAK commands */
-DECL|struct|whiteheat_rdb_set
+multiline_comment|/*&n; * WHITEHEAT_SET_RTS&n; * WHITEHEAT_SET_DTR&n; * WHITEHEAT_SET_BREAK&n; */
+DECL|macro|WHITEHEAT_RTS_OFF
+mdefine_line|#define WHITEHEAT_RTS_OFF&t;0x00
+DECL|macro|WHITEHEAT_RTS_ON
+mdefine_line|#define WHITEHEAT_RTS_ON&t;0x01
+DECL|macro|WHITEHEAT_DTR_OFF
+mdefine_line|#define WHITEHEAT_DTR_OFF&t;0x00
+DECL|macro|WHITEHEAT_DTR_ON
+mdefine_line|#define WHITEHEAT_DTR_ON&t;0x01
+DECL|macro|WHITEHEAT_BREAK_OFF
+mdefine_line|#define WHITEHEAT_BREAK_OFF&t;0x00
+DECL|macro|WHITEHEAT_BREAK_ON
+mdefine_line|#define WHITEHEAT_BREAK_ON&t;0x01
+DECL|struct|whiteheat_set_rdb
 r_struct
-id|whiteheat_rdb_set
+id|whiteheat_set_rdb
 (brace
 DECL|member|port
 id|__u8
@@ -126,29 +173,48 @@ DECL|member|state
 id|__u8
 id|state
 suffix:semicolon
-multiline_comment|/* 0 = off, non-zero = on */
+multiline_comment|/* 0/1 turns signal off/on */
 )brace
 suffix:semicolon
-multiline_comment|/* data for:&n;&t;WHITEHEAT_OPEN&n;&t;WHITEHEAT_CLOSE&n;&t;WHITEHEAT_STATUS&n;&t;WHITEHEAT_GET_DTR_RTS&n;&t;WHITEHEAT_REPORT_TX_DONE */
-DECL|struct|whiteheat_min_set
+multiline_comment|/*&n; * WHITEHEAT_DUMP&n; */
+DECL|macro|WHITEHEAT_DUMP_MEM_DATA
+mdefine_line|#define WHITEHEAT_DUMP_MEM_DATA&t;&t;&squot;d&squot;  /* data */
+DECL|macro|WHITEHEAT_DUMP_MEM_IDATA
+mdefine_line|#define WHITEHEAT_DUMP_MEM_IDATA&t;&squot;i&squot;  /* idata */
+DECL|macro|WHITEHEAT_DUMP_MEM_BDATA
+mdefine_line|#define WHITEHEAT_DUMP_MEM_BDATA&t;&squot;b&squot;  /* bdata */
+DECL|macro|WHITEHEAT_DUMP_MEM_XDATA
+mdefine_line|#define WHITEHEAT_DUMP_MEM_XDATA&t;&squot;x&squot;  /* xdata */
+multiline_comment|/*&n; * Allowable address ranges (firmware checks address):&n; * Type DATA:  0x00 - 0xff&n; * Type IDATA: 0x80 - 0xff&n; * Type BDATA: 0x20 - 0x2f&n; * Type XDATA: 0x0000 - 0xffff&n; *&n; * B/I/DATA all read the local memory space&n; * XDATA reads the external memory space&n; * BDATA returns bits as bytes&n; *&n; * NOTE: 0x80 - 0xff (local space) are the Special Function Registers&n; *       of the 8051, and some have on-read side-effects.&n; */
+DECL|struct|whiteheat_dump
 r_struct
-id|whiteheat_min_set
+id|whiteheat_dump
 (brace
-DECL|member|port
+DECL|member|mem_type
 id|__u8
-id|port
+id|mem_type
 suffix:semicolon
-multiline_comment|/* port number (1 to N) */
+multiline_comment|/* see WHITEHEAT_DUMP_* above */
+DECL|member|addr
+id|__u16
+id|addr
+suffix:semicolon
+multiline_comment|/* address, see restrictions above */
+DECL|member|length
+id|__u16
+id|length
+suffix:semicolon
+multiline_comment|/* number of bytes to dump, max 63 bytes */
 )brace
 suffix:semicolon
-multiline_comment|/* data for WHITEHEAT_PURGE command */
-DECL|macro|WHITEHEAT_PURGE_INPUT
-mdefine_line|#define WHITEHEAT_PURGE_INPUT&t;&t;0x01
-DECL|macro|WHITEHEAT_PURGE_OUTPUT
-mdefine_line|#define WHITEHEAT_PURGE_OUTPUT&t;&t;0x02
-DECL|struct|whiteheat_purge_set
+multiline_comment|/*&n; * WHITEHEAT_PURGE&n; */
+DECL|macro|WHITEHEAT_PURGE_RX
+mdefine_line|#define WHITEHEAT_PURGE_RX&t;0x01&t;/* purge rx fifos */
+DECL|macro|WHITEHEAT_PURGE_TX
+mdefine_line|#define WHITEHEAT_PURGE_TX&t;0x02&t;/* purge tx fifos */
+DECL|struct|whiteheat_purge
 r_struct
-id|whiteheat_purge_set
+id|whiteheat_purge
 (brace
 DECL|member|port
 id|__u8
@@ -162,32 +228,10 @@ suffix:semicolon
 multiline_comment|/* bit pattern of what to purge */
 )brace
 suffix:semicolon
-multiline_comment|/* data for WHITEHEAT_DUMP command */
-DECL|struct|whiteheat_dump_info
+multiline_comment|/*&n; * WHITEHEAT_ECHO&n; */
+DECL|struct|whiteheat_echo
 r_struct
-id|whiteheat_dump_info
-(brace
-DECL|member|mem_type
-id|__u8
-id|mem_type
-suffix:semicolon
-multiline_comment|/* memory type: &squot;d&squot; = data, &squot;i&squot; = idata, &squot;b&squot; = bdata, &squot;x&squot; = xdata */
-DECL|member|addr
-id|__u16
-id|addr
-suffix:semicolon
-multiline_comment|/* memory address to dump, address range depends on the above mem_type:&n;&t;&t;&t;&t; *&t;&squot;d&squot; = 0 to ff (80 to FF is SFR&squot;s)&n;&t;&t;&t;&t; *&t;&squot;i&squot; = 80 to ff&n;&t;&t;&t;&t; *&t;&squot;b&squot; = 20 to 2f (bits returned as bytes)&n;&t;&t;&t;&t; *&t;&squot;x&squot; = 0000 to ffff (also code space)&t;*/
-DECL|member|length
-id|__u16
-id|length
-suffix:semicolon
-multiline_comment|/* number of bytes to dump, max 64 */
-)brace
-suffix:semicolon
-multiline_comment|/* data for WHITEHEAT_ECHO command */
-DECL|struct|whiteheat_echo_set
-r_struct
-id|whiteheat_echo_set
+id|whiteheat_echo
 (brace
 DECL|member|port
 id|__u8
@@ -198,7 +242,7 @@ DECL|member|length
 id|__u8
 id|length
 suffix:semicolon
-multiline_comment|/* length of message to echo */
+multiline_comment|/* length of message to echo, max 61 bytes */
 DECL|member|echo_data
 id|__u8
 id|echo_data
@@ -209,33 +253,75 @@ suffix:semicolon
 multiline_comment|/* data to echo */
 )brace
 suffix:semicolon
-multiline_comment|/* data returned from WHITEHEAT_STATUS command */
-DECL|macro|WHITEHEAT_OVERRUN_ERROR
-mdefine_line|#define WHITEHEAT_OVERRUN_ERROR&t;&t;0x02
-DECL|macro|WHITEHEAT_PARITY_ERROR
-mdefine_line|#define WHITEHEAT_PARITY_ERROR&t;&t;0x04
-DECL|macro|WHITEHEAT_FRAMING_ERROR
-mdefine_line|#define WHITEHEAT_FRAMING_ERROR&t;&t;0x08
-DECL|macro|WHITEHEAT_BREAK_ERROR
-mdefine_line|#define WHITEHEAT_BREAK_ERROR&t;&t;0x10
-DECL|macro|WHITEHEAT_OHFLOW
-mdefine_line|#define WHITEHEAT_OHFLOW&t;&t;0x01&t;/* TX is stopped by CTS (waiting for CTS to go ON) */
-DECL|macro|WHITEHEAT_IHFLOW
-mdefine_line|#define WHITEHEAT_IHFLOW&t;&t;0x02&t;/* remote TX is stopped by RTS */
-DECL|macro|WHITEHEAT_OSFLOW
-mdefine_line|#define WHITEHEAT_OSFLOW&t;&t;0x04&t;/* TX is stopped by XOFF received (waiting for XON to occur) */
-DECL|macro|WHITEHEAT_ISFLOW
-mdefine_line|#define WHITEHEAT_ISFLOW&t;&t;0x08&t;/* remote TX is stopped by XOFF transmitted */
-DECL|macro|WHITEHEAT_TX_DONE
-mdefine_line|#define WHITEHEAT_TX_DONE&t;&t;0x80&t;/* TX has completed */
-DECL|macro|WHITEHEAT_MODEM_EVENT
-mdefine_line|#define WHITEHEAT_MODEM_EVENT&t;&t;0x01
-DECL|macro|WHITEHEAT_ERROR_EVENT
-mdefine_line|#define WHITEHEAT_ERROR_EVENT&t;&t;0x02
-DECL|macro|WHITEHEAT_FLOW_EVENT
-mdefine_line|#define WHITEHEAT_FLOW_EVENT&t;&t;0x04
-DECL|macro|WHITEHEAT_CONNECT_EVENT
-mdefine_line|#define WHITEHEAT_CONNECT_EVENT&t;&t;0x08
+multiline_comment|/*&n; * WHITEHEAT_DO_TEST&n; */
+DECL|macro|WHITEHEAT_TEST_UART_RW
+mdefine_line|#define WHITEHEAT_TEST_UART_RW&t;&t;0x01  /* read/write uart registers */
+DECL|macro|WHITEHEAT_TEST_UART_INTR
+mdefine_line|#define WHITEHEAT_TEST_UART_INTR&t;0x02  /* uart interrupt */
+DECL|macro|WHITEHEAT_TEST_SETUP_CONT
+mdefine_line|#define WHITEHEAT_TEST_SETUP_CONT&t;0x03  /* setup for PORT_CONT/PORT_DISCONT */
+DECL|macro|WHITEHEAT_TEST_PORT_CONT
+mdefine_line|#define WHITEHEAT_TEST_PORT_CONT&t;0x04  /* port connect */
+DECL|macro|WHITEHEAT_TEST_PORT_DISCONT
+mdefine_line|#define WHITEHEAT_TEST_PORT_DISCONT&t;0x05  /* port disconnect */
+DECL|macro|WHITEHEAT_TEST_UART_CLK_START
+mdefine_line|#define WHITEHEAT_TEST_UART_CLK_START&t;0x06  /* uart clock test start */
+DECL|macro|WHITEHEAT_TEST_UART_CLK_STOP
+mdefine_line|#define WHITEHEAT_TEST_UART_CLK_STOP&t;0x07  /* uart clock test stop */
+DECL|macro|WHITEHEAT_TEST_MODEM_FT
+mdefine_line|#define WHITEHEAT_TEST_MODEM_FT&t;&t;0x08  /* modem signals, requires a loopback cable/connector */
+DECL|macro|WHITEHEAT_TEST_ERASE_EEPROM
+mdefine_line|#define WHITEHEAT_TEST_ERASE_EEPROM&t;0x09  /* erase eeprom */
+DECL|macro|WHITEHEAT_TEST_READ_EEPROM
+mdefine_line|#define WHITEHEAT_TEST_READ_EEPROM&t;0x0a  /* read eeprom */
+DECL|macro|WHITEHEAT_TEST_PROGRAM_EEPROM
+mdefine_line|#define WHITEHEAT_TEST_PROGRAM_EEPROM&t;0x0b  /* program eeprom */
+DECL|struct|whiteheat_test
+r_struct
+id|whiteheat_test
+(brace
+DECL|member|port
+id|__u8
+id|port
+suffix:semicolon
+multiline_comment|/* port number (1 to n) */
+DECL|member|test
+id|__u8
+id|test
+suffix:semicolon
+multiline_comment|/* see WHITEHEAT_TEST_* above*/
+DECL|member|info
+id|__u8
+id|info
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* additional info */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Replies from the firmware&n; */
+multiline_comment|/*&n; * WHITEHEAT_STATUS&n; */
+DECL|macro|WHITEHEAT_EVENT_MODEM
+mdefine_line|#define WHITEHEAT_EVENT_MODEM&t;&t;0x01&t;/* modem field is valid */
+DECL|macro|WHITEHEAT_EVENT_ERROR
+mdefine_line|#define WHITEHEAT_EVENT_ERROR&t;&t;0x02&t;/* error field is valid */
+DECL|macro|WHITEHEAT_EVENT_FLOW
+mdefine_line|#define WHITEHEAT_EVENT_FLOW&t;&t;0x04&t;/* flow field is valid */
+DECL|macro|WHITEHEAT_EVENT_CONNECT
+mdefine_line|#define WHITEHEAT_EVENT_CONNECT&t;&t;0x08&t;/* connect field is valid */
+DECL|macro|WHITEHEAT_FLOW_NONE
+mdefine_line|#define WHITEHEAT_FLOW_NONE&t;&t;0x00&t;/* no flow control active */
+DECL|macro|WHITEHEAT_FLOW_HARD_OUT
+mdefine_line|#define WHITEHEAT_FLOW_HARD_OUT&t;&t;0x01&t;/* TX is stopped by CTS (waiting for CTS to go on) */
+DECL|macro|WHITEHEAT_FLOW_HARD_IN
+mdefine_line|#define WHITEHEAT_FLOW_HARD_IN&t;&t;0x02&t;/* remote TX is stopped by RTS */
+DECL|macro|WHITEHEAT_FLOW_SOFT_OUT
+mdefine_line|#define WHITEHEAT_FLOW_SOFT_OUT&t;&t;0x04&t;/* TX is stopped by XOFF received (waiting for XON) */
+DECL|macro|WHITEHEAT_FLOW_SOFT_IN
+mdefine_line|#define WHITEHEAT_FLOW_SOFT_IN&t;&t;0x08&t;/* remote TX is stopped by XOFF transmitted */
+DECL|macro|WHITEHEAT_FLOW_TX_DONE
+mdefine_line|#define WHITEHEAT_FLOW_TX_DONE&t;&t;0x80&t;/* TX has completed */
 DECL|struct|whiteheat_status_info
 r_struct
 id|whiteheat_status_info
@@ -249,52 +335,42 @@ DECL|member|event
 id|__u8
 id|event
 suffix:semicolon
-multiline_comment|/* indicates which of the following bytes are the current event */
+multiline_comment|/* indicates what the current event is, see WHITEHEAT_EVENT_* above */
 DECL|member|modem
 id|__u8
 id|modem
 suffix:semicolon
-multiline_comment|/* modem signal status (copy of UART MSR register) */
+multiline_comment|/* modem signal status (copy of uart&squot;s MSR register) */
 DECL|member|error
 id|__u8
 id|error
 suffix:semicolon
-multiline_comment|/* PFO and RX break (copy of UART LSR register) */
+multiline_comment|/* line status (copy of uart&squot;s LSR register) */
 DECL|member|flow
 id|__u8
 id|flow
 suffix:semicolon
-multiline_comment|/* flow control state */
+multiline_comment|/* flow control state, see WHITEHEAT_FLOW_* above */
 DECL|member|connect
 id|__u8
 id|connect
 suffix:semicolon
-multiline_comment|/* connect state, non-zero value indicates connected */
+multiline_comment|/* 0 means not connected, non-zero means connected */
 )brace
 suffix:semicolon
-multiline_comment|/* data returned from WHITEHEAT_EVENT command */
-DECL|struct|whiteheat_event
+multiline_comment|/*&n; * WHITEHEAT_GET_DTR_RTS&n; */
+DECL|struct|whiteheat_dr_info
 r_struct
-id|whiteheat_event
+id|whiteheat_dr_info
 (brace
-DECL|member|port
+DECL|member|mcr
 id|__u8
-id|port
+id|mcr
 suffix:semicolon
-multiline_comment|/* port number (1 to N) */
-DECL|member|event
-id|__u8
-id|event
-suffix:semicolon
-multiline_comment|/* indicates which of the following bytes are the current event */
-DECL|member|info
-id|__u8
-id|info
-suffix:semicolon
-multiline_comment|/* either modem, error, flow, or connect information */
+multiline_comment|/* copy of uart&squot;s MCR register */
 )brace
 suffix:semicolon
-multiline_comment|/* data retured by the WHITEHEAT_GET_HW_INFO command */
+multiline_comment|/*&n; * WHITEHEAT_GET_HW_INFO&n; */
 DECL|struct|whiteheat_hw_info
 r_struct
 id|whiteheat_hw_info
@@ -400,6 +476,64 @@ DECL|member|hw_eeprom_info
 id|hw_eeprom_info
 suffix:semicolon
 multiline_comment|/* EEPROM contents */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * WHITEHEAT_EVENT&n; */
+DECL|struct|whiteheat_event_info
+r_struct
+id|whiteheat_event_info
+(brace
+DECL|member|port
+id|__u8
+id|port
+suffix:semicolon
+multiline_comment|/* port number (1 to N) */
+DECL|member|event
+id|__u8
+id|event
+suffix:semicolon
+multiline_comment|/* see whiteheat_status_info.event */
+DECL|member|info
+id|__u8
+id|info
+suffix:semicolon
+multiline_comment|/* see whiteheat_status_info.modem, .error, .flow, .connect */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * WHITEHEAT_DO_TEST&n; */
+DECL|macro|WHITEHEAT_TEST_FAIL
+mdefine_line|#define WHITEHEAT_TEST_FAIL&t;0x00  /* test failed */
+DECL|macro|WHITEHEAT_TEST_UNKNOWN
+mdefine_line|#define WHITEHEAT_TEST_UNKNOWN&t;0x01  /* unknown test requested */
+DECL|macro|WHITEHEAT_TEST_PASS
+mdefine_line|#define WHITEHEAT_TEST_PASS&t;0xff  /* test passed */
+DECL|struct|whiteheat_test_info
+r_struct
+id|whiteheat_test_info
+(brace
+DECL|member|port
+id|__u8
+id|port
+suffix:semicolon
+multiline_comment|/* port number (1 to N) */
+DECL|member|test
+id|__u8
+id|test
+suffix:semicolon
+multiline_comment|/* indicates which test this is a response for, see WHITEHEAT_DO_TEST above */
+DECL|member|status
+id|__u8
+id|status
+suffix:semicolon
+multiline_comment|/* see WHITEHEAT_TEST_* above */
+DECL|member|results
+id|__u8
+id|results
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* test-dependent results */
 )brace
 suffix:semicolon
 macro_line|#endif

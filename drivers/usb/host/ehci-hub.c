@@ -881,12 +881,15 @@ op_amp
 id|PORT_RESET
 )paren
 op_logical_and
+id|time_after
+(paren
 id|jiffies
-OG
+comma
 id|ehci-&gt;reset_done
 (braket
 id|wIndex
 )braket
+)paren
 )paren
 (brace
 id|status

@@ -128,15 +128,6 @@ r_int
 r_int
 id|counter
 suffix:semicolon
-DECL|member|flush_done
-id|atomic_t
-id|flush_done
-suffix:semicolon
-DECL|member|flush_queue
-id|wait_queue_head_t
-id|flush_queue
-suffix:semicolon
-multiline_comment|/* Processes waiting until flush    */
 DECL|member|mmap_buffer
 id|drm_buf_t
 op_star
@@ -159,6 +150,10 @@ suffix:semicolon
 DECL|member|depth_offset
 r_int
 id|depth_offset
+suffix:semicolon
+DECL|member|front_offset
+r_int
+id|front_offset
 suffix:semicolon
 DECL|member|w
 DECL|member|h
@@ -457,18 +452,16 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-DECL|macro|I830_VERBOSE
-mdefine_line|#define I830_VERBOSE 0
 DECL|macro|I830_BASE
 mdefine_line|#define I830_BASE(reg)&t;&t;((unsigned long) &bslash;&n;&t;&t;&t;&t;dev_priv-&gt;mmio_map-&gt;handle)
 DECL|macro|I830_ADDR
 mdefine_line|#define I830_ADDR(reg)&t;&t;(I830_BASE(reg) + reg)
 DECL|macro|I830_DEREF
-mdefine_line|#define I830_DEREF(reg)&t;&t;*(__volatile__ int *)I830_ADDR(reg)
+mdefine_line|#define I830_DEREF(reg)&t;&t;*(__volatile__ unsigned int *)I830_ADDR(reg)
 DECL|macro|I830_READ
-mdefine_line|#define I830_READ(reg)&t;&t;I830_DEREF(reg)
+mdefine_line|#define I830_READ(reg)&t;&t;readl((volatile u32 *)I830_ADDR(reg))
 DECL|macro|I830_WRITE
-mdefine_line|#define I830_WRITE(reg,val) &t;do { I830_DEREF(reg) = val; } while (0)
+mdefine_line|#define I830_WRITE(reg,val) &t;writel(val, (volatile u32 *)I830_ADDR(reg))
 DECL|macro|I830_DEREF16
 mdefine_line|#define I830_DEREF16(reg)&t;*(__volatile__ u16 *)I830_ADDR(reg)
 DECL|macro|I830_READ16
@@ -514,7 +507,7 @@ mdefine_line|#define HP_RING     &t;&t;0x2040
 DECL|macro|RING_TAIL
 mdefine_line|#define RING_TAIL      &t;&t;0x00
 DECL|macro|TAIL_ADDR
-mdefine_line|#define TAIL_ADDR&t;&t;0x000FFFF8
+mdefine_line|#define TAIL_ADDR&t;&t;0x001FFFF8
 DECL|macro|RING_HEAD
 mdefine_line|#define RING_HEAD      &t;&t;0x04
 DECL|macro|HEAD_WRAP_COUNT
@@ -526,11 +519,11 @@ mdefine_line|#define HEAD_ADDR           &t;0x001FFFFC
 DECL|macro|RING_START
 mdefine_line|#define RING_START     &t;&t;0x08
 DECL|macro|START_ADDR
-mdefine_line|#define START_ADDR          &t;0x00FFFFF8
+mdefine_line|#define START_ADDR          &t;0x0xFFFFF000
 DECL|macro|RING_LEN
 mdefine_line|#define RING_LEN       &t;&t;0x0C
 DECL|macro|RING_NR_PAGES
-mdefine_line|#define RING_NR_PAGES       &t;0x000FF000 
+mdefine_line|#define RING_NR_PAGES       &t;0x001FF000 
 DECL|macro|RING_REPORT_MASK
 mdefine_line|#define RING_REPORT_MASK    &t;0x00000006
 DECL|macro|RING_REPORT_64K
@@ -581,6 +574,12 @@ DECL|macro|GFX_OP_PRIMITIVE
 mdefine_line|#define GFX_OP_PRIMITIVE         ((0x3&lt;&lt;29)|(0x1f&lt;&lt;24))
 DECL|macro|CMD_OP_DESTBUFFER_INFO
 mdefine_line|#define CMD_OP_DESTBUFFER_INFO&t; ((0x3&lt;&lt;29)|(0x1d&lt;&lt;24)|(0x8e&lt;&lt;16)|1)
+DECL|macro|CMD_3D
+mdefine_line|#define CMD_3D                          (0x3&lt;&lt;29)
+DECL|macro|STATE3D_CONST_BLEND_COLOR_CMD
+mdefine_line|#define STATE3D_CONST_BLEND_COLOR_CMD   (CMD_3D|(0x1d&lt;&lt;24)|(0x88&lt;&lt;16))
+DECL|macro|STATE3D_MAP_COORD_SETBIND_CMD
+mdefine_line|#define STATE3D_MAP_COORD_SETBIND_CMD   (CMD_3D|(0x1d&lt;&lt;24)|(0x02&lt;&lt;16))
 DECL|macro|BR00_BITBLT_CLIENT
 mdefine_line|#define BR00_BITBLT_CLIENT   0x40000000
 DECL|macro|BR00_OP_COLOR_BLT
@@ -617,6 +616,10 @@ DECL|macro|XY_SRC_COPY_BLT_WRITE_RGB
 mdefine_line|#define XY_SRC_COPY_BLT_WRITE_RGB       (1&lt;&lt;20)
 DECL|macro|MI_BATCH_BUFFER
 mdefine_line|#define MI_BATCH_BUFFER &t;((0x30&lt;&lt;23)|1)
+DECL|macro|MI_BATCH_BUFFER_START
+mdefine_line|#define MI_BATCH_BUFFER_START &t;(0x31&lt;&lt;23)
+DECL|macro|MI_BATCH_BUFFER_END
+mdefine_line|#define MI_BATCH_BUFFER_END &t;(0xA&lt;&lt;23)
 DECL|macro|MI_BATCH_NON_SECURE
 mdefine_line|#define MI_BATCH_NON_SECURE&t;(1)
 macro_line|#endif

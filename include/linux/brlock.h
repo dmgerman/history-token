@@ -114,7 +114,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|read_lock
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|_raw_read_lock
 c_func
 (paren
 op_amp
@@ -201,6 +206,11 @@ op_ge
 id|__BR_END
 )paren
 id|__br_lock_usage_bug
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_disable
 c_func
 (paren
 )paren
@@ -335,6 +345,11 @@ op_star
 id|ctr
 )paren
 op_decrement
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* __BRLOCK_USE_ATOMICS */
