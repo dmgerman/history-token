@@ -2767,6 +2767,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                             PCI Interrupt Routing&n;   -------------------------------------------------------------------------- */
+macro_line|#ifdef CONFIG_PCI
 r_int
 id|__init
 DECL|function|acpi_get_prt
@@ -2960,6 +2961,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Assume IA64 always use I/O SAPIC */
 r_int
 id|__init
