@@ -546,7 +546,7 @@ suffix:semicolon
 DECL|macro|xfs_binval
 mdefine_line|#define xfs_binval(buftarg) XFS_bflush(buftarg)
 DECL|macro|xfs_incore_relse
-mdefine_line|#define xfs_incore_relse(buftarg,delwri_only,wait)&t;&bslash;&n;       pagebuf_target_clear(buftarg)
+mdefine_line|#define xfs_incore_relse(buftarg,delwri_only,wait)&t;&bslash;&n;&t;xfs_relse_buftarg(buftarg)
 DECL|macro|xfs_baread
 mdefine_line|#define xfs_baread(target, rablkno, ralen)  &bslash;&n;&t;pagebuf_readahead((target), (rablkno), &bslash;&n;&t;&t;&t;  (ralen), PBF_DONT_BLOCK)
 DECL|macro|XFS_getrbuf

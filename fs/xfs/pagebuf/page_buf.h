@@ -877,16 +877,6 @@ suffix:semicolon
 multiline_comment|/* buffer to lock&t;&t;*/
 r_extern
 r_void
-id|pagebuf_target_clear
-c_func
-(paren
-r_struct
-id|pb_target
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|pagebuf_unlock
 c_func
 (paren
