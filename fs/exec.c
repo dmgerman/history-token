@@ -162,6 +162,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|register_binfmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_binfmt
+)paren
+suffix:semicolon
 DECL|function|unregister_binfmt
 r_int
 id|unregister_binfmt
@@ -244,6 +251,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|unregister_binfmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_binfmt
+)paren
+suffix:semicolon
 DECL|function|put_binfmt
 r_static
 r_inline
@@ -1042,6 +1056,13 @@ r_return
 id|r
 suffix:semicolon
 )brace
+DECL|variable|copy_strings_kernel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_strings_kernel
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
 multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; *&n; * tsk-&gt;mmap_sem is held for writing.&n; */
 DECL|function|put_dirty_page
@@ -1855,6 +1876,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|setup_arg_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|setup_arg_pages
+)paren
+suffix:semicolon
 DECL|macro|free_arg_pages
 mdefine_line|#define free_arg_pages(bprm) do { } while (0)
 macro_line|#else
@@ -2117,6 +2145,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|variable|open_exec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|open_exec
+)paren
+suffix:semicolon
 DECL|function|kernel_read
 r_int
 id|kernel_read
@@ -2198,6 +2233,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|kernel_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_read
+)paren
+suffix:semicolon
 DECL|function|exec_mmap
 r_static
 r_int
@@ -3464,6 +3506,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|flush_old_exec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_old_exec
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We mustn&squot;t allow tracing of suid binaries, unless&n; * the tracer has the capability to trace anything..&n; */
 DECL|function|must_not_trace_exec
 r_static
@@ -3647,6 +3696,13 @@ id|BINPRM_BUF_SIZE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|prepare_binprm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|prepare_binprm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function is used to produce the new IDs and capabilities&n; * from the old ones and the file&squot;s capabilities.&n; *&n; * The formula used for evolving capabilities is:&n; *&n; *       pI&squot; = pI&n; * (***) pP&squot; = (fP &amp; X) | (fI &amp; pI)&n; *       pE&squot; = pP&squot; &amp; fE          [NB. fE is 0 or ~0]&n; *&n; * I=Inheritable, P=Permitted, E=Effective // p=process, f=file&n; * &squot; indicates post-exec(), and X is the global &squot;cap_bset&squot;.&n; *&n; */
 DECL|function|compute_creds
 r_void
@@ -3769,6 +3825,13 @@ id|bprm
 )paren
 suffix:semicolon
 )brace
+DECL|variable|compute_creds
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|compute_creds
+)paren
+suffix:semicolon
 DECL|function|remove_arg_zero
 r_void
 id|remove_arg_zero
@@ -3879,6 +3942,13 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
+DECL|variable|remove_arg_zero
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remove_arg_zero
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * cycle the list of binary formats handler, until one recognizes the image&n; */
 DECL|function|search_binary_handler
 r_int
@@ -4344,6 +4414,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|search_binary_handler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|search_binary_handler
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sys_execve() executes a new program.&n; */
 DECL|function|do_execve
 r_int
@@ -4786,6 +4863,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|do_execve
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_execve
+)paren
+suffix:semicolon
 DECL|function|set_binfmt
 r_int
 id|set_binfmt
@@ -4846,6 +4930,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|set_binfmt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_binfmt
+)paren
+suffix:semicolon
 DECL|macro|CORENAME_MAX_SIZE
 mdefine_line|#define CORENAME_MAX_SIZE 64
 multiline_comment|/* format_corename will inspect the pattern parameter, and output a&n; * name into corename, which must have space for at least&n; * CORENAME_MAX_SIZE bytes plus one byte for the zero terminator.&n; */
