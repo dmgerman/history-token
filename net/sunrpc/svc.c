@@ -1542,9 +1542,29 @@ comma
 id|statp
 )paren
 )paren
+(brace
+multiline_comment|/* Release reply info */
+r_if
+c_cond
+(paren
+id|procp-&gt;pc_release
+)paren
+id|procp
+op_member_access_from_pointer
+id|pc_release
+c_func
+(paren
+id|rqstp
+comma
+l_int|NULL
+comma
+id|rqstp-&gt;rq_resp
+)paren
+suffix:semicolon
 r_goto
 id|dropit
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Check RPC status result */
 r_if
