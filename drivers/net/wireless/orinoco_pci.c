@@ -687,17 +687,6 @@ id|priv
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
