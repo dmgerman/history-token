@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_core_dbf
 macro_line|#include &quot;tape.h&quot;
 macro_line|#include &quot;tape_std.h&quot;
 macro_line|#include &quot;tape_class.h&quot;

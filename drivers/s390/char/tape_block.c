@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_core_dbf
 macro_line|#include &quot;tape.h&quot;
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;TAPE_BLOCK: &quot;

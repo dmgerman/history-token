@@ -4,10 +4,27 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_34xx_dbf
 macro_line|#include &quot;tape.h&quot;
 macro_line|#include &quot;tape_std.h&quot;
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;TAPE_34XX: &quot;
+multiline_comment|/*&n; * Pointer to debug area.&n; */
+DECL|variable|TAPE_DBF_AREA
+id|debug_info_t
+op_star
+id|TAPE_DBF_AREA
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|TAPE_DBF_AREA
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|TAPE_DBF_AREA
+)paren
+suffix:semicolon
 DECL|enum|tape_34xx_type
 r_enum
 id|tape_34xx_type
@@ -5040,12 +5057,49 @@ r_void
 r_int
 id|rc
 suffix:semicolon
+id|TAPE_DBF_AREA
+op_assign
+id|debug_register
+(paren
+l_string|&quot;tape_34xx&quot;
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|4
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|TAPE_DBF_AREA
+comma
+op_amp
+id|debug_sprintf_view
+)paren
+suffix:semicolon
+macro_line|#ifdef DBF_LIKE_HELL
+id|debug_set_level
+c_func
+(paren
+id|TAPE_DBF_AREA
+comma
+l_int|6
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DBF_EVENT
 c_func
 (paren
 l_int|3
 comma
-l_string|&quot;34xx init: $Revision: 1.20 $&bslash;n&quot;
+l_string|&quot;34xx init: $Revision: 1.21 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register driver for 3480/3490 tapes. */
@@ -5100,6 +5154,12 @@ op_amp
 id|tape_34xx_driver
 )paren
 suffix:semicolon
+id|debug_unregister
+c_func
+(paren
+id|TAPE_DBF_AREA
+)paren
+suffix:semicolon
 )brace
 id|MODULE_DEVICE_TABLE
 c_func
@@ -5119,7 +5179,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached 3480 tape &quot;
-l_string|&quot;device driver ($Revision: 1.20 $)&quot;
+l_string|&quot;device driver ($Revision: 1.21 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
