@@ -1203,12 +1203,6 @@ op_star
 )paren
 id|pcibr_device_unregister
 comma
-(paren
-id|pciio_dma_enabled_f
-op_star
-)paren
-id|pcibr_dma_enabled
-comma
 )brace
 suffix:semicolon
 eof

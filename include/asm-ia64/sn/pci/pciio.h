@@ -791,15 +791,6 @@ id|vertex_hdl_t
 id|conn
 )paren
 suffix:semicolon
-r_typedef
-r_int
-DECL|typedef|pciio_dma_enabled_f
-id|pciio_dma_enabled_f
-(paren
-id|vertex_hdl_t
-id|conn
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Adapters that provide a PCI interface adhere to this software interface.&n; */
 DECL|struct|pciio_provider_s
 r_typedef
@@ -976,11 +967,6 @@ DECL|member|device_unregister
 id|pciio_device_unregister_f
 op_star
 id|device_unregister
-suffix:semicolon
-DECL|member|dma_enabled
-id|pciio_dma_enabled_f
-op_star
-id|dma_enabled
 suffix:semicolon
 DECL|typedef|pciio_provider_t
 )brace
@@ -1738,14 +1724,6 @@ id|ioerror_mode_t
 comma
 id|ioerror_t
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pciio_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * sn_pci_set_vchan - Set the requested Virtual Channel bits into the mapped DMA&n; *                    address.&n; * @pci_dev: pci device pointer&n; * @addr: mapped dma address&n; * @vchan: Virtual Channel to use 0 or 1.&n; *&n; * Set the Virtual Channel bit in the mapped dma address.&n; */

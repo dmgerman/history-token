@@ -7540,14 +7540,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|hub_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _KERNEL */
 macro_line|#endif /* _ASM_IA64_SN_SN2_SHUBIO_H */

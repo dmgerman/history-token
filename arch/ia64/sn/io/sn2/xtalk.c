@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
-multiline_comment|/*&n; * Implement crosstalk provider operations.  The xtalk* layer provides a&n; * platform-independent interface for crosstalk devices.  This layer&n; * switches among the possible implementations of a crosstalk adapter.&n; *&n; * On platforms with only one possible xtalk provider, macros can be&n; * set up at the top that cause the table lookups and indirections to&n; * completely disappear.&n; */
+multiline_comment|/*&n; * Implement io channel provider operations.  The xtalk* layer provides a&n; * platform-independent interface for io channel devices.  This layer&n; * switches among the possible implementations of a io channel adapter.&n; *&n; * On platforms with only one possible xtalk provider, macros can be&n; * set up at the top that cause the table lookups and indirections to&n; * completely disappear.&n; */
 DECL|macro|NEW
 mdefine_line|#define&t;NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
 DECL|macro|DEL
@@ -25,14 +25,6 @@ id|widget_info_fingerprint
 op_assign
 l_string|&quot;widget_info&quot;
 suffix:semicolon
-DECL|macro|DEV_FUNC
-mdefine_line|#define&t;DEV_FUNC(dev,func)&t;hub_##func
-DECL|macro|CAST_PIOMAP
-mdefine_line|#define&t;CAST_PIOMAP(x)&t;&t;((hub_piomap_t)(x))
-DECL|macro|CAST_DMAMAP
-mdefine_line|#define&t;CAST_DMAMAP(x)&t;&t;((hub_dmamap_t)(x))
-DECL|macro|CAST_INTR
-mdefine_line|#define&t;CAST_INTR(x)&t;&t;((hub_intr_t)(x))
 multiline_comment|/* =====================================================================&n; *            Function Table of Contents&n; */
 id|xtalk_piomap_t
 id|xtalk_piomap_alloc
@@ -608,6 +600,15 @@ DECL|macro|CAST_DMAMAP
 mdefine_line|#define&t;CAST_DMAMAP(x)&t;&t;((xtalk_dmamap_t)(x))
 DECL|macro|CAST_INTR
 mdefine_line|#define&t;CAST_INTR(x)&t;&t;((xtalk_intr_t)(x))
+id|xtalk_provider_t
+op_star
+id|xwidget_info_pops_get
+c_func
+(paren
+id|xwidget_info_t
+id|info
+)paren
+suffix:semicolon
 r_static
 id|xtalk_provider_t
 op_star
@@ -662,6 +663,45 @@ r_return
 (paren
 id|provider_fns
 )paren
+suffix:semicolon
+)brace
+id|xtalk_provider_t
+op_star
+DECL|function|xwidget_info_pops_get
+id|xwidget_info_pops_get
+c_func
+(paren
+id|xwidget_info_t
+id|info
+)paren
+(brace
+id|vertex_hdl_t
+id|master
+op_assign
+id|info-&gt;w_master
+suffix:semicolon
+id|xtalk_provider_t
+op_star
+id|provider_fns
+suffix:semicolon
+id|provider_fns
+op_assign
+id|xtalk_provider_fns_get
+c_func
+(paren
+id|master
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|provider_fns
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+id|provider_fns
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1039,7 +1079,7 @@ op_assign
 id|impl
 suffix:semicolon
 )brace
-multiline_comment|/* xtalk_early_piotrans_addr:&n; * figure out a PIO address for the &quot;nth&quot; crosstalk widget that&n; * matches the specified part and mfgr number. Returns NULL if&n; * there is no such widget, or if the requested mapping can not&n; * be constructed.&n; * Limitations on which crosstalk slots (and busses) are&n; * checked, and definitions of the ordering of the search across&n; * the crosstalk slots, are defined by the platform.&n; */
+multiline_comment|/* xtalk_early_piotrans_addr:&n; * figure out a PIO address for the &quot;nth&quot; io channel widget that&n; * matches the specified part and mfgr number. Returns NULL if&n; * there is no such widget, or if the requested mapping can not&n; * be constructed.&n; * Limitations on which io channel slots (and busses) are&n; * checked, and definitions of the ordering of the search across&n; * the io channel slots, are defined by the platform.&n; */
 id|caddr_t
 DECL|function|xtalk_early_piotrans_addr
 id|xtalk_early_piotrans_addr
@@ -1120,7 +1160,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* =====================================================================&n; *                    DMA MANAGEMENT&n; *&n; *      For mapping from crosstalk space to system&n; *      physical space.&n; */
+multiline_comment|/* =====================================================================&n; *                    DMA MANAGEMENT&n; *&n; *      For mapping from io channel space to system&n; *      physical space.&n; */
 id|xtalk_dmamap_t
 DECL|function|xtalk_dmamap_alloc
 id|xtalk_dmamap_alloc
@@ -1462,7 +1502,7 @@ id|list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* =====================================================================&n; *                    INTERRUPT MANAGEMENT&n; *&n; *      Allow crosstalk devices to establish interrupts&n; */
+multiline_comment|/* =====================================================================&n; *                    INTERRUPT MANAGEMENT&n; *&n; *      Allow io channel devices to establish interrupts&n; */
 multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in intr_desc.&n; * Return resource handle in intr_hdl.&n; */
 id|xtalk_intr_t
 DECL|function|xtalk_intr_alloc
@@ -1664,7 +1704,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * =====================================================================&n; *                      ERROR MANAGEMENT&n; */
-multiline_comment|/*&n; * xtalk_error_handler:&n; * pass this error on to the handler registered&n; * at the specified xtalk connecdtion point,&n; * or complain about it here if there is no handler.&n; *&n; * This routine plays two roles during error delivery&n; * to most widgets: first, the external agent (heart,&n; * hub, or whatever) calls in with the error and the&n; * connect point representing the crosstalk switch,&n; * or whatever crosstalk device is directly connected&n; * to the agent.&n; *&n; * If there is a switch, it will generally look at the&n; * widget number stashed in the ioerror structure; and,&n; * if the error came from some widget other than the&n; * switch, it will call back into xtalk_error_handler&n; * with the connection point of the offending port.&n; */
+multiline_comment|/*&n; * xtalk_error_handler:&n; * pass this error on to the handler registered&n; * at the specified xtalk connecdtion point,&n; * or complain about it here if there is no handler.&n; *&n; * This routine plays two roles during error delivery&n; * to most widgets: first, the external agent (heart,&n; * hub, or whatever) calls in with the error and the&n; * connect point representing the io channel switch,&n; * or whatever io channel device is directly connected&n; * to the agent.&n; *&n; * If there is a switch, it will generally look at the&n; * widget number stashed in the ioerror structure; and,&n; * if the error came from some widget other than the&n; * switch, it will call back into xtalk_error_handler&n; * with the connection point of the offending port.&n; */
 r_int
 DECL|function|xtalk_error_handler
 id|xtalk_error_handler
@@ -1686,6 +1726,12 @@ id|ioerror
 (brace
 id|xwidget_info_t
 id|xwidget_info
+suffix:semicolon
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
 suffix:semicolon
 id|xwidget_info
 op_assign
@@ -1740,41 +1786,21 @@ id|MODE_DEVREENABLE
 r_return
 id|IOERROR_HANDLED
 suffix:semicolon
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Xbow at %v encountered Fatal error&quot;
+l_string|&quot;Xbow at %s encountered Fatal error&quot;
 comma
-id|xconn
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
+id|vertex_to_name
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Xbow at 0x%p encountered Fatal error&quot;
-comma
-(paren
-r_void
-op_star
-)paren
 id|xconn
+comma
+id|name
+comma
+id|MAXDEVNAME
 )paren
-suffix:semicolon
-macro_line|#endif
-id|ioerror_dump
-c_func
-(paren
-l_string|&quot;xtalk&quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
 )paren
 suffix:semicolon
 r_return
@@ -1814,7 +1840,7 @@ id|error_code
 suffix:semicolon
 )brace
 multiline_comment|/* =====================================================================&n; *                    CONFIGURATION MANAGEMENT&n; */
-multiline_comment|/*&n; * Startup a crosstalk provider&n; */
+multiline_comment|/*&n; * Startup an io channel provider&n; */
 r_void
 DECL|function|xtalk_provider_startup
 id|xtalk_provider_startup
@@ -1824,19 +1850,26 @@ id|vertex_hdl_t
 id|xtalk_provider
 )paren
 (brace
-id|DEV_FUNC
+(paren
+(paren
+id|xtalk_provider_t
+op_star
+)paren
+id|hwgraph_fastinfo_get
 c_func
 (paren
 id|xtalk_provider
-comma
-id|provider_startup
 )paren
+)paren
+op_member_access_from_pointer
+id|provider_startup
+c_func
 (paren
 id|xtalk_provider
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Shutdown a crosstalk provider&n; */
+multiline_comment|/*&n; * Shutdown an io channel provider&n; */
 r_void
 DECL|function|xtalk_provider_shutdown
 id|xtalk_provider_shutdown
@@ -1846,13 +1879,20 @@ id|vertex_hdl_t
 id|xtalk_provider
 )paren
 (brace
-id|DEV_FUNC
+(paren
+(paren
+id|xtalk_provider_t
+op_star
+)paren
+id|hwgraph_fastinfo_get
 c_func
 (paren
 id|xtalk_provider
-comma
-id|provider_shutdown
 )paren
+)paren
+op_member_access_from_pointer
+id|provider_shutdown
+c_func
 (paren
 id|xtalk_provider
 )paren
@@ -1890,30 +1930,8 @@ id|devnum
 r_return
 suffix:semicolon
 )brace
-r_int
-DECL|function|xtalk_dma_enabled
-id|xtalk_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
-id|xconn_vhdl
-)paren
-(brace
-r_return
-id|DEV_FUNC
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|dma_enabled
-)paren
-(paren
-id|xconn_vhdl
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Generic crosstalk functions, for use with all crosstalk providers&n; * and all crosstalk devices.&n; */
-multiline_comment|/****** Generic crosstalk interrupt interfaces ******/
+multiline_comment|/*&n; * Generic io channel functions, for use with all io channel providers&n; * and all io channel devices.&n; */
+multiline_comment|/* Generic io channel interrupt interfaces */
 id|vertex_hdl_t
 DECL|function|xtalk_intr_dev_get
 id|xtalk_intr_dev_get
@@ -1992,7 +2010,7 @@ id|xtalk_intr-&gt;xi_sfarg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****** Generic crosstalk pio interfaces ******/
+multiline_comment|/* Generic io channel pio interfaces */
 id|vertex_hdl_t
 DECL|function|xtalk_pio_dev_get
 id|xtalk_pio_dev_get
@@ -2068,7 +2086,7 @@ id|xtalk_piomap-&gt;xp_kvaddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****** Generic crosstalk dma interfaces ******/
+multiline_comment|/* Generic io channel dma interfaces */
 id|vertex_hdl_t
 DECL|function|xtalk_dma_dev_get
 id|xtalk_dma_dev_get
@@ -2099,7 +2117,7 @@ id|xtalk_dmamap-&gt;xd_target
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****** Generic crosstalk widget information interfaces ******/
+multiline_comment|/* Generic io channel widget information interfaces */
 multiline_comment|/* xwidget_info_chk:&n; * check to see if this vertex is a widget;&n; * if so, return its widget_info (if any).&n; * if not, return NULL.&n; */
 id|xwidget_info_t
 DECL|function|xwidget_info_chk
@@ -2407,7 +2425,7 @@ r_return
 id|xwidget_info-&gt;w_name
 suffix:semicolon
 )brace
-multiline_comment|/****** Generic crosstalk initialization interfaces ******/
+multiline_comment|/* Generic io channel initialization interfaces */
 multiline_comment|/*&n; * Associate a set of xtalk_provider functions with a vertex.&n; */
 r_void
 DECL|function|xtalk_provider_register

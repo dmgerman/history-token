@@ -509,14 +509,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_typedef
-r_int
-DECL|typedef|xtalk_dma_enabled_f
-id|xtalk_dma_enabled_f
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 multiline_comment|/* Error Management */
 r_typedef
 r_int
@@ -788,10 +780,6 @@ suffix:semicolon
 r_extern
 id|xtalk_widgetdev_shutdown_f
 id|xtalk_widgetdev_shutdown
-suffix:semicolon
-r_extern
-id|xtalk_dma_enabled_f
-id|xtalk_dma_enabled
 suffix:semicolon
 r_extern
 id|xtalk_error_devenable_f

@@ -635,14 +635,6 @@ c_func
 id|vertex_hdl_t
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|pcibr_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Bridge-specific flags that can be set via pcibr_device_flags_set&n; * and cleared via pcibr_device_flags_clear.  Other flags are&n; * more generic and are maniuplated through PCI-generic interfaces.&n; *&n; * Note that all PCI implementation-specific flags (Bridge flags, in&n; * this case) are in bits 15-31.  The lower 15 bits are reserved&n; * for PCI-generic flags.&n; *&n; * Some of these flags have been &quot;promoted&quot; to the&n; * generic layer, so they can be used without having&n; * to &quot;know&quot; that the PCI bus is hosted by a Bridge.&n; *&n; * PCIBR_NO_ATE_ROUNDUP: Request that no rounding up be done when &n; * allocating ATE&squot;s. ATE count computation will assume that the&n; * address to be mapped will start on a page boundary.&n; */
 DECL|macro|PCIBR_NO_ATE_ROUNDUP
 mdefine_line|#define PCIBR_NO_ATE_ROUNDUP    0x00008000
