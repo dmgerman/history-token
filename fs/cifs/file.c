@@ -7918,9 +7918,17 @@ comma
 (paren
 l_string|&quot;Count: %d  End: %d &quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|findParms.SearchCount
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|findParms.EndofSearch
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -7932,6 +7940,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|__u16
+id|count
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|findParms.SearchCount
+)paren
+suffix:semicolon
 id|searchHandle
 op_assign
 id|findParms.SearchHandle
@@ -8033,7 +8050,11 @@ op_star
 )paren
 id|pfindData
 op_plus
+id|le16_to_cpu
+c_func
+(paren
 id|findParms.LastNameOffset
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -8344,11 +8365,7 @@ l_int|2
 suffix:semicolon
 id|i
 OL
-(paren
-r_int
-r_int
-)paren
-id|findParms.SearchCount
+id|count
 op_plus
 l_int|2
 suffix:semicolon
@@ -8693,7 +8710,11 @@ c_cond
 (paren
 id|findParms.SearchCount
 op_eq
+id|cpu_to_le16
+c_func
+(paren
 l_int|2
+)paren
 )paren
 (brace
 id|cifsFile-&gt;emptyDir
@@ -8827,9 +8848,17 @@ comma
 (paren
 l_string|&quot;Count: %d  End: %d &quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|findNextParms.SearchCount
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|findNextParms.EndofSearch
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -8850,6 +8879,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* BB save off resume key, key name and name length  */
+id|__u16
+id|count
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|findNextParms.SearchCount
+)paren
+suffix:semicolon
 id|lastFindData
 op_assign
 (paren
@@ -8863,7 +8901,11 @@ op_star
 )paren
 id|pfindData
 op_plus
+id|le16_to_cpu
+c_func
+(paren
 id|findNextParms.LastNameOffset
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -9202,7 +9244,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|findNextParms.SearchCount
+id|count
 suffix:semicolon
 id|i
 op_increment
