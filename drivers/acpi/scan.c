@@ -336,7 +336,7 @@ suffix:semicolon
 id|acpi_handle
 id|handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u32
 id|i
@@ -2961,12 +2961,12 @@ suffix:semicolon
 id|acpi_handle
 id|phandle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|acpi_handle
 id|chandle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|acpi_object_type
 id|type
@@ -3112,7 +3112,7 @@ id|chandle
 suffix:semicolon
 id|chandle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -3207,7 +3207,7 @@ id|ACPI_TYPE_ANY
 comma
 id|chandle
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -3231,7 +3231,7 @@ id|chandle
 suffix:semicolon
 id|chandle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|parent
 op_assign

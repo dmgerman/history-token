@@ -665,7 +665,7 @@ id|start_handle
 suffix:semicolon
 id|child_handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|level
 op_assign
@@ -721,7 +721,7 @@ id|ACPI_TYPE_ANY
 comma
 id|child_handle
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|dummy
@@ -739,7 +739,7 @@ id|child_handle
 suffix:semicolon
 id|child_handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
