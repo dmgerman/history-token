@@ -1462,7 +1462,7 @@ multiline_comment|/*(length != sizeof (struct smb_hdr) - 1)&n;&t;&t;&t;&t;    ||
 (paren
 id|pdu_length
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 )paren

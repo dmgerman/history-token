@@ -2574,16 +2574,6 @@ id|CIFSMaxBufSize
 op_assign
 l_int|4096
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Buffer size set to minimum of 1 page (4096)&quot;
-)paren
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -2602,17 +2592,16 @@ l_int|1024
 op_star
 l_int|127
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Buffer size set to maximum&quot;
-)paren
-)paren
-suffix:semicolon
 )brace
+r_else
+(brace
+id|CIFSMaxBufSize
+op_and_assign
+l_int|0x1FE00
+suffix:semicolon
+multiline_comment|/* Round size to even 512 byte mult*/
+)brace
+multiline_comment|/*&t;cERROR(1,(&quot;CIFSMaxBufSize %d 0x%x&quot;,CIFSMaxBufSize,CIFSMaxBufSize)); */
 id|cifs_req_cachep
 op_assign
 id|kmem_cache_create
@@ -2620,7 +2609,7 @@ c_func
 (paren
 l_string|&quot;cifs_request&quot;
 comma
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 comma

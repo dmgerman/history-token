@@ -1044,7 +1044,7 @@ op_logical_and
 (paren
 id|total_size
 OL
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -1305,7 +1305,7 @@ comma
 (paren
 id|__u32
 )paren
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -3717,7 +3717,7 @@ c_cond
 (paren
 id|data_length
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 )paren
 op_logical_or
 (paren
@@ -12063,7 +12063,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_div
 r_sizeof
 (paren
@@ -12651,7 +12651,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_div
 r_sizeof
 (paren
@@ -13132,7 +13132,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_div
 r_sizeof
 (paren
@@ -13704,7 +13704,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_div
 r_sizeof
 (paren

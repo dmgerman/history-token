@@ -1339,7 +1339,7 @@ op_logical_or
 (paren
 id|len
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -1410,7 +1410,7 @@ c_cond
 (paren
 id|len
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -1422,7 +1422,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;smb_buf_length greater than CIFS_MAX_MSGSIZE ... &quot;
+l_string|&quot;smb_buf_length greater than MaxBufSize&quot;
 )paren
 )paren
 suffix:semicolon

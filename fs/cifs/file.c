@@ -6305,21 +6305,6 @@ op_ne
 id|bytes_read
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Partial page %d of %d read to cache&quot;
-comma
-id|i
-op_increment
-comma
-id|num_pages
-)paren
-)paren
-suffix:semicolon
 id|i
 op_increment
 suffix:semicolon
@@ -8725,7 +8710,7 @@ c_cond
 (paren
 id|bufsize
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 )paren
 (brace
 id|rc

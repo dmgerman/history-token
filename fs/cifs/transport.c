@@ -1109,7 +1109,7 @@ c_cond
 (paren
 id|in_buf-&gt;smb_buf_length
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -1665,7 +1665,7 @@ c_cond
 (paren
 id|in_buf-&gt;smb_buf_length
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 op_minus
@@ -2154,7 +2154,7 @@ c_cond
 (paren
 id|receive_len
 OG
-id|CIFS_MAX_MSGSIZE
+id|CIFSMaxBufSize
 op_plus
 id|MAX_CIFS_HDR_SIZE
 )paren
