@@ -2035,9 +2035,17 @@ id|dev
 )paren
 )paren
 )paren
+(brace
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|master
 op_assign
 id|dev-&gt;priv
@@ -2125,6 +2133,7 @@ op_amp
 id|master-&gt;qops
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: we&squot;re inside a spinlock; unregister_netdev() blocks */
 id|unregister_netdev
 c_func
 (paren

@@ -179,6 +179,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
+DECL|member|addr_space
+r_struct
+id|list_head
+id|addr_space
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|enum|devctl_cmd
