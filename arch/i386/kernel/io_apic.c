@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
+macro_line|#include &quot;io_ports.h&quot;
 DECL|macro|APIC_LOCKUP_DEBUG
 macro_line|#undef APIC_LOCKUP_DEBUG
 DECL|macro|APIC_LOCKUP_DEBUG
@@ -9034,7 +9035,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the old PIC in all cases:&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; * - There used to be IRQ13 here as well, but all&n; *   MPS-compliant must not use it for FPU coupling and we&n; *   want to use exception 16 anyway.  And there are&n; *   systems who connect it to an I/O APIC for other uses.&n; *   Thus we don&squot;t mark it special any longer.&n; *&n; * Additionally, something is definitely wrong with irq9&n; * on PIIX4 boards.&n; */
 DECL|macro|PIC_IRQS
-mdefine_line|#define PIC_IRQS&t;(1&lt;&lt;2)
+mdefine_line|#define PIC_IRQS&t;(1 &lt;&lt; PIC_CASCADE_IR)
 DECL|function|setup_IO_APIC
 r_void
 id|__init
