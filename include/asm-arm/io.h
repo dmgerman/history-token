@@ -482,6 +482,12 @@ macro_line|#endif
 multiline_comment|/*&n; * can the hardware map this into one segment or not, given no other&n; * constraints.&n; */
 DECL|macro|BIOVEC_MERGEABLE
 mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __ASM_ARM_IO_H */
 eof

@@ -84,5 +84,11 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif
 eof

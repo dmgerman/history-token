@@ -1603,5 +1603,11 @@ multiline_comment|/* PA machines have an MM I/O space from 0xf0000000-0xffffffff
 DECL|macro|F_EXTEND
 mdefine_line|#define F_EXTEND(x) ((unsigned long)((x) | (0xffffffff00000000ULL)))
 macro_line|#include &lt;asm-generic/iomap.h&gt;
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif
 eof

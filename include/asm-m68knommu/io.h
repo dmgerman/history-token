@@ -725,6 +725,12 @@ DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68KNOMMU_IO_H */
 eof

@@ -720,5 +720,11 @@ DECL|macro|csr_out32
 mdefine_line|#define csr_out32(v,a) (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST) = (v))
 DECL|macro|csr_in32
 mdefine_line|#define csr_in32(a)    (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST))
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif /* _ASM_IO_H */
 eof

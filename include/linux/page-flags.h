@@ -47,6 +47,8 @@ DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
 DECL|macro|PG_nosave_free
 mdefine_line|#define PG_nosave_free&t;&t;19&t;/* Free, should not be written */
+DECL|macro|PG_uncached
+mdefine_line|#define PG_uncached&t;&t;20&t;/* Page has been mapped as uncached */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -492,6 +494,12 @@ macro_line|#else
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page)&t;0
 macro_line|#endif
+DECL|macro|PageUncached
+mdefine_line|#define PageUncached(page)&t;test_bit(PG_uncached, &amp;(page)-&gt;flags)
+DECL|macro|SetPageUncached
+mdefine_line|#define SetPageUncached(page)&t;set_bit(PG_uncached, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageUncached
+mdefine_line|#define ClearPageUncached(page)&t;clear_bit(PG_uncached, &amp;(page)-&gt;flags)
 r_struct
 id|page
 suffix:semicolon

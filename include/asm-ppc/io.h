@@ -2211,5 +2211,11 @@ macro_line|#endif /* _PPC_IO_H */
 macro_line|#ifdef CONFIG_8260_PCI9
 macro_line|#include &lt;asm/mpc8260_pci9.h&gt;
 macro_line|#endif
+multiline_comment|/*&n; * Convert a physical pointer to a virtual kernel pointer for /dev/mem&n; * access&n; */
+DECL|macro|xlate_dev_mem_ptr
+mdefine_line|#define xlate_dev_mem_ptr(p)&t;__va(p)
+multiline_comment|/*&n; * Convert a virtual cached pointer to an uncached pointer&n; */
+DECL|macro|xlate_dev_kmem_ptr
+mdefine_line|#define xlate_dev_kmem_ptr(p)&t;p
 macro_line|#endif /* __KERNEL__ */
 eof
