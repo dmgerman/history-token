@@ -2160,16 +2160,6 @@ comma
 l_int|0xf0
 )brace
 suffix:semicolon
-r_static
-r_int
-id|hi
-op_assign
-l_int|0
-comma
-id|lo
-op_assign
-l_int|0
-suffix:semicolon
 id|u_long
 id|b
 comma
