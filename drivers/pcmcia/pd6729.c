@@ -705,7 +705,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;pd6729: infinite eventloop in interrupt&bslash;n&quot;
+l_string|&quot;pd6729: infinite eventloop &quot;
+l_string|&quot;in interrupt&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1550,9 +1551,7 @@ id|SS_RESET
 )paren
 )paren
 id|reg
-op_assign
-id|reg
-op_or
+op_or_assign
 id|I365_PC_RESET
 suffix:semicolon
 r_if
@@ -1563,9 +1562,7 @@ op_amp
 id|SS_IOCARD
 )paren
 id|reg
-op_assign
-id|reg
-op_or
+op_or_assign
 id|I365_PC_IOCARD
 suffix:semicolon
 multiline_comment|/* IGENC, Interrupt and General Control Register */
@@ -1695,7 +1692,8 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;pd6729: pd6729_set_socket called with invalid VCC power value: %i&bslash;n&quot;
+l_string|&quot;pd6729: pd6729_set_socket called with &quot;
+l_string|&quot;invalid VCC power value: %i&bslash;n&quot;
 comma
 id|state-&gt;Vcc
 )paren
@@ -2046,7 +2044,7 @@ id|map
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&t;dprintk(&quot;set_io_map: Setting range to %x - %x&bslash;n&quot;, io-&gt;start, io-&gt;stop);*/
+multiline_comment|/* dprintk(&quot;set_io_map: Setting range to %x - %x&bslash;n&quot;,&n;&t;   io-&gt;start, io-&gt;stop);*/
 multiline_comment|/* write the new values */
 id|indirect_write16
 c_func
@@ -2266,7 +2264,6 @@ c_func
 l_string|&quot;pd6729_set_mem_map: invalid address / speed&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;invalid mem map for socket %i : %lx to %lx with a start of %x&bslash;n&quot;,&n;&t;&t;&t; sock, mem-&gt;res-&gt;start, mem-&gt;res-&gt;end, mem-&gt;card_start); */
 r_return
 op_minus
 id|EINVAL
@@ -2485,7 +2482,7 @@ op_amp
 id|MAP_ATTRIB
 )paren
 (brace
-multiline_comment|/*&t;&t;dprintk(&quot;requesting attribute memory for socket %i&bslash;n&quot;,&n;&t;&t;&t;socket-&gt;number);*/
+multiline_comment|/* dprintk(&quot;requesting attribute memory for socket %i&bslash;n&quot;,&n;&t;&t;&t;socket-&gt;number);*/
 id|i
 op_or_assign
 id|I365_MEM_REG
@@ -2493,7 +2490,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&t;&t;dprintk(&quot;requesting normal memory for socket %i&bslash;n&quot;,&n;&t;&t;&t;socket-&gt;number);*/
+multiline_comment|/* dprintk(&quot;requesting normal memory for socket %i&bslash;n&quot;,&n;&t;&t;&t;socket-&gt;number);*/
 )brace
 id|indirect_write16
 c_func
@@ -2821,7 +2818,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;pd6729: Cirrus PD6729 PCI to PCMCIA Bridge at 0x%lx on irq %d&bslash;n&quot;
+l_string|&quot;pd6729: Cirrus PD6729 PCI to PCMCIA Bridge &quot;
+l_string|&quot;at 0x%lx on irq %d&bslash;n&quot;
 comma
 id|pci_resource_start
 c_func
@@ -2834,16 +2832,7 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;pd6729: configured as a %d socket device.&bslash;n&quot;
-comma
-id|MAX_SOCKETS
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Since we have no memory BARs some firmware we may not&n;&t; * have had PCI_COMMAND_MEM enabled, yet the device needs&n;&t; * it.&n;&t; */
+multiline_comment|/*&n;&t; * Since we have no memory BARs some firmware may not&n;&t; * have had PCI_COMMAND_MEMORY enabled, yet the device needs it.&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -3116,7 +3105,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;pd6729: pcmcia_register_socket failed.&bslash;n&quot;
+l_string|&quot;pd6729: pcmcia_register_socket &quot;
+l_string|&quot;failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
