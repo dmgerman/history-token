@@ -157,6 +157,10 @@ DECL|member|magic
 r_int
 id|magic
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|port
 r_int
 id|port
