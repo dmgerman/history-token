@@ -19,7 +19,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * core module and version information&n; */
 DECL|macro|RNG_VERSION
-mdefine_line|#define RNG_VERSION &quot;0.9.0&quot;
+mdefine_line|#define RNG_VERSION &quot;1.0.0&quot;
 DECL|macro|RNG_MODULE_NAME
 mdefine_line|#define RNG_MODULE_NAME &quot;hw_random&quot;
 DECL|macro|RNG_DRIVER_NAME
@@ -1627,8 +1627,8 @@ r_while
 c_loop
 (paren
 id|have_data
-OG
-l_int|0
+op_logical_and
+id|size
 )paren
 (brace
 r_if

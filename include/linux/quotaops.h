@@ -773,6 +773,8 @@ DECL|macro|sb_dquot_ops
 mdefine_line|#define sb_dquot_ops&t;&t;&t;&t;(NULL)
 DECL|macro|sb_quotactl_ops
 mdefine_line|#define sb_quotactl_ops&t;&t;&t;&t;(NULL)
+DECL|macro|sync_dquots_dev
+mdefine_line|#define sync_dquots_dev(dev,type)&t;&t;(NULL)
 DECL|macro|DQUOT_INIT
 mdefine_line|#define DQUOT_INIT(inode)&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_DROP
