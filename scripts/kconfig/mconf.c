@@ -1883,9 +1883,9 @@ l_string|&quot;.search.tmp&quot;
 comma
 l_string|&quot;Search Results&quot;
 comma
-id|rows
+l_int|0
 comma
-id|cols
+l_int|0
 )paren
 suffix:semicolon
 id|unlink
@@ -3593,9 +3593,9 @@ id|title
 comma
 id|text
 comma
-id|rows
+l_int|0
 comma
-id|cols
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3728,9 +3728,9 @@ l_string|&quot;scripts/README.Menuconfig&quot;
 comma
 l_int|NULL
 comma
-id|rows
+l_int|0
 comma
-id|cols
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3805,6 +3805,11 @@ c_func
 l_string|&quot;%d&quot;
 comma
 id|r
+ques
+c_cond
+id|r
+suffix:colon
+id|rows
 )paren
 suffix:semicolon
 id|cprint
@@ -3813,6 +3818,11 @@ c_func
 l_string|&quot;%d&quot;
 comma
 id|c
+ques
+c_cond
+id|c
+suffix:colon
+id|cols
 )paren
 suffix:semicolon
 )brace
