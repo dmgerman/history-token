@@ -12,7 +12,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* mmio access */
 DECL|macro|btwrite
 mdefine_line|#define btwrite(dat,adr)    writel((dat), (bta-&gt;mmio+(adr)))
@@ -4290,7 +4292,10 @@ id|btwrite
 c_func
 (paren
 op_complement
-l_int|0x0UL
+(paren
+id|u32
+)paren
+l_int|0x0
 comma
 id|REG_INT_STAT
 )paren
@@ -4553,7 +4558,10 @@ id|btwrite
 c_func
 (paren
 op_complement
-l_int|0x0UL
+(paren
+id|u32
+)paren
+l_int|0x0
 comma
 id|REG_INT_STAT
 )paren

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SUNRPC_AUTH_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* size of the nodename buffer */
 DECL|macro|UNX_MAXNODENAME
 mdefine_line|#define UNX_MAXNODENAME&t;32
@@ -20,6 +21,18 @@ op_star
 id|cr_next
 suffix:semicolon
 multiline_comment|/* linked list */
+DECL|member|cr_auth
+r_struct
+id|rpc_auth
+op_star
+id|cr_auth
+suffix:semicolon
+DECL|member|cr_ops
+r_struct
+id|rpc_credops
+op_star
+id|cr_ops
+suffix:semicolon
 DECL|member|cr_expire
 r_int
 r_int
@@ -27,8 +40,7 @@ id|cr_expire
 suffix:semicolon
 multiline_comment|/* when to gc */
 DECL|member|cr_count
-r_int
-r_int
+id|atomic_t
 id|cr_count
 suffix:semicolon
 multiline_comment|/* ref count */
@@ -177,6 +189,12 @@ id|crcreate
 r_int
 )paren
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|rpc_credops
+r_struct
+id|rpc_credops
+(brace
 DECL|member|crdestroy
 r_void
 (paren
@@ -343,13 +361,9 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|rpcauth_releasecred
+id|put_rpccred
 c_func
 (paren
-r_struct
-id|rpc_auth
-op_star
-comma
 r_struct
 id|rpc_cred
 op_star
@@ -463,6 +477,32 @@ id|rpc_cred
 op_star
 )paren
 suffix:semicolon
+r_static
+r_inline
+DECL|function|get_rpccred
+r_struct
+id|rpc_cred
+op_star
+id|get_rpccred
+c_func
+(paren
+r_struct
+id|rpc_cred
+op_star
+id|cred
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|cred-&gt;cr_count
+)paren
+suffix:semicolon
+r_return
+id|cred
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SUNRPC_AUTH_H */
 eof

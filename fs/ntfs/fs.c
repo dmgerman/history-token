@@ -5137,6 +5137,8 @@ c_func
 id|max
 c_func
 (paren
+r_int
+comma
 id|vol-&gt;mft_record_size
 comma
 id|vol-&gt;cluster_size
@@ -5160,6 +5162,8 @@ OL
 id|max
 c_func
 (paren
+r_int
+comma
 id|vol-&gt;mft_clusters_per_record
 comma
 l_int|1

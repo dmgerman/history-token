@@ -735,14 +735,6 @@ macro_line|#endif
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#ifndef&t;min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef&t;max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 DECL|macro|is_digit
 mdefine_line|#define&t;is_digit(ch) (((ch)&gt;=(unsigned)&squot;0&squot;&amp;&amp;(ch)&lt;=(unsigned)&squot;9&squot;)?1:0)
 DECL|macro|is_alpha

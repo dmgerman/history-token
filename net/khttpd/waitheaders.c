@@ -652,6 +652,9 @@ c_func
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|Request-&gt;Time
 comma
 id|CurrentTime_i

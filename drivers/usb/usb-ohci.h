@@ -724,8 +724,6 @@ DECL|macro|RH_A_NOCP
 mdefine_line|#define&t;RH_A_NOCP&t;(1 &lt;&lt; 12)&t;&t;/* no over current protection */
 DECL|macro|RH_A_POTPGT
 mdefine_line|#define&t;RH_A_POTPGT&t;(0xff &lt;&lt; 24)&t;&t;/* power on to power good time */
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))  
 multiline_comment|/* urb */
 r_typedef
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* airport.c 0.05&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; */
+multiline_comment|/* airport.c 0.06f&n; *&n; * A driver for &quot;Hermes&quot; chipset based Apple Airport wireless&n; * card.&n; *&n; * Copyright notice &amp; release notes in file orinoco.c&n; * &n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -21,6 +21,29 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/feature.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;airport.c 0.06f (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the Apple Airport wireless card.&quot;
+)paren
+suffix:semicolon
 DECL|struct|dldwd_card
 r_typedef
 r_struct
@@ -49,14 +72,6 @@ suffix:semicolon
 DECL|typedef|dldwd_card_t
 )brace
 id|dldwd_card_t
-suffix:semicolon
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;airport.c 0.05 (Benjamin Herrenschmidt &lt;benh@kernel.crashing.org&gt;)&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 r_static
@@ -616,7 +631,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;airport: card registered for interface %s&bslash;n&quot;
 comma
 id|ndev-&gt;name
@@ -783,7 +798,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|version

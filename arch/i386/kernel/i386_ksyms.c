@@ -664,4 +664,13 @@ id|empty_zero_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_HAVE_DEC_LOCK
+DECL|variable|atomic_dec_and_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|atomic_dec_and_lock
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -188,15 +188,6 @@ DECL|macro|RIO_ISMODEM
 mdefine_line|#define&t;RIO_ISMODEM(DEV)&t;(minor(DEV) &amp; RIO_MODEM_BIT)
 DECL|macro|RIO_PORT
 mdefine_line|#define RIO_PORT(DEV,FIRST_MAJ)&t;( (major(DEV) - FIRST_MAJ) * PORTS_PER_HOST) &bslash;&n;&t;&t;&t;&t;&t;+ minor(DEV)
-multiline_comment|/*&n;**&t;Min and Max&n;*/
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define&t;min(A,B)&t;((A)&lt;(B)?(A):(B))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define&t;max(A,B)&t;((A)&gt;(B)?(A):(B))
-macro_line|#endif
 DECL|macro|splrio
 mdefine_line|#define&t;splrio&t;spltty
 DECL|macro|RIO_IPL

@@ -32,8 +32,6 @@ DECL|macro|READ_DEFECT_DATA_TIMEOUT
 mdefine_line|#define READ_DEFECT_DATA_TIMEOUT&t;(60 * HZ )  /* ZIP-250 on parallel port takes as long! */
 DECL|macro|MAX_BUF
 mdefine_line|#define MAX_BUF PAGE_SIZE
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a) &gt; (b)) ? (a) : (b))
 multiline_comment|/*&n; * If we are told to probe a host, we will return 0 if  the host is not&n; * present, 1 if the host is present, and will return an identifying&n; * string at *arg, if arg is non null, filling to the length stored at&n; * (int *) arg&n; */
 DECL|function|ioctl_probe
 r_static

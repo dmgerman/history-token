@@ -752,6 +752,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -868,6 +871,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -968,6 +974,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1039,6 +1048,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1166,6 +1178,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1258,6 +1273,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1356,6 +1374,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1452,6 +1473,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1583,6 +1607,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1683,6 +1710,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1820,6 +1850,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft
@@ -1919,6 +1952,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|userCount
 comma
 id|frameLeft

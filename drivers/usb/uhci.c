@@ -189,8 +189,6 @@ op_star
 id|uhci
 )paren
 suffix:semicolon
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
 multiline_comment|/* If a transfer is still active after this much time, turn off FSBR */
 DECL|macro|IDLE_TIMEOUT
 mdefine_line|#define IDLE_TIMEOUT&t;(HZ / 20)&t;/* 50 ms */
@@ -9230,11 +9228,17 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|leni
 comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 r_sizeof
 (paren
 id|root_hub_dev_des
@@ -9269,11 +9273,17 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|leni
 comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 r_sizeof
 (paren
 id|root_hub_config_des
@@ -9328,9 +9338,13 @@ l_int|0
 )paren
 (brace
 id|OK
+c_func
 (paren
 id|min
+c_func
 (paren
+r_int
+comma
 id|leni
 comma
 id|len
@@ -9364,11 +9378,17 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|leni
 comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 r_sizeof
 (paren
 id|root_hub_hub_des

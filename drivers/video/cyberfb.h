@@ -124,14 +124,6 @@ mdefine_line|#define S3_HWGC_DY     0x4f
 DECL|macro|S3_LAW_CTL
 mdefine_line|#define S3_LAW_CTL 0x58
 multiline_comment|/**************************************************/
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif /* !min */
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max(a,b)&t;((a) &gt; (b) ? (a) : (b))
-macro_line|#endif /* !max */
 multiline_comment|/* support for a BitBlt operation. The op-codes are identical&n;   to X11 GCs */
 DECL|macro|GRFBBOPclear
 mdefine_line|#define&t;GRFBBOPclear&t;&t;0x0&t;/* 0 */

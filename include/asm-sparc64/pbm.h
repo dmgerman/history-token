@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pbm.h,v 1.26 2001/05/15 08:54:30 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pbm.h,v 1.27 2001/08/12 13:18:23 davem Exp $&n; * pbm.h: UltraSparc PCI controller software state.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __SPARC64_PBM_H
 DECL|macro|__SPARC64_PBM_H
 mdefine_line|#define __SPARC64_PBM_H
@@ -298,6 +298,12 @@ r_struct
 id|pci_iommu
 op_star
 id|iommu
+suffix:semicolon
+multiline_comment|/* PCI slot mapping. */
+DECL|member|pci_first_slot
+r_int
+r_int
+id|pci_first_slot
 suffix:semicolon
 multiline_comment|/* Now things for the actual PCI bus probes. */
 DECL|member|pci_first_busno

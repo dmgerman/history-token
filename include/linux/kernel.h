@@ -387,6 +387,10 @@ DECL|macro|NIPQUAD
 mdefine_line|#define NIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[0], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[3]
 DECL|macro|HIPQUAD
 mdefine_line|#define HIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[3], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[0]
+DECL|macro|min
+mdefine_line|#define min(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &lt; __y ? __x: __y; })
+DECL|macro|max
+mdefine_line|#define max(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &gt; __y ? __x: __y; })
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|SI_LOAD_SHIFT
 mdefine_line|#define SI_LOAD_SHIFT&t;16

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: uctrl.c,v 1.10 2001/02/13 01:17:00 davem Exp $&n; * uctrl.c: TS102 Microcontroller interface on Tadpole Sparcbook 3&n; *&n; * Copyright 1999 Derrick J Brashear (shadow@dementia.org)&n; */
+multiline_comment|/* $Id: uctrl.c,v 1.11 2001/08/13 14:40:08 davem Exp $&n; * uctrl.c: TS102 Microcontroller interface on Tadpole Sparcbook 3&n; *&n; * Copyright 1999 Derrick J Brashear (shadow@dementia.org)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

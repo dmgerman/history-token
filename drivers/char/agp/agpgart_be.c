@@ -1506,6 +1506,8 @@ op_or
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 id|mode
 op_amp
@@ -1515,6 +1517,8 @@ comma
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 id|command
 op_amp
@@ -11475,6 +11479,8 @@ op_or
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 id|mode
 op_amp
@@ -11484,6 +11490,8 @@ comma
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 id|command
 op_amp

@@ -454,6 +454,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|free
 ques
 c_cond
@@ -462,7 +464,10 @@ suffix:colon
 id|ch-&gt;debug_size
 comma
 id|min
+c_func
 (paren
+r_int
+comma
 id|ch-&gt;debug_size
 op_minus
 id|ch-&gt;debug_end
@@ -2870,6 +2875,8 @@ r_return
 id|min
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|len
@@ -3068,6 +3075,8 @@ r_return
 id|min
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|len

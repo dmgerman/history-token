@@ -634,6 +634,8 @@ comma
 id|min
 c_func
 (paren
+r_int
+comma
 id|value_len
 comma
 id|a-&gt;size
@@ -1752,6 +1754,8 @@ comma
 id|min
 c_func
 (paren
+id|s64
+comma
 id|newsize
 comma
 id|oldsize
@@ -3290,6 +3294,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|size
 comma
 l_int|512
@@ -3551,6 +3557,8 @@ op_assign
 id|min
 c_func
 (paren
+id|s64
+comma
 (paren
 (paren
 id|__s64
@@ -3657,11 +3665,15 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|len
 op_minus
 id|max
 c_func
 (paren
+r_int
+comma
 id|s_vcn
 op_minus
 id|vcn
@@ -3714,6 +3726,8 @@ op_plus
 id|max
 c_func
 (paren
+r_int
+comma
 id|s_vcn
 op_minus
 id|vcn
@@ -3881,6 +3895,8 @@ op_assign
 id|min
 c_func
 (paren
+id|s64
+comma
 (paren
 l_int|16
 op_lshift
@@ -3897,6 +3913,8 @@ op_assign
 id|min
 c_func
 (paren
+id|s64
+comma
 id|l
 comma
 id|chunk

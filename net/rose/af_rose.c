@@ -1884,6 +1884,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 r_sizeof

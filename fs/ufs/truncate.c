@@ -125,7 +125,10 @@ suffix:semicolon
 id|frag4
 op_assign
 id|min
+c_func
 (paren
+id|u32
+comma
 id|UFS_NDIR_FRAGMENT
 comma
 id|inode-&gt;u.ufs_i.i_lastfrag

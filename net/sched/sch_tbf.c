@@ -528,6 +528,8 @@ c_func
 id|max
 c_func
 (paren
+r_int
+comma
 op_minus
 id|toks
 comma

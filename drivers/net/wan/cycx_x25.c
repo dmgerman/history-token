@@ -882,6 +882,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.hi_pvc
 comma
 l_int|4095
@@ -892,6 +895,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.lo_pvc
 comma
 id|card-&gt;u.x.hi_pvc
@@ -909,6 +915,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.hi_svc
 comma
 l_int|4095
@@ -919,6 +928,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.lo_svc
 comma
 id|card-&gt;u.x.hi_svc
@@ -965,6 +977,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.hdlc_window
 comma
 l_int|7
@@ -980,6 +995,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.pkt_window
 comma
 l_int|7
@@ -995,6 +1013,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.t1
 comma
 l_int|30
@@ -1010,6 +1031,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.t2
 comma
 l_int|30
@@ -1025,6 +1049,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.t11_t21
 comma
 l_int|30
@@ -1040,6 +1067,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.t13_t23
 comma
 l_int|30
@@ -1055,6 +1085,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;u.x25.n2
 comma
 l_int|30

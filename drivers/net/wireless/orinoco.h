@@ -158,6 +158,7 @@ DECL|member|has_ibss
 DECL|member|has_port3
 DECL|member|prefer_port3
 DECL|member|has_ibss_any
+DECL|member|ibss_port
 r_int
 id|has_ibss
 comma
@@ -166,6 +167,8 @@ comma
 id|prefer_port3
 comma
 id|has_ibss_any
+comma
+id|ibss_port
 suffix:semicolon
 DECL|member|has_wep
 DECL|member|has_big_wep
@@ -342,15 +345,15 @@ id|dldwd_priv_t
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 r_extern
-r_int
-id|dldwd_debug
-suffix:semicolon
-r_extern
 r_struct
 id|list_head
 id|dldwd_instances
 suffix:semicolon
 macro_line|#ifdef ORINOCO_DEBUG
+r_extern
+r_int
+id|dldwd_debug
+suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (dldwd_debug&gt;(n)) printk(KERN_DEBUG args)
 DECL|macro|DEBUGMORE

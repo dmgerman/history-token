@@ -446,11 +446,6 @@ macro_line|#endif /* BAYCOM_DEBUG */
 )brace
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|macro|min
-mdefine_line|#define min(a, b) (((a) &lt; (b)) ? (a) : (b))
-DECL|macro|max
-mdefine_line|#define max(a, b) (((a) &gt; (b)) ? (a) : (b))
-multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|KISS_VERBOSE
 mdefine_line|#define KISS_VERBOSE
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -2408,6 +2403,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|cnt
 comma
 id|bc-&gt;hdlctx.flags
@@ -2550,6 +2547,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|cnt
 comma
 id|bc-&gt;hdlctx.bufcnt
@@ -2621,6 +2620,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|cnt
 comma
 id|bc-&gt;hdlctx.flags
@@ -2731,6 +2732,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|cnt
 comma
 id|bc-&gt;hdlctx.calibrate

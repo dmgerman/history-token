@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.18 2001/08/06 13:34:47 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.c,v 1.19 2001/08/13 14:40:07 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2305,6 +2305,8 @@ suffix:semicolon
 )brace
 id|skb-&gt;csum
 op_assign
+id|ntohs
+c_func
 (paren
 (paren
 id|status

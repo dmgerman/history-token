@@ -1,13 +1,4 @@
-multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism I &amp; II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver.&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; * &n; * This file distributed under the GPL, version 2.&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;hermes.c: 12 Dec 2000 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
-suffix:semicolon
+multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver (in no&n; * particular order).&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; * &n; * This file distributed under the GPL, version 2.  */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -19,6 +10,29 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &quot;hermes.h&quot;
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;hermes.c: 1 Aug 2001 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Low-level driver helper for Lucent Hermes chipset and Prism II HFA384x wireless MAC controller&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
 DECL|macro|CMD_BUSY_TIMEOUT
 mdefine_line|#define CMD_BUSY_TIMEOUT (100) /* In iterations of ~1us */
@@ -66,7 +80,6 @@ r_uint16
 id|param0
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Internal inline functions&n; */
 multiline_comment|/*&n; * Internal functions&n; */
 multiline_comment|/* Issue a command to the chip. Waiting for it to complete is the caller&squot;s&n;   problem.&n;&n;   Returns -EBUSY if the command register is busy, 0 on success.&n;&n;   Callable from any context.&n;*/
 DECL|function|hermes_issue_cmd
@@ -89,7 +102,6 @@ id|param0
 r_uint16
 id|reg
 suffix:semicolon
-multiline_comment|/*  &t;unsigned long k = CMD_BUSY_TIMEOUT; */
 multiline_comment|/* First check that the command register is not busy */
 id|reg
 op_assign
@@ -229,7 +241,7 @@ comma
 l_int|0xffff
 )paren
 suffix:semicolon
-multiline_comment|/* Because we hope we can reset the card even if it gets into&n;&t;   a stupid state, we actually wait to see if the command&n;&t;   register will unbusy itself */
+multiline_comment|/* Normally it&squot;s a &quot;can&squot;t happen&quot; for the command register to&n;           be busy when we go to issue a command because we are&n;           serializing all commands.  However we want to have some&n;           chance of resetting the card even if it gets into a stupid&n;           state, so we actually wait to see if the command register&n;           will unbusy itself here. */
 id|k
 op_assign
 id|CMD_BUSY_TIMEOUT
@@ -288,7 +300,7 @@ id|CMD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* No need to explicitly handle the timeout - hermes_issue_cmd() will&n;&t;   probably return -EBUSY */
+multiline_comment|/* No need to explicitly handle the timeout - if we&squot;ve timed&n;&t;   out hermes_issue_cmd() will probably return -EBUSY below */
 multiline_comment|/* According to the documentation, EVSTAT may contain&n;&t;   obsolete event occurrence information.  We have to acknowledge&n;&t;   it by writing EVACK. */
 id|reg
 op_assign
@@ -1872,7 +1884,7 @@ r_void
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|version

@@ -121,11 +121,6 @@ mdefine_line|#define PARAM_HARDWARE  6
 DECL|macro|PARAM_RETURN
 mdefine_line|#define PARAM_RETURN    255
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|macro|min
-mdefine_line|#define min(a, b) (((a) &lt; (b)) ? (a) : (b))
-DECL|macro|max
-mdefine_line|#define max(a, b) (((a) &gt; (b)) ? (a) : (b))
-multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * the CRC routines are stolen from WAMPES&n; * by Dieter Deyke&n; */
 DECL|variable|crc_ccitt_table
 r_static

@@ -783,14 +783,6 @@ macro_line|#ifndef&t;COMX_PPP_MAJOR
 DECL|macro|COMX_PPP_MAJOR
 mdefine_line|#define&t;COMX_PPP_MAJOR&t;&t;88
 macro_line|#endif
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;&t;((a) &gt; (b) ? (b) : (a))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max(a,b)&t;&t;((a) &gt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|COMX_CHANNEL
 mdefine_line|#define COMX_CHANNEL(dev) ((struct comx_channel*)dev-&gt;priv)
 DECL|macro|TWIN

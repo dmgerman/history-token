@@ -46,12 +46,6 @@ macro_line|# undef  RPC_DEBUG_DATA
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_XPRT
 macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-macro_line|# define MAX(a, b)&t;((a) &gt; (b)? (a) : (b))
-DECL|macro|MIN
-macro_line|# define MIN(a, b)&t;((a) &lt; (b)? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * Local functions&n; */
 r_static
 r_void
@@ -2943,9 +2937,12 @@ id|done
 suffix:semicolon
 id|want
 op_assign
-id|MIN
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 r_sizeof
 (paren
 id|xprt-&gt;tcp_xid
@@ -3081,9 +3078,12 @@ id|done
 suffix:semicolon
 id|want
 op_assign
-id|MIN
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|req-&gt;rq_rlen
 op_minus
 id|xprt-&gt;tcp_copied
@@ -3231,9 +3231,12 @@ id|avail
 (brace
 id|want
 op_assign
-id|MIN
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|avail
 comma
 r_sizeof
@@ -4302,6 +4305,8 @@ OL
 id|min
 c_func
 (paren
+r_int
+comma
 id|sk-&gt;sndbuf
 comma
 id|XPRT_MIN_WRITE_SPACE

@@ -9152,6 +9152,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|length
 comma
 id|j-&gt;read_buffer_size
@@ -9187,6 +9190,9 @@ r_return
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|length
 comma
 id|j-&gt;read_buffer_size
@@ -9618,6 +9624,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|j-&gt;write_buffer_size
@@ -9647,6 +9656,9 @@ r_return
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|j-&gt;write_buffer_size

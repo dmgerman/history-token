@@ -124,41 +124,12 @@ suffix:semicolon
 )brace
 DECL|macro|UPARG
 mdefine_line|#define UPARG(op)&bslash;&n;do {&bslash;&n;&t;inp = (union inputArgs *)alloc_upcall(op, insize); &bslash;&n;        if (IS_ERR(inp)) { return PTR_ERR(inp); }&bslash;&n;        outp = (union outputArgs *)(inp); &bslash;&n;        outsize = insize; &bslash;&n;} while (0)
-DECL|function|max
-r_static
-r_inline
-r_int
-id|max
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|a
-OG
-id|b
-)paren
-r_return
-id|a
-suffix:semicolon
-r_else
-r_return
-id|b
-suffix:semicolon
-)brace
 DECL|macro|INSIZE
 mdefine_line|#define INSIZE(tag) sizeof(struct coda_ ## tag ## _in)
 DECL|macro|OUTSIZE
 mdefine_line|#define OUTSIZE(tag) sizeof(struct coda_ ## tag ## _out)
 DECL|macro|SIZE
-mdefine_line|#define SIZE(tag)  max(INSIZE(tag), OUTSIZE(tag))
+mdefine_line|#define SIZE(tag)  max(unsigned int, INSIZE(tag), OUTSIZE(tag))
 multiline_comment|/* the upcalls */
 DECL|function|venus_rootfid
 r_int
@@ -545,6 +516,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|length
@@ -1162,6 +1136,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|length
@@ -1342,6 +1319,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|new_length
@@ -1603,6 +1583,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|length
@@ -1779,6 +1762,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|length
@@ -1929,6 +1915,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|length
@@ -2074,6 +2063,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|INSIZE
 c_func
 (paren
@@ -2270,6 +2262,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|len
@@ -2447,6 +2442,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|offset
 op_plus
 id|len
@@ -3158,6 +3156,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|INSIZE
 c_func
 (paren

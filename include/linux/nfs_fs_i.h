@@ -44,10 +44,6 @@ DECL|member|read_cache_mtime
 id|__u64
 id|read_cache_mtime
 suffix:semicolon
-DECL|member|read_cache_atime
-id|__u64
-id|read_cache_atime
-suffix:semicolon
 DECL|member|read_cache_isize
 id|__u64
 id|read_cache_isize
@@ -120,6 +116,13 @@ DECL|member|nextscan
 r_int
 r_int
 id|nextscan
+suffix:semicolon
+multiline_comment|/* Credentials for shared mmap */
+DECL|member|mm_cred
+r_struct
+id|rpc_cred
+op_star
+id|mm_cred
 suffix:semicolon
 )brace
 suffix:semicolon

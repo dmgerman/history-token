@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Device handling code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_device.c,v 1.4 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Device handling code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_device.c,v 1.5 2001/08/14 22:05:57 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
@@ -180,7 +180,17 @@ id|skb-&gt;len
 suffix:semicolon
 id|dest
 op_assign
+id|skb-&gt;mac.raw
+op_assign
 id|skb-&gt;data
+suffix:semicolon
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+id|ETH_HLEN
+)paren
 suffix:semicolon
 r_if
 c_cond

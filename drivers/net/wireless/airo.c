@@ -703,8 +703,6 @@ l_string|&quot;The permission bits of the files in /proc&quot;
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|min
-mdefine_line|#define min(x,y) ((x&lt;y)?x:y)
 multiline_comment|/* This is a kind of sloppy hack to get this information to OUT4500 and&n;   IN4500.  I would be extremely interested in the situation where this&n;   doesnt work though!!! */
 DECL|variable|do8bitIO
 r_static
@@ -8378,6 +8376,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|le16_to_cpu
@@ -19799,7 +19800,11 @@ comma
 id|iobuf
 comma
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|comp-&gt;len
 comma
 r_sizeof
@@ -20047,6 +20052,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|comp-&gt;len
 comma
 r_sizeof

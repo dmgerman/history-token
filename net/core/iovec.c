@@ -218,6 +218,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|iov-&gt;iov_len
 comma
 id|len
@@ -310,6 +313,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|iov-&gt;iov_len
 comma
 id|len
@@ -393,6 +399,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|iov-&gt;iov_len
@@ -513,6 +522,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|iov-&gt;iov_len
@@ -639,12 +651,14 @@ op_plus
 id|offset
 suffix:semicolon
 r_int
-r_int
 id|copy
 op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|iov-&gt;iov_len

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.19 2001/06/20 21:31:00 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.20 2001/08/12 13:18:23 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -7046,6 +7046,10 @@ suffix:semicolon
 id|pbm-&gt;prom_node
 op_assign
 id|prom_node
+suffix:semicolon
+id|pbm-&gt;pci_first_slot
+op_assign
+l_int|1
 suffix:semicolon
 id|prom_getstring
 c_func

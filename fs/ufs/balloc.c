@@ -1572,7 +1572,10 @@ suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
 id|max
+c_func
 (paren
+id|u32
+comma
 id|inode-&gt;u.ufs_i.i_lastfrag
 comma
 id|fragment
@@ -1637,7 +1640,10 @@ suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
 id|max
+c_func
 (paren
+id|u32
+comma
 id|inode-&gt;u.ufs_i.i_lastfrag
 comma
 id|fragment
@@ -1899,7 +1905,10 @@ suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
 id|max
+c_func
 (paren
+id|u32
+comma
 id|inode-&gt;u.ufs_i.i_lastfrag
 comma
 id|fragment

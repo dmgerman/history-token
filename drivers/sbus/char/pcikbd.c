@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pcikbd.c,v 1.58 2001/06/10 06:51:03 davem Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
+multiline_comment|/* $Id: pcikbd.c,v 1.59 2001/08/13 14:40:08 davem Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1963,6 +1963,22 @@ c_func
 (paren
 id|KBD_CMD_ENABLE
 )paren
+suffix:semicolon
+)brace
+DECL|function|pcikbd_rate
+r_int
+id|pcikbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+(brace
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 DECL|function|pcikbd_wait_for_input

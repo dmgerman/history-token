@@ -396,10 +396,6 @@ multiline_comment|/* We know a bit about the numbers, so we can do it this way *
 DECL|macro|DIVUL
 mdefine_line|#define DIVUL(x1, x2) ((((long)((unsigned long long)x1 &gt;&gt; 8) / x2) &lt;&lt; 8) + &bslash;&n;&t;((((long)((unsigned long long)x1 &gt;&gt; 8) % x2) &lt;&lt; 8) / x2))
 macro_line|#endif
-DECL|macro|min
-mdefine_line|#define min(a, b)&t;((a) &lt; (b) ? (a) : (b))
-DECL|macro|max
-mdefine_line|#define max(a, b)&t;((a) &gt; (b) ? (a) : (b))
 DECL|macro|highw
 mdefine_line|#define highw(x)&t;((u_long)(x)&gt;&gt;16 &amp; 0xffff)
 DECL|macro|loww

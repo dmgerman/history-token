@@ -38,14 +38,10 @@ DECL|macro|DSP56K_TRANSMIT
 mdefine_line|#define DSP56K_TRANSMIT&t;&t;(dsp56k_host_interface.isr &amp; DSP56K_ISR_TXDE)
 DECL|macro|DSP56K_RECEIVE
 mdefine_line|#define DSP56K_RECEIVE&t;&t;(dsp56k_host_interface.isr &amp; DSP56K_ISR_RXDF)
-DECL|macro|max
-mdefine_line|#define max(a,b) ((a) &gt; (b) ? (a) : (b))
-DECL|macro|min
-mdefine_line|#define min(a,b) ((a) &lt; (b) ? (a) : (b))
 DECL|macro|wait_some
 mdefine_line|#define wait_some(n) &bslash;&n;{ &bslash;&n;&t;set_current_state(TASK_INTERRUPTIBLE); &bslash;&n;&t;schedule_timeout(n); &bslash;&n;}
 DECL|macro|handshake
-mdefine_line|#define handshake(count, maxio, timeout, ENABLE, f) &bslash;&n;{ &bslash;&n;&t;long i, t, m; &bslash;&n;&t;while (count &gt; 0) { &bslash;&n;&t;&t;m = min(count, maxio); &bslash;&n;&t;&t;for (i = 0; i &lt; m; i++) { &bslash;&n;&t;&t;&t;for (t = 0; t &lt; timeout &amp;&amp; !ENABLE; t++) &bslash;&n;&t;&t;&t;&t;wait_some(HZ/50); &bslash;&n;&t;&t;&t;if(!ENABLE) &bslash;&n;&t;&t;&t;&t;return -EIO; &bslash;&n;&t;&t;&t;f; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;count -= m; &bslash;&n;&t;&t;if (m == maxio) wait_some(HZ/50); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define handshake(count, maxio, timeout, ENABLE, f) &bslash;&n;{ &bslash;&n;&t;long i, t, m; &bslash;&n;&t;while (count &gt; 0) { &bslash;&n;&t;&t;m = min(unsigned long, count, maxio); &bslash;&n;&t;&t;for (i = 0; i &lt; m; i++) { &bslash;&n;&t;&t;&t;for (t = 0; t &lt; timeout &amp;&amp; !ENABLE; t++) &bslash;&n;&t;&t;&t;&t;wait_some(HZ/50); &bslash;&n;&t;&t;&t;if(!ENABLE) &bslash;&n;&t;&t;&t;&t;return -EIO; &bslash;&n;&t;&t;&t;f; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;count -= m; &bslash;&n;&t;&t;if (m == maxio) wait_some(HZ/50); &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|tx_wait
 mdefine_line|#define tx_wait(n) &bslash;&n;{ &bslash;&n;&t;int t; &bslash;&n;&t;for(t = 0; t &lt; n &amp;&amp; !DSP56K_TRANSMIT; t++) &bslash;&n;&t;&t;wait_some(HZ/100); &bslash;&n;&t;if(!DSP56K_TRANSMIT) { &bslash;&n;&t;&t;return -EIO; &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|rx_wait

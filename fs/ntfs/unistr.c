@@ -283,6 +283,9 @@ OL
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|name1_len
 comma
 id|name2_len

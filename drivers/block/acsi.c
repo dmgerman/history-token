@@ -685,8 +685,6 @@ DECL|macro|CMDSET_BLOCK
 mdefine_line|#define CMDSET_BLOCK(cmd,blk)&t;&t;&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __blk = (blk);&t;&t;&t;&t;&bslash;&n;&t;&t;cmd[3] = __blk; __blk &gt;&gt;= 8;&t;&t;&t;&t;&bslash;&n;&t;&t;cmd[2] = __blk; __blk &gt;&gt;= 8;&t;&t;&t;&t;&bslash;&n;&t;&t;cmd[1] = (cmd[1] &amp; 0xe0) | (__blk &amp; 0x1f);&t;&bslash;&n;&t;} while(0)
 DECL|macro|CMDSET_LEN
 mdefine_line|#define CMDSET_LEN(cmd,len)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cmd[4] = (len);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;(((a)&lt;(b))?(a):(b))
 multiline_comment|/* ACSI errors (from REQUEST SENSE); There are two tables, one for the&n; * old Atari disks and one for SCSI on ACSI disks.&n; */
 DECL|struct|acsi_error
 r_struct

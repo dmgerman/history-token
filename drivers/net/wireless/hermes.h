@@ -113,7 +113,7 @@ DECL|macro|HERMES_STATUS_RESULT
 mdefine_line|#define&t;&t;HERMES_STATUS_RESULT&t;&t;(0x7f00)
 DECL|macro|HERMES_STATUS_CMDCODE
 mdefine_line|#define&t;&t;HERMES_STATUS_CMDCODE&t;&t;(0x003f)
-multiline_comment|/*&n; * OFFSET refister bitmasks&n; */
+multiline_comment|/*&n; * OFFSET register bitmasks&n; */
 DECL|macro|HERMES_OFFSET_BUSY
 mdefine_line|#define&t;&t;HERMES_OFFSET_BUSY&t;&t;(0x8000)
 DECL|macro|HERMES_OFFSET_ERR

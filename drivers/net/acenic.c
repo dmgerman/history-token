@@ -227,10 +227,6 @@ macro_line|#ifndef __devinit
 DECL|macro|__devinit
 mdefine_line|#define __devinit&t;__init
 macro_line|#endif
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;(((a)&lt;(b))?(a):(b))
-macro_line|#endif
 macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
@@ -10784,6 +10780,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 (paren
 op_complement
@@ -10802,6 +10800,8 @@ comma
 id|min
 c_func
 (paren
+id|u32
+comma
 id|size
 comma
 id|ACE_WINDOW_SIZE
@@ -10951,6 +10951,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 (paren
 (paren
 op_complement
@@ -10969,6 +10971,8 @@ comma
 id|min
 c_func
 (paren
+id|u32
+comma
 id|size
 comma
 id|ACE_WINDOW_SIZE

@@ -14,10 +14,6 @@ DECL|macro|PP_VERSION
 mdefine_line|#define PP_VERSION &quot;ppdev: user-space parallel port driver&quot;
 DECL|macro|CHRDEV
 mdefine_line|#define CHRDEV &quot;ppdev&quot;
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) ((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 DECL|struct|pp_struct
 r_struct
 id|pp_struct
@@ -191,9 +187,14 @@ suffix:semicolon
 id|kbuffer
 op_assign
 id|kmalloc
+c_func
 (paren
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|PP_BUFFER_SIZE
@@ -243,6 +244,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 op_minus
 id|bytes_read
@@ -548,9 +552,14 @@ suffix:semicolon
 id|kbuffer
 op_assign
 id|kmalloc
+c_func
 (paren
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|PP_BUFFER_SIZE
@@ -600,6 +609,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 op_minus
 id|bytes_written

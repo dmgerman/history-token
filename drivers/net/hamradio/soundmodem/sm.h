@@ -484,11 +484,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|macro|min
-mdefine_line|#define min(a, b) (((a) &lt; (b)) ? (a) : (b))
-DECL|macro|max
-mdefine_line|#define max(a, b) (((a) &gt; (b)) ? (a) : (b))
-multiline_comment|/* --------------------------------------------------------------------- */
 r_extern
 r_const
 r_char

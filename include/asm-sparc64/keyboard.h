@@ -1,9 +1,11 @@
-multiline_comment|/* $Id: keyboard.h,v 1.3 1999/04/28 11:59:12 davem Exp $&n; * linux/include/asm-sparc64/keyboard.h&n; *&n; * Created Aug 29 1997 by Eddie C. Dost (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: keyboard.h,v 1.4 2001/08/13 14:40:07 davem Exp $&n; * linux/include/asm-sparc64/keyboard.h&n; *&n; * Created Aug 29 1997 by Eddie C. Dost (ecd@skynet.be)&n; */
 multiline_comment|/*&n; *  This file contains the Ultra/PCI architecture specific keyboard definitions&n; */
 macro_line|#ifndef _SPARC64_KEYBOARD_H
 DECL|macro|_SPARC64_KEYBOARD_H
 mdefine_line|#define _SPARC64_KEYBOARD_H 1
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
@@ -71,6 +73,17 @@ id|leds
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|pcikbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pcikbd_init_hw
 c_func
@@ -96,6 +109,8 @@ DECL|macro|kbd_unexpected_up
 mdefine_line|#define kbd_unexpected_up&t;&t;pcikbd_unexpected_up
 DECL|macro|kbd_leds
 mdefine_line|#define kbd_leds&t;&t;&t;pcikbd_leds
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate&t;&t;&t;pcikbd_rate
 DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;&t;pcikbd_init_hw
 DECL|macro|kbd_sysrq_xlate

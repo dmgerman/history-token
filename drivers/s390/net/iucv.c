@@ -15,14 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|macro|KERN_INFO
 macro_line|#undef KERN_INFO
@@ -4387,7 +4379,11 @@ r_else
 id|moved
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|buflen
 comma
 l_int|8
@@ -4703,7 +4699,11 @@ id|buflen
 id|dyn_len
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|buffer
 op_plus

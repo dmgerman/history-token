@@ -13,31 +13,6 @@ macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|function|min
-r_static
-r_inline
-r_int
-id|min
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-(brace
-r_return
-id|a
-OL
-id|b
-ques
-c_cond
-id|a
-suffix:colon
-id|b
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Fill in the supplied page for mmap&n; */
 DECL|function|ncp_file_mmap_nopage
 r_static
@@ -225,6 +200,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|to_read
 comma
 id|count

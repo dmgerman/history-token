@@ -2421,6 +2421,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|PacketP-&gt;len
 op_amp
 id|PKT_LEN_MASK

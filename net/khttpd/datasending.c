@@ -242,6 +242,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 l_int|4
 op_star
 l_int|4096
@@ -256,6 +258,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|ReadSize
 comma
 id|Space

@@ -1709,6 +1709,8 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+comma
 id|blksize_org
 comma
 id|blksize_snap
@@ -1719,6 +1721,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|blksize_org
 comma
 id|blksize_snap
@@ -1759,6 +1763,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|chunk_size
 comma
 id|max_sectors
@@ -2204,6 +2210,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|buckets
 comma
 id|max_buckets

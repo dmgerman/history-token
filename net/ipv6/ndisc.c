@@ -3753,6 +3753,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|IPV6_MIN_MTU
 op_minus
 r_sizeof

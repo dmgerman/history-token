@@ -11,8 +11,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 macro_line|#endif
-DECL|macro|min
-mdefine_line|#define min(a,b) ((a&lt;b)?(a):(b))
 DECL|macro|R_LIMIT
 mdefine_line|#define R_LIMIT 0x20000
 DECL|macro|MAXISA

@@ -120,8 +120,6 @@ r_return
 id|x
 suffix:semicolon
 )brace
-DECL|macro|min
-mdefine_line|#define&t;min(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|macro|CLEAR
 mdefine_line|#define&t;CLEAR(a,n) {&bslash;&n;int ci;&bslash;&n;for(ci=(n)-1;ci &gt;=0;ci--)&bslash;&n;(a)[ci] = 0;&bslash;&n;}
 DECL|macro|COPY
@@ -1904,6 +1902,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|deg_lambda
 comma
 id|NN

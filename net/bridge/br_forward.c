@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Forwarding decision&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_forward.c,v 1.3 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Forwarding decision&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_forward.c,v 1.4 2001/08/14 22:05:57 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
@@ -42,6 +42,36 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|__dev_queue_push_xmit
+r_static
+r_int
+id|__dev_queue_push_xmit
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+id|skb_push
+c_func
+(paren
+id|skb
+comma
+id|ETH_HLEN
+)paren
+suffix:semicolon
+id|dev_queue_xmit
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|__br_forward_finish
 r_static
 r_int
@@ -67,7 +97,7 @@ l_int|NULL
 comma
 id|skb-&gt;dev
 comma
-id|dev_queue_xmit
+id|__dev_queue_push_xmit
 )paren
 suffix:semicolon
 r_return

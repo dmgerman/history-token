@@ -1,31 +1,6 @@
 multiline_comment|/*&n; *  ncplib_kernel.c&n; *&n; *  Copyright (C) 1995, 1996 by Volker Lendecke&n; *  Modified for big endian by J.F. Chadima and David S. Miller&n; *  Modified 1997 Peter Waltenberg, Bill Hawes, David Woodhouse for 2.1 dcache&n; *  Modified 1999 Wolfram Pienkoss for NLS&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
-DECL|function|min
-r_static
-r_inline
-r_int
-id|min
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-(brace
-r_return
-id|a
-OL
-id|b
-ques
-c_cond
-id|a
-suffix:colon
-id|b
-suffix:semicolon
-)brace
 DECL|function|assert_server_locked
 r_static
 r_inline
@@ -650,6 +625,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|ntohs
 c_func
 (paren
@@ -797,6 +775,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|result
 comma
 id|size

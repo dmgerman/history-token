@@ -696,6 +696,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|totallen
 comma
 l_int|65536
@@ -1307,6 +1309,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|totallen
 comma
 l_int|65536

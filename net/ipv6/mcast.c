@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.37 2001/04/25 20:46:34 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Multicast support for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: mcast.c,v 1.38 2001/08/15 07:36:31 davem Exp $&n; *&n; *&t;Based on linux/ipv4/igmp.c and linux/ipv4/ip_sockglue.c &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Changes:&n; *&n; *&t;yoshfuji&t;: fix format of router-alert option&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -191,10 +191,6 @@ id|in6_addr
 )paren
 )paren
 suffix:semicolon
-id|mc_lst-&gt;ifindex
-op_assign
-id|ifindex
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -283,6 +279,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|mc_lst-&gt;ifindex
+op_assign
+id|dev-&gt;ifindex
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;now add/increase the group membership on the device&n;&t; */
 id|err
 op_assign

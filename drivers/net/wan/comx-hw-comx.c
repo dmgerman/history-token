@@ -5270,6 +5270,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|PAGE_SIZE
@@ -6232,11 +6234,15 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|FILE_PAGESIZE
 comma
 id|min
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|hw-&gt;firmware
@@ -6354,6 +6360,8 @@ r_return
 id|min
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|len

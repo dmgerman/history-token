@@ -1301,6 +1301,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;mtu
 comma
 id|PPP_MAX_MTU
@@ -2141,6 +2144,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|dev-&gt;mtu
 comma
 id|card-&gt;wandev.mtu

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.26 2001/06/13 06:34:30 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.27 2001/08/12 13:18:23 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -6173,8 +6173,16 @@ id|pci_pbm_info
 op_star
 id|pbm
 suffix:semicolon
+r_char
+id|namebuf
+(braket
+l_int|64
+)braket
+suffix:semicolon
 r_int
 id|err
+comma
+id|len
 suffix:semicolon
 r_if
 c_cond
@@ -6186,6 +6194,10 @@ id|pbm
 op_assign
 op_amp
 id|p-&gt;pbm_A
+suffix:semicolon
+id|pbm-&gt;pci_first_slot
+op_assign
+l_int|1
 suffix:semicolon
 id|pbm-&gt;io_space.start
 op_assign
@@ -6207,6 +6219,52 @@ op_assign
 op_amp
 id|p-&gt;pbm_B
 suffix:semicolon
+id|pbm-&gt;pci_first_slot
+op_assign
+l_int|1
+suffix:semicolon
+id|len
+op_assign
+id|prom_getproperty
+c_func
+(paren
+id|prom_root_node
+comma
+l_string|&quot;name&quot;
+comma
+id|namebuf
+comma
+r_sizeof
+(paren
+id|namebuf
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|namebuf
+comma
+l_string|&quot;SUNW,Ultra-1-Engine&quot;
+)paren
+)paren
+id|pbm-&gt;pci_first_slot
+op_assign
+l_int|2
+suffix:semicolon
+)brace
 id|pbm-&gt;io_space.start
 op_assign
 id|p-&gt;controller_regs

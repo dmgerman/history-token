@@ -189,8 +189,6 @@ mdefine_line|#define GET_LE32(p) DVAL_LH(p,0)
 DECL|macro|PUT_LE32
 mdefine_line|#define PUT_LE32(p,v) DSET_LH(p,0,v)
 macro_line|#endif
-DECL|macro|min
-mdefine_line|#define min(a,b) ((a)&lt;(b)?(a):(b))
 DECL|function|nwsign
 r_static
 r_void
@@ -944,6 +942,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 (paren
 op_star
 id|size

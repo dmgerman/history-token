@@ -292,7 +292,5 @@ macro_line|#ifndef __initdata
 DECL|macro|__initdata
 mdefine_line|#define __initdata
 macro_line|#endif
-DECL|macro|min
-mdefine_line|#define min( x, y )&t;( (x) &lt; (y)  ?  (x)  :  (y) )
 macro_line|#endif
 eof

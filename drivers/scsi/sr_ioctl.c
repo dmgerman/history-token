@@ -3002,8 +3002,6 @@ id|target
 )braket
 dot
 id|capacity
-op_rshift
-l_int|1
 comma
 (paren
 r_int

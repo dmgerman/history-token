@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mmu_context.h,v 1.49 2001/08/09 21:10:20 davem Exp $ */
+multiline_comment|/* $Id: mmu_context.h,v 1.50 2001/08/13 20:24:34 kanoj Exp $ */
 macro_line|#ifndef __SPARC64_MMU_CONTEXT_H
 DECL|macro|__SPARC64_MMU_CONTEXT_H
 mdefine_line|#define __SPARC64_MMU_CONTEXT_H
@@ -7,6 +7,7 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -45,8 +46,14 @@ id|mmu_context_bmap
 (braket
 )braket
 suffix:semicolon
+multiline_comment|/*&n; * For the 8k pagesize kernel, use only 10 hw context bits to optimize some shifts in&n; * the fast tlbmiss handlers, instead of all 13 bits (specifically for vpte offset&n; * calculation). For other pagesizes, this optimization in the tlbhandlers can not be &n; * done; but still, all 13 bits can not be used because the tlb handlers use &quot;andcc&quot;&n; * instruction which sign extends 13 bit arguments.&n; */
+macro_line|#if PAGE_SHIFT == 13
 DECL|macro|CTX_VERSION_SHIFT
-mdefine_line|#define CTX_VERSION_SHIFT&t;(PAGE_SHIFT - 3)
+mdefine_line|#define CTX_VERSION_SHIFT&t;10
+macro_line|#else
+DECL|macro|CTX_VERSION_SHIFT
+mdefine_line|#define CTX_VERSION_SHIFT&t;12
+macro_line|#endif
 DECL|macro|CTX_VERSION_MASK
 mdefine_line|#define CTX_VERSION_MASK&t;((~0UL) &lt;&lt; CTX_VERSION_SHIFT)
 DECL|macro|CTX_FIRST_VERSION

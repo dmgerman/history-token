@@ -349,6 +349,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|bytestocopy
 comma
 id|count
@@ -817,6 +819,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|bytestocopy
 comma
 id|count

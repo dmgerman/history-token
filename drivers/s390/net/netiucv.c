@@ -68,8 +68,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;&t;/* skb                          */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __setup()                    */
 macro_line|#include &lt;asm/string.h&gt;&t;&t;/* memset, memcpy, etc.         */
 macro_line|#include &quot;iucv.h&quot;
-DECL|macro|min
-mdefine_line|#define min(a,b) (a &lt; b) ? a : b
 macro_line|#if defined( DEBUG )
 DECL|macro|KERN_INFO
 macro_line|#undef KERN_INFO
@@ -2977,8 +2975,13 @@ comma
 id|userid
 comma
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|strlen
+c_func
 (paren
 id|userid
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_output.c,v 1.137 2001/06/29 21:11:28 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_output.c,v 1.140 2001/08/13 18:56:12 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 multiline_comment|/*&n; * Changes:&t;Pedro Roque&t;:&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;:&t;Fragmentation on mtu decrease&n; *&t;&t;&t;&t;:&t;Segment collapse on retransmit&n; *&t;&t;&t;&t;:&t;AF independence&n; *&n; *&t;&t;Linus Torvalds&t;:&t;send_delayed_ack&n; *&t;&t;David S. Miller&t;:&t;Charge memory using the right skb&n; *&t;&t;&t;&t;&t;during syn/ack processing.&n; *&t;&t;David S. Miller :&t;Output engine completely rewritten.&n; *&t;&t;Andrea Arcangeli:&t;SYNACK carry ts_recent in tsecr.&n; *&t;&t;Cacophonix Gaul :&t;draft-minshall-nagle-01&n; *&t;&t;J Hadi Salim&t;:&t;ECN support&n; *&n; */
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -237,6 +237,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|restart_cwnd
 comma
 id|cwnd
@@ -266,6 +268,8 @@ op_assign
 id|max
 c_func
 (paren
+id|u32
+comma
 id|cwnd
 comma
 id|restart_cwnd
@@ -2120,6 +2124,8 @@ op_assign
 id|max
 c_func
 (paren
+id|u32
+comma
 (paren
 id|tp-&gt;max_window
 op_rshift
@@ -2383,6 +2389,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|tp-&gt;window_clamp
 comma
 id|tcp_full_space
@@ -2430,6 +2439,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|tp-&gt;rcv_ssthresh
 comma
 l_int|4
@@ -3075,6 +3086,8 @@ OG
 id|min
 c_func
 (paren
+r_int
+comma
 id|sk-&gt;wmem_queued
 op_plus
 (paren
@@ -5168,6 +5181,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|tp-&gt;srtt
 op_rshift
 l_int|3
@@ -5192,6 +5208,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|ato
 comma
 id|max_ato
@@ -5717,6 +5735,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|seg_size
 comma
 id|mss
@@ -5930,6 +5950,8 @@ comma
 id|min
 c_func
 (paren
+id|u32
+comma
 id|tp-&gt;rto
 op_lshift
 id|tp-&gt;backoff
@@ -5961,6 +5983,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|tp-&gt;rto
 op_lshift
 id|tp-&gt;backoff

@@ -395,8 +395,6 @@ DECL|macro|RH_REQ_ERR
 mdefine_line|#define RH_REQ_ERR                 -1
 DECL|macro|RH_NACK
 mdefine_line|#define RH_NACK                    0x00
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
 multiline_comment|/* Field definitions for */
 DECL|macro|USB_IN_command__eol__BITNR
 mdefine_line|#define USB_IN_command__eol__BITNR      0 /* command macros */

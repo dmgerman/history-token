@@ -4,10 +4,6 @@ macro_line|#include &quot;swab.h&quot;
 multiline_comment|/*&n; * some useful macros&n; */
 DECL|macro|in_range
 mdefine_line|#define in_range(b,first,len)&t;((b)&gt;=(first)&amp;&amp;(b)&lt;(first)+(len))
-DECL|macro|min
-mdefine_line|#define min(x,y)&t;&t;((x)&lt;(y)?(x):(y))
-DECL|macro|max
-mdefine_line|#define max(x,y)&t;&t;((x)&gt;(y)?(x):(y))
 multiline_comment|/*&n; * macros used for retyping&n; */
 DECL|macro|UCPI_UBH
 mdefine_line|#define UCPI_UBH ((struct ufs_buffer_head *)ucpi)
@@ -1220,7 +1216,11 @@ suffix:semicolon
 id|count
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|size
 op_plus
 id|offset
@@ -1477,7 +1477,11 @@ suffix:semicolon
 id|count
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|size
 op_plus
 (paren

@@ -260,7 +260,9 @@ id|addr
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|quadlet_t
@@ -406,7 +408,9 @@ id|data
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|u32
@@ -4408,7 +4412,9 @@ comma
 id|isroot
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Read the interrupt event register. We don&squot;t clear the bus reset&n;&t; * here. We wait till we get a selfid complete interrupt and clear&n;&t; * it then, and _only_ then.  */
@@ -5810,7 +5816,9 @@ comma
 id|bytes_left
 comma
 id|ack
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|quadlet_t

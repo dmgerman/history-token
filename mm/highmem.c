@@ -75,9 +75,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|pte_t
-id|pte
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * zero means we don&squot;t have anything to do,&n;&t;&t; * &gt;1 means that it is still in use. Only&n;&t;&t; * a count of 1 means that it is free but&n;&t;&t; * needs to be unmapped&n;&t;&t; */
 r_if
 c_cond
@@ -98,23 +95,17 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|pte
-op_assign
-id|ptep_get_and_clear
-c_func
-(paren
-id|pkmap_page_table
-op_plus
-id|i
-)paren
-suffix:semicolon
+multiline_comment|/* sanity check */
 r_if
 c_cond
 (paren
 id|pte_none
 c_func
 (paren
-id|pte
+id|pkmap_page_table
+(braket
+id|i
+)braket
 )paren
 )paren
 id|BUG
@@ -122,12 +113,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Don&squot;t need an atomic fetch-and-clear op here;&n;&t;&t; * no-one has the page mapped, and cannot get at&n;&t;&t; * its virtual address (and hence PTE) without first&n;&t;&t; * getting the kmap_lock (which is held here).&n;&t;&t; * So no dangers, even with speculative execution.&n;&t;&t; */
 id|page
 op_assign
 id|pte_page
 c_func
 (paren
-id|pte
+id|pkmap_page_table
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|pte_clear
+c_func
+(paren
+op_amp
+id|pkmap_page_table
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 id|page
@@ -461,6 +466,9 @@ r_int
 r_int
 id|nr
 suffix:semicolon
+r_int
+id|need_wakeup
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -498,6 +506,10 @@ id|vaddr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * A count must never go down to zero&n;&t; * without a TLB flush!&n;&t; */
+id|need_wakeup
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -519,7 +531,10 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|wake_up
+multiline_comment|/*&n;&t;&t; * Avoid an unnecessary wake_up() function call.&n;&t;&t; * The common case is pkmap_count[] == 1, but&n;&t;&t; * no waiters.&n;&t;&t; * The tasks queued in the wait-queue are guarded&n;&t;&t; * by both the lock in the wait-queue-head and by&n;&t;&t; * the kmap_lock.  As the kmap_lock is held here,&n;&t;&t; * no need for the wait-queue-head&squot;s lock.  Simply&n;&t;&t; * test if the queue is empty.&n;&t;&t; */
+id|need_wakeup
+op_assign
+id|waitqueue_active
 c_func
 (paren
 op_amp
@@ -532,6 +547,19 @@ c_func
 (paren
 op_amp
 id|kmap_lock
+)paren
+suffix:semicolon
+multiline_comment|/* do wake-up, if needed, race-free outside of the spin lock */
+r_if
+c_cond
+(paren
+id|need_wakeup
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|pkmap_map_wait
 )paren
 suffix:semicolon
 )brace
@@ -594,25 +622,9 @@ r_char
 op_star
 id|vfrom
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|p_from
 op_assign
 id|from-&gt;b_page
-suffix:semicolon
-multiline_comment|/*&n;&t; * Since this can be executed from IRQ context, reentrance&n;&t; * on the same CPU must be avoided:&n;&t; */
-id|__save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
-)paren
 suffix:semicolon
 id|vfrom
 op_assign
@@ -646,12 +658,6 @@ c_func
 id|vfrom
 comma
 id|KM_BOUNCE_WRITE
-)paren
-suffix:semicolon
-id|__restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

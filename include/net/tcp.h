@@ -3094,11 +3094,15 @@ op_amp
 id|sk-&gt;tp_pinfo.af_tcp
 suffix:semicolon
 r_int
+r_int
 id|hint
 op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|tp-&gt;advmss
 comma
 id|tp-&gt;mss_cache
@@ -3109,6 +3113,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|hint
 comma
 id|tp-&gt;rcv_wnd
@@ -3121,9 +3128,15 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|hint
 comma
 id|TCP_MIN_RCVMSS
@@ -3479,6 +3492,8 @@ r_return
 id|max
 c_func
 (paren
+id|u32
+comma
 id|tp-&gt;snd_cwnd
 op_rshift
 l_int|1
@@ -3524,8 +3539,11 @@ r_return
 id|max
 c_func
 (paren
+id|u32
+comma
 id|tp-&gt;snd_ssthresh
 comma
+(paren
 (paren
 id|tp-&gt;snd_cwnd
 op_rshift
@@ -3536,6 +3554,7 @@ op_plus
 id|tp-&gt;snd_cwnd
 op_rshift
 l_int|2
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -3692,6 +3711,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|tp-&gt;snd_cwnd
 comma
 id|tcp_packets_in_flight
@@ -5335,6 +5356,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 op_star
 id|window_clamp
 comma
@@ -5368,6 +5391,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|space
 comma
 id|MAX_TCP_WINDOW
@@ -5430,6 +5455,9 @@ op_minus
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|space
 op_rshift
@@ -5524,6 +5552,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 l_int|65535
 op_lshift
 (paren
@@ -6275,6 +6305,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|sk-&gt;sndbuf
 comma
 id|sk-&gt;wmem_queued
@@ -6287,6 +6319,8 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+comma
 id|sk-&gt;sndbuf
 comma
 id|SOCK_MIN_SNDBUF

@@ -1227,6 +1227,8 @@ op_assign
 id|min
 c_func
 (paren
+id|u32
+comma
 id|buffer-&gt;size
 comma
 op_star

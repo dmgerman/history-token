@@ -2609,6 +2609,14 @@ r_int
 r_int
 id|inactive
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|zone-&gt;size
+)paren
+r_continue
+suffix:semicolon
 id|inactive
 op_assign
 id|zone-&gt;inactive_dirty_pages

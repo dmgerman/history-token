@@ -6301,6 +6301,7 @@ op_star
 id|drive
 comma
 r_int
+r_int
 op_star
 id|capacity
 comma
@@ -11520,6 +11521,7 @@ op_star
 id|drive
 )paren
 (brace
+r_int
 r_int
 id|capacity
 suffix:semicolon

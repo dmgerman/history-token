@@ -21,14 +21,6 @@ mdefine_line|#define PROC_STATS_FORMAT &quot;%30s: %12u&bslash;n&quot;
 macro_line|#include &lt;asm/segment.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#endif
 multiline_comment|/****** Defines and Macros **************************************************/
-macro_line|#ifndef&t;min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef&t;max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 DECL|macro|PROC_BUFSZ
 mdefine_line|#define&t;PROC_BUFSZ&t;4000&t;/* buffer size for printing proc info */
 DECL|macro|PROT_DECODE
@@ -663,6 +655,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|pos
 op_minus
 id|offs
@@ -2707,6 +2702,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|pos
 op_minus
 id|offs
@@ -2915,6 +2913,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|pos
 op_minus
 id|offs

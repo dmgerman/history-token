@@ -1298,6 +1298,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 l_int|255
 comma
 id|tmp
@@ -1317,6 +1320,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 l_int|255
 op_minus
 id|PrefixLen
@@ -1371,6 +1377,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 l_int|127
 comma
 id|EOL
@@ -1420,6 +1429,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 l_int|127
 comma
 id|EOL
@@ -1469,6 +1481,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 l_int|127
 comma
 id|EOL

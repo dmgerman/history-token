@@ -305,10 +305,6 @@ DECL|macro|MASK_ON
 mdefine_line|#define MASK_ON&t;&t;(MASKREG_M3|MASKREG_M2|MASKREG_M1|MASKREG_M0)
 DECL|macro|MASK_OFF
 mdefine_line|#define MASK_OFF&t;(MASKREG_M3|MASKREG_M2|MASKREG_M1)
-DECL|macro|min
-mdefine_line|#define min(x,y) ((x) &lt; (y) ? (x) : (y))
-DECL|macro|max
-mdefine_line|#define max(x,y) ((x) &lt; (y) ? (y) : (x))
 multiline_comment|/*&n; * SCSI driver phases&n; */
 r_typedef
 r_enum

@@ -58,8 +58,6 @@ macro_line|#else
 DECL|macro|PAUSE
 mdefine_line|#define PAUSE ;
 macro_line|#endif
-DECL|macro|cy_min
-mdefine_line|#define cy_min(a,b) (((a)&lt;(b))?(a):(b))
 multiline_comment|/*&n; * Include section &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -4721,18 +4719,24 @@ OL
 (paren
 id|small_count
 op_assign
-id|cy_min
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|rx_bufsize
 op_minus
 id|new_rx_get
 )paren
 comma
-id|cy_min
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|TTY_FLIPBUF_SIZE
 op_minus
@@ -5189,26 +5193,36 @@ OL
 (paren
 id|small_count
 op_assign
-id|cy_min
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|tx_bufsize
 op_minus
 id|tx_put
 )paren
 comma
-id|cy_min
+id|min
+c_func
 (paren
+r_int
+r_int
+comma
 (paren
 id|SERIAL_XMIT_SIZE
 op_minus
 id|info-&gt;xmit_tail
 )paren
 comma
-id|cy_min
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|info-&gt;xmit_cnt
 comma
 id|char_count

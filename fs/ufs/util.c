@@ -896,7 +896,11 @@ id|size
 id|len
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|size
 comma
 id|uspi-&gt;s_fsize
@@ -988,7 +992,11 @@ id|size
 id|len
 op_assign
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|size
 comma
 id|uspi-&gt;s_fsize

@@ -150,8 +150,6 @@ r_struct
 id|proto_ops
 id|atalk_dgram_ops
 suffix:semicolon
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;(((a)&lt;(b))?(a):(b))
 multiline_comment|/**************************************************************************&bslash;&n;*                                                                          *&n;* Handlers for the socket list.                                            *&n;*                                                                          *&n;&bslash;**************************************************************************/
 DECL|variable|atalk_sockets
 r_static
@@ -5238,6 +5236,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|skb-&gt;len
 comma
 id|ddphv.deh_len
@@ -5419,6 +5420,9 @@ comma
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|origlen
 comma
 id|rt-&gt;dev-&gt;hard_header_len

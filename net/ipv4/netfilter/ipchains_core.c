@@ -1578,6 +1578,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|f-&gt;ipfw.fw_outputsize
 comma
 id|ntohs

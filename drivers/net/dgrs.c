@@ -1695,8 +1695,6 @@ id|len
 comma
 id|amt
 suffix:semicolon
-DECL|macro|mymin
-macro_line|#&t;define&t;&t;mymin(A,B)&t;( (A) &lt; (B) ? (A) : (B) )
 multiline_comment|/*&n;&t; *&t;Determine 0th priv and dev structure pointers&n;&t; */
 r_if
 c_cond
@@ -1850,9 +1848,12 @@ suffix:semicolon
 )brace
 id|amt
 op_assign
-id|mymin
+id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|rbdp-&gt;size

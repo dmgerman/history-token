@@ -2,9 +2,6 @@ multiline_comment|/* Driver for Lexar &quot;Jumpshot&quot; USB Compact Flash rea
 macro_line|#ifndef _USB_JUMPSHOT_H
 DECL|macro|_USB_JUMPSHOT_H
 mdefine_line|#define _USB_JUMPSHOT_H
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))  
-singleline_comment|// this is defined in tons of header files, i wish it had a standar single definition...
 r_extern
 r_int
 id|jumpshot_transport

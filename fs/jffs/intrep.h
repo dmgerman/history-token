@@ -3,30 +3,6 @@ macro_line|#ifndef __LINUX_JFFS_INTREP_H__
 DECL|macro|__LINUX_JFFS_INTREP_H__
 mdefine_line|#define __LINUX_JFFS_INTREP_H__
 macro_line|#include &quot;jffs_fm.h&quot;
-r_inline
-r_int
-id|jffs_min
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-suffix:semicolon
-r_inline
-r_int
-id|jffs_max
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-suffix:semicolon
 id|__u32
 id|jffs_checksum
 c_func

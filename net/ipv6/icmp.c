@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Internet Control Message Protocol (ICMPv6)&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;$Id: icmp.c,v 1.32 2001/06/10 09:20:07 davem Exp $&n; *&n; *&t;Based on net/ipv4/icmp.c&n; *&n; *&t;RFC 1885&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Internet Control Message Protocol (ICMPv6)&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;$Id: icmp.c,v 1.35 2001/08/13 18:56:13 davem Exp $&n; *&n; *&t;Based on net/ipv4/icmp.c&n; *&n; *&t;RFC 1885&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Andi Kleen&t;&t;:&t;exception handling&n; *&t;Andi Kleen&t;&t;&t;add rate limits. never reply to a icmp.&n; *&t;&t;&t;&t;&t;add more length checks and other fixes.&n; *&t;yoshfuji&t;&t;:&t;ensure to sent parameter problem for&n; *&t;&t;&t;&t;&t;fragments.&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -1166,6 +1166,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|len
 comma
 id|IPV6_MIN_MTU

@@ -1,4 +1,4 @@
-multiline_comment|/* orinoco_cs.c 0.06&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.06f&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -26,45 +26,30 @@ macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 macro_line|#include &quot;orinoco.h&quot;
-multiline_comment|/* Pcmcia specific structure */
-DECL|struct|dldwd_card
-r_typedef
-r_struct
-id|dldwd_card
-(brace
-DECL|member|link
-id|dev_link_t
-id|link
-suffix:semicolon
-DECL|member|node
-id|dev_node_t
-id|node
-suffix:semicolon
-DECL|member|instance
-r_int
-id|instance
-suffix:semicolon
-multiline_comment|/* Common structure (fully included), see orinoco.h */
-DECL|member|priv
-r_struct
-id|dldwd_priv
-id|priv
-suffix:semicolon
-DECL|typedef|dldwd_card_t
-)brace
-id|dldwd_card_t
-suffix:semicolon
+multiline_comment|/*====================================================================*/
 DECL|variable|__initdata
 r_static
+r_const
 r_char
 id|version
 (braket
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.06 (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.06f (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
-multiline_comment|/*====================================================================*/
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for PCMCIA Lucent Orinoco, Prism II based and similar wireless cards&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* The old way: bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
@@ -102,9 +87,8 @@ DECL|variable|ignore_cis_vcc
 r_static
 r_int
 id|ignore_cis_vcc
-op_assign
-l_int|0
 suffix:semicolon
+multiline_comment|/* = 0 */
 id|MODULE_PARM
 c_func
 (paren
@@ -136,6 +120,34 @@ id|ignore_cis_vcc
 comma
 l_string|&quot;i&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* Pcmcia specific structure */
+DECL|struct|dldwd_card
+r_typedef
+r_struct
+id|dldwd_card
+(brace
+DECL|member|link
+id|dev_link_t
+id|link
+suffix:semicolon
+DECL|member|node
+id|dev_node_t
+id|node
+suffix:semicolon
+DECL|member|instance
+r_int
+id|instance
+suffix:semicolon
+multiline_comment|/* Common structure (fully included), see orinoco.h */
+DECL|member|priv
+r_struct
+id|dldwd_priv
+id|priv
+suffix:semicolon
+DECL|typedef|dldwd_card_t
+)brace
+id|dldwd_card_t
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/* struct net_device methods */
@@ -230,11 +242,13 @@ id|dev_link_t
 op_star
 id|dev_list
 suffix:semicolon
+multiline_comment|/* = NULL */
 DECL|variable|num_instances
 r_static
 r_int
 id|num_instances
 suffix:semicolon
+multiline_comment|/* = 0 */
 multiline_comment|/*====================================================================*/
 r_static
 r_void
@@ -2026,7 +2040,7 @@ multiline_comment|/* Finally, report what we&squot;ve done */
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: index 0x%02x: Vcc %d.%d&quot;
 comma
 id|ndev-&gt;name
@@ -2646,9 +2660,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;dldwd: David&squot;s Less Dodgy WaveLAN/IEEE Driver&bslash;n&quot;
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|version

@@ -196,6 +196,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|ncards
 comma
 id|MAX_CARDS
@@ -206,6 +208,8 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+comma
 id|ncards
 comma
 l_int|1

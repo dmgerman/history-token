@@ -47,14 +47,6 @@ DECL|macro|LVM_STRUCT_VERSION
 mdefine_line|#define LVM_STRUCT_VERSION&t;1&t;/* structure version */
 DECL|macro|LVM_DIR_PREFIX
 mdefine_line|#define&t;LVM_DIR_PREFIX&t;&quot;/dev/&quot;
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 multiline_comment|/* set the default structure version */
 macro_line|#if ( LVM_STRUCT_VERSION == 1)
 DECL|macro|pv_t

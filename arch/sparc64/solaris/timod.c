@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: timod.c,v 1.11 2001/04/14 21:12:01 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
+multiline_comment|/* $Id: timod.c,v 1.15 2001/08/13 18:56:10 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3928,16 +3928,14 @@ id|it
 op_assign
 id|sock-&gt;pfirst
 suffix:semicolon
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) ((a)&lt;(b)?(a):(b))
-macro_line|#endif
 r_int
 id|l
 op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|ctl_maxlen
 comma
 id|it-&gt;length
@@ -4684,13 +4682,7 @@ id|fd
 comma
 id|data_buf
 comma
-id|min
-c_func
-(paren
-l_int|0
-comma
 id|data_maxlen
-)paren
 comma
 l_int|0
 comma

@@ -665,6 +665,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|z
 comma
 id|cmd-&gt;SCp.this_residual
@@ -853,6 +856,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|z
 comma
 id|cmd-&gt;SCp.this_residual

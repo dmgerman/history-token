@@ -9,6 +9,12 @@ macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_AUTH
 macro_line|#endif
+DECL|variable|null_credops
+r_static
+r_struct
+id|rpc_credops
+id|null_credops
+suffix:semicolon
 r_static
 r_struct
 id|rpc_auth
@@ -177,9 +183,14 @@ id|cred
 r_return
 l_int|NULL
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
 id|cred-&gt;cr_count
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|cred-&gt;cr_flags
 op_assign
@@ -188,6 +199,11 @@ suffix:semicolon
 id|cred-&gt;cr_uid
 op_assign
 id|current-&gt;uid
+suffix:semicolon
+id|cred-&gt;cr_ops
+op_assign
+op_amp
+id|null_credops
 suffix:semicolon
 r_return
 id|cred
@@ -417,7 +433,15 @@ comma
 id|nul_destroy
 comma
 id|nul_create_cred
-comma
+)brace
+suffix:semicolon
+r_static
+DECL|variable|null_credops
+r_struct
+id|rpc_credops
+id|null_credops
+op_assign
+(brace
 id|nul_destroy_cred
 comma
 id|nul_match

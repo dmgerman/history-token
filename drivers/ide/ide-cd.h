@@ -420,6 +420,7 @@ id|xa_flag
 suffix:semicolon
 DECL|member|capacity
 r_int
+r_int
 id|capacity
 suffix:semicolon
 DECL|member|hdr

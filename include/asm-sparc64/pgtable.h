@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.140 2001/04/12 22:41:15 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.141 2001/08/13 20:24:34 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PG_dcache_dirty
 mdefine_line|#define PG_dcache_dirty&t;&t;PG_arch_1
@@ -14,6 +15,9 @@ multiline_comment|/* Certain architectures need to do special things when pte&sq
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
 multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
+multiline_comment|/*&n; * Given a virtual address, the lowest PAGE_SHIFT bits determine offset&n; * into the page; the next higher PAGE_SHIFT-3 bits determine the pte#&n; * in the proper pagetable (the -3 is from the 8 byte ptes, and each page&n; * table is a single page long). The next higher PMD_BITS determine pmd# &n; * in the proper pmdtable (where we must have PMD_BITS &lt;= (PAGE_SHIFT-2) &n; * since the pmd entries are 4 bytes, and each pmd page is a single page &n; * long). Finally, the higher few bits determine pgde#.&n; */
+DECL|macro|VA_BITS
+mdefine_line|#define VA_BITS &t;44
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3))
@@ -21,9 +25,11 @@ DECL|macro|PMD_SIZE
 mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
+DECL|macro|PMD_BITS
+mdefine_line|#define PMD_BITS&t;11
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|PGDIR_SHIFT
-mdefine_line|#define PGDIR_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3) + (PAGE_SHIFT-2))
+mdefine_line|#define PGDIR_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3) + PMD_BITS)
 DECL|macro|PGDIR_SIZE
 mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
@@ -33,12 +39,12 @@ DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 multiline_comment|/* We the first one in this file, what we export to the kernel&n; * is different so we can optimize correctly for 32-bit tasks.&n; */
 DECL|macro|REAL_PTRS_PER_PMD
-mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; (PAGE_SHIFT-2))
+mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (REAL_PTRS_PER_PMD &gt;&gt; 2) : (REAL_PTRS_PER_PMD)))
+mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : (REAL_PTRS_PER_PMD)))
 multiline_comment|/* We cannot use the top 16G because VPTE table lives there. */
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;((1UL &lt;&lt; (PAGE_SHIFT-3))-1)
+mdefine_line|#define PTRS_PER_PGD&t;&t;((1UL &lt;&lt; (VA_BITS - PAGE_SHIFT - (PAGE_SHIFT-3) - PMD_BITS))-1)
 multiline_comment|/* Kernel has a separate 44bit address space. */
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD)))
@@ -48,8 +54,6 @@ DECL|macro|PTE_TABLE_SIZE
 mdefine_line|#define PTE_TABLE_SIZE&t;0x2000&t;/* 1024 entries 8 bytes each */
 DECL|macro|PMD_TABLE_SIZE
 mdefine_line|#define PMD_TABLE_SIZE&t;0x2000&t;/* 2048 entries 4 bytes each */
-DECL|macro|PGD_TABLE_SIZE
-mdefine_line|#define PGD_TABLE_SIZE&t;0x1000&t;/* 1024 entries 4 bytes each */
 multiline_comment|/* NOTE: TLB miss handlers depend heavily upon where this is. */
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;0x0000000140000000UL

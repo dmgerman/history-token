@@ -2626,6 +2626,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|lock_kernel
@@ -9071,6 +9072,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+r_int
 r_int
 id|flags
 op_assign

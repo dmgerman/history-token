@@ -12,34 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
-DECL|function|min
-r_static
-r_inline
-r_int
-r_int
-id|min
-c_func
-(paren
-r_int
-r_int
-id|a
-comma
-r_int
-r_int
-id|b
-)paren
-(brace
-r_return
-id|a
-OL
-id|b
-ques
-c_cond
-id|a
-suffix:colon
-id|b
-suffix:semicolon
-)brace
 DECL|function|ncp_fsync
 r_static
 r_int
@@ -667,6 +639,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|bufsize
 op_minus
 (paren
@@ -1036,6 +1011,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|bufsize
 op_minus
 (paren

@@ -488,10 +488,6 @@ DECL|macro|A_IDXFIX
 mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge.aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;(((a)&lt;(b))?(a):(b))
-macro_line|#endif
 DECL|macro|AGPGART_MODULE_NAME
 mdefine_line|#define AGPGART_MODULE_NAME&t;&quot;agpgart&quot;
 DECL|macro|PFX

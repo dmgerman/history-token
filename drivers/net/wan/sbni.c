@@ -2944,6 +2944,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|skb-&gt;len
 op_minus
 id|nl-&gt;outpos
@@ -3376,6 +3379,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|nl-&gt;maxframe
 comma
 id|nl-&gt;tx_buf_p-&gt;len

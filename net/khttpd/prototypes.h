@@ -13,17 +13,6 @@ macro_line|#include &quot;structure.h&quot;
 multiline_comment|/* General defines and stuff */
 DECL|macro|CONFIG_KHTTPD_NUMCPU
 mdefine_line|#define CONFIG_KHTTPD_NUMCPU 16    /* Maximum number of threads */
-multiline_comment|/* the TCP/IP stack defines a __BROKEN__ set of min/max functions !! */
-multiline_comment|/* So we better define our own.                                      */
-multiline_comment|/* Broken means: working on unsigned data only, which is not acceptable&n; &t;&t; for kHTTPd and probably a lot of other functions. */
-DECL|macro|min
-macro_line|#undef min
-DECL|macro|max
-macro_line|#undef max
-DECL|macro|min
-mdefine_line|#define min(a,b)  ( (a) &lt; (b) ? (a) : (b) )
-DECL|macro|max
-mdefine_line|#define max(a,b)  ( (a) &gt; (b) ? (a) : (b) )
 macro_line|#ifdef OOPSTRACE
 DECL|macro|EnterFunction
 mdefine_line|#define EnterFunction(x)   printk(&quot;Enter: %s, %s line %i&bslash;n&quot;,x,__FILE__,__LINE__)

@@ -78,6 +78,16 @@ l_string|&quot;IBM-DTLA-305030&quot;
 comma
 l_string|&quot;IBM-DTLA-305020&quot;
 comma
+l_string|&quot;IC35L010AVER07-0&quot;
+comma
+l_string|&quot;IC35L020AVER07-0&quot;
+comma
+l_string|&quot;IC35L030AVER07-0&quot;
+comma
+l_string|&quot;IC35L040AVER07-0&quot;
+comma
+l_string|&quot;IC35L060AVER07-0&quot;
+comma
 l_string|&quot;WDC AC310200R&quot;
 comma
 l_int|NULL
@@ -109,6 +119,16 @@ comma
 l_string|&quot;IBM-DTLA-305030&quot;
 comma
 l_string|&quot;IBM-DTLA-305020&quot;
+comma
+l_string|&quot;IC35L010AVER07-0&quot;
+comma
+l_string|&quot;IC35L020AVER07-0&quot;
+comma
+l_string|&quot;IC35L030AVER07-0&quot;
+comma
+l_string|&quot;IC35L040AVER07-0&quot;
+comma
+l_string|&quot;IC35L060AVER07-0&quot;
 comma
 l_string|&quot;WDC AC310200R&quot;
 comma

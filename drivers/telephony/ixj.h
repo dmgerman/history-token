@@ -39,14 +39,6 @@ DECL|macro|TRUE
 mdefine_line|#define TRUE 1
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
-macro_line|#ifndef max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 multiline_comment|/******************************************************************************&n;*&n;*  This structure when unioned with the structures below makes simple byte&n;*  access to the registers easier.&n;*&n;******************************************************************************/
 r_typedef
 r_struct

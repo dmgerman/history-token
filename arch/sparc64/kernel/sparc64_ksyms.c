@@ -815,6 +815,13 @@ c_func
 id|__atomic_sub
 )paren
 suffix:semicolon
+DECL|variable|atomic_dec_and_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|atomic_dec_and_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Atomic bit operations. */
 DECL|variable|___test_and_set_bit
 id|EXPORT_SYMBOL

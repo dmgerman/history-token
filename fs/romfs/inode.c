@@ -11,31 +11,6 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|function|min
-r_static
-r_int
-r_inline
-id|min
-c_func
-(paren
-r_int
-id|a
-comma
-r_int
-id|b
-)paren
-(brace
-r_return
-id|a
-OL
-id|b
-ques
-c_cond
-id|a
-suffix:colon
-id|b
-suffix:semicolon
-)brace
 r_static
 id|__s32
 DECL|function|romfs_checksum
@@ -263,6 +238,8 @@ comma
 id|min
 c_func
 (paren
+r_int
+comma
 id|sz
 comma
 l_int|512
@@ -540,6 +517,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|avail
@@ -625,6 +605,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 op_minus
 id|res
@@ -769,6 +752,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 comma
 id|avail
@@ -852,6 +838,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|count
 op_minus
 id|res
@@ -1671,6 +1660,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|avail
 comma
 id|PAGE_SIZE

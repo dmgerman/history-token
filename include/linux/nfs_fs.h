@@ -41,6 +41,26 @@ mdefine_line|#define NFS_LOOKUP_CACHE_SIZE&t;&t;64
 multiline_comment|/*&n; * superblock magic number for NFS&n; */
 DECL|macro|NFS_SUPER_MAGIC
 mdefine_line|#define NFS_SUPER_MAGIC&t;&t;&t;0x6969
+DECL|function|NFS_I
+r_static
+r_inline
+r_struct
+id|nfs_inode_info
+op_star
+id|NFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+op_amp
+id|inode-&gt;u.nfs_i
+suffix:semicolon
+)brace
 DECL|macro|NFS_FH
 mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;(inode)-&gt;u.nfs_i.fh)
 DECL|macro|NFS_SERVER
@@ -63,8 +83,6 @@ DECL|macro|NFS_CACHE_CTIME
 mdefine_line|#define NFS_CACHE_CTIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_ctime)
 DECL|macro|NFS_CACHE_MTIME
 mdefine_line|#define NFS_CACHE_MTIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_mtime)
-DECL|macro|NFS_CACHE_ATIME
-mdefine_line|#define NFS_CACHE_ATIME(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_atime)
 DECL|macro|NFS_CACHE_ISIZE
 mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;((inode)-&gt;u.nfs_i.read_cache_isize)
 DECL|macro|NFS_NEXTSCAN

@@ -470,6 +470,8 @@ op_assign
 id|max
 c_func
 (paren
+id|s64
+comma
 id|size
 op_rshift
 l_int|10
@@ -1878,6 +1880,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 id|datasize
 comma
 l_int|1024
@@ -3511,6 +3515,8 @@ op_assign
 id|min
 c_func
 (paren
+id|s64
+comma
 (paren
 (paren
 id|__s64

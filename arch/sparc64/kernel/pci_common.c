@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_common.c,v 1.26 2001/06/28 01:32:18 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.27 2001/08/12 13:18:22 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3086,7 +3086,7 @@ op_rshift
 l_int|3
 )paren
 op_minus
-l_int|1
+id|pbm-&gt;pci_first_slot
 suffix:semicolon
 )brace
 r_else
@@ -3100,7 +3100,7 @@ op_rshift
 l_int|3
 )paren
 op_minus
-l_int|1
+id|pbm-&gt;pci_first_slot
 suffix:semicolon
 )brace
 id|slot

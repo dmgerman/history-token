@@ -1571,6 +1571,7 @@ op_plus
 id|CSR_CONFIG_ROM
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* We need to detect when the ConfigROM&squot;s generation has changed,&n;&t; * so we only update the node&squot;s info when it needs to be.  */
@@ -2254,6 +2255,7 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -2346,6 +2348,7 @@ id|hi
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -2464,6 +2467,7 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -725,6 +725,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|vol-&gt;cluster_size
 op_minus
 id|start_offs

@@ -4130,6 +4130,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|host-&gt;scsi.SCp.this_residual
 comma
 id|DMAC_BUFFER_SIZE
@@ -4547,6 +4550,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|host-&gt;scsi.SCp.this_residual
 comma
 id|DMAC_BUFFER_SIZE
@@ -6283,6 +6289,9 @@ op_assign
 id|max
 c_func
 (paren
+r_int
+r_int
+comma
 id|message
 (braket
 l_int|3
@@ -6298,6 +6307,9 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|message
 (braket
 l_int|4

@@ -27,8 +27,6 @@ DECL|macro|FLAGS_AVAILABLE
 mdefine_line|#define FLAGS_AVAILABLE     0x0001
 DECL|macro|FLAGS_READY
 mdefine_line|#define FLAGS_READY         0x0002
-DECL|macro|min
-mdefine_line|#define min(x,y) ((x) &lt; (y)) ? (x) : (y)
 DECL|struct|memhandle
 r_struct
 id|memhandle

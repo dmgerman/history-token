@@ -689,7 +689,5 @@ DECL|macro|RH_REQ_ERR
 mdefine_line|#define RH_REQ_ERR                 -1
 DECL|macro|RH_NACK
 mdefine_line|#define RH_NACK                    0x00
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
 macro_line|#endif
 eof

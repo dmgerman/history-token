@@ -47,8 +47,6 @@ DECL|macro|MIN_BUFSIZE
 mdefine_line|#define MIN_BUFSIZE&t;&t;4&t;/* in KB */
 DECL|macro|MAX_BUFSIZE
 mdefine_line|#define MAX_BUFSIZE&t;&t;128&t;/* Limit for Amiga in KB */
-DECL|macro|min
-mdefine_line|#define min(x, y)&t;((x) &lt; (y) ? (x) : (y))
 DECL|macro|le2be16
 mdefine_line|#define le2be16(x)&t;(((x)&lt;&lt;8 &amp; 0xff00) | ((x)&gt;&gt;8 &amp; 0x00ff))
 DECL|macro|le2be16dbl

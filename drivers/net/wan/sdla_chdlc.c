@@ -1718,6 +1718,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;mtu
 comma
 id|PRI_MAX_NO_DATA_BYTES_IN_FRAME
@@ -1748,6 +1751,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;mtu
 comma
 id|SEC_MAX_NO_DATA_BYTES_IN_FRAME
@@ -2849,6 +2855,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;keepalive_tx_tmr
 comma
 id|MAX_Tx_KPALV_TIMER
@@ -2872,6 +2881,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;keepalive_rx_tmr
 comma
 id|MAX_Rx_KPALV_TIMER
@@ -2895,6 +2907,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;keepalive_err_margin
 comma
 id|MAX_KPALV_ERR_TOL
@@ -2918,7 +2933,11 @@ l_int|0
 ques
 c_cond
 id|min
+c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;slarp_timer
 comma
 id|MAX_SLARP_REQ_TIMER

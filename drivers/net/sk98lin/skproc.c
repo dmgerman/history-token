@@ -1398,6 +1398,8 @@ r_return
 id|min
 c_func
 (paren
+r_int
+comma
 id|buffer_length
 comma
 id|len

@@ -6172,7 +6172,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|ips_ha_t
@@ -6900,7 +6901,8 @@ id|ips_ha_t
 op_star
 id|ha
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|DECLARE_MUTEX_LOCKED
@@ -7853,7 +7855,8 @@ id|ips_ha_t
 op_star
 id|ha
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -8033,7 +8036,8 @@ suffix:semicolon
 r_int
 id|intrstatus
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -8243,7 +8247,8 @@ suffix:semicolon
 r_int
 id|intrstatus
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -14466,10 +14471,12 @@ suffix:semicolon
 r_int
 id|intr_status
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags2
 suffix:semicolon
 id|METHOD_TRACE
@@ -17192,7 +17199,8 @@ id|scb
 r_int
 id|ret
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -21436,7 +21444,8 @@ id|ips_scb_t
 op_star
 id|scb
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -21531,7 +21540,8 @@ op_star
 id|scb
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -23089,7 +23099,8 @@ id|ha
 r_int
 id|reset_counter
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -23239,7 +23250,8 @@ id|ha
 r_int
 id|reset_counter
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -23392,7 +23404,8 @@ suffix:semicolon
 id|u8
 id|junk
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -23955,7 +23968,8 @@ suffix:semicolon
 id|u16
 id|val
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -24172,7 +24186,8 @@ suffix:semicolon
 id|u32
 id|val
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -24382,7 +24397,8 @@ op_star
 id|scb
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE
@@ -24494,7 +24510,8 @@ op_star
 id|scb
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|cpu_flags
 suffix:semicolon
 id|METHOD_TRACE

@@ -2,9 +2,6 @@ multiline_comment|/* Driver for Datafab MDCFE-B USB Compact Flash reader&n; * He
 macro_line|#ifndef _USB_DATAFAB_MDCFE_B_H
 DECL|macro|_USB_DATAFAB_MDCFE_B_H
 mdefine_line|#define _USB_DATAFAB_MDCFE_B_H
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))  
-singleline_comment|// this is defined in tons of header files, i wish it had a standard single definition...
 r_extern
 r_int
 id|datafab_transport

@@ -1111,10 +1111,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(x,y) ( (x)&lt;(y)?(x):(y) )
-macro_line|#endif
 DECL|function|cfi_udelay
 r_static
 r_inline

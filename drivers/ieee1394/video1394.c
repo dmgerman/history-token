@@ -6674,7 +6674,9 @@ id|res
 op_assign
 op_minus
 id|EINVAL
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_struct
@@ -6877,7 +6879,9 @@ c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_struct
@@ -7017,7 +7021,9 @@ id|mask
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_struct
@@ -7376,7 +7382,9 @@ id|isoXmitIntEvent
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_struct
@@ -7632,6 +7640,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -7941,7 +7950,9 @@ id|video
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|ohci1394_unregister_video
@@ -8089,6 +8100,7 @@ id|ti_ohci
 op_star
 id|ohci
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

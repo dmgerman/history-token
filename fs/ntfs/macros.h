@@ -9,13 +9,6 @@ DECL|macro|NTFS_INO2VOL
 mdefine_line|#define NTFS_INO2VOL(ino)&t;(&amp;((ino)-&gt;i_sb-&gt;u.ntfs_sb))
 DECL|macro|NTFS_LINO2NINO
 mdefine_line|#define NTFS_LINO2NINO(ino)     (&amp;((ino)-&gt;u.ntfs_i))
-multiline_comment|/* Classical min and max macros still missing in standard headers... */
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;((a) &lt;= (b) ? (a) : (b))
-DECL|macro|max
-mdefine_line|#define max(a,b)&t;((a) &gt;= (b) ? (a) : (b))
-macro_line|#endif
 DECL|macro|IS_MAGIC
 mdefine_line|#define IS_MAGIC(a,b)&t;&t;(*(int*)(a) == *(int*)(b))
 DECL|macro|IS_MFT_RECORD

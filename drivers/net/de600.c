@@ -2360,8 +2360,6 @@ mdefine_line|#define DE600_MAX_WINDOW 2048
 DECL|macro|DE600_TCP_WINDOW_DIFF
 mdefine_line|#define DE600_TCP_WINDOW_DIFF 1024
 multiline_comment|/*&n; * Copied from &quot;net/inet/sock.c&quot;&n; *&n; * Sets a lower max receive window in order to achieve &lt;= 2&n; * packets arriving at the adapter in fast succession.&n; * (No way that a DE-600 can keep up with a net saturated&n; *  with packets homing in on it :-( )&n; *&n; * Since there are only 2 receive buffers in the DE-600&n; * and it takes some time to copy from the adapter,&n; * this is absolutely necessary for any TCP performance whatsoever!&n; *&n; * Note that the returned window info will never be smaller than&n; * DE600_MIN_WINDOW, i.e. 1024&n; * This differs from the standard function, that can return an&n; * arbitrarily small window!&n; */
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;((a)&lt;(b)?(a):(b))
 r_static
 r_int
 r_int
@@ -2411,6 +2409,8 @@ op_assign
 id|min
 c_func
 (paren
+r_int
+comma
 (paren
 id|sk-&gt;rcvbuf
 op_minus

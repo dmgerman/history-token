@@ -1268,6 +1268,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;mtu
 comma
 id|PRI_MAX_NO_DATA_BYTES_IN_FRAME
@@ -1298,6 +1301,9 @@ c_cond
 id|min
 c_func
 (paren
+r_int
+r_int
+comma
 id|conf-&gt;mtu
 comma
 id|SEC_MAX_NO_DATA_BYTES_IN_FRAME

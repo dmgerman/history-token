@@ -42,6 +42,7 @@ id|page_hash_table
 suffix:semicolon
 DECL|variable|pagecache_lock
 id|spinlock_t
+id|__cacheline_aligned
 id|pagecache_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
@@ -49,6 +50,7 @@ suffix:semicolon
 multiline_comment|/*&n; * NOTE: to avoid deadlocking you must never acquire the pagecache_lock with&n; *       the pagemap_lru_lock held.&n; */
 DECL|variable|pagemap_lru_lock
 id|spinlock_t
+id|__cacheline_aligned
 id|pagemap_lru_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED

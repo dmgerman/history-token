@@ -269,11 +269,11 @@ c_func
 id|rpcauth_matchcred
 )paren
 suffix:semicolon
-DECL|variable|rpcauth_releasecred
+DECL|variable|put_rpccred
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|rpcauth_releasecred
+id|put_rpccred
 )paren
 suffix:semicolon
 multiline_comment|/* RPC server stuff */

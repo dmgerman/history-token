@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Handle incoming frames&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_input.c,v 1.8 2001/06/01 09:28:28 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Handle incoming frames&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_input.c,v 1.9 2001/08/14 22:05:57 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -91,14 +91,12 @@ id|skb-&gt;pkt_type
 op_assign
 id|PACKET_HOST
 suffix:semicolon
-id|skb_pull
+id|skb_push
 c_func
 (paren
 id|skb
 comma
-id|skb-&gt;mac.raw
-op_minus
-id|skb-&gt;data
+id|ETH_HLEN
 )paren
 suffix:semicolon
 id|skb-&gt;protocol
@@ -196,16 +194,6 @@ id|BR_STATE_DISABLED
 )paren
 r_goto
 id|freeandout
-suffix:semicolon
-id|skb_push
-c_func
-(paren
-id|skb
-comma
-id|skb-&gt;data
-op_minus
-id|skb-&gt;mac.raw
-)paren
 suffix:semicolon
 r_if
 c_cond

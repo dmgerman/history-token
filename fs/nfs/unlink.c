@@ -460,11 +460,9 @@ op_amp
 id|task-&gt;tk_msg
 )paren
 suffix:semicolon
-id|rpcauth_releasecred
+id|put_rpccred
 c_func
 (paren
-id|task-&gt;tk_auth
-comma
 id|data-&gt;cred
 )paren
 suffix:semicolon
