@@ -852,7 +852,7 @@ r_extern
 r_struct
 id|usb_serial
 op_star
-id|usb_serial_get_by_minor
+id|usb_serial_get_by_index
 (paren
 r_int
 r_int
