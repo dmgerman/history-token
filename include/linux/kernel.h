@@ -48,6 +48,25 @@ mdefine_line|#define&t;KERN_DEBUG&t;&quot;&lt;7&gt;&quot;&t;/* debug-level messa
 r_struct
 id|completion
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
+r_void
+id|__might_sleep
+c_func
+(paren
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+suffix:semicolon
+DECL|macro|might_sleep
+mdefine_line|#define might_sleep() __might_sleep(__FILE__, __LINE__)
+macro_line|#else
+DECL|macro|might_sleep
+mdefine_line|#define might_sleep() do {} while(0)
+macro_line|#endif
 r_extern
 r_struct
 id|notifier_block

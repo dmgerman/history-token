@@ -295,15 +295,11 @@ r_extern
 id|elevator_t
 id|elevator_noop
 suffix:semicolon
-multiline_comment|/*&n; * elevator linus. based on linus ideas of starvation control, using&n; * sequencing to manage inserts and merges.&n; */
+multiline_comment|/*&n; * deadline i/o scheduler. uses request time outs to prevent indefinite&n; * starvation&n; */
 r_extern
 id|elevator_t
-id|elevator_linus
+id|iosched_deadline
 suffix:semicolon
-DECL|macro|elv_linus_sequence
-mdefine_line|#define elv_linus_sequence(rq)&t;((long)(rq)-&gt;elevator_private)
-DECL|macro|ELV_LINUS_SEEK_COST
-mdefine_line|#define ELV_LINUS_SEEK_COST&t;16
 multiline_comment|/*&n; * use the /proc/iosched interface, all the below is history -&gt;&n; */
 DECL|struct|blkelv_ioctl_arg_s
 r_typedef

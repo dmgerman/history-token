@@ -170,6 +170,8 @@ id|escd.nv_storage_base
 )paren
 suffix:semicolon
 )brace
+DECL|macro|MAX_SANE_ESCD_SIZE
+mdefine_line|#define MAX_SANE_ESCD_SIZE (32*1024)
 DECL|function|proc_read_escd
 r_static
 r_int
@@ -235,18 +237,14 @@ c_cond
 (paren
 id|escd.escd_size
 OG
-(paren
-l_int|32
-op_star
-l_int|1024
-)paren
+id|MAX_SANE_ESCD_SIZE
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: proc_read_escd: ESCD size is too great&bslash;n&quot;
+l_string|&quot;PnPBIOS: proc_read_escd: ESCD size reported by BIOS escd_info call is too great&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -296,7 +294,7 @@ r_int
 r_char
 )paren
 (paren
-id|buf
+id|tmpbuf
 (braket
 l_int|0
 )braket
@@ -307,7 +305,7 @@ r_int
 r_char
 )paren
 (paren
-id|buf
+id|tmpbuf
 (braket
 l_int|1
 )braket
@@ -315,6 +313,27 @@ l_int|1
 op_star
 l_int|256
 suffix:semicolon
+multiline_comment|/* sanity check */
+r_if
+c_cond
+(paren
+id|escd_size
+OG
+id|MAX_SANE_ESCD_SIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: proc_read_escd: ESCD size reported by BIOS read_escd call is too great&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EFBIG
+suffix:semicolon
+)brace
 id|escd_left_to_read
 op_assign
 id|escd_size

@@ -80,19 +80,19 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* A callback function for pdflush to work on */
+multiline_comment|/* A callback function */
 DECL|member|arg0
 r_int
 r_int
 id|arg0
 suffix:semicolon
-multiline_comment|/* An argument to the callback function */
+multiline_comment|/* An argument to the callback */
 DECL|member|list
 r_struct
 id|list_head
 id|list
 suffix:semicolon
-multiline_comment|/* On pdflush_list, when the thread is idle */
+multiline_comment|/* On pdflush_list, when idle */
 DECL|member|when_i_went_to_sleep
 r_int
 r_int
@@ -166,6 +166,13 @@ id|my_work-&gt;who
 op_assign
 id|current
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|my_work-&gt;list
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -176,7 +183,6 @@ suffix:semicolon
 id|nr_pdflush_threads
 op_increment
 suffix:semicolon
-singleline_comment|//&t;printk(&quot;pdflush %d [%d] starts&bslash;n&quot;, nr_pdflush_threads, current-&gt;pid);
 r_for
 c_loop
 (paren
@@ -189,7 +195,13 @@ id|pdflush_work
 op_star
 id|pdf
 suffix:semicolon
-id|list_add
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|list_move
 c_func
 (paren
 op_amp
@@ -202,12 +214,6 @@ suffix:semicolon
 id|my_work-&gt;when_i_went_to_sleep
 op_assign
 id|jiffies
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -234,11 +240,62 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|pdflush_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|my_work-&gt;list
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;pdflush: bogus wakeup!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|my_work-&gt;fn
+op_assign
+l_int|NULL
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|my_work-&gt;fn
+op_eq
+l_int|NULL
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;pdflush: NULL work function&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|pdflush_lock
+)paren
+suffix:semicolon
 (paren
 op_star
 id|my_work-&gt;fn
@@ -294,6 +351,10 @@ op_amp
 id|pdflush_lock
 )paren
 suffix:semicolon
+id|my_work-&gt;fn
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Thread destruction: For how long has the sleepiest&n;&t;&t; * thread slept?&n;&t;&t; */
 r_if
 c_cond
@@ -341,24 +402,19 @@ op_star
 id|HZ
 )paren
 (brace
+multiline_comment|/* Limit exit rate */
 id|pdf-&gt;when_i_went_to_sleep
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* Limit exit rate */
 r_break
 suffix:semicolon
 multiline_comment|/* exeunt */
 )brace
-id|my_work-&gt;fn
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 id|nr_pdflush_threads
 op_decrement
 suffix:semicolon
-singleline_comment|//&t;printk(&quot;pdflush %d [%d] ends&bslash;n&quot;, nr_pdflush_threads, current-&gt;pid);
 id|spin_unlock_irq
 c_func
 (paren
@@ -514,15 +570,6 @@ id|last_empty_jifs
 op_assign
 id|jiffies
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pdflush_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|pdf-&gt;fn
 op_assign
 id|fn
@@ -531,16 +578,19 @@ id|pdf-&gt;arg0
 op_assign
 id|arg0
 suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ? */
 id|wake_up_process
 c_func
 (paren
 id|pdf-&gt;who
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pdflush_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
