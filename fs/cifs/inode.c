@@ -2978,7 +2978,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;inode unchanged on server&quot;
+l_string|&quot;cifs_revalidate - inode unchanged&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3036,8 +3036,38 @@ c_func
 id|direntry-&gt;d_inode-&gt;i_mapping
 )paren
 suffix:semicolon
-multiline_comment|/* invalidate_remote_inode(direntry-&gt;d_inode); */
-multiline_comment|/* BB fixme */
+multiline_comment|/* may eventually have to do this for open files too */
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+(paren
+id|cifsInode-&gt;openFileList
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Has changed on server - flush read ahead pages */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Invalidating read ahead data on closed file&quot;
+)paren
+)paren
+suffix:semicolon
+id|invalidate_remote_inode
+c_func
+(paren
+id|direntry-&gt;d_inode
+)paren
+suffix:semicolon
+)brace
 )brace
 id|up
 c_func
