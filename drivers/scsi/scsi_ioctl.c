@@ -372,7 +372,6 @@ multiline_comment|/* printk(KERN_INFO &quot;Disc change detected.&bslash;n&quot;
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Fall through for non-removable media */
@@ -422,7 +421,6 @@ l_int|0xf
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|result
 op_assign
 id|SRpnt-&gt;sr_result
@@ -457,7 +455,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This interface is depreciated - users should use the scsi generic (sg)&n; * interface instead, as this is a more flexible approach to performing&n; * generic SCSI commands on a device.&n; *&n; * The structure that we are passed should look like:&n; *&n; * struct sdata {&n; *  unsigned int inlen;      [i] Length of data to be written to device &n; *  unsigned int outlen;     [i] Length of data to be read from device &n; *  unsigned char cmd[x];    [i] SCSI command (6 &lt;= x &lt;= 12).&n; *                           [o] Data read from device starts here.&n; *                           [o] On error, sense buffer starts here.&n; *  unsigned char wdata[y];  [i] Data written to device starts here.&n; * };&n; * Notes:&n; *   -  The SCSI command length is determined by examining the 1st byte&n; *      of the given command. There is no way to override this.&n; *   -  Data transfers are limited to PAGE_SIZE (4K on i386, 8K on alpha).&n; *   -  The length (x + y) must be at least OMAX_SB_LEN bytes long to&n; *      accomodate the sense buffer when an error occurs.&n; *      The sense buffer is truncated to OMAX_SB_LEN (16) bytes so that&n; *      old code will not be surprised.&n; *   -  If a Unix error occurs (e.g. ENOMEM) then the user will receive&n; *      a negative return and the Unix error code in &squot;errno&squot;. &n; *      If the SCSI command succeeds then 0 is returned.&n; *      Positive numbers returned are the compacted SCSI error codes (4 &n; *      bytes in one int) where the lowest byte is the SCSI status.&n; *      See the drivers/scsi/scsi.h file for more information on this.&n; *&n; */
+multiline_comment|/*&n; * This interface is deprecated - users should use the scsi generic (sg)&n; * interface instead, as this is a more flexible approach to performing&n; * generic SCSI commands on a device.&n; *&n; * The structure that we are passed should look like:&n; *&n; * struct sdata {&n; *  unsigned int inlen;      [i] Length of data to be written to device &n; *  unsigned int outlen;     [i] Length of data to be read from device &n; *  unsigned char cmd[x];    [i] SCSI command (6 &lt;= x &lt;= 12).&n; *                           [o] Data read from device starts here.&n; *                           [o] On error, sense buffer starts here.&n; *  unsigned char wdata[y];  [i] Data written to device starts here.&n; * };&n; * Notes:&n; *   -  The SCSI command length is determined by examining the 1st byte&n; *      of the given command. There is no way to override this.&n; *   -  Data transfers are limited to PAGE_SIZE (4K on i386, 8K on alpha).&n; *   -  The length (x + y) must be at least OMAX_SB_LEN bytes long to&n; *      accomodate the sense buffer when an error occurs.&n; *      The sense buffer is truncated to OMAX_SB_LEN (16) bytes so that&n; *      old code will not be surprised.&n; *   -  If a Unix error occurs (e.g. ENOMEM) then the user will receive&n; *      a negative return and the Unix error code in &squot;errno&squot;. &n; *      If the SCSI command succeeds then 0 is returned.&n; *      Positive numbers returned are the compacted SCSI error codes (4 &n; *      bytes in one int) where the lowest byte is the SCSI status.&n; *      See the drivers/scsi/scsi.h file for more information on this.&n; *&n; */
 DECL|macro|OMAX_SB_LEN
 mdefine_line|#define OMAX_SB_LEN 16&t;&t;/* Old sense buffer length */
 DECL|function|scsi_ioctl_send_command
@@ -1995,5 +1993,4 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

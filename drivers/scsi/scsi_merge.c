@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 multiline_comment|/*&n; * Function:    scsi_init_io()&n; *&n; * Purpose:     SCSI I/O initialize function.&n; *&n; * Arguments:   SCpnt   - Command descriptor we wish to initialize&n; *&n; * Returns:     1 on success.&n; *&n; * Lock status: &n; */
 DECL|function|scsi_init_io

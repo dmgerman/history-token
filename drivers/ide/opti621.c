@@ -1036,7 +1036,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|ata_register_chipset
 c_func
 (paren
@@ -1047,7 +1046,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

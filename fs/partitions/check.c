@@ -2014,13 +2014,10 @@ id|nr_sects
 op_assign
 id|size
 suffix:semicolon
-multiline_comment|/* No such device or no minors to use for partitions */
+multiline_comment|/* No minors to use for partitions */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|size
-op_logical_or
 id|minors
 op_eq
 l_int|1
@@ -2076,6 +2073,15 @@ id|g-&gt;major
 )braket
 op_assign
 id|g-&gt;sizes
+suffix:semicolon
+multiline_comment|/* No such device (e.g., media were just removed) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|size
+)paren
+r_return
 suffix:semicolon
 id|check_partition
 c_func

@@ -28,7 +28,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;mac_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#if 0
 mdefine_line|#define NDEBUG (NDEBUG_INTR | NDEBUG_PSEUDO_DMA | NDEBUG_ARBITRATION | NDEBUG_SELECTION | NDEBUG_RESELECTION)
 macro_line|#else

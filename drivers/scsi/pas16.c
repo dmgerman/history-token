@@ -21,7 +21,6 @@ macro_line|#include &quot;pas16.h&quot;
 DECL|macro|AUTOPROBE_IRQ
 mdefine_line|#define AUTOPROBE_IRQ
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

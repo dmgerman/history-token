@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/NCR5380.h&quot;
-macro_line|#include &quot;../../scsi/constants.h&quot;
 DECL|macro|ECOSCSI_PUBLIC_RELEASE
 mdefine_line|#define ECOSCSI_PUBLIC_RELEASE 1
 DECL|function|ecoscsi_read

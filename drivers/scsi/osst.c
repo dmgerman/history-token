@@ -60,7 +60,6 @@ macro_line|#include &quot;st.h&quot;
 macro_line|#include &quot;osst.h&quot;
 macro_line|#include &quot;osst_options.h&quot;
 macro_line|#include &quot;osst_detect.h&quot;
-macro_line|#include &quot;constants.h&quot;
 DECL|variable|buffer_kbs
 r_static
 r_int

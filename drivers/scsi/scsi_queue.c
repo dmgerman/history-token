@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 multiline_comment|/*&n; * TODO:&n; *      1) Prevent multiple traversals of list to look for commands to&n; *         queue.&n; *      2) Protect against multiple insertions of list at the same time.&n; * DONE:&n; *      1) Set state of scsi command to a new state value for ml queue.&n; *      2) Insert into queue when host rejects command.&n; *      3) Make sure status code is properly passed from low-level queue func&n; *         so that internal_cmnd properly returns the right value.&n; *      4) Insert into queue when QUEUE_FULL.&n; *      5) Cull queue in bottom half handler.&n; *      6) Check usage count prior to queue insertion.  Requeue if usage&n; *         count is 0.&n; *      7) Don&squot;t send down any more commands if the host/device is busy.&n; */
 DECL|variable|RCSid
 r_static

@@ -184,7 +184,6 @@ id|id_table_combined
 suffix:semicolon
 DECL|variable|id_table_std
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_std
@@ -210,7 +209,6 @@ suffix:semicolon
 macro_line|#ifdef KEYSPAN
 DECL|variable|id_table_fake
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_fake
@@ -237,7 +235,6 @@ macro_line|#endif
 macro_line|#ifdef XIRCOM
 DECL|variable|id_table_fake_xircom
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table_fake_xircom
@@ -3029,7 +3026,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_fake_startup
 comma
@@ -3072,7 +3069,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_fake_startup
 comma
@@ -3162,7 +3159,7 @@ id|break_ctl
 suffix:colon
 id|keyspan_pda_break_ctl
 comma
-id|startup
+id|attach
 suffix:colon
 id|keyspan_pda_startup
 comma

@@ -4,7 +4,6 @@ DECL|macro|IO_TABLES_H
 mdefine_line|#define IO_TABLES_H
 DECL|variable|edgeport_1port_id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|edgeport_1port_id_table
@@ -28,7 +27,6 @@ comma
 suffix:semicolon
 DECL|variable|edgeport_2port_id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|edgeport_2port_id_table
@@ -142,7 +140,6 @@ comma
 suffix:semicolon
 DECL|variable|edgeport_4port_id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|edgeport_4port_id_table
@@ -286,7 +283,6 @@ comma
 suffix:semicolon
 DECL|variable|edgeport_8port_id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|edgeport_8port_id_table
@@ -732,7 +728,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -817,7 +813,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -902,7 +898,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma
@@ -987,7 +983,7 @@ id|unthrottle
 suffix:colon
 id|edge_unthrottle
 comma
-id|startup
+id|attach
 suffix:colon
 id|edge_startup
 comma

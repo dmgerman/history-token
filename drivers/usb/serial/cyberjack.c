@@ -144,7 +144,6 @@ id|urb
 suffix:semicolon
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table
@@ -209,7 +208,7 @@ id|num_ports
 suffix:colon
 l_int|1
 comma
-id|startup
+id|attach
 suffix:colon
 id|cyberjack_startup
 comma
