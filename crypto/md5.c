@@ -63,7 +63,6 @@ op_star
 id|in
 )paren
 (brace
-r_register
 id|u32
 id|a
 comma

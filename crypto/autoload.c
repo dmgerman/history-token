@@ -38,6 +38,12 @@ l_string|&quot;des&quot;
 )brace
 comma
 (brace
+id|CRYPTO_ALG_MD4
+comma
+l_string|&quot;md4&quot;
+)brace
+comma
+(brace
 id|CRYPTO_ALG_MD5
 comma
 l_string|&quot;md5&quot;
@@ -52,7 +58,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|ALG_MAX_MODMAP
-mdefine_line|#define ALG_MAX_MODMAP 4
+mdefine_line|#define ALG_MAX_MODMAP 5
 DECL|function|crypto_alg_autoload
 r_void
 id|crypto_alg_autoload
