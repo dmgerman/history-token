@@ -1098,6 +1098,11 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|cache_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

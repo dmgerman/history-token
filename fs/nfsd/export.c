@@ -888,6 +888,11 @@ id|nd
 )paren
 suffix:semicolon
 )brace
+id|cache_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 r_if
@@ -1929,6 +1934,11 @@ suffix:semicolon
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+id|cache_flush
+c_func
+(paren
+)paren
 suffix:semicolon
 id|out
 suffix:colon
