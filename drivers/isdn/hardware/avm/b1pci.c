@@ -643,11 +643,6 @@ id|ctr_read_proc
 suffix:colon
 id|b1ctl_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
@@ -1303,11 +1298,6 @@ id|ctr_read_proc
 suffix:colon
 id|b1dmactl_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_ISDN_DRV_AVMB1_B1PCIV4 */

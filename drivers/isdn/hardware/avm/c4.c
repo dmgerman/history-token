@@ -6560,11 +6560,6 @@ id|ctr_read_proc
 suffix:colon
 id|c4_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 DECL|variable|c4_driver
@@ -6614,11 +6609,6 @@ id|ctr_read_proc
 suffix:colon
 id|c4_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 DECL|function|c4_probe

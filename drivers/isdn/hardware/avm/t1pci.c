@@ -740,11 +740,6 @@ id|ctr_read_proc
 suffix:colon
 id|b1dmactl_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */

@@ -2631,11 +2631,6 @@ id|ctr_read_proc
 suffix:colon
 id|b1ctl_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 DECL|macro|MAX_CARDS

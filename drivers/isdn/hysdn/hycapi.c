@@ -3297,11 +3297,6 @@ id|ctr_read_proc
 suffix:colon
 id|hycapi_read_proc
 comma
-id|driver_read_proc
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* use standard driver_read_proc */
 )brace
 suffix:semicolon
 multiline_comment|/**********************************************************&n;int hycapi_init()&n;&n;attach the capi-driver to the kernel-capi.&n;&n;***********************************************************/
