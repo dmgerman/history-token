@@ -1486,6 +1486,27 @@ c_func
 id|put_unused_fd
 )paren
 suffix:semicolon
+DECL|variable|get_sb_bdev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_bdev
+)paren
+suffix:semicolon
+DECL|variable|get_sb_nodev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_nodev
+)paren
+suffix:semicolon
+DECL|variable|get_sb_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_sb_single
+)paren
+suffix:semicolon
 multiline_comment|/* for stackable file systems (lofs, wrapfs, cryptfs, etc.) */
 DECL|variable|default_llseek
 id|EXPORT_SYMBOL
