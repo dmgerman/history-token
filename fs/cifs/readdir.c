@@ -1864,8 +1864,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|cifs_filldir2
-id|cifs_filldir2
+DECL|function|cifs_filldir
+id|cifs_filldir
 c_func
 (paren
 r_char
@@ -2500,9 +2500,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|cifs_readdir2
+DECL|function|cifs_readdir
 r_int
-id|cifs_readdir2
+id|cifs_readdir
 c_func
 (paren
 r_struct
@@ -2925,7 +2925,7 @@ suffix:semicolon
 multiline_comment|/*&t;&t;&t;if((!(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM)) || &n;&t;&t;&t;   (cifsFile-&gt;srch_inf.info_level != something that supports server inodes)) {&n;&t;&t;&t;&t;create dentry&n;&t;&t;&t;&t;create inode&n;&t;&t;&t;&t;fill in inode new_inode (which makes number locally)&n;&t;&t;&t;}&n;&t;&t;&t;also create local inode for per reasons unless new mount parm says otherwise */
 id|rc
 op_assign
-id|cifs_filldir2
+id|cifs_filldir
 c_func
 (paren
 id|current_entry
