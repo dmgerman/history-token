@@ -85,6 +85,18 @@ c_func
 r_void
 )paren
 (brace
+r_return
+id|AE_OK
+suffix:semicolon
+)brace
+id|acpi_status
+DECL|function|acpi_os_initialize1
+id|acpi_os_initialize1
+c_func
+(paren
+r_void
+)paren
+(brace
 multiline_comment|/*&n;&t; * Initialize PCI configuration space access, as we&squot;ll need to access&n;&t; * it while walking the namespace (bus 0 and root bridges w/ _BBNs).&n;&t; */
 macro_line|#ifdef CONFIG_ACPI_PCI
 r_if
@@ -1546,6 +1558,13 @@ r_return
 id|AE_ERROR
 suffix:semicolon
 )brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|raw_pci_ops
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|raw_pci_ops
@@ -1646,6 +1665,13 @@ r_return
 id|AE_ERROR
 suffix:semicolon
 )brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|raw_pci_ops
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|raw_pci_ops
