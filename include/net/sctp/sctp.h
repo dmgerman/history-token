@@ -517,30 +517,30 @@ mdefine_line|#define sctp_spin_unlock_irqrestore(lock, flags)  &bslash;&n;      
 DECL|macro|sctp_local_bh_disable
 mdefine_line|#define sctp_local_bh_disable() local_bh_disable()
 DECL|macro|sctp_local_bh_enable
-mdefine_line|#define sctp_local_bh_enable() local_bh_enable()
+mdefine_line|#define sctp_local_bh_enable()  local_bh_enable()
 DECL|macro|sctp_spin_lock
-mdefine_line|#define sctp_spin_lock(lock) spin_lock(lock)
+mdefine_line|#define sctp_spin_lock(lock)    spin_lock(lock)
 DECL|macro|sctp_spin_unlock
-mdefine_line|#define sctp_spin_unlock(lock) spin_unlock(lock)
+mdefine_line|#define sctp_spin_unlock(lock)  spin_unlock(lock)
 DECL|macro|sctp_write_lock
-mdefine_line|#define sctp_write_lock(lock) write_lock(lock)
+mdefine_line|#define sctp_write_lock(lock)   write_lock(lock)
 DECL|macro|sctp_write_unlock
 mdefine_line|#define sctp_write_unlock(lock) write_unlock(lock)
 DECL|macro|sctp_read_lock
-mdefine_line|#define sctp_read_lock(lock) read_lock(lock)
+mdefine_line|#define sctp_read_lock(lock)    read_lock(lock)
 DECL|macro|sctp_read_unlock
-mdefine_line|#define sctp_read_unlock(lock) read_unlock(lock)
+mdefine_line|#define sctp_read_unlock(lock)  read_unlock(lock)
 multiline_comment|/* sock lock wrappers. */
 DECL|macro|sctp_lock_sock
-mdefine_line|#define sctp_lock_sock(sk) lock_sock(sk)
+mdefine_line|#define sctp_lock_sock(sk)       lock_sock(sk)
 DECL|macro|sctp_release_sock
-mdefine_line|#define sctp_release_sock(sk) release_sock(sk)
+mdefine_line|#define sctp_release_sock(sk)    release_sock(sk)
 DECL|macro|sctp_bh_lock_sock
-mdefine_line|#define sctp_bh_lock_sock(sk) bh_lock_sock(sk)
+mdefine_line|#define sctp_bh_lock_sock(sk)    bh_lock_sock(sk)
 DECL|macro|sctp_bh_unlock_sock
-mdefine_line|#define sctp_bh_unlock_sock(sk) bh_unlock_sock(sk)
+mdefine_line|#define sctp_bh_unlock_sock(sk)  bh_unlock_sock(sk)
 DECL|macro|SCTP_SOCK_SLEEP_PRE
-mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
+mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk)  SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST
 mdefine_line|#define SCTP_SOCK_SLEEP_POST(sk) SOCK_SLEEP_POST(sk)
 multiline_comment|/* SCTP SNMP MIB stats handlers */
@@ -554,13 +554,13 @@ id|sctp_statistics
 )paren
 suffix:semicolon
 DECL|macro|SCTP_INC_STATS
-mdefine_line|#define SCTP_INC_STATS(field)&t;&t;SNMP_INC_STATS(sctp_statistics, field)
+mdefine_line|#define SCTP_INC_STATS(field)      SNMP_INC_STATS(sctp_statistics, field)
 DECL|macro|SCTP_INC_STATS_BH
-mdefine_line|#define SCTP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(sctp_statistics, field)
+mdefine_line|#define SCTP_INC_STATS_BH(field)   SNMP_INC_STATS_BH(sctp_statistics, field)
 DECL|macro|SCTP_INC_STATS_USER
-mdefine_line|#define SCTP_INC_STATS_USER(field)&t;SNMP_INC_STATS_USER(sctp_statistics, field)
+mdefine_line|#define SCTP_INC_STATS_USER(field) SNMP_INC_STATS_USER(sctp_statistics, field)
 DECL|macro|SCTP_DEC_STATS
-mdefine_line|#define SCTP_DEC_STATS(field)&t;&t;SNMP_DEC_STATS(sctp_statistics, field)
+mdefine_line|#define SCTP_DEC_STATS(field)      SNMP_DEC_STATS(sctp_statistics, field)
 multiline_comment|/* Determine if this is a valid kernel address.  */
 DECL|function|sctp_is_valid_kaddr
 r_static
@@ -1304,9 +1304,6 @@ id|__u8
 id|ipver
 )paren
 (brace
-r_int
-id|family
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1316,33 +1313,65 @@ id|ipver
 r_case
 l_int|4
 suffix:colon
-id|family
-op_assign
+r_return
 id|AF_INET
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 l_int|6
 suffix:colon
-id|family
-op_assign
+r_return
 id|AF_INET6
-suffix:semicolon
-r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|family
-op_assign
+r_return
 l_int|0
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 suffix:semicolon
+)brace
+multiline_comment|/* Perform some sanity checks. */
+DECL|function|sctp_sanity_check
+r_static
+r_inline
+r_int
+id|sctp_sanity_check
+c_func
+(paren
+r_void
+)paren
+(brace
+id|SCTP_ASSERT
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|sctp_ulpevent
+)paren
+op_le
+r_sizeof
+(paren
+(paren
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+l_int|0
+)paren
+op_member_access_from_pointer
+id|cb
+)paren
+comma
+l_string|&quot;SCTP: ulpevent does not fit in skb!&bslash;n&quot;
+comma
 r_return
-id|family
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Warning: The following hash functions assume a power of two &squot;size&squot;. */

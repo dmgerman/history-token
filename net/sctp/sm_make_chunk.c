@@ -10,6 +10,60 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/random.h&gt;&t;/* for get_random_bytes */
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
+multiline_comment|/* What was the inbound interface for this chunk? */
+DECL|function|sctp_chunk_iif
+r_int
+id|sctp_chunk_iif
+c_func
+(paren
+r_const
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
+)paren
+(brace
+r_struct
+id|sctp_af
+op_star
+id|af
+suffix:semicolon
+r_int
+id|iif
+op_assign
+l_int|0
+suffix:semicolon
+id|af
+op_assign
+id|sctp_get_af_specific
+c_func
+(paren
+id|ipver2af
+c_func
+(paren
+id|chunk-&gt;skb-&gt;nh.iph-&gt;version
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|af
+)paren
+id|iif
+op_assign
+id|af
+op_member_access_from_pointer
+id|skb_iif
+c_func
+(paren
+id|chunk-&gt;skb
+)paren
+suffix:semicolon
+r_return
+id|iif
+suffix:semicolon
+)brace
 multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n; *&n; * Note 2: The ECN capable field is reserved for future use of&n; * Explicit Congestion Notification.&n; */
 DECL|variable|ecap_param
 r_static
@@ -141,7 +195,7 @@ op_star
 id|bp
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|vparam_len
@@ -204,7 +258,7 @@ comma
 op_amp
 id|addrs_len
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -450,7 +504,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|unkparam_len
@@ -495,7 +549,7 @@ comma
 op_amp
 id|addrs_len
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -3562,7 +3616,7 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* The first chunk, the first chunk was likely short &n;&t;&t; * to allow bundling, so reset to full size.&n;&t;&t; */
+multiline_comment|/* The first chunk, the first chunk was likely short&n;&t;&t; * to allow bundling, so reset to full size.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3865,21 +3919,28 @@ id|sctp_make_temp_asoc
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_association_t
 op_star
 id|asoc
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|sctp_scope_t
 id|scope
@@ -3908,7 +3969,7 @@ id|ep-&gt;base.sk
 comma
 id|scope
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -3920,11 +3981,16 @@ id|asoc
 r_goto
 id|nodata
 suffix:semicolon
+id|skb
+op_assign
+id|chunk-&gt;skb
+suffix:semicolon
 multiline_comment|/* Create an entry for the source address of the packet.  */
+multiline_comment|/* FIXME: Use the af specific helpers. */
 r_switch
 c_cond
 (paren
-id|chunk-&gt;skb-&gt;nh.iph-&gt;version
+id|skb-&gt;nh.iph-&gt;version
 )paren
 (brace
 r_case
@@ -3944,7 +4010,7 @@ id|chunk-&gt;sctp_hdr-&gt;source
 suffix:semicolon
 id|asoc-&gt;c.peer_addr.v4.sin_addr.s_addr
 op_assign
-id|chunk-&gt;skb-&gt;nh.iph-&gt;saddr
+id|skb-&gt;nh.iph-&gt;saddr
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3970,13 +4036,21 @@ suffix:semicolon
 multiline_comment|/* BUG BUG BUG */
 id|asoc-&gt;c.peer_addr.v6.sin6_addr
 op_assign
-id|chunk-&gt;skb-&gt;nh.ipv6h-&gt;saddr
+id|skb-&gt;nh.ipv6h-&gt;saddr
 suffix:semicolon
 id|asoc-&gt;c.peer_addr.v6.sin6_scope_id
 op_assign
-l_int|0
+(paren
+(paren
+r_struct
+id|inet6_skb_parm
+op_star
+)paren
+id|skb-&gt;cb
+)paren
+op_member_access_from_pointer
+id|iif
 suffix:semicolon
-multiline_comment|/* BUG BUG BUG */
 r_break
 suffix:semicolon
 r_default
@@ -4289,7 +4363,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 op_star
@@ -4334,6 +4408,13 @@ id|secret
 suffix:semicolon
 id|sctp_scope_t
 id|scope
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+op_assign
+id|chunk-&gt;skb
 suffix:semicolon
 id|headersize
 op_assign
@@ -4510,7 +4591,7 @@ c_func
 (paren
 id|bear_cookie-&gt;expiration
 comma
-id|chunk-&gt;skb-&gt;stamp
+id|skb-&gt;stamp
 )paren
 )paren
 (brace
@@ -4550,14 +4631,14 @@ id|suseconds_t
 id|usecs
 op_assign
 (paren
-id|chunk-&gt;skb-&gt;stamp.tv_sec
+id|skb-&gt;stamp.tv_sec
 op_minus
 id|bear_cookie-&gt;expiration.tv_sec
 )paren
 op_star
 l_int|1000000L
 op_plus
-id|chunk-&gt;skb-&gt;stamp.tv_usec
+id|skb-&gt;stamp.tv_usec
 op_minus
 id|bear_cookie-&gt;expiration.tv_usec
 suffix:semicolon
@@ -4628,7 +4709,7 @@ id|ep-&gt;base.sk
 comma
 id|scope
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -4733,7 +4814,6 @@ id|fail
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 3rd Level Abstractions&n; ********************************************************************/
-multiline_comment|/*&n; * Report a missing mandatory parameter.&n; */
 DECL|struct|__sctp_missing
 r_struct
 id|__sctp_missing
@@ -4756,6 +4836,7 @@ id|packed
 )paren
 suffix:semicolon
 suffix:semicolon
+multiline_comment|/*&n; * Report a missing mandatory parameter.&n; */
 DECL|function|sctp_process_missing_param
 r_static
 r_int
@@ -5504,7 +5585,7 @@ op_star
 id|peer_init
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_union
@@ -5546,7 +5627,7 @@ id|asoc
 comma
 id|peer_addr
 comma
-id|priority
+id|gfp
 )paren
 )paren
 (brace
@@ -5578,7 +5659,7 @@ id|param
 comma
 id|peer_addr
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_goto
@@ -5697,7 +5778,7 @@ c_func
 (paren
 id|asoc-&gt;peer.cookie_len
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -5771,7 +5852,7 @@ id|asoc-&gt;peer.i.num_outbound_streams
 comma
 id|asoc-&gt;c.sinit_num_ostreams
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -5862,7 +5943,7 @@ op_star
 id|peer_addr
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_union
@@ -5920,6 +6001,8 @@ comma
 id|param.addr
 comma
 id|asoc-&gt;peer.port
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|scope
@@ -5954,7 +6037,7 @@ comma
 op_amp
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_return
@@ -6270,6 +6353,9 @@ id|param
 comma
 id|__u16
 id|port
+comma
+r_int
+id|iif
 )paren
 (brace
 r_switch
@@ -6317,9 +6403,8 @@ id|param-&gt;v6.addr
 suffix:semicolon
 id|addr-&gt;v6.sin6_scope_id
 op_assign
-l_int|0
+id|iif
 suffix:semicolon
-multiline_comment|/* BUG */
 r_break
 suffix:semicolon
 r_default

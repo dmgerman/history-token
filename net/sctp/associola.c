@@ -1672,7 +1672,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; *&n; * FIXME: We do not match address scopes correctly.&n; */
+multiline_comment|/* Compare two addresses to see if they match.  Wildcard addresses&n; * only match themselves.&n; */
 DECL|function|sctp_cmp_addr_exact
 r_int
 id|sctp_cmp_addr_exact
@@ -1707,8 +1707,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|af
+)paren
 )paren
 r_return
 l_int|0
@@ -1743,7 +1747,7 @@ id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
-multiline_comment|/* Send ECNE if needed. &n;&t; * Not being able to allocate a chunk here is not deadly. &n;&t; */
+multiline_comment|/* Send ECNE if needed.&n;&t; * Not being able to allocate a chunk here is not deadly.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3047,12 +3051,13 @@ r_int
 id|sctp_assoc_set_bind_addr_from_ep
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_scope_t
@@ -3114,7 +3119,7 @@ id|asoc-&gt;ep-&gt;base.bind_addr
 comma
 id|scope
 comma
-id|priority
+id|gfp
 comma
 id|flags
 )paren
@@ -3135,7 +3140,7 @@ op_star
 id|cookie
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_int
@@ -3154,7 +3159,7 @@ id|cookie-&gt;raw_addr_list_len
 suffix:semicolon
 id|__u8
 op_star
-id|raw_addr_list
+id|raw
 op_assign
 (paren
 id|__u8
@@ -3176,13 +3181,13 @@ c_func
 op_amp
 id|asoc-&gt;base.bind_addr
 comma
-id|raw_addr_list
+id|raw
 comma
 id|var_size3
 comma
 id|asoc-&gt;ep-&gt;base.bind_addr.port
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 )brace

@@ -1241,11 +1241,13 @@ id|sctp_cmd_seq_t
 op_star
 id|commands
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -1254,7 +1256,7 @@ op_star
 id|peer_init
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_int
@@ -1280,7 +1282,7 @@ id|chunk
 comma
 id|peer_init
 comma
-id|priority
+id|gfp
 )paren
 )paren
 id|error
