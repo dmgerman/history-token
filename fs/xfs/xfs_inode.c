@@ -10826,13 +10826,10 @@ id|corrupt_out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * inode clustering:&n;&t; * see if other inodes can be gathered into this write&n;&t; */
-macro_line|#ifdef DEBUG
 id|ip-&gt;i_chash-&gt;chl_buf
 op_assign
 id|bp
 suffix:semicolon
-multiline_comment|/* inode clustering debug */
-macro_line|#endif
 id|ch
 op_assign
 id|XFS_CHASH

@@ -350,15 +350,13 @@ id|xfs_daddr_t
 id|chl_blkno
 suffix:semicolon
 multiline_comment|/* starting block number of&n;&t;&t;&t;&t;&t;&t; * the cluster */
-macro_line|#ifdef DEBUG
 DECL|member|chl_buf
 r_struct
 id|xfs_buf
 op_star
 id|chl_buf
 suffix:semicolon
-multiline_comment|/* debug: the inode buffer */
-macro_line|#endif
+multiline_comment|/* the inode buffer */
 DECL|typedef|xfs_chashlist_t
 )brace
 id|xfs_chashlist_t
