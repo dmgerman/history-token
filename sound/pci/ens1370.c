@@ -12460,11 +12460,19 @@ id|pci_driver
 id|driver
 op_assign
 (brace
+macro_line|#ifdef CHIP1371
 dot
 id|name
 op_assign
-l_string|&quot;Ensoniq AudioPCI&quot;
+l_string|&quot;Ensoniq 1371+&quot;
 comma
+macro_line|#else
+dot
+id|name
+op_assign
+l_string|&quot;Ensoniq 1370&quot;
+comma
+macro_line|#endif
 dot
 id|id_table
 op_assign
