@@ -3719,10 +3719,20 @@ r_goto
 id|err_init_mibs
 suffix:semicolon
 multiline_comment|/* Initialize proc fs directory.  */
+id|status
+op_assign
 id|sctp_proc_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+r_goto
+id|err_init_proc
 suffix:semicolon
 multiline_comment|/* Initialize object count debugging.  */
 id|sctp_dbg_objcnt_init
@@ -4411,6 +4421,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|err_init_proc
+suffix:colon
 id|sctp_proc_exit
 c_func
 (paren
