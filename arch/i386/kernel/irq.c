@@ -2858,7 +2858,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse the first 8 characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
+multiline_comment|/*&n;&t; * Parse the first HEX_DIGITS characters as a hex string, any non-hex char&n;&t; * is end-of-string. &squot;00e1&squot;, &squot;e1&squot;, &squot;00E1&squot;, &squot;E1&squot; are all the same.&n;&t; */
 r_for
 c_loop
 (paren
