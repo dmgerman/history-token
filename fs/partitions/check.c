@@ -1728,7 +1728,7 @@ c_func
 (paren
 id|vname
 comma
-l_string|&quot;cdroms/cdrom%d&quot;
+l_string|&quot;cdrom%d&quot;
 comma
 id|dev-&gt;number
 )paren
