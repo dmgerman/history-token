@@ -192,12 +192,12 @@ c_func
 id|superblock_security_head
 )paren
 suffix:semicolon
-DECL|variable|sb_security_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sb_security_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate and free functions for each kind of security blob. */
 DECL|function|task_alloc_security

@@ -26,10 +26,11 @@ id|key_serial_tree
 suffix:semicolon
 multiline_comment|/* tree of keys indexed by serial */
 DECL|variable|key_serial_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|key_serial_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|key_user_tree
 r_struct
@@ -38,10 +39,11 @@ id|key_user_tree
 suffix:semicolon
 multiline_comment|/* tree of quota records indexed by UID */
 DECL|variable|key_user_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|key_user_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

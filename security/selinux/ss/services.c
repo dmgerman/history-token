@@ -32,12 +32,12 @@ r_int
 r_int
 id|policydb_loaded_version
 suffix:semicolon
-DECL|variable|policy_rwlock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|policy_rwlock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|POLICY_RDLOCK
 mdefine_line|#define POLICY_RDLOCK read_lock(&amp;policy_rwlock)
