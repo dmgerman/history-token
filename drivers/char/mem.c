@@ -36,26 +36,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PROM_CONSOLE
-r_extern
-r_void
-id|prom_con_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MDA_CONSOLE
-r_extern
-r_void
-id|mda_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
 r_extern
 r_void
@@ -2984,20 +2964,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined (CONFIG_FB)
 id|fbmem_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined (CONFIG_PROM_CONSOLE)
-id|prom_con_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined (CONFIG_MDA_CONSOLE)
-id|mda_console_init
 c_func
 (paren
 )paren

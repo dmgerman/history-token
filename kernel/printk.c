@@ -2186,6 +2186,13 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|variable|console_conditional_schedule
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_conditional_schedule
+)paren
+suffix:semicolon
 DECL|function|console_print
 r_void
 id|console_print
