@@ -29,7 +29,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; should be the hcd state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Jun-01&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Jun-10&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber &lt;weissg@vienna.at&gt;, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -800,11 +800,6 @@ id|dev-&gt;ep
 id|i
 )braket
 suffix:semicolon
-r_struct
-id|td
-op_star
-id|tdTailP
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -845,34 +840,11 @@ suffix:semicolon
 r_case
 id|ED_UNLINK
 suffix:colon
-id|tdTailP
-op_assign
-id|dma_to_td
-(paren
-id|ohci
-comma
-id|le32_to_cpup
-(paren
-op_amp
-id|ed-&gt;hwTailP
-)paren
-op_amp
-l_int|0xfffffff0
-)paren
-suffix:semicolon
 id|td_free
 (paren
 id|ohci
 comma
-id|tdTailP
-)paren
-suffix:semicolon
-multiline_comment|/* free dummy td */
-id|hash_free_ed
-(paren
-id|ohci
-comma
-id|ed
+id|ed-&gt;dummy
 )paren
 suffix:semicolon
 r_break

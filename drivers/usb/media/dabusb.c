@@ -116,12 +116,7 @@ id|tmp
 op_assign
 id|src-&gt;next
 suffix:semicolon
-id|list_del
-(paren
-id|tmp
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 (paren
 id|tmp
 comma
@@ -2620,6 +2615,13 @@ OL
 l_int|0
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|s-&gt;mutex
+)paren
+suffix:semicolon
 id|err
 c_func
 (paren

@@ -8403,15 +8403,7 @@ op_plus
 id|u-&gt;timeout
 )paren
 )paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|u-&gt;urb_list
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 c_func
 (paren
 op_amp
@@ -8421,7 +8413,6 @@ op_amp
 id|list
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
