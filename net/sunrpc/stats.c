@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/net/sunrpc/stats.c&n; *&n; * procfs-based user a
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -744,10 +745,11 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+DECL|function|init_sunrpc
+id|init_sunrpc
 c_func
 (paren
 r_void
@@ -769,9 +771,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|cleanup_sunrpc
+id|cleanup_sunrpc
 c_func
 (paren
 r_void
@@ -790,11 +794,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|init_sunrpc
+id|module_init
+c_func
+(paren
+id|init_sunrpc
+)paren
+suffix:semicolon
+DECL|variable|cleanup_sunrpc
+id|module_exit
+c_func
+(paren
+id|cleanup_sunrpc
 )paren
 suffix:semicolon
 eof
