@@ -45,7 +45,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020117
 id|MODULE_PARM
 c_func
 (paren
@@ -70,7 +69,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|read_lpstatus
 r_static
 r_inline

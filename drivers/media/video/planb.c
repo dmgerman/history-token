@@ -882,7 +882,6 @@ id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x02017F
 id|schedule_timeout
 c_func
 (paren
@@ -893,25 +892,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-macro_line|#else
-id|current-&gt;timeout
-op_assign
-id|jiffies
-op_plus
-l_int|30
-op_star
-id|HZ
-op_div
-l_int|1000
-suffix:semicolon
-multiline_comment|/* 30 ms */
-suffix:semicolon
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 r_int
