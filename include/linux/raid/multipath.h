@@ -109,11 +109,6 @@ DECL|member|cmd
 r_int
 id|cmd
 suffix:semicolon
-DECL|member|state
-r_int
-r_int
-id|state
-suffix:semicolon
 DECL|member|mddev
 id|mddev_t
 op_star
@@ -140,12 +135,5 @@ suffix:semicolon
 multiline_comment|/* next for retry or in free list */
 )brace
 suffix:semicolon
-multiline_comment|/* bits for multipath_bh.state */
-DECL|macro|MPBH_Uptodate
-mdefine_line|#define&t;MPBH_Uptodate&t;1
-DECL|macro|MPBH_SyncPhase
-mdefine_line|#define&t;MPBH_SyncPhase&t;2
-DECL|macro|MPBH_PreAlloc
-mdefine_line|#define&t;MPBH_PreAlloc&t;3&t;/* this was pre-allocated, add to free list */
 macro_line|#endif
 eof

@@ -426,30 +426,6 @@ op_star
 id|bio-&gt;bi_private
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * this branch is our &squot;one multipath IO has finished&squot; event handler:&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|uptodate
-)paren
-id|md_error
-(paren
-id|mp_bh-&gt;mddev
-comma
-id|bio-&gt;bi_bdev
-)paren
-suffix:semicolon
-r_else
-multiline_comment|/*&n;&t;&t; * Set MPBH_Uptodate in our master buffer_head, so that&n;&t;&t; * we will return a good error code for to the higher&n;&t;&t; * levels even if IO on some other multipathed buffer fails.&n;&t;&t; *&n;&t;&t; * The &squot;master&squot; represents the complex operation to &n;&t;&t; * user-side. So if something waits for IO, then it will&n;&t;&t; * wait for the &squot;master&squot; buffer_head.&n;&t;&t; */
-id|set_bit
-(paren
-id|MPBH_Uptodate
-comma
-op_amp
-id|mp_bh-&gt;state
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -468,6 +444,13 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * oops, IO error:&n;&t; */
+id|md_error
+(paren
+id|mp_bh-&gt;mddev
+comma
+id|bio-&gt;bi_bdev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
