@@ -765,10 +765,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -993,10 +995,12 @@ op_logical_neg
 id|buf
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - out of memory.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1357,9 +1361,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;pl2303 driver does not support the baudrate requested (fix it)&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;pl2303 driver does not support the baudrate requested (fix it)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2022,10 +2029,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2071,10 +2080,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting interrupt urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting interrupt urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2981,9 +2992,12 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3164,10 +3178,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3286,10 +3302,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3414,10 +3432,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting write urb, error %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
