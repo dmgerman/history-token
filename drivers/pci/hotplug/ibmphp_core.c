@@ -82,7 +82,7 @@ id|irqs
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* PIC mode IRQ&squot;s we&squot;re using so far (in case MPS tables don&squot;t provide default info for empty slots */
+multiline_comment|/* PIC mode IRQ&squot;s we&squot;re using so far (in case MPS&n;&t;&t;&t; * tables don&squot;t provide default info for empty slots */
 DECL|variable|init_flag
 r_static
 r_int
@@ -94,6 +94,7 @@ r_static
 r_inline
 r_int
 id|get_cur_bus_info
+c_func
 (paren
 r_struct
 id|slot
@@ -116,6 +117,7 @@ op_star
 id|sl
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;options = %x&bslash;n&quot;
 comma
@@ -123,6 +125,7 @@ id|slot_cur-&gt;ctrl-&gt;options
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;revision = %x&bslash;n&quot;
 comma
@@ -133,6 +136,7 @@ r_if
 c_cond
 (paren
 id|READ_BUS_STATUS
+c_func
 (paren
 id|slot_cur-&gt;ctrl
 )paren
@@ -140,6 +144,7 @@ id|slot_cur-&gt;ctrl
 id|rc
 op_assign
 id|ibmphp_hpc_readslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -159,6 +164,7 @@ suffix:semicolon
 id|slot_cur-&gt;bus_on-&gt;current_speed
 op_assign
 id|CURRENT_BUS_SPEED
+c_func
 (paren
 id|slot_cur-&gt;busstatus
 )paren
@@ -167,6 +173,7 @@ r_if
 c_cond
 (paren
 id|READ_BUS_MODE
+c_func
 (paren
 id|slot_cur-&gt;ctrl
 )paren
@@ -174,6 +181,7 @@ id|slot_cur-&gt;ctrl
 id|slot_cur-&gt;bus_on-&gt;current_bus_mode
 op_assign
 id|CURRENT_BUS_MODE
+c_func
 (paren
 id|slot_cur-&gt;busstatus
 )paren
@@ -184,6 +192,7 @@ op_assign
 l_int|0xFF
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;busstatus = %x, bus_speed = %x, bus_mode = %x&bslash;n&quot;
 comma
@@ -208,6 +217,7 @@ r_static
 r_inline
 r_int
 id|slot_update
+c_func
 (paren
 r_struct
 id|slot
@@ -222,6 +232,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|ibmphp_hpc_readslot
+c_func
 (paren
 op_star
 id|sl
@@ -282,6 +293,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|list_for_each
+c_func
 (paren
 id|tmp
 comma
@@ -292,6 +304,7 @@ id|ibmphp_slot_head
 id|slot_cur
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -305,6 +318,7 @@ multiline_comment|/* sometimes the hot-pluggable slots start with 4 (not always 
 id|slot_count
 op_assign
 id|max
+c_func
 (paren
 id|slot_count
 comma
@@ -320,6 +334,7 @@ multiline_comment|/* This routine will put the correct slot-&gt;device informati
 DECL|function|ibmphp_init_devno
 r_int
 id|ibmphp_init_devno
+c_func
 (paren
 r_struct
 id|slot
@@ -345,6 +360,7 @@ suffix:semicolon
 id|rtable
 op_assign
 id|pcibios_get_irq_routing_table
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -356,6 +372,7 @@ id|rtable
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;no BIOS routing table...&bslash;n&quot;
 )paren
@@ -452,6 +469,7 @@ op_member_access_from_pointer
 id|device
 op_assign
 id|PCI_SLOT
+c_func
 (paren
 id|rtable-&gt;slots
 (braket
@@ -486,6 +504,7 @@ id|i
 )braket
 op_assign
 id|IO_APIC_get_PCI_irq_vector
+c_func
 (paren
 (paren
 r_int
@@ -511,6 +530,7 @@ id|i
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;(*cur_slot)-&gt;irq[0] = %x&bslash;n&quot;
 comma
@@ -526,6 +546,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;(*cur_slot)-&gt;irq[1] = %x&bslash;n&quot;
 comma
@@ -541,6 +562,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;(*cur_slot)-&gt;irq[2] = %x&bslash;n&quot;
 comma
@@ -556,6 +578,7 @@ l_int|2
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;(*cur_slot)-&gt;irq[3] = %x&bslash;n&quot;
 comma
@@ -571,6 +594,7 @@ l_int|3
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;exlusive_irqs = %x&bslash;n&quot;
 comma
@@ -578,6 +602,7 @@ id|rtable-&gt;exclusive_irqs
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[0].bitmap = %x&bslash;n&quot;
 comma
@@ -595,6 +620,7 @@ id|bitmap
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[1].bitmap = %x&bslash;n&quot;
 comma
@@ -612,6 +638,7 @@ id|bitmap
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[2].bitmap = %x&bslash;n&quot;
 comma
@@ -629,6 +656,7 @@ id|bitmap
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[3].bitmap = %x&bslash;n&quot;
 comma
@@ -646,8 +674,9 @@ id|bitmap
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
-l_string|&quot;rtable-&gt;slots[loop].irq[0].link= %x&bslash;n&quot;
+l_string|&quot;rtable-&gt;slots[loop].irq[0].link = %x&bslash;n&quot;
 comma
 id|rtable-&gt;slots
 (braket
@@ -663,6 +692,7 @@ id|link
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[1].link = %x&bslash;n&quot;
 comma
@@ -680,6 +710,7 @@ id|link
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[2].link = %x&bslash;n&quot;
 comma
@@ -697,6 +728,7 @@ id|link
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;rtable-&gt;slots[loop].irq[3].link = %x&bslash;n&quot;
 comma
@@ -714,6 +746,7 @@ id|link
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;end of init_devno&bslash;n&quot;
 )paren
@@ -734,6 +767,7 @@ r_static
 r_inline
 r_int
 id|power_on
+c_func
 (paren
 r_struct
 id|slot
@@ -752,6 +786,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|ibmphp_hpc_writeslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -765,6 +800,7 @@ id|retval
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;power on failed&bslash;n&quot;
 )paren
@@ -777,12 +813,14 @@ r_if
 c_cond
 (paren
 id|CTLR_RESULT
+c_func
 (paren
 id|slot_cur-&gt;ctrl-&gt;status
 )paren
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;command not completed successfully in power_on&bslash;n&quot;
 )paren
@@ -808,6 +846,7 @@ r_static
 r_inline
 r_int
 id|power_off
+c_func
 (paren
 r_struct
 id|slot
@@ -826,6 +865,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|ibmphp_hpc_writeslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -839,6 +879,7 @@ id|retval
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;power off failed&bslash;n&quot;
 )paren
@@ -851,12 +892,14 @@ r_if
 c_cond
 (paren
 id|CTLR_RESULT
+c_func
 (paren
 id|slot_cur-&gt;ctrl-&gt;status
 )paren
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;command not completed successfully in power_off&bslash;n&quot;
 )paren
@@ -875,6 +918,7 @@ DECL|function|set_attention_status
 r_static
 r_int
 id|set_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -899,6 +943,7 @@ id|u8
 id|cmd
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;set_attention_status - Entry hotplug_slot[%lx] value[%x]&bslash;n&quot;
 comma
@@ -911,6 +956,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -966,6 +1012,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|err
+c_func
 (paren
 l_string|&quot;set_attention_status - Error : invalid input [%x]&bslash;n&quot;
 comma
@@ -1024,10 +1071,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;set_attention_status - Exit rc[%d]&bslash;n&quot;
 comma
@@ -1042,6 +1091,7 @@ DECL|function|get_attention_status
 r_static
 r_int
 id|get_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1069,6 +1119,7 @@ id|slot
 id|myslot
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;get_attention_status - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;
 comma
@@ -1084,6 +1135,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1113,6 +1165,7 @@ id|pslot
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 (paren
 r_void
@@ -1180,6 +1233,7 @@ op_star
 id|value
 op_assign
 id|SLOT_ATTN
+c_func
 (paren
 id|myslot.status
 comma
@@ -1189,6 +1243,7 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1211,6 +1266,7 @@ DECL|function|get_latch_status
 r_static
 r_int
 id|get_latch_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1238,6 +1294,7 @@ id|slot
 id|myslot
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;get_latch_status - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;
 comma
@@ -1253,6 +1310,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1282,6 +1340,7 @@ id|pslot
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 (paren
 r_void
@@ -1328,6 +1387,7 @@ op_star
 id|value
 op_assign
 id|SLOT_LATCH
+c_func
 (paren
 id|myslot.status
 )paren
@@ -1335,6 +1395,7 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1359,6 +1420,7 @@ DECL|function|get_power_status
 r_static
 r_int
 id|get_power_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1386,6 +1448,7 @@ id|slot
 id|myslot
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;get_power_status - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;
 comma
@@ -1401,6 +1464,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1430,6 +1494,7 @@ id|pslot
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 (paren
 r_void
@@ -1476,6 +1541,7 @@ op_star
 id|value
 op_assign
 id|SLOT_PWRGD
+c_func
 (paren
 id|myslot.status
 )paren
@@ -1483,6 +1549,7 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1507,6 +1574,7 @@ DECL|function|get_adapter_present
 r_static
 r_int
 id|get_adapter_present
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1537,6 +1605,7 @@ id|slot
 id|myslot
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;get_adapter_status - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;
 comma
@@ -1552,6 +1621,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1581,6 +1651,7 @@ id|pslot
 )paren
 (brace
 id|memcpy
+c_func
 (paren
 (paren
 r_void
@@ -1627,6 +1698,7 @@ id|rc
 id|present
 op_assign
 id|SLOT_PRESENT
+c_func
 (paren
 id|myslot.status
 )paren
@@ -1653,6 +1725,7 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1675,6 +1748,7 @@ DECL|function|get_max_bus_speed
 r_static
 r_int
 id|get_max_bus_speed
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1704,6 +1778,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s - Entry hotplug_slot[%p] pvalue[%p]&bslash;n&quot;
 comma
@@ -1715,6 +1790,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1812,10 +1888,12 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s - Exit rc[%d] value[%x]&bslash;n&quot;
 comma
@@ -1835,6 +1913,7 @@ DECL|function|get_cur_bus_speed
 r_static
 r_int
 id|get_cur_bus_speed
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -1864,6 +1943,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s - Entry hotplug_slot[%p] pvalue[%p]&bslash;n&quot;
 comma
@@ -1875,6 +1955,7 @@ id|value
 )paren
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1906,6 +1987,7 @@ id|pslot
 id|rc
 op_assign
 id|get_cur_bus_info
+c_func
 (paren
 op_amp
 id|pslot
@@ -1997,10 +2079,12 @@ suffix:semicolon
 )brace
 )brace
 id|ibmphp_unlock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s - Exit rc[%d] value[%x]&bslash;n&quot;
 comma
@@ -2016,13 +2100,14 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n;static int get_max_adapter_speed_1 (struct hotplug_slot *hotplug_slot, u8 * value, u8 flag)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot;&n;&t;struct slot myslot;&n;&n;&t;debug (&quot;get_max_adapter_speed_1 - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;, (ulong)hotplug_slot, (ulong) value);&n;&n;&t;if (flag)&n;&t;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot &amp;&amp; value) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;memcpy ((void *) &amp;myslot, (void *) pslot, sizeof (struct slot));&n;&t;&t;&t;rc = ibmphp_hpc_readslot(pslot, READ_SLOTSTATUS, &amp;(myslot.status));&n;&n;&t;&t;&t;if (!(SLOT_LATCH (myslot.status)) &amp;&amp; (SLOT_PRESENT (myslot.status))) {&n;&t;&t;&t;&t;rc = ibmphp_hpc_readslot(pslot, READ_EXTSLOTSTATUS, &amp;(myslot.ext_status));&n;&t;&t;&t;&t;if (!rc)&n;&t;&t;&t;&t;&t;*value = SLOT_SPEED (myslot.ext_status);&n;&t;&t;&t;} else&n;&t;&t;&t;&t;*value = MAX_ADAPTER_NONE;&n;                }&n;&t;}&n;&n;&t;if (flag)&n;&t;&t;ibmphp_unlock_operations ();&n;&n;&t;debug(&quot;get_max_adapter_speed_1 - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;&n;static int get_bus_name (struct hotplug_slot *hotplug_slot, char * value)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot = NULL;&n;&n;&t;debug (&quot;get_bus_name - Entry hotplug_slot[%lx]&bslash;n&quot;, (ulong)hotplug_slot);&n;&n;&t;ibmphp_lock_operations ();&n;&n;&t;if (hotplug_slot) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;rc = 0;&n;&t;&t;&t;snprintf (value, 100, &quot;Bus %x&quot;, pslot-&gt;bus);&n;&t;&t;}&n;&t;} else&n;&t;&t;rc = -ENODEV;&n;&n;&t;ibmphp_unlock_operations ();&n;&t;debug (&quot;get_bus_name - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;*/
-multiline_comment|/*******************************************************************************&n; * This routine will initialize the ops data structure used in the validate&n; * function. It will also power off empty slots that are powered on since BIOS&n; * leaves those on, albeit disconnected&n; ******************************************************************************/
+multiline_comment|/*&n;static int get_max_adapter_speed_1(struct hotplug_slot *hotplug_slot, u8 * value, u8 flag)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot;&n;&t;struct slot myslot;&n;&n;&t;debug(&quot;get_max_adapter_speed_1 - Entry hotplug_slot[%lx] pvalue[%lx]&bslash;n&quot;,&n;&t;&t;&t;&t;&t;&t;(ulong)hotplug_slot, (ulong) value);&n;&n;&t;if (flag)&n;&t;&t;ibmphp_lock_operations();&n;&n;&t;if (hotplug_slot &amp;&amp; value) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;memcpy((void *) &amp;myslot, (void *) pslot,&n;&t;&t;&t;&t;&t;&t;sizeof(struct slot));&n;&t;&t;&t;rc = ibmphp_hpc_readslot(pslot, READ_SLOTSTATUS,&n;&t;&t;&t;&t;&t;&t;&amp;(myslot.status));&n;&n;&t;&t;&t;if (!(SLOT_LATCH (myslot.status)) &amp;&amp;&n;&t;&t;&t;&t;&t;(SLOT_PRESENT (myslot.status))) {&n;&t;&t;&t;&t;rc = ibmphp_hpc_readslot(pslot,&n;&t;&t;&t;&t;&t;&t;READ_EXTSLOTSTATUS,&n;&t;&t;&t;&t;&t;&t;&amp;(myslot.ext_status));&n;&t;&t;&t;&t;if (!rc)&n;&t;&t;&t;&t;&t;*value = SLOT_SPEED(myslot.ext_status);&n;&t;&t;&t;} else&n;&t;&t;&t;&t;*value = MAX_ADAPTER_NONE;&n;                }&n;&t;}&n;&n;&t;if (flag)&n;&t;&t;ibmphp_unlock_operations();&n;&n;&t;debug(&quot;get_max_adapter_speed_1 - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;&n;static int get_bus_name(struct hotplug_slot *hotplug_slot, char * value)&n;{&n;&t;int rc = -ENODEV;&n;&t;struct slot *pslot = NULL;&n;&n;&t;debug(&quot;get_bus_name - Entry hotplug_slot[%lx]&bslash;n&quot;, (ulong)hotplug_slot);&n;&n;&t;ibmphp_lock_operations();&n;&n;&t;if (hotplug_slot) {&n;&t;&t;pslot = (struct slot *) hotplug_slot-&gt;private;&n;&t;&t;if (pslot) {&n;&t;&t;&t;rc = 0;&n;&t;&t;&t;snprintf(value, 100, &quot;Bus %x&quot;, pslot-&gt;bus);&n;&t;&t;}&n;&t;} else&n;&t;&t;rc = -ENODEV;&n;&n;&t;ibmphp_unlock_operations();&n;&t;debug(&quot;get_bus_name - Exit rc[%d] value[%x]&bslash;n&quot;, rc, *value);&n;&t;return rc;&n;}&n;*/
+multiline_comment|/****************************************************************************&n; * This routine will initialize the ops data structure used in the validate&n; * function. It will also power off empty slots that are powered on since BIOS&n; * leaves those on, albeit disconnected&n; ****************************************************************************/
 DECL|function|init_ops
 r_static
 r_int
 id|__init
 id|init_ops
+c_func
 (paren
 r_void
 )paren
@@ -2044,6 +2129,7 @@ r_int
 id|rc
 suffix:semicolon
 id|list_for_each
+c_func
 (paren
 id|tmp
 comma
@@ -2054,6 +2140,7 @@ id|ibmphp_slot_head
 id|slot_cur
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -2074,6 +2161,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;BEFORE GETTING SLOT STATUS, slot # %x&bslash;n&quot;
 comma
@@ -2091,6 +2179,7 @@ r_if
 c_cond
 (paren
 id|get_ctrl_revision
+c_func
 (paren
 id|slot_cur
 comma
@@ -2113,6 +2202,7 @@ r_if
 c_cond
 (paren
 id|get_cur_bus_info
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -2133,6 +2223,7 @@ r_if
 c_cond
 (paren
 id|get_hpc_options
+c_func
 (paren
 id|slot_cur
 comma
@@ -2147,6 +2238,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -2161,6 +2253,7 @@ r_return
 id|retval
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;status = %x&bslash;n&quot;
 comma
@@ -2168,6 +2261,7 @@ id|slot_cur-&gt;status
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;ext_status = %x&bslash;n&quot;
 comma
@@ -2175,30 +2269,36 @@ id|slot_cur-&gt;ext_status
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;SLOT_POWER = %x&bslash;n&quot;
 comma
 id|SLOT_POWER
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;SLOT_PRESENT = %x&bslash;n&quot;
 comma
 id|SLOT_PRESENT
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;SLOT_LATCH = %x&bslash;n&quot;
 comma
 id|SLOT_LATCH
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2209,6 +2309,7 @@ c_cond
 (paren
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2217,6 +2318,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_PRESENT
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2225,6 +2327,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_LATCH
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2232,6 +2335,7 @@ id|slot_cur-&gt;status
 )paren
 (brace
 id|debug
+c_func
 (paren
 l_string|&quot;BEFORE POWER OFF COMMAND&bslash;n&quot;
 )paren
@@ -2239,6 +2343,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|power_off
+c_func
 (paren
 id|slot_cur
 )paren
@@ -2251,7 +2356,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-multiline_comment|/*&t;&t;retval = slot_update (&amp;slot_cur);&n;&t; *&t;&t;if (retval)&n;&t; *&t;&t;&t;return retval;&n;&t; *&t;&t;ibmphp_update_slot_info (slot_cur);&n;&t; */
+multiline_comment|/*&t;&t;retval = slot_update(&amp;slot_cur);&n;&t; *&t;&t;if (retval)&n;&t; *&t;&t;&t;return retval;&n;&t; *&t;&t;ibmphp_update_slot_info(slot_cur);&n;&t; */
 )brace
 )brace
 id|init_flag
@@ -2267,6 +2372,7 @@ DECL|function|validate
 r_static
 r_int
 id|validate
+c_func
 (paren
 r_struct
 id|slot
@@ -2317,6 +2423,7 @@ op_minus
 id|EBADSLT
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;slot_number in validate is %d&bslash;n&quot;
 comma
@@ -2326,6 +2433,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -2354,6 +2462,7 @@ c_cond
 op_logical_neg
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2361,6 +2470,7 @@ id|slot_cur-&gt;status
 op_logical_and
 (paren
 id|SLOT_PRESENT
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2369,6 +2479,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_LATCH
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2387,6 +2498,7 @@ c_cond
 (paren
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2394,6 +2506,7 @@ id|slot_cur-&gt;status
 op_logical_and
 (paren
 id|SLOT_PRESENT
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2402,6 +2515,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_LATCH
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2418,6 +2532,7 @@ r_break
 suffix:semicolon
 )brace
 id|err
+c_func
 (paren
 l_string|&quot;validate failed....&bslash;n&quot;
 )paren
@@ -2427,10 +2542,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/********************************************************************************&n; * This routine is for updating the data structures in the hotplug core&n; * Parameters: struct slot&n; * Returns: 0 or error&n; *******************************************************************************/
+multiline_comment|/****************************************************************************&n; * This routine is for updating the data structures in the hotplug core&n; * Parameters: struct slot&n; * Returns: 0 or error&n; ****************************************************************************/
 DECL|function|ibmphp_update_slot_info
 r_int
 id|ibmphp_update_slot_info
+c_func
 (paren
 r_struct
 id|slot
@@ -2455,6 +2571,7 @@ suffix:semicolon
 id|info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -2473,6 +2590,7 @@ id|info
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;out of system memory&bslash;n&quot;
 )paren
@@ -2485,6 +2603,7 @@ suffix:semicolon
 id|info-&gt;power_status
 op_assign
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2492,6 +2611,7 @@ suffix:semicolon
 id|info-&gt;attention_status
 op_assign
 id|SLOT_ATTN
+c_func
 (paren
 id|slot_cur-&gt;status
 comma
@@ -2501,6 +2621,7 @@ suffix:semicolon
 id|info-&gt;latch_status
 op_assign
 id|SLOT_LATCH
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2510,6 +2631,7 @@ c_cond
 (paren
 op_logical_neg
 id|SLOT_PRESENT
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -2519,7 +2641,7 @@ id|info-&gt;adapter_status
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//&t;&t;info-&gt;max_adapter_speed_status = MAX_ADAPTER_NONE;
+multiline_comment|/*&t;&t;info-&gt;max_adapter_speed_status = MAX_ADAPTER_NONE; */
 )brace
 r_else
 (brace
@@ -2527,7 +2649,7 @@ id|info-&gt;adapter_status
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|//&t;&t;get_max_adapter_speed_1 (slot_cur-&gt;hotplug_slot, &amp;info-&gt;max_adapter_speed_status, 0);
+multiline_comment|/*&t;&t;get_max_adapter_speed_1(slot_cur-&gt;hotplug_slot,&n;&t;&t;&t;&t;&t;&amp;info-&gt;max_adapter_speed_status, 0); */
 )brace
 id|bus_speed
 op_assign
@@ -2609,6 +2731,7 @@ singleline_comment|// To do: bus_names
 id|rc
 op_assign
 id|pci_hp_change_slot_info
+c_func
 (paren
 id|slot_cur-&gt;hotplug_slot
 comma
@@ -2616,6 +2739,7 @@ id|info
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|info
 )paren
@@ -2631,6 +2755,7 @@ r_struct
 id|pci_func
 op_star
 id|ibm_slot_find
+c_func
 (paren
 id|u8
 id|busno
@@ -2658,6 +2783,7 @@ op_star
 id|tmp
 suffix:semicolon
 id|list_for_each
+c_func
 (paren
 id|tmp
 comma
@@ -2668,6 +2794,7 @@ id|ibmphp_slot_head
 id|slot_cur
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -2733,6 +2860,7 @@ DECL|function|free_slots
 r_static
 r_void
 id|free_slots
+c_func
 (paren
 r_void
 )paren
@@ -2753,6 +2881,7 @@ op_star
 id|next
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s -- enter&bslash;n&quot;
 comma
@@ -2760,6 +2889,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 id|list_for_each_safe
+c_func
 (paren
 id|tmp
 comma
@@ -2772,6 +2902,7 @@ id|ibmphp_slot_head
 id|slot_cur
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -2782,12 +2913,14 @@ id|ibm_slot_list
 )paren
 suffix:semicolon
 id|pci_hp_deregister
+c_func
 (paren
 id|slot_cur-&gt;hotplug_slot
 )paren
 suffix:semicolon
 )brace
 id|debug
+c_func
 (paren
 l_string|&quot;%s -- exit&bslash;n&quot;
 comma
@@ -2894,6 +3027,7 @@ DECL|function|bus_structure_fixup
 r_static
 id|u8
 id|bus_structure_fixup
+c_func
 (paren
 id|u8
 id|busno
@@ -2926,6 +3060,7 @@ op_logical_or
 op_logical_neg
 (paren
 id|ibmphp_find_same_bus_num
+c_func
 (paren
 id|busno
 )paren
@@ -2937,6 +3072,7 @@ suffix:semicolon
 id|bus
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -2955,6 +3091,7 @@ id|bus
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
@@ -2968,6 +3105,7 @@ suffix:semicolon
 id|dev
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -2986,11 +3124,13 @@ id|dev
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|bus
 )paren
 suffix:semicolon
 id|err
+c_func
 (paren
 l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
@@ -3034,6 +3174,7 @@ c_cond
 (paren
 op_logical_neg
 id|pci_read_config_word
+c_func
 (paren
 id|dev
 comma
@@ -3043,16 +3184,21 @@ op_amp
 id|l
 )paren
 op_logical_and
+(paren
 id|l
 op_ne
 l_int|0x0000
+)paren
 op_logical_and
+(paren
 id|l
 op_ne
 l_int|0xffff
 )paren
+)paren
 (brace
 id|debug
+c_func
 (paren
 l_string|&quot;%s - Inside bus_struture_fixup()&bslash;n&quot;
 comma
@@ -3060,6 +3206,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 id|pci_scan_bus
+c_func
 (paren
 id|busno
 comma
@@ -3073,11 +3220,13 @@ suffix:semicolon
 )brace
 )brace
 id|kfree
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|bus
 )paren
@@ -3090,6 +3239,7 @@ DECL|function|ibm_configure_device
 r_static
 r_int
 id|ibm_configure_device
+c_func
 (paren
 r_struct
 id|pci_func
@@ -3114,13 +3264,14 @@ id|flag
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* this is to make sure we don&squot;t double scan the bus, for bridged devices primarily */
+multiline_comment|/* this is to make sure we don&squot;t double scan the bus,&n;&t;&t;&t;&t;&t;for bridged devices primarily */
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
 id|bus_structure_fixup
+c_func
 (paren
 id|func-&gt;busno
 )paren
@@ -3140,6 +3291,7 @@ l_int|NULL
 id|func-&gt;dev
 op_assign
 id|pci_find_slot
+c_func
 (paren
 id|func-&gt;busno
 comma
@@ -3234,6 +3386,7 @@ l_int|NULL
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;ERROR... : pci_dev still NULL&bslash;n&quot;
 )paren
@@ -3259,6 +3412,7 @@ id|PCI_HEADER_TYPE_BRIDGE
 )paren
 (brace
 id|pci_read_config_byte
+c_func
 (paren
 id|func-&gt;dev
 comma
@@ -3276,6 +3430,7 @@ id|pci_bus
 op_star
 )paren
 id|pci_add_new_bus
+c_func
 (paren
 id|func-&gt;dev-&gt;bus
 comma
@@ -3287,6 +3442,7 @@ id|bus
 )paren
 suffix:semicolon
 id|pci_do_scan_bus
+c_func
 (paren
 id|child
 )paren
@@ -3301,6 +3457,7 @@ DECL|function|is_bus_empty
 r_static
 r_int
 id|is_bus_empty
+c_func
 (paren
 r_struct
 id|slot
@@ -3346,6 +3503,7 @@ suffix:semicolon
 id|tmp_slot
 op_assign
 id|ibmphp_get_slot_from_physical_num
+c_func
 (paren
 id|i
 )paren
@@ -3362,6 +3520,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|tmp_slot
@@ -3379,11 +3538,13 @@ r_if
 c_cond
 (paren
 id|SLOT_PRESENT
+c_func
 (paren
 id|tmp_slot-&gt;status
 )paren
 op_logical_and
 id|SLOT_PWRGD
+c_func
 (paren
 id|tmp_slot-&gt;status
 )paren
@@ -3404,6 +3565,7 @@ DECL|function|set_bus
 r_static
 r_int
 id|set_bus
+c_func
 (paren
 r_struct
 id|slot
@@ -3449,6 +3611,7 @@ comma
 )brace
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s - entry slot # %d&bslash;n&quot;
 comma
@@ -3461,11 +3624,13 @@ r_if
 c_cond
 (paren
 id|SET_BUS_STATUS
+c_func
 (paren
 id|slot_cur-&gt;ctrl
 )paren
 op_logical_and
 id|is_bus_empty
+c_func
 (paren
 id|slot_cur
 )paren
@@ -3474,6 +3639,7 @@ id|slot_cur
 id|rc
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -3490,11 +3656,13 @@ suffix:semicolon
 id|speed
 op_assign
 id|SLOT_SPEED
+c_func
 (paren
 id|slot_cur-&gt;ext_status
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;ext_status = %x, speed = %x&bslash;n&quot;
 comma
@@ -3525,6 +3693,7 @@ r_if
 c_cond
 (paren
 id|SLOT_PCIX
+c_func
 (paren
 id|slot_cur-&gt;ext_status
 )paren
@@ -3555,6 +3724,7 @@ c_cond
 (paren
 op_logical_neg
 id|SLOT_BUS_MODE
+c_func
 (paren
 id|slot_cur-&gt;ext_status
 )paren
@@ -3653,6 +3823,7 @@ id|ciobx
 )paren
 )paren
 id|ibmphp_hpc_writeslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -3668,6 +3839,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|err
+c_func
 (paren
 l_string|&quot;Wrong bus speed&bslash;n&quot;
 )paren
@@ -3682,6 +3854,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|err
+c_func
 (paren
 l_string|&quot;wrong slot speed&bslash;n&quot;
 )paren
@@ -3692,6 +3865,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 id|debug
+c_func
 (paren
 l_string|&quot;setting bus speed for slot %d, cmd %x&bslash;n&quot;
 comma
@@ -3703,6 +3877,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|ibmphp_hpc_writeslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -3716,6 +3891,7 @@ id|retval
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;setting bus speed failed&bslash;n&quot;
 )paren
@@ -3728,12 +3904,14 @@ r_if
 c_cond
 (paren
 id|CTLR_RESULT
+c_func
 (paren
 id|slot_cur-&gt;ctrl-&gt;status
 )paren
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;command not completed successfully in set_bus&bslash;n&quot;
 )paren
@@ -3752,6 +3930,7 @@ l_int|1000
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;%s -Exit&bslash;n&quot;
 comma
@@ -3767,6 +3946,7 @@ DECL|function|check_limitations
 r_static
 r_int
 id|check_limitations
+c_func
 (paren
 r_struct
 id|slot
@@ -3810,6 +3990,7 @@ op_increment
 id|tmp_slot
 op_assign
 id|ibmphp_get_slot_from_physical_num
+c_func
 (paren
 id|i
 )paren
@@ -3829,6 +4010,7 @@ c_cond
 (paren
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|tmp_slot-&gt;status
 )paren
@@ -3837,6 +4019,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_CONNECT
+c_func
 (paren
 id|tmp_slot-&gt;status
 )paren
@@ -3847,6 +4030,7 @@ op_increment
 suffix:semicolon
 )brace
 id|get_cur_bus_info
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -3931,6 +4115,7 @@ r_static
 r_inline
 r_void
 id|print_card_capability
+c_func
 (paren
 r_struct
 id|slot
@@ -3939,6 +4124,7 @@ id|slot_cur
 )paren
 (brace
 id|info
+c_func
 (paren
 l_string|&quot;capability of the card is &quot;
 )paren
@@ -3955,6 +4141,7 @@ op_eq
 id|PCIX133
 )paren
 id|info
+c_func
 (paren
 l_string|&quot;   133 MHz PCI-X&bslash;n&quot;
 )paren
@@ -3972,6 +4159,7 @@ op_eq
 id|PCIX66
 )paren
 id|info
+c_func
 (paren
 l_string|&quot;    66 MHz PCI-X&bslash;n&quot;
 )paren
@@ -3989,12 +4177,14 @@ op_eq
 id|PCI66
 )paren
 id|info
+c_func
 (paren
 l_string|&quot;    66 MHz PCI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
 id|info
+c_func
 (paren
 l_string|&quot;    33 MHz PCI&bslash;n&quot;
 )paren
@@ -4005,6 +4195,7 @@ DECL|function|enable_slot
 r_static
 r_int
 id|enable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -4033,10 +4224,12 @@ op_star
 id|tmp_func
 suffix:semicolon
 id|ibmphp_lock_operations
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;ENABLING SLOT........&bslash;n&quot;
 )paren
@@ -4059,6 +4252,7 @@ c_cond
 id|rc
 op_assign
 id|validate
+c_func
 (paren
 id|slot_cur
 comma
@@ -4068,6 +4262,7 @@ id|ENABLE
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;validate function failed&bslash;n&quot;
 )paren
@@ -4077,6 +4272,7 @@ id|error_nopower
 suffix:semicolon
 )brace
 id|attn_LED_blink
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4084,6 +4280,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|set_bus
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4095,6 +4292,7 @@ id|rc
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;was not able to set the bus&bslash;n&quot;
 )paren
@@ -4105,12 +4303,14 @@ suffix:semicolon
 )brace
 multiline_comment|/*-----------------debugging------------------------------*/
 id|get_cur_bus_info
+c_func
 (paren
 op_amp
 id|slot_cur
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;the current bus speed right after set_bus = %x&bslash;n&quot;
 comma
@@ -4121,6 +4321,7 @@ multiline_comment|/*----------------------------------------------------------*/
 id|rc
 op_assign
 id|check_limitations
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4132,17 +4333,20 @@ id|rc
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;Adding this card exceeds the limitations of this bus.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
+c_func
 (paren
 l_string|&quot;(i.e., &gt;1 133MHz cards running on same bus, or &quot;
 l_string|&quot;&gt;2 66 PCI cards running on same bus&bslash;n.&quot;
 )paren
 suffix:semicolon
 id|err
+c_func
 (paren
 l_string|&quot;Try hot-adding into another bus&bslash;n&quot;
 )paren
@@ -4159,6 +4363,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|power_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4170,6 +4375,7 @@ id|rc
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;something wrong when powering up... please see below for details&bslash;n&quot;
 )paren
@@ -4182,6 +4388,7 @@ id|slot_cur
 )paren
 suffix:semicolon
 id|attn_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4190,6 +4397,7 @@ r_if
 c_cond
 (paren
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4197,11 +4405,13 @@ id|slot_cur
 )paren
 (brace
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 id|attn_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4221,6 +4431,7 @@ c_cond
 (paren
 (paren
 id|SLOT_POWER
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -4229,12 +4440,14 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
 )paren
 )paren
 id|err
+c_func
 (paren
 l_string|&quot;power fault occurred trying to power up&bslash;n&quot;
 )paren
@@ -4244,17 +4457,21 @@ r_if
 c_cond
 (paren
 id|SLOT_BUS_SPEED
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
 )paren
 (brace
 id|err
+c_func
 (paren
-l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability&bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check &quot;
+l_string|&quot;current bus speed and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4265,23 +4482,28 @@ r_if
 c_cond
 (paren
 id|SLOT_BUS_MODE
+c_func
 (paren
 id|slot_cur-&gt;ext_status
 )paren
 )paren
 (brace
 id|err
+c_func
 (paren
-l_string|&quot;bus mode mismatch occurred.  please check current bus mode and card capability&bslash;n&quot;
+l_string|&quot;bus mode mismatch occurred.  please check &quot;
+l_string|&quot;current bus mode and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 )brace
 id|ibmphp_update_slot_info
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4291,18 +4513,21 @@ m_exit
 suffix:semicolon
 )brace
 id|debug
+c_func
 (paren
 l_string|&quot;after power_on&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*-----------------------debugging---------------------------*/
 id|get_cur_bus_info
+c_func
 (paren
 op_amp
 id|slot_cur
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;the current bus speed right after power_on = %x&bslash;n&quot;
 comma
@@ -4313,6 +4538,7 @@ multiline_comment|/*----------------------------------------------------------*/
 id|rc
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4335,6 +4561,7 @@ r_if
 c_cond
 (paren
 id|SLOT_POWER
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -4342,6 +4569,7 @@ op_logical_and
 op_logical_neg
 (paren
 id|SLOT_PWRGD
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -4349,6 +4577,7 @@ id|slot_cur-&gt;status
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;power fault occurred trying to power up...&bslash;n&quot;
 )paren
@@ -4361,12 +4590,14 @@ r_if
 c_cond
 (paren
 id|SLOT_POWER
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
 op_logical_and
 (paren
 id|SLOT_BUS_SPEED
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -4374,11 +4605,14 @@ id|slot_cur-&gt;status
 )paren
 (brace
 id|err
+c_func
 (paren
-l_string|&quot;bus speed mismatch occurred.  please check current bus speed and card capability&bslash;n&quot;
+l_string|&quot;bus speed mismatch occurred.  please check current bus &quot;
+l_string|&quot;speed and card capability&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_card_capability
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4387,13 +4621,14 @@ r_goto
 id|error_power
 suffix:semicolon
 )brace
-multiline_comment|/* Don&squot;t think this case will happen after above checks... but just in case, for paranoia sake */
+multiline_comment|/* Don&squot;t think this case will happen after above checks...&n;&t; * but just in case, for paranoia sake */
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
 id|SLOT_POWER
+c_func
 (paren
 id|slot_cur-&gt;status
 )paren
@@ -4401,6 +4636,7 @@ id|slot_cur-&gt;status
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;power on failed...&bslash;n&quot;
 )paren
@@ -4417,6 +4653,7 @@ id|pci_func
 op_star
 )paren
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -4436,6 +4673,7 @@ id|slot_cur-&gt;func
 (brace
 multiline_comment|/* We cannot do update_slot_info here, since no memory for&n;&t;&t; * kmalloc n.e.ways, and update_slot_info allocates some */
 id|err
+c_func
 (paren
 l_string|&quot;out of system memory&bslash;n&quot;
 )paren
@@ -4450,6 +4688,7 @@ id|error_power
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|slot_cur-&gt;func
 comma
@@ -4495,6 +4734,7 @@ id|i
 )braket
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;b4 configure_card, slot_cur-&gt;bus = %x, slot_cur-&gt;device = %x&bslash;n&quot;
 comma
@@ -4507,6 +4747,7 @@ r_if
 c_cond
 (paren
 id|ibmphp_configure_card
+c_func
 (paren
 id|slot_cur-&gt;func
 comma
@@ -4515,11 +4756,14 @@ id|slot_cur-&gt;number
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;configure_card was unsuccessful...&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* true because don&squot;t need to actually deallocate resources,&n;&t;&t; * just remove references */
 id|ibmphp_unconfigure_card
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4527,8 +4771,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* true because don&squot;t need to actually deallocate resources, just remove references */
 id|debug
+c_func
 (paren
 l_string|&quot;after unconfigure_card&bslash;n&quot;
 )paren
@@ -4555,6 +4799,7 @@ r_do
 id|tmp_func
 op_assign
 id|ibm_slot_find
+c_func
 (paren
 id|slot_cur-&gt;bus
 comma
@@ -4575,6 +4820,7 @@ id|tmp_func-&gt;dev
 )paren
 )paren
 id|ibm_configure_device
+c_func
 (paren
 id|tmp_func
 )paren
@@ -4587,6 +4833,7 @@ id|tmp_func
 )paren
 suffix:semicolon
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4595,6 +4842,7 @@ r_if
 c_cond
 (paren
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4611,12 +4859,14 @@ m_exit
 suffix:semicolon
 )brace
 id|ibmphp_print_test
+c_func
 (paren
 )paren
 suffix:semicolon
 id|rc
 op_assign
 id|ibmphp_update_slot_info
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4634,12 +4884,14 @@ suffix:semicolon
 id|error_nopower
 suffix:colon
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 multiline_comment|/* need to turn off if was blinking b4 */
 id|attn_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4649,6 +4901,7 @@ suffix:colon
 id|rcpr
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4669,6 +4922,7 @@ m_exit
 suffix:semicolon
 )brace
 id|ibmphp_update_slot_info
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4679,12 +4933,14 @@ suffix:semicolon
 id|error_power
 suffix:colon
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 multiline_comment|/* need to turn off if was blinking b4 */
 id|attn_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4692,6 +4948,7 @@ suffix:semicolon
 id|rcpr
 op_assign
 id|power_off
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4719,6 +4976,7 @@ DECL|function|ibmphp_disable_slot
 r_static
 r_int
 id|ibmphp_disable_slot
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -4763,6 +5021,7 @@ suffix:semicolon
 DECL|function|ibmphp_do_disable_slot
 r_int
 id|ibmphp_do_disable_slot
+c_func
 (paren
 r_struct
 id|slot
@@ -4777,6 +5036,7 @@ id|u8
 id|flag
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;DISABLING SLOT...&bslash;n&quot;
 )paren
@@ -4821,6 +5081,7 @@ id|TRUE
 id|rc
 op_assign
 id|validate
+c_func
 (paren
 id|slot_cur
 comma
@@ -4838,6 +5099,7 @@ id|error
 suffix:semicolon
 )brace
 id|attn_LED_blink
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4859,6 +5121,7 @@ id|pci_func
 op_star
 )paren
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -4877,6 +5140,7 @@ id|slot_cur-&gt;func
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;out of system memory&bslash;n&quot;
 )paren
@@ -4891,6 +5155,7 @@ id|error
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|slot_cur-&gt;func
 comma
@@ -4927,6 +5192,7 @@ id|flag
 )paren
 (brace
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4938,6 +5204,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|ibmphp_unconfigure_card
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -4950,6 +5217,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;in disable_slot. after unconfigure_card&bslash;n&quot;
 )paren
@@ -4961,6 +5229,7 @@ id|rc
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;could not unconfigure card.&bslash;n&quot;
 )paren
@@ -4972,6 +5241,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|ibmphp_hpc_writeslot
+c_func
 (paren
 id|slot_cur
 comma
@@ -4987,6 +5257,7 @@ r_goto
 id|error
 suffix:semicolon
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
@@ -4994,6 +5265,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -5010,11 +5282,13 @@ suffix:semicolon
 id|rc
 op_assign
 id|ibmphp_update_slot_info
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 id|ibmphp_print_test
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5027,11 +5301,13 @@ id|error
 suffix:colon
 multiline_comment|/*  Need to turn off if was blinking b4 */
 id|attn_off
+c_func
 (paren
 id|slot_cur
 )paren
 suffix:semicolon
 id|attn_on
+c_func
 (paren
 id|slot_cur
 )paren
@@ -5040,6 +5316,7 @@ r_if
 c_cond
 (paren
 id|slot_update
+c_func
 (paren
 op_amp
 id|slot_cur
@@ -5061,6 +5338,7 @@ c_cond
 id|flag
 )paren
 id|ibmphp_update_slot_info
+c_func
 (paren
 id|slot_cur
 )paren
@@ -5137,56 +5415,68 @@ DECL|function|ibmphp_unload
 r_static
 r_void
 id|ibmphp_unload
+c_func
 (paren
 r_void
 )paren
 (brace
 id|free_slots
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after slots&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_resources
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after resources&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_bus_info_queue
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after bus info&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_ebda_hpc_queue
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after ebda hpc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_free_ebda_pci_rsrc_queue
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after ebda pci rsrc&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|ibmphp_pci_bus
 )paren
@@ -5197,6 +5487,7 @@ r_static
 r_int
 id|__init
 id|ibmphp_init
+c_func
 (paren
 r_void
 )paren
@@ -5221,6 +5512,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|info
+c_func
 (paren
 id|DRIVER_DESC
 l_string|&quot; version: &quot;
@@ -5231,6 +5523,7 @@ suffix:semicolon
 id|ibmphp_pci_bus
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -5249,6 +5542,7 @@ id|ibmphp_pci_bus
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;out of memory&bslash;n&quot;
 )paren
@@ -5280,6 +5574,7 @@ id|bus
 )paren
 (brace
 id|err
+c_func
 (paren
 l_string|&quot;Can&squot;t find the root pci bus, can not continue&bslash;n&quot;
 )paren
@@ -5294,6 +5589,7 @@ id|error
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 id|ibmphp_pci_bus
 comma
@@ -5311,6 +5607,7 @@ op_assign
 id|debug
 suffix:semicolon
 id|ibmphp_hpc_initvars
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5342,6 +5639,7 @@ c_cond
 id|rc
 op_assign
 id|ibmphp_access_ebda
+c_func
 (paren
 )paren
 )paren
@@ -5350,8 +5648,9 @@ r_goto
 id|error
 suffix:semicolon
 id|debug
+c_func
 (paren
-l_string|&quot;after ibmphp_access_ebda ()&bslash;n&quot;
+l_string|&quot;after ibmphp_access_ebda()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -5361,6 +5660,7 @@ c_cond
 id|rc
 op_assign
 id|ibmphp_rsrc_init
+c_func
 (paren
 )paren
 )paren
@@ -5369,6 +5669,7 @@ r_goto
 id|error
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;AFTER Resource &amp; EBDA INITIALIZATIONS&bslash;n&quot;
 )paren
@@ -5376,6 +5677,7 @@ suffix:semicolon
 id|max_slots
 op_assign
 id|get_max_slots
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5386,6 +5688,7 @@ c_cond
 id|rc
 op_assign
 id|ibmphp_register_pci
+c_func
 (paren
 )paren
 )paren
@@ -5397,6 +5700,7 @@ r_if
 c_cond
 (paren
 id|init_ops
+c_func
 (paren
 )paren
 )paren
@@ -5411,6 +5715,7 @@ id|error
 suffix:semicolon
 )brace
 id|ibmphp_print_test
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5421,6 +5726,7 @@ c_cond
 id|rc
 op_assign
 id|ibmphp_hpc_start_poll_thread
+c_func
 (paren
 )paren
 )paren
@@ -5445,6 +5751,7 @@ suffix:semicolon
 id|error
 suffix:colon
 id|ibmphp_unload
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5457,24 +5764,29 @@ r_static
 r_void
 id|__exit
 id|ibmphp_exit
+c_func
 (paren
 r_void
 )paren
 (brace
 id|ibmphp_hpc_stop_poll_thread
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;after polling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ibmphp_unload
+c_func
 (paren
 )paren
 suffix:semicolon
 id|debug
+c_func
 (paren
 l_string|&quot;done&bslash;n&quot;
 )paren
@@ -5482,12 +5794,14 @@ suffix:semicolon
 )brace
 DECL|variable|ibmphp_init
 id|module_init
+c_func
 (paren
 id|ibmphp_init
 )paren
 suffix:semicolon
 DECL|variable|ibmphp_exit
 id|module_exit
+c_func
 (paren
 id|ibmphp_exit
 )paren
