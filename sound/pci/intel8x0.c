@@ -624,6 +624,8 @@ DECL|macro|ICH_M2INT
 mdefine_line|#define   ICH_M2INT&t;&t;0x01000000&t;/* ICH4: Mic2-In interrupt */
 DECL|macro|ICH_SAMPLE_CAP
 mdefine_line|#define   ICH_SAMPLE_CAP&t;0x00c00000&t;/* ICH4: sample capability bits (RO) */
+DECL|macro|ICH_SAMPLE_16_20
+mdefine_line|#define   ICH_SAMPLE_16_20&t;0x00400000&t;/* ICH4: 16- and 20-bit samples */
 DECL|macro|ICH_MULTICHAN_CAP
 mdefine_line|#define   ICH_MULTICHAN_CAP&t;0x00300000&t;/* ICH4: multi-channel capability bits (RO) */
 DECL|macro|ICH_MD3
@@ -1131,6 +1133,11 @@ r_int
 r_int
 id|position
 suffix:semicolon
+DECL|member|pos_shift
+r_int
+r_int
+id|pos_shift
+suffix:semicolon
 DECL|member|frags
 r_int
 id|frags
@@ -1395,11 +1402,6 @@ id|u32
 id|int_sta_mask
 suffix:semicolon
 multiline_comment|/* interrupt status mask */
-DECL|member|pcm_pos_shift
-r_int
-r_int
-id|pcm_pos_shift
-suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|in_suspend
 r_int
@@ -3059,7 +3061,7 @@ op_or
 multiline_comment|/* interrupt on completion */
 id|ichdev-&gt;fragsize1
 op_rshift
-id|chip-&gt;pcm_pos_shift
+id|ichdev-&gt;pos_shift
 )paren
 suffix:semicolon
 id|bdbar
@@ -3096,7 +3098,7 @@ op_or
 multiline_comment|/* interrupt on completion */
 id|ichdev-&gt;fragsize1
 op_rshift
-id|chip-&gt;pcm_pos_shift
+id|ichdev-&gt;pos_shift
 )paren
 suffix:semicolon
 )brace
@@ -3181,7 +3183,7 @@ op_or
 multiline_comment|/* interrupt on completion */
 id|ichdev-&gt;fragsize
 op_rshift
-id|chip-&gt;pcm_pos_shift
+id|ichdev-&gt;pos_shift
 )paren
 suffix:semicolon
 singleline_comment|// printk(&quot;bdbar[%i] = 0x%x [0x%x]&bslash;n&quot;, idx + 0, bdbar[idx + 0], bdbar[idx + 1]);
@@ -4548,10 +4550,10 @@ id|substream
 )paren
 suffix:semicolon
 )brace
-DECL|function|snd_intel8x0_setup_multi_channels
+DECL|function|snd_intel8x0_setup_pcm_out
 r_static
 r_void
-id|snd_intel8x0_setup_multi_channels
+id|snd_intel8x0_setup_pcm_out
 c_func
 (paren
 id|intel8x0_t
@@ -4560,6 +4562,9 @@ id|chip
 comma
 r_int
 id|channels
+comma
+r_int
+id|sample_bits
 )paren
 (brace
 r_int
@@ -4721,7 +4726,11 @@ suffix:semicolon
 id|cnt
 op_and_assign
 op_complement
+(paren
 id|ICH_PCM_246_MASK
+op_or
+id|ICH_PCM_20BIT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4784,6 +4793,27 @@ l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* grrr... */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_INTEL_ICH4
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sample_bits
+OG
+l_int|16
+)paren
+id|cnt
+op_or_assign
+id|ICH_PCM_20BIT
+suffix:semicolon
 )brace
 id|iputdword
 c_func
@@ -4875,12 +4905,14 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-id|snd_intel8x0_setup_multi_channels
+id|snd_intel8x0_setup_pcm_out
 c_func
 (paren
 id|chip
 comma
 id|runtime-&gt;channels
+comma
+id|runtime-&gt;sample_bits
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -4890,6 +4922,28 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_INTEL_ICH4
+)paren
+(brace
+id|ichdev-&gt;pos_shift
+op_assign
+(paren
+id|runtime-&gt;sample_bits
+OG
+l_int|16
+)paren
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|1
+suffix:semicolon
+)brace
 )brace
 id|snd_intel8x0_setup_periods
 c_func
@@ -4955,7 +5009,7 @@ op_plus
 id|ichdev-&gt;roff_picb
 )paren
 op_lshift
-id|chip-&gt;pcm_pos_shift
+id|ichdev-&gt;pos_shift
 suffix:semicolon
 r_if
 c_cond
@@ -5392,6 +5446,15 @@ id|hw_constraints_channels4
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|chip-&gt;smp20bit
+)paren
+id|runtime-&gt;hw.formats
+op_or_assign
+id|SNDRV_PCM_FMTBIT_S32_LE
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9137,6 +9200,40 @@ c_cond
 (paren
 id|chip-&gt;device_type
 op_eq
+id|DEVICE_INTEL_ICH4
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|igetdword
+c_func
+(paren
+id|chip
+comma
+id|ICHREG
+c_func
+(paren
+id|GLOB_STA
+)paren
+)paren
+op_amp
+id|ICH_SAMPLE_CAP
+)paren
+op_eq
+id|ICH_SAMPLE_16_20
+)paren
+id|chip-&gt;smp20bit
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
 id|DEVICE_NFORCE
 )paren
 (brace
@@ -11163,7 +11260,7 @@ op_plus
 id|ichdev-&gt;roff_picb
 )paren
 op_lshift
-id|chip-&gt;pcm_pos_shift
+id|ichdev-&gt;pos_shift
 suffix:semicolon
 id|pos
 op_add_assign
@@ -12655,9 +12752,8 @@ l_int|0x40
 op_div
 l_int|0x10
 suffix:semicolon
-)brace
-multiline_comment|/* SIS7012 handles the pcm data in bytes, others are in words */
-id|chip-&gt;pcm_pos_shift
+multiline_comment|/* SIS7012 handles the pcm data in bytes, others are in samples */
+id|ichdev-&gt;pos_shift
 op_assign
 (paren
 id|device_type
@@ -12670,6 +12766,7 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
