@@ -1434,7 +1434,6 @@ id|device_id
 op_assign
 id|PCI_DEVICE_ID_VIA_8361
 comma
-singleline_comment|// 0x3112
 dot
 id|chipset_name
 op_assign
