@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.h&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.4 $&n; *&n; * History of changes&n; *&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.h&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.6 $&n; */
 DECL|macro|MDSK_WRITE_REQ
 mdefine_line|#define MDSK_WRITE_REQ 0x01
 DECL|macro|MDSK_READ_REQ
@@ -13,10 +13,9 @@ DECL|macro|DEV_CLASS_FBA
 mdefine_line|#define DEV_CLASS_FBA&t;0x01
 DECL|macro|DEV_CLASS_ECKD
 mdefine_line|#define DEV_CLASS_ECKD&t;0x04
-DECL|struct|dasd_diag_characteristics_t
-r_typedef
+DECL|struct|dasd_diag_characteristics
 r_struct
-id|dasd_diag_characteristics_t
+id|dasd_diag_characteristics
 (brace
 DECL|member|dev_nr
 id|u16
@@ -71,13 +70,10 @@ l_int|4
 )paren
 )paren
 )paren
-DECL|typedef|dasd_diag_characteristics_t
-id|dasd_diag_characteristics_t
 suffix:semicolon
-DECL|struct|diag_bio_t
-r_typedef
+DECL|struct|dasd_diag_bio
 r_struct
-id|diag_bio_t
+id|dasd_diag_bio
 (brace
 DECL|member|type
 id|u8
@@ -116,13 +112,10 @@ l_int|8
 )paren
 )paren
 )paren
-DECL|typedef|diag_bio_t
-id|diag_bio_t
 suffix:semicolon
-DECL|struct|diag_init_io_t
-r_typedef
+DECL|struct|dasd_diag_init_io
 r_struct
-id|diag_init_io_t
+id|dasd_diag_init_io
 (brace
 DECL|member|dev_nr
 id|u16
@@ -171,13 +164,10 @@ l_int|8
 )paren
 )paren
 )paren
-DECL|typedef|diag_init_io_t
-id|diag_init_io_t
 suffix:semicolon
-DECL|struct|diag_rw_io_t
-r_typedef
+DECL|struct|dasd_diag_rw_io
 r_struct
-id|diag_rw_io_t
+id|dasd_diag_rw_io
 (brace
 DECL|member|dev_nr
 id|u16
@@ -238,7 +228,5 @@ l_int|8
 )paren
 )paren
 )paren
-DECL|typedef|diag_rw_io_t
-id|diag_rw_io_t
 suffix:semicolon
 eof

@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.12 $&n; *&n; * History of changes &n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.15 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
@@ -10,8 +9,9 @@ DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_devmap:&quot;
 macro_line|#include &quot;dasd_int.h&quot;
 multiline_comment|/*&n; * dasd_devmap_t is used to store the features and the relation&n; * between device number and device index. To find a dasd_devmap_t&n; * that corresponds to a device number of a device index each&n; * dasd_devmap_t is added to two linked lists, one to search by&n; * the device number and one to search by the device index. As&n; * soon as big minor numbers are available the device index list&n; * can be removed since the device number will then be identical&n; * to the device index.&n; */
-r_typedef
+DECL|struct|dasd_devmap
 r_struct
+id|dasd_devmap
 (brace
 DECL|member|devindex_list
 r_struct
@@ -39,13 +39,12 @@ r_int
 id|features
 suffix:semicolon
 DECL|member|device
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
-DECL|typedef|dasd_devmap_t
 )brace
-id|dasd_devmap_t
 suffix:semicolon
 multiline_comment|/*&n; * Parameter parsing functions for dasd= parameter. The syntax is:&n; *   &lt;devno&gt;&t;&t;: (0x)?[0-9a-fA-F]+&n; *   &lt;feature&gt;&t;&t;: ro&n; *   &lt;feature_list&gt;&t;: &bslash;(&lt;feature&gt;(:&lt;feature&gt;)*&bslash;)&n; *   &lt;range&gt;&t;&t;: &lt;devno&gt;(-&lt;devno&gt;)?&lt;feature_list&gt;?&n; *   &lt;dasd_module&gt;&t;: dasd_diag_mod|dasd_eckd_mod|dasd_fba_mod&n; *&n; *   &lt;dasd&gt;&t;&t;: autodetect|probeonly|&lt;range&gt;(,&lt;range&gt;)*&n; */
 DECL|variable|dasd_probeonly
@@ -834,27 +833,23 @@ id|devno
 op_increment
 )paren
 (brace
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 comma
 op_star
 id|tmp
 suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
 id|devmap
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Find previous devmap for device number i */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|tmp
 comma
 op_amp
 id|dasd_devno_hashlists
@@ -863,20 +858,10 @@ id|devno
 op_amp
 l_int|255
 )braket
-)paren
-(brace
-id|tmp
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-id|dasd_devmap_t
 comma
 id|devno_list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -905,7 +890,8 @@ multiline_comment|/* This devno is new. */
 id|devmap
 op_assign
 (paren
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 )paren
 id|kmalloc
@@ -913,7 +899,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 )paren
 comma
 id|GFP_KERNEL
@@ -1005,9 +992,9 @@ id|devno
 )paren
 (brace
 r_struct
-id|list_head
+id|dasd_devmap
 op_star
-id|l
+id|devmap
 suffix:semicolon
 r_int
 id|ret
@@ -1025,10 +1012,10 @@ id|dasd_devmap_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Find devmap for device with device number devno */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|devmap
 comma
 op_amp
 id|dasd_devno_hashlists
@@ -1037,22 +1024,14 @@ id|devno
 op_amp
 l_int|255
 )braket
+comma
+id|devno_list
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|list_entry
-c_func
-(paren
-id|l
-comma
-id|dasd_devmap_t
-comma
-id|devno_list
-)paren
-op_member_access_from_pointer
-id|devno
+id|devmap-&gt;devno
 op_eq
 id|devno
 )paren
@@ -1120,7 +1099,8 @@ comma
 op_star
 id|next
 suffix:semicolon
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
@@ -1145,7 +1125,8 @@ c_func
 (paren
 id|l
 comma
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 comma
 id|devno_list
 )paren
@@ -1194,7 +1175,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the devmap structure from a devno. Can be removed as soon&n; * as big minors are available.&n; */
 r_static
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 DECL|function|dasd_devmap_from_devno
 id|dasd_devmap_from_devno
@@ -1205,11 +1187,7 @@ id|devno
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-id|dasd_devmap_t
+id|dasd_devmap
 op_star
 id|devmap
 comma
@@ -1228,10 +1206,10 @@ id|dasd_devmap_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Find devmap for device with device number devno */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|tmp
 comma
 op_amp
 id|dasd_devno_hashlists
@@ -1240,20 +1218,10 @@ id|devno
 op_amp
 l_int|255
 )braket
-)paren
-(brace
-id|tmp
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-id|dasd_devmap_t
 comma
 id|devno_list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1284,7 +1252,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the devmap for a device by its device index. Can be removed&n; * as soon as big minors are available.&n; */
 r_static
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 DECL|function|dasd_devmap_from_devindex
 id|dasd_devmap_from_devindex
@@ -1295,11 +1264,7 @@ id|devindex
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|l
-suffix:semicolon
-id|dasd_devmap_t
+id|dasd_devmap
 op_star
 id|devmap
 comma
@@ -1318,10 +1283,10 @@ id|dasd_devmap_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Find devmap for device with device index devindex */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|tmp
 comma
 op_amp
 id|dasd_devindex_hashlists
@@ -1330,20 +1295,10 @@ id|devindex
 op_amp
 l_int|255
 )braket
-)paren
-(brace
-id|tmp
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-id|dasd_devmap_t
 comma
 id|devindex_list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1372,7 +1327,8 @@ r_return
 id|devmap
 suffix:semicolon
 )brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 DECL|function|dasd_device_from_devindex
 id|dasd_device_from_devindex
@@ -1382,11 +1338,13 @@ r_int
 id|devindex
 )paren
 (brace
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -1447,12 +1405,14 @@ DECL|function|dasd_get_kdev
 id|dasd_get_kdev
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
 (brace
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
@@ -1525,7 +1485,8 @@ id|minor
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Create a dasd device structure for cdev.&n; */
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 DECL|function|dasd_create_device
 id|dasd_create_device
@@ -1537,11 +1498,13 @@ op_star
 id|cdev
 )paren
 (brace
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -1767,7 +1730,8 @@ DECL|function|dasd_delete_device
 id|dasd_delete_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -1777,7 +1741,8 @@ id|ccw_device
 op_star
 id|cdev
 suffix:semicolon
-id|dasd_devmap_t
+r_struct
+id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
@@ -1880,7 +1845,8 @@ DECL|function|dasd_put_device_wake
 id|dasd_put_device_wake
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.20 $&n; *&n; * History of changes:&n; * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.24 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -7,10 +7,9 @@ DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_erp(3990): &quot;
 macro_line|#include &quot;dasd_int.h&quot;
 macro_line|#include &quot;dasd_eckd.h&quot;
-DECL|struct|DCTL_data_t
-r_typedef
+DECL|struct|DCTL_data
 r_struct
-id|DCTL_data_t
+id|DCTL_data
 (brace
 DECL|member|subcommand
 r_int
@@ -30,7 +29,6 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* reserved */
-DECL|typedef|DCTL_data_t
 )brace
 id|__attribute__
 (paren
@@ -38,7 +36,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|DCTL_data_t
 suffix:semicolon
 multiline_comment|/*&n; ***************************************************************************** &n; * SECTION ERP EXAMINATION&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE_24 &n; *&n; * DESCRIPTION&n; *   Checks only for fatal (unrecoverable) error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; *   Each bit configuration leading to an action code 2 (Exit with&n; *   programming error or unusual condition indication)&n; *   are handled as fatal error&#xfffd;s.&n; * &n; *   All other configurations are handled as recoverable errors.&n; *&n; * RETURN VALUES&n; *   dasd_era_fatal&t;for all fatal (unrecoverable errors)&n; *   dasd_era_recover&t;for all others.&n; */
@@ -48,7 +45,8 @@ DECL|function|dasd_3990_erp_examine_24
 id|dasd_3990_erp_examine_24
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -57,7 +55,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -198,7 +197,8 @@ DECL|function|dasd_3990_erp_examine_32
 id|dasd_3990_erp_examine_32
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -207,7 +207,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -260,7 +261,8 @@ DECL|function|dasd_3990_erp_examine
 id|dasd_3990_erp_examine
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -281,7 +283,8 @@ id|era
 op_assign
 id|dasd_era_recover
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -387,13 +390,15 @@ multiline_comment|/*&n; ********************************************************
 multiline_comment|/*&n; ***************************************************************************** &n; * 24 and 32 byte sense ERP functions&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; * DASD_3990_ERP_CLEANUP &n; *&n; * DESCRIPTION&n; *   Removes the already build but not necessary ERP request and sets&n; *   the status of the original cqr / erp to the given (final) status&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   final_status&t;either DASD_CQR_DONE or DASD_CQR_FAILED &n; *&n; * RETURN VALUES&n; *   cqr&t;&t;original cqr&t;&t;   &n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_cleanup
 id|dasd_3990_erp_cleanup
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -401,7 +406,8 @@ r_char
 id|final_status
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 op_assign
@@ -431,7 +437,8 @@ DECL|function|dasd_3990_erp_block_queue
 id|dasd_3990_erp_block_queue
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -439,7 +446,8 @@ r_int
 id|expires
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -472,18 +480,21 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * DASD_3990_ERP_INT_REQ &n; *&n; * DESCRIPTION&n; *   Handles &squot;Intervention Required&squot; error.&n; *   This means either device offline or not installed.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp&n; * RETURN VALUES&n; *   erp&t;&t;modified erp&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_int_req
 id|dasd_3990_erp_int_req
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -548,12 +559,14 @@ DECL|function|dasd_3990_erp_alternate_path
 id|dasd_3990_erp_alternate_path
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -661,13 +674,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_alternate_path */
 multiline_comment|/*&n; * DASD_3990_ERP_DCTL&n; *&n; * DESCRIPTION&n; *   Setup cqr to do the Diagnostic Control (DCTL) command with an &n; *   Inhibit Write subcommand (0x20) and the given modifier.&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current (failed) ERP&n; *   modifier&t;&t;subcommand modifier&n; *   &n; * RETURN VALUES&n; *   dctl_cqr&t;&t;pointer to NEW dctl_cqr &n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_DCTL
 id|dasd_3990_erp_DCTL
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -675,13 +690,15 @@ r_char
 id|modifier
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
 id|erp-&gt;device
 suffix:semicolon
-id|DCTL_data_t
+r_struct
+id|DCTL_data
 op_star
 id|DCTL_data
 suffix:semicolon
@@ -690,7 +707,8 @@ id|ccw1
 op_star
 id|ccw
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dctl_cqr
 suffix:semicolon
@@ -710,7 +728,8 @@ l_int|1
 comma
 r_sizeof
 (paren
-id|DCTL_data_t
+r_struct
+id|DCTL_data
 )paren
 comma
 id|erp-&gt;device
@@ -841,13 +860,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_DCTL */
 multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 1 (see Reference manual).&n; *   Repeat the operation on a different channel path.&n; *   If all alternate paths have been tried, the request is posted with a&n; *   permanent error.&n; *   Note: duplex handling is not implemented (yet).&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action_1
 id|dasd_3990_erp_action_1
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
@@ -869,13 +890,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_action_1 */
 multiline_comment|/*&n; * DASD_3990_ERP_ACTION_4 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 4 (see Reference manual).&n; *   Set the current request to PENDING to block the CQR queue for that device&n; *   until the state change interrupt appears.&n; *   Use a timer (20 seconds) to retry the cqr if the interrupt is still missing.&n; *&n; *  PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action_4
 id|dasd_3990_erp_action_4
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -884,7 +907,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -977,13 +1001,15 @@ multiline_comment|/* end dasd_3990_erp_action_4 */
 multiline_comment|/*&n; ***************************************************************************** &n; * 24 byte sense ERP functions (only)&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; * DASD_3990_ERP_ACTION_5 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 5 (see Reference manual).&n; *   NOTE: Further handling is done in xxx_further_erp after the retries.&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action_5
 id|dasd_3990_erp_action_5
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
@@ -1009,7 +1035,8 @@ DECL|function|dasd_3990_handle_env_data
 id|dasd_3990_handle_env_data
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -1018,7 +1045,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3313,13 +3341,15 @@ multiline_comment|/* end switch message format */
 multiline_comment|/* end dasd_3990_handle_env_data */
 multiline_comment|/*&n; * DASD_3990_ERP_COM_REJ&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Command Reject&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; *   sense&t;&t;current sense data&n; * &n; * RETURN VALUES&n; *   erp&t;&t;&squot;new&squot; erp_head - pointer to new ERP &n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_com_rej
 id|dasd_3990_erp_com_rej
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -3328,7 +3358,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3408,18 +3439,21 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_com_rej */
 multiline_comment|/*&n; * DASD_3990_ERP_BUS_OUT &n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Bus Out Parity Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_bus_out
 id|dasd_3990_erp_bus_out
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3479,13 +3513,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_bus_out */
 multiline_comment|/*&n; * DASD_3990_ERP_EQUIP_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Equipment Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_equip_check
 id|dasd_3990_erp_equip_check
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -3494,7 +3530,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3661,13 +3698,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_equip_check */
 multiline_comment|/*&n; * DASD_3990_ERP_DATA_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Data Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_data_check
 id|dasd_3990_erp_data_check
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -3676,7 +3715,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3823,13 +3863,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_data_check */
 multiline_comment|/*&n; * DASD_3990_ERP_OVERRUN&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Overrun&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_overrun
 id|dasd_3990_erp_overrun
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -3838,7 +3880,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3876,13 +3919,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_overrun */
 multiline_comment|/*&n; * DASD_3990_ERP_INV_FORMAT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Invalid Track Format&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_inv_format
 id|dasd_3990_erp_inv_format
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -3891,7 +3936,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -3977,13 +4023,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_inv_format */
 multiline_comment|/*&n; * DASD_3990_ERP_EOC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;End-of-Cylinder&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;already added default erp&n; * RETURN VALUES&n; *   erp&t;&t;pointer to original (failed) cqr.&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_EOC
 id|dasd_3990_erp_EOC
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|default_erp
 comma
@@ -3992,7 +4040,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4024,13 +4073,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_EOC */
 multiline_comment|/*&n; * DASD_3990_ERP_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental-Data Present&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_env_data
 id|dasd_3990_erp_env_data
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -4039,7 +4090,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4112,13 +4164,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_env_data */
 multiline_comment|/*&n; * DASD_3990_ERP_NO_REC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;No Record Found&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;already added default ERP&n; *&t;&t;&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_no_rec
 id|dasd_3990_erp_no_rec
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|default_erp
 comma
@@ -4127,7 +4181,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4159,18 +4214,21 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_no_rec */
 multiline_comment|/*&n; * DASD_3990_ERP_FILE_PROT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;File Protected&squot; error.&n; *   Note: Seek related recovery is not implemented because&n; *&t;   wee don&squot;t use the seek command yet.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_file_prot
 id|dasd_3990_erp_file_prot
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4201,13 +4259,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_file_prot */
 multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_24 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 24 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the (addtitional) ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_inspect_24
 id|dasd_3990_erp_inspect_24
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -4216,7 +4276,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_filled
 op_assign
@@ -4580,13 +4641,15 @@ multiline_comment|/* END dasd_3990_erp_inspect_24 */
 multiline_comment|/*&n; ***************************************************************************** &n; * 32 byte sense ERP functions (only)&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; * DASD_3990_ERPACTION_10_32 &n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 10&squot; of Single Program Action Codes.&n; *   Just retry and if retry doesn&squot;t work, return with error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; *   sense&t;&t;current sense data &n; * RETURN VALUES&n; *   erp&t;&t;modified erp_head&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action_10_32
 id|dasd_3990_erp_action_10_32
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -4595,7 +4658,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4628,13 +4692,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_action_10_32 */
 multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1B_32&n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 1B&squot; of Single Program Action Codes.&n; *   A write operation could not be finished because of an unexpected &n; *   condition.&n; *   The already created &squot;default erp&squot; is used to get the link to &n; *   the erp chain, but it can not be used for this recovery &n; *   action because it contains no DE/LO data space.&n; *&n; * PARAMETER&n; *   default_erp&t;already added default erp.&n; *   sense&t;&t;current sense data &n; *&n; * RETURN VALUES&n; *   erp&t;&t;new erp or &n; *&t;&t;&t;default_erp in case of imprecise ending or error&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action_1B_32
 id|dasd_3990_erp_action_1B_32
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|default_erp
 comma
@@ -4643,7 +4709,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -4654,15 +4721,18 @@ id|cpa
 op_assign
 l_int|0
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 suffix:semicolon
-id|DE_eckd_data_t
+r_struct
+id|DE_eckd_data
 op_star
 id|DE_data
 suffix:semicolon
@@ -4795,12 +4865,14 @@ comma
 multiline_comment|/* DE/LO + TIC */
 r_sizeof
 (paren
-id|DE_eckd_data_t
+r_struct
+id|DE_eckd_data
 )paren
 op_plus
 r_sizeof
 (paren
-id|LO_eckd_data_t
+r_struct
+id|LO_eckd_data
 )paren
 comma
 id|device
@@ -4852,7 +4924,8 @@ id|cqr-&gt;data
 comma
 r_sizeof
 (paren
-id|DE_eckd_data_t
+r_struct
+id|DE_eckd_data
 )paren
 )paren
 suffix:semicolon
@@ -4863,7 +4936,8 @@ id|erp-&gt;data
 op_plus
 r_sizeof
 (paren
-id|DE_eckd_data_t
+r_struct
+id|DE_eckd_data
 )paren
 suffix:semicolon
 r_if
@@ -5198,13 +5272,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_action_1B_32 */
 multiline_comment|/*&n; * DASD_3990_UPDATE_1B&n; *&n; * DESCRIPTION&n; *   Handles the update to the 32 byte &squot;Action 1B&squot; of Single Program &n; *   Action Codes in case the first action was not successful.&n; *   The already created &squot;previous_erp&squot; is the currently not successful&n; *   ERP. &n; *&n; * PARAMETER&n; *   previous_erp&t;already created previous erp.&n; *   sense&t;&t;current sense data &n; * RETURN VALUES&n; *   erp&t;&t;modified erp &n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_update_1B
 id|dasd_3990_update_1B
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|previous_erp
 comma
@@ -5213,7 +5289,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -5224,11 +5301,13 @@ id|cpa
 op_assign
 l_int|0
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 suffix:semicolon
@@ -5236,7 +5315,7 @@ r_char
 op_star
 id|LO_data
 suffix:semicolon
-multiline_comment|/* LO_eckd_data_t */
+multiline_comment|/* struct LO_eckd_data */
 r_struct
 id|ccw1
 op_star
@@ -5351,7 +5430,8 @@ id|erp-&gt;data
 op_plus
 r_sizeof
 (paren
-id|DE_eckd_data_t
+r_struct
+id|DE_eckd_data
 )paren
 suffix:semicolon
 r_if
@@ -5580,7 +5660,8 @@ DECL|function|dasd_3990_erp_compound_retry
 id|dasd_3990_erp_compound_retry
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5661,7 +5742,8 @@ DECL|function|dasd_3990_erp_compound_path
 id|dasd_3990_erp_compound_path
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5714,13 +5796,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_compound_path */
 multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_CODE &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for retry code.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;NEW ERP pointer&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_compound_code
 id|dasd_3990_erp_compound_code
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5807,7 +5891,8 @@ DECL|function|dasd_3990_erp_compound_config
 id|dasd_3990_erp_compound_config
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5839,7 +5924,8 @@ id|DASD_SENSE_BIT_2
 )paren
 (brace
 multiline_comment|/* set to suspended duplex state then restart */
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -5869,13 +5955,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_compound_config */
 multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND &n; *&n; * DESCRIPTION&n; *   Does the further compound program action if &n; *   compound retry was not successful.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current (failed) ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;(additional) ERP pointer&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_compound
 id|dasd_3990_erp_compound
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5982,13 +6070,15 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_compound */
 multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_32 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 32 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp_filled&t;&t;pointer to the ERP&n; *&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_inspect_32
 id|dasd_3990_erp_inspect_32
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 comma
@@ -5997,7 +6087,8 @@ op_star
 id|sense
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -6282,18 +6373,21 @@ multiline_comment|/* end dasd_3990_erp_inspect_32 */
 multiline_comment|/*&n; ***************************************************************************** &n; * main ERP control fuctions (24 and 32 byte sense)&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; * DASD_3990_ERP_INSPECT&n; *&n; * DESCRIPTION&n; *   Does a detailed inspection for sense data by calling either&n; *   the 24-byte or the 32-byte inspection routine.&n; *&n; * PARAMETER&n; *   erp&t;&t;pointer to the currently created default ERP&n; * RETURN VALUES&n; *   erp_new&t;&t;contens was possibly modified &n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_inspect
 id|dasd_3990_erp_inspect
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_new
 op_assign
@@ -6353,18 +6447,21 @@ suffix:semicolon
 multiline_comment|/* END dasd_3990_erp_inspect */
 multiline_comment|/*&n; * DASD_3990_ERP_ADD_ERP&n; * &n; * DESCRIPTION&n; *   This funtion adds an additional request block (ERP) to the head of&n; *   the given cqr (or erp).&n; *   This erp is initialized as an default erp (retry TIC)&n; *&n; * PARAMETER&n; *   cqr&t;&t;head of the current ERP-chain (or single cqr if &n; *&t;&t;&t;first error)&n; * RETURN VALUES&n; *   erp&t;&t;pointer to new ERP-chain head&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_add_erp
 id|dasd_3990_erp_add_erp
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -6376,7 +6473,8 @@ op_star
 id|ccw
 suffix:semicolon
 multiline_comment|/* allocate additional request block */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 suffix:semicolon
@@ -6534,18 +6632,21 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * DASD_3990_ERP_ADDITIONAL_ERP &n; * &n; * DESCRIPTION&n; *   An additional ERP is needed to handle the current error.&n; *   Add ERP to the head of the ERP-chain containing the ERP processing&n; *   determined based on the sense data.&n; *&n; * PARAMETER&n; *   cqr&t;&t;head of the current ERP-chain (or single cqr if &n; *&t;&t;&t;first error)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to new ERP-chain head&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_additional_erp
 id|dasd_3990_erp_additional_erp
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 op_assign
@@ -6590,11 +6691,13 @@ DECL|function|dasd_3990_erp_error_match
 id|dasd_3990_erp_error_match
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr1
 comma
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr2
 )paren
@@ -6668,18 +6771,21 @@ multiline_comment|/* match */
 multiline_comment|/* end dasd_3990_erp_error_match */
 multiline_comment|/*&n; * DASD_3990_ERP_IN_ERP&n; *&n; * DESCRIPTION&n; *   check if the current error already happened before.&n; *   quick exit if current cqr is not an ERP (cqr-&gt;refers=NULL)&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;erp-pointer to the already defined error &n; *&t;&t;&t;recovery procedure OR&n; *&t;&t;&t;NULL if a &squot;new&squot; error occurred.&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_in_erp
 id|dasd_3990_erp_in_erp
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_head
 op_assign
@@ -6770,18 +6876,21 @@ multiline_comment|/* return address of matching erp */
 multiline_comment|/* END dasd_3990_erp_in_erp */
 multiline_comment|/*&n; * DASD_3990_ERP_FURTHER_ERP (24 &amp; 32 byte sense)&n; *&n; * DESCRIPTION&n; *   No retry is left for the current ERP. Check what has to be done &n; *   with the ERP.&n; *     - do further defined ERP action or&n; *     - wait for interrupt or&t;&n; *     - exit with permanent error&n; *&n; * PARAMETER&n; *   erp&t;&t;ERP which is in progress with no retry left&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_further_erp
 id|dasd_3990_erp_further_erp
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -7021,35 +7130,41 @@ suffix:semicolon
 multiline_comment|/* end dasd_3990_erp_further_erp */
 multiline_comment|/*&n; * DASD_3990_ERP_HANDLE_MATCH_ERP &n; *&n; * DESCRIPTION&n; *   An error occurred again and an ERP has been detected which is already&n; *   used to handle this error (e.g. retries). &n; *   All prior ERP&squot;s are asumed to be successful and therefore removed&n; *   from queue.&n; *   If retry counter of matching erp is already 0, it is checked if further &n; *   action is needed (besides retry) or if the ERP has failed.&n; *&n; * PARAMETER&n; *   erp_head&t;&t;first ERP in ERP-chain&n; *   erp&t;&t;ERP that handles the actual error.&n; *&t;&t;&t;(matching erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_handle_match_erp
 id|dasd_3990_erp_handle_match_erp
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_head
 comma
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
 id|erp_head-&gt;device
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_done
 op_assign
 id|erp_head
 suffix:semicolon
 multiline_comment|/* finished req */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp_free
 op_assign
@@ -7223,24 +7338,28 @@ suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_handle_match_erp */
 multiline_comment|/*&n; * DASD_3990_ERP_ACTION&n; *&n; * DESCRIPTION&n; *   controll routine for 3990 erp actions.&n; *   Has to be called with the queue lock (namely the s390_irq_lock) acquired.&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;erp-pointer to the head of the ERP action chain.&n; *&t;&t;&t;This means:&n; *&t;&t;&t; - either a ptr to an additional ERP cqr or&n; *&t;&t;&t; - the original given cqr (which&squot;s status might &n; *&t;&t;&t;   be modified)&n; */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_3990_erp_action
 id|dasd_3990_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 op_assign
@@ -7266,7 +7385,8 @@ l_string|&quot;ERP chain at BEGINNING of ERP-ACTION&quot;
 )paren
 suffix:semicolon
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|temp_erp
 op_assign
@@ -7432,7 +7552,8 @@ l_string|&quot;ERP chain at END of ERP-ACTION&quot;
 )paren
 suffix:semicolon
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|temp_erp
 op_assign
