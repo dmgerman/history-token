@@ -827,6 +827,7 @@ op_star
 id|HPTES_PER_GROUP
 )paren
 suffix:semicolon
+multiline_comment|/* Panic if a pte grpup is full */
 r_if
 c_cond
 (paren

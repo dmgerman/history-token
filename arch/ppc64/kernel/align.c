@@ -795,9 +795,9 @@ suffix:semicolon
 DECL|macro|SWAP
 mdefine_line|#define SWAP(a, b)&t;(t = (a), (a) = (b), (b) = t)
 DECL|function|make_dsisr
-r_int
 r_static
 r_inline
+r_int
 id|make_dsisr
 c_func
 (paren
