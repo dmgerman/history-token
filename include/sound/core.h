@@ -489,6 +489,11 @@ r_int
 id|controls_count
 suffix:semicolon
 multiline_comment|/* count of all controls */
+DECL|member|user_ctl_count
+r_int
+id|user_ctl_count
+suffix:semicolon
+multiline_comment|/* count of all user controls */
 DECL|member|controls
 r_struct
 id|list_head
