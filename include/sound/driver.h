@@ -68,6 +68,5 @@ suffix:semicolon
 DECL|macro|vfree
 macro_line|#undef vfree
 macro_line|#endif
-macro_line|#include &quot;sndmagic.h&quot;
 macro_line|#endif /* __SOUND_DRIVER_H */
 eof

@@ -277,12 +277,15 @@ id|q
 suffix:semicolon
 id|q
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|queue_t
+op_star
+id|q
 )paren
 comma
 id|GFP_KERNEL

@@ -19,8 +19,6 @@ mdefine_line|#define SNDRV_LEGACY_FIND_FREE_IRQ
 DECL|macro|SNDRV_LEGACY_FIND_FREE_DMA
 mdefine_line|#define SNDRV_LEGACY_FIND_FREE_DMA
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 macro_line|#ifdef SNDRV_SBAWE
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;sbawe: &quot;
@@ -40,12 +38,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 macro_line|#ifndef SNDRV_SBAWE
 id|MODULE_DESCRIPTION
 c_func
@@ -53,7 +45,7 @@ c_func
 l_string|&quot;Sound Blaster 16&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Creative Labs,SB 16},&quot;
@@ -70,7 +62,7 @@ c_func
 l_string|&quot;Sound Blaster AWE&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Creative Labs,SB AWE 32},&quot;
@@ -324,14 +316,6 @@ comma
 l_string|&quot;Index value for SoundBlaster 16 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -352,14 +336,6 @@ comma
 l_string|&quot;ID string for SoundBlaster 16 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -378,14 +354,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable SoundBlaster 16 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -409,14 +377,6 @@ comma
 l_string|&quot;PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -436,15 +396,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for SB16 driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220},{0x240},{0x260},{0x280}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -467,15 +418,6 @@ comma
 l_string|&quot;MPU-401 port # for SB16 driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x330},{0x300}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -494,15 +436,6 @@ c_func
 id|fm_port
 comma
 l_string|&quot;FM port # for SB16 PnP driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x388},{0x38c},{0x390},{0x394}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SNDRV_SBAWE_EMU8000
@@ -526,15 +459,6 @@ comma
 l_string|&quot;AWE port # for SB16 PnP driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|awe_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x620},{0x640},{0x660},{0x680}},dialog:list&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -554,14 +478,6 @@ c_func
 id|irq
 comma
 l_string|&quot;IRQ # for SB16 driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -584,14 +500,6 @@ comma
 l_string|&quot;8-bit DMA # for SB16 driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma8
-comma
-id|SNDRV_DMA8_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -612,14 +520,6 @@ comma
 l_string|&quot;16-bit DMA # for SB16 driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma16
-comma
-id|SNDRV_DMA16_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -638,16 +538,6 @@ c_func
 id|mic_agc
 comma
 l_string|&quot;Mic Auto-Gain-Control switch.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mic_agc
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_SB16_CSP
@@ -671,16 +561,6 @@ comma
 l_string|&quot;ASP/CSP chip support.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|csp
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef SNDRV_SBAWE_EMU8000
 id|module_param_array
@@ -701,15 +581,6 @@ c_func
 id|seq_ports
 comma
 l_string|&quot;Number of sequencer ports for WaveTable synth.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|seq_ports
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,8}},skill:advanced&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -9,8 +9,6 @@ macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs4231_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -23,12 +21,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef CS4232
 id|MODULE_DESCRIPTION
 c_func
@@ -36,7 +28,7 @@ c_func
 l_string|&quot;Cirrus Logic CS4232&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Turtle Beach,TBS-2000},&quot;
@@ -54,7 +46,7 @@ c_func
 l_string|&quot;Cirrus Logic CS4235-9&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Crystal Semiconductors,CS4235},&quot;
@@ -280,14 +272,6 @@ id|IDENT
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -308,14 +292,6 @@ comma
 l_string|&quot;ID string for &quot;
 id|IDENT
 l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -340,14 +316,6 @@ id|IDENT
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
 id|module_param_array
 c_func
@@ -367,14 +335,6 @@ c_func
 id|isapnp
 comma
 l_string|&quot;ISA PnP detection for specified soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -400,14 +360,6 @@ id|IDENT
 l_string|&quot; driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -428,14 +380,6 @@ comma
 l_string|&quot;Control port # for &quot;
 id|IDENT
 l_string|&quot; driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cport
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -460,14 +404,6 @@ id|IDENT
 l_string|&quot; driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -488,14 +424,6 @@ comma
 l_string|&quot;FM port # for &quot;
 id|IDENT
 l_string|&quot; driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -520,14 +448,6 @@ id|IDENT
 l_string|&quot; driver (optional).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sb_port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -548,14 +468,6 @@ comma
 l_string|&quot;IRQ # for &quot;
 id|IDENT
 l_string|&quot; driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -580,14 +492,6 @@ id|IDENT
 l_string|&quot; driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -610,14 +514,6 @@ id|IDENT
 l_string|&quot; driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -638,14 +534,6 @@ comma
 l_string|&quot;DMA2 # for &quot;
 id|IDENT
 l_string|&quot; driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 DECL|struct|snd_card_cs4236

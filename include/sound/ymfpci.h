@@ -765,11 +765,6 @@ id|gameport
 id|gameport
 suffix:semicolon
 macro_line|#endif
-DECL|member|dma_dev
-r_struct
-id|snd_dma_device
-id|dma_dev
-suffix:semicolon
 DECL|member|work_ptr
 r_struct
 id|snd_dma_buffer

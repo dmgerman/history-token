@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 multiline_comment|/* i2c address */
 DECL|macro|DACA_I2C_ADDR
 mdefine_line|#define DACA_I2C_ADDR&t;0x4d
@@ -852,8 +850,6 @@ id|daca_put_amp
 comma
 )brace
 suffix:semicolon
-DECL|macro|num_controls
-mdefine_line|#define num_controls(ary) (sizeof(ary) / sizeof(snd_kcontrol_new_t))
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 DECL|function|daca_resume
 r_static
@@ -1084,7 +1080,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_controls
+id|ARRAY_SIZE
 c_func
 (paren
 id|daca_mixers

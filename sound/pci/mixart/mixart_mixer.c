@@ -9,8 +9,6 @@ macro_line|#include &quot;mixart_core.h&quot;
 macro_line|#include &quot;mixart_hwdep.h&quot;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &quot;mixart_mixer.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t mixart_t
 DECL|variable|mixart_analog_level
 r_static
 id|u32

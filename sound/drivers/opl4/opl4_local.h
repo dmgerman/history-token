@@ -369,10 +369,6 @@ r_struct
 id|list_head
 id|on_voices
 suffix:semicolon
-DECL|member|voices_lock
-id|spinlock_t
-id|voices_lock
-suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon

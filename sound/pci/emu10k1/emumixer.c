@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t emu10k1_t
 DECL|macro|AC97_ID_STAC9758
 mdefine_line|#define AC97_ID_STAC9758&t;0x83847658
 DECL|function|snd_emu10k1_spdif_info
@@ -2433,15 +2431,7 @@ id|emu10k1_t
 op_star
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu10k1_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|emu-&gt;ac97
 op_assign
@@ -2782,35 +2772,28 @@ id|emu-&gt;no_ac97
 )paren
 (brace
 id|ac97_bus_t
-id|bus
-comma
 op_star
 id|pbus
 suffix:semicolon
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|bus
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|bus
-)paren
-)paren
-suffix:semicolon
-id|bus.write
+r_static
+id|ac97_bus_ops_t
+id|ops
+op_assign
+(brace
+dot
+id|write
 op_assign
 id|snd_emu10k1_ac97_write
-suffix:semicolon
-id|bus.read
+comma
+dot
+id|read
 op_assign
 id|snd_emu10k1_ac97_read
+comma
+)brace
 suffix:semicolon
 r_if
 c_cond
@@ -2823,8 +2806,12 @@ c_func
 (paren
 id|emu-&gt;card
 comma
+l_int|0
+comma
 op_amp
-id|bus
+id|ops
+comma
+l_int|NULL
 comma
 op_amp
 id|pbus

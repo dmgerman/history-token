@@ -4711,6 +4711,26 @@ id|i
 suffix:semicolon
 )brace
 )brace
+r_static
+r_void
+DECL|function|vortex_XtalkHw_SetGainsAllChan
+id|vortex_XtalkHw_SetGainsAllChan
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+)paren
+(brace
+id|vortex_XtalkHw_SetGains
+c_func
+(paren
+id|vortex
+comma
+id|asXtalkGainsAllChan
+)paren
+suffix:semicolon
+)brace
 macro_line|#if 0
 r_static
 r_void

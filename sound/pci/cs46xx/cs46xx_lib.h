@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  The driver for the Cirrus Logic&squot;s Sound Fusion 
 macro_line|#ifndef __CS46XX_LIB_H__
 DECL|macro|__CS46XX_LIB_H__
 mdefine_line|#define __CS46XX_LIB_H__
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs46xx_t
 multiline_comment|/*&n; *  constants&n; */
 DECL|macro|CS46XX_BA0_SIZE
 mdefine_line|#define CS46XX_BA0_SIZE&t;&t;  0x1000

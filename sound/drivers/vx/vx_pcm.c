@@ -2,13 +2,12 @@ multiline_comment|/*&n; * Driver for Digigram VX soundcards&n; *&n; * PCM part&n
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/vx_core.h&gt;
 macro_line|#include &quot;vx_cmd.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t&t;vx_core_t
 multiline_comment|/*&n; * we use a vmalloc&squot;ed (sg-)buffer&n; */
 multiline_comment|/* get the physical page pointer on the given offset */
 DECL|function|snd_pcm_get_vmalloc_page
@@ -1227,8 +1226,6 @@ comma
 id|i
 comma
 id|cur_state
-comma
-id|delay
 suffix:semicolon
 multiline_comment|/* Check the pipe is not already in the requested state */
 r_if
@@ -1268,11 +1265,6 @@ c_cond
 id|state
 )paren
 (brace
-r_int
-id|delay
-op_assign
-id|CAN_START_DELAY
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1288,14 +1280,6 @@ id|i
 op_increment
 )paren
 (brace
-id|snd_vx_delay
-c_func
-(paren
-id|chip
-comma
-id|delay
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|vx_pipe_can_start
@@ -1316,20 +1300,11 @@ l_int|0
 r_break
 suffix:semicolon
 multiline_comment|/* Wait for a few, before asking again&n;&t;&t;&t; * to avoid flooding the DSP with our requests&n;&t;&t;&t; */
-r_if
-c_cond
+id|mdelay
+c_func
 (paren
-(paren
-id|i
-op_mod
-l_int|4
-)paren
-op_eq
-l_int|0
-)paren
-id|delay
-op_lshift_assign
 l_int|1
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1372,10 +1347,6 @@ r_return
 id|err
 suffix:semicolon
 multiline_comment|/* If it completes successfully, wait for the pipes&n;&t; * reaching the expected state before returning&n;&t; * Check one pipe only (since they are synchronous)&n;&t; */
-id|delay
-op_assign
-id|WAIT_STATE_DELAY
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1391,14 +1362,6 @@ id|i
 op_increment
 )paren
 (brace
-id|snd_vx_delay
-c_func
-(paren
-id|chip
-comma
-id|delay
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|vx_get_pipe_state
@@ -1430,20 +1393,11 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_if
-c_cond
+id|mdelay
+c_func
 (paren
-(paren
-id|i
-op_mod
-l_int|4
-)paren
-op_eq
-l_int|0
-)paren
-id|delay
-op_lshift_assign
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -1644,12 +1598,16 @@ suffix:semicolon
 multiline_comment|/* initialize the pipe record */
 id|pipe
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|vx_pipe_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|pipe
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -1783,7 +1741,7 @@ op_amp
 id|rmh
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|pipe
@@ -2244,17 +2202,7 @@ id|EINVAL
 suffix:semicolon
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|subs-&gt;runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2862,29 +2810,13 @@ id|vx_core_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_core_t
-comma
 id|subs-&gt;pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|subs-&gt;runtime-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|err
@@ -2979,17 +2911,7 @@ id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|subs-&gt;runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|err
@@ -3174,17 +3096,7 @@ id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_return
 id|pipe-&gt;position
@@ -3272,17 +3184,7 @@ id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|err
@@ -4044,17 +3946,7 @@ id|EINVAL
 suffix:semicolon
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|subs-&gt;runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|chip-&gt;capture_pipes
 (braket
@@ -4483,17 +4375,7 @@ id|vx_pipe_t
 op_star
 id|pipe
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_pipe_t
-comma
 id|runtime-&gt;private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_return
 id|bytes_to_frames
@@ -5121,15 +5003,7 @@ id|vx_core_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|vx_core_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|chip-&gt;pcm
 (braket

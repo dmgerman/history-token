@@ -202,10 +202,12 @@ multiline_comment|/* for mixer */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Information about devices with broken descriptors&n; */
+multiline_comment|/* special values for .ifnum */
 DECL|macro|QUIRK_NO_INTERFACE
 mdefine_line|#define QUIRK_NO_INTERFACE&t;&t;-2
 DECL|macro|QUIRK_ANY_INTERFACE
 mdefine_line|#define QUIRK_ANY_INTERFACE&t;&t;-1
+multiline_comment|/* quirk type */
 DECL|macro|QUIRK_MIDI_FIXED_ENDPOINT
 mdefine_line|#define QUIRK_MIDI_FIXED_ENDPOINT&t;0
 DECL|macro|QUIRK_MIDI_YAMAHA
@@ -423,6 +425,26 @@ r_const
 id|snd_usb_audio_quirk_t
 op_star
 id|quirk
+)paren
+suffix:semicolon
+r_void
+id|snd_usbmidi_input_stop
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|p
+)paren
+suffix:semicolon
+r_void
+id|snd_usbmidi_input_start
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|p
 )paren
 suffix:semicolon
 r_void

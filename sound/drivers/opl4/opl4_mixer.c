@@ -1,8 +1,6 @@
 multiline_comment|/*&n; * OPL4 mixer functions&n; * Copyright (c) 2003 by Clemens Ladisch &lt;clemens@ladisch.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &quot;opl4_local.h&quot;
 macro_line|#include &lt;sound/control.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t opl4_t
 DECL|function|snd_opl4_ctl_info
 r_static
 r_int
@@ -63,6 +61,10 @@ c_func
 id|kcontrol
 )paren
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u8
 id|reg
 op_assign
@@ -70,6 +72,15 @@ id|kcontrol-&gt;private_value
 suffix:semicolon
 id|u8
 id|value
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|opl4-&gt;reg_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|value
 op_assign
@@ -79,6 +90,15 @@ c_func
 id|opl4
 comma
 id|reg
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|opl4-&gt;reg_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ucontrol-&gt;value.integer.value
@@ -140,6 +160,10 @@ c_func
 id|kcontrol
 )paren
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u8
 id|reg
 op_assign
@@ -182,6 +206,15 @@ op_lshift
 l_int|3
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|opl4-&gt;reg_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|old_value
 op_assign
 id|snd_opl4_read
@@ -200,6 +233,15 @@ comma
 id|reg
 comma
 id|value
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|opl4-&gt;reg_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -302,16 +344,14 @@ id|i
 comma
 id|err
 suffix:semicolon
-macro_line|#if 0&t;/* already set by the codec driver */
-id|strcpy
+id|strcat
 c_func
 (paren
 id|card-&gt;mixername
 comma
-l_string|&quot;OPL4 Mixer&quot;
+l_string|&quot;,OPL4&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren

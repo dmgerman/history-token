@@ -22,12 +22,15 @@ id|f
 suffix:semicolon
 id|f
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|prioq_t
+op_star
+id|f
 )paren
 comma
 id|GFP_KERNEL

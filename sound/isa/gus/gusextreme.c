@@ -35,13 +35,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Gravis,UltraSound Extreme}}&quot;
@@ -296,14 +290,6 @@ comma
 l_string|&quot;Index value for GUS Extreme soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -322,14 +308,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for GUS Extreme soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -352,14 +330,6 @@ comma
 l_string|&quot;Enable GUS Extreme soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -378,15 +348,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220,0x260,0x20}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -409,15 +370,6 @@ comma
 l_string|&quot;GF1 port # for GUS Extreme driver (optional).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|gf1_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x210,0x270,0x10}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -436,15 +388,6 @@ c_func
 id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x300,0x320,0x10}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -467,15 +410,6 @@ comma
 l_string|&quot;IRQ # for GUS Extreme driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7},{9},{10}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -494,15 +428,6 @@ c_func
 id|mpu_irq
 comma
 l_string|&quot;MPU-401 IRQ # for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7},{9},{10}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -525,15 +450,6 @@ comma
 l_string|&quot;GF1 IRQ # for GUS Extreme driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|gf1_irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{2},{3},{5},{9},{11},{12},{15}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -552,14 +468,6 @@ c_func
 id|dma8
 comma
 l_string|&quot;8-bit DMA # for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma8
-comma
-id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -582,14 +490,6 @@ comma
 l_string|&quot;GF1 DMA # for GUS Extreme driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -608,15 +508,6 @@ c_func
 id|joystick_dac
 comma
 l_string|&quot;Joystick DAC level 0.59V-4.52V or 0.389V-2.98V for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_dac
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,31}}&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -639,15 +530,6 @@ comma
 l_string|&quot;GF1 channels for GUS Extreme driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|channels
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{14,32}}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -666,15 +548,6 @@ c_func
 id|pcm_channels
 comma
 l_string|&quot;Reserved PCM channels for GUS Extreme driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_channels
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{2,16}}&quot;
 )paren
 suffix:semicolon
 DECL|variable|snd_gusextreme_cards

@@ -25,16 +25,7 @@ id|emu10k1_t
 op_star
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|emu10k1_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int

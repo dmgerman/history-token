@@ -323,17 +323,7 @@ id|snd_emux_t
 op_star
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_emux_t
-comma
 id|hw-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_switch
 c_cond

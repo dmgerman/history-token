@@ -169,16 +169,15 @@ l_int|0
 suffix:semicolon
 id|card
 op_assign
-(paren
-id|snd_card_t
-op_star
-)paren
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|snd_card_t
+op_star
+id|card
 )paren
 op_plus
 id|extra_size
@@ -3213,6 +3212,15 @@ id|SNDRV_CTL_POWER_D0
 )paren
 r_return
 l_int|0
+suffix:semicolon
+multiline_comment|/* restore the PCI config space */
+id|pci_restore_state
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;saved_config_space
+)paren
 suffix:semicolon
 multiline_comment|/* FIXME: correct state value? */
 r_return
