@@ -684,6 +684,11 @@ r_int
 id|transcount
 suffix:semicolon
 multiline_comment|/* byte-counter for cps-calculation */
+DECL|member|last_jiffies
+r_int
+id|last_jiffies
+suffix:semicolon
+multiline_comment|/* when transcount was reset        */
 DECL|member|sqfull
 r_int
 id|sqfull
