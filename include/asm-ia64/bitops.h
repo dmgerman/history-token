@@ -1141,6 +1141,7 @@ r_extern
 r_int
 id|__find_next_zero_bit
 (paren
+r_const
 r_void
 op_star
 id|addr

@@ -1,6 +1,9 @@
 multiline_comment|/**&n; * &bslash;file drm_vm.h&n; * Memory mapping for DRM&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 multiline_comment|/*&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#if defined(__ia64__)
+macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#endif
 multiline_comment|/**&n; * &bslash;c nopage method for AGP virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;return pointer to the page structure.&n; * &n; * Find the right map and if it&squot;s AGP memory find the real physical page to&n; * map, get the page, increment the use count and return it.&n; */
 macro_line|#if __OS_HAS_AGP
 DECL|function|drm_do_vm_nopage
@@ -2232,13 +2235,28 @@ macro_line|#if defined(__ia64__)
 r_if
 c_cond
 (paren
-id|map-&gt;type
-op_ne
-id|_DRM_AGP
+id|efi_range_is_wc
+c_func
+(paren
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+)paren
 )paren
 id|vma-&gt;vm_page_prot
 op_assign
 id|pgprot_writecombine
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+r_else
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_noncached
 c_func
 (paren
 id|vma-&gt;vm_page_prot

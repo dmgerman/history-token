@@ -1002,6 +1002,10 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
+suffix:semicolon
 DECL|member|regs
 r_void
 id|__iomem

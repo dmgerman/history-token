@@ -63,6 +63,8 @@ DECL|macro|NETDEV_TX_OK
 mdefine_line|#define NETDEV_TX_OK 0&t;&t;/* driver took care of packet */
 DECL|macro|NETDEV_TX_BUSY
 mdefine_line|#define NETDEV_TX_BUSY 1&t;/* driver tx path was busy*/
+DECL|macro|NETDEV_TX_LOCKED
+mdefine_line|#define NETDEV_TX_LOCKED -1&t;/* driver tx lock was already taken */
 multiline_comment|/*&n; *&t;Compute the worst case header length according to the protocols&n; *&t;used.&n; */
 macro_line|#if !defined(CONFIG_AX25) &amp;&amp; !defined(CONFIG_AX25_MODULE) &amp;&amp; !defined(CONFIG_TR)
 DECL|macro|LL_MAX_HEADER
@@ -927,7 +929,7 @@ mdefine_line|#define NETIF_F_VLAN_CHALLENGED&t;1024&t;/* Device cannot handle VL
 DECL|macro|NETIF_F_TSO
 mdefine_line|#define NETIF_F_TSO&t;&t;2048&t;/* Can offload TCP/IP segmentation */
 DECL|macro|NETIF_F_LLTX
-mdefine_line|#define NETIF_F_LLTX&t;&t;4096&t;/* Do not grab xmit_lock during -&gt;hard_start_xmit */
+mdefine_line|#define NETIF_F_LLTX&t;&t;4096&t;/* LockLess TX */
 multiline_comment|/* Called after device is detached from network. */
 DECL|member|uninit
 r_void
@@ -3256,17 +3258,11 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_bh
 c_func
 (paren
 op_amp
 id|dev-&gt;xmit_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -3275,13 +3271,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|dev-&gt;xmit_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace

@@ -302,7 +302,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|spin_lock_irq
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -430,7 +430,7 @@ id|clip_vcc
 suffix:semicolon
 id|out
 suffix:colon
-id|spin_unlock_irq
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

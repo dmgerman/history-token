@@ -4026,7 +4026,7 @@ comma
 id|NMI_STACK
 )paren
 suffix:semicolon
-id|set_intr_gate
+id|set_system_gate
 c_func
 (paren
 l_int|3

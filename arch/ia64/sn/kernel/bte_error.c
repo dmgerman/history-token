@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/sn/geo.h&gt;
 macro_line|#include &quot;xtalk/xwidgetdev.h&quot;
 macro_line|#include &quot;xtalk/hubdev.h&quot;
 macro_line|#include &lt;asm/sn/bte.h&gt;
+macro_line|#include &lt;asm/param.h&gt;
 multiline_comment|/*&n; * Bte error handling is done in two parts.  The first captures&n; * any crb related errors.  Since there can be multiple crbs per&n; * interface and multiple interfaces active, we need to wait until&n; * all active crbs are completed.  This is the first job of the&n; * second part error handler.  When all bte related CRBs are cleanly&n; * completed, it resets the interfaces and gets them ready for new&n; * transfers to be queued.&n; */
 r_void
 id|bte_error_handler

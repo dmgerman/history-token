@@ -20,10 +20,6 @@ macro_line|#ifdef CONFIG_PERFMON
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#endif
 macro_line|#include &quot;entry.h&quot;
-DECL|macro|p4
-mdefine_line|#define p4&t;(1UL &lt;&lt; 4)&t;/* for pSys (see entry.h) */
-DECL|macro|p5
-mdefine_line|#define p5&t;(1UL &lt;&lt; 5)&t;/* for pNonSys (see entry.h) */
 multiline_comment|/*&n; * Bits in the PSR that we allow ptrace() to change:&n; *&t;be, up, ac, mfl, mfh (the user mask; five bits total)&n; *&t;db (debug breakpoint fault; one bit)&n; *&t;id (instruction debug fault disable; one bit)&n; *&t;dd (data debug fault disable; one bit)&n; *&t;ri (restart instruction; two bits)&n; *&t;is (instruction set; one bit)&n; */
 DECL|macro|IPSR_WRITE_MASK
 mdefine_line|#define IPSR_WRITE_MASK &bslash;&n;&t;(IA64_PSR_UM | IA64_PSR_DB | IA64_PSR_IS | IA64_PSR_ID | IA64_PSR_DD | IA64_PSR_RI)
@@ -2643,11 +2639,19 @@ suffix:semicolon
 id|pr
 op_and_assign
 op_complement
-id|pSys
+(paren
+l_int|1UL
+op_lshift
+id|PRED_SYSCALL
+)paren
 suffix:semicolon
 id|pr
 op_or_assign
-id|pNonSys
+(paren
+l_int|1UL
+op_lshift
+id|PRED_NON_SYSCALL
+)paren
 suffix:semicolon
 id|unw_set_pr
 c_func

@@ -876,7 +876,6 @@ suffix:semicolon
 r_struct
 id|sigaction
 suffix:semicolon
-id|asmlinkage
 r_int
 id|sys_execve
 c_func

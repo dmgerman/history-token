@@ -1,15 +1,31 @@
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * Preserved registers that are shared between code in ivt.S and entry.S.  Be&n; * careful not to step on these!&n; */
+multiline_comment|/*&n; * Preserved registers that are shared between code in ivt.S and&n; * entry.S.  Be careful not to step on these!&n; */
+DECL|macro|PRED_LEAVE_SYSCALL
+mdefine_line|#define PRED_LEAVE_SYSCALL&t;1 /* TRUE iff leave from syscall */
+DECL|macro|PRED_KERNEL_STACK
+mdefine_line|#define PRED_KERNEL_STACK&t;2 /* returning to kernel-stacks? */
+DECL|macro|PRED_USER_STACK
+mdefine_line|#define PRED_USER_STACK&t;&t;3 /* returning to user-stacks? */
+DECL|macro|PRED_SYSCALL
+mdefine_line|#define PRED_SYSCALL&t;&t;4 /* inside a system call? */
+DECL|macro|PRED_NON_SYSCALL
+mdefine_line|#define PRED_NON_SYSCALL&t;5 /* complement of PRED_SYSCALL */
+macro_line|#ifdef __ASSEMBLY__
+DECL|macro|PASTE2
+macro_line|# define PASTE2(x,y)&t;x##y
+DECL|macro|PASTE
+macro_line|# define PASTE(x,y)&t;PASTE2(x,y)
 DECL|macro|pLvSys
-mdefine_line|#define pLvSys&t;&t;p1&t;/* set 1 if leave from syscall; otherwise, set 0 */
+macro_line|# define pLvSys&t;&t;PASTE(p,PRED_LEAVE_SYSCALL)
 DECL|macro|pKStk
-mdefine_line|#define pKStk&t;&t;p2&t;/* will leave_{kernel,syscall} return to kernel-stacks? */
+macro_line|# define pKStk&t;&t;PASTE(p,PRED_KERNEL_STACK)
 DECL|macro|pUStk
-mdefine_line|#define pUStk&t;&t;p3&t;/* will leave_{kernel,syscall} return to user-stacks? */
+macro_line|# define pUStk&t;&t;PASTE(p,PRED_USER_STACK)
 DECL|macro|pSys
-mdefine_line|#define pSys&t;&t;p4&t;/* are we processing a (synchronous) system call? */
+macro_line|# define pSys&t;&t;PASTE(p,PRED_SYSCALL)
 DECL|macro|pNonSys
-mdefine_line|#define pNonSys&t;&t;p5&t;/* complement of pSys */
+macro_line|# define pNonSys&t;PASTE(p,PRED_NON_SYSCALL)
+macro_line|#endif
 DECL|macro|PT
 mdefine_line|#define PT(f)&t;&t;(IA64_PT_REGS_##f##_OFFSET)
 DECL|macro|SW

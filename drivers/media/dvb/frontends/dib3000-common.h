@@ -1,31 +1,16 @@
-multiline_comment|/*&n; * .h-files for the common use of the frontend drivers made by DiBcom&n; * DiBcom 3000-MB/MC/P&n; *&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
+multiline_comment|/*&n; * .h-files for the common use of the frontend drivers made by DiBcom&n; * DiBcom 3000-MB/MC/P&n; *&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
 macro_line|#ifndef DIB3000_COMMON_H
 DECL|macro|DIB3000_COMMON_H
 mdefine_line|#define DIB3000_COMMON_H
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dib3000.h&quot;
-multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default,&n; * please change !&n; */
+multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default. */
 DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
 DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-multiline_comment|/* a PID for the pid_filter list, when in use */
-DECL|struct|dib3000_pid
-r_struct
-id|dib3000_pid
-(brace
-DECL|member|pid
-id|u16
-id|pid
-suffix:semicolon
-DECL|member|active
-r_int
-id|active
-suffix:semicolon
-)brace
-suffix:semicolon
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;dib3000mX: &quot; format &quot;&bslash;n&quot; , ## arg)
 multiline_comment|/* frontend state */
 DECL|struct|dib3000_state
 r_struct
@@ -48,20 +33,6 @@ r_struct
 id|dib3000_config
 id|config
 suffix:semicolon
-DECL|member|pid_list_lock
-id|spinlock_t
-id|pid_list_lock
-suffix:semicolon
-DECL|member|pid_list
-r_struct
-id|dib3000_pid
-op_star
-id|pid_list
-suffix:semicolon
-DECL|member|feedcount
-r_int
-id|feedcount
-suffix:semicolon
 DECL|member|frontend
 r_struct
 id|dvb_frontend
@@ -74,6 +45,14 @@ suffix:semicolon
 DECL|member|timing_offset_comp_done
 r_int
 id|timing_offset_comp_done
+suffix:semicolon
+DECL|member|last_tuned_bw
+id|fe_bandwidth_t
+id|last_tuned_bw
+suffix:semicolon
+DECL|member|last_tuned_freq
+id|u32
+id|last_tuned_freq
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -111,56 +90,6 @@ id|val
 suffix:semicolon
 r_extern
 r_int
-id|dib3000_init_pid_list
-c_func
-(paren
-r_struct
-id|dib3000_state
-op_star
-id|state
-comma
-r_int
-id|num
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dib3000_dealloc_pid_list
-c_func
-(paren
-r_struct
-id|dib3000_state
-op_star
-id|state
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dib3000_get_pid_index
-c_func
-(paren
-r_struct
-id|dib3000_pid
-id|pid_list
-(braket
-)braket
-comma
-r_int
-id|num_pids
-comma
-r_int
-id|pid
-comma
-id|spinlock_t
-op_star
-id|pid_list_lock
-comma
-r_int
-id|onoff
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|dib3000_search_status
 c_func
 (paren
@@ -177,7 +106,7 @@ mdefine_line|#define rd(reg) dib3000_read_reg(state,reg)
 DECL|macro|wr
 mdefine_line|#define wr(reg,val) if (dib3000_write_reg(state,reg,val)) &bslash;&n;&t;{ err(&quot;while sending 0x%04x to 0x%04x.&quot;,val,reg); return -EREMOTEIO; }
 DECL|macro|wr_foreach
-mdefine_line|#define wr_foreach(a,v) { int i; &bslash;&n;&t;if (sizeof(a) != sizeof(v)) &bslash;&n;&t;&t;err(&quot;sizeof: %zd %zd is different&quot;,sizeof(a),sizeof(v));&bslash;&n;&t;for (i=0; i &lt; sizeof(a)/sizeof(u16); i++) &bslash;&n;&t;&t;wr(a[i],v[i]); &bslash;&n;&t;}
+mdefine_line|#define wr_foreach(a,v) { int i; &bslash;&n;&t;if (sizeof(a) != sizeof(v)) &bslash;&n;&t;&t;err(&quot;sizeof: %d %d is different&quot;,sizeof(a),sizeof(v));&bslash;&n;&t;for (i=0; i &lt; sizeof(a)/sizeof(u16); i++) &bslash;&n;&t;&t;wr(a[i],v[i]); &bslash;&n;&t;}
 DECL|macro|set_or
 mdefine_line|#define set_or(reg,val) wr(reg,rd(reg) | val)
 DECL|macro|set_and
@@ -243,9 +172,9 @@ mdefine_line|#define DIB3000_DDS_INVERSION_OFF&t;&t;(     0)
 DECL|macro|DIB3000_DDS_INVERSION_ON
 mdefine_line|#define DIB3000_DDS_INVERSION_ON&t;&t;(     1)
 DECL|macro|DIB3000_TUNER_WRITE_ENABLE
-mdefine_line|#define DIB3000_TUNER_WRITE_ENABLE(a)&t;(0xffff &amp; (a &lt;&lt; 7))
+mdefine_line|#define DIB3000_TUNER_WRITE_ENABLE(a)&t;(0xffff &amp; (a &lt;&lt; 8))
 DECL|macro|DIB3000_TUNER_WRITE_DISABLE
-mdefine_line|#define DIB3000_TUNER_WRITE_DISABLE(a)&t;(0xffff &amp; ((a &lt;&lt; 7) | (1 &lt;&lt; 7)))
+mdefine_line|#define DIB3000_TUNER_WRITE_DISABLE(a)&t;(0xffff &amp; ((a &lt;&lt; 8) | (1 &lt;&lt; 7)))
 multiline_comment|/* for auto search */
 r_extern
 id|u16

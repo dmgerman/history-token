@@ -13889,6 +13889,12 @@ comma
 id|uru
 ques
 c_cond
+(paren
+r_struct
+id|rusage
+id|__user
+op_star
+)paren
 op_amp
 id|ru
 suffix:colon
