@@ -44,7 +44,6 @@ suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG( s )
 multiline_comment|/* #define DEBUG( s ) printk( s ) &n; */
-macro_line|#ifdef PARANOIA
 DECL|variable|requests_in
 r_static
 r_int
@@ -55,7 +54,6 @@ r_static
 r_int
 id|requests_out
 suffix:semicolon
-macro_line|#endif
 DECL|function|nbd_open
 r_static
 r_int
@@ -1043,45 +1041,14 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-macro_line|#ifdef PARANOIA
-r_if
-c_cond
-(paren
-id|lo
-op_ne
-id|req-&gt;rq_disk-&gt;private_data
-)paren
-(brace
-id|printk
+id|BUG_ON
 c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;NBD: request corrupted!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
 (paren
 id|lo-&gt;magic
 op_ne
 id|LO_MAGIC
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ALERT
-l_string|&quot;NBD: nbd_dev[] corrupted: Not enough magic&bslash;n&quot;
-)paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-macro_line|#endif
 id|nbd_end_request
 c_func
 (paren
@@ -1110,26 +1077,14 @@ id|request
 op_star
 id|req
 suffix:semicolon
-macro_line|#ifdef PARANOIA
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|lo-&gt;magic
 op_ne
 id|LO_MAGIC
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;NBD: nbd_dev[] corrupted: Not enough magic when clearing!&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 r_do
 (brace
 id|req
@@ -1323,24 +1278,17 @@ l_string|&quot;Write on read-only&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef PARANOIA
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|lo-&gt;magic
 op_ne
 id|LO_MAGIC
 )paren
-id|FAIL
-c_func
-(paren
-l_string|&quot;nbd[] is not magical!&quot;
-)paren
 suffix:semicolon
 id|requests_in
 op_increment
 suffix:semicolon
-macro_line|#endif
 id|req-&gt;errors
 op_assign
 l_int|0
