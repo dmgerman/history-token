@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.64 2002/06/10&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
@@ -8,14 +8,6 @@ macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAVEN_I2CID
 mdefine_line|#define MAVEN_I2CID&t;(0x1B)
-DECL|macro|MODE_PAL
-mdefine_line|#define MODE_PAL&t;MATROXFB_OUTPUT_MODE_PAL
-DECL|macro|MODE_NTSC
-mdefine_line|#define MODE_NTSC&t;MATROXFB_OUTPUT_MODE_NTSC
-DECL|macro|MODE_TV
-mdefine_line|#define MODE_TV(x)&t;(((x) == MODE_PAL) || ((x) == MODE_NTSC))
-DECL|macro|MODE_MONITOR
-mdefine_line|#define MODE_MONITOR&t;MATROXFB_OUTPUT_MODE_MONITOR
 DECL|macro|MGATVO_B
 mdefine_line|#define MGATVO_B&t;1
 DECL|macro|MGATVO_C
@@ -477,7 +469,7 @@ id|pll-&gt;vco_freq_max
 op_div
 id|ctl-&gt;den
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
@@ -670,7 +662,7 @@ id|htotal
 )paren
 r_continue
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
@@ -693,7 +685,7 @@ OG
 id|besth2
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
@@ -1228,7 +1220,7 @@ comma
 multiline_comment|/* 3F not written */
 )brace
 comma
-id|MODE_PAL
+id|MATROXFB_OUTPUT_MODE_PAL
 comma
 l_int|625
 comma
@@ -1421,7 +1413,7 @@ comma
 multiline_comment|/* never written */
 )brace
 comma
-id|MODE_NTSC
+id|MATROXFB_OUTPUT_MODE_NTSC
 comma
 l_int|525
 comma
@@ -1448,7 +1440,7 @@ l_int|1
 dot
 id|mode
 op_eq
-id|MODE_PAL
+id|MATROXFB_OUTPUT_MODE_PAL
 )paren
 op_star
 id|data
@@ -1742,8 +1734,8 @@ r_if
 c_cond
 (paren
 id|m-&gt;mode
-op_amp
-id|MODE_PAL
+op_eq
+id|MATROXFB_OUTPUT_MODE_PAL
 )paren
 (brace
 id|maven_set_reg
@@ -1959,8 +1951,8 @@ r_if
 c_cond
 (paren
 id|m-&gt;mode
-op_amp
-id|MODE_PAL
+op_eq
+id|MATROXFB_OUTPUT_MODE_PAL
 )paren
 id|maven_set_reg
 c_func
@@ -2566,8 +2558,8 @@ r_if
 c_cond
 (paren
 id|m-&gt;mode
-op_amp
-id|MODE_PAL
+op_eq
+id|MATROXFB_OUTPUT_MODE_PAL
 )paren
 id|maven_set_reg
 c_func
@@ -2795,8 +2787,8 @@ c_func
 (paren
 (paren
 id|m-&gt;mode
-op_amp
-id|MODE_PAL
+op_eq
+id|MATROXFB_OUTPUT_MODE_PAL
 )paren
 ques
 c_cond
@@ -2950,11 +2942,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MODE_TV
-c_func
-(paren
 id|m-&gt;mode
-)paren
+op_ne
+id|MATROXFB_OUTPUT_MODE_MONITOR
 )paren
 (brace
 r_int
@@ -4115,8 +4105,8 @@ r_if
 c_cond
 (paren
 id|m-&gt;mode
-op_amp
-id|MODE_MONITOR
+op_eq
+id|MATROXFB_OUTPUT_MODE_MONITOR
 )paren
 (brace
 id|LR
@@ -4629,7 +4619,7 @@ l_int|1
 dot
 id|mode
 op_assign
-id|MODE_MONITOR
+id|MATROXFB_OUTPUT_MODE_MONITOR
 suffix:semicolon
 id|up_write
 c_func
@@ -5274,7 +5264,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 1999-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 1999-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
