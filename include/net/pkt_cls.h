@@ -545,6 +545,16 @@ DECL|struct|tcf_pkt_info
 r_struct
 id|tcf_pkt_info
 (brace
+DECL|member|ptr
+r_int
+r_char
+op_star
+id|ptr
+suffix:semicolon
+DECL|member|nexthdr
+r_int
+id|nexthdr
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_EMATCH
