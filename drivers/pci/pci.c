@@ -1927,6 +1927,15 @@ id|dev
 suffix:semicolon
 )brace
 macro_line|#ifndef HAVE_ARCH_PCI_MWI
+multiline_comment|/* This can be overridden by arch code. */
+DECL|variable|pci_cache_line_size
+id|u8
+id|pci_cache_line_size
+op_assign
+id|L1_CACHE_BYTES
+op_rshift
+l_int|2
+suffix:semicolon
 multiline_comment|/**&n; * pci_generic_prep_mwi - helper function for pci_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for generic implementation of pcibios_prep_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appropriate -ERRNO error value on error, or zero for success.&n; */
 r_static
 r_int
@@ -1940,15 +1949,21 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
 id|u8
-id|cache_size
+id|cacheline_size
 suffix:semicolon
-multiline_comment|/*&n;&t; * Looks like this is necessary to deal with on all architectures,&n;&t; * even this %$#%$# N440BX Intel based thing doesn&squot;t get it right.&n;&t; * Ie. having two NICs in the machine, one will have the cache&n;&t; * line set at boot time, the other will not.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_cache_line_size
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* The system doesn&squot;t support MWI. */
+multiline_comment|/* Validate current setting: the PCI_CACHE_LINE_SIZE must be&n;&t;   equal to or multiple of the right value. */
 id|pci_read_config_byte
 c_func
 (paren
@@ -1957,65 +1972,28 @@ comma
 id|PCI_CACHE_LINE_SIZE
 comma
 op_amp
-id|cache_size
-)paren
-suffix:semicolon
-id|cache_size
-op_lshift_assign
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cache_size
-op_ne
-id|SMP_CACHE_BYTES
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;PCI: %s PCI cache line size set &quot;
-l_string|&quot;incorrectly (%i bytes) by BIOS/FW, &quot;
-comma
-id|dev-&gt;slot_name
-comma
-id|cache_size
+id|cacheline_size
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|cache_size
-OG
-id|SMP_CACHE_BYTES
-)paren
-(brace
-id|printk
-c_func
+id|cacheline_size
+op_ge
+id|pci_cache_line_size
+op_logical_and
 (paren
-l_string|&quot;expecting %i&bslash;n&quot;
-comma
-id|SMP_CACHE_BYTES
+id|cacheline_size
+op_mod
+id|pci_cache_line_size
 )paren
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;correcting to %i&bslash;n&quot;
-comma
-id|SMP_CACHE_BYTES
+op_eq
+l_int|0
 )paren
+r_return
+l_int|0
 suffix:semicolon
+multiline_comment|/* Write the correct value. */
 id|pci_write_config_byte
 c_func
 (paren
@@ -2023,15 +2001,48 @@ id|dev
 comma
 id|PCI_CACHE_LINE_SIZE
 comma
-id|SMP_CACHE_BYTES
-op_rshift
-l_int|2
+id|pci_cache_line_size
 )paren
 suffix:semicolon
-)brace
-)brace
+multiline_comment|/* Read it back. */
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_CACHE_LINE_SIZE
+comma
+op_amp
+id|cacheline_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cacheline_size
+op_eq
+id|pci_cache_line_size
+)paren
 r_return
-id|rc
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: cache line size of %d is not supported &quot;
+l_string|&quot;by device %s&bslash;n&quot;
+comma
+id|pci_cache_line_size
+op_lshift
+l_int|2
+comma
+id|dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif /* !HAVE_ARCH_PCI_MWI */
