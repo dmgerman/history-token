@@ -3542,6 +3542,28 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;ppw - page not up to date&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|cifs_partialpagewrite
@@ -3635,7 +3657,10 @@ id|PAGE_CACHE_SHIFT
 op_plus
 id|to
 suffix:semicolon
-multiline_comment|/* struct cifsFileInfo *open_file;&n;&t;struct cifs_sb_info *cifs_sb; */
+r_char
+op_star
+id|page_data
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -3677,12 +3702,123 @@ id|position
 suffix:semicolon
 multiline_comment|/*if (file-&gt;private_data == NULL) {&n;&t;&t;&t;rc = -EBADF;&n;&t;&t;} else {&n;&t;&t;&t;open_file = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;&t;cifs_sb = CIFS_SB(inode-&gt;i_sb);&n;&t;&t;&t;rc = -EAGAIN;&n;&t;&t;&t;while(rc == -EAGAIN) {&n;&t;&t;&t;&t;if((open_file-&gt;invalidHandle) &amp;&amp; &n;&t;&t;&t;&t;  (!open_file-&gt;closePend)) {&n;&t;&t;&t;&t;&t;rc = cifs_reopen_file(file-&gt;f_dentry-&gt;d_inode,file);&n;&t;&t;&t;&t;&t;if(rc != 0)&n;&t;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;&t;if(!open_file-&gt;closePend) {&n;&t;&t;&t;&t;&t;rc = CIFSSMBSetFileSize(xid, cifs_sb-&gt;tcon, &n;&t;&t;&t;&t;&t;&t;position, open_file-&gt;netfid,&n;&t;&t;&t;&t;&t;&t;open_file-&gt;pid,FALSE);&n;&t;&t;&t;&t;} else {&n;&t;&t;&t;&t;&t;rc = -EBADF;&n;&t;&t;&t;&t;&t;break;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;cFYI(1,(&quot; SetEOF (commit write) rc = %d&quot;,rc));&n;&t;&t;}*/
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|position
+op_assign
+(paren
+(paren
+id|loff_t
+)paren
+id|page-&gt;index
+op_lshift
+id|PAGE_CACHE_SHIFT
+)paren
+op_plus
+id|offset
+suffix:semicolon
+multiline_comment|/* can not rely on (or let) writepage write this data */
+r_if
+c_cond
+(paren
+id|to
+OL
+id|offset
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Illegal offsets, can not copy from %d to %d&quot;
+comma
+id|offset
+comma
+id|to
+)paren
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+multiline_comment|/* this is probably better than directly calling &n;&t;&t;partialpage_write since in this function&n;&t;&t;the file handle is known which we might as well&n;&t;&t;leverage */
+multiline_comment|/* BB check if anything else missing out of ppw */
+multiline_comment|/* such as updating last write time */
+id|page_data
+op_assign
+id|kmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|cifs_write
+c_func
+(paren
+id|file
+comma
+id|page_data
+op_plus
+id|offset
+comma
+id|to
+op_minus
+id|offset
+comma
+op_amp
+id|position
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OG
+l_int|0
+)paren
+(brace
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* else if rc &lt; 0 should we set writebehind rc? */
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|set_page_dirty
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 id|FreeXid
 c_func
 (paren
@@ -9128,6 +9264,18 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/* might as well read a page, it is fast enough */
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_ne
+id|O_WRONLY
+)paren
+(brace
 id|rc
 op_assign
 id|cifs_readpage_worker
@@ -9141,7 +9289,12 @@ op_amp
 id|offset
 )paren
 suffix:semicolon
-multiline_comment|/* if this returns an error should we try using another&n;&t;&t;file handle if there is one - how would we lock it&n;&t;&t;to prevent close of that handle racing with this read? */
+)brace
+r_else
+(brace
+multiline_comment|/* should we try using another&n;&t;&t;file handle if there is one - how would we lock it&n;&t;&t;to prevent close of that handle racing with this read? */
+multiline_comment|/* In any case this will be written out by commit_write */
+)brace
 )brace
 multiline_comment|/* BB should we pass any errors back? e.g. if we do not have read access to the file */
 r_return
