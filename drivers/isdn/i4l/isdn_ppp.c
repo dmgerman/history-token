@@ -4562,6 +4562,8 @@ c_cond
 id|cmd
 )paren
 (brace
+DECL|macro|PPP_VERSION
+mdefine_line|#define PPP_VERSION &quot;2.3.7&quot;
 r_case
 id|SIOCGPPPVER
 suffix:colon
