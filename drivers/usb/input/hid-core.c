@@ -7377,7 +7377,7 @@ id|fail
 suffix:semicolon
 id|pipe
 op_assign
-id|usb_sndbulkpipe
+id|usb_sndintpipe
 c_func
 (paren
 id|dev
@@ -7385,7 +7385,7 @@ comma
 id|endpoint-&gt;bEndpointAddress
 )paren
 suffix:semicolon
-id|usb_fill_bulk_urb
+id|usb_fill_int_urb
 c_func
 (paren
 id|hid-&gt;urbout
@@ -7401,6 +7401,8 @@ comma
 id|hid_irq_out
 comma
 id|hid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|hid-&gt;urbout-&gt;transfer_dma
