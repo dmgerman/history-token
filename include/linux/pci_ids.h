@@ -565,7 +565,7 @@ mdefine_line|#define PCI_DEVICE_ID_ATI_RS100&t;&t;0xcab0
 DECL|macro|PCI_DEVICE_ID_ATI_RS200
 mdefine_line|#define PCI_DEVICE_ID_ATI_RS200&t;&t;0xcab2
 DECL|macro|PCI_DEVICE_ID_ATI_RS200_B
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS200_B&t;0xcbb3
+mdefine_line|#define PCI_DEVICE_ID_ATI_RS200_B&t;0xcbb2
 DECL|macro|PCI_DEVICE_ID_ATI_RS250
 mdefine_line|#define PCI_DEVICE_ID_ATI_RS250&t;&t;0xcab3
 DECL|macro|PCI_DEVICE_ID_ATI_RS300_100
