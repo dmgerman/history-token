@@ -254,6 +254,10 @@ r_char
 op_star
 id|protocol_name
 suffix:semicolon
+DECL|member|bcs_signature
+id|__le32
+id|bcs_signature
+suffix:semicolon
 DECL|member|subclass
 id|u8
 id|subclass
