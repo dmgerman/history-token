@@ -319,7 +319,6 @@ DECL|macro|SI_FROMUSER
 mdefine_line|#define SI_FROMUSER(siptr)&t;((siptr)-&gt;si_code &lt;= 0)
 DECL|macro|SI_FROMKERNEL
 mdefine_line|#define SI_FROMKERNEL(siptr)&t;((siptr)-&gt;si_code &gt; 0)
-macro_line|#ifndef HAVE_ARCH_SI_CODES
 multiline_comment|/*&n; * SIGILL si_codes&n; */
 DECL|macro|ILL_ILLOPC
 mdefine_line|#define ILL_ILLOPC&t;(__SI_FAULT|1)&t;/* illegal opcode */
@@ -411,7 +410,6 @@ DECL|macro|POLL_HUP
 mdefine_line|#define POLL_HUP&t;(__SI_POLL|6)&t;/* device disconnected */
 DECL|macro|NSIGPOLL
 mdefine_line|#define NSIGPOLL&t;6
-macro_line|#endif
 multiline_comment|/*&n; * sigevent definitions&n; * &n; * It seems likely that SIGEV_THREAD will have to be handled from &n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
 DECL|macro|SIGEV_SIGNAL
 mdefine_line|#define SIGEV_SIGNAL&t;0&t;/* notify via signal */
@@ -427,7 +425,6 @@ macro_line|#ifndef SIGEV_PAD_SIZE
 DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 macro_line|#endif
-macro_line|#ifndef HAVE_ARCH_SIGEVENT_T
 DECL|struct|sigevent
 r_typedef
 r_struct
@@ -488,7 +485,6 @@ DECL|typedef|sigevent_t
 )brace
 id|sigevent_t
 suffix:semicolon
-macro_line|#endif
 DECL|macro|sigev_notify_function
 mdefine_line|#define sigev_notify_function&t;_sigev_un._sigev_thread._function
 DECL|macro|sigev_notify_attributes
