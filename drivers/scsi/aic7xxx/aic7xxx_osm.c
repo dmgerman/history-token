@@ -2279,11 +2279,6 @@ id|found
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|eisa_err
-comma
-id|pci_err
-suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * It is a bug that the upper layer takes&n;&t; * this lock just prior to calling us.&n;&t; */
 id|spin_unlock_irq
@@ -2394,16 +2389,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pci_err
+id|found
 op_assign
 id|ahc_linux_pci_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|eisa_err
-op_assign
-id|ahc_linux_eisa_init
 c_func
 (paren
 )paren
@@ -2411,15 +2399,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_err
-op_logical_and
-id|eisa_err
+op_logical_neg
+id|ahc_linux_eisa_init
+c_func
+(paren
 )paren
-(brace
-r_goto
-id|out
+)paren
+id|found
+op_increment
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Register with the SCSI layer all&n;&t; * controllers we&squot;ve found.&n;&t; */
 id|TAILQ_FOREACH
 c_func
@@ -2449,8 +2437,6 @@ id|found
 op_increment
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|spin_lock_irq
 c_func
