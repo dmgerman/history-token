@@ -1236,14 +1236,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_BAGETLANCE        /* Lance-based Baget ethernet boards */
-(brace
-id|bagetlance_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
