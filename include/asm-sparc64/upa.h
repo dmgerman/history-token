@@ -31,7 +31,7 @@ mdefine_line|#define UPA_PORTID_PREQRD       0x0000000001e00000 /* # incoming P_
 DECL|macro|UPA_PORTID_UPACAP
 mdefine_line|#define UPA_PORTID_UPACAP       0x00000000001f0000 /* UPA capabilities of mod      */
 DECL|macro|UPA_PORTID_ID
-mdefine_line|#define UPA_PORTID_ID           0x000000000000ffff /* Module Indentification bits  */
+mdefine_line|#define UPA_PORTID_ID           0x000000000000ffff /* Module Identification bits  */
 multiline_comment|/* UPA I/O space accessors */
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
 DECL|function|_upa_readb

@@ -3325,7 +3325,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/* PCI Errors.  They are signalled by the PCI bus module since they&n; * are assosciated with a specific bus segment.&n; */
+multiline_comment|/* PCI Errors.  They are signalled by the PCI bus module since they&n; * are associated with a specific bus segment.&n; */
 DECL|macro|PSYCHO_PCI_AFSR_A
 mdefine_line|#define PSYCHO_PCI_AFSR_A&t;0x2010UL
 DECL|macro|PSYCHO_PCI_AFSR_B
