@@ -120,6 +120,10 @@ id|R_390_GOT16
 suffix:colon
 multiline_comment|/* 16 bit GOT offset.  */
 r_case
+id|R_390_GOT20
+suffix:colon
+multiline_comment|/* 20 bit GOT offset.  */
+r_case
 id|R_390_GOT32
 suffix:colon
 multiline_comment|/* 32 bit GOT offset.  */
@@ -138,11 +142,15 @@ multiline_comment|/* 12 bit offset to jump slot.&t;*/
 r_case
 id|R_390_GOTPLT16
 suffix:colon
-multiline_comment|/* 16 bit offset to jump slot. */
+multiline_comment|/* 16 bit offset to jump slot.  */
+r_case
+id|R_390_GOTPLT20
+suffix:colon
+multiline_comment|/* 20 bit offset to jump slot.  */
 r_case
 id|R_390_GOTPLT32
 suffix:colon
-multiline_comment|/* 32 bit offset to jump slot. */
+multiline_comment|/* 32 bit offset to jump slot.  */
 r_case
 id|R_390_GOTPLT64
 suffix:colon
@@ -764,6 +772,10 @@ id|R_390_16
 suffix:colon
 multiline_comment|/* Direct 16 bit.  */
 r_case
+id|R_390_20
+suffix:colon
+multiline_comment|/* Direct 20 bit.  */
+r_case
 id|R_390_32
 suffix:colon
 multiline_comment|/* Direct 32 bit.  */
@@ -843,6 +855,50 @@ op_star
 id|loc
 op_assign
 id|val
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_20
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_amp
+l_int|0xf00000ff
+)paren
+op_or
+(paren
+id|val
+op_amp
+l_int|0xfff
+)paren
+op_lshift
+l_int|16
+op_or
+(paren
+id|val
+op_amp
+l_int|0xff000
+)paren
+op_rshift
+l_int|4
 suffix:semicolon
 r_else
 r_if
@@ -1012,6 +1068,10 @@ id|R_390_GOT16
 suffix:colon
 multiline_comment|/* 16 bit GOT offset.  */
 r_case
+id|R_390_GOT20
+suffix:colon
+multiline_comment|/* 20 bit GOT offset.  */
+r_case
 id|R_390_GOT32
 suffix:colon
 multiline_comment|/* 32 bit GOT offset.  */
@@ -1028,13 +1088,17 @@ id|R_390_GOTPLT12
 suffix:colon
 multiline_comment|/* 12 bit offset to jump slot.&t;*/
 r_case
+id|R_390_GOTPLT20
+suffix:colon
+multiline_comment|/* 20 bit offset to jump slot.  */
+r_case
 id|R_390_GOTPLT16
 suffix:colon
-multiline_comment|/* 16 bit offset to jump slot. */
+multiline_comment|/* 16 bit offset to jump slot.  */
 r_case
 id|R_390_GOTPLT32
 suffix:colon
-multiline_comment|/* 32 bit offset to jump slot. */
+multiline_comment|/* 32 bit offset to jump slot.  */
 r_case
 id|R_390_GOTPLT64
 suffix:colon
@@ -1137,6 +1201,54 @@ op_star
 id|loc
 op_assign
 id|val
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|r_type
+op_eq
+id|R_390_GOT20
+op_logical_or
+id|r_type
+op_eq
+id|R_390_GOTPLT20
+)paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_assign
+(paren
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|loc
+op_amp
+l_int|0xf00000ff
+)paren
+op_or
+(paren
+id|val
+op_amp
+l_int|0xfff
+)paren
+op_lshift
+l_int|16
+op_or
+(paren
+id|val
+op_amp
+l_int|0xff000
+)paren
+op_rshift
+l_int|4
 suffix:semicolon
 r_else
 r_if

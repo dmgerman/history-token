@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/requestirq.c&n; *   S/390 common I/O routines -- enabling and disabling of devices&n; *   $Revision: 1.44 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/requestirq.c&n; *   S/390 common I/O routines -- enabling and disabling of devices&n; *   $Revision: 1.45 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -87,6 +87,17 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Let&squot;s build our path group ID here.&n;&t; */
+r_if
+c_cond
+(paren
+id|MACHINE_NEW_STIDP
+)paren
+id|global_pgid.cpu_addr
+op_assign
+l_int|0x8000
+suffix:semicolon
+r_else
+(brace
 macro_line|#ifdef CONFIG_SMP
 id|global_pgid.cpu_addr
 op_assign
@@ -101,6 +112,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+)brace
 id|global_pgid.cpu_id
 op_assign
 (paren
