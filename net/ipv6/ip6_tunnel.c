@@ -275,6 +275,7 @@ id|dst
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_lookup - fetch tunnel matching the end-point addresses&n; *   @remote: the address of the tunnel exit-point &n; *   @local: the address of the tunnel entry-point &n; *&n; * Return:  &n; *   tunnel matching given end-points if found,&n; *   else fallback tunnel if its device is up, &n; *   else %NULL&n; **/
+r_static
 r_struct
 id|ip6_tnl
 op_star
@@ -1305,8 +1306,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_err - tunnel error handler&n; *&n; * Description:&n; *   ip6ip6_err() should handle errors in the tunnel according&n; *   to the specifications in RFC 2473.&n; **/
-DECL|function|ip6ip6_err
+r_static
 r_void
+DECL|function|ip6ip6_err
 id|ip6ip6_err
 c_func
 (paren
@@ -1778,8 +1780,9 @@ id|ip6ip6_lock
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_rcv - decapsulate IPv6 packet and retransmit it locally&n; *   @skb: received socket buffer&n; *&n; * Return: 0&n; **/
-DECL|function|ip6ip6_rcv
+r_static
 r_int
+DECL|function|ip6ip6_rcv
 id|ip6ip6_rcv
 c_func
 (paren
@@ -1863,6 +1866,31 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1989,14 +2017,8 @@ id|skb-&gt;dev
 suffix:semicolon
 id|discard
 suffix:colon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|create_tel
@@ -2173,8 +2195,9 @@ id|hdr-&gt;saddr
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_tnl_xmit - encapsulate packet and send &n; *   @skb: the outgoing socket buffer&n; *   @dev: the outgoing tunnel device &n; *&n; * Description:&n; *   Build new header and do some sanity checks on the packet before sending&n; *   it.&n; *&n; * Return: &n; *   0&n; **/
-DECL|function|ip6ip6_tnl_xmit
+r_static
 r_int
+DECL|function|ip6ip6_tnl_xmit
 id|ip6ip6_tnl_xmit
 c_func
 (paren
@@ -4265,8 +4288,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6ip6_fb_tnl_dev_init - initializer for fallback tunnel device&n; *   @dev: fallback device&n; *&n; * Return: 0&n; **/
-DECL|function|ip6ip6_fb_tnl_dev_init
+r_static
 r_int
+DECL|function|ip6ip6_fb_tnl_dev_init
 id|ip6ip6_fb_tnl_dev_init
 c_func
 (paren
@@ -4306,11 +4330,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ip6ip6_protocol
+DECL|variable|ip6ip6_handler
 r_static
 r_struct
-id|inet6_protocol
-id|ip6ip6_protocol
+id|xfrm6_tunnel
+id|ip6ip6_handler
 op_assign
 (brace
 dot
@@ -4323,10 +4347,6 @@ id|err_handler
 op_assign
 id|ip6ip6_err
 comma
-dot
-id|flags
-op_assign
-id|INET6_PROTO_FINAL
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * ip6_tunnel_init - register protocol and reserve needed resources&n; *&n; * Return: 0 on success&n; **/
@@ -4346,17 +4366,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|err
-op_assign
-id|inet6_add_protocol
+id|xfrm6_tunnel_register
 c_func
 (paren
 op_amp
-id|ip6ip6_protocol
-comma
-id|IPPROTO_IPV6
-)paren
+id|ip6ip6_handler
 )paren
 OL
 l_int|0
@@ -4366,11 +4380,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to register IPv6 protocol&bslash;n&quot;
+l_string|&quot;ip6ip6 init: can&squot;t register tunnel&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|err
+op_minus
+id|EAGAIN
 suffix:semicolon
 )brace
 id|ip6ip6_fb_tnl_dev
@@ -4438,13 +4453,11 @@ l_int|0
 suffix:semicolon
 id|fail
 suffix:colon
-id|inet6_del_protocol
+id|xfrm6_tunnel_deregister
 c_func
 (paren
 op_amp
-id|ip6ip6_protocol
-comma
-id|IPPROTO_IPV6
+id|ip6ip6_handler
 )paren
 suffix:semicolon
 r_return
@@ -4462,19 +4475,29 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|xfrm6_tunnel_deregister
+c_func
+(paren
+op_amp
+id|ip6ip6_handler
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ip6ip6 close: can&squot;t deregister tunnel&bslash;n&quot;
+)paren
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
 id|ip6ip6_fb_tnl_dev
-)paren
-suffix:semicolon
-id|inet6_del_protocol
-c_func
-(paren
-op_amp
-id|ip6ip6_protocol
-comma
-id|IPPROTO_IPV6
 )paren
 suffix:semicolon
 )brace
