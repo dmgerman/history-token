@@ -4104,6 +4104,15 @@ op_logical_neg
 id|tmpl-&gt;id.spi
 )paren
 op_logical_and
+(paren
+id|x-&gt;props.reqid
+op_eq
+id|tmpl-&gt;reqid
+op_logical_or
+op_logical_neg
+id|tmpl-&gt;reqid
+)paren
+op_logical_and
 id|x-&gt;props.mode
 op_eq
 id|tmpl-&gt;mode
