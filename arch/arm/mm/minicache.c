@@ -107,7 +107,7 @@ c_func
 suffix:semicolon
 id|minicache_pte
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp

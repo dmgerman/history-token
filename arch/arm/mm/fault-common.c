@@ -213,9 +213,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_HIGHMEM
+multiline_comment|/* We must not map this if we have highmem enabled */
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -251,6 +253,13 @@ op_minus
 id|PTRS_PER_PTE
 )braket
 )paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|pte_unmap
+c_func
+(paren
+id|pte
 )paren
 suffix:semicolon
 macro_line|#endif
