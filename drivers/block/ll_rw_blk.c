@@ -5940,11 +5940,11 @@ id|bio-&gt;bi_rw
 suffix:semicolon
 id|ra
 op_assign
-id|bio_flagged
-c_func
+id|bio-&gt;bi_rw
+op_amp
 (paren
-id|bio
-comma
+l_int|1
+op_lshift
 id|BIO_RW_AHEAD
 )paren
 suffix:semicolon
