@@ -1129,11 +1129,21 @@ id|urb-&gt;actual_length
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb-&gt;status
+op_ne
+op_minus
+id|EPIPE
+)paren
+(brace
 id|dev_dbg
 (paren
 id|hcd-&gt;self.controller
 comma
-l_string|&quot;CTRL: TypeReq=0x%x val=0x%x idx=0x%x len=%d ==&gt; %d&bslash;n&quot;
+l_string|&quot;CTRL: TypeReq=0x%x val=0x%x &quot;
+l_string|&quot;idx=0x%x len=%d ==&gt; %d&bslash;n&quot;
 comma
 id|typeReq
 comma
@@ -1146,6 +1156,7 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
