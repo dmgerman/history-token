@@ -1627,7 +1627,7 @@ id|command
 suffix:semicolon
 id|command
 op_or_assign
-l_int|0x100
+id|AGPSTAT_AGP_ENABLE
 suffix:semicolon
 id|pci_write_config_dword
 c_func

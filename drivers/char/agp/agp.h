@@ -1155,15 +1155,17 @@ id|minor
 suffix:semicolon
 DECL|macro|AGPSTAT_RQ_DEPTH
 mdefine_line|#define AGPSTAT_RQ_DEPTH&t;(0xff000000)
+DECL|macro|AGPSTAT_AGP_ENABLE
+mdefine_line|#define AGPSTAT_AGP_ENABLE&t;(1&lt;&lt;8)
 DECL|macro|AGPSTAT_SBA
 mdefine_line|#define AGPSTAT_SBA&t;&t;(1&lt;&lt;9)
-DECL|macro|AGPSTAT_FW
-mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
-DECL|macro|AGPSTAT2_4X
-mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT2_1X
+mdefine_line|#define AGPSTAT2_1X&t;&t;(1&lt;&lt;0)
 DECL|macro|AGPSTAT2_2X
 mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
-DECL|macro|AGPSTAT2_1X
-mdefine_line|#define AGPSTAT2_1X&t;&t;(1)
+DECL|macro|AGPSTAT2_4X
+mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT_FW
+mdefine_line|#define AGPSTAT_FW&t;&t;(1&lt;&lt;4)
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof
