@@ -1066,7 +1066,7 @@ id|i
 suffix:semicolon
 id|isa_bridge
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SI
@@ -1082,10 +1082,9 @@ c_cond
 op_logical_neg
 id|isa_bridge
 )paren
-(brace
 id|isa_bridge
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SI
@@ -1113,7 +1112,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 id|pci_read_config_byte
 c_func
@@ -1194,6 +1192,12 @@ id|reg
 op_amp
 op_complement
 l_int|0x40
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|isa_bridge
 )paren
 suffix:semicolon
 r_return
@@ -2021,7 +2025,7 @@ suffix:semicolon
 multiline_comment|/* save our host bridge revision */
 id|dev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SI
@@ -2036,6 +2040,7 @@ c_cond
 (paren
 id|dev
 )paren
+(brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -2047,6 +2052,13 @@ op_amp
 id|sis_priv-&gt;host_bridge_rev
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* print some information about our NIC */
 id|printk
 c_func
