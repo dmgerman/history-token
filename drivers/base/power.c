@@ -65,7 +65,11 @@ op_assign
 id|get_device_locked
 c_func
 (paren
-id|dev
+id|to_dev
+c_func
+(paren
+id|node
+)paren
 )paren
 suffix:semicolon
 r_if
