@@ -5413,12 +5413,6 @@ c_func
 id|mm
 )paren
 suffix:semicolon
-id|release_segments
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
