@@ -1,5 +1,3 @@
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 r_extern
 r_struct
 id|semaphore
