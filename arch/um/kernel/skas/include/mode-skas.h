@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * L
 macro_line|#ifndef __MODE_SKAS_H__
 DECL|macro|__MODE_SKAS_H__
 mdefine_line|#define __MODE_SKAS_H__
+macro_line|#include &lt;sysdep/ptrace.h&gt;
 r_extern
 r_int
 r_int
