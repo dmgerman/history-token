@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -57,8 +58,6 @@ id|rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|TICK_SIZE
-mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 DECL|variable|i8253_lock
 id|spinlock_t
 id|i8253_lock
@@ -72,11 +71,12 @@ c_func
 id|i8253_lock
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_TSC
-macro_line|#else
-DECL|macro|do_gettimeoffset
-mdefine_line|#define do_gettimeoffset()&t;do_fast_gettimeoffset()
-macro_line|#endif
+DECL|variable|timer
+r_struct
+id|timer_opts
+op_star
+id|timer
+suffix:semicolon
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution&n; * and better than microsecond precision on fast x86 machines with TSC.&n; */
 DECL|function|do_gettimeofday
 r_void
@@ -110,7 +110,9 @@ id|flags
 suffix:semicolon
 id|usec
 op_assign
-id|do_gettimeoffset
+id|timer
+op_member_access_from_pointer
+id|get_offset
 c_func
 (paren
 )paren
@@ -207,7 +209,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
-id|do_gettimeoffset
+id|timer
+op_member_access_from_pointer
+id|get_offset
 c_func
 (paren
 )paren
@@ -751,6 +755,13 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|timer
+op_member_access_from_pointer
+id|mark_offset
+c_func
+(paren
+)paren
+suffix:semicolon
 id|do_timer_interrupt
 c_func
 (paren
@@ -1022,6 +1033,7 @@ id|sec
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* XXX this driverfs stuff should probably go elsewhere later -john */
 DECL|variable|device_i8253
 r_static
 r_struct
@@ -1096,6 +1108,13 @@ suffix:semicolon
 id|xtime.tv_nsec
 op_assign
 l_int|0
+suffix:semicolon
+id|timer
+op_assign
+id|select_timer
+c_func
+(paren
+)paren
 suffix:semicolon
 id|time_init_hook
 c_func

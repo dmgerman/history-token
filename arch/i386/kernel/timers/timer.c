@@ -1,7 +1,17 @@
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 multiline_comment|/* list of externed timers */
-multiline_comment|/* eg: extern struct timer_opts timer_XXX*/
+macro_line|#ifndef CONFIG_X86_TSC
+r_extern
+r_struct
+id|timer_opts
+id|timer_pit
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_struct
+id|timer_opts
+id|timer_tsc
 suffix:semicolon
 multiline_comment|/* list of timers, ordered by preference */
 DECL|variable|timers
@@ -13,7 +23,13 @@ id|timers
 )braket
 op_assign
 (brace
-multiline_comment|/* eg: &amp;timer_XXX */
+op_amp
+id|timer_tsc
+macro_line|#ifndef CONFIG_X86_TSC
+comma
+op_amp
+id|timer_pit
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|NR_TIMERS

@@ -1,3 +1,22 @@
+multiline_comment|/*&n; * This code largely moved from arch/i386/kernel/time.c.&n; * See comments there for proper credits.&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+r_extern
+r_int
+id|x86_udelay_tsc
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+DECL|variable|use_tsc
+r_static
+r_int
+id|use_tsc
+suffix:semicolon
 multiline_comment|/* Number of usecs that the last interrupt was delayed */
 DECL|variable|delay_at_last_interrupt
 r_static
@@ -17,12 +36,11 @@ r_int
 r_int
 id|fast_gettimeoffset_quotient
 suffix:semicolon
-DECL|function|do_fast_gettimeoffset
+DECL|function|get_offset_tsc
 r_static
-r_inline
 r_int
 r_int
-id|do_fast_gettimeoffset
+id|get_offset_tsc
 c_func
 (paren
 r_void
@@ -84,14 +102,20 @@ op_plus
 id|edx
 suffix:semicolon
 )brace
-r_if
-c_cond
+DECL|function|mark_offset_tsc
+r_static
+r_void
+id|mark_offset_tsc
+c_func
 (paren
-id|use_tsc
+r_void
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * It is important that these two operations happen almost at&n;&t;&t; * the same time. We do the RDTSC stuff first, since it&squot;s&n;&t;&t; * faster. To avoid any inconsistencies, we need interrupts&n;&t;&t; * disabled locally.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * Interrupts are just disabled locally since the timer irq&n;&t;&t; * has the SA_INTERRUPT flag set. -arca&n;&t;&t; */
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/*&n;&t; * It is important that these two operations happen almost at&n;&t; * the same time. We do the RDTSC stuff first, since it&squot;s&n;&t; * faster. To avoid any inconsistencies, we need interrupts&n;&t; * disabled locally.&n;&t; */
+multiline_comment|/*&n;&t; * Interrupts are just disabled locally since the timer irq&n;&t; * has the SA_INTERRUPT flag set. -arca&n;&t; */
 multiline_comment|/* read Pentium cycle counter */
 id|rdtscl
 c_func
@@ -173,7 +197,6 @@ DECL|macro|CALIBRATE_LATCH
 mdefine_line|#define CALIBRATE_LATCH&t;(5 * LATCH)
 DECL|macro|CALIBRATE_TIME
 mdefine_line|#define CALIBRATE_TIME&t;(5 * 1000020/HZ)
-macro_line|#ifdef CONFIG_X86_TSC
 DECL|function|calibrate_tsc
 r_static
 r_int
@@ -411,7 +434,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_X86_TSC */
 macro_line|#ifdef CONFIG_CPU_FREQ
 r_static
 r_int
@@ -703,14 +725,16 @@ id|time_cpufreq_notifier
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_TSC
-r_extern
+DECL|function|init_tsc
+r_static
 r_int
-id|x86_udelay_tsc
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * If we have APM enabled or the CPU clock speed is variable&n; * (CPU stops clock on HLT or slows clock to save power)&n; * then the TSC timestamps may diverge by up to 1 jiffy from&n; * &squot;real time&squot; but nothing will break.&n; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n; * state by the timer interrupt itself, so we get 0 error. In the&n; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n; * still perfectly ordered.&n; * Note that the TSC counter will be reset if APM suspends&n; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n; * smart.  See arch/i386/kernel/apm.c.&n; */
-macro_line|#ifdef CONFIG_X86_TSC
+id|init_tsc
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * If we have APM enabled or the CPU clock speed is variable&n;&t; * (CPU stops clock on HLT or slows clock to save power)&n;&t; * then the TSC timestamps may diverge by up to 1 jiffy from&n;&t; * &squot;real time&squot; but nothing will break.&n;&t; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n;&t; * state by the timer interrupt itself, so we get 0 error. In the&n;&t; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n;&t; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n;&t; * still perfectly ordered.&n;&t; * Note that the TSC counter will be reset if APM suspends&n;&t; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n;&t; * smart.  See arch/i386/kernel/apm.c.&n;&t; */
 multiline_comment|/*&n; &t; *&t;Firstly we have to do a CPU check for chips with&n; &t; * &t;a potentially buggy TSC. At this point we haven&squot;t run&n; &t; *&t;the ident/bugs checks so we must run this hook as it&n; &t; *&t;may turn off the TSC flag.&n; &t; *&n; &t; *&t;NOTE: this doesnt yet handle SMP 486 machines where only&n; &t; *&t;some CPU&squot;s have a TSC. Thats never worked and nobody has&n; &t; *&t;moaned if you have the only one in the world - you fix it!&n; &t; */
 id|dodgy_tsc
 c_func
@@ -751,12 +775,6 @@ id|x86_udelay_tsc
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifndef do_gettimeoffset
-id|do_gettimeoffset
-op_assign
-id|do_fast_gettimeoffset
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* report CPU clock rate in Hz.&n;&t;&t;&t; * The formula is (10^6 * 2^32) / (2^32 * 1 / (clocks/us)) =&n;&t;&t;&t; * clock/second. Our precision is about 100 ppm.&n;&t;&t;&t; */
 (brace
 r_int
@@ -826,7 +844,34 @@ id|CPUFREQ_TRANSITION_NOTIFIER
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|1
+suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_X86_TSC */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/************************************************************/
+multiline_comment|/* tsc timer_opts struct */
+DECL|variable|timer_tsc
+r_struct
+id|timer_opts
+id|timer_tsc
+op_assign
+(brace
+id|init
+suffix:colon
+id|init_tsc
+comma
+id|mark_offset
+suffix:colon
+id|mark_offset_tsc
+comma
+id|get_offset
+suffix:colon
+id|get_offset_tsc
+)brace
+suffix:semicolon
 eof

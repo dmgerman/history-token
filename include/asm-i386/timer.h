@@ -41,6 +41,8 @@ r_void
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|TICK_SIZE
+mdefine_line|#define TICK_SIZE (tick_nsec / 1000)
 r_struct
 id|timer_opts
 op_star

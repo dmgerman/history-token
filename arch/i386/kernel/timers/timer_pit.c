@@ -1,9 +1,48 @@
+multiline_comment|/*&n; * This code largely moved from arch/i386/kernel/time.c.&n; * See comments there for proper credits.&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+r_extern
+id|spinlock_t
+id|i8259A_lock
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|i8253_lock
+suffix:semicolon
+macro_line|#include &quot;do_timer.h&quot;
+DECL|function|init_pit
+r_static
+r_int
+id|init_pit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|mark_offset_pit
+r_static
+r_void
+id|mark_offset_pit
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* nothing needed */
+)brace
 multiline_comment|/* This function must be called with interrupts disabled &n; * It was inspired by Steve McCanne&squot;s microtime-i386 for BSD.  -- jrs&n; * &n; * However, the pc-audio speaker driver changes the divisor so that&n; * it gets interrupted rather more often - it loads 64 into the&n; * counter rather than 11932! This has an adverse impact on&n; * do_gettimeoffset() -- it stops working! What is also not&n; * good is that the interval that our timer function gets called&n; * is no longer 10.0002 ms, but 9.9767 ms. To get around this&n; * would require using a different timing source. Maybe someone&n; * could use the RTC - I know that this can interrupt at frequencies&n; * ranging from 8192Hz to 2Hz. If I had the energy, I&squot;d somehow fix&n; * it so that at startup, the timer code in sched.c would select&n; * using either the RTC or the 8253 timer. The decision would be&n; * based on whether there was any other device around that needed&n; * to trample on the 8253. I&squot;d set up the RTC to interrupt at 1024 Hz,&n; * and then do some jiggery to have a version of do_timer that &n; * advanced the clock by 1/1024 s. Every time that reached over 1/100&n; * of a second, then do all the old code. If the time was kept correct&n; * then do_gettimeoffset could just return 0 - there is no low order&n; * divider that can be accessed.&n; *&n; * Ideally, you would be able to use the RTC for the speaker driver,&n; * but it appears that the speaker driver really needs interrupt more&n; * often than every 120 us or so.&n; *&n; * Anyway, this needs more thought....&t;&t;pjsg (1993-08-28)&n; * &n; * If you are really that interested, you should be reading&n; * comp.protocols.time.ntp!&n; */
-DECL|function|do_slow_gettimeoffset
+DECL|function|get_offset_pit
 r_static
 r_int
 r_int
-id|do_slow_gettimeoffset
+id|get_offset_pit
 c_func
 (paren
 r_void
@@ -191,18 +230,24 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|variable|do_gettimeoffset
-r_static
-r_int
-r_int
-(paren
-op_star
-id|do_gettimeoffset
-)paren
-(paren
-r_void
-)paren
+multiline_comment|/* tsc timer_opts struct */
+DECL|variable|timer_pit
+r_struct
+id|timer_opts
+id|timer_pit
 op_assign
-id|do_slow_gettimeoffset
+(brace
+id|init
+suffix:colon
+id|init_pit
+comma
+id|mark_offset
+suffix:colon
+id|mark_offset_pit
+comma
+id|get_offset
+suffix:colon
+id|get_offset_pit
+)brace
 suffix:semicolon
 eof
