@@ -691,10 +691,6 @@ op_star
 id|i2c
 )paren
 suffix:semicolon
-DECL|macro|snd_pmac_keywest_write
-mdefine_line|#define snd_pmac_keywest_write(i2c,cmd,len,data) i2c_smbus_write_block_data((i2c)-&gt;client, cmd, len, data)
-DECL|macro|snd_pmac_keywest_write_byte
-mdefine_line|#define snd_pmac_keywest_write_byte(i2c,cmd,data) i2c_smbus_write_byte_data((i2c)-&gt;client, cmd, data)
 multiline_comment|/* misc */
 r_int
 id|snd_pmac_boolean_stereo_info
