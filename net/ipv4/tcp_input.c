@@ -2689,7 +2689,7 @@ id|cwnd
 r_if
 c_cond
 (paren
-id|tp-&gt;mss_cache
+id|tp-&gt;mss_cache_std
 OG
 l_int|1460
 )paren
@@ -2701,7 +2701,7 @@ r_else
 id|cwnd
 op_assign
 (paren
-id|tp-&gt;mss_cache
+id|tp-&gt;mss_cache_std
 OG
 l_int|1095
 )paren
