@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; */
+multiline_comment|/*&n; * 1999 Copyright (C) Pavel Machek, pavel@ucw.cz. This code is GPL.&n; * 1999/11/04 Copyright (C) 1999 VMware, Inc. (Regis &quot;HPReg&quot; Duchesne)&n; *            Made nbd_end_request() use the io_request_lock&n; * 2001 Copyright (C) Steven Whitehouse&n; *            New nbd_end_request() for compatibility with new linux block&n; *            layer code.&n; * 2003/06/24 Louis D. Langholtz &lt;ldl@aros.net&gt;&n; *            Removed unneeded blksize_bits field from nbd_device struct.&n; */
 macro_line|#ifndef LINUX_NBD_H
 DECL|macro|LINUX_NBD_H
 mdefine_line|#define LINUX_NBD_H
@@ -115,10 +115,6 @@ suffix:semicolon
 DECL|member|blksize
 r_int
 id|blksize
-suffix:semicolon
-DECL|member|blksize_bits
-r_int
-id|blksize_bits
 suffix:semicolon
 DECL|member|bytesize
 id|u64

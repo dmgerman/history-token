@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; * 03-06-23 Cosmetic changes. &lt;ldl@aros.net&gt;&n; * 03-06-23 Enhance diagnostics support. &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
+multiline_comment|/*&n; * Network block device - make block devices work over TCP&n; *&n; * Note that you can not swap over this thing, yet. Seems to work but&n; * deadlocks sometimes - you can not swap over TCP in general.&n; * &n; * Copyright 1997-2000 Pavel Machek &lt;pavel@ucw.cz&gt;&n; * Parts copyright 2001 Steven Whitehouse &lt;steve@chygwyn.com&gt;&n; *&n; * (part of code stolen from loop.c)&n; *&n; * 97-3-25 compiled 0-th version, not yet tested it &n; *   (it did not work, BTW) (later that day) HEY! it works!&n; *   (bit later) hmm, not that much... 2:00am next day:&n; *   yes, it works, but it gives something like 50kB/sec&n; * 97-4-01 complete rewrite to make it possible for many requests at &n; *   once to be processed&n; * 97-4-11 Making protocol independent of endianity etc.&n; * 97-9-13 Cosmetic changes&n; * 98-5-13 Attempt to make 64-bit-clean on 64-bit machines&n; * 99-1-11 Attempt to make 64-bit-clean on 32-bit machines &lt;ankry@mif.pg.gda.pl&gt;&n; * 01-2-27 Fix to store proper blockcount for kernel (calculated using&n; *   BLOCK_SIZE_BITS, not device blocksize) &lt;aga@permonline.ru&gt;&n; * 01-3-11 Make nbd work with new Linux block layer code. It now supports&n; *   plugging like all the other block devices. Also added in MSG_MORE to&n; *   reduce number of partial TCP segments sent. &lt;steve@chygwyn.com&gt;&n; * 01-12-6 Fix deadlock condition by making queue locks independent of&n; *   the transmit lock. &lt;steve@chygwyn.com&gt;&n; * 02-10-11 Allow hung xmit to be aborted via SIGKILL &amp; various fixes.&n; *   &lt;Paul.Clements@SteelEye.com&gt; &lt;James.Bottomley@SteelEye.com&gt;&n; * 03-06-22 Make nbd work with new linux 2.5 block layer design. This fixes&n; *   memory corruption from module removal and possible memory corruption&n; *   from sending/receiving disk data. &lt;ldl@aros.net&gt;&n; * 03-06-23 Cosmetic changes. &lt;ldl@aros.net&gt;&n; * 03-06-23 Enhance diagnostics support. &lt;ldl@aros.net&gt;&n; * 03-06-24 Remove unneeded blksize_bits field from nbd_device struct.&n; *   &lt;ldl@aros.net&gt;&n; *&n; * possible FIXME: make set_sock / set_blksize / set_size / do_it one syscall&n; * why not: would need verify_area and friends, would share yet another &n; *          structure with userland&n; */
 DECL|macro|PARANOIA
 mdefine_line|#define PARANOIA
 macro_line|#include &lt;linux/major.h&gt;
@@ -2173,8 +2173,6 @@ id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
 r_int
 id|error
-comma
-id|temp
 suffix:semicolon
 r_struct
 id|request
@@ -2480,32 +2478,6 @@ id|lo-&gt;blksize
 op_assign
 id|arg
 suffix:semicolon
-id|temp
-op_assign
-id|arg
-op_rshift
-l_int|9
-suffix:semicolon
-id|lo-&gt;blksize_bits
-op_assign
-l_int|9
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|temp
-OG
-l_int|1
-)paren
-(brace
-id|lo-&gt;blksize_bits
-op_increment
-suffix:semicolon
-id|temp
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
 id|lo-&gt;bytesize
 op_and_assign
 op_complement
@@ -2566,8 +2538,8 @@ id|u64
 )paren
 id|arg
 )paren
-op_lshift
-id|lo-&gt;blksize_bits
+op_star
+id|lo-&gt;blksize
 suffix:semicolon
 id|set_capacity
 c_func
@@ -3050,15 +3022,6 @@ dot
 id|blksize
 op_assign
 l_int|1024
-suffix:semicolon
-id|nbd_dev
-(braket
-id|i
-)braket
-dot
-id|blksize_bits
-op_assign
-l_int|10
 suffix:semicolon
 id|nbd_dev
 (braket
