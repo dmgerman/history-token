@@ -39,6 +39,11 @@ l_string|&quot;.weak iosapic_init&quot;
 suffix:semicolon
 id|asm
 (paren
+l_string|&quot;.weak iosapic_system_init&quot;
+)paren
+suffix:semicolon
+id|asm
+(paren
 l_string|&quot;.weak iosapic_version&quot;
 )paren
 suffix:semicolon
@@ -1074,33 +1079,14 @@ c_cond
 (paren
 id|iosapic_init
 )paren
-(brace
-macro_line|#ifndef CONFIG_ITANIUM
-multiline_comment|/* PCAT_COMPAT flag indicates dual-8259 setup */
 id|iosapic_init
 c_func
 (paren
 id|iosapic-&gt;address
 comma
 id|iosapic-&gt;global_irq_base
-comma
-id|acpi_madt-&gt;flags.pcat_compat
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* Firmware on old Itanium systems is broken */
-id|iosapic_init
-c_func
-(paren
-id|iosapic-&gt;address
-comma
-id|iosapic-&gt;global_irq_base
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1432,9 +1418,28 @@ id|phys_addr
 )paren
 suffix:semicolon
 multiline_comment|/* remember the value for reference after free_initmem() */
+macro_line|#ifdef CONFIG_ITANIUM
+id|has_8259
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Firmware on old Itanium systems is broken */
+macro_line|#else
 id|has_8259
 op_assign
 id|acpi_madt-&gt;flags.pcat_compat
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|iosapic_system_init
+)paren
+id|iosapic_system_init
+c_func
+(paren
+id|has_8259
+)paren
 suffix:semicolon
 multiline_comment|/* Get base address of IPI Message Block */
 r_if

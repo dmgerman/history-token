@@ -58,6 +58,15 @@ macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
 id|__devinit
+id|iosapic_system_init
+(paren
+r_int
+id|pcat_compat
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__devinit
 id|iosapic_init
 (paren
 r_int
@@ -67,9 +76,6 @@ comma
 r_int
 r_int
 id|gsi_base
-comma
-r_int
-id|pcat_compat
 )paren
 suffix:semicolon
 r_extern
