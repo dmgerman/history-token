@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -376,13 +377,7 @@ suffix:semicolon
 singleline_comment|// ramdisk in kernel space
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_if
 c_cond
@@ -416,13 +411,7 @@ macro_line|#if CONFIG_VIODASD_IDE
 (brace
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|IDE0_MAJOR
-comma
-l_int|1
-)paren
+id|Root_HDA1
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_VIODASD)

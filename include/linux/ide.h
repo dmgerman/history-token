@@ -1972,6 +1972,8 @@ DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Not locking and locking variant: */
 r_extern

@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -1337,13 +1338,8 @@ l_int|3
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0301
-)paren
+id|Root_HDA1
 suffix:semicolon
-multiline_comment|/* hda1 */
 r_break
 suffix:semicolon
 r_case
@@ -1370,37 +1366,20 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
-multiline_comment|/* /dev/ram */
 r_else
 macro_line|#endif
 macro_line|#ifdef CONFIG_ROOT_NFS
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x00ff
-)paren
+id|Root_NFS
 suffix:semicolon
-multiline_comment|/* /dev/nfs */
 macro_line|#else
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0802
-)paren
+id|Root_SDA2
 suffix:semicolon
-multiline_comment|/* /dev/sda2 */
 macro_line|#endif
 r_break
 suffix:semicolon

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
@@ -141,11 +142,7 @@ macro_line|#endif
 macro_line|#ifdef notdef
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0301
-)paren
+id|Root_HDA1
 suffix:semicolon
 multiline_comment|/* hda1 */
 macro_line|#endif
@@ -153,11 +150,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#if 0
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0200
-)paren
+id|Root_FD0
 suffix:semicolon
 multiline_comment|/* floppy */
 id|rd_prompt

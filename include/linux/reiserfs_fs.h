@@ -3510,11 +3510,10 @@ DECL|macro|JBH_HASH_SHIFT
 mdefine_line|#define JBH_HASH_SHIFT 13 /* these are based on journal hash size of 8192 */
 DECL|macro|JBH_HASH_MASK
 mdefine_line|#define JBH_HASH_MASK 8191
-multiline_comment|/* After several hours of tedious analysis, the following hash&n; * function won.  Do not mess with it... -DaveM&n; */
 DECL|macro|_jhashfn
-mdefine_line|#define _jhashfn(dev,block)&t;&bslash;&n;&t;((((dev)&lt;&lt;(JBH_HASH_SHIFT - 6)) ^ ((dev)&lt;&lt;(JBH_HASH_SHIFT - 9))) ^ &bslash;&n;&t; (((block)&lt;&lt;(JBH_HASH_SHIFT - 6)) ^ ((block) &gt;&gt; 13) ^ ((block) &lt;&lt; (JBH_HASH_SHIFT - 12))))
+mdefine_line|#define _jhashfn(sb,block)&t;&bslash;&n;&t;(((unsigned long)sb&gt;&gt;L1_CACHE_SHIFT) ^ &bslash;&n;&t; (((block)&lt;&lt;(JBH_HASH_SHIFT - 6)) ^ ((block) &gt;&gt; 13) ^ ((block) &lt;&lt; (JBH_HASH_SHIFT - 12))))
 DECL|macro|journal_hash
-mdefine_line|#define journal_hash(t,sb,block) ((t)[_jhashfn((kdev_t_to_nr(sb-&gt;s_dev)),(block)) &amp; JBH_HASH_MASK])
+mdefine_line|#define journal_hash(t,sb,block) ((t)[_jhashfn((sb),(block)) &amp; JBH_HASH_MASK])
 multiline_comment|/* finds n&squot;th buffer with 0 being the start of this commit.  Needs to go away, j_ap_blocks has changed&n;** since I created this.  One chunk of code in journal.c needs changing before deleting it&n;*/
 DECL|macro|JOURNAL_BUFFER
 mdefine_line|#define JOURNAL_BUFFER(j,n) ((j)-&gt;j_ap_blocks[((j)-&gt;j_start + (n)) % JOURNAL_BLOCK_COUNT])

@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
@@ -2514,13 +2515,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* Board specific code should have set up initrd_start and initrd_end */
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_if
 c_cond

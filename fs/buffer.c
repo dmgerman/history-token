@@ -753,11 +753,7 @@ op_assign
 id|get_super
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 )paren
 suffix:semicolon
 r_if

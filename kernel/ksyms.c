@@ -39,6 +39,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -469,6 +470,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_fs_type
+)paren
+suffix:semicolon
+DECL|variable|user_get_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|user_get_super
 )paren
 suffix:semicolon
 DECL|variable|get_super
@@ -1354,6 +1362,13 @@ c_func
 id|vfs_lstat
 )paren
 suffix:semicolon
+DECL|variable|vfs_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_getattr
+)paren
+suffix:semicolon
 DECL|variable|lock_rename
 id|EXPORT_SYMBOL
 c_func
@@ -1803,6 +1818,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|is_read_only
+)paren
+suffix:semicolon
+DECL|variable|bdev_read_only
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bdev_read_only
 )paren
 suffix:semicolon
 DECL|variable|set_device_ro

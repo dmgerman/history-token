@@ -169,7 +169,11 @@ id|sb
 suffix:semicolon
 id|inode-&gt;i_dev
 op_assign
+id|to_kdev_t
+c_func
+(paren
 id|sb-&gt;s_dev
+)paren
 suffix:semicolon
 id|inode-&gt;i_blkbits
 op_assign
@@ -1176,7 +1180,7 @@ op_assign
 id|get_super
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if

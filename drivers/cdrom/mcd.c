@@ -20,6 +20,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
 mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
@@ -2294,6 +2296,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2343,6 +2347,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2585,6 +2591,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2847,6 +2855,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3021,6 +3031,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3212,6 +3224,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3356,6 +3370,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon

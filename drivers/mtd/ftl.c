@@ -46,8 +46,6 @@ macro_line|#endif
 multiline_comment|/* Funky stuff for setting up a block device */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;&t;FTL_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME&t;&t;&quot;ftl&quot;
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 DECL|macro|DEVICE_NR
@@ -5121,12 +5119,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|minor
 op_assign
 id|minor
@@ -5276,6 +5270,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 (paren
 id|ret
 op_eq

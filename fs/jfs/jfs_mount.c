@@ -1690,11 +1690,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 id|lmLog

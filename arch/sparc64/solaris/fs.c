@@ -2369,11 +2369,7 @@ id|__put_user
 id|R4_DEV
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_sb-&gt;s_dev
-)paren
 )paren
 comma
 op_amp
@@ -2625,11 +2621,7 @@ id|__put_user
 id|R4_DEV
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_sb-&gt;s_dev
-)paren
 )paren
 comma
 op_amp

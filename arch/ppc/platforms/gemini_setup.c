@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -676,23 +677,13 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|SCSI_CDROM_MAJOR
-comma
-l_int|0
-)paren
+id|Root_SR0
 suffix:semicolon
 r_else
 macro_line|#endif
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0801
-)paren
+id|Root_SDA1
 suffix:semicolon
 multiline_comment|/* nothing but serial consoles... */
 id|sprintf
