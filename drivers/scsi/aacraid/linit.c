@@ -1894,6 +1894,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -2224,6 +2225,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
