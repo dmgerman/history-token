@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * Copyright (c) 2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * USB Host Controller Driver (usb_hcd) framework&n; *&n; * Since &quot;struct usb_bus&quot; is so thin, you can&squot;t share much code in it.&n; * This framework is a layer over that, and should be more sharable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -14,12 +15,13 @@ id|usb_bus
 op_star
 id|bus
 suffix:semicolon
-multiline_comment|/* hcd is-a bus */
-DECL|member|hcd_list
+multiline_comment|/* FIXME only use &quot;self&quot; */
+DECL|member|self
 r_struct
-id|list_head
-id|hcd_list
+id|usb_bus
+id|self
 suffix:semicolon
+multiline_comment|/* hcd is-a bus */
 DECL|member|bus_name
 r_const
 r_char
@@ -170,6 +172,79 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * FIXME usb_operations should vanish or become hc_driver,&n; * when usb_bus and usb_hcd become the same thing.&n; */
+DECL|struct|usb_operations
+r_struct
+id|usb_operations
+(brace
+DECL|member|allocate
+r_int
+(paren
+op_star
+id|allocate
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|deallocate
+r_int
+(paren
+op_star
+id|deallocate
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_frame_number
+r_int
+(paren
+op_star
+id|get_frame_number
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+id|usb_dev
+)paren
+suffix:semicolon
+DECL|member|submit_urb
+r_int
+(paren
+op_star
+id|submit_urb
+)paren
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+comma
+r_int
+id|mem_flags
+)paren
+suffix:semicolon
+DECL|member|unlink_urb
+r_int
+(paren
+op_star
+id|unlink_urb
+)paren
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* each driver provides one of these, and hardware init support */
 DECL|struct|hc_driver
 r_struct
@@ -279,7 +354,6 @@ op_star
 id|hcd
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: rework generic-to-specific HCD linkage (specific contains generic)
 multiline_comment|/* memory lifecycle */
 DECL|member|hcd_alloc
 r_struct
@@ -431,6 +505,12 @@ id|urb
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
+r_struct
+id|pci_dev
+suffix:semicolon
+r_struct
+id|pci_device_id
+suffix:semicolon
 r_extern
 r_int
 id|usb_hcd_pci_probe
@@ -522,6 +602,169 @@ mdefine_line|#define SetHubFeature&t;&t;(0x2000 | USB_REQ_SET_FEATURE)
 DECL|macro|SetPortFeature
 mdefine_line|#define SetPortFeature&t;&t;(0x2300 | USB_REQ_SET_FEATURE)
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * Generic bandwidth allocation constants/support&n; */
+DECL|macro|FRAME_TIME_USECS
+mdefine_line|#define FRAME_TIME_USECS&t;1000L
+DECL|macro|BitTime
+mdefine_line|#define BitTime(bytecount)  (7 * 8 * bytecount / 6)  /* with integer truncation */
+multiline_comment|/* Trying not to use worst-case bit-stuffing&n;                   of (7/6 * 8 * bytecount) = 9.33 * bytecount */
+multiline_comment|/* bytecount = data payload byte count */
+DECL|macro|NS_TO_US
+mdefine_line|#define NS_TO_US(ns)&t;((ns + 500L) / 1000L)
+multiline_comment|/* convert &amp; round nanoseconds to microseconds */
+r_extern
+r_void
+id|usb_claim_bandwidth
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|urb
+op_star
+id|urb
+comma
+r_int
+id|bustime
+comma
+r_int
+id|isoc
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_release_bandwidth
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|urb
+op_star
+id|urb
+comma
+r_int
+id|isoc
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Full/low speed bandwidth allocation constants/support.&n; */
+DECL|macro|BW_HOST_DELAY
+mdefine_line|#define BW_HOST_DELAY&t;1000L&t;&t;/* nanoseconds */
+DECL|macro|BW_HUB_LS_SETUP
+mdefine_line|#define BW_HUB_LS_SETUP&t;333L&t;&t;/* nanoseconds */
+multiline_comment|/* 4 full-speed bit times (est.) */
+DECL|macro|FRAME_TIME_BITS
+mdefine_line|#define FRAME_TIME_BITS         12000L&t;&t;/* frame = 1 millisecond */
+DECL|macro|FRAME_TIME_MAX_BITS_ALLOC
+mdefine_line|#define FRAME_TIME_MAX_BITS_ALLOC&t;(90L * FRAME_TIME_BITS / 100L)
+DECL|macro|FRAME_TIME_MAX_USECS_ALLOC
+mdefine_line|#define FRAME_TIME_MAX_USECS_ALLOC&t;(90L * FRAME_TIME_USECS / 100L)
+r_extern
+r_int
+id|usb_check_bandwidth
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_struct
+id|urb
+op_star
+id|urb
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+r_extern
+r_struct
+id|usb_bus
+op_star
+id|usb_alloc_bus
+(paren
+r_struct
+id|usb_operations
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_free_bus
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_register_bus
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_deregister_bus
+(paren
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_register_root_hub
+(paren
+r_struct
+id|usb_device
+op_star
+id|usb_dev
+comma
+r_struct
+id|device
+op_star
+id|parent_dev
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* exported only within usbcore */
+r_extern
+r_struct
+id|list_head
+id|usb_bus_list
+suffix:semicolon
+r_extern
+r_struct
+id|semaphore
+id|usb_bus_list_lock
+suffix:semicolon
+r_extern
+r_void
+id|usb_bus_get
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_bus_put
+(paren
+r_struct
+id|usb_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* hub.h ... DeviceRemovable in 2.4.2-ac11, gone in 2.4.10 */
 singleline_comment|// bleech -- resurfaced in 2.4.11 or 2.4.12
 DECL|macro|bitmap
@@ -530,4 +773,5 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/* random stuff */
 DECL|macro|RUN_CONTEXT
 mdefine_line|#define&t;RUN_CONTEXT (in_irq () ? &quot;in_irq&quot; &bslash;&n;&t;&t;: (in_interrupt () ? &quot;in_interrupt&quot; : &quot;can sleep&quot;))
+macro_line|#endif /* __KERNEL__ */
 eof
