@@ -418,31 +418,6 @@ op_star
 id|t
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|get_info
-r_int
-(paren
-op_star
-id|get_info
-)paren
-(paren
-r_struct
-id|dn_fib_table
-op_star
-id|table
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|first
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 DECL|member|dump
 r_int
 (paren
@@ -970,6 +945,10 @@ id|dn_fib_tables
 )braket
 suffix:semicolon
 macro_line|#else /* Endnode */
+DECL|macro|dn_fib_init
+mdefine_line|#define dn_fib_init() (0)
+DECL|macro|dn_fib_cleanup
+mdefine_line|#define dn_fib_cleanup() (0)
 DECL|macro|dn_fib_lookup
 mdefine_line|#define dn_fib_lookup(fl, res) (-ESRCH)
 DECL|macro|dn_fib_info_put

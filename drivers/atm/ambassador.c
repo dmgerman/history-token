@@ -43,15 +43,13 @@ multiline_comment|/*&n;  &n;  Theory of Operation&n;  &n;  I Hardware, detection
 multiline_comment|/********** microcode **********/
 macro_line|#ifdef AMB_NEW_MICROCODE
 DECL|macro|UCODE
-mdefine_line|#define UCODE(x) UCODE1(atmsar12.,x)
+mdefine_line|#define UCODE(x) UCODE2(atmsar12.x)
 macro_line|#else
 DECL|macro|UCODE
-mdefine_line|#define UCODE(x) UCODE1(atmsar11.,x)
+mdefine_line|#define UCODE(x) UCODE2(atmsar11.x)
 macro_line|#endif
 DECL|macro|UCODE2
 mdefine_line|#define UCODE2(x) #x
-DECL|macro|UCODE1
-mdefine_line|#define UCODE1(x,y) UCODE2(x ## y)
 DECL|variable|ucode_start
 r_static
 id|u32

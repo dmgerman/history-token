@@ -4608,7 +4608,7 @@ ques
 c_cond
 l_char|&squot;.&squot;
 suffix:colon
-l_string|&quot;RSDZTD&quot;
+l_string|&quot;RSDTZW&quot;
 (braket
 id|i
 )braket

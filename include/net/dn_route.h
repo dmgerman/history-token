@@ -184,10 +184,11 @@ DECL|member|rt_gateway
 id|__u16
 id|rt_gateway
 suffix:semicolon
-DECL|member|__padding
+DECL|member|rt_local_src
 id|__u16
-id|__padding
+id|rt_local_src
 suffix:semicolon
+multiline_comment|/* Source used for forwarding packets */
 DECL|member|rt_src_map
 id|__u16
 id|rt_src_map

@@ -32,21 +32,23 @@ r_int
 r_int
 id|protonum
 suffix:semicolon
-multiline_comment|/* Do a packet translation according to the ip_nat_proto_manip&n;&t; * and manip type. */
+multiline_comment|/* Do a packet translation according to the ip_nat_proto_manip&n;&t; * and manip type.  Return true if succeeded. */
 DECL|member|manip_pkt
-r_void
+r_int
 (paren
 op_star
 id|manip_pkt
 )paren
 (paren
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+op_star
+id|pskb
 comma
 r_int
-id|len
+r_int
+id|hdroff
 comma
 r_const
 r_struct

@@ -31,16 +31,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-DECL|struct|esphdr
-r_struct
-id|esphdr
-(brace
-DECL|member|spi
-id|__u32
-id|spi
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Returns 1 if the spi is matched by the range, 0 otherwise */
 r_static
 r_inline
@@ -163,7 +153,7 @@ id|hotdrop
 )paren
 (brace
 r_struct
-id|esphdr
+id|ip_esp_hdr
 op_star
 id|esp
 op_assign
@@ -432,7 +422,7 @@ r_int
 r_sizeof
 (paren
 r_struct
-id|esphdr
+id|ip_esp_hdr
 )paren
 )paren
 (brace
@@ -447,9 +437,16 @@ suffix:semicolon
 )brace
 id|esp
 op_assign
+(paren
+r_struct
+id|ip_esp_hdr
+op_star
+)paren
+(paren
 id|skb-&gt;data
 op_plus
 id|ptr
+)paren
 suffix:semicolon
 id|DEBUGP
 c_func
