@@ -2062,6 +2062,11 @@ id|end
 comma
 id|block
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

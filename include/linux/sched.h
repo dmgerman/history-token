@@ -2662,8 +2662,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PREEMPT
-multiline_comment|/*&n; * cond_resched_lock() - if a reschedule is pending, drop the given lock,&n; * call schedule, and on return reacquire the lock.&n; *&n; * Note: this does not assume the given lock is the _only_ lock held.&n; * The kernel preemption counter gives us &quot;free&quot; checking that we are&n; * atomic -- let&squot;s use it.&n; */
+multiline_comment|/*&n; * cond_resched_lock() - if a reschedule is pending, drop the given lock,&n; * call schedule, and on return reacquire the lock.&n; *&n; * This works OK both with and without CONFIG_PREEMPT.  We do strange low-level&n; * operations here to prevent schedule() from being called twice (once via&n; * spin_unlock(), once by hand).&n; */
 DECL|function|cond_resched_lock
 r_static
 r_inline
@@ -2683,13 +2682,6 @@ id|need_resched
 c_func
 (paren
 )paren
-op_logical_and
-id|preempt_count
-c_func
-(paren
-)paren
-op_eq
-l_int|1
 )paren
 (brace
 id|_raw_spin_unlock
@@ -2716,21 +2708,6 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-macro_line|#else
-DECL|function|cond_resched_lock
-r_static
-r_inline
-r_void
-id|cond_resched_lock
-c_func
-(paren
-id|spinlock_t
-op_star
-id|lock
-)paren
-(brace
-)brace
-macro_line|#endif
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
 r_extern
 id|FASTCALL
