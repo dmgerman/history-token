@@ -12,10 +12,10 @@ op_star
 id|dev
 comma
 id|u32
-id|stage
+id|state
 comma
 id|u32
-id|state
+id|level
 )paren
 (brace
 r_struct
@@ -53,7 +53,7 @@ id|pci_dev-&gt;driver
 r_if
 c_cond
 (paren
-id|stage
+id|level
 op_eq
 id|SUSPEND_SAVE_STATE
 op_logical_and
@@ -75,7 +75,7 @@ r_else
 r_if
 c_cond
 (paren
-id|stage
+id|level
 op_eq
 id|SUSPEND_POWER_DOWN
 op_logical_and
@@ -110,7 +110,7 @@ op_star
 id|dev
 comma
 id|u32
-id|stage
+id|level
 )paren
 (brace
 r_struct
@@ -143,7 +143,7 @@ id|pci_dev-&gt;driver
 r_if
 c_cond
 (paren
-id|stage
+id|level
 op_eq
 id|RESUME_POWER_ON
 op_logical_and
