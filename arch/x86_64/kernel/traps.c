@@ -25,31 +25,8 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-id|asmlinkage
-r_int
-id|system_call
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|kernel_syscall
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ia32_syscall
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|gate_struct
@@ -233,10 +210,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|exception_trace
 suffix:semicolon
 DECL|variable|die_chain
 r_struct
@@ -2184,15 +2157,6 @@ l_string|&quot;reserved&quot;
 comma
 id|reserved
 )paren
-r_extern
-r_void
-id|dump_pagetable
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|do_general_protection
 id|asmlinkage
 r_void

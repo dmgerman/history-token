@@ -650,8 +650,7 @@ DECL|macro|at_sk
 mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;sk_protinfo)
 r_extern
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|atalk_sockets
 suffix:semicolon
 r_extern

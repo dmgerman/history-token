@@ -20,9 +20,7 @@ macro_line|#include &lt;linux/divert.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
-macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_NET)
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#endif&t;/* CONFIG_NET_RADIO */
@@ -2839,7 +2837,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET
 r_if
 c_cond
 (paren
@@ -2872,7 +2869,6 @@ id|arg
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif  /* CONFIG_NET */
 macro_line|#ifdef WIRELESS_EXT
 r_if
 c_cond
@@ -2984,7 +2980,6 @@ op_assign
 op_minus
 id|ENOPKG
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
 r_if
 c_cond
 (paren
@@ -2997,7 +2992,6 @@ c_func
 l_string|&quot;bridge&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|down
 c_func
 (paren
@@ -3038,7 +3032,6 @@ op_assign
 op_minus
 id|ENOPKG
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
 r_if
 c_cond
 (paren
@@ -3051,7 +3044,6 @@ c_func
 l_string|&quot;8021q&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|down
 c_func
 (paren
@@ -3116,7 +3108,6 @@ op_assign
 op_minus
 id|ENOPKG
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
 r_if
 c_cond
 (paren
@@ -3129,7 +3120,6 @@ c_func
 l_string|&quot;dlci&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3868,7 +3858,7 @@ id|err
 r_return
 id|err
 suffix:semicolon
-macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_NET)
+macro_line|#if defined(CONFIG_KMOD)
 multiline_comment|/* Attempt to load a protocol module if the find failed. &n;&t; * &n;&t; * 12/09/1996 Marcin: But! this makes REALLY only sense, if the user &n;&t; * requested real, full-featured networking support upon configuration.&n;&t; * Otherwise module support will break!&n;&t; */
 r_if
 c_cond

@@ -1,6 +1,6 @@
-macro_line|#ident &quot;$Id: msr.c,v 1.6 2001/10/24 23:58:53 ak Exp $&quot;
+macro_line|#ident &quot;$Id$&quot;
 multiline_comment|/* ----------------------------------------------------------------------- *&n; *   &n; *   Copyright 2000 H. Peter Anvin - All Rights Reserved&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation, Inc., 675 Mass Ave, Cambridge MA 02139,&n; *   USA; either version 2 of the License, or (at your option) any later&n; *   version; incorporated herein by reference.&n; *&n; * ----------------------------------------------------------------------- */
-multiline_comment|/*&n; * msr.c&n; *&n; * x86 MSR access device&n; *&n; * This device is accessed by lseek() to the appropriate register number&n; * and then read/write in chunks of 8 bytes.  A larger size means multiple&n; * reads or writes of the same register.&n; *&n; * This driver uses /dev/cpu/%d/msr where %d is the minor number, and on&n; * an SMP box will direct the access to CPU %d.&n;&n;RED-PEN: need to get power management for S3 restore&n;&n; */
+multiline_comment|/*&n; * msr.c&n; *&n; * x86 MSR access device&n; *&n; * This device is accessed by lseek() to the appropriate register number&n; * and then read/write in chunks of 8 bytes.  A larger size means multiple&n; * reads or writes of the same register.&n; *&n; * This driver uses /dev/cpu/%d/msr where %d is the minor number, and on&n; * an SMP box will direct the access to CPU %d.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/cpufeature.h&gt;
 multiline_comment|/* Note: &quot;err&quot; is handled in a funny way below.  Otherwise one version&n;   of gcc or another breaks. */
 DECL|function|wrmsr_eio
 r_static
@@ -318,6 +317,9 @@ r_struct
 id|msr_command
 id|cmd
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|preempt_disable
 c_func
 (paren
@@ -334,7 +336,6 @@ c_func
 )paren
 )paren
 (brace
-r_int
 id|ret
 op_assign
 id|wrmsr_eio
@@ -346,14 +347,6 @@ id|eax
 comma
 id|edx
 )paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 r_else
@@ -393,15 +386,19 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|cmd.err
+suffix:semicolon
+)brace
 id|preempt_enable
 c_func
 (paren
 )paren
 suffix:semicolon
 r_return
-id|cmd.err
+id|ret
 suffix:semicolon
-)brace
 )brace
 DECL|function|do_rdmsr
 r_static
@@ -429,6 +426,14 @@ r_struct
 id|msr_command
 id|cmd
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -440,7 +445,8 @@ c_func
 )paren
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|rdmsr_eio
 c_func
 (paren
@@ -491,10 +497,19 @@ id|cmd.data
 l_int|1
 )braket
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|cmd.err
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 macro_line|#else /* ! CONFIG_SMP */
 DECL|function|do_wrmsr

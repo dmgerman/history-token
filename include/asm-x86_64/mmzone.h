@@ -38,7 +38,6 @@ id|node_data
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/* kern_addr_valid below hardcodes the same algorithm*/
 DECL|function|phys_to_nid
 r_static
 r_inline
@@ -110,8 +109,6 @@ DECL|macro|node_size
 mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) )
-DECL|macro|kern_addr_valid
-mdefine_line|#define kern_addr_valid(kvaddr) ({&t;&t;&t;&t;&t;&bslash;&n;&t;int ok = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        unsigned long index = __pa(kvaddr) &gt;&gt; memnode_shift;&t;&t;&bslash;&n;&t;if (index &lt;= NODEMAPSIZE) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned nodeid = memnodemap[index];&t;&t;&t;&bslash;&n;&t;&t;unsigned long pfn = __pa(kvaddr) &gt;&gt; PAGE_SHIFT;&t;&t;&bslash;&n;&t;&t;unsigned long start_pfn = node_start_pfn(nodeid);&t;&bslash;&n;&t;&t;ok = (nodeid != 0xff) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t;     (pfn &gt;= start_pfn) &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;&t;     (pfn &lt;  start_pfn + node_size(nodeid));&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        ok;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* AK: this currently doesn&squot;t deal with invalid addresses. We&squot;ll see &n;   if the 2.5 kernel doesn&squot;t pass them&n;   (2.4 used to). */
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn) ({ &bslash;&n;&t;int nid = phys_to_nid(((unsigned long)(pfn)) &lt;&lt; PAGE_SHIFT); &t;&bslash;&n;&t;((pfn) - node_start_pfn(nid)) + node_mem_map(nid);&t;&t;&bslash;&n;})

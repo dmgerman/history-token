@@ -5,6 +5,7 @@ DECL|macro|__BLUETOOTH_H
 mdefine_line|#define __BLUETOOTH_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#ifndef AF_BLUETOOTH
@@ -256,8 +257,7 @@ id|bt_sock_list
 (brace
 DECL|member|head
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|head
 suffix:semicolon
 DECL|member|lock

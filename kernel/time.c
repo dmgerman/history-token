@@ -423,6 +423,10 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|new_tv.tv_nsec
+op_mul_assign
+id|NSEC_PER_USEC
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -451,10 +455,6 @@ id|tz
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-id|new_tv.tv_nsec
-op_mul_assign
-id|NSEC_PER_USEC
 suffix:semicolon
 )brace
 r_return

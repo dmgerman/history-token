@@ -43,8 +43,7 @@ DECL|macro|RAWV4_HTABLE_SIZE
 mdefine_line|#define RAWV4_HTABLE_SIZE&t;MAX_INET_PROTOS
 r_extern
 r_struct
-id|sock
-op_star
+id|hlist_head
 id|raw_v4_htable
 (braket
 id|RAWV4_HTABLE_SIZE
