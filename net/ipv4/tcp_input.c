@@ -15319,6 +15319,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|th-&gt;rst
+)paren
+(brace
+r_goto
+id|discard
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|th-&gt;syn
 )paren
 (brace
