@@ -26,7 +26,7 @@ mdefine_line|#define atomic_set(v, i)        (((v)-&gt;counter) = i)
 macro_line|#else
 multiline_comment|/* We do the bulk of the actual work out of line in two common&n; * routines in assembler, see arch/sparc/lib/atomic.S for the&n; * &quot;fun&quot; details.&n; *&n; * For SMP the trick is you embed the spin lock byte within&n; * the word, use the low byte so signedness is easily retained&n; * via a quick arithmetic shift.  It looks like this:&n; *&n; *&t;----------------------------------------&n; *&t;| signed 24-bit counter value |  lock  |  atomic_t&n; *&t;----------------------------------------&n; *&t; 31                          8 7      0&n; */
 DECL|macro|ATOMIC_INIT
-mdefine_line|#define ATOMIC_INIT(i)&t;{ (i &lt;&lt; 8) }
+mdefine_line|#define ATOMIC_INIT(i)&t;{ ((i) &lt;&lt; 8) }
 DECL|function|atomic_read
 r_static
 id|__inline__
@@ -34,6 +34,7 @@ r_int
 id|atomic_read
 c_func
 (paren
+r_const
 id|atomic_t
 op_star
 id|v
