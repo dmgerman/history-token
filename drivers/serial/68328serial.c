@@ -1,4 +1,4 @@
-multiline_comment|/* 68328serial.c: Serial port driver for 68328 microcontroller&n; *&n; * Copyright (C) 1995       David S. Miller    &lt;davem@caip.rutgers.edu&gt;&n; * Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; * Copyright (C) 1998, 1999 D. Jeff Dionne     &lt;jeff@uclinux.org&gt;&n; * Copyright (C) 1999       Vladimir Gurevich  &lt;vgurevic@cisco.com&gt;&n; * Copyright (C) 2002       David McCullough   &lt;davidm@snapgear.com&gt;&n; * Copyright (C) 2002       Greg Ungerer       &lt;gerg@snapgear.com&gt;&n; *&n; * VZ Support/Fixes             Evan Stawnyczy &lt;e@lineo.ca&gt;&n; * Multiple UART support        Daniel Potts &lt;danielp@cse.unsw.edu.au&gt;&n; * Power management support     Daniel Potts &lt;danielp@cse.unsw.edu.au&gt;&n; * VZ Second Serial Port enable Phil Wilshire&n; * 2.4/2.5 port                 David McCullough&n; */
+multiline_comment|/* 68328serial.c: Serial port driver for 68328 microcontroller&n; *&n; * Copyright (C) 1995       David S. Miller    &lt;davem@caip.rutgers.edu&gt;&n; * Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; * Copyright (C) 1998, 1999 D. Jeff Dionne     &lt;jeff@uclinux.org&gt;&n; * Copyright (C) 1999       Vladimir Gurevich  &lt;vgurevic@cisco.com&gt;&n; * Copyright (C) 2002-2003  David McCullough   &lt;davidm@snapgear.com&gt;&n; * Copyright (C) 2002       Greg Ungerer       &lt;gerg@snapgear.com&gt;&n; *&n; * VZ Support/Fixes             Evan Stawnyczy &lt;e@lineo.ca&gt;&n; * Multiple UART support        Daniel Potts &lt;danielp@cse.unsw.edu.au&gt;&n; * Power management support     Daniel Potts &lt;danielp@cse.unsw.edu.au&gt;&n; * VZ Second Serial Port enable Phil Wilshire&n; * 2.4/2.5 port                 David McCullough&n; */
 macro_line|#include &lt;asm/dbg.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -57,7 +57,7 @@ id|NR_PORTS
 suffix:semicolon
 DECL|variable|IRQ_ports
 r_struct
-id|m86k_serial
+id|m68k_serial
 op_star
 id|IRQ_ports
 (braket
@@ -81,6 +81,10 @@ id|m68328_uart
 op_star
 id|uart_addr
 op_assign
+(paren
+id|m68328_uart
+op_star
+)paren
 id|USTCNT_ADDR
 suffix:semicolon
 DECL|variable|m68k_ttys
@@ -1260,7 +1264,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the serial driver&squot;s generic interrupt routine&n; */
 DECL|function|rs_interrupt
-r_void
+id|irqreturn_t
 id|rs_interrupt
 c_func
 (paren
@@ -1309,6 +1313,7 @@ id|info
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|uart
@@ -1371,6 +1376,7 @@ id|rx
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|do_softint
@@ -2858,9 +2864,11 @@ c_func
 suffix:semicolon
 id|c
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|count
 comma
 id|min
@@ -2912,9 +2920,11 @@ id|c
 suffix:semicolon
 id|c
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
 id|min
@@ -4107,31 +4117,6 @@ id|TIOCGSOFTCAR
 suffix:colon
 id|error
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
 id|put_user
 c_func
 (paren
@@ -4153,6 +4138,14 @@ op_star
 )paren
 id|arg
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 r_return
 l_int|0
