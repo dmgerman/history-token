@@ -944,19 +944,24 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if us-&gt;srb is NULL, we are being asked to exit */
+multiline_comment|/* if the device has disconnected, we are free to exit */
 r_if
 c_cond
 (paren
-id|us-&gt;srb
-op_eq
-l_int|NULL
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
 )paren
 (brace
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- exit command received&bslash;n&quot;
+l_string|&quot;-- exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -1000,30 +1005,6 @@ l_int|16
 suffix:semicolon
 r_goto
 id|SkipForAbort
-suffix:semicolon
-)brace
-multiline_comment|/* don&squot;t do anything if we are disconnecting */
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|US_FLIDX_DISCONNECTING
-comma
-op_amp
-id|us-&gt;flags
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;No command during disconnect&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|SkipForDisconnect
 suffix:semicolon
 )brace
 id|scsi_unlock
@@ -1272,8 +1253,6 @@ id|us-&gt;notify
 )paren
 suffix:semicolon
 multiline_comment|/* finished working on this command */
-id|SkipForDisconnect
-suffix:colon
 id|us-&gt;srb
 op_assign
 l_int|NULL
@@ -2523,57 +2502,11 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Kill the control thread.  The SCSI host must already have been&n;&t; * removed so it won&squot;t try to queue any more commands.&n;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;pid
-)paren
-(brace
-multiline_comment|/* Wait for the thread to be idle */
-id|down
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
+multiline_comment|/* Tell the control thread to exit.  The SCSI host must&n;&t; * already have been removed so it won&squot;t try to queue&n;&t; * any more commands.&n;&t; */
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;-- sending exit command to thread&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* If the SCSI midlayer queued a final command just before&n;&t;&t; * scsi_remove_host() was called, us-&gt;srb might not be&n;&t;&t; * NULL.  We can overwrite it safely, because the midlayer&n;&t;&t; * will not wait for the command to finish.  Also the&n;&t;&t; * control thread will already have been awakened.&n;&t;&t; * That&squot;s okay, an extra up() on us-&gt;sema won&squot;t hurt.&n;&t;&t; *&n;&t;&t; * Enqueue the command, wake up the thread, and wait for &n;&t;&t; * notification that it has exited.&n;&t;&t; */
-id|scsi_lock
-c_func
-(paren
-id|us_to_host
-c_func
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|us_to_host
-c_func
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 id|up
@@ -2583,14 +2516,6 @@ op_amp
 id|us-&gt;sema
 )paren
 suffix:semicolon
-id|wait_for_completion
-c_func
-(paren
-op_amp
-id|us-&gt;notify
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Call the destructor routine, if it exists */
 r_if
 c_cond
@@ -3261,6 +3186,15 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;storage_probe() failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
 )paren
 suffix:semicolon
 id|usb_stor_release_resources
