@@ -33,6 +33,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -54,12 +55,10 @@ comma
 id|bytecount
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|modify_ldt
 c_func
@@ -88,6 +87,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -308,6 +308,7 @@ r_int
 id|func
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma

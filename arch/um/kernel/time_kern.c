@@ -352,6 +352,7 @@ id|um_time
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tloc
 )paren
@@ -400,6 +401,7 @@ id|um_stime
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tptr
 )paren

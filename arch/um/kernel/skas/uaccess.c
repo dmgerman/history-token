@@ -785,6 +785,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -812,6 +813,11 @@ c_func
 (paren
 id|to
 comma
+(paren
+id|__force
+r_void
+op_star
+)paren
 id|from
 comma
 id|n
@@ -918,6 +924,7 @@ id|copy_to_user_skas
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -948,6 +955,11 @@ id|KERNEL_DS
 id|memcpy
 c_func
 (paren
+(paren
+id|__force
+r_void
+op_star
+)paren
 id|to
 comma
 id|from
@@ -1083,6 +1095,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -1119,6 +1132,11 @@ c_func
 (paren
 id|dst
 comma
+(paren
+id|__force
+r_void
+op_star
+)paren
 id|src
 comma
 id|count
@@ -1240,6 +1258,7 @@ id|__clear_user_skas
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|mem
 comma
@@ -1273,6 +1292,7 @@ id|clear_user_skas
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|mem
 comma
@@ -1298,6 +1318,11 @@ id|KERNEL_DS
 id|memset
 c_func
 (paren
+(paren
+id|__force
+r_void
+op_star
+)paren
 id|mem
 comma
 l_int|0
@@ -1410,6 +1435,7 @@ c_func
 (paren
 r_const
 r_void
+id|__user
 op_star
 id|str
 comma
@@ -1443,6 +1469,11 @@ r_return
 id|strnlen
 c_func
 (paren
+(paren
+id|__force
+r_char
+op_star
+)paren
 id|str
 comma
 id|len

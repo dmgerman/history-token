@@ -1546,6 +1546,7 @@ id|copy_to_user_proc
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -1579,6 +1580,7 @@ op_star
 id|to
 comma
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -1604,6 +1606,7 @@ id|clear_user_proc
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1627,6 +1630,7 @@ id|strlen_user_proc
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|str
 )paren

@@ -600,7 +600,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap_pte
 id|pte_t
 op_star
@@ -1146,6 +1146,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr

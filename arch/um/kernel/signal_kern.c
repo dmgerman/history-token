@@ -840,10 +840,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 )paren
