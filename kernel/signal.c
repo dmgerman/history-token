@@ -3823,6 +3823,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * These are for backward compatibility with the rest of the kernel source.&n; */
+multiline_comment|/*&n; * XXX should probably nix these interfaces and update the kernel&n; * to specify explicitly whether the signal is a group signal or&n; * specific to a thread.&n; */
 r_int
 DECL|function|send_sig_info
 id|send_sig_info
@@ -3845,7 +3846,14 @@ id|p
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* XXX should nix these interfaces and update the kernel */
+multiline_comment|/*&n;&t; * We need the tasklist lock even for the specific&n;&t; * thread case (when we don&squot;t need to follow the group&n;&t; * lists) in order to avoid races with &quot;p-&gt;sighand&quot;&n;&t; * going away or changing from under us.&n;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3858,13 +3866,6 @@ id|SIG_KERNEL_BROADCAST_MASK
 )paren
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|group_send_sig_info
@@ -3875,13 +3876,6 @@ comma
 id|info
 comma
 id|p
-)paren
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
@@ -3914,6 +3908,13 @@ id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
