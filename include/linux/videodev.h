@@ -1085,6 +1085,8 @@ DECL|macro|VID_HARDWARE_MEYE
 mdefine_line|#define VID_HARDWARE_MEYE&t;32&t;/* Sony Vaio MotionEye cameras */
 DECL|macro|VID_HARDWARE_CPIA2
 mdefine_line|#define VID_HARDWARE_CPIA2&t;33
+DECL|macro|VID_HARDWARE_VICAM
+mdefine_line|#define VID_HARDWARE_VICAM&t;34
 macro_line|#endif /* __LINUX_VIDEODEV_H */
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof
