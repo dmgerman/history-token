@@ -26,6 +26,10 @@ id|page
 suffix:semicolon
 DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
+DECL|macro|alloc_zeroed_user_highpage
+mdefine_line|#define alloc_zeroed_user_highpage(vma, vaddr) alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vma, vmaddr)
+DECL|macro|__HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
+mdefine_line|#define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE
 r_extern
 r_void
 id|copy_page
