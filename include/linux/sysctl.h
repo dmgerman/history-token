@@ -1439,6 +1439,11 @@ id|NET_IPV4_ROUTE_SECRET_INTERVAL
 op_assign
 l_int|18
 comma
+DECL|enumerator|NET_IPV4_ROUTE_GC_MIN_INTERVAL_MS
+id|NET_IPV4_ROUTE_GC_MIN_INTERVAL_MS
+op_assign
+l_int|19
+comma
 )brace
 suffix:semicolon
 r_enum
