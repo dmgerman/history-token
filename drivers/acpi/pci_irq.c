@@ -906,6 +906,11 @@ comma
 r_int
 op_star
 id|active_high_low
+comma
+r_char
+op_star
+op_star
+id|link
 )paren
 (brace
 r_struct
@@ -1017,6 +1022,8 @@ comma
 id|edge_level
 comma
 id|active_high_low
+comma
+id|link
 )paren
 suffix:semicolon
 r_if
@@ -1103,6 +1110,11 @@ comma
 r_int
 op_star
 id|active_high_low
+comma
+r_char
+op_star
+op_star
+id|link
 )paren
 (brace
 r_struct
@@ -1255,6 +1267,8 @@ comma
 id|edge_level
 comma
 id|active_high_low
+comma
+id|link
 )paren
 suffix:semicolon
 )brace
@@ -1355,6 +1369,12 @@ suffix:semicolon
 r_extern
 r_int
 id|via_interrupt_line_quirk
+suffix:semicolon
+r_char
+op_star
+id|link
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -1465,6 +1485,9 @@ id|edge_level
 comma
 op_amp
 id|active_high_low
+comma
+op_amp
+id|link
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to derive an IRQ from the&n;&t; * device&squot;s parent bridge.&n;&t; */
@@ -1489,6 +1512,9 @@ id|edge_level
 comma
 op_amp
 id|active_high_low
+comma
+op_amp
+id|link
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * No IRQ known to the ACPI subsystem - maybe the BIOS / &n;&t; * driver reported one, then use it. Exit in any case.&n;&t; */
@@ -1505,7 +1531,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|PREFIX
-l_string|&quot;PCI interrupt %s[%c]: no GSI&quot;
+l_string|&quot;PCI Interrupt %s[%c]: no GSI&quot;
 comma
 id|pci_name
 c_func
@@ -1600,8 +1626,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;PCI interrupt %s[%c] -&gt; GSI %u &quot;
-l_string|&quot;(%s, %s) -&gt; IRQ %d&bslash;n&quot;
+l_string|&quot;PCI Interrupt %s[%c] -&gt; &quot;
 comma
 id|pci_name
 c_func
@@ -1612,6 +1637,25 @@ comma
 l_char|&squot;A&squot;
 op_plus
 id|pin
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Link [%s] -&gt; &quot;
+comma
+id|link
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;GSI %u (%s, %s) -&gt; IRQ %d&bslash;n&quot;
 comma
 id|irq
 comma
