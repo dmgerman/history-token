@@ -178,6 +178,16 @@ r_struct
 id|work_struct
 id|local_work
 suffix:semicolon
+DECL|member|canceled_list
+r_struct
+id|list_head
+id|canceled_list
+suffix:semicolon
+DECL|member|canceled_work
+r_struct
+id|work_struct
+id|canceled_work
+suffix:semicolon
 DECL|member|refcount
 id|atomic_t
 id|refcount
