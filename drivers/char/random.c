@@ -22,10 +22,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Configuration information&n; */
-DECL|macro|DEFAULT_POOL_SIZE
-mdefine_line|#define DEFAULT_POOL_SIZE 512
-DECL|macro|SECONDARY_POOL_SIZE
-mdefine_line|#define SECONDARY_POOL_SIZE 128
+DECL|macro|INPUT_POOL_WORDS
+mdefine_line|#define INPUT_POOL_WORDS 128
+DECL|macro|OUTPUT_POOL_WORDS
+mdefine_line|#define OUTPUT_POOL_WORDS 32
 DECL|macro|BATCH_ENTROPY_SIZE
 mdefine_line|#define BATCH_ENTROPY_SIZE 256
 DECL|macro|USE_SHA
@@ -52,9 +52,9 @@ r_static
 r_int
 id|trickle_thresh
 op_assign
-id|DEFAULT_POOL_SIZE
+id|INPUT_POOL_WORDS
 op_star
-l_int|7
+l_int|28
 suffix:semicolon
 r_static
 id|DEFINE_PER_CPU
@@ -293,28 +293,28 @@ DECL|macro|POOLBYTES
 mdefine_line|#define POOLBYTES&t;poolwords*4
 multiline_comment|/*&n; * For the purposes of better mixing, we use the CRC-32 polynomial as&n; * well to make a twisted Generalized Feedback Shift Reigster&n; *&n; * (See M. Matsumoto &amp; Y. Kurita, 1992.  Twisted GFSR generators.  ACM&n; * Transactions on Modeling and Computer Simulation 2(3):179-194.&n; * Also see M. Matsumoto &amp; Y. Kurita, 1994.  Twisted GFSR generators&n; * II.  ACM Transactions on Mdeling and Computer Simulation 4:254-266)&n; *&n; * Thanks to Colin Plumb for suggesting this.&n; *&n; * We have not analyzed the resultant polynomial to prove it primitive;&n; * in fact it almost certainly isn&squot;t.  Nonetheless, the irreducible factors&n; * of a random large-degree polynomial over GF(2) are more than large enough&n; * that periodicity is not a concern.&n; *&n; * The input hash is much less sensitive than the output hash.  All&n; * that we want of it is that it be a good non-cryptographic hash;&n; * i.e. it not produce collisions when fed &quot;random&quot; data of the sort&n; * we expect to see.  As long as the pool state differs for different&n; * inputs, we have preserved the input entropy and done a good job.&n; * The fact that an intelligent attacker can construct inputs that&n; * will produce controlled alterations to the pool&squot;s state is not&n; * important because we don&squot;t consider such inputs to contribute any&n; * randomness.  The only property we need with respect to them is that&n; * the attacker can&squot;t increase his/her knowledge of the pool&squot;s state.&n; * Since all additions are reversible (knowing the final state and the&n; * input, you can reconstruct the initial state), if an attacker has&n; * any uncertainty about the initial state, he/she can only shuffle&n; * that uncertainty about, but never cause any collisions (which would&n; * decrease the uncertainty).&n; *&n; * The chosen system lets the state of the pool be (essentially) the input&n; * modulo the generator polymnomial.  Now, for random primitive polynomials,&n; * this is a universal class of hash functions, meaning that the chance&n; * of a collision is limited by the attacker&squot;s knowledge of the generator&n; * polynomail, so if it is chosen at random, an attacker can never force&n; * a collision.  Here, we use a fixed polynomial, but we *can* assume that&n; * ###--&gt; it is unknown to the processes generating the input entropy. &lt;-###&n; * Because of this important property, this is a good, collision-resistant&n; * hash; hash collisions will occur no more often than chance.&n; */
 multiline_comment|/*&n; * Static global variables&n; */
-DECL|variable|random_state
+DECL|variable|input_pool
 r_static
 r_struct
 id|entropy_store
 op_star
-id|random_state
+id|input_pool
 suffix:semicolon
 multiline_comment|/* The default global store */
-DECL|variable|sec_random_state
+DECL|variable|blocking_pool
 r_static
 r_struct
 id|entropy_store
 op_star
-id|sec_random_state
+id|blocking_pool
 suffix:semicolon
 multiline_comment|/* secondary store */
-DECL|variable|urandom_state
+DECL|variable|nonblocking_pool
 r_static
 r_struct
 id|entropy_store
 op_star
-id|urandom_state
+id|nonblocking_pool
 suffix:semicolon
 multiline_comment|/* For urandom */
 r_static
@@ -394,7 +394,7 @@ comma
 l_int|0644
 )paren
 suffix:semicolon
-mdefine_line|#define DEBUG_ENT(fmt, arg...) do { if (debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;random %04d %04d %04d: &quot; &bslash;&n;&t;fmt,&bslash;&n;&t;random_state-&gt;entropy_count,&bslash;&n;&t;sec_random_state-&gt;entropy_count,&bslash;&n;&t;urandom_state-&gt;entropy_count,&bslash;&n;&t;## arg); } while (0)
+mdefine_line|#define DEBUG_ENT(fmt, arg...) do { if (debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;random %04d %04d %04d: &quot; &bslash;&n;&t;fmt,&bslash;&n;&t;input_pool-&gt;entropy_count,&bslash;&n;&t;blocking_pool-&gt;entropy_count,&bslash;&n;&t;nonblocking_pool-&gt;entropy_count,&bslash;&n;&t;## arg); } while (0)
 macro_line|#else
 DECL|macro|DEBUG_ENT
 mdefine_line|#define DEBUG_ENT(fmt, arg...) do {} while (0)
@@ -1446,7 +1446,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Flush out the accumulated entropy operations, adding entropy to the passed&n; * store (normally random_state).  If that store has enough entropy, alternate&n; * between randomizing the data of the primary and secondary stores.&n; */
+multiline_comment|/*&n; * Flush out the accumulated entropy operations, adding entropy to the&n; * input pool.  If that pool has enough entropy, alternate&n; * between randomizing the data of all pools.&n; */
 DECL|function|batch_entropy_process
 r_static
 r_void
@@ -1551,13 +1551,13 @@ op_assign
 (paren
 id|r
 op_eq
-id|sec_random_state
+id|blocking_pool
 )paren
 ques
 c_cond
-id|random_state
+id|input_pool
 suffix:colon
-id|sec_random_state
+id|blocking_pool
 suffix:semicolon
 id|max_entropy
 op_assign
@@ -1705,7 +1705,7 @@ multiline_comment|/* if over the trickle threshold, use only 1 in 4096 samples *
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 OG
 id|trickle_thresh
 op_logical_and
@@ -6831,7 +6831,7 @@ op_assign
 id|extract_entropy
 c_func
 (paren
-id|random_state
+id|input_pool
 comma
 id|tmp
 comma
@@ -7420,7 +7420,7 @@ id|entropy_store
 op_star
 id|r
 op_assign
-id|urandom_state
+id|nonblocking_pool
 suffix:semicolon
 r_int
 id|flags
@@ -7435,7 +7435,7 @@ id|r
 )paren
 id|r
 op_assign
-id|sec_random_state
+id|blocking_pool
 suffix:semicolon
 r_if
 c_cond
@@ -7446,7 +7446,7 @@ id|r
 (brace
 id|r
 op_assign
-id|random_state
+id|input_pool
 suffix:semicolon
 id|flags
 op_assign
@@ -7602,12 +7602,12 @@ c_cond
 id|create_entropy_store
 c_func
 (paren
-id|DEFAULT_POOL_SIZE
+id|INPUT_POOL_WORDS
 comma
-l_string|&quot;primary&quot;
+l_string|&quot;input&quot;
 comma
 op_amp
-id|random_state
+id|input_pool
 )paren
 )paren
 r_goto
@@ -7621,7 +7621,7 @@ c_func
 (paren
 id|BATCH_ENTROPY_SIZE
 comma
-id|random_state
+id|input_pool
 )paren
 )paren
 r_goto
@@ -7633,12 +7633,12 @@ c_cond
 id|create_entropy_store
 c_func
 (paren
-id|SECONDARY_POOL_SIZE
+id|OUTPUT_POOL_WORDS
 comma
-l_string|&quot;secondary&quot;
+l_string|&quot;blocking&quot;
 comma
 op_amp
-id|sec_random_state
+id|blocking_pool
 )paren
 )paren
 r_goto
@@ -7650,12 +7650,12 @@ c_cond
 id|create_entropy_store
 c_func
 (paren
-id|SECONDARY_POOL_SIZE
+id|OUTPUT_POOL_WORDS
 comma
-l_string|&quot;urandom&quot;
+l_string|&quot;nonblocking&quot;
 comma
 op_amp
-id|urandom_state
+id|nonblocking_pool
 )paren
 )paren
 r_goto
@@ -7664,26 +7664,26 @@ suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|random_state
+id|input_pool
 )paren
 suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|sec_random_state
+id|blocking_pool
 )paren
 suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|urandom_state
+id|nonblocking_pool
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init_random
 c_func
 (paren
-id|random_state
+id|input_pool
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7916,7 +7916,7 @@ op_assign
 id|extract_entropy
 c_func
 (paren
-id|sec_random_state
+id|blocking_pool
 comma
 id|buf
 comma
@@ -7982,7 +7982,7 @@ c_func
 (paren
 id|random_read_wait
 comma
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 op_ge
 id|random_read_wakeup_thresh
 )paren
@@ -8106,7 +8106,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|random_state-&gt;lock
+id|input_pool-&gt;lock
 comma
 id|cpuflags
 )paren
@@ -8114,9 +8114,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 OG
-id|random_state-&gt;poolinfo.POOLBITS
+id|input_pool-&gt;poolinfo.POOLBITS
 )paren
 id|flags
 op_or_assign
@@ -8126,7 +8126,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|random_state-&gt;lock
+id|input_pool-&gt;lock
 comma
 id|cpuflags
 )paren
@@ -8135,7 +8135,7 @@ r_return
 id|extract_entropy
 c_func
 (paren
-id|urandom_state
+id|nonblocking_pool
 comma
 id|buf
 comma
@@ -8195,7 +8195,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 op_ge
 id|random_read_wakeup_thresh
 )paren
@@ -8208,7 +8208,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 OL
 id|random_write_wakeup_thresh
 )paren
@@ -8334,7 +8334,7 @@ suffix:semicolon
 id|add_entropy_words
 c_func
 (paren
-id|random_state
+id|input_pool
 comma
 id|buf
 comma
@@ -8454,7 +8454,7 @@ id|RNDGETENTCNT
 suffix:colon
 id|ent_count
 op_assign
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 suffix:semicolon
 r_if
 c_cond
@@ -8509,7 +8509,7 @@ suffix:semicolon
 id|credit_entropy_store
 c_func
 (paren
-id|random_state
+id|input_pool
 comma
 id|ent_count
 )paren
@@ -8518,7 +8518,7 @@ multiline_comment|/*&n;&t;&t; * Wake up waiting processes if we have enough&n;&t
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 op_ge
 id|random_read_wakeup_thresh
 )paren
@@ -8626,7 +8626,7 @@ suffix:semicolon
 id|credit_entropy_store
 c_func
 (paren
-id|random_state
+id|input_pool
 comma
 id|ent_count
 )paren
@@ -8635,7 +8635,7 @@ multiline_comment|/*&n;&t;&t; * Wake up waiting processes if we have enough&n;&t
 r_if
 c_cond
 (paren
-id|random_state-&gt;entropy_count
+id|input_pool-&gt;entropy_count
 op_ge
 id|random_read_wakeup_thresh
 )paren
@@ -8673,19 +8673,19 @@ suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|random_state
+id|input_pool
 )paren
 suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|sec_random_state
+id|blocking_pool
 )paren
 suffix:semicolon
 id|init_std_data
 c_func
 (paren
-id|urandom_state
+id|nonblocking_pool
 )paren
 suffix:semicolon
 r_return
@@ -9225,7 +9225,9 @@ r_static
 r_int
 id|sysctl_poolsize
 op_assign
-id|DEFAULT_POOL_SIZE
+id|INPUT_POOL_WORDS
+op_star
+l_int|32
 suffix:semicolon
 DECL|variable|random_table
 id|ctl_table
@@ -9509,7 +9511,7 @@ c_func
 r_struct
 id|entropy_store
 op_star
-id|random_state
+id|pool
 )paren
 (brace
 id|min_read_thresh
@@ -9524,7 +9526,7 @@ id|max_read_thresh
 op_assign
 id|max_write_thresh
 op_assign
-id|random_state-&gt;poolinfo.POOLBITS
+id|pool-&gt;poolinfo.POOLBITS
 suffix:semicolon
 id|random_table
 (braket
@@ -9534,7 +9536,7 @@ dot
 id|data
 op_assign
 op_amp
-id|random_state-&gt;entropy_count
+id|pool-&gt;entropy_count
 suffix:semicolon
 )brace
 macro_line|#endif &t;/* CONFIG_SYSCTL */
