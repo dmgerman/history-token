@@ -91,13 +91,33 @@ DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())
+DECL|macro|IRQ_EXIT_OFFSET
+macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
+macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != 0)
+DECL|macro|IRQ_EXIT_OFFSET
+macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
+macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= HARDIRQ_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;__asm__(&quot;bl%? __do_softirq&quot;: : : &quot;lr&quot;);/* out of line */&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;__asm__(&quot;bl%? __do_softirq&quot;: : : &quot;lr&quot;);/* out of line */&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq(irq)&t;barrier()
 macro_line|#else
-macro_line|#error SMP not supported
+r_extern
+r_void
+id|synchronize_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

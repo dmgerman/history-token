@@ -1925,6 +1925,8 @@ c_func
 op_amp
 id|info-&gt;scsi.SCp
 )paren
+op_logical_and
+id|bytes_transferred
 )paren
 (brace
 id|printk
@@ -8737,15 +8739,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d.%c: &quot;
-id|__FUNCTION__
-l_string|&quot;: called&bslash;n&quot;
+l_string|&quot;scsi%d.%c: %s: called&bslash;n&quot;
 comma
 id|info-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
 id|SCpnt-&gt;target
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -8791,15 +8793,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d.%c: &quot;
-id|__FUNCTION__
-l_string|&quot;: resetting bus&bslash;n&quot;
+l_string|&quot;scsi%d.%c: %s: resetting bus&bslash;n&quot;
 comma
 id|info-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
 id|SCpnt-&gt;target
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to stop all activity on this interface.&n;&t; */
@@ -9066,15 +9068,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d.%c: &quot;
-id|__FUNCTION__
-l_string|&quot;: resetting host&bslash;n&quot;
+l_string|&quot;scsi%d.%c: %s: resetting host&bslash;n&quot;
 comma
 id|info-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
 id|SCpnt-&gt;target
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reset the SCSI chip.&n;&t; */

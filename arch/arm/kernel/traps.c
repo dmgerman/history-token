@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ptrace.h&quot;
 r_extern
 r_void
@@ -233,15 +234,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s&quot;
+l_string|&quot;%s(0x%08lx to 0x%08lx)&bslash;n&quot;
 comma
 id|str
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;(0x%08lx to 0x%08lx)&bslash;n&quot;
 comma
 id|bottom
 comma
@@ -537,10 +532,10 @@ id|fs
 )paren
 suffix:semicolon
 )brace
-DECL|function|dump_stack
+DECL|function|__dump_stack
 r_static
 r_void
-id|dump_stack
+id|__dump_stack
 c_func
 (paren
 r_struct
@@ -694,7 +689,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called from SysRq-T (show_task) to display the current&n; * call trace for each process.  Very useful.&n; */
+multiline_comment|/*&n; * This is called from SysRq-T (show_task) to display the current call&n; * trace for each process.  This version will also display the running&n; * threads call trace (ie, us.)&n; */
 DECL|function|show_trace_task
 r_void
 id|show_trace_task
@@ -706,6 +701,10 @@ op_star
 id|tsk
 )paren
 (brace
+r_int
+r_int
+id|fp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -713,15 +712,24 @@ id|tsk
 op_ne
 id|current
 )paren
-(brace
-r_int
-r_int
 id|fp
 op_assign
 id|thread_saved_fp
 c_func
 (paren
 id|tsk
+)paren
+suffix:semicolon
+r_else
+id|asm
+c_func
+(paren
+l_string|&quot;mov%? %0, fp&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|fp
+)paren
 )paren
 suffix:semicolon
 id|c_backtrace
@@ -732,7 +740,6 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|die_lock
 id|spinlock_t
@@ -837,7 +844,7 @@ c_func
 )paren
 )paren
 (brace
-id|dump_stack
+id|__dump_stack
 c_func
 (paren
 id|tsk
