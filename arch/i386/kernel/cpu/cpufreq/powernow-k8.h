@@ -125,6 +125,9 @@ DECL|macro|MSR_S_HI_START_VID
 mdefine_line|#define MSR_S_HI_START_VID        0x00001f00
 DECL|macro|MSR_S_HI_CURRENT_VID
 mdefine_line|#define MSR_S_HI_CURRENT_VID      0x0000001f
+DECL|macro|MSR_C_HI_STP_GNT_BENIGN
+mdefine_line|#define MSR_C_HI_STP_GNT_BENIGN   0x00000001
+multiline_comment|/*&n; * There are restrictions frequencies have to follow:&n; * - only 1 entry in the low fid table ( &lt;=1.4GHz )&n; * - lowest entry in the high fid table must be &gt;= 2 * the entry in the&n; *   low fid table&n; * - lowest entry in the high fid table must be a &lt;= 200MHz + 2 * the entry&n; *   in the low fid table&n; * - the parts can only step at 200 MHz intervals, so 1.9 GHz is never valid&n; * - lowest frequency must be &gt;= interprocessor hypertransport link speed&n; *   (only applies to MP systems obviously)&n; */
 multiline_comment|/* fids (frequency identifiers) are arranged in 2 tables - lo and hi */
 DECL|macro|LO_FID_TABLE_TOP
 mdefine_line|#define LO_FID_TABLE_TOP     6
