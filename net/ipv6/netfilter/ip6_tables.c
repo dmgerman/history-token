@@ -3896,9 +3896,9 @@ id|SMP_ALIGN
 c_func
 (paren
 id|newinfo-&gt;size
+)paren
 op_star
 id|i
-)paren
 comma
 id|newinfo-&gt;entries
 comma
