@@ -4,8 +4,8 @@ DECL|macro|_IRQS_H
 mdefine_line|#define _IRQS_H
 multiline_comment|/*&n; * Do NOT add #ifdef MACHINE_FOO in here.&n; * Simpy add your machine IRQs here and increase NR_IRQS if needed to&n; * hold your machine&squot;s IRQ table.&n; */
 multiline_comment|/*&n; * Some interrupt numbers go unused b/c the IRQ mask/ummask/status&n; * register has those bit reserved. We just mark those interrupts&n; * as invalid and this allows us to do mask/unmask with a single&n; * shift operation instead of having to map the IRQ number to&n; * a HW IRQ number.&n; */
-DECL|macro|IRQ_IXP2000_SWI
-mdefine_line|#define&t;IRQ_IXP2000_SWI&t;&t;&t;0 /* soft interrupt */
+DECL|macro|IRQ_IXP2000_SOFT_INT
+mdefine_line|#define&t;IRQ_IXP2000_SOFT_INT&t;&t;0 /* soft interrupt */
 DECL|macro|IRQ_IXP2000_ERRSUM
 mdefine_line|#define&t;IRQ_IXP2000_ERRSUM&t;&t;1 /* OR of all bits in ErrorStatus reg*/
 DECL|macro|IRQ_IXP2000_UART
@@ -74,35 +74,8 @@ DECL|macro|IRQ_IXP2000_PCIA
 mdefine_line|#define IRQ_IXP2000_PCIA&t;&t;40
 DECL|macro|IRQ_IXP2000_PCIB
 mdefine_line|#define IRQ_IXP2000_PCIB&t;&t;41
-multiline_comment|/* Int sources from IRQ_ERROR_STATUS */
-DECL|macro|IRQ_IXP2000_DRAM0_MIN_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM0_MIN_ERR&t;42
-DECL|macro|IRQ_IXP2000_DRAM0_MAJ_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM0_MAJ_ERR&t;43
-DECL|macro|IRQ_IXP2000_DRAM1_MIN_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM1_MIN_ERR&t;44
-DECL|macro|IRQ_IXP2000_DRAM1_MAJ_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM1_MAJ_ERR&t;45
-DECL|macro|IRQ_IXP2000_DRAM2_MIN_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM2_MIN_ERR&t;46
-DECL|macro|IRQ_IXP2000_DRAM2_MAJ_ERR
-mdefine_line|#define IRQ_IXP2000_DRAM2_MAJ_ERR&t;47
-DECL|macro|IRQ_IXP2000_SRAM0_ERR
-mdefine_line|#define IRQ_IXP2000_SRAM0_ERR&t;&t;48
-DECL|macro|IRQ_IXP2000_SRAM1_ERR
-mdefine_line|#define IRQ_IXP2000_SRAM1_ERR&t;&t;49
-DECL|macro|IRQ_IXP2000_SRAM2_ERR
-mdefine_line|#define IRQ_IXP2000_SRAM2_ERR           50
-DECL|macro|IRQ_IXP2000_SRAM3_ERR
-mdefine_line|#define IRQ_IXP2000_SRAM3_ERR&t;&t;51
-DECL|macro|IRQ_IXP2000_MEDIA_ERR
-mdefine_line|#define IRQ_IXP2000_MEDIA_ERR&t;&t;52
-DECL|macro|IRQ_IXP2000_PCI_ERR
-mdefine_line|#define IRQ_IXP2000_PCI_ERR&t;&t;53
-DECL|macro|IRQ_IXP2000_SP_INT
-mdefine_line|#define IRQ_IXP2000_SP_INT&t;&t;54
 DECL|macro|NR_IXP2000_IRQS
-mdefine_line|#define NR_IXP2000_IRQS                 55
+mdefine_line|#define NR_IXP2000_IRQS                 42
 DECL|macro|IXP2000_BOARD_IRQ
 mdefine_line|#define&t;IXP2000_BOARD_IRQ(x)&t;&t;(NR_IXP2000_IRQS + (x))
 DECL|macro|IXP2000_BOARD_IRQ_MASK
