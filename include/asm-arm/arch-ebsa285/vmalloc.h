@@ -12,8 +12,4 @@ macro_line|#else
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END       (PAGE_OFFSET + 0x20000000)
 macro_line|#endif
-DECL|macro|MODULE_START
-mdefine_line|#define MODULE_START&t;(PAGE_OFFSET - 16*1048576)
-DECL|macro|MODULE_END
-mdefine_line|#define MODULE_END&t;(PAGE_OFFSET)
 eof
