@@ -460,10 +460,6 @@ op_amp
 id|bte-&gt;spinlock
 )paren
 suffix:semicolon
-id|bte
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -472,6 +468,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|bte
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 r_if
 c_cond
