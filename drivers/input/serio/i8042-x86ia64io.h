@@ -1007,7 +1007,7 @@ id|i8042_command_reg
 )paren
 op_logical_or
 op_logical_neg
-id|i8042_pnp_data_reg
+id|i8042_pnp_command_reg
 )paren
 (brace
 id|printk
@@ -1113,7 +1113,7 @@ comma
 id|result_kbd
 OG
 l_int|0
-op_logical_or
+op_logical_and
 id|result_aux
 OG
 l_int|0
