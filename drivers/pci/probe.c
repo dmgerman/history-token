@@ -225,7 +225,11 @@ id|pos
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|reg
 op_assign
@@ -577,7 +581,11 @@ id|PCI_ROM_RESOURCE
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -760,7 +768,11 @@ c_func
 (paren
 l_string|&quot;Transparent bridge - %s&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1919,18 +1931,6 @@ id|dev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-l_string|&quot;PCI device %04x:%04x&quot;
-comma
-id|dev-&gt;vendor
-comma
-id|dev-&gt;device
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -2956,14 +2956,6 @@ id|b
 )paren
 comma
 id|bus
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|b-&gt;dev-&gt;name
-comma
-l_string|&quot;Host/PCI Bridge&quot;
 )paren
 suffix:semicolon
 id|device_register
