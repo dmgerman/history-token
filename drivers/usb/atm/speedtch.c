@@ -2633,7 +2633,7 @@ id|instance
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_start_synchro: failed&bslash;n&quot;
+l_string|&quot;speedtch_start_synchro: failed&quot;
 )paren
 suffix:semicolon
 id|speedtch_got_firmware
@@ -2670,9 +2670,13 @@ id|intf
 suffix:semicolon
 id|fail_free
 suffix:colon
-id|kfree
+id|free_page
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|buffer
 )paren
 suffix:semicolon
@@ -2721,6 +2725,22 @@ id|bcdDevice
 op_assign
 id|instance-&gt;u.usb_dev-&gt;descriptor.bcdDevice
 suffix:semicolon
+r_const
+id|u8
+id|major_revision
+op_assign
+id|bcdDevice
+op_rshift
+l_int|8
+suffix:semicolon
+r_const
+id|u8
+id|minor_revision
+op_assign
+id|bcdDevice
+op_amp
+l_int|0xff
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -2730,19 +2750,15 @@ l_string|&quot;speedtch-%d.bin.%x.%02x&quot;
 comma
 id|phase
 comma
-id|bcdDevice
-op_rshift
-l_int|8
+id|major_revision
 comma
-id|bcdDevice
-op_amp
-l_int|0xff
+id|minor_revision
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+l_string|&quot;speedtch_find_firmware: looking for %s&quot;
 comma
 id|buf
 )paren
@@ -2750,7 +2766,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|request_firmware
 c_func
 (paren
@@ -2762,9 +2777,7 @@ op_amp
 id|instance-&gt;u.usb_dev-&gt;dev
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 id|sprintf
 c_func
 (paren
@@ -2774,15 +2787,13 @@ l_string|&quot;speedtch-%d.bin.%x&quot;
 comma
 id|phase
 comma
-id|bcdDevice
-op_rshift
-l_int|8
+id|major_revision
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+l_string|&quot;speedtch_find_firmware: looking for %s&quot;
 comma
 id|buf
 )paren
@@ -2790,7 +2801,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|request_firmware
 c_func
 (paren
@@ -2802,9 +2812,7 @@ op_amp
 id|instance-&gt;u.usb_dev-&gt;dev
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 id|sprintf
 c_func
 (paren
@@ -2818,7 +2826,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;speedtch_find_firmware: looking for %s&bslash;n&quot;
+l_string|&quot;speedtch_find_firmware: looking for %s&quot;
 comma
 id|buf
 )paren
@@ -2826,7 +2834,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|request_firmware
 c_func
 (paren
@@ -2838,9 +2845,7 @@ op_amp
 id|instance-&gt;u.usb_dev-&gt;dev
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 id|dev_warn
 c_func
 (paren
@@ -2855,6 +2860,25 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOENT
+suffix:semicolon
+)brace
+)brace
+)brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|instance-&gt;u.usb_dev-&gt;dev
+comma
+l_string|&quot;found stage %d firmware %s&bslash;n&quot;
+comma
+id|phase
+comma
+id|buf
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|speedtch_load_firmware
