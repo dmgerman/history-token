@@ -628,8 +628,7 @@ r_int
 id|do_signal
 c_func
 (paren
-r_int
-id|error
+r_void
 )paren
 (brace
 r_return
@@ -641,7 +640,12 @@ id|current-&gt;thread.regs
 comma
 l_int|NULL
 comma
-id|error
+id|PT_REGS_SYSCALL_RET
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs
+)paren
 )paren
 suffix:semicolon
 )brace

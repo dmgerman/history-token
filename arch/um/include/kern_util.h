@@ -127,8 +127,7 @@ r_int
 id|do_signal
 c_func
 (paren
-r_int
-id|error
+r_void
 )paren
 suffix:semicolon
 r_extern

@@ -554,7 +554,6 @@ id|TIF_SIGPENDING
 id|do_signal
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
