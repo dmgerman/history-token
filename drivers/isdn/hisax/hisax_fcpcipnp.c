@@ -144,7 +144,14 @@ l_string|&quot;AVM0900&quot;
 )brace
 )brace
 suffix:semicolon
-singleline_comment|//MODULE_DEVICE_TABLE(pnpc, fcpnp_ids); FIXME
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pnp_card
+comma
+id|fcpnp_ids
+)paren
+suffix:semicolon
 DECL|variable|protocol
 r_static
 r_int
@@ -4338,7 +4345,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|card_id
 )paren
