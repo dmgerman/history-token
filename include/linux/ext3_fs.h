@@ -1402,6 +1402,21 @@ op_star
 id|bh
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ext3_should_retry_alloc
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+op_star
+id|retries
+)paren
+suffix:semicolon
 multiline_comment|/* dir.c */
 r_extern
 r_int
