@@ -32,11 +32,6 @@ r_static
 r_int
 id|debug
 suffix:semicolon
-DECL|variable|setup
-r_static
-r_int
-id|setup
-suffix:semicolon
 DECL|variable|bridge
 r_static
 r_char
