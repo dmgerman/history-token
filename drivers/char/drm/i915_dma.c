@@ -1848,6 +1848,7 @@ op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
 id|drm_clip_rect_t
+id|__user
 op_star
 id|boxes
 op_assign
