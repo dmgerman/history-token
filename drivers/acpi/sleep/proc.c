@@ -246,12 +246,8 @@ id|sleep_states
 id|state
 )braket
 )paren
-id|return_VALUE
-c_func
-(paren
-op_minus
-id|ENODEV
-)paren
+r_goto
+id|Done
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_if
@@ -1666,6 +1662,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|acpi_sleep_proc_init
+r_static
 r_int
 id|acpi_sleep_proc_init
 c_func
@@ -1738,4 +1735,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|acpi_sleep_proc_init
+id|late_initcall
+c_func
+(paren
+id|acpi_sleep_proc_init
+)paren
+suffix:semicolon
 eof

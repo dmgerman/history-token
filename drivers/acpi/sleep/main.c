@@ -597,11 +597,6 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
-id|acpi_sleep_proc_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|return_VALUE
 c_func
 (paren
