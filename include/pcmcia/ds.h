@@ -465,11 +465,8 @@ id|u_int
 id|state
 suffix:semicolon
 DECL|member|EventMask
-DECL|member|PendingEvents
 id|event_t
 id|EventMask
-comma
-id|PendingEvents
 suffix:semicolon
 DECL|member|event_handler
 r_int

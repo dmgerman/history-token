@@ -2989,11 +2989,6 @@ comma
 id|CS_EVENT_PRI_LOW
 )paren
 suffix:semicolon
-r_else
-id|client-&gt;PendingEvents
-op_or_assign
-id|CS_EVENT_CARD_INSERTION
-suffix:semicolon
 )brace
 id|up
 c_func
