@@ -1456,7 +1456,7 @@ id|adapter-&gt;dev
 comma
 l_string|&quot;client [%s] registered to adapter&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 )paren
 )paren
 suffix:semicolon
