@@ -1164,7 +1164,7 @@ l_int|NULL
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return
@@ -2634,7 +2634,7 @@ id|err
 id|UDP_INC_STATS_USER
 c_func
 (paren
-id|UdpOutDatagrams
+id|UDP_MIB_OUTDATAGRAMS
 )paren
 suffix:semicolon
 r_return
@@ -3442,6 +3442,23 @@ id|err
 op_assign
 id|copied
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_TRUNC
+)paren
+id|err
+op_assign
+id|skb-&gt;len
+op_minus
+r_sizeof
+(paren
+r_struct
+id|udphdr
+)paren
+suffix:semicolon
 id|out_free
 suffix:colon
 id|skb_free_datagram
@@ -3462,7 +3479,7 @@ suffix:colon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInErrors
+id|UDP_MIB_INERRORS
 )paren
 suffix:semicolon
 multiline_comment|/* Clear queue. */
@@ -4105,7 +4122,7 @@ suffix:semicolon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInDatagrams
+id|UDP_MIB_INDATAGRAMS
 )paren
 suffix:semicolon
 r_return
@@ -4138,7 +4155,7 @@ id|skb
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInErrors
+id|UDP_MIB_INERRORS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -4174,7 +4191,7 @@ l_int|0
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInErrors
+id|UDP_MIB_INERRORS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -4191,7 +4208,7 @@ suffix:semicolon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInDatagrams
+id|UDP_MIB_INDATAGRAMS
 )paren
 suffix:semicolon
 r_return
@@ -4787,7 +4804,7 @@ suffix:semicolon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpNoPorts
+id|UDP_MIB_NOPORTS
 )paren
 suffix:semicolon
 id|icmp_send
@@ -4865,7 +4882,7 @@ suffix:colon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInErrors
+id|UDP_MIB_INERRORS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -4929,7 +4946,7 @@ suffix:colon
 id|UDP_INC_STATS_BH
 c_func
 (paren
-id|UdpInErrors
+id|UDP_MIB_INERRORS
 )paren
 suffix:semicolon
 id|kfree_skb

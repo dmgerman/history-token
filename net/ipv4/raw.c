@@ -1168,7 +1168,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
