@@ -4000,7 +4000,6 @@ r_return
 id|max_low_pfn
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * Free all available memory for boot time allocation.  Used&n; * as a callback function by efi_memory_walk()&n; */
 r_static
 r_int
@@ -4283,6 +4282,15 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+r_void
+id|__init
+id|setup_bootmem_allocator
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|setup_memory
 r_static
 r_int
@@ -4294,16 +4302,8 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|bootmap_size
-comma
-id|start_pfn
-comma
-id|max_low_pfn
-suffix:semicolon
 multiline_comment|/*&n;&t; * partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
-id|start_pfn
+id|min_low_pfn
 op_assign
 id|PFN_UP
 c_func
@@ -4372,13 +4372,46 @@ id|max_low_pfn
 )paren
 )paren
 suffix:semicolon
+id|setup_bootmem_allocator
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|max_low_pfn
+suffix:semicolon
+)brace
+macro_line|#else
+r_extern
+r_int
+r_int
+id|setup_memory
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+DECL|function|setup_bootmem_allocator
+r_void
+id|__init
+id|setup_bootmem_allocator
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|bootmap_size
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the boot-time allocator (with low memory only):&n;&t; */
 id|bootmap_size
 op_assign
 id|init_bootmem
 c_func
 (paren
-id|start_pfn
+id|min_low_pfn
 comma
 id|max_low_pfn
 )paren
@@ -4399,7 +4432,7 @@ comma
 id|PFN_PHYS
 c_func
 (paren
-id|start_pfn
+id|min_low_pfn
 )paren
 op_plus
 id|bootmap_size
@@ -4552,21 +4585,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_return
-id|max_low_pfn
-suffix:semicolon
 )brace
-macro_line|#else
-r_extern
-r_int
-r_int
-id|setup_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 multiline_comment|/*&n; * Request address space for all standard RAM and ROM resources&n; * and also for regions reported as reserved by the e820.&n; */
 r_static
 r_void
