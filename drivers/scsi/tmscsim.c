@@ -3749,6 +3749,11 @@ op_star
 (brace
 id|PDCB
 id|pDCB
+op_assign
+(paren
+id|PDCB
+)paren
+id|cmd-&gt;device-&gt;hostdata
 suffix:semicolon
 id|PSRB
 id|pSRB
@@ -3827,17 +3832,6 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|pDCB
-op_assign
-id|dc390_findDCB
-(paren
-id|pACB
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
 multiline_comment|/* Should it be: BUG_ON(!pDCB); ? */
 r_if
 c_cond
@@ -4870,6 +4864,11 @@ id|cmd
 (brace
 id|PDCB
 id|pDCB
+op_assign
+(paren
+id|PDCB
+)paren
+id|cmd-&gt;device-&gt;hostdata
 suffix:semicolon
 id|PSRB
 id|pSRB
@@ -4898,17 +4897,6 @@ id|printk
 l_string|&quot;DC390: Abort command (pid %li, Device %02i-%02i)&bslash;n&quot;
 comma
 id|cmd-&gt;pid
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-id|pDCB
-op_assign
-id|dc390_findDCB
-(paren
-id|pACB
 comma
 id|cmd-&gt;device-&gt;id
 comma
@@ -7201,6 +7189,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|scsi_device-&gt;hostdata
+op_assign
+id|pDCB
+suffix:semicolon
 id|pACB-&gt;scan_devices
 op_assign
 l_int|1
@@ -7238,15 +7230,10 @@ suffix:semicolon
 id|PDCB
 id|pDCB
 op_assign
-id|dc390_findDCB
 (paren
-id|pACB
-comma
-id|scsi_device-&gt;id
-comma
-id|scsi_device-&gt;lun
+id|PDCB
 )paren
-suffix:semicolon
+id|scsi_device-&gt;hostdata
 suffix:semicolon
 id|pACB-&gt;scan_devices
 op_assign
@@ -8409,9 +8396,7 @@ op_assign
 (paren
 id|PACB
 )paren
-(paren
 id|host-&gt;hostdata
-)paren
 suffix:semicolon
 multiline_comment|/*  pACB-&gt;soft_reset(host); */
 id|printk
@@ -8497,9 +8482,7 @@ op_assign
 (paren
 id|PACB
 )paren
-(paren
 id|host-&gt;hostdata
-)paren
 suffix:semicolon
 id|pDCB
 op_assign
@@ -8577,9 +8560,7 @@ op_assign
 (paren
 id|PACB
 )paren
-(paren
 id|host-&gt;hostdata
-)paren
 suffix:semicolon
 id|DC390_LOCK_IO
 c_func
