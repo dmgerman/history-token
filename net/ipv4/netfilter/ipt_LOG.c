@@ -265,7 +265,7 @@ op_logical_and
 id|iph.ihl
 op_star
 l_int|4
-op_ne
+OG
 r_sizeof
 (paren
 r_struct
@@ -654,7 +654,7 @@ op_logical_and
 id|tcph.doff
 op_star
 l_int|4
-op_ne
+OG
 r_sizeof
 (paren
 r_struct
