@@ -445,6 +445,16 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|emulate_altivec
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|cvt_fd
 c_func
