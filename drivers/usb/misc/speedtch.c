@@ -2266,13 +2266,7 @@ r_else
 (brace
 id|dbg
 (paren
-l_string|&quot;dropping incoming packet : rx_inuse = %d, vcc-&gt;sk-&gt;rcvbuf = %d, skb-&gt;true_size = %d&quot;
-comma
-id|atomic_read
-(paren
-op_amp
-id|atmsar_vcc-&gt;vcc-&gt;rx_inuse
-)paren
+l_string|&quot;dropping incoming packet : vcc-&gt;sk-&gt;rcvbuf = %d, skb-&gt;true_size = %d&quot;
 comma
 id|atmsar_vcc-&gt;vcc-&gt;sk-&gt;rcvbuf
 comma
