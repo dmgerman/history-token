@@ -522,6 +522,7 @@ op_star
 id|txd
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -667,6 +668,7 @@ op_star
 id|rxd
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -809,6 +811,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -973,6 +976,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -1666,6 +1670,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -2543,6 +2548,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -3361,6 +3367,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -4209,6 +4216,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -4763,6 +4771,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -4999,6 +5008,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -5894,6 +5904,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -6059,6 +6070,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -6811,6 +6823,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -7312,6 +7325,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -7964,6 +7978,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -8127,6 +8142,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -8260,6 +8276,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
@@ -8616,6 +8633,7 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 op_assign
