@@ -31,6 +31,12 @@ DECL|macro|PTRACE_DETACH
 mdefine_line|#define PTRACE_DETACH&t;&t;0x11
 DECL|macro|PTRACE_SYSCALL
 mdefine_line|#define PTRACE_SYSCALL&t;&t;  24
+multiline_comment|/* 0x4200-0x4300 are reserved for architecture-independent additions.  */
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS&t;0x4200
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 r_extern
@@ -123,6 +129,26 @@ id|task
 comma
 r_int
 id|kill
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ptrace_request
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|child
+comma
+r_int
+id|request
+comma
+r_int
+id|addr
+comma
+r_int
+id|data
 )paren
 suffix:semicolon
 r_extern
