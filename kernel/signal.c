@@ -3369,6 +3369,16 @@ id|t
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Don&squot;t bother with already dead threads&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|t-&gt;state
+op_eq
+id|TASK_ZOMBIE
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We don&squot;t want to notify the parent, since we are&n;&t;&t; * killed as part of a thread group due to another&n;&t;&t; * thread doing an execve() or similar. So set the&n;&t;&t; * exit signal to -1 to allow immediate reaping of&n;&t;&t; * the process.&n;&t;&t; */
 id|t-&gt;exit_signal
 op_assign
