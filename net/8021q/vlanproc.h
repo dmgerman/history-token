@@ -34,8 +34,6 @@ id|vlan_proc_cleanup
 r_void
 )paren
 suffix:semicolon
-DECL|macro|VLAN_PROC_BUFSZ
-mdefine_line|#define&t;VLAN_PROC_BUFSZ&t;(4096)&t;/* buffer size for printing proc info */
 macro_line|#else /* No CONFIG_PROC_FS */
 DECL|macro|vlan_proc_init
 mdefine_line|#define vlan_proc_init()&t;(0)
