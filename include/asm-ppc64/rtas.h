@@ -591,8 +591,8 @@ mdefine_line|#define ERR_TYPE_KERNEL_PANIC&t;0x4&t;/* from panic() */
 multiline_comment|/* All the types and not flags */
 DECL|macro|ERR_TYPE_MASK
 mdefine_line|#define ERR_TYPE_MASK&t;(ERR_TYPE_RTAS_LOG | ERR_TYPE_KERNEL_PANIC)
-DECL|macro|RTAS_ERR
-mdefine_line|#define RTAS_ERR KERN_ERR &quot;RTAS: &quot;
+DECL|macro|RTAS_DEBUG
+mdefine_line|#define RTAS_DEBUG KERN_DEBUG &quot;RTAS: &quot;
 DECL|macro|RTAS_ERROR_LOG_MAX
 mdefine_line|#define RTAS_ERROR_LOG_MAX 2048
 multiline_comment|/* Event Scan Parameters */

@@ -143,7 +143,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|RTAS_ERR
+id|RTAS_DEBUG
 l_string|&quot;%d -------- %s begin --------&bslash;n&quot;
 comma
 id|error_log_cnt
@@ -267,7 +267,7 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|buffer
@@ -288,7 +288,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|buffer
@@ -297,7 +297,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|RTAS_ERR
+id|RTAS_DEBUG
 l_string|&quot;%d -------- %s end ----------&bslash;n&quot;
 comma
 id|error_log_cnt
