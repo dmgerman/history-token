@@ -449,8 +449,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|macro|LIST_LEN
-mdefine_line|#define LIST_LEN(l) (sizeof(l) / sizeof(l[0]))
 r_static
 r_void
 id|e1000_check_fiber_options
@@ -818,7 +816,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|fc_list
@@ -1187,7 +1185,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|speed_list
@@ -1275,7 +1273,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|dplx_list
@@ -1599,7 +1597,7 @@ suffix:colon
 (brace
 id|nr
 suffix:colon
-id|LIST_LEN
+id|ARRAY_SIZE
 c_func
 (paren
 id|an_list
