@@ -76,14 +76,11 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_SCSI_QLA6312) || defined(CONFIG_SCSI_QLA6312_MODULE)
 DECL|macro|IS_QLA6312
 mdefine_line|#define IS_QLA6312(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6312)
-macro_line|#else
-DECL|macro|IS_QLA6312
-mdefine_line|#define IS_QLA6312(ha)&t;0
-macro_line|#endif
-macro_line|#if defined(CONFIG_SCSI_QLA6322) || defined(CONFIG_SCSI_QLA6322_MODULE)
 DECL|macro|IS_QLA6322
 mdefine_line|#define IS_QLA6322(ha)&t;((ha)-&gt;pdev-&gt;device == PCI_DEVICE_ID_QLOGIC_ISP6322)
 macro_line|#else
+DECL|macro|IS_QLA6312
+mdefine_line|#define IS_QLA6312(ha)&t;0
 DECL|macro|IS_QLA6322
 mdefine_line|#define IS_QLA6322(ha)&t;0
 macro_line|#endif
