@@ -29,6 +29,7 @@ op_star
 id|integers
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|xd
 r_static
 r_int
@@ -52,6 +53,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|macro|XD_DONT_USE_DMA
 mdefine_line|#define XD_DONT_USE_DMA&t;&t;0  /* Initial value. may be overriden using&n;&t;&t;&t;&t;      &quot;nodma&quot; module option */
 DECL|macro|XD_INIT_DISK_DELAY
@@ -439,11 +441,6 @@ id|i
 comma
 id|controller
 suffix:semicolon
-id|u_char
-id|count
-op_assign
-l_int|0
-suffix:semicolon
 r_int
 r_int
 id|address
@@ -452,6 +449,12 @@ r_int
 id|err
 suffix:semicolon
 macro_line|#ifdef MODULE
+(brace
+id|u_char
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -512,6 +515,7 @@ c_func
 id|xd
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|init_timer
 (paren
