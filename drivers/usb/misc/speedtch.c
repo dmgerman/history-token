@@ -73,9 +73,6 @@ DECL|macro|UDSL_RCV_BUF_SIZE
 mdefine_line|#define UDSL_RCV_BUF_SIZE&t;&t;64 /* ATM cells */
 DECL|macro|UDSL_SND_BUF_SIZE
 mdefine_line|#define UDSL_SND_BUF_SIZE&t;&t;64 /* ATM cells */
-multiline_comment|/* max should be (1500 IP mtu + 2 ppp bytes + 32 * 5 cellheader overhead) for&n; * PPPoA and (1500 + 14 + 32*5 cellheader overhead) for PPPoE */
-DECL|macro|UDSL_MAX_AAL5_MRU
-mdefine_line|#define UDSL_MAX_AAL5_MRU&t;&t;2048
 DECL|macro|UDSL_IOCTL_LINE_UP
 mdefine_line|#define UDSL_IOCTL_LINE_UP&t;&t;1
 DECL|macro|UDSL_IOCTL_LINE_DOWN
@@ -86,6 +83,8 @@ DECL|macro|UDSL_ENDPOINT_DATA_IN
 mdefine_line|#define UDSL_ENDPOINT_DATA_IN&t;&t;0x87
 DECL|macro|ATM_CELL_HEADER
 mdefine_line|#define ATM_CELL_HEADER&t;&t;&t;(ATM_CELL_SIZE - ATM_CELL_PAYLOAD)
+DECL|macro|UDSL_NUM_CELLS
+mdefine_line|#define UDSL_NUM_CELLS(x)&t;&t;(((x) + ATM_AAL5_TRAILER + ATM_CELL_PAYLOAD - 1) / ATM_CELL_PAYLOAD)
 DECL|macro|hex2int
 mdefine_line|#define hex2int(c) ( (c &gt;= &squot;0&squot;) &amp;&amp; (c &lt;= &squot;9&squot;) ? (c - &squot;0&squot;) : ((c &amp; 0xf) + 9) )
 DECL|variable|udsl_usb_ids
@@ -1423,17 +1422,10 @@ l_int|0xec
 suffix:semicolon
 id|ctrl-&gt;num_cells
 op_assign
+id|UDSL_NUM_CELLS
 (paren
 id|skb-&gt;len
-op_plus
-id|ATM_AAL5_TRAILER
-op_plus
-id|ATM_CELL_PAYLOAD
-op_minus
-l_int|1
 )paren
-op_div
-id|ATM_CELL_PAYLOAD
 suffix:semicolon
 id|ctrl-&gt;num_entire
 op_assign
@@ -3872,6 +3864,10 @@ c_cond
 id|vcc-&gt;qos.aal
 op_ne
 id|ATM_AAL5
+op_logical_or
+id|vcc-&gt;qos.rxtp.max_sdu
+template_param
+id|ATM_MAX_AAL5_PDU
 )paren
 r_return
 op_minus
@@ -3991,7 +3987,17 @@ r_new
 op_member_access_from_pointer
 id|max_pdu
 op_assign
-id|UDSL_MAX_AAL5_MRU
+id|max
+(paren
+l_int|1
+comma
+id|UDSL_NUM_CELLS
+(paren
+id|vcc-&gt;qos.rxtp.max_sdu
+)paren
+)paren
+op_star
+id|ATM_CELL_PAYLOAD
 suffix:semicolon
 id|vcc-&gt;dev_data
 op_assign
