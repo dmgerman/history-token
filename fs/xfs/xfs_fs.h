@@ -1,9 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 1995-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2.1 of the GNU Lesser General Public License&n; * as published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU Lesser General Public&n; * License along with this program; if not, write the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307,&n; * USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef _LINUX_XFS_FS_H
-DECL|macro|_LINUX_XFS_FS_H
-mdefine_line|#define _LINUX_XFS_FS_H
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/ioctl.h&gt;
+macro_line|#ifndef __XFS_FS_H__
+DECL|macro|__XFS_FS_H__
+mdefine_line|#define __XFS_FS_H__
 multiline_comment|/*&n; * SGI&squot;s XFS filesystem&squot;s major stuff (constants, structures)&n; */
 DECL|macro|XFS_NAME
 mdefine_line|#define XFS_NAME&t;&quot;xfs&quot;
@@ -1023,6 +1021,7 @@ DECL|typedef|xfs_fsid_t
 id|xfs_fsid_t
 suffix:semicolon
 multiline_comment|/*&n; * File identifier.  Should be unique per filesystem on a single machine.&n; * This is typically called by a stateless file server in order to generate&n; * &quot;file handles&quot;.&n; */
+macro_line|#ifndef MAXFIDSZ
 DECL|macro|MAXFIDSZ
 mdefine_line|#define MAXFIDSZ&t;46
 DECL|struct|fid
@@ -1048,6 +1047,7 @@ DECL|typedef|fid_t
 )brace
 id|fid_t
 suffix:semicolon
+macro_line|#endif
 DECL|struct|xfs_fid
 r_typedef
 r_struct
@@ -1242,5 +1242,5 @@ DECL|macro|BTOBBT
 mdefine_line|#define BTOBBT(bytes)&t;((__u64)(bytes) &gt;&gt; BBSHIFT)
 DECL|macro|BBTOB
 mdefine_line|#define BBTOB(bbs)&t;((bbs) &lt;&lt; BBSHIFT)
-macro_line|#endif&t;/* _LINUX_XFS_FS_H */
+macro_line|#endif&t;/* __XFS_FS_H__ */
 eof

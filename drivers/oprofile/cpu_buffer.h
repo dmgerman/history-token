@@ -4,6 +4,7 @@ DECL|macro|OPROFILE_CPU_BUFFER_H
 mdefine_line|#define OPROFILE_CPU_BUFFER_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon

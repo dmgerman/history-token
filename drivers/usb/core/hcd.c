@@ -1962,12 +1962,14 @@ c_cond
 (paren
 id|retval
 )paren
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;%s - usb_new_device failed with value %d&quot;
+op_star
+id|parent_dev
 comma
-id|__FUNCTION__
+l_string|&quot;can&squot;t register root hub for %s, %d&bslash;n&quot;
+comma
+id|usb_dev-&gt;dev.bus_id
 comma
 id|retval
 )paren
@@ -3720,25 +3722,7 @@ id|urb
 suffix:semicolon
 singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
 singleline_comment|// hcd_monitor_hook(MONITOR_URB_FINISH, urb, dev)
-singleline_comment|// It would catch exit/unlink paths for all urbs, but non-exit
-singleline_comment|// completions for periodic urbs need hooks inside the HCD.
-singleline_comment|// hcd_monitor_hook(MONITOR_URB_UPDATE, urb, dev)
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-)paren
-id|dbg
-(paren
-l_string|&quot;giveback urb %p status %d len %d&quot;
-comma
-id|urb
-comma
-id|urb-&gt;status
-comma
-id|urb-&gt;actual_length
-)paren
-suffix:semicolon
+singleline_comment|// It would catch exit/unlink paths for all urbs.
 multiline_comment|/* lower level hcd code should use *_dma exclusively */
 r_if
 c_cond

@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6185,9 +6186,9 @@ id|VERIFY_WRITE
 )paren
 ques
 c_cond
-id|DN_MODIFY
-suffix:colon
 id|DN_ACCESS
+suffix:colon
+id|DN_MODIFY
 )paren
 suffix:semicolon
 r_return

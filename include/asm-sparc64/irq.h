@@ -189,7 +189,7 @@ id|buff
 suffix:semicolon
 )brace
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS    15
+mdefine_line|#define NR_IRQS    16
 DECL|macro|irq_cannonicalize
 mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
 r_extern

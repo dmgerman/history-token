@@ -670,6 +670,8 @@ comma
 l_string|&quot;g7&quot;
 comma
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return

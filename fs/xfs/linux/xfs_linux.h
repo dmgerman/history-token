@@ -153,8 +153,6 @@ DECL|macro|EFSCORRUPTED
 mdefine_line|#define EFSCORRUPTED&t;990&t;&t;/* Filesystem is corrupted */
 DECL|macro|SYNCHRONIZE
 mdefine_line|#define SYNCHRONIZE()&t;barrier()
-DECL|macro|rootdev
-mdefine_line|#define rootdev&t;&t;ROOT_DEV
 DECL|macro|__return_address
 mdefine_line|#define __return_address __builtin_return_address(0)
 multiline_comment|/* IRIX uses a dynamic sizing algorithm (ndquot = 200 + numprocs*2) */

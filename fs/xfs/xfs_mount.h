@@ -843,6 +843,11 @@ id|__uint8_t
 id|m_inode_quiesce
 suffix:semicolon
 multiline_comment|/* call quiesce on new inodes.&n;&t;&t;&t;&t;&t;&t;   field governed by m_ilock */
+DECL|member|m_sectbb_log
+id|__uint8_t
+id|m_sectbb_log
+suffix:semicolon
+multiline_comment|/* sectlog - BBSHIFT */
 DECL|member|m_dirversion
 id|__uint8_t
 id|m_dirversion
@@ -944,8 +949,7 @@ macro_line|#if XFS_BIG_FILESYSTEMS
 DECL|macro|XFS_MOUNT_INO64
 mdefine_line|#define XFS_MOUNT_INO64&t;&t;0x00000002
 macro_line|#endif
-DECL|macro|XFS_MOUNT_ROOTQCHECK
-mdefine_line|#define XFS_MOUNT_ROOTQCHECK&t;0x00000004
+multiline_comment|/* 0x00000004&t;-- currently unused */
 multiline_comment|/* 0x00000008&t;-- currently unused */
 DECL|macro|XFS_MOUNT_FS_SHUTDOWN
 mdefine_line|#define XFS_MOUNT_FS_SHUTDOWN&t;0x00000010&t;/* atomic stop of all filesystem&n;&t;&t;&t;&t;&t;&t;   operations, typically for&n;&t;&t;&t;&t;&t;&t;   disk errors in metadata */

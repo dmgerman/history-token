@@ -800,7 +800,7 @@ id|val
 r_return
 id|val
 OG
-id|__PAGE_OFFSET
+id|PAGE_OFFSET
 suffix:semicolon
 )brace
 multiline_comment|/* Add a sample to the global event buffer. If possible the&n; * sample is converted into a persistent dentry/offset pair&n; * for later lookup from userspace.&n; */

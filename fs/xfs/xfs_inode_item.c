@@ -1276,17 +1276,6 @@ id|XFS_ILOG_AEXT
 id|ASSERT
 c_func
 (paren
-op_logical_neg
-(paren
-id|iip-&gt;ili_format.ilf_fields
-op_amp
-id|XFS_ILOG_DEXT
-)paren
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
 id|ip-&gt;i_afp-&gt;if_bytes
 OG
 l_int|0
