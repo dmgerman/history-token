@@ -2725,6 +2725,17 @@ op_amp
 id|rawv6_protosw
 )paren
 suffix:semicolon
+multiline_comment|/* Register the family here so that the init calls below will&n;&t; * be able to create sockets. (?? is this dangerous ??)&n;&t; */
+(paren
+r_void
+)paren
+id|sock_register
+c_func
+(paren
+op_amp
+id|inet6_family_ops
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;ipngwg API draft makes clear that the correct semantics&n;&t; *&t;for TCP and UDP is to consider one TCP and UDP instance&n;&t; *&t;in a host availiable by both INET and INET6 APIs and&n;&t; *&t;able to communicate via both network protocols.&n;&t; */
 macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
 id|ipv6_sysctl_register
@@ -2916,17 +2927,6 @@ suffix:semicolon
 id|tcpv6_init
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* Now the userspace is allowed to create INET6 sockets. */
-(paren
-r_void
-)paren
-id|sock_register
-c_func
-(paren
-op_amp
-id|inet6_family_ops
 )paren
 suffix:semicolon
 r_return
