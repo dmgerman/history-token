@@ -82,6 +82,13 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_mdi_cntrl
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+suffix:semicolon
 multiline_comment|/* wait 20usec before checking status */
 id|udelay
 c_func
@@ -199,6 +206,13 @@ id|temp_val
 comma
 op_amp
 id|bdp-&gt;scb-&gt;scb_mdi_cntrl
+)paren
+suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
 multiline_comment|/* wait 20usec before checking status */
@@ -722,7 +736,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;503 serial component detected which &quot;
+l_string|&quot;e100: 503 serial component detected which &quot;
 l_string|&quot;cannot autonegotiate&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -730,7 +744,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;speed/duplex forced to 10Mbps / Half duplex&bslash;n&quot;
+l_string|&quot;e100: speed/duplex forced to &quot;
+l_string|&quot;10Mbps / Half duplex&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bdp-&gt;params.e100_speed_duplex
@@ -749,16 +764,16 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;503 serial component detected which does not &quot;
-l_string|&quot;support 100Mbps&bslash;n&quot;
+l_string|&quot;e100: 503 serial component detected &quot;
+l_string|&quot;which does not support 100Mbps&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Change the forced speed/duplex to a supported &quot;
-l_string|&quot;setting&bslash;n&quot;
+l_string|&quot;e100: Change the forced speed/duplex &quot;
+l_string|&quot;to a supported setting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -816,7 +831,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NC3133 NIC can only run &quot;
+l_string|&quot;e100: NC3133 NIC can only run &quot;
 l_string|&quot;at 100Mbps full duplex&bslash;n&quot;
 )paren
 suffix:semicolon

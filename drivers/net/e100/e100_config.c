@@ -1523,7 +1523,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef ETHTOOL_GWOL
 multiline_comment|/**&n; * e100_config_wol&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This sets configuration options for Wake On LAN functionality (WOL) in the&n; * config record. WOL options are retrieved from wolinfo_wolopts in @bdp&n; */
 r_void
 DECL|function|e100_config_wol
@@ -1606,7 +1605,6 @@ id|bdp-&gt;config_lock
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/**&n; * e100_config_loopback_mode&n; * @bdp: atapter&squot;s private data struct&n; * @mode: loopback mode(phy/mac/none)&n; *&n; */
 r_int
 r_char
@@ -1680,7 +1678,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;e100_config_loopback_mode: &quot;
+l_string|&quot;e100: e100_config_loopback_mode: &quot;
 l_string|&quot;Invalid argument &squot;mode&squot;: %d&bslash;n&quot;
 comma
 id|mode

@@ -1,8 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html, &n;or the Intel BSD + Patent License, the text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU General Public License 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;General Public License 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU General &n;Public License 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************&n;&n;Portions (C) 2002 Red Hat, Inc. under the terms of the GNU GPL v2.&n;&n;*******************************************************************************/
 multiline_comment|/**********************************************************************&n;*                                                                     *&n;* INTEL CORPORATION                                                   *&n;*                                                                     *&n;* This software is supplied under the terms of the license included   *&n;* above.  All use of this driver must be in accordance with the terms *&n;* of that license.                                                    *&n;*                                                                     *&n;* Module Name:  e100_main.c                                           *&n;*                                                                     *&n;* Abstract:     Functions for the driver entry points like load,      *&n;*               unload, open and close. All board specific calls made *&n;*               by the network interface section of the driver.       *&n;*                                                                     *&n;* Environment:  This file is intended to be specific to the Linux     *&n;*               operating system.                                     *&n;*                                                                     *&n;**********************************************************************/
 multiline_comment|/* Change Log&n; *&n; * 2.1.6        7/5/02&n; *   o Added device ID support for Dell LOM.&n; *   o Added device ID support for 82511QM mobile nics.&n; *   o Bug fix: ethtool get/set EEPROM routines modified to use byte&n; *     addressing rather than word addressing.&n; *   o Feature: added MDIX mode support for 82550 and up.&n; *   o Bug fix: added reboot notifer to setup WOL settings when&n; *     shutting system down.&n; *   o Cleanup: removed yield() redefinition (Andrew Morton, &n; *     akpm@zip.com.au).&n; *   o Bug fix: flow control now working when link partner is &n; *     autoneg capable but not flow control capable.&n; *   o Bug fix: added check for corrupted EEPROM&n; *   o Bug fix: don&squot;t report checksum offloading for the older&n; *     controllers that don&squot;t support the feature.&n; *   o Bug fix: calculate cable diagnostics when link goes down&n; *     rather than when queuering /proc file.&n; *   o Cleanup: move mdi_access_lock to local get/set mdi routines.&n; *&n; * 2.0.30       5/30/02&n; */
-DECL|macro|__NO_VERSION__
-macro_line|#undef __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -12,11 +10,7 @@ macro_line|#include &quot;e100_ucode.h&quot;
 macro_line|#include &quot;e100_config.h&quot;
 macro_line|#include &quot;e100_phy.h&quot;
 macro_line|#include &quot;e100_vendor.h&quot;
-macro_line|#ifndef CONFIG_PROC_FS
-DECL|macro|E100_CONFIG_PROC_FS
-macro_line|#undef E100_CONFIG_PROC_FS
-macro_line|#endif
-macro_line|#ifdef E100_CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_int
 id|e100_create_proc_subdir
@@ -43,11 +37,6 @@ mdefine_line|#define e100_create_proc_subdir(X) 0
 DECL|macro|e100_remove_proc_subdir
 mdefine_line|#define e100_remove_proc_subdir(X) do {} while(0)
 macro_line|#endif
-macro_line|#ifdef SIOCETHTOOL
-DECL|macro|E100_ETHTOOL_IOCTL
-mdefine_line|#define E100_ETHTOOL_IOCTL
-macro_line|#endif
-macro_line|#ifdef E100_ETHTOOL_IOCTL
 r_static
 r_int
 id|e100_do_ethtool_ioctl
@@ -100,7 +89,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GDRVINFO
 r_static
 r_int
 id|e100_ethtool_get_drvinfo
@@ -115,8 +103,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GEEPROM
 r_static
 r_int
 id|e100_ethtool_eeprom
@@ -133,8 +119,6 @@ op_star
 suffix:semicolon
 DECL|macro|E100_EEPROM_MAGIC
 mdefine_line|#define E100_EEPROM_MAGIC 0x1234
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GLINK
 r_static
 r_int
 id|e100_ethtool_glink
@@ -149,8 +133,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_NWAY_RST
 r_static
 r_int
 id|e100_ethtool_nway_rst
@@ -165,8 +147,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GWOL
 r_static
 r_int
 id|e100_ethtool_wol
@@ -231,8 +211,6 @@ op_star
 id|bdp
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
 r_extern
 id|u32
 id|e100_run_diag
@@ -265,8 +243,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GSTRINGS
 r_static
 r_int
 id|e100_ethtool_gstrings
@@ -305,8 +281,6 @@ comma
 l_string|&quot;E100_LPBK_PHY_FAIL&quot;
 )brace
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef&t;ETHTOOL_PHYS_ID
 r_static
 r_int
 id|e100_ethtool_led_blink
@@ -321,13 +295,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif /*E100_ETHTOOL_IOCTL */
-macro_line|#ifdef SIOCGMIIPHY
-DECL|macro|E100_MII_IOCTL
-mdefine_line|#define E100_MII_IOCTL
-macro_line|#endif
-macro_line|#ifdef E100_MII_IOCTL
 macro_line|#include &lt;linux/mii.h&gt;
 r_static
 r_int
@@ -345,7 +312,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif /*E100_MII_IOCTL */
 r_static
 r_int
 r_char
@@ -1765,7 +1731,7 @@ id|bdp-&gt;scb-&gt;scb_status
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* flashes last write, read-safe */
+multiline_comment|/* flushes last write, read-safe */
 )brace
 multiline_comment|/**&n; * e100_wait_scb - wait for SCB to clear&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine checks to see if the e100 has accepted a command.&n; * It does so by checking the command field in the SCB, which will&n; * be zeroed by the e100 upon accepting a command.  The loop waits&n; * for up to 1 millisecond for command acceptance.&n; *&n; * Returns:&n; *      true if the SCB cleared within 1 millisecond.&n; *      false if it didn&squot;t clear within 1 millisecond&n; */
 r_int
@@ -1897,7 +1863,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s e100_wait_exec_simple: Wait failed&bslash;n&quot;
+l_string|&quot;e100: %s: e100_wait_exec_simple: failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -1955,7 +1921,7 @@ id|bdp-&gt;scb-&gt;scb_status
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* flashes last write, read-safe */
+multiline_comment|/* flushes last write, read-safe */
 id|e100_exec_cmd
 c_func
 (paren
@@ -2306,7 +2272,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Not able to alloc etherdev struct&bslash;n&quot;
+l_string|&quot;e100: Not able to alloc etherdev struct&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -2646,7 +2612,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to initialize e100, instance #%d&bslash;n&quot;
+l_string|&quot;e100: Failed to initialize, instance #%d&bslash;n&quot;
 comma
 id|e100nics
 )paren
@@ -2753,7 +2719,6 @@ op_assign
 op_amp
 id|e100_ioctl
 suffix:semicolon
-macro_line|#ifdef E100_ZEROCOPY
 r_if
 c_cond
 (paren
@@ -2769,18 +2734,15 @@ op_or
 id|NETIF_F_IP_CSUM
 suffix:semicolon
 )brace
-macro_line|#endif
 id|e100nics
 op_increment
 suffix:semicolon
-macro_line|#ifdef E100_ETHTOOL_IOCTL
 id|e100_get_speed_duplex_caps
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
-macro_line|#endif /*E100_ETHTOOL_IOCTL */
 r_if
 c_cond
 (paren
@@ -2809,7 +2771,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: %s&bslash;n&quot;
+l_string|&quot;e100: %s: %s&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 comma
@@ -2888,13 +2850,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Failed to create proc directory for %s&bslash;n&quot;
+l_string|&quot;e100: Failed to create proc dir for %s&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef ETHTOOL_GWOL
 multiline_comment|/* Disabling all WOLs as initialization */
 id|bdp-&gt;wolsupported
 op_assign
@@ -2934,7 +2895,6 @@ op_assign
 id|WAKE_MAGIC
 suffix:semicolon
 )brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -3149,7 +3109,6 @@ op_assign
 id|E100_NON_TX_IDLE
 suffix:semicolon
 )brace
-macro_line|#ifdef ETHTOOL_GWOL
 multiline_comment|/* Set up wol options and enable PME if wol is enabled */
 r_if
 c_cond
@@ -3187,7 +3146,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|e100_clear_structs
 c_func
 (paren
@@ -3358,7 +3316,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;No configuration available for board #%d&bslash;n&quot;
+l_string|&quot;e100: No configuration available for board #%d&bslash;n&quot;
 comma
 id|board
 )paren
@@ -3367,7 +3325,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Using defaults for all values&bslash;n&quot;
+l_string|&quot;e100: Using defaults for all values&bslash;n&quot;
 )paren
 suffix:semicolon
 id|board
@@ -3727,7 +3685,8 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Invalid %s specified (%i). Valid range is %i-%i&bslash;n&quot;
+l_string|&quot;e100: Invalid %s specified (%i). &quot;
+l_string|&quot;Valid range is %i-%i&bslash;n&quot;
 comma
 id|name
 comma
@@ -3742,7 +3701,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Using default %s of %i&bslash;n&quot;
+l_string|&quot;e100: Using default %s of %i&bslash;n&quot;
 comma
 id|name
 comma
@@ -3761,7 +3720,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Using specified %s of %i&bslash;n&quot;
+l_string|&quot;e100: Using specified %s of %i&bslash;n&quot;
 comma
 id|name
 comma
@@ -3841,7 +3800,8 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Invalid %s specified (%i). Valid values are %i/%i&bslash;n&quot;
+l_string|&quot;e100: Invalid %s specified (%i). &quot;
+l_string|&quot;Valid values are %i/%i&bslash;n&quot;
 comma
 id|name
 comma
@@ -3856,7 +3816,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Using default %s of %i&bslash;n&quot;
+l_string|&quot;e100: Using default %s of %i&bslash;n&quot;
 comma
 id|name
 comma
@@ -3879,7 +3839,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Using specified %s of %i&bslash;n&quot;
+l_string|&quot;e100: Using specified %s of %i&bslash;n&quot;
 comma
 id|name
 comma
@@ -4225,7 +4185,6 @@ c_func
 id|bdp
 )paren
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GWOL
 id|bdp-&gt;ip_lbytes
 op_assign
 id|e100_get_ip_lbytes
@@ -4234,7 +4193,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|free_irq
 c_func
 (paren
@@ -4834,7 +4792,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Multicast setup failed&bslash;n&quot;
+l_string|&quot;e100: %s: Multicast setup failed&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4993,7 +4951,6 @@ c_cond
 id|cmd
 )paren
 (brace
-macro_line|#ifdef E100_ETHTOOL_IOCTL
 r_case
 id|SIOCETHTOOL
 suffix:colon
@@ -5008,8 +4965,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /*E100_ETHTOOL_IOCTL */
-macro_line|#ifdef E100_MII_IOCTL
 r_case
 id|SIOCGMIIPHY
 suffix:colon
@@ -5035,7 +4990,6 @@ id|cmd
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /*E100_MII_IOCTL */
 r_default
 suffix:colon
 r_return
@@ -5087,7 +5041,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;selftest failed&bslash;n&quot;
+l_string|&quot;e100: selftest failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5125,7 +5079,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hw init failed&bslash;n&quot;
+l_string|&quot;e100: hw init failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5627,7 +5581,6 @@ l_int|0x10
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef E100_ZEROCOPY
 r_if
 c_cond
 (paren
@@ -5664,7 +5617,6 @@ id|pcurr_tcb-&gt;tcb_tbd_dflt_ptr
 op_assign
 id|pcurr_tcb-&gt;tcb_tbd_ptr
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5832,9 +5784,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s - Failed to allocate memory&bslash;n&quot;
-comma
-id|e100_short_driver_name
+l_string|&quot;e100: Failed to allocate memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7174,6 +7124,13 @@ id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
 multiline_comment|/* ack intrs */
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+suffix:semicolon
 multiline_comment|/* the device is closed, don&squot;t continue or else bad things may happen. */
 r_if
 c_cond
@@ -7358,7 +7315,6 @@ c_cond
 id|tcb-&gt;tcb_skb
 )paren
 (brace
-macro_line|#ifdef E100_ZEROCOPY
 r_int
 id|i
 suffix:semicolon
@@ -7418,28 +7374,6 @@ id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|pci_unmap_single
-c_func
-(paren
-id|bdp-&gt;pdev
-comma
-id|le32_to_cpu
-c_func
-(paren
-(paren
-id|tcb-&gt;tbd_ptr
-)paren
-op_member_access_from_pointer
-id|tbd_buf_addr
-)paren
-comma
-id|tcb-&gt;tcb_skb-&gt;len
-comma
-id|PCI_DMA_TODEVICE
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dev_kfree_skb_irq
 c_func
 (paren
@@ -8179,7 +8113,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* end underrun check */
 )brace
-macro_line|#ifdef E100_ZEROCOPY
 multiline_comment|/**&n; * e100_pseudo_hdr_csum - compute IP pseudo-header checksum&n; * @ip: points to the header of the IP packet&n; *&n; * Return the 16 bit checksum of the IP pseudo-header.,which is computed&n; * on the fields: IP src, IP dst, next protocol, payload length.&n; * The checksum vaule is returned in network byte order.&n; */
 r_static
 r_inline
@@ -8275,7 +8208,6 @@ id|pseudo
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* E100_ZEROCOPY */
 multiline_comment|/**&n; * e100_prepare_xmit_buff - prepare a buffer for transmission&n; * @bdp: atapter&squot;s private data struct&n; * @skb: skb to send&n; *&n; * This routine prepare a buffer for transmission. It checks&n; * the message length for the appropiate size. It picks up a&n; * free tcb from the TCB pool and sets up the corresponding&n; * TBD&squot;s. If the number of fragments are more than the number&n; * of TBD/TCB it copies all the fragments in a coalesce buffer.&n; * It returns a pointer to the prepared TCB.&n; */
 r_static
 r_inline
@@ -8380,7 +8312,6 @@ id|tcb-&gt;tcb_skb
 op_assign
 id|skb
 suffix:semicolon
-macro_line|#ifdef E100_ZEROCOPY
 r_if
 c_cond
 (paren
@@ -8730,42 +8661,6 @@ op_assign
 id|tcb-&gt;tcb_tbd_expand_ptr
 suffix:semicolon
 )brace
-macro_line|#else
-(paren
-id|tcb-&gt;tbd_ptr
-)paren
-op_member_access_from_pointer
-id|tbd_buf_addr
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|pci_map_single
-c_func
-(paren
-id|bdp-&gt;pdev
-comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
-comma
-id|PCI_DMA_TODEVICE
-)paren
-)paren
-suffix:semicolon
-(paren
-id|tcb-&gt;tbd_ptr
-)paren
-op_member_access_from_pointer
-id|tbd_buf_cnt
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|skb-&gt;len
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* clear the S-BIT on the previous tcb */
 id|prev_tcb
 op_assign
@@ -8962,7 +8857,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s cu_start: timeout waiting for cu&bslash;n&quot;
+l_string|&quot;e100: %s: cu_start: timeout waiting for cu&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -8991,7 +8886,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s cu_start: timeout waiting for scb&bslash;n&quot;
+l_string|&quot;e100: %s: cu_start: timeout waiting for scb&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -9314,7 +9209,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s IA setup failed&bslash;n&quot;
+l_string|&quot;e100: %s: IA setup failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -9458,7 +9353,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s start_ru: wait_scb failed&bslash;n&quot;
+l_string|&quot;e100: %s: start_ru: wait_scb failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -11511,9 +11406,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s - %s: Failed to map PCI address 0x%lX&bslash;n&quot;
-comma
-id|e100_short_driver_name
+l_string|&quot;e100: %s: Failed to map PCI address 0x%lX&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -11858,7 +11751,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100_hw_reset_recover: setup iaaddr failed&bslash;n&quot;
+l_string|&quot;e100: e100_hw_reset_recover: &quot;
+l_string|&quot;setup iaaddr failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -11966,7 +11860,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100_deisolate_driver:&quot;
+l_string|&quot;e100: e100_deisolate_driver:&quot;
 l_string|&quot; HW SOFTWARE reset recover failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12018,7 +11912,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100_deisolate_driver:&quot;
+l_string|&quot;e100: e100_deisolate_driver:&quot;
 l_string|&quot; HW reset recover failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12089,7 +11983,6 @@ op_assign
 l_bool|false
 suffix:semicolon
 )brace
-macro_line|#ifdef E100_ETHTOOL_IOCTL
 r_static
 r_int
 DECL|function|e100_do_ethtool_ioctl
@@ -12174,7 +12067,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GDRVINFO
 r_case
 id|ETHTOOL_GDRVINFO
 suffix:colon
@@ -12190,8 +12082,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_NWAY_RST
 r_case
 id|ETHTOOL_NWAY_RST
 suffix:colon
@@ -12207,8 +12097,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GLINK
 r_case
 id|ETHTOOL_GLINK
 suffix:colon
@@ -12224,8 +12112,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GEEPROM
 r_case
 id|ETHTOOL_GEEPROM
 suffix:colon
@@ -12244,8 +12130,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GWOL
 r_case
 id|ETHTOOL_GWOL
 suffix:colon
@@ -12264,8 +12148,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
 r_case
 id|ETHTOOL_TEST
 suffix:colon
@@ -12281,8 +12163,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GSTRINGS
 r_case
 id|ETHTOOL_GSTRINGS
 suffix:colon
@@ -12298,8 +12178,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef&t;ETHTOOL_PHYS_ID
 r_case
 id|ETHTOOL_PHYS_ID
 suffix:colon
@@ -12315,7 +12193,6 @@ id|ifr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 r_break
@@ -12827,7 +12704,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef ETHTOOL_GLINK
 r_static
 r_int
 DECL|function|e100_ethtool_glink
@@ -12913,8 +12789,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
 r_static
 r_int
 DECL|function|e100_ethtool_test
@@ -13072,8 +12946,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_NWAY_RST
 r_static
 r_int
 DECL|function|e100_ethtool_nway_rst
@@ -13148,8 +13020,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GDRVINFO
 r_static
 r_int
 DECL|function|e100_ethtool_get_drvinfo
@@ -13262,7 +13132,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GEEPROM
 id|info.eedump_len
 op_assign
 (paren
@@ -13271,13 +13140,10 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
 id|info.testinfo_len
 op_assign
 id|E100_MAX_TEST_RES
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13303,9 +13169,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|//ETHTOOL_GDRVINFO
-macro_line|#ifdef ETHTOOL_GEEPROM
 r_static
 r_int
 DECL|function|e100_ethtool_eeprom
@@ -13692,8 +13555,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_PHYS_ID
 DECL|macro|E100_BLINK_INTERVAL
 mdefine_line|#define E100_BLINK_INTERVAL&t;(HZ/4)
 multiline_comment|/**&n; * e100_led_control&n; * @bdp: atapter&squot;s private data struct&n; * @led_mdi_op: led operation&n; *&n; * Software control over adapter&squot;s led. The possible operations are:&n; * TURN LED OFF, TURN LED ON and RETURN LED CONTROL TO HARDWARE.&n; */
@@ -13957,7 +13818,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_static
 r_inline
 r_int
@@ -14147,7 +14007,6 @@ id|SUPPORTED_MII
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef ETHTOOL_GWOL
 r_static
 r_int
 r_char
@@ -14301,7 +14160,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s Filter setup failed&bslash;n&quot;
+l_string|&quot;e100: %s: Filter setup failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
 )paren
@@ -14370,7 +14229,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100_config WOL options failed&bslash;n&quot;
+l_string|&quot;e100: WOL options failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -14380,7 +14239,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100_config WOL failed&bslash;n&quot;
+l_string|&quot;e100: config WOL failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -14626,8 +14485,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_GSTRINGS
 DECL|function|e100_ethtool_gstrings
 r_static
 r_int
@@ -14865,9 +14722,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#endif /*E100_ETHTOOL_IOCTL */
-macro_line|#ifdef E100_MII_IOCTL
 r_static
 r_int
 DECL|function|e100_mii_ioctl
@@ -15024,8 +14878,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|//E100_MII_IOCTL
 id|nxmit_cb_entry_t
 op_star
 DECL|function|e100_alloc_non_tx_cmd
@@ -15905,7 +15757,6 @@ id|bdp-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* If wol is enabled */
-macro_line|#ifdef ETHTOOL_GWOL
 r_if
 c_cond
 (paren
@@ -15967,22 +15818,6 @@ id|state
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|pci_disable_device
-c_func
-(paren
-id|pcid
-)paren
-suffix:semicolon
-id|pci_set_power_state
-c_func
-(paren
-id|pcid
-comma
-id|state
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -16069,7 +15904,6 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-macro_line|#ifdef ETHTOOL_GWOL
 r_if
 c_cond
 (paren
@@ -16087,7 +15921,6 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-macro_line|#endif
 id|e100_deisolate_driver
 c_func
 (paren

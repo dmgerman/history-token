@@ -24,10 +24,8 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#ifdef SIOCETHTOOL
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1624,17 +1622,8 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MAX_SKB_FRAGS
-DECL|macro|E100_ZEROCOPY
-mdefine_line|#define E100_ZEROCOPY
-macro_line|#endif
-macro_line|#ifdef E100_ZEROCOPY
 DECL|macro|E100_TBD_ARRAY_SIZE
 mdefine_line|#define E100_TBD_ARRAY_SIZE (2+MAX_SKB_FRAGS)
-macro_line|#else
-DECL|macro|E100_TBD_ARRAY_SIZE
-mdefine_line|#define E100_TBD_ARRAY_SIZE 2
-macro_line|#endif /*E100_ZEROCOPY */
 multiline_comment|/* Transmit Command Block (TCB)*/
 DECL|struct|_tcb_t
 r_struct
@@ -1687,7 +1676,6 @@ id|tbd_t
 op_star
 id|tbd_ptr
 suffix:semicolon
-macro_line|#ifdef E100_ZEROCOPY
 DECL|member|tcb_tbd_dflt_ptr
 id|u32
 id|tcb_tbd_dflt_ptr
@@ -1698,7 +1686,6 @@ id|u32
 id|tcb_tbd_expand_ptr
 suffix:semicolon
 multiline_comment|/* TBD address for segmented packet */
-macro_line|#endif&t;&t;&t;&t;/*E100_ZEROCOPY */
 DECL|member|tcb_skb
 r_struct
 id|sk_buff
@@ -1719,7 +1706,6 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef _TCB_T_
 DECL|macro|_TCB_T_
 mdefine_line|#define _TCB_T_
 DECL|typedef|tcb_t
@@ -1728,7 +1714,6 @@ r_struct
 id|_tcb_t
 id|tcb_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Receive Frame Descriptor (RFD) - will be using the simple model*/
 DECL|struct|_rfd_t
 r_struct
@@ -1802,7 +1787,6 @@ id|__packed__
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef _RFD_T_
 DECL|macro|_RFD_T_
 mdefine_line|#define _RFD_T_
 DECL|typedef|rfd_t
@@ -1811,7 +1795,6 @@ r_struct
 id|_rfd_t
 id|rfd_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Receive Buffer Descriptor (RBD)*/
 DECL|struct|_rbd_t
 r_typedef
@@ -2034,7 +2017,6 @@ id|b_params
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_TEST 
 DECL|struct|ethtool_lpbk_data
 r_struct
 id|ethtool_lpbk_data
@@ -2055,7 +2037,6 @@ id|rfd
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|struct|e100_private
 r_struct
 id|e100_private
@@ -2418,7 +2399,6 @@ r_struct
 id|tasklet_struct
 id|polling_tasklet
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_GWOL
 multiline_comment|/* WOL params for ethtool */
 DECL|member|wolsupported
 id|u32
@@ -2432,22 +2412,17 @@ DECL|member|ip_lbytes
 id|u16
 id|ip_lbytes
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST 
 DECL|member|loopback
 r_struct
 id|ethtool_lpbk_data
 id|loopback
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef ETHTOOL_PHYS_ID
 DECL|member|blink_timer
 r_struct
 id|timer_list
 id|blink_timer
 suffix:semicolon
 multiline_comment|/* led blink timer id */
-macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 DECL|member|pci_state
 id|u32
@@ -2629,7 +2604,6 @@ id|u32
 id|reset_cmd
 )paren
 suffix:semicolon
-macro_line|#ifdef ETHTOOL_TEST
 DECL|macro|ROM_TEST_FAIL
 mdefine_line|#define ROM_TEST_FAIL&t;&t;0x01
 DECL|macro|REGISTER_TEST_FAIL
@@ -2669,6 +2643,5 @@ DECL|enumerator|E100_MAX_TEST_RES
 id|E100_MAX_TEST_RES
 )brace
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 eof

@@ -246,11 +246,6 @@ id|adapter
 )paren
 )paren
 suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 singleline_comment|// Check to see if this bit set or not.
 id|data
 op_assign
@@ -524,6 +519,15 @@ id|CSR_EEPROM_CONTROL_FIELD
 c_func
 (paren
 id|adapter
+)paren
+)paren
+suffix:semicolon
+id|readw
+c_func
+(paren
+op_amp
+(paren
+id|adapter-&gt;scb-&gt;scb_status
 )paren
 )paren
 suffix:semicolon
