@@ -7758,7 +7758,7 @@ suffix:semicolon
 )brace
 DECL|function|start_hc
 r_static
-r_void
+r_int
 id|start_hc
 c_func
 (paren
@@ -7777,7 +7777,7 @@ suffix:semicolon
 r_int
 id|timeout
 op_assign
-l_int|1000
+l_int|10
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reset the HC - this will force us to get a&n;&t; * new notification of any already connected&n;&t; * ports due to the virtual disconnect that it&n;&t; * implies.&n;&t; */
 id|outw
@@ -7807,9 +7807,10 @@ id|USBCMD_HCRESET
 r_if
 c_cond
 (paren
-op_logical_neg
 op_decrement
 id|timeout
+OL
+l_int|0
 )paren
 (brace
 id|dev_err
@@ -7824,9 +7825,17 @@ comma
 l_string|&quot;USBCMD_HCRESET timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_break
+r_return
+op_minus
+id|ETIMEDOUT
 suffix:semicolon
 )brace
+id|msleep
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Turn on PIRQ and all interrupts */
 id|pci_write_config_word
@@ -7912,6 +7921,9 @@ suffix:semicolon
 id|uhci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * De-allocate all resources..&n; */
@@ -8888,11 +8900,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_assign
 id|start_hc
 c_func
 (paren
 id|uhci
 )paren
+)paren
+op_ne
+l_int|0
+)paren
+r_goto
+id|err_alloc_skelqh
 suffix:semicolon
 id|init_stall_timer
 c_func
@@ -9290,6 +9314,9 @@ c_func
 id|hcd
 )paren
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 id|pci_set_master
 c_func
 (paren
@@ -9398,11 +9425,23 @@ c_func
 id|uhci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|start_hc
 c_func
 (paren
 id|uhci
 )paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|rc
 suffix:semicolon
 )brace
 id|uhci-&gt;hcd.state
