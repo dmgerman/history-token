@@ -10,8 +10,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-multiline_comment|/*&n; * Yes, specifying asm-ia64 is ugly, but this lets it build on&n; * other platforms too, until efi.h moves to include/linux.&n; */
-macro_line|#include &lt;asm-ia64/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 DECL|macro|MSDOS_MBR_SIGNATURE
 mdefine_line|#define MSDOS_MBR_SIGNATURE 0xaa55
 DECL|macro|EFI_PMBR_OSTYPE_EFI

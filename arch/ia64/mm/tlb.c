@@ -47,10 +47,13 @@ op_complement
 l_int|0U
 )brace
 suffix:semicolon
-DECL|variable|__per_cpu_data
+id|DEFINE_PER_CPU
+c_func
+(paren
 id|u8
+comma
 id|ia64_need_tlb_flush
-id|__per_cpu_data
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Acquire the ia64_ctx.lock before calling this function!&n; */
 r_void

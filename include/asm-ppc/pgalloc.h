@@ -50,7 +50,7 @@ mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = __pa(pte))
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = ((pte) - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define pmd_populate(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = (page_to_pfn(pte) &lt;&lt; PAGE_SHIFT))
 r_extern
 id|pte_t
 op_star

@@ -1905,7 +1905,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 comma
-id|GDT_ENTRY_TLS_MAX
+id|GDT_ENTRY_TLS_ENTRIES
 op_star
 l_int|8
 )paren

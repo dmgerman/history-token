@@ -9488,6 +9488,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|card-&gt;irq
 )paren
 suffix:semicolon
 id|dmabuf-&gt;ready
@@ -9524,6 +9525,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|card-&gt;irq
 )paren
 suffix:semicolon
 id|dmabuf-&gt;ready

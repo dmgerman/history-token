@@ -2,6 +2,7 @@ multiline_comment|/*&n; * sound/sound_timer.c&n; */
 multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; */
 multiline_comment|/*&n; * Thomas Sailer   : ioctl code reworked (vmalloc/vfree removed)&n; */
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 DECL|variable|initialized
 DECL|variable|opened
@@ -74,6 +75,11 @@ r_struct
 id|sound_lowlev_timer
 op_star
 id|tmr
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|function|tmr2ticks
 r_static
@@ -238,15 +244,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmr_offs
@@ -278,9 +282,12 @@ id|curr_ticks
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1001,6 +1008,10 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1024,6 +1035,15 @@ op_logical_neg
 id|tmr_running
 )paren
 r_return
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|tmr_ctr
 op_increment
@@ -1062,6 +1082,15 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|sound_timer_init
 r_void

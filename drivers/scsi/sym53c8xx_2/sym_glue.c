@@ -6158,6 +6158,7 @@ suffix:semicolon
 r_else
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|SYM_LOCK_HCB

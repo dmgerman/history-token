@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/sys_timer.c&n; *&n; * The default timer for the Level 2 sequencer interface&n; * Uses the (1/HZ sec) timer of kernel.&n; */
 multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; */
 multiline_comment|/*&n; * Thomas Sailer   : ioctl code reworked (vmalloc/vfree removed)&n; * Andrew Veliath  : adapted tmr2ticks from level 1 sequencer (avoid overflow)&n; */
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 DECL|variable|opened
 DECL|variable|tmr_running
@@ -69,6 +70,13 @@ r_int
 r_int
 id|dummy
 )paren
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|def_tmr
 r_static
@@ -181,6 +189,13 @@ c_cond
 id|tmr_running
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lock
+)paren
+suffix:semicolon
 id|tmr_ctr
 op_increment
 suffix:semicolon
@@ -218,6 +233,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lock
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -234,15 +256,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmr_offs
@@ -274,9 +294,12 @@ id|curr_ticks
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -422,14 +422,22 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;&t;1233
-DECL|macro|__NR_get_large_pages
-mdefine_line|#define __NR_get_large_pages&t;&t;1234
-DECL|macro|__NR_free_large_pages
-mdefine_line|#define __NR_free_large_pages&t;&t;1235
-DECL|macro|__NR_share_large_pages
-mdefine_line|#define __NR_share_large_pages&t;&t;1236
-DECL|macro|__NR_unshare_large_pages
-mdefine_line|#define __NR_unshare_large_pages&t;1237
+DECL|macro|__NR_alloc_hugepages
+mdefine_line|#define __NR_alloc_hugepages&t;&t;1234
+DECL|macro|__NR_free_hugepages
+mdefine_line|#define __NR_free_hugepages&t;&t;1235
+multiline_comment|/* 1236 currently unused */
+multiline_comment|/* 1237 currently unused */
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;&t;1238
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;&t;1239
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;&t;1240
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;&t;1241
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;&t;1242
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

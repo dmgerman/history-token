@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.12  &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;nm256.h&quot;
 macro_line|#include &quot;nm256_coeff.h&quot;
@@ -928,13 +929,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * If we&squot;re not currently recording, set up the start and end registers&n;     * for the recording engine.&n;     */
@@ -1016,8 +1017,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Not sure what else to do here.  */
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1078,8 +1083,12 @@ op_or
 id|NM_RECORD_FREERUN
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1276,13 +1285,13 @@ id|card-&gt;requested_amt
 op_assign
 id|amt
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1498,8 +1507,12 @@ id|startPlay
 id|card
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2918,13 +2931,13 @@ id|base
 op_assign
 id|card-&gt;mixer
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|nm256_isReady
@@ -2977,8 +2990,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3780,6 +3797,13 @@ suffix:semicolon
 id|card-&gt;rev
 op_assign
 id|rev
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
 suffix:semicolon
 multiline_comment|/* Init the memory port info.  */
 r_for

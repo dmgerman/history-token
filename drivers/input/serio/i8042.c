@@ -2246,7 +2246,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; */
+multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; * 0x00 - no error, 0x01-0x03 - clock/data stuck, 0xff - general error&n; * We ignore general error, since some chips report it even under normal&n; * operation.&n; */
 r_if
 c_cond
 (paren
@@ -2259,7 +2259,13 @@ comma
 id|I8042_CMD_AUX_TEST
 )paren
 op_logical_or
+(paren
 id|param
+op_logical_and
+id|param
+op_ne
+l_int|0xff
+)paren
 )paren
 r_return
 op_minus
@@ -2305,36 +2311,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|i8042_command
-c_func
-(paren
-op_amp
-id|param
-comma
-id|I8042_CMD_AUX_TEST
-)paren
-op_logical_or
-id|param
-)paren
-(brace
-multiline_comment|/*&n; * We&squot;ve got an old AMI i8042 with &squot;Bad Cache&squot; commands.&n; */
-id|i8042_command
-c_func
-(paren
-op_amp
-id|param
-comma
-id|I8042_CMD_AUX_ENABLE
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

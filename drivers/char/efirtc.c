@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_RTC_VERSION

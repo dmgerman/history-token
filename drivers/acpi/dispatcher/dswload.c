@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 71 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -138,6 +138,9 @@ id|NATIVE_CHAR
 op_star
 id|path
 suffix:semicolon
+id|u32
+id|flags
+suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load1_begin_op&quot;
@@ -160,32 +163,6 @@ id|walk_state
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|op
-op_logical_and
-(paren
-id|op-&gt;common.aml_opcode
-op_eq
-id|AML_INT_NAMEDFIELD_OP
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_DISPATCH
-comma
-l_string|&quot;Op=%p State=%p&bslash;n&quot;
-comma
-id|op
-comma
-id|walk_state
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* We are only interested in opcodes that have an associated name */
 r_if
 c_cond
@@ -204,6 +181,46 @@ id|AML_NAMED
 )paren
 )paren
 (brace
+macro_line|#if 0
+r_if
+c_cond
+(paren
+(paren
+id|walk_state-&gt;op_info
+op_member_access_from_pointer
+r_class
+op_eq
+id|AML_CLASS_EXECUTE
+)paren
+op_logical_or
+(paren
+id|walk_state-&gt;op_info
+op_member_access_from_pointer
+r_class
+op_eq
+id|AML_CLASS_CONTROL
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;&bslash;n&bslash;n***EXECUTABLE OPCODE %s***&bslash;n&bslash;n&quot;
+comma
+id|walk_state-&gt;op_info-&gt;name
+)paren
+suffix:semicolon
+op_star
+id|out_op
+op_assign
+id|op
+suffix:semicolon
+r_return
+(paren
+id|AE_CTRL_SKIP
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 op_star
 id|out_op
 op_assign
@@ -252,16 +269,69 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;State=%p Op=%p Type=%X&bslash;n&quot;
+l_string|&quot;State=%p Op=%p [%s] &quot;
 comma
 id|walk_state
 comma
 id|op
 comma
+id|acpi_ut_get_type_name
+(paren
 id|object_type
 )paren
 )paren
+)paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Setup the search flags.&n;&t; *&n;&t; * Since we are entering a name into the namespace, we do not want to&n;&t; *    enable the search-to-root upsearch.&n;&t; *&n;&t; * There are only two conditions where it is acceptable that the name&n;&t; *    already exists:&n;&t; *    1) the Scope() operator can reopen a scoping object that was&n;&t; *       previously defined (Scope, Method, Device, etc.)&n;&t; *    2) Whenever we are parsing a deferred opcode (Op_region, Buffer,&n;&t; *       Buffer_field, or Package), the name of the object is already&n;&t; *       in the namespace.&n;&t; */
+id|flags
+op_assign
+id|ACPI_NS_NO_UPSEARCH
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|walk_state-&gt;opcode
+op_ne
+id|AML_SCOPE_OP
+)paren
+op_logical_and
+(paren
+op_logical_neg
+(paren
+id|walk_state-&gt;parse_flags
+op_amp
+id|ACPI_PARSE_DEFERRED_OP
+)paren
+)paren
+)paren
+(brace
+id|flags
+op_or_assign
+id|ACPI_NS_ERROR_IF_FOUND
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Cannot already exist&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Both Find or Create allowed&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Enter the named type into the internal namespace.  We enter the name&n;&t; * as we go downward in the parse tree.  Any necessary subobjects that involve&n;&t; * arguments to the opcode must be created as we go back up the parse tree later.&n;&t; */
 id|status
 op_assign
@@ -275,7 +345,7 @@ id|object_type
 comma
 id|ACPI_IMODE_LOAD_PASS1
 comma
-id|ACPI_NS_NO_UPSEARCH
+id|flags
 comma
 id|walk_state
 comma
@@ -299,6 +369,67 @@ r_return
 id|status
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * For the scope op, we must check to make sure that the target is&n;&t; * one of the opcodes that actually opens a scope&n;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;opcode
+op_eq
+id|AML_SCOPE_OP
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|node-&gt;type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_ANY
+suffix:colon
+multiline_comment|/* Scope nodes are untyped (ANY) */
+r_case
+id|ACPI_TYPE_DEVICE
+suffix:colon
+r_case
+id|ACPI_TYPE_METHOD
+suffix:colon
+r_case
+id|ACPI_TYPE_POWER
+suffix:colon
+r_case
+id|ACPI_TYPE_PROCESSOR
+suffix:colon
+r_case
+id|ACPI_TYPE_THERMAL
+suffix:colon
+multiline_comment|/* These are acceptable types */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All other types are an error */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Invalid type (%s) for target of Scope operator [%4.4s]&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|node-&gt;type
+)paren
+comma
+id|path
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

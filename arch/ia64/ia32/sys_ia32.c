@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/nfsd/xdr.h&gt;
 macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
 macro_line|#include &lt;asm/types.h&gt;

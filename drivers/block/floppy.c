@@ -181,6 +181,8 @@ r_static
 r_int
 id|irqdma_allocated
 suffix:semicolon
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT current_req
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
 DECL|macro|MAJOR_NR
@@ -193,6 +195,13 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt; /* for the compatibility eject ioctl */
 macro_line|#include &lt;linux/completion.h&gt;
+DECL|variable|current_req
+r_static
+r_struct
+id|request
+op_star
+id|current_req
+suffix:semicolon
 macro_line|#ifndef fd_get_dma_residue
 DECL|macro|fd_get_dma_residue
 mdefine_line|#define fd_get_dma_residue() get_dma_residue(FLOPPY_DMA)
@@ -9337,7 +9346,7 @@ id|req
 comma
 id|uptodate
 comma
-id|req-&gt;hard_cur_sectors
+id|current_count_sectors
 )paren
 )paren
 r_return
@@ -9374,6 +9383,11 @@ c_func
 id|req
 )paren
 suffix:semicolon
+multiline_comment|/* We&squot;re done with the request */
+id|CURRENT
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* new request_done. Can handle physical sectors which are smaller than a&n; * logical buffer */
 DECL|function|request_done
@@ -9398,11 +9412,7 @@ id|request
 op_star
 id|req
 op_assign
-id|elv_next_request
-c_func
-(paren
-id|q
-)paren
+id|CURRENT
 suffix:semicolon
 r_int
 r_int
@@ -9428,17 +9438,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
+op_logical_neg
+id|req
 )paren
 (brace
-id|DPRINT
+id|printk
 c_func
 (paren
-l_string|&quot;request list destroyed in floppy request done&bslash;n&quot;
+l_string|&quot;floppy.c: no request in request_done&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9485,35 +9492,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|current_count_sectors
-op_logical_and
-op_logical_neg
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-op_logical_and
-id|current_count_sectors
-op_ge
-id|req-&gt;current_nr_sectors
-)paren
-(brace
-id|current_count_sectors
-op_sub_assign
-id|req-&gt;current_nr_sectors
-suffix:semicolon
-id|req-&gt;nr_sectors
-op_sub_assign
-id|req-&gt;current_nr_sectors
-suffix:semicolon
-id|req-&gt;sector
-op_add_assign
-id|req-&gt;current_nr_sectors
-suffix:semicolon
 id|end_request
 c_func
 (paren
@@ -9522,65 +9500,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
 id|q-&gt;queue_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current_count_sectors
-op_logical_and
-op_logical_neg
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-)paren
-(brace
-multiline_comment|/* &quot;unlock&quot; last subsector */
-id|req-&gt;buffer
-op_add_assign
-id|current_count_sectors
-op_lshift
-l_int|9
-suffix:semicolon
-id|req-&gt;current_nr_sectors
-op_sub_assign
-id|current_count_sectors
-suffix:semicolon
-id|req-&gt;nr_sectors
-op_sub_assign
-id|current_count_sectors
-suffix:semicolon
-id|req-&gt;sector
-op_add_assign
-id|current_count_sectors
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|current_count_sectors
-op_logical_and
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-)paren
-id|DPRINT
-c_func
-(paren
-l_string|&quot;request list destroyed in floppy request done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -12307,11 +12232,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
+op_logical_neg
+id|CURRENT
+)paren
+(brace
+r_struct
+id|request
+op_star
+id|req
+op_assign
+id|elv_next_request
 c_func
 (paren
 id|QUEUE
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|req
 )paren
 (brace
 id|do_floppy
@@ -12324,6 +12264,11 @@ c_func
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+id|CURRENT
+op_assign
+id|req
 suffix:semicolon
 )brace
 r_if

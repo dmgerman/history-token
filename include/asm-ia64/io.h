@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_IO_H
 DECL|macro|_ASM_IA64_IO_H
 mdefine_line|#define _ASM_IA64_IO_H
-multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 multiline_comment|/* We don&squot;t use IO slowdowns on the ia64, but.. */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
@@ -936,7 +936,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unfortunately, some platforms are broken and do not follow the&n; * IA-64 architecture specification regarding legacy I/O support.&n; * Thus, we have to make these operations platform dependent...&n; */
+multiline_comment|/*&n; * Unfortunately, some platforms are broken and do not follow the IA-64 architecture&n; * specification regarding legacy I/O support.  Thus, we have to make these operations&n; * platform dependent...&n; */
 DECL|macro|__inb
 mdefine_line|#define __inb&t;&t;platform_inb
 DECL|macro|__inw
@@ -952,31 +952,31 @@ mdefine_line|#define __outl&t;&t;platform_outl
 DECL|macro|__mmiob
 mdefine_line|#define __mmiob         platform_mmiob
 DECL|macro|inb
-mdefine_line|#define inb&t;&t;__inb
+mdefine_line|#define inb(p)&t;&t;__inb(p)
 DECL|macro|inw
-mdefine_line|#define inw&t;&t;__inw
+mdefine_line|#define inw(p)&t;&t;__inw(p)
 DECL|macro|inl
-mdefine_line|#define inl&t;&t;__inl
+mdefine_line|#define inl(p)&t;&t;__inl(p)
 DECL|macro|insb
-mdefine_line|#define insb&t;&t;__insb
+mdefine_line|#define insb(p,d,c)&t;__insb(p,d,c)
 DECL|macro|insw
-mdefine_line|#define insw&t;&t;__insw
+mdefine_line|#define insw(p,d,c)&t;__insw(p,d,c)
 DECL|macro|insl
-mdefine_line|#define insl&t;&t;__insl
+mdefine_line|#define insl(p,d,c)&t;__insl(p,d,c)
 DECL|macro|outb
-mdefine_line|#define outb&t;&t;__outb
+mdefine_line|#define outb(v,p)&t;__outb(v,p)
 DECL|macro|outw
-mdefine_line|#define outw&t;&t;__outw
+mdefine_line|#define outw(v,p)&t;__outw(v,p)
 DECL|macro|outl
-mdefine_line|#define outl&t;&t;__outl
+mdefine_line|#define outl(v,p)&t;__outl(v,p)
 DECL|macro|outsb
-mdefine_line|#define outsb&t;&t;__outsb
+mdefine_line|#define outsb(p,s,c)&t;__outsb(p,s,c)
 DECL|macro|outsw
-mdefine_line|#define outsw&t;&t;__outsw
+mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
-mdefine_line|#define outsl&t;&t;__outsl
+mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
 DECL|macro|mmiob
-mdefine_line|#define mmiob           __mmiob
+mdefine_line|#define mmiob()&t;&t;__mmiob()
 multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
 r_static
 r_inline

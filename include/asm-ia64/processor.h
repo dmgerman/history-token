@@ -3,8 +3,6 @@ DECL|macro|_ASM_IA64_PROCESSOR_H
 mdefine_line|#define _ASM_IA64_PROCESSOR_H
 multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/percpu.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -65,8 +63,10 @@ multiline_comment|/*&n; * This shift should be large enough to be able to repres
 DECL|macro|IA64_USEC_PER_CYC_SHIFT
 mdefine_line|#define IA64_USEC_PER_CYC_SHIFT&t;41
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/page.h&gt;

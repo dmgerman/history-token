@@ -609,7 +609,8 @@ comma
 id|static_prio
 suffix:semicolon
 DECL|member|run_list
-id|list_t
+r_struct
+id|list_head
 id|run_list
 suffix:semicolon
 DECL|member|array
@@ -1166,6 +1167,8 @@ DECL|macro|PF_IOTHREAD
 mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
+DECL|macro|PF_SYNC
+mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1297,7 +1300,7 @@ id|init_mm
 suffix:semicolon
 multiline_comment|/* PID hashing. (shouldnt this be dynamic?) */
 DECL|macro|PIDHASH_SZ
-mdefine_line|#define PIDHASH_SZ (4096 &gt;&gt; 2)
+mdefine_line|#define PIDHASH_SZ 8192
 r_extern
 r_struct
 id|task_struct
@@ -2644,6 +2647,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+op_star
 )paren
 suffix:semicolon
 r_extern

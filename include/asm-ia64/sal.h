@@ -3,8 +3,8 @@ DECL|macro|_ASM_IA64_SAL_H
 mdefine_line|#define _ASM_IA64_SAL_H
 multiline_comment|/*&n; * System Abstraction Layer definitions.&n; *&n; * This is based on version 2.5 of the manual &quot;IA-64 System&n; * Abstraction Layer&quot;.&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) 2002 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; * Copyright (C) 2001 Fred Lewis &lt;frederick.v.lewis@intel.com&gt;&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 02/01/04 J. Hall Updated Error Record Structures to conform to July 2001&n; *&t;&t;    revision of the SAL spec.&n; * 01/01/03 fvlewis Updated Error Record Structures to conform with Nov. 2000&n; *                  revision of the SAL spec.&n; * 99/09/29 davidm&t;Updated for SAL 2.6.&n; * 00/03/29 cfleck      Updated SAL Error Logging info for processor (SAL 2.6) &n; *                      (plus examples of platform error info structures from smariset @ Intel)&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 r_extern

@@ -2,36 +2,8 @@ multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp.,
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
+macro_line|#include &quot;jfs_xattr.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
-r_extern
-r_int
-id|generic_file_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|loff_t
-id|generic_file_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-id|loff_t
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|jfs_commit_inode
@@ -364,6 +336,26 @@ dot
 id|truncate
 op_assign
 id|jfs_truncate
+comma
+dot
+id|setxattr
+op_assign
+id|jfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|jfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|jfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|jfs_removexattr
 comma
 )brace
 suffix:semicolon

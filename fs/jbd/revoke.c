@@ -273,9 +273,9 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;ENOMEM in &quot;
+l_string|&quot;ENOMEM in %s, retrying&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;, retrying.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|yield

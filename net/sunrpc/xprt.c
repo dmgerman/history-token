@@ -382,6 +382,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|task-&gt;tk_rqstp
+op_logical_and
 id|task-&gt;tk_rqstp-&gt;rq_nresend
 )paren
 id|rpc_sleep_on
@@ -3797,7 +3799,7 @@ id|sk-&gt;sleep
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The following 2 routines allow a task to sleep while socket memory is&n; * low.&n; */
+multiline_comment|/*&n; * Called when more output buffer space is available for this socket.&n; * We try not to wake our writers until they can make &quot;significant&quot;&n; * progress, otherwise we&squot;ll waste resources thrashing sock_sendmsg&n; * with a bunch of small requests.&n; */
 r_static
 r_void
 DECL|function|xprt_write_space
@@ -3854,6 +3856,34 @@ multiline_comment|/* Wait until we have enough socket memory */
 r_if
 c_cond
 (paren
+id|xprt-&gt;stream
+)paren
+(brace
+multiline_comment|/* from net/ipv4/tcp.c:tcp_write_space */
+r_if
+c_cond
+(paren
+id|tcp_wspace
+c_func
+(paren
+id|sk
+)paren
+OL
+id|tcp_min_write_space
+c_func
+(paren
+id|sk
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* from net/core/sock.c:sock_def_write_space */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|sock_writeable
 c_func
@@ -3863,6 +3893,7 @@ id|sk
 )paren
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

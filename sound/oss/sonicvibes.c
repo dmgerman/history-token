@@ -8229,6 +8229,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.swptr
@@ -8259,6 +8260,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.swptr
@@ -15324,6 +15326,7 @@ multiline_comment|/* disable ints */
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|inb

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;

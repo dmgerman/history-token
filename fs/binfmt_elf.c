@@ -350,7 +350,7 @@ suffix:semicolon
 id|elf_addr_t
 id|elf_info
 (braket
-l_int|30
+l_int|40
 )braket
 suffix:semicolon
 r_int

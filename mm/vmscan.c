@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for try_to_release_page() */
 macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
+macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;

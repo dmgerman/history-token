@@ -127,10 +127,8 @@ r_int
 id|index
 suffix:semicolon
 multiline_comment|/* this locks around the oss state in the driver */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
+multiline_comment|/* no, this lock is removed - only use card-&gt;lock */
+multiline_comment|/* otherwise: against what are you protecting on SMP &n;&t;&t;when irqhandler uses s-&gt;lock&n;&t;&t;and m3_assp_read uses card-&gt;lock ?&n;&t;&t;*/
 DECL|member|open_sem
 r_struct
 id|semaphore
@@ -3880,24 +3878,6 @@ id|offset
 suffix:semicolon
 )brace
 r_static
-r_void
-id|m3_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
 r_int
 DECL|function|prog_dmabuf
 id|prog_dmabuf
@@ -3954,7 +3934,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -4227,7 +4207,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -4828,7 +4808,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|c-&gt;lock
 )paren
 suffix:semicolon
 id|m3_update_ptr
@@ -4841,7 +4821,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|c-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -4960,7 +4940,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -4973,7 +4953,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5232,7 +5212,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5320,7 +5300,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5342,7 +5322,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5431,7 +5411,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5470,7 +5450,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5518,7 +5498,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5650,7 +5630,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5762,7 +5742,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5784,7 +5764,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5876,7 +5856,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5916,7 +5896,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -5984,7 +5964,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -6079,7 +6059,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -6175,7 +6155,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|s-&gt;card-&gt;lock
 comma
 id|flags
 )paren
@@ -6446,6 +6426,13 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
+r_struct
+id|m3_card
+op_star
+id|card
+op_assign
+id|s-&gt;card
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6589,7 +6576,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6611,6 +6598,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;card-&gt;pcidev-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.swptr
@@ -6641,6 +6629,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;card-&gt;pcidev-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.swptr
@@ -6658,7 +6647,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6688,7 +6677,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6760,7 +6749,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6809,7 +6798,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6917,7 +6906,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -6947,7 +6936,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7068,7 +7057,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7156,7 +7145,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7277,7 +7266,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7560,7 +7549,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7595,7 +7584,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7673,7 +7662,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7706,7 +7695,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7767,7 +7756,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7786,7 +7775,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7825,7 +7814,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7865,7 +7854,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7919,7 +7908,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -7959,7 +7948,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -8088,7 +8077,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -8213,7 +8202,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -9006,7 +8995,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|c-&gt;lock
 comma
 id|flags
 )paren
@@ -9152,7 +9141,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|c-&gt;lock
 comma
 id|flags
 )paren
@@ -9189,6 +9178,13 @@ id|m3_state
 op_star
 )paren
 id|file-&gt;private_data
+suffix:semicolon
+r_struct
+id|m3_card
+op_star
+id|card
+op_assign
+id|s-&gt;card
 suffix:semicolon
 r_int
 r_int
@@ -9228,7 +9224,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -9342,7 +9338,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|s-&gt;lock
+id|card-&gt;lock
 comma
 id|flags
 )paren
@@ -12074,13 +12070,6 @@ op_amp
 id|s-&gt;open_wait
 )paren
 suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|s-&gt;lock
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -12608,15 +12597,13 @@ id|pci_dev
 )paren
 suffix:semicolon
 multiline_comment|/* must be a better way.. */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -12827,9 +12814,12 @@ id|card-&gt;in_suspend
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -12870,16 +12860,13 @@ c_func
 id|pci_dev
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* paranoia */
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|card-&gt;in_suspend
@@ -13202,9 +13189,12 @@ id|s
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|card-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

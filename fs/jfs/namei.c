@@ -6,6 +6,7 @@ macro_line|#include &quot;jfs_dinode.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
 macro_line|#include &quot;jfs_unicode.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
+macro_line|#include &quot;jfs_xattr.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
 r_extern
 r_struct
@@ -2513,21 +2514,6 @@ id|DXD_EXTENT
 (brace
 id|s64
 id|xaddr
-suffix:semicolon
-r_int
-id|xlen
-suffix:semicolon
-id|maplock_t
-id|maplock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
-op_star
-id|pxdlock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-multiline_comment|/* free EA pages from cache */
-id|xaddr
 op_assign
 id|addressDXD
 c_func
@@ -2542,6 +2528,7 @@ op_member_access_from_pointer
 id|ea
 )paren
 suffix:semicolon
+r_int
 id|xlen
 op_assign
 id|lengthDXD
@@ -2557,18 +2544,30 @@ op_member_access_from_pointer
 id|ea
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-id|bmExtentInvalidate
+id|maplock_t
+id|maplock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|pxdlock_t
+op_star
+id|pxdlock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+multiline_comment|/* free EA pages from cache */
+id|invalidate_dxd_metapages
 c_func
 (paren
 id|ip
 comma
-id|xaddr
-comma
-id|xlen
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|ea
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* free EA extent from working block map */
 id|maplock.index
 op_assign
@@ -2635,21 +2634,6 @@ id|DXD_EXTENT
 (brace
 id|s64
 id|xaddr
-suffix:semicolon
-r_int
-id|xlen
-suffix:semicolon
-id|maplock_t
-id|maplock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
-op_star
-id|pxdlock
-suffix:semicolon
-multiline_comment|/* maplock for COMMIT_WMAP */
-multiline_comment|/* free ACL pages from cache */
-id|xaddr
 op_assign
 id|addressDXD
 c_func
@@ -2664,6 +2648,7 @@ op_member_access_from_pointer
 id|acl
 )paren
 suffix:semicolon
+r_int
 id|xlen
 op_assign
 id|lengthDXD
@@ -2679,18 +2664,29 @@ op_member_access_from_pointer
 id|acl
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-id|bmExtentInvalidate
+id|maplock_t
+id|maplock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|pxdlock_t
+op_star
+id|pxdlock
+suffix:semicolon
+multiline_comment|/* maplock for COMMIT_WMAP */
+id|invalidate_dxd_metapages
 c_func
 (paren
 id|ip
 comma
-id|xaddr
-comma
-id|xlen
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|acl
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* free ACL extent from working block map */
 id|maplock.index
 op_assign
@@ -3432,6 +3428,34 @@ op_assign
 id|ssize
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * if symlink is &gt; 128 bytes, we don&squot;t have the space to&n;&t;&t; * store inline extended attributes&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ssize
+OG
+r_sizeof
+(paren
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|i_inline
+)paren
+)paren
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|mode2
+op_and_assign
+op_complement
+id|INLINEEA
 suffix:semicolon
 id|jFYI
 c_func
@@ -5419,6 +5443,11 @@ id|btstack
 r_goto
 id|out3
 suffix:semicolon
+id|ip-&gt;i_op
+op_assign
+op_amp
+id|jfs_file_inode_operations
+suffix:semicolon
 id|init_special_inode
 c_func
 (paren
@@ -5982,6 +6011,26 @@ dot
 id|rename
 op_assign
 id|jfs_rename
+comma
+dot
+id|setxattr
+op_assign
+id|jfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|jfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|jfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|jfs_removexattr
 comma
 )brace
 suffix:semicolon

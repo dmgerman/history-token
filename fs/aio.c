@@ -4375,7 +4375,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|__copy_from_user
+id|copy_from_user
 c_func
 (paren
 op_amp

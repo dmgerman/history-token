@@ -2646,15 +2646,7 @@ op_ge
 l_int|1024
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -5077,7 +5069,7 @@ op_amp
 id|serv-&gt;sv_lock
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_NOTICE

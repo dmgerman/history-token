@@ -2257,6 +2257,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|card-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|DPRINTK

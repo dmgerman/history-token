@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 multiline_comment|/*&n; * The largest-sized BIO which this code will assemble, in bytes.  Set this&n; * to PAGE_CACHE_SIZE if your drivers are broken.&n; */
 DECL|macro|MPAGE_BIO_MAX_SIZE
@@ -1985,6 +1986,14 @@ id|done
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|sync
+op_assign
+id|called_for_sync
+c_func
+(paren
+)paren
+suffix:semicolon
 r_struct
 id|pagevec
 id|pvec
@@ -2085,6 +2094,9 @@ c_func
 (paren
 id|page
 )paren
+op_logical_and
+op_logical_neg
+id|sync
 )paren
 (brace
 r_if
@@ -2171,6 +2183,17 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 id|lock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sync
+)paren
+id|wait_on_page_writeback
 c_func
 (paren
 id|page
@@ -2279,6 +2302,28 @@ suffix:semicolon
 id|page
 op_assign
 l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+op_minus
+id|EAGAIN
+op_logical_and
+id|page
+)paren
+(brace
+id|__set_page_dirty_nobuffers
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if

@@ -45,7 +45,7 @@ l_string|&quot;HFC PCI ISDN driver&quot;
 )paren
 suffix:semicolon
 DECL|macro|ID
-mdefine_line|#define ID(ven, dev, name)                     &bslash;&n;        { .vendor      = PCI_VENDOR_ID_##ven,    &bslash;&n;&t;  .device      = PCI_DEVICE_ID_##dev,    &bslash;&n;&t;  .subvendor   = PCI_ANY_ID,             &bslash;&n;&t;  .subdevice   = PCI_ANY_ID,             &bslash;&n;&t;  .class       = 0,                      &bslash;&n;          .class_mask  = 0,                      &bslash;&n;&t;  driver_data: (unsigned long) name }
+mdefine_line|#define ID(ven, dev, name)                     &bslash;&n;        { .vendor      = PCI_VENDOR_ID_##ven,    &bslash;&n;&t;  .device      = PCI_DEVICE_ID_##dev,    &bslash;&n;&t;  .subvendor   = PCI_ANY_ID,             &bslash;&n;&t;  .subdevice   = PCI_ANY_ID,             &bslash;&n;&t;  .class       = 0,                      &bslash;&n;          .class_mask  = 0,                      &bslash;&n;&t;  .driver_data = (unsigned long) name }
 DECL|variable|__devinitdata
 r_static
 r_struct

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
+macro_line|#include &quot;jfs_xattr.h&quot;
 DECL|function|jfs_follow_link
 r_static
 r_int
@@ -100,6 +101,26 @@ dot
 id|follow_link
 op_assign
 id|jfs_follow_link
+comma
+dot
+id|setxattr
+op_assign
+id|jfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|jfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|jfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|jfs_removexattr
 comma
 )brace
 suffix:semicolon

@@ -3034,7 +3034,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5672,6 +5672,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.count
@@ -5702,6 +5703,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.count
@@ -6739,7 +6741,7 @@ id|file
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -9075,6 +9077,7 @@ macro_line|#endif /* CONFIG_LL_DEBUG */
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

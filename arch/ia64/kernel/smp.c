@@ -12,11 +12,11 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -88,7 +88,7 @@ DECL|macro|IPI_CPU_STOP
 mdefine_line|#define IPI_CPU_STOP&t;&t;1
 multiline_comment|/* This needs to be cacheline aligned because it is written to by *other* CPUs.  */
 r_static
-id|DECLARE_PER_CPU
+id|DEFINE_PER_CPU
 c_func
 (paren
 id|__u64

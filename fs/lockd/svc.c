@@ -225,11 +225,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|reparent_to_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren

@@ -1,8 +1,13 @@
 multiline_comment|/*&n; * sound/pas2_midi.c&n; *&n; * The low level driver for the PAS Midi Interface.&n; */
 multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; * Bartlomiej Zolnierkiewicz&t;: Added __init to pas_init_mixer()&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;pas2.h&quot;
+r_extern
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|variable|midi_busy
 DECL|variable|input_opened
 r_static
@@ -136,15 +141,13 @@ comma
 l_int|0x178b
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -163,9 +166,12 @@ OL
 l_int|0
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -245,9 +251,12 @@ comma
 l_int|0x1B88
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -381,15 +390,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drain the local queue first&n;&t; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -414,9 +421,12 @@ id|qhead
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -451,15 +461,13 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Local queue full */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmp_queue
@@ -475,9 +483,12 @@ suffix:semicolon
 id|qtail
 op_increment
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -684,10 +695,6 @@ id|i
 comma
 id|incount
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|stat
 op_assign
 id|pas_read
@@ -780,17 +787,14 @@ l_int|0x10
 )paren
 )paren
 (brace
-id|save_flags
+id|spin_lock
 c_func
 (paren
-id|flags
+op_amp
+id|lock
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* called in irq context */
 r_while
 c_loop
 (paren
@@ -813,10 +817,11 @@ id|qhead
 op_increment
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|lock
 )paren
 suffix:semicolon
 )brace

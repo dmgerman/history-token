@@ -274,7 +274,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|ip_mc_dec_group
 c_func
 (paren

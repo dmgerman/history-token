@@ -441,11 +441,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren

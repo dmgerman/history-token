@@ -258,11 +258,11 @@ id|clear_page
 suffix:semicolon
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|# ifndef CONFIG_NUMA
-DECL|variable|cpu_info
+DECL|variable|cpu_info__per_cpu
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_info
+id|cpu_info__per_cpu
 )paren
 suffix:semicolon
 macro_line|# endif

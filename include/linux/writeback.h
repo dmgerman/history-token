@@ -257,5 +257,22 @@ r_int
 id|nr_pdflush_threads
 suffix:semicolon
 multiline_comment|/* Global so it can be exported to sysctl&n;&t;&t;&t;&t;   read-only. */
+multiline_comment|/*&n; * Tell the writeback paths that they are being called for a &quot;data integrity&quot;&n; * operation such as fsync().&n; */
+DECL|function|called_for_sync
+r_static
+r_inline
+r_int
+id|called_for_sync
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|current-&gt;flags
+op_amp
+id|PF_SYNC
+suffix:semicolon
+)brace
 macro_line|#endif&t;&t;/* WRITEBACK_H */
 eof

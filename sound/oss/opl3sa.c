@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/opl3sa.c&n; *&n; * Low level driver for Yamaha YMF701B aka OPL3-SA chip&n; * &n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; * Changes:&n; *&t;Alan Cox&t;&t;Modularisation&n; *&t;Christoph Hellwig&t;Adapted to module_init/module_exit&n; *&t;Arnaldo C. de Melo&t;got rid of attach_uart401&n; *&n; * FIXME:&n; * &t;Check for install of mpu etc is wrong, should check result of the mss stuff&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|SB_OK
 macro_line|#undef  SB_OK
 macro_line|#include &quot;sound_config.h&quot;
@@ -31,6 +32,13 @@ id|mpu_initialized
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|opl3sa_osp
 r_static
 r_int
@@ -58,15 +66,13 @@ r_int
 r_char
 id|tmp
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -104,9 +110,12 @@ l_int|0xf87
 )paren
 suffix:semicolon
 multiline_comment|/* data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -131,15 +140,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -183,9 +190,12 @@ l_int|0xf87
 )paren
 suffix:semicolon
 multiline_comment|/* data */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -704,7 +704,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|page_to_bus
 mdefine_line|#define page_to_bus(page)&t;(page_to_phys(page) + PCI_DRAM_OFFSET)
 macro_line|#endif /* __KERNEL__ */

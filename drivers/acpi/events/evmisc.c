@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -971,7 +971,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Disable events and free memory allocated for table storage.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ev_terminate
 id|acpi_ev_terminate
@@ -990,8 +990,14 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Ev_terminate&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable all event-related functionality.&n;&t; * In all cases, on error, print a message but obviously we don&squot;t abort.&n;&t; */
-multiline_comment|/*&n;&t; * Disable all fixed events&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_gbl_events_initialized
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Disable all event-related functionality.&n;&t;&t; * In all cases, on error, print a message but obviously we don&squot;t abort.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Disable all fixed events&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1033,7 +1039,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Failed to disable fixed event %d.&bslash;n&quot;
+l_string|&quot;Could not disable fixed event %d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1041,7 +1047,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Disable all GPEs&n;&t; */
+multiline_comment|/*&n;&t;&t; * Disable all GPEs&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1091,7 +1097,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Failed to disable GPE %d.&bslash;n&quot;
+l_string|&quot;Could not disable GPE %d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1100,7 +1106,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * Remove SCI handler&n;&t; */
+multiline_comment|/*&n;&t;&t; * Remove SCI handler&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ev_remove_sci_handler
@@ -1123,10 +1129,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unable to remove SCI handler.&bslash;n&quot;
+l_string|&quot;Could not remove SCI handler&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Return to original mode if necessary&n;&t; */
 r_if
@@ -1157,7 +1164,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Acpi_disable failed.&bslash;n&quot;
+l_string|&quot;Acpi_disable failed&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

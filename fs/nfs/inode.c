@@ -3410,12 +3410,6 @@ op_and_assign
 op_complement
 id|ATTR_SIZE
 suffix:semicolon
-id|filemap_fdatawait
-c_func
-(paren
-id|inode-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren

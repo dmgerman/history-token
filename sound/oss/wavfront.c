@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;    
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -418,6 +419,13 @@ suffix:semicolon
 DECL|variable|dev
 )brace
 id|dev
+suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 r_int
@@ -7947,14 +7955,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+multiline_comment|/* this will not help on SMP - but at least it compiles */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|dev.irq_ok
@@ -7976,8 +7984,12 @@ comma
 id|timeout
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8020,10 +8032,6 @@ id|printk
 id|KERN_DEBUG
 id|LOGNAME
 l_string|&quot;autodetecting WaveFront IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sti
-(paren
 )paren
 suffix:semicolon
 id|irq_mask

@@ -5925,6 +5925,8 @@ multiline_comment|/* note: a 0-length skb is used as an error indication */
 op_increment
 id|ppp-&gt;stats.rx_length_errors
 suffix:semicolon
+id|err
+suffix:colon
 id|kfree_skb
 c_func
 (paren

@@ -49,7 +49,7 @@ mdefine_line|#define PLAT_NODE_DATA_STARTNR(n)    (PLAT_NODE_DATA(n)-&gt;gendata
 DECL|macro|PLAT_NODE_DATA_SIZE
 mdefine_line|#define PLAT_NODE_DATA_SIZE(n)&t;     (PLAT_NODE_DATA(n)-&gt;gendata.node_size)
 DECL|macro|PLAT_NODE_DATA_LOCALNR
-mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n) &bslash;&n;&t;&t;(((p) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_paddr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define PLAT_NODE_DATA_LOCALNR(p, n) &bslash;&n;&t;&t;(((p) &gt;&gt; PAGE_SHIFT) - PLAT_NODE_DATA(n)-&gt;gendata.node_start_pfn)
 DECL|macro|numa_node_id
 mdefine_line|#define numa_node_id()&t;cputocnode(current-&gt;processor)
 macro_line|#ifdef CONFIG_DISCONTIGMEM

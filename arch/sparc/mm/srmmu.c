@@ -6805,6 +6805,8 @@ comma
 id|zones_size
 comma
 id|phys_base
+op_rshift
+id|PAGE_SHIFT
 comma
 id|zholes_size
 )paren

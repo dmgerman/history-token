@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_TYPES_H
 DECL|macro|_ASM_IA64_TYPES_H
 mdefine_line|#define _ASM_IA64_TYPES_H
-multiline_comment|/*&n; * This file is never included by application software unless&n; * explicitly requested (e.g., via linux/types.h) in which case the&n; * application is Linux specific so (user-) name space pollution is&n; * not a major issue.  However, for interoperability, libraries still&n; * need to be careful to avoid a name clashes.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file is never included by application software unless explicitly requested (e.g.,&n; * via linux/types.h) in which case the application is Linux specific so (user-) name&n; * space pollution is not a major issue.  However, for interoperability, libraries still&n; * need to be careful to avoid a name clashes.&n; *&n; * Copyright (C) 1998-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__IA64_UL
 macro_line|# define __IA64_UL(x)&t;&t;(x)
@@ -12,8 +12,6 @@ DECL|macro|__IA64_UL
 macro_line|# define __IA64_UL(x)&t;&t;((unsigned long)(x))
 DECL|macro|__IA64_UL_CONST
 macro_line|# define __IA64_UL_CONST(x)&t;x##UL
-macro_line|#endif
-macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
 r_int

@@ -199,7 +199,7 @@ DECL|macro|PAGE_TO_PA
 mdefine_line|#define PAGE_TO_PA(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 macro_line|#else
 DECL|macro|PAGE_TO_PA
-mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;+ (page)-&gt;zone-&gt;zone_start_paddr)
+mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;((( (page) - (page)-&gt;zone-&gt;zone_mem_map ) &bslash;&n;&t;&t;+ (page)-&gt;zone-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pte_pfn
@@ -210,7 +210,7 @@ DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = (page_to_pfn(page) &lt;&lt; 32) | pgprot_val(pgprot);&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#else
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pfn;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pfn = ((unsigned long)((page)-(page)-&gt;zone-&gt;zone_mem_map)) &lt;&lt; 32;&t;&bslash;&n;&t;pfn += (page)-&gt;zone-&gt;zone_start_paddr &lt;&lt; (32-PAGE_SHIFT);&t;&t;&bslash;&n;&t;pte_val(pte) = pfn | pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pfn;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pfn = ((unsigned long)((page)-(page)-&gt;zone-&gt;zone_mem_map)) &lt;&lt; 32;&t;&bslash;&n;&t;pfn += (page)-&gt;zone-&gt;zone_start_pfn &lt;&lt; 32);&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = pfn | pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
