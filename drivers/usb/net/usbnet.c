@@ -3192,7 +3192,6 @@ OG
 l_int|3
 )paren
 (brace
-multiline_comment|/* ignore bDescriptorType != CS_INTERFACE */
 r_if
 c_cond
 (paren
@@ -3201,7 +3200,7 @@ id|buf
 l_int|1
 )braket
 op_ne
-l_int|0x24
+id|USB_DT_CS_INTERFACE
 )paren
 r_goto
 id|next_desc
