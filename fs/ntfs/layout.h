@@ -251,10 +251,6 @@ r_return
 (paren
 id|x
 op_eq
-(paren
-id|__force
-id|le32
-)paren
 id|r
 )paren
 suffix:semicolon
@@ -281,10 +277,6 @@ r_return
 op_star
 id|p
 op_eq
-(paren
-id|__force
-id|le32
-)paren
 id|r
 )paren
 suffix:semicolon
