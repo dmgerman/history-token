@@ -47,8 +47,6 @@ id|xpram_devfs_handle
 suffix:semicolon
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) MINOR(device)   /* xpram has no partition bits */
-DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR xpram_intrptr         /* pointer to the bottom half */
 DECL|macro|DEVICE_NO_RANDOM
 mdefine_line|#define DEVICE_NO_RANDOM                  /* no entropy to contribute */
 DECL|macro|DEVICE_OFF
@@ -1935,12 +1933,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|fault
 op_assign
 l_int|0

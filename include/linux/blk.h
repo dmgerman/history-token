@@ -259,26 +259,6 @@ macro_line|#ifndef CURRENT
 DECL|macro|CURRENT
 macro_line|# define CURRENT elv_next_request(QUEUE)
 macro_line|#endif
-macro_line|#ifdef DEVICE_INTR
-DECL|variable|DEVICE_INTR
-r_static
-r_void
-(paren
-op_star
-id|DEVICE_INTR
-)paren
-(paren
-r_void
-)paren
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|macro|CLEAR_INTR
-macro_line|#  define CLEAR_INTR DEVICE_INTR = NULL
-macro_line|# else
-DECL|macro|CLEAR_INTR
-macro_line|#  define CLEAR_INTR
-macro_line|# endif
 macro_line|#endif /* !defined(IDE_DRIVER) */
 multiline_comment|/*&n; * If we have our own end_request, we do not want to include this mess&n; */
 macro_line|#ifndef LOCAL_END_REQUEST

@@ -17,8 +17,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR
-DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR do_mfm
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#include &lt;linux/blk.h&gt;
@@ -31,6 +29,19 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/hardware/ioc.h&gt;
+DECL|variable|do_mfm
+r_static
+r_void
+(paren
+op_star
+id|do_mfm
+)paren
+(paren
+r_void
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n; * This sort of stuff should be in a header file shared with ide.c, hd.c, xd.c etc&n; */
 macro_line|#ifndef HDIO_GETGEO
 DECL|macro|HDIO_GETGEO
@@ -1853,7 +1864,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Its going to generate another interrupt */
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_rw_intr
 suffix:semicolon
@@ -1875,7 +1886,7 @@ c_func
 l_string|&quot;setting up for rw...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_rw_intr
 suffix:semicolon
@@ -2007,7 +2018,7 @@ op_amp
 id|STAT_CED
 )paren
 (brace
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_recal_intr
 suffix:semicolon
@@ -2146,7 +2157,7 @@ op_amp
 id|STAT_CED
 )paren
 (brace
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_seek_intr
 suffix:semicolon
@@ -2487,7 +2498,7 @@ OL
 l_int|0
 )paren
 (brace
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_recal_intr
 suffix:semicolon
@@ -2572,7 +2583,7 @@ l_int|3
 op_assign
 id|raw_cmd.cylinder
 suffix:semicolon
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 id|mfm_seek_intr
 suffix:semicolon
@@ -3407,7 +3418,7 @@ c_func
 l_string|&quot;mfm_request: Exiting due to empty queue (pre)&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3721,9 +3732,9 @@ id|handler
 r_void
 )paren
 op_assign
-id|DEVICE_INTR
+id|do_mfm
 suffix:semicolon
-id|DEVICE_INTR
+id|do_mfm
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -27862,8 +27862,6 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -27895,12 +27893,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|req
 op_assign
 id|CURRENT
