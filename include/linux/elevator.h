@@ -485,9 +485,9 @@ r_int
 id|elv_register_queue
 c_func
 (paren
-r_struct
-id|gendisk
+id|request_queue_t
 op_star
+id|q
 )paren
 suffix:semicolon
 r_extern
@@ -495,9 +495,9 @@ r_void
 id|elv_unregister_queue
 c_func
 (paren
-r_struct
-id|gendisk
+id|request_queue_t
 op_star
+id|q
 )paren
 suffix:semicolon
 r_extern

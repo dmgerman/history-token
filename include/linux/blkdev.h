@@ -37,7 +37,7 @@ suffix:semicolon
 DECL|macro|BLKDEV_MIN_RQ
 mdefine_line|#define BLKDEV_MIN_RQ&t;4
 DECL|macro|BLKDEV_MAX_RQ
-mdefine_line|#define BLKDEV_MAX_RQ&t;128
+mdefine_line|#define BLKDEV_MAX_RQ&t;128&t;/* Default maximum */
 DECL|struct|request_list
 r_struct
 id|request_list
@@ -732,7 +732,19 @@ id|spinlock_t
 op_star
 id|queue_lock
 suffix:semicolon
+multiline_comment|/*&n;&t; * queue kobject&n;&t; */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 multiline_comment|/*&n;&t; * queue settings&n;&t; */
+DECL|member|nr_requests
+r_int
+r_int
+id|nr_requests
+suffix:semicolon
+multiline_comment|/* Max # of requests */
 DECL|member|max_sectors
 r_int
 r_int
@@ -1009,6 +1021,28 @@ r_int
 id|block_size_bits
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_int
+id|blk_register_queue
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_unregister_queue
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
 suffix:semicolon
 r_extern
 r_void
