@@ -18,15 +18,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|macro|FIND_FIRST_BIT
 mdefine_line|#define FIND_FIRST_BIT(n)&t;((n) - ((n) &amp; ((n)-1)))
@@ -243,12 +234,14 @@ c_cond
 id|s-&gt;cb_cis_virt
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: cb_release_cis_mem()&bslash;n&quot;
+l_string|&quot;cb_release_cis_mem()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iounmap
@@ -386,12 +379,14 @@ id|resource
 op_star
 id|res
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|3
 comma
-l_string|&quot;cs: read_cb_mem(%d, %#x, %u)&bslash;n&quot;
+l_string|&quot;read_cb_mem(%d, %#x, %u)&bslash;n&quot;
 comma
 id|space
 comma

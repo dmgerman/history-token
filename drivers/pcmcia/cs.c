@@ -1,5 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    Kernel Card Services -- core services&n;&n;    cs.c 1.271 2000/10/02 20:27:49&n;    &n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -190,24 +191,37 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* ns */
-macro_line|#ifdef PCMCIA_DEBUG
-id|INT_MODULE_PARM
+macro_line|#ifdef DEBUG
+DECL|variable|pc_debug
+r_static
+r_int
+id|pc_debug
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-id|PCMCIA_DEBUG
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;cs.c 1.279 2001/10/13 00:08:28 (David Hinds)&quot;
+DECL|function|cs_debug_level
+r_int
+id|cs_debug_level
+c_func
+(paren
+r_int
+id|level
+)paren
+(brace
+r_return
+id|pc_debug
+OG
+id|level
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|variable|dead_socket
@@ -1050,12 +1064,14 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|socket
+comma
 l_int|0
 comma
-l_string|&quot;cs: pcmcia_register_socket(0x%p)&bslash;n&quot;
+l_string|&quot;pcmcia_register_socket(0x%p)&bslash;n&quot;
 comma
 id|socket-&gt;ops
 )paren
@@ -1352,12 +1368,14 @@ id|socket
 )paren
 r_return
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|socket
+comma
 l_int|0
 comma
-l_string|&quot;cs: pcmcia_unregister_socket(0x%p)&bslash;n&quot;
+l_string|&quot;pcmcia_unregister_socket(0x%p)&bslash;n&quot;
 comma
 id|socket-&gt;ops
 )paren
@@ -1590,14 +1608,14 @@ op_star
 op_star
 id|c
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: shutdown_socket(%p)&bslash;n&quot;
-comma
-id|s
+l_string|&quot;shutdown_socket&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Blank out the socket state */
@@ -1836,14 +1854,14 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: send_event(sock %d, event %d, pri %d)&bslash;n&quot;
-comma
-id|s-&gt;sock
+l_string|&quot;send_event(event %d, pri %d)&bslash;n&quot;
 comma
 id|event
 comma
@@ -1925,90 +1943,6 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* send_event */
-DECL|function|pcmcia_error
-r_static
-r_void
-id|pcmcia_error
-c_func
-(paren
-r_struct
-id|pcmcia_socket
-op_star
-id|skt
-comma
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-(brace
-r_static
-r_char
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
-id|va_list
-id|ap
-suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-id|va_start
-c_func
-(paren
-id|ap
-comma
-id|fmt
-)paren
-suffix:semicolon
-id|len
-op_assign
-id|vsnprintf
-c_func
-(paren
-id|buf
-comma
-r_sizeof
-(paren
-id|buf
-)paren
-comma
-id|fmt
-comma
-id|ap
-)paren
-suffix:semicolon
-id|va_end
-c_func
-(paren
-id|ap
-)paren
-suffix:semicolon
-id|buf
-(braket
-id|len
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCMCIA: socket %p: %s&quot;
-comma
-id|skt
-comma
-id|buf
-)paren
-suffix:semicolon
-)brace
 DECL|macro|cs_to_timeout
 mdefine_line|#define cs_to_timeout(cs) (((cs) * HZ + 99) / 100)
 DECL|function|socket_remove_drivers
@@ -2026,6 +1960,16 @@ id|skt
 id|client_t
 op_star
 id|client
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;remove_drivers&bslash;n&quot;
+)paren
 suffix:semicolon
 id|send_event
 c_func
@@ -2077,6 +2021,16 @@ op_star
 id|skt
 )paren
 (brace
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;shutdown&bslash;n&quot;
+)paren
+suffix:semicolon
 id|socket_remove_drivers
 c_func
 (paren
@@ -2127,6 +2081,16 @@ r_int
 id|status
 comma
 id|i
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;reset&bslash;n&quot;
+)paren
 suffix:semicolon
 id|skt-&gt;socket.flags
 op_or_assign
@@ -2252,7 +2216,7 @@ id|unreset_check
 )paren
 suffix:semicolon
 )brace
-id|pcmcia_error
+id|cs_err
 c_func
 (paren
 id|skt
@@ -2283,6 +2247,16 @@ r_int
 id|status
 comma
 id|i
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;setup&bslash;n&quot;
+)paren
 suffix:semicolon
 id|skt-&gt;ops
 op_member_access_from_pointer
@@ -2400,7 +2374,7 @@ op_amp
 id|SS_PENDING
 )paren
 (brace
-id|pcmcia_error
+id|cs_err
 c_func
 (paren
 id|skt
@@ -2425,7 +2399,7 @@ op_or_assign
 id|SOCKET_CARDBUS
 suffix:semicolon
 macro_line|#ifndef CONFIG_CARDBUS
-id|pcmcia_error
+id|cs_err
 c_func
 (paren
 id|skt
@@ -2471,7 +2445,7 @@ l_int|50
 suffix:semicolon
 r_else
 (brace
-id|pcmcia_error
+id|cs_err
 c_func
 (paren
 id|skt
@@ -2537,7 +2511,7 @@ id|SS_POWERON
 )paren
 )paren
 (brace
-id|pcmcia_error
+id|cs_err
 c_func
 (paren
 id|skt
@@ -2572,6 +2546,16 @@ id|skt
 (brace
 r_int
 id|ret
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;insert&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2629,6 +2613,16 @@ id|SOCKET_CARDBUS_CONFIG
 suffix:semicolon
 )brace
 macro_line|#endif
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|4
+comma
+l_string|&quot;insert done&bslash;n&quot;
+)paren
+suffix:semicolon
 id|send_event
 c_func
 (paren
@@ -3301,6 +3295,18 @@ id|u_int
 id|events
 )paren
 (brace
+id|cs_dbg
+c_func
+(paren
+id|s
+comma
+l_int|4
+comma
+l_string|&quot;parse_events: events %08x&bslash;n&quot;
+comma
+id|events
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3413,9 +3419,11 @@ op_star
 id|base
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|0
 comma
 l_string|&quot;odd IO request: num %04x align %04x&bslash;n&quot;
@@ -3461,9 +3469,11 @@ l_int|1
 )paren
 )paren
 (brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|0
 comma
 l_string|&quot;odd IO request: base %04x align %04x&bslash;n&quot;
@@ -4276,16 +4286,16 @@ id|s-&gt;clients
 op_assign
 id|client
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: bind_device(): client 0x%p, sock %p, dev %s&bslash;n&quot;
+l_string|&quot;bind_device(): client 0x%p, dev %s&bslash;n&quot;
 comma
 id|client
-comma
-id|client-&gt;Socket
 comma
 id|client-&gt;dev_info
 )paren
@@ -4392,12 +4402,14 @@ comma
 id|DEV_NAME_LEN
 )paren
 suffix:semicolon
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: bind_mtd(): attr 0x%x, offset 0x%x, dev %s&bslash;n&quot;
+l_string|&quot;bind_mtd(): attr 0x%x, offset 0x%x, dev %s&bslash;n&quot;
 comma
 id|req-&gt;Attributes
 comma
@@ -4444,16 +4456,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: deregister_client(%p)&bslash;n&quot;
-comma
-id|handle
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4465,6 +4467,26 @@ id|handle
 )paren
 r_return
 id|CS_BAD_HANDLE
+suffix:semicolon
+id|s
+op_assign
+id|SOCKET
+c_func
+(paren
+id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|s
+comma
+l_int|1
+comma
+l_string|&quot;deregister_client(%p)&bslash;n&quot;
+comma
+id|handle
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4511,14 +4533,6 @@ r_return
 id|CS_IN_USE
 suffix:semicolon
 multiline_comment|/* Disconnect all MTD links */
-id|s
-op_assign
-id|SOCKET
-c_func
-(paren
-id|handle
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6736,16 +6750,16 @@ id|s-&gt;functions
 )paren
 suffix:semicolon
 )brace
-id|DEBUG
+id|cs_dbg
 c_func
 (paren
+id|s
+comma
 l_int|1
 comma
-l_string|&quot;cs: register_client(): client 0x%p, sock %p, dev %s&bslash;n&quot;
+l_string|&quot;register_client(): client 0x%p, dev %s&bslash;n&quot;
 comma
 id|client
-comma
-id|client-&gt;Socket
 comma
 id|client-&gt;dev_info
 )paren
@@ -9278,22 +9292,22 @@ id|handle
 r_return
 id|CS_BAD_HANDLE
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: resetting socket %p&bslash;n&quot;
-comma
-id|handle-&gt;Socket
-)paren
-suffix:semicolon
 id|skt
 op_assign
 id|SOCKET
 c_func
 (paren
 id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|1
+comma
+l_string|&quot;resetting socket&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -9483,22 +9497,22 @@ id|handle
 r_return
 id|CS_BAD_HANDLE
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: suspending socket %p&bslash;n&quot;
-comma
-id|handle-&gt;Socket
-)paren
-suffix:semicolon
 id|skt
 op_assign
 id|SOCKET
 c_func
 (paren
 id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|1
+comma
+l_string|&quot;suspending socket&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -9603,22 +9617,22 @@ id|handle
 r_return
 id|CS_BAD_HANDLE
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: waking up socket %p&bslash;n&quot;
-comma
-id|handle-&gt;Socket
-)paren
-suffix:semicolon
 id|skt
 op_assign
 id|SOCKET
 c_func
 (paren
 id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|1
+comma
+l_string|&quot;waking up socket&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -9724,22 +9738,22 @@ id|handle
 r_return
 id|CS_BAD_HANDLE
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: user eject request on socket %p&bslash;n&quot;
-comma
-id|handle-&gt;Socket
-)paren
-suffix:semicolon
 id|skt
 op_assign
 id|SOCKET
 c_func
 (paren
 id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|1
+comma
+l_string|&quot;user eject request&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -9852,22 +9866,22 @@ id|handle
 r_return
 id|CS_BAD_HANDLE
 suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;cs: user insert request on socket %p&bslash;n&quot;
-comma
-id|handle-&gt;Socket
-)paren
-suffix:semicolon
 id|skt
 op_assign
 id|SOCKET
 c_func
 (paren
 id|handle
+)paren
+suffix:semicolon
+id|cs_dbg
+c_func
+(paren
+id|skt
+comma
+l_int|1
+comma
+l_string|&quot;user insert request&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -10615,16 +10629,6 @@ id|KERN_INFO
 l_string|&quot;  %s&bslash;n&quot;
 comma
 id|options
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|version
 )paren
 suffix:semicolon
 id|class_register

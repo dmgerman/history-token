@@ -612,19 +612,6 @@ id|parse
 )paren
 suffix:semicolon
 multiline_comment|/* In bulkmem.c */
-r_void
-id|retry_erase_list
-c_func
-(paren
-r_struct
-id|erase_busy_t
-op_star
-id|list
-comma
-id|u_int
-id|cause
-)paren
-suffix:semicolon
 r_int
 id|get_first_region
 c_func
@@ -869,16 +856,24 @@ r_struct
 id|list_head
 id|pcmcia_socket_list
 suffix:semicolon
-macro_line|#ifdef PCMCIA_DEBUG
+DECL|macro|cs_socket_name
+mdefine_line|#define cs_socket_name(skt)&t;((skt)-&gt;dev.class_id)
+macro_line|#ifdef DEBUG
 r_extern
 r_int
-id|pc_debug
+id|cs_debug_level
+c_func
+(paren
+r_int
+)paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) do { if (pc_debug&gt;(n)) printk(KERN_DEBUG args); } while (0)
+DECL|macro|cs_dbg
+mdefine_line|#define cs_dbg(skt, lvl, fmt, arg...) do {&t;&t;&bslash;&n;&t;if (cs_debug_level(lvl))&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;cs: %s: &quot; fmt, &t;&bslash;&n;&t;&t;       cs_socket_name(skt) , ## arg);&t;&bslash;&n;} while (0)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) do { } while (0)
+DECL|macro|cs_dbg
+mdefine_line|#define cs_dbg(skt, lvl, fmt, arg...) do { } while (0)
 macro_line|#endif
+DECL|macro|cs_err
+mdefine_line|#define cs_err(skt, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;cs: %s: &quot; fmt, (skt)-&gt;dev.class_id , ## arg)
 macro_line|#endif /* _LINUX_CS_INTERNAL_H */
 eof

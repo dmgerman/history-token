@@ -1,6 +1,7 @@
 multiline_comment|/*======================================================================&n;&n;    PC Card Driver Services&n;    &n;    ds.c 1.112 2001/10/13 00:08:28&n;    &n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -46,22 +47,27 @@ c_func
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|INT_MODULE_PARM
-mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
-macro_line|#ifdef PCMCIA_DEBUG
-id|INT_MODULE_PARM
+macro_line|#ifdef DEBUG
+DECL|variable|pc_debug
+r_static
+r_int
+id|pc_debug
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-id|PCMCIA_DEBUG
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|macro|ds_dbg
+mdefine_line|#define ds_dbg(lvl, fmt, arg...) do {&t;&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;ds: &quot; fmt , ## arg);&t;&t;&bslash;&n;} while (0)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
+DECL|macro|ds_dbg
+mdefine_line|#define ds_dbg(lvl, fmt, arg...) do { } while (0)
 macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|struct|socket_bind_t
@@ -864,12 +870,12 @@ id|pcmcia_bus_socket
 op_star
 id|s
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;ds: ds_event(0x%06x, %d, 0x%p)&bslash;n&quot;
+l_string|&quot;ds_event(0x%06x, %d, 0x%p)&bslash;n&quot;
 comma
 id|event
 comma
@@ -1111,7 +1117,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -1699,7 +1705,7 @@ comma
 op_star
 id|c
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -1875,7 +1881,7 @@ id|user_info_t
 op_star
 id|user
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|0
@@ -2032,7 +2038,7 @@ op_star
 op_star
 id|link
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|0
@@ -2205,7 +2211,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -2215,7 +2221,7 @@ comma
 id|iminor
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -2347,7 +2353,7 @@ id|user_info_t
 op_star
 id|user
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -2357,7 +2363,7 @@ comma
 id|iminor
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -2500,7 +2506,7 @@ id|user_info_t
 op_star
 id|user
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -2510,7 +2516,7 @@ comma
 id|iminor
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 suffix:semicolon
@@ -2610,7 +2616,7 @@ id|user_info_t
 op_star
 id|user
 suffix:semicolon
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2
@@ -2736,7 +2742,7 @@ c_cond
 id|err
 )paren
 (brace
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|3
@@ -2781,7 +2787,7 @@ c_cond
 id|err
 )paren
 (brace
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|3
@@ -3346,7 +3352,7 @@ id|CS_SUCCESS
 )paren
 )paren
 (brace
-id|DEBUG
+id|ds_dbg
 c_func
 (paren
 l_int|2

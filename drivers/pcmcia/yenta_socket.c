@@ -14,10 +14,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;yenta_socket.h&quot;
 macro_line|#include &quot;i82365.h&quot;
 macro_line|#if 0
-mdefine_line|#define DEBUG(x,args...)&t;printk(KERN_DEBUG &quot;%s: &quot; x, __FUNCTION__, ##args)
+mdefine_line|#define debug(x,args...) printk(KERN_DEBUG &quot;%s: &quot; x, __func__ , ##args)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(x,args...)
+DECL|macro|debug
+mdefine_line|#define debug(x,args...)
 macro_line|#endif
 multiline_comment|/* Don&squot;t ask.. */
 DECL|macro|to_cycles
@@ -52,7 +52,7 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %08x&bslash;n&quot;
@@ -87,7 +87,7 @@ id|u32
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %08x&bslash;n&quot;
@@ -140,7 +140,7 @@ op_amp
 id|val
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %02x&bslash;n&quot;
@@ -186,7 +186,7 @@ op_amp
 id|val
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %04x&bslash;n&quot;
@@ -232,7 +232,7 @@ op_amp
 id|val
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %08x&bslash;n&quot;
@@ -267,7 +267,7 @@ id|u8
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %02x&bslash;n&quot;
@@ -309,7 +309,7 @@ id|u16
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %04x&bslash;n&quot;
@@ -351,7 +351,7 @@ id|u32
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %08x&bslash;n&quot;
@@ -403,7 +403,7 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %02x&bslash;n&quot;
@@ -466,7 +466,7 @@ l_int|1
 op_lshift
 l_int|8
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %04x&bslash;n&quot;
@@ -501,7 +501,7 @@ id|u8
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %02x&bslash;n&quot;
@@ -544,7 +544,7 @@ id|u16
 id|val
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_string|&quot;%p %04x %04x&bslash;n&quot;
