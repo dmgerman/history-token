@@ -1343,7 +1343,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;RAMDISK: ran out of compressed data&bslash;n&quot;
+l_string|&quot;RAMDISK: ran out of compressed data&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1512,7 +1512,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|x
 )paren

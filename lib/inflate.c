@@ -3663,7 +3663,7 @@ l_int|1
 id|error
 c_func
 (paren
-l_string|&quot; incomplete literal tree&bslash;n&quot;
+l_string|&quot;incomplete literal tree&quot;
 )paren
 suffix:semicolon
 id|huft_free
@@ -3737,7 +3737,7 @@ l_int|1
 id|error
 c_func
 (paren
-l_string|&quot; incomplete distance tree&bslash;n&quot;
+l_string|&quot;incomplete distance tree&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef PKZIP_BUG_WORKAROUND
@@ -4512,7 +4512,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Input is encrypted&bslash;n&quot;
+l_string|&quot;Input is encrypted&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4535,7 +4535,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Multi part input&bslash;n&quot;
+l_string|&quot;Multi part input&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4558,7 +4558,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Input has invalid flags&bslash;n&quot;
+l_string|&quot;Input has invalid flags&quot;
 )paren
 suffix:semicolon
 r_return

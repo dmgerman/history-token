@@ -301,7 +301,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Malloc error&bslash;n&quot;
+l_string|&quot;Malloc error&quot;
 )paren
 suffix:semicolon
 r_if
@@ -314,7 +314,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Memory error&bslash;n&quot;
+l_string|&quot;Memory error&quot;
 )paren
 suffix:semicolon
 id|free_mem_ptr
@@ -433,7 +433,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;ran out of input data&bslash;n&quot;
+l_string|&quot;ran out of input data&quot;
 )paren
 suffix:semicolon
 id|inbuf

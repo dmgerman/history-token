@@ -386,7 +386,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Malloc error&bslash;n&quot;
+l_string|&quot;Malloc error&quot;
 )paren
 suffix:semicolon
 r_if
@@ -399,7 +399,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;Memory error&bslash;n&quot;
+l_string|&quot;Memory error&quot;
 )paren
 suffix:semicolon
 id|free_mem_ptr
@@ -436,7 +436,7 @@ id|free_mem_end_ptr
 id|error
 c_func
 (paren
-l_string|&quot;&bslash;nOut of memory&bslash;n&quot;
+l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -905,7 +905,7 @@ l_int|0
 id|error
 c_func
 (paren
-l_string|&quot;ran out of input data&bslash;n&quot;
+l_string|&quot;ran out of input data&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1264,7 +1264,7 @@ l_int|1024
 id|error
 c_func
 (paren
-l_string|&quot;Less than 2MB of memory.&bslash;n&quot;
+l_string|&quot;Less than 2MB of memory&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1287,7 +1287,7 @@ l_int|1024
 id|error
 c_func
 (paren
-l_string|&quot;Less than 2MB of memory.&bslash;n&quot;
+l_string|&quot;Less than 2MB of memory&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1377,7 +1377,7 @@ l_int|1024
 id|error
 c_func
 (paren
-l_string|&quot;Less than 4MB of memory.&bslash;n&quot;
+l_string|&quot;Less than 4MB of memory&quot;
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1404,7 +1404,7 @@ l_int|1024
 id|error
 c_func
 (paren
-l_string|&quot;Less than 4MB of memory.&bslash;n&quot;
+l_string|&quot;Less than 4MB of memory&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;
