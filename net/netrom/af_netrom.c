@@ -2012,6 +2012,12 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|sock_hold
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|lock_sock
 c_func
 (paren
@@ -2158,6 +2164,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|release_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|sock_put
 c_func
 (paren
 id|sk
