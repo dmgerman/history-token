@@ -1180,12 +1180,15 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.isurf.reset
 comma
 l_int|1
+comma
+l_string|&quot;isurf isdn&quot;
 )paren
 )paren
 (brace
@@ -1206,19 +1209,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.isurf.reset
-comma
-l_int|1
-comma
-l_string|&quot;isurf isdn&quot;
 )paren
 suffix:semicolon
 )brace
