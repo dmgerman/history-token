@@ -6,14 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 r_extern
 r_int
-id|slip_init_ctrl_dev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|x25_asy_init_ctrl_dev
 c_func
 (paren
@@ -276,13 +268,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_SLIP)
-id|slip_init_ctrl_dev
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_X25_ASY)
 id|x25_asy_init_ctrl_dev
 c_func
