@@ -192,6 +192,8 @@ id|pteptr
 suffix:semicolon
 )brace
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) set_64bit((phys_t *) (pmdptr), pmd_val(pmdval))
 DECL|function|pmd_alloc_one

@@ -140,6 +140,11 @@ r_void
 id|io_remap_pte_range
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 id|pte_t
 op_star
 id|pte
@@ -200,6 +205,10 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|pte
 )paren
 suffix:semicolon
@@ -253,6 +262,11 @@ r_int
 id|io_remap_pmd_range
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
 id|pmd_t
 op_star
 id|pmd
@@ -315,7 +329,7 @@ op_assign
 id|pte_alloc_map
 c_func
 (paren
-id|current-&gt;mm
+id|mm
 comma
 id|pmd
 comma
@@ -335,6 +349,8 @@ suffix:semicolon
 id|io_remap_pte_range
 c_func
 (paren
+id|mm
+comma
 id|pte
 comma
 id|address
@@ -516,6 +532,8 @@ op_assign
 id|io_remap_pmd_range
 c_func
 (paren
+id|mm
+comma
 id|pmd
 comma
 id|from

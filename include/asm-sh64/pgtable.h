@@ -191,6 +191,8 @@ suffix:colon
 id|x
 suffix:semicolon
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|function|pmd_set
 r_static
 id|__inline__
@@ -488,7 +490,7 @@ mdefine_line|#define _PTE_EMPTY&t;0x0
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;(set_pte(xp, __pte(_PTE_EMPTY)))
+mdefine_line|#define pte_clear(mm,addr,xp)&t;(set_pte_at(mm, addr, xp, __pte(_PTE_EMPTY)))
 DECL|macro|pte_none
 mdefine_line|#define pte_none(x)&t;(pte_val(x) == _PTE_EMPTY)
 multiline_comment|/*&n; * Some definitions to translate between mem_map, PTEs, and page&n; * addresses:&n; */

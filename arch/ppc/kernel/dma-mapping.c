@@ -768,6 +768,8 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+comma
+id|addr
 suffix:semicolon
 id|pte_t
 op_star
@@ -863,6 +865,10 @@ c_func
 id|c-&gt;vm_start
 )paren
 suffix:semicolon
+id|addr
+op_assign
+id|c-&gt;vm_start
+suffix:semicolon
 r_do
 (brace
 id|pte_t
@@ -871,6 +877,11 @@ op_assign
 id|ptep_get_and_clear
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -880,6 +891,10 @@ id|pfn
 suffix:semicolon
 id|ptep
 op_increment
+suffix:semicolon
+id|addr
+op_add_assign
+id|PAGE_SIZE
 suffix:semicolon
 r_if
 c_cond

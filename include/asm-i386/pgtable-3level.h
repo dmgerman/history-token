@@ -116,6 +116,8 @@ op_assign
 id|pte.pte_low
 suffix:semicolon
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|__HAVE_ARCH_SET_PTE_ATOMIC
 mdefine_line|#define __HAVE_ARCH_SET_PTE_ATOMIC
 DECL|macro|set_pte_atomic
@@ -155,6 +157,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep

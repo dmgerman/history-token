@@ -980,6 +980,16 @@ op_increment
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|address
+op_plus
+(paren
+id|i
+op_star
+id|PAGE_SIZE
+)paren
+comma
 id|pte
 )paren
 suffix:semicolon

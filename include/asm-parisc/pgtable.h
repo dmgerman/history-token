@@ -16,6 +16,8 @@ mdefine_line|#define kern_addr_valid(addr)&t;(1)
 multiline_comment|/* Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval)                                 &bslash;&n;        do{                                                     &bslash;&n;                *(pteptr) = (pteval);                           &bslash;&n;        } while(0)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %08lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
@@ -307,7 +309,7 @@ mdefine_line|#define pte_none(x)     ((pte_val(x) == 0) || (pte_val(x) &amp; _PA
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = 0; } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { pte_val(*(xp)) = 0; } while (0)
 DECL|macro|pmd_flag
 mdefine_line|#define pmd_flag(x)&t;(pmd_val(x) &amp; PxD_FLAG_MASK)
 DECL|macro|pmd_address
@@ -981,6 +983,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1040,9 +1051,13 @@ id|pte
 r_return
 l_int|0
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_mkold
@@ -1064,6 +1079,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1123,9 +1147,13 @@ id|pte
 r_return
 l_int|0
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_mkclean
@@ -1151,6 +1179,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1193,9 +1230,13 @@ id|pte
 op_or_assign
 id|_PAGE_FLUSH
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte
@@ -1219,6 +1260,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1286,64 +1336,16 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_wrprotect
-c_func
-(paren
-id|old_pte
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-macro_line|#ifdef CONFIG_SMP
-id|set_bit
-c_func
-(paren
-id|xlate_pabit
-c_func
-(paren
-id|_PAGE_DIRTY_BIT
-)paren
-comma
-op_amp
-id|pte_val
-c_func
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|pte_t
-id|old_pte
-op_assign
-op_star
-id|ptep
-suffix:semicolon
-id|set_pte
-c_func
-(paren
-id|ptep
-comma
-id|pte_mkdirty
 c_func
 (paren
 id|old_pte
@@ -1368,8 +1370,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

@@ -864,6 +864,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -948,6 +957,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1020,6 +1038,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1079,11 +1106,11 @@ multiline_comment|/*&n; * We currently remove entries from the hashtable regardl
 DECL|macro|__HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 DECL|macro|ptep_clear_flush_young
-mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __young = ptep_test_and_clear_young(__ptep);&t;&t;&bslash;&n;&t;__young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__young = ptep_test_and_clear_young(__vma, __address, __ptep);&t;&bslash;&n;&t;__young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
 mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
 DECL|macro|ptep_clear_flush_dirty
-mdefine_line|#define ptep_clear_flush_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __dirty = ptep_test_and_clear_dirty(__ptep);&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;&t;__dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ptep_clear_flush_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__dirty = ptep_test_and_clear_dirty(__vma, __address, __ptep);&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;&t;__dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -1091,6 +1118,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1141,6 +1177,15 @@ r_void
 id|pte_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1178,13 +1223,22 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set_pte stores a linux PTE into the linux page table.&n; */
-DECL|function|set_pte
+DECL|function|set_pte_at
 r_static
 r_inline
 r_void
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1207,6 +1261,10 @@ id|ptep
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon

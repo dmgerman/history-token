@@ -129,6 +129,11 @@ op_assign
 id|ptep_get_and_clear
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|address
+comma
 id|pte
 )paren
 suffix:semicolon
@@ -540,9 +545,14 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|address
+comma
 id|pte
 comma
 id|mk_pte

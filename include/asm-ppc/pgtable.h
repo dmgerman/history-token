@@ -434,7 +434,7 @@ mdefine_line|#define pte_none(pte)&t;&t;((pte_val(pte) &amp; ~_PTE_NONE_MASK) ==
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;do { set_pte((ptep), __pte(0)); } while (0)
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;do { set_pte_at((mm), (addr), (ptep), __pte(0)); } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
@@ -1087,6 +1087,8 @@ id|pte
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 r_extern
 r_void
 id|flush_hash_one_pte
@@ -1105,6 +1107,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1158,6 +1169,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1192,6 +1212,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1221,6 +1250,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1238,29 +1276,6 @@ id|_PAGE_HWWRITE
 )paren
 comma
 l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-id|pte_update
-c_func
-(paren
-id|ptep
-comma
-l_int|0
-comma
-id|_PAGE_DIRTY
 )paren
 suffix:semicolon
 )brace
@@ -1687,8 +1702,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

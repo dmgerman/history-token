@@ -1248,9 +1248,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|pte
 comma
 id|pte_mkdirty

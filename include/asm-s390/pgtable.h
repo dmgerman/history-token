@@ -271,6 +271,8 @@ op_assign
 id|pteval
 suffix:semicolon
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 multiline_comment|/*&n; * pgd/pmd/pte query functions&n; */
 macro_line|#ifndef __s390x__
 DECL|function|pgd_present
@@ -851,6 +853,15 @@ r_void
 id|pte_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1038,6 +1049,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1073,6 +1093,10 @@ r_return
 id|ptep_test_and_clear_young
 c_func
 (paren
+id|vma
+comma
+id|address
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -1084,6 +1108,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1119,6 +1152,10 @@ r_return
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+id|vma
+comma
+id|address
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -1130,6 +1167,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1144,6 +1190,10 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -1291,6 +1341,10 @@ macro_line|#endif /* __s390x__ */
 id|pte_clear
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|address
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -1305,6 +1359,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1316,9 +1379,13 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_wrprotect
@@ -1326,26 +1393,6 @@ c_func
 (paren
 id|old_pte
 )paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-id|pte_mkdirty
-c_func
-(paren
-op_star
-id|ptep
 )paren
 suffix:semicolon
 )brace
@@ -1619,8 +1666,6 @@ DECL|macro|__HAVE_ARCH_PTEP_CLEAR_FLUSH
 mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_FLUSH
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY

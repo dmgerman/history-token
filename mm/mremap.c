@@ -651,9 +651,13 @@ comma
 id|src
 )paren
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|new_addr
+comma
 id|dst
 comma
 id|pte

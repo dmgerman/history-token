@@ -473,8 +473,10 @@ id|orig
 )paren
 suffix:semicolon
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0UL))
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;&t;&bslash;&n;&t;set_pte_at((mm), (addr), (ptep), __pte(0UL))
 r_extern
 id|pgd_t
 id|swapper_pg_dir
