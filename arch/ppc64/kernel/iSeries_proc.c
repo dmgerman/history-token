@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/param.h&gt;&t;&t;/* for HZ */
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;

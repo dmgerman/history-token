@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;mpic.h&quot;
