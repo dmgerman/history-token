@@ -35,7 +35,7 @@ id|DRIVER_PATCHLEVEL
 comma
 id|DRIVER_DATE
 comma
-id|dev-&gt;minor
+id|dev-&gt;primary.minor
 comma
 id|pci_pretty_name
 c_func

@@ -229,7 +229,7 @@ id|_overrun
 suffix:semicolon
 multiline_comment|/* overrun count */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 multiline_comment|/* same as below */
@@ -257,7 +257,7 @@ id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 DECL|member|_rt

@@ -619,7 +619,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon
@@ -674,6 +674,7 @@ id|serio
 suffix:semicolon
 )brace
 DECL|function|ct82c710_init
+r_static
 r_int
 id|__init
 id|ct82c710_init
@@ -773,6 +774,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ct82c710_exit
+r_static
 r_void
 id|__exit
 id|ct82c710_exit

@@ -1071,6 +1071,8 @@ comma
 id|end
 comma
 id|tmp
+comma
+id|reqprot
 suffix:semicolon
 r_struct
 id|vm_area_struct
@@ -1189,6 +1191,10 @@ id|start
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|reqprot
+op_assign
+id|prot
 suffix:semicolon
 multiline_comment|/*&n;&t; * Does the application expect PROT_READ to imply PROT_EXEC:&n;&t; */
 r_if
@@ -1443,6 +1449,8 @@ id|security_file_mprotect
 c_func
 (paren
 id|vma
+comma
+id|reqprot
 comma
 id|prot
 )paren

@@ -47,11 +47,6 @@ id|errno
 comma
 id|is_user
 suffix:semicolon
-id|unprotect_kernel_mem
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* This is done because to allow SIGSEGV to be delivered inside a SEGV&n;&t; * handler.  This can happen in copy_user, and if SEGV is disabled,&n;&t; * the process will die.&n;&t; */
 r_if
 c_cond
@@ -187,18 +182,6 @@ id|errno
 op_assign
 id|save_errno
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|is_user
-)paren
-(brace
-id|protect_kernel_mem
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

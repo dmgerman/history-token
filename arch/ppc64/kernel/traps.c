@@ -1075,6 +1075,10 @@ id|regs-&gt;nip
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Illegal instruction emulation support.  Return non-zero if we can&squot;t&n; * emulate, or -EFAULT if the associated memory access caused an access&n; * fault.  Return zero on success.&n; */
+DECL|macro|INST_MFSPR_PVR
+mdefine_line|#define INST_MFSPR_PVR&t;&t;0x7c1f42a6
+DECL|macro|INST_MFSPR_PVR_MASK
+mdefine_line|#define INST_MFSPR_PVR_MASK&t;0xfc1fffff
 DECL|macro|INST_DCBA
 mdefine_line|#define INST_DCBA&t;&t;0x7c0005ec
 DECL|macro|INST_DCBA_MASK
@@ -1142,6 +1146,48 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/* Emulate the mfspr rD, PVR. */
+r_if
+c_cond
+(paren
+(paren
+id|instword
+op_amp
+id|INST_MFSPR_PVR_MASK
+)paren
+op_eq
+id|INST_MFSPR_PVR
+)paren
+(brace
+r_int
+r_int
+id|rd
+suffix:semicolon
+id|rd
+op_assign
+(paren
+id|instword
+op_rshift
+l_int|21
+)paren
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|regs-&gt;gpr
+(braket
+id|rd
+)braket
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_PVR
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Emulating the dcba insn is just a no-op.  */
 r_if
 c_cond
@@ -1516,29 +1562,6 @@ c_cond
 (paren
 id|regs-&gt;msr
 op_amp
-l_int|0x40000
-)paren
-(brace
-multiline_comment|/* Privileged instruction */
-id|_exception
-c_func
-(paren
-id|SIGILL
-comma
-id|regs
-comma
-id|ILL_PRVOPC
-comma
-id|regs-&gt;nip
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
 l_int|0x20000
 )paren
 (brace
@@ -1609,7 +1632,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Illegal instruction; try to emulate it.  */
+multiline_comment|/* Privileged or illegal instruction; try to emulate it. */
 r_switch
 c_cond
 (paren
@@ -1655,6 +1678,30 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+l_int|0x40000
+)paren
+multiline_comment|/* priveleged */
+id|_exception
+c_func
+(paren
+id|SIGILL
+comma
+id|regs
+comma
+id|ILL_PRVOPC
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+r_else
+multiline_comment|/* illegal */
 id|_exception
 c_func
 (paren

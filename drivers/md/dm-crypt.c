@@ -3700,12 +3700,6 @@ id|ti
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_char
-id|buffer
-(braket
-l_int|32
-)braket
-suffix:semicolon
 r_const
 r_char
 op_star
@@ -3885,14 +3879,6 @@ op_assign
 l_char|&squot;-&squot;
 suffix:semicolon
 )brace
-id|format_dev_t
-c_func
-(paren
-id|buffer
-comma
-id|cc-&gt;dev-&gt;bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|DMEMIT
 c_func
 (paren
@@ -3903,7 +3889,7 @@ id|SECTOR_FORMAT
 comma
 id|cc-&gt;iv_offset
 comma
-id|buffer
+id|cc-&gt;dev-&gt;name
 comma
 id|cc-&gt;start
 )paren

@@ -356,6 +356,8 @@ r_char
 id|kbd_sysrq_xlate
 (braket
 id|KEY_MAX
+op_plus
+l_int|1
 )braket
 op_assign
 l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
@@ -455,10 +457,6 @@ r_if
 c_cond
 (paren
 id|scancode
-OL
-l_int|0
-op_logical_or
-id|scancode
 op_ge
 id|dev-&gt;keycodemax
 )paren
@@ -502,6 +500,7 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_int
 id|i
 comma
@@ -555,12 +554,19 @@ r_if
 c_cond
 (paren
 id|scancode
-OL
-l_int|0
-op_logical_or
-id|scancode
 op_ge
 id|dev-&gt;keycodemax
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|keycode
+OG
+id|KEY_MAX
 )paren
 r_return
 op_minus
@@ -1340,6 +1346,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|j
@@ -1537,6 +1544,7 @@ id|d
 op_assign
 id|diacr
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -4199,7 +4207,7 @@ id|keyboard_tasklet
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) ||&bslash;&n;    defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC32) ||&bslash;&n;    defined(CONFIG_SPARC64) || defined(CONFIG_PARISC) || defined(CONFIG_SUPERH) ||&bslash;&n;    (defined(CONFIG_ARM) &amp;&amp; defined(CONFIG_KEYBOARD_ATKBD) &amp;&amp; !defined(CONFIG_RPC))
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) ||&bslash;&n;    defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC32) ||&bslash;&n;    defined(CONFIG_SPARC64) || defined(CONFIG_PARISC) || defined(CONFIG_SUPERH) ||&bslash;&n;    (defined(CONFIG_ARM) &amp;&amp; defined(CONFIG_KEYBOARD_ATKBD) &amp;&amp; !defined(CONFIG_ARCH_RPC))
 DECL|macro|HW_RAW
 mdefine_line|#define HW_RAW(dev) (test_bit(EV_MSC, dev-&gt;evbit) &amp;&amp; test_bit(MSC_RAW, dev-&gt;mscbit) &amp;&amp;&bslash;&n;&t;&t;&t;((dev)-&gt;id.bustype == BUS_I8042) &amp;&amp; ((dev)-&gt;id.vendor == 0x0001) &amp;&amp; ((dev)-&gt;id.product == 0x0001))
 DECL|variable|x86_keycodes

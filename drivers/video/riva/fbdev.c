@@ -775,49 +775,49 @@ id|rivafb_pci_tbl
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * global variables&n; *&n; * ------------------------------------------------------------------------- */
 multiline_comment|/* command line data, set in rivafb_setup() */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|flatpanel
-id|__initdata
+id|__devinitdata
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Autodetect later */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|forceCRTC
-id|__initdata
+id|__devinitdata
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|noaccel
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|nomtrr
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
 id|mode_option
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -832,7 +832,7 @@ DECL|variable|rivafb_fix
 r_static
 r_struct
 id|fb_fix_screeninfo
-id|__initdata
+id|__devinitdata
 id|rivafb_fix
 op_assign
 (brace
@@ -857,7 +857,7 @@ DECL|variable|rivafb_default_var
 r_static
 r_struct
 id|fb_var_screeninfo
-id|__initdata
+id|__devinitdata
 id|rivafb_default_var
 op_assign
 (brace
@@ -4830,6 +4830,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* acceleration routines */
 DECL|function|wait_for_idle
+r_static
 r_inline
 r_void
 id|wait_for_idle
@@ -4908,6 +4909,7 @@ id|rop
 suffix:semicolon
 )brace
 DECL|function|riva_setup_accel
+r_static
 r_void
 id|riva_setup_accel
 c_func
@@ -10411,6 +10413,7 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifndef MODULE
 DECL|function|rivafb_setup
+r_static
 r_int
 id|__init
 id|rivafb_setup
@@ -10660,6 +10663,7 @@ comma
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * modularization&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|rivafb_init
+r_static
 r_int
 id|__devinit
 id|rivafb_init

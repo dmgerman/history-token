@@ -6,7 +6,7 @@ macro_line|#include &quot;asm/elf.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
-macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;sysdep/sc.h&quot;
 DECL|function|arch_switch

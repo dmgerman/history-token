@@ -69,6 +69,9 @@ r_struct
 id|user_struct
 suffix:semicolon
 r_struct
+id|signal_struct
+suffix:semicolon
+r_struct
 id|key_type
 suffix:semicolon
 r_struct
@@ -835,6 +838,17 @@ id|tsk
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|copy_thread_group_keys
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|exit_keys
 c_func
@@ -843,6 +857,17 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|exit_thread_group_keys
+c_func
+(paren
+r_struct
+id|signal_struct
+op_star
+id|tg
 )paren
 suffix:semicolon
 r_extern
@@ -912,8 +937,12 @@ DECL|macro|switch_uid_keyring
 mdefine_line|#define switch_uid_keyring(u)&t;&t;do { } while(0)
 DECL|macro|copy_keys
 mdefine_line|#define copy_keys(f,t)&t;&t;&t;0
+DECL|macro|copy_thread_group_keys
+mdefine_line|#define copy_thread_group_keys(t)&t;0
 DECL|macro|exit_keys
 mdefine_line|#define exit_keys(t)&t;&t;&t;do { } while(0)
+DECL|macro|exit_thread_group_keys
+mdefine_line|#define exit_thread_group_keys(tg)&t;do { } while(0)
 DECL|macro|suid_keys
 mdefine_line|#define suid_keys(t)&t;&t;&t;do { } while(0)
 DECL|macro|exec_keys

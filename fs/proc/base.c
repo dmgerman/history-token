@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/seccomp.h&gt;
+macro_line|#include &lt;linux/cpuset.h&gt;
 macro_line|#include &quot;internal.h&quot;
 multiline_comment|/*&n; * For hysterical raisins we keep the same inumbers as in the old procfs.&n; * Feel free to change the macro below - just keep the range distinct from&n; * inumbers of the rest of procfs (currently those are in 0x0000--0xffff).&n; * As soon as we&squot;ll get a separate superblock we will be able to forget&n; * about magical ranges too.&n; */
 DECL|macro|fake_ino
@@ -84,6 +85,11 @@ comma
 macro_line|#ifdef CONFIG_SCHEDSTATS
 DECL|enumerator|PROC_TGID_SCHEDSTAT
 id|PROC_TGID_SCHEDSTAT
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+DECL|enumerator|PROC_TGID_CPUSET
+id|PROC_TGID_CPUSET
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_SECURITY
@@ -170,6 +176,11 @@ comma
 macro_line|#ifdef CONFIG_SCHEDSTATS
 DECL|enumerator|PROC_TID_SCHEDSTAT
 id|PROC_TID_SCHEDSTAT
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+DECL|enumerator|PROC_TID_CPUSET
+id|PROC_TID_CPUSET
 comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_SECURITY
@@ -476,6 +487,20 @@ id|S_IRUGO
 )paren
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+id|E
+c_func
+(paren
+id|PROC_TGID_CPUSET
+comma
+l_string|&quot;cpuset&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+)paren
+comma
+macro_line|#endif
 id|E
 c_func
 (paren
@@ -751,6 +776,20 @@ c_func
 id|PROC_TID_SCHEDSTAT
 comma
 l_string|&quot;schedstat&quot;
+comma
+id|S_IFREG
+op_or
+id|S_IRUGO
+)paren
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+id|E
+c_func
+(paren
+id|PROC_TID_CPUSET
+comma
+l_string|&quot;cpuset&quot;
 comma
 id|S_IFREG
 op_or
@@ -7576,6 +7615,21 @@ suffix:semicolon
 id|ei-&gt;op.proc_read
 op_assign
 id|proc_pid_schedstat
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_CPUSETS
+r_case
+id|PROC_TID_CPUSET
+suffix:colon
+r_case
+id|PROC_TGID_CPUSET
+suffix:colon
+id|inode-&gt;i_fop
+op_assign
+op_amp
+id|proc_cpuset_operations
 suffix:semicolon
 r_break
 suffix:semicolon

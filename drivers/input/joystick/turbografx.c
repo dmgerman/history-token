@@ -265,6 +265,7 @@ op_assign
 l_string|&quot;TurboGraFX Multisystem joystick&quot;
 suffix:semicolon
 DECL|struct|tgfx
+r_static
 r_struct
 id|tgfx
 (brace
@@ -1203,6 +1204,7 @@ id|tgfx
 suffix:semicolon
 )brace
 DECL|function|tgfx_init
+r_static
 r_int
 id|__init
 id|tgfx_init
@@ -1277,6 +1279,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|tgfx_exit
+r_static
 r_void
 id|__exit
 id|tgfx_exit

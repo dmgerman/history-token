@@ -1817,6 +1817,6 @@ macro_line|#endif /* __KERNEL_SYSCALLS__ */
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot;&bslash;t=&bslash;tsys_ni_syscall&quot;);
+mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot;&bslash;t=&bslash;tsys_ni_syscall&quot;)
 macro_line|#endif /* _ASM_UNISTD_H */
 eof

@@ -85,24 +85,24 @@ mdefine_line|#define I8042_CMD_MUX_SEND&t;0x1090
 multiline_comment|/*&n; * Return codes.&n; */
 DECL|macro|I8042_RET_CTL_TEST
 mdefine_line|#define I8042_RET_CTL_TEST&t;0x55
-multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers. 32 should be more than enough.&n; */
+multiline_comment|/*&n; * Expected maximum internal i8042 buffer size. This is used for flushing&n; * the i8042 buffers.&n; */
 DECL|macro|I8042_BUFFER_SIZE
-mdefine_line|#define I8042_BUFFER_SIZE&t;32
+mdefine_line|#define I8042_BUFFER_SIZE&t;16
 multiline_comment|/*&n; * Number of AUX ports on controllers supporting active multiplexing&n; * specification&n; */
 DECL|macro|I8042_NUM_MUX_PORTS
 mdefine_line|#define I8042_NUM_MUX_PORTS&t;4
 multiline_comment|/*&n; * Debug.&n; */
 macro_line|#ifdef DEBUG
-DECL|variable|i8042_start
+DECL|variable|i8042_start_time
 r_static
 r_int
 r_int
-id|i8042_start
+id|i8042_start_time
 suffix:semicolon
 DECL|macro|dbg_init
-mdefine_line|#define dbg_init() do { i8042_start = jiffies; } while (0)
+mdefine_line|#define dbg_init() do { i8042_start_time = jiffies; } while (0)
 DECL|macro|dbg
-mdefine_line|#define dbg(format, arg...) &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (i8042_debug)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot; [%d]&bslash;n&quot; ,&t;&bslash;&n;&t; &t;&t;&t;## arg, (int) (jiffies - i8042_start));&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define dbg(format, arg...) &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (i8042_debug)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot; [%d]&bslash;n&quot; ,&t;&bslash;&n;&t; &t;&t;&t;## arg, (int) (jiffies - i8042_start_time));&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|dbg_init
 mdefine_line|#define dbg_init() do { } while (0)

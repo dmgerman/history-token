@@ -647,17 +647,14 @@ id|dev-&gt;unique
 id|DRM_PROC_PRINT
 c_func
 (paren
-l_string|&quot;%s 0x%lx %s&bslash;n&quot;
+l_string|&quot;%s %s %s&bslash;n&quot;
 comma
 id|dev-&gt;driver-&gt;pci_driver.name
 comma
-(paren
-r_int
-)paren
-id|old_encode_dev
+id|pci_name
 c_func
 (paren
-id|dev-&gt;device
+id|dev-&gt;pdev
 )paren
 comma
 id|dev-&gt;unique
@@ -669,17 +666,14 @@ r_else
 id|DRM_PROC_PRINT
 c_func
 (paren
-l_string|&quot;%s 0x%lx&bslash;n&quot;
+l_string|&quot;%s %s&bslash;n&quot;
 comma
 id|dev-&gt;driver-&gt;pci_driver.name
 comma
-(paren
-r_int
-)paren
-id|old_encode_dev
+id|pci_name
 c_func
 (paren
-id|dev-&gt;device
+id|dev-&gt;pdev
 )paren
 )paren
 suffix:semicolon

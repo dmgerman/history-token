@@ -8,9 +8,6 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-multiline_comment|/*Userspace header, must be after sys/ptrace.h, and both must be included. */
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -22,7 +19,6 @@ macro_line|#include &quot;process.h&quot;
 macro_line|#include &quot;signal_kern.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
-macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
@@ -30,6 +26,7 @@ macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
+macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
@@ -1313,7 +1310,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -1496,7 +1493,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -1530,7 +1527,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma
@@ -1802,7 +1799,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -1824,7 +1821,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_POKEUSER
+id|PTRACE_POKEUSR
 comma
 id|pid
 comma

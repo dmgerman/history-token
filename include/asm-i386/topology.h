@@ -114,6 +114,29 @@ suffix:semicolon
 multiline_comment|/* sched_domains SD_NODE_INIT for NUMAQ machines */
 DECL|macro|SD_NODE_INIT
 mdefine_line|#define SD_NODE_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 32,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (10*1000000),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_LOAD_BALANCE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+r_extern
+r_int
+r_int
+id|node_start_pfn
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|node_end_pfn
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|node_remap_size
+(braket
+)braket
+suffix:semicolon
+DECL|macro|node_has_online_mem
+mdefine_line|#define node_has_online_mem(nid) (node_start_pfn[nid] != node_end_pfn[nid])
 macro_line|#else /* !CONFIG_NUMA */
 multiline_comment|/*&n; * Other i386 platforms should define their own version of the &n; * above macros here.&n; */
 macro_line|#include &lt;asm-generic/topology.h&gt;

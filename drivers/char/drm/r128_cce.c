@@ -1040,6 +1040,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|R128_READ_PLL
+r_static
 r_int
 id|R128_READ_PLL
 c_func
@@ -3882,6 +3883,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|r128_freelist_get
+r_static
 id|drm_buf_t
 op_star
 id|r128_freelist_get

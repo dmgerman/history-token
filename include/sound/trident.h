@@ -1485,7 +1485,7 @@ id|reg_lock
 suffix:semicolon
 DECL|member|gameport
 r_struct
-id|snd_trident_gameport
+id|gameport
 op_star
 id|gameport
 suffix:semicolon
@@ -1519,8 +1519,8 @@ op_star
 id|rtrident
 )paren
 suffix:semicolon
-r_void
-id|snd_trident_gameport
+r_int
+id|snd_trident_create_gameport
 c_func
 (paren
 id|trident_t

@@ -36,7 +36,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
@@ -437,7 +437,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_lock_t
 id|lock

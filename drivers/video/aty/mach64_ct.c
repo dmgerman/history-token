@@ -1614,6 +1614,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|aty_get_pll_ct
+r_static
 r_void
 id|__init
 id|aty_get_pll_ct
@@ -1781,6 +1782,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|aty_init_pll_ct
+r_static
 r_int
 id|__init
 id|aty_init_pll_ct

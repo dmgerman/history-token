@@ -38,7 +38,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_unique_t
 id|__user
@@ -166,7 +166,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_unique_t
 id|u
@@ -552,7 +552,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_map_t
 id|__user
@@ -791,7 +791,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_client_t
 id|__user
@@ -986,7 +986,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_stats_t
 id|stats
@@ -1173,6 +1173,20 @@ comma
 r_sizeof
 (paren
 id|sv
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|version
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|version
 )paren
 )paren
 suffix:semicolon

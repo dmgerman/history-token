@@ -1489,6 +1489,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;hga_pan_display - pan or wrap the display&n; *&t;@var:contains new xoffset, yoffset and vmode values&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&n; *&t;This function looks only at xoffset, yoffset and the %FB_VMODE_YWRAP&n; *&t;flag in @var. If input parameters are correct it calls hga_pan() to &n; *&t;program the hardware. @info-&gt;var is updated to the new values.&n; *&t;A zero is returned on success and %-EINVAL for failure.&n; */
 DECL|function|hgafb_pan_display
+r_static
 r_int
 id|hgafb_pan_display
 c_func
@@ -2024,6 +2025,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;&t; *  Initialization&n;&t; */
 DECL|function|hgafb_init
+r_static
 r_int
 id|__init
 id|hgafb_init
@@ -2183,22 +2185,6 @@ comma
 id|fb_info.fix.id
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *  Setup&n;&t; */
-DECL|function|hgafb_setup
-r_int
-id|__init
-id|hgafb_setup
-c_func
-(paren
-r_char
-op_star
-id|options
-)paren
-(brace
 r_return
 l_int|0
 suffix:semicolon

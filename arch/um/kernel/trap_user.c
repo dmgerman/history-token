@@ -4,7 +4,6 @@ macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;setjmp.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;

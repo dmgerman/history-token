@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; * mtouchusb.c  --  Driver for Microtouch (Now 3M) USB Touchscreens&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon original work by Radoslaw Garbacz (usb-support@ite.pl)&n; *  (http://freshmeat.net/projects/3mtouchscreendriver)&n; *&n; * History&n; *&n; *  0.3 &amp; 0.4  2002 (TEJ) tejohnson@yahoo.com&n; *    Updated to 2.4.18, then 2.4.19&n; *    Old version still relied on stealing a minor&n; *&n; *  0.5  02/26/2004 (TEJ) tejohnson@yahoo.com&n; *    Complete rewrite using Linux Input in 2.6.3&n; *    Unfortunately no calibration support at this time&n; *&n; *  1.4 04/25/2004 (TEJ) tejohnson@yahoo.com&n; *    Changed reset from standard USB dev reset to vendor reset&n; *    Changed data sent to host from compensated to raw coordinates&n; *    Eliminated vendor/product module params&n; *    Performed multiple successfull tests with an EXII-5010UC&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; * mtouchusb.c  --  Driver for Microtouch (Now 3M) USB Touchscreens&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Based upon original work by Radoslaw Garbacz (usb-support@ite.pl)&n; *  (http://freshmeat.net/projects/3mtouchscreendriver)&n; *&n; * History&n; *&n; *  0.3 &amp; 0.4  2002 (TEJ) tejohnson@yahoo.com&n; *    Updated to 2.4.18, then 2.4.19&n; *    Old version still relied on stealing a minor&n; *&n; *  0.5  02/26/2004 (TEJ) tejohnson@yahoo.com&n; *    Complete rewrite using Linux Input in 2.6.3&n; *    Unfortunately no calibration support at this time&n; *&n; *  1.4 04/25/2004 (TEJ) tejohnson@yahoo.com&n; *    Changed reset from standard USB dev reset to vendor reset&n; *    Changed data sent to host from compensated to raw coordinates&n; *    Eliminated vendor/product module params&n; *    Performed multiple successfull tests with an EXII-5010UC&n; *&n; *  1.5 02/27/2005 ddstreet@ieee.org&n; *    Added module parameter to select raw or hw-calibrated coordinate reporting&n; *&n; *****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -15,16 +15,20 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|MTOUCHUSB_MIN_XC
 mdefine_line|#define MTOUCHUSB_MIN_XC                0x0
-DECL|macro|MTOUCHUSB_MAX_XC
-mdefine_line|#define MTOUCHUSB_MAX_XC                0x4000
+DECL|macro|MTOUCHUSB_MAX_RAW_XC
+mdefine_line|#define MTOUCHUSB_MAX_RAW_XC            0x4000
+DECL|macro|MTOUCHUSB_MAX_CALIB_XC
+mdefine_line|#define MTOUCHUSB_MAX_CALIB_XC          0xffff
 DECL|macro|MTOUCHUSB_XC_FUZZ
 mdefine_line|#define MTOUCHUSB_XC_FUZZ               0x0
 DECL|macro|MTOUCHUSB_XC_FLAT
 mdefine_line|#define MTOUCHUSB_XC_FLAT               0x0
 DECL|macro|MTOUCHUSB_MIN_YC
 mdefine_line|#define MTOUCHUSB_MIN_YC                0x0
-DECL|macro|MTOUCHUSB_MAX_YC
-mdefine_line|#define MTOUCHUSB_MAX_YC                0x4000
+DECL|macro|MTOUCHUSB_MAX_RAW_YC
+mdefine_line|#define MTOUCHUSB_MAX_RAW_YC            0x4000
+DECL|macro|MTOUCHUSB_MAX_CALIB_YC
+mdefine_line|#define MTOUCHUSB_MAX_CALIB_YC          0xffff
 DECL|macro|MTOUCHUSB_YC_FUZZ
 mdefine_line|#define MTOUCHUSB_YC_FUZZ               0x0
 DECL|macro|MTOUCHUSB_YC_FLAT
@@ -37,20 +41,55 @@ DECL|macro|MTOUCHUSB_REPORT_DATA_SIZE
 mdefine_line|#define MTOUCHUSB_REPORT_DATA_SIZE      11
 DECL|macro|MTOUCHUSB_REQ_CTRLLR_ID
 mdefine_line|#define MTOUCHUSB_REQ_CTRLLR_ID         10
+DECL|macro|MTOUCHUSB_GET_RAW_XC
+mdefine_line|#define MTOUCHUSB_GET_RAW_XC(data)      (data[8]&lt;&lt;8 | data[7])
+DECL|macro|MTOUCHUSB_GET_CALIB_XC
+mdefine_line|#define MTOUCHUSB_GET_CALIB_XC(data)    (data[4]&lt;&lt;8 | data[3])
+DECL|macro|MTOUCHUSB_GET_RAW_YC
+mdefine_line|#define MTOUCHUSB_GET_RAW_YC(data)      (data[10]&lt;&lt;8 | data[9])
+DECL|macro|MTOUCHUSB_GET_CALIB_YC
+mdefine_line|#define MTOUCHUSB_GET_CALIB_YC(data)    (data[6]&lt;&lt;8 | data[5])
 DECL|macro|MTOUCHUSB_GET_XC
-mdefine_line|#define MTOUCHUSB_GET_XC(data)          (data[8]&lt;&lt;8 | data[7])
+mdefine_line|#define MTOUCHUSB_GET_XC(data)          (raw_coordinates ? &bslash;&n;                                         MTOUCHUSB_GET_RAW_XC(data) : &bslash;&n;                                         MTOUCHUSB_GET_CALIB_XC(data))
 DECL|macro|MTOUCHUSB_GET_YC
-mdefine_line|#define MTOUCHUSB_GET_YC(data)          (data[10]&lt;&lt;8 | data[9])
+mdefine_line|#define MTOUCHUSB_GET_YC(data)          (raw_coordinates ? &bslash;&n;                                         MTOUCHUSB_GET_RAW_YC(data) : &bslash;&n;                                         MTOUCHUSB_GET_CALIB_YC(data))
 DECL|macro|MTOUCHUSB_GET_TOUCHED
 mdefine_line|#define MTOUCHUSB_GET_TOUCHED(data)     ((data[2] &amp; 0x40) ? 1:0)
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.4&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.5&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Todd E. Johnson, tejohnson@yahoo.com&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;3M USB Touchscreen Driver&quot;
 DECL|macro|DRIVER_LICENSE
 mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
+DECL|variable|raw_coordinates
+r_static
+r_int
+id|raw_coordinates
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|raw_coordinates
+comma
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|raw_coordinates
+comma
+l_string|&quot;report raw coordinate values (y, default) or hardware-calibrated coordinate values (n)&quot;
+)paren
+suffix:semicolon
 DECL|struct|mtouch_usb
 r_struct
 id|mtouch_usb
@@ -267,6 +306,15 @@ id|mtouch-&gt;input
 comma
 id|ABS_Y
 comma
+(paren
+id|raw_coordinates
+ques
+c_cond
+id|MTOUCHUSB_MAX_RAW_YC
+suffix:colon
+id|MTOUCHUSB_MAX_CALIB_YC
+)paren
+op_minus
 id|MTOUCHUSB_GET_YC
 c_func
 (paren
@@ -810,7 +858,13 @@ id|mtouch-&gt;input.absmax
 id|ABS_X
 )braket
 op_assign
-id|MTOUCHUSB_MAX_XC
+id|raw_coordinates
+ques
+c_cond
+"&bslash;"
+id|MTOUCHUSB_MAX_RAW_XC
+suffix:colon
+id|MTOUCHUSB_MAX_CALIB_XC
 suffix:semicolon
 id|mtouch-&gt;input.absfuzz
 (braket
@@ -838,7 +892,13 @@ id|mtouch-&gt;input.absmax
 id|ABS_Y
 )braket
 op_assign
-id|MTOUCHUSB_MAX_YC
+id|raw_coordinates
+ques
+c_cond
+"&bslash;"
+id|MTOUCHUSB_MAX_RAW_YC
+suffix:colon
+id|MTOUCHUSB_MAX_CALIB_YC
 suffix:semicolon
 id|mtouch-&gt;input.absfuzz
 (braket

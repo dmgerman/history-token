@@ -2507,7 +2507,7 @@ suffix:semicolon
 DECL|function|chips_hw_init
 r_static
 r_void
-id|__init
+id|__devinit
 id|chips_hw_init
 c_func
 (paren
@@ -2772,12 +2772,12 @@ id|data
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_fix_screeninfo
 id|asiliantfb_fix
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -2813,12 +2813,12 @@ comma
 multiline_comment|/* 2MB */
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_var_screeninfo
 id|asiliantfb_var
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -2933,7 +2933,7 @@ suffix:semicolon
 DECL|function|init_asiliant
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_asiliant
 c_func
 (paren

@@ -2,6 +2,12 @@ multiline_comment|/*&n; * eisa_eeprom.h - provide support for EISA adapters in P
 macro_line|#ifndef ASM_EISA_EEPROM_H
 DECL|macro|ASM_EISA_EEPROM_H
 mdefine_line|#define ASM_EISA_EEPROM_H
+r_extern
+r_void
+id|__iomem
+op_star
+id|eisa_eeprom_addr
+suffix:semicolon
 DECL|macro|HPEE_MAX_LENGTH
 mdefine_line|#define HPEE_MAX_LENGTH       0x2000&t;/* maximum eeprom length */
 DECL|macro|HPEE_SLOT_INFO

@@ -254,7 +254,7 @@ DECL|macro|mtsp
 mdefine_line|#define mtsp(gr, cr) &bslash;&n;&t;__asm__ __volatile__(&quot;mtsp %0,%1&quot; &bslash;&n;&t;&t;: /* no outputs */ &bslash;&n;&t;&t;: &quot;r&quot; (gr), &quot;i&quot; (cr) : &quot;memory&quot;)
 multiline_comment|/*&n;** This is simply the barrier() macro from linux/kernel.h but when serial.c&n;** uses tqueue.h uses smp_mb() defined using barrier(), linux/kernel.h&n;** hasn&squot;t yet been included yet so it fails, thus repeating the macro here.&n;**&n;** PA-RISC architecture allows for weakly ordered memory accesses although&n;** none of the processors use it. There is a strong ordered bit that is&n;** set in the O-bit of the page directory entry. Operating systems that&n;** can not tolerate out of order accesses should set this bit when mapping&n;** pages. The O-bit of the PSW should also be set to 1 (I don&squot;t believe any&n;** of the processor implemented the PSW O-bit). The PCX-W ERS states that&n;** the TLB O-bit is not implemented so the page directory does not need to&n;** have the O-bit set when mapping pages (section 3.1). This section also&n;** states that the PSW Y, Z, G, and O bits are not implemented.&n;** So it looks like nothing needs to be done for parisc-linux (yet).&n;** (thanks to chada for the above comment -ggg)&n;**&n;** The __asm__ op below simple prevents gcc/ld from reordering&n;** instructions across the mb() &quot;call&quot;.&n;*/
 DECL|macro|mb
-mdefine_line|#define mb()&t;&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);&t;/* barrier() */
+mdefine_line|#define mb()&t;&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;)&t;/* barrier() */
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;&t;mb()
 DECL|macro|wmb

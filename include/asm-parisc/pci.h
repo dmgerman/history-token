@@ -185,9 +185,31 @@ suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
-multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+multiline_comment|/*&n; * If the PCI device&squot;s view of memory is the same as the CPU&squot;s view of memory,&n; * PCI_DMA_BUS_IS_PHYS is true.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+macro_line|#ifdef CONFIG_PA20
+multiline_comment|/* All PA-2.0 machines have an IOMMU. */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
-mdefine_line|#define PCI_DMA_BUS_IS_PHYS     (1)
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;0
+DECL|macro|parisc_has_iommu
+mdefine_line|#define parisc_has_iommu()&t;do { } while (0)
+macro_line|#else
+macro_line|#if defined(CONFIG_IOMMU_CCIO) || defined(CONFIG_IOMMU_SBA)
+r_extern
+r_int
+id|parisc_bus_is_phys
+suffix:semicolon
+multiline_comment|/* in arch/parisc/kernel/setup.c */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;parisc_bus_is_phys
+DECL|macro|parisc_has_iommu
+mdefine_line|#define parisc_has_iommu()&t;do { parisc_bus_is_phys = 0; } while (0)
+macro_line|#else
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;1
+DECL|macro|parisc_has_iommu
+mdefine_line|#define parisc_has_iommu()&t;do { } while (0)
+macro_line|#endif
+macro_line|#endif&t;/* !CONFIG_PA20 */
 multiline_comment|/*&n;** Most PCI devices (eg Tulip, NCR720) also export the same registers&n;** to both MMIO and I/O port space.  Due to poor performance of I/O Port&n;** access under HP PCI bus adapters, strongly reccomend use of MMIO&n;** address space.&n;**&n;** While I&squot;m at it more PA programming notes:&n;**&n;** 1) MMIO stores (writes) are posted operations. This means the processor&n;**    gets an &quot;ACK&quot; before the write actually gets to the device. A read&n;**    to the same device (or typically the bus adapter above it) will&n;**    force in-flight write transaction(s) out to the targeted device&n;**    before the read can complete.&n;**&n;** 2) The Programmed I/O (PIO) data may not always be strongly ordered with&n;**    respect to DMA on all platforms. Ie PIO data can reach the processor&n;**    before in-flight DMA reaches memory. Since most SMP PA platforms&n;**    are I/O coherent, it generally doesn&squot;t matter...but sometimes&n;**    it does.&n;**&n;** I&squot;ve helped device driver writers debug both types of problems.&n;*/
 DECL|struct|pci_port_ops
 r_struct

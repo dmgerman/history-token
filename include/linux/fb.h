@@ -175,6 +175,14 @@ DECL|macro|FB_ACCEL_SIS_XABRE
 mdefine_line|#define FB_ACCEL_SIS_XABRE      41&t;/* SiS 330 (&quot;Xabre&quot;)&t;&t;*/
 DECL|macro|FB_ACCEL_I830
 mdefine_line|#define FB_ACCEL_I830           42      /* Intel 830M/845G/85x/865G     */
+DECL|macro|FB_ACCEL_NV_10
+mdefine_line|#define FB_ACCEL_NV_10          43      /* nVidia Arch 10               */
+DECL|macro|FB_ACCEL_NV_20
+mdefine_line|#define FB_ACCEL_NV_20          44      /* nVidia Arch 20               */
+DECL|macro|FB_ACCEL_NV_30
+mdefine_line|#define FB_ACCEL_NV_30          45      /* nVidia Arch 30               */
+DECL|macro|FB_ACCEL_NV_40
+mdefine_line|#define FB_ACCEL_NV_40          46      /* nVidia Arch 40               */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
@@ -1296,6 +1304,9 @@ mdefine_line|#define FB_EVENT_SET_CONSOLE_MAP        0x07
 multiline_comment|/*      A display blank is requested       */
 DECL|macro|FB_EVENT_BLANK
 mdefine_line|#define FB_EVENT_BLANK                  0x08
+multiline_comment|/*      Private modelist is to be replaced */
+DECL|macro|FB_EVENT_NEW_MODELIST
+mdefine_line|#define FB_EVENT_NEW_MODELIST           0x09
 DECL|struct|fb_event
 r_struct
 id|fb_event
@@ -2227,6 +2238,13 @@ id|list_head
 id|modelist
 suffix:semicolon
 multiline_comment|/* mode list */
+DECL|member|mode
+r_struct
+id|fb_videomode
+op_star
+id|mode
+suffix:semicolon
+multiline_comment|/* current mode */
 DECL|member|fbops
 r_struct
 id|fb_ops
@@ -2239,6 +2257,13 @@ id|device
 op_star
 id|device
 suffix:semicolon
+DECL|member|class_device
+r_struct
+id|class_device
+op_star
+id|class_device
+suffix:semicolon
+multiline_comment|/* sysfs per device attrs */
 macro_line|#ifdef CONFIG_FB_TILEBLITTING
 DECL|member|tileops
 r_struct
@@ -2715,9 +2740,9 @@ id|fb_get_color_depth
 c_func
 (paren
 r_struct
-id|fb_info
+id|fb_var_screeninfo
 op_star
-id|info
+id|var
 )paren
 suffix:semicolon
 r_extern
@@ -2733,6 +2758,17 @@ r_char
 op_star
 op_star
 id|option
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_new_modelist
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
 )paren
 suffix:semicolon
 r_extern
@@ -2774,6 +2810,28 @@ r_struct
 id|fb_info
 op_star
 id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_init_class_device
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_cleanup_class_device
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|head
 )paren
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
@@ -2890,22 +2948,6 @@ id|var
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|fb_get_monitor_limits
-c_func
-(paren
-r_int
-r_char
-op_star
-id|edid
-comma
-r_struct
-id|fb_monspecs
-op_star
-id|specs
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|fb_edid_to_monspecs
 c_func
@@ -2919,39 +2961,6 @@ r_struct
 id|fb_monspecs
 op_star
 id|specs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fb_get_monitor_limits
-c_func
-(paren
-r_int
-r_char
-op_star
-id|edid
-comma
-r_struct
-id|fb_monspecs
-op_star
-id|specs
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|fb_videomode
-op_star
-id|fb_create_modedb
-c_func
-(paren
-r_int
-r_char
-op_star
-id|edid
-comma
-r_int
-op_star
-id|dbsize
 )paren
 suffix:semicolon
 r_extern
@@ -3071,6 +3080,24 @@ r_struct
 id|fb_videomode
 op_star
 id|fb_find_best_mode
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|fb_videomode
+op_star
+id|fb_find_nearest_mode
 c_func
 (paren
 r_struct

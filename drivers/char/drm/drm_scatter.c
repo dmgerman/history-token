@@ -146,7 +146,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_scatter_gather_t
 id|__user
@@ -891,7 +891,7 @@ id|drm_device_t
 op_star
 id|dev
 op_assign
-id|priv-&gt;dev
+id|priv-&gt;head-&gt;dev
 suffix:semicolon
 id|drm_scatter_gather_t
 id|request

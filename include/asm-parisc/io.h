@@ -1130,14 +1130,15 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#endif /* !USE_HPPA_IOREMAP */
+multiline_comment|/* readb can never be const, so use __fswab instead of le*_to_cpu */
 DECL|macro|readb
 mdefine_line|#define readb(addr) __raw_readb(addr)
 DECL|macro|readw
-mdefine_line|#define readw(addr) le16_to_cpu(__raw_readw(addr))
+mdefine_line|#define readw(addr) __fswab16(__raw_readw(addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr) le32_to_cpu(__raw_readl(addr))
+mdefine_line|#define readl(addr) __fswab32(__raw_readl(addr))
 DECL|macro|readq
-mdefine_line|#define readq(addr) le64_to_cpu(__raw_readq(addr))
+mdefine_line|#define readq(addr) __fswab64(__raw_readq(addr))
 DECL|macro|writeb
 mdefine_line|#define writeb(b, addr) __raw_writeb(b, addr)
 DECL|macro|writew

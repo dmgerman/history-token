@@ -1074,6 +1074,6 @@ suffix:semicolon
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
 multiline_comment|/* &quot;Conditional&quot; syscalls.  What we want is&n;&n;&t;__attribute__((weak,alias(&quot;sys_ni_syscall&quot;)))&n;&n;   but that raises the problem of what type to give the symbol.  If we use&n;   a prototype, it&squot;ll conflict with the definition given in this file and&n;   others.  If we use __typeof, we discover that not all symbols actually&n;   have declarations.  If we use no prototype, then we get warnings from&n;   -Wstrict-prototypes.  Ho hum.  */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x)  asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot; = sys_ni_syscall&quot;);
+mdefine_line|#define cond_syscall(x)  asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot; = sys_ni_syscall&quot;)
 macro_line|#endif /* _ALPHA_UNISTD_H */
 eof

@@ -227,22 +227,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     *  Interface used by the world&n;     */
-r_int
-id|vfb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|vfb_setup
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
 r_static
 r_int
 id|vfb_check_var
@@ -1299,7 +1283,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|vfb_setup
+r_static
 r_int
 id|__init
 id|vfb_setup
@@ -1382,6 +1368,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif  /*  MODULE  */
 multiline_comment|/*&n;     *  Initialisation&n;     */
 DECL|function|vfb_platform_release
 r_static
@@ -1760,6 +1747,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|vfb_init
+r_static
 r_int
 id|__init
 id|vfb_init

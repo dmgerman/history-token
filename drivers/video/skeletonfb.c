@@ -69,7 +69,7 @@ r_struct
 id|fb_info
 id|info
 suffix:semicolon
-multiline_comment|/* &n;     * Each one represents the a state of the hardware. Most hardware have &n;     * just one hardware state. These here represent the default state(s). &n;     */
+multiline_comment|/* &n;     * Each one represents the state of the hardware. Most hardware have&n;     * just one hardware state. These here represent the default state(s). &n;     */
 DECL|variable|current_par
 r_static
 r_struct
@@ -92,7 +92,7 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;xxxfb_open - Optional function. Called when the framebuffer is&n; *&t;&t;     first accessed.&n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&n; *&t;This function is the first function called in the framebuffer api.&n; *&t;Usually you don&squot;t need to provide this function. The case where it &n; *&t;is used is to change from a text mode hardware state to a graphics&n; * &t;mode state. &n; */
+multiline_comment|/**&n; *&t;xxxfb_open - Optional function. Called when the framebuffer is&n; *&t;&t;     first accessed.&n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&n; *&t;This function is the first function called in the framebuffer api.&n; *&t;Usually you don&squot;t need to provide this function. The case where it &n; *&t;is used is to change from a text mode hardware state to a graphics&n; * &t;mode state. &n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_open
 r_static
 r_int
@@ -113,7 +113,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;xxxfb_release - Optional function. Called when the framebuffer &n; *&t;&t;&t;device is closed. &n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&t;&n; *&t;Thus function is called when we close /dev/fb or the framebuffer &n; *&t;console system is released. Usually you don&squot;t need this function.&n; *&t;The case where it is usually used is to go from a graphics state&n; *&t;to a text mode state.&n; */
+multiline_comment|/**&n; *&t;xxxfb_release - Optional function. Called when the framebuffer &n; *&t;&t;&t;device is closed. &n; *&t;@info: frame buffer structure that represents a single frame buffer&n; *&t;@user: tell us if the userland (value=1) or the console is accessing&n; *&t;       the framebuffer. &n; *&t;&n; *&t;Thus function is called when we close /dev/fb or the framebuffer &n; *&t;console system is released. Usually you don&squot;t need this function.&n; *&t;The case where it is usually used is to go from a graphics state&n; *&t;to a text mode state.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_release
 r_static
 r_int
@@ -171,7 +171,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *      xxxfb_set_par - Optional function. Alters the hardware state.&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Using the fb_var_screeninfo in fb_info we set the resolution of the&n; *&t;this particular framebuffer. This function alters the par AND the&n; *&t;fb_fix_screeninfo stored in fb_info. It doesn&squot;t not alter var in &n; *&t;fb_info since we are using that data. This means we depend on the&n; *&t;data in var inside fb_info to be supported by the hardware. &n; *&t;xxxfb_check_var is always called before xxxfb_set_par to ensure this.&n; *&t;Again if you can&squot;t can&squot;t the resolution you don&squot;t need this function.&n; *&n; */
+multiline_comment|/**&n; *      xxxfb_set_par - Optional function. Alters the hardware state.&n; *      @info: frame buffer structure that represents a single frame buffer&n; *&n; *&t;Using the fb_var_screeninfo in fb_info we set the resolution of the&n; *&t;this particular framebuffer. This function alters the par AND the&n; *&t;fb_fix_screeninfo stored in fb_info. It doesn&squot;t not alter var in &n; *&t;fb_info since we are using that data. This means we depend on the&n; *&t;data in var inside fb_info to be supported by the hardware. &n; *&t;xxxfb_check_var is always called before xxxfb_set_par to ensure this.&n; *&t;Again if you can&squot;t change the resolution you don&squot;t need this function.&n; *&n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_set_par
 r_static
 r_int
@@ -201,7 +201,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  &t;xxxfb_setcolreg - Optional function. Sets a color register.&n; *      @regno: Which register in the CLUT we are programming &n; *      @red: The red value which can be up to 16 bits wide &n; *&t;@green: The green value which can be up to 16 bits wide &n; *&t;@blue:  The blue value which can be up to 16 bits wide.&n; *&t;@transp: If supported the alpha value which can be up to 16 bits wide.&t;&n; *      @info: frame buffer info structure&n; * &n; *  &t;Set a single color register. The values supplied have a 16 bit&n; *  &t;magnitude which needs to be scaled in this function for the hardware. &n; *&t;Things to take into consideration are how many color registers, if&n; *&t;any, are supported with the current color visual. With truecolor mode&n; *&t;no color palettes are supported. Here a psuedo palette is created &n; *&t;which we store the value in pseudo_palette in struct fb_info. For&n; *&t;pseudocolor mode we have a limited color palette. To deal with this&n; *&t;we can program what color is displayed for a particular pixel value.&n; *&t;DirectColor is similar in that we can program each color field. If&n; *&t;we have a static colormap we don&squot;t need to implement this function. &n; * &n; *&t;Returns negative errno on error, or zero on success.&n; */
+multiline_comment|/**&n; *  &t;xxxfb_setcolreg - Optional function. Sets a color register.&n; *      @regno: Which register in the CLUT we are programming &n; *      @red: The red value which can be up to 16 bits wide &n; *&t;@green: The green value which can be up to 16 bits wide &n; *&t;@blue:  The blue value which can be up to 16 bits wide.&n; *&t;@transp: If supported, the alpha value which can be up to 16 bits wide.&n; *      @info: frame buffer info structure&n; * &n; *  &t;Set a single color register. The values supplied have a 16 bit&n; *  &t;magnitude which needs to be scaled in this function for the hardware. &n; *&t;Things to take into consideration are how many color registers, if&n; *&t;any, are supported with the current color visual. With truecolor mode&n; *&t;no color palettes are supported. Here a pseudo palette is created&n; *&t;which we store the value in pseudo_palette in struct fb_info. For&n; *&t;pseudocolor mode we have a limited color palette. To deal with this&n; *&t;we can program what color is displayed for a particular pixel value.&n; *&t;DirectColor is similar in that we can program each color field. If&n; *&t;we have a static colormap we don&squot;t need to implement this function. &n; * &n; *&t;Returns negative errno on error, or zero on success.&n; */
 DECL|function|xxxfb_setcolreg
 r_static
 r_int
@@ -239,7 +239,8 @@ l_int|256
 )paren
 multiline_comment|/* no. of hw registers */
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;     * Program hardware... do anything you want with transp&n;     */
 multiline_comment|/* grayscale works only partially under directcolor */
@@ -400,7 +401,8 @@ op_ge
 l_int|16
 )paren
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 id|v
 op_assign
@@ -727,7 +729,7 @@ id|option
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* &n;     * Here we set the screen_base to the vitrual memory address&n;     * for the framebuffer. Usually we obtain the resource address&n;     * from the bus layer and then translate it to virtual memory&n;     * space via ioremap. Consult ioport.h. &n;     */
+multiline_comment|/* &n;     * Here we set the screen_base to the virtual memory address&n;     * for the framebuffer. Usually we obtain the resource address&n;     * from the bus layer and then translate it to virtual memory&n;     * space via ioremap. Consult ioport.h. &n;     */
 id|info.screen_base
 op_assign
 id|framebuffer_virtual_memory
@@ -865,6 +867,13 @@ id|unregister_framebuffer
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+id|fb_dealloc_cmap
+c_func
+(paren
+op_amp
+id|info.cmap
 )paren
 suffix:semicolon
 multiline_comment|/* ... */

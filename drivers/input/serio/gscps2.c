@@ -21,7 +21,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;HP GSC PS/2 port driver&quot;
+l_string|&quot;HP GSC PS2 port driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1138,23 +1138,7 @@ id|serio-&gt;phys
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;idbus
-op_assign
-id|BUS_GSC
-suffix:semicolon
-id|serio-&gt;idvendor
-op_assign
-id|PCI_VENDOR_ID_HP
-suffix:semicolon
-id|serio-&gt;idproduct
-op_assign
-l_int|0x0001
-suffix:semicolon
-id|serio-&gt;idversion
-op_assign
-l_int|0x0010
-suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon
@@ -1485,7 +1469,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;GSC PS/2&quot;
+l_string|&quot;GSC PS2&quot;
 comma
 dot
 id|id_table

@@ -9,6 +9,7 @@ r_int
 id|null_chan
 suffix:semicolon
 DECL|function|null_init
+r_static
 r_void
 op_star
 id|null_init
@@ -33,6 +34,7 @@ id|null_chan
 suffix:semicolon
 )brace
 DECL|function|null_open
+r_static
 r_int
 id|null_open
 c_func
@@ -81,6 +83,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|null_read
+r_static
 r_int
 id|null_read
 c_func
@@ -103,6 +106,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|null_free
+r_static
 r_void
 id|null_free
 c_func

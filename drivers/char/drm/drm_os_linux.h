@@ -43,7 +43,7 @@ DECL|macro|DRM_MEMORYBARRIER
 mdefine_line|#define DRM_MEMORYBARRIER()&t;&t;mb()
 multiline_comment|/** DRM device local declaration */
 DECL|macro|DRM_DEVICE
-mdefine_line|#define DRM_DEVICE&t;drm_file_t&t;*priv&t;= filp-&gt;private_data; &bslash;&n;&t;&t;&t;drm_device_t&t;*dev&t;= priv-&gt;dev
+mdefine_line|#define DRM_DEVICE&t;drm_file_t&t;*priv&t;= filp-&gt;private_data; &bslash;&n;&t;&t;&t;drm_device_t&t;*dev&t;= priv-&gt;head-&gt;dev
 multiline_comment|/** IRQ handler arguments and return type and values */
 DECL|macro|DRM_IRQ_ARGS
 mdefine_line|#define DRM_IRQ_ARGS&t;&t;int irq, void *arg, struct pt_regs *regs

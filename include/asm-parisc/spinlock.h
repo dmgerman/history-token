@@ -536,7 +536,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEBUG_RWLOCK
 r_extern
-r_void
+r_int
 id|_dbg_write_trylock
 c_func
 (paren

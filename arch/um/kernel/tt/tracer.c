@@ -8,8 +8,6 @@ macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;user.h&quot;
@@ -844,12 +842,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
-r_int
-id|eip
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|status
 comma
 id|pid
@@ -871,8 +863,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|last_index
-comma
 id|proc_id
 op_assign
 l_int|0
@@ -894,6 +884,17 @@ id|local_using_sysemu
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_SYSCALL_DEBUG
+r_int
+r_int
+id|eip
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|last_index
+suffix:semicolon
+macro_line|#endif
 id|signal
 c_func
 (paren
@@ -1460,6 +1461,7 @@ c_func
 id|status
 )paren
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_SYSCALL_DEBUG
 r_if
 c_cond
 (paren
@@ -1593,7 +1595,7 @@ op_assign
 id|ptrace
 c_func
 (paren
-id|PTRACE_PEEKUSER
+id|PTRACE_PEEKUSR
 comma
 id|pid
 comma
@@ -1633,6 +1635,7 @@ id|signal
 op_assign
 id|sig
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2342,51 +2345,6 @@ l_string|&quot;    Causes the tracing thread to pause until it is attached by a&
 l_string|&quot;    debugger and continued.  This is mostly for debugging crashes&bslash;n&quot;
 l_string|&quot;    early during boot, and should be pretty much obsoleted by&bslash;n&quot;
 l_string|&quot;    the debug switch.&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-DECL|function|uml_honeypot_setup
-r_static
-r_int
-id|__init
-id|uml_honeypot_setup
-c_func
-(paren
-r_char
-op_star
-id|line
-comma
-r_int
-op_star
-id|add
-)paren
-(brace
-id|jail_setup
-c_func
-(paren
-l_string|&quot;&quot;
-comma
-id|add
-)paren
-suffix:semicolon
-id|honeypot
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|__uml_setup
-c_func
-(paren
-l_string|&quot;honeypot&quot;
-comma
-id|uml_honeypot_setup
-comma
-l_string|&quot;honeypot&bslash;n&quot;
-l_string|&quot;    This makes UML put process stacks in the same location as they are&bslash;n&quot;
-l_string|&quot;    on the host, allowing expoits such as stack smashes to work against&bslash;n&quot;
-l_string|&quot;    UML.  This implies &squot;jail&squot;.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

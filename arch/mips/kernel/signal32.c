@@ -22,23 +22,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 DECL|macro|SI_PAD_SIZE32
 mdefine_line|#define SI_PAD_SIZE32   ((SI_MAX_SIZE/sizeof(int)) - 3)
-DECL|union|sigval32
-r_typedef
-r_union
-id|sigval32
-(brace
-DECL|member|sival_int
-r_int
-id|sival_int
-suffix:semicolon
-DECL|member|sival_ptr
-id|s32
-id|sival_ptr
-suffix:semicolon
-DECL|typedef|sigval_t32
-)brace
-id|sigval_t32
-suffix:semicolon
 DECL|struct|compat_siginfo
 r_typedef
 r_struct
@@ -196,7 +179,7 @@ id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
 DECL|member|_sigval
-id|sigval_t32
+id|compat_sigval_t
 id|_sigval
 suffix:semicolon
 DECL|member|_rt

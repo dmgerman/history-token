@@ -969,6 +969,8 @@ DECL|macro|SECURITY__SETBOOL
 mdefine_line|#define SECURITY__SETBOOL                         0x00000100UL
 DECL|macro|SECURITY__SETSECPARAM
 mdefine_line|#define SECURITY__SETSECPARAM                     0x00000200UL
+DECL|macro|SECURITY__SETCHECKREQPROT
+mdefine_line|#define SECURITY__SETCHECKREQPROT                 0x00000400UL
 DECL|macro|SYSTEM__IPC_INFO
 mdefine_line|#define SYSTEM__IPC_INFO                          0x00000001UL
 DECL|macro|SYSTEM__SYSLOG_READ

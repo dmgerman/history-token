@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2004 PathScale, Inc&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;sys/ptrace.h&gt;
+macro_line|#include &quot;sysdep/ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;skas_ptregs.h&quot;
@@ -99,6 +99,89 @@ id|to-&gt;skas.xfp
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* XXX These need to use [GS]ETFPXREGS and copy_sc_{to,from}_user_skas needs&n; * to pass in a sufficiently large buffer&n; */
+DECL|function|save_fp_registers
+r_int
+id|save_fp_registers
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+r_int
+op_star
+id|fp_regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_GETFPREGS
+comma
+id|pid
+comma
+l_int|0
+comma
+id|fp_regs
+)paren
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|errno
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|restore_fp_registers
+r_int
+id|restore_fp_registers
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+r_int
+op_star
+id|fp_regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ptrace
+c_func
+(paren
+id|PTRACE_SETFPREGS
+comma
+id|pid
+comma
+l_int|0
+comma
+id|fp_regs
+)paren
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|errno
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|move_registers
 r_static
