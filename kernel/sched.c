@@ -10462,6 +10462,33 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+macro_line|#ifdef kern_profile
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|prof_on
+op_eq
+l_int|2
+)paren
+)paren
+id|__do_profile
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|__builtin_return_address
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Valid priorities for SCHED_FIFO and SCHED_RR are&n;&t; * 1..MAX_USER_RT_PRIO-1, valid priority for SCHED_NORMAL is 0.&n;&t; */
 id|retval
 op_assign
