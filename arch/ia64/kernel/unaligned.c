@@ -4061,6 +4061,7 @@ id|val
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -4244,6 +4245,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -4761,6 +4763,7 @@ l_int|0
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -4779,6 +4782,7 @@ l_int|1
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -5177,6 +5181,7 @@ id|fpr_init
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -5532,6 +5537,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -5965,6 +5971,7 @@ id|bundle
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;cr_iip
@@ -6404,6 +6411,7 @@ id|si.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa

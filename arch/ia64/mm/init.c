@@ -1889,6 +1889,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|pg
@@ -1934,6 +1935,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren

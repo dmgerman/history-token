@@ -475,11 +475,11 @@ suffix:semicolon
 DECL|macro|SET_UNALIGN_CTL
 mdefine_line|#define SET_UNALIGN_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_UAC_MASK)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;| (((value) &lt;&lt; IA64_THREAD_UAC_SHIFT) &amp; IA64_THREAD_UAC_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_UNALIGN_CTL
-mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|SET_FPEMU_CTL
 mdefine_line|#define SET_FPEMU_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_FPEMU_MASK)&t;&t;&bslash;&n;&t;&t;&t;  | (((value) &lt;&lt; IA64_THREAD_FPEMU_SHIFT) &amp; IA64_THREAD_FPEMU_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_FPEMU_CTL
-mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int __user *) (addr));&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|struct|desc_struct
 r_struct

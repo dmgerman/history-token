@@ -11390,6 +11390,7 @@ DECL|function|sys_getunwind
 id|sys_getunwind
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma

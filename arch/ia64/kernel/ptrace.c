@@ -351,6 +351,7 @@ id|w0
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|regs-&gt;cr_iip
@@ -451,6 +452,7 @@ id|w0
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|regs-&gt;cr_iip
@@ -7470,6 +7472,7 @@ comma
 (paren
 r_struct
 id|pt_all_user_regs
+id|__user
 op_star
 )paren
 id|data
@@ -7491,6 +7494,7 @@ comma
 (paren
 r_struct
 id|pt_all_user_regs
+id|__user
 op_star
 )paren
 id|data

@@ -5265,6 +5265,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5659,6 +5660,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -16189,6 +16191,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 comma

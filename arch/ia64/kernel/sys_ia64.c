@@ -315,6 +315,7 @@ r_int
 id|shmid
 comma
 r_void
+id|__user
 op_star
 id|shmaddr
 comma

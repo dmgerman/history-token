@@ -454,6 +454,7 @@ id|do_csum_partial_copy_from_user
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -621,6 +622,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
