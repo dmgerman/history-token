@@ -4755,7 +4755,7 @@ multiline_comment|/*&n;&t; * We don&squot;t need try_module_get here, as the lis
 id|__module_get
 c_func
 (paren
-id|sock-&gt;ops-&gt;owner
+id|newsock-&gt;ops-&gt;owner
 )paren
 suffix:semicolon
 id|err
@@ -4780,7 +4780,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_module_put
+id|out_release
 suffix:semicolon
 r_if
 c_cond
@@ -4820,7 +4820,7 @@ op_minus
 id|ECONNABORTED
 suffix:semicolon
 r_goto
-id|out_module_put
+id|out_release
 suffix:semicolon
 )brace
 id|err
@@ -4845,7 +4845,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_module_put
+id|out_release
 suffix:semicolon
 )brace
 multiline_comment|/* File flags are not inherited via accept() unlike another OSes. */
@@ -4865,7 +4865,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out_module_put
+id|out_release
 suffix:semicolon
 id|security_socket_post_accept
 c_func
@@ -4887,14 +4887,6 @@ id|out
 suffix:colon
 r_return
 id|err
-suffix:semicolon
-id|out_module_put
-suffix:colon
-id|module_put
-c_func
-(paren
-id|sock-&gt;ops-&gt;owner
-)paren
 suffix:semicolon
 id|out_release
 suffix:colon
