@@ -2211,7 +2211,7 @@ comma
 id|sinfo_flags
 )paren
 suffix:semicolon
-multiline_comment|/* If MSG_EOF|MSG_ABORT is set, no data can be sent.  Disallow&n;&t; * sending 0-length messages when MSG_EOF|MSG_ABORT is not set.&n;&t; */
+multiline_comment|/* If MSG_EOF is set, no data can be sent. Disallow sending zero&n;&t; * length messages when MSG_EOF|MSG_ABORT is not set.&n;&t; * If MSG_ABORT is set, the message length could be non zero with&n;&t; * the msg_iov set to the user abort reason.&n; &t; */
 r_if
 c_cond
 (paren
@@ -2219,11 +2219,7 @@ c_cond
 (paren
 id|sinfo_flags
 op_amp
-(paren
 id|MSG_EOF
-op_or
-id|MSG_ABORT
-)paren
 )paren
 op_logical_and
 (paren
@@ -2541,7 +2537,7 @@ c_func
 (paren
 id|asoc
 comma
-l_int|NULL
+id|msg
 )paren
 suffix:semicolon
 id|err
@@ -3779,6 +3775,18 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+multiline_comment|/* Applicable to UDP-style socket only */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 r_if
 c_cond
@@ -5068,6 +5076,24 @@ op_star
 id|optlen
 )paren
 (brace
+multiline_comment|/* Applicable to UDP-style socket only */
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5180,12 +5206,12 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* An association cannot be branched off from an already peeled-off&n;&t; * socket.&n;&t; */
+multiline_comment|/* An association cannot be branched off from an already peeled-off&n;&t; * socket, nor is this supported for tcp style sockets.&n;&t; */
 r_if
 c_cond
 (paren
-id|SCTP_SOCKET_UDP_HIGH_BANDWIDTH
-op_eq
+id|SCTP_SOCKET_UDP
+op_ne
 id|sctp_sk
 c_func
 (paren
@@ -5196,7 +5222,7 @@ id|type
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* Create a new socket.  */
 id|err
