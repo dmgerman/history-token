@@ -6740,6 +6740,8 @@ suffix:semicolon
 id|vga16fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|i
 op_assign

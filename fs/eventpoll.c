@@ -2109,11 +2109,7 @@ id|eventpoll_mnt
 suffix:semicolon
 id|file-&gt;f_dentry
 op_assign
-id|dget
-c_func
-(paren
 id|dentry
-)paren
 suffix:semicolon
 id|file-&gt;f_mapping
 op_assign

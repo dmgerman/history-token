@@ -1576,6 +1576,8 @@ DECL|macro|FBINFO_MISC_MODECHANGEUSER
 mdefine_line|#define FBINFO_MISC_MODECHANGEUSER     0x10000 /* mode change request&n;&t;&t;&t;&t;&t;&t;  from userspace */
 DECL|macro|FBINFO_MISC_MODESWITCH
 mdefine_line|#define FBINFO_MISC_MODESWITCH         0x20000 /* mode switch */
+DECL|macro|FBINFO_MISC_MODESWITCHLATE
+mdefine_line|#define FBINFO_MISC_MODESWITCHLATE     0x40000 /* init hardware later */
 DECL|struct|fb_info
 r_struct
 id|fb_info

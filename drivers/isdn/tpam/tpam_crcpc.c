@@ -110,6 +110,7 @@ r_void
 id|init_CRC
 c_func
 (paren
+r_void
 )paren
 (brace
 id|ap_hdlc_like_ctrl_char_list

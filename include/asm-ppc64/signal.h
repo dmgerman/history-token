@@ -2,6 +2,7 @@ macro_line|#ifndef _ASMPPC64_SIGNAL_H
 DECL|macro|_ASMPPC64_SIGNAL_H
 mdefine_line|#define _ASMPPC64_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
@@ -157,16 +158,38 @@ mdefine_line|#define SIG_UNBLOCK        1&t;/* for unblocking signals */
 DECL|macro|SIG_SETMASK
 mdefine_line|#define SIG_SETMASK        2&t;/* for setting the signal mask */
 multiline_comment|/* Type of a signal handler.  */
-DECL|typedef|__sighandler_t
+DECL|typedef|__sigfunction
 r_typedef
 r_void
-(paren
-op_star
-id|__sighandler_t
-)paren
+id|__sigfunction
+c_func
 (paren
 r_int
 )paren
+suffix:semicolon
+DECL|typedef|__sighandler_t
+r_typedef
+id|__sigfunction
+id|__user
+op_star
+id|__sighandler_t
+suffix:semicolon
+multiline_comment|/* Type of the restorer function */
+DECL|typedef|__sigrestorer
+r_typedef
+r_void
+id|__sigrestorer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|typedef|__sigrestorer_t
+r_typedef
+id|__sigrestorer
+id|__user
+op_star
+id|__sigrestorer_t
 suffix:semicolon
 DECL|macro|SIG_DFL
 mdefine_line|#define SIG_DFL&t;((__sighandler_t)0)&t;/* default signal handling */
@@ -192,14 +215,8 @@ r_int
 id|sa_flags
 suffix:semicolon
 DECL|member|sa_restorer
-r_void
-(paren
-op_star
+id|__sigrestorer_t
 id|sa_restorer
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -217,14 +234,8 @@ r_int
 id|sa_flags
 suffix:semicolon
 DECL|member|sa_restorer
-r_void
-(paren
-op_star
+id|__sigrestorer_t
 id|sa_restorer
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|member|sa_mask
 id|sigset_t
@@ -251,6 +262,7 @@ id|sigaltstack
 (brace
 DECL|member|ss_sp
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon

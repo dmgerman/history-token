@@ -130,12 +130,10 @@ id|ext_int_info_t
 id|ext_int_pfault
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_NO_IDLE_HZ) || defined(CONFIG_VIRT_TIMER)
 r_extern
 id|pgm_check_handler_t
 id|do_monitor_call
 suffix:semicolon
-macro_line|#endif
 DECL|macro|stack_pointer
 mdefine_line|#define stack_pointer ({ void **sp; asm(&quot;la %0,0(15)&quot; : &quot;=&amp;d&quot; (sp)); sp; })
 macro_line|#ifndef CONFIG_ARCH_S390X
@@ -3406,7 +3404,6 @@ op_assign
 op_amp
 id|privileged_op
 suffix:semicolon
-macro_line|#if defined(CONFIG_VIRT_TIMER) || defined(CONFIG_NO_IDLE_HZ)
 id|pgm_check_table
 (braket
 l_int|0x40
@@ -3415,7 +3412,6 @@ op_assign
 op_amp
 id|do_monitor_call
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
