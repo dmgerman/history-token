@@ -34,6 +34,8 @@ mdefine_line|#define CFG_338_PNP3 0x4f
 multiline_comment|/* Config registers for the &squot;39x (in the logical device bank) */
 DECL|macro|CFG_39X_LDN
 mdefine_line|#define CFG_39X_LDN&t;0x07&t;/* Logical device number (Super I/O bank) */
+DECL|macro|CFG_39X_SIOCF1
+mdefine_line|#define CFG_39X_SIOCF1&t;0x21&t;/* SuperI/O Config */
 DECL|macro|CFG_39X_ACT
 mdefine_line|#define CFG_39X_ACT&t;0x30&t;/* Device activation */
 DECL|macro|CFG_39X_BASEH
