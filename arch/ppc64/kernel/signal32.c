@@ -1,41 +1,17 @@
 multiline_comment|/*&n; * signal32.c: Support 32bit signal syscalls.&n; *&n; * Copyright (C) 2001 IBM&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/fs.h&gt; 
 macro_line|#include &lt;linux/mm.h&gt; 
-macro_line|#include &lt;linux/file.h&gt; 
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/utime.h&gt;
-macro_line|#include &lt;linux/resource.h&gt;
-macro_line|#include &lt;linux/times.h&gt;
-macro_line|#include &lt;linux/utsname.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/sem.h&gt;
-macro_line|#include &lt;linux/msg.h&gt;
-macro_line|#include &lt;linux/shm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/uio.h&gt;
-macro_line|#include &lt;linux/nfs_fs.h&gt;
-macro_line|#include &lt;linux/smb_fs.h&gt;
-macro_line|#include &lt;linux/smb_mount.h&gt;
-macro_line|#include &lt;linux/ncp_fs.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/personality.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/filter.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/ipc.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
 multiline_comment|/* &n; * These are the flags in the MSR that the user is allowed to change&n; * by modifying the saved value of the MSR on the stack.  SE and BE&n; * should not be in this list since gdb may want to change these.  I.e,&n; * you should be able to step out of a signal handler to see what&n; * instruction executes next after the signal handler completes.&n; * Alternately, if you stepped into a signal handler, you should be&n; * able to continue &squot;til the next breakpoint from within the signal&n; * handler, even if the handler returns.&n; */
@@ -121,32 +97,8 @@ id|uc
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-r_struct
-id|rusage
-op_star
-id|ru
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *  Start of nonRT signal support&n; *&n; *     sigset_t is 32 bits for non-rt signals&n; *&n; *  System Calls&n; *       sigaction                sys32_sigaction&n; *       sigpending               sys32_sigpending&n; *       sigprocmask              sys32_sigprocmask&n; *       sigreturn                sys32_sigreturn&n; *&n; *  Note sigsuspend has no special 32 bit routine - uses the 64 bit routine&n; *&n; *  Other routines&n; *        setup_frame32&n; */
 DECL|function|sys32_sigaction
-id|asmlinkage
 r_int
 id|sys32_sigaction
 c_func
@@ -195,8 +147,9 @@ id|act
 id|old_sigset_t32
 id|mask
 suffix:semicolon
-id|ret
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -208,9 +161,7 @@ comma
 op_amp
 id|act-&gt;sa_handler
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__get_user
 c_func
 (paren
@@ -222,9 +173,7 @@ comma
 op_amp
 id|act-&gt;sa_restorer
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__get_user
 c_func
 (paren
@@ -233,9 +182,7 @@ comma
 op_amp
 id|act-&gt;sa_flags
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__get_user
 c_func
 (paren
@@ -244,14 +191,10 @@ comma
 op_amp
 id|act-&gt;sa_mask
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
 )paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 id|siginitset
 c_func
@@ -296,8 +239,9 @@ op_logical_and
 id|oact
 )paren
 (brace
-id|ret
-op_assign
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -309,9 +253,7 @@ comma
 op_amp
 id|oact-&gt;sa_handler
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__put_user
 c_func
 (paren
@@ -323,9 +265,7 @@ comma
 op_amp
 id|oact-&gt;sa_restorer
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__put_user
 c_func
 (paren
@@ -334,9 +274,7 @@ comma
 op_amp
 id|oact-&gt;sa_flags
 )paren
-suffix:semicolon
-id|ret
-op_or_assign
+op_logical_or
 id|__put_user
 c_func
 (paren
@@ -348,6 +286,10 @@ comma
 op_amp
 id|oact-&gt;sa_mask
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
@@ -355,7 +297,6 @@ id|ret
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_sigpending
 c_func
@@ -366,7 +307,6 @@ id|set
 )paren
 suffix:semicolon
 DECL|function|sys32_sigpending
-id|asmlinkage
 r_int
 id|sys32_sigpending
 c_func
@@ -431,7 +371,6 @@ id|ret
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_sigprocmask
 c_func
@@ -450,7 +389,6 @@ id|oset
 suffix:semicolon
 multiline_comment|/*&n; * Note: it is necessary to treat how as an unsigned int, with the&n; * corresponding cast to a signed int to insure that the proper&n; * conversion (sign extension) between the register representation&n; * of a signed int (msr in 32-bit mode) and the register representation&n; * of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_sigprocmask
-id|asmlinkage
 r_int
 id|sys32_sigprocmask
 c_func
@@ -718,19 +656,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Last stacked signal - restore registers */
-id|sr
-op_assign
-(paren
-r_struct
-id|sigregs32
-op_star
-)paren
-(paren
-id|u64
-)paren
-id|sigctx.regs
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -743,6 +668,19 @@ c_func
 (paren
 id|current
 )paren
+suffix:semicolon
+multiline_comment|/* Last stacked signal - restore registers */
+id|sr
+op_assign
+(paren
+r_struct
+id|sigregs32
+op_star
+)paren
+(paren
+id|u64
+)paren
+id|sigctx.regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * copy the 32 bit register values off the user stack&n;&t; * into the 32 bit register area&n;&t; */
 r_if
@@ -1294,6 +1232,7 @@ r_sizeof
 r_float
 )paren
 )paren
+multiline_comment|/* li r0, __NR_sigreturn */
 op_logical_or
 id|__put_user
 c_func
@@ -1308,7 +1247,7 @@ id|frame-&gt;tramp
 l_int|0
 )braket
 )paren
-multiline_comment|/* li r0, __NR_sigreturn */
+multiline_comment|/* sc */
 op_logical_or
 id|__put_user
 c_func
@@ -1322,7 +1261,6 @@ l_int|1
 )braket
 )paren
 )paren
-multiline_comment|/* sc */
 r_goto
 id|badframe
 suffix:semicolon
@@ -1515,7 +1453,7 @@ id|regs
 r_struct
 id|rt_sigframe_32
 op_star
-id|rt_stack_frame
+id|rt_sf
 suffix:semicolon
 r_struct
 id|sigcontext32_struct
@@ -1524,7 +1462,7 @@ suffix:semicolon
 r_struct
 id|sigregs32
 op_star
-id|signalregs
+id|sr
 suffix:semicolon
 r_int
 id|ret
@@ -1534,20 +1472,16 @@ id|saved_regs
 suffix:semicolon
 multiline_comment|/* an array of 32 bit register values */
 id|sigset_t
-id|signal_set
+id|set
 suffix:semicolon
 id|stack_t
-id|stack
+id|st
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Adjust the inputted reg1 to point to the first rt signal frame */
-id|rt_stack_frame
+id|rt_sf
 op_assign
 (paren
 r_struct
@@ -1574,7 +1508,7 @@ op_amp
 id|sigctx
 comma
 op_amp
-id|rt_stack_frame-&gt;uc.uc_mcontext
+id|rt_sf-&gt;uc.uc_mcontext
 comma
 r_sizeof
 (paren
@@ -1586,14 +1520,14 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|signal_set
+id|set
 comma
 op_amp
-id|rt_stack_frame-&gt;uc.uc_sigmask
+id|rt_sf-&gt;uc.uc_sigmask
 comma
 r_sizeof
 (paren
-id|signal_set
+id|set
 )paren
 )paren
 op_logical_or
@@ -1601,26 +1535,26 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|stack
+id|st
 comma
 op_amp
-id|rt_stack_frame-&gt;uc.uc_stack
+id|rt_sf-&gt;uc.uc_stack
 comma
 r_sizeof
 (paren
-id|stack
+id|st
 )paren
 )paren
 )paren
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unblock the signal that was processed &n;&t; *   After a signal handler runs - &n;&t; *     if the signal is blockable - the signal will be unblocked  &n;&t; *       ( sigkill and sigstop are not blockable)&n;&t; */
+multiline_comment|/*&n;&t; * Unblock the signal that was processed &n;&t; *   After a signal handler runs - &n;&t; *     if the signal is blockable - the signal will be unblocked  &n;&t; *       (sigkill and sigstop are not blockable)&n;&t; */
 id|sigdelsetmask
 c_func
 (paren
 op_amp
-id|signal_set
+id|set
 comma
 op_complement
 id|_BLOCKABLE
@@ -1636,7 +1570,7 @@ id|current-&gt;sigmask_lock
 suffix:semicolon
 id|current-&gt;blocked
 op_assign
-id|signal_set
+id|set
 suffix:semicolon
 id|recalc_sigpending
 c_func
@@ -1649,19 +1583,6 @@ c_func
 op_amp
 id|current-&gt;sigmask_lock
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Set to point to the next rt_sigframe - this is used to&n;&t; * determine whether this is the last signal to process&n;&t; */
-id|signalregs
-op_assign
-(paren
-r_struct
-id|sigregs32
-op_star
-)paren
-(paren
-id|u64
-)paren
-id|sigctx.regs
 suffix:semicolon
 multiline_comment|/* If currently owning the floating point - give them up */
 r_if
@@ -1677,6 +1598,19 @@ c_func
 id|current
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set to point to the next rt_sigframe - this is used to&n;&t; * determine whether this is the last signal to process&n;&t; */
+id|sr
+op_assign
+(paren
+r_struct
+id|sigregs32
+op_star
+)paren
+(paren
+id|u64
+)paren
+id|sigctx.regs
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1686,11 +1620,11 @@ c_func
 id|saved_regs
 comma
 op_amp
-id|signalregs-&gt;gp_regs
+id|sr-&gt;gp_regs
 comma
 r_sizeof
 (paren
-id|signalregs-&gt;gp_regs
+id|sr-&gt;gp_regs
 )paren
 )paren
 )paren
@@ -1891,7 +1825,6 @@ id|SIGSEGV
 suffix:semicolon
 )brace
 DECL|function|sys32_rt_sigaction
-id|asmlinkage
 r_int
 id|sys32_rt_sigaction
 c_func
@@ -2310,7 +2243,6 @@ id|ret
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_rt_sigprocmask
 c_func
@@ -2332,7 +2264,6 @@ id|sigsetsize
 suffix:semicolon
 multiline_comment|/*&n; * Note: it is necessary to treat how as an unsigned int, with the&n; * corresponding cast to a signed int to insure that the proper&n; * conversion (sign extension) between the register representation&n; * of a signed int (msr in 32-bit mode) and the register representation&n; * of a signed int (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_rt_sigprocmask
-id|asmlinkage
 r_int
 id|sys32_rt_sigprocmask
 c_func
@@ -2707,7 +2638,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_rt_sigpending
 c_func
@@ -2721,7 +2651,6 @@ id|sigsetsize
 )paren
 suffix:semicolon
 DECL|function|sys32_rt_sigpending
-id|asmlinkage
 r_int
 id|sys32_rt_sigpending
 c_func
@@ -3069,7 +2998,6 @@ id|d
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_rt_sigtimedwait
 c_func
@@ -3094,7 +3022,6 @@ id|sigsetsize
 )paren
 suffix:semicolon
 DECL|function|sys32_rt_sigtimedwait
-id|asmlinkage
 r_int
 id|sys32_rt_sigtimedwait
 c_func
@@ -3551,7 +3478,6 @@ id|d
 suffix:semicolon
 )brace
 r_extern
-id|asmlinkage
 r_int
 id|sys_rt_sigqueueinfo
 c_func
@@ -3569,7 +3495,6 @@ id|uinfo
 suffix:semicolon
 multiline_comment|/*&n; * Note: it is necessary to treat pid and sig as unsigned ints, with the&n; * corresponding cast to a signed int to insure that the proper conversion&n; * (sign extension) between the register representation of a signed int&n; * (msr in 32-bit mode) and the register representation of a signed int&n; * (msr in 64-bit mode) is performed.&n; */
 DECL|function|sys32_rt_sigqueueinfo
-id|asmlinkage
 r_int
 id|sys32_rt_sigqueueinfo
 c_func
@@ -4558,7 +4483,7 @@ op_assign
 op_minus
 id|EINTR
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up the signal frame&n;&t; * Determine if an real time frame - siginfo required&n;&t; */
+multiline_comment|/*&n;&t; * Set up the signal frame&n;&t; * Determine if a real time frame and a siginfo is required&n;&t; */
 r_if
 c_cond
 (paren
@@ -5006,7 +4931,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Start Alternate signal stack support&n; *&n; *  System Calls&n; *       sigaltatck               sys32_sigaltstack&n; */
 DECL|function|sys32_sigaltstack
-id|asmlinkage
 r_int
 id|sys32_sigaltstack
 c_func
@@ -5258,7 +5182,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Start of do_signal32 routine&n; *&n; *   This routine gets control when a pemding signal needs to be processed&n; *     in the 32 bit target thread -&n; *&n; *   It handles both rt and non-rt signals&n; */
+multiline_comment|/*&n; *  Start of do_signal32 routine&n; *&n; *   This routine gets control when a pending signal needs to be processed&n; *     in the 32 bit target thread -&n; *&n; *   It handles both rt and non-rt signals&n; */
 multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
 DECL|function|do_signal32
 r_int
