@@ -9812,11 +9812,7 @@ op_assign
 dot
 id|name
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|driver_name
+l_string|&quot;pxa2xx-udc&quot;
 comma
 dot
 id|bus
