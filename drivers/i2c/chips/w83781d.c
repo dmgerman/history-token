@@ -20,7 +20,7 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )brace
 suffix:semicolon
 DECL|variable|normal_i2c_range
@@ -36,7 +36,7 @@ l_int|0x20
 comma
 l_int|0x2f
 comma
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )brace
 suffix:semicolon
 DECL|variable|normal_isa
@@ -50,7 +50,7 @@ op_assign
 (brace
 l_int|0x0290
 comma
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 DECL|variable|normal_isa_range
@@ -62,7 +62,7 @@ id|normal_isa_range
 )braket
 op_assign
 (brace
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/* Insmod parameters */
@@ -82,7 +82,7 @@ comma
 id|w83697hf
 )paren
 suffix:semicolon
-id|SENSORS_MODULE_PARM
+id|I2C_CLIENT_MODULE_PARM
 c_func
 (paren
 id|force_subclients
