@@ -3124,11 +3124,9 @@ op_assign
 op_amp
 id|i8k_fops
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|proc_i8k
-)paren
+id|proc_i8k-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|printk
 c_func

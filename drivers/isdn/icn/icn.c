@@ -7490,12 +7490,9 @@ id|card-&gt;port
 op_assign
 id|port
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|card-&gt;interface
-)paren
+id|card-&gt;interface.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|card-&gt;interface.hl_hdrlen
 op_assign

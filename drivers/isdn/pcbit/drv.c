@@ -715,11 +715,9 @@ id|dev-&gt;dev_if
 op_assign
 id|dev_if
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|dev_if
-)paren
+id|dev_if-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|dev_if-&gt;channels
 op_assign
