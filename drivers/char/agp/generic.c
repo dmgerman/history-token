@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;agp.h&quot;
 DECL|variable|agp_gatt_table
 id|__u32
@@ -2945,16 +2946,15 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|agp_bridge-&gt;gatt_table
-(braket
-id|i
-)braket
-op_assign
+id|writel
+c_func
 (paren
-r_int
-r_int
-)paren
 id|agp_bridge-&gt;scratch_page
+comma
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3378,18 +3378,19 @@ c_func
 (paren
 id|agp_bridge
 comma
+id|readl
+c_func
+(paren
 id|agp_bridge-&gt;gatt_table
-(braket
+op_plus
 id|j
-)braket
 )paren
 )paren
-(brace
+)paren
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 id|j
 op_increment
 suffix:semicolon
@@ -3435,11 +3436,9 @@ comma
 id|j
 op_increment
 )paren
-id|agp_bridge-&gt;gatt_table
-(braket
-id|j
-)braket
-op_assign
+id|writel
+c_func
+(paren
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|mask_memory
@@ -3451,6 +3450,11 @@ id|i
 )braket
 comma
 id|mem-&gt;type
+)paren
+comma
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|j
 )paren
 suffix:semicolon
 id|agp_bridge-&gt;driver
@@ -3529,19 +3533,16 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|agp_bridge-&gt;gatt_table
-(braket
-id|i
-)braket
-op_assign
+id|writel
+c_func
 (paren
-r_int
-r_int
-)paren
 id|agp_bridge-&gt;scratch_page
+comma
+id|agp_bridge-&gt;gatt_table
+op_plus
+id|i
+)paren
 suffix:semicolon
-)brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush

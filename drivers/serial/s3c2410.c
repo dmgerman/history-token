@@ -2467,12 +2467,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 r_case
 id|S3C2410_LCON_PNONE
 suffix:colon
-multiline_comment|/* nothing */
+op_star
+id|parity
+op_assign
+l_char|&squot;n&squot;
+suffix:semicolon
 )brace
 multiline_comment|/* now calculate the baud rate */
 op_star
