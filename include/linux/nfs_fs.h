@@ -54,6 +54,10 @@ DECL|macro|FLUSH_WAIT
 mdefine_line|#define FLUSH_WAIT&t;&t;2&t;/* wait for completion */
 DECL|macro|FLUSH_STABLE
 mdefine_line|#define FLUSH_STABLE&t;&t;4&t;/* commit to stable storage */
+DECL|macro|FLUSH_LOWPRI
+mdefine_line|#define FLUSH_LOWPRI&t;&t;8&t;/* low priority background flush */
+DECL|macro|FLUSH_HIGHPRI
+mdefine_line|#define FLUSH_HIGHPRI&t;&t;16&t;/* high priority memory reclaim flush */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * NFSv3 Access mode cache&n; */
 DECL|struct|nfs_access_cache
@@ -1100,11 +1104,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write back all requests on one page - we do this before reading it.&n; */
+DECL|function|nfs_wb_page_priority
 r_static
 r_inline
 r_int
-DECL|function|nfs_wb_page
-id|nfs_wb_page
+id|nfs_wb_page_priority
 c_func
 (paren
 r_struct
@@ -1116,6 +1120,9 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+id|how
 )paren
 (brace
 r_int
@@ -1130,6 +1137,8 @@ id|page-&gt;index
 comma
 l_int|1
 comma
+id|how
+op_or
 id|FLUSH_WAIT
 op_or
 id|FLUSH_STABLE
@@ -1146,6 +1155,36 @@ c_cond
 id|error
 suffix:colon
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|nfs_wb_page
+r_static
+r_inline
+r_int
+id|nfs_wb_page
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|nfs_wb_page_priority
+c_func
+(paren
+id|inode
+comma
+id|page
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Hack for future NFS swap support */

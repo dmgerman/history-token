@@ -6009,7 +6009,7 @@ comma
 id|xprt-&gt;prot
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_wait_queue
 c_func
 (paren
 op_amp
@@ -6018,7 +6018,7 @@ comma
 l_string|&quot;xprt_pending&quot;
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_wait_queue
 c_func
 (paren
 op_amp
@@ -6027,7 +6027,7 @@ comma
 l_string|&quot;xprt_sending&quot;
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_wait_queue
 c_func
 (paren
 op_amp
@@ -6036,7 +6036,7 @@ comma
 l_string|&quot;xprt_resend&quot;
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_priority_wait_queue
 c_func
 (paren
 op_amp

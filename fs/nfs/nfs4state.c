@@ -292,7 +292,7 @@ op_amp
 id|clp-&gt;cl_waitq
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_wait_queue
 c_func
 (paren
 op_amp

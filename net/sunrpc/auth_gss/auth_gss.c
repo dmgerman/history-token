@@ -1622,7 +1622,7 @@ op_amp
 id|gss_new-&gt;list
 )paren
 suffix:semicolon
-id|INIT_RPC_WAITQ
+id|rpc_init_wait_queue
 c_func
 (paren
 op_amp

@@ -974,6 +974,14 @@ c_func
 id|data
 )paren
 suffix:semicolon
+id|data-&gt;task.tk_cookie
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|inode
+suffix:semicolon
 id|data-&gt;task.tk_calldata
 op_assign
 id|data
