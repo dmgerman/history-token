@@ -6118,13 +6118,6 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Journalled Block Device driver loaded&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|journal_init_caches
