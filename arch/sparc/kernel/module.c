@@ -384,7 +384,12 @@ suffix:semicolon
 )brace
 id|v
 op_add_assign
-id|rel-&gt;r_addend
+id|rel
+(braket
+id|i
+)braket
+dot
+id|r_addend
 suffix:semicolon
 r_switch
 c_cond
@@ -590,6 +595,7 @@ op_minus
 id|ENOEXEC
 suffix:semicolon
 )brace
+suffix:semicolon
 )brace
 r_return
 l_int|0
