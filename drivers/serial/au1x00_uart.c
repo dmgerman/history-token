@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -18,7 +19,6 @@ DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Debugging.&n; */
 macro_line|#if 0
 mdefine_line|#define DEBUG_AUTOCONF(fmt...)&t;printk(fmt)

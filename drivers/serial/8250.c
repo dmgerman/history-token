@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -19,7 +20,6 @@ DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &quot;8250.h&quot;
 multiline_comment|/*&n; * Configuration:&n; *   share_irqs - whether we pass SA_SHIRQ to request_irq().  This option&n; *                is unsafe when used on edge-triggered interrupts.&n; */
 DECL|variable|share_irqs
 r_int
@@ -76,6 +76,7 @@ macro_line|#ifndef SERIAL_PORT_DFNS
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS
 macro_line|#endif
+macro_line|#ifndef ARCH_HAS_GET_LEGACY_SERIAL_PORTS
 DECL|variable|old_serial_port
 r_static
 r_struct
@@ -89,8 +90,37 @@ id|SERIAL_PORT_DFNS
 multiline_comment|/* defined in asm/serial.h */
 )brace
 suffix:semicolon
+DECL|function|get_legacy_serial_ports
+r_static
+r_inline
+r_struct
+id|old_serial_port
+op_star
+id|get_legacy_serial_ports
+c_func
+(paren
+r_int
+r_int
+op_star
+id|count
+)paren
+(brace
+op_star
+id|count
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|old_serial_port
+)paren
+suffix:semicolon
+r_return
+id|old_serial_port
+suffix:semicolon
+)brace
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;(ARRAY_SIZE(old_serial_port) + CONFIG_SERIAL_8250_NR_UARTS)
+macro_line|#endif /* ARCH_HAS_DYNAMIC_LEGACY_SERIAL_PORTS */
 macro_line|#ifdef CONFIG_SERIAL_8250_RSA
 DECL|macro|PORT_RSA_MAX
 mdefine_line|#define PORT_RSA_MAX 4
@@ -8017,6 +8047,14 @@ id|first
 op_assign
 l_int|1
 suffix:semicolon
+r_struct
+id|old_serial_port
+op_star
+id|old_ports
+suffix:semicolon
+r_int
+id|count
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -8032,6 +8070,24 @@ id|first
 op_assign
 l_int|0
 suffix:semicolon
+id|old_ports
+op_assign
+id|get_legacy_serial_ports
+c_func
+(paren
+op_amp
+id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_ports
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -8045,11 +8101,7 @@ id|serial8250_ports
 suffix:semicolon
 id|i
 OL
-id|ARRAY_SIZE
-c_func
-(paren
-id|old_serial_port
-)paren
+id|count
 suffix:semicolon
 id|i
 op_increment
@@ -8060,7 +8112,7 @@ op_increment
 (brace
 id|up-&gt;port.iobase
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8072,7 +8124,7 @@ op_assign
 id|irq_canonicalize
 c_func
 (paren
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8082,7 +8134,7 @@ id|irq
 suffix:semicolon
 id|up-&gt;port.uartclk
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8093,7 +8145,7 @@ l_int|16
 suffix:semicolon
 id|up-&gt;port.flags
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8102,7 +8154,7 @@ id|flags
 suffix:semicolon
 id|up-&gt;port.hub6
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8111,7 +8163,7 @@ id|hub6
 suffix:semicolon
 id|up-&gt;port.membase
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8120,7 +8172,7 @@ id|iomem_base
 suffix:semicolon
 id|up-&gt;port.iotype
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8129,7 +8181,7 @@ id|io_type
 suffix:semicolon
 id|up-&gt;port.regshift
 op_assign
-id|old_serial_port
+id|old_ports
 (braket
 id|i
 )braket
@@ -8203,6 +8255,15 @@ id|serial8250_ports
 (braket
 id|i
 )braket
+suffix:semicolon
+multiline_comment|/* Don&squot;t register &quot;empty&quot; ports, setting &quot;ops&quot; on them&n;&t;&t; * makes the console driver &quot;setup&quot; routine to succeed,&n;&t;&t; * which is wrong. --BenH.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|up-&gt;port.iobase
+)paren
+r_continue
 suffix:semicolon
 id|up-&gt;port.line
 op_assign
