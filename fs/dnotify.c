@@ -645,7 +645,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;dnotify cache&quot;
+l_string|&quot;dnotify_cache&quot;
 comma
 r_sizeof
 (paren
