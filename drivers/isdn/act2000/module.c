@@ -2891,7 +2891,7 @@ id|card-&gt;ptype
 op_assign
 id|ISDN_PTYPE_EURO
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|card-&gt;interface.id
@@ -2902,8 +2902,6 @@ r_sizeof
 (paren
 id|card-&gt;interface.id
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_for

@@ -229,7 +229,7 @@ op_amp
 id|device-&gt;kobj
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|device-&gt;kobj.name

@@ -7767,7 +7767,7 @@ comma
 l_string|&quot;saa7134&quot;
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cap-&gt;card
@@ -8900,7 +8900,7 @@ id|f-&gt;type
 op_assign
 id|type
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|f-&gt;description
@@ -8912,7 +8912,10 @@ id|index
 dot
 id|name
 comma
-l_int|31
+r_sizeof
+(paren
+id|f-&gt;description
+)paren
 )paren
 suffix:semicolon
 id|f-&gt;pixelformat
@@ -9758,7 +9761,7 @@ comma
 l_string|&quot;saa7134&quot;
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|cap-&gt;card

@@ -7396,7 +7396,7 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* Suspend */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|chanp-&gt;setup.phone
@@ -7432,7 +7432,7 @@ r_case
 l_int|5
 suffix:colon
 multiline_comment|/* Resume */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|chanp-&gt;setup.phone

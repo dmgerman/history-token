@@ -299,22 +299,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|sclp_tty_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tty3215_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|tub3270_init
 c_func
 (paren
@@ -10636,13 +10620,6 @@ suffix:semicolon
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_TN3270
 id|tub3270_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SCLP_TTY
-id|sclp_tty_init
 c_func
 (paren
 )paren

@@ -8378,7 +8378,7 @@ op_assign
 op_amp
 id|i82365_data
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|i82365_class_data.class_id

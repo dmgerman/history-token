@@ -1952,7 +1952,7 @@ op_assign
 id|hc-&gt;md
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Sneakily write in both the name and the uuid&n;&t;&t; * while we have the cell.&n;&t;&t; */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|param-&gt;name
@@ -1970,7 +1970,7 @@ c_cond
 (paren
 id|hc-&gt;uuid
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|param-&gt;uuid
@@ -1981,8 +1981,6 @@ r_sizeof
 (paren
 id|param-&gt;uuid
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -2576,7 +2574,7 @@ id|spec-&gt;length
 op_assign
 id|ti-&gt;len
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|spec-&gt;target_type

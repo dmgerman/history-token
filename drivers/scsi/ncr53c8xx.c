@@ -9383,7 +9383,7 @@ r_goto
 id|attach_error
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Store input informations in the host data structure.&n;&t;*/
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;chip_name
@@ -9394,8 +9394,6 @@ r_sizeof
 (paren
 id|np-&gt;chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|np-&gt;unit
@@ -13835,7 +13833,7 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* Local copy so we don&squot;t access np after freeing it! */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|inst_name
@@ -13846,7 +13844,10 @@ c_func
 id|np
 )paren
 comma
-l_int|16
+r_sizeof
+(paren
+id|inst_name
+)paren
 )paren
 suffix:semicolon
 id|printk

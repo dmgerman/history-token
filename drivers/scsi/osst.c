@@ -11964,22 +11964,15 @@ op_ne
 l_int|0
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|id_string
 comma
 id|header-&gt;ident_str
 comma
-l_int|7
+l_int|8
 )paren
-suffix:semicolon
-id|id_string
-(braket
-l_int|7
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
 id|printk

@@ -14250,7 +14250,7 @@ op_star
 id|options
 )paren
 (brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|pm2fb_options.font
@@ -14262,18 +14262,6 @@ r_sizeof
 id|pm2fb_options.font
 )paren
 )paren
-suffix:semicolon
-id|pm2fb_options.font
-(braket
-r_sizeof
-(paren
-id|pm2fb_options.font
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 DECL|function|pm2fb_var_setup

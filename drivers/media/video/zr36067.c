@@ -14438,7 +14438,7 @@ id|zr-&gt;name
 )paren
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|b.name

@@ -168,7 +168,7 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|str2
@@ -177,13 +177,6 @@ id|str
 comma
 id|n
 )paren
-suffix:semicolon
-id|str2
-(braket
-id|n
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|va_start
 c_func

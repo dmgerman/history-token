@@ -597,7 +597,7 @@ op_assign
 op_amp
 id|dev-&gt;dev
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|socket-&gt;cls_d.class_dev.class_id

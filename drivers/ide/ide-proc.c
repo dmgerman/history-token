@@ -2473,7 +2473,7 @@ comma
 id|MAX_LEN
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|name
@@ -2488,13 +2488,6 @@ comma
 id|MAX_LEN
 )paren
 )paren
-suffix:semicolon
-id|name
-(braket
-id|len
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

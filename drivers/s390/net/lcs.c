@@ -7663,9 +7663,12 @@ id|dev-&gt;get_stats
 op_assign
 id|lcs_getstats
 suffix:semicolon
-id|dev-&gt;owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
+id|tun-&gt;dev
+)paren
 suffix:semicolon
 id|netif_stop_queue
 c_func
