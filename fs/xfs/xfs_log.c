@@ -4355,7 +4355,7 @@ op_assign
 id|xlog_in_core_2_t
 op_star
 )paren
-id|kmem_alloc
+id|kmem_zalloc
 c_func
 (paren
 id|iclogsize

@@ -752,7 +752,7 @@ id|ip
 )paren
 )paren
 suffix:semicolon
-id|filemap_fdatawrite
+id|filemap_flush
 c_func
 (paren
 id|inode-&gt;i_mapping
