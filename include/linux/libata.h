@@ -292,16 +292,6 @@ l_int|2
 )paren
 comma
 multiline_comment|/* data delivered via DMA */
-DECL|enumerator|ATA_QCFLAG_ATAPI
-id|ATA_QCFLAG_ATAPI
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-comma
-multiline_comment|/* is ATAPI packet command? */
 DECL|enumerator|ATA_QCFLAG_SG
 id|ATA_QCFLAG_SG
 op_assign

@@ -873,5 +873,32 @@ DECL|macro|ata_id_u32
 mdefine_line|#define ata_id_u32(dev,n)&t;&bslash;&n;&t;(((u32) (dev)-&gt;id[(n) + 1] &lt;&lt; 16) | ((u32) (dev)-&gt;id[(n)]))
 DECL|macro|ata_id_u64
 mdefine_line|#define ata_id_u64(dev,n)&t;&bslash;&n;&t;( ((u64) dev-&gt;id[(n) + 3] &lt;&lt; 48) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 2] &lt;&lt; 32) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 1] &lt;&lt; 16) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 0]) )
+DECL|function|is_atapi_taskfile
+r_static
+r_inline
+r_int
+id|is_atapi_taskfile
+c_func
+(paren
+r_struct
+id|ata_taskfile
+op_star
+id|tf
+)paren
+(brace
+r_return
+(paren
+id|tf-&gt;protocol
+op_eq
+id|ATA_PROT_ATAPI
+)paren
+op_logical_or
+(paren
+id|tf-&gt;protocol
+op_eq
+id|ATA_PROT_ATAPI_DMA
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __LINUX_ATA_H__ */
 eof

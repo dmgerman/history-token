@@ -8031,9 +8031,12 @@ id|ATA_DRQ
 r_if
 c_cond
 (paren
-id|qc-&gt;flags
+id|is_atapi_taskfile
+c_func
+(paren
 op_amp
-id|ATA_QCFLAG_ATAPI
+id|qc-&gt;tf
+)paren
 )paren
 id|cmd-&gt;result
 op_assign

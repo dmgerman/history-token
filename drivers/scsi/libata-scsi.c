@@ -2983,10 +2983,6 @@ id|cmd
 op_assign
 id|qc-&gt;scsicmd
 suffix:semicolon
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_ATAPI
-suffix:semicolon
 id|qc-&gt;tf.flags
 op_or_assign
 id|ATA_TFLAG_ISADDR
