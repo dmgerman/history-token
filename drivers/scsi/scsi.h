@@ -537,15 +537,6 @@ id|host
 suffix:semicolon
 r_extern
 r_int
-id|scsi_sense_valid
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scsi_decide_disposition
 c_func
 (paren
@@ -1753,6 +1744,11 @@ r_int
 id|eh_state
 suffix:semicolon
 multiline_comment|/* Used for state tracking in error handlr */
+DECL|member|eh_eflags
+r_int
+id|eh_eflags
+suffix:semicolon
+multiline_comment|/* Used by error handlr */
 DECL|member|done
 r_void
 (paren
@@ -2256,5 +2252,24 @@ op_star
 id|req-&gt;special
 suffix:semicolon
 )brace
+DECL|macro|scsi_eh_eflags_chk
+mdefine_line|#define scsi_eh_eflags_chk(scp, flags) (scp-&gt;eh_eflags &amp; flags)
+DECL|macro|scsi_eh_eflags_set
+mdefine_line|#define scsi_eh_eflags_set(scp, flags) do { &bslash;&n;&t;scp-&gt;eh_eflags |= flags; &bslash;&n;&t;} while(0)
+DECL|macro|scsi_eh_eflags_clr
+mdefine_line|#define scsi_eh_eflags_clr(scp, flags) do { &bslash;&n;&t;scp-&gt;eh_eflags &amp;= ~flags; &bslash;&n;&t;} while(0)
+DECL|macro|scsi_eh_eflags_clr_all
+mdefine_line|#define scsi_eh_eflags_clr_all(scp) (scp-&gt;eh_eflags = 0)
+multiline_comment|/*&n; * Scsi Error Handler Flags&n; */
+DECL|macro|SCSI_EH_CMD_ERR
+mdefine_line|#define SCSI_EH_CMD_ERR&t;0x0001&t;/* Orig cmd error&squot;d */
+DECL|macro|SCSI_EH_CMD_FAILED
+mdefine_line|#define SCSI_EH_CMD_FAILED&t;0x0002&t;/* Orig cmd error type failed */
+DECL|macro|SCSI_EH_CMD_TIMEOUT
+mdefine_line|#define SCSI_EH_CMD_TIMEOUT&t;0x0004&t;/* Orig cmd error type timeout */
+DECL|macro|SCSI_EH_REC_TIMEOUT
+mdefine_line|#define SCSI_EH_REC_TIMEOUT&t;0x0008&t;/* Recovery cmd timeout */
+DECL|macro|SCSI_SENSE_VALID
+mdefine_line|#define SCSI_SENSE_VALID(scmd) ((scmd-&gt;sense_buffer[0] &amp; 0x70) == 0x70)
 macro_line|#endif
 eof

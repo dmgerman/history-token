@@ -121,7 +121,7 @@ DECL|macro|lmc_delay
 mdefine_line|#define lmc_delay() inl(sc-&gt;lmc_csrs.csr_9)
 multiline_comment|/* This macro sync&squot;s up with the mii so that reads and writes can take place */
 DECL|macro|LMC_MII_SYNC
-mdefine_line|#define LMC_MII_SYNC(sc) do {int n=32; while( n &gt;= 0 ) { &bslash;&n;                LMC_CSR_WRITE((sc), csr_9, 0x20000); &bslash;&n;&t;&t;lmc_delay(); &bslash;&n;&t;&t;LMC_CSR_WRITE((sc), csr_9, 0x30000); &bslash;&n;                lmc_delay(); &bslash;&n;&t;&t;n--; }} while(0);
+mdefine_line|#define LMC_MII_SYNC(sc) do {int n=32; while( n &gt;= 0 ) { &bslash;&n;                LMC_CSR_WRITE((sc), csr_9, 0x20000); &bslash;&n;&t;&t;lmc_delay(); &bslash;&n;&t;&t;LMC_CSR_WRITE((sc), csr_9, 0x30000); &bslash;&n;                lmc_delay(); &bslash;&n;&t;&t;n--; }} while(0)
 DECL|struct|lmc_regfile_t
 r_struct
 id|lmc_regfile_t

@@ -4457,7 +4457,9 @@ op_add_assign
 (paren
 id|addr
 op_minus
-id|vma-&gt;vm_start
+r_new
+op_member_access_from_pointer
+id|vm_start
 )paren
 op_rshift
 id|PAGE_SHIFT

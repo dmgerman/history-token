@@ -2930,6 +2930,7 @@ op_eq
 id|hcd-&gt;self.root_hub
 )paren
 (brace
+multiline_comment|/* NOTE:  requirement on hub callers (usbfs and the hub&n;&t;&t; * driver, for now) that URBs&squot; urb-&gt;transfer_buffer be&n;&t;&t; * valid and usb_buffer_{sync,unmap}() not be needed, since&n;&t;&t; * they could clobber root hub response data.&n;&t;&t; */
 id|urb-&gt;transfer_flags
 op_or_assign
 id|URB_NO_DMA_MAP
@@ -3258,22 +3259,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/* For non-periodic transfers, any status except -EINPROGRESS means&n;&t; * the HCD has already started to unlink this URB from the hardware.&n;&t; * In that case, there&squot;s no more work to do.&n;&t; *&n;&t; * For periodic transfers, this is the only way to trigger unlinking&n;&t; * from the hardware.  Since we (currently) overload urb-&gt;status to&n;&t; * tell the driver to unlink, error status might get clobbered ...&n;&t; * unless that transfer hasn&squot;t yet restarted.  One such case is when&n;&t; * the URB gets unlinked from its completion handler.&n;&t; *&n;&t; * FIXME use an URB_UNLINKED flag to match URB_TIMEOUT_KILLED&n;&t; */
-r_switch
-c_cond
-(paren
-id|usb_pipetype
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-(brace
-r_case
-id|PIPE_CONTROL
-suffix:colon
-r_case
-id|PIPE_BULK
-suffix:colon
+multiline_comment|/* Except for interrupt transfers, any status except -EINPROGRESS&n;&t; * means the HCD already started to unlink this URB from the hardware.&n;&t; * So there&squot;s no more work to do.&n;&t; *&n;&t; * For interrupt transfers, this is the only way to trigger unlinking&n;&t; * from the hardware.  Since we (currently) overload urb-&gt;status to&n;&t; * tell the driver to unlink, error status might get clobbered ...&n;&t; * unless that transfer hasn&squot;t yet restarted.  One such case is when&n;&t; * the URB gets unlinked from its completion handler.&n;&t; *&n;&t; * FIXME use an URB_UNLINKED flag to match URB_TIMEOUT_KILLED&n;&t; */
 r_if
 c_cond
 (paren
@@ -3281,6 +3267,13 @@ id|urb-&gt;status
 op_ne
 op_minus
 id|EINPROGRESS
+op_logical_and
+id|usb_pipetype
+(paren
+id|urb-&gt;pipe
+)paren
+op_ne
+id|PIPE_INTERRUPT
 )paren
 (brace
 id|retval
@@ -3291,7 +3284,6 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* maybe set up to block on completion notification */
 r_if

@@ -122,10 +122,16 @@ op_assign
 id|scan-&gt;next
 suffix:semicolon
 r_return
+id|scan
+ques
+c_cond
 id|scan-&gt;virt
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_struct
 id|td
 op_star
@@ -173,6 +179,7 @@ suffix:semicolon
 singleline_comment|// FIXME:  when updating the hashtables this way, mem_flags is unusable...
 multiline_comment|/* Add a hash entry for a TD/ED; return true on success */
 r_static
+r_inline
 r_int
 DECL|function|hash_add_ed_td
 id|hash_add_ed_td
@@ -307,6 +314,7 @@ id|mem_flags
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
 DECL|function|hash_free_ed_td
 id|hash_free_ed_td

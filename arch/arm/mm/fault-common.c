@@ -25,7 +25,7 @@ mdefine_line|#define DO_COW(m)&t;&t;((m) &amp; (FAULT_CODE_WRITE|FAULT_CODE_FORC
 DECL|macro|READ_FAULT
 mdefine_line|#define READ_FAULT(m)&t;&t;(!((m) &amp; FAULT_CODE_WRITE))
 macro_line|#else
-multiline_comment|/*&n; * &quot;code&quot; is actually the FSR register.  Bit 11 set means the&n; * isntruction was performing a write.&n; */
+multiline_comment|/*&n; * &quot;code&quot; is actually the FSR register.  Bit 11 set means the&n; * instruction was performing a write.&n; */
 DECL|macro|DO_COW
 mdefine_line|#define DO_COW(code)&t;&t;((code) &amp; (1 &lt;&lt; 11))
 DECL|macro|READ_FAULT
@@ -85,7 +85,9 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;*pgd=%08lx&quot;
+l_string|&quot;[%08lx] *pgd=%08lx&quot;
+comma
+id|addr
 comma
 id|pgd_val
 c_func

@@ -69,12 +69,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 r_static
 r_int
 id|tosh_get_info
@@ -1807,4 +1801,36 @@ id|tosh_device
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tosh_fn
+comma
+l_string|&quot;User specified Fn key detection port&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jonathan Buzzard &lt;jonathan@buzzard.org.uk&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Toshiba laptop SMM driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_SUPPORTED_DEVICE
+c_func
+(paren
+l_string|&quot;toshiba&quot;
+)paren
+suffix:semicolon
 eof

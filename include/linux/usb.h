@@ -106,6 +106,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for struct file_operations */
+macro_line|#include &lt;linux/completion.h&gt;&t;/* for struct completion */
 DECL|function|wait_ms
 r_static
 id|__inline__
@@ -1314,7 +1315,7 @@ id|actual
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * Device table entry for &quot;new style&quot; table-driven USB drivers.&n; * User mode code can read these tables to choose which modules to load.&n; * Declare the table as a MODULE_DEVICE_TABLE.&n; *&n; * The third probe() parameter will point to a matching entry from this&n; * table.  (Null value reserved.)  Use the driver_data field for each&n; * match to hold information tied to that match:  device quirks, etc.&n; *&n; * Terminate the driver&squot;s table with an all-zeroes entry.&n; * Use the flag values to control which fields are compared.&n; */
+multiline_comment|/*&n; * Device table entry for &quot;new style&quot; table-driven USB drivers.&n; * User mode code can read these tables to choose which modules to load.&n; * Declare the table as a MODULE_DEVICE_TABLE.&n; *&n; * A probe() parameter will point to a matching entry from this table.&n; * Use the driver_info field for each match to hold information tied&n; * to that match:  device quirks, etc.&n; *&n; * Terminate the driver&squot;s table with an all-zeroes entry.&n; * Use the flag values to control which fields are compared.&n; */
 multiline_comment|/**&n; * struct usb_device_id - identifies USB devices for probing and hotplugging&n; * @match_flags: Bit mask controlling of the other fields are used to match&n; *&t;against new devices.  Any field except for driver_info may be used,&n; *&t;although some only make sense in conjunction with other fields.&n; *&t;This is usually set by a USB_DEVICE_*() macro, which sets all&n; *&t;other fields in this structure except for driver_info.&n; * @idVendor: USB vendor ID for a device; numbers are assigned&n; *&t;by the USB forum to its members.&n; * @idProduct: Vendor-assigned product ID.&n; * @bcdDevice_lo: Low end of range of vendor-assigned product version numbers.&n; *&t;This is also used to identify individual product versions, for&n; *&t;a range consisting of a single device.&n; * @bcdDevice_hi: High end of version number range.  The range of product&n; *&t;versions is inclusive.&n; * @bDeviceClass: Class of device; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Device classes specify behavior of all&n; *&t;the interfaces on a devices.&n; * @bDeviceSubClass: Subclass of device; associated with bDeviceClass.&n; * @bDeviceProtocol: Protocol of device; associated with bDeviceClass.&n; * @bInterfaceClass: Class of interface; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Interface classes specify behavior only&n; *&t;of a given interface; other interfaces may support other classes.&n; * @bInterfaceSubClass: Subclass of interface; associated with bInterfaceClass.&n; * @bInterfaceProtocol: Protocol of interface; associated with bInterfaceClass.&n; * @driver_info: Holds information used by the driver.  Usually it holds&n; *&t;a pointer to a descriptor understood by the driver, or perhaps&n; *&t;device flags.&n; *&n; * In most cases, drivers will create a table of device IDs by using&n; * USB_DEVICE(), or similar macros designed for that purpose.&n; * They will then export it to userspace using MODULE_DEVICE_TABLE(),&n; * and provide it to the USB core through their usb_driver structure.&n; *&n; * See the usb_match_id() function for information about how matches are&n; * performed.  Briefly, you will normally use one of several macros to help&n; * construct these entries.  Each entry you provide will either identify&n; * one or more specific products, or will identify a class of products&n; * which have agreed to behave the same.  You should put the more specific&n; * matches towards the beginning of your table, so that driver_info can&n; * record quirks of specific products.&n; */
 DECL|struct|usb_device_id
 r_struct
@@ -1420,7 +1421,7 @@ multiline_comment|/**&n; * USB_INTERFACE_INFO - macro used to describe a class o
 DECL|macro|USB_INTERFACE_INFO
 mdefine_line|#define USB_INTERFACE_INFO(cl,sc,pr) &bslash;&n;&t;match_flags: USB_DEVICE_ID_MATCH_INT_INFO, bInterfaceClass: (cl), bInterfaceSubClass: (sc), bInterfaceProtocol: (pr)
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/**&n; * struct usb_driver - identifies USB driver to usbcore&n; * @owner: Pointer to the module owner of this driver; initialize&n; *&t;it using THIS_MODULE.&n; * @name: The driver name should be unique among USB drivers,&n; *&t;and should normally be the same as the module name.&n; * @probe: Called to see if the driver is willing to manage a particular&n; *&t;interface on a device.  The probe routine returns a handle that &n; *&t;will later be provided to disconnect(), or a null pointer to&n; *&t;indicate that the driver will not handle the interface.&n; *&t;The handle is normally a pointer to driver-specific data.&n; *&t;If the probe() routine needs to access the interface&n; *&t;structure itself, use usb_ifnum_to_if() to make sure it&squot;s using&n; *&t;the right one.&n; * @disconnect: Called when the interface is no longer accessible, usually&n; *&t;because its device has been (or is being) disconnected.  The&n; *&t;handle passed is what was returned by probe(), or was provided&n; *&t;to usb_driver_claim_interface().&n; * @ioctl: Used for drivers that want to talk to userspace through&n; *&t;the &quot;usbfs&quot; filesystem.  This lets devices provide ways to&n; *&t;expose information to user space regardless of where they&n; *&t;do (or don&squot;t) show up otherwise in the filesystem.&n; * @id_table: USB drivers use ID table to support hotplugging.&n; *&t;Export this with MODULE_DEVICE_TABLE(usb,...).  This must be set&n; *&t;or your driver&squot;s probe function will never get called. &n; *&n; * USB drivers must provide a name, probe() and disconnect() methods,&n; * and an id_table.  Other driver fields are optional.&n; *&n; * The id_table is used in hotplugging.  It holds a set of descriptors,&n; * and specialized data may be associated with each entry.  That table&n; * is used by both user and kernel mode hotplugging support.&n; *&n; * The probe() and disconnect() methods are called in a context where&n; * they can sleep, but they should avoid abusing the privilege.  Most&n; * work to connect to a device should be done when the device is opened,&n; * and undone at the last close.  The disconnect code needs to address&n; * concurrency issues with respect to open() and close() methods, as&n; * well as forcing all pending I/O requests to complete (by unlinking&n; * them as necessary, and blocking until the unlinks complete).&n; */
+multiline_comment|/**&n; * struct usb_driver - identifies USB driver to usbcore&n; * @owner: Pointer to the module owner of this driver; initialize&n; *&t;it using THIS_MODULE.&n; * @name: The driver name should be unique among USB drivers,&n; *&t;and should normally be the same as the module name.&n; * @probe: Called to see if the driver is willing to manage a particular&n; *&t;interface on a device.  If it is, probe returns zero and uses&n; *&t;dev_set_drvdata() to associate driver-specific data with the&n; *&t;interface.  It may also use usb_set_interface() to specify the&n; *&t;appropriate altsetting.  If unwilling to manage the interface,&n; *&t;return a negative errno value.&n; * @disconnect: Called when the interface is no longer accessible, usually&n; *&t;because its device has been (or is being) disconnected or the&n; *&t;driver module is being unloaded.&n; * @ioctl: Used for drivers that want to talk to userspace through&n; *&t;the &quot;usbfs&quot; filesystem.  This lets devices provide ways to&n; *&t;expose information to user space regardless of where they&n; *&t;do (or don&squot;t) show up otherwise in the filesystem.&n; * @id_table: USB drivers use ID table to support hotplugging.&n; *&t;Export this with MODULE_DEVICE_TABLE(usb,...).  This must be set&n; *&t;or your driver&squot;s probe function will never get called. &n; *&n; * USB drivers must provide a name, probe() and disconnect() methods,&n; * and an id_table.  Other driver fields are optional.&n; *&n; * The id_table is used in hotplugging.  It holds a set of descriptors,&n; * and specialized data may be associated with each entry.  That table&n; * is used by both user and kernel mode hotplugging support.&n; *&n; * The probe() and disconnect() methods are called in a context where&n; * they can sleep, but they should avoid abusing the privilege.  Most&n; * work to connect to a device should be done when the device is opened,&n; * and undone at the last close.  The disconnect code needs to address&n; * concurrency issues with respect to open() and close() methods, as&n; * well as forcing all pending I/O requests to complete (by unlinking&n; * them as necessary, and blocking until the unlinks complete).&n; */
 DECL|struct|usb_driver
 r_struct
 id|usb_driver
@@ -1477,9 +1478,9 @@ id|ioctl
 )paren
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
+id|intf
 comma
 r_int
 r_int
@@ -2468,6 +2469,119 @@ mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;3
 macro_line|#endif
 DECL|macro|USB_CTRL_SET_TIMEOUT
 mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;3
+multiline_comment|/**&n; * struct usb_sg_request - support for scatter/gather I/O&n; * @status: zero indicates success, else negative errno&n; * @bytes: counts bytes transferred.&n; *&n; * These requests are initialized using usb_sg_init(), and then are used&n; * as request handles passed to usb_sg_wait() or usb_sg_cancel().  Most&n; * members of the request object aren&squot;t for driver access.&n; *&n; * The status and bytecount values are valid only after usb_sg_wait()&n; * returns.  If the status is zero, then the bytecount matches the total&n; * from the request.&n; *&n; * After an error completion, drivers may need to clear a halt condition&n; * on the endpoint.&n; */
+DECL|struct|usb_sg_request
+r_struct
+id|usb_sg_request
+(brace
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+DECL|member|bytes
+r_int
+id|bytes
+suffix:semicolon
+singleline_comment|// members not documented above are private to usbcore,
+singleline_comment|// and are not provided for driver access!
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|pipe
+r_int
+id|pipe
+suffix:semicolon
+DECL|member|sg
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
+DECL|member|nents
+r_int
+id|nents
+suffix:semicolon
+DECL|member|entries
+r_int
+id|entries
+suffix:semicolon
+DECL|member|urbs
+r_struct
+id|urb
+op_star
+op_star
+id|urbs
+suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+DECL|member|complete
+r_struct
+id|completion
+id|complete
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|usb_sg_init
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+comma
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|pipe
+comma
+r_int
+id|period
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nents
+comma
+r_int
+id|length
+comma
+r_int
+id|mem_flags
+)paren
+suffix:semicolon
+r_void
+id|usb_sg_cancel
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+)paren
+suffix:semicolon
+r_void
+id|usb_sg_wait
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+)paren
+suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In] ...&n; *&t;&t;&t;&t;&t;like endpoint bEndpointAddress)&n; *  - device:&t;&t;bits 8-14       ... bit positions known to uhci-hcd&n; *  - endpoint:&t;&t;bits 15-18      ... bit positions known to uhci-hcd&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 multiline_comment|/* NOTE:  these are not the standard USB_ENDPOINT_XFER_* values!! */

@@ -1173,6 +1173,13 @@ l_int|0
 r_return
 id|result
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;usb_stor_clear_halt() WORKED!&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* reset the toggles and endpoint flags */
 id|usb_endpoint_running
 c_func

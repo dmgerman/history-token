@@ -112,47 +112,11 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|SA1111_FAKE_PCIDEV
 mdefine_line|#define SA1111_FAKE_PCIDEV ((struct pci_dev *) 1111)
-DECL|function|dev_is_sa1111
-r_static
-r_inline
-r_int
-id|dev_is_sa1111
-c_func
-(paren
-r_const
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-(paren
-id|dev
-op_eq
-id|SA1111_FAKE_PCIDEV
-)paren
-suffix:semicolon
-)brace
+DECL|macro|dev_is_sa1111
+mdefine_line|#define dev_is_sa1111(dev) (dev == SA1111_FAKE_PCIDEV)
 macro_line|#else
-DECL|function|dev_is_sa1111
-r_static
-r_inline
-r_int
-id|dev_is_sa1111
-c_func
-(paren
-r_const
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|dev_is_sa1111
+mdefine_line|#define dev_is_sa1111(dev) (0)
 macro_line|#endif
 DECL|function|pcibios_set_master
 r_static
