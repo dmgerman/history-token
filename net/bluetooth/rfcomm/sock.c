@@ -41,8 +41,9 @@ id|bluez_sock_list
 id|rfcomm_sk_list
 op_assign
 (brace
+dot
 id|lock
-suffix:colon
+op_assign
 id|RW_LOCK_UNLOCKED
 )brace
 suffix:semicolon
