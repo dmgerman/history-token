@@ -63,14 +63,6 @@ id|ms
 )paren
 suffix:semicolon
 )brace
-r_void
-id|usb_uninterruptible_sleep_ms
-c_func
-(paren
-r_int
-id|msecs
-)paren
-suffix:semicolon
 r_struct
 id|usb_device
 suffix:semicolon
