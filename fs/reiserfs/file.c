@@ -5590,7 +5590,7 @@ multiline_comment|/* amount of bytes to write during this iteration */
 r_int
 id|blocks_to_allocate
 suffix:semicolon
-multiline_comment|/* how much blocks we need to allocate for&n;&t;&t;&t;&t;   this iteration */
+multiline_comment|/* how much blocks we need to allocate for this iteration */
 multiline_comment|/*  (pos &amp; (PAGE_CACHE_SIZE-1)) is an idiom for offset into a page of pos*/
 id|num_pages
 op_assign
