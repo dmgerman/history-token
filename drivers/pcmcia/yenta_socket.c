@@ -5189,14 +5189,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|pci_set_power_state
-c_func
-(paren
-id|dev
-comma
-l_int|3
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Some laptops (IBM T22) do not like us putting the Cardbus&n;&t;&t; * bridge into D3.  At a guess, some other laptop will&n;&t;&t; * probably require this, so leave it commented out for now.&n;&t;&t; */
+multiline_comment|/* pci_set_power_state(dev, 3); */
 )brace
 r_return
 id|ret
