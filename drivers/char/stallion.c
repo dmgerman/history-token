@@ -407,8 +407,14 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Define some string labels for arguments passed from the module&n; *&t;load line. These allow for easy board definitions, and easy&n; *&t;modification of the io, memory and irq resoucres.&n; */
+DECL|variable|stl_nargs
+r_static
+r_int
+id|stl_nargs
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|board0
 r_static
 r_char
@@ -704,12 +710,17 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|board0
 comma
-l_string|&quot;1-4s&quot;
+id|charp
+comma
+op_amp
+id|stl_nargs
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -720,12 +731,17 @@ comma
 l_string|&quot;Board 0 config -&gt; name[,ioaddr[,ioaddr2][,irq]]&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|board1
 comma
-l_string|&quot;1-4s&quot;
+id|charp
+comma
+op_amp
+id|stl_nargs
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -736,12 +752,17 @@ comma
 l_string|&quot;Board 1 config -&gt; name[,ioaddr[,ioaddr2][,irq]]&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|board2
 comma
-l_string|&quot;1-4s&quot;
+id|charp
+comma
+op_amp
+id|stl_nargs
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -752,12 +773,17 @@ comma
 l_string|&quot;Board 2 config -&gt; name[,ioaddr[,ioaddr2][,irq]]&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|board3
 comma
-l_string|&quot;1-4s&quot;
+id|charp
+comma
+op_amp
+id|stl_nargs
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -768,7 +794,6 @@ comma
 l_string|&quot;Board 3 config -&gt; name[,ioaddr[,ioaddr2][,irq]]&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Hardware ID bits for the EasyIO and ECH boards. These defines apply&n; *&t;to the directly accessible io ports of these boards (not the uarts -&n; *&t;they are in cd1400.h and sc26198.h).&n; */
 DECL|macro|EIO_8PORTRS
@@ -1062,7 +1087,6 @@ DECL|macro|TOLOWER
 mdefine_line|#define&t;TOLOWER(x)&t;((((x) &gt;= &squot;A&squot;) &amp;&amp; ((x) &lt;= &squot;Z&squot;)) ? ((x) + 0x20) : (x))
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Declare all those functions in this driver!&n; */
-macro_line|#ifdef MODULE
 r_static
 r_void
 id|stl_argbrds
@@ -1097,7 +1121,6 @@ op_star
 id|str
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|stl_init
 c_func
@@ -2834,7 +2857,6 @@ id|class_simple
 op_star
 id|stallion_class
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Loadable module initialization stuff.&n; */
 DECL|function|stallion_module_init
 r_static
@@ -3327,8 +3349,6 @@ op_star
 id|brdp
 suffix:semicolon
 r_int
-id|nrargs
-comma
 id|i
 suffix:semicolon
 macro_line|#ifdef DEBUG
@@ -3339,20 +3359,6 @@ l_string|&quot;stl_argbrds()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|nrargs
-op_assign
-r_sizeof
-(paren
-id|stl_brdsp
-)paren
-op_div
-r_sizeof
-(paren
-r_char
-op_star
-op_star
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3363,7 +3369,7 @@ suffix:semicolon
 (paren
 id|i
 OL
-id|nrargs
+id|stl_nargs
 )paren
 suffix:semicolon
 id|i
@@ -3981,7 +3987,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Local driver kernel memory allocation routine.&n; */
 DECL|function|stl_memalloc
@@ -11903,7 +11908,6 @@ id|stl_brdconf
 id|i
 )braket
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|stl_parsebrd
 c_func
 (paren
@@ -11915,7 +11919,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -11970,13 +11973,11 @@ id|brdp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Find any dynamically supported boards. That is via module load&n; *&t;line options or auto-detected on the PCI bus.&n; */
-macro_line|#ifdef MODULE
 id|stl_argbrds
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 id|stl_findpcibrds
 c_func
