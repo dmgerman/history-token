@@ -2591,10 +2591,10 @@ id|port_num
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return 0 if SMP is to be sent&n; * Return 1 if SMP was consumed locally (whether or not solicited)&n; * Return &lt; 0 if error&n; */
-DECL|function|handle_outgoing_smp
+DECL|function|handle_outgoing_dr_smp
 r_static
 r_int
-id|handle_outgoing_smp
+id|handle_outgoing_dr_smp
 c_func
 (paren
 r_struct
@@ -3497,7 +3497,7 @@ id|IB_MGMT_CLASS_SUBN_DIRECTED_ROUTE
 (brace
 id|ret
 op_assign
-id|handle_outgoing_smp
+id|handle_outgoing_dr_smp
 c_func
 (paren
 id|mad_agent_priv
