@@ -6,7 +6,7 @@ DECL|macro|SGI_UART_VECTOR
 mdefine_line|#define SGI_UART_VECTOR&t;&t;(0xe9)
 DECL|macro|SGI_PCIBR_ERROR
 mdefine_line|#define SGI_PCIBR_ERROR&t;&t;(0x33)
-singleline_comment|// These two IRQ&squot;s are used by partitioning.
+multiline_comment|/* Reserved IRQs : Note, not to exceed IA64_SN2_FIRST_DEVICE_VECTOR */
 DECL|macro|SGI_XPC_ACTIVATE
 mdefine_line|#define SGI_XPC_ACTIVATE                (0x30)
 DECL|macro|SGI_II_ERROR
@@ -17,12 +17,20 @@ DECL|macro|SGI_PCIBR_ERROR
 mdefine_line|#define SGI_PCIBR_ERROR                 (0x33)
 DECL|macro|SGI_ACPI_SCI_INT
 mdefine_line|#define SGI_ACPI_SCI_INT                (0x34)
-DECL|macro|SGI_MMTIMER_VECTOR
-mdefine_line|#define SGI_MMTIMER_VECTOR&t;&t;(0x35)
+DECL|macro|SGI_TIOCA_ERROR
+mdefine_line|#define SGI_TIOCA_ERROR                 (0x35)
 DECL|macro|SGI_TIO_ERROR
-mdefine_line|#define SGI_TIO_ERROR&t;&t;&t;(0x36)
+mdefine_line|#define SGI_TIO_ERROR                   (0x36)
+DECL|macro|SGI_TIOCX_ERROR
+mdefine_line|#define SGI_TIOCX_ERROR                 (0x37)
+DECL|macro|SGI_MMTIMER_VECTOR
+mdefine_line|#define SGI_MMTIMER_VECTOR              (0x38)
 DECL|macro|SGI_XPC_NOTIFY
 mdefine_line|#define SGI_XPC_NOTIFY                  (0xe7)
+DECL|macro|IA64_SN2_FIRST_DEVICE_VECTOR
+mdefine_line|#define IA64_SN2_FIRST_DEVICE_VECTOR    (0x3c)
+DECL|macro|IA64_SN2_LAST_DEVICE_VECTOR
+mdefine_line|#define IA64_SN2_LAST_DEVICE_VECTOR     (0xe6)
 DECL|macro|SN2_IRQ_RESERVED
 mdefine_line|#define SN2_IRQ_RESERVED        (0x1)
 DECL|macro|SN2_IRQ_CONNECTED
