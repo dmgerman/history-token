@@ -75,7 +75,6 @@ suffix:semicolon
 DECL|macro|__DEBUG_FEATURE_VERSION
 mdefine_line|#define __DEBUG_FEATURE_VERSION      1  /* version of debug feature */
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
