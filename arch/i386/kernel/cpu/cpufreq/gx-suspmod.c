@@ -339,10 +339,13 @@ multiline_comment|/**&n; *      gx_get_cpuspeed:&n; *&n; * Finds out at which ef
 DECL|function|gx_get_cpuspeed
 r_static
 r_int
+r_int
 id|gx_get_cpuspeed
 c_func
 (paren
-r_void
+r_int
+r_int
+id|cpu
 )paren
 (brace
 r_if
@@ -545,6 +548,7 @@ op_assign
 id|gx_get_cpuspeed
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|new_khz
@@ -1113,6 +1117,7 @@ id|policy
 )paren
 (brace
 r_int
+r_int
 id|maxfreq
 comma
 id|curfreq
@@ -1193,6 +1198,7 @@ op_assign
 id|gx_get_cpuspeed
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|dprintk
@@ -1274,6 +1280,11 @@ id|cpufreq_driver
 id|gx_suspmod_driver
 op_assign
 (brace
+dot
+id|get
+op_assign
+id|gx_get_cpuspeed
+comma
 dot
 id|verify
 op_assign
