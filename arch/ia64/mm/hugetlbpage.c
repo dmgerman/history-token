@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * IA-64 Huge TLB Page Support for Kernel.&n; *&n; * Copyright (C) 2002-2004 Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 2003-2004 Ken Chen &lt;kenneth.w.chen@intel.com&gt;&n; *&n; * Sep, 2003: add numa support&n; * Feb, 2004: dynamic hugetlb page size via boot parameter&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
