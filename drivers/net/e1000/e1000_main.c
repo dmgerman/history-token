@@ -10928,7 +10928,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 )paren
 (brace
@@ -10950,7 +10951,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 comma
 r_uint32

@@ -1318,7 +1318,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -1344,7 +1345,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 comma
 r_uint32
@@ -2844,7 +2846,8 @@ id|e1000_ffe_config
 id|ffe_config_state
 suffix:semicolon
 DECL|member|io_base
-r_uint32
+r_int
+r_int
 id|io_base
 suffix:semicolon
 DECL|member|phy_id
