@@ -244,11 +244,12 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|variable|proc_info
+DECL|variable|cpu_name
 r_static
-r_struct
-id|proc_info_item
-id|proc_info
+r_const
+r_char
+op_star
+id|cpu_name
 suffix:semicolon
 DECL|variable|machine_name
 r_static
@@ -975,10 +976,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|proc_info
+id|cpu_name
 op_assign
-op_star
-id|list-&gt;info
+id|list-&gt;cpu_name
 suffix:semicolon
 macro_line|#ifdef MULTI_CPU
 id|processor
@@ -1004,11 +1004,11 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: %s %s revision %d (ARMv%s)&bslash;n&quot;
+l_string|&quot;CPU: %s [%08x] revision %d (ARMv%s)&bslash;n&quot;
 comma
-id|proc_info.manufacturer
+id|cpu_name
 comma
-id|proc_info.cpu_name
+id|processor_id
 comma
 (paren
 r_int
@@ -2904,11 +2904,9 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;Processor&bslash;t: %s %s rev %d (%s)&bslash;n&quot;
+l_string|&quot;Processor&bslash;t: %s rev %d (%s)&bslash;n&quot;
 comma
-id|proc_info.manufacturer
-comma
-id|proc_info.cpu_name
+id|cpu_name
 comma
 (paren
 r_int

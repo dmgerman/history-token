@@ -3950,21 +3950,12 @@ r_int
 r_int
 id|caps
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
 DECL|member|dev
 r_struct
 id|pnp_dev
 op_star
 id|dev
 suffix:semicolon
-macro_line|#else
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
-macro_line|#endif
 DECL|member|cardtype
 r_int
 r_int

@@ -93,8 +93,8 @@ mdefine_line|#define ICC_IND_AIL    0xE
 DECL|macro|ICC_IND_DC
 mdefine_line|#define ICC_IND_DC     0xF
 r_extern
-r_void
-id|ICCVersion
+r_int
+id|icc_setup
 c_func
 (paren
 r_struct
@@ -102,9 +102,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-r_char
+r_struct
+id|dc_hw_ops
 op_star
-id|s
+id|icc_ops
 )paren
 suffix:semicolon
 r_extern

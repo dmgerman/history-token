@@ -127,13 +127,15 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__get_user_x
-mdefine_line|#define __get_user_x(__r1,__p,__e,__s,__i...)&t;&t;&t;&t;&bslash;&n;&t;   __asm__ __volatile__ (&quot;bl&t;__get_user_&quot; #__s&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__e), &quot;=r&quot; (__r1)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (__p)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __i)
+mdefine_line|#define __get_user_x(__r1,__p,__e,__s,__i...)&t;&t;&t;&t;&bslash;&n;&t;   __asm__ __volatile__ (&quot;bl&t;__get_user_&quot; #__s&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__e), &quot;=r&quot; (__r1)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (__p)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __i, &quot;cc&quot;)
 DECL|macro|get_user
 mdefine_line|#define get_user(x,p)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const register typeof(*(p)) *__p asm(&quot;r0&quot;) = (p);&t;&bslash;&n;&t;&t;register typeof(*(p)) __r1 asm(&quot;r1&quot;);&t;&t;&t;&bslash;&n;&t;&t;register int __e asm(&quot;r0&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(__p))) {&t;&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_user_x(__r1, __p, __e, 1, &quot;lr&quot;);&t;&t;&bslash;&n;&t;       &t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_user_x(__r1, __p, __e, 2, &quot;r2&quot;, &quot;lr&quot;);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;       &t;&t;__get_user_x(__r1, __p, __e, 4, &quot;lr&quot;);&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_user_x(__r1, __p, __e, 8, &quot;lr&quot;);&t;&t;&bslash;&n;&t;       &t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __e = __get_user_bad(); break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;x = __r1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__e;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|__get_user
-mdefine_line|#define __get_user(x,p)&t;&t;__get_user_nocheck((x),(p),sizeof(*(p)))
+mdefine_line|#define __get_user(x,ptr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_err((x),(ptr),__gu_err);&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_user_error
-mdefine_line|#define __get_user_error(x,p,e)&t;__get_user_nocheck_error((x),(p),sizeof(*(p)),(e))
+mdefine_line|#define __get_user_error(x,ptr,err)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_err((x),(ptr),err);&t;&t;&t;&t;&t;&bslash;&n;&t;(void) 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__get_user_err
+mdefine_line|#define __get_user_err(x,ptr,err)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __gu_addr = (unsigned long)(ptr);&t;&t;&t;&bslash;&n;&t;unsigned long __gu_val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;__get_user_asm_byte(__gu_val,__gu_addr,err);&t;break;&t;&bslash;&n;&t;case 2:&t;__get_user_asm_half(__gu_val,__gu_addr,err);&t;break;&t;&bslash;&n;&t;case 4:&t;__get_user_asm_word(__gu_val,__gu_addr,err);&t;break;&t;&bslash;&n;&t;default: (__gu_val) = __get_user_bad();&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_extern
 r_int
 id|__put_user_1
@@ -192,13 +194,15 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__put_user_x
-mdefine_line|#define __put_user_x(__r1,__p,__e,__s,__i...)&t;&t;&t;&t;&bslash;&n;&t;   __asm__ __volatile__ (&quot;bl&t;__put_user_&quot; #__s&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__e)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (__p), &quot;r&quot; (__r1)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __i)
+mdefine_line|#define __put_user_x(__r1,__p,__e,__s,__i...)&t;&t;&t;&t;&bslash;&n;&t;   __asm__ __volatile__ (&quot;bl&t;__put_user_&quot; #__s&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (__e)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (__p), &quot;r&quot; (__r1)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __i, &quot;cc&quot;)
 DECL|macro|put_user
 mdefine_line|#define put_user(x,p)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;const register typeof(*(p)) __r1 asm(&quot;r1&quot;) = (x);&t;&bslash;&n;&t;&t;const register typeof(*(p)) *__p asm(&quot;r0&quot;) = (p);&t;&bslash;&n;&t;&t;register int __e asm(&quot;r0&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;switch (sizeof(*(__p))) {&t;&t;&t;&t;&bslash;&n;&t;&t;case 1:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_x(__r1, __p, __e, 1, &quot;r2&quot;, &quot;lr&quot;);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 2:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_x(__r1, __p, __e, 2, &quot;r2&quot;, &quot;lr&quot;);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 4:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_x(__r1, __p, __e, 4, &quot;r2&quot;, &quot;lr&quot;);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;case 8:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__put_user_x(__r1, __p, __e, 8, &quot;ip&quot;, &quot;lr&quot;);&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;default: __e = __put_user_bad(); break;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__e;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|__put_user
-mdefine_line|#define __put_user(x,p)&t;&t;__put_user_nocheck((__typeof(*(p)))(x),(p),sizeof(*(p)))
+mdefine_line|#define __put_user(x,ptr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_err((x),(ptr),__pu_err);&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__put_user_error
-mdefine_line|#define __put_user_error(x,p,e)&t;__put_user_nocheck_error((x),(p),sizeof(*(p)),(e))
+mdefine_line|#define __put_user_error(x,ptr,err)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__put_user_err((x),(ptr),err);&t;&t;&t;&t;&t;&bslash;&n;&t;(void) 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__put_user_err
+mdefine_line|#define __put_user_err(x,ptr,err)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pu_addr = (unsigned long)(ptr);&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) __pu_val = (x);&t;&t;&t;&t;&bslash;&n;&t;switch (sizeof(*(ptr))) {&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_asm_byte(__pu_val,__pu_addr,err);&t;break;&t;&bslash;&n;&t;case 2: __put_user_asm_half(__pu_val,__pu_addr,err);&t;break;&t;&bslash;&n;&t;case 4: __put_user_asm_word(__pu_val,__pu_addr,err);&t;break;&t;&bslash;&n;&t;case 8:&t;__put_user_asm_dword(__pu_val,__pu_addr,err);&t;break;&t;&bslash;&n;&t;default: __put_user_bad();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|function|copy_from_user
 r_static
 id|__inline__
@@ -587,23 +591,5 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These are the work horses of the get/put_user functions&n; */
-macro_line|#if 0
-mdefine_line|#define __get_user_check(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = -EFAULT, __gu_val = 0;&t;&t;&t;&t;&bslash;&n;&t;const __typeof__(*(ptr)) *__gu_addr = (ptr);&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_READ,__gu_addr,size)) {&t;&t;&t;&bslash;&n;&t;&t;__gu_err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user_size(__gu_val,__gu_addr,(size),__gu_err);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif
-DECL|macro|__get_user_nocheck
-mdefine_line|#define __get_user_nocheck(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_err = 0, __gu_val;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_size(__gu_val,(ptr),(size),__gu_err);&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;&t;__gu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__get_user_nocheck_error
-mdefine_line|#define __get_user_nocheck_error(x,ptr,size,err)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __gu_val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__get_user_size(__gu_val,(ptr),(size),(err));&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr)))__gu_val;&t;&t;&t;&t;&bslash;&n;&t;(void) 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = -EFAULT;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(*(ptr)) *__pu_addr = (ptr);&t;&t;&t;&t;&bslash;&n;&t;if (access_ok(VERIFY_WRITE,__pu_addr,size)) {&t;&t;&t;&bslash;&n;&t;&t;__pu_err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__put_user_size((x),__pu_addr,(size),__pu_err);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_nocheck
-mdefine_line|#define __put_user_nocheck(x,ptr,size)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __pu_err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pu_addr = (unsigned long)(ptr);&t;&t;&t;&bslash;&n;&t;__put_user_size((x),__pu_addr,(size),__pu_err);&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__put_user_nocheck_error
-mdefine_line|#define __put_user_nocheck_error(x,ptr,size,err)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __pu_addr = (unsigned long)(ptr);&t;&t;&t;&bslash;&n;&t;__put_user_size((x),__pu_addr,(size),err);&t;&t;&t;&bslash;&n;&t;(void) 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|__get_user_size
-mdefine_line|#define __get_user_size(x,ptr,size,retval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1:&t;__get_user_asm_byte(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 2:&t;__get_user_asm_half(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 4:&t;__get_user_asm_word(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 8:&t;__get_user_asm_dword(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;default: (x) = __get_user_bad();&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|__put_user_size
-mdefine_line|#define __put_user_size(x,ptr,size,retval)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;case 1: __put_user_asm_byte(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 2: __put_user_asm_half(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 4: __put_user_asm_word(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;case 8:&t;__put_user_asm_dword(x,ptr,retval);&t;break;&t;&t;&bslash;&n;&t;default: __put_user_bad();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASMARM_UACCESS_H */
 eof

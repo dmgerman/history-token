@@ -11,8 +11,10 @@ DECL|macro|DEVICE_COUNT_IRQ
 mdefine_line|#define DEVICE_COUNT_IRQ&t;2
 DECL|macro|DEVICE_COUNT_DMA
 mdefine_line|#define DEVICE_COUNT_DMA&t;2
-DECL|macro|DEVICE_COUNT_RESOURCE
-mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
+DECL|macro|DEVICE_COUNT_IO
+mdefine_line|#define DEVICE_COUNT_IO&t;&t;8
+DECL|macro|DEVICE_COUNT_MEM
+mdefine_line|#define DEVICE_COUNT_MEM&t;4
 DECL|macro|MAX_DEVICES
 mdefine_line|#define MAX_DEVICES&t;&t;8
 r_struct
@@ -38,6 +40,11 @@ id|name
 l_int|80
 )braket
 suffix:semicolon
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* status of the card */
 DECL|member|number
 r_int
 r_char
@@ -246,6 +253,14 @@ r_int
 id|active
 suffix:semicolon
 multiline_comment|/* status of the device */
+DECL|member|capabilities
+r_int
+id|capabilities
+suffix:semicolon
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
 DECL|member|global_list
 r_struct
 id|list_head
@@ -319,15 +334,24 @@ r_int
 id|lock_resources
 suffix:semicolon
 multiline_comment|/* resources are locked */
-DECL|member|resource
+DECL|member|io_resource
 r_struct
 id|resource
-id|resource
+id|io_resource
 (braket
-id|DEVICE_COUNT_RESOURCE
+id|DEVICE_COUNT_IO
 )braket
 suffix:semicolon
-multiline_comment|/* I/O and memory regions + expansion ROMs */
+multiline_comment|/* port regions */
+DECL|member|mem_resource
+r_struct
+id|resource
+id|mem_resource
+(braket
+id|DEVICE_COUNT_MEM
+)braket
+suffix:semicolon
+multiline_comment|/* memory regions + expansion ROMs */
 DECL|member|dma_resource
 r_struct
 id|resource
@@ -381,37 +405,8 @@ DECL|macro|to_pnp_dev
 mdefine_line|#define&t;to_pnp_dev(n) container_of(n, struct pnp_dev, dev)
 DECL|macro|pnp_for_each_dev
 mdefine_line|#define pnp_for_each_dev(dev) &bslash;&n;&t;for(dev = global_to_pnp_dev(pnp_global.next); &bslash;&n;&t;dev != global_to_pnp_dev(&amp;pnp_global); &bslash;&n;&t;dev = global_to_pnp_dev(dev-&gt;global_list.next))
-DECL|function|pnp_dev_has_driver
-r_static
-r_inline
-r_int
-id|pnp_dev_has_driver
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|pdev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pdev-&gt;driver
-op_logical_or
-(paren
-id|pdev-&gt;card
-op_logical_and
-id|pdev-&gt;card-&gt;driver
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|card_for_each_dev
+mdefine_line|#define card_for_each_dev(card,dev) &bslash;&n;&t;for((dev) = card_to_pnp_dev((card)-&gt;devices.next); &bslash;&n;&t;(dev) != card_to_pnp_dev(&amp;(card)-&gt;devices); &bslash;&n;&t;(dev) = card_to_pnp_dev((dev)-&gt;card_list.next))
 DECL|function|pnp_get_drvdata
 r_static
 r_inline
@@ -525,6 +520,36 @@ suffix:semicolon
 multiline_comment|/* fixup function */
 )brace
 suffix:semicolon
+multiline_comment|/* capabilities */
+DECL|macro|PNP_READ
+mdefine_line|#define PNP_READ&t;&t;0x0001
+DECL|macro|PNP_WRITE
+mdefine_line|#define PNP_WRITE&t;&t;0x0002
+DECL|macro|PNP_DISABLE
+mdefine_line|#define PNP_DISABLE&t;&t;0x0004
+DECL|macro|PNP_CONFIGURABLE
+mdefine_line|#define PNP_CONFIGURABLE&t;0x0008
+DECL|macro|PNP_REMOVABLE
+mdefine_line|#define PNP_REMOVABLE&t;&t;0x0010
+DECL|macro|pnp_can_read
+mdefine_line|#define pnp_can_read(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;get) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_READ))
+DECL|macro|pnp_can_write
+mdefine_line|#define pnp_can_write(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;set) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_WRITE))
+DECL|macro|pnp_can_disable
+mdefine_line|#define pnp_can_disable(dev)&t;(((dev)-&gt;protocol) &amp;&amp; ((dev)-&gt;protocol-&gt;disable) &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((dev)-&gt;capabilities &amp; PNP_DISABLE))
+DECL|macro|pnp_can_configure
+mdefine_line|#define pnp_can_configure(dev)&t;((!(dev)-&gt;active) &amp;&amp; ((dev)-&gt;capabilities &amp; PNP_CONFIGURABLE))
+multiline_comment|/* status */
+DECL|macro|PNP_INIT
+mdefine_line|#define PNP_INIT&t;&t;0x0000
+DECL|macro|PNP_READY
+mdefine_line|#define PNP_READY&t;&t;0x0001
+DECL|macro|PNP_ATTACHED
+mdefine_line|#define PNP_ATTACHED&t;&t;0x0002
+DECL|macro|PNP_BUSY
+mdefine_line|#define PNP_BUSY&t;&t;0x0004
+DECL|macro|PNP_FAULTY
+mdefine_line|#define PNP_FAULTY&t;&t;0x0008
 multiline_comment|/*&n; * Driver Management&n; */
 DECL|struct|pnp_id
 r_struct
@@ -564,9 +589,9 @@ suffix:semicolon
 multiline_comment|/* data private to the driver */
 )brace
 suffix:semicolon
-DECL|struct|pnp_card_id
+DECL|struct|pnp_card_device_id
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 (brace
 DECL|member|id
 r_char
@@ -688,7 +713,7 @@ suffix:semicolon
 DECL|member|id_table
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id_table
 suffix:semicolon
@@ -711,7 +736,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|card_id
 )paren
@@ -739,31 +764,41 @@ suffix:semicolon
 DECL|macro|to_pnpc_driver
 mdefine_line|#define&t;to_pnpc_driver(drv) container_of(drv,struct pnpc_driver, driver)
 multiline_comment|/*&n; * Resource Management&n; */
+DECL|macro|pnp_flags_valid
+mdefine_line|#define pnp_flags_valid(resrc)&t;(((resrc)-&gt;flags &amp; IORESOURCE_UNSET) == 0 &amp;&amp; &bslash;&n;&t;&t;&t;&t; ((resrc)-&gt;flags &amp; (IORESOURCE_IO|IORESOURCE_MEM|IORESOURCE_IRQ|IORESOURCE_DMA)) != 0)
 multiline_comment|/* Use these instead of directly reading pnp_dev to get resource information */
 DECL|macro|pnp_port_start
-mdefine_line|#define pnp_port_start(dev,bar)   ((dev)-&gt;resource[(bar)].start)
+mdefine_line|#define pnp_port_start(dev,bar)&t;((dev)-&gt;io_resource[(bar)].start)
 DECL|macro|pnp_port_end
-mdefine_line|#define pnp_port_end(dev,bar)     ((dev)-&gt;resource[(bar)].end)
+mdefine_line|#define pnp_port_end(dev,bar)&t;((dev)-&gt;io_resource[(bar)].end)
 DECL|macro|pnp_port_flags
-mdefine_line|#define pnp_port_flags(dev,bar)   ((dev)-&gt;resource[(bar)].flags)
+mdefine_line|#define pnp_port_flags(dev,bar)&t;((dev)-&gt;io_resource[(bar)].flags)
+DECL|macro|pnp_port_valid
+mdefine_line|#define pnp_port_valid(dev,bar)&t;pnp_flags_valid(&amp;(dev)-&gt;io_resource[(bar)])
 DECL|macro|pnp_port_len
 mdefine_line|#define pnp_port_len(dev,bar) &bslash;&n;&t;((pnp_port_start((dev),(bar)) == 0 &amp;&amp;&t;&bslash;&n;&t;  pnp_port_end((dev),(bar)) ==&t;&t;&bslash;&n;&t;  pnp_port_start((dev),(bar))) ? 0 :&t;&bslash;&n;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t; (pnp_port_end((dev),(bar)) -&t;&t;&bslash;&n;&t;  pnp_port_start((dev),(bar)) + 1))
 DECL|macro|pnp_mem_start
-mdefine_line|#define pnp_mem_start(dev,bar)   ((dev)-&gt;resource[(bar+8)].start)
+mdefine_line|#define pnp_mem_start(dev,bar)&t;((dev)-&gt;mem_resource[(bar)].start)
 DECL|macro|pnp_mem_end
-mdefine_line|#define pnp_mem_end(dev,bar)     ((dev)-&gt;resource[(bar+8)].end)
+mdefine_line|#define pnp_mem_end(dev,bar)&t;((dev)-&gt;mem_resource[(bar)].end)
 DECL|macro|pnp_mem_flags
-mdefine_line|#define pnp_mem_flags(dev,bar)   ((dev)-&gt;resource[(bar+8)].flags)
+mdefine_line|#define pnp_mem_flags(dev,bar)&t;((dev)-&gt;mem_resource[(bar)].flags)
+DECL|macro|pnp_mem_valid
+mdefine_line|#define pnp_mem_valid(dev,bar)&t;pnp_flags_valid(&amp;(dev)-&gt;mem_resource[(bar)])
 DECL|macro|pnp_mem_len
 mdefine_line|#define pnp_mem_len(dev,bar) &bslash;&n;&t;((pnp_mem_start((dev),(bar)) == 0 &amp;&amp;&t;&bslash;&n;&t;  pnp_mem_end((dev),(bar)) ==&t;&t;&bslash;&n;&t;  pnp_mem_start((dev),(bar))) ? 0 :&t;&bslash;&n;&t;  &t;&t;&t;&t;&t;&bslash;&n;&t; (pnp_mem_end((dev),(bar)) -&t;&t;&bslash;&n;&t;  pnp_mem_start((dev),(bar)) + 1))
 DECL|macro|pnp_irq
-mdefine_line|#define pnp_irq(dev,bar)&t; ((dev)-&gt;irq_resource[(bar)].start)
+mdefine_line|#define pnp_irq(dev,bar)&t;((dev)-&gt;irq_resource[(bar)].start)
 DECL|macro|pnp_irq_flags
-mdefine_line|#define pnp_irq_flags(dev,bar)&t; ((dev)-&gt;irq_resource[(bar)].flags)
+mdefine_line|#define pnp_irq_flags(dev,bar)&t;((dev)-&gt;irq_resource[(bar)].flags)
+DECL|macro|pnp_irq_valid
+mdefine_line|#define pnp_irq_valid(dev,bar)&t;pnp_flags_valid(&amp;(dev)-&gt;irq_resource[(bar)])
 DECL|macro|pnp_dma
-mdefine_line|#define pnp_dma(dev,bar)&t; ((dev)-&gt;dma_resource[(bar)].start)
+mdefine_line|#define pnp_dma(dev,bar)&t;((dev)-&gt;dma_resource[(bar)].start)
 DECL|macro|pnp_dma_flags
-mdefine_line|#define pnp_dma_flags(dev,bar)&t; ((dev)-&gt;dma_resource[(bar)].flags)
+mdefine_line|#define pnp_dma_flags(dev,bar)&t;((dev)-&gt;dma_resource[(bar)].flags)
+DECL|macro|pnp_dma_valid
+mdefine_line|#define pnp_dma_valid(dev,bar)&t;pnp_flags_valid(&amp;(dev)-&gt;dma_resource[(bar)])
 DECL|macro|PNP_PORT_FLAG_16BITADDR
 mdefine_line|#define PNP_PORT_FLAG_16BITADDR&t;(1&lt;&lt;0)
 DECL|macro|PNP_PORT_FLAG_FIXED
@@ -1057,15 +1092,24 @@ DECL|struct|pnp_res_cfg
 r_struct
 id|pnp_res_cfg
 (brace
-DECL|member|resource
+DECL|member|io_resource
 r_struct
 id|resource
-id|resource
+id|io_resource
 (braket
-id|DEVICE_COUNT_RESOURCE
+id|DEVICE_COUNT_IO
 )braket
 suffix:semicolon
-multiline_comment|/* I/O and memory regions + expansion ROMs */
+multiline_comment|/* I/O ports */
+DECL|member|mem_resource
+r_struct
+id|resource
+id|mem_resource
+(braket
+id|DEVICE_COUNT_MEM
+)braket
+suffix:semicolon
+multiline_comment|/* memory regions + expansion ROMs */
 DECL|member|dma_resource
 r_struct
 id|resource
@@ -1084,10 +1128,6 @@ id|DEVICE_COUNT_IRQ
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PNP_DYNAMIC
-mdefine_line|#define PNP_DYNAMIC&t;&t;0&t;/* get or set current resource */
-DECL|macro|PNP_STATIC
-mdefine_line|#define PNP_STATIC&t;&t;1&t;/* get or set resource for next boot */
 DECL|struct|pnp_cfg
 r_struct
 id|pnp_cfg
@@ -1182,9 +1222,6 @@ r_struct
 id|pnp_cfg
 op_star
 id|config
-comma
-r_char
-id|flags
 )paren
 suffix:semicolon
 DECL|member|disable
@@ -1460,9 +1497,6 @@ r_struct
 id|pnp_res_cfg
 op_star
 r_template
-comma
-r_int
-id|mode
 )paren
 suffix:semicolon
 r_void
@@ -1532,6 +1566,26 @@ r_struct
 id|pnp_driver
 op_star
 id|drv
+)paren
+suffix:semicolon
+r_int
+id|pnp_device_attach
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|pnp_dev
+)paren
+suffix:semicolon
+r_void
+id|pnp_device_detach
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|pnp_dev
 )paren
 suffix:semicolon
 macro_line|#else
@@ -1888,14 +1942,34 @@ r_struct
 id|pnp_res_cfg
 op_star
 r_template
-comma
-r_int
-id|mode
 )paren
 (brace
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|pnp_resource_change
+r_static
+r_inline
+r_void
+id|pnp_resource_change
+c_func
+(paren
+r_struct
+id|resource
+op_star
+id|resource
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
 suffix:semicolon
 )brace
 DECL|function|compare_pnp_id
@@ -1973,6 +2047,39 @@ r_struct
 id|pnp_driver
 op_star
 id|drv
+)paren
+(brace
+suffix:semicolon
+)brace
+DECL|function|pnp_device_attach
+r_static
+r_inline
+r_int
+id|pnp_device_attach
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|pnp_dev
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|pnp_device_detach
+r_static
+r_inline
+r_void
+id|pnp_device_detach
+c_func
+(paren
+r_struct
+id|pnp_dev
+op_star
+id|pnp_dev
 )paren
 (brace
 suffix:semicolon
@@ -2096,6 +2203,26 @@ r_extern
 r_struct
 id|list_head
 id|pnp_cards
+suffix:semicolon
+r_int
+id|pnpc_attach
+c_func
+(paren
+r_struct
+id|pnp_card
+op_star
+id|card
+)paren
+suffix:semicolon
+r_void
+id|pnpc_detach
+c_func
+(paren
+r_struct
+id|pnp_card
+op_star
+id|card
+)paren
 suffix:semicolon
 macro_line|#else
 DECL|function|pnpc_add_card
@@ -2269,115 +2396,40 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnpc_attach
+r_static
+r_inline
+r_int
+id|pnpc_attach
+c_func
+(paren
+r_struct
+id|pnp_card
+op_star
+id|card
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|pnpc_detach
+r_static
+r_inline
+r_void
+id|pnpc_detach
+c_func
+(paren
+r_struct
+id|pnp_card
+op_star
+id|card
+)paren
+(brace
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_PNP_CARD */
-macro_line|#if defined(CONFIG_ISAPNP)
-multiline_comment|/* compat */
-r_struct
-id|pnp_card
-op_star
-id|pnp_find_card
-c_func
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|device
-comma
-r_struct
-id|pnp_card
-op_star
-id|from
-)paren
-suffix:semicolon
-r_struct
-id|pnp_dev
-op_star
-id|pnp_find_dev
-c_func
-(paren
-r_struct
-id|pnp_card
-op_star
-id|card
-comma
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|function
-comma
-r_struct
-id|pnp_dev
-op_star
-id|from
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|function|pnp_find_card
-r_static
-r_inline
-r_struct
-id|pnp_card
-op_star
-id|pnp_find_card
-c_func
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|device
-comma
-r_struct
-id|pnp_card
-op_star
-id|from
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|function|pnp_find_dev
-r_static
-r_inline
-r_struct
-id|pnp_dev
-op_star
-id|pnp_find_dev
-c_func
-(paren
-r_struct
-id|pnp_card
-op_star
-id|card
-comma
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|function
-comma
-r_struct
-id|pnp_dev
-op_star
-id|from
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ISAPNP */
 macro_line|#ifdef DEBUG
 DECL|macro|pnp_dbg
 mdefine_line|#define pnp_dbg(format, arg...) printk(KERN_DEBUG &quot;pnp: &quot; format &quot;&bslash;n&quot; , ## arg)

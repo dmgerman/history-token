@@ -10322,6 +10322,17 @@ suffix:semicolon
 r_case
 id|TCP_SEQ_STATE_LISTENING
 suffix:colon
+r_if
+c_cond
+(paren
+id|v
+op_ne
+(paren
+r_void
+op_star
+)paren
+l_int|1
+)paren
 id|tcp_listen_unlock
 c_func
 (paren

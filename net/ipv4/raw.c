@@ -3055,6 +3055,7 @@ id|sk-&gt;next
 suffix:semicolon
 id|try_again
 suffix:colon
+suffix:semicolon
 )brace
 r_while
 c_loop

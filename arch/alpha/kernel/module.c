@@ -857,7 +857,7 @@ id|i
 dot
 id|r_offset
 suffix:semicolon
-multiline_comment|/* This is the symbol it is referring to.  */
+multiline_comment|/* This is the symbol it is referring to.  Note that all&n;&t;&t;   unresolved symbols have been resolved.  */
 id|sym
 op_assign
 id|symtab
@@ -867,34 +867,7 @@ suffix:semicolon
 id|value
 op_assign
 id|sym-&gt;st_value
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;module %s: Unknown symbol %s&bslash;n&quot;
-comma
-id|me-&gt;name
-comma
-id|strtab
 op_plus
-id|sym-&gt;st_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-)brace
-id|value
-op_add_assign
 id|rela
 (braket
 id|i

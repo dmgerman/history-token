@@ -7035,12 +7035,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -7060,8 +7054,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|off
-op_logical_or
 op_logical_neg
 id|card
 )paren
@@ -7069,12 +7061,10 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|snprintf
+id|sprintf
 c_func
 (paren
 id|buf
-comma
-id|count
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
@@ -7100,9 +7090,6 @@ id|buf
 comma
 r_int
 id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -7125,8 +7112,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|off
-op_logical_or
 op_logical_neg
 id|card
 )paren

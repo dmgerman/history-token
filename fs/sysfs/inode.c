@@ -631,6 +631,9 @@ r_const
 r_char
 op_star
 id|page
+comma
+r_int
+id|count
 )paren
 (brace
 r_struct
@@ -675,6 +678,8 @@ c_func
 id|s
 comma
 id|page
+comma
+id|count
 )paren
 suffix:semicolon
 r_return
@@ -910,7 +915,8 @@ r_return
 id|error
 ques
 c_cond
-id|error
+op_minus
+id|EFAULT
 suffix:colon
 id|count
 suffix:semicolon
@@ -1088,15 +1094,16 @@ r_return
 id|error
 ques
 c_cond
-id|error
+op_minus
+id|EFAULT
 suffix:colon
 id|count
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;flush_write_buffer - push buffer to kobject.&n; *&t;@file:&t;&t;file pointer.&n; *&t;@buffer:&t;data buffer for file.&n; *&n; *&t;Get the correct pointers for the kobject and the attribute we&squot;re&n; *&t;dealing with, then call the store() method for the attribute, &n; *&t;passing the buffer that we acquired in fill_write_buffer().&n; */
-DECL|function|flush_write_buffer
 r_static
 r_int
+DECL|function|flush_write_buffer
 id|flush_write_buffer
 c_func
 (paren
@@ -1109,6 +1116,9 @@ r_struct
 id|sysfs_buffer
 op_star
 id|buffer
+comma
+r_int
+id|count
 )paren
 (brace
 r_struct
@@ -1143,6 +1153,8 @@ comma
 id|attr
 comma
 id|buffer-&gt;page
+comma
+id|count
 )paren
 suffix:semicolon
 )brace
@@ -1205,6 +1217,8 @@ c_func
 id|file
 comma
 id|buffer
+comma
+id|count
 )paren
 suffix:semicolon
 r_if

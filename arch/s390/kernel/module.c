@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/s390x/kernel/module.c - Kernel module help for s390x.&n; *&n; *  S390 version&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  based on i386 version&n; *    Copyright (C) 2001 Rusty Russell.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  arch/s390/kernel/module.c - Kernel module help for s390.&n; *&n; *  S390 version&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  based on i386 version&n; *    Copyright (C) 2001 Rusty Russell.&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -226,7 +226,7 @@ id|i
 dot
 id|r_offset
 suffix:semicolon
-multiline_comment|/* This is the symbol it is referring to */
+multiline_comment|/* This is the symbol it is referring to.  Note that all&n;&t;&t;   undefined symbols have been resolved.  */
 id|sym
 op_assign
 (paren
@@ -258,31 +258,6 @@ dot
 id|r_info
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sym-&gt;st_value
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Unknown symbol %s&bslash;n&quot;
-comma
-id|me-&gt;name
-comma
-id|strtab
-op_plus
-id|sym-&gt;st_name
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren

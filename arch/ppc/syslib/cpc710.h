@@ -80,6 +80,18 @@ DECL|macro|PSBAR
 mdefine_line|#define PSBAR&t;0x000f8140
 DECL|macro|PPBAR
 mdefine_line|#define PPBAR&t;0x000f8150
+DECL|macro|BPMDLK
+mdefine_line|#define BPMDLK&t;0x000f8200      /* Bottom of Peripheral Memory Space */
+DECL|macro|TPMDLK
+mdefine_line|#define TPMDLK&t;0x000f8210      /* Top of Peripheral Memory Space */
+DECL|macro|BIODLK
+mdefine_line|#define BIODLK&t;0x000f8220      /* Bottom of Peripheral I/O Space */
+DECL|macro|TIODLK
+mdefine_line|#define TIODLK&t;0x000f8230      /* Top of Perioheral I/O Space */
+DECL|macro|DLKCTRL
+mdefine_line|#define DLKCTRL&t;0x000f8240      /* Deadlock control */
+DECL|macro|DLKDEV
+mdefine_line|#define DLKDEV&t;0x000f8250      /* Deadlock device */
 multiline_comment|/* System standard configuration registers space */
 DECL|macro|DCR
 mdefine_line|#define&t;DCR&t;0xff200000

@@ -147,12 +147,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -185,11 +179,6 @@ id|nid
 )paren
 suffix:semicolon
 r_return
-id|off
-ques
-c_cond
-l_int|0
-suffix:colon
 id|sprintf
 c_func
 (paren
@@ -266,9 +255,6 @@ op_minus
 id|i.freehigh
 )paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|macro|K

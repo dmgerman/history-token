@@ -4704,6 +4704,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t confuse &quot;arp -a&quot; w/ magic entries */
 id|try_again
 suffix:colon
+suffix:semicolon
 )brace
 r_while
 c_loop

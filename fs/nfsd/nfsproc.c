@@ -1869,10 +1869,11 @@ id|resp-&gt;offset
 op_star
 id|resp-&gt;offset
 op_assign
+id|htonl
+c_func
 (paren
-id|u32
-)paren
 id|offset
+)paren
 suffix:semicolon
 id|fh_put
 c_func
