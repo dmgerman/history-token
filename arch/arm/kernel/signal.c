@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2442,6 +2443,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|no_signal
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|current-&gt;ptrace
 op_amp
 id|PT_SINGLESTEP
@@ -2505,6 +2524,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|no_signal
+suffix:colon
 multiline_comment|/*&n;&t; * No signal to deliver to the process - restart the syscall.&n;&t; */
 r_if
 c_cond

@@ -524,15 +524,6 @@ id|apm_waitqueue
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* defined in pm.c */
-r_extern
-r_int
-id|suspend
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|apm_suspend
 r_static
 r_int
@@ -550,9 +541,10 @@ suffix:semicolon
 r_int
 id|err
 op_assign
-id|suspend
+id|pm_suspend
 c_func
 (paren
+id|PM_SUSPEND_MEM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Anyone on the APM queues will think we&squot;re still suspended.&n;&t; * Send a message so everyone knows we&squot;re now awake again.&n;&t; */

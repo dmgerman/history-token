@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; *&n; * 2002-05-27:&t;Nicolas Pitre&t;Killed sleep.h and the kmalloced save array.&n; * &t;&t;&t;&t;Storage is local on the stack now.&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -75,12 +77,14 @@ DECL|enumerator|SLEEP_SAVE_SIZE
 id|SLEEP_SAVE_SIZE
 )brace
 suffix:semicolon
-DECL|function|pm_do_suspend
+DECL|function|sa11x0_pm_enter
+r_static
 r_int
-id|pm_do_suspend
+id|sa11x0_pm_enter
 c_func
 (paren
-r_void
+id|u32
+id|state
 )paren
 (brace
 r_int
@@ -95,6 +99,17 @@ r_int
 id|delta
 comma
 id|gpio
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|state
+op_ne
+id|PM_SUSPEND_MEM
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* preserve current time */
 id|delta
@@ -353,4 +368,92 @@ id|sp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called after processes are frozen, but before we shut down devices.&n; */
+DECL|function|sa11x0_pm_prepare
+r_static
+r_int
+id|sa11x0_pm_prepare
+c_func
+(paren
+id|u32
+id|state
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Called after devices are re-setup, but before processes are thawed.&n; */
+DECL|function|sa11x0_pm_finish
+r_static
+r_int
+id|sa11x0_pm_finish
+c_func
+(paren
+id|u32
+id|state
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Set to PM_DISK_FIRMWARE so we can quickly veto suspend-to-disk.&n; */
+DECL|variable|sa11x0_pm_ops
+r_static
+r_struct
+id|pm_ops
+id|sa11x0_pm_ops
+op_assign
+(brace
+dot
+id|pm_disk_mode
+op_assign
+id|PM_DISK_FIRMWARE
+comma
+dot
+id|prepare
+op_assign
+id|sa11x0_pm_prepare
+comma
+dot
+id|enter
+op_assign
+id|sa11x0_pm_enter
+comma
+dot
+id|finish
+op_assign
+id|sa11x0_pm_finish
+comma
+)brace
+suffix:semicolon
+DECL|function|sa11x0_pm_init
+r_static
+r_int
+id|__init
+id|sa11x0_pm_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|pm_set_ops
+c_func
+(paren
+op_amp
+id|sa11x0_pm_ops
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|sa11x0_pm_init
+id|late_initcall
+c_func
+(paren
+id|sa11x0_pm_init
+)paren
+suffix:semicolon
 eof
