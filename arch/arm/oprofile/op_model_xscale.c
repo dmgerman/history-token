@@ -5,7 +5,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/arch/irqs.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;op_counter.h&quot;
 macro_line|#include &quot;op_arm_model.h&quot;
 DECL|macro|PMU_ENABLE
@@ -1683,21 +1684,14 @@ suffix:semicolon
 id|u32
 id|id
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;mrc p15, 0, %0, c0, c0, 0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|id
-)paren
-)paren
-suffix:semicolon
 id|id
 op_assign
 (paren
-id|id
+id|read_cpuid
+c_func
+(paren
+id|CPUID_ID
+)paren
 op_rshift
 l_int|13
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/serial/uart00.c&n; *&n; *  Driver for UART00 serial ports&n; *&n; *  Based on drivers/char/serial_amba.c, by ARM Limited &amp; &n; *                                          Deep Blue Solutions Ltd.&n; *  Copyright 2001 Altera Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: uart00.c,v 1.35 2002/07/28 10:03:28 rmk Exp $&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/serial/uart00.c&n; *&n; *  Driver for UART00 serial ports&n; *&n; *  Based on drivers/char/serial_amba.c, by ARM Limited &amp; &n; *                                          Deep Blue Solutions Ltd.&n; *  Copyright 2001 Altera Corporation&n; *&n; *  Update for 2.6.4 by Dirk Behme &lt;dirk.behme@de.bosch.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: uart00.c,v 1.35 2002/07/28 10:03:28 rmk Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/pld/pld_hotswap.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sizes.h&gt;
@@ -826,7 +825,7 @@ suffix:semicolon
 )brace
 DECL|function|uart00_int
 r_static
-r_void
+id|irqreturn_t
 id|uart00_int
 c_func
 (paren
@@ -937,6 +936,9 @@ c_loop
 (paren
 id|status
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|uart00_tx_empty
@@ -2310,7 +2312,7 @@ suffix:semicolon
 r_int
 id|baud
 op_assign
-l_int|38400
+l_int|115200
 suffix:semicolon
 r_int
 id|bits
@@ -2444,7 +2446,7 @@ id|data
 op_assign
 op_amp
 id|uart00_reg
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 DECL|function|uart00_console_init
@@ -2542,6 +2544,7 @@ id|port
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PLD_HOTSWAP
 DECL|variable|dev_port_map
 r_static
 r_struct
@@ -2551,7 +2554,6 @@ id|dev_port_map
 id|UART_NR
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PLD_HOTSWAP
 multiline_comment|/*&n; * Keep a mapping of dev_info addresses -&gt; port lines to use when&n; * removing ports dev==NULL indicates unused entry&n; */
 DECL|struct|uart00_ps_data
 r_struct
