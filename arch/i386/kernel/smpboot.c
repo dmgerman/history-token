@@ -3448,8 +3448,6 @@ DECL|variable|xquad_portio
 r_void
 op_star
 id|xquad_portio
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|__cacheline_aligned
 r_int

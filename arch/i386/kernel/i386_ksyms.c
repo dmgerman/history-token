@@ -709,4 +709,13 @@ c_func
 id|__PAGE_KERNEL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|variable|xquad_portio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xquad_portio
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
