@@ -1954,14 +1954,7 @@ multiline_comment|/* bender off */
 )brace
 )brace
 )brace
-id|snd_seq_oss_midi_close
-c_func
-(paren
-id|dp
-comma
-id|dev
-)paren
-suffix:semicolon
+singleline_comment|// snd_seq_oss_midi_close(dp, dev);
 id|snd_use_lock_free
 c_func
 (paren
