@@ -509,8 +509,12 @@ DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;252
 DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;253
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;254
+DECL|macro|__NR_rtas
+mdefine_line|#define __NR_rtas&t;&t;255
 DECL|macro|__NR_syscalls
-mdefine_line|#define __NR_syscalls&t;&t;254
+mdefine_line|#define __NR_syscalls&t;&t;256
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;__NR_syscalls
