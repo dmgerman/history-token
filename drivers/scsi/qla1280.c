@@ -18137,6 +18137,11 @@ id|qla1280_driver_template
 op_assign
 (brace
 dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|proc_name
 op_assign
 l_string|&quot;qla1280&quot;
