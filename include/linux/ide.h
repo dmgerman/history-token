@@ -3342,6 +3342,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* this interface exists */
+DECL|member|hold
+r_int
+id|hold
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* this interface is always present */
 DECL|member|serialized
 r_int
 id|serialized
