@@ -3124,20 +3124,6 @@ comma
 id|d_hash
 )paren
 suffix:semicolon
-multiline_comment|/* if lookup ends up in a different bucket &n;&t;&t; * due to concurrent rename, fail it&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|dentry-&gt;d_bucket
-op_ne
-id|head
-)paren
-)paren
-r_break
-suffix:semicolon
 id|smp_rmb
 c_func
 (paren
@@ -3167,6 +3153,21 @@ c_func
 op_amp
 id|dentry-&gt;d_lock
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If lookup ends up in a different bucket due to concurrent&n;&t;&t; * rename, fail it&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|dentry-&gt;d_bucket
+op_ne
+id|head
+)paren
+)paren
+r_goto
+id|terminate
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Recheck the dentry after taking the lock - d_move may have&n;&t;&t; * changed things.  Don&squot;t bother checking the hash because we&squot;re&n;&t;&t; * about to compare the whole name anyway.&n;&t;&t; */
 r_if
@@ -3268,6 +3269,8 @@ op_assign
 id|dentry
 suffix:semicolon
 )brace
+id|terminate
+suffix:colon
 id|spin_unlock
 c_func
 (paren
