@@ -99,7 +99,7 @@ DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y) ioremap(X,Y)
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(__alpha__) || defined(__m68k__)
+macro_line|#if defined(__alpha__) || defined(__mc68000__)
 DECL|macro|READx_WORKS
 mdefine_line|#define READx_WORKS
 DECL|macro|MEMCPYTOIO_WORKS
@@ -119,7 +119,7 @@ DECL|macro|MEMCPYTOIO_WRITEL
 mdefine_line|#define MEMCPYTOIO_WRITEL
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(__m68k__)
+macro_line|#if defined(__mc68000__)
 DECL|macro|MAP_BUSTOVIRT
 mdefine_line|#define MAP_BUSTOVIRT
 macro_line|#else
