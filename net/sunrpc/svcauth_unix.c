@@ -635,7 +635,7 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -645,7 +645,7 @@ comma
 id|im-&gt;m_class
 )paren
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -770,7 +770,7 @@ suffix:semicolon
 multiline_comment|/* class */
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -795,7 +795,7 @@ suffix:semicolon
 multiline_comment|/* ip address */
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -872,7 +872,7 @@ suffix:semicolon
 multiline_comment|/* domainname, or empty for NEGATIVE */
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp

@@ -292,7 +292,7 @@ id|type
 l_int|5
 )braket
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -314,7 +314,7 @@ comma
 id|ek-&gt;ek_fsidtype
 )paren
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -324,7 +324,7 @@ comma
 id|type
 )paren
 suffix:semicolon
-id|add_hex
+id|qword_addhex
 c_func
 (paren
 id|bpp
@@ -480,7 +480,7 @@ c_cond
 (paren
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -538,7 +538,7 @@ c_cond
 (paren
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -601,7 +601,7 @@ c_cond
 (paren
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -696,7 +696,7 @@ c_cond
 (paren
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -1335,7 +1335,7 @@ r_char
 op_star
 id|pth
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -1361,7 +1361,7 @@ op_star
 id|blen
 )paren
 suffix:semicolon
-id|add_word
+id|qword_add
 c_func
 (paren
 id|bpp
@@ -1503,7 +1503,7 @@ suffix:semicolon
 multiline_comment|/* client */
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
@@ -1559,7 +1559,7 @@ c_cond
 (paren
 id|len
 op_assign
-id|get_word
+id|qword_get
 c_func
 (paren
 op_amp
