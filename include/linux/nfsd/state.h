@@ -635,6 +635,8 @@ DECL|macro|WR_STATE
 mdefine_line|#define WR_STATE&t;        0x00000020
 DECL|macro|CLOSE_STATE
 mdefine_line|#define CLOSE_STATE             0x00000040
+DECL|macro|DELEG_RET
+mdefine_line|#define DELEG_RET               0x00000080
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 r_extern
