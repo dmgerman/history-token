@@ -7355,10 +7355,6 @@ comma
 id|err2
 suffix:semicolon
 r_struct
-id|shmid_ds
-id|s
-suffix:semicolon
-r_struct
 id|shmid64_ds
 id|s64
 suffix:semicolon
@@ -7721,7 +7717,7 @@ op_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.uid
+id|s64.shm_perm.uid
 comma
 op_amp
 id|up64-&gt;shm_perm.uid
@@ -7732,7 +7728,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.gid
+id|s64.shm_perm.gid
 comma
 op_amp
 id|up64-&gt;shm_perm.gid
@@ -7743,7 +7739,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.mode
+id|s64.shm_perm.mode
 comma
 op_amp
 id|up64-&gt;shm_perm.mode
@@ -7757,7 +7753,7 @@ op_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.uid
+id|s64.shm_perm.uid
 comma
 op_amp
 id|up32-&gt;shm_perm.uid
@@ -7768,7 +7764,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.gid
+id|s64.shm_perm.gid
 comma
 op_amp
 id|up32-&gt;shm_perm.gid
@@ -7779,7 +7775,7 @@ op_or_assign
 id|get_user
 c_func
 (paren
-id|s.shm_perm.mode
+id|s64.shm_perm.mode
 comma
 op_amp
 id|up32-&gt;shm_perm.mode
@@ -7816,7 +7812,7 @@ comma
 id|second
 comma
 op_amp
-id|s
+id|s64
 )paren
 suffix:semicolon
 id|set_fs
