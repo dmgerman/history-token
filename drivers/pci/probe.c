@@ -1821,6 +1821,13 @@ comma
 id|dev-&gt;device
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dev-&gt;pools
+)paren
+suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren

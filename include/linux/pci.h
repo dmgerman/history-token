@@ -600,6 +600,12 @@ id|u64
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
+DECL|member|pools
+r_struct
+id|list_head
+id|pools
+suffix:semicolon
+multiline_comment|/* pci_pools tied to this device */
 DECL|member|current_state
 id|u32
 id|current_state
