@@ -553,7 +553,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;interrupt_controller    = 0x%ld&bslash;n&quot;
+l_string|&quot;naca-&gt;interrupt_controller    = 0x%lx&bslash;n&quot;
 comma
 id|naca-&gt;interrupt_controller
 )paren
@@ -561,7 +561,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcf                      = 0x%p&bslash;n&quot;
+l_string|&quot;systemcfg                      = 0x%p&bslash;n&quot;
 comma
 id|systemcfg
 )paren
@@ -827,7 +827,7 @@ op_logical_neg
 id|cpu_online_map
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu_id
 )paren
@@ -1339,17 +1339,12 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_CMDLINE
-id|strlcpy
+id|strcpy
 c_func
 (paren
 id|cmd_line
 comma
 id|CONFIG_CMDLINE
-comma
-r_sizeof
-(paren
-id|cmd_line
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
@@ -1395,7 +1390,7 @@ l_int|0
 op_ne
 l_int|0
 )paren
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|cmd_line
@@ -1409,6 +1404,18 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
+id|cmd_line
+(braket
+r_sizeof
+(paren
+id|cmd_line
+)paren
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Look for mem= option on command line */
 r_if
 c_cond
@@ -2336,7 +2343,7 @@ op_logical_and
 (paren
 id|val
 op_le
-id|MAX_PACAS
+id|NR_CPUS
 )paren
 )paren
 (brace
