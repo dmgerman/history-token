@@ -359,12 +359,6 @@ op_decrement
 id|nr
 )paren
 suffix:semicolon
-multiline_comment|/* keep the page table cache within bounds */
-id|check_pgt_cache
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|pte_alloc_map
 id|pte_t
