@@ -1809,7 +1809,7 @@ id|ip_options
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -2073,7 +2073,7 @@ c_cond
 (paren
 id|skb-&gt;protocol
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -2259,7 +2259,7 @@ op_or_assign
 (paren
 id|old_iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -2272,7 +2272,7 @@ c_cond
 (paren
 id|old_iph-&gt;frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -2854,7 +2854,7 @@ op_logical_or
 (paren
 id|p.iph.frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 op_complement
@@ -2872,7 +2872,7 @@ id|p.iph.ttl
 )paren
 id|p.iph.frag_off
 op_or_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF

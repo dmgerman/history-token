@@ -1716,7 +1716,7 @@ id|ip_options
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPV6
@@ -2013,7 +2013,7 @@ c_cond
 (paren
 id|skb-&gt;protocol
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPV6
@@ -2590,7 +2590,7 @@ id|IPV6_MIN_MTU
 )paren
 id|iph-&gt;frag_off
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF
@@ -2919,7 +2919,7 @@ op_logical_or
 (paren
 id|p.iph.frag_off
 op_amp
-id|__constant_htons
+id|htons
 c_func
 (paren
 op_complement
@@ -2937,7 +2937,7 @@ id|p.iph.ttl
 )paren
 id|p.iph.frag_off
 op_or_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF

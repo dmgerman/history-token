@@ -661,7 +661,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0xffff
@@ -811,7 +811,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0xffff

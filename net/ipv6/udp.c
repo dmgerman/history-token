@@ -1979,7 +1979,7 @@ c_cond
 (paren
 id|skb-&gt;protocol
 op_eq
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -2007,7 +2007,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0xffff
