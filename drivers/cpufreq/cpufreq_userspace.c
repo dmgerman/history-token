@@ -1552,13 +1552,17 @@ c_func
 id|THIS_MODULE
 )paren
 )paren
-op_logical_or
-op_logical_neg
-id|policy-&gt;cur
 )paren
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|policy-&gt;cur
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -1825,7 +1829,6 @@ DECL|macro|cpufreq_sa11x0_compat
 mdefine_line|#define cpufreq_sa11x0_compat() do {} while(0)
 macro_line|#endif
 DECL|variable|cpufreq_gov_userspace
-r_static
 r_struct
 id|cpufreq_governor
 id|cpufreq_gov_userspace
@@ -1979,7 +1982,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|cpufreq_gov_userspace_init
-id|module_init
+id|fs_initcall
 c_func
 (paren
 id|cpufreq_gov_userspace_init
