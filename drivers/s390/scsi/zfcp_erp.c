@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.79 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.83 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -11660,7 +11660,6 @@ op_logical_neg
 id|unit-&gt;device
 )paren
 )paren
-(brace
 id|scsi_add_device
 c_func
 (paren
@@ -11673,13 +11672,6 @@ comma
 id|unit-&gt;scsi_lun
 )paren
 suffix:semicolon
-id|zfcp_cb_unit_add
-c_func
-(paren
-id|unit
-)paren
-suffix:semicolon
-)brace
 id|zfcp_unit_put
 c_func
 (paren
@@ -12558,39 +12550,4 @@ suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA
 macro_line|#undef ZFCP_LOG_AREA
-DECL|variable|zfcp_erp_wait
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zfcp_erp_wait
-)paren
-suffix:semicolon
-DECL|variable|zfcp_erp_port_reopen
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zfcp_erp_port_reopen
-)paren
-suffix:semicolon
-DECL|variable|zfcp_erp_unit_reopen
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zfcp_erp_unit_reopen
-)paren
-suffix:semicolon
-DECL|variable|zfcp_erp_unit_shutdown
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zfcp_erp_unit_shutdown
-)paren
-suffix:semicolon
-DECL|variable|zfcp_fsf_request_timeout_handler
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zfcp_fsf_request_timeout_handler
-)paren
-suffix:semicolon
 eof
