@@ -21,7 +21,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -229,6 +229,11 @@ r_struct
 id|sk_buff
 op_star
 id|saved_skb
+suffix:semicolon
+DECL|member|tx_task
+r_struct
+id|tasklet_struct
+id|tx_task
 suffix:semicolon
 multiline_comment|/*&n;&t; * these are things that the kernel wants me to keep, so users&n;&t; * can find out semi-useless statistics of how well the card is&n;&t; * performing&n;&t; */
 DECL|member|stats
@@ -1197,18 +1202,29 @@ id|MC_RELEASE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; * Returns non-zero when successful.&n; */
-DECL|function|smc_hardware_send_packet
+DECL|function|smc_hardware_send_pkt
 r_static
 r_void
-id|smc_hardware_send_packet
+id|smc_hardware_send_pkt
 c_func
 (paren
+r_int
+r_int
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
 )paren
-(brace
+id|data
+suffix:semicolon
 r_struct
 id|smc_local
 op_star
@@ -1293,7 +1309,7 @@ suffix:semicolon
 id|lp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-id|dev_kfree_skb_any
+id|dev_kfree_skb
 c_func
 (paren
 id|skb
@@ -1403,7 +1419,29 @@ comma
 id|DATA_REG
 )paren
 suffix:semicolon
-multiline_comment|/* and let the chipset deal with it */
+multiline_comment|/*&n;&t; * If THROTTLE_TX_PKTS is set, we look at the TX_EMPTY flag&n;&t; * before queueing this packet for TX, and if it&squot;s clear then&n;&t; * we stop the queue here.  This will have the effect of&n;&t; * having at most 2 packets queued for TX in the chip&squot;s memory&n;&t; * at all time. If THROTTLE_TX_PKTS is not set then the queue&n;&t; * is stopped only when memory allocation (MC_ALLOC) does not&n;&t; * succeed right away.&n;&t; */
+r_if
+c_cond
+(paren
+id|THROTTLE_TX_PKTS
+op_logical_and
+op_logical_neg
+(paren
+id|SMC_GET_INT
+c_func
+(paren
+)paren
+op_amp
+id|IM_TX_EMPTY_INT
+)paren
+)paren
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* queue the packet for TX */
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -1416,15 +1454,35 @@ c_func
 id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
-id|dev_kfree_skb_any
+id|SMC_ENABLE_INT
+c_func
+(paren
+id|IM_TX_INT
+op_or
+id|IM_TX_EMPTY_INT
+)paren
+suffix:semicolon
+id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
 suffix:semicolon
 id|lp-&gt;stats.tx_packets
 op_increment
@@ -1642,30 +1700,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Allocation succeeded: push packet to the chip&squot;s own memory&n;&t;&t; * immediately.&n;&t;&t; *&n;&t;&t; * If THROTTLE_TX_PKTS is selected that means we don&squot;t want&n;&t;&t; * more than a single TX packet taking up space in the chip&squot;s&n;&t;&t; * internal memory at all time, in which case we stop the&n;&t;&t; * queue right here until we&squot;re notified of TX completion.&n;&t;&t; *&n;&t;&t; * Otherwise we&squot;re quite happy to feed more TX packets right&n;&t;&t; * away for better TX throughput, in which case the queue is&n;&t;&t; * left active.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|THROTTLE_TX_PKTS
-)paren
-id|netif_stop_queue
+multiline_comment|/*&n;&t;&t; * Allocation succeeded: push packet to the chip&squot;s own memory&n;&t;&t; * immediately.&n;&t;&t; */
+id|smc_hardware_send_pkt
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|dev
-)paren
-suffix:semicolon
-id|smc_hardware_send_packet
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|SMC_ENABLE_INT
-c_func
-(paren
-id|IM_TX_INT
-op_or
-id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
 )brace
@@ -3893,36 +3936,17 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|smc_hardware_send_packet
+id|tasklet_hi_schedule
 c_func
 (paren
-id|dev
-)paren
-suffix:semicolon
-id|mask
-op_or_assign
-(paren
-id|IM_TX_INT
-op_or
-id|IM_TX_EMPTY_INT
+op_amp
+id|lp-&gt;tx_task
 )paren
 suffix:semicolon
 id|mask
 op_and_assign
 op_complement
 id|IM_ALLOC_INT
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|THROTTLE_TX_PKTS
-)paren
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -5949,6 +5973,21 @@ c_func
 (paren
 op_amp
 id|lp-&gt;lock
+)paren
+suffix:semicolon
+id|tasklet_init
+c_func
+(paren
+op_amp
+id|lp-&gt;tx_task
+comma
+id|smc_hardware_send_pkt
+comma
+(paren
+r_int
+r_int
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|lp-&gt;mii.phy_id_mask
