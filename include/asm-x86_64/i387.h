@@ -81,6 +81,8 @@ DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
 mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
+DECL|macro|unlazy_current_fpu
+mdefine_line|#define unlazy_current_fpu() do { &bslash;&n;&t;if (test_thread_flag(TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
 mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk,TIF_USEDFPU); &t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|load_mxcsr
@@ -116,23 +118,6 @@ r_struct
 id|user_i387_struct
 op_star
 id|buf
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * FPU state for core dumps...&n; */
-r_extern
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
-id|user_i387_struct
-op_star
-id|fpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * i387 state interaction&n; */

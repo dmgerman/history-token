@@ -4,6 +4,7 @@ mdefine_line|#define __ASM_X86_64_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 DECL|typedef|elf_greg_t
 r_typedef
 r_int
@@ -25,12 +26,6 @@ r_typedef
 r_struct
 id|user_i387_struct
 id|elf_fpregset_t
-suffix:semicolon
-DECL|typedef|elf_fpxregset_t
-r_typedef
-r_struct
-id|user_fxsr_struct
-id|elf_fpxregset_t
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
@@ -73,6 +68,46 @@ r_void
 suffix:semicolon
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality_64bit()
+r_extern
+r_int
+id|dump_task_regs
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_gregset_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_regs) dump_task_regs(tsk, elf_regs)
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|dump_smp_unlazy_fpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_SYNC
+mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

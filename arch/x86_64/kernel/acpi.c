@@ -1179,8 +1179,6 @@ macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Low-Level Sleep Support&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 macro_line|#error not ported to x86-64 yet
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#endif

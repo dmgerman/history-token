@@ -9,8 +9,6 @@ macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * possibly do the LDT unload here?&n; */
-DECL|macro|destroy_context
-mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)
 r_int
 id|init_new_context
 c_func
@@ -20,6 +18,16 @@ id|task_struct
 op_star
 id|tsk
 comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+r_void
+id|destroy_context
+c_func
+(paren
 r_struct
 id|mm_struct
 op_star

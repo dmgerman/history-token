@@ -1068,6 +1068,18 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;vmalloc_fault err %lx addr %lx rip %lx&bslash;n&quot;
+comma
+id|error_code
+comma
+id|address
+comma
+id|regs-&gt;rip
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * x86-64 has the same kernel 3rd level pages for all CPUs.&n;&t;&t; * But for vmalloc/modules the TLB synchronization works lazily,&n;&t;&t; * so it can happen that we get a page fault for something&n;&t;&t; * that is really already in the page table. Just check if it&n;&t;&t; * is really there and when yes flush the local TLB. &n;&t;&t; */
 id|pgd
 op_assign

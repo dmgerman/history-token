@@ -1133,6 +1133,8 @@ suffix:semicolon
 )brace
 id|pe
 op_assign
+id|_PAGE_NX
+op_or
 id|_PAGE_PSE
 op_or
 id|_KERNPG_TABLE
@@ -1140,6 +1142,10 @@ op_or
 id|_PAGE_GLOBAL
 op_or
 id|paddr
+suffix:semicolon
+id|pe
+op_and_assign
+id|__supported_pte_mask
 suffix:semicolon
 id|set_pmd
 c_func

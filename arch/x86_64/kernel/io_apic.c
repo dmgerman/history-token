@@ -12,6 +12,11 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+DECL|variable|sis_apic_bug
+r_int
+id|sis_apic_bug
+suffix:semicolon
+multiline_comment|/* not actually supported, dummy for compile */
 DECL|macro|APIC_LOCKUP_DEBUG
 macro_line|#undef APIC_LOCKUP_DEBUG
 DECL|macro|APIC_LOCKUP_DEBUG

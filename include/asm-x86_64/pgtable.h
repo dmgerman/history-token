@@ -47,6 +47,11 @@ id|boot_vmalloc_pgt
 (braket
 )braket
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|__supported_pte_mask
+suffix:semicolon
 DECL|macro|swapper_pg_dir
 mdefine_line|#define swapper_pg_dir NULL
 r_extern
@@ -261,7 +266,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|macro|pgd_page
-mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
+mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PHYSICAL_PAGE_MASK))
 DECL|macro|ptep_get_and_clear
 mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
 DECL|macro|pte_same
@@ -354,25 +359,35 @@ mdefine_line|#define _PAGE_CHG_MASK&t;(PTE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY)
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_SHARED&t;__pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|PAGE_SHARED_EXEC
+mdefine_line|#define PAGE_SHARED_EXEC __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_COPY    __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|PAGE_COPY_EXEC
+mdefine_line|#define PAGE_COPY_EXEC __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|PAGE_READONLY_EXEC
+mdefine_line|#define PAGE_READONLY_EXEC __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL
-mdefine_line|#define __PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
+mdefine_line|#define __PAGE_KERNEL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_NX)
+DECL|macro|__PAGE_KERNEL_EXECUTABLE
+mdefine_line|#define __PAGE_KERNEL_EXECUTABLE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL_NOCACHE
-mdefine_line|#define __PAGE_KERNEL_NOCACHE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_PCD | _PAGE_ACCESSED)
+mdefine_line|#define __PAGE_KERNEL_NOCACHE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_PCD | _PAGE_ACCESSED | _PAGE_NX)
 DECL|macro|__PAGE_KERNEL_RO
-mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED)
+mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_NX)
 DECL|macro|__PAGE_KERNEL_VSYSCALL
 mdefine_line|#define __PAGE_KERNEL_VSYSCALL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL_LARGE
-mdefine_line|#define __PAGE_KERNEL_LARGE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_PSE)
+mdefine_line|#define __PAGE_KERNEL_LARGE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_PSE | _PAGE_NX)
 DECL|macro|MAKE_GLOBAL
 mdefine_line|#define MAKE_GLOBAL(x) __pgprot((x) | _PAGE_GLOBAL)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL MAKE_GLOBAL(__PAGE_KERNEL)
+DECL|macro|PAGE_KERNEL_EXECUTABLE
+mdefine_line|#define PAGE_KERNEL_EXECUTABLE MAKE_GLOBAL(__PAGE_KERNEL_EXECUTABLE)
 DECL|macro|PAGE_KERNEL_RO
 mdefine_line|#define PAGE_KERNEL_RO MAKE_GLOBAL(__PAGE_KERNEL_RO)
 DECL|macro|PAGE_KERNEL_NOCACHE
@@ -381,6 +396,7 @@ DECL|macro|PAGE_KERNEL_VSYSCALL
 mdefine_line|#define PAGE_KERNEL_VSYSCALL MAKE_GLOBAL(__PAGE_KERNEL_VSYSCALL)
 DECL|macro|PAGE_KERNEL_LARGE
 mdefine_line|#define PAGE_KERNEL_LARGE MAKE_GLOBAL(__PAGE_KERNEL_LARGE)
+multiline_comment|/*         xwr */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
@@ -390,13 +406,13 @@ mdefine_line|#define __P010&t;PAGE_COPY
 DECL|macro|__P011
 mdefine_line|#define __P011&t;PAGE_COPY
 DECL|macro|__P100
-mdefine_line|#define __P100&t;PAGE_READONLY
+mdefine_line|#define __P100&t;PAGE_READONLY_EXEC
 DECL|macro|__P101
-mdefine_line|#define __P101&t;PAGE_READONLY
+mdefine_line|#define __P101&t;PAGE_READONLY_EXEC
 DECL|macro|__P110
-mdefine_line|#define __P110&t;PAGE_COPY
+mdefine_line|#define __P110&t;PAGE_COPY_EXEC
 DECL|macro|__P111
-mdefine_line|#define __P111&t;PAGE_COPY
+mdefine_line|#define __P111&t;PAGE_COPY_EXEC
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
@@ -406,13 +422,13 @@ mdefine_line|#define __S010&t;PAGE_SHARED
 DECL|macro|__S011
 mdefine_line|#define __S011&t;PAGE_SHARED
 DECL|macro|__S100
-mdefine_line|#define __S100&t;PAGE_READONLY
+mdefine_line|#define __S100&t;PAGE_READONLY_EXEC
 DECL|macro|__S101
-mdefine_line|#define __S101&t;PAGE_READONLY
+mdefine_line|#define __S101&t;PAGE_READONLY_EXEC
 DECL|macro|__S110
-mdefine_line|#define __S110&t;PAGE_SHARED
+mdefine_line|#define __S110&t;PAGE_SHARED_EXEC
 DECL|macro|__S111
-mdefine_line|#define __S111&t;PAGE_SHARED
+mdefine_line|#define __S111&t;PAGE_SHARED_EXEC
 DECL|function|pgd_bad
 r_static
 r_inline
@@ -503,12 +519,26 @@ id|page_nr
 op_lshift
 id|PAGE_SHIFT
 )paren
-op_or
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_or_assign
 id|pgprot_val
 c_func
 (paren
 id|pgprot
 )paren
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_and_assign
+id|__supported_pte_mask
 suffix:semicolon
 r_return
 id|pte
@@ -1234,9 +1264,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0 /* disabled because of confusing/wrong naming. */
-mdefine_line|#define __pgd_offset(address) pgd_index(address)
-macro_line|#endif
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* PMD  - Level 2 access */

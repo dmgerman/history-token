@@ -1,6 +1,7 @@
 macro_line|#ifndef SOCKET32_H
 DECL|macro|SOCKET32_H
 mdefine_line|#define SOCKET32_H 1
+macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/* XXX This really belongs in some header file... -DaveM */
 DECL|macro|MAX_SOCK_ADDR
 mdefine_line|#define MAX_SOCK_ADDR&t;128&t;&t;/* 108 for Unix domain - &n;&t;&t;&t;&t;&t;   16 for IP, 16 for IPX,&n;&t;&t;&t;&t;&t;   24 for IPv6,&n;&t;&t;&t;&t;&t;   about 80 for AX.25 */
@@ -21,7 +22,7 @@ id|u32
 id|msg_iov
 suffix:semicolon
 DECL|member|msg_iovlen
-id|__kernel_size_t32
+id|compat_size_t
 id|msg_iovlen
 suffix:semicolon
 DECL|member|msg_control
@@ -29,7 +30,7 @@ id|u32
 id|msg_control
 suffix:semicolon
 DECL|member|msg_controllen
-id|__kernel_size_t32
+id|compat_size_t
 id|msg_controllen
 suffix:semicolon
 DECL|member|msg_flags
@@ -43,7 +44,7 @@ r_struct
 id|cmsghdr32
 (brace
 DECL|member|cmsg_len
-id|__kernel_size_t32
+id|compat_size_t
 id|cmsg_len
 suffix:semicolon
 DECL|member|cmsg_level

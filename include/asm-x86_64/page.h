@@ -23,6 +23,14 @@ DECL|macro|LARGE_PAGE_MASK
 mdefine_line|#define LARGE_PAGE_MASK (~(LARGE_PAGE_SIZE-1))
 DECL|macro|LARGE_PAGE_SIZE
 mdefine_line|#define LARGE_PAGE_SIZE (1UL &lt;&lt; PMD_SHIFT)
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT PMD_SHIFT
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;((1UL) &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+DECL|macro|HUGETLB_PAGE_ORDER
+mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_void

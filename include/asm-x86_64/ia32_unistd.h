@@ -2,6 +2,8 @@ macro_line|#ifndef _ASM_X86_64_IA32_UNISTD_H_
 DECL|macro|_ASM_X86_64_IA32_UNISTD_H_
 mdefine_line|#define _ASM_X86_64_IA32_UNISTD_H_
 multiline_comment|/*&n; * This file contains the system call numbers of the ia32 port,&n; * this is for the kernel only.&n; */
+DECL|macro|__NR_ia32_restart_syscall
+mdefine_line|#define __NR_ia32_restart_syscall 0
 DECL|macro|__NR_ia32_exit
 mdefine_line|#define __NR_ia32_exit&t;&t;  1
 DECL|macro|__NR_ia32_fork
@@ -508,7 +510,19 @@ DECL|macro|__NR_ia32_free_hugepages
 mdefine_line|#define __NR_ia32_free_hugepages&t;&t;251
 DECL|macro|__NR_ia32_exit_group
 mdefine_line|#define __NR_ia32_exit_group&t;&t;252
+DECL|macro|__NR_ia32_lookup_dcookie
+mdefine_line|#define __NR_ia32_lookup_dcookie&t;253
+DECL|macro|__NR_ia32_sys_epoll_create
+mdefine_line|#define __NR_ia32_sys_epoll_create&t;254
+DECL|macro|__NR_ia32_sys_epoll_ctl
+mdefine_line|#define __NR_ia32_sys_epoll_ctl&t;255
+DECL|macro|__NR_ia32_sys_epoll_wait
+mdefine_line|#define __NR_ia32_sys_epoll_wait&t;256
+DECL|macro|__NR_ia32_remap_file_pages
+mdefine_line|#define __NR_ia32_remap_file_pages&t;257
+DECL|macro|__NR_ia32_set_tid_address
+mdefine_line|#define __NR_ia32_set_tid_address&t;258
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 260&t;/* must be &gt; than biggest syscall! */&t;
+mdefine_line|#define IA32_NR_syscalls 265&t;/* must be &gt; than biggest syscall! */&t;
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof

@@ -120,6 +120,8 @@ DECL|macro|X86_VENDOR_RISE
 mdefine_line|#define X86_VENDOR_RISE 6
 DECL|macro|X86_VENDOR_TRANSMETA
 mdefine_line|#define X86_VENDOR_TRANSMETA 7
+DECL|macro|X86_VENDOR_NUM
+mdefine_line|#define X86_VENDOR_NUM 8
 DECL|macro|X86_VENDOR_UNKNOWN
 mdefine_line|#define X86_VENDOR_UNKNOWN 0xff
 r_extern
@@ -597,7 +599,7 @@ multiline_comment|/* This decides where the kernel will search for a free chunk 
 DECL|macro|TASK_UNMAPPED_32
 mdefine_line|#define TASK_UNMAPPED_32 0x40000000
 DECL|macro|TASK_UNMAPPED_64
-mdefine_line|#define TASK_UNMAPPED_64 (TASK_SIZE/3) 
+mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flag(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
 multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
@@ -875,7 +877,7 @@ mdefine_line|#define N_EXCEPTION_STACKS 3  /* hw limit: 7 */
 DECL|macro|EXCEPTION_STKSZ
 mdefine_line|#define EXCEPTION_STKSZ 1024
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;__asm__(&quot;movl %0,%%fs; movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (0));&t;&t; &bslash;&n;&t;wrmsrl(MSR_KERNEL_GS_BASE, 0);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rip = (new_rip);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;write_pda(oldrsp, (new_rsp));&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;cs = __USER_CS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;ss = __USER_DS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;eflags = 0x200;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while(0) 
+mdefine_line|#define start_thread(regs,new_rip,new_rsp) do { &bslash;&n;&t;asm volatile(&quot;movl %0,%%fs; movl %0,%%es; movl %0,%%ds&quot;: :&quot;r&quot; (0));&t; &bslash;&n;&t;load_gs_index(0);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(regs)-&gt;rip = (new_rip);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;rsp = (new_rsp);&t;&t;&t;&t;&t;&t; &bslash;&n;&t;write_pda(oldrsp, (new_rsp));&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;cs = __USER_CS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;ss = __USER_DS;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(regs)-&gt;eflags = 0x200;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t; &bslash;&n;} while(0) 
 r_struct
 id|task_struct
 suffix:semicolon
@@ -918,7 +920,9 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-r_extern
+DECL|function|release_segments
+r_static
+r_inline
 r_void
 id|release_segments
 c_func
@@ -928,7 +932,8 @@ id|mm_struct
 op_star
 id|mm
 )paren
-suffix:semicolon
+(brace
+)brace
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; * What is this good for? it will be always the scheduler or ret_from_fork.&n; */
 DECL|macro|thread_saved_pc
 mdefine_line|#define thread_saved_pc(t) (*(unsigned long *)((t)-&gt;thread.rsp - 8))
@@ -987,5 +992,35 @@ DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)  prefetchw(x)
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()   rep_nop()
+multiline_comment|/*&n; *      NSC/Cyrix CPU configuration register indexes&n; */
+DECL|macro|CX86_CCR0
+mdefine_line|#define CX86_CCR0 0xc0
+DECL|macro|CX86_CCR1
+mdefine_line|#define CX86_CCR1 0xc1
+DECL|macro|CX86_CCR2
+mdefine_line|#define CX86_CCR2 0xc2
+DECL|macro|CX86_CCR3
+mdefine_line|#define CX86_CCR3 0xc3
+DECL|macro|CX86_CCR4
+mdefine_line|#define CX86_CCR4 0xe8
+DECL|macro|CX86_CCR5
+mdefine_line|#define CX86_CCR5 0xe9
+DECL|macro|CX86_CCR6
+mdefine_line|#define CX86_CCR6 0xea
+DECL|macro|CX86_CCR7
+mdefine_line|#define CX86_CCR7 0xeb
+DECL|macro|CX86_DIR0
+mdefine_line|#define CX86_DIR0 0xfe
+DECL|macro|CX86_DIR1
+mdefine_line|#define CX86_DIR1 0xff
+DECL|macro|CX86_ARR_BASE
+mdefine_line|#define CX86_ARR_BASE 0xc4
+DECL|macro|CX86_RCR_BASE
+mdefine_line|#define CX86_RCR_BASE 0xdc
+multiline_comment|/*&n; *      NSC/Cyrix CPU indexed register access macros&n; */
+DECL|macro|getCx86
+mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
+DECL|macro|setCx86
+mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

@@ -1581,7 +1581,7 @@ c_func
 (paren
 id|__NR_create_module
 comma
-id|sys_create_module
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_init_module
 mdefine_line|#define __NR_init_module                       175
@@ -1608,7 +1608,7 @@ c_func
 (paren
 id|__NR_get_kernel_syms
 comma
-id|sys_get_kernel_syms
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_query_module
 mdefine_line|#define __NR_query_module                      178
@@ -1617,7 +1617,7 @@ c_func
 (paren
 id|__NR_query_module
 comma
-id|sys_query_module
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_quotactl
 mdefine_line|#define __NR_quotactl                          179
@@ -1673,7 +1673,15 @@ id|__NR_tuxcall
 comma
 id|sys_ni_syscall
 )paren
-multiline_comment|/* 165 currently unused */
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;&t;185
+id|__SYSCALL
+c_func
+(paren
+id|__NR_security
+comma
+id|sys_ni_syscall
+)paren
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;186
 id|__SYSCALL
@@ -1917,8 +1925,80 @@ id|__NR_lookup_dcookie
 comma
 id|sys_lookup_dcookie
 )paren
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;213
+id|__SYSCALL
+c_func
+(paren
+id|__NR_epoll_create
+comma
+id|sys_epoll_create
+)paren
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;214
+id|__SYSCALL
+c_func
+(paren
+id|__NR_epoll_ctl
+comma
+id|sys_epoll_ctl
+)paren
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;215
+id|__SYSCALL
+c_func
+(paren
+id|__NR_epoll_wait
+comma
+id|sys_epoll_wait
+)paren
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;216
+id|__SYSCALL
+c_func
+(paren
+id|__NR_remap_file_pages
+comma
+id|sys_remap_file_pages
+)paren
+DECL|macro|__NR_getdents64
+mdefine_line|#define __NR_getdents64&t;217
+id|__SYSCALL
+c_func
+(paren
+id|__NR_getdents64
+comma
+id|sys_getdents64
+)paren
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;218
+id|__SYSCALL
+c_func
+(paren
+id|__NR_set_tid_address
+comma
+id|sys_set_tid_address
+)paren
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;219
+id|__SYSCALL
+c_func
+(paren
+id|__NR_restart_syscall
+comma
+id|sys_restart_syscall
+)paren
+DECL|macro|__NR_semtimedop
+mdefine_line|#define __NR_semtimedop&t;&t;220
+id|__SYSCALL
+c_func
+(paren
+id|__NR_semtimedop
+comma
+id|sys_semtimedop
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_lookup_dcookie
+mdefine_line|#define __NR_syscall_max __NR_semtimedop
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber
@@ -1969,18 +2049,20 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|ssize_t
+r_int
 id|sys_write
 c_func
 (paren
 r_int
-r_int
+id|fd
 comma
+r_const
 r_char
 op_star
+id|buf
 comma
 r_int
+id|size
 )paren
 suffix:semicolon
 r_static
@@ -2253,7 +2335,6 @@ suffix:semicolon
 r_struct
 id|rusage
 suffix:semicolon
-id|asmlinkage
 r_int
 id|sys_wait4
 c_func

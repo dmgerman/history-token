@@ -292,24 +292,32 @@ DECL|macro|readw
 mdefine_line|#define readw(addr) (*(volatile unsigned short *) __io_virt(addr))
 DECL|macro|readl
 mdefine_line|#define readl(addr) (*(volatile unsigned int *) __io_virt(addr))
+DECL|macro|readq
+mdefine_line|#define readq(addr) (*(volatile unsigned long *) __io_virt(addr))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb readb
 DECL|macro|__raw_readw
 mdefine_line|#define __raw_readw readw
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl readl
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq readq
 DECL|macro|writeb
 mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) __io_virt(addr) = (b))
 DECL|macro|writew
 mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) __io_virt(addr) = (b))
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) __io_virt(addr) = (b))
+DECL|macro|writeq
+mdefine_line|#define writeq(b,addr) (*(volatile unsigned long *) __io_virt(addr) = (b))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq writeq
 r_void
 op_star
 id|memcpy_fromio
@@ -318,6 +326,7 @@ c_func
 r_void
 op_star
 comma
+r_const
 r_void
 op_star
 comma
@@ -332,6 +341,7 @@ c_func
 r_void
 op_star
 comma
+r_const
 r_void
 op_star
 comma
@@ -361,7 +371,7 @@ DECL|macro|isa_memcpy_fromio
 mdefine_line|#define isa_memcpy_fromio(a,b,c)&t;memcpy_fromio((a),__ISA_IO_base + (b),(c))
 DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
-multiline_comment|/*&n; * Again, i386 does not require mem IO specific function.&n; */
+multiline_comment|/*&n; * Again, x86-64 does not require mem IO specific function.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),__io_virt(b),(c),(d))
 DECL|macro|isa_eth_io_copy_and_sum

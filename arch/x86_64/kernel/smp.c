@@ -8,10 +8,10 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 multiline_comment|/*&n; * the following functions deal with sending IPIs between CPUs.&n; *&n; * We use &squot;broadcast&squot;, CPU-&gt;CPU IPIs and self-IPIs too.&n; */
 DECL|function|__prepare_ICR
 r_static

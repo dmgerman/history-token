@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/i386/kernel/profile.c&n; *&n; *&t;(C) 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; */
+multiline_comment|/*&n; *&t;linux/arch/x86_64/kernel/profile.c&n; *&n; *&t;(C) 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; */
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;

@@ -20,6 +20,87 @@ DECL|macro|__PUSH
 mdefine_line|#define __PUSH(x) &quot;pushq %%&quot; __STR(x) &quot;&bslash;n&bslash;t&quot;
 DECL|macro|__POP
 mdefine_line|#define __POP(x)  &quot;popq  %%&quot; __STR(x) &quot;&bslash;n&bslash;t&quot;
+DECL|struct|save_context_frame
+r_struct
+id|save_context_frame
+(brace
+DECL|member|rbp
+r_int
+r_int
+id|rbp
+suffix:semicolon
+DECL|member|rbx
+r_int
+r_int
+id|rbx
+suffix:semicolon
+DECL|member|rcx
+r_int
+r_int
+id|rcx
+suffix:semicolon
+DECL|member|rdx
+r_int
+r_int
+id|rdx
+suffix:semicolon
+DECL|member|rsi
+r_int
+r_int
+id|rsi
+suffix:semicolon
+DECL|member|rdi
+r_int
+r_int
+id|rdi
+suffix:semicolon
+DECL|member|rax
+r_int
+r_int
+id|rax
+suffix:semicolon
+DECL|member|r15
+r_int
+r_int
+id|r15
+suffix:semicolon
+DECL|member|r14
+r_int
+r_int
+id|r14
+suffix:semicolon
+DECL|member|r13
+r_int
+r_int
+id|r13
+suffix:semicolon
+DECL|member|r12
+r_int
+r_int
+id|r12
+suffix:semicolon
+DECL|member|r11
+r_int
+r_int
+id|r11
+suffix:semicolon
+DECL|member|r10
+r_int
+r_int
+id|r10
+suffix:semicolon
+DECL|member|r9
+r_int
+r_int
+id|r9
+suffix:semicolon
+DECL|member|r8
+r_int
+r_int
+id|r8
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* frame pointer must be last for get_wchan */
 multiline_comment|/* It would be more efficient to let the compiler clobber most of these registers.&n;   Clobbering all is not possible because that lets reload freak out. Even just &n;   clobbering six generates wrong code with gcc 3.1 for me so do it this way for now.&n;   rbp needs to be always explicitely saved because gcc cannot clobber the&n;   frame pointer and the scheduler is compiled with frame pointers. -AK */
 DECL|macro|SAVE_CONTEXT
@@ -28,7 +109,7 @@ DECL|macro|RESTORE_CONTEXT
 mdefine_line|#define RESTORE_CONTEXT &bslash;&n;&t;__POP(rbp) __POP(rbx) &bslash;&n;&t;__POP(rcx) __POP(rdx) &bslash;&n;&t;__POP(rsi) __POP(rdi) &bslash;&n;&t;__POP(rax) __POP(r15) __POP(r14) __POP(r13) __POP(r12) __POP(r11) __POP(r10) &bslash;&n;&t;__POP(r9) __POP(r8)
 multiline_comment|/* RED-PEN: pipeline stall on ret because it is not predicted */
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $1f,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip)&t;&t;&t;    &t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip]&quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
+mdefine_line|#define switch_to(prev,next,last) &bslash;&n;&t;asm volatile(SAVE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %%rsp,%[prevrsp]&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq %[nextrsp],%%rsp&bslash;n&bslash;t&quot;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;movq $thread_return,%[prevrip]&bslash;n&bslash;t&quot;&t;&t;&t;   &bslash;&n;&t;&t;     &quot;pushq %[nextrip]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;     &quot;.globl thread_return&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;thread_return:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     RESTORE_CONTEXT&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;&t;     :[prevrsp] &quot;=m&quot; (prev-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [prevrip] &quot;=m&quot; (prev-&gt;thread.rip)&t;&t;&t;    &t;    &bslash;&n;&t;&t;     :[nextrsp] &quot;m&quot; (next-&gt;thread.rsp), &t;&t;&t;    &bslash;&n;&t;&t;      [nextrip]&quot;m&quot; (next-&gt;thread.rip),&t;&t;&t;&t;    &bslash;&n;&t;&t;      [next] &quot;S&quot; (next), [prev] &quot;D&quot; (prev)  &t;&t;&t;    &bslash;&n;&t;             :&quot;memory&quot;)
 r_extern
 r_void
 id|load_gs_index
@@ -45,14 +126,114 @@ mdefine_line|#define set_debug(value,register) &bslash;&n;                __asm_
 multiline_comment|/*&n; * Clear and set &squot;TS&squot; bit respectively&n; */
 DECL|macro|clts
 mdefine_line|#define clts() __asm__ __volatile__ (&quot;clts&quot;)
-DECL|macro|read_cr0
-mdefine_line|#define read_cr0() ({ &bslash;&n;&t;unsigned long __dummy; &bslash;&n;&t;__asm__( &bslash;&n;&t;&t;&quot;movq %%cr0,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;:&quot;=r&quot; (__dummy)); &bslash;&n;&t;__dummy; &bslash;&n;})
-DECL|macro|write_cr0
-mdefine_line|#define write_cr0(x) &bslash;&n;&t;__asm__(&quot;movq %0,%%cr0&quot;: :&quot;r&quot; (x));
-DECL|macro|read_cr4
-mdefine_line|#define read_cr4() ({ &bslash;&n;&t;unsigned long __dummy; &bslash;&n;&t;__asm__( &bslash;&n;&t;&t;&quot;movq %%cr4,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;:&quot;=r&quot; (__dummy)); &bslash;&n;&t;__dummy; &bslash;&n;})
-DECL|macro|write_cr4
-mdefine_line|#define write_cr4(x) &bslash;&n;&t;__asm__(&quot;movq %0,%%cr4&quot;: :&quot;r&quot; (x));
+DECL|function|read_cr0
+r_static
+r_inline
+r_int
+r_int
+id|read_cr0
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|cr0
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;movq %%cr0,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|cr0
+)paren
+)paren
+suffix:semicolon
+r_return
+id|cr0
+suffix:semicolon
+)brace
+DECL|function|write_cr0
+r_static
+r_inline
+r_void
+id|write_cr0
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;movq %0,%%cr0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|read_cr4
+r_static
+r_inline
+r_int
+r_int
+id|read_cr4
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|cr4
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;movq %%cr4,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|cr4
+)paren
+)paren
+suffix:semicolon
+r_return
+id|cr4
+suffix:semicolon
+)brace
+DECL|function|write_cr4
+r_static
+r_inline
+r_void
+id|write_cr4
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;movq %0,%%cr4&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|stts
 mdefine_line|#define stts() write_cr0(8 | read_cr0())
 DECL|macro|wbinvd

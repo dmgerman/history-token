@@ -47,6 +47,8 @@ DECL|macro|SS
 mdefine_line|#define SS 160
 DECL|macro|ARGOFFSET
 mdefine_line|#define ARGOFFSET R11
+DECL|macro|SWFRAME
+mdefine_line|#define SWFRAME ORIG_RAX
 DECL|variable|norcx
 dot
 id|macro
@@ -187,6 +189,7 @@ DECL|macro|ARG_SKIP
 mdefine_line|#define ARG_SKIP 9*8
 DECL|variable|addskip
 DECL|variable|skiprcx
+DECL|variable|skipr11
 dot
 id|macro
 id|RESTORE_ARGS
@@ -201,6 +204,17 @@ comma
 id|skiprcx
 op_assign
 l_int|0
+comma
+id|skipr11
+op_assign
+l_int|0
+dot
+r_if
+c_cond
+"&bslash;"
+id|skipr11
+dot
+r_else
 id|movq
 (paren
 op_mod
@@ -209,6 +223,8 @@ id|rsp
 comma
 op_mod
 id|r11
+dot
+id|endif
 id|movq
 l_int|1
 op_star

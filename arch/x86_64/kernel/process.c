@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -747,6 +748,19 @@ op_star
 l_int|8
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|tsk-&gt;thread.tls_array
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|tsk-&gt;thread.tls_array
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Forget coprocessor state..&n;&t; */
 id|clear_fpu
 c_func
@@ -898,7 +912,9 @@ r_int
 id|childregs
 suffix:semicolon
 )brace
-id|p-&gt;user_tid
+id|p-&gt;set_child_tid
+op_assign
+id|p-&gt;clear_child_tid
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1180,7 +1196,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This special macro can be used to load a debugging register&n; */
 DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;&t;&t;set_debug(thread-&gt;debugreg[register], register)
-multiline_comment|/*&n; *&t;switch_to(x,y) should switch tasks from x to y.&n; *&n; * We fsave/fwait so that an exception goes off at the right time&n; * (as a call from the fsave or fwait in effect) rather than to&n; * the wrong process. &n; * &n; * This could still be optimized: &n; * - fold all the options into a flag word and test it with a single test.&n; * - could test fs/gs bitsliced&n; */
+multiline_comment|/*&n; *&t;switch_to(x,y) should switch tasks from x to y.&n; *&n; * This could still be optimized: &n; * - fold all the options into a flag word and test it with a single test.&n; * - could test fs/gs bitsliced&n; */
 DECL|function|__switch_to
 r_void
 id|__switch_to
@@ -1300,15 +1316,18 @@ comma
 id|next-&gt;ds
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Switch FS and GS.&n;&t; * XXX Check if this is safe on SMP (!= -&gt; |)&n;&t; * Need to simplify this.&n;&t; */
+id|load_TLS
+c_func
+(paren
+id|next
+comma
+id|cpu
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t; * Switch FS and GS.&n;&t; */
 (brace
 r_int
-r_int
 id|fsindex
-suffix:semicolon
-r_int
-r_int
-id|gsindex
 suffix:semicolon
 id|asm
 r_volatile
@@ -1321,51 +1340,21 @@ id|fsindex
 )paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl %%gs,%0&quot;
-suffix:colon
-l_string|&quot;=g&quot;
-(paren
-id|gsindex
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Load the per-thread Thread-Local Storage descriptor.&n;&t;&t; */
+multiline_comment|/* segment register != 0 always requires a reload. &n;&t;&t;   also reload when it has changed. &n;&t;&t;   when prev process used 64bit base always reload&n;&t;&t;   to avoid an information leak. */
 r_if
 c_cond
 (paren
-id|load_TLS
+id|unlikely
 c_func
 (paren
-id|next
-comma
-id|cpu
-)paren
-)paren
-(brace
-id|loadsegment
-c_func
-(paren
-id|fs
-comma
-id|next-&gt;fsindex
-)paren
-suffix:semicolon
-multiline_comment|/* should find a way to optimize this away - it is&n;&t;&t;&t;   slow */
-r_goto
-id|loadgs
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
 (paren
 id|fsindex
-op_ne
+op_or
 id|next-&gt;fsindex
+)paren
+op_logical_or
+id|prev-&gt;fs
+)paren
 )paren
 id|loadsegment
 c_func
@@ -1375,24 +1364,7 @@ comma
 id|next-&gt;fsindex
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|gsindex
-op_ne
-id|next-&gt;gsindex
-)paren
-(brace
-id|loadgs
-suffix:colon
-id|load_gs_index
-c_func
-(paren
-id|next-&gt;gsindex
-)paren
-suffix:semicolon
-)brace
-)brace
+multiline_comment|/* check if the user changed the selector&n;&t;&t;   if yes clear 64bit base. */
 r_if
 c_cond
 (paren
@@ -1408,20 +1380,11 @@ id|prev-&gt;fs
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* when next process has a 64bit base use it */
 r_if
 c_cond
 (paren
-(paren
-id|fsindex
-op_ne
-id|prev-&gt;fsindex
-)paren
-op_logical_or
-(paren
-id|prev-&gt;fs
-op_ne
 id|next-&gt;fs
-)paren
 )paren
 id|wrmsrl
 c_func
@@ -1435,6 +1398,43 @@ id|prev-&gt;fsindex
 op_assign
 id|fsindex
 suffix:semicolon
+)brace
+(brace
+r_int
+id|gsindex
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;movl %%gs,%0&quot;
+suffix:colon
+l_string|&quot;=g&quot;
+(paren
+id|gsindex
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+id|gsindex
+op_or
+id|next-&gt;gsindex
+)paren
+op_logical_or
+id|prev-&gt;gs
+)paren
+)paren
+id|load_gs_index
+c_func
+(paren
+id|next-&gt;gsindex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1453,12 +1453,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gsindex
-op_ne
-id|prev-&gt;gsindex
-op_logical_or
-id|prev-&gt;gs
-op_ne
 id|next-&gt;gs
 )paren
 id|wrmsrl
@@ -1775,6 +1769,8 @@ comma
 l_int|0
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1810,7 +1806,11 @@ id|newsp
 comma
 r_void
 op_star
-id|user_tid
+id|parent_tid
+comma
+r_void
+op_star
+id|child_tid
 comma
 r_struct
 id|pt_regs
@@ -1849,7 +1849,9 @@ id|regs
 comma
 l_int|0
 comma
-id|user_tid
+id|parent_tid
+comma
+id|child_tid
 )paren
 suffix:semicolon
 r_return
@@ -1903,6 +1905,8 @@ op_amp
 id|regs
 comma
 l_int|0
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -2124,16 +2128,15 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|asm
-r_volatile
+id|load_gs_index
+c_func
 (paren
-l_string|&quot;movw %%gs,%0&quot;
-suffix:colon
-l_string|&quot;=g&quot;
-(paren
+l_int|0
+)paren
+suffix:semicolon
 id|current-&gt;thread.gsindex
-)paren
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|current-&gt;thread.gs
 op_assign
@@ -2169,13 +2172,17 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movw %%fs,%0&quot;
-suffix:colon
-l_string|&quot;=g&quot;
+l_string|&quot;movl %0,%%fs&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
 (paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
 id|current-&gt;thread.fsindex
-)paren
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|current-&gt;thread.fs
 op_assign
@@ -2714,6 +2721,69 @@ id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* &n; * Capture the user space registers if the task is not running (in user space)&n; */
+DECL|function|dump_task_regs
+r_int
+id|dump_task_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+id|elf_gregset_t
+op_star
+id|regs
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|pp
+comma
+id|ptregs
+suffix:semicolon
+id|pp
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+id|tsk-&gt;thread.rsp0
+)paren
+suffix:semicolon
+op_decrement
+id|pp
+suffix:semicolon
+id|ptregs
+op_assign
+op_star
+id|pp
+suffix:semicolon
+id|ptregs.cs
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|ptregs.ss
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|elf_core_copy_regs
+c_func
+(paren
+id|regs
+comma
+op_amp
+id|ptregs
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 eof
