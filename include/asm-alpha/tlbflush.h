@@ -3,6 +3,7 @@ DECL|macro|_ALPHA_TLBFLUSH_H
 mdefine_line|#define _ALPHA_TLBFLUSH_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#ifndef __EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
 mdefine_line|#define __EXTERN_INLINE extern inline

@@ -2542,8 +2542,6 @@ id|DO_DEFAULT_RTC
 comma
 id|DO_TSUNAMI_IO
 comma
-id|DO_TSUNAMI_BUS
-comma
 dot
 id|machine_check
 op_assign
@@ -2638,8 +2636,6 @@ id|DO_DEFAULT_RTC
 comma
 id|DO_TSUNAMI_IO
 comma
-id|DO_TSUNAMI_BUS
-comma
 dot
 id|machine_check
 op_assign
@@ -2729,8 +2725,6 @@ comma
 id|DO_DEFAULT_RTC
 comma
 id|DO_TSUNAMI_IO
-comma
-id|DO_TSUNAMI_BUS
 comma
 dot
 id|machine_check
@@ -2822,8 +2816,6 @@ id|DO_DEFAULT_RTC
 comma
 id|DO_TSUNAMI_IO
 comma
-id|DO_TSUNAMI_BUS
-comma
 dot
 id|machine_check
 op_assign
@@ -2914,8 +2906,6 @@ comma
 id|DO_DEFAULT_RTC
 comma
 id|DO_TSUNAMI_IO
-comma
-id|DO_TSUNAMI_BUS
 comma
 dot
 id|machine_check

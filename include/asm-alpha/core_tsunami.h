@@ -876,201 +876,38 @@ DECL|macro|__IO_EXTERN_INLINE
 mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif
 multiline_comment|/*&n; * I/O functions:&n; *&n; * TSUNAMI, the 21??? PCI/memory support chipset for the EV6 (21264)&n; * can only use linear accesses to get at PCI memory and I/O spaces.&n; */
-DECL|macro|vucp
-mdefine_line|#define vucp&t;volatile unsigned char *
-DECL|macro|vusp
-mdefine_line|#define vusp&t;volatile unsigned short *
-DECL|macro|vuip
-mdefine_line|#define vuip&t;volatile unsigned int *
-DECL|macro|vulp
-mdefine_line|#define vulp&t;volatile unsigned long *
-DECL|function|tsunami_inb
-id|__EXTERN_INLINE
-id|u8
-id|tsunami_inb
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-multiline_comment|/* ??? I wish I could get rid of this.  But there&squot;s no ioremap&n;&t;   equivalent for I/O space.  PCI I/O can be forced into the&n;&t;   correct hose&squot;s I/O region, but that doesn&squot;t take care of&n;&t;   legacy ISA crap.  */
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-r_return
-id|__kernel_ldbu
-c_func
-(paren
-op_star
-(paren
-id|vucp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_outb
-id|__EXTERN_INLINE
-r_void
-id|tsunami_outb
-c_func
-(paren
-id|u8
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-id|__kernel_stb
-c_func
-(paren
-id|b
-comma
-op_star
-(paren
-id|vucp
-)paren
-id|addr
-)paren
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_inw
-id|__EXTERN_INLINE
-id|u16
-id|tsunami_inw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-r_return
-id|__kernel_ldwu
-c_func
-(paren
-op_star
-(paren
-id|vusp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_outw
-id|__EXTERN_INLINE
-r_void
-id|tsunami_outw
-c_func
-(paren
-id|u16
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-id|__kernel_stw
-c_func
-(paren
-id|b
-comma
-op_star
-(paren
-id|vusp
-)paren
-id|addr
-)paren
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_inl
-id|__EXTERN_INLINE
-id|u32
-id|tsunami_inl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-r_return
-op_star
-(paren
-id|vuip
-)paren
-id|addr
-suffix:semicolon
-)brace
-DECL|function|tsunami_outl
-id|__EXTERN_INLINE
-r_void
-id|tsunami_outl
-c_func
-(paren
-id|u32
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|addr
-op_add_assign
-id|TSUNAMI_IO_BIAS
-suffix:semicolon
-op_star
-(paren
-id|vuip
-)paren
-id|addr
-op_assign
-id|b
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Memory functions.  all accesses are done through linear space.&n; */
+DECL|function|tsunami_ioportmap
+id|__EXTERN_INLINE
+r_void
+id|__iomem
+op_star
+id|tsunami_ioportmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
+id|addr
+op_plus
+id|TSUNAMI_IO_BIAS
+)paren
+suffix:semicolon
+)brace
 DECL|function|tsunami_ioremap
 id|__EXTERN_INLINE
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|tsunami_ioremap
 c_func
 (paren
@@ -1081,33 +918,19 @@ comma
 r_int
 r_int
 id|size
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
 )paren
 (brace
 r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 id|addr
 op_plus
 id|TSUNAMI_MEM_BIAS
-suffix:semicolon
-)brace
-DECL|function|tsunami_iounmap
-id|__EXTERN_INLINE
-r_void
-id|tsunami_iounmap
-c_func
-(paren
-r_int
-r_int
-id|addr
 )paren
-(brace
-r_return
 suffix:semicolon
 )brace
 DECL|function|tsunami_is_ioaddr
@@ -1127,262 +950,55 @@ op_ge
 id|TSUNAMI_BASE
 suffix:semicolon
 )brace
-DECL|function|tsunami_readb
+DECL|function|tsunami_is_mmio
 id|__EXTERN_INLINE
-id|u8
-id|tsunami_readb
+r_int
+id|tsunami_is_mmio
 c_func
 (paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|__kernel_ldbu
-c_func
-(paren
-op_star
-(paren
-id|vucp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_readw
-id|__EXTERN_INLINE
-id|u16
-id|tsunami_readw
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-id|__kernel_ldwu
-c_func
-(paren
-op_star
-(paren
-id|vusp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_readl
-id|__EXTERN_INLINE
-id|u32
-id|tsunami_readl
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-op_star
-(paren
-id|vuip
-)paren
-id|addr
-suffix:semicolon
-)brace
-DECL|function|tsunami_readq
-id|__EXTERN_INLINE
-id|u64
-id|tsunami_readq
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-op_star
-(paren
-id|vulp
-)paren
-id|addr
-suffix:semicolon
-)brace
-DECL|function|tsunami_writeb
-id|__EXTERN_INLINE
+r_const
+r_volatile
 r_void
-id|tsunami_writeb
-c_func
-(paren
-id|u8
-id|b
-comma
-r_int
-r_int
-id|addr
+id|__iomem
+op_star
+id|xaddr
 )paren
 (brace
-id|__kernel_stb
-c_func
-(paren
-id|b
-comma
-op_star
-(paren
-id|vucp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_writew
-id|__EXTERN_INLINE
-r_void
-id|tsunami_writew
-c_func
-(paren
-id|u16
-id|b
-comma
 r_int
 r_int
-id|addr
-)paren
-(brace
-id|__kernel_stw
-c_func
-(paren
-id|b
-comma
-op_star
-(paren
-id|vusp
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-DECL|function|tsunami_writel
-id|__EXTERN_INLINE
-r_void
-id|tsunami_writel
-c_func
-(paren
-id|u32
-id|b
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-op_star
-(paren
-id|vuip
-)paren
 id|addr
 op_assign
-id|b
-suffix:semicolon
-)brace
-DECL|function|tsunami_writeq
-id|__EXTERN_INLINE
-r_void
-id|tsunami_writeq
-c_func
 (paren
-id|u64
-id|b
-comma
 r_int
 r_int
-id|addr
 )paren
-(brace
-op_star
+id|xaddr
+suffix:semicolon
+r_return
 (paren
-id|vulp
-)paren
 id|addr
-op_assign
-id|b
+op_amp
+l_int|0x100000000UL
+)paren
+op_eq
+l_int|0
 suffix:semicolon
 )brace
-DECL|macro|vucp
-macro_line|#undef vucp
-DECL|macro|vusp
-macro_line|#undef vusp
-DECL|macro|vuip
-macro_line|#undef vuip
-DECL|macro|vulp
-macro_line|#undef vulp
-macro_line|#ifdef __WANT_IO_DEF
-DECL|macro|__inb
-mdefine_line|#define __inb(p)&t;&t;tsunami_inb((unsigned long)(p))
-DECL|macro|__inw
-mdefine_line|#define __inw(p)&t;&t;tsunami_inw((unsigned long)(p))
-DECL|macro|__inl
-mdefine_line|#define __inl(p)&t;&t;tsunami_inl((unsigned long)(p))
-DECL|macro|__outb
-mdefine_line|#define __outb(x,p)&t;&t;tsunami_outb((x),(unsigned long)(p))
-DECL|macro|__outw
-mdefine_line|#define __outw(x,p)&t;&t;tsunami_outw((x),(unsigned long)(p))
-DECL|macro|__outl
-mdefine_line|#define __outl(x,p)&t;&t;tsunami_outl((x),(unsigned long)(p))
-DECL|macro|__readb
-mdefine_line|#define __readb(a)&t;&t;tsunami_readb((unsigned long)(a))
-DECL|macro|__readw
-mdefine_line|#define __readw(a)&t;&t;tsunami_readw((unsigned long)(a))
-DECL|macro|__readl
-mdefine_line|#define __readl(a)&t;&t;tsunami_readl((unsigned long)(a))
-DECL|macro|__readq
-mdefine_line|#define __readq(a)&t;&t;tsunami_readq((unsigned long)(a))
-DECL|macro|__writeb
-mdefine_line|#define __writeb(x,a)&t;&t;tsunami_writeb((x),(unsigned long)(a))
-DECL|macro|__writew
-mdefine_line|#define __writew(x,a)&t;&t;tsunami_writew((x),(unsigned long)(a))
-DECL|macro|__writel
-mdefine_line|#define __writel(x,a)&t;&t;tsunami_writel((x),(unsigned long)(a))
-DECL|macro|__writeq
-mdefine_line|#define __writeq(x,a)&t;&t;tsunami_writeq((x),(unsigned long)(a))
-DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;tsunami_ioremap((unsigned long)(a),(s))
-DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;tsunami_iounmap((unsigned long)(a))
-DECL|macro|__is_ioaddr
-mdefine_line|#define __is_ioaddr(a)&t;&t;tsunami_is_ioaddr((unsigned long)(a))
-DECL|macro|inb
-mdefine_line|#define inb(p)&t;&t;&t;__inb(p)
-DECL|macro|inw
-mdefine_line|#define inw(p)&t;&t;&t;__inw(p)
-DECL|macro|inl
-mdefine_line|#define inl(p)&t;&t;&t;__inl(p)
-DECL|macro|outb
-mdefine_line|#define outb(x,p)&t;&t;__outb((x),(p))
-DECL|macro|outw
-mdefine_line|#define outw(x,p)&t;&t;__outw((x),(p))
-DECL|macro|outl
-mdefine_line|#define outl(x,p)&t;&t;__outl((x),(p))
-DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(a)&t;&t;__readb(a)
-DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(a)&t;&t;__readw(a)
-DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(a)&t;&t;__readl(a)
-DECL|macro|__raw_readq
-mdefine_line|#define __raw_readq(a)&t;&t;__readq(a)
-DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;__writeb((v),(a))
-DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;__writew((v),(a))
-DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;__writel((v),(a))
-DECL|macro|__raw_writeq
-mdefine_line|#define __raw_writeq(v,a)&t;__writeq((v),(a))
-macro_line|#endif /* __WANT_IO_DEF */
+DECL|macro|__IO_PREFIX
+macro_line|#undef __IO_PREFIX
+DECL|macro|__IO_PREFIX
+mdefine_line|#define __IO_PREFIX&t;&t;tsunami
+DECL|macro|tsunami_trivial_rw_bw
+mdefine_line|#define tsunami_trivial_rw_bw&t;1
+DECL|macro|tsunami_trivial_rw_lq
+mdefine_line|#define tsunami_trivial_rw_lq&t;1
+DECL|macro|tsunami_trivial_io_bw
+mdefine_line|#define tsunami_trivial_io_bw&t;1
+DECL|macro|tsunami_trivial_io_lq
+mdefine_line|#define tsunami_trivial_io_lq&t;1
+DECL|macro|tsunami_trivial_iounmap
+mdefine_line|#define tsunami_trivial_iounmap&t;1
+macro_line|#include &lt;asm/io_trivial.h&gt;
 macro_line|#ifdef __IO_EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE

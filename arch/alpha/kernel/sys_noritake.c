@@ -1115,8 +1115,6 @@ id|DO_DEFAULT_RTC
 comma
 id|DO_APECS_IO
 comma
-id|DO_APECS_BUS
-comma
 dot
 id|machine_check
 op_assign
@@ -1202,8 +1200,6 @@ comma
 id|DO_DEFAULT_RTC
 comma
 id|DO_CIA_IO
-comma
-id|DO_CIA_BUS
 comma
 dot
 id|machine_check

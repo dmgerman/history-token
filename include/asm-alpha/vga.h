@@ -31,10 +31,6 @@ c_cond
 id|__is_ioaddr
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 )paren
 )paren
@@ -44,8 +40,10 @@ c_func
 id|val
 comma
 (paren
-r_int
-r_int
+r_volatile
+id|u16
+id|__iomem
+op_star
 )paren
 id|addr
 )paren
@@ -77,10 +75,6 @@ c_cond
 id|__is_ioaddr
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|addr
 )paren
 )paren
@@ -89,8 +83,11 @@ id|__raw_readw
 c_func
 (paren
 (paren
-r_int
-r_int
+r_volatile
+r_const
+id|u16
+id|__iomem
+op_star
 )paren
 id|addr
 )paren
@@ -126,16 +123,17 @@ c_cond
 id|__is_ioaddr
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|s
 )paren
 )paren
 id|memsetw_io
 c_func
 (paren
+(paren
+id|u16
+id|__iomem
+op_star
+)paren
 id|s
 comma
 id|c
@@ -177,10 +175,10 @@ id|count
 suffix:semicolon
 multiline_comment|/* ??? These are currently only used for downloading character sets.  As&n;   such, they don&squot;t need memory barriers.  Is this all they are intended&n;   to be used for?  */
 DECL|macro|vga_readb
-mdefine_line|#define vga_readb&t;readb
+mdefine_line|#define vga_readb(a)&t;readb((u8 __iomem *)(a))
 DECL|macro|vga_writeb
-mdefine_line|#define vga_writeb&t;writeb
+mdefine_line|#define vga_writeb(v,a)&t;writeb(v, (u8 __iomem *)(a))
 DECL|macro|VGA_MAP_MEM
-mdefine_line|#define VGA_MAP_MEM(x)&t;((unsigned long) ioremap((x), 0))
+mdefine_line|#define VGA_MAP_MEM(x)&t;((unsigned long) ioremap(x, 0))
 macro_line|#endif
 eof
