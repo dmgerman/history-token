@@ -3025,8 +3025,8 @@ id|tsk
 suffix:semicolon
 )brace
 r_void
-DECL|function|__put_task_struct
-id|__put_task_struct
+DECL|function|free_task_struct
+id|free_task_struct
 (paren
 r_struct
 id|task_struct
