@@ -1,5 +1,9 @@
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/string.h&quot;
+macro_line|#include &quot;linux/smp_lock.h&quot;
+macro_line|#include &quot;linux/spinlock.h&quot;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/delay.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
@@ -172,6 +176,13 @@ c_func
 id|phys_to_page
 )paren
 suffix:semicolon
+DECL|variable|high_physmem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|high_physmem
+)paren
+suffix:semicolon
 DECL|variable|os_open_file
 id|EXPORT_SYMBOL
 c_func
@@ -205,6 +216,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|os_pipe
+)paren
+suffix:semicolon
+DECL|variable|os_file_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_file_type
+)paren
+suffix:semicolon
+DECL|variable|os_close_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_close_file
 )paren
 suffix:semicolon
 DECL|variable|helper_wait
@@ -285,4 +310,86 @@ c_func
 id|sys_wait4
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* required for SMP */
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__write_lock_failed
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__write_lock_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__write_lock_failed
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__read_lock_failed
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__read_lock_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__read_lock_failed
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|variable|kmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap
+)paren
+suffix:semicolon
+DECL|variable|kunmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kunmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic_to_page
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
