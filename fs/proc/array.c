@@ -1559,7 +1559,7 @@ op_assign
 id|task-&gt;pid
 ques
 c_cond
-id|task-&gt;real_parent-&gt;pid
+id|task-&gt;group_leader-&gt;real_parent-&gt;tgid
 suffix:colon
 l_int|0
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ocelot.c,v 1.13 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
+multiline_comment|/*&n; * $Id: ocelot.c,v 1.14 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -290,8 +290,9 @@ multiline_comment|/* Now ioremap the NVRAM space */
 id|ocelot_nvram_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func
@@ -373,8 +374,9 @@ multiline_comment|/* Now map the flash space */
 id|ocelot_flash_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func

@@ -374,8 +374,6 @@ c_func
 (paren
 id|tty
 comma
-l_int|0
-comma
 id|skb-&gt;data
 comma
 id|skb-&gt;len
@@ -1667,7 +1665,6 @@ comma
 r_const
 r_int
 r_char
-id|__user
 op_star
 id|data
 comma

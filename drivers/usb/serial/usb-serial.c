@@ -914,9 +914,6 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -985,8 +982,6 @@ id|write
 c_func
 (paren
 id|port
-comma
-id|from_user
 comma
 id|buf
 comma

@@ -3226,7 +3226,7 @@ id|up-&gt;port.mapbase
 suffix:semicolon
 id|start
 op_add_assign
-id|UARRT_RSA_BASE
+id|UART_RSA_BASE
 op_lshift
 id|up-&gt;port.regshift
 suffix:semicolon
@@ -5103,7 +5103,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: M32R SIO driver $Revision: 1.6 $ &quot;
+l_string|&quot;Serial: M32R SIO driver $Revision: 1.9 $ &quot;
 l_string|&quot;IRQ sharing %sabled&bslash;n&quot;
 comma
 id|share_irqs_sio
@@ -5275,15 +5275,17 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Generic M32R SIO serial driver $Revision: 1.6 $&quot;
+l_string|&quot;Generic M32R SIO serial driver $Revision: 1.9 $&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|share_irqs_sio
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

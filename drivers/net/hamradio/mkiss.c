@@ -1826,8 +1826,6 @@ c_func
 (paren
 id|ax-&gt;tty
 comma
-l_int|0
-comma
 id|ax-&gt;xbuff
 comma
 id|count
@@ -1948,8 +1946,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|ax-&gt;xhead
 comma

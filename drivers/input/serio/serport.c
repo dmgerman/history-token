@@ -95,8 +95,6 @@ c_func
 (paren
 id|serport-&gt;tty
 comma
-l_int|0
-comma
 op_amp
 id|data
 comma

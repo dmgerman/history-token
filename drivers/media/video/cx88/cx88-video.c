@@ -10771,7 +10771,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|cx8800_finidev
+)paren
 comma
 dot
 id|suspend

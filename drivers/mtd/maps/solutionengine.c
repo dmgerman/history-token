@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: solutionengine.c,v 1.13 2004/07/12 21:59:45 dwmw2 Exp $&n; *&n; * Flash and EPROM on Hitachi Solution Engine and similar boards.&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; */
+multiline_comment|/*&n; * $Id: solutionengine.c,v 1.14 2004/09/16 23:27:14 gleixner Exp $&n; *&n; * Flash and EPROM on Hitachi Solution Engine and similar boards.&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -170,6 +170,11 @@ l_int|0
 suffix:semicolon
 id|soleng_flash_map.virt
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|P2SEGADDR
 c_func
 (paren
@@ -182,6 +187,11 @@ l_int|0x01000000
 suffix:semicolon
 id|soleng_eprom_map.virt
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|P1SEGADDR
 c_func
 (paren

@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.5 2004/07/12 21:59:44 dwmw2 Exp $&n; */
+multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.7 2004/10/20 22:17:30 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -840,8 +840,9 @@ suffix:semicolon
 id|nettel_amd_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func

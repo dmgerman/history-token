@@ -585,9 +585,6 @@ id|usb_serial_port
 op_star
 id|port
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -4079,9 +4076,6 @@ id|usb_serial_port
 op_star
 id|port
 comma
-r_int
-id|from_user
-comma
 r_const
 r_int
 r_char
@@ -4118,14 +4112,6 @@ op_assign
 id|port-&gt;write_urb-&gt;transfer_buffer
 suffix:semicolon
 r_int
-r_char
-id|user_buf
-(braket
-l_int|64
-)braket
-suffix:semicolon
-multiline_comment|/* 64 bytes is max USB bulk packet */
-r_int
 r_int
 id|flags
 op_assign
@@ -4134,13 +4120,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;digi_write: TOP: port=%d, count=%d, from_user=%d, in_interrupt=%ld&quot;
+l_string|&quot;digi_write: TOP: port=%d, count=%d, in_interrupt=%ld&quot;
 comma
 id|priv-&gt;dp_port_num
 comma
 id|count
-comma
-id|from_user
 comma
 id|in_interrupt
 c_func
@@ -4171,27 +4155,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|from_user
-op_logical_and
-id|copy_from_user
-c_func
-(paren
-id|user_buf
-comma
-id|buf
-comma
-id|count
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 multiline_comment|/* be sure only one write proceeds at a time */
 multiline_comment|/* there are races on the port private buffer */
 multiline_comment|/* and races to check write_urb-&gt;status */
@@ -4236,14 +4199,7 @@ op_increment
 )braket
 op_assign
 op_star
-(paren
-id|from_user
-ques
-c_cond
-id|user_buf
-suffix:colon
 id|buf
-)paren
 suffix:semicolon
 id|new_len
 op_assign
@@ -4356,11 +4312,6 @@ c_func
 (paren
 id|data
 comma
-id|from_user
-ques
-c_cond
-id|user_buf
-suffix:colon
 id|buf
 comma
 id|new_len

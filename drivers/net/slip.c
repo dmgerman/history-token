@@ -1473,8 +1473,6 @@ c_func
 (paren
 id|sl-&gt;tty
 comma
-l_int|0
-comma
 id|sl-&gt;xbuff
 comma
 id|count
@@ -1600,8 +1598,6 @@ id|write
 c_func
 (paren
 id|tty
-comma
-l_int|0
 comma
 id|sl-&gt;xhead
 comma
@@ -5600,8 +5596,6 @@ id|write
 c_func
 (paren
 id|sl-&gt;tty
-comma
-l_int|0
 comma
 op_amp
 id|s

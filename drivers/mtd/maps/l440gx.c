@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: l440gx.c,v 1.13 2004/07/12 21:59:44 dwmw2 Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
+multiline_comment|/*&n; * $Id: l440gx.c,v 1.14 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * BIOS Flash chip on Intel 440GX board.&n; *&n; * Bugs this currently does not work under linuxBIOS.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -198,8 +198,9 @@ suffix:semicolon
 id|l440gx_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func
