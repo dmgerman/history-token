@@ -2306,7 +2306,7 @@ id|info-&gt;ssize
 )paren
 suffix:semicolon
 singleline_comment|// build the reply
-singleline_comment|//
+singleline_comment|// we need the last sector, not the number of sectors
 (paren
 (paren
 id|u32
@@ -2322,6 +2322,8 @@ id|cpu_to_be32
 c_func
 (paren
 id|info-&gt;sectors
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 (paren

@@ -1269,6 +1269,8 @@ DECL|macro|PCI_DEVICE_ID_TI_TVP4010
 mdefine_line|#define PCI_DEVICE_ID_TI_TVP4010&t;0x3d04
 DECL|macro|PCI_DEVICE_ID_TI_TVP4020
 mdefine_line|#define PCI_DEVICE_ID_TI_TVP4020&t;0x3d07
+DECL|macro|PCI_DEVICE_ID_TI_4450
+mdefine_line|#define PCI_DEVICE_ID_TI_4450&t;&t;0x8011
 DECL|macro|PCI_DEVICE_ID_TI_1130
 mdefine_line|#define PCI_DEVICE_ID_TI_1130&t;&t;0xac12
 DECL|macro|PCI_DEVICE_ID_TI_1031
@@ -1301,6 +1303,8 @@ DECL|macro|PCI_DEVICE_ID_TI_1410
 mdefine_line|#define PCI_DEVICE_ID_TI_1410&t;&t;0xac50
 DECL|macro|PCI_DEVICE_ID_TI_1420
 mdefine_line|#define PCI_DEVICE_ID_TI_1420&t;&t;0xac51
+DECL|macro|PCI_DEVICE_ID_TI_1451A
+mdefine_line|#define PCI_DEVICE_ID_TI_1451A&t;&t;0xac52
 DECL|macro|PCI_DEVICE_ID_TI_1520
 mdefine_line|#define PCI_DEVICE_ID_TI_1520&t;&t;0xac55
 DECL|macro|PCI_DEVICE_ID_TI_1510
@@ -1768,6 +1772,8 @@ DECL|macro|PCI_DEVICE_ID_AL_M1533
 mdefine_line|#define PCI_DEVICE_ID_AL_M1533&t;&t;0x1533
 DECL|macro|PCI_DEVICE_ID_AL_M1541
 mdefine_line|#define PCI_DEVICE_ID_AL_M1541&t;&t;0x1541
+DECL|macro|PCI_DEVICE_ID_AL_M1563
+mdefine_line|#define PCI_DEVICE_ID_AL_M1563&t;&t;0x1563
 DECL|macro|PCI_DEVICE_ID_AL_M1621
 mdefine_line|#define PCI_DEVICE_ID_AL_M1621&t;&t;0x1621
 DECL|macro|PCI_DEVICE_ID_AL_M1631
@@ -3291,6 +3297,10 @@ DECL|macro|PCI_DEVICE_ID_S2IO_WIN
 mdefine_line|#define&t;PCI_DEVICE_ID_S2IO_WIN&t;&t;0x5731
 DECL|macro|PCI_DEVICE_ID_S2IO_UNI
 mdefine_line|#define&t;PCI_DEVICE_ID_S2IO_UNI&t;&t;0x5831
+DECL|macro|PCI_VENDOR_ID_ARC
+mdefine_line|#define PCI_VENDOR_ID_ARC               0x192E
+DECL|macro|PCI_DEVICE_ID_ARC_EHCI
+mdefine_line|#define PCI_DEVICE_ID_ARC_EHCI          0x0101
 DECL|macro|PCI_VENDOR_ID_SYMPHONY
 mdefine_line|#define PCI_VENDOR_ID_SYMPHONY&t;&t;0x1c1c
 DECL|macro|PCI_DEVICE_ID_SYMPHONY_101

@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.5.7 (2002/12/31)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.6.1 (2004/03/13)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -56,6 +56,10 @@ DECL|macro|ANLP
 mdefine_line|#define&t;ANLP&t;&t;&t;0x0146
 DECL|macro|AER
 mdefine_line|#define&t;AER&t;&t;&t;0x0148
+DECL|macro|CSCR
+mdefine_line|#define CSCR&t;&t;&t;0x014C  /* This one has the link status */
+DECL|macro|CSCR_LINK_STATUS
+mdefine_line|#define CSCR_LINK_STATUS&t;(1 &lt;&lt; 3)
 DECL|macro|IDR_EEPROM
 mdefine_line|#define&t;IDR_EEPROM&t;&t;0x1202
 DECL|macro|PHY_READ
@@ -76,6 +80,90 @@ DECL|macro|RTL8150_REQ_GET_REGS
 mdefine_line|#define&t;RTL8150_REQ_GET_REGS&t;0x05
 DECL|macro|RTL8150_REQ_SET_REGS
 mdefine_line|#define&t;RTL8150_REQ_SET_REGS&t;0x05
+multiline_comment|/* Transmit status register errors */
+DECL|macro|TSR_ECOL
+mdefine_line|#define TSR_ECOL&t;&t;(1&lt;&lt;5)
+DECL|macro|TSR_LCOL
+mdefine_line|#define TSR_LCOL&t;&t;(1&lt;&lt;4)
+DECL|macro|TSR_LOSS_CRS
+mdefine_line|#define TSR_LOSS_CRS&t;&t;(1&lt;&lt;3)
+DECL|macro|TSR_JBR
+mdefine_line|#define TSR_JBR&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|TSR_ERRORS
+mdefine_line|#define TSR_ERRORS&t;&t;(TSR_ECOL | TSR_LCOL | TSR_LOSS_CRS | TSR_JBR)
+multiline_comment|/* Receive status register errors */
+DECL|macro|RSR_CRC
+mdefine_line|#define RSR_CRC&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|RSR_FAE
+mdefine_line|#define RSR_FAE&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|RSR_ERRORS
+mdefine_line|#define RSR_ERRORS&t;&t;(RSR_CRC | RSR_FAE)
+multiline_comment|/* Media status register definitions */
+DECL|macro|MSR_DUPLEX
+mdefine_line|#define MSR_DUPLEX&t;&t;(1&lt;&lt;4)
+DECL|macro|MSR_SPEED
+mdefine_line|#define MSR_SPEED&t;&t;(1&lt;&lt;3)
+DECL|macro|MSR_LINK
+mdefine_line|#define MSR_LINK&t;&t;(1&lt;&lt;2)
+multiline_comment|/* Interrupt pipe data */
+DECL|macro|INT_TSR
+mdefine_line|#define INT_TSR&t;&t;&t;0x00
+DECL|macro|INT_RSR
+mdefine_line|#define INT_RSR&t;&t;&t;0x01
+DECL|macro|INT_MSR
+mdefine_line|#define INT_MSR&t;&t;&t;0x02
+DECL|macro|INT_WAKSR
+mdefine_line|#define INT_WAKSR&t;&t;0x03
+DECL|macro|INT_TXOK_CNT
+mdefine_line|#define INT_TXOK_CNT&t;&t;0x04
+DECL|macro|INT_RXLOST_CNT
+mdefine_line|#define INT_RXLOST_CNT&t;&t;0x05
+DECL|macro|INT_CRERR_CNT
+mdefine_line|#define INT_CRERR_CNT&t;&t;0x06
+DECL|macro|INT_COL_CNT
+mdefine_line|#define INT_COL_CNT&t;&t;0x07
+multiline_comment|/* Transmit status register errors */
+DECL|macro|TSR_ECOL
+mdefine_line|#define TSR_ECOL&t;&t;(1&lt;&lt;5)
+DECL|macro|TSR_LCOL
+mdefine_line|#define TSR_LCOL&t;&t;(1&lt;&lt;4)
+DECL|macro|TSR_LOSS_CRS
+mdefine_line|#define TSR_LOSS_CRS&t;&t;(1&lt;&lt;3)
+DECL|macro|TSR_JBR
+mdefine_line|#define TSR_JBR&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|TSR_ERRORS
+mdefine_line|#define TSR_ERRORS&t;&t;(TSR_ECOL | TSR_LCOL | TSR_LOSS_CRS | TSR_JBR)
+multiline_comment|/* Receive status register errors */
+DECL|macro|RSR_CRC
+mdefine_line|#define RSR_CRC&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|RSR_FAE
+mdefine_line|#define RSR_FAE&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|RSR_ERRORS
+mdefine_line|#define RSR_ERRORS&t;&t;(RSR_CRC | RSR_FAE)
+multiline_comment|/* Media status register definitions */
+DECL|macro|MSR_DUPLEX
+mdefine_line|#define MSR_DUPLEX&t;&t;(1&lt;&lt;4)
+DECL|macro|MSR_SPEED
+mdefine_line|#define MSR_SPEED&t;&t;(1&lt;&lt;3)
+DECL|macro|MSR_LINK
+mdefine_line|#define MSR_LINK&t;&t;(1&lt;&lt;2)
+multiline_comment|/* Interrupt pipe data */
+DECL|macro|INT_TSR
+mdefine_line|#define INT_TSR&t;&t;&t;0x00
+DECL|macro|INT_RSR
+mdefine_line|#define INT_RSR&t;&t;&t;0x01
+DECL|macro|INT_MSR
+mdefine_line|#define INT_MSR&t;&t;&t;0x02
+DECL|macro|INT_WAKSR
+mdefine_line|#define INT_WAKSR&t;&t;0x03
+DECL|macro|INT_TXOK_CNT
+mdefine_line|#define INT_TXOK_CNT&t;&t;0x04
+DECL|macro|INT_RXLOST_CNT
+mdefine_line|#define INT_RXLOST_CNT&t;&t;0x05
+DECL|macro|INT_CRERR_CNT
+mdefine_line|#define INT_CRERR_CNT&t;&t;0x06
+DECL|macro|INT_COL_CNT
+mdefine_line|#define INT_COL_CNT&t;&t;0x07
 DECL|macro|RTL8150_MTU
 mdefine_line|#define&t;RTL8150_MTU&t;&t;1540
 DECL|macro|RTL8150_TX_TIMEOUT
@@ -96,10 +184,18 @@ DECL|macro|VENDOR_ID_REALTEK
 mdefine_line|#define VENDOR_ID_REALTEK&t;&t;0x0bda
 DECL|macro|VENDOR_ID_MELCO
 mdefine_line|#define&t;VENDOR_ID_MELCO&t;&t;&t;0x0411
+DECL|macro|VENDOR_ID_MICRONET
+mdefine_line|#define VENDOR_ID_MICRONET&t;&t;0x3980
+DECL|macro|VENDOR_ID_LONGSHINE
+mdefine_line|#define&t;VENDOR_ID_LONGSHINE&t;&t;0x07b8
 DECL|macro|PRODUCT_ID_RTL8150
 mdefine_line|#define PRODUCT_ID_RTL8150&t;&t;0x8150
 DECL|macro|PRODUCT_ID_LUAKTX
 mdefine_line|#define&t;PRODUCT_ID_LUAKTX&t;&t;0x0012
+DECL|macro|PRODUCT_ID_LCS8138TX
+mdefine_line|#define&t;PRODUCT_ID_LCS8138TX&t;&t;0x401a
+DECL|macro|PRODUCT_ID_SP128AR
+mdefine_line|#define PRODUCT_ID_SP128AR&t;&t;0x0003
 DECL|macro|EEPROM_WRITE
 macro_line|#undef&t;EEPROM_WRITE
 multiline_comment|/* table of devices that work with this driver */
@@ -129,6 +225,26 @@ c_func
 id|VENDOR_ID_MELCO
 comma
 id|PRODUCT_ID_LUAKTX
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|VENDOR_ID_MICRONET
+comma
+id|PRODUCT_ID_SP128AR
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|VENDOR_ID_LONGSHINE
+comma
+id|PRODUCT_ID_LCS8138TX
 )paren
 )brace
 comma
@@ -1671,6 +1787,17 @@ id|dev-&gt;rx_skb
 r_goto
 id|resched
 suffix:semicolon
+multiline_comment|/* protect against short packets (tell me why we got some?!?) */
+r_if
+c_cond
+(paren
+id|urb-&gt;actual_length
+OL
+l_int|4
+)paren
+r_goto
+id|goon
+suffix:semicolon
 id|res
 op_assign
 id|urb-&gt;actual_length
@@ -2117,6 +2244,10 @@ id|rtl8150_t
 op_star
 id|dev
 suffix:semicolon
+id|__u8
+op_star
+id|d
+suffix:semicolon
 r_int
 id|status
 suffix:semicolon
@@ -2176,7 +2307,139 @@ r_goto
 id|resubmit
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME if this doesn&squot;t do anything, don&squot;t submit the urb! */
+id|d
+op_assign
+id|urb-&gt;transfer_buffer
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d
+(braket
+l_int|0
+)braket
+op_amp
+id|TSR_ERRORS
+)paren
+(brace
+id|dev-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d
+(braket
+id|INT_TSR
+)braket
+op_amp
+(paren
+id|TSR_ECOL
+op_or
+id|TSR_JBR
+)paren
+)paren
+id|dev-&gt;stats.tx_aborted_errors
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d
+(braket
+id|INT_TSR
+)braket
+op_amp
+id|TSR_LCOL
+)paren
+id|dev-&gt;stats.tx_window_errors
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|d
+(braket
+id|INT_TSR
+)braket
+op_amp
+id|TSR_LOSS_CRS
+)paren
+id|dev-&gt;stats.tx_carrier_errors
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/* Report link status changes to the network stack */
+r_if
+c_cond
+(paren
+(paren
+id|d
+(braket
+id|INT_MSR
+)braket
+op_amp
+id|MSR_LINK
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|netif_carrier_ok
+c_func
+(paren
+id|dev-&gt;netdev
+)paren
+)paren
+(brace
+id|netif_carrier_off
+c_func
+(paren
+id|dev-&gt;netdev
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: LINK LOST&bslash;n&quot;
+comma
+id|__func__
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_carrier_ok
+c_func
+(paren
+id|dev-&gt;netdev
+)paren
+)paren
+(brace
+id|netif_carrier_on
+c_func
+(paren
+id|dev-&gt;netdev
+)paren
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s: LINK CAME BACK&bslash;n&quot;
+comma
+id|__func__
+)paren
+suffix:semicolon
+)brace
+)brace
 id|resubmit
 suffix:colon
 id|status
@@ -2451,7 +2714,6 @@ id|rcr
 op_assign
 l_int|0x9e
 suffix:semicolon
-multiline_comment|/* bit7=1 attach Rx info at the end */
 id|dev-&gt;rx_creg
 op_assign
 id|cpu_to_le16
@@ -2931,6 +3193,61 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|set_carrier
+r_static
+r_void
+id|set_carrier
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|netdev
+)paren
+(brace
+id|rtl8150_t
+op_star
+id|dev
+op_assign
+id|netdev-&gt;priv
+suffix:semicolon
+r_int
+id|tmp
+suffix:semicolon
+id|get_registers
+c_func
+(paren
+id|dev
+comma
+id|CSCR
+comma
+l_int|2
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+id|CSCR_LINK_STATUS
+)paren
+id|netif_carrier_on
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+r_else
+id|netif_carrier_off
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
+)brace
 DECL|function|rtl8150_open
 r_static
 r_int
@@ -3116,6 +3433,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|set_carrier
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
 r_return
 id|res
 suffix:semicolon
@@ -3202,7 +3525,6 @@ op_star
 id|netdev
 comma
 r_void
-id|__user
 op_star
 id|uaddr
 )paren
@@ -3647,11 +3969,6 @@ c_func
 (paren
 id|netdev
 comma
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon

@@ -37,13 +37,14 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
+macro_line|#include &quot;gadget_chips.h&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;File-backed Storage Gadget&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&t;&quot;g_file_storage&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;26 January 2004&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;21 March 2004&quot;
 DECL|variable|longname
 r_static
 r_const
@@ -90,273 +91,7 @@ singleline_comment|// NetChip
 DECL|macro|DRIVER_PRODUCT_ID
 mdefine_line|#define DRIVER_PRODUCT_ID&t;0xa4a5&t;
 singleline_comment|// Linux-USB File-backed Storage Gadget
-multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * Hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * FS_BULK_IN_MAXPACKET ... maxpacket value for full-speed bulk-in ep&n; * FS_BULK_OUT_MAXPACKET ... maxpacket value for full-speed bulk-out ep&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * MAX_USB_POWER ... define if we use other than 100 mA bus current&n; * SELFPOWER ... if we can run on bus power, zero&n; * NO_BULK_STALL ... bulk endpoint halts don&squot;t work well so avoid them&n; */
-multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0201
-DECL|variable|EP_BULK_IN_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-a&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_IN_NUM
-mdefine_line|#define EP_BULK_IN_NUM&t;&t;1
-DECL|macro|FS_BULK_IN_MAXPACKET
-mdefine_line|#define FS_BULK_IN_MAXPACKET&t;64
-DECL|variable|EP_BULK_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-b&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_OUT_NUM
-mdefine_line|#define EP_BULK_OUT_NUM&t;&t;2
-DECL|macro|FS_BULK_OUT_MAXPACKET
-mdefine_line|#define FS_BULK_OUT_MAXPACKET&t;64
-DECL|variable|EP_INTR_IN_NAME
-r_static
-r_const
-r_char
-id|EP_INTR_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-e&quot;
-suffix:semicolon
-DECL|macro|EP_INTR_IN_NUM
-mdefine_line|#define EP_INTR_IN_NUM&t;&t;5
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
-macro_line|#endif
-multiline_comment|/*&n; * Dummy_hcd, software-based loopback controller.&n; *&n; * This imitates the abilities of the NetChip 2280, so we will use&n; * the same configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_DUMMY_HCD
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;dummy&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0202
-DECL|variable|EP_BULK_IN_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-a&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_IN_NUM
-mdefine_line|#define EP_BULK_IN_NUM&t;&t;1
-DECL|macro|FS_BULK_IN_MAXPACKET
-mdefine_line|#define FS_BULK_IN_MAXPACKET&t;64
-DECL|variable|EP_BULK_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-b&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_OUT_NUM
-mdefine_line|#define EP_BULK_OUT_NUM&t;&t;2
-DECL|macro|FS_BULK_OUT_MAXPACKET
-mdefine_line|#define FS_BULK_OUT_MAXPACKET&t;64
-DECL|variable|EP_INTR_IN_NAME
-r_static
-r_const
-r_char
-id|EP_INTR_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-e&quot;
-suffix:semicolon
-DECL|macro|EP_INTR_IN_NUM
-mdefine_line|#define EP_INTR_IN_NUM&t;&t;5
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
-macro_line|#endif
-multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0203
-DECL|variable|EP_BULK_IN_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_IN_NUM
-mdefine_line|#define EP_BULK_IN_NUM&t;&t;1
-DECL|macro|FS_BULK_IN_MAXPACKET
-mdefine_line|#define FS_BULK_IN_MAXPACKET&t;64
-DECL|variable|EP_BULK_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_OUT_NUM
-mdefine_line|#define EP_BULK_OUT_NUM&t;&t;2
-DECL|macro|FS_BULK_OUT_MAXPACKET
-mdefine_line|#define FS_BULK_OUT_MAXPACKET&t;64
-DECL|variable|EP_INTR_IN_NAME
-r_static
-r_const
-r_char
-id|EP_INTR_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep6in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_INTR_IN_NUM
-mdefine_line|#define EP_INTR_IN_NUM&t;&t;6
-macro_line|#endif
-multiline_comment|/*&n; * SuperH UDC:  UDC built-in to some Renesas SH processors.&n; *&n; * This has three fixed-function full speed bulk/interrupt endpoints.&n; *&n; * Only one configuration and interface is supported (SET_CONFIGURATION&n; * and SET_INTERFACE are handled completely by the hardware).&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_SUPERH
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;superh&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0205
-DECL|variable|EP_BULK_IN_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_IN_NUM
-mdefine_line|#define EP_BULK_IN_NUM&t;&t;2
-DECL|macro|FS_BULK_IN_MAXPACKET
-mdefine_line|#define FS_BULK_IN_MAXPACKET&t;64
-DECL|variable|EP_BULK_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_OUT_NUM
-mdefine_line|#define EP_BULK_OUT_NUM&t;&t;1
-DECL|macro|FS_BULK_OUT_MAXPACKET
-mdefine_line|#define FS_BULK_OUT_MAXPACKET&t;64
-DECL|variable|EP_INTR_IN_NAME
-r_static
-r_const
-r_char
-id|EP_INTR_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep3in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_INTR_IN_NUM
-mdefine_line|#define EP_INTR_IN_NUM&t;&t;3
-DECL|macro|NO_BULK_STALL
-mdefine_line|#define NO_BULK_STALL
-macro_line|#endif
-multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0206
-DECL|variable|EP_BULK_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_OUT_NUM
-mdefine_line|#define EP_BULK_OUT_NUM&t;&t;1
-DECL|macro|FS_BULK_IN_MAXPACKET
-mdefine_line|#define FS_BULK_IN_MAXPACKET&t;64
-DECL|variable|EP_BULK_IN_NAME
-r_static
-r_const
-r_char
-id|EP_BULK_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_BULK_IN_NUM
-mdefine_line|#define EP_BULK_IN_NUM&t;&t;2
-DECL|macro|FS_BULK_OUT_MAXPACKET
-mdefine_line|#define FS_BULK_OUT_MAXPACKET&t;64
-DECL|variable|EP_INTR_IN_NAME
-r_static
-r_const
-r_char
-id|EP_INTR_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep3-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_INTR_IN_NUM
-mdefine_line|#define EP_INTR_IN_NUM&t;&t;3
-macro_line|#endif
-multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef CHIP
-macro_line|#&t;error Configure some USB peripheral controller driver!
-macro_line|#endif
-multiline_comment|/* Power usage is config specific.&n; * Hardware that supports remote wakeup defaults to disabling it.&n; */
-macro_line|#ifndef&t;SELFPOWER
-multiline_comment|/* default: say we&squot;re self-powered */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* else:&n; * - SELFPOWER value must be zero&n; * - MAX_USB_POWER may be nonzero.&n; */
-macro_line|#endif
-macro_line|#ifndef&t;MAX_USB_POWER
-multiline_comment|/* Any hub supports this steady state bus power consumption */
-DECL|macro|MAX_USB_POWER
-mdefine_line|#define MAX_USB_POWER&t;100&t;/* mA */
-macro_line|#endif
-multiline_comment|/* We don&squot;t support remote wake-up */
-macro_line|#ifdef NO_BULK_STALL
-DECL|macro|CAN_STALL
-mdefine_line|#define CAN_STALL&t;0
-macro_line|#else
-DECL|macro|CAN_STALL
-mdefine_line|#define CAN_STALL&t;1
-macro_line|#endif
+multiline_comment|/*&n; * This driver assumes self-powered hardware and has no way for users to&n; * trigger remote wakeup.  It uses autoconfiguration to select endpoints&n; * and endpoint addresses.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|xprintk
 mdefine_line|#define xprintk(f,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;(f)-&gt;gadget-&gt;dev , fmt , ## args)
@@ -544,8 +279,9 @@ comma
 dot
 id|release
 op_assign
-id|DRIVER_VERSION_NUM
+l_int|0xffff
 comma
+singleline_comment|// Use controller chip type
 dot
 id|buflen
 op_assign
@@ -554,7 +290,7 @@ comma
 dot
 id|can_stall
 op_assign
-id|CAN_STALL
+l_int|1
 comma
 )brace
 suffix:semicolon
@@ -2276,7 +2012,7 @@ op_assign
 id|__constant_cpu_to_le16
 c_func
 (paren
-id|DRIVER_VERSION_NUM
+l_int|0xffff
 )paren
 comma
 dot
@@ -2319,7 +2055,7 @@ id|bDescriptorType
 op_assign
 id|USB_DT_CONFIG
 comma
-multiline_comment|/* wTotalLength adjusted during bind() */
+multiline_comment|/* wTotalLength computed by usb_gadget_config_buf() */
 dot
 id|bNumInterfaces
 op_assign
@@ -2335,19 +2071,14 @@ id|bmAttributes
 op_assign
 id|USB_CONFIG_ATT_ONE
 op_or
-id|SELFPOWER
+id|USB_CONFIG_ATT_SELFPOWER
 comma
 dot
 id|bMaxPower
 op_assign
-(paren
-id|MAX_USB_POWER
-op_plus
 l_int|1
-)paren
-op_div
-l_int|2
 comma
+singleline_comment|// self-powered
 )brace
 suffix:semicolon
 multiline_comment|/* There is only one interface. */
@@ -2374,7 +2105,7 @@ id|bNumEndpoints
 op_assign
 l_int|2
 comma
-singleline_comment|// Adjusted during bind()
+singleline_comment|// Adjusted during fsg_bind()
 dot
 id|bInterfaceClass
 op_assign
@@ -2385,18 +2116,17 @@ id|bInterfaceSubClass
 op_assign
 id|USB_SC_SCSI
 comma
-singleline_comment|// Adjusted during bind()
+singleline_comment|// Adjusted during fsg_bind()
 dot
 id|bInterfaceProtocol
 op_assign
 id|USB_PR_BULK
 comma
-singleline_comment|// Adjusted during bind()
+singleline_comment|// Adjusted during fsg_bind()
 )brace
 suffix:semicolon
 multiline_comment|/* Three full-speed endpoint descriptors: bulk-in, bulk-out,&n; * and interrupt-in. */
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 DECL|variable|fs_bulk_in_desc
@@ -2416,8 +2146,6 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_BULK_IN_NUM
-op_or
 id|USB_DIR_IN
 comma
 dot
@@ -2425,19 +2153,10 @@ id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
 comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-id|FS_BULK_IN_MAXPACKET
-)paren
-comma
+multiline_comment|/* wMaxPacketSize set by autoconfiguration */
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 DECL|variable|fs_bulk_out_desc
@@ -2457,26 +2176,17 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_BULK_OUT_NUM
+id|USB_DIR_OUT
 comma
 dot
 id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
 comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-id|FS_BULK_OUT_MAXPACKET
-)paren
-comma
+multiline_comment|/* wMaxPacketSize set by autoconfiguration */
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 DECL|variable|fs_intr_in_desc
@@ -2496,8 +2206,6 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_INTR_IN_NUM
-op_or
 id|USB_DIR_IN
 comma
 dot
@@ -2522,141 +2230,55 @@ comma
 singleline_comment|// frames -&gt; 32 ms
 )brace
 suffix:semicolon
-macro_line|#ifdef&t;HIGHSPEED
+DECL|variable|fs_function
+r_static
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+id|fs_function
+(braket
+)braket
+op_assign
+(brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|intf_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|fs_bulk_in_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|fs_bulk_out_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|fs_intr_in_desc
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/*&n; * USB 2.0 devices need to expose both high speed and full speed&n; * descriptors, unless they only run at full speed.&n; *&n; * That means alternate endpoint descriptors (bigger packets)&n; * and a &quot;device qualifier&quot; ... plus more construction options&n; * for the config descriptor.&n; */
-r_static
-r_const
-r_struct
-id|usb_endpoint_descriptor
-DECL|variable|hs_bulk_in_desc
-id|hs_bulk_in_desc
-op_assign
-(brace
-dot
-id|bLength
-op_assign
-id|USB_DT_ENDPOINT_SIZE
-comma
-dot
-id|bDescriptorType
-op_assign
-id|USB_DT_ENDPOINT
-comma
-dot
-id|bEndpointAddress
-op_assign
-id|EP_BULK_IN_NUM
-op_or
-id|USB_DIR_IN
-comma
-dot
-id|bmAttributes
-op_assign
-id|USB_ENDPOINT_XFER_BULK
-comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-l_int|512
-)paren
-comma
-)brace
-suffix:semicolon
-r_static
-r_const
-r_struct
-id|usb_endpoint_descriptor
-DECL|variable|hs_bulk_out_desc
-id|hs_bulk_out_desc
-op_assign
-(brace
-dot
-id|bLength
-op_assign
-id|USB_DT_ENDPOINT_SIZE
-comma
-dot
-id|bDescriptorType
-op_assign
-id|USB_DT_ENDPOINT
-comma
-dot
-id|bEndpointAddress
-op_assign
-id|EP_BULK_OUT_NUM
-comma
-dot
-id|bmAttributes
-op_assign
-id|USB_ENDPOINT_XFER_BULK
-comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-l_int|512
-)paren
-comma
-dot
-id|bInterval
-op_assign
-l_int|1
-comma
-singleline_comment|// NAK every 1 uframe
-)brace
-suffix:semicolon
-r_static
-r_const
-r_struct
-id|usb_endpoint_descriptor
-DECL|variable|hs_intr_in_desc
-id|hs_intr_in_desc
-op_assign
-(brace
-dot
-id|bLength
-op_assign
-id|USB_DT_ENDPOINT_SIZE
-comma
-dot
-id|bDescriptorType
-op_assign
-id|USB_DT_ENDPOINT
-comma
-dot
-id|bEndpointAddress
-op_assign
-id|EP_INTR_IN_NUM
-op_or
-id|USB_DIR_IN
-comma
-dot
-id|bmAttributes
-op_assign
-id|USB_ENDPOINT_XFER_INT
-comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-l_int|2
-)paren
-comma
-dot
-id|bInterval
-op_assign
-l_int|9
-comma
-singleline_comment|// 2**(9-1) = 256 uframes -&gt; 32 ms
-)brace
-suffix:semicolon
 r_static
 r_struct
 id|usb_qualifier_descriptor
@@ -2696,15 +2318,184 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+r_static
+r_struct
+id|usb_endpoint_descriptor
+DECL|variable|hs_bulk_in_desc
+id|hs_bulk_in_desc
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+id|USB_DT_ENDPOINT_SIZE
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_ENDPOINT
+comma
+multiline_comment|/* bEndpointAddress copied from fs_bulk_in_desc during fsg_bind() */
+dot
+id|bmAttributes
+op_assign
+id|USB_ENDPOINT_XFER_BULK
+comma
+dot
+id|wMaxPacketSize
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|512
+)paren
+comma
+)brace
+suffix:semicolon
+r_static
+r_struct
+id|usb_endpoint_descriptor
+DECL|variable|hs_bulk_out_desc
+id|hs_bulk_out_desc
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+id|USB_DT_ENDPOINT_SIZE
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_ENDPOINT
+comma
+multiline_comment|/* bEndpointAddress copied from fs_bulk_out_desc during fsg_bind() */
+dot
+id|bmAttributes
+op_assign
+id|USB_ENDPOINT_XFER_BULK
+comma
+dot
+id|wMaxPacketSize
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|512
+)paren
+comma
+dot
+id|bInterval
+op_assign
+l_int|1
+comma
+singleline_comment|// NAK every 1 uframe
+)brace
+suffix:semicolon
+r_static
+r_struct
+id|usb_endpoint_descriptor
+DECL|variable|hs_intr_in_desc
+id|hs_intr_in_desc
+op_assign
+(brace
+dot
+id|bLength
+op_assign
+id|USB_DT_ENDPOINT_SIZE
+comma
+dot
+id|bDescriptorType
+op_assign
+id|USB_DT_ENDPOINT
+comma
+multiline_comment|/* bEndpointAddress copied from fs_intr_in_desc during fsg_bind() */
+dot
+id|bmAttributes
+op_assign
+id|USB_ENDPOINT_XFER_INT
+comma
+dot
+id|wMaxPacketSize
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|2
+)paren
+comma
+dot
+id|bInterval
+op_assign
+l_int|9
+comma
+singleline_comment|// 2**(9-1) = 256 uframes -&gt; 32 ms
+)brace
+suffix:semicolon
+DECL|variable|hs_function
+r_static
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+id|hs_function
+(braket
+)braket
+op_assign
+(brace
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|intf_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|hs_bulk_in_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|hs_bulk_out_desc
+comma
+(paren
+r_struct
+id|usb_descriptor_header
+op_star
+)paren
+op_amp
+id|hs_intr_in_desc
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Maxpacket and other transfer characteristics vary by speed. */
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,fs,hs)&t;(((g)-&gt;speed==USB_SPEED_HIGH) ? (hs) : (fs))
 macro_line|#else
-multiline_comment|/* If there&squot;s no high speed support, maxpacket doesn&squot;t change. */
+multiline_comment|/* If there&squot;s no high speed support, always use the full-speed descriptor. */
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,fs,hs)&t;fs
-macro_line|#endif&t;/* !HIGHSPEED */
+macro_line|#endif&t;/* !CONFIG_USB_GADGET_DUALSPEED */
 multiline_comment|/* The CBI specification limits the serial string to 12 uppercase hexadecimal&n; * characters. */
+DECL|variable|manufacturer
+r_static
+r_char
+id|manufacturer
+(braket
+l_int|40
+)braket
+suffix:semicolon
 DECL|variable|serial
 r_static
 r_char
@@ -2713,7 +2504,7 @@ id|serial
 l_int|13
 )braket
 suffix:semicolon
-multiline_comment|/* Static strings, in ISO 8859/1 */
+multiline_comment|/* Static strings, in UTF-8 (for simplicity we use only ASCII characters) */
 DECL|variable|strings
 r_static
 r_struct
@@ -2726,31 +2517,23 @@ op_assign
 (brace
 id|STRING_MANUFACTURER
 comma
-id|UTS_SYSNAME
-l_string|&quot; &quot;
-id|UTS_RELEASE
-l_string|&quot; with &quot;
-id|CHIP
-comma
+id|manufacturer
 )brace
 comma
 (brace
 id|STRING_PRODUCT
 comma
 id|longname
-comma
 )brace
 comma
 (brace
 id|STRING_SERIAL
 comma
 id|serial
-comma
 )brace
 comma
 (brace
 )brace
-singleline_comment|// end of list
 )brace
 suffix:semicolon
 DECL|variable|stringtab
@@ -2773,7 +2556,7 @@ id|strings
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Config descriptors are handcrafted.  They must agree with the code&n; * that sets configurations and with code managing interfaces and their&n; * altsettings.  They must also handle different speeds and other-speed&n; * requests.&n; */
+multiline_comment|/*&n; * Config descriptors must agree with the code that sets configurations&n; * and with code managing interfaces and their altsettings.  They must&n; * also handle different speeds and other-speed requests.&n; */
 DECL|function|populate_config_buf
 r_static
 r_int
@@ -2786,7 +2569,7 @@ id|speed
 comma
 id|u8
 op_star
-id|buf0
+id|buf
 comma
 id|u8
 id|type
@@ -2795,17 +2578,16 @@ r_int
 id|index
 )paren
 (brace
-id|u8
-op_star
-id|buf
-op_assign
-id|buf0
-suffix:semicolon
-macro_line|#ifdef HIGHSPEED
 r_int
-id|hs
+id|len
 suffix:semicolon
-macro_line|#endif
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+id|function
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2817,66 +2599,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|config_desc.wTotalLength
-OG
-id|EP0_BUFSIZE
-)paren
-r_return
-op_minus
-id|EDOM
-suffix:semicolon
-multiline_comment|/* Config (or other speed config) */
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|config_desc
-comma
-id|USB_DT_CONFIG_SIZE
-)paren
-suffix:semicolon
-id|buf
-(braket
-l_int|1
-)braket
-op_assign
-id|type
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_CONFIG_SIZE
-suffix:semicolon
-multiline_comment|/* Interface */
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|intf_desc
-comma
-id|USB_DT_INTERFACE_SIZE
-)paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_INTERFACE_SIZE
-suffix:semicolon
-multiline_comment|/* The endpoints in the interface (at that speed) */
-macro_line|#ifdef HIGHSPEED
-id|hs
-op_assign
-(paren
-id|speed
-op_eq
-id|USB_SPEED_HIGH
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_if
 c_cond
 (paren
@@ -2884,136 +2607,73 @@ id|type
 op_eq
 id|USB_DT_OTHER_SPEED_CONFIG
 )paren
-id|hs
+id|speed
 op_assign
-op_logical_neg
-id|hs
+(paren
+id|USB_SPEED_FULL
+op_plus
+id|USB_SPEED_HIGH
+)paren
+op_minus
+id|speed
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|hs
+id|speed
+op_eq
+id|USB_SPEED_HIGH
 )paren
-(brace
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|hs_bulk_in_desc
-comma
-id|USB_DT_ENDPOINT_SIZE
-)paren
+id|function
+op_assign
+id|hs_function
 suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|hs_bulk_out_desc
-comma
-id|USB_DT_ENDPOINT_SIZE
-)paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|transport_is_cbi
-c_func
-(paren
-)paren
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|hs_intr_in_desc
-comma
-id|USB_DT_ENDPOINT_SIZE
-)paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
-suffix:semicolon
-)brace
-)brace
 r_else
 macro_line|#endif
-(brace
-id|memcpy
+id|function
+op_assign
+id|fs_function
+suffix:semicolon
+id|len
+op_assign
+id|usb_gadget_config_buf
 c_func
 (paren
-id|buf
-comma
 op_amp
-id|fs_bulk_in_desc
+id|config_desc
 comma
-id|USB_DT_ENDPOINT_SIZE
+id|buf
+comma
+id|EP0_BUFSIZE
+comma
+id|function
 )paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|fs_bulk_out_desc
-comma
-id|USB_DT_ENDPOINT_SIZE
-)paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|transport_is_cbi
-c_func
-(paren
+id|len
+OL
+l_int|0
 )paren
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|fs_intr_in_desc
-comma
-id|USB_DT_ENDPOINT_SIZE
-)paren
-suffix:semicolon
-id|buf
-op_add_assign
-id|USB_DT_ENDPOINT_SIZE
-suffix:semicolon
-)brace
-)brace
 r_return
+id|len
+suffix:semicolon
+(paren
+(paren
+r_struct
+id|usb_config_descriptor
+op_star
+)paren
 id|buf
-op_minus
-id|buf0
+)paren
+op_member_access_from_pointer
+id|bDescriptorType
+op_assign
+id|type
+suffix:semicolon
+r_return
+id|len
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -4249,7 +3909,7 @@ id|value
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_case
 id|USB_DT_DEVICE_QUALIFIER
 suffix:colon
@@ -4260,6 +3920,14 @@ id|fsg
 comma
 l_string|&quot;get device qualifier&bslash;n&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsg-&gt;gadget-&gt;is_dualspeed
+)paren
+r_break
 suffix:semicolon
 id|value
 op_assign
@@ -4299,10 +3967,18 @@ comma
 l_string|&quot;get other-speed config descriptor&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fsg-&gt;gadget-&gt;is_dualspeed
+)paren
+r_break
+suffix:semicolon
 r_goto
 id|get_config
 suffix:semicolon
-macro_line|#endif /* HIGHSPEED */
+macro_line|#endif
 r_case
 id|USB_DT_CONFIG
 suffix:colon
@@ -4314,10 +3990,10 @@ comma
 l_string|&quot;get configuration descriptor&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 id|get_config
 suffix:colon
-macro_line|#endif /* HIGHSPEED */
+macro_line|#endif
 id|value
 op_assign
 id|populate_config_buf
@@ -7017,7 +6693,7 @@ id|vendor_id
 comma
 id|product_id
 comma
-id|DRIVER_VERSION_NUM
+id|mod_data.release
 )paren
 suffix:semicolon
 r_return
@@ -12016,6 +11692,10 @@ id|fsg-&gt;bulk_out_enabled
 op_assign
 l_int|1
 suffix:semicolon
+id|fsg-&gt;bulk_out_maxpacket
+op_assign
+id|d-&gt;wMaxPacketSize
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14721,6 +14401,176 @@ id|mod_data.protocol_name
 op_assign
 l_string|&quot;Transparent SCSI&quot;
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gadget_is_sh
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.can_stall
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mod_data.release
+op_eq
+l_int|0xffff
+)paren
+(brace
+singleline_comment|// Parameter wasn&squot;t set
+r_if
+c_cond
+(paren
+id|gadget_is_net2280
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0301
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_dummy
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0302
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_pxa
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0303
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_sh
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0304
+)paren
+suffix:semicolon
+multiline_comment|/* The sa1100 controller is not supported */
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_goku
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0306
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_mq11xx
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0307
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_omap
+c_func
+(paren
+id|fsg-&gt;gadget
+)paren
+)paren
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0308
+)paren
+suffix:semicolon
+r_else
+(brace
+id|WARN
+c_func
+(paren
+id|fsg
+comma
+l_string|&quot;controller &squot;%s&squot; not recognized&bslash;n&quot;
+comma
+id|fsg-&gt;gadget-&gt;name
+)paren
+suffix:semicolon
+id|mod_data.release
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+l_int|0x0399
+)paren
+suffix:semicolon
+)brace
+)brace
 id|prot
 op_assign
 id|simple_strtol
@@ -14807,7 +14657,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|INFO
+id|ERROR
 c_func
 (paren
 id|fsg
@@ -15009,7 +14859,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|INFO
+id|ERROR
 c_func
 (paren
 id|fsg
@@ -15036,7 +14886,7 @@ op_le
 l_int|0
 )paren
 (brace
-id|INFO
+id|ERROR
 c_func
 (paren
 id|fsg
@@ -15192,7 +15042,7 @@ OG
 id|MAX_LUNS
 )paren
 (brace
-id|INFO
+id|ERROR
 c_func
 (paren
 id|fsg
@@ -15374,7 +15224,7 @@ op_logical_neg
 id|mod_data.removable
 )paren
 (brace
-id|INFO
+id|ERROR
 c_func
 (paren
 id|fsg
@@ -15394,18 +15244,109 @@ id|out
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Find all the endpoints we will use */
+id|ep
+op_assign
+id|usb_ep_autoconfig
+c_func
+(paren
+id|gadget
+comma
+op_amp
+id|fs_bulk_in_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|fsg
+suffix:semicolon
+singleline_comment|// claim the endpoint
+id|fsg-&gt;bulk_in
+op_assign
+id|ep
+suffix:semicolon
+id|ep
+op_assign
+id|usb_ep_autoconfig
+c_func
+(paren
+id|gadget
+comma
+op_amp
+id|fs_bulk_out_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|fsg
+suffix:semicolon
+singleline_comment|// claim the endpoint
+id|fsg-&gt;bulk_out
+op_assign
+id|ep
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|transport_is_cbi
+c_func
+(paren
+)paren
+)paren
+(brace
+id|ep
+op_assign
+id|usb_ep_autoconfig
+c_func
+(paren
+id|gadget
+comma
+op_amp
+id|fs_intr_in_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|fsg
+suffix:semicolon
+singleline_comment|// claim the endpoint
+id|fsg-&gt;intr_in
+op_assign
+id|ep
+suffix:semicolon
+)brace
 multiline_comment|/* Fix up the descriptors */
 id|device_desc.bMaxPacketSize0
 op_assign
 id|fsg-&gt;ep0-&gt;maxpacket
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
-id|dev_qualifier.bMaxPacketSize0
-op_assign
-id|fsg-&gt;ep0-&gt;maxpacket
-suffix:semicolon
-singleline_comment|// ???
-macro_line|#endif
 id|device_desc.idVendor
 op_assign
 id|cpu_to_le16
@@ -15445,16 +15386,6 @@ l_int|2
 )paren
 suffix:semicolon
 singleline_comment|// Number of endpoints
-id|config_desc.wTotalLength
-op_assign
-id|USB_DT_CONFIG_SIZE
-op_plus
-id|USB_DT_INTERFACE_SIZE
-op_plus
-id|USB_DT_ENDPOINT_SIZE
-op_star
-id|i
-suffix:semicolon
 id|intf_desc.bNumEndpoints
 op_assign
 id|i
@@ -15467,119 +15398,44 @@ id|intf_desc.bInterfaceProtocol
 op_assign
 id|mod_data.transport_type
 suffix:semicolon
-multiline_comment|/* Find all the endpoints we will use */
-id|gadget_for_each_ep
-c_func
-(paren
-id|ep
-comma
-id|gadget
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|strcmp
-c_func
-(paren
-id|ep-&gt;name
-comma
-id|EP_BULK_IN_NAME
-)paren
-op_eq
-l_int|0
-)paren
-id|fsg-&gt;bulk_in
+id|fs_function
+(braket
+id|i
+op_plus
+l_int|1
+)braket
 op_assign
-id|ep
+l_int|NULL
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|strcmp
-c_func
-(paren
-id|ep-&gt;name
-comma
-id|EP_BULK_OUT_NAME
-)paren
-op_eq
-l_int|0
-)paren
-id|fsg-&gt;bulk_out
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
+id|hs_function
+(braket
+id|i
+op_plus
+l_int|1
+)braket
 op_assign
-id|ep
+l_int|NULL
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|strcmp
-c_func
-(paren
-id|ep-&gt;name
-comma
-id|EP_INTR_IN_NAME
-)paren
-op_eq
-l_int|0
-)paren
-id|fsg-&gt;intr_in
+multiline_comment|/* Assume ep0 uses the same maxpacket value for both speeds */
+id|dev_qualifier.bMaxPacketSize0
 op_assign
-id|ep
+id|fsg-&gt;ep0-&gt;maxpacket
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fsg-&gt;bulk_in
-op_logical_or
-op_logical_neg
-id|fsg-&gt;bulk_out
-op_logical_or
-(paren
-id|transport_is_cbi
-c_func
-(paren
-)paren
-op_logical_and
-op_logical_neg
-id|fsg-&gt;intr_in
-)paren
-)paren
-(brace
-id|DBG
-c_func
-(paren
-id|fsg
-comma
-l_string|&quot;unable to find all endpoints&bslash;n&quot;
-)paren
-suffix:semicolon
-id|rc
+multiline_comment|/* Assume that all endpoint addresses are the same for both speeds */
+id|hs_bulk_in_desc.bEndpointAddress
 op_assign
-op_minus
-id|ENOTSUPP
+id|fs_bulk_in_desc.bEndpointAddress
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|fsg-&gt;bulk_out_maxpacket
+id|hs_bulk_out_desc.bEndpointAddress
 op_assign
-(paren
-id|gadget-&gt;speed
-op_eq
-id|USB_SPEED_HIGH
-ques
-c_cond
-l_int|512
-suffix:colon
-id|FS_BULK_OUT_MAXPACKET
-)paren
+id|fs_bulk_out_desc.bEndpointAddress
 suffix:semicolon
+id|hs_intr_in_desc.bEndpointAddress
+op_assign
+id|fs_intr_in_desc.bEndpointAddress
+suffix:semicolon
+macro_line|#endif
 id|rc
 op_assign
 op_minus
@@ -15713,6 +15569,22 @@ id|usb_gadget_set_selfpowered
 c_func
 (paren
 id|gadget
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|manufacturer
+comma
+r_sizeof
+id|manufacturer
+comma
+id|UTS_SYSNAME
+l_string|&quot; &quot;
+id|UTS_RELEASE
+l_string|&quot; with %s&quot;
+comma
+id|gadget-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* On a real device, serial[] would be loaded from permanent&n;&t; * storage.  We just encode it from the driver version string. */
@@ -15997,6 +15869,21 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|autoconf_fail
+suffix:colon
+id|ERROR
+c_func
+(paren
+id|fsg
+comma
+l_string|&quot;unable to autoconfigure all endpoints&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ENOTSUPP
+suffix:semicolon
 id|out
 suffix:colon
 id|fsg-&gt;state
@@ -16028,7 +15915,7 @@ id|usb_gadget_driver
 id|fsg_driver
 op_assign
 (brace
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 dot
 id|speed
 op_assign

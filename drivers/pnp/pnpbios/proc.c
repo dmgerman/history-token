@@ -560,7 +560,7 @@ c_func
 op_amp
 id|nodenum
 comma
-id|PNPMODE_STATIC
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren

@@ -2304,13 +2304,11 @@ l_int|0
 )paren
 )paren
 r_return
-l_int|1
-suffix:semicolon
-r_else
-r_return
 l_int|0
 suffix:semicolon
 )brace
+r_else
+(brace
 id|dep
 op_assign
 id|dev-&gt;dependent
@@ -2329,9 +2327,8 @@ id|i
 )paren
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
-multiline_comment|/* if this dependent resource failed, try the next one */
 id|dep
 op_assign
 id|dep-&gt;next
@@ -2346,6 +2343,7 @@ c_loop
 id|dep
 )paren
 suffix:semicolon
+)brace
 id|pnp_err
 c_func
 (paren
@@ -2355,7 +2353,8 @@ id|dev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_activate_dev - activates a PnP device for use&n; * @dev: pointer to the desired device&n; *&n; * does not validate or set resources so be careful.&n; */
@@ -2395,7 +2394,6 @@ multiline_comment|/* ensure resources are allocated */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pnp_auto_config_dev
 c_func
 (paren

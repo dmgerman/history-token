@@ -32,6 +32,10 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;whiteheat_fw.h&quot;&t;&t;/* firmware for the ConnectTech WhiteHEAT device */
 macro_line|#include &quot;whiteheat.h&quot;&t;&t;&t;/* WhiteHEAT specific commands */
+macro_line|#ifndef CMSPAR
+DECL|macro|CMSPAR
+mdefine_line|#define CMSPAR 0
+macro_line|#endif
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v2.0&quot;
@@ -5138,9 +5142,6 @@ id|whiteheat_private
 op_star
 id|info
 suffix:semicolon
-r_int
-id|timeout
-suffix:semicolon
 id|__u8
 op_star
 id|transfer_buffer
@@ -5267,33 +5268,20 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* wait for the command to complete */
-id|timeout
-op_assign
-id|COMMAND_TIMEOUT
-suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible_timeout
+c_func
 (paren
-id|timeout
-op_logical_and
-(paren
-id|command_info-&gt;command_finished
-op_eq
-id|FALSE
-)paren
-)paren
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-(paren
-op_amp
 id|command_info-&gt;wait_command
 comma
-id|timeout
+(paren
+id|command_info-&gt;command_finished
+op_ne
+id|FALSE
+)paren
+comma
+id|COMMAND_TIMEOUT
 )paren
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren

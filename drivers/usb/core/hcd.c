@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;hcd.h&quot;
 singleline_comment|// #define USB_BANDWIDTH_MESSAGES
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -1013,7 +1014,38 @@ suffix:semicolon
 multiline_comment|/* CLASS REQUESTS (and errors) */
 r_default
 suffix:colon
+(brace
+)brace
 multiline_comment|/* non-generic request */
+r_if
+c_cond
+(paren
+id|HCD_IS_SUSPENDED
+(paren
+id|hcd-&gt;state
+)paren
+)paren
+id|urb-&gt;status
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
+)paren
+id|urb-&gt;status
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_else
 id|urb-&gt;status
 op_assign
 id|hcd-&gt;driver-&gt;hub_control
@@ -1936,11 +1968,20 @@ id|busnum
 suffix:semicolon
 )brace
 r_else
-id|warn
+(brace
+id|printk
 (paren
-l_string|&quot;too many buses&quot;
+id|KERN_ERR
+l_string|&quot;%s: too many buses&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|E2BIG
+suffix:semicolon
+)brace
 id|snprintf
 c_func
 (paren
@@ -2413,9 +2454,11 @@ id|tmp
 suffix:semicolon
 r_default
 suffix:colon
-id|dbg
+id|pr_debug
 (paren
-l_string|&quot;bogus device speed!&quot;
+l_string|&quot;%s: bogus device speed!&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return

@@ -1730,7 +1730,7 @@ id|driver_name
 )paren
 )paren
 (brace
-singleline_comment|//              WARNING(__FUNCTION__ &quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;,self-&gt;io.fir_base);
+singleline_comment|//              WARNING(&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;, __FUNCTION__, self-&gt;io.fir_base);
 id|err
 op_assign
 op_minus

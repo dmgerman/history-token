@@ -103,9 +103,17 @@ DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
 macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
-multiline_comment|/*&n; * Some compilers get the use of &quot;%?&quot; wrong in the asm below.&n; */
+r_extern
+id|asmlinkage
+r_void
+id|__do_softirq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;__asm__(&quot;bl&t;__do_softirq&quot;: : : &quot;lr&quot;, &quot;cc&quot;);/* out of line */&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; local_softirq_pending())&t;&t;&bslash;&n;&t;&t;&t;__do_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq(irq)&t;barrier()
 macro_line|#else

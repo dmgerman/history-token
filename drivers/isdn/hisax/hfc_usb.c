@@ -638,7 +638,7 @@ c_func
 (paren
 id|hfc-&gt;ctrl_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 multiline_comment|/* start transfer */
@@ -2978,7 +2978,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3278,7 +3278,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -5907,7 +5907,6 @@ multiline_comment|/*************************************************/
 DECL|function|hfc_usb_probe
 r_static
 r_int
-id|__devinit
 id|hfc_usb_probe
 c_func
 (paren

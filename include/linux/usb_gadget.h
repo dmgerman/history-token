@@ -1160,6 +1160,34 @@ op_star
 id|desc
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* utility wrapping a simple endpoint selection policy */
+r_extern
+r_struct
+id|usb_ep
+op_star
+id|usb_ep_autoconfig
+(paren
+r_struct
+id|usb_gadget
+op_star
+comma
+r_struct
+id|usb_endpoint_descriptor
+op_star
+)paren
+id|__init
+suffix:semicolon
+r_extern
+r_void
+id|usb_ep_autoconfig_reset
+(paren
+r_struct
+id|usb_gadget
+op_star
+)paren
+id|__init
+suffix:semicolon
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_USB_GADGET_H */
 eof
