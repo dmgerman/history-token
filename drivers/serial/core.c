@@ -2819,6 +2819,7 @@ id|port-&gt;type
 op_ne
 id|PORT_UNKNOWN
 )paren
+(brace
 id|retval
 op_assign
 id|port-&gt;ops
@@ -2829,6 +2830,15 @@ c_func
 id|port
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Always success - Jean II */
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If we fail to request resources for the&n;&t;&t; * new port, try to restore the old settings.&n;&t;&t; */
 r_if
 c_cond
