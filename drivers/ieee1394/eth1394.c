@@ -306,7 +306,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The max_partial_datagrams parameter is the maximum number of fragmented&n; * datagrams per node that eth1394 will keep in memory.  Providing an upper&n; * bound allows us to limit the amount of memory that partial datagrams&n; * consume in the event that some partial datagrams are never completed.  This&n; * should probably change to a sysctl item or the like if possible.&n; */
+multiline_comment|/* The max_partial_datagrams parameter is the maximum number of fragmented&n; * datagrams per node that eth1394 will keep in memory.  Providing an upper&n; * bound allows us to limit the amount of memory that partial datagrams&n; * consume in the event that some partial datagrams are never completed.&n; */
 DECL|variable|max_partial_datagrams
 r_static
 r_int
@@ -4976,11 +4976,11 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_if
-c_cond
+r_while
+c_loop
 (paren
 id|pdg-&gt;sz
-op_eq
+op_ge
 id|max_partial_datagrams
 )paren
 (brace
