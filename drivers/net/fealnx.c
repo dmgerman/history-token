@@ -1639,6 +1639,7 @@ id|dev
 )paren
 suffix:semicolon
 DECL|function|stop_nic_tx
+r_static
 r_void
 id|stop_nic_tx
 c_func
@@ -1708,6 +1709,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|stop_nic_rx
+r_static
 r_void
 id|stop_nic_rx
 c_func
@@ -3588,8 +3590,6 @@ comma
 id|miiport
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|netdev_open
 r_static
@@ -5196,8 +5196,6 @@ suffix:semicolon
 id|np-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* Initialize the Rx and Tx rings, along with various &squot;dev&squot; bits. */
 DECL|function|init_ring
@@ -5967,6 +5965,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|free_one_rx_descriptor
+r_static
 r_void
 id|free_one_rx_descriptor
 c_func
@@ -6016,6 +6015,7 @@ id|np-&gt;cur_rx-&gt;next_desc_logical
 suffix:semicolon
 )brace
 DECL|function|reset_rx_descriptors
+r_static
 r_void
 id|reset_rx_descriptors
 c_func
