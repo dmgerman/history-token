@@ -2180,6 +2180,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|esp
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|esp-&gt;conf.tfm
 )paren
 (brace
