@@ -1,4 +1,4 @@
-multiline_comment|/* Copyright (C) 1998  Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *                     The Silver Hammer Group, Ltd.&n; * Copyright (C) 2002  David McCullough &lt;davidm@snapgear.com&gt;&n; */
+multiline_comment|/* Copyright (C) 1998  Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *                     The Silver Hammer Group, Ltd.&n; * Copyright (C) 2002  David McCullough &lt;davidm@snapgear.com&gt;&n; *&n; * This file provides the definitions and structures needed to&n; * support uClinux flat-format executables.&n; */
 macro_line|#ifndef _LINUX_FLAT_H
 DECL|macro|_LINUX_FLAT_H
 mdefine_line|#define _LINUX_FLAT_H
