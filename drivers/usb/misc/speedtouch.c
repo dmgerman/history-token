@@ -2843,7 +2843,7 @@ suffix:semicolon
 id|tasklet_kill
 (paren
 op_amp
-id|instance-&gt;receive_tasklet
+id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
 id|PDEBUG
@@ -4711,7 +4711,7 @@ suffix:semicolon
 id|tasklet_enable
 (paren
 op_amp
-id|instance-&gt;receive_tasklet
+id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
 id|PDEBUG
