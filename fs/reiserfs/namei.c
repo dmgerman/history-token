@@ -1375,6 +1375,11 @@ id|k_objectid
 )paren
 )paren
 (brace
+id|reiserfs_write_unlock
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 (paren
@@ -4820,6 +4825,12 @@ op_eq
 l_int|0
 )paren
 (brace
+id|reiserfs_write_unlock
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
