@@ -12084,7 +12084,7 @@ id|ifa
 suffix:semicolon
 id|ifa
 op_assign
-id|ifua-&gt;tmp_next
+id|ifa-&gt;tmp_next
 comma
 id|ip_idx
 op_increment
