@@ -1637,11 +1637,14 @@ id|deleted
 id|MAXIMUM_NUM_CONTAINERS
 )braket
 suffix:semicolon
-DECL|member|devno
-id|u32
-id|devno
+DECL|member|devname
+r_char
+id|devname
 (braket
 id|MAXIMUM_NUM_CONTAINERS
+)braket
+(braket
+l_int|8
 )braket
 suffix:semicolon
 )brace
