@@ -8,7 +8,7 @@ id|cpumask_t
 id|cpumask_const_t
 suffix:semicolon
 DECL|macro|mk_cpumask_const
-mdefine_line|#define mk_cpumask_const(map)&t;&t;((cpumask_const_t)(map))
+mdefine_line|#define mk_cpumask_const(map)&t;&t;(map)
 DECL|macro|cpu_isset_const
 mdefine_line|#define cpu_isset_const(cpu, map)&t;cpu_isset(cpu, map)
 DECL|macro|cpus_and_const
