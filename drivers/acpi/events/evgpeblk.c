@@ -110,13 +110,16 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_walk_gpe_list&n; *&n; * PARAMETERS:  gpe_walk_callback   - Routine called for each GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the GPE lists.&n; *              FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_walk_gpe_list&n; *&n; * PARAMETERS:  gpe_walk_callback   - Routine called for each GPE block&n; *              Flags               - ACPI_NOT_ISR or ACPI_ISR&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the GPE lists.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_walk_gpe_list
 id|acpi_ev_walk_gpe_list
 (paren
 id|ACPI_GPE_CALLBACK
 id|gpe_walk_callback
+comma
+id|u32
+id|flags
 )paren
 (brace
 r_struct
@@ -143,7 +146,7 @@ id|acpi_os_acquire_lock
 (paren
 id|acpi_gbl_gpe_lock
 comma
-id|ACPI_ISR
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the interrupt level descriptor list */
@@ -207,7 +210,7 @@ id|acpi_os_release_lock
 (paren
 id|acpi_gbl_gpe_lock
 comma
-id|ACPI_ISR
+id|flags
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

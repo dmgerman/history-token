@@ -988,6 +988,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_disable_gpe_block
+comma
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Remove SCI handler */
@@ -1024,6 +1026,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_ev_delete_gpe_handlers
+comma
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Return to original mode if necessary */

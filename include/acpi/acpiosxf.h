@@ -238,7 +238,7 @@ id|acpi_os_install_interrupt_handler
 id|u32
 id|gsi
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|service_routine
 comma
 r_void
@@ -250,9 +250,9 @@ id|acpi_status
 id|acpi_os_remove_interrupt_handler
 (paren
 id|u32
-id|interrupt_number
+id|gsi
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|service_routine
 )paren
 suffix:semicolon
@@ -269,7 +269,7 @@ id|acpi_os_queue_for_execution
 id|u32
 id|priority
 comma
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 id|function
 comma
 r_void
@@ -359,7 +359,7 @@ id|u32
 id|width
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Platform and hardware-independent PCI configuration space access&n; */
+multiline_comment|/*&n; * Platform and hardware-independent PCI configuration space access&n; * Note: Can&squot;t use &quot;Register&quot; as a parameter, changed to &quot;Reg&quot; --&n; * certain compilers complain.&n; */
 id|acpi_status
 id|acpi_os_read_pci_configuration
 (paren
@@ -369,7 +369,7 @@ op_star
 id|pci_id
 comma
 id|u32
-r_register
+id|reg
 comma
 r_void
 op_star
@@ -388,7 +388,7 @@ op_star
 id|pci_id
 comma
 id|u32
-r_register
+id|reg
 comma
 id|acpi_integer
 id|value

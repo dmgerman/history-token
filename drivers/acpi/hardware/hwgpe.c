@@ -603,12 +603,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_all_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable and clear all GPEs&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_all_gpes&n; *&n; * PARAMETERS:  Flags           - ACPI_NOT_ISR or ACPI_ISR&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable and clear all GPEs&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_disable_all_gpes
 id|acpi_hw_disable_all_gpes
 (paren
-r_void
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -624,6 +625,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_disable_gpe_block
+comma
+id|flags
 )paren
 suffix:semicolon
 id|status
@@ -631,6 +634,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_clear_gpe_block
+comma
+id|flags
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -639,12 +644,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_all_runtime_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all GPEs of the given type&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_all_runtime_gpes&n; *&n; * PARAMETERS:  Flags           - ACPI_NOT_ISR or ACPI_ISR&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all GPEs of the given type&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_enable_all_runtime_gpes
 id|acpi_hw_enable_all_runtime_gpes
 (paren
-r_void
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -660,6 +666,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_enable_runtime_gpe_block
+comma
+id|flags
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -668,12 +676,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_all_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all GPEs of the given type&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_all_wakeup_gpes&n; *&n; * PARAMETERS:  Flags           - ACPI_NOT_ISR or ACPI_ISR&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable all GPEs of the given type&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_enable_all_wakeup_gpes
 id|acpi_hw_enable_all_wakeup_gpes
 (paren
-r_void
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -689,6 +698,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_enable_wakeup_gpe_block
+comma
+id|flags
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

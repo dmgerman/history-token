@@ -44,14 +44,14 @@ id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Runtime configuration (static defaults that can be overriden at runtime)&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Create the predefined _OSI method in the namespace? Default is TRUE&n; * because ACPI CA is fully compatible with other ACPI implementations.&n; * Changing this will revert ACPI CA (and machine ASL) to pre-OSI behavior.&n; */
+multiline_comment|/*&n; * Enable &quot;slack&quot; in the AML interpreter?  Default is FALSE, and the&n; * interpreter strictly follows the ACPI specification.  Setting to TRUE&n; * allows the interpreter to forgive certain bad AML constructs.&n; */
 id|ACPI_EXTERN
 id|u8
 id|ACPI_INIT_GLOBAL
 (paren
-id|acpi_gbl_create_osi_method
+id|acpi_gbl_enable_interpeter_slack
 comma
-id|TRUE
+id|FALSE
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Automatically serialize ALL control methods? Default is FALSE, meaning&n; * to use the Serialized/not_serialized method flags on a per method basis.&n; * Only change this if the ASL code is poorly written and cannot handle&n; * reentrancy even though methods are marked &quot;not_serialized&quot;.&n; */
@@ -62,6 +62,16 @@ id|ACPI_INIT_GLOBAL
 id|acpi_gbl_all_methods_serialized
 comma
 id|FALSE
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Create the predefined _OSI method in the namespace? Default is TRUE&n; * because ACPI CA is fully compatible with other ACPI implementations.&n; * Changing this will revert ACPI CA (and machine ASL) to pre-OSI behavior.&n; */
+id|ACPI_EXTERN
+id|u8
+id|ACPI_INIT_GLOBAL
+(paren
+id|acpi_gbl_create_osi_method
+comma
+id|TRUE
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Disable wakeup GPEs during runtime? Default is TRUE because WAKE and&n; * RUNTIME GPEs should never be shared, and WAKE GPEs should typically only&n; * be enabled just before going to sleep.&n; */
