@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 DECL|macro|mmu_inval_dma_area
 mdefine_line|#define mmu_inval_dma_area(p, l)&t;/* Anton pulled it out for 2.4.0-xx */
 r_struct
