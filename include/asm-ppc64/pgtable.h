@@ -1009,6 +1009,8 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; PTE_SHIFT)
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) {((off) &lt;&lt; PTE_SHIFT)|_PAGE_FILE})
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;(BITS_PER_LONG - PTE_SHIFT)
 multiline_comment|/*&n; * kern_addr_valid is intended to indicate whether an address is a valid&n; * kernel address.  Most 32-bit archs define it as always true (like this)&n; * but most 64-bit archs actually perform a test.  What should we do here?&n; * The only use is in fs/ncpfs/dir.c&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
