@@ -40,7 +40,7 @@ suffix:semicolon
 DECL|macro|IDE_PMAC_DEBUG
 mdefine_line|#define IDE_PMAC_DEBUG
 DECL|macro|DMA_WAIT_TIMEOUT
-mdefine_line|#define DMA_WAIT_TIMEOUT&t;100
+mdefine_line|#define DMA_WAIT_TIMEOUT&t;50
 DECL|struct|pmac_ide_hwif
 r_typedef
 r_struct
@@ -8769,7 +8769,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* verify good dma status */
+multiline_comment|/* verify good dma status. we don&squot;t check for ACTIVE beeing 0. We should...&n;&t; * in theory, but with ATAPI decices doing buffer underruns, that would&n;&t; * cause us to disable DMA, which isn&squot;t what we want&n;&t; */
 r_return
 (paren
 id|dstat
@@ -8778,8 +8778,6 @@ op_amp
 id|RUN
 op_or
 id|DEAD
-op_or
-id|ACTIVE
 )paren
 )paren
 op_ne
@@ -8823,6 +8821,8 @@ suffix:semicolon
 r_int
 r_int
 id|status
+comma
+id|timeout
 suffix:semicolon
 r_if
 c_cond
@@ -8838,7 +8838,7 @@ id|dma
 op_assign
 id|pmif-&gt;dma_regs
 suffix:semicolon
-multiline_comment|/* We have to things to deal with here:&n;&t; * &n;&t; * - The dbdma won&squot;t stop if the command was started&n;&t; * but completed with an error without transferring all&n;&t; * datas. This happens when bad blocks are met during&n;&t; * a multi-block transfer.&n;&t; * &n;&t; * - The dbdma fifo hasn&squot;t yet finished flushing to&n;&t; * to system memory when the disk interrupt occurs.&n;&t; * &n;&t; * The trick here is to increment drive-&gt;waiting_for_dma,&n;&t; * and return as if no interrupt occurred. If the counter&n;&t; * reach a certain timeout value, we then return 1. If&n;&t; * we really got the interrupt, it will happen right away&n;&t; * again.&n;&t; * Apple&squot;s solution here may be more elegant. They issue&n;&t; * a DMA channel interrupt (a separate irq line) via a DBDMA&n;&t; * NOP command just before the STOP, and wait for both the&n;&t; * disk and DBDMA interrupts to have completed.&n;&t; */
+multiline_comment|/* We have to things to deal with here:&n;&t; * &n;&t; * - The dbdma won&squot;t stop if the command was started&n;&t; * but completed with an error without transferring all&n;&t; * datas. This happens when bad blocks are met during&n;&t; * a multi-block transfer.&n;&t; * &n;&t; * - The dbdma fifo hasn&squot;t yet finished flushing to&n;&t; * to system memory when the disk interrupt occurs.&n;&t; * &n;&t; */
 multiline_comment|/* If ACTIVE is cleared, the STOP command have passed and&n;&t; * transfer is complete.&n;&t; */
 id|status
 op_assign
@@ -8883,23 +8883,81 @@ op_member_access_from_pointer
 id|index
 )paren
 suffix:semicolon
-multiline_comment|/* If dbdma didn&squot;t execute the STOP command yet, the&n;&t; * active bit is still set */
-id|drive-&gt;waiting_for_dma
-op_increment
+multiline_comment|/* If dbdma didn&squot;t execute the STOP command yet, the&n;&t; * active bit is still set. We consider that we aren&squot;t&n;&t; * sharing interrupts (which is hopefully the case with&n;&t; * those controllers) and so we just try to flush the&n;&t; * channel for pending data in the fifo&n;&t; */
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+(paren
+id|FLUSH
+op_lshift
+l_int|16
+)paren
+op_or
+id|FLUSH
+comma
+op_amp
+id|dma-&gt;control
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|readl
+c_func
+(paren
+op_amp
+id|dma-&gt;status
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;waiting_for_dma
-op_ge
-id|DMA_WAIT_TIMEOUT
+(paren
+id|status
+op_amp
+id|FLUSH
+)paren
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|timeout
+OG
+l_int|100
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide%d, timeout waiting &bslash;&n;&t;&t;&t;for dbdma command stop&bslash;n&quot;
+l_string|&quot;ide%d, ide_dma_test_irq &bslash;&n;&t;&t;&t;timeout flushing channel&bslash;n&quot;
 comma
 id|HWIF
 c_func
@@ -8910,18 +8968,12 @@ op_member_access_from_pointer
 id|index
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_break
 suffix:semicolon
 )brace
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
+)brace
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 r_static
