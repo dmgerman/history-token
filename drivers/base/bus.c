@@ -340,7 +340,8 @@ id|drv
 r_int
 id|error
 op_assign
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -394,6 +395,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_else
+id|attach
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_return
 id|error
