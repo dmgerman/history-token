@@ -3350,7 +3350,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
 DECL|variable|pnp_opl3sa2_list
 r_struct
-id|pnp_id
+id|pnp_device_id
 id|pnp_opl3sa2_list
 (braket
 )braket
@@ -3397,7 +3397,7 @@ id|dev
 comma
 r_const
 r_struct
-id|pnp_id
+id|pnp_device_id
 op_star
 id|dev_id
 )paren
