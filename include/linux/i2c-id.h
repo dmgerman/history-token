@@ -5,7 +5,7 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.41 2002/03/11 07:18:55 simon Exp $ */
+multiline_comment|/* $Id: i2c-id.h,v 1.52 2002/07/10 13:28:44 abz Exp $ */
 macro_line|#ifndef I2C_ID_H
 DECL|macro|I2C_ID_H
 mdefine_line|#define I2C_ID_H
@@ -102,7 +102,17 @@ mdefine_line|#define I2C_DRIVERID_SP5055&t;44     /* Satellite tuner&t;&t;*/
 DECL|macro|I2C_DRIVERID_STV0030
 mdefine_line|#define I2C_DRIVERID_STV0030&t;45     /* Multipurpose switch&t;&t;*/
 DECL|macro|I2C_DRIVERID_SAA7108
-mdefine_line|#define I2C_DRIVERID_SAA7108    46     /* video decoder, image scaler   */
+mdefine_line|#define I2C_DRIVERID_SAA7108&t;46     /* video decoder, image scaler   */
+DECL|macro|I2C_DRIVERID_DS1307
+mdefine_line|#define I2C_DRIVERID_DS1307&t;47     /* DS1307 real time clock&t;*/
+DECL|macro|I2C_DRIVERID_ADV717x
+mdefine_line|#define I2C_DRIVERID_ADV717x&t;48     /* ADV 7175/7176 video encoder&t;*/
+DECL|macro|I2C_DRIVERID_ZR36067
+mdefine_line|#define I2C_DRIVERID_ZR36067&t;49     /* Zoran 36067 video encoder&t;*/
+DECL|macro|I2C_DRIVERID_ZR36120
+mdefine_line|#define I2C_DRIVERID_ZR36120&t;50     /* Zoran 36120 video encoder&t;*/
+DECL|macro|I2C_DRIVERID_24LC32A
+mdefine_line|#define I2C_DRIVERID_24LC32A&t;51&t;&t;/* Microchip 24LC32A 32k EEPROM&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -115,6 +125,10 @@ DECL|macro|I2C_DRIVERID_I2CDEV
 mdefine_line|#define I2C_DRIVERID_I2CDEV&t;900
 DECL|macro|I2C_DRIVERID_I2CPROC
 mdefine_line|#define I2C_DRIVERID_I2CPROC&t;901
+DECL|macro|I2C_DRIVERID_ARP
+mdefine_line|#define I2C_DRIVERID_ARP        902    /* SMBus ARP Client              */
+DECL|macro|I2C_DRIVERID_ALERT
+mdefine_line|#define I2C_DRIVERID_ALERT      903    /* SMBus Alert Responder Client  */
 multiline_comment|/* IDs --   Use DRIVERIDs 1000-1999 for sensors. &n;   These were originally in sensors.h in the lm_sensors package */
 DECL|macro|I2C_DRIVERID_LM78
 mdefine_line|#define I2C_DRIVERID_LM78 1002
@@ -174,6 +188,12 @@ DECL|macro|I2C_DRIVERID_FSCSCY
 mdefine_line|#define I2C_DRIVERID_FSCSCY 1029
 DECL|macro|I2C_DRIVERID_PCF8591
 mdefine_line|#define I2C_DRIVERID_PCF8591 1030
+DECL|macro|I2C_DRIVERID_SMSC47M1
+mdefine_line|#define I2C_DRIVERID_SMSC47M1 1031
+DECL|macro|I2C_DRIVERID_VT1211
+mdefine_line|#define I2C_DRIVERID_VT1211 1032
+DECL|macro|I2C_DRIVERID_LM92
+mdefine_line|#define I2C_DRIVERID_LM92 1033
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -199,6 +219,8 @@ DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
 mdefine_line|#define I2C_ALGO_MPC8XX 0x110000&t;/* MPC8xx PowerPC I2C algorithm */
+DECL|macro|I2C_ALGO_OCP
+mdefine_line|#define I2C_ALGO_OCP    0x120000&t;/* IBM or otherwise On-chip I2C algorithm */
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -237,12 +259,16 @@ DECL|macro|I2C_HW_B_VOO
 mdefine_line|#define I2C_HW_B_VOO&t;0x0b&t;/* 3dfx Voodoo 3 / Banshee      &t;*/
 DECL|macro|I2C_HW_B_PPORT
 mdefine_line|#define I2C_HW_B_PPORT  0x0c&t;/* Primitive parallel port adapter&t;*/
+DECL|macro|I2C_HW_B_SAVG
+mdefine_line|#define I2C_HW_B_SAVG&t;0x0d&t;/* Savage 4                     &t;*/
 DECL|macro|I2C_HW_B_RIVA
 mdefine_line|#define I2C_HW_B_RIVA&t;0x10&t;/* Riva based graphics cards&t;&t;*/
 DECL|macro|I2C_HW_B_IOC
 mdefine_line|#define I2C_HW_B_IOC&t;0x11&t;/* IOC bit-wiggling&t;&t;&t;*/
 DECL|macro|I2C_HW_B_TSUNA
 mdefine_line|#define I2C_HW_B_TSUNA  0x12&t;/* DEC Tsunami chipset&t;&t;&t;*/
+DECL|macro|I2C_HW_B_FRODO
+mdefine_line|#define I2C_HW_B_FRODO  0x13    /* 2d3D, Inc. SA-1110 Development Board */
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_P_LP
 mdefine_line|#define I2C_HW_P_LP&t;0x00&t;/* Parallel port interface&t;&t;*/
@@ -259,6 +285,9 @@ mdefine_line|#define I2C_HW_MPC8XX_EPON 0x00&t;/* Eponymous MPC8xx I2C adapter &
 multiline_comment|/* --- ITE based algorithms&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_I_IIC
 mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
+multiline_comment|/* --- PowerPC on-chip adapters&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_OCP
+mdefine_line|#define I2C_HW_OCP 0x00&t;/* IBM on-chip I2C adapter &t;*/
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00

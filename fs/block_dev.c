@@ -32,7 +32,12 @@ id|sector_t
 id|retval
 op_assign
 op_complement
-l_int|0U
+(paren
+(paren
+id|sector_t
+)paren
+l_int|0
+)paren
 suffix:semicolon
 id|loff_t
 id|sz
@@ -45,7 +50,8 @@ c_cond
 id|sz
 )paren
 (brace
-id|sector_t
+r_int
+r_int
 id|size
 op_assign
 id|block_size
@@ -54,6 +60,7 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
+r_int
 r_int
 id|sizebits
 op_assign

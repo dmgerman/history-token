@@ -1898,7 +1898,7 @@ id|wipe_partitions
 )paren
 suffix:semicolon
 DECL|variable|generic_file_direct_IO
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|generic_file_direct_IO
@@ -2691,6 +2691,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cdevname
+)paren
+suffix:semicolon
+DECL|variable|simple_strtoull
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtoull
 )paren
 suffix:semicolon
 DECL|variable|simple_strtoul

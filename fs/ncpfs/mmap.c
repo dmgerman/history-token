@@ -321,8 +321,9 @@ id|vm_operations_struct
 id|ncp_file_mmap
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|ncp_file_mmap_nopage
 comma
 )brace

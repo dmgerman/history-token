@@ -1228,12 +1228,9 @@ id|buff
 suffix:semicolon
 singleline_comment|// Tell the kernel to stop sending us frames while we get this
 singleline_comment|// all set up.
-id|netif_stop_queue
-c_func
-(paren
-id|net
-)paren
-suffix:semicolon
+singleline_comment|//&t;netif_stop_queue(net);
+singleline_comment|// FIXME: We hold xmit_lock. If you want to do the queue stuff you need
+singleline_comment|//&t;  to enable it from a completion handler
 multiline_comment|/* Note: do not reorder, GCC is clever about common statements. */
 r_if
 c_cond
@@ -1358,15 +1355,7 @@ l_int|6
 op_star
 id|net-&gt;mc_count
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
 id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_for
@@ -1418,6 +1407,7 @@ c_func
 (paren
 id|ether_dev-&gt;usb
 comma
+singleline_comment|// FIXME: We hold a spinlock. You must not use a synchronous API
 id|usb_sndctrlpipe
 c_func
 (paren
@@ -1483,12 +1473,7 @@ id|ether_dev
 suffix:semicolon
 macro_line|#endif&t;
 singleline_comment|// Tell the kernel to start giving frames to us again.
-id|netif_wake_queue
-c_func
-(paren
-id|net
-)paren
-suffix:semicolon
+singleline_comment|//&t;netif_wake_queue(net);
 )brace
 singleline_comment|//////////////////////////////////////////////////////////////////////////////
 singleline_comment|// Routines used to parse out the Functional Descriptors /////////////////////

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if defined(CONFIG_MULTIQUAD) || defined(CONFIG_IA64)
@@ -496,7 +497,7 @@ comma
 id|console_setup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Commands to do_syslog:&n; *&n; * &t;0 -- Close the log.  Currently a NOP.&n; * &t;1 -- Open the log. Currently a NOP.&n; * &t;2 -- Read from the log.&n; * &t;3 -- Read all messages remaining in the ring buffer.&n; * &t;4 -- Read and clear all messages remaining in the ring buffer&n; * &t;5 -- Clear ring buffer.&n; * &t;6 -- Disable printk&squot;s to console&n; * &t;7 -- Enable printk&squot;s to console&n; *&t;8 -- Set level of messages printed to console&n; *&t;9 -- Return number of unread characters in the log buffer&n; */
+multiline_comment|/*&n; * Commands to do_syslog:&n; *&n; * &t;0 -- Close the log.  Currently a NOP.&n; * &t;1 -- Open the log. Currently a NOP.&n; * &t;2 -- Read from the log.&n; * &t;3 -- Read all messages remaining in the ring buffer.&n; * &t;4 -- Read and clear all messages remaining in the ring buffer&n; * &t;5 -- Clear ring buffer.&n; * &t;6 -- Disable printk&squot;s to console&n; * &t;7 -- Enable printk&squot;s to console&n; *&t;8 -- Set level of messages printed to console&n; *&t;9 -- Return number of unread characters in the log buffer&n; *     10 -- Printk from userspace.  Includes loglevel.  Returns number of&n; *           chars printed.&n; */
 DECL|function|do_syslog
 r_int
 id|do_syslog
@@ -530,6 +531,12 @@ l_int|0
 suffix:semicolon
 r_char
 id|c
+suffix:semicolon
+r_char
+op_star
+id|lbuf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|error
@@ -1117,6 +1124,74 @@ id|logbuf_lock
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|10
+suffix:colon
+id|lbuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|len
+op_plus
+l_int|1
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lbuf
+op_eq
+l_int|NULL
+)paren
+r_break
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|lbuf
+comma
+id|buf
+comma
+id|len
+)paren
+)paren
+r_break
+suffix:semicolon
+id|lbuf
+(braket
+id|len
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+id|error
+op_assign
+id|printk
+c_func
+(paren
+l_string|&quot;%s&quot;
+comma
+id|lbuf
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|error
@@ -1129,6 +1204,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|kfree
+c_func
+(paren
+id|lbuf
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

@@ -455,7 +455,7 @@ c_func
 (paren
 id|task_struct_cachep
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
