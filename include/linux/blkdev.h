@@ -54,6 +54,13 @@ id|mempool_t
 op_star
 id|rq_pool
 suffix:semicolon
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+(braket
+l_int|2
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * try to put the fields that are referenced together in the same cacheline&n; */
