@@ -890,6 +890,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|isdn_ciscohdlck_connected
 id|isdn_ciscohdlck_connected
@@ -928,6 +929,14 @@ id|lp-&gt;cisco_debserint
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lp-&gt;p_encap
+op_eq
+id|ISDN_NET_ENCAP_CISCOHDLCK
+)paren
+(brace
 multiline_comment|/* send slarp request because interface/seq.no.s reset */
 id|isdn_net_ciscohdlck_slarp_send_request
 c_func
@@ -970,6 +979,13 @@ id|lp-&gt;cisco_timer
 )paren
 suffix:semicolon
 )brace
+id|isdn_net_device_wake_queue
+c_func
+(paren
+id|lp
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|isdn_ciscohdlck_disconnected
 id|isdn_ciscohdlck_disconnected
@@ -980,6 +996,14 @@ op_star
 id|lp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|lp-&gt;p_encap
+op_eq
+id|ISDN_NET_ENCAP_CISCOHDLCK
+)paren
+(brace
 id|del_timer
 c_func
 (paren
@@ -987,6 +1011,7 @@ op_amp
 id|lp-&gt;cisco_timer
 )paren
 suffix:semicolon
+)brace
 )brace
 r_static
 r_void
@@ -1819,6 +1844,10 @@ suffix:semicolon
 id|p-&gt;local.receive
 op_assign
 id|isdn_ciscohdlck_receive
+suffix:semicolon
+id|p-&gt;local.connected
+op_assign
+id|isdn_ciscohdlck_connected
 suffix:semicolon
 r_return
 l_int|0

@@ -1095,6 +1095,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * kick the ipppd on the device&n; * (wakes up daemon after B-channel connect)&n; */
+r_static
 r_void
 DECL|function|isdn_ppp_wakeup_daemon
 id|isdn_ppp_wakeup_daemon
@@ -13156,6 +13157,10 @@ suffix:semicolon
 id|p-&gt;local.receive
 op_assign
 id|isdn_ppp_receive
+suffix:semicolon
+id|p-&gt;local.connected
+op_assign
+id|isdn_ppp_wakeup_daemon
 suffix:semicolon
 r_return
 l_int|0

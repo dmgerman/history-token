@@ -516,6 +516,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|isdn_x25_connected
+r_static
 r_void
 id|isdn_x25_connected
 c_func
@@ -571,6 +572,12 @@ id|cprot
 )paren
 suffix:semicolon
 )brace
+id|isdn_net_device_wake_queue
+c_func
+(paren
+id|lp
+)paren
+suffix:semicolon
 )brace
 DECL|function|isdn_x25_dhup
 r_void
@@ -1013,6 +1020,10 @@ suffix:semicolon
 id|p-&gt;local.receive
 op_assign
 id|isdn_x25_receive
+suffix:semicolon
+id|p-&gt;local.connected
+op_assign
+id|isdn_x25_connected
 suffix:semicolon
 multiline_comment|/* the protocol is not configured yet; this will&n;&t;   happen later when isdn_x25_open() is called */
 r_return
