@@ -2288,7 +2288,7 @@ c_func
 (paren
 l_string|&quot;probing config %d&quot;
 comma
-id|cfacm-&gt;bConfigurationValue
+id|cfacm-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_if
