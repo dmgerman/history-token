@@ -150,10 +150,10 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/* USB 2.0 spec Section 11.24.4.5 */
-DECL|function|usb_get_hub_descriptor
+DECL|function|get_hub_descriptor
 r_static
 r_int
-id|usb_get_hub_descriptor
+id|get_hub_descriptor
 c_func
 (paren
 r_struct
@@ -200,14 +200,16 @@ comma
 id|size
 comma
 id|HZ
+op_star
+id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.1&n; */
-DECL|function|usb_clear_hub_feature
+DECL|function|clear_hub_feature
 r_static
 r_int
-id|usb_clear_hub_feature
+id|clear_hub_feature
 c_func
 (paren
 r_struct
@@ -250,10 +252,10 @@ id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.2&n; * BUG: doesn&squot;t handle port indicator selector in high byte of wIndex&n; */
-DECL|function|usb_clear_port_feature
+DECL|function|clear_port_feature
 r_static
 r_int
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 r_struct
@@ -299,10 +301,10 @@ id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.13&n; * BUG: doesn&squot;t handle port indicator selector in high byte of wIndex&n; */
-DECL|function|usb_set_port_feature
+DECL|function|set_port_feature
 r_static
 r_int
-id|usb_set_port_feature
+id|set_port_feature
 c_func
 (paren
 r_struct
@@ -348,10 +350,10 @@ id|HZ
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.6&n; */
-DECL|function|usb_get_hub_status
+DECL|function|get_hub_status
 r_static
 r_int
-id|usb_get_hub_status
+id|get_hub_status
 c_func
 (paren
 r_struct
@@ -398,14 +400,16 @@ id|data
 )paren
 comma
 id|HZ
+op_star
+id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * USB 2.0 spec Section 11.24.2.7&n; */
-DECL|function|usb_get_port_status
+DECL|function|get_port_status
 r_static
 r_int
-id|usb_get_port_status
+id|get_port_status
 c_func
 (paren
 r_struct
@@ -455,6 +459,8 @@ id|data
 )paren
 comma
 id|HZ
+op_star
+id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
 )brace
@@ -1000,10 +1006,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|usb_hub_power_on
+DECL|function|hub_power_on
 r_static
 r_void
-id|usb_hub_power_on
+id|hub_power_on
 c_func
 (paren
 r_struct
@@ -1059,7 +1065,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|usb_set_port_feature
+id|set_port_feature
 c_func
 (paren
 id|dev
@@ -1081,10 +1087,10 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-DECL|function|usb_hub_hub_status
+DECL|function|hub_hub_status
 r_static
 r_int
-id|usb_hub_hub_status
+id|hub_hub_status
 c_func
 (paren
 r_struct
@@ -1116,7 +1122,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|usb_get_hub_status
+id|get_hub_status
 c_func
 (paren
 id|dev
@@ -1175,10 +1181,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|usb_hub_configure
+DECL|function|hub_configure
 r_static
 r_int
-id|usb_hub_configure
+id|hub_configure
 c_func
 (paren
 r_struct
@@ -1330,7 +1336,7 @@ suffix:semicolon
 multiline_comment|/* Request the entire hub descriptor.&n;&t; * hub-&gt;descriptor can handle USB_MAXCHILDREN ports,&n;&t; * but the hub can/will return fewer bytes here.&n;&t; */
 id|ret
 op_assign
-id|usb_get_hub_descriptor
+id|get_hub_descriptor
 c_func
 (paren
 id|dev
@@ -1817,7 +1823,7 @@ id|hub-&gt;descriptor-&gt;bHubContrCurrent
 suffix:semicolon
 id|ret
 op_assign
-id|usb_hub_hub_status
+id|hub_hub_status
 c_func
 (paren
 id|hub
@@ -2012,7 +2018,7 @@ op_amp
 id|khubd_wait
 )paren
 suffix:semicolon
-id|usb_hub_power_on
+id|hub_power_on
 c_func
 (paren
 id|hub
@@ -2505,7 +2511,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_hub_configure
+id|hub_configure
 c_func
 (paren
 id|hub
@@ -2688,10 +2694,10 @@ id|ENOSYS
 suffix:semicolon
 )brace
 )brace
-DECL|function|usb_hub_reset
+DECL|function|hub_reset
 r_static
 r_int
-id|usb_hub_reset
+id|hub_reset
 c_func
 (paren
 r_struct
@@ -2798,7 +2804,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|usb_hub_power_on
+id|hub_power_on
 c_func
 (paren
 id|hub
@@ -2808,10 +2814,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|usb_hub_disconnect
+DECL|function|hub_start_disconnect
 r_static
 r_void
-id|usb_hub_disconnect
+id|hub_start_disconnect
 c_func
 (paren
 r_struct
@@ -2887,10 +2893,10 @@ id|dev-&gt;devpath
 )paren
 suffix:semicolon
 )brace
-DECL|function|usb_hub_port_status
+DECL|function|hub_port_status
 r_static
 r_int
-id|usb_hub_port_status
+id|hub_port_status
 c_func
 (paren
 r_struct
@@ -2925,7 +2931,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|usb_get_port_status
+id|get_port_status
 c_func
 (paren
 id|dev
@@ -2999,10 +3005,10 @@ mdefine_line|#define HUB_LONG_RESET_TIME&t;200
 DECL|macro|HUB_RESET_TIMEOUT
 mdefine_line|#define HUB_RESET_TIMEOUT&t;500
 multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
-DECL|function|usb_hub_port_wait_reset
+DECL|function|hub_port_wait_reset
 r_static
 r_int
-id|usb_hub_port_wait_reset
+id|hub_port_wait_reset
 c_func
 (paren
 r_struct
@@ -3060,7 +3066,7 @@ suffix:semicolon
 multiline_comment|/* read and decode port status */
 id|ret
 op_assign
-id|usb_hub_port_status
+id|hub_port_status
 c_func
 (paren
 id|hub
@@ -3202,10 +3208,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
-DECL|function|usb_hub_port_reset
+DECL|function|hub_port_reset
 r_static
 r_int
-id|usb_hub_port_reset
+id|hub_port_reset
 c_func
 (paren
 r_struct
@@ -3247,7 +3253,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usb_set_port_feature
+id|set_port_feature
 c_func
 (paren
 id|hub
@@ -3262,7 +3268,7 @@ suffix:semicolon
 multiline_comment|/* return on disconnect or reset */
 id|status
 op_assign
-id|usb_hub_port_wait_reset
+id|hub_port_wait_reset
 c_func
 (paren
 id|hub
@@ -3283,7 +3289,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|hub
@@ -3346,9 +3352,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|usb_hub_port_disable
+DECL|function|hub_port_disable
 r_int
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 r_struct
@@ -3365,7 +3371,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|hub
@@ -3412,10 +3418,10 @@ mdefine_line|#define HUB_DEBOUNCE_STEP&t; 25
 DECL|macro|HUB_DEBOUNCE_STABLE
 mdefine_line|#define HUB_DEBOUNCE_STABLE&t;  4
 multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
-DECL|function|usb_hub_port_debounce
+DECL|function|hub_port_debounce
 r_static
 r_int
-id|usb_hub_port_debounce
+id|hub_port_debounce
 c_func
 (paren
 r_struct
@@ -3475,7 +3481,7 @@ id|HUB_DEBOUNCE_STEP
 suffix:semicolon
 id|ret
 op_assign
-id|usb_hub_port_status
+id|hub_port_status
 c_func
 (paren
 id|hub
@@ -3553,7 +3559,7 @@ id|USB_PORT_STAT_C_CONNECTION
 )paren
 )paren
 (brace
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|hub
@@ -3603,10 +3609,10 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|usb_hub_port_connect_change
+DECL|function|hub_port_connect_change
 r_static
 r_void
-id|usb_hub_port_connect_change
+id|hub_port_connect_change
 c_func
 (paren
 r_struct
@@ -3671,7 +3677,7 @@ id|portstatus
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the connection change status */
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|hub
@@ -3721,7 +3727,7 @@ id|portstatus
 op_amp
 id|USB_PORT_STAT_ENABLE
 )paren
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 id|hub
@@ -3735,7 +3741,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_hub_port_debounce
+id|hub_port_debounce
 c_func
 (paren
 id|hub
@@ -3756,7 +3762,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 id|hub
@@ -3854,7 +3860,7 @@ multiline_comment|/* Reset the device, and detect its speed */
 r_if
 c_cond
 (paren
-id|usb_hub_port_reset
+id|hub_port_reset
 c_func
 (paren
 id|hub
@@ -4054,7 +4060,7 @@ id|port
 op_assign
 l_int|NULL
 suffix:semicolon
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 id|hub
@@ -4072,10 +4078,10 @@ id|usb_address0_sem
 )paren
 suffix:semicolon
 )brace
-DECL|function|usb_hub_events
+DECL|function|hub_events
 r_static
 r_void
-id|usb_hub_events
+id|hub_events
 c_func
 (paren
 r_void
@@ -4225,7 +4231,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_hub_reset
+id|hub_reset
 c_func
 (paren
 id|hub
@@ -4247,7 +4253,7 @@ op_amp
 id|hub-&gt;khubd_sem
 )paren
 suffix:semicolon
-id|usb_hub_disconnect
+id|hub_start_disconnect
 c_func
 (paren
 id|dev
@@ -4282,7 +4288,7 @@ op_increment
 (brace
 id|ret
 op_assign
-id|usb_hub_port_status
+id|hub_port_status
 c_func
 (paren
 id|dev
@@ -4315,7 +4321,7 @@ op_amp
 id|USB_PORT_STAT_C_CONNECTION
 )paren
 (brace
-id|usb_hub_port_connect_change
+id|hub_port_connect_change
 c_func
 (paren
 id|hub
@@ -4353,7 +4359,7 @@ comma
 id|portstatus
 )paren
 suffix:semicolon
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|dev
@@ -4404,7 +4410,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|usb_hub_port_connect_change
+id|hub_port_connect_change
 c_func
 (paren
 id|hub
@@ -4438,7 +4444,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|dev
@@ -4471,7 +4477,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|dev
@@ -4483,7 +4489,7 @@ comma
 id|USB_PORT_FEAT_C_OVER_CURRENT
 )paren
 suffix:semicolon
-id|usb_hub_power_on
+id|hub_power_on
 c_func
 (paren
 id|hub
@@ -4510,7 +4516,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|usb_clear_port_feature
+id|clear_port_feature
 c_func
 (paren
 id|dev
@@ -4529,7 +4535,7 @@ multiline_comment|/* deal with hub status changes */
 r_if
 c_cond
 (paren
-id|usb_hub_hub_status
+id|hub_hub_status
 c_func
 (paren
 id|hub
@@ -4569,7 +4575,7 @@ comma
 l_string|&quot;power change&bslash;n&quot;
 )paren
 suffix:semicolon
-id|usb_clear_hub_feature
+id|clear_hub_feature
 c_func
 (paren
 id|dev
@@ -4601,7 +4607,7 @@ l_int|500
 )paren
 suffix:semicolon
 multiline_comment|/* Cool down */
-id|usb_clear_hub_feature
+id|clear_hub_feature
 c_func
 (paren
 id|dev
@@ -4609,7 +4615,7 @@ comma
 id|C_HUB_OVER_CURRENT
 )paren
 suffix:semicolon
-id|usb_hub_power_on
+id|hub_power_on
 c_func
 (paren
 id|hub
@@ -4636,10 +4642,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|usb_hub_thread
+DECL|function|hub_thread
 r_static
 r_int
-id|usb_hub_thread
+id|hub_thread
 c_func
 (paren
 r_void
@@ -4663,7 +4669,7 @@ suffix:semicolon
 multiline_comment|/* Send me a signal to get me die (for debugging) */
 r_do
 (brace
-id|usb_hub_events
+id|hub_events
 c_func
 (paren
 )paren
@@ -4710,7 +4716,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;usb_hub_thread exiting&quot;
+l_string|&quot;hub_thread exiting&quot;
 )paren
 suffix:semicolon
 id|complete_and_exit
@@ -4848,7 +4854,7 @@ op_assign
 id|kernel_thread
 c_func
 (paren
-id|usb_hub_thread
+id|hub_thread
 comma
 l_int|NULL
 comma
@@ -4886,7 +4892,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;failed to start usb_hub_thread&quot;
+l_string|&quot;failed to start hub_thread&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5065,7 +5071,7 @@ multiline_comment|/* Send a reset to the device */
 r_if
 c_cond
 (paren
-id|usb_hub_port_reset
+id|hub_port_reset
 c_func
 (paren
 id|parent
@@ -5078,7 +5084,7 @@ id|HUB_SHORT_RESET_TIME
 )paren
 )paren
 (brace
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 id|parent
@@ -5129,7 +5135,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|usb_hub_port_disable
+id|hub_port_disable
 c_func
 (paren
 id|parent
