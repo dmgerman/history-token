@@ -312,7 +312,9 @@ r_struct
 id|task_struct
 suffix:semicolon
 r_extern
-r_void
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
@@ -326,12 +328,14 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev, next, last) __switch_to((prev), (next))
+mdefine_line|#define switch_to(prev, next, last)&t;((last) = __switch_to((prev), (next)))
 r_struct
 id|thread_struct
 suffix:semicolon
 r_extern
-r_void
+r_struct
+id|task_struct
+op_star
 id|_switch
 c_func
 (paren

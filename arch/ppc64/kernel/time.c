@@ -74,8 +74,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|XSEC_PER_SEC
 mdefine_line|#define XSEC_PER_SEC (1024*1024)
-DECL|macro|USEC_PER_SEC
-mdefine_line|#define USEC_PER_SEC (1000000)
 DECL|variable|tb_ticks_per_jiffy
 r_int
 r_int
