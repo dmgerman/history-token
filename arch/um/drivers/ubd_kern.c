@@ -3167,13 +3167,10 @@ suffix:semicolon
 )brace
 id|err
 op_assign
-id|ubd_file_size
+id|ubd_revalidate
 c_func
 (paren
-id|dev
-comma
-op_amp
-id|dev-&gt;size
+id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 r_if
