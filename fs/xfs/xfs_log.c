@@ -8061,6 +8061,10 @@ c_cond
 (paren
 id|iclog-&gt;ic_state
 op_eq
+id|XLOG_STATE_WANT_SYNC
+op_logical_or
+id|iclog-&gt;ic_state
+op_eq
 id|XLOG_STATE_SYNCING
 op_logical_or
 id|iclog-&gt;ic_state
