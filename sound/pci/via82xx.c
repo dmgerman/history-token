@@ -139,6 +139,22 @@ id|dxs_support
 (braket
 id|SNDRV_CARDS
 )braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+l_int|3
+)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -9983,7 +9999,7 @@ c_func
 id|alsa_card_via82xx_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-via82xx=enable,index,id,&n;&t;&t;&t;  mpu_port,ac97_clock */
+multiline_comment|/* format is: snd-via82xx=enable,index,id,&n;&t;&t;&t;  mpu_port,ac97_clock,dxs_support */
 DECL|function|alsa_card_via82xx_setup
 r_static
 r_int
@@ -10089,6 +10105,21 @@ id|str
 comma
 op_amp
 id|ac97_clock
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|dxs_support
 (braket
 id|nr_dev
 )braket
