@@ -123,7 +123,6 @@ id|u8
 id|offset
 )paren
 (brace
-r_register
 id|u8
 id|idx
 op_assign
@@ -138,11 +137,9 @@ id|AVM_ISAC_REG_HIGH
 suffix:colon
 id|AVM_ISAC_REG_LOW
 suffix:semicolon
-r_register
 id|u8
 id|val
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
@@ -213,7 +210,6 @@ id|u8
 id|value
 )paren
 (brace
-r_register
 id|u8
 id|idx
 op_assign
@@ -228,7 +224,6 @@ id|AVM_ISAC_REG_HIGH
 suffix:colon
 id|AVM_ISAC_REG_LOW
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
@@ -404,7 +399,6 @@ id|u8
 id|offset
 )paren
 (brace
-r_register
 id|u_int
 id|idx
 op_assign
@@ -415,11 +409,9 @@ id|AVM_HDLC_2
 suffix:colon
 id|AVM_HDLC_1
 suffix:semicolon
-r_register
 id|u_int
 id|val
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
@@ -490,7 +482,6 @@ id|u_int
 id|value
 )paren
 (brace
-r_register
 id|u_int
 id|idx
 op_assign
@@ -501,7 +492,6 @@ id|AVM_HDLC_2
 suffix:colon
 id|AVM_HDLC_1
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
@@ -564,7 +554,6 @@ id|u8
 id|offset
 )paren
 (brace
-r_register
 id|u8
 id|idx
 op_assign
@@ -575,11 +564,9 @@ id|AVM_HDLC_2
 suffix:colon
 id|AVM_HDLC_1
 suffix:semicolon
-r_register
 id|u8
 id|val
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
@@ -650,7 +637,6 @@ id|u8
 id|value
 )paren
 (brace
-r_register
 id|u8
 id|idx
 op_assign
@@ -661,7 +647,6 @@ id|AVM_HDLC_2
 suffix:colon
 id|AVM_HDLC_1
 suffix:semicolon
-r_register
 r_int
 r_int
 id|flags
