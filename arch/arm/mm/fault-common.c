@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;fault.h&quot;
 macro_line|#ifdef CONFIG_CPU_26
 DECL|macro|FAULT_CODE_WRITE
@@ -289,55 +290,18 @@ op_star
 id|regs
 )paren
 (brace
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|fixup
-suffix:semicolon
 multiline_comment|/*&n;&t; * Are we prepared to handle this kernel fault?&n;&t; */
-id|fixup
-op_assign
-id|search_exception_tables
-c_func
+r_if
+c_cond
 (paren
-id|instruction_pointer
+id|fixup_exception
 c_func
 (paren
 id|regs
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fixup
-)paren
-(brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: Exception at [&lt;%lx&gt;] addr=%lx (fixup: %lx)&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|regs-&gt;ARM_pc
-comma
-id|addr
-comma
-id|fixup-&gt;fixup
-)paren
-suffix:semicolon
-macro_line|#endif
-id|regs-&gt;ARM_pc
-op_assign
-id|fixup-&gt;fixup
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * No handler, we&squot;ll have to terminate things with extreme prejudice.&n;&t; */
 id|bust_spinlocks
 c_func
