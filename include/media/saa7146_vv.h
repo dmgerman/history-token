@@ -359,10 +359,10 @@ DECL|member|current_hps_sync
 r_int
 id|current_hps_sync
 suffix:semicolon
-DECL|member|clipping
-id|u32
-op_star
-id|clipping
+DECL|member|d_clipping
+r_struct
+id|saa7146_dma
+id|d_clipping
 suffix:semicolon
 multiline_comment|/* pointer to clipping memory */
 )brace

@@ -1,8 +1,4 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
 DECL|macro|BOARD_CAN_DO_VBI
 mdefine_line|#define BOARD_CAN_DO_VBI(dev)   (dev-&gt;revision != 0 &amp;&amp; dev-&gt;vv_data-&gt;vbi_minor != -1) 
 multiline_comment|/********************************************************************************/
@@ -523,15 +519,7 @@ id|dev
 comma
 id|RPS_ADDR0
 comma
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|dev-&gt;rps0
-(braket
-l_int|0
-)braket
-)paren
+id|dev-&gt;d_rps0.dma_handle
 )paren
 suffix:semicolon
 multiline_comment|/* turn on rps */
@@ -1544,12 +1532,16 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;V4L2_BUF_TYPE_VIDEO_CAPTURE: file:%p, data:%p, count:%d&bslash;n&quot;
+l_string|&quot;V4L2_BUF_TYPE_VIDEO_CAPTURE: file:%p, data:%p, count:%lun&quot;
 comma
 id|file
 comma
 id|data
 comma
+(paren
+r_int
+r_int
+)paren
 id|count
 )paren
 )paren
@@ -1578,12 +1570,16 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;V4L2_BUF_TYPE_VBI_CAPTURE: file:%p, data:%p, count:%d&bslash;n&quot;
+l_string|&quot;V4L2_BUF_TYPE_VBI_CAPTURE: file:%p, data:%p, count:%lu&bslash;n&quot;
 comma
 id|file
 comma
 id|data
 comma
+(paren
+r_int
+r_int
+)paren
 id|count
 )paren
 )paren
@@ -1934,18 +1930,17 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|vv-&gt;clipping
+id|vv-&gt;d_clipping.cpu_addr
 op_assign
-(paren
-id|u32
-op_star
-)paren
-id|kmalloc
+id|pci_alloc_consistent
 c_func
 (paren
+id|dev-&gt;pci
+comma
 id|SAA7146_CLIPPING_MEM
 comma
-id|GFP_KERNEL
+op_amp
+id|vv-&gt;d_clipping.dma_handle
 )paren
 suffix:semicolon
 r_if
@@ -1953,7 +1948,7 @@ c_cond
 (paren
 l_int|NULL
 op_eq
-id|vv-&gt;clipping
+id|vv-&gt;d_clipping.cpu_addr
 )paren
 (brace
 id|ERR
@@ -1978,7 +1973,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|vv-&gt;clipping
+id|vv-&gt;d_clipping.cpu_addr
 comma
 l_int|0x0
 comma
@@ -2044,6 +2039,18 @@ l_string|&quot;dev:%p&bslash;n&quot;
 comma
 id|dev
 )paren
+)paren
+suffix:semicolon
+id|pci_free_consistent
+c_func
+(paren
+id|dev-&gt;pci
+comma
+id|SAA7146_RPS_MEM
+comma
+id|vv-&gt;d_clipping.cpu_addr
+comma
+id|vv-&gt;d_clipping.dma_handle
 )paren
 suffix:semicolon
 id|kfree

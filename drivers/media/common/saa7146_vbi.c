@@ -1,8 +1,4 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
 DECL|variable|vbi_pixel_to_capture
 r_static
 r_int
@@ -12,6 +8,8 @@ l_int|720
 op_star
 l_int|2
 suffix:semicolon
+DECL|macro|WRITE_RPS1
+mdefine_line|#define WRITE_RPS1(x) dev-&gt;d_rps1.cpu_addr[ count++ ] = cpu_to_le32(x)
 r_static
 DECL|function|vbi_workaround
 r_int
@@ -41,7 +39,7 @@ suffix:semicolon
 r_int
 id|i
 comma
-id|index
+id|count
 suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
@@ -236,17 +234,14 @@ op_or
 id|MASK_20
 )paren
 suffix:semicolon
-id|index
+id|count
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* load brs-control register */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -259,46 +254,38 @@ op_or
 id|BRS_CTRL
 op_div
 l_int|4
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* BXO = 1h, BRS to outbound */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 l_int|0xc000008c
+)paren
 suffix:semicolon
 multiline_comment|/* wait for vbi_a */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|MASK_10
+)paren
 suffix:semicolon
 multiline_comment|/* upload brs */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_UPLOAD
 op_or
 id|MASK_08
+)paren
 suffix:semicolon
 multiline_comment|/* load brs-control register */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -312,14 +299,12 @@ id|BRS_CTRL
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* BYO = 1, BXO = NQBIL (=1728 for PAL, for NTSC this is 858*2) - NumByte3 (=1440) = 288 */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 (paren
 (paren
 l_int|1728
@@ -333,36 +318,30 @@ l_int|7
 )paren
 op_or
 id|MASK_19
+)paren
 suffix:semicolon
 multiline_comment|/* wait for brs_done */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|MASK_08
+)paren
 suffix:semicolon
 multiline_comment|/* upload brs */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_UPLOAD
 op_or
 id|MASK_08
+)paren
 suffix:semicolon
 multiline_comment|/* load video-dma3 NumLines3 and NumBytes3 */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -376,14 +355,12 @@ id|NUM_LINE_BYTE3
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* dev-&gt;vbi_count*2 lines, 720 pixel (= 1440 Bytes) */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 (paren
 l_int|2
 op_lshift
@@ -393,14 +370,12 @@ op_or
 (paren
 id|vbi_pixel_to_capture
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* load brs-control register */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -414,14 +389,12 @@ id|BRS_CTRL
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* Set BRS right: note: this is an experimental value for BXO (=&gt; PAL!) */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 (paren
 l_int|540
 op_lshift
@@ -433,39 +406,33 @@ l_int|5
 op_lshift
 l_int|19
 )paren
+)paren
 suffix:semicolon
 singleline_comment|// 5 == vbi_start  
 multiline_comment|/* wait for brs_done */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|MASK_08
+)paren
 suffix:semicolon
 multiline_comment|/* upload brs and video-dma3*/
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_UPLOAD
 op_or
 id|MASK_08
 op_or
 id|MASK_04
+)paren
 suffix:semicolon
 multiline_comment|/* load mc2 register: enable dma3 */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -479,34 +446,29 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|MASK_20
 op_or
 id|MASK_04
+)paren
 suffix:semicolon
 multiline_comment|/* generate interrupt */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_INTERRUPT
+)paren
 suffix:semicolon
 multiline_comment|/* stop rps1 */
-id|dev-&gt;rps1
-(braket
-id|index
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_STOP
+)paren
 suffix:semicolon
 multiline_comment|/* enable rps1 irqs */
 id|IER_ENABLE
@@ -540,15 +502,7 @@ id|dev
 comma
 id|RPS_ADDR1
 comma
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|dev-&gt;rps1
-(braket
-l_int|0
-)braket
-)paren
+id|dev-&gt;d_rps1.dma_handle
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -821,14 +775,11 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle only if bit 1 is not set */
 multiline_comment|/* we don&squot;t wait here for the first field anymore. this is different from the video&n;&t;   capture and might cause that the first buffer is only half filled (with only&n;&t;   one field). but since this is some sort of streaming data, this is not that negative.&n;&t;   but by doing this, we can use the whole engine from video-buf.c... */
-multiline_comment|/*&n;&t;dev-&gt;rps1[ count++ ] = CMD_PAUSE | CMD_OAN | CMD_SIG1 | e_wait;&n;&t;dev-&gt;rps1[ count++ ] = CMD_PAUSE | CMD_OAN | CMD_SIG1 | o_wait;&n;*/
+multiline_comment|/*&n;&t;WRITE_RPS1(CMD_PAUSE | CMD_OAN | CMD_SIG1 | e_wait);&n;&t;WRITE_RPS1(CMD_PAUSE | CMD_OAN | CMD_SIG1 | o_wait);&n;*/
 multiline_comment|/* set bit 1 */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG
 op_or
 (paren
@@ -842,24 +793,20 @@ id|MC2
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|MASK_28
 op_or
 id|MASK_12
+)paren
 suffix:semicolon
 multiline_comment|/* turn on video-dma3 */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_WR_REG_MASK
 op_or
 (paren
@@ -867,67 +814,56 @@ id|MC1
 op_div
 l_int|4
 )paren
+)paren
 suffix:semicolon
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|MASK_04
 op_or
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; mask */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|MASK_04
 op_or
 id|MASK_20
+)paren
 suffix:semicolon
 multiline_comment|/* =&gt; values */
 multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|o_wait
+)paren
 suffix:semicolon
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_PAUSE
 op_or
 id|e_wait
+)paren
 suffix:semicolon
 multiline_comment|/* generate interrupt */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_INTERRUPT
+)paren
 suffix:semicolon
 multiline_comment|/* stop */
-id|dev-&gt;rps1
-(braket
-id|count
-op_increment
-)braket
-op_assign
+id|WRITE_RPS1
+c_func
+(paren
 id|CMD_STOP
+)paren
 suffix:semicolon
 multiline_comment|/* enable rps1 irqs */
 id|IER_ENABLE
@@ -946,15 +882,7 @@ id|dev
 comma
 id|RPS_ADDR1
 comma
-id|virt_to_bus
-c_func
-(paren
-op_amp
-id|dev-&gt;rps1
-(braket
-l_int|0
-)braket
-)paren
+id|dev-&gt;d_rps1.dma_handle
 )paren
 suffix:semicolon
 multiline_comment|/* turn on rps */

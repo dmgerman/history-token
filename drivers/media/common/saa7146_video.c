@@ -1,8 +1,4 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
 r_static
 DECL|variable|memory
 r_int
@@ -1859,6 +1855,16 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_BRIGHTNESS: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1882,6 +1888,16 @@ op_amp
 id|value
 op_rshift
 l_int|16
+)paren
+suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_CONTRAST: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1909,6 +1925,16 @@ op_rshift
 l_int|0
 )paren
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_SATURATION: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1918,6 +1944,16 @@ id|c-&gt;value
 op_assign
 id|vv-&gt;vflip
 suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_VFLIP: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1926,6 +1962,16 @@ suffix:colon
 id|c-&gt;value
 op_assign
 id|vv-&gt;hflip
+suffix:semicolon
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;V4L2_CID_HFLIP: %d&bslash;n&quot;
+comma
+id|c-&gt;value
+)paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3841,7 +3887,7 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;VIDIOC_ENUMSTD: type:%d, index:%d&bslash;n&quot;
+l_string|&quot;VIDIOC_ENUM_FMT: type:%d, index:%d&bslash;n&quot;
 comma
 id|f-&gt;type
 comma
@@ -4270,6 +4316,14 @@ op_star
 id|ov_fh
 op_assign
 l_int|NULL
+suffix:semicolon
+id|DEB_EE
+c_func
+(paren
+(paren
+l_string|&quot;VIDIOC_S_STD&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond

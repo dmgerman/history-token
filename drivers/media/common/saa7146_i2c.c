@@ -1,8 +1,4 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-DECL|macro|KBUILD_MODNAME
-mdefine_line|#define KBUILD_MODNAME saa7146
-macro_line|#endif
 multiline_comment|/* helper function */
 r_static
 DECL|function|my_wait
@@ -1462,7 +1458,7 @@ id|u32
 op_star
 id|buffer
 op_assign
-id|dev-&gt;i2c_mem
+id|dev-&gt;d_i2c.cpu_addr
 suffix:semicolon
 r_int
 id|err
@@ -1841,16 +1837,6 @@ id|i2c_get_adapdata
 c_func
 (paren
 id|adapter
-)paren
-suffix:semicolon
-id|DEB_I2C
-c_func
-(paren
-(paren
-l_string|&quot;adapter: &squot;%s&squot;.&bslash;n&quot;
-comma
-id|adapter-&gt;dev.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* use helper function to transfer data */
