@@ -348,8 +348,6 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Allocate space for a compressor.&n; */
@@ -481,8 +479,6 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|memset
 (paren
@@ -1178,8 +1174,6 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Allocate space for a decompressor.&n; */
@@ -1311,8 +1305,6 @@ l_int|NULL
 )paren
 r_return
 l_int|NULL
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|memset
 (paren
