@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PCBIT-D device driver definitions&n; *&n; * Copyright 
 macro_line|#ifndef PCBIT_H
 DECL|macro|PCBIT_H
 mdefine_line|#define PCBIT_H
+macro_line|#include &lt;linux/tqueue.h&gt;
 DECL|macro|MAX_PCBIT_CARDS
 mdefine_line|#define MAX_PCBIT_CARDS 4
 DECL|macro|BLOCK_TIMER
