@@ -2,11 +2,41 @@ multiline_comment|/*&n; * Architecture-specific kernel symbols&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+DECL|macro|memset
+macro_line|#undef memset
+r_extern
+r_void
+op_star
+id|memset
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|variable|memset
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memset
+)paren
+suffix:semicolon
+multiline_comment|/* gcc generates direct calls to memset()... */
+DECL|variable|__memset_generic
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__memset_generic
+)paren
+suffix:semicolon
+DECL|variable|__bzero
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__bzero
 )paren
 suffix:semicolon
 DECL|variable|memchr
@@ -282,7 +312,7 @@ id|last_cli_ip
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|flush_tlb_range
 id|EXPORT_SYMBOL
 c_func
@@ -620,6 +650,23 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|efi_dir
+)paren
+suffix:semicolon
+macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#ifdef CONFIG_IA64_GENERIC
+DECL|variable|ia64_mv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_mv
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|variable|machvec_noop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machvec_noop
 )paren
 suffix:semicolon
 eof

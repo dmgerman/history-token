@@ -1487,7 +1487,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;microcode: too much data (max %d pages)&bslash;n&quot;
+l_string|&quot;microcode: too much data (max %ld pages)&bslash;n&quot;
 comma
 id|num_physpages
 )paren

@@ -8,6 +8,8 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|macro|ACPI_SIG_LEN
+mdefine_line|#define ACPI_SIG_LEN&t;&t;4
 multiline_comment|/* ACPI table signatures */
 DECL|macro|ACPI_SPCRT_SIGNATURE
 mdefine_line|#define ACPI_SPCRT_SIGNATURE&t;&quot;SPCR&quot;

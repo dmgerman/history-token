@@ -13,7 +13,7 @@ mdefine_line|#define LOCK_PREFIX &quot;&quot;
 macro_line|#endif
 DECL|macro|ADDR
 mdefine_line|#define ADDR (*(volatile long *) addr)
-multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; */
+multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|set_bit
 r_static
 id|__inline__
@@ -35,7 +35,7 @@ id|__volatile__
 c_func
 (paren
 id|LOCK_PREFIX
-l_string|&quot;btsl %1,%0&quot;
+l_string|&quot;btsq %1,%0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -46,6 +46,8 @@ l_string|&quot;dIr&quot;
 (paren
 id|nr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -67,7 +69,7 @@ id|addr
 )paren
 (brace
 id|__asm__
-c_func
+r_volatile
 (paren
 l_string|&quot;btsl %1,%0&quot;
 suffix:colon
@@ -80,6 +82,8 @@ l_string|&quot;dIr&quot;
 (paren
 id|nr
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -146,7 +150,7 @@ l_string|&quot;=m&quot;
 id|ADDR
 )paren
 suffix:colon
-l_string|&quot;Ir&quot;
+l_string|&quot;dIr&quot;
 (paren
 id|nr
 )paren
@@ -669,7 +673,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;movl $-1,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;xorq %%rdx,%%rdx&bslash;n&bslash;t&quot;
+l_string|&quot;xorl %%edx,%%edx&bslash;n&bslash;t&quot;
 l_string|&quot;repe; scasl&bslash;n&bslash;t&quot;
 l_string|&quot;je 1f&bslash;n&bslash;t&quot;
 l_string|&quot;xorl -4(%%rdi),%%eax&bslash;n&bslash;t&quot;
@@ -727,6 +731,153 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
+DECL|function|find_next_zero_bit
+r_static
+id|__inline__
+r_int
+id|find_next_zero_bit
+(paren
+r_void
+op_star
+id|addr
+comma
+r_int
+id|size
+comma
+r_int
+id|offset
+)paren
+(brace
+r_int
+r_int
+op_star
+id|p
+op_assign
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+)paren
+op_plus
+(paren
+id|offset
+op_rshift
+l_int|6
+)paren
+suffix:semicolon
+r_int
+r_int
+id|set
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|res
+comma
+id|bit
+op_assign
+id|offset
+op_amp
+l_int|63
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bit
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Look for zero in first word&n;&t;&t; */
+id|__asm__
+c_func
+(paren
+l_string|&quot;bsfq %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;cmoveq %2,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|set
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+op_complement
+(paren
+op_star
+id|p
+op_rshift
+id|bit
+)paren
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|64L
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|set
+OL
+(paren
+l_int|64
+op_minus
+id|bit
+)paren
+)paren
+r_return
+id|set
+op_plus
+id|offset
+suffix:semicolon
+id|set
+op_assign
+l_int|64
+op_minus
+id|bit
+suffix:semicolon
+id|p
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * No zero yet, search remaining full words for a zero&n;&t; */
+id|res
+op_assign
+id|find_first_zero_bit
+(paren
+id|p
+comma
+id|size
+op_minus
+l_int|64
+op_star
+(paren
+id|p
+op_minus
+(paren
+r_int
+r_int
+op_star
+)paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|offset
+op_plus
+id|set
+op_plus
+id|res
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * find_first_bit - find the first set bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first set bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|function|find_first_bit
 r_static
@@ -752,7 +903,6 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* This looks at memory. Mark it volatile to tell gcc not to move it around */
-multiline_comment|/* Work in 32bit for now */
 id|__asm__
 id|__volatile__
 c_func
@@ -761,10 +911,10 @@ l_string|&quot;xorl %%eax,%%eax&bslash;n&bslash;t&quot;
 l_string|&quot;repe; scasl&bslash;n&bslash;t&quot;
 l_string|&quot;jz 1f&bslash;n&bslash;t&quot;
 l_string|&quot;leaq -4(%%rdi),%%rdi&bslash;n&bslash;t&quot;
-l_string|&quot;bsfl (%%rdi),%%eax&bslash;n&quot;
-l_string|&quot;1:&bslash;tsubq %%rbx,%%rdi&bslash;n&bslash;t&quot;
-l_string|&quot;shlq $3,%%rdi&bslash;n&bslash;t&quot;
-l_string|&quot;addq %%rdi,%%rax&quot;
+l_string|&quot;bsfq (%%rdi),%%rax&bslash;n&quot;
+l_string|&quot;1:&bslash;tsubl %%ebx,%%edi&bslash;n&bslash;t&quot;
+l_string|&quot;shll $3,%%edi&bslash;n&bslash;t&quot;
+l_string|&quot;addl %%edi,%%eax&quot;
 suffix:colon
 l_string|&quot;=a&quot;
 (paren
@@ -807,12 +957,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
-DECL|function|find_next_zero_bit
+multiline_comment|/**&n; * find_next_bit - find the first set bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
+DECL|function|find_next_bit
 r_static
 id|__inline__
 r_int
-id|find_next_zero_bit
+id|find_next_bit
+c_func
 (paren
 r_void
 op_star
@@ -864,14 +1015,12 @@ c_cond
 id|bit
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Look for zero in the first 32 bits.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Look for nonzero in the first 32 bits:&n;&t;&t; */
 id|__asm__
 c_func
 (paren
 l_string|&quot;bsfl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jne 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl $32, %0&bslash;n&quot;
-l_string|&quot;1:&quot;
+l_string|&quot;cmovel %2,%0&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -880,13 +1029,15 @@ id|set
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-op_complement
-(paren
 op_star
 id|p
 op_rshift
 id|bit
 )paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|32
 )paren
 )paren
 suffix:semicolon
@@ -909,146 +1060,6 @@ suffix:semicolon
 id|set
 op_assign
 l_int|32
-op_minus
-id|bit
-suffix:semicolon
-id|p
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * No zero yet, search remaining full bytes for a zero&n;&t; */
-id|res
-op_assign
-id|find_first_zero_bit
-(paren
-id|p
-comma
-id|size
-op_minus
-l_int|32
-op_star
-(paren
-id|p
-op_minus
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|offset
-op_plus
-id|set
-op_plus
-id|res
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * find_next_bit - find the first set bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
-DECL|function|find_next_bit
-r_static
-id|__inline__
-r_int
-id|find_next_bit
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-id|size
-comma
-r_int
-id|offset
-)paren
-(brace
-r_int
-r_int
-op_star
-id|p
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-)paren
-op_plus
-(paren
-id|offset
-op_rshift
-l_int|5
-)paren
-suffix:semicolon
-r_int
-r_int
-id|set
-op_assign
-l_int|0
-comma
-id|bit
-op_assign
-id|offset
-op_amp
-l_int|63
-comma
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bit
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Look for nonzero in the first 64 bits:&n;&t;&t; */
-id|__asm__
-c_func
-(paren
-l_string|&quot;bsfq %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jne 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movq $64, %0&bslash;n&quot;
-l_string|&quot;1:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|set
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_star
-id|p
-op_rshift
-id|bit
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|set
-OL
-(paren
-l_int|64
-op_minus
-id|bit
-)paren
-)paren
-r_return
-id|set
-op_plus
-id|offset
-suffix:semicolon
-id|set
-op_assign
-l_int|64
 op_minus
 id|bit
 suffix:semicolon
@@ -1065,7 +1076,7 @@ id|p
 comma
 id|size
 op_minus
-l_int|64
+l_int|32
 op_star
 (paren
 id|p
@@ -1250,9 +1261,7 @@ id|__asm__
 c_func
 (paren
 l_string|&quot;bsfl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jnz 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl $-1,%0&bslash;n&quot;
-l_string|&quot;1:&quot;
+l_string|&quot;cmovzl %2,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1262,6 +1271,11 @@ suffix:colon
 l_string|&quot;g&quot;
 (paren
 id|x
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|32
 )paren
 )paren
 suffix:semicolon
@@ -1281,26 +1295,26 @@ mdefine_line|#define hweight8(x) generic_hweight8(x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __KERNEL__
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit                 __test_and_set_bit
+mdefine_line|#define ext2_set_bit(nr,addr) &bslash;&n;&t;__test_and_set_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit               __test_and_clear_bit
+mdefine_line|#define ext2_clear_bit(nr, addr) &bslash;&n;&t;__test_and_clear_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit                test_bit
+mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit     find_first_zero_bit
+mdefine_line|#define ext2_find_first_zero_bit(addr, size) &bslash;&n;&t;find_first_zero_bit((unsigned long*)addr, size)
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit      find_next_zero_bit
+mdefine_line|#define ext2_find_next_zero_bit(addr, size, off) &bslash;&n;&t;find_next_zero_bit((unsigned long*)addr, size, off)
 multiline_comment|/* Bitmap functions for the minix filesystem.  */
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,addr) __test_and_set_bit(nr,addr)
+mdefine_line|#define minix_test_and_set_bit(nr,addr) __test_and_set_bit(nr,(void*)addr)
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,addr) __set_bit(nr,addr)
+mdefine_line|#define minix_set_bit(nr,addr) __set_bit(nr,(void*)addr)
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,addr) __test_and_clear_bit(nr,addr)
+mdefine_line|#define minix_test_and_clear_bit(nr,addr) __test_and_clear_bit(nr,(void*)addr)
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,addr)
+mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,(void*)addr)
 DECL|macro|minix_find_first_zero_bit
-mdefine_line|#define minix_find_first_zero_bit(addr,size) find_first_zero_bit(addr,size)
+mdefine_line|#define minix_find_first_zero_bit(addr,size) &bslash;&n;&t;find_first_zero_bit((void*)addr,size)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_BITOPS_H */
 eof

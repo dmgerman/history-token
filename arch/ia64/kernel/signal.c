@@ -2621,11 +2621,11 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|info.si_uid
 op_assign
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 suffix:semicolon
 )brace
 multiline_comment|/* If the (new) signal is now blocked, requeue it.  */
@@ -2782,7 +2782,7 @@ id|signr
 suffix:semicolon
 id|sig
 op_assign
-id|current-&gt;p_pptr-&gt;sig
+id|current-&gt;parent-&gt;sig
 suffix:semicolon
 r_if
 c_cond

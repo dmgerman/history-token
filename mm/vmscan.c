@@ -15,6 +15,54 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
 DECL|macro|DEF_PRIORITY
 mdefine_line|#define DEF_PRIORITY (6)
+multiline_comment|/*&n; * On the swap_out path, the radix-tree node allocations are performing&n; * GFP_ATOMIC allocations under PF_MEMALLOC.  They can completely&n; * exhaust the page allocator.  This is bad; some pages should be left&n; * available for the I/O system to start sending the swapcache contents&n; * to disk.&n; *&n; * So PF_MEMALLOC is dropped here.  This causes the slab allocations to fail&n; * earlier, so radix-tree nodes will then be allocated from the mempool&n; * reserves.&n; */
+r_static
+r_inline
+r_int
+DECL|function|swap_out_add_to_swap_cache
+id|swap_out_add_to_swap_cache
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+id|swp_entry_t
+id|entry
+)paren
+(brace
+r_int
+id|flags
+op_assign
+id|current-&gt;flags
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_MEMALLOC
+suffix:semicolon
+id|ret
+op_assign
+id|add_to_swap_cache
+c_func
+(paren
+id|page
+comma
+id|entry
+)paren
+suffix:semicolon
+id|current-&gt;flags
+op_assign
+id|flags
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The swap-out function returns 1 if it successfully&n; * scanned all the pages it was asked to (`count&squot;).&n; * It returns zero if it couldn&squot;t do anything,&n; *&n; * rss may decrease because pages are shared, but this&n; * doesn&squot;t count as having freed a page.&n; */
 multiline_comment|/* mm-&gt;page_table_lock is held. mmap_sem is not held */
 DECL|function|try_to_swap_out
@@ -309,7 +357,7 @@ multiline_comment|/* Add it to the swap cache and mark it dirty&n;&t;&t; * (addi
 r_switch
 c_cond
 (paren
-id|add_to_swap_cache
+id|swap_out_add_to_swap_cache
 c_func
 (paren
 id|page

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2000-2002 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; * 01/07/27&t;J.I. Lee&t;PCI irq routing, Platform/Legacy interrupts and fixes for&n; *&t;&t;&t;&t;ACPI S5(SoftOff) support.&n; * 02/01/23&t;J.I. Lee&t;iosapic pgm fixes for PCI irq routing from _PRT&n; * 02/01/07     E. Focht        &lt;efocht@ess.nec.de&gt; Redirectable interrupt vectors in&n; *                              iosapic_set_affinity(), initializations for&n; *                              /proc/irq/#/smp_affinity&n; */
+multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2000-2002 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; * 01/07/27&t;J.I. Lee&t;PCI irq routing, Platform/Legacy interrupts and fixes for&n; *&t;&t;&t;&t;ACPI S5(SoftOff) support.&n; * 02/01/23&t;J.I. Lee&t;iosapic pgm fixes for PCI irq routing from _PRT&n; * 02/01/07     E. Focht        &lt;efocht@ess.nec.de&gt; Redirectable interrupt vectors in&n; *                              iosapic_set_affinity(), initializations for&n; *                              /proc/irq/#/smp_affinity&n; * 02/04/02&t;P. Diefenbaugh&t;Cleaned up ACPI PCI IRQ routing.&n; */
 multiline_comment|/*&n; * Here is what the interrupt logic between a PCI device and the CPU looks like:&n; *&n; * (1) A PCI device raises one of the four interrupt pins (INTA, INTB, INTC, INTD).  The&n; *     device is uniquely identified by its bus--, and slot-number (the function&n; *     number does not matter here because all functions share the same interrupt&n; *     lines).&n; *&n; * (2) The motherboard routes the interrupt line to a pin on a IOSAPIC controller.&n; *     Multiple interrupt lines may have to share the same IOSAPIC pin (if they&squot;re level&n; *     triggered and use the same polarity).  Each interrupt line has a unique IOSAPIC&n; *     irq number which can be calculated as the sum of the controller&squot;s base irq number&n; *     and the IOSAPIC pin number to which the line connects.&n; *&n; * (3) The IOSAPIC uses an internal table to map the IOSAPIC pin into the IA-64 interrupt&n; *     vector.  This interrupt vector is then sent to the CPU.&n; *&n; * In other words, there are two levels of indirections involved:&n; *&n; *&t;pci pin -&gt; iosapic irq -&gt; IA-64 vector&n; *&n; * Note: outside this module, IA-64 vectors are called &quot;irqs&quot;.  This is because that&squot;s&n; * the traditional name Linux uses for interrupt vectors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,8 +8,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;asm/acpi-ext.h&gt;
-macro_line|#include &lt;asm/acpikcfg.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -101,7 +100,113 @@ id|iosapic_irq
 id|IA64_NUM_VECTORS
 )braket
 suffix:semicolon
+DECL|struct|iosapic
+r_static
+r_struct
+id|iosapic
+(brace
+DECL|member|addr
+r_char
+op_star
+id|addr
+suffix:semicolon
+multiline_comment|/* base address of IOSAPIC */
+DECL|member|pcat_compat
+r_int
+r_char
+id|pcat_compat
+suffix:semicolon
+multiline_comment|/* 8259 compatibility flag */
+DECL|member|base_irq
+r_int
+r_char
+id|base_irq
+suffix:semicolon
+multiline_comment|/* first irq assigned to this IOSAPIC */
+DECL|member|max_pin
+r_int
+r_int
+id|max_pin
+suffix:semicolon
+multiline_comment|/* max input pin supported in this IOSAPIC */
+DECL|variable|__initdata
+)brace
+id|iosapic_lists
+(braket
+l_int|256
+)braket
+id|__initdata
+suffix:semicolon
+DECL|variable|num_iosapic
+r_static
+r_int
+id|num_iosapic
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n; * Find an IOSAPIC associated with an IRQ&n; */
+r_static
+r_inline
+r_int
+id|__init
+DECL|function|find_iosapic
+id|find_iosapic
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_iosapic
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|irq
+op_minus
+id|iosapic_lists
+(braket
+id|i
+)braket
+dot
+id|base_irq
+)paren
+OL
+id|iosapic_lists
+(braket
+id|i
+)braket
+dot
+id|max_pin
+)paren
+r_return
+id|i
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Translate IOSAPIC irq number to the corresponding IA-64 interrupt vector.  If no&n; * entry exists, return -1.&n; */
+r_static
 r_int
 DECL|function|iosapic_irq_to_vector
 id|iosapic_irq_to_vector
@@ -1800,7 +1905,7 @@ id|int_type
 )paren
 (brace
 r_case
-id|ACPI20_ENTRY_PIS_PMI
+id|ACPI_INTERRUPT_PMI
 suffix:colon
 id|vector
 op_assign
@@ -1820,20 +1925,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI20_ENTRY_PIS_CPEI
-suffix:colon
-id|vector
-op_assign
-id|IA64_PCE_VECTOR
-suffix:semicolon
-id|delivery
-op_assign
-id|IOSAPIC_LOWEST_PRIORITY
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI20_ENTRY_PIS_INIT
+id|ACPI_INTERRUPT_INIT
 suffix:colon
 id|vector
 op_assign
@@ -1845,6 +1937,19 @@ suffix:semicolon
 id|delivery
 op_assign
 id|IOSAPIC_INIT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_INTERRUPT_CPEI
+suffix:colon
+id|vector
+op_assign
+id|IA64_PCE_VECTOR
+suffix:semicolon
+id|delivery
+op_assign
+id|IOSAPIC_LOWEST_PRIORITY
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2066,8 +2171,6 @@ id|pcat_compat
 )paren
 (brace
 r_int
-id|i
-comma
 id|irq
 comma
 id|max_pin
@@ -2125,15 +2228,36 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* mark as unused */
-multiline_comment|/*&n;&t;&t; * Fetch the PCI interrupt routing table:&n;&t;&t; */
-id|acpi_cf_get_pci_vectors
+)brace
+r_if
+c_cond
+(paren
+id|pcat_compat
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Disable the compatibility mode interrupts (8259 style), needs IN/OUT support&n;&t;&t; * enabled.&n;&t;&t; */
+id|printk
 c_func
 (paren
-op_amp
-id|pci_irq.route
+l_string|&quot;%s: Disabling PC-AT compatible 8259 interrupts&bslash;n&quot;
 comma
-op_amp
-id|pci_irq.num_routes
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0xff
+comma
+l_int|0xA1
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0xff
+comma
+l_int|0x21
 )paren
 suffix:semicolon
 )brace
@@ -2164,6 +2288,45 @@ l_int|16
 )paren
 op_amp
 l_int|0xff
+suffix:semicolon
+id|iosapic_lists
+(braket
+id|num_iosapic
+)braket
+dot
+id|addr
+op_assign
+id|addr
+suffix:semicolon
+id|iosapic_lists
+(braket
+id|num_iosapic
+)braket
+dot
+id|pcat_compat
+op_assign
+id|pcat_compat
+suffix:semicolon
+id|iosapic_lists
+(braket
+id|num_iosapic
+)braket
+dot
+id|base_irq
+op_assign
+id|base_irq
+suffix:semicolon
+id|iosapic_lists
+(braket
+id|num_iosapic
+)braket
+dot
+id|max_pin
+op_assign
+id|max_pin
+suffix:semicolon
+id|num_iosapic
+op_increment
 suffix:semicolon
 id|printk
 c_func
@@ -2204,6 +2367,7 @@ l_int|0
 op_logical_and
 id|pcat_compat
 )paren
+(brace
 multiline_comment|/*&n;&t;&t; * Map the legacy ISA devices into the IOSAPIC data.  Some of these may&n;&t;&t; * get reprogrammed later on with data from the ACPI Interrupt Source&n;&t;&t; * Override table.&n;&t;&t; */
 r_for
 c_loop
@@ -2315,6 +2479,57 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
+)brace
+)brace
+r_void
+id|__init
+DECL|function|iosapic_init_pci_irq
+id|iosapic_init_pci_irq
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|index
+comma
+id|vector
+comma
+id|pin
+suffix:semicolon
+r_int
+id|base_irq
+comma
+id|max_pin
+comma
+id|pcat_compat
+suffix:semicolon
+r_int
+r_int
+id|irq
+suffix:semicolon
+r_char
+op_star
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|acpi_get_prt
+c_func
+(paren
+op_amp
+id|pci_irq.route
+comma
+op_amp
+id|pci_irq.num_routes
+)paren
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2339,30 +2554,84 @@ id|i
 dot
 id|irq
 suffix:semicolon
+id|index
+op_assign
+id|find_iosapic
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI: IRQ %u has no IOSAPIC mapping&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|addr
+op_assign
+id|iosapic_lists
+(braket
+id|index
+)braket
+dot
+id|addr
+suffix:semicolon
+id|base_irq
+op_assign
+id|iosapic_lists
+(braket
+id|index
+)braket
+dot
+id|base_irq
+suffix:semicolon
+id|max_pin
+op_assign
+id|iosapic_lists
+(braket
+id|index
+)braket
+dot
+id|max_pin
+suffix:semicolon
+id|pcat_compat
+op_assign
+id|iosapic_lists
+(braket
+id|index
+)braket
+dot
+id|pcat_compat
+suffix:semicolon
+id|pin
+op_assign
+id|irq
+op_minus
+id|base_irq
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|irq
-OL
-(paren
 r_int
 )paren
-id|base_irq
-)paren
-op_logical_or
-(paren
-id|irq
+id|pin
 OG
-(paren
-r_int
-)paren
-(paren
-id|base_irq
-op_plus
 id|max_pin
-)paren
-)paren
 )paren
 multiline_comment|/* the interrupt route is for another controller... */
 r_continue
@@ -2419,11 +2688,8 @@ id|irq
 comma
 id|vector
 comma
-id|irq
-op_minus
-id|base_irq
+id|pin
 comma
-multiline_comment|/* IOSAPIC_POL_LOW, IOSAPIC_LEVEL */
 id|IOSAPIC_LOWEST_PRIORITY
 comma
 l_int|0
@@ -2435,7 +2701,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|# ifdef DEBUG_IRQ_ROUTING
+macro_line|#ifdef DEBUG_IRQ_ROUTING
 id|printk
 c_func
 (paren
@@ -2481,25 +2747,7 @@ comma
 id|vector
 )paren
 suffix:semicolon
-macro_line|# endif
-multiline_comment|/* program the IOSAPIC routing table: */
-id|set_rte
-c_func
-(paren
-id|vector
-comma
-(paren
-id|ia64_get_lid
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xffff
-)paren
-suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 r_void
@@ -2531,6 +2779,22 @@ id|irq_desc_t
 op_star
 id|idesc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|phase
+op_eq
+l_int|0
+)paren
+(brace
+id|iosapic_init_pci_irq
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2764,8 +3028,8 @@ id|no_irq_type
 id|printk
 c_func
 (paren
-l_string|&quot;iosapic_pci_fixup: changing vector 0x%02x from &quot;
-l_string|&quot;%s to %s&bslash;n&quot;
+l_string|&quot;iosapic_pci_fixup: changing vector 0x%02x &quot;
+l_string|&quot;from %s to %s&bslash;n&quot;
 comma
 id|vector
 comma

@@ -146,7 +146,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rgn_offset
+id|REGION_OFFSET
 c_func
 (paren
 id|addr
@@ -564,7 +564,7 @@ id|oldbrk
 OG
 id|RGN_MAP_LIMIT
 op_logical_or
-id|rgn_offset
+id|REGION_OFFSET
 c_func
 (paren
 id|newbrk
@@ -893,7 +893,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t permit mappings into unmapped space, the virtual page table of a region,&n;&t; * or across a region boundary.  Note: RGN_MAP_LIMIT is equal to 2^n-PAGE_SIZE&n;&t; * (for some integer n &lt;= 61) and len &gt; 0.&n;&t; */
 id|roff
 op_assign
-id|rgn_offset
+id|REGION_OFFSET
 c_func
 (paren
 id|addr

@@ -75,7 +75,7 @@ comma
 l_int|50
 )brace
 suffix:semicolon
-r_int
+r_void
 DECL|function|check_pgt_cache
 id|check_pgt_cache
 (paren
@@ -86,10 +86,6 @@ r_int
 id|low
 comma
 id|high
-comma
-id|freed
-op_assign
-l_int|0
 suffix:semicolon
 id|low
 op_assign
@@ -133,9 +129,6 @@ c_func
 l_int|0
 )paren
 )paren
-comma
-op_increment
-id|freed
 suffix:semicolon
 r_if
 c_cond
@@ -157,9 +150,6 @@ comma
 l_int|0
 )paren
 )paren
-comma
-op_increment
-id|freed
 suffix:semicolon
 )brace
 r_while
@@ -171,9 +161,6 @@ id|low
 )paren
 suffix:semicolon
 )brace
-r_return
-id|freed
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * This performs some platform-dependent address space initialization.&n; * On IA-64, we want to setup the VM area for the register backing&n; * store (which grows upwards) and install the gateway page which is&n; * used for signal trampolines, etc.&n; */
 r_void
@@ -1299,16 +1286,6 @@ id|zones_size
 (braket
 id|MAX_NR_ZONES
 )braket
-suffix:semicolon
-id|clear_page
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ZERO_PAGE_ADDR
-)paren
 suffix:semicolon
 multiline_comment|/* initialize mem_map[] */
 id|memset

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/x86_64/kernel/vsyscall.c&n; *&n; *  Copyright (C) 2001 Andrea Arcangeli &lt;andrea@suse.de&gt; SuSE&n; *&n; *  Thanks to hpa@transmeta.com for some useful hint.&n; *  Special thanks to Ingo Molnar for his early experience with&n; *  a different vsyscall implementation for Linux/IA32 and for the name.&n; *&n; *  vsyscall 1 is located at -10Mbyte, vsyscall 2 is located&n; *  at virtual address -10Mbyte+1024bytes etc... There are at max 8192&n; *  vsyscalls. One vsyscall can reserve more than 1 slot to avoid&n; *  jumping out of line if necessary.&n; *&n; *  $Id: vsyscall.c,v 1.4 2001/09/27 17:58:13 ak Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/x86_64/kernel/vsyscall.c&n; *&n; *  Copyright (C) 2001 Andrea Arcangeli &lt;andrea@suse.de&gt; SuSE&n; *&n; *  Thanks to hpa@transmeta.com for some useful hint.&n; *  Special thanks to Ingo Molnar for his early experience with&n; *  a different vsyscall implementation for Linux/IA32 and for the name.&n; *&n; *  vsyscall 1 is located at -10Mbyte, vsyscall 2 is located&n; *  at virtual address -10Mbyte+1024bytes etc... There are at max 8192&n; *  vsyscalls. One vsyscall can reserve more than 1 slot to avoid&n; *  jumping out of line if necessary.&n; *&n; *  $Id: vsyscall.c,v 1.9 2002/03/21 13:42:58 ak Exp $&n; */
 multiline_comment|/*&n; * TODO 2001-03-20:&n; *&n; * 1) make page fault handler detect faults on page1-page-last of the vsyscall&n; *    virtual space, and make it increase %rip and write -ENOSYS in %rax (so&n; *    we&squot;ll be able to upgrade to a new glibc without upgrading kernel after&n; *    we add more vsyscalls.&n; * 2) Possibly we need a fixmap table for the vsyscalls too if we want&n; *    to avoid SIGSEGV and we want to return -EFAULT from the vsyscalls as well.&n; *    Can we segfault inside a &quot;syscall&quot;? We can fix this anytime and those fixes&n; *    won&squot;t be visible for userspace. Not fixing this is a noop for correct programs,&n; *    broken programs will segfault and there&squot;s no security risk until we choose to&n; *    fix it.&n; *&n; * These are not urgent things that we need to address only before shipping the first&n; * production binary kernels.&n; */
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -11,7 +11,39 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
-DECL|function|timeval_normalize
+singleline_comment|//#define NO_VSYSCALL 1
+macro_line|#ifdef NO_VSYSCALL
+macro_line|#include &lt;asm/unistd.h&gt;
+DECL|variable|__section_vxtime_sequence
+r_static
+r_int
+id|errno
+id|__section_vxtime_sequence
+suffix:semicolon
+id|__syscall2
+c_func
+(paren
+r_static
+r_inline
+r_int
+comma
+r_int
+comma
+id|gettimeofday
+comma
+r_struct
+id|timeval
+op_star
+comma
+id|tv
+comma
+r_struct
+id|timezone
+op_star
+comma
+id|tz
+)paren
+macro_line|#else
 r_static
 r_inline
 r_void
@@ -49,7 +81,6 @@ id|__sec
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__section_vxtime_sequence
 r_int
 id|__vxtime_sequence
 (braket
@@ -57,7 +88,7 @@ l_int|2
 )braket
 id|__section_vxtime_sequence
 suffix:semicolon
-DECL|function|do_vgettimeofday
+r_static
 r_inline
 r_void
 id|do_vgettimeofday
@@ -196,7 +227,6 @@ id|tv
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_get_tz
 r_static
 r_inline
 r_void
@@ -249,6 +279,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|vgettimeofday
 r_static
 r_int
@@ -271,6 +302,17 @@ op_star
 id|tz
 )paren
 (brace
+macro_line|#ifdef NO_VSYSCALL
+r_return
+id|gettimeofday
+c_func
+(paren
+id|tv
+comma
+id|tz
+)paren
+suffix:semicolon
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -296,6 +338,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|vtime
 r_static
@@ -310,9 +353,37 @@ c_func
 (paren
 id|time_t
 op_star
-id|time
+id|t
 )paren
 (brace
+macro_line|#ifdef NO_VSYSCALL
+r_struct
+id|timeval
+id|tv
+suffix:semicolon
+id|gettimeofday
+c_func
+(paren
+op_amp
+id|tv
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+)paren
+op_star
+id|t
+op_assign
+id|tv.tv_sec
+suffix:semicolon
+r_return
+id|tv.tv_sec
+suffix:semicolon
+macro_line|#else
 r_int
 id|sequence
 suffix:semicolon
@@ -357,16 +428,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|time
+id|t
 )paren
 op_star
-id|time
+id|t
 op_assign
 id|__time
 suffix:semicolon
 r_return
 id|__time
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|venosys_0
 r_static

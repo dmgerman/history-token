@@ -16,8 +16,10 @@ multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int
 id|smp_found_config
-op_assign
-l_int|0
+suffix:semicolon
+DECL|variable|acpi_found_madt
+r_int
+id|acpi_found_madt
 suffix:semicolon
 multiline_comment|/*&n; * Various Linux-internal data structures created from the&n; * MP-table.&n; */
 DECL|variable|apic_version
@@ -141,6 +143,54 @@ id|phys_cpu_present_map
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* ACPI MADT entry parsing functions */
+macro_line|#ifdef CONFIG_ACPI_BOOT
+r_extern
+r_struct
+id|acpi_boot_flags
+id|acpi_boot
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|acpi_parse_lapic
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_parse_lapic_addr_ovr
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_parse_lapic_nmi
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
+macro_line|#ifdef CONFIG_X86_IO_APIC
+r_extern
+r_int
+id|acpi_parse_ioapic
+(paren
+id|acpi_table_entry_header
+op_star
+id|header
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_X86_IO_APIC*/
+macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 macro_line|#ifndef CONFIG_X86_VISWS_APIC
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
@@ -1137,6 +1187,12 @@ id|mpc-&gt;mpc_lapic
 )paren
 suffix:semicolon
 multiline_comment|/* save the local APIC address, it might be non-default */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_found_madt
+)paren
 id|mp_lapic_addr
 op_assign
 id|mpc-&gt;mpc_lapic
@@ -1173,6 +1229,12 @@ op_star
 )paren
 id|mpt
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_found_madt
+)paren
 id|MP_processor_info
 c_func
 (paren
@@ -2030,6 +2092,41 @@ id|mpf
 op_assign
 id|mpf_found
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;&t; * Check if the MADT exists, and if so, use it to get processor&n;&t; * information (ACPI_MADT_LAPIC).  The MADT supports the concept&n;&t; * of both logical (e.g. HT) and physical processor(s); where the&n;&t; * MPS only supports physical.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_boot.madt
+)paren
+(brace
+id|acpi_found_madt
+op_assign
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_APIC
+comma
+id|acpi_parse_madt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_found_madt
+OG
+l_int|0
+)paren
+id|acpi_table_parse_madt
+c_func
+(paren
+id|ACPI_MADT_LAPIC
+comma
+id|acpi_parse_lapic
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /*CONFIG_ACPI_BOOT*/
 id|printk
 c_func
 (paren

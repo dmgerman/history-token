@@ -358,7 +358,7 @@ c_func
 (paren
 r_int
 r_int
-id|address
+id|start
 comma
 r_int
 r_int
@@ -371,15 +371,15 @@ id|dir
 suffix:semicolon
 r_int
 r_int
-id|start
-op_assign
 id|address
+op_assign
+id|start
 suffix:semicolon
 r_int
 r_int
 id|end
 op_assign
-id|address
+id|start
 op_plus
 id|size
 suffix:semicolon

@@ -3206,19 +3206,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|drive-&gt;keep_settings
-op_logical_and
-op_logical_neg
-id|drive-&gt;using_dma
-)paren
-id|drive-&gt;mult_req
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|drive-&gt;mult_req
 op_ne
 id|drive-&gt;mult_count
@@ -5035,37 +5022,6 @@ c_func
 (paren
 id|drive
 comma
-l_string|&quot;bswap&quot;
-comma
-id|SETTING_READ
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-id|TYPE_BYTE
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-op_amp
-id|drive-&gt;bswap
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|ide_add_setting
-c_func
-(paren
-id|drive
-comma
 l_string|&quot;multcount&quot;
 comma
 id|id
@@ -5833,6 +5789,7 @@ op_div
 id|drive-&gt;bios_head
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: %ld sectors&quot;
@@ -5845,6 +5802,7 @@ suffix:semicolon
 multiline_comment|/* Give size in megabytes (MB), not mebibytes (MiB). */
 multiline_comment|/* We compute the exact rounded value, avoiding overflow. */
 id|printk
+c_func
 (paren
 l_string|&quot; (%ld MB)&quot;
 comma
@@ -5907,7 +5865,7 @@ comma
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -5969,7 +5927,8 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#else&t;/* original, pre IDE-NFG, per request of AC */
+macro_line|#else
+multiline_comment|/* original, pre IDE-NFG, per request of AC */
 id|drive-&gt;mult_req
 op_assign
 id|INITIAL_MULT_COUNT
@@ -6004,9 +5963,10 @@ id|drive-&gt;special.b.set_multmode
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IDEDISK_MULTI_MODE */
+macro_line|#endif
 )brace
-id|drive-&gt;no_io_32bit
+multiline_comment|/* FIXME: Nowadays there are many chipsets out there which *require* 32&n;&t; * bit IO. Those will most propably not work properly with drives not&n;&t; * supporting this. But right now we don&squot;t do anything about this. We&n;&t; * dont&squot; even *warn* the user!&n;&t; */
+id|drive-&gt;channel-&gt;no_io_32bit
 op_assign
 id|id-&gt;dword_io
 ques

@@ -25,5 +25,14 @@ DECL|macro|PR_GET_KEEPCAPS
 mdefine_line|#define PR_GET_KEEPCAPS   7
 DECL|macro|PR_SET_KEEPCAPS
 mdefine_line|#define PR_SET_KEEPCAPS   8
+multiline_comment|/* Get/set floating-point emulation control bits (if meaningful) */
+DECL|macro|PR_GET_FPEMU
+mdefine_line|#define PR_GET_FPEMU  9
+DECL|macro|PR_SET_FPEMU
+mdefine_line|#define PR_SET_FPEMU 10
+DECL|macro|PR_FPEMU_NOPRINT
+macro_line|# define PR_FPEMU_NOPRINT&t;1&t;/* silently emulate fp operations accesses */
+DECL|macro|PR_FPEMU_SIGFPE
+macro_line|# define PR_FPEMU_SIGFPE&t;2&t;/* don&squot;t emulate fp operations, send SIGFPE instead */
 macro_line|#endif /* _LINUX_PRCTL_H */
 eof

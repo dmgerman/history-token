@@ -12,8 +12,8 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14, 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda) minor=0; (hdb) minor=64&n; * Secondary i/f:  ide1: major=22; (hdc) minor=0; (hdd) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde) minor=0; (hdf) minor=64&n; * Quaternary i/f: ide3: major=34; (hdg) minor=0; (hdh) minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; */
 DECL|macro|INITIAL_MULT_COUNT
@@ -488,10 +488,11 @@ mdefine_line|#define IDE_CUR_AR(drive)&t;(HWGROUP((drive))-&gt;rq-&gt;special)
 r_struct
 id|ide_settings_s
 suffix:semicolon
-DECL|struct|ide_drive_s
+multiline_comment|/* structure describing an ATA/ATAPI device */
 r_typedef
+DECL|struct|ata_device
 r_struct
-id|ide_drive_s
+id|ata_device
 (brace
 DECL|member|channel
 r_struct
@@ -499,7 +500,14 @@ id|ata_channel
 op_star
 id|channel
 suffix:semicolon
-multiline_comment|/* parent pointer to the channel we are attached to  */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* device name */
 DECL|member|usage
 r_int
 r_int
@@ -525,7 +533,7 @@ suffix:semicolon
 multiline_comment|/* free ata requests */
 DECL|member|next
 r_struct
-id|ide_drive_s
+id|ata_device
 op_star
 id|next
 suffix:semicolon
@@ -560,11 +568,6 @@ id|special_t
 id|special
 suffix:semicolon
 multiline_comment|/* special action flags */
-DECL|member|keep_settings
-id|byte
-id|keep_settings
-suffix:semicolon
-multiline_comment|/* restore settings after drive reset */
 DECL|member|using_dma
 id|byte
 id|using_dma
@@ -585,21 +588,6 @@ id|byte
 id|state
 suffix:semicolon
 multiline_comment|/* retry state */
-DECL|member|unmask
-id|byte
-id|unmask
-suffix:semicolon
-multiline_comment|/* flag: okay to unmask other irqs */
-DECL|member|slow
-id|byte
-id|slow
-suffix:semicolon
-multiline_comment|/* flag: slow data port */
-DECL|member|bswap
-id|byte
-id|bswap
-suffix:semicolon
-multiline_comment|/* flag: byte swap data */
 DECL|member|dsc_overlap
 id|byte
 id|dsc_overlap
@@ -654,20 +642,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 if hdx=c,h,s was given at boot */
-DECL|member|no_unmask
-r_int
-id|no_unmask
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* disallow setting unmask bit */
-DECL|member|no_io_32bit
-r_int
-id|no_io_32bit
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* disallow enabling 32bit I/O */
 DECL|member|nobios
 r_int
 id|nobios
@@ -717,12 +691,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
-DECL|member|service_pending
-r_int
-id|service_pending
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|addressing
 r_int
 id|addressing
@@ -763,11 +731,6 @@ id|byte
 id|tune_req
 suffix:semicolon
 multiline_comment|/* requested drive tuning setting */
-DECL|member|io_32bit
-id|byte
-id|io_32bit
-suffix:semicolon
-multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|bad_wstat
 id|byte
 id|bad_wstat
@@ -853,14 +816,6 @@ op_star
 id|part
 suffix:semicolon
 multiline_comment|/* drive partition table */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|6
-)braket
-suffix:semicolon
-multiline_comment|/* drive name, such as &quot;hda&quot; */
 DECL|member|driver
 r_struct
 id|ata_operations
@@ -1068,142 +1023,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * An ide_ideproc_t() performs CPU-polled transfers to/from a drive.&n; * Arguments are: the drive, the buffer pointer, and the length (in bytes or&n; * words depending on if it&squot;s an IDE or ATAPI call).&n; *&n; * If it is not defined for a controller, standard-code is used from ide.c.&n; *&n; * Controllers which are not memory-mapped in the standard way need to&n; * override that mechanism using this function to work.&n; *&n; */
-DECL|enumerator|ideproc_ide_input_data
-DECL|enumerator|ideproc_ide_output_data
-r_typedef
-r_enum
-(brace
-id|ideproc_ide_input_data
-comma
-id|ideproc_ide_output_data
-comma
-DECL|enumerator|ideproc_atapi_input_bytes
-DECL|enumerator|ideproc_atapi_output_bytes
-id|ideproc_atapi_input_bytes
-comma
-id|ideproc_atapi_output_bytes
-DECL|typedef|ide_ide_action_t
-)brace
-id|ide_ide_action_t
-suffix:semicolon
-DECL|typedef|ide_ideproc_t
-r_typedef
-r_void
-(paren
-id|ide_ideproc_t
-)paren
-(paren
-id|ide_ide_action_t
-comma
-id|ide_drive_t
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * An ide_tuneproc_t() is used to set the speed of an IDE interface&n; * to a particular PIO mode.  The &quot;byte&quot; parameter is used&n; * to select the PIO mode by number (0,1,2,3,4,5), and a value of 255&n; * indicates that the interface driver should &quot;auto-tune&quot; the PIO mode&n; * according to the drive capabilities in drive-&gt;id;&n; *&n; * Not all interface types support tuning, and not all of those&n; * support all possible PIO settings.  They may silently ignore&n; * or round values as they see fit.&n; */
-DECL|typedef|ide_tuneproc_t
-r_typedef
-r_void
-(paren
-id|ide_tuneproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|byte
-)paren
-suffix:semicolon
-DECL|typedef|ide_speedproc_t
-r_typedef
-r_int
-(paren
-id|ide_speedproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|byte
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This is used to provide support for strange interfaces&n; */
-DECL|typedef|ide_selectproc_t
-r_typedef
-r_void
-(paren
-id|ide_selectproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_resetproc_t
-r_typedef
-r_void
-(paren
-id|ide_resetproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_quirkproc_t
-r_typedef
-r_int
-(paren
-id|ide_quirkproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_intrproc_t
-r_typedef
-r_void
-(paren
-id|ide_intrproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ide_maskproc_t
-r_typedef
-r_void
-(paren
-id|ide_maskproc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-DECL|typedef|ide_rw_proc_t
-r_typedef
-r_void
-(paren
-id|ide_rw_proc_t
-)paren
-(paren
-id|ide_drive_t
-op_star
-comma
-id|ide_dma_action_t
-)paren
-suffix:semicolon
 r_enum
 (brace
 DECL|enumerator|ATA_PRIMARY
@@ -1283,60 +1102,180 @@ op_star
 id|gd
 suffix:semicolon
 multiline_comment|/* gendisk structure */
+multiline_comment|/*&n;&t; * Routines to tune PIO and DMA mode for drives.&n;&t; *&n;&t; * A value of 255 indicates that the function should choose the optimal&n;&t; * mode itself.&n;&t; */
 DECL|member|tuneproc
-id|ide_tuneproc_t
+r_void
+(paren
 op_star
 id|tuneproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+id|byte
+id|pio
+)paren
 suffix:semicolon
-multiline_comment|/* routine to tune PIO mode for drives */
 DECL|member|speedproc
-id|ide_speedproc_t
+r_int
+(paren
 op_star
 id|speedproc
-suffix:semicolon
-multiline_comment|/* routine to retune DMA modes for drives */
-DECL|member|selectproc
-id|ide_selectproc_t
+)paren
+(paren
+id|ide_drive_t
 op_star
-id|selectproc
+comma
+id|byte
+id|pio
+)paren
 suffix:semicolon
 multiline_comment|/* tweaks hardware to select drive */
-DECL|member|resetproc
-id|ide_resetproc_t
+DECL|member|selectproc
+r_void
+(paren
 op_star
-id|resetproc
+id|selectproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/* routine to reset controller after a disk reset */
-DECL|member|intrproc
-id|ide_intrproc_t
+DECL|member|resetproc
+r_void
+(paren
 op_star
-id|intrproc
+id|resetproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/* special interrupt handling for shared pci interrupts */
-DECL|member|maskproc
-id|ide_maskproc_t
+DECL|member|intrproc
+r_void
+(paren
 op_star
-id|maskproc
+id|intrproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/* special host masking for drive selection */
-DECL|member|quirkproc
-id|ide_quirkproc_t
+DECL|member|maskproc
+r_void
+(paren
 op_star
-id|quirkproc
-suffix:semicolon
-multiline_comment|/* check host&squot;s drive quirk list */
-DECL|member|rwproc
-id|ide_rw_proc_t
+id|maskproc
+)paren
+(paren
+id|ide_drive_t
 op_star
-id|rwproc
+comma
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/* adjust timing based upon rq-&gt;cmd direction */
-DECL|member|ideproc
-id|ide_ideproc_t
+DECL|member|rwproc
+r_void
+(paren
 op_star
-id|ideproc
+id|rwproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+id|ide_dma_action_t
+)paren
 suffix:semicolon
-multiline_comment|/* CPU-polled transfer routine */
+multiline_comment|/* check host&squot;s drive quirk list */
+DECL|member|quirkproc
+r_int
+(paren
+op_star
+id|quirkproc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* CPU-polled transfer routines */
+DECL|member|ata_read
+r_void
+(paren
+op_star
+id|ata_read
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|ata_write
+r_void
+(paren
+op_star
+id|ata_write
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|atapi_read
+r_void
+(paren
+op_star
+id|atapi_read
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|atapi_write
+r_void
+(paren
+op_star
+id|atapi_write
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|member|dmaproc
 id|ide_dmaproc_t
 op_star
@@ -1457,6 +1396,42 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* can do full 32-bit dma */
+DECL|member|slow
+id|byte
+id|slow
+suffix:semicolon
+multiline_comment|/* flag: slow data port */
+DECL|member|no_io_32bit
+r_int
+id|no_io_32bit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disallow enabling 32bit I/O */
+DECL|member|io_32bit
+id|byte
+id|io_32bit
+suffix:semicolon
+multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
+DECL|member|no_unmask
+r_int
+id|no_unmask
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disallow setting unmask bit */
+DECL|member|unmask
+id|byte
+id|unmask
+suffix:semicolon
+multiline_comment|/* flag: okay to unmask other irqs */
+DECL|member|auto_poll
+r_int
+id|auto_poll
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* supports nop auto-poll */
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -2556,7 +2531,7 @@ suffix:semicolon
 multiline_comment|/* real request */
 DECL|member|ar_drive
 r_struct
-id|ide_drive_s
+id|ata_device
 op_star
 id|ar_drive
 suffix:semicolon
@@ -2619,8 +2594,10 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|AR_TASK_CMD
 mdefine_line|#define AR_TASK_CMD(ar)&t;((ar)-&gt;ar_task.taskfile.command)
+r_extern
 r_void
-id|ata_input_data
+id|ata_read
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2635,8 +2612,10 @@ r_int
 id|wcount
 )paren
 suffix:semicolon
+r_extern
 r_void
-id|ata_output_data
+id|ata_write
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2651,8 +2630,10 @@ r_int
 id|wcount
 )paren
 suffix:semicolon
+r_extern
 r_void
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2667,8 +2648,10 @@ r_int
 id|bytecount
 )paren
 suffix:semicolon
+r_extern
 r_void
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2681,38 +2664,6 @@ comma
 r_int
 r_int
 id|bytecount
-)paren
-suffix:semicolon
-r_void
-id|taskfile_input_data
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|wcount
-)paren
-suffix:semicolon
-r_void
-id|taskfile_output_data
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|wcount
 )paren
 suffix:semicolon
 r_extern
@@ -3283,11 +3234,11 @@ suffix:semicolon
 multiline_comment|/*&n; * Tagged Command Queueing:&n; */
 multiline_comment|/*&n; * ata_request flag bits&n; */
 DECL|macro|ATA_AR_QUEUED
-mdefine_line|#define ATA_AR_QUEUED&t;1
+mdefine_line|#define ATA_AR_QUEUED&t;1&t;/* was queued */
 DECL|macro|ATA_AR_SETUP
-mdefine_line|#define ATA_AR_SETUP&t;2
-DECL|macro|ATA_AR_RETURN
-mdefine_line|#define ATA_AR_RETURN&t;4
+mdefine_line|#define ATA_AR_SETUP&t;2&t;/* dma table mapped */
+DECL|macro|ATA_AR_POOL
+mdefine_line|#define ATA_AR_POOL&t;4&t;/* originated from drive pool */
 multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
 DECL|macro|ATA_AR_MAX_TURNAROUND
 mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
@@ -3418,6 +3369,10 @@ comma
 id|ar
 )paren
 suffix:semicolon
+id|ar-&gt;ar_flags
+op_or_assign
+id|ATA_AR_POOL
+suffix:semicolon
 )brace
 r_return
 id|ar
@@ -3440,6 +3395,13 @@ op_star
 id|ar
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ar-&gt;ar_flags
+op_amp
+id|ATA_AR_POOL
+)paren
 id|list_add
 c_func
 (paren

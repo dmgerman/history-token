@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU&t;&t;&t;*/
 DECL|variable|smp_b_stepping
 r_static
@@ -184,15 +186,13 @@ r_void
 )paren
 (brace
 r_extern
+r_volatile
 id|__u32
 id|tramp_gdt_ptr
 suffix:semicolon
 id|tramp_gdt_ptr
 op_assign
-(paren
-id|__u32
-)paren
-id|virt_to_phys
+id|__pa_symbol
 c_func
 (paren
 op_amp
@@ -414,9 +414,9 @@ r_int
 r_int
 id|fast_gettimeoffset_quotient
 suffix:semicolon
-multiline_comment|/*&n; * accurate 64-bit/32-bit division, expanded to 32-bit divisions and 64-bit&n; * multiplication. Not terribly optimized but we need it at boot time only&n; * anyway.&n; *&n; * result == a / b&n; *&t;== (a1 + a2*(2^32)) / b&n; *&t;== a1/b + a2*(2^32/b)&n; *&t;== a1/b + a2*((2^32-1)/b) + a2/b + (a2*((2^32-1) % b))/b&n; *&t;&t;    ^---- (this multiplication can overflow)&n; */
 DECL|function|div64
 r_static
+r_inline
 r_int
 r_int
 r_int
@@ -429,92 +429,13 @@ id|a
 comma
 r_int
 r_int
-id|b0
+id|b
 )paren
 (brace
-r_int
-r_int
-id|a1
-comma
-id|a2
-suffix:semicolon
-r_int
-r_int
-r_int
-id|res
-suffix:semicolon
-id|a1
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|a
-)paren
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|a2
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|a
-)paren
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|res
-op_assign
-id|a1
-op_div
-id|b0
-op_plus
-(paren
-r_int
-r_int
-r_int
-)paren
-id|a2
-op_star
-(paren
-r_int
-r_int
-r_int
-)paren
-(paren
-l_int|0xffffffff
-op_div
-id|b0
-)paren
-op_plus
-id|a2
-op_div
-id|b0
-op_plus
-(paren
-id|a2
-op_star
-(paren
-l_int|0xffffffff
-op_mod
-id|b0
-)paren
-)paren
-op_div
-id|b0
-suffix:semicolon
 r_return
-id|res
+id|a
+op_div
+id|b
 suffix:semicolon
 )brace
 DECL|function|synchronize_tsc_bp
@@ -888,7 +809,6 @@ c_func
 l_string|&quot;passed.&bslash;n&quot;
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|synchronize_tsc_ap
 r_static
@@ -1234,9 +1154,16 @@ c_func
 id|cpuid
 )paren
 suffix:semicolon
-id|disable_APIC_timer
+id|notify_die
 c_func
 (paren
+id|DIE_CPUINIT
+comma
+l_string|&quot;cpuinit&quot;
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
@@ -1285,6 +1212,18 @@ op_star
 id|unused
 )paren
 (brace
+r_int
+id|var
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;rsp %p&bslash;n&quot;
+comma
+op_amp
+id|var
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Dont put anything before smp_callin(), SMP&n;&t; * booting is too fragile that we want to limit the&n;&t; * things done here to the most necessary things.&n;&t; */
 id|cpu_init
 c_func
@@ -1312,11 +1251,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|enable_APIC_timer
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * low-memory mappings have been cleared, flush them from&n;&t; * the local TLBs too.&n;&t; */
 id|local_flush_tlb
 c_func
@@ -1340,6 +1274,16 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|stack_current
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t actually need to load the full TSS,&n;&t; * basically just the stack pointer and the eip.&n;&t; */
 id|asm
 r_volatile
@@ -1350,19 +1294,20 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|current-&gt;thread.rsp
+id|me-&gt;thread.rsp
 )paren
 comma
 l_string|&quot;r&quot;
 (paren
-id|current-&gt;thread.rip
+id|me-&gt;thread.rip
 )paren
 )paren
 suffix:semicolon
 )brace
 r_extern
-r_void
-op_star
+r_volatile
+r_int
+r_int
 id|init_rsp
 suffix:semicolon
 r_extern
@@ -1389,7 +1334,7 @@ r_struct
 id|pt_regs
 id|regs
 suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
+multiline_comment|/*&n;&t; * don&squot;t care about the rip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
 r_return
 id|do_fork
 c_func
@@ -1648,6 +1593,14 @@ r_int
 r_int
 id|start_eip
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;do_boot_cpu cpucount = %d&bslash;n&quot;
+comma
+id|cpucount
+)paren
+suffix:semicolon
 id|cpu
 op_assign
 op_increment
@@ -1726,22 +1679,7 @@ r_int
 )paren
 id|start_secondary
 suffix:semicolon
-id|init_rsp
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|THREAD_SIZE
-op_plus
-(paren
-r_char
-op_star
-)paren
-id|idle-&gt;thread_info
-)paren
-suffix:semicolon
+singleline_comment|//&t;idle-&gt;thread.rsp = (unsigned long)idle-&gt;thread_info + THREAD_SIZE - 512;
 id|unhash_process
 c_func
 (paren
@@ -1757,17 +1695,6 @@ id|pcurrent
 op_assign
 id|idle
 suffix:semicolon
-id|cpu_pda
-(braket
-id|cpu
-)braket
-dot
-id|kernelstack
-op_assign
-id|init_rsp
-op_minus
-id|PDA_STACKOFFSET
-suffix:semicolon
 multiline_comment|/* start_eip had better be page-aligned! */
 id|start_eip
 op_assign
@@ -1776,22 +1703,37 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* So we see what&squot;s up   */
+id|init_rsp
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|idle-&gt;thread_info
+op_plus
+id|PAGE_SIZE
+op_plus
+l_int|1024
+suffix:semicolon
+id|initial_code
+op_assign
+id|initialize_secondary
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Booting processor %d/%d eip %lx&bslash;n&quot;
+l_string|&quot;Booting processor %d/%d rip %lx rsp %lx rsp2 %lx&bslash;n&quot;
 comma
 id|cpu
 comma
 id|apicid
 comma
 id|start_eip
+comma
+id|idle-&gt;thread.rsp
+comma
+id|init_rsp
 )paren
-suffix:semicolon
-id|initial_code
-op_assign
-id|initialize_secondary
 suffix:semicolon
 multiline_comment|/*&n;&t; * This grunge runs the startup process for&n;&t; * the targeted processor.&n;&t; */
 id|atomic_set

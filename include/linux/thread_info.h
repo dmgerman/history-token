@@ -2,8 +2,8 @@ multiline_comment|/* thread_info.h: common low-level thread information accessor
 macro_line|#ifndef _LINUX_THREAD_INFO_H
 DECL|macro|_LINUX_THREAD_INFO_H
 mdefine_line|#define _LINUX_THREAD_INFO_H
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/thread_info.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * flag set/clear/test wrappers&n; * - pass TIF_xxxx constants to these functions&n; */
 DECL|function|set_thread_flag

@@ -1061,7 +1061,7 @@ id|dbg
 (paren
 l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&quot;
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 comma
 id|readl
 (paren
@@ -1344,7 +1344,7 @@ l_int|0x1fe
 )paren
 suffix:semicolon
 multiline_comment|/* connect the virtual root hub */
-id|ohci-&gt;hcd.bus-&gt;root_hub
+id|ohci-&gt;hcd.self.root_hub
 op_assign
 id|udev
 op_assign
@@ -1352,7 +1352,8 @@ id|usb_alloc_dev
 (paren
 l_int|NULL
 comma
-id|ohci-&gt;hcd.bus
+op_amp
+id|ohci-&gt;hcd.self
 )paren
 suffix:semicolon
 id|ohci-&gt;hcd.state
@@ -1521,7 +1522,7 @@ id|err
 (paren
 l_string|&quot;OHCI Unrecoverable Error, %s disabled&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 singleline_comment|// e.g. due to PCI Master/Target Abort
@@ -1687,7 +1688,7 @@ id|dbg
 (paren
 l_string|&quot;%s: stop %s controller%s&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|hcfs2string
 (paren
@@ -1823,7 +1824,7 @@ id|info
 (paren
 l_string|&quot;%s: AMD756 erratum 4 workaround&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 )brace
@@ -1845,7 +1846,7 @@ id|info
 (paren
 l_string|&quot;%s: WARNING: OPTi workarounds unavailable&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 )brace
@@ -1930,7 +1931,7 @@ id|err
 (paren
 l_string|&quot;can&squot;t start %s&quot;
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 )paren
 suffix:semicolon
 id|ohci_stop
@@ -2005,7 +2006,7 @@ id|dbg
 (paren
 l_string|&quot;can&squot;t suspend %s (state is %s)&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|hcfs2string
 (paren
@@ -2025,7 +2026,7 @@ id|dbg
 (paren
 l_string|&quot;%s: suspend to %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|state
 )paren
@@ -2189,7 +2190,7 @@ id|dbg
 (paren
 l_string|&quot;%s suspend-&gt;reset ?&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 r_break
@@ -2201,7 +2202,7 @@ id|dbg
 (paren
 l_string|&quot;%s suspend-&gt;resume ?&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 r_break
@@ -2213,7 +2214,7 @@ id|dbg
 (paren
 l_string|&quot;%s suspend-&gt;operational ?&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 r_break
@@ -2225,7 +2226,7 @@ id|dbg
 (paren
 l_string|&quot;%s suspended&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 r_break
@@ -2326,12 +2327,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ohci-&gt;hcd.bus-&gt;root_hub
+id|ohci-&gt;hcd.self.root_hub
 )paren
 id|usb_disconnect
 (paren
 op_amp
-id|ohci-&gt;hcd.bus-&gt;root_hub
+id|ohci-&gt;hcd.self.root_hub
 )paren
 suffix:semicolon
 multiline_comment|/* empty the interrupt branches */
@@ -2435,7 +2436,7 @@ id|err
 (paren
 l_string|&quot;can&squot;t restart %s, %d&quot;
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 comma
 id|temp
 )paren
@@ -2449,7 +2450,7 @@ id|dbg
 (paren
 l_string|&quot;restart %s completed&quot;
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 )paren
 suffix:semicolon
 r_return
@@ -2565,7 +2566,7 @@ id|info
 (paren
 l_string|&quot;USB restart: %s&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|retval
@@ -2589,7 +2590,7 @@ id|info
 (paren
 l_string|&quot;USB continue: %s from %s wakeup&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 (paren
 id|temp
@@ -2662,7 +2663,7 @@ id|err
 (paren
 l_string|&quot;controller %s won&squot;t resume&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|ohci-&gt;disabled
@@ -2879,7 +2880,7 @@ id|warn
 (paren
 l_string|&quot;odd PCI resume for %s&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 )brace

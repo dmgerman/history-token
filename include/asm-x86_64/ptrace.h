@@ -1,7 +1,7 @@
 macro_line|#ifndef _X86_64_PTRACE_H
 DECL|macro|_X86_64_PTRACE_H
 mdefine_line|#define _X86_64_PTRACE_H
-macro_line|#ifdef __ASSEMBLY__
+macro_line|#if defined(__ASSEMBLY__) || defined(__FRAME_OFFSETS) 
 DECL|macro|R15
 mdefine_line|#define R15 0
 DECL|macro|R14
@@ -195,9 +195,9 @@ DECL|macro|PTRACE_SETFPXREGS
 mdefine_line|#define PTRACE_SETFPXREGS         19
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__) 
 DECL|macro|user_mode
-mdefine_line|#define user_mode(regs) ((regs)-&gt;rsp &lt;= PAGE_OFFSET)
+mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))
 DECL|macro|instruction_pointer
-mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;eip)
+mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;rip)
 r_extern
 r_void
 id|show_regs

@@ -143,6 +143,7 @@ DECL|macro|PAGE_KERNELRX
 mdefine_line|#define PAGE_KERNELRX&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_RX)
 macro_line|# ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Next come the mappings that determine how mmap() protection bits&n; * (PROT_EXEC, PROT_READ, PROT_WRITE, PROT_NONE) get implemented.  The&n; * _P version gets used for a private shared memory segment, the _S&n; * version gets used for a shared memory segment with MAP_SHARED on.&n; * In a private shared memory segment, we do a copy-on-write if a task&n; * attempts to write to the page.&n; */
@@ -313,54 +314,6 @@ macro_line|#else
 DECL|macro|pgprot_writecombine
 macro_line|# define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
 macro_line|#endif
-multiline_comment|/*&n; * Return the region index for virtual address ADDRESS.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|rgn_index
-id|rgn_index
-(paren
-r_int
-r_int
-id|address
-)paren
-(brace
-id|ia64_va
-id|a
-suffix:semicolon
-id|a.l
-op_assign
-id|address
-suffix:semicolon
-r_return
-id|a.f.reg
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Return the region offset for virtual address ADDRESS.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|rgn_offset
-id|rgn_offset
-(paren
-r_int
-r_int
-id|address
-)paren
-(brace
-id|ia64_va
-id|a
-suffix:semicolon
-id|a.l
-op_assign
-id|address
-suffix:semicolon
-r_return
-id|a.f.off
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_int
@@ -810,37 +763,6 @@ DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)&t;&t;(0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range remap_page_range&t;/* XXX is this right? */
-multiline_comment|/*&n; * Now for some cache flushing routines.  This is the kind of stuff that can be very&n; * expensive, so try to avoid them whenever possible.&n; */
-multiline_comment|/* Caches aren&squot;t brain-dead on the IA-64. */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,page)&t;&t;do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(PG_arch_1, &amp;page-&gt;flags);&t;&bslash;&n;} while (0)
-r_extern
-r_void
-id|flush_icache_range
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma, page, user_addr, len)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _addr = page_address(page) + ((user_addr) &amp; ~PAGE_MASK);&t;&bslash;&n;&t;flush_icache_range(_addr, _addr + (len));&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int

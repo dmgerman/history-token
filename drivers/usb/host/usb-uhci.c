@@ -13596,6 +13596,10 @@ id|bus-&gt;hcpriv
 op_assign
 id|s
 suffix:semicolon
+id|bus-&gt;bus_name
+op_assign
+id|dev-&gt;slot_name
+suffix:semicolon
 multiline_comment|/* UHCI specs says devices must have 2 ports, but goes on to say */
 multiline_comment|/* they may have more but give no way to determine how many they */
 multiline_comment|/* have, so default to 2 */

@@ -58,7 +58,7 @@ id|dbg
 (paren
 l_string|&quot;%s port %d full speed, give to companion, 0x%x&quot;
 comma
-id|ehci-&gt;hcd.bus_name
+id|ehci-&gt;hcd.self.bus_name
 comma
 id|index
 op_plus
@@ -89,7 +89,7 @@ id|dbg
 (paren
 l_string|&quot;%s port %d high speed&quot;
 comma
-id|ehci-&gt;hcd.bus_name
+id|ehci-&gt;hcd.self.bus_name
 comma
 id|index
 op_plus
@@ -1209,7 +1209,7 @@ id|dbg
 (paren
 l_string|&quot;%s port %d low speed, give to companion&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|wIndex
 op_plus
@@ -1227,7 +1227,7 @@ id|vdbg
 (paren
 l_string|&quot;%s port %d reset&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|wIndex
 op_plus

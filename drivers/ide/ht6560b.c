@@ -647,11 +647,11 @@ op_or_assign
 id|t
 suffix:semicolon
 multiline_comment|/* enable prefetch mode */
-id|drive-&gt;no_unmask
+id|drive-&gt;channel-&gt;no_unmask
 op_assign
 l_int|1
 suffix:semicolon
-id|drive-&gt;unmask
+id|drive-&gt;channel-&gt;unmask
 op_assign
 l_int|0
 suffix:semicolon
@@ -664,7 +664,7 @@ op_complement
 id|t
 suffix:semicolon
 multiline_comment|/* disable prefetch mode */
-id|drive-&gt;no_unmask
+id|drive-&gt;channel-&gt;no_unmask
 op_assign
 l_int|0
 suffix:semicolon

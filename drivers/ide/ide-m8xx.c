@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&n; *  linux/drivers/ide/ide-m8xx.c&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ide-m8xx.c&n; *&n; *  Copyright (C) 2000, 2001 Wolfgang Denk, wd@denx.de&n; *  Modified for direct IDE interface&n; *&t;by Thomas Lange, thomas@corelatus.com&n; *  Modified for direct IDE interface on 8xx without using the PCMCIA&n; *  controller&n; *&t;by Steven.Scholz@imc-berlin.de&n; *  Moved out of arch/ppc/kernel/m8xx_setup.c, other minor cleanups&n; *&t;by Mathew Locke &lt;mattl@mvista.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

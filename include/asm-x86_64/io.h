@@ -294,35 +294,11 @@ DECL|macro|isa_page_to_bus
 mdefine_line|#define isa_page_to_bus page_to_phys
 DECL|macro|isa_bus_to_virt
 mdefine_line|#define isa_bus_to_virt phys_to_virt
-multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; */
-r_extern
-r_int
-r_int
-id|virt_to_bus_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; *&n; * Allow them on x86 for legacy drivers, though.&n; */
 DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus virt_to_bus_not_defined_use_pci_map
-r_extern
-r_int
-r_int
-id|bus_to_virt_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))
@@ -380,6 +356,7 @@ DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),__io_virt(b),(c),(d))
 DECL|macro|isa_eth_io_copy_and_sum
 mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),__io_virt(__ISA_IO_base + (b)),(c),(d))
+multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
 r_inline
@@ -449,6 +426,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;isa_check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the ISA mmio address io_addr.&n; *&t;Returns 1 on a match.&n; *&n; *&t;This function is deprecated. New drivers should use ioremap and&n; *&t;check_signature.&n; */
 DECL|function|isa_check_signature
 r_static
 r_inline

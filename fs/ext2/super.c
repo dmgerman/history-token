@@ -942,6 +942,32 @@ id|ext2_remount
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Yes, most of these are left as NULL!!&n; * A NULL value implies the default, which works with ext2-like file&n; * systems, but can be improved upon.&n; * Currently only get_parent is required.&n; */
+r_struct
+id|dentry
+op_star
+id|ext2_get_parent
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|child
+)paren
+suffix:semicolon
+DECL|variable|ext2_export_ops
+r_static
+r_struct
+id|export_operations
+id|ext2_export_ops
+op_assign
+(brace
+id|get_parent
+suffix:colon
+id|ext2_get_parent
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * This function has been shamelessly adapted from the msdos fs&n; */
 DECL|function|parse_options
 r_static
@@ -3482,6 +3508,11 @@ id|sb-&gt;s_op
 op_assign
 op_amp
 id|ext2_sops
+suffix:semicolon
+id|sb-&gt;s_export_op
+op_assign
+op_amp
+id|ext2_export_ops
 suffix:semicolon
 id|sb-&gt;s_root
 op_assign

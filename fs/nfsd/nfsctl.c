@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr.h&gt;
 macro_line|#include &lt;linux/nfsd/syscall.h&gt;
+macro_line|#include &lt;linux/nfsd/interface.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; *&t;We have a single directory with 8 nodes in it.&n; */
 r_enum

@@ -3,9 +3,9 @@ multiline_comment|/*&n; * This file handles the architecture-dependent parts of 
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -30,10 +31,11 @@ macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;asm/prctl.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/err.h&gt;
 id|asmlinkage
 r_extern
 r_void
@@ -95,7 +97,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * We use this if we don&squot;t have any better&n; * idle routine..&n; */
 DECL|function|default_idle
-r_static
 r_void
 id|default_idle
 c_func
@@ -330,10 +331,6 @@ r_static
 r_int
 id|reboot_mode
 suffix:semicolon
-DECL|variable|reboot_thru_bios
-r_int
-id|reboot_thru_bios
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|reboot_smp
 r_int
@@ -349,9 +346,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* shamelessly grabbed from lib/vsprintf.c for readability */
-DECL|macro|is_digit
-mdefine_line|#define is_digit(c)&t;((c) &gt;= &squot;0&squot; &amp;&amp; (c) &lt;= &squot;9&squot;)
 macro_line|#endif
 DECL|function|reboot_setup
 r_static
@@ -398,26 +392,6 @@ l_int|0x0
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_char|&squot;b&squot;
-suffix:colon
-multiline_comment|/* &quot;bios&quot; reboot by jumping through the BIOS */
-id|reboot_thru_bios
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_char|&squot;h&squot;
-suffix:colon
-multiline_comment|/* &quot;hard&quot; reboot by toggling RESET and/or crashing the CPU */
-id|reboot_thru_bios
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_case
 l_char|&squot;s&squot;
@@ -430,69 +404,56 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_digit
+id|isdigit
 c_func
 (paren
-op_star
+id|str
+(braket
+l_int|1
+)braket
+)paren
+)paren
+id|sscanf
+c_func
 (paren
 id|str
 op_plus
 l_int|1
-)paren
-)paren
-)paren
-(brace
+comma
+l_string|&quot;%d&quot;
+comma
+op_amp
 id|reboot_cpu
-op_assign
-(paren
-r_int
-)paren
-(paren
-op_star
-(paren
-id|str
-op_plus
-l_int|1
-)paren
-op_minus
-l_char|&squot;0&squot;
 )paren
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
-id|is_digit
+op_logical_neg
+id|strncmp
 c_func
 (paren
-op_star
+id|str
+comma
+l_string|&quot;smp&quot;
+comma
+l_int|3
+)paren
+)paren
+id|sscanf
+c_func
 (paren
 id|str
 op_plus
-l_int|2
-)paren
-)paren
-)paren
+l_int|3
+comma
+l_string|&quot;%d&quot;
+comma
+op_amp
 id|reboot_cpu
-op_assign
-id|reboot_cpu
-op_star
-l_int|10
-op_plus
-(paren
-r_int
-)paren
-(paren
-op_star
-(paren
-id|str
-op_plus
-l_int|2
-)paren
-op_minus
-l_char|&squot;0&squot;
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* we will leave sorting out the final value &n;&t;&t;&t;&t;when we are ready to reboot, since we might not&n; &t;&t;&t;&t;have set up boot_cpu_id or smp_num_cpu */
 r_break
 suffix:semicolon
@@ -580,42 +541,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * Switch to real mode and then execute the code&n; * specified by the code and length parameters.&n; * We assume that length will aways be less that 100!&n; */
-DECL|function|machine_real_restart
-r_void
-id|machine_real_restart
-c_func
-(paren
-r_int
-r_char
-op_star
-id|code
-comma
-r_int
-id|length
-)paren
-(brace
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* This will have to be rewritten for sledgehammer. It would&n;&t;   help if sledgehammer have simple option to reset itself.&n;&t;*/
-id|panic
-c_func
-(paren
-l_string|&quot;real_restart is hard to do.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-suffix:semicolon
-)brace
 )brace
 DECL|function|machine_restart
 r_void
@@ -747,6 +672,23 @@ l_string|&quot;hlt&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Stop all CPUs and turn off local APICs and the IO-APIC, so&n;&t; * other OSs see a clean IRQ state.&n;&t; */
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_STOP
+comma
+l_string|&quot;cpustop&quot;
+comma
+l_int|0
+comma
+l_int|0
+)paren
+op_ne
+id|NOTIFY_BAD
+)paren
 id|smp_send_stop
 c_func
 (paren
@@ -758,13 +700,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|reboot_thru_bios
-)paren
-(brace
 multiline_comment|/* rebooting needs to touch the page at absolute addr 0 */
 op_star
 (paren
@@ -792,6 +727,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* First fondle with the keyboard controller. */
 r_for
 c_loop
 (paren
@@ -856,20 +792,7 @@ l_string|&quot;int3&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;no bios restart currently&bslash;n&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
+multiline_comment|/* Could do reset through the northbridge of Hammer here. */
 )brace
 DECL|function|machine_halt
 r_void
@@ -932,6 +855,8 @@ comma
 id|fs
 comma
 id|gs
+comma
+id|shadowgs
 suffix:semicolon
 r_int
 r_int
@@ -1017,7 +942,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;RBP: %016lx R08: %016lx R09: %08lx&bslash;n&quot;
+l_string|&quot;RBP: %016lx R08: %016lx R09: %016lx&bslash;n&quot;
 comma
 id|regs-&gt;rbp
 comma
@@ -1064,22 +989,22 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;movl %%es,%0&quot;
+l_string|&quot;movl %%cs,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|es
+id|cs
 )paren
 )paren
 suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;movl %%cs,%0&quot;
+l_string|&quot;movl %%es,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|cs
+id|es
 )paren
 )paren
 suffix:semicolon
@@ -1108,7 +1033,7 @@ suffix:semicolon
 id|rdmsrl
 c_func
 (paren
-l_int|0xc0000100
+id|MSR_FS_BASE
 comma
 id|fs
 )paren
@@ -1116,9 +1041,17 @@ suffix:semicolon
 id|rdmsrl
 c_func
 (paren
-l_int|0xc0000101
+id|MSR_GS_BASE
 comma
 id|gs
+)paren
+suffix:semicolon
+id|rdmsrl
+c_func
+(paren
+id|MSR_KERNEL_GS_BASE
+comma
+id|shadowgs
 )paren
 suffix:semicolon
 id|asm
@@ -1168,7 +1101,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;FS: %016lx(%04x) GS:%016lx(%04x)&bslash;n&quot;
+l_string|&quot;FS:  %016lx(%04x) GS:%016lx(%04x) knlGS:%016lx&bslash;n&quot;
 comma
 id|fs
 comma
@@ -1177,12 +1110,14 @@ comma
 id|gs
 comma
 id|gsindex
+comma
+id|shadowgs
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CS: %04x DS:%04x ES:%04x CR0: %016lx&bslash;n&quot;
+l_string|&quot;CS:  %04x DS: %04x ES: %04x CR0: %016lx&bslash;n&quot;
 comma
 id|cs
 comma
@@ -1247,6 +1182,54 @@ id|ldt
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|load_gs_index
+r_void
+id|load_gs_index
+c_func
+(paren
+r_int
+id|gs
+)paren
+(brace
+r_int
+id|access
+suffix:semicolon
+multiline_comment|/* should load gs in syscall exit after swapgs instead */
+multiline_comment|/* XXX need to add LDT locking for SMP to protect against parallel changes */
+id|asm
+r_volatile
+(paren
+l_string|&quot;pushf&bslash;n&bslash;t&quot;
+l_string|&quot;cli&bslash;n&bslash;t&quot;
+l_string|&quot;swapgs&bslash;n&bslash;t&quot;
+l_string|&quot;lar %1,%0&bslash;n&bslash;t&quot;
+l_string|&quot;jnz 1f&bslash;n&bslash;t&quot;
+l_string|&quot;movl %1,%%eax&bslash;n&bslash;t&quot;
+l_string|&quot;movl %%eax,%%gs&bslash;n&bslash;t&quot;
+l_string|&quot;jmp 2f&bslash;n&bslash;t&quot;
+l_string|&quot;1: movl %2,%%gs&bslash;n&bslash;t&quot;
+l_string|&quot;2: swapgs&bslash;n&bslash;t&quot;
+l_string|&quot;popf&quot;
+suffix:colon
+l_string|&quot;=g&quot;
+(paren
+id|access
+)paren
+suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|gs
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+l_int|0
+)paren
+suffix:colon
+l_string|&quot;rax&quot;
+)paren
+suffix:semicolon
 )brace
 DECL|macro|__STR
 mdefine_line|#define __STR(x) #x
@@ -1648,267 +1631,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fill in the user structure for a core dump..&n; */
-DECL|function|dump_thread
-r_void
-id|dump_thread
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
-id|user
-op_star
-id|dump
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* changed the size calculations - should hopefully work better. lbt */
-id|dump-&gt;magic
-op_assign
-id|CMAGIC
-suffix:semicolon
-id|dump-&gt;start_code
-op_assign
-l_int|0
-suffix:semicolon
-id|dump-&gt;start_stack
-op_assign
-id|regs-&gt;rsp
-op_amp
-op_complement
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|dump-&gt;u_tsize
-op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
-id|current-&gt;mm-&gt;end_code
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|dump-&gt;u_dsize
-op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
-(paren
-id|current-&gt;mm-&gt;brk
-op_plus
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|dump-&gt;u_dsize
-op_sub_assign
-id|dump-&gt;u_tsize
-suffix:semicolon
-id|dump-&gt;u_ssize
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dump-&gt;u_debugreg
-(braket
-id|i
-)braket
-op_assign
-id|current-&gt;thread.debugreg
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dump-&gt;start_stack
-OL
-id|TASK_SIZE
-)paren
-id|dump-&gt;u_ssize
-op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
-(paren
-id|TASK_SIZE
-op_minus
-id|dump-&gt;start_stack
-)paren
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-DECL|macro|SAVE
-mdefine_line|#define SAVE(reg) dump-&gt;regs.reg = regs-&gt;reg
-id|SAVE
-c_func
-(paren
-id|rax
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rbx
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rcx
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rdx
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rsi
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rdi
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rbp
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r8
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r9
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r10
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r11
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r12
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r13
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r14
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|r15
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|orig_rax
-)paren
-suffix:semicolon
-id|SAVE
-c_func
-(paren
-id|rip
-)paren
-suffix:semicolon
-DECL|macro|SAVE
-macro_line|#undef SAVE
-multiline_comment|/* FIXME: Should use symbolic names for msr-s! */
-id|rdmsrl
-c_func
-(paren
-l_int|0xc0000100
-comma
-id|dump-&gt;regs.fs_base
-)paren
-suffix:semicolon
-id|rdmsrl
-c_func
-(paren
-l_int|0xc0000101
-comma
-id|dump-&gt;regs.kernel_gs_base
-)paren
-suffix:semicolon
-id|dump-&gt;u_fpvalid
-op_assign
-id|dump_fpu
-(paren
-id|regs
-comma
-op_amp
-id|dump-&gt;i387
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * This special macro can be used to load a debugging register&n; */
 DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;&t;&t;set_debug(thread-&gt;debugreg[register], register)
@@ -1966,7 +1688,7 @@ id|tss-&gt;rsp0
 op_assign
 id|next-&gt;rsp0
 suffix:semicolon
-multiline_comment|/* &n;&t; * Switch DS and ES.&n;&t; * XXX: check if this is safe on SMP&n;&t; */
+multiline_comment|/* &n;&t; * Switch DS and ES.&n;&t; */
 id|asm
 r_volatile
 (paren
@@ -1985,7 +1707,7 @@ id|unlikely
 c_func
 (paren
 id|next-&gt;es
-op_ne
+op_or
 id|prev-&gt;es
 )paren
 )paren
@@ -2015,7 +1737,7 @@ id|unlikely
 c_func
 (paren
 id|next-&gt;ds
-op_ne
+op_or
 id|prev-&gt;ds
 )paren
 )paren
@@ -2027,7 +1749,7 @@ comma
 id|next-&gt;ds
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Switch FS and GS.&n;&t; */
+multiline_comment|/* &n;&t; * Switch FS and GS.&n;&t; * XXX Check if this is safe on SMP (!= -&gt; |)&n;&t; */
 (brace
 r_int
 r_int
@@ -2052,6 +1774,26 @@ c_func
 (paren
 id|fsindex
 op_ne
+id|next-&gt;fsindex
+)paren
+)paren
+multiline_comment|/* or likely? */
+id|loadsegment
+c_func
+(paren
+id|fs
+comma
+id|next-&gt;fsindex
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|fsindex
+op_ne
 id|prev-&gt;fsindex
 )paren
 )paren
@@ -2062,37 +1804,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
-(paren
-id|fsindex
-op_or
-id|next-&gt;fsindex
-)paren
-op_logical_or
-id|prev-&gt;fs
-)paren
-)paren
-id|loadsegment
-c_func
-(paren
-id|fs
-comma
-id|next-&gt;fsindex
-)paren
-suffix:semicolon
-multiline_comment|/* Should use a shortcut via a GDT entry if next-&gt;fs is 32bit */
-r_if
-c_cond
 (paren
 id|fsindex
 op_ne
 id|prev-&gt;fsindex
+)paren
 op_logical_or
-id|next-&gt;fs
-op_ne
+(paren
 id|prev-&gt;fs
+op_ne
+id|next-&gt;fs
+)paren
 )paren
 id|wrmsrl
 c_func
@@ -2131,6 +1853,23 @@ c_func
 (paren
 id|gsindex
 op_ne
+id|next-&gt;gsindex
+)paren
+)paren
+id|load_gs_index
+c_func
+(paren
+id|next-&gt;gs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|gsindex
+op_ne
 id|prev-&gt;gsindex
 )paren
 )paren
@@ -2141,80 +1880,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
-(paren
-id|gsindex
-op_or
-id|next-&gt;gsindex
-)paren
-op_logical_or
-id|prev-&gt;gs
-)paren
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* could load gs in syscall exit after swapgs instead */
-r_int
-id|nr
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|loadsegment
-c_func
-(paren
-id|gs
-comma
-id|next-&gt;gsindex
-)paren
-suffix:semicolon
-id|wrmsrl
-c_func
-(paren
-id|MSR_GS_BASE
-comma
-id|cpu_pda
-op_plus
-id|nr
-)paren
-suffix:semicolon
-id|__restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|gsindex
 op_ne
 id|prev-&gt;gsindex
 op_logical_or
-(paren
 id|prev-&gt;gs
-op_or
+op_ne
 id|next-&gt;gs
-)paren
 )paren
 id|wrmsrl
 c_func
@@ -2342,7 +2014,7 @@ id|unlikely
 c_func
 (paren
 id|prev-&gt;ioperm
-op_or
+op_logical_or
 id|next-&gt;ioperm
 )paren
 )paren
@@ -2621,7 +2293,6 @@ DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched
 mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
-multiline_comment|/* &n; * Do a traceback through the scheduler to find where a process sleeps.&n; * &n; * Currently sched.c is compiled with -fno-omit-frame-pointer, so we&n; * just go through the stack frames. &n; */
 DECL|function|get_wchan
 r_int
 r_int
@@ -2634,9 +2305,125 @@ op_star
 id|p
 )paren
 (brace
+id|u64
+id|fp
+comma
+id|rip
+suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
+op_logical_or
+id|p
+op_eq
+id|current
+op_logical_or
+id|p-&gt;state
+op_eq
+id|TASK_RUNNING
+)paren
 r_return
-op_minus
-l_int|1
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;thread.rsp
+template_param
+(paren
+id|u64
+)paren
+id|p
+op_plus
+id|THREAD_SIZE
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|fp
+op_assign
+op_star
+(paren
+id|u64
+op_star
+)paren
+(paren
+id|p-&gt;thread.rsp
+)paren
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|fp
+template_param
+(paren
+r_int
+r_int
+)paren
+id|p
+op_plus
+id|THREAD_SIZE
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|rip
+op_assign
+op_star
+(paren
+id|u64
+op_star
+)paren
+(paren
+id|fp
+op_plus
+l_int|8
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rip
+OL
+id|first_sched
+op_logical_or
+id|rip
+op_ge
+id|last_sched
+)paren
+r_return
+id|rip
+suffix:semicolon
+id|fp
+op_assign
+op_star
+(paren
+id|u64
+op_star
+)paren
+id|fp
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|count
+op_increment
+OL
+l_int|16
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|macro|last_sched
@@ -2675,6 +2462,17 @@ id|code
 r_case
 id|ARCH_SET_GS
 suffix:colon
+r_if
+c_cond
+(paren
+id|addr
+op_ge
+id|TASK_SIZE
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -2705,6 +2503,18 @@ suffix:semicolon
 r_case
 id|ARCH_SET_FS
 suffix:colon
+multiline_comment|/* Not strictly needed for fs, but do it for symmetry&n;&t;&t;   with gs */
+r_if
+c_cond
+(paren
+id|addr
+op_ge
+id|TASK_SIZE
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 id|asm
 r_volatile
 (paren

@@ -14,6 +14,22 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#ifndef SET_UNALIGN_CTL
+DECL|macro|SET_UNALIGN_CTL
+macro_line|# define SET_UNALIGN_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
+macro_line|#ifndef GET_UNALIGN_CTL
+DECL|macro|GET_UNALIGN_CTL
+macro_line|# define GET_UNALIGN_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
+macro_line|#ifndef SET_FPEMU_CTL
+DECL|macro|SET_FPEMU_CTL
+macro_line|# define SET_FPEMU_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
+macro_line|#ifndef GET_FPEMU_CTL
+DECL|macro|GET_FPEMU_CTL
+macro_line|# define GET_FPEMU_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
 multiline_comment|/*&n; * this is where the system-wide overflow UID and GID are defined, for&n; * architectures that now have 32-bit UID/GID but didn&squot;t in the past&n; */
 DECL|variable|overflowuid
 r_int
@@ -4668,7 +4684,6 @@ suffix:semicolon
 r_case
 id|PR_SET_UNALIGN
 suffix:colon
-macro_line|#ifdef SET_UNALIGN_CTL
 id|error
 op_assign
 id|SET_UNALIGN_CTL
@@ -4679,19 +4694,11 @@ comma
 id|arg2
 )paren
 suffix:semicolon
-macro_line|#else
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|PR_GET_UNALIGN
 suffix:colon
-macro_line|#ifdef GET_UNALIGN_CTL
 id|error
 op_assign
 id|GET_UNALIGN_CTL
@@ -4702,13 +4709,36 @@ comma
 id|arg2
 )paren
 suffix:semicolon
-macro_line|#else
+r_break
+suffix:semicolon
+r_case
+id|PR_SET_FPEMU
+suffix:colon
 id|error
 op_assign
-op_minus
-id|EINVAL
+id|SET_FPEMU_CTL
+c_func
+(paren
+id|current
+comma
+id|arg2
+)paren
 suffix:semicolon
-macro_line|#endif
+r_break
+suffix:semicolon
+r_case
+id|PR_GET_FPEMU
+suffix:colon
+id|error
+op_assign
+id|GET_FPEMU_CTL
+c_func
+(paren
+id|current
+comma
+id|arg2
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
