@@ -4602,6 +4602,10 @@ r_int
 id|pass_counter
 op_assign
 l_int|0
+comma
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|DEBUG_INTR
 c_func
@@ -4689,6 +4693,10 @@ op_amp
 id|up-&gt;port.lock
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|end
 op_assign
 l_int|NULL
@@ -4759,9 +4767,12 @@ c_func
 l_string|&quot;end.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME! Was it really ours? */
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * To support ISA shared interrupts, we need to have one interrupt&n; * handler that ensures that the IRQ line has been deasserted&n; * before returning.  Failing to do this will result in the IRQ&n; * line being stuck active, and, since ISA irqs are edge triggered,&n; * no more IRQs will be seen.&n; */
