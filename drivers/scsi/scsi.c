@@ -1,8 +1,4 @@
 multiline_comment|/*&n; *  scsi.c Copyright (C) 1992 Drew Eckhardt&n; *         Copyright (C) 1993, 1994, 1995, 1999 Eric Youngdale&n; *&n; *  generic mid-level SCSI driver&n; *      Initial versions: Drew Eckhardt&n; *      Subsequent revisions: Eric Youngdale&n; *&n; *  &lt;drew@colorado.edu&gt;&n; *&n; *  Bug correction thanks go to :&n; *      Rik Faith &lt;faith@cs.unc.edu&gt;&n; *      Tommy Thorn &lt;tthorn&gt;&n; *      Thomas Wuensche &lt;tw@fgb1.fgb.mw.tu-muenchen.de&gt;&n; *&n; *  Modified by Eric Youngdale eric@andante.org or ericy@gnu.ai.mit.edu to&n; *  add scatter-gather, multiple outstanding request, and other&n; *  enhancements.&n; *&n; *  Native multichannel, wide scsi, /proc/scsi and hot plugging&n; *  support added by Michael Neuffer &lt;mike@i-connect.net&gt;&n; *&n; *  Added request_module(&quot;scsi_hostadapter&quot;) for kerneld:&n; *  (Put an &quot;alias scsi_hostadapter your_hostadapter&quot; in /etc/modules.conf)&n; *  Bjorn Ekwall  &lt;bj0rn@blox.se&gt;&n; *  (changed to kmod)&n; *&n; *  Major improvements to the timeout, abort, and reset processing,&n; *  as well as performance modifications for large queue depths by&n; *  Leonard N. Zubkoff &lt;lnz@dandelion.com&gt;&n; *&n; *  Converted cli() code to spinlocks, Ingo Molnar&n; *&n; *  Jiffies wrap fixes (host-&gt;resetting), 3 Dec 1998 Andrea Arcangeli&n; *&n; *  out_of_space hacks, D. Gilbert (dpg) 990608&n; */
-DECL|macro|REVISION
-mdefine_line|#define REVISION&t;&quot;Revision: 1.00&quot;
-DECL|macro|VERSION
-mdefine_line|#define VERSION&t;&t;&quot;Id: scsi.c 1.00 2000/09/26&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4388,6 +4384,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;SCSI subsystem initialized&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4410,6 +4413,16 @@ suffix:colon
 id|scsi_exit_queue
 c_func
 (paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SCSI subsystem failed to initialize, error = %d&bslash;n&quot;
+comma
+op_minus
+id|error
 )paren
 suffix:semicolon
 r_return
