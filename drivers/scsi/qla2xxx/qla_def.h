@@ -5075,6 +5075,7 @@ id|____cacheline_aligned
 suffix:semicolon
 DECL|member|iobase
 id|device_reg_t
+id|__iomem
 op_star
 id|iobase
 suffix:semicolon
@@ -5088,16 +5089,6 @@ DECL|member|pio_length
 r_int
 r_int
 id|pio_length
-suffix:semicolon
-DECL|member|mmio_address
-r_void
-op_star
-id|mmio_address
-suffix:semicolon
-DECL|member|mmio_length
-r_int
-r_int
-id|mmio_length
 suffix:semicolon
 DECL|macro|MIN_IOBASE_LEN
 mdefine_line|#define MIN_IOBASE_LEN&t;&t;0x100

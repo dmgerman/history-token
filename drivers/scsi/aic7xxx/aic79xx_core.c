@@ -22476,17 +22476,6 @@ c_func
 id|ahd
 )paren
 suffix:semicolon
-id|TAILQ_REMOVE
-c_func
-(paren
-op_amp
-id|ahd_tailq
-comma
-id|ahd
-comma
-id|links
-)paren
-suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 r_case
 l_int|4
