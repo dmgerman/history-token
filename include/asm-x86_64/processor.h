@@ -642,6 +642,10 @@ r_int
 op_star
 id|io_bitmap_ptr
 suffix:semicolon
+DECL|member|io_bitmap_max
+r_int
+id|io_bitmap_max
+suffix:semicolon
 multiline_comment|/* cached TLS descriptors. */
 DECL|member|tls_array
 id|u64

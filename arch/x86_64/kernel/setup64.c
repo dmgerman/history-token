@@ -1020,6 +1020,9 @@ id|task_struct
 op_star
 id|me
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* CPU 0 is initialised in head64.c */
 r_if
 c_cond
@@ -1302,12 +1305,32 @@ suffix:semicolon
 )brace
 id|t-&gt;io_bitmap_base
 op_assign
-id|INVALID_IO_BITMAP_OFFSET
+m_offsetof
+(paren
+r_struct
+id|tss_struct
+comma
+id|io_bitmap
+)paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is required because the CPU will access up to&n;&t; * 8 bits beyond the end of the IO permission bitmap.&n;&t; */
+multiline_comment|/*&n;&t; * &lt;= is required because the CPU will access up to&n;&t; * 8 bits beyond the end of the IO permission bitmap.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+id|IO_BITMAP_LONGS
+suffix:semicolon
+id|i
+op_increment
+)paren
 id|t-&gt;io_bitmap
 (braket
-id|IO_BITMAP_LONGS
+id|i
 )braket
 op_assign
 op_complement
