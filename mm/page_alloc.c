@@ -4032,7 +4032,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Active:%lu inactive:%lu dirty:%lu writeback:%lu free:%u&bslash;n&quot;
+l_string|&quot;Active:%lu inactive:%lu dirty:%lu writeback:%lu &quot;
+l_string|&quot;unstable:%lu free:%u&bslash;n&quot;
 comma
 id|active
 comma
@@ -4041,6 +4042,8 @@ comma
 id|ps.nr_dirty
 comma
 id|ps.nr_writeback
+comma
+id|ps.nr_unstable
 comma
 id|nr_free_pages
 c_func
@@ -6251,6 +6254,8 @@ op_assign
 l_string|&quot;nr_dirty&quot;
 comma
 l_string|&quot;nr_writeback&quot;
+comma
+l_string|&quot;nr_unstable&quot;
 comma
 l_string|&quot;nr_page_table_pages&quot;
 comma
