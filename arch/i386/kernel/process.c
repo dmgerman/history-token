@@ -448,7 +448,7 @@ c_func
 l_string|&quot;monitor/mwait feature present.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Skip, if setup has overridden idle.&n;&t;&t; * Also, take care of system with asymmetric CPUs.&n;&t;&t; * Use, mwait_idle only if all cpus support it.&n;&t;&t; * If not, we fallback to default_idle()&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Skip, if setup has overridden idle.&n;&t;&t; * One CPU supports mwait =&gt; All CPUs supports mwait&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -467,15 +467,7 @@ op_assign
 id|mwait_idle
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-id|pm_idle
-op_assign
-id|default_idle
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|idle_setup
 r_static
