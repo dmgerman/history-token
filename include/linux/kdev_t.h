@@ -70,17 +70,6 @@ DECL|macro|NODEV
 mdefine_line|#define NODEV&t;&t;(mk_kdev(0,0))
 DECL|macro|B_FREE
 mdefine_line|#define B_FREE&t;&t;(mk_kdev(0xff,0xff))
-r_extern
-r_const
-r_char
-op_star
-id|kdevname
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-multiline_comment|/* note: returns pointer to static data! */
 DECL|function|kdev_same
 r_static
 r_inline

@@ -132,6 +132,7 @@ multiline_comment|/* insert expect proto private data here */
 )brace
 suffix:semicolon
 multiline_comment|/* Add protocol helper include file here */
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_amanda.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
 multiline_comment|/* per expectation: application helper private data */
@@ -140,6 +141,11 @@ r_union
 id|ip_conntrack_expect_help
 (brace
 multiline_comment|/* insert conntrack helper private data (expect) here */
+DECL|member|exp_amanda_info
+r_struct
+id|ip_ct_amanda_expect
+id|exp_amanda_info
+suffix:semicolon
 DECL|member|exp_ftp_info
 r_struct
 id|ip_ct_ftp_expect

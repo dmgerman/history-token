@@ -14,7 +14,6 @@ macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
-macro_line|#include &quot;asm/softirq.h&quot;
 macro_line|#include &quot;asm/hardirq.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
 macro_line|#include &quot;stdio_console.h&quot;

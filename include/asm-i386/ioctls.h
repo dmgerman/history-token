@@ -79,8 +79,7 @@ DECL|macro|TIOCGETD
 mdefine_line|#define TIOCGETD&t;0x5424
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;0x5425&t;/* Needed for POSIX tcsendbreak() */
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;0x5426  /* For debugging only */
+multiline_comment|/* #define TIOCTTYGSTRUCT 0x5426 - Former debugging-only ioctl */
 DECL|macro|TIOCSBRK
 mdefine_line|#define TIOCSBRK&t;0x5427  /* BSD compatibility */
 DECL|macro|TIOCCBRK
@@ -92,7 +91,7 @@ mdefine_line|#define TIOCGPTN&t;_IOR(&squot;T&squot;,0x30, unsigned int) /* Get 
 DECL|macro|TIOCSPTLCK
 mdefine_line|#define TIOCSPTLCK&t;_IOW(&squot;T&squot;,0x31, int)  /* Lock/unlock Pty */
 DECL|macro|FIONCLEX
-mdefine_line|#define FIONCLEX&t;0x5450  /* these numbers need to be adjusted. */
+mdefine_line|#define FIONCLEX&t;0x5450
 DECL|macro|FIOCLEX
 mdefine_line|#define FIOCLEX&t;&t;0x5451
 DECL|macro|FIOASYNC

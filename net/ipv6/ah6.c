@@ -1327,7 +1327,11 @@ id|x-&gt;props.mode
 )paren
 id|x-&gt;props.header_len
 op_add_assign
-l_int|40
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
 suffix:semicolon
 id|x-&gt;data
 op_assign

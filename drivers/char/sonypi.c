@@ -2643,7 +2643,7 @@ c_cond
 id|ec_read16
 c_func
 (paren
-id|SONYPI_BAT1_FULL
+id|SONYPI_BAT1_LEFT
 comma
 op_amp
 id|val16
@@ -2695,7 +2695,7 @@ c_cond
 id|ec_read16
 c_func
 (paren
-id|SONYPI_BAT1_FULL
+id|SONYPI_BAT2_FULL
 comma
 op_amp
 id|val16
@@ -2747,7 +2747,7 @@ c_cond
 id|ec_read16
 c_func
 (paren
-id|SONYPI_BAT1_FULL
+id|SONYPI_BAT2_LEFT
 comma
 op_amp
 id|val16

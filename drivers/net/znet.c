@@ -22,7 +22,6 @@ multiline_comment|/* This include could be elsewhere, since it is not wireless s
 macro_line|#include &quot;wireless/i82593.h&quot;
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|version
 (braket

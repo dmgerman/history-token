@@ -482,7 +482,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event typedefs and structs&n; *&n; ****************************************************************************/
-multiline_comment|/* Information about each particular GPE level */
+multiline_comment|/* Information about a GPE, one per each GPE in an array */
 DECL|struct|acpi_gpe_event_info
 r_struct
 id|acpi_gpe_event_info
@@ -511,18 +511,20 @@ id|acpi_gpe_register_info
 op_star
 id|register_info
 suffix:semicolon
-DECL|member|type
+multiline_comment|/* Backpointer to register info */
+DECL|member|flags
 id|u8
-id|type
+id|flags
 suffix:semicolon
 multiline_comment|/* Level or Edge */
 DECL|member|bit_mask
 id|u8
 id|bit_mask
 suffix:semicolon
+multiline_comment|/* This GPE within the register */
 )brace
 suffix:semicolon
-multiline_comment|/* Information about a particular GPE register pair */
+multiline_comment|/* Information about a GPE register pair, one per each status/enable pair in an array */
 DECL|struct|acpi_gpe_register_info
 r_struct
 id|acpi_gpe_register_info
@@ -561,11 +563,7 @@ suffix:semicolon
 multiline_comment|/* Base GPE number for this register */
 )brace
 suffix:semicolon
-DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
-mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        1
-DECL|macro|ACPI_GPE_EDGE_TRIGGERED
-mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         2
-multiline_comment|/* Information about each GPE register block */
+multiline_comment|/*&n; * Information about a GPE register block, one per each installed block --&n; * GPE0, GPE1, and one per each installed GPE Block Device.&n; */
 DECL|struct|acpi_gpe_block_info
 r_struct
 id|acpi_gpe_block_info
@@ -582,38 +580,94 @@ id|acpi_gpe_block_info
 op_star
 id|next
 suffix:semicolon
-DECL|member|next_on_interrupt
+DECL|member|xrupt_block
 r_struct
-id|acpi_gpe_block_info
+id|acpi_gpe_xrupt_info
 op_star
-id|next_on_interrupt
+id|xrupt_block
 suffix:semicolon
+multiline_comment|/* Backpointer to interrupt block */
 DECL|member|register_info
 r_struct
 id|acpi_gpe_register_info
 op_star
 id|register_info
 suffix:semicolon
+multiline_comment|/* One per GPE register pair */
 DECL|member|event_info
 r_struct
 id|acpi_gpe_event_info
 op_star
 id|event_info
 suffix:semicolon
+multiline_comment|/* One for each GPE */
 DECL|member|block_address
 r_struct
 id|acpi_generic_address
 id|block_address
 suffix:semicolon
+multiline_comment|/* Base address of the block */
 DECL|member|register_count
 id|u32
 id|register_count
 suffix:semicolon
+multiline_comment|/* Number of register pairs in block */
 DECL|member|block_base_number
 id|u8
 id|block_base_number
 suffix:semicolon
+multiline_comment|/* Base GPE number for this block */
 )brace
+suffix:semicolon
+multiline_comment|/* Information about GPE interrupt handlers, one per each interrupt level used for GPEs */
+DECL|struct|acpi_gpe_xrupt_info
+r_struct
+id|acpi_gpe_xrupt_info
+(brace
+DECL|member|previous
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|previous
+suffix:semicolon
+DECL|member|next
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|next
+suffix:semicolon
+DECL|member|gpe_block_list_head
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block_list_head
+suffix:semicolon
+multiline_comment|/* List of GPE blocks for this xrupt */
+DECL|member|interrupt_level
+id|u32
+id|interrupt_level
+suffix:semicolon
+multiline_comment|/* System interrupt level */
+)brace
+suffix:semicolon
+DECL|typedef|ACPI_GPE_CALLBACK
+r_typedef
+id|acpi_status
+(paren
+op_star
+id|ACPI_GPE_CALLBACK
+)paren
+(paren
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|gpe_xrupt_info
+comma
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+)paren
 suffix:semicolon
 multiline_comment|/* Information about each particular fixed event */
 DECL|struct|acpi_fixed_event_handler

@@ -28,7 +28,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* Each escaped entry is prefixed by ESCAPE_CODE&n; * then one of the following codes, then the&n; * relevant data.&n; */
 DECL|macro|ESCAPE_CODE
-mdefine_line|#define ESCAPE_CODE&t;&t;~0UL
+mdefine_line|#define ESCAPE_CODE&t;&t;&t;~0UL
 DECL|macro|CTX_SWITCH_CODE
 mdefine_line|#define CTX_SWITCH_CODE &t;&t;1
 DECL|macro|CPU_SWITCH_CODE
@@ -39,6 +39,8 @@ DECL|macro|KERNEL_ENTER_SWITCH_CODE
 mdefine_line|#define KERNEL_ENTER_SWITCH_CODE&t;4
 DECL|macro|KERNEL_EXIT_SWITCH_CODE
 mdefine_line|#define KERNEL_EXIT_SWITCH_CODE&t;&t;5
+DECL|macro|MODULE_LOADED_CODE
+mdefine_line|#define MODULE_LOADED_CODE&t;&t;6
 multiline_comment|/* add data to the event buffer */
 r_void
 id|add_event_entry

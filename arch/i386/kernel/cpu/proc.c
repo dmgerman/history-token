@@ -304,13 +304,13 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 l_string|&quot;tm2&quot;
 comma
+l_string|&quot;est&quot;
+comma
 l_int|NULL
 comma
-l_string|&quot;cnxt_id&quot;
+l_string|&quot;cid&quot;
 comma
 l_int|NULL
 comma

@@ -1663,7 +1663,7 @@ id|inode-&gt;i_nlink
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * BEFS&squot;s time is 64 bits, but current VFS is 32 bits...&n;&t; * BEFS don&squot;t have access time. Nor inode change time. VFS&n;&t; * doesn&squot;t have creation time.&n;&t; */
+multiline_comment|/*&n;&t; * BEFS&squot;s time is 64 bits, but current VFS is 32 bits...&n;&t; * BEFS don&squot;t have access time. Nor inode change time. VFS&n;&t; * doesn&squot;t have creation time.&n;&t; * Also, the lower 16 bits of the last_modified_time and &n;&t; * create_time are just a counter to help ensure uniqueness&n;&t; * for indexing purposes. (PFD, page 54)&n;&t; */
 id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|fs64_to_cpu
@@ -1680,7 +1680,7 @@ id|inode-&gt;i_mtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* use the lower bits ? */
+multiline_comment|/* lower 16 bits are not a time */
 id|inode-&gt;i_ctime
 op_assign
 id|inode-&gt;i_mtime
@@ -2359,7 +2359,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * UTF-8 to NLS charset  convert routine&n; *&n; * Changed 8/10/01 by Will Dyson. Now use uni2char() / char2uni() rather than&n; * the nls tables directly&n; */
+multiline_comment|/*&n; * UTF-8 to NLS charset  convert routine&n; * &n; *&n; * Changed 8/10/01 by Will Dyson. Now use uni2char() / char2uni() rather than&n; * the nls tables directly&n; */
 r_static
 r_int
 DECL|function|befs_utf2nls
@@ -2585,6 +2585,11 @@ id|o
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+op_star
+id|out_len
+op_assign
+id|o
+suffix:semicolon
 id|befs_debug
 c_func
 (paren
@@ -2594,11 +2599,6 @@ l_string|&quot;&lt;--- utf2nls()&quot;
 )paren
 suffix:semicolon
 r_return
-id|o
-suffix:semicolon
-op_star
-id|out_len
-op_assign
 id|o
 suffix:semicolon
 id|conv_err
@@ -2633,7 +2633,7 @@ op_minus
 id|EILSEQ
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * befs_nls2utf - Convert NLS string to utf8 encodeing&n; * @sb: Superblock&n; * @src: Input string buffer in NLS format&n; * @srclen: Length of input string in bytes&n; * @dest: The output string in UTF8 format&n; * @destlen: Length of the output buffer&n; * &n; * Converts input string @src, which is in the format of the loaded NLS map,&n; * into a utf8 string.&n; * &n; * The destination string @dest is allocated by this function and the caller is&n; * responsible for freeing it with kfree()&n; * &n; * On return, *@destlen is the length of @dest in bytes.&n; *&n; * On success, the return value is the number of utf8 charecters written to&n; * the ouput buffer @dest.&n; *  &n; * On Failure, a negative number coresponding to the error code is returned.&n; */
+multiline_comment|/**&n; * befs_nls2utf - Convert NLS string to utf8 encodeing&n; * @sb: Superblock&n; * @src: Input string buffer in NLS format&n; * @srclen: Length of input string in bytes&n; * @dest: The output string in UTF8 format&n; * @destlen: Length of the output buffer&n; * &n; * Converts input string @src, which is in the format of the loaded NLS map,&n; * into a utf8 string.&n; * &n; * The destination string @dest is allocated by this function and the caller is&n; * responsible for freeing it with kfree()&n; * &n; * On return, *@destlen is the length of @dest in bytes.&n; *&n; * On success, the return value is the number of utf8 characters written to&n; * the output buffer @dest.&n; *  &n; * On Failure, a negative number coresponding to the error code is returned.&n; */
 r_static
 r_int
 DECL|function|befs_nls2utf
