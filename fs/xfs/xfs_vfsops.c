@@ -3031,8 +3031,8 @@ mdefine_line|#define IPOINTER_INSERT(ip, mp) { &bslash;&n;&t;&t;ASSERT(ipointer_
 multiline_comment|/* Remove the marker from the inode list. If the marker was the only item&n; * in the list then there are no remaining inodes and we should zero out&n; * the whole list. If we are the current head of the list then move the head&n; * past us.&n; */
 DECL|macro|IPOINTER_REMOVE
 mdefine_line|#define IPOINTER_REMOVE(ip, mp) { &bslash;&n;&t;&t;ASSERT(ipointer_in == B_TRUE); &bslash;&n;&t;&t;if (ipointer-&gt;ip_mnext != (xfs_inode_t *)ipointer) { &bslash;&n;&t;&t;&t;ip = ipointer-&gt;ip_mnext; &bslash;&n;&t;&t;&t;ip-&gt;i_mprev = ipointer-&gt;ip_mprev; &bslash;&n;&t;&t;&t;ipointer-&gt;ip_mprev-&gt;i_mnext = ip; &bslash;&n;&t;&t;&t;if (mp-&gt;m_inodes == (xfs_inode_t *)ipointer) { &bslash;&n;&t;&t;&t;&t;mp-&gt;m_inodes = ip; &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;ASSERT(mp-&gt;m_inodes == (xfs_inode_t *)ipointer); &bslash;&n;&t;&t;&t;mp-&gt;m_inodes = NULL; &bslash;&n;&t;&t;&t;ip = NULL; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;IPOINTER_CLR; &bslash;&n;&t;}
-DECL|macro|PREEMPT_MASK
-mdefine_line|#define PREEMPT_MASK&t;0x7f
+DECL|macro|XFS_PREEMPT_MASK
+mdefine_line|#define XFS_PREEMPT_MASK&t;0x7f
 r_if
 c_cond
 (paren
@@ -4456,7 +4456,7 @@ c_cond
 op_increment
 id|preempt
 op_amp
-id|PREEMPT_MASK
+id|XFS_PREEMPT_MASK
 )paren
 op_eq
 l_int|0
