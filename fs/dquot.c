@@ -6381,17 +6381,20 @@ id|S_NOQUOTA
 op_or
 id|S_NOATIME
 suffix:semicolon
-id|clear_bit
+multiline_comment|/*&n;&t; * We write to quota files deep within filesystem code.  We don&squot;t want&n;&t; * the VFS to reenter filesystem code when it tries to allocate a&n;&t; * pagecache page for the quota file write.  So clear __GFP_FS in&n;&t; * the quota file&squot;s allocation flags.&n;&t; */
+id|mapping_set_gfp_mask
 c_func
 (paren
-id|ffs
-c_func
-(paren
-id|__GFP_FS
-)paren
+id|inode-&gt;i_mapping
 comma
+id|mapping_gfp_mask
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
 op_amp
-id|inode-&gt;i_mapping-&gt;flags
+op_complement
+id|__GFP_FS
 )paren
 suffix:semicolon
 r_for
