@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.49 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: fs.c,v 1.50 2004/11/23 15:37:31 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2290,6 +2290,17 @@ id|c-&gt;flash_size
 op_div
 id|c-&gt;sector_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+)paren
+(brace
 r_while
 c_loop
 (paren
@@ -2318,6 +2329,7 @@ id|c-&gt;sector_size
 op_lshift_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Size alignment check&n;&t; */
 r_if
@@ -2628,6 +2640,20 @@ c_func
 id|c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+id|vfree
+c_func
+(paren
+id|c-&gt;blocks
+)paren
+suffix:semicolon
+r_else
 id|kfree
 c_func
 (paren

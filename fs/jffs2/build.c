@@ -1,7 +1,9 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.66 2004/11/20 19:18:07 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.68 2004/11/27 13:38:10 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_void
@@ -1293,6 +1295,28 @@ id|c-&gt;flash_size
 op_div
 id|c-&gt;sector_size
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;mtd-&gt;flags
+op_amp
+id|MTD_NO_VIRTBLOCKS
+)paren
+id|c-&gt;blocks
+op_assign
+id|vmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|jffs2_eraseblock
+)paren
+op_star
+id|c-&gt;nr_blocks
+)paren
+suffix:semicolon
+r_else
 id|c-&gt;blocks
 op_assign
 id|kmalloc
