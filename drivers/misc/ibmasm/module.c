@@ -292,9 +292,12 @@ r_goto
 id|error_remote_queue
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
