@@ -7093,14 +7093,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|IS_ERR
 c_func
 (paren
 id|f
-)paren
 )paren
 )paren
 (brace
