@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/init_task.h&quot;
@@ -86,7 +87,6 @@ suffix:semicolon
 DECL|function|alloc_task_struct
 r_struct
 id|task_struct
-(def_block
 op_star
 id|alloc_task_struct
 c_func
@@ -94,13 +94,7 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|task
-suffix:semicolon
-id|task
-op_assign
+r_return
 (paren
 r_struct
 id|task_struct
@@ -111,26 +105,10 @@ c_func
 (paren
 id|GFP_KERNEL
 comma
-l_int|2
+id|CONFIG_KERNEL_STACK_ORDER
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|task
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
-r_return
-id|task
-suffix:semicolon
-)brace
-)def_block
 DECL|function|unprotect_stack
 r_void
 id|unprotect_stack
@@ -146,7 +124,11 @@ c_func
 (paren
 id|stack
 comma
-l_int|4
+(paren
+l_int|1
+op_lshift
+id|CONFIG_KERNEL_STACK_ORDER
+)paren
 op_star
 id|PAGE_SIZE
 comma
@@ -181,7 +163,7 @@ r_int
 )paren
 id|task
 comma
-l_int|2
+id|CONFIG_KERNEL_STACK_ORDER
 )paren
 suffix:semicolon
 )brace
