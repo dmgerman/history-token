@@ -23,6 +23,14 @@ op_assign
 id|NR_FILE
 )brace
 suffix:semicolon
+DECL|variable|files_stat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|files_stat
+)paren
+suffix:semicolon
+multiline_comment|/* Needed by unix.o */
 multiline_comment|/* public *and* exported. Not pretty! */
 DECL|variable|files_lock
 id|spinlock_t
@@ -30,6 +38,13 @@ id|__cacheline_aligned_in_smp
 id|files_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|files_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|files_lock
+)paren
 suffix:semicolon
 DECL|variable|filp_count_lock
 r_static
@@ -333,6 +348,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|get_empty_filp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_empty_filp
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Clear and initialize a (private) struct file for the given dentry,&n; * allocate the security structure, and call the open function (if any).  &n; * The file should be released using close_private_file.&n; */
 DECL|function|open_private_file
 r_int
@@ -472,6 +494,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|open_private_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|open_private_file
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Release a private file by calling the release function (if any) and&n; * freeing the security structure.&n; */
 DECL|function|close_private_file
 r_void
@@ -515,6 +544,13 @@ id|file
 )paren
 suffix:semicolon
 )brace
+DECL|variable|close_private_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|close_private_file
+)paren
+suffix:semicolon
 DECL|function|fput
 r_void
 id|fput
@@ -543,6 +579,13 @@ id|file
 )paren
 suffix:semicolon
 )brace
+DECL|variable|fput
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fput
+)paren
+suffix:semicolon
 multiline_comment|/* __fput is called from task context when aio completion releases the last&n; * last use of a struct file *.  Do not use otherwise.&n; */
 DECL|function|__fput
 r_void
@@ -742,6 +785,13 @@ r_return
 id|file
 suffix:semicolon
 )brace
+DECL|variable|fget
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fget
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Lightweight file lookup - no refcnt increment if fd table isn&squot;t shared. &n; * You can use this only if it is guranteed that the current task already &n; * holds a refcnt to that file. That check has to be done at fget() only&n; * and a flag is returned to be passed to the corresponding fput_light().&n; * There must not be a cloning between an fget_light/fput_light pair.&n; */
 DECL|function|fget_light
 r_struct
@@ -893,6 +943,13 @@ id|file
 suffix:semicolon
 )brace
 )brace
+DECL|variable|put_filp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_filp
+)paren
+suffix:semicolon
 DECL|function|file_move
 r_void
 id|file_move
@@ -1129,12 +1186,4 @@ op_assign
 id|NR_FILE
 suffix:semicolon
 )brace
-multiline_comment|/* Needed by unix.o */
-DECL|variable|files_stat
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|files_stat
-)paren
-suffix:semicolon
 eof

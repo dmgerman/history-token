@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/stat.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
@@ -82,6 +83,13 @@ op_assign
 id|inode-&gt;i_blksize
 suffix:semicolon
 )brace
+DECL|variable|generic_fillattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_fillattr
+)paren
+suffix:semicolon
 DECL|function|vfs_getattr
 r_int
 id|vfs_getattr
@@ -205,6 +213,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|vfs_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_getattr
+)paren
+suffix:semicolon
 DECL|function|vfs_stat
 r_int
 id|vfs_stat
@@ -270,6 +285,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|vfs_stat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_stat
+)paren
+suffix:semicolon
 DECL|function|vfs_lstat
 r_int
 id|vfs_lstat
@@ -335,6 +357,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|vfs_lstat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_lstat
+)paren
+suffix:semicolon
 DECL|function|vfs_fstat
 r_int
 id|vfs_fstat
@@ -396,6 +425,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|vfs_fstat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_fstat
+)paren
+suffix:semicolon
 macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &amp;&amp; !defined(__x86_64__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850) &amp;&amp; !defined(__powerpc64__)
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|cp_old_stat
@@ -1660,6 +1696,13 @@ id|inode-&gt;i_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|inode_add_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_add_bytes
+)paren
+suffix:semicolon
 DECL|function|inode_sub_bytes
 r_void
 id|inode_sub_bytes
@@ -1719,6 +1762,13 @@ id|inode-&gt;i_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|inode_sub_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_sub_bytes
+)paren
+suffix:semicolon
 DECL|function|inode_get_bytes
 id|loff_t
 id|inode_get_bytes
@@ -1766,6 +1816,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|inode_get_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_get_bytes
+)paren
+suffix:semicolon
 DECL|function|inode_set_bytes
 r_void
 id|inode_set_bytes
@@ -1793,4 +1850,11 @@ op_amp
 l_int|511
 suffix:semicolon
 )brace
+DECL|variable|inode_set_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_set_bytes
+)paren
+suffix:semicolon
 eof
