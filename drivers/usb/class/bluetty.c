@@ -4254,8 +4254,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|info
 c_func
 (paren
@@ -4297,8 +4295,6 @@ c_func
 l_string|&quot;No more free Bluetooth devices&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -4330,8 +4326,6 @@ c_func
 (paren
 l_string|&quot;Out of memory&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4935,8 +4929,6 @@ id|kfree
 id|bluetooth
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -5218,8 +5210,6 @@ l_string|&quot;device disconnected&quot;
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|variable|bluetooth_tty_driver
 r_static
@@ -5232,6 +5222,11 @@ dot
 id|magic
 op_assign
 id|TTY_DRIVER_MAGIC
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|driver_name
