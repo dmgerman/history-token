@@ -5,9 +5,6 @@ macro_line|#ifdef CONFIG_HUGETLB_PAGE
 r_struct
 id|ctl_table
 suffix:semicolon
-r_struct
-id|hugetlb_key
-suffix:semicolon
 DECL|function|is_vm_hugetlb_page
 r_static
 r_inline
