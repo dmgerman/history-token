@@ -5,7 +5,6 @@ mdefine_line|#define __ASM_PPC_DMA_MAPPING_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* need struct page definitions */
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE

@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_LINUX_DMA_MAPPING_H
 DECL|macro|_ASM_LINUX_DMA_MAPPING_H
 mdefine_line|#define _ASM_LINUX_DMA_MAPPING_H
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 multiline_comment|/* These definitions mirror those in pci.h, so they can be used&n; * interchangeably with their PCI_ counterparts */
 DECL|enum|dma_data_direction
