@@ -5684,7 +5684,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|xfrm_userpolicy_info
+id|xfrm_user_polexpire
 )paren
 )paren
 )paren
