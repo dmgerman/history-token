@@ -1754,6 +1754,16 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFSD_V3
+id|fhp-&gt;fh_pre_saved
+op_assign
+l_int|0
+suffix:semicolon
+id|fhp-&gt;fh_post_saved
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|nfsd_nr_put
 op_increment
 suffix:semicolon
