@@ -5341,37 +5341,9 @@ l_int|0x0010
 id|ep-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-id|txstatus
-op_amp
-l_int|0x1000
-)paren
-id|ep-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-(paren
-id|txstatus
-op_amp
-l_int|0x0002
-)paren
-op_ne
-l_int|0
-)paren
-id|ep-&gt;stats.tx_deferred
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|ep-&gt;stats.collisions
 op_add_assign
 (paren

@@ -7101,22 +7101,6 @@ id|TxOutOfWindow
 id|tp-&gt;stats.tx_window_errors
 op_increment
 suffix:semicolon
-macro_line|#ifdef ETHER_STATS
-r_if
-c_cond
-(paren
-(paren
-id|txstatus
-op_amp
-l_int|0x0f000000
-)paren
-op_eq
-l_int|0x0f000000
-)paren
-id|tp-&gt;stats.collisions16
-op_increment
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
