@@ -3911,13 +3911,11 @@ op_amp
 id|cookie-&gt;c.expiration
 )paren
 suffix:semicolon
-id|tv_add
+id|TIMEVAL_ADD
 c_func
 (paren
-op_amp
 id|asoc-&gt;cookie_life
 comma
-op_amp
 id|cookie-&gt;c.expiration
 )paren
 suffix:semicolon

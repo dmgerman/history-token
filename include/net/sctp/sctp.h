@@ -1306,65 +1306,9 @@ mdefine_line|#define t_new(type, flags)&t;(type *)kmalloc(sizeof(type), flags)
 multiline_comment|/* Compare two timevals.  */
 DECL|macro|tv_lt
 mdefine_line|#define tv_lt(s, t) &bslash;&n;   (s.tv_sec &lt; t.tv_sec || (s.tv_sec == t.tv_sec &amp;&amp; s.tv_usec &lt; t.tv_usec))
-multiline_comment|/* Stolen from net/profile.h.  Using it from there is more grief than&n; * it is worth.&n; */
-DECL|function|tv_add
-r_static
-r_inline
-r_void
-id|tv_add
-c_func
-(paren
-r_const
-r_struct
-id|timeval
-op_star
-id|entered
-comma
-r_struct
-id|timeval
-op_star
-id|leaved
-)paren
-(brace
-id|time_t
-id|usecs
-op_assign
-id|leaved-&gt;tv_usec
-op_plus
-id|entered-&gt;tv_usec
-suffix:semicolon
-id|time_t
-id|secs
-op_assign
-id|leaved-&gt;tv_sec
-op_plus
-id|entered-&gt;tv_sec
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usecs
-op_ge
-l_int|1000000
-)paren
-(brace
-id|usecs
-op_sub_assign
-l_int|1000000
-suffix:semicolon
-id|secs
-op_increment
-suffix:semicolon
-)brace
-id|leaved-&gt;tv_sec
-op_assign
-id|secs
-suffix:semicolon
-id|leaved-&gt;tv_usec
-op_assign
-id|usecs
-suffix:semicolon
-)brace
+multiline_comment|/* Add tv1 to tv2. */
+DECL|macro|TIMEVAL_ADD
+mdefine_line|#define TIMEVAL_ADD(tv1, tv2) &bslash;&n;({ &bslash;&n;        suseconds_t usecs = (tv2).tv_usec + (tv1).tv_usec; &bslash;&n;        time_t secs = (tv2).tv_sec + (tv1).tv_sec; &bslash;&n;&bslash;&n;        if (usecs &gt;= 1000000) { &bslash;&n;                usecs -= 1000000; &bslash;&n;                secs++; &bslash;&n;        } &bslash;&n;        (tv2).tv_sec = secs; &bslash;&n;        (tv2).tv_usec = usecs; &bslash;&n;})
 multiline_comment|/* External references. */
 r_extern
 r_struct
