@@ -376,9 +376,8 @@ r_void
 id|enter_rtas
 c_func
 (paren
-r_struct
-id|rtas_args
-op_star
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
