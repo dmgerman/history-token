@@ -6,21 +6,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/numaq.h&gt;
-multiline_comment|/* These are needed before the pgdat&squot;s are created */
-r_extern
-r_int
-id|node_start_pfn
-(braket
-)braket
-comma
-id|node_end_pfn
-(braket
-)braket
-comma
-id|node_remap_size
-(braket
-)braket
-suffix:semicolon
+macro_line|#include &lt;asm/topology.h&gt;
 DECL|macro|MB_TO_PAGES
 mdefine_line|#define&t;MB_TO_PAGES(addr) ((addr) &lt;&lt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * Function: smp_dump_qct()&n; *&n; * Description: gets memory layout from the quad config table.  This&n; * function also updates node_online_map with the nodes (quads) present.&n; */

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/srat.h&gt;
+macro_line|#include &lt;asm/topology.h&gt;
 multiline_comment|/*&n; * proximity macros and definitions&n; */
 DECL|macro|NODE_ARRAY_INDEX
 mdefine_line|#define NODE_ARRAY_INDEX(x)&t;((x) / 8)&t;/* 8 bits/char */
@@ -93,21 +94,6 @@ id|zholes_size
 id|MAX_NUMNODES
 op_star
 id|MAX_NR_ZONES
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|node_start_pfn
-(braket
-)braket
-comma
-id|node_end_pfn
-(braket
-)braket
-comma
-id|node_remap_size
-(braket
 )braket
 suffix:semicolon
 r_extern
@@ -1084,6 +1070,49 @@ id|j
 op_increment
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Only add present memroy to node_end/start_pfn&n;&t;&t;&t; * There is no guarantee from the srat that the memory&n;&t;&t;&t; * is present at boot time.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|node_memory_chunk
+(braket
+id|j
+)braket
+dot
+id|start_pfn
+op_ge
+id|max_pfn
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;Ignoring chunk of memory reported in the SRAT (could be hot-add zone?)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;chunk is reported from pfn %04x to %04x&bslash;n&quot;
+comma
+id|node_memory_chunk
+(braket
+id|j
+)braket
+dot
+id|start_pfn
+comma
+id|node_memory_chunk
+(braket
+id|j
+)braket
+dot
+id|end_pfn
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
