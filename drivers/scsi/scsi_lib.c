@@ -1251,8 +1251,6 @@ id|req-&gt;hard_nr_sectors
 op_lshift
 l_int|9
 )paren
-op_minus
-id|bytes
 suffix:semicolon
 r_if
 c_cond
@@ -1266,8 +1264,6 @@ id|req
 id|leftover
 op_assign
 id|req-&gt;data_len
-op_minus
-id|bytes
 suffix:semicolon
 multiline_comment|/* kill remainder if no retrys */
 r_if
