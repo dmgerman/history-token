@@ -271,6 +271,8 @@ DECL|macro|__SI_CHLD
 mdefine_line|#define __SI_CHLD&t;(4 &lt;&lt; 16)
 DECL|macro|__SI_RT
 mdefine_line|#define __SI_RT&t;&t;(5 &lt;&lt; 16)
+DECL|macro|__SI_MESGQ
+mdefine_line|#define __SI_MESGQ&t;(6 &lt;&lt; 16)
 DECL|macro|__SI_CODE
 mdefine_line|#define __SI_CODE(T,N)&t;((T) | ((N) &amp; 0xffff))
 macro_line|#else
@@ -286,6 +288,8 @@ DECL|macro|__SI_CHLD
 mdefine_line|#define __SI_CHLD&t;0
 DECL|macro|__SI_RT
 mdefine_line|#define __SI_RT&t;&t;0
+DECL|macro|__SI_MESGQ
+mdefine_line|#define __SI_MESGQ&t;0
 DECL|macro|__SI_CODE
 mdefine_line|#define __SI_CODE(T,N)&t;(N)
 macro_line|#endif
@@ -299,7 +303,7 @@ mdefine_line|#define SI_QUEUE&t;-1&t;&t;/* sent by sigqueue */
 DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-2) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
-mdefine_line|#define SI_MESGQ&t;-3&t;&t;/* sent by real time mesq state change */
+mdefine_line|#define SI_MESGQ __SI_CODE(__SI_MESGQ,-3) /* sent by real time mesq state change */
 DECL|macro|SI_ASYNCIO
 mdefine_line|#define SI_ASYNCIO&t;-4&t;&t;/* sent by AIO completion */
 DECL|macro|SI_SIGIO
