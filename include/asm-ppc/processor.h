@@ -888,9 +888,9 @@ mdefine_line|#define&t;IMISS&t;SPRN_IMISS&t;/* Instruction TLB Miss Register */
 DECL|macro|IMMR
 mdefine_line|#define&t;IMMR&t;SPRN_IMMR      &t;/* PPC 860/821 Internal Memory Map Register */
 DECL|macro|L2CR
-mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* PPC 750 L2 control register */
+mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* Classic PPC L2 cache control register */
 DECL|macro|L3CR
-mdefine_line|#define&t;L3CR&t;SPRN_L3CR    &t;/* PPC 7450 L3 Cache control register */
+mdefine_line|#define&t;L3CR&t;SPRN_L3CR&t;/* PPC 745x L3 cache control register */
 DECL|macro|LR
 mdefine_line|#define&t;LR&t;SPRN_LR
 DECL|macro|PVR
