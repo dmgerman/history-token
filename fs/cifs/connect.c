@@ -6408,6 +6408,13 @@ op_amp
 id|srvTcp-&gt;response_q
 )paren
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|srvTcp-&gt;request_q
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
