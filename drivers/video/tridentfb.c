@@ -6002,8 +6002,18 @@ id|tridentfb_ops
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_TRIDENT_ACCEL
+id|fb_info.flags
+op_or_assign
+id|FBINFO_HWACCEL_COPYAREA
+op_or
+id|FBINFO_HWACCEL_FILLRECT
+suffix:semicolon
+macro_line|#endif
 id|fb_info.pseudo_palette
 op_assign
 id|pseudo_pal

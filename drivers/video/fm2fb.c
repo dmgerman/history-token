@@ -954,7 +954,7 @@ id|fb_fix
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 r_if
 c_cond

@@ -2506,7 +2506,9 @@ l_string|&quot;leolx cursor&quot;
 suffix:semicolon
 id|all-&gt;info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign

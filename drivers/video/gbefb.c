@@ -4848,7 +4848,7 @@ id|pseudo_palette
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|fb_info.screen_base
 op_assign

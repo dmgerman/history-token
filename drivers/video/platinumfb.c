@@ -1383,7 +1383,7 @@ id|pinfo-&gt;pseudo_palette
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign

@@ -2053,7 +2053,7 @@ id|fbgen_update_var
 suffix:semicolon
 id|fb_info.gen.info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 multiline_comment|/* This should give a reasonable default video mode */
 id|fbgen_get_var

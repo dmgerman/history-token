@@ -1138,7 +1138,7 @@ id|pseudo_palette
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 multiline_comment|/* Clear the framebuffer */
 id|memset

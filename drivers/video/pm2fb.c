@@ -5430,7 +5430,9 @@ l_int|1
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 macro_line|#ifndef MODULE
 r_if

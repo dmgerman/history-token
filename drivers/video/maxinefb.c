@@ -560,7 +560,7 @@ id|maxinefb_fix
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|fb_alloc_cmap
 c_func

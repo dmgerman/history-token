@@ -2994,6 +2994,15 @@ id|info-&gt;fix.ypanstep
 op_assign
 l_int|0
 suffix:semicolon
+id|info-&gt;flags
+op_assign
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YWRAP
+op_or
+id|FBINFO_READS_FAST
+suffix:semicolon
+multiline_comment|/* override SCROLL_REDRAW */
 )brace
 r_else
 (brace
@@ -3022,6 +3031,12 @@ suffix:semicolon
 id|info-&gt;fix.ypanstep
 op_assign
 l_int|1
+suffix:semicolon
+id|info-&gt;flags
+op_assign
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 )brace
 r_return
@@ -8303,7 +8318,7 @@ id|currentpar
 suffix:semicolon
 id|fb_info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 r_if
 c_cond

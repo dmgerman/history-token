@@ -373,7 +373,7 @@ id|q40fb_ops
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 multiline_comment|/* not as module for now */
 id|info-&gt;pseudo_palette
