@@ -2143,27 +2143,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|mm_struct
-op_star
-id|start_lazy_tlb
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|end_lazy_tlb
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
 multiline_comment|/* mmdrop drops the mm and the page tables */
 r_extern
 r_inline
