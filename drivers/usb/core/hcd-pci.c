@@ -1037,7 +1037,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|USB_STATE_SUSPENDED
+id|HCD_STATE_SUSPENDED
 suffix:colon
 id|dev_dbg
 (paren
@@ -1090,7 +1090,7 @@ suffix:semicolon
 r_else
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_SUSPENDED
+id|HCD_STATE_SUSPENDED
 suffix:semicolon
 )brace
 id|pci_set_power_state
@@ -1151,7 +1151,7 @@ c_cond
 (paren
 id|hcd-&gt;state
 op_ne
-id|USB_STATE_SUSPENDED
+id|HCD_STATE_SUSPENDED
 )paren
 (brace
 id|dev_dbg

@@ -309,6 +309,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|op

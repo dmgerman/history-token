@@ -165,8 +165,8 @@ DECL|macro|USB_STATE_QUIESCING
 macro_line|#&t;define&t;USB_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
 DECL|macro|USB_STATE_RESUMING
 macro_line|#&t;define&t;USB_STATE_RESUMING&t;(__SUSPEND|__TRANSIENT)
-DECL|macro|USB_STATE_SUSPENDED
-macro_line|#&t;define&t;USB_STATE_SUSPENDED&t;(__SUSPEND)
+DECL|macro|HCD_STATE_SUSPENDED
+macro_line|#&t;define&t;HCD_STATE_SUSPENDED&t;(__SUSPEND)
 DECL|macro|HCD_IS_RUNNING
 mdefine_line|#define&t;HCD_IS_RUNNING(state) ((state) &amp; __ACTIVE)
 DECL|macro|HCD_IS_SUSPENDED
