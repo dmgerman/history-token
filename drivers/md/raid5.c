@@ -7156,11 +7156,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|atomic_dec
+id|rdev_dec_pending
 c_func
 (paren
-op_amp
-id|rdev-&gt;nr_pending
+id|rdev
+comma
+id|mddev
 )paren
 suffix:semicolon
 )brace
