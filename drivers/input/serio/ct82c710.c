@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -47,6 +48,10 @@ DECL|macro|CT82C710_ENABLE
 mdefine_line|#define CT82C710_ENABLE       0x80&t;&t;/* Device Enable */
 DECL|macro|CT82C710_IRQ
 mdefine_line|#define CT82C710_IRQ          12
+DECL|macro|CT82C710_DATA
+mdefine_line|#define CT82C710_DATA         ct82c710_iores.start
+DECL|macro|CT82C710_STATUS
+mdefine_line|#define CT82C710_STATUS       (ct82c710_iores.start + 1)
 DECL|variable|ct82c710_port
 r_static
 r_struct
@@ -54,15 +59,18 @@ id|serio
 op_star
 id|ct82c710_port
 suffix:semicolon
-DECL|variable|ct82c710_data
+DECL|variable|ct82c710_device
 r_static
-r_int
-id|ct82c710_data
+r_struct
+id|platform_device
+op_star
+id|ct82c710_device
 suffix:semicolon
-DECL|variable|ct82c710_status
+DECL|variable|ct82c710_iores
 r_static
-r_int
-id|ct82c710_status
+r_struct
+id|resource
+id|ct82c710_iores
 suffix:semicolon
 multiline_comment|/*&n; * Interrupt handler for the 82C710 mouse port. A character&n; * is waiting in the 82C710.&n; */
 DECL|function|ct82c710_interrupt
@@ -93,7 +101,7 @@ comma
 id|inb
 c_func
 (paren
-id|ct82c710_data
+id|CT82C710_DATA
 )paren
 comma
 l_int|0
@@ -124,7 +132,7 @@ c_loop
 id|inb
 c_func
 (paren
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 op_amp
 (paren
@@ -151,7 +159,7 @@ c_cond
 id|inb_p
 c_func
 (paren
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 op_amp
 id|CT82C710_RX_FULL
@@ -159,7 +167,7 @@ id|CT82C710_RX_FULL
 id|inb_p
 c_func
 (paren
-id|ct82c710_data
+id|CT82C710_DATA
 )paren
 suffix:semicolon
 id|udelay
@@ -210,7 +218,7 @@ c_func
 id|inb_p
 c_func
 (paren
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 op_amp
 op_complement
@@ -220,7 +228,7 @@ op_or
 id|CT82C710_INTS_ON
 )paren
 comma
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -289,7 +297,7 @@ op_assign
 id|inb_p
 c_func
 (paren
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 id|status
@@ -305,7 +313,7 @@ c_func
 (paren
 id|status
 comma
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 id|status
@@ -320,7 +328,7 @@ c_func
 (paren
 id|status
 comma
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 id|status
@@ -332,7 +340,7 @@ c_func
 (paren
 id|status
 comma
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts */
@@ -366,7 +374,7 @@ c_func
 (paren
 id|status
 comma
-id|ct82c710_status
+id|CT82C710_STATUS
 )paren
 suffix:semicolon
 id|free_irq
@@ -420,7 +428,7 @@ c_func
 (paren
 id|c
 comma
-id|ct82c710_data
+id|CT82C710_DATA
 )paren
 suffix:semicolon
 r_return
@@ -518,7 +526,7 @@ l_int|0x390
 )paren
 suffix:semicolon
 multiline_comment|/* Write index */
-id|ct82c710_data
+id|ct82c710_iores.start
 op_assign
 id|inb_p
 c_func
@@ -529,11 +537,15 @@ op_lshift
 l_int|2
 suffix:semicolon
 multiline_comment|/* Get mouse I/O address */
-id|ct82c710_status
+id|ct82c710_iores.end
 op_assign
-id|ct82c710_data
+id|ct82c710_iores.start
 op_plus
 l_int|1
+suffix:semicolon
+id|ct82c710_iores.flags
+op_assign
+id|IORESOURCE_IO
 suffix:semicolon
 id|outb_p
 c_func
@@ -623,6 +635,11 @@ id|serio-&gt;write
 op_assign
 id|ct82c710_write
 suffix:semicolon
+id|serio-&gt;dev.parent
+op_assign
+op_amp
+id|ct82c710_device-&gt;dev
+suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -646,9 +663,9 @@ r_sizeof
 id|serio-&gt;phys
 )paren
 comma
-l_string|&quot;isa%04x/serio0&quot;
+l_string|&quot;isa%04lx/serio0&quot;
 comma
-id|ct82c710_data
+id|CT82C710_DATA
 )paren
 suffix:semicolon
 )brace
@@ -677,22 +694,37 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|ct82c710_device
+op_assign
+id|platform_device_register_simple
+c_func
+(paren
+l_string|&quot;ct82c710&quot;
+comma
+op_minus
+l_int|1
+comma
+op_amp
+id|ct82c710_iores
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_region
+id|IS_ERR
 c_func
 (paren
-id|ct82c710_data
-comma
-l_int|2
-comma
-l_string|&quot;ct82c710&quot;
+id|ct82c710_device
 )paren
 )paren
 r_return
-op_minus
-id|EBUSY
+id|PTR_ERR
+c_func
+(paren
+id|ct82c710_device
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -708,12 +740,10 @@ c_func
 )paren
 )paren
 (brace
-id|release_region
+id|platform_device_unregister
 c_func
 (paren
-id|ct82c710_data
-comma
-l_int|2
+id|ct82c710_device
 )paren
 suffix:semicolon
 r_return
@@ -731,9 +761,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;serio: C&amp;T 82c710 mouse port at %#x irq %d&bslash;n&quot;
+l_string|&quot;serio: C&amp;T 82c710 mouse port at %#lx irq %d&bslash;n&quot;
 comma
-id|ct82c710_data
+id|CT82C710_DATA
 comma
 id|CT82C710_IRQ
 )paren
@@ -757,12 +787,10 @@ c_func
 id|ct82c710_port
 )paren
 suffix:semicolon
-id|release_region
+id|platform_device_unregister
 c_func
 (paren
-id|ct82c710_data
-comma
-l_int|2
+id|ct82c710_device
 )paren
 suffix:semicolon
 )brace

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -41,6 +42,13 @@ r_struct
 id|serio
 op_star
 id|q40kbd_port
+suffix:semicolon
+DECL|variable|q40kbd_device
+r_static
+r_struct
+id|platform_device
+op_star
+id|q40kbd_device
 suffix:semicolon
 DECL|function|q40kbd_interrupt
 r_static
@@ -361,6 +369,11 @@ id|serio-&gt;close
 op_assign
 id|q40kbd_close
 suffix:semicolon
+id|serio-&gt;dev.parent
+op_assign
+op_amp
+id|q40kbd_device-&gt;dev
+suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -412,6 +425,37 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+id|q40kbd_device
+op_assign
+id|platform_device_register_simple
+c_func
+(paren
+l_string|&quot;q40kbd&quot;
+comma
+op_minus
+l_int|1
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|q40kbd_device
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|q40kbd_device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -425,10 +469,18 @@ c_func
 )paren
 )paren
 )paren
+(brace
+id|platform_device_unregister
+c_func
+(paren
+id|q40kbd_device
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|serio_register_port
 c_func
 (paren
@@ -460,6 +512,12 @@ id|serio_unregister_port
 c_func
 (paren
 id|q40kbd_port
+)paren
+suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+id|q40kbd_device
 )paren
 suffix:semicolon
 )brace

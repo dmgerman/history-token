@@ -1132,9 +1132,9 @@ c_func
 (paren
 id|list-&gt;joydev-&gt;wait
 comma
+op_logical_neg
 id|list-&gt;joydev-&gt;exist
-op_logical_and
-(paren
+op_logical_or
 id|list-&gt;startup
 OL
 id|joydev-&gt;nabs
@@ -1144,7 +1144,6 @@ op_logical_or
 id|list-&gt;head
 op_ne
 id|list-&gt;tail
-)paren
 )paren
 suffix:semicolon
 r_if

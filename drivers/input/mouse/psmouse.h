@@ -17,6 +17,8 @@ DECL|macro|PSMOUSE_CMD_SETRATE
 mdefine_line|#define PSMOUSE_CMD_SETRATE&t;0x10f3
 DECL|macro|PSMOUSE_CMD_ENABLE
 mdefine_line|#define PSMOUSE_CMD_ENABLE&t;0x00f4
+DECL|macro|PSMOUSE_CMD_DISABLE
+mdefine_line|#define PSMOUSE_CMD_DISABLE&t;0x00f5
 DECL|macro|PSMOUSE_CMD_RESET_DIS
 mdefine_line|#define PSMOUSE_CMD_RESET_DIS&t;0x00f6
 DECL|macro|PSMOUSE_CMD_RESET_BAT
@@ -29,21 +31,32 @@ DECL|macro|PSMOUSE_RET_ACK
 mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
-multiline_comment|/* psmouse states */
-DECL|macro|PSMOUSE_CMD_MODE
-mdefine_line|#define PSMOUSE_CMD_MODE&t;0
-DECL|macro|PSMOUSE_ACTIVATED
-mdefine_line|#define PSMOUSE_ACTIVATED&t;1
-DECL|macro|PSMOUSE_IGNORE
-mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
 DECL|macro|PSMOUSE_FLAG_ACK
 mdefine_line|#define PSMOUSE_FLAG_ACK&t;0&t;/* Waiting for ACK/NAK */
 DECL|macro|PSMOUSE_FLAG_CMD
 mdefine_line|#define PSMOUSE_FLAG_CMD&t;1&t;/* Waiting for command to finish */
 DECL|macro|PSMOUSE_FLAG_CMD1
-mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* First byte of command response */
-DECL|macro|PSMOUSE_FLAG_ID
-mdefine_line|#define PSMOUSE_FLAG_ID&t;&t;3&t;/* First byte is not keyboard ID */
+mdefine_line|#define PSMOUSE_FLAG_CMD1&t;2&t;/* Waiting for the first byte of command response */
+DECL|macro|PSMOUSE_FLAG_WAITID
+mdefine_line|#define PSMOUSE_FLAG_WAITID&t;3&t;/* Command execiting is GET ID */
+DECL|enum|psmouse_state
+r_enum
+id|psmouse_state
+(brace
+DECL|enumerator|PSMOUSE_IGNORE
+id|PSMOUSE_IGNORE
+comma
+DECL|enumerator|PSMOUSE_INITIALIZING
+id|PSMOUSE_INITIALIZING
+comma
+DECL|enumerator|PSMOUSE_CMD_MODE
+id|PSMOUSE_CMD_MODE
+comma
+DECL|enumerator|PSMOUSE_ACTIVATED
+id|PSMOUSE_ACTIVATED
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* psmouse protocol handler return codes */
 r_typedef
 r_enum
@@ -137,8 +150,8 @@ r_int
 id|out_of_sync
 suffix:semicolon
 DECL|member|state
-r_int
-r_char
+r_enum
+id|psmouse_state
 id|state
 suffix:semicolon
 DECL|member|nak
@@ -168,6 +181,11 @@ DECL|member|flags
 r_int
 r_int
 id|flags
+suffix:semicolon
+multiline_comment|/* Used to signal completion from interrupt handler */
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
 suffix:semicolon
 DECL|member|protocol_handler
 id|psmouse_ret_t
