@@ -100,9 +100,9 @@ l_int|100
 suffix:semicolon
 )brace
 multiline_comment|/* Return the vco fid for an input fid */
+DECL|function|convert_fid_to_vco_fid
 r_static
 id|u32
-DECL|function|convert_fid_to_vco_fid
 id|convert_fid_to_vco_fid
 c_func
 (paren
@@ -135,11 +135,11 @@ id|fid
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Return 1 if the pending bit is set. Unless we are actually just told the&n; * processor to transition a state, seeing this bit set is really bad news.&n; */
+multiline_comment|/*&n; * Return 1 if the pending bit is set. Unless we just instructed the processor&n; * to transition to a new state, seeing this bit set is really bad news.&n; */
+DECL|function|pending_bit_stuck
 r_static
 r_inline
 r_int
-DECL|function|pending_bit_stuck
 id|pending_bit_stuck
 c_func
 (paren
@@ -172,7 +172,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Update the global current fid / vid values from the status msr. Returns 1&n; * on error.&n; */
+multiline_comment|/*&n; * Update the global current fid / vid values from the status msr.&n; * Returns 1 on error.&n; */
 r_static
 r_int
 DECL|function|query_current_values_with_pending_wait
@@ -2919,9 +2919,9 @@ id|res
 suffix:semicolon
 )brace
 multiline_comment|/* Driver entry point to switch to the target frequency */
+DECL|function|powernowk8_target
 r_static
 r_int
-DECL|function|powernowk8_target
 id|powernowk8_target
 c_func
 (paren
@@ -3413,10 +3413,10 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* driver entry point for init */
+DECL|function|powernowk8_init
 r_static
 r_int
 id|__init
-DECL|function|powernowk8_init
 id|powernowk8_init
 c_func
 (paren
@@ -3487,10 +3487,10 @@ id|cpufreq_amd64_driver
 suffix:semicolon
 )brace
 multiline_comment|/* driver entry point for term */
+DECL|function|powernowk8_exit
 r_static
 r_void
 id|__exit
-DECL|function|powernowk8_exit
 id|powernowk8_exit
 c_func
 (paren
@@ -3502,7 +3502,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;powernowk8_exit&bslash;n&quot;
+l_string|&quot;exit&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cpufreq_unregister_driver
