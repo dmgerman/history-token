@@ -4018,13 +4018,6 @@ id|ei_poll
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|ei_tx_timeout
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ei_tx_timeout
-)paren
-suffix:semicolon
 DECL|variable|NS8390_init
 id|EXPORT_SYMBOL
 c_func

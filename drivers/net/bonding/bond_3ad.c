@@ -173,18 +173,6 @@ op_star
 id|port
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_void
-id|__deinitialize_port_locks
-c_func
-(paren
-r_struct
-id|port
-op_star
-id|port
-)paren
-suffix:semicolon
 singleline_comment|//conversions
 r_static
 r_void
@@ -1307,21 +1295,6 @@ id|rx_machine_lock
 )paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/**&n; * __deinitialize_port_locks - deinitialize a port&squot;s RX machine spinlock&n; * @port: the port we&squot;re looking at&n; *&n; */
-DECL|function|__deinitialize_port_locks
-r_static
-r_inline
-r_void
-id|__deinitialize_port_locks
-c_func
-(paren
-r_struct
-id|port
-op_star
-id|port
-)paren
-(brace
 )brace
 singleline_comment|//conversions
 multiline_comment|/**&n; * __ntohs_lacpdu - convert the contents of a LACPDU to host byte order&n; * @lacpdu: the speicifed lacpdu&n; *&n; * For each multi-byte field in the lacpdu, convert its content&n; */

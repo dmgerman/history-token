@@ -2188,6 +2188,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 id|module_param
 c_func
 (paren
