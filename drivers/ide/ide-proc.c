@@ -3456,10 +3456,6 @@ id|ide_driver_t
 op_star
 id|driver
 op_assign
-(paren
-id|ide_driver_t
-op_star
-)paren
 id|drive-&gt;driver
 suffix:semicolon
 r_int
@@ -4130,7 +4126,6 @@ id|name
 l_int|64
 )braket
 suffix:semicolon
-singleline_comment|//&t;ide_driver_t *driver = drive-&gt;driver;
 r_if
 c_cond
 (paren

@@ -292,13 +292,14 @@ id|block
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
-r_goto
-id|good_command
-suffix:semicolon
+)paren
+(brace
 id|blk_dump_rq_flags
 c_func
 (paren
@@ -322,9 +323,7 @@ suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
-id|good_command
-suffix:colon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+)brace
 r_if
 c_cond
 (paren
@@ -359,7 +358,6 @@ id|block
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
 r_if
 c_cond
 (paren
@@ -382,11 +380,6 @@ id|drive
 comma
 id|rq
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|block
 )paren
 suffix:semicolon
@@ -404,10 +397,6 @@ id|drive
 comma
 id|rq
 comma
-(paren
-r_int
-r_int
-)paren
 id|block
 )paren
 suffix:semicolon
@@ -420,10 +409,6 @@ id|drive
 comma
 id|rq
 comma
-(paren
-r_int
-r_int
-)paren
 id|block
 )paren
 suffix:semicolon

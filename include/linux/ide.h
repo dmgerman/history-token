@@ -866,7 +866,8 @@ id|drive_data
 suffix:semicolon
 multiline_comment|/* for use by tuneproc/selectproc as needed */
 DECL|member|hwif
-r_void
+r_struct
+id|hwif_s
 op_star
 id|hwif
 suffix:semicolon
@@ -899,7 +900,8 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* drive name, such as &quot;hda&quot; */
 DECL|member|driver
-r_void
+r_struct
+id|ide_driver_s
 op_star
 id|driver
 suffix:semicolon
