@@ -27,6 +27,11 @@ r_int
 r_int
 id|size
 suffix:semicolon
+DECL|member|phys_addr
+r_int
+r_int
+id|phys_addr
+suffix:semicolon
 DECL|member|next
 r_struct
 id|vm_struct
@@ -126,6 +131,18 @@ id|gfp_mask
 comma
 id|pgprot_t
 id|prot
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|vm_struct
+op_star
+id|remove_kernel_area
+c_func
+(paren
+r_void
+op_star
+id|addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Various ways to allocate pages.&n; */
