@@ -206,8 +206,6 @@ DECL|variable|pcf8574_id
 r_static
 r_int
 id|pcf8574_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* following are the sysfs callback functions */
 DECL|function|show_read

@@ -954,6 +954,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|sis96x_ids
+)paren
+suffix:semicolon
 DECL|function|sis96x_probe
 r_static
 r_int

@@ -444,8 +444,6 @@ DECL|variable|lm80_id
 r_static
 r_int
 id|lm80_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
 DECL|variable|lm80_driver
@@ -1146,6 +1144,8 @@ suffix:semicolon
 r_int
 r_int
 id|min
+comma
+id|val
 suffix:semicolon
 id|u8
 id|reg
@@ -1171,14 +1171,8 @@ id|nr
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;fan_div
-(braket
-id|nr
-)braket
+id|val
 op_assign
-id|DIV_TO_REG
-c_func
-(paren
 id|simple_strtoul
 c_func
 (paren
@@ -1188,6 +1182,16 @@ l_int|NULL
 comma
 l_int|10
 )paren
+suffix:semicolon
+id|data-&gt;fan_div
+(braket
+id|nr
+)braket
+op_assign
+id|DIV_TO_REG
+c_func
+(paren
+id|val
 )paren
 suffix:semicolon
 id|reg

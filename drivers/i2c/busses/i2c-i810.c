@@ -53,6 +53,7 @@ mdefine_line|#define TIMEOUT&t;&t;&t;(HZ / 2)
 DECL|variable|ioaddr
 r_static
 r_void
+id|__iomem
 op_star
 id|ioaddr
 suffix:semicolon
@@ -737,6 +738,13 @@ comma
 )brace
 comma
 )brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|i810_ids
+)paren
 suffix:semicolon
 DECL|function|i810_probe
 r_static

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &quot;w1.h&quot;
 macro_line|#include &quot;w1_log.h&quot;
 macro_line|#include &quot;w1_netlink.h&quot;
+macro_line|#ifndef NETLINK_DISABLED
 DECL|function|w1_netlink_send
 r_void
 id|w1_netlink_send
@@ -159,4 +160,24 @@ suffix:colon
 r_return
 suffix:semicolon
 )brace
+macro_line|#else
+macro_line|#warning Netlink support is disabled. Please compile with NET support enabled.
+DECL|function|w1_netlink_send
+r_void
+id|w1_netlink_send
+c_func
+(paren
+r_struct
+id|w1_master
+op_star
+id|dev
+comma
+r_struct
+id|w1_netlink_msg
+op_star
+id|msg
+)paren
+(brace
+)brace
+macro_line|#endif
 eof

@@ -273,6 +273,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|vt586b_ids
+)paren
+suffix:semicolon
 DECL|function|vt586b_probe
 r_static
 r_int

@@ -695,8 +695,6 @@ DECL|variable|it87_id
 r_static
 r_int
 id|it87_id
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|show_in
 r_static

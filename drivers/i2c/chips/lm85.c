@@ -1178,8 +1178,6 @@ DECL|variable|lm85_id
 r_static
 r_int
 id|lm85_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 4 Fans */
 DECL|function|show_fan
@@ -2691,6 +2689,21 @@ op_star
 id|adapter
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|adapter
+op_member_access_from_pointer
+r_class
+op_amp
+id|I2C_CLASS_HWMON
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|i2c_detect
 c_func
