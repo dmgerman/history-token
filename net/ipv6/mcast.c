@@ -10659,10 +10659,6 @@ id|dev_base_lock
 )paren
 suffix:semicolon
 r_return
-op_star
-id|pos
-ques
-c_cond
 id|igmp6_mc_get_idx
 c_func
 (paren
@@ -10670,12 +10666,6 @@ id|seq
 comma
 op_star
 id|pos
-)paren
-suffix:colon
-id|igmp6_mc_get_first
-c_func
-(paren
-id|seq
 )paren
 suffix:semicolon
 )brace
