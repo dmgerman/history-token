@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003 Manfred Spraul&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in start_rx, clean up a bit.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger&n; *&n; * Known bugs:&n; * The irq handling is wrong - no tx done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens in the hw timer&n; * interrupt (1/2 second on nForce2, 1/100 second on nForce3), or if an&n; * rx packet arrives by chance.&n; */
+multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003 Manfred Spraul&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in start_rx, clean up a bit.&n; * &t;&t;&t;&t;(C) Carl-Daniel Hailfinger&n; * &t;0.20: 07 Dev 2003: alloc fixes&n; *&n; * Known bugs:&n; * The irq handling is wrong - no tx done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens in the hw timer&n; * interrupt (1/2 second on nForce2, 1/100 second on nForce3), or if an&n; * rx packet arrives by chance.&n; */
 DECL|macro|FORCEDETH_VERSION
 mdefine_line|#define FORCEDETH_VERSION&t;&t;&quot;0.19&quot;
 macro_line|#include &lt;linux/module.h&gt;
@@ -5905,9 +5905,15 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;forcedeth: pci_enable_dev failed: %d&bslash;n&quot;
+l_string|&quot;forcedeth: pci_enable_dev failed (%d) for device %s&bslash;n&quot;
 comma
 id|err
+comma
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -5968,7 +5974,13 @@ id|dprintk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;forcedeth: resource %d start %p len %ld flags 0x%08lx.&bslash;n&quot;
+l_string|&quot;%s: resource %d start %p len %ld flags 0x%08lx.&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|i
 comma
@@ -6051,7 +6063,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;forcedeth: Couldn&squot;t find register window.&bslash;n&quot;
+l_string|&quot;forcedeth: Couldn&squot;t find register window for device %s.&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -6172,46 +6190,6 @@ c_func
 id|pci_dev
 comma
 id|dev
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;forcedeth: unable to register netdev: %d&bslash;n&quot;
-comma
-id|err
-)paren
-suffix:semicolon
-r_goto
-id|out_freering
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: forcedeth.c: subsystem: %05x:%04x&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|pci_dev-&gt;subsystem_vendor
-comma
-id|pci_dev-&gt;subsystem_device
 )paren
 suffix:semicolon
 multiline_comment|/* read the mac address */
@@ -6363,7 +6341,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: Invalid Mac address detected: %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|dev-&gt;dev_addr
 (braket
@@ -6443,7 +6425,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: MAC Address %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|dev-&gt;dev_addr
 (braket
@@ -6525,6 +6511,52 @@ id|np-&gt;irqmask
 op_assign
 id|NVREG_IRQMASK_WANTED_2
 suffix:semicolon
+id|err
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;forcedeth: unable to register netdev: %d&bslash;n&quot;
+comma
+id|err
+)paren
+suffix:semicolon
+r_goto
+id|out_freering
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: forcedeth.c: subsystem: %05x:%04x bound to %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|pci_dev-&gt;subsystem_vendor
+comma
+id|pci_dev-&gt;subsystem_device
+comma
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6582,7 +6614,7 @@ id|pci_dev
 suffix:semicolon
 id|out_free
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
