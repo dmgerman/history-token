@@ -192,6 +192,12 @@ r_char
 id|clocal
 suffix:semicolon
 multiline_comment|/* termios CLOCAL */
+DECL|member|ready_for_write
+r_int
+r_char
+id|ready_for_write
+suffix:semicolon
+multiline_comment|/* write urb can be used */
 )brace
 suffix:semicolon
 multiline_comment|/* &quot;Union Functional Descriptor&quot; from CDC spec 5.2.3.X */

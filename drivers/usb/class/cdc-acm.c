@@ -747,7 +747,8 @@ c_func
 id|acm
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -768,6 +769,12 @@ c_func
 op_amp
 id|acm-&gt;work
 )paren
+suffix:semicolon
+id|out
+suffix:colon
+id|acm-&gt;ready_for_write
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|acm_softint
@@ -1196,10 +1203,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acm-&gt;writeurb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
+op_logical_neg
+id|acm-&gt;ready_for_write
 )paren
 r_return
 l_int|0
@@ -1274,7 +1279,10 @@ id|acm-&gt;writeurb-&gt;dev
 op_assign
 id|acm-&gt;dev
 suffix:semicolon
-multiline_comment|/* GFP_KERNEL probably works if from_user */
+id|acm-&gt;ready_for_write
+op_assign
+l_int|0
+suffix:semicolon
 id|stat
 op_assign
 id|usb_submit_urb
@@ -1282,7 +1290,7 @@ c_func
 (paren
 id|acm-&gt;writeurb
 comma
-id|GFP_ATOMIC
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -1298,6 +1306,10 @@ c_func
 (paren
 l_string|&quot;usb_submit_urb(write bulk) failed&quot;
 )paren
+suffix:semicolon
+id|acm-&gt;ready_for_write
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 id|stat
@@ -1341,10 +1353,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|acm-&gt;writeurb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
+op_logical_neg
+id|acm-&gt;ready_for_write
 ques
 c_cond
 l_int|0
@@ -1386,10 +1396,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|acm-&gt;writeurb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
+op_logical_neg
+id|acm-&gt;ready_for_write
 ques
 c_cond
 id|acm-&gt;writeurb-&gt;transfer_buffer_length
@@ -2733,6 +2741,10 @@ id|acm_softint
 comma
 id|acm
 )paren
+suffix:semicolon
+id|acm-&gt;ready_for_write
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
