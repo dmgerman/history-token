@@ -4043,14 +4043,6 @@ id|saved_videomode
 op_assign
 id|VIDEO_MODE
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Video mode to be used for restore is %lx&bslash;n&quot;
-comma
-id|saved_videomode
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
