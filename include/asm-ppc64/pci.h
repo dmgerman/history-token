@@ -161,7 +161,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -183,7 +184,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -207,7 +209,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -231,7 +234,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -382,6 +386,10 @@ id|ptr
 comma
 id|size
 comma
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|direction
 )paren
 suffix:semicolon
@@ -419,6 +427,10 @@ id|dma_addr
 comma
 id|size
 comma
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|direction
 )paren
 suffix:semicolon
@@ -459,6 +471,10 @@ id|sg
 comma
 id|nents
 comma
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|direction
 )paren
 suffix:semicolon
@@ -498,6 +514,10 @@ id|sg
 comma
 id|nents
 comma
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|direction
 )paren
 suffix:semicolon

@@ -1655,9 +1655,6 @@ id|vaddr
 comma
 id|npages
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -1841,9 +1838,6 @@ id|sglist
 comma
 id|nelems
 comma
-(paren
-r_int
-)paren
 id|direction
 )paren
 suffix:semicolon
@@ -2057,9 +2051,6 @@ id|ret
 comma
 id|npages
 comma
-(paren
-r_int
-)paren
 id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -441,7 +440,8 @@ r_int
 r_int
 id|npages
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -873,7 +873,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace

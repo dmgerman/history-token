@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
@@ -37,7 +38,8 @@ r_int
 r_int
 id|uaddr
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -64,7 +66,7 @@ c_cond
 (paren
 id|direction
 op_ne
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 id|t.te_pciwr
 op_assign

@@ -5,6 +5,7 @@ mdefine_line|#define _PCI_DMA_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/*&n; * IOMAP_MAX_ORDER defines the largest contiguous block&n; * of dma (tce) space we can get.  IOMAP_MAX_ORDER = 10 &n; * allows up to 2**9 pages (512 * 4096) = 2 MB&n; */
 DECL|macro|IOMAP_MAX_ORDER
 mdefine_line|#define IOMAP_MAX_ORDER 10
@@ -376,7 +377,8 @@ r_int
 r_int
 id|numPages
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -422,7 +424,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon

@@ -78,6 +78,7 @@ macro_line|#endif /* CONFIG_PPC_PSERIES */
 )brace
 multiline_comment|/* Allocates a contiguous real buffer and creates mappings over it.&n; * Returns the virtual address of the buffer and sets dma_handle&n; * to the dma address (mapping) of the first page.&n; */
 DECL|function|pci_iommu_alloc_consistent
+r_static
 r_void
 op_star
 id|pci_iommu_alloc_consistent
@@ -223,7 +224,7 @@ id|ret
 comma
 id|npages
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if
@@ -262,6 +263,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|pci_iommu_free_consistent
+r_static
 r_void
 id|pci_iommu_free_consistent
 c_func
@@ -349,6 +351,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Creates TCEs for a user provided buffer.  The user buffer must be &n; * contiguous real kernel storage (not vmalloc).  The address of the buffer&n; * passed here is the kernel (virtual) address of the buffer.  The buffer&n; * need not be page aligned, the dma_addr_t returned will point to the same&n; * byte within the page as vaddr.&n; */
 DECL|function|pci_iommu_map_single
+r_static
 id|dma_addr_t
 id|pci_iommu_map_single
 c_func
@@ -365,7 +368,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -392,7 +396,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|uaddr
@@ -499,6 +503,7 @@ id|dma_handle
 suffix:semicolon
 )brace
 DECL|function|pci_iommu_unmap_single
+r_static
 r_void
 id|pci_iommu_unmap_single
 c_func
@@ -514,7 +519,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -532,7 +538,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|npages
@@ -580,6 +586,7 @@ id|npages
 suffix:semicolon
 )brace
 DECL|function|pci_iommu_map_sg
+r_static
 r_int
 id|pci_iommu_map_sg
 c_func
@@ -597,7 +604,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -611,7 +619,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 r_if
@@ -659,6 +667,7 @@ id|direction
 suffix:semicolon
 )brace
 DECL|function|pci_iommu_unmap_sg
+r_static
 r_void
 id|pci_iommu_unmap_sg
 c_func
@@ -676,7 +685,8 @@ comma
 r_int
 id|nelems
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -690,7 +700,7 @@ c_func
 (paren
 id|direction
 op_eq
-id|PCI_DMA_NONE
+id|DMA_NONE
 )paren
 suffix:semicolon
 id|tbl
