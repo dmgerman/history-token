@@ -649,6 +649,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|trizeps_map_io
+r_static
 r_void
 id|__init
 id|trizeps_map_io
