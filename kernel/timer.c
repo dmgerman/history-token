@@ -5128,12 +5128,12 @@ id|time_interpolator
 op_star
 id|time_interpolator_list
 suffix:semicolon
-DECL|variable|time_interpolator_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|time_interpolator_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|time_interpolator_get_cycles
 r_static

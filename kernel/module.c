@@ -35,12 +35,12 @@ multiline_comment|/* If this is set, the section belongs in the init part of the
 DECL|macro|INIT_OFFSET_MASK
 mdefine_line|#define INIT_OFFSET_MASK (1UL &lt;&lt; (BITS_PER_LONG-1))
 multiline_comment|/* Protects module list */
-DECL|variable|modlist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|modlist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* List of modules, protected by module_mutex AND modlist_lock */
 r_static

@@ -63,12 +63,12 @@ id|free_huge_pages_node
 id|MAX_NUMNODES
 )braket
 suffix:semicolon
-DECL|variable|hugetlb_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hugetlb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|enqueue_huge_page
 r_static

@@ -90,12 +90,12 @@ multiline_comment|/* Empty if single thread */
 )brace
 suffix:semicolon
 multiline_comment|/* All the per-cpu workqueues on the system, for hotplug cpu to add/remove&n;   threads to each one as cpus come/go. */
-DECL|variable|workqueue_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|workqueue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

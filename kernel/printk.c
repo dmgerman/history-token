@@ -86,12 +86,12 @@ r_int
 id|console_locked
 suffix:semicolon
 multiline_comment|/*&n; * logbuf_lock protects log_buf, log_start, log_end, con_start and logged_chars&n; * It is also used in interesting ways to provide interlocking in&n; * release_console_sem().&n; */
-DECL|variable|logbuf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|logbuf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|__log_buf
 r_static
@@ -3282,10 +3282,11 @@ id|ratelimit_burst
 )paren
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ratelimit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int
