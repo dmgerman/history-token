@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
@@ -270,6 +271,7 @@ DECL|function|mem2hex
 id|mem2hex
 c_func
 (paren
+r_const
 r_char
 op_star
 id|mem
@@ -3304,19 +3306,11 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|breakinst
-id|breakinst
-suffix:colon
-dot
-r_int
-l_int|0x7d821008
-"&quot;"
+l_string|&quot;&t;.globl breakinst&t;&bslash;n&bslash;&n;&t;     breakinst: .long 0x7d821008&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_KGDB_CONSOLE
 multiline_comment|/* Output string in GDB O-packet format if GDB has connected. If nothing&n;   output, returns 0 (caller must then handle output). */
 r_int
 DECL|function|kgdb_output_string
@@ -3408,4 +3402,5 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 eof
