@@ -534,7 +534,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|ClearPageDirty
+id|clear_page_dirty
 c_func
 (paren
 id|page
@@ -1022,7 +1022,7 @@ id|page-&gt;index
 OG
 id|start
 )paren
-id|ClearPageDirty
+id|clear_page_dirty
 c_func
 (paren
 id|page
@@ -1327,7 +1327,7 @@ id|unlocked
 op_assign
 l_int|0
 suffix:semicolon
-id|ClearPageDirty
+id|clear_page_dirty
 c_func
 (paren
 id|page
@@ -2046,12 +2046,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|ClearPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|___add_to_page_cache
 c_func
 (paren
@@ -2060,6 +2054,12 @@ comma
 id|mapping
 comma
 id|offset
+)paren
+suffix:semicolon
+id|ClearPageDirty
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 )brace

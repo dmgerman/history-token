@@ -5341,6 +5341,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* Multicast hash filter */
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_int

@@ -549,6 +549,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|save_flags
@@ -683,6 +684,7 @@ id|i
 comma
 id|length
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

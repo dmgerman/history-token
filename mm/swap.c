@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm_inline.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 multiline_comment|/* How many pages do we try to swap or page in/out together? */
 DECL|variable|page_cluster
@@ -949,6 +950,84 @@ c_func
 id|pvec
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * Try to drop buffers from the pages in a pagevec&n; */
+DECL|function|pagevec_strip
+r_void
+id|pagevec_strip
+c_func
+(paren
+r_struct
+id|pagevec
+op_star
+id|pvec
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|pagevec_count
+c_func
+(paren
+id|pvec
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|pvec-&gt;pages
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|TestSetPageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|try_to_release_page
+c_func
+(paren
+id|page
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*&n; * Perform any setup for the swap system&n; */
 DECL|function|swap_setup

@@ -1067,6 +1067,14 @@ id|printk
 l_string|&quot; unable to get memory for dev-&gt;priv.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|IRQ_AMIGA_PORTS
+comma
+id|dev
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM

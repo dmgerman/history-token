@@ -5467,6 +5467,7 @@ op_star
 id|tmdp
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef XMT_VIA_SKB

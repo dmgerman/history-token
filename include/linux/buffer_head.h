@@ -647,6 +647,10 @@ id|bh
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|buffer_heads_over_limit
+suffix:semicolon
 multiline_comment|/*&n; * Generic address_space_operations implementations for buffer_head-backed&n; * address_spaces.&n; */
 r_int
 id|try_to_release_page

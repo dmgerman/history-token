@@ -895,6 +895,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 r_int
@@ -910,6 +913,8 @@ id|pcibios_enable_resources
 c_func
 (paren
 id|dev
+comma
+id|mask
 )paren
 )paren
 OL

@@ -1013,6 +1013,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|typedef|pte_addr_t
+r_typedef
+id|pte_t
+op_star
+id|pte_addr_t
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PPC64_PGTABLE_H */
 eof
