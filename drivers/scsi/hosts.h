@@ -424,6 +424,11 @@ id|list_head
 id|free_list
 suffix:semicolon
 multiline_comment|/* backup store of cmd structs */
+DECL|member|starved_list
+r_struct
+id|list_head
+id|starved_list
+suffix:semicolon
 DECL|member|default_lock
 id|spinlock_t
 id|default_lock
@@ -642,13 +647,6 @@ multiline_comment|/*&n;     * Host uses correct SCSI ordering not PC ordering. T
 DECL|member|reverse_ordering
 r_int
 id|reverse_ordering
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;     * Indicates that one or more devices on this host were starved, and&n;     * when the device becomes less busy that we need to feed them.&n;     */
-DECL|member|some_device_starved
-r_int
-id|some_device_starved
 suffix:colon
 l_int|1
 suffix:semicolon
