@@ -82,6 +82,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_ZERO
 )paren
 suffix:semicolon
 id|init
@@ -101,12 +103,6 @@ c_cond
 id|ret
 )paren
 (brace
-id|clear_page
-c_func
-(paren
-id|ret
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ALPHA_LARGE_VMALLOC
 id|memcpy
 (paren
@@ -219,17 +215,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte
-)paren
-id|clear_page
-c_func
-(paren
-id|pte
+op_or
+id|__GFP_ZERO
 )paren
 suffix:semicolon
 r_return
