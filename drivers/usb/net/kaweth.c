@@ -12,10 +12,10 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/dma-mapping.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG
