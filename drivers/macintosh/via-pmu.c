@@ -36,7 +36,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
