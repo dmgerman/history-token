@@ -335,9 +335,9 @@ r_else
 multiline_comment|/*&n;&t;&t; * Nope.  Try old-style &quot;0321&quot;&n;&t;&t; */
 id|res
 op_assign
+id|old_decode_dev
+c_func
 (paren
-id|dev_t
-)paren
 id|simple_strtoul
 c_func
 (paren
@@ -347,6 +347,7 @@ op_amp
 id|s
 comma
 l_int|16
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -490,9 +491,6 @@ suffix:semicolon
 id|fail
 suffix:colon
 r_return
-(paren
-id|dev_t
-)paren
 l_int|0
 suffix:semicolon
 )brace
@@ -611,9 +609,9 @@ r_else
 (brace
 id|res
 op_assign
+id|old_decode_dev
+c_func
 (paren
-id|dev_t
-)paren
 id|simple_strtoul
 c_func
 (paren
@@ -623,6 +621,7 @@ op_amp
 id|p
 comma
 l_int|16
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -877,9 +876,6 @@ id|fail
 suffix:colon
 id|res
 op_assign
-(paren
-id|dev_t
-)paren
 l_int|0
 suffix:semicolon
 r_goto

@@ -372,7 +372,7 @@ r_char
 op_star
 id|path
 comma
-id|dev_t
+r_int
 id|dev
 )paren
 (brace
@@ -750,7 +750,11 @@ c_func
 (paren
 id|path
 comma
+id|old_encode_dev
+c_func
+(paren
 id|dev
+)paren
 )paren
 OL
 l_int|0

@@ -33,7 +33,7 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
+r_int
 id|dev
 )paren
 suffix:semicolon
@@ -307,7 +307,11 @@ id|S_IFBLK
 op_or
 l_int|0600
 comma
+id|old_encode_dev
+c_func
+(paren
 id|dev
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -4007,7 +4007,11 @@ c_func
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|ORIG_ROOT_DEV
+)paren
 suffix:semicolon
 id|drive_info
 op_assign

@@ -95,7 +95,7 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
+r_int
 id|dev
 )paren
 suffix:semicolon
@@ -575,7 +575,7 @@ suffix:semicolon
 DECL|variable|rdev
 r_static
 id|__initdata
-id|dev_t
+r_int
 id|rdev
 suffix:semicolon
 DECL|function|parse_header
@@ -720,6 +720,9 @@ l_int|8
 suffix:semicolon
 id|rdev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
@@ -732,6 +735,7 @@ id|parsed
 (braket
 l_int|10
 )braket
+)paren
 )paren
 suffix:semicolon
 id|name_len

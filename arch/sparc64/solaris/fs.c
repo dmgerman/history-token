@@ -1342,7 +1342,7 @@ op_star
 comma
 r_int
 comma
-id|dev_t
+r_int
 )paren
 op_assign
 (paren
@@ -1357,7 +1357,7 @@ op_star
 comma
 r_int
 comma
-id|dev_t
+r_int
 )paren
 )paren
 id|SYS
@@ -1419,12 +1419,16 @@ id|path
 comma
 id|mode
 comma
+id|old_encode_dev
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
 id|major
 comma
 id|minor
+)paren
 )paren
 )paren
 suffix:semicolon

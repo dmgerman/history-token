@@ -5416,6 +5416,7 @@ r_inline
 id|u32
 DECL|function|linux_to_irix_dev_t
 id|linux_to_irix_dev_t
+c_func
 (paren
 id|dev_t
 id|t
@@ -6314,7 +6315,7 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
+r_int
 id|dev
 )paren
 suffix:semicolon
@@ -6334,7 +6335,7 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
+r_int
 id|dev
 )paren
 (brace
@@ -6356,9 +6357,6 @@ id|filename
 comma
 id|mode
 comma
-(paren
-r_int
-)paren
 id|dev
 )paren
 suffix:semicolon
@@ -6371,6 +6369,7 @@ id|ver
 r_case
 l_int|2
 suffix:colon
+multiline_comment|/* shouldn&squot;t we convert here as well as on stat()? */
 id|retval
 op_assign
 id|sys_mknod

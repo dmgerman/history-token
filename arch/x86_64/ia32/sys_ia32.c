@@ -8086,7 +8086,7 @@ r_int
 id|sys32_ustat
 c_func
 (paren
-id|dev_t
+r_int
 id|dev
 comma
 r_struct

@@ -188,7 +188,11 @@ id|pid
 suffix:semicolon
 id|real_root_dev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|ROOT_DEV
+)paren
 suffix:semicolon
 id|create_dev
 c_func
@@ -373,7 +377,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|old_decode_dev
+c_func
+(paren
 id|real_root_dev
+)paren
 op_eq
 id|Root_RAM0
 )paren
@@ -389,7 +397,11 @@ suffix:semicolon
 )brace
 id|ROOT_DEV
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|real_root_dev
+)paren
 suffix:semicolon
 id|mount_root
 c_func

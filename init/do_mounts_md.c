@@ -580,7 +580,11 @@ id|buf.st_mode
 )paren
 id|dev
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|buf.st_rdev
+)paren
 suffix:semicolon
 r_if
 c_cond

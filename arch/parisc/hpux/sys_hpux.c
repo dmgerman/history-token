@@ -1028,10 +1028,11 @@ r_return
 id|hpux_ustat
 c_func
 (paren
+id|old_decode_dev
+c_func
 (paren
-id|dev_t
-)paren
 id|n
+)paren
 comma
 (paren
 r_struct

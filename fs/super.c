@@ -1523,7 +1523,7 @@ r_int
 id|sys_ustat
 c_func
 (paren
-id|dev_t
+r_int
 id|dev
 comma
 r_struct
@@ -1557,7 +1557,11 @@ op_assign
 id|user_get_super
 c_func
 (paren
+id|old_decode_dev
+c_func
+(paren
 id|dev
+)paren
 )paren
 suffix:semicolon
 r_if
