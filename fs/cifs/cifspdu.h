@@ -5099,20 +5099,18 @@ DECL|struct|fea
 r_struct
 id|fea
 (brace
-DECL|member|fEA
+DECL|member|EA_flags
 r_int
 r_char
-id|fEA
+id|EA_flags
 suffix:semicolon
-DECL|member|cbName
-r_int
-r_char
-id|cbName
+DECL|member|name_len
+id|__u8
+id|name_len
 suffix:semicolon
-DECL|member|cbValue
-r_int
-r_int
-id|cbValue
+DECL|member|value_len
+id|__u16
+id|value_len
 suffix:semicolon
 DECL|member|szName
 r_char
@@ -5121,6 +5119,7 @@ id|szName
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* optionally followed by value */
 )brace
 suffix:semicolon
 multiline_comment|/* flags for _FEA.fEA */
@@ -5130,10 +5129,10 @@ DECL|struct|fealist
 r_struct
 id|fealist
 (brace
-DECL|member|cbList
+DECL|member|list_len
 r_int
 r_int
-id|cbList
+id|list_len
 suffix:semicolon
 DECL|member|list
 r_struct

@@ -165,6 +165,8 @@ r_if
 c_cond
 (paren
 id|direntry-&gt;d_inode
+op_eq
+l_int|NULL
 )paren
 (brace
 r_return

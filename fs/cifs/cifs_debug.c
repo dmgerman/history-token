@@ -740,7 +740,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Currently Allocated structures&bslash;nCIFS Sessions: %d&bslash;n&quot;
+l_string|&quot;Resources in use&bslash;nCIFS Session: %d&bslash;n&quot;
 comma
 id|sesInfoAllocCount.counter
 )paren
@@ -756,7 +756,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Shares (unique mount targets): %d&bslash;n&quot;
+l_string|&quot;Share (unique mount targets): %d&bslash;n&quot;
 comma
 id|tconInfoAllocCount.counter
 )paren
@@ -776,7 +776,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Allocated SMB Request/Response Buffers: %d&bslash;n&quot;
+l_string|&quot;SMB Request/Response Buffer: %d&bslash;n&quot;
 comma
 id|bufAllocCount.counter
 )paren
@@ -796,7 +796,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Active Operations (MIDs in use): %d&bslash;n&quot;
+l_string|&quot;Operations (MIDs): %d&bslash;n&quot;
 comma
 id|midCount.counter
 )paren
@@ -816,7 +816,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%d session %d share reconnects&bslash;n&quot;
+l_string|&quot;&bslash;n%d session %d share reconnects&bslash;n&quot;
 comma
 id|tcpSesReconnectCount.counter
 comma
