@@ -1725,6 +1725,10 @@ c_cond
 id|tlb_type
 op_ne
 id|cheetah
+op_logical_and
+id|tlb_type
+op_ne
+id|cheetah_plus
 )paren
 r_return
 op_minus

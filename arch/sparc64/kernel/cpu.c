@@ -118,6 +118,16 @@ comma
 l_string|&quot;UltraSparc III integrated FPU&quot;
 )brace
 comma
+(brace
+l_int|0x3e
+comma
+l_int|0x15
+comma
+l_int|0
+comma
+l_string|&quot;UltraSparc III+ integrated FPU&quot;
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|macro|NSPARCFPU
@@ -176,6 +186,14 @@ comma
 l_int|0x14
 comma
 l_string|&quot;TI UltraSparc III (Cheetah)&quot;
+)brace
+comma
+(brace
+l_int|0x3e
+comma
+l_int|0x15
+comma
+l_string|&quot;TI UltraSparc III+ (Cheetah+)&quot;
 )brace
 comma
 )brace
