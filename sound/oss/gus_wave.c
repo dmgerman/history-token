@@ -5153,7 +5153,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -8051,6 +8053,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -8608,6 +8611,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 op_amp
@@ -10000,7 +10004,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -10026,6 +10032,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -10067,6 +10074,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -10103,6 +10111,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -10144,6 +10153,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -10201,6 +10211,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -12768,7 +12779,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -12805,10 +12818,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -12843,6 +12852,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -13264,6 +13274,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
