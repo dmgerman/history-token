@@ -3311,7 +3311,7 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t return an error code, only for flow control... */
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irnet_disconnect_indication (instance, sap, reason, skb)&n; *&n; *    Connection has been closed. Chech reason to find out why&n; *&n; * Note : there are many cases where we come here :&n; *&t;o attempted to connect, timeout&n; *&t;o connected, link is broken, LAP has timeout&n; *&t;o connected, other side close the link&n; *&t;o connection request on the server no handled&n; */
+multiline_comment|/*&n; * Function irnet_disconnect_indication (instance, sap, reason, skb)&n; *&n; *    Connection has been closed. Chech reason to find out why&n; *&n; * Note : there are many cases where we come here :&n; *&t;o attempted to connect, timeout&n; *&t;o connected, link is broken, LAP has timeout&n; *&t;o connected, other side close the link&n; *&t;o connection request on the server not handled&n; */
 r_static
 r_void
 DECL|function|irnet_disconnect_indication
@@ -3527,27 +3527,8 @@ id|self-&gt;tsap
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Cleanup &amp; close the PPP channel, which will kill pppd and the rest */
-r_if
-c_cond
-(paren
-id|self-&gt;ppp_open
-)paren
-(brace
-id|ppp_unregister_channel
-c_func
-(paren
-op_amp
-id|self-&gt;chan
-)paren
-suffix:semicolon
 )brace
-id|self-&gt;ppp_open
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* Cleanup the socket in case we want to reconnect */
+multiline_comment|/* Cleanup the socket in case we want to reconnect in ppp_output_wakeup() */
 id|self-&gt;stsap_sel
 op_assign
 l_int|0
@@ -3560,7 +3541,44 @@ id|self-&gt;tx_flow
 op_assign
 id|FLOW_START
 suffix:semicolon
-multiline_comment|/* Note : what should we say to ppp ?&n;   * It seem the ppp_generic and pppd are happy that way and will eventually&n;   * timeout gracefully, so don&squot;t bother them... */
+multiline_comment|/* Deal with the ppp instance if it&squot;s still alive */
+r_if
+c_cond
+(paren
+id|self-&gt;ppp_open
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|test_open
+)paren
+(brace
+multiline_comment|/* If we were connected, cleanup &amp; close the PPP channel,&n;&t;   * which will kill pppd (hangup) and the rest */
+id|ppp_unregister_channel
+c_func
+(paren
+op_amp
+id|self-&gt;chan
+)paren
+suffix:semicolon
+id|self-&gt;ppp_open
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* If we were trying to connect, flush (drain) ppp_generic&n;&t;   * Tx queue (most often we have blocked it), which will&n;&t;   * trigger an other attempt to connect. If we are passive,&n;&t;   * this will empty the Tx queue after last try. */
+id|ppp_output_wakeup
+c_func
+(paren
+op_amp
+id|self-&gt;chan
+)paren
+suffix:semicolon
+)brace
+)brace
 id|DEXIT
 c_func
 (paren
