@@ -1883,7 +1883,7 @@ suffix:semicolon
 id|u8
 id|lastfid
 op_assign
-l_int|0xFF
+l_int|0xff
 suffix:semicolon
 r_for
 c_loop
@@ -1953,8 +1953,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-id|PFX
-l_string|&quot;BIOS error - 0 vid exceeded with pstate %d&bslash;n&quot;
+id|BFX
+l_string|&quot;0 vid exceeded with pstate %d&bslash;n&quot;
 comma
 id|j
 )paren
@@ -1984,8 +1984,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-id|PFX
-l_string|&quot;BIOS error - maxvid exceeded with pstate %d&bslash;n&quot;
+id|BFX
+l_string|&quot;maxvid exceeded with pstate %d&bslash;n&quot;
 comma
 id|j
 )paren
