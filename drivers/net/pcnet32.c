@@ -4449,23 +4449,6 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|0x2628
-suffix:colon
-id|chipname
-op_assign
-l_string|&quot;PCnet/FAST III 79C976&quot;
-suffix:semicolon
-id|fdx
-op_assign
-l_int|1
-suffix:semicolon
-id|mii
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 (brace
