@@ -152,8 +152,6 @@ DECL|macro|SF_PREFIX
 mdefine_line|#define SF_PREFIX&t;0x0400&t;&t;/* Buffer for prefix is allocated */
 DECL|macro|SF_VERBOSE
 mdefine_line|#define SF_VERBOSE&t;0x0800&t;&t;/* Talk about fs when mounting */
-DECL|macro|SF_READONLY
-mdefine_line|#define SF_READONLY&t;0x1000&t;&t;/* Don&squot;t allow to remount rw */
 multiline_comment|/* short cut to get to the affs specific sb data */
 DECL|function|AFFS_SB
 r_static

@@ -2212,17 +2212,6 @@ id|sb-&gt;s_flags
 op_or_assign
 id|MS_RDONLY
 suffix:semicolon
-id|AFFS_SB
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|s_flags
-op_or_assign
-id|SF_READONLY
-suffix:semicolon
-multiline_comment|/* Don&squot;t allow to remount rw */
 )brace
 r_void
 DECL|function|affs_warning
