@@ -86,7 +86,7 @@ mdefine_line|#define ELF_NGREG&t;48&t;/* includes nip, msr, lr, etc. */
 DECL|macro|ELF_NFPREG
 mdefine_line|#define ELF_NFPREG&t;33&t;/* includes fpscr */
 DECL|macro|ELF_NVRREG
-mdefine_line|#define ELF_NVRREG&t;33&t;/* includes vscr */
+mdefine_line|#define ELF_NVRREG&t;34&t;/* includes vscr */
 DECL|typedef|elf_greg_t64
 r_typedef
 r_int
@@ -161,6 +161,21 @@ id|elf_fpreg_t
 id|elf_fpregset_t
 (braket
 id|ELF_NFPREG
+)braket
+suffix:semicolon
+multiline_comment|/* Altivec registers */
+multiline_comment|/*&n; * The entries with indexes 0-31 contain the corresponding vector registers. &n; * The entry with index 32 contains the vscr as the last word (offset 12) &n; * within the quadword.  This allows the vscr to be stored as either a &n; * quadword (since it must be copied via a vector register to/from storage) &n; * or as a word.  The entry with index 33 contains the vrsave as the first &n; * word (offset 0) within the quadword.&n; *&n; * This definition of the VMX state is compatible with the current PPC32 &n; * ptrace interface.  This allows signal handling and ptrace to use the same &n; * structures.  This also simplifies the implementation of a bi-arch &n; * (combined (32- and 64-bit) gdb.&n; */
+DECL|typedef|elf_vrreg_t
+r_typedef
+id|__vector128
+id|elf_vrreg_t
+suffix:semicolon
+DECL|typedef|elf_vrregset_t
+r_typedef
+id|elf_vrreg_t
+id|elf_vrregset_t
+(braket
+id|ELF_NVRREG
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */

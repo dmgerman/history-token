@@ -246,6 +246,25 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|PT_FPSCR32
 mdefine_line|#define PT_FPSCR32 (PT_FPR0 + 2*32 + 1)&t;  /* each FP reg occupies 2 32-bit userspace slots */
 macro_line|#endif
+DECL|macro|PT_VR0
+mdefine_line|#define PT_VR0 82&t;/* each Vector reg occupies 2 slots in 64-bit */
+DECL|macro|PT_VSCR
+mdefine_line|#define PT_VSCR (PT_VR0 + 32*2 + 1)
+DECL|macro|PT_VRSAVE
+mdefine_line|#define PT_VRSAVE (PT_VR0 + 33*2)
+macro_line|#ifdef __KERNEL__
+DECL|macro|PT_VR0_32
+mdefine_line|#define PT_VR0_32 164&t;/* each Vector reg occupies 4 slots in 32-bit */
+DECL|macro|PT_VSCR_32
+mdefine_line|#define PT_VSCR_32 (PT_VR0 + 32*4 + 3)
+DECL|macro|PT_VRSAVE_32
+mdefine_line|#define PT_VRSAVE_32 (PT_VR0 + 33*4)
+macro_line|#endif
+multiline_comment|/*&n; * Get/set all the altivec registers vr0..vr31, vscr, vrsave, in one go. &n; * The transfer totals 34 quadword.  Quadwords 0-31 contain the &n; * corresponding vector registers.  Quadword 32 contains the vscr as the &n; * last word (offset 12) within that quadword.  Quadword 33 contains the &n; * vrsave as the first word (offset 0) within the quadword.&n; *&n; * This definition of the VMX state is compatible with the current PPC32 &n; * ptrace interface.  This allows signal handling and ptrace to use the same &n; * structures.  This also simplifies the implementation of a bi-arch &n; * (combined (32- and 64-bit) gdb.&n; */
+DECL|macro|PTRACE_GETVRREGS
+mdefine_line|#define PTRACE_GETVRREGS&t;18
+DECL|macro|PTRACE_SETVRREGS
+mdefine_line|#define PTRACE_SETVRREGS&t;19
 multiline_comment|/* Additional PTRACE requests implemented on PowerPC. */
 DECL|macro|PPC_PTRACE_GETREGS
 mdefine_line|#define PPC_PTRACE_GETREGS&t;      0x99  /* Get GPRs 0 - 31 */
