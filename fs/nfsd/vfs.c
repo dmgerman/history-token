@@ -6349,12 +6349,6 @@ id|current-&gt;fsuid
 r_return
 l_int|0
 suffix:semicolon
-id|acc
-op_and_assign
-op_complement
-id|MAY_OWNER_OVERRIDE
-suffix:semicolon
-multiline_comment|/* This bit is no longer needed,&n;                                        and gets in the way later */
 id|err
 op_assign
 id|permission
@@ -6390,7 +6384,11 @@ id|inode-&gt;i_mode
 op_logical_and
 id|acc
 op_eq
+(paren
 id|MAY_READ
+op_or
+id|MAY_OWNER_OVERRIDE
+)paren
 )paren
 id|err
 op_assign

@@ -64,7 +64,8 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
+op_star
 id|radix_tree_delete
 c_func
 (paren

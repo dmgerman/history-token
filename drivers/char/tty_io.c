@@ -7856,7 +7856,7 @@ c_cond
 id|p-&gt;files
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -7935,7 +7935,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

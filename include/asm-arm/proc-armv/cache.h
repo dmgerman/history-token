@@ -24,9 +24,6 @@ DECL|macro|flush_dcache_range
 mdefine_line|#define flush_dcache_range(_s,_e)&t;cpu_cache_clean_invalidate_range((_s),(_e),0)
 DECL|macro|clean_dcache_area
 mdefine_line|#define clean_dcache_area(start,size) &bslash;&n;&t;cpu_cache_clean_invalidate_range((unsigned long)start, &bslash;&n;&t;&t;&t;&t;&t; ((unsigned long)start) + size, 0);
-multiline_comment|/*&n; * This is an obsolete interface; the functionality that was provided by this&n; * function is now merged into our flush_dcache_page, flush_icache_page,&n; * copy_user_page and clear_user_page functions.&n; */
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;do { } while (0)
 multiline_comment|/*&n; * flush_dcache_page is used when the kernel has written to the page&n; * cache page at virtual address page-&gt;virtual.&n; *&n; * If this page isn&squot;t mapped (ie, page-&gt;mapping = NULL), or it has&n; * userspace mappings (page-&gt;mapping-&gt;i_mmap or page-&gt;mapping-&gt;i_mmap_shared)&n; * then we _must_ always clean + invalidate the dcache entries associated&n; * with the kernel mapping.&n; *&n; * Otherwise we can defer the operation, and clean the cache when we are&n; * about to change to user space.  This is the same method as used on SPARC64.&n; * See update_mmu_cache for the user space part.&n; */
 DECL|macro|mapping_mapped
 mdefine_line|#define mapping_mapped(map)&t;(!list_empty(&amp;(map)-&gt;i_mmap) || &bslash;&n;&t;&t;&t;&t; !list_empty(&amp;(map)-&gt;i_mmap_shared))

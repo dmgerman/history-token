@@ -5870,12 +5870,6 @@ suffix:semicolon
 id|recover
 suffix:colon
 multiline_comment|/*&n;&t; * ENOSPC, or some other error.  We may already have added some&n;&t; * blocks to the file, so we need to write these out to avoid&n;&t; * exposing stale data.&n;&t; * The page is currently locked and not marked for writeback&n;&t; */
-id|ClearPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|bh
 op_assign
 id|head

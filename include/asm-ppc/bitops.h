@@ -1826,8 +1826,12 @@ suffix:semicolon
 )brace
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr, addr)&t;__test_and_set_bit((nr) ^ 0x18, (unsigned long *)(addr))
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock, nr, addr)  test_and_set_bit((nr) ^ 0x18, (unsigned long *)(addr))
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr, addr) __test_and_clear_bit((nr) ^ 0x18, (unsigned long *)(addr))
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock, nr, addr) test_and_clear_bit((nr) ^ 0x18, (unsigned long *)(addr))
 DECL|function|ext2_test_bit
 r_static
 id|__inline__

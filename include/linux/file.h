@@ -19,7 +19,7 @@ id|atomic_t
 id|count
 suffix:semicolon
 DECL|member|file_lock
-id|rwlock_t
+id|spinlock_t
 id|file_lock
 suffix:semicolon
 multiline_comment|/* Protects all the below members.  Nests inside tsk-&gt;alloc_lock */

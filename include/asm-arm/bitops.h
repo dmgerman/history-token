@@ -1293,8 +1293,12 @@ mdefine_line|#define hweight8(x) generic_hweight8(x)
 multiline_comment|/*&n; * Ext2 is defined to use little-endian byte ordering.&n; * These do not need to be atomic.&n; */
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
+DECL|macro|ext2_set_bit_atomic
+mdefine_line|#define ext2_set_bit_atomic(lock,nr,p)          &bslash;&n;                test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_clear_bit
 mdefine_line|#define ext2_clear_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
+DECL|macro|ext2_clear_bit_atomic
+mdefine_line|#define ext2_clear_bit_atomic(lock,nr,p)        &bslash;&n;                test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_test_bit
 mdefine_line|#define ext2_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_find_first_zero_bit
