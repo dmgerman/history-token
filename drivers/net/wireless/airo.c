@@ -887,6 +887,8 @@ DECL|macro|NOP
 mdefine_line|#define NOP&t;&t;0x0010
 DECL|macro|CMD_WORKAROUND
 mdefine_line|#define CMD_WORKAROUND&t;0x0011
+DECL|macro|CMD_ALLOCATEAUX
+mdefine_line|#define CMD_ALLOCATEAUX 0x0020
 DECL|macro|CMD_ACCESS
 mdefine_line|#define CMD_ACCESS&t;0x0021
 DECL|macro|CMD_PCIBAP
@@ -1079,6 +1081,8 @@ DECL|macro|EV_LINK
 mdefine_line|#define EV_LINK 0x80
 DECL|macro|EV_AWAKE
 mdefine_line|#define EV_AWAKE 0x100
+DECL|macro|EV_TXCPY
+mdefine_line|#define EV_TXCPY 0x400
 DECL|macro|EV_UNKNOWN
 mdefine_line|#define EV_UNKNOWN 0x800
 DECL|macro|EV_MIC
