@@ -2722,6 +2722,13 @@ c_func
 id|simple_strtoul
 )paren
 suffix:semicolon
+DECL|variable|simple_strtol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtol
+)paren
+suffix:semicolon
 DECL|variable|system_utsname
 id|EXPORT_SYMBOL
 c_func
