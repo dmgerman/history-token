@@ -2,11 +2,10 @@ multiline_comment|/*&n; * $Id: kernelcapi.h,v 1.8.6.2 2001/02/07 11:31:31 kai Ex
 macro_line|#ifndef __KERNELCAPI_H__
 DECL|macro|__KERNELCAPI_H__
 mdefine_line|#define __KERNELCAPI_H__
-macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|CAPI_MAXAPPL
-mdefine_line|#define CAPI_MAXAPPL&t;128&t;/* maximum number of applications  */
+mdefine_line|#define CAPI_MAXAPPL&t;240&t;/* maximum number of applications  */
 DECL|macro|CAPI_MAXCONTR
-mdefine_line|#define CAPI_MAXCONTR&t;16&t;/* maximum number of controller    */
+mdefine_line|#define CAPI_MAXCONTR&t;32&t;/* maximum number of controller    */
 DECL|macro|CAPI_MAXDATAWINDOW
 mdefine_line|#define CAPI_MAXDATAWINDOW&t;8
 DECL|struct|kcapi_flagdef
@@ -77,6 +76,7 @@ mdefine_line|#define KCAPI_TRACE_SHORT&t;&t;3
 DECL|macro|KCAPI_TRACE_FULL
 mdefine_line|#define KCAPI_TRACE_FULL&t;&t;4
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|macro|KCI_CONTRUP
 mdefine_line|#define&t;KCI_CONTRUP&t;0&t;/* arg: struct capi_profile */
@@ -137,6 +137,25 @@ DECL|member|nsentdatapkt
 r_int
 r_int
 id|nsentdatapkt
+suffix:semicolon
+DECL|member|recv_sem
+r_struct
+id|semaphore
+id|recv_sem
+suffix:semicolon
+DECL|member|recv_queue
+r_struct
+id|sk_buff_head
+id|recv_queue
+suffix:semicolon
+DECL|member|recv_work
+r_struct
+id|work_struct
+id|recv_work
+suffix:semicolon
+DECL|member|release_in_progress
+r_int
+id|release_in_progress
 suffix:semicolon
 multiline_comment|/* ugly hack to allow for notification of added/removed&n;&t; * controllers. The Right Way (tm) is known. XXX&n;&t; */
 DECL|member|callback
