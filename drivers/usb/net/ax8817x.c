@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ASIX AX8817x USB 2.0 10/100/HomePNA Ethernet controller driver&n; *&n; * $Id: ax8817x.c,v 1.11 2003/06/15 19:00:02 dhollis Exp $&n; *&n; * Copyright (c) 2002-2003 TiVo Inc.&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * History &n; *&n; *&t;2003-06-15 - Dave Hollis &lt;dhollis@davehollis.com&gt;  2.0.0&n; *&t;&t;* Remove crc32 inline function, use core kernel instead&n; *&t;&t;* Set sane defaults for rx_buffers&n; *&t;&t;* Fix ethtool GETDRVINFO bits - use strlcpy and&n; *&t;&t;  usb_make_path&n; *&n; *&t;2003-06-05 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.10.0&n; *&t;&t;* Port to 2.5 series kernels&n; *&t;&t;* Remove #if 0 blocks that are confirmed&n; *&t;&t;  unnecessary&n; *&t;&t;* Re-did tx routines based off pegasus driver.&n; *&t;&t;  This resolved hard crashes and greatly simplified&n; *&t;&t;  things.&n; *&t;&t;* Redo mii/ethtool routines&n; *&n; *&t;2003-05-31 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.8&n; *&t;&t;* Don&squot;t stop/start the queue in start_xmit&n; *&t;&t;* Swallow URB status upon hard removal&n; *&t;&t;* Cleanup remaining comments (kill // style)&n; *&n; *&t;2003-05-29 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.7&n; *&t;&t;* Set module owner&n; *&t;&t;* Follow-up on suggestions from David Brownell &amp;&n; *&t;&t;  Oliver Neukum which should help with robustness&n; *&t;&t;* Use ether_crc from stock kernel if available&n; *&n; *&t;2003-05-28 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.6&n; *&t;&t;* Added basic ethtool &amp; mii support&n; *&n; *&t;2003-05-28 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.5&n; *&t;&t;* Workout devrequest change to usb_ctrlrequest structure&n; *&t;&t;* Replace FILL_BULK_URB macros to non-deprecated &n; *&t;&t;  usb_fill_bulk_urb macros&n; *&t;&t;* Replace printks with equivalent macros&n; *&t;&t;* Use defines for module description, version, author to&n; *&t;&t;  simplify future changes&n; *&n; * Known Issues&n; *&n; * Todo&n; *&t;Fix mii/ethtool output&n;*/
+multiline_comment|/*&n; * ASIX AX8817x USB 2.0 10/100/HomePNA Ethernet controller driver&n; *&n; * $Id: ax8817x.c,v 1.17 2003/07/23 20:46:13 dhollis Exp $&n; *&n; * Copyright (c) 2002-2003 TiVo Inc.&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * History &n; *&n; *&t;2003-07-22 - Dave Hollis &lt;dhollis@davehollis.com&gt;  2.0.1&n; *&t;&t;* Add Intellinet USB ids&n; *&t;&t;* Fix mii/ethtool support - link check works!&n; *&t;&t;* Add msglevel support&n; *&t;&t;* Shamelessly &squot;borrowed&squot; devdbg/err/info macros from usbnet&n; *&t;&t;* Change strlcpy to strncpy&n; *&t;2003-06-15 - Dave Hollis &lt;dhollis@davehollis.com&gt;  2.0.0&n; *&t;&t;* Remove crc32 inline function, use core kernel instead&n; *&t;&t;* Set sane defaults for rx_buffers&n; *&t;&t;* Fix ethtool GETDRVINFO bits - use strlcpy and&n; *&t;&t;  usb_make_path&n; *&n; *&t;2003-06-05 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.10.0&n; *&t;&t;* Port to 2.5 series kernels&n; *&t;&t;* Remove #if 0 blocks that are confirmed&n; *&t;&t;  unnecessary&n; *&t;&t;* Re-did tx routines based off pegasus driver.&n; *&t;&t;  This resolved hard crashes and greatly simplified&n; *&t;&t;  things.&n; *&t;&t;* Redo mii/ethtool routines&n; *&n; *&t;2003-05-31 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.8&n; *&t;&t;* Don&squot;t stop/start the queue in start_xmit&n; *&t;&t;* Swallow URB status upon hard removal&n; *&t;&t;* Cleanup remaining comments (kill // style)&n; *&n; *&t;2003-05-29 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.7&n; *&t;&t;* Set module owner&n; *&t;&t;* Follow-up on suggestions from David Brownell &amp;&n; *&t;&t;  Oliver Neukum which should help with robustness&n; *&t;&t;* Use ether_crc from stock kernel if available&n; *&n; *&t;2003-05-28 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.6&n; *&t;&t;* Added basic ethtool &amp; mii support&n; *&n; *&t;2003-05-28 - Dave Hollis &lt;dhollis@davehollis.com&gt;  0.9.5&n; *&t;&t;* Workout devrequest change to usb_ctrlrequest structure&n; *&t;&t;* Replace FILL_BULK_URB macros to non-deprecated &n; *&t;&t;  usb_fill_bulk_urb macros&n; *&t;&t;* Replace printks with equivalent macros&n; *&t;&t;* Use defines for module description, version, author to&n; *&t;&t;  simplify future changes&n; *&n; * Known Issues&n; *&n; * Todo&n; *&t;Fix receive performance on OHCI&n;*/
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v2.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v2.0.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;TiVo, Inc.&quot;
 DECL|macro|DRIVER_DESC
@@ -70,6 +70,8 @@ DECL|macro|AX_TIMEOUT_CMD
 mdefine_line|#define AX_TIMEOUT_CMD              ( HZ / 10 )
 DECL|macro|AX_TIMEOUT_TX
 mdefine_line|#define AX_TIMEOUT_TX               ( HZ * 2 )
+DECL|macro|AX_MCAST_FILTER_SIZE
+mdefine_line|#define AX_MCAST_FILTER_SIZE        8
 DECL|macro|AX_MAX_MCAST
 mdefine_line|#define AX_MAX_MCAST                64
 DECL|macro|AX_DRV_STATE_INITIALIZING
@@ -276,6 +278,10 @@ DECL|member|drv_state
 id|u8
 id|drv_state
 suffix:semicolon
+DECL|member|msg_level
+r_int
+id|msg_level
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|ax8817x_id_table
@@ -347,6 +353,21 @@ suffix:colon
 l_int|0x009f9d9f
 )brace
 comma
+multiline_comment|/* Intellinet USB Ethernet */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0b95
+comma
+l_int|0x1720
+)paren
+comma
+id|driver_info
+suffix:colon
+l_int|0x00130103
+)brace
+comma
 (brace
 )brace
 )brace
@@ -359,6 +380,17 @@ comma
 id|ax8817x_id_table
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+DECL|macro|devdbg
+mdefine_line|#define devdbg(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (ax_info)-&gt;net-&gt;name, ## arg)
+macro_line|#else
+DECL|macro|devdbg
+mdefine_line|#define devdbg(ax_info, fmt, arg...) do {} while(0)
+macro_line|#endif
+DECL|macro|deverr
+mdefine_line|#define deverr(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot;, (ax_info)-&gt;net-&gt;name, ## arg)
+DECL|macro|devinfo
+mdefine_line|#define devinfo(ax_info, fmt, arg...) &bslash;&n;&t;do { if ((ax_info)-&gt;msg_level &gt;= 1) &bslash;&n;&t;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot;, (ax_info)-&gt;net-&gt;name, ## arg); &bslash;&n;&t;} while (0)
 r_static
 r_void
 id|ax_run_ctl_queue
@@ -3349,7 +3381,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|8
+id|AX_MCAST_FILTER_SIZE
 comma
 id|GFP_ATOMIC
 )paren
@@ -3377,7 +3409,7 @@ id|multi_filter
 comma
 l_int|0
 comma
-l_int|8
+id|AX_MCAST_FILTER_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Build the multicast hash filter. */
@@ -3439,7 +3471,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|8
+id|AX_MCAST_FILTER_SIZE
 comma
 id|multi_filter
 )paren
@@ -3492,6 +3524,27 @@ id|regd
 r_int
 id|ret
 suffix:semicolon
+id|u8
+id|buf
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|devdbg
+c_func
+(paren
+id|ax_info
+comma
+l_string|&quot;read_mii_word: phy=%02x, indx=%02x, regd=%04x&quot;
+comma
+id|phy
+comma
+id|indx
+comma
+op_star
+id|regd
+)paren
+suffix:semicolon
 id|ax_write_cmd
 c_func
 (paren
@@ -3505,7 +3558,8 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|NULL
+op_amp
+id|buf
 )paren
 suffix:semicolon
 id|ret
@@ -3517,12 +3571,28 @@ id|ax_info
 comma
 id|AX_CMD_READ_MII_REG
 comma
-id|phy
+id|ax_info-&gt;phy_id
 comma
+(paren
+id|__u16
+)paren
 id|indx
 comma
 l_int|2
 comma
+id|regd
+)paren
+suffix:semicolon
+id|devdbg
+c_func
+(paren
+id|ax_info
+comma
+l_string|&quot;read_mii_word: AX_CMD_READ_MII_REG ret=%02x, regd=%04x&quot;
+comma
+id|ret
+comma
+op_star
 id|regd
 )paren
 suffix:semicolon
@@ -3539,11 +3609,12 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|NULL
+op_amp
+id|buf
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|write_mii_word
@@ -3567,9 +3638,11 @@ id|__u16
 id|regd
 )paren
 (brace
-id|warn
+id|deverr
 c_func
 (paren
+id|ax_info
+comma
 l_string|&quot;write_mii_word - not implemented!&quot;
 )paren
 suffix:semicolon
@@ -3604,6 +3677,18 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|res
+suffix:semicolon
+id|devdbg
+c_func
+(paren
+id|ax_info
+comma
+l_string|&quot;mdio_read: phy_id=%02x, loc=%02x&quot;
+comma
+id|phy_id
+comma
+id|loc
+)paren
 suffix:semicolon
 id|read_mii_word
 c_func
@@ -3655,6 +3740,18 @@ op_star
 id|ax_info
 op_assign
 id|dev-&gt;priv
+suffix:semicolon
+id|devdbg
+c_func
+(paren
+id|ax_info
+comma
+l_string|&quot;mdio_write: phy_id=%02x, loc=%02x&quot;
+comma
+id|phy_id
+comma
+id|loc
+)paren
 suffix:semicolon
 id|write_mii_word
 c_func
@@ -3735,24 +3832,34 @@ op_assign
 id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.driver
 comma
 id|DRIVER_NAME
 comma
-id|ETHTOOL_BUSINFO_LEN
+r_sizeof
+(paren
+id|info.driver
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.version
 comma
 id|DRIVER_VERSION
 comma
-id|ETHTOOL_BUSINFO_LEN
+r_sizeof
+(paren
+id|info.version
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|usb_make_path
@@ -3909,9 +4016,12 @@ id|ETHTOOL_GLINK
 suffix:semicolon
 id|edata.data
 op_assign
-id|ax_info-&gt;phy_state
-op_eq
-id|AX_PHY_STATE_LINK
+id|mii_link_ok
+c_func
+(paren
+op_amp
+id|ax_info-&gt;mii
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3950,7 +4060,10 @@ op_assign
 id|ETHTOOL_GMSGLVL
 )brace
 suffix:semicolon
-multiline_comment|/* edata.data = ax_info-&gt;msg_enable; FIXME */
+id|edata.data
+op_assign
+id|ax_info-&gt;msg_level
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4005,7 +4118,10 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* sp-&gt;msg_enable = edata.data;  FIXME */
+id|ax_info-&gt;msg_level
+op_assign
+id|edata.data
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4014,116 +4130,6 @@ suffix:semicolon
 r_return
 op_minus
 id|EOPNOTSUPP
-suffix:semicolon
-)brace
-DECL|function|ax8817x_mii_ioctl
-r_static
-r_int
-id|ax8817x_mii_ioctl
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|net
-comma
-r_struct
-id|ifreq
-op_star
-id|ifr
-comma
-r_int
-id|cmd
-)paren
-(brace
-r_struct
-id|ax8817x_info
-op_star
-id|ax_info
-suffix:semicolon
-r_struct
-id|mii_ioctl_data
-op_star
-id|data_ptr
-op_assign
-(paren
-r_struct
-id|mii_ioctl_data
-op_star
-)paren
-op_amp
-(paren
-id|ifr-&gt;ifr_data
-)paren
-suffix:semicolon
-id|ax_info
-op_assign
-id|net-&gt;priv
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-r_case
-id|SIOCGMIIPHY
-suffix:colon
-id|data_ptr-&gt;phy_id
-op_assign
-id|ax_info-&gt;phy_id
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIOCGMIIREG
-suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_NET_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
-id|ax_read_cmd
-c_func
-(paren
-id|ax_info
-comma
-id|AX_CMD_READ_MII_REG
-comma
-l_int|0
-comma
-id|data_ptr-&gt;reg_num
-op_amp
-l_int|0x1f
-comma
-l_int|2
-comma
-op_amp
-(paren
-id|data_ptr-&gt;val_out
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ax8817x_ioctl
@@ -4151,28 +4157,18 @@ id|ax8817x_info
 op_star
 id|ax_info
 suffix:semicolon
-r_int
-id|res
-suffix:semicolon
 id|ax_info
 op_assign
 id|net-&gt;priv
 suffix:semicolon
-id|res
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|cmd
-)paren
-(brace
-r_case
+op_eq
 id|SIOCETHTOOL
-suffix:colon
-id|res
-op_assign
+)paren
+r_return
 id|ax8817x_ethtool_ioctl
 c_func
 (paren
@@ -4186,41 +4182,25 @@ op_star
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIOCGMIIPHY
-suffix:colon
-multiline_comment|/* Get address of PHY in use */
-r_case
-id|SIOCGMIIREG
-suffix:colon
-multiline_comment|/* Read from MII PHY register */
-r_case
-id|SIOCSMIIREG
-suffix:colon
-multiline_comment|/* Write to MII PHY register */
 r_return
-id|ax8817x_mii_ioctl
+id|generic_mii_ioctl
 c_func
 (paren
-id|net
+op_amp
+id|ax_info-&gt;mii
 comma
-id|ifr
+(paren
+r_struct
+id|mii_ioctl_data
+op_star
+)paren
+op_amp
+id|ifr-&gt;ifr_data
 comma
 id|cmd
+comma
+l_int|NULL
 )paren
-suffix:semicolon
-r_default
-suffix:colon
-id|res
-op_assign
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-r_return
-id|res
 suffix:semicolon
 )brace
 DECL|function|ax8817x_net_init
@@ -4971,9 +4951,13 @@ id|ax_info-&gt;mii.mdio_write
 op_assign
 id|mdio_write
 suffix:semicolon
+id|ax_info-&gt;mii.phy_id
+op_assign
+id|ax_info-&gt;phy_id
+suffix:semicolon
 id|ax_info-&gt;mii.phy_id_mask
 op_assign
-l_int|0x1f
+l_int|0x3f
 suffix:semicolon
 id|ax_info-&gt;mii.reg_num_mask
 op_assign
