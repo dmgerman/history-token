@@ -29365,7 +29365,6 @@ c_func
 (paren
 id|X86_FEATURE_MMX
 comma
-op_amp
 id|boot_cpu_data.x86_capability
 )paren
 )paren
