@@ -2691,6 +2691,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 id|list_add
 c_func
 (paren
@@ -2701,6 +2702,7 @@ op_amp
 id|root_corkscrew_dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
