@@ -12018,7 +12018,7 @@ c_cond
 (paren
 (paren
 id|offset
-OG
+op_ge
 id|eeprom-&gt;word_size
 )paren
 op_logical_or
@@ -12568,7 +12568,7 @@ c_cond
 (paren
 (paren
 id|offset
-OG
+op_ge
 id|eeprom-&gt;word_size
 )paren
 op_logical_or
