@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/idr.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_static
@@ -1178,52 +1179,6 @@ id|proc_inum_lock
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-DECL|function|proc_readlink
-id|proc_readlink
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_char
-id|__user
-op_star
-id|buffer
-comma
-r_int
-id|buflen
-)paren
-(brace
-r_char
-op_star
-id|s
-op_assign
-id|PDE
-c_func
-(paren
-id|dentry-&gt;d_inode
-)paren
-op_member_access_from_pointer
-id|data
-suffix:semicolon
-r_return
-id|vfs_readlink
-c_func
-(paren
-id|dentry
-comma
-id|buffer
-comma
-id|buflen
-comma
-id|s
-)paren
-suffix:semicolon
-)brace
 DECL|function|proc_follow_link
 r_static
 r_int
@@ -1241,10 +1196,11 @@ op_star
 id|nd
 )paren
 (brace
-r_char
-op_star
-id|s
-op_assign
+id|nd_set_link
+c_func
+(paren
+id|nd
+comma
 id|PDE
 c_func
 (paren
@@ -1252,15 +1208,10 @@ id|dentry-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|data
+)paren
 suffix:semicolon
 r_return
-id|vfs_follow_link
-c_func
-(paren
-id|nd
-comma
-id|s
-)paren
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|proc_link_inode_operations
@@ -1273,7 +1224,7 @@ op_assign
 dot
 id|readlink
 op_assign
-id|proc_readlink
+id|generic_readlink
 comma
 dot
 id|follow_link
