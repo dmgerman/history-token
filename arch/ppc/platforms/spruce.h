@@ -55,7 +55,7 @@ mdefine_line|#define UART0_INT&t;3
 DECL|macro|UART1_INT
 mdefine_line|#define UART1_INT&t;4
 DECL|macro|STD_UART_OP
-mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&bslash;&n;&t;&t;ASYNC_BOOT_AUTOCONF,&t;&t;&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
+mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&t;&bslash;&n;&t;&t;ASYNC_BOOT_AUTOCONF,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;iomem_base: (unsigned char *) UART##num##_IO_BASE,&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&bslash;&n;&t;STD_UART_OP(0)&t;&t;&bslash;&n;&t;STD_UART_OP(1)
 macro_line|#endif /* __ASM_SPRUCE_H__ */
