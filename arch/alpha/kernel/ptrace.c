@@ -1042,7 +1042,7 @@ c_cond
 id|displ
 )paren
 multiline_comment|/* guard against unoptimized code */
-id|child-&gt;thread.bpt_addr
+id|child-&gt;thread_info-&gt;bpt_addr
 (braket
 id|nsaved
 op_increment

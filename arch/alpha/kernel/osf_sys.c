@@ -3186,7 +3186,12 @@ multiline_comment|/* Return current software fp control &amp; status bits.  */
 multiline_comment|/* Note that DU doesn&squot;t verify available space here.  */
 id|w
 op_assign
-id|current_thread_info-&gt;ieee_state
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|ieee_state
 op_amp
 id|IEEE_SW_MASK
 suffix:semicolon

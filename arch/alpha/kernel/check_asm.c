@@ -40,7 +40,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|thread_struct
+id|thread_info
 comma
 id|task
 )paren
@@ -54,7 +54,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|thread_struct
+id|thread_info
 comma
 id|flags
 )paren
@@ -68,7 +68,7 @@ comma
 m_offsetof
 (paren
 r_struct
-id|thread_struct
+id|thread_info
 comma
 id|cpu
 )paren

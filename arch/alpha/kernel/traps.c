@@ -578,7 +578,6 @@ id|thread_info
 op_star
 id|ti
 op_assign
-op_amp
 id|tsk-&gt;thread_info
 suffix:semicolon
 r_int
@@ -1491,7 +1490,7 @@ l_int|3
 suffix:colon
 multiline_comment|/* FEN fault */
 multiline_comment|/* Irritating users can call PAL_clrfen to disable the&n;&t;&t;   FPU for the process.  The kernel will then trap in&n;&t;&t;   do_switch_stack and undo_switch_stack when we try&n;&t;&t;   to save and restore the FP registers.&n;&n;&t;&t;   Given that GCC by default generates code that uses the&n;&t;&t;   FP registers, PAL_clrfen is not useful except for DoS&n;&t;&t;   attacks.  So turn the bleeding FPU back on and be done&n;&t;&t;   with it.  */
-id|current_thead_info
+id|current_thread_info
 c_func
 (paren
 )paren

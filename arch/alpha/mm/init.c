@@ -1090,6 +1090,10 @@ id|VM_ALLOC
 suffix:semicolon
 id|console_remap_vm.addr
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|VMALLOC_START
 suffix:semicolon
 id|console_remap_vm.size
