@@ -3020,19 +3020,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* RFC 2460 section 8.1 says that we SHOULD log&n;&t;&t;   this error. Well, it is reasonable.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;IPv6: udp checksum is 0&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -3106,16 +3102,9 @@ id|skb-&gt;csum
 )paren
 )paren
 (brace
-id|NETDEBUG
+id|LIMIT_NETDEBUG
 c_func
 (paren
-r_if
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -4605,16 +4594,9 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|NETDEBUG
+id|LIMIT_NETDEBUG
 c_func
 (paren
-r_if
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|printk
 c_func
 (paren

@@ -3899,9 +3899,12 @@ suffix:semicolon
 multiline_comment|/* &n; *&t;Enable debug/info messages &n; */
 macro_line|#if 0
 mdefine_line|#define NETDEBUG(x)&t;do { } while (0)
+mdefine_line|#define LIMIT_NETDEBUG(x) do {} while(0)
 macro_line|#else
 DECL|macro|NETDEBUG
 mdefine_line|#define NETDEBUG(x)&t;do { x; } while (0)
+DECL|macro|LIMIT_NETDEBUG
+mdefine_line|#define LIMIT_NETDEBUG(x) do { if (net_ratelimit()) { x; } } while(0)
 macro_line|#endif
 multiline_comment|/*&n; * Macros for sleeping on a socket. Use them like this:&n; *&n; * SOCK_SLEEP_PRE(sk)&n; * if (condition)&n; * &t;schedule();&n; * SOCK_SLEEP_POST(sk)&n; *&n; * N.B. These are now obsolete and were, afaik, only ever used in DECnet&n; * and when the last use of them in DECnet has gone, I&squot;m intending to&n; * remove them.&n; */
 DECL|macro|SOCK_SLEEP_PRE

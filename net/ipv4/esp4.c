@@ -2261,6 +2261,9 @@ id|x
 )paren
 r_return
 suffix:semicolon
+id|NETDEBUG
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -2277,6 +2280,7 @@ id|ntohl
 c_func
 (paren
 id|iph-&gt;daddr
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2555,6 +2559,9 @@ id|esp-&gt;auth.tfm
 )paren
 )paren
 (brace
+id|NETDEBUG
+c_func
+(paren
 id|printk
 c_func
 (paren
@@ -2572,6 +2579,7 @@ comma
 id|aalg_desc-&gt;uinfo.auth.icv_fullbits
 op_div
 l_int|8
+)paren
 )paren
 suffix:semicolon
 r_goto

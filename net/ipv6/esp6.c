@@ -1474,15 +1474,8 @@ op_ge
 id|elen
 )paren
 (brace
-r_if
-c_cond
+id|LIMIT_NETDEBUG
 (paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-(brace
 id|printk
 c_func
 (paren
@@ -1497,6 +1490,8 @@ id|elen
 )paren
 suffix:semicolon
 )brace
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -1605,7 +1600,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|esp6_get_max_size
 r_static
 id|u32
 id|esp6_get_max_size
@@ -1702,7 +1696,6 @@ op_plus
 id|esp-&gt;auth.icv_full_len
 suffix:semicolon
 )brace
-DECL|function|esp6_err
 r_void
 id|esp6_err
 c_func
@@ -1830,7 +1823,6 @@ id|x
 )paren
 suffix:semicolon
 )brace
-DECL|function|esp6_destroy
 r_void
 id|esp6_destroy
 c_func
@@ -1931,7 +1923,6 @@ id|esp
 )paren
 suffix:semicolon
 )brace
-DECL|function|esp6_init_state
 r_int
 id|esp6_init_state
 c_func
@@ -2352,7 +2343,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|variable|esp6_type
 r_static
 r_struct
 id|xfrm_type
@@ -2400,7 +2390,6 @@ op_assign
 id|esp6_output
 )brace
 suffix:semicolon
-DECL|variable|esp6_protocol
 r_static
 r_struct
 id|inet6_protocol
@@ -2424,7 +2413,6 @@ id|INET6_PROTO_NOPOLICY
 comma
 )brace
 suffix:semicolon
-DECL|function|esp6_init
 r_int
 id|__init
 id|esp6_init
@@ -2500,7 +2488,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|esp6_fini
 r_static
 r_void
 id|__exit
@@ -2553,14 +2540,12 @@ l_string|&quot;ipv6 esp close: can&squot;t remove xfrm type&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|esp6_init
 id|module_init
 c_func
 (paren
 id|esp6_init
 )paren
 suffix:semicolon
-DECL|variable|esp6_fini
 id|module_exit
 c_func
 (paren

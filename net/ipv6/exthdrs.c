@@ -1592,14 +1592,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -1612,6 +1607,7 @@ id|optoff
 op_plus
 l_int|1
 )braket
+)paren
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1664,14 +1660,9 @@ op_ne
 l_int|2
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -1684,6 +1675,7 @@ id|optoff
 op_plus
 l_int|1
 )braket
+)paren
 )paren
 suffix:semicolon
 id|IP6_INC_STATS_BH

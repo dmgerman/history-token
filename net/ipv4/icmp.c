@@ -1863,14 +1863,9 @@ c_cond
 id|ipv4_config.no_pmtu_disc
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -1883,6 +1878,7 @@ id|NIPQUAD
 c_func
 (paren
 id|iph-&gt;daddr
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1918,14 +1914,9 @@ suffix:semicolon
 r_case
 id|ICMP_SR_FAILED
 suffix:colon
-r_if
-c_cond
-(paren
-id|net_ratelimit
+id|LIMIT_NETDEBUG
 c_func
 (paren
-)paren
-)paren
 id|printk
 c_func
 (paren
@@ -1937,6 +1928,7 @@ id|NIPQUAD
 c_func
 (paren
 id|iph-&gt;daddr
+)paren
 )paren
 )paren
 suffix:semicolon

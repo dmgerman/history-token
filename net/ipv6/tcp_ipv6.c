@@ -6917,16 +6917,9 @@ id|skb-&gt;csum
 r_return
 l_int|0
 suffix:semicolon
-id|NETDEBUG
+id|LIMIT_NETDEBUG
 c_func
 (paren
-r_if
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
 id|printk
 c_func
 (paren
