@@ -5931,13 +5931,6 @@ comma
 id|ctl-&gt;kcontrol
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|ctl-&gt;list
-)paren
-suffix:semicolon
 )brace
 )brace
 DECL|function|snd_emu10k1_list_controls

@@ -2181,8 +2181,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* memcpy Bytes */
-id|memcpy
+multiline_comment|/* Copy Bytes */
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
 (paren
 id|ptr
 comma
@@ -2194,7 +2198,20 @@ id|mdc800-&gt;out_ptr
 comma
 id|sts
 )paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|mdc800-&gt;io_lock
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 id|ptr
 op_add_assign
 id|sts
@@ -2309,6 +2326,10 @@ OL
 id|len
 )paren
 (brace
+r_int
+r_char
+id|c
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2329,18 +2350,38 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|c
+comma
+id|buf
+op_plus
+id|i
+)paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|mdc800-&gt;io_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 multiline_comment|/* check for command start */
 r_if
 c_cond
 (paren
-id|buf
-(braket
-id|i
-)braket
+id|c
 op_eq
-(paren
-r_char
-)paren
 l_int|0x55
 )paren
 (brace
@@ -2375,10 +2416,7 @@ id|mdc800-&gt;in
 id|mdc800-&gt;in_count
 )braket
 op_assign
-id|buf
-(braket
-id|i
-)braket
+id|c
 suffix:semicolon
 id|mdc800-&gt;in_count
 op_increment
@@ -2386,11 +2424,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|err
-(paren
-l_string|&quot;Command is too long !&bslash;n&quot;
-)paren
-suffix:semicolon
 id|up
 (paren
 op_amp
@@ -2688,8 +2721,8 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* Write dummy data, (this is ugly but part of the USB Protokoll */
-multiline_comment|/* if you use endpoint 1 as bulk and not as irq */
+multiline_comment|/* Write dummy data, (this is ugly but part of the USB Protocol */
+multiline_comment|/* if you use endpoint 1 as bulk and not as irq) */
 id|memcpy
 (paren
 id|mdc800-&gt;out

@@ -4,8 +4,6 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; */
 macro_line|#ifdef COMPILE_VXP440
@@ -277,13 +275,6 @@ id|SNDRV_ENABLED
 suffix:semicolon
 multiline_comment|/*&n; */
 macro_line|#ifdef COMPILE_VXP440
-DECL|variable|dev_info
-r_static
-id|dev_info_t
-id|dev_info
-op_assign
-l_string|&quot;snd-vxp440&quot;
-suffix:semicolon
 multiline_comment|/* 1 DSP, 1 sync UER, 1 sync World Clock (NIY) */
 multiline_comment|/* SMPTE (NIY) */
 multiline_comment|/* 2 stereo analog input (line/micro) */
@@ -294,14 +285,9 @@ DECL|macro|NUM_CODECS
 mdefine_line|#define NUM_CODECS&t;2
 DECL|macro|CARD_TYPE
 mdefine_line|#define CARD_TYPE&t;VX_TYPE_VXP440
+DECL|macro|DEV_INFO
+mdefine_line|#define DEV_INFO&t;&quot;snd-vxp440&quot;
 macro_line|#else
-DECL|variable|dev_info
-r_static
-id|dev_info_t
-id|dev_info
-op_assign
-l_string|&quot;snd-vxpocket&quot;
-suffix:semicolon
 multiline_comment|/* 1 DSP, 1 sync UER */
 multiline_comment|/* 1 programmable clock (NIY) */
 multiline_comment|/* 1 stereo analog input (line/micro) */
@@ -311,7 +297,16 @@ DECL|macro|NUM_CODECS
 mdefine_line|#define NUM_CODECS&t;1
 DECL|macro|CARD_TYPE
 mdefine_line|#define CARD_TYPE&t;VX_TYPE_VXPOCKET
+DECL|macro|DEV_INFO
+mdefine_line|#define DEV_INFO&t;&quot;snd-vxpocket&quot;
 macro_line|#endif
+DECL|variable|dev_info
+r_static
+id|dev_info_t
+id|dev_info
+op_assign
+id|DEV_INFO
+suffix:semicolon
 DECL|variable|vxp_hw
 r_static
 r_struct
@@ -454,6 +449,40 @@ id|link
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Module entry points&n; */
+DECL|variable|vxp_cs_driver
+r_static
+r_struct
+id|pcmcia_driver
+id|vxp_cs_driver
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|drv
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|DEV_INFO
+comma
+)brace
+comma
+dot
+id|attach
+op_assign
+id|vxp_attach
+comma
+dot
+id|detach
+op_assign
+id|vxp_detach
+)brace
+suffix:semicolon
 DECL|function|init_vxpocket
 r_static
 r_int
@@ -464,55 +493,13 @@ c_func
 r_void
 )paren
 (brace
-id|servinfo_t
-id|serv
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|GetCardServicesInfo
-comma
-op_amp
-id|serv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serv.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;init_vxpocket: Card Services release does not match (%x != %x)!&bslash;n&quot;
-comma
-id|serv.Revision
-comma
-id|CS_RELEASE_CODE
-)paren
-suffix:semicolon
 r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-id|register_pccard_driver
+id|pcmcia_register_driver
 c_func
 (paren
 op_amp
-id|dev_info
-comma
-id|vxp_attach
-comma
-id|vxp_detach
+id|vxp_cs_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|exit_vxpocket
@@ -525,11 +512,11 @@ c_func
 r_void
 )paren
 (brace
-id|unregister_pccard_driver
+id|pcmcia_unregister_driver
 c_func
 (paren
 op_amp
-id|dev_info
+id|vxp_cs_driver
 )paren
 suffix:semicolon
 id|snd_vxpocket_detach_all

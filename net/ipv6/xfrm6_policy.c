@@ -715,7 +715,7 @@ op_assign
 op_amp
 id|rt-&gt;u.dst
 suffix:semicolon
-multiline_comment|/* Copy neighbout for reachability confirmation */
+multiline_comment|/* Copy neighbour for reachability confirmation */
 id|dst_prev-&gt;neighbour
 op_assign
 id|neigh_clone
@@ -860,6 +860,20 @@ id|u8
 id|nexthdr
 op_assign
 id|skb-&gt;nh.ipv6h-&gt;nexthdr
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|fl
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|flowi
+)paren
+)paren
 suffix:semicolon
 id|ipv6_addr_copy
 c_func

@@ -252,6 +252,8 @@ r_struct
 id|pci_dev
 op_star
 id|gx_pci
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* check if CPU is a MediaGX or a Geode. */
 r_if
@@ -282,10 +284,24 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* detect which companion chip is used */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|gx_pci
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|gx_pci
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

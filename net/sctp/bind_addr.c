@@ -1073,16 +1073,6 @@ r_int
 id|flags
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|error
 op_assign
@@ -1103,8 +1093,6 @@ op_assign
 id|sctp_copy_local_addr_list
 c_func
 (paren
-id|proto
-comma
 id|dest
 comma
 id|scope

@@ -158,16 +158,6 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -280,14 +270,14 @@ suffix:semicolon
 multiline_comment|/* Set things that have constant value.  */
 id|asoc-&gt;cookie_life.tv_sec
 op_assign
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 op_div
 id|HZ
 suffix:semicolon
 id|asoc-&gt;cookie_life.tv_usec
 op_assign
 (paren
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 op_mod
 id|HZ
 )paren
@@ -307,23 +297,23 @@ suffix:semicolon
 multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
-id|proto-&gt;max_retrans_association
+id|sctp_max_retrans_association
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|proto-&gt;rto_initial
+id|sctp_rto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|proto-&gt;rto_max
+id|sctp_rto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|proto-&gt;rto_min
+id|sctp_rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
-l_int|0
+id|asoc-&gt;max_retrans
 suffix:semicolon
 id|asoc-&gt;overall_error_count
 op_assign
@@ -332,7 +322,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
-id|proto-&gt;max_burst
+id|sctp_max_burst
 suffix:semicolon
 multiline_comment|/* Copy things from the endpoint.  */
 r_for
@@ -424,7 +414,7 @@ multiline_comment|/* Set the local window size for receive.&n;&t; * This is also
 r_if
 c_cond
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 OL
 id|SCTP_DEFAULT_MINWINDOW
 )paren
@@ -435,7 +425,7 @@ suffix:semicolon
 r_else
 id|asoc-&gt;rwnd
 op_assign
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 suffix:semicolon
 id|asoc-&gt;a_rwnd
 op_assign
@@ -664,6 +654,26 @@ id|asoc-&gt;autoclose
 op_assign
 id|sp-&gt;autoclose
 suffix:semicolon
+id|asoc-&gt;default_stream
+op_assign
+id|sp-&gt;default_stream
+suffix:semicolon
+id|asoc-&gt;default_ppid
+op_assign
+id|sp-&gt;default_ppid
+suffix:semicolon
+id|asoc-&gt;default_flags
+op_assign
+id|sp-&gt;default_flags
+suffix:semicolon
+id|asoc-&gt;default_context
+op_assign
+id|sp-&gt;default_context
+suffix:semicolon
+id|asoc-&gt;default_timetolive
+op_assign
+id|sp-&gt;default_timetolive
+suffix:semicolon
 r_return
 id|asoc
 suffix:semicolon
@@ -747,7 +757,7 @@ comma
 id|LISTENING
 )paren
 )paren
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 multiline_comment|/* Mark as dead, so other users can know this structure is&n;&t; * going away.&n;&t; */
@@ -1225,19 +1235,6 @@ id|peer-&gt;error_threshold
 op_assign
 id|peer-&gt;max_retrans
 suffix:semicolon
-multiline_comment|/* Update the overall error threshold value of the association&n;&t; * taking the new peer&squot;s error threshold into account.&n;&t; */
-id|asoc-&gt;overall_error_threshold
-op_assign
-id|min
-c_func
-(paren
-id|asoc-&gt;overall_error_threshold
-op_plus
-id|peer-&gt;error_threshold
-comma
-id|asoc-&gt;max_retrans
-)paren
-suffix:semicolon
 multiline_comment|/* By default, enable heartbeat for peer address. */
 id|peer-&gt;hb_allowed
 op_assign
@@ -1438,7 +1435,7 @@ id|SCTP_TRANSPORT_UP
 suffix:colon
 id|transport-&gt;active
 op_assign
-l_int|1
+id|SCTP_ACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
@@ -1451,7 +1448,7 @@ id|SCTP_TRANSPORT_DOWN
 suffix:colon
 id|transport-&gt;active
 op_assign
-l_int|0
+id|SCTP_INACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
@@ -2376,7 +2373,7 @@ comma
 id|TCP
 )paren
 )paren
-id|oldsk-&gt;ack_backlog
+id|oldsk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 multiline_comment|/* Release references to the old endpoint and the sock.  */
@@ -2888,7 +2885,7 @@ c_func
 id|__u32
 comma
 (paren
-id|asoc-&gt;base.sk-&gt;rcvbuf
+id|asoc-&gt;base.sk-&gt;sk_rcvbuf
 op_rshift
 l_int|1
 )paren
@@ -3203,7 +3200,7 @@ op_assign
 (paren
 id|PF_INET6
 op_eq
-id|asoc-&gt;base.sk-&gt;family
+id|asoc-&gt;base.sk-&gt;sk_family
 )paren
 ques
 c_cond

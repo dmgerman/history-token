@@ -497,7 +497,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 op_logical_and
 op_logical_neg
@@ -519,12 +519,12 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 comma
 id|size
 comma
-id|vcc-&gt;sk-&gt;sndbuf
+id|vcc-&gt;sk-&gt;sk_sndbuf
 )paren
 suffix:semicolon
 r_return
@@ -561,7 +561,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 comma
 id|skb-&gt;truesize
@@ -573,7 +573,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 r_return
@@ -711,7 +711,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 comma
 l_int|0
 )paren
@@ -720,7 +720,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 comma
 l_int|0
 )paren
@@ -757,7 +757,7 @@ op_amp
 id|vcc-&gt;sleep
 )paren
 suffix:semicolon
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 op_assign
 op_amp
 id|vcc-&gt;sleep
@@ -854,7 +854,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -893,7 +893,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 )paren
 id|printk
@@ -907,7 +907,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 )paren
 suffix:semicolon
@@ -2091,7 +2091,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -2289,7 +2289,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;rmem_alloc
+id|vcc-&gt;sk-&gt;sk_rmem_alloc
 )paren
 comma
 id|skb-&gt;truesize
@@ -2819,7 +2819,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 id|mask
@@ -2874,10 +2874,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 op_le
-id|vcc-&gt;sk-&gt;sndbuf
+id|vcc-&gt;sk-&gt;sk_sndbuf
 )paren
 id|mask
 op_or_assign
@@ -3200,13 +3200,13 @@ op_assign
 id|put_user
 c_func
 (paren
-id|vcc-&gt;sk-&gt;sndbuf
+id|vcc-&gt;sk-&gt;sk_sndbuf
 op_minus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 comma
 (paren
@@ -3257,7 +3257,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|ret_val
@@ -3534,7 +3534,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vcc-&gt;sk-&gt;stamp.tv_sec
+id|vcc-&gt;sk-&gt;sk_stamp.tv_sec
 )paren
 (brace
 id|ret_val
@@ -3558,7 +3558,7 @@ op_star
 id|arg
 comma
 op_amp
-id|vcc-&gt;sk-&gt;stamp
+id|vcc-&gt;sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren
@@ -5568,7 +5568,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vcc-&gt;sk-&gt;family
+id|vcc-&gt;sk-&gt;sk_family
 op_eq
 id|AF_ATMPVC
 )paren

@@ -269,45 +269,13 @@ DECL|struct|isdn_modem
 r_struct
 id|isdn_modem
 (brace
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
-multiline_comment|/* Number of opens        */
 DECL|member|tty_modem
 r_struct
 id|tty_driver
+op_star
 id|tty_modem
 suffix:semicolon
 multiline_comment|/* tty-device             */
-DECL|member|modem_table
-r_struct
-id|tty_struct
-op_star
-id|modem_table
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* ?? copied from Orig */
-DECL|member|modem_termios
-r_struct
-id|termios
-op_star
-id|modem_termios
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-DECL|member|modem_termios_locked
-r_struct
-id|termios
-op_star
-id|modem_termios_locked
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
 DECL|member|info
 id|modem_info
 id|info

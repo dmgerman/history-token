@@ -4364,16 +4364,6 @@ suffix:semicolon
 id|uint
 id|plxdma
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;First, check for PCI boards&n;&t; */
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 r_struct
 id|pci_dev
 op_star
@@ -4381,6 +4371,7 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t; *&t;First, check for PCI boards&n;&t; */
 r_while
 c_loop
 (paren
@@ -4401,7 +4392,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Get and check the bus-master and latency values.&n;&t;&t;&t; * Some PCI BIOSes fail to set the master-enable bit,&n;&t;&t;&t; * and the latency timer must be set to the maximum&n;&t;&t;&t; * value to avoid data corruption that occurs when the&n;&t;&t;&t; * timer expires during a transfer.  Yes, it&squot;s a bug.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get and check the bus-master and latency values.&n;&t;&t; * Some PCI BIOSes fail to set the master-enable bit,&n;&t;&t; * and the latency timer must be set to the maximum&n;&t;&t; * value to avoid data corruption that occurs when the&n;&t;&t; * timer expires during a transfer.  Yes, it&squot;s a bug.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4466,7 +4457,7 @@ op_and_assign
 op_complement
 l_int|15
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * On some BIOSES, the PLX &quot;expansion rom&quot; (used for DMA)&n;&t;&t;&t; * address comes up as &quot;0&quot;.  This is probably because&n;&t;&t;&t; * the BIOS doesn&squot;t see a valid 55 AA ROM signature at&n;&t;&t;&t; * the &quot;ROM&quot; start and zeroes the address.  To get&n;&t;&t;&t; * around this problem the SE-6 is configured to ask&n;&t;&t;&t; * for 4 MB of space for the dual port memory.  We then&n;&t;&t;&t; * must set its range back to 2 MB, and use the upper&n;&t;&t;&t; * half for DMA register access&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * On some BIOSES, the PLX &quot;expansion rom&quot; (used for DMA)&n;&t;&t; * address comes up as &quot;0&quot;.  This is probably because&n;&t;&t; * the BIOS doesn&squot;t see a valid 55 AA ROM signature at&n;&t;&t; * the &quot;ROM&quot; start and zeroes the address.  To get&n;&t;&t; * around this problem the SE-6 is configured to ask&n;&t;&t; * for 4 MB of space for the dual port memory.  We then&n;&t;&t; * must set its range back to 2 MB, and use the upper&n;&t;&t; * half for DMA register access&n;&t;&t; */
 id|OUTL
 c_func
 (paren
@@ -4539,7 +4530,6 @@ suffix:semicolon
 id|cards_found
 op_increment
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; *&t;Second, check for EISA boards&n;&t; */
 r_if

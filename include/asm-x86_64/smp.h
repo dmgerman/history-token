@@ -119,6 +119,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|smp_stop_cpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|SMP_TRAMPOLINE_BASE
 mdefine_line|#define SMP_TRAMPOLINE_BASE 0x6000
 multiline_comment|/*&n; * On x86 all CPUs are mapped 1:1 to the APIC space.&n; * This simplifies scheduling and IPI sending and&n; * compresses data structures.&n; */

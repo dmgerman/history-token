@@ -2631,16 +2631,6 @@ c_func
 id|lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|oldsig-&gt;group_exit_task
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 id|spin_unlock_irq
 c_func

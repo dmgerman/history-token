@@ -3814,11 +3814,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|subsys
-r_struct
-id|subsystem
-id|subsys
-suffix:semicolon
 DECL|member|fs_flags
 r_int
 id|fs_flags

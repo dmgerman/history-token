@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
@@ -271,13 +272,13 @@ op_logical_and
 id|np-&gt;recverr
 )paren
 (brace
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|err
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -287,7 +288,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Only an error on timeout */
-id|sk-&gt;err_soft
+id|sk-&gt;sk_err_soft
 op_assign
 id|err
 suffix:semicolon
@@ -383,7 +384,7 @@ id|fl
 suffix:semicolon
 id|fl.proto
 op_assign
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 suffix:semicolon
 multiline_comment|/* Fill in the dest address from the route entry passed with the skb&n;&t; * and the source address from the transport.&n;&t; */
 id|ipv6_addr_copy
@@ -437,7 +438,7 @@ suffix:semicolon
 r_else
 id|fl.oif
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:semicolon
 id|fl.fl_ip_sport
 op_assign
@@ -527,6 +528,8 @@ op_amp
 id|fl
 comma
 id|np-&gt;opt
+comma
+id|ipfragok
 )paren
 suffix:semicolon
 )brace
@@ -1401,7 +1404,7 @@ op_member_access_from_pointer
 id|rcv_saddr
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize sk-&gt;rcv_saddr from sctp_addr. */
+multiline_comment|/* Initialize sk-&gt;sk_rcv_saddr from sctp_addr. */
 DECL|function|sctp_v6_to_sk_saddr
 r_static
 r_void
@@ -1430,7 +1433,7 @@ op_assign
 id|addr-&gt;v6.sin6_addr
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize sk-&gt;daddr from sctp_addr. */
+multiline_comment|/* Initialize sk-&gt;sk_daddr from sctp_addr. */
 DECL|function|sctp_v6_to_sk_daddr
 r_static
 r_void
@@ -1935,7 +1938,7 @@ r_struct
 id|sctp6_sock
 )paren
 comma
-id|sk-&gt;slab
+id|sk-&gt;sk_slab
 )paren
 suffix:semicolon
 r_if
@@ -1963,45 +1966,45 @@ comma
 id|THIS_MODULE
 )paren
 suffix:semicolon
-id|newsk-&gt;type
+id|newsk-&gt;sk_type
 op_assign
 id|SOCK_STREAM
 suffix:semicolon
-id|newsk-&gt;prot
+id|newsk-&gt;sk_prot
 op_assign
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 suffix:semicolon
-id|newsk-&gt;no_check
+id|newsk-&gt;sk_no_check
 op_assign
-id|sk-&gt;no_check
+id|sk-&gt;sk_no_check
 suffix:semicolon
-id|newsk-&gt;reuse
+id|newsk-&gt;sk_reuse
 op_assign
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 suffix:semicolon
-id|newsk-&gt;destruct
+id|newsk-&gt;sk_destruct
 op_assign
 id|inet_sock_destruct
 suffix:semicolon
-id|newsk-&gt;zapped
+id|newsk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|newsk-&gt;family
+id|newsk-&gt;sk_family
 op_assign
 id|PF_INET6
 suffix:semicolon
-id|newsk-&gt;protocol
+id|newsk-&gt;sk_protocol
 op_assign
 id|IPPROTO_SCTP
 suffix:semicolon
-id|newsk-&gt;backlog_rcv
+id|newsk-&gt;sk_backlog_rcv
 op_assign
-id|sk-&gt;prot-&gt;backlog_rcv
+id|sk-&gt;sk_prot-&gt;backlog_rcv
 suffix:semicolon
-id|newsk-&gt;shutdown
+id|newsk-&gt;sk_shutdown
 op_assign
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 suffix:semicolon
 id|newsctp6sk
 op_assign
@@ -2127,9 +2130,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
-id|newsk-&gt;prot
+id|newsk-&gt;sk_prot
 op_member_access_from_pointer
 id|init
 c_func
@@ -2217,6 +2218,39 @@ c_func
 l_int|1
 op_lshift
 l_int|20
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Dump the v6 addr to the seq file. */
+DECL|function|sctp_v6_seq_dump_addr
+r_static
+r_void
+id|sctp_v6_seq_dump_addr
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|seq
+comma
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x &quot;
+comma
+id|NIP6
+c_func
+(paren
+id|addr-&gt;v6.sin6_addr
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2738,7 +2772,7 @@ c_cond
 (paren
 id|addr-&gt;v6.sin6_scope_id
 )paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 id|addr-&gt;v6.sin6_scope_id
 suffix:semicolon
@@ -2746,7 +2780,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 r_return
 l_int|0
@@ -2855,7 +2889,7 @@ c_cond
 (paren
 id|addr-&gt;v6.sin6_scope_id
 )paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 id|addr-&gt;v6.sin6_scope_id
 suffix:semicolon
@@ -2863,7 +2897,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 r_return
 l_int|0
@@ -3263,6 +3297,11 @@ dot
 id|is_ce
 op_assign
 id|sctp_v6_is_ce
+comma
+dot
+id|seq_dump_addr
+op_assign
+id|sctp_v6_seq_dump_addr
 comma
 dot
 id|net_header_len

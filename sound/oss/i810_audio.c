@@ -10692,6 +10692,26 @@ op_eq
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* free any read channel allocated earlier */
+r_if
+c_cond
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_READ
+)paren
+(brace
+id|card
+op_member_access_from_pointer
+id|free_pcm_channel
+c_func
+(paren
+id|card
+comma
+id|dmabuf-&gt;read_channel-&gt;num
+)paren
+suffix:semicolon
+)brace
 id|kfree
 (paren
 id|card-&gt;states
@@ -15323,20 +15343,6 @@ id|i810_init_module
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* No PCI bus in this machine! */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|printk
 c_func
 (paren

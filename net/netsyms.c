@@ -701,6 +701,13 @@ c_func
 id|neigh_sysctl_register
 )paren
 suffix:semicolon
+DECL|variable|neigh_sysctl_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|neigh_sysctl_unregister
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|pneigh_lookup
 id|EXPORT_SYMBOL
@@ -1506,11 +1513,11 @@ c_func
 id|xfrm_policy_kill
 )paren
 suffix:semicolon
-DECL|variable|xfrm_policy_delete
+DECL|variable|xfrm_policy_bysel
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|xfrm_policy_delete
+id|xfrm_policy_bysel
 )paren
 suffix:semicolon
 DECL|variable|xfrm_policy_insert
@@ -2353,6 +2360,8 @@ id|sysctl_max_syn_backlog
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
+macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE) || defined (CONFIG_IPV6_TUNNEL_MODULE)
 DECL|variable|ip_generic_getfrag
 id|EXPORT_SYMBOL
 c_func

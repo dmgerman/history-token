@@ -1134,6 +1134,9 @@ id|_PAGE_DIRTY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HASHPTE) == 0)
 DECL|macro|pmd_page_kernel

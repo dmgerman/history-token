@@ -37,6 +37,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
@@ -3008,9 +3009,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_has_noexecute
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_NOEXECUTE
 )paren
 )paren
 (brace

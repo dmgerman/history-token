@@ -90,7 +90,7 @@ id|cpu_type
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure.&n; * Return 0 on success.&n; */
+multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure. This is called even in timer interrupt&n; * mode.&n; *&n; * Return 0 on success.&n; */
 r_int
 id|oprofile_arch_init
 c_func

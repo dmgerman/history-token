@@ -169,7 +169,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_static
 r_void
 id|pcibios_fixup_cardbus
@@ -181,6 +181,8 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|variable|pci_to_OF_bus_map
 r_static
 id|u8
@@ -262,7 +264,7 @@ comma
 id|pcibios_fixup_resources
 )brace
 comma
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/* We should add per-machine fixup support in xxx_setup.c or xxx_pci.c */
 (brace
 id|PCI_FIXUP_FINAL
@@ -274,7 +276,7 @@ comma
 id|pcibios_fixup_cardbus
 )brace
 comma
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 (brace
 l_int|0
 )brace
@@ -643,7 +645,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_static
 r_void
 DECL|function|pcibios_fixup_cardbus
@@ -835,7 +837,7 @@ l_int|0x06
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_void
 DECL|function|pcibios_resource_to_bus
 id|pcibios_resource_to_bus
@@ -2564,6 +2566,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|idx
@@ -2578,10 +2582,24 @@ id|resource
 op_star
 id|r
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|pci_read_config_word
@@ -2764,6 +2782,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|idx
@@ -2773,10 +2793,24 @@ id|resource
 op_star
 id|r
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_int
@@ -3148,7 +3182,7 @@ r_return
 id|hose
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/*&n; * Functions below are used on OpenFirmware machines.&n; */
 r_static
 r_void
@@ -4147,6 +4181,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4278,10 +4314,24 @@ id|pci_to_OF_bus_map
 r_return
 l_int|0
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -4955,6 +5005,8 @@ id|of_prop
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_PPC_OF */
+macro_line|#ifdef CONFIG_PPC_PMAC
 multiline_comment|/*&n; * This set of routines checks for PCI&lt;-&gt;PCI bridges that have closed&n; * IO resources and have child devices. It tries to re-open an IO&n; * window on them. &n; * &n; * This is a _temporary_ fix to workaround a problem with Apple&squot;s OF&n; * closing IO windows on P2P bridges when the OF drivers of cards&n; * below this bridge don&squot;t claim any IO range (typically ATI or&n; * Adaptec).&n; * &n; * A more complete fix would be to use drivers/pci/setup-bus.c, which&n; * involves a working pcibios_fixup_pbus_ranges(), some more care about&n; * ordering when creating the host bus resources, and maybe a few more&n; * minor tweaks&n; */
 multiline_comment|/* Initialize bridges with base/limit values we have collected */
 r_static
@@ -5921,7 +5973,7 @@ id|b
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_static
 r_int
 id|__init
@@ -6082,13 +6134,13 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 id|pcibios_fixup_p2p_bridges
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_PMAC */
 id|pcibios_assign_resources
 c_func
 (paren
@@ -6937,34 +6989,6 @@ suffix:semicolon
 multiline_comment|/* We may want to do something with IOs here... */
 r_return
 id|res-&gt;start
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Return the index of the PCI controller for device pdev.&n; */
-DECL|function|pci_controller_num
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|pci_controller
-op_star
-id|hose
-op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
-id|dev-&gt;sysdata
-suffix:semicolon
-r_return
-id|hose-&gt;index
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Platform support for /proc/bus/pci/X/Y mmap()s,&n; * modelled on the sparc64 implementation by Dave Miller.&n; *  -- paulus.&n; */

@@ -331,7 +331,7 @@ c_func
 (paren
 id|child
 comma
-id|sk-&gt;owner
+id|sk-&gt;sk_owner
 )paren
 suffix:semicolon
 id|tcp_acceptq_queue

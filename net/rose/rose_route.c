@@ -3559,15 +3559,15 @@ id|rose-&gt;state
 op_assign
 id|ROSE_STATE_0
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_CLOSE
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_or_assign
 id|SEND_SHUTDOWN
 suffix:semicolon
@@ -3586,7 +3586,7 @@ id|SOCK_DEAD
 (brace
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk

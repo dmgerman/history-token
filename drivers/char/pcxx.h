@@ -366,11 +366,6 @@ DECL|member|c_oflag
 id|ulong
 id|c_oflag
 suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 DECL|member|digiext
 r_struct
 id|digi_struct

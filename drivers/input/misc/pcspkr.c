@@ -140,7 +140,7 @@ l_int|32767
 )paren
 id|count
 op_assign
-l_int|1193182
+id|CLOCK_TICK_RATE
 op_div
 id|value
 suffix:semicolon

@@ -45,18 +45,7 @@ r_void
 )paren
 (brace
 r_return
-(paren
-(paren
 id|cpu_online_map
-OL
-l_int|0xf
-)paren
-ques
-c_cond
-id|cpu_online_map
-suffix:colon
-l_int|0xf
-)paren
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
@@ -557,7 +546,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|TARGET_CPUS
+l_int|0xFF
 suffix:semicolon
 )brace
 id|apicid

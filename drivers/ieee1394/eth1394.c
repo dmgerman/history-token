@@ -44,7 +44,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 945 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 951 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -6228,6 +6228,37 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|ret
+op_assign
+id|skb_linearize
+c_func
+(paren
+id|skb
+comma
+id|kmflags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+r_goto
+id|fail
+suffix:semicolon
+)brace
+)brace
 id|ptask
 op_assign
 id|kmem_cache_alloc

@@ -129,7 +129,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* Default base address for i82365sl and other ISA chips */
 DECL|variable|i365_base
 r_static
@@ -184,7 +183,6 @@ id|cs_irq
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Probe for safe interrupts? */
 DECL|variable|do_scan
 r_static
@@ -273,7 +271,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* Vadem options */
 DECL|variable|async_clock
 r_static
@@ -298,8 +295,6 @@ id|wakeup
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISA
 id|MODULE_PARM
 c_func
 (paren
@@ -372,7 +367,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -501,10 +495,9 @@ DECL|typedef|vg46x_state_t
 )brace
 id|vg46x_state_t
 suffix:semicolon
-DECL|struct|socket_info_t
-r_typedef
+DECL|struct|i82365_socket
 r_struct
-id|socket_info_t
+id|i82365_socket
 (brace
 DECL|member|type
 DECL|member|flags
@@ -512,6 +505,16 @@ id|u_short
 id|type
 comma
 id|flags
+suffix:semicolon
+DECL|member|socket
+r_struct
+id|pcmcia_socket
+id|socket
+suffix:semicolon
+DECL|member|number
+r_int
+r_int
+id|number
 suffix:semicolon
 DECL|member|cap
 id|socket_cap_t
@@ -574,9 +577,7 @@ DECL|member|state
 )brace
 id|state
 suffix:semicolon
-DECL|typedef|socket_info_t
 )brace
-id|socket_info_t
 suffix:semicolon
 multiline_comment|/* Where we keep track of our sockets... */
 DECL|variable|sockets
@@ -588,7 +589,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|socket
 r_static
-id|socket_info_t
+r_struct
+id|i82365_socket
 id|socket
 (braket
 l_int|8
@@ -606,7 +608,6 @@ suffix:semicolon
 multiline_comment|/* Default ISA interrupt mask */
 DECL|macro|I365_MASK
 mdefine_line|#define I365_MASK&t;0xdeb8&t;/* irq 15,14,12,11,10,9,7,5,4,3 */
-macro_line|#ifdef CONFIG_ISA
 DECL|variable|grab_irq
 r_static
 r_int
@@ -623,12 +624,6 @@ DECL|macro|ISA_LOCK
 mdefine_line|#define ISA_LOCK(n, f) spin_lock_irqsave(&amp;isa_lock, f)
 DECL|macro|ISA_UNLOCK
 mdefine_line|#define ISA_UNLOCK(n, f) spin_unlock_irqrestore(&amp;isa_lock, f)
-macro_line|#else
-DECL|macro|ISA_LOCK
-mdefine_line|#define ISA_LOCK(n, f) do { } while (0)
-DECL|macro|ISA_UNLOCK
-mdefine_line|#define ISA_UNLOCK(n, f) do { } while (0)
-macro_line|#endif
 DECL|variable|poll_timer
 r_static
 r_struct
@@ -640,7 +635,6 @@ multiline_comment|/* Default settings for PCI command configuration register */
 DECL|macro|CMD_DFLT
 mdefine_line|#define CMD_DFLT (PCI_COMMAND_IO|PCI_COMMAND_MEMORY| &bslash;&n;&t;&t;  PCI_COMMAND_MASTER|PCI_COMMAND_WAIT)
 multiline_comment|/* These definitions must match the pcic table! */
-macro_line|#ifdef CONFIG_ISA
 DECL|enum|pcic_id
 r_typedef
 r_enum
@@ -683,7 +677,6 @@ DECL|typedef|pcic_id
 )brace
 id|pcic_id
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Flags for classifying groups of controllers */
 DECL|macro|IS_VADEM
 mdefine_line|#define IS_VADEM&t;0x0001
@@ -735,7 +728,6 @@ id|pcic
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_ISA
 (brace
 l_string|&quot;Intel i82365sl A step&quot;
 comma
@@ -806,7 +798,6 @@ op_or
 id|IS_VIA
 )brace
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|PCIC_COUNT
@@ -1458,7 +1449,8 @@ op_star
 id|buf
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -1831,7 +1823,6 @@ id|mask
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================&n;&n;    Code to save and restore global state information for Vadem VG468&n;    and VG469 controllers, and to set and report global configuration&n;    options.&n;    &n;======================================================================*/
-macro_line|#ifdef CONFIG_ISA
 DECL|function|vg46x_get_state
 r_static
 r_void
@@ -2110,7 +2101,6 @@ r_return
 l_int|0xffff
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*======================================================================&n;&n;    Generic routines to get and set controller options&n;    &n;======================================================================*/
 DECL|function|get_bridge_state
 r_static
@@ -2122,7 +2112,8 @@ id|u_short
 id|s
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -2145,7 +2136,6 @@ c_func
 id|s
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_else
 r_if
 c_cond
@@ -2160,7 +2150,6 @@ c_func
 id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|set_bridge_state
 r_static
@@ -2172,7 +2161,8 @@ id|u_short
 id|s
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -2230,7 +2220,6 @@ comma
 id|t-&gt;intr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -2244,7 +2233,6 @@ c_func
 id|s
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|set_bridge_opts
 r_static
@@ -2351,7 +2339,6 @@ comma
 id|buf
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_else
 r_if
 c_cond
@@ -2375,7 +2362,6 @@ comma
 id|buf
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_bridge_state
 c_func
 (paren
@@ -2626,7 +2612,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
 DECL|function|isa_scan
 r_static
 id|u_int
@@ -2965,7 +2950,6 @@ r_return
 id|mask1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISA */
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Time conversion functions */
 DECL|function|to_cycles
@@ -2985,7 +2969,6 @@ id|cycle_time
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
-macro_line|#ifdef CONFIG_ISA
 DECL|function|identify
 r_static
 r_int
@@ -3328,7 +3311,6 @@ id|type
 suffix:semicolon
 )brace
 multiline_comment|/* identify */
-macro_line|#endif
 multiline_comment|/*======================================================================&n;&n;    See if a card is present, powered up, in IO mode, and already&n;    bound to a (non PC Card) Linux driver.  We leave these alone.&n;&n;    We make an exception for cards that seem to be serial devices.&n;    &n;======================================================================*/
 DECL|function|is_alive
 r_static
@@ -3581,7 +3563,8 @@ id|isa_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -3676,7 +3659,6 @@ l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* Set host options, build basic interrupt mask */
 r_if
 c_cond
@@ -3721,7 +3703,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|mask
 op_and_assign
 id|I365_MASK
@@ -3734,7 +3715,6 @@ comma
 id|ns
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* Scan for ISA interrupts */
 id|mask
 op_assign
@@ -3746,7 +3726,6 @@ comma
 id|mask
 )paren
 suffix:semicolon
-macro_line|#else
 id|printk
 c_func
 (paren
@@ -3754,8 +3733,6 @@ id|KERN_INFO
 l_string|&quot;    PCI card interrupts,&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISA
 multiline_comment|/* Poll if only two interrupts available */
 r_if
 c_cond
@@ -3915,7 +3892,6 @@ id|cs_irq
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4006,7 +3982,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* add_pcic */
 multiline_comment|/*====================================================================*/
-macro_line|#ifdef CONFIG_ISA
 macro_line|#ifdef CONFIG_PNP
 DECL|variable|__initdata
 r_static
@@ -4660,7 +4635,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|variable|pending_events
 r_static
@@ -4829,13 +4803,11 @@ id|events
 comma
 id|active
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 id|u_long
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 r_int
 id|handled
 op_assign
@@ -5237,9 +5209,10 @@ r_int
 id|pcic_register_callback
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 r_void
 (paren
@@ -5259,6 +5232,23 @@ op_star
 id|info
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 id|socket
 (braket
 id|sock
@@ -5289,15 +5279,33 @@ r_int
 id|pcic_inquire_socket
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|socket_cap_t
 op_star
 id|cap
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 op_star
 id|cap
 op_assign
@@ -5459,7 +5467,6 @@ id|SS_POWERON
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -5557,7 +5564,6 @@ id|SS_XVCARD
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 id|DEBUG
 c_func
 (paren
@@ -5591,7 +5597,8 @@ op_star
 id|state
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -6114,7 +6121,8 @@ op_star
 id|state
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -7354,7 +7362,8 @@ op_star
 id|data
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|s
 op_assign
@@ -7427,7 +7436,8 @@ id|u_short
 id|sock
 op_assign
 (paren
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 )paren
 id|data
@@ -7445,13 +7455,11 @@ id|i
 comma
 id|top
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 id|u_long
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|ISA_LOCK
 c_func
 (paren
@@ -7589,8 +7597,9 @@ r_void
 id|pcic_proc_setup
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 comma
 r_struct
@@ -7599,15 +7608,21 @@ op_star
 id|base
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|s
 op_assign
-op_amp
-id|socket
-(braket
+id|container_of
+c_func
+(paren
 id|sock
-)braket
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7704,29 +7719,42 @@ DECL|macro|pcic_proc_setup
 mdefine_line|#define pcic_proc_setup NULL
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*====================================================================*/
-multiline_comment|/*&n; * The locking is rather broken. Why do we only lock for ISA, not for&n; * all other cases? If there are reasons to lock, we should lock. Not&n; * this silly conditional.&n; *&n; * Plan: make it bug-for-bug compatible with the old stuff, and clean&n; * it up when the infrastructure is done.&n; */
-macro_line|#ifdef CONFIG_ISA
+multiline_comment|/* this is horribly ugly... proper locking needs to be done here at &n; * some time... */
 DECL|macro|LOCKED
 mdefine_line|#define LOCKED(x) do { &bslash;&n;&t;int retval; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;isa_lock, flags); &bslash;&n;&t;retval = x; &bslash;&n;&t;spin_unlock_irqrestore(&amp;isa_lock, flags); &bslash;&n;&t;return retval; &bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|LOCKED
-mdefine_line|#define LOCKED(x) return x
-macro_line|#endif
 DECL|function|pcic_get_status
 r_static
 r_int
 id|pcic_get_status
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|u_int
 op_star
 id|value
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7769,15 +7797,33 @@ r_int
 id|pcic_get_socket
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|socket_state_t
 op_star
 id|state
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7813,15 +7859,33 @@ r_int
 id|pcic_set_socket
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|socket_state_t
 op_star
 id|state
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7857,9 +7921,10 @@ r_int
 id|pcic_set_io_map
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 r_struct
 id|pccard_io_map
@@ -7867,6 +7932,23 @@ op_star
 id|io
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7902,9 +7984,10 @@ r_int
 id|pcic_set_mem_map
 c_func
 (paren
-r_int
-r_int
-id|sock
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 r_struct
 id|pccard_mem_map
@@ -7912,6 +7995,23 @@ op_star
 id|mem
 )paren
 (brace
+r_int
+r_int
+id|sock
+op_assign
+id|container_of
+c_func
+(paren
+id|s
+comma
+r_struct
+id|i82365_socket
+comma
+id|socket
+)paren
+op_member_access_from_pointer
+id|number
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7947,8 +8047,9 @@ r_int
 id|pcic_init
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|s
 )paren
 (brace
@@ -8068,8 +8169,9 @@ r_int
 id|pcic_suspend
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|pcmcia_socket
+op_star
 id|sock
 )paren
 (brace
@@ -8149,21 +8251,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*====================================================================*/
-DECL|variable|i82365_data
-r_static
-r_struct
-id|pcmcia_socket_class_data
-id|i82365_data
-op_assign
-(brace
-dot
-id|ops
-op_assign
-op_amp
-id|pcic_operations
-comma
-)brace
-suffix:semicolon
 DECL|variable|i82365_driver
 r_static
 r_struct
@@ -8182,8 +8269,16 @@ op_assign
 op_amp
 id|platform_bus_type
 comma
-multiline_comment|/*&t;.suspend = pcmcia_socket_dev_suspend,&t;FIXME?&t;*/
-multiline_comment|/*&t;.resume = pcmcia_socket_dev_resume,&t;FIXME?&t;*/
+dot
+id|suspend
+op_assign
+id|pcmcia_socket_dev_suspend
+comma
+dot
+id|resume
+op_assign
+id|pcmcia_socket_dev_resume
+comma
 )brace
 suffix:semicolon
 DECL|variable|i82365_device
@@ -8216,21 +8311,6 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|i82365_class_data
-r_static
-r_struct
-id|class_device
-id|i82365_class_data
-op_assign
-(brace
-dot
-r_class
-op_assign
-op_amp
-id|pcmcia_socket_class
-comma
-)brace
-suffix:semicolon
 DECL|function|init_i82365
 r_static
 r_int
@@ -8243,6 +8323,11 @@ r_void
 (brace
 id|servinfo_t
 id|serv
+suffix:semicolon
+r_int
+id|i
+comma
+id|ret
 suffix:semicolon
 id|pcmcia_get_card_services_info
 c_func
@@ -8307,13 +8392,11 @@ id|sockets
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 id|isa_probe
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8340,8 +8423,14 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|i82365_device
+)paren
+suffix:semicolon
 multiline_comment|/* Set up interrupt handler(s) */
-macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -8363,45 +8452,101 @@ comma
 id|pcic_interrupt
 )paren
 suffix:semicolon
-macro_line|#endif
-id|i82365_data.nsock
+multiline_comment|/* register sockets with the pcmcia core */
+r_for
+c_loop
+(paren
+id|i
 op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
 id|sockets
 suffix:semicolon
-id|i82365_class_data.dev
+id|i
+op_increment
+)paren
+(brace
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket.dev.dev
 op_assign
 op_amp
 id|i82365_device.dev
 suffix:semicolon
-id|i82365_class_data.class_data
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket.ss_entry
 op_assign
 op_amp
-id|i82365_data
+id|pcic_operations
 suffix:semicolon
-id|strlcpy
-c_func
-(paren
-id|i82365_class_data.class_id
-comma
-l_string|&quot;i82365&quot;
-comma
-id|BUS_ID_SIZE
-)paren
+id|socket
+(braket
+id|i
+)braket
+dot
+id|number
+op_assign
+id|i
 suffix:semicolon
-id|platform_device_register
-c_func
-(paren
-op_amp
-id|i82365_device
-)paren
-suffix:semicolon
-id|class_device_register
+id|ret
+op_assign
+id|pcmcia_register_socket
 c_func
 (paren
 op_amp
-id|i82365_class_data
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_logical_and
+id|i
+op_decrement
+)paren
+(brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|i
+op_ge
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+)paren
+id|pcmcia_unregister_socket
+c_func
+(paren
+op_amp
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Finally, schedule a polling interrupt */
 r_if
 c_cond
@@ -8458,7 +8603,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 r_for
 c_loop
 (paren
@@ -8473,6 +8617,20 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+id|pcmcia_unregister_socket
+c_func
+(paren
+op_amp
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|pcic_proc_remove
 c_func
 (paren
@@ -8480,13 +8638,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|class_device_unregister
-c_func
-(paren
-op_amp
-id|i82365_class_data
-)paren
-suffix:semicolon
+)brace
 id|platform_device_unregister
 c_func
 (paren
@@ -8508,7 +8660,6 @@ op_amp
 id|poll_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
 r_if
 c_cond
 (paren
@@ -8524,7 +8675,6 @@ comma
 id|pcic_interrupt
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -8565,7 +8715,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(__ISAPNP__)
+macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren

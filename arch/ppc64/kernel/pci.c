@@ -347,6 +347,8 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|i
@@ -370,10 +372,24 @@ id|isa_io_base
 suffix:colon
 l_int|0
 suffix:semicolon
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -1411,16 +1427,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the index of the PCI controller for device pdev.&n; */
-DECL|function|pci_controller_num
+multiline_comment|/*&n; * Return the domain number for this bus.&n; */
+DECL|function|pci_domain_nr
 r_int
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|dev
+id|bus
 )paren
 (brace
 r_struct
@@ -1431,7 +1447,7 @@ op_assign
 id|PCI_GET_PHB_PTR
 c_func
 (paren
-id|dev
+id|bus
 )paren
 suffix:semicolon
 r_return

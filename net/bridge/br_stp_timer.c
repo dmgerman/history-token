@@ -91,7 +91,7 @@ c_func
 (paren
 l_string|&quot;%s: hello timer expired&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -104,7 +104,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -192,7 +192,7 @@ c_func
 (paren
 l_string|&quot;%s: neighbor %.2x%.2x.%.2x:%.2x:%.2x:%.2x:%.2x:%.2x lost on port %d(%s)&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 comma
 id|id-&gt;prio
 (braket
@@ -334,7 +334,7 @@ c_func
 (paren
 l_string|&quot;%s: %d(%s) forward delay timer&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 comma
 id|p-&gt;port_no
 comma
@@ -445,7 +445,7 @@ c_func
 (paren
 l_string|&quot;%s: tcn timer expired&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -458,7 +458,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -519,7 +519,7 @@ c_func
 (paren
 l_string|&quot;%s: topo change timer expired&bslash;n&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -573,7 +573,7 @@ c_func
 (paren
 l_string|&quot;%s: %d(%s) hold timer expired&bslash;n&quot;
 comma
-id|p-&gt;br-&gt;dev.name
+id|p-&gt;br-&gt;dev-&gt;name
 comma
 id|p-&gt;port_no
 comma

@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/tiocl.h&gt;
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
@@ -346,9 +347,10 @@ id|set_selection
 c_func
 (paren
 r_const
-r_int
-r_int
-id|arg
+r_struct
+id|tiocl_selection
+op_star
+id|sel
 comma
 r_struct
 id|tty_struct
@@ -388,11 +390,6 @@ id|currcons
 op_assign
 id|fg_console
 suffix:semicolon
-id|unblank_screen
-c_func
-(paren
-)paren
-suffix:semicolon
 id|poke_blanked_console
 c_func
 (paren
@@ -401,9 +398,6 @@ suffix:semicolon
 (brace
 r_int
 r_int
-op_star
-id|args
-comma
 id|xs
 comma
 id|ys
@@ -411,19 +405,6 @@ comma
 id|xe
 comma
 id|ye
-suffix:semicolon
-id|args
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|arg
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -439,14 +420,13 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-id|args
+id|sel
 comma
 r_sizeof
 (paren
-r_int
-)paren
 op_star
-l_int|5
+id|sel
+)paren
 )paren
 )paren
 r_return
@@ -458,8 +438,8 @@ c_func
 (paren
 id|xs
 comma
-id|args
-op_increment
+op_amp
+id|sel-&gt;xs
 )paren
 suffix:semicolon
 id|__get_user
@@ -467,8 +447,8 @@ c_func
 (paren
 id|ys
 comma
-id|args
-op_increment
+op_amp
+id|sel-&gt;ys
 )paren
 suffix:semicolon
 id|__get_user
@@ -476,8 +456,8 @@ c_func
 (paren
 id|xe
 comma
-id|args
-op_increment
+op_amp
+id|sel-&gt;xe
 )paren
 suffix:semicolon
 id|__get_user
@@ -485,8 +465,8 @@ c_func
 (paren
 id|ye
 comma
-id|args
-op_increment
+op_amp
+id|sel-&gt;ye
 )paren
 suffix:semicolon
 id|__get_user
@@ -494,7 +474,8 @@ c_func
 (paren
 id|sel_mode
 comma
-id|args
+op_amp
+id|sel-&gt;sel_mode
 )paren
 suffix:semicolon
 )brace
@@ -502,41 +483,24 @@ r_else
 (brace
 id|xs
 op_assign
-op_star
-(paren
-id|args
-op_increment
-)paren
+id|sel-&gt;xs
 suffix:semicolon
 multiline_comment|/* set selection from kernel */
 id|ys
 op_assign
-op_star
-(paren
-id|args
-op_increment
-)paren
+id|sel-&gt;ys
 suffix:semicolon
 id|xe
 op_assign
-op_star
-(paren
-id|args
-op_increment
-)paren
+id|sel-&gt;xe
 suffix:semicolon
 id|ye
 op_assign
-op_star
-(paren
-id|args
-op_increment
-)paren
+id|sel-&gt;ye
 suffix:semicolon
 id|sel_mode
 op_assign
-op_star
-id|args
+id|sel-&gt;sel_mode
 suffix:semicolon
 )brace
 id|xs
@@ -628,7 +592,7 @@ c_cond
 (paren
 id|sel_mode
 op_eq
-l_int|4
+id|TIOCL_SELCLEAR
 )paren
 (brace
 multiline_comment|/* useful for screendump without selection highlights */
@@ -652,7 +616,7 @@ op_logical_and
 (paren
 id|sel_mode
 op_amp
-l_int|16
+id|TIOCL_SELMOUSEREPORT
 )paren
 )paren
 (brace
@@ -663,7 +627,7 @@ id|tty
 comma
 id|sel_mode
 op_amp
-l_int|15
+id|TIOCL_SELBUTTONMASK
 comma
 id|xs
 comma
@@ -723,7 +687,7 @@ id|sel_mode
 )paren
 (brace
 r_case
-l_int|0
+id|TIOCL_SELCHAR
 suffix:colon
 multiline_comment|/* character-by-character selection */
 id|new_sel_start
@@ -737,7 +701,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|TIOCL_SELWORD
 suffix:colon
 multiline_comment|/* word-by-word selection */
 id|spc
@@ -903,7 +867,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|TIOCL_SELLINE
 suffix:colon
 multiline_comment|/* line-by-line selection */
 id|new_sel_start
@@ -929,7 +893,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|TIOCL_SELPOINTER
 suffix:colon
 id|highlight_pointer
 c_func

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;&t;/* for cpu relax */
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Must define these before including other files, inline functions need them&n; */
 DECL|macro|LOCK_SECTION_NAME

@@ -14,6 +14,13 @@ c_func
 (paren
 r_void
 )paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|noreturn
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * EGCS 1.1 knows about arbitrary unaligned loads.  Define some&n; * packed structures to talk about such things with.&n; */
 DECL|struct|__una_u64

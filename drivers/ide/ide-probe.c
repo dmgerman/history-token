@@ -2640,98 +2640,7 @@ id|hwif-&gt;name
 suffix:semicolon
 )brace
 singleline_comment|//EXPORT_SYMBOL(hwif_register);
-multiline_comment|/* Enable code below on all archs later, for now, I want it on PPC&n; */
 macro_line|#ifdef CONFIG_PPC
-multiline_comment|/*&n; * This function waits for the hwif to report a non-busy status&n; * see comments in probe_hwif()&n; */
-DECL|function|wait_not_busy
-r_static
-r_int
-id|wait_not_busy
-c_func
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-comma
-r_int
-r_int
-id|timeout
-)paren
-(brace
-id|u8
-id|stat
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|timeout
-op_decrement
-)paren
-(brace
-multiline_comment|/* Turn this into a schedule() sleep once I&squot;m sure&n;&t;&t; * about locking issues (2.5 work ?)&n;&t;&t; */
-id|mdelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|stat
-op_assign
-id|hwif
-op_member_access_from_pointer
-id|INB
-c_func
-(paren
-id|hwif-&gt;io_ports
-(braket
-id|IDE_STATUS_OFFSET
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|stat
-op_amp
-id|BUSY_STAT
-)paren
-op_eq
-l_int|0
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* Assume a value of 0xff means nothing is connected to&n;&t;&t; * the interface and it doesn&squot;t implement the pull-down&n;&t;&t; * resistor on D7&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|stat
-op_eq
-l_int|0xff
-)paren
-r_break
-suffix:semicolon
-)brace
-r_return
-(paren
-(paren
-id|stat
-op_amp
-id|BUSY_STAT
-)paren
-op_eq
-l_int|0
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 DECL|function|wait_hwif_ready
 r_static
 r_int
@@ -2765,7 +2674,7 @@ suffix:semicolon
 multiline_comment|/* Wait for BSY bit to go away, spec timeout is 30 seconds,&n;&t; * I know of at least one disk who takes 31 seconds, I use 35&n;&t; * here to be safe&n;&t; */
 id|rc
 op_assign
-id|wait_not_busy
+id|ide_wait_not_busy
 c_func
 (paren
 id|hwif
@@ -2813,7 +2722,7 @@ l_int|2
 suffix:semicolon
 id|rc
 op_assign
-id|wait_not_busy
+id|ide_wait_not_busy
 c_func
 (paren
 id|hwif
@@ -2860,7 +2769,7 @@ l_int|2
 suffix:semicolon
 id|rc
 op_assign
-id|wait_not_busy
+id|ide_wait_not_busy
 c_func
 (paren
 id|hwif
@@ -2883,7 +2792,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC */
+macro_line|#endif
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
 r_void

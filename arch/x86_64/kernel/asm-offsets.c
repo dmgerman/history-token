@@ -131,6 +131,7 @@ c_func
 suffix:semicolon
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
+macro_line|#ifdef CONFIG_IA32_EMULATION
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(entry) DEFINE(IA32_SIGCONTEXT_ ## entry, offsetof(struct sigcontext_ia32, entry))
 id|ENTRY
@@ -213,6 +214,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

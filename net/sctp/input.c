@@ -1542,13 +1542,13 @@ op_logical_and
 id|inet-&gt;recverr
 )paren
 (brace
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|err
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -1558,7 +1558,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Only an error on timeout */
-id|sk-&gt;err_soft
+id|sk-&gt;sk_err_soft
 op_assign
 id|err
 suffix:semicolon
@@ -1672,21 +1672,14 @@ op_eq
 id|ch-&gt;type
 )paren
 (brace
+id|sctp_walk_errors
+c_func
+(paren
 id|err
-op_assign
-(paren
-id|sctp_errhdr_t
-op_star
-)paren
-(paren
+comma
 id|ch
-op_plus
-r_sizeof
-(paren
-id|sctp_chunkhdr_t
 )paren
-)paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -1697,6 +1690,7 @@ id|err-&gt;cause
 r_goto
 id|discard
 suffix:semicolon
+)brace
 )brace
 id|ch
 op_assign
@@ -1747,7 +1741,8 @@ id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -1767,7 +1762,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -1862,7 +1857,8 @@ op_star
 id|ep
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -1887,7 +1883,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -1976,7 +1972,8 @@ op_star
 id|laddr
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2004,7 +2001,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.ep_hashbucket
+id|sctp_ep_hashbucket
 (braket
 id|hash
 )braket
@@ -2150,7 +2147,8 @@ id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2173,7 +2171,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -2268,7 +2266,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2295,7 +2294,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|epb-&gt;hashent
 )braket
@@ -2367,7 +2366,8 @@ op_star
 id|pt
 )paren
 (brace
-id|sctp_hashbucket_t
+r_struct
+id|sctp_hashbucket
 op_star
 id|head
 suffix:semicolon
@@ -2403,7 +2403,7 @@ suffix:semicolon
 id|head
 op_assign
 op_amp
-id|sctp_proto.assoc_hashbucket
+id|sctp_assoc_hashbucket
 (braket
 id|hash
 )braket
@@ -2692,6 +2692,11 @@ id|sctp_init_chunk_t
 op_star
 id|init
 suffix:semicolon
+r_struct
+id|sctp_transport
+op_star
+id|transport
+suffix:semicolon
 id|ch
 op_assign
 (paren
@@ -2785,7 +2790,8 @@ id|laddr
 comma
 id|paddr
 comma
-id|transportp
+op_amp
+id|transport
 )paren
 suffix:semicolon
 r_if

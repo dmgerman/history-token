@@ -121,7 +121,7 @@ id|sysctl_tcp_ecn
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;route_caps
+id|sk-&gt;sk_route_caps
 op_amp
 id|NETIF_F_TSO
 )paren
@@ -143,7 +143,7 @@ id|tp-&gt;ecn_flags
 op_assign
 id|TCP_ECN_OK
 suffix:semicolon
-id|sk-&gt;no_largesend
+id|sk-&gt;sk_no_largesend
 op_assign
 l_int|1
 suffix:semicolon

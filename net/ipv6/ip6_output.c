@@ -521,7 +521,7 @@ op_assign
 id|skb-&gt;sk
 ques
 c_cond
-id|skb-&gt;sk-&gt;bound_dev_if
+id|skb-&gt;sk-&gt;sk_bound_dev_if
 suffix:colon
 l_int|0
 comma
@@ -692,6 +692,9 @@ r_struct
 id|ipv6_txoptions
 op_star
 id|opt
+comma
+r_int
+id|ipfragok
 )paren
 (brace
 r_struct
@@ -1027,9 +1030,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|skb-&gt;len
 op_le
 id|mtu
+)paren
+op_logical_or
+id|ipfragok
 )paren
 (brace
 id|IP6_INC_STATS
@@ -1070,6 +1077,10 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;IPv6: sending pkt_too_big to self&bslash;n&quot;
 )paren
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+id|dst-&gt;dev
 suffix:semicolon
 id|icmpv6_send
 c_func
@@ -1572,7 +1583,7 @@ op_add_assign
 id|opt-&gt;opt_flen
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octects&quot;.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octets&quot;.&n;&t; */
 id|frag_len
 op_assign
 (paren
@@ -1868,7 +1879,7 @@ c_func
 (paren
 id|last_skb
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -2444,7 +2455,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3753,9 +3764,9 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-DECL|function|ip6_found_nexthdr
+DECL|function|ip6_find_1stfragopt
 r_int
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 r_struct
@@ -4002,7 +4013,7 @@ id|rt-&gt;u.dst.dev
 suffix:semicolon
 id|hlen
 op_assign
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb
@@ -5130,7 +5141,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5332,7 +5343,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 (brace
@@ -5357,7 +5368,7 @@ c_func
 (paren
 id|opt-&gt;tot_len
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 id|memcpy
@@ -5578,7 +5589,7 @@ id|skb_peek_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -5734,12 +5745,12 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_le
 l_int|2
 op_star
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 id|skb
 op_assign
@@ -5756,7 +5767,7 @@ l_int|15
 comma
 l_int|1
 comma
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 )paren
 suffix:semicolon
 r_if
@@ -5911,7 +5922,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -6155,7 +6166,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 comma
 l_int|0
 )paren
@@ -6223,7 +6234,7 @@ c_func
 id|PAGE_SIZE
 comma
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -6426,7 +6437,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_eq
@@ -6476,7 +6487,7 @@ id|__skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -6846,7 +6857,7 @@ id|__skb_dequeue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne

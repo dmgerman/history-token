@@ -313,22 +313,22 @@ id|HZ
 suffix:semicolon
 multiline_comment|/* Set up the default send/receive buffer space.  */
 multiline_comment|/* FIXME - Should the min and max window size be configurable&n;&t; * sysctl parameters as opposed to be constants?&n;&t; */
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_assign
 id|SCTP_DEFAULT_MAXWINDOW
 suffix:semicolon
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
 id|SCTP_DEFAULT_MAXWINDOW
 op_star
 l_int|2
 suffix:semicolon
 multiline_comment|/* Use SCTP specific send buffer space queues.  */
-id|sk-&gt;write_space
+id|sk-&gt;sk_write_space
 op_assign
 id|sctp_write_space
 suffix:semicolon
-id|sk-&gt;use_write_queue
+id|sk-&gt;sk_use_write_queue
 op_assign
 l_int|1
 suffix:semicolon
@@ -418,7 +418,7 @@ comma
 id|LISTENING
 )paren
 )paren
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 )brace
@@ -467,7 +467,7 @@ comma
 r_return
 )paren
 suffix:semicolon
-id|ep-&gt;base.sk-&gt;state
+id|ep-&gt;base.sk-&gt;sk_state
 op_assign
 id|SCTP_SS_CLOSED
 suffix:semicolon
@@ -521,9 +521,7 @@ multiline_comment|/* Remove and free the port */
 r_if
 c_cond
 (paren
-id|ep-&gt;base.sk-&gt;prev
-op_ne
-l_int|NULL
+id|ep-&gt;base.sk-&gt;sk_prev
 )paren
 id|sctp_put_port
 c_func

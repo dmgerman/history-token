@@ -6978,7 +6978,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
@@ -6991,7 +6991,7 @@ id|np-&gt;mc_loop
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func
@@ -7036,6 +7036,15 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SYSCTL
+id|neigh_sysctl_unregister
+c_func
+(paren
+op_amp
+id|nd_tbl.parms
+)paren
+suffix:semicolon
+macro_line|#endif
 id|neigh_table_clear
 c_func
 (paren

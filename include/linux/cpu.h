@@ -2,7 +2,7 @@ multiline_comment|/*&n; * include/linux/cpu.h - generic cpu definition&n; *&n; *
 macro_line|#ifndef _LINUX_CPU_H_
 DECL|macro|_LINUX_CPU_H_
 mdefine_line|#define _LINUX_CPU_H_
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|cpu
@@ -37,10 +37,79 @@ id|node
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|notifier_block
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Need to know about CPUs going up/down? */
+r_extern
+r_int
+id|register_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unregister_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|cpu_up
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|register_cpu_notifier
+r_static
+r_inline
+r_int
+id|register_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|unregister_cpu_notifier
+r_static
+r_inline
+r_void
+id|unregister_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+)brace
+macro_line|#endif /* CONFIG_SMP */
 r_extern
 r_struct
-r_class
-id|cpu_class
+id|sysdev_class
+id|cpu_sysdev_class
 suffix:semicolon
 multiline_comment|/* Stop CPUs going up and down. */
 r_extern

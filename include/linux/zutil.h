@@ -8,34 +8,17 @@ macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#ifndef local
-DECL|macro|local
-macro_line|#  define local static
-macro_line|#endif
-multiline_comment|/* compile with -Dlocal if your debugger can&squot;t find static symbols */
 DECL|typedef|uch
 r_typedef
 r_int
 r_char
 id|uch
 suffix:semicolon
-DECL|typedef|uchf
-r_typedef
-id|uch
-id|FAR
-id|uchf
-suffix:semicolon
 DECL|typedef|ush
 r_typedef
 r_int
 r_int
 id|ush
-suffix:semicolon
-DECL|typedef|ushf
-r_typedef
-id|ush
-id|FAR
-id|ushf
 suffix:semicolon
 DECL|typedef|ulg
 r_typedef
@@ -78,29 +61,24 @@ DECL|macro|OS_CODE
 macro_line|#  define OS_CODE  0x03  /* assume Unix */
 macro_line|#endif
 multiline_comment|/* functions */
-DECL|typedef|OF
+DECL|typedef|check_func
 r_typedef
 id|uLong
 (paren
-id|ZEXPORT
 op_star
 id|check_func
 )paren
-id|OF
-c_func
-(paren
 (paren
 id|uLong
 id|check
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma
 id|uInt
 id|len
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* checksum functions */
@@ -120,7 +98,7 @@ mdefine_line|#define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);
 DECL|macro|DO16
 mdefine_line|#define DO16(buf)   DO8(buf,0); DO8(buf,8);
 multiline_comment|/* ========================================================================= */
-multiline_comment|/*&n;     Update a running Adler-32 checksum with the bytes buf[0..len-1] and&n;   return the updated checksum. If buf is NULL, this function returns&n;   the required initial value for the checksum.&n;   An Adler-32 checksum is almost as reliable as a CRC32 but can be computed&n;   much faster. Usage example:&n;&n;     uLong adler = adler32(0L, Z_NULL, 0);&n;&n;     while (read_buffer(buffer, length) != EOF) {&n;       adler = adler32(adler, buffer, length);&n;     }&n;     if (adler != original_adler) error();&n;*/
+multiline_comment|/*&n;     Update a running Adler-32 checksum with the bytes buf[0..len-1] and&n;   return the updated checksum. If buf is NULL, this function returns&n;   the required initial value for the checksum.&n;   An Adler-32 checksum is almost as reliable as a CRC32 but can be computed&n;   much faster. Usage example:&n;&n;     uLong adler = adler32(0L, NULL, 0);&n;&n;     while (read_buffer(buffer, length) != EOF) {&n;       adler = adler32(adler, buffer, length);&n;     }&n;     if (adler != original_adler) error();&n;*/
 DECL|function|zlib_adler32
 r_static
 r_inline
@@ -132,7 +110,7 @@ id|uLong
 id|adler
 comma
 r_const
-id|Bytef
+id|Byte
 op_star
 id|buf
 comma
@@ -168,7 +146,7 @@ c_cond
 (paren
 id|buf
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 l_int|1L

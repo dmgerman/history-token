@@ -781,21 +781,21 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|TXDCTRL_BUFSZ
-mdefine_line|#define TXDCTRL_BUFSZ&t;0x0000000000007fff&t;/* Buffer Size&t;&t;*/
+mdefine_line|#define TXDCTRL_BUFSZ&t;0x0000000000007fffULL&t;/* Buffer Size&t;&t;*/
 DECL|macro|TXDCTRL_CSTART
-mdefine_line|#define TXDCTRL_CSTART&t;0x00000000001f8000&t;/* CSUM Start Offset&t;*/
+mdefine_line|#define TXDCTRL_CSTART&t;0x00000000001f8000ULL&t;/* CSUM Start Offset&t;*/
 DECL|macro|TXDCTRL_COFF
-mdefine_line|#define TXDCTRL_COFF&t;0x000000001fe00000&t;/* CSUM Stuff Offset&t;*/
+mdefine_line|#define TXDCTRL_COFF&t;0x000000001fe00000ULL&t;/* CSUM Stuff Offset&t;*/
 DECL|macro|TXDCTRL_CENAB
-mdefine_line|#define TXDCTRL_CENAB&t;0x0000000020000000&t;/* CSUM Enable&t;&t;*/
+mdefine_line|#define TXDCTRL_CENAB&t;0x0000000020000000ULL&t;/* CSUM Enable&t;&t;*/
 DECL|macro|TXDCTRL_EOF
-mdefine_line|#define TXDCTRL_EOF&t;0x0000000040000000&t;/* End of Frame&t;&t;*/
+mdefine_line|#define TXDCTRL_EOF&t;0x0000000040000000ULL&t;/* End of Frame&t;&t;*/
 DECL|macro|TXDCTRL_SOF
-mdefine_line|#define TXDCTRL_SOF&t;0x0000000080000000&t;/* Start of Frame&t;*/
+mdefine_line|#define TXDCTRL_SOF&t;0x0000000080000000ULL&t;/* Start of Frame&t;*/
 DECL|macro|TXDCTRL_INTME
-mdefine_line|#define TXDCTRL_INTME&t;0x0000000100000000&t;/* &quot;Interrupt Me&quot;&t;*/
+mdefine_line|#define TXDCTRL_INTME&t;0x0000000100000000ULL&t;/* &quot;Interrupt Me&quot;&t;*/
 DECL|macro|TXDCTRL_NOCRC
-mdefine_line|#define TXDCTRL_NOCRC&t;0x0000000200000000&t;/* No CRC Present&t;*/
+mdefine_line|#define TXDCTRL_NOCRC&t;0x0000000200000000ULL&t;/* No CRC Present&t;*/
 multiline_comment|/* GEM requires that RX descriptors are provided four at a time,&n; * aligned.  Also, the RX ring may not wrap around.  This means that&n; * there will be at least 4 unused desciptor entries in the middle&n; * of the RX ring at all times.&n; *&n; * Similar to HME, GEM assumes that it can write garbage bytes before&n; * the beginning of the buffer and right after the end in order to DMA&n; * whole cachelines.&n; *&n; * Unlike for TX, GEM does update the status word in the RX descriptors&n; * when packets arrive.  Therefore an ownership bit does exist in the&n; * RX descriptors.  It is advisory, GEM clears it but does not check&n; * it in any way.  So when buffers are posted to the RX ring (via the&n; * RX Kick register) by the driver it must make sure the buffers are&n; * truly ready and that the ownership bits are set properly.&n; *&n; * Even though GEM modifies the RX descriptors, it guarantees that the&n; * buffer DMA address field will stay the same when it performs these&n; * updates.  Therefore it can be used to keep track of DMA mappings&n; * by the host driver just as in the TX descriptor case above.&n; */
 DECL|struct|gem_rxd
 r_struct
@@ -812,19 +812,19 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RXDCTRL_TCPCSUM
-mdefine_line|#define RXDCTRL_TCPCSUM&t;0x000000000000ffff&t;/* TCP Pseudo-CSUM&t;*/
+mdefine_line|#define RXDCTRL_TCPCSUM&t;0x000000000000ffffULL&t;/* TCP Pseudo-CSUM&t;*/
 DECL|macro|RXDCTRL_BUFSZ
-mdefine_line|#define RXDCTRL_BUFSZ&t;0x000000007fff0000&t;/* Buffer Size&t;&t;*/
+mdefine_line|#define RXDCTRL_BUFSZ&t;0x000000007fff0000ULL&t;/* Buffer Size&t;&t;*/
 DECL|macro|RXDCTRL_OWN
-mdefine_line|#define RXDCTRL_OWN&t;0x0000000080000000&t;/* GEM owns this entry&t;*/
+mdefine_line|#define RXDCTRL_OWN&t;0x0000000080000000ULL&t;/* GEM owns this entry&t;*/
 DECL|macro|RXDCTRL_HASHVAL
-mdefine_line|#define RXDCTRL_HASHVAL&t;0x0ffff00000000000&t;/* Hash Value&t;&t;*/
+mdefine_line|#define RXDCTRL_HASHVAL&t;0x0ffff00000000000ULL&t;/* Hash Value&t;&t;*/
 DECL|macro|RXDCTRL_HPASS
-mdefine_line|#define RXDCTRL_HPASS&t;0x1000000000000000&t;/* Passed Hash Filter&t;*/
+mdefine_line|#define RXDCTRL_HPASS&t;0x1000000000000000ULL&t;/* Passed Hash Filter&t;*/
 DECL|macro|RXDCTRL_ALTMAC
-mdefine_line|#define RXDCTRL_ALTMAC&t;0x2000000000000000&t;/* Matched ALT MAC&t;*/
+mdefine_line|#define RXDCTRL_ALTMAC&t;0x2000000000000000ULL&t;/* Matched ALT MAC&t;*/
 DECL|macro|RXDCTRL_BAD
-mdefine_line|#define RXDCTRL_BAD&t;0x4000000000000000&t;/* Frame has bad CRC&t;*/
+mdefine_line|#define RXDCTRL_BAD&t;0x4000000000000000ULL&t;/* Frame has bad CRC&t;*/
 DECL|macro|RXDCTRL_FRESH
 mdefine_line|#define RXDCTRL_FRESH(gp)&t;&bslash;&n;&t;((((RX_BUF_ALLOC_SIZE(gp) - RX_OFFSET) &lt;&lt; 16) &amp; RXDCTRL_BUFSZ) | &bslash;&n;&t; RXDCTRL_OWN)
 DECL|macro|TX_RING_SIZE
@@ -1172,7 +1172,7 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|member|of_node
 r_struct
 id|device_node

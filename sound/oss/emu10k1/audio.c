@@ -5319,9 +5319,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|wave_dev
+)paren
+suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|ENOMEM
 suffix:semicolon
 )brace
 r_if

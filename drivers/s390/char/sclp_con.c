@@ -599,7 +599,6 @@ op_assign
 id|c-&gt;index
 suffix:semicolon
 r_return
-op_amp
 id|sclp_tty_driver
 suffix:semicolon
 )brace

@@ -439,6 +439,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -573,6 +574,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -908,6 +910,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -943,6 +946,7 @@ comma
 (paren
 r_struct
 id|i2c_rdwr_ioctl_data
+id|__user
 op_star
 )paren
 id|arg
@@ -1327,6 +1331,7 @@ comma
 (paren
 r_struct
 id|i2c_smbus_ioctl_data
+id|__user
 op_star
 )paren
 id|arg

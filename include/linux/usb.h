@@ -215,8 +215,8 @@ op_star
 id|data
 )paren
 (brace
-r_return
 id|dev_set_drvdata
+c_func
 (paren
 op_amp
 id|intf-&gt;dev

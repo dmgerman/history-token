@@ -59,14 +59,11 @@ c_loop
 (paren
 suffix:semicolon
 id|sk
-op_ne
-l_int|NULL
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -83,7 +80,6 @@ id|num
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

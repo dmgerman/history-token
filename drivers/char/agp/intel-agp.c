@@ -2040,6 +2040,8 @@ id|intel_i830_private.gtt_entries
 suffix:semicolon
 id|printk
 (paren
+id|KERN_INFO
+id|PFX
 l_string|&quot;Trying to insert into local/stolen memory&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2203,6 +2205,8 @@ id|intel_i830_private.gtt_entries
 (brace
 id|printk
 (paren
+id|KERN_INFO
+id|PFX
 l_string|&quot;Trying to disable local/stolen memory&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2960,6 +2964,7 @@ id|INTEL_815_ATTBASE_MASK
 id|printk
 (paren
 id|KERN_EMERG
+id|PFX
 l_string|&quot;gatt bus addr too high&quot;
 )paren
 suffix:semicolon
@@ -4341,7 +4346,7 @@ comma
 dot
 id|masks
 op_assign
-l_int|NULL
+id|intel_generic_masks
 comma
 dot
 id|agp_enable

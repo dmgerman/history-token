@@ -4,6 +4,7 @@ mdefine_line|#define __irq_cpustat_h
 multiline_comment|/*&n; * Contains default mappings for irq_cpustat_t, used by almost every&n; * architecture.  Some arch (like s390) have per cpu hardware pages and&n; * they define their own mappings for irq_stat.&n; *&n; * Keith Owens &lt;kaos@ocs.com.au&gt; July 2000.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Simple wrappers reducing source bloat.  Define all irq_stat fields&n; * here, even ones that are arch dependent.  That way we get common&n; * definitions instead of differing sets for each arch.&n; */
+macro_line|#ifndef __ARCH_IRQ_STAT
 r_extern
 id|irq_cpustat_t
 id|irq_stat
@@ -11,7 +12,6 @@ id|irq_stat
 )braket
 suffix:semicolon
 multiline_comment|/* defined in asm/hardirq.h */
-macro_line|#ifndef __ARCH_IRQ_STAT /* Some architectures can do this more efficiently */ 
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu, member)&t;(irq_stat[cpu].member)
@@ -27,10 +27,14 @@ DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending()&t;softirq_pending(smp_processor_id())
 DECL|macro|syscall_count
 mdefine_line|#define syscall_count(cpu)&t;__IRQ_STAT((cpu), __syscall_count)
+DECL|macro|local_syscall_count
+mdefine_line|#define local_syscall_count()&t;syscall_count(smp_processor_id())
 DECL|macro|ksoftirqd_task
 mdefine_line|#define ksoftirqd_task(cpu)&t;__IRQ_STAT((cpu), __ksoftirqd_task)
+DECL|macro|local_ksoftirqd_task
+mdefine_line|#define local_ksoftirqd_task()&t;ksoftirqd_task(smp_processor_id())
 multiline_comment|/* arch dependent irq_stat fields */
 DECL|macro|nmi_count
-mdefine_line|#define nmi_count(cpu)&t;&t;__IRQ_STAT((cpu), __nmi_count)&t;&t;/* i386, ia64 */
+mdefine_line|#define nmi_count(cpu)&t;&t;__IRQ_STAT((cpu), __nmi_count)&t;/* i386 */
 macro_line|#endif&t;/* __irq_cpustat_h */
 eof

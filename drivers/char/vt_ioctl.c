@@ -26,10 +26,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|console_driver
 suffix:semicolon
 DECL|macro|VT_IS_IN_USE
-mdefine_line|#define VT_IS_IN_USE(i)&t;(console_driver.table[i] &amp;&amp; console_driver.table[i]-&gt;count)
+mdefine_line|#define VT_IS_IN_USE(i)&t;(console_driver-&gt;ttys[i] &amp;&amp; console_driver-&gt;ttys[i]-&gt;count)
 DECL|macro|VT_BUSY
 mdefine_line|#define VT_BUSY(i)&t;(VT_IS_IN_USE(i) || i == fg_console || i == sel_cons)
 multiline_comment|/*&n; * Console (vt and kd) routines, as defined by USL SVR4 manual, and by&n; * experimentation and study of X386 SYSV handling.&n; *&n; * One point of difference: SYSV vt&squot;s are /dev/vtX, which X &gt;= 0, and&n; * /dev/console is a separate ttyp. Under Linux, /dev/tty0 is /dev/console,&n; * and the vc start at /dev/ttyX, X &gt;= 1. We maintain that here, so we will&n; * always treat our set of vt as numbered 1..MAX_NR_CONSOLES (corresponding to&n; * ttys 0..MAX_NR_CONSOLES-1). Explicitly naming VT 0 is illegal, but using&n; * /dev/tty0 (fg_console) as a target is legal, since an implicit aliasing&n; * to the current console is done by the main ioctl code.&n; */
@@ -1861,7 +1862,7 @@ id|arg
 )paren
 id|arg
 op_assign
-l_int|1193180
+l_int|1193182
 op_div
 id|arg
 suffix:semicolon
@@ -1933,7 +1934,7 @@ id|count
 )paren
 id|count
 op_assign
-l_int|1193180
+l_int|1193182
 op_div
 id|count
 suffix:semicolon

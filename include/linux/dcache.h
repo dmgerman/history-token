@@ -482,6 +482,17 @@ op_star
 id|dentry
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dentry-&gt;d_vfs_flags
+op_amp
+id|DCACHE_UNHASHED
+)paren
+)paren
+(brace
 id|dentry-&gt;d_vfs_flags
 op_or_assign
 id|DCACHE_UNHASHED
@@ -493,6 +504,7 @@ op_amp
 id|dentry-&gt;d_hash
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|d_drop
 r_static

@@ -43,7 +43,7 @@ macro_line|#else
 DECL|macro|DBG_PRINTK
 mdefine_line|#define DBG_PRINTK(format, a...)
 macro_line|#endif      
-multiline_comment|/* SECURE SOCKET IMPLEMENTATION &n; * &n; *   TRANSMIT:&n; *&n; *      When the user sends a packet via send() system call&n; *      the wanpipe_sendmsg() function is executed.  &n; *      &n; *      Each packet is enqueud into sk-&gt;write_queue transmit&n; *      queue. When the packet is enqueued, a delayed transmit&n; *      timer is triggerd which acts as a Bottom Half hander. &n; *&n; *      wanpipe_delay_transmit() function (BH), dequeues packets&n; *      from the sk-&gt;write_queue transmit queue and sends it &n; *      to the deriver via dev-&gt;hard_start_xmit(skb, dev) function.  &n; *      Note, this function is actual a function pointer of if_send()&n; *      routine in the wanpipe driver.&n; *&n; *      X25API GUARANTEED DELIVERY:&n; *&n; *         In order to provide 100% guaranteed packet delivery, &n; *         an atomic &squot;packet_sent&squot; counter is implemented.  Counter &n; *         is incremented for each packet enqueued &n; *         into sk-&gt;write_queue.  Counter is decremented each&n; *         time wanpipe_delayed_transmit() function successfuly &n; *         passes the packet to the driver. Before each send(), a poll&n; *         routine checks the sock resources The maximum value of&n; *         packet sent counter is 1, thus if one packet is queued, the&n; *         application will block until that packet is passed to the&n; *         driver.&n; *&n; *   RECEIVE:&n; *&n; *      Wanpipe device drivers call the socket bottom half&n; *      function, wanpipe_rcv() to queue the incoming packets&n; *      into an AF_WANPIPE socket queue.  Based on wanpipe_rcv()&n; *      return code, the driver knows whether the packet was&n; *      successfully queued.  If the socket queue is full, &n; *      protocol flow control is used by the driver, if any, &n; *      to slow down the traffic until the sock queue is free.&n; *&n; *      Every time a packet arrives into a socket queue the &n; *      socket wakes up processes which are waiting to receive&n; *      data.&n; *&n; *      If the socket queue is full, the driver sets a block&n; *      bit which signals the socket to kick the wanpipe driver&n; *      bottom half hander when the socket queue is partialy&n; *      empty. wanpipe_recvmsg() function performs this action.&n; * &n; *      In case of x25api, packets will never be dropped, since&n; *      flow control is available. &n; *      &n; *      In case of streaming protocols like CHDLC, packets will &n; *      be dropped but the statistics will be generated. &n; */
+multiline_comment|/* SECURE SOCKET IMPLEMENTATION &n; * &n; *   TRANSMIT:&n; *&n; *      When the user sends a packet via send() system call&n; *      the wanpipe_sendmsg() function is executed.  &n; *      &n; *      Each packet is enqueud into sk-&gt;sk_write_queue transmit&n; *      queue. When the packet is enqueued, a delayed transmit&n; *      timer is triggerd which acts as a Bottom Half hander. &n; *&n; *      wanpipe_delay_transmit() function (BH), dequeues packets&n; *      from the sk-&gt;sk_write_queue transmit queue and sends it &n; *      to the deriver via dev-&gt;hard_start_xmit(skb, dev) function.  &n; *      Note, this function is actual a function pointer of if_send()&n; *      routine in the wanpipe driver.&n; *&n; *      X25API GUARANTEED DELIVERY:&n; *&n; *         In order to provide 100% guaranteed packet delivery, &n; *         an atomic &squot;packet_sent&squot; counter is implemented.  Counter &n; *         is incremented for each packet enqueued &n; *         into sk-&gt;sk_write_queue.  Counter is decremented each&n; *         time wanpipe_delayed_transmit() function successfuly &n; *         passes the packet to the driver. Before each send(), a poll&n; *         routine checks the sock resources The maximum value of&n; *         packet sent counter is 1, thus if one packet is queued, the&n; *         application will block until that packet is passed to the&n; *         driver.&n; *&n; *   RECEIVE:&n; *&n; *      Wanpipe device drivers call the socket bottom half&n; *      function, wanpipe_rcv() to queue the incoming packets&n; *      into an AF_WANPIPE socket queue.  Based on wanpipe_rcv()&n; *      return code, the driver knows whether the packet was&n; *      successfully queued.  If the socket queue is full, &n; *      protocol flow control is used by the driver, if any, &n; *      to slow down the traffic until the sock queue is free.&n; *&n; *      Every time a packet arrives into a socket queue the &n; *      socket wakes up processes which are waiting to receive&n; *      data.&n; *&n; *      If the socket queue is full, the driver sets a block&n; *      bit which signals the socket to kick the wanpipe driver&n; *      bottom half hander when the socket queue is partialy&n; *      empty. wanpipe_recvmsg() function performs this action.&n; * &n; *      In case of x25api, packets will never be dropped, since&n; *      flow control is available. &n; *      &n; *      In case of streaming protocols like CHDLC, packets will &n; *      be dropped but the statistics will be generated. &n; */
 multiline_comment|/* The code below is used to test memory leaks. It prints out&n; * a message every time kmalloc and kfree system calls get executed.&n; * If the calls match there is no leak :)&n; */
 multiline_comment|/***********FOR DEBUGGING PURPOSES*********************************************&n;#define KMEM_SAFETYZONE 8&n;&n;static void * dbg_kmalloc(unsigned int size, int prio, int line) {&n;&t;void * v = kmalloc(size,prio);&n;&t;printk(KERN_INFO &quot;line %d  kmalloc(%d,%d) = %p&bslash;n&quot;,line,size,prio,v);&n;&t;return v;&n;}&n;static void dbg_kfree(void * v, int line) {&n;&t;printk(KERN_INFO &quot;line %d  kfree(%p)&bslash;n&quot;,line,v);&n;&t;kfree(v);&n;}&n;&n;#define kmalloc(x,y) dbg_kmalloc(x,y,__LINE__)&n;#define kfree(x) dbg_kfree(x,__LINE__)&n;******************************************************************************/
 multiline_comment|/* List of all wanpipe sockets. */
@@ -558,14 +558,14 @@ suffix:semicolon
 r_case
 id|WAN_PACKET_CMD
 suffix:colon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|chan-&gt;state
 suffix:semicolon
 multiline_comment|/* Bug fix: update Mar6. &n;                         * Do not set the sock lcn number here, since&n;         &t;&t; * cmd is not guaranteed to be executed on the&n;                         * board, thus Lcn could be wrong */
 id|sk
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|sk
@@ -584,7 +584,7 @@ suffix:semicolon
 r_case
 id|WAN_PACKET_ERR
 suffix:colon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|chan-&gt;state
 suffix:semicolon
@@ -628,11 +628,11 @@ r_break
 suffix:semicolon
 )brace
 singleline_comment|//??????????????????????
-singleline_comment|//&t;if (sk-&gt;state == WANSOCK_DISCONNECTED){
-singleline_comment|//&t;&t;if (sk-&gt;zapped){
+singleline_comment|//&t;if (sk-&gt;sk_state == WANSOCK_DISCONNECTED){
+singleline_comment|//&t;&t;if (sk-&gt;sk_zapped) {
 singleline_comment|//&t;&t;&t;//printk(KERN_INFO &quot;wansock: Disconnected, killing early&bslash;n&quot;);
 singleline_comment|//&t;&t;&t;wanpipe_unlink_driver(sk);
-singleline_comment|//&t;&t;&t;sk-&gt;bound_dev_if = 0;
+singleline_comment|//&t;&t;&t;sk-&gt;sk_bound_dev_if = 0;
 singleline_comment|//&t;&t;}
 singleline_comment|//&t;}
 r_return
@@ -795,7 +795,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the new sock structure &n;&t; */
-id|newsk-&gt;bound_dev_if
+id|newsk-&gt;sk_bound_dev_if
 op_assign
 id|dev-&gt;ifindex
 suffix:semicolon
@@ -919,7 +919,7 @@ id|MAX_X25_LCN
 op_assign
 id|dev
 suffix:semicolon
-id|newsk-&gt;zapped
+id|newsk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
@@ -961,7 +961,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|newsk-&gt;state
+id|newsk-&gt;sk_state
 op_assign
 id|WANSOCK_CONNECTING
 suffix:semicolon
@@ -994,7 +994,7 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 multiline_comment|/* We must do this manually, since the sock_queue_rcv_skb()&n;&t; * function sets the skb-&gt;dev to NULL.  However, we use&n;&t; * the dev field in the accept function.*/
@@ -1005,7 +1005,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_plus
 id|skb-&gt;truesize
@@ -1013,7 +1013,7 @@ op_ge
 (paren
 r_int
 )paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 )paren
 (brace
 id|wanpipe_unlink_driver
@@ -1028,7 +1028,7 @@ id|newsk
 )paren
 suffix:semicolon
 op_decrement
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 suffix:semicolon
 r_return
 op_minus
@@ -1047,14 +1047,14 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|sk
@@ -1089,7 +1089,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|osk-&gt;type
+id|osk-&gt;sk_type
 op_ne
 id|SOCK_RAW
 )paren
@@ -1113,21 +1113,21 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_assign
-id|osk-&gt;type
+id|osk-&gt;sk_type
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
-id|osk-&gt;socket
+id|osk-&gt;sk_socket
 suffix:semicolon
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 op_assign
-id|osk-&gt;priority
+id|osk-&gt;sk_priority
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
-id|osk-&gt;protocol
+id|osk-&gt;sk_protocol
 suffix:semicolon
 id|wp_sk
 c_func
@@ -1145,25 +1145,25 @@ id|osk
 op_member_access_from_pointer
 id|num
 suffix:semicolon
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_assign
-id|osk-&gt;rcvbuf
+id|osk-&gt;sk_rcvbuf
 suffix:semicolon
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
-id|osk-&gt;sndbuf
+id|osk-&gt;sk_sndbuf
 suffix:semicolon
-id|sk-&gt;debug
+id|sk-&gt;sk_debug
 op_assign
-id|osk-&gt;debug
+id|osk-&gt;sk_debug
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_CONNECTING
 suffix:semicolon
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 op_assign
-id|osk-&gt;sleep
+id|osk-&gt;sk_sleep
 suffix:semicolon
 r_return
 id|sk
@@ -1301,7 +1301,7 @@ r_return
 id|sk
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * wanpipe_sendmsg&n; *&n; *&t;This function implements a sendto() system call,&n; *      for AF_WANPIPE socket family. &n; *      During socket bind() sk-&gt;bound_dev_if is initialized&n; *      to a correct network device. This number is used&n; *      to find a network device to which the packet should&n; *      be passed to.&n; *&n; *      Each packet is queued into sk-&gt;write_queue and &n; *      delayed transmit bottom half handler is marked for &n; *      execution.&n; *&n; *      A socket must be in WANSOCK_CONNECTED state before&n; *      a packet is queued into sk-&gt;write_queue.&n; *===========================================================*/
+multiline_comment|/*============================================================&n; * wanpipe_sendmsg&n; *&n; *&t;This function implements a sendto() system call,&n; *      for AF_WANPIPE socket family. &n; *      During socket bind() sk-&gt;sk_bound_dev_if is initialized&n; *      to a correct network device. This number is used&n; *      to find a network device to which the packet should&n; *      be passed to.&n; *&n; *      Each packet is queued into sk-&gt;sk_write_queue and &n; *      delayed transmit bottom half handler is marked for &n; *      execution.&n; *&n; *      A socket must be in WANSOCK_CONNECTED state before&n; *      a packet is queued into sk-&gt;sk_write_queue.&n; *===========================================================*/
 DECL|function|wanpipe_sendmsg
 r_static
 r_int
@@ -1382,7 +1382,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 r_return
 op_minus
@@ -1391,7 +1391,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 )paren
@@ -1444,7 +1444,7 @@ l_int|NULL
 (brace
 id|ifindex
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:semicolon
 id|proto
 op_assign
@@ -1476,7 +1476,7 @@ suffix:semicolon
 )brace
 id|ifindex
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:semicolon
 id|proto
 op_assign
@@ -1691,7 +1691,7 @@ id|dev
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
-id|sk-&gt;priority
+id|sk-&gt;sk_priority
 suffix:semicolon
 id|skb-&gt;pkt_type
 op_assign
@@ -1722,7 +1722,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_plus
 id|skb-&gt;truesize
@@ -1731,7 +1731,7 @@ OG
 r_int
 r_int
 )paren
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 (brace
 id|kfree_skb
@@ -1749,7 +1749,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -1815,7 +1815,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * wanpipe_delayed_tarnsmit&n; *&n; *&t;Transmit bottom half handler. It dequeues packets&n; *      from sk-&gt;write_queue and passes them to the &n; *      driver.  If the driver is busy, the packet is &n; *      re-enqueued.  &n; *&n; *      Packet Sent counter is decremented on successful&n; *      transmission. &n; *===========================================================*/
+multiline_comment|/*============================================================&n; * wanpipe_delayed_tarnsmit&n; *&n; *&t;Transmit bottom half handler. It dequeues packets&n; *      from sk-&gt;sk_write_queue and passes them to the &n; *      driver.  If the driver is busy, the packet is &n; *      re-enqueued.  &n; *&n; *      Packet Sent counter is decremented on successful&n; *      transmission. &n; *===========================================================*/
 DECL|function|wanpipe_delayed_transmit
 r_static
 r_void
@@ -1902,12 +1902,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 op_logical_or
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 id|clear_bit
@@ -2013,7 +2013,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -2041,7 +2041,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -2075,7 +2075,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 op_eq
 l_int|NULL
@@ -2084,7 +2084,7 @@ l_int|NULL
 multiline_comment|/* If there is nothing to send, kick&n;&t;&t;&t;&t; * the poll routine, which will trigger&n;&t;&t;&t;&t; * the application to send more data */
 id|sk
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|sk
@@ -2191,7 +2191,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -2208,7 +2208,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;wansock: Exec failed no dev %i&bslash;n&quot;
 comma
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_return
@@ -2370,7 +2370,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2441,7 +2441,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2494,7 +2494,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_logical_and
 op_logical_neg
@@ -2502,7 +2502,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 )paren
 op_logical_or
@@ -2521,14 +2521,14 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_logical_or
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 )paren
 id|printk
@@ -2559,7 +2559,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -2569,7 +2569,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 comma
 l_int|1
 )paren
@@ -2584,7 +2584,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -2605,7 +2605,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -2617,7 +2617,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 id|printk
@@ -2651,11 +2651,11 @@ id|chan
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_DISCONNECTED
 suffix:semicolon
@@ -2674,7 +2674,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -2837,7 +2837,7 @@ id|wp-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -2957,11 +2957,11 @@ c_func
 id|X25_PROT
 )paren
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_DISCONNECTED
 op_logical_and
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 r_struct
@@ -2972,7 +2972,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 id|wanpipe_common_t
@@ -3004,7 +3004,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;wansock: Sending Clear Indication %i&bslash;n&quot;
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 id|dev_put
@@ -3050,7 +3050,7 @@ op_star
 id|skp
 )paren
 op_member_access_from_pointer
-id|next
+id|sk_next
 )paren
 (brace
 r_if
@@ -3065,7 +3065,7 @@ id|sk
 op_star
 id|skp
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 id|__sock_put
 c_func
@@ -3102,7 +3102,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Now the socket is dead. No more input will appear.&n;&t; */
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -3113,7 +3113,7 @@ id|sock-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3130,21 +3130,21 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
 r_if
@@ -3154,14 +3154,14 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_logical_or
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 )paren
 (brace
@@ -3169,7 +3169,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 id|printk
@@ -3182,18 +3182,18 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 comma
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 )paren
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -3201,13 +3201,13 @@ r_int
 )paren
 id|sk
 suffix:semicolon
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
 id|HZ
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|wanpipe_destroy_timer
 suffix:semicolon
@@ -3215,7 +3215,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 r_return
@@ -3243,7 +3243,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -3259,7 +3259,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -3267,7 +3267,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 comma
 l_int|1
 )paren
@@ -3306,7 +3306,7 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 )paren
@@ -3320,7 +3320,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 )paren
 r_return
@@ -3367,11 +3367,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_LISTEN
 op_logical_or
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_BIND_LISTEN
 )paren
@@ -3386,7 +3386,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -3438,7 +3438,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 id|wanpipe_unlink_card
 c_func
@@ -3452,7 +3452,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 id|wanpipe_unlink_driver
 c_func
@@ -3461,15 +3461,15 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_DISCONNECTED
 suffix:semicolon
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
@@ -3517,10 +3517,10 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -3528,13 +3528,13 @@ r_int
 )paren
 id|sk
 suffix:semicolon
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
 id|HZ
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|wanpipe_kill_sock_timer
 suffix:semicolon
@@ -3542,7 +3542,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 )brace
@@ -3597,7 +3597,7 @@ id|wanpipe_tx_critical
 )paren
 )paren
 (brace
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -3607,7 +3607,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 r_return
@@ -3639,7 +3639,7 @@ op_star
 id|skp
 )paren
 op_member_access_from_pointer
-id|next
+id|sk_next
 )paren
 (brace
 r_if
@@ -3654,7 +3654,7 @@ id|sk
 op_star
 id|skp
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 id|__sock_put
 c_func
@@ -3690,7 +3690,7 @@ c_func
 id|X25_PROT
 )paren
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_DISCONNECTED
 )paren
@@ -3703,7 +3703,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 id|wanpipe_common_t
@@ -3743,7 +3743,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3752,21 +3752,21 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
 r_if
@@ -3776,14 +3776,14 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 op_logical_or
 id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 )paren
 (brace
@@ -3791,7 +3791,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 id|printk
@@ -3801,7 +3801,7 @@ id|KERN_INFO
 l_string|&quot;wansock: Killing SOCK in Timer&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sk-&gt;timer.data
+id|sk-&gt;sk_timer.data
 op_assign
 (paren
 r_int
@@ -3809,13 +3809,13 @@ r_int
 )paren
 id|sk
 suffix:semicolon
-id|sk-&gt;timer.expires
+id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
 id|HZ
 suffix:semicolon
-id|sk-&gt;timer.function
+id|sk-&gt;sk_timer.function
 op_assign
 id|wanpipe_destroy_timer
 suffix:semicolon
@@ -3823,7 +3823,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|sk-&gt;timer
+id|sk-&gt;sk_timer
 )paren
 suffix:semicolon
 r_return
@@ -3865,7 +3865,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -3875,7 +3875,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 comma
 l_int|1
 )paren
@@ -3890,7 +3890,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -3963,7 +3963,7 @@ op_star
 id|skp
 )paren
 op_member_access_from_pointer
-id|next
+id|sk_next
 )paren
 (brace
 r_if
@@ -3978,7 +3978,7 @@ id|sk
 op_star
 id|skp
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 suffix:semicolon
 id|__sock_put
 c_func
@@ -3997,7 +3997,7 @@ op_amp
 id|wanpipe_sklist_lock
 )paren
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4037,7 +4037,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -4047,7 +4047,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 comma
 l_int|1
 )paren
@@ -4062,7 +4062,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -4102,7 +4102,7 @@ id|sk
 )paren
 r_return
 suffix:semicolon
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4142,7 +4142,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 op_ne
 l_int|1
@@ -4152,7 +4152,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 comma
 l_int|1
 )paren
@@ -4167,7 +4167,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;refcnt
+id|sk-&gt;sk_refcnt
 )paren
 )paren
 suffix:semicolon
@@ -4231,7 +4231,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 id|err
@@ -4288,7 +4288,7 @@ id|chan
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|chan-&gt;state
 suffix:semicolon
@@ -4303,11 +4303,11 @@ c_func
 id|X25_PROT
 )paren
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_DISCONNECTED
 op_logical_and
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTING
 )paren
@@ -4318,7 +4318,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;wansock: Binding to Device not DISCONNECTED %i&bslash;n&quot;
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 id|release_device
@@ -4344,7 +4344,7 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 id|dev-&gt;ifindex
 suffix:semicolon
@@ -4373,13 +4373,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|ENETDOWN
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -4633,7 +4633,7 @@ id|wp-&gt;num
 op_assign
 id|sll-&gt;sll_protocol
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_BIND_LISTEN
 suffix:semicolon
@@ -5126,7 +5126,7 @@ r_return
 op_minus
 id|ENOBUFS
 suffix:semicolon
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 op_assign
 l_int|1
 suffix:semicolon
@@ -5143,11 +5143,11 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;family
+id|sk-&gt;sk_family
 op_assign
 id|PF_WANPIPE
 suffix:semicolon
@@ -5161,15 +5161,15 @@ id|num
 op_assign
 id|protocol
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_DISCONNECTED
 suffix:semicolon
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 l_int|0
 suffix:semicolon
@@ -5197,7 +5197,7 @@ op_amp
 id|wanpipe_sklist_lock
 )paren
 suffix:semicolon
-id|sk-&gt;next
+id|sk-&gt;sk_next
 op_assign
 id|wanpipe_sklist
 suffix:semicolon
@@ -5304,7 +5304,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
 )brace
@@ -5474,7 +5474,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -5522,14 +5522,14 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 OL
 (paren
 (paren
 r_int
 )paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_star
 l_float|0.9
 )paren
@@ -5621,7 +5621,7 @@ id|AF_WANPIPE
 suffix:semicolon
 id|sll-&gt;sll_ifindex
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:semicolon
 id|sll-&gt;sll_protocol
 op_assign
@@ -5638,7 +5638,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -5751,7 +5751,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 r_if
@@ -5797,7 +5797,7 @@ c_cond
 (paren
 id|dev-&gt;ifindex
 op_eq
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 (brace
 id|printk
@@ -5812,7 +5812,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 id|wanpipe_unlink_driver
@@ -5821,13 +5821,13 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_assign
 id|ENETDOWN
 suffix:semicolon
 id|sk
 op_member_access_from_pointer
-id|error_report
+id|sk_error_report
 c_func
 (paren
 id|sk
@@ -5857,7 +5857,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 l_int|0
 suffix:semicolon
@@ -5873,12 +5873,12 @@ c_cond
 (paren
 id|dev-&gt;ifindex
 op_eq
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_logical_and
 id|po-&gt;num
 op_logical_and
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 (brace
 id|printk
@@ -5950,16 +5950,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;stamp.tv_sec
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_stamp.tv_sec
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -5979,7 +5976,7 @@ op_star
 id|arg
 comma
 op_amp
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren
@@ -6003,7 +6000,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 r_case
@@ -6012,7 +6009,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTED
 )paren
@@ -6134,7 +6131,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_DISCONNECTED
 )paren
@@ -6299,7 +6296,7 @@ id|sk
 suffix:semicolon
 id|sk
 op_assign
-id|sk-&gt;next
+id|sk-&gt;sk_next
 )paren
 (brace
 id|wanpipe_opt
@@ -6356,7 +6353,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 comma
 op_amp
 id|dbg_data-&gt;debug
@@ -6364,7 +6361,7 @@ id|dbg_data-&gt;debug
 id|cnt
 )braket
 dot
-id|sk_state
+id|state_sk
 )paren
 )paren
 )paren
@@ -6380,7 +6377,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 comma
 op_amp
 id|dbg_data-&gt;debug
@@ -6408,7 +6405,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 comma
 op_amp
@@ -6437,7 +6434,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 comma
 op_amp
@@ -6462,7 +6459,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 comma
 op_amp
 id|dbg_data-&gt;debug
@@ -6534,7 +6531,7 @@ op_assign
 id|put_user
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 comma
 op_amp
 id|dbg_data-&gt;debug
@@ -6552,7 +6549,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 (brace
 id|dev
@@ -6560,7 +6557,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -7135,7 +7132,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 r_if
@@ -7441,7 +7438,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -7454,14 +7451,14 @@ multiline_comment|/* exceptional events? */
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 op_logical_neg
 id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 )paren
 (brace
@@ -7476,7 +7473,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -7493,7 +7490,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 (brace
@@ -7508,7 +7505,7 @@ multiline_comment|/* connection hasn&squot;t started yet */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTING
 )paren
@@ -7520,7 +7517,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_DISCONNECTED
 )paren
@@ -7600,7 +7597,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 )brace
@@ -7656,16 +7653,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_BIND_LISTEN
 )paren
 (brace
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 op_assign
 id|backlog
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_LISTEN
 suffix:semicolon
@@ -7762,7 +7759,7 @@ id|card-&gt;func
 op_assign
 id|wanpipe_listen_rcv
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|1
 suffix:semicolon
@@ -7907,7 +7904,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTING
 )paren
@@ -7945,7 +7942,7 @@ multiline_comment|/* Update. Mar6 2000. &n;                         * Do not set
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTED
 )paren
@@ -8004,7 +8001,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_DISCONNECTED
 )paren
@@ -8025,7 +8022,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_logical_or
 id|check_driver_busy
@@ -8062,7 +8059,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_DISCONNECTING
 suffix:semicolon
@@ -8095,7 +8092,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_DISCONNECTED
 )paren
@@ -8126,7 +8123,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 )paren
@@ -8147,7 +8144,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 op_logical_or
 id|check_driver_busy
@@ -8238,7 +8235,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTED
 )paren
@@ -8273,7 +8270,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTING
 op_logical_and
@@ -8357,7 +8354,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 suffix:semicolon
 id|wanpipe_common_t
@@ -8488,7 +8485,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 op_ne
 id|SOCK_RAW
 )paren
@@ -8499,7 +8496,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_LISTEN
 )paren
@@ -8531,7 +8528,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -8554,7 +8551,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -8601,7 +8598,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -8653,7 +8650,7 @@ op_amp
 id|wanpipe_sklist_lock
 )paren
 suffix:semicolon
-id|newsk-&gt;next
+id|newsk-&gt;sk_next
 op_assign
 id|wanpipe_sklist
 suffix:semicolon
@@ -8683,21 +8680,21 @@ op_amp
 id|wanpipe_tx_critical
 )paren
 suffix:semicolon
-id|newsk-&gt;pair
+id|newsk-&gt;sk_pair
 op_assign
 l_int|NULL
 suffix:semicolon
-id|newsk-&gt;socket
+id|newsk-&gt;sk_socket
 op_assign
 id|newsock
 suffix:semicolon
-id|newsk-&gt;sleep
+id|newsk-&gt;sk_sleep
 op_assign
 op_amp
 id|newsock-&gt;wait
 suffix:semicolon
 multiline_comment|/* Now attach up the new socket */
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_decrement
 suffix:semicolon
 id|newsock-&gt;sk
@@ -8875,7 +8872,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|WANSOCK_CONNECTED
 )paren
@@ -8887,7 +8884,7 @@ multiline_comment|/* No reconnect on a seqpacket socket */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WAN_DISCONNECTED
 )paren
@@ -8904,7 +8901,7 @@ op_minus
 id|ECONNREFUSED
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_DISCONNECTED
 suffix:semicolon
@@ -8947,7 +8944,7 @@ op_assign
 id|dev_get_by_index
 c_func
 (paren
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 )paren
 )paren
 op_eq
@@ -8967,7 +8964,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 )paren
 multiline_comment|/* Must bind first - autobinding does not work */
 r_return
@@ -8978,7 +8975,7 @@ id|sock-&gt;state
 op_assign
 id|SS_CONNECTING
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_CONNECTING
 suffix:semicolon
@@ -9060,7 +9057,7 @@ id|sock-&gt;state
 op_assign
 id|SS_UNCONNECTED
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|WANSOCK_CONNECTED
 suffix:semicolon
@@ -9071,7 +9068,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 op_logical_and
@@ -9089,7 +9086,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|WANSOCK_CONNECTED
 )paren

@@ -137,11 +137,6 @@ r_struct
 id|work_struct
 id|tqhangup
 suffix:semicolon
-DECL|member|normaltermios
-r_struct
-id|termios
-id|normaltermios
-suffix:semicolon
 DECL|member|asig
 id|asysigs_t
 id|asig

@@ -395,20 +395,18 @@ multiline_comment|/*&n;&t;&t; *&t;If all instances of the descriptor are not&n;&
 r_if
 c_cond
 (paren
-id|s-&gt;socket
+id|s-&gt;sk_socket
 op_logical_and
-id|s-&gt;socket-&gt;file
+id|s-&gt;sk_socket-&gt;file
 )paren
-(brace
 id|open_count
 op_assign
 id|file_count
 c_func
 (paren
-id|s-&gt;socket-&gt;file
+id|s-&gt;sk_socket-&gt;file
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -462,7 +460,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|x-&gt;receive_queue.lock
+id|x-&gt;sk_receive_queue.lock
 )paren
 suffix:semicolon
 id|skb
@@ -471,7 +469,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|x-&gt;receive_queue
+id|x-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Loop through all but first born &n;&t;&t; */
@@ -488,7 +486,7 @@ id|sk_buff
 op_star
 )paren
 op_amp
-id|x-&gt;receive_queue
+id|x-&gt;sk_receive_queue
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; *&t;Do we have file descriptors ?&n;&t;&t;&t; */
@@ -569,18 +567,16 @@ multiline_comment|/* We have to scan not-yet-accepted ones too */
 r_if
 c_cond
 (paren
-id|x-&gt;state
+id|x-&gt;sk_state
 op_eq
 id|TCP_LISTEN
 )paren
-(brace
 id|maybe_unmark_and_push
 c_func
 (paren
 id|skb-&gt;sk
 )paren
 suffix:semicolon
-)brace
 id|skb
 op_assign
 id|skb-&gt;next
@@ -590,7 +586,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|x-&gt;receive_queue.lock
+id|x-&gt;sk_receive_queue.lock
 )paren
 suffix:semicolon
 id|sock_put
@@ -643,7 +639,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|s-&gt;receive_queue.lock
+id|s-&gt;sk_receive_queue.lock
 )paren
 suffix:semicolon
 id|skb
@@ -652,7 +648,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|s-&gt;receive_queue
+id|s-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_while
@@ -668,7 +664,7 @@ id|sk_buff
 op_star
 )paren
 op_amp
-id|s-&gt;receive_queue
+id|s-&gt;sk_receive_queue
 )paren
 (brace
 id|nextsk
@@ -715,7 +711,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|s-&gt;receive_queue.lock
+id|s-&gt;sk_receive_queue.lock
 )paren
 suffix:semicolon
 )brace

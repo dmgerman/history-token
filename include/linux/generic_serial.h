@@ -165,11 +165,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait

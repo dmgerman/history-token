@@ -5383,7 +5383,7 @@ macro_line|#ifdef CONFIG_IP_FIREWALL_NETLINK
 id|sock_release
 c_func
 (paren
-id|ipfwsk-&gt;socket
+id|ipfwsk-&gt;sk_socket
 )paren
 suffix:semicolon
 macro_line|#endif

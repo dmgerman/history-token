@@ -157,14 +157,6 @@ r_int
 r_int
 id|phys_cpu_present_map
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_GENERICARCH
-DECL|variable|x86_summit
-r_int
-id|x86_summit
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 DECL|variable|bios_cpu_apicid
 id|u8
 id|bios_cpu_apicid

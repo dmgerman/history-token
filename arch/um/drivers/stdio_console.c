@@ -32,14 +32,8 @@ DECL|variable|console_driver
 r_static
 r_struct
 id|tty_driver
+op_star
 id|console_driver
-suffix:semicolon
-DECL|variable|console_refcount
-r_static
-r_int
-id|console_refcount
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|init_console_ops
 r_static
@@ -698,6 +692,8 @@ id|KERN_INFO
 l_string|&quot;Initializing stdio console driver&bslash;n&quot;
 )paren
 suffix:semicolon
+id|console_driver
+op_assign
 id|line_register_devfs
 c_func
 (paren
@@ -708,7 +704,7 @@ op_amp
 id|driver
 comma
 op_amp
-id|console_driver
+id|console_ops
 comma
 id|vts
 comma
@@ -862,19 +858,13 @@ id|sem
 suffix:semicolon
 )brace
 )brace
-DECL|variable|console_driver
+DECL|variable|console_ops
 r_static
 r_struct
-id|tty_driver
-id|console_driver
+id|tty_operations
+id|console_ops
 op_assign
 (brace
-dot
-id|refcount
-op_assign
-op_amp
-id|console_refcount
-comma
 dot
 id|open
 op_assign
@@ -899,6 +889,12 @@ dot
 id|set_termios
 op_assign
 id|set_termios
+comma
+dot
+id|write_room
+op_assign
+id|line_write_room
+comma
 )brace
 suffix:semicolon
 DECL|function|console_device
@@ -925,7 +921,6 @@ op_assign
 id|c-&gt;index
 suffix:semicolon
 r_return
-op_amp
 id|console_driver
 suffix:semicolon
 )brace

@@ -329,11 +329,6 @@ DECL|member|xmit_cnt
 r_int
 id|xmit_cnt
 suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  ISI Card specific ops ...&n; */

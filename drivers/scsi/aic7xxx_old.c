@@ -33246,14 +33246,6 @@ id|AIC7XXX_MAX_SG
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;   * PCI-bus probe.&n;   */
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
 (brace
 r_struct
 (brace
@@ -36139,7 +36131,6 @@ multiline_comment|/* while(pdev=....) */
 )brace
 multiline_comment|/* for PCI_DEVICES */
 )brace
-multiline_comment|/* PCI BIOS present */
 macro_line|#endif /* CONFIG_PCI */
 macro_line|#if defined(__i386__) || defined(__alpha__)
 multiline_comment|/*&n;   * EISA/VL-bus card signature probe.&n;   */

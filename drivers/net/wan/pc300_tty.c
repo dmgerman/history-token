@@ -158,36 +158,6 @@ DECL|typedef|st_cpc_tty_area
 id|st_cpc_tty_area
 suffix:semicolon
 multiline_comment|/* TTY data structures */
-DECL|variable|cpc_tty_serial_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|cpc_tty_serial_table
-(braket
-id|CPC_TTY_NPORTS
-)braket
-suffix:semicolon
-DECL|variable|cpc_tty_serial_termios
-r_static
-r_struct
-id|termios
-op_star
-id|cpc_tty_serial_termios
-(braket
-id|CPC_TTY_NPORTS
-)braket
-suffix:semicolon
-DECL|variable|cpc_tty_serial_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|cpc_tty_serial_termios_locked
-(braket
-id|CPC_TTY_NPORTS
-)braket
-suffix:semicolon
 DECL|variable|serial_drv
 r_static
 r_struct
@@ -209,10 +179,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* number of intrfaces configured with MLPPP */
-DECL|variable|cpc_tty_refcount
-r_int
-id|cpc_tty_refcount
-suffix:semicolon
 DECL|variable|cpc_tty_unreg_flag
 r_int
 id|cpc_tty_unreg_flag
@@ -863,24 +829,6 @@ suffix:semicolon
 id|serial_drv.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|serial_drv.refcount
-op_assign
-op_amp
-id|cpc_tty_refcount
-suffix:semicolon
-multiline_comment|/* tty data structures */
-id|serial_drv.table
-op_assign
-id|cpc_tty_serial_table
-suffix:semicolon
-id|serial_drv.termios
-op_assign
-id|cpc_tty_serial_termios
-suffix:semicolon
-id|serial_drv.termios_locked
-op_assign
-id|cpc_tty_serial_termios_locked
 suffix:semicolon
 multiline_comment|/* interface routines from the upper tty layer to the tty driver */
 id|serial_drv.open
@@ -1682,7 +1630,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpc_tty_refcount
+id|serial_drv.refcount
 op_logical_and
 id|cpc_tty_unreg_flag
 )paren
@@ -2645,7 +2593,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpc_tty_refcount
+id|serial_drv.refcount
 op_logical_and
 id|cpc_tty_unreg_flag
 )paren
@@ -4650,7 +4598,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|cpc_tty_refcount
+id|serial_drv.refcount
 )paren
 (brace
 id|CPC_TTY_DBG
@@ -4660,7 +4608,7 @@ l_string|&quot;%s: unregister is not possible, refcount=%d&quot;
 comma
 id|cpc_tty-&gt;name
 comma
-id|cpc_tty_refcount
+id|serial_drv.refcount
 )paren
 suffix:semicolon
 id|cpc_tty_cnt

@@ -11956,7 +11956,7 @@ r_if
 c_cond
 (paren
 id|l
-OG
+op_ge
 l_int|0x10000
 )paren
 r_return
@@ -12036,6 +12036,13 @@ op_amp
 id|all_mddevs_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|l
+op_decrement
+)paren
 r_return
 (paren
 r_void
@@ -12044,6 +12051,9 @@ op_star
 l_int|2
 suffix:semicolon
 multiline_comment|/* tail */
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|md_seq_next
 r_static

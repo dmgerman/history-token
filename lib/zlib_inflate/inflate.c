@@ -5,7 +5,6 @@ macro_line|#include &quot;infblock.h&quot;
 macro_line|#include &quot;infutil.h&quot;
 DECL|function|zlib_inflate_workspacesize
 r_int
-id|ZEXPORT
 id|zlib_inflate_workspacesize
 c_func
 (paren
@@ -22,7 +21,6 @@ suffix:semicolon
 )brace
 DECL|function|zlib_inflateReset
 r_int
-id|ZEXPORT
 id|zlib_inflateReset
 c_func
 (paren
@@ -35,15 +33,15 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;workspace
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -56,7 +54,7 @@ l_int|0
 suffix:semicolon
 id|z-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 id|z-&gt;state-&gt;mode
 op_assign
@@ -74,7 +72,7 @@ id|z-&gt;state-&gt;blocks
 comma
 id|z
 comma
-id|Z_NULL
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -83,7 +81,6 @@ suffix:semicolon
 )brace
 DECL|function|zlib_inflateEnd
 r_int
-id|ZEXPORT
 id|zlib_inflateEnd
 c_func
 (paren
@@ -96,15 +93,15 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;workspace
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -114,7 +111,7 @@ c_cond
 (paren
 id|z-&gt;state-&gt;blocks
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 id|zlib_inflate_blocks_free
 c_func
@@ -126,7 +123,7 @@ id|z
 suffix:semicolon
 id|z-&gt;state
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 r_return
 id|Z_OK
@@ -134,7 +131,6 @@ suffix:semicolon
 )brace
 DECL|function|zlib_inflateInit2_
 r_int
-id|ZEXPORT
 id|zlib_inflateInit2_
 c_func
 (paren
@@ -158,7 +154,7 @@ c_cond
 (paren
 id|version
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|version
 (braket
@@ -179,7 +175,7 @@ id|z_stream
 op_logical_or
 id|z-&gt;workspace
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_VERSION_ERROR
@@ -190,14 +186,14 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
 suffix:semicolon
 id|z-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 id|z-&gt;state
 op_assign
@@ -212,7 +208,7 @@ id|internal_state
 suffix:semicolon
 id|z-&gt;state-&gt;blocks
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* handle undocumented nowrap option (no zlib header or check) */
 id|z-&gt;state-&gt;nowrap
@@ -278,7 +274,7 @@ comma
 id|z-&gt;state-&gt;nowrap
 ques
 c_cond
-id|Z_NULL
+l_int|NULL
 suffix:colon
 id|zlib_adler32
 comma
@@ -291,7 +287,7 @@ id|w
 )paren
 )paren
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 id|zlib_inflateEnd
@@ -347,7 +343,6 @@ suffix:semicolon
 )brace
 DECL|function|zlib_inflateInit_
 r_int
-id|ZEXPORT
 id|zlib_inflateInit_
 c_func
 (paren
@@ -387,7 +382,6 @@ DECL|macro|NEXTBYTE
 mdefine_line|#define NEXTBYTE (z-&gt;avail_in--,z-&gt;total_in++,*z-&gt;next_in++)
 DECL|function|zlib_inflate
 r_int
-id|ZEXPORT
 id|zlib_inflate
 c_func
 (paren
@@ -411,15 +405,15 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;next_in
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -948,7 +942,6 @@ suffix:semicolon
 )brace
 DECL|function|zlib_inflateSync
 r_int
-id|ZEXPORT
 id|zlib_inflateSync
 c_func
 (paren
@@ -960,7 +953,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* number of bytes to look at */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -981,11 +974,11 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1160,7 +1153,6 @@ suffix:semicolon
 multiline_comment|/* Returns true if inflate is currently at the end of a block generated&n; * by Z_SYNC_FLUSH or Z_FULL_FLUSH. This function is used by one PPP&n; * implementation to provide an additional safety check. PPP uses Z_SYNC_FLUSH&n; * but removes the length bytes of the resulting empty stored block. When&n; * decompressing, PPP checks that at the end of input packet, inflate is&n; * waiting for these length bytes.&n; */
 DECL|function|zlib_inflateSyncPoint
 r_int
-id|ZEXPORT
 id|zlib_inflateSyncPoint
 c_func
 (paren
@@ -1173,15 +1165,15 @@ c_cond
 (paren
 id|z
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|z-&gt;state-&gt;blocks
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1224,7 +1216,7 @@ id|uInt
 id|t
 suffix:semicolon
 multiline_comment|/* temporary storage */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -1233,7 +1225,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -1294,7 +1286,7 @@ c_cond
 (paren
 id|s-&gt;checkfn
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 id|s-&gt;check
 op_assign
@@ -1371,7 +1363,6 @@ suffix:semicolon
 multiline_comment|/*&n; * This subroutine adds the data at next_in/avail_in to the output history&n; * without performing any output.  The output buffer must be &quot;caught up&quot;;&n; * i.e. no pending output (hence s-&gt;read equals s-&gt;write), and the state must&n; * be BLOCKS (i.e. we should be willing to see the start of a series of&n; * BLOCKS).  On exit, the output will also be caught up, and the checksum&n; * will have been updated if need be.&n; */
 DECL|function|zlib_inflateIncomp
 r_int
-id|ZEXPORT
 id|zlib_inflateIncomp
 c_func
 (paren

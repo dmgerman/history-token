@@ -5895,7 +5895,7 @@ id|dev-&gt;hard_header_len
 op_plus
 l_int|15
 comma
-l_int|0
+l_int|1
 comma
 op_amp
 id|err
@@ -7775,7 +7775,7 @@ id|full_len
 op_plus
 l_int|15
 comma
-l_int|0
+l_int|1
 comma
 op_amp
 id|err
@@ -11052,11 +11052,11 @@ id|sk
 op_assign
 id|igmp6_socket-&gt;sk
 suffix:semicolon
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func

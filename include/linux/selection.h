@@ -2,6 +2,7 @@ multiline_comment|/*&n; * selection.h&n; *&n; * Interface between console.c, tty
 macro_line|#ifndef _LINUX_SELECTION_H_
 DECL|macro|_LINUX_SELECTION_H_
 mdefine_line|#define _LINUX_SELECTION_H_
+macro_line|#include &lt;linux/tiocl.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
 r_extern
 r_int
@@ -21,9 +22,10 @@ id|set_selection
 c_func
 (paren
 r_const
-r_int
-r_int
-id|arg
+r_struct
+id|tiocl_selection
+op_star
+id|sel
 comma
 r_struct
 id|tty_struct

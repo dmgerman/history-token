@@ -23,7 +23,7 @@ mdefine_line|#define clear_cb(skb)&t;&t; (memset(&amp;skb_origaddr(skb), 0, &bsl
 DECL|macro|has_bridge_parent
 mdefine_line|#define has_bridge_parent(device)&t;((device)-&gt;br_port != NULL)
 DECL|macro|bridge_parent
-mdefine_line|#define bridge_parent(device)&t;&t;(&amp;((device)-&gt;br_port-&gt;br-&gt;dev))
+mdefine_line|#define bridge_parent(device)&t;&t;((device)-&gt;br_port-&gt;br-&gt;dev)
 multiline_comment|/* We need these fake structures to make netfilter happy --&n; * lots of places assume that skb-&gt;dst != NULL, which isn&squot;t&n; * all that unreasonable.&n; *&n; * Currently, we fill in the PMTU entry because netfilter&n; * refragmentation needs it, and the rt_flags entry because&n; * ipt_REJECT needs it.  Future netfilter modules might&n; * require us to fill additional fields.&n; */
 DECL|variable|__fake_net_device
 r_static

@@ -3558,23 +3558,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* The card is only available on PCI, so if we don&squot;t have a&n;     * PCI bus, we are in trouble.&n;     */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/*        printk (&quot;%s: We really want a pci bios!&bslash;n&quot;, dev-&gt;name);*/
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Loop basically until we don&squot;t find anymore. */
 r_while
 c_loop

@@ -209,6 +209,7 @@ id|index
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|hp_simserial_driver
 suffix:semicolon
 op_star
@@ -217,7 +218,6 @@ op_assign
 id|c-&gt;index
 suffix:semicolon
 r_return
-op_amp
 id|hp_simserial_driver
 suffix:semicolon
 )brace

@@ -18,6 +18,8 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|DEBUG_PM
+mdefine_line|#define DEBUG_PM
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda)         minor=0; (hdb)         minor=64&n; * Secondary i/f:  ide1: major=22; (hdc or hd1a) minor=0; (hdd or hd1b) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde)         minor=0; (hdf)         minor=64&n; * Quaternary i/f: ide3: major=34; (hdg)         minor=0; (hdh)         minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; *&n; * REALLY_SLOW_IO can be defined in ide.c and ide-cd.c, if necessary&n; */
 DECL|macro|REALLY_FAST_IO
@@ -2275,6 +2277,7 @@ DECL|typedef|ide_dma_ops_t
 id|ide_dma_ops_t
 suffix:semicolon
 multiline_comment|/*&n; * mapping stuff, prepare for highmem...&n; * &n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
+macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
 DECL|macro|ide_rq_offset
 mdefine_line|#define ide_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
 multiline_comment|/*&n; * taskfiles really should use hard_cur_sectors as well!&n; */
@@ -2367,6 +2370,89 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
+DECL|function|task_map_rq
+r_static
+r_inline
+r_void
+op_star
+id|task_map_rq
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+multiline_comment|/*&n;&t; * fs request&n;&t; */
+r_if
+c_cond
+(paren
+id|rq-&gt;cbio
+)paren
+r_return
+id|rq_map_buffer
+c_func
+(paren
+id|rq
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * task request&n;&t; */
+r_return
+id|rq-&gt;buffer
+op_plus
+id|blk_rq_offset
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+)brace
+DECL|function|task_unmap_rq
+r_static
+r_inline
+r_void
+id|task_unmap_rq
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_char
+op_star
+id|buffer
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|rq-&gt;cbio
+)paren
+id|rq_unmap_buffer
+c_func
+(paren
+id|buffer
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* !CONFIG_IDE_TASKFILE_IO */
 DECL|macro|IDE_CHIPSET_PCI_MASK
 mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
 DECL|macro|IDE_CHIPSET_IS_PCI
@@ -3938,6 +4024,27 @@ macro_line|#else
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 macro_line|#endif
+multiline_comment|/*&n; * Power Management step value (rq-&gt;pm-&gt;pm_step).&n; *&n; * The step value starts at 0 (ide_pm_state_start_suspend) for a&n; * suspend operation or 1000 (ide_pm_state_start_resume) for a&n; * resume operation.&n; *&n; * For each step, the core calls the subdriver start_power_step() first.&n; * This can return:&n; *&t;- ide_stopped :&t;In this case, the core calls us back again unless&n; *&t;&t;&t;step have been set to ide_power_state_completed.&n; *&t;- ide_started :&t;In this case, the channel is left busy until an&n; *&t;&t;&t;async event (interrupt) occurs.&n; * Typically, start_power_step() will issue a taskfile request with&n; * do_rw_taskfile().&n; *&n; * Upon reception of the interrupt, the core will call complete_power_step()&n; * with the error code if any. This routine should update the step value&n; * and return. It should not start a new request. The core will call&n; * start_power_step for the new step value, unless step have been set to&n; * ide_power_state_completed.&n; *&n; * Subdrivers are expected to define their own additional power&n; * steps from 1..999 for suspend and from 1001..1999 for resume,&n; * other values are reserved for future use.&n; */
+r_enum
+(brace
+DECL|enumerator|ide_pm_state_completed
+id|ide_pm_state_completed
+op_assign
+op_minus
+l_int|1
+comma
+DECL|enumerator|ide_pm_state_start_suspend
+id|ide_pm_state_start_suspend
+op_assign
+l_int|0
+comma
+DECL|enumerator|ide_pm_state_start_resume
+id|ide_pm_state_start_resume
+op_assign
+l_int|1000
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Subdrivers support.&n; */
 DECL|macro|IDE_SUBDRIVER_VERSION
 mdefine_line|#define IDE_SUBDRIVER_VERSION&t;1
@@ -4197,6 +4304,40 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+DECL|member|start_power_step
+id|ide_startstop_t
+(paren
+op_star
+id|start_power_step
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+DECL|member|complete_power_step
+r_void
+(paren
+op_star
+id|complete_power_step
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+id|u8
+comma
+id|u8
+)paren
+suffix:semicolon
 DECL|member|gen_driver
 r_struct
 id|device_driver
@@ -4231,6 +4372,37 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|generic_ide_suspend
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|state
+comma
+id|u32
+id|level
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|generic_ide_resume
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|level
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * IDE modules.&n; */
@@ -4584,6 +4756,10 @@ DECL|enumerator|ide_preempt
 id|ide_preempt
 comma
 multiline_comment|/* insert rq in front of current request */
+DECL|enumerator|ide_head_wait
+id|ide_head_wait
+comma
+multiline_comment|/* insert rq in front of current request and wait for it */
 DECL|enumerator|ide_end
 id|ide_end
 multiline_comment|/* insert rq at end of list, but don&squot;t wait for it */
@@ -4901,6 +5077,107 @@ comma
 id|u32
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
+DECL|macro|IDE_PIO_IN
+mdefine_line|#define IDE_PIO_IN&t;0
+DECL|macro|IDE_PIO_OUT
+mdefine_line|#define IDE_PIO_OUT&t;1
+DECL|function|task_sectors
+r_static
+r_inline
+r_void
+id|task_sectors
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+id|nsect
+comma
+r_int
+id|rw
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_char
+op_star
+id|buf
+suffix:semicolon
+id|buf
+op_assign
+id|task_map_rq
+c_func
+(paren
+id|rq
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * IRQ can happen instantly after reading/writing&n;&t; * last sector of the datablock.&n;&t; */
+id|process_that_request_first
+c_func
+(paren
+id|rq
+comma
+id|nsect
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|IDE_PIO_OUT
+)paren
+id|taskfile_output_data
+c_func
+(paren
+id|drive
+comma
+id|buf
+comma
+id|nsect
+op_star
+id|SECTOR_WORDS
+)paren
+suffix:semicolon
+r_else
+id|taskfile_input_data
+c_func
+(paren
+id|drive
+comma
+id|buf
+comma
+id|nsect
+op_star
+id|SECTOR_WORDS
+)paren
+suffix:semicolon
+id|task_unmap_rq
+c_func
+(paren
+id|rq
+comma
+id|buf
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 r_extern
 r_int
 id|drive_is_ready
@@ -5433,6 +5710,20 @@ id|drive
 comma
 id|u8
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ide_wait_not_busy
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+r_int
+r_int
+id|timeout
 )paren
 suffix:semicolon
 id|ide_startstop_t

@@ -1658,18 +1658,12 @@ id|spdif
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: set the above 1 if we can detect the chip rev.E correctly.&n;&t; *        this is used for switching mic and center/lfe, which needs&n;&t; *        resetting GPIO0 level on the older revision.&n;&t; */
+multiline_comment|/* FIXME: set the below 1 if we can detect the chip rev.E correctly.&n;&t; *        this is used for switching mic and center/lfe, which needs&n;&t; *        resetting GPIO0 level on the older revision.&n;&t; */
 id|ac97-&gt;spec.dev_flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* check spdif */
-r_if
-c_cond
-(paren
-id|ac97-&gt;spec.dev_flags
-)paren
-(brace
+multiline_comment|/* check spdif (should be only on rev.E) */
 id|val
 op_assign
 id|snd_ac97_read
@@ -1691,7 +1685,6 @@ id|spdif
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

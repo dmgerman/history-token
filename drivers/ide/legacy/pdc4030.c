@@ -35,8 +35,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 suffix:semicolon
@@ -1509,9 +1508,6 @@ id|drive
 )paren
 (brace
 r_int
-id|total_remaining
-suffix:semicolon
-r_int
 r_int
 id|sectors_left
 comma
@@ -1523,20 +1519,18 @@ r_struct
 id|request
 op_star
 id|rq
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
 suffix:semicolon
 id|ata_status_t
 id|status
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_char
-op_star
-id|to
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 id|status.all
 op_assign
 id|HWIF
@@ -1577,7 +1571,7 @@ c_func
 (paren
 id|drive
 comma
-l_string|&quot;promise_read_intr&quot;
+id|__FUNCTION__
 comma
 id|status.all
 )paren
@@ -1631,16 +1625,6 @@ op_ne
 id|sectors_left
 )paren
 suffix:semicolon
-id|rq
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-suffix:semicolon
 id|sectors_avail
 op_assign
 id|rq-&gt;nr_sectors
@@ -1658,16 +1642,6 @@ id|read_again
 suffix:semicolon
 id|read_next
 suffix:colon
-id|rq
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-suffix:semicolon
 id|nsect
 op_assign
 id|rq-&gt;current_nr_sectors
@@ -1687,72 +1661,25 @@ id|sectors_avail
 op_sub_assign
 id|nsect
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-id|to
-op_assign
-id|ide_map_buffer
-c_func
-(paren
-id|rq
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ata_input_data
-c_func
-(paren
-id|drive
-comma
-id|to
-comma
-id|nsect
-op_star
-id|SECTOR_WORDS
-)paren
-suffix:semicolon
-macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ata_input_data
-c_func
-(paren
-id|drive
-comma
-id|rq-&gt;buffer
-comma
-id|nsect
-op_star
-id|SECTOR_WORDS
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 macro_line|#ifdef DEBUG_READ
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s:  promise_read: sectors(%ld-%ld), &quot;
-l_string|&quot;buf=0x%08lx, rem=%ld&bslash;n&quot;
+l_string|&quot;%s: %s: sectors(%lu-%lu), rem=%lu&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
+id|__FUNCTION__
+comma
 (paren
+r_int
 r_int
 )paren
 id|rq-&gt;sector
 comma
 (paren
+r_int
 r_int
 )paren
 id|rq-&gt;sector
@@ -1761,21 +1688,10 @@ id|nsect
 op_minus
 l_int|1
 comma
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 (paren
 r_int
 r_int
 )paren
-id|to
-comma
-macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-comma
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 id|rq-&gt;nr_sectors
 op_minus
 id|nsect
@@ -1783,23 +1699,79 @@ id|nsect
 suffix:semicolon
 macro_line|#endif /* DEBUG_READ */
 macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-id|ide_unmap_buffer
+id|task_sectors
 c_func
 (paren
-id|to
+id|drive
 comma
-op_amp
-id|flags
+id|rq
+comma
+id|nsect
+comma
+id|IDE_PIO_IN
 )paren
 suffix:semicolon
-macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
+multiline_comment|/* FIXME: can we check status after transfer on pdc4030? */
+multiline_comment|/* Complete previously submitted bios. */
+r_while
+c_loop
+(paren
+id|rq-&gt;bio
+op_ne
+id|rq-&gt;cbio
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|end_request
+c_func
+(paren
+id|drive
+comma
+l_int|1
+comma
+id|bio_sectors
+c_func
+(paren
+id|rq-&gt;bio
+)paren
+)paren
+)paren
+r_return
+id|ide_stopped
+suffix:semicolon
+macro_line|#else /* CONFIG_IDE_TASKFILE_IO */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|ata_input_data
+c_func
+(paren
+id|drive
+comma
+id|rq-&gt;buffer
+comma
+id|nsect
+op_star
+id|SECTOR_WORDS
+)paren
+suffix:semicolon
 id|rq-&gt;buffer
 op_add_assign
 id|nsect
 op_lshift
 l_int|9
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 id|rq-&gt;sector
 op_add_assign
 id|nsect
@@ -1812,22 +1784,12 @@ id|rq-&gt;nr_sectors
 op_sub_assign
 id|nsect
 suffix:semicolon
-id|total_remaining
-op_assign
-id|rq-&gt;nr_sectors
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|rq-&gt;current_nr_sectors
-op_sub_assign
-id|nsect
 )paren
-op_le
-l_int|0
-)paren
-(brace
 id|DRIVER
 c_func
 (paren
@@ -1844,12 +1806,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 multiline_comment|/*&n; * Now the data has been read in, do the following:&n; * &n; * if there are still sectors left in the request, &n; *   if we know there are still sectors available from the interface,&n; *     go back and read the next bit of the request.&n; *   else if DRQ is asserted, there are more sectors available, so&n; *     go back and find out how many, then read them in.&n; *   else if BUSY is asserted, we are going to get an interrupt, so&n; *     set the handler for the interrupt and just return&n; */
 r_if
 c_cond
 (paren
-id|total_remaining
+id|rq-&gt;nr_sectors
 OG
 l_int|0
 )paren
@@ -1998,9 +1960,6 @@ id|rq
 op_assign
 id|hwgroup-&gt;rq
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2121,23 +2080,18 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif /* DEBUG_WRITE */
-r_for
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
+multiline_comment|/* Complete previously submitted bios. */
+r_while
 c_loop
 (paren
-id|i
-op_assign
-id|rq-&gt;nr_sectors
-suffix:semicolon
-id|i
-OG
-l_int|0
-suffix:semicolon
+id|rq-&gt;bio
+op_ne
+id|rq-&gt;cbio
 )paren
-(brace
-id|i
-op_sub_assign
-id|rq-&gt;current_nr_sectors
-suffix:semicolon
+(paren
+r_void
+)paren
 id|DRIVER
 c_func
 (paren
@@ -2151,17 +2105,128 @@ id|drive
 comma
 l_int|1
 comma
-l_int|0
+id|bio_sectors
+c_func
+(paren
+id|rq-&gt;bio
+)paren
 )paren
 suffix:semicolon
-)brace
+macro_line|#else
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|end_request
+c_func
+(paren
+id|drive
+comma
+l_int|1
+comma
+id|rq-&gt;hard_nr_sectors
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * promise_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; *&n; * Returns 0 on success.&n; *&n; * Note that we may be called from two contexts - the do_rw_disk context&n; * and IRQ context. The IRQ can happen any time after we&squot;ve output the&n; * full &quot;mcount&quot; number of sectors, so we must make sure we update the&n; * state _before_ we output the final part of the data!&n; */
+multiline_comment|/*&n; * promise_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multiple-sector write operation.&n; */
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 DECL|function|promise_multwrite
+r_static
+r_void
+id|promise_multwrite
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
 r_int
+r_int
+id|msect
+)paren
+(brace
+r_struct
+id|request
+op_star
+id|rq
+op_assign
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq
+suffix:semicolon
+r_int
+r_int
+id|nsect
+suffix:semicolon
+id|rq-&gt;errors
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+(brace
+id|nsect
+op_assign
+id|rq-&gt;current_nr_sectors
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nsect
+OG
+id|msect
+)paren
+id|nsect
+op_assign
+id|msect
+suffix:semicolon
+id|task_sectors
+c_func
+(paren
+id|drive
+comma
+id|rq
+comma
+id|nsect
+comma
+id|IDE_PIO_OUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rq-&gt;nr_sectors
+)paren
+id|msect
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|msect
+op_sub_assign
+id|nsect
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|msect
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* CONFIG_IDE_TASKFILE_IO */
+DECL|function|promise_multwrite
+r_static
+r_void
 id|promise_multwrite
 (paren
 id|ide_drive_t
@@ -2202,12 +2267,6 @@ id|nsect
 op_assign
 id|rq-&gt;current_nr_sectors
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-r_int
-r_int
-id|flags
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 r_if
 c_cond
 (paren
@@ -2223,23 +2282,6 @@ id|mcount
 op_sub_assign
 id|nsect
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-id|buffer
-op_assign
-id|ide_map_buffer
-c_func
-(paren
-id|rq
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
-id|rq-&gt;sector
-op_add_assign
-id|nsect
-suffix:semicolon
-macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
 id|buffer
 op_assign
 id|rq-&gt;buffer
@@ -2254,7 +2296,6 @@ id|nsect
 op_lshift
 l_int|9
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 id|rq-&gt;nr_sectors
 op_sub_assign
 id|nsect
@@ -2347,17 +2388,6 @@ op_lshift
 l_int|7
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
-id|ide_unmap_buffer
-c_func
-(paren
-id|buffer
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 )brace
 r_while
 c_loop
@@ -2369,6 +2399,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * promise_write_pollfunc() is the handler for disk write completion polling.&n; */
 DECL|function|promise_write_pollfunc
 r_static
@@ -2389,6 +2420,13 @@ c_func
 (paren
 id|drive
 )paren
+suffix:semicolon
+r_struct
+id|request
+op_star
+id|rq
+op_assign
+id|hwgroup-&gt;rq
 suffix:semicolon
 r_if
 c_cond
@@ -2493,6 +2531,39 @@ id|IDE_STATUS_REG
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
+multiline_comment|/* Complete previously submitted bios. */
+r_while
+c_loop
+(paren
+id|rq-&gt;bio
+op_ne
+id|rq-&gt;cbio
+)paren
+(paren
+r_void
+)paren
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|end_request
+c_func
+(paren
+id|drive
+comma
+l_int|1
+comma
+id|bio_sectors
+c_func
+(paren
+id|rq-&gt;bio
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Now write out last 4 sectors and poll for not BUSY&n;&t; */
 id|promise_multwrite
 c_func
@@ -2583,6 +2654,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
+r_struct
+id|request
+op_star
+id|rq
+op_assign
+id|hwgroup-&gt;rq
+suffix:semicolon
+macro_line|#else
 r_struct
 id|request
 op_star
@@ -2591,22 +2671,26 @@ op_assign
 op_amp
 id|hwgroup-&gt;wrq
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef DEBUG_WRITE
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: promise_write: sectors(%ld-%ld), &quot;
-l_string|&quot;buffer=%p&bslash;n&quot;
+l_string|&quot;%s: %s: sectors(%lu-%lu)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
+id|__FUNCTION__
+comma
 (paren
+r_int
 r_int
 )paren
 id|rq-&gt;sector
 comma
 (paren
+r_int
 r_int
 )paren
 id|rq-&gt;sector
@@ -2614,8 +2698,6 @@ op_plus
 id|rq-&gt;nr_sectors
 op_minus
 l_int|1
-comma
-id|rq-&gt;buffer
 )paren
 suffix:semicolon
 macro_line|#endif /* DEBUG_WRITE */
@@ -2628,9 +2710,6 @@ OG
 l_int|4
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|promise_multwrite
 c_func
 (paren
@@ -2640,9 +2719,6 @@ id|rq-&gt;nr_sectors
 op_minus
 l_int|4
 )paren
-)paren
-r_return
-id|ide_stopped
 suffix:semicolon
 id|hwgroup-&gt;poll_timeout
 op_assign
@@ -2684,9 +2760,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t; * There are 4 or fewer sectors to transfer, do them all in one go&n;&t; * and wait for NOT BUSY.&n;&t; */
-r_if
-c_cond
-(paren
 id|promise_multwrite
 c_func
 (paren
@@ -2694,9 +2767,6 @@ id|drive
 comma
 id|rq-&gt;nr_sectors
 )paren
-)paren
-r_return
-id|ide_stopped
 suffix:semicolon
 id|hwgroup-&gt;poll_timeout
 op_assign
@@ -2776,7 +2846,20 @@ op_star
 id|rq
 )paren
 (brace
-macro_line|#else /* CONFIG_IDE_TASKFILE_IO */
+id|ide_startstop_t
+id|startstop
+suffix:semicolon
+r_int
+r_int
+id|timeout
+suffix:semicolon
+id|u8
+id|stat
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+r_static
 id|ide_startstop_t
 id|do_pdc4030_io
 (paren
@@ -2812,7 +2895,6 @@ op_star
 )paren
 id|task-&gt;tfRegister
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
@@ -2825,46 +2907,6 @@ id|stat
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|blk_fs_request
-c_func
-(paren
-id|rq
-)paren
-)paren
-(brace
-id|blk_dump_rq_flags
-c_func
-(paren
-id|rq
-comma
-l_string|&quot;do_pdc4030_io - bad command&quot;
-)paren
-suffix:semicolon
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 r_if
 c_cond
 (paren
@@ -2993,7 +3035,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3021,7 +3063,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
+macro_line|#endif
 multiline_comment|/*&n; * The card&squot;s behaviour is odd at this point. If the data is&n; * available, DRQ will be true, and no interrupt will be&n; * generated by the card. If this is the case, we need to call the &n; * &quot;interrupt&quot; handler (promise_read_intr) directly. Otherwise, if&n; * an interrupt is going to occur, bit0 of the SELECT register will&n; * be high, so we can set the handler the just return and be interrupted.&n; * If neither of these is the case, we wait for up to 50ms (badly I&squot;m&n; * afraid!) until one of them is.&n; */
 id|timeout
 op_assign
@@ -3167,7 +3209,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3212,6 +3254,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
 id|HWGROUP
 c_func
 (paren
@@ -3224,6 +3267,7 @@ op_star
 id|rq
 suffix:semicolon
 multiline_comment|/* scratchpad */
+macro_line|#endif
 r_return
 id|promise_write
 c_func
@@ -3247,8 +3291,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -3270,17 +3313,15 @@ l_int|1
 op_plus
 id|drive-&gt;select.b.unit
 suffix:semicolon
-macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
-id|ide_hwif_t
-op_star
-id|hwif
-op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
+r_struct
+id|hd_drive_task_hdr
+id|taskfile
 suffix:semicolon
+id|ide_task_t
+id|args
+suffix:semicolon
+macro_line|#endif
 id|BUG_ON
 c_func
 (paren
@@ -3289,6 +3330,72 @@ OG
 l_int|127
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blk_fs_request
+c_func
+(paren
+id|rq
+)paren
+)paren
+(brace
+id|blk_dump_rq_flags
+c_func
+(paren
+id|rq
+comma
+l_string|&quot;promise_rw_disk - bad command&quot;
+)paren
+suffix:semicolon
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|end_request
+c_func
+(paren
+id|drive
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|ide_stopped
+suffix:semicolon
+)brace
+macro_line|#ifdef DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: %sing: LBAsect=%lu, sectors=%lu&bslash;n&quot;
+comma
+id|drive-&gt;name
+comma
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
+ques
+c_cond
+l_string|&quot;writ&quot;
+suffix:colon
+l_string|&quot;read&quot;
+comma
+id|block
+comma
+id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
 r_if
 c_cond
 (paren
@@ -3304,38 +3411,6 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %sing: LBAsect=%ld, sectors=%ld, &quot;
-l_string|&quot;buffer=0x%08lx&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-(paren
-id|rq-&gt;cmd
-op_eq
-id|READ
-)paren
-ques
-c_cond
-l_string|&quot;read&quot;
-suffix:colon
-l_string|&quot;writ&quot;
-comma
-id|block
-comma
-id|rq-&gt;nr_sectors
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-macro_line|#endif
 id|hwif
 op_member_access_from_pointer
 id|OUTB
@@ -3419,14 +3494,7 @@ comma
 id|rq
 )paren
 suffix:semicolon
-macro_line|#else /* CONFIG_IDE_TASKFILE_IO */
-r_struct
-id|hd_drive_task_hdr
-id|taskfile
-suffix:semicolon
-id|ide_task_t
-id|args
-suffix:semicolon
+macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
 id|memset
 c_func
 (paren
@@ -3559,6 +3627,6 @@ op_amp
 id|args
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
+macro_line|#endif /* !CONFIG_IDE_TASKFILE_IO */
 )brace
 eof

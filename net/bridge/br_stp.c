@@ -42,7 +42,7 @@ c_func
 (paren
 l_string|&quot;%s: port %d(%s) entering %s state&bslash;n&quot;
 comma
-id|p-&gt;br-&gt;dev.name
+id|p-&gt;br-&gt;dev-&gt;name
 comma
 id|p-&gt;port_no
 comma
@@ -462,7 +462,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -1117,7 +1117,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -1129,7 +1129,7 @@ c_func
 (paren
 l_string|&quot;%s: topology change detected&quot;
 comma
-id|br-&gt;dev.name
+id|br-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -1792,7 +1792,7 @@ c_func
 (paren
 l_string|&quot;%s: received tcn bpdu on port %i(%s)&bslash;n&quot;
 comma
-id|p-&gt;br-&gt;dev.name
+id|p-&gt;br-&gt;dev-&gt;name
 comma
 id|p-&gt;port_no
 comma

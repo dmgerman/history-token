@@ -182,11 +182,6 @@ id|wait_queue_head_t
 id|close_wait
 suffix:semicolon
 macro_line|#endif
-DECL|member|normaltermios
-r_struct
-id|termios
-id|normaltermios
-suffix:semicolon
 DECL|member|tqueue
 r_struct
 id|work_struct

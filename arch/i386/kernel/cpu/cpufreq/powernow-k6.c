@@ -469,13 +469,6 @@ op_star
 id|policy
 )paren
 (brace
-r_struct
-id|cpuinfo_x86
-op_star
-id|c
-op_assign
-id|cpu_data
-suffix:semicolon
 r_int
 r_int
 id|i

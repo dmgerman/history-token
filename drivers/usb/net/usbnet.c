@@ -89,11 +89,6 @@ id|driver_info
 op_star
 id|driver_info
 suffix:semicolon
-DECL|member|mutex
-r_struct
-id|semaphore
-id|mutex
-suffix:semicolon
 DECL|member|wait
 id|wait_queue_head_t
 op_star
@@ -120,6 +115,7 @@ singleline_comment|// protocol/interface state
 DECL|member|net
 r_struct
 id|net_device
+op_star
 id|net
 suffix:semicolon
 DECL|member|stats
@@ -408,25 +404,21 @@ comma
 l_string|&quot;Initial message level (default = 1)&quot;
 )paren
 suffix:semicolon
-DECL|macro|mutex_lock
-mdefine_line|#define&t;mutex_lock(x)&t;down(x)
-DECL|macro|mutex_unlock
-mdefine_line|#define&t;mutex_unlock(x)&t;up(x)
 DECL|macro|RUN_CONTEXT
 mdefine_line|#define&t;RUN_CONTEXT (in_irq () ? &quot;in_irq&quot; &bslash;&n;&t;&t;&t;: (in_interrupt () ? &quot;in_interrupt&quot; : &quot;can sleep&quot;))
 macro_line|#ifdef DEBUG
 DECL|macro|devdbg
-mdefine_line|#define devdbg(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
+mdefine_line|#define devdbg(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net-&gt;name , ## arg)
 macro_line|#else
 DECL|macro|devdbg
 mdefine_line|#define devdbg(usbnet, fmt, arg...) do {} while(0)
 macro_line|#endif
 DECL|macro|deverr
-mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
+mdefine_line|#define deverr(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net-&gt;name , ## arg)
 DECL|macro|devwarn
-mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg)
+mdefine_line|#define devwarn(usbnet, fmt, arg...) &bslash;&n;&t;printk(KERN_WARNING &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net-&gt;name , ## arg)
 DECL|macro|devinfo
-mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net.name , ## arg); &bslash;&n;&t;} while (0)
+mdefine_line|#define devinfo(usbnet, fmt, arg...) &bslash;&n;&t;do { if ((usbnet)-&gt;msg_level &gt;= 1) &bslash;&n;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (usbnet)-&gt;net-&gt;name , ## arg); &bslash;&n;&t;} while (0)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* mostly for PDA style devices, which are always connected if present */
 DECL|function|always_connected
@@ -999,7 +991,7 @@ id|tmp
 op_add_assign
 l_int|2
 )paren
-id|dev-&gt;net.dev_addr
+id|dev-&gt;net-&gt;dev_addr
 (braket
 id|i
 )braket
@@ -1431,7 +1423,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME cdc-ether has some multicast code too, though it complains&n;&t; * in routine cases.  info-&gt;ether describes the multicast support.&n;&t; */
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 op_assign
 id|cpu_to_le16p
 (paren
@@ -1947,7 +1939,7 @@ id|dbg
 (paren
 l_string|&quot;%s: genelink_check_connect write fail - %X&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|retval
 )paren
@@ -1976,7 +1968,7 @@ id|dbg
 (paren
 l_string|&quot;%s: genelink_check_connect read fail - %X&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|retval
 )paren
@@ -1989,7 +1981,7 @@ id|dbg
 (paren
 l_string|&quot;%s: genelink_check_connect read success&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -2037,7 +2029,7 @@ id|dbg
 (paren
 l_string|&quot;%s: cannot allocate private data per device&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -2067,7 +2059,7 @@ id|dbg
 (paren
 l_string|&quot;%s: cannot allocate private irq urb per device&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 )paren
 suffix:semicolon
 id|kfree
@@ -2313,22 +2305,23 @@ id|gl_skb
 (brace
 singleline_comment|// copy the packet data to the new skb
 id|memcpy
+c_func
 (paren
-id|gl_skb-&gt;data
+id|skb_put
+c_func
+(paren
+id|gl_skb
+comma
+id|size
+)paren
 comma
 id|packet-&gt;packet_data
 comma
 id|size
 )paren
 suffix:semicolon
-singleline_comment|// set skb data size
-id|gl_skb-&gt;len
-op_assign
-id|size
-suffix:semicolon
 id|gl_skb-&gt;dev
 op_assign
-op_amp
 id|dev-&gt;net
 suffix:semicolon
 singleline_comment|// determine the packet&squot;s protocol ID
@@ -2338,7 +2331,6 @@ id|eth_type_trans
 (paren
 id|gl_skb
 comma
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -3048,7 +3040,7 @@ id|dbg
 (paren
 l_string|&quot;%s registers:&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 )paren
 suffix:semicolon
 r_for
@@ -3118,7 +3110,7 @@ id|dbg
 (paren
 l_string|&quot;%s reg [0x%x] ==&gt; error %d&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|reg
 comma
@@ -3130,7 +3122,7 @@ id|dbg
 (paren
 l_string|&quot;%s reg [0x%x] = 0x%x&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|reg
 comma
@@ -3697,7 +3689,7 @@ id|dbg
 (paren
 l_string|&quot;%s: assigned TTL, %d ms&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|NC_READ_TTL_MS
 )paren
@@ -3827,7 +3819,7 @@ id|dbg
 (paren
 l_string|&quot;%s net1080_check_conn read - %d&quot;
 comma
-id|dev-&gt;net.name
+id|dev-&gt;net-&gt;name
 comma
 id|retval
 )paren
@@ -4112,7 +4104,7 @@ id|skb-&gt;len
 OG
 id|FRAMED_SIZE
 (paren
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 )paren
 (brace
@@ -4135,10 +4127,10 @@ r_int
 )paren
 id|FRAMED_SIZE
 (paren
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 comma
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 suffix:semicolon
 id|nc_ensure_sync
@@ -5562,7 +5554,7 @@ id|size
 op_assign
 id|FRAMED_SIZE
 (paren
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 suffix:semicolon
 r_else
@@ -5600,7 +5592,7 @@ r_struct
 id|ethhdr
 )paren
 op_plus
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 suffix:semicolon
 r_else
@@ -5614,7 +5606,7 @@ r_struct
 id|ethhdr
 )paren
 op_plus
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 )paren
 suffix:semicolon
 r_if
@@ -5715,13 +5707,11 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 op_logical_and
 id|netif_device_present
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 op_logical_and
@@ -5787,7 +5777,6 @@ l_string|&quot;device gone&quot;
 suffix:semicolon
 id|netif_device_detach
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -5912,7 +5901,6 @@ id|status
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-op_amp
 id|dev-&gt;net
 suffix:semicolon
 id|skb-&gt;protocol
@@ -5921,7 +5909,6 @@ id|eth_type_trans
 (paren
 id|skb
 comma
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -6284,7 +6271,6 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 op_logical_and
@@ -6507,12 +6493,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|mutex_lock
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 id|netif_stop_queue
 (paren
 id|net
@@ -6646,12 +6626,6 @@ op_amp
 id|dev-&gt;bh
 )paren
 suffix:semicolon
-id|mutex_unlock
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6693,12 +6667,6 @@ op_star
 id|info
 op_assign
 id|dev-&gt;driver_info
-suffix:semicolon
-id|mutex_lock
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
 suffix:semicolon
 singleline_comment|// put into &quot;known safe&quot; state
 r_if
@@ -6797,7 +6765,7 @@ id|TX_QLEN
 id|dev
 )paren
 comma
-id|dev-&gt;net.mtu
+id|dev-&gt;net-&gt;mtu
 comma
 (paren
 id|info-&gt;flags
@@ -6835,12 +6803,6 @@ id|dev-&gt;bh
 suffix:semicolon
 id|done
 suffix:colon
-id|mutex_unlock
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -7256,7 +7218,6 @@ id|dev-&gt;flags
 suffix:semicolon
 id|netif_wake_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -7350,7 +7311,6 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -7558,7 +7518,6 @@ suffix:semicolon
 )brace
 id|netif_stop_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -8275,13 +8234,11 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 op_logical_and
 id|netif_device_present
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 op_logical_and
@@ -8421,7 +8378,6 @@ id|dev
 )paren
 id|netif_wake_queue
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -8497,7 +8453,6 @@ id|dev-&gt;driver_info-&gt;description
 suffix:semicolon
 id|unregister_netdev
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -8511,6 +8466,12 @@ id|dev-&gt;driver_info-&gt;unbind
 id|dev
 comma
 id|intf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev-&gt;net
 )paren
 suffix:semicolon
 id|kfree
@@ -8616,6 +8577,16 @@ id|udev-&gt;altsetting
 id|udev-&gt;act_altsetting
 )braket
 suffix:semicolon
+id|usb_get_dev
+(paren
+id|xdev
+)paren
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 singleline_comment|// set up our own records
 r_if
 c_cond
@@ -8640,9 +8611,8 @@ id|dbg
 l_string|&quot;can&squot;t kmalloc dev&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|memset
@@ -8654,17 +8624,6 @@ comma
 r_sizeof
 op_star
 id|dev
-)paren
-suffix:semicolon
-id|init_MUTEX_LOCKED
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
-id|usb_get_dev
-(paren
-id|xdev
 )paren
 suffix:semicolon
 id|dev-&gt;udev
@@ -8740,13 +8699,29 @@ suffix:semicolon
 singleline_comment|// set up network interface records
 id|net
 op_assign
-op_amp
-id|dev-&gt;net
+id|alloc_etherdev
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|net
+)paren
+r_goto
+id|out1
 suffix:semicolon
 id|SET_MODULE_OWNER
 (paren
 id|net
 )paren
+suffix:semicolon
+id|dev-&gt;net
+op_assign
+id|net
 suffix:semicolon
 id|net-&gt;priv
 op_assign
@@ -8767,13 +8742,6 @@ id|node_id
 comma
 r_sizeof
 id|node_id
-)paren
-suffix:semicolon
-singleline_comment|// point-to-point link ... we always use Ethernet headers 
-singleline_comment|// supports win32 interop (some devices) and the bridge driver.
-id|ether_setup
-(paren
-id|net
 )paren
 suffix:semicolon
 singleline_comment|// possible with some EHCI controllers
@@ -8946,16 +8914,9 @@ id|status
 OL
 l_int|0
 )paren
-(brace
-id|kfree
-(paren
-id|dev
-)paren
+r_goto
+id|out2
 suffix:semicolon
-r_return
-id|status
-suffix:semicolon
-)brace
 id|dev-&gt;maxpacket
 op_assign
 id|usb_maxpacket
@@ -8970,18 +8931,26 @@ suffix:semicolon
 id|SET_NETDEV_DEV
 c_func
 (paren
-op_amp
 id|dev-&gt;net
 comma
 op_amp
 id|dev-&gt;udev-&gt;dev
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|register_netdev
 (paren
-op_amp
 id|dev-&gt;net
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+r_goto
+id|out3
 suffix:semicolon
 id|devinfo
 (paren
@@ -9004,21 +8973,55 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|mutex_unlock
-(paren
-op_amp
-id|dev-&gt;mutex
-)paren
-suffix:semicolon
 singleline_comment|// start as if the link is up
 id|netif_device_attach
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|out3
+suffix:colon
+r_if
+c_cond
+(paren
+id|info-&gt;unbind
+)paren
+id|info-&gt;unbind
+(paren
+id|dev
+comma
+id|udev
+)paren
+suffix:semicolon
+id|out2
+suffix:colon
+id|kfree
+c_func
+(paren
+id|net
+)paren
+suffix:semicolon
+id|out1
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|usb_put_dev
+c_func
+(paren
+id|xdev
+)paren
+suffix:semicolon
+r_return
+id|status
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/

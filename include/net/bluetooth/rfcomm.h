@@ -1002,7 +1002,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|rfcomm_pi
-mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *) sk-&gt;protinfo)
+mdefine_line|#define rfcomm_pi(sk)   ((struct rfcomm_pinfo *)sk-&gt;sk_protinfo)
 DECL|struct|rfcomm_pinfo
 r_struct
 id|rfcomm_pinfo

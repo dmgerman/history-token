@@ -754,7 +754,7 @@ c_func
 id|s
 )paren
 suffix:semicolon
-macro_line|#if CHECK_STACK
+macro_line|#ifdef CHECK_STACK
 id|check_stack
 c_func
 (paren
@@ -1817,14 +1817,17 @@ r_int
 id|usp
 comma
 r_int
+id|__user
 op_star
 id|parent_tidp
 comma
 r_void
+id|__user
 op_star
 id|child_threadptr
 comma
 r_int
+id|__user
 op_star
 id|child_tidp
 comma
@@ -2044,6 +2047,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|a0
@@ -2106,14 +2110,18 @@ id|filename
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|a1
 comma
 (paren
 r_char
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|a2

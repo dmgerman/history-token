@@ -5,10 +5,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 multiline_comment|/* inode in-kernel data */
 DECL|macro|SHMEM_NR_DIRECT
 mdefine_line|#define SHMEM_NR_DIRECT 16
-r_extern
-id|atomic_t
-id|shmem_nrpages
-suffix:semicolon
 DECL|struct|shmem_inode_info
 r_struct
 id|shmem_inode_info

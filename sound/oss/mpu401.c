@@ -2881,7 +2881,10 @@ id|cmd
 r_case
 id|SNDCTL_SYNTH_INFO
 suffix:colon
-id|memcpy
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -2914,6 +2917,10 @@ r_struct
 id|synth_info
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0

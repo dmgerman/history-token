@@ -1198,14 +1198,6 @@ id|ENXIO
 suffix:semicolon
 multiline_comment|/* First: scan PCI bus(es) */
 macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
 (brace
 r_int
 id|pci_index
@@ -12767,6 +12759,7 @@ id|i
 comma
 id|cards
 suffix:semicolon
+macro_line|#ifndef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -12776,12 +12769,6 @@ l_int|0
 op_logical_and
 op_logical_neg
 id|EISA_bus
-op_logical_and
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
 )paren
 id|printk
 c_func
@@ -12789,6 +12776,7 @@ c_func
 l_string|&quot;hp100: You should not use auto-probing with insmod!&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Loop on all possible base addresses */
 id|i
 op_assign

@@ -45,6 +45,8 @@ DECL|macro|INITRD_START
 mdefine_line|#define INITRD_START (*(unsigned int *) (PARAM+0x218))
 DECL|macro|INITRD_SIZE
 mdefine_line|#define INITRD_SIZE (*(unsigned int *) (PARAM+0x21c))
+DECL|macro|EDID_INFO
+mdefine_line|#define EDID_INFO (*(struct edid_info *) (PARAM+0x440))
 DECL|macro|COMMAND_LINE
 mdefine_line|#define COMMAND_LINE saved_command_line
 DECL|macro|COMMAND_LINE_SIZE

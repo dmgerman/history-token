@@ -1696,6 +1696,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;FAT: Directory bread(block %llu) failed&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|phys
 )paren
 suffix:semicolon

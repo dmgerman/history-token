@@ -810,6 +810,14 @@ comma
 l_string|&quot;Bad copyin of host data&bslash;n&quot;
 )paren
 suffix:semicolon
+id|sysfree
+c_func
+(paren
+id|DownCode
+comma
+id|rbp-&gt;Count
+)paren
+suffix:semicolon
 id|p-&gt;RIOError.Error
 op_assign
 id|COPYIN_FAILED

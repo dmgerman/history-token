@@ -29,7 +29,7 @@ multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt archi
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
 id|irq_desc_t
-id|_irq_desc
+id|irq_desc
 (braket
 id|NR_IRQS
 )braket
@@ -47,15 +47,20 @@ l_int|1
 )braket
 op_assign
 (brace
+dot
+id|status
+op_assign
 id|IRQ_DISABLED
 comma
+dot
+id|handler
+op_assign
 op_amp
 id|no_irq_type
 comma
-l_int|NULL
-comma
-l_int|0
-comma
+dot
+id|lock
+op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 )brace

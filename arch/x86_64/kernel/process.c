@@ -312,9 +312,9 @@ id|idle_setup
 )paren
 suffix:semicolon
 multiline_comment|/* Prints also some state that isn&squot;t saved in the pt_regs */
-DECL|function|show_regs
+DECL|function|__show_regs
 r_void
-id|show_regs
+id|__show_regs
 c_func
 (paren
 r_struct
@@ -640,6 +640,24 @@ comma
 id|cr3
 comma
 id|cr4
+)paren
+suffix:semicolon
+)brace
+DECL|function|show_regs
+r_void
+id|show_regs
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|__show_regs
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 id|show_trace

@@ -53,27 +53,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;dmx3191: PCI support not enabled&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|tmpl-&gt;proc_name
 op_assign
 id|DMX3191D_DRIVER_NAME

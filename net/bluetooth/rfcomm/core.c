@@ -430,7 +430,7 @@ l_string|&quot;%p state %d&quot;
 comma
 id|sk
 comma
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 suffix:semicolon
 id|rfcomm_schedule
@@ -527,11 +527,11 @@ id|sock
 op_member_access_from_pointer
 id|sk
 suffix:semicolon
-id|sk-&gt;data_ready
+id|sk-&gt;sk_data_ready
 op_assign
 id|rfcomm_l2data_ready
 suffix:semicolon
-id|sk-&gt;state_change
+id|sk-&gt;sk_state_change
 op_assign
 id|rfcomm_l2state_change
 suffix:semicolon
@@ -7683,7 +7683,7 @@ id|skb_queue_len
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 suffix:semicolon
@@ -7698,7 +7698,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -7721,7 +7721,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_eq
 id|BT_CLOSED
 )paren
@@ -7743,7 +7743,7 @@ c_func
 (paren
 id|s
 comma
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 suffix:semicolon
 )brace
@@ -7856,11 +7856,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Set our callbacks */
-id|nsock-&gt;sk-&gt;data_ready
+id|nsock-&gt;sk-&gt;sk_data_ready
 op_assign
 id|rfcomm_l2data_ready
 suffix:semicolon
-id|nsock-&gt;sk-&gt;state_change
+id|nsock-&gt;sk-&gt;sk_state_change
 op_assign
 id|rfcomm_l2state_change
 suffix:semicolon
@@ -7926,7 +7926,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 (brace
 r_case
@@ -7983,7 +7983,7 @@ c_func
 (paren
 id|s
 comma
-id|sk-&gt;err
+id|sk-&gt;sk_err
 )paren
 suffix:semicolon
 r_break

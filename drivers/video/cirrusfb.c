@@ -23,7 +23,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_AMIGA
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PREP
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|isPReP
 mdefine_line|#define isPReP (_machine == _MACH_prep)
@@ -10356,7 +10356,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* FBCON_HAS_CFB32 */
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PREP
 DECL|macro|PREP_VIDEO_BASE
 mdefine_line|#define PREP_VIDEO_BASE ((volatile unsigned long) 0xC0000000)
 DECL|macro|PREP_IO_BASE
@@ -10403,7 +10403,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_ALL_PPC */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_PREP */
 macro_line|#ifdef CONFIG_PCI
 DECL|variable|release_io_ports
 r_static
@@ -10940,7 +10940,7 @@ comma
 l_int|0x00000000
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PREP
 id|get_prep_addrs
 (paren
 op_amp

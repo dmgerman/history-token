@@ -92,11 +92,6 @@ r_struct
 id|async_icount
 id|icount
 suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 DECL|member|io_type
 r_int
 id|io_type

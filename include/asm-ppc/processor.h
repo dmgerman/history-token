@@ -1040,7 +1040,7 @@ DECL|macro|PVR_MAJ
 mdefine_line|#define&t;PVR_MAJ(pvr)&t;(((pvr) &gt;&gt;  4) &amp; 0xF)&t;/* Major revision field */
 DECL|macro|PVR_MIN
 mdefine_line|#define&t;PVR_MIN(pvr)&t;(((pvr) &gt;&gt;  0) &amp; 0xF)&t;/* Minor revision field */
-multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_ALL_PPC and CHRP/PReP/PMac. -- Tom&n; */
+multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_PPC_MULTIPLATFORM and CHRP/PReP/PMac. -- Tom&n; */
 DECL|macro|_MACH_prep
 mdefine_line|#define _MACH_prep&t;0x00000001
 DECL|macro|_MACH_Pmac
@@ -1114,7 +1114,7 @@ mdefine_line|#define SR14&t;14
 DECL|macro|SR15
 mdefine_line|#define SR15&t;15
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#if defined(CONFIG_ALL_PPC)
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 r_extern
 r_int
 id|_machine
@@ -1145,7 +1145,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|_machine
 mdefine_line|#define _machine 0
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
 r_struct
 id|task_struct
 suffix:semicolon
@@ -1321,19 +1321,39 @@ id|fpscr
 suffix:semicolon
 multiline_comment|/* Floating point status */
 macro_line|#ifdef CONFIG_ALTIVEC
-DECL|member|vr
+multiline_comment|/* Complete AltiVec register set */
 id|vector128
 id|vr
 (braket
 l_int|32
 )braket
-suffix:semicolon
-multiline_comment|/* Complete AltiVec set */
-DECL|member|vscr
-id|vector128
-id|vscr
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* AltiVec status */
+id|vector128
+id|vscr
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
 DECL|member|vrsave
 r_int
 r_int

@@ -14122,27 +14122,6 @@ id|KERN_INFO
 l_string|&quot;aec671x_detect: &bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;   NO PCI SUPPORT.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|count
-suffix:semicolon
-)brace
 id|tpnt-&gt;proc_name
 op_assign
 l_string|&quot;atp870u&quot;

@@ -458,18 +458,6 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do. */
 )brace
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-r_extern
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|pcibios_resource_to_bus
@@ -491,6 +479,8 @@ op_star
 id|res
 )paren
 suffix:semicolon
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Values for the `which&squot; argument to sys_pciconfig_iobase.  */
 DECL|macro|IOBASE_HOSE

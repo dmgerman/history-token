@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
@@ -4188,12 +4189,6 @@ r_int
 r_int
 id|last_nsec_offset
 suffix:semicolon
-DECL|variable|time_interpolator
-r_struct
-id|time_interpolator
-op_star
-id|time_interpolator
-suffix:semicolon
 macro_line|#ifndef __HAVE_ARCH_CMPXCHG
 DECL|variable|last_nsec_offset_lock
 id|spinlock_t
@@ -4202,31 +4197,25 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#endif
-r_static
-r_struct
-(brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* lock protecting list */
-DECL|member|list
+DECL|variable|time_interpolator
 r_struct
 id|time_interpolator
 op_star
-id|list
+id|time_interpolator
 suffix:semicolon
-multiline_comment|/* list of registered interpolators */
-DECL|variable|ti_global
-)brace
-id|ti_global
-op_assign
-(brace
-dot
-id|lock
+DECL|variable|time_interpolator_list
+r_static
+r_struct
+id|time_interpolator
+op_star
+id|time_interpolator_list
+suffix:semicolon
+DECL|variable|time_interpolator_lock
+r_static
+id|spinlock_t
+id|time_interpolator_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-)brace
 suffix:semicolon
 r_static
 r_inline
@@ -4289,10 +4278,9 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|ti_global.lock
+id|time_interpolator_lock
 )paren
 suffix:semicolon
-(brace
 id|write_seqlock_irq
 c_func
 (paren
@@ -4300,7 +4288,6 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-(brace
 r_if
 c_cond
 (paren
@@ -4314,7 +4301,6 @@ id|time_interpolator
 op_assign
 id|ti
 suffix:semicolon
-)brace
 id|write_sequnlock_irq
 c_func
 (paren
@@ -4324,18 +4310,17 @@ id|xtime_lock
 suffix:semicolon
 id|ti-&gt;next
 op_assign
-id|ti_global.list
+id|time_interpolator_list
 suffix:semicolon
-id|ti_global.list
+id|time_interpolator_list
 op_assign
 id|ti
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
 op_amp
-id|ti_global.lock
+id|time_interpolator_lock
 )paren
 suffix:semicolon
 )brace
@@ -4363,14 +4348,13 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|ti_global.lock
+id|time_interpolator_lock
 )paren
 suffix:semicolon
-(brace
 id|prev
 op_assign
 op_amp
-id|ti_global.list
+id|time_interpolator_list
 suffix:semicolon
 r_for
 c_loop
@@ -4416,7 +4400,6 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-(brace
 r_if
 c_cond
 (paren
@@ -4436,7 +4419,7 @@ c_loop
 (paren
 id|curr
 op_assign
-id|ti_global.list
+id|time_interpolator_list
 suffix:semicolon
 id|curr
 suffix:semicolon
@@ -4458,7 +4441,6 @@ op_assign
 id|curr
 suffix:semicolon
 )brace
-)brace
 id|write_sequnlock_irq
 c_func
 (paren
@@ -4466,12 +4448,11 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
 op_amp
-id|ti_global.lock
+id|time_interpolator_lock
 )paren
 suffix:semicolon
 )brace

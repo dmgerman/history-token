@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -150,7 +151,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_CHRP
 multiline_comment|/*&n; * This looks in the &quot;ranges&quot; property for the primary PCI host bridge&n; * to find the physical address of the start of PCI/ISA I/O space.&n; * It is basically a cut-down version of pci_process_bridge_OF_ranges.&n; */
 DECL|function|chrp_find_phys_io_base
 r_static
@@ -347,7 +348,7 @@ r_return
 id|base
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_CHRP */
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|function|sysrq_handle_xmon
 r_static
@@ -409,7 +410,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 r_volatile
 r_int
 r_char
@@ -1692,6 +1693,7 @@ DECL|function|xmon_init_scc
 id|xmon_init_scc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if

@@ -5,6 +5,11 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+multiline_comment|/*&n; * These are non-NULL pointers that will result in page faults&n; * under normal circumstances, used to verify that nobody uses&n; * non-initialized list entries.&n; */
+DECL|macro|LIST_POISON1
+mdefine_line|#define LIST_POISON1  ((void *) 0x00100100)
+DECL|macro|LIST_POISON2
+mdefine_line|#define LIST_POISON2  ((void *) 0x00200200)
 multiline_comment|/*&n; * Simple doubly linked list implementation.&n; *&n; * Some of the internal functions (&quot;__xxx&quot;) are useful when&n; * manipulating whole lists rather than single entries, as&n; * sometimes we already know the next/prev entries and we can&n; * generate better code by using them directly rather than&n; * using the generic single-entry routines.&n; */
 DECL|struct|list_head
 r_struct
@@ -293,8 +298,16 @@ comma
 id|entry-&gt;next
 )paren
 suffix:semicolon
+id|entry-&gt;next
+op_assign
+id|LIST_POISON1
+suffix:semicolon
+id|entry-&gt;prev
+op_assign
+id|LIST_POISON2
+suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; */
+multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; *&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward &n; * pointers that may still be used for walking the list.&n; */
 DECL|function|list_del_rcu
 r_static
 r_inline
@@ -315,6 +328,10 @@ id|entry-&gt;prev
 comma
 id|entry-&gt;next
 )paren
+suffix:semicolon
+id|entry-&gt;prev
+op_assign
+id|LIST_POISON2
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * list_del_init - deletes entry from list and reinitialize it.&n; * @entry: the element to delete from the list.&n; */
@@ -596,6 +613,9 @@ mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (
 multiline_comment|/**&n; * list_for_each_entry&t;-&t;iterate over list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_for_each_entry
 mdefine_line|#define list_for_each_entry(pos, head, member)&t;&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
+multiline_comment|/**&n; * list_for_each_entry_reverse - iterate backwards over list of given type.&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
+DECL|macro|list_for_each_entry_reverse
+mdefine_line|#define list_for_each_entry_reverse(pos, head, member)&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;prev, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.prev);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.prev, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.prev))
 multiline_comment|/**&n; * list_for_each_entry_safe - iterate over list of given type safe against removal of list entry&n; * @pos:&t;the type * to use as a loop counter.&n; * @n:&t;&t;another type * to use as temporary storage&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_for_each_entry_safe
 mdefine_line|#define list_for_each_entry_safe(pos, n, head, member)&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;n = list_entry(pos-&gt;member.next, typeof(*pos), member);&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = n, n = list_entry(n-&gt;member.next, typeof(*n), member))
@@ -743,20 +763,46 @@ op_star
 id|n
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|n-&gt;pprev
-)paren
 id|__hlist_del
 c_func
 (paren
 id|n
 )paren
 suffix:semicolon
+id|n-&gt;next
+op_assign
+id|LIST_POISON1
+suffix:semicolon
+id|n-&gt;pprev
+op_assign
+id|LIST_POISON2
+suffix:semicolon
 )brace
-DECL|macro|hlist_del_rcu
-mdefine_line|#define hlist_del_rcu hlist_del  /* list_del_rcu is identical too? */
+multiline_comment|/**&n; * hlist_del_rcu - deletes entry from hash list without re-initialization&n; * @entry: the element to delete from the hash list.&n; *&n; * Note: list_unhashed() on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward&n; * pointers that may still be used for walking the hash list.&n; */
+DECL|function|hlist_del_rcu
+r_static
+r_inline
+r_void
+id|hlist_del_rcu
+c_func
+(paren
+r_struct
+id|hlist_node
+op_star
+id|n
+)paren
+(brace
+id|__hlist_del
+c_func
+(paren
+id|n
+)paren
+suffix:semicolon
+id|n-&gt;pprev
+op_assign
+id|LIST_POISON2
+suffix:semicolon
+)brace
 DECL|function|hlist_del_init
 r_static
 id|__inline__
@@ -790,6 +836,8 @@ id|n
 suffix:semicolon
 )brace
 )brace
+DECL|macro|hlist_del_rcu_init
+mdefine_line|#define hlist_del_rcu_init hlist_del_init
 DECL|function|hlist_add_head
 r_static
 id|__inline__
@@ -933,13 +981,53 @@ op_assign
 id|n
 suffix:semicolon
 )brace
+DECL|function|hlist_add_after
+r_static
+id|__inline__
+r_void
+id|hlist_add_after
+c_func
+(paren
+r_struct
+id|hlist_node
+op_star
+id|n
+comma
+r_struct
+id|hlist_node
+op_star
+id|next
+)paren
+(brace
+id|next-&gt;next
+op_assign
+id|n-&gt;next
+suffix:semicolon
+op_star
+(paren
+id|next-&gt;pprev
+)paren
+op_assign
+id|n
+suffix:semicolon
+id|n-&gt;next
+op_assign
+id|next
+suffix:semicolon
+)brace
 DECL|macro|hlist_entry
 mdefine_line|#define hlist_entry(ptr, type, member) container_of(ptr,type,member)
 multiline_comment|/* Cannot easily do prefetch unfortunately */
 DECL|macro|hlist_for_each
-mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos; &bslash;&n;&t;     pos = pos-&gt;next) 
+mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos &amp;&amp; ({ prefetch(pos-&gt;next); 1; }); &bslash;&n;&t;     pos = pos-&gt;next) 
 DECL|macro|hlist_for_each_safe
 mdefine_line|#define hlist_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;first; n = pos ? pos-&gt;next : 0, pos; &bslash;&n;&t;     pos = n)
+multiline_comment|/**&n; * hlist_for_each_entry&t;- iterate over list of given type&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
+DECL|macro|hlist_for_each_entry
+mdefine_line|#define hlist_for_each_entry(tpos, pos, head, member)&t;&t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ prefetch(pos-&gt;next); 1;}) &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = pos-&gt;next)
+multiline_comment|/**&n; * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @n:&t;&t;another &amp;struct hlist_node to use as temporary storage&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
+DECL|macro|hlist_for_each_entry_safe
+mdefine_line|#define hlist_for_each_entry_safe(tpos, pos, n, head, member) &t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ n = pos-&gt;next; 1; }) &amp;&amp; &t;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = n)
 macro_line|#else
 macro_line|#warning &quot;don&squot;t include kernel headers in userspace&quot;
 macro_line|#endif /* __KERNEL__ */

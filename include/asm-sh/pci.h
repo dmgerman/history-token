@@ -486,9 +486,6 @@ suffix:semicolon
 multiline_comment|/* Not supporting more than 32-bit PCI bus addresses now, but&n; * must satisfy references to this function.  Change if needed.&n; */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask) (0)
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns, or alternatively stop on the first sg_dma_len(sg) which&n; * is 0.&n; */
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))

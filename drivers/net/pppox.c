@@ -116,7 +116,7 @@ multiline_comment|/* Clear connection to ppp device, if attached. */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 (paren
 id|PPPOX_BOUND
@@ -138,7 +138,7 @@ op_member_access_from_pointer
 id|chan
 )paren
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|PPPOX_DEAD
 suffix:semicolon
@@ -237,7 +237,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_amp
 id|PPPOX_CONNECTED
 )paren
@@ -279,7 +279,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_or_assign
 id|PPPOX_BOUND
 suffix:semicolon
@@ -295,7 +295,7 @@ c_cond
 (paren
 id|pppox_protos
 (braket
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 )braket
 op_member_access_from_pointer
 id|ioctl
@@ -304,7 +304,7 @@ id|rc
 op_assign
 id|pppox_protos
 (braket
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 )braket
 op_member_access_from_pointer
 id|ioctl

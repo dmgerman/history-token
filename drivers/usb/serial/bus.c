@@ -225,7 +225,6 @@ id|port-&gt;number
 suffix:semicolon
 id|tty_register_device
 (paren
-op_amp
 id|usb_serial_tty_driver
 comma
 id|minor
@@ -363,7 +362,6 @@ id|port-&gt;number
 suffix:semicolon
 id|tty_unregister_device
 (paren
-op_amp
 id|usb_serial_tty_driver
 comma
 id|minor

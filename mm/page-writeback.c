@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
 DECL|macro|MAX_WRITEBACK_PAGES
 mdefine_line|#define MAX_WRITEBACK_PAGES&t;1024
@@ -116,11 +117,11 @@ id|ps
 comma
 r_int
 op_star
-id|background
+id|pbackground
 comma
 r_int
 op_star
-id|dirty
+id|pdirty
 )paren
 (brace
 r_int
@@ -132,6 +133,12 @@ id|dirty_ratio
 suffix:semicolon
 r_int
 id|unmapped_ratio
+suffix:semicolon
+r_int
+id|background
+suffix:semicolon
+r_int
+id|dirty
 suffix:semicolon
 id|get_page_state
 c_func
@@ -198,7 +205,6 @@ id|dirty_ratio
 op_div
 l_int|2
 suffix:semicolon
-op_star
 id|background
 op_assign
 (paren
@@ -209,7 +215,6 @@ id|total_pages
 op_div
 l_int|100
 suffix:semicolon
-op_star
 id|dirty
 op_assign
 (paren
@@ -219,6 +224,37 @@ id|total_pages
 )paren
 op_div
 l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_LESS_THROTTLE
+)paren
+(brace
+id|background
+op_add_assign
+id|background
+op_div
+l_int|4
+suffix:semicolon
+id|dirty
+op_add_assign
+id|dirty
+op_div
+l_int|4
+suffix:semicolon
+)brace
+op_star
+id|pbackground
+op_assign
+id|background
+suffix:semicolon
+op_star
+id|pdirty
+op_assign
+id|dirty
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are generating dirty&n; * data.  It looks at the number of dirty pages in the machine and will force&n; * the caller to perform writeback if the system is over `vm_dirty_ratio&squot;.&n; * If we&squot;re over `background_thresh&squot; then pdflush is woken to perform some&n; * writeout.&n; */
@@ -538,13 +574,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|balance_dirty_pages_ratelimited
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|balance_dirty_pages_ratelimited
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * writeback at least _min_pages, and keep writing until the amount of dirty&n; * memory is less than the background threshold, or until we&squot;re all clean.&n; */
 DECL|function|background_writeout
 r_static

@@ -33,6 +33,9 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/transp_v6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
+macro_line|#if CONFIG_IPV6_TUNNEL
+macro_line|#include &lt;net/ip6_tunnel.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#if 0 /*def MODULE*/
@@ -396,7 +399,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_eq
 id|IPPROTO_UDP
 )paren
@@ -420,7 +423,7 @@ r_else
 r_if
 c_cond
 (paren
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_eq
 id|IPPROTO_RAW
 )paren
@@ -663,11 +666,11 @@ comma
 id|THIS_MODULE
 )paren
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_assign
 id|answer-&gt;prot
 suffix:semicolon
-id|sk-&gt;no_check
+id|sk-&gt;sk_no_check
 op_assign
 id|answer-&gt;no_check
 suffix:semicolon
@@ -678,7 +681,7 @@ id|INET_PROTOSW_REUSE
 op_amp
 id|answer-&gt;flags
 )paren
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 op_assign
 l_int|1
 suffix:semicolon
@@ -719,23 +722,23 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|sk-&gt;destruct
+id|sk-&gt;sk_destruct
 op_assign
 id|inet6_sock_destruct
 suffix:semicolon
-id|sk-&gt;zapped
+id|sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;family
+id|sk-&gt;sk_family
 op_assign
 id|PF_INET6
 suffix:semicolon
-id|sk-&gt;protocol
+id|sk-&gt;sk_protocol
 op_assign
 id|protocol
 suffix:semicolon
-id|sk-&gt;backlog_rcv
+id|sk-&gt;sk_backlog_rcv
 op_assign
 id|answer-&gt;prot-&gt;backlog_rcv
 suffix:semicolon
@@ -847,7 +850,7 @@ c_func
 id|inet-&gt;num
 )paren
 suffix:semicolon
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|hash
 c_func
@@ -859,13 +862,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;prot-&gt;init
+id|sk-&gt;sk_prot-&gt;init
 )paren
 (brace
 r_int
 id|err
 op_assign
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|init
 c_func
@@ -1032,11 +1035,10 @@ multiline_comment|/* If the socket has its own bind function then use it. */
 r_if
 c_cond
 (paren
-id|sk-&gt;prot-&gt;bind
+id|sk-&gt;sk_prot-&gt;bind
 )paren
-(brace
 r_return
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|bind
 c_func
@@ -1048,7 +1050,6 @@ comma
 id|addr_len
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1128,7 +1129,7 @@ op_ne
 id|IPV6_ADDR_ANY
 )paren
 (brace
-multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t;&t; * unpecified and mapped address have a v4 equivalent.&n;&t;&t;&t; */
+multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t;&t; * unspecified and mapped address have a v4 equivalent.&n;&t;&t;&t; */
 id|v4addr
 op_assign
 id|LOOPBACK4_IPV6
@@ -1202,7 +1203,7 @@ multiline_comment|/* Check these errors (active socket, double bind). */
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|TCP_CLOSE
 op_logical_or
@@ -1243,7 +1244,7 @@ id|addr-&gt;sin6_scope_id
 )paren
 (brace
 multiline_comment|/* Override any existing binding, if another one&n;&t;&t;&t; * is supplied by user.&n;&t;&t;&t; */
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 op_assign
 id|addr-&gt;sin6_scope_id
 suffix:semicolon
@@ -1252,9 +1253,8 @@ multiline_comment|/* Binding to link-local address requires an interface */
 r_if
 c_cond
 (paren
-id|sk-&gt;bound_dev_if
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_bound_dev_if
 )paren
 (brace
 id|release_sock
@@ -1311,7 +1311,7 @@ multiline_comment|/* Make sure we are allowed to bind here. */
 r_if
 c_cond
 (paren
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|get_port
 c_func
@@ -1320,8 +1320,6 @@ id|sk
 comma
 id|snum
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|inet_reset_saddr
@@ -1348,7 +1346,7 @@ id|addr_type
 op_ne
 id|IPV6_ADDR_ANY
 )paren
-id|sk-&gt;userlocks
+id|sk-&gt;sk_userlocks
 op_or_assign
 id|SOCK_BINDADDR_LOCK
 suffix:semicolon
@@ -1357,7 +1355,7 @@ c_cond
 (paren
 id|snum
 )paren
-id|sk-&gt;userlocks
+id|sk-&gt;sk_userlocks
 op_or_assign
 id|SOCK_BINDPORT_LOCK
 suffix:semicolon
@@ -1642,7 +1640,7 @@ c_cond
 (paren
 l_int|1
 op_lshift
-id|sk-&gt;state
+id|sk-&gt;sk_state
 )paren
 op_amp
 (paren
@@ -1738,7 +1736,7 @@ id|IPV6_ADDR_LINKLOCAL
 )paren
 id|sin-&gt;sin6_scope_id
 op_assign
-id|sk-&gt;bound_dev_if
+id|sk-&gt;sk_bound_dev_if
 suffix:semicolon
 op_star
 id|uaddr_len
@@ -1797,16 +1795,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;stamp.tv_sec
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_stamp.tv_sec
 )paren
-(brace
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|copy_to_user
@@ -1819,7 +1814,7 @@ op_star
 id|arg
 comma
 op_amp
-id|sk-&gt;stamp
+id|sk-&gt;sk_stamp
 comma
 r_sizeof
 (paren
@@ -1908,14 +1903,13 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sk-&gt;prot-&gt;ioctl
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_prot-&gt;ioctl
 op_logical_or
 (paren
 id|err
 op_assign
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|ioctl
 c_func
@@ -1931,7 +1925,6 @@ op_eq
 op_minus
 id|ENOIOCTLCMD
 )paren
-(brace
 r_return
 id|dev_ioctl
 c_func
@@ -1945,7 +1938,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -2541,11 +2533,11 @@ l_int|2
 comma
 r_int
 id|mibsize
+comma
+r_int
+id|mibalign
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2562,12 +2554,12 @@ id|ptr
 l_int|0
 )braket
 op_assign
-id|kmalloc_percpu
+id|__alloc_percpu
 c_func
 (paren
 id|mibsize
 comma
-id|GFP_KERNEL
+id|mibalign
 )paren
 suffix:semicolon
 r_if
@@ -2587,12 +2579,12 @@ id|ptr
 l_int|1
 )braket
 op_assign
-id|kmalloc_percpu
+id|__alloc_percpu
 c_func
 (paren
 id|mibsize
 comma
-id|GFP_KERNEL
+id|mibalign
 )paren
 suffix:semicolon
 r_if
@@ -2607,78 +2599,12 @@ l_int|1
 r_goto
 id|err1
 suffix:semicolon
-multiline_comment|/* Zero percpu version of the mibs */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_possible
-c_func
-(paren
-id|i
-)paren
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|per_cpu_ptr
-c_func
-(paren
-id|ptr
-(braket
-l_int|0
-)braket
-comma
-id|i
-)paren
-comma
-l_int|0
-comma
-id|mibsize
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|per_cpu_ptr
-c_func
-(paren
-id|ptr
-(braket
-l_int|1
-)braket
-comma
-id|i
-)paren
-comma
-l_int|0
-comma
-id|mibsize
-)paren
-suffix:semicolon
-)brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
 id|err1
 suffix:colon
-id|kfree_percpu
+id|free_percpu
 c_func
 (paren
 id|ptr
@@ -2723,7 +2649,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|kfree_percpu
+id|free_percpu
 c_func
 (paren
 id|ptr
@@ -2732,7 +2658,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|kfree_percpu
+id|free_percpu
 c_func
 (paren
 id|ptr
@@ -2782,6 +2708,13 @@ r_sizeof
 r_struct
 id|ipv6_mib
 )paren
+comma
+id|__alignof__
+c_func
+(paren
+r_struct
+id|ipv6_mib
+)paren
 )paren
 OL
 l_int|0
@@ -2807,6 +2740,13 @@ r_sizeof
 r_struct
 id|icmpv6_mib
 )paren
+comma
+id|__alignof__
+c_func
+(paren
+r_struct
+id|ipv6_mib
+)paren
 )paren
 OL
 l_int|0
@@ -2831,6 +2771,13 @@ r_sizeof
 (paren
 r_struct
 id|udp_mib
+)paren
+comma
+id|__alignof__
+c_func
+(paren
+r_struct
+id|ipv6_mib
 )paren
 )paren
 OL
@@ -3206,6 +3153,23 @@ id|err
 r_goto
 id|ndisc_fail
 suffix:semicolon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|err
+op_assign
+id|ip6_tunnel_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|ip6_tunnel_fail
+suffix:semicolon
+macro_line|#endif
 id|err
 op_assign
 id|igmp6_init
@@ -3415,6 +3379,15 @@ suffix:semicolon
 macro_line|#endif
 id|igmp_fail
 suffix:colon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|ip6_tunnel_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ip6_tunnel_fail
+suffix:colon
+macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren
@@ -3540,6 +3513,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|ip6_tunnel_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren

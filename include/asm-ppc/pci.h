@@ -741,17 +741,8 @@ id|direction
 multiline_comment|/* Nothing to do. */
 )brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-r_extern
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
 multiline_comment|/* Map a range of PCI memory or I/O space for a device into user space */
 r_int
 id|pci_mmap_page_range

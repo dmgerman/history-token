@@ -145,8 +145,6 @@ id|ENOMEM
 suffix:semicolon
 r_int
 id|i
-comma
-id|result
 suffix:semicolon
 r_if
 c_cond
@@ -395,46 +393,6 @@ dot
 id|bInterval
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* USB initialisation magic for the simple case */
-id|result
-op_assign
-id|usb_set_interface
-c_func
-(paren
-id|dev
-comma
-id|altsetting-&gt;desc.bInterfaceNumber
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|result
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* no error */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;unknown error %d from usb_set_interface&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-r_goto
-id|out_free_controlurb
-suffix:semicolon
 )brace
 multiline_comment|/* build and submit an interrupt URB for status byte handling */
 id|usb_fill_int_urb

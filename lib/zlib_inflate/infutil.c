@@ -71,11 +71,11 @@ id|r
 id|uInt
 id|n
 suffix:semicolon
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -148,7 +148,7 @@ c_cond
 (paren
 id|s-&gt;checkfn
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 id|z-&gt;adler
 op_assign
@@ -261,7 +261,7 @@ c_cond
 (paren
 id|s-&gt;checkfn
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 id|z-&gt;adler
 op_assign

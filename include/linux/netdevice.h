@@ -731,6 +731,12 @@ op_star
 id|ec_ptr
 suffix:semicolon
 multiline_comment|/* Econet specific data&t;*/
+DECL|member|ax25_ptr
+r_void
+op_star
+id|ax25_ptr
+suffix:semicolon
+multiline_comment|/* AX.25 specific data */
 DECL|member|poll_list
 r_struct
 id|list_head
@@ -3025,6 +3031,33 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Support for loadable net-drivers */
+r_extern
+r_struct
+id|net_device
+op_star
+id|alloc_netdev
+c_func
+(paren
+r_int
+id|sizeof_priv
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_void
+(paren
+op_star
+id|setup
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+)paren
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|register_netdev

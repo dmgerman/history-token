@@ -669,8 +669,6 @@ id|uid
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|get_current_user
-mdefine_line|#define get_current_user() ({ &t;&t;&t;&t;&bslash;&n;&t;struct user_struct *__user = current-&gt;user;&t;&bslash;&n;&t;atomic_inc(&amp;__user-&gt;__count);&t;&t;&t;&bslash;&n;&t;__user; })
 r_extern
 r_struct
 id|user_struct
@@ -1396,6 +1394,8 @@ DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
 DECL|macro|PF_SWAPOFF
 mdefine_line|#define PF_SWAPOFF&t;0x00080000&t;/* I am in swapoff */
+DECL|macro|PF_LESS_THROTTLE
+mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
