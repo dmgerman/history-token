@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * ASCII values for a number of symbolic constants, printing functions,&n; * etc.&n; * Additions for SCSI 2 and Linux 2.2.x by D. Gilbert (990422)&n; * Additions for SCSI 3+ (SPC-3 T10/1416-D Rev 07 3 May 2002)&n; *   by D. Gilbert and aeb (20020609)&n; */
+multiline_comment|/* &n; * ASCII values for a number of symbolic constants, printing functions,&n; * etc.&n; * Additions for SCSI 2 and Linux 2.2.x by D. Gilbert (990422)&n; * Additions for SCSI 3+ (SPC-3 T10/1416-D Rev 07 3 May 2002)&n; *   by D. Gilbert and aeb (20020609)&n; * Additions for SPC-3 T10/1416-D Rev 21 22 Sept 2004, D. Gilbert 20041025&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,50 +7,29 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
-DECL|macro|CONST_COMMAND
-mdefine_line|#define CONST_COMMAND   0x01
-DECL|macro|CONST_STATUS
-mdefine_line|#define CONST_STATUS    0x02
-DECL|macro|CONST_SENSE
-mdefine_line|#define CONST_SENSE     0x04
-DECL|macro|CONST_XSENSE
-mdefine_line|#define CONST_XSENSE    0x08
-DECL|macro|CONST_CMND
-mdefine_line|#define CONST_CMND      0x10
-DECL|macro|CONST_MSG
-mdefine_line|#define CONST_MSG       0x20
-DECL|macro|CONST_HOST
-mdefine_line|#define CONST_HOST&t;0x40
-DECL|macro|CONST_DRIVER
-mdefine_line|#define CONST_DRIVER&t;0x80
-DECL|variable|unknown
-r_static
-r_const
-r_char
-id|unknown
-(braket
-)braket
-op_assign
-l_string|&quot;UNKNOWN&quot;
-suffix:semicolon
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+multiline_comment|/* Commands with service actions that change the command name */
+DECL|macro|MAINTENANCE_IN
+mdefine_line|#define MAINTENANCE_IN 0xa3
+DECL|macro|MAINTENANCE_OUT
+mdefine_line|#define MAINTENANCE_OUT 0xa4
+DECL|macro|SERVICE_ACTION_IN_12
+mdefine_line|#define SERVICE_ACTION_IN_12 0xab
+DECL|macro|SERVICE_ACTION_OUT_12
+mdefine_line|#define SERVICE_ACTION_OUT_12 0xa9
+DECL|macro|SERVICE_ACTION_IN_16
+mdefine_line|#define SERVICE_ACTION_IN_16 0x9e
+DECL|macro|SERVICE_ACTION_OUT_16
+mdefine_line|#define SERVICE_ACTION_OUT_16 0x9f
+DECL|macro|VARIABLE_LENGTH_CMD
+mdefine_line|#define VARIABLE_LENGTH_CMD 0x7f
 macro_line|#ifdef CONFIG_SCSI_CONSTANTS
-macro_line|#ifdef CONSTANTS
-DECL|macro|CONSTANTS
-macro_line|#undef CONSTANTS
-macro_line|#endif
-DECL|macro|CONSTANTS
-mdefine_line|#define CONSTANTS (CONST_COMMAND | CONST_STATUS | CONST_SENSE | CONST_XSENSE &bslash;&n;&t;&t;   | CONST_CMND | CONST_MSG | CONST_HOST | CONST_DRIVER)
-macro_line|#else
-DECL|macro|CONSTANTS
-mdefine_line|#define CONSTANTS 0
-macro_line|#endif
-macro_line|#if (CONSTANTS &amp; CONST_COMMAND)
-DECL|variable|group_0_commands
+DECL|variable|cdb_byte0_names
 r_static
 r_const
 r_char
 op_star
-id|group_0_commands
+id|cdb_byte0_names
 (braket
 )braket
 op_assign
@@ -58,36 +37,36 @@ op_assign
 multiline_comment|/* 00-03 */
 l_string|&quot;Test Unit Ready&quot;
 comma
-l_string|&quot;Rezero Unit&quot;
+l_string|&quot;Rezero Unit/Rewind&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Request Sense&quot;
 comma
 multiline_comment|/* 04-07 */
-l_string|&quot;Format Unit&quot;
+l_string|&quot;Format Unit/Medium&quot;
 comma
 l_string|&quot;Read Block Limits&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Reasssign Blocks&quot;
 comma
 multiline_comment|/* 08-0d */
 l_string|&quot;Read (6)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Write (6)&quot;
 comma
 l_string|&quot;Seek (6)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
 multiline_comment|/* 0e-12 */
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Read Reverse&quot;
 comma
@@ -98,26 +77,26 @@ comma
 l_string|&quot;Inquiry&quot;
 comma
 multiline_comment|/* 13-16 */
-l_string|&quot;Verify&quot;
+l_string|&quot;Verify (6)&quot;
 comma
 l_string|&quot;Recover Buffered Data&quot;
 comma
-l_string|&quot;Mode Select&quot;
+l_string|&quot;Mode Select (6)&quot;
 comma
-l_string|&quot;Reserve&quot;
+l_string|&quot;Reserve (6)&quot;
 comma
-multiline_comment|/* 17-1b */
-l_string|&quot;Release&quot;
+multiline_comment|/* 17-1a */
+l_string|&quot;Release (6)&quot;
 comma
 l_string|&quot;Copy&quot;
 comma
 l_string|&quot;Erase&quot;
 comma
-l_string|&quot;Mode Sense&quot;
+l_string|&quot;Mode Sense (6)&quot;
 comma
+multiline_comment|/* 1b-1d */
 l_string|&quot;Start/Stop Unit&quot;
 comma
-multiline_comment|/* 1c-1d */
 l_string|&quot;Receive Diagnostic&quot;
 comma
 l_string|&quot;Send Diagnostic&quot;
@@ -125,37 +104,25 @@ comma
 multiline_comment|/* 1e-1f */
 l_string|&quot;Prevent/Allow Medium Removal&quot;
 comma
-id|unknown
+l_int|NULL
 comma
-)brace
-suffix:semicolon
-DECL|variable|group_1_commands
-r_static
-r_const
-r_char
-op_star
-id|group_1_commands
-(braket
-)braket
-op_assign
-(brace
 multiline_comment|/* 20-22 */
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
 multiline_comment|/* 23-28 */
-id|unknown
+l_string|&quot;Read Format Capacities&quot;
 comma
-l_string|&quot;Define window parameters&quot;
+l_string|&quot;Set Window&quot;
 comma
-l_string|&quot;Read Capacity&quot;
+l_string|&quot;Read Capacity (10)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Read (10)&quot;
 comma
@@ -166,14 +133,14 @@ l_string|&quot;Write (10)&quot;
 comma
 l_string|&quot;Seek (10)&quot;
 comma
-l_string|&quot;Erase&quot;
+l_string|&quot;Erase (10)&quot;
 comma
 l_string|&quot;Read updated block&quot;
 comma
 multiline_comment|/* 2e-31 */
-l_string|&quot;Write Verify&quot;
+l_string|&quot;Write Verify (10)&quot;
 comma
-l_string|&quot;Verify&quot;
+l_string|&quot;Verify (10)&quot;
 comma
 l_string|&quot;Search High&quot;
 comma
@@ -184,14 +151,14 @@ l_string|&quot;Search Low&quot;
 comma
 l_string|&quot;Set Limits&quot;
 comma
-l_string|&quot;Prefetch or Read Position&quot;
+l_string|&quot;Prefetch/Read Position&quot;
 comma
 multiline_comment|/* 35-37 */
-l_string|&quot;Synchronize Cache&quot;
+l_string|&quot;Synchronize Cache (10)&quot;
 comma
-l_string|&quot;Lock/Unlock Cache&quot;
+l_string|&quot;Lock/Unlock Cache (10)&quot;
 comma
-l_string|&quot;Read Defect Data&quot;
+l_string|&quot;Read Defect Data(10)&quot;
 comma
 multiline_comment|/* 38-3c */
 l_string|&quot;Medium Scan&quot;
@@ -207,33 +174,21 @@ comma
 multiline_comment|/* 3d-3f */
 l_string|&quot;Update Block&quot;
 comma
-l_string|&quot;Read Long&quot;
+l_string|&quot;Read Long (10)&quot;
 comma
-l_string|&quot;Write Long&quot;
+l_string|&quot;Write Long (10)&quot;
 comma
-)brace
-suffix:semicolon
-DECL|variable|group_2_commands
-r_static
-r_const
-r_char
-op_star
-id|group_2_commands
-(braket
-)braket
-op_assign
-(brace
 multiline_comment|/* 40-41 */
 l_string|&quot;Change Definition&quot;
 comma
-l_string|&quot;Write Same&quot;
+l_string|&quot;Write Same (10)&quot;
 comma
 multiline_comment|/* 42-48 */
 l_string|&quot;Read sub-channel&quot;
 comma
-l_string|&quot;Read TOC&quot;
+l_string|&quot;Read TOC/PMA/ATIP&quot;
 comma
-l_string|&quot;Read header&quot;
+l_string|&quot;Read density support&quot;
 comma
 l_string|&quot;Play audio (10)&quot;
 comma
@@ -256,7 +211,7 @@ l_string|&quot;Log Sense&quot;
 comma
 l_string|&quot;Stop play/scan&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 multiline_comment|/* 50-55 */
 l_string|&quot;Xdwrite&quot;
@@ -267,7 +222,7 @@ l_string|&quot;Xdread, Read track info&quot;
 comma
 l_string|&quot;Reserve track&quot;
 comma
-l_string|&quot;Send OPC onfo&quot;
+l_string|&quot;Send OPC info&quot;
 comma
 l_string|&quot;Mode Select (10)&quot;
 comma
@@ -293,19 +248,74 @@ l_string|&quot;Persistent reserve in&quot;
 comma
 l_string|&quot;Persistent reserve out&quot;
 comma
-)brace
-suffix:semicolon
-multiline_comment|/* The following are 16 byte commands in group 4 */
-DECL|variable|group_4_commands
-r_static
-r_const
-r_char
-op_star
-id|group_4_commands
-(braket
-)braket
-op_assign
-(brace
+multiline_comment|/* 60-67 */
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+multiline_comment|/* 68-6f */
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+multiline_comment|/* 70-77 */
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+multiline_comment|/* 78-7f */
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_string|&quot;Variable length&quot;
+comma
 multiline_comment|/* 80-84 */
 l_string|&quot;Xdwrite (16)&quot;
 comma
@@ -331,7 +341,7 @@ comma
 multiline_comment|/* 8a-8f */
 l_string|&quot;Write (16)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Read attributes&quot;
 comma
@@ -350,45 +360,32 @@ l_string|&quot;Lock/unlock cache (16)&quot;
 comma
 l_string|&quot;Write same (16)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 multiline_comment|/* 95-99 */
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
 multiline_comment|/* 9a-9f */
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-id|unknown
+l_int|NULL
 comma
-l_string|&quot;Service action in&quot;
+l_string|&quot;Service action in (16)&quot;
 comma
-l_string|&quot;Service action out&quot;
+l_string|&quot;Service action out (16)&quot;
 comma
-)brace
-suffix:semicolon
-multiline_comment|/* The following are 12 byte commands in group 5 */
-DECL|variable|group_5_commands
-r_static
-r_const
-r_char
-op_star
-id|group_5_commands
-(braket
-)braket
-op_assign
-(brace
 multiline_comment|/* a0-a5 */
 l_string|&quot;Report luns&quot;
 comma
@@ -396,9 +393,9 @@ l_string|&quot;Blank&quot;
 comma
 l_string|&quot;Send event&quot;
 comma
-l_string|&quot;Maintenance (in)&quot;
+l_string|&quot;Maintenance in&quot;
 comma
-l_string|&quot;Maintenance (out)&quot;
+l_string|&quot;Maintenance out&quot;
 comma
 l_string|&quot;Move medium/play audio(12)&quot;
 comma
@@ -414,7 +411,7 @@ comma
 multiline_comment|/* aa-ae */
 l_string|&quot;Write(12)&quot;
 comma
-id|unknown
+l_int|NULL
 comma
 l_string|&quot;Erase(12), Get Performance&quot;
 comma
@@ -453,150 +450,1033 @@ l_string|&quot;Redundancy group (in), Scan&quot;
 comma
 l_string|&quot;Redundancy group (out), Set cd-rom speed&quot;
 comma
-l_string|&quot;Spare (in), Play cd&quot;
+l_string|&quot;Spare in, Play cd&quot;
 comma
 multiline_comment|/* bd-bf */
-l_string|&quot;Spare (out), Mechanism status&quot;
+l_string|&quot;Spare out, Mechanism status&quot;
 comma
-l_string|&quot;Volume set (in), Read cd&quot;
+l_string|&quot;Volume set in, Read cd&quot;
 comma
-l_string|&quot;Volume set (out), Send DVD structure&quot;
+l_string|&quot;Volume set out, Send DVD structure&quot;
 comma
 )brace
 suffix:semicolon
-DECL|macro|group
-mdefine_line|#define group(opcode) (((opcode) &gt;&gt; 5) &amp; 7)
-DECL|macro|RESERVED_GROUP
-mdefine_line|#define RESERVED_GROUP  0
-DECL|macro|VENDOR_GROUP
-mdefine_line|#define VENDOR_GROUP    1
-DECL|variable|commands
-r_static
+DECL|struct|value_name_pair
+r_struct
+id|value_name_pair
+(brace
+DECL|member|value
+r_int
+id|value
+suffix:semicolon
+DECL|member|name
 r_const
 r_char
 op_star
-op_star
-id|commands
+id|name
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|variable|maint_in_arr
+r_static
+r_const
+r_struct
+id|value_name_pair
+id|maint_in_arr
 (braket
 )braket
 op_assign
 (brace
-id|group_0_commands
+(brace
+l_int|0x5
 comma
-id|group_1_commands
+l_string|&quot;Report device identifier&quot;
+)brace
 comma
-id|group_2_commands
+(brace
+l_int|0xa
 comma
-(paren
-r_const
-r_char
-op_star
-op_star
-)paren
-id|RESERVED_GROUP
+l_string|&quot;Report target port groups&quot;
+)brace
 comma
-id|group_4_commands
+(brace
+l_int|0xb
 comma
-id|group_5_commands
+l_string|&quot;Report aliases&quot;
+)brace
 comma
-(paren
-r_const
-r_char
-op_star
-op_star
-)paren
-id|VENDOR_GROUP
+(brace
+l_int|0xc
 comma
-(paren
-r_const
-r_char
-op_star
-op_star
-)paren
-id|VENDOR_GROUP
+l_string|&quot;Report supported operation codes&quot;
+)brace
+comma
+(brace
+l_int|0xd
+comma
+l_string|&quot;Report supported task management functions&quot;
+)brace
+comma
+(brace
+l_int|0xe
+comma
+l_string|&quot;Report priority&quot;
+)brace
+comma
 )brace
 suffix:semicolon
-DECL|variable|reserved
+DECL|macro|MAINT_IN_SZ
+mdefine_line|#define MAINT_IN_SZ &bslash;&n;        (int)(sizeof(maint_in_arr) / sizeof(maint_in_arr[0]))
+DECL|variable|maint_out_arr
 r_static
 r_const
-r_char
-id|reserved
+r_struct
+id|value_name_pair
+id|maint_out_arr
 (braket
 )braket
 op_assign
-l_string|&quot;RESERVED&quot;
+(brace
+(brace
+l_int|0x6
+comma
+l_string|&quot;Set device identifier&quot;
+)brace
+comma
+(brace
+l_int|0xa
+comma
+l_string|&quot;Set target port groups&quot;
+)brace
+comma
+(brace
+l_int|0xb
+comma
+l_string|&quot;Change aliases&quot;
+)brace
+comma
+(brace
+l_int|0xe
+comma
+l_string|&quot;Set priority&quot;
+)brace
+comma
+)brace
 suffix:semicolon
-DECL|variable|vendor
+DECL|macro|MAINT_OUT_SZ
+mdefine_line|#define MAINT_OUT_SZ &bslash;&n;        (int)(sizeof(maint_out_arr) / sizeof(maint_out_arr[0]))
+DECL|variable|serv_in12_arr
 r_static
 r_const
-r_char
-id|vendor
+r_struct
+id|value_name_pair
+id|serv_in12_arr
 (braket
 )braket
 op_assign
-l_string|&quot;VENDOR SPECIFIC&quot;
+(brace
+(brace
+l_int|0x1
+comma
+l_string|&quot;Read media serial number&quot;
+)brace
+comma
+)brace
 suffix:semicolon
-DECL|function|print_opcode
+DECL|macro|SERV_IN12_SZ
+mdefine_line|#define SERV_IN12_SZ  &bslash;&n;        (int)(sizeof(serv_in12_arr) / sizeof(serv_in12_arr[0]))
+DECL|variable|serv_out12_arr
+r_static
+r_const
+r_struct
+id|value_name_pair
+id|serv_out12_arr
+(braket
+)braket
+op_assign
+(brace
+(brace
+op_minus
+l_int|1
+comma
+l_string|&quot;dummy entry&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|macro|SERV_OUT12_SZ
+mdefine_line|#define SERV_OUT12_SZ &bslash;&n;        (int)(sizeof(serv_out12_arr) / sizeof(serv_in12_arr[0]))
+DECL|variable|serv_in16_arr
+r_static
+r_const
+r_struct
+id|value_name_pair
+id|serv_in16_arr
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x10
+comma
+l_string|&quot;Read capacity(16)&quot;
+)brace
+comma
+(brace
+l_int|0x11
+comma
+l_string|&quot;Read long(16)&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|macro|SERV_IN16_SZ
+mdefine_line|#define SERV_IN16_SZ  &bslash;&n;        (int)(sizeof(serv_in16_arr) / sizeof(serv_in16_arr[0]))
+DECL|variable|serv_out16_arr
+r_static
+r_const
+r_struct
+id|value_name_pair
+id|serv_out16_arr
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x11
+comma
+l_string|&quot;Write long(16)&quot;
+)brace
+comma
+(brace
+l_int|0x1f
+comma
+l_string|&quot;Notify data transfer device(16)&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|macro|SERV_OUT16_SZ
+mdefine_line|#define SERV_OUT16_SZ &bslash;&n;        (int)(sizeof(serv_out16_arr) / sizeof(serv_in16_arr[0]))
+DECL|variable|variable_length_arr
+r_static
+r_const
+r_struct
+id|value_name_pair
+id|variable_length_arr
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x1
+comma
+l_string|&quot;Rebuild(32)&quot;
+)brace
+comma
+(brace
+l_int|0x2
+comma
+l_string|&quot;Regenerate(32)&quot;
+)brace
+comma
+(brace
+l_int|0x3
+comma
+l_string|&quot;Xdread(32)&quot;
+)brace
+comma
+(brace
+l_int|0x4
+comma
+l_string|&quot;Xdwrite(32)&quot;
+)brace
+comma
+(brace
+l_int|0x5
+comma
+l_string|&quot;Xdwrite extended(32)&quot;
+)brace
+comma
+(brace
+l_int|0x6
+comma
+l_string|&quot;Xpwrite(32)&quot;
+)brace
+comma
+(brace
+l_int|0x7
+comma
+l_string|&quot;Xdwriteread(32)&quot;
+)brace
+comma
+(brace
+l_int|0x8
+comma
+l_string|&quot;Xdwrite extended(64)&quot;
+)brace
+comma
+(brace
+l_int|0x9
+comma
+l_string|&quot;Read(32)&quot;
+)brace
+comma
+(brace
+l_int|0xa
+comma
+l_string|&quot;Verify(32)&quot;
+)brace
+comma
+(brace
+l_int|0xb
+comma
+l_string|&quot;Write(32)&quot;
+)brace
+comma
+(brace
+l_int|0xc
+comma
+l_string|&quot;Write an verify(32)&quot;
+)brace
+comma
+(brace
+l_int|0xd
+comma
+l_string|&quot;Write same(32)&quot;
+)brace
+comma
+(brace
+l_int|0x8801
+comma
+l_string|&quot;Format OSD&quot;
+)brace
+comma
+(brace
+l_int|0x8802
+comma
+l_string|&quot;Create (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8803
+comma
+l_string|&quot;List (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8805
+comma
+l_string|&quot;Read (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8806
+comma
+l_string|&quot;Write (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8807
+comma
+l_string|&quot;Append (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8808
+comma
+l_string|&quot;Flush (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x880a
+comma
+l_string|&quot;Remove (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x880b
+comma
+l_string|&quot;Create partition (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x880c
+comma
+l_string|&quot;Remove partition (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x880e
+comma
+l_string|&quot;Get attributes (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x880f
+comma
+l_string|&quot;Set attributes (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8812
+comma
+l_string|&quot;Create and write (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8815
+comma
+l_string|&quot;Create collection (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8816
+comma
+l_string|&quot;Remove collection (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8817
+comma
+l_string|&quot;List collection (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8818
+comma
+l_string|&quot;Set key (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8819
+comma
+l_string|&quot;Set master key (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x881a
+comma
+l_string|&quot;Flush collection (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x881b
+comma
+l_string|&quot;Flush partition (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x881c
+comma
+l_string|&quot;Flush OSD&quot;
+)brace
+comma
+(brace
+l_int|0x8f7e
+comma
+l_string|&quot;Perform SCSI command (osd)&quot;
+)brace
+comma
+(brace
+l_int|0x8f7f
+comma
+l_string|&quot;Perform task management function (osd)&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|macro|VARIABLE_LENGTH_SZ
+mdefine_line|#define VARIABLE_LENGTH_SZ &bslash;&n;        (int)(sizeof(variable_length_arr) / sizeof(variable_length_arr[0]))
+DECL|function|get_sa_name
+r_static
+r_const
+r_char
+op_star
+id|get_sa_name
+c_func
+(paren
+r_const
+r_struct
+id|value_name_pair
+op_star
+id|arr
+comma
+r_int
+id|arr_sz
+comma
+r_int
+id|service_action
+)paren
+(brace
+r_int
+id|k
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+suffix:semicolon
+id|k
+OL
+id|arr_sz
+suffix:semicolon
+op_increment
+id|k
+comma
+op_increment
+id|arr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|service_action
+op_eq
+id|arr-&gt;value
+)paren
+r_break
+suffix:semicolon
+)brace
+r_return
+(paren
+id|k
+OL
+id|arr_sz
+)paren
+ques
+c_cond
+id|arr-&gt;name
+suffix:colon
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* attempt to guess cdb length if cdb_len==0 . No trailing linefeed. */
+DECL|function|print_opcode_name
 r_static
 r_void
-id|print_opcode
+id|print_opcode_name
 c_func
 (paren
 r_int
-id|opcode
+r_char
+op_star
+id|cdbp
+comma
+r_int
+id|cdb_len
+comma
+r_int
+id|start_of_line
 )paren
 (brace
+r_int
+id|sa
+comma
+id|len
+comma
+id|cdb0
+suffix:semicolon
 r_const
 r_char
 op_star
+id|name
+suffix:semicolon
+r_const
+r_char
 op_star
-id|table
+id|leadin
 op_assign
-id|commands
+id|start_of_line
+ques
+c_cond
+id|KERN_INFO
+suffix:colon
+l_string|&quot;&quot;
+suffix:semicolon
+id|cdb0
+op_assign
+id|cdbp
 (braket
-id|group
-c_func
-(paren
-id|opcode
-)paren
+l_int|0
 )braket
 suffix:semicolon
 r_switch
 c_cond
 (paren
-(paren
-r_int
-r_int
-)paren
-id|table
+id|cdb0
 )paren
 (brace
 r_case
-id|RESERVED_GROUP
+id|VARIABLE_LENGTH_CMD
 suffix:colon
+id|len
+op_assign
+id|cdbp
+(braket
+l_int|7
+)braket
+op_plus
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|10
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s(0x%02x) &quot;
+l_string|&quot;%sshort variable length command, &quot;
+l_string|&quot;len=%d ext_len=%d&quot;
 comma
-id|reserved
+id|leadin
 comma
-id|opcode
+id|len
+comma
+id|cdb_len
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|sa
+op_assign
+(paren
+id|cdbp
+(braket
+l_int|8
+)braket
+op_lshift
+l_int|8
+)paren
+op_plus
+id|cdbp
+(braket
+l_int|9
+)braket
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|maint_in_arr
+comma
+id|MAINT_IN_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cdb_len
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|len
+op_ne
+id|cdb_len
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;, in_cdb_len=%d, ext_len=%d&quot;
+comma
+id|len
+comma
+id|cdb_len
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cdb_len
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|len
+op_ne
+id|cdb_len
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;, in_cdb_len=%d, ext_len=%d&quot;
+comma
+id|len
+comma
+id|cdb_len
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|MAINTENANCE_IN
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|maint_in_arr
+comma
+id|MAINT_IN_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VENDOR_GROUP
+id|MAINTENANCE_OUT
 suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|maint_out_arr
+comma
+id|MAINT_OUT_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;%s(0x%02x) &quot;
+l_string|&quot;%s%s&quot;
 comma
-id|vendor
+id|leadin
 comma
-id|opcode
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERVICE_ACTION_IN_12
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|serv_in12_arr
+comma
+id|SERV_IN12_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERVICE_ACTION_OUT_12
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|serv_out12_arr
+comma
+id|SERV_OUT12_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERVICE_ACTION_IN_16
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|serv_in16_arr
+comma
+id|SERV_IN16_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SERVICE_ACTION_OUT_16
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|name
+op_assign
+id|get_sa_name
+c_func
+(paren
+id|serv_out16_arr
+comma
+id|SERV_OUT16_SZ
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s%s&quot;
+comma
+id|leadin
+comma
+id|name
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
 )paren
 suffix:semicolon
 r_break
@@ -608,67 +1488,278 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|table
+id|cdb0
+OL
+l_int|0xc0
+)paren
+(brace
+id|name
+op_assign
+id|cdb_byte0_names
 (braket
-id|opcode
-op_amp
-l_int|0x1f
+id|cdb0
 )braket
-op_ne
-id|unknown
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;%s &quot;
+l_string|&quot;%s%s&quot;
 comma
-id|table
-(braket
-id|opcode
-op_amp
-l_int|0x1f
-)braket
+id|leadin
+comma
+id|name
 )paren
 suffix:semicolon
 r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s(0x%02x) &quot;
+l_string|&quot;%scdb[0]=0x%x (reserved)&quot;
 comma
-id|unknown
+id|leadin
 comma
-id|opcode
+id|cdb0
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x (vendor)&quot;
+comma
+id|leadin
+comma
+id|cdb0
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#else /* CONST &amp; CONST_COMMAND */
-DECL|function|print_opcode
+macro_line|#else /* ifndef CONFIG_SCSI_CONSTANTS */
+DECL|function|print_opcode_name
 r_static
 r_void
-id|print_opcode
+id|print_opcode_name
 c_func
 (paren
 r_int
-id|opcode
+r_char
+op_star
+id|cdbp
+comma
+r_int
+id|cdb_len
+comma
+r_int
+id|start_of_line
+)paren
+(brace
+r_int
+id|sa
+comma
+id|len
+comma
+id|cdb0
+suffix:semicolon
+r_const
+r_char
+op_star
+id|leadin
+op_assign
+id|start_of_line
+ques
+c_cond
+id|KERN_INFO
+suffix:colon
+l_string|&quot;&quot;
+suffix:semicolon
+id|cdb0
+op_assign
+id|cdbp
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cdb0
+)paren
+(brace
+r_case
+id|VARIABLE_LENGTH_CMD
+suffix:colon
+id|len
+op_assign
+id|cdbp
+(braket
+l_int|7
+)braket
+op_plus
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|10
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;0x%02x &quot;
+l_string|&quot;%sshort opcode=0x%x command, len=%d &quot;
+l_string|&quot;ext_len=%d&quot;
 comma
-id|opcode
+id|leadin
+comma
+id|cdb0
+comma
+id|len
+comma
+id|cdb_len
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|sa
+op_assign
+(paren
+id|cdbp
+(braket
+l_int|8
+)braket
+op_lshift
+l_int|8
+)paren
+op_plus
+id|cdbp
+(braket
+l_int|9
+)braket
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ne
+id|cdb_len
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;, in_cdb_len=%d, ext_len=%d&quot;
+comma
+id|len
+comma
+id|cdb_len
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MAINTENANCE_IN
+suffix:colon
+r_case
+id|MAINTENANCE_OUT
+suffix:colon
+r_case
+id|SERVICE_ACTION_IN_12
+suffix:colon
+r_case
+id|SERVICE_ACTION_OUT_12
+suffix:colon
+r_case
+id|SERVICE_ACTION_IN_16
+suffix:colon
+r_case
+id|SERVICE_ACTION_OUT_16
+suffix:colon
+id|sa
+op_assign
+id|cdbp
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x, sa=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+comma
+id|sa
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|cdb0
+OL
+l_int|0xc0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x&quot;
+comma
+id|leadin
+comma
+id|cdb0
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;%scdb[0]=0x%x (vendor)&quot;
+comma
+id|leadin
+comma
+id|cdb0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif  
 DECL|function|__scsi_print_command
 r_void
 id|__scsi_print_command
+c_func
 (paren
 r_int
 r_char
@@ -677,27 +1768,41 @@ id|command
 )paren
 (brace
 r_int
-id|i
+id|k
 comma
-id|s
+id|len
 suffix:semicolon
-id|print_opcode
+id|print_opcode_name
 c_func
 (paren
+id|command
+comma
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|VARIABLE_LENGTH_CMD
+op_eq
 id|command
 (braket
 l_int|0
 )braket
 )paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
+id|len
 op_assign
-l_int|1
-comma
-id|s
+id|command
+(braket
+l_int|7
+)braket
+op_plus
+l_int|8
+suffix:semicolon
+r_else
+id|len
 op_assign
 id|COMMAND_SIZE
 c_func
@@ -708,21 +1813,107 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|i
+multiline_comment|/* print out all bytes in cdb */
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+suffix:semicolon
+id|k
 OL
-id|s
+id|len
 suffix:semicolon
 op_increment
-id|i
+id|k
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;%02x &quot;
+l_string|&quot; %02x&quot;
 comma
 id|command
 (braket
-id|i
+id|k
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|variable|__scsi_print_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_print_command
+)paren
+suffix:semicolon
+multiline_comment|/* This function (perhaps with the addition of peripheral device type)&n; * is more approriate than __scsi_print_command(). Perhaps that static&n; * can be dropped later if it replaces the __scsi_print_command version.&n; */
+DECL|function|scsi_print_cdb
+r_static
+r_void
+id|scsi_print_cdb
+c_func
+(paren
+r_int
+r_char
+op_star
+id|cdb
+comma
+r_int
+id|cdb_len
+comma
+r_int
+id|start_of_line
+)paren
+(brace
+r_int
+id|k
+suffix:semicolon
+id|print_opcode_name
+c_func
+(paren
+id|cdb
+comma
+id|cdb_len
+comma
+id|start_of_line
+)paren
+suffix:semicolon
+multiline_comment|/* print out all bytes in cdb */
+id|printk
+c_func
+(paren
+l_string|&quot;:&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+suffix:semicolon
+id|k
+OL
+id|cdb_len
+suffix:semicolon
+op_increment
+id|k
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %02x&quot;
+comma
+id|cdb
+(braket
+id|k
 )braket
 )paren
 suffix:semicolon
@@ -744,7 +1935,7 @@ r_char
 id|scsi_status
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_STATUS)
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 r_const
 r_char
 op_star
@@ -867,6 +2058,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s&quot;
 comma
 id|ccp
@@ -876,6 +2068,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;0x%0x&quot;
 comma
 id|scsi_status
@@ -883,7 +2076,14 @@ id|scsi_status
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if (CONSTANTS &amp; CONST_XSENSE)
+DECL|variable|scsi_print_status
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_status
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|struct|error_info
 r_struct
 id|error_info
@@ -1142,6 +2342,18 @@ l_string|&quot;Logical unit not ready, auxiliary memory not accessible&quot;
 )brace
 comma
 (brace
+l_int|0x0411
+comma
+l_string|&quot;Logical unit not ready, notify (enable spinup) required&quot;
+)brace
+comma
+(brace
+l_int|0x0412
+comma
+l_string|&quot;Logical unit not ready, offline&quot;
+)brace
+comma
+(brace
 l_int|0x0500
 comma
 l_string|&quot;Logical unit does not respond to selection&quot;
@@ -1364,9 +2576,45 @@ l_string|&quot;Copy target device data overrun&quot;
 )brace
 comma
 (brace
+l_int|0x0E00
+comma
+l_string|&quot;Invalid information unit&quot;
+)brace
+comma
+(brace
+l_int|0x0E01
+comma
+l_string|&quot;Information unit too short&quot;
+)brace
+comma
+(brace
+l_int|0x0E02
+comma
+l_string|&quot;Information unit too long&quot;
+)brace
+comma
+(brace
 l_int|0x1000
 comma
 l_string|&quot;Id CRC or ECC error&quot;
+)brace
+comma
+(brace
+l_int|0x1001
+comma
+l_string|&quot;Data block guard check failed&quot;
+)brace
+comma
+(brace
+l_int|0x1002
+comma
+l_string|&quot;Data block application tag check failed&quot;
+)brace
+comma
+(brace
+l_int|0x1003
+comma
+l_string|&quot;Data block reference tag check failed&quot;
 )brace
 comma
 (brace
@@ -1892,15 +3140,27 @@ l_string|&quot;CDB decryption error&quot;
 )brace
 comma
 (brace
-l_int|0x2402
+l_int|0x2404
 comma
-l_string|&quot;Obsolete&quot;
+l_string|&quot;Security audit value frozen&quot;
 )brace
 comma
 (brace
-l_int|0x2403
+l_int|0x2405
 comma
-l_string|&quot;Obsolete&quot;
+l_string|&quot;Security working key frozen&quot;
+)brace
+comma
+(brace
+l_int|0x2406
+comma
+l_string|&quot;Nonce not unique&quot;
+)brace
+comma
+(brace
+l_int|0x2407
+comma
+l_string|&quot;Nonce timestamp out of range&quot;
 )brace
 comma
 (brace
@@ -1991,6 +3251,18 @@ comma
 l_int|0x260D
 comma
 l_string|&quot;Copy segment granularity violation&quot;
+)brace
+comma
+(brace
+l_int|0x260E
+comma
+l_string|&quot;Invalid parameter while port is enabled&quot;
+)brace
+comma
+(brace
+l_int|0x260F
+comma
+l_string|&quot;Invalid data-out buffer integrity&quot;
 )brace
 comma
 (brace
@@ -2144,6 +3416,18 @@ l_string|&quot;Implicit asymmetric access state transition failed&quot;
 )brace
 comma
 (brace
+l_int|0x2A08
+comma
+l_string|&quot;Priority changed&quot;
+)brace
+comma
+(brace
+l_int|0x2A09
+comma
+l_string|&quot;Capacity data has changed&quot;
+)brace
+comma
+(brace
 l_int|0x2B00
 comma
 l_string|&quot;Copy cannot execute since host cannot disconnect&quot;
@@ -2207,6 +3491,18 @@ comma
 l_int|0x2C09
 comma
 l_string|&quot;Previous reservation conflict status&quot;
+)brace
+comma
+(brace
+l_int|0x2C0A
+comma
+l_string|&quot;Partition or collection contains user objects&quot;
+)brace
+comma
+(brace
+l_int|0x2C0B
+comma
+l_string|&quot;Not reserved&quot;
 )brace
 comma
 (brace
@@ -2288,6 +3584,18 @@ l_string|&quot;Current session not fixated for append&quot;
 )brace
 comma
 (brace
+l_int|0x300A
+comma
+l_string|&quot;Cleaning request rejected&quot;
+)brace
+comma
+(brace
+l_int|0x300C
+comma
+l_string|&quot;WORM medium, overwrite attempted&quot;
+)brace
+comma
+(brace
 l_int|0x3010
 comma
 l_string|&quot;Medium not formatted&quot;
@@ -2363,6 +3671,12 @@ comma
 l_int|0x3504
 comma
 l_string|&quot;Enclosure services transfer refused&quot;
+)brace
+comma
+(brace
+l_int|0x3505
+comma
+l_string|&quot;Enclosure services checksum error&quot;
 )brace
 comma
 (brace
@@ -2570,6 +3884,12 @@ l_string|&quot;Mechanical positioning or changer error&quot;
 )brace
 comma
 (brace
+l_int|0x3B17
+comma
+l_string|&quot;Read past end of user object&quot;
+)brace
+comma
+(brace
 l_int|0x3D00
 comma
 l_string|&quot;Invalid bits in identify message&quot;
@@ -2713,36 +4033,7 @@ comma
 l_string|&quot;Medium auxiliary memory accessible&quot;
 )brace
 comma
-macro_line|#if 0
-(brace
-l_int|0x40
-id|NN
-comma
-l_string|&quot;Ram failure&quot;
-)brace
-comma
-(brace
-l_int|0x40
-id|NN
-comma
-l_string|&quot;Diagnostic failure on component nn&quot;
-)brace
-comma
-(brace
-l_int|0x41
-id|NN
-comma
-l_string|&quot;Data path failure&quot;
-)brace
-comma
-(brace
-l_int|0x42
-id|NN
-comma
-l_string|&quot;Power-on or self-test failure&quot;
-)brace
-comma
-macro_line|#endif
+multiline_comment|/*&n; *&t;{0x40NN, &quot;Ram failure&quot;},&n; *&t;{0x40NN, &quot;Diagnostic failure on component nn&quot;},&n; *&t;{0x41NN, &quot;Data path failure&quot;},&n; *&t;{0x42NN, &quot;Power-on or self-test failure&quot;},&n; */
 (brace
 l_int|0x4300
 comma
@@ -2804,6 +4095,12 @@ l_string|&quot;Protocol service CRC error&quot;
 )brace
 comma
 (brace
+l_int|0x477f
+comma
+l_string|&quot;Some commands cleared by iSCSI Protocol event&quot;
+)brace
+comma
+(brace
 l_int|0x4800
 comma
 l_string|&quot;Initiator detected error message received&quot;
@@ -2828,20 +4125,48 @@ l_string|&quot;Data phase error&quot;
 )brace
 comma
 (brace
+l_int|0x4B01
+comma
+l_string|&quot;Invalid target port transfer tag received&quot;
+)brace
+comma
+(brace
+l_int|0x4B02
+comma
+l_string|&quot;Too much write data&quot;
+)brace
+comma
+(brace
+l_int|0x4B03
+comma
+l_string|&quot;Ack/nak timeout&quot;
+)brace
+comma
+(brace
+l_int|0x4B04
+comma
+l_string|&quot;Nak received&quot;
+)brace
+comma
+(brace
+l_int|0x4B05
+comma
+l_string|&quot;Data offset error&quot;
+)brace
+comma
+(brace
+l_int|0x4B06
+comma
+l_string|&quot;Initiator response timeout&quot;
+)brace
+comma
+(brace
 l_int|0x4C00
 comma
 l_string|&quot;Logical unit failed self-configuration&quot;
 )brace
 comma
-macro_line|#if 0
-(brace
-l_int|0x4D
-id|NN
-comma
-l_string|&quot;Tagged overlapped commands (nn = queue tag)&quot;
-)brace
-comma
-macro_line|#endif
+multiline_comment|/*&n; *&t;{0x4DNN, &quot;Tagged overlapped commands (nn = queue tag)&quot;},&n; */
 (brace
 l_int|0x4E00
 comma
@@ -2948,6 +4273,12 @@ comma
 l_int|0x5506
 comma
 l_string|&quot;Auxiliary memory out of space&quot;
+)brace
+comma
+(brace
+l_int|0x5507
+comma
+l_string|&quot;Quota error&quot;
 )brace
 comma
 (brace
@@ -3846,15 +5177,7 @@ comma
 l_string|&quot;Drive region must be permanent/region reset count error&quot;
 )brace
 comma
-macro_line|#if 0
-(brace
-l_int|0x70
-id|NN
-comma
-l_string|&quot;Decompression exception short algorithm id of nn&quot;
-)brace
-comma
-macro_line|#endif
+multiline_comment|/*&n; *&t;{0x70NN, &quot;Decompression exception short algorithm id of nn&quot;},&n; */
 (brace
 l_int|0x7100
 comma
@@ -4049,8 +5372,6 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
-macro_line|#endif
-macro_line|#if (CONSTANTS &amp; CONST_SENSE)
 multiline_comment|/* description of the sense key values */
 DECL|variable|snstext
 r_static
@@ -4082,16 +5403,15 @@ comma
 multiline_comment|/* 5: Error in request */
 l_string|&quot;Unit Attention&quot;
 comma
-multiline_comment|/* 6: Removable medium was changed, or&n;&t;&t;&t;&t;  the target has been reset */
+multiline_comment|/* 6: Removable medium was changed, or&n;&t;&t;&t;&t;  the target has been reset, or ... */
 l_string|&quot;Data Protect&quot;
 comma
 multiline_comment|/* 7: Access to the data is blocked */
 l_string|&quot;Blank Check&quot;
 comma
 multiline_comment|/* 8: Reached unexpected written or unwritten&n;&t;&t;&t;&t;  region of the medium */
-l_string|&quot;Vendor Specific&quot;
+l_string|&quot;Vendor Specific(9)&quot;
 comma
-multiline_comment|/* 9: Vendor specific */
 l_string|&quot;Copy Aborted&quot;
 comma
 multiline_comment|/* A: COPY or COMPARE was aborted */
@@ -4123,7 +5443,7 @@ r_char
 id|key
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_SENSE)
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 r_if
 c_cond
 (paren
@@ -4142,7 +5462,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get extended sense key string or NULL if not available.&n; * This string may contain a %x and must be printed with ascq as arg.&n; */
+DECL|variable|scsi_sense_key_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_sense_key_string
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Get additional sense code string or NULL if not available.&n; * This string may contain a &quot;%x&quot; and should be printed with ascq as arg.&n; */
 r_const
 r_char
 op_star
@@ -4159,7 +5486,7 @@ r_char
 id|ascq
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_XSENSE)
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 r_int
 id|i
 suffix:semicolon
@@ -4274,7 +5601,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Print extended sense information */
+DECL|variable|scsi_extd_sense_format
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_extd_sense_format
+)paren
+suffix:semicolon
+multiline_comment|/* Print extended sense information; no leadin, no linefeed */
 r_static
 r_void
 DECL|function|scsi_show_extd_sense
@@ -4309,6 +5643,18 @@ c_cond
 id|extd_sense_fmt
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|extd_sense_fmt
+comma
+l_string|&quot;%x&quot;
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -4323,19 +5669,58 @@ comma
 id|ascq
 )paren
 suffix:semicolon
+)brace
+r_else
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;Additional sense: %s&quot;
+comma
+id|extd_sense_fmt
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|asc
+op_ge
+l_int|0x80
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;ASC=%2x ASCQ=%2x&bslash;n&quot;
+l_string|&quot;&lt;&lt;vendor&gt;&gt; ASC=0x%x ASCQ=0x%x&quot;
+comma
+id|asc
+comma
+id|ascq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ascq
+op_ge
+l_int|0x80
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ASC=0x%x &lt;&lt;vendor&gt;&gt; ASCQ=0x%x&quot;
+comma
+id|asc
+comma
+id|ascq
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;ASC=0x%x ASCQ=0x%x&quot;
 comma
 id|asc
 comma
@@ -4362,6 +5747,9 @@ r_char
 op_star
 id|sense_buffer
 comma
+r_int
+id|sense_len
+comma
 r_struct
 id|request
 op_star
@@ -4369,28 +5757,20 @@ id|req
 )paren
 (brace
 r_int
-id|s
+id|k
 comma
-id|sense_class
+id|num
 comma
-id|valid
-comma
-id|code
-comma
+id|res
+suffix:semicolon
+r_int
+r_int
 id|info
 suffix:semicolon
 r_const
 r_char
 op_star
 id|error
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-r_char
-id|asc
-comma
-id|ascq
 suffix:semicolon
 r_const
 r_char
@@ -4409,29 +5789,225 @@ id|req-&gt;rq_disk-&gt;disk_name
 suffix:colon
 id|devclass
 suffix:semicolon
-id|sense_class
+r_struct
+id|scsi_sense_hdr
+id|ssh
+suffix:semicolon
+id|res
 op_assign
+id|scsi_normalize_sense
+c_func
 (paren
 id|sense_buffer
-(braket
-l_int|0
-)braket
-op_rshift
-l_int|4
-)paren
+comma
+id|sense_len
+comma
 op_amp
-l_int|0x07
+id|ssh
+)paren
 suffix:semicolon
-id|code
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|res
+)paren
+(brace
+multiline_comment|/* this may be SCSI-1 sense data */
+id|num
 op_assign
+(paren
+id|sense_len
+OL
+l_int|32
+)paren
+ques
+c_cond
+id|sense_len
+suffix:colon
+l_int|32
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Unrecognized sense data (in hex):&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+l_int|0
+suffix:semicolon
+id|k
+OL
+id|num
+suffix:semicolon
+op_increment
+id|k
+)paren
+(brace
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+(paren
+id|k
+op_mod
+l_int|16
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;        &quot;
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
 id|sense_buffer
 (braket
-l_int|0
+id|k
 )braket
-op_amp
-l_int|0xf
+)paren
 suffix:semicolon
-id|valid
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* An example of deferred is when an earlier write to disk cache&n;&t; * succeeded, but now the disk discovers that it cannot write the&n;&t; * data to the magnetic media.&n;&t; */
+id|error
+op_assign
+id|scsi_sense_is_deferred
+c_func
+(paren
+op_amp
+id|ssh
+)paren
+ques
+c_cond
+l_string|&quot;&lt;&lt;DEFERRED&gt;&gt;&quot;
+suffix:colon
+l_string|&quot;Current&quot;
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: %s&quot;
+comma
+id|name
+comma
+id|error
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ssh.response_code
+op_ge
+l_int|0x72
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; [descriptor]&quot;
+)paren
+suffix:semicolon
+id|sense_txt
+op_assign
+id|scsi_sense_key_string
+c_func
+(paren
+id|ssh.sense_key
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sense_txt
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;: sense key: %s&bslash;n&quot;
+comma
+id|sense_txt
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;: sense key=0x%x&bslash;n&quot;
+comma
+id|ssh.sense_key
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;    &quot;
+)paren
+suffix:semicolon
+id|scsi_show_extd_sense
+c_func
+(paren
+id|ssh.asc
+comma
+id|ssh.ascq
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ssh.response_code
+OL
+l_int|0x72
+)paren
+(brace
+multiline_comment|/* only decode extras for &quot;fixed&quot; format now */
+r_char
+id|buff
+(braket
+l_int|80
+)braket
+suffix:semicolon
+r_int
+id|blen
+comma
+id|fixed_valid
+suffix:semicolon
+id|fixed_valid
 op_assign
 id|sense_buffer
 (braket
@@ -4439,35 +6015,6 @@ l_int|0
 )braket
 op_amp
 l_int|0x80
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sense_class
-op_eq
-l_int|7
-)paren
-(brace
-multiline_comment|/* extended sense data */
-id|s
-op_assign
-id|sense_buffer
-(braket
-l_int|7
-)braket
-op_plus
-l_int|8
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s
-OG
-id|SCSI_SENSE_BUFFERSIZE
-)paren
-id|s
-op_assign
-id|SCSI_SENSE_BUFFERSIZE
 suffix:semicolon
 id|info
 op_assign
@@ -4505,42 +6052,55 @@ l_int|6
 )braket
 )paren
 suffix:semicolon
+id|res
+op_assign
+l_int|0
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|buff
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|buff
+)paren
+)paren
+suffix:semicolon
+id|blen
+op_assign
+r_sizeof
+(paren
+id|buff
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|info
-op_logical_or
-id|valid
+id|fixed_valid
 )paren
-(brace
-id|printk
+id|res
+op_add_assign
+id|snprintf
 c_func
 (paren
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
 l_string|&quot;Info fld=0x%x&quot;
 comma
 id|info
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|valid
-)paren
-multiline_comment|/* info data not according to standard */
-id|printk
-c_func
-(paren
-l_string|&quot; (nonstd)&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;, &quot;
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4551,13 +6111,48 @@ l_int|2
 op_amp
 l_int|0x80
 )paren
-id|printk
+(brace
+multiline_comment|/* current command has read a filemark */
+r_if
+c_cond
+(paren
+id|res
+OG
+l_int|0
+)paren
+id|res
+op_add_assign
+id|snprintf
 c_func
 (paren
-l_string|&quot;FMK &quot;
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;, &quot;
 )paren
 suffix:semicolon
-multiline_comment|/* current command has read a filemark */
+id|res
+op_add_assign
+id|snprintf
+c_func
+(paren
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;FMK&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4568,13 +6163,48 @@ l_int|2
 op_amp
 l_int|0x40
 )paren
-id|printk
+(brace
+multiline_comment|/* end-of-medium condition exists */
+r_if
+c_cond
+(paren
+id|res
+OG
+l_int|0
+)paren
+id|res
+op_add_assign
+id|snprintf
 c_func
 (paren
-l_string|&quot;EOM &quot;
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;, &quot;
 )paren
 suffix:semicolon
-multiline_comment|/* end-of-medium condition exists */
+id|res
+op_add_assign
+id|snprintf
+c_func
+(paren
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;EOM&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4585,250 +6215,155 @@ l_int|2
 op_amp
 l_int|0x20
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;ILI &quot;
-)paren
-suffix:semicolon
+(brace
 multiline_comment|/* incorrect block length requested */
-r_switch
-c_cond
-(paren
-id|code
-)paren
-(brace
-r_case
-l_int|0x0
-suffix:colon
-id|error
-op_assign
-l_string|&quot;Current&quot;
-suffix:semicolon
-multiline_comment|/* error concerns current command */
-r_break
-suffix:semicolon
-r_case
-l_int|0x1
-suffix:colon
-id|error
-op_assign
-l_string|&quot;Deferred&quot;
-suffix:semicolon
-multiline_comment|/* error concerns some earlier command */
-multiline_comment|/* e.g., an earlier write to disk cache succeeded, but&n;&t;&t;&t;   now the disk discovers that it cannot write the data */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|error
-op_assign
-l_string|&quot;Invalid&quot;
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s &quot;
-comma
-id|error
-)paren
-suffix:semicolon
-id|sense_txt
-op_assign
-id|scsi_sense_key_string
-c_func
-(paren
-id|sense_buffer
-(braket
-l_int|2
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|sense_txt
+id|res
+OG
+l_int|0
 )paren
-id|printk
+id|res
+op_add_assign
+id|snprintf
 c_func
 (paren
-l_string|&quot;%s: sense key %s&bslash;n&quot;
-comma
-id|name
-comma
-id|sense_txt
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;%s: sense = %2x %2x&bslash;n&quot;
-comma
-id|name
-comma
-id|sense_buffer
-(braket
-l_int|0
-)braket
-comma
-id|sense_buffer
-(braket
-l_int|2
-)braket
-)paren
-suffix:semicolon
-id|asc
-op_assign
-id|ascq
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sense_buffer
-(braket
-l_int|7
-)braket
+id|buff
 op_plus
-l_int|7
-op_ge
-l_int|13
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;, &quot;
 )paren
-(brace
-id|asc
-op_assign
-id|sense_buffer
-(braket
-l_int|12
-)braket
 suffix:semicolon
-id|ascq
-op_assign
-id|sense_buffer
-(braket
-l_int|13
-)braket
+id|res
+op_add_assign
+id|snprintf
+c_func
+(paren
+id|buff
+op_plus
+id|res
+comma
+id|blen
+op_minus
+id|res
+comma
+l_string|&quot;ILI&quot;
+)paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|asc
-op_logical_or
-id|ascq
+id|res
+OG
+l_int|0
 )paren
-id|scsi_show_extd_sense
+id|printk
 c_func
 (paren
-id|asc
+id|KERN_INFO
+l_string|&quot;%s&bslash;n&quot;
 comma
-id|ascq
+id|buff
 )paren
 suffix:semicolon
 )brace
 r_else
-(brace
-multiline_comment|/* non-extended sense data */
-multiline_comment|/*&n;&t;&t; * Standard says:&n;&t;&t; *    sense_buffer[0] &amp; 0200 : address valid&n;&t;&t; *    sense_buffer[0] &amp; 0177 : vendor-specific error code&n;&t;&t; *    sense_buffer[1] &amp; 0340 : vendor-specific&n;&t;&t; *    sense_buffer[1..3] : 21-bit logical block address&n;&t;&t; */
-id|sense_txt
-op_assign
-id|scsi_sense_key_string
-c_func
-(paren
-id|sense_buffer
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|sense_txt
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: old sense key %s&bslash;n&quot;
-comma
-id|name
-comma
-id|sense_txt
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;%s: sense = %2x %2x&bslash;n&quot;
-comma
-id|name
-comma
-id|sense_buffer
-(braket
+id|ssh.additional_length
+OG
 l_int|0
-)braket
-comma
-id|sense_buffer
-(braket
-l_int|2
-)braket
 )paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Non-extended sense class %d code 0x%0x&bslash;n&quot;
-comma
-id|sense_class
-comma
-id|code
-)paren
-suffix:semicolon
-id|s
-op_assign
-l_int|4
-suffix:semicolon
-)brace
-macro_line|#if !(CONSTANTS &amp; CONST_SENSE)
 (brace
-r_int
-id|i
+multiline_comment|/* descriptor format with sense descriptors */
+id|num
+op_assign
+l_int|8
+op_plus
+id|ssh.additional_length
+suffix:semicolon
+id|num
+op_assign
+(paren
+id|sense_len
+OL
+id|num
+)paren
+ques
+c_cond
+id|sense_len
+suffix:colon
+id|num
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Raw sense data:&quot;
+id|KERN_INFO
+l_string|&quot;Descriptor sense data with sense &quot;
+l_string|&quot;descriptors (in hex):&quot;
 )paren
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|k
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|k
 OL
-id|s
+id|num
 suffix:semicolon
 op_increment
-id|i
+id|k
 )paren
+(brace
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+(paren
+id|k
+op_mod
+l_int|16
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;0x%02x &quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;        &quot;
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
 comma
 id|sense_buffer
 (braket
-id|i
+id|k
 )braket
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -4836,7 +6371,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|scsi_print_sense
 r_void
@@ -4861,10 +6395,19 @@ id|devclass
 comma
 id|cmd-&gt;sense_buffer
 comma
+id|SCSI_SENSE_BUFFERSIZE
+comma
 id|cmd-&gt;request
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_sense
+)paren
+suffix:semicolon
 DECL|function|scsi_print_req_sense
 r_void
 id|scsi_print_req_sense
@@ -4888,11 +6431,20 @@ id|devclass
 comma
 id|sreq-&gt;sr_sense_buffer
 comma
+id|SCSI_SENSE_BUFFERSIZE
+comma
 id|sreq-&gt;sr_request
 )paren
 suffix:semicolon
 )brace
-macro_line|#if (CONSTANTS &amp; CONST_MSG) 
+DECL|variable|scsi_print_req_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_req_sense
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|variable|one_byte_msgs
 r_static
 r_const
@@ -4991,7 +6543,6 @@ l_string|&quot;Wide Data Transfer Request&quot;
 suffix:semicolon
 DECL|macro|NO_EXTENDED_MSGS
 mdefine_line|#define NO_EXTENDED_MSGS (sizeof(two_byte_msgs)  / sizeof (const char *))
-macro_line|#endif /* (CONSTANTS &amp; CONST_MSG) */
 DECL|function|scsi_print_msg
 r_int
 id|scsi_print_msg
@@ -5030,7 +6581,6 @@ id|msg
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#if (CONSTANTS &amp; CONST_MSG)
 r_if
 c_cond
 (paren
@@ -5198,33 +6748,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-op_increment
-id|i
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
-comma
-id|msg
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Identify */
 )brace
 r_else
@@ -5239,7 +6762,6 @@ op_amp
 l_int|0x80
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_MSG)
 id|printk
 c_func
 (paren
@@ -5281,19 +6803,6 @@ op_amp
 l_int|0x7
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
-comma
-id|msg
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 id|len
 op_assign
 l_int|1
@@ -5312,7 +6821,6 @@ OL
 l_int|0x1f
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_MSG)
 r_if
 c_cond
 (paren
@@ -5347,19 +6855,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
-comma
-id|msg
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 id|len
 op_assign
 l_int|1
@@ -5378,7 +6873,6 @@ op_le
 l_int|0x2f
 )paren
 (brace
-macro_line|#if (CONSTANTS &amp; CONST_MSG)
 r_if
 c_cond
 (paren
@@ -5431,7 +6925,165 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#else
+id|len
+op_assign
+l_int|2
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;reserved&quot;
+)paren
+suffix:semicolon
+r_return
+id|len
+suffix:semicolon
+)brace
+DECL|variable|scsi_print_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_msg
+)paren
+suffix:semicolon
+macro_line|#else  /* ifndef CONFIG_SCSI_CONSTANTS */
+DECL|function|scsi_print_msg
+r_int
+id|scsi_print_msg
+(paren
+r_const
+r_int
+r_char
+op_star
+id|msg
+)paren
+(brace
+r_int
+id|len
+op_assign
+l_int|0
+comma
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg
+(braket
+l_int|0
+)braket
+op_eq
+id|EXTENDED_MESSAGE
+)paren
+(brace
+id|len
+op_assign
+l_int|3
+op_plus
+id|msg
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+id|msg
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* Identify */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|msg
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x80
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+id|msg
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|len
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Normal One byte */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|msg
+(braket
+l_int|0
+)braket
+OL
+l_int|0x1f
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+id|msg
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|len
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Two byte */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|msg
+(braket
+l_int|0
+)braket
+op_le
+l_int|0x2f
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5448,21 +7100,12 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|len
 op_assign
 l_int|2
 suffix:semicolon
 )brace
 r_else
-macro_line|#if (CONSTANTS &amp; CONST_MSG)
-id|printk
-c_func
-(paren
-id|reserved
-)paren
-suffix:semicolon
-macro_line|#else
 id|printk
 c_func
 (paren
@@ -5474,11 +7117,18 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|len
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_msg
+)paren
+suffix:semicolon
+macro_line|#endif /* ! CONFIG_SCSI_CONSTANTS */
 DECL|function|scsi_print_command
 r_void
 id|scsi_print_command
@@ -5490,6 +7140,7 @@ op_star
 id|cmd
 )paren
 (brace
+multiline_comment|/* Assume appended output (i.e. not at start of line) */
 id|printk
 c_func
 (paren
@@ -5505,17 +7156,29 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;        command = &quot;
+id|KERN_INFO
+l_string|&quot;        command: &quot;
 )paren
 suffix:semicolon
-id|__scsi_print_command
+id|scsi_print_cdb
 c_func
 (paren
 id|cmd-&gt;cmnd
+comma
+id|cmd-&gt;cmd_len
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#if (CONSTANTS &amp; CONST_HOST)
+DECL|variable|scsi_print_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_command
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|variable|hostbyte_table
 r_static
 r_const
@@ -5527,6 +7190,8 @@ id|hostbyte_table
 op_assign
 initialization_block
 suffix:semicolon
+DECL|macro|NUM_HOSTBYTE_STRS
+mdefine_line|#define NUM_HOSTBYTE_STRS (sizeof(hostbyte_table) / sizeof(const char *))
 DECL|function|scsi_print_hostbyte
 r_void
 id|scsi_print_hostbyte
@@ -5536,80 +7201,30 @@ r_int
 id|scsiresult
 )paren
 (brace
-r_static
 r_int
-id|maxcode
+id|hb
 op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_if
-c_cond
+id|host_byte
+c_func
 (paren
-op_logical_neg
-id|maxcode
+id|scsiresult
 )paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
 suffix:semicolon
-id|hostbyte_table
-(braket
-id|i
-)braket
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-id|maxcode
-op_assign
-id|i
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
 l_string|&quot;Hostbyte=0x%02x&quot;
 comma
-id|host_byte
-c_func
-(paren
-id|scsiresult
-)paren
+id|hb
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|host_byte
-c_func
-(paren
-id|scsiresult
+id|hb
+OL
+id|NUM_HOSTBYTE_STRS
 )paren
-OG
-id|maxcode
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;is invalid &quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -5617,12 +7232,15 @@ l_string|&quot;(%s) &quot;
 comma
 id|hostbyte_table
 (braket
-id|host_byte
+id|hb
+)braket
+)paren
+suffix:semicolon
+r_else
+id|printk
 c_func
 (paren
-id|scsiresult
-)paren
-)braket
+l_string|&quot;is invalid &quot;
 )paren
 suffix:semicolon
 )brace
@@ -5650,7 +7268,7 @@ id|scsiresult
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if (CONSTANTS &amp; CONST_DRIVER)
+macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|variable|driverbyte_table
 r_static
 r_const
@@ -5662,6 +7280,8 @@ id|driverbyte_table
 op_assign
 initialization_block
 suffix:semicolon
+DECL|macro|NUM_DRIVERBYTE_STRS
+mdefine_line|#define NUM_DRIVERBYTE_STRS (sizeof(driverbyte_table) / sizeof(const char *))
 DECL|variable|driversuggest_table
 r_static
 r_const
@@ -5673,6 +7293,8 @@ id|driversuggest_table
 op_assign
 initialization_block
 suffix:semicolon
+DECL|macro|NUM_SUGGEST_STRS
+mdefine_line|#define NUM_SUGGEST_STRS (sizeof(driversuggest_table) / sizeof(const char *))
 DECL|function|scsi_print_driverbyte
 r_void
 id|scsi_print_driverbyte
@@ -5682,21 +7304,10 @@ r_int
 id|scsiresult
 )paren
 (brace
-r_static
 r_int
-id|driver_max
-op_assign
-l_int|0
-comma
-id|suggest_max
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|i
-comma
 id|dr
 op_assign
+(paren
 id|driver_byte
 c_func
 (paren
@@ -5704,9 +7315,12 @@ id|scsiresult
 )paren
 op_amp
 id|DRIVER_MASK
-comma
+)paren
+suffix:semicolon
+r_int
 id|su
 op_assign
+(paren
 (paren
 id|driver_byte
 c_func
@@ -5718,63 +7332,12 @@ id|SUGGEST_MASK
 )paren
 op_rshift
 l_int|4
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver_max
 )paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
 suffix:semicolon
-id|driverbyte_table
-(braket
-id|i
-)braket
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-id|driver_max
-op_assign
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|driversuggest_table
-(braket
-id|i
-)braket
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-suffix:semicolon
-)brace
-id|suggest_max
-op_assign
-id|i
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
-l_string|&quot;Driverbyte=0x%02x&quot;
+l_string|&quot;Driverbyte=0x%02x &quot;
 comma
 id|driver_byte
 c_func
@@ -5788,9 +7351,10 @@ c_func
 (paren
 l_string|&quot;(%s,%s) &quot;
 comma
+(paren
 id|dr
 OL
-id|driver_max
+id|NUM_DRIVERBYTE_STRS
 ques
 c_cond
 id|driverbyte_table
@@ -5799,10 +7363,12 @@ id|dr
 )braket
 suffix:colon
 l_string|&quot;invalid&quot;
+)paren
 comma
+(paren
 id|su
 OL
-id|suggest_max
+id|NUM_SUGGEST_STRS
 ques
 c_cond
 id|driversuggest_table
@@ -5811,6 +7377,7 @@ id|su
 )braket
 suffix:colon
 l_string|&quot;invalid&quot;
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -461,7 +461,7 @@ l_int|0x0286
 comma
 l_int|0x9005
 comma
-l_int|0x0800
+l_int|0x029b
 comma
 l_int|0
 comma
@@ -470,7 +470,58 @@ comma
 l_int|22
 )brace
 comma
-multiline_comment|/* Jupiter Platform */
+multiline_comment|/* AAR-2820SA (Intruder) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x029c
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|23
+)brace
+comma
+multiline_comment|/* AAR-2620SA (Intruder) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x029d
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|24
+)brace
+comma
+multiline_comment|/* AAR-2420SA (Intruder) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x0800
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|25
+)brace
+comma
+multiline_comment|/* Callisto Jupiter Platform */
 (brace
 l_int|0x9005
 comma
@@ -484,7 +535,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|23
+l_int|26
 )brace
 comma
 multiline_comment|/* ASR-2020SA SATA PCI-X ZCR (Skyhawk) */
@@ -501,7 +552,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|24
+l_int|27
 )brace
 comma
 multiline_comment|/* ASR-2025SA SATA SO-DIMM PCI-X ZCR (Terminator) */
@@ -518,7 +569,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|25
+l_int|28
 )brace
 comma
 multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II) */
@@ -535,7 +586,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|26
+l_int|29
 )brace
 comma
 multiline_comment|/* CERC SATA RAID 2 PCI SATA 6ch (DellCorsair) */
@@ -552,7 +603,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|27
+l_int|30
 )brace
 comma
 multiline_comment|/* AAR-2810SA PCI SATA 8ch (Corsair-8) */
@@ -569,7 +620,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|28
+l_int|31
 )brace
 comma
 multiline_comment|/* AAR-21610SA PCI SATA 16ch (Corsair-16) */
@@ -586,7 +637,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|29
+l_int|32
 )brace
 comma
 multiline_comment|/* ESD SO-DIMM PCI-X SATA ZCR (Prowler) */
@@ -595,15 +646,15 @@ l_int|0x9005
 comma
 l_int|0x0285
 comma
-l_int|0x0E11
+l_int|0x103C
 comma
-l_int|0x0295
-comma
-l_int|0
+l_int|0x3227
 comma
 l_int|0
 comma
-l_int|30
+l_int|0
+comma
+l_int|33
 )brace
 comma
 multiline_comment|/* AAR-2610SA PCI SATA 6ch */
@@ -620,61 +671,10 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|31
-)brace
-comma
-multiline_comment|/* ASR-2240S */
-(brace
-l_int|0x9005
-comma
-l_int|0x0285
-comma
-l_int|0x9005
-comma
-l_int|0x0296
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|32
-)brace
-comma
-multiline_comment|/* ASR-4005SAS */
-(brace
-l_int|0x9005
-comma
-l_int|0x0285
-comma
-l_int|0x9005
-comma
-l_int|0x0296
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|33
-)brace
-comma
-multiline_comment|/* ASR-4000SAS */
-(brace
-l_int|0x9005
-comma
-l_int|0x0285
-comma
-l_int|0x9005
-comma
-l_int|0x0296
-comma
-l_int|0
-comma
-l_int|0
-comma
 l_int|34
 )brace
 comma
-multiline_comment|/* ASR-4800SAS */
+multiline_comment|/* ASR-2240S (SabreExpress) */
 (brace
 l_int|0x9005
 comma
@@ -682,7 +682,7 @@ l_int|0x0285
 comma
 l_int|0x9005
 comma
-l_int|0x0296
+l_int|0x0297
 comma
 l_int|0
 comma
@@ -691,7 +691,75 @@ comma
 l_int|35
 )brace
 comma
-multiline_comment|/* ASR-4805SAS */
+multiline_comment|/* ASR-4005SAS */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1014
+comma
+l_int|0x02F2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|36
+)brace
+comma
+multiline_comment|/* IBM 8i (AvonPark) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0298
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|37
+)brace
+comma
+multiline_comment|/* ASR-4000SAS (BlackBird) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0299
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|38
+)brace
+comma
+multiline_comment|/* ASR-4800SAS (Marauder-X) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x029A
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|39
+)brace
+comma
+multiline_comment|/* ASR-4805SAS (Marauder-E) */
 (brace
 l_int|0x9005
 comma
@@ -705,7 +773,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|36
+l_int|40
 )brace
 comma
 multiline_comment|/* Perc 320/DC*/
@@ -722,7 +790,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|37
+l_int|41
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -739,7 +807,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|38
+l_int|42
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -756,7 +824,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|39
+l_int|43
 )brace
 comma
 multiline_comment|/* Dell PERC2/QC */
@@ -773,7 +841,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|40
+l_int|44
 )brace
 comma
 multiline_comment|/* HP NetRAID-4M */
@@ -790,7 +858,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|41
+l_int|45
 )brace
 comma
 multiline_comment|/* Dell Catchall */
@@ -807,7 +875,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|42
+l_int|46
 )brace
 comma
 multiline_comment|/* Legend Catchall */
@@ -824,7 +892,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|43
+l_int|47
 )brace
 comma
 multiline_comment|/* Adaptec Catch All */
@@ -841,7 +909,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|44
+l_int|48
 )brace
 comma
 multiline_comment|/* Adaptec Rocket Catch All */
@@ -881,6 +949,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 2/Si (Iguana/PERC2Si) */
@@ -896,6 +966,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Opal/PERC3Di) */
@@ -911,6 +983,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Si (SlimFast/PERC3Si */
@@ -926,6 +1000,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Iguana FlipChip/PERC3DiF */
@@ -941,6 +1017,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Viper/PERC3DiV) */
@@ -956,6 +1034,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Lexus/PERC3DiL) */
@@ -971,6 +1051,8 @@ comma
 l_int|1
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Jaguar/PERC3DiJ) */
@@ -986,6 +1068,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Dagger/PERC3DiD) */
@@ -1001,6 +1085,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* PERC 3/Di (Boxster/PERC3DiB) */
@@ -1016,6 +1102,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* catapult */
@@ -1031,6 +1119,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* tomcat */
@@ -1046,6 +1136,8 @@ comma
 l_int|1
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec 2120S (Crusader) */
@@ -1061,6 +1153,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec 2200S (Vulcan) */
@@ -1076,6 +1170,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec 2200S (Vulcan-2m) */
@@ -1091,6 +1187,8 @@ comma
 l_int|1
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Legend S220 (Legend Crusader) */
@@ -1106,6 +1204,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Legend S230 (Legend Vulcan) */
@@ -1194,9 +1294,50 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
+l_string|&quot;AAR-2820SA      &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-2820SA (Intruder) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-2620SA      &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-2620SA (Intruder) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-2420SA      &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-2420SA (Intruder) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
 l_string|&quot;Callisto        &quot;
 comma
 l_int|2
+comma
+id|AAC_QUIRK_MASTER
 )brace
 comma
 multiline_comment|/* Jupiter Platform */
@@ -1285,7 +1426,7 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
-l_string|&quot;SO-DIMM SATA ZCR&quot;
+l_string|&quot;ASR-2026ZCR     &quot;
 comma
 l_int|1
 )brace
@@ -1316,7 +1457,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* ASR-2240S */
+multiline_comment|/* ASR-2240S (SabreExpress) */
 (brace
 id|aac_rx_init
 comma
@@ -1335,6 +1476,19 @@ id|aac_rx_init
 comma
 l_string|&quot;aacraid&quot;
 comma
+l_string|&quot;IBM     &quot;
+comma
+l_string|&quot;ServeRAID 8i    &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* IBM 8i (AvonPark) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
 l_string|&quot;ADAPTEC &quot;
 comma
 l_string|&quot;ASR-4000SAS     &quot;
@@ -1342,7 +1496,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* ASR-4000SAS */
+multiline_comment|/* ASR-4000SAS (BlackBird &amp; AvonPark) */
 (brace
 id|aac_rx_init
 comma
@@ -1355,7 +1509,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* ASR-4800SAS */
+multiline_comment|/* ASR-4800SAS (Marauder-X) */
 (brace
 id|aac_rx_init
 comma
@@ -1368,7 +1522,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* ASR-4805SAS */
+multiline_comment|/* ASR-4805SAS (Marauder-E) */
 (brace
 id|aac_rx_init
 comma
@@ -1381,6 +1535,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Perc 320/DC*/
@@ -1394,6 +1550,8 @@ comma
 l_string|&quot;Adaptec 5400S   &quot;
 comma
 l_int|4
+comma
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -1407,6 +1565,8 @@ comma
 l_string|&quot;AAC-364         &quot;
 comma
 l_int|4
+comma
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -1422,6 +1582,8 @@ comma
 l_int|4
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Dell PERC2/QC */
@@ -1435,6 +1597,8 @@ comma
 l_string|&quot;NetRAID         &quot;
 comma
 l_int|4
+comma
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* HP NetRAID-4M */
@@ -1450,6 +1614,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Dell Catchall */
@@ -1465,6 +1631,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Legend Catchall */
@@ -1480,6 +1648,8 @@ comma
 l_int|2
 comma
 id|AAC_QUIRK_31BIT
+op_or
+id|AAC_QUIRK_34SG
 )brace
 comma
 multiline_comment|/* Adaptec Catch All */
@@ -2116,7 +2286,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;aac_queuedepth&t;&t;-&t;compute queue depths&n; *&t;@sdev:&t;SCSI device we are considering&n; *&n; *&t;Selects queue depths for each target device based on the host adapter&squot;s&n; *&t;total capacity and the queue depth supported by the target device.&n; *&t;A queue depth of one automatically disables tagged queueing.&n; */
+multiline_comment|/**&n; *&t;aac_slave_configure&t;&t;-&t;compute queue depths&n; *&t;@sdev:&t;SCSI device we are considering&n; *&n; *&t;Selects queue depths for each target device based on the host adapter&squot;s&n; *&t;total capacity and the queue depth supported by the target device.&n; *&t;A queue depth of one automatically disables tagged queueing.&n; */
 DECL|function|aac_slave_configure
 r_static
 r_int

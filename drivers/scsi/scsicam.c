@@ -132,6 +132,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|scsi_bios_ptable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_bios_ptable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function : int scsicam_bios_param (struct block_device *bdev, ector_t capacity, int *ip)&n; *&n; * Purpose : to determine the BIOS mapping used for a drive in a &n; *      SCSI-CAM system, storing the results in ip as required&n; *      by the HDIO_GETGEO ioctl().&n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
 DECL|function|scsicam_bios_param
 r_int
@@ -387,6 +394,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|scsicam_bios_param
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsicam_bios_param
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function : static int scsi_partsize(unsigned char *buf, unsigned long &n; *     capacity,unsigned int *cyls, unsigned int *hds, unsigned int *secs);&n; *&n; * Purpose : to determine the BIOS mapping used to create the partition&n; *      table, storing the results in *cyls, *hds, and *secs &n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
 DECL|function|scsi_partsize
 r_int
@@ -773,6 +787,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|scsi_partsize
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_partsize
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function : static int setsize(unsigned long capacity,unsigned int *cyls,&n; *      unsigned int *hds, unsigned int *secs);&n; *&n; * Purpose : to determine a near-optimal int 0x13 mapping for a&n; *      SCSI disk in terms of lost space of size capacity, storing&n; *      the results in *cyls, *hds, and *secs.&n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; * Extracted from&n; *&n; * WORKING                                                    X3T9.2&n; * DRAFT                                                        792D&n; *&n; *&n; *                                                        Revision 6&n; *                                                         10-MAR-94&n; * Information technology -&n; * SCSI-2 Common access method&n; * transport and SCSI interface module&n; * &n; * ANNEX A :&n; *&n; * setsize() converts a read capacity value to int 13h&n; * head-cylinder-sector requirements. It minimizes the value for&n; * number of heads and maximizes the number of cylinders. This&n; * will support rather large disks before the number of heads&n; * will not fit in 4 bits (or 6 bits). This algorithm also&n; * minimizes the number of sectors that will be unused at the end&n; * of the disk while allowing for very large disks to be&n; * accommodated. This algorithm does not use physical geometry. &n; */
 DECL|function|setsize
 r_static

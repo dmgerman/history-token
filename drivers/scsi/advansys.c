@@ -9102,6 +9102,13 @@ id|iolen
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_int
 id|pci_init_search
@@ -9125,13 +9132,6 @@ r_int
 id|pci_card_cnt
 op_assign
 l_int|0
-suffix:semicolon
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -26358,7 +26358,6 @@ id|byte_data
 suffix:semicolon
 macro_line|#else /* CONFIG_PCI */
 r_return
-l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace
@@ -44205,11 +44204,14 @@ id|warn_code
 suffix:semicolon
 id|ushort
 id|pci_device_id
+op_assign
+l_int|0
 suffix:semicolon
 id|iop_base
 op_assign
 id|asc_dvc-&gt;iop_base
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -44225,11 +44227,7 @@ id|asc_dvc-&gt;cfg-&gt;dev
 op_member_access_from_pointer
 id|device
 suffix:semicolon
-r_else
-id|pci_device_id
-op_assign
-l_int|0
-suffix:semicolon
+macro_line|#endif
 id|warn_code
 op_assign
 l_int|0
