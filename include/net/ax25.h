@@ -94,6 +94,10 @@ DECL|macro|AX25_FRMR
 mdefine_line|#define&t;AX25_FRMR&t;&t;0x87&t;/* Frame reject */
 DECL|macro|AX25_UI
 mdefine_line|#define&t;AX25_UI&t;&t;&t;0x03&t;/* Unnumbered information */
+DECL|macro|AX25_XID
+mdefine_line|#define&t;AX25_XID&t;&t;0xaf&t;/* Exchange information */
+DECL|macro|AX25_TEST
+mdefine_line|#define&t;AX25_TEST&t;&t;0xe3&t;/* Test */
 DECL|macro|AX25_PF
 mdefine_line|#define&t;AX25_PF&t;&t;&t;0x10&t;/* Poll/final bit for standard AX.25 */
 DECL|macro|AX25_EPF
