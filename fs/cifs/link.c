@@ -351,7 +351,7 @@ op_logical_neg
 id|full_path
 )paren
 r_goto
-id|out
+id|out_no_free
 suffix:semicolon
 id|cFYI
 c_func
@@ -441,9 +441,8 @@ r_else
 (brace
 multiline_comment|/* rc = CIFSSMBQueryReparseLinkInfo */
 multiline_comment|/* BB Add code to Query ReparsePoint info */
+multiline_comment|/* BB Add MAC style xsymlink check here if enabled */
 )brace
-multiline_comment|/* BB Anything else to do to handle recursive links? */
-multiline_comment|/* BB Should we be using page symlink ops here? */
 r_if
 c_cond
 (paren
@@ -488,6 +487,8 @@ c_func
 id|full_path
 )paren
 suffix:semicolon
+id|out_no_free
+suffix:colon
 id|FreeXid
 c_func
 (paren
