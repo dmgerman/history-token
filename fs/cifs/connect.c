@@ -1058,6 +1058,20 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
+op_logical_or
+(paren
+(paren
+id|length
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|length
+op_le
+l_int|3
+)paren
+)paren
 )paren
 (brace
 id|set_current_state
@@ -1171,7 +1185,7 @@ c_func
 id|smb_buffer-&gt;smb_buf_length
 )paren
 suffix:semicolon
-multiline_comment|/* Ony read pdu_length after below checks for too short (due&n;&t;&t;   to e.g. int overflow) and too long ie beyond end of buf */
+multiline_comment|/* Only read pdu_length after below checks for too short (due&n;&t;&t;   to e.g. int overflow) and too long ie beyond end of buf */
 id|cFYI
 c_func
 (paren
@@ -1458,7 +1472,31 @@ r_else
 r_if
 c_cond
 (paren
-multiline_comment|/*(length != sizeof (struct smb_hdr) - 1)&n;&t;&t;&t;&t;    ||*/
+id|length
+OL
+l_int|16
+)paren
+(brace
+multiline_comment|/* We can not validate the SMB unless &n;&t;&t;&t;&t;&t;at least this much of SMB available&n;&t;&t;&t;&t;&t;so give the socket time to copy&n;&t;&t;&t;&t;&t;a few more bytes and retry */
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|pdu_length
 OG

@@ -720,7 +720,7 @@ comma
 id|MT_DEVICE
 )brace
 comma
-macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+macro_line|#ifdef CONFIG_MACH_VERSATILE_AB
 (brace
 id|IO_ADDRESS
 c_func
@@ -1359,7 +1359,7 @@ id|VERSATILE_SYS_BASE
 op_plus
 id|VERSATILE_SYS_OSC4_OFFSET
 suffix:semicolon
-macro_line|#elif defined(CONFIG_ARCH_VERSATILE_AB)
+macro_line|#elif defined(CONFIG_MACH_VERSATILE_AB)
 r_int
 r_int
 id|sys_osc
@@ -2112,7 +2112,7 @@ comma
 id|sys_clcd
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+macro_line|#ifdef CONFIG_MACH_VERSATILE_AB
 multiline_comment|/*&n;&t; * If the LCD is Sanyo 2x5 in on the IB2 board, turn the back-light off&n;&t; */
 r_if
 c_cond
@@ -2260,7 +2260,7 @@ comma
 id|sys_clcd
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ARCH_VERSATILE_AB
+macro_line|#ifdef CONFIG_MACH_VERSATILE_AB
 multiline_comment|/*&n;&t; * If the LCD is Sanyo 2x5 in on the IB2 board, turn the back-light on&n;&t; */
 r_if
 c_cond

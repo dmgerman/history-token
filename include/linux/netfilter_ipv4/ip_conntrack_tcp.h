@@ -44,8 +44,8 @@ id|TCP_CONNTRACK_IGNORE
 )brace
 suffix:semicolon
 multiline_comment|/* Window scaling is advertised by the sender */
-DECL|macro|IP_CT_TCP_STATE_FLAG_WINDOW_SCALE
-mdefine_line|#define IP_CT_TCP_STATE_FLAG_WINDOW_SCALE&t;0x01
+DECL|macro|IP_CT_TCP_FLAG_WINDOW_SCALE
+mdefine_line|#define IP_CT_TCP_FLAG_WINDOW_SCALE&t;&t;0x01
 multiline_comment|/* SACK is permitted by the sender */
 DECL|macro|IP_CT_TCP_FLAG_SACK_PERM
 mdefine_line|#define IP_CT_TCP_FLAG_SACK_PERM&t;&t;0x02

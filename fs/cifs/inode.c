@@ -4449,6 +4449,29 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EOPNOTSUPP
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;OS2 level of SetPathInfo not implemented&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Need to convert time_buf into old format, &n;&t;&t;&t;but probably better to do that inside the function&n;&t;&t;&t;below rather than here */
+multiline_comment|/* Better to return EOPNOTSUPP until function&n;&t;&t;&t;below is ready */
+multiline_comment|/* CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        FILE_INFO_STANDARD * data, cifs_sb-&gt;local_nls); */
+)brace
 )brace
 multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
 r_if

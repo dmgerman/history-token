@@ -202,6 +202,14 @@ id|regs-&gt;msr
 op_or_assign
 id|MSR_SE
 suffix:semicolon
+id|set_ti_thread_flag
+c_func
+(paren
+id|task-&gt;thread_info
+comma
+id|TIF_SINGLESTEP
+)paren
+suffix:semicolon
 )brace
 DECL|function|clear_single_step
 r_static
@@ -234,6 +242,14 @@ id|regs-&gt;msr
 op_and_assign
 op_complement
 id|MSR_SE
+suffix:semicolon
+id|clear_ti_thread_flag
+c_func
+(paren
+id|task-&gt;thread_info
+comma
+id|TIF_SINGLESTEP
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _PPC64_PTRACE_COMMON_H */

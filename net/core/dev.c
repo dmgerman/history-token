@@ -3326,40 +3326,6 @@ DECL|macro|HARD_TX_LOCK
 mdefine_line|#define HARD_TX_LOCK(dev, cpu) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;spin_lock(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = cpu;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|HARD_TX_UNLOCK
 mdefine_line|#define HARD_TX_UNLOCK(dev) {&t;&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = -1;&t;&t;&bslash;&n;&t;&t;spin_unlock(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
-DECL|function|qdisc_run
-r_static
-r_inline
-r_void
-id|qdisc_run
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
-id|qdisc_restart
-c_func
-(paren
-id|dev
-)paren
-OL
-l_int|0
-)paren
-multiline_comment|/* NOTHING */
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;dev_queue_xmit - transmit a buffer&n; *&t;@skb: buffer to transmit&n; *&n; *&t;Queue a buffer for transmission to a network device. The caller must&n; *&t;have set the device and priority and built the buffer before calling&n; *&t;this function. The function can be called from an interrupt.&n; *&n; *&t;A negative errno code is returned on a failure. A success does not&n; *&t;guarantee the frame will be transmitted as it may be dropped due&n; *&t;to congestion or traffic shaping.&n; */
 DECL|function|dev_queue_xmit
 r_int

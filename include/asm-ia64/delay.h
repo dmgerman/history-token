@@ -276,7 +276,10 @@ id|start
 OL
 id|cycles
 )paren
-multiline_comment|/* skip */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* _ASM_IA64_DELAY_H */

@@ -1274,9 +1274,11 @@ comma
 op_amp
 id|sr-&gt;mc_vregs
 comma
+id|ELF_NEVRREG
+op_star
 r_sizeof
 (paren
-id|sr-&gt;mc_vregs
+id|u32
 )paren
 )paren
 )paren

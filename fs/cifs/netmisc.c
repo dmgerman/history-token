@@ -5129,6 +5129,14 @@ comma
 l_int|0xc000029c
 )brace
 comma
+(brace
+id|ERRDOS
+comma
+id|ERRinvlevel
+comma
+l_int|0x007c0001
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; Print an error message from the status code&n; *****************************************************************************/
