@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *  Copyright (c) by Scott McNab &lt;sdm@fractalgraphics.com.au&gt;&n; *&n; *  Trident 4DWave-NX memory page allocation (TLB area)&n; *  Trident chip can handle only 16MByte of the memory at the same time.&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/trident.h&gt;
@@ -1120,7 +1121,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|substream-&gt;dma_device.type
+id|substream-&gt;dma_buffer.dev.type
 op_eq
 id|SNDRV_DMA_TYPE_DEV_SG
 )paren
@@ -1497,6 +1498,18 @@ r_struct
 id|snd_dma_buffer
 id|dmab
 suffix:semicolon
+id|dmab.dev.type
+op_assign
+id|SNDRV_DMA_TYPE_DEV
+suffix:semicolon
+id|dmab.dev.dev
+op_assign
+id|snd_dma_pci_data
+c_func
+(paren
+id|trident-&gt;pci
+)paren
+suffix:semicolon
 id|dmab.area
 op_assign
 id|ptr
@@ -1512,9 +1525,6 @@ suffix:semicolon
 id|snd_dma_free_pages
 c_func
 (paren
-op_amp
-id|trident-&gt;dma_dev
-comma
 op_amp
 id|dmab
 )paren
@@ -1759,8 +1769,13 @@ c_cond
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|hw-&gt;dma_dev
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
+c_func
+(paren
+id|hw-&gt;pci
+)paren
 comma
 id|ALIGN_PAGE_SIZE
 comma
@@ -1787,9 +1802,6 @@ id|dmab.addr
 id|snd_dma_free_pages
 c_func
 (paren
-op_amp
-id|hw-&gt;dma_dev
-comma
 op_amp
 id|dmab
 )paren

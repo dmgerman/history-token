@@ -1905,12 +1905,6 @@ r_int
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* PCI DMA mask */
-DECL|member|dma_dev
-r_struct
-id|snd_dma_device
-id|dma_dev
-suffix:semicolon
-multiline_comment|/* DMA device description */
 DECL|member|max_cache_pages
 r_int
 id|max_cache_pages

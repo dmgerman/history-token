@@ -1264,15 +1264,15 @@ r_int
 id|buffer_bytes_max
 suffix:semicolon
 multiline_comment|/* limit ring buffer size */
-DECL|member|dma_device
-r_struct
-id|snd_dma_device
-id|dma_device
-suffix:semicolon
 DECL|member|dma_buffer
 r_struct
 id|snd_dma_buffer
 id|dma_buffer
+suffix:semicolon
+DECL|member|dma_buf_id
+r_int
+r_int
+id|dma_buf_id
 suffix:semicolon
 DECL|member|dma_max
 r_int

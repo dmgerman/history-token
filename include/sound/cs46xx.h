@@ -2467,11 +2467,6 @@ r_int
 r_int
 id|uartm
 suffix:semicolon
-DECL|member|dma_dev
-r_struct
-id|snd_dma_device
-id|dma_dev
-suffix:semicolon
 DECL|member|amplifier
 r_int
 id|amplifier
