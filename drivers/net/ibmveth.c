@@ -2958,7 +2958,7 @@ l_int|0
 dot
 id|fields.length
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|desc
@@ -3059,7 +3059,7 @@ id|frag-&gt;page_offset
 comma
 id|frag-&gt;size
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|desc
