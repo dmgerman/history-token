@@ -31,9 +31,9 @@ r_int
 id|i_ctime_ms
 suffix:semicolon
 multiline_comment|/* unused change time in milliseconds */
-DECL|member|i_location
-r_int
-id|i_location
+DECL|member|i_pos
+id|loff_t
+id|i_pos
 suffix:semicolon
 multiline_comment|/* on-disk position of directory entry or 0 */
 DECL|member|i_fat_hash

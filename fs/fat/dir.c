@@ -894,8 +894,6 @@ op_member_access_from_pointer
 id|options.shortname
 suffix:semicolon
 r_int
-id|ino
-comma
 id|chl
 comma
 id|i
@@ -909,6 +907,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|loff_t
+id|i_pos
+comma
 id|cpos
 op_assign
 l_int|0
@@ -937,7 +937,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 op_eq
 op_minus
@@ -1225,7 +1225,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 OL
 l_int|0
@@ -2042,10 +2042,10 @@ op_member_access_from_pointer
 id|options.shortname
 suffix:semicolon
 r_int
-id|ino
-comma
+r_int
 id|inum
-comma
+suffix:semicolon
+r_int
 id|chi
 comma
 id|chl
@@ -2065,6 +2065,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|loff_t
+id|i_pos
+comma
 id|cpos
 suffix:semicolon
 r_int
@@ -2207,7 +2209,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 op_eq
 op_minus
@@ -2533,7 +2535,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 op_eq
 op_minus
@@ -3209,7 +3211,7 @@ c_func
 (paren
 id|sb
 comma
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 r_if
@@ -4042,6 +4044,8 @@ id|dir
 (brace
 id|loff_t
 id|pos
+comma
+id|i_pos
 suffix:semicolon
 r_struct
 id|buffer_head
@@ -4054,8 +4058,6 @@ op_star
 id|de
 suffix:semicolon
 r_int
-id|ino
-comma
 id|result
 op_assign
 l_int|0
@@ -4086,7 +4088,7 @@ op_amp
 id|de
 comma
 op_amp
-id|ino
+id|i_pos
 )paren
 OG
 op_minus
@@ -4179,9 +4181,9 @@ op_star
 op_star
 id|de
 comma
-r_int
+id|loff_t
 op_star
-id|ino
+id|i_pos
 )paren
 (brace
 r_struct
@@ -4234,7 +4236,7 @@ id|bh
 comma
 id|de
 comma
-id|ino
+id|i_pos
 )paren
 OG
 op_minus
@@ -4370,7 +4372,7 @@ id|bh
 comma
 id|de
 comma
-id|ino
+id|i_pos
 )paren
 suffix:semicolon
 )brace
