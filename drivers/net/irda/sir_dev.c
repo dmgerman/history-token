@@ -183,6 +183,10 @@ id|len
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -200,11 +204,13 @@ r_return
 op_minus
 id|ENOSPC
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with other tx operations */
@@ -217,11 +223,13 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* wait until tx idle */
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|set_current_state
@@ -240,11 +248,13 @@ l_int|10
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -276,11 +286,13 @@ comma
 id|dev-&gt;tx_buff.len
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -384,6 +396,10 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -397,11 +413,13 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -530,11 +548,13 @@ OG
 l_int|0
 )paren
 (brace
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -659,11 +679,13 @@ id|dev-&gt;netdev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -913,6 +935,10 @@ op_assign
 id|ndev-&gt;priv
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|actual
 op_assign
 l_int|0
@@ -1078,11 +1104,13 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 multiline_comment|/* serialize with write completion */
-id|spin_lock_bh
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Copy skb to tx_buff while wrapping, stuffing and making CRC */
@@ -1210,11 +1238,13 @@ id|ndev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|dev-&gt;tx_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
