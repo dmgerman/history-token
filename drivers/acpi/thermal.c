@@ -3857,10 +3857,7 @@ op_logical_or
 (paren
 id|count
 OG
-r_sizeof
-(paren
-id|limit_string
-)paren
+id|ACPI_THERMAL_MAX_LIMIT_STR_LEN
 op_minus
 l_int|1
 )paren
