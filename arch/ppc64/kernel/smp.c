@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* #include &lt;linux/openpic.h&gt; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
