@@ -189,9 +189,7 @@ multiline_comment|/* depth first traversal. We&squot;ll do it in groups of this 
 multiline_comment|/* to make sure it doesn&squot;t hog all of the bandwidth */
 DECL|macro|DEPTH_INTERVAL
 mdefine_line|#define DEPTH_INTERVAL 5
-DECL|macro|MAX_URB_LOOP
-mdefine_line|#define MAX_URB_LOOP&t;2048&t;&t;/* Maximum number of linked URB&squot;s */
-multiline_comment|/*&n; * Technically, updating td-&gt;status here is a race, but it&squot;s not really a&n; * problem. The worst that can happen is that we set the IOC bit again&n; * generating a spurios interrupt. We could fix this by creating another&n; * QH and leaving the IOC bit always set, but then we would have to play&n; * games with the FSBR code to make sure we get the correct order in all&n; * the cases. I don&squot;t think it&squot;s worth the effort&n; */
+multiline_comment|/*&n; * Technically, updating td-&gt;status here is a race, but it&squot;s not really a&n; * problem. The worst that can happen is that we set the IOC bit again&n; * generating a spurious interrupt. We could fix this by creating another&n; * QH and leaving the IOC bit always set, but then we would have to play&n; * games with the FSBR code to make sure we get the correct order in all&n; * the cases. I don&squot;t think it&squot;s worth the effort&n; */
 DECL|function|uhci_set_next_interrupt
 r_static
 r_inline
@@ -934,7 +932,7 @@ id|urb
 op_star
 id|urb
 comma
-r_int
+id|u32
 id|breadth
 )paren
 (brace
@@ -1011,14 +1009,7 @@ c_func
 id|td-&gt;dma_handle
 )paren
 op_or
-(paren
 id|breadth
-ques
-c_cond
-l_int|0
-suffix:colon
-id|UHCI_PTR_DEPTH
-)paren
 suffix:semicolon
 id|ptd
 op_assign
@@ -1062,14 +1053,7 @@ c_func
 id|td-&gt;dma_handle
 )paren
 op_or
-(paren
 id|breadth
-ques
-c_cond
-l_int|0
-suffix:colon
-id|UHCI_PTR_DEPTH
-)paren
 suffix:semicolon
 id|ptd
 op_assign
@@ -1098,7 +1082,6 @@ op_star
 id|td
 )paren
 (brace
-multiline_comment|/*&n;&t;if (!list_empty(&amp;td-&gt;list) || !list_empty(&amp;td-&gt;fl_list))&n;&t;&t;dbg(&quot;td %p is still in URB list!&quot;, td);&n;*/
 r_if
 c_cond
 (paren
@@ -1331,7 +1314,7 @@ id|qh-&gt;dma_handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MUST be called with uhci-&gt;frame_list_lock acquired&n; */
+multiline_comment|/*&n; * Append this urb&squot;s qh after the last qh in skelqh-&gt;list&n; * MUST be called with uhci-&gt;frame_list_lock acquired&n; *&n; * Note that urb_priv.queue_list doesn&squot;t have a separate queue head;&n; * it&squot;s a ring with every element &quot;live&quot;.&n; */
 DECL|function|_uhci_insert_qh
 r_static
 r_void
@@ -1369,9 +1352,6 @@ suffix:semicolon
 r_struct
 id|list_head
 op_star
-id|head
-comma
-op_star
 id|tmp
 suffix:semicolon
 r_struct
@@ -1393,27 +1373,13 @@ comma
 id|list
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* Patch this endpoint&squot;s URBs&squot; QHs to point to the next skelQH:&n;&t; *    SkelQH --&gt; ... lqh --&gt; NewQH --&gt; NextSkelQH&n;&t; * Do this first, so the HC always sees the right QH after this one.&n;&t; */
+id|list_for_each
 (paren
-id|lqh-&gt;urbp
-)paren
-(brace
-id|head
-op_assign
+id|tmp
+comma
 op_amp
-id|lqh-&gt;urbp-&gt;queue_list
-suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|head
-op_ne
-id|tmp
+id|urbp-&gt;queue_list
 )paren
 (brace
 r_struct
@@ -1432,9 +1398,51 @@ comma
 id|queue_list
 )paren
 suffix:semicolon
-id|tmp
+id|turbp-&gt;qh-&gt;link
 op_assign
-id|tmp-&gt;next
+id|lqh-&gt;link
+suffix:semicolon
+)brace
+id|urbp-&gt;qh-&gt;link
+op_assign
+id|lqh-&gt;link
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Ordering is important */
+multiline_comment|/* Patch QHs for previous endpoint&squot;s queued URBs?  HC goes&n;&t; * here next, not to the NextSkelQH it now points to.&n;&t; *&n;&t; *    lqh --&gt; td ... --&gt; qh ... --&gt; td --&gt; qh ... --&gt; td&n;&t; *     |                 |                 |&n;&t; *     v                 v                 v&n;&t; *     +&lt;----------------+-----------------+&n;&t; *     v&n;&t; *    NewQH --&gt; td ... --&gt; td&n;&t; *     |&n;&t; *     v&n;&t; *    ...&n;&t; *&n;&t; * The HC could see (and use!) any of these as we write them.&n;&t; */
+r_if
+c_cond
+(paren
+id|lqh-&gt;urbp
+)paren
+(brace
+id|list_for_each
+(paren
+id|tmp
+comma
+op_amp
+id|lqh-&gt;urbp-&gt;queue_list
+)paren
+(brace
+r_struct
+id|urb_priv
+op_star
+id|turbp
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|urb_priv
+comma
+id|queue_list
+)paren
 suffix:semicolon
 id|turbp-&gt;qh-&gt;link
 op_assign
@@ -1448,58 +1456,6 @@ id|UHCI_PTR_QH
 suffix:semicolon
 )brace
 )brace
-id|head
-op_assign
-op_amp
-id|urbp-&gt;queue_list
-suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|head
-op_ne
-id|tmp
-)paren
-(brace
-r_struct
-id|urb_priv
-op_star
-id|turbp
-op_assign
-id|list_entry
-c_func
-(paren
-id|tmp
-comma
-r_struct
-id|urb_priv
-comma
-id|queue_list
-)paren
-suffix:semicolon
-id|tmp
-op_assign
-id|tmp-&gt;next
-suffix:semicolon
-id|turbp-&gt;qh-&gt;link
-op_assign
-id|lqh-&gt;link
-suffix:semicolon
-)brace
-id|urbp-&gt;qh-&gt;link
-op_assign
-id|lqh-&gt;link
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Ordering is important */
 id|lqh-&gt;link
 op_assign
 id|cpu_to_le32
@@ -1576,6 +1532,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* start removal of qh from schedule; it finishes next frame.&n; * TDs should be unlinked before this is called.&n; */
 DECL|function|uhci_remove_qh
 r_static
 r_void
@@ -3533,7 +3490,7 @@ id|qh-&gt;urbp
 op_assign
 id|urbp
 suffix:semicolon
-multiline_comment|/* Low speed or small transfers gets a different queue and treatment */
+multiline_comment|/* Low speed transfers get a different queue, and won&squot;t hog the bus */
 r_if
 c_cond
 (paren
@@ -3549,7 +3506,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|0
+id|UHCI_PTR_DEPTH
 )paren
 suffix:semicolon
 id|uhci_insert_qh
@@ -3572,7 +3529,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|1
+id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
 id|uhci_insert_qh
@@ -3754,10 +3711,10 @@ id|urbp-&gt;qh
 comma
 id|urb
 comma
-l_int|0
+id|UHCI_PTR_DEPTH
 )paren
 suffix:semicolon
-multiline_comment|/* Low speed or small transfers gets a different queue and treatment */
+multiline_comment|/* Low speed transfers get a different queue */
 r_if
 c_cond
 (paren
@@ -5332,7 +5289,7 @@ id|qh-&gt;urbp
 op_assign
 id|urbp
 suffix:semicolon
-multiline_comment|/* Always assume breadth first */
+multiline_comment|/* Always breadth first */
 id|uhci_insert_tds_in_qh
 c_func
 (paren
@@ -5340,7 +5297,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|1
+id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
 r_if
