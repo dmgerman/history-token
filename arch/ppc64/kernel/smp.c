@@ -36,13 +36,6 @@ id|smp_threads_ready
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__cacheline_aligned
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|cache_decay_ticks
 r_int
 r_int

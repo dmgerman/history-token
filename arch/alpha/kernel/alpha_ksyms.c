@@ -64,10 +64,6 @@ op_star
 suffix:semicolon
 r_extern
 id|spinlock_t
-id|kernel_flag
-suffix:semicolon
-r_extern
-id|spinlock_t
 id|rtc_lock
 suffix:semicolon
 multiline_comment|/* these are C runtime functions with special calling conventions: */
@@ -1009,13 +1005,6 @@ id|up
 suffix:semicolon
 multiline_comment|/* &n; * SMP-specific symbols.&n; */
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
 c_func

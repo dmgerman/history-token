@@ -41,6 +41,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2561,6 +2562,15 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|set_cpus_allowed
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+DECL|variable|kernel_flag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_flag
 )paren
 suffix:semicolon
 macro_line|#endif
