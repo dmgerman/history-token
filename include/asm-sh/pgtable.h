@@ -944,8 +944,6 @@ mdefine_line|#define pmd_page(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd)
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-DECL|macro|__pgd_offset
-mdefine_line|#define __pgd_offset(address) pgd_index(address)
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */

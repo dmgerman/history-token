@@ -1046,8 +1046,6 @@ mdefine_line|#define pmd_page(pmd) (phys_mem_map(pmd_val(pmd) &amp; PAGE_MASK) +
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
-DECL|macro|__pgd_offset
-mdefine_line|#define __pgd_offset(address) pgd_index(address)
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) &bslash;&n;((mm)-&gt;pgd + ((address) &gt;&gt; PGDIR_SHIFT))
