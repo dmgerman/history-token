@@ -496,7 +496,7 @@ c_func
 id|ide_dma_intr
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
+multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_build_sglist
 r_static
 r_int
@@ -589,7 +589,7 @@ id|hwif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic neccessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the neccessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
+multiline_comment|/**&n; *&t;ide_raw_build_sglist&t;-&t;map IDE scatter gather for DMA&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a taskfile request via PCI DMA. The lower layers &n; *&t;of the  kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_raw_build_sglist
 r_static
 r_int

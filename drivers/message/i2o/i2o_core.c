@@ -7526,7 +7526,7 @@ id|iop
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;i2o_activate_controller&t;-&t;bring controller up to HOLD&n; *&t;@iop: controller&n; *&n; *&t;This function brings an I2O controller into HOLD state. The adapter&n; *&t;is reset if neccessary and then the queues and resource table&n; *&t;are read. -1 is returned on a failure, 0 on success.&n; *&t;&n; */
+multiline_comment|/**&n; *&t;i2o_activate_controller&t;-&t;bring controller up to HOLD&n; *&t;@iop: controller&n; *&n; *&t;This function brings an I2O controller into HOLD state. The adapter&n; *&t;is reset if necessary and then the queues and resource table&n; *&t;are read. -1 is returned on a failure, 0 on success.&n; *&t;&n; */
 DECL|function|i2o_activate_controller
 r_int
 id|i2o_activate_controller

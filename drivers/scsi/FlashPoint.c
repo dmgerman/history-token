@@ -40193,7 +40193,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*---------------------------------------------------------------------&n; *&n; * Function: DiagEEPROM&n; *&n; * Description: Verfiy checksum and &squot;Key&squot; and initialize the EEPROM if&n; *              neccessary.&n; *&n; *---------------------------------------------------------------------*/
+multiline_comment|/*---------------------------------------------------------------------&n; *&n; * Function: DiagEEPROM&n; *&n; * Description: Verfiy checksum and &squot;Key&squot; and initialize the EEPROM if&n; *              necessary.&n; *&n; *---------------------------------------------------------------------*/
 macro_line|#if defined(DOS)
 DECL|function|DiagEEPROM
 r_void

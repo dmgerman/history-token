@@ -1041,7 +1041,7 @@ l_int|0
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/**&n; * ei_interrupt - handle the interrupts from an 8390&n; * @irq: interrupt number&n; * @dev_id: a pointer to the net_device&n; * @regs: unused&n; *&n; * Handle the ether interface interrupts. We pull packets from&n; * the 8390 via the card specific functions and fire them at the networking&n; * stack. We also handle transmit completions and wake the transmit path if&n; * neccessary. We also update the counters and do other housekeeping as&n; * needed.&n; */
+multiline_comment|/**&n; * ei_interrupt - handle the interrupts from an 8390&n; * @irq: interrupt number&n; * @dev_id: a pointer to the net_device&n; * @regs: unused&n; *&n; * Handle the ether interface interrupts. We pull packets from&n; * the 8390 via the card specific functions and fire them at the networking&n; * stack. We also handle transmit completions and wake the transmit path if&n; * necessary. We also update the counters and do other housekeeping as&n; * needed.&n; */
 DECL|function|ei_interrupt
 r_void
 id|ei_interrupt

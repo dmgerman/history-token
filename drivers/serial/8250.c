@@ -8190,7 +8190,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;register_serial - configure a 16x50 serial port at runtime&n; *&t;@req: request structure&n; *&n; *&t;Configure the serial port specified by the request. If the&n; *&t;port exists and is in use an error is returned. If the port&n; *&t;is not currently in the table it is added.&n; *&n; *&t;The port is then probed and if neccessary the IRQ is autodetected&n; *&t;If this fails an error is returned.&n; *&n; *&t;On success the port is ready to use and the line number is returned.&n; */
+multiline_comment|/**&n; *&t;register_serial - configure a 16x50 serial port at runtime&n; *&t;@req: request structure&n; *&n; *&t;Configure the serial port specified by the request. If the&n; *&t;port exists and is in use an error is returned. If the port&n; *&t;is not currently in the table it is added.&n; *&n; *&t;The port is then probed and if necessary the IRQ is autodetected&n; *&t;If this fails an error is returned.&n; *&n; *&t;On success the port is ready to use and the line number is returned.&n; */
 DECL|function|register_serial
 r_int
 id|register_serial

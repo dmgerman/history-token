@@ -62,7 +62,7 @@ r_int
 id|__u64
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* A address type so that arithmetic can be done on it &amp; it can be upgraded to&n;   64 bit when neccessary &n;*/
+multiline_comment|/* A address type so that arithmetic can be done on it &amp; it can be upgraded to&n;   64 bit when necessary &n;*/
 DECL|typedef|addr_t
 r_typedef
 id|__u32

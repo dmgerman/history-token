@@ -1158,7 +1158,7 @@ op_amp
 id|tuple-&gt;src.ip
 suffix:semicolon
 )brace
-multiline_comment|/* Don&squot;t do do_extra_mangle unless neccessary (overrides&n;           explicit socket bindings, for example) */
+multiline_comment|/* Don&squot;t do do_extra_mangle unless necessary (overrides&n;           explicit socket bindings, for example) */
 id|orig_dstip
 op_assign
 id|tuple-&gt;dst.ip

@@ -1348,7 +1348,7 @@ id|zft_just_before_eof
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* now merge with old data if neccessary */
+multiline_comment|/* now merge with old data if necessary */
 r_if
 c_cond
 (paren

@@ -424,7 +424,7 @@ comma
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/* This just modifies memory; should not be neccessary. But... This is neccessary, because 386 hardware has concept of busy TSS or some similar stupidity. */
+multiline_comment|/* This just modifies memory; should not be necessary. But... This is necessary, because 386 hardware has concept of busy TSS or some similar stupidity. */
 id|cpu_gdt_table
 (braket
 id|cpu

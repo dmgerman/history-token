@@ -2499,7 +2499,7 @@ r_return
 id|cinfo-&gt;infobuf
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************&n;hycapi_rx_capipkt&n;&n;Receive a capi-message.&n;&n;All B3_DATA_IND are converted to 64K-extension compatible format.&n;New nccis are created if neccessary.&n;*******************************************************************/
+multiline_comment|/******************************************************************&n;hycapi_rx_capipkt&n;&n;Receive a capi-message.&n;&n;All B3_DATA_IND are converted to 64K-extension compatible format.&n;New nccis are created if necessary.&n;*******************************************************************/
 r_void
 DECL|function|hycapi_rx_capipkt
 id|hycapi_rx_capipkt

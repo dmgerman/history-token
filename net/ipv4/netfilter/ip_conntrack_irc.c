@@ -828,7 +828,7 @@ op_amp
 id|ip_irc_lock
 )paren
 suffix:semicolon
-multiline_comment|/* save position of address in dcc string,&n;&t;&t;&t; * neccessary for NAT */
+multiline_comment|/* save position of address in dcc string,&n;&t;&t;&t; * necessary for NAT */
 id|DEBUGP
 c_func
 (paren
