@@ -34,6 +34,9 @@ macro_line|#ifdef CONFIG_HUGETLB_PAGE
 macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
 DECL|macro|HPAGE_SHIFT
 macro_line|#  define HPAGE_SHIFT&t;32
+macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_1GB)
+DECL|macro|HPAGE_SHIFT
+macro_line|#  define HPAGE_SHIFT&t;30
 macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256MB)
 DECL|macro|HPAGE_SHIFT
 macro_line|#  define HPAGE_SHIFT&t;28
