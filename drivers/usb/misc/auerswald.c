@@ -7357,9 +7357,7 @@ multiline_comment|/* pointer to the receive buffer */
 l_int|2
 comma
 multiline_comment|/* length of the buffer */
-id|HZ
-op_star
-l_int|2
+l_int|2000
 )paren
 suffix:semicolon
 multiline_comment|/* time to wait for the message to complete before timing out */
