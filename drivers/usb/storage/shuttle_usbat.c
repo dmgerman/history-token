@@ -2766,7 +2766,7 @@ id|page
 op_plus
 id|sg
 (braket
-id|sg_sgement
+id|sg_segment
 )braket
 dot
 id|offset
