@@ -323,30 +323,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|c-&gt;x86_vendor
 op_ne
 id|X86_VENDOR_AMD
 )paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;AMD processor not detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
+op_logical_or
 (paren
 id|c-&gt;x86
 op_ne
 l_int|6
 )paren
+)paren
 (brace
+macro_line|#ifdef MODULE
 id|printk
 (paren
 id|KERN_INFO
@@ -354,17 +344,11 @@ id|PFX
 l_string|&quot;This module only works with AMD K7 CPUs&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;AMD K7 CPU detected.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
