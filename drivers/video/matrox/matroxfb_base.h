@@ -2291,11 +2291,6 @@ id|reg
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|list_head
-id|matroxfb_list
-suffix:semicolon
-r_extern
 r_void
 id|matroxfb_var2my
 c_func

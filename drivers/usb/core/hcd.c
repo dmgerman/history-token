@@ -4456,7 +4456,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef&t;CONFIG_USB_OTG
-multiline_comment|/**&n; * usb_bus_start_enum - start immediate enumeration (for OTG)&n; * @bus: the bus (must use hcd framework)&n; * @port: 1-based number of port; usually bus-&gt;otg_port&n; * Context: in_interrupt()&n; *&n; * Starts enumeration, with an immediate reset followed later by&n; * khubd identifying and possibly configuring the device.&n; * This is needed by OTG controller drivers, where it helps meet&n; * HNP protocol timing requirements for starting a port reset.&n; */
+multiline_comment|/**&n; * usb_bus_start_enum - start immediate enumeration (for OTG)&n; * @bus: the bus (must use hcd framework)&n; * @port_num: 1-based number of port; usually bus-&gt;otg_port&n; * Context: in_interrupt()&n; *&n; * Starts enumeration, with an immediate reset followed later by&n; * khubd identifying and possibly configuring the device.&n; * This is needed by OTG controller drivers, where it helps meet&n; * HNP protocol timing requirements for starting a port reset.&n; */
 DECL|function|usb_bus_start_enum
 r_int
 id|usb_bus_start_enum

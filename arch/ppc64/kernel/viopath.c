@@ -109,7 +109,7 @@ op_star
 id|event
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We use this structure to handle asynchronous responses.  The caller&n; * blocks on the semaphore and the handler posts the semaphore.  However,&n; * if in_atomic() is true in the caller, then wait_atomic is used ...&n; */
+multiline_comment|/*&n; * We use this structure to handle asynchronous responses.  The caller&n; * blocks on the semaphore and the handler posts the semaphore.  However,&n; * if system_state is not SYSTEM_RUNNING, then wait_atomic is used ...&n; */
 DECL|struct|doneAllocParms_t
 r_struct
 id|doneAllocParms_t
@@ -1594,10 +1594,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_atomic
-c_func
-(paren
-)paren
+id|system_state
+op_ne
+id|SYSTEM_RUNNING
 )paren
 (brace
 id|parms.used_wait_atomic
@@ -1653,10 +1652,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_atomic
-c_func
-(paren
-)paren
+id|system_state
+op_ne
+id|SYSTEM_RUNNING
 )paren
 (brace
 r_while

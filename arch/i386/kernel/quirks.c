@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PCI)
 DECL|function|quirk_intel_irqbalance
+r_static
 r_void
 id|__devinit
 id|quirk_intel_irqbalance

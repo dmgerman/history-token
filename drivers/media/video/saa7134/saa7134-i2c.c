@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: saa7134-i2c.c,v 1.7 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * i2c interface support&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-i2c.c,v 1.10 2005/01/24 17:37:23 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * i2c interface support&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -797,6 +798,8 @@ l_int|0x00
 op_lshift
 l_int|16
 suffix:semicolon
+multiline_comment|/* 100 kHz */
+singleline_comment|//&t;dword |= 0x40 &lt;&lt; 16;  /* 400 kHz */
 id|dword
 op_or_assign
 l_int|0xf0
@@ -1027,6 +1030,12 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+id|d2printk
+c_func
+(paren
+l_string|&quot;start xfer&bslash;n&quot;
+)paren
+suffix:semicolon
 id|d1printk
 c_func
 (paren
@@ -1072,6 +1081,12 @@ id|i
 )paren
 (brace
 multiline_comment|/* send address */
+id|d2printk
+c_func
+(paren
+l_string|&quot;send address&bslash;n&quot;
+)paren
+suffix:semicolon
 id|addr
 op_assign
 id|msgs
@@ -1099,6 +1114,54 @@ id|addr
 op_or_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OG
+l_int|0
+op_logical_and
+id|msgs
+(braket
+id|i
+)braket
+dot
+id|flags
+op_amp
+id|I2C_M_RD
+)paren
+(brace
+multiline_comment|/* workaround for a saa7134 i2c bug&n;&t;&t;&t;&t; * needed to talk to the mt352 demux&n;&t;&t;&t;&t; * thanks to pinnacle for the hint */
+r_int
+id|quirk
+op_assign
+l_int|0xfd
+suffix:semicolon
+id|d1printk
+c_func
+(paren
+l_string|&quot; [%02x quirk]&quot;
+comma
+id|quirk
+)paren
+suffix:semicolon
+id|i2c_send_byte
+c_func
+(paren
+id|dev
+comma
+id|START
+comma
+id|quirk
+)paren
+suffix:semicolon
+id|i2c_recv_byte
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 id|d1printk
 c_func
 (paren
@@ -1144,6 +1207,12 @@ id|I2C_M_RD
 )paren
 (brace
 multiline_comment|/* read bytes */
+id|d2printk
+c_func
+(paren
+l_string|&quot;read bytes&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1213,6 +1282,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* write bytes */
+id|d2printk
+c_func
+(paren
+l_string|&quot;write bytes&bslash;n&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1278,6 +1353,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|d2printk
+c_func
+(paren
+l_string|&quot;xfer done&bslash;n&quot;
+)paren
+suffix:semicolon
 id|d1printk
 c_func
 (paren
@@ -1414,38 +1495,6 @@ r_return
 id|I2C_FUNC_SMBUS_EMUL
 suffix:semicolon
 )brace
-macro_line|#ifndef I2C_PEC
-DECL|function|inc_use
-r_static
-r_void
-id|inc_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|dec_use
-r_static
-r_void
-id|dec_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|attach_inform
 r_static
 r_int
@@ -1542,24 +1591,11 @@ id|i2c_adapter
 id|saa7134_adap_template
 op_assign
 (brace
-macro_line|#ifdef I2C_PEC
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#else
-dot
-id|inc_use
-op_assign
-id|inc_use
-comma
-dot
-id|dec_use
-op_assign
-id|dec_use
-comma
-macro_line|#endif
 macro_line|#ifdef I2C_CLASS_TV_ANALOG
 dot
 r_class

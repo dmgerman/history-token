@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/katana.h&n; *&n; * Definitions for Artesyn Katana750i/3750 board.&n; *&n; * Tim Montgomery &lt;timm@artesyncp.com&gt;&n; *&n; * Based on code done by Rabeeh Khoury - rabeeh@galileo.co.il&n; * Based on code done by Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/katana.h&n; *&n; * Definitions for Artesyn Katana750i/3750 board.&n; *&n; * Author: Tim Montgomery &lt;timm@artesyncp.com&gt;&n; * Maintained by: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * Based on code done by Rabeeh Khoury - rabeeh@galileo.co.il&n; * Based on code done by Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
 multiline_comment|/*&n; * The MV64360 has 2 PCI buses each with 1 window from the CPU bus to&n; * PCI I/O space and 4 windows from the CPU bus to PCI MEM space.&n; * We&squot;ll only use one PCI MEM window on each PCI bus.&n; *&n; * This is the CPU physical memory map (windows must be at least 64 KB and start&n; * on a boundary that is a multiple of the window size):&n; *&n; *    0xff800000-0xffffffff      - Boot window&n; *    0xf8400000-0xf85fffff      - Internal SRAM&n; *    0xf8200000-0xf83fffff      - CPLD&n; *    0xf8100000-0xf810ffff      - MV64360 Registers (CONFIG_MV64X60_NEW_BASE)&n; *    0xf8000000-0xf80fffff      - Socketed FLASH&n; *    0xe0000000-0xefffffff      - Soldered FLASH&n; *    0xc0000000-0xc3ffffff      - PCI I/O (second hose)&n; *    0x80000000-0xbfffffff      - PCI MEM (second hose)&n; */
 macro_line|#ifndef __PPC_PLATFORMS_KATANA_H
 DECL|macro|__PPC_PLATFORMS_KATANA_H
@@ -245,5 +245,80 @@ DECL|typedef|katana_id_t
 id|katana_id_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif&t;&t;&t;&t;/* __PPC_PLATFORMS_KATANA_H */
+r_static
+r_inline
+id|u32
+DECL|function|katana_bus_freq
+id|katana_bus_freq
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|cpld_base
+)paren
+(brace
+id|u8
+id|bd_cfg_0
+suffix:semicolon
+id|bd_cfg_0
+op_assign
+id|in_8
+c_func
+(paren
+id|cpld_base
+op_plus
+id|KATANA_CPLD_BD_CFG_0
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|bd_cfg_0
+op_amp
+id|KATANA_CPLD_BD_CFG_0_SYSCLK_MASK
+)paren
+(brace
+r_case
+id|KATANA_CPLD_BD_CFG_0_SYSCLK_200
+suffix:colon
+r_return
+l_int|200000000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|KATANA_CPLD_BD_CFG_0_SYSCLK_166
+suffix:colon
+r_return
+l_int|166666666
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|KATANA_CPLD_BD_CFG_0_SYSCLK_133
+suffix:colon
+r_return
+l_int|133333333
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|KATANA_CPLD_BD_CFG_0_SYSCLK_100
+suffix:colon
+r_return
+l_int|100000000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|133333333
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif&t;/* __PPC_PLATFORMS_KATANA_H */
 eof

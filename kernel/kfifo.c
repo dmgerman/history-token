@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/kfifo.h&gt;
-multiline_comment|/*&n; * kfifo_init - allocates a new FIFO using a preallocated buffer&n; * @buffer: the preallocated buffer to be used.&n; * @size: the size of the internal buffer, this have to be a power of 2.&n; * @gfp_mask: get_free_pages mask, passed to kmalloc()&n; * @lock: the lock to be used to protect the fifo buffer&n; *&n; * Do NOT pass the kfifo to kfifo_free() after use ! Simply free the&n; * struct kfifo with kfree().&n; */
+multiline_comment|/**&n; * kfifo_init - allocates a new FIFO using a preallocated buffer&n; * @buffer: the preallocated buffer to be used.&n; * @size: the size of the internal buffer, this have to be a power of 2.&n; * @gfp_mask: get_free_pages mask, passed to kmalloc()&n; * @lock: the lock to be used to protect the fifo buffer&n; *&n; * Do NOT pass the kfifo to kfifo_free() after use ! Simply free the&n; * struct kfifo with kfree().&n; */
 DECL|function|kfifo_init
 r_struct
 id|kfifo
@@ -104,7 +104,7 @@ c_func
 id|kfifo_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * kfifo_alloc - allocates a new FIFO and its internal buffer&n; * @size: the size of the internal buffer to be allocated.&n; * @gfp_mask: get_free_pages mask, passed to kmalloc()&n; * @lock: the lock to be used to protect the fifo buffer&n; *&n; * The size will be rounded-up to a power of 2.&n; */
+multiline_comment|/**&n; * kfifo_alloc - allocates a new FIFO and its internal buffer&n; * @size: the size of the internal buffer to be allocated.&n; * @gfp_mask: get_free_pages mask, passed to kmalloc()&n; * @lock: the lock to be used to protect the fifo buffer&n; *&n; * The size will be rounded-up to a power of 2.&n; */
 DECL|function|kfifo_alloc
 r_struct
 id|kfifo
@@ -228,7 +228,7 @@ c_func
 id|kfifo_alloc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * kfifo_free - frees the FIFO&n; * @fifo: the fifo to be freed.&n; */
+multiline_comment|/**&n; * kfifo_free - frees the FIFO&n; * @fifo: the fifo to be freed.&n; */
 DECL|function|kfifo_free
 r_void
 id|kfifo_free
@@ -260,7 +260,7 @@ c_func
 id|kfifo_free
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * __kfifo_put - puts some data into the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; * @buffer: the data to be added.&n; * @len: the length of the data to be added.&n; *&n; * This function copies at most &squot;len&squot; bytes from the &squot;buffer&squot; into&n; * the FIFO depending on the free space, and returns the number of&n; * bytes copied.&n; *&n; * Note that with only one concurrent reader and one concurrent&n; * writer, you don&squot;t need extra locking to use these functions.&n; */
+multiline_comment|/**&n; * __kfifo_put - puts some data into the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; * @buffer: the data to be added.&n; * @len: the length of the data to be added.&n; *&n; * This function copies at most &squot;len&squot; bytes from the &squot;buffer&squot; into&n; * the FIFO depending on the free space, and returns the number of&n; * bytes copied.&n; *&n; * Note that with only one concurrent reader and one concurrent&n; * writer, you don&squot;t need extra locking to use these functions.&n; */
 DECL|function|__kfifo_put
 r_int
 r_int
@@ -371,7 +371,7 @@ c_func
 id|__kfifo_put
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * __kfifo_get - gets some data from the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; * @buffer: where the data must be copied.&n; * @len: the size of the destination buffer.&n; *&n; * This function copies at most &squot;len&squot; bytes from the FIFO into the&n; * &squot;buffer&squot; and returns the number of copied bytes.&n; *&n; * Note that with only one concurrent reader and one concurrent&n; * writer, you don&squot;t need extra locking to use these functions.&n; */
+multiline_comment|/**&n; * __kfifo_get - gets some data from the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; * @buffer: where the data must be copied.&n; * @len: the size of the destination buffer.&n; *&n; * This function copies at most &squot;len&squot; bytes from the FIFO into the&n; * &squot;buffer&squot; and returns the number of copied bytes.&n; *&n; * Note that with only one concurrent reader and one concurrent&n; * writer, you don&squot;t need extra locking to use these functions.&n; */
 DECL|function|__kfifo_get
 r_int
 r_int

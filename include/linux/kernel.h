@@ -69,7 +69,12 @@ mdefine_line|#define default_console_loglevel (console_printk[3])
 r_struct
 id|completion
 suffix:semicolon
+multiline_comment|/**&n; * might_sleep - annotation for functions that can sleep&n; *&n; * this macro will print a stack trace if it is executed in an atomic&n; * context (spinlock, irq-handler, ...).&n; *&n; * This is a useful debugging help to be able to catch problems early and not&n; * be biten later when the calling function happens to sleep when it is not&n; * supposed to.&n; */
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK_SLEEP
+DECL|macro|might_sleep
+mdefine_line|#define might_sleep() __might_sleep(__FILE__, __LINE__)
+DECL|macro|might_sleep_if
+mdefine_line|#define might_sleep_if(cond) do { if (unlikely(cond)) might_sleep(); } while (0)
 r_void
 id|__might_sleep
 c_func
@@ -82,10 +87,6 @@ r_int
 id|line
 )paren
 suffix:semicolon
-DECL|macro|might_sleep
-mdefine_line|#define might_sleep() __might_sleep(__FILE__, __LINE__)
-DECL|macro|might_sleep_if
-mdefine_line|#define might_sleep_if(cond) do { if (unlikely(cond)) might_sleep(); } while (0)
 macro_line|#else
 DECL|macro|might_sleep
 mdefine_line|#define might_sleep() do {} while(0)

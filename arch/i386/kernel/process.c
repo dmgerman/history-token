@@ -53,6 +53,7 @@ l_string|&quot;ret_from_fork&quot;
 )paren
 suffix:semicolon
 DECL|variable|hlt_counter
+r_static
 r_int
 id|hlt_counter
 suffix:semicolon

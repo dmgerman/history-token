@@ -718,6 +718,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cpuid_init
+r_static
 r_int
 id|__init
 id|cpuid_init
@@ -889,6 +890,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|cpuid_exit
+r_static
 r_void
 id|__exit
 id|cpuid_exit

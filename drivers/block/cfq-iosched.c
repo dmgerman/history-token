@@ -7766,6 +7766,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cfq_ktype
+r_static
 r_struct
 id|kobj_type
 id|cfq_ktype

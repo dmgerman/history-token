@@ -6254,7 +6254,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Interface to the world&n; */
+macro_line|#ifndef MODULE
 DECL|function|sstfb_setup
+r_static
 r_int
 id|__init
 id|sstfb_setup
@@ -6485,6 +6487,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|sstfb_ops
 r_static
 r_struct
@@ -7360,6 +7363,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sstfb_init
+r_static
 r_int
 id|__devinit
 id|sstfb_init
@@ -7407,7 +7411,9 @@ id|sstfb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 DECL|function|sstfb_exit
+r_static
 r_void
 id|__devexit
 id|sstfb_exit
@@ -7424,6 +7430,7 @@ id|sstfb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * testing and debugging functions&n; */
 DECL|function|sstfb_dump_regs
 r_static

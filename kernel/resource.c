@@ -375,6 +375,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|resource_op
+r_static
 r_struct
 id|seq_operations
 id|resource_op

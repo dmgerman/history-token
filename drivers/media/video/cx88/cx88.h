@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * $Id: cx88.h,v 1.40 2004/11/03 09:04:51 kraxel Exp $&n; *&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88.h,v 1.56 2005/03/04 09:12:23 kraxel Exp $&n; *&n; * v4l2 device driver for cx2388x based TV cards&n; *&n; * (c) 2003,04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;media/tveeprom.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/video-buf-dvb.h&gt;
@@ -270,8 +271,8 @@ DECL|macro|CX88_BOARD_PIXELVIEW
 mdefine_line|#define CX88_BOARD_PIXELVIEW                3
 DECL|macro|CX88_BOARD_ATI_WONDER_PRO
 mdefine_line|#define CX88_BOARD_ATI_WONDER_PRO           4
-DECL|macro|CX88_BOARD_WINFAST2000XP
-mdefine_line|#define CX88_BOARD_WINFAST2000XP            5
+DECL|macro|CX88_BOARD_WINFAST2000XP_EXPERT
+mdefine_line|#define CX88_BOARD_WINFAST2000XP_EXPERT     5
 DECL|macro|CX88_BOARD_AVERTV_303
 mdefine_line|#define CX88_BOARD_AVERTV_303               6
 DECL|macro|CX88_BOARD_MSI_TVANYWHERE_MASTER
@@ -304,6 +305,16 @@ DECL|macro|CX88_BOARD_PROVIDEO_PV259
 mdefine_line|#define CX88_BOARD_PROVIDEO_PV259          20
 DECL|macro|CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS
 mdefine_line|#define CX88_BOARD_DVICO_FUSIONHDTV_DVB_T_PLUS 21
+DECL|macro|CX88_BOARD_PCHDTV_HD3000
+mdefine_line|#define CX88_BOARD_PCHDTV_HD3000           22
+DECL|macro|CX88_BOARD_DNTV_LIVE_DVB_T
+mdefine_line|#define CX88_BOARD_DNTV_LIVE_DVB_T         23
+DECL|macro|CX88_BOARD_HAUPPAUGE_ROSLYN
+mdefine_line|#define CX88_BOARD_HAUPPAUGE_ROSLYN        24
+DECL|macro|CX88_BOARD_DIGITALLOGIC_MEC
+mdefine_line|#define CX88_BOARD_DIGITALLOGIC_MEC&t;       25
+DECL|macro|CX88_BOARD_IODATA_GVBCTV7E
+mdefine_line|#define CX88_BOARD_IODATA_GVBCTV7E         26
 DECL|enum|cx88_itype
 r_enum
 id|cx88_itype
@@ -564,6 +575,10 @@ id|shadow
 id|SHADOW_MAX
 )braket
 suffix:semicolon
+DECL|member|pci_irqmask
+r_int
+id|pci_irqmask
+suffix:semicolon
 multiline_comment|/* i2c i/o */
 DECL|member|i2c_adap
 r_struct
@@ -609,20 +624,16 @@ r_int
 id|has_radio
 suffix:semicolon
 multiline_comment|/* config info -- dvb */
-DECL|member|pll_type
-r_int
-r_int
-id|pll_type
+DECL|member|pll_desc
+r_struct
+id|dvb_pll_desc
+op_star
+id|pll_desc
 suffix:semicolon
 DECL|member|pll_addr
 r_int
 r_int
 id|pll_addr
-suffix:semicolon
-DECL|member|demod_addr
-r_int
-r_int
-id|demod_addr
 suffix:semicolon
 multiline_comment|/* state info */
 DECL|member|kthread
@@ -641,6 +652,14 @@ DECL|member|tvaudio
 id|u32
 id|tvaudio
 suffix:semicolon
+DECL|member|audiomode_manual
+id|u32
+id|audiomode_manual
+suffix:semicolon
+DECL|member|audiomode_current
+id|u32
+id|audiomode_current
+suffix:semicolon
 DECL|member|input
 id|u32
 id|input
@@ -648,6 +667,13 @@ suffix:semicolon
 DECL|member|astat
 id|u32
 id|astat
+suffix:semicolon
+multiline_comment|/* IR remote control state */
+DECL|member|ir
+r_struct
+id|cx88_IR
+op_star
+id|ir
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -965,6 +991,14 @@ DECL|member|mailbox
 id|u32
 id|mailbox
 suffix:semicolon
+DECL|member|width
+r_int
+id|width
+suffix:semicolon
+DECL|member|height
+r_int
+id|height
+suffix:semicolon
 multiline_comment|/* for dvb only */
 DECL|member|dvb
 r_struct
@@ -987,6 +1021,12 @@ r_void
 op_star
 id|handle
 )paren
+suffix:semicolon
+multiline_comment|/* for switching modulation types */
+DECL|member|ts_gen_cntrl
+r_int
+r_char
+id|ts_gen_cntrl
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1078,8 +1118,8 @@ id|cmd
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|cx88_irq
+r_int
+id|cx88_core_irq
 c_func
 (paren
 r_struct
@@ -1089,9 +1129,6 @@ id|core
 comma
 id|u32
 id|status
-comma
-id|u32
-id|mask
 )paren
 suffix:semicolon
 r_extern
@@ -1601,6 +1638,16 @@ id|core
 )paren
 suffix:semicolon
 r_void
+id|cx88_newstation
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+)paren
+suffix:semicolon
+r_void
 id|cx88_get_stereo
 c_func
 (paren
@@ -1626,6 +1673,9 @@ id|core
 comma
 id|u32
 id|mode
+comma
+r_int
+id|manual
 )paren
 suffix:semicolon
 r_int
@@ -1635,6 +1685,43 @@ c_func
 r_void
 op_star
 id|data
+)paren
+suffix:semicolon
+multiline_comment|/* ----------------------------------------------------------- */
+multiline_comment|/* cx88-input.c                                                */
+r_int
+id|cx88_ir_init
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+comma
+r_struct
+id|pci_dev
+op_star
+id|pci
+)paren
+suffix:semicolon
+r_int
+id|cx88_ir_fini
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
+)paren
+suffix:semicolon
+r_void
+id|cx88_ir_irq
+c_func
+(paren
+r_struct
+id|cx88_core
+op_star
+id|core
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
@@ -1708,7 +1795,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon

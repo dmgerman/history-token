@@ -5524,7 +5524,7 @@ OL
 id|len
 )paren
 (brace
-multiline_comment|/* Split frag.&n;&t;&t;&t;&t; * We have to variants in this case:&n;&t;&t;&t;&t; * 1. Move all the frag to the second&n;&t;&t;&t;&t; *    part, if it is possible. F.e.&n;&t;&t;&t;&t; *    this approach is mandatory for TUX,&n;&t;&t;&t;&t; *    where splitting is expensive.&n;&t;&t;&t;&t; * 2. Split is accurately. We make this.&n;&t;&t;&t;&t; */
+multiline_comment|/* Split frag.&n;&t;&t;&t;&t; * We have two variants in this case:&n;&t;&t;&t;&t; * 1. Move all the frag to the second&n;&t;&t;&t;&t; *    part, if it is possible. F.e.&n;&t;&t;&t;&t; *    this approach is mandatory for TUX,&n;&t;&t;&t;&t; *    where splitting is expensive.&n;&t;&t;&t;&t; * 2. Split is accurately. We make this.&n;&t;&t;&t;&t; */
 id|get_page
 c_func
 (paren
@@ -5633,7 +5633,7 @@ op_assign
 id|k
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * skb_split - Split fragmented skb to two parts at length len.&n; */
+multiline_comment|/**&n; * skb_split - Split fragmented skb to two parts at length len.&n; * @skb: the buffer to split&n; * @skb1: the buffer to receive the second part&n; * @len: new length for skb&n; */
 DECL|function|skb_split
 r_void
 id|skb_split

@@ -392,6 +392,7 @@ id|monotonic_lock
 suffix:semicolon
 )brace
 DECL|function|delay_hpet
+r_static
 r_void
 id|delay_hpet
 c_func

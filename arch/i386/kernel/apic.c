@@ -3049,6 +3049,7 @@ multiline_comment|/*&n; * This function sets up the local APIC timer, with a tim
 DECL|macro|APIC_DIVISOR
 mdefine_line|#define APIC_DIVISOR 16
 DECL|function|__setup_APIC_LVTT
+r_static
 r_void
 id|__setup_APIC_LVTT
 c_func
@@ -3192,6 +3193,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * In this function we calibrate APIC bus clocks to the external&n; * timer. Unfortunately we cannot use jiffies and the timer irq&n; * to calibrate, since some later bootup code depends on getting&n; * the first irq? Ugh.&n; *&n; * We want to do the calibration only once since we&n; * want to have local timer irqs syncron. CPUs connected&n; * by the same APIC bus have the very same bus frequency.&n; * And we want to have irqs off anyways, no accidental&n; * APIC irq that way.&n; */
 DECL|function|calibrate_APIC_clock
+r_static
 r_int
 id|__init
 id|calibrate_APIC_clock

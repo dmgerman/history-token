@@ -51,74 +51,6 @@ DECL|macro|_IPS_H_
 mdefine_line|#define _IPS_H_
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* Prototypes */
-r_extern
-r_int
-id|ips_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ips_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ips_eh_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ips_eh_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ips_queue
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|ips_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;    * Some handy macros&n;    */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || defined CONFIG_HIGHIO
 DECL|macro|IPS_HIGHIO
@@ -743,6 +675,7 @@ id|geom
 )paren
 suffix:semicolon
 macro_line|#else
+r_static
 r_int
 id|ips_proc_info
 c_func
@@ -789,6 +722,7 @@ id|geom
 )braket
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ips_slave_configure
 c_func

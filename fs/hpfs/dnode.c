@@ -495,6 +495,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|hpfs_pos_subst
+r_static
 r_void
 id|hpfs_pos_subst
 c_func
@@ -526,6 +527,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*void hpfs_hpfs_pos_substd(loff_t *p, loff_t f, loff_t t)&n;{&n;&t;if ((*p &amp; ~0x3f) == (f &amp; ~0x3f)) *p = (t &amp; ~0x3f) | (*p &amp; 0x3f);&n;}*/
 DECL|function|hpfs_pos_ins
+r_static
 r_void
 id|hpfs_pos_ins
 c_func
@@ -628,6 +630,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hpfs_pos_del
+r_static
 r_void
 id|hpfs_pos_del
 c_func
@@ -1297,6 +1300,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Delete dirent and don&squot;t care about its subtree */
 DECL|function|hpfs_delete_de
+r_static
 r_void
 id|hpfs_delete_de
 c_func
@@ -1504,6 +1508,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Add an entry to dnode and do dnode splitting if required */
 DECL|function|hpfs_add_to_dnode
+r_static
 r_int
 id|hpfs_add_to_dnode
 c_func

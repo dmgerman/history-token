@@ -3121,12 +3121,10 @@ comma
 id|pmu_version
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_PPC64
 id|sys_ctrler
 op_assign
 id|SYS_CTRLER_PMU
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -9681,6 +9679,15 @@ r_struct
 id|adb_request
 id|req
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|via
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 id|local_irq_disable
 c_func
 (paren
@@ -9769,6 +9776,15 @@ r_void
 r_struct
 id|adb_request
 id|req
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|via
+op_eq
+l_int|NULL
+)paren
+r_return
 suffix:semicolon
 id|local_irq_disable
 c_func

@@ -728,6 +728,26 @@ id|pci_dev
 op_star
 id|cb_dev
 suffix:semicolon
+multiline_comment|/* socket setup is done so resources should be able to be allocated. Only&n;&t; * if set to 1, calls to find_{io,mem}_region are handled, and insertion&n;&t; * events are actually managed by the PCMCIA layer.*/
+DECL|member|resource_setup_done
+id|u8
+id|resource_setup_done
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* is set to one if resource setup is done using adjust_resource_info() */
+DECL|member|resource_setup_old
+id|u8
+id|resource_setup_old
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:colon
+l_int|6
+suffix:semicolon
 multiline_comment|/* socket operations */
 DECL|member|ops
 r_struct

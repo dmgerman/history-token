@@ -1652,12 +1652,15 @@ mdefine_line|#define NUM_TOTAL_MODES    ARRAY_SIZE(cirrusfb_predefined)
 multiline_comment|/****************************************************************************/
 multiline_comment|/**** BEGIN PROTOTYPES ******************************************************/
 multiline_comment|/*--- Interface used by the world ------------------------------------------*/
+r_static
 r_int
 id|cirrusfb_init
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE
+r_static
 r_int
 id|cirrusfb_setup
 (paren
@@ -1666,6 +1669,8 @@ op_star
 id|options
 )paren
 suffix:semicolon
+macro_line|#endif
+r_static
 r_int
 id|cirrusfb_open
 (paren
@@ -1678,6 +1683,7 @@ r_int
 id|user
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_release
 (paren
@@ -1690,6 +1696,7 @@ r_int
 id|user
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_setcolreg
 (paren
@@ -1714,6 +1721,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_check_var
 (paren
@@ -1728,6 +1736,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_set_par
 (paren
@@ -1737,6 +1746,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_pan_display
 (paren
@@ -1751,6 +1761,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cirrusfb_blank
 (paren
@@ -1763,6 +1774,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cirrusfb_fillrect
 (paren
@@ -1778,6 +1790,7 @@ op_star
 id|region
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cirrusfb_copyarea
 c_func
@@ -1794,6 +1807,7 @@ op_star
 id|area
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cirrusfb_imageblit
 c_func
@@ -2231,6 +2245,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*--- Open /dev/fbx ---------------------------------------------------------*/
 DECL|function|cirrusfb_open
+r_static
 r_int
 id|cirrusfb_open
 (paren
@@ -2264,6 +2279,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*--- Close /dev/fbx --------------------------------------------------------*/
 DECL|function|cirrusfb_release
+r_static
 r_int
 id|cirrusfb_release
 (paren
@@ -2460,6 +2476,7 @@ id|mclk
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_check_var
+r_static
 r_int
 id|cirrusfb_check_var
 c_func
@@ -6406,6 +6423,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* for some reason incomprehensible to me, cirrusfb requires that you write&n; * the registers twice for the settings to take..grr. -dte */
 DECL|function|cirrusfb_set_par
+r_static
 r_int
 id|cirrusfb_set_par
 (paren
@@ -6428,6 +6446,7 @@ id|info
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_setcolreg
+r_static
 r_int
 id|cirrusfb_setcolreg
 (paren
@@ -6670,6 +6689,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*************************************************************************&n;&t;cirrusfb_pan_display()&n;&n;&t;performs display panning - provided hardware permits this&n;**************************************************************************/
 DECL|function|cirrusfb_pan_display
+r_static
 r_int
 id|cirrusfb_pan_display
 (paren
@@ -6990,6 +7010,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_blank
+r_static
 r_int
 id|cirrusfb_blank
 (paren
@@ -8573,6 +8594,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_fillrect
+r_static
 r_void
 id|cirrusfb_fillrect
 (paren
@@ -8824,6 +8846,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_copyarea
+r_static
 r_void
 id|cirrusfb_copyarea
 c_func
@@ -9024,6 +9047,7 @@ id|modded
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_imageblit
+r_static
 r_void
 id|cirrusfb_imageblit
 c_func
@@ -10399,6 +10423,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|cirrusfb_pci_unregister
+r_static
 r_void
 id|__devexit
 id|cirrusfb_pci_unregister
@@ -11018,6 +11043,7 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_ZORRO */
 DECL|function|cirrusfb_init
+r_static
 r_int
 id|__init
 id|cirrusfb_init
@@ -11089,6 +11115,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|cirrusfb_setup
+r_static
 r_int
 id|__init
 id|cirrusfb_setup
@@ -11252,6 +11279,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|cirrusfb_exit
+r_static
 r_void
 id|__exit
 id|cirrusfb_exit

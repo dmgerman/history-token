@@ -3650,6 +3650,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|deadline_ktype
+r_static
 r_struct
 id|kobj_type
 id|deadline_ktype

@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * $Id: cx88-vbi.c,v 1.14 2004/11/07 13:17:15 kraxel Exp $&n; */
+multiline_comment|/*&n; * $Id: cx88-vbi.c,v 1.16 2004/12/10 12:33:39 kraxel Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;cx88.h&quot;
@@ -273,7 +274,9 @@ c_func
 (paren
 id|MO_PCI_INTMSK
 comma
-l_int|0x00fc01
+id|core-&gt;pci_irqmask
+op_or
+l_int|0x01
 )paren
 suffix:semicolon
 id|cx_set

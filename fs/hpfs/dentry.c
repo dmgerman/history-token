@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/hpfs/dentry.c&n; *&n; *  Mikulas Patocka (mi
 macro_line|#include &quot;hpfs_fn.h&quot;
 multiline_comment|/*&n; * Note: the dentry argument is the parent dentry.&n; */
 DECL|function|hpfs_hash_dentry
+r_static
 r_int
 id|hpfs_hash_dentry
 c_func
@@ -153,6 +154,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hpfs_compare_dentry
+r_static
 r_int
 id|hpfs_compare_dentry
 c_func
@@ -252,6 +254,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hpfs_dentry_operations
+r_static
 r_struct
 id|dentry_operations
 id|hpfs_dentry_operations

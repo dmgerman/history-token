@@ -663,6 +663,13 @@ comma
 id|socket-&gt;ops
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|socket-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -829,13 +836,6 @@ c_func
 (paren
 op_amp
 id|socket-&gt;cis_cache
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|socket-&gt;lock
 )paren
 suffix:semicolon
 id|init_completion

@@ -1527,6 +1527,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|zf_exit
+r_static
 r_void
 id|__exit
 id|zf_exit

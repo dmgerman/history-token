@@ -2658,6 +2658,7 @@ id|id_table
 )paren
 suffix:semicolon
 DECL|function|sym53c416_probe
+r_static
 r_void
 id|sym53c416_probe
 c_func

@@ -249,8 +249,7 @@ l_int|0
 r_return
 id|i
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;check_sig: 0x%x&bslash;n&quot;
@@ -258,7 +257,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -403,8 +401,7 @@ l_int|0
 r_return
 id|i
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;rds-signal: %d&bslash;n&quot;
@@ -412,7 +409,6 @@ comma
 id|buf
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -705,8 +701,7 @@ comma
 id|pcm20-&gt;freq
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;First view (setfreq): 0x%x&bslash;n&quot;
@@ -714,7 +709,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|i
 suffix:semicolon

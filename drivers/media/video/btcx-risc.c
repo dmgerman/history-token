@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: btcx-risc.c,v 1.5 2004/12/10 12:33:39 kraxel Exp $&n;&n;    btcx-risc.c&n;&n;    bt848/bt878/cx2388x risc code generator.&n;&n;    (c) 2000-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: btcx-risc.c,v 1.6 2005/02/21 13:57:59 kraxel Exp $&n;&n;    btcx-risc.c&n;&n;    bt848/bt878/cx2388x risc code generator.&n;&n;    (c) 2000-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -84,6 +84,30 @@ id|risc-&gt;cpu
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+)paren
+(brace
+id|memcnt
+op_decrement
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;btcx: riscmem free [%d] dma=%lx&bslash;n&quot;
+comma
+id|memcnt
+comma
+(paren
+r_int
+r_int
+)paren
+id|risc-&gt;dma
+)paren
+suffix:semicolon
+)brace
 id|pci_free_consistent
 c_func
 (paren
@@ -110,24 +134,6 @@ id|risc
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug
-)paren
-(brace
-id|memcnt
-op_decrement
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;btcx: riscmem free [%d]&bslash;n&quot;
-comma
-id|memcnt
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|btcx_riscmem_alloc
 r_int
@@ -231,11 +237,19 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;btcx: riscmem alloc size=%d [%d]&bslash;n&quot;
-comma
-id|size
+l_string|&quot;btcx: riscmem alloc [%d] dma=%lx cpu=%p size=%d&bslash;n&quot;
 comma
 id|memcnt
+comma
+(paren
+r_int
+r_int
+)paren
+id|dma
+comma
+id|cpu
+comma
+id|size
 )paren
 suffix:semicolon
 )brace

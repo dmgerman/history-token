@@ -584,28 +584,282 @@ mdefine_line|#define V4L2_TC_USERBITS_USERDEFINED&t;0x0000
 DECL|macro|V4L2_TC_USERBITS_8BITCHARS
 mdefine_line|#define V4L2_TC_USERBITS_8BITCHARS&t;0x0008
 multiline_comment|/* The above is based on SMPTE timecodes */
-multiline_comment|/*&n; *&t;C O M P R E S S I O N   P A R A M E T E R S&n; */
-macro_line|#if 0
-multiline_comment|/* ### generic compression settings don&squot;t work, there is too much&n; * ### codec-specific stuff.  Maybe reuse that for MPEG codec settings&n; * ### later ... */
-r_struct
-id|v4l2_compression
+macro_line|#if 1
+multiline_comment|/*&n; *&t;M P E G   C O M P R E S S I O N   P A R A M E T E R S&n; *&n; *  ### WARNING: this is still work-in-progress right now, most likely&n; *  ###          there will be some incompatible changes.&n; *&n; */
+DECL|enum|v4l2_bitrate_mode
+r_enum
+id|v4l2_bitrate_mode
 (brace
-id|__u32
-id|quality
+DECL|enumerator|V4L2_BITRATE_NONE
+id|V4L2_BITRATE_NONE
+op_assign
+l_int|0
+comma
+multiline_comment|/* not specified */
+DECL|enumerator|V4L2_BITRATE_CBR
+id|V4L2_BITRATE_CBR
+comma
+multiline_comment|/* constant bitrate */
+DECL|enumerator|V4L2_BITRATE_VBR
+id|V4L2_BITRATE_VBR
+comma
+multiline_comment|/* variable bitrate */
+)brace
 suffix:semicolon
-id|__u32
-id|keyframerate
+DECL|struct|v4l2_bitrate
+r_struct
+id|v4l2_bitrate
+(brace
+multiline_comment|/* rates are specified in kbit/sec */
+DECL|member|mode
+r_enum
+id|v4l2_bitrate_mode
+id|mode
 suffix:semicolon
+DECL|member|min
 id|__u32
-id|pframerate
+id|min
 suffix:semicolon
+DECL|member|target
 id|__u32
-id|reserved
+id|target
+suffix:semicolon
+multiline_comment|/* use this one for CBR */
+DECL|member|max
+id|__u32
+id|max
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|v4l2_mpeg_streamtype
+r_enum
+id|v4l2_mpeg_streamtype
+(brace
+DECL|enumerator|V4L2_MPEG_SS_1
+id|V4L2_MPEG_SS_1
+comma
+multiline_comment|/* MPEG-1 system stream */
+DECL|enumerator|V4L2_MPEG_PS_2
+id|V4L2_MPEG_PS_2
+comma
+multiline_comment|/* MPEG-2 program stream */
+DECL|enumerator|V4L2_MPEG_TS_2
+id|V4L2_MPEG_TS_2
+comma
+multiline_comment|/* MPEG-2 transport stream */
+DECL|enumerator|V4L2_MPEG_PS_DVD
+id|V4L2_MPEG_PS_DVD
+comma
+multiline_comment|/* MPEG-2 program stream with DVD header fixups */
+)brace
+suffix:semicolon
+DECL|enum|v4l2_mpeg_audiotype
+r_enum
+id|v4l2_mpeg_audiotype
+(brace
+DECL|enumerator|V4L2_MPEG_AU_2_I
+id|V4L2_MPEG_AU_2_I
+comma
+multiline_comment|/* MPEG-2 layer 1 */
+DECL|enumerator|V4L2_MPEG_AU_2_II
+id|V4L2_MPEG_AU_2_II
+comma
+multiline_comment|/* MPEG-2 layer 2 */
+DECL|enumerator|V4L2_MPEG_AU_2_III
+id|V4L2_MPEG_AU_2_III
+comma
+multiline_comment|/* MPEG-2 layer 3 */
+DECL|enumerator|V4L2_MPEG_AC3
+id|V4L2_MPEG_AC3
+comma
+multiline_comment|/* AC3 */
+DECL|enumerator|V4L2_MPEG_LPCM
+id|V4L2_MPEG_LPCM
+comma
+multiline_comment|/* LPCM */
+)brace
+suffix:semicolon
+DECL|enum|v4l2_mpeg_videotype
+r_enum
+id|v4l2_mpeg_videotype
+(brace
+DECL|enumerator|V4L2_MPEG_VI_1
+id|V4L2_MPEG_VI_1
+comma
+multiline_comment|/* MPEG-1 */
+DECL|enumerator|V4L2_MPEG_VI_2
+id|V4L2_MPEG_VI_2
+comma
+multiline_comment|/* MPEG-2 */
+)brace
+suffix:semicolon
+DECL|enum|v4l2_mpeg_aspectratio
+r_enum
+id|v4l2_mpeg_aspectratio
+(brace
+DECL|enumerator|V4L2_MPEG_ASPECT_SQUARE
+id|V4L2_MPEG_ASPECT_SQUARE
+op_assign
+l_int|1
+comma
+multiline_comment|/* square pixel */
+DECL|enumerator|V4L2_MPEG_ASPECT_4_3
+id|V4L2_MPEG_ASPECT_4_3
+op_assign
+l_int|2
+comma
+multiline_comment|/*  4 : 3       */
+DECL|enumerator|V4L2_MPEG_ASPECT_16_9
+id|V4L2_MPEG_ASPECT_16_9
+op_assign
+l_int|3
+comma
+multiline_comment|/* 16 : 9       */
+DECL|enumerator|V4L2_MPEG_ASPECT_1_221
+id|V4L2_MPEG_ASPECT_1_221
+op_assign
+l_int|4
+comma
+multiline_comment|/*  1 : 2,21    */
+)brace
+suffix:semicolon
+DECL|struct|v4l2_mpeg_compression
+r_struct
+id|v4l2_mpeg_compression
+(brace
+multiline_comment|/* general */
+DECL|member|st_type
+r_enum
+id|v4l2_mpeg_streamtype
+id|st_type
+suffix:semicolon
+DECL|member|st_bitrate
+r_struct
+id|v4l2_bitrate
+id|st_bitrate
+suffix:semicolon
+multiline_comment|/* transport streams */
+DECL|member|ts_pid_pmt
+id|__u16
+id|ts_pid_pmt
+suffix:semicolon
+DECL|member|ts_pid_audio
+id|__u16
+id|ts_pid_audio
+suffix:semicolon
+DECL|member|ts_pid_video
+id|__u16
+id|ts_pid_video
+suffix:semicolon
+DECL|member|ts_pid_pcr
+id|__u16
+id|ts_pid_pcr
+suffix:semicolon
+multiline_comment|/* program stream */
+DECL|member|ps_size
+id|__u16
+id|ps_size
+suffix:semicolon
+DECL|member|reserved_1
+id|__u16
+id|reserved_1
+suffix:semicolon
+multiline_comment|/* align */
+multiline_comment|/* audio */
+DECL|member|au_type
+r_enum
+id|v4l2_mpeg_audiotype
+id|au_type
+suffix:semicolon
+DECL|member|au_bitrate
+r_struct
+id|v4l2_bitrate
+id|au_bitrate
+suffix:semicolon
+DECL|member|au_sample_rate
+id|__u32
+id|au_sample_rate
+suffix:semicolon
+DECL|member|au_pesid
+id|__u8
+id|au_pesid
+suffix:semicolon
+DECL|member|reserved_2
+id|__u8
+id|reserved_2
 (braket
-l_int|5
+l_int|3
 )braket
 suffix:semicolon
-multiline_comment|/*  what we&squot;ll need for MPEG, extracted from some postings on&n;    the v4l list (Gert Vervoort, PlasmaJohn).&n;&n;system stream:&n;  - type: elementary stream(ES), packatised elementary stream(s) (PES)&n;    program stream(PS), transport stream(TS)&n;  - system bitrate&n;  - PS packet size (DVD: 2048 bytes, VCD: 2324 bytes)&n;  - TS video PID&n;  - TS audio PID&n;  - TS PCR PID&n;  - TS system information tables (PAT, PMT, CAT, NIT and SIT)&n;  - (MPEG-1 systems stream vs. MPEG-2 program stream (TS not supported&n;    by MPEG-1 systems)&n;&n;audio:&n;  - type: MPEG (+Layer I,II,III), AC-3, LPCM&n;  - bitrate&n;  - sampling frequency (DVD: 48 Khz, VCD: 44.1 KHz, 32 kHz)&n;  - Trick Modes? (ff, rew)&n;  - Copyright&n;  - Inverse Telecine&n;&n;video:&n;  - picturesize (SIF, 1/2 D1, 2/3 D1, D1) and PAL/NTSC norm can be set&n;    through excisting V4L2 controls&n;  - noise reduction, parameters encoder specific?&n;  - MPEG video version: MPEG-1, MPEG-2&n;  - GOP (Group Of Pictures) definition:&n;    - N: number of frames per GOP&n;    - M: distance between reference (I,P) frames&n;    - open/closed GOP&n;  - quantiser matrix: inter Q matrix (64 bytes) and intra Q matrix (64 bytes)&n;  - quantiser scale: linear or logarithmic&n;  - scanning: alternate or zigzag&n;  - bitrate mode: CBR (constant bitrate) or VBR (variable bitrate).&n;  - target video bitrate for CBR&n;  - target video bitrate for VBR&n;  - maximum video bitrate for VBR - min. quantiser value for VBR&n;  - max. quantiser value for VBR&n;  - adaptive quantisation value&n;  - return the number of bytes per GOP or bitrate for bitrate monitoring&n;&n;*/
+multiline_comment|/* align */
+multiline_comment|/* video */
+DECL|member|vi_type
+r_enum
+id|v4l2_mpeg_videotype
+id|vi_type
+suffix:semicolon
+DECL|member|vi_aspect_ratio
+r_enum
+id|v4l2_mpeg_aspectratio
+id|vi_aspect_ratio
+suffix:semicolon
+DECL|member|vi_bitrate
+r_struct
+id|v4l2_bitrate
+id|vi_bitrate
+suffix:semicolon
+DECL|member|vi_frame_rate
+id|__u32
+id|vi_frame_rate
+suffix:semicolon
+DECL|member|vi_frames_per_gop
+id|__u16
+id|vi_frames_per_gop
+suffix:semicolon
+DECL|member|vi_bframes_count
+id|__u16
+id|vi_bframes_count
+suffix:semicolon
+DECL|member|vi_pesid
+id|__u8
+id|vi_pesid
+suffix:semicolon
+DECL|member|reserved_3
+id|__u8
+id|reserved_3
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* align */
+multiline_comment|/* misc flags */
+DECL|member|closed_gops
+id|__u32
+id|closed_gops
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|pulldown
+id|__u32
+id|pulldown
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved_4
+id|__u32
+id|reserved_4
+suffix:colon
+l_int|30
+suffix:semicolon
+multiline_comment|/* align */
+multiline_comment|/* I don&squot;t expect the above being perfect yet ;) */
+DECL|member|reserved_5
+id|__u32
+id|reserved_5
+(braket
+l_int|8
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -1793,9 +2047,11 @@ DECL|macro|VIDIOC_G_FMT
 mdefine_line|#define VIDIOC_G_FMT&t;&t;_IOWR (&squot;V&squot;,  4, struct v4l2_format)
 DECL|macro|VIDIOC_S_FMT
 mdefine_line|#define VIDIOC_S_FMT&t;&t;_IOWR (&squot;V&squot;,  5, struct v4l2_format)
-macro_line|#if 0
-mdefine_line|#define VIDIOC_G_COMP&t;&t;_IOR  (&squot;V&squot;,  6, struct v4l2_compression)
-mdefine_line|#define VIDIOC_S_COMP&t;&t;_IOW  (&squot;V&squot;,  7, struct v4l2_compression)
+macro_line|#if 1 /* experimental */
+DECL|macro|VIDIOC_G_MPEGCOMP
+mdefine_line|#define VIDIOC_G_MPEGCOMP       _IOR  (&squot;V&squot;,  6, struct v4l2_mpeg_compression)
+DECL|macro|VIDIOC_S_MPEGCOMP
+mdefine_line|#define VIDIOC_S_MPEGCOMP     &t;_IOW  (&squot;V&squot;,  7, struct v4l2_mpeg_compression)
 macro_line|#endif
 DECL|macro|VIDIOC_REQBUFS
 mdefine_line|#define VIDIOC_REQBUFS&t;&t;_IOWR (&squot;V&squot;,  8, struct v4l2_requestbuffers)

@@ -94,6 +94,7 @@ id|ctxt
 suffix:semicolon
 )brace
 DECL|variable|oldmask
+r_static
 id|cpumask_t
 id|oldmask
 suffix:semicolon

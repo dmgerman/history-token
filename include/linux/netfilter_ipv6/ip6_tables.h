@@ -331,7 +331,7 @@ DECL|macro|IP6T_CONTINUE
 mdefine_line|#define IP6T_CONTINUE 0xFFFFFFFF
 multiline_comment|/* For standard target */
 DECL|macro|IP6T_RETURN
-mdefine_line|#define IP6T_RETURN (-NF_MAX_VERDICT - 1)
+mdefine_line|#define IP6T_RETURN (-NF_REPEAT - 1)
 multiline_comment|/* TCP matching stuff */
 DECL|struct|ip6t_tcp
 r_struct

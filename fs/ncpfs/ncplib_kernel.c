@@ -5144,6 +5144,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|ncp_RenameNSEntry
 id|ncp_RenameNSEntry

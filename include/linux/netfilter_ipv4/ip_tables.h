@@ -339,7 +339,7 @@ DECL|macro|IPT_CONTINUE
 mdefine_line|#define IPT_CONTINUE 0xFFFFFFFF
 multiline_comment|/* For standard target */
 DECL|macro|IPT_RETURN
-mdefine_line|#define IPT_RETURN (-NF_MAX_VERDICT - 1)
+mdefine_line|#define IPT_RETURN (-NF_REPEAT - 1)
 multiline_comment|/* TCP matching stuff */
 DECL|struct|ipt_tcp
 r_struct

@@ -24,6 +24,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|count_bits
+r_static
 r_void
 id|count_bits
 c_func

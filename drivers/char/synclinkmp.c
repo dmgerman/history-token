@@ -9566,6 +9566,7 @@ id|tty
 suffix:semicolon
 )brace
 DECL|function|isr_txeom
+r_static
 r_void
 id|isr_txeom
 c_func
@@ -16368,6 +16369,7 @@ macro_line|#endif
 )brace
 multiline_comment|/* Allocate and initialize a device instance structure&n; *&n; * Return Value:&t;pointer to SLMP_INFO if success, otherwise NULL&n; */
 DECL|function|alloc_dev
+r_static
 id|SLMP_INFO
 op_star
 id|alloc_dev
@@ -21776,6 +21778,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* initialize individual SCA device (2 ports)&n; */
 DECL|function|sca_init
+r_static
 r_int
 id|sca_init
 c_func

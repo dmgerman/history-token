@@ -366,6 +366,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close the old accouting file (if currently open) and then replace&n; * it with file (if non-NULL).&n; *&n; * NOTE: acct_globals.lock MUST be held on entry and exit.&n; */
 DECL|function|acct_file_reopen
+r_static
 r_void
 id|acct_file_reopen
 c_func

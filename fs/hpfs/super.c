@@ -1343,6 +1343,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|parse_opts
+r_static
 r_int
 id|parse_opts
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: tuner-simple.c,v 1.4 2005/02/15 15:59:35 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls all those simple 4-control-bytes style tuners.&n; */
+multiline_comment|/*&n; * $Id: tuner-simple.c,v 1.10 2005/03/08 08:38:00 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls all those simple 4-control-bytes style tuners.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -1507,6 +1507,84 @@ op_or
 id|NTSC
 comma
 multiline_comment|/* see tda8290.c for details */
+)brace
+comma
+(brace
+l_string|&quot;LG PAL (TAPE series)&quot;
+comma
+id|LGINNOTEK
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|170.00
+comma
+l_int|16
+op_star
+l_float|450.00
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|0x08
+comma
+l_int|0xce
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Philips PAL/SECAM multi (FQ1216AME MK4)&quot;
+comma
+id|Philips
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|160.00
+comma
+l_int|16
+op_star
+l_float|442.00
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|0x04
+comma
+l_int|0xce
+comma
+l_int|623
+)brace
+comma
+(brace
+l_string|&quot;Philips FQ1236A MK4&quot;
+comma
+id|Philips
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|160.00
+comma
+l_int|16
+op_star
+l_float|442.00
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|0x04
+comma
+l_int|0x8e
+comma
+l_int|732
 )brace
 comma
 )brace

@@ -90,6 +90,7 @@ id|cpu_khz
 suffix:semicolon
 multiline_comment|/* TSC clocks / usec, not used here */
 DECL|variable|hpet_period
+r_static
 r_int
 r_int
 id|hpet_period

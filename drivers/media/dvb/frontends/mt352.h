@@ -12,6 +12,22 @@ DECL|member|demod_address
 id|u8
 id|demod_address
 suffix:semicolon
+multiline_comment|/* frequencies in kHz */
+DECL|member|adc_clock
+r_int
+id|adc_clock
+suffix:semicolon
+singleline_comment|// default: 20480
+DECL|member|if2
+r_int
+id|if2
+suffix:semicolon
+singleline_comment|// default: 36166
+multiline_comment|/* set if no pll is connected to the secondary i2c bus */
+DECL|member|no_tuner
+r_int
+id|no_tuner
+suffix:semicolon
 multiline_comment|/* Initialise the demodulator and PLL. Cannot be NULL */
 DECL|member|demod_init
 r_int
@@ -89,7 +105,7 @@ id|ilen
 )paren
 suffix:semicolon
 r_extern
-id|u8
+r_int
 id|mt352_read
 c_func
 (paren
@@ -104,4 +120,5 @@ id|reg
 suffix:semicolon
 macro_line|#endif 
 singleline_comment|// MT352_H
+multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

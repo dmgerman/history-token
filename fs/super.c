@@ -407,7 +407,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;put_super&t;-&t;drop a temporary reference to superblock&n; *&t;@s: superblock in question&n; *&n; *&t;Drops a temporary reference, frees superblock if there&squot;s no&n; *&t;references left.&n; */
+multiline_comment|/**&n; *&t;put_super&t;-&t;drop a temporary reference to superblock&n; *&t;@sb: superblock in question&n; *&n; *&t;Drops a temporary reference, frees superblock if there&squot;s no&n; *&t;references left.&n; */
 DECL|function|put_super
 r_static
 r_void

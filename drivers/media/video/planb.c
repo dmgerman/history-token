@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -9416,20 +9417,15 @@ id|pb
 )paren
 suffix:semicolon
 multiline_comment|/* empty the grabbing queue */
-r_while
-c_loop
-(paren
-id|pb-&gt;grabbing
-)paren
-(brace
-id|interruptible_sleep_on
+id|wait_event
 c_func
 (paren
-op_amp
 id|pb-&gt;capq
+comma
+op_logical_neg
+id|pb-&gt;grabbing
 )paren
 suffix:semicolon
-)brace
 id|pb-&gt;maxlines
 op_assign
 id|maxlines

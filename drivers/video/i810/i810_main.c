@@ -3181,6 +3181,7 @@ suffix:semicolon
 multiline_comment|/************************************************************&n; *                    Helpers                               * &n; ************************************************************/
 multiline_comment|/**&n; * get_line_length - calculates buffer pitch in bytes&n; * @par: pointer to i810fb_par structure&n; * @xres_virtual: virtual resolution of the frame&n; * @bpp: bits per pixel&n; *&n; * DESCRIPTION:&n; * Calculates buffer pitch in bytes.  &n; */
 DECL|function|get_line_length
+r_static
 id|u32
 id|get_line_length
 c_func
@@ -3541,6 +3542,7 @@ suffix:semicolon
 multiline_comment|/*************************************************************&n; *                Hardware Cursor Routines                   *&n; *************************************************************/
 multiline_comment|/**&n; * i810_enable_cursor - show or hide the hardware cursor&n; * @mmio: address of register space&n; * @mode: show (1) or hide (0)&n; *&n; * Description:&n; * Shows or hides the hardware cursor&n; */
 DECL|function|i810_enable_cursor
+r_static
 r_void
 id|i810_enable_cursor
 c_func
@@ -8404,7 +8406,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|i810fb_setup
+r_static
 r_int
 id|__init
 id|i810fb_setup
@@ -8889,6 +8893,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|i810fb_init_pci
 r_static
 r_int
@@ -9507,6 +9512,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|i810fb_init
+r_static
 r_int
 id|__init
 id|i810fb_init

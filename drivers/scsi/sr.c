@@ -1867,6 +1867,7 @@ id|cd-&gt;cdi
 suffix:semicolon
 )brace
 DECL|variable|sr_bdops
+r_static
 r_struct
 id|block_device_operations
 id|sr_bdops

@@ -297,6 +297,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|pm_states
+r_static
 r_char
 op_star
 id|pm_states

@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &quot;cpu.h&quot;
 multiline_comment|/*&n; * Read NSC/Cyrix DEVID registers (DIR) to get more detailed info. about the CPU&n; */
 DECL|function|do_cyrix_devid
+r_static
 r_void
 id|__init
 id|do_cyrix_devid

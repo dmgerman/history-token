@@ -138,7 +138,7 @@ r_int
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * __kfifo_reset - removes the entire FIFO contents, no locking version&n; * @fifo: the fifo to be emptied.&n; */
+multiline_comment|/**&n; * __kfifo_reset - removes the entire FIFO contents, no locking version&n; * @fifo: the fifo to be emptied.&n; */
 DECL|function|__kfifo_reset
 r_static
 r_inline
@@ -159,7 +159,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * kfifo_reset - removes the entire FIFO contents&n; * @fifo: the fifo to be emptied.&n; */
+multiline_comment|/**&n; * kfifo_reset - removes the entire FIFO contents&n; * @fifo: the fifo to be emptied.&n; */
 DECL|function|kfifo_reset
 r_static
 r_inline
@@ -200,7 +200,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * kfifo_put - puts some data into the FIFO&n; * @fifo: the fifo to be used.&n; * @buffer: the data to be added.&n; * @len: the length of the data to be added.&n; *&n; * This function copies at most &squot;len&squot; bytes from the &squot;buffer&squot; into&n; * the FIFO depending on the free space, and returns the number of&n; * bytes copied.&n; */
+multiline_comment|/**&n; * kfifo_put - puts some data into the FIFO&n; * @fifo: the fifo to be used.&n; * @buffer: the data to be added.&n; * @len: the length of the data to be added.&n; *&n; * This function copies at most &squot;len&squot; bytes from the &squot;buffer&squot; into&n; * the FIFO depending on the free space, and returns the number of&n; * bytes copied.&n; */
 DECL|function|kfifo_put
 r_static
 r_inline
@@ -264,7 +264,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * kfifo_get - gets some data from the FIFO&n; * @fifo: the fifo to be used.&n; * @buffer: where the data must be copied.&n; * @len: the size of the destination buffer.&n; *&n; * This function copies at most &squot;len&squot; bytes from the FIFO into the&n; * &squot;buffer&squot; and returns the number of copied bytes.&n; */
+multiline_comment|/**&n; * kfifo_get - gets some data from the FIFO&n; * @fifo: the fifo to be used.&n; * @buffer: where the data must be copied.&n; * @len: the size of the destination buffer.&n; *&n; * This function copies at most &squot;len&squot; bytes from the FIFO into the&n; * &squot;buffer&squot; and returns the number of copied bytes.&n; */
 DECL|function|kfifo_get
 r_static
 r_inline
@@ -342,7 +342,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * __kfifo_len - returns the number of bytes available in the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; */
+multiline_comment|/**&n; * __kfifo_len - returns the number of bytes available in the FIFO, no locking version&n; * @fifo: the fifo to be used.&n; */
 DECL|function|__kfifo_len
 r_static
 r_inline
@@ -363,7 +363,7 @@ op_minus
 id|fifo-&gt;out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * kfifo_len - returns the number of bytes available in the FIFO&n; * @fifo: the fifo to be used.&n; */
+multiline_comment|/**&n; * kfifo_len - returns the number of bytes available in the FIFO&n; * @fifo: the fifo to be used.&n; */
 DECL|function|kfifo_len
 r_static
 r_inline

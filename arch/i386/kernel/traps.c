@@ -3238,6 +3238,7 @@ id|regs-&gt;eip
 suffix:semicolon
 )brace
 DECL|function|simd_math_error
+r_static
 r_void
 id|simd_math_error
 c_func

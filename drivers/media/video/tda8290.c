@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: tda8290.c,v 1.5 2005/02/15 15:59:35 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls the philips tda8290+75 tuner chip combo.&n; */
+multiline_comment|/*&n; * $Id: tda8290.c,v 1.7 2005/03/07 12:01:51 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls the philips tda8290+75 tuner chip combo.&n; */
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -870,7 +870,7 @@ id|i2c_msg
 id|set_freq
 op_assign
 (brace
-id|I2C_ADDR_TDA8290
+id|I2C_ADDR_TDA8275
 comma
 l_int|0
 comma

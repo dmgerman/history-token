@@ -22,8 +22,10 @@ DECL|macro|NF_QUEUE
 mdefine_line|#define NF_QUEUE 3
 DECL|macro|NF_REPEAT
 mdefine_line|#define NF_REPEAT 4
+DECL|macro|NF_STOP
+mdefine_line|#define NF_STOP 5
 DECL|macro|NF_MAX_VERDICT
-mdefine_line|#define NF_MAX_VERDICT NF_REPEAT
+mdefine_line|#define NF_MAX_VERDICT NF_STOP
 multiline_comment|/* Generic cache responses from hook functions.&n;   &lt;= 0x2000 is used for protocol-flags. */
 DECL|macro|NFC_UNKNOWN
 mdefine_line|#define NFC_UNKNOWN 0x4000
@@ -423,14 +425,14 @@ multiline_comment|/* RR:&n;   &gt; I don&squot;t want nf_hook to return anything
 multiline_comment|/* This is gross, but inline doesn&squot;t cut it for avoiding the function&n;   call in fast path: gcc doesn&squot;t inline (needs value tracking?). --RR */
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|macro|NF_HOOK
-mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;&bslash;&n; nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), INT_MIN)
+mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;       &bslash;&n;({int __ret;&t;&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;if ((__ret=nf_hook_slow(pf, hook, &amp;(skb), indev, outdev, okfn, INT_MIN)) == 1) &bslash;&n;&t;__ret = (okfn)(skb);&t;&t;&t;&t;&t;&t;       &bslash;&n;__ret;})
 DECL|macro|NF_HOOK_THRESH
-mdefine_line|#define NF_HOOK_THRESH nf_hook_slow
+mdefine_line|#define NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, thresh)&t;       &bslash;&n;({int __ret;&t;&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;if ((__ret=nf_hook_slow(pf, hook, &amp;(skb), indev, outdev, okfn, thresh)) == 1)  &bslash;&n;&t;__ret = (okfn)(skb);&t;&t;&t;&t;&t;&t;       &bslash;&n;__ret;})
 macro_line|#else
 DECL|macro|NF_HOOK
-mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;&bslash;&n;(list_empty(&amp;nf_hooks[(pf)][(hook)])&t;&t;&t;&t;&t;&bslash;&n; ? (okfn)(skb)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; : nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), INT_MIN))
+mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;       &bslash;&n;({int __ret;&t;&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;if (list_empty(&amp;nf_hooks[pf][hook]) ||&t;&t;&t;&t;&t;       &bslash;&n;    (__ret=nf_hook_slow(pf, hook, &amp;(skb), indev, outdev, okfn, INT_MIN)) == 1) &bslash;&n;&t;__ret = (okfn)(skb);&t;&t;&t;&t;&t;&t;       &bslash;&n;__ret;})
 DECL|macro|NF_HOOK_THRESH
-mdefine_line|#define NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, thresh)&t;&bslash;&n;(list_empty(&amp;nf_hooks[(pf)][(hook)])&t;&t;&t;&t;&t;&bslash;&n; ? (okfn)(skb)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; : nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), (thresh)))
+mdefine_line|#define NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, thresh)&t;       &bslash;&n;({int __ret;&t;&t;&t;&t;&t;&t;&t;&t;       &bslash;&n;if (list_empty(&amp;nf_hooks[pf][hook]) ||&t;&t;&t;&t;&t;       &bslash;&n;    (__ret=nf_hook_slow(pf, hook, &amp;(skb), indev, outdev, okfn, thresh)) == 1)  &bslash;&n;&t;__ret = (okfn)(skb);&t;&t;&t;&t;&t;&t;       &bslash;&n;__ret;})
 macro_line|#endif
 r_int
 id|nf_hook_slow
@@ -446,7 +448,8 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 comma
 r_struct
 id|net_device
