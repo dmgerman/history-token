@@ -109,12 +109,27 @@ c_func
 id|mmu_cr4_features
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+macro_line|#ifdef CONFIG_ACPI_HT_ONLY
+DECL|variable|acpi_disabled
 r_int
 id|acpi_disabled
-id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|acpi_disabled
+r_int
+id|acpi_disabled
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#endif
+DECL|variable|acpi_disabled
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_disabled
+)paren
 suffix:semicolon
 DECL|variable|MCA_bus
 r_int
@@ -2035,6 +2050,26 @@ l_int|8
 id|acpi_disabled
 op_assign
 l_int|1
+suffix:semicolon
+multiline_comment|/* &quot;acpismp=force&quot; turns on ACPI again */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpismp=force&quot;
+comma
+l_int|14
+)paren
+)paren
+id|acpi_disabled
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
 r_if
