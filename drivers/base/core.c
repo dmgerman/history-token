@@ -968,6 +968,11 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
 id|kobject_put
 c_func
 (paren
