@@ -108,6 +108,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UART_CAP_FIFO
 mdefine_line|#define UART_CAP_FIFO&t;(1 &lt;&lt; 8)&t;/* UART has FIFO */
+DECL|macro|UART_CAP_SLEEP
+mdefine_line|#define UART_CAP_SLEEP&t;(1 &lt;&lt; 10)&t;/* UART has IER sleep */
 DECL|macro|SERIAL_DEBUG_PCI
 macro_line|#undef SERIAL_DEBUG_PCI
 macro_line|#if defined(__i386__) &amp;&amp; (defined(CONFIG_M386) || defined(CONFIG_M486))
