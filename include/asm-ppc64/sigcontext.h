@@ -3,9 +3,9 @@ DECL|macro|_ASM_PPC64_SIGCONTEXT_H
 mdefine_line|#define _ASM_PPC64_SIGCONTEXT_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
-DECL|struct|sigcontext_struct
+DECL|struct|sigcontext
 r_struct
-id|sigcontext_struct
+id|sigcontext
 (brace
 DECL|member|_unused
 r_int

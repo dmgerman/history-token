@@ -639,9 +639,9 @@ id|st_ctime
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|sigcontext32_struct
+DECL|struct|sigcontext32
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 (brace
 DECL|member|_unused
 r_int
@@ -692,7 +692,7 @@ id|uc_stack
 suffix:semicolon
 DECL|member|uc_mcontext
 r_struct
-id|sigcontext32_struct
+id|sigcontext32
 id|uc_mcontext
 suffix:semicolon
 DECL|member|uc_sigmask
