@@ -428,6 +428,7 @@ op_star
 id|tmp
 suffix:semicolon
 id|list_for_each_entry_safe
+c_func
 (paren
 id|pgpath
 comma
@@ -580,9 +581,12 @@ op_amp
 id|m-&gt;priority_groups
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|m-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|m-&gt;queue_io
 op_assign
@@ -675,6 +679,7 @@ op_amp
 id|m-&gt;hw_handler
 suffix:semicolon
 id|list_for_each_entry_safe
+c_func
 (paren
 id|pg
 comma
@@ -951,6 +956,7 @@ multiline_comment|/*&n;&t; * Loop through priority groups until we find a valid 
 r_do
 (brace
 id|list_for_each_entry
+c_func
 (paren
 id|pg
 comma

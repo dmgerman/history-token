@@ -25,21 +25,37 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Constructs a hardware handler object, takes custom arguments&n; */
-DECL|typedef|hwh_ctr_fn
-r_typedef
+multiline_comment|/* Information about a hardware handler type */
+DECL|struct|hw_handler_type
+r_struct
+id|hw_handler_type
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|module
+r_struct
+id|module
+op_star
+id|module
+suffix:semicolon
+DECL|member|ctr
 r_int
 (paren
 op_star
-id|hwh_ctr_fn
+id|ctr
 )paren
 (paren
 r_struct
 id|hw_handler
 op_star
-id|hwh
+id|handler
 comma
 r_int
-id|arc
+r_int
+id|argc
 comma
 r_char
 op_star
@@ -47,12 +63,11 @@ op_star
 id|argv
 )paren
 suffix:semicolon
-DECL|typedef|hwh_dtr_fn
-r_typedef
+DECL|member|dtr
 r_void
 (paren
 op_star
-id|hwh_dtr_fn
+id|dtr
 )paren
 (paren
 r_struct
@@ -61,12 +76,11 @@ op_star
 id|hwh
 )paren
 suffix:semicolon
-DECL|typedef|hwh_pg_init_fn
-r_typedef
+DECL|member|pg_init
 r_void
 (paren
 op_star
-id|hwh_pg_init_fn
+id|pg_init
 )paren
 (paren
 r_struct
@@ -83,12 +97,11 @@ op_star
 id|path
 )paren
 suffix:semicolon
-DECL|typedef|hwh_err_fn
-r_typedef
+DECL|member|err
 r_int
 (paren
 op_star
-id|hwh_err_fn
+id|err
 )paren
 (paren
 r_struct
@@ -102,12 +115,11 @@ op_star
 id|bio
 )paren
 suffix:semicolon
-DECL|typedef|hwh_status_fn
-r_typedef
+DECL|member|status
 r_int
 (paren
 op_star
-id|hwh_status_fn
+id|status
 )paren
 (paren
 r_struct
@@ -126,42 +138,6 @@ r_int
 r_int
 id|maxlen
 )paren
-suffix:semicolon
-multiline_comment|/* Information about a hardware handler type */
-DECL|struct|hw_handler_type
-r_struct
-id|hw_handler_type
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|module
-r_struct
-id|module
-op_star
-id|module
-suffix:semicolon
-DECL|member|ctr
-id|hwh_ctr_fn
-id|ctr
-suffix:semicolon
-DECL|member|dtr
-id|hwh_dtr_fn
-id|dtr
-suffix:semicolon
-DECL|member|pg_init
-id|hwh_pg_init_fn
-id|pg_init
-suffix:semicolon
-DECL|member|err
-id|hwh_err_fn
-id|err
-suffix:semicolon
-DECL|member|status
-id|hwh_status_fn
-id|status
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -211,7 +187,7 @@ op_star
 id|hwht
 )paren
 suffix:semicolon
-multiline_comment|/* Default hwh_err_fn */
+multiline_comment|/* Default err function */
 r_int
 id|dm_scsi_err_handler
 c_func
@@ -227,7 +203,7 @@ op_star
 id|bio
 )paren
 suffix:semicolon
-multiline_comment|/* Error flags for hwh_err_fn and dm_pg_init_complete */
+multiline_comment|/* Error flags for err and dm_pg_init_complete */
 DECL|macro|MP_FAIL_PATH
 mdefine_line|#define MP_FAIL_PATH 1
 DECL|macro|MP_BYPASS_PG

@@ -2,7 +2,9 @@ multiline_comment|/*&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&
 macro_line|#ifndef&t;DM_MPATH_H
 DECL|macro|DM_MPATH_H
 mdefine_line|#define&t;DM_MPATH_H
-macro_line|#include &lt;linux/device-mapper.h&gt;
+r_struct
+id|dm_dev
+suffix:semicolon
 DECL|struct|path
 r_struct
 id|path

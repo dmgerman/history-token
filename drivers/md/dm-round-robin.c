@@ -45,6 +45,7 @@ op_star
 id|next
 suffix:semicolon
 id|list_for_each_entry_safe
+c_func
 (paren
 id|pi
 comma

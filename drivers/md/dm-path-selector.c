@@ -57,6 +57,7 @@ op_star
 id|psi
 suffix:semicolon
 id|list_for_each_entry
+c_func
 (paren
 id|psi
 comma
