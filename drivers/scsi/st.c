@@ -5,7 +5,7 @@ r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20050307&quot;
+l_string|&quot;20050312&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -912,20 +912,6 @@ id|sense
 op_assign
 id|SRpnt-&gt;sr_sense_buffer
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|s
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|st_cmdstatus
-)paren
-)paren
-suffix:semicolon
 id|s-&gt;have_sense
 op_assign
 id|scsi_request_normalize_sense
@@ -937,12 +923,20 @@ op_amp
 id|s-&gt;sense_hdr
 )paren
 suffix:semicolon
+id|s-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|s-&gt;have_sense
 )paren
 (brace
+id|s-&gt;deferred
+op_assign
+l_int|0
+suffix:semicolon
 id|s-&gt;remainder_valid
 op_assign
 id|scsi_get_sense_info_fld
