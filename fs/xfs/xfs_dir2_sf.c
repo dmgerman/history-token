@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * xfs_dir2_sf.c&n; * Shortform directory implementation for v2 directories.&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
@@ -99,7 +99,7 @@ macro_line|#else
 DECL|macro|xfs_dir2_sf_check
 mdefine_line|#define&t;xfs_dir2_sf_check(args)
 macro_line|#endif /* DEBUG */
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_static
 r_void
 id|xfs_dir2_sf_toino4
@@ -120,7 +120,7 @@ op_star
 id|args
 )paren
 suffix:semicolon
-macro_line|#endif /* XFS_BIG_FILESYSTEMS */
+macro_line|#endif /* XFS_BIG_INUMS */
 multiline_comment|/*&n; * Given a block directory (dp/block), calculate its size as a shortform (sf)&n; * directory and a header for the sf directory, if it will fit it the&n; * space currently present in the inode.  If it won&squot;t fit, the output&n; * size is too big (but not accurate).&n; */
 r_int
 multiline_comment|/* size for sf form */
@@ -337,7 +337,7 @@ l_int|1
 op_eq
 l_char|&squot;.&squot;
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -1198,7 +1198,11 @@ id|incr_isize
 op_assign
 id|add_entsize
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+id|objchange
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if XFS_BIG_INUMS
 multiline_comment|/*&n;&t; * Do we have to change to 8 byte inodes?&n;&t; */
 r_if
 c_cond
@@ -1262,16 +1266,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_else
-id|objchange
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#else
-id|objchange
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
 id|old_isize
 op_assign
@@ -1401,7 +1395,7 @@ op_eq
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -1600,7 +1594,7 @@ multiline_comment|/*&n;&t; * Update the header and inode.&n;&t; */
 id|sfp-&gt;hdr.count
 op_increment
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -1967,7 +1961,7 @@ suffix:semicolon
 id|sfp-&gt;hdr.count
 op_increment
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -2253,7 +2247,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * If changing the inode number size, do it the hard way.&n;&t; */
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -2476,16 +2470,16 @@ op_eq
 id|sfp-&gt;hdr.i8count
 )paren
 suffix:semicolon
-macro_line|#if !XFS_BIG_FILESYSTEMS
 id|ASSERT
 c_func
 (paren
+id|XFS_BIG_INUMS
+op_logical_or
 id|i8count
 op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -2949,17 +2943,14 @@ comma
 id|XFS_DIR2_DATA_DOTDOT_OFFSET
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|p.ino
 op_assign
 id|dp-&gt;i_ino
-op_plus
-id|mp-&gt;m_inoadd
 suffix:semicolon
-macro_line|#else
+macro_line|#if XFS_BIG_INUMS
 id|p.ino
-op_assign
-id|dp-&gt;i_ino
+op_add_assign
+id|mp-&gt;m_inoadd
 suffix:semicolon
 macro_line|#endif
 id|p.name
@@ -3034,7 +3025,6 @@ comma
 id|XFS_DIR2_DATA_FIRST_OFFSET
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|p.ino
 op_assign
 id|XFS_DIR2_SF_GET_INUMBER_ARCH
@@ -3047,22 +3037,11 @@ id|sfp-&gt;hdr.parent
 comma
 id|ARCH_CONVERT
 )paren
-op_plus
-id|mp-&gt;m_inoadd
 suffix:semicolon
-macro_line|#else
+macro_line|#if XFS_BIG_INUMS
 id|p.ino
-op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
-c_func
-(paren
-id|sfp
-comma
-op_amp
-id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
-)paren
+op_add_assign
+id|mp-&gt;m_inoadd
 suffix:semicolon
 macro_line|#endif
 id|p.name
@@ -3197,7 +3176,6 @@ id|p.namelen
 )paren
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
 id|p.ino
 op_assign
 id|XFS_DIR2_SF_GET_INUMBER_ARCH
@@ -3213,25 +3191,11 @@ id|sfep
 comma
 id|ARCH_CONVERT
 )paren
-op_plus
-id|mp-&gt;m_inoadd
 suffix:semicolon
-macro_line|#else
+macro_line|#if XFS_BIG_INUMS
 id|p.ino
-op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
-c_func
-(paren
-id|sfp
-comma
-id|XFS_DIR2_SF_INUMBERP
-c_func
-(paren
-id|sfep
-)paren
-comma
-id|ARCH_CONVERT
-)paren
+op_add_assign
+id|mp-&gt;m_inoadd
 suffix:semicolon
 macro_line|#endif
 id|p.name
@@ -3947,7 +3911,7 @@ op_star
 )paren
 id|dp-&gt;i_df.if_u1.if_data
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 multiline_comment|/*&n;&t; * Are we changing inode number size?&n;&t; */
 r_if
 c_cond
@@ -4020,7 +3984,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* entry index */
-macro_line|#if XFS_BIG_FILESYSTEMS || defined(DEBUG)
+macro_line|#if XFS_BIG_INUMS || defined(DEBUG)
 id|xfs_ino_t
 id|ino
 op_assign
@@ -4028,7 +3992,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* entry old inode number */
 macro_line|#endif
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_int
 id|i8elevated
 suffix:semicolon
@@ -4132,7 +4096,7 @@ id|sfp-&gt;hdr.i8count
 )paren
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 multiline_comment|/*&n;&t; * New inode number is large, and need to convert to 8-byte inodes.&n;&t; */
 r_if
 c_cond
@@ -4285,7 +4249,7 @@ op_eq
 l_char|&squot;.&squot;
 )paren
 (brace
-macro_line|#if XFS_BIG_FILESYSTEMS || defined(DEBUG)
+macro_line|#if XFS_BIG_INUMS || defined(DEBUG)
 id|ino
 op_assign
 id|XFS_DIR2_SF_GET_INUMBER_ARCH
@@ -4389,7 +4353,7 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if XFS_BIG_FILESYSTEMS || defined(DEBUG)
+macro_line|#if XFS_BIG_INUMS || defined(DEBUG)
 id|ino
 op_assign
 id|XFS_DIR2_SF_GET_INUMBER_ARCH
@@ -4451,7 +4415,7 @@ c_func
 id|args-&gt;oknoent
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 r_if
 c_cond
 (paren
@@ -4473,7 +4437,7 @@ id|ENOENT
 suffix:semicolon
 )brace
 )brace
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 multiline_comment|/*&n;&t; * See if the old number was large, the new number is small.&n;&t; */
 r_if
 c_cond
@@ -4559,7 +4523,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 multiline_comment|/*&n; * Convert from 8-byte inode numbers to 4-byte inode numbers.&n; * The last 8-byte inode number is gone, but the count is still 1.&n; */
 r_static
 r_void
@@ -5250,5 +5214,5 @@ id|XFS_ILOG_DDATA
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* XFS_BIG_FILESYSTEMS */
+macro_line|#endif&t;/* XFS_BIG_INUMS */
 eof

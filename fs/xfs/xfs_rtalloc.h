@@ -57,7 +57,7 @@ DECL|macro|XFS_RTLOBIT
 mdefine_line|#define&t;XFS_RTLOBIT(w)&t;xfs_lowbit32(w)
 DECL|macro|XFS_RTHIBIT
 mdefine_line|#define&t;XFS_RTHIBIT(w)&t;xfs_highbit32(w)
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 DECL|macro|XFS_RTBLOCKLOG
 mdefine_line|#define&t;XFS_RTBLOCKLOG(b)&t;xfs_highbit64(b)
 macro_line|#else

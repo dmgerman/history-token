@@ -1008,7 +1008,8 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: filesystem is marked as having an external log; specify logdev on the&bslash;nmount command line.&quot;
+l_string|&quot;XFS: filesystem is marked as having an external log; &quot;
+l_string|&quot;specify logdev on the&bslash;nmount command line.&quot;
 )paren
 suffix:semicolon
 id|XFS_CORRUPTION_ERROR
@@ -1052,7 +1053,8 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS: filesystem is marked as having an internal log; don&squot;t specify logdev on&bslash;nthe mount command line.&quot;
+l_string|&quot;XFS: filesystem is marked as having an internal log; &quot;
+l_string|&quot;don&squot;t specify logdev on&bslash;nthe mount command line.&quot;
 )paren
 suffix:semicolon
 id|XFS_CORRUPTION_ERROR
@@ -1219,17 +1221,43 @@ id|EFSCORRUPTED
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !XFS_BIG_FILESYSTEMS
+macro_line|#if !XFS_BIG_BLKNOS
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
+(paren
 id|sbp-&gt;sb_dblocks
+op_lshift
+(paren
+id|__uint64_t
+)paren
+(paren
+id|sbp-&gt;sb_blocklog
+op_minus
+id|BBSHIFT
+)paren
+)paren
 OG
 id|INT_MAX
 op_logical_or
+(paren
 id|sbp-&gt;sb_rblocks
+op_lshift
+(paren
+id|__uint64_t
+)paren
+(paren
+id|sbp-&gt;sb_blocklog
+op_minus
+id|BBSHIFT
+)paren
+)paren
 OG
 id|INT_MAX
+)paren
 )paren
 (brace
 id|cmn_err
@@ -1237,7 +1265,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;XFS:  File systems greater than 1TB not supported on this system.&quot;
+l_string|&quot;XFS: File system is too large to be mounted on this system.&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1289,9 +1317,13 @@ multiline_comment|/*&n;&t; * Until this is fixed only page-sized or smaller data
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|sbp-&gt;sb_blocksize
 OG
 id|PAGE_SIZE
+)paren
 )paren
 (brace
 id|cmn_err
@@ -1395,14 +1427,27 @@ comma
 id|agino
 )paren
 suffix:semicolon
-multiline_comment|/* Clear the mount flag if no inode can overflow 32 bits&n;&t; * on this filesystem.&n;&t; */
+multiline_comment|/* Clear the mount flag if no inode can overflow 32 bits&n;&t; * on this filesystem, or if specifically requested..&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|mp-&gt;m_flags
+op_amp
+id|XFS_MOUNT_32BITINOOPT
+)paren
+op_logical_and
 id|ino
-op_le
+OG
 id|max_inum
 )paren
+(brace
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_32BITINODES
+suffix:semicolon
+)brace
+r_else
 (brace
 id|mp-&gt;m_flags
 op_and_assign
