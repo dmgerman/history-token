@@ -7,24 +7,24 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Turn this on to have the driver print out the meanings of the&n;   ATAPI error codes.  This will use up additional kernel-space&n;   memory, though. */
 macro_line|#ifndef VERBOSE_IDE_CD_ERRORS
 DECL|macro|VERBOSE_IDE_CD_ERRORS
-mdefine_line|#define VERBOSE_IDE_CD_ERRORS 1
+macro_line|# define VERBOSE_IDE_CD_ERRORS 1
 macro_line|#endif
 multiline_comment|/* Turning this on will remove code to work around various nonstandard&n;   ATAPI implementations.  If you know your drive follows the standard,&n;   this will give you a slightly smaller kernel. */
 macro_line|#ifndef STANDARD_ATAPI
 DECL|macro|STANDARD_ATAPI
-mdefine_line|#define STANDARD_ATAPI 0
+macro_line|# define STANDARD_ATAPI 0
 macro_line|#endif
 multiline_comment|/* Turning this on will disable the door-locking functionality.&n;   This is apparently needed for supermount. */
 macro_line|#ifndef NO_DOOR_LOCKING
 DECL|macro|NO_DOOR_LOCKING
-mdefine_line|#define NO_DOOR_LOCKING 0
+macro_line|# define NO_DOOR_LOCKING 0
 macro_line|#endif
 multiline_comment|/************************************************************************/
 DECL|macro|SECTOR_BITS
-mdefine_line|#define SECTOR_BITS &t;&t;9
+mdefine_line|#define SECTOR_BITS&t;&t;9
 macro_line|#ifndef SECTOR_SIZE
 DECL|macro|SECTOR_SIZE
-mdefine_line|#define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
+macro_line|# define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
 macro_line|#endif
 DECL|macro|SECTORS_PER_FRAME
 mdefine_line|#define SECTORS_PER_FRAME&t;(CD_FRAMESIZE &gt;&gt; SECTOR_BITS)
@@ -38,13 +38,6 @@ DECL|macro|BLOCKS_PER_FRAME
 mdefine_line|#define BLOCKS_PER_FRAME&t;(CD_FRAMESIZE / BLOCK_SIZE)
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
-multiline_comment|/* special command codes for strategy routine. */
-DECL|macro|PACKET_COMMAND
-mdefine_line|#define PACKET_COMMAND        4315
-DECL|macro|REQUEST_SENSE_COMMAND
-mdefine_line|#define REQUEST_SENSE_COMMAND 4316
-DECL|macro|RESET_DRIVE_COMMAND
-mdefine_line|#define RESET_DRIVE_COMMAND   4317
 multiline_comment|/* Configuration flags.  These describe the capabilities of the drive.&n;   They generally do not change after initialization, unless we learn&n;   more about the drive from stuff failing. */
 DECL|struct|ide_cd_config_flags
 r_struct
@@ -291,14 +284,6 @@ id|request_sense
 op_star
 id|sense
 suffix:semicolon
-DECL|member|c
-r_int
-r_char
-id|c
-(braket
-l_int|12
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Structure of a MSF cdrom address. */
@@ -306,23 +291,30 @@ DECL|struct|atapi_msf
 r_struct
 id|atapi_msf
 (brace
-DECL|member|reserved
-id|byte
-id|reserved
+DECL|member|__reserved
+id|u8
+id|__reserved
 suffix:semicolon
 DECL|member|minute
-id|byte
+id|u8
 id|minute
 suffix:semicolon
 DECL|member|second
-id|byte
+id|u8
 id|second
 suffix:semicolon
 DECL|member|frame
-id|byte
+id|u8
 id|frame
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Space to hold the disk TOC. */
 DECL|macro|MAX_TRACKS
@@ -332,19 +324,25 @@ r_struct
 id|atapi_toc_header
 (brace
 DECL|member|toc_length
-r_int
-r_int
+id|u16
 id|toc_length
 suffix:semicolon
 DECL|member|first_track
-id|byte
+id|u8
 id|first_track
 suffix:semicolon
 DECL|member|last_track
-id|byte
+id|u8
 id|last_track
 suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|struct|atapi_toc_entry
 r_struct
@@ -449,43 +447,43 @@ r_struct
 id|atapi_cdrom_subchnl
 (brace
 DECL|member|acdsc_reserved
-id|u_char
+id|u8
 id|acdsc_reserved
 suffix:semicolon
 DECL|member|acdsc_audiostatus
-id|u_char
+id|u8
 id|acdsc_audiostatus
 suffix:semicolon
 DECL|member|acdsc_length
-id|u_short
+id|u16
 id|acdsc_length
 suffix:semicolon
 DECL|member|acdsc_format
-id|u_char
+id|u8
 id|acdsc_format
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
 DECL|member|acdsc_ctrl
-id|u_char
+id|u8
 id|acdsc_ctrl
 suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|acdsc_adr
-id|u_char
+id|u8
 id|acdsc_adr
 suffix:colon
 l_int|4
 suffix:semicolon
 macro_line|#elif defined(__LITTLE_ENDIAN_BITFIELD)
 DECL|member|acdsc_adr
-id|u_char
+id|u8
 id|acdsc_adr
 suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|acdsc_ctrl
-id|u_char
+id|u8
 id|acdsc_ctrl
 suffix:colon
 l_int|4

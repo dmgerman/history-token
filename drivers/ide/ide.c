@@ -12154,6 +12154,7 @@ op_star
 id|drive
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_struct
 id|pci_dev
 op_star
@@ -12161,6 +12162,15 @@ id|pdev
 op_assign
 id|drive-&gt;channel-&gt;pci_dev
 suffix:semicolon
+macro_line|#else
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|list_head
 op_star
@@ -12231,6 +12241,7 @@ op_star
 id|drive
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_struct
 id|pci_dev
 op_star
@@ -12238,6 +12249,15 @@ id|pdev
 op_assign
 id|drive-&gt;channel-&gt;pci_dev
 suffix:semicolon
+macro_line|#else
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|ata_request
 op_star
@@ -12466,10 +12486,6 @@ op_ge
 l_int|1
 )paren
 (brace
-id|drive-&gt;using_tcq
-op_assign
-l_int|1
-suffix:semicolon
 id|drive-&gt;tcq-&gt;queued
 op_assign
 l_int|0
