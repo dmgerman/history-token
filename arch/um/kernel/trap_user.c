@@ -399,6 +399,10 @@ r_int
 id|sig
 )paren
 (brace
+id|kmalloc_ok
+op_assign
+l_int|0
+suffix:semicolon
 id|signal
 c_func
 (paren
@@ -784,7 +788,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;tracing thread pid = %d&bslash;n&quot;
@@ -944,7 +948,7 @@ c_cond
 id|debug_trace
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Tracing thread pausing to be attached&bslash;n&quot;
@@ -1031,7 +1035,7 @@ c_cond
 id|err
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Failed to attach debugger parent %d, &quot;
@@ -1068,7 +1072,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Failed to continue debugger &quot;
@@ -1128,7 +1132,7 @@ op_ne
 id|ECHILD
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;wait failed - errno = %d&bslash;n&quot;
@@ -1580,7 +1584,7 @@ suffix:semicolon
 r_case
 id|OP_NONE
 suffix:colon
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Detaching pid %d&bslash;n&quot;

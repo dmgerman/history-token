@@ -882,14 +882,6 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|ACCEPT_IRQ
-comma
-id|port
-)paren
-suffix:semicolon
 id|os_close_file
 c_func
 (paren

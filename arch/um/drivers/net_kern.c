@@ -2493,12 +2493,6 @@ l_string|&quot;eth[0-9]+=&lt;transport&gt;,&lt;options&gt;&bslash;n&quot;
 l_string|&quot;    Configure a network device.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|variable|ndev
-r_int
-id|ndev
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|eth_init
 r_static
 r_int

@@ -1341,12 +1341,10 @@ OL
 id|physmem_size
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Kernel virtual memory size shrunk to %ld &quot;
-l_string|&quot;bytes&bslash;n&quot;
+l_string|&quot;Kernel virtual memory size shrunk to %ld bytes&bslash;n&quot;
 comma
 id|virtmem_size
 )paren
@@ -1371,7 +1369,7 @@ c_cond
 id|err
 )paren
 (brace
-id|panic
+id|tracer_panic
 c_func
 (paren
 l_string|&quot;Failed to reserve VM area for kernel VM&bslash;n&quot;
