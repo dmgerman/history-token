@@ -4841,6 +4841,15 @@ op_amp
 id|xattr_handlers
 )paren
 suffix:semicolon
+id|list_add_tail
+(paren
+op_amp
+id|trusted_handler.handlers
+comma
+op_amp
+id|xattr_handlers
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_REISERFS_FS_POSIX_ACL
 id|list_add_tail
 (paren

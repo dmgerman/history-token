@@ -358,6 +358,11 @@ r_struct
 id|reiserfs_xattr_handler
 id|user_handler
 suffix:semicolon
+r_extern
+r_struct
+id|reiserfs_xattr_handler
+id|trusted_handler
+suffix:semicolon
 r_int
 id|reiserfs_xattr_register_handlers
 (paren
