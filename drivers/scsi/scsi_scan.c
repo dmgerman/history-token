@@ -8,9 +8,9 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
-macro_line|#include &quot;scsi_devinfo.h&quot;
 DECL|macro|ALLOC_FAILURE_MSG
 mdefine_line|#define ALLOC_FAILURE_MSG&t;KERN_ERR &quot;%s: Allocation failure during&quot; &bslash;&n;&t;&quot; SCSI scanning, some SCSI devices might not be configured&bslash;n&quot;
 multiline_comment|/*&n; * Prefix values for the SCSI id&squot;s (stored in driverfs name field)&n; */
@@ -1124,6 +1124,8 @@ op_or_assign
 id|scsi_get_device_flags
 c_func
 (paren
+id|sdev
+comma
 op_amp
 id|inq_result
 (braket
@@ -1962,9 +1964,41 @@ id|sdev-&gt;use_10_for_rw
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_MS_SKIP_PAGE_08
+)paren
+id|sdev-&gt;skip_ms_page_8
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_MS_SKIP_PAGE_3F
+)paren
+id|sdev-&gt;skip_ms_page_3f
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_USE_10_BYTE_MS
+)paren
 id|sdev-&gt;use_10_for_ms
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2118,6 +2152,8 @@ op_assign
 id|scsi_get_device_flags
 c_func
 (paren
+id|sdev
+comma
 id|sdev-&gt;vendor
 comma
 id|sdev-&gt;model

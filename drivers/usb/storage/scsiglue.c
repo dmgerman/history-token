@@ -5,6 +5,7 @@ macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 multiline_comment|/***********************************************************************&n; * Host functions &n; ***********************************************************************/
 DECL|function|host_info
 r_static
@@ -35,15 +36,6 @@ op_star
 id|sdev
 )paren
 (brace
-multiline_comment|/* set device to use 10-byte commands where possible */
-id|sdev-&gt;use_10_for_ms
-op_assign
-l_int|1
-suffix:semicolon
-id|sdev-&gt;use_10_for_rw
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* this is to satisify the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0
@@ -959,6 +951,16 @@ dot
 id|emulated
 op_assign
 id|TRUE
+comma
+multiline_comment|/* modify scsi_device bits on probe */
+dot
+id|flags
+op_assign
+(paren
+id|BLIST_MS_SKIP_PAGE_08
+op_or
+id|BLIST_USE_10_BYTE_MS
+)paren
 comma
 multiline_comment|/* module management */
 dot

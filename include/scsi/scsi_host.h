@@ -412,6 +412,12 @@ r_struct
 id|list_head
 id|legacy_hosts
 suffix:semicolon
+multiline_comment|/*&n;&t; * Default flags settings, these modify the setting of scsi_device&n;&t; * bits.&n;&t; */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * shost states&n; */

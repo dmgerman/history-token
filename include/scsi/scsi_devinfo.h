@@ -1,3 +1,6 @@
+macro_line|#ifndef _SCSI_SCSI_DEVINFO_H
+DECL|macro|_SCSI_SCSI_DEVINFO_H
+mdefine_line|#define _SCSI_SCSI_DEVINFO_H
 multiline_comment|/*&n; * Flags for SCSI devices that need special treatment&n; */
 DECL|macro|BLIST_NOLUN
 mdefine_line|#define BLIST_NOLUN     &t;0x001&t;/* Only scan LUN 0 */
@@ -24,5 +27,12 @@ mdefine_line|#define BLIST_INQUIRY_36&t;0x400&t;/* override additional length fi
 DECL|macro|BLIST_INQUIRY_58
 mdefine_line|#define BLIST_INQUIRY_58&t;0x800&t;/* ... for broken inquiry responses */
 DECL|macro|BLIST_NOSTARTONADD
-mdefine_line|#define BLIST_NOSTARTONADD      0x1000  /* do not do automatic start on add */
+mdefine_line|#define BLIST_NOSTARTONADD&t;0x1000&t;/* do not do automatic start on add */
+DECL|macro|BLIST_MS_SKIP_PAGE_08
+mdefine_line|#define BLIST_MS_SKIP_PAGE_08&t;0x2000&t;/* do not send ms page 0x08 */
+DECL|macro|BLIST_MS_SKIP_PAGE_3F
+mdefine_line|#define BLIST_MS_SKIP_PAGE_3F&t;0x4000&t;/* do not send ms page 0x3f */
+DECL|macro|BLIST_USE_10_BYTE_MS
+mdefine_line|#define BLIST_USE_10_BYTE_MS&t;0x8000&t;/* use 10 byte ms before 6 byte ms */
+macro_line|#endif
 eof

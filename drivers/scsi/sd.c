@@ -4392,6 +4392,24 @@ r_struct
 id|scsi_mode_data
 id|data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdkp-&gt;device-&gt;skip_ms_page_3f
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: assuming Write Enabled&bslash;n&quot;
+comma
+id|diskname
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * First attempt: ask for all pages (0x3F), but only 4 bytes.&n;&t; * We have to start carefully: some devices hang if we ask&n;&t; * for more than is available.&n;&t; */
 id|res
 op_assign
@@ -4605,6 +4623,14 @@ multiline_comment|/* current values, cache page */
 r_struct
 id|scsi_mode_data
 id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdkp-&gt;device-&gt;skip_ms_page_8
+)paren
+r_goto
+id|defaults
 suffix:semicolon
 multiline_comment|/* cautiously ask */
 id|res
@@ -4854,6 +4880,8 @@ id|diskname
 )paren
 suffix:semicolon
 )brace
+id|defaults
+suffix:colon
 id|printk
 c_func
 (paren

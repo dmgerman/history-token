@@ -5,9 +5,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
-macro_line|#include &quot;scsi_devinfo.h&quot;
 multiline_comment|/*&n; * scsi_dev_info_list: structure to hold black/white listed devices.&n; */
 DECL|struct|scsi_dev_info_list
 r_struct
@@ -1840,12 +1841,17 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * get_device_flags - get device specific flags from the dynamic device&n; * list. Called during scan time.&n; * @vendor:&t;vendor name&n; * @model:&t;model name&n; *&n; * Description:&n; *     Search the scsi_dev_info_list for an entry matching @vendor and&n; *     @model, if found, return the matching flags value, else return&n; *     scsi_default_dev_flags.&n; **/
+multiline_comment|/**&n; * get_device_flags - get device specific flags from the dynamic device&n; * list. Called during scan time.&n; * @vendor:&t;vendor name&n; * @model:&t;model name&n; *&n; * Description:&n; *     Search the scsi_dev_info_list for an entry matching @vendor and&n; *     @model, if found, return the matching flags value, else return&n; *     the host or global default settings.&n; **/
 DECL|function|scsi_get_device_flags
 r_int
 id|scsi_get_device_flags
 c_func
 (paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+comma
 r_int
 r_char
 op_star
@@ -1861,6 +1867,24 @@ r_struct
 id|scsi_dev_info_list
 op_star
 id|devinfo
+suffix:semicolon
+r_int
+r_int
+id|bflags
+suffix:semicolon
+id|bflags
+op_assign
+id|sdev-&gt;host-&gt;hostt-&gt;flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bflags
+)paren
+id|bflags
+op_assign
+id|scsi_default_dev_flags
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -2033,7 +2057,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|scsi_default_dev_flags
+id|bflags
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SCSI_PROC_FS
