@@ -1752,12 +1752,12 @@ c_func
 id|max_cpus
 )paren
 suffix:semicolon
-id|do_basic_setup
+id|smp_init
 c_func
 (paren
 )paren
 suffix:semicolon
-id|smp_init
+id|do_basic_setup
 c_func
 (paren
 )paren
