@@ -2315,28 +2315,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Used by processes to &quot;lock&quot; a socket state, so that&n; * interrupts and bottom half handlers won&squot;t change it&n; * from under us. It essentially blocks any incoming&n; * packets, so that we won&squot;t get any new data or any&n; * packets that change the state of the socket.&n; *&n; * While locked, BH processing will add new packets to&n; * the backlog queue.  This queue is processed by the&n; * owner of the socket lock right before it is released.&n; *&n; * Since ~2.3.5 it is also exclusive sleep lock serializing&n; * accesses from user process context.&n; */
-r_extern
-r_void
-id|__lock_sock
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__release_sock
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
 DECL|macro|sock_owned_by_user
 mdefine_line|#define sock_owned_by_user(sk)&t;((sk)-&gt;sk_lock.owner)
 r_extern

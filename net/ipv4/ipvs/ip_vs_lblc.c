@@ -1256,9 +1256,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|tbl-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|tbl-&gt;max_size
 op_assign

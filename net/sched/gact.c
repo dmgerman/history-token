@@ -77,6 +77,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_static
 r_int
 DECL|function|gact_net_rand
 id|gact_net_rand
@@ -105,6 +106,7 @@ r_return
 id|p-&gt;paction
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|gact_determ
 id|gact_determ
@@ -146,6 +148,7 @@ id|gact_determ
 )brace
 suffix:semicolon
 macro_line|#endif
+r_static
 r_int
 DECL|function|tcf_gact_init
 id|tcf_gact_init
@@ -436,6 +439,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_gact_cleanup
 id|tcf_gact_cleanup
@@ -485,6 +489,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_gact
 id|tcf_gact
@@ -630,6 +635,7 @@ r_return
 id|action
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|tcf_gact_dump
 id|tcf_gact_dump
@@ -844,6 +850,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|act_gact_ops
+r_static
 r_struct
 id|tc_action_ops
 id|act_gact_ops

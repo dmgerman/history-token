@@ -1550,9 +1550,12 @@ r_int
 )paren
 id|fq
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|fq-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|atomic_set
 c_func
