@@ -74,6 +74,9 @@ multiline_comment|/* Service Access Point */
 DECL|macro|SO_ATMPVC
 mdefine_line|#define SO_ATMPVC&t;__SO_ENCODE(SOL_ATM,4,struct sockaddr_atmpvc)
 multiline_comment|/* &quot;PVC&quot; address (also for SVCs); get only */
+DECL|macro|SO_MULTIPOINT
+mdefine_line|#define SO_MULTIPOINT&t;__SO_ENCODE(SOL_ATM, 5, int)
+multiline_comment|/* make this vc a p2mp */
 multiline_comment|/*&n; * Note @@@: since the socket layers don&squot;t really distinguish the control and&n; * the data plane but generally seems to be data plane-centric, any layer is&n; * about equally wrong for the SAP. If you have a better idea about this,&n; * please speak up ...&n; */
 multiline_comment|/* ATM cell header (for AAL0) */
 multiline_comment|/* BEGIN_CH */

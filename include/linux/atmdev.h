@@ -121,6 +121,12 @@ multiline_comment|/* set backend handler */
 DECL|macro|ATM_NEWBACKENDIF
 mdefine_line|#define ATM_NEWBACKENDIF _IOW(&squot;a&squot;,ATMIOC_SPECIAL+3,atm_backend_t)
 multiline_comment|/* use backend to make new if */
+DECL|macro|ATM_ADDPARTY
+mdefine_line|#define ATM_ADDPARTY  &t;_IOW(&squot;a&squot;, ATMIOC_SPECIAL+4,struct atm_iobuf)
+multiline_comment|/* add party to p2mp call */
+DECL|macro|ATM_DROPPARTY
+mdefine_line|#define ATM_DROPPARTY &t;_IOW(&squot;a&squot;, ATMIOC_SPECIAL+5,int)
+multiline_comment|/* drop party from p2mp call */
 multiline_comment|/*&n; * These are backend handkers that can be set via the ATM_SETBACKEND call&n; * above.  In the future we may support dynamic loading of these - for now,&n; * they&squot;re just being used to share the ATMIOC_BACKEND ioctls&n; */
 DECL|macro|ATM_BACKEND_RAW
 mdefine_line|#define ATM_BACKEND_RAW&t;&t;0&t;
