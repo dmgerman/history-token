@@ -4,7 +4,7 @@ mdefine_line|#define DRV_NAME&t;&t;&quot;3c527&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&t;&quot;0.7-SMP&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;2003/10/06&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;2003/09/17&quot;
 DECL|variable|version
 r_static
 r_const
@@ -1874,7 +1874,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_command&t;-&t;send a command and sleep until completion&n; *&t;@dev: The 3c527 card to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Sends exec commands in a user context. This permits us to wait around&n; *&t;for the replies and also to wait for the command buffer to complete&n; *&t;from a previous command before we execute our command. After our &n; *&t;command completes we will attempt any pending multicast reload&n; *&t;we blocked off by hogging the exec buffer.&n; *&n; *&t;You feed the card a command, you wait, it interrupts you get a &n; *&t;reply. All well and good. The complication arises because you use&n; *&t;commands for filter list changes which come in at bh level from things&n; *&t;like IPV6 group stuff.&n; *&n; */
+multiline_comment|/**&n; *&t;mc32_command&t;-&t;send a command and sleep until completion&n; *&t;@dev: The 3c527 card to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Sends exec commands in a user context. This permits us to wait around&n; *&t;for the replies and also to wait for the command buffer to complete&n; *&t;from a previous command before we execute our command. After our &n; *&t;command completes we will attempt any pending multicast reload&n; *&t;we blocked off by hogging the exec buffer.&n; *&n; *&t;You feed the card a command, you wait, it interrupts you get a &n; *&t;reply. All well and good. The complication arises because you use&n; *&t;commands for filter list changes which come in at bh level from things&n; *&t;like IPV6 group stuff.&n; */
 DECL|function|mc32_command
 r_static
 r_int
@@ -1926,7 +1926,7 @@ op_amp
 id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;My turn&n;&t; */
+multiline_comment|/*&n;&t; *     My Turn&n;&t; */
 id|lp-&gt;cmd_nonblocking
 op_assign
 l_int|0
@@ -2009,7 +2009,7 @@ op_amp
 id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;A multicast set got blocked - try it now&n;&t; */
+multiline_comment|/*&n;&t; *&t;A multicast set got blocked - try it now&n;         */
 r_if
 c_cond
 (paren
@@ -2027,7 +2027,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_start_transceiver&t;-&t;tell board to restart tx/rx&n; *&t;@dev: The 3c527 card to issue the command to&n; *&n; *&t;This may be called from the interrupt state, where it is used&n; *&t;to restart the rx ring if the card runs out of rx buffers. &n; *&t;&n; *&t;We must first check if it&squot;s ok to (re)start the transceiver. See&n; *&t;mc32_close for details.&n; */
+multiline_comment|/**&n; *&t;mc32_start_transceiver&t;-&t;tell board to restart tx/rx&n; *&t;@dev: The 3c527 card to issue the command to&n; *&n; *&t;This may be called from the interrupt state, where it is used&n; *&t;to restart the rx ring if the card runs out of rx buffers. &n; *&t;&n; * &t;We must first check if it&squot;s ok to (re)start the transceiver. See&n; *      mc32_close for details.&n; */
 DECL|function|mc32_start_transceiver
 r_static
 r_void
@@ -2406,7 +2406,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_flush_rx_ring&t;-&t;free the ring of receive buffers&n; *&t;@lp: Local data of 3c527 to flush the rx ring of&n; *&n; *&t;Free the buffer for each ring slot. This may be called &n; *      before mc32_load_rx_ring(), eg. on error in mc32_open().&n; *      Requires rx skb pointers to point to a valid skb, or NULL. &n; */
+multiline_comment|/**&n; *&t;mc32_flush_rx_ring&t;-&t;free the ring of receive buffers&n; *&t;@lp: Local data of 3c527 to flush the rx ring of&n; *&n; *&t;Free the buffer for each ring slot. This may be called &n; *      before mc32_load_rx_ring(), eg. on error in mc32_open().&n; *      Requires rx skb pointers to point to a valid skb, or NULL.&n; */
 DECL|function|mc32_flush_rx_ring
 r_static
 r_void
@@ -2584,7 +2584,7 @@ op_assign
 id|p-&gt;next
 suffix:semicolon
 )brace
-multiline_comment|/* -1 so that tx_ring_head cannot &quot;lap&quot; tx_ring_tail,           */
+multiline_comment|/* -1 so that tx_ring_head cannot &quot;lap&quot; tx_ring_tail */
 multiline_comment|/* see mc32_tx_ring */
 id|atomic_set
 c_func
@@ -2604,7 +2604,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_flush_tx_ring &t;-&t;free transmit ring&n; *&t;@lp: Local data of 3c527 to flush the tx ring of&n; *&t;&n; *      If the ring is non-empty, zip over the it, freeing any&n; *      allocated skb_buffs.  The tx ring house-keeping variables are&n; *      then reset. Requires rx skb pointers to point to a valid skb,&n; *      or NULL.&n; */
+multiline_comment|/**&n; *&t;mc32_flush_tx_ring &t;-&t;free transmit ring&n; *&t;@lp: Local data of 3c527 to flush the tx ring of&n; *&n; *      If the ring is non-empty, zip over the it, freeing any&n; *      allocated skb_buffs.  The tx ring house-keeping variables are&n; *      then reset. Requires rx skb pointers to point to a valid skb,&n; *      or NULL.&n; */
 DECL|function|mc32_flush_tx_ring
 r_static
 r_void
@@ -2771,7 +2771,7 @@ op_plus
 id|HOST_CTRL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * &t;Allow ourselves to issue commands&n;&t; */
+multiline_comment|/*&n;&t; *      Allow ourselves to issue commands&n;&t; */
 id|up
 c_func
 (paren
@@ -3013,7 +3013,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries, we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *&t;We do not disable interrupts or acquire any locks; this can&n; *&t;run concurrently with mc32_tx_ring(), and the function itself&n; *&t;is serialised at a higher layer. However, this makes it&n; *&t;crucial that we update lp-&gt;tx_ring_head only after we&squot;ve&n; *&t;established a valid packet in the tx ring (and is why we mark&n; *&t;tx_ring_head volatile).&n; */
+multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries, we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *      We do not disable interrupts or acquire any locks; this can&n; *      run concurrently with mc32_tx_ring(), and the function itself&n; *      is serialised at a higher layer. However, this makes it&n; *      crucial that we update lp-&gt;tx_ring_head only after we&squot;ve&n; *      established a valid packet in the tx ring (and is why we mark&n; *      tx_ring_head volatile).&n; *&n; **/
 DECL|function|mc32_send_packet
 r_static
 r_int
@@ -3146,7 +3146,7 @@ suffix:semicolon
 multiline_comment|/* We will need this to flush the buffer out */
 id|lp-&gt;tx_ring
 (braket
-id|head
+id|lp-&gt;tx_ring_head
 )braket
 dot
 id|skb
@@ -3696,7 +3696,7 @@ id|skb_header
 op_star
 id|np
 suffix:semicolon
-multiline_comment|/*&n;&t; * We rely on head==tail to mean &squot;queue empty&squot;. &n;&t; * This is why lp-&gt;tx_count=TX_RING_LEN-1: in order to prevent&n;&t; * tx_ring_head wrapping to tail and confusing a &squot;queue empty&squot;&n;&t; * condition with &squot;queue full&squot; &n;&t; */
+multiline_comment|/*&n;&t; * We rely on head==tail to mean &squot;queue empty&squot;.&n;&t; * This is why lp-&gt;tx_count=TX_RING_LEN-1: in order to prevent&n;&t; * tx_ring_head wrapping to tail and confusing a &squot;queue empty&squot;&n;&t; * condition with &squot;queue full&squot;&n;&t; */
 r_while
 c_loop
 (paren
@@ -4206,6 +4206,7 @@ id|dev
 suffix:semicolon
 )brace
 r_else
+(brace
 id|complete
 c_func
 (paren
@@ -4213,6 +4214,7 @@ op_amp
 id|lp-&gt;execution_cmd
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -4413,7 +4415,6 @@ id|mc32_local
 op_star
 )paren
 id|dev-&gt;priv
-suffix:semicolon
 suffix:semicolon
 id|mc32_update_stats
 c_func
