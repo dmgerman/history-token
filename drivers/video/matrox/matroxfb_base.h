@@ -93,25 +93,17 @@ DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y) ioremap(X,Y)
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(__alpha__) || defined(__mc68000__)
+macro_line|#if defined(__alpha__) || defined(__mc68000__) || defined(__i386__) || defined(__x86_64__)
 DECL|macro|READx_WORKS
 mdefine_line|#define READx_WORKS
 DECL|macro|MEMCPYTOIO_WORKS
 mdefine_line|#define MEMCPYTOIO_WORKS
 macro_line|#else
+multiline_comment|/* ppc/ppc64 must use __raw_{read,write}[bwl] as we drive adapter &n;   in big-endian mode for compatibility with XFree mga driver, and&n;   so we do not want little-endian {read,write}[bwl] */
 DECL|macro|READx_FAILS
 mdefine_line|#define READx_FAILS
-multiline_comment|/* recheck __ppc__, maybe that __ppc__ needs MEMCPYTOIO_WRITEL */
-multiline_comment|/* I benchmarked PII/350MHz with G200... MEMCPY, MEMCPYTOIO and WRITEL are on same speed ( &lt;2% diff) */
-multiline_comment|/* so that means that G200 speed (or AGP speed?) is our limit... I do not have benchmark to test, how */
-multiline_comment|/* much of PCI bandwidth is used during transfers... */
-macro_line|#if defined(__i386__) || defined(__x86_64__)
-DECL|macro|MEMCPYTOIO_MEMCPY
-mdefine_line|#define MEMCPYTOIO_MEMCPY
-macro_line|#else
 DECL|macro|MEMCPYTOIO_WRITEL
 mdefine_line|#define MEMCPYTOIO_WRITEL
-macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(__mc68000__)
 DECL|macro|MAP_BUSTOVIRT
@@ -177,6 +169,7 @@ r_struct
 (brace
 DECL|member|vaddr
 id|u_int8_t
+id|__iomem
 op_star
 id|vaddr
 suffix:semicolon
@@ -367,12 +360,8 @@ id|offs
 )paren
 (brace
 r_return
-op_star
-(paren
-r_volatile
-id|u_int8_t
-op_star
-)paren
+id|__raw_readb
+c_func
 (paren
 id|va.vaddr
 op_plus
@@ -397,12 +386,8 @@ id|offs
 )paren
 (brace
 r_return
-op_star
-(paren
-r_volatile
-id|u_int16_t
-op_star
-)paren
+id|__raw_readw
+c_func
 (paren
 id|va.vaddr
 op_plus
@@ -426,12 +411,8 @@ id|offs
 )paren
 (brace
 r_return
-op_star
-(paren
-r_volatile
-id|u_int32_t
-op_star
-)paren
+id|__raw_readl
+c_func
 (paren
 id|va.vaddr
 op_plus
@@ -457,19 +438,15 @@ id|u_int8_t
 id|value
 )paren
 (brace
-op_star
+id|__raw_writeb
+c_func
 (paren
-r_volatile
-id|u_int8_t
-op_star
-)paren
-(paren
+id|value
+comma
 id|va.vaddr
 op_plus
 id|offs
 )paren
-op_assign
-id|value
 suffix:semicolon
 )brace
 DECL|function|mga_writew
@@ -490,19 +467,15 @@ id|u_int16_t
 id|value
 )paren
 (brace
-op_star
+id|__raw_writew
+c_func
 (paren
-r_volatile
-id|u_int16_t
-op_star
-)paren
-(paren
+id|value
+comma
 id|va.vaddr
 op_plus
 id|offs
 )paren
-op_assign
-id|value
 suffix:semicolon
 )brace
 DECL|function|mga_writel
@@ -523,19 +496,15 @@ id|u_int32_t
 id|value
 )paren
 (brace
-op_star
+id|__raw_writel
+c_func
 (paren
-r_volatile
-id|u_int32_t
-op_star
-)paren
-(paren
+id|value
+comma
 id|va.vaddr
 op_plus
 id|offs
 )paren
-op_assign
-id|value
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -694,19 +663,6 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined(MEMCPYTOIO_MEMCPY)
-id|memcpy
-c_func
-(paren
-id|va.vaddr
-op_plus
-id|offs
-comma
-id|src
-comma
-id|len
-)paren
-suffix:semicolon
 macro_line|#else
 macro_line|#error &quot;Sorry, do not know how to write block of data to device&quot;
 macro_line|#endif
@@ -736,6 +692,7 @@ DECL|function|vaddr_va
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 id|vaddr_va
 c_func
