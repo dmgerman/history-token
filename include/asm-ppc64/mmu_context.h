@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;&t;
 macro_line|#include &lt;linux/mm.h&gt;&t;
 macro_line|#include &lt;asm/mmu.h&gt;&t;
 macro_line|#include &lt;asm/ppcdebug.h&gt;&t;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/*&n; * Copyright (C) 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 DECL|function|sched_find_first_bit
@@ -425,10 +426,10 @@ id|mm
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * switch_mm is the entry point called from the architecture independent&n; * code in kernel/sched.c&n; */
+DECL|function|switch_mm
 r_static
 r_inline
 r_void
-DECL|function|switch_mm
 id|switch_mm
 c_func
 (paren
@@ -448,6 +449,22 @@ op_star
 id|tsk
 )paren
 (brace
+macro_line|#ifdef CONFIG_ALTIVEC
+id|asm
+r_volatile
+(paren
+id|BEGIN_FTR_SECTION
+l_string|&quot;dssall;&bslash;n&quot;
+id|END_FTR_SECTION_IFSET
+c_func
+(paren
+id|CPU_FTR_ALTIVEC
+)paren
+suffix:colon
+suffix:colon
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|flush_stab
 c_func
 (paren

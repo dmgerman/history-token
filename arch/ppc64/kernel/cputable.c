@@ -13,6 +13,7 @@ id|cur_cpu_spec
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* NOTE:&n; * Unlike ppc32, ppc64 will only call this once for the boot CPU, it&squot;s&n; * the responsibility of the appropriate CPU save/restore functions to&n; * eventually copy these settings over. Those save/restore aren&squot;t yet&n; * part of the cputable though. That has to be fixed for both ppc32&n; * and ppc64&n; */
 r_extern
 r_void
 id|__setup_cpu_power3

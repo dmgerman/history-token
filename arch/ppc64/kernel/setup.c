@@ -1078,6 +1078,23 @@ comma
 id|pvr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_ALTIVEC
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;, altivec supported&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|seq_printf
 c_func
 (paren

@@ -10811,6 +10811,21 @@ c_func
 id|current
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|error
 op_assign
 id|do_execve32
@@ -10927,6 +10942,7 @@ id|regs-&gt;msr
 op_assign
 id|MSR_USER32
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -10938,10 +10954,89 @@ id|last_task_used_math
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
 id|current-&gt;thread.fpscr
 op_assign
 l_int|0
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|current-&gt;thread.fpr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|current-&gt;thread.fpr
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+macro_line|#ifndef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|last_task_used_altivec
+op_eq
+id|current
+)paren
+id|last_task_used_altivec
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
+id|memset
+c_func
+(paren
+id|current-&gt;thread.vr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|current-&gt;thread.vr
+)paren
+)paren
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x00010000
+suffix:semicolon
+multiline_comment|/* Java mode disabled */
+id|current-&gt;thread.vrsave
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.used_vr
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 r_extern
 id|asmlinkage

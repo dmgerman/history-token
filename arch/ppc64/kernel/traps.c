@@ -1556,6 +1556,37 @@ l_string|&quot;Unrecoverable FP Unavailable Exception in Kernel&quot;
 suffix:semicolon
 )brace
 r_void
+DECL|function|KernelAltivecUnavailableException
+id|KernelAltivecUnavailableException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Illegal VMX/Altivec used in kernel (task=0x%p, &quot;
+l_string|&quot;pc=0x%016lx, trap=0x%lx)&bslash;n&quot;
+comma
+id|current
+comma
+id|regs-&gt;nip
+comma
+id|regs-&gt;trap
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Unrecoverable VMX/Altivec Unavailable Exception in Kernel&quot;
+)paren
+suffix:semicolon
+)brace
+r_void
 DECL|function|SingleStepException
 id|SingleStepException
 c_func
@@ -1826,6 +1857,41 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ALTIVEC
+r_void
+DECL|function|AltivecAssistException
+id|AltivecAssistException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* XXX quick hack for now: set the non-Java bit in the VSCR */
+id|current-&gt;thread.vscr.u
+(braket
+l_int|3
+)braket
+op_or_assign
+l_int|0x10000
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ALTIVEC */
 DECL|function|trap_init
 r_void
 id|__init

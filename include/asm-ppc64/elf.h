@@ -1,6 +1,9 @@
 macro_line|#ifndef __PPC64_ELF_H
 DECL|macro|__PPC64_ELF_H
 mdefine_line|#define __PPC64_ELF_H
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/* PowerPC relocations defined by the ABIs */
 DECL|macro|R_PPC_NONE
 mdefine_line|#define R_PPC_NONE&t;&t;0
@@ -76,17 +79,76 @@ DECL|macro|R_PPC_SECTOFF_HI
 mdefine_line|#define R_PPC_SECTOFF_HI&t;35
 DECL|macro|R_PPC_SECTOFF_HA
 mdefine_line|#define R_PPC_SECTOFF_HA&t;36
+multiline_comment|/* PowerPC relocations defined for the TLS access ABI.  */
+DECL|macro|R_PPC_TLS
+mdefine_line|#define R_PPC_TLS&t;&t;67 /* none&t;(sym+add)@tls */
+DECL|macro|R_PPC_DTPMOD32
+mdefine_line|#define R_PPC_DTPMOD32&t;&t;68 /* word32&t;(sym+add)@dtpmod */
+DECL|macro|R_PPC_TPREL16
+mdefine_line|#define R_PPC_TPREL16&t;&t;69 /* half16*&t;(sym+add)@tprel */
+DECL|macro|R_PPC_TPREL16_LO
+mdefine_line|#define R_PPC_TPREL16_LO&t;70 /* half16&t;(sym+add)@tprel@l */
+DECL|macro|R_PPC_TPREL16_HI
+mdefine_line|#define R_PPC_TPREL16_HI&t;71 /* half16&t;(sym+add)@tprel@h */
+DECL|macro|R_PPC_TPREL16_HA
+mdefine_line|#define R_PPC_TPREL16_HA&t;72 /* half16&t;(sym+add)@tprel@ha */
+DECL|macro|R_PPC_TPREL32
+mdefine_line|#define R_PPC_TPREL32&t;&t;73 /* word32&t;(sym+add)@tprel */
+DECL|macro|R_PPC_DTPREL16
+mdefine_line|#define R_PPC_DTPREL16&t;&t;74 /* half16*&t;(sym+add)@dtprel */
+DECL|macro|R_PPC_DTPREL16_LO
+mdefine_line|#define R_PPC_DTPREL16_LO&t;75 /* half16&t;(sym+add)@dtprel@l */
+DECL|macro|R_PPC_DTPREL16_HI
+mdefine_line|#define R_PPC_DTPREL16_HI&t;76 /* half16&t;(sym+add)@dtprel@h */
+DECL|macro|R_PPC_DTPREL16_HA
+mdefine_line|#define R_PPC_DTPREL16_HA&t;77 /* half16&t;(sym+add)@dtprel@ha */
+DECL|macro|R_PPC_DTPREL32
+mdefine_line|#define R_PPC_DTPREL32&t;&t;78 /* word32&t;(sym+add)@dtprel */
+DECL|macro|R_PPC_GOT_TLSGD16
+mdefine_line|#define R_PPC_GOT_TLSGD16&t;79 /* half16*&t;(sym+add)@got@tlsgd */
+DECL|macro|R_PPC_GOT_TLSGD16_LO
+mdefine_line|#define R_PPC_GOT_TLSGD16_LO&t;80 /* half16&t;(sym+add)@got@tlsgd@l */
+DECL|macro|R_PPC_GOT_TLSGD16_HI
+mdefine_line|#define R_PPC_GOT_TLSGD16_HI&t;81 /* half16&t;(sym+add)@got@tlsgd@h */
+DECL|macro|R_PPC_GOT_TLSGD16_HA
+mdefine_line|#define R_PPC_GOT_TLSGD16_HA&t;82 /* half16&t;(sym+add)@got@tlsgd@ha */
+DECL|macro|R_PPC_GOT_TLSLD16
+mdefine_line|#define R_PPC_GOT_TLSLD16&t;83 /* half16*&t;(sym+add)@got@tlsld */
+DECL|macro|R_PPC_GOT_TLSLD16_LO
+mdefine_line|#define R_PPC_GOT_TLSLD16_LO&t;84 /* half16&t;(sym+add)@got@tlsld@l */
+DECL|macro|R_PPC_GOT_TLSLD16_HI
+mdefine_line|#define R_PPC_GOT_TLSLD16_HI&t;85 /* half16&t;(sym+add)@got@tlsld@h */
+DECL|macro|R_PPC_GOT_TLSLD16_HA
+mdefine_line|#define R_PPC_GOT_TLSLD16_HA&t;86 /* half16&t;(sym+add)@got@tlsld@ha */
+DECL|macro|R_PPC_GOT_TPREL16
+mdefine_line|#define R_PPC_GOT_TPREL16&t;87 /* half16*&t;(sym+add)@got@tprel */
+DECL|macro|R_PPC_GOT_TPREL16_LO
+mdefine_line|#define R_PPC_GOT_TPREL16_LO&t;88 /* half16&t;(sym+add)@got@tprel@l */
+DECL|macro|R_PPC_GOT_TPREL16_HI
+mdefine_line|#define R_PPC_GOT_TPREL16_HI&t;89 /* half16&t;(sym+add)@got@tprel@h */
+DECL|macro|R_PPC_GOT_TPREL16_HA
+mdefine_line|#define R_PPC_GOT_TPREL16_HA&t;90 /* half16&t;(sym+add)@got@tprel@ha */
+DECL|macro|R_PPC_GOT_DTPREL16
+mdefine_line|#define R_PPC_GOT_DTPREL16&t;91 /* half16*&t;(sym+add)@got@dtprel */
+DECL|macro|R_PPC_GOT_DTPREL16_LO
+mdefine_line|#define R_PPC_GOT_DTPREL16_LO&t;92 /* half16*&t;(sym+add)@got@dtprel@l */
+DECL|macro|R_PPC_GOT_DTPREL16_HI
+mdefine_line|#define R_PPC_GOT_DTPREL16_HI&t;93 /* half16*&t;(sym+add)@got@dtprel@h */
+DECL|macro|R_PPC_GOT_DTPREL16_HA
+mdefine_line|#define R_PPC_GOT_DTPREL16_HA&t;94 /* half16*&t;(sym+add)@got@dtprel@ha */
 multiline_comment|/* Keep this the last entry.  */
 DECL|macro|R_PPC_NUM
-mdefine_line|#define R_PPC_NUM&t;&t;37
+mdefine_line|#define R_PPC_NUM&t;&t;95
 multiline_comment|/*&n; * ELF register definitions..&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;48&t;/* includes nip, msr, lr, etc. */
 DECL|macro|ELF_NFPREG
 mdefine_line|#define ELF_NFPREG&t;33&t;/* includes fpscr */
+DECL|macro|ELF_NVRREG32
+mdefine_line|#define ELF_NVRREG32&t;33&t;/* includes vscr &amp; vrsave stuffed together */
 DECL|macro|ELF_NVRREG
-mdefine_line|#define ELF_NVRREG&t;34&t;/* includes vscr */
+mdefine_line|#define ELF_NVRREG&t;34&t;/* includes vscr &amp; vrsave in split vectors */
 DECL|typedef|elf_greg_t64
 r_typedef
 r_int
@@ -164,7 +226,7 @@ id|ELF_NFPREG
 )braket
 suffix:semicolon
 multiline_comment|/* Altivec registers */
-multiline_comment|/*&n; * The entries with indexes 0-31 contain the corresponding vector registers. &n; * The entry with index 32 contains the vscr as the last word (offset 12) &n; * within the quadword.  This allows the vscr to be stored as either a &n; * quadword (since it must be copied via a vector register to/from storage) &n; * or as a word.  The entry with index 33 contains the vrsave as the first &n; * word (offset 0) within the quadword.&n; *&n; * This definition of the VMX state is compatible with the current PPC32 &n; * ptrace interface.  This allows signal handling and ptrace to use the same &n; * structures.  This also simplifies the implementation of a bi-arch &n; * (combined (32- and 64-bit) gdb.&n; */
+multiline_comment|/*&n; * The entries with indexes 0-31 contain the corresponding vector registers. &n; * The entry with index 32 contains the vscr as the last word (offset 12) &n; * within the quadword.  This allows the vscr to be stored as either a &n; * quadword (since it must be copied via a vector register to/from storage) &n; * or as a word.  The entry with index 33 contains the vrsave as the first &n; * word (offset 0) within the quadword.&n; *&n; * This definition of the VMX state is compatible with the current PPC32 &n; * ptrace interface.  This allows signal handling and ptrace to use the same &n; * structures.  This also simplifies the implementation of a bi-arch &n; * (combined (32- and 64-bit) gdb.&n; *&n; * Note that it&squot;s _not_ compatible with 32 bits ucontext which stuffs the&n; * vrsave along with vscr and so only uses 33 vectors for the register set&n; */
 DECL|typedef|elf_vrreg_t
 r_typedef
 id|__vector128
@@ -176,6 +238,14 @@ id|elf_vrreg_t
 id|elf_vrregset_t
 (braket
 id|ELF_NVRREG
+)braket
+suffix:semicolon
+DECL|typedef|elf_vrregset_t32
+r_typedef
+id|elf_vrreg_t
+id|elf_vrregset_t32
+(braket
+id|ELF_NVRREG32
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
@@ -329,10 +399,11 @@ op_star
 suffix:semicolon
 DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
+multiline_comment|/* XXX Should we define the XFPREGS using altivec ??? */
 macro_line|#endif
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP&t;(0)
+mdefine_line|#define ELF_HWCAP&t;(cur_cpu_spec-&gt;cpu_user_features)
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.&n;&n;   For the moment, we have only optimizations for the Intel generations,&n;   but that could change... */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;(NULL)
@@ -496,8 +567,89 @@ DECL|macro|R_PPC64_PLTGOT16_DS
 mdefine_line|#define R_PPC64_PLTGOT16_DS    65 /* half16ds* (M + A) &gt;&gt; 2.  */
 DECL|macro|R_PPC64_PLTGOT16_LO_DS
 mdefine_line|#define R_PPC64_PLTGOT16_LO_DS 66 /* half16ds  #lo(M + A) &gt;&gt; 2.  */
+multiline_comment|/* PowerPC64 relocations defined for the TLS access ABI.  */
+DECL|macro|R_PPC64_TLS
+mdefine_line|#define R_PPC64_TLS&t;&t;67 /* none&t;(sym+add)@tls */
+DECL|macro|R_PPC64_DTPMOD64
+mdefine_line|#define R_PPC64_DTPMOD64&t;68 /* doubleword64 (sym+add)@dtpmod */
+DECL|macro|R_PPC64_TPREL16
+mdefine_line|#define R_PPC64_TPREL16&t;&t;69 /* half16*&t;(sym+add)@tprel */
+DECL|macro|R_PPC64_TPREL16_LO
+mdefine_line|#define R_PPC64_TPREL16_LO&t;70 /* half16&t;(sym+add)@tprel@l */
+DECL|macro|R_PPC64_TPREL16_HI
+mdefine_line|#define R_PPC64_TPREL16_HI&t;71 /* half16&t;(sym+add)@tprel@h */
+DECL|macro|R_PPC64_TPREL16_HA
+mdefine_line|#define R_PPC64_TPREL16_HA&t;72 /* half16&t;(sym+add)@tprel@ha */
+DECL|macro|R_PPC64_TPREL64
+mdefine_line|#define R_PPC64_TPREL64&t;&t;73 /* doubleword64 (sym+add)@tprel */
+DECL|macro|R_PPC64_DTPREL16
+mdefine_line|#define R_PPC64_DTPREL16&t;74 /* half16*&t;(sym+add)@dtprel */
+DECL|macro|R_PPC64_DTPREL16_LO
+mdefine_line|#define R_PPC64_DTPREL16_LO&t;75 /* half16&t;(sym+add)@dtprel@l */
+DECL|macro|R_PPC64_DTPREL16_HI
+mdefine_line|#define R_PPC64_DTPREL16_HI&t;76 /* half16&t;(sym+add)@dtprel@h */
+DECL|macro|R_PPC64_DTPREL16_HA
+mdefine_line|#define R_PPC64_DTPREL16_HA&t;77 /* half16&t;(sym+add)@dtprel@ha */
+DECL|macro|R_PPC64_DTPREL64
+mdefine_line|#define R_PPC64_DTPREL64&t;78 /* doubleword64 (sym+add)@dtprel */
+DECL|macro|R_PPC64_GOT_TLSGD16
+mdefine_line|#define R_PPC64_GOT_TLSGD16&t;79 /* half16*&t;(sym+add)@got@tlsgd */
+DECL|macro|R_PPC64_GOT_TLSGD16_LO
+mdefine_line|#define R_PPC64_GOT_TLSGD16_LO&t;80 /* half16&t;(sym+add)@got@tlsgd@l */
+DECL|macro|R_PPC64_GOT_TLSGD16_HI
+mdefine_line|#define R_PPC64_GOT_TLSGD16_HI&t;81 /* half16&t;(sym+add)@got@tlsgd@h */
+DECL|macro|R_PPC64_GOT_TLSGD16_HA
+mdefine_line|#define R_PPC64_GOT_TLSGD16_HA&t;82 /* half16&t;(sym+add)@got@tlsgd@ha */
+DECL|macro|R_PPC64_GOT_TLSLD16
+mdefine_line|#define R_PPC64_GOT_TLSLD16&t;83 /* half16*&t;(sym+add)@got@tlsld */
+DECL|macro|R_PPC64_GOT_TLSLD16_LO
+mdefine_line|#define R_PPC64_GOT_TLSLD16_LO&t;84 /* half16&t;(sym+add)@got@tlsld@l */
+DECL|macro|R_PPC64_GOT_TLSLD16_HI
+mdefine_line|#define R_PPC64_GOT_TLSLD16_HI&t;85 /* half16&t;(sym+add)@got@tlsld@h */
+DECL|macro|R_PPC64_GOT_TLSLD16_HA
+mdefine_line|#define R_PPC64_GOT_TLSLD16_HA&t;86 /* half16&t;(sym+add)@got@tlsld@ha */
+DECL|macro|R_PPC64_GOT_TPREL16_DS
+mdefine_line|#define R_PPC64_GOT_TPREL16_DS&t;87 /* half16ds*&t;(sym+add)@got@tprel */
+DECL|macro|R_PPC64_GOT_TPREL16_LO_DS
+mdefine_line|#define R_PPC64_GOT_TPREL16_LO_DS 88 /* half16ds (sym+add)@got@tprel@l */
+DECL|macro|R_PPC64_GOT_TPREL16_HI
+mdefine_line|#define R_PPC64_GOT_TPREL16_HI&t;89 /* half16&t;(sym+add)@got@tprel@h */
+DECL|macro|R_PPC64_GOT_TPREL16_HA
+mdefine_line|#define R_PPC64_GOT_TPREL16_HA&t;90 /* half16&t;(sym+add)@got@tprel@ha */
+DECL|macro|R_PPC64_GOT_DTPREL16_DS
+mdefine_line|#define R_PPC64_GOT_DTPREL16_DS&t;91 /* half16ds*&t;(sym+add)@got@dtprel */
+DECL|macro|R_PPC64_GOT_DTPREL16_LO_DS
+mdefine_line|#define R_PPC64_GOT_DTPREL16_LO_DS 92 /* half16ds (sym+add)@got@dtprel@l */
+DECL|macro|R_PPC64_GOT_DTPREL16_HI
+mdefine_line|#define R_PPC64_GOT_DTPREL16_HI&t;93 /* half16&t;(sym+add)@got@dtprel@h */
+DECL|macro|R_PPC64_GOT_DTPREL16_HA
+mdefine_line|#define R_PPC64_GOT_DTPREL16_HA&t;94 /* half16&t;(sym+add)@got@dtprel@ha */
+DECL|macro|R_PPC64_TPREL16_DS
+mdefine_line|#define R_PPC64_TPREL16_DS&t;95 /* half16ds*&t;(sym+add)@tprel */
+DECL|macro|R_PPC64_TPREL16_LO_DS
+mdefine_line|#define R_PPC64_TPREL16_LO_DS&t;96 /* half16ds&t;(sym+add)@tprel@l */
+DECL|macro|R_PPC64_TPREL16_HIGHER
+mdefine_line|#define R_PPC64_TPREL16_HIGHER&t;97 /* half16&t;(sym+add)@tprel@higher */
+DECL|macro|R_PPC64_TPREL16_HIGHERA
+mdefine_line|#define R_PPC64_TPREL16_HIGHERA&t;98 /* half16&t;(sym+add)@tprel@highera */
+DECL|macro|R_PPC64_TPREL16_HIGHEST
+mdefine_line|#define R_PPC64_TPREL16_HIGHEST&t;99 /* half16&t;(sym+add)@tprel@highest */
+DECL|macro|R_PPC64_TPREL16_HIGHESTA
+mdefine_line|#define R_PPC64_TPREL16_HIGHESTA 100 /* half16&t;(sym+add)@tprel@highesta */
+DECL|macro|R_PPC64_DTPREL16_DS
+mdefine_line|#define R_PPC64_DTPREL16_DS&t;101 /* half16ds* (sym+add)@dtprel */
+DECL|macro|R_PPC64_DTPREL16_LO_DS
+mdefine_line|#define R_PPC64_DTPREL16_LO_DS&t;102 /* half16ds&t;(sym+add)@dtprel@l */
+DECL|macro|R_PPC64_DTPREL16_HIGHER
+mdefine_line|#define R_PPC64_DTPREL16_HIGHER&t;103 /* half16&t;(sym+add)@dtprel@higher */
+DECL|macro|R_PPC64_DTPREL16_HIGHERA
+mdefine_line|#define R_PPC64_DTPREL16_HIGHERA 104 /* half16&t;(sym+add)@dtprel@highera */
+DECL|macro|R_PPC64_DTPREL16_HIGHEST
+mdefine_line|#define R_PPC64_DTPREL16_HIGHEST 105 /* half16&t;(sym+add)@dtprel@highest */
+DECL|macro|R_PPC64_DTPREL16_HIGHESTA
+mdefine_line|#define R_PPC64_DTPREL16_HIGHESTA 106 /* half16&t;(sym+add)@dtprel@highesta */
 multiline_comment|/* Keep this the last entry.  */
 DECL|macro|R_PPC64_NUM
-mdefine_line|#define R_PPC64_NUM&t;&t;67
+mdefine_line|#define R_PPC64_NUM&t;&t;107
 macro_line|#endif /* __PPC64_ELF_H */
 eof

@@ -128,5 +128,10 @@ id|__vector128
 suffix:semicolon
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
+DECL|typedef|vector128
+r_typedef
+id|__vector128
+id|vector128
+suffix:semicolon
 macro_line|#endif /* _PPC64_TYPES_H */
 eof

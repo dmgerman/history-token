@@ -688,13 +688,15 @@ c_func
 id|giveup_fpu
 )paren
 suffix:semicolon
-DECL|variable|enable_kernel_fp
+macro_line|#ifdef CONFIG_ALTIVEC
+DECL|variable|giveup_altivec
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|enable_kernel_fp
+id|giveup_altivec
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|flush_icache_range
 id|EXPORT_SYMBOL
 c_func
