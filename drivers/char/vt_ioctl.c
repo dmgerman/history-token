@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kbd_diacr.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 DECL|variable|vt_dont_switch
+r_static
 r_char
 id|vt_dont_switch
 suffix:semicolon
@@ -34,17 +35,20 @@ mdefine_line|#define VT_IS_IN_USE(i)&t;(console_driver-&gt;ttys[i] &amp;&amp; co
 DECL|macro|VT_BUSY
 mdefine_line|#define VT_BUSY(i)&t;(VT_IS_IN_USE(i) || i == fg_console || vc_cons[i].d == sel_cons)
 multiline_comment|/*&n; * Console (vt and kd) routines, as defined by USL SVR4 manual, and by&n; * experimentation and study of X386 SYSV handling.&n; *&n; * One point of difference: SYSV vt&squot;s are /dev/vtX, which X &gt;= 0, and&n; * /dev/console is a separate ttyp. Under Linux, /dev/tty0 is /dev/console,&n; * and the vc start at /dev/ttyX, X &gt;= 1. We maintain that here, so we will&n; * always treat our set of vt as numbered 1..MAX_NR_CONSOLES (corresponding to&n; * ttys 0..MAX_NR_CONSOLES-1). Explicitly naming VT 0 is illegal, but using&n; * /dev/tty0 (fg_console) as a target is legal, since an implicit aliasing&n; * to the current console is done by the main ioctl code.&n; */
-multiline_comment|/* Keyboard type: Default is KB_101, but can be set by machine&n; * specific code.&n; */
-DECL|variable|keyboard_type
-r_int
-r_char
-id|keyboard_type
-op_assign
-id|KB_101
-suffix:semicolon
 macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#endif
+r_static
+r_void
+id|complete_change_console
+c_func
+(paren
+r_struct
+id|vc_data
+op_star
+id|vc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * these are the valid i/o ports we&squot;re allowed to change. they map all the&n; * video ports&n; */
 DECL|macro|GPFIRST
 mdefine_line|#define GPFIRST 0x3b4
@@ -1929,7 +1933,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t; * this is naive.&n;&t;&t; */
 id|ucval
 op_assign
-id|keyboard_type
+id|KB_101
 suffix:semicolon
 r_goto
 id|setchar
@@ -4514,6 +4518,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Performs the back end of a vt switch&n; */
 DECL|function|complete_change_console
+r_static
 r_void
 id|complete_change_console
 c_func

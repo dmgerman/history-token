@@ -61,11 +61,6 @@ id|plain_map
 id|NR_KEYS
 )braket
 suffix:semicolon
-r_extern
-r_int
-r_char
-id|keyboard_type
-suffix:semicolon
 macro_line|#endif
 DECL|macro|MAX_NR_FUNC
 mdefine_line|#define MAX_NR_FUNC&t;256&t;/* max nr of strings assigned to keys */

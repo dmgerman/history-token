@@ -261,6 +261,17 @@ r_int
 id|dummy
 )paren
 suffix:semicolon
+r_static
+r_void
+id|set_palette
+c_func
+(paren
+r_struct
+id|vc_data
+op_star
+id|vc
+)paren
+suffix:semicolon
 DECL|variable|printable
 r_static
 r_int
@@ -3385,6 +3396,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|resize_screen
+r_static
 r_inline
 r_int
 id|resize_screen
@@ -10186,6 +10198,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_VT_CONSOLE
 multiline_comment|/*&n; *&t;Console on virtual terminal&n; *&n; * The console must be locked when we get here.&n; */
 DECL|function|vt_console_print
+r_static
 r_void
 id|vt_console_print
 c_func
@@ -10658,6 +10671,7 @@ id|console_driver
 suffix:semicolon
 )brace
 DECL|variable|vt_console_driver
+r_static
 r_struct
 id|console
 id|vt_console_driver
@@ -13346,6 +13360,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Palettes&n; */
 DECL|function|set_palette
+r_static
 r_void
 id|set_palette
 c_func
@@ -13771,6 +13786,7 @@ multiline_comment|/*&n; *  Font switching&n; *&n; *  Currently we only support f
 DECL|macro|max_font_size
 mdefine_line|#define max_font_size 65536
 DECL|function|con_font_get
+r_static
 r_int
 id|con_font_get
 c_func
@@ -14029,6 +14045,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|con_font_set
+r_static
 r_int
 id|con_font_set
 c_func
@@ -14349,6 +14366,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|con_font_default
+r_static
 r_int
 id|con_font_default
 c_func
@@ -14505,6 +14523,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|con_font_copy
+r_static
 r_int
 id|con_font_copy
 c_func
