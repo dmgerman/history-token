@@ -2445,10 +2445,6 @@ l_int|0
 (brace
 id|cpu_data
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|__alloc_bootmem
 c_func
 (paren

@@ -24,7 +24,6 @@ macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;linux/quota.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -757,7 +756,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|stat-&gt;atime
+id|stat-&gt;atime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_atime
@@ -768,7 +767,18 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|stat-&gt;mtime
+id|stat-&gt;atime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_atime_nsec
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|stat-&gt;mtime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_mtime
@@ -779,10 +789,32 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|stat-&gt;ctime
+id|stat-&gt;mtime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_mtime_nsec
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|stat-&gt;ctime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_ctime
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|stat-&gt;ctime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_ctime_nsec
 )paren
 suffix:semicolon
 id|err
@@ -16253,7 +16285,7 @@ id|i
 comma
 (paren
 r_struct
-id|_fpxreg_ia32
+id|_fpreg_ia32
 op_star
 )paren
 op_amp
@@ -16664,7 +16696,7 @@ id|i
 comma
 (paren
 r_struct
-id|_fpxreg_ia32
+id|_fpreg_ia32
 op_star
 )paren
 op_amp
@@ -20267,7 +20299,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|kbuf-&gt;atime
+id|kbuf-&gt;atime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_atime
@@ -20278,7 +20310,18 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|kbuf-&gt;mtime
+id|kbuf-&gt;atime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_atime_nsec
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|kbuf-&gt;mtime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_mtime
@@ -20289,10 +20332,32 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|kbuf-&gt;ctime
+id|kbuf-&gt;mtime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_mtime_nsec
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|kbuf-&gt;ctime.tv_sec
 comma
 op_amp
 id|ubuf-&gt;st_ctime
+)paren
+suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|kbuf-&gt;ctime.tv_nsec
+comma
+op_amp
+id|ubuf-&gt;st_ctime_nsec
 )paren
 suffix:semicolon
 id|err

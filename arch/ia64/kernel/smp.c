@@ -654,7 +654,7 @@ op_star
 id|mm
 )paren
 (brace
-id|local_flush_tlb_mm
+id|local_finish_flush_tlb_mm
 c_func
 (paren
 id|mm
@@ -683,6 +683,7 @@ l_int|1
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/*&n;&t; * We could optimize this further by using mm-&gt;cpu_vm_mask to track which CPUs&n;&t; * have been running in the address space.  It&squot;s not clear that this is worth the&n;&t; * trouble though: to avoid races, we have to raise the IPI on the target CPU&n;&t; * anyhow, and once a CPU is interrupted, the cost of local_flush_tlb_all() is&n;&t; * rather trivial.&n;&t; */
 id|smp_call_function
 c_func
 (paren
@@ -696,7 +697,7 @@ r_void
 op_star
 )paren
 )paren
-id|local_flush_tlb_mm
+id|local_finish_flush_tlb_mm
 comma
 id|mm
 comma

@@ -42,8 +42,8 @@ macro_line|#endif
 r_static
 r_inline
 r_void
-DECL|function|local_flush_tlb_mm
-id|local_flush_tlb_mm
+DECL|function|local_finish_flush_tlb_mm
+id|local_finish_flush_tlb_mm
 (paren
 r_struct
 id|mm_struct
@@ -58,20 +58,12 @@ id|mm
 op_eq
 id|current-&gt;active_mm
 )paren
-(brace
-id|get_new_mmu_context
+id|activate_context
 c_func
 (paren
 id|mm
 )paren
 suffix:semicolon
-id|reload_context
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Flush a specified user mapping.  This is called, e.g., as a result of fork() and&n; * exit().  fork() ends up here because the copy-on-write mechanism needs to write-protect&n; * the PTEs of the parent task.&n; */
 r_static
@@ -121,7 +113,7 @@ id|mm
 )paren
 suffix:semicolon
 macro_line|#else
-id|local_flush_tlb_mm
+id|local_finish_flush_tlb_mm
 c_func
 (paren
 id|mm
