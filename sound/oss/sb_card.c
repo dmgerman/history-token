@@ -2158,7 +2158,7 @@ comma
 id|ISAPNP_DEVICE
 c_func
 (paren
-l_int|0x0047
+l_int|0x0046
 )paren
 comma
 id|ISAPNP_VENDOR
