@@ -2842,6 +2842,7 @@ id|des_tv
 (brace
 DECL|member|len
 r_int
+r_int
 id|len
 suffix:semicolon
 DECL|member|fail

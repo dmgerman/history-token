@@ -72,6 +72,7 @@ op_star
 id|crypto_alg_lookup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -297,6 +298,7 @@ op_star
 id|crypto_alloc_tfm
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -641,8 +643,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: blocksize %Zd exceeds max. &quot;
-l_string|&quot;size %d&bslash;n&quot;
+l_string|&quot;%s: blocksize %u exceeds max. &quot;
+l_string|&quot;size %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -974,7 +976,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;blocksize  : %Zd&bslash;n&quot;
+l_string|&quot;blocksize  : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_blocksize
 )paren
@@ -995,7 +997,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;keysize    : %Zd&bslash;n&quot;
+l_string|&quot;keysize    : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_cipher.cia_keysize
 )paren
@@ -1005,7 +1007,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;ivsize     : %Zd&bslash;n&quot;
+l_string|&quot;ivsize     : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_cipher.cia_ivsize
 )paren
@@ -1020,7 +1022,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;digestsize : %Zd&bslash;n&quot;
+l_string|&quot;digestsize : %u&bslash;n&quot;
 comma
 id|alg-&gt;cra_digest.dia_digestsize
 )paren

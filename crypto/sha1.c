@@ -1613,6 +1613,7 @@ op_star
 id|data
 comma
 r_int
+r_int
 id|len
 )paren
 (brace
@@ -1623,6 +1624,7 @@ id|sctx
 op_assign
 id|ctx
 suffix:semicolon
+r_int
 r_int
 id|i
 comma

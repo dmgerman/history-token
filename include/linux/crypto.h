@@ -59,9 +59,11 @@ id|cipher_alg
 (brace
 DECL|member|cia_keysize
 r_int
+r_int
 id|cia_keysize
 suffix:semicolon
 DECL|member|cia_ivsize
+r_int
 r_int
 id|cia_ivsize
 suffix:semicolon
@@ -82,9 +84,10 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
-r_int
+id|u32
 op_star
 id|flags
 )paren
@@ -104,6 +107,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -124,6 +128,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -136,6 +141,7 @@ r_struct
 id|digest_alg
 (brace
 DECL|member|dia_digestsize
+r_int
 r_int
 id|dia_digestsize
 suffix:semicolon
@@ -167,6 +173,7 @@ id|u8
 op_star
 id|data
 comma
+r_int
 r_int
 id|len
 )paren
@@ -231,18 +238,21 @@ id|list_head
 id|cra_list
 suffix:semicolon
 DECL|member|cra_flags
-r_int
+id|u32
 id|cra_flags
 suffix:semicolon
 DECL|member|cra_blocksize
+r_int
 r_int
 id|cra_blocksize
 suffix:semicolon
 DECL|member|cra_ctxsize
 r_int
+r_int
 id|cra_ctxsize
 suffix:semicolon
 DECL|member|cra_name
+r_const
 r_char
 id|cra_name
 (braket
@@ -334,6 +344,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 )paren
 suffix:semicolon
@@ -355,6 +366,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 suffix:semicolon
@@ -375,6 +387,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren
@@ -416,6 +429,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 suffix:semicolon
@@ -454,6 +468,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 comma
 id|u8
@@ -478,6 +493,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
 r_struct
@@ -485,6 +501,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 comma
@@ -543,7 +560,7 @@ op_star
 id|crt_ctx
 suffix:semicolon
 DECL|member|crt_flags
-r_int
+id|u32
 id|crt_flags
 suffix:semicolon
 r_union
@@ -583,6 +600,7 @@ op_star
 id|crypto_alloc_tfm
 c_func
 (paren
+r_const
 r_char
 op_star
 id|alg_name
@@ -605,6 +623,7 @@ multiline_comment|/*&n; * Transform helpers which query the underlying algorithm
 DECL|function|crypto_tfm_alg_name
 r_static
 r_inline
+r_const
 r_char
 op_star
 id|crypto_tfm_alg_name
@@ -678,6 +697,7 @@ DECL|function|crypto_tfm_alg_keysize
 r_static
 r_inline
 r_int
+r_int
 id|crypto_tfm_alg_keysize
 c_func
 (paren
@@ -694,6 +714,7 @@ suffix:semicolon
 DECL|function|crypto_tfm_alg_ivsize
 r_static
 r_inline
+r_int
 r_int
 id|crypto_tfm_alg_ivsize
 c_func
@@ -712,6 +733,7 @@ DECL|function|crypto_tfm_alg_blocksize
 r_static
 r_inline
 r_int
+r_int
 id|crypto_tfm_alg_blocksize
 c_func
 (paren
@@ -728,6 +750,7 @@ suffix:semicolon
 DECL|function|crypto_tfm_alg_digestsize
 r_static
 r_inline
+r_int
 r_int
 id|crypto_tfm_alg_digestsize
 c_func
@@ -794,6 +817,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren
@@ -881,6 +905,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 comma
 id|u8
@@ -932,6 +957,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
 r_struct
@@ -939,6 +965,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 comma
@@ -996,6 +1023,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 )paren
 (brace
@@ -1042,6 +1070,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren
@@ -1090,6 +1119,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 (brace
@@ -1131,10 +1161,12 @@ id|crypto_tfm
 op_star
 id|tfm
 comma
+r_const
 id|u8
 op_star
 id|src
 comma
+r_int
 r_int
 id|len
 )paren
@@ -1178,6 +1210,7 @@ id|u8
 op_star
 id|dst
 comma
+r_int
 r_int
 id|len
 )paren

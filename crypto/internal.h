@@ -121,6 +121,7 @@ r_void
 id|crypto_alg_autoload
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name

@@ -3177,6 +3177,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -7648,8 +7649,6 @@ l_int|7
 )braket
 op_assign
 id|y
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|des_small_fips_decrypt
@@ -7666,6 +7665,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -12137,8 +12137,6 @@ l_int|7
 )braket
 op_assign
 id|y
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * RFC2451: Weak key checks SHOULD be performed.&n; */
@@ -12158,9 +12156,10 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
-r_int
+id|u32
 op_star
 id|flags
 )paren
@@ -13337,9 +13336,10 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
-r_int
+id|u32
 op_star
 id|flags
 )paren
@@ -13381,6 +13381,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -13420,6 +13421,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -13462,13 +13464,15 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
-r_int
+id|u32
 op_star
 id|flags
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
@@ -13625,6 +13629,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -13676,8 +13681,6 @@ id|dst
 comma
 id|dst
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|des3_ede_decrypt
@@ -13694,6 +13697,7 @@ id|u8
 op_star
 id|dst
 comma
+r_const
 id|u8
 op_star
 id|src
@@ -13745,8 +13749,6 @@ id|dst
 comma
 id|dst
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|variable|des_alg

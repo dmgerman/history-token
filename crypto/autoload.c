@@ -10,6 +10,7 @@ r_void
 id|crypto_alg_autoload
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
@@ -20,8 +21,6 @@ c_func
 (paren
 id|name
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 eof

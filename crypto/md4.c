@@ -46,6 +46,7 @@ id|u32
 id|x
 comma
 r_int
+r_int
 id|s
 )paren
 (brace
@@ -190,6 +191,7 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|words
 )paren
 (brace
@@ -222,6 +224,7 @@ id|u32
 op_star
 id|buf
 comma
+r_int
 r_int
 id|words
 )paren
@@ -1344,6 +1347,7 @@ op_star
 id|data
 comma
 r_int
+r_int
 id|len
 )paren
 (brace
@@ -1523,6 +1527,7 @@ op_assign
 id|ctx
 suffix:semicolon
 r_const
+r_int
 r_int
 id|offset
 op_assign

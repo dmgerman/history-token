@@ -18,8 +18,6 @@ op_star
 id|tfm
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|crypto_decompress
 r_static
@@ -33,8 +31,6 @@ op_star
 id|tfm
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|crypto_init_compress_flags
 r_int

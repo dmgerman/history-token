@@ -62,6 +62,7 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|len
 )paren
 (brace
@@ -102,6 +103,7 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -133,6 +135,7 @@ op_star
 id|hmac_md5_tv
 suffix:semicolon
 r_int
+r_int
 id|tsize
 suffix:semicolon
 id|printk
@@ -159,7 +162,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -232,7 +235,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -609,7 +612,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -655,7 +658,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -1052,6 +1055,7 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -1077,6 +1081,7 @@ id|md4_testvec
 op_star
 id|md4_tv
 suffix:semicolon
+r_int
 r_int
 id|tsize
 suffix:semicolon
@@ -1104,7 +1109,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -1177,7 +1182,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -1330,6 +1335,7 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -1354,6 +1360,7 @@ id|sg
 l_int|2
 )braket
 suffix:semicolon
+r_int
 r_int
 id|tsize
 suffix:semicolon
@@ -1387,7 +1394,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -1460,7 +1467,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -1837,7 +1844,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -1883,7 +1890,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -2275,12 +2282,14 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|ret
 comma
 id|i
 comma
 id|len
 suffix:semicolon
+r_int
 r_int
 id|tsize
 suffix:semicolon
@@ -2342,7 +2351,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -2415,7 +2424,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -5529,7 +5538,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -5575,7 +5584,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -6661,7 +6670,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -6772,7 +6781,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -7403,7 +7412,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -7455,7 +7464,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -8055,8 +8064,6 @@ c_func
 id|tfm
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_void
 DECL|function|test_des3_ede
@@ -8067,12 +8074,14 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|ret
 comma
 id|i
 comma
 id|len
 suffix:semicolon
+r_int
 r_int
 id|tsize
 suffix:semicolon
@@ -8129,7 +8138,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -8202,7 +8211,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -8425,7 +8434,7 @@ id|TVMEMSIZE
 id|printk
 c_func
 (paren
-l_string|&quot;template (%Zd) too big for tvmem (%d)&bslash;n&quot;
+l_string|&quot;template (%u) too big for tvmem (%u)&bslash;n&quot;
 comma
 id|tsize
 comma
@@ -8471,7 +8480,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;test %d:&bslash;n&quot;
+l_string|&quot;test %u:&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -8677,8 +8686,6 @@ c_func
 (paren
 id|tfm
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 r_static

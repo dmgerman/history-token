@@ -20,6 +20,7 @@ comma
 id|u8
 op_star
 comma
+r_const
 id|u8
 op_star
 )paren
@@ -110,6 +111,7 @@ DECL|function|sglen
 r_static
 r_inline
 r_int
+r_int
 id|sglen
 c_func
 (paren
@@ -119,13 +121,14 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|n
 suffix:semicolon
 r_for
@@ -163,6 +166,7 @@ multiline_comment|/*&n; * Do not call this unless the total length of all of the
 DECL|function|copy_chunks
 r_static
 r_int
+r_int
 id|copy_chunks
 c_func
 (paren
@@ -181,11 +185,14 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|sgidx
 comma
 r_int
+r_int
 id|rlen
 comma
+r_int
 r_int
 op_star
 id|last
@@ -194,6 +201,7 @@ r_int
 id|in
 )paren
 (brace
+r_int
 r_int
 id|i
 comma
@@ -205,6 +213,7 @@ id|j
 comma
 id|aligned
 suffix:semicolon
+r_int
 r_int
 id|bsize
 op_assign
@@ -240,6 +249,7 @@ op_increment
 )paren
 (brace
 r_int
+r_int
 id|len
 op_assign
 id|sg
@@ -249,6 +259,7 @@ id|i
 dot
 id|length
 suffix:semicolon
+r_int
 r_int
 id|clen
 suffix:semicolon
@@ -268,11 +279,9 @@ l_int|0
 suffix:semicolon
 id|clen
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-comma
 id|len
 comma
 id|bsize
@@ -399,6 +408,7 @@ DECL|function|gather_chunks
 r_static
 r_inline
 r_int
+r_int
 id|gather_chunks
 c_func
 (paren
@@ -417,11 +427,14 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|sgidx
 comma
 r_int
+r_int
 id|rlen
 comma
+r_int
 r_int
 op_star
 id|last
@@ -451,6 +464,7 @@ DECL|function|scatter_chunks
 r_static
 r_inline
 r_int
+r_int
 id|scatter_chunks
 c_func
 (paren
@@ -469,11 +483,14 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|sgidx
 comma
 r_int
+r_int
 id|rlen
 comma
+r_int
 r_int
 op_star
 id|last
@@ -517,6 +534,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 comma
 id|cryptfn_t
@@ -530,10 +548,12 @@ id|enc
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|coff
 suffix:semicolon
+r_int
 r_int
 id|bsize
 op_assign
@@ -592,6 +612,7 @@ op_increment
 )paren
 (brace
 r_int
+r_int
 id|n
 op_assign
 l_int|0
@@ -600,6 +621,7 @@ id|boff
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|len
 op_assign
@@ -973,6 +995,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 )paren
 (brace
@@ -1009,6 +1032,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren
@@ -1048,6 +1072,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 (brace
@@ -1085,6 +1110,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren
@@ -1124,6 +1150,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 (brace
@@ -1161,6 +1188,7 @@ id|scatterlist
 op_star
 id|sg
 comma
+r_int
 r_int
 id|nsg
 )paren

@@ -24,8 +24,6 @@ c_func
 id|tfm-&gt;crt_ctx
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|update
 r_static
@@ -44,9 +42,11 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -117,8 +117,6 @@ id|tfm
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|final
 r_static
@@ -146,8 +144,6 @@ comma
 id|out
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|digest
 r_static
@@ -166,6 +162,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 comma
 id|u8
@@ -173,6 +170,7 @@ op_star
 id|out
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -259,8 +257,6 @@ comma
 id|out
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|hmac
 r_static
@@ -278,6 +274,7 @@ op_star
 id|key
 comma
 r_int
+r_int
 id|keylen
 comma
 r_struct
@@ -286,6 +283,7 @@ op_star
 id|sg
 comma
 r_int
+r_int
 id|nsg
 comma
 id|u8
@@ -293,6 +291,7 @@ op_star
 id|out
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -616,8 +615,6 @@ id|tfm
 comma
 id|out
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|crypto_init_digest_flags
