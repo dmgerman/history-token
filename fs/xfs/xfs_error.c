@@ -1031,7 +1031,6 @@ id|ap
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 r_void
 DECL|function|xfs_stack_trace
 id|xfs_stack_trace
@@ -1046,16 +1045,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* __KERNEL__ */
-macro_line|#ifndef __KERNEL__
-DECL|variable|xfs_error_level
-r_int
-id|xfs_error_level
-op_assign
-id|XFS_ERRLEVEL_HIGH
-suffix:semicolon
-multiline_comment|/* systune in SIM library */
-macro_line|#endif /* ! __KERNEL */
 r_void
 DECL|function|xfs_error_report
 id|xfs_error_report
@@ -1140,13 +1129,11 @@ id|ra
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __KERNEL__
 id|xfs_stack_trace
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 )brace
 )brace
 r_void
