@@ -3415,7 +3415,28 @@ id|ss-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: complete all pending commands with&n;&t; * cmd-&gt;result = DID_ERROR &lt;&lt; 16 */
+multiline_comment|/* Complete all pending commands with * cmd-&gt;result = DID_ERROR &lt;&lt; 16.&n;&t; * Since we only queue one command at a time, this is pretty easy. */
+r_if
+c_cond
+(paren
+id|ss-&gt;srb
+)paren
+(brace
+id|ss-&gt;srb-&gt;result
+op_assign
+id|DID_ERROR
+op_lshift
+l_int|16
+suffix:semicolon
+id|ss-&gt;srb
+op_member_access_from_pointer
+id|scsi_done
+c_func
+(paren
+id|ss-&gt;srb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
 multiline_comment|/* remove the pointer to the data structure we were using */
 (paren
