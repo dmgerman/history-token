@@ -498,6 +498,11 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* interrupt&t;&t;&t;&t;*/
+DECL|member|dma
+r_int
+id|dma
+suffix:semicolon
+multiline_comment|/* dma channel&t;&t;&t;&t;*/
 DECL|member|SCp
 id|Scsi_Pointer
 id|SCp

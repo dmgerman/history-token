@@ -10964,7 +10964,7 @@ id|info-&gt;host-&gt;io_port
 comma
 id|info-&gt;scsi.irq
 comma
-id|info-&gt;host-&gt;dma_channel
+id|info-&gt;scsi.dma
 )paren
 suffix:semicolon
 )brace
