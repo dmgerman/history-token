@@ -1102,21 +1102,11 @@ r_int
 id|intr_enabled
 suffix:semicolon
 multiline_comment|/* FW Interrupt flag - 0 disabled, 1 enabled */
-DECL|member|resource
+DECL|member|pdev
 r_struct
-id|resource
+id|pci_dev
 op_star
-id|resource
-suffix:semicolon
-DECL|member|res_start
-r_int
-r_int
-id|res_start
-suffix:semicolon
-DECL|member|res_len
-r_int
-r_int
-id|res_len
+id|pdev
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|member|card_lock

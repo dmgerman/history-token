@@ -1796,6 +1796,9 @@ id|PAGE_SIZE
 op_minus
 id|pgoff
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1814,6 +1817,8 @@ id|src
 comma
 id|k
 )paren
+)paren
+r_return
 suffix:semicolon
 id|len
 op_sub_assign
@@ -1827,6 +1832,9 @@ OG
 id|PAGE_SIZE
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1842,6 +1850,8 @@ id|k
 comma
 id|PAGE_SIZE
 )paren
+)paren
+r_return
 suffix:semicolon
 id|k
 op_add_assign
@@ -1852,6 +1862,9 @@ op_sub_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1867,6 +1880,8 @@ id|k
 comma
 id|len
 )paren
+)paren
+r_return
 suffix:semicolon
 )brace
 r_else
@@ -1965,6 +1980,9 @@ id|voice_num
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -1990,6 +2008,10 @@ id|src
 comma
 id|woinst-&gt;format.bytespervoicesample
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|src
 op_add_assign

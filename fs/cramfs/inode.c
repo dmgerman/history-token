@@ -118,6 +118,14 @@ id|inode-&gt;i_gid
 op_assign
 id|cramfs_inode-&gt;gid
 suffix:semicolon
+id|inode-&gt;i_mtime
+op_assign
+id|inode-&gt;i_atime
+op_assign
+id|inode-&gt;i_ctime
+op_assign
+l_int|0
+suffix:semicolon
 id|inode-&gt;i_ino
 op_assign
 id|CRAMINO

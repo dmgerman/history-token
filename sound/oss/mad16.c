@@ -1336,6 +1336,14 @@ id|cfg
 op_assign
 l_int|0
 suffix:semicolon
+id|cfg
+op_or_assign
+(paren
+l_int|0x0f
+op_amp
+id|mad16_conf
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1439,6 +1447,27 @@ l_int|0x04
 suffix:colon
 l_int|0x00
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mad16_cdsel
+op_amp
+l_int|0x20
+)paren
+(brace
+id|mad_write
+c_func
+(paren
+id|MC4_PORT
+comma
+l_int|0x62
+op_or
+id|cfg
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* opl4 */
+r_else
 id|mad_write
 c_func
 (paren
@@ -1449,6 +1478,7 @@ op_or
 id|cfg
 )paren
 suffix:semicolon
+multiline_comment|/* opl3 */
 id|mad_write
 c_func
 (paren
@@ -1958,6 +1988,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2002,6 +2033,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * Set the WSS address&n; */
 id|tmp
 op_assign
@@ -2083,6 +2115,15 @@ op_and_assign
 op_complement
 l_int|0x0f
 suffix:semicolon
+id|tmp
+op_or_assign
+(paren
+id|mad16_conf
+op_amp
+l_int|0x0f
+)paren
+suffix:semicolon
+multiline_comment|/* CD-ROM and joystick bits */
 id|mad_write
 c_func
 (paren
@@ -2093,11 +2134,7 @@ id|tmp
 suffix:semicolon
 id|tmp
 op_assign
-id|mad_read
-c_func
-(paren
-id|MC2_PORT
-)paren
+id|mad16_cdsel
 suffix:semicolon
 id|mad_write
 c_func
@@ -2257,6 +2294,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2301,6 +2339,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
+)brace
 id|wss_init
 c_func
 (paren
@@ -3421,7 +3460,7 @@ r_int
 id|__initdata
 id|joystick
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -3853,7 +3892,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;         *    Build the config words&n;         */
+multiline_comment|/*&n;&t; *    Build the config words&n;&t; */
 id|mad16_conf
 op_assign
 (paren
@@ -4256,6 +4295,33 @@ op_amp
 id|cfg_mpu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|gameport.io
+)paren
+(brace
+multiline_comment|/* the gameport was initialized so we must free it up */
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|gameport
+)paren
+suffix:semicolon
+id|gameport.io
+op_assign
+l_int|0
+suffix:semicolon
+id|release_region
+c_func
+(paren
+l_int|0x201
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|unload_mad16
 c_func
 (paren

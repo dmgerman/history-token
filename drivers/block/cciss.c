@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for Compaq SMART2 Controllers&n; *    Copyright 2000 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *&n; */
+multiline_comment|/*&n; *    Disk Array driver for HP SA 5xxx and 6xxx Controllers&n; *    Copyright 2000, 2002 Hewlett-Packard Development Company, L.P.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to Cciss-discuss@lists.sourceforge.net&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -126,6 +126,70 @@ l_int|0
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_CISSC
+comma
+l_int|0x0E11
+comma
+l_int|0x409A
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_CISSC
+comma
+l_int|0x0E11
+comma
+l_int|0x409B
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_CISSC
+comma
+l_int|0x0E11
+comma
+l_int|0x409C
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_COMPAQ
+comma
+id|PCI_DEVICE_ID_COMPAQ_CISSC
+comma
+l_int|0x0E11
+comma
+l_int|0x409D
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -185,6 +249,42 @@ l_string|&quot;Smart Array 5312&quot;
 comma
 op_amp
 id|SA5B_access
+)brace
+comma
+(brace
+l_int|0x409A0E11
+comma
+l_string|&quot;Smart Array 641&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x409B0E11
+comma
+l_string|&quot;Smart Array 642&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x409C0E11
+comma
+l_string|&quot;Smart Array 6400&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x409D0E11
+comma
+l_string|&quot;Smart Array 6400 EM&quot;
+comma
+op_amp
+id|SA5_access
 )brace
 comma
 )brace

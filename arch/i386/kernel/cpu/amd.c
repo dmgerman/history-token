@@ -249,19 +249,6 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;K6 BUG %ld %d (Report these if test report is incorrect)&bslash;n&quot;
-comma
-id|d
-comma
-l_int|20
-op_star
-id|K6_BUG_LOOP
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
 l_string|&quot;AMD K6 stepping B detected - &quot;
 )paren
 suffix:semicolon
@@ -292,7 +279,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Please see http://www.mygale.com/~poulot/k6bug.html&bslash;n&quot;
+l_string|&quot;Please see http://membres.lycos.fr/poulot/k6bug.html&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
