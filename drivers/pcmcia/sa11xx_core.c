@@ -3127,6 +3127,17 @@ id|ret
 comma
 id|i
 suffix:semicolon
+multiline_comment|/*&n;&t; * set default MECR calculation if the board specific&n;&t; * code did not specify one...&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ops-&gt;socket_get_timing
+)paren
+id|ops-&gt;socket_get_timing
+op_assign
+id|sa1100_pcmcia_default_mecr_timing
+suffix:semicolon
 id|cls
 op_assign
 id|kmalloc
@@ -3179,17 +3190,6 @@ suffix:semicolon
 id|cls-&gt;nsock
 op_assign
 id|nr
-suffix:semicolon
-multiline_comment|/*&n;&t; * set default MECR calculation if the board specific&n;&t; * code did not specify one...&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ops-&gt;socket_get_timing
-)paren
-id|ops-&gt;socket_get_timing
-op_assign
-id|sa1100_pcmcia_default_mecr_timing
 suffix:semicolon
 id|cpu_clock
 op_assign
@@ -3859,6 +3859,11 @@ c_func
 id|sock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skt-&gt;ops
+)paren
 id|sa1100_pcmcia_set_mecr
 c_func
 (paren
