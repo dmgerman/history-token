@@ -56,11 +56,11 @@ suffix:semicolon
 DECL|function|sign_invert
 r_static
 r_inline
-r_int
+id|u16
 id|sign_invert
 c_func
 (paren
-r_int
+id|u16
 id|a
 )paren
 (brace
@@ -193,8 +193,6 @@ id|i
 op_plus
 l_int|2
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -214,8 +212,6 @@ id|i
 op_plus
 l_int|3
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -235,8 +231,6 @@ id|i
 op_plus
 l_int|4
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 )brace
@@ -263,8 +257,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -288,8 +280,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -313,8 +303,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 )brace
@@ -435,8 +423,6 @@ l_int|2
 op_plus
 id|i
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -456,8 +442,6 @@ l_int|3
 op_plus
 id|i
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -477,8 +461,6 @@ l_int|4
 op_plus
 id|i
 )braket
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 )brace
@@ -505,8 +487,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -530,8 +510,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -555,8 +533,6 @@ op_plus
 id|i
 )braket
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 )brace
@@ -1083,8 +1059,6 @@ c_func
 (paren
 id|a
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|hwwrite
@@ -1099,8 +1073,6 @@ c_func
 (paren
 id|b
 )paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 )brace
