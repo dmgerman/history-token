@@ -6072,7 +6072,17 @@ id|state
 suffix:semicolon
 )brace
 r_return
+id|put_user
+c_func
+(paren
 id|ret
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETBLKSIZE

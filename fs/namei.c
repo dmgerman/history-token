@@ -4548,6 +4548,11 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+id|error
+op_assign
+op_minus
+id|ELOOP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4557,10 +4562,6 @@ op_eq
 l_int|32
 )paren
 (brace
-id|dentry
-op_assign
-id|nd-&gt;dentry
-suffix:semicolon
 id|putname
 c_func
 (paren
@@ -4568,7 +4569,7 @@ id|nd-&gt;last.name
 )paren
 suffix:semicolon
 r_goto
-id|ok
+m_exit
 suffix:semicolon
 )brace
 id|dir

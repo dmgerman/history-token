@@ -558,6 +558,12 @@ id|ino
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: we must free any quota before locking the superblock,&n;&t; * as writing the quota to disk may need the lock as well.&n;&t; */
+id|DQUOT_INIT
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|DQUOT_FREE_INODE
 c_func
 (paren
@@ -1537,10 +1543,6 @@ id|sb-&gt;s_dirt
 op_assign
 l_int|1
 suffix:semicolon
-id|inode-&gt;i_mode
-op_assign
-id|mode
-suffix:semicolon
 id|inode-&gt;i_uid
 op_assign
 id|current-&gt;fsuid
@@ -1590,6 +1592,10 @@ r_else
 id|inode-&gt;i_gid
 op_assign
 id|current-&gt;fsgid
+suffix:semicolon
+id|inode-&gt;i_mode
+op_assign
+id|mode
 suffix:semicolon
 id|inode-&gt;i_ino
 op_assign

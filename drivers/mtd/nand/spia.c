@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/mtd/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: spia.c,v 1.9 2001/06/02 14:47:16 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
+multiline_comment|/*&n; *  drivers/mtd/spia.c&n; *&n; *  Copyright (C) 2000 Steven J. Hill (sjhill@cotw.com)&n; *&n; * $Id: spia.c,v 1.11 2001/07/03 17:50:56 sjhill Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Overview:&n; *   This is a device driver for the NAND flash device found on the&n; *   SPIA board which utilizes the Toshiba TC58V64AFT part. This is&n; *   a 64Mibit (8MiB x 8 bits) NAND flash device.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -15,6 +15,15 @@ id|spia_mtd
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n; * Values specific to the SPIA board (used with EP7212 processor)&n; */
+DECL|macro|SPIA_IO_ADDR
+mdefine_line|#define SPIA_IO_ADDR&t;= 0xd0000000&t;/* Start of EP7212 IO address space */
+DECL|macro|SPIA_FIO_ADDR
+mdefine_line|#define SPIA_FIO_ADDR&t;= 0xf0000000&t;/* Address where flash is mapped */
+DECL|macro|SPIA_PEDR
+mdefine_line|#define SPIA_PEDR&t;= 0x0080&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data register&n;&t;&t;&t;&t;&t; * where the CLE, ALE and NCE pins&n;&t;&t;&t;&t;&t; * are wired to.&n;&t;&t;&t;&t;&t; */
+DECL|macro|SPIA_PEDDR
+mdefine_line|#define SPIA_PEDDR&t;= 0x00c0&t;/*&n;&t;&t;&t;&t;&t; * IO offset to Port E data direction&n;&t;&t;&t;&t;&t; * register so we can control the IO&n;&t;&t;&t;&t;&t; * lines.&n;&t;&t;&t;&t;&t; */
 multiline_comment|/*&n; * Module stuff&n; */
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20212 &amp;&amp; defined(MODULE)
 DECL|macro|spia_init
@@ -22,6 +31,98 @@ mdefine_line|#define spia_init init_module
 DECL|macro|spia_cleanup
 mdefine_line|#define spia_cleanup cleanup_module
 macro_line|#endif
+DECL|variable|spia_io_base
+r_static
+r_int
+id|spia_io_base
+op_assign
+id|SPIA_IO_BASE
+suffix:semicolon
+DECL|variable|spia_fio_base
+r_static
+r_int
+id|spia_fio_base
+op_assign
+id|SPIA_FIO_BASE
+suffix:semicolon
+DECL|variable|spia_pedr
+r_static
+r_int
+id|spia_pedr
+op_assign
+id|SPIA_PEDR
+suffix:semicolon
+DECL|variable|spia_peddr
+r_static
+r_int
+id|spia_peddr
+op_assign
+id|SPIA_PEDDR
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|spia_io_base
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|spia_fio_base
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|spia_pedr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|spia_peddr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;spia_io_base=&quot;
+comma
+id|spia_io_base
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;spia_fio_base=&quot;
+comma
+id|spia_fio_base
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;spia_pedr=&quot;
+comma
+id|spia_pedr
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;spia_peddr=&quot;
+comma
+id|spia_peddr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Define partitions for flash device&n; */
 DECL|variable|partition_info
 r_const
@@ -195,9 +296,9 @@ r_char
 op_star
 )paren
 (paren
-id|IO_BASE
+id|spia_io_base
 op_plus
-id|PEDDR
+id|spia_peddr
 )paren
 )paren
 op_assign
@@ -206,13 +307,13 @@ suffix:semicolon
 multiline_comment|/* Set address of NAND IO lines */
 id|this-&gt;IO_ADDR
 op_assign
-id|FIO_BASE
+id|spia_fio_base
 suffix:semicolon
 id|this-&gt;CTRL_ADDR
 op_assign
-id|IO_BASE
+id|spia_io_base
 op_plus
-id|PEDR
+id|spia_pedr
 suffix:semicolon
 id|this-&gt;CLE
 op_assign
