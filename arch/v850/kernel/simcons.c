@@ -353,8 +353,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* We use `late_initcall&squot; instead of just `__initcall&squot; as a workaround for&n;   the fact that (1) simcons_tty_init can&squot;t be called before tty_init,&n;   (2) tty_init is called via `module_init&squot;, (3) if statically linked,&n;   module_init == device_init, and (4) there&squot;s no ordering of init lists.&n;   We can do this easily because simcons is always statically linked, but&n;   other tty drivers that depend on tty_init and which must use&n;   `module_init&squot; to declare their init routines are likely to be broken.  */
 DECL|variable|simcons_tty_init
-id|__initcall
+id|late_initcall
+c_func
 (paren
 id|simcons_tty_init
 )paren
