@@ -239,13 +239,14 @@ op_assign
 id|unexpected_thermal_interrupt
 suffix:semicolon
 DECL|function|smp_thermal_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_thermal_interrupt
 c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -257,7 +258,6 @@ suffix:semicolon
 id|vendor_thermal_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon

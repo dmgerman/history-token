@@ -34,7 +34,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by Brad Hards, Rory Bolt, and others.&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2004-05-10 Root hub and PCI suspend/resume support; remote wakeup. (db)&n; * 2004-02-24 Replace pci_* with generic dma_* API calls (dsaxena@plexity.net)&n; * 2003-12-29 Rewritten high speed iso transfer support (by Michal Sojka,&n; *&t;&lt;sojkam@centrum.cz&gt;, updates by DB).&n; *&n; * 2002-11-29&t;Correct handling for hw async_next register.&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2004-May-10&quot;
+mdefine_line|#define DRIVER_VERSION &quot;26 Oct 2004&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -334,10 +334,10 @@ l_int|1000
 suffix:semicolon
 )brace
 multiline_comment|/* idle the controller (from running) */
-DECL|function|ehci_ready
+DECL|function|ehci_quiesce
 r_static
 r_void
-id|ehci_ready
+id|ehci_quiesce
 (paren
 r_struct
 id|ehci_hcd
@@ -366,27 +366,18 @@ macro_line|#endif
 multiline_comment|/* wait for any schedule enables/disables to take effect */
 id|temp
 op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
+id|readl
 (paren
-id|ehci-&gt;async-&gt;qh_next.qh
+op_amp
+id|ehci-&gt;regs-&gt;command
 )paren
+op_lshift
+l_int|10
+suffix:semicolon
 id|temp
-op_assign
+op_and_assign
 id|STS_ASS
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ehci-&gt;next_uframe
-op_ne
-op_minus
-l_int|1
-)paren
-id|temp
-op_or_assign
+op_or
 id|STS_PSS
 suffix:semicolon
 r_if
@@ -1143,6 +1134,24 @@ id|sbrn
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|first
+suffix:semicolon
+multiline_comment|/* skip some things on restart paths */
+id|first
+op_assign
+(paren
+id|ehci-&gt;watchdog.data
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|first
+)paren
+(brace
 id|init_timer
 (paren
 op_amp
@@ -1161,6 +1170,7 @@ r_int
 )paren
 id|ehci
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * hw default: 1K periodic list heads, one per frame.&n;&t; * periodic_size can shrink by USBCMD update if hcc_params allows.&n;&t; */
 id|ehci-&gt;periodic_size
 op_assign
@@ -1169,6 +1179,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|first
+op_logical_and
 (paren
 id|retval
 op_assign
@@ -1221,6 +1233,10 @@ suffix:semicolon
 id|ehci-&gt;reclaim
 op_assign
 l_int|NULL
+suffix:semicolon
+id|ehci-&gt;reclaim_ready
+op_assign
+l_int|0
 suffix:semicolon
 id|ehci-&gt;next_uframe
 op_assign
@@ -1354,6 +1370,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; * its dummy is used in hw_alt_next of many tds, to prevent the qh&n;&t; * from automatically advancing to the next td after short reads.&n;&t; */
+r_if
+c_cond
+(paren
+id|first
+)paren
+(brace
 id|ehci-&gt;async-&gt;qh_next.qh
 op_assign
 l_int|NULL
@@ -1405,6 +1427,7 @@ op_amp
 id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  the dma mask is visible through dma_supported(), so&n;&t; * drivers can pass this info along ... like NETIF_F_HIGHDMA,&n;&t; * Scsi_Host.highmem_io, and so forth.  It&squot;s readonly to all&n;&t; * host side drivers though.&n;&t; */
 r_if
 c_cond
@@ -1595,6 +1618,9 @@ id|hcd
 suffix:semicolon
 id|udev
 op_assign
+id|first
+ques
+c_cond
 id|usb_alloc_dev
 (paren
 l_int|NULL
@@ -1603,6 +1629,8 @@ id|bus
 comma
 l_int|0
 )paren
+suffix:colon
+id|bus-&gt;root_hub
 suffix:semicolon
 r_if
 c_cond
@@ -1623,7 +1651,30 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|udev-&gt;speed
+op_assign
+id|USB_SPEED_HIGH
+suffix:semicolon
+id|udev-&gt;state
+op_assign
+id|first
+ques
+c_cond
+id|USB_STATE_ATTACHED
+suffix:colon
+id|USB_STATE_CONFIGURED
+suffix:semicolon
+id|udev-&gt;dev.power.power_state
+op_assign
+id|PM_SUSPEND_ON
+suffix:semicolon
 multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.  (Except where one is integrated,&n;&t; * and there&squot;s no companion controller unless maybe for USB OTG.)&n;&t; */
+r_if
+c_cond
+(paren
+id|first
+)paren
+(brace
 id|ehci-&gt;reboot_notifier.notifier_call
 op_assign
 id|ehci_reboot
@@ -1634,6 +1685,7 @@ op_amp
 id|ehci-&gt;reboot_notifier
 )paren
 suffix:semicolon
+)brace
 id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
@@ -1669,7 +1721,7 @@ id|ehci_info
 (paren
 id|ehci
 comma
-l_string|&quot;USB %x.%x enabled, EHCI %x.%02x, driver %s&bslash;n&quot;
+l_string|&quot;USB %x.%x %s, EHCI %x.%02x, driver %s&bslash;n&quot;
 comma
 (paren
 (paren
@@ -1687,6 +1739,13 @@ op_amp
 l_int|0x0f
 )paren
 comma
+id|first
+ques
+c_cond
+l_string|&quot;initialized&quot;
+suffix:colon
+l_string|&quot;restarted&quot;
+comma
 id|temp
 op_rshift
 l_int|8
@@ -1698,14 +1757,12 @@ comma
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * From here on, khubd concurrently accesses the root&n;&t; * hub; drivers will be talking to enumerated devices.&n;&t; *&n;&t; * Before this point the HC was idle/ready.  After, khubd&n;&t; * and device drivers may start it running.&n;&t; */
-id|udev-&gt;speed
-op_assign
-id|USB_SPEED_HIGH
-suffix:semicolon
+multiline_comment|/*&n;&t; * From here on, khubd concurrently accesses the root&n;&t; * hub; drivers will be talking to enumerated devices.&n;&t; * (On restart paths, khubd already knows about the root&n;&t; * hub and could find work as soon as we wrote FLAG_CF.)&n;&t; *&n;&t; * Before this point the HC was idle/ready.  After, khubd&n;&t; * and device drivers may start it running.&n;&t; */
 r_if
 c_cond
 (paren
+id|first
+op_logical_and
 id|hcd_register_root
 (paren
 id|udev
@@ -1723,7 +1780,7 @@ id|hcd-&gt;state
 op_eq
 id|USB_STATE_RUNNING
 )paren
-id|ehci_ready
+id|ehci_quiesce
 (paren
 id|ehci
 )paren
@@ -1756,6 +1813,11 @@ id|ehci-&gt;regs-&gt;intr_enable
 )paren
 suffix:semicolon
 multiline_comment|/* Turn On Interrupts */
+r_if
+c_cond
+(paren
+id|first
+)paren
 id|create_debug_files
 (paren
 id|ehci
@@ -1799,44 +1861,6 @@ comma
 l_string|&quot;stop&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* no more interrupts ... */
-r_if
-c_cond
-(paren
-id|hcd-&gt;state
-op_eq
-id|USB_STATE_RUNNING
-)paren
-id|ehci_ready
-(paren
-id|ehci
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* must not happen!! */
-id|ehci_err
-(paren
-id|ehci
-comma
-l_string|&quot;stopped in_interrupt!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|del_timer_sync
-(paren
-op_amp
-id|ehci-&gt;watchdog
-)paren
-suffix:semicolon
 multiline_comment|/* Turn off port power on all root hub ports. */
 id|rh_ports
 op_assign
@@ -1859,7 +1883,9 @@ suffix:semicolon
 id|port
 op_increment
 )paren
-(brace
+(paren
+r_void
+)paren
 id|ehci_hub_control
 c_func
 (paren
@@ -1876,7 +1902,33 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* no more interrupts ... */
+id|del_timer_sync
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|HCD_IS_RUNNING
+(paren
+id|ehci-&gt;hcd.state
+)paren
+)paren
+id|ehci_quiesce
+(paren
+id|ehci
+)paren
+suffix:semicolon
 id|ehci_reset
 (paren
 id|ehci
@@ -1888,6 +1940,13 @@ l_int|0
 comma
 op_amp
 id|ehci-&gt;regs-&gt;intr_enable
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ehci-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* let companion controllers work when we aren&squot;t */
@@ -2020,7 +2079,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef&t;CONFIG_PM
 multiline_comment|/* suspend/resume, section 4.3 */
-multiline_comment|/* These routines rely on PCI to handle powerdown and wakeup, and&n; * transceivers that don&squot;t need any software attention to set up&n; * the right sort of wakeup.  &n; */
+multiline_comment|/* These routines rely on the bus (pci, platform, etc)&n; * to handle powerdown and wakeup, and currently also on&n; * transceivers that don&squot;t need any software attention to set up&n; * the right sort of wakeup.  &n; */
 DECL|function|ehci_suspend
 r_static
 r_int
@@ -2044,6 +2103,14 @@ id|hcd_to_ehci
 (paren
 id|hcd
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcd-&gt;self.root_hub-&gt;dev.power.power_state
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -2109,7 +2176,20 @@ id|hcd
 )paren
 suffix:semicolon
 r_int
+id|port
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|root
+op_assign
+id|hcd-&gt;self.root_hub
+suffix:semicolon
+r_int
 id|retval
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 singleline_comment|// maybe restore (PCI) FLADJ
 r_while
@@ -2127,16 +2207,54 @@ id|msleep
 l_int|100
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_USB_SUSPEND
-id|retval
-op_assign
-id|usb_resume_device
+multiline_comment|/* If any port is suspended, we know we can/must resume the HC. */
+r_for
+c_loop
 (paren
-id|hcd-&gt;self.root_hub
+id|port
+op_assign
+id|HCS_N_PORTS
+(paren
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* FIXME lock root hub */
+id|port
+OG
+l_int|0
+suffix:semicolon
+)paren
+(brace
+id|u32
+id|status
+suffix:semicolon
+id|port
+op_decrement
+suffix:semicolon
+id|status
+op_assign
+id|readl
+(paren
+op_amp
+id|ehci-&gt;regs-&gt;port_status
+(braket
+id|port
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|PORT_SUSPEND
+)paren
+(brace
+id|down
+(paren
+op_amp
+id|hcd-&gt;self.root_hub-&gt;serialize
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|ehci_hub_resume
@@ -2144,7 +2262,121 @@ id|ehci_hub_resume
 id|hcd
 )paren
 suffix:semicolon
-macro_line|#endif
+id|up
+(paren
+op_amp
+id|hcd-&gt;self.root_hub-&gt;serialize
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|root-&gt;children
+(braket
+id|port
+)braket
+)paren
+r_continue
+suffix:semicolon
+id|dbg_port
+(paren
+id|ehci
+comma
+id|__FUNCTION__
+comma
+id|port
+op_plus
+l_int|1
+comma
+id|status
+)paren
+suffix:semicolon
+id|usb_set_device_state
+(paren
+id|root-&gt;children
+(braket
+id|port
+)braket
+comma
+id|USB_STATE_NOTATTACHED
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Else reset, to cope with power loss or flush-to-storage&n;&t; * style &quot;resume&quot; having activated BIOS during reboot.&n;&t; */
+r_if
+c_cond
+(paren
+id|port
+op_eq
+l_int|0
+)paren
+(brace
+(paren
+r_void
+)paren
+id|ehci_halt
+(paren
+id|ehci
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|ehci_reset
+(paren
+id|ehci
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|ehci_hc_reset
+(paren
+id|hcd
+)paren
+suffix:semicolon
+multiline_comment|/* emptying the schedule aborts any urbs */
+id|spin_lock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ehci-&gt;reclaim
+)paren
+id|ehci-&gt;reclaim_ready
+op_assign
+l_int|1
+suffix:semicolon
+id|ehci_work
+(paren
+id|ehci
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+multiline_comment|/* restart; khubd will disconnect devices */
+id|retval
+op_assign
+id|ehci_start
+(paren
+id|hcd
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2240,13 +2472,16 @@ multiline_comment|/* the IO watchdog guards against hardware or driver bugs that
 r_if
 c_cond
 (paren
+id|HCD_IS_RUNNING
+(paren
+id|ehci-&gt;hcd.state
+)paren
+op_logical_and
 (paren
 id|ehci-&gt;async-&gt;qh_next.ptr
 op_ne
 l_int|0
-)paren
 op_logical_or
-(paren
 id|ehci-&gt;periodic_sched
 op_ne
 l_int|0
@@ -3467,11 +3702,6 @@ dot
 id|hcd_alloc
 op_assign
 id|ehci_hcd_alloc
-comma
-dot
-id|hcd_free
-op_assign
-id|ehci_hcd_free
 comma
 multiline_comment|/*&n;&t; * managing i/o requests and associated device resources&n;&t; */
 dot

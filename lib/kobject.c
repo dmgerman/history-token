@@ -666,6 +666,12 @@ c_func
 id|parent
 )paren
 suffix:semicolon
+id|kobject_put
+c_func
+(paren
+id|kobj
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
