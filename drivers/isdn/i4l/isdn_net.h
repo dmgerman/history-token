@@ -19,8 +19,6 @@ DECL|macro|CISCO_CTRL
 mdefine_line|#define CISCO_CTRL            0x00
 DECL|macro|CISCO_TYPE_CDP
 mdefine_line|#define CISCO_TYPE_CDP        0x2000
-DECL|macro|CISCO_TYPE_INET
-mdefine_line|#define CISCO_TYPE_INET       0x0800
 DECL|macro|CISCO_TYPE_SLARP
 mdefine_line|#define CISCO_TYPE_SLARP      0x8035
 DECL|macro|CISCO_SLARP_REQUEST
