@@ -213,6 +213,8 @@ id|timer_status
 )paren
 )brace
 comma
+macro_line|#if 0
+multiline_comment|/* ** FIXME **&n;&t; * The following four entries are disabled because they conflict&n;&t; * with the TCOC* definitions.&n;&t; * Unfortunately, the current ioctl32 wrapper uses a single&n;&t; * hash table for all devices.  Once when the wrapper is fixed&n;&t; * with the table based on devices, they&squot;ll be back again.&n;&t; */
 id|MAP_COMPAT
 c_func
 (paren
@@ -231,6 +233,13 @@ c_func
 id|SNDRV_TIMER_IOCTL_CONTINUE
 )paren
 comma
+id|MAP_COMPAT
+c_func
+(paren
+id|SNDRV_TIMER_IOCTL_PAUSE
+)paren
+comma
+macro_line|#endif
 (brace
 l_int|0
 )brace

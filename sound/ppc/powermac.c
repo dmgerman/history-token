@@ -51,13 +51,7 @@ op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|enable
-r_static
-r_int
-id|enable
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* static int enable = 1; */
 macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 DECL|variable|enable_beep
 r_static
@@ -119,30 +113,7 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|enable
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|enable
-comma
-l_string|&quot;Enable this soundchip.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
+multiline_comment|/* MODULE_PARM(enable, &quot;i&quot;);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;   MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC); */
 macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 id|MODULE_PARM
 c_func
@@ -713,6 +684,17 @@ op_star
 id|str
 )paren
 (brace
+r_int
+id|__attribute__
+(paren
+(paren
+id|__unused__
+)paren
+)paren
+id|enable
+op_assign
+l_int|1
+suffix:semicolon
 (paren
 r_void
 )paren

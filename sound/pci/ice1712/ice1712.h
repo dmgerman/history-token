@@ -948,6 +948,12 @@ op_star
 id|cs8427
 suffix:semicolon
 multiline_comment|/* CS8427 I2C device */
+DECL|member|cs8427_timeout
+r_int
+r_int
+id|cs8427_timeout
+suffix:semicolon
+multiline_comment|/* CS8427 reset timeout in HZ/100 */
 DECL|member|i2cdevs
 id|snd_i2c_device_t
 op_star
