@@ -991,6 +991,12 @@ c_cond
 id|c
 )paren
 (brace
+r_int
+r_int
+id|off
+op_assign
+id|vma-&gt;vm_pgoff
+suffix:semicolon
 id|kern_size
 op_assign
 (paren
@@ -1004,7 +1010,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vma-&gt;vm_pgoff
+id|off
 OL
 id|kern_size
 op_logical_and
@@ -1013,7 +1019,7 @@ op_le
 (paren
 id|kern_size
 op_minus
-id|vma-&gt;vm_pgoff
+id|off
 )paren
 )paren
 (brace
@@ -1035,6 +1041,8 @@ c_func
 (paren
 id|c-&gt;vm_pages
 )paren
+op_plus
+id|off
 comma
 id|user_size
 comma
