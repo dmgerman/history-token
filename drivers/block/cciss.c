@@ -1590,10 +1590,10 @@ id|filep
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR
@@ -1614,9 +1614,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;cciss_open %x (%x:%x)&bslash;n&quot;
+l_string|&quot;cciss_open %s (%x:%x)&bslash;n&quot;
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|ctlr
 comma
@@ -1737,10 +1737,10 @@ id|filep
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR
@@ -1761,9 +1761,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;cciss_release %x (%x:%x)&bslash;n&quot;
+l_string|&quot;cciss_release %s (%x:%x)&bslash;n&quot;
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|ctlr
 comma
@@ -1826,10 +1826,10 @@ id|arg
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR

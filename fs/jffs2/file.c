@@ -377,10 +377,10 @@ multiline_comment|/* For these, we don&squot;t actually need to read the old nod
 id|dev
 op_assign
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|dentry-&gt;d_inode-&gt;i_rdev
+id|dentry-&gt;d_inode
 )paren
 op_lshift
 l_int|8

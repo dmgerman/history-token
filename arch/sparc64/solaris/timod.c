@@ -5338,10 +5338,10 @@ op_logical_neg
 id|ino-&gt;i_sock
 op_logical_and
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 op_ne
 l_int|30

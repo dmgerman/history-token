@@ -6731,10 +6731,10 @@ c_func
 id|inode-&gt;i_mode
 )paren
 op_logical_or
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 id|snd_major

@@ -940,10 +940,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|filp-&gt;f_dentry-&gt;d_inode
 )paren
 op_ne
 id|tapechar_major

@@ -184,10 +184,10 @@ id|file
 r_if
 c_cond
 (paren
-id|major
+id|imajor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 op_eq
 id|MEM_MAJOR

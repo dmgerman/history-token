@@ -293,10 +293,10 @@ id|file
 r_int
 id|major
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_int
