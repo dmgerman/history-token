@@ -83,6 +83,8 @@ DECL|macro|ASI_INTR_RECEIVE
 mdefine_line|#define ASI_INTR_RECEIVE&t;0x49 /* IRQ vector receive status&t;&t;*/
 DECL|macro|ASI_UPA_CONFIG
 mdefine_line|#define ASI_UPA_CONFIG&t;&t;0x4a /* UPA config space&t;&t;&t;*/
+DECL|macro|ASI_JBUS_CONFIG
+mdefine_line|#define ASI_JBUS_CONFIG&t;&t;0x4a /* (IIIi) JBUS Config Register&t;&t;*/
 DECL|macro|ASI_SAFARI_CONFIG
 mdefine_line|#define ASI_SAFARI_CONFIG&t;0x4a /* (III) Safari Config Register&t;&t;*/
 DECL|macro|ASI_SAFARI_ADDRESS
