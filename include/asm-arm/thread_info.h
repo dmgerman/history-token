@@ -252,6 +252,8 @@ mdefine_line|#define TI_EXEC_DOMAIN&t;28
 DECL|macro|TI_FPSTATE
 mdefine_line|#define TI_FPSTATE&t;32
 macro_line|#endif
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000
 multiline_comment|/*&n; * thread information flags:&n; *  TIF_SYSCALL_TRACE&t;- syscall trace active&n; *  TIF_NOTIFY_RESUME&t;- resumption notification requested&n; *  TIF_SIGPENDING&t;- signal pending&n; *  TIF_NEED_RESCHED&t;- rescheduling necessary&n; *  TIF_USEDFPU&t;&t;- FPU was used by this task this quantum (SMP)&n; *  TIF_POLLING_NRFLAG&t;- true if poll_idle() is polling TIF_NEED_RESCHED&n; */
 DECL|macro|TIF_NOTIFY_RESUME
 mdefine_line|#define TIF_NOTIFY_RESUME&t;0
