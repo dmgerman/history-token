@@ -981,9 +981,16 @@ id|IS_SHORT_READ
 id|token
 )paren
 op_logical_and
+op_logical_neg
+(paren
+id|token
+op_amp
+id|QTD_STS_HALT
+)paren
+op_logical_and
 id|ehci-&gt;async-&gt;hw_alt_next
 op_eq
-id|qh-&gt;hw_current
+id|qh-&gt;hw_alt_next
 )paren
 r_goto
 id|halt
