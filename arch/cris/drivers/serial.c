@@ -10619,13 +10619,11 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;[%d] rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;[%d] rs_open %s, count = %d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-id|tty-&gt;driver-&gt;name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren

@@ -3024,8 +3024,9 @@ id|mgsl_struct
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -3062,11 +3063,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3088,11 +3085,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3143,7 +3136,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_stop&quot;
 )paren
@@ -3233,7 +3226,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_start&quot;
 )paren
@@ -6938,7 +6931,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_put_char&quot;
 )paren
@@ -7076,7 +7069,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_flush_chars&quot;
 )paren
@@ -7261,7 +7254,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_write&quot;
 )paren
@@ -8051,7 +8044,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_write_room&quot;
 )paren
@@ -8182,7 +8175,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_chars_in_buffer&quot;
 )paren
@@ -8298,7 +8291,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_flush_buffer&quot;
 )paren
@@ -8430,7 +8423,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_send_xchar&quot;
 )paren
@@ -8537,7 +8530,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_throttle&quot;
 )paren
@@ -8661,7 +8654,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_unthrottle&quot;
 )paren
@@ -10792,7 +10785,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_break&quot;
 )paren
@@ -10942,7 +10935,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_ioctl&quot;
 )paren
@@ -11746,7 +11739,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_close&quot;
 )paren
@@ -12103,7 +12096,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_wait_until_sent&quot;
 )paren
@@ -12372,7 +12365,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_hangup&quot;
 )paren
@@ -13107,7 +13100,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;mgsl_open&quot;
 )paren

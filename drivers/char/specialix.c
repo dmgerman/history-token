@@ -306,8 +306,9 @@ r_const
 op_star
 id|port
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -346,11 +347,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -372,11 +369,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -6070,7 +6063,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_open&quot;
 )paren
@@ -6269,7 +6262,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;close&quot;
 )paren
@@ -6707,7 +6700,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_write&quot;
 )paren
@@ -7116,7 +7109,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_put_char&quot;
 )paren
@@ -7224,7 +7217,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_flush_chars&quot;
 )paren
@@ -7336,7 +7329,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_write_room&quot;
 )paren
@@ -7399,7 +7392,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_chars_in_buffer&quot;
 )paren
@@ -7447,7 +7440,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_flush_buffer&quot;
 )paren
@@ -8688,7 +8681,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_ioctl&quot;
 )paren
@@ -9053,7 +9046,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_throttle&quot;
 )paren
@@ -9214,7 +9207,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_unthrottle&quot;
 )paren
@@ -9362,7 +9355,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_stop&quot;
 )paren
@@ -9465,7 +9458,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_start&quot;
 )paren
@@ -9627,7 +9620,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_hangup&quot;
 )paren
@@ -9720,7 +9713,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_set_termios&quot;
 )paren

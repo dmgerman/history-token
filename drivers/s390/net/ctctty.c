@@ -1340,8 +1340,9 @@ id|ctc_tty_info
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -1361,19 +1362,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ctc_tty: null info_struct for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;ctc_tty: null info_struct for %s in %s&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -1394,19 +1385,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ctc_tty: bad magic for info struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;ctc_tty: bad magic for info struct %s in %s&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -2040,7 +2021,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_write&quot;
 )paren
@@ -2299,7 +2280,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_write_room&quot;
 )paren
@@ -2341,7 +2322,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_chars_in_buffer&quot;
 )paren
@@ -2406,7 +2387,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_flush_buffer&quot;
 )paren
@@ -2511,7 +2492,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_flush_chars&quot;
 )paren
@@ -2576,7 +2557,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_throttle&quot;
 )paren
@@ -2646,7 +2627,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_unthrottle&quot;
 )paren
@@ -3182,7 +3163,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_ioctl&quot;
 )paren
@@ -4245,7 +4226,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_open&quot;
 )paren
@@ -4269,11 +4250,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ctc_tty_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;ctc_tty_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver-&gt;name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -4400,11 +4379,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ctc_tty_open %s%d successful...&bslash;n&quot;
+l_string|&quot;ctc_tty_open %s successful...&bslash;n&quot;
 comma
-id|CTC_TTY_NAME
-comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4456,7 +4433,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_close&quot;
 )paren
@@ -4830,7 +4807,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;ctc_tty_hangup&quot;
 )paren

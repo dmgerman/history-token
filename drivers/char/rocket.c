@@ -403,8 +403,9 @@ id|r_port
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -419,7 +420,7 @@ r_char
 op_star
 id|badmagic
 op_assign
-l_string|&quot;Warning: bad magic number for rocketport struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: bad magic number for rocketport struct %s in %s&bslash;n&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -443,17 +444,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3894,7 +3885,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_close&quot;
 )paren
@@ -4412,7 +4403,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_set_termios&quot;
 )paren
@@ -4630,7 +4621,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_break&quot;
 )paren
@@ -5507,7 +5498,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_ioctl&quot;
 )paren
@@ -5657,63 +5648,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if (defined(ROCKET_DEBUG_FLOW) || defined(ROCKET_DEBUG_THROTTLE))
-DECL|function|rp_tty_name
-r_static
-r_char
-op_star
-id|rp_tty_name
-c_func
-(paren
-r_struct
-id|tty_struct
-op_star
-id|tty
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tty
-)paren
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;%s%d&quot;
-comma
-id|tty-&gt;driver-&gt;name
-comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
-op_plus
-id|tty-&gt;driver-&gt;name_base
-)paren
-suffix:semicolon
-r_else
-id|strcpy
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;NULL tty&quot;
-)paren
-suffix:semicolon
-r_return
-id|buf
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|rp_send_xchar
 r_static
 r_void
@@ -5753,7 +5687,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_send_xchar&quot;
 )paren
@@ -5836,13 +5770,7 @@ c_func
 (paren
 l_string|&quot;throttle %s: %d....&bslash;n&quot;
 comma
-id|rp_tty_name
-c_func
-(paren
-id|tty
-comma
-id|buf
-)paren
+id|tty-&gt;name
 comma
 id|tty-&gt;ldisc
 dot
@@ -5862,7 +5790,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_throttle&quot;
 )paren
@@ -5943,13 +5871,7 @@ c_func
 (paren
 l_string|&quot;unthrottle %s: %d....&bslash;n&quot;
 comma
-id|rp_tty_name
-c_func
-(paren
-id|tty
-comma
-id|buf
-)paren
+id|tty-&gt;name
 comma
 id|tty-&gt;ldisc
 dot
@@ -5969,7 +5891,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_throttle&quot;
 )paren
@@ -6047,13 +5969,7 @@ c_func
 (paren
 l_string|&quot;stop %s: %d %d....&bslash;n&quot;
 comma
-id|rp_tty_name
-c_func
-(paren
-id|tty
-comma
-id|buf
-)paren
+id|tty-&gt;name
 comma
 id|info-&gt;xmit_cnt
 comma
@@ -6069,7 +5985,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_stop&quot;
 )paren
@@ -6130,13 +6046,7 @@ c_func
 (paren
 l_string|&quot;start %s: %d %d....&bslash;n&quot;
 comma
-id|rp_tty_name
-c_func
-(paren
-id|tty
-comma
-id|buf
-)paren
+id|tty-&gt;name
 comma
 id|info-&gt;xmit_cnt
 comma
@@ -6152,7 +6062,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_stop&quot;
 )paren
@@ -6236,7 +6146,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_wait_until_sent&quot;
 )paren
@@ -6462,7 +6372,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_hangup&quot;
 )paren
@@ -6672,7 +6582,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_put_char&quot;
 )paren
@@ -6856,7 +6766,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_write&quot;
 )paren
@@ -7406,7 +7316,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_write_room&quot;
 )paren
@@ -7484,7 +7394,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_chars_in_buffer&quot;
 )paren
@@ -7547,7 +7457,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rp_flush_buffer&quot;
 )paren

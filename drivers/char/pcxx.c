@@ -9974,13 +9974,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;overrun! DigiBoard device minor=%d&bslash;n&quot;
+l_string|&quot;overrun! DigiBoard device %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 )brace

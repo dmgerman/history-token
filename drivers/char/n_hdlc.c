@@ -810,23 +810,13 @@ id|DEBUG_LEVEL_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d)n_hdlc_tty_open() called (major=%u,minor=%u)&bslash;n&quot;
+l_string|&quot;%s(%d)n_hdlc_tty_open() called (device=%s)&bslash;n&quot;
 comma
 id|__FILE__
 comma
 id|__LINE__
 comma
-id|major
-c_func
-(paren
-id|tty-&gt;device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* There should not be an existing table for this slot. */

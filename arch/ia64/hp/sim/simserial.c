@@ -3331,11 +3331,9 @@ macro_line|#ifdef SIMSERIAL_DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;rs_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver-&gt;name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;state-&gt;count
 )paren

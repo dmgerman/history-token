@@ -3127,13 +3127,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;moxa_close: bad serial port count, minor=%d&bslash;n&quot;
+l_string|&quot;moxa_close: bad serial port count, device=%s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 id|ch-&gt;count

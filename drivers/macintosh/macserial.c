@@ -471,8 +471,9 @@ id|mac_serial
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -489,7 +490,7 @@ id|badmagic
 )braket
 op_assign
 id|KERN_WARNING
-l_string|&quot;Warning: bad magic number for serial struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: bad magic number for serial struct %s in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
@@ -499,7 +500,7 @@ id|badinfo
 )braket
 op_assign
 id|KERN_WARNING
-l_string|&quot;Warning: null mac_serial for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: null mac_serial for %s in %s&bslash;n&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -513,17 +514,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -545,17 +536,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -2617,7 +2598,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_stop&quot;
 )paren
@@ -2739,7 +2720,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_start&quot;
 )paren
@@ -6787,7 +6768,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_chars&quot;
 )paren
@@ -6892,7 +6873,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write&quot;
 )paren
@@ -7282,7 +7263,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write_room&quot;
 )paren
@@ -7345,7 +7326,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_chars_in_buffer&quot;
 )paren
@@ -7393,7 +7374,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_buffer&quot;
 )paren
@@ -7510,7 +7491,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_throttle&quot;
 )paren
@@ -7744,7 +7725,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_unthrottle&quot;
 )paren
@@ -8671,7 +8652,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_break&quot;
 )paren
@@ -8790,7 +8771,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_ioctl&quot;
 )paren
@@ -9105,7 +9086,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_close&quot;
 )paren
@@ -9572,7 +9553,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_wait_until_sent&quot;
 )paren
@@ -9775,7 +9756,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_hangup&quot;
 )paren
@@ -10429,7 +10410,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_open&quot;
 )paren
@@ -10441,11 +10422,9 @@ suffix:semicolon
 id|OPNDBG
 c_func
 (paren
-l_string|&quot;rs_open %s%d, count = %d, tty=%p&bslash;n&quot;
+l_string|&quot;rs_open %s, count = %d, tty=%p&bslash;n&quot;
 comma
-id|tty-&gt;driver-&gt;name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 comma
@@ -10695,9 +10674,9 @@ suffix:semicolon
 id|OPNDBG
 c_func
 (paren
-l_string|&quot;rs_open ttyS%d successful...&bslash;n&quot;
+l_string|&quot;rs_open %s successful...&bslash;n&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 r_return

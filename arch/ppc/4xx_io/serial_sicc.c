@@ -5661,11 +5661,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for %s%d: %d&bslash;n&quot;
+l_string|&quot;rs_close: bad serial port count for %s: %d&bslash;n&quot;
 comma
-id|tty-&gt;driver-&gt;name
-comma
-id|info-&gt;state-&gt;line
+id|tty-&gt;name
 comma
 id|state-&gt;count
 )paren
