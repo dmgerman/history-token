@@ -2641,8 +2641,6 @@ r_struct
 id|icmphdr
 op_star
 id|icmph
-op_assign
-id|skb-&gt;h.icmph
 suffix:semicolon
 r_struct
 id|rtable
@@ -2755,6 +2753,10 @@ id|icmphdr
 )paren
 r_goto
 id|error
+suffix:semicolon
+id|icmph
+op_assign
+id|skb-&gt;h.icmph
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;18 is the highest &squot;known&squot; ICMP type. Anything else is a mystery&n;&t; *&n;&t; *&t;RFC 1122: 3.2.2  Unknown ICMP messages types MUST be silently discarded.&n;&t; */
 r_if
