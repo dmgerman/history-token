@@ -80,8 +80,6 @@ id|conntrack
 r_static
 id|u_int16_t
 id|id
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int

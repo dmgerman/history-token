@@ -55,8 +55,6 @@ DECL|variable|in_keycall
 r_static
 r_int
 id|in_keycall
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|FAIL
 mdefine_line|#define FAIL(err) &bslash;&n;&t;{ if (data) put_cred(data);&t;&t;&t;&bslash;&n;&t;  *authp = rpc_autherr_##err;&t;&t;&t;&bslash;&n;&t;  return;&t;&t;&t;&t;&t;&bslash;&n;&t;}
@@ -807,8 +805,6 @@ id|cryptkey
 r_static
 r_int
 id|in_keycall
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|des_cred

@@ -7155,8 +7155,6 @@ id|SIOCAX25GETINFOOLD
 r_static
 r_int
 id|warned
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

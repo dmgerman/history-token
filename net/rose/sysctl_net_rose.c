@@ -62,11 +62,8 @@ r_static
 r_int
 id|min_route
 (braket
+l_int|1
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 comma
 id|max_route
 (braket

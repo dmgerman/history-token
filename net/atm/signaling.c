@@ -54,8 +54,6 @@ r_static
 r_int
 r_int
 id|silence
-op_assign
-l_int|0
 suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func

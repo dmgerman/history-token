@@ -1068,10 +1068,6 @@ id|nulldevname
 (braket
 id|IFNAMSIZ
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 r_int
 r_int

@@ -1112,8 +1112,6 @@ r_static
 r_int
 r_int
 id|randomness
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
