@@ -823,7 +823,7 @@ id|queue_head
 suffix:semicolon
 DECL|member|last_merge
 r_struct
-id|list_head
+id|request
 op_star
 id|last_merge
 suffix:semicolon
