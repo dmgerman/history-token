@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * bus.c - bus driver management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * bus.c - bus driver management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -8,16 +8,16 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 macro_line|#include &quot;power/power.h&quot;
 DECL|macro|to_dev
-mdefine_line|#define to_dev(node) container_of(node,struct device,bus_list)
+mdefine_line|#define to_dev(node) container_of(node, struct device, bus_list)
 DECL|macro|to_drv
-mdefine_line|#define to_drv(node) container_of(node,struct device_driver,kobj.entry)
+mdefine_line|#define to_drv(node) container_of(node, struct device_driver, kobj.entry)
 DECL|macro|to_bus_attr
-mdefine_line|#define to_bus_attr(_attr) container_of(_attr,struct bus_attribute,attr)
+mdefine_line|#define to_bus_attr(_attr) container_of(_attr, struct bus_attribute, attr)
 DECL|macro|to_bus
-mdefine_line|#define to_bus(obj) container_of(obj,struct bus_type,subsys.kset.kobj)
+mdefine_line|#define to_bus(obj) container_of(obj, struct bus_type, subsys.kset.kobj)
 multiline_comment|/*&n; * sysfs bindings for drivers&n; */
 DECL|macro|to_drv_attr
-mdefine_line|#define to_drv_attr(_attr) container_of(_attr,struct driver_attribute,attr)
+mdefine_line|#define to_drv_attr(_attr) container_of(_attr, struct driver_attribute, attr)
 DECL|macro|to_driver
 mdefine_line|#define to_driver(obj) container_of(obj, struct device_driver, kobj)
 r_static
@@ -526,7 +526,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;bus_for_each_dev - device iterator.&n; *&t;@bus:&t;bus type.&n; *&t;@start:&t;device to start iterating from.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @bus&squot;s list of devices, and call @fn for each,&n; *&t;passing it @data. If @start is not NULL, we use that device to&n; *&t;begin iterating from.&n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; *&n; *&t;NOTE: The device that returns a non-zero value is not retained&n; *&t;in any way, nor is its refcount incremented. If the caller needs&n; *&t;to retain this data, it should do, and increment the reference &n; *&t;count in the supplied callback.&n; */
+multiline_comment|/**&n; *&t;bus_for_each_dev - device iterator.&n; *&t;@bus:&t;bus type.&n; *&t;@start:&t;device to start iterating from.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @bus&squot;s list of devices, and call @fn for each,&n; *&t;passing it @data. If @start is not NULL, we use that device to&n; *&t;begin iterating from.&n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; *&n; *&t;NOTE: The device that returns a non-zero value is not retained&n; *&t;in any way, nor is its refcount incremented. If the caller needs&n; *&t;to retain this data, it should do, and increment the reference&n; *&t;count in the supplied callback.&n; */
 DECL|function|bus_for_each_dev
 r_int
 id|bus_for_each_dev
@@ -675,7 +675,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_for_each_drv - driver iterator&n; *&t;@bus:&t;bus we&squot;re dealing with.&n; *&t;@start:&t;driver to start iterating on.&n; *&t;@data:&t;data to pass to the callback.&n; *&t;@fn:&t;function to call for each driver.&n; *&n; *&t;This is nearly identical to the device iterator above.&n; *&t;We iterate over each driver that belongs to @bus, and call&n; *&t;@fn for each. If @fn returns anything but 0, we break out&n; *&t;and return it. If @start is not NULL, we use it as the head&n; *&t;of the list.&n; *&n; *&t;NOTE: we don&squot;t return the driver that returns a non-zero &n; *&t;value, nor do we leave the reference count incremented for that&n; *&t;driver. If the caller needs to know that info, it must set it&n; *&t;in the callback. It must also be sure to increment the refcount&n; *&t;so it doesn&squot;t disappear before returning to the caller.&n; */
+multiline_comment|/**&n; *&t;bus_for_each_drv - driver iterator&n; *&t;@bus:&t;bus we&squot;re dealing with.&n; *&t;@start:&t;driver to start iterating on.&n; *&t;@data:&t;data to pass to the callback.&n; *&t;@fn:&t;function to call for each driver.&n; *&n; *&t;This is nearly identical to the device iterator above.&n; *&t;We iterate over each driver that belongs to @bus, and call&n; *&t;@fn for each. If @fn returns anything but 0, we break out&n; *&t;and return it. If @start is not NULL, we use it as the head&n; *&t;of the list.&n; *&n; *&t;NOTE: we don&squot;t return the driver that returns a non-zero&n; *&t;value, nor do we leave the reference count incremented for that&n; *&t;driver. If the caller needs to know that info, it must set it&n; *&t;in the callback. It must also be sure to increment the refcount&n; *&t;so it doesn&squot;t disappear before returning to the caller.&n; */
 DECL|function|bus_for_each_drv
 r_int
 id|bus_for_each_drv
@@ -828,7 +828,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_bind_driver - bind a driver to one device.&n; *&t;@dev:&t;device.&n; *&n; *&t;Allow manual attachment of a driver to a deivce.&n; *&t;Caller must have already set @dev-&gt;driver.&n; *&n; *&t;Note that this does not modify the bus reference count &n; *&t;nor take the bus&squot;s rwsem. Please verify those are accounted &n; *&t;for before calling this. (It is ok to call with no other effort&n; *&t;from a driver&squot;s probe() method.)&n; */
+multiline_comment|/**&n; *&t;device_bind_driver - bind a driver to one device.&n; *&t;@dev:&t;device.&n; *&n; *&t;Allow manual attachment of a driver to a deivce.&n; *&t;Caller must have already set @dev-&gt;driver.&n; *&n; *&t;Note that this does not modify the bus reference count&n; *&t;nor take the bus&squot;s rwsem. Please verify those are accounted&n; *&t;for before calling this. (It is ok to call with no other effort&n; *&t;from a driver&squot;s probe() method.)&n; */
 DECL|function|device_bind_driver
 r_void
 id|device_bind_driver
@@ -878,7 +878,7 @@ id|dev-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_match - check compatibility between device &amp; driver.&n; *&t;@dev:&t;device.&n; *&t;@drv:&t;driver.&n; *&n; *&t;First, we call the bus&squot;s match function, which should compare&n; *&t;the device IDs the driver supports with the device IDs of the &n; *&t;device. Note we don&squot;t do this ourselves because we don&squot;t know &n; *&t;the format of the ID structures, nor what is to be considered&n; *&t;a match and what is not.&n; *&t;&n; *&t;If we find a match, we call @drv-&gt;probe(@dev) if it exists, and &n; *&t;call attach() above.&n; */
+multiline_comment|/**&n; *&t;bus_match - check compatibility between device &amp; driver.&n; *&t;@dev:&t;device.&n; *&t;@drv:&t;driver.&n; *&n; *&t;First, we call the bus&squot;s match function, which should compare&n; *&t;the device IDs the driver supports with the device IDs of the&n; *&t;device. Note we don&squot;t do this ourselves because we don&squot;t know&n; *&t;the format of the ID structures, nor what is to be considered&n; *&t;a match and what is not.&n; *&n; *&t;If we find a match, we call @drv-&gt;probe(@dev) if it exists, and&n; *&t;call attach() above.&n; */
 DECL|function|bus_match
 r_static
 r_int
@@ -966,7 +966,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_attach - try to attach device to a driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Walk the list of drivers that the bus has and call bus_match() &n; *&t;for each pair. If a compatible pair is found, break out and return.&n; */
+multiline_comment|/**&n; *&t;device_attach - try to attach device to a driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Walk the list of drivers that the bus has and call bus_match()&n; *&t;for each pair. If a compatible pair is found, break out and return.&n; */
 DECL|function|device_attach
 r_static
 r_int
@@ -1084,7 +1084,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from bus_match(), since it&squot;s &n; *&t;perfectly valid for a driver not to bind to any devices.&n; */
+multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from bus_match(), since it&squot;s&n; *&t;perfectly valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
 r_void
 id|driver_attach
@@ -2180,7 +2180,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;bus_register - register a bus with the system.&n; *&t;@bus:&t;bus.&n; *&n; *&t;Once we have that, we registered the bus with the kobject&n; *&t;infrastructure, then register the children subsystems it has:&n; *&t;the devices and drivers that belong to the bus. &n; */
+multiline_comment|/**&n; *&t;bus_register - register a bus with the system.&n; *&t;@bus:&t;bus.&n; *&n; *&t;Once we have that, we registered the bus with the kobject&n; *&t;infrastructure, then register the children subsystems it has:&n; *&t;the devices and drivers that belong to the bus.&n; */
 DECL|function|bus_register
 r_int
 id|bus_register
@@ -2347,7 +2347,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bus_unregister - remove a bus from the system &n; *&t;@bus:&t;bus.&n; *&n; *&t;Unregister the child subsystems and the bus itself.&n; *&t;Finally, we call put_bus() to release the refcount&n; */
+multiline_comment|/**&n; *&t;bus_unregister - remove a bus from the system&n; *&t;@bus:&t;bus.&n; *&n; *&t;Unregister the child subsystems and the bus itself.&n; *&t;Finally, we call put_bus() to release the refcount&n; */
 DECL|function|bus_unregister
 r_void
 id|bus_unregister

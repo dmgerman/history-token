@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * class.c - basic device class management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman&n; * Copyright (c) 2003-2004 IBM Corp.&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * class.c - basic device class management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman&n; * Copyright (c) 2003-2004 IBM Corp.&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -6,9 +6,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|macro|to_class_attr
-mdefine_line|#define to_class_attr(_attr) container_of(_attr,struct class_attribute,attr)
+mdefine_line|#define to_class_attr(_attr) container_of(_attr, struct class_attribute, attr)
 DECL|macro|to_class
-mdefine_line|#define to_class(obj) container_of(obj,struct class,subsys.kset.kobj)
+mdefine_line|#define to_class(obj) container_of(obj, struct class, subsys.kset.kobj)
 r_static
 id|ssize_t
 DECL|function|class_attr_show
