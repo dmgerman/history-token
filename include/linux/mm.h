@@ -3052,6 +3052,16 @@ op_star
 id|tsk
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;__HAVE_ARCH_GATE_AREA
+r_int
+id|in_gate_area_no_task
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 r_int
 id|in_gate_area
 c_func
@@ -3066,6 +3076,19 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+macro_line|#else
+r_int
+id|in_gate_area_no_task
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+DECL|macro|in_gate_area
+mdefine_line|#define in_gate_area(task, addr) ({(void)task; in_gate_area_no_task(addr);})
+macro_line|#endif&t;/* __HAVE_ARCH_GATE_AREA */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */
 eof
