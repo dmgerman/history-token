@@ -1380,7 +1380,7 @@ mdefine_line|#define __NR_remap_file_pages   (__NR_Linux + 227)
 DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop         (__NR_Linux + 228)
 DECL|macro|__NR_mq_open
-mdefine_line|#define __NR_mq_open            (__NR_Linux + 229) /* Keep the mq_* syscalls together */
+mdefine_line|#define __NR_mq_open            (__NR_Linux + 229)
 DECL|macro|__NR_mq_unlink
 mdefine_line|#define __NR_mq_unlink          (__NR_Linux + 230)
 DECL|macro|__NR_mq_timedsend
@@ -1391,8 +1391,64 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify          (__NR_Linux + 233)
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr      (__NR_Linux + 234)
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;(__NR_Linux + 235)
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;(__NR_Linux + 236)
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;(__NR_Linux + 237)
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;(__NR_Linux + 238)
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;(__NR_Linux + 239)
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;(__NR_Linux + 240)
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;(__NR_Linux + 241)
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;(__NR_Linux + 242)
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;(__NR_Linux + 243)
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;(__NR_Linux + 244)
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;(__NR_Linux + 245)
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;(__NR_Linux + 246)
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;(__NR_Linux + 247)
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;(__NR_Linux + 248)
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;(__NR_Linux + 249)
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;(__NR_Linux + 250)
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;(__NR_Linux + 251)
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;(__NR_Linux + 252)
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;(__NR_Linux + 253)
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;(__NR_Linux + 254)
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;(__NR_Linux + 255)
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;(__NR_Linux + 256)
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;(__NR_Linux + 257)
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;(__NR_Linux + 258)
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;(__NR_Linux + 259)
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;(__NR_Linux + 260)
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;(__NR_Linux + 261)
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;(__NR_Linux + 262)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     235
+mdefine_line|#define __NR_Linux_syscalls     263
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR
