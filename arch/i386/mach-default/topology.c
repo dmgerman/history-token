@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 DECL|variable|cpu_devices
+r_static
 r_struct
 id|i386_cpu
 id|cpu_devices

@@ -1502,7 +1502,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_hub_tt_clear_buffer - clear control/bulk TT state in high speed hub&n; * @dev: the device whose split transaction failed&n; * @pipe: identifies the endpoint of the failed transaction&n; *&n; * High speed HCDs use this to tell the hub driver that some split control or&n; * bulk transaction failed in a way that requires clearing internal state of&n; * a transaction translator.  This is normally detected (and reported) from&n; * interrupt context.&n; *&n; * It may not be possible for that hub to handle additional full (or low)&n; * speed transactions until that state is fully cleared out.&n; */
+multiline_comment|/**&n; * usb_hub_tt_clear_buffer - clear control/bulk TT state in high speed hub&n; * @udev: the device whose split transaction failed&n; * @pipe: identifies the endpoint of the failed transaction&n; *&n; * High speed HCDs use this to tell the hub driver that some split control or&n; * bulk transaction failed in a way that requires clearing internal state of&n; * a transaction translator.  This is normally detected (and reported) from&n; * interrupt context.&n; *&n; * It may not be possible for that hub to handle additional full (or low)&n; * speed transactions until that state is fully cleared out.&n; */
 DECL|function|usb_hub_tt_clear_buffer
 r_void
 id|usb_hub_tt_clear_buffer

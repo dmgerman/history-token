@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 DECL|variable|hlt_counter
+r_static
 r_int
 id|hlt_counter
 suffix:semicolon

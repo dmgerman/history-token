@@ -126,7 +126,7 @@ id|notifier_block
 op_star
 id|reboot_notifier_list
 suffix:semicolon
-DECL|variable|notifier_lock
+r_static
 id|DEFINE_RWLOCK
 c_func
 (paren
@@ -6188,6 +6188,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * It would make sense to put struct rusage in the task_struct,&n; * except that would make the task_struct be *really big*.  After&n; * task_struct gets moved into malloc&squot;ed memory, it would&n; * make sense to do this.  It will make moving the rest of the information&n; * a lot simpler!  (Which we&squot;re not doing right now because we&squot;re not&n; * measuring them yet).&n; *&n; * This expects to be called with tasklist_lock read-locked or better,&n; * and the siglock not locked.  It may momentarily take the siglock.&n; *&n; * When sampling multiple threads for RUSAGE_SELF, under SMP we might have&n; * races with threads incrementing their own counters.  But since word&n; * reads are atomic, we either get new values or old values and we don&squot;t&n; * care which for the sums.  We always take the siglock to protect reading&n; * the c* fields from p-&gt;signal from races with exit.c updating those&n; * fields when reaping, so a sample either gets all the additions of a&n; * given child after it&squot;s reaped, or none so this sample is before reaping.&n; */
 DECL|function|k_getrusage
+r_static
 r_void
 id|k_getrusage
 c_func

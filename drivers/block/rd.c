@@ -58,6 +58,7 @@ suffix:semicolon
 multiline_comment|/* Size of the RAM disks */
 multiline_comment|/*&n; * It would be very desirable to have a soft-blocksize (that in the case&n; * of the ramdisk driver is also the hardblocksize ;) of PAGE_SIZE because&n; * doing that we&squot;ll achieve a far better MM footprint. Using a rd_blocksize of&n; * BLOCK_SIZE in the worst case we&squot;ll make PAGE_SIZE/BLOCK_SIZE buffer-pages&n; * unfreeable. With a rd_blocksize of PAGE_SIZE instead we are sure that only&n; * 1 page will be protected. Depending on the size of the ramdisk you&n; * may want to change the ramdisk blocksize to achieve a better or worse MM&n; * behaviour. The default is still BLOCK_SIZE (needed by rd_load_image that&n; * supposes the filesystem in the image uses a BLOCK_SIZE blocksize).&n; */
 DECL|variable|rd_blocksize
+r_static
 r_int
 id|rd_blocksize
 op_assign

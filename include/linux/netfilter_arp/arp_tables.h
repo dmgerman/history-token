@@ -319,7 +319,7 @@ DECL|macro|ARPT_CONTINUE
 mdefine_line|#define ARPT_CONTINUE 0xFFFFFFFF
 multiline_comment|/* For standard target */
 DECL|macro|ARPT_RETURN
-mdefine_line|#define ARPT_RETURN (-NF_MAX_VERDICT - 1)
+mdefine_line|#define ARPT_RETURN (-NF_REPEAT - 1)
 multiline_comment|/* The argument to ARPT_SO_GET_INFO */
 DECL|struct|arpt_getinfo
 r_struct

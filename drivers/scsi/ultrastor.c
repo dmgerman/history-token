@@ -378,6 +378,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Set this to 1 to reset the SCSI bus on error.  */
 DECL|variable|ultrastor_bus_reset
+r_static
 r_int
 id|ultrastor_bus_reset
 suffix:semicolon

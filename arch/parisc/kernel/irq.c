@@ -347,6 +347,11 @@ OL
 id|NR_IRQS
 )paren
 (brace
+r_struct
+id|irqaction
+op_star
+id|action
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -361,9 +366,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_struct
-id|irqaction
-op_star
 id|action
 op_assign
 id|irq_desc

@@ -95,6 +95,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|mp_current_pci_id
+r_static
 r_int
 id|mp_current_pci_id
 suffix:semicolon
@@ -312,6 +313,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|MP_processor_info
+r_static
 r_void
 id|__init
 id|MP_processor_info
@@ -3575,6 +3577,7 @@ mdefine_line|#define MP_ISA_BUS&t;&t;0
 DECL|macro|MP_MAX_IOAPIC_PIN
 mdefine_line|#define MP_MAX_IOAPIC_PIN&t;127
 DECL|struct|mp_ioapic_routing
+r_static
 r_struct
 id|mp_ioapic_routing
 (brace

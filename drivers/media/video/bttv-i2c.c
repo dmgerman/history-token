@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-i2c.c,v 1.17 2004/12/14 15:33:30 kraxel Exp $&n;&n;    bttv-i2c.c  --  all the i2c code is here&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-i2c.c,v 1.18 2005/02/16 12:14:10 kraxel Exp $&n;&n;    bttv-i2c.c  --  all the i2c code is here&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -32,17 +32,6 @@ suffix:semicolon
 r_static
 r_int
 id|attach_inform
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-suffix:semicolon
-r_static
-r_int
-id|detach_inform
 c_func
 (paren
 r_struct
@@ -387,11 +376,6 @@ dot
 id|client_register
 op_assign
 id|attach_inform
-comma
-dot
-id|client_unregister
-op_assign
-id|detach_inform
 comma
 )brace
 suffix:semicolon
@@ -1313,11 +1297,6 @@ id|client_register
 op_assign
 id|attach_inform
 comma
-dot
-id|client_unregister
-op_assign
-id|detach_inform
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
@@ -1381,17 +1360,6 @@ op_amp
 id|btv-&gt;pinnacle_id
 )paren
 suffix:semicolon
-id|bttv_i2c_info
-c_func
-(paren
-op_amp
-id|btv-&gt;c
-comma
-id|client
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1409,44 +1377,6 @@ c_func
 (paren
 id|client
 )paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|detach_inform
-r_static
-r_int
-id|detach_inform
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-r_struct
-id|bttv
-op_star
-id|btv
-op_assign
-id|i2c_get_adapdata
-c_func
-(paren
-id|client-&gt;adapter
-)paren
-suffix:semicolon
-id|bttv_i2c_info
-c_func
-(paren
-op_amp
-id|btv-&gt;c
-comma
-id|client
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return

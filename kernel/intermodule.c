@@ -389,6 +389,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * inter_module_get - return arbitrary userdata from another module.&n; * @im_name: an arbitrary string to identify the data, must be unique&n; *&n; * Description: If the im_name has not been registered, return NULL.&n; * Try to increment the use count on the owning module, if that fails&n; * then return NULL.  Otherwise return the userdata.&n; */
 DECL|function|inter_module_get
+r_static
 r_const
 r_void
 op_star
@@ -668,13 +669,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|inter_module_unregister
-)paren
-suffix:semicolon
-DECL|variable|inter_module_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inter_module_get
 )paren
 suffix:semicolon
 DECL|variable|inter_module_get_request

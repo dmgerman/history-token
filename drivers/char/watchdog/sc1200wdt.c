@@ -90,6 +90,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* for non plug and play */
 DECL|variable|open_sem
+r_static
 r_struct
 id|semaphore
 id|open_sem
@@ -100,6 +101,7 @@ r_char
 id|expect_close
 suffix:semicolon
 DECL|variable|sc1200wdt_lock
+r_static
 id|spinlock_t
 id|sc1200wdt_lock
 suffix:semicolon
@@ -1117,6 +1119,7 @@ suffix:semicolon
 )brace
 macro_line|#if defined CONFIG_PNP
 DECL|variable|scl200wdt_pnp_devices
+r_static
 r_struct
 id|pnp_device_id
 id|scl200wdt_pnp_devices

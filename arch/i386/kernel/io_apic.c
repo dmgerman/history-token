@@ -958,6 +958,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|struct|irq_cpu_info
+r_static
 r_struct
 id|irq_cpu_info
 (brace
@@ -1006,6 +1007,7 @@ mdefine_line|#define BALANCED_IRQ_MORE_DELTA&t;&t;(HZ/10)
 DECL|macro|BALANCED_IRQ_LESS_DELTA
 mdefine_line|#define BALANCED_IRQ_LESS_DELTA&t;&t;(HZ)
 DECL|variable|balanced_irq_interval
+r_static
 r_int
 id|balanced_irq_interval
 op_assign

@@ -16,22 +16,6 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
-r_extern
-r_void
-id|k_getrusage
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-comma
-r_int
-comma
-r_struct
-id|rusage
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * SLAB caches for signal bits.&n; */
 DECL|variable|sigqueue_cachep
 r_static

@@ -808,6 +808,7 @@ id|bh
 suffix:semicolon
 )brace
 DECL|function|hpfs_write_inode_ea
+r_static
 r_void
 id|hpfs_write_inode_ea
 c_func

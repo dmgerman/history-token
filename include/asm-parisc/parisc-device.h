@@ -33,6 +33,11 @@ DECL|member|irq
 r_int
 id|irq
 suffix:semicolon
+DECL|member|aux_irq
+r_int
+id|aux_irq
+suffix:semicolon
+multiline_comment|/* Some devices have a second IRQ */
 DECL|member|hw_path
 r_char
 id|hw_path

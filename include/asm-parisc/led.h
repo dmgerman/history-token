@@ -35,7 +35,7 @@ mdefine_line|#define DISPLAY_MODEL_LASI 2&t;&t;/* LASI style 8 bit LED */
 DECL|macro|DISPLAY_MODEL_OLD_ASP
 mdefine_line|#define DISPLAY_MODEL_OLD_ASP 0x7F&t;/* faked: ASP style 8 x 1 bit LED (only very old ASP versions) */
 DECL|macro|LED_CMD_REG_NONE
-mdefine_line|#define LED_CMD_REG_NONE NULL&t;&t;/* NULL == no addr for the cmd register */
+mdefine_line|#define LED_CMD_REG_NONE 0&t;&t;/* NULL == no addr for the cmd register */
 multiline_comment|/* led tasklet struct */
 r_extern
 r_struct
@@ -51,12 +51,12 @@ c_func
 r_int
 id|model
 comma
-r_char
-op_star
+r_int
+r_int
 id|cmd_reg
 comma
-r_char
-op_star
+r_int
+r_int
 id|data_reg
 )paren
 suffix:semicolon
@@ -69,6 +69,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CHASSIS_LCD_LED
 multiline_comment|/* writes a string to the LCD display (if possible on this h/w) */
 r_int
 id|lcd_print
@@ -79,6 +80,10 @@ op_star
 id|str
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|lcd_print
+mdefine_line|#define lcd_print(str)
+macro_line|#endif
 multiline_comment|/* main LED initialization function (uses PDC) */
 r_int
 id|__init

@@ -1748,6 +1748,7 @@ multiline_comment|/* address for this change point */
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|change_member
 id|change_point_list
@@ -1759,6 +1760,7 @@ id|E820MAX
 id|__initdata
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|change_member
 op_star
@@ -1771,6 +1773,7 @@ id|E820MAX
 id|__initdata
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|e820entry
 op_star
@@ -1781,6 +1784,7 @@ id|E820MAX
 id|__initdata
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|e820entry
 id|new_bios

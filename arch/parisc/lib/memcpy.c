@@ -51,9 +51,9 @@ DECL|macro|EXC_WORD
 mdefine_line|#define EXC_WORD &quot;.dword&quot;
 macro_line|#endif
 DECL|macro|def_load_ai_insn
-mdefine_line|#define def_load_ai_insn(_insn,_sz,_tt,_s,_a,_t,_e)&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; #_insn &quot;,ma &quot; #_sz &quot;(&quot; _s &quot;,%1), %0&bslash;n&quot; &t;&bslash;&n;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t&quot; #_e &quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: _tt(_t), &quot;+r&quot;(_a)&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot;(_a)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r8&quot;)
+mdefine_line|#define def_load_ai_insn(_insn,_sz,_tt,_s,_a,_t,_e)&t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; #_insn &quot;,ma &quot; #_sz &quot;(&quot; _s &quot;,%1), %0&bslash;n&quot; &t;&bslash;&n;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t&quot; #_e &quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: _tt(_t), &quot;+r&quot;(_a)&t;&t;&t;&t;&bslash;&n;&t;: &t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r8&quot;)
 DECL|macro|def_store_ai_insn
-mdefine_line|#define def_store_ai_insn(_insn,_sz,_tt,_s,_a,_t,_e) &t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; #_insn &quot;,ma %1, &quot; #_sz &quot;(&quot; _s &quot;,%0)&bslash;n&quot; &t;&bslash;&n;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t&quot; #_e &quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot;(_a) &t;&t;&t;&t;&t;&bslash;&n;&t;: _tt(_t), &quot;0&quot;(_a)&t;&t;&t;&t;&bslash;&n;&t;: &quot;r8&quot;)
+mdefine_line|#define def_store_ai_insn(_insn,_sz,_tt,_s,_a,_t,_e) &t;&bslash;&n;&t;__asm__ __volatile__ (&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&bslash;t&quot; #_insn &quot;,ma %1, &quot; #_sz &quot;(&quot; _s &quot;,%0)&bslash;n&quot; &t;&bslash;&n;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;aw&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t1b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t&quot; EXC_WORD &quot;&bslash;t&quot; #_e &quot;&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&bslash;t.previous&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;+r&quot;(_a) &t;&t;&t;&t;&t;&bslash;&n;&t;: _tt(_t)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r8&quot;)
 DECL|macro|ldbma
 mdefine_line|#define ldbma(_s, _a, _t, _e) def_load_ai_insn(ldbs,1,&quot;=r&quot;,_s,_a,_t,_e)
 DECL|macro|stbma
@@ -868,6 +868,7 @@ comma
 id|t3
 suffix:semicolon
 r_register
+r_int
 r_char
 op_star
 id|pcs

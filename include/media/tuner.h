@@ -112,6 +112,12 @@ DECL|macro|TUNER_PHILIPS_FQ1286
 mdefine_line|#define TUNER_PHILIPS_FQ1286     53
 DECL|macro|TUNER_PHILIPS_TDA8290
 mdefine_line|#define TUNER_PHILIPS_TDA8290    54
+DECL|macro|TUNER_LG_PAL_TAPE
+mdefine_line|#define TUNER_LG_PAL_TAPE        55    /* Hauppauge PVR-150 PAL */
+DECL|macro|TUNER_PHILIPS_FQ1216AME_MK4
+mdefine_line|#define TUNER_PHILIPS_FQ1216AME_MK4 56 /* Hauppauge PVR-150 PAL */
+DECL|macro|TUNER_PHILIPS_FQ1236A_MK4
+mdefine_line|#define TUNER_PHILIPS_FQ1236A_MK4 57   /* Hauppauge PVR-500MCE NTSC */
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL

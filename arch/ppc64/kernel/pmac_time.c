@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support for periodic interrupts (100 per second) and for getting&n; * the current time from the RTC on Power Macintoshes.&n; *&n; * We use the decrementer register for our periodic interrupts.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
+multiline_comment|/*&n; * Support for periodic interrupts (100 per second) and for getting&n; * the current time from the RTC on Power Macintoshes.&n; *&n; * We use the decrementer register for our periodic interrupts.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; * Copyright (C) 2003-2005 Benjamin Herrenschmidt.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/smu.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -83,6 +84,18 @@ op_star
 id|tm
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|sys_ctrler
+)paren
+(brace
+macro_line|#ifdef CONFIG_ADB_PMU
+r_case
+id|SYS_CTRLER_PMU
+suffix:colon
+(brace
+multiline_comment|/* TODO: Move that to a function in the PMU driver */
 r_struct
 id|adb_request
 id|req
@@ -91,7 +104,6 @@ r_int
 r_int
 id|now
 suffix:semicolon
-multiline_comment|/* Get the time from the RTC */
 r_if
 c_cond
 (paren
@@ -112,15 +124,11 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|req.complete
-)paren
-id|pmu_poll
+id|pmu_wait_complete
 c_func
 (paren
+op_amp
+id|req
 )paren
 suffix:semicolon
 r_if
@@ -134,7 +142,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;pmac_get_rtc_time: got %d byte reply&bslash;n&quot;
+l_string|&quot;pmac_get_rtc_time: PMU returned a %d&quot;
+l_string|&quot; bytes reply&bslash;n&quot;
 comma
 id|req.reply_len
 )paren
@@ -231,6 +240,27 @@ comma
 id|tm-&gt;tm_sec
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ADB_PMU */
+macro_line|#ifdef CONFIG_PMAC_SMU
+r_case
+id|SYS_CTRLER_SMU
+suffix:colon
+id|smu_get_rtc_time
+c_func
+(paren
+id|tm
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_SMU */
+r_default
+suffix:colon
+suffix:semicolon
+)brace
 )brace
 DECL|function|pmac_set_rtc_time
 r_int
@@ -244,6 +274,18 @@ op_star
 id|tm
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|sys_ctrler
+)paren
+(brace
+macro_line|#ifdef CONFIG_ADB_PMU
+r_case
+id|SYS_CTRLER_PMU
+suffix:colon
+(brace
+multiline_comment|/* TODO: Move that to a function in the PMU driver */
 r_struct
 id|adb_request
 id|req
@@ -255,7 +297,8 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;set: tm_mday: %d, tm_mon: %d, tm_year: %d, %d:%02d:%02d&bslash;n&quot;
+l_string|&quot;set: tm_mday: %d, tm_mon: %d, tm_year: %d,&quot;
+l_string|&quot; %d:%02d:%02d&bslash;n&quot;
 comma
 id|tm-&gt;tm_mday
 comma
@@ -349,17 +392,14 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+op_minus
+id|ENXIO
 suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|req.complete
-)paren
-id|pmu_poll
+id|pmu_wait_complete
 c_func
 (paren
+op_amp
+id|req
 )paren
 suffix:semicolon
 r_if
@@ -373,14 +413,36 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;pmac_set_rtc_time: got %d byte reply&bslash;n&quot;
+l_string|&quot;pmac_set_rtc_time: PMU returned a %d&quot;
+l_string|&quot; bytes reply&bslash;n&quot;
 comma
 id|req.reply_len
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ADB_PMU */
+macro_line|#ifdef CONFIG_PMAC_SMU
+r_case
+id|SYS_CTRLER_SMU
+suffix:colon
+r_return
+id|smu_set_rtc_time
+c_func
+(paren
+id|tm
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_SMU */
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 )brace
 DECL|function|pmac_get_boot_time
 r_void

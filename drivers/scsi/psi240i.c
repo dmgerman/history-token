@@ -1308,6 +1308,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Psi240i_QueueCommand&n; *&n; *&t;Description:&t;Process a queued command from the SCSI manager.&n; *&n; *&t;Parameters:&t;&t;SCpnt - Pointer to SCSI command structure.&n; *&t;&t;&t;&t;&t;done  - Pointer to done function to call.&n; *&n; *&t;Returns:&t;&t;Status code.&n; *&n; ****************************************************************/
 DECL|function|Psi240i_QueueCommand
+r_static
 r_int
 id|Psi240i_QueueCommand
 (paren
@@ -1835,6 +1836,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n; *&t;Name:&t;&t;&t;ReadChipMemory&n; *&n; *&t;Description:&t;Read information from controller memory.&n; *&n; *&t;Parameters:&t;&t;psetup&t;- Pointer to memory image of setup information.&n; *&t;&t;&t;&t;&t;base&t;- base address of memory.&n; *&t;&t;&t;&t;&t;length&t;- lenght of data space in bytes.&n; *&t;&t;&t;&t;&t;port&t;- I/O address of data port.&n; *&n; *&t;Returns:&t;&t;Nothing.&n; *&n; **************************************************************************/
 DECL|function|ReadChipMemory
+r_static
 r_void
 id|ReadChipMemory
 (paren
@@ -1950,6 +1952,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Psi240i_Detect&n; *&n; *&t;Description:&t;Detect and initialize our boards.&n; *&n; *&t;Parameters:&t;&t;tpnt - Pointer to SCSI host template structure.&n; *&n; *&t;Returns:&t;&t;Number of adapters found.&n; *&n; ****************************************************************/
 DECL|function|Psi240i_Detect
+r_static
 r_int
 id|Psi240i_Detect
 (paren
@@ -2765,6 +2768,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *&t;Name:&t;Psi240i_BiosParam&n; *&n; *&t;Description:&t;Process the biosparam request from the SCSI manager to&n; *&t;&t;&t;&t;&t;return C/H/S data.&n; *&n; *&t;Parameters:&t;&t;disk - Pointer to SCSI disk structure.&n; *&t;&t;&t;&t;&t;dev&t; - Major/minor number from kernel.&n; *&t;&t;&t;&t;&t;geom - Pointer to integer array to place geometry data.&n; *&n; *&t;Returns:&t;&t;zero.&n; *&n; ****************************************************************/
 DECL|function|Psi240i_BiosParam
+r_static
 r_int
 id|Psi240i_BiosParam
 (paren

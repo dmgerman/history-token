@@ -12,15 +12,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;/* get_order */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef DEBUG_PCI
-DECL|macro|ASSERT
-macro_line|#undef ASSERT
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
-macro_line|#else
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr)
-macro_line|#endif
 DECL|variable|proc_gsc_root
 r_static
 r_struct
@@ -1030,36 +1021,6 @@ id|size
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_needed
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-(paren
-id|pages_needed
-op_star
-id|PAGE_SIZE
-)paren
-OL
-id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_needed
-OL
-(paren
-id|BITS_PER_LONG
-op_minus
-id|PAGE_SHIFT
-)paren
-)paren
-suffix:semicolon
 id|mask
 op_assign
 (paren
@@ -1247,7 +1208,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|macro|PCXL_FREE_MAPPINGS
-mdefine_line|#define PCXL_FREE_MAPPINGS(idx, m, size) &bslash;&n;&t;&t;u##size *res_ptr = (u##size *)&amp;(pcxl_res_map[(idx) + (((size &gt;&gt; 3) - 1) &amp; (~((size &gt;&gt; 3) - 1)))]); &bslash;&n;&t;&t;ASSERT((*res_ptr &amp; m) == m); &bslash;&n;&t;&t;*res_ptr &amp;= ~m;
+mdefine_line|#define PCXL_FREE_MAPPINGS(idx, m, size) &bslash;&n;&t;&t;u##size *res_ptr = (u##size *)&amp;(pcxl_res_map[(idx) + (((size &gt;&gt; 3) - 1) &amp; (~((size &gt;&gt; 3) - 1)))]); &bslash;&n;&t;&t;/* BUG_ON((*res_ptr &amp; m) != m); */ &bslash;&n;&t;&t;*res_ptr &amp;= ~m;
 multiline_comment|/*&n;** clear bits in the pcxl resource map&n;*/
 r_static
 r_void
@@ -1291,36 +1252,6 @@ op_assign
 id|size
 op_rshift
 id|PAGE_SHIFT
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_mapped
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-(paren
-id|pages_mapped
-op_star
-id|PAGE_SIZE
-)paren
-OL
-id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_mapped
-OL
-(paren
-id|BITS_PER_LONG
-op_minus
-id|PAGE_SHIFT
-)paren
-)paren
 suffix:semicolon
 id|mask
 op_assign

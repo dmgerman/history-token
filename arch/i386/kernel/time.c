@@ -1257,6 +1257,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* Duplicate of time_init() below, with hpet_enable part added */
 DECL|function|hpet_time_init
+r_static
 r_void
 id|__init
 id|hpet_time_init

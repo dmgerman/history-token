@@ -2094,6 +2094,7 @@ id|NTP_PHASE_LIMIT
 suffix:semicolon
 multiline_comment|/* estimated error (us)&t;&t;*/
 DECL|variable|time_phase
+r_static
 r_int
 id|time_phase
 suffix:semicolon
@@ -2126,6 +2127,7 @@ id|NSEC_PER_USEC
 suffix:semicolon
 multiline_comment|/* frequency offset (scaled ppm)*/
 DECL|variable|time_adj
+r_static
 r_int
 id|time_adj
 suffix:semicolon

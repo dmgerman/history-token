@@ -105,6 +105,8 @@ DECL|macro|DELAYED_RESOURCE_CNT
 mdefine_line|#define DELAYED_RESOURCE_CNT&t;64
 DECL|macro|ZX1_IOC_ID
 mdefine_line|#define ZX1_IOC_ID&t;((PCI_DEVICE_ID_HP_ZX1_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
+DECL|macro|ZX2_IOC_ID
+mdefine_line|#define ZX2_IOC_ID&t;((PCI_DEVICE_ID_HP_ZX2_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
 DECL|macro|REO_IOC_ID
 mdefine_line|#define REO_IOC_ID&t;((PCI_DEVICE_ID_HP_REO_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
 DECL|macro|SX1000_IOC_ID
@@ -5709,6 +5711,14 @@ comma
 l_string|&quot;zx1&quot;
 comma
 id|ioc_zx1_init
+)brace
+comma
+(brace
+id|ZX2_IOC_ID
+comma
+l_string|&quot;zx2&quot;
+comma
+l_int|NULL
 )brace
 comma
 (brace

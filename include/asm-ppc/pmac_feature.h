@@ -87,9 +87,15 @@ mdefine_line|#define PMAC_TYPE_UNKNOWN_PANGEA&t;0x10f
 multiline_comment|/* MacRISC2 machines based on the Intrepid chipset&n; */
 DECL|macro|PMAC_TYPE_UNKNOWN_INTREPID
 mdefine_line|#define PMAC_TYPE_UNKNOWN_INTREPID&t;0x11f&t;/* Generic */
-multiline_comment|/* MacRISC4 / G5 machines&n; */
+multiline_comment|/* MacRISC4 / G5 machines. We don&squot;t have per-machine selection here anymore,&n; * but rather machine families&n; */
 DECL|macro|PMAC_TYPE_POWERMAC_G5
-mdefine_line|#define PMAC_TYPE_POWERMAC_G5&t;&t;0x150&t;/* First tower */
+mdefine_line|#define PMAC_TYPE_POWERMAC_G5&t;&t;0x150&t;/* U3 &amp; U3H based */
+DECL|macro|PMAC_TYPE_POWERMAC_G5_U3L
+mdefine_line|#define PMAC_TYPE_POWERMAC_G5_U3L&t;0x151&t;/* U3L based desktop */
+DECL|macro|PMAC_TYPE_IMAC_G5
+mdefine_line|#define PMAC_TYPE_IMAC_G5&t;&t;0x152&t;/* iMac G5 */
+DECL|macro|PMAC_TYPE_XSERVE_G5
+mdefine_line|#define PMAC_TYPE_XSERVE_G5&t;&t;0x153&t;/* Xserve G5 */
 DECL|macro|PMAC_TYPE_UNKNOWN_K2
 mdefine_line|#define PMAC_TYPE_UNKNOWN_K2&t;&t;0x19f&t;/* Any other K2 based */
 multiline_comment|/*&n; * Motherboard flags&n; */

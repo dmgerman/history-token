@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * $Id: saa7134-core.c,v 1.15 2004/11/07 14:44:59 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * driver core&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-core.c,v 1.28 2005/02/22 09:56:29 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * driver core&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -490,6 +491,7 @@ id|mops_list
 )paren
 suffix:semicolon
 DECL|variable|saa7134_devcount
+r_static
 r_int
 r_int
 id|saa7134_devcount
@@ -3202,7 +3204,8 @@ c_cond
 (paren
 id|report
 op_amp
-id|SAA7134_IRQ_REPORT_INTL
+id|SAA7134_IRQ_REPORT_RDCAP
+multiline_comment|/* _INTL */
 )paren
 id|saa7134_irq_video_intl
 c_func
@@ -3322,7 +3325,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3368,6 +3370,43 @@ c_func
 id|SAA7134_IRQ2
 comma
 id|SAA7134_IRQ2_INTE_PE
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|report
+op_amp
+(paren
+id|SAA7134_IRQ_REPORT_GPIO16
+op_or
+id|SAA7134_IRQ_REPORT_GPIO18
+)paren
+)paren
+(brace
+multiline_comment|/* disable gpio IRQs */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s/irq: looping -- &quot;
+l_string|&quot;clearing GPIO enable bits&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|saa_clearl
+c_func
+(paren
+id|SAA7134_IRQ2
+comma
+(paren
+id|SAA7134_IRQ2_INTE_GPIO16
+op_or
+id|SAA7134_IRQ2_INTE_GPIO18
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3634,29 +3673,7 @@ c_func
 (paren
 id|SAA7134_IRQ2
 comma
-id|SAA7134_IRQ2_INTE_GPIO18
-op_or
-id|SAA7134_IRQ2_INTE_GPIO18A
-op_or
-id|SAA7134_IRQ2_INTE_GPIO16
-op_or
-id|SAA7134_IRQ2_INTE_SC2
-op_or
-id|SAA7134_IRQ2_INTE_SC1
-op_or
-id|SAA7134_IRQ2_INTE_SC0
-op_or
-multiline_comment|/* SAA7134_IRQ2_INTE_DEC5    |  FIXME: TRIG_ERR ??? */
-id|SAA7134_IRQ2_INTE_DEC3
-op_or
-id|SAA7134_IRQ2_INTE_DEC2
-op_or
-multiline_comment|/* SAA7134_IRQ2_INTE_DEC1    | */
-id|SAA7134_IRQ2_INTE_DEC0
-op_or
-id|SAA7134_IRQ2_INTE_PE
-op_or
-id|SAA7134_IRQ2_INTE_AR
+id|dev-&gt;irq2_mask
 )paren
 suffix:semicolon
 r_return
@@ -4741,6 +4758,20 @@ id|fail2
 suffix:semicolon
 )brace
 multiline_comment|/* initialize hardware #1 */
+id|dev-&gt;irq2_mask
+op_assign
+id|SAA7134_IRQ2_INTE_DEC3
+op_or
+id|SAA7134_IRQ2_INTE_DEC2
+op_or
+id|SAA7134_IRQ2_INTE_DEC1
+op_or
+id|SAA7134_IRQ2_INTE_DEC0
+op_or
+id|SAA7134_IRQ2_INTE_PE
+op_or
+id|SAA7134_IRQ2_INTE_AR
+suffix:semicolon
 id|saa7134_board_init1
 c_func
 (paren
@@ -5244,6 +5275,13 @@ c_func
 (paren
 op_amp
 id|devlist_lock
+)paren
+suffix:semicolon
+multiline_comment|/* check for signal */
+id|saa7134_irq_video_intl
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -5916,6 +5954,18 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pending_registered
+)paren
+id|unregister_module_notifier
+c_func
+(paren
+op_amp
+id|pending_notifier
+)paren
+suffix:semicolon
 id|pci_unregister_driver
 c_func
 (paren

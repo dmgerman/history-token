@@ -11,8 +11,6 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &quot;gsc.h&quot;
 DECL|macro|WAX_GSC_IRQ
 mdefine_line|#define WAX_GSC_IRQ&t;7&t;/* Hardcoded Interrupt for GSC */
-DECL|macro|WAX_GSC_NMI_IRQ
-mdefine_line|#define WAX_GSC_NMI_IRQ&t;29
 DECL|function|wax_choose_irq
 r_static
 r_void
@@ -47,7 +45,7 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* HIL */
+multiline_comment|/* i8042 General */
 r_case
 l_int|0x8c
 suffix:colon
@@ -57,7 +55,7 @@ l_int|6
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* RS232 */
+multiline_comment|/* Serial */
 r_case
 l_int|0x90
 suffix:colon
@@ -67,7 +65,7 @@ l_int|10
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* WAX EISA BA */
+multiline_comment|/* EISA */
 r_default
 suffix:colon
 r_return
@@ -83,6 +81,49 @@ id|irq
 comma
 op_amp
 id|dev-&gt;irq
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;id.sversion
+)paren
+(brace
+r_case
+l_int|0x73
+suffix:colon
+id|irq
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* i8042 High-priority */
+r_case
+l_int|0x90
+suffix:colon
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* EISA NMI */
+r_default
+suffix:colon
+r_return
+suffix:semicolon
+multiline_comment|/* No secondary IRQ */
+)brace
+id|gsc_asic_assign_irq
+c_func
+(paren
+id|ctrl
+comma
+id|irq
+comma
+op_amp
+id|dev-&gt;aux_irq
 )paren
 suffix:semicolon
 )brace
@@ -105,7 +146,7 @@ id|base
 op_assign
 id|wax-&gt;hpa
 suffix:semicolon
-multiline_comment|/* Stop WAX barking for a bit */
+multiline_comment|/* Wax-off */
 id|gsc_writel
 c_func
 (paren
@@ -129,7 +170,6 @@ multiline_comment|/* We&squot;re not really convinced we want to reset the onboa
 multiline_comment|/* Resets */
 singleline_comment|//&t;gsc_writel(0xFFFFFFFF, base+0x1000); /* HIL */
 singleline_comment|//&t;gsc_writel(0xFFFFFFFF, base+0x2000); /* RS232-B on Wax */
-multiline_comment|/* Ok we hit it on the head with a hammer, our Dog is now&n;&t;** comatose and muzzled.  Devices will now unmask WAX&n;&t;** interrupts as they are registered as irq&squot;s in the WAX range.&n;&t;*/
 )brace
 r_int
 id|__init
@@ -186,7 +226,7 @@ id|ENOMEM
 suffix:semicolon
 id|wax-&gt;name
 op_assign
-l_string|&quot;Wax&quot;
+l_string|&quot;wax&quot;
 suffix:semicolon
 id|wax-&gt;hpa
 op_assign
@@ -422,7 +462,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Wax&quot;
+l_string|&quot;wax&quot;
 comma
 dot
 id|id_table

@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: cx88-video.c,v 1.46 2004/11/07 14:44:59 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * video4linux video interface&n; *&n; * (c) 2003-04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-video.c,v 1.58 2005/03/07 15:58:05 kraxel Exp $&n; *&n; * device driver for Conexant 2388x based TV cards&n; * video4linux video interface&n; *&n; * (c) 2003-04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1922,7 +1923,9 @@ c_func
 (paren
 id|MO_PCI_INTMSK
 comma
-l_int|0x00fc01
+id|core-&gt;pci_irqmask
+op_or
+l_int|0x01
 )paren
 suffix:semicolon
 id|cx_set
@@ -4829,6 +4832,8 @@ c_func
 id|core
 comma
 id|V4L2_TUNER_MODE_STEREO
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|cx88_call_i2c_clients
@@ -4858,7 +4863,6 @@ op_star
 id|file
 comma
 r_char
-id|__user
 op_star
 id|data
 comma
@@ -5291,6 +5295,20 @@ id|RESOURCE_VBI
 )paren
 suffix:semicolon
 )brace
+id|videobuf_mmap_free
+c_func
+(paren
+op_amp
+id|fh-&gt;vidq
+)paren
+suffix:semicolon
+id|videobuf_mmap_free
+c_func
+(paren
+op_amp
+id|fh-&gt;vbiq
+)paren
+suffix:semicolon
 id|file-&gt;private_data
 op_assign
 l_int|NULL
@@ -6931,6 +6949,12 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
+id|cx88_newstation
+c_func
+(paren
+id|core
+)paren
+suffix:semicolon
 id|video_mux
 c_func
 (paren
@@ -7520,6 +7544,8 @@ c_func
 id|core
 comma
 id|t-&gt;audmode
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -7663,6 +7689,12 @@ suffix:semicolon
 id|dev-&gt;freq
 op_assign
 id|f-&gt;frequency
+suffix:semicolon
+id|cx88_newstation
+c_func
+(paren
+id|core
+)paren
 suffix:semicolon
 macro_line|#ifdef V4L2_I2C_CLIENTS
 id|cx88_call_i2c_clients
@@ -9143,8 +9175,6 @@ id|dev-&gt;core
 suffix:semicolon
 id|u32
 id|status
-comma
-id|mask
 suffix:semicolon
 r_int
 id|loop
@@ -9177,18 +9207,9 @@ id|MO_PCI_INTSTAT
 )paren
 op_amp
 (paren
-op_complement
-l_int|0x1f
+id|core-&gt;pci_irqmask
 op_or
 l_int|0x01
-)paren
-suffix:semicolon
-id|mask
-op_assign
-id|cx_read
-c_func
-(paren
-id|MO_PCI_INTMSK
 )paren
 suffix:semicolon
 r_if
@@ -9196,11 +9217,7 @@ c_cond
 (paren
 l_int|0
 op_eq
-(paren
 id|status
-op_amp
-id|mask
-)paren
 )paren
 r_goto
 id|out
@@ -9222,19 +9239,14 @@ c_cond
 (paren
 id|status
 op_amp
-id|mask
-op_amp
-op_complement
-l_int|0x1f
+id|core-&gt;pci_irqmask
 )paren
-id|cx88_irq
+id|cx88_core_irq
 c_func
 (paren
 id|core
 comma
 id|status
-comma
-id|mask
 )paren
 suffix:semicolon
 r_if
@@ -9966,6 +9978,14 @@ r_goto
 id|fail_core
 suffix:semicolon
 )brace
+id|cx_set
+c_func
+(paren
+id|MO_PCI_INTMSK
+comma
+id|core-&gt;pci_irqmask
+)paren
+suffix:semicolon
 multiline_comment|/* load and configure helper modules */
 r_if
 c_cond
@@ -10463,7 +10483,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -10593,7 +10613,13 @@ c_func
 (paren
 id|pci_dev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pci_dev
+comma
 id|state
+)paren
 )paren
 )paren
 (brace
@@ -10664,7 +10690,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state
@@ -10911,7 +10937,7 @@ l_int|100
 suffix:semicolon
 macro_line|#endif
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

@@ -18,14 +18,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|i386_cpu
-id|cpu_devices
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
 r_int
 id|arch_register_cpu
 c_func

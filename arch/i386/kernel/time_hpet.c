@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
 macro_line|#include &lt;linux/hpet.h&gt;
 DECL|variable|hpet_period
+r_static
 r_int
 r_int
 id|hpet_period
@@ -73,6 +74,7 @@ id|a
 suffix:semicolon
 )brace
 DECL|function|hpet_writel
+r_static
 r_void
 id|hpet_writel
 c_func
@@ -100,6 +102,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/*&n; * HPET counters dont wrap around on every tick. They just change the&n; * comparator value and continue. Next tick can be caught by checking&n; * for a change in the comparator value. Used in apic.c.&n; */
 DECL|function|wait_hpet_tick
+r_static
 r_void
 id|__init
 id|wait_hpet_tick

@@ -31,8 +31,8 @@ c_func
 id|cap_bset
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This global lock protects task-&gt;cap_* for all tasks including current.&n; * Locking rule: acquire this prior to tasklist_lock.&n; */
-DECL|variable|task_capability_lock
+multiline_comment|/*&n; * This lock protects task-&gt;cap_* for all tasks including current.&n; * Locking rule: acquire this prior to tasklist_lock.&n; */
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren

@@ -122,14 +122,14 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* width of the LCD in chars (DISPLAY_MODEL_LCD only) */
 DECL|member|lcd_cmd_reg_addr
-r_char
-op_star
+r_int
+r_int
 id|lcd_cmd_reg_addr
 suffix:semicolon
 multiline_comment|/* ptr to LCD cmd-register &amp; data ptr for LED */
 DECL|member|lcd_data_reg_addr
-r_char
-op_star
+r_int
+r_int
 id|lcd_data_reg_addr
 suffix:semicolon
 multiline_comment|/* ptr to LCD data-register (LCD only) */
@@ -220,19 +220,11 @@ comma
 dot
 id|lcd_cmd_reg_addr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|KITTYHAWK_LCD_CMD
 comma
 dot
 id|lcd_data_reg_addr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|KITTYHAWK_LCD_DATA
 comma
 dot
@@ -1834,12 +1826,12 @@ c_func
 r_int
 id|model
 comma
-r_char
-op_star
+r_int
+r_int
 id|cmd_reg
 comma
-r_char
-op_star
+r_int
+r_int
 id|data_reg
 )paren
 (brace
@@ -1872,7 +1864,7 @@ id|LED_CMD_REG_NONE
 )paren
 ques
 c_cond
-l_int|NULL
+l_int|0
 suffix:colon
 id|cmd_reg
 suffix:semicolon
@@ -1893,7 +1885,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;LCD display at %p,%p registered&bslash;n&quot;
+l_string|&quot;LCD display at %lx,%lx registered&bslash;n&quot;
 comma
 id|LCD_CMD_REG
 comma
@@ -1931,7 +1923,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;LED display at %p registered&bslash;n&quot;
+l_string|&quot;LED display at %lx registered&bslash;n&quot;
 comma
 id|LED_DATA_REG
 )paren
@@ -1957,7 +1949,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;LED (ASP-style) display at %p registered&bslash;n&quot;
+l_string|&quot;LED (ASP-style) display at %lx registered&bslash;n&quot;
 comma
 id|LED_DATA_REG
 )paren
@@ -2294,10 +2286,6 @@ id|chassis_info.maxcnt
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|pdc_chassis_info
@@ -2314,7 +2302,11 @@ r_sizeof
 id|lcd_info
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 op_eq
 id|PDC_OK
 )paren

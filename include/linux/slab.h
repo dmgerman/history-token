@@ -418,11 +418,6 @@ suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
-id|mm_cachep
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
 id|names_cachep
 suffix:semicolon
 r_extern

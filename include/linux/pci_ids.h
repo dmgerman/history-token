@@ -1291,6 +1291,8 @@ DECL|macro|PCI_DEVICE_ID_HP_CISSA
 mdefine_line|#define PCI_DEVICE_ID_HP_CISSA&t;&t;0x3220
 DECL|macro|PCI_DEVICE_ID_HP_CISSB
 mdefine_line|#define PCI_DEVICE_ID_HP_CISSB&t;&t;0x3230
+DECL|macro|PCI_DEVICE_ID_HP_ZX2_IOC
+mdefine_line|#define PCI_DEVICE_ID_HP_ZX2_IOC&t;0x4031
 DECL|macro|PCI_VENDOR_ID_PCTECH
 mdefine_line|#define PCI_VENDOR_ID_PCTECH&t;&t;0x1042
 DECL|macro|PCI_DEVICE_ID_PCTECH_RZ1000
@@ -1389,6 +1391,8 @@ DECL|macro|PCI_DEVICE_ID_TI_4410
 mdefine_line|#define PCI_DEVICE_ID_TI_4410&t;&t;0xac41
 DECL|macro|PCI_DEVICE_ID_TI_4451
 mdefine_line|#define PCI_DEVICE_ID_TI_4451&t;&t;0xac42
+DECL|macro|PCI_DEVICE_ID_TI_4510
+mdefine_line|#define PCI_DEVICE_ID_TI_4510&t;&t;0xac44
 DECL|macro|PCI_DEVICE_ID_TI_4520
 mdefine_line|#define PCI_DEVICE_ID_TI_4520&t;&t;0xac46
 DECL|macro|PCI_DEVICE_ID_TI_1410

@@ -18,6 +18,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_8_100
+r_static
 r_struct
 id|wm_info
 id|i810_wm_8_100
@@ -226,6 +227,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_16_100
+r_static
 r_struct
 id|wm_info
 id|i810_wm_16_100
@@ -428,6 +430,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_24_100
+r_static
 r_struct
 id|wm_info
 id|i810_wm_24_100
@@ -618,6 +621,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_8_133
+r_static
 r_struct
 id|wm_info
 id|i810_wm_8_133
@@ -826,6 +830,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_16_133
+r_static
 r_struct
 id|wm_info
 id|i810_wm_16_133
@@ -1028,6 +1033,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|i810_wm_24_133
+r_static
 r_struct
 id|wm_info
 id|i810_wm_24_133

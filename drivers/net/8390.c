@@ -3370,7 +3370,7 @@ id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * alloc_ei_netdev - alloc_etherdev counterpart for 8390&n; *&n; * Allocate 8390-specific net_device.&n; */
+multiline_comment|/**&n; * alloc_ei_netdev - alloc_etherdev counterpart for 8390&n; * @size: extra bytes to allocate&n; *&n; * Allocate 8390-specific net_device.&n; */
 DECL|function|__alloc_ei_netdev
 r_struct
 id|net_device

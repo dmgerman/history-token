@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134.h,v 1.27 2004/11/04 11:03:52 kraxel Exp $&n; *&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134.h,v 1.38 2005/03/07 12:01:51 kraxel Exp $&n; *&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
 mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,12)
@@ -81,6 +81,9 @@ DECL|enumerator|LINE2
 id|LINE2
 op_assign
 l_int|3
+comma
+DECL|enumerator|LINE2_LEFT
+id|LINE2_LEFT
 comma
 )brace
 suffix:semicolon
@@ -354,16 +357,16 @@ DECL|macro|SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER
 mdefine_line|#define SAA7134_BOARD_AVERMEDIA_DVD_EZMAKER 33
 DECL|macro|SAA7134_BOARD_NOVAC_PRIMETV7133
 mdefine_line|#define SAA7134_BOARD_NOVAC_PRIMETV7133 34
-DECL|macro|SAA7134_BOARD_AVERMEDIA_305
-mdefine_line|#define SAA7134_BOARD_AVERMEDIA_305    35
+DECL|macro|SAA7134_BOARD_AVERMEDIA_STUDIO_305
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_STUDIO_305 35
 DECL|macro|SAA7133_BOARD_UPMOST_PURPLE_TV
 mdefine_line|#define SAA7133_BOARD_UPMOST_PURPLE_TV 36
 DECL|macro|SAA7134_BOARD_ITEMS_MTV005
 mdefine_line|#define SAA7134_BOARD_ITEMS_MTV005     37
 DECL|macro|SAA7134_BOARD_CINERGY200
 mdefine_line|#define SAA7134_BOARD_CINERGY200       38
-DECL|macro|SAA7134_BOARD_FLYTVPLATINUM
-mdefine_line|#define SAA7134_BOARD_FLYTVPLATINUM    39
+DECL|macro|SAA7134_BOARD_FLYTVPLATINUM_MINI
+mdefine_line|#define SAA7134_BOARD_FLYTVPLATINUM_MINI 39
 DECL|macro|SAA7134_BOARD_VIDEOMATE_TV_PVR
 mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV_PVR 40
 DECL|macro|SAA7134_BOARD_VIDEOMATE_TV_GOLD_PLUS
@@ -380,6 +383,22 @@ DECL|macro|SAA7134_BOARD_AVERMEDIA_CARDBUS
 mdefine_line|#define SAA7134_BOARD_AVERMEDIA_CARDBUS 46
 DECL|macro|SAA7134_BOARD_CINERGY400_CARDBUS
 mdefine_line|#define SAA7134_BOARD_CINERGY400_CARDBUS 47
+DECL|macro|SAA7134_BOARD_CINERGY600_MK3
+mdefine_line|#define SAA7134_BOARD_CINERGY600_MK3   48
+DECL|macro|SAA7134_BOARD_VIDEOMATE_GOLD_PLUS
+mdefine_line|#define SAA7134_BOARD_VIDEOMATE_GOLD_PLUS 49
+DECL|macro|SAA7134_BOARD_PINNACLE_300I_DVBT_PAL
+mdefine_line|#define SAA7134_BOARD_PINNACLE_300I_DVBT_PAL 50
+DECL|macro|SAA7134_BOARD_PROVIDEO_PV952
+mdefine_line|#define SAA7134_BOARD_PROVIDEO_PV952   51
+DECL|macro|SAA7134_BOARD_AVERMEDIA_305
+mdefine_line|#define SAA7134_BOARD_AVERMEDIA_305    52
+DECL|macro|SAA7135_BOARD_ASUSTeK_TVFM7135
+mdefine_line|#define SAA7135_BOARD_ASUSTeK_TVFM7135 53
+DECL|macro|SAA7134_BOARD_FLYTVPLATINUM_FM
+mdefine_line|#define SAA7134_BOARD_FLYTVPLATINUM_FM 54
+DECL|macro|SAA7134_BOARD_FLYDVBTDUO
+mdefine_line|#define SAA7134_BOARD_FLYDVBTDUO 55
 DECL|macro|SAA7134_MAXBOARDS
 mdefine_line|#define SAA7134_MAXBOARDS 8
 DECL|macro|SAA7134_INPUT_MAX
@@ -1001,6 +1020,19 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|member|signal_change
+r_void
+(paren
+op_star
+id|signal_change
+)paren
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* global device status */
@@ -1127,6 +1159,11 @@ DECL|member|gpio_value
 r_int
 r_int
 id|gpio_value
+suffix:semicolon
+DECL|member|irq2_mask
+r_int
+r_int
+id|irq2_mask
 suffix:semicolon
 multiline_comment|/* i2c i/o */
 DECL|member|i2c_adap
@@ -1307,6 +1344,10 @@ DECL|member|last_carrier
 r_int
 id|last_carrier
 suffix:semicolon
+DECL|member|nosignal
+r_int
+id|nosignal
+suffix:semicolon
 multiline_comment|/* SAA7134_MPEG_* */
 DECL|member|ts
 r_struct
@@ -1340,6 +1381,15 @@ DECL|member|empress_users
 r_int
 r_int
 id|empress_users
+suffix:semicolon
+DECL|member|empress_workqueue
+r_struct
+id|work_struct
+id|empress_workqueue
+suffix:semicolon
+DECL|member|empress_started
+r_int
+id|empress_started
 suffix:semicolon
 multiline_comment|/* SAA7134_MPEG_DVB only */
 DECL|member|dvb
@@ -1378,11 +1428,6 @@ r_extern
 r_struct
 id|list_head
 id|saa7134_devlist
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|saa7134_devcount
 suffix:semicolon
 r_void
 id|saa7134_print_ioctl

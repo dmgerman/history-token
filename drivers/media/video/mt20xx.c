@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: mt20xx.c,v 1.3 2005/02/15 15:59:35 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls microtune tuners, mt2032 + mt2050 at the moment.&n; */
+multiline_comment|/*&n; * $Id: mt20xx.c,v 1.4 2005/03/04 09:24:56 kraxel Exp $&n; *&n; * i2c tv tuner chip device driver&n; * controls microtune tuners, mt2032 + mt2050 at the moment.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|variable|optimize_vco

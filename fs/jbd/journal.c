@@ -3928,7 +3928,7 @@ id|journal
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *int journal_check_used_features () - Check if features specified are used.&n; * &n; * Check whether the journal uses all of a given set of&n; * features.  Return true (non-zero) if it does. &n; **/
+multiline_comment|/**&n; *int journal_check_used_features () - Check if features specified are used.&n; * @journal: Journal to check.&n; * @compat: bitmask of compatible features&n; * @ro: bitmask of features that force read-only mount&n; * @incompat: bitmask of incompatible features&n; * &n; * Check whether the journal uses all of a given set of&n; * features.  Return true (non-zero) if it does. &n; **/
 DECL|function|journal_check_used_features
 r_int
 id|journal_check_used_features
@@ -4035,7 +4035,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * int journal_check_available_features() - Check feature set in journalling layer&n; * &n; * Check whether the journaling code supports the use of&n; * all of a given set of features on this journal.  Return true&n; * (non-zero) if it can. */
+multiline_comment|/**&n; * int journal_check_available_features() - Check feature set in journalling layer&n; * @journal: Journal to check.&n; * @compat: bitmask of compatible features&n; * @ro: bitmask of features that force read-only mount&n; * @incompat: bitmask of incompatible features&n; * &n; * Check whether the journaling code supports the use of&n; * all of a given set of features on this journal.  Return true&n; * (non-zero) if it can. */
 DECL|function|journal_check_available_features
 r_int
 id|journal_check_available_features
@@ -4125,7 +4125,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * int journal_set_features () - Mark a given journal feature in the superblock&n; *&n; * Mark a given journal feature as present on the&n; * superblock.  Returns true if the requested features could be set. &n; *&n; */
+multiline_comment|/**&n; * int journal_set_features () - Mark a given journal feature in the superblock&n; * @journal: Journal to act on.&n; * @compat: bitmask of compatible features&n; * @ro: bitmask of features that force read-only mount&n; * @incompat: bitmask of incompatible features&n; *&n; * Mark a given journal feature as present on the&n; * superblock.  Returns true if the requested features could be set. &n; *&n; */
 DECL|function|journal_set_features
 r_int
 id|journal_set_features
@@ -4234,7 +4234,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * int journal_update_format () - Update on-disk journal structure.&n; *&n; * Given an initialised but unloaded journal struct, poke about in the&n; * on-disk structure to update it to the most recent supported version.&n; */
+multiline_comment|/**&n; * int journal_update_format () - Update on-disk journal structure.&n; * @journal: Journal to act on.&n; *&n; * Given an initialised but unloaded journal struct, poke about in the&n; * on-disk structure to update it to the most recent supported version.&n; */
 DECL|function|journal_update_format
 r_int
 id|journal_update_format
@@ -5032,7 +5032,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * int journal_clear_err () - clears the journal&squot;s error state&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
+multiline_comment|/** &n; * int journal_clear_err () - clears the journal&squot;s error state&n; * @journal: journal to act on.&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
 DECL|function|journal_clear_err
 r_int
 id|journal_clear_err
@@ -5083,7 +5083,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * void journal_ack_err() - Ack journal err.&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
+multiline_comment|/** &n; * void journal_ack_err() - Ack journal err.&n; * @journal: journal to act on.&n; *&n; * An error must be cleared or Acked to take a FS out of readonly&n; * mode.&n; */
 DECL|function|journal_ack_err
 r_void
 id|journal_ack_err
@@ -5139,8 +5139,7 @@ id|inode-&gt;i_sb-&gt;s_blocksize_bits
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Simple support for retying memory allocations.  Introduced to help to&n; * debug different VM deadlock avoidance strategies. &n; */
-multiline_comment|/*&n; * Simple support for retying memory allocations.  Introduced to help to&n; * debug different VM deadlock avoidance strategies. &n; */
+multiline_comment|/*&n; * Simple support for retrying memory allocations.  Introduced to help to&n; * debug different VM deadlock avoidance strategies. &n; */
 DECL|function|__jbd_kmalloc
 r_void
 op_star

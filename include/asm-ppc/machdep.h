@@ -539,6 +539,11 @@ id|SYS_CTRLER_PMU
 op_assign
 l_int|2
 comma
+DECL|enumerator|SYS_CTRLER_SMU
+id|SYS_CTRLER_SMU
+op_assign
+l_int|3
+comma
 DECL|typedef|sys_ctrler_t
 )brace
 id|sys_ctrler_t

@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * $Id: cx88-mpeg.c,v 1.14 2004/10/25 11:26:36 kraxel Exp $&n; *&n; *  Support for the mpeg transport stream transfers&n; *  PCI function #2 of the cx2388x.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Chris Pascoe &lt;c.pascoe@itee.uq.edu.au&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-mpeg.c,v 1.25 2005/03/07 14:18:00 kraxel Exp $&n; *&n; *  Support for the mpeg transport stream transfers&n; *  PCI function #2 of the cx2388x.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Chris Pascoe &lt;c.pascoe@itee.uq.edu.au&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -143,13 +144,65 @@ dot
 id|dvb
 )paren
 (brace
-multiline_comment|/* Setup TS portion of chip */
+multiline_comment|/* negedge driven &amp; software reset */
 id|cx_write
 c_func
 (paren
 id|TS_GEN_CNTRL
 comma
-l_int|0x0c
+l_int|0x40
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+id|cx_write
+c_func
+(paren
+id|MO_PINMUX_IO
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|cx_write
+c_func
+(paren
+id|TS_HW_SOP_CNTRL
+comma
+l_int|47
+op_lshift
+l_int|16
+op_or
+l_int|188
+op_lshift
+l_int|4
+op_or
+l_int|0x00
+)paren
+suffix:semicolon
+id|cx_write
+c_func
+(paren
+id|TS_SOP_STAT
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|cx_write
+c_func
+(paren
+id|TS_GEN_CNTRL
+comma
+id|dev-&gt;ts_gen_cntrl
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -243,7 +296,9 @@ c_func
 (paren
 id|MO_PCI_INTMSK
 comma
-l_int|0x00fc04
+id|core-&gt;pci_irqmask
+op_or
+l_int|0x04
 )paren
 suffix:semicolon
 id|cx_write
@@ -1305,8 +1360,6 @@ id|dev-&gt;core
 suffix:semicolon
 id|u32
 id|status
-comma
-id|mask
 suffix:semicolon
 r_int
 id|loop
@@ -1339,18 +1392,9 @@ id|MO_PCI_INTSTAT
 )paren
 op_amp
 (paren
-op_complement
-l_int|0x1f
+id|core-&gt;pci_irqmask
 op_or
 l_int|0x04
-)paren
-suffix:semicolon
-id|mask
-op_assign
-id|cx_read
-c_func
-(paren
-id|MO_PCI_INTMSK
 )paren
 suffix:semicolon
 r_if
@@ -1358,11 +1402,7 @@ c_cond
 (paren
 l_int|0
 op_eq
-(paren
 id|status
-op_amp
-id|mask
-)paren
 )paren
 r_goto
 id|out
@@ -1384,19 +1424,14 @@ c_cond
 (paren
 id|status
 op_amp
-id|mask
-op_amp
-op_complement
-l_int|0x1f
+id|core-&gt;pci_irqmask
 )paren
-id|cx88_irq
+id|cx88_core_irq
 c_func
 (paren
 id|core
 comma
 id|status
-comma
-id|mask
 )paren
 suffix:semicolon
 r_if
@@ -1463,6 +1498,13 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|cx88_core
+op_star
+id|core
+op_assign
+id|dev-&gt;core
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -1628,15 +1670,6 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-macro_line|#if 0 /* FIXME */
-multiline_comment|/* initialize hardware */
-id|cx8802_reset
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* get irq */
 id|err
 op_assign
@@ -1679,15 +1712,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#if 0 /* FIXME */
-multiline_comment|/* register i2c bus + load i2c helpers */
-id|cx88_card_setup
+id|cx_set
 c_func
 (paren
-id|dev
+id|MO_PCI_INTMSK
+comma
+id|core-&gt;pci_irqmask
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* everything worked */
 id|pci_set_drvdata
 c_func
@@ -1763,7 +1795,7 @@ id|pci_dev
 op_star
 id|pci_dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -1859,7 +1891,13 @@ c_func
 (paren
 id|pci_dev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pci_dev
+comma
 id|state
+)paren
 )paren
 )paren
 (brace
@@ -1929,7 +1967,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state

@@ -522,10 +522,6 @@ id|mpc_default_type
 suffix:semicolon
 r_extern
 r_int
-id|mp_current_pci_id
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|mp_lapic_addr
 suffix:semicolon

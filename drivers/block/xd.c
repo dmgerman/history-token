@@ -59,6 +59,7 @@ DECL|macro|XD_INIT_DISK_DELAY
 mdefine_line|#define XD_INIT_DISK_DELAY&t;(30*HZ/1000)  /* 30 ms delay during disk initialization */
 multiline_comment|/* Above may need to be increased if a problem with the 2nd drive detection&n;   (ST11M controller) or resetting a controller (WD) appears */
 DECL|variable|xd_info
+r_static
 id|XD_INFO
 id|xd_info
 (braket

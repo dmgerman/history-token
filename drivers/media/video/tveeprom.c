@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * tveeprom - eeprom decoder for tvcard configuration eeproms&n; *&n; * Data and decoding routines shamelessly borrowed from bttv-cards.c&n; * eeprom access routine shamelessly borrowed from bttv-if.c&n; * which are:&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n; * Adjustments to fit a more general model and all bugs:&n;&n; &t;Copyright (C) 2003 John Klar &lt;linpvr at projectplasma.com&gt;&n;&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -712,13 +713,13 @@ l_string|&quot;LG TALN H202T&quot;
 )brace
 comma
 (brace
-id|TUNER_ABSENT
+id|TUNER_PHILIPS_FQ1216AME_MK4
 comma
 l_string|&quot;Philips FQ1216AME MK4&quot;
 )brace
 comma
 (brace
-id|TUNER_ABSENT
+id|TUNER_PHILIPS_FQ1236A_MK4
 comma
 l_string|&quot;Philips FQ1236A MK4&quot;
 )brace
@@ -739,6 +740,18 @@ comma
 id|TUNER_ABSENT
 comma
 l_string|&quot;Philips FQ1236 MK5&quot;
+)brace
+comma
+(brace
+id|TUNER_ABSENT
+comma
+l_string|&quot;Unspecified&quot;
+)brace
+comma
+(brace
+id|TUNER_LG_PAL_TAPE
+comma
+l_string|&quot;LG PAL (TAPE Series)&quot;
 )brace
 comma
 )brace
@@ -950,6 +963,10 @@ r_case
 l_int|89
 suffix:colon
 singleline_comment|//PNPEnv_TUNER_TCL_MFPE05_2:
+r_case
+l_int|92
+suffix:colon
+singleline_comment|//PNPEnv_TUNER_PHILIPS_FQ1236A_MK4:
 r_return
 l_int|1
 suffix:semicolon
@@ -974,7 +991,7 @@ op_star
 id|eeprom_data
 )paren
 (brace
-multiline_comment|/* ----------------------------------------------&n;&t;** The hauppauge eeprom format is tagged&n;&t;**&n;&t;** if packet[0] == 0x84, then packet[0..1] == length&n;&t;** else length = packet[0] &amp; 3f;&n;&t;** if packet[0] &amp; f8 == f8, then EOD and packet[1] == checksum&n;&t;**&n;&t;** In our (ivtv) case we&squot;re interested in the following:&n;&t;** tuner type: tag [00].05 or [0a].01 (index into hauppauge_tuners)&n;&t;** tuner fmts: tag [00].04 or [0a].00 (bitmask index into hauppauge_fmts)&n;&t;** radio:      tag [00].{last} or [0e].00  (bitmask.  bit2=FM)&n;&t;** audio proc: tag [02].01 or [05].00 (lower nibble indexes lut?)&n;&n;&t;** Fun info:&n;&t;** model:      tag [00].07-08 or [06].00-01&n;&t;** revision:   tag [00].09-0b or [06].04-06&n;&t;** serial#:    tag [01].05-07 or [04].04-06&n;&n;&t;** # of inputs/outputs ???&n;&t;*/
+multiline_comment|/* ----------------------------------------------&n;&t;** The hauppauge eeprom format is tagged&n;&t;**&n;&t;** if packet[0] == 0x84, then packet[0..1] == length&n;&t;** else length = packet[0] &amp; 3f;&n;&t;** if packet[0] &amp; f8 == f8, then EOD and packet[1] == checksum&n;&t;**&n;&t;** In our (ivtv) case we&squot;re interested in the following:&n;&t;** tuner type: tag [00].05 or [0a].01 (index into hauppauge_tuner)&n;&t;** tuner fmts: tag [00].04 or [0a].00 (bitmask index into hauppauge_tuner_fmt)&n;&t;** radio:      tag [00].{last} or [0e].00  (bitmask.  bit2=FM)&n;&t;** audio proc: tag [02].01 or [05].00 (lower nibble indexes lut?)&n;&n;&t;** Fun info:&n;&t;** model:      tag [00].07-08 or [06].00-01&n;&t;** revision:   tag [00].09-0b or [06].04-06&n;&t;** serial#:    tag [01].05-07 or [04].04-06&n;&n;&t;** # of inputs/outputs ???&n;&t;*/
 r_int
 id|i
 comma
@@ -983,6 +1000,8 @@ comma
 id|len
 comma
 id|done
+comma
+id|beenhere
 comma
 id|tag
 comma
@@ -1020,6 +1039,8 @@ op_assign
 id|done
 op_assign
 id|len
+op_assign
+id|beenhere
 op_assign
 l_int|0
 suffix:semicolon
@@ -1483,6 +1504,14 @@ suffix:semicolon
 r_case
 l_int|0x0a
 suffix:colon
+r_if
+c_cond
+(paren
+id|beenhere
+op_eq
+l_int|0
+)paren
+(brace
 id|tuner
 op_assign
 id|eeprom_data
@@ -1501,8 +1530,18 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+id|beenhere
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
+r_else
+(brace
+r_break
+suffix:semicolon
+)brace
 r_case
 l_int|0x0e
 suffix:colon

@@ -12,8 +12,9 @@ r_struct
 id|pci_hba_data
 (brace
 DECL|member|base_addr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 suffix:semicolon
 multiline_comment|/* aka Host Physical Address */
@@ -128,7 +129,7 @@ DECL|macro|PCI_PORT_HBA
 mdefine_line|#define PCI_PORT_HBA(a)&t;&t;((a) &gt;&gt; HBA_PORT_SPACE_BITS)
 DECL|macro|PCI_PORT_ADDR
 mdefine_line|#define PCI_PORT_ADDR(a)&t;((a) &amp; (HBA_PORT_SPACE_SIZE - 1))
-macro_line|#if CONFIG_PARISC64
+macro_line|#if CONFIG_64BIT
 DECL|macro|PCI_F_EXTEND
 mdefine_line|#define PCI_F_EXTEND&t;&t;0xffffffff00000000UL
 DECL|macro|PCI_IS_LMMIO
@@ -168,7 +169,7 @@ DECL|macro|PCI_BUS_ADDR
 mdefine_line|#define PCI_BUS_ADDR(hba,a)&t;(PCI_IS_LMMIO(hba,a)&t;&bslash;&n;&t;&t;?  ((a) - hba-&gt;lmmio_space_offset)&t;/* mangle LMMIO */ &bslash;&n;&t;&t;: (a))&t;&t;&t;&t;&t;/* GMMIO */
 DECL|macro|PCI_HOST_ADDR
 mdefine_line|#define PCI_HOST_ADDR(hba,a)&t;((a) + hba-&gt;lmmio_space_offset)
-macro_line|#else&t;/* !CONFIG_PARISC64 */
+macro_line|#else&t;/* !CONFIG_64BIT */
 DECL|macro|PCI_BUS_ADDR
 mdefine_line|#define PCI_BUS_ADDR(hba,a)&t;(a)
 DECL|macro|PCI_HOST_ADDR
@@ -177,7 +178,7 @@ DECL|macro|PCI_F_EXTEND
 mdefine_line|#define PCI_F_EXTEND&t;&t;0UL
 DECL|macro|PCI_IS_LMMIO
 mdefine_line|#define PCI_IS_LMMIO(hba,a)&t;(1)&t;/* 32-bit doesn&squot;t support GMMIO */
-macro_line|#endif /* !CONFIG_PARISC64 */
+macro_line|#endif /* !CONFIG_64BIT */
 multiline_comment|/*&n;** KLUGE: linux/pci.h include asm/pci.h BEFORE declaring struct pci_bus&n;** (This eliminates some of the warnings).&n;*/
 r_struct
 id|pci_bus
@@ -431,11 +432,11 @@ id|x
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;** used by drivers/pci/pci.c:pci_do_scan_bus()&n;**   0 == check if bridge is numbered before re-numbering.&n;**   1 == pci_do_scan_bus() should automatically number all PCI-PCI bridges.&n;**&n;** REVISIT:&n;**   To date, only alpha sets this to one. We&squot;ll need to set this&n;**   to zero for legacy platforms and one for PAT platforms.&n;*/
+multiline_comment|/*&n; * pcibios_assign_all_busses() is used in drivers/pci/pci.c:pci_do_scan_bus()&n; *   0 == check if bridge is numbered before re-numbering.&n; *   1 == pci_do_scan_bus() should automatically number all PCI-PCI bridges.&n; *&n; *   We *should* set this to zero for &quot;legacy&quot; platforms and one&n; *   for PAT platforms.&n; *&n; *   But legacy platforms also need to renumber the busses below a Host&n; *   Bus controller.  Adding a 4-port Tulip card on the first PCI root&n; *   bus of a C200 resulted in the secondary bus being numbered as 1.&n; *   The second PCI host bus controller&squot;s root bus had already been&n; *   assigned bus number 1 by firmware and sysfs complained.&n; *&n; *   Firmware isn&squot;t doing anything wrong here since each controller&n; *   is its own PCI domain.  It&squot;s simpler and easier for us to renumber&n; *   the busses rather than treat each Dino as a separate PCI domain.&n; *   Eventually, we may want to introduce PCI domains for Superdome or&n; *   rp7420/8420 boxes and then revisit this issue.&n; */
 DECL|macro|pcibios_assign_all_busses
-mdefine_line|#define pcibios_assign_all_busses()     (pdc_type == PDC_TYPE_PAT)
+mdefine_line|#define pcibios_assign_all_busses()     (1)
 DECL|macro|pcibios_scan_all_fns
-mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;(0)
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO          0x10
 DECL|macro|PCIBIOS_MIN_MEM

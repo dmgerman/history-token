@@ -751,6 +751,42 @@ id|cmd_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
+multiline_comment|/*&n; * Power macintoshes have either a CUDA, PMU or SMU controlling&n; * system reset, power, NVRAM, RTC.&n; */
+DECL|enum|sys_ctrler_kind
+r_typedef
+r_enum
+id|sys_ctrler_kind
+(brace
+DECL|enumerator|SYS_CTRLER_UNKNOWN
+id|SYS_CTRLER_UNKNOWN
+op_assign
+l_int|0
+comma
+DECL|enumerator|SYS_CTRLER_CUDA
+id|SYS_CTRLER_CUDA
+op_assign
+l_int|1
+comma
+DECL|enumerator|SYS_CTRLER_PMU
+id|SYS_CTRLER_PMU
+op_assign
+l_int|2
+comma
+DECL|enumerator|SYS_CTRLER_SMU
+id|SYS_CTRLER_SMU
+op_assign
+l_int|3
+comma
+DECL|typedef|sys_ctrler_t
+)brace
+id|sys_ctrler_t
+suffix:semicolon
+r_extern
+id|sys_ctrler_t
+id|sys_ctrler
+suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PMAC */
 multiline_comment|/* Functions to produce codes on the leds.&n; * The SRC code should be unique for the message category and should&n; * be limited to the lower 24 bits (the upper 8 are set by these funcs),&n; * and (for boot &amp; dump) should be sorted numerically in the order&n; * the events occur.&n; */
 multiline_comment|/* Print a boot progress message. */
 r_void

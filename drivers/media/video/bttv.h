@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: bttv.h,v 1.15 2005/01/24 17:37:23 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
+multiline_comment|/*&n; * $Id: bttv.h,v 1.17 2005/02/22 14:06:32 kraxel Exp $&n; *&n; *  bttv - Bt848 frame grabber driver&n; *&n; *  card ID&squot;s and external interfaces of the bttv driver&n; *  basically stuff needed by other drivers (i2c, lirc, ...)&n; *  and is supported not to change much over time.&n; *&n; *  Copyright (C) 1996,97 Ralph Metzler (rjkm@thp.uni-koeln.de)&n; *  (c) 1999,2000 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
 macro_line|#ifndef _BTTV_H_
 DECL|macro|_BTTV_H_
 mdefine_line|#define _BTTV_H_
@@ -232,6 +232,8 @@ DECL|macro|BTTV_DVICO_DVBT_LITE
 mdefine_line|#define BTTV_DVICO_DVBT_LITE  0x80
 DECL|macro|BTTV_TIBET_CS16
 mdefine_line|#define BTTV_TIBET_CS16  0x83
+DECL|macro|BTTV_KODICOM_4400R
+mdefine_line|#define BTTV_KODICOM_4400R  0x84
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -797,27 +799,6 @@ r_struct
 id|bttv_sub_device
 op_star
 id|sub
-)paren
-suffix:semicolon
-DECL|member|i2c_info
-r_void
-(paren
-op_star
-id|i2c_info
-)paren
-(paren
-r_struct
-id|bttv_sub_device
-op_star
-id|sub
-comma
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-id|attach
 )paren
 suffix:semicolon
 )brace
