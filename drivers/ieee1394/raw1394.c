@@ -14475,13 +14475,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-id|hpsb_unregister_protocol
-c_func
-(paren
-op_amp
-id|raw1394_driver
-)paren
-suffix:semicolon
 id|cdev_del
 c_func
 (paren
@@ -14500,6 +14493,13 @@ c_func
 (paren
 op_amp
 id|raw1394_highlevel
+)paren
+suffix:semicolon
+id|hpsb_unregister_protocol
+c_func
+(paren
+op_amp
+id|raw1394_driver
 )paren
 suffix:semicolon
 )brace
