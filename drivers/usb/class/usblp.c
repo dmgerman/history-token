@@ -655,7 +655,8 @@ id|usblp
 )paren
 suffix:semicolon
 multiline_comment|/* forward reference to make our lives easier */
-r_extern
+DECL|variable|usblp_driver
+r_static
 r_struct
 id|usb_driver
 id|usblp_driver
