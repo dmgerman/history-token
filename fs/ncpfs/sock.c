@@ -2705,7 +2705,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncpfs: tcp: bug in recvmsg (%u &gt; %u)&bslash;n&quot;
+l_string|&quot;ncpfs: tcp: bug in recvmsg (%u &gt; %Zu)&bslash;n&quot;
 comma
 id|result
 comma
@@ -3160,7 +3160,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ncpfs: tcp: Unexpected reply len %d (expected at most %d)&bslash;n&quot;
+l_string|&quot;ncpfs: tcp: Unexpected reply len %d (expected at most %Zd)&bslash;n&quot;
 comma
 id|datalen
 comma

@@ -40,12 +40,8 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X, event=%d, daddr=%08x, name=``%s&squot;&squot;)&bslash;n&quot;
+l_string|&quot;(ap=0x%p, event=%d, daddr=%08x, name=``%s&squot;&squot;)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|event
@@ -255,12 +251,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -368,12 +360,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot; - tsap=0x%X, sel=0x%X&bslash;n&quot;
+l_string|&quot; - tsap=0x%p, sel=0x%X&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self-&gt;tsap
 comma
 id|self-&gt;stsap_sel
@@ -416,12 +404,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -628,12 +612,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -722,12 +702,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -949,12 +925,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -1012,12 +984,8 @@ c_func
 (paren
 id|IRDA_SR_INFO
 comma
-l_string|&quot;Got the log (0x%X), size is %d&bslash;n&quot;
+l_string|&quot;Got the log (0x%p), size is %d&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self-&gt;discoveries
 comma
 id|self-&gt;disco_number
@@ -1136,12 +1104,8 @@ c_func
 (paren
 id|IRDA_SR_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -1299,12 +1263,8 @@ c_func
 (paren
 id|IRDA_SOCK_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -1423,12 +1383,8 @@ c_func
 (paren
 id|IRDA_SOCK_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -1673,12 +1629,8 @@ c_func
 (paren
 id|IRDA_SOCK_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -1950,12 +1902,8 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -2136,12 +2084,8 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -2215,12 +2159,8 @@ c_func
 (paren
 id|IRDA_SERV_INFO
 comma
-l_string|&quot;Socket 0x%X matches rname ``%s&squot;&squot;.&bslash;n&quot;
+l_string|&quot;Socket 0x%p matches rname ``%s&squot;&squot;.&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 r_new
 comma
 r_new
@@ -2295,12 +2235,8 @@ c_func
 (paren
 id|IRDA_SERV_INFO
 comma
-l_string|&quot;Socket 0x%X matches daddr %#08x.&bslash;n&quot;
+l_string|&quot;Socket 0x%p matches daddr %#08x.&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 r_new
 comma
 id|self-&gt;daddr
@@ -2410,12 +2346,8 @@ c_func
 (paren
 id|IRDA_SERV_INFO
 comma
-l_string|&quot;Socket 0x%X is free.&bslash;n&quot;
+l_string|&quot;Socket 0x%p is free.&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 r_new
 )paren
 suffix:semicolon
@@ -2449,12 +2381,8 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot; - new = 0x%X&bslash;n&quot;
+l_string|&quot; - new = 0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 r_new
 )paren
 suffix:semicolon
@@ -2496,18 +2424,10 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot;(server=0x%X, new=0x%X)&bslash;n&quot;
+l_string|&quot;(server=0x%p, new=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|server
 comma
-(paren
-r_int
-r_int
-)paren
 r_new
 )paren
 suffix:semicolon
@@ -2787,12 +2707,8 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -3108,18 +3024,10 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self/ap=0x%X, skb=0x%X)&bslash;n&quot;
+l_string|&quot;(self/ap=0x%p, skb=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
-(paren
-r_int
-r_int
-)paren
 id|skb
 )paren
 suffix:semicolon
@@ -3348,12 +3256,8 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -3635,12 +3539,8 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -3860,12 +3760,8 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self=0x%X, flow=%d)&bslash;n&quot;
+l_string|&quot;(self=0x%p, flow=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 comma
 id|flow
@@ -3991,12 +3887,8 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -4116,12 +4008,8 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(server=0x%X)&bslash;n&quot;
+l_string|&quot;(server=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|server
 )paren
 suffix:semicolon
@@ -4136,12 +4024,8 @@ comma
 comma
 id|IRDA_CB_ERROR
 comma
-l_string|&quot;Invalid instance (0x%X) !!!&bslash;n&quot;
+l_string|&quot;Invalid instance (0x%p) !!!&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|instance
 )paren
 suffix:semicolon
@@ -4478,12 +4362,8 @@ c_func
 (paren
 id|IRDA_OCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -4650,12 +4530,8 @@ c_func
 (paren
 id|IRDA_OCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -4817,12 +4693,8 @@ c_func
 (paren
 id|IRDA_OCB_INFO
 comma
-l_string|&quot;Cleaning up log (0x%X)&bslash;n&quot;
+l_string|&quot;Cleaning up log (0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self-&gt;discoveries
 )paren
 suffix:semicolon
@@ -4946,12 +4818,8 @@ c_func
 (paren
 id|IRDA_OCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -4966,12 +4834,8 @@ comma
 comma
 id|IRDA_OCB_ERROR
 comma
-l_string|&quot;Invalid instance (0x%X) !!!&bslash;n&quot;
+l_string|&quot;Invalid instance (0x%p) !!!&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|priv
 )paren
 suffix:semicolon
@@ -5047,12 +4911,8 @@ c_func
 (paren
 id|IRDA_OCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -5067,12 +4927,8 @@ comma
 comma
 id|IRDA_OCB_ERROR
 comma
-l_string|&quot;Invalid instance (0x%X) !!!&bslash;n&quot;
+l_string|&quot;Invalid instance (0x%p) !!!&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|priv
 )paren
 suffix:semicolon
