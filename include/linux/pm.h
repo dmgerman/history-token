@@ -576,17 +576,30 @@ multiline_comment|/*&n; * Device power management&n; */
 r_struct
 id|device
 suffix:semicolon
+DECL|typedef|pm_message_t
+r_typedef
+id|u32
+id|__bitwise
+id|pm_message_t
+suffix:semicolon
+multiline_comment|/*&n; * There are 4 important states driver can be in:&n; * ON     -- driver is working&n; * FREEZE -- stop operations and apply whatever policy is applicable to a suspended driver&n; *           of that class, freeze queues for block like IDE does, drop packets for&n; *           ethernet, etc... stop DMA engine too etc... so a consistent image can be&n; *           saved; but do not power any hardware down.&n; * SUSPEND - like FREEZE, but hardware is doing as much powersaving as possible. Roughly&n; *           pci D3.&n; *&n; * Unfortunately, current drivers only recognize numeric values 0 (ON) and 3 (SUSPEND).&n; * We&squot;ll need to fix the drivers. So yes, putting 3 to all diferent defines is intentional,&n; * and will go away as soon as drivers are fixed. Also note that typedef is neccessary,&n; * we&squot;ll probably want to switch to&n; *   typedef struct pm_message_t { int event; int flags; } pm_message_t&n; * or something similar soon.&n; */
+DECL|macro|PMSG_FREEZE
+mdefine_line|#define PMSG_FREEZE&t;((__force pm_message_t) 3)
+DECL|macro|PMSG_SUSPEND
+mdefine_line|#define PMSG_SUSPEND&t;((__force pm_message_t) 3)
+DECL|macro|PMSG_ON
+mdefine_line|#define PMSG_ON&t;&t;((__force pm_message_t) 0)
 DECL|struct|dev_pm_info
 r_struct
 id|dev_pm_info
 (brace
 DECL|member|power_state
-id|u32
+id|pm_message_t
 id|power_state
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_PM
 DECL|member|prev_state
-id|u32
+id|pm_message_t
 id|prev_state
 suffix:semicolon
 DECL|member|saved_state
@@ -633,7 +646,7 @@ r_int
 id|device_suspend
 c_func
 (paren
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -642,7 +655,7 @@ r_int
 id|device_power_down
 c_func
 (paren
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
