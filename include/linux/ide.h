@@ -2412,11 +2412,10 @@ suffix:semicolon
 multiline_comment|/*&n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
 DECL|macro|ide_rq_offset
 mdefine_line|#define ide_rq_offset(rq) (((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
-DECL|macro|task_rq_offset
-mdefine_line|#define task_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;nr_sectors - (rq)-&gt;current_nr_sectors) * SECTOR_SIZE)
-multiline_comment|/*&n; * This function issues a special IDE device request&n; * onto the request queue.&n; *&n; * If action is ide_wait, then the rq is queued at the end of the&n; * request queue, and the function sleeps until it has been processed.&n; * This is for use when invoked from an ioctl handler.&n; *&n; * If action is ide_preempt, then the rq is queued at the head of&n; * the request queue, displacing the currently-being-processed&n; * request and this function returns immediately without waiting&n; * for the new rq to be completed.  This is VERY DANGEROUS, and is&n; * intended for careful use by the ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_next, then the rq is queued immediately after&n; * the currently-being-processed-request (if any), and the function&n; * returns without waiting for the new rq to be completed.  As above,&n; * This is VERY DANGEROUS, and is intended for careful use by the&n; * ATAPI tape/cdrom driver code.&n; *&n; * If action is ide_end, then the rq is queued at the end of the&n; * request queue, and the function returns immediately without waiting&n; * for the new rq to be completed. This is again intended for careful&n; * use by the ATAPI tape/cdrom driver code.&n; */
+r_extern
 r_int
 id|ide_do_drive_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2610,22 +2609,10 @@ r_int
 id|wcount
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * taskfile io for disks for now...&n; */
+r_extern
 id|ide_startstop_t
-id|do_rw_taskfile
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-id|ide_task_t
-op_star
-id|task
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Builds request from ide_ioctl&n; */
-r_void
-id|do_taskfile
+id|ata_taskfile
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2644,6 +2631,15 @@ comma
 id|ide_handler_t
 op_star
 id|handler
+comma
+id|ide_pre_handler_t
+op_star
+id|prehandler
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
@@ -2858,9 +2854,10 @@ r_int
 id|system_bus_speed
 suffix:semicolon
 multiline_comment|/*&n; * idedisk_input_data() is a wrapper around ide_input_data() which copes&n; * with byte-swapping the input data if required.&n; */
-r_inline
+r_extern
 r_void
 id|idedisk_input_data
+c_func
 (paren
 id|ide_drive_t
 op_star

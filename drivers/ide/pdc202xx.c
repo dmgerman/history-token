@@ -1356,6 +1356,21 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PCI_DEVICE_ID_PROMISE_20276
+suffix:colon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;&bslash;n                                PDC20276 Chipset.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|PCI_DEVICE_ID_PROMISE_20269
 suffix:colon
 id|p
@@ -1446,6 +1461,9 @@ id|bmide_dev-&gt;device
 (brace
 r_case
 id|PCI_DEVICE_ID_PROMISE_20275
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_PROMISE_20276
 suffix:colon
 r_case
 id|PCI_DEVICE_ID_PROMISE_20269
@@ -4713,6 +4731,9 @@ r_case
 id|PCI_DEVICE_ID_PROMISE_20275
 suffix:colon
 r_case
+id|PCI_DEVICE_ID_PROMISE_20276
+suffix:colon
+r_case
 id|PCI_DEVICE_ID_PROMISE_20269
 suffix:colon
 id|udma_133
@@ -6493,6 +6514,9 @@ r_case
 id|PCI_DEVICE_ID_PROMISE_20275
 suffix:colon
 r_case
+id|PCI_DEVICE_ID_PROMISE_20276
+suffix:colon
+r_case
 id|PCI_DEVICE_ID_PROMISE_20269
 suffix:colon
 r_case
@@ -7255,6 +7279,9 @@ r_case
 id|PCI_DEVICE_ID_PROMISE_20275
 suffix:colon
 r_case
+id|PCI_DEVICE_ID_PROMISE_20276
+suffix:colon
+r_case
 id|PCI_DEVICE_ID_PROMISE_20269
 suffix:colon
 r_case
@@ -7768,6 +7795,9 @@ r_case
 id|PCI_DEVICE_ID_PROMISE_20275
 suffix:colon
 r_case
+id|PCI_DEVICE_ID_PROMISE_20276
+suffix:colon
+r_case
 id|PCI_DEVICE_ID_PROMISE_20269
 suffix:colon
 r_case
@@ -7859,6 +7889,9 @@ id|hwif-&gt;pci_dev-&gt;device
 (brace
 r_case
 id|PCI_DEVICE_ID_PROMISE_20275
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_PROMISE_20276
 suffix:colon
 r_case
 id|PCI_DEVICE_ID_PROMISE_20269
