@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ALPS touchpad PS/2 mouse driver&n; *&n; * Copyright (c) 2003 Peter Osterlund &lt;petero2@telia.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
+multiline_comment|/*&n; * ALPS touchpad PS/2 mouse driver&n; *&n; * Copyright (c) 2003 Peter Osterlund &lt;petero2@telia.com&gt;&n; * Copyright (c) 2005 Vojtech Pavlik &lt;vojtech@suse.cz&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#ifndef _ALPS_H
 DECL|macro|_ALPS_H
 mdefine_line|#define _ALPS_H
@@ -29,11 +29,33 @@ DECL|struct|alps_data
 r_struct
 id|alps_data
 (brace
-DECL|member|model
-r_int
-id|model
+DECL|member|dev2
+r_struct
+id|input_dev
+id|dev2
 suffix:semicolon
-multiline_comment|/* Glidepoint or Dualpoint */
+multiline_comment|/* Relative device */
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* Name */
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* Phys */
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Protocol details */
 DECL|member|prev_fin
 r_int
 id|prev_fin
