@@ -896,7 +896,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0 : Allocating %d bytes for hash.&bslash;n&quot;
+l_string|&quot;raid0 : Allocating %Zd bytes for hash.&bslash;n&quot;
 comma
 id|nb_zone
 op_star
