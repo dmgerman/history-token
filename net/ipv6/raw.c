@@ -2630,7 +2630,7 @@ id|TCP_ESTABLISHED
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EDESTADDRREQ
 suffix:semicolon
 id|proto
 op_assign

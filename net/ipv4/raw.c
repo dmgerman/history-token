@@ -1365,7 +1365,7 @@ r_else
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|EDESTADDRREQ
 suffix:semicolon
 r_if
 c_cond

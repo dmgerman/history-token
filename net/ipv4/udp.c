@@ -2032,7 +2032,7 @@ id|TCP_ESTABLISHED
 )paren
 r_return
 op_minus
-id|ENOTCONN
+id|EDESTADDRREQ
 suffix:semicolon
 id|daddr
 op_assign

@@ -14873,6 +14873,24 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Remember, tcp_poll() does not lock socket!&n;&t;&t; * Change state from SYN-SENT only after copied_seq&n;&t;&t; * is initialized. */
+id|tp-&gt;copied_seq
+op_assign
+id|tp-&gt;rcv_nxt
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tcp_set_state
+c_func
+(paren
+id|sk
+comma
+id|TCP_ESTABLISHED
+)paren
+suffix:semicolon
 multiline_comment|/* Make sure socket is routed, for correct metrics.  */
 id|tp-&gt;af_specific
 op_member_access_from_pointer
@@ -14940,24 +14958,6 @@ r_else
 id|tp-&gt;pred_flags
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Remember, tcp_poll() does not lock socket!&n;&t;&t; * Change state from SYN-SENT only after copied_seq&n;&t;&t; * is initialized. */
-id|tp-&gt;copied_seq
-op_assign
-id|tp-&gt;rcv_nxt
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|tcp_set_state
-c_func
-(paren
-id|sk
-comma
-id|TCP_ESTABLISHED
-)paren
 suffix:semicolon
 r_if
 c_cond

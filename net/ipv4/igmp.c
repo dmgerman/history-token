@@ -4802,6 +4802,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|in_dev-&gt;dev-&gt;flags
+op_amp
+id|IFF_UP
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|IGMP_V1_SEEN
 c_func
 (paren
@@ -4855,6 +4863,7 @@ c_func
 id|in_dev
 )paren
 suffix:semicolon
+)brace
 id|done
 suffix:colon
 macro_line|#endif

@@ -6531,39 +6531,6 @@ comma
 id|DEFAULT_IPG2
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we can handle VLAN frames.  */
-id|hme_write32
-c_func
-(paren
-id|hp
-comma
-id|bregs
-op_plus
-id|BMAC_TXMAX
-comma
-id|ETH_DATA_LEN
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|8
-)paren
-suffix:semicolon
-id|hme_write32
-c_func
-(paren
-id|hp
-comma
-id|bregs
-op_plus
-id|BMAC_RXMAX
-comma
-id|ETH_DATA_LEN
-op_plus
-id|ETH_HLEN
-op_plus
-l_int|8
-)paren
-suffix:semicolon
 multiline_comment|/* Load up the MAC address and random seed. */
 id|HMD
 c_func
@@ -13021,12 +12988,14 @@ op_assign
 op_amp
 id|happy_meal_ioctl
 suffix:semicolon
-multiline_comment|/* Happy Meal can do it all... */
+multiline_comment|/* Happy Meal can do it all... except VLAN. */
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
 op_or
 id|NETIF_F_HW_CSUM
+op_or
+id|NETIF_F_VLAN_CHALLENGED
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
