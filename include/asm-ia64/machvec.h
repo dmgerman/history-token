@@ -15,9 +15,6 @@ r_struct
 id|scatterlist
 suffix:semicolon
 r_struct
-id|irq_desc
-suffix:semicolon
-r_struct
 id|page
 suffix:semicolon
 r_struct
@@ -104,26 +101,6 @@ id|ia64_mv_tlb_migrate_finish_t
 r_struct
 id|mm_struct
 op_star
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_irq_desc
-r_typedef
-r_struct
-id|irq_desc
-op_star
-id|ia64_mv_irq_desc
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|typedef|ia64_mv_irq_to_vector
-r_typedef
-id|u8
-id|ia64_mv_irq_to_vector
-(paren
-r_int
-r_int
 )paren
 suffix:semicolon
 DECL|typedef|ia64_mv_local_vector_to_irq
@@ -709,10 +686,6 @@ DECL|macro|platform_dma_mapping_error
 macro_line|#  define platform_dma_mapping_error&t;&t;ia64_mv.dma_mapping_error
 DECL|macro|platform_dma_supported
 macro_line|#  define platform_dma_supported&t;ia64_mv.dma_supported
-DECL|macro|platform_irq_desc
-macro_line|#  define platform_irq_desc&t;&t;ia64_mv.irq_desc
-DECL|macro|platform_irq_to_vector
-macro_line|#  define platform_irq_to_vector&t;ia64_mv.irq_to_vector
 DECL|macro|platform_local_vector_to_irq
 macro_line|#  define platform_local_vector_to_irq&t;ia64_mv.local_vector_to_irq
 DECL|macro|platform_pci_get_legacy_mem
@@ -863,16 +836,6 @@ id|ia64_mv_dma_supported
 op_star
 id|dma_supported
 suffix:semicolon
-DECL|member|irq_desc
-id|ia64_mv_irq_desc
-op_star
-id|irq_desc
-suffix:semicolon
-DECL|member|irq_to_vector
-id|ia64_mv_irq_to_vector
-op_star
-id|irq_to_vector
-suffix:semicolon
 DECL|member|local_vector_to_irq
 id|ia64_mv_local_vector_to_irq
 op_star
@@ -983,7 +946,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_tlb_migrate_finish,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_pci_get_legacy_mem,&t;&t;&bslash;&n;&t;platform_pci_legacy_read,&t;&t;&bslash;&n;&t;platform_pci_legacy_write,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_mmiowb,&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_tlb_migrate_finish,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_mapping_error,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_pci_get_legacy_mem,&t;&t;&bslash;&n;&t;platform_pci_legacy_read,&t;&t;&bslash;&n;&t;platform_pci_legacy_write,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_mmiowb,&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -1135,14 +1098,6 @@ macro_line|#endif
 macro_line|#ifndef platform_dma_supported
 DECL|macro|platform_dma_supported
 macro_line|# define  platform_dma_supported&t;swiotlb_dma_supported
-macro_line|#endif
-macro_line|#ifndef platform_irq_desc
-DECL|macro|platform_irq_desc
-macro_line|# define platform_irq_desc&t;&t;__ia64_irq_desc
-macro_line|#endif
-macro_line|#ifndef platform_irq_to_vector
-DECL|macro|platform_irq_to_vector
-macro_line|# define platform_irq_to_vector&t;&t;__ia64_irq_to_vector
 macro_line|#endif
 macro_line|#ifndef platform_local_vector_to_irq
 DECL|macro|platform_local_vector_to_irq
