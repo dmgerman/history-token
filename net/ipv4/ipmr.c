@@ -4642,7 +4642,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|OutForwDatagrams
+id|IPSTATS_MIB_OUTFORWDATAGRAMS
 )paren
 suffix:semicolon
 r_if
@@ -4963,7 +4963,7 @@ multiline_comment|/* Do not fragment multicasts. Alas, IPv4 does not&n;&t;&t;   
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 id|ip_rt_put
