@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * gus.h&n; *&n; * Copyright:&t;Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; *&n; */
 macro_line|#include &quot;ad1848.h&quot;
 multiline_comment|/*&t;From gus_card.c */
 r_int

@@ -5641,6 +5641,11 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|override
+op_assign
+l_int|1
+suffix:semicolon
 r_struct
 id|neighbour
 op_star
@@ -5831,6 +5836,12 @@ op_assign
 op_minus
 id|EEXIST
 suffix:semicolon
+id|override
+op_assign
+id|nlh-&gt;nlmsg_flags
+op_amp
+id|NLM_F_REPLACE
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -5933,9 +5944,7 @@ l_int|NULL
 comma
 id|ndm-&gt;ndm_state
 comma
-id|nlh-&gt;nlmsg_flags
-op_amp
-id|NLM_F_REPLACE
+id|override
 comma
 l_int|0
 )paren

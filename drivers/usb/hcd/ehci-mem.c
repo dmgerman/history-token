@@ -761,9 +761,6 @@ op_star
 )paren
 comma
 id|flags
-op_amp
-op_complement
-id|EHCI_SLAB_FLAGS
 )paren
 suffix:semicolon
 r_if

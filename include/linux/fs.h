@@ -2062,6 +2062,11 @@ r_int
 r_char
 id|s_blocksize_bits
 suffix:semicolon
+DECL|member|s_old_blocksize
+r_int
+r_int
+id|s_old_blocksize
+suffix:semicolon
 DECL|member|s_dirt
 r_int
 r_char

@@ -924,7 +924,7 @@ macro_line|#else
 DECL|macro|PSCHED_TDIFF
 mdefine_line|#define PSCHED_TDIFF(tv1, tv2) (long)((tv1) - (tv2))
 DECL|macro|PSCHED_TDIFF_SAFE
-mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   long __delta = (tv1) - (tv2); &bslash;&n;&t;   if ( __delta &gt; (bound)) {  __delta = (bound); guard; } &bslash;&n;&t;   __delta; &bslash;&n;})
+mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   long long __delta = (tv1) - (tv2); &bslash;&n;&t;   if ( __delta &gt; (long long)(bound)) {  __delta = (bound); guard; } &bslash;&n;&t;   __delta; &bslash;&n;})
 DECL|macro|PSCHED_TLESS
 mdefine_line|#define PSCHED_TLESS(tv1, tv2) ((tv1) &lt; (tv2))
 DECL|macro|PSCHED_TADD2

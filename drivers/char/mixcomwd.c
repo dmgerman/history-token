@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * MixCom Watchdog: A Simple Hardware Watchdog Device&n; * Based on Softdog driver by Alan Cox and PC Watchdog driver by Ken Hollis&n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (c) 1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.1 (99/04/15):&n; *&t;&t;- first version&n; *&n; * Version 0.2 (99/06/16):&n; *&t;&t;- added kernel timer watchdog ping after close&n; *&t;&t;  since the hardware does not support watchdog shutdown&n; *&n; * Version 0.3 (99/06/21):&n; *&t;&t;- added WDIOC_GETSTATUS and WDIOC_GETSUPPORT ioctl calls&n; *&n; * Version 0.3.1 (99/06/22):&n; *&t;&t;- allow module removal while internal timer is active,&n; *&t;&t;  print warning about probable reset&n; *&n; * Version 0.4 (99/11/15):&n; *&t;&t;- support for one more type board&n; *&t;&n; */
+multiline_comment|/*&n; * MixCom Watchdog: A Simple Hardware Watchdog Device&n; * Based on Softdog driver by Alan Cox and PC Watchdog driver by Ken Hollis&n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (c) 1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.1 (99/04/15):&n; *&t;&t;- first version&n; *&n; * Version 0.2 (99/06/16):&n; *&t;&t;- added kernel timer watchdog ping after close&n; *&t;&t;  since the hardware does not support watchdog shutdown&n; *&n; * Version 0.3 (99/06/21):&n; *&t;&t;- added WDIOC_GETSTATUS and WDIOC_GETSUPPORT ioctl calls&n; *&n; * Version 0.3.1 (99/06/22):&n; *&t;&t;- allow module removal while internal timer is active,&n; *&t;&t;  print warning about probable reset&n; *&n; * Version 0.4 (99/11/15):&n; *&t;&t;- support for one more type board&n; *&n; * Version 0.5 (2001/12/14) Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *              - added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;&n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.4&quot; 
+mdefine_line|#define VERSION &quot;0.5&quot; 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -51,7 +51,6 @@ r_static
 r_int
 id|watchdog_port
 suffix:semicolon
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|mixcomwd_timer_alive
 r_static
 r_int
@@ -63,7 +62,39 @@ r_struct
 id|timer_list
 id|mixcomwd_timer
 suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 DECL|function|mixcomwd_ping
 r_static
 r_void
@@ -84,7 +115,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
 DECL|function|mixcomwd_timerfun
 r_static
 r_void
@@ -115,7 +145,6 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; *&t;Allow only one person to hold it open&n; */
 DECL|function|mixcomwd_open
 r_static
@@ -157,7 +186,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -176,7 +215,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -198,7 +237,13 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -251,7 +296,7 @@ op_amp
 id|mixcomwd_timer
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 id|clear_bit
 c_func
 (paren
@@ -376,12 +421,18 @@ id|status
 op_assign
 id|mixcomwd_opened
 suffix:semicolon
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|status
 op_or_assign
 id|mixcomwd_timer_alive
 suffix:semicolon
-macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -809,7 +860,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -836,7 +893,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|release_region
 c_func
 (paren

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
@@ -668,32 +669,33 @@ id|options
 r_return
 l_int|1
 suffix:semicolon
-r_for
+r_while
 c_loop
+(paren
 (paren
 id|this_char
 op_assign
-id|strtok
+id|strsep
 (paren
+op_amp
 id|options
 comma
 l_string|&quot;,&quot;
 )paren
-suffix:semicolon
-id|this_char
+)paren
 op_ne
 l_int|NULL
-suffix:semicolon
-id|this_char
-op_assign
-id|strtok
-(paren
-l_int|NULL
-comma
-l_string|&quot;,&quot;
-)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|this_char
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1171,18 +1173,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize blocksize to 4K.&n;&t; */
-id|sb-&gt;s_blocksize
-op_assign
-id|PSIZE
-suffix:semicolon
-id|sb-&gt;s_blocksize_bits
-op_assign
-id|L2PSIZE
-suffix:semicolon
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|PSIZE
 )paren

@@ -492,6 +492,10 @@ comma
 id|icmp_new
 comma
 l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
 )brace
 suffix:semicolon
 eof

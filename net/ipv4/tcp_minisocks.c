@@ -3043,6 +3043,12 @@ comma
 id|req
 )paren
 suffix:semicolon
+id|TCP_INC_STATS_BH
+c_func
+(paren
+id|TcpPassiveOpens
+)paren
+suffix:semicolon
 )brace
 r_return
 id|newsk
@@ -3237,7 +3243,41 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Further reproduces section &quot;SEGMENT ARRIVES&quot;&n;&t;   for state SYN-RECEIVED of RFC793.&n;&t;   It is broken, however, it does not work only&n;&t;   when SYNs are crossed, which is impossible in our&n;&t;   case.&n;&n;&t;   But generally, we should (RFC lies!) to accept ACK&n;&t;   from SYNACK both here and in tcp_rcv_state_process().&n;&t;   tcp_rcv_state_process() does not, hence, we do not too.&n;&n;&t;   Note that the case is absolutely generic:&n;&t;   we cannot optimize anything here without&n;&t;   violating protocol. All the checks must be made&n;&t;   before attempt to create socket.&n;&t; */
+multiline_comment|/* Further reproduces section &quot;SEGMENT ARRIVES&quot;&n;&t;   for state SYN-RECEIVED of RFC793.&n;&t;   It is broken, however, it does not work only&n;&t;   when SYNs are crossed.&n;&n;&t;   You would think that SYN crossing is impossible here, since&n;&t;   we should have a SYN_SENT socket (from connect()) on our end,&n;&t;   but this is not true if the crossed SYNs were sent to both&n;&t;   ends by a malicious third party.  We must defend against this,&n;&t;   and to do that we first verify the ACK (as per RFC793, page&n;&t;   36) and reset if it is invalid.  Is this a true full defense?&n;&t;   To convince ourselves, let us consider a way in which the ACK&n;&t;   test can still pass in this &squot;malicious crossed SYNs&squot; case.&n;&t;   Malicious sender sends identical SYNs (and thus identical sequence&n;&t;   numbers) to both A and B:&n;&n;&t;&t;A: gets SYN, seq=7&n;&t;&t;B: gets SYN, seq=7&n;&n;&t;   By our good fortune, both A and B select the same initial&n;&t;   send sequence number of seven :-)&n;&n;&t;&t;A: sends SYN|ACK, seq=7, ack_seq=8&n;&t;&t;B: sends SYN|ACK, seq=7, ack_seq=8&n;&n;&t;   So we are now A eating this SYN|ACK, ACK test passes.  So&n;&t;   does sequence test, SYN is truncated, and thus we consider&n;&t;   it a bare ACK.&n;&n;&t;   If tp-&gt;defer_accept, we silently drop this bare ACK.  Otherwise,&n;&t;   we create an established connection.  Both ends (listening sockets)&n;&t;   accept the new incoming connection and try to talk to each other. 8-)&n;&n;&t;   Note: This case is both harmless, and rare.  Possibility is about the&n;&t;   same as us discovering intelligent life on another plant tomorrow.&n;&n;&t;   But generally, we should (RFC lies!) to accept ACK&n;&t;   from SYNACK both here and in tcp_rcv_state_process().&n;&t;   tcp_rcv_state_process() does not, hence, we do not too.&n;&n;&t;   Note that the case is absolutely generic:&n;&t;   we cannot optimize anything here without&n;&t;   violating protocol. All the checks must be made&n;&t;   before attempt to create socket.&n;&t; */
+multiline_comment|/* RFC793 page 36: &quot;If the connection is in any non-synchronized state ...&n;&t; *                  and the incoming segment acknowledges something not yet&n;&t; *                  sent (the segment carries an unaccaptable ACK) ...&n;&t; *                  a reset is sent.&quot;&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flg
+op_amp
+id|TCP_FLAG_ACK
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Invalid ACK: reset will be sent by listening socket */
+r_if
+c_cond
+(paren
+id|TCP_SKB_CB
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|ack_seq
+op_ne
+id|req-&gt;snt_isn
+op_plus
+l_int|1
+)paren
+r_return
+id|sk
+suffix:semicolon
+multiline_comment|/* Also, it would be not so bad idea to check rcv_tsecr, which&n;&t; * is essentially ACK extension and too early or too late values&n;&t; * should cause reset in unsynchronized states.&n;&t; */
 multiline_comment|/* RFC793: &quot;first check sequence number&quot;. */
 r_if
 c_cond
@@ -3377,40 +3417,6 @@ id|TCP_FLAG_SYN
 r_goto
 id|embryonic_reset
 suffix:semicolon
-multiline_comment|/* RFC793: &quot;fifth check the ACK field&quot; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|flg
-op_amp
-id|TCP_FLAG_ACK
-)paren
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Invalid ACK: reset will be sent by listening socket */
-r_if
-c_cond
-(paren
-id|TCP_SKB_CB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|ack_seq
-op_ne
-id|req-&gt;snt_isn
-op_plus
-l_int|1
-)paren
-r_return
-id|sk
-suffix:semicolon
-multiline_comment|/* Also, it would be not so bad idea to check rcv_tsecr, which&n;&t; * is essentially ACK extension and too early or too late values&n;&t; * should cause reset in unsynchronized states.&n;&t; */
 multiline_comment|/* If TCP_DEFER_ACCEPT is set, drop bare ACK. */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci-hub.c,v 1.2 2002/01/19 00:21:49 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under GPL&n; * $Id: ohci-hub.c,v 1.3 2002/03/22 16:04:54 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * OHCI Root Hub ... the nonsharable stuff&n; *&n; * Registers don&squot;t need cpu_to_le32, that happens transparently&n; */
 multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */

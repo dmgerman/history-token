@@ -4419,6 +4419,7 @@ c_func
 (paren
 )paren
 op_logical_and
+op_logical_neg
 id|kdev_same
 c_func
 (paren

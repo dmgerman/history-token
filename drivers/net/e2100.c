@@ -70,7 +70,7 @@ mdefine_line|#define E21_SAPROM&t;&t;0x10&t;/* Offset to station address data. *
 DECL|macro|E21_IO_EXTENT
 mdefine_line|#define E21_IO_EXTENT&t; 0x20
 DECL|function|mem_on
-r_extern
+r_static
 r_inline
 r_void
 id|mem_on
@@ -120,7 +120,7 @@ id|E21_MEM_ON
 suffix:semicolon
 )brace
 DECL|function|mem_off
-r_extern
+r_static
 r_inline
 r_void
 id|mem_off
@@ -882,7 +882,7 @@ l_int|0xd0000
 suffix:semicolon
 macro_line|#ifdef notdef
 multiline_comment|/* These values are unused.  The E2100 has a 2K window into the packet&n;&t;   buffer.  The window can be set to start on any page boundary. */
-id|dev-&gt;rmem_start
+id|ei_status.rmem_start
 op_assign
 id|dev-&gt;mem_start
 op_plus
@@ -892,7 +892,7 @@ l_int|256
 suffix:semicolon
 id|dev-&gt;mem_end
 op_assign
-id|dev-&gt;rmem_end
+id|ei_status.rmem_end
 op_assign
 id|dev-&gt;mem_start
 op_plus

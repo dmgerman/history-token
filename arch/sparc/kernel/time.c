@@ -327,8 +327,6 @@ multiline_comment|/* last time the cmos clock got updated */
 r_static
 r_int
 id|last_rtc_update
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 r_if

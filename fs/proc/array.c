@@ -662,6 +662,13 @@ c_func
 r_catch
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|p-&gt;sigmask_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -723,6 +730,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|p-&gt;sigmask_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|task_sig
 r_static

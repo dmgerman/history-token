@@ -50,6 +50,13 @@ mdefine_line|#define for_fib_info() { struct fib_info *fi; &bslash;&n;&t;for (fi
 DECL|macro|endfor_fib_info
 mdefine_line|#define endfor_fib_info() }
 macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH
+DECL|variable|fib_multipath_lock
+r_static
+id|spinlock_t
+id|fib_multipath_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|for_nexthops
 mdefine_line|#define for_nexthops(fi) { int nhsel; const struct fib_nh * nh; &bslash;&n;for (nhsel=0, nh = (fi)-&gt;fib_nh; nhsel &lt; (fi)-&gt;fib_nhs; nh++, nhsel++)
 DECL|macro|change_nexthops
@@ -3947,6 +3954,13 @@ op_or_assign
 id|RTNH_F_DEAD
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
+suffix:semicolon
 id|fi-&gt;fib_power
 op_sub_assign
 id|nh-&gt;nh_power
@@ -3955,6 +3969,32 @@ id|nh-&gt;nh_power
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|force
+op_logical_and
+id|nh-&gt;nh_dev
+)paren
+(brace
+id|dev_put
+c_func
+(paren
+id|nh-&gt;nh_dev
+)paren
+suffix:semicolon
+id|nh-&gt;nh_dev
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#endif
 id|dead
 op_increment
@@ -4063,6 +4103,29 @@ c_cond
 id|nh-&gt;nh_dev
 op_eq
 l_int|NULL
+op_logical_and
+id|nh-&gt;nh_oif
+op_eq
+id|dev-&gt;ifindex
+)paren
+(brace
+id|dev_hold
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|nh-&gt;nh_dev
+op_assign
+id|dev
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|nh-&gt;nh_dev
+op_eq
+l_int|NULL
 op_logical_or
 op_logical_neg
 (paren
@@ -4093,6 +4156,13 @@ suffix:semicolon
 id|alive
 op_increment
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
+suffix:semicolon
 id|nh-&gt;nh_power
 op_assign
 l_int|0
@@ -4101,6 +4171,13 @@ id|nh-&gt;nh_flags
 op_and_assign
 op_complement
 id|RTNH_F_DEAD
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
 suffix:semicolon
 )brace
 id|endfor_nexthops
@@ -4163,6 +4240,13 @@ suffix:semicolon
 r_int
 id|w
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4213,7 +4297,6 @@ id|fi-&gt;fib_power
 op_assign
 id|power
 suffix:semicolon
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -4222,17 +4305,21 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|spin_unlock_bh
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;impossible 777&bslash;n&quot;
+op_amp
+id|fib_multipath_lock
 )paren
+suffix:semicolon
+multiline_comment|/* Race condition: route has just become dead. */
+id|res-&gt;nh_sel
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 multiline_comment|/* w should be random number [0..fi-&gt;fib_power-1],&n;&t;   it is pretty bad approximation.&n;&t; */
 id|w
@@ -4282,6 +4369,13 @@ id|res-&gt;nh_sel
 op_assign
 id|nhsel
 suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|fib_multipath_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4293,16 +4387,17 @@ c_func
 id|fi
 )paren
 suffix:semicolon
-macro_line|#if 1
-id|printk
+multiline_comment|/* Race condition: route has just become dead. */
+id|res-&gt;nh_sel
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_unlock_bh
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;impossible 888&bslash;n&quot;
+op_amp
+id|fib_multipath_lock
 )paren
-suffix:semicolon
-macro_line|#endif
-r_return
 suffix:semicolon
 )brace
 macro_line|#endif

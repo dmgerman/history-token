@@ -328,7 +328,7 @@ id|__vmalloc
 )paren
 suffix:semicolon
 DECL|variable|vmalloc_to_page
-id|EXPORT_SYMBOL_GPL
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|vmalloc_to_page
@@ -2888,13 +2888,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|clear_inode
-)paren
-suffix:semicolon
-DECL|variable|___strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|___strtok
 )paren
 suffix:semicolon
 DECL|variable|init_special_inode

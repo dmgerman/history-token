@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-mem.c,v 1.2 2002/01/19 00:22:13 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci-mem.c,v 1.3 2002/03/22 16:04:54 dbrownell Exp $&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * There&squot;s basically three types of memory:&n; *&t;- data used only by the HCD ... kmalloc is fine&n; *&t;- async and periodic schedules, shared by HC and HCD ... these&n; *&t;  need to use pci_pool or pci_alloc_consistent&n; *&t;- driver buffers, read/written by HC ... single shot DMA mapped &n; *&n; * There&squot;s also PCI &quot;register&quot; data, which is memory mapped.&n; * No memory seen by this driver is pagable.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -84,13 +84,6 @@ id|hcd
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
-DECL|macro|OHCI_MEM_FLAGS
-macro_line|#&t;define OHCI_MEM_FLAGS&t;SLAB_POISON
-macro_line|#else
-DECL|macro|OHCI_MEM_FLAGS
-macro_line|#&t;define OHCI_MEM_FLAGS&t;0
-macro_line|#endif
 macro_line|#ifndef CONFIG_PCI
 macro_line|#&t;error &quot;usb-ohci currently requires PCI-based controllers&quot;
 multiline_comment|/* to support non-PCI OHCIs, you need custom bus/mem/... glue */
@@ -615,8 +608,6 @@ l_int|0
 multiline_comment|/* no page-crossing issues */
 comma
 id|GFP_KERNEL
-op_or
-id|OHCI_MEM_FLAGS
 )paren
 suffix:semicolon
 r_if
@@ -650,8 +641,6 @@ l_int|0
 multiline_comment|/* no page-crossing issues */
 comma
 id|GFP_KERNEL
-op_or
-id|OHCI_MEM_FLAGS
 )paren
 suffix:semicolon
 r_if

@@ -94,13 +94,6 @@ c_func
 id|strncpy
 )paren
 suffix:semicolon
-DECL|variable|strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|strtok
-)paren
-suffix:semicolon
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|variable|hppa_dma_ops
 id|EXPORT_SYMBOL

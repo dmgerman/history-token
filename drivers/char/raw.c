@@ -1391,7 +1391,12 @@ comma
 op_amp
 id|iobuf
 comma
-id|dev
+id|raw_devices
+(braket
+id|minor
+)braket
+dot
+id|binding
 comma
 op_amp
 id|blocknr

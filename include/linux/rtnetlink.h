@@ -1155,7 +1155,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|ASSERT_RTNL
-mdefine_line|#define ASSERT_RTNL() do { if (down_trylock(&amp;rtnl_sem) == 0)  { up(&amp;rtnl_sem); &bslash;&n;printk(&quot;RTNL: assertion failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); } &bslash;&n;&t;&t;   } while(0);
+mdefine_line|#define ASSERT_RTNL() do { if (down_trylock(&amp;rtnl_sem) == 0)  { up(&amp;rtnl_sem); &bslash;&n;printk(&quot;RTNL: assertion failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); } &bslash;&n;&t;&t;   } while(0)
 DECL|macro|BUG_TRAP
 mdefine_line|#define BUG_TRAP(x) if (!(x)) { printk(&quot;KERNEL: assertion (&quot; #x &quot;) failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); }
 macro_line|#endif /* __KERNEL__ */

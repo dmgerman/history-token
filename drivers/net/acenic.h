@@ -1413,14 +1413,6 @@ id|dma_addr_t
 id|info_dma
 suffix:semicolon
 multiline_comment|/* 32/64 bit */
-macro_line|#if ACENIC_DO_VLAN
-DECL|member|vlgrp
-r_struct
-id|vlan_group
-op_star
-id|vlgrp
-suffix:semicolon
-macro_line|#endif
 DECL|member|version
 DECL|member|link
 r_int
@@ -1450,11 +1442,6 @@ DECL|member|tx_ret_csm
 r_volatile
 id|u32
 id|tx_ret_csm
-suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
 suffix:semicolon
 DECL|member|tx_ring_entries
 r_int
@@ -1533,6 +1520,14 @@ id|rx_desc
 op_star
 id|rx_return_ring
 suffix:semicolon
+macro_line|#if ACENIC_DO_VLAN
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
+macro_line|#endif
 DECL|member|tasklet_pending
 DECL|member|jumbo
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/* The &quot;unknown&quot; protocol.  This is what is used for protocols we&n; * don&squot;t understand.  It&squot;s returned by find_proto().&n; */
+multiline_comment|/* The &quot;unknown&quot; protocol.  This is what is used for protocols we&n; * don&squot;t understand.  It&squot;s returned by ip_ct_find_proto().&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;

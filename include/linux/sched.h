@@ -100,7 +100,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/resource.h&gt;

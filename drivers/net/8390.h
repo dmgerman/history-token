@@ -144,7 +144,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/* Most of these entries should be in &squot;struct net_device&squot; (or most of the&n;   things in there should be here!) */
 multiline_comment|/* You have one of these per-board */
 DECL|struct|ei_device
 r_struct
@@ -226,6 +225,16 @@ op_star
 comma
 r_int
 )paren
+suffix:semicolon
+DECL|member|rmem_start
+r_int
+r_int
+id|rmem_start
+suffix:semicolon
+DECL|member|rmem_end
+r_int
+r_int
+id|rmem_end
 suffix:semicolon
 DECL|member|mcfilter
 r_int

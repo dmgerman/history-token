@@ -232,7 +232,8 @@ multiline_comment|/*&n; * These are initialized to point at the devices we contr
 DECL|variable|cmd_hwif0
 DECL|variable|cmd_hwif1
 r_static
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|cmd_hwif0
 comma
@@ -1265,7 +1266,8 @@ id|i
 op_increment
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -2807,7 +2809,7 @@ id|cmd_hwif1-&gt;mate
 op_assign
 id|cmd_hwif0
 suffix:semicolon
-id|cmd_hwif1-&gt;channel
+id|cmd_hwif1-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

@@ -148,6 +148,12 @@ DECL|macro|CB_CFIG_VLAN_DROP_ENABLE
 mdefine_line|#define CB_CFIG_VLAN_DROP_ENABLE    BIT_1&t;/* vlan stripping */
 DECL|macro|CB_CFIG_LONG_RX_OK
 mdefine_line|#define CB_CFIG_LONG_RX_OK&t;    BIT_3
+DECL|macro|NO_LOOPBACK
+mdefine_line|#define NO_LOOPBACK&t;0&t;
+DECL|macro|MAC_LOOPBACK
+mdefine_line|#define MAC_LOOPBACK&t;0x01
+DECL|macro|PHY_LOOPBACK
+mdefine_line|#define PHY_LOOPBACK&t;0x02
 multiline_comment|/* function prototypes */
 r_extern
 r_void
@@ -257,6 +263,48 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+)paren
+suffix:semicolon
+r_extern
+id|u8
+id|e100_config_loopback_mode
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u8
+id|mode
+)paren
+suffix:semicolon
+r_extern
+id|u8
+id|e100_config_dynamic_tbd
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u8
+id|enable
+)paren
+suffix:semicolon
+r_extern
+id|u8
+id|e100_config_tcb_ext_enable
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+comma
+id|u8
+id|enable
 )paren
 suffix:semicolon
 macro_line|#endif /* _E100_CONFIG_INC_ */

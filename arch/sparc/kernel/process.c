@@ -125,22 +125,16 @@ r_static
 r_int
 r_int
 id|last_jiffies
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
 r_int
 id|last_faults
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
 r_int
 id|fps
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -227,7 +221,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;kernel faults / second = %d&bslash;n&quot;
+l_string|&quot;kernel faults / second = %ld&bslash;n&quot;
 comma
 id|fps
 )paren

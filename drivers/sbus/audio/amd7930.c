@@ -6081,12 +6081,6 @@ comma
 id|drv
 )paren
 suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|info-&gt;irq
-)paren
-suffix:semicolon
 id|amd7930_enable_ints
 c_func
 (paren
@@ -6192,12 +6186,6 @@ id|KERN_ERR
 l_string|&quot;amd7930: unable to register&bslash;n&quot;
 )paren
 suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|info-&gt;irq
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -6284,12 +6272,6 @@ id|amd7930_idle
 c_func
 (paren
 id|info
-)paren
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|info-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

@@ -124,8 +124,12 @@ DECL|member|reserved2
 r_char
 id|reserved2
 (braket
-l_int|24
+l_int|20
 )braket
+suffix:semicolon
+DECL|member|testinfo_len
+id|u32
+id|testinfo_len
 suffix:semicolon
 DECL|member|eedump_len
 id|u32
@@ -426,6 +430,110 @@ id|tx_pause
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|ETH_GSTRING_LEN
+mdefine_line|#define ETH_GSTRING_LEN&t;&t;32
+DECL|enum|ethtool_stringset
+r_enum
+id|ethtool_stringset
+(brace
+DECL|enumerator|ETH_SS_TEST
+id|ETH_SS_TEST
+op_assign
+l_int|0
+comma
+DECL|enumerator|ETH_SS_STATS
+id|ETH_SS_STATS
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* for passing string sets for data tagging */
+DECL|struct|ethtool_gstrings
+r_struct
+id|ethtool_gstrings
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_GSTRINGS */
+DECL|member|string_set
+id|u32
+id|string_set
+suffix:semicolon
+multiline_comment|/* string set id e.c. ETH_SS_TEST, etc*/
+DECL|member|len
+id|u32
+id|len
+suffix:semicolon
+multiline_comment|/* number of strings in the string set */
+DECL|member|data
+id|u8
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|ethtool_test_flags
+r_enum
+id|ethtool_test_flags
+(brace
+DECL|enumerator|ETH_TEST_FL_OFFLINE
+id|ETH_TEST_FL_OFFLINE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+multiline_comment|/* online / offline */
+DECL|enumerator|ETH_TEST_FL_FAILED
+id|ETH_TEST_FL_FAILED
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* test passed / failed */
+)brace
+suffix:semicolon
+multiline_comment|/* for requesting NIC test and getting results*/
+DECL|struct|ethtool_test
+r_struct
+id|ethtool_test
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_TEST */
+DECL|member|flags
+id|u32
+id|flags
+suffix:semicolon
+multiline_comment|/* ETH_TEST_FL_xxx */
+DECL|member|reserved
+id|u32
+id|reserved
+suffix:semicolon
+DECL|member|len
+id|u32
+id|len
+suffix:semicolon
+multiline_comment|/* result length, in number of u64 elements */
+DECL|member|data
+id|u64
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
 mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
@@ -450,19 +558,19 @@ mdefine_line|#define ETHTOOL_GLINK&t;&t;0x0000000a /* Get link status (ethtool_v
 DECL|macro|ETHTOOL_GEEPROM
 mdefine_line|#define ETHTOOL_GEEPROM&t;&t;0x0000000b /* Get EEPROM data */
 DECL|macro|ETHTOOL_SEEPROM
-mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data */
+mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data, priv. */
 DECL|macro|ETHTOOL_GCOALESCE
 mdefine_line|#define ETHTOOL_GCOALESCE&t;0x0000000e /* Get coalesce config */
 DECL|macro|ETHTOOL_SCOALESCE
-mdefine_line|#define ETHTOOL_SCOALESCE&t;0x0000000f /* Set coalesce config */
+mdefine_line|#define ETHTOOL_SCOALESCE&t;0x0000000f /* Set coalesce config, priv. */
 DECL|macro|ETHTOOL_GRINGPARAM
 mdefine_line|#define ETHTOOL_GRINGPARAM&t;0x00000010 /* Get ring parameters */
 DECL|macro|ETHTOOL_SRINGPARAM
-mdefine_line|#define ETHTOOL_SRINGPARAM&t;0x00000011 /* Set ring parameters */
+mdefine_line|#define ETHTOOL_SRINGPARAM&t;0x00000011 /* Set ring parameters, priv. */
 DECL|macro|ETHTOOL_GPAUSEPARAM
 mdefine_line|#define ETHTOOL_GPAUSEPARAM&t;0x00000012 /* Get pause parameters */
 DECL|macro|ETHTOOL_SPAUSEPARAM
-mdefine_line|#define ETHTOOL_SPAUSEPARAM&t;0x00000013 /* Set pause parameters */
+mdefine_line|#define ETHTOOL_SPAUSEPARAM&t;0x00000013 /* Set pause parameters, priv. */
 DECL|macro|ETHTOOL_GRXCSUM
 mdefine_line|#define ETHTOOL_GRXCSUM&t;&t;0x00000014 /* Get RX hw csum enable (ethtool_value) */
 DECL|macro|ETHTOOL_SRXCSUM
@@ -474,7 +582,11 @@ mdefine_line|#define ETHTOOL_STXCSUM&t;&t;0x00000017 /* Set TX hw csum enable (e
 DECL|macro|ETHTOOL_GSG
 mdefine_line|#define ETHTOOL_GSG&t;&t;0x00000018 /* Get scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value) */
 DECL|macro|ETHTOOL_SSG
-mdefine_line|#define ETHTOOL_SSG&t;&t;0x00000019 /* Set scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value) */
+mdefine_line|#define ETHTOOL_SSG&t;&t;0x00000019 /* Set scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value), priv. */
+DECL|macro|ETHTOOL_TEST
+mdefine_line|#define ETHTOOL_TEST&t;&t;0x0000001a /* execute NIC self-test, priv. */
+DECL|macro|ETHTOOL_GSTRINGS
+mdefine_line|#define ETHTOOL_GSTRINGS&t;0x0000001b /* get specified string set */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET

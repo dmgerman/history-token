@@ -34,6 +34,6 @@ id|IOMD_SUSMODE
 suffix:semicolon
 )brace
 DECL|macro|arch_reset
-mdefine_line|#define arch_reset(mode)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;iomd_writeb(0, IOMD_ROMCR0);&t;&bslash;&n;&t;&t;cpu_reset(0);&t;&t;&t;&bslash;&n;&t;} while (0);
+mdefine_line|#define arch_reset(mode)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;iomd_writeb(0, IOMD_ROMCR0);&t;&bslash;&n;&t;&t;cpu_reset(0);&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif
 eof

@@ -1462,6 +1462,10 @@ id|port-&gt;hdlc.stats.rx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;data

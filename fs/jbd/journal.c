@@ -2749,14 +2749,10 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|journal-&gt;j_dev-&gt;bd_dev
-)paren
+id|journal-&gt;j_dev
 )paren
 suffix:semicolon
 id|jbd_debug

@@ -6,8 +6,8 @@ macro_line|#ifndef __KERNEL__
 macro_line|#error Only in kernel.
 macro_line|#endif
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
-DECL|macro|IP_CONNTR_IRC
-mdefine_line|#define IP_CONNTR_IRC&t;2
+DECL|macro|IRC_PORT
+mdefine_line|#define IRC_PORT&t;6667
 DECL|struct|dccproto
 r_struct
 id|dccproto
@@ -32,21 +32,12 @@ id|ip_irc_lock
 )paren
 suffix:semicolon
 multiline_comment|/* We record seq number and length of irc ip/port text here: all in&n;   host order. */
-DECL|struct|ip_ct_irc
+multiline_comment|/* This structure is per expected connection */
+DECL|struct|ip_ct_irc_expect
 r_struct
-id|ip_ct_irc
+id|ip_ct_irc_expect
 (brace
-multiline_comment|/* This tells NAT that this is an IRC connection */
-DECL|member|is_irc
-r_int
-id|is_irc
-suffix:semicolon
-multiline_comment|/* sequence number where address part of DCC command begins */
-DECL|member|seq
-id|u_int32_t
-id|seq
-suffix:semicolon
-multiline_comment|/* 0 means not found yet */
+multiline_comment|/* length of IP address */
 DECL|member|len
 id|u_int32_t
 id|len
@@ -56,6 +47,13 @@ DECL|member|port
 id|u_int16_t
 id|port
 suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* This structure exists only once per master */
+DECL|struct|ip_ct_irc_master
+r_struct
+id|ip_ct_irc_master
+(brace
 )brace
 suffix:semicolon
 macro_line|#endif /* _IP_CONNTRACK_IRC_H */

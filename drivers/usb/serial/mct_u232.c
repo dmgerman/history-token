@@ -1085,31 +1085,6 @@ op_increment
 id|i
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|serial-&gt;port
-(braket
-id|i
-)braket
-dot
-id|open_count
-OG
-l_int|0
-)paren
-(brace
-id|mct_u232_close
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-id|i
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* My special items, the standard routines free my urbs */
 r_if
 c_cond
@@ -1186,18 +1161,7 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_increment
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* Compensate for a hardware bug: although the Sitecom U232-P25&n;&t;&t; * device reports a maximum output packet size of 32 bytes,&n;&t;&t; * it seems to be able to accept only 16 bytes (and that&squot;s what&n;&t;&t; * SniffUSB says too...)&n;&t;&t; */
+multiline_comment|/* Compensate for a hardware bug: although the Sitecom U232-P25&n;&t; * device reports a maximum output packet size of 32 bytes,&n;&t; * it seems to be able to accept only 16 bytes (and that&squot;s what&n;&t; * SniffUSB says too...)&n;&t; */
 r_if
 c_cond
 (paren
@@ -1209,7 +1173,7 @@ id|port-&gt;bulk_out_size
 op_assign
 l_int|16
 suffix:semicolon
-multiline_comment|/* Do a defined restart: the normal serial device seems to &n;&t;&t; * always turn on DTR and RTS here, so do the same. I&squot;m not&n;&t;&t; * sure if this is really necessary. But it should not harm&n;&t;&t; * either.&n;&t;&t; */
+multiline_comment|/* Do a defined restart: the normal serial device seems to &n;&t; * always turn on DTR and RTS here, so do the same. I&squot;m not&n;&t; * sure if this is really necessary. But it should not harm&n;&t; * either.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1360,7 +1324,6 @@ c_func
 l_string|&quot; usb_submit_urb(read int) failed&quot;
 )paren
 suffix:semicolon
-)brace
 m_exit
 suffix:colon
 r_return
@@ -1393,17 +1356,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-op_decrement
-id|port-&gt;open_count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;open_count
-op_le
-l_int|0
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1425,11 +1377,6 @@ id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
-suffix:semicolon
-)brace
-id|port-&gt;open_count
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace

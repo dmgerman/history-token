@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -9056,6 +9057,12 @@ id|jfsIOwait
 suffix:semicolon
 r_do
 (brace
+id|LAZY_LOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|restart
 suffix:colon
 id|WorkDone
@@ -9076,12 +9083,6 @@ multiline_comment|/*&n;&t;&t;&t; * We can&squot;t get ahead of user thread.  Spi
 id|WorkDone
 op_assign
 l_int|1
-suffix:semicolon
-id|LAZY_LOCK
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Remove first transaction from queue&n;&t;&t;&t; */
 id|TxAnchor.unlock_queue
@@ -9135,6 +9136,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|LAZY_LOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -9143,6 +9150,12 @@ id|WorkDone
 )paren
 r_goto
 id|restart
+suffix:semicolon
+id|LAZY_UNLOCK
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 id|set_current_state
 c_func

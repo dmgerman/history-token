@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
@@ -2247,6 +2248,22 @@ id|s-&gt;s_id
 )paren
 )paren
 suffix:semicolon
+id|s-&gt;s_old_blocksize
+op_assign
+id|block_size
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|sb_set_blocksize
+c_func
+(paren
+id|s
+comma
+id|s-&gt;s_old_blocksize
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|fill_super
@@ -2359,6 +2376,18 @@ id|generic_shutdown_super
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+id|set_blocksize
+c_func
+(paren
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
+comma
+id|sb-&gt;s_old_blocksize
 )paren
 suffix:semicolon
 id|bd_release

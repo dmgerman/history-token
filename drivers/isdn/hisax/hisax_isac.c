@@ -55,6 +55,12 @@ c_func
 l_string|&quot;ISAC/ISAC-SX driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|DBG_WARN
 mdefine_line|#define DBG_WARN      0x0001
 DECL|macro|DBG_IRQ

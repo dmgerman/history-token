@@ -370,6 +370,24 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on sparc64, so we just do it by hand&n; */
+DECL|macro|cond_syscall
+mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
+id|cond_syscall
+c_func
+(paren
+id|sys_nfsservctl
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_quotactl
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_acct
+)paren
 DECL|function|proc_sel
 r_static
 r_int

@@ -3,6 +3,7 @@ multiline_comment|/* (C) Copyright 2001 Oliver Neukum */
 multiline_comment|/* sponsored by the Linux Usb Project */
 multiline_comment|/* large parts based on or taken from code by John Fremlin and Matt Dharm */
 multiline_comment|/* this file is licensed under the GPL */
+multiline_comment|/* A big thanks to Jose for untiring testing */
 DECL|typedef|usb_urb_callback
 r_typedef
 r_void
@@ -28,6 +29,10 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+DECL|macro|SENSE_COMMAND_SIZE
+mdefine_line|#define SENSE_COMMAND_SIZE 6
+DECL|macro|HPUSBSCSI_SENSE_LENGTH
+mdefine_line|#define HPUSBSCSI_SENSE_LENGTH 0x16
 DECL|struct|hpusbscsi
 r_struct
 id|hpusbscsi
@@ -82,6 +87,13 @@ DECL|member|srb
 id|Scsi_Cmnd
 op_star
 id|srb
+suffix:semicolon
+DECL|member|sense_command
+id|u8
+id|sense_command
+(braket
+id|SENSE_COMMAND_SIZE
+)braket
 suffix:semicolon
 DECL|member|use_count
 r_int
@@ -307,6 +319,16 @@ id|hpusbscsi_scsi_abort
 id|Scsi_Cmnd
 op_star
 id|srb
+)paren
+suffix:semicolon
+r_static
+r_void
+id|issue_request_sense
+(paren
+r_struct
+id|hpusbscsi
+op_star
+id|hpusbscsi
 )paren
 suffix:semicolon
 DECL|variable|hpusbscsi_scsi_host_template

@@ -907,6 +907,23 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+macro_line|#include &quot;hid-debug.h&quot;
+macro_line|#else
+DECL|macro|hid_dump_input
+mdefine_line|#define hid_dump_input(a,b)&t;do { } while (0)
+DECL|macro|hid_dump_device
+mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
+DECL|macro|hid_dump_field
+mdefine_line|#define hid_dump_field(a,b)&t;do { } while (0)
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_HIDINPUT
+multiline_comment|/* Applications from HID Usage Tables 4/8/99 Version 1.1 */
+multiline_comment|/* We ignore a few input applications that are not widely used */
+DECL|macro|IS_INPUT_APPLICATION
+mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || ( a == 0x00010080) || ( a == 0x000c0001))
+r_extern
 r_void
 id|hidinput_hid_event
 c_func
@@ -926,6 +943,7 @@ comma
 id|__s32
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|hidinput_connect
 c_func
@@ -935,6 +953,7 @@ id|hid_device
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|hidinput_disconnect
 c_func
@@ -944,21 +963,69 @@ id|hid_device
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-macro_line|#include &quot;hid-debug.h&quot;
 macro_line|#else
-DECL|macro|hid_dump_input
-mdefine_line|#define hid_dump_input(a,b)&t;do { } while (0)
-DECL|macro|hid_dump_device
-mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
-DECL|macro|hid_dump_field
-mdefine_line|#define hid_dump_field(a,b)&t;do { } while (0)
-macro_line|#endif
-macro_line|#endif
-multiline_comment|/* Applications from HID Usage Tables 4/8/99 Version 1.1 */
-multiline_comment|/* We ignore a few input applications that are not widely used */
 DECL|macro|IS_INPUT_APPLICATION
-mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || ( a == 0x00010080) || ( a == 0x000c0001))
+mdefine_line|#define IS_INPUT_APPLICATION(a) (0)
+DECL|function|hidinput_hid_event
+r_static
+r_inline
+r_void
+id|hidinput_hid_event
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+comma
+r_struct
+id|hid_field
+op_star
+id|field
+comma
+r_struct
+id|hid_usage
+op_star
+id|usage
+comma
+id|__s32
+id|value
+)paren
+(brace
+)brace
+DECL|function|hidinput_connect
+r_static
+r_inline
+r_int
+id|hidinput_connect
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+(brace
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+DECL|function|hidinput_disconnect
+r_static
+r_inline
+r_void
+id|hidinput_disconnect
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
+)paren
+(brace
+)brace
+macro_line|#endif
 r_int
 id|hid_open
 c_func

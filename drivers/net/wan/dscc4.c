@@ -1741,6 +1741,10 @@ c_func
 id|ETH_P_HDLC
 )paren
 suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|netif_rx
 c_func
 (paren

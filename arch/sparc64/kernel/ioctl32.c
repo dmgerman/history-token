@@ -6431,8 +6431,6 @@ r_do
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -11266,8 +11264,6 @@ r_do
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -11880,8 +11876,6 @@ r_do
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -12835,8 +12829,6 @@ r_do
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -13505,8 +13497,6 @@ suffix:colon
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -28640,8 +28630,6 @@ r_else
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -1628,7 +1628,6 @@ id|urb-&gt;pipe
 )paren
 (brace
 multiline_comment|/* control request data is passed in the &quot;setup&quot; pid */
-multiline_comment|/* NOTE:  this isn&squot;t smart about 64bit DMA, since it uses the&n;&t;&t; * default (32bit) mask rather than using the whole address&n;&t;&t; * space.  we could set pdev-&gt;dma_mask to all-ones while&n;&t;&t; * getting this mapping, locking it and restoring before&n;&t;&t; * allocating qtd/qh/... or maybe only do that for the main&n;&t;&t; * data phase (below).&n;&t;&t; */
 id|qtd-&gt;buf_dma
 op_assign
 id|pci_map_single
@@ -1747,7 +1746,6 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* NOTE:  sub-optimal mapping with 64bit DMA (see above) */
 id|buf
 op_assign
 id|map_buf

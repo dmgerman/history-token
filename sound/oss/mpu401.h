@@ -1,4 +1,3 @@
-multiline_comment|/*&n; *&t;uart401.h &n; *&n; * Copyright:&t;Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; *&n; */
 multiline_comment|/*&t;From uart401.c */
 r_int
 id|probe_uart401
