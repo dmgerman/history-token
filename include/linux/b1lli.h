@@ -149,7 +149,7 @@ suffix:semicolon
 DECL|macro|AVMB1_LOAD
 mdefine_line|#define&t;AVMB1_LOAD&t;&t;0&t;/* load image to card */
 DECL|macro|AVMB1_ADDCARD
-mdefine_line|#define AVMB1_ADDCARD&t;&t;1&t;/* add a new card */
+mdefine_line|#define AVMB1_ADDCARD&t;&t;1&t;/* add a new card - OBSOLETE */
 DECL|macro|AVMB1_RESETCARD
 mdefine_line|#define AVMB1_RESETCARD&t;&t;2&t;/* reset a card */
 DECL|macro|AVMB1_LOAD_AND_CONFIG
@@ -159,7 +159,7 @@ mdefine_line|#define&t;AVMB1_ADDCARD_WITH_TYPE&t;4&t;/* add a new card, with car
 DECL|macro|AVMB1_GET_CARDINFO
 mdefine_line|#define AVMB1_GET_CARDINFO&t;5&t;/* get cardtype */
 DECL|macro|AVMB1_REMOVECARD
-mdefine_line|#define AVMB1_REMOVECARD&t;6&t;/* remove a card (useful for T1) */
+mdefine_line|#define AVMB1_REMOVECARD&t;6&t;/* remove a card - OBSOLETE */
 DECL|macro|AVMB1_REGISTERCARD_IS_OBSOLETE
 mdefine_line|#define&t;AVMB1_REGISTERCARD_IS_OBSOLETE
 macro_line|#endif&t;&t;&t;&t;/* _B1LLI_H_ */
