@@ -124,6 +124,13 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+DECL|variable|noautodma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|noautodma
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ide_modules keeps track of the available IDE chipset/probe/driver modules.&n; */
 DECL|variable|ide_chipsets
 id|ide_module_t
