@@ -3236,40 +3236,75 @@ id|tab_unreach
 op_assign
 (brace
 (brace
+multiline_comment|/* NOROUTE */
+dot
+id|err
+op_assign
 id|ENETUNREACH
 comma
+dot
+id|fatal
+op_assign
 l_int|0
+comma
 )brace
 comma
-multiline_comment|/* NOROUTE&t;&t;*/
 (brace
+multiline_comment|/* ADM_PROHIBITED */
+dot
+id|err
+op_assign
 id|EACCES
 comma
+dot
+id|fatal
+op_assign
 l_int|1
+comma
 )brace
 comma
-multiline_comment|/* ADM_PROHIBITED&t;*/
 (brace
-id|EHOSTUNREACH
-comma
-l_int|0
-)brace
-comma
 multiline_comment|/* Was NOT_NEIGHBOUR, now reserved */
-(brace
+dot
+id|err
+op_assign
 id|EHOSTUNREACH
 comma
+dot
+id|fatal
+op_assign
 l_int|0
+comma
 )brace
 comma
-multiline_comment|/* ADDR_UNREACH&t;&t;*/
 (brace
+multiline_comment|/* ADDR_UNREACH&t;*/
+dot
+id|err
+op_assign
+id|EHOSTUNREACH
+comma
+dot
+id|fatal
+op_assign
+l_int|0
+comma
+)brace
+comma
+(brace
+multiline_comment|/* PORT_UNREACH&t;*/
+dot
+id|err
+op_assign
 id|ECONNREFUSED
 comma
+dot
+id|fatal
+op_assign
 l_int|1
+comma
 )brace
 comma
-multiline_comment|/* PORT_UNREACH&t;&t;*/
 )brace
 suffix:semicolon
 DECL|function|icmpv6_err_convert
