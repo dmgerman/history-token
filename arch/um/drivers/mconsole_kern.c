@@ -191,6 +191,7 @@ op_star
 id|regs
 )paren
 (brace
+multiline_comment|/* long to avoid size mismatch warnings from gcc */
 r_int
 id|fd
 suffix:semicolon
@@ -2141,10 +2142,12 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* long to avoid size mismatch warnings from gcc */
+r_int
+id|sock
+suffix:semicolon
 r_int
 id|err
-comma
-id|sock
 suffix:semicolon
 r_char
 id|file
