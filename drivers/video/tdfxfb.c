@@ -32,12 +32,12 @@ DECL|macro|VOODOO3_MAX_PIXCLOCK
 mdefine_line|#define VOODOO3_MAX_PIXCLOCK 300000
 DECL|macro|VOODOO5_MAX_PIXCLOCK
 mdefine_line|#define VOODOO5_MAX_PIXCLOCK 350000
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_fix_screeninfo
 id|tdfx_fix
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -71,12 +71,12 @@ op_assign
 id|FB_ACCEL_3DFX_BANSHEE
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_var_screeninfo
 id|tdfx_var
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* &quot;640x480, 8 bpp @ 60 Hz */
@@ -633,12 +633,12 @@ op_assign
 l_int|1
 suffix:semicolon
 singleline_comment|// not implemented (yet)
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
 id|mode_option
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|NULL
 suffix:semicolon
