@@ -1898,8 +1898,13 @@ comma
 id|stacr
 )paren
 suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
+(paren
 (paren
 (paren
 (paren
@@ -1910,6 +1915,7 @@ c_func
 (paren
 op_amp
 id|emacp-&gt;em0stacr
+)paren
 )paren
 op_amp
 id|EMAC_STACR_OC
@@ -1922,7 +1928,7 @@ op_logical_and
 id|count
 op_increment
 OL
-l_int|5000
+id|MDIO_DELAY
 )paren
 )paren
 id|udelay
