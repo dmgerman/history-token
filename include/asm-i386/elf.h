@@ -97,8 +97,8 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) do { } while (0)
 multiline_comment|/*&n; * An executable for which elf_read_implies_exec() returns TRUE will&n; * have the READ_IMPLIES_EXEC personality flag set automatically.&n; */
-DECL|macro|elf_read_implies_exec_binary
-mdefine_line|#define elf_read_implies_exec_binary(ex, have_pt_gnu_stack)&t;(!(have_pt_gnu_stack))
+DECL|macro|elf_read_implies_exec
+mdefine_line|#define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;(!(have_pt_gnu_stack))
 r_extern
 r_int
 id|dump_task_regs
