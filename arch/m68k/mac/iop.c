@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt; 
 macro_line|#include &lt;asm/mac_iop.h&gt;
 macro_line|#include &lt;asm/mac_oss.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*#define DEBUG_IOP*/
 multiline_comment|/* Set to nonezero if the IOPs are present. Set by iop_init() */
 DECL|variable|iop_scc_present
