@@ -1,24 +1,17 @@
 multiline_comment|/*&n; *&t;IB700 Single Board Computer WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Charles Howes &lt;chowes@vsol.net&gt;&n; *&n; *      Based on advantechwdt.c which is based on acquirewdt.c which&n; *       is based on wdt.c.&n; *&n; *&t;(c) Copyright 2000-2001 Marek Michalkiewicz &lt;marekm@linux.org.pl&gt;&n; *&n; *&t;Based on acquirewdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Added timeout module option to override default&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|ibwdt_is_open
 r_static
 r_int
@@ -37,43 +30,77 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&n; * Watchdog Timer Configuration&n; *&n; * The function of the watchdog timer is to reset the system&n; * automatically and is defined at I/O port 0443H.  To enable the&n; * watchdog timer and allow the system to reset, write I/O port 0443H.&n; * To disable the timer, write I/O port 0441H for the system to stop the&n; * watchdog function.  The timer has a tolerance of 20% for its&n; * intervals.&n; *&n; * The following describes how the timer should be programmed.&n; *&n; * Enabling Watchdog:&n; * MOV AX,000FH (Choose the values from 0 to F)&n; * MOV DX,0443H&n; * OUT DX,AX&n; *&n; * Disabling Watchdog:&n; * MOV AX,000FH (Any value is fine.)&n; * MOV DX,0441H&n; * OUT DX,AX&n; *&n; * Watchdog timer control table:&n; * Level   Value  Time/sec | Level Value Time/sec&n; *   1       F       0     |   9     7      16&n; *   2       E       2     |   10    6      18&n; *   3       D       4     |   11    5      20&n; *   4       C       6     |   12    4      22&n; *   5       B       8     |   13    3      24&n; *   6       A       10    |   14    2      26&n; *   7       9       12    |   15    1      28&n; *   8       8       14    |   16    0      30&n; *&n; */
+DECL|variable|wd_times
+r_static
+r_int
+id|wd_times
+(braket
+)braket
+op_assign
+(brace
+l_int|30
+comma
+multiline_comment|/* 0x0 */
+l_int|28
+comma
+multiline_comment|/* 0x1 */
+l_int|26
+comma
+multiline_comment|/* 0x2 */
+l_int|24
+comma
+multiline_comment|/* 0x3 */
+l_int|22
+comma
+multiline_comment|/* 0x4 */
+l_int|20
+comma
+multiline_comment|/* 0x5 */
+l_int|18
+comma
+multiline_comment|/* 0x6 */
+l_int|16
+comma
+multiline_comment|/* 0x7 */
+l_int|14
+comma
+multiline_comment|/* 0x8 */
+l_int|12
+comma
+multiline_comment|/* 0x9 */
+l_int|10
+comma
+multiline_comment|/* 0xA */
+l_int|8
+comma
+multiline_comment|/* 0xB */
+l_int|6
+comma
+multiline_comment|/* 0xC */
+l_int|4
+comma
+multiline_comment|/* 0xD */
+l_int|2
+comma
+multiline_comment|/* 0xE */
+l_int|0
+comma
+multiline_comment|/* 0xF */
+)brace
+suffix:semicolon
 DECL|macro|WDT_STOP
 mdefine_line|#define WDT_STOP 0x441
 DECL|macro|WDT_START
 mdefine_line|#define WDT_START 0x443
+multiline_comment|/* Default timeout */
 DECL|macro|WD_TIMO
 mdefine_line|#define WD_TIMO 0&t;&t;/* 30 seconds +/- 20%, from table */
-DECL|variable|timeout_val
+DECL|variable|wd_margin
 r_static
 r_int
-id|timeout_val
+id|wd_margin
 op_assign
 id|WD_TIMO
-suffix:semicolon
-multiline_comment|/* value in table */
-DECL|variable|timeout
-r_static
-r_int
-id|timeout
-op_assign
-l_int|30
-suffix:semicolon
-multiline_comment|/* in seconds */
-id|MODULE_PARM
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|timeout
-comma
-l_string|&quot;Watchdog timeout in seconds, 0 &lt; n &lt; 30, must be even (default=30)&quot;
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
 DECL|variable|nowayout
@@ -111,38 +138,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Kernel methods.&n; */
 r_static
 r_void
-id|__init
-DECL|function|ibwdt_validate_timeout
-id|ibwdt_validate_timeout
-c_func
-(paren
-r_void
-)paren
-(brace
-id|timeout_val
-op_assign
-(paren
-l_int|30
-op_minus
-id|timeout
-)paren
-op_div
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|timeout_val
-template_param
-l_int|0xF
-)paren
-id|timeout_val
-op_assign
-id|WD_TIMO
-suffix:semicolon
-)brace
-r_static
-r_void
 DECL|function|ibwdt_ping
 id|ibwdt_ping
 c_func
@@ -154,7 +149,10 @@ multiline_comment|/* Write a watchdog value */
 id|outb_p
 c_func
 (paren
-id|timeout_val
+id|wd_times
+(braket
+id|wd_margin
+)braket
 comma
 id|WDT_START
 )paren
@@ -332,6 +330,11 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|i
+comma
+id|new_margin
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -431,6 +434,105 @@ suffix:colon
 id|ibwdt_ping
 c_func
 (paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|new_margin
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|new_margin
+OG
+l_int|30
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0x0F
+suffix:semicolon
+id|i
+OG
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+op_decrement
+)paren
+r_if
+c_cond
+(paren
+id|wd_times
+(braket
+id|i
+)braket
+OG
+id|new_margin
+)paren
+r_break
+suffix:semicolon
+id|wd_margin
+op_assign
+id|i
+suffix:semicolon
+id|ibwdt_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|wd_times
+(braket
+id|wd_margin
+)braket
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
 )paren
 suffix:semicolon
 r_break
@@ -580,7 +682,10 @@ id|expect_close
 id|outb_p
 c_func
 (paren
-id|timeout_val
+id|wd_times
+(braket
+id|wd_margin
+)braket
 comma
 id|WDT_STOP
 )paren
@@ -646,7 +751,10 @@ multiline_comment|/* Turn the WDT off */
 id|outb_p
 c_func
 (paren
-id|timeout_val
+id|wd_times
+(braket
+id|wd_margin
+)braket
 comma
 id|WDT_STOP
 )paren
@@ -758,11 +866,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;WDT driver for IB700 single board computer initialising.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ibwdt_validate_timeout
-c_func
-(paren
 )paren
 suffix:semicolon
 id|spin_lock_init

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -301,6 +300,8 @@ id|arg
 (brace
 r_int
 id|i
+comma
+id|new_margin
 suffix:semicolon
 r_static
 r_struct
@@ -308,7 +309,7 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
-l_int|0
+id|WDIOF_SETTIMEOUT
 comma
 l_int|0
 comma
@@ -391,6 +392,74 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|new_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+multiline_comment|/* Arbitrary, can&squot;t find the card&squot;s limits */
+r_if
+c_cond
+(paren
+(paren
+id|new_marg
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
+id|new_margin
+OG
+l_int|60
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|soft_margin
+op_assign
+id|new_margin
+suffix:semicolon
+id|watchdog_ping
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|soft_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|variable|watchdog_fops
@@ -452,6 +521,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -464,6 +536,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+id|retval
+op_assign
 id|misc_register
 c_func
 (paren
@@ -471,6 +545,18 @@ op_amp
 id|watchdog_miscdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+r_return
+id|retval
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
