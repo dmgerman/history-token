@@ -669,8 +669,6 @@ id|uid
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|get_current_user
-mdefine_line|#define get_current_user() ({ &t;&t;&t;&t;&bslash;&n;&t;struct user_struct *__user = current-&gt;user;&t;&bslash;&n;&t;atomic_inc(&amp;__user-&gt;__count);&t;&t;&t;&bslash;&n;&t;__user; })
 r_extern
 r_struct
 id|user_struct

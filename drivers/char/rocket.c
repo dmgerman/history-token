@@ -12185,6 +12185,10 @@ id|rocket_driver.flags
 op_assign
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
+id|rocket_driver.devfs_name
+op_assign
+l_string|&quot;tts/R&quot;
+suffix:semicolon
 id|rocket_driver.name
 op_assign
 l_string|&quot;ttyR&quot;

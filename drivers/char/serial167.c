@@ -9833,17 +9833,14 @@ id|cy_serial_driver.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|cy_serial_driver.name
+id|cy_serial_driver.devfs_name
 op_assign
 l_string|&quot;tts/&quot;
 suffix:semicolon
-macro_line|#else
 id|cy_serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
-macro_line|#endif
 id|cy_serial_driver.major
 op_assign
 id|TTY_MAJOR
