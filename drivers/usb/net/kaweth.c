@@ -2385,9 +2385,10 @@ id|int_callback
 comma
 id|kaweth
 comma
-l_int|8
+l_int|250
 )paren
 suffix:semicolon
+multiline_comment|/* overriding the descriptor */
 id|kaweth-&gt;irq_urb-&gt;transfer_dma
 op_assign
 id|kaweth-&gt;intbufferhandle

@@ -2064,7 +2064,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;out_urb
@@ -3169,7 +3169,7 @@ c_cond
 (paren
 id|ati_remote-&gt;irq_urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;irq_urb
@@ -3180,7 +3180,7 @@ c_cond
 (paren
 id|ati_remote-&gt;out_urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;out_urb

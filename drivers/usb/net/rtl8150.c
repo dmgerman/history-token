@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.6.1 (2004/03/13)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.6.2 (2004/08/27)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1636,25 +1636,25 @@ op_star
 id|dev
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dev-&gt;rx_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dev-&gt;tx_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dev-&gt;intr_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|dev-&gt;ctrl_urb

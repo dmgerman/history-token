@@ -109,11 +109,10 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
+id|usb_lock_device
 c_func
 (paren
-op_amp
-id|udev-&gt;serialize
+id|udev
 )paren
 suffix:semicolon
 id|value
@@ -125,11 +124,10 @@ comma
 id|config
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 c_func
 (paren
-op_amp
-id|udev-&gt;serialize
+id|udev
 )paren
 suffix:semicolon
 r_return

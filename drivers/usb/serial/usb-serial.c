@@ -209,20 +209,20 @@ r_if
 c_cond
 (paren
 (paren
+id|i
+op_plus
+id|j
+op_ge
+id|SERIAL_TTY_MINORS
+)paren
+op_logical_or
+(paren
 id|serial_table
 (braket
 id|i
 op_plus
 id|j
 )braket
-)paren
-op_logical_or
-(paren
-id|i
-op_plus
-id|j
-op_ge
-id|SERIAL_TTY_MINORS
 )paren
 )paren
 (brace
@@ -537,7 +537,7 @@ c_cond
 id|port-&gt;read_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -556,7 +556,7 @@ c_cond
 id|port-&gt;write_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;write_urb
@@ -575,7 +575,7 @@ c_cond
 id|port-&gt;interrupt_in_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;interrupt_in_urb
@@ -1197,8 +1197,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function */
@@ -1214,9 +1213,6 @@ c_func
 (paren
 id|port
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_unthrottle
@@ -1267,8 +1263,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function */
@@ -1284,9 +1279,6 @@ c_func
 (paren
 id|port
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_ioctl
@@ -1448,8 +1440,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function if it is available */
@@ -1467,9 +1458,6 @@ id|port
 comma
 id|old
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_break
@@ -1523,8 +1511,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function if it is available */
@@ -1542,9 +1529,6 @@ id|port
 comma
 id|break_state
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_read_proc
@@ -2196,7 +2180,7 @@ c_cond
 id|port-&gt;read_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -2215,7 +2199,7 @@ c_cond
 id|port-&gt;write_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;write_urb
@@ -2234,7 +2218,7 @@ c_cond
 id|port-&gt;interrupt_in_urb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;interrupt_in_urb
@@ -4187,8 +4171,6 @@ id|i
 suffix:semicolon
 r_int
 id|result
-op_assign
-l_int|0
 suffix:semicolon
 id|usb_serial_tty_driver
 op_assign
@@ -4232,6 +4214,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|result
+op_assign
 id|bus_register
 c_func
 (paren
@@ -4239,6 +4223,24 @@ op_amp
 id|usb_serial_bus_type
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s - registering bus driver failed&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_goto
+id|exit_bus
+suffix:semicolon
+)brace
 multiline_comment|/* register the generic driver, if we should */
 id|result
 op_assign
@@ -4265,7 +4267,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
-m_exit
+id|exit_generic
 suffix:semicolon
 )brace
 id|usb_serial_tty_driver-&gt;owner
@@ -4354,7 +4356,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_goto
-id|exit_generic
+id|exit_reg_driver
 suffix:semicolon
 )brace
 multiline_comment|/* register the USB driver */
@@ -4406,14 +4408,23 @@ c_func
 id|usb_serial_tty_driver
 )paren
 suffix:semicolon
-id|exit_generic
+id|exit_reg_driver
 suffix:colon
 id|usb_serial_generic_deregister
 c_func
 (paren
 )paren
 suffix:semicolon
-m_exit
+id|exit_generic
+suffix:colon
+id|bus_unregister
+c_func
+(paren
+op_amp
+id|usb_serial_bus_type
+)paren
+suffix:semicolon
+id|exit_bus
 suffix:colon
 id|err
 (paren

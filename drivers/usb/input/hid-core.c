@@ -6257,7 +6257,7 @@ op_amp
 id|hid-&gt;iofl
 )paren
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hid-&gt;urbctrl
@@ -6275,7 +6275,7 @@ op_amp
 id|hid-&gt;iofl
 )paren
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hid-&gt;urbout
@@ -6498,11 +6498,15 @@ mdefine_line|#define USB_DEVICE_ID_1_PHIDGETSERVO_20&t;0x8101
 DECL|macro|USB_DEVICE_ID_4_PHIDGETSERVO_20
 mdefine_line|#define USB_DEVICE_ID_4_PHIDGETSERVO_20&t;0x8104
 DECL|macro|USB_VENDOR_ID_CODEMERCS
-mdefine_line|#define USB_VENDOR_ID_CODEMERCS&t;&t;0x07c0
+mdefine_line|#define USB_VENDOR_ID_CODEMERCS        0x07c0
 DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW40
-mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW40&t;0x1500
+mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW40  0x1500
 DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW24
-mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW24&t;0x1501
+mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW24  0x1501
+DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW48
+mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW48  0x1502
+DECL|macro|USB_DEVICE_ID_CODEMERCS_IOW28
+mdefine_line|#define USB_DEVICE_ID_CODEMERCS_IOW28  0x1503
 DECL|struct|hid_blacklist
 r_static
 r_struct
@@ -7139,6 +7143,38 @@ comma
 id|USB_DEVICE_ID_TOPMAX_COBRAPAD
 comma
 id|HID_QUIRK_BADPAD
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CODEMERCS
+comma
+id|USB_DEVICE_ID_CODEMERCS_IOW40
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CODEMERCS
+comma
+id|USB_DEVICE_ID_CODEMERCS_IOW24
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CODEMERCS
+comma
+id|USB_DEVICE_ID_CODEMERCS_IOW48
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_CODEMERCS
+comma
+id|USB_DEVICE_ID_CODEMERCS_IOW28
+comma
+id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
