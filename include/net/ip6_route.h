@@ -402,6 +402,17 @@ id|lst_resort
 suffix:semicolon
 r_extern
 r_void
+id|rt6_reset_dflt_pointer
+c_func
+(paren
+r_struct
+id|rt6_info
+op_star
+id|rt
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|rt6_redirect
 c_func
 (paren
