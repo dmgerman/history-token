@@ -5000,7 +5000,7 @@ comma
 op_amp
 id|cmap
 comma
-l_int|0
+l_int|2
 )paren
 )paren
 suffix:semicolon
