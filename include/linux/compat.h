@@ -106,6 +106,7 @@ op_star
 comma
 r_struct
 id|compat_stat
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -121,6 +122,7 @@ comma
 r_const
 r_struct
 id|compat_timespec
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -136,6 +138,7 @@ op_star
 comma
 r_struct
 id|compat_timespec
+id|__user
 op_star
 )paren
 suffix:semicolon
