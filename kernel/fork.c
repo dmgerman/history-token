@@ -498,7 +498,8 @@ op_increment
 id|last_pid
 )paren
 op_amp
-l_int|0xffff8000
+op_complement
+id|PID_MASK
 )paren
 (brace
 id|last_pid
@@ -573,7 +574,8 @@ c_cond
 (paren
 id|last_pid
 op_amp
-l_int|0xffff8000
+op_complement
+id|PID_MASK
 )paren
 (brace
 id|last_pid
