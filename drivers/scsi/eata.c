@@ -2251,7 +2251,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -2288,6 +2288,13 @@ id|addr
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* we are in so much trouble for a pci hotplug system with this driver&n;       * anyway, so doing this at least lets people unload the driver and not&n;       * cause memory problems, but in general this is a bad thing to do (this&n;       * driver needs to be converted to the proper PCI api someday... */
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2329,7 +2336,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -5014,7 +5021,7 @@ op_logical_neg
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_STORAGE_SCSI
@@ -5108,6 +5115,12 @@ op_plus
 id|PCI_BASE_ADDRESS_0
 suffix:semicolon
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* end CONFIG_PCI */
 r_return
 suffix:semicolon
