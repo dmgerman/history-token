@@ -502,6 +502,11 @@ r_struct
 id|tty_ldisc
 id|ldisc
 suffix:semicolon
+DECL|member|termios_sem
+r_struct
+id|semaphore
+id|termios_sem
+suffix:semicolon
 DECL|member|termios
 DECL|member|termios_locked
 r_struct
