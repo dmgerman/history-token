@@ -83,7 +83,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;CPU#%d: Unexpected LVT TMR interrupt!&bslash;n&quot;
+l_string|&quot;CPU%d: Unexpected LVT TMR interrupt!&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -119,12 +119,48 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_static
+r_int
+r_int
+id|next
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 id|ack_APIC_irq
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|next
+(braket
+id|cpu
+)braket
+comma
+id|jiffies
+)paren
+)paren
+r_return
+suffix:semicolon
+id|next
+(braket
+id|cpu
+)braket
+op_assign
+id|jiffies
+op_plus
+id|HZ
+op_star
+l_int|5
+suffix:semicolon
 id|rdmsr
+c_func
 (paren
 id|MSR_IA32_THERM_STATUS
 comma
@@ -138,14 +174,14 @@ c_cond
 (paren
 id|l
 op_amp
-l_int|1
+l_int|0x1
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;CPU#%d: Temperature above threshold&bslash;n&quot;
+l_string|&quot;CPU%d: Temperature above threshold&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -154,7 +190,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;CPU#%d: Running in modulated clock mode&bslash;n&quot;
+l_string|&quot;CPU%d: Running in modulated clock mode&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -166,7 +202,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;CPU#%d: Temperature/speed normal&bslash;n&quot;
+l_string|&quot;CPU%d: Temperature/speed normal&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -321,7 +357,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU#%d: Thermal monitoring handled by SMI&bslash;n&quot;
+l_string|&quot;CPU%d: Thermal monitoring handled by SMI&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -343,7 +379,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU#%d: Thermal LVT vector (%#x) already installed&bslash;n&quot;
+l_string|&quot;CPU%d: Thermal LVT vector (%#x) already &quot;
+l_string|&quot;installed&bslash;n&quot;
 comma
 id|cpu
 comma
@@ -450,7 +487,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;CPU#%d: Thermal monitoring enabled&bslash;n&quot;
+l_string|&quot;CPU%d: Thermal monitoring enabled&bslash;n&quot;
 comma
 id|cpu
 )paren
@@ -1170,7 +1207,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;CPU#%d: Intel P4/Xeon Extended MCE MSRs (%d) available&bslash;n&quot;
+l_string|&quot;CPU%d: Intel P4/Xeon Extended MCE MSRs (%d)&quot;
+l_string|&quot; available&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
