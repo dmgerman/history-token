@@ -3808,13 +3808,7 @@ c_cond
 (paren
 id|self-&gt;netdev
 )paren
-(brace
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 id|self-&gt;netdev
@@ -3824,12 +3818,6 @@ id|self-&gt;netdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Remove the speed buffer */
 r_if
 c_cond
