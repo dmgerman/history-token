@@ -11,6 +11,7 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Rage 128&quot;
 DECL|macro|DRIVER_DATE
 mdefine_line|#define DRIVER_DATE&t;&t;&quot;20030725&quot;
+multiline_comment|/* Interface history:&n; *&n; * ??  - ??&n; * 2.4 - Add support for ycbcr textures (no new ioctls)&n; * 2.5 - Add FLIP ioctl, disable FULLSCREEN.&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;2
 DECL|macro|DRIVER_MINOR
