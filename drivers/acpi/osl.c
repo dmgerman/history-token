@@ -936,10 +936,7 @@ DECL|function|acpi_os_sleep
 id|acpi_os_sleep
 c_func
 (paren
-id|u32
-id|sec
-comma
-id|u32
+id|acpi_integer
 id|ms
 )paren
 (brace
@@ -950,11 +947,11 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|HZ
-op_star
-id|sec
-op_plus
 (paren
+(paren
+r_int
+r_int
+)paren
 id|ms
 op_star
 id|HZ
