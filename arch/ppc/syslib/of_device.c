@@ -982,19 +982,6 @@ op_assign
 op_amp
 id|of_platform_bus_type
 suffix:semicolon
-multiline_comment|/* XXX Make something better here ? */
-id|snprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;Platform device %s&quot;
-comma
-id|np-&gt;name
-)paren
-suffix:semicolon
 id|reg
 op_assign
 (paren

@@ -5057,11 +5057,6 @@ id|idescsi_primary
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;Ide-scsi Parent&quot;
-comma
-dot
 id|bus_id
 op_assign
 l_string|&quot;ide-scsi&quot;
