@@ -260,7 +260,7 @@ id|ehci-&gt;next_statechange
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -451,7 +451,7 @@ id|i
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|20
 )paren
@@ -599,7 +599,7 @@ id|ehci-&gt;next_statechange
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5
@@ -1383,7 +1383,7 @@ id|wIndex
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|20
 )paren
@@ -2201,7 +2201,7 @@ id|wIndex
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|50
 )paren

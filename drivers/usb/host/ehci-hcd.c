@@ -2489,7 +2489,7 @@ id|i
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|20
 )paren
