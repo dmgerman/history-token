@@ -5525,9 +5525,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|do_readahead
 r_static
 id|ssize_t
+DECL|function|do_readahead
 id|do_readahead
 c_func
 (paren
@@ -5556,6 +5556,10 @@ r_int
 r_int
 id|max
 suffix:semicolon
+r_struct
+id|page_state
+id|ps
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5573,9 +5577,16 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Limit it to a sane percentage of the inactive list.. */
+id|get_page_state
+c_func
+(paren
+op_amp
+id|ps
+)paren
+suffix:semicolon
 id|max
 op_assign
-id|nr_inactive_pages
+id|ps.nr_inactive
 op_div
 l_int|2
 suffix:semicolon

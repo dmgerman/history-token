@@ -55,6 +55,18 @@ r_int
 r_int
 id|nr_pagecache
 suffix:semicolon
+DECL|member|nr_active
+r_int
+r_int
+id|nr_active
+suffix:semicolon
+multiline_comment|/* on active_list LRU */
+DECL|member|nr_inactive
+r_int
+r_int
+id|nr_inactive
+suffix:semicolon
+multiline_comment|/* on inactive_list LRU */
 )brace
 id|____cacheline_aligned_in_smp
 id|page_states
