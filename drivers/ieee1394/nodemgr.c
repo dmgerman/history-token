@@ -6630,6 +6630,15 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Check the kill_me again */
+r_if
+c_cond
+(paren
+id|hi-&gt;kill_me
+)paren
+r_goto
+id|caught_signal
+suffix:semicolon
 )brace
 r_if
 c_cond
