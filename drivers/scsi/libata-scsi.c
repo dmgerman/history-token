@@ -3800,7 +3800,7 @@ l_int|0xa
 comma
 l_int|0xa
 comma
-l_int|2
+l_int|6
 comma
 l_int|0
 comma
@@ -3821,6 +3821,7 @@ comma
 l_int|30
 )brace
 suffix:semicolon
+multiline_comment|/* byte 2: set the descriptor format sense data bit (bit 2)&n;&t; * since we need to support returning this format for SAT&n;&t; * commands and any SCSI commands against a 48b LBA device.&n;&t; */
 id|ata_msense_push
 c_func
 (paren
