@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -89,12 +88,6 @@ DECL|macro|VIOMAXBLOCKDMA
 mdefine_line|#define VIOMAXBLOCKDMA&t;&t;12
 DECL|macro|DEVICE_NO
 mdefine_line|#define DEVICE_NO(cell)&t;((struct viodasd_device *)(cell) - &amp;viodasd_devices[0])
-r_extern
-r_struct
-id|device
-op_star
-id|iSeries_vio_dev
-suffix:semicolon
 DECL|struct|open_data
 r_struct
 id|open_data
