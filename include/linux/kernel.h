@@ -527,6 +527,10 @@ id|panic_on_oops
 suffix:semicolon
 r_extern
 r_int
+id|system_running
+suffix:semicolon
+r_extern
+r_int
 id|tainted
 suffix:semicolon
 r_extern
