@@ -1349,6 +1349,14 @@ id|transport-&gt;partial_bytes_acked
 suffix:semicolon
 )brace
 multiline_comment|/* RFC 2960 6.1  Transmission of DATA Chunks&n;&t; *&n;&t; * B) At any given time, the sender MUST NOT transmit new data&n;&t; * to a given transport address if it has cwnd or more bytes&n;&t; * of data outstanding to that transport address.&n;&t; */
+multiline_comment|/* RFC 7.2.4 &amp; the Implementers Guide 2.8.&n;&t; *&n;&t; * 3) ...&n;&t; *    When a Fast Retransmit is being performed the sender SHOULD&n;&t; *    ignore the value of cwnd and SHOULD NOT delay retransmission.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chunk-&gt;fast_retransmit
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1364,6 +1372,7 @@ suffix:semicolon
 r_goto
 id|finish
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Keep track of how many bytes are in flight over this transport. */
 id|transport-&gt;flight_size
