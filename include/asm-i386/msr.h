@@ -7,9 +7,10 @@ mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&qu
 DECL|macro|wrmsr
 mdefine_line|#define wrmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&quot;wrmsr&quot; &bslash;&n;&t;&t;&t;  : /* no outputs */ &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr), &quot;a&quot; (val1), &quot;d&quot; (val2))
 DECL|macro|rdmsrl
-mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);  &bslash;&n;&t;val = l__;  &bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);  &bslash;&n;} while(0)
+mdefine_line|#define rdmsrl(msr,val) do { &bslash;&n;&t;unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);  &bslash;&n;&t;val = l__;  &bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);  &bslash;&n;} while(0)
 DECL|function|wrmsrl
 r_static
+r_inline
 r_void
 id|wrmsrl
 (paren
