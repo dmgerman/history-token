@@ -2034,6 +2034,12 @@ id|SEND_FLAG_COMPLETE
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
