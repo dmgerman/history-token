@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#else
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;sys/ioctl.h&gt;
-macro_line|#include &lt;stdint.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * The event structure itself&n; */
 DECL|struct|input_event
@@ -21,15 +21,15 @@ id|timeval
 id|time
 suffix:semicolon
 DECL|member|type
-r_uint16
+id|__u16
 id|type
 suffix:semicolon
 DECL|member|code
-r_uint16
+id|__u16
 id|code
 suffix:semicolon
 DECL|member|value
-r_int32
+id|__s32
 id|value
 suffix:semicolon
 )brace
@@ -43,19 +43,19 @@ r_struct
 id|input_id
 (brace
 DECL|member|bustype
-r_uint16
+id|__u16
 id|bustype
 suffix:semicolon
 DECL|member|vendor
-r_uint16
+id|__u16
 id|vendor
 suffix:semicolon
 DECL|member|product
-r_uint16
+id|__u16
 id|product
 suffix:semicolon
 DECL|member|version
-r_uint16
+id|__u16
 id|version
 suffix:semicolon
 )brace
@@ -65,23 +65,23 @@ r_struct
 id|input_absinfo
 (brace
 DECL|member|value
-r_int
+id|__s32
 id|value
 suffix:semicolon
 DECL|member|minimum
-r_int
+id|__s32
 id|minimum
 suffix:semicolon
 DECL|member|maximum
-r_int
+id|__s32
 id|maximum
 suffix:semicolon
 DECL|member|fuzz
-r_int
+id|__s32
 id|fuzz
 suffix:semicolon
 DECL|member|flat
-r_int
+id|__s32
 id|flat
 suffix:semicolon
 )brace
@@ -1023,12 +1023,12 @@ r_struct
 id|ff_replay
 (brace
 DECL|member|length
-r_uint16
+id|__u16
 id|length
 suffix:semicolon
 multiline_comment|/* Duration of an effect in ms. All other times are also expressed in ms */
 DECL|member|delay
-r_uint16
+id|__u16
 id|delay
 suffix:semicolon
 multiline_comment|/* Time to wait before to start playing an effect */
@@ -1039,12 +1039,12 @@ r_struct
 id|ff_trigger
 (brace
 DECL|member|button
-r_uint16
+id|__u16
 id|button
 suffix:semicolon
 multiline_comment|/* Number of button triggering an effect */
 DECL|member|interval
-r_uint16
+id|__u16
 id|interval
 suffix:semicolon
 multiline_comment|/* Time to wait before an effect can be re-triggered (ms) */
@@ -1055,22 +1055,22 @@ r_struct
 id|ff_envelope
 (brace
 DECL|member|attack_length
-r_uint16
+id|__u16
 id|attack_length
 suffix:semicolon
 multiline_comment|/* Duration of attack (ms) */
 DECL|member|attack_level
-r_uint16
+id|__u16
 id|attack_level
 suffix:semicolon
 multiline_comment|/* Level at beginning of attack */
 DECL|member|fade_length
-r_uint16
+id|__u16
 id|fade_length
 suffix:semicolon
 multiline_comment|/* Duration of fade (ms) */
 DECL|member|fade_level
-r_uint16
+id|__u16
 id|fade_level
 suffix:semicolon
 multiline_comment|/* Level at end of fade */
@@ -1082,7 +1082,7 @@ r_struct
 id|ff_constant_effect
 (brace
 DECL|member|level
-r_int16
+id|__s16
 id|level
 suffix:semicolon
 multiline_comment|/* Strength of effect. Negative values are OK */
@@ -1099,11 +1099,11 @@ r_struct
 id|ff_ramp_effect
 (brace
 DECL|member|start_level
-r_int16
+id|__s16
 id|start_level
 suffix:semicolon
 DECL|member|end_level
-r_int16
+id|__s16
 id|end_level
 suffix:semicolon
 DECL|member|envelope
@@ -1119,32 +1119,32 @@ r_struct
 id|ff_condition_effect
 (brace
 DECL|member|right_saturation
-r_uint16
+id|__u16
 id|right_saturation
 suffix:semicolon
 multiline_comment|/* Max level when joystick is on the right */
 DECL|member|left_saturation
-r_uint16
+id|__u16
 id|left_saturation
 suffix:semicolon
 multiline_comment|/* Max level when joystick in on the left */
 DECL|member|right_coeff
-r_int16
+id|__s16
 id|right_coeff
 suffix:semicolon
 multiline_comment|/* Indicates how fast the force grows when the&n;&t;&t;&t;&t;   joystick moves to the right */
 DECL|member|left_coeff
-r_int16
+id|__s16
 id|left_coeff
 suffix:semicolon
 multiline_comment|/* Same for left side */
 DECL|member|deadband
-r_uint16
+id|__u16
 id|deadband
 suffix:semicolon
 multiline_comment|/* Size of area where no force is produced */
 DECL|member|center
-r_int16
+id|__s16
 id|center
 suffix:semicolon
 multiline_comment|/* Position of dead zone */
@@ -1156,27 +1156,27 @@ r_struct
 id|ff_periodic_effect
 (brace
 DECL|member|waveform
-r_uint16
+id|__u16
 id|waveform
 suffix:semicolon
 multiline_comment|/* Kind of wave (sine, square...) */
 DECL|member|period
-r_uint16
+id|__u16
 id|period
 suffix:semicolon
 multiline_comment|/* in ms */
 DECL|member|magnitude
-r_int16
+id|__s16
 id|magnitude
 suffix:semicolon
 multiline_comment|/* Peak value */
 DECL|member|offset
-r_int16
+id|__s16
 id|offset
 suffix:semicolon
 multiline_comment|/* Mean value of wave (roughly) */
 DECL|member|phase
-r_uint16
+id|__u16
 id|phase
 suffix:semicolon
 multiline_comment|/* &squot;Horizontal&squot; shift */
@@ -1187,12 +1187,12 @@ id|envelope
 suffix:semicolon
 multiline_comment|/* Only used if waveform == FF_CUSTOM */
 DECL|member|custom_len
-r_uint32
+id|__u32
 id|custom_len
 suffix:semicolon
 multiline_comment|/* Number of samples  */
 DECL|member|custom_data
-r_int16
+id|__s16
 op_star
 id|custom_data
 suffix:semicolon
@@ -1207,12 +1207,12 @@ r_struct
 id|ff_rumble_effect
 (brace
 DECL|member|strong_magnitude
-r_uint16
+id|__u16
 id|strong_magnitude
 suffix:semicolon
 multiline_comment|/* Magnitude of the heavy motor */
 DECL|member|weak_magnitude
-r_uint16
+id|__u16
 id|weak_magnitude
 suffix:semicolon
 multiline_comment|/* Magnitude of the light one */
@@ -1224,16 +1224,16 @@ r_struct
 id|ff_effect
 (brace
 DECL|member|type
-r_uint16
+id|__u16
 id|type
 suffix:semicolon
 multiline_comment|/* Following field denotes the unique id assigned to an effect.&n; * If user sets if to -1, a new effect is created, and its id is returned in the same field&n; * Else, the user sets it to the effect id it wants to update.&n; */
 DECL|member|id
-r_int16
+id|__s16
 id|id
 suffix:semicolon
 DECL|member|direction
-r_uint16
+id|__u16
 id|direction
 suffix:semicolon
 multiline_comment|/* Direction. 0 deg -&gt; 0x0000 (down)&n;&t;&t;&t;&t;&t;     90 deg -&gt; 0x4000 (left)&n;&t;&t;&t;&t;&t;    180 deg -&gt; 0x8000 (up)&n;&t;&t;&t;&t;&t;    270 deg -&gt; 0xC000 (right)&n;&t;&t;&t;&t;*/
