@@ -16,8 +16,6 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
-DECL|macro|APIC_LOCKUP_DEBUG
-mdefine_line|#define APIC_LOCKUP_DEBUG
 DECL|variable|ioapic_lock
 r_static
 id|spinlock_t
@@ -7892,13 +7890,6 @@ l_int|0x1f
 )paren
 )paren
 (brace
-macro_line|#ifdef APIC_LOCKUP_DEBUG
-r_struct
-id|irq_pin_list
-op_star
-id|entry
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef APIC_MISMATCH_DEBUG
 id|atomic_inc
 c_func
@@ -7921,78 +7912,6 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef APIC_LOCKUP_DEBUG
-r_for
-c_loop
-(paren
-id|entry
-op_assign
-id|irq_2_pin
-op_plus
-id|irq
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-r_int
-r_int
-id|reg
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|entry-&gt;pin
-op_eq
-op_minus
-l_int|1
-)paren
-r_break
-suffix:semicolon
-id|reg
-op_assign
-id|io_apic_read
-c_func
-(paren
-id|entry-&gt;apic
-comma
-l_int|0x10
-op_plus
-id|entry-&gt;pin
-op_star
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reg
-op_amp
-l_int|0x00004000
-)paren
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;Aieee!!!  Remote IRR&quot;
-l_string|&quot; still set after unlock!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|entry-&gt;next
-)paren
-r_break
-suffix:semicolon
-id|entry
-op_assign
-id|irq_2_pin
-op_plus
-id|entry-&gt;next
-suffix:semicolon
-)brace
-macro_line|#endif
 id|__unmask_and_level_IO_APIC_irq
 c_func
 (paren
