@@ -2092,6 +2092,47 @@ l_int|5
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if HZ == 1000
+multiline_comment|/* Compensate for (HZ==1000) != (1 &lt;&lt; SHIFT_HZ).&n;     * Add 1.5625% and 0.78125% to get 1023.4375; =&gt; only 0.05% error (p. 14)&n;     */
+r_if
+c_cond
+(paren
+id|time_adj
+OL
+l_int|0
+)paren
+id|time_adj
+op_sub_assign
+(paren
+op_minus
+id|time_adj
+op_rshift
+l_int|6
+)paren
+op_plus
+(paren
+op_minus
+id|time_adj
+op_rshift
+l_int|7
+)paren
+suffix:semicolon
+r_else
+id|time_adj
+op_add_assign
+(paren
+id|time_adj
+op_rshift
+l_int|6
+)paren
+op_plus
+(paren
+id|time_adj
+op_rshift
+l_int|7
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* in the NTP reference this is called &quot;hardclock()&quot; */
 DECL|function|update_wall_time_one_tick
