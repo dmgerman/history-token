@@ -1473,6 +1473,8 @@ id|bv_len
 comma
 id|bv_offset
 )paren
+OL
+id|bv_len
 )paren
 (brace
 id|dio_bio_submit
@@ -1517,8 +1519,8 @@ id|BUG_ON
 c_func
 (paren
 id|ret
-op_ne
-l_int|0
+OL
+id|bv_len
 )paren
 suffix:semicolon
 )brace
