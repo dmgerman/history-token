@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 macro_line|#include &lt;mach_apicdef.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 DECL|function|target_cpus
