@@ -2265,6 +2265,11 @@ r_int
 id|out_qlen
 suffix:semicolon
 multiline_comment|/* Total length of queued data chunks. */
+multiline_comment|/* Error of send failed, may used in SCTP_SEND_FAILED event. */
+DECL|member|error
+r_int
+id|error
+suffix:semicolon
 multiline_comment|/* These are control chunks we want to send.  */
 DECL|member|control
 r_struct
