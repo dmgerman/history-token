@@ -319,7 +319,7 @@ multiline_comment|/* Check alignment and WDS frame formatting. The start of the 
 r_if
 c_cond
 (paren
-id|unlikely
+id|likely
 c_func
 (paren
 (paren
