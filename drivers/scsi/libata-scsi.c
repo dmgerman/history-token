@@ -2282,7 +2282,7 @@ comma
 multiline_comment|/* claim SPC-3 version compatibility */
 l_int|2
 comma
-l_int|96
+l_int|95
 op_minus
 l_int|4
 )brace
@@ -2332,7 +2332,7 @@ c_cond
 (paren
 id|buflen
 OG
-l_int|36
+l_int|35
 )paren
 (brace
 id|memcpy
