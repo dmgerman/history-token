@@ -2986,12 +2986,14 @@ id|dump.offset
 op_add_assign
 id|len
 suffix:semicolon
+id|dump.ptr
+op_assign
 (paren
 r_char
 op_star
 )paren
 id|dump.ptr
-op_add_assign
+op_plus
 id|len
 suffix:semicolon
 )brace
