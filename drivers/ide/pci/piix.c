@@ -2922,19 +2922,6 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|ide_setup_pci_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;init_setup_piix&t;&t;-&t;callback for IDE initialize&n; *&t;@dev: PIIX PCI device&n; *&t;@d: IDE pci info&n; *&n; *&t;Enable the xp fixup for the PIIX controller and then perform&n; *&t;a standard ide PCI setup&n; */
 DECL|function|init_setup_piix
 r_static
