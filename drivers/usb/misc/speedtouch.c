@@ -20,14 +20,28 @@ macro_line|#include &quot;atmsar.h&quot;
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
 macro_line|#ifdef DEBUG
 DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(arg...)  printk(KERN_DEBUG &quot;SpeedTouch USB: &quot; arg)
+mdefine_line|#define PDEBUG(arg...)  printk(KERN_DEBUG __FILE__ &quot;: &quot; arg)
 macro_line|#else
 DECL|macro|PDEBUG
 mdefine_line|#define PDEBUG(arg...)
 macro_line|#endif
 macro_line|#ifdef DEBUG_PACKET
+r_static
+r_int
+id|udsl_print_packet
+(paren
+r_const
+r_int
+r_char
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
 DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...) udsl_print_packet ( arg )
+mdefine_line|#define PACKETDEBUG(arg...) udsl_print_packet (arg)
 macro_line|#else
 DECL|macro|PACKETDEBUG
 mdefine_line|#define PACKETDEBUG(arg...)
@@ -51,7 +65,7 @@ mdefine_line|#define UDSL_NUMBER_SND_BUFS&t;&t;(2*UDSL_NUMBER_SND_URBS)
 DECL|macro|UDSL_RCV_BUFFER_SIZE
 mdefine_line|#define UDSL_RCV_BUFFER_SIZE&t;&t;(1*64) /* ATM cells */
 DECL|macro|UDSL_SND_BUFFER_SIZE
-mdefine_line|#define UDSL_SND_BUFFER_SIZE&t;&t;(2*64) /* ATM cells */
+mdefine_line|#define UDSL_SND_BUFFER_SIZE&t;&t;(1*64) /* ATM cells */
 multiline_comment|/* max should be (1500 IP mtu + 2 ppp bytes + 32 * 5 cellheader overhead) for&n; * PPPoA and (1500 + 14 + 32*5 cellheader overhead) for PPPoE */
 DECL|macro|UDSL_MAX_AAL5_MRU
 mdefine_line|#define UDSL_MAX_AAL5_MRU&t;&t;2048
@@ -364,24 +378,8 @@ id|udsl_driver_name
 (braket
 )braket
 op_assign
-l_string|&quot;Alcatel SpeedTouch USB&quot;
+l_string|&quot;speedtch&quot;
 suffix:semicolon
-macro_line|#ifdef DEBUG_PACKET
-r_static
-r_int
-id|udsl_print_packet
-(paren
-r_const
-r_int
-r_char
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * atm driver prototypes and stuctures&n; */
 r_static
 r_void
@@ -509,18 +507,6 @@ id|udsl_atm_proc_read
 comma
 )brace
 suffix:semicolon
-DECL|struct|udsl_atm_dev_data
-r_struct
-id|udsl_atm_dev_data
-(brace
-DECL|member|atmsar_vcc
-r_struct
-id|atmsar_vcc_data
-op_star
-id|atmsar_vcc
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * usb driver prototypes and structures&n; */
 r_static
 r_int
@@ -629,6 +615,8 @@ id|skb
 suffix:semicolon
 r_int
 r_int
+id|i
+comma
 id|zero_padding
 suffix:semicolon
 r_int
@@ -639,9 +627,6 @@ l_int|0
 suffix:semicolon
 id|u32
 id|crc
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|ctrl-&gt;atm_data.vcc
 op_assign
@@ -1901,6 +1886,26 @@ id|data
 )paren
 (brace
 r_struct
+id|udsl_send_buffer
+op_star
+id|buf
+suffix:semicolon
+r_int
+r_int
+id|cells_to_write
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|i
+suffix:semicolon
+r_struct
 id|udsl_instance_data
 op_star
 id|instance
@@ -1913,37 +1918,19 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|udsl_sender
-op_star
-id|snd
-suffix:semicolon
-r_struct
-id|udsl_send_buffer
-op_star
-id|buf
-suffix:semicolon
-r_int
-r_int
-id|cells_to_write
-comma
-id|i
-suffix:semicolon
-r_struct
 id|sk_buff
 op_star
 id|skb
+suffix:semicolon
+r_struct
+id|udsl_sender
+op_star
+id|snd
 suffix:semicolon
 r_int
 r_char
 op_star
 id|target
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|err
 suffix:semicolon
 id|PDEBUG
 (paren
@@ -3024,11 +3011,6 @@ id|vci
 )paren
 (brace
 r_struct
-id|udsl_atm_dev_data
-op_star
-id|dev_data
-suffix:semicolon
-r_struct
 id|udsl_instance_data
 op_star
 id|instance
@@ -3071,30 +3053,7 @@ id|EINVAL
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|dev_data
-op_assign
-id|kmalloc
-(paren
-r_sizeof
-(paren
-r_struct
-id|udsl_atm_dev_data
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev_data
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|dev_data-&gt;atmsar_vcc
+id|vcc-&gt;dev_data
 op_assign
 id|atmsar_open
 (paren
@@ -3124,13 +3083,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_data-&gt;atmsar_vcc
+id|vcc-&gt;dev_data
 )paren
 (brace
-id|kfree
-(paren
-id|dev_data
-)paren
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -3170,11 +3126,16 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
+(paren
+(paren
+r_struct
+id|atmsar_vcc_data
+op_star
+)paren
 id|vcc-&gt;dev_data
-op_assign
-id|dev_data
-suffix:semicolon
-id|dev_data-&gt;atmsar_vcc-&gt;mtu
+)paren
+op_member_access_from_pointer
+id|mtu
 op_assign
 id|UDSL_MAX_AAL5_MRU
 suffix:semicolon
@@ -3209,13 +3170,6 @@ id|vcc
 )paren
 (brace
 r_struct
-id|udsl_atm_dev_data
-op_star
-id|dev_data
-op_assign
-id|vcc-&gt;dev_data
-suffix:semicolon
-r_struct
 id|udsl_instance_data
 op_star
 id|instance
@@ -3231,15 +3185,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_data
-op_logical_or
-op_logical_neg
 id|instance
 )paren
 (brace
 id|PDEBUG
 (paren
-l_string|&quot;NULL data!&bslash;n&quot;
+l_string|&quot;NULL instance!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3261,12 +3212,7 @@ op_amp
 id|instance-&gt;atmsar_vcc_list
 )paren
 comma
-id|dev_data-&gt;atmsar_vcc
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|dev_data
+id|vcc-&gt;dev_data
 )paren
 suffix:semicolon
 id|vcc-&gt;dev_data
