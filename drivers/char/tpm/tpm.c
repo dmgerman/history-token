@@ -903,7 +903,7 @@ op_assign
 id|buf
 suffix:semicolon
 r_struct
-id|tpm_chp
+id|tpm_chip
 op_star
 id|chip
 op_assign
