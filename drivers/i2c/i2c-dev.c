@@ -2220,7 +2220,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;dev driver&quot;
+l_string|&quot;dev_driver&quot;
 comma
 dot
 id|id
