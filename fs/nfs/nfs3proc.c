@@ -311,9 +311,9 @@ id|nfs3_proc_setattr
 c_func
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
-id|inode
+id|dentry
 comma
 r_struct
 id|nfs_fattr
@@ -326,6 +326,13 @@ op_star
 id|sattr
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
 r_struct
 id|nfs3_sattrargs
 id|arg

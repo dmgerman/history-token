@@ -3465,7 +3465,7 @@ op_member_access_from_pointer
 id|setattr
 c_func
 (paren
-id|inode
+id|dentry
 comma
 op_amp
 id|fattr
