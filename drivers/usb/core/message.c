@@ -2542,6 +2542,12 @@ comma
 id|interface-&gt;dev.bus_id
 )paren
 suffix:semicolon
+id|usb_remove_sysfs_intf_files
+c_func
+(paren
+id|interface
+)paren
+suffix:semicolon
 id|device_del
 (paren
 op_amp

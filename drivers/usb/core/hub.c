@@ -3827,6 +3827,12 @@ op_amp
 id|udev-&gt;serialize
 )paren
 suffix:semicolon
+id|usb_remove_sysfs_dev_files
+c_func
+(paren
+id|udev
+)paren
+suffix:semicolon
 id|device_unregister
 c_func
 (paren
