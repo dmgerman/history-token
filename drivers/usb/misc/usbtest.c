@@ -5650,6 +5650,27 @@ id|fw_info
 comma
 )brace
 comma
+multiline_comment|/* &quot;Gadget Zero&quot; firmware runs under Linux */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0525
+comma
+l_int|0xa4a0
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|fw_info
+comma
+)brace
+comma
 macro_line|#ifdef KEYSPAN_19Qi
 multiline_comment|/* Keyspan 19qi uses an21xx (original EZ-USB) */
 singleline_comment|// this does not coexist with the real Keyspan 19qi driver!
