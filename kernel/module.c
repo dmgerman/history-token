@@ -1922,6 +1922,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|name_user
 comma
@@ -2853,7 +2854,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|set_obsolete
-r_extern
 r_int
 id|set_obsolete
 c_func
@@ -5107,6 +5107,7 @@ id|load_module
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|umod
 comma
@@ -5116,6 +5117,7 @@ id|len
 comma
 r_const
 r_char
+id|__user
 op_star
 id|uargs
 )paren
@@ -6680,6 +6682,7 @@ id|sys_init_module
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|umod
 comma
@@ -6689,6 +6692,7 @@ id|len
 comma
 r_const
 r_char
+id|__user
 op_star
 id|uargs
 )paren
