@@ -117,6 +117,9 @@ mdefine_line|#define PORT_S3C2400&t;67
 multiline_comment|/* M32R SIO */
 DECL|macro|PORT_M32R_SIO
 mdefine_line|#define PORT_M32R_SIO&t;68
+multiline_comment|/*Digi jsm */
+DECL|macro|PORT_JSM
+mdefine_line|#define PORT_JSM        65
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
