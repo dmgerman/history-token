@@ -1516,7 +1516,7 @@ id|UDF_FLAG_UTF8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_NLS
+macro_line|#if defined(CONFIG_NLS) || defined(CONFIG_NLS_MODULE)
 r_case
 id|Opt_iocharset
 suffix:colon
@@ -7455,7 +7455,7 @@ r_goto
 id|error_out
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NLS
+macro_line|#if defined(CONFIG_NLS) || defined(CONFIG_NLS_MODULE)
 r_if
 c_cond
 (paren
@@ -8452,7 +8452,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_NLS
+macro_line|#if defined(CONFIG_NLS) || defined(CONFIG_NLS_MODULE)
 r_if
 c_cond
 (paren
@@ -9053,7 +9053,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_NLS
+macro_line|#if defined(CONFIG_NLS) || defined(CONFIG_NLS_MODULE)
 r_if
 c_cond
 (paren
