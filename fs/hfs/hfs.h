@@ -138,11 +138,11 @@ r_struct
 id|hfs_point
 (brace
 DECL|member|v
-id|u16
+id|__be16
 id|v
 suffix:semicolon
 DECL|member|h
-id|u16
+id|__be16
 id|h
 suffix:semicolon
 DECL|variable|__packed
@@ -154,19 +154,19 @@ r_struct
 id|hfs_rect
 (brace
 DECL|member|top
-id|u16
+id|__be16
 id|top
 suffix:semicolon
 DECL|member|left
-id|u16
+id|__be16
 id|left
 suffix:semicolon
 DECL|member|bottom
-id|u16
+id|__be16
 id|bottom
 suffix:semicolon
 DECL|member|right
-id|u16
+id|__be16
 id|right
 suffix:semicolon
 DECL|variable|__packed
@@ -178,15 +178,15 @@ r_struct
 id|hfs_finfo
 (brace
 DECL|member|fdType
-id|u32
+id|__be32
 id|fdType
 suffix:semicolon
 DECL|member|fdCreator
-id|u32
+id|__be32
 id|fdCreator
 suffix:semicolon
 DECL|member|fdFlags
-id|u16
+id|__be16
 id|fdFlags
 suffix:semicolon
 DECL|member|fdLocation
@@ -195,7 +195,7 @@ id|hfs_point
 id|fdLocation
 suffix:semicolon
 DECL|member|fdFldr
-id|u16
+id|__be16
 id|fdFldr
 suffix:semicolon
 DECL|variable|__packed
@@ -207,7 +207,7 @@ r_struct
 id|hfs_fxinfo
 (brace
 DECL|member|fdIconID
-id|u16
+id|__be16
 id|fdIconID
 suffix:semicolon
 DECL|member|fdUnused
@@ -218,11 +218,11 @@ l_int|8
 )braket
 suffix:semicolon
 DECL|member|fdComment
-id|u16
+id|__be16
 id|fdComment
 suffix:semicolon
 DECL|member|fdPutAway
-id|u32
+id|__be32
 id|fdPutAway
 suffix:semicolon
 DECL|variable|__packed
@@ -239,7 +239,7 @@ id|hfs_rect
 id|frRect
 suffix:semicolon
 DECL|member|frFlags
-id|u16
+id|__be16
 id|frFlags
 suffix:semicolon
 DECL|member|frLocation
@@ -248,7 +248,7 @@ id|hfs_point
 id|frLocation
 suffix:semicolon
 DECL|member|frView
-id|u16
+id|__be16
 id|frView
 suffix:semicolon
 DECL|variable|__packed
@@ -265,19 +265,19 @@ id|hfs_point
 id|frScroll
 suffix:semicolon
 DECL|member|frOpenChain
-id|u32
+id|__be32
 id|frOpenChain
 suffix:semicolon
 DECL|member|frUnused
-id|u16
+id|__be16
 id|frUnused
 suffix:semicolon
 DECL|member|frComment
-id|u16
+id|__be16
 id|frComment
 suffix:semicolon
 DECL|member|frPutAway
-id|u32
+id|__be32
 id|frPutAway
 suffix:semicolon
 DECL|variable|__packed
@@ -343,7 +343,7 @@ id|reserved
 suffix:semicolon
 multiline_comment|/* padding */
 DECL|member|ParID
-id|u32
+id|__be32
 id|ParID
 suffix:semicolon
 multiline_comment|/* CNID of the parent dir */
@@ -373,12 +373,12 @@ id|FkType
 suffix:semicolon
 multiline_comment|/* HFS_FK_{DATA,RSRC} */
 DECL|member|FNum
-id|u32
+id|__be32
 id|FNum
 suffix:semicolon
 multiline_comment|/* The File ID of the file */
 DECL|member|FABN
-id|u16
+id|__be16
 id|FABN
 suffix:semicolon
 multiline_comment|/* allocation blocks number*/
@@ -421,11 +421,11 @@ r_struct
 id|hfs_extent
 (brace
 DECL|member|block
-id|u16
+id|__be16
 id|block
 suffix:semicolon
 DECL|member|count
-id|u16
+id|__be16
 id|count
 suffix:semicolon
 )brace
@@ -470,52 +470,52 @@ id|UsrWds
 suffix:semicolon
 multiline_comment|/* data used by the Finder */
 DECL|member|FlNum
-id|u32
+id|__be32
 id|FlNum
 suffix:semicolon
 multiline_comment|/* The CNID */
 DECL|member|StBlk
-id|u16
+id|__be16
 id|StBlk
 suffix:semicolon
 multiline_comment|/* obsolete */
 DECL|member|LgLen
-id|u32
+id|__be32
 id|LgLen
 suffix:semicolon
 multiline_comment|/* The logical EOF of the data fork*/
 DECL|member|PyLen
-id|u32
+id|__be32
 id|PyLen
 suffix:semicolon
 multiline_comment|/* The physical EOF of the data fork */
 DECL|member|RStBlk
-id|u16
+id|__be16
 id|RStBlk
 suffix:semicolon
 multiline_comment|/* obsolete */
 DECL|member|RLgLen
-id|u32
+id|__be32
 id|RLgLen
 suffix:semicolon
 multiline_comment|/* The logical EOF of the rsrc fork */
 DECL|member|RPyLen
-id|u32
+id|__be32
 id|RPyLen
 suffix:semicolon
 multiline_comment|/* The physical EOF of the rsrc fork */
 DECL|member|CrDat
-id|u32
+id|__be32
 id|CrDat
 suffix:semicolon
 multiline_comment|/* The creation date */
 DECL|member|MdDat
-id|u32
+id|__be32
 id|MdDat
 suffix:semicolon
 multiline_comment|/* The modified date */
 DECL|member|BkDat
-id|u32
+id|__be32
 id|BkDat
 suffix:semicolon
 multiline_comment|/* The last backup date */
@@ -526,7 +526,7 @@ id|FndrInfo
 suffix:semicolon
 multiline_comment|/* more data for the Finder */
 DECL|member|ClpSize
-id|u16
+id|__be16
 id|ClpSize
 suffix:semicolon
 multiline_comment|/* number of bytes to allocate&n;&t;&t;&t;&t;&t;   when extending files */
@@ -564,32 +564,32 @@ id|u8
 id|reserved
 suffix:semicolon
 DECL|member|Flags
-id|u16
+id|__be16
 id|Flags
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|member|Val
-id|u16
+id|__be16
 id|Val
 suffix:semicolon
 multiline_comment|/* Valence: number of files and&n;&t;&t;&t;&t;&t;   dirs in the directory */
 DECL|member|DirID
-id|u32
+id|__be32
 id|DirID
 suffix:semicolon
 multiline_comment|/* The CNID */
 DECL|member|CrDat
-id|u32
+id|__be32
 id|CrDat
 suffix:semicolon
 multiline_comment|/* The creation date */
 DECL|member|MdDat
-id|u32
+id|__be32
 id|MdDat
 suffix:semicolon
 multiline_comment|/* The modification date */
 DECL|member|BkDat
-id|u32
+id|__be32
 id|BkDat
 suffix:semicolon
 multiline_comment|/* The last backup date */
@@ -636,7 +636,7 @@ l_int|9
 suffix:semicolon
 multiline_comment|/* reserved by Apple */
 DECL|member|ParID
-id|u32
+id|__be32
 id|ParID
 suffix:semicolon
 multiline_comment|/* CNID of parent directory */
@@ -685,67 +685,67 @@ r_struct
 id|hfs_mdb
 (brace
 DECL|member|drSigWord
-id|u16
+id|__be16
 id|drSigWord
 suffix:semicolon
 multiline_comment|/* Signature word indicating fs type */
 DECL|member|drCrDate
-id|u32
+id|__be32
 id|drCrDate
 suffix:semicolon
 multiline_comment|/* fs creation date/time */
 DECL|member|drLsMod
-id|u32
+id|__be32
 id|drLsMod
 suffix:semicolon
 multiline_comment|/* fs modification date/time */
 DECL|member|drAtrb
-id|u16
+id|__be16
 id|drAtrb
 suffix:semicolon
 multiline_comment|/* fs attributes */
 DECL|member|drNmFls
-id|u16
+id|__be16
 id|drNmFls
 suffix:semicolon
 multiline_comment|/* number of files in root directory */
 DECL|member|drVBMSt
-id|u16
+id|__be16
 id|drVBMSt
 suffix:semicolon
 multiline_comment|/* location (in 512-byte blocks)&n;&t;&t;&t;&t;&t;   of the volume bitmap */
 DECL|member|drAllocPtr
-id|u16
+id|__be16
 id|drAllocPtr
 suffix:semicolon
 multiline_comment|/* location (in allocation blocks)&n;&t;&t;&t;&t;&t;   to begin next allocation search */
 DECL|member|drNmAlBlks
-id|u16
+id|__be16
 id|drNmAlBlks
 suffix:semicolon
 multiline_comment|/* number of allocation blocks */
 DECL|member|drAlBlkSiz
-id|u32
+id|__be32
 id|drAlBlkSiz
 suffix:semicolon
 multiline_comment|/* bytes in an allocation block */
 DECL|member|drClpSiz
-id|u32
+id|__be32
 id|drClpSiz
 suffix:semicolon
 multiline_comment|/* clumpsize, the number of bytes to&n;&t;&t;&t;&t;&t;   allocate when extending a file */
 DECL|member|drAlBlSt
-id|u16
+id|__be16
 id|drAlBlSt
 suffix:semicolon
 multiline_comment|/* location (in 512-byte blocks)&n;&t;&t;&t;&t;&t;   of the first allocation block */
 DECL|member|drNxtCNID
-id|u32
+id|__be32
 id|drNxtCNID
 suffix:semicolon
 multiline_comment|/* CNID to assign to the next&n;&t;&t;&t;&t;&t;   file or directory created */
 DECL|member|drFreeBks
-id|u16
+id|__be16
 id|drFreeBks
 suffix:semicolon
 multiline_comment|/* number of free allocation blocks */
@@ -758,42 +758,42 @@ l_int|28
 suffix:semicolon
 multiline_comment|/* the volume label */
 DECL|member|drVolBkUp
-id|u32
+id|__be32
 id|drVolBkUp
 suffix:semicolon
 multiline_comment|/* fs backup date/time */
 DECL|member|drVSeqNum
-id|u16
+id|__be16
 id|drVSeqNum
 suffix:semicolon
 multiline_comment|/* backup sequence number */
 DECL|member|drWrCnt
-id|u32
+id|__be32
 id|drWrCnt
 suffix:semicolon
 multiline_comment|/* fs write count */
 DECL|member|drXTClpSiz
-id|u32
+id|__be32
 id|drXTClpSiz
 suffix:semicolon
 multiline_comment|/* clumpsize for the extents B-tree */
 DECL|member|drCTClpSiz
-id|u32
+id|__be32
 id|drCTClpSiz
 suffix:semicolon
 multiline_comment|/* clumpsize for the catalog B-tree */
 DECL|member|drNmRtDirs
-id|u16
+id|__be16
 id|drNmRtDirs
 suffix:semicolon
 multiline_comment|/* number of directories in&n;&t;&t;&t;&t;&t;   the root directory */
 DECL|member|drFilCnt
-id|u32
+id|__be32
 id|drFilCnt
 suffix:semicolon
 multiline_comment|/* number of files in the fs */
 DECL|member|drDirCnt
-id|u32
+id|__be32
 id|drDirCnt
 suffix:semicolon
 multiline_comment|/* number of directories in the fs */
@@ -806,17 +806,17 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* data used by the Finder */
 DECL|member|drEmbedSigWord
-id|u16
+id|__be16
 id|drEmbedSigWord
 suffix:semicolon
 multiline_comment|/* embedded volume signature */
 DECL|member|drEmbedExtent
-id|u32
+id|__be32
 id|drEmbedExtent
 suffix:semicolon
 multiline_comment|/* starting block number (xdrStABN)&n;&t;&t;&t;&t;&t;   and number of allocation blocks&n;&t;&t;&t;&t;&t;   (xdrNumABlks) occupied by embedded&n;&t;&t;&t;&t;&t;   volume */
 DECL|member|drXTFlSize
-id|u32
+id|__be32
 id|drXTFlSize
 suffix:semicolon
 multiline_comment|/* bytes in the extents B-tree */
@@ -826,7 +826,7 @@ id|drXTExtRec
 suffix:semicolon
 multiline_comment|/* extents B-tree&squot;s first 3 extents */
 DECL|member|drCTFlSize
-id|u32
+id|__be32
 id|drCTFlSize
 suffix:semicolon
 multiline_comment|/* bytes in the catalog B-tree */

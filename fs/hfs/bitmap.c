@@ -7,7 +7,7 @@ id|u32
 id|hfs_find_set_zero_bits
 c_func
 (paren
-id|u32
+id|__be32
 op_star
 id|bitmap
 comma
@@ -22,7 +22,7 @@ op_star
 id|max
 )paren
 (brace
-id|u32
+id|__be32
 op_star
 id|curr
 comma
@@ -30,13 +30,16 @@ op_star
 id|end
 suffix:semicolon
 id|u32
-id|val
-comma
 id|mask
 comma
 id|start
 comma
 id|len
+comma
+id|n
+suffix:semicolon
+id|__be32
+id|val
 suffix:semicolon
 r_int
 id|i
@@ -92,7 +95,7 @@ op_complement
 id|val
 )paren
 (brace
-id|val
+id|n
 op_assign
 id|be32_to_cpu
 c_func
@@ -137,7 +140,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|val
+id|n
 op_amp
 id|mask
 )paren
@@ -169,7 +172,7 @@ op_complement
 id|val
 )paren
 (brace
-id|val
+id|n
 op_assign
 id|be32_to_cpu
 c_func
@@ -207,7 +210,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|val
+id|n
 op_amp
 id|mask
 )paren
@@ -264,7 +267,7 @@ c_loop
 l_int|1
 )paren
 (brace
-id|val
+id|n
 op_or_assign
 id|mask
 suffix:semicolon
@@ -289,7 +292,7 @@ op_logical_neg
 op_decrement
 id|len
 op_logical_or
-id|val
+id|n
 op_amp
 id|mask
 )paren
@@ -314,7 +317,7 @@ op_assign
 id|cpu_to_be32
 c_func
 (paren
-id|val
+id|n
 )paren
 suffix:semicolon
 multiline_comment|/* do full u32s */
@@ -324,7 +327,7 @@ c_loop
 l_int|1
 )paren
 (brace
-id|val
+id|n
 op_assign
 id|be32_to_cpu
 c_func
@@ -345,7 +348,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|val
+id|n
 )paren
 (brace
 id|len
@@ -359,7 +362,11 @@ op_star
 id|curr
 op_increment
 op_assign
-l_int|0xffffffffU
+id|cpu_to_be32
+c_func
+(paren
+l_int|0xffffffff
+)paren
 suffix:semicolon
 id|len
 op_sub_assign
@@ -391,13 +398,13 @@ op_increment
 r_if
 c_cond
 (paren
-id|val
+id|n
 op_amp
 id|mask
 )paren
 r_break
 suffix:semicolon
-id|val
+id|n
 op_or_assign
 id|mask
 suffix:semicolon
@@ -414,7 +421,7 @@ op_assign
 id|cpu_to_be32
 c_func
 (paren
-id|val
+id|n
 )paren
 suffix:semicolon
 op_star
@@ -642,7 +649,7 @@ id|u16
 id|count
 )paren
 (brace
-id|u32
+id|__be32
 op_star
 id|curr
 suffix:semicolon
