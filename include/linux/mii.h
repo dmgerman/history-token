@@ -170,6 +170,14 @@ DECL|member|advertising
 r_int
 id|advertising
 suffix:semicolon
+DECL|member|phy_id_mask
+r_int
+id|phy_id_mask
+suffix:semicolon
+DECL|member|reg_num_mask
+r_int
+id|reg_num_mask
+suffix:semicolon
 DECL|member|full_duplex
 r_int
 r_int
@@ -177,13 +185,15 @@ id|full_duplex
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|duplex_lock
+multiline_comment|/* is full duplex? */
+DECL|member|force_media
 r_int
 r_int
-id|duplex_lock
+id|force_media
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* is autoneg. disabled? */
 DECL|member|dev
 r_struct
 id|net_device
@@ -235,6 +245,9 @@ suffix:semicolon
 suffix:semicolon
 r_struct
 id|ethtool_cmd
+suffix:semicolon
+r_struct
+id|mii_ioctl_data
 suffix:semicolon
 r_extern
 r_int
@@ -311,6 +324,34 @@ comma
 r_int
 r_int
 id|ok_to_print
+comma
+r_int
+r_int
+id|init_media
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|generic_mii_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|mii_if_info
+op_star
+id|mii_if
+comma
+r_struct
+id|mii_ioctl_data
+op_star
+id|mii_data
+comma
+r_int
+id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */
