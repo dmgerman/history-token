@@ -1391,6 +1391,7 @@ l_int|0
 comma
 dot
 id|cls
+op_assign
 op_amp
 id|timer_sysclass
 comma
