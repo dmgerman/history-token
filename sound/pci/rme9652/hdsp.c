@@ -2792,7 +2792,7 @@ op_eq
 id|H9632
 )paren
 (brace
-multiline_comment|/* from martin bj&ouml;rnsen:&n;&t;&t;   &n;&t;&t;   &quot;You can only write dwords to the&n;&t;&t;   mixer memory which contain two&n;&t;&t;   mixer values in the low and high&n;&t;&t;   word. So if you want to change&n;&t;&t;   value 0 you have to read value 1&n;&t;&t;   from the cache and write both to&n;&t;&t;   the first dword in the mixer&n;&t;&t;   memory.&quot;&n;&t;&t;*/
+multiline_comment|/* from martin bjornsen:&n;&t;&t;   &n;&t;&t;   &quot;You can only write dwords to the&n;&t;&t;   mixer memory which contain two&n;&t;&t;   mixer values in the low and high&n;&t;&t;   word. So if you want to change&n;&t;&t;   value 0 you have to read value 1&n;&t;&t;   from the cache and write both to&n;&t;&t;   the first dword in the mixer&n;&t;&t;   memory.&quot;&n;&t;&t;*/
 r_if
 c_cond
 (paren
