@@ -395,11 +395,13 @@ id|msg_level
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|msg_level
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -246,12 +246,14 @@ r_static
 r_int
 id|ov518_color
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|autobright
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -262,12 +264,14 @@ comma
 l_string|&quot;Sensor automatically changes brightness&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|autogain
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -278,12 +282,14 @@ comma
 l_string|&quot;Sensor automatically changes gain&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|autoexp
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -294,12 +300,14 @@ comma
 l_string|&quot;Sensor automatically changes exposure&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -310,12 +318,14 @@ comma
 l_string|&quot;Debug level: 0=none, 1=inits, 2=warning, 3=config, 4=functions, 5=max&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|snapshot
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -326,12 +336,14 @@ comma
 l_string|&quot;Enable snapshot mode&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cams
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -342,12 +354,14 @@ comma
 l_string|&quot;Number of simultaneous cameras&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|compress
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -358,12 +372,14 @@ comma
 l_string|&quot;Turn on compression&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|testpat
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -374,12 +390,14 @@ comma
 l_string|&quot;Replace image with vertical bar testpattern (only partially working)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dumppix
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -390,12 +408,14 @@ comma
 l_string|&quot;Dump raw pixel data&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|led
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -406,12 +426,14 @@ comma
 l_string|&quot;LED policy (OV511+ or later). 0=off, 1=on (default), 2=auto (on when open)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dump_bridge
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -422,12 +444,14 @@ comma
 l_string|&quot;Dump the bridge registers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dump_sensor
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -438,12 +462,14 @@ comma
 l_string|&quot;Dump the sensor registers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|printph
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -454,12 +480,14 @@ comma
 l_string|&quot;Print frame start/end headers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|phy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -470,12 +498,14 @@ comma
 l_string|&quot;Prediction range (horiz. Y)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|phuv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -486,12 +516,14 @@ comma
 l_string|&quot;Prediction range (horiz. UV)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pvy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -502,12 +534,14 @@ comma
 l_string|&quot;Prediction range (vert. Y)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pvuv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -518,12 +552,14 @@ comma
 l_string|&quot;Prediction range (vert. UV)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qhy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -534,12 +570,14 @@ comma
 l_string|&quot;Quantization threshold (horiz. Y)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qhuv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -550,12 +588,14 @@ comma
 l_string|&quot;Quantization threshold (horiz. UV)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qvy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -566,12 +606,14 @@ comma
 l_string|&quot;Quantization threshold (vert. Y)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|qvuv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -582,12 +624,14 @@ comma
 l_string|&quot;Quantization threshold (vert. UV)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lightfreq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -598,12 +642,14 @@ comma
 l_string|&quot;Light frequency. Set to 50 or 60 Hz, or zero for default settings&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|bandingfilter
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -614,12 +660,14 @@ comma
 l_string|&quot;Enable banding filter (to reduce effects of fluorescent lighting)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|clockdiv
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -630,12 +678,14 @@ comma
 l_string|&quot;Force pixel clock divisor to a specific value&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|packetsize
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -646,12 +696,14 @@ comma
 l_string|&quot;Force a specific isoc packet size&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|framedrop
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -662,12 +714,14 @@ comma
 l_string|&quot;Force a specific frame drop register setting&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fastset
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -678,12 +732,14 @@ comma
 l_string|&quot;Allows picture settings to take effect immediately&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|force_palette
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -694,12 +750,14 @@ comma
 l_string|&quot;Force the palette to a specific value&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|backlight
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -710,34 +768,16 @@ comma
 l_string|&quot;For objects that are lit from behind&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|unit_video
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|OV511_MAX_UNIT_VIDEO
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|unit_video
-comma
-l_string|&quot;Force use of specific minor number(s). 0 is not allowed.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/*module_param_array(unit_video, int, OV511_MAX_UNIT_VIDEO, 0); */
+multiline_comment|/*MODULE_PARM_DESC(unit_video,&n;  &quot;Force use of specific minor number(s). 0 is not allowed.&quot;); */
+id|module_param
 c_func
 (paren
 id|remove_zeros
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -748,12 +788,14 @@ comma
 l_string|&quot;Remove zero-padding from uncompressed incoming data&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mirror
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -764,12 +806,14 @@ comma
 l_string|&quot;Reverse image horizontally&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ov518_color
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

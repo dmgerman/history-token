@@ -2102,11 +2102,14 @@ id|MODULE_LICENSE
 id|DRIVER_LICENSE
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
