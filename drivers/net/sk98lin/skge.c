@@ -5,9 +5,7 @@ multiline_comment|/*************************************************************
 macro_line|#include&t;&quot;h/skversion.h&quot;
 macro_line|#include&t;&lt;linux/module.h&gt;
 macro_line|#include&t;&lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &t;&lt;linux/proc_fs.h&gt;
-macro_line|#endif
 macro_line|#include&t;&quot;h/skdrv1st.h&quot;
 macro_line|#include&t;&quot;h/skdrv2nd.h&quot;
 multiline_comment|/*******************************************************************************&n; *&n; * Defines&n; *&n; ******************************************************************************/
@@ -21337,6 +21335,7 @@ r_void
 r_int
 id|error
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|memcpy
 c_func
 (paren
@@ -21353,7 +21352,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|pSkRootDir
 op_assign
 id|proc_mkdir
