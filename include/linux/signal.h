@@ -1,9 +1,10 @@
 macro_line|#ifndef _LINUX_SIGNAL_H
 DECL|macro|_LINUX_SIGNAL_H
 mdefine_line|#define _LINUX_SIGNAL_H
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Real Time signals may be queued.&n; */
 DECL|struct|sigqueue

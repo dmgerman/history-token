@@ -745,6 +745,11 @@ DECL|struct|scsi_device
 r_struct
 id|scsi_device
 (brace
+DECL|member|sdev_classdev
+r_struct
+id|class_device
+id|sdev_classdev
+suffix:semicolon
 multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.&n;&t; */
 DECL|member|siblings
 r_struct

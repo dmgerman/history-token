@@ -1160,8 +1160,10 @@ id|ppa_hosts
 (braket
 id|i
 )braket
-op_eq
+dot
 id|host
+op_eq
+id|host-&gt;host_no
 )paren
 r_break
 suffix:semicolon
