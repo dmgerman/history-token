@@ -1381,7 +1381,8 @@ multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional paramete
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 )paren
 id|chunk-&gt;skb-&gt;data
@@ -4536,7 +4537,8 @@ multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional paramete
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 )paren
 id|chunk-&gt;skb-&gt;data
@@ -12102,7 +12104,8 @@ c_cond
 id|packet
 )paren
 (brace
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 id|cookie
 suffix:semicolon

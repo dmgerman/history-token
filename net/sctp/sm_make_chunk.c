@@ -3851,7 +3851,8 @@ id|sctp_cookie_param_t
 op_star
 id|retval
 suffix:semicolon
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 id|cookie
 suffix:semicolon
@@ -3885,7 +3886,8 @@ id|bodysize
 op_assign
 r_sizeof
 (paren
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 )paren
 op_plus
 id|ntohs
@@ -3967,7 +3969,8 @@ suffix:semicolon
 id|cookie
 op_assign
 (paren
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 )paren
 id|retval-&gt;body
@@ -4189,11 +4192,13 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 id|cookie
 suffix:semicolon
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 op_star
 id|bear_cookie
 suffix:semicolon
@@ -4259,7 +4264,8 @@ id|headersize
 op_plus
 r_sizeof
 (paren
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 )paren
 suffix:semicolon
 multiline_comment|/* Verify that the chunk looks like it even has a cookie.&n;&t; * There must be enough room for our cookie and our peer&squot;s&n;&t; * INIT chunk.&n;&t; */

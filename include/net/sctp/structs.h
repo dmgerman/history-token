@@ -1,16 +1,16 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Randall Stewart       &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau           &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie&t;    &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson&t;    &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm&t;&t;    &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo&t;    &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *    Anup Pemmaiah         &lt;pemmaiah@cc.usu.edu&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *&t;&t;   ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Randall Stewart&t;    &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau&t;    &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie&t;    &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson&t;    &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm&t;&t;    &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo&t;    &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *    Anup Pemmaiah&t;    &lt;pemmaiah@cc.usu.edu&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __sctp_structs_h__
 DECL|macro|__sctp_structs_h__
 mdefine_line|#define __sctp_structs_h__
 macro_line|#include &lt;linux/time.h&gt;&t;&t;/* We get struct timespec.    */
 macro_line|#include &lt;linux/socket.h&gt;&t;/* linux/in.h needs this!!    */
 macro_line|#include &lt;linux/in.h&gt;&t;&t;/* We get struct sockaddr_in. */
-macro_line|#include &lt;linux/in6.h&gt;          /* We get struct in6_addr     */
+macro_line|#include &lt;linux/in6.h&gt;&t;&t;/* We get struct in6_addr     */
 macro_line|#include &lt;asm/param.h&gt;&t;&t;/* We get MAXHOSTNAMELEN.     */
 macro_line|#include &lt;asm/atomic.h&gt;&t;&t;/* This gets us atomic counters.  */
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* We need sk_buff_head. */
-macro_line|#include &lt;linux/workqueue.h&gt;&t;/* We need tq_struct.    */
-macro_line|#include &lt;linux/sctp.h&gt;         /* We need sctp* header structs.  */
+macro_line|#include &lt;linux/workqueue.h&gt;&t;/* We need tq_struct.&t; */
+macro_line|#include &lt;linux/sctp.h&gt;&t;&t;/* We need sctp* header structs.  */
 multiline_comment|/* A convenience structure for handling sockaddr structures.&n; * We should wean ourselves off this.&n; */
 DECL|union|sctp_addr
 r_union
@@ -161,7 +161,7 @@ r_extern
 r_struct
 id|sctp_globals
 (brace
-multiline_comment|/* RFC2960 Section 14. Suggested SCTP Protocol Parameter Values&n;&t; *&n;&t; * The following protocol parameters are RECOMMENDED:&n;&t; *&n;&t; * RTO.Initial              - 3  seconds&n;&t; * RTO.Min                  - 1  second&n;&t; * RTO.Max                 -  60 seconds&n;&t; * RTO.Alpha                - 1/8  (3 when converted to right shifts.)&n;&t; * RTO.Beta                 - 1/4  (2 when converted to right shifts.)&n;&t; */
+multiline_comment|/* RFC2960 Section 14. Suggested SCTP Protocol Parameter Values&n;&t; *&n;&t; * The following protocol parameters are RECOMMENDED:&n;&t; *&n;&t; * RTO.Initial&t;&t;    - 3&t; seconds&n;&t; * RTO.Min&t;&t;    - 1&t; second&n;&t; * RTO.Max&t;&t;   -  60 seconds&n;&t; * RTO.Alpha&t;&t;    - 1/8  (3 when converted to right shifts.)&n;&t; * RTO.Beta&t;&t;    - 1/4  (2 when converted to right shifts.)&n;&t; */
 DECL|member|rto_initial
 id|__u32
 id|rto_initial
@@ -188,7 +188,7 @@ DECL|member|max_burst
 r_int
 id|max_burst
 suffix:semicolon
-multiline_comment|/* Valid.Cookie.Life        - 60  seconds  */
+multiline_comment|/* Valid.Cookie.Life&t;    - 60  seconds  */
 DECL|member|valid_cookie_life
 r_int
 id|valid_cookie_life
@@ -198,7 +198,7 @@ DECL|member|cookie_preserve_enable
 r_int
 id|cookie_preserve_enable
 suffix:semicolon
-multiline_comment|/* Association.Max.Retrans  - 10 attempts&n;&t; * Path.Max.Retrans         - 5  attempts (per destination address)&n;&t; * Max.Init.Retransmits     - 8  attempts&n;&t; */
+multiline_comment|/* Association.Max.Retrans  - 10 attempts&n;&t; * Path.Max.Retrans&t;    - 5&t; attempts (per destination address)&n;&t; * Max.Init.Retransmits&t;    - 8&t; attempts&n;&t; */
 DECL|member|max_retrans_association
 r_int
 id|max_retrans_association
@@ -211,12 +211,12 @@ DECL|member|max_retrans_init
 r_int
 id|max_retrans_init
 suffix:semicolon
-multiline_comment|/* HB.interval              - 30 seconds  */
+multiline_comment|/* HB.interval&t;&t;    - 30 seconds  */
 DECL|member|hb_interval
 r_int
 id|hb_interval
 suffix:semicolon
-multiline_comment|/* The following variables are implementation specific.  */
+multiline_comment|/* The following variables are implementation specific.&t; */
 multiline_comment|/* Default initialization values to be applied to new associations. */
 DECL|member|max_instreams
 id|__u16
@@ -254,7 +254,7 @@ id|sctp_hashbucket
 op_star
 id|assoc_hashbucket
 suffix:semicolon
-multiline_comment|/* This is the sctp port control hash.  */
+multiline_comment|/* This is the sctp port control hash.&t;*/
 DECL|member|port_hashsize
 r_int
 id|port_hashsize
@@ -1042,21 +1042,20 @@ suffix:semicolon
 multiline_comment|/* This is our APPLICATION-SPECIFIC state cookie.&n; * THIS IS NOT DICTATED BY THE SPECIFICATION.&n; */
 multiline_comment|/* These are the parts of an association which we send in the cookie.&n; * Most of these are straight out of:&n; * RFC2960 12.2 Parameters necessary per association (i.e. the TCB)&n; *&n; */
 DECL|struct|sctp_cookie
-r_typedef
 r_struct
 id|sctp_cookie
 (brace
-multiline_comment|/* My          : Tag expected in every inbound packet and sent&n;         * Verification: in the INIT or INIT ACK chunk.&n;         * Tag         :&n;         */
+multiline_comment|/* My&t;       : Tag expected in every inbound packet and sent&n;&t; * Verification: in the INIT or INIT ACK chunk.&n;&t; * Tag&t;       :&n;&t; */
 DECL|member|my_vtag
 id|__u32
 id|my_vtag
 suffix:semicolon
-multiline_comment|/* Peer&squot;s      : Tag expected in every outbound packet except&n;         * Verification: in the INIT chunk.&n;         * Tag         :&n;         */
+multiline_comment|/* Peer&squot;s      : Tag expected in every outbound packet except&n;&t; * Verification: in the INIT chunk.&n;&t; * Tag&t;       :&n;&t; */
 DECL|member|peer_vtag
 id|__u32
 id|peer_vtag
 suffix:semicolon
-multiline_comment|/* The rest of these are not from the spec, but really need to&n;         * be in the cookie.&n;         */
+multiline_comment|/* The rest of these are not from the spec, but really need to&n;&t; * be in the cookie.&n;&t; */
 multiline_comment|/* My Tie Tag  : Assist in discovering a restarting association. */
 DECL|member|my_ttag
 id|__u32
@@ -1099,19 +1098,17 @@ id|__u32
 id|raw_addr_list_len
 suffix:semicolon
 DECL|member|peer_init
-id|sctp_init_chunk_t
+r_struct
+id|sctp_init_chunk
 id|peer_init
 (braket
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|sctp_cookie_t
 )brace
-id|sctp_cookie_t
 suffix:semicolon
 multiline_comment|/* The format of our cookie that we send to our peer. */
 DECL|struct|sctp_signed_cookie
-r_typedef
 r_struct
 id|sctp_signed_cookie
 (brace
@@ -1123,23 +1120,24 @@ id|SCTP_SECRET_SIZE
 )braket
 suffix:semicolon
 DECL|member|c
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 id|c
 suffix:semicolon
-DECL|typedef|sctp_signed_cookie_t
 )brace
-id|sctp_signed_cookie_t
 suffix:semicolon
 multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
 r_typedef
 r_union
 (brace
 DECL|member|v4
-id|sctp_ipv4addr_param_t
+r_struct
+id|sctp_ipv4addr_param
 id|v4
 suffix:semicolon
 DECL|member|v6
-id|sctp_ipv6addr_param_t
+r_struct
+id|sctp_ipv6addr_param
 id|v6
 suffix:semicolon
 DECL|typedef|sctp_addr_param_t
@@ -1157,42 +1155,50 @@ op_star
 id|v
 suffix:semicolon
 DECL|member|p
-id|sctp_paramhdr_t
+r_struct
+id|sctp_paramhdr
 op_star
 id|p
 suffix:semicolon
 DECL|member|life
-id|sctp_cookie_preserve_param_t
+r_struct
+id|sctp_cookie_preserve_param
 op_star
 id|life
 suffix:semicolon
 DECL|member|dns
-id|sctp_hostname_param_t
+r_struct
+id|sctp_hostname_param
 op_star
 id|dns
 suffix:semicolon
 DECL|member|cookie
-id|sctp_cookie_param_t
+r_struct
+id|sctp_cookie_param
 op_star
 id|cookie
 suffix:semicolon
 DECL|member|sat
-id|sctp_supported_addrs_param_t
+r_struct
+id|sctp_supported_addrs_param
 op_star
 id|sat
 suffix:semicolon
 DECL|member|v4
-id|sctp_ipv4addr_param_t
+r_struct
+id|sctp_ipv4addr_param
 op_star
 id|v4
 suffix:semicolon
 DECL|member|v6
-id|sctp_ipv6addr_param_t
+r_struct
+id|sctp_ipv6addr_param
 op_star
 id|v6
 suffix:semicolon
 DECL|member|addr
-id|sctp_addr_param_t
+r_struct
+id|sctp_addr_param
 op_star
 id|addr
 suffix:semicolon
@@ -1205,7 +1211,8 @@ r_struct
 id|sctp_sender_hb_info
 (brace
 DECL|member|param_hdr
-id|sctp_paramhdr_t
+r_struct
+id|sctp_paramhdr
 id|param_hdr
 suffix:semicolon
 DECL|member|daddr
@@ -1341,7 +1348,7 @@ id|id
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* Return the next SSN number for this stream.  */
+multiline_comment|/* Return the next SSN number for this stream.&t;*/
 DECL|function|sctp_ssn_next
 r_static
 r_inline
@@ -1574,52 +1581,62 @@ op_star
 id|v
 suffix:semicolon
 DECL|member|data_hdr
-id|sctp_datahdr_t
+r_struct
+id|sctp_datahdr
 op_star
 id|data_hdr
 suffix:semicolon
 DECL|member|init_hdr
-id|sctp_inithdr_t
+r_struct
+id|sctp_inithdr
 op_star
 id|init_hdr
 suffix:semicolon
 DECL|member|sack_hdr
-id|sctp_sackhdr_t
+r_struct
+id|sctp_sackhdr
 op_star
 id|sack_hdr
 suffix:semicolon
 DECL|member|hb_hdr
-id|sctp_heartbeathdr_t
+r_struct
+id|sctp_heartbeathdr
 op_star
 id|hb_hdr
 suffix:semicolon
 DECL|member|hbs_hdr
-id|sctp_sender_hb_info_t
+r_struct
+id|sctp_sender_hb_info
 op_star
 id|hbs_hdr
 suffix:semicolon
 DECL|member|shutdown_hdr
-id|sctp_shutdownhdr_t
+r_struct
+id|sctp_shutdownhdr
 op_star
 id|shutdown_hdr
 suffix:semicolon
 DECL|member|cookie_hdr
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 id|cookie_hdr
 suffix:semicolon
 DECL|member|ecne_hdr
-id|sctp_ecnehdr_t
+r_struct
+id|sctp_ecnehdr
 op_star
 id|ecne_hdr
 suffix:semicolon
 DECL|member|ecn_cwr_hdr
-id|sctp_cwrhdr_t
+r_struct
+id|sctp_cwrhdr
 op_star
 id|ecn_cwr_hdr
 suffix:semicolon
 DECL|member|err_hdr
-id|sctp_errhdr_t
+r_struct
+id|sctp_errhdr
 op_star
 id|err_hdr
 suffix:semicolon
@@ -1633,12 +1650,14 @@ op_star
 id|chunk_end
 suffix:semicolon
 DECL|member|chunk_hdr
-id|sctp_chunkhdr_t
+r_struct
+id|sctp_chunkhdr
 op_star
 id|chunk_hdr
 suffix:semicolon
 DECL|member|sctp_hdr
-id|sctp_sctphdr_t
+r_struct
+id|sctphdr
 op_star
 id|sctp_hdr
 suffix:semicolon
@@ -1687,7 +1706,7 @@ id|sctp_datamsg
 op_star
 id|msg
 suffix:semicolon
-multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
+multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.&t;It is NULL if we have no preference.&n;&t; */
 DECL|member|transport
 r_struct
 id|sctp_transport
@@ -2121,7 +2140,7 @@ id|sctp_packet
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use union sctp_addr.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o  Transport address:  A Transport Address is traditionally defined&n; *      by Network Layer address, Transport Layer protocol and Transport&n; *      Layer port number.  In the case of SCTP running over IP, a&n; *      transport address is defined by the combination of an IP address&n; *      and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o  The sender keeps a separate congestion control parameter set for&n; *      each of the destination addresses it can send to (not each&n; *      source-destination pair but for each destination).  The parameters&n; *      should decay if the address is not used for a long enough time&n; *      period.&n; *&n; */
+multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use union sctp_addr.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o&t;Transport address:  A Transport Address is traditionally defined&n; *&t;by Network Layer address, Transport Layer protocol and Transport&n; *&t;Layer port number.  In the case of SCTP running over IP, a&n; *&t;transport address is defined by the combination of an IP address&n; *&t;and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o&t;The sender keeps a separate congestion control parameter set for&n; *&t;each of the destination addresses it can send to (not each&n; *&t;source-destination pair but for each destination).  The parameters&n; *&t;should decay if the address is not used for a long enough time&n; *&t;period.&n; *&n; */
 DECL|struct|sctp_transport
 r_struct
 id|sctp_transport
@@ -2147,7 +2166,7 @@ r_union
 id|sctp_addr
 id|ipaddr
 suffix:semicolon
-multiline_comment|/* These are the functions we call to handle LLP stuff.  */
+multiline_comment|/* These are the functions we call to handle LLP stuff.&t; */
 DECL|member|af_specific
 r_struct
 id|sctp_af
@@ -2166,8 +2185,8 @@ DECL|member|rtt
 id|__u32
 id|rtt
 suffix:semicolon
-multiline_comment|/* This is the most recent RTT.  */
-multiline_comment|/* RTO         : The current retransmission timeout value.  */
+multiline_comment|/* This is the most recent RTT.&t; */
+multiline_comment|/* RTO&t;       : The current retransmission timeout value.  */
 DECL|member|rto
 id|__u32
 id|rto
@@ -2177,18 +2196,18 @@ DECL|member|rttvar
 id|__u32
 id|rttvar
 suffix:semicolon
-multiline_comment|/* SRTT        : The current smoothed round trip time.  */
+multiline_comment|/* SRTT&t;       : The current smoothed round trip time.&t;*/
 DECL|member|srtt
 id|__u32
 id|srtt
 suffix:semicolon
-multiline_comment|/* RTO-Pending : A flag used to track if one of the DATA&n;&t; *              chunks sent to this address is currently being&n;&t; *              used to compute a RTT. If this flag is 0,&n;&t; *              the next DATA chunk sent to this destination&n;&t; *              should be used to compute a RTT and this flag&n;&t; *              should be set. Every time the RTT&n;&t; *              calculation completes (i.e. the DATA chunk&n;&t; *              is SACK&squot;d) clear this flag.&n;         */
+multiline_comment|/* RTO-Pending : A flag used to track if one of the DATA&n;&t; *&t;&t;chunks sent to this address is currently being&n;&t; *&t;&t;used to compute a RTT. If this flag is 0,&n;&t; *&t;&t;the next DATA chunk sent to this destination&n;&t; *&t;&t;should be used to compute a RTT and this flag&n;&t; *&t;&t;should be set. Every time the RTT&n;&t; *&t;&t;calculation completes (i.e. the DATA chunk&n;&t; *&t;&t;is SACK&squot;d) clear this flag.&n;&t; */
 DECL|member|rto_pending
 r_int
 id|rto_pending
 suffix:semicolon
 multiline_comment|/*&n;&t; * These are the congestion stats.&n;&t; */
-multiline_comment|/* cwnd        : The current congestion window.  */
+multiline_comment|/* cwnd&t;       : The current congestion window.&t; */
 DECL|member|cwnd
 id|__u32
 id|cwnd
@@ -2209,7 +2228,7 @@ DECL|member|flight_size
 id|__u32
 id|flight_size
 suffix:semicolon
-multiline_comment|/* PMTU       : The current known path MTU.  */
+multiline_comment|/* PMTU&t;      : The current known path MTU.  */
 DECL|member|pmtu
 id|__u32
 id|pmtu
@@ -2250,24 +2269,24 @@ r_int
 r_int
 id|last_time_ecne_reduced
 suffix:semicolon
-multiline_comment|/* active      : The current active state of this destination,&n;&t; *             :  i.e. DOWN, UP, etc.&n;&t; */
+multiline_comment|/* active      : The current active state of this destination,&n;&t; *&t;       :  i.e. DOWN, UP, etc.&n;&t; */
 DECL|member|active
 r_int
 id|active
 suffix:semicolon
-multiline_comment|/* hb_allowed  : The current heartbeat state of this destination,&n;&t; *             :  i.e. ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
+multiline_comment|/* hb_allowed  : The current heartbeat state of this destination,&n;&t; *&t;       :  i.e. ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
 DECL|member|hb_allowed
 r_int
 id|hb_allowed
 suffix:semicolon
 multiline_comment|/* These are the error stats for this destination.  */
-multiline_comment|/* Error count : The current error count for this destination.  */
+multiline_comment|/* Error count : The current error count for this destination.&t;*/
 DECL|member|error_count
 r_int
 r_int
 id|error_count
 suffix:semicolon
-multiline_comment|/* Error       : Current error threshold for this destination&n;&t; * Threshold   : i.e. what value marks the destination down if&n;&t; *             : errorCount reaches this value.&n;&t; */
+multiline_comment|/* Error       : Current error threshold for this destination&n;&t; * Threshold   : i.e. what value marks the destination down if&n;&t; *&t;       : errorCount reaches this value.&n;&t; */
 DECL|member|error_threshold
 r_int
 r_int
@@ -2278,7 +2297,7 @@ DECL|member|max_retrans
 r_int
 id|max_retrans
 suffix:semicolon
-multiline_comment|/* Per         : A timer used by each destination.&n;&t; * Destination :&n;&t; * Timer       :&n;&t; *&n;&t; * [Everywhere else in the text this is called T3-rtx. -ed]&n;&t; */
+multiline_comment|/* Per&t;       : A timer used by each destination.&n;&t; * Destination :&n;&t; * Timer       :&n;&t; *&n;&t; * [Everywhere else in the text this is called T3-rtx. -ed]&n;&t; */
 DECL|member|T3_rtx_timer
 r_struct
 id|timer_list
@@ -2313,7 +2332,7 @@ r_int
 id|malloced
 suffix:semicolon
 multiline_comment|/* Is this structure kfree()able? */
-multiline_comment|/* State information saved for SFR_CACC algorithm. The key&n;&t; * idea in SFR_CACC is to maintain state at the sender on a&n;&t; * per-destination basis when a changeover happens.&n;&t; * &t;char changeover_active;&n;&t; * &t;char cycling_changeover;&n;&t; * &t;__u32 next_tsn_at_change;&n;&t; * &t;char cacc_saw_newack;&n;&t; */
+multiline_comment|/* State information saved for SFR_CACC algorithm. The key&n;&t; * idea in SFR_CACC is to maintain state at the sender on a&n;&t; * per-destination basis when a changeover happens.&n;&t; *&t;char changeover_active;&n;&t; *&t;char cycling_changeover;&n;&t; *&t;__u32 next_tsn_at_change;&n;&t; *&t;char cacc_saw_newack;&n;&t; */
 r_struct
 (brace
 multiline_comment|/* An unsigned integer, which stores the next TSN to be&n;&t;&t; * used by the sender, at the moment of changeover.&n;&t;&t; */
@@ -2531,7 +2550,7 @@ DECL|member|malloced
 r_int
 id|malloced
 suffix:semicolon
-multiline_comment|/* Is this structure kfree()able?  */
+multiline_comment|/* Is this structure kfree()able?&t;*/
 )brace
 suffix:semicolon
 r_struct
@@ -2607,7 +2626,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* This is the structure we use to hold outbound chunks.  You push&n; * chunks in and they automatically pop out the other end as bundled&n; * packets (it calls (*output_handler)()).&n; *&n; * This structure covers sections 6.3, 6.4, 6.7, 6.8, 6.10, 7., 8.1,&n; * and 8.2 of the v13 draft.&n; *&n; * It handles retransmissions.  The connection to the timeout portion&n; * of the state machine is through sctp_..._timeout() and timeout_handler.&n; *&n; * If you feed it SACKs, it will eat them.&n; *&n; * If you give it big chunks, it will fragment them.&n; *&n; * It assigns TSN&squot;s to data chunks.  This happens at the last possible&n; * instant before transmission.&n; *&n; * When free()&squot;d, it empties itself out via output_handler().&n; */
+multiline_comment|/* This is the structure we use to hold outbound chunks.  You push&n; * chunks in and they automatically pop out the other end as bundled&n; * packets (it calls (*output_handler)()).&n; *&n; * This structure covers sections 6.3, 6.4, 6.7, 6.8, 6.10, 7., 8.1,&n; * and 8.2 of the v13 draft.&n; *&n; * It handles retransmissions.&t;The connection to the timeout portion&n; * of the state machine is through sctp_..._timeout() and timeout_handler.&n; *&n; * If you feed it SACKs, it will eat them.&n; *&n; * If you give it big chunks, it will fragment them.&n; *&n; * It assigns TSN&squot;s to data chunks.  This happens at the last possible&n; * instant before transmission.&n; *&n; * When free()&squot;d, it empties itself out via output_handler().&n; */
 DECL|struct|sctp_outq
 r_struct
 id|sctp_outq
@@ -2678,7 +2697,7 @@ id|sctp_outq_ohandler_force_t
 op_star
 id|force_output
 suffix:semicolon
-multiline_comment|/* How many unackd bytes do we have in-flight?  */
+multiline_comment|/* How many unackd bytes do we have in-flight?&t;*/
 DECL|member|outstanding_bytes
 id|__u32
 id|outstanding_bytes
@@ -2775,7 +2794,8 @@ r_struct
 id|sctp_outq
 op_star
 comma
-id|sctp_sackhdr_t
+r_struct
+id|sctp_sackhdr
 op_star
 )paren
 suffix:semicolon
@@ -2885,7 +2905,7 @@ DECL|struct|sctp_bind_addr
 r_struct
 id|sctp_bind_addr
 (brace
-multiline_comment|/* RFC 2960 12.1 Parameters necessary for the SCTP instance&n;&t; *&n;&t; * SCTP Port:   The local SCTP port number the endpoint is&n;&t; * &t;&t;bound to.&n;&t; */
+multiline_comment|/* RFC 2960 12.1 Parameters necessary for the SCTP instance&n;&t; *&n;&t; * SCTP Port:&t;The local SCTP port number the endpoint is&n;&t; *&t;&t;bound to.&n;&t; */
 DECL|member|port
 id|__u16
 id|port
@@ -3109,7 +3129,7 @@ DECL|typedef|sctp_endpoint_type_t
 )brace
 id|sctp_endpoint_type_t
 suffix:semicolon
-multiline_comment|/*&n; * A common base class to bridge the implmentation view of a&n; * socket (usually listening) endpoint versus an association&squot;s&n; * local endpoint.&n; * This common structure is useful for several purposes:&n; *   1) Common interface for lookup routines.&n; *      a) Subfunctions work for either endpoint or association&n; *      b) Single interface to lookup allows hiding the lookup lock rather&n; *         than acquiring it externally.&n; *   2) Common interface for the inbound chunk handling/state machine.&n; *   3) Common object handling routines for reference counting, etc.&n; *   4) Disentangle association lookup from endpoint lookup, where we&n; *      do not have to find our endpoint to find our association.&n; *&n; */
+multiline_comment|/*&n; * A common base class to bridge the implmentation view of a&n; * socket (usually listening) endpoint versus an association&squot;s&n; * local endpoint.&n; * This common structure is useful for several purposes:&n; *   1) Common interface for lookup routines.&n; *&t;a) Subfunctions work for either endpoint or association&n; *&t;b) Single interface to lookup allows hiding the lookup lock rather&n; *&t;   than acquiring it externally.&n; *   2) Common interface for the inbound chunk handling/state machine.&n; *   3) Common object handling routines for reference counting, etc.&n; *   4) Disentangle association lookup from endpoint lookup, where we&n; *&t;do not have to find our endpoint to find our association.&n; *&n; */
 DECL|struct|sctp_ep_common
 r_struct
 id|sctp_ep_common
@@ -3187,14 +3207,14 @@ r_struct
 id|sctp_ep_common
 id|base
 suffix:semicolon
-multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *            to the data consumers for each association. This&n;&t; *            may be in the form of a hash table or other&n;&t; *            implementation dependent structure. The data&n;&t; *            consumers may be process identification&n;&t; *            information such as file descriptors, named pipe&n;&t; *            pointer, or table pointers dependent on how SCTP&n;&t; *            is implemented.&n;&t; */
+multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *&t;      to the data consumers for each association. This&n;&t; *&t;      may be in the form of a hash table or other&n;&t; *&t;      implementation dependent structure. The data&n;&t; *&t;      consumers may be process identification&n;&t; *&t;      information such as file descriptors, named pipe&n;&t; *&t;      pointer, or table pointers dependent on how SCTP&n;&t; *&t;      is implemented.&n;&t; */
 multiline_comment|/* This is really a list of struct sctp_association entries. */
 DECL|member|asocs
 r_struct
 id|list_head
 id|asocs
 suffix:semicolon
-multiline_comment|/* Secret Key: A secret key used by this endpoint to compute&n;&t; *            the MAC.  This SHOULD be a cryptographic quality&n;&t; *            random number with a sufficient length.&n;&t; *&t;      Discussion in [RFC1750] can be helpful in&n;&t; * &t;      selection of the key.&n;&t; */
+multiline_comment|/* Secret Key: A secret key used by this endpoint to compute&n;&t; *&t;      the MAC.&t;This SHOULD be a cryptographic quality&n;&t; *&t;      random number with a sufficient length.&n;&t; *&t;      Discussion in [RFC1750] can be helpful in&n;&t; *&t;      selection of the key.&n;&t; */
 DECL|member|secret_key
 id|__u8
 id|secret_key
@@ -3225,7 +3245,7 @@ id|timeouts
 id|SCTP_NUM_TIMEOUT_TYPES
 )braket
 suffix:semicolon
-multiline_comment|/* Various thresholds.  */
+multiline_comment|/* Various thresholds.&t;*/
 multiline_comment|/* Name for debugging output... */
 DECL|member|debug_name
 r_char
@@ -3533,7 +3553,7 @@ DECL|member|eyecatcher
 id|__u32
 id|eyecatcher
 suffix:semicolon
-multiline_comment|/* This is our parent endpoint.  */
+multiline_comment|/* This is our parent endpoint.&t; */
 DECL|member|ep
 r_struct
 id|sctp_endpoint
@@ -3542,7 +3562,8 @@ id|ep
 suffix:semicolon
 multiline_comment|/* These are those association elements needed in the cookie.  */
 DECL|member|c
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 id|c
 suffix:semicolon
 multiline_comment|/* This is all information about our peer.  */
@@ -3553,7 +3574,7 @@ DECL|member|rwnd
 id|__u32
 id|rwnd
 suffix:semicolon
-multiline_comment|/* transport_addr_list&n;&t;&t; *&n;&t;&t; * Peer        : A list of SCTP transport addresses that the&n;&t;&t; * Transport   : peer is bound to. This information is derived&n;&t;&t; * Address     : from the INIT or INIT ACK and is used to&n;&t;&t; * List        : associate an inbound packet with a given&n;&t;&t; *             : association. Normally this information is&n;&t;&t; *&t;       : hashed or keyed for quick lookup and access&n;&t;&t; *&t;       : of the TCB.&n;&t;&t; *&n;&t;&t; * It is a list of SCTP_transport&squot;s.&n;&t;&t; */
+multiline_comment|/* transport_addr_list&n;&t;&t; *&n;&t;&t; * Peer&t;       : A list of SCTP transport addresses that the&n;&t;&t; * Transport   : peer is bound to. This information is derived&n;&t;&t; * Address     : from the INIT or INIT ACK and is used to&n;&t;&t; * List&t;       : associate an inbound packet with a given&n;&t;&t; *&t;       : association. Normally this information is&n;&t;&t; *&t;       : hashed or keyed for quick lookup and access&n;&t;&t; *&t;       : of the TCB.&n;&t;&t; *&n;&t;&t; * It is a list of SCTP_transport&squot;s.&n;&t;&t; */
 DECL|member|transport_addr_list
 r_struct
 id|list_head
@@ -3564,7 +3585,7 @@ DECL|member|port
 id|__u16
 id|port
 suffix:semicolon
-multiline_comment|/* primary_path&n;&t;&t; *&n;&t;&t; * Primary     : This is the current primary destination&n;&t;&t; * Path        : transport address of the peer endpoint.  It&n;&t;&t; *             : may also specify a source transport address&n;&t;&t; *&t;       : on this endpoint.&n;&t;&t; *&n;&t;&t; * All of these paths live on transport_addr_list.&n;&t;&t; *&n;&t;&t; * At the bakeoffs, we discovered that the intent of&n;&t;&t; * primaryPath is that it only changes when the ULP&n;&t;&t; * asks to have it changed.  We add the activePath to&n;&t;&t; * designate the connection we are currently using to&n;&t;&t; * transmit new data and most control chunks.&n;&t;&t; */
+multiline_comment|/* primary_path&n;&t;&t; *&n;&t;&t; * Primary     : This is the current primary destination&n;&t;&t; * Path&t;       : transport address of the peer endpoint.  It&n;&t;&t; *&t;       : may also specify a source transport address&n;&t;&t; *&t;       : on this endpoint.&n;&t;&t; *&n;&t;&t; * All of these paths live on transport_addr_list.&n;&t;&t; *&n;&t;&t; * At the bakeoffs, we discovered that the intent of&n;&t;&t; * primaryPath is that it only changes when the ULP&n;&t;&t; * asks to have it changed.  We add the activePath to&n;&t;&t; * designate the connection we are currently using to&n;&t;&t; * transmit new data and most control chunks.&n;&t;&t; */
 DECL|member|primary_path
 r_struct
 id|sctp_transport
@@ -3598,14 +3619,14 @@ id|sctp_transport
 op_star
 id|last_sent_to
 suffix:semicolon
-multiline_comment|/* This is the last transport I have received DATA on.  */
+multiline_comment|/* This is the last transport I have received DATA on.&t;*/
 DECL|member|last_data_from
 r_struct
 id|sctp_transport
 op_star
 id|last_data_from
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Mapping  An array of bits or bytes indicating which out of&n;&t;&t; * Array    order TSN&squot;s have been received (relative to the&n;&t;&t; *          Last Rcvd TSN). If no gaps exist, i.e. no out of&n;&t;&t; *          order packets have been received, this array&n;&t;&t; *          will be set to all zero. This structure may be&n;&t;&t; *          in the form of a circular buffer or bit array.&n;&t;&t; *&n;&t;&t; * Last Rcvd   : This is the last TSN received in&n;&t;&t; * TSN&t;       : sequence. This value is set initially by&n;&t;&t; *             : taking the peer&squot;s Initial TSN, received in&n;&t;&t; *             : the INIT or INIT ACK chunk, and subtracting&n;&t;&t; *             : one from it.&n;&t;&t; *&n;&t;&t; * Throughout most of the specification this is called the&n;&t;&t; * &quot;Cumulative TSN ACK Point&quot;.  In this case, we&n;&t;&t; * ignore the advice in 12.2 in favour of the term&n;&t;&t; * used in the bulk of the text.  This value is hidden&n;&t;&t; * in tsn_map--we get it by calling sctp_tsnmap_get_ctsn().&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Mapping  An array of bits or bytes indicating which out of&n;&t;&t; * Array    order TSN&squot;s have been received (relative to the&n;&t;&t; *&t;    Last Rcvd TSN). If no gaps exist, i.e. no out of&n;&t;&t; *&t;    order packets have been received, this array&n;&t;&t; *&t;    will be set to all zero. This structure may be&n;&t;&t; *&t;    in the form of a circular buffer or bit array.&n;&t;&t; *&n;&t;&t; * Last Rcvd   : This is the last TSN received in&n;&t;&t; * TSN&t;       : sequence. This value is set initially by&n;&t;&t; *&t;       : taking the peer&squot;s Initial TSN, received in&n;&t;&t; *&t;       : the INIT or INIT ACK chunk, and subtracting&n;&t;&t; *&t;       : one from it.&n;&t;&t; *&n;&t;&t; * Throughout most of the specification this is called the&n;&t;&t; * &quot;Cumulative TSN ACK Point&quot;.&t;In this case, we&n;&t;&t; * ignore the advice in 12.2 in favour of the term&n;&t;&t; * used in the bulk of the text.  This value is hidden&n;&t;&t; * in tsn_map--we get it by calling sctp_tsnmap_get_ctsn().&n;&t;&t; */
 DECL|member|tsn_map
 r_struct
 id|sctp_tsnmap
@@ -3649,7 +3670,8 @@ id|hostname_address
 suffix:semicolon
 multiline_comment|/* Peer understands DNS addresses? */
 DECL|member|i
-id|sctp_inithdr_t
+r_struct
+id|sctp_inithdr
 id|i
 suffix:semicolon
 DECL|member|cookie_len
@@ -3671,7 +3693,7 @@ DECL|member|peer
 )brace
 id|peer
 suffix:semicolon
-multiline_comment|/* State       : A state variable indicating what state the&n;&t; *&t;       : association is in, i.e. COOKIE-WAIT,&n;&t; *             : COOKIE-ECHOED, ESTABLISHED, SHUTDOWN-PENDING,&n;&t; *             : SHUTDOWN-SENT, SHUTDOWN-RECEIVED, SHUTDOWN-ACK-SENT.&n;&t; *&n;&t; *              Note: No &quot;CLOSED&quot; state is illustrated since if a&n;&t; *              association is &quot;CLOSED&quot; its TCB SHOULD be removed.&n;&t; *&n;&t; * &t;&t;In this implementation we DO have a CLOSED&n;&t; *&t;&t;state which is used during initiation and shutdown.&n;&t; *&n;&t; * &t;&t;State takes values from SCTP_STATE_*.&n;&t; */
+multiline_comment|/* State       : A state variable indicating what state the&n;&t; *&t;       : association is in, i.e. COOKIE-WAIT,&n;&t; *&t;       : COOKIE-ECHOED, ESTABLISHED, SHUTDOWN-PENDING,&n;&t; *&t;       : SHUTDOWN-SENT, SHUTDOWN-RECEIVED, SHUTDOWN-ACK-SENT.&n;&t; *&n;&t; *&t;&t;Note: No &quot;CLOSED&quot; state is illustrated since if a&n;&t; *&t;&t;association is &quot;CLOSED&quot; its TCB SHOULD be removed.&n;&t; *&n;&t; *&t;&t;In this implementation we DO have a CLOSED&n;&t; *&t;&t;state which is used during initiation and shutdown.&n;&t; *&n;&t; *&t;&t;State takes values from SCTP_STATE_*.&n;&t; */
 DECL|member|state
 id|sctp_state_t
 id|state
@@ -3752,12 +3774,12 @@ id|sctp_transport
 op_star
 id|shutdown_last_sent_to
 suffix:semicolon
-multiline_comment|/* Next TSN    : The next TSN number to be assigned to a new&n;&t; *             : DATA chunk.  This is sent in the INIT or INIT&n;&t; *             : ACK chunk to the peer and incremented each&n;&t; *             : time a DATA chunk is assigned a TSN&n;&t; *             : (normally just prior to transmit or during&n;&t; *&t;       : fragmentation).&n;&t; */
+multiline_comment|/* Next TSN    : The next TSN number to be assigned to a new&n;&t; *&t;       : DATA chunk.  This is sent in the INIT or INIT&n;&t; *&t;       : ACK chunk to the peer and incremented each&n;&t; *&t;       : time a DATA chunk is assigned a TSN&n;&t; *&t;       : (normally just prior to transmit or during&n;&t; *&t;       : fragmentation).&n;&t; */
 DECL|member|next_tsn
 id|__u32
 id|next_tsn
 suffix:semicolon
-multiline_comment|/*&n;&t; * Last Rcvd   : This is the last TSN received in sequence.  This value&n;&t; * TSN         : is set initially by taking the peer&squot;s Initial TSN,&n;&t; *             : received in the INIT or INIT ACK chunk, and&n;&t; *             : subtracting one from it.&n;&t; *&n;&t; * Most of RFC 2960 refers to this as the Cumulative TSN Ack Point.&n;&t; */
+multiline_comment|/*&n;&t; * Last Rcvd   : This is the last TSN received in sequence.  This value&n;&t; * TSN&t;       : is set initially by taking the peer&squot;s Initial TSN,&n;&t; *&t;       : received in the INIT or INIT ACK chunk, and&n;&t; *&t;       : subtracting one from it.&n;&t; *&n;&t; * Most of RFC 2960 refers to this as the Cumulative TSN Ack Point.&n;&t; */
 DECL|member|ctsn_ack_point
 id|__u32
 id|ctsn_ack_point
@@ -3797,7 +3819,7 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-multiline_comment|/* Association : The smallest PMTU discovered for all of the&n;&t; * PMTU        : peer&squot;s transport addresses.&n;&t; */
+multiline_comment|/* Association : The smallest PMTU discovered for all of the&n;&t; * PMTU&t;       : peer&squot;s transport addresses.&n;&t; */
 DECL|member|pmtu
 id|__u32
 id|pmtu
@@ -3807,7 +3829,7 @@ DECL|member|frag_point
 id|__u32
 id|frag_point
 suffix:semicolon
-multiline_comment|/* Ack State   : This flag indicates if the next received&n;&t; *             : packet is to be responded to with a&n;&t; *             : SACK. This is initializedto 0.  When a packet&n;&t; *             : is received it is incremented. If this value&n;&t; *             : reaches 2 or more, a SACK is sent and the&n;&t; *             : value is reset to 0. Note: This is used only&n;&t; *             : when no DATA chunks are received out of&n;&t; *&t;       : order.  When DATA chunks are out of order,&n;&t; *             : SACK&squot;s are not delayed (see Section 6).&n;&t; */
+multiline_comment|/* Ack State   : This flag indicates if the next received&n;&t; *&t;       : packet is to be responded to with a&n;&t; *&t;       : SACK. This is initializedto 0.&t; When a packet&n;&t; *&t;       : is received it is incremented. If this value&n;&t; *&t;       : reaches 2 or more, a SACK is sent and the&n;&t; *&t;       : value is reset to 0. Note: This is used only&n;&t; *&t;       : when no DATA chunks are received out of&n;&t; *&t;       : order.&t; When DATA chunks are out of order,&n;&t; *&t;       : SACK&squot;s are not delayed (see Section 6).&n;&t; */
 multiline_comment|/* Do we need to send an ack?&n;&t; * When counters[SctpCounterAckState] is above 1 we do!&n;&t; */
 DECL|member|counters
 r_int
@@ -3837,7 +3859,7 @@ DECL|member|default_timetolive
 id|__u32
 id|default_timetolive
 suffix:semicolon
-multiline_comment|/* This tracks outbound ssn for a given stream.  */
+multiline_comment|/* This tracks outbound ssn for a given stream.&t; */
 DECL|member|ssnmap
 r_struct
 id|sctp_ssnmap
@@ -3861,7 +3883,7 @@ DECL|member|last_ecne_tsn
 id|__u32
 id|last_ecne_tsn
 suffix:semicolon
-multiline_comment|/* Last TSN that caused a CWR Chunk to be sent.  */
+multiline_comment|/* Last TSN that caused a CWR Chunk to be sent.&t; */
 DECL|member|last_cwr_tsn
 id|__u32
 id|last_cwr_tsn
@@ -3891,7 +3913,7 @@ id|sctp_chunk
 op_star
 id|addip_last_asconf_ack
 suffix:semicolon
-multiline_comment|/* These ASCONF chunks are waiting to be sent.&n;&t; *&n;&t; * These chunaks can&squot;t be pushed to outqueue until receiving&n;&t; * ASCONF_ACK for the previous ASCONF indicated by&n;&t; * addip_last_asconf, so as to guarantee that only one ASCONF&n;&t; * is in flight at any time.&n;&t; *&n;&t; * ADDIP Section 4.1.1 Congestion Control of ASCONF Chunks&n;&t; *&n;&t; * In defining the ASCONF Chunk transfer procedures, it is&n;&t; * essential that these transfers MUST NOT cause congestion&n;&t; * within the network.  To achieve this, we place these&n;&t; * restrictions on the transfer of ASCONF Chunks:&n;&t; *&n;&t; * R1) One and only one ASCONF Chunk MAY be in transit and&n;&t; * unacknowledged at any one time.  If a sender, after sending&n;&t; * an ASCONF chunk, decides it needs to transfer another&n;&t; * ASCONF Chunk, it MUST wait until the ASCONF-ACK Chunk&n;&t; * returns from the previous ASCONF Chunk before sending a&n;&t; * subsequent ASCONF. Note this restriction binds each side,&n;&t; * so at any time two ASCONF may be in-transit on any given&n;&t; * association (one sent from each endpoint).&n;&t; *&n;&t; *&n;&t; * [I really think this is EXACTLY the sort of intelligence&n;&t; *  which already resides in sctp_outq.  Please move this&n;&t; *  queue and its supporting logic down there.  --piggy]&n;&t; */
+multiline_comment|/* These ASCONF chunks are waiting to be sent.&n;&t; *&n;&t; * These chunaks can&squot;t be pushed to outqueue until receiving&n;&t; * ASCONF_ACK for the previous ASCONF indicated by&n;&t; * addip_last_asconf, so as to guarantee that only one ASCONF&n;&t; * is in flight at any time.&n;&t; *&n;&t; * ADDIP Section 4.1.1 Congestion Control of ASCONF Chunks&n;&t; *&n;&t; * In defining the ASCONF Chunk transfer procedures, it is&n;&t; * essential that these transfers MUST NOT cause congestion&n;&t; * within the network.&t;To achieve this, we place these&n;&t; * restrictions on the transfer of ASCONF Chunks:&n;&t; *&n;&t; * R1) One and only one ASCONF Chunk MAY be in transit and&n;&t; * unacknowledged at any one time.  If a sender, after sending&n;&t; * an ASCONF chunk, decides it needs to transfer another&n;&t; * ASCONF Chunk, it MUST wait until the ASCONF-ACK Chunk&n;&t; * returns from the previous ASCONF Chunk before sending a&n;&t; * subsequent ASCONF. Note this restriction binds each side,&n;&t; * so at any time two ASCONF may be in-transit on any given&n;&t; * association (one sent from each endpoint).&n;&t; *&n;&t; *&n;&t; * [I really think this is EXACTLY the sort of intelligence&n;&t; *  which already resides in sctp_outq.&t; Please move this&n;&t; *  queue and its supporting logic down there.&t;--piggy]&n;&t; */
 DECL|member|addip_chunks
 r_struct
 id|sk_buff_head
@@ -3967,7 +3989,7 @@ r_return
 id|asoc
 suffix:semicolon
 )brace
-multiline_comment|/* These are function signatures for manipulating associations.  */
+multiline_comment|/* These are function signatures for manipulating associations.&t; */
 r_struct
 id|sctp_association
 op_star
@@ -4265,7 +4287,8 @@ r_struct
 id|sctp_association
 op_star
 comma
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 op_star
 comma
 r_int

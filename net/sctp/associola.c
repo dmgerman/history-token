@@ -3325,7 +3325,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 op_star
 id|cookie
 comma
@@ -3359,7 +3360,8 @@ id|cookie
 op_plus
 r_sizeof
 (paren
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 )paren
 op_plus
 id|var_size2
