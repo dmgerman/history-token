@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/pfs168.c&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

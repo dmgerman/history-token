@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/idp.h&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Copyright (c) 2001 Cliff Brake, Accelent Systems Inc.&n; *&n; * 2001-09-13: Cliff Brake &lt;cbrake@accelent.com&gt;&n; *             Initial code&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Note: this file must be safe to include in assembly files&n; */
 multiline_comment|/* comment out following if you have a rev01 board */
 DECL|macro|PXA_IDP_REV02

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/arch/arm/mach-clps711x/mm.c&n; *&n; *  Generic 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
