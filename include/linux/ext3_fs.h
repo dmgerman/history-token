@@ -233,6 +233,8 @@ DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */
 DECL|macro|EXT3_STATE_NEW
 mdefine_line|#define EXT3_STATE_NEW&t;&t;&t;0x00000002 /* inode is newly created */
+DECL|macro|EXT3_STATE_XATTR
+mdefine_line|#define EXT3_STATE_XATTR&t;&t;0x00000004 /* has in-inode xattrs */
 multiline_comment|/* Used to pass group descriptor data when online resize is done */
 DECL|struct|ext3_new_group_input
 r_struct
@@ -563,6 +565,14 @@ DECL|member|osd2
 id|osd2
 suffix:semicolon
 multiline_comment|/* OS dependent 2 */
+DECL|member|i_extra_isize
+id|__le16
+id|i_extra_isize
+suffix:semicolon
+DECL|member|i_pad1
+id|__le16
+id|i_pad1
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|i_size_high

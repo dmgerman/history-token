@@ -54,6 +54,17 @@ suffix:semicolon
 multiline_comment|/* zero right now */
 )brace
 suffix:semicolon
+DECL|struct|ext3_xattr_ibody_header
+r_struct
+id|ext3_xattr_ibody_header
+(brace
+DECL|member|h_magic
+id|__le32
+id|h_magic
+suffix:semicolon
+multiline_comment|/* magic number for identification */
+)brace
+suffix:semicolon
 DECL|struct|ext3_xattr_entry
 r_struct
 id|ext3_xattr_entry
