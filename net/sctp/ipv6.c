@@ -95,11 +95,13 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -190,7 +192,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Warning:  The sock lock is held.  Remember to call &n;&t; * sctp_err_finish!&n;&t; */
+multiline_comment|/* Warning:  The sock lock is held.  Remember to call&n;&t; * sctp_err_finish!&n;&t; */
 r_switch
 c_cond
 (paren
@@ -333,25 +335,6 @@ r_struct
 id|flowi
 id|fl
 suffix:semicolon
-r_struct
-id|dst_entry
-op_star
-id|dst
-op_assign
-id|skb-&gt;dst
-suffix:semicolon
-r_struct
-id|rt6_info
-op_star
-id|rt6
-op_assign
-(paren
-r_struct
-id|rt6_info
-op_star
-)paren
-id|dst
-suffix:semicolon
 id|fl.proto
 op_assign
 id|sk-&gt;protocol
@@ -360,7 +343,7 @@ multiline_comment|/* Fill in the dest address from the route entry passed with t
 id|fl.fl6_dst
 op_assign
 op_amp
-id|rt6-&gt;rt6i_dst.addr
+id|transport-&gt;ipaddr.v6.sin6_addr
 suffix:semicolon
 id|fl.fl6_src
 op_assign
@@ -493,7 +476,8 @@ op_star
 id|sctp_v6_get_dst
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -753,7 +737,8 @@ r_void
 id|sctp_v6_get_saddr
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1350,10 +1335,10 @@ id|rcv_saddr
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize sk-&gt;rcv_saddr from sctp_addr. */
-DECL|function|sctp_v6_to_sk
+DECL|function|sctp_v6_to_sk_saddr
 r_static
 r_void
-id|sctp_v6_to_sk
+id|sctp_v6_to_sk_saddr
 c_func
 (paren
 r_union
@@ -1374,6 +1359,35 @@ id|sk
 )paren
 op_member_access_from_pointer
 id|rcv_saddr
+op_assign
+id|addr-&gt;v6.sin6_addr
+suffix:semicolon
+)brace
+multiline_comment|/* Initialize sk-&gt;daddr from sctp_addr. */
+DECL|function|sctp_v6_to_sk_daddr
+r_static
+r_void
+id|sctp_v6_to_sk_daddr
+c_func
+(paren
+r_union
+id|sctp_addr
+op_star
+id|addr
+comma
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+id|inet6_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|daddr
 op_assign
 id|addr-&gt;v6.sin6_addr
 suffix:semicolon
@@ -1431,7 +1445,7 @@ id|rt-&gt;rt6i_src.addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Compare addresses exactly.  &n; * FIXME: v4-mapped-v6.&n; */
+multiline_comment|/* Compare addresses exactly.&n; * FIXME: v4-mapped-v6.&n; */
 DECL|function|sctp_v6_cmp_addr
 r_static
 r_int
@@ -1910,6 +1924,10 @@ id|newsk-&gt;backlog_rcv
 op_assign
 id|sk-&gt;prot-&gt;backlog_rcv
 suffix:semicolon
+id|newsk-&gt;shutdown
+op_assign
+id|sk-&gt;shutdown
+suffix:semicolon
 id|newsctp6sk
 op_assign
 (paren
@@ -1954,23 +1972,30 @@ id|ipv6_pinfo
 )paren
 )paren
 suffix:semicolon
-id|ipv6_addr_copy
-c_func
-(paren
-op_amp
-id|newnp-&gt;daddr
-comma
-op_amp
-id|asoc-&gt;peer.primary_addr.v6.sin6_addr
-)paren
-suffix:semicolon
+multiline_comment|/* Initialize sk&squot;s sport, dport, rcv_saddr and daddr for getsockname()&n;&t; * and getpeername().&n;&t; */
 id|newinet-&gt;sport
 op_assign
 id|inet-&gt;sport
 suffix:semicolon
+id|newnp-&gt;saddr
+op_assign
+id|np-&gt;saddr
+suffix:semicolon
+id|newnp-&gt;rcv_saddr
+op_assign
+id|np-&gt;rcv_saddr
+suffix:semicolon
 id|newinet-&gt;dport
 op_assign
+id|htons
+c_func
+(paren
 id|asoc-&gt;peer.port
+)paren
+suffix:semicolon
+id|newnp-&gt;daddr
+op_assign
+id|asoc-&gt;peer.primary_addr.v6.sin6_addr
 suffix:semicolon
 macro_line|#ifdef INET_REFCNT_DEBUG
 id|atomic_inc
@@ -3034,9 +3059,14 @@ op_assign
 id|sctp_v6_from_sk
 comma
 dot
-id|to_sk
+id|to_sk_saddr
 op_assign
-id|sctp_v6_to_sk
+id|sctp_v6_to_sk_saddr
+comma
+dot
+id|to_sk_daddr
+op_assign
+id|sctp_v6_to_sk_daddr
 comma
 dot
 id|dst_saddr

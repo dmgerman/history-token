@@ -570,7 +570,7 @@ id|sctp_new_cmd_seq
 c_func
 (paren
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize a block of memory as a command sequence.&n; * Return 0 if the initialization fails.&n; */

@@ -14,7 +14,8 @@ r_void
 id|sctp_assoc_bh_rcv
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -22,13 +23,15 @@ suffix:semicolon
 multiline_comment|/* 1st Level Abstractions. */
 multiline_comment|/* Allocate and initialize a new association */
 DECL|function|sctp_association_new
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_new
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -42,10 +45,11 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -54,9 +58,10 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -83,7 +88,7 @@ id|sk
 comma
 id|scope
 comma
-id|priority
+id|gfp
 )paren
 )paren
 r_goto
@@ -118,17 +123,20 @@ suffix:semicolon
 )brace
 multiline_comment|/* Intialize a new association from provided memory. */
 DECL|function|sctp_association_init
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_association_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 comma
@@ -142,13 +150,23 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
 id|sctp_opt
 op_star
 id|sp
+suffix:semicolon
+r_struct
+id|sctp_protocol
+op_star
+id|proto
+op_assign
+id|sctp_get_protocol
+c_func
+(paren
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -177,7 +195,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 )paren
 )paren
 suffix:semicolon
@@ -185,7 +204,8 @@ multiline_comment|/* Discarding const is appropriate here.  */
 id|asoc-&gt;ep
 op_assign
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 id|ep
@@ -287,19 +307,19 @@ suffix:semicolon
 multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
-id|ep-&gt;proto-&gt;max_retrans_association
+id|proto-&gt;max_retrans_association
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|ep-&gt;proto-&gt;rto_initial
+id|proto-&gt;rto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|ep-&gt;proto-&gt;rto_max
+id|proto-&gt;rto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|ep-&gt;proto-&gt;rto_min
+id|proto-&gt;rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
@@ -312,7 +332,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the maximum mumber of new data packets that can be sent&n;&t; * in a burst.&n;&t; */
 id|asoc-&gt;max_burst
 op_assign
-id|ep-&gt;proto-&gt;max_burst
+id|proto-&gt;max_burst
 suffix:semicolon
 multiline_comment|/* Copy things from the endpoint.  */
 r_for
@@ -676,7 +696,8 @@ r_void
 id|sctp_association_free
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -896,7 +917,8 @@ r_void
 id|sctp_association_destroy
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1012,7 +1034,7 @@ op_star
 id|addr
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1074,7 +1096,7 @@ c_func
 (paren
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1272,7 +1294,8 @@ id|sctp_assoc_lookup_paddr
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1342,7 +1365,8 @@ r_void
 id|sctp_assoc_control_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1597,7 +1621,8 @@ r_void
 id|sctp_association_hold
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1616,7 +1641,8 @@ r_void
 id|sctp_association_put
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1644,7 +1670,8 @@ id|__u32
 id|sctp_association_get_next_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1671,7 +1698,8 @@ id|__u32
 id|sctp_association_get_tsn_block
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1803,7 +1831,8 @@ op_star
 id|sctp_get_no_prepend
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -1820,7 +1849,8 @@ op_star
 id|sctp_assoc_lookup_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1997,7 +2027,8 @@ op_star
 id|sctp_assoc_is_match
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -2107,12 +2138,14 @@ r_void
 id|sctp_assoc_bh_rcv
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2277,7 +2310,8 @@ r_void
 id|sctp_assoc_migrate
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|assoc
 comma
@@ -2381,11 +2415,13 @@ r_void
 id|sctp_assoc_update
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 r_new
 )paren
@@ -2493,7 +2529,8 @@ r_void
 id|sctp_assoc_update_retran_path
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2623,7 +2660,8 @@ op_star
 id|sctp_assoc_choose_shutdown_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2664,7 +2702,8 @@ r_void
 id|sctp_assoc_sync_pmtu
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2846,7 +2885,8 @@ r_void
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -3021,7 +3061,8 @@ r_void
 id|sctp_assoc_rwnd_decrease
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -3179,7 +3220,8 @@ r_int
 id|sctp_assoc_set_bind_addr_from_cookie
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma

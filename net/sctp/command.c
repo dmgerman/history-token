@@ -10,7 +10,7 @@ id|sctp_new_cmd_seq
 c_func
 (paren
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_cmd_seq_t
@@ -22,7 +22,7 @@ c_func
 (paren
 id|sctp_cmd_seq_t
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if

@@ -1,7 +1,6 @@
 multiline_comment|/* Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001-2003 Intel Corp.&n; * Copyright (c) 2001-2002 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; *&n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -9,6 +8,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -224,9 +224,18 @@ comma
 id|sctp_socket_type_t
 )paren
 suffix:semicolon
+DECL|variable|sctp_hmac_alg
+r_static
+r_char
+op_star
+id|sctp_hmac_alg
+op_assign
+id|SCTP_COOKIE_HMAC_ALG
+suffix:semicolon
 multiline_comment|/* Look up the association by its id.  If this is not a UDP-style&n; * socket, the ID field is always ignored.&n; */
 DECL|function|sctp_id2assoc
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_id2assoc
 c_func
@@ -240,13 +249,14 @@ id|sctp_assoc_t
 id|id
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* If this is not a UDP-style socket, assoc id should be &n;&t; * ignored.&n;&t; */
+multiline_comment|/* If this is not a UDP-style socket, assoc id should be&n;&t; * ignored.&n;&t; */
 r_if
 c_cond
 (paren
@@ -291,7 +301,8 @@ id|sk
 op_member_access_from_pointer
 id|ep-&gt;asocs.next
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -315,17 +326,21 @@ id|id
 )paren
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
+id|temp
+suffix:semicolon
+multiline_comment|/* Verify that this _is_ an sctp_association&n;&t;&t; * data structure and if so, that the socket matches.&n;&t;&t; */
 id|temp
 op_assign
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 id|id
 suffix:semicolon
-multiline_comment|/* Verify that this _is_ an sctp_association_t&n;&t;&t; * data structure and if so, that the socket matches.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -567,7 +582,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -872,7 +888,7 @@ id|num
 suffix:semicolon
 id|af
 op_member_access_from_pointer
-id|to_sk
+id|to_sk_saddr
 c_func
 (paren
 id|addr
@@ -1247,11 +1263,13 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1281,7 +1299,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -1336,7 +1355,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -1620,11 +1640,13 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1654,7 +1676,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -1799,8 +1822,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|kaddrs
 )paren
 )paren
@@ -1884,11 +1906,13 @@ r_int
 id|timeout
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1947,11 +1971,49 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
 suffix:semicolon
+multiline_comment|/* A closed association can still be in the list if it&n;&t;&t; * belongs to a TCP-style listening socket that is not&n;&t;&t; * yet accepted.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+op_logical_and
+(paren
+id|SCTP_STATE_CLOSED
+op_eq
+id|asoc-&gt;state
+)paren
+)paren
+(brace
+id|sctp_unhash_established
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+id|sctp_association_free
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+)brace
+r_else
 id|sctp_primitive_SHUTDOWN
 c_func
 (paren
@@ -2038,6 +2100,75 @@ id|sock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Handle EPIPE error. */
+DECL|function|sctp_error
+r_static
+r_int
+id|sctp_error
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+id|flags
+comma
+r_int
+id|err
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EPIPE
+)paren
+id|err
+op_assign
+id|sock_error
+c_func
+(paren
+id|sk
+)paren
+ques
+c_cond
+suffix:colon
+op_minus
+id|EPIPE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EPIPE
+op_logical_and
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MSG_NOSIGNAL
+)paren
+)paren
+id|send_sig
+c_func
+(paren
+id|SIGPIPE
+comma
+id|current
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * Note:  This function could use a rewrite especially when explicit&n; * connect support comes in.&n; */
 multiline_comment|/* BUG:  We do not implement the equivalent of wait_for_tcp_memory(). */
 id|SCTP_STATIC
@@ -2084,11 +2215,13 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|new_asoc
 op_assign
@@ -2169,6 +2302,11 @@ r_struct
 id|sk_buff_head
 id|chunks
 suffix:semicolon
+r_int
+id|msg_flags
+op_assign
+id|msg-&gt;msg_flags
+suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -2205,6 +2343,31 @@ comma
 id|ep-&gt;debug_name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+op_logical_and
+(paren
+id|SCTP_SS_ESTABLISHED
+op_ne
+id|sk-&gt;state
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EPIPE
+suffix:semicolon
+r_goto
+id|out_nounlock
+suffix:semicolon
+)brace
 multiline_comment|/* Parse out the SCTP CMSGs.  */
 id|err
 op_assign
@@ -2525,6 +2688,32 @@ comma
 id|asoc-&gt;debug_name
 )paren
 suffix:semicolon
+multiline_comment|/* We cannot send a message on a TCP-style SCTP_SS_ESTABLISHED &n;&t;&t; * socket that has an association in CLOSED state. This can&n;&t;&t; * happen when an accepted socket has an association that is&n;&t;&t; * already CLOSED. &n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_STATE_CLOSED
+op_eq
+id|asoc-&gt;state
+)paren
+op_logical_and
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sp-&gt;type
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EPIPE
+suffix:semicolon
+r_goto
+id|out_unlock
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3235,7 +3424,15 @@ suffix:semicolon
 id|out_nounlock
 suffix:colon
 r_return
+id|sctp_error
+c_func
+(paren
+id|sk
+comma
+id|msg_flags
+comma
 id|err
+)paren
 suffix:semicolon
 macro_line|#if 0
 id|do_sock_err
@@ -4068,7 +4265,8 @@ r_struct
 id|sctp_paddrparams
 id|params
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -4296,7 +4494,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&n; * 7.1.15 Set default send parameters (SET_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; */
+multiline_comment|/*&n; * 7.1.15 Set default send parameters (SET_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; */
 DECL|function|sctp_setsockopt_default_send_param
 r_static
 r_int
@@ -4320,7 +4518,8 @@ r_struct
 id|sctp_sndrcvinfo
 id|info
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -5034,11 +5233,13 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -5050,6 +5251,11 @@ suffix:semicolon
 r_union
 id|sctp_addr
 id|to
+suffix:semicolon
+r_struct
+id|sctp_af
+op_star
+id|af
 suffix:semicolon
 id|sctp_scope_t
 id|scope
@@ -5094,7 +5300,7 @@ id|ep
 op_assign
 id|sp-&gt;ep
 suffix:semicolon
-multiline_comment|/* connect() cannot be done on a socket that is already in ESTABLISHED&n;&t; * state - UDP-style peeled off socket or a TCP-style socket that&n;&t; * is already connected. &n;&t; * It cannot be done even on a TCP-style listening socket.&n;&t; */
+multiline_comment|/* connect() cannot be done on a socket that is already in ESTABLISHED&n;&t; * state - UDP-style peeled off socket or a TCP-style socket that&n;&t; * is already connected.&n;&t; * It cannot be done even on a TCP-style listening socket.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5408,6 +5614,40 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+multiline_comment|/* Initialize sk&squot;s dport and daddr for getpeername() */
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|dport
+op_assign
+id|htons
+c_func
+(paren
+id|asoc-&gt;peer.port
+)paren
+suffix:semicolon
+id|af
+op_assign
+id|sctp_get_af_specific
+c_func
+(paren
+id|to.sa.sa_family
+)paren
+suffix:semicolon
+id|af
+op_member_access_from_pointer
+id|to_sk_daddr
+c_func
+(paren
+op_amp
+id|to
+comma
+id|sk
+)paren
+suffix:semicolon
 id|timeo
 op_assign
 id|sock_sndtimeo
@@ -5507,7 +5747,7 @@ suffix:semicolon
 r_struct
 id|sctp_association
 op_star
-id|assoc
+id|asoc
 suffix:semicolon
 r_int
 id|timeo
@@ -5599,8 +5839,8 @@ id|error
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* We treat the list of associations on the endpoint as the accept &n;&t; * queue and pick the first association on the list. &n;&t; */
-id|assoc
+multiline_comment|/* We treat the list of associations on the endpoint as the accept&n;&t; * queue and pick the first association on the list.&n;&t; */
+id|asoc
 op_assign
 id|list_entry
 c_func
@@ -5622,7 +5862,7 @@ c_func
 (paren
 id|sk
 comma
-id|assoc
+id|asoc
 )paren
 suffix:semicolon
 r_if
@@ -5641,7 +5881,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * assoc to the newsk.&n;&t; */
+multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * asoc to the newsk.&n;&t; */
 id|sctp_sock_migrate
 c_func
 (paren
@@ -5649,7 +5889,7 @@ id|sk
 comma
 id|newsk
 comma
-id|assoc
+id|asoc
 comma
 id|SCTP_SOCKET_TCP
 )paren
@@ -5671,7 +5911,7 @@ r_return
 id|newsk
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Write Comments. */
+multiline_comment|/* The SCTP ioctl handler. */
 DECL|function|sctp_ioctl
 id|SCTP_STATIC
 r_int
@@ -5693,9 +5933,8 @@ id|arg
 (brace
 r_return
 op_minus
-id|EOPNOTSUPP
+id|ENOIOCTLCMD
 suffix:semicolon
-multiline_comment|/* STUB */
 )brace
 multiline_comment|/* This is the function which gets called during socket creation to&n; * initialized the SCTP-specific portion of the sock.&n; * The sock structure should already be zero-filled memory.&n; */
 DECL|function|sctp_init_sock
@@ -5710,7 +5949,8 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -5890,8 +6130,6 @@ op_assign
 id|sctp_endpoint_new
 c_func
 (paren
-id|proto
-comma
 id|sk
 comma
 id|GFP_KERNEL
@@ -5900,8 +6138,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
+op_logical_neg
 id|ep
 )paren
 r_return
@@ -5911,6 +6148,10 @@ suffix:semicolon
 id|sp-&gt;ep
 op_assign
 id|ep
+suffix:semicolon
+id|sp-&gt;hmac
+op_assign
+l_int|NULL
 suffix:semicolon
 id|SCTP_DBG_OBJCNT_INC
 c_func
@@ -5935,7 +6176,8 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -5968,7 +6210,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Comments needed.  */
+multiline_comment|/* API 4.1.7 shutdown() - TCP Style Syntax&n; *     int shutdown(int socket, int how);&n; *&n; *     sd      - the socket descriptor of the association to be closed.&n; *     how     - Specifies the type of shutdown.  The  values  are&n; *               as follows:&n; *               SHUT_RD&n; *                     Disables further receive operations. No SCTP&n; *                     protocol action is taken.&n; *               SHUT_WR&n; *                     Disables further send operations, and initiates&n; *                     the SCTP shutdown sequence.&n; *               SHUT_RDWR&n; *                     Disables further send  and  receive  operations&n; *                     and initiates the SCTP shutdown sequence.&n; */
 DECL|function|sctp_shutdown
 id|SCTP_STATIC
 r_void
@@ -5984,8 +6226,84 @@ r_int
 id|how
 )paren
 (brace
-multiline_comment|/* UDP-style sockets do not support shutdown. */
-multiline_comment|/* STUB */
+r_struct
+id|sctp_endpoint
+op_star
+id|ep
+suffix:semicolon
+r_struct
+id|sctp_association
+op_star
+id|asoc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SCTP_SOCKET_TCP
+op_ne
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|how
+op_amp
+id|SEND_SHUTDOWN
+)paren
+(brace
+id|ep
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|ep
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|ep-&gt;asocs
+)paren
+)paren
+(brace
+id|asoc
+op_assign
+id|list_entry
+c_func
+(paren
+id|ep-&gt;asocs.next
+comma
+r_struct
+id|sctp_association
+comma
+id|asocs
+)paren
+suffix:semicolon
+id|sctp_primitive_SHUTDOWN
+c_func
+(paren
+id|asoc
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/* 7.2.1 Association Status (SCTP_STATUS)&n;&n; * Applications can retrieve current status information about an&n; * association, including association state, peer receiver window size,&n; * number of unacked data chunks, and number of data chunks pending&n; * receipt.  This information is read-only.&n; */
 DECL|function|sctp_getsockopt_sctp_status
@@ -6015,9 +6333,10 @@ r_struct
 id|sctp_status
 id|status
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|assoc
+id|asoc
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6085,7 +6404,7 @@ id|associd
 op_assign
 id|status.sstat_assoc_id
 suffix:semicolon
-id|assoc
+id|asoc
 op_assign
 id|sctp_id2assoc
 c_func
@@ -6099,7 +6418,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|assoc
+id|asoc
 )paren
 (brace
 id|retval
@@ -6113,43 +6432,43 @@ suffix:semicolon
 )brace
 id|transport
 op_assign
-id|assoc-&gt;peer.primary_path
+id|asoc-&gt;peer.primary_path
 suffix:semicolon
 id|status.sstat_assoc_id
 op_assign
 id|sctp_assoc2id
 c_func
 (paren
-id|assoc
+id|asoc
 )paren
 suffix:semicolon
 id|status.sstat_state
 op_assign
-id|assoc-&gt;state
+id|asoc-&gt;state
 suffix:semicolon
 id|status.sstat_rwnd
 op_assign
-id|assoc-&gt;peer.rwnd
+id|asoc-&gt;peer.rwnd
 suffix:semicolon
 id|status.sstat_unackdata
 op_assign
-id|assoc-&gt;unack_data
+id|asoc-&gt;unack_data
 suffix:semicolon
 id|status.sstat_penddata
 op_assign
-id|assoc-&gt;peer.tsn_map.pending_data
+id|asoc-&gt;peer.tsn_map.pending_data
 suffix:semicolon
 id|status.sstat_instrms
 op_assign
-id|assoc-&gt;c.sinit_max_instreams
+id|asoc-&gt;c.sinit_max_instreams
 suffix:semicolon
 id|status.sstat_outstrms
 op_assign
-id|assoc-&gt;c.sinit_num_ostreams
+id|asoc-&gt;c.sinit_num_ostreams
 suffix:semicolon
 id|status.sstat_fragmentation_point
 op_assign
-id|assoc-&gt;frag_point
+id|asoc-&gt;frag_point
 suffix:semicolon
 id|status.sstat_primary.spinfo_assoc_id
 op_assign
@@ -6518,33 +6837,29 @@ r_int
 id|sctp_do_peeloff
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|assoc
+id|asoc
 comma
 r_struct
 id|socket
 op_star
 op_star
-id|newsock
+id|sockp
 )paren
 (brace
 r_struct
 id|sock
 op_star
-id|oldsk
+id|sk
 op_assign
-id|assoc-&gt;base.sk
-suffix:semicolon
-r_struct
-id|sock
-op_star
-id|newsk
+id|asoc-&gt;base.sk
 suffix:semicolon
 r_struct
 id|socket
 op_star
-id|tmpsock
+id|sock
 suffix:semicolon
 r_int
 id|err
@@ -6560,14 +6875,14 @@ op_ne
 id|sctp_sk
 c_func
 (paren
-id|oldsk
+id|sk
 )paren
 op_member_access_from_pointer
 id|type
 )paren
 r_return
 op_minus
-id|EOPNOTSUPP
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* Create a new socket.  */
 id|err
@@ -6575,14 +6890,14 @@ op_assign
 id|sock_create
 c_func
 (paren
-id|oldsk-&gt;family
+id|sk-&gt;family
 comma
 id|SOCK_SEQPACKET
 comma
 id|IPPROTO_SCTP
 comma
 op_amp
-id|tmpsock
+id|sock
 )paren
 suffix:semicolon
 r_if
@@ -6595,27 +6910,23 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|newsk
-op_assign
-id|tmpsock-&gt;sk
-suffix:semicolon
-multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * assoc to the newsk.&n;&t; */
+multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * asoc to the newsk.&n;&t; */
 id|sctp_sock_migrate
 c_func
 (paren
-id|oldsk
+id|sk
 comma
-id|newsk
+id|sock-&gt;sk
 comma
-id|assoc
+id|asoc
 comma
 id|SCTP_SOCKET_UDP_HIGH_BANDWIDTH
 )paren
 suffix:semicolon
 op_star
-id|newsock
+id|sockp
 op_assign
-id|tmpsock
+id|sock
 suffix:semicolon
 r_return
 id|err
@@ -6657,9 +6968,10 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|assoc
+id|asoc
 suffix:semicolon
 r_if
 c_cond
@@ -6693,7 +7005,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|assoc
+id|asoc
 op_assign
 id|sctp_id2assoc
 c_func
@@ -6706,9 +7018,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|NULL
-op_eq
-id|assoc
+op_logical_neg
+id|asoc
 )paren
 (brace
 id|retval
@@ -6723,13 +7034,13 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: sk: %p assoc: %p&bslash;n&quot;
+l_string|&quot;%s: sk: %p asoc: %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|sk
 comma
-id|assoc
+id|asoc
 )paren
 suffix:semicolon
 id|retval
@@ -6737,7 +7048,7 @@ op_assign
 id|sctp_do_peeloff
 c_func
 (paren
-id|assoc
+id|asoc
 comma
 op_amp
 id|newsock
@@ -6783,13 +7094,13 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: sk: %p assoc: %p newsk: %p sd: %d&bslash;n&quot;
+l_string|&quot;%s: sk: %p asoc: %p newsk: %p sd: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|sk
 comma
-id|assoc
+id|asoc
 comma
 id|newsock-&gt;sk
 comma
@@ -6853,7 +7164,8 @@ r_struct
 id|sctp_paddrparams
 id|params
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7097,7 +7409,8 @@ id|optlen
 id|sctp_assoc_t
 id|id
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7228,7 +7541,8 @@ op_star
 id|optlen
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7448,7 +7762,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7611,7 +7926,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7999,7 +8315,8 @@ r_struct
 id|sctp_sndrcvinfo
 id|info
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -8950,12 +9267,8 @@ r_if
 c_cond
 (paren
 id|pp
-op_ne
-l_int|NULL
 op_logical_and
 id|pp-&gt;sk
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* We had a port hash table hit - there is an&n;&t;&t; * available port (pp != NULL) and it is being&n;&t;&t; * used by other socket (pp-&gt;sk != NULL); that other&n;&t;&t; * socket is going to be sk2.&n;&t;&t; */
@@ -9006,7 +9319,8 @@ op_assign
 id|sk2-&gt;bind_next
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep2
 suffix:semicolon
@@ -9088,10 +9402,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pp
-op_eq
-l_int|NULL
 op_logical_and
+op_logical_neg
 (paren
 id|pp
 op_assign
@@ -9103,8 +9417,6 @@ comma
 id|snum
 )paren
 )paren
-op_eq
-l_int|NULL
 )paren
 r_goto
 id|fail_unlock
@@ -9113,11 +9425,9 @@ multiline_comment|/* In either case (hit or miss), make sure fastreuse is 1 only
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pp-&gt;sk
-op_eq
-l_int|NULL
 )paren
-(brace
 id|pp-&gt;fastreuse
 op_assign
 id|sk-&gt;reuse
@@ -9127,7 +9437,6 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -9138,12 +9447,10 @@ id|sk-&gt;reuse
 op_eq
 l_int|0
 )paren
-(brace
 id|pp-&gt;fastreuse
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* We are set, so fill up all the data in the hash table&n;&t; * entry, tie the socket list information with the rest of the&n;&t; * sockets FIXME: Blurry, NPI (ipg).&n;&t; */
 id|success
 suffix:colon
@@ -9347,7 +9654,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -9411,7 +9719,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * 4.1.3 listen() - TCP Style Syntax&n; *&n; *   Applications uses listen() to ready the SCTP endpoint for accepting &n; *   inbound associations.&n; */
+multiline_comment|/*&n; * 4.1.3 listen() - TCP Style Syntax&n; *&n; *   Applications uses listen() to ready the SCTP endpoint for accepting&n; *   inbound associations.&n; */
 DECL|function|sctp_stream_listen
 id|SCTP_STATIC
 r_int
@@ -9438,7 +9746,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -9516,29 +9825,18 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+op_assign
+l_int|NULL
+suffix:semicolon
 r_int
-id|err
-suffix:semicolon
-id|sctp_lock_sock
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus
 id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sock-&gt;state
-op_ne
-id|SS_UNCONNECTED
-)paren
-r_goto
-id|out
 suffix:semicolon
 r_if
 c_cond
@@ -9554,6 +9852,56 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+id|sctp_lock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sock-&gt;state
+op_ne
+id|SS_UNCONNECTED
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* Allocate HMAC for generating cookie. */
+r_if
+c_cond
+(paren
+id|sctp_hmac_alg
+)paren
+(brace
+id|tfm
+op_assign
+id|sctp_crypto_alloc_tfm
+c_func
+(paren
+id|sctp_hmac_alg
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tfm
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOSYS
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+)brace
 r_switch
 c_cond
 (paren
@@ -9592,10 +9940,28 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|cleanup
+suffix:semicolon
+multiline_comment|/* Store away the transform reference. */
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|hmac
+op_assign
+id|tfm
 suffix:semicolon
 id|out
 suffix:colon
@@ -9607,6 +9973,22 @@ id|sk
 suffix:semicolon
 r_return
 id|err
+suffix:semicolon
+id|cleanup
+suffix:colon
+r_if
+c_cond
+(paren
+id|tfm
+)paren
+id|sctp_crypto_free_tfm
+c_func
+(paren
+id|tfm
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is done by modeling the current datagram_poll() and the&n; * tcp_poll().  Note that, based on these implementations, we don&squot;t&n; * lock the socket in this function, even though it seems that,&n; * ideally, locking or some other mechanisms can be used to ensure&n; * the integrity of the counters (sndbuf and wmem_queued) used&n; * in this place.  We assume that we don&squot;t need locks either until proven&n; * otherwise.&n; *&n; * Another thing to note is that we include the Async I/O support&n; * here, again, by modeling the current TCP/UDP code.  We don&squot;t have&n; * a good way to test with it yet.&n; */
@@ -10217,7 +10599,7 @@ id|cmsg-&gt;cmsg_type
 r_case
 id|SCTP_INIT
 suffix:colon
-multiline_comment|/* SCTP Socket API Extension (draft 1)&n;&t;&t;&t; * 5.2.1 SCTP Initiation Structure (SCTP_INIT)&n;&t;&t;&t; *&n;&t;&t;&t; * This cmsghdr structure provides information for&n;&t;&t;&t; * initializing new SCTP associations with sendmsg().&n;&t;&t;&t; * The SCTP_INITMSG socket option uses this same data&n;&t;&t;&t; * structure.  This structure is not used for&n;&t;&t;&t; * recvmsg().&n;&t;&t;&t; *&n;&t;&t;&t; * cmsg_level    cmsg_type      cmsg_data[]&n;&t;&t;&t; * ------------  ------------   ----------------------&n;&t;&t;&t; * IPPROTO_SCTP  SCTP_INIT      struct sctp_initmsg&n;&t;&t;&t; */
+multiline_comment|/* SCTP Socket API Extension&n;&t;&t;&t; * 5.2.1 SCTP Initiation Structure (SCTP_INIT)&n;&t;&t;&t; *&n;&t;&t;&t; * This cmsghdr structure provides information for&n;&t;&t;&t; * initializing new SCTP associations with sendmsg().&n;&t;&t;&t; * The SCTP_INITMSG socket option uses this same data&n;&t;&t;&t; * structure.  This structure is not used for&n;&t;&t;&t; * recvmsg().&n;&t;&t;&t; *&n;&t;&t;&t; * cmsg_level    cmsg_type      cmsg_data[]&n;&t;&t;&t; * ------------  ------------   ----------------------&n;&t;&t;&t; * IPPROTO_SCTP  SCTP_INIT      struct sctp_initmsg&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10255,7 +10637,7 @@ suffix:semicolon
 r_case
 id|SCTP_SNDRCV
 suffix:colon
-multiline_comment|/* SCTP Socket API Extension (draft 1)&n;&t;&t;&t; * 5.2.2 SCTP Header Information Structure(SCTP_SNDRCV)&n;&t;&t;&t; *&n;&t;&t;&t; * This cmsghdr structure specifies SCTP options for&n;&t;&t;&t; * sendmsg() and describes SCTP header information&n;&t;&t;&t; * about a received message through recvmsg().&n;&t;&t;&t; *&n;&t;&t;&t; * cmsg_level    cmsg_type      cmsg_data[]&n;&t;&t;&t; * ------------  ------------   ----------------------&n;&t;&t;&t; * IPPROTO_SCTP  SCTP_SNDRCV    struct sctp_sndrcvinfo&n;&t;&t;&t; */
+multiline_comment|/* SCTP Socket API Extension&n;&t;&t;&t; * 5.2.2 SCTP Header Information Structure(SCTP_SNDRCV)&n;&t;&t;&t; *&n;&t;&t;&t; * This cmsghdr structure specifies SCTP options for&n;&t;&t;&t; * sendmsg() and describes SCTP header information&n;&t;&t;&t; * about a received message through recvmsg().&n;&t;&t;&t; *&n;&t;&t;&t; * cmsg_level    cmsg_type      cmsg_data[]&n;&t;&t;&t; * ------------  ------------   ----------------------&n;&t;&t;&t; * IPPROTO_SCTP  SCTP_SNDRCV    struct sctp_sndrcvinfo&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10576,7 +10958,7 @@ suffix:semicolon
 r_int
 id|timeo
 suffix:semicolon
-multiline_comment|/* Caller is allowed not to check sk-&gt;err before skb_recv_datagram()  */
+multiline_comment|/* Caller is allowed not to check sk-&gt;err before calling.  */
 id|error
 op_assign
 id|sock_error
@@ -10687,6 +11069,15 @@ id|skb
 )paren
 r_return
 id|skb
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;shutdown
+op_amp
+id|RCV_SHUTDOWN
+)paren
+r_break
 suffix:semicolon
 multiline_comment|/* User doesn&squot;t want to wait.  */
 id|error
@@ -10848,7 +11239,8 @@ r_int
 id|sctp_wspace
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -10899,7 +11291,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -10962,7 +11355,8 @@ r_void
 id|__sctp_write_space
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -11080,7 +11474,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -11152,7 +11547,8 @@ r_int
 id|sctp_wait_for_sndbuf
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -11390,7 +11786,8 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -11426,7 +11823,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -11485,7 +11883,8 @@ r_int
 id|sctp_wait_for_connect
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -11577,6 +11976,15 @@ id|timeo_p
 )paren
 r_goto
 id|do_nonblock
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk-&gt;shutdown
+op_amp
+id|RCV_SHUTDOWN
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -11883,8 +12291,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the assoc &n; * and its messages to the newsk.&n; */
+multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the assoc&n; * and its messages to the newsk.&n; */
 DECL|function|sctp_sock_migrate
+r_static
 r_void
 id|sctp_sock_migrate
 c_func
@@ -11930,7 +12339,8 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|newep
 op_assign
@@ -11968,6 +12378,10 @@ multiline_comment|/* Restore the ep value that was overwritten with the above st
 id|newsp-&gt;ep
 op_assign
 id|newep
+suffix:semicolon
+id|newsp-&gt;hmac
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Move any messages in the old socket&squot;s receive queue that are for the&n;&t; * peeled off association to the new socket&squot;s receive queue.&n;&t; */
 id|sctp_skb_for_each
