@@ -10050,9 +10050,13 @@ id|rtattr_failure
 suffix:semicolon
 id|ci.rta_lastuse
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jiffies
 op_minus
 id|rt-&gt;u.dst.lastuse
+)paren
 suffix:semicolon
 id|ci.rta_used
 op_assign
