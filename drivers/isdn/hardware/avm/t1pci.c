@@ -174,6 +174,13 @@ id|avmcard
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+)paren
+suffix:semicolon
 id|card-&gt;dma
 op_assign
 id|avmcard_dma_alloc
