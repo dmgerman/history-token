@@ -14554,15 +14554,6 @@ id|slot
 dot
 id|name
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ad1848: %s detected&bslash;n&quot;
-comma
-id|busname
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize this baby. */
 r_if
 c_cond
@@ -14600,16 +14591,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ad1848: Failed to initialize %s&bslash;n&quot;
-comma
-id|busname
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

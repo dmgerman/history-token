@@ -110,8 +110,6 @@ r_return
 suffix:semicolon
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
 macro_line|#else
 r_void
