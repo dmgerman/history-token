@@ -91,7 +91,7 @@ DECL|variable|sysctl_tcp_frto
 r_int
 id|sysctl_tcp_frto
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 DECL|macro|FLAG_DATA
 mdefine_line|#define FLAG_DATA&t;&t;0x01 /* Incoming frame contained data.&t;&t;*/
