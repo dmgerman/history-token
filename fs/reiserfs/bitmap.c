@@ -4307,7 +4307,7 @@ id|sb
 multiline_comment|/* superblock of filesystem&n;&t;&t;&t;&t;&t;&t;       to estimate space */
 )paren
 (brace
-id|b_blocknr_t
+r_int
 id|space
 suffix:semicolon
 id|spin_lock
@@ -4362,6 +4362,13 @@ id|bitmap_lock
 suffix:semicolon
 r_return
 id|space
+OG
+l_int|0
+ques
+c_cond
+id|space
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 eof

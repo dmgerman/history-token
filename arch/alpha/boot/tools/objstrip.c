@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/coff.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#ifdef __ELF__
-macro_line|# include &lt;asm/elf.h&gt;
 macro_line|# include &lt;linux/elf.h&gt;
 macro_line|#endif
 multiline_comment|/* bootfile size must be multiple of BLOCK_SIZE: */

@@ -1795,9 +1795,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;first_busno
+id|hose-&gt;bus
 op_eq
-id|bus
+id|pbus
 )paren
 (brace
 multiline_comment|/* Don&squot;t support idsel &gt; 20 on primary bus.  */

@@ -15827,9 +15827,6 @@ l_int|0
 id|wv_pcmcia_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -15887,21 +15884,11 @@ DECL|function|wv_pcmcia_release
 id|wv_pcmcia_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-multiline_comment|/* Address of the interface struct */
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|device
 op_star
 id|dev
@@ -17495,9 +17482,6 @@ id|DEV_STALE_CONFIG
 id|wv_pcmcia_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -17605,19 +17589,6 @@ r_struct
 id|dev_link_t
 )paren
 )paren
-suffix:semicolon
-multiline_comment|/* Unused for the Wavelan */
-id|link-&gt;release.function
-op_assign
-op_amp
-id|wv_pcmcia_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
 suffix:semicolon
 multiline_comment|/* The io structure describes IO port mapping */
 id|link-&gt;io.NumPorts1
@@ -18085,9 +18056,6 @@ multiline_comment|/* Some others haven&squot;t done their job : give them anothe
 id|wv_pcmcia_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -18494,9 +18462,6 @@ multiline_comment|/* Release the card */
 id|wv_pcmcia_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon

@@ -2908,22 +2908,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
-r_extern
-r_int
-id|do_setitimer
-c_func
-(paren
-r_int
-comma
-r_struct
-id|itimerval
-op_star
-comma
-r_struct
-id|itimerval
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * For backwards compatibility?  This can be done in libc so Alpha&n; * and all newer ports shouldn&squot;t need it.&n; */
 DECL|function|sys_alarm
 id|asmlinkage

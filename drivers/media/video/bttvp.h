@@ -2,8 +2,9 @@ multiline_comment|/*&n;    bttv - Bt848 frame grabber driver&n;&n;    bttv&squot
 macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
+macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,4)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,11)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -17,6 +18,7 @@ macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &quot;bt848.h&quot;
 macro_line|#include &quot;bttv.h&quot;
+macro_line|#include &quot;btcx-risc.h&quot;
 macro_line|#ifdef __KERNEL__
 DECL|macro|FORMAT_FLAGS_DITHER
 mdefine_line|#define FORMAT_FLAGS_DITHER       0x01
@@ -109,6 +111,10 @@ DECL|member|vbipack
 id|u8
 id|vbipack
 suffix:semicolon
+DECL|member|vtotal
+id|u16
+id|vtotal
+suffix:semicolon
 DECL|member|sram
 r_int
 id|sram
@@ -125,6 +131,7 @@ id|bttv_tvnorms
 suffix:semicolon
 r_extern
 r_const
+r_int
 r_int
 id|BTTV_TVNORMS
 suffix:semicolon
@@ -187,6 +194,7 @@ suffix:semicolon
 r_extern
 r_const
 r_int
+r_int
 id|BTTV_FORMATS
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
@@ -217,37 +225,15 @@ suffix:semicolon
 DECL|member|sheight
 DECL|member|vscale
 DECL|member|vdelay
+DECL|member|vtotal
 id|u16
 id|sheight
 comma
 id|vscale
 comma
 id|vdelay
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|bttv_riscmem
-r_struct
-id|bttv_riscmem
-(brace
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-DECL|member|cpu
-id|u32
-op_star
-id|cpu
-suffix:semicolon
-DECL|member|jmp
-id|u32
-op_star
-id|jmp
-suffix:semicolon
-DECL|member|dma
-id|dma_addr_t
-id|dma
+comma
+id|vtotal
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -288,13 +274,50 @@ id|geo
 suffix:semicolon
 DECL|member|top
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 id|top
 suffix:semicolon
 DECL|member|bottom
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 id|bottom
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|bttv_buffer_set
+r_struct
+id|bttv_buffer_set
+(brace
+DECL|member|top
+r_struct
+id|bttv_buffer
+op_star
+id|top
+suffix:semicolon
+multiline_comment|/* top field buffer    */
+DECL|member|bottom
+r_struct
+id|bttv_buffer
+op_star
+id|bottom
+suffix:semicolon
+multiline_comment|/* bottom field buffer */
+DECL|member|vbi
+r_struct
+id|bttv_buffer
+op_star
+id|vbi
+suffix:semicolon
+multiline_comment|/* vbi buffer */
+DECL|member|irqflags
+r_int
+r_int
+id|irqflags
+suffix:semicolon
+DECL|member|topirq
+r_int
+r_int
+id|topirq
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -326,6 +349,10 @@ DECL|member|nclips
 r_int
 id|nclips
 suffix:semicolon
+DECL|member|setup_ok
+r_int
+id|setup_ok
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|bttv_fh
@@ -353,7 +380,6 @@ r_struct
 id|videobuf_queue
 id|cap
 suffix:semicolon
-multiline_comment|/* struct bttv_buffer       buf; */
 DECL|member|fmt
 r_const
 r_struct
@@ -396,41 +422,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-risc.c                                                */
-multiline_comment|/* alloc/free memory */
-r_int
-id|bttv_riscmem_alloc
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci
-comma
-r_struct
-id|bttv_riscmem
-op_star
-id|risc
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-r_void
-id|bttv_riscmem_free
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci
-comma
-r_struct
-id|bttv_riscmem
-op_star
-id|risc
-)paren
-suffix:semicolon
 multiline_comment|/* risc code generators - capture */
 r_int
 id|bttv_risc_packed
@@ -442,7 +433,7 @@ op_star
 id|btv
 comma
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 op_star
 id|risc
 comma
@@ -452,14 +443,18 @@ op_star
 id|sglist
 comma
 r_int
+r_int
 id|offset
 comma
+r_int
 r_int
 id|bpl
 comma
 r_int
+r_int
 id|pitch
 comma
+r_int
 r_int
 id|lines
 )paren
@@ -474,7 +469,7 @@ op_star
 id|btv
 comma
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 op_star
 id|risc
 comma
@@ -484,69 +479,40 @@ op_star
 id|sglist
 comma
 r_int
+r_int
 id|yoffset
 comma
+r_int
 r_int
 id|ybpl
 comma
 r_int
+r_int
 id|ypadding
 comma
+r_int
 r_int
 id|ylines
 comma
 r_int
+r_int
 id|uoffset
 comma
+r_int
 r_int
 id|voffset
 comma
 r_int
+r_int
 id|hshift
 comma
+r_int
 r_int
 id|vshift
 comma
 r_int
+r_int
 id|cpadding
-)paren
-suffix:semicolon
-multiline_comment|/* risc code generator + helpers - screen overlay */
-r_int
-id|bttv_screen_clips
-c_func
-(paren
-r_int
-id|swidth
-comma
-r_int
-id|sheight
-comma
-r_struct
-id|v4l2_rect
-op_star
-id|win
-comma
-r_struct
-id|v4l2_clip
-op_star
-id|clips
-comma
-r_int
-id|n
-)paren
-suffix:semicolon
-r_void
-id|bttv_sort_clips
-c_func
-(paren
-r_struct
-id|v4l2_clip
-op_star
-id|clips
-comma
-r_int
-id|nclips
 )paren
 suffix:semicolon
 r_int
@@ -559,7 +525,7 @@ op_star
 id|btv
 comma
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 op_star
 id|risc
 comma
@@ -667,7 +633,7 @@ r_int
 id|slot
 comma
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 op_star
 id|risc
 comma
@@ -692,7 +658,7 @@ id|buf
 )paren
 suffix:semicolon
 r_int
-id|bttv_buffer_activate
+id|bttv_buffer_set_activate
 c_func
 (paren
 r_struct
@@ -701,14 +667,9 @@ op_star
 id|btv
 comma
 r_struct
-id|bttv_buffer
+id|bttv_buffer_set
 op_star
-id|top
-comma
-r_struct
-id|bttv_buffer
-op_star
-id|bottom
+id|set
 )paren
 suffix:semicolon
 r_void
@@ -756,7 +717,22 @@ suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-vbi.c                                                 */
 r_void
-id|bttv_vbi_fmt
+id|bttv_vbi_try_fmt
+c_func
+(paren
+r_struct
+id|bttv_fh
+op_star
+id|fh
+comma
+r_struct
+id|v4l2_format
+op_star
+id|f
+)paren
+suffix:semicolon
+r_void
+id|bttv_vbi_get_fmt
 c_func
 (paren
 r_struct
@@ -897,8 +873,9 @@ DECL|macro|d2printk
 mdefine_line|#define d2printk if (bttv_debug &gt;= 2) printk
 multiline_comment|/* our devices */
 DECL|macro|BTTV_MAX
-mdefine_line|#define BTTV_MAX 4
+mdefine_line|#define BTTV_MAX 16
 r_extern
+r_int
 r_int
 id|bttv_num
 suffix:semicolon
@@ -999,14 +976,21 @@ suffix:semicolon
 multiline_comment|/* pci subsystem id (bt878 based ones) */
 DECL|member|type
 r_int
+r_int
 id|type
 suffix:semicolon
 multiline_comment|/* card type (pointer into tvcards[])  */
 DECL|member|tuner_type
 r_int
+r_int
 id|tuner_type
 suffix:semicolon
 multiline_comment|/* tuner chip type */
+DECL|member|pinnacle_id
+r_int
+r_int
+id|pinnacle_id
+suffix:semicolon
 DECL|member|pll
 r_struct
 id|bttv_pll_info
@@ -1107,9 +1091,11 @@ suffix:semicolon
 multiline_comment|/* video state */
 DECL|member|input
 r_int
+r_int
 id|input
 suffix:semicolon
 DECL|member|audio
+r_int
 r_int
 id|audio
 suffix:semicolon
@@ -1140,6 +1126,7 @@ id|video_buffer
 id|fbuf
 suffix:semicolon
 DECL|member|field_count
+r_int
 r_int
 id|field_count
 suffix:semicolon
@@ -1211,50 +1198,37 @@ DECL|member|mbox_csel
 r_int
 id|mbox_csel
 suffix:semicolon
-multiline_comment|/* risc memory management data&n;&t;   - must aquire s_lock before changing these&n;&t;   - only the irq handler is supported to touch odd + even */
+multiline_comment|/* risc memory management data&n;&t;   - must aquire s_lock before changing these&n;&t;   - only the irq handler is supported to touch top + bottom + vcurr */
 DECL|member|main
 r_struct
-id|bttv_riscmem
+id|btcx_riscmem
 id|main
 suffix:semicolon
-DECL|member|top
-r_struct
-id|bttv_buffer
-op_star
-id|top
-suffix:semicolon
-multiline_comment|/* current active top field    */
-DECL|member|bottom
-r_struct
-id|bttv_buffer
-op_star
-id|bottom
-suffix:semicolon
-multiline_comment|/* current active bottom field */
 DECL|member|screen
 r_struct
 id|bttv_buffer
 op_star
 id|screen
 suffix:semicolon
-multiline_comment|/* overlay                     */
+multiline_comment|/* overlay             */
 DECL|member|capture
 r_struct
 id|list_head
 id|capture
 suffix:semicolon
-multiline_comment|/* capture buffer queue        */
-DECL|member|vcurr
-r_struct
-id|bttv_buffer
-op_star
-id|vcurr
-suffix:semicolon
+multiline_comment|/* video capture queue */
 DECL|member|vcapture
 r_struct
 id|list_head
 id|vcapture
 suffix:semicolon
+multiline_comment|/* vbi capture queue   */
+DECL|member|curr
+r_struct
+id|bttv_buffer_set
+id|curr
+suffix:semicolon
+multiline_comment|/* active buffers      */
 DECL|member|cap_ctl
 r_int
 r_int
@@ -1272,9 +1246,11 @@ id|timeout
 suffix:semicolon
 DECL|member|errors
 r_int
+r_int
 id|errors
 suffix:semicolon
 DECL|member|users
+r_int
 r_int
 id|users
 suffix:semicolon

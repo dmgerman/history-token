@@ -6,8 +6,14 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if   defined(CONFIG_ALPHA_GENERIC)
 multiline_comment|/* Here NR_IRQS is not exact, but rather an upper bound.  This is used&n;   many places throughout the kernel to size static arrays.  That&squot;s ok,&n;   we&squot;ll use alpha_mv.nr_irqs when we want the real thing.  */
+multiline_comment|/* When LEGACY_START_ADDRESS is selected, we leave out:&n;     TITAN&n;     WILDFIRE&n;     MARVEL&n;&n;   This helps keep the kernel object size reasonable for the majority&n;   of machines.&n;*/
+macro_line|# if defined(CONFIG_ALPHA_LEGACY_START_ADDRESS)
 DECL|macro|NR_IRQS
-macro_line|# define NR_IRQS&t;(32768 + 16) &t;/* marvel - 32 pids*/
+macro_line|#  define NR_IRQS      (128)           /* max is RAWHIDE/TAKARA */
+macro_line|# else
+DECL|macro|NR_IRQS
+macro_line|#  define NR_IRQS      (32768 + 16)    /* marvel - 32 pids */
+macro_line|# endif
 macro_line|#elif defined(CONFIG_ALPHA_CABRIOLET) || &bslash;&n;      defined(CONFIG_ALPHA_EB66P)     || &bslash;&n;      defined(CONFIG_ALPHA_EB164)     || &bslash;&n;      defined(CONFIG_ALPHA_PC164)     || &bslash;&n;      defined(CONFIG_ALPHA_LX164)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;35

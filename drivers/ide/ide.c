@@ -729,8 +729,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * current_capacity() returns the capacity (in sectors) of a drive&n; * according to its current geometry/LBA settings.&n; */
 DECL|function|current_capacity
-r_int
-r_int
+id|sector_t
 id|current_capacity
 (paren
 id|ide_drive_t
@@ -2662,10 +2661,32 @@ id|drive-&gt;present
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Messed up locking ... */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ide_lock
+)paren
+suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
 id|drive-&gt;queue
+)paren
+suffix:semicolon
+id|device_unregister
+c_func
+(paren
+op_amp
+id|drive-&gt;gendev
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ide_lock
 )paren
 suffix:semicolon
 id|drive-&gt;queue
@@ -2749,6 +2770,28 @@ id|hwif
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* More messed up locking ... */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ide_lock
+)paren
+suffix:semicolon
+id|device_unregister
+c_func
+(paren
+op_amp
+id|hwif-&gt;gendev
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ide_lock
+)paren
+suffix:semicolon
 macro_line|#if !defined(CONFIG_DMA_NONPCI)
 r_if
 c_cond
@@ -2917,6 +2960,10 @@ id|hwif-&gt;chipset
 op_assign
 id|old_hwif.chipset
 suffix:semicolon
+id|hwif-&gt;hold
+op_assign
+id|old_hwif.hold
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 id|hwif-&gt;pci_dev
 op_assign
@@ -3079,6 +3126,28 @@ id|hwif-&gt;ide_dma_timeout
 op_assign
 id|old_hwif.ide_dma_timeout
 suffix:semicolon
+id|hwif-&gt;ide_dma_queued_on
+op_assign
+id|old_hwif.ide_dma_queued_on
+suffix:semicolon
+id|hwif-&gt;ide_dma_queued_off
+op_assign
+id|old_hwif.ide_dma_queued_off
+suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
+id|hwif-&gt;ide_dma_queued_read
+op_assign
+id|old_hwif.ide_dma_queued_read
+suffix:semicolon
+id|hwif-&gt;ide_dma_queued_write
+op_assign
+id|old_hwif.ide_dma_queued_write
+suffix:semicolon
+id|hwif-&gt;ide_dma_queued_start
+op_assign
+id|old_hwif.ide_dma_queued_start
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#if 0
 id|hwif-&gt;iops
@@ -9719,8 +9788,7 @@ id|drive
 )brace
 DECL|function|default_capacity
 r_static
-r_int
-r_int
+id|sector_t
 id|default_capacity
 (paren
 id|ide_drive_t

@@ -4116,6 +4116,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+id|ide_driver_t
+id|idedefault_driver
+suffix:semicolon
 DECL|function|ata_probe
 r_struct
 id|kobject
@@ -4171,8 +4175,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|drive-&gt;driver
+op_eq
+op_amp
+id|idedefault_driver
 )paren
 (brace
 r_if
@@ -4261,8 +4267,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|drive-&gt;driver
+op_eq
+op_amp
+id|idedefault_driver
 )paren
 r_return
 l_int|NULL

@@ -1592,6 +1592,7 @@ op_star
 id|dd
 suffix:semicolon
 r_int
+r_int
 id|major
 comma
 id|minor
@@ -1615,7 +1616,7 @@ c_func
 (paren
 id|path
 comma
-l_string|&quot;%x:%x&quot;
+l_string|&quot;%u:%u&quot;
 comma
 op_amp
 id|major

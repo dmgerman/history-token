@@ -5,9 +5,9 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DM_DRIVER_EMAIL
 mdefine_line|#define DM_DRIVER_EMAIL &quot;dm@uk.sistina.com&quot;
@@ -2361,10 +2361,10 @@ id|new_name
 )paren
 suffix:semicolon
 )brace
-DECL|function|suspend
+DECL|function|do_suspend
 r_static
 r_int
-id|suspend
+id|do_suspend
 c_func
 (paren
 r_struct
@@ -2445,10 +2445,10 @@ r_return
 id|r
 suffix:semicolon
 )brace
-DECL|function|resume
+DECL|function|do_resume
 r_static
 r_int
-id|resume
+id|do_resume
 c_func
 (paren
 r_struct
@@ -2713,14 +2713,14 @@ op_amp
 id|DM_SUSPEND_FLAG
 )paren
 r_return
-id|suspend
+id|do_suspend
 c_func
 (paren
 id|param
 )paren
 suffix:semicolon
 r_return
-id|resume
+id|do_resume
 c_func
 (paren
 id|param

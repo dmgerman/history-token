@@ -149,6 +149,8 @@ DECL|macro|BTTV_RV605
 mdefine_line|#define BTTV_RV605          0x4a
 DECL|macro|BTTV_WINDVR
 mdefine_line|#define BTTV_WINDVR         0x4c
+DECL|macro|BTTV_GRANDTEC
+mdefine_line|#define BTTV_GRANDTEC       0x4d
 DECL|macro|BTTV_KWORLD
 mdefine_line|#define BTTV_KWORLD         0x4e
 DECL|macro|BTTV_HAUPPAUGEPVR
@@ -185,6 +187,18 @@ DECL|macro|BTTV_FORMAC_PROTV
 mdefine_line|#define BTTV_FORMAC_PROTV   0x5f
 DECL|macro|BTTV_EURESYS_PICOLO
 mdefine_line|#define BTTV_EURESYS_PICOLO 0x61
+DECL|macro|BTTV_PV150
+mdefine_line|#define BTTV_PV150          0x62
+DECL|macro|BTTV_AD_TVK503
+mdefine_line|#define BTTV_AD_TVK503      0x63
+DECL|macro|BTTV_IVC200
+mdefine_line|#define BTTV_IVC200         0x66
+DECL|macro|BTTV_XGUARD
+mdefine_line|#define BTTV_XGUARD         0x67
+DECL|macro|BTTV_NEBULA_DIGITV
+mdefine_line|#define BTTV_NEBULA_DIGITV  0x68
+DECL|macro|BTTV_PV143
+mdefine_line|#define BTTV_PV143          0x69
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -213,6 +227,8 @@ DECL|macro|I2C_VHX
 mdefine_line|#define I2C_VHX            0xc0
 DECL|macro|I2C_MSP3400
 mdefine_line|#define I2C_MSP3400        0x80
+DECL|macro|I2C_MSP3400_ALT
+mdefine_line|#define I2C_MSP3400_ALT    0x88
 DECL|macro|I2C_TEA6300
 mdefine_line|#define I2C_TEA6300        0x80
 DECL|macro|I2C_DPL3518
@@ -253,21 +269,26 @@ id|name
 suffix:semicolon
 DECL|member|video_inputs
 r_int
+r_int
 id|video_inputs
 suffix:semicolon
 DECL|member|audio_inputs
+r_int
 r_int
 id|audio_inputs
 suffix:semicolon
 DECL|member|tuner
 r_int
+r_int
 id|tuner
 suffix:semicolon
 DECL|member|svhs
 r_int
+r_int
 id|svhs
 suffix:semicolon
 DECL|member|digital_mode
+r_int
 r_int
 id|digital_mode
 suffix:semicolon
@@ -299,11 +320,13 @@ multiline_comment|/* GPIO MUX mask */
 multiline_comment|/* i2c audio flags */
 DECL|member|no_msp34xx
 r_int
+r_int
 id|no_msp34xx
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|no_tda9875
+r_int
 r_int
 id|no_tda9875
 suffix:colon
@@ -311,18 +334,28 @@ l_int|1
 suffix:semicolon
 DECL|member|no_tda7432
 r_int
+r_int
 id|no_tda7432
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|needs_tvaudio
 r_int
+r_int
 id|needs_tvaudio
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|msp34xx_alt
+r_int
+r_int
+id|msp34xx_alt
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* other settings */
 DECL|member|pll
+r_int
 r_int
 id|pll
 suffix:semicolon
@@ -334,9 +367,11 @@ DECL|macro|PLL_35
 mdefine_line|#define PLL_35   2
 DECL|member|tuner_type
 r_int
+r_int
 id|tuner_type
 suffix:semicolon
 DECL|member|has_radio
+r_int
 r_int
 id|has_radio
 suffix:semicolon
@@ -389,6 +424,7 @@ id|bttv_tvcards
 suffix:semicolon
 r_extern
 r_const
+r_int
 r_int
 id|bttv_num_tvcards
 suffix:semicolon

@@ -1,5 +1,4 @@
 multiline_comment|/*&n;    bttv-if.c  --  interfaces to other kernel modules&n;&t;all the i2c code is here&n;&t;also the gpio interface exported by bttv (used by lirc)&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;    &n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -716,6 +715,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|btv-&gt;pinnacle_id
+op_ne
+id|UNSET
+)paren
+id|bttv_call_i2c_clients
+c_func
+(paren
+id|btv
+comma
+id|AUDC_CONFIG_PINNACLE
+comma
+op_amp
+id|btv-&gt;pinnacle_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|bttv_debug
 )paren
 id|printk
@@ -874,6 +891,11 @@ id|owner
 op_assign
 id|THIS_MODULE
 comma
+dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_TV_ANALOG
+comma
 id|I2C_DEVNAME
 c_func
 (paren
@@ -884,11 +906,6 @@ dot
 id|id
 op_assign
 id|I2C_HW_B_BT848
-comma
-dot
-r_class
-op_assign
-id|I2C_ADAP_CLASS_TV_ANALOG
 comma
 dot
 id|client_register
@@ -1334,6 +1351,11 @@ l_string|&quot;bt848 #%d&quot;
 comma
 id|btv-&gt;nr
 )paren
+suffix:semicolon
+id|btv-&gt;i2c_adap.dev.parent
+op_assign
+op_amp
+id|btv-&gt;dev-&gt;dev
 suffix:semicolon
 id|btv-&gt;i2c_algo.data
 op_assign

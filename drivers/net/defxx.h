@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File Name:&n; *   defxx.h&n; *&n; * Copyright Information:&n; *   Copyright Digital Equipment Corporation 1996.&n; *&n; *   This software may be used and distributed according to the terms of&n; *   the GNU General Public License, incorporated herein by reference.&n; *&n; * Abstract:&n; *   Contains all definitions specified by port specification and required&n; *   by the defxx.c driver.&n; *&n; * Maintainers:&n; *   LVS&t;Lawrence V. Stefani&n; *&n; * Contact:&n; *&t; The author may be reached at:&n; *&n; *&t;&t;Inet: stefani@lkg.dec.com&n; *&t;&t;Mail: Digital Equipment Corporation&n; *&t;&t;&t;  550 King Street&n; *&t;&t;&t;  M/S: LKG1-3/M07&n; *&t;&t;&t;  Littleton, MA  01460&n; *&n; * Modification History:&n; *&t;&t;Date&t;&t;Name&t;Description&n; *&t;&t;16-Aug-96&t;LVS&t;&t;Created.&n; *&t;&t;09-Sep-96&t;LVS&t;&t;Added group_prom field.  Moved read/write I/O&n; *&t;&t;&t;&t;&t;&t;&t;macros to DEFXX.C.&n; *&t;&t;12-Sep-96&t;LVS&t;&t;Removed packet request header pointers.&n; */
+multiline_comment|/*&n; * File Name:&n; *   defxx.h&n; *&n; * Copyright Information:&n; *   Copyright Digital Equipment Corporation 1996.&n; *&n; *   This software may be used and distributed according to the terms of&n; *   the GNU General Public License, incorporated herein by reference.&n; *&n; * Abstract:&n; *   Contains all definitions specified by port specification and required&n; *   by the defxx.c driver.&n; *&n; * The original author:&n; *   LVS&t;Lawrence V. Stefani &lt;lstefani@yahoo.com&gt;&n; *&n; * Maintainers:&n; *   macro&t;Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; *&n; * Modification History:&n; *&t;&t;Date&t;&t;Name&t;Description&n; *&t;&t;16-Aug-96&t;LVS&t;&t;Created.&n; *&t;&t;09-Sep-96&t;LVS&t;&t;Added group_prom field.  Moved read/write I/O&n; *&t;&t;&t;&t;&t;&t;&t;macros to DEFXX.C.&n; *&t;&t;12-Sep-96&t;LVS&t;&t;Removed packet request header pointers.&n; *&t;&t;04 Aug 2003&t;macro&t;&t;Converted to the DMA API.&n; */
 macro_line|#ifndef _DEFXX_H_
 DECL|macro|_DEFXX_H_
 mdefine_line|#define _DEFXX_H_
@@ -3737,7 +3737,12 @@ r_char
 op_star
 id|kmalloced
 suffix:semicolon
-multiline_comment|/* kfree this on unload */
+multiline_comment|/* pci_free_consistent this on unload */
+DECL|member|kmalloced_dma
+id|dma_addr_t
+id|kmalloced_dma
+suffix:semicolon
+multiline_comment|/* DMA handle for the above */
 DECL|member|descr_block_virt
 id|PI_DESCR_BLOCK
 op_star
@@ -3745,7 +3750,7 @@ id|descr_block_virt
 suffix:semicolon
 multiline_comment|/* PDQ descriptor block virt address */
 DECL|member|descr_block_phys
-id|u32
+id|dma_addr_t
 id|descr_block_phys
 suffix:semicolon
 multiline_comment|/* PDQ descriptor block phys address */
@@ -3756,7 +3761,7 @@ id|cmd_req_virt
 suffix:semicolon
 multiline_comment|/* Command request buffer virt address */
 DECL|member|cmd_req_phys
-id|u32
+id|dma_addr_t
 id|cmd_req_phys
 suffix:semicolon
 multiline_comment|/* Command request buffer phys address */
@@ -3767,7 +3772,7 @@ id|cmd_rsp_virt
 suffix:semicolon
 multiline_comment|/* Command response buffer virt address */
 DECL|member|cmd_rsp_phys
-id|u32
+id|dma_addr_t
 id|cmd_rsp_phys
 suffix:semicolon
 multiline_comment|/* Command response buffer phys address */
@@ -3778,7 +3783,7 @@ id|rcv_block_virt
 suffix:semicolon
 multiline_comment|/* LLC host receive queue buf blk virt */
 DECL|member|rcv_block_phys
-id|u32
+id|dma_addr_t
 id|rcv_block_phys
 suffix:semicolon
 multiline_comment|/* LLC host receive queue buf blk phys */
@@ -3789,7 +3794,7 @@ id|cons_block_virt
 suffix:semicolon
 multiline_comment|/* PDQ consumer block virt address */
 DECL|member|cons_block_phys
-id|u32
+id|dma_addr_t
 id|cons_block_phys
 suffix:semicolon
 multiline_comment|/* PDQ consumer block phys address */

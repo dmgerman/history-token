@@ -3,15 +3,10 @@ DECL|macro|__LINUX_VIDEODEV_H
 mdefine_line|#define __LINUX_VIDEODEV_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if 1
-multiline_comment|/*&n; * v4l2 is still work-in-progress, integration planed for 2.5.x&n; *   documentation:           http://bytesex.org/v4l/&n; *   patches available from:  http://bytesex.org/patches/&n; */
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|HAVE_V4L2
-macro_line|# define HAVE_V4L2 1
-macro_line|# include &lt;linux/videodev2.h&gt;
-macro_line|#else
-DECL|macro|HAVE_V4L2
-macro_line|# undef HAVE_V4L2
-macro_line|#endif
+mdefine_line|#define HAVE_V4L2 1
+macro_line|#include &lt;linux/videodev2.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -19,11 +14,12 @@ DECL|struct|video_device
 r_struct
 id|video_device
 (brace
-DECL|member|owner
+multiline_comment|/* device info */
+DECL|member|dev
 r_struct
-id|module
+id|device
 op_star
-id|owner
+id|dev
 suffix:semicolon
 DECL|member|name
 r_char
@@ -50,29 +46,53 @@ DECL|member|minor
 r_int
 id|minor
 suffix:semicolon
-multiline_comment|/* new interface -- we will use file_operations directly&n; &t; * like soundcore does. */
+multiline_comment|/* device ops + callbacks */
 DECL|member|fops
 r_struct
 id|file_operations
 op_star
 id|fops
 suffix:semicolon
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|video_device
+op_star
+id|vfd
+)paren
+suffix:semicolon
+macro_line|#if 1 /* to be removed in 2.7.x */
+multiline_comment|/* obsolete -- fops-&gt;owner is used instead */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+multiline_comment|/* dev-&gt;driver_data will be used instead some day.&n;&t; * Use the video_{get|set}_drvdata() helper functions,&n;&t; * so the switch over will be transparent for you.&n;&t; * Or use {pci|usb}_{get|set}_drvdata() directly. */
 DECL|member|priv
 r_void
 op_star
 id|priv
 suffix:semicolon
-multiline_comment|/* Used to be &squot;private&squot; but that upsets C++ */
-multiline_comment|/* for videodev.c intenal usage -- don&squot;t touch */
+macro_line|#endif
+multiline_comment|/* for videodev.c intenal usage -- please don&squot;t touch */
 DECL|member|users
 r_int
 id|users
 suffix:semicolon
+multiline_comment|/* video_exclusive_{open|close} ... */
 DECL|member|lock
 r_struct
 id|semaphore
 id|lock
 suffix:semicolon
+multiline_comment|/* ... helper function uses these   */
 DECL|member|devfs_name
 r_char
 id|devfs_name
@@ -81,10 +101,24 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* devfs */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* sysfs */
 )brace
 suffix:semicolon
 DECL|macro|VIDEO_MAJOR
 mdefine_line|#define VIDEO_MAJOR&t;81
+DECL|macro|VFL_TYPE_GRABBER
+mdefine_line|#define VFL_TYPE_GRABBER&t;0
+DECL|macro|VFL_TYPE_VBI
+mdefine_line|#define VFL_TYPE_VBI&t;&t;1
+DECL|macro|VFL_TYPE_RADIO
+mdefine_line|#define VFL_TYPE_RADIO&t;&t;2
+DECL|macro|VFL_TYPE_VTX
+mdefine_line|#define VFL_TYPE_VTX&t;&t;3
 r_extern
 r_int
 id|video_register_device
@@ -101,14 +135,6 @@ r_int
 id|nr
 )paren
 suffix:semicolon
-DECL|macro|VFL_TYPE_GRABBER
-mdefine_line|#define VFL_TYPE_GRABBER&t;0
-DECL|macro|VFL_TYPE_VBI
-mdefine_line|#define VFL_TYPE_VBI&t;&t;1
-DECL|macro|VFL_TYPE_RADIO
-mdefine_line|#define VFL_TYPE_RADIO&t;&t;2
-DECL|macro|VFL_TYPE_VTX
-mdefine_line|#define VFL_TYPE_VTX&t;&t;3
 r_extern
 r_void
 id|video_unregister_device
@@ -131,6 +157,97 @@ id|file
 op_star
 )paren
 suffix:semicolon
+DECL|macro|to_video_device
+mdefine_line|#define to_video_device(cd) container_of(cd, struct video_device, class_dev)
+r_static
+r_inline
+r_void
+DECL|function|video_device_create_file
+id|video_device_create_file
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|vfd
+comma
+r_struct
+id|class_device_attribute
+op_star
+id|attr
+)paren
+(brace
+id|class_device_create_file
+c_func
+(paren
+op_amp
+id|vfd-&gt;class_dev
+comma
+id|attr
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* helper functions to alloc / release struct video_device, the&n;   later can be used for video_device-&gt;release() */
+r_struct
+id|video_device
+op_star
+id|video_device_alloc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|video_device_release
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|vfd
+)paren
+suffix:semicolon
+multiline_comment|/* helper functions to access driver private data. */
+DECL|function|video_get_drvdata
+r_static
+r_inline
+r_void
+op_star
+id|video_get_drvdata
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|dev-&gt;priv
+suffix:semicolon
+)brace
+DECL|function|video_set_drvdata
+r_static
+r_inline
+r_void
+id|video_set_drvdata
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|dev-&gt;priv
+op_assign
+id|data
+suffix:semicolon
+)brace
 r_extern
 r_int
 id|video_exclusive_open

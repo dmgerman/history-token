@@ -6,6 +6,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/core_titan.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/err_common.h&gt;
+macro_line|#include &lt;asm/err_ev6.h&gt;
 macro_line|#include &quot;err_impl.h&quot;
 macro_line|#include &quot;proto.h&quot;
 r_static
@@ -2015,6 +2017,11 @@ c_func
 (paren
 op_amp
 id|titan_subpacket_handler
+)paren
+suffix:semicolon
+id|ev6_register_error_handlers
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

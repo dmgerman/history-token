@@ -542,6 +542,18 @@ id|irq_desc
 op_plus
 id|irq
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;handler
+op_eq
+op_amp
+id|no_irq_type
+)paren
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
 multiline_comment|/*&n;&t; * Some drivers like serial.c use request_irq() heavily,&n;&t; * so we have to be careful not to interfere with a&n;&t; * running system.&n;&t; */
 r_if
 c_cond
@@ -663,7 +675,15 @@ suffix:semicolon
 id|desc-&gt;status
 op_and_assign
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_AUTODETECT
+op_or
+id|IRQ_WAITING
+op_or
+id|IRQ_INPROGRESS
+)paren
 suffix:semicolon
 id|desc-&gt;handler
 op_member_access_from_pointer
@@ -1395,13 +1415,6 @@ r_int
 id|irq
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-suffix:semicolon
-macro_line|#endif
 r_char
 id|name
 (braket
@@ -1425,6 +1438,11 @@ op_eq
 op_amp
 id|no_irq_type
 )paren
+op_logical_or
+id|irq_dir
+(braket
+id|irq
+)braket
 )paren
 r_return
 suffix:semicolon
@@ -1474,6 +1492,11 @@ dot
 id|handler-&gt;set_affinity
 )paren
 (brace
+r_struct
+id|proc_dir_entry
+op_star
+id|entry
+suffix:semicolon
 multiline_comment|/* create /proc/irq/1234/smp_affinity */
 id|entry
 op_assign
@@ -1490,6 +1513,12 @@ id|irq
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+(brace
 id|entry-&gt;nlink
 op_assign
 l_int|1
@@ -1513,6 +1542,7 @@ id|entry-&gt;write_proc
 op_assign
 id|irq_affinity_write_proc
 suffix:semicolon
+)brace
 id|smp_affinity_entry
 (braket
 id|irq
