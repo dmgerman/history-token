@@ -463,9 +463,13 @@ c_func
 (paren
 r_int
 r_int
-id|irq
+id|host_irq
 )paren
 (brace
+r_int
+r_int
+id|irq
+suffix:semicolon
 multiline_comment|/*&n;&t; * Setup, and then probe for an ISA PIC&n;&t; * If the PIC is not there, then we&n;&t; * ignore the PIC.&n;&t; */
 id|outb
 c_func
@@ -627,8 +631,12 @@ id|KERN_INFO
 l_string|&quot;IRQ: ISA PIC not found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|irq
+id|host_irq
 op_assign
+(paren
+r_int
+r_int
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -636,8 +644,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|host_irq
 op_ne
+(paren
+r_int
+r_int
+)paren
 op_minus
 l_int|1
 )paren
@@ -776,7 +788,7 @@ suffix:semicolon
 id|set_irq_chained_handler
 c_func
 (paren
-id|irq
+id|host_irq
 comma
 id|isa_irq_handler
 )paren
