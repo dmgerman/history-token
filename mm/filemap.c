@@ -5773,6 +5773,16 @@ id|RLIMIT_FSIZE
 dot
 id|rlim_cur
 suffix:semicolon
+r_const
+r_int
+id|isblk
+op_assign
+id|S_ISBLK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+suffix:semicolon
 r_int
 id|status
 op_assign
@@ -5989,17 +5999,17 @@ id|written
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* FIXME: this is for backwards compatibility with 2.4 */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
+id|isblk
 )paren
-op_logical_and
+(brace
+multiline_comment|/* FIXME: this is for backwards compatibility with 2.4 */
+r_if
+c_cond
+(paren
 id|file-&gt;f_flags
 op_amp
 id|O_APPEND
@@ -6008,17 +6018,12 @@ id|pos
 op_assign
 id|inode-&gt;i_size
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check whether we&squot;ve reached the file size limit.&n;&t; */
 r_if
 c_cond
-(paren
-id|unlikely
-c_func
 (paren
 id|limit
 op_ne
 id|RLIM_INFINITY
-)paren
 )paren
 (brace
 r_if
@@ -6075,6 +6080,7 @@ id|u32
 )paren
 id|pos
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n;&t; * LFS rule&n;&t; */
@@ -6159,11 +6165,7 @@ id|likely
 c_func
 (paren
 op_logical_neg
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
+id|isblk
 )paren
 )paren
 (brace
@@ -6399,11 +6401,7 @@ OG
 id|inode-&gt;i_size
 op_logical_and
 op_logical_neg
-id|S_ISBLK
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
+id|isblk
 )paren
 (brace
 id|inode-&gt;i_size
