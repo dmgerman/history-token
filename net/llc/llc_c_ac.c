@@ -6490,9 +6490,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|u8
-id|f_bit
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6502,8 +6499,11 @@ c_func
 (paren
 id|pdu
 )paren
-op_logical_and
-op_logical_neg
+)paren
+(brace
+id|u8
+id|f_bit
+suffix:semicolon
 id|llc_pdu_decode_pf_bit
 c_func
 (paren
@@ -6512,7 +6512,10 @@ comma
 op_amp
 id|f_bit
 )paren
-op_logical_and
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|f_bit
 )paren
 (brace
@@ -6534,6 +6537,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0

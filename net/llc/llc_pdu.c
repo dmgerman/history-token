@@ -6,7 +6,7 @@ macro_line|#include &lt;net/llc_if.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
 r_static
-r_int
+r_void
 id|llc_pdu_decode_pdu_type
 c_func
 (paren
@@ -149,9 +149,6 @@ id|llc_pdu_sn
 op_star
 id|pdu
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|llc_pdu_decode_pdu_type
 c_func
 (paren
@@ -160,9 +157,6 @@ comma
 op_amp
 id|pdu_type
 )paren
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|pdu
 op_assign
@@ -216,13 +210,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|out
-suffix:colon
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_decode_pf_bit - extracs poll/final bit from LLC header&n; *&t;@skb: input skb that p/f bit must be extracted from it&n; *&t;@pf_bit: poll/final bit (0 or 1)&n; *&n; *&t;This function extracts poll/final bit from LLC header (based on type of&n; *&t;PDU). In I or S pdus, p/f bit is right bit of fourth byte in header. In&n; *&t;U pdus p/f bit is fifth bit of third byte.&n; */
 DECL|function|llc_pdu_decode_pf_bit
-r_int
+r_void
 id|llc_pdu_decode_pf_bit
 c_func
 (paren
@@ -244,9 +235,6 @@ id|llc_pdu_sn
 op_star
 id|pdu
 suffix:semicolon
-r_int
-id|rc
-op_assign
 id|llc_pdu_decode_pdu_type
 c_func
 (paren
@@ -255,14 +243,6 @@ comma
 op_amp
 id|pdu_type
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_goto
-id|out
 suffix:semicolon
 id|pdu
 op_assign
@@ -310,15 +290,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|out
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_pdu_decode_cr_bit - extracs command response bit from LLC header&n; *&t;@skb: input skb that c/r bit must be extracted from it.&n; *&t;@cr_bit: command/response bit (0 or 1).&n; *&n; *&t;This function extracts command/response bit from LLC header. this bit&n; *&t;is right bit of source SAP.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_decode_cr_bit - extracts command response bit from LLC header&n; *&t;@skb: input skb that c/r bit must be extracted from it.&n; *&t;@cr_bit: command/response bit (0 or 1).&n; *&n; *&t;This function extracts command/response bit from LLC header. this bit&n; *&t;is right bit of source SAP.&n; */
 DECL|function|llc_pdu_decode_cr_bit
-r_int
+r_void
 id|llc_pdu_decode_cr_bit
 c_func
 (paren
@@ -345,13 +320,10 @@ id|ssap
 op_amp
 id|LLC_PDU_CMD_RSP_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_decode_sa - extracs source address (MAC) of input frame&n; *&t;@skb: input skb that source address must be extracted from it.&n; *&t;@sa: pointer to source address (6 byte array).&n; *&n; *&t;This function extracts source address(MAC) of input frame.&n; */
 DECL|function|llc_pdu_decode_sa
-r_int
+r_void
 id|llc_pdu_decode_sa
 c_func
 (paren
@@ -426,13 +398,10 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_decode_da - extracts dest address of input frame&n; *&t;@skb: input skb that destination address must be extracted from it&n; *&t;@sa: pointer to destination address (6 byte array).&n; *&n; *&t;This function extracts destination address(MAC) of input frame.&n; */
 DECL|function|llc_pdu_decode_da
-r_int
+r_void
 id|llc_pdu_decode_da
 c_func
 (paren
@@ -507,13 +476,10 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_decode_dsap - extracts dest SAP of input frame&n; *&t;@skb: input skb that destination SAP must be extracted from it.&n; *&t;@dsap: destination SAP (output argument).&n; *&n; *&t;This function extracts destination SAP of input frame. right bit of&n; *&t;DSAP designates individual/group SAP.&n; */
 DECL|function|llc_pdu_decode_dsap
-r_int
+r_void
 id|llc_pdu_decode_dsap
 c_func
 (paren
@@ -540,13 +506,10 @@ id|dsap
 op_amp
 l_int|0xFE
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_pdu_decode_ssap - extracts source SAP of input frame&n; *&t;@skb: input skb that source SAP must be extracted from it.&n; *&t;@ssap: source SAP (output argument).&n; *&n; *&t;This function extracts source SAP of input frame. right bit of SSAP is&n; *&t;command/response bit.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_decode_ssap - extracts source SAP of input frame&n; *&t;@skb: input skb that source SAP must be extracted from it.&n; *&t;@ssap: source SAP (output argument).&n; *&n; *&t;This function extracts source SAP of input frame. Right bit of SSAP is&n; *&t;command/response bit.&n; */
 DECL|function|llc_pdu_decode_ssap
-r_int
+r_void
 id|llc_pdu_decode_ssap
 c_func
 (paren
@@ -573,13 +536,10 @@ id|ssap
 op_amp
 l_int|0xFE
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_init_as_ui_cmd - sets LLC header as UI PDU&n; *&t;@skb: input skb that header must be set into it.&n; *&n; *&t;This function sets third byte of LLC header as a UI PDU.&n; */
 DECL|function|llc_pdu_init_as_ui_cmd
-r_int
+r_void
 id|llc_pdu_init_as_ui_cmd
 c_func
 (paren
@@ -608,13 +568,10 @@ id|pdu-&gt;ctrl_1
 op_or_assign
 id|LLC_1_PDU_CMD_UI
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_init_as_xid_cmd - sets bytes 3, 4 &amp; 5 of LLC header as XID&n; *&t;@skb: input skb that header must be set into it.&n; *&n; *&t;This function sets third,fourth,fifth and sixth bytes of LLC header as&n; *&t;a XID PDU.&n; */
 DECL|function|llc_pdu_init_as_xid_cmd
-r_int
+r_void
 id|llc_pdu_init_as_xid_cmd
 c_func
 (paren
@@ -702,13 +659,10 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_init_as_test_cmd - sets PDU as TEST&n; *&t;@skb - Address of the skb to build&n; *&n; * &t;Sets a PDU as TEST&n; */
 DECL|function|llc_pdu_init_as_test_cmd
-r_int
+r_void
 id|llc_pdu_init_as_test_cmd
 c_func
 (paren
@@ -741,13 +695,10 @@ id|pdu-&gt;ctrl_1
 op_or_assign
 id|LLC_U_PF_BIT_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_pdu_init_as_disc_cmd - Builds DISC PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a DISC command.&n; */
 DECL|function|llc_pdu_init_as_disc_cmd
-r_int
+r_void
 id|llc_pdu_init_as_disc_cmd
 c_func
 (paren
@@ -793,13 +744,10 @@ l_int|4
 op_amp
 id|LLC_U_PF_BIT_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_i_cmd - builds I pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@ns: The sequence number of the data PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an I command.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_i_cmd - builds I pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@ns: The sequence number of the data PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an I command.&n; */
 DECL|function|llc_pdu_init_as_i_cmd
-r_int
+r_void
 id|llc_pdu_init_as_i_cmd
 c_func
 (paren
@@ -868,13 +816,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rej_cmd - builds REJ PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as a REJ command.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rej_cmd - builds REJ PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as a REJ command.&n; */
 DECL|function|llc_pdu_init_as_rej_cmd
-r_int
+r_void
 id|llc_pdu_init_as_rej_cmd
 c_func
 (paren
@@ -935,13 +880,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rnr_cmd - builds RNR pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RNR command.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rnr_cmd - builds RNR pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RNR command.&n; */
 DECL|function|llc_pdu_init_as_rnr_cmd
-r_int
+r_void
 id|llc_pdu_init_as_rnr_cmd
 c_func
 (paren
@@ -1002,13 +944,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rr_cmd - Builds RR pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RR command.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rr_cmd - Builds RR pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&t;@nr: The seq. number of the expected I PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RR command.&n; */
 DECL|function|llc_pdu_init_as_rr_cmd
-r_int
+r_void
 id|llc_pdu_init_as_rr_cmd
 c_func
 (paren
@@ -1065,13 +1004,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_sabme_cmd - builds SABME pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as an SABME command.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_sabme_cmd - builds SABME pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as an SABME command.&n; */
 DECL|function|llc_pdu_init_as_sabme_cmd
-r_int
+r_void
 id|llc_pdu_init_as_sabme_cmd
 c_func
 (paren
@@ -1117,13 +1053,10 @@ l_int|4
 op_amp
 id|LLC_U_PF_BIT_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_dm_rsp - builds DM response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a DM response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_dm_rsp - builds DM response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a DM response.&n; */
 DECL|function|llc_pdu_init_as_dm_rsp
-r_int
+r_void
 id|llc_pdu_init_as_dm_rsp
 c_func
 (paren
@@ -1169,13 +1102,10 @@ l_int|4
 op_amp
 id|LLC_U_PF_BIT_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_xid_rsp - builds XID response PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@svcs_supported: The class of the LLC (I or II)&n; *&t;@rx_window: The size of the receive window of the LLC&n; *&n; *&t;Builds a pdu frame as an XID response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_xid_rsp - builds XID response PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@svcs_supported: The class of the LLC (I or II)&n; *&t;@rx_window: The size of the receive window of the LLC&n; *&n; *&t;Builds a pdu frame as an XID response.&n; */
 DECL|function|llc_pdu_init_as_xid_rsp
-r_int
+r_void
 id|llc_pdu_init_as_xid_rsp
 c_func
 (paren
@@ -1261,13 +1191,10 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_test_rsp - build TEST response PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@ev_skb: The received TEST command PDU frame&n; *&n; *&t;Builds a pdu frame as a TEST response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_test_rsp - build TEST response PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@ev_skb: The received TEST command PDU frame&n; *&n; *&t;Builds a pdu frame as a TEST response.&n; */
 DECL|function|llc_pdu_init_as_test_rsp
-r_int
+r_void
 id|llc_pdu_init_as_test_rsp
 c_func
 (paren
@@ -1385,13 +1312,10 @@ id|dsize
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_frmr_rsp - builds FRMR response PDU&n; *&t;@pdu_frame: Address of the frame to build&n; *&t;@prev_pdu: The rejected PDU frame&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@vs: tx state vari value for the data link conn at the rejecting LLC&n; *&t;@vr: rx state var value for the data link conn at the rejecting LLC&n; *&t;@vzyxw: completely described in the IEEE Std 802.2 document (Pg 55)&n; *&n; *&t;Builds a pdu frame as a FRMR response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_frmr_rsp - builds FRMR response PDU&n; *&t;@skb: Address of the frame to build&n; *&t;@prev_pdu: The rejected PDU frame&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@vs: tx state vari value for the data link conn at the rejecting LLC&n; *&t;@vr: rx state var value for the data link conn at the rejecting LLC&n; *&t;@vzyxw: completely described in the IEEE Std 802.2 document (Pg 55)&n; *&n; *&t;Builds a pdu frame as a FRMR response.&n; */
 DECL|function|llc_pdu_init_as_frmr_rsp
-r_int
+r_void
 id|llc_pdu_init_as_frmr_rsp
 c_func
 (paren
@@ -1572,13 +1496,10 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rr_rsp - builds RR response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RR response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rr_rsp - builds RR response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RR response.&n; */
 DECL|function|llc_pdu_init_as_rr_rsp
-r_int
+r_void
 id|llc_pdu_init_as_rr_rsp
 c_func
 (paren
@@ -1639,13 +1560,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rej_rsp - builds REJ response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as a REJ response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rej_rsp - builds REJ response pdu&n; *&t;@skb: Address of the skb to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as a REJ response.&n; */
 DECL|function|llc_pdu_init_as_rej_rsp
-r_int
+r_void
 id|llc_pdu_init_as_rej_rsp
 c_func
 (paren
@@ -1706,13 +1624,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_rnr_rsp - builds RNR response pdu&n; *&t;@pdu_frame: Address of the frame to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RNR response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_rnr_rsp - builds RNR response pdu&n; *&t;@skb: Address of the frame to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&t;@nr: The seq. number of the expected data PDU from the remote&n; *&n; *&t;Builds a pdu frame as an RNR response.&n; */
 DECL|function|llc_pdu_init_as_rnr_rsp
-r_int
+r_void
 id|llc_pdu_init_as_rnr_rsp
 c_func
 (paren
@@ -1773,13 +1688,10 @@ op_amp
 l_int|0xFE
 suffix:semicolon
 multiline_comment|/* set N(R) in bits 10..16 */
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pdu_init_as_ua_rsp - builds UA response pdu&n; *&t;@skb: Address of the frame to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a UA response.&n; */
+multiline_comment|/**&n; *&t;llc_pdu_init_as_ua_rsp - builds UA response pdu&n; *&t;@skb: Address of the frame to build&n; *&t;@f_bit: The F bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a UA response.&n; */
 DECL|function|llc_pdu_init_as_ua_rsp
-r_int
+r_void
 id|llc_pdu_init_as_ua_rsp
 c_func
 (paren
@@ -1825,14 +1737,11 @@ l_int|4
 op_amp
 id|LLC_U_PF_BIT_MASK
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_pdu_decode_pdu_type - designates PDU type&n; *&t;@skb: input skb that type of it must be designated.&n; *&t;@type: type of PDU (output argument).&n; *&n; *&t;This function designates type of PDU (I,S or U).&n; */
+multiline_comment|/**&n; *&t;llc_pdu_decode_pdu_type - designates PDU type&n; *&t;@skb: input skb that type of it must be designated.&n; *&t;@type: type of PDU (output argument).&n; *&n; *&t;This function designates type of PDU (I, S or U).&n; */
 DECL|function|llc_pdu_decode_pdu_type
 r_static
-r_int
+r_void
 id|llc_pdu_decode_pdu_type
 c_func
 (paren
@@ -1894,13 +1803,10 @@ id|type
 op_assign
 id|LLC_PDU_TYPE_I
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_decode_pdu_type - designates component LLC must handle for PDU&n; *&t;@skb: input skb&n; *&t;@dest: destination component&n; *&n; *&t;This function designates which component of LLC must handle this PDU.&n; */
 DECL|function|llc_decode_pdu_type
-r_int
+r_void
 id|llc_decode_pdu_type
 c_func
 (paren
@@ -2002,9 +1908,6 @@ op_star
 id|dest
 op_assign
 id|type
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_get_hdr_len - designates LLC header length&n; *&t;@type: type of PDU.&n; *&n; *&t;This function designates LLC header length of PDU. header length for I&n; *&t;and S PDU is 4 and for U is 3 bytes. Returns the length of header.&n; */

@@ -1751,9 +1751,7 @@ id|u8
 id|state
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|state
 op_ne
 id|LLC_CONN_STATE_NORMAL
@@ -1765,13 +1763,6 @@ op_logical_and
 id|state
 op_ne
 id|LLC_CONN_STATE_REJ
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* data_conn_refuse */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;find_next_offset - finds offset for next category of transitions&n; *&t;@state: state table.&n; *&t;@offset: start offset.&n; *&n; *&t;Finds offset of next category of transitions in transition table.&n; *&t;Returns the start index of next category.&n; */
