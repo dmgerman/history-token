@@ -2265,7 +2265,8 @@ id|ret
 suffix:semicolon
 r_int
 id|rs
-comma
+suffix:semicolon
+id|loff_t
 id|off
 suffix:semicolon
 id|__u16
