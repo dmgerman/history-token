@@ -28,14 +28,19 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* CPU_MASK_ALL (0xff) has undefined behaviour with&n;&t; * dest_LowestPrio mode logical clustered apic interrupt routing&n;&t; * Just start on cpu 0.  IRQ balancing will spread load&n;&t; */
 r_return
-id|CPU_MASK_ALL
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;(target_cpus())
 DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE (dest_Fixed)
+mdefine_line|#define INT_DELIVERY_MODE (dest_LowestPrio)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|function|check_apicid_used
