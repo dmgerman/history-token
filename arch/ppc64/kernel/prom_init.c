@@ -8358,23 +8358,6 @@ comma
 id|offset
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reserve kernel in reserve map&n;&t; */
-id|reserve_mem
-c_func
-(paren
-l_int|0
-comma
-id|__pa
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-id|klimit
-)paren
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Check for an initrd&n;&t; */
 id|prom_check_initrd
 c_func
