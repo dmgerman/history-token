@@ -6059,11 +6059,6 @@ r_break
 suffix:semicolon
 macro_line|#endif
 r_case
-id|ISDN_STAT_L1ERR
-suffix:colon
-r_break
-suffix:semicolon
-r_case
 id|CAPI_PUT_MESSAGE
 suffix:colon
 r_return

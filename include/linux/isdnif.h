@@ -276,8 +276,6 @@ DECL|macro|ISDN_STAT_PROT
 mdefine_line|#define ISDN_STAT_PROT    273    /* protocol IO specific callback         */
 DECL|macro|ISDN_STAT_DISPLAY
 mdefine_line|#define ISDN_STAT_DISPLAY 274    /* deliver a received display message    */
-DECL|macro|ISDN_STAT_L1ERR
-mdefine_line|#define ISDN_STAT_L1ERR   275    /* Signal Layer-1 Error                  */
 DECL|macro|ISDN_STAT_FAXIND
 mdefine_line|#define ISDN_STAT_FAXIND  276    /* FAX indications from HL-driver        */
 DECL|macro|ISDN_STAT_AUDIO
@@ -289,11 +287,6 @@ DECL|macro|ISDN_AUDIO_SETDD
 mdefine_line|#define ISDN_AUDIO_SETDD&t;0&t;/* Set DTMF detection           */
 DECL|macro|ISDN_AUDIO_DTMF
 mdefine_line|#define ISDN_AUDIO_DTMF&t;&t;1&t;/* Rx/Tx DTMF                   */
-multiline_comment|/*&n; * Values for errcode field&n; */
-DECL|macro|ISDN_STAT_L1ERR_SEND
-mdefine_line|#define ISDN_STAT_L1ERR_SEND 1
-DECL|macro|ISDN_STAT_L1ERR_RECV
-mdefine_line|#define ISDN_STAT_L1ERR_RECV 2
 multiline_comment|/*&n; * Values for feature-field of interface-struct.&n; */
 multiline_comment|/* Layer 2 */
 DECL|macro|ISDN_FEATURE_L2_X75I
