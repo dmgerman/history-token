@@ -589,7 +589,7 @@ id|SRMMU_ET_PTE
 id|vaddr
 op_and_assign
 op_complement
-id|SRMMU_PMD_MASK
+id|SRMMU_REAL_PMD_MASK
 suffix:semicolon
 id|vaddr
 op_rshift_assign
