@@ -1110,7 +1110,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the relevent break bits */
+multiline_comment|/* Clear the relevant break bits */
 r_if
 c_cond
 (paren

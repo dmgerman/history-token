@@ -2408,7 +2408,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** can_remove_receive(PktP,P) returns non-zero if PKT_IN_USE is set&n;** for the next packet on the queue. It will also set PktP to point to the&n;** relevent packet, [having cleared the PKT_IN_USE bit]. If PKT_IN_USE is clear,&n;** then can_remove_receive() returns 0.&n;*/
+multiline_comment|/*&n;** can_remove_receive(PktP,P) returns non-zero if PKT_IN_USE is set&n;** for the next packet on the queue. It will also set PktP to point to the&n;** relevant packet, [having cleared the PKT_IN_USE bit]. If PKT_IN_USE is clear,&n;** then can_remove_receive() returns 0.&n;*/
 r_int
 DECL|function|can_remove_receive
 id|can_remove_receive

@@ -1049,7 +1049,7 @@ op_assign
 id|obj-&gt;attr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get a directory entry.  Note that the caller is responsible&n; * for holding the relevent locks.&n; */
+multiline_comment|/*&n; * get a directory entry.  Note that the caller is responsible&n; * for holding the relevant locks.&n; */
 r_int
 DECL|function|__adfs_dir_get
 id|__adfs_dir_get

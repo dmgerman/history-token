@@ -2026,7 +2026,7 @@ id|ModTypes
 op_assign
 id|Mod
 suffix:semicolon
-multiline_comment|/*&n;      ** If either of the modules on this unit is read-only or write-only&n;      ** or none-xprint, then we need to transfer that info over to the&n;      ** relevent ports.&n;      */
+multiline_comment|/*&n;      ** If either of the modules on this unit is read-only or write-only&n;      ** or none-xprint, then we need to transfer that info over to the&n;      ** relevant ports.&n;      */
 r_if
 c_cond
 (paren
