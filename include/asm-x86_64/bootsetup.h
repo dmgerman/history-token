@@ -47,10 +47,12 @@ DECL|macro|INITRD_SIZE
 mdefine_line|#define INITRD_SIZE (*(unsigned int *) (PARAM+0x21c))
 DECL|macro|EDID_INFO
 mdefine_line|#define EDID_INFO (*(struct edid_info *) (PARAM+0x440))
-DECL|macro|DISK80_SIGNATURE
-mdefine_line|#define DISK80_SIGNATURE (*(unsigned int*) (PARAM+DISK80_SIG_BUFFER))
 DECL|macro|EDD_NR
 mdefine_line|#define EDD_NR     (*(unsigned char *) (PARAM+EDDNR))
+DECL|macro|EDD_MBR_SIG_NR
+mdefine_line|#define EDD_MBR_SIG_NR (*(unsigned char *) (PARAM+EDD_MBR_SIG_NR_BUF))
+DECL|macro|EDD_MBR_SIGNATURE
+mdefine_line|#define EDD_MBR_SIGNATURE ((unsigned int *) (PARAM+EDD_MBR_SIG_BUF))
 DECL|macro|EDD_BUF
 mdefine_line|#define EDD_BUF     ((struct edd_info *) (PARAM+EDDBUF))
 DECL|macro|COMMAND_LINE
