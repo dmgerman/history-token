@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -1059,6 +1060,41 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|root_delay
+r_static
+r_int
+r_int
+id|__initdata
+id|root_delay
+suffix:semicolon
+DECL|function|root_delay_setup
+r_static
+r_int
+id|__init
+id|root_delay_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|root_delay
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|__setup
 c_func
 (paren
@@ -1073,6 +1109,14 @@ c_func
 l_string|&quot;rootfstype=&quot;
 comma
 id|fs_names_setup
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;rootdelay=&quot;
+comma
+id|root_delay_setup
 )paren
 suffix:semicolon
 DECL|function|get_fs_names
@@ -1862,6 +1906,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|root_delay
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Waiting %dsec before mounting root device...&bslash;n&quot;
+comma
+id|root_delay
+)paren
+suffix:semicolon
+id|ssleep
+c_func
+(paren
+id|root_delay
+)paren
+suffix:semicolon
+)brace
 id|md_run_setup
 c_func
 (paren
