@@ -4199,21 +4199,12 @@ id|xtime_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This is annoying.  The below is the same thing&n;&t;&t; * posix_get_clock_monotonic() does, but it wants to&n;&t;&t; * take the lock which we want to cover the loads stuff&n;&t;&t; * too.&n;&t;&t; */
-id|do_gettimeofday
+id|getnstimeofday
 c_func
 (paren
-(paren
-r_struct
-id|timeval
-op_star
-)paren
 op_amp
 id|tp
 )paren
-suffix:semicolon
-id|tp.tv_nsec
-op_mul_assign
-id|NSEC_PER_USEC
 suffix:semicolon
 id|tp.tv_sec
 op_add_assign
