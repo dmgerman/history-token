@@ -26,9 +26,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;linux/adb.h&gt;
-macro_line|#include &lt;linux/cuda.h&gt;
-macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
@@ -37,9 +34,8 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
-macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/smplock.h&gt;
-macro_line|#endif /* CONFIG_SMP */
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;

@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#endif

@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * Create a pte. Used during initialization only.&n; * We assume the PTE will fit in the primary PTEG.&n; */
 DECL|function|pSeries_make_pte
 r_void

@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* Status return values */
 DECL|macro|H_Success
 mdefine_line|#define H_Success&t;0

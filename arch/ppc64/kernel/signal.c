@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE

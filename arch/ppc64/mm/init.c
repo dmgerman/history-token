@@ -961,8 +961,28 @@ suffix:semicolon
 )brace
 )brace
 r_void
-DECL|function|local_flush_tlb_mm
-id|local_flush_tlb_mm
+DECL|function|flush_tlb_all
+id|flush_tlb_all
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Implemented to just flush the vmalloc area.&n;&t; * vmalloc is the only user of flush_tlb_all.&n;&t; */
+id|__flush_tlb_range
+c_func
+(paren
+l_int|NULL
+comma
+id|VMALLOC_START
+comma
+id|VMALLOC_END
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|flush_tlb_mm
+id|flush_tlb_mm
 c_func
 (paren
 r_struct
@@ -997,7 +1017,7 @@ id|mp
 op_assign
 id|mp-&gt;vm_next
 )paren
-id|local_flush_tlb_range
+id|__flush_tlb_range
 c_func
 (paren
 id|mm
@@ -1012,7 +1032,7 @@ r_else
 (brace
 multiline_comment|/* MIKEC: It is not clear why this is needed */
 multiline_comment|/* paulus: it is needed to clear out stale HPTEs&n;&t;&t; * when an address space (represented by an mm_struct)&n;&t;&t; * is being destroyed. */
-id|local_flush_tlb_range
+id|__flush_tlb_range
 c_func
 (paren
 id|mm
@@ -1031,8 +1051,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Callers should hold the mm-&gt;page_table_lock&n; */
 r_void
-DECL|function|local_flush_tlb_page
-id|local_flush_tlb_page
+DECL|function|flush_tlb_page
+id|flush_tlb_page
 c_func
 (paren
 r_struct
@@ -1150,7 +1170,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;local_flush_tlb_page: invalid region 0x%016lx&quot;
+l_string|&quot;flush_tlb_page: invalid region 0x%016lx&quot;
 comma
 id|vmaddr
 )paren
@@ -1257,8 +1277,8 @@ id|MAX_BATCH_FLUSH
 )braket
 suffix:semicolon
 r_void
-DECL|function|local_flush_tlb_range
-id|local_flush_tlb_range
+DECL|function|__flush_tlb_range
+id|__flush_tlb_range
 c_func
 (paren
 r_struct
