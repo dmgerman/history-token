@@ -7610,7 +7610,7 @@ comma
 l_string|&quot;Received invalid manufacture info length&quot;
 l_string|&quot; (%d)&bslash;n&quot;
 comma
-id|s-&gt;bca.len
+id|s-&gt;manufact.len
 )paren
 suffix:semicolon
 id|ret
