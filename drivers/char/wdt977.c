@@ -37,6 +37,7 @@ multiline_comment|/* timeout in minutes */
 DECL|variable|timer_alive
 r_static
 r_int
+r_int
 id|timer_alive
 suffix:semicolon
 DECL|variable|testmode
